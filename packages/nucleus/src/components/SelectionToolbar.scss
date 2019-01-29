@@ -1,0 +1,16 @@
+.#{$ns}-selection-toolbar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -48px;
+  padding: $spacing;
+  line-height: 24px;
+  box-sizing: border-box;
+  background: white;
+  display: flex;
+  justify-content: flex-end;
+
+  > * {
+    margin-left: 8px;
+  }
+}

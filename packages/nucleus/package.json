@@ -1,0 +1,22 @@
+{
+  "private": true,
+  "name": "@nebula.js/nucleus",
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT",
+  "author": "QlikTech International AB",
+  "keywords": [],
+  "main": "dist/nucleus.js",
+  "module": "dist/nucleus.esm.js",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
+    "build:watch": "rollup --config ../../rollup.config.js -w",
+    "lint": "eslint --ext .js,.jsx src"
+  },
+  "devDependencies": {
+    "@nebula.js/selections": "^0.1.0",
+    "@nebula.js/supernova": "^0.1.0",
+    "node-event-emitter": "^0.0.1",
+    "preact": "^8.4.2"
+  }
+}

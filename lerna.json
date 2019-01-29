@@ -1,0 +1,15 @@
+{
+  "command": {
+    "publish": {
+      "registry": "https://qliktech.jfrog.io/qliktech/api/npm/npm-local/"
+    },
+    "version": {
+      "allowBranch": "master",
+      "conventionalCommits": true,
+      "message": "chore(release): %s 🚀"
+    }
+  },
+  "version": "0.1.0",
+  "npmClient": "yarn",
+  "useWorkspaces": true
+}

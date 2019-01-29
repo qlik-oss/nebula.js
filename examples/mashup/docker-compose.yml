@@ -1,0 +1,9 @@
+version: "2"
+
+services:
+  engine:
+    image: qlikcore/engine:12.300.0
+    restart: always
+    command: -S AcceptEULA=${ACCEPT_EULA}
+    ports:
+      - "19076:19076"

@@ -1,0 +1,25 @@
+{
+  "root": true,
+  "env": {
+    "browser": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "extends": [
+    "airbnb"
+  ],
+  "settings": {
+    "react": {
+      "pragma": "preact"
+    }
+  },
+  "rules": {
+    "import/no-extraneous-dependencies": [2, { "devDependencies": true }],
+    "max-len": 0,
+    "no-plusplus": 0,
+    "no-bitwise" : 0,
+    "react/destructuring-assignment": [0, "always"],
+    "react/prop-types": 0
+  }
+}

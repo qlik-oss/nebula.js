@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "@nebula.js/supernova",
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT",
+  "author": "QlikTech International AB",
+  "keywords": [],
+  "main": "dist/supernova.js",
+  "module": "dist/supernova.esm.js",
+  "scripts": {
+    "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
+    "build:dev": "rollup --config ../../rollup.config.js",
+    "lint": "eslint src"
+  },
+  "devDependencies": {
+    "@nebula.js/selections": "^0.1.0",
+    "extend": "^3.0.2",
+    "node-event-emitter": "^0.0.1"
+  }
+}
