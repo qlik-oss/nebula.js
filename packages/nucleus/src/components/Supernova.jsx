@@ -63,7 +63,6 @@ const scheduleRender = (props, prev, initial, contentElement) => {
 
       Promise.resolve(props.sn.component.render({
         layout: props.layout,
-        layoutChanges: props.layoutChanges,
         options: props.snOptions || {},
         context: {
           permissions: (props.snContext || {}).permissions,
