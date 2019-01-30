@@ -20,6 +20,30 @@
     "no-plusplus": 0,
     "no-bitwise" : 0,
     "react/destructuring-assignment": [0, "always"],
-    "react/prop-types": 0
-  }
+    "react/prop-types": 0,
+    "react/no-deprecated": 0
+  },
+  "overrides": [
+    {
+      "files": ["**/*.spec.js"],
+      "env": {
+        "browser": false,
+        "node": true,
+        "mocha": true
+      },
+      "globals": {
+        "chai": false,
+        "expect": false,
+        "sinon": false,
+        "page": false
+      },
+      "plugins": [
+        "mocha"
+      ],
+      "rules": {
+        "mocha/no-exclusive-tests": "error",
+        "no-unused-expressions": 0
+      }
+    }
+  ]
 }

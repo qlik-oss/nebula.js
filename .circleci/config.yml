@@ -1,0 +1,82 @@
+version: 2
+
+aliases:
+  - &restore_yarn_cache
+    name: Restore yarn cache
+    keys:
+      - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+      - yarn-packages-{{ .Branch }}
+      - yarn-packages-
+  - &save_yarn_cache
+    name: Save yarn cache
+    paths:
+      - ~/.cache/yarn
+    key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+  - &filter_master
+    branches:
+      only: master
+  - &attach
+    at: ~/project
+
+defaults: &defaults
+  working_directory: ~/project
+  docker:
+    - image: circleci/node:10.9.0-browsers
+
+jobs:
+  install:
+    <<: *defaults
+    steps:
+      - checkout
+      - restore_cache: *restore_yarn_cache
+      - run:
+          name: Install packages
+          command: yarn install --frozen-lockfile
+      - save_cache: *save_yarn_cache
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  build:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach
+      - run:
+          name: Build packages
+          command: yarn run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - packages/*/dist
+
+  lint:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach
+      - run:
+          name: Lint
+          command: yarn run lint
+
+  test-unit:
+    <<: *defaults
+    steps:
+      - attach_workspace: *attach
+      - run:
+          name: Unit tests
+          command: yarn run test:unit
+
+workflows:
+  version: 2
+  build-all:
+    jobs:
+      - install
+      - build:
+          requires:
+            - install
+      - test-unit:
+          requires:
+            - build
+      - lint:
+          requires:
+            - build
