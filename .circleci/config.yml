@@ -71,12 +71,12 @@ workflows:
   build-all:
     jobs:
       - install
+      - test-unit:
+          requires:
+            - install
       - build:
           requires:
             - install
-      - test-unit:
-          requires:
-            - build
       - lint:
           requires:
             - build

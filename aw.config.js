@@ -43,6 +43,13 @@ const TYPES = {
   unit: {
     glob: `${argv.scope}/__tests__/unit/**/*.spec.js`,
     reportDir: 'coverage/unit',
+    mocks: [
+      // mock nebula modules to avoid parsing errors without build.
+      // these modules should be mocked properly in the unit test
+      ['@nebula.js/selections', () => ({})],
+      ['@nebula.js/supernova', () => ({})],
+      ['@nebula.js/nucleus', () => ({})],
+    ],
   },
 };
 
@@ -61,7 +68,13 @@ module.exports = {
     instrumenter: './lib/instrumenters/noop',
     reportDir: 'coverage/unit',
   },
+  coverage: true,
   mocha: Object.assign({
     timeout: 30000,
   }, type.mocha),
+  mocks: [
+    ['**/*.scss', '{}'],
+    ['**/*.css', '{}'],
+    ...(type.mocks || []),
+  ],
 };
