@@ -18,7 +18,7 @@ const argv = yargs
       type: 'string',
       alias: 't',
       default: 'unit',
-      choices: ['unit'],
+      choices: ['unit', 'integration'],
     },
   })
   .coerce('scope', (scope) => {
@@ -39,11 +39,22 @@ const argv = yargs
   })
   .argv;
 
-const TYPES = {
+const CONFIGS = {
   unit: {
-    glob: `${argv.scope}/__tests__/unit/**/*.spec.js`,
-    reportDir: 'coverage/unit',
+    glob: [`${argv.scope}/__tests__/unit/**/*.spec.js`],
+    src: [`${argv.scope}/src/**/*.{js,jsx}`],
+    coverage: true,
+    nyc: {
+      include: [`${argv.scope}/src/**/*.{js,jsx}`],
+      exclude: ['**/*.spec.js'],
+      sourceMap: false,
+      instrumenter: './lib/instrumenters/noop',
+      reportDir: 'coverage/unit',
+    },
     mocks: [
+      ['**/*.scss', '{}'],
+      ['**/*.css', '{}'],
+
       // mock nebula modules to avoid parsing errors without build.
       // these modules should be mocked properly in the unit test
       ['@nebula.js/selections', () => ({})],
@@ -51,30 +62,18 @@ const TYPES = {
       ['@nebula.js/nucleus', () => ({})],
     ],
   },
+  integration: {
+    glob: 'test/integration/**/*.spec.js',
+    watchGlob: ['test/integration/**/*.{js,html}'],
+  },
 };
 
-const type = TYPES[argv.type];
-
-const glob = [type.glob];
-const src = [`${argv.scope}/src/**/*.{js,jsx}`];
+const config = CONFIGS[argv.type];
 
 module.exports = {
-  glob,
-  src,
-  watchGlob: [...src, ...glob],
-  nyc: {
-    include: src,
-    sourceMap: false,
-    instrumenter: './lib/instrumenters/noop',
-    reportDir: 'coverage/unit',
-  },
-  coverage: true,
-  mocha: Object.assign({
+  watchGlob: [config.src, config.glob],
+  mocha: {
     timeout: 30000,
-  }, type.mocha),
-  mocks: [
-    ['**/*.scss', '{}'],
-    ['**/*.css', '{}'],
-    ...(type.mocks || []),
-  ],
+  },
+  ...config,
 };

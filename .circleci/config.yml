@@ -66,6 +66,28 @@ jobs:
           name: Unit tests
           command: yarn run test:unit
 
+  test-integration:
+    docker:
+      - image: circleci/node:10.9.0-browsers
+      - image: qlikcore/engine:12.311.0
+        command: -S AcceptEULA=yes
+
+    working_directory: ~/project
+
+    steps:
+      - attach_workspace: *attach
+      - run:
+          name: install dockerize
+          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
+          environment:
+            DOCKERIZE_VERSION: v0.6.1
+      - run:
+          name: Wait for engine
+          command: dockerize -wait tcp://localhost:9076 -timeout 1m
+      - run:
+          name: Integration tests
+          command: yarn run test:integration
+
 workflows:
   version: 2
   build-all:
@@ -78,5 +100,8 @@ workflows:
           requires:
             - install
       - lint:
+          requires:
+            - build
+      - test-integration:
           requires:
             - build
