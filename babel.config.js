@@ -10,6 +10,7 @@ module.exports = {
           'istanbul',
           {
             exclude: [
+              '**/test/**',
               '**/__test__/**',
               '**/dist/**',
             ],
