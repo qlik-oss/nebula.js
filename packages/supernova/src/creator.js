@@ -1,13 +1,13 @@
 import extend from 'extend';
 import EventEmitter from 'node-event-emitter';
 
-import translator from './translator';
 import actionhero from './action-hero';
 
 const defaultComponent = {
   app: null,
   model: null,
   actions: null,
+  selections: null,
   created: () => {},
   mounted: () => {},
   render: () => {},
@@ -33,7 +33,7 @@ const mixin = (obj) => {
   return obj;
 };
 
-export default function create(sn, opts, env) {
+export default function create(sn, opts) {
   const componentInstance = {
     ...defaultComponent,
   };
@@ -64,16 +64,13 @@ export default function create(sn, opts, env) {
     app: opts.app,
     selections: opts.selections,
     actions: hero.actions,
-    resources: {
-      translator: env.translator || translator,
-      Promise: env.Promise || Promise,
-    },
   });
 
   extend(componentInstance, {
     actions: hero.actions,
     model: opts.model,
     app: opts.app,
+    selections: opts.selections,
   });
 
   return {

@@ -1,5 +1,4 @@
 import preact from 'preact';
-import { createAppSelectionAPI } from '@nebula.js/selections';
 import Cell from './components/Cell';
 
 import populateData from './populator';
@@ -11,16 +10,6 @@ import './components/Style.scss';
 export function boot({
   id,
 }, visual, config, nebbie, app) {
-  if (!app.selections) {
-    let selections = null;
-    Object.defineProperty(app, 'selections', {
-      get() {
-        selections = selections || createAppSelectionAPI(app);
-        return selections;
-      },
-    });
-  }
-
   return new config.env.Promise((resolve) => {
     let reference;
     const unmount = () => {

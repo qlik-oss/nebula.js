@@ -39,14 +39,14 @@ export default function ({
   const actions = {};
   const selectionToolbarItems = [];
   const w = actionWrapper(component);
-  ((sn.selectionToolbar || {}).items || []).forEach((item) => {
+  ((sn.definition.selectionToolbar || {}).items || []).forEach((item) => {
     const wrapped = w(item);
     // TODO - check if key exists
     actions[item.key] = wrapped;
     selectionToolbarItems.push(wrapped);
   });
 
-  (sn.actions || []).forEach((item) => {
+  (sn.definition.actions || []).forEach((item) => {
     const wrapped = w(item);
     // TODO - check if key exists
     actions[item.key] = wrapped;

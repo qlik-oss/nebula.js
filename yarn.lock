@@ -5656,7 +5656,7 @@ nise@^1.4.6:
     path-to-regexp "^1.7.0"
     text-encoding "^0.6.4"
 
-node-event-emitter@0.0.1, node-event-emitter@^0.0.1:
+node-event-emitter@^0.0.1:
   version "0.0.1"
   resolved "https://registry.yarnpkg.com/node-event-emitter/-/node-event-emitter-0.0.1.tgz#8b597377d79a1d976f7d45f916d3d3643d73f8ce"
 

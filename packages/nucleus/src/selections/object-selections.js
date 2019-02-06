@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle: 0 */
 import eventmixin from './event-mixin';
 
 const event = () => {
@@ -11,11 +12,15 @@ const event = () => {
 };
 
 export default function (model, app) {
-  const appAPI = app.selections;
+  if (model._selections) {
+    return model._selections;
+  }
+  const appAPI = () => app._selections;
   let hasSelected = false;
   let isActive = false;
   let layout = {};
   const api = {
+    // model,
     id: model.id,
     setLayout(lyt) {
       layout = lyt;
@@ -28,7 +33,7 @@ export default function (model, app) {
       }
       isActive = true;
       this.emit('activated');
-      return appAPI.switchModal(model, paths, true);
+      return appAPI().switchModal(model, paths, true);
     },
     clear() {
       hasSelected = false;
@@ -40,18 +45,18 @@ export default function (model, app) {
       isActive = false;
       this.emit('confirmed');
       this.emit('deactivated');
-      return appAPI.switchModal(null, null, true);
+      return appAPI().switchModal(null, null, true);
     },
     cancel() {
       hasSelected = false;
       isActive = false;
       this.emit('canceled');
       this.emit('deactivated');
-      return appAPI.switchModal(null, null, false, false);
+      return appAPI().switchModal(null, null, false, false);
     },
     select(s) {
       this.begin([s.params[0]]);
-      if (!appAPI.isModal()) {
+      if (!appAPI().isModal()) {
         return;
       }
       hasSelected = true;
@@ -71,12 +76,14 @@ export default function (model, app) {
       return true;
     },
     isActive: () => isActive,
-    isModal: () => appAPI.isModal(model),
-    goModal: paths => appAPI.switchModal(model, paths, false),
-    noModal: () => appAPI.switchModal(null, null, false),
+    isModal: () => appAPI().isModal(model),
+    goModal: paths => appAPI().switchModal(model, paths, false),
+    noModal: () => appAPI().switchModal(null, null, false),
   };
 
   eventmixin(api);
+
+  model._selections = api; // eslint-disable-line no-param-reassign
 
   return api;
 }

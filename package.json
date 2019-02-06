@@ -3,7 +3,7 @@
   "description": "",
   "scripts": {
     "build": "cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
-    "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream",
+    "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream --concurrency 99 --no-sort",
     "lint": "eslint packages --ext .js --ext .jsx",
     "test": "yarn run test:unit",
     "test:integration": "aw puppet -c aw.config.js --type integration",

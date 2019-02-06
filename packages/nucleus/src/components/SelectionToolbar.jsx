@@ -60,7 +60,7 @@ class Item extends preact.Component {
 class Component extends preact.Component {
   constructor(props) {
     super(props);
-    const api = props.model.selections;
+    const api = props.sn.component.selections;
 
     this.state = {
       confirmable: api.canConfirm(),
@@ -113,7 +113,7 @@ class Component extends preact.Component {
   }
 
   static getDerivedStateFromProps(nextProps) {
-    const api = nextProps.model.selections;
+    const api = nextProps.sn.component.selections;
     return {
       confirmable: api.canConfirm(),
       cancelable: api.canCancel(),
