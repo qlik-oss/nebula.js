@@ -79,6 +79,6 @@ export default function create(sn, opts) {
     selectionToolbar: {
       items: hero.selectionToolbarItems,
     },
-    logicalSize: sn.logicalSize || (() => false),
+    logicalSize: sn.definition.logicalSize || (() => false),
   };
 }

@@ -7,6 +7,7 @@ describe('creator', () => {
   it('should return a default component api', () => {
     const generator = {
       component: {},
+      definition: {},
     };
     const env = {};
     const params = {
@@ -40,6 +41,7 @@ describe('creator', () => {
         destroy: sinon.spy(),
         custom: sinon.spy(),
       },
+      definition: {},
     };
     const env = {};
     const params = {
