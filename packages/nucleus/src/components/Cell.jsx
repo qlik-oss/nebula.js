@@ -1,4 +1,5 @@
 import preact from 'preact';
+import { createObjectSelectionAPI } from '../selections';
 
 import { prefixer } from '../utils';
 
@@ -107,6 +108,7 @@ class Cell extends preact.Component {
         const sn = SN.create({
           model,
           app: props.app,
+          selections: createObjectSelectionAPI(model, props.app),
         });
         sn.component.on('rendered', (...args) => {
           externalAPI.emit('rendered', ...args);
@@ -127,15 +129,16 @@ class Cell extends preact.Component {
     };
 
     const onChanged = () => model.getLayout().then((layout) => {
-      if (model.selections) {
-        model.selections.setLayout(layout);
+      const selections = this.state.sn ? this.state.sn.component.selections : null;
+      if (selections && selections.id === model.id) {
+        selections.setLayout(layout);
         if (layout.qSelectionInfo && layout.qSelectionInfo.qInSelections
-            && !model.selections.isModal()) {
-          model.selections.goModal('/qHyperCubeDef');
+            && !selections.isModal()) {
+          selections.goModal('/qHyperCubeDef');
         }
         if (!layout.qSelectionInfo || !layout.qSelectionInfo.qInSelections) {
-          if (model.selections.isModal()) {
-            model.selections.noModal();
+          if (selections.isModal()) {
+            selections.noModal();
           }
         }
       }

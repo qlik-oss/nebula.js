@@ -65,10 +65,6 @@ const config = (isEsm) => {
       commonjs(),
       babel({
         babelrc: false,
-        // include: [
-        //   'src/**',
-        //   // /react-leonardo-ui/
-        // ],
         presets: [
           ['@babel/preset-env', {
             modules: false,
