@@ -1,8 +1,5 @@
 {
   "command": {
-    "publish": {
-      "registry": "https://qliktech.jfrog.io/qliktech/api/npm/npm-local/"
-    },
     "version": {
       "allowBranch": "master",
       "conventionalCommits": true,
