@@ -40,11 +40,16 @@ describe('qae', () => {
             min: () => 3,
             max: () => 7,
             add: () => 'a',
+            description: () => 'Slice',
+            move: () => 'c',
+            replace: () => 'd',
           },
           measures: {
             min: 2,
             max: 4,
             add: () => 'b',
+            description: () => 'Angle',
+            remove: () => 'e',
           },
         }],
       },
@@ -53,8 +58,13 @@ describe('qae', () => {
     expect(t.dimensions.min()).to.eql(3);
     expect(t.dimensions.max()).to.eql(7);
     expect(t.dimensions.add()).to.equal('a');
+    expect(t.dimensions.description()).to.equal('Slice');
+    expect(t.dimensions.move()).to.equal('c');
+    expect(t.dimensions.replace()).to.equal('d');
     expect(t.measures.min()).to.eql(2);
     expect(t.measures.max()).to.eql(4);
     expect(t.measures.add()).to.equal('b');
+    expect(t.measures.description()).to.equal('Angle');
+    expect(t.measures.remove()).to.equal('e');
   });
 });
