@@ -9,6 +9,9 @@ const load = ({ name, version }, config) => {
       name,
       version,
     }, config.env);
+    if (typeof p === 'undefined') {
+      throw new Error(`Failed to load supernova: ${name}`);
+    }
     if (typeof p === 'string') {
       throw new Error('Return value must be a Promise');
     }
@@ -57,6 +60,7 @@ export default function (opts, meta, config) {
           },
           visualization: type.name,
           version: type.version,
+          showTitles: true,
           ...s.qae.properties,
           ...initial,
         };

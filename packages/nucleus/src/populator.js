@@ -25,9 +25,10 @@ export default function populateData({
   sn,
   properties,
   fields,
-}) {
+}, context) {
   const target = sn.qae.data.targets[0];
   if (!target) {
+    context.logger.warn('Attempting to add fields to an object without a specified data target');
     return;
   }
   const { path } = target;
