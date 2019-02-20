@@ -101,7 +101,7 @@ class Supernova extends preact.Component {
         this.initial.mount = () => {};
       },
       rendered: () => {
-        this.props.prom();
+        // this.props.prom();
         this.initial.rendered = () => {};
       },
     };
