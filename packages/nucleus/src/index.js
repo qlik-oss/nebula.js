@@ -1,9 +1,9 @@
 import { createAppSelectionAPI } from './selections';
 
-import create from './create-object';
-import get from './get-object';
+import create from './object/create-object';
+import get from './object/get-object';
 import types from './sn/types';
-import logger from './logger';
+import logger from './utils/logger';
 
 function apiGenerator(app) {
   createAppSelectionAPI(app);

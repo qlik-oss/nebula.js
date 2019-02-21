@@ -3,7 +3,7 @@ import Button from './Button';
 import FadeButton from './FadeButton';
 import Icon from './Icon';
 
-import { prefixer } from '../utils';
+import { prefixer } from '../utils/utils';
 /* eslint react/no-multi-comp: 0 */
 
 class Item extends preact.Component {

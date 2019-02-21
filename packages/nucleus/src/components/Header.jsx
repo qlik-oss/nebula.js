@@ -1,5 +1,5 @@
 import preact from 'preact';
-import { prefixer } from '../utils';
+import { prefixer } from '../utils/utils';
 
 const Header = ({ layout }) => (
   layout && layout.showTitles && (layout.title || layout.subtitle) ? (
