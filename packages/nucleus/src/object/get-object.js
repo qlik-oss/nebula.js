@@ -1,5 +1,5 @@
-import { createObjectSelectionAPI } from './selections';
-import vizualizationAPI from './viz';
+import { createObjectSelectionAPI } from '../selections';
+import vizualizationAPI from '../viz';
 
 export function init(model, optional, context) {
   let state = {

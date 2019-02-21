@@ -1,7 +1,5 @@
 import populateData from './populator';
 
-import './components/Style.scss';
-
 export default function create({
   type,
   version,

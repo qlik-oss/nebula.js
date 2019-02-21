@@ -1,4 +1,4 @@
-import cell from './boot';
+import cell from './components/boot';
 
 const noopi = Promise.resolve({
   setProps() {},

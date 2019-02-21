@@ -1,6 +1,6 @@
 import preact from 'preact';
 
-import { prefixer } from '../utils';
+import { prefixer } from '../utils/utils';
 
 const Component = props => (
   <div className={prefixer('cell__error')}>

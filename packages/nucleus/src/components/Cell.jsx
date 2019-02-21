@@ -1,6 +1,6 @@
 import preact from 'preact';
 
-import { prefixer } from '../utils';
+import { prefixer } from '../utils/utils';
 
 import Requirements from './Requirements';
 import CError from './Error';
