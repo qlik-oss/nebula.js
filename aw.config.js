@@ -41,12 +41,12 @@ const argv = yargs
 
 const CONFIGS = {
   unit: {
-    glob: [`${argv.scope}/__tests__/unit/**/*.spec.js`],
+    glob: [`${argv.scope}/__tests__/unit/**/*.spec.{js,jsx}`],
     src: [`${argv.scope}/src/**/*.{js,jsx}`],
     coverage: true,
     nyc: {
       include: [`${argv.scope}/src/**/*.{js,jsx}`],
-      exclude: ['**/*.spec.js'],
+      exclude: ['**/*.spec.{js,jsx}'],
       sourceMap: false,
       instrumenter: './lib/instrumenters/noop',
       reportDir: 'coverage/unit',
