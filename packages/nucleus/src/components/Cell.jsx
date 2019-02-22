@@ -56,7 +56,7 @@ class Cell extends preact.Component {
           objectProps.sn
           && objectProps.layout.qSelectionInfo
           && objectProps.layout.qSelectionInfo.qInSelections
-            && <SelectionToolbar model={this.props.model} sn={objectProps.sn} />
+            && <SelectionToolbar sn={objectProps.sn} />
         }
         <div className={prefixer(['cell'])}>
           <Header layout={objectProps.layout} />
