@@ -111,6 +111,9 @@ export default function (app) {
         cache[app.id].selections = cache[app.id].selections || create(app);
         return cache[app.id].selections;
       },
+      set(v) {
+        cache[app.id].selections = v;
+      },
     });
   }
 }

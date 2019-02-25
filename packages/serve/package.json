@@ -1,0 +1,32 @@
+{
+  "name": "@nebula.js/cli-serve",
+  "version": "0.1.0",
+  "private": true,
+  "description": "",
+  "license": "MIT",
+  "author": "QlikTech International AB",
+  "keywords": [],
+  "files": [
+    "lib"
+  ],
+  "main": "serve.js",
+  "scripts": {
+    "lint": "eslint public"
+  },
+  "dependencies": {
+    "@nebula.js/nucleus": "0.1.0",
+    "chalk": "^2.4.2",
+    "enigma.js": "^2.4.0",
+    "html-webpack-plugin": "^3.2.0",
+    "leonardo-ui": "^1.6.0",
+    "portfinder": "^1.0.20",
+    "rollup": "^1.1.2",
+    "rollup-plugin-commonjs": "^9.2.0",
+    "rollup-plugin-json": "^3.1.0",
+    "rollup-plugin-node-resolve": "^4.0.0",
+    "rollup-plugin-serve": "^1.0.1",
+    "webpack": "^4.29.3",
+    "webpack-dev-server": "^3.1.14",
+    "yargs": "^12.0.5"
+  }
+}

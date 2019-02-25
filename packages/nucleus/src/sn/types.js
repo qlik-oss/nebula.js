@@ -42,7 +42,12 @@ export default function (config) {
 
   return {
     fetch,
-    clearFromCache,
+    clearFromCache: (name) => {
+      if (types[name]) {
+        types[name] = undefined;
+      }
+      clearFromCache(name);
+    },
     load: (name, version) => fetch(name, version).load(),
     supernova: (name, version) => fetch(name, version).supernova(),
     // instance: (name, version) => fetch(name, version).instance(),
