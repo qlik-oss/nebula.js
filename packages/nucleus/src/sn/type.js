@@ -56,7 +56,7 @@ export default function (opts, meta, config) {
       return this.supernova().then((s) => {
         const props = {
           qInfo: {
-            qType: 'foobar',
+            qType: type.name,
           },
           visualization: type.name,
           version: type.version,
