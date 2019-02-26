@@ -4,6 +4,10 @@ module.exports = {
   command: 'serve',
   desc: 'Dev server',
   builder(yargs) {
+    yargs.option('build', {
+      type: 'boolean',
+      default: true,
+    });
     yargs.option('host', {
       type: 'string',
     });

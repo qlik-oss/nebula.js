@@ -1,10 +1,13 @@
 const path = require('path');
+const fs = require('fs');
 
 const chalk = require('chalk');
 const portfinder = require('portfinder');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+
+const { watch } = require('@nebula.js/cli-build');
 
 const nm = require.resolve('leonardo-ui');
 const nmPath = nm.substring(0, nm.lastIndexOf('node_modules') + 12);
@@ -15,15 +18,25 @@ module.exports = async (argv) => {
   const enigmaConfig = argv.enigma || {};
   let snPath;
   let snName;
+  let watcher;
   if (argv.sn) {
     snPath = path.resolve(argv.sn);
     const parsed = path.parse(snPath);
     snName = parsed.name;
   } else {
+    if (argv.build !== false) {
+      watcher = await watch();
+    }
     const context = process.cwd();
     const externalPkg = require(path.resolve(context, 'package.json')); // eslint-disable-line global-require
+    const externalEntry = externalPkg.module || externalPkg.main;
     snName = externalPkg.name;
-    snPath = context;
+    snPath = path.resolve(context, externalEntry);
+  }
+  if (!fs.existsSync(snPath)) {
+    const rel = path.relative(process.cwd(), snPath);
+    console.log(chalk.red(`The specified entry point ${chalk.yellow(rel)} does not exist`));
+    return;
   }
 
   const config = {
@@ -79,16 +92,22 @@ module.exports = async (argv) => {
   const compiler = webpack(config);
   const server = new WebpackDevServer(compiler, options);
 
-  ['SIGINT', 'SIGTERM'].forEach((signal) => {
-    process.on(signal, () => {
-      server.close(() => {
-        process.exit(0);
-      });
+  const close = () => {
+    if (watcher) {
+      watcher.close();
+    }
+    server.close(() => {
+      process.exit(0);
     });
+  };
+
+  ['SIGINT', 'SIGTERM'].forEach((signal) => {
+    process.on(signal, close);
   });
+
   let initiated = false;
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => { // eslint-disable-line consistent-return
     compiler.hooks.done.tap('nebula serve', (stats) => {
       if (!initiated) {
         initiated = true;
@@ -98,9 +117,7 @@ module.exports = async (argv) => {
         resolve({
           context: '',
           url,
-          close() {
-            server.close();
-          },
+          close,
         });
 
         if (stats.hasErrors()) {

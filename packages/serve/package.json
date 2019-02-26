@@ -6,14 +6,16 @@
   "license": "MIT",
   "author": "QlikTech International AB",
   "keywords": [],
-  "files": [
-    "lib"
-  ],
   "main": "serve.js",
+  "files": [
+    "lib",
+    "command.js"
+  ],
   "scripts": {
     "lint": "eslint public"
   },
   "dependencies": {
+    "@nebula.js/cli-build": "0.1.0",
     "@nebula.js/nucleus": "0.1.0",
     "chalk": "^2.4.2",
     "enigma.js": "^2.4.0",
