@@ -21,6 +21,7 @@
   "main": "dist/<%= name %>.js",
   "module": "dist/<%= name %>.esm.js",
   "scripts": {
+    "build": "nebula build",
     "lint": "eslint src",
     "serve": "nebula serve"
   },
