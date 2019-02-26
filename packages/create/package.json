@@ -1,0 +1,21 @@
+{
+  "name": "@nebula.js/cli-create",
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT",
+  "author": "QlikTech International AB",
+  "keywords": [],
+  "files": [
+    "command.js",
+    "generator"
+  ],
+  "scripts": {
+    "generate": "yo ./generator/index.js"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "execa": "^1.0.0",
+    "yeoman-generator": "^3.2.0",
+    "yo": "^2.0.5"
+  }
+}
