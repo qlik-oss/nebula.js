@@ -66,12 +66,13 @@ jobs:
           name: Unit tests
           command: yarn run test:unit
 
-  test-integration:
+  test-integration-e2e:
     machine: true
     working_directory: ~/project
 
     steps:
       - attach_workspace: *attach
+      - restore_cache: *restore_yarn_cache
 
       - run:
           name: Upgrade node
@@ -100,12 +101,27 @@ jobs:
             DOCKERIZE_VERSION: v0.6.1
 
       - run:
-          name: Wait for engine
-          command: dockerize -wait tcp://localhost:9076 -timeout 1m
+          name: Test integration
+          command: yarn run test:integration
 
       - run:
-          name: Integration tests
-          command: yarn run test:integration
+          name: Create a supernova project
+          command: npx nebula create generated/hello --pkgm yarn
+
+      - run:
+          background: true
+          name: Serve supernova
+          command: |
+            cd generated/hello
+            yarn run serve --port 8085
+
+      - run:
+          name: Wait for web server
+          command: dockerize -wait tcp://localhost:8085 -timeout 30s
+
+      - run:
+          name: Test generated supernova
+          command: npx aw puppeteer --glob test/e2e-cli/**/*.spec.js
 
 workflows:
   version: 2
@@ -121,6 +137,6 @@ workflows:
       - lint:
           requires:
             - build
-      - test-integration:
+      - test-integration-e2e:
           requires:
             - build

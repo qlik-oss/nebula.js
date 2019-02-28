@@ -8,6 +8,7 @@ module.exports = class extends Generator {
 
     this.argument('name', { type: String, required: true });
     this.option('install', { type: Boolean, default: true });
+    this.argument('pkgm', { type: 'string', required: false });
 
     // console.log('OPTS', this.options);
     // console.log('ARGS', this.arguments);
@@ -16,15 +17,10 @@ module.exports = class extends Generator {
     if (fs.existsSync(destination)) {
       this.cancelled = true;
       this.log.error(chalk.red(`Oopsie, looks like ${this.options.name} already exists.`));
-      // return;
     }
 
     // silence create
     this.log.create = () => {};
-
-    // this.log('\n');
-    // this.log(`Creating a new project in ${chalk.cyan(destination)}`);
-    // this.log('\n');
   }
 
   async prompting() {
@@ -34,10 +30,18 @@ module.exports = class extends Generator {
 
     this.answers = await this.prompt([{
       type: 'list',
-      name: 'packageManager',
+      name: 'pkgm',
       message: 'Pick the package manager you want to use:',
       choices: ['npm', 'yarn'],
+      when: !this.options.pkgm && this.options.install,
     }]);
+
+    const safename = this.options.name.split('/').slice(-1)[0];
+
+    this.opts = {
+      pkgm: this.answers.pkgm || this.options.pkgm || 'npm',
+      packageName: safename,
+    };
   }
 
   async writing() {
@@ -61,7 +65,7 @@ module.exports = class extends Generator {
       this.templatePath('project/package.json'),
       this.destinationPath(`${name}/package.json`),
       {
-        name,
+        name: this.opts.packageName,
         description: '',
         user: this.user.git.name(),
         email: this.user.git.email(),
@@ -96,9 +100,9 @@ module.exports = class extends Generator {
     }
     process.chdir(this.options.name);
     this.installDependencies({
-      npm: this.answers.packageManager === 'npm',
+      npm: this.opts.pkgm === 'npm',
       bower: false,
-      yarn: this.answers.packageManager === 'yarn',
+      yarn: this.opts.pkgm === 'yarn',
     });
   }
 
@@ -106,7 +110,7 @@ module.exports = class extends Generator {
     if (this.cancelled) {
       return;
     }
-    const p = this.answers.packageManager === 'npm' ? 'npm' : 'yarn';
+    const p = this.opts.pkgm;
     this.log('\n');
     this.log(`Successfully created project ${chalk.yellow(this.options.name)}`);
     this.log('Get started with the following commands:');
