@@ -21,7 +21,7 @@ aliases:
 defaults: &defaults
   working_directory: ~/project
   docker:
-    - image: circleci/node:10.9.0-browsers
+    - image: circleci/node:10.9.0
 
 jobs:
   install:
@@ -67,23 +67,42 @@ jobs:
           command: yarn run test:unit
 
   test-integration:
-    docker:
-      - image: circleci/node:10.9.0-browsers
-      - image: qlikcore/engine:12.321.0
-        command: -S AcceptEULA=yes
-
+    machine: true
     working_directory: ~/project
 
     steps:
       - attach_workspace: *attach
+
+      - run:
+          name: Upgrade node
+          command: ./.circleci/upgrade-node.sh
+
+      - run:
+          name: Install yarn
+          command: npm i yarn@1.9.4 -g
+
+      - run:
+          name: Install Chrome
+          command: |
+            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+            sudo dpkg -i google-chrome-stable_current_amd64.deb; sudo apt-get -fy install
+
+      - run:
+          name: Start engine
+          command: |
+            set -x
+            ACCEPT_EULA=yes docker-compose -f ./packages/serve/docker-compose.yml up -d
+
       - run:
           name: install dockerize
           command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
           environment:
             DOCKERIZE_VERSION: v0.6.1
+
       - run:
           name: Wait for engine
           command: dockerize -wait tcp://localhost:9076 -timeout 1m
+
       - run:
           name: Integration tests
           command: yarn run test:integration

@@ -7,7 +7,7 @@ let s;
 
 before(async () => {
   s = await serve({
-    sn: path.resolve(__dirname, 'sn.js'),
+    entry: path.resolve(__dirname, 'sn.js'),
   });
 
   process.testServer = s;

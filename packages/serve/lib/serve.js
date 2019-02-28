@@ -9,32 +9,45 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const { watch } = require('@nebula.js/cli-build');
 
+const {
+  startEngine,
+  stopEngine,
+} = require('./engine');
+
 const nm = require.resolve('leonardo-ui');
 const nmPath = nm.substring(0, nm.lastIndexOf('node_modules') + 12);
 
 module.exports = async (argv) => {
+  if (process.env.ACCEPT_EULA === 'yes') {
+    await startEngine();
+  }
   const port = argv.port || await portfinder.getPortPromise();
   const host = argv.host || 'localhost';
   const enigmaConfig = argv.enigma || {};
+  const publicDir = path.resolve(__dirname, '../public');
+  const context = process.cwd();
   let snPath;
   let snName;
   let watcher;
-  if (argv.sn) {
-    snPath = path.resolve(argv.sn);
+  if (argv.entry) {
+    snPath = path.resolve(context, argv.entry);
     const parsed = path.parse(snPath);
     snName = parsed.name;
   } else {
     if (argv.build !== false) {
       watcher = await watch();
     }
-    const context = process.cwd();
-    const externalPkg = require(path.resolve(context, 'package.json')); // eslint-disable-line global-require
-    const externalEntry = externalPkg.module || externalPkg.main;
-    snName = externalPkg.name;
-    snPath = path.resolve(context, externalEntry);
+    try {
+      const externalPkg = require(path.resolve(context, 'package.json')); // eslint-disable-line global-require
+      const externalEntry = externalPkg.module || externalPkg.main;
+      snName = externalPkg.name;
+      snPath = path.resolve(context, externalEntry);
+    } catch (e) {
+      //
+    }
   }
   if (!fs.existsSync(snPath)) {
-    const rel = path.relative(process.cwd(), snPath);
+    const rel = path.relative(context, snPath);
     console.log(chalk.red(`The specified entry point ${chalk.yellow(rel)} does not exist`));
     return;
   }
@@ -43,12 +56,12 @@ module.exports = async (argv) => {
     mode: 'development',
     entry: {
       app: [
-        path.resolve(__dirname, 'public', 'index'),
+        path.resolve(publicDir, 'index'),
       ],
     },
     devtool: 'source-map',
     output: {
-      path: path.resolve(__dirname, 'dist'),
+      path: path.resolve(publicDir, 'dist'),
       filename: '[name].js',
     },
     resolve: {
@@ -63,7 +76,7 @@ module.exports = async (argv) => {
         ENIGMA_PORT: JSON.stringify(enigmaConfig.port || 9076),
       }),
       new HtmlWebpackPlugin({
-        template: path.resolve(__dirname, 'public', 'index.html'),
+        template: path.resolve(publicDir, 'index.html'),
       }),
       new webpack.HotModuleReplacementPlugin(),
     ],
@@ -81,7 +94,7 @@ module.exports = async (argv) => {
     quiet: true,
     open: true,
     contentBase: [
-      path.resolve(__dirname, 'public'),
+      publicDir,
       nmPath,
     ],
   };
@@ -93,6 +106,9 @@ module.exports = async (argv) => {
   const server = new WebpackDevServer(compiler, options);
 
   const close = () => {
+    if (process.env.ACCEPT_EULA === 'yes') {
+      stopEngine();
+    }
     if (watcher) {
       watcher.close();
     }
