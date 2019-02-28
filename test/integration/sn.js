@@ -1,7 +1,7 @@
 const sn = {
   component: {
     mounted(element) {
-      element.textContent = 'Hello!'; // eslint-disable-line no-param-reassign
+      element.textContent = 'Hello engine!'; // eslint-disable-line no-param-reassign
     },
   },
 };
