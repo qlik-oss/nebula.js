@@ -6,10 +6,11 @@
   "license": "MIT",
   "author": "QlikTech International AB",
   "keywords": [],
-  "main": "serve.js",
+  "main": "lib/serve.js",
   "files": [
+    "command.js",
     "lib",
-    "command.js"
+    "public"
   ],
   "scripts": {
     "lint": "eslint public"
@@ -19,6 +20,7 @@
     "@nebula.js/nucleus": "0.1.0",
     "chalk": "^2.4.2",
     "enigma.js": "^2.4.0",
+    "execa": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
     "leonardo-ui": "^1.6.0",
     "portfinder": "^1.0.20",

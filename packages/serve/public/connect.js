@@ -4,6 +4,21 @@ import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/3.2.json';
 import SenseUtilities from 'enigma.js/sense-utilities';
 
+const params = (() => {
+  const opts = {};
+  window.location.search.substring(1).split('&').forEach((pair) => {
+    const idx = pair.indexOf('=');
+    const name = pair.substr(0, idx);
+    let value = decodeURIComponent(pair.substring(idx + 1));
+    if (name === 'cols') {
+      value = value.split(',');
+    }
+    opts[name] = value;
+  });
+
+  return opts;
+})();
+
 const defaultConfig = {
   host: ENIGMA_HOST || window.location.hostname || 'localhost',
   port: ENIGMA_PORT,
@@ -22,35 +37,16 @@ const connect = () => {
   return connection;
 };
 
-const openApp = cfg => enigma.create({
+const openApp = id => enigma.create({
   schema: qixSchema,
   url: SenseUtilities.buildUrl({
     ...defaultConfig,
-    ...cfg,
+    appId: id,
   }),
-}).open().then(global => global.openDoc(cfg.appId));
-
-const openDemoApp = () => enigma.create({
-  schema: qixSchema,
-  url: SenseUtilities.buildUrl({
-    ...defaultConfig,
-    appId: 'demo',
-  }),
-}).open().then(qix => qix.createSessionApp()).then(app => app.setScript(`
-Characters:
-Load Chr(RecNo()+Ord('A')-1) as Alpha, RecNo() as Num autogenerate 26;
-  
-ASCII:
-Load 
-  if(RecNo()>=65 and RecNo()<=90,RecNo()-64) as Num,
-  Chr(RecNo()) as AsciiAlpha, 
-  RecNo() as AsciiNum
-autogenerate 85
-  Where (RecNo()>=65 and RecNo()<=126) or RecNo()>=160;
-`).then(() => app.doReload().then(() => app)));
+}).open().then(global => global.openDoc(id));
 
 export {
   connect,
   openApp,
-  openDemoApp,
+  params,
 };

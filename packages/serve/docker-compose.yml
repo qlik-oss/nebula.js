@@ -1,0 +1,11 @@
+version: "3.1"
+
+services:
+  engine:
+    image: qlikcore/engine:${ENGINE_VERSION:-12.329.0}
+    # restart: always
+    command: -S AcceptEULA=${ACCEPT_EULA:-no} -S DocumentDirectory=/apps
+    ports:
+      - ${ENGINE_PORT:-9076}:9076
+    volumes:
+      - ${APPS_PATH:-./data/apps}:/apps

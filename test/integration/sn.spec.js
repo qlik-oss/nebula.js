@@ -1,7 +1,7 @@
 describe('sn', () => {
   const content = '.nucleus-content__body';
   it('should say hello', async () => {
-    await page.goto(process.testServer.url);
+    await page.goto(`${process.testServer.url}?app=/apps/ctrl00.qvf`);
     await page.waitForSelector(content, {
       timeout: 5000,
     });
