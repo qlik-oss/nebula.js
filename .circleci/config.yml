@@ -18,91 +18,46 @@ aliases:
   - &attach
     at: ~/project
 
-defaults: &defaults
-  working_directory: ~/project
-  docker:
-    - image: circleci/node:10.9.0
-
 jobs:
-  install:
-    <<: *defaults
+  build:
+    docker:
+      - image: circleci/node:10.9.0-browsers
+      - image: qlikcore/engine:12.321.0
+        command: -S AcceptEULA=yes
+
+    working_directory: ~/project
+
     steps:
       - checkout
+
       - restore_cache: *restore_yarn_cache
+
       - run:
-          name: Install packages
+          name: Install dependencies
           command: yarn install --frozen-lockfile
-      - save_cache: *save_yarn_cache
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
 
-  build:
-    <<: *defaults
-    steps:
-      - attach_workspace: *attach
       - run:
-          name: Build packages
+          name: Build
           command: yarn run build
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - packages/*/dist
 
-  lint:
-    <<: *defaults
-    steps:
-      - attach_workspace: *attach
       - run:
           name: Lint
           command: yarn run lint
 
-  test-unit:
-    <<: *defaults
-    steps:
-      - attach_workspace: *attach
       - run:
           name: Unit tests
           command: yarn run test:unit
 
-  test-integration-e2e:
-    machine: true
-    working_directory: ~/project
-
-    steps:
-      - attach_workspace: *attach
-      - restore_cache: *restore_yarn_cache
-
       - run:
-          name: Upgrade node
-          command: ./.circleci/upgrade-node.sh
-
-      - run:
-          name: Install yarn
-          command: npm i yarn@1.9.4 -g
-
-      - run:
-          name: Install Chrome
+          name: Import app
           command: |
-            wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-            sudo dpkg -i google-chrome-stable_current_amd64.deb; sudo apt-get -fy install
-
-      - run:
-          name: Start engine
-          command: |
-            set -x
-            ACCEPT_EULA=yes docker-compose -f ./packages/serve/docker-compose.yml up -d
-
-      - run:
-          name: install dockerize
-          command: wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSION/dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && sudo tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
-          environment:
-            DOCKERIZE_VERSION: v0.6.1
+            DocId=$(curl -s --data-binary @packages/serve/data/apps/ctrl00.qvf http://localhost:9076/v1/apps/import | jq -r '.attributes.id')
+            echo "export DOC_ID=$DocId" >> $BASH_ENV
 
       - run:
           name: Test integration
-          command: yarn run test:integration
+          command: |
+            APP_ID=$DOC_ID yarn run test:integration
 
       - run:
           name: Create a supernova project
@@ -116,27 +71,9 @@ jobs:
             yarn run serve --port 8085
 
       - run:
-          name: Wait for web server
-          command: dockerize -wait tcp://localhost:8085 -timeout 30s
-
-      - run:
           name: Test generated supernova
-          command: npx aw puppeteer --glob test/e2e-cli/**/*.spec.js
+          command: |
+            dockerize -wait tcp://localhost:8085 -timeout 30s
+            APP_ID=$DOC_ID npx aw puppeteer --glob test/e2e-cli/**/*.spec.js
 
-workflows:
-  version: 2
-  build-all:
-    jobs:
-      - install
-      - test-unit:
-          requires:
-            - install
-      - build:
-          requires:
-            - install
-      - lint:
-          requires:
-            - build
-      - test-integration-e2e:
-          requires:
-            - build
+      - save_cache: *save_yarn_cache
