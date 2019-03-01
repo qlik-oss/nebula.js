@@ -1,5 +1,5 @@
 window.connect = function connect() {
-  const loadSchema = () => fetch('https://raw.githubusercontent.com/qlik-oss/enigma.js/master/schemas/3.2.json').then(response => response.json());
+  const loadSchema = () => fetch('https://unpkg.com/enigma.js/schemas/3.2.json').then(response => response.json());
 
   const createConnection = () => loadSchema().then(schema => window.enigma.create({
     schema,
