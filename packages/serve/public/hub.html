@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Nebula hub</title>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    body {
+      background: linear-gradient(110deg, #92498F 0%, #45B3B2 100%);
+      color: #666;
+      font: normal 14px/16px "Source Sans Pro", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    #apps {
+      background-color: white;
+      max-width: 400px;
+      width: 80%;
+      margin: 0 auto;
+      margin-top: 32px;
+      border-radius: 4px;
+      box-shadow: 0 32px 32px -16px rgba(0, 0, 0, 0.2);
+      display: flex;
+      flex-direction: column;
+      max-height: calc(100% - 64px);
+    }
+
+    .title {
+      padding: 16px;
+      font-size: 1.2em;
+      font-weight: bold;
+    }
+
+    #apps ul {
+      list-style: none;
+      padding: 0;
+      overflow-y: auto;
+    }
+
+    #apps li {
+      border-top: 1px solid #eee;
+    }
+
+    #apps li a {
+      padding: 16px;
+      display: block;
+      text-decoration: none;
+      color: #666;
+    }
+
+    #apps li a[href]:hover {
+      padding: 16px;
+      background: #eee;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="apps">
+    <div class="title">Apps</div>
+    <ul>
+      <li><a>Loading...</a></li>
+    </ul>
+  </div>
+  <script type="text/javascript" src="hub.js"></script>
+</body>
+</html>

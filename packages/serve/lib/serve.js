@@ -55,8 +55,11 @@ module.exports = async (argv) => {
   const config = {
     mode: 'development',
     entry: {
-      app: [
+      single: [
         path.resolve(publicDir, 'index'),
+      ],
+      hub: [
+        path.resolve(publicDir, 'hub'),
       ],
     },
     devtool: 'source-map',
@@ -76,7 +79,14 @@ module.exports = async (argv) => {
         ENIGMA_PORT: JSON.stringify(enigmaConfig.port || 9076),
       }),
       new HtmlWebpackPlugin({
-        template: path.resolve(publicDir, 'index.html'),
+        template: path.resolve(publicDir, 'single.html'),
+        filename: 'single.html',
+        chunks: ['single'],
+      }),
+      new HtmlWebpackPlugin({
+        template: path.resolve(publicDir, 'hub.html'),
+        filename: 'hub.html',
+        chunks: ['hub'],
       }),
       new webpack.HotModuleReplacementPlugin(),
     ],
@@ -94,9 +104,17 @@ module.exports = async (argv) => {
     quiet: true,
     open: true,
     contentBase: [
-      publicDir,
+      path.resolve(publicDir, 'dist'),
       nmPath,
     ],
+    historyApiFallback: {
+      index: '/hub.html',
+    },
+    proxy: [{
+      context: '/app/',
+      target: `http://${host}:${port}/single.html`,
+      ignorePath: true,
+    }],
   };
 
   console.log('Starting development server...');
