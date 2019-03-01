@@ -6,6 +6,10 @@ import SenseUtilities from 'enigma.js/sense-utilities';
 
 const params = (() => {
   const opts = {};
+  const { pathname } = window.location;
+  if (/^\/app\//.test(pathname)) {
+    opts.app = decodeURIComponent(pathname.replace(/^\/app\//, ''));
+  }
   window.location.search.substring(1).split('&').forEach((pair) => {
     const idx = pair.indexOf('=');
     const name = pair.substr(0, idx);
