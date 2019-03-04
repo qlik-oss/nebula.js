@@ -68,7 +68,7 @@ jobs:
           name: Serve supernova
           command: |
             cd generated/hello
-            yarn run serve --port 8085
+            yarn run start --port 8085
 
       - run:
           name: Test generated supernova
