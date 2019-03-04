@@ -6,6 +6,7 @@ export default function sn(env) {
       properties,
     },
     component: {
+      created() {},
       mounted(element) {
         console.log(env);
         this.element = element;
@@ -17,6 +18,9 @@ export default function sn(env) {
       }) {
         console.log(layout, context);
       },
+      resize() {},
+      willUnmount() {},
+      destroy() {},
     },
   };
 }
