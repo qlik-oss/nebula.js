@@ -6,9 +6,14 @@
   "license": "MIT",
   "author": "QlikTech International AB",
   "keywords": [],
+  "publishConfig": {
+    "access": "public"
+  },
   "main": "lib/serve.js",
   "files": [
     "command.js",
+    "data",
+    "docker-compose.yml",
     "lib",
     "public"
   ],

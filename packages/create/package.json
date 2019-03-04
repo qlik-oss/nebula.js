@@ -5,6 +5,9 @@
   "license": "MIT",
   "author": "QlikTech International AB",
   "keywords": [],
+  "publishConfig": {
+    "access": "public"
+  },
   "files": [
     "command.js",
     "generator"
