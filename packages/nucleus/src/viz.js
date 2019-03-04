@@ -77,6 +77,7 @@ export default function ({
       show(element);
     },
     close() {
+      model.emit('closed');
       c.then(x => x.unmount());
       c = noopi;
     },
