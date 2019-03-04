@@ -119,7 +119,7 @@ module.exports = class extends Generator {
     if (this.options.install === false) {
       this.log(chalk.cyan(`   ${p} install`));
     }
-    this.log(chalk.cyan(`   ${p} run serve`));
+    this.log(chalk.cyan(`   ${p} run start`));
     this.log('\n');
   }
 };

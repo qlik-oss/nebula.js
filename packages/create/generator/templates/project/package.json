@@ -23,7 +23,7 @@
   "scripts": {
     "build": "nebula build",
     "lint": "eslint src",
-    "serve": "nebula serve"
+    "start": "nebula serve"
   },
   "devDependencies": {
     "@nebula.js/cli": "0.1.0",
