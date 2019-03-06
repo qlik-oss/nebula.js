@@ -10,6 +10,9 @@
   },
   "main": "dist/supernova.js",
   "module": "dist/supernova.esm.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
     "build:dev": "rollup --config ../../rollup.config.js",

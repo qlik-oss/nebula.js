@@ -10,6 +10,9 @@
   },
   "main": "dist/nucleus.js",
   "module": "dist/nucleus.esm.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
     "build:watch": "rollup --config ../../rollup.config.js -w",
