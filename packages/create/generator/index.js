@@ -62,7 +62,7 @@ module.exports = class extends Generator {
     ));
 
     this.fs.copyTpl(
-      this.templatePath('project/package.json'),
+      this.templatePath('project/_package.json'), // npm pack will not pack the whole folder if it contains a package.json file
       this.destinationPath(`${name}/package.json`),
       {
         name: this.opts.packageName,
