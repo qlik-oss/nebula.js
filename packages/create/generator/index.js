@@ -52,13 +52,13 @@ module.exports = class extends Generator {
 
     // copy raw files
     [
-      '.editorconfig',
-      '.eslintignore',
-      '.gitignore',
-      '.eslintrc.json',
+      'editorconfig',
+      'eslintignore',
+      'gitignore',
+      'eslintrc.json',
     ].forEach(filename => this.fs.copy(
-      this.templatePath(`project/${filename}`),
-      this.destinationPath(`${name}/${filename}`),
+      this.templatePath(`project/_${filename}`), // copying dotfiles may not always work, so they are prefixed with an underline
+      this.destinationPath(`${name}/.${filename}`),
     ));
 
     this.fs.copyTpl(
