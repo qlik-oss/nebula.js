@@ -2,6 +2,6 @@
   "private": true,
   "dependencies": {
     "enigma.js": "^2.4.0",
-    "leonardo-ui": "^1.6.0"
+    "leonardo-ui": "1.6.0"
   }
 }

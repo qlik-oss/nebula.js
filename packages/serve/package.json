@@ -26,7 +26,7 @@
     "enigma.js": "^2.4.0",
     "execa": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
-    "leonardo-ui": "^1.6.0",
+    "leonardo-ui": "1.6.0",
     "portfinder": "^1.0.20",
     "rollup": "^1.1.2",
     "rollup-plugin-commonjs": "^9.2.0",
