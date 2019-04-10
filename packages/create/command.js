@@ -19,10 +19,15 @@ module.exports = {
       choices: ['npm', 'yarn'],
       description: 'Package manager',
     });
+    yargs.option('picasso', {
+      type: 'string',
+      choices: ['none', 'minimal', 'barchart'],
+      description: 'Picasso template',
+    });
   },
   async handler(argv) {
     const generator = path.resolve(__dirname, 'generator/index.js');
-    const args = `${argv.name} ${!argv.install ? '--no-install' : ''} ${argv.pkgm ? `--pkgm ${argv.pkgm}` : ''}`;
+    const args = `${argv.name} ${!argv.install ? '--no-install' : ''} ${argv.pkgm ? `--pkgm ${argv.pkgm}` : ''} ${argv.picasso ? `--picasso ${argv.picasso}` : ''}`;
     try {
       execa.shell(`yo ${generator} ${args} --no-insight`, {
         localDir: path.resolve(__dirname, 'node_modules', '.bin'),
