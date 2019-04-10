@@ -22,7 +22,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:10.9.0-browsers
-      - image: qlikcore/engine:12.329.0
+      - image: qlikcore/engine:12.350.0
         command: -S AcceptEULA=yes
 
     working_directory: ~/project
