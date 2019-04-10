@@ -1,0 +1,40 @@
+import properties from './object-properties';
+<%_ if (usePicasso) { _%>
+import pic from './pic';
+<%_ } _%>
+
+export default function supernova(env) {
+  return {
+    qae: {
+      properties,
+      data: {
+        targets: [{
+          key: 'qHyperCube',
+        }],
+      },
+    },
+    component: {
+      created() {},
+      mounted(element) {
+        console.log(env);
+        <%_ if (usePicasso) { _%>
+        this.pic = pic(element);
+        <%_ } else {_%>
+        element.innerHTML = '<div>Hello!</div>';
+        <%_ } _%>
+      },
+      render({
+        layout,
+        context,
+      }) {
+        console.log(layout, context);
+        <%_ if (usePicasso) { _%>
+        this.pic.update({ layout });
+        <%_ } _%>
+      },
+      resize() {},
+      willUnmount() {},
+      destroy() {},
+    },
+  };
+}

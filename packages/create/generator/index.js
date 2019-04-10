@@ -9,6 +9,7 @@ module.exports = class extends Generator {
     this.argument('name', { type: String, required: true });
     this.option('install', { type: Boolean, default: true });
     this.argument('pkgm', { type: 'string', required: false });
+    this.argument('picasso', { type: 'string', required: false });
 
     // console.log('OPTS', this.options);
     // console.log('ARGS', this.arguments);
@@ -34,6 +35,13 @@ module.exports = class extends Generator {
       message: 'Pick the package manager you want to use:',
       choices: ['npm', 'yarn'],
       when: !this.options.pkgm && this.options.install,
+    }, {
+      type: 'list',
+      name: 'picasso',
+      message: 'Pick a picasso template',
+      default: 'none',
+      choices: ['none', 'minimal', 'barchart'],
+      when: !this.options.picasso,
     }]);
 
     const safename = this.options.name.split('/').slice(-1)[0];
@@ -41,6 +49,7 @@ module.exports = class extends Generator {
     this.opts = {
       pkgm: this.answers.pkgm || this.options.pkgm || 'npm',
       packageName: safename,
+      picasso: this.answers.picasso || this.options.picasso,
     };
   }
 
@@ -49,6 +58,7 @@ module.exports = class extends Generator {
       return;
     }
     const { name } = this.options;
+    const usePicasso = this.opts.picasso !== 'none';
 
     // copy raw files
     [
@@ -70,6 +80,7 @@ module.exports = class extends Generator {
         user: this.user.git.name(),
         email: this.user.git.email(),
         // username: await this.user.github.username(),
+        usePicasso,
       },
     );
 
@@ -82,9 +93,11 @@ module.exports = class extends Generator {
     );
 
     this.fs.copyTpl(
-      this.templatePath('project/sn.js'),
+      this.templatePath('project/supernova.ejs'),
       this.destinationPath(`${name}/src/index.js`),
-      {},
+      {
+        usePicasso,
+      },
     );
 
     this.fs.copyTpl(
@@ -92,6 +105,19 @@ module.exports = class extends Generator {
       this.destinationPath(`${name}/src/object-properties.js`),
       { name },
     );
+
+    if (this.opts.picasso !== 'none') {
+      this.fs.copyTpl(
+        this.templatePath('project/picasso-templates/pic.ejs'),
+        this.destinationPath(`${name}/src/pic.js`),
+        {},
+      );
+      this.fs.copyTpl(
+        this.templatePath(`project/picasso-templates/${this.opts.picasso}.ejs`),
+        this.destinationPath(`${name}/src/picasso-definition.js`),
+        { name },
+      );
+    }
   }
 
   install() {

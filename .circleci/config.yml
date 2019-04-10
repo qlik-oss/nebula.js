@@ -61,7 +61,7 @@ jobs:
 
       - run:
           name: Create a supernova project
-          command: npx nebula create generated/hello --pkgm yarn
+          command: npx nebula create generated/hello --pkgm yarn --picasso none
 
       - run:
           background: true

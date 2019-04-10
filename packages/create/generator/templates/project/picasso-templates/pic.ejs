@@ -1,0 +1,31 @@
+import picassojs from 'picasso.js';
+import picassoQ from 'picasso-plugin-q';
+
+import definition from './picasso-definition';
+
+export default function pic(element) {
+  const picasso = picassojs();
+  picasso.use(picassoQ);
+
+  const instance = picasso.chart({
+    element,
+    data: [],
+    settings: {},
+  });
+
+  return {
+    update({ layout }) {
+      instance.update({
+        data: [{
+          type: 'q',
+          key: 'qHyperCube',
+          data: layout.qHyperCube,
+        }],
+        settings: definition({ layout }),
+      });
+    },
+    destroy() {
+      instance.destroy();
+    },
+  };
+}
