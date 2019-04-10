@@ -1,4 +1,3 @@
-import extend from 'extend';
 import EventEmitter from 'node-event-emitter';
 
 import actionhero from './action-hero';
@@ -59,14 +58,14 @@ export default function create(sn, opts) {
     component: userInstance,
   });
 
-  extend(userInstance, {
+  Object.assign(userInstance, {
     model: opts.model,
     app: opts.app,
     selections: opts.selections,
     actions: hero.actions,
   });
 
-  extend(componentInstance, {
+  Object.assign(componentInstance, {
     actions: hero.actions,
     model: opts.model,
     app: opts.app,

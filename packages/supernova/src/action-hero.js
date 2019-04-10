@@ -1,5 +1,4 @@
 import EventEmitter from 'node-event-emitter';
-import extend from 'extend';
 
 const mixin = (obj) => {
   /* eslint no-param-reassign: 0 */
@@ -11,7 +10,7 @@ const mixin = (obj) => {
 };
 
 const actionWrapper = component => (item) => {
-  const wrapped = mixin(extend(true, {}, item, {
+  const wrapped = mixin(Object.assign({}, item, {
     action() {
       if (typeof item.action === 'function') {
         item.action.call(wrapped, component);

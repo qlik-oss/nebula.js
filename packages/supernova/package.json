@@ -20,7 +20,6 @@
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {
-    "extend": "^3.0.2",
     "node-event-emitter": "^0.0.1"
   }
 }
