@@ -1,21 +1,15 @@
 const path = require('path');
 const fs = require('fs');
-
 const chalk = require('chalk');
 const portfinder = require('portfinder');
-const webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-
 const { watch } = require('@nebula.js/cli-build');
+
+const webpack = require('./webpack.conf');
 
 const {
   startEngine,
   stopEngine,
 } = require('./engine');
-
-const nm = require.resolve('leonardo-ui');
-const nmPath = nm.substring(0, nm.lastIndexOf('node_modules') + 12);
 
 module.exports = async (argv) => {
   if (process.env.ACCEPT_EULA === 'yes') {
@@ -52,76 +46,14 @@ module.exports = async (argv) => {
     return;
   }
 
-  const config = {
-    mode: 'development',
-    entry: {
-      single: [
-        path.resolve(publicDir, 'index'),
-      ],
-      hub: [
-        path.resolve(publicDir, 'hub'),
-      ],
-    },
-    devtool: 'source-map',
-    output: {
-      path: path.resolve(publicDir, 'dist'),
-      filename: '[name].js',
-    },
-    resolve: {
-      alias: {
-        snDefinition: snPath,
-      },
-    },
-    plugins: [
-      new webpack.DefinePlugin({
-        SN_NAME: JSON.stringify(snName),
-        ENIGMA_HOST: JSON.stringify(enigmaConfig.host || ''),
-        ENIGMA_PORT: JSON.stringify(enigmaConfig.port || 9076),
-      }),
-      new HtmlWebpackPlugin({
-        template: path.resolve(publicDir, 'single.html'),
-        filename: 'single.html',
-        chunks: ['single'],
-      }),
-      new HtmlWebpackPlugin({
-        template: path.resolve(publicDir, 'hub.html'),
-        filename: 'hub.html',
-        chunks: ['hub'],
-      }),
-      new webpack.HotModuleReplacementPlugin(),
-    ],
-  };
-
-  const options = {
-    clientLogLevel: 'none',
-    hot: true,
+  const server = await webpack({
     host,
     port,
-    overlay: {
-      warnings: false,
-      errors: true,
-    },
-    quiet: true,
-    open: true,
-    contentBase: [
-      path.resolve(publicDir, 'dist'),
-      nmPath,
-    ],
-    historyApiFallback: {
-      index: '/hub.html',
-    },
-    proxy: [{
-      context: '/app/',
-      target: `http://${host}:${port}/single.html`,
-      ignorePath: true,
-    }],
-  };
-
-  console.log('Starting development server...');
-
-  WebpackDevServer.addDevServerEntrypoints(config, options);
-  const compiler = webpack(config);
-  const server = new WebpackDevServer(compiler, options);
+    publicDir,
+    enigmaConfig,
+    snName,
+    snPath,
+  });
 
   const close = () => {
     if (process.env.ACCEPT_EULA === 'yes') {
@@ -139,33 +71,8 @@ module.exports = async (argv) => {
     process.on(signal, close);
   });
 
-  let initiated = false;
-
-  return new Promise((resolve, reject) => { // eslint-disable-line consistent-return
-    compiler.hooks.done.tap('nebula serve', (stats) => {
-      if (!initiated) {
-        initiated = true;
-        const url = `http://${host}:${port}`;
-        console.log(`...running at ${chalk.green(url)}`);
-
-        resolve({
-          context: '',
-          url,
-          close,
-        });
-
-        if (stats.hasErrors()) {
-          stats.compilation.errors.forEach((e) => {
-            console.log(chalk.red(e));
-          });
-        }
-      }
-    });
-
-    server.listen(port, host, (err) => {
-      if (err) {
-        reject(err);
-      }
-    });
-  });
+  return { //eslint-disable-line
+    url: server.url,
+    close,
+  };
 };
