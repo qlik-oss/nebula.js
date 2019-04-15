@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <base href="/">
+  <title>Nebula mashup</title>
+
+  <link rel="stylesheet" href="leonardo-ui/dist/leonardo-ui.css" type="text/css"/>
+
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    body {
+      background: #ddd;
+      color: #666;
+      font: normal 14px/16px "Source Sans Pro", Arial, sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    @font-face {
+      font-family: "LUI icons";
+      src: url(leonardo-ui/dist/lui-icons.woff) format('woff'),
+        url(leonardo-ui/dist/lui-icons.ttf) format('truetype');
+    }
+
+    #app, #app > * {
+      height: 100%;
+    }
+
+    .nebula-grid {
+      display: flex;
+      padding: 0 8px;
+    }
+
+    .nebula-grid > * {
+      flex: 1 0 auto;
+      margin: 8px 0;
+    }
+
+    .nebula-grid.no-spacing {
+      padding: 0;
+    }
+
+    .nebula-grid.no-spacing > * {
+      margin: 0;
+    }
+
+    .nebula-grid.vertical {
+      flex-direction: column;
+    }
+
+    textarea {
+      font-family: Monaco, monospace;
+      color: #333;
+      border-color: #ccc;
+    }
+
+  </style>
+</head>
+<body>
+  <div id="app"></div>
+</body>
+</html>

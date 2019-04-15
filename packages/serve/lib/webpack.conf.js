@@ -22,6 +22,9 @@ module.exports = async ({
       render: [
         path.resolve(publicDir, 'render'),
       ],
+      dev: [
+        path.resolve(publicDir, 'dev'),
+      ],
       hub: [
         path.resolve(publicDir, 'hub'),
       ],
@@ -35,6 +38,31 @@ module.exports = async ({
       alias: {
         snDefinition: snPath,
       },
+      extensions: ['.js', '.jsx'],
+    },
+    module: {
+      rules: [{
+        test: /\.jsx?$/,
+        sideEffects: false,
+        include: [
+          publicDir,
+          /react-leonardo-ui/,
+        ],
+        use: {
+          loader: 'babel-loader',
+          options: {
+            presets: [
+              ['@babel/preset-env', {
+                modules: false,
+                targets: {
+                  browsers: ['last 2 chrome versions'],
+                },
+              }],
+              '@babel/preset-react',
+            ],
+          },
+        },
+      }],
     },
     plugins: [
       new webpack.DefinePlugin({
@@ -46,6 +74,11 @@ module.exports = async ({
         template: path.resolve(publicDir, 'render.html'),
         filename: 'render.html',
         chunks: ['render'],
+      }),
+      new HtmlWebpackPlugin({
+        template: path.resolve(publicDir, 'dev.html'),
+        filename: 'dev.html',
+        chunks: ['dev'],
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(publicDir, 'hub.html'),
@@ -77,6 +110,10 @@ module.exports = async ({
     proxy: [{
       context: '/render',
       target: `http://${host}:${port}/render.html`,
+      ignorePath: true,
+    }, {
+      context: '/dev',
+      target: `http://${host}:${port}/dev.html`,
       ignorePath: true,
     }],
   };
@@ -116,6 +153,7 @@ module.exports = async ({
           stats.compilation.errors.forEach((e) => {
             console.log(chalk.red(e));
           });
+          process.exit(1);
         }
       }
     });
