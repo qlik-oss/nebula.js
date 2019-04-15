@@ -19,8 +19,8 @@ module.exports = async ({
   const config = {
     mode: 'development',
     entry: {
-      single: [
-        path.resolve(publicDir, 'single'),
+      render: [
+        path.resolve(publicDir, 'render'),
       ],
       hub: [
         path.resolve(publicDir, 'hub'),
@@ -43,9 +43,9 @@ module.exports = async ({
         ENIGMA_PORT: JSON.stringify(enigmaConfig.port || 9076),
       }),
       new HtmlWebpackPlugin({
-        template: path.resolve(publicDir, 'single.html'),
-        filename: 'single.html',
-        chunks: ['single'],
+        template: path.resolve(publicDir, 'render.html'),
+        filename: 'render.html',
+        chunks: ['render'],
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(publicDir, 'hub.html'),
@@ -75,8 +75,8 @@ module.exports = async ({
       index: '/hub.html',
     },
     proxy: [{
-      context: '/app/',
-      target: `http://${host}:${port}/single.html`,
+      context: '/render',
+      target: `http://${host}:${port}/render.html`,
       ignorePath: true,
     }],
   };

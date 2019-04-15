@@ -7,8 +7,9 @@ import SenseUtilities from 'enigma.js/sense-utilities';
 const params = (() => {
   const opts = {};
   const { pathname } = window.location;
-  if (/^\/app\//.test(pathname)) {
-    opts.app = decodeURIComponent(pathname.replace(/^\/app\//, ''));
+  const am = pathname.match(/\/app\/([^/?&]+)/);
+  if (am) {
+    opts.app = decodeURIComponent(am[1]);
   }
   window.location.search.substring(1).split('&').forEach((pair) => {
     const idx = pair.indexOf('=');
