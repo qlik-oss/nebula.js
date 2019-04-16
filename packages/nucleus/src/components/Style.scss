@@ -3,3 +3,11 @@ $spacing: 8px;
 
 @import 'SelectionToolbar';
 @import 'Cell';
+
+.nebula-toolbar {
+  background: #fff;
+
+  .nebula-selections-nav > * {
+    margin: 4px;
+  }
+}

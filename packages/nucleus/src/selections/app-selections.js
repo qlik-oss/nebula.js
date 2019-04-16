@@ -1,5 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
 import eventmixin from './event-mixin';
+import visual from '../components/AppSelections';
 
 const cache = {};
 
@@ -9,6 +10,7 @@ const create = (app) => {
   let canClear = false;
 
   let modalObject;
+  let mounted;
   const api = {
     switchModal(object, path, accept = true) {
       if (object === modalObject) {
@@ -61,6 +63,21 @@ const create = (app) => {
     clear() {
       this.switchModal();
       return app.clearAll();
+    },
+    mount(element) {
+      if (mounted) {
+        console.error('Already mounted');
+        return;
+      }
+      mounted = visual({
+        element,
+        api,
+      });
+    },
+    unmount() {
+      if (mounted) {
+        mounted();
+      }
     },
   };
 
