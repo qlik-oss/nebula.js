@@ -46,6 +46,7 @@ function parse(id, style, sheet) {
       rule.push(`${prop.replace(rxCap, '-$&').toLowerCase()}: ${value}`);
     }
   });
+  sheet.insertRule(`.${id} { ${rule.join(';')} }`, sheet.cssRules.length);
   Object.keys(post).forEach((key) => {
     parse(`${id}${key}`, post[key], sheet);
   });
