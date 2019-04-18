@@ -1,8 +1,6 @@
 import preact from 'preact';
 import Cell from './Cell';
 
-import './Style.scss';
-
 export default function boot({
   element,
   model,

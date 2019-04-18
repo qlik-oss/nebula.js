@@ -1,9 +1,7 @@
 import preact from 'preact';
+import styled from '@nebula.js/ui/components/styled';
 
 import Item from './SelectionToolbarItem';
-
-import { prefixer } from '../utils/utils';
-/* eslint react/no-multi-comp: 0 */
 
 class Component extends preact.Component {
   constructor(props) {
@@ -15,6 +13,18 @@ class Component extends preact.Component {
       cancelable: api.canCancel(),
       clearable: api.canClear(),
     };
+
+    this.styledClasses = styled({
+      position: 'absolute',
+      left: '0',
+      right: '0',
+      top: '-48px',
+      padding: '8px',
+      boxSizing: 'border-box',
+      background: '$grey100',
+      display: 'flex',
+      justifyContent: 'flex-end',
+    });
 
     const items = [];
 
@@ -72,7 +82,7 @@ class Component extends preact.Component {
 
   render() {
     return (
-      <div className={prefixer('selection-toolbar')}>
+      <div className={this.styledClasses}>
         {this.state.items.map(itm => <Item key={itm.key} item={itm} isCustom={!!this.custom[itm.key]} />)}
       </div>
     );

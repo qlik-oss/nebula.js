@@ -1,14 +1,14 @@
 import preact from 'preact';
-import { prefixer } from '../utils/utils';
+import Text from '@nebula.js/ui/components/Text';
 
-const Header = ({ layout }) => (
+const Header = ({
+  layout,
+}) => (
   layout && layout.showTitles && (layout.title || layout.subtitle) ? (
-    <header className={prefixer(['cell__header'])}>
-      <div className={prefixer(['type--m'])}>
-        {layout.title}
-      </div>
-      <div className={prefixer(['type--s'])}>{layout.subtitle}</div>
-    </header>
+    <div style={{ background: 'transparent', padding: '0 8px' }}>
+      <Text size="large" nowrap block>{layout.title}</Text>
+      <Text faded size="small" nowrap block>{layout.subtitle}</Text>
+    </div>
   ) : null
 );
 

@@ -3,7 +3,6 @@ const nodeResolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
 const babel = require('rollup-plugin-babel');
 const replace = require('rollup-plugin-replace');
-const sass = require('rollup-plugin-sass');
 const { terser } = require('rollup-plugin-terser');
 
 const cwd = process.cwd();
@@ -61,9 +60,6 @@ const config = (isEsm) => {
     plugins: [
       replace({
         'process.env.NODE_ENV': JSON.stringify(isEsm ? 'development' : 'production'),
-      }),
-      sass({
-        insert: true,
       }),
       nodeResolve({
         extensions: ['.js', '.jsx'],

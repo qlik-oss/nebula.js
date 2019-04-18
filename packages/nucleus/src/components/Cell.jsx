@@ -1,6 +1,7 @@
 import preact from 'preact';
 
-import { prefixer } from '../utils/utils';
+import Grid from '@nebula.js/ui/components/Grid';
+import styled from '@nebula.js/ui/components/styled';
 
 import Requirements from './Requirements';
 import CError from './Error';
@@ -11,10 +12,10 @@ import Placeholder from './Placeholder';
 import SelectionToolbar from './SelectionToolbar';
 
 const showRequirements = (sn, layout) => {
-  if (!sn || !sn.definition || !sn.definition.qae || !layout || !layout.qHyperCube) {
+  if (!sn || !sn.generator || !sn.generator.qae || !layout || !layout.qHyperCube) {
     return false;
   }
-  const def = sn.definition.qae.data.targets[0];
+  const def = sn.generator.qae.data.targets[0];
   if (!def) {
     return false;
   }
@@ -25,14 +26,34 @@ const showRequirements = (sn, layout) => {
 };
 
 const Content = ({ children }) => (
-  <div className={prefixer(['content'])}>
-    <div className={prefixer(['content__body'])}>
+  <div style={{ position: 'relative', height: '100%' }}>
+    <div
+      className="nebulajs-sn"
+      style={{
+        position: 'absolute',
+        top: '8px',
+        left: '8px',
+        right: '8px',
+        bottom: '8px',
+      }}
+    >
       {children}
     </div>
   </div>
 );
 
 class Cell extends preact.Component {
+  constructor(...args) {
+    super(...args);
+    this.styledClasses = ['nebulajs', ...styled({
+      fontSize: '$fontSize',
+      lineHeight: '$lineHeight',
+      fontWeight: '400',
+      fontFamily: '$fontFamily',
+      color: '$grey25',
+    })].join(' ');
+  }
+
   componentDidCatch() {
     this.setState({
       error: {
@@ -51,31 +72,33 @@ class Cell extends preact.Component {
     const Comp = !objectProps.sn ? Placeholder : SN;
     const err = objectProps.error || this.state.error;
     return (
-      <div className={prefixer(['cell-wrapper'])}>
+      <div className={this.styledClasses} style={{ height: '100%' }}>
         {
           objectProps.sn
           && objectProps.layout.qSelectionInfo
           && objectProps.layout.qSelectionInfo.qInSelections
             && <SelectionToolbar sn={objectProps.sn} />
         }
-        <div className={prefixer(['cell'])}>
-          <Header layout={objectProps.layout} />
-          <Content>
-            {err
-              ? (<CError {...err} />)
-              : (
-                <Comp
-                  key={objectProps.layout.visualization}
-                  sn={objectProps.sn}
-                  snContext={userProps.context}
-                  snOptions={userProps.options}
-                  layout={objectProps.layout}
-                />
-              )
-            }
-          </Content>
+        <Grid vertical style={{ height: '100%' }}>
+          <Header layout={objectProps.layout}>&nbsp;</Header>
+          <Grid.Item>
+            <Content>
+              {err
+                ? (<CError {...err} />)
+                : (
+                  <Comp
+                    key={objectProps.layout.visualization}
+                    sn={objectProps.sn}
+                    snContext={userProps.context}
+                    snOptions={userProps.options}
+                    layout={objectProps.layout}
+                  />
+                )
+              }
+            </Content>
+          </Grid.Item>
           <Footer layout={objectProps.layout} />
-        </div>
+        </Grid>
       </div>
     );
   }

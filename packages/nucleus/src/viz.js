@@ -99,7 +99,7 @@ export default function ({
     takeSnapshot() {
       return c.then((x) => {
         if (x.reference) {
-          const content = x.reference.querySelector('.nucleus-content__body');
+          const content = x.reference.querySelector('.nebulajs-sn');
           if (content) {
             const rect = content.getBoundingClientRect();
             if (objectProps.sn) {
