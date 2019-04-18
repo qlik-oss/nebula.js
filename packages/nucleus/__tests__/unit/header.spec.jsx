@@ -14,10 +14,10 @@ describe('<Header />', () => {
     const layout = { showTitles: true, title: 'foo' };
     const html = render(<Header layout={layout} />);
     looksLike(html, `
-    <header class="nucleus-cell__header">
-      <div class="nucleus-type--m">foo</div>
-      <div class="nucleus-type--s"></div>
-    </header>
+    <div>
+      <span>foo</span>
+      <span></span>
+    </div>
     `);
   });
 
@@ -25,10 +25,10 @@ describe('<Header />', () => {
     const layout = { showTitles: true, subtitle: 'foo' };
     const html = render(<Header layout={layout} />);
     looksLike(html, `
-    <header class="nucleus-cell__header">
-      <div class="nucleus-type--m"></div>
-      <div class="nucleus-type--s">foo</div>
-    </header>
+    <div>
+      <span></span>
+      <span>foo</span>
+    </div>
     `);
   });
 });

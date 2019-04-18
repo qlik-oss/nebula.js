@@ -109,10 +109,12 @@ describe('<SelectionToolbar />', () => {
       },
     };
     const STItem = ({ key, isCustom }) => `-${key}:${isCustom}-`;
+    const styled = () => ['a'];
     const [{ default: STB }] = aw.mock([
       ['**/SelectionToolbarItem.jsx', () => STItem],
+      ['**/styled.js', () => styled],
     ], ['../../src/components/SelectionToolbar']);
     const html = render.render(<STB sn={props.sn} />);
-    expect(html).to.equal('<div class="nucleus-selection-toolbar">-mine:true--clear:false--cancel:false--confirm:false-</div>');
+    expect(html).to.equal('<div class="a">-mine:true--clear:false--cancel:false--confirm:false-</div>');
   });
 });

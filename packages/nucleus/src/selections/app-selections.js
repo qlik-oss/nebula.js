@@ -11,6 +11,7 @@ const create = (app) => {
 
   let modalObject;
   let mounted;
+  let lyt;
   const api = {
     switchModal(object, path, accept = true) {
       if (object === modalObject) {
@@ -52,6 +53,9 @@ const create = (app) => {
     canClear() {
       return canClear;
     },
+    layout() {
+      return lyt;
+    },
     forward() {
       this.switchModal();
       return app.forward();
@@ -63,6 +67,9 @@ const create = (app) => {
     clear() {
       this.switchModal();
       return app.clearAll();
+    },
+    clearField(field, state = '$') {
+      return app.getField(field, state).then(f => f.clear());
     },
     mount(element) {
       if (mounted) {
@@ -83,17 +90,24 @@ const create = (app) => {
 
   eventmixin(api);
 
-  const prom = app.getObject('CurrentSelection');
+  const prom = app.getObject('CurrentSelectionB');
   const obj = new Promise((resolve) => {
     prom.then((sel) => {
       resolve(sel);
     }).catch(() => {
       app.createSessionObject({
         qInfo: {
-          qId: 'CurrentSelection',
-          qType: 'CurrentSelection',
+          qId: 'CurrentSelectionB',
+          qType: 'CurrentSelectionB',
         },
         qSelectionObjectDef: {},
+        alternateStates: [{
+          stateName: 'andal',
+          qSelectionObjectDef: { qStateName: 'andal' },
+        }, {
+          stateName: 'forest',
+          qSelectionObjectDef: { qStateName: 'forest' },
+        }],
       }).then((sel) => {
         resolve(sel);
       });
@@ -101,9 +115,11 @@ const create = (app) => {
   });
   obj.then((model) => {
     const onChanged = () => model.getLayout().then((layout) => {
+      // FIXME - if all currently selected fields are locked, no actions should be allowed
       canGoBack = layout.qSelectionObject && layout.qSelectionObject.qBackCount > 0;
       canGoForward = layout.qSelectionObject && layout.qSelectionObject.qForwardCount > 0;
       canClear = layout.qSelectionObject && layout.qSelectionObject.qSelections.length > 0;
+      lyt = layout;
       api.emit('changed');
     });
     model.on('changed', onChanged);

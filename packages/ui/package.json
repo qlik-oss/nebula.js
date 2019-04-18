@@ -1,0 +1,13 @@
+{
+  "name": "@nebula.js/ui",
+  "private": true,
+  "version": "0.1.0",
+  "description": "",
+  "license": "MIT",
+  "author": "QlikTech International AB",
+  "keywords": [],
+  "scripts": {},
+  "devDependencies": {
+    "preact": "^8.4.2"
+  }
+}

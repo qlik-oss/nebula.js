@@ -1,5 +1,5 @@
 describe('sn', () => {
-  const content = '.nucleus-content__body';
+  const content = '.nebulajs-sn';
   it('should say hello', async () => {
     const app = encodeURIComponent(process.env.APP_ID || '/apps/ctrl00.qvf');
     await page.goto(`http://localhost:8085/render/app/${app}`);

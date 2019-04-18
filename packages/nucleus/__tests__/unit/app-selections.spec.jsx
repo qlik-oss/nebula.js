@@ -10,6 +10,7 @@ describe('<AppSelections />', () => {
       canGoForward: () => 'canGoForward',
       canGoBack: () => 'canGoBack',
       canClear: () => 'canClear',
+      layout: () => (null),
       back: sinon.spy(),
       forward: sinon.spy(),
       clear: sinon.spy(),
@@ -24,6 +25,7 @@ describe('<AppSelections />', () => {
         back: 'canGoBack',
         forward: 'canGoForward',
         clear: 'canClear',
+        items: [],
       });
     });
   });
@@ -46,20 +48,29 @@ describe('<AppSelections />', () => {
 
   it('should render a toolbar', () => {
     api.canGoBack = () => false;
-    const Button = ({ className, disabled, children }) => <b c={className} d={disabled}>{children}</b>;
-    const Icon = ({ name }) => `i:${name}`;
+    const Button = ({ disabled, children }) => <b d={disabled}>{children}</b>;
+    const Toolbar = ({ children }) => <t>{children}</t>;
+    const Grid = ({ children }) => <g>{children}</g>;
     const [{ AppSelections: AS }] = aw.mock([
-      ['**/Button.jsx', () => Button],
-      ['**/Icon.jsx', () => Icon],
+      ['**/SelectionsBack.jsx', () => () => 'Back'],
+      ['**/SelectionsForward.jsx', () => () => 'Forward'],
+      ['**/ClearSelections.jsx', () => () => 'Clear'],
+      ['**/ButtonInline.jsx', () => Button],
+      ['**/Toolbar.jsx', () => Toolbar],
+      ['**/Grid.jsx', () => Grid],
+      ['**/Text.jsx', () => Button],
     ], ['../../src/components/AppSelections']);
     const html = render.render(<AS api={api} />);
     expect(html).to.equal(`
-      <div class="nebula-toolbar">
-        <div class="nebula-selections-nav">
-          <b c="lui-fade-button" d>i:selections-back</b>
-          <b c="lui-fade-button">i:selections-forward</b>
-          <b c="lui-fade-button">i:clear-selections</b>
-        </div>
-      </div>`.replace(/\n(\s+)/g, ''));
+    <t>
+      <g>
+        <g>
+          <b d>Back</b>
+          <b>Forward</b>
+          <b>Clear</b>
+        </g>
+        <g></g>
+      </g>
+    </t>`.replace(/\n(\s+)/g, ''));
   });
 });

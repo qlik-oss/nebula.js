@@ -21,6 +21,7 @@
   },
   "devDependencies": {
     "@nebula.js/supernova": "^0.1.0",
+    "@nebula.js/ui": "^0.1.0",
     "html-looks-like": "^1.0.3",
     "node-event-emitter": "^0.0.1",
     "preact": "^8.4.2",

@@ -1,11 +1,12 @@
 import preact from 'preact';
-import { prefixer } from '../utils/utils';
+import Text from '@nebula.js/ui/components/Text';
+import Grid from '@nebula.js/ui/components/Grid';
 
 const Footer = ({ layout }) => (
   layout && layout.showTitles && layout.footnote ? (
-    <footer className={prefixer(['cell__footnote'])}>
-      <div className={prefixer(['type', 'type--s'])}>{layout.footnote}</div>
-    </footer>
+    <Grid>
+      <Text nowrap size="small">{layout.footnote}</Text>
+    </Grid>
   ) : null
 );
 

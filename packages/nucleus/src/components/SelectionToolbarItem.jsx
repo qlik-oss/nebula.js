@@ -1,8 +1,16 @@
 import preact from 'preact';
 
-import Button from './Button';
-import FadeButton from './FadeButton';
-import Icon from './Icon';
+import ButtonInline from '@nebula.js/ui/components/ButtonInline';
+
+import CloseIcon from '@nebula.js/ui/icons/Close';
+import TickIcon from '@nebula.js/ui/icons/Tick';
+import ClearSelections from '@nebula.js/ui/icons/ClearSelections';
+
+const ICONS = {
+  close: CloseIcon,
+  tick: TickIcon,
+  'clear-selections': ClearSelections,
+};
 
 export default class Item extends preact.Component {
   constructor(props) {
@@ -41,16 +49,15 @@ export default class Item extends preact.Component {
 
   render() {
     const props = this.props.item;
-    const Btn = props.type === 'fade-button' || this.props.isCustom ? FadeButton : Button;
+    const Icon = ICONS[props.icon] || null;
     return (
-      <Btn
+      <ButtonInline
         onClick={() => props.action()}
-        variant={props.variant}
         active={this.state.active}
         disabled={this.state.disabled}
       >
-        {props.icon ? <Icon name={props.icon} /> : props.label}
-      </Btn>
+        {<Icon />}
+      </ButtonInline>
     );
   }
 }
