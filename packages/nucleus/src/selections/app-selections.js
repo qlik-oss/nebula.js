@@ -13,6 +13,7 @@ const create = (app) => {
   let mounted;
   let lyt;
   const api = {
+    model: app,
     switchModal(object, path, accept = true) {
       if (object === modalObject) {
         return Promise.resolve();

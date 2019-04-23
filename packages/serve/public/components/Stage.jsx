@@ -25,7 +25,7 @@ export default function Stage({
 
   return (
     <Card>
-      <Grid vertical noSpacing>
+      <Grid vertical noSpacing style={{ height: '100%' }}>
         <Toolbar style={{ textAlign: 'right' }}>
           <Button onClick={() => setDialogOpen(true)} disabled={!model}>Props</Button>
           {model && (

@@ -3,6 +3,7 @@
 import React, {
   useEffect,
   useState,
+  useRef,
 } from 'react';
 
 import {
@@ -28,12 +29,14 @@ export default function App({
 }) {
   const [viz, setViz] = useState(null);
   const [sn, setSupernova] = useState(null);
+  const sel = useRef(null);
 
   useEffect(() => {
     const nebbie = nucleus(app)
       .load((type, config) => config.Promise.resolve(snDefinition));
 
     nebbie.types.supernova(SN_NAME).then(setSupernova);
+    nebbie.selections().mount(sel.current);
 
     const create = () => {
       nebbie.create({
@@ -64,7 +67,8 @@ export default function App({
             </Button>
           </a>
         </Toolbar>
-        <Grid noSpacing>
+        <div ref={sel} style={{ flex: '0 0 auto' }} />
+        <Grid noSpacing className="content">
           <Stage viz={viz} sn={sn} />
           <Panel>
             <Properties sn={sn} model={viz && viz.model} />

@@ -3,12 +3,16 @@ const theme = {
   $grey98: 'fafafa',
   $grey95: 'f2f2f2',
   $grey90: '#e6e6e6',
+  $grey85: '#d9d9d9',
+  $grey70: '#b3b3b3',
   $grey25: '#404040',
 
+  $alpha03: 'rgba(0, 0, 0, 0.03)',
   $alpha15: 'rgba(0, 0, 0, 0.15)',
   $alpha55: 'rgba(0, 0, 0, 0.55)',
 
   $green: '#6CB33F',
+  $bluePale: '#469DCD',
 
   $fontFamily: '"Source Sans Pro", Arial, sans-serif',
   $fontSize: '14px',
