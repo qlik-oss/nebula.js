@@ -54,6 +54,7 @@ const CONFIGS = {
     mocks: [
       ['**/*.scss', '{}'],
       ['**/*.css', '{}'],
+      ['**/styled.js', () => () => ['classes']],
 
       // mock nebula modules to avoid parsing errors without build.
       // these modules should be mocked properly in the unit test
