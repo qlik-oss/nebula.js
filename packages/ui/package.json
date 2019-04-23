@@ -8,6 +8,6 @@
   "keywords": [],
   "scripts": {},
   "devDependencies": {
-    "preact": "^8.4.2"
+    "react": "^16.8.6"
   }
 }

@@ -1,11 +1,12 @@
-import preact from 'preact';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import Cell from './Cell';
 
 export default function boot({
   element,
   model,
 }, props, config) {
-  const reference = preact.render(
+  ReactDOM.render(
     <Cell
       {...props}
       model={model}
@@ -14,14 +15,14 @@ export default function boot({
   );
 
   const unmount = () => {
-    preact.render('', element, reference);
+    ReactDOM.unmountComponentAtNode(element);
   };
 
   const update = (p) => {
-    preact.render(<Cell
+    ReactDOM.render(<Cell
       {...p}
       model={model}
-    />, element, reference);
+    />, element);
   };
 
   model.once('closed', unmount);
@@ -31,6 +32,5 @@ export default function boot({
       update(p);
     },
     unmount,
-    reference,
   });
 }

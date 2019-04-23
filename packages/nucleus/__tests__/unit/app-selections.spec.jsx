@@ -1,5 +1,6 @@
-import preact from 'preact';
-import render from 'preact-render-to-string';
+/* eslint object-property-newline:0 */
+import React from 'react';
+import renderer from 'react-test-renderer';
 
 import { AppSelections } from '../../src/components/AppSelections';
 
@@ -60,17 +61,18 @@ describe('<AppSelections />', () => {
       ['**/Grid.jsx', () => Grid],
       ['**/Text.jsx', () => Button],
     ], ['../../src/components/AppSelections']);
-    const html = render.render(<AS api={api} />);
-    expect(html).to.equal(`
-    <t>
-      <g>
-        <g>
-          <b d>Back</b>
-          <b>Forward</b>
-          <b>Clear</b>
-        </g>
-        <g></g>
-      </g>
-    </t>`.replace(/\n(\s+)/g, ''));
+    const r = renderer.create(<AS api={api} />);
+
+    expect(r.toJSON()).to.eql({
+      type: 't', props: {}, children: [{
+        type: 'g', props: {}, children: [{
+          type: 'g', props: {}, children: [
+            { type: 'b', props: { d: true }, children: ['Back'] },
+            { type: 'b', props: { d: false }, children: ['Forward'] },
+            { type: 'b', props: { d: false }, children: ['Clear'] },
+          ],
+        }, { type: 'g', props: {}, children: null }],
+      }],
+    });
   });
 });

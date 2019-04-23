@@ -1,4 +1,4 @@
-import preact from 'preact';
+import React from 'react';
 
 import Grid from '@nebula.js/ui/components/Grid';
 import styled from '@nebula.js/ui/components/styled';
@@ -42,7 +42,7 @@ const Content = ({ children }) => (
   </div>
 );
 
-class Cell extends preact.Component {
+class Cell extends React.Component {
   constructor(...args) {
     super(...args);
     this.styledClasses = ['nebulajs', ...styled({
@@ -52,6 +52,7 @@ class Cell extends preact.Component {
       fontFamily: '$fontFamily',
       color: '$grey25',
     })].join(' ');
+    this.state = {};
   }
 
   componentDidCatch() {

@@ -5,7 +5,7 @@ module.exports = {
         ['@babel/preset-env', { targets: { node: 'current' } }],
       ],
       plugins: [
-        ['@babel/plugin-transform-react-jsx', { pragma: 'preact.h' }],
+        ['@babel/plugin-transform-react-jsx'],
         [
           'istanbul',
           {

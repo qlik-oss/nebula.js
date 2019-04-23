@@ -9,11 +9,6 @@
   "extends": [
     "airbnb"
   ],
-  "settings": {
-    "react": {
-      "pragma": "preact"
-    }
-  },
   "rules": {
     "max-len": 0,
     "no-plusplus": 0,

@@ -1,5 +1,5 @@
-import preact from 'preact';
-import render from 'preact-render-to-string';
+import React from 'react';
+import renderer from 'react-test-renderer';
 
 import SelectionToolbar from '../../src/components/SelectionToolbar';
 
@@ -25,7 +25,13 @@ describe('<SelectionToolbar />', () => {
           selectionToolbar: { items: [{ key: 'mine', type: 'random' }] },
         },
       };
-      st = new SelectionToolbar(props);
+      const STItem = () => '';
+      const styled = () => ['classes'];
+      const [{ default: STB }] = aw.mock([
+        ['**/SelectionToolbarItem.jsx', () => STItem],
+        ['**/styled.js', () => styled],
+      ], ['../../src/components/SelectionToolbar']);
+      st = new STB(props);
     });
 
     it('should have a confirm item', () => {
@@ -108,13 +114,17 @@ describe('<SelectionToolbar />', () => {
         selectionToolbar: { items: [{ key: 'mine' }] },
       },
     };
-    const STItem = ({ key, isCustom }) => `-${key}:${isCustom}-`;
+    const STItem = ({ isCustom }) => `-${isCustom}-`;
     const styled = () => ['a'];
     const [{ default: STB }] = aw.mock([
       ['**/SelectionToolbarItem.jsx', () => STItem],
       ['**/styled.js', () => styled],
     ], ['../../src/components/SelectionToolbar']);
-    const html = render.render(<STB sn={props.sn} />);
-    expect(html).to.equal('<div class="a">-mine:true--clear:false--cancel:false--confirm:false-</div>');
+    const c = renderer.create(<STB sn={props.sn} />);
+    expect(c.toJSON()).to.eql({
+      type: 'div',
+      props: { className: 'a' },
+      children: ['-true-', '-false-', '-false-', '-false-'],
+    });
   });
 });

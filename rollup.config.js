@@ -29,7 +29,15 @@ const browserList = [
 ];
 
 const GLOBALS = {
+  react: 'React',
+  'react-dom': 'ReactDOM',
 };
+
+const EXTERNALS = [
+  'react',
+  'react-dom',
+  'react-leonardo-ui',
+];
 
 const config = (isEsm) => {
   const outputFile = isEsm ? pkg.module : pkg.main;
@@ -37,7 +45,7 @@ const config = (isEsm) => {
   const dir = path.dirname(outputFile);
   const umdName = basename.replace(/-([a-z])/g, (m, p1) => p1.toUpperCase()).split('.js').join('');
 
-  const external = isEsm ? Object.keys(pkg.dependencies || {}) : [];
+  const external = [...EXTERNALS, ...(isEsm ? Object.keys(pkg.dependencies || {}) : [])];
   const globals = {};
   external.forEach((e) => {
     if ([GLOBALS[e]]) {
@@ -76,7 +84,7 @@ const config = (isEsm) => {
           }],
         ],
         plugins: [
-          ['@babel/plugin-transform-react-jsx', { pragma: 'preact.h' }],
+          ['@babel/plugin-transform-react-jsx'],
         ],
       }),
     ],

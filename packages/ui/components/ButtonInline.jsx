@@ -1,4 +1,4 @@
-import preact from 'preact';
+import React from 'react';
 
 import styled from './styled';
 

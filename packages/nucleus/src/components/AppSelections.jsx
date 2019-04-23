@@ -1,4 +1,5 @@
-import preact from 'preact';
+import React from 'react';
+import ReactDOM from 'react-dom';
 
 import SelectionsBack from '@nebula.js/ui/icons/SelectionsBack';
 import SelectionsForward from '@nebula.js/ui/icons/SelectionsForward';
@@ -121,7 +122,7 @@ function MultiState({
   );
 }
 
-export class AppSelections extends preact.Component {
+export class AppSelections extends React.Component {
   constructor(props) {
     super(props);
 
@@ -201,7 +202,7 @@ export default function mount({
   element,
   api,
 }) {
-  const reference = preact.render(
+  ReactDOM.render(
     <AppSelections
       api={api}
     />,
@@ -209,7 +210,7 @@ export default function mount({
   );
 
   const unmount = () => {
-    preact.render('', element, reference);
+    ReactDOM.unmountComponentAtNode(element);
   };
 
   return () => {

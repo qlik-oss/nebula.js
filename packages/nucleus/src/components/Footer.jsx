@@ -1,4 +1,4 @@
-import preact from 'preact';
+import React from 'react';
 import Text from '@nebula.js/ui/components/Text';
 import Grid from '@nebula.js/ui/components/Grid';
 

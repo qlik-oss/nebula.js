@@ -1,9 +1,9 @@
-import preact from 'preact';
+import React from 'react';
 import styled from '@nebula.js/ui/components/styled';
 
 import Item from './SelectionToolbarItem';
 
-class Component extends preact.Component {
+class Component extends React.Component {
   constructor(props) {
     super(props);
     const api = props.sn.component.selections;
@@ -24,7 +24,7 @@ class Component extends preact.Component {
       background: '$grey100',
       display: 'flex',
       justifyContent: 'flex-end',
-    });
+    }).join(' ');
 
     const items = [];
 

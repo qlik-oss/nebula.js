@@ -1,4 +1,4 @@
-import preact from 'preact';
+import React from 'react';
 
 const constrainElement = (el, d) => {
   /* eslint-disable no-param-reassign */
@@ -88,7 +88,7 @@ const scheduleRender = (props, prev, initial, contentElement) => {
   return prom;
 };
 
-class Supernova extends preact.Component {
+class Supernova extends React.Component {
   constructor(props) {
     super(props);
     this.initial = {

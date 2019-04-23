@@ -1,4 +1,4 @@
-import preact from 'preact';
+import React from 'react';
 
 import ButtonInline from '@nebula.js/ui/components/ButtonInline';
 
@@ -12,7 +12,7 @@ const ICONS = {
   'clear-selections': ClearSelections,
 };
 
-export default class Item extends preact.Component {
+export default class Item extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

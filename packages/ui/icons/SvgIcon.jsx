@@ -1,4 +1,4 @@
-import preact from 'preact';
+import React from 'react';
 
 function getFontSize(size) {
   if (size === 'large') {
