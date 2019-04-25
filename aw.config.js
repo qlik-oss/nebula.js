@@ -41,7 +41,7 @@ const argv = yargs
 
 const CONFIGS = {
   unit: {
-    glob: [`${argv.scope}/__tests__/unit/**/*.spec.{js,jsx}`],
+    glob: [`${argv.scope}/__tests__/unit/**/*.spec.{js,jsx}`, `${argv.scope}/src/**/__tests__/**/*.spec.{js,jsx}`],
     src: [`${argv.scope}/src/**/*.{js,jsx}`],
     coverage: true,
     nyc: {

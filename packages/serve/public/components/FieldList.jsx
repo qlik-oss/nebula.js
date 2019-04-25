@@ -9,6 +9,9 @@ import {
   Icon,
 } from 'react-leonardo-ui';
 
+import useModel from '@nebula.js/nucleus/src/hooks/useModel';
+import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
+
 import AppContext from '../contexts/AppContext';
 
 const Field = ({ qName }) => (
@@ -24,25 +27,25 @@ export default function FieldList() {
   const app = useContext(AppContext);
   const [fields, setFields] = useState([]);
 
+  const [model] = useModel({
+    qInfo: {
+      qType: 'FieldList',
+      qId: 'FieldList',
+    },
+    qFieldListDef: {
+      qShowDerivedFelds: false,
+      qShowHidden: false,
+      qShowSemantic: true,
+      qShowSrcTables: true,
+      qShowSystem: false,
+    },
+  }, [app && app.id]);
+
+  const [layout] = useLayout(model, app);
+
   useEffect(() => {
-    app.createSessionObject({
-      qInfo: {
-        qType: 'FieldList',
-        qId: 'FieldList',
-      },
-      qFieldListDef: {
-        qShowDerivedFelds: false,
-        qShowHidden: false,
-        qShowSemantic: true,
-        qShowSrcTables: true,
-        qShowSystem: false,
-      },
-    }).then((object) => {
-      object.getLayout().then((layout) => {
-        setFields(layout.qFieldList.qItems);
-      });
-    });
-  }, []);
+    setFields(layout.qFieldList.qItems);
+  }, [layout]);
 
   return (
     <List>

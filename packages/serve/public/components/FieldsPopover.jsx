@@ -8,14 +8,14 @@ import {
   List,
 } from 'react-leonardo-ui';
 
+import useModel from '@nebula.js/nucleus/src/hooks/useModel';
+import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
+
 import {
   Label,
 } from '../ui-components';
 
 import AppContext from '../contexts/AppContext';
-
-
-import useFields from '../hooks/useFields';
 
 const Field = ({ field, onSelect }) => (
   <List.Item onClick={() => onSelect(field.qName)} data-key={field.qName}>
@@ -30,7 +30,21 @@ export default function FieldsPopover({
   onSelected,
 }) {
   const app = useContext(AppContext);
-  const [fieldsLayout] = useFields(app);
+  const [model] = useModel({
+    qInfo: {
+      qType: 'FieldList',
+      qId: 'FieldList',
+    },
+    qFieldListDef: {
+      qShowDerivedFelds: false,
+      qShowHidden: false,
+      qShowSemantic: true,
+      qShowSrcTables: true,
+      qShowSystem: false,
+    },
+  }, app);
+
+  const [layout] = useLayout(model, app);
 
   const onConfirm = (e) => {
     if (e.key === 'Enter') {
@@ -41,7 +55,7 @@ export default function FieldsPopover({
     }
   };
 
-  const fields = fieldsLayout ? (fieldsLayout.qFieldList.qItems || []) : [];
+  const fields = layout ? (layout.qFieldList.qItems || []) : [];
 
   const onSelect = (s) => {
     onSelected({
