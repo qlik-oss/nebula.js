@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-serve",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha.8",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -23,8 +23,8 @@
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
-    "@nebula.js/cli-build": "0.1.0",
-    "@nebula.js/nucleus": "0.1.0",
+    "@nebula.js/cli-build": "0.1.0-alpha.8",
+    "@nebula.js/nucleus": "0.1.0-alpha.8",
     "babel-loader": "^8.0.5",
     "chalk": "^2.4.2",
     "enigma.js": "^2.4.0",

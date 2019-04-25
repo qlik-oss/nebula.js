@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/nucleus",
-  "version": "0.1.0",
+  "version": "0.1.0-alpha.8",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -20,8 +20,8 @@
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "devDependencies": {
-    "@nebula.js/supernova": "^0.1.0",
-    "@nebula.js/ui": "^0.1.0",
+    "@nebula.js/supernova": "0.1.0-alpha.8",
+    "@nebula.js/ui": "0.1.0-alpha.8",
     "node-event-emitter": "^0.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
