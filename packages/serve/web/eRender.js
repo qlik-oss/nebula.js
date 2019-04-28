@@ -1,5 +1,3 @@
-/* global SN_NAME */
-
 import nucleus from '@nebula.js/nucleus';
 import snDefinition from 'snDefinition'; // eslint-disable-line
 
@@ -24,7 +22,7 @@ openApp(params.app).then((app) => {
 
   const create = () => {
     obj = nebbie.create({
-      type: SN_NAME,
+      type: '__undefined__',
       fields: params.cols || [],
     }, {
       element: document.querySelector('#chart-container'),
@@ -49,11 +47,13 @@ openApp(params.app).then((app) => {
 
   render();
 
-  module.hot.accept('snDefinition', () => {
-    nebbie.types.clearFromCache(objType);
-    obj.then((viz) => {
-      viz.close();
-      render();
+  if (module.hot) {
+    module.hot.accept('snDefinition', () => {
+      nebbie.types.clearFromCache(objType);
+      obj.then((viz) => {
+        viz.close();
+        render();
+      });
     });
-  });
+  }
 });

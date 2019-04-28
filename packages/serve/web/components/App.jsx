@@ -1,5 +1,3 @@
-/* global SN_NAME */
-
 import React, {
   useEffect,
   useState,
@@ -35,12 +33,12 @@ export default function App({
     const nebbie = nucleus(app)
       .load((type, config) => config.Promise.resolve(snDefinition));
 
-    nebbie.types.supernova(SN_NAME).then(setSupernova);
+    nebbie.types.supernova('__undefined__').then(setSupernova);
     nebbie.selections().mount(sel.current);
 
     const create = () => {
       nebbie.create({
-        type: SN_NAME || '__undefined__',
+        type: '__undefined__',
       }, {}).then((v) => {
         v.context({
           permissions: ['passive', 'interact', 'select', 'fetch'],
