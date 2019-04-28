@@ -1,5 +1,3 @@
-/* global ENIGMA_HOST, ENIGMA_PORT */
-
 import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/3.2.json';
 import SenseUtilities from 'enigma.js/sense-utilities';
@@ -25,8 +23,9 @@ const params = (() => {
 })();
 
 const defaultConfig = {
-  host: ENIGMA_HOST || window.location.hostname || 'localhost',
-  port: ENIGMA_PORT,
+  host: window.location.hostname || 'localhost',
+  port: window.location.port,
+  prefix: 'engine',
   secure: false,
 };
 

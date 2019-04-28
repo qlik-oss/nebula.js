@@ -4,7 +4,7 @@ const chalk = require('chalk');
 const portfinder = require('portfinder');
 const { watch } = require('@nebula.js/cli-build');
 
-const webpack = require('./webpack.conf');
+const webpackServe = require('./webpack.serve.js');
 
 const {
   startEngine,
@@ -17,8 +17,11 @@ module.exports = async (argv) => {
   }
   const port = argv.port || await portfinder.getPortPromise();
   const host = argv.host || 'localhost';
-  const enigmaConfig = argv.enigma || {};
-  const publicDir = path.resolve(__dirname, '../public');
+  const enigmaConfig = {
+    port: 9076,
+    host: 'localhost',
+    ...argv.enigma,
+  };
   const context = process.cwd();
   let snPath;
   let snName;
@@ -46,13 +49,13 @@ module.exports = async (argv) => {
     return;
   }
 
-  const server = await webpack({
+  const server = await webpackServe({
     host,
     port,
-    publicDir,
     enigmaConfig,
     snName,
     snPath,
+    dev: process.env.MONO === 'true',
   });
 
   const close = () => {
