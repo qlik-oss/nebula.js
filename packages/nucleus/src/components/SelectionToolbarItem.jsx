@@ -49,14 +49,14 @@ export default class Item extends React.Component {
 
   render() {
     const props = this.props.item;
-    const Icon = ICONS[props.icon] || null;
+    const Icon = ICONS[props.icon] || '';
     return (
       <ButtonInline
         onClick={() => props.action()}
-        active={this.state.active}
+        active={this.state.active || false}
         disabled={this.state.disabled}
       >
-        {<Icon />}
+        {Icon && <Icon />}
       </ButtonInline>
     );
   }
