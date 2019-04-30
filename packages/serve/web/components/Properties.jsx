@@ -1,6 +1,8 @@
 import React, { useRef, useState } from 'react';
 import { Button, List, Icon } from 'react-leonardo-ui';
 
+import useProperties from '@nebula.js/nucleus/src/hooks/useProperties';
+
 import {
   Toolbar,
   Grid,
@@ -8,7 +10,6 @@ import {
 } from '../ui-components';
 
 import FieldsPopover from './FieldsPopover';
-import useProperties from '../hooks/useProperties';
 
 const Fields = ({
   model,

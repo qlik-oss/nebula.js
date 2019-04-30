@@ -40,9 +40,13 @@ describe('observer', () => {
     it('should call callback using cached value when state is VALID', () => {
       const spy = sinon.spy();
       cache.a = {
-        value: 'cached',
-        callbacks: [],
-        state: 1,
+        props: {
+          layout: {
+            value: 'cached',
+            callbacks: [],
+            state: 1,
+          },
+        },
       };
       const model = {
         id: 'a',
@@ -85,18 +89,18 @@ describe('observer', () => {
       expect(cb.callCount).to.equal(1);
 
       onChanged();
-      expect(cache.a.state).to.equal(3);
-      cache.a.state = 5;
+      expect(cache.a.props.layout.state).to.equal(3);
+      cache.a.props.layout.state = 5;
       await layoutPromise1;
 
       onChanged();
-      expect(cache.a.state).to.equal(3);
-      cache.a.state = 6;
+      expect(cache.a.props.layout.state).to.equal(3);
+      cache.a.props.layout.state = 6;
       await layoutPromise2;
 
       onChanged();
-      expect(cache.a.state).to.equal(3);
-      cache.a.state = 7;
+      expect(cache.a.props.layout.state).to.equal(3);
+      cache.a.props.layout.state = 7;
       await layoutPromise3;
 
       expect(cb.callCount).to.equal(1);
@@ -132,10 +136,14 @@ describe('observer', () => {
         id: 'a',
       };
       cache.a = {
-        callbacks: [0, 1, callback, 3, 4],
+        props: {
+          layout: {
+            callbacks: [0, 1, callback, 3, 4],
+          },
+        },
       };
       unObserve(model, callback);
-      expect(cache.a.callbacks).to.eql([0, 1, 3, 4]);
+      expect(cache.a.props.layout.callbacks).to.eql([0, 1, 3, 4]);
     });
   });
 });

@@ -3,21 +3,18 @@ import {
   useState,
 } from 'react';
 
-const cache = {};
+import modelCache, { key } from '../object/model-cache';
 
 export default function useModel(definition, app, ...deps) {
-  const key = app && `${app.id}:${JSON.stringify(definition)}`;
+  const k = key(definition, app);
   const [model, setModel] = useState(null);
 
   useEffect(() => {
     if (!app) {
       return;
     }
-    if (!cache[key]) {
-      cache[key] = app.createSessionObject(definition);
-    }
-    cache[key].then(setModel);
-  }, [app && key, ...deps]);
+    modelCache(definition, app).then(setModel);
+  }, [app && k, ...deps]);
 
   return [model];
 }

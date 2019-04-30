@@ -9,30 +9,55 @@ const STATES = {
   CANCELLED: 7,
 };
 
-export function observe(model, callback) {
-  let onChanged;
+const OBSERVABLE = {
+  layout: ['getAppLayout', 'getLayout'],
+  properties: ['getProperties'],
+};
+
+const OBSERVABLE_KEYS = Object.keys(OBSERVABLE);
+
+export function observe(model, callback, property = 'layout') {
+  if (!OBSERVABLE[property]) {
+    throw new Error(`'${property}' is not observable!`);
+  }
   if (!cache[model.id]) {
-    onChanged = () => {
+    const onChanged = (filtered) => {
       const c = cache[model.id];
-      c.state = STATES.INVALID;
-      if (c.callbacks.length) {
-        c.state = STATES.VALIDATING;
-        model.getLayout().then((layout) => {
-          if (cache[model.id]) {
-            if (cache[model.id].state < STATES.CLOSED) {
-              cache[model.id].state = STATES.VALID;
-              cache[model.id].value = layout;
-              cache[model.id].callbacks.forEach(h => h(layout));
+      const affected = [];
+      Object.keys(c.props).filter(key => (filtered ? key === filtered : true)).forEach((key) => {
+        c.props[key].state = STATES.INVALID;
+        if (c.props[key].callbacks.length) {
+          affected.push(key);
+        }
+      });
+
+      affected.forEach((key) => {
+        c.props[key].state = STATES.VALIDATING;
+        const method = OBSERVABLE[key].filter(m => model[m])[0];
+        model[method]().then((value) => {
+          if (cache[model.id] && cache[model.id].props[key]) {
+            if (cache[model.id].props[key].state < STATES.CLOSED && cache[model.id].props[key].state !== STATES.VALID) {
+              cache[model.id].props[key].state = STATES.VALID;
+              cache[model.id].props[key].value = value;
+              cache[model.id].props[key].callbacks.forEach(cb => cb(value));
             }
           }
         });
-      }
+      });
     };
+
     cache[model.id] = {
-      state: STATES.INVALID,
-      value: null,
-      callbacks: [],
+      onChanged,
+      props: {},
     };
+
+    OBSERVABLE_KEYS.forEach((key) => {
+      cache[model.id].props[key] = {
+        state: STATES.INVALID,
+        callbacks: [],
+        value: null,
+      };
+    });
 
     model.on('changed', onChanged);
     model.once('closed', () => {
@@ -40,19 +65,29 @@ export function observe(model, callback) {
       delete cache[model.id];
     });
   }
-  cache[model.id].callbacks.push(callback);
-  if (cache[model.id].state === STATES.VALID) {
-    callback(cache[model.id].value);
-  } else if (cache[model.id].state === STATES.INVALID) {
-    onChanged();
+  cache[model.id].props[property].callbacks.push(callback);
+  if (cache[model.id].props[property].state === STATES.VALID) {
+    callback(cache[model.id].props[property].value);
+  } else if (cache[model.id].props[property].state === STATES.INVALID) {
+    cache[model.id].onChanged(property);
   }
 }
 
-export function unObserve(model, handler) {
+export function unObserve(model, handler, property = 'layout') {
   if (cache[model.id]) {
-    const idx = cache[model.id].callbacks.indexOf(handler);
+    const idx = cache[model.id].props[property].callbacks.indexOf(handler);
     if (idx !== 1) {
-      cache[model.id].callbacks.splice(idx, 1);
+      cache[model.id].props[property].callbacks.splice(idx, 1);
     }
   }
+}
+
+export function get(model, property) {
+  return new Promise((resolve) => {
+    const cb = (value) => {
+      unObserve(model, cb, property);
+      resolve(value);
+    };
+    observe(model, cb, property);
+  });
 }
