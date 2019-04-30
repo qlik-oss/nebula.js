@@ -2,6 +2,9 @@
 import eventmixin from './event-mixin';
 import visual from '../components/AppSelections';
 
+import modelCache from '../object/model-cache';
+import { observe } from '../object/observer';
+
 const cache = {};
 
 const create = (app) => {
@@ -91,45 +94,49 @@ const create = (app) => {
 
   eventmixin(api);
 
-  const prom = app.getObject('CurrentSelectionB');
-  const obj = new Promise((resolve) => {
-    prom.then((sel) => {
-      resolve(sel);
-    }).catch(() => {
-      app.createSessionObject({
-        qInfo: {
-          qId: 'CurrentSelectionB',
-          qType: 'CurrentSelectionB',
+  modelCache({
+    qInfo: {
+      qType: 'current-selections',
+    },
+    qSelectionObjectDef: {
+      qStateName: '$',
+    },
+    alternateStates: [],
+  }, app).then((model) => {
+    observe(app, (appLayout) => {
+      const states = [...appLayout.qStateNames].map(s => ({
+        stateName: s, // need this as reference in selection toolbar since qSelectionObject.qStateName is not in the layout
+        qSelectionObjectDef: {
+          qStateName: s,
         },
-        qSelectionObjectDef: {},
-        alternateStates: [{
-          stateName: 'andal',
-          qSelectionObjectDef: { qStateName: 'andal' },
-        }, {
-          stateName: 'forest',
-          qSelectionObjectDef: { qStateName: 'forest' },
-        }],
-      }).then((sel) => {
-        resolve(sel);
-      });
+      }));
+      const existingStates = (lyt ? lyt.alternateStates.map(s => s.stateName) : []).join('::');
+      const newStates = appLayout.qStateNames.map(s => s).join('::');
+      if (existingStates !== newStates) {
+        model.applyPatches([{
+          qOp: 'replace',
+          qPath: '/alternateStates',
+          qValue: JSON.stringify(states),
+        }], true);
+      }
     });
-  });
-  obj.then((model) => {
-    const onChanged = () => model.getLayout().then((layout) => {
-      // FIXME - if all currently selected fields are locked, no actions should be allowed
-      canGoBack = layout.qSelectionObject && layout.qSelectionObject.qBackCount > 0;
-      canGoForward = layout.qSelectionObject && layout.qSelectionObject.qForwardCount > 0;
-      canClear = layout.qSelectionObject && layout.qSelectionObject.qSelections.length > 0;
+
+    observe(model, (layout) => {
+      canGoBack = false;
+      canGoForward = false;
+      canClear = false;
+      [layout, ...layout.alternateStates].forEach((state) => {
+        canGoBack = canGoBack || state.qSelectionObject.qBackCount > 0;
+        canGoForward = canGoForward || state.qSelectionObject.qForwardCount > 0;
+        canClear = canClear || state.qSelectionObject.qSelections.filter(s => s.qLocked !== true).length > 0;
+      });
       lyt = layout;
       api.emit('changed');
     });
-    model.on('changed', onChanged);
     model.once('closed', () => {
-      model.removeListener('changed', onChanged);
       app._selections = null; // eslint-disable-line no-param-reassign
       cache[app.id] = null;
     });
-    onChanged();
   });
 
   return api;
