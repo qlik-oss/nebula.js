@@ -28,8 +28,10 @@ function getItems(layout) {
     return [];
   }
   const fields = {};
-  collect(layout.qSelectionObject, fields);
-  if (layout.alternateStates || layout.selectionsInStates) {
+  if (layout.qSelectionObject) {
+    collect(layout.qSelectionObject, fields);
+  }
+  if (layout.alternateStates) {
     layout.alternateStates.forEach(s => collect(s.qSelectionObject, fields, s.stateName));
   }
   return Object.keys(fields).map(key => fields[key]);
