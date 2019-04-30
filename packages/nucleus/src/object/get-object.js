@@ -31,7 +31,7 @@ export default function initiate(getCfg, optional, context) {
       viz.api.context(optional.context);
     }
     if (optional.element) {
-      viz.api.show(optional.element);
+      viz.api.mount(optional.element);
     }
 
     observe(model, objectAPI);

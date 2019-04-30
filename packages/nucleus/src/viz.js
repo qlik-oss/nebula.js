@@ -28,7 +28,7 @@ export default function ({
 
   let queueShow = false;
 
-  const show = (element) => {
+  const mount = (element) => {
     if (!objectProps.layout) {
       queueShow = element;
       return;
@@ -44,7 +44,7 @@ export default function ({
 
   const update = () => {
     if (queueShow && objectProps.layout) {
-      show(queueShow);
+      mount(queueShow);
       queueShow = false;
     }
     c.then(x => x.setProps({
@@ -72,9 +72,9 @@ export default function ({
   const api = {
     model,
     // app,
-    show(element) {
-      // TODO - handle multiple calls to show with different elements
-      show(element);
+    mount(element) {
+      // TODO - remount if already mounted
+      mount(element);
     },
     close() {
       model.emit('closed');

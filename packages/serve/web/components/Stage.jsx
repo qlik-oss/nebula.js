@@ -18,7 +18,7 @@ export default function Stage({
   const [dialogOpen, setDialogOpen] = useState(false);
 
   useEffect(() => {
-    viz && viz.show(c.current);
+    viz && viz.mount(c.current);
   }, [viz]);
 
   const closeDialog = useCallback(() => { setDialogOpen(false); });
