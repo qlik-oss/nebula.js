@@ -12,6 +12,7 @@ const STATES = {
 const OBSERVABLE = {
   layout: ['getAppLayout', 'getLayout'],
   properties: ['getProperties'],
+  effectiveProperties: ['getEffectiveProperties'],
 };
 
 const OBSERVABLE_KEYS = Object.keys(OBSERVABLE);

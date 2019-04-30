@@ -1,5 +1,8 @@
 import cell from './components/boot';
 
+import { get } from './object/observer';
+import getPatches from './utils/patcher';
+
 const noopi = Promise.resolve({
   setProps() {},
   unmount() {},
@@ -77,12 +80,19 @@ export default function ({
       mount(element);
     },
     close() {
+      // TODO - destroy session object (if created as such)
       model.emit('closed');
       c.then(x => x.unmount());
       c = noopi;
     },
-    setProperties() {
-      // TODO - apply soft patch on existing properties
+    setTemporaryProperties(props) {
+      return get(model, 'effectiveProperties').then((current) => {
+        const patches = getPatches('/', props, current);
+        if (patches.length) {
+          return model.applyPatches(patches, true);
+        }
+        return Promise.resolve();
+      });
     },
     options(opts) {
       setUserProps({
