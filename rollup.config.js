@@ -36,7 +36,6 @@ const GLOBALS = {
 const EXTERNALS = [
   'react',
   'react-dom',
-  'react-leonardo-ui',
 ];
 
 const config = (isEsm) => {
@@ -45,7 +44,7 @@ const config = (isEsm) => {
   const dir = path.dirname(outputFile);
   const umdName = basename.replace(/-([a-z])/g, (m, p1) => p1.toUpperCase()).split('.js').join('');
 
-  const external = [...EXTERNALS, ...(isEsm ? Object.keys(pkg.dependencies || {}) : [])];
+  const external = isEsm ? [...EXTERNALS, ...Object.keys(pkg.dependencies || {})] : [];
   const globals = {};
   external.forEach((e) => {
     if ([GLOBALS[e]]) {
@@ -72,9 +71,18 @@ const config = (isEsm) => {
       nodeResolve({
         extensions: ['.js', '.jsx'],
       }),
-      commonjs(),
+      commonjs({
+        namedExports: {
+          react: ['useState', 'useEffect', 'useRef', 'useContext', 'useCallback', 'createElement', 'PureComponent'],
+          'react-dom': ['createPortal'],
+        },
+      }),
       babel({
         babelrc: false,
+        include: [
+          '/**/packages/nucleus/**',
+          '/**/packages/ui/**',
+        ],
         presets: [
           ['@babel/preset-env', {
             modules: false,

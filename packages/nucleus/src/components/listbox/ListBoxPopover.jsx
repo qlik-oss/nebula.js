@@ -2,13 +2,10 @@ import React, {
   useCallback,
 } from 'react';
 
-import {
-  Popover,
-} from 'react-leonardo-ui';
-
 import Lock from '@nebula.js/ui/icons/Lock';
 import Unlock from '@nebula.js/ui/icons/Unlock';
 import ButtonInline from '@nebula.js/ui/components/ButtonInline';
+import Popover from '@nebula.js/ui/components/popover';
 
 import useModel from '../../hooks/useModel';
 import useLayout from '../../hooks/useLayout';
@@ -79,7 +76,7 @@ export default function ListBoxPopover({
         )
       }
       </Popover.Header>
-      <Popover.Body nopad>
+      <Popover.Body>
         <ListBox model={model} />
       </Popover.Body>
     </Popover>
