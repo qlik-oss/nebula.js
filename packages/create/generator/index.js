@@ -2,6 +2,8 @@ const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const fs = require('fs');
 
+const pkg = require('../package.json');
+
 module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
@@ -79,6 +81,7 @@ module.exports = class extends Generator {
         description: '',
         user: this.user.git.name(),
         email: this.user.git.email(),
+        nebulaVersion: pkg.version,
         // username: await this.user.github.username(),
         usePicasso,
       },

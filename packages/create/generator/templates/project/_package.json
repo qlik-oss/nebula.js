@@ -26,7 +26,7 @@
     "start": "nebula serve"
   },
   "devDependencies": {
-    "@nebula.js/cli": "0.1.0-alpha.8",
+    "@nebula.js/cli": "<%= nebulaVersion %>",
     "eslint": "^5.12.1",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.15.0",
