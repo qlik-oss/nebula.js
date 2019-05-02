@@ -61,6 +61,7 @@ const CONFIGS = {
       ['@nebula.js/selections', () => ({})],
       ['@nebula.js/supernova', () => ({})],
       ['@nebula.js/nucleus', () => ({})],
+      ['**/positioner.js', () => ({})],
     ],
   },
   integration: {
