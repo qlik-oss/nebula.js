@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import styled from './styled';
+import themes from '../theme';
 
 export default function Toolbar({
   children,
   style,
+  theme = themes('light'),
 }) {
-  const classes = styled([{
-    background: '$grey90',
-    color: '$grey25',
+  const className = useMemo(() => theme.style({
+    background: '$palette.grey.98',
+    color: '$palette.text.primary',
     height: '48px',
-    boxShadow: '0 1px 0 $alpha15',
-    fontFamily: '"Source Sans Pro", Arial, sans-serif',
-  }, style]);
+    fontFamily: '$typography.fontFamily',
+  }), [theme]);
 
   return (
     <div
-      className={classes.join(' ')}
+      className={className}
+      style={style}
     >
       {children}
     </div>

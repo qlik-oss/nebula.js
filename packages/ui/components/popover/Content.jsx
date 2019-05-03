@@ -1,130 +1,140 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useMemo,
+} from 'react';
 
 import { oppositeDock, positionToElement } from 'react-leonardo-ui/src/positioner';
 
-import styled from '../styled';
-
-const classes = styled({
-  position: 'relative',
-  display: 'flex',
-  flexDirection: 'column',
-  borderRadius: '2px',
-  margin: 'auto',
-  minWidth: '250px',
-  border: '1px solid transparent',
-  zIndex: '1021',
-  backgroundColor: '$grey100',
-  borderColor: '$alpha15',
-  boxShadow: '0 1px 2px $alpha03',
-});
-
-const [arrowC] = styled({
-  position: 'absolute',
-  '&::before': {
-    content: '""',
-    position: 'absolute',
-    width: 0,
-    height: 0,
-  },
-  '&::after': {
-    content: '""',
-    position: 'absolute',
-    width: 0,
-    height: 0,
-  },
-});
-
-const [arrowTop] = styled({
-  position: 'absolute',
-  top: 0,
-  '&::before': {
-    left: '-8px',
-    bottom: 0,
-    borderLeft: '8px solid transparent',
-    borderRight: '8px solid transparent',
-    borderBottom: '8px solid $alpha15',
-  },
-  '&::after': {
-    left: '-8px',
-    bottom: '-1px',
-    borderLeft: '8px solid transparent',
-    borderRight: '8px solid transparent',
-    borderBottom: '8px solid $grey100',
-  },
-});
-
-const [arrowBottom] = styled({
-  position: 'absolute',
-  bottom: 0,
-  '&::before': {
-    left: '-8px',
-    top: 0,
-    borderLeft: '8px solid transparent',
-    borderRight: '8px solid transparent',
-    borderTop: '8px solid $alpha15',
-  },
-  '&::after': {
-    left: '-8px',
-    top: '-1px',
-    borderLeft: '8px solid transparent',
-    borderRight: '8px solid transparent',
-    borderTop: '8px solid $grey100',
-  },
-});
-
-const [arrowLeft] = styled({
-  position: 'absolute',
-  left: 0,
-  top: '50%',
-  '&::before': {
-    top: '-8px',
-    right: 0,
-    borderRight: '8px solid $alpha15',
-    borderTop: '8px solid transparent',
-    borderBottom: '8px solid transparent',
-  },
-  '&::after': {
-    top: '-8px',
-    right: '-1px',
-    borderRight: '8px solid $grey100',
-    borderTop: '8px solid transparent',
-    borderBottom: '8px solid transparent',
-  },
-});
-
-const [arrowRight] = styled({
-  position: 'absolute',
-  left: 0,
-  top: '50%',
-  '&::before': {
-    top: '-8px',
-    left: 0,
-    borderLeft: '8px solid $alpha15',
-    borderTop: '8px solid transparent',
-    borderBottom: '8px solid transparent',
-  },
-  '&::after': {
-    top: '-8px',
-    left: '-1px',
-    borderLeft: '8px solid $grey100',
-    borderTop: '8px solid transparent',
-    borderBottom: '8px solid transparent',
-  },
-});
-
-const arrows = {
-  left: arrowLeft,
-  right: arrowRight,
-  top: arrowTop,
-  bottom: arrowBottom,
-};
+import themes from '../../theme';
 
 export default function PopoverContent({
   children,
   alignTo,
+  theme = themes('light'),
 }) {
   const [p, setP] = useState(null);
   const ref = useRef(null);
+
+  const {
+    container,
+    arrowContent,
+    arrowLeft,
+    arrowTop,
+    arrowBottom,
+    arrowRight,
+  } = useMemo(() => ({
+    container: theme.style({
+      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
+      borderRadius: '$shape.borderRadius',
+      margin: 'auto',
+      minWidth: '250px',
+      border: '1px solid transparent',
+      zIndex: '1021',
+      backgroundColor: '$palette.background.lightest',
+      borderColor: '$palette.black.05',
+      boxShadow: '$shadows.3',
+    }),
+    arrowContent: theme.style({
+      position: 'absolute',
+      '&::before': {
+        content: '""',
+        position: 'absolute',
+        width: 0,
+        height: 0,
+      },
+      '&::after': {
+        content: '""',
+        position: 'absolute',
+        width: 0,
+        height: 0,
+      },
+    }),
+    arrowTop: theme.style({
+      position: 'absolute',
+      top: 0,
+      '&::before': {
+        left: '-8px',
+        bottom: 0,
+        borderLeft: '8px solid transparent',
+        borderRight: '8px solid transparent',
+        borderBottom: '8px solid $palette.black.05',
+      },
+      '&::after': {
+        left: '-8px',
+        bottom: '-1px',
+        borderLeft: '8px solid transparent',
+        borderRight: '8px solid transparent',
+        borderBottom: '8px solid $palette.background.lightest',
+      },
+    }),
+    arrowBottom: theme.style({
+      position: 'absolute',
+      bottom: 0,
+      '&::before': {
+        left: '-8px',
+        top: 0,
+        borderLeft: '8px solid transparent',
+        borderRight: '8px solid transparent',
+        borderTop: '8px solid $palette.black.05',
+      },
+      '&::after': {
+        left: '-8px',
+        top: '-1px',
+        borderLeft: '8px solid transparent',
+        borderRight: '8px solid transparent',
+        borderTop: '8px solid $palette.background.lightest',
+      },
+    }),
+    arrowLeft: theme.style({
+      position: 'absolute',
+      left: 0,
+      top: '50%',
+      '&::before': {
+        top: '-8px',
+        right: 0,
+        borderRight: '8px solid $palette.black.05',
+        borderTop: '8px solid transparent',
+        borderBottom: '8px solid transparent',
+      },
+      '&::after': {
+        top: '-8px',
+        right: '-1px',
+        borderRight: '8px solid $palette.background.lightest',
+        borderTop: '8px solid transparent',
+        borderBottom: '8px solid transparent',
+      },
+    }),
+    arrowRight: theme.style({
+      position: 'absolute',
+      left: 0,
+      top: '50%',
+      '&::before': {
+        top: '-8px',
+        left: 0,
+        borderLeft: '8px solid $palette.black.05',
+        borderTop: '8px solid transparent',
+        borderBottom: '8px solid transparent',
+      },
+      '&::after': {
+        top: '-8px',
+        left: '-1px',
+        borderLeft: '8px solid $palette.background.lightest',
+        borderTop: '8px solid transparent',
+        borderBottom: '8px solid transparent',
+      },
+    }),
+  }), [theme]);
+
+  const arrows = {
+    left: arrowLeft,
+    right: arrowRight,
+    top: arrowTop,
+    bottom: arrowBottom,
+  };
 
   const style = {
     visibility: p ? 'visible' : 'hidden',
@@ -135,11 +145,11 @@ export default function PopoverContent({
   };
 
   useEffect(() => {
-    const pp = positionToElement(ref.current, alignTo, 'right', {
-      dock: 'right',
+    const pp = positionToElement(ref.current, alignTo, 'bottom', {
+      dock: 'bottom',
       offset: 8,
-      minWindowOffset: 10,
-      minEdgeOffset: 5,
+      minWindowOffset: 8,
+      minEdgeOffset: 4,
     });
     setP(pp);
   }, [alignTo]);
@@ -158,13 +168,13 @@ export default function PopoverContent({
   }
   const arrowElem = (
     <div
-      className={[arrowC, arrows[arrow.dock]].join(' ')}
+      className={[arrowContent, arrows[arrow.dock]].join(' ')}
       style={arrow.style}
     />
   );
   return (
     <div
-      className={classes.join(' ')}
+      className={container}
       ref={ref}
       role="dialog"
       style={style}

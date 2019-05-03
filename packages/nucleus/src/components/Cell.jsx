@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Grid from '@nebula.js/ui/components/Grid';
-import styled from '@nebula.js/ui/components/styled';
+import themes from '@nebula.js/ui/theme';
 
 import Requirements from './Requirements';
 import CError from './Error';
@@ -45,12 +45,13 @@ const Content = ({ children }) => (
 class Cell extends React.Component {
   constructor(...args) {
     super(...args);
-    this.styledClasses = ['nebulajs', ...styled({
-      fontSize: '$fontSize',
-      lineHeight: '$lineHeight',
-      fontWeight: '400',
-      fontFamily: '$fontFamily',
-      color: '$grey25',
+    const theme = themes('light');
+    this.styledClasses = ['nebulajs', ...theme.style({
+      fontSize: '$typography.medium.fontSize',
+      lineHeight: '$typography.medium.lineHeight',
+      fontWeight: '$typography.weight.regular',
+      fontFamily: '$typography.fontFamily',
+      color: '$palette.text.primary',
     })].join(' ');
     this.state = {};
   }

@@ -1,41 +1,46 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import styled from '@nebula.js/ui/components/styled';
+import themes from '@nebula.js/ui/theme';
 import Text from '@nebula.js/ui/components/Text';
 import Grid from '@nebula.js/ui/components/Grid';
 import Lock from '@nebula.js/ui/icons/Lock';
 import Tick from '@nebula.js/ui/icons/Tick';
 
-const defaultClasses = styled({
-  boxSizing: 'border-box',
-  borderBottom: '1px solid rgba(0, 0, 0, 0.15)',
-  background: '$grey100',
-  color: '$grey25',
-  justifyContent: 'space-between',
-  '&:focus': {
-    outline: 'none',
-    boxShadow: 'inset 0 0 0 2px $bluePale',
-  },
-});
-
-const S = styled({
-  background: '$green',
-  color: '$grey100',
-});
-
-const A = styled({
-  background: '$grey85',
-});
-
-const X = styled({
-  background: '$grey70',
-});
-
 export default function Row({
   index,
   style,
   data,
+  theme = themes('light'),
 }) {
+  const {
+    D,
+    S,
+    A,
+    X,
+  } = useMemo(() => ({
+    D: theme.style({
+      boxSizing: 'border-box',
+      borderBottom: '1px solid $palette.divider',
+      background: '$palette.background.default',
+      color: '$palette.text.primary',
+      justifyContent: 'space-between',
+      '&:focus': {
+        outline: 'none',
+        boxShadow: 'inset 0 0 0 2px $bluePale',
+      },
+    }),
+    S: theme.style({
+      background: '$palette.green',
+      color: '$palette.grey.100',
+    }),
+    A: theme.style({
+      background: '$palette.grey.85',
+    }),
+    X: theme.style({
+      background: '$palette.grey.70',
+    }),
+  }), [theme]);
+
   let label = '';
   const { onClick, pages } = data;
   let cell;
@@ -48,7 +53,7 @@ export default function Row({
       }
     }
   }
-  const classes = [...defaultClasses];
+  const classes = [D];
   let locked = false;
   let selected = false;
   if (cell) {
@@ -56,11 +61,11 @@ export default function Row({
     locked = cell.qState === 'L' || cell.qState === 'XL';
     selected = cell.qState === 'S' || cell.qState === 'XS';
     if (cell.qState === 'S' || cell.qState === 'L') {
-      classes.push(...S);
+      classes.push(S);
     } else if (cell.qState === 'A') {
-      classes.push(...A);
+      classes.push(A);
     } else if (cell.qState === 'X' || cell.qState === 'XS' || cell.qState === 'XL') {
-      classes.push(...X);
+      classes.push(X);
     }
   }
   return (

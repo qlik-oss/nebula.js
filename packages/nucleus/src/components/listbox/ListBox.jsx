@@ -5,10 +5,13 @@ import React, {
   useState,
   useCallback,
   useRef,
+  useMemo,
 } from 'react';
 
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
+
+import themes from '@nebula.js/ui/theme';
 
 import useLayout from '../../hooks/useLayout';
 
@@ -16,6 +19,7 @@ import Row from './ListBoxRow';
 
 export default function ListBox({
   model,
+  theme = themes('light'),
 }) {
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
@@ -27,6 +31,10 @@ export default function ListBox({
 
   const listData = useRef({
     pages: [],
+  });
+
+  const listClass = theme.style({
+    backgroundColor: '$palette.background.lightest',
   });
 
   const onClick = useCallback((e) => {
@@ -105,8 +113,7 @@ export default function ListBox({
         return (
           <FixedSizeList
             useIsScrolling
-            className="List"
-            style={{ background: 'white' }}
+            className={listClass}
             height={8 * ITEM_HEIGHT}
             itemCount={count}
             itemData={{ onClick, pages }}

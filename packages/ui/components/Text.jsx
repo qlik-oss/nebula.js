@@ -1,18 +1,18 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import styled from './styled';
+import themes from '../theme';
 
 const sizes = {
-  small: { fontSize: '12px', lineHeight: '16px' },
-  medium: { fontSize: '14px', lineHeight: '16px' },
-  large: { fontSize: '16px', lineHeight: '24px' },
-  xlarge: { fontSize: '24px', lineHeight: '32px' },
+  small: { fontSize: '$typography.small.fontSize', lineHeight: '$typography.small.lineHeight' },
+  medium: { fontSize: '$typography.medium.fontSize', lineHeight: '$typography.small.lineHeight' },
+  large: { fontSize: '$typography.large.fontSize', lineHeight: '$typography.large.lineHeight' },
+  xlarge: { fontSize: '$typography.xlarge.fontSize', lineHeight: '$typography.xlarge.lineHeight' },
 };
 
 const weights = {
-  light: 300,
-  regular: 400,
-  semibold: 600,
+  light: '$typography.weight.light',
+  regular: '$typography.weight.regular',
+  semibold: '$typography.weight.semibold',
 };
 
 export default function Text({
@@ -23,30 +23,33 @@ export default function Text({
   nowrap,
   faded,
   block,
+  theme = themes('light'),
 }) {
   const { fontSize, lineHeight } = sizes[size];
   const fontWeight = weights[weight];
 
-  const nowrapStyle = nowrap ? {
+  const nowrapClass = useMemo(() => (nowrap ? theme.style({
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
-  } : {};
+  }) : ''), [nowrap]);
 
-  const family = {
-    fontFamily: '$fontFamily',
-  };
+  const familyClass = useMemo(() => theme.style({
+    fontFamily: '$typography.fontFamily',
+  }), [theme]);
 
-  const inlineStyle = {
+  const inlineClass = theme.style({
     fontSize,
     fontWeight,
     lineHeight,
     display: block ? 'block' : 'inline-block',
-    color: faded ? '$alpha55' : '',
-  };
-  const classes = styled([family, inlineStyle, nowrapStyle, style]);
+    color: faded ? '$palette.text.secondary' : '$palette.text.primary',
+  });
+
+  const classes = [nowrapClass, familyClass, inlineClass];
+
   return (
-    <span className={classes.join(' ')}>
+    <span className={classes.join(' ')} style={style}>
       {children}
     </span>
   );

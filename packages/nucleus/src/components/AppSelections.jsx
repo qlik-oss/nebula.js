@@ -48,8 +48,8 @@ function MultiState({
         justifyContent: 'space-between',
         height: '48px',
         boxSizing: 'border-box',
-        background: '$grey100',
-        borderRight: '1px solid $alpha15',
+        background: '$palette.background.default',
+        borderRight: '1px solid $palette.divider',
       }}
     >
       <Grid vertical spacing="small" style={{ overflow: 'hidden' }}>
@@ -102,9 +102,9 @@ export class AppSelections extends React.Component {
 
   render() {
     return (
-      <Toolbar>
+      <Toolbar style={{ backgroundColor: '#E5E5E5' }}>
         <Grid spacing="none">
-          <Grid styled={{ background: '$grey100', borderRight: '1px solid $alpha15' }}>
+          <Grid styled={{ background: '$palette.background.default', borderRight: '1px solid $palette.divider' }}>
             <ButtonInline
               style={{ marginRight: '8px' }}
               disabled={!this.state.back}

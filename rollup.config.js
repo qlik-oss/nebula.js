@@ -73,7 +73,7 @@ const config = (isEsm) => {
       }),
       commonjs({
         namedExports: {
-          react: ['useState', 'useEffect', 'useRef', 'useContext', 'useCallback', 'createElement', 'PureComponent'],
+          react: ['useState', 'useEffect', 'useRef', 'useContext', 'useCallback', 'useMemo', 'createElement', 'PureComponent'],
           'react-dom': ['createPortal'],
         },
       }),

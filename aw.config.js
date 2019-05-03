@@ -41,8 +41,12 @@ const argv = yargs
 
 const CONFIGS = {
   unit: {
-    glob: [`${argv.scope}/__tests__/unit/**/*.spec.{js,jsx}`, `${argv.scope}/src/**/__tests__/**/*.spec.{js,jsx}`],
-    src: [`${argv.scope}/src/**/*.{js,jsx}`],
+    glob: [
+      `${argv.scope}/__tests__/unit/**/*.spec.{js,jsx}`,
+      `${argv.scope}/src/**/__tests__/**/*.spec.{js,jsx}`,
+      `${argv.scope}/**/__tests__/**/*.spec.js`,
+    ],
+    src: [`${argv.scope}/src/**/*.{js,jsx}`, `${argv.scope}/**/*.{js,jsx}`],
     coverage: true,
     nyc: {
       include: [`${argv.scope}/src/**/*.{js,jsx}`],
@@ -54,7 +58,7 @@ const CONFIGS = {
     mocks: [
       ['**/*.scss', '{}'],
       ['**/*.css', '{}'],
-      ['**/styled.js', () => () => ['classes']],
+      ['**/theme.js', () => () => ({ style: () => 'classname' })],
 
       // mock nebula modules to avoid parsing errors without build.
       // these modules should be mocked properly in the unit test

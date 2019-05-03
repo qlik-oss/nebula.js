@@ -1,6 +1,6 @@
 import React from 'react';
 
-import styledFn from './styled';
+import themes from '../theme';
 
 export default function Grid({
   children,
@@ -9,6 +9,7 @@ export default function Grid({
   style,
   styled,
   className = '',
+  theme = themes('light'),
   ...props
 }) {
   let space = '8px';
@@ -23,10 +24,10 @@ export default function Grid({
     flexDirection: vertical ? 'column' : '',
     alignItems: vertical ? '' : 'center',
   };
-  const classes = styledFn([inlineStyle, styled, { boxSizing: 'border-box' }]);
+  const classes = theme.style([inlineStyle, styled, { boxSizing: 'border-box' }]);
   return (
     <div
-      className={[className, ...classes].join(' ')}
+      className={[className, classes].join(' ')}
       style={style}
       {...props}
     >
@@ -38,13 +39,14 @@ export default function Grid({
 Grid.Item = function GridItem({
   children,
   style,
+  theme = themes('light'),
 }) {
-  const classes = styledFn([{
+  const className = theme.style([{
     flex: '1 0 auto',
   }, style]);
 
   return (
-    <div className={classes.join(' ')}>
+    <div className={className}>
       {children}
     </div>
   );

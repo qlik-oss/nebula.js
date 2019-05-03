@@ -1,11 +1,12 @@
 import React, {
   useRef,
   useState,
+  useMemo,
 } from 'react';
 
 import Remove from '@nebula.js/ui/icons/Remove';
 import Lock from '@nebula.js/ui/icons/Lock';
-import styled from '@nebula.js/ui/components/styled';
+import themes from '@nebula.js/ui/theme';
 
 import ButtonInline from '@nebula.js/ui/components/ButtonInline';
 import Grid from '@nebula.js/ui/components/Grid';
@@ -13,28 +14,29 @@ import Text from '@nebula.js/ui/components/Text';
 
 import ListBoxPopover from './listbox/ListBoxPopover';
 
-const [classes] = styled({
-  position: 'absolute',
-  top: 0,
-  bottom: 0,
-  right: 0,
-  left: 0,
-  cursor: 'pointer',
-  '&:hover': {
-    background: '$alpha03',
-  },
-  '&:focus': {
-    outline: 'none',
-    boxShadow: 'inset 0 0 0 2px $bluePale',
-  },
-});
-
 export default function SelectedField({
   field,
   api,
+  theme = themes('light'),
 }) {
   const alignTo = useRef();
   const [isActive, setIsActive] = useState(false);
+
+  const classes = useMemo(() => theme.style({
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    right: 0,
+    left: 0,
+    cursor: 'pointer',
+    '&:hover': {
+      background: '$palette.background.hover',
+    },
+    '&:focus': {
+      outline: 'none',
+      boxShadow: 'inset 0 0 0 2px $bluePale',
+    },
+  }), [theme]);
 
   const toggleActive = () => setIsActive(!isActive);
   const keyToggleActive = e => e.key === ' ' && setIsActive(!isActive);
@@ -65,8 +67,8 @@ export default function SelectedField({
         position: 'relative',
         width: '148px',
         justifyContent: 'space-between',
-        background: '$grey100',
-        borderRight: '1px solid $alpha15',
+        background: '$palette.background.default',
+        borderRight: '1px solid $palette.divider',
       }}
     >
       <Grid

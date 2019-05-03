@@ -1,41 +1,42 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 
-import styled from './styled';
+import themes from '../theme';
 
 export default function ButtonInline({
   children,
   disabled,
+  theme = themes('light'),
   ...props
 }) {
   const s = {
   };
 
-  const classes = styled({
-    padding: '8px',
+  const className = useMemo(() => theme.style({
+    padding: '$spacing.4',
     border: '0px solid transparent',
     background: 'transparent',
-    borderRadius: '2px',
+    borderRadius: '$shape.borderRadius',
     cursor: 'pointer',
-    color: '$grey25',
-    font: 'normal 14px/0 "Source Sans Pro", Arial, sans-serif',
+    color: '$palette.text.primary',
+    font: 'normal 14px/0 $typography.fontFamily',
 
     '&:hover': {
-      background: 'rgba(0, 0, 0, 0.03)',
+      background: '$palette.background.hover',
     },
 
     '&:active': {
-      background: 'rgba(0, 0, 0, 0.1)',
+      background: '$palette.background.active',
     },
 
     '&:disabled': {
       opacity: '0.3',
       cursor: 'default',
     },
-  });
+  }), [theme]);
 
   return (
     <button
-      className={classes.join(' ')}
+      className={className}
       type="button"
       disabled={disabled}
       style={s}

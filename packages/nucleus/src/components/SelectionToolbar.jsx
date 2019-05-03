@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '@nebula.js/ui/components/styled';
+import themes from '@nebula.js/ui/theme';
 
 import Item from './SelectionToolbarItem';
 
@@ -14,17 +14,19 @@ class Component extends React.Component {
       clearable: api.canClear(),
     };
 
-    this.styledClasses = styled({
+    const theme = themes('light');
+
+    this.styledClasses = theme.style({
       position: 'absolute',
       left: '0',
       right: '0',
       top: '-48px',
       padding: '8px',
       boxSizing: 'border-box',
-      background: '$grey100',
+      background: '$palette.background.default',
       display: 'flex',
       justifyContent: 'flex-end',
-    }).join(' ');
+    });
 
     const items = [];
 
