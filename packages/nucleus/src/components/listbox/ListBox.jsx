@@ -33,9 +33,9 @@ export default function ListBox({
     pages: [],
   });
 
-  const listClass = theme.style({
+  const listClass = useMemo(() => theme.style({
     backgroundColor: '$palette.background.lightest',
-  });
+  }), [theme]);
 
   const onClick = useCallback((e) => {
     const elemNumber = +e.target.getAttribute('data-n');
