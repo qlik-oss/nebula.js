@@ -13,6 +13,7 @@ module.exports = async ({
   port,
   enigmaConfig,
   snPath,
+  snName,
   dev = false,
 }) => {
   let config;
@@ -57,6 +58,16 @@ module.exports = async ({
     historyApiFallback: {
       index: '/eHub.html',
     },
+    before(app) {
+      app.get('/info', (req, res) => {
+        res.json({
+          enigma: enigmaConfig,
+          supernova: {
+            name: snName,
+          },
+        });
+      });
+    },
     proxy: [{
       context: '/render',
       target: `http://${host}:${port}/eRender.html`,
@@ -65,11 +76,6 @@ module.exports = async ({
       context: '/dev',
       target: `http://${host}:${port}/eDev.html`,
       ignorePath: true,
-    }, {
-      context: '/engine',
-      ignorePath: true,
-      ws: true,
-      target: `ws://${enigmaConfig.host || 'localhost'}:${enigmaConfig.port}`,
     }],
   };
 

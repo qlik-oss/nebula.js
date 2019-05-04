@@ -24,6 +24,7 @@ import AppContext from '../contexts/AppContext';
 
 export default function App({
   app,
+  info,
 }) {
   const [viz, setViz] = useState(null);
   const [sn, setSupernova] = useState(null);
@@ -33,12 +34,12 @@ export default function App({
     const nebbie = nucleus(app)
       .load((type, config) => config.Promise.resolve(snDefinition));
 
-    nebbie.types.supernova('__undefined__').then(setSupernova);
+    nebbie.types.supernova(info.supernova.name).then(setSupernova);
     nebbie.selections().mount(sel.current);
 
     const create = () => {
       nebbie.create({
-        type: '__undefined__',
+        type: info.supernova.name,
       }, {}).then((v) => {
         v.context({
           permissions: ['passive', 'interact', 'select', 'fetch'],

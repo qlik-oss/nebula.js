@@ -4,13 +4,14 @@ import snDefinition from 'snDefinition'; // eslint-disable-line
 import {
   openApp,
   params,
+  info as serverInfo,
 } from './connect';
 
 if (!params.app) {
   location.href = location.origin; //eslint-disable-line
 }
 
-openApp(params.app).then((app) => {
+serverInfo.then(info => openApp(params.app).then((app) => {
   let obj;
   let objType;
 
@@ -22,7 +23,7 @@ openApp(params.app).then((app) => {
 
   const create = () => {
     obj = nebbie.create({
-      type: '__undefined__',
+      type: info.supernova.name,
       fields: params.cols || [],
     }, {
       element: document.querySelector('#chart-container'),
@@ -56,4 +57,4 @@ openApp(params.app).then((app) => {
       });
     });
   }
-});
+}));

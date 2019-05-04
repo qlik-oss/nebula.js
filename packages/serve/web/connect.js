@@ -22,35 +22,41 @@ const params = (() => {
   return opts;
 })();
 
+const requestInfo = fetch('/info').then(response => response.json());
+
 const defaultConfig = {
   host: window.location.hostname || 'localhost',
-  port: window.location.port,
-  prefix: 'engine',
+  port: 9076,
   secure: false,
 };
 
 let connection;
 const connect = () => {
   if (!connection) {
-    connection = enigma.create({
+    connection = requestInfo.then(info => enigma.create({
       schema: qixSchema,
-      url: SenseUtilities.buildUrl(defaultConfig),
-    }).open();
+      url: SenseUtilities.buildUrl({
+        ...defaultConfig,
+        ...info.enigma,
+      }),
+    }).open());
   }
 
   return connection;
 };
 
-const openApp = id => enigma.create({
+const openApp = id => requestInfo.then(info => enigma.create({
   schema: qixSchema,
   url: SenseUtilities.buildUrl({
     ...defaultConfig,
+    ...info.enigma,
     appId: id,
   }),
-}).open().then(global => global.openDoc(id));
+}).open().then(global => global.openDoc(id)));
 
 export {
   connect,
   openApp,
   params,
+  requestInfo as info,
 };
