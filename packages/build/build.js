@@ -1,4 +1,5 @@
 const path = require('path');
+const chokidar = require('chokidar');
 
 const rollup = require('rollup');
 const babel = require('rollup-plugin-babel');
@@ -87,26 +88,25 @@ const watch = async () => {
     mode: 'development',
     format: 'esm',
   });
-  const watcher = rollup.watch({
-    ...c.input,
-    output: c.output,
+
+  const rebuild = async () => {
+    try {
+      const bundle = await rollup.rollup(c.input);
+      await bundle.write(c.output);
+    } catch (e) {
+      console.error(e.message);
+    }
+  };
+
+  const watcher = chokidar.watch('./src', {
+    cwd: process.cwd(),
+  });
+  watcher.on('change', () => {
+    rebuild();
   });
 
-  return new Promise((resolve, reject) => {
-    watcher.on('event', (event) => {
-      if (event.code === 'FATAL') {
-        console.error(event);
-        reject();
-      }
-      if (event.code === 'ERROR') {
-        console.error(event);
-        reject();
-      }
-      if (event.code === 'END') {
-        resolve(watcher);
-      }
-    });
-  });
+  await rebuild();
+  return watcher;
 };
 
 async function build(argv) {
