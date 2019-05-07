@@ -38,7 +38,7 @@ describe('<SelectionToolbar />', () => {
       const item = st.state.items[3];
       expect(item).to.containSubset({
         key: 'confirm',
-        type: 'fade-button',
+        type: 'icon-button',
         label: 'Confirm',
         icon: 'tick',
       });
@@ -52,7 +52,7 @@ describe('<SelectionToolbar />', () => {
       const item = st.state.items[2];
       expect(st.state.items[2]).to.containSubset({
         key: 'cancel',
-        type: 'fade-button',
+        type: 'icon-button',
         label: 'Cancel',
         icon: 'close',
       });
@@ -65,7 +65,7 @@ describe('<SelectionToolbar />', () => {
       const item = st.state.items[1];
       expect(st.state.items[1]).to.containSubset({
         key: 'clear',
-        type: 'fade-button',
+        type: 'icon-button',
         label: 'Clear',
         icon: 'clear-selections',
       });
@@ -123,7 +123,7 @@ describe('<SelectionToolbar />', () => {
     const c = renderer.create(<STB sn={props.sn} />);
     expect(c.toJSON()).to.eql({
       type: 'div',
-      props: { className: 'a' },
+      props: {},
       children: ['-true-', '-false-', '-false-', '-false-'],
     });
   });

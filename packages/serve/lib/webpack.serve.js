@@ -5,9 +5,6 @@ const chalk = require('chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
-const nm = require.resolve('leonardo-ui');
-const nmPath = nm.substring(0, nm.lastIndexOf('node_modules') + 12);
-
 module.exports = async ({
   host,
   port,
@@ -53,7 +50,6 @@ module.exports = async ({
     open: true,
     contentBase: [
       contentBase,
-      nmPath,
     ],
     historyApiFallback: {
       index: '/eHub.html',

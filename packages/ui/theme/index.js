@@ -1,16 +1,18 @@
-import theme from './theme';
+import {
+  ThemeProvider,
+  useTheme,
+  StylesProvider,
+  createGenerateClassName,
+  makeStyles,
+} from '@material-ui/styles';
 
-import light from './definitions/light';
+import createTheme from './create';
 
-const cache = {};
-
-export default function (name) {
-  if (name !== 'light') {
-    throw new Error('No theme');
-  }
-  if (!cache[name]) {
-    cache[name] = theme(light);
-  }
-
-  return cache[name];
-}
+export {
+  createTheme,
+  useTheme,
+  makeStyles,
+  ThemeProvider,
+  StylesProvider,
+  createGenerateClassName,
+};

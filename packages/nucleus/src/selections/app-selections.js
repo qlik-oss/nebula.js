@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
 import eventmixin from './event-mixin';
-import visual from '../components/AppSelections';
+import visual from '../components/selections/AppSelections';
 
 import modelCache from '../object/model-cache';
 import { observe } from '../object/observer';

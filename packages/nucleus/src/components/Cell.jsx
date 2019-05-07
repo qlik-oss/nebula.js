@@ -1,7 +1,17 @@
-import React from 'react';
+import React, {
+  useMemo,
+} from 'react';
 
-import Grid from '@nebula.js/ui/components/Grid';
-import themes from '@nebula.js/ui/theme';
+import {
+  createTheme,
+  ThemeProvider,
+  StylesProvider,
+  createGenerateClassName,
+} from '@nebula.js/ui/theme';
+
+import {
+  Grid,
+} from '@nebula.js/ui/components';
 
 import Requirements from './Requirements';
 import CError from './Error';
@@ -9,7 +19,12 @@ import Header from './Header';
 import Footer from './Footer';
 import Supernova from './Supernova';
 import Placeholder from './Placeholder';
-import SelectionToolbar from './SelectionToolbar';
+
+const generateClassName = createGenerateClassName({
+  productionPrefix: 'n',
+  disableGlobal: true,
+  seed: 'nebula',
+});
 
 const showRequirements = (sn, layout) => {
   if (!sn || !sn.generator || !sn.generator.qae || !layout || !layout.qHyperCube) {
@@ -42,48 +57,23 @@ const Content = ({ children }) => (
   </div>
 );
 
-class Cell extends React.Component {
-  constructor(...args) {
-    super(...args);
-    const theme = themes('light');
-    this.styledClasses = ['nebulajs', ...theme.style({
-      fontSize: '$typography.medium.fontSize',
-      lineHeight: '$typography.medium.lineHeight',
-      fontWeight: '$typography.weight.regular',
-      fontFamily: '$typography.fontFamily',
-      color: '$palette.text.primary',
-    })].join(' ');
-    this.state = {};
-  }
-
-  componentDidCatch() {
-    this.setState({
-      error: {
-        message: 'Failed to render',
-      },
-    });
-  }
-
-  render() {
-    const {
-      objectProps,
-      userProps,
-    } = this.props;
-
-    const SN = (showRequirements(objectProps.sn, objectProps.layout) ? Requirements : Supernova);
-    const Comp = !objectProps.sn ? Placeholder : SN;
-    const err = objectProps.error || this.state.error;
-    return (
-      <div className={this.styledClasses} style={{ height: '100%' }}>
-        {
-          objectProps.sn
-          && objectProps.layout.qSelectionInfo
-          && objectProps.layout.qSelectionInfo.qInSelections
-            && <SelectionToolbar sn={objectProps.sn} />
-        }
-        <Grid vertical style={{ height: '100%' }}>
-          <Header layout={objectProps.layout}>&nbsp;</Header>
-          <Grid.Item>
+export default function Cell({
+  objectProps,
+  userProps,
+  themeDefinition = {},
+}) {
+  const theme = useMemo(() => createTheme(themeDefinition), [JSON.stringify(themeDefinition)]);
+  const SN = (showRequirements(objectProps.sn, objectProps.layout) ? Requirements : Supernova);
+  const Comp = !objectProps.sn ? Placeholder : SN;
+  const err = objectProps.error || false;
+  return (
+    <StylesProvider generateClassName={generateClassName}>
+      <ThemeProvider theme={theme}>
+        <Grid container direction="column" spacing={0} style={{ height: '100%', padding: '8px', boxSixing: 'borderBox' }}>
+          <Grid item style={{ maxWidth: '100%' }}>
+            <Header layout={objectProps.layout} sn={objectProps.sn}>&nbsp;</Header>
+          </Grid>
+          <Grid item xs>
             <Content>
               {err
                 ? (<CError {...err} />)
@@ -98,12 +88,10 @@ class Cell extends React.Component {
                 )
               }
             </Content>
-          </Grid.Item>
+          </Grid>
           <Footer layout={objectProps.layout} />
         </Grid>
-      </div>
-    );
-  }
+      </ThemeProvider>
+    </StylesProvider>
+  );
 }
-
-export default Cell;

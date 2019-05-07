@@ -1,67 +1,63 @@
+/* eslint object-curly-newline: 0 */
+/* eslint object-property-newline: 0 */
+
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import Header from '../../src/components/Header';
+const mock = ({
+  components = {
+    Grid: ({ children }) => <g>{children}</g>,
+    Typography: ({ children }) => <t>{children}</t>,
+  },
+  STB = () => <stb />,
+} = {}) => aw.mock([
+  ['**/ui/components/index.js', () => components],
+  ['**/SelectionToolbar.jsx', () => STB],
+], ['../../src/components/Header']);
 
 describe('<Header />', () => {
-  it('should be empty when input is falsy', () => {
-    expect(renderer.create(<Header />).toJSON()).to.equal(null);
-    expect(renderer.create(<Header layout={{ showTitles: true }} />).toJSON()).to.equal(null);
-  });
-
   it('should render a title', () => {
-    const layout = { showTitles: true, title: 'foo' };
-    const [{ default: MockedHeader }] = aw.mock([
-      ['**/Text.jsx', () => ({ children, ...p }) => <span {...p}>{children}</span>],
-    ], ['../../src/components/Header']);
-    const tree = renderer.create(<MockedHeader layout={layout} />).toJSON();
+    const layout = { showTitles: true, title: 'title' };
+    const [{ default: Header }] = mock();
+    const tree = renderer.create(<Header layout={layout} />).toJSON();
     expect(tree).to.eql({
-      type: 'div',
-      props: {
-        style: { background: 'transparent', padding: '0 8px' },
-      },
-      children: [{
-        type: 'span',
-        props: { block: true, nowrap: true, size: 'large' },
-        children: ['foo'],
-      }, {
-        type: 'span',
-        props: {
-          faded: true,
-          block: true,
-          nowrap: true,
-          size: 'small',
-        },
-        children: null,
-      }],
+      type: 'g', props: {}, children: [{
+        type: 'g', props: {}, children: [{
+          type: 'g', props: {}, children: [{
+            type: 't', props: {}, children: ['title'],
+          }],
+        }],
+      }, { type: 'g', props: {}, children: null }],
     });
   });
 
   it('should render a subtitle', () => {
-    const layout = { showTitles: true, subtitle: 'foo' };
-    const [{ default: MockedHeader }] = aw.mock([
-      ['**/Text.jsx', () => ({ children, ...p }) => <span {...p}>{children}</span>],
-    ], ['../../src/components/Header']);
-    const tree = renderer.create(<MockedHeader layout={layout} />).toJSON();
+    const layout = { showTitles: true, subtitle: 'sub' };
+    const [{ default: Header }] = mock();
+    const tree = renderer.create(<Header layout={layout} />).toJSON();
     expect(tree).to.eql({
-      type: 'div',
-      props: {
-        style: { background: 'transparent', padding: '0 8px' },
-      },
-      children: [{
-        type: 'span',
-        props: { block: true, nowrap: true, size: 'large' },
-        children: null,
-      }, {
-        type: 'span',
-        props: {
-          faded: true,
-          block: true,
-          nowrap: true,
-          size: 'small',
-        },
-        children: ['foo'],
-      }],
+      type: 'g', props: {}, children: [{
+        type: 'g', props: {}, children: [{
+          type: 'g', props: {}, children: [{
+            type: 't', props: {}, children: ['sub'],
+          }],
+        }],
+      }, { type: 'g', props: {}, children: null }],
+    });
+  });
+
+  it('should render selection actions', () => {
+    const layout = { showTitles: false, qSelectionInfo: { qInSelections: true } };
+    const [{ default: Header }] = mock();
+    const tree = renderer.create(<Header layout={layout} sn />).toJSON();
+    expect(tree).to.eql({
+      type: 'g', props: {}, children: [{
+        type: 'g', props: {}, children: [{
+          type: 'g', props: {}, children: null,
+        }],
+      }, { type: 'g', props: {}, children: [{
+        type: 'stb', props: {}, children: null,
+      }] }],
     });
   });
 });

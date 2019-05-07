@@ -4,10 +4,16 @@ import React, {
   useCallback,
   useState,
 } from 'react';
-import { Button } from 'react-leonardo-ui';
+
+import {
+  Button,
+  Grid,
+  Card,
+  Toolbar,
+  Divider,
+} from '@nebula.js/ui/components';
 
 import PropsDialog from './PropertiesDialog';
-import { Grid, Toolbar, Card } from '../ui-components';
 
 export default function Stage({
   viz,
@@ -21,23 +27,30 @@ export default function Stage({
     viz && viz.mount(c.current);
   }, [viz]);
 
-  const closeDialog = useCallback(() => { setDialogOpen(false); });
+  const closeDialog = useCallback(() => { setDialogOpen(false); }, []);
 
   return (
-    <Card>
-      <Grid vertical noSpacing style={{ height: '100%' }}>
-        <Toolbar style={{ textAlign: 'right' }}>
-          <Button onClick={() => setDialogOpen(true)} disabled={!model}>Props</Button>
-          {model && (
-            <PropsDialog
-              show={dialogOpen}
-              close={closeDialog}
-              model={model}
-            />
-          )}
-        </Toolbar>
-        <div ref={c} style={{ position: 'relative' }} />
-      </Grid>
-    </Card>
+    <div style={{ padding: '12px', height: '100%', boxSizing: 'border-box' }}>
+      <Card style={{ height: '100%' }}>
+        <Grid container direction="column" style={{ height: '100%' }}>
+          <Grid item>
+            <Toolbar>
+              <Button
+                variant="outlined"
+                disabled={!model}
+                onClick={() => setDialogOpen(true)}
+              >
+                Props
+              </Button>
+              <PropsDialog model={model} show={dialogOpen} close={closeDialog} />
+            </Toolbar>
+            <Divider />
+          </Grid>
+          <Grid item xs>
+            <div ref={c} style={{ position: 'relative', height: '100%' }} />
+          </Grid>
+        </Grid>
+      </Card>
+    </div>
   );
 }

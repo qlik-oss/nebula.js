@@ -5,13 +5,11 @@ import React, {
   useState,
   useCallback,
   useRef,
-  useMemo,
+  // useMemo,
 } from 'react';
 
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
-
-import themes from '@nebula.js/ui/theme';
 
 import useLayout from '../../hooks/useLayout';
 
@@ -19,7 +17,6 @@ import Row from './ListBoxRow';
 
 export default function ListBox({
   model,
-  theme = themes('light'),
 }) {
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
@@ -33,12 +30,8 @@ export default function ListBox({
     pages: [],
   });
 
-  const listClass = useMemo(() => theme.style({
-    backgroundColor: '$palette.background.lightest',
-  }), [theme]);
-
   const onClick = useCallback((e) => {
-    const elemNumber = +e.target.getAttribute('data-n');
+    const elemNumber = +e.currentTarget.getAttribute('data-n');
     if (!Number.isNaN(elemNumber)) {
       model.selectListObjectValues('/qListObjectDef', [elemNumber], true);
     }
@@ -113,7 +106,7 @@ export default function ListBox({
         return (
           <FixedSizeList
             useIsScrolling
-            className={listClass}
+            style={{}}
             height={8 * ITEM_HEIGHT}
             itemCount={count}
             itemData={{ onClick, pages }}

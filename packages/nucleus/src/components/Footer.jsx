@@ -1,11 +1,16 @@
 import React from 'react';
-import Text from '@nebula.js/ui/components/Text';
-import Grid from '@nebula.js/ui/components/Grid';
+
+import {
+  Typography,
+  Grid,
+} from '@nebula.js/ui/components';
 
 const Footer = ({ layout }) => (
   layout && layout.showTitles && layout.footnote ? (
-    <Grid>
-      <Text nowrap size="small">{layout.footnote}</Text>
+    <Grid container>
+      <Grid item style={{ minWidth: 0 }}>
+        <Typography noWrap variant="body2">{layout.footnote}</Typography>
+      </Grid>
     </Grid>
   ) : null
 );

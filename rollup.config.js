@@ -36,6 +36,30 @@ const GLOBALS = {
 const EXTERNALS = [
   'react',
   'react-dom',
+  '@material-ui/core',
+  '@material-ui/styles',
+];
+
+const propTypes = [
+  'array',
+  'bool',
+  'func',
+  'number',
+  'object',
+  'string',
+  'symbol',
+
+  'any',
+  'arrayOf',
+  'element',
+  'instanceOf',
+  'node',
+  'objectOf',
+  'oneOf',
+  'oneOfType',
+  'shape',
+  'exact',
+  'elementType',
 ];
 
 const config = (isEsm) => {
@@ -73,8 +97,24 @@ const config = (isEsm) => {
       }),
       commonjs({
         namedExports: {
-          react: ['useState', 'useEffect', 'useRef', 'useContext', 'useCallback', 'useMemo', 'createElement', 'PureComponent'],
-          'react-dom': ['createPortal'],
+          react: [
+            'useState',
+            'useEffect',
+            'useRef',
+            'useContext',
+            'useCallback',
+            'useMemo',
+            'createElement',
+            'PureComponent',
+            'isValidElement',
+            'Children',
+            'cloneElement',
+          ],
+          'react-dom': ['createPortal', 'findDOMNode'],
+          'react-is': ['ForwardRef'],
+          'react-transition-group/node_modules/prop-types/index.js': propTypes,
+          'prop-types/index.js': propTypes,
+          '@material-ui/utils/node_modules/prop-types': propTypes,
         },
       }),
       babel({

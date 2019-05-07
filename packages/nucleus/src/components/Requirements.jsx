@@ -1,7 +1,11 @@
+import {
+  Typography,
+} from '@nebula.js/ui/components';
+
 import React from 'react';
 
 const Component = () => (
-  <div>More stuff required</div>
+  <Typography>More data required</Typography>
 );
 
 export default Component;
