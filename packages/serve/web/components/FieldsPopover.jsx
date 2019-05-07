@@ -4,23 +4,22 @@ import React, {
 
 import {
   Popover,
-  Input,
   List,
-} from 'react-leonardo-ui';
+  ListSubheader,
+  ListItem,
+  ListItemText,
+} from '@nebula.js/ui/components';
 
 import useModel from '@nebula.js/nucleus/src/hooks/useModel';
 import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
 
-import {
-  Label,
-} from '../ui-components';
 
 import AppContext from '../contexts/AppContext';
 
 const Field = ({ field, onSelect }) => (
-  <List.Item onClick={() => onSelect(field.qName)} data-key={field.qName}>
-    <List.Text>{field.qName}</List.Text>
-  </List.Item>
+  <ListItem button onClick={() => onSelect(field.qName)} data-key={field.qName}>
+    <ListItemText>{field.qName}</ListItemText>
+  </ListItem>
 );
 
 export default function FieldsPopover({
@@ -46,15 +45,6 @@ export default function FieldsPopover({
 
   const [layout] = useLayout(model, app);
 
-  const onConfirm = (e) => {
-    if (e.key === 'Enter') {
-      onSelected({
-        field: e.target.value,
-      });
-      close();
-    }
-  };
-
   const fields = layout ? (layout.qFieldList.qItems || []) : [];
 
   const onSelect = (s) => {
@@ -66,21 +56,27 @@ export default function FieldsPopover({
 
   return (
     <Popover
-      onOutside={close}
-      alignTo={alignTo.current ? alignTo.current.element : null}
-      show={show}
+      open={show}
+      onClose={close}
+      anchorEl={alignTo.current}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
+      PaperProps={{
+        style: { minWidth: '250px' },
+      }}
     >
-      <Popover.Header>
-        <Input onKeyPress={onConfirm} />
-      </Popover.Header>
-      <Popover.Body nopad>
-        {fields.length > 0 && (
-          <List>
-            <Label>From a field</Label>
-            {fields.map(field => <Field key={field.qName} field={field} onSelect={onSelect} />)}
-          </List>
-        )}
-      </Popover.Body>
+      {fields.length > 0 && (
+        <List dense>
+          <ListSubheader>Fields</ListSubheader>
+          {fields.map(field => <Field key={field.qName} field={field} onSelect={onSelect} />)}
+        </List>
+      )}
     </Popover>
   );
 }

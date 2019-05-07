@@ -6,7 +6,7 @@ const cfg = ({
   snPath = path.resolve(__dirname, 'placeholder'),
 }) => {
   const config = {
-    mode: 'development',
+    mode: 'production',
     entry: path.resolve(__dirname, './sn.js'),
     devtool: 'source-map',
     output: {

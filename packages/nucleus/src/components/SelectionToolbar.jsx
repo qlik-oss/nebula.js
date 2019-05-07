@@ -1,5 +1,4 @@
 import React from 'react';
-import themes from '@nebula.js/ui/theme';
 
 import Item from './SelectionToolbarItem';
 
@@ -14,28 +13,13 @@ class Component extends React.Component {
       clearable: api.canClear(),
     };
 
-    const theme = themes('light');
-
-    this.styledClasses = theme.style({
-      position: 'absolute',
-      left: '0',
-      right: '0',
-      top: '-48px',
-      padding: '8px',
-      boxSizing: 'border-box',
-      background: '$palette.background.default',
-      display: 'flex',
-      justifyContent: 'flex-end',
-    });
-
     const items = [];
 
     // TODO - translations
     items.push({
       key: 'confirm',
-      type: 'fade-button',
+      type: 'icon-button',
       label: 'Confirm',
-      // variant: 'success',
       icon: 'tick',
       enabled: () => this.state.confirmable,
       action: () => api.confirm(props.sn.component),
@@ -43,9 +27,8 @@ class Component extends React.Component {
 
     items.push({
       key: 'cancel',
-      type: 'fade-button',
+      type: 'icon-button',
       label: 'Cancel',
-      // variant: 'danger',
       icon: 'close',
       enabled: () => this.state.cancelable,
       action: () => api.cancel(props.sn.component),
@@ -53,7 +36,7 @@ class Component extends React.Component {
 
     items.push({
       key: 'clear',
-      type: 'fade-button',
+      type: 'icon-button',
       label: 'Clear',
       icon: 'clear-selections',
       enabled: () => this.state.clearable,
@@ -84,7 +67,7 @@ class Component extends React.Component {
 
   render() {
     return (
-      <div className={this.styledClasses}>
+      <div>
         {this.state.items.map(itm => <Item key={itm.key} item={itm} isCustom={!!this.custom[itm.key]} />)}
       </div>
     );

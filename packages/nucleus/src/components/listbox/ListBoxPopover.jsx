@@ -4,8 +4,12 @@ import React, {
 
 import Lock from '@nebula.js/ui/icons/Lock';
 import Unlock from '@nebula.js/ui/icons/Unlock';
-import ButtonInline from '@nebula.js/ui/components/ButtonInline';
-import Popover from '@nebula.js/ui/components/popover';
+
+import {
+  IconButton,
+  Popover,
+  Grid,
+} from '@nebula.js/ui/components';
 
 import useModel from '../../hooks/useModel';
 import useLayout from '../../hooks/useLayout';
@@ -58,27 +62,41 @@ export default function ListBoxPopover({
 
   const isLocked = layout ? layout.qListObject.qDimensionInfo.qLocked === true : false;
 
+  const open = show && Boolean(alignTo.current);
+
   return (
     <Popover
-      onOutside={close}
-      alignTo={alignTo.current}
-      show={alignTo.current && show}
+      open={open}
+      onClose={close}
+      anchorEl={alignTo.current}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'center',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'center',
+      }}
+      PaperProps={{
+        style: { minWidth: '250px' },
+      }}
     >
-      <Popover.Header>
-        {isLocked ? (
-          <ButtonInline onClick={unlock}>
-            <Unlock />
-          </ButtonInline>
-        ) : (
-          <ButtonInline onClick={lock}>
-            <Lock />
-          </ButtonInline>
-        )
-      }
-      </Popover.Header>
-      <Popover.Body>
-        <ListBox model={model} />
-      </Popover.Body>
+      <Grid container direction="column" spacing={0}>
+        <Grid item>
+          {isLocked ? (
+            <IconButton onClick={unlock}>
+              <Unlock />
+            </IconButton>
+          ) : (
+            <IconButton onClick={lock}>
+              <Lock />
+            </IconButton>
+          )}
+        </Grid>
+        <Grid item xs>
+          <ListBox model={model} />
+        </Grid>
+      </Grid>
     </Popover>
   );
 }

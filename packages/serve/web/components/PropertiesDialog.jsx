@@ -8,7 +8,10 @@ import React, {
 import {
   Button,
   Dialog,
-} from 'react-leonardo-ui';
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+} from '@nebula.js/ui/components';
 
 export default function PropertiesDialog({
   model,
@@ -46,17 +49,17 @@ export default function PropertiesDialog({
   }, [model && model.id, show]);
 
   return (
-    <Dialog show={show}>
-      <Dialog.Header>
-        <Dialog.Title>Modify object properties</Dialog.Title>
-      </Dialog.Header>
-      <Dialog.Body>
+    <Dialog open={show} scroll="paper" maxWidth="lg" onClose={close}>
+      <DialogTitle>
+        Modify object properties
+      </DialogTitle>
+      <DialogContent dividers>
         <textarea value={objectProps} onChange={onChange} ref={text} cols="100" rows="40" />
-      </Dialog.Body>
-      <Dialog.Footer>
-        <Button onClick={close}>Cancel</Button>
-        <Button variant="success" onClick={onConfirm}>Confirm</Button>
-      </Dialog.Footer>
+      </DialogContent>
+      <DialogActions>
+        <Button variant="outlined" onClick={close}>Cancel</Button>
+        <Button variant="outlined" onClick={onConfirm}>Confirm</Button>
+      </DialogActions>
     </Dialog>
   );
 }

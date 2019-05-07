@@ -1,13 +1,19 @@
 import React, { useRef, useState } from 'react';
-import { Button, List, Icon } from 'react-leonardo-ui';
-
-import useProperties from '@nebula.js/nucleus/src/hooks/useProperties';
 
 import {
-  Toolbar,
-  Grid,
-  Label,
-} from '../ui-components';
+  IconButton,
+  Button,
+  List,
+  ListItem,
+  ListItemText,
+  ListItemSecondaryAction,
+  Divider,
+  Typography,
+} from '@nebula.js/ui/components';
+
+import Remove from '@nebula.js/ui/icons/Remove';
+
+import useProperties from '@nebula.js/nucleus/src/hooks/useProperties';
 
 import FieldsPopover from './FieldsPopover';
 
@@ -24,7 +30,8 @@ const Fields = ({
     label: 'Dimensions',
     add: 'Add dimension',
     title(dim) {
-      return dim.qDef.qFieldDefs[0];
+      // TODO - get library item
+      return dim.qLibraryId || dim.qDef.qFieldDefs[0];
     },
     def(f) {
       return {
@@ -38,7 +45,7 @@ const Fields = ({
     label: 'Measures',
     add: 'Add measure',
     title(m) {
-      return m.qDef.qDef;
+      return m.qLibraryId || m.qDef.qDef;
     },
     def(f) {
       return {
@@ -67,24 +74,25 @@ const Fields = ({
 
   return (
     <div>
-      <Label weight="semibold">{t.label}</Label>
-      <List>
+      <Typography variant="overline">{t.label}</Typography>
+      <List dense>
         {arr.map((d, i) => (
-          <List.Item>
-            <List.Text>{t.title(d)}</List.Text>
-            <List.Aside onClick={() => onRemove(i)}><Icon name="remove" /></List.Aside>
-          </List.Item>
+          <ListItem>
+            <ListItemText>{t.title(d)}</ListItemText>
+            <ListItemSecondaryAction>
+              <IconButton onClick={() => onRemove(i)}><Remove /></IconButton>
+            </ListItemSecondaryAction>
+          </ListItem>
         ))}
       </List>
-      <Grid>
-        <Button
-          onClick={onAdd}
-          active={isActive}
-          ref={btn}
-        >
-          {t.add}
-        </Button>
-      </Grid>
+      <Button
+        variant="outlined"
+        fullWidth
+        onClick={onAdd}
+        ref={btn}
+      >
+        {t.add}
+      </Button>
       {isActive && (
         <FieldsPopover
           alignTo={btn}
@@ -98,22 +106,36 @@ const Fields = ({
 };
 
 export default function Properties({
-  model,
+  viz,
   sn,
 }) {
-  const [properties] = useProperties(model);
+  const [properties] = useProperties(viz ? viz.model : null);
 
-  if (!sn || !properties) {
+  if (!sn) {
     return null;
   }
 
+  if (!viz || !properties) {
+    return (
+      <div style={{
+        minWidth: '250px',
+        padding: '8px',
+      }}
+      >
+        <Typography>Nothing selected</Typography>
+      </div>
+    );
+  }
+
   return (
-    <div>
-      <Toolbar>
-        <Label weight="semibold">Properties</Label>
-      </Toolbar>
-      <Fields properties={properties} model={model} type="dimension" />
-      <Fields properties={properties} model={model} type="measure" />
+    <div style={{
+      minWidth: '250px',
+      padding: '8px',
+    }}
+    >
+      <Fields properties={properties} model={viz.model} type="dimension" />
+      <Divider />
+      <Fields properties={properties} model={viz.model} type="measure" />
     </div>
   );
 }

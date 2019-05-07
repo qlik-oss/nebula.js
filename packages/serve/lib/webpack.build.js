@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const cfg = ({
@@ -38,7 +39,8 @@ const cfg = ({
         sideEffects: false,
         include: [
           srcDir,
-          /react-leonardo-ui/,
+          /nucleus/,
+          /ui\/icons/,
         ],
         use: {
           loader: 'babel-loader',
@@ -72,7 +74,7 @@ const cfg = ({
         filename: 'eHub.html',
         chunks: ['eHub'],
       }),
-      // new webpack.HotModuleReplacementPlugin(),
+      new webpack.HotModuleReplacementPlugin(),
     ],
   };
 

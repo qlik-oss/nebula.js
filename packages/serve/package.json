@@ -17,7 +17,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "webpack --config ./lib/webpack.build.js",
+    "build": "cross-env NODE_ENV=production webpack --config ./lib/webpack.build.js",
     "lint": "eslint web",
     "prepublishOnly": "rm -rf dist && npm run build"
   },
@@ -26,7 +26,6 @@
     "chalk": "^2.4.2",
     "execa": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
-    "leonardo-ui": "1.6.0",
     "portfinder": "^1.0.20",
     "webpack": "^4.29.3",
     "webpack-dev-server": "^3.1.14",
@@ -36,12 +35,13 @@
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
+    "@material-ui/core": "^4.0.0-beta.0",
     "@nebula.js/nucleus": "0.1.0-alpha.9",
+    "@nebula.js/ui": "0.1.0-alpha.9",
     "babel-loader": "^8.0.5",
     "enigma.js": "^2.4.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-leonardo-ui": "^0.15.0",
     "webpack-cli": "^3.3.1"
   }
 }

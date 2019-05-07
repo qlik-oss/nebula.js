@@ -27,6 +27,9 @@ serverInfo.then(info => openApp(params.app).then((app) => {
       fields: params.cols || [],
     }, {
       element: document.querySelector('#chart-container'),
+      context: {
+        permissions: params.permissions || [],
+      },
     });
   };
 

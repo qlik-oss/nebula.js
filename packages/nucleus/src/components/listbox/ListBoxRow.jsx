@@ -1,45 +1,51 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 
-import themes from '@nebula.js/ui/theme';
-import Text from '@nebula.js/ui/components/Text';
-import Grid from '@nebula.js/ui/components/Grid';
+import {
+  Grid,
+  Typography,
+} from '@nebula.js/ui/components';
+
+import { makeStyles } from '@nebula.js/ui/theme';
+
 import Lock from '@nebula.js/ui/icons/Lock';
 import Tick from '@nebula.js/ui/icons/Tick';
+
+const useStyles = makeStyles(theme => ({
+  row: {
+    flexWrap: 'nowrap',
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
+  cell: {
+    padding: '8px',
+    whiteSpace: 'nowrap',
+    fontSize: '12px',
+    lineHeight: '16px',
+  },
+  icon: {
+    padding: theme.spacing(1),
+  },
+  D: {
+    background: '#fff',
+  },
+  S: {
+    background: '#6CB33F',
+    color: '#fff',
+  },
+  A: {
+    background: '#fafafa',
+  },
+  X: {
+    background: '#eee',
+  },
+}));
 
 export default function Row({
   index,
   style,
   data,
-  theme = themes('light'),
 }) {
-  const {
-    D,
-    S,
-    A,
-    X,
-  } = useMemo(() => ({
-    D: theme.style({
-      boxSizing: 'border-box',
-      borderBottom: '1px solid $palette.divider',
-      background: '$palette.background.default',
-      color: '$palette.text.primary',
-      justifyContent: 'space-between',
-      '&:focus': {
-        outline: 'none',
-        boxShadow: 'inset 0 0 0 2px $bluePale',
-      },
-    }),
-    S: theme.style({
-      background: '$palette.green',
-      color: '$palette.grey.100',
-    }),
-    A: theme.style({
-      background: '$palette.grey.85',
-    }),
-    X: theme.style({
-      background: '$palette.grey.70',
-    }),
-  }), [theme]);
+  const classes = useStyles();
+  const classArr = [classes.row];
 
   let label = '';
   const { onClick, pages } = data;
@@ -53,7 +59,6 @@ export default function Row({
       }
     }
   }
-  const classes = [D];
   let locked = false;
   let selected = false;
   if (cell) {
@@ -61,27 +66,33 @@ export default function Row({
     locked = cell.qState === 'L' || cell.qState === 'XL';
     selected = cell.qState === 'S' || cell.qState === 'XS';
     if (cell.qState === 'S' || cell.qState === 'L') {
-      classes.push(S);
+      classArr.push(classes.S);
     } else if (cell.qState === 'A') {
-      classes.push(A);
+      classArr.push(classes.A);
     } else if (cell.qState === 'X' || cell.qState === 'XS' || cell.qState === 'XL') {
-      classes.push(X);
+      classArr.push(classes.X);
     }
   }
   return (
     <Grid
-      className={classes.join(' ')}
+      container
+      spacing={0}
+      className={classArr.join(' ')}
       style={style}
       onClick={onClick}
       role="row"
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
     >
-      <Text nowrap>
-        {cell ? `${label}` : '' }
-      </Text>
-      {locked && (<Lock size="small" />)}
-      {selected && (<Tick size="small" />)}
+      <Grid item style={{ minWidth: 0, flexGrow: 1 }}>
+        <Typography className={classes.cell} noWrap>
+          {cell ? `${label}` : '' }
+        </Typography>
+      </Grid>
+      <Grid item className={classes.icon}>
+        {locked && (<Lock size="small" />)}
+        {selected && (<Tick size="small" />)}
+      </Grid>
     </Grid>
   );
 }
