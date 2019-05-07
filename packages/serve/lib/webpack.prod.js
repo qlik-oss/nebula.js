@@ -1,12 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 const cfg = ({
   srcDir = path.resolve(__dirname, '../dist'),
   snPath = path.resolve(__dirname, 'placeholder'),
 }) => {
   const config = {
-    mode: 'production',
+    mode: 'development',
     entry: path.resolve(__dirname, './sn.js'),
     devtool: 'source-map',
     output: {
@@ -29,7 +30,7 @@ const cfg = ({
         filename: 'eDev.html',
         inject: 'head',
       }),
-      // new webpack.HotModuleReplacementPlugin(),
+      new webpack.HotModuleReplacementPlugin(),
     ],
   };
 

@@ -21,7 +21,7 @@ import Supernova from './Supernova';
 import Placeholder from './Placeholder';
 
 const generateClassName = createGenerateClassName({
-  productionPrefix: 'n',
+  productionPrefix: 'cell-',
   disableGlobal: true,
   seed: 'nebula',
 });

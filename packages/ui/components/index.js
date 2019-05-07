@@ -22,6 +22,10 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
+
 export {
   Button,
   ButtonBase,
@@ -46,4 +50,8 @@ export {
   ListItem,
   ListItemText,
   ListItemSecondaryAction,
+
+  FormGroup,
+  FormControlLabel,
+  Switch,
 };

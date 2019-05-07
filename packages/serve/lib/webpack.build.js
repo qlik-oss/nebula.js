@@ -1,5 +1,4 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const cfg = ({
@@ -74,7 +73,6 @@ const cfg = ({
         filename: 'eHub.html',
         chunks: ['eHub'],
       }),
-      new webpack.HotModuleReplacementPlugin(),
     ],
   };
 

@@ -18,7 +18,7 @@ import SelectedFields from './SelectedFields';
 import Nav from './Nav';
 
 const generateClassName = createGenerateClassName({
-  productionPrefix: 'n',
+  productionPrefix: 'sel-',
   disableGlobal: true,
   seed: 'nebula',
 });

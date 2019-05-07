@@ -17,6 +17,15 @@ const OBSERVABLE = {
 
 const OBSERVABLE_KEYS = Object.keys(OBSERVABLE);
 
+export function unObserve(model, handler, property = 'layout') {
+  if (cache[model.id]) {
+    const idx = cache[model.id].props[property].callbacks.indexOf(handler);
+    if (idx !== 1) {
+      cache[model.id].props[property].callbacks.splice(idx, 1);
+    }
+  }
+}
+
 export function observe(model, callback, property = 'layout') {
   if (!OBSERVABLE[property]) {
     throw new Error(`'${property}' is not observable!`);
@@ -72,15 +81,10 @@ export function observe(model, callback, property = 'layout') {
   } else if (cache[model.id].props[property].state === STATES.INVALID) {
     cache[model.id].onChanged(property);
   }
-}
 
-export function unObserve(model, handler, property = 'layout') {
-  if (cache[model.id]) {
-    const idx = cache[model.id].props[property].callbacks.indexOf(handler);
-    if (idx !== 1) {
-      cache[model.id].props[property].callbacks.splice(idx, 1);
-    }
-  }
+  return () => {
+    unObserve(model, callback, property);
+  };
 }
 
 export function get(model, property) {
