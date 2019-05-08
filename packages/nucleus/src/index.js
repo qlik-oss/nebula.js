@@ -1,4 +1,9 @@
+/* eslint no-underscore-dangle:0 */
+
 import { createAppSelectionAPI } from './selections';
+
+import App from './components/App';
+import AppSelectionsPortal from './components/selections/AppSelections';
 
 import create from './object/create-object';
 import get from './object/get-object';
@@ -17,13 +22,21 @@ function apiGenerator(app) {
     load: () => undefined,
   };
 
+  const root = App({
+    app,
+  });
+
   const context = {
     nebbie: null,
     app,
     config,
     logger: lgr,
     types: types(config),
+    root,
   };
+
+  let selectionsApi = null;
+  let selectionsComponentReference = null;
 
   const api = {
     get: (getCfg, userProps) => get(getCfg, userProps, context),
@@ -36,7 +49,31 @@ function apiGenerator(app) {
       config.load = $;
       return api;
     },
-    selections: () => app._selections, // eslint-disable-line no-underscore-dangle
+    selections: () => {
+      if (!selectionsApi) {
+        selectionsApi = {
+          ...app._selections, // eslint-disable-line no-underscore-dangle
+          mount(element) {
+            if (selectionsComponentReference) {
+              console.error('Already mounted');
+              return;
+            }
+            selectionsComponentReference = AppSelectionsPortal({
+              element,
+              api: app._selections,
+            });
+            root.add(selectionsComponentReference);
+          },
+          unmount() {
+            if (selectionsComponentReference) {
+              root.remove(selectionsComponentReference);
+              selectionsComponentReference = null;
+            }
+          },
+        };
+      }
+      return selectionsApi;
+    },
     types: context.types,
   };
 

@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
 import eventmixin from './event-mixin';
-import visual from '../components/selections/AppSelections';
+// import visual from '../components/selections/AppSelections';
 
 import modelCache from '../object/model-cache';
 import { observe } from '../object/observer';
@@ -13,7 +13,7 @@ const create = (app) => {
   let canClear = false;
 
   let modalObject;
-  let mounted;
+  // let mounted;
   let lyt;
   const api = {
     model: app,
@@ -74,21 +74,6 @@ const create = (app) => {
     },
     clearField(field, state = '$') {
       return app.getField(field, state).then(f => f.clear());
-    },
-    mount(element) {
-      if (mounted) {
-        console.error('Already mounted');
-        return;
-      }
-      mounted = visual({
-        element,
-        api,
-      });
-    },
-    unmount() {
-      if (mounted) {
-        mounted();
-      }
     },
   };
 

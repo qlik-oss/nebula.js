@@ -5,32 +5,30 @@ import Cell from './Cell';
 export default function boot({
   element,
   model,
-}, props, config) {
-  ReactDOM.render(
+  api,
+  nebulaContext,
+}) {
+  const {
+    root,
+  } = nebulaContext;
+
+  const portal = ReactDOM.createPortal(
     <Cell
-      {...props}
+      api={api}
       model={model}
     />,
     element,
   );
 
   const unmount = () => {
-    ReactDOM.unmountComponentAtNode(element);
-  };
-
-  const update = (p) => {
-    ReactDOM.render(<Cell
-      {...p}
-      model={model}
-    />, element);
+    root.remove(portal);
   };
 
   model.once('closed', unmount);
 
-  return config.env.Promise.resolve({
-    setProps(p) {
-      update(p);
-    },
-    unmount,
-  });
+  root.add(portal);
+
+  return () => {
+    unmount();
+  };
 }

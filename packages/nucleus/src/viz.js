@@ -3,17 +3,17 @@ import cell from './components/boot';
 import { get } from './object/observer';
 import getPatches from './utils/patcher';
 
-const noopi = Promise.resolve({
-  setProps() {},
-  unmount() {},
-});
+import eventMixin from './selections/event-mixin';
+
+const noopi = () => {};
 
 export default function ({
   model,
-  config,
+  context,
   initialUserProps = {},
 } = {}) {
-  let c = noopi;
+  let reference = noopi;
+  let elementReference = null;
 
   let userProps = {
     options: {},
@@ -29,6 +29,17 @@ export default function ({
     error: null,
   };
 
+  const cellApi = {
+    userProps() {
+      return userProps;
+    },
+    objectProps() {
+      return objectProps;
+    },
+  };
+
+  eventMixin(cellApi);
+
   let queueShow = false;
 
   const mount = (element) => {
@@ -36,13 +47,13 @@ export default function ({
       queueShow = element;
       return;
     }
-    c = cell({
+    elementReference = element;
+    reference = cell({
       element,
       model,
-    }, {
-      userProps,
-      objectProps,
-    }, config);
+      api: cellApi,
+      nebulaContext: context,
+    });
   };
 
   const update = () => {
@@ -50,10 +61,7 @@ export default function ({
       mount(queueShow);
       queueShow = false;
     }
-    c.then(x => x.setProps({
-      objectProps,
-      userProps,
-    }));
+    cellApi.emit('changed');
   };
 
   const setUserProps = (up) => {
@@ -82,8 +90,8 @@ export default function ({
     close() {
       // TODO - destroy session object (if created as such)
       model.emit('closed');
-      c.then(x => x.unmount());
-      c = noopi;
+      reference();
+      reference = noopi;
     },
     setTemporaryProperties(props) {
       return get(model, 'effectiveProperties').then((current) => {
@@ -107,34 +115,32 @@ export default function ({
       return api;
     },
     takeSnapshot() {
-      return c.then((x) => {
-        if (x.reference) {
-          const content = x.reference.querySelector('.nebulajs-sn');
-          if (content) {
-            const rect = content.getBoundingClientRect();
-            if (objectProps.sn) {
-              const snapshot = {
-                ...objectProps.layout,
-                snapshotData: {
-                  object: {
-                    size: {
-                      w: rect.width,
-                      h: rect.height,
-                    },
+      if (elementReference) {
+        const content = elementReference.querySelector('.nebulajs-sn');
+        if (content) {
+          const rect = content.getBoundingClientRect();
+          if (objectProps.sn) {
+            const snapshot = {
+              ...objectProps.layout,
+              snapshotData: {
+                object: {
+                  size: {
+                    w: rect.width,
+                    h: rect.height,
                   },
                 },
-              };
+              },
+            };
 
-              if (typeof objectProps.sn.component.setSnapshotData === 'function') {
-                return objectProps.sn.component.setSnapshotData(snapshot);
-              }
-              return Promise.resolve(snapshot);
+            if (typeof objectProps.sn.component.setSnapshotData === 'function') {
+              return objectProps.sn.component.setSnapshotData(snapshot);
             }
-            return Promise.reject(new Error('No content'));
+            return Promise.resolve(snapshot);
           }
+          return Promise.reject(new Error('No content'));
         }
-        return Promise.reject(new Error('Not mounted yet'));
-      });
+      }
+      return Promise.reject(new Error('Not mounted yet'));
     },
 
     // QVisualization API

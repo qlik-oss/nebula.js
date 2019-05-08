@@ -19,7 +19,7 @@ export default function initiate(getCfg, optional, context) {
   return context.app.getObject(getCfg.id).then((model) => {
     const viz = vizualizationAPI({
       model,
-      config: context.config,
+      context,
     });
 
     const objectAPI = new ObjectAPI(model, context, viz);

@@ -91,6 +91,7 @@ const config = (isEsm) => {
     plugins: [
       replace({
         'process.env.NODE_ENV': JSON.stringify(isEsm ? 'development' : 'production'),
+        'process.env.NEBULA_VERSION': JSON.stringify(version),
       }),
       nodeResolve({
         extensions: ['.js', '.jsx'],

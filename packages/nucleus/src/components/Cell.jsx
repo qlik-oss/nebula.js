@@ -1,13 +1,7 @@
 import React, {
-  useMemo,
+  useEffect,
+  useState,
 } from 'react';
-
-import {
-  createTheme,
-  ThemeProvider,
-  StylesProvider,
-  createGenerateClassName,
-} from '@nebula.js/ui/theme';
 
 import {
   Grid,
@@ -19,12 +13,6 @@ import Header from './Header';
 import Footer from './Footer';
 import Supernova from './Supernova';
 import Placeholder from './Placeholder';
-
-const generateClassName = createGenerateClassName({
-  productionPrefix: 'cell-',
-  disableGlobal: true,
-  seed: 'nebula',
-});
 
 const showRequirements = (sn, layout) => {
   if (!sn || !sn.generator || !sn.generator.qae || !layout || !layout.qHyperCube) {
@@ -58,40 +46,50 @@ const Content = ({ children }) => (
 );
 
 export default function Cell({
-  objectProps,
-  userProps,
-  themeDefinition = {},
+  api,
 }) {
-  const theme = useMemo(() => createTheme(themeDefinition), [JSON.stringify(themeDefinition)]);
-  const SN = (showRequirements(objectProps.sn, objectProps.layout) ? Requirements : Supernova);
-  const Comp = !objectProps.sn ? Placeholder : SN;
-  const err = objectProps.error || false;
+  const [state, setState] = useState({
+    objectProps: api.objectProps(),
+    userProps: api.userProps(),
+  });
+  useEffect(() => {
+    const onChanged = () => {
+      setState({
+        objectProps: api.objectProps(),
+        userProps: api.userProps(),
+      });
+    };
+    api.on('changed', onChanged);
+    return () => {
+      api.removeListener('changed', onChanged);
+    };
+  }, [api]);
+
+  const SN = (showRequirements(state.objectProps.sn, state.objectProps.layout) ? Requirements : Supernova);
+  const Comp = !state.objectProps.sn ? Placeholder : SN;
+  const err = state.objectProps.error || false;
   return (
-    <StylesProvider generateClassName={generateClassName}>
-      <ThemeProvider theme={theme}>
-        <Grid container direction="column" spacing={0} style={{ height: '100%', padding: '8px', boxSixing: 'borderBox' }}>
-          <Grid item style={{ maxWidth: '100%' }}>
-            <Header layout={objectProps.layout} sn={objectProps.sn}>&nbsp;</Header>
-          </Grid>
-          <Grid item xs>
-            <Content>
-              {err
-                ? (<CError {...err} />)
-                : (
-                  <Comp
-                    key={objectProps.layout.visualization}
-                    sn={objectProps.sn}
-                    snContext={userProps.context}
-                    snOptions={userProps.options}
-                    layout={objectProps.layout}
-                  />
-                )
-              }
-            </Content>
-          </Grid>
-          <Footer layout={objectProps.layout} />
-        </Grid>
-      </ThemeProvider>
-    </StylesProvider>
+    <Grid container direction="column" spacing={0} style={{ height: '100%', padding: '8px', boxSixing: 'borderBox' }}>
+      <Grid item style={{ maxWidth: '100%' }}>
+        <Header layout={state.objectProps.layout} sn={state.objectProps.sn}>&nbsp;</Header>
+      </Grid>
+      <Grid item xs>
+        <Content>
+          {err
+            ? (<CError {...err} />)
+            : (
+              <Comp
+                key={state.objectProps.layout.visualization}
+                sn={state.objectProps.sn}
+                snContext={state.userProps.context}
+                snOptions={state.userProps.options}
+                layout={state.objectProps.layout}
+              />
+            )
+          }
+        </Content>
+      </Grid>
+      <Footer layout={state.objectProps.layout} />
+    </Grid>
   );
 }
