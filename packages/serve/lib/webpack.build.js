@@ -1,6 +1,10 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const babelPath = require.resolve('babel-loader');
+const babelPresetEnvPath = require.resolve('@babel/preset-env');
+const babelPresetReactPath = require.resolve('@babel/preset-react');
+
 const cfg = ({
   srcDir,
   distDir,
@@ -42,16 +46,16 @@ const cfg = ({
           /ui\/icons/,
         ],
         use: {
-          loader: 'babel-loader',
+          loader: babelPath,
           options: {
             presets: [
-              ['@babel/preset-env', {
+              [babelPresetEnvPath, {
                 modules: false,
                 targets: {
                   browsers: ['last 2 chrome versions'],
                 },
               }],
-              '@babel/preset-react',
+              babelPresetReactPath,
             ],
           },
         },

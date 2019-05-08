@@ -68,7 +68,7 @@ export default function App({
   const uid = useRef();
 
   const nebbie = useMemo(() => nucleus(app)
-    .load((type, config) => config.Promise.resolve(window.snDefinition)), [app]);
+    .load((type, config) => config.Promise.resolve(window.snDefinition || snDefinition)), [app]);
 
   useEffect(() => {
     let propertyObserver = () => {};
