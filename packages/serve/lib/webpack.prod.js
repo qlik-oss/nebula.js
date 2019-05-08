@@ -2,6 +2,8 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const webpack = require('webpack');
 
+const sourceMapLoaderPath = require.resolve('source-map-loader');
+
 const cfg = ({
   srcDir = path.resolve(__dirname, '../dist'),
   snPath = path.resolve(__dirname, 'placeholder'),
@@ -18,6 +20,13 @@ const cfg = ({
       alias: {
         snDefinition: snPath,
       },
+    },
+    module: {
+      rules: [{
+        enforce: 'pre',
+        test: /\.js$/,
+        loader: sourceMapLoaderPath,
+      }],
     },
     plugins: [
       new HtmlWebpackPlugin({
