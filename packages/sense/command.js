@@ -14,6 +14,12 @@ module.exports = {
       required: false,
       desc: 'Extension meta information',
     });
+    yargs.option('minify', {
+      type: 'boolean',
+      required: false,
+      default: true,
+      desc: 'Minify and uglify code',
+    });
   },
   handler(argv) {
     build(argv);

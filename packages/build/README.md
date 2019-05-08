@@ -1,9 +1,9 @@
-# @nebula.js/cli-build
+# @nebula.js/cli@next-build
 
 ## Install
 
 ```sh
-npm install @nebula.js/cli
+npm install @nebula.js/cli@next
 ```
 
 ## Usage

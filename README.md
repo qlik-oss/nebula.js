@@ -27,13 +27,13 @@ It consists of three parts:
 
 The easiest way to get started is to create a new project using the nebula CLI through `npx`:
 ```sh
-npx @nebula.js/cli create hello-sunshine
+npx @nebula.js/cli@next create hello-sunshine
 ```
 
 or by doing a global install and running the `nebula` command:
 
 ```sh
-npm install @nebula.js/cli -g
+npm install @nebula.js/cli@next -g
 nebula create hello-sunshine
 ```
 
