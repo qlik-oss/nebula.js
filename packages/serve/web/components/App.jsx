@@ -14,6 +14,10 @@ import {
 } from '@nebula.js/ui/theme';
 
 import {
+  ChevronLeft,
+} from '@nebula.js/ui/icons';
+
+import {
   Grid,
   Toolbar,
   Button,
@@ -133,7 +137,8 @@ export default function App({
                 <Grid container>
                   <Grid item>
                     <Button variant="outlined" href={window.location.origin}>
-                      &lt; Hub
+                      <ChevronLeft />
+                      Hub
                     </Button>
                   </Grid>
                   <Grid item xs />

@@ -47,10 +47,10 @@ const Fields = ({
     title(m) {
       return m.qLibraryId || m.qDef.qDef;
     },
-    def(f) {
+    def(f, aggr = 'sum') {
       return {
         qDef: {
-          qDef: `avg(${f})`,
+          qDef: `${aggr}([${f}])`,
         },
       };
     },
@@ -62,8 +62,8 @@ const Fields = ({
     setIsActive(!isActive);
   };
 
-  const onSelected = ({ field }) => {
-    arr.push(t.def(field));
+  const onSelected = ({ field, aggr }) => {
+    arr.push(t.def(field, aggr));
     model.setProperties(properties);
   };
 
@@ -77,7 +77,7 @@ const Fields = ({
       <Typography variant="overline">{t.label}</Typography>
       <List dense>
         {arr.map((d, i) => (
-          <ListItem>
+          <ListItem disableGutters>
             <ListItemText>{t.title(d)}</ListItemText>
             <ListItemSecondaryAction>
               <IconButton onClick={() => onRemove(i)}><Remove /></IconButton>
@@ -99,6 +99,7 @@ const Fields = ({
           show={isActive}
           close={() => setIsActive(false)}
           onSelected={onSelected}
+          type={type}
         />
       )}
     </div>

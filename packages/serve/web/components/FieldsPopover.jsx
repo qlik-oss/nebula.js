@@ -1,5 +1,6 @@
 import React, {
   useContext,
+  useState,
 } from 'react';
 
 import {
@@ -8,17 +9,34 @@ import {
   ListSubheader,
   ListItem,
   ListItemText,
+  ListItemIcon,
+  Divider,
 } from '@nebula.js/ui/components';
+
+import {
+  ChevronRight,
+  ChevronLeft,
+} from '@nebula.js/ui/icons';
+
+import {
+  useTheme,
+} from '@nebula.js/ui/theme';
 
 import useModel from '@nebula.js/nucleus/src/hooks/useModel';
 import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
 
-
 import AppContext from '../contexts/AppContext';
 
-const Field = ({ field, onSelect }) => (
+const Field = ({ field, onSelect, sub }) => (
   <ListItem button onClick={() => onSelect(field.qName)} data-key={field.qName}>
     <ListItemText>{field.qName}</ListItemText>
+    {sub && <ChevronRight fontSize="small" />}
+  </ListItem>
+);
+
+const Aggr = ({ aggr, field, onSelect }) => (
+  <ListItem button onClick={() => onSelect(aggr)} data-key={aggr}>
+    <ListItemText>{`${aggr}(${field})`}</ListItemText>
   </ListItem>
 );
 
@@ -27,8 +45,11 @@ export default function FieldsPopover({
   show,
   close,
   onSelected,
+  type,
 }) {
   const app = useContext(AppContext);
+  const [selectedField, setSelectedField] = useState(null);
+  const theme = useTheme();
   const [model] = useModel({
     qInfo: {
       qType: 'FieldList',
@@ -48,8 +69,20 @@ export default function FieldsPopover({
   const fields = layout ? (layout.qFieldList.qItems || []) : [];
 
   const onSelect = (s) => {
+    if (type === 'measure') {
+      setSelectedField(s);
+    } else {
+      onSelected({
+        field: s,
+      });
+      close();
+    }
+  };
+
+  const onAggregateSelected = (s) => {
     onSelected({
-      field: s,
+      field: selectedField,
+      aggregation: s,
     });
     close();
   };
@@ -59,6 +92,8 @@ export default function FieldsPopover({
       open={show}
       onClose={close}
       anchorEl={alignTo.current}
+      marginThreshold={theme.spacing(1)}
+      elevation={3}
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'center',
@@ -68,13 +103,26 @@ export default function FieldsPopover({
         horizontal: 'center',
       }}
       PaperProps={{
-        style: { minWidth: '250px' },
+        style: { minWidth: '250px', maxHeight: '300px' },
       }}
     >
-      {fields.length > 0 && (
-        <List dense>
-          <ListSubheader>Fields</ListSubheader>
-          {fields.map(field => <Field key={field.qName} field={field} onSelect={onSelect} />)}
+      {selectedField && (
+        <List dense component="nav">
+          <ListItem button onClick={() => setSelectedField(null)}>
+            <ListItemIcon>
+              <ChevronLeft />
+            </ListItemIcon>
+            <ListItemText>Back</ListItemText>
+          </ListItem>
+          <Divider />
+          <ListSubheader component="div">Aggregation</ListSubheader>
+          {['sum', 'count', 'avg', 'min', 'max'].map(v => <Aggr key={v} aggr={v} field={selectedField} onSelect={onAggregateSelected} />)}
+        </List>
+      )}
+      {!selectedField && fields.length > 0 && (
+        <List dense component="nav" style={{ background: theme.palette.background.paper }}>
+          <ListSubheader component="div" style={{ backgroundColor: 'inherit' }}>Fields</ListSubheader>
+          {fields.map(field => <Field key={field.qName} field={field} onSelect={onSelect} sub={type === 'measure'} />)}
         </List>
       )}
     </Popover>
