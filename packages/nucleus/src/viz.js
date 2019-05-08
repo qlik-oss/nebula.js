@@ -64,6 +64,8 @@ export default function ({
     cellApi.emit('changed');
   };
 
+  cellApi.once('ready', () => cellApi.emit('changed'));
+
   const setUserProps = (up) => {
     userProps = {
       ...userProps,
