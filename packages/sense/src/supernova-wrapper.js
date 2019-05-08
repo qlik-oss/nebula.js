@@ -15,7 +15,7 @@ const snGenerator = supernova(snDefinition, env);
 const ext = typeof extDefinition === 'function' ? extDefinition(env) : extDefinition;
 
 export default {
-  initialProperties: snGenerator.qae.properties,
+  // overridable properties
   definition: {
     type: 'items',
     component: 'accordion',
@@ -31,7 +31,12 @@ export default {
     snapshot: false,
     viewData: false,
   },
+  // override with user config
   ...ext,
+
+  // =============================================
+  // non-overridable properties
+  initialProperties: snGenerator.qae.properties,
   importProperties: null, // Disable conversion to/from this object
   exportProperties: null, // Disable conversion to/from this object
   template: '<div style="height: 100%;position: relative"></div>',
