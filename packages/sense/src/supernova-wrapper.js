@@ -34,7 +34,9 @@ export default {
   ...ext,
   importProperties: null, // Disable conversion to/from this object
   exportProperties: null, // Disable conversion to/from this object
+  template: '<div style="height: 100%;position: relative"></div>',
   mounted($element) {
+    const element = $element[0].children[0];
     const selectionAPI = selectionsApi(this.$scope);
     const sn = snGenerator.create({
       model: this.backendApi.model,
@@ -45,7 +47,7 @@ export default {
     this.snComponent.created({
       options: this.options || {},
     });
-    this.snComponent.mounted($element[0]);
+    this.snComponent.mounted(element);
   },
   paint($element, layout) {
     return this.snComponent.render({
