@@ -1,4 +1,4 @@
-# @nebula.js/cli@next-sense
+# @nebula.js/cli-sense
 
 ## Install
 

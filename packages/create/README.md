@@ -1,4 +1,4 @@
-# @nebula.js/cli@next-create
+# @nebula.js/cli-create
 
 ## Install
 
