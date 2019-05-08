@@ -58,6 +58,7 @@ const config = ({
       format,
       file: format === 'esm' && pkg.module ? pkg.module : pkg.main,
       name: pkg.name,
+      sourcemap: true,
       output: {
         preamble: banner,
       },
