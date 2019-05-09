@@ -14,17 +14,18 @@ const THEME_PREFIX = (process.env.NEBULA_VERSION || '').replace(/[.-]/g, '_');
 
 let counter = 0;
 
-function App({
+function NebulaApp({
   children,
+  themeName,
 }) {
   const { theme, generator } = useMemo(() => ({
-    theme: createTheme(),
+    theme: createTheme(themeName),
     generator: createGenerateClassName({
       productionPrefix: `${THEME_PREFIX}-`,
       disableGlobal: true,
       seed: `nebulajs-${counter++}`,
     }),
-  }), []);
+  }), [themeName]);
 
   return (
     <StylesProvider generateClassName={generator}>
@@ -39,6 +40,7 @@ function App({
 
 export default function boot({
   app,
+  theme = 'light',
 }) {
   const element = document.createElement('div');
   element.style.display = 'none';
@@ -46,10 +48,11 @@ export default function boot({
   element.setAttribute('data-app-id', app.id);
   document.body.appendChild(element);
   const components = [];
+  let themeName = theme;
 
   const update = () => {
     ReactDOM.render(
-      <App app={app}>{components}</App>,
+      <NebulaApp themeName={themeName} app={app}>{components}</NebulaApp>,
       element,
     );
   };
@@ -70,6 +73,11 @@ export default function boot({
       if (idx !== -1) {
         components.splice(idx, 1);
       }
+      update();
+    },
+    theme(name) {
+      themeName = name;
+      update();
     },
   };
 }

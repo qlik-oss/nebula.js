@@ -103,7 +103,7 @@ export default function FieldsPopover({
         horizontal: 'center',
       }}
       PaperProps={{
-        style: { minWidth: '250px', maxHeight: '300px' },
+        style: { minWidth: '250px', maxHeight: '300px', background: theme.palette.background.lightest },
       }}
     >
       {selectedField && (
@@ -120,7 +120,7 @@ export default function FieldsPopover({
         </List>
       )}
       {!selectedField && fields.length > 0 && (
-        <List dense component="nav" style={{ background: theme.palette.background.paper }}>
+        <List dense component="nav" style={{ background: theme.palette.background.lightest }}>
           <ListSubheader component="div" style={{ backgroundColor: 'inherit' }}>Fields</ListSubheader>
           {fields.map(field => <Field key={field.qName} field={field} onSelect={onSelect} sub={type === 'measure'} />)}
         </List>

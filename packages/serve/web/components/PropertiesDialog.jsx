@@ -11,6 +11,7 @@ import {
   DialogTitle,
   DialogContent,
   DialogActions,
+  TextField,
 } from '@nebula.js/ui/components';
 
 export default function PropertiesDialog({
@@ -49,12 +50,33 @@ export default function PropertiesDialog({
   }, [model && model.id, show]);
 
   return (
-    <Dialog open={show} scroll="paper" maxWidth="lg" onClose={close}>
+    <Dialog
+      open={show}
+      scroll="paper"
+      maxWidth="md"
+      onClose={close}
+      PaperProps={{
+        style: {
+          width: '80%',
+        },
+      }}
+    >
       <DialogTitle>
         Modify object properties
       </DialogTitle>
       <DialogContent dividers>
-        <textarea value={objectProps} onChange={onChange} ref={text} cols="100" rows="40" />
+
+        <TextField
+          value={objectProps}
+          onChange={onChange}
+          ref={text}
+          multiline
+          row="40"
+          fullWidth
+          InputProps={{
+            style: { fontFamily: 'Monaco, monospace', fontSize: '0.8rem' },
+          }}
+        />
       </DialogContent>
       <DialogActions>
         <Button variant="outlined" onClick={close}>Cancel</Button>

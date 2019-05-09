@@ -18,12 +18,12 @@ import { makeStyles } from '@nebula.js/ui/theme';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
-const useStyles = makeStyles(() => ({
+const useStyles = makeStyles(theme => ({
   item: {
     cursor: 'pointer',
     padding: '4px',
     '&:hover': {
-      backgroundColor: '#eee',
+      backgroundColor: theme.palette.action.hover,
     },
   },
 }));

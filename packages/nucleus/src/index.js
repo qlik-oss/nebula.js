@@ -2,7 +2,7 @@
 
 import { createAppSelectionAPI } from './selections';
 
-import App from './components/App';
+import App from './components/NebulaApp';
 import AppSelectionsPortal from './components/selections/AppSelections';
 
 import create from './object/create-object';
@@ -48,6 +48,9 @@ function apiGenerator(app) {
     load: ($) => {
       config.load = $;
       return api;
+    },
+    theme(t) {
+      root.theme(t);
     },
     selections: () => {
       if (!selectionsApi) {

@@ -25,17 +25,17 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(1),
   },
   D: {
-    background: '#fff',
+    // background: '#fff',
   },
   S: {
     background: '#6CB33F',
-    color: '#fff',
+    color: theme.palette.text.primary,
   },
   A: {
-    background: '#fafafa',
+    background: theme.palette.background.lighter,
   },
   X: {
-    background: '#eee',
+    background: theme.palette.background.darker,
   },
 }));
 

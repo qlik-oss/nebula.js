@@ -23,7 +23,7 @@ export function AppSelections({
       spacing={0}
       wrap="nowrap"
       style={{
-        backgroundColor: '#fff',
+        backgroundColor: theme.palette.background.paper,
         minHeight: '40px',
       }}
     >
@@ -35,7 +35,7 @@ export function AppSelections({
       >
         <Nav api={api} />
       </Grid>
-      <Grid item xs style={{ backgroundColor: '#E5E5E5', overflow: 'hidden' }}>
+      <Grid item xs style={{ backgroundColor: theme.palette.background.darker, overflow: 'hidden' }}>
         <SelectedFields api={api} />
       </Grid>
     </Grid>

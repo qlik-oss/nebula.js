@@ -1,5 +1,6 @@
 import React, {
   useEffect,
+  useLayoutEffect,
   useState,
   useRef,
   useMemo,
@@ -15,6 +16,8 @@ import {
 
 import {
   ChevronLeft,
+  WbSunny,
+  Brightness3,
 } from '@nebula.js/ui/icons';
 
 import {
@@ -34,8 +37,6 @@ import Stage from './Stage';
 import AppContext from '../contexts/AppContext';
 import NebulaContext from '../contexts/NebulaContext';
 
-const defaultTheme = createTheme();
-
 const storage = (() => {
   const stored = window.localStorage.getItem('nebula-dev');
   const parsed = stored ? JSON.parse(stored) : {};
@@ -50,7 +51,7 @@ const storage = (() => {
     },
     props(name, v) {
       if (v) {
-        s.save(`props:${name}`, JSON.stringify(v));
+        s.save(`props:${name}`, JSON.stringify(v)); // TODO add app id to key to avoid using fields that don't exist
         return undefined;
       }
       const p = s.get(`props:${name}`);
@@ -68,11 +69,20 @@ export default function App({
   const [viz, setViz] = useState(null);
   const [sn, setSupernova] = useState(null);
   const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
+  const [darkMode, setDarkMode] = useState(storage.get('darkMode') === true);
   const currentSelectionsRef = useRef(null);
   const uid = useRef();
 
+  const themeName = darkMode ? 'dark' : 'light';
+
+  const theme = useMemo(() => createTheme(themeName), [themeName]);
+
   const nebbie = useMemo(() => nucleus(app)
     .load((type, config) => config.Promise.resolve(window.snDefinition || snDefinition)), [app]);
+
+  useLayoutEffect(() => {
+    nebbie.theme(themeName);
+  }, [nebbie, theme]);
 
   useEffect(() => {
     let propertyObserver = () => {};
@@ -127,13 +137,18 @@ export default function App({
     setReadCacheEnabled(e.target.checked);
   };
 
+  const handleThemeChange = (e) => {
+    storage.save('darkMode', e.target.checked);
+    setDarkMode(e.target.checked);
+  };
+
   return (
     <AppContext.Provider value={app}>
-      <ThemeProvider theme={defaultTheme}>
+      <ThemeProvider theme={theme}>
         <NebulaContext.Provider value={nebbie}>
-          <Grid container wrap="nowrap" direction="column">
+          <Grid container wrap="nowrap" direction="column" style={{ background: theme.palette.background.darkest }}>
             <Grid item>
-              <Toolbar variant="dense" style={{ background: '#fff' }}>
+              <Toolbar variant="dense" style={{ background: theme.palette.background.paper }}>
                 <Grid container>
                   <Grid item>
                     <Button variant="outlined" href={window.location.origin}>
@@ -149,6 +164,16 @@ export default function App({
                       }
                       label="Cache"
                     />
+                    <FormControlLabel
+                      label=""
+                      control={(
+                        <>
+                          <WbSunny fontSize="small" style={{ color: theme.palette.text.secondary, marginLeft: theme.spacing(2) }} />
+                          <Switch checked={darkMode} onChange={handleThemeChange} value="darkMode" />
+                          <Brightness3 fontSize="small" style={{ color: theme.palette.text.secondary }} />
+                        </>
+                      )}
+                    />
                   </Grid>
                 </Grid>
               </Toolbar>
@@ -163,7 +188,7 @@ export default function App({
                 <Grid item xs style={{ overflow: 'hidden' }}>
                   <Stage viz={viz} />
                 </Grid>
-                <Grid item style={{ background: '#fff' }}>
+                <Grid item style={{ background: theme.palette.background.paper }}>
                   <Properties sn={sn} viz={viz} />
                 </Grid>
               </Grid>
