@@ -83,7 +83,7 @@ const cfg = ({
   return config;
 };
 
-if (process.stdin.isTTY) {
+if (!process.env.DEFAULTS) {
   module.exports = cfg;
 } else {
   module.exports = cfg({

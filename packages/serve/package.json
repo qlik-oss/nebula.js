@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-serve",
-  "version": "0.1.0-alpha.9",
+  "version": "0.1.0-alpha.10",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -17,12 +17,12 @@
     "dist"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production webpack --config ./lib/webpack.build.js",
+    "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js",
     "lint": "eslint web",
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "dependencies": {
-    "@nebula.js/cli-build": "0.1.0-alpha.9",
+    "@nebula.js/cli-build": "0.1.0-alpha.10",
     "chalk": "^2.4.2",
     "execa": "^1.0.0",
     "html-webpack-plugin": "^3.2.0",
@@ -37,8 +37,8 @@
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
     "@material-ui/core": "^4.0.0-beta.0",
-    "@nebula.js/nucleus": "0.1.0-alpha.9",
-    "@nebula.js/ui": "0.1.0-alpha.9",
+    "@nebula.js/nucleus": "0.1.0-alpha.10",
+    "@nebula.js/ui": "0.1.0-alpha.10",
     "babel-loader": "^8.0.5",
     "enigma.js": "^2.4.0",
     "react": "^16.8.6",
