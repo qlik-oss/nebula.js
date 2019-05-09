@@ -1,25 +1,4 @@
-
-const nxDimension = f => ({
-  qDef: {
-    qFieldDefs: [f],
-    qSortCriterias: [{
-      qSortByLoadOrder: 1,
-      qSortByNumeric: 1,
-      qSortByAscii: 1,
-    }],
-  },
-  qOtherTotalSpec: {},
-});
-
-const nxMeasure = f => ({
-  qDef: {
-    qDef: f,
-  },
-  qSortBy: {
-    qSortByLoadOrder: 1,
-    qSortByNumeric: -1,
-  },
-});
+import hcHandler from './hc-handler';
 
 export default function populateData({
   sn,
@@ -40,10 +19,12 @@ export default function populateData({
     p = s ? p[s] : p;
   }
 
-  const hc = p;
+  const hc = hcHandler({
+    hc: p,
+    def: target,
+  });
 
-  hc.qInterColumnSortOrder = hc.qInterColumnSortOrder || [];
-  fields.forEach((f, i) => {
+  fields.forEach((f) => {
     let type = 'dimension';
     if ((typeof f === 'string' && f[0] === '=')
       || (typeof f === 'object' && f.qDef.qDef)
@@ -51,17 +32,10 @@ export default function populateData({
       type = 'measure';
     }
 
-    hc.qInterColumnSortOrder.push(i);
     if (type === 'measure') {
-      hc.qMeasures = hc.qMeasures || [];
-      const def = nxMeasure(f);
-      hc.qMeasures.push(def);
-      target.measures.add.call(null, def, properties);
+      hc.addMeasure(f);
     } else {
-      hc.qDimensions = hc.qDimensions || [];
-      const def = nxDimension(f);
-      hc.qDimensions.push(def);
-      target.dimensions.add.call(null, def, properties);
+      hc.addDimension(f);
     }
   });
 }
