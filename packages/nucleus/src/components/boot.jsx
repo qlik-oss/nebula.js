@@ -7,6 +7,7 @@ export default function boot({
   model,
   api,
   nebulaContext,
+  onInitial,
 }) {
   const {
     root,
@@ -16,6 +17,7 @@ export default function boot({
     <Cell
       api={api}
       model={model}
+      onInitial={onInitial}
     />,
     element,
   );

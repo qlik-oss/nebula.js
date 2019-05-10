@@ -15,6 +15,14 @@ export default function ({
   let reference = noopi;
   let elementReference = null;
 
+  let supernovaReady;
+  let layoutReady;
+  let mounted;
+
+  const whenLayoutReady = new Promise((resolve) => { layoutReady = resolve; });
+  const whenSupernovaReady = new Promise((resolve) => { supernovaReady = resolve; });
+  const whenMounted = new Promise((resolve) => { mounted = resolve; });
+
   let userProps = {
     options: {},
     context: {
@@ -40,31 +48,9 @@ export default function ({
 
   eventMixin(cellApi);
 
-  let queueShow = false;
-
-  const mount = (element) => {
-    if (!objectProps.layout) {
-      queueShow = element;
-      return;
-    }
-    elementReference = element;
-    reference = cell({
-      element,
-      model,
-      api: cellApi,
-      nebulaContext: context,
-    });
-  };
-
   const update = () => {
-    if (queueShow && objectProps.layout) {
-      mount(queueShow);
-      queueShow = false;
-    }
     cellApi.emit('changed');
   };
-
-  cellApi.once('ready', () => cellApi.emit('changed'));
 
   const setUserProps = (up) => {
     userProps = {
@@ -79,6 +65,12 @@ export default function ({
       ...objectProps,
       ...p,
     };
+    if (objectProps.layout) {
+      layoutReady();
+    }
+    if (objectProps.sn) {
+      supernovaReady();
+    }
     update();
   };
 
@@ -86,8 +78,23 @@ export default function ({
     model,
     // app,
     mount(element) {
-      // TODO - remount if already mounted
-      mount(element);
+      if (elementReference) {
+        throw new Error('Already mounted');
+      }
+      elementReference = element;
+      return Promise.all([
+        whenLayoutReady,
+        whenSupernovaReady,
+      ]).then(() => {
+        reference = cell({
+          element,
+          model,
+          api: cellApi,
+          nebulaContext: context,
+          onInitial: mounted,
+        });
+        return whenMounted;
+      });
     },
     close() {
       // TODO - destroy session object (if created as such)

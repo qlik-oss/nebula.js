@@ -24,6 +24,10 @@ export default function initiate(getCfg, optional, context) {
 
     const objectAPI = new ObjectAPI(model, context, viz);
 
+    observe(model, objectAPI);
+
+    const api = objectAPI.getPublicAPI();
+
     if (optional.options) {
       viz.api.options(optional.options);
     }
@@ -31,11 +35,9 @@ export default function initiate(getCfg, optional, context) {
       viz.api.context(optional.context);
     }
     if (optional.element) {
-      viz.api.mount(optional.element);
+      return viz.api.mount(optional.element).then(() => api);
     }
 
-    observe(model, objectAPI);
-
-    return objectAPI.getPublicAPI();
+    return api;
   });
 }

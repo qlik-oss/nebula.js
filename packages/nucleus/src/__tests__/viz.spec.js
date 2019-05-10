@@ -1,3 +1,5 @@
+const flush = () => new Promise(r => setImmediate(r));
+
 describe('viz', () => {
   const doMock = ({
     boot = () => {},
@@ -35,24 +37,56 @@ describe('viz', () => {
   });
 
   describe('mounting', () => {
-    it('should not mount when layout is not defined', () => {
+    it('should not initiate mount when layout and sn are not defined', async () => {
       const boot = sinon.spy();
-      const [{ default: create }] = doMock();
-      const { api } = create({});
-      api.mount('element');
-      expect(boot.callCount).to.equal(0);
-    });
-
-    it('should mount when layout is valid', () => {
-      const boot = sinon.stub().returns(Promise.resolve());
       const [{ default: create }] = doMock({ boot });
       const { api, setObjectProps } = create({});
+
       api.mount('element');
-      expect(boot.callCount).to.equal(0);
-      setObjectProps({
-        layout: {},
+
+      setObjectProps();
+
+      await flush();
+      expect(boot.callCount).to.equal(0, 'invalid layout, invalid sn');
+    });
+
+    it('should initiate React mount when layout and supernova are valid', async () => {
+      const boot = sinon.spy();
+      const [{ default: create }] = doMock({ boot });
+      const { api, setObjectProps } = create({});
+
+      api.mount('element');
+
+      setObjectProps({ layout: {} });
+      await flush();
+      expect(boot.callCount).to.equal(0, 'valid layout, invalid sn');
+
+      setObjectProps({ layout: {}, sn: {} });
+      await flush();
+      expect(boot.callCount).to.equal(1, 'valid layout, invalid sn');
+    });
+
+    it('should resolve mount when React cell is ready', async () => {
+      let cellIsReady;
+      const boot = sinon.spy(({ onInitial }) => {
+        cellIsReady = onInitial;
+        return {};
       });
-      expect(boot.callCount).to.equal(1);
+      const [{ default: create }] = doMock({ boot });
+      const { api, setObjectProps } = create({});
+
+      let mounted = false;
+
+      api.mount('element').then(() => { mounted = true; });
+      setObjectProps({ layout: {}, sn: {} });
+
+      await flush();
+      expect(mounted).to.equal(false, 'cell is not ready yet');
+
+      cellIsReady();
+
+      await flush();
+      expect(mounted).to.equal(true, 'cell is ready');
     });
   });
 

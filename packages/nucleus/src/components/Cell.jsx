@@ -47,16 +47,20 @@ const Content = ({ children }) => (
 
 export default function Cell({
   api,
+  onInitial,
 }) {
   const [, setChanged] = useState(0);
   useEffect(() => {
     const onChanged = () => setChanged(Date.now());
     api.on('changed', onChanged);
-    api.emit('ready');
     return () => {
       api.removeListener('changed', onChanged);
     };
   }, [api]);
+
+  useEffect(() => {
+    onInitial();
+  });
 
   const objectProps = api.objectProps();
   const userProps = api.userProps();
