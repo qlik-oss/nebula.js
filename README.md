@@ -1,4 +1,4 @@
-# nebula.js
+# [EXPERIMENTAL] nebula.js
 
 `nebula.js` is a collection of JavaScript libraries and APIs that enables you to build visualizations and mashups on top of Qlik's Associative Engine.
 
