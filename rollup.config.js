@@ -33,13 +33,6 @@ const GLOBALS = {
   'react-dom': 'ReactDOM',
 };
 
-const EXTERNALS = [
-  'react',
-  'react-dom',
-  '@material-ui/core',
-  '@material-ui/styles',
-];
-
 const propTypes = [
   'array',
   'bool',
@@ -68,7 +61,19 @@ const config = (isEsm) => {
   const dir = path.dirname(outputFile);
   const umdName = basename.replace(/-([a-z])/g, (m, p1) => p1.toUpperCase()).split('.js').join('');
 
-  const external = isEsm ? [...EXTERNALS, ...Object.keys(pkg.dependencies || {})] : [];
+  if (Object.keys(pkg.dependencies || {}).length) {
+    throw new Error('Dependencies for a web javascript library makes no sense');
+  }
+
+  const peers = Object.keys(pkg.peerDependencies || {});
+
+  // all peers should be externals for esm bundle
+  const esmExternals = peers;
+
+  // peers that are not devDeps should be externals for full bundle
+  const bundleExternals = peers.filter(p => typeof (pkg.devDependencies || {})[p] === 'undefined');
+
+  const external = isEsm ? esmExternals : bundleExternals;
   const globals = {};
   external.forEach((e) => {
     if ([GLOBALS[e]]) {
@@ -139,7 +144,7 @@ const config = (isEsm) => {
     ],
   };
 
-  if (process.env.NODE_ENV === 'production' && !isEsm) {
+  if (process.env.NODE_ENV === 'production') {
     cfg.plugins.push(terser({
       output: {
         preamble: banner,

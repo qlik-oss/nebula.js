@@ -19,7 +19,17 @@
     "lint": "eslint --ext .js,.jsx src",
     "prepublishOnly": "rm -rf dist && npm run build"
   },
+  "peerDependencies": {
+    "@material-ui/styles": "^4.0.0-beta.1",
+    "@material-ui/icons": "^4.0.0-beta.0",
+    "@material-ui/core": "^4.0.0-beta.1",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6"
+  },
   "devDependencies": {
+    "@material-ui/styles": "^4.0.0-beta.1",
+    "@material-ui/icons": "^4.0.0-beta.0",
+    "@material-ui/core": "^4.0.0-beta.1",
     "@nebula.js/supernova": "0.1.0-alpha.10",
     "@nebula.js/ui": "0.1.0-alpha.10",
     "node-event-emitter": "^0.0.1",
