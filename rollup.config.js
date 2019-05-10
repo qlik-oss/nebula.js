@@ -144,7 +144,7 @@ const config = (isEsm) => {
     ],
   };
 
-  if (process.env.NODE_ENV === 'production') {
+  if (process.env.NODE_ENV === 'production' && !isEsm) {
     cfg.plugins.push(terser({
       output: {
         preamble: banner,
