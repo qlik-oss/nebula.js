@@ -68,7 +68,7 @@ export default function SelectedFields({
           style={{
             position: 'relative',
             maxWidth: '240px',
-            minWidth: '96px',
+            minWidth: '120px',
             background: theme.palette.background.paper,
             borderRight: `1px solid ${theme.palette.divider}`,
           }}

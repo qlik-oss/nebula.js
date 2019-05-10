@@ -43,6 +43,7 @@ export default function Nav({
       style={{
         height: '100%',
         alignItems: 'center',
+        padding: '0 8px',
       }}
     >
       <Grid item>
