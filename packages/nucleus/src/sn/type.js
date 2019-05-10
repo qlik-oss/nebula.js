@@ -39,6 +39,7 @@ export function clearFromCache(name) {
 
 export default function (opts, meta, config) {
   let sn;
+  let stringified;
   const type = {
     name: opts.name,
     version: opts.version,
@@ -50,10 +51,11 @@ export default function (opts, meta, config) {
     supernova: () => load(type, config)
       .then((SNDefinition) => {
         sn = sn || SNFactory(SNDefinition, config.env);
+        stringified = JSON.stringify(sn.qae.properties);
         return sn;
       }),
     initialProperties(initial) {
-      return this.supernova().then((s) => {
+      return this.supernova().then(() => {
         const props = {
           qInfo: {
             qType: type.name,
@@ -61,7 +63,7 @@ export default function (opts, meta, config) {
           visualization: type.name,
           version: type.version,
           showTitles: true,
-          ...s.qae.properties,
+          ...JSON.parse(stringified),
           ...initial,
         };
         return props;
