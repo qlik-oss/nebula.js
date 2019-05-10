@@ -5,6 +5,7 @@ const rollup = require('rollup');
 const babel = require('rollup-plugin-babel');
 const postcss = require('rollup-plugin-postcss');
 const replace = require('rollup-plugin-replace');
+const node = require('rollup-plugin-node-resolve');
 const { terser } = require('rollup-plugin-terser');
 
 const config = ({
@@ -27,12 +28,21 @@ const config = ({
 */
 `;
 
+  // all peers should be externals for esm bundle
+  const external = format === 'esm' ? Object.keys(pkg.peerDependencies || {}) : [];
+
   return {
     input: {
       input: path.resolve(cwd, 'src/index'),
+      external,
       plugins: [
         replace({
           'process.env.NODE_ENV': JSON.stringify(mode === 'development' ? 'development' : 'production'),
+        }),
+        node({
+          customResolveOptions: {
+            moduleDirectory: path.resolve(cwd, 'node_modules'),
+          },
         }),
         babel({
           babelrc: false,
