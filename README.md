@@ -1,11 +1,16 @@
-# [EXPERIMENTAL] nebula.js
+<p align="center">
+  <img width="500" src="./assets/logos/nebula.png" alt="nebula.js logo" />
+  <div style="text-align: center; ">A new star on the rise</div>
+</p>
 
-`nebula.js` is a collection of JavaScript libraries and APIs that enables you to build visualizations and mashups on top of Qlik's Associative Engine.
+# [EXPERIMENTAL]
+
+`nebula.js` is a collection of JavaScript libraries and APIs that helps developers build visualizations and mashups on top of Qlik's Associative Engine.
 
 It consists of three parts:
 
-- `nucleus`: A product and framework agnostic JavaScript library that helps you build mashups.
-- `supernova`: A JavaScript API that helps you consume and visualize QIX data.
+- `nucleus`: A product and framework agnostic JavaScript library for building mashups.
+- `supernova`: A JavaScript API for consuming and visualizing QIX data.
 - `cli`: Tools to help you create, develop and build a `supernova`.
 
 ![nebula-overview](assets/nebula-overview.png)
