@@ -50,10 +50,10 @@ export default function Fields({
     setIsActive(!isActive);
   };
 
-  const onSelected = ({ field, aggr }) => {
+  const onSelected = ({ field, aggregation }) => {
     // arr.push(t.def(field, aggr));
     // model.setProperties(properties);
-    onAdded(t.def(field, aggr));
+    onAdded(t.def(field, aggregation));
   };
 
   const onRemove = (idx) => {
