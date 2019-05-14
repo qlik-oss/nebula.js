@@ -1,11 +1,11 @@
 <p align="center">
   <img width="500" src="./assets/logos/nebula.png" alt="nebula.js logo" />
-  <div style="text-align: center; ">A new star on the rise</div>
 </p>
+<p align="center">A new star on the rise</p>
 
-# [EXPERIMENTAL]
+# !!EXPERIMENTAL!!
 
-`nebula.js` is a collection of JavaScript libraries and APIs that helps developers build visualizations and mashups on top of Qlik's Associative Engine.
+`nebula.js` is a collection of JavaScript libraries and APIs that helps developers integrate visualizations and mashups on top of Qlik's Associative Engine.
 
 It consists of three parts:
 
@@ -15,15 +15,60 @@ It consists of three parts:
 
 ![nebula-overview](assets/nebula-overview.png)
 
-## Getting started
+## Roadmap
+
+Since nebula.js is still in an early stage we are very much open to input and suggestions. If you think something is missing, an API is weird or have general opinions about anything, let us know.
+
+*Your opinions, requirements and involvement is key to the success of this project.* Click on the linked issues below ([or create you own](https://github.com/qlik-oss/nebula.js/issues/new/choose)), voice your opinion and vote if you would like to see it get implemented. 
+
+This is a draft of the roadmap ahead:
+
+**Documentation**
+
+This is the primary task right now as there is currently barely any documentation at all 😬.
+
+**Integration APIs**
+- nucleus
+  - theming (#24)
+  - translations, localization (#25)
+  - error handling
+  - export (#26)
+- supernova
+  - consume theme (#27)
+  - consume translator (#28)
+  - actions api
+  - options api
+  - context menu (#41)
+  - take and consume snapshot (#29)
+  - versioning (#39)
+  - hooks (#30)
+  - deduce data targets from properties
+  - type definitions (#40)
+
+**CLI**
+- create
+  - more templates (#31)
+- build
+  - support more loaders (#32)
+- serve
+  - assets (#35)
+  - printing/export (#33)
+  - generate property panel from properties (#34)
+  - ui overlay on failure (#36)
+  - developer hints
+  - theme editor (#37)
+- sense
+  - generate property panel definition based on initialProperties
+  - adapt Sense theme to nebula (#38)
+
+## Try it out
 
 ### Prerequisites
 
 - node.js `v8.0.0+`
-- Qlik Engine
+- Access to Qlik Associative Engine
   - which comes bundled with one of the following products
     - Qlik Sense Desktop
-    - Qlik Sense Enterprise (coming soon)
   - or by running it in a Docker container through either
     - Qlik Core
     - or the `qlikcore/engine` image
@@ -58,20 +103,24 @@ hello-sunshine
 
 The `package.json` contains a few built-in npm commands:
 
-#### `npm start`
+- `npm start`
 
-Starts a web development server.
+  Starts a web development server.
 
-The server needs to connect to a running instance of Qlik Engine and by default assumes it's already running on port `9076`. If you don't have Qlik Sense desktop installed you can opt-in to start a Docker image of Qlik Engine by accepting the [Qlik Core EULA](https://core.qlik.com/eula/):
+  The server needs to connect to a running instance of Qlik Engine and by default assumes it's already running on port `9076`. If you don't have Qlik Sense desktop installed you can opt-in to start a Docker image of Qlik Engine by accepting the [Qlik Core EULA](https://core.qlik.com/eula/):
 
-```sh
-ACCEPT_EULA=yes npm start
-```
+  ```sh
+  ACCEPT_EULA=yes npm start
+  ```
 
-#### `npm run build`
+- `npm run build`
 
-Builds the supernova for production into the `dist` folder. At this stage you can publish the supernova to npm using the command `npm publish`.
+  Builds the supernova for production into the `dist` folder. At this stage you can publish the supernova to npm using the command `npm publish`.
 
-#### `npm lint`
+- `npm lint`
 
-Checks for code syntax issues.
+  Checks for code syntax issues.
+
+## Contributing
+
+Please follow the instructions in our [contributing guide](./.github/CONTRIBUTING.md).
