@@ -40,7 +40,7 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
   - `nucleus`: JavaScript library for mashups
   - `sense`: cli command to build a Qlik Sense extension from a supernova
   - `serve`: cli command to start a development server for rapid prototyping of a supernova
-  - `supernova`: JavaScript library that provides an API to
+  - `supernova`: JavaScript API for consuming and visualizing QIX data
   - `ui`: [private] ui components
 - `test/`: contains test configs
 
