@@ -29,37 +29,37 @@ This is the primary task right now as there is currently barely any documentatio
 
 **Integration APIs**
 - nucleus
-  - theming (#24)
-  - translations, localization (#25)
+  - theming ([#24](https://github.com/qlik-oss/nebula.js/issues/24))
+  - translations, localization ([#25](https://github.com/qlik-oss/nebula.js/issues/25))
   - error handling
-  - export (#26)
+  - export ([#26](https://github.com/qlik-oss/nebula.js/issues/26))
 - supernova
-  - consume theme (#27)
-  - consume translator (#28)
+  - consume theme ([#27](https://github.com/qlik-oss/nebula.js/issues/27))
+  - consume translator ([#28](https://github.com/qlik-oss/nebula.js/issues/28))
   - actions api
   - options api
-  - context menu (#41)
-  - take and consume snapshot (#29)
-  - versioning (#39)
-  - hooks (#30)
+  - context menu ([#41](https://github.com/qlik-oss/nebula.js/issues/41))
+  - take and consume snapshot ([#29](https://github.com/qlik-oss/nebula.js/issues/29))
+  - versioning ([#39](https://github.com/qlik-oss/nebula.js/issues/39))
+  - hooks ([#30](https://github.com/qlik-oss/nebula.js/issues/30))
   - deduce data targets from properties
-  - type definitions (#40)
+  - type definitions ([#40](https://github.com/qlik-oss/nebula.js/issues/40))
 
 **CLI**
 - create
-  - more templates (#31)
+  - more templates ([#31](https://github.com/qlik-oss/nebula.js/issues/31))
 - build
-  - support more loaders (#32)
+  - support more loaders ([#32](https://github.com/qlik-oss/nebula.js/issues/32))
 - serve
-  - assets (#35)
-  - printing/export (#33)
-  - generate property panel from properties (#34)
-  - ui overlay on failure (#36)
+  - assets ([#35](https://github.com/qlik-oss/nebula.js/issues/35))
+  - printing/export ([#33](https://github.com/qlik-oss/nebula.js/issues/33))
+  - generate property panel from properties ([#34](https://github.com/qlik-oss/nebula.js/issues/34))
+  - ui overlay on failure ([#36](https://github.com/qlik-oss/nebula.js/issues/36))
   - developer hints
-  - theme editor (#37)
+  - theme editor ([#37](https://github.com/qlik-oss/nebula.js/issues/37))
 - sense
   - generate property panel definition based on initialProperties
-  - adapt Sense theme to nebula (#38)
+  - adapt Sense theme to nebula ([#38](https://github.com/qlik-oss/nebula.js/issues/38))
 
 ## Try it out
 
