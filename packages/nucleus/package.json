@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/nucleus",
-  "version": "0.1.0-alpha.12",
+  "version": "0.1.0-alpha.13",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -34,8 +34,8 @@
     "@material-ui/core": "^4.0.0-beta.1",
     "@material-ui/icons": "^4.0.0-beta.0",
     "@material-ui/styles": "^4.0.0-beta.1",
-    "@nebula.js/supernova": "0.1.0-alpha.12",
-    "@nebula.js/ui": "0.1.0-alpha.12",
+    "@nebula.js/supernova": "0.1.0-alpha.13",
+    "@nebula.js/ui": "0.1.0-alpha.13",
     "node-event-emitter": "^0.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
