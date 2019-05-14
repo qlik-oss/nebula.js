@@ -8,6 +8,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qlik-oss/nebula.js.git"
+  },
   "main": "lib/serve.js",
   "files": [
     "command.js",

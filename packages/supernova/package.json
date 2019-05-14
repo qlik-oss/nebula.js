@@ -8,6 +8,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qlik-oss/nebula.js.git"
+  },
   "main": "dist/supernova.js",
   "module": "dist/supernova.esm.js",
   "files": [
