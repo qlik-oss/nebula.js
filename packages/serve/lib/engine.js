@@ -3,7 +3,7 @@ const execa = require('execa');
 
 /* eslint no-use-before-define:0 */
 const startEngine = () => {
-  if (process.env.ACCEPT_EULA !== 'yes') {
+  if (process.env.ACCEPT_EULA == null || process.env.ACCEPT_EULA.toLowerCase() !== 'yes') {
     throw new Error('Need to accept EULA in order to start engine container');
   }
   console.log('Starting engine container ...');
