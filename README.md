@@ -110,7 +110,7 @@ The `package.json` contains a few built-in npm commands:
   The server needs to connect to a running instance of Qlik Engine and by default assumes it's already running on port `9076`. If you don't have Qlik Sense desktop installed you can opt-in to start a Docker image of Qlik Engine by accepting the [Qlik Core EULA](https://core.qlik.com/eula/):
 
   ```sh
-  ACCEPT_EULA=yes npm start
+  cross-env ACCEPT_EULA=yes npm start
   ```
 
 - `npm run build`
