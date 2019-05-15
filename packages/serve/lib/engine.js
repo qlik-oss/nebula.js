@@ -8,7 +8,7 @@ const startEngine = () => {
   }
   console.log('Starting engine container ...');
   return new Promise((resolve, reject) => {
-    const c = execa.shell('ACCEPT_EULA=yes docker-compose up -d --build', {
+    const c = execa.shell('cross-env ACCEPT_EULA=yes docker-compose up -d --build', {
       cwd: path.resolve(__dirname, '../'),
       stdio: 'inherit',
     });
