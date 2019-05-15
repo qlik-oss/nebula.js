@@ -116,6 +116,11 @@ module.exports = class extends Generator {
         {},
       );
       this.fs.copyTpl(
+        this.templatePath('project/picasso-templates/pic-selections.ejs'),
+        this.destinationPath(`${name}/src/pic-selections.js`),
+        {},
+      );
+      this.fs.copyTpl(
         this.templatePath(`project/picasso-templates/${this.opts.picasso}.ejs`),
         this.destinationPath(`${name}/src/picasso-definition.js`),
         { name },

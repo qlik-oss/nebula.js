@@ -1,9 +1,14 @@
 import picassojs from 'picasso.js';
 import picassoQ from 'picasso-plugin-q';
 
+import picSelections from './pic-selections';
+
 import definition from './picasso-definition';
 
-export default function pic(element) {
+export default function pic({
+  element,
+  selections,
+}) {
   const picasso = picassojs();
   picasso.use(picassoQ);
 
@@ -13,18 +18,25 @@ export default function pic(element) {
     settings: {},
   });
 
+  const picsel = picSelections({
+    selections,
+    brush: instance.brush('selection'),
+    picassoQ,
+  });
+
   return {
-    update({ layout }) {
+    update({ layout, context }) {
       instance.update({
         data: [{
           type: 'q',
           key: 'qHyperCube',
           data: layout.qHyperCube,
         }],
-        settings: definition({ layout }),
+        settings: definition({ layout, context }),
       });
     },
     destroy() {
+      picsel.release();
       instance.destroy();
     },
   };

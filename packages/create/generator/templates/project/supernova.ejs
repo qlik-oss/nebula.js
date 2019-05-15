@@ -18,7 +18,10 @@ export default function supernova(env) {
       mounted(element) {
         console.log(env);
         <%_ if (usePicasso) { _%>
-        this.pic = pic(element);
+        this.pic = pic({
+          element,
+          selections: this.selections
+        });
         <%_ } else {_%>
         element.innerHTML = '<div>Hello!</div>';
         <%_ } _%>
@@ -27,9 +30,8 @@ export default function supernova(env) {
         layout,
         context,
       }) {
-        console.log(layout, context);
         <%_ if (usePicasso) { _%>
-        this.pic.update({ layout });
+        this.pic.update({ layout, context });
         <%_ } _%>
       },
       resize() {},
