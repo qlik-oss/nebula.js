@@ -1962,15 +1962,15 @@
     mkdirp "^0.5.1"
     rimraf "^2.5.2"
 
-"@material-ui/core@^4.0.0-beta.0", "@material-ui/core@^4.0.0-beta.1":
-  version "4.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.0.0-beta.1.tgz#5f8f47b66e92f266abbad6cfcc9efa6e5d87e54c"
+"@material-ui/core@^4.0.0-rc.0":
+  version "4.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/core/-/core-4.0.0-rc.0.tgz#313ba18cdf4baeaa6c2efb1e38a88ac5b064dce4"
   dependencies:
     "@babel/runtime" "^7.2.0"
-    "@material-ui/styles" "^4.0.0-beta.1"
-    "@material-ui/system" "^4.0.0-beta.1"
-    "@material-ui/types" "^4.0.0-beta.2"
-    "@material-ui/utils" "^4.0.0-beta.1"
+    "@material-ui/styles" "^4.0.0-rc.0"
+    "@material-ui/system" "^4.0.0-rc.0"
+    "@material-ui/types" "^4.0.0-rc.0"
+    "@material-ui/utils" "^4.0.0-rc.0"
     "@types/react-transition-group" "^2.0.16"
     clsx "^1.0.2"
     convert-css-length "^1.0.2"
@@ -1986,20 +1986,20 @@
     react-transition-group "^4.0.0"
     warning "^4.0.1"
 
-"@material-ui/icons@^4.0.0-beta.0":
-  version "4.0.0-beta.0"
-  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.0.0-beta.0.tgz#9d117e72d7d690f6e212e02dcf491898145c5660"
+"@material-ui/icons@^4.0.0-rc.0":
+  version "4.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/icons/-/icons-4.0.0-rc.0.tgz#c7895049ffcf452d74327cc096da7b80d1352d6f"
   dependencies:
     "@babel/runtime" "^7.2.0"
 
-"@material-ui/styles@^4.0.0-beta.1":
-  version "4.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.0.0-beta.1.tgz#a552fe402763f0579cbd39e79a9e42fbf6762139"
+"@material-ui/styles@^4.0.0-rc.0":
+  version "4.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/styles/-/styles-4.0.0-rc.0.tgz#c805bdd2439bee0259a2b2d24fc7fc4fce4a1cd3"
   dependencies:
     "@babel/runtime" "^7.2.0"
     "@emotion/hash" "^0.7.1"
-    "@material-ui/types" "^4.0.0-beta.2"
-    "@material-ui/utils" "^4.0.0-beta.1"
+    "@material-ui/types" "^4.0.0-rc.0"
+    "@material-ui/utils" "^4.0.0-rc.0"
     clsx "^1.0.2"
     deepmerge "^3.0.0"
     hoist-non-react-statics "^3.2.1"
@@ -2014,22 +2014,22 @@
     prop-types "^15.7.2"
     warning "^4.0.1"
 
-"@material-ui/system@^4.0.0-beta.1":
-  version "4.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@material-ui/system/-/system-4.0.0-beta.1.tgz#6e170d72b8f4944f1d9d915f435967d1a7bcdac3"
+"@material-ui/system@^4.0.0-rc.0":
+  version "4.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/system/-/system-4.0.0-rc.0.tgz#3379fa73bcb2b93f8d032a32f80b25330e7e00e4"
   dependencies:
     "@babel/runtime" "^7.2.0"
     deepmerge "^3.0.0"
     prop-types "^15.7.2"
     warning "^4.0.1"
 
-"@material-ui/types@^4.0.0-beta.2":
-  version "4.0.0-beta.2"
-  resolved "https://registry.yarnpkg.com/@material-ui/types/-/types-4.0.0-beta.2.tgz#aa686548f6eca0b055249cdeb089973f33ab6976"
+"@material-ui/types@^4.0.0-rc.0":
+  version "4.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/types/-/types-4.0.0-rc.0.tgz#a50a021ea636fc4ed39e8d1fd311fe0fc299e8e3"
 
-"@material-ui/utils@^4.0.0-beta.1":
-  version "4.0.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@material-ui/utils/-/utils-4.0.0-beta.1.tgz#d5d566e38e21287a095e030d0bf465ea4f195633"
+"@material-ui/utils@^4.0.0-rc.0":
+  version "4.0.0-rc.0"
+  resolved "https://registry.yarnpkg.com/@material-ui/utils/-/utils-4.0.0-rc.0.tgz#c147d3c74aa1d540fa9bc3e6ab2dd08cc2380f22"
   dependencies:
     "@babel/runtime" "^7.2.0"
     prop-types "^15.7.2"

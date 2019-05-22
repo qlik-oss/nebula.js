@@ -41,7 +41,7 @@
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "@material-ui/core": "^4.0.0-beta.0",
+    "@material-ui/core": "^4.0.0-rc.0",
     "@nebula.js/nucleus": "0.1.0-alpha.13",
     "@nebula.js/ui": "0.1.0-alpha.13",
     "babel-loader": "^8.0.6",
