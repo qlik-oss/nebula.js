@@ -1,5 +1,13 @@
 {
   "extends": [
-    "config:base"
-  ]
+    "qlik-oss"
+  ],
+  "semanticCommits": true,
+  "rangeStrategy": "bump",
+  "packageRules": [{
+    "depTypeList": [
+      "engines"
+    ],
+    "enabled": false
+  }]
 }
