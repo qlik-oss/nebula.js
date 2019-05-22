@@ -1,6 +1,5 @@
 describe('creator', () => {
   const [{ default: create }] = aw.mock([
-    ['**/translator.js', () => () => {}],
     ['**/action-hero.js', () => () => ({})],
   ], ['../../src/creator']);
 

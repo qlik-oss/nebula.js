@@ -56,16 +56,8 @@ const CONFIGS = {
       reportDir: 'coverage/unit',
     },
     mocks: [
-      ['**/*.scss', '{}'],
-      ['**/*.css', '{}'],
-      ['**/theme.js', () => () => ({ style: () => 'classname' })],
-
       // mock nebula modules to avoid parsing errors without build.
       // these modules should be mocked properly in the unit test
-      ['@nebula.js/selections', () => ({})],
-      ['@nebula.js/supernova', () => ({})],
-      ['@nebula.js/nucleus', () => ({})],
-      ['**/positioner.js', () => ({})],
       ['snDefinition', () => ({})],
       ['extDefinition', () => ({})],
     ],

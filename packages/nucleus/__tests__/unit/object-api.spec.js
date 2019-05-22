@@ -4,7 +4,7 @@ describe('ObjectAPI', () => {
   const doMock = ({
     createObjectSelectionAPI = () => ({}),
   } = {}) => aw.mock([
-    ['**/selections.js', () => ({
+    ['**/selections/index.js', () => ({
       createObjectSelectionAPI,
     })],
   ], ['../../src/object/object-api']);

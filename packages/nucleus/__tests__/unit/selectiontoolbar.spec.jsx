@@ -26,10 +26,8 @@ describe('<SelectionToolbar />', () => {
         },
       };
       const STItem = () => '';
-      const styled = () => ['classes'];
       const [{ default: STB }] = aw.mock([
         ['**/SelectionToolbarItem.jsx', () => STItem],
-        ['**/styled.js', () => styled],
       ], ['../../src/components/SelectionToolbar']);
       st = new STB(props);
     });
@@ -115,10 +113,8 @@ describe('<SelectionToolbar />', () => {
       },
     };
     const STItem = ({ isCustom }) => `-${isCustom}-`;
-    const styled = () => ({ style: () => 'a' });
     const [{ default: STB }] = aw.mock([
       ['**/SelectionToolbarItem.jsx', () => STItem],
-      ['**/theme.js', () => styled],
     ], ['../../src/components/SelectionToolbar']);
     const c = renderer.create(<STB sn={props.sn} />);
     expect(c.toJSON()).to.eql({
