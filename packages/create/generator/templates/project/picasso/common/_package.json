@@ -1,0 +1,37 @@
+{
+  "name": "<%= name %>",
+  "version": "0.1.0",
+  "description": "<%= description %>",
+  "license": "MIT",
+  "author": {
+    "name": "<%= user %>",
+    "email": "<%= email %>"
+  },
+  "keywords": [
+    "qlik",
+    "nebula",
+    "supernova"
+  ],
+  "files": [
+    "dist"
+  ],
+  "engines": {
+    "node": ">=8"
+  },
+  "main": "dist/<%= name %>.js",
+  "module": "dist/<%= name %>.esm.js",
+  "scripts": {
+    "build": "nebula build",
+    "lint": "eslint src",
+    "start": "nebula serve"
+  },
+  "devDependencies": {
+    "@nebula.js/cli": "<%= nebulaVersion %>",
+    "eslint": "^5.12.1",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.15.0",
+    "eslint-plugin-mocha": "^5.2.1",
+    "picasso.js": "^0.25.2",
+    "picasso-plugin-q": "^0.25.2"
+  }
+}

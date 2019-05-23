@@ -4,6 +4,14 @@ const fs = require('fs');
 
 const pkg = require('../package.json');
 
+function cpy(source, target, args = {}) {
+  this.fs.copyTpl(
+    this.templatePath(source),
+    this.destinationPath(target),
+    args,
+  );
+}
+
 module.exports = class extends Generator {
   constructor(args, opts) {
     super(args, opts);
@@ -60,8 +68,8 @@ module.exports = class extends Generator {
       return;
     }
     const { name } = this.options;
-    const usePicasso = this.opts.picasso !== 'none';
 
+    // ==== common files ====
     // copy raw files
     [
       'editorconfig',
@@ -69,63 +77,40 @@ module.exports = class extends Generator {
       'gitignore',
       'eslintrc.json',
     ].forEach(filename => this.fs.copy(
-      this.templatePath(`project/_${filename}`), // copying dotfiles may not always work, so they are prefixed with an underline
+      this.templatePath(`project/common/_${filename}`), // copying dotfiles may not always work, so they are prefixed with an underline
       this.destinationPath(`${name}/.${filename}`),
     ));
 
-    this.fs.copyTpl(
-      this.templatePath('project/_package.json'), // npm pack will not pack the whole folder if it contains a package.json file
-      this.destinationPath(`${name}/package.json`),
-      {
-        name: this.opts.packageName,
-        description: '',
-        user: this.user.git.name(),
-        email: this.user.git.email(),
-        nebulaVersion: pkg.version,
-        // username: await this.user.github.username(),
-        usePicasso,
-      },
-    );
+    const copy = cpy.bind(this);
 
-    this.fs.copyTpl(
-      this.templatePath('project/README.md'),
-      this.destinationPath(`${name}/README.md`),
-      {
-        name,
-      },
-    );
+    copy('project/common/README.md', `${name}/README.md`, { name: this.opts.packageName });
 
-    this.fs.copyTpl(
-      this.templatePath('project/supernova.ejs'),
-      this.destinationPath(`${name}/src/index.js`),
-      {
-        usePicasso,
-      },
-    );
-
-    this.fs.copyTpl(
-      this.templatePath('project/object-properties.js'),
-      this.destinationPath(`${name}/src/object-properties.js`),
-      { name },
-    );
-
+    // ==== template files ====
+    const folders = [];
     if (this.opts.picasso !== 'none') {
-      this.fs.copyTpl(
-        this.templatePath('project/picasso-templates/pic.ejs'),
-        this.destinationPath(`${name}/src/pic.js`),
-        {},
-      );
-      this.fs.copyTpl(
-        this.templatePath('project/picasso-templates/pic-selections.ejs'),
-        this.destinationPath(`${name}/src/pic-selections.js`),
-        {},
-      );
-      this.fs.copyTpl(
-        this.templatePath(`project/picasso-templates/${this.opts.picasso}.ejs`),
-        this.destinationPath(`${name}/src/picasso-definition.js`),
-        { name },
-      );
+      folders.push('project/picasso/common');
+      folders.push(`project/picasso/${this.opts.picasso}`);
+    } else {
+      folders.push('project/none');
     }
+
+    folders.forEach((folder) => {
+      const files = fs.readdirSync(this.templatePath(folder));
+
+      files.forEach((file) => {
+        if (file === '_package.json') {
+          copy(`${folder}/_package.json`, `${name}/package.json`, {
+            name: this.opts.packageName,
+            description: '',
+            user: this.user.git.name(),
+            email: this.user.git.email(),
+            nebulaVersion: pkg.version,
+          });
+        } else {
+          copy(`${folder}/${file}`, `${name}/src/${file}`);
+        }
+      });
+    });
   }
 
   install() {
