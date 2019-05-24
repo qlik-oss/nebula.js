@@ -56,8 +56,7 @@ jobs:
 
       - run:
           name: Test integration
-          command: |
-            APP_ID=$DOC_ID yarn run test:integration
+          command: APP_ID=$DOC_ID yarn run test:integration
 
       - run:
           name: Create a supernova project

@@ -94,12 +94,16 @@ module.exports = class extends Generator {
       folders.push('project/none');
     }
 
-    folders.forEach((folder) => {
-      const files = fs.readdirSync(this.templatePath(folder));
+    const traverse = (sourceFolder, targetFolder = '') => {
+      const files = fs.readdirSync(this.templatePath(sourceFolder));
 
       files.forEach((file) => {
-        if (file === '_package.json') {
-          copy(`${folder}/_package.json`, `${name}/package.json`, {
+        const p = `${sourceFolder}/${file}`;
+        const stats = fs.lstatSync(this.templatePath(p));
+        if (stats.isDirectory()) {
+          traverse(p, `${targetFolder}/${file}`);
+        } else if (file === '_package.json') {
+          copy(`${sourceFolder}/_package.json`, `${name}/package.json`, {
             name: this.opts.packageName,
             description: '',
             user: this.user.git.name(),
@@ -107,9 +111,32 @@ module.exports = class extends Generator {
             nebulaVersion: pkg.version,
           });
         } else {
-          copy(`${folder}/${file}`, `${name}/src/${file}`);
+          copy(`${sourceFolder}/${file}`, `${name}/${targetFolder}/${file}`);
         }
       });
+    };
+
+    folders.forEach((folder) => {
+      traverse(folder);
+      // const files = fs.readdirSync(this.templatePath(folder));
+      // console.log('FEILS', files);
+
+      // files.forEach((file) => {
+      //   const stats = fs.lstatSync();
+      //   if (stats.isDirectory()) {
+      //     traverse(this.templatePath(folder), file);
+      //   } else if (file === '_package.json') {
+      //     copy(`${folder}/_package.json`, `${name}/package.json`, {
+      //       name: this.opts.packageName,
+      //       description: '',
+      //       user: this.user.git.name(),
+      //       email: this.user.git.email(),
+      //       nebulaVersion: pkg.version,
+      //     });
+      //   } else {
+      //     copy(`${folder}/${file}`, `${name}/src/${file}`);
+      //   }
+      // });
     });
   }
 
