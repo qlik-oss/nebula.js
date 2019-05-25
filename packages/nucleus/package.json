@@ -24,16 +24,16 @@
     "prepublishOnly": "rm -rf dist && npm run build"
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.0.0-rc.0",
-    "@material-ui/icons": "^4.0.0-rc.0",
-    "@material-ui/styles": "^4.0.0-rc.0",
+    "@material-ui/core": "^4.0.0",
+    "@material-ui/icons": "^4.0.0",
+    "@material-ui/styles": "^4.0.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6"
   },
   "devDependencies": {
-    "@material-ui/core": "^4.0.0-rc.0",
-    "@material-ui/icons": "^4.0.0-rc.0",
-    "@material-ui/styles": "^4.0.0-rc.0",
+    "@material-ui/core": "^4.0.0",
+    "@material-ui/icons": "^4.0.0",
+    "@material-ui/styles": "^4.0.0",
     "@nebula.js/supernova": "0.1.0-alpha.13",
     "@nebula.js/ui": "0.1.0-alpha.13",
     "node-event-emitter": "^0.0.1",
