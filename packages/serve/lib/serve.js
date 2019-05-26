@@ -56,6 +56,7 @@ module.exports = async (argv) => {
     snName,
     snPath,
     dev: process.env.MONO === 'true',
+    open: argv.open !== false,
   });
 
   const close = () => {
@@ -65,9 +66,7 @@ module.exports = async (argv) => {
     if (watcher) {
       watcher.close();
     }
-    server.close(() => {
-      process.exit(0);
-    });
+    server.close();
   };
 
   ['SIGINT', 'SIGTERM'].forEach((signal) => {

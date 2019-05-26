@@ -12,6 +12,7 @@ module.exports = async ({
   snPath,
   snName,
   dev = false,
+  open = true,
 }) => {
   let config;
   let contentBase;
@@ -47,7 +48,7 @@ module.exports = async ({
       errors: true,
     },
     quiet: true,
-    open: true,
+    open,
     contentBase: [
       contentBase,
     ],
@@ -82,9 +83,7 @@ module.exports = async ({
   const server = new WebpackDevServer(compiler, options);
 
   const close = () => {
-    server.close(() => {
-      process.exit(0);
-    });
+    server.close();
   };
 
   ['SIGINT', 'SIGTERM'].forEach((signal) => {
