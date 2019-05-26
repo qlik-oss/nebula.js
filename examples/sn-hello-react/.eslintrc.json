@@ -1,0 +1,43 @@
+{
+  "root": true,
+  "env": {
+    "browser": true
+  },
+  "parserOptions": {
+    "sourceType": "module"
+  },
+  "extends": [
+    "airbnb"
+  ],
+  "rules": {
+    "max-len": 0,
+    "no-plusplus": 0,
+    "no-bitwise" : 0,
+    "no-unused-expressions": 0,
+    "import/no-extraneous-dependencies": [2, { "devDependencies": true }],
+    "react/prop-types": 0
+  },
+  "overrides": [
+    {
+      "files": ["**/*.spec.js"],
+      "env": {
+        "browser": false,
+        "node": true,
+        "mocha": true
+      },
+      "globals": {
+        "chai": false,
+        "expect": false,
+        "sinon": false,
+        "aw": false,
+        "page": false
+      },
+      "plugins": [
+        "mocha"
+      ],
+      "rules": {
+        "mocha/no-exclusive-tests": "error"
+      }
+    }
+  ]
+}
