@@ -17,11 +17,11 @@ before(async () => {
     console.error('Web: ', e.message);
   });
 
-  // page.on('console', (msg) => {
-  //   for (let i = 0; i < msg.args().length; ++i) {
-  //     console.log(`console ${msg.text()}`);
-  //   }
-  // });
+  page.on('console', (msg) => {
+    for (let i = 0; i < msg.args().length; ++i) {
+      console.log(`console ${msg.text()}`);
+    }
+  });
 });
 
 after(() => {
