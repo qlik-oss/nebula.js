@@ -70,7 +70,7 @@ export default function Fields({
           <ListItem disableGutters key={d.qDef.cId}>
             <ListItemText>{t.title(d)}</ListItemText>
             <ListItemSecondaryAction>
-              <IconButton onClick={() => onRemove(i)}><Remove /></IconButton>
+              <IconButton edge="end" onClick={() => onRemove(i)}><Remove /></IconButton>
             </ListItemSecondaryAction>
           </ListItem>
         ))}

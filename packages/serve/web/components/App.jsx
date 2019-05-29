@@ -152,7 +152,7 @@ export default function App({
                 <Grid container>
                   <Grid item>
                     <Button variant="outlined" href={window.location.origin}>
-                      <ChevronLeft />
+                      <ChevronLeft style={{ marginLeft: -theme.spacing(1 * 1.5) }} />
                       Hub
                     </Button>
                   </Grid>
