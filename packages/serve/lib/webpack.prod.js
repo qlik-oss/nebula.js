@@ -22,11 +22,17 @@ const cfg = ({
       },
     },
     module: {
-      rules: [{
-        enforce: 'pre',
-        test: /\.js$/,
-        loader: sourceMapLoaderPath,
-      }],
+      rules: [
+        {
+          enforce: 'pre',
+          test: /\.js$/,
+          loader: sourceMapLoaderPath,
+        },
+        {
+          test: /\.css$/i,
+          use: ['style-loader', 'css-loader'],
+        },
+      ],
     },
     plugins: [
       new HtmlWebpackPlugin({
