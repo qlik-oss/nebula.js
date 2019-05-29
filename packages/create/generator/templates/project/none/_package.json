@@ -23,9 +23,11 @@
   "scripts": {
     "build": "nebula build",
     "lint": "eslint src",
-    "start": "nebula serve"
+    "start": "nebula serve",
+    "test:integration": "aw puppet --glob 'test/integration/**/*.spec.js' --chrome.headless true --mocha.timeout 15000"
   },
   "devDependencies": {
+    "@after-work.js/aw": "^6.0.3",
     "@nebula.js/cli": "<%= nebulaVersion %>",
     "eslint": "^5.12.1",
     "eslint-config-airbnb-base": "^13.1.0",

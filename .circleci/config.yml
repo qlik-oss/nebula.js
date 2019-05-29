@@ -61,20 +61,11 @@ jobs:
 
       - run:
           name: Create a hello supernova project
-          command: npx nebula create generated/hello --pkgm yarn --picasso none
-
-      - run:
-          background: true
-          name: Serve hello supernova
           command: |
+            set -e
+            npx nebula create generated/hello --pkgm yarn --picasso none
             cd generated/hello
-            yarn run start --port 8085
-
-      - run:
-          name: Test generated hello supernova
-          command: |
-            dockerize -wait tcp://localhost:8085 -timeout 30s
-            APP_ID=$DOC_ID npx aw puppeteer --glob test/e2e-cli/**/*.spec.js --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+            APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 
       - run:
           name: Create a picasso barchart supernova project
