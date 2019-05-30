@@ -1,5 +1,4 @@
-const path = require('path');
-const execa = require('execa');
+const create = require('./lib');
 
 module.exports = {
   command: 'create <name>',
@@ -24,18 +23,12 @@ module.exports = {
       choices: ['none', 'minimal', 'barchart'],
       description: 'Picasso template',
     });
+    yargs.option('author', {
+      type: 'string',
+      description: 'Package author',
+    });
   },
   async handler(argv) {
-    const generator = path.resolve(__dirname, 'generator/index.js');
-    const args = `${argv.name} ${!argv.install ? '--no-install' : ''} ${argv.pkgm ? `--pkgm ${argv.pkgm}` : ''} ${argv.picasso ? `--picasso ${argv.picasso}` : ''}`;
-    try {
-      execa.shell(`yo ${generator} ${args} --no-insight`, {
-        localDir: path.resolve(__dirname, 'node_modules', '.bin'),
-        preferLocal: true,
-        stdio: 'inherit',
-      });
-    } catch (err) {
-      console.error(err);
-    }
+    create(argv);
   },
 };
