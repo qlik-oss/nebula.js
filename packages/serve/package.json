@@ -34,14 +34,14 @@
     "portfinder": "^1.0.20",
     "source-map-loader": "^0.2.4",
     "webpack": "^4.32.2",
-    "webpack-dev-server": "^3.4.1",
+    "webpack-dev-server": "^3.5.1",
     "yargs": "^13.2.4"
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "@material-ui/core": "^4.0.0",
+    "@material-ui/core": "^4.0.2",
     "@nebula.js/nucleus": "0.1.0-alpha.14",
     "@nebula.js/ui": "0.1.0-alpha.14",
     "babel-loader": "^8.0.6",
