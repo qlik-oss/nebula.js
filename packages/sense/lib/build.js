@@ -54,17 +54,18 @@ async function build(argv) {
           }],
         ],
       }),
-      terser({
+      (argv.minify && terser({
         output: {
           comments: /@license|@preserve|Copyright|license/,
         },
-      }),
+      })),
     ],
   });
 
   await bundle.write({
     dir: targetDirectory,
     format: 'amd',
+    sourcemap: true,
     paths: {
       snDefinition: './supernova',
       extDefinition: './extDefinition',
