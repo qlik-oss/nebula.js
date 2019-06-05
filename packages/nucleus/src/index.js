@@ -1,4 +1,5 @@
 /* eslint no-underscore-dangle:0 */
+import localeFn from './locale';
 
 import { createAppSelectionAPI } from './selections';
 
@@ -10,14 +11,17 @@ import get from './object/get-object';
 import types from './sn/types';
 import logger from './utils/logger';
 
-function apiGenerator(app) {
+function nucleus(app, cfg = {}) {
   createAppSelectionAPI(app);
 
   const lgr = logger({ level: 4 });
 
+  const locale = localeFn(cfg.locale);
+
   const config = {
     env: {
       Promise,
+      translator: locale.translator(),
     },
     load: () => undefined,
   };
@@ -85,4 +89,4 @@ function apiGenerator(app) {
   return api;
 }
 
-export default apiGenerator;
+export default nucleus;
