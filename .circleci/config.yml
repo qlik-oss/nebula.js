@@ -60,19 +60,21 @@ jobs:
           command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 
       - run:
-          name: Create a hello supernova project
+          name: Create a hello supernova project from latest release
           command: |
             set -e
-            npx nebula create generated/hello --pkgm yarn --picasso none
-            cd generated/hello
+            npx nebula create temp/hello --pkgm yarn --picasso none
+            cd temp/hello
             APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 
       - run:
-          name: Create a picasso barchart supernova project
+          name: Create a picasso barchart supernova project from current commit
           command: |
             set -e
-            npx nebula create generated/barchart --pkgm yarn --picasso barchart
+            ./packages/cli/lib/index.js create generated/barchart --picasso barchart --no-install
+            yarn
             cd generated/barchart
+            npm i picasso.js picasso-plugin-q
             yarn run build
             APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 

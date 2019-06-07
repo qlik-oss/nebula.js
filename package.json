@@ -58,7 +58,7 @@
     "yargs": "^13.2.4"
   },
   "workspaces": [
-    "generated",
+    "generated/*",
     "packages/*"
   ]
 }
