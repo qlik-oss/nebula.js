@@ -15,11 +15,12 @@ serverInfo.then(info => openApp(params.app).then((app) => {
   let obj;
   let objType;
 
-  const nebbie = nucleus(app)
-    .load((type, config) => {
+  const nebbie = nucleus(app, {
+    load: (type, config) => {
       objType = type.name;
       return config.Promise.resolve(snDefinition);
-    });
+    },
+  });
 
   const create = () => {
     obj = nebbie.create({
