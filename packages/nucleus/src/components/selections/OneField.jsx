@@ -1,7 +1,7 @@
 import React, {
   useRef,
   useState,
-  // useMemo,
+  useContext,
 } from 'react';
 
 import Remove from '@nebula.js/ui/icons/Remove';
@@ -18,6 +18,8 @@ import { makeStyles } from '@nebula.js/ui/theme';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
+import LocaleContext from '../../contexts/LocaleContext';
+
 const useStyles = makeStyles(theme => ({
   item: {
     cursor: 'pointer',
@@ -33,6 +35,7 @@ export default function OneField({
   api,
   // theme = themes('light'),
 }) {
+  const translator = useContext(LocaleContext);
   const alignTo = useRef();
   const [isActive, setIsActive] = useState(false);
 
@@ -53,9 +56,9 @@ export default function OneField({
   const numSelected = counts.qSelected + counts.qSelectedExcluded + counts.qLocked + counts.qLockedExcluded;
   let label = '&nbsp;'; // FIXME translate
   if (selection.qTotal === numSelected && selection.qTotal > 1) {
-    label = 'All';
+    label = translator.get('CurrentSelections.All');
   } else if (numSelected > 1 && selection.qTotal) {
-    label = `${numSelected} of ${selection.qTotal}`;
+    label = translator.get('CurrentSelections.Of', [numSelected, selection.qTotal]);
   } else {
     label = selection.qSelectedFieldSelectionInfo.map(v => v.qName).join(', ');
   }
@@ -91,6 +94,7 @@ export default function OneField({
       {selection.qLocked ? (<Grid item><IconButton><Lock /></IconButton></Grid>) : (
         <Grid item>
           <IconButton
+            title={translator.get('Selection.Clear')}
             onClick={(e) => { e.stopPropagation(); api.clearField(selection.qField, field.states[0]); }}
             style={{ zIndex: 1 }}
           >

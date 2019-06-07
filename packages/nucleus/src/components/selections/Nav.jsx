@@ -1,6 +1,7 @@
 import React, {
   useEffect,
   useState,
+  useContext,
 } from 'react';
 
 import {
@@ -12,9 +13,13 @@ import SelectionsBack from '@nebula.js/ui/icons/SelectionsBack';
 import SelectionsForward from '@nebula.js/ui/icons/SelectionsForward';
 import ClearSelections from '@nebula.js/ui/icons/ClearSelections';
 
+import LocaleContext from '../../contexts/LocaleContext';
+
 export default function Nav({
   api,
 }) {
+  const translator = useContext(LocaleContext);
+
   const [state, setState] = useState({
     forward: api.canGoForward(),
     back: api.canGoBack(),
@@ -50,6 +55,7 @@ export default function Nav({
         <IconButton
           style={{ marginRight: '8px' }}
           disabled={!state.back}
+          title={translator.get('Navigate.Back')}
           onClick={() => api.back()}
         >
           <SelectionsBack />
@@ -59,6 +65,7 @@ export default function Nav({
         <IconButton
           style={{ marginRight: '8px' }}
           disabled={!state.forward}
+          title={translator.get('Navigate.Forward')}
           onClick={() => api.forward()}
         >
           <SelectionsForward />
@@ -67,6 +74,7 @@ export default function Nav({
       <Grid item>
         <IconButton
           disabled={!state.clear}
+          title={translator.get('Selection.ClearAll')}
           onClick={() => api.clear()}
         >
           <ClearSelections />

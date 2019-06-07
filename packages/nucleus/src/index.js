@@ -28,6 +28,7 @@ function nucleus(app, cfg = {}) {
 
   const root = App({
     app,
+    translator: locale.translator(),
   });
 
   const context = {

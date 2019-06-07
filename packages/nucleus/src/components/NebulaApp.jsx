@@ -10,6 +10,8 @@ import {
   createGenerateClassName,
 } from '@nebula.js/ui/theme';
 
+import LocaleContext from '../contexts/LocaleContext';
+
 const THEME_PREFIX = (process.env.NEBULA_VERSION || '').replace(/[.-]/g, '_');
 
 let counter = 0;
@@ -17,6 +19,7 @@ let counter = 0;
 function NebulaApp({
   children,
   themeName,
+  translator,
 }) {
   const { theme, generator } = useMemo(() => ({
     theme: createTheme(themeName),
@@ -30,9 +33,11 @@ function NebulaApp({
   return (
     <StylesProvider generateClassName={generator}>
       <ThemeProvider theme={theme}>
-        <>
-          {children}
-        </>
+        <LocaleContext.Provider value={translator}>
+          <>
+            {children}
+          </>
+        </LocaleContext.Provider>
       </ThemeProvider>
     </StylesProvider>
   );
@@ -41,6 +46,7 @@ function NebulaApp({
 export default function boot({
   app,
   theme = 'light',
+  translator,
 }) {
   const element = document.createElement('div');
   element.style.display = 'none';
@@ -52,7 +58,13 @@ export default function boot({
 
   const update = () => {
     ReactDOM.render(
-      <NebulaApp themeName={themeName} app={app}>{components}</NebulaApp>,
+      <NebulaApp
+        themeName={themeName}
+        app={app}
+        translator={translator}
+      >
+        {components}
+      </NebulaApp>,
       element,
     );
   };

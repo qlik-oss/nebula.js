@@ -8,4 +8,6 @@ export default {
   'Selection.Confirm': 'Confirm selection',
   'Selection.Cancel': 'Cancel selection',
   'Selection.Clear': 'Clear selection',
+  'CurrentSelections.All': 'ALL',
+  'CurrentSelections.Of': '{0} of {1}',
 };

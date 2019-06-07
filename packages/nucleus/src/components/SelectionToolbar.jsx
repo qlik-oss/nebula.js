@@ -1,77 +1,60 @@
-import React from 'react';
+import React, {
+  useContext,
+  useMemo,
+} from 'react';
 
 import Item from './SelectionToolbarItem';
+import LocaleContext from '../contexts/LocaleContext';
 
-class Component extends React.Component {
-  constructor(props) {
-    super(props);
-    const api = props.sn.component.selections;
+function Component({
+  sn,
+}) {
+  const translator = useContext(LocaleContext);
+  const api = sn.component.selections;
 
-    this.state = {
-      confirmable: api.canConfirm(),
-      cancelable: api.canCancel(),
-      clearable: api.canClear(),
-    };
+  const s = {
+    confirmable: api.canConfirm(),
+    cancelable: api.canCancel(),
+    clearable: api.canClear(),
+  };
 
-    const items = [];
-
-    // TODO - translations
-    items.push({
+  const { items, custom } = useMemo(() => {
+    const arr = [{
       key: 'confirm',
       type: 'icon-button',
-      label: 'Confirm',
+      label: translator.get('Selection.Confirm'),
       icon: 'tick',
-      enabled: () => this.state.confirmable,
-      action: () => api.confirm(props.sn.component),
-    });
-
-    items.push({
+      enabled: () => s.confirmable,
+      action: () => api.confirm(sn.component),
+    }, {
       key: 'cancel',
       type: 'icon-button',
-      label: 'Cancel',
+      label: translator.get('Selection.Cancel'),
       icon: 'close',
-      enabled: () => this.state.cancelable,
-      action: () => api.cancel(props.sn.component),
-    });
-
-    items.push({
+      enabled: () => s.cancelable,
+      action: () => api.cancel(sn.component),
+    }, {
       key: 'clear',
       type: 'icon-button',
-      label: 'Clear',
+      label: translator.get('Selection.Clear'),
       icon: 'clear-selections',
-      enabled: () => this.state.clearable,
-      action: () => api.clear(props.sn.component),
+      enabled: () => s.clearable,
+      action: () => api.clear(sn.component),
+    }];
+    const c = {};
+    (sn.selectionToolbar.items || []).forEach((item) => {
+      c[item.key] = true;
+      arr.push(item);
     });
 
-    this.listeners = [];
-    this.custom = {};
+    return { items: arr.reverse(), custom: c };
+  }, [s.confirmable, s.cancelable, s.clearable, sn && sn.selectionToolbar.items]);
 
-    (props.sn.selectionToolbar.items || []).forEach((item) => {
-      this.custom[item.key] = true;
-      items.push(item);
-    });
-
-    items.reverse();
-
-    this.state.items = items;
-  }
-
-  static getDerivedStateFromProps(nextProps) {
-    const api = nextProps.sn.component.selections;
-    return {
-      confirmable: api.canConfirm(),
-      cancelable: api.canCancel(),
-      clearable: api.canClear(),
-    };
-  }
-
-  render() {
-    return (
-      <div>
-        {this.state.items.map(itm => <Item key={itm.key} item={itm} isCustom={!!this.custom[itm.key]} />)}
-      </div>
-    );
-  }
+  return (
+    <div>
+      {items.map(itm => <Item key={itm.key} item={itm} isCustom={!!custom[itm.key]} />)}
+    </div>
+  );
 }
 
 export default Component;
