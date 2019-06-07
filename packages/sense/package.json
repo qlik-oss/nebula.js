@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-sense",
-  "version": "0.1.0-alpha.14",
+  "version": "0.1.0-alpha.15",
   "description": "Build a supernova as a Qlik Sense extension",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -30,7 +30,7 @@
     "@babel/cli": "^7.4.4",
     "@babel/core": "^7.4.5",
     "@babel/preset-env": "^7.4.5",
-    "@nebula.js/supernova": "0.1.0-alpha.14",
+    "@nebula.js/supernova": "0.1.0-alpha.15",
     "chalk": "^2.4.2",
     "node-event-emitter": "^0.0.1",
     "rollup": "^1.13.1",

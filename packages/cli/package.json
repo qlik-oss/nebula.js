@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli",
-  "version": "0.1.0-alpha.14",
+  "version": "0.1.0-alpha.15",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -22,10 +22,10 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@nebula.js/cli-build": "0.1.0-alpha.14",
-    "@nebula.js/cli-create": "0.1.0-alpha.14",
-    "@nebula.js/cli-sense": "0.1.0-alpha.14",
-    "@nebula.js/cli-serve": "0.1.0-alpha.14",
+    "@nebula.js/cli-build": "0.1.0-alpha.15",
+    "@nebula.js/cli-create": "0.1.0-alpha.15",
+    "@nebula.js/cli-sense": "0.1.0-alpha.15",
+    "@nebula.js/cli-serve": "0.1.0-alpha.15",
     "chalk": "^2.4.2",
     "yargs": "^13.2.4"
   }
