@@ -23,12 +23,13 @@ function nucleus(app, cfg = {}) {
       Promise,
       translator: locale.translator(),
     },
-    load: () => undefined,
+    load: cfg.load || (() => undefined),
   };
 
   const root = App({
     app,
     translator: locale.translator(),
+    theme: cfg.theme || 'light',
   });
 
   const context = {
@@ -50,12 +51,9 @@ function nucleus(app, cfg = {}) {
       Object.assign(config.env, e);
       return api;
     },
-    load: ($) => {
-      config.load = $;
-      return api;
-    },
     theme(t) {
       root.theme(t);
+      return api;
     },
     selections: () => {
       if (!selectionsApi) {

@@ -77,8 +77,10 @@ export default function App({
 
   const theme = useMemo(() => createTheme(themeName), [themeName]);
 
-  const nebbie = useMemo(() => nucleus(app)
-    .load((type, config) => config.Promise.resolve(window.snDefinition || snDefinition)), [app]);
+  const nebbie = useMemo(() => nucleus(app, {
+    load: (type, config) => config.Promise.resolve(window.snDefinition || snDefinition),
+    theme: themeName,
+  }), [app]);
 
   useLayoutEffect(() => {
     nebbie.theme(themeName);
