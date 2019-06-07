@@ -1,11 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-import SelectionToolbar from '../../src/components/SelectionToolbar';
-
 describe('<SelectionToolbar />', () => {
-  describe('constructor', () => {
-    let st;
+  describe('state', () => {
+    let items;
     let component;
     beforeEach(() => {
       component = {
@@ -26,18 +24,35 @@ describe('<SelectionToolbar />', () => {
         },
       };
       const STItem = () => '';
+      const LocaleContext = React.createContext();
       const [{ default: STB }] = aw.mock([
         ['**/SelectionToolbarItem.jsx', () => STItem],
+        ['**/LocaleContext.js', () => LocaleContext],
       ], ['../../src/components/SelectionToolbar']);
-      st = new STB(props);
+
+      const translator = {
+        get: sinon.stub(),
+      };
+
+      translator.get.withArgs('Selection.Confirm').returns('localized confirm');
+      translator.get.withArgs('Selection.Cancel').returns('localized cancel');
+      translator.get.withArgs('Selection.Clear').returns('localized clear');
+
+      const c = renderer.create(
+        <LocaleContext.Provider value={translator}>
+          <STB sn={props.sn} />
+        </LocaleContext.Provider>,
+      );
+
+      items = c.root.findAllByType(STItem);
     });
 
     it('should have a confirm item', () => {
-      const item = st.state.items[3];
+      const { item } = items[3].props;
       expect(item).to.containSubset({
         key: 'confirm',
         type: 'icon-button',
-        label: 'Confirm',
+        label: 'localized confirm',
         icon: 'tick',
       });
 
@@ -47,11 +62,11 @@ describe('<SelectionToolbar />', () => {
     });
 
     it('should have a cancel item', () => {
-      const item = st.state.items[2];
-      expect(st.state.items[2]).to.containSubset({
+      const { item } = items[2].props;
+      expect(item).to.containSubset({
         key: 'cancel',
         type: 'icon-button',
-        label: 'Cancel',
+        label: 'localized cancel',
         icon: 'close',
       });
       expect(item.enabled()).to.equal('cancelable');
@@ -60,11 +75,11 @@ describe('<SelectionToolbar />', () => {
     });
 
     it('should have a clear item', () => {
-      const item = st.state.items[1];
-      expect(st.state.items[1]).to.containSubset({
+      const { item } = items[1].props;
+      expect(item).to.containSubset({
         key: 'clear',
         type: 'icon-button',
-        label: 'Clear',
+        label: 'localized clear',
         icon: 'clear-selections',
       });
       expect(item.enabled()).to.equal('clearable');
@@ -73,28 +88,11 @@ describe('<SelectionToolbar />', () => {
     });
 
     it('should have a custom item', () => {
-      expect(st.state.items[0]).to.containSubset({
+      const { item } = items[0].props;
+      expect(item).to.containSubset({
         key: 'mine',
         type: 'random',
       });
-    });
-  });
-
-  it('getDerivedStateFromProps', () => {
-    expect(SelectionToolbar.getDerivedStateFromProps({
-      sn: {
-        component: {
-          selections: {
-            canConfirm: () => 'cm',
-            canCancel: () => 'cl',
-            canClear: () => 'cr',
-          },
-        },
-      },
-    })).to.eql({
-      confirmable: 'cm',
-      cancelable: 'cl',
-      clearable: 'cr',
     });
   });
 
@@ -113,10 +111,22 @@ describe('<SelectionToolbar />', () => {
       },
     };
     const STItem = ({ isCustom }) => `-${isCustom}-`;
+    const LocaleContext = React.createContext();
     const [{ default: STB }] = aw.mock([
       ['**/SelectionToolbarItem.jsx', () => STItem],
+      ['**/LocaleContext.js', () => LocaleContext],
     ], ['../../src/components/SelectionToolbar']);
-    const c = renderer.create(<STB sn={props.sn} />);
+
+    const translator = {
+      get: sinon.stub(),
+    };
+
+    const c = renderer.create(
+      <LocaleContext.Provider value={translator}>
+        <STB sn={props.sn} />
+      </LocaleContext.Provider>,
+    );
+
     expect(c.toJSON()).to.eql({
       type: 'div',
       props: {},
