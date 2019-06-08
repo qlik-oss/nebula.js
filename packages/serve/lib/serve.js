@@ -57,6 +57,7 @@ module.exports = async (argv) => {
     snPath,
     dev: process.env.MONO === 'true',
     open: argv.open !== false,
+    watcher,
   });
 
   const close = () => {

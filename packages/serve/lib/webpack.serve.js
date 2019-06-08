@@ -13,6 +13,7 @@ module.exports = async ({
   snName,
   dev = false,
   open = true,
+  watcher,
 }) => {
   let config;
   let contentBase;
@@ -89,6 +90,14 @@ module.exports = async ({
   ['SIGINT', 'SIGTERM'].forEach((signal) => {
     process.on(signal, close);
   });
+
+  if (watcher) {
+    watcher.on('event', (event) => {
+      if (event.code === 'ERROR') {
+        server.sockWrite(server.sockets, 'errors', [event.error.stack]);
+      }
+    });
+  }
 
   let initiated = false;
 
