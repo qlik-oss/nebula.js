@@ -24,7 +24,7 @@ jobs:
       - image: circleci/node:10.9.0
       - image: qlikcore/engine:12.387.0
         command: -S AcceptEULA=yes
-      - image: browserless/chrome:1.8-puppeteer-1.13.0
+      - image: browserless/chrome:1.9-puppeteer-1.13.0
 
     working_directory: ~/project
 
