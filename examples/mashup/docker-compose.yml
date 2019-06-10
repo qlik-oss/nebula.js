@@ -2,8 +2,8 @@ version: "3.1"
 
 services:
   engine:
-    image: qlikcore/engine:${ENGINE_VERSION:-latest}
+    image: qlikcore/engine:${ENGINE_VERSION}
     restart: always
     command: -S AcceptEULA="${ACCEPT_EULA:-no}"
     ports:
-      - "19076:9076"
+      - "9076:9076"

@@ -1,6 +1,0 @@
-{
-  "private": true,
-  "dependencies": {
-    "enigma.js": "^2.4.0"
-  }
-}

@@ -3,8 +3,9 @@
 <head>
 	<meta charset="UTF-8">
   <title>Nebula mashup</title>
-  <script src="./node_modules/enigma.js/enigma.js"></script>
-  <script src="../../packages/nucleus/dist/nucleus.js"></script>
+
+  <script src="https://unpkg.com/enigma.js"></script>
+  <script src="https://unpkg.com/@nebula.js/nucleus@next"></script>
 
 	<style>
     body {
@@ -19,9 +20,13 @@
 
     .object {
       position: relative;
-      width: 600px;
       height: 400px;
       background-color: white;
+    }
+
+    .toolbar {
+      background-color: white;
+      margin: 12px 0px;
     }
 
 	</style>
@@ -29,6 +34,7 @@
 <body>
 
   <div class="content">
+    <div class="toolbar"></div>
     <div class="object" data-type='foo'></div>
   </div>
 
