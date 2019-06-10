@@ -11,6 +11,8 @@ connect().then((app) => {
     load: (type, config) => config.Promise.resolve(sn),
   });
 
+  nebbie.selections().mount(document.querySelector('.toolbar'));
+
   document.querySelectorAll('.object').forEach((el) => {
     const type = el.getAttribute('data-type');
 
