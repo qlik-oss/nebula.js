@@ -130,6 +130,7 @@ export default function OneField({
           alignTo={alignTo}
           show={isActive}
           close={() => setIsActive(false)}
+          selections={api}
           app={api.model}
           fieldName={selection.qField}
           stateName={field.states[0]}

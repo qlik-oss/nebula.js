@@ -21,6 +21,7 @@ export default function ListBoxPopover({
   show,
   close,
   app,
+  selections,
   fieldName,
   stateName = '$',
 }) {
@@ -63,6 +64,10 @@ export default function ListBoxPopover({
   const isLocked = layout ? layout.qListObject.qDimensionInfo.qLocked === true : false;
 
   const open = show && Boolean(alignTo.current);
+
+  if (open) {
+    selections.switchModal();
+  }
 
   return (
     <Popover
