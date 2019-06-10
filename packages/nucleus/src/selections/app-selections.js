@@ -61,19 +61,16 @@ const create = (app) => {
       return lyt;
     },
     forward() {
-      this.switchModal();
-      return app.forward();
+      return this.switchModal().then(() => app.forward());
     },
     back() {
-      this.switchModal();
-      return app.back();
+      return this.switchModal().then(() => app.back());
     },
     clear() {
-      this.switchModal();
-      return app.clearAll();
+      return this.switchModal().then(() => app.clearAll());
     },
     clearField(field, state = '$') {
-      return app.getField(field, state).then(f => f.clear());
+      return this.switchModal().then(() => app.getField(field, state).then(f => f.clear()));
     },
   };
 
