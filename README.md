@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="500" src="./assets/logos/nebula.png" alt="nebula.js logo" />
+  <img width="500" src="./docs/assets/logos/nebula.png" alt="nebula.js logo" />
 </p>
 <p align="center">A new star on the rise</p>
 
@@ -13,7 +13,7 @@ It consists of three parts:
 - `supernova`: A JavaScript API for consuming and visualizing QIX data.
 - `cli`: Tools to help you create, develop and build a `supernova`.
 
-![nebula-overview](assets/nebula-overview.png)
+![nebula-overview](docs/assets/nebula-overview.png)
 
 ## Roadmap
 
