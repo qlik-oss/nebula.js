@@ -1,6 +1,7 @@
 import React, {
   useContext,
   useState,
+  useMemo,
 } from 'react';
 
 import {
@@ -24,6 +25,7 @@ import {
 
 import useModel from '@nebula.js/nucleus/src/hooks/useModel';
 import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
+import useLibraryList from '../hooks/useLibraryList';
 
 import AppContext from '../contexts/AppContext';
 
@@ -34,11 +36,37 @@ const Field = ({ field, onSelect, sub }) => (
   </ListItem>
 );
 
+const LibraryItem = ({ item, onSelect }) => (
+  <ListItem button onClick={() => onSelect(item.qInfo)} data-key={item.qInfo.qId}>
+    <ListItemText>{item.qData.title}</ListItemText>
+  </ListItem>
+);
+
 const Aggr = ({ aggr, field, onSelect }) => (
   <ListItem button onClick={() => onSelect(aggr)} data-key={aggr}>
     <ListItemText>{`${aggr}(${field})`}</ListItemText>
   </ListItem>
 );
+
+const LibraryList = ({
+  app,
+  onSelect,
+  title = '',
+  type = 'dimension',
+}) => {
+  const [libraryItems] = useLibraryList(app, type);
+  const sortedLibraryItems = useMemo(() => libraryItems
+    .slice()
+    .sort((a, b) => a.qData.title.toLowerCase().localeCompare(b.qData.title.toLowerCase())),
+  [libraryItems]);
+
+  return libraryItems.length > 0 ? (
+    <React.Fragment>
+      <ListSubheader component="div" style={{ backgroundColor: 'inherit' }}>{title}</ListSubheader>
+      {sortedLibraryItems.map(item => <LibraryItem key={item.qInfo.qId} item={item} onSelect={onSelect} />)}
+    </React.Fragment>
+  ) : null;
+};
 
 export default function FieldsPopover({
   alignTo,
@@ -66,10 +94,16 @@ export default function FieldsPopover({
 
   const [layout] = useLayout(model, app);
 
-  const fields = layout ? (layout.qFieldList.qItems || []) : [];
+  const fields = useMemo(() => (layout ? (layout.qFieldList.qItems || []) : [])
+    .slice()
+    .sort((a, b) => a.qName.toLowerCase().localeCompare(b.qName.toLowerCase())),
+  [layout]);
 
   const onSelect = (s) => {
-    if (type === 'measure') {
+    if (s && s.qId) {
+      onSelected(s);
+      close();
+    } else if (type === 'measure') {
       setSelectedField(s);
     } else {
       onSelected({
@@ -121,6 +155,7 @@ export default function FieldsPopover({
       )}
       {!selectedField && fields.length > 0 && (
         <List dense component="nav" style={{ background: theme.palette.background.lightest }}>
+          <LibraryList app={app} onSelect={onSelect} type={type} title={type === 'measure' ? 'Measures' : 'Dimensions'} />
           <ListSubheader component="div" style={{ backgroundColor: 'inherit' }}>Fields</ListSubheader>
           {fields.map(field => <Field key={field.qName} field={field} onSelect={onSelect} sub={type === 'measure'} />)}
         </List>
