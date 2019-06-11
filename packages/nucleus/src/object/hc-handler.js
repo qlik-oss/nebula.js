@@ -70,7 +70,10 @@ export default function hcHandler({
       return hc.qMeasures;
     },
     addDimension(d) {
-      const dimension = typeof d === 'string' ? nxDimension(d) : d;
+      const dimension = typeof d === 'string' ? nxDimension(d) : {
+        ...d,
+        qDef: d.qDef || {},
+      };
       dimension.qDef.cId = dimension.qDef.cId || uid();
       dimension.qOtherTotalSpec = dimension.qOtherTotalSpec || {};
       if (!dimension.qDef.cId) {
@@ -94,7 +97,10 @@ export default function hcHandler({
       def.dimensions.remove(dimension, objectProperties, idx);
     },
     addMeasure(m) {
-      const measure = typeof m === 'string' ? nxMeasure(m) : m;
+      const measure = typeof m === 'string' ? nxMeasure(m) : {
+        ...m,
+        qDef: m.qDef || {},
+      };
       measure.qDef.cId = measure.qDef.cId || uid();
       if (!measure.qDef.cId) {
         measure.qDef.cId = uid();

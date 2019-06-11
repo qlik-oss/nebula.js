@@ -41,7 +41,7 @@ export default function HyperCube({
   }), [properties]);
 
   const onDimensionAdded = (a) => {
-    handler.addDimension(a);
+    handler.addDimension(typeof a === 'object' ? { qLibraryId: a.qId } : a);
     model.setProperties(properties);
   };
 
@@ -51,7 +51,7 @@ export default function HyperCube({
   };
 
   const onMeasureAdded = (a) => {
-    handler.addMeasure(a);
+    handler.addMeasure(typeof a === 'object' ? { qLibraryId: a.qId } : a);
     model.setProperties(properties);
   };
 

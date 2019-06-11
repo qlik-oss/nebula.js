@@ -1,4 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, {
+  useRef,
+  useState,
+  useContext,
+} from 'react';
 
 import {
   IconButton,
@@ -13,7 +17,27 @@ import {
 
 import Remove from '@nebula.js/ui/icons/Remove';
 
+import useLibraryList from '../../hooks/useLibraryList';
+
+import AppContext from '../../contexts/AppContext';
 import FieldsPopover from '../FieldsPopover';
+
+const FieldTitle = ({
+  field,
+  libraryItems,
+}) => {
+  if (field.qLibraryId) {
+    const f = libraryItems.filter(ff => ff.qInfo.qId === field.qLibraryId)[0];
+    return f ? f.qData.title : '!!!';
+  }
+  if (field.qDef && field.qDef.qFieldDefs) {
+    return field.qDef.qFieldDefs[0];
+  }
+  if (field.qDef && field.qDef.qDef) {
+    return field.qDef.qDef;
+  }
+  return '???';
+};
 
 export default function Fields({
   items,
@@ -26,39 +50,26 @@ export default function Fields({
 }) {
   const [isActive, setIsActive] = useState(false);
   const btn = useRef(null);
-
-  const t = type === 'dimension' ? {
-    title(dim) {
-      // TODO - get library item
-      return dim.qLibraryId || dim.qDef.qFieldDefs[0];
-    },
-    def(f) {
-      return f;
-    },
-  } : {
-    title(m) {
-      return m.qLibraryId || m.qDef.qDef;
-    },
-    def(f, aggr = 'sum') {
-      return `${aggr}([${f}])`;
-    },
-  };
-
-  // const arr = hc[t.prop];
+  const app = useContext(AppContext);
+  const [libraryItems] = useLibraryList(app, type);
 
   const onAdd = () => {
     setIsActive(!isActive);
   };
 
-  const onSelected = ({ field, aggregation }) => {
-    // arr.push(t.def(field, aggr));
-    // model.setProperties(properties);
-    onAdded(t.def(field, aggregation));
+  const onSelected = (o) => {
+    if (o.qId) {
+      onAdded(o);
+    } else if (o) {
+      if (type === 'dimension') {
+        onAdded(o.field);
+      } else {
+        onAdded(`${o.aggregation || 'sum'}([${o.field}])`);
+      }
+    }
   };
 
   const onRemove = (idx) => {
-    // arr.splice(idx, 1);
-    // model.setProperties(properties);
     onRemoved(idx);
   };
 
@@ -68,7 +79,9 @@ export default function Fields({
       <List dense>
         {items.map((d, i) => (
           <ListItem disableGutters key={d.qDef.cId}>
-            <ListItemText>{t.title(d)}</ListItemText>
+            <ListItemText>
+              <FieldTitle field={d} libraryItems={libraryItems} type={type} />
+            </ListItemText>
             <ListItemSecondaryAction>
               <IconButton edge="end" onClick={() => onRemove(i)}><Remove /></IconButton>
             </ListItemSecondaryAction>
