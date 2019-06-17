@@ -7,7 +7,8 @@ export default class ObjectAPI {
     this.viz = viz;
 
     this.currentObjectType = '__placeholder__';
-    this.currentObjectVersion = '';
+    this.currentPropertyVersion = '';
+    this.currentSupernovaVersion = '';
 
     this.state = {
       layout: null,
@@ -60,13 +61,17 @@ export default class ObjectAPI {
     });
   }
 
-  setType(type, version) {
+  setType(type, propertyVersion, snVersion) {
     this.currentObjectType = type;
-    this.currentObjectVersion = version;
+    this.currentPropertyVersion = propertyVersion;
+    this.currentSupernovaVersion = snVersion;
     if (!this.currentObjectType) {
       return this.context.config.env.Promise.resolve();
     }
-    return this.context.nebbie.types.supernova(this.currentObjectType, this.currentObjectVersion).then((SN) => {
+    return this.context.nebbie.types.get({
+      name: this.currentObjectType,
+      version: this.currentSupernovaVersion,
+    }).supernova().then((SN) => {
       // layout might have changed since we requested the new type,
       // make sure type in layout matches the requested one
       if (!this.state.layout || this.state.layout.visualization !== this.currentObjectType) {
@@ -84,13 +89,25 @@ export default class ObjectAPI {
 
   setLayout(layout) {
     this.updateModal(layout);
-    if (layout.visualization !== this.currentObjectType || layout.version !== this.currentObjectVersion) {
+    if (layout.visualization !== this.currentObjectType || layout.version !== this.currentPropertyVersion) {
+      const v = this.context.nebbie.types.getSupportedVersion(layout.visualization, layout.version);
+      if (!v) {
+        this.setState({
+          layout,
+          error: {
+            message: 'Could not find a version that supports current object version',
+          },
+          sn: null,
+        });
+        return;
+      }
+
       this.setState({
         layout,
         sn: null,
         error: null,
       });
-      this.setType(layout.visualization, layout.version);
+      this.setType(layout.visualization, layout.version, v);
     } else {
       this.setState({
         layout,

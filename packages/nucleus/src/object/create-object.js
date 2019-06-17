@@ -5,7 +5,7 @@ export default function create({
   version,
   fields,
 }, optional, context) {
-  const t = context.nebbie.types.fetch(type, version);
+  const t = context.nebbie.types.get({ name: type, version });
   return t.initialProperties(optional.properties)
     .then(mergedProps => t.supernova().then((sn) => {
       if (fields) {

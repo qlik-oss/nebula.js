@@ -1,54 +1,21 @@
 import SNFactory from '@nebula.js/supernova';
+import { satisfies } from 'semver';
+import { load } from './load';
 
-const LOADED = {};
-
-const load = ({ name, version }, config) => {
-  const key = `${name}__${version}`;
-  if (!LOADED[key]) {
-    const p = config.load({
-      name,
-      version,
-    }, config.env);
-    if (typeof p === 'undefined') {
-      throw new Error(`Failed to load supernova: ${name}`);
-    }
-    if (typeof p === 'string') {
-      throw new Error('Return value must be a Promise');
-    }
-    LOADED[key] = p.then((sn) => {
-      if (!sn) {
-        throw new Error('undefined supernova');
-      }
-      return sn;
-    }).catch((e) => {
-      console.error(e);
-      throw new Error(`Failed to load supernova: ${name}`);
-    });
-  }
-
-  return LOADED[key];
-};
-
-export function clearFromCache(name) {
-  Object.keys(LOADED).forEach((key) => {
-    if (key.split('__')[0] === name) {
-      LOADED[key] = undefined;
-    }
-  });
-}
-
-export default function (opts, meta, config) {
+export default function create(info, config, opts = {}) {
   let sn;
   let stringified;
+  const { meta } = opts;
   const type = {
-    name: opts.name,
-    version: opts.version,
-    /**
-     * Initiate load of supernova
-     * @returns {Promise<function|SNDefinition>}
-     */
-    load: () => load(type, config),
-    supernova: () => load(type, config)
+    name: info.name,
+    version: info.version,
+    supportsPropertiesVersion: (v) => {
+      if (v && meta && meta.deps && meta.deps.properties) {
+        return satisfies(v, meta.deps.properties);
+      }
+      return true;
+    },
+    supernova: () => load(type.name, type.version, config, opts.load)
       .then((SNDefinition) => {
         sn = sn || SNFactory(SNDefinition, config.env);
         stringified = JSON.stringify(sn.qae.properties);

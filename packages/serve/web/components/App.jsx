@@ -77,10 +77,14 @@ export default function App({
 
   const theme = useMemo(() => createTheme(themeName), [themeName]);
 
-  const nebbie = useMemo(() => nucleus(app, {
-    load: (type, config) => config.Promise.resolve(window.snDefinition || snDefinition),
-    theme: themeName,
-  }), [app]);
+  const nebbie = useMemo(() => {
+    const n = nucleus(app, {
+      load: (type, config) => config.Promise.resolve(window.snDefinition || snDefinition),
+      theme: themeName,
+    });
+    return n;
+  }, [app]);
+
 
   useLayoutEffect(() => {
     nebbie.theme(themeName);
@@ -112,7 +116,9 @@ export default function App({
       });
     };
 
-    nebbie.types.supernova(info.supernova.name).then(setSupernova);
+    nebbie.types.get({
+      name: info.supernova.name,
+    }).supernova().then(setSupernova);
     nebbie.selections().mount(currentSelectionsRef.current);
     if (window.hotReload) {
       window.hotReload(() => {

@@ -1,55 +1,75 @@
-import type, { clearFromCache } from './type';
+import type from './type';
+import { clearFromCache } from './load';
 
-const collection = (name, config) => {
+export function semverSort(arr) {
+  const unversioned = arr.filter(v => v === 'undefined');
+  return [...unversioned, ...arr.filter(v => v !== 'undefined').map(v => v.split('.').map(n => parseInt(n, 10)))
+    .sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2])
+    .map(n => n.join('.'))];
+}
+
+export function typeCollection(name, config) {
   const versions = {};
+  let sortedVersions = null;
 
-  const get = (version) => {
-    // TODO determine latest version based on semver
-    const v = version || Object.keys(versions).sort().slice(-1);
-    return versions[v];
-  };
-
-  const add = (version, meta) => {
-    if (!versions[version]) {
+  return {
+    get: version => versions[version],
+    register: (version, opts) => {
+      if (versions[version]) {
+        throw new Error(`Supernova '${name}@${version}' already registered.`);
+      }
       versions[version] = type({
         name,
         version,
-      }, meta, config);
-    }
-    return get(version);
-  };
-
-  return {
-    fetch: version => add(version),
-    register: (version, meta) => {
-      if (versions[version]) {
-        throw new Error('Already registered!');
-      }
-      return add(version, meta);
+      }, config, opts);
+      sortedVersions = null;
     },
+    getMatchingVersionFromProperties: (propertyVersion) => {
+      if (!sortedVersions) {
+        sortedVersions = semverSort(Object.keys(versions));
+      }
+      for (let i = sortedVersions.length - 1; i >= 0; i--) {
+        const t = versions[sortedVersions[i]];
+        if (t.supportsPropertiesVersion(propertyVersion)) {
+          return sortedVersions[i];
+        }
+      }
+      return null;
+    },
+    versions,
   };
-};
+}
 
-export default function (config) {
-  const types = {};
-
-  const fetch = (name, version) => {
-    if (!types[name]) {
-      types[name] = collection(name, config);
-    }
-    return types[name].fetch(version);
-  };
+export function create({
+  config,
+}) {
+  const tc = {};
 
   return {
-    fetch,
+    register: (typeInfo, opts) => {
+      if (!tc[typeInfo.name]) {
+        tc[typeInfo.name] = typeCollection(typeInfo.name, config);
+      }
+      tc[typeInfo.name].register(typeInfo.version, opts);
+    },
+    getSupportedVersion: (name, propertyVersion) => {
+      if (!tc[name]) {
+        return null;
+      }
+      return tc[name].getMatchingVersionFromProperties(propertyVersion);
+    },
+    get(typeInfo) {
+      const { name, version } = typeInfo;
+      if (!tc[name] || !tc[name].versions[version]) {
+        this.register({ name, version });
+      }
+      return tc[name].get(version);
+    },
     clearFromCache: (name) => {
-      if (types[name]) {
-        types[name] = undefined;
+      if (tc[name]) {
+        tc[name] = undefined;
       }
       clearFromCache(name);
     },
-    load: (name, version) => fetch(name, version).load(),
-    supernova: (name, version) => fetch(name, version).supernova(),
-    // instance: (name, version) => fetch(name, version).instance(),
   };
 }
