@@ -71,34 +71,47 @@ describe('ObjectAPI', () => {
       context = {
         nebbie: {
           types: {
-            supernova: sinon.stub(),
+            get: sinon.stub(),
           },
         },
         config: { env: { Promise: { resolve: sinon.spy() } } },
       };
-      context.nebbie.types.supernova.withArgs('my-type', 'my-version').returns(Promise.resolve('my-sn'));
+      context.nebbie.types.get.withArgs({ name: 'my-type', version: 'my-sn-version' }).returns({ supernova: () => Promise.resolve('my-sn') });
       api = new API('model', context, 'viz');
       api.setSupernova = sinon.spy();
     });
 
     it('should load SN but not set when mismatched', async () => {
       api.state.layout = { visualization: 'my-other-type' };
-      await api.setType('my-type', 'my-version');
+      await api.setType('my-type', '', 'my-sn-version');
       expect(api.setSupernova).to.not.have.been.called;
       expect(context.config.env.Promise.resolve).to.have.been.calledOnce;
     });
 
     it('should load SN', async () => {
       api.state.layout = { visualization: 'my-type' };
-      await api.setType('my-type', 'my-version');
+      await api.setType('my-type', '', 'my-sn-version');
       expect(api.setSupernova).to.have.been.calledWithExactly('my-sn');
     });
   });
 
   describe('setLayout', () => {
-    it('should update modal', () => {
+    let getSupportedVersion;
+    let api;
+    beforeEach(() => {
+      getSupportedVersion = sinon.stub();
       const [{ default: API }] = doMock();
-      const api = new API();
+      const context = {
+        nebbie: {
+          types: {
+            getSupportedVersion,
+          },
+        },
+      };
+      api = new API('model', context);
+    });
+
+    it('should update modal', () => {
       api.updateModal = sinon.spy();
       api.setType = sinon.spy();
       api.setState = sinon.spy();
@@ -106,25 +119,34 @@ describe('ObjectAPI', () => {
       expect(api.updateModal).to.have.been.calledWithExactly('layout');
     });
 
-    it('should setType and reset sn when type has changed', () => {
-      const [{ default: API }] = doMock();
-      const api = new API();
+    it('should setState with error when supported version is not found', () => {
       api.updateModal = sinon.spy();
       api.setType = sinon.spy();
       api.setState = sinon.spy();
       api.setLayout({ visualization: 'viz', version: 'vers' });
-      expect(api.setState).to.have.been.calledWithExactly({ layout: { visualization: 'viz', version: 'vers' }, error: null, sn: null });
-      expect(api.setType).to.have.been.calledWithExactly('viz', 'vers');
+      expect(api.setState).to.have.been.calledWithExactly({
+        layout: { visualization: 'viz', version: 'vers' },
+        error: { message: 'Could not find a version that supports current object version' },
+        sn: null,
+      });
+    });
+
+    it('should setType and reset sn when type has changed', () => {
+      getSupportedVersion.returns('sn-version');
+      api.updateModal = sinon.spy();
+      api.setType = sinon.spy();
+      api.setState = sinon.spy();
+      api.setLayout({ visualization: 'viz', version: 'prop-version' });
+      expect(api.setState).to.have.been.calledWithExactly({ layout: { visualization: 'viz', version: 'prop-version' }, error: null, sn: null });
+      expect(api.setType).to.have.been.calledWithExactly('viz', 'prop-version', 'sn-version');
     });
 
     it('should only set state when type has not changed', () => {
-      const [{ default: API }] = doMock();
-      const api = new API();
       api.updateModal = sinon.spy();
       api.setType = sinon.spy();
       api.setState = sinon.spy();
       api.currentObjectType = 'viz';
-      api.currentObjectVersion = '1.0.0';
+      api.currentPropertyVersion = '1.0.0';
       api.setLayout({ visualization: 'viz', version: '1.0.0' });
       expect(api.setState).to.have.been.calledWithExactly({ layout: { visualization: 'viz', version: '1.0.0' }, error: null });
       expect(api.setType).to.not.have.been.called;

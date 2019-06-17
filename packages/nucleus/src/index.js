@@ -8,7 +8,7 @@ import AppSelectionsPortal from './components/selections/AppSelections';
 
 import create from './object/create-object';
 import get from './object/get-object';
-import types from './sn/types';
+import { create as types } from './sn/types';
 import logger from './utils/logger';
 
 function nucleus(app, cfg = {}) {
@@ -37,7 +37,7 @@ function nucleus(app, cfg = {}) {
     app,
     config,
     logger: lgr,
-    types: types(config),
+    types: types({ logger: lgr, config }),
     root,
   };
 

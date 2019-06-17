@@ -41,6 +41,7 @@
     "react-dom": "^16.8.6",
     "react-test-renderer": "^16.8.6",
     "react-window": "^1.8.2",
-    "react-window-infinite-loader": "^1.0.3"
+    "react-window-infinite-loader": "^1.0.3",
+    "semver": "^6.1.1"
   }
 }
