@@ -21,6 +21,7 @@ const config = ({
   } = pkg;
 
   const auth = typeof author === 'object' ? `${author.name} <${author.email}>` : author || '';
+  const moduleName = name.split('/').reverse()[0];
 
   const banner = `/*
 * ${name} v${version}
@@ -68,7 +69,7 @@ const config = ({
       banner,
       format,
       file: format === 'esm' && pkg.module ? pkg.module : pkg.main,
-      name: pkg.name,
+      name: moduleName,
       sourcemap: true,
       output: {
         preamble: banner,
