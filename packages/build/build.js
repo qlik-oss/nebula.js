@@ -20,9 +20,11 @@ const config = ({
     author,
   } = pkg;
 
+  const auth = typeof author === 'object' ? `${author.name} <${author.email}>` : author || '';
+
   const banner = `/*
 * ${name} v${version}
-* Copyright (c) ${new Date().getFullYear()} ${author.name} <${author.email}>
+* Copyright (c) ${new Date().getFullYear()} ${auth}
 * Released under the ${license} license.
 */
 `;
