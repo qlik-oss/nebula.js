@@ -33,21 +33,21 @@
     "html-webpack-plugin": "^3.2.0",
     "portfinder": "^1.0.20",
     "source-map-loader": "^0.2.4",
-    "webpack": "^4.34.0",
-    "webpack-dev-server": "^3.7.1",
+    "webpack": "^4.35.3",
+    "webpack-dev-server": "^3.7.2",
     "yargs": "^13.2.4"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.5",
-    "@babel/preset-env": "^7.4.5",
+    "@babel/core": "^7.5.0",
+    "@babel/preset-env": "^7.5.2",
     "@babel/preset-react": "^7.0.0",
-    "@material-ui/core": "^4.1.1",
+    "@material-ui/core": "^4.2.0",
     "@nebula.js/nucleus": "0.1.0-alpha.17",
     "@nebula.js/ui": "0.1.0-alpha.17",
     "babel-loader": "^8.0.6",
     "enigma.js": "^2.4.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "webpack-cli": "^3.3.4"
+    "webpack-cli": "^3.3.5"
   }
 }
