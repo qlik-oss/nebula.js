@@ -8,13 +8,14 @@ const startEngine = () => {
   }
   console.log('Starting engine container ...');
   return new Promise((resolve, reject) => {
-    const c = execa.shell('cross-env ACCEPT_EULA=yes docker-compose up -d --build', {
+    const c = execa.command('cross-env ACCEPT_EULA=yes docker-compose up -d --build', {
       cwd: path.resolve(__dirname, '../'),
       stdio: 'inherit',
+      shell: true,
     });
 
     const ping = setInterval(() => {
-      const { stdout } = execa.shellSync('docker ps -q -f name=engine -f status=running');
+      const { stdout } = execa.command('docker ps -q -f name=engine -f status=running');
       if (stdout) {
         console.log('... engine container running');
         clear();
