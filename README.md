@@ -124,3 +124,14 @@ The `package.json` contains a few built-in npm commands:
 ## Contributing
 
 Please follow the instructions in our [contributing guide](./.github/CONTRIBUTING.md).
+
+
+## Resources
+
+| name | status | description |
+|---|---|---|
+| [sn-mekko-chart]       | [![mekko-status]][mekko-npm]  | Mekko chart |
+
+[sn-mekko-chart]: https://github.com/qlik-oss/sn-mekko-chart
+[mekko-status]: https://img.shields.io/npm/v/@nebula.js/sn-mekko-chart.svg
+[mekko-npm]: https://www.npmjs.com/package/@nebula.js/sn-mekko-chart
