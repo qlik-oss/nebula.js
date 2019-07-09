@@ -36,7 +36,7 @@
     "babel-plugin-istanbul": "^5.1.4",
     "cross-env": "^5.2.0",
     "enigma.js": "^2.4.0",
-    "eslint": "^5.16.0",
+    "eslint": "^6.0.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jsx-a11y": "^6.2.1",
