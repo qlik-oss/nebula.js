@@ -27,6 +27,6 @@
     "@nebula.js/cli-sense": "0.1.0-alpha.17",
     "@nebula.js/cli-serve": "0.1.0-alpha.17",
     "chalk": "^2.4.2",
-    "yargs": "^13.2.4"
+    "yargs": "^13.3.0"
   }
 }

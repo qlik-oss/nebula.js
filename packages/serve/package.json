@@ -31,15 +31,15 @@
     "cross-env": "^5.2.0",
     "execa": "^2.0.3",
     "html-webpack-plugin": "^3.2.0",
-    "portfinder": "^1.0.20",
+    "portfinder": "^1.0.21",
     "source-map-loader": "^0.2.4",
     "webpack": "^4.35.3",
     "webpack-dev-server": "^3.7.2",
-    "yargs": "^13.2.4"
+    "yargs": "^13.3.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.5.0",
-    "@babel/preset-env": "^7.5.2",
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
     "@babel/preset-react": "^7.0.0",
     "@material-ui/core": "^4.2.0",
     "@nebula.js/nucleus": "0.1.0-alpha.17",
@@ -48,6 +48,6 @@
     "enigma.js": "^2.4.0",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "webpack-cli": "^3.3.5"
+    "webpack-cli": "^3.3.6"
   }
 }

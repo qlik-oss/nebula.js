@@ -28,16 +28,16 @@
   },
   "dependencies": {
     "@babel/cli": "^7.5.0",
-    "@babel/core": "^7.5.0",
-    "@babel/preset-env": "^7.5.2",
+    "@babel/core": "^7.5.4",
+    "@babel/preset-env": "^7.5.4",
     "@nebula.js/supernova": "0.1.0-alpha.17",
     "chalk": "^2.4.2",
     "node-event-emitter": "^0.0.1",
-    "rollup": "^1.16.7",
+    "rollup": "^1.17.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.0.1",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.1.1",
-    "yargs": "^13.2.4"
+    "yargs": "^13.3.0"
   }
 }
