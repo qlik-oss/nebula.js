@@ -27,9 +27,9 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "^7.5.0",
-    "@babel/core": "^7.5.4",
-    "@babel/preset-env": "^7.5.4",
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@babel/preset-env": "^7.5.5",
     "@nebula.js/supernova": "0.1.0-alpha.17",
     "chalk": "^2.4.2",
     "node-event-emitter": "^0.0.1",
