@@ -127,6 +127,7 @@ const config = (isEsm) => {
         babelrc: false,
         include: [
           '/**/packages/nucleus/**',
+          '/**/packages/supernova/**',
           '/**/packages/ui/**',
         ],
         presets: [
