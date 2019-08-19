@@ -55,6 +55,8 @@ const propTypes = [
   'elementType',
 ];
 
+const watch = process.argv.indexOf('-w') > 2;
+
 const config = (isEsm) => {
   const outputFile = isEsm ? pkg.module : pkg.main;
   const basename = path.basename(outputFile);
@@ -71,7 +73,7 @@ const config = (isEsm) => {
   const esmExternals = peers;
 
   // peers that are not devDeps should be externals for full bundle
-  const bundleExternals = peers.filter(p => typeof (pkg.devDependencies || {})[p] === 'undefined');
+  const bundleExternals = peers.filter((p) => typeof (pkg.devDependencies || {})[p] === 'undefined');
 
   const external = isEsm ? esmExternals : bundleExternals;
   const globals = {};
@@ -157,6 +159,6 @@ const config = (isEsm) => {
 };
 
 module.exports = [
-  config(),
+  watch ? false : config(),
   config(true),
-];
+].filter(Boolean);
