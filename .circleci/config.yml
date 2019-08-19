@@ -22,7 +22,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:10.13.0
-      - image: qlikcore/engine:12.424.0
+      - image: qlikcore/engine:12.429.0
         command: -S AcceptEULA=yes
       - image: browserless/chrome:1.9-puppeteer-1.13.0
 
