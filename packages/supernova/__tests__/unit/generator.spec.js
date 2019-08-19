@@ -3,7 +3,7 @@
 describe('generator', () => {
   const [{ default: generator }] = aw.mock([
     ['**/creator.js', () => (...a) => [...a]],
-    ['**/qae.js', () => qae => qae || 'qae'],
+    ['**/qae.js', () => (qae) => qae || 'qae'],
   ], ['../../src/generator']);
 
   it('should have a default qae property', () => {

@@ -10,7 +10,7 @@ import { makeStyles } from '@nebula.js/ui/theme';
 import Lock from '@nebula.js/ui/icons/Lock';
 import Tick from '@nebula.js/ui/icons/Tick';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   row: {
     flexWrap: 'nowrap',
     borderBottom: `1px solid ${theme.palette.divider}`,
@@ -51,7 +51,7 @@ export default function Row({
   const { onClick, pages } = data;
   let cell;
   if (pages) {
-    const page = pages.filter(p => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
+    const page = pages.filter((p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
     if (page) {
       const area = page.qArea;
       if (index >= area.qTop && (index < area.qTop + area.qHeight)) {

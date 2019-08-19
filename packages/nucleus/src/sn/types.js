@@ -2,10 +2,10 @@ import type from './type';
 import { clearFromCache } from './load';
 
 export function semverSort(arr) {
-  const unversioned = arr.filter(v => v === 'undefined');
-  return [...unversioned, ...arr.filter(v => v !== 'undefined').map(v => v.split('.').map(n => parseInt(n, 10)))
+  const unversioned = arr.filter((v) => v === 'undefined');
+  return [...unversioned, ...arr.filter((v) => v !== 'undefined').map((v) => v.split('.').map((n) => parseInt(n, 10)))
     .sort((a, b) => a[0] - b[0] || a[1] - b[1] || a[2] - b[2])
-    .map(n => n.join('.'))];
+    .map((n) => n.join('.'))];
 }
 
 export function typeCollection(name, config) {
@@ -13,7 +13,7 @@ export function typeCollection(name, config) {
   let sortedVersions = null;
 
   return {
-    get: version => versions[version],
+    get: (version) => versions[version],
     register: (version, opts) => {
       if (versions[version]) {
         throw new Error(`Supernova '${name}@${version}' already registered.`);

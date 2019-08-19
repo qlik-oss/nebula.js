@@ -27,7 +27,7 @@ export default function locale({
     translator: () => translator.api,
   };
 
-  SUPPORTED_LANGUAGES.forEach(d => translator.addLanguage(d.info, d.data));
+  SUPPORTED_LANGUAGES.forEach((d) => translator.addLanguage(d.info, d.data));
 
   api.locale(language || DEFAULT_LOCALE);
 

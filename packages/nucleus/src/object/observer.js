@@ -34,7 +34,7 @@ export function observe(model, callback, property = 'layout') {
     const onChanged = (filtered) => {
       const c = cache[model.id];
       const affected = [];
-      Object.keys(c.props).filter(key => (filtered ? key === filtered : true)).forEach((key) => {
+      Object.keys(c.props).filter((key) => (filtered ? key === filtered : true)).forEach((key) => {
         c.props[key].state = STATES.INVALID;
         if (c.props[key].callbacks.length) {
           affected.push(key);
@@ -43,13 +43,13 @@ export function observe(model, callback, property = 'layout') {
 
       affected.forEach((key) => {
         c.props[key].state = STATES.VALIDATING;
-        const method = OBSERVABLE[key].filter(m => model[m])[0];
+        const method = OBSERVABLE[key].filter((m) => model[m])[0];
         model[method]().then((value) => {
           if (cache[model.id] && cache[model.id].props[key]) {
             if (cache[model.id].props[key].state < STATES.CLOSED && cache[model.id].props[key].state !== STATES.VALID) {
               cache[model.id].props[key].state = STATES.VALID;
               cache[model.id].props[key].value = value;
-              cache[model.id].props[key].callbacks.forEach(cb => cb(value));
+              cache[model.id].props[key].callbacks.forEach((cb) => cb(value));
             }
           }
         });

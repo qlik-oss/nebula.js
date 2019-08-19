@@ -20,7 +20,7 @@ import ListBoxPopover from '../listbox/ListBoxPopover';
 
 import LocaleContext from '../../contexts/LocaleContext';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   item: {
     cursor: 'pointer',
     padding: '4px',
@@ -60,7 +60,7 @@ export default function OneField({
   } else if (numSelected > 1 && selection.qTotal) {
     label = translator.get('CurrentSelections.Of', [numSelected, selection.qTotal]);
   } else {
-    label = selection.qSelectedFieldSelectionInfo.map(v => v.qName).join(', ');
+    label = selection.qSelectedFieldSelectionInfo.map((v) => v.qName).join(', ');
   }
   if (field.states[0] !== '$') {
     label = `${field.states[0]}: ${label}`;
@@ -111,7 +111,7 @@ export default function OneField({
           width: '100%',
         }}
       >
-        {segments.map(s => (
+        {segments.map((s) => (
           <div
             key={s.color}
             style={{

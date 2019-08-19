@@ -76,7 +76,7 @@ export default function Cell({
       <Grid item xs>
         <Content>
           {err
-            ? (<CError {...err} />)
+            ? (<CError message={err.message} />)
             : (
               <Comp
                 key={objectProps.layout.visualization}
@@ -85,8 +85,7 @@ export default function Cell({
                 snOptions={userProps.options}
                 layout={objectProps.layout}
               />
-            )
-          }
+            )}
         </Content>
       </Grid>
       <Footer layout={objectProps.layout} />

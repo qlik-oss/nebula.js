@@ -52,7 +52,7 @@ function Component({
 
   return (
     <div>
-      {items.map(itm => <Item key={itm.key} item={itm} isCustom={!!custom[itm.key]} />)}
+      {items.map((itm) => <Item key={itm.key} item={itm} isCustom={!!custom[itm.key]} />)}
     </div>
   );
 }

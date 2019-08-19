@@ -27,7 +27,7 @@ export default function Data({
 
   return (
     <List>
-      {targets.map(t => (
+      {targets.map((t) => (
         <ListItem key={t.path} divider disableGutters>
           <HyperCube target={t} properties={properties} model={model} />
         </ListItem>

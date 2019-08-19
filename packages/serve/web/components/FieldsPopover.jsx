@@ -61,10 +61,10 @@ const LibraryList = ({
   [libraryItems]);
 
   return libraryItems.length > 0 ? (
-    <React.Fragment>
+    <>
       <ListSubheader component="div" style={{ backgroundColor: 'inherit' }}>{title}</ListSubheader>
-      {sortedLibraryItems.map(item => <LibraryItem key={item.qInfo.qId} item={item} onSelect={onSelect} />)}
-    </React.Fragment>
+      {sortedLibraryItems.map((item) => <LibraryItem key={item.qInfo.qId} item={item} onSelect={onSelect} />)}
+    </>
   ) : null;
 };
 
@@ -150,14 +150,14 @@ export default function FieldsPopover({
           </ListItem>
           <Divider />
           <ListSubheader component="div">Aggregation</ListSubheader>
-          {['sum', 'count', 'avg', 'min', 'max'].map(v => <Aggr key={v} aggr={v} field={selectedField} onSelect={onAggregateSelected} />)}
+          {['sum', 'count', 'avg', 'min', 'max'].map((v) => <Aggr key={v} aggr={v} field={selectedField} onSelect={onAggregateSelected} />)}
         </List>
       )}
       {!selectedField && fields.length > 0 && (
         <List dense component="nav" style={{ background: theme.palette.background.lightest }}>
           <LibraryList app={app} onSelect={onSelect} type={type} title={type === 'measure' ? 'Measures' : 'Dimensions'} />
           <ListSubheader component="div" style={{ backgroundColor: 'inherit' }}>Fields</ListSubheader>
-          {fields.map(field => <Field key={field.qName} field={field} onSelect={onSelect} sub={type === 'measure'} />)}
+          {fields.map((field) => <Field key={field.qName} field={field} onSelect={onSelect} sub={type === 'measure'} />)}
         </List>
       )}
     </Popover>

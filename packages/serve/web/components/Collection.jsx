@@ -35,7 +35,7 @@ export default function Collection({
 
   return (
     <Grid container spacing={2} style={{ padding: '12px' }}>
-      {objects.map(c => (
+      {objects.map((c) => (
         <Grid item xs={12} md={6} lg={4} key={c.qInfo.qId}>
           <Cell object={c} onSelected={onSelectedCell} />
         </Grid>

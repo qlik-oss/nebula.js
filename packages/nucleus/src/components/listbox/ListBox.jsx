@@ -42,7 +42,7 @@ export default function ListBox({
       return false;
     }
     local.current.checkIdx = index;
-    const page = pages.filter(p => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
+    const page = pages.filter((p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
     return page && page.qArea.qTop <= index && index < page.qArea.qTop + page.qArea.qHeight;
   }, [layout, pages]);
 
@@ -61,7 +61,7 @@ export default function ListBox({
     return new Promise((resolve) => {
       local.current.timeout = setTimeout(() => {
         const sorted = local.current.queue.slice(-2).sort((a, b) => a.start - b.start);
-        model.getListObjectData('/qListObjectDef', sorted.map(s => ({
+        model.getListObjectData('/qListObjectDef', sorted.map((s) => ({
           qTop: s.start,
           qHeight: s.stop - s.start + 1,
           qLeft: 0,

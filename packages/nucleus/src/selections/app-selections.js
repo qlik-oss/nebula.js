@@ -70,7 +70,7 @@ const create = (app) => {
       return this.switchModal().then(() => app.clearAll());
     },
     clearField(field, state = '$') {
-      return this.switchModal().then(() => app.getField(field, state).then(f => f.clear()));
+      return this.switchModal().then(() => app.getField(field, state).then((f) => f.clear()));
     },
   };
 
@@ -86,14 +86,14 @@ const create = (app) => {
     alternateStates: [],
   }, app).then((model) => {
     observe(app, (appLayout) => {
-      const states = [...appLayout.qStateNames].map(s => ({
+      const states = [...appLayout.qStateNames].map((s) => ({
         stateName: s, // need this as reference in selection toolbar since qSelectionObject.qStateName is not in the layout
         qSelectionObjectDef: {
           qStateName: s,
         },
       }));
-      const existingStates = (lyt ? lyt.alternateStates.map(s => s.stateName) : []).join('::');
-      const newStates = appLayout.qStateNames.map(s => s).join('::');
+      const existingStates = (lyt ? lyt.alternateStates.map((s) => s.stateName) : []).join('::');
+      const newStates = appLayout.qStateNames.map((s) => s).join('::');
       if (existingStates !== newStates) {
         model.applyPatches([{
           qOp: 'replace',
@@ -110,7 +110,7 @@ const create = (app) => {
       [layout, ...layout.alternateStates].forEach((state) => {
         canGoBack = canGoBack || state.qSelectionObject.qBackCount > 0;
         canGoForward = canGoForward || state.qSelectionObject.qForwardCount > 0;
-        canClear = canClear || state.qSelectionObject.qSelections.filter(s => s.qLocked !== true).length > 0;
+        canClear = canClear || state.qSelectionObject.qSelections.filter((s) => s.qLocked !== true).length > 0;
       });
       lyt = layout;
       api.emit('changed');

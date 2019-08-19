@@ -9,8 +9,9 @@ const mixin = (obj) => {
   return obj;
 };
 
-const actionWrapper = component => (item) => {
-  const wrapped = mixin(Object.assign({}, item, {
+const actionWrapper = (component) => (item) => {
+  const wrapped = mixin({
+    ...item,
     action() {
       if (typeof item.action === 'function') {
         item.action.call(wrapped, component);
@@ -26,7 +27,7 @@ const actionWrapper = component => (item) => {
     active: typeof item.active === 'function' ? function active() {
       return item.active.call(wrapped, component);
     } : undefined,
-  }));
+  });
 
   return wrapped;
 };

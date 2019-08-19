@@ -32,9 +32,9 @@ function getItems(layout) {
     collect(layout.qSelectionObject, fields);
   }
   if (layout.alternateStates) {
-    layout.alternateStates.forEach(s => collect(s.qSelectionObject, fields, s.stateName));
+    layout.alternateStates.forEach((s) => collect(s.qSelectionObject, fields, s.stateName));
   }
-  return Object.keys(fields).map(key => fields[key]);
+  return Object.keys(fields).map((key) => fields[key]);
 }
 
 export default function SelectedFields({
@@ -61,7 +61,7 @@ export default function SelectedFields({
 
   return (
     <Grid container spacing={0} wrap="nowrap">
-      {state.items.map(s => (
+      {state.items.map((s) => (
         <Grid
           item
           key={`${s.states.join('::')}::${s.name}`}

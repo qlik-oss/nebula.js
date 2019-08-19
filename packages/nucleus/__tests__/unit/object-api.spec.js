@@ -1,5 +1,4 @@
 
-
 describe('ObjectAPI', () => {
   const doMock = ({
     createObjectSelectionAPI = () => ({}),

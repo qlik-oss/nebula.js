@@ -18,7 +18,7 @@ const defaultComponent = {
   getViewState: () => {},
 
   // temporary
-  setSnapshotData: snapshot => Promise.resolve(snapshot),
+  setSnapshotData: (snapshot) => Promise.resolve(snapshot),
 };
 
 const reservedKeys = Object.keys(defaultComponent);

@@ -32,7 +32,7 @@ function createRefs(obj, s = '', refs) {
 function resolver(theme = {}) {
   const refs = {};
   createRefs(theme, '', refs);
-  const replacer = match => refs[match.substring(1)];
+  const replacer = (match) => refs[match.substring(1)];
 
   function resolveValueReferences(value, path = []) {
     const variables = typeof value === 'string' ? value.match(VARIABLE_RX) : null;

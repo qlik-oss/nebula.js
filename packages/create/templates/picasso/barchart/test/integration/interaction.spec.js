@@ -9,7 +9,7 @@ describe('interaction', () => {
     await page.click('rect[data-label="S"]');
     await page.click('button[title="Confirm selection"]');
 
-    const rects = await page.$$eval('rect[data-label]', sel => sel.map(r => r.getAttribute('data-label')));
+    const rects = await page.$$eval('rect[data-label]', (sel) => sel.map((r) => r.getAttribute('data-label')));
     expect(rects).to.eql(['K', 'S']);
   });
 });

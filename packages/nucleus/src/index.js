@@ -71,7 +71,7 @@ function nuked(configuration = {}) {
       root,
     };
 
-    currentConfig.types.forEach(t => context.types.register({
+    currentConfig.types.forEach((t) => context.types.register({
       name: t.name,
       version: t.version,
     }, {
@@ -122,7 +122,7 @@ function nuked(configuration = {}) {
     return api;
   }
 
-  nucleus.configured = c => nuked(mergeConfigs(configuration, c));
+  nucleus.configured = (c) => nuked(mergeConfigs(configuration, c));
 
   return nucleus;
 }

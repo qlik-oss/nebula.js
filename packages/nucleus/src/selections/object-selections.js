@@ -77,7 +77,7 @@ export default function (model, app) {
     },
     isActive: () => isActive,
     isModal: () => appAPI().isModal(model),
-    goModal: paths => appAPI().switchModal(model, paths, false),
+    goModal: (paths) => appAPI().switchModal(model, paths, false),
     noModal: () => appAPI().switchModal(null, null, false),
   };
 

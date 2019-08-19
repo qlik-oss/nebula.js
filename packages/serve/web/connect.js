@@ -22,7 +22,7 @@ const params = (() => {
   return opts;
 })();
 
-const requestInfo = fetch('/info').then(response => response.json());
+const requestInfo = fetch('/info').then((response) => response.json());
 
 const defaultConfig = {
   host: window.location.hostname || 'localhost',
@@ -33,7 +33,7 @@ const defaultConfig = {
 let connection;
 const connect = () => {
   if (!connection) {
-    connection = requestInfo.then(info => enigma.create({
+    connection = requestInfo.then((info) => enigma.create({
       schema: qixSchema,
       url: SenseUtilities.buildUrl({
         ...defaultConfig,
@@ -45,14 +45,14 @@ const connect = () => {
   return connection;
 };
 
-const openApp = id => requestInfo.then(info => enigma.create({
+const openApp = (id) => requestInfo.then((info) => enigma.create({
   schema: qixSchema,
   url: SenseUtilities.buildUrl({
     ...defaultConfig,
     ...info.enigma,
     appId: id,
   }),
-}).open().then(global => global.openDoc(id)));
+}).open().then((global) => global.openDoc(id)));
 
 export {
   connect,

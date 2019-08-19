@@ -6,7 +6,7 @@ import {
 
 describe('observer', () => {
   beforeEach(() => {
-    Object.keys(cache).forEach(key => delete cache[key]);
+    Object.keys(cache).forEach((key) => delete cache[key]);
   });
 
   describe('observe', () => {

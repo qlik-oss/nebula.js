@@ -104,7 +104,7 @@ const create = async (argv) => {
       'eslintignore',
       'gitignore',
       'eslintrc.json',
-    ].forEach(filename => fs.copyFileSync(
+    ].forEach((filename) => fs.copyFileSync(
       path.resolve(templatesRoot, 'common', `_${filename}`), // copying dotfiles may not always work, so they are prefixed with an underline
       path.resolve(destination, `.${filename}`),
     ));

@@ -11,7 +11,7 @@ if (!params.app) {
   location.href = location.origin; //eslint-disable-line
 }
 
-serverInfo.then(info => openApp(params.app).then((app) => {
+serverInfo.then((info) => openApp(params.app).then((app) => {
   let obj;
   let objType;
 

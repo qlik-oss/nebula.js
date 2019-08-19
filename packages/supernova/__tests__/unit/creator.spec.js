@@ -23,7 +23,7 @@ describe('creator', () => {
       'resize',
       'willUnmount',
       'destroy',
-    ].forEach(key => expect(c[key]).to.be.a('function'));
+    ].forEach((key) => expect(c[key]).to.be.a('function'));
 
     expect(c.model).to.equal(params.model);
     expect(c.app).to.equal(params.app);

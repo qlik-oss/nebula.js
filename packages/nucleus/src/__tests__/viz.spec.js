@@ -1,4 +1,4 @@
-const flush = () => new Promise(r => setImmediate(r));
+const flush = () => new Promise((r) => setImmediate(r));
 
 describe('viz', () => {
   const doMock = ({
