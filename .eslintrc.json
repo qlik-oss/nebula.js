@@ -6,14 +6,14 @@
   "parserOptions": {
     "sourceType": "module"
   },
-  "extends": [
-    "airbnb"
-  ],
+  "extends": ["airbnb", "prettier", "prettier/react"],
+  "plugins": ["prettier"],
   "rules": {
     "max-len": 0,
     "no-plusplus": 0,
-    "no-bitwise" : 0,
+    "no-bitwise": 0,
     "no-unused-expressions": 0,
+    "prettier/prettier": 2,
     "react/destructuring-assignment": [0, "always"],
     "react/prop-types": 0,
     "react/no-deprecated": 0,
@@ -35,9 +35,7 @@
         "aw": false,
         "page": false
       },
-      "plugins": [
-        "mocha"
-      ],
+      "plugins": ["mocha"],
       "rules": {
         "mocha/no-exclusive-tests": "error"
       }

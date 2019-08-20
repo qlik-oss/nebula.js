@@ -4,19 +4,19 @@ import enUs from './translations/en-US';
 
 const DEFAULT_LOCALE = 'en-US';
 
-const SUPPORTED_LANGUAGES = [{
-  info: {
-    short: 'en',
-    long: 'en-US',
-    label: 'English',
-    translatedLabel: 'Common.English',
+const SUPPORTED_LANGUAGES = [
+  {
+    info: {
+      short: 'en',
+      long: 'en-US',
+      label: 'English',
+      translatedLabel: 'Common.English',
+    },
+    data: enUs,
   },
-  data: enUs,
-}];
+];
 
-export default function locale({
-  language,
-} = {}) {
+export default function locale({ language } = {}) {
   const translator = translatorFn();
 
   const api = {
@@ -27,7 +27,7 @@ export default function locale({
     translator: () => translator.api,
   };
 
-  SUPPORTED_LANGUAGES.forEach((d) => translator.addLanguage(d.info, d.data));
+  SUPPORTED_LANGUAGES.forEach(d => translator.addLanguage(d.info, d.data));
 
   api.locale(language || DEFAULT_LOCALE);
 

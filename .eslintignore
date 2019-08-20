@@ -1,4 +1,3 @@
-dist
-node_modules
-**/__test__/unit/coverage/*
-**/__test__/component/coverage/*
+dist/
+coverage/
+node_modules/

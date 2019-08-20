@@ -29,16 +29,15 @@ export default function supernova(/* env */) {
           picassoQ,
         });
       },
-      render({
-        layout,
-        context,
-      }) {
+      render({ layout, context }) {
         this.pic.update({
-          data: [{
-            type: 'q',
-            key: 'qHyperCube',
-            data: layout.qHyperCube,
-          }],
+          data: [
+            {
+              type: 'q',
+              key: 'qHyperCube',
+              data: layout.qHyperCube,
+            },
+          ],
           settings: definition({ layout, context }),
         });
       },

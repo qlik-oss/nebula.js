@@ -1,11 +1,11 @@
-
 import vizualizationAPI from '../viz';
 import ObjectAPI from './object-api';
 
 export function observe(model, objectAPI) {
-  const onChanged = () => model.getLayout().then((layout) => {
-    objectAPI.setLayout(layout);
-  });
+  const onChanged = () =>
+    model.getLayout().then(layout => {
+      objectAPI.setLayout(layout);
+    });
   model.on('changed', onChanged);
   model.once('closed', () => {
     model.removeListener('changed', onChanged);
@@ -16,7 +16,7 @@ export function observe(model, objectAPI) {
 }
 
 export default function initiate(getCfg, optional, context) {
-  return context.app.getObject(getCfg.id).then((model) => {
+  return context.app.getObject(getCfg.id).then(model => {
     const viz = vizualizationAPI({
       model,
       context,

@@ -1,14 +1,9 @@
-import React, {
-  useContext,
-  useMemo,
-} from 'react';
+import React, { useContext, useMemo } from 'react';
 
 import Item from './SelectionToolbarItem';
 import LocaleContext from '../contexts/LocaleContext';
 
-function Component({
-  sn,
-}) {
+function Component({ sn }) {
   const translator = useContext(LocaleContext);
   const api = sn.component.selections;
 
@@ -19,30 +14,34 @@ function Component({
   };
 
   const { items, custom } = useMemo(() => {
-    const arr = [{
-      key: 'confirm',
-      type: 'icon-button',
-      label: translator.get('Selection.Confirm'),
-      icon: 'tick',
-      enabled: () => s.confirmable,
-      action: () => api.confirm(sn.component),
-    }, {
-      key: 'cancel',
-      type: 'icon-button',
-      label: translator.get('Selection.Cancel'),
-      icon: 'close',
-      enabled: () => s.cancelable,
-      action: () => api.cancel(sn.component),
-    }, {
-      key: 'clear',
-      type: 'icon-button',
-      label: translator.get('Selection.Clear'),
-      icon: 'clear-selections',
-      enabled: () => s.clearable,
-      action: () => api.clear(sn.component),
-    }];
+    const arr = [
+      {
+        key: 'confirm',
+        type: 'icon-button',
+        label: translator.get('Selection.Confirm'),
+        icon: 'tick',
+        enabled: () => s.confirmable,
+        action: () => api.confirm(sn.component),
+      },
+      {
+        key: 'cancel',
+        type: 'icon-button',
+        label: translator.get('Selection.Cancel'),
+        icon: 'close',
+        enabled: () => s.cancelable,
+        action: () => api.cancel(sn.component),
+      },
+      {
+        key: 'clear',
+        type: 'icon-button',
+        label: translator.get('Selection.Clear'),
+        icon: 'clear-selections',
+        enabled: () => s.clearable,
+        action: () => api.clear(sn.component),
+      },
+    ];
     const c = {};
-    (sn.selectionToolbar.items || []).forEach((item) => {
+    (sn.selectionToolbar.items || []).forEach(item => {
       c[item.key] = true;
       arr.push(item);
     });
@@ -52,7 +51,9 @@ function Component({
 
   return (
     <div>
-      {items.map((itm) => <Item key={itm.key} item={itm} isCustom={!!custom[itm.key]} />)}
+      {items.map(itm => (
+        <Item key={itm.key} item={itm} isCustom={!!custom[itm.key]} />
+      ))}
     </div>
   );
 }

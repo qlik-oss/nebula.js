@@ -10,11 +10,7 @@ function getFontSize(size) {
   return '16px';
 }
 
-export default function SvgIcon({
-  d,
-  size,
-  style = {},
-}) {
+export default function SvgIcon({ d, size, style = {} }) {
   const s = {
     fontSize: getFontSize(size),
     display: 'inline-block',
@@ -30,13 +26,7 @@ export default function SvgIcon({
   };
   return (
     <i style={s}>
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="1em"
-        height="1em"
-        viewBox="0 0 16 16"
-        fill="currentColor"
-      >
+      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16" fill="currentColor">
         <path d={d} />
       </svg>
     </i>

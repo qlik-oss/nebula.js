@@ -18,10 +18,14 @@ const hasYarn = () => {
   }
 };
 
-const author = async (cwd) => {
+const author = async cwd => {
   try {
-    const email = execSync('git config --get user.email', { cwd }).toString().trim();
-    const name = execSync('git config --get user.name', { cwd }).toString().trim();
+    const email = execSync('git config --get user.email', { cwd })
+      .toString()
+      .trim();
+    const name = execSync('git config --get user.name', { cwd })
+      .toString()
+      .trim();
     return {
       email,
       name,
@@ -54,7 +58,7 @@ function cpy(root, destination) {
   };
 }
 
-const create = async (argv) => {
+const create = async argv => {
   const { name } = argv;
 
   const projectFolder = name;
@@ -67,8 +71,8 @@ const create = async (argv) => {
   let options = {
     install: true,
     ...argv,
-    pkgm: argv.pkgm || (await hasYarn() ? 'yarn' : 'npm'),
-    author: argv.author ? parseAuthor(argv.author) : (await author()),
+    pkgm: argv.pkgm || ((await hasYarn()) ? 'yarn' : 'npm'),
+    author: argv.author ? parseAuthor(argv.author) : await author(),
   };
 
   const results = {};
@@ -79,14 +83,16 @@ const create = async (argv) => {
   }
 
   const prompt = async () => {
-    const answers = await inquirer.prompt([{
-      type: 'list',
-      name: 'picasso',
-      message: 'Pick a picasso template',
-      default: 'none',
-      choices: ['none', 'minimal', 'barchart'],
-      when: !argv.picasso,
-    }]);
+    const answers = await inquirer.prompt([
+      {
+        type: 'list',
+        name: 'picasso',
+        message: 'Pick a picasso template',
+        default: 'none',
+        choices: ['none', 'minimal', 'barchart'],
+        when: !argv.picasso,
+      },
+    ]);
 
     options = { ...options, ...answers };
   };
@@ -99,15 +105,12 @@ const create = async (argv) => {
 
     // ==== common files ====
     // copy raw files
-    [
-      'editorconfig',
-      'eslintignore',
-      'gitignore',
-      'eslintrc.json',
-    ].forEach((filename) => fs.copyFileSync(
-      path.resolve(templatesRoot, 'common', `_${filename}`), // copying dotfiles may not always work, so they are prefixed with an underline
-      path.resolve(destination, `.${filename}`),
-    ));
+    ['editorconfig', 'eslintignore', 'gitignore', 'eslintrc.json'].forEach(filename =>
+      fs.copyFileSync(
+        path.resolve(templatesRoot, 'common', `_${filename}`), // copying dotfiles may not always work, so they are prefixed with an underline
+        path.resolve(destination, `.${filename}`)
+      )
+    );
 
     const copy = cpy(templatesRoot, destination);
 
@@ -125,7 +128,7 @@ const create = async (argv) => {
     const traverse = (sourceFolder, targetFolder = '') => {
       const files = fs.readdirSync(path.resolve(templatesRoot, sourceFolder));
 
-      files.forEach((file) => {
+      files.forEach(file => {
         const p = `${sourceFolder}/${file}`;
         const stats = fs.lstatSync(path.resolve(templatesRoot, p));
         const next = `${targetFolder}/${file}`.replace(/^\//, '');
@@ -146,7 +149,7 @@ const create = async (argv) => {
       });
     };
 
-    folders.forEach((folder) => {
+    folders.forEach(folder => {
       traverse(folder);
     });
   };

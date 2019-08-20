@@ -10,10 +10,11 @@ const mock = ({
     Typography: ({ children }) => <t>{children}</t>,
   },
   STB = () => <stb />,
-} = {}) => aw.mock([
-  ['**/ui/components/index.js', () => components],
-  ['**/SelectionToolbar.jsx', () => STB],
-], ['../../src/components/Header']);
+} = {}) =>
+  aw.mock(
+    [['**/ui/components/index.js', () => components], ['**/SelectionToolbar.jsx', () => STB]],
+    ['../../src/components/Header']
+  );
 
 describe('<Header />', () => {
   it('should render a title', () => {
@@ -21,13 +22,28 @@ describe('<Header />', () => {
     const [{ default: Header }] = mock();
     const tree = renderer.create(<Header layout={layout} />).toJSON();
     expect(tree).to.eql({
-      type: 'g', props: {}, children: [{
-        type: 'g', props: {}, children: [{
-          type: 'g', props: {}, children: [{
-            type: 't', props: {}, children: ['title'],
-          }],
-        }],
-      }, { type: 'g', props: {}, children: null }],
+      type: 'g',
+      props: {},
+      children: [
+        {
+          type: 'g',
+          props: {},
+          children: [
+            {
+              type: 'g',
+              props: {},
+              children: [
+                {
+                  type: 't',
+                  props: {},
+                  children: ['title'],
+                },
+              ],
+            },
+          ],
+        },
+        { type: 'g', props: {}, children: null },
+      ],
     });
   });
 
@@ -36,13 +52,28 @@ describe('<Header />', () => {
     const [{ default: Header }] = mock();
     const tree = renderer.create(<Header layout={layout} />).toJSON();
     expect(tree).to.eql({
-      type: 'g', props: {}, children: [{
-        type: 'g', props: {}, children: [{
-          type: 'g', props: {}, children: [{
-            type: 't', props: {}, children: ['sub'],
-          }],
-        }],
-      }, { type: 'g', props: {}, children: null }],
+      type: 'g',
+      props: {},
+      children: [
+        {
+          type: 'g',
+          props: {},
+          children: [
+            {
+              type: 'g',
+              props: {},
+              children: [
+                {
+                  type: 't',
+                  props: {},
+                  children: ['sub'],
+                },
+              ],
+            },
+          ],
+        },
+        { type: 'g', props: {}, children: null },
+      ],
     });
   });
 
@@ -51,13 +82,32 @@ describe('<Header />', () => {
     const [{ default: Header }] = mock();
     const tree = renderer.create(<Header layout={layout} sn />).toJSON();
     expect(tree).to.eql({
-      type: 'g', props: {}, children: [{
-        type: 'g', props: {}, children: [{
-          type: 'g', props: {}, children: null,
-        }],
-      }, { type: 'g', props: {}, children: [{
-        type: 'stb', props: {}, children: null,
-      }] }],
+      type: 'g',
+      props: {},
+      children: [
+        {
+          type: 'g',
+          props: {},
+          children: [
+            {
+              type: 'g',
+              props: {},
+              children: null,
+            },
+          ],
+        },
+        {
+          type: 'g',
+          props: {},
+          children: [
+            {
+              type: 'stb',
+              props: {},
+              children: null,
+            },
+          ],
+        },
+      ],
     });
   });
 });

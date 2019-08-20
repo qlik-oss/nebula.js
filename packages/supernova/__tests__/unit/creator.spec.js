@@ -1,7 +1,5 @@
 describe('creator', () => {
-  const [{ default: create }] = aw.mock([
-    ['**/action-hero.js', () => () => ({})],
-  ], ['../../src/creator']);
+  const [{ default: create }] = aw.mock([['**/action-hero.js', () => () => ({})]], ['../../src/creator']);
 
   it('should return a default component api', () => {
     const generator = {
@@ -16,14 +14,9 @@ describe('creator', () => {
 
     const c = create(generator, params, env).component;
 
-    [
-      'created',
-      'mounted',
-      'render',
-      'resize',
-      'willUnmount',
-      'destroy',
-    ].forEach((key) => expect(c[key]).to.be.a('function'));
+    ['created', 'mounted', 'render', 'resize', 'willUnmount', 'destroy'].forEach(key =>
+      expect(c[key]).to.be.a('function')
+    );
 
     expect(c.model).to.equal(params.model);
     expect(c.app).to.equal(params.app);
@@ -50,14 +43,7 @@ describe('creator', () => {
 
     const c = create(generator, params, env).component;
 
-    [
-      'created',
-      'mounted',
-      'render',
-      'resize',
-      'willUnmount',
-      'destroy',
-    ].forEach((key) => {
+    ['created', 'mounted', 'render', 'resize', 'willUnmount', 'destroy'].forEach(key => {
       c[key]('a');
       expect(generator.component[key]).to.have.been.calledWithExactly('a');
     });

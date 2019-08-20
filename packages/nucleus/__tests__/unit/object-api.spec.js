@@ -1,12 +1,16 @@
-
 describe('ObjectAPI', () => {
-  const doMock = ({
-    createObjectSelectionAPI = () => ({}),
-  } = {}) => aw.mock([
-    ['**/selections/index.js', () => ({
-      createObjectSelectionAPI,
-    })],
-  ], ['../../src/object/object-api']);
+  const doMock = ({ createObjectSelectionAPI = () => ({}) } = {}) =>
+    aw.mock(
+      [
+        [
+          '**/selections/index.js',
+          () => ({
+            createObjectSelectionAPI,
+          }),
+        ],
+      ],
+      ['../../src/object/object-api']
+    );
 
   it('setState should pass props to viz', () => {
     const [{ default: API }] = doMock();
@@ -75,7 +79,9 @@ describe('ObjectAPI', () => {
         },
         config: { env: { Promise: { resolve: sinon.spy() } } },
       };
-      context.nebbie.types.get.withArgs({ name: 'my-type', version: 'my-sn-version' }).returns({ supernova: () => Promise.resolve('my-sn') });
+      context.nebbie.types.get
+        .withArgs({ name: 'my-type', version: 'my-sn-version' })
+        .returns({ supernova: () => Promise.resolve('my-sn') });
       api = new API('model', context, 'viz');
       api.setSupernova = sinon.spy();
     });
@@ -136,7 +142,11 @@ describe('ObjectAPI', () => {
       api.setType = sinon.spy();
       api.setState = sinon.spy();
       api.setLayout({ visualization: 'viz', version: 'prop-version' });
-      expect(api.setState).to.have.been.calledWithExactly({ layout: { visualization: 'viz', version: 'prop-version' }, error: null, sn: null });
+      expect(api.setState).to.have.been.calledWithExactly({
+        layout: { visualization: 'viz', version: 'prop-version' },
+        error: null,
+        sn: null,
+      });
       expect(api.setType).to.have.been.calledWithExactly('viz', 'prop-version', 'sn-version');
     });
 
@@ -147,7 +157,10 @@ describe('ObjectAPI', () => {
       api.currentObjectType = 'viz';
       api.currentPropertyVersion = '1.0.0';
       api.setLayout({ visualization: 'viz', version: '1.0.0' });
-      expect(api.setState).to.have.been.calledWithExactly({ layout: { visualization: 'viz', version: '1.0.0' }, error: null });
+      expect(api.setState).to.have.been.calledWithExactly({
+        layout: { visualization: 'viz', version: '1.0.0' },
+        error: null,
+      });
       expect(api.setType).to.not.have.been.called;
     });
   });

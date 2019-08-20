@@ -9,15 +9,19 @@ describe('types', () => {
   });
 
   describe('factory', () => {
-    const mock = ({
-      createType = () => ({}),
-      clearFromCache = () => {},
-    } = {}) => aw.mock([
-      ['**/sn/type.js', () => createType],
-      ['**/sn/load.js', () => ({
-        clearFromCache,
-      })],
-    ], ['../types']);
+    const mock = ({ createType = () => ({}), clearFromCache = () => {} } = {}) =>
+      aw.mock(
+        [
+          ['**/sn/type.js', () => createType],
+          [
+            '**/sn/load.js',
+            () => ({
+              clearFromCache,
+            }),
+          ],
+        ],
+        ['../types']
+      );
 
     let c;
     let type;
@@ -33,17 +37,21 @@ describe('types', () => {
 
     it('should instantiate a type when registering', () => {
       c.register({ name: 'pie', version: '1.0.3' }, 'opts');
-      expect(type).to.have.been.calledWithExactly({
-        name: 'pie',
-        version: '1.0.3',
-      }, 'config', 'opts');
+      expect(type).to.have.been.calledWithExactly(
+        {
+          name: 'pie',
+          version: '1.0.3',
+        },
+        'config',
+        'opts'
+      );
     });
 
     it('should throw when registering an already registered version', () => {
       c.register({ name: 'pie', version: '1.0.3' }, 'opts');
       const fn = () => c.register({ name: 'pie', version: '1.0.3' }, 'opts');
 
-      expect(fn).to.throw('Supernova \'pie@1.0.3\' already registered.');
+      expect(fn).to.throw("Supernova 'pie@1.0.3' already registered.");
     });
 
     it('should find 1.5.1 as matching version from properties', () => {

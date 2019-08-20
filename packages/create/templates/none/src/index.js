@@ -14,10 +14,7 @@ export default function supernova(env) {
       mounted(element) {
         element.innerHTML = '<div>Hello!</div>'; // eslint-disable-line
       },
-      render({
-        layout,
-        context,
-      }) {
+      render({ layout, context }) {
         console.log('render', layout, context);
       },
       resize() {},

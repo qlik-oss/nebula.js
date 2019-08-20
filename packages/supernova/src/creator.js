@@ -18,14 +18,14 @@ const defaultComponent = {
   getViewState: () => {},
 
   // temporary
-  setSnapshotData: (snapshot) => Promise.resolve(snapshot),
+  setSnapshotData: snapshot => Promise.resolve(snapshot),
 };
 
 const reservedKeys = Object.keys(defaultComponent);
 
-const mixin = (obj) => {
+const mixin = obj => {
   /* eslint no-param-reassign: 0 */
-  Object.keys(EventEmitter.prototype).forEach((key) => {
+  Object.keys(EventEmitter.prototype).forEach(key => {
     obj[key] = EventEmitter.prototype[key];
   });
   EventEmitter.init(obj);
@@ -45,7 +45,7 @@ export default function create(sn, opts) {
     },
   };
 
-  Object.keys(sn.component || {}).forEach((key) => {
+  Object.keys(sn.component || {}).forEach(key => {
     if (reservedKeys.indexOf(key) !== -1) {
       componentInstance[key] = sn.component[key].bind(userInstance);
     } else {

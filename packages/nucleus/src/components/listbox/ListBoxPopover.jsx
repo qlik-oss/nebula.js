@@ -1,55 +1,53 @@
-import React, {
-  useCallback,
-} from 'react';
+import React, { useCallback } from 'react';
 
 import Lock from '@nebula.js/ui/icons/Lock';
 import Unlock from '@nebula.js/ui/icons/Unlock';
 
-import {
-  IconButton,
-  Popover,
-  Grid,
-} from '@nebula.js/ui/components';
+import { IconButton, Popover, Grid } from '@nebula.js/ui/components';
 
 import useModel from '../../hooks/useModel';
 import useLayout from '../../hooks/useLayout';
 
 import ListBox from './ListBox';
 
-export default function ListBoxPopover({
-  alignTo,
-  show,
-  close,
-  app,
-  selections,
-  fieldName,
-  stateName = '$',
-}) {
-  const [model] = useModel({
-    qInfo: {
-      qType: 'dummy',
-    },
-    qListObjectDef: {
-      qStateName: stateName,
-      qShowAlternatives: true,
-      qFrequencyMode: 'N',
-      qReverseSort: false,
-      qInitialDataFetch: [{
-        qTop: 0, qLeft: 0, qHeight: 0, qWidth: 1,
-      }],
-      qDef: {
-        qSortCriterias: [{
-          qSortByExpression: 0,
-          qSortByFrequency: 0,
-          qSortByGreyness: 0,
-          qSortByLoadOrder: 1,
-          qSortByNumeric: 1,
-          qSortByState: 1,
-        }],
-        qFieldDefs: [fieldName],
+export default function ListBoxPopover({ alignTo, show, close, app, selections, fieldName, stateName = '$' }) {
+  const [model] = useModel(
+    {
+      qInfo: {
+        qType: 'dummy',
+      },
+      qListObjectDef: {
+        qStateName: stateName,
+        qShowAlternatives: true,
+        qFrequencyMode: 'N',
+        qReverseSort: false,
+        qInitialDataFetch: [
+          {
+            qTop: 0,
+            qLeft: 0,
+            qHeight: 0,
+            qWidth: 1,
+          },
+        ],
+        qDef: {
+          qSortCriterias: [
+            {
+              qSortByExpression: 0,
+              qSortByFrequency: 0,
+              qSortByGreyness: 0,
+              qSortByLoadOrder: 1,
+              qSortByNumeric: 1,
+              qSortByState: 1,
+            },
+          ],
+          qFieldDefs: [fieldName],
+        },
       },
     },
-  }, app, fieldName, stateName);
+    app,
+    fieldName,
+    stateName
+  );
 
   const lock = useCallback(() => {
     model.lock('/qListObjectDef');

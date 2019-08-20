@@ -11,7 +11,7 @@ const event = () => {
   };
 };
 
-export default function (model, app) {
+export default function(model, app) {
   if (model._selections) {
     return model._selections;
   }
@@ -60,7 +60,7 @@ export default function (model, app) {
         return;
       }
       hasSelected = true;
-      model[s.method](...s.params).then((qSuccess) => {
+      model[s.method](...s.params).then(qSuccess => {
         if (!qSuccess) {
           this.clear();
         }
@@ -77,7 +77,7 @@ export default function (model, app) {
     },
     isActive: () => isActive,
     isModal: () => appAPI().isModal(model),
-    goModal: (paths) => appAPI().switchModal(model, paths, false),
+    goModal: paths => appAPI().switchModal(model, paths, false),
     noModal: () => appAPI().switchModal(null, null, false),
   };
 

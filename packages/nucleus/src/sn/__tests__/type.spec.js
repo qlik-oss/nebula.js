@@ -1,12 +1,12 @@
-const mock = ({
-  SNFactory = () => ({}),
-  satisfies = () => false,
-  load = () => null,
-} = {}) => aw.mock([
-  ['**/dist/supernova.js', () => SNFactory],
-  ['**/semver.js', () => ({ satisfies })],
-  ['**/load.js', () => ({ load })],
-], ['../type']);
+const mock = ({ SNFactory = () => ({}), satisfies = () => false, load = () => null } = {}) =>
+  aw.mock(
+    [
+      ['**/dist/supernova.js', () => SNFactory],
+      ['**/semver.js', () => ({ satisfies })],
+      ['**/load.js', () => ({ load })],
+    ],
+    ['../type']
+  );
 
 describe('type', () => {
   let c;

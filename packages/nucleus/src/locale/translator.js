@@ -7,8 +7,9 @@ const format = (message = '', args = []) => {
 };
 
 const getLongLanguageCode = (lang, list) => {
-  const code = list.filter((item) => item.long.toLowerCase() === lang.toLowerCase())[0]
-    || list.filter((item) => item.short.toLowerCase() === lang.toLowerCase())[0];
+  const code =
+    list.filter(item => item.long.toLowerCase() === lang.toLowerCase())[0] ||
+    list.filter(item => item.short.toLowerCase() === lang.toLowerCase())[0];
 
   if (!code) {
     console.warn(`Language '${lang}' not supported, falling back to ${DEFAULT_LANGUAGE}`);
@@ -40,7 +41,7 @@ export default function translator() {
   };
 
   return {
-    setLanguage: (code) => {
+    setLanguage: code => {
       currentLocale = code;
       // TODO - emit change?
     },
@@ -48,7 +49,7 @@ export default function translator() {
       languageList.push(descr);
       api.append(data, descr.long);
     },
-    getLongCode: (lang) => getLongLanguageCode(lang, languageList),
+    getLongCode: lang => getLongLanguageCode(lang, languageList),
     api,
   };
 }

@@ -16,7 +16,11 @@ function permissions(options, backendApi) {
   if (showTooltip(options)) {
     p.push('passive');
   }
-  if (options.interactionState === INTERACTION_STATES.ANALYSIS && options.tooltips !== false && options.limitedInteraction !== true) {
+  if (
+    options.interactionState === INTERACTION_STATES.ANALYSIS &&
+    options.tooltips !== false &&
+    options.limitedInteraction !== true
+  ) {
     p.push('interact');
   }
   if (!backendApi.isSnapshot) {

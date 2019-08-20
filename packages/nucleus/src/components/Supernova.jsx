@@ -24,10 +24,13 @@ const scheduleRender = (props, prev, initial, contentElement) => {
   }
   const prom = {};
 
-  const p = new Promise((resolve) => {
+  const p = new Promise(resolve => {
     const timeout = setTimeout(() => {
       const parentRect = contentElement.parentElement.parentElement.getBoundingClientRect();
-      const r = typeof props.snContext.logicalSize === 'function' ? props.snContext.logicalSize(props.layout, props.sn) : props.sn.logicalSize({ layout: props.layout });
+      const r =
+        typeof props.snContext.logicalSize === 'function'
+          ? props.snContext.logicalSize(props.layout, props.sn)
+          : props.sn.logicalSize({ layout: props.layout });
       const logicalSize = r || undefined;
       if (r) {
         // const rect = that.element.getBoundingClientRect();
@@ -40,7 +43,8 @@ const scheduleRender = (props, prev, initial, contentElement) => {
         let left = 0;
         let top = 0;
 
-        if (parentRatio > rRatio) { // parent is wider -> limit height
+        if (parentRatio > rRatio) {
+          // parent is wider -> limit height
           ({ height } = parentRect);
           width = height * rRatio;
           left = (parentRect.width - width) / 2;
@@ -53,7 +57,10 @@ const scheduleRender = (props, prev, initial, contentElement) => {
         }
 
         constrainElement(contentElement, {
-          top, left, width, height,
+          top,
+          left,
+          width,
+          height,
         });
       } else {
         constrainElement(contentElement);
@@ -61,20 +68,24 @@ const scheduleRender = (props, prev, initial, contentElement) => {
 
       initial.mount();
 
-      Promise.resolve(props.sn.component.render({
-        layout: props.layout,
-        options: props.snOptions || {},
-        context: {
-          permissions: (props.snContext || {}).permissions,
-          theme: (props.snContext || {}).theme,
-          rtl: (props.snContext || {}).rtl,
-          localeInfo: (props.snContext || {}).localeInfo,
-          logicalSize,
-        },
-      })).then(() => {
-        initial.rendered();
-        // props.sn.component.didUpdate(); // TODO - should check if component is in update stage
-      }).then(resolve);
+      Promise.resolve(
+        props.sn.component.render({
+          layout: props.layout,
+          options: props.snOptions || {},
+          context: {
+            permissions: (props.snContext || {}).permissions,
+            theme: (props.snContext || {}).theme,
+            rtl: (props.snContext || {}).rtl,
+            localeInfo: (props.snContext || {}).localeInfo,
+            logicalSize,
+          },
+        })
+      )
+        .then(() => {
+          initial.rendered();
+          // props.sn.component.didUpdate(); // TODO - should check if component is in update stage
+        })
+        .then(resolve);
     }, 0);
 
     prom.reject = () => {
@@ -137,19 +148,23 @@ class Supernova extends React.Component {
       }
     };
 
-    this.next = scheduleRender({
-      snOptions: this.props.snOptions,
-      snContext: this.props.snContext,
-      sn: this.props.sn,
-      layout: this.props.layout,
-    }, this.next, this.initial, this.contentElement);
+    this.next = scheduleRender(
+      {
+        snOptions: this.props.snOptions,
+        snContext: this.props.snContext,
+        sn: this.props.sn,
+        layout: this.props.layout,
+      },
+      this.next,
+      this.initial,
+      this.contentElement
+    );
   }
 
   shouldComponentUpdate(nextProps) {
-    const update = nextProps.sn
-      && !(nextProps.layout
-          && nextProps.layout.qSelectionInfo
-          && nextProps.layout.qSelectionInfo.qInSelections);
+    const update =
+      nextProps.sn &&
+      !(nextProps.layout && nextProps.layout.qSelectionInfo && nextProps.layout.qSelectionInfo.qInSelections);
     if (!update) {
       return false;
     }
@@ -183,16 +198,19 @@ class Supernova extends React.Component {
     return (
       <div
         style={style}
-        ref={(element) => { this.element = element; }}
+        ref={element => {
+          this.element = element;
+        }}
       >
         <div
           style={{
             position: 'absolute',
           }}
-          ref={(element) => { this.contentElement = element; }}
+          ref={element => {
+            this.contentElement = element;
+          }}
         />
       </div>
-
     );
   }
 }

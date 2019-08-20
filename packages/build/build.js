@@ -7,18 +7,9 @@ const replace = require('rollup-plugin-replace');
 const node = require('rollup-plugin-node-resolve');
 const { terser } = require('rollup-plugin-terser');
 
-const config = ({
-  mode = 'production',
-  format = 'umd',
-  cwd = process.cwd(),
-} = {}) => {
+const config = ({ mode = 'production', format = 'umd', cwd = process.cwd() } = {}) => {
   const pkg = require(path.resolve(cwd, 'package.json')); // eslint-disable-line
-  const {
-    name,
-    version,
-    license,
-    author,
-  } = pkg;
+  const { name, version, license, author } = pkg;
 
   const auth = typeof author === 'object' ? `${author.name} <${author.email}>` : author || '';
   const moduleName = name.split('/').reverse()[0];
@@ -49,20 +40,27 @@ const config = ({
         babel({
           babelrc: false,
           presets: [
-            ['@babel/preset-env', {
-              modules: false,
-              targets: {
-                browsers: ['ie 11', 'chrome 47'],
+            [
+              '@babel/preset-env',
+              {
+                modules: false,
+                targets: {
+                  browsers: ['ie 11', 'chrome 47'],
+                },
               },
-            }],
+            ],
           ],
         }),
         postcss({}),
-        ...[mode === 'production' ? terser({
-          output: {
-            preamble: banner,
-          },
-        }) : false],
+        ...[
+          mode === 'production'
+            ? terser({
+                output: {
+                  preamble: banner,
+                },
+              })
+            : false,
+        ],
       ].filter(Boolean),
     },
     output: {
@@ -108,7 +106,7 @@ const watch = async () => {
   });
 
   return new Promise((resolve, reject) => {
-    watcher.on('event', (event) => {
+    watcher.on('event', event => {
       if (event.code === 'FATAL') {
         console.error(event);
         reject();

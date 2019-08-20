@@ -1,10 +1,10 @@
 // import generator from '../../src/generator';
 
 describe('generator', () => {
-  const [{ default: generator }] = aw.mock([
-    ['**/creator.js', () => (...a) => [...a]],
-    ['**/qae.js', () => (qae) => qae || 'qae'],
-  ], ['../../src/generator']);
+  const [{ default: generator }] = aw.mock(
+    [['**/creator.js', () => (...a) => [...a]], ['**/qae.js', () => qae => qae || 'qae']],
+    ['../../src/generator']
+  );
 
   it('should have a default qae property', () => {
     expect(generator({}).qae).to.eql('qae');
@@ -15,10 +15,12 @@ describe('generator', () => {
   });
 
   it('should not override reserved properties', () => {
-    expect(generator({
-      foo: 'bar',
-      component: 'c',
-    }).definition).to.eql({
+    expect(
+      generator({
+        foo: 'bar',
+        component: 'c',
+      }).definition
+    ).to.eql({
       foo: 'bar',
     });
   });
@@ -33,10 +35,13 @@ describe('generator', () => {
   });
 
   it('should create an instance', () => {
-    const g = generator({}, {
-      translator: 't',
-      Promise: 'P',
-    });
+    const g = generator(
+      {},
+      {
+        translator: 't',
+        Promise: 'P',
+      }
+    );
     const ret = g.create('a');
     expect(ret).to.eql([g, 'a', { translator: 't', Promise: 'P' }]);
   });

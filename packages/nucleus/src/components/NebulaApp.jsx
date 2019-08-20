@@ -1,14 +1,7 @@
-import React, {
-  useMemo,
-} from 'react';
+import React, { useMemo } from 'react';
 import ReactDOM from 'react-dom';
 
-import {
-  createTheme,
-  ThemeProvider,
-  StylesProvider,
-  createGenerateClassName,
-} from '@nebula.js/ui/theme';
+import { createTheme, ThemeProvider, StylesProvider, createGenerateClassName } from '@nebula.js/ui/theme';
 
 import LocaleContext from '../contexts/LocaleContext';
 
@@ -16,38 +9,31 @@ const THEME_PREFIX = (process.env.NEBULA_VERSION || '').replace(/[.-]/g, '_');
 
 let counter = 0;
 
-function NebulaApp({
-  children,
-  themeName,
-  translator,
-}) {
-  const { theme, generator } = useMemo(() => ({
-    theme: createTheme(themeName),
-    generator: createGenerateClassName({
-      productionPrefix: `${THEME_PREFIX}-`,
-      disableGlobal: true,
-      seed: `nebulajs-${counter++}`,
+function NebulaApp({ children, themeName, translator }) {
+  const { theme, generator } = useMemo(
+    () => ({
+      theme: createTheme(themeName),
+      generator: createGenerateClassName({
+        productionPrefix: `${THEME_PREFIX}-`,
+        disableGlobal: true,
+        seed: `nebulajs-${counter++}`,
+      }),
     }),
-  }), [themeName]);
+    [themeName]
+  );
 
   return (
     <StylesProvider generateClassName={generator}>
       <ThemeProvider theme={theme}>
         <LocaleContext.Provider value={translator}>
-          <>
-            {children}
-          </>
+          <>{children}</>
         </LocaleContext.Provider>
       </ThemeProvider>
     </StylesProvider>
   );
 }
 
-export default function boot({
-  app,
-  theme = 'light',
-  translator,
-}) {
+export default function boot({ app, theme = 'light', translator }) {
   const element = document.createElement('div');
   element.style.display = 'none';
   element.setAttribute('data-nebulajs-version', process.env.NEBULA_VERSION || '');
@@ -58,14 +44,10 @@ export default function boot({
 
   const update = () => {
     ReactDOM.render(
-      <NebulaApp
-        themeName={themeName}
-        app={app}
-        translator={translator}
-      >
+      <NebulaApp themeName={themeName} app={app} translator={translator}>
         {components}
       </NebulaApp>,
-      element,
+      element
     );
   };
 

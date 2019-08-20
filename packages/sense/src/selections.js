@@ -1,9 +1,9 @@
 import EventEmitter from 'node-event-emitter';
 
-export default (scope) => {
+export default scope => {
   /* eslint no-param-reassign: 0 */
-  const mixin = (obj) => {
-    Object.keys(EventEmitter.prototype).forEach((key) => {
+  const mixin = obj => {
+    Object.keys(EventEmitter.prototype).forEach(key => {
       obj[key] = EventEmitter.prototype[key];
     });
     EventEmitter.init(obj);
@@ -31,7 +31,7 @@ export default (scope) => {
       if (s.method !== 'resetMadeSelections' && !scope.selectionsApi.selectionsMade) {
         scope.backendApi.beginSelections();
       }
-      scope.backendApi.model[s.method](...s.params).then((qSuccess) => {
+      scope.backendApi.model[s.method](...s.params).then(qSuccess => {
         if (!qSuccess) {
           scope.selectionsApi.selectionsMade = false;
           this.clear();

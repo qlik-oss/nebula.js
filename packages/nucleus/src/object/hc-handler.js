@@ -2,7 +2,7 @@
 
 const idGen = [[10, 31], [0, 31], [0, 31], [0, 31], [0, 31], [0, 31]];
 function toChar([min, max]) {
-  return (min + (Math.random() * (max - min) | 0)).toString(32);
+  return (min + ((Math.random() * (max - min)) | 0)).toString(32);
 }
 
 function uid() {
@@ -30,19 +30,21 @@ function removeIndex(array, index) {
   return removeIdx;
 }
 
-const nxDimension = (f) => ({
+const nxDimension = f => ({
   qDef: {
     qFieldDefs: [f],
-    qSortCriterias: [{
-      qSortByLoadOrder: 1,
-      qSortByNumeric: 1,
-      qSortByAscii: 1,
-    }],
+    qSortCriterias: [
+      {
+        qSortByLoadOrder: 1,
+        qSortByNumeric: 1,
+        qSortByAscii: 1,
+      },
+    ],
   },
   qOtherTotalSpec: {},
 });
 
-const nxMeasure = (f) => ({
+const nxMeasure = f => ({
   qDef: {
     qDef: f,
   },
@@ -52,10 +54,7 @@ const nxMeasure = (f) => ({
   },
 });
 
-export default function hcHandler({
-  hc,
-  def,
-}) {
+export default function hcHandler({ hc, def }) {
   hc.qDimensions = hc.qDimensions || [];
   hc.qMeasures = hc.qMeasures || [];
   hc.qInterColumnSortOrder = hc.qInterColumnSortOrder || [];
@@ -70,10 +69,13 @@ export default function hcHandler({
       return hc.qMeasures;
     },
     addDimension(d) {
-      const dimension = typeof d === 'string' ? nxDimension(d) : {
-        ...d,
-        qDef: d.qDef || {},
-      };
+      const dimension =
+        typeof d === 'string'
+          ? nxDimension(d)
+          : {
+              ...d,
+              qDef: d.qDef || {},
+            };
       dimension.qDef.cId = dimension.qDef.cId || uid();
       dimension.qOtherTotalSpec = dimension.qOtherTotalSpec || {};
       if (!dimension.qDef.cId) {
@@ -97,10 +99,13 @@ export default function hcHandler({
       def.dimensions.remove(dimension, objectProperties, idx);
     },
     addMeasure(m) {
-      const measure = typeof m === 'string' ? nxMeasure(m) : {
-        ...m,
-        qDef: m.qDef || {},
-      };
+      const measure =
+        typeof m === 'string'
+          ? nxMeasure(m)
+          : {
+              ...m,
+              qDef: m.qDef || {},
+            };
       measure.qDef.cId = measure.qDef.cId || uid();
       if (!measure.qDef.cId) {
         measure.qDef.cId = uid();

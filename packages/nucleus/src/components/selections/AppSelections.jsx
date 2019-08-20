@@ -1,20 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import {
-  Grid,
-} from '@nebula.js/ui/components';
+import { Grid } from '@nebula.js/ui/components';
 
-import {
-  useTheme,
-} from '@nebula.js/ui/theme';
+import { useTheme } from '@nebula.js/ui/theme';
 
 import SelectedFields from './SelectedFields';
 import Nav from './Nav';
 
-export function AppSelections({
-  api,
-}) {
+export function AppSelections({ api }) {
   const theme = useTheme();
 
   return (
@@ -42,14 +36,6 @@ export function AppSelections({
   );
 }
 
-export default function mount({
-  element,
-  api,
-}) {
-  return ReactDOM.createPortal(
-    <AppSelections
-      api={api}
-    />,
-    element,
-  );
+export default function mount({ element, api }) {
+  return ReactDOM.createPortal(<AppSelections api={api} />, element);
 }
