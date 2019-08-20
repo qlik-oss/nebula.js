@@ -29,38 +29,63 @@ const MODES = {
 describe('permissions', () => {
   describe('with live engine', () => {
     it('in STATIC mode should only allow model SELECT and FETCH', () => {
-      expect(permissions({
-        interactionState: 0,
-      }, {})).to.eql(['select', 'fetch']);
+      expect(
+        permissions(
+          {
+            interactionState: 0,
+          },
+          {}
+        )
+      ).to.eql(['select', 'fetch']);
     });
 
     it('in ANALYSIS mode should allow everything', () => {
-      expect(permissions({
-        interactionState: 1,
-      }, {})).to.eql(['passive', 'interact', 'select', 'fetch']);
+      expect(
+        permissions(
+          {
+            interactionState: 1,
+          },
+          {}
+        )
+      ).to.eql(['passive', 'interact', 'select', 'fetch']);
     });
 
     it('in EDIT mode should only allow model SELECT and FETCH', () => {
-      expect(permissions({
-        interactionState: 2,
-      }, {})).to.eql(['select', 'fetch']);
+      expect(
+        permissions(
+          {
+            interactionState: 2,
+          },
+          {}
+        )
+      ).to.eql(['select', 'fetch']);
     });
 
     it('in ANALYSIS mode with tooltips and selections off, should only allow FETCH', () => {
-      expect(permissions({
-        interactionState: 1,
-        tooltips: false,
-        selections: false,
-      }, {})).to.eql(['fetch']);
+      expect(
+        permissions(
+          {
+            interactionState: 1,
+            tooltips: false,
+            selections: false,
+          },
+          {}
+        )
+      ).to.eql(['fetch']);
     });
   });
 
   describe('for a snapshot', () => {
     // interactive chart snapshot (shared chart)
     it('in ANALYSIS mode should only allow PASSIVE and INTERACT', () => {
-      expect(permissions({
-        interactionState: 1,
-      }, { isSnapshot: true })).to.eql(['passive', 'interact']);
+      expect(
+        permissions(
+          {
+            interactionState: 1,
+          },
+          { isSnapshot: true }
+        )
+      ).to.eql(['passive', 'interact']);
     });
 
     // edit story

@@ -33,7 +33,7 @@ const startEngine = () => {
       clearTimeout(timeout);
     }
 
-    c.on('exit', (code) => {
+    c.on('exit', code => {
       if (code !== 0) {
         clear();
         reject();

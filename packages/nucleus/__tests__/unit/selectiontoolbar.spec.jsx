@@ -25,10 +25,10 @@ describe('<SelectionToolbar />', () => {
       };
       const STItem = () => '';
       const LocaleContext = React.createContext();
-      const [{ default: STB }] = aw.mock([
-        ['**/SelectionToolbarItem.jsx', () => STItem],
-        ['**/LocaleContext.js', () => LocaleContext],
-      ], ['../../src/components/SelectionToolbar']);
+      const [{ default: STB }] = aw.mock(
+        [['**/SelectionToolbarItem.jsx', () => STItem], ['**/LocaleContext.js', () => LocaleContext]],
+        ['../../src/components/SelectionToolbar']
+      );
 
       const translator = {
         get: sinon.stub(),
@@ -41,7 +41,7 @@ describe('<SelectionToolbar />', () => {
       const c = renderer.create(
         <LocaleContext.Provider value={translator}>
           <STB sn={props.sn} />
-        </LocaleContext.Provider>,
+        </LocaleContext.Provider>
       );
 
       items = c.root.findAllByType(STItem);
@@ -112,10 +112,10 @@ describe('<SelectionToolbar />', () => {
     };
     const STItem = ({ isCustom }) => `-${isCustom}-`;
     const LocaleContext = React.createContext();
-    const [{ default: STB }] = aw.mock([
-      ['**/SelectionToolbarItem.jsx', () => STItem],
-      ['**/LocaleContext.js', () => LocaleContext],
-    ], ['../../src/components/SelectionToolbar']);
+    const [{ default: STB }] = aw.mock(
+      [['**/SelectionToolbarItem.jsx', () => STItem], ['**/LocaleContext.js', () => LocaleContext]],
+      ['../../src/components/SelectionToolbar']
+    );
 
     const translator = {
       get: sinon.stub(),
@@ -124,7 +124,7 @@ describe('<SelectionToolbar />', () => {
     const c = renderer.create(
       <LocaleContext.Provider value={translator}>
         <STB sn={props.sn} />
-      </LocaleContext.Provider>,
+      </LocaleContext.Provider>
     );
 
     expect(c.toJSON()).to.eql({

@@ -1,13 +1,6 @@
-import React, {
-  useEffect,
-  useState,
-  useContext,
-} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
-import {
-  IconButton,
-  Grid,
-} from '@nebula.js/ui/components';
+import { IconButton, Grid } from '@nebula.js/ui/components';
 
 import SelectionsBack from '@nebula.js/ui/icons/SelectionsBack';
 import SelectionsForward from '@nebula.js/ui/icons/SelectionsForward';
@@ -15,9 +8,7 @@ import ClearSelections from '@nebula.js/ui/icons/ClearSelections';
 
 import LocaleContext from '../../contexts/LocaleContext';
 
-export default function Nav({
-  api,
-}) {
+export default function Nav({ api }) {
   const translator = useContext(LocaleContext);
 
   const [state, setState] = useState({
@@ -30,11 +21,12 @@ export default function Nav({
     if (!api) {
       return undefined;
     }
-    const onChange = () => setState({
-      forward: api.canGoForward(),
-      back: api.canGoBack(),
-      clear: api.canClear(),
-    });
+    const onChange = () =>
+      setState({
+        forward: api.canGoForward(),
+        back: api.canGoBack(),
+        clear: api.canClear(),
+      });
     api.on('changed', onChange);
     return () => {
       api.removeListener('changed', onChange);
@@ -72,11 +64,7 @@ export default function Nav({
         </IconButton>
       </Grid>
       <Grid item>
-        <IconButton
-          disabled={!state.clear}
-          title={translator.get('Selection.ClearAll')}
-          onClick={() => api.clear()}
-        >
+        <IconButton disabled={!state.clear} title={translator.get('Selection.ClearAll')} onClick={() => api.clear()}>
           <ClearSelections />
         </IconButton>
       </Grid>

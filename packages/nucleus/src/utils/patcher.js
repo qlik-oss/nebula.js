@@ -1,4 +1,6 @@
-function isObject(v) { return v != null && !Array.isArray(v) && typeof v === 'object'; }
+function isObject(v) {
+  return v != null && !Array.isArray(v) && typeof v === 'object';
+}
 
 function isEqual(a, b) {
   if (isObject(a) && isObject(b)) {
@@ -12,7 +14,7 @@ function isEqual(a, b) {
 
 export default function getPatches(path = '/', obj, old) {
   const patches = [];
-  Object.keys(obj).forEach((prop) => {
+  Object.keys(obj).forEach(prop => {
     const v = obj[prop];
     if (typeof old[prop] === 'object' && typeof v === 'object' && !Array.isArray(v)) {
       patches.push(...getPatches(`${path}${prop}/`, obj[prop], old[prop]));

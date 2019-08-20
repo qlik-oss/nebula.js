@@ -1,10 +1,6 @@
 import hcHandler from './hc-handler';
 
-export default function populateData({
-  sn,
-  properties,
-  fields,
-}, context) {
+export default function populateData({ sn, properties, fields }, context) {
   const target = sn.qae.data.targets[0];
   if (!target) {
     context.logger.warn('Attempting to add fields to an object without a specified data target');
@@ -24,11 +20,13 @@ export default function populateData({
     def: target,
   });
 
-  fields.forEach((f) => {
+  fields.forEach(f => {
     let type = 'dimension';
-    if ((typeof f === 'string' && f[0] === '=')
-      || (typeof f === 'object' && f.qDef.qDef)
-      || (typeof f === 'object' && f.qLibraryId && f.qType === 'measure')) {
+    if (
+      (typeof f === 'string' && f[0] === '=') ||
+      (typeof f === 'object' && f.qDef.qDef) ||
+      (typeof f === 'object' && f.qLibraryId && f.qType === 'measure')
+    ) {
       type = 'measure';
     }
 

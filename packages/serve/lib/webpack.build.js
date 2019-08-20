@@ -5,24 +5,13 @@ const babelPath = require.resolve('babel-loader');
 const babelPresetEnvPath = require.resolve('@babel/preset-env');
 const babelPresetReactPath = require.resolve('@babel/preset-react');
 
-const cfg = ({
-  srcDir,
-  distDir,
-  snPath,
-  dev = false,
-}) => {
+const cfg = ({ srcDir, distDir, snPath, dev = false }) => {
   const config = {
     mode: dev ? 'development' : 'production',
     entry: {
-      eRender: [
-        path.resolve(srcDir, 'eRender'),
-      ],
-      eDev: [
-        path.resolve(srcDir, 'eDev'),
-      ],
-      eHub: [
-        path.resolve(srcDir, 'eHub'),
-      ],
+      eRender: [path.resolve(srcDir, 'eRender')],
+      eDev: [path.resolve(srcDir, 'eDev')],
+      eHub: [path.resolve(srcDir, 'eHub')],
     },
     devtool: 'source-map',
     output: {
@@ -37,29 +26,30 @@ const cfg = ({
     },
     externals: dev ? {} : 'snDefinition',
     module: {
-      rules: [{
-        test: /\.jsx?$/,
-        sideEffects: false,
-        include: [
-          srcDir,
-          /nucleus/,
-          /ui\/icons/,
-        ],
-        use: {
-          loader: babelPath,
-          options: {
-            presets: [
-              [babelPresetEnvPath, {
-                modules: false,
-                targets: {
-                  browsers: ['last 2 chrome versions'],
-                },
-              }],
-              babelPresetReactPath,
-            ],
+      rules: [
+        {
+          test: /\.jsx?$/,
+          sideEffects: false,
+          include: [srcDir, /nucleus/, /ui\/icons/],
+          use: {
+            loader: babelPath,
+            options: {
+              presets: [
+                [
+                  babelPresetEnvPath,
+                  {
+                    modules: false,
+                    targets: {
+                      browsers: ['last 2 chrome versions'],
+                    },
+                  },
+                ],
+                babelPresetReactPath,
+              ],
+            },
           },
         },
-      }],
+      ],
     },
     plugins: [
       new HtmlWebpackPlugin({

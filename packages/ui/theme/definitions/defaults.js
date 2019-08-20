@@ -5,14 +5,9 @@ export default {
     fontWeightLight: 300,
     fontWeightRegular: 400,
     fontWeightMedium: 600,
-    fontFamily: [
-      '"Source Sans Pro"',
-      '"Segoe UI"',
-      '"Helvetica Neue"',
-      '-apple-system',
-      'Arial',
-      'sans-serif',
-    ].join(','),
+    fontFamily: ['"Source Sans Pro"', '"Segoe UI"', '"Helvetica Neue"', '-apple-system', 'Arial', 'sans-serif'].join(
+      ','
+    ),
     button: {
       textTransform: 'initial',
       fontWeight: 400,

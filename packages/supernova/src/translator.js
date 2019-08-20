@@ -1,5 +1,5 @@
 export default {
-  get(str/* , args */) {
+  get(str /* , args */) {
     return `$$$${str}$$$`;
   },
 };

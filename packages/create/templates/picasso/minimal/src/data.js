@@ -1,11 +1,13 @@
 export default {
-  targets: [{
-    path: 'qHyperCubeDef',
-    dimensions: {
-      min: 1,
+  targets: [
+    {
+      path: 'qHyperCubeDef',
+      dimensions: {
+        min: 1,
+      },
+      measures: {
+        min: 1,
+      },
     },
-    measures: {
-      min: 1,
-    },
-  }],
+  ],
 };

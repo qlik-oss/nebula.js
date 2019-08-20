@@ -6,16 +6,13 @@ const { watch } = require('@nebula.js/cli-build');
 
 const webpackServe = require('./webpack.serve.js');
 
-const {
-  startEngine,
-  stopEngine,
-} = require('./engine');
+const { startEngine, stopEngine } = require('./engine');
 
-module.exports = async (argv) => {
+module.exports = async argv => {
   if (process.env.ACCEPT_EULA === 'yes') {
     await startEngine();
   }
-  const port = argv.port || await portfinder.getPortPromise();
+  const port = argv.port || (await portfinder.getPortPromise());
   const host = argv.host || 'localhost';
   const enigmaConfig = {
     port: 9076,
@@ -70,7 +67,7 @@ module.exports = async (argv) => {
     server.close();
   };
 
-  ['SIGINT', 'SIGTERM'].forEach((signal) => {
+  ['SIGINT', 'SIGTERM'].forEach(signal => {
     process.on(signal, close);
   });
 

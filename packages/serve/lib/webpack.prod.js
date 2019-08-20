@@ -4,10 +4,7 @@ const webpack = require('webpack');
 
 const sourceMapLoaderPath = require.resolve('source-map-loader');
 
-const cfg = ({
-  srcDir = path.resolve(__dirname, '../dist'),
-  snPath = path.resolve(__dirname, 'placeholder'),
-}) => {
+const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), snPath = path.resolve(__dirname, 'placeholder') }) => {
   const config = {
     mode: 'development',
     entry: path.resolve(__dirname, './sn.js'),
@@ -22,11 +19,13 @@ const cfg = ({
       },
     },
     module: {
-      rules: [{
-        enforce: 'pre',
-        test: /\.js$/,
-        loader: sourceMapLoaderPath,
-      }],
+      rules: [
+        {
+          enforce: 'pre',
+          test: /\.js$/,
+          loader: sourceMapLoaderPath,
+        },
+      ],
     },
     plugins: [
       new HtmlWebpackPlugin({

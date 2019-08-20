@@ -37,8 +37,7 @@ export default class ObjectAPI {
     const selections = this.state.sn ? this.state.sn.component.selections : null;
     if (selections && selections.id === this.model.id) {
       selections.setLayout(layout);
-      if (layout.qSelectionInfo && layout.qSelectionInfo.qInSelections
-          && !selections.isModal()) {
+      if (layout.qSelectionInfo && layout.qSelectionInfo.qInSelections && !selections.isModal()) {
         selections.goModal('/qHyperCubeDef'); // TODO - use path from data targets
       }
       if (!layout.qSelectionInfo || !layout.qSelectionInfo.qInSelections) {
@@ -68,23 +67,27 @@ export default class ObjectAPI {
     if (!this.currentObjectType) {
       return this.context.config.env.Promise.resolve();
     }
-    return this.context.nebbie.types.get({
-      name: this.currentObjectType,
-      version: this.currentSupernovaVersion,
-    }).supernova().then((SN) => {
-      // layout might have changed since we requested the new type,
-      // make sure type in layout matches the requested one
-      if (!this.state.layout || this.state.layout.visualization !== this.currentObjectType) {
-        return this.context.config.env.Promise.resolve();
-      }
-      return this.setSupernova(SN);
-    }).catch((e) => {
-      this.setState({
-        error: {
-          message: `${e.message}`,
-        },
+    return this.context.nebbie.types
+      .get({
+        name: this.currentObjectType,
+        version: this.currentSupernovaVersion,
+      })
+      .supernova()
+      .then(SN => {
+        // layout might have changed since we requested the new type,
+        // make sure type in layout matches the requested one
+        if (!this.state.layout || this.state.layout.visualization !== this.currentObjectType) {
+          return this.context.config.env.Promise.resolve();
+        }
+        return this.setSupernova(SN);
+      })
+      .catch(e => {
+        this.setState({
+          error: {
+            message: `${e.message}`,
+          },
+        });
       });
-    });
   }
 
   setLayout(layout) {

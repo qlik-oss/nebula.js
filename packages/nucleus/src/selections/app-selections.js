@@ -7,7 +7,7 @@ import { observe } from '../object/observer';
 
 const cache = {};
 
-const create = (app) => {
+const create = app => {
   let canGoForward = false;
   let canGoBack = false;
   let canClear = false;
@@ -26,7 +26,8 @@ const create = (app) => {
         api.emit('modal-unset');
         modalObject._selections.emit('deactivated');
       }
-      if (object && object !== null) { // TODO check model state
+      if (object && object !== null) {
+        // TODO check model state
         modalObject = object;
         api.emit('modal', modalObject._selections);
         return modalObject.beginSelections(Array.isArray(path) ? path : [path]);
@@ -70,47 +71,55 @@ const create = (app) => {
       return this.switchModal().then(() => app.clearAll());
     },
     clearField(field, state = '$') {
-      return this.switchModal().then(() => app.getField(field, state).then((f) => f.clear()));
+      return this.switchModal().then(() => app.getField(field, state).then(f => f.clear()));
     },
   };
 
   eventmixin(api);
 
-  modelCache({
-    qInfo: {
-      qType: 'current-selections',
+  modelCache(
+    {
+      qInfo: {
+        qType: 'current-selections',
+      },
+      qSelectionObjectDef: {
+        qStateName: '$',
+      },
+      alternateStates: [],
     },
-    qSelectionObjectDef: {
-      qStateName: '$',
-    },
-    alternateStates: [],
-  }, app).then((model) => {
-    observe(app, (appLayout) => {
-      const states = [...appLayout.qStateNames].map((s) => ({
+    app
+  ).then(model => {
+    observe(app, appLayout => {
+      const states = [...appLayout.qStateNames].map(s => ({
         stateName: s, // need this as reference in selection toolbar since qSelectionObject.qStateName is not in the layout
         qSelectionObjectDef: {
           qStateName: s,
         },
       }));
-      const existingStates = (lyt ? lyt.alternateStates.map((s) => s.stateName) : []).join('::');
-      const newStates = appLayout.qStateNames.map((s) => s).join('::');
+      const existingStates = (lyt ? lyt.alternateStates.map(s => s.stateName) : []).join('::');
+      const newStates = appLayout.qStateNames.map(s => s).join('::');
       if (existingStates !== newStates) {
-        model.applyPatches([{
-          qOp: 'replace',
-          qPath: '/alternateStates',
-          qValue: JSON.stringify(states),
-        }], true);
+        model.applyPatches(
+          [
+            {
+              qOp: 'replace',
+              qPath: '/alternateStates',
+              qValue: JSON.stringify(states),
+            },
+          ],
+          true
+        );
       }
     });
 
-    observe(model, (layout) => {
+    observe(model, layout => {
       canGoBack = false;
       canGoForward = false;
       canClear = false;
-      [layout, ...layout.alternateStates].forEach((state) => {
+      [layout, ...layout.alternateStates].forEach(state => {
         canGoBack = canGoBack || state.qSelectionObject.qBackCount > 0;
         canGoForward = canGoForward || state.qSelectionObject.qForwardCount > 0;
-        canClear = canClear || state.qSelectionObject.qSelections.filter((s) => s.qLocked !== true).length > 0;
+        canClear = canClear || state.qSelectionObject.qSelections.filter(s => s.qLocked !== true).length > 0;
       });
       lyt = layout;
       api.emit('changed');
@@ -124,7 +133,7 @@ const create = (app) => {
   return api;
 };
 
-export default function (app) {
+export default function(app) {
   if (!cache[app.id]) {
     cache[app.id] = {
       selections: null,

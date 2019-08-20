@@ -7,11 +7,7 @@ import eventMixin from './selections/event-mixin';
 
 const noopi = () => {};
 
-export default function ({
-  model,
-  context,
-  initialUserProps = {},
-} = {}) {
+export default function({ model, context, initialUserProps = {} } = {}) {
   let reference = noopi;
   let elementReference = null;
 
@@ -19,9 +15,15 @@ export default function ({
   let layoutReady;
   let mounted;
 
-  const whenLayoutReady = new Promise((resolve) => { layoutReady = resolve; });
-  const whenSupernovaReady = new Promise((resolve) => { supernovaReady = resolve; });
-  const whenMounted = new Promise((resolve) => { mounted = resolve; });
+  const whenLayoutReady = new Promise(resolve => {
+    layoutReady = resolve;
+  });
+  const whenSupernovaReady = new Promise(resolve => {
+    supernovaReady = resolve;
+  });
+  const whenMounted = new Promise(resolve => {
+    mounted = resolve;
+  });
 
   let userProps = {
     options: {},
@@ -52,7 +54,7 @@ export default function ({
     cellApi.emit('changed');
   };
 
-  const setUserProps = (up) => {
+  const setUserProps = up => {
     userProps = {
       ...userProps,
       ...up,
@@ -60,7 +62,7 @@ export default function ({
     update();
   };
 
-  const setObjectProps = (p) => {
+  const setObjectProps = p => {
     objectProps = {
       ...objectProps,
       ...p,
@@ -82,10 +84,7 @@ export default function ({
         throw new Error('Already mounted');
       }
       elementReference = element;
-      return Promise.all([
-        whenLayoutReady,
-        whenSupernovaReady,
-      ]).then(() => {
+      return Promise.all([whenLayoutReady, whenSupernovaReady]).then(() => {
         reference = cell({
           element,
           model,
@@ -103,7 +102,7 @@ export default function ({
       reference = noopi;
     },
     setTemporaryProperties(props) {
-      return get(model, 'effectiveProperties').then((current) => {
+      return get(model, 'effectiveProperties').then(current => {
         const patches = getPatches('/', props, current);
         if (patches.length) {
           return model.applyPatches(patches, true);

@@ -30,7 +30,8 @@ const mergeConfigs = (base, c) => ({
   locale: {
     language: (c.locale ? c.locale.language : '') || base.locale.language,
   },
-  types: [ // TODO - filter to avoid duplicates
+  types: [
+    // TODO - filter to avoid duplicates
     ...(base.types || []),
     ...(c.types || []),
   ],
@@ -71,13 +72,18 @@ function nuked(configuration = {}) {
       root,
     };
 
-    currentConfig.types.forEach((t) => context.types.register({
-      name: t.name,
-      version: t.version,
-    }, {
-      meta: t.meta,
-      load: t.load,
-    }));
+    currentConfig.types.forEach(t =>
+      context.types.register(
+        {
+          name: t.name,
+          version: t.version,
+        },
+        {
+          meta: t.meta,
+          load: t.load,
+        }
+      )
+    );
 
     let selectionsApi = null;
     let selectionsComponentReference = null;
@@ -122,7 +128,7 @@ function nuked(configuration = {}) {
     return api;
   }
 
-  nucleus.configured = (c) => nuked(mergeConfigs(configuration, c));
+  nucleus.configured = c => nuked(mergeConfigs(configuration, c));
 
   return nucleus;
 }

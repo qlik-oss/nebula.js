@@ -11,9 +11,11 @@ describe('qae', () => {
   });
 
   it('should provide properties', () => {
-    expect(qae({
-      properties: { p: 'p' },
-    }).properties).to.eql({ p: 'p' });
+    expect(
+      qae({
+        properties: { p: 'p' },
+      }).properties
+    ).to.eql({ p: 'p' });
   });
 
   it('should map target defaults', () => {
@@ -34,24 +36,26 @@ describe('qae', () => {
   it('should map provided data', () => {
     const t = qae({
       data: {
-        targets: [{
-          path: 'qhc',
-          dimensions: {
-            min: () => 3,
-            max: () => 7,
-            add: () => 'a',
-            description: () => 'Slice',
-            move: () => 'c',
-            replace: () => 'd',
+        targets: [
+          {
+            path: 'qhc',
+            dimensions: {
+              min: () => 3,
+              max: () => 7,
+              add: () => 'a',
+              description: () => 'Slice',
+              move: () => 'c',
+              replace: () => 'd',
+            },
+            measures: {
+              min: 2,
+              max: 4,
+              add: () => 'b',
+              description: () => 'Angle',
+              remove: () => 'e',
+            },
           },
-          measures: {
-            min: 2,
-            max: 4,
-            add: () => 'b',
-            description: () => 'Angle',
-            remove: () => 'e',
-          },
-        }],
+        ],
       },
     }).data.targets[0];
     expect(t.path).to.eql('qhc');

@@ -1,9 +1,6 @@
 import React from 'react';
 
-import {
-  IconButton,
-  Button,
-} from '@nebula.js/ui/components';
+import { IconButton, Button } from '@nebula.js/ui/components';
 
 import CloseIcon from '@nebula.js/ui/icons/Close';
 import TickIcon from '@nebula.js/ui/icons/Tick';
@@ -64,11 +61,7 @@ export default class Item extends React.Component {
         {Icon && <Icon />}
       </Button>
     ) : (
-      <IconButton
-        title={item.label}
-        onClick={() => item.action()}
-        disabled={this.state.disabled}
-      >
+      <IconButton title={item.label} onClick={() => item.action()} disabled={this.state.disabled}>
         {Icon && <Icon />}
       </IconButton>
     );

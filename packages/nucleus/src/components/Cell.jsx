@@ -1,11 +1,6 @@
-import React, {
-  useEffect,
-  useState,
-} from 'react';
+import React, { useEffect, useState } from 'react';
 
-import {
-  Grid,
-} from '@nebula.js/ui/components';
+import { Grid } from '@nebula.js/ui/components';
 
 import Requirements from './Requirements';
 import CError from './Error';
@@ -24,8 +19,7 @@ const showRequirements = (sn, layout) => {
   }
   const minD = def.dimensions.min();
   const minM = def.measures.min();
-  return (layout.qHyperCube.qDimensionInfo.length < minD
-    || layout.qHyperCube.qMeasureInfo.length < minM);
+  return layout.qHyperCube.qDimensionInfo.length < minD || layout.qHyperCube.qMeasureInfo.length < minM;
 };
 
 const Content = ({ children }) => (
@@ -45,10 +39,7 @@ const Content = ({ children }) => (
   </div>
 );
 
-export default function Cell({
-  api,
-  onInitial,
-}) {
+export default function Cell({ api, onInitial }) {
   const [, setChanged] = useState(0);
   useEffect(() => {
     const onChanged = () => setChanged(Date.now());
@@ -65,27 +56,29 @@ export default function Cell({
   const objectProps = api.objectProps();
   const userProps = api.userProps();
 
-  const SN = (showRequirements(objectProps.sn, objectProps.layout) ? Requirements : Supernova);
+  const SN = showRequirements(objectProps.sn, objectProps.layout) ? Requirements : Supernova;
   const Comp = !objectProps.sn ? Placeholder : SN;
   const err = objectProps.error || false;
   return (
     <Grid container direction="column" spacing={0} style={{ height: '100%', padding: '8px', boxSixing: 'borderBox' }}>
       <Grid item style={{ maxWidth: '100%' }}>
-        <Header layout={objectProps.layout} sn={objectProps.sn}>&nbsp;</Header>
+        <Header layout={objectProps.layout} sn={objectProps.sn}>
+          &nbsp;
+        </Header>
       </Grid>
       <Grid item xs>
         <Content>
-          {err
-            ? (<CError message={err.message} />)
-            : (
-              <Comp
-                key={objectProps.layout.visualization}
-                sn={objectProps.sn}
-                snContext={userProps.context}
-                snOptions={userProps.options}
-                layout={objectProps.layout}
-              />
-            )}
+          {err ? (
+            <CError message={err.message} />
+          ) : (
+            <Comp
+              key={objectProps.layout.visualization}
+              sn={objectProps.sn}
+              snContext={userProps.context}
+              snOptions={userProps.options}
+              layout={objectProps.layout}
+            />
+          )}
         </Content>
       </Grid>
       <Footer layout={objectProps.layout} />

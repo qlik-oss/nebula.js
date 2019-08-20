@@ -1,12 +1,8 @@
-import {
-  observe,
-  unObserve,
-  cache,
-} from '../observer';
+import { observe, unObserve, cache } from '../observer';
 
 describe('observer', () => {
   beforeEach(() => {
-    Object.keys(cache).forEach((key) => delete cache[key]);
+    Object.keys(cache).forEach(key => delete cache[key]);
   });
 
   describe('observe', () => {
@@ -60,16 +56,16 @@ describe('observer', () => {
     it('should not call callbacks if model state is CLOSED, CLOSING or CANCELLED', async () => {
       const cb = sinon.spy();
       let onChanged;
-      const layoutPromise0 = new Promise((resolve) => {
+      const layoutPromise0 = new Promise(resolve => {
         setTimeout(resolve, 10);
       });
-      const layoutPromise1 = new Promise((resolve) => {
+      const layoutPromise1 = new Promise(resolve => {
         setTimeout(resolve, 10);
       });
-      const layoutPromise2 = new Promise((resolve) => {
+      const layoutPromise2 = new Promise(resolve => {
         setTimeout(resolve, 10);
       });
-      const layoutPromise3 = new Promise((resolve) => {
+      const layoutPromise3 = new Promise(resolve => {
         setTimeout(resolve, 10);
       });
       const model = {

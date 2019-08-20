@@ -33,11 +33,12 @@ describe('resolver', () => {
     });
 
     it('should throw when reference is cyclical', () => {
-      const fn = () => resolver({
-        foo: {
-          bar: '4px $foo.bar',
-        },
-      });
+      const fn = () =>
+        resolver({
+          foo: {
+            bar: '4px $foo.bar',
+          },
+        });
       expect(fn).to.throw('Cyclical reference for "$foo.bar"');
     });
   });
@@ -49,9 +50,11 @@ describe('resolver', () => {
           fontFamily: 'Arial',
         },
       });
-      expect(r.resolve({
-        font: '16px $typography.fontFamily',
-      })).to.eql({
+      expect(
+        r.resolve({
+          font: '16px $typography.fontFamily',
+        })
+      ).to.eql({
         font: '16px Arial',
       });
     });

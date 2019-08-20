@@ -1,15 +1,15 @@
-const flush = () => new Promise((r) => setImmediate(r));
+const flush = () => new Promise(r => setImmediate(r));
 
 describe('viz', () => {
-  const doMock = ({
-    boot = () => {},
-    getter = () => {},
-    getPatches = () => {},
-  } = {}) => aw.mock([
-    ['**/components/boot.jsx', () => boot],
-    ['**/object/observer.js', () => ({ get: getter })],
-    ['**/utils/patcher.js', () => getPatches],
-  ], ['../viz.js']);
+  const doMock = ({ boot = () => {}, getter = () => {}, getPatches = () => {} } = {}) =>
+    aw.mock(
+      [
+        ['**/components/boot.jsx', () => boot],
+        ['**/object/observer.js', () => ({ get: getter })],
+        ['**/utils/patcher.js', () => getPatches],
+      ],
+      ['../viz.js']
+    );
 
   describe('api', () => {
     let api;
@@ -77,7 +77,9 @@ describe('viz', () => {
 
       let mounted = false;
 
-      api.mount('element').then(() => { mounted = true; });
+      api.mount('element').then(() => {
+        mounted = true;
+      });
       setObjectProps({ layout: {}, sn: {} });
 
       await flush();

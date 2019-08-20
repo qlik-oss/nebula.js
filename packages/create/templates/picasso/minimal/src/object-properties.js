@@ -2,9 +2,7 @@ const properties = {
   qHyperCubeDef: {
     qDimensions: [],
     qMeasures: [],
-    qInitialDataFetch: [
-      { qWidth: 10, qHeight: 500 },
-    ],
+    qInitialDataFetch: [{ qWidth: 10, qHeight: 500 }],
     qSuppressZero: false,
     qSuppressMissing: true,
   },

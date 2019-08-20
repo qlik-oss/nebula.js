@@ -6,10 +6,7 @@ const LOG_LEVEL = {
   DEBUG: 4,
 };
 
-const loggerFn = ({
-  level = LOG_LEVEL.OFF,
-  pipe = console,
-} = {}) => {
+const loggerFn = ({ level = LOG_LEVEL.OFF, pipe = console } = {}) => {
   let currentlevel = level;
 
   const LOG_FN = {
@@ -21,7 +18,9 @@ const loggerFn = ({
   };
 
   const log = (lev, ...args) => {
-    if (!lev || currentlevel < lev) { return; }
+    if (!lev || currentlevel < lev) {
+      return;
+    }
 
     (LOG_FN[lev] || LOG_FN[LOG_LEVEL.DEBUG])(...args);
   };
@@ -68,7 +67,7 @@ const loggerFn = ({
      * Set the current log level
      * @param {number} lev - The log level
      */
-    level: (lev) => {
+    level: lev => {
       if (typeof lev === 'number') {
         currentlevel = lev;
       }

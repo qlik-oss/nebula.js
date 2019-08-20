@@ -5,16 +5,7 @@ const chalk = require('chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
-module.exports = async ({
-  host,
-  port,
-  enigmaConfig,
-  snPath,
-  snName,
-  dev = false,
-  open = true,
-  watcher,
-}) => {
+module.exports = async ({ host, port, enigmaConfig, snPath, snName, dev = false, open = true, watcher }) => {
   let config;
   let contentBase;
 
@@ -50,9 +41,7 @@ module.exports = async ({
     },
     quiet: true,
     open,
-    contentBase: [
-      contentBase,
-    ],
+    contentBase: [contentBase],
     historyApiFallback: {
       index: '/eHub.html',
     },
@@ -66,15 +55,18 @@ module.exports = async ({
         });
       });
     },
-    proxy: [{
-      context: '/render',
-      target: `http://${host}:${port}/eRender.html`,
-      ignorePath: true,
-    }, {
-      context: '/dev',
-      target: `http://${host}:${port}/eDev.html`,
-      ignorePath: true,
-    }],
+    proxy: [
+      {
+        context: '/render',
+        target: `http://${host}:${port}/eRender.html`,
+        ignorePath: true,
+      },
+      {
+        context: '/dev',
+        target: `http://${host}:${port}/eDev.html`,
+        ignorePath: true,
+      },
+    ],
   };
 
   console.log('Starting development server...');
@@ -87,12 +79,12 @@ module.exports = async ({
     server.close();
   };
 
-  ['SIGINT', 'SIGTERM'].forEach((signal) => {
+  ['SIGINT', 'SIGTERM'].forEach(signal => {
     process.on(signal, close);
   });
 
   if (watcher) {
-    watcher.on('event', (event) => {
+    watcher.on('event', event => {
       if (event.code === 'ERROR') {
         server.sockWrite(server.sockets, 'errors', [event.error.stack]);
       }
@@ -101,8 +93,9 @@ module.exports = async ({
 
   let initiated = false;
 
-  return new Promise((resolve, reject) => { // eslint-disable-line consistent-return
-    compiler.hooks.done.tap('nebula serve', (stats) => {
+  return new Promise((resolve, reject) => {
+    // eslint-disable-line consistent-return
+    compiler.hooks.done.tap('nebula serve', stats => {
       if (!initiated) {
         initiated = true;
         const url = `http://${host}:${port}`;
@@ -115,7 +108,7 @@ module.exports = async ({
         });
 
         if (stats.hasErrors()) {
-          stats.compilation.errors.forEach((e) => {
+          stats.compilation.errors.forEach(e => {
             console.log(chalk.red(e));
           });
           process.exit(1);
@@ -123,7 +116,7 @@ module.exports = async ({
       }
     });
 
-    server.listen(port, host, (err) => {
+    server.listen(port, host, err => {
       if (err) {
         reject(err);
       }

@@ -14,12 +14,16 @@ const mock = ({
   },
   SelectedFields = () => <sf />,
   Nav = () => <nav />,
-} = {}) => aw.mock([
-  ['**/ui/components/index.js', () => components],
-  ['**/ui/theme/index.js', () => theme],
-  ['**/SelectedFields.jsx', () => SelectedFields],
-  ['**/Nav.jsx', () => Nav],
-], ['../AppSelections']);
+} = {}) =>
+  aw.mock(
+    [
+      ['**/ui/components/index.js', () => components],
+      ['**/ui/theme/index.js', () => theme],
+      ['**/SelectedFields.jsx', () => SelectedFields],
+      ['**/Nav.jsx', () => Nav],
+    ],
+    ['../AppSelections']
+  );
 
 describe('<AppSelections />', () => {
   let api;
@@ -28,7 +32,7 @@ describe('<AppSelections />', () => {
       canGoForward: () => 'canGoForward',
       canGoBack: () => 'canGoBack',
       canClear: () => 'canClear',
-      layout: () => (null),
+      layout: () => null,
       back: sinon.spy(),
       forward: sinon.spy(),
       clear: sinon.spy(),
@@ -43,19 +47,44 @@ describe('<AppSelections />', () => {
     const r = renderer.create(<AS api={api} />);
 
     expect(r.toJSON()).to.eql({
-      type: 'sp', props: {}, children: [{
-        type: 'tp', props: {}, children: [{
-          type: 'g', props: {}, children: [{
-            type: 'g', props: {}, children: [{
-              type: 'nav', props: {}, children: null,
-            }],
-          }, {
-            type: 'g', props: {}, children: [{
-              type: 'sf', props: {}, children: null,
-            }],
-          }],
-        }],
-      }],
+      type: 'sp',
+      props: {},
+      children: [
+        {
+          type: 'tp',
+          props: {},
+          children: [
+            {
+              type: 'g',
+              props: {},
+              children: [
+                {
+                  type: 'g',
+                  props: {},
+                  children: [
+                    {
+                      type: 'nav',
+                      props: {},
+                      children: null,
+                    },
+                  ],
+                },
+                {
+                  type: 'g',
+                  props: {},
+                  children: [
+                    {
+                      type: 'sf',
+                      props: {},
+                      children: null,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
     });
   });
 });

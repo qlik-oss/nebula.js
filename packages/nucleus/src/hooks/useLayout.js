@@ -1,12 +1,6 @@
-import {
-  useState,
-  useEffect,
-} from 'react';
+import { useState, useEffect } from 'react';
 
-import {
-  observe,
-  unObserve,
-} from '../object/observer';
+import { observe, unObserve } from '../object/observer';
 
 export default function useLayout(model) {
   const [layout, setLayout] = useState(null);

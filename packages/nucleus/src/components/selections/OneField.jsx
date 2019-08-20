@@ -1,18 +1,10 @@
-import React, {
-  useRef,
-  useState,
-  useContext,
-} from 'react';
+import React, { useRef, useState, useContext } from 'react';
 
 import Remove from '@nebula.js/ui/icons/Remove';
 import Lock from '@nebula.js/ui/icons/Lock';
 // import themes from '@nebula.js/ui/theme';
 
-import {
-  IconButton,
-  Grid,
-  Typography,
-} from '@nebula.js/ui/components';
+import { IconButton, Grid, Typography } from '@nebula.js/ui/components';
 
 import { makeStyles } from '@nebula.js/ui/theme';
 
@@ -20,7 +12,7 @@ import ListBoxPopover from '../listbox/ListBoxPopover';
 
 import LocaleContext from '../../contexts/LocaleContext';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   item: {
     cursor: 'pointer',
     padding: '4px',
@@ -41,8 +33,9 @@ export default function OneField({
 
   const classes = useStyles();
 
-  const toggleActive = (e) => {
-    if (e.currentTarget.contains(e.target)) { // because click in popover will propagate to parent
+  const toggleActive = e => {
+    if (e.currentTarget.contains(e.target)) {
+      // because click in popover will propagate to parent
       setIsActive(!isActive);
     }
   };
@@ -60,7 +53,7 @@ export default function OneField({
   } else if (numSelected > 1 && selection.qTotal) {
     label = translator.get('CurrentSelections.Of', [numSelected, selection.qTotal]);
   } else {
-    label = selection.qSelectedFieldSelectionInfo.map((v) => v.qName).join(', ');
+    label = selection.qSelectedFieldSelectionInfo.map(v => v.qName).join(', ');
   }
   if (field.states[0] !== '$') {
     label = `${field.states[0]}: ${label}`;
@@ -76,26 +69,29 @@ export default function OneField({
   });
 
   return (
-    <Grid
-      container
-      spacing={0}
-      ref={alignTo}
-      className={classes.item}
-      onClick={toggleActive}
-    >
-      <Grid
-        item
-        xs
-        style={{ minWidth: 0, flexGrow: 1, opacity: selection.qLocked ? '0.3' : '' }}
-      >
-        <Typography noWrap style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600 }}>{selection.qField}</Typography>
-        <Typography noWrap style={{ fontSize: '12px', opacity: 0.55, lineHeight: '16px' }}>{label}</Typography>
+    <Grid container spacing={0} ref={alignTo} className={classes.item} onClick={toggleActive}>
+      <Grid item xs style={{ minWidth: 0, flexGrow: 1, opacity: selection.qLocked ? '0.3' : '' }}>
+        <Typography noWrap style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600 }}>
+          {selection.qField}
+        </Typography>
+        <Typography noWrap style={{ fontSize: '12px', opacity: 0.55, lineHeight: '16px' }}>
+          {label}
+        </Typography>
       </Grid>
-      {selection.qLocked ? (<Grid item><IconButton><Lock /></IconButton></Grid>) : (
+      {selection.qLocked ? (
+        <Grid item>
+          <IconButton>
+            <Lock />
+          </IconButton>
+        </Grid>
+      ) : (
         <Grid item>
           <IconButton
             title={translator.get('Selection.Clear')}
-            onClick={(e) => { e.stopPropagation(); api.clearField(selection.qField, field.states[0]); }}
+            onClick={e => {
+              e.stopPropagation();
+              api.clearField(selection.qField, field.states[0]);
+            }}
             style={{ zIndex: 1 }}
           >
             <Remove />
@@ -111,7 +107,7 @@ export default function OneField({
           width: '100%',
         }}
       >
-        {segments.map((s) => (
+        {segments.map(s => (
           <div
             key={s.color}
             style={{

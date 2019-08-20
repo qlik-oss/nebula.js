@@ -22,10 +22,7 @@ async function build(argv) {
 
   const meta = argv.meta ? require(path.resolve(argv.meta)) : {}; // eslint-disable-line
 
-  const {
-    module,
-    main,
-  } = supernovaPkg;
+  const { module, main } = supernovaPkg;
 
   const bundle = await rollup.rollup({
     input: {
@@ -33,32 +30,31 @@ async function build(argv) {
       extDefinition,
       [extName]: path.resolve(__dirname, '../src/supernova-wrapper'),
     },
-    external: [
-      'snDefinition',
-      'extDefinition',
-    ],
+    external: ['snDefinition', 'extDefinition'],
     plugins: [
       nodeResolve(),
       common(),
       babel({
         babelrc: false,
-        exclude: [
-          /node_modules/,
-        ],
+        exclude: [/node_modules/],
         presets: [
-          ['@babel/preset-env', {
-            modules: false,
-            targets: {
-              browsers: ['ie 11', 'chrome 47'],
+          [
+            '@babel/preset-env',
+            {
+              modules: false,
+              targets: {
+                browsers: ['ie 11', 'chrome 47'],
+              },
             },
-          }],
+          ],
         ],
       }),
-      (argv.minify && terser({
-        output: {
-          comments: /@license|@preserve|Copyright|license/,
-        },
-      })),
+      argv.minify &&
+        terser({
+          output: {
+            comments: /@license|@preserve|Copyright|license/,
+          },
+        }),
     ],
   });
 
@@ -77,7 +73,7 @@ async function build(argv) {
   // since that would cause requirejs in sense-client to interpret the request as text/html
   // so we trim off the file extension in the modules, but then attach it to the files
   const files = fs.readdirSync(targetDirectory);
-  files.forEach((f) => {
+  files.forEach(f => {
     if (/^chunk-/.test(f) && !/\.js$/.test(f)) {
       // attach file extension
       fs.renameSync(path.resolve(targetDirectory, f), path.resolve(targetDirectory, `${f}.js`));
@@ -85,14 +81,21 @@ async function build(argv) {
   });
 
   // write .qext for the extension
-  fs.writeFileSync(path.resolve(targetDirectory, `${extName}.qext`), JSON.stringify({
-    name: extName,
-    description: supernovaPkg.description,
-    author: supernovaPkg.author,
-    version: supernovaPkg.version,
-    ...meta,
-    type: 'visualization',
-  }, null, 2));
+  fs.writeFileSync(
+    path.resolve(targetDirectory, `${extName}.qext`),
+    JSON.stringify(
+      {
+        name: extName,
+        description: supernovaPkg.description,
+        author: supernovaPkg.author,
+        version: supernovaPkg.version,
+        ...meta,
+        type: 'visualization',
+      },
+      null,
+      2
+    )
+  );
 }
 
 module.exports = build;
