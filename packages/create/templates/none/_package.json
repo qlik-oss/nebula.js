@@ -7,14 +7,8 @@
     "name": "<%= user %>",
     "email": "<%= email %>"
   },
-  "keywords": [
-    "qlik",
-    "nebula",
-    "supernova"
-  ],
-  "files": [
-    "dist"
-  ],
+  "keywords": ["qlik", "nebula", "supernova"],
+  "files": ["dist"],
   "engines": {
     "node": ">=8"
   },
@@ -24,7 +18,7 @@
     "build": "nebula build",
     "lint": "eslint src",
     "start": "nebula serve",
-    "test:integration": "aw puppet --glob 'test/integration/**/*.spec.js' --chrome.headless true --mocha.timeout 15000"
+    "test:integration": "aw puppet --testExt '*.int.js' --glob 'test/integration/**/*.int.js' --chrome.headless true --mocha.timeout 15000"
   },
   "devDependencies": {
     "@after-work.js/aw": "^6.0.3",
