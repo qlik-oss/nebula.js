@@ -67,6 +67,9 @@ module.exports = async ({ host, port, enigmaConfig, snPath, snName, dev = false,
         ignorePath: true,
       },
     ],
+    watchOptions: {
+      ignored: /node_modules/,
+    },
   };
 
   console.log('Starting development server...');
