@@ -38,6 +38,6 @@
     "rollup-plugin-commonjs": "^10.0.2",
     "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^5.1.1",
-    "yargs": "^13.3.0"
+    "yargs": "^14.0.0"
   }
 }
