@@ -7,11 +7,7 @@ const { terser } = require('rollup-plugin-terser');
 
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json')); // eslint-disable-line
-const {
-  name,
-  version,
-  license,
-} = pkg;
+const { name, version, license } = pkg;
 
 const banner = `/*
 * ${name} v${version}
@@ -57,11 +53,14 @@ const propTypes = [
 
 const watch = process.argv.indexOf('-w') > 2;
 
-const config = (isEsm) => {
+const config = isEsm => {
   const outputFile = isEsm ? pkg.module : pkg.main;
   const basename = path.basename(outputFile);
   const dir = path.dirname(outputFile);
-  const umdName = basename.replace(/-([a-z])/g, (m, p1) => p1.toUpperCase()).split('.js').join('');
+  const umdName = basename
+    .replace(/-([a-z])/g, (m, p1) => p1.toUpperCase())
+    .split('.js')
+    .join('');
 
   if (Object.keys(pkg.dependencies || {}).length) {
     throw new Error('Dependencies for a web javascript library makes no sense');
@@ -73,11 +72,11 @@ const config = (isEsm) => {
   const esmExternals = peers;
 
   // peers that are not devDeps should be externals for full bundle
-  const bundleExternals = peers.filter((p) => typeof (pkg.devDependencies || {})[p] === 'undefined');
+  const bundleExternals = peers.filter(p => typeof (pkg.devDependencies || {})[p] === 'undefined');
 
   const external = isEsm ? esmExternals : bundleExternals;
   const globals = {};
-  external.forEach((e) => {
+  external.forEach(e => {
     if ([GLOBALS[e]]) {
       globals[e] = GLOBALS[e];
     }
@@ -127,38 +126,34 @@ const config = (isEsm) => {
       }),
       babel({
         babelrc: false,
-        include: [
-          '/**/packages/nucleus/**',
-          '/**/packages/supernova/**',
-          '/**/packages/ui/**',
-        ],
+        include: ['/**/apis/nucleus/**', '/**/apis/supernova/**', '/**/packages/ui/**'],
         presets: [
-          ['@babel/preset-env', {
-            modules: false,
-            targets: {
-              browsers: [...browserList, ...(['ie 11', 'chrome 47'])],
+          [
+            '@babel/preset-env',
+            {
+              modules: false,
+              targets: {
+                browsers: [...browserList, ...['ie 11', 'chrome 47']],
+              },
             },
-          }],
+          ],
         ],
-        plugins: [
-          ['@babel/plugin-transform-react-jsx'],
-        ],
+        plugins: [['@babel/plugin-transform-react-jsx']],
       }),
     ],
   };
 
   if (process.env.NODE_ENV === 'production' && !isEsm) {
-    cfg.plugins.push(terser({
-      output: {
-        preamble: banner,
-      },
-    }));
+    cfg.plugins.push(
+      terser({
+        output: {
+          preamble: banner,
+        },
+      })
+    );
   }
 
   return cfg;
 };
 
-module.exports = [
-  watch ? false : config(),
-  config(true),
-].filter(Boolean);
+module.exports = [watch ? false : config(), config(true)].filter(Boolean);

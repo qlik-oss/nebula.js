@@ -52,7 +52,7 @@ jobs:
       - run:
           name: Import app
           command: |
-            DocId=$(curl -s --data-binary @packages/serve/data/apps/ctrl00.qvf http://localhost:9076/v1/apps/import | jq -r '.attributes.id')
+            DocId=$(curl -s --data-binary @commands/serve/data/apps/ctrl00.qvf http://localhost:9076/v1/apps/import | jq -r '.attributes.id')
             echo "export DOC_ID=$DocId" >> $BASH_ENV
 
       - run:

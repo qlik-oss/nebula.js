@@ -1,4 +1,4 @@
-const create = require('./lib');
+const create = require('./lib/create');
 
 module.exports = {
   command: 'create <name>',
@@ -28,7 +28,7 @@ module.exports = {
       description: 'Package author',
     });
   },
-  async handler(argv) {
+  handler(argv) {
     create(argv);
   },
 };

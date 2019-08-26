@@ -64,6 +64,8 @@
   },
   "workspaces": [
     "generated/*",
-    "packages/*"
+    "packages/*",
+    "commands/*",
+    "apis/*"
   ]
 }
