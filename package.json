@@ -60,7 +60,7 @@
     "rollup-plugin-sass": "^1.2.2",
     "rollup-plugin-terser": "^5.1.1",
     "ws": "^7.1.2",
-    "yargs": "^13.3.0"
+    "yargs": "^14.0.0"
   },
   "workspaces": [
     "generated/*",
