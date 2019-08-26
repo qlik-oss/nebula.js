@@ -71,7 +71,7 @@ jobs:
           name: Create a picasso barchart supernova project from current commit
           command: |
             set -e
-            ./packages/cli/lib/index.js create generated/barchart --picasso barchart --no-install
+            ./commands/cli/lib/index.js create generated/barchart --picasso barchart --no-install
             yarn
             cd generated/barchart
             npm i picasso.js picasso-plugin-q
