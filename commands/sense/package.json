@@ -17,7 +17,7 @@
     "type": "git",
     "url": "https://github.com/qlik-oss/nebula.js.git"
   },
-  "main": "build.js",
+  "main": "lib/build.js",
   "files": [
     "command.js",
     "lib",

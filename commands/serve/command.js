@@ -24,7 +24,7 @@ module.exports = {
     yargs.option('enigma.port', {
       type: 'port',
       default: 9076,
-    });
+    }).argv;
   },
   handler(argv) {
     serve(argv);
