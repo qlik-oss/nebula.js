@@ -47,9 +47,9 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
 ### Development workflow
 
 - `yarn` generates UMD bundles for all packages
-- `yarn run build`
-- `yarn run lint` checks code style
-- `yarn run test` runs all tests
+- `yarn build`
+- `yarn lint` checks code style
+- `yarn test` runs all tests
 
 ### Cutting a release 
 

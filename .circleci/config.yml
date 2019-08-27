@@ -39,15 +39,15 @@ jobs:
 
       - run:
           name: Build
-          command: yarn run build
+          command: yarn build
 
       - run:
           name: Lint
-          command: yarn run lint
+          command: yarn lint
 
       - run:
           name: Unit tests
-          command: yarn run test:unit
+          command: yarn test:unit
 
       - run:
           name: Import app
@@ -57,7 +57,7 @@ jobs:
 
       - run:
           name: Test integration
-          command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+          command: APP_ID=$DOC_ID yarn test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 
       - run:
           name: Create a hello supernova project from latest release
@@ -65,7 +65,7 @@ jobs:
             set -e
             npx nebula create temp/hello --pkgm yarn --picasso none
             cd temp/hello
-            APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+            APP_ID=$DOC_ID yarn test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 
       - run:
           name: Create a picasso barchart supernova project from current commit
@@ -75,7 +75,7 @@ jobs:
             yarn
             cd generated/barchart
             npm i picasso.js picasso-plugin-q
-            yarn run build
-            APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+            yarn build
+            APP_ID=$DOC_ID yarn test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 
       - save_cache: *save_yarn_cache

@@ -13,11 +13,11 @@ yarn install
 Watch build:
 
 ```sh
-yarn run build:watch
+yarn build:watch
 ```
 
 Serve build
 
 ```sh
-yarn run start
+yarn start
 ```

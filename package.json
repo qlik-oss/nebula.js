@@ -7,7 +7,7 @@
     "lint": "eslint packages apis commands --ext .js,.jsx",
     "lint:check": "eslint --print-config ./aw.config.js | eslint-config-prettier-check",
     "start": "MONO=true ./commands/cli/lib/index.js serve --entry ./test/integration/sn.js",
-    "test": "yarn run test:unit",
+    "test": "yarn test:unit",
     "test:integration": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/integration/*.int.js'",
     "test:unit": "aw -c aw.config.js"
   },

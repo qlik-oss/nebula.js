@@ -23,7 +23,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js",
     "lint": "eslint web",
-    "prepublishOnly": "rm -rf dist && yarn run build"
+    "prepublishOnly": "rm -rf dist && yarn build"
   },
   "dependencies": {
     "@nebula.js/cli-build": "0.1.0-alpha.18",
