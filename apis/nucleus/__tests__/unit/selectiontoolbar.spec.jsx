@@ -58,7 +58,7 @@ describe('<SelectionToolbar />', () => {
 
       expect(item.enabled()).to.equal('confirmable');
       item.action();
-      expect(component.selections.confirm).to.have.been.calledWithExactly(component);
+      expect(component.selections.confirm).to.have.been.calledWithExactly();
     });
 
     it('should have a cancel item', () => {
@@ -71,7 +71,7 @@ describe('<SelectionToolbar />', () => {
       });
       expect(item.enabled()).to.equal('cancelable');
       item.action();
-      expect(component.selections.cancel).to.have.been.calledWithExactly(component);
+      expect(component.selections.cancel).to.have.been.calledWithExactly();
     });
 
     it('should have a clear item', () => {
@@ -84,7 +84,7 @@ describe('<SelectionToolbar />', () => {
       });
       expect(item.enabled()).to.equal('clearable');
       item.action();
-      expect(component.selections.clear).to.have.been.calledWithExactly(component);
+      expect(component.selections.clear).to.have.been.calledWithExactly();
     });
 
     it('should have a custom item', () => {

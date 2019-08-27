@@ -21,7 +21,7 @@ function Component({ sn }) {
         label: translator.get('Selection.Confirm'),
         icon: 'tick',
         enabled: () => s.confirmable,
-        action: () => api.confirm(sn.component),
+        action: () => api.confirm(),
       },
       {
         key: 'cancel',
@@ -29,7 +29,7 @@ function Component({ sn }) {
         label: translator.get('Selection.Cancel'),
         icon: 'close',
         enabled: () => s.cancelable,
-        action: () => api.cancel(sn.component),
+        action: () => api.cancel(),
       },
       {
         key: 'clear',
@@ -37,7 +37,7 @@ function Component({ sn }) {
         label: translator.get('Selection.Clear'),
         icon: 'clear-selections',
         enabled: () => s.clearable,
-        action: () => api.clear(sn.component),
+        action: () => api.clear(),
       },
     ];
     const c = {};
