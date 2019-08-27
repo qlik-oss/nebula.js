@@ -6,11 +6,12 @@ const { watch } = require('@nebula.js/cli-build');
 
 const webpackServe = require('./webpack.serve.js');
 
-const { startEngine, stopEngine } = require('./engine');
+const useEngine = require('./engine');
 
 module.exports = async argv => {
-  if (process.env.ACCEPT_EULA === 'yes') {
-    await startEngine();
+  let stopEngine = () => {};
+  if (argv.ACCEPT_EULA) {
+    stopEngine = await useEngine(argv);
   }
   const port = argv.port || (await portfinder.getPortPromise());
   const host = argv.host || 'localhost';
@@ -57,10 +58,8 @@ module.exports = async argv => {
     watcher,
   });
 
-  const close = () => {
-    if (process.env.ACCEPT_EULA === 'yes') {
-      stopEngine();
-    }
+  const close = async () => {
+    await stopEngine();
     if (watcher) {
       watcher.close();
     }
@@ -71,7 +70,8 @@ module.exports = async argv => {
     process.on(signal, close);
   });
 
-  return { //eslint-disable-line
+  // eslint-disable-next-line consistent-return
+  return {
     url: server.url,
     close,
   };

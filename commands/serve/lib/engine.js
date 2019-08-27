@@ -1,55 +1,51 @@
 const path = require('path');
-const execa = require('execa');
+const { spawn } = require('child_process');
 
-/* eslint no-use-before-define:0 */
-const startEngine = () => {
-  if (process.env.ACCEPT_EULA == null || process.env.ACCEPT_EULA.toLowerCase() !== 'yes') {
+const cwd = path.resolve(__dirname, '../');
+
+const execCmd = (cmd, cmdArgs = [], opts) => {
+  return new Promise((resolve, reject) => {
+    const child = spawn(cmd, cmdArgs, opts);
+    const res = {
+      exitCode: null,
+      out: '',
+      err: '',
+    };
+    child.on('error', reject);
+    child.stdout.on('data', chunk => {
+      res.out += chunk.toString();
+    });
+    child.stderr.on('data', chunk => {
+      res.err += chunk.toString();
+    });
+    child.on('exit', exitCode => {
+      res.exitCode = exitCode;
+      if (exitCode === 0) {
+        resolve(res);
+      } else {
+        reject(res);
+      }
+    });
+  });
+};
+
+const useEngine = ({ ACCEPT_EULA = false }) => {
+  if (ACCEPT_EULA !== true) {
     throw new Error('Need to accept EULA in order to start engine container');
   }
-  console.log('Starting engine container ...');
-  return new Promise((resolve, reject) => {
-    const c = execa.command('cross-env ACCEPT_EULA=yes docker-compose up -d --build', {
-      cwd: path.resolve(__dirname, '../'),
-      stdio: 'inherit',
-      shell: true,
-    });
-
-    const ping = setInterval(() => {
-      const { stdout } = execa.command('docker ps -q -f name=engine -f status=running');
-      if (stdout) {
-        console.log('... engine container running');
-        clear();
-        resolve();
-      }
-    }, 1000);
-
-    const timeout = setTimeout(() => {
-      clear();
-      reject();
-    }, 60000);
-
-    function clear() {
-      clearInterval(ping);
-      clearTimeout(timeout);
+  console.error('Starting engine container...');
+  process.env.ACCEPT_EULA = 'yes';
+  const stopEngine = async () => {
+    console.error('Stopping engine container...');
+    try {
+      await execCmd('docker-compose', ['down', '--remove-orphans'], {
+        cwd,
+      });
+    } catch (err) {
+      console.error(err);
     }
-
-    c.on('exit', code => {
-      if (code !== 0) {
-        clear();
-        reject();
-      }
-    });
-  });
+  };
+  return execCmd('docker-compose', ['up', '-d', '--build'], { cwd }).then(() => stopEngine);
 };
 
-const stopEngine = () => {
-  execa.shellSync('docker-compose down', {
-    cwd: path.resolve(__dirname, '../'),
-    stdio: 'inherit',
-  });
-};
-
-module.exports = {
-  startEngine,
-  stopEngine,
-};
+module.exports = useEngine;
