@@ -25,7 +25,9 @@ const Header = ({ layout, sn }) => {
         </Grid>
       </Grid>
       <Grid item style={{ whiteSpace: 'nowrap', minHeight: '32px' }}>
-        {showInSelectionActions && <SelectionToolbar inline sn={sn} />}
+        {showInSelectionActions && (
+          <SelectionToolbar inline api={sn.component.selections} items={sn.selectionToolbar.items} />
+        )}
       </Grid>
     </Grid>
   );
