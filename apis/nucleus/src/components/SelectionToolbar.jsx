@@ -3,9 +3,8 @@ import React, { useContext, useMemo } from 'react';
 import Item from './SelectionToolbarItem';
 import LocaleContext from '../contexts/LocaleContext';
 
-function Component({ sn }) {
+function Component({ api, items = [] }) {
   const translator = useContext(LocaleContext);
-  const api = sn.component.selections;
 
   const s = {
     confirmable: api.canConfirm(),
@@ -13,7 +12,7 @@ function Component({ sn }) {
     clearable: api.canClear(),
   };
 
-  const { items, custom } = useMemo(() => {
+  const { allItems, custom } = useMemo(() => {
     const arr = [
       {
         key: 'confirm',
@@ -41,17 +40,17 @@ function Component({ sn }) {
       },
     ];
     const c = {};
-    (sn.selectionToolbar.items || []).forEach(item => {
+    items.forEach(item => {
       c[item.key] = true;
       arr.push(item);
     });
 
-    return { items: arr.reverse(), custom: c };
-  }, [s.confirmable, s.cancelable, s.clearable, sn && sn.selectionToolbar.items]);
+    return { allItems: arr.reverse(), custom: c };
+  }, [s.confirmable, s.cancelable, s.clearable, items]);
 
   return (
     <div>
-      {items.map(itm => (
+      {allItems.map(itm => (
         <Item key={itm.key} item={itm} isCustom={!!custom[itm.key]} />
       ))}
     </div>
