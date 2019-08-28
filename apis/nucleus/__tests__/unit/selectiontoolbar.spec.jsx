@@ -40,7 +40,7 @@ describe('<SelectionToolbar />', () => {
 
       const c = renderer.create(
         <LocaleContext.Provider value={translator}>
-          <STB sn={props.sn} />
+          <STB api={props.sn.component.selections} items={props.sn.selectionToolbar.items} />
         </LocaleContext.Provider>
       );
 
@@ -123,7 +123,7 @@ describe('<SelectionToolbar />', () => {
 
     const c = renderer.create(
       <LocaleContext.Provider value={translator}>
-        <STB sn={props.sn} />
+        <STB api={props.sn.component.selections} items={props.sn.selectionToolbar.items} />
       </LocaleContext.Provider>
     );
 

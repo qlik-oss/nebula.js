@@ -78,9 +78,10 @@ describe('<Header />', () => {
   });
 
   it('should render selection actions', () => {
+    const sn = { component: { selections: {} }, selectionToolbar: { items: [] } };
     const layout = { showTitles: false, qSelectionInfo: { qInSelections: true } };
     const [{ default: Header }] = mock();
-    const tree = renderer.create(<Header layout={layout} sn />).toJSON();
+    const tree = renderer.create(<Header layout={layout} sn={sn} />).toJSON();
     expect(tree).to.eql({
       type: 'g',
       props: {},
