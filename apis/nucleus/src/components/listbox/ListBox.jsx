@@ -15,7 +15,7 @@ import useLayout from '../../hooks/useLayout';
 
 import Row from './ListBoxRow';
 
-export default function ListBox({ model }) {
+export default function ListBox({ model, selections }) {
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
   const loaderRef = useRef(null);
@@ -32,7 +32,11 @@ export default function ListBox({ model }) {
     e => {
       const elemNumber = +e.currentTarget.getAttribute('data-n');
       if (!Number.isNaN(elemNumber)) {
-        model.selectListObjectValues('/qListObjectDef', [elemNumber], true);
+        // model.selectListObjectValues('/qListObjectDef', [elemNumber], true);
+        selections.select({
+          method: 'selectListObjectValues',
+          params: ['/qListObjectDef', [elemNumber], true],
+        });
       }
     },
     [model]
