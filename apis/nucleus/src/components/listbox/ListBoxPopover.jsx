@@ -10,7 +10,10 @@ import useLayout from '../../hooks/useLayout';
 
 import ListBox from './ListBox';
 
-export default function ListBoxPopover({ alignTo, show, close, app, selections, fieldName, stateName = '$' }) {
+import { createObjectSelectionAPI } from '../../selections';
+import SelectionToolbar from '../SelectionToolbar';
+
+export default function ListBoxPopover({ alignTo, show, close, app, fieldName, stateName = '$' }) {
   const [model] = useModel(
     {
       qInfo: {
@@ -59,18 +62,29 @@ export default function ListBoxPopover({ alignTo, show, close, app, selections, 
 
   const [layout] = useLayout(model);
 
+  if (!model || !layout) {
+    return null;
+  }
+
+  const sel = createObjectSelectionAPI(model, app);
+  sel.setLayout(layout);
+
   const isLocked = layout ? layout.qListObject.qDimensionInfo.qLocked === true : false;
 
   const open = show && Boolean(alignTo.current);
 
   if (open) {
-    selections.switchModal();
+    sel.goModal('/qListObjectDef');
   }
+  const popoverClose = () => {
+    sel.noModal(true);
+    close();
+  };
 
   return (
     <Popover
       open={open}
-      onClose={close}
+      onClose={popoverClose}
       anchorEl={alignTo.current}
       anchorOrigin={{
         vertical: 'bottom',
@@ -86,18 +100,25 @@ export default function ListBoxPopover({ alignTo, show, close, app, selections, 
     >
       <Grid container direction="column" spacing={0}>
         <Grid item>
-          {isLocked ? (
-            <IconButton onClick={unlock}>
-              <Unlock />
-            </IconButton>
-          ) : (
-            <IconButton onClick={lock}>
-              <Lock />
-            </IconButton>
-          )}
+          <Grid container direction="row">
+            <Grid item>
+              {isLocked ? (
+                <IconButton onClick={unlock}>
+                  <Unlock />
+                </IconButton>
+              ) : (
+                <IconButton onClick={lock}>
+                  <Lock />
+                </IconButton>
+              )}
+            </Grid>
+            <Grid item>
+              <SelectionToolbar api={sel} />
+            </Grid>
+          </Grid>
         </Grid>
         <Grid item xs>
-          <ListBox model={model} />
+          <ListBox model={model} selections={sel} />
         </Grid>
       </Grid>
     </Popover>
