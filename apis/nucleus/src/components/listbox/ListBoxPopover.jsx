@@ -1,17 +1,21 @@
-import React, { useCallback } from 'react';
+import React, { useContext, useCallback, useRef, useState } from 'react';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
 
-import { IconButton, Popover, Grid } from '@nebula.js/ui/components';
+import { IconButton, Popover, Grid, MenuList } from '@nebula.js/ui/components';
 
+import { more } from '@nebula.js/ui/icons/more';
 import useModel from '../../hooks/useModel';
 import useLayout from '../../hooks/useLayout';
 
 import ListBox from './ListBox';
+import createListboxSelectionToolbar from './listbox-selection-toolbar';
 
 import { createObjectSelectionAPI } from '../../selections';
-import SelectionToolbar from '../SelectionToolbar';
+import SelectionToolbarWithDefault, { SelectionToolbar } from '../SelectionToolbar';
+
+import LocaleContext from '../../contexts/LocaleContext';
 
 export default function ListBoxPopover({ alignTo, show, close, app, fieldName, stateName = '$' }) {
   const [model] = useModel(
@@ -62,15 +66,19 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
 
   const [layout] = useLayout(model);
 
-  if (!model || !layout) {
+  const translator = useContext(LocaleContext);
+
+  const moreAlignTo = useRef();
+  const [showSelectionsMenu, setShowSelectionsMenu] = useState(false);
+
+  if (!model || !layout || !translator) {
     return null;
   }
 
   const sel = createObjectSelectionAPI(model, app);
   sel.setLayout(layout);
 
-  const isLocked = layout ? layout.qListObject.qDimensionInfo.qLocked === true : false;
-
+  const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
   const open = show && Boolean(alignTo.current);
 
   if (open) {
@@ -79,6 +87,22 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
   const popoverClose = () => {
     sel.noModal(true);
     close();
+  };
+
+  const listboxSelectionToolbarItems = createListboxSelectionToolbar({
+    layout,
+    model,
+    translator,
+    onSelected: () => setShowSelectionsMenu(false),
+  });
+
+  const moreItem = {
+    key: 'more',
+    type: 'icon-button',
+    label: translator.get('Selection.Menu'),
+    getSvgIconShape: more,
+    enabled: () => true,
+    action: () => setShowSelectionsMenu(!showSelectionsMenu),
   };
 
   return (
@@ -113,12 +137,34 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
               )}
             </Grid>
             <Grid item>
-              <SelectionToolbar api={sel} />
+              <SelectionToolbarWithDefault api={sel} xItems={[moreItem]} />
             </Grid>
           </Grid>
         </Grid>
         <Grid item xs>
+          <div ref={moreAlignTo} />
           <ListBox model={model} selections={sel} />
+          {showSelectionsMenu && (
+            <Popover
+              open={showSelectionsMenu}
+              anchorEl={moreAlignTo.current}
+              getContentAnchorEl={null}
+              container={moreAlignTo.current}
+              disablePortal
+              hideBackdrop
+              style={{ pointerEvents: 'none' }}
+              PaperProps={{
+                style: {
+                  minWidth: '250px',
+                  pointerEvents: 'auto',
+                },
+              }}
+            >
+              <MenuList>
+                <SelectionToolbar items={listboxSelectionToolbarItems} />
+              </MenuList>
+            </Popover>
+          )}
         </Grid>
       </Grid>
     </Popover>

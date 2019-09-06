@@ -1,60 +1,57 @@
-import React, { useContext, useMemo } from 'react';
+import React, { useContext } from 'react';
+import { close } from '@nebula.js/ui/icons/close';
+import { tick } from '@nebula.js/ui/icons/tick';
+import { clearSelections } from '@nebula.js/ui/icons/clear-selections';
 
-import Item from './SelectionToolbarItem';
 import LocaleContext from '../contexts/LocaleContext';
+import Item from './SelectionToolbarItem';
 
-function Component({ api, items = [] }) {
+const SelectionToolbar = React.forwardRef(({ items }, ref) => {
+  return (
+    <>
+      {items.map((e, ix) => (
+        <Item key={e.key} item={e} ref={ix === 0 ? ref : null} />
+      ))}
+    </>
+  );
+});
+
+const SelectionToolbarWithDefault = ({ api, xItems = [] }) => {
   const translator = useContext(LocaleContext);
 
-  const s = {
-    confirmable: api.canConfirm(),
-    cancelable: api.canCancel(),
-    clearable: api.canClear(),
-  };
+  const items = [
+    ...xItems,
+    {
+      key: 'clear',
+      type: 'icon-button',
+      label: translator.get('Selection.Clear'),
+      icon: 'clear-selections',
+      enabled: () => api.canClear(),
+      action: () => api.clear(),
+      getSvgIconShape: clearSelections,
+    },
+    {
+      key: 'cancel',
+      type: 'icon-button',
+      label: translator.get('Selection.Cancel'),
+      icon: 'close',
+      enabled: () => api.canCancel(),
+      action: () => api.cancel(),
+      getSvgIconShape: close,
+    },
+    {
+      key: 'confirm',
+      type: 'icon-button',
+      label: translator.get('Selection.Confirm'),
+      icon: 'tick',
+      enabled: () => api.canConfirm(),
+      action: () => api.confirm(),
+      getSvgIconShape: tick,
+    },
+  ];
 
-  const { allItems, custom } = useMemo(() => {
-    const arr = [
-      {
-        key: 'confirm',
-        type: 'icon-button',
-        label: translator.get('Selection.Confirm'),
-        icon: 'tick',
-        enabled: () => s.confirmable,
-        action: () => api.confirm(),
-      },
-      {
-        key: 'cancel',
-        type: 'icon-button',
-        label: translator.get('Selection.Cancel'),
-        icon: 'close',
-        enabled: () => s.cancelable,
-        action: () => api.cancel(),
-      },
-      {
-        key: 'clear',
-        type: 'icon-button',
-        label: translator.get('Selection.Clear'),
-        icon: 'clear-selections',
-        enabled: () => s.clearable,
-        action: () => api.clear(),
-      },
-    ];
-    const c = {};
-    items.forEach(item => {
-      c[item.key] = true;
-      arr.push(item);
-    });
+  return <SelectionToolbar items={items} />;
+};
 
-    return { allItems: arr.reverse(), custom: c };
-  }, [s.confirmable, s.cancelable, s.clearable, items]);
-
-  return (
-    <div>
-      {allItems.map(itm => (
-        <Item key={itm.key} item={itm} isCustom={!!custom[itm.key]} />
-      ))}
-    </div>
-  );
-}
-
-export default Component;
+export default SelectionToolbarWithDefault;
+export { SelectionToolbar };

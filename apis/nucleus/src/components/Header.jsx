@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Grid, Typography } from '@nebula.js/ui/components';
 
-import SelectionToolbar from './SelectionToolbar';
+import STToolbar from './SelectionToolbar';
 
 const Header = ({ layout, sn }) => {
   const showTitle = layout && layout.showTitles && !!layout.title;
@@ -25,9 +25,7 @@ const Header = ({ layout, sn }) => {
         </Grid>
       </Grid>
       <Grid item style={{ whiteSpace: 'nowrap', minHeight: '32px' }}>
-        {showInSelectionActions && (
-          <SelectionToolbar inline api={sn.component.selections} items={sn.selectionToolbar.items} />
-        )}
+        {showInSelectionActions && <STToolbar inline api={sn.component.selections} items={sn.selectionToolbar.items} />}
       </Grid>
     </Grid>
   );
