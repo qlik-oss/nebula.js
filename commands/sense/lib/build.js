@@ -12,7 +12,19 @@ async function build(argv) {
   const supernovaPkg = require(path.resolve(cwd, 'package.json')); // eslint-disable-line
 
   const extName = supernovaPkg.name.replace(/\//, '-').replace('@', '');
-  const targetDirectory = path.resolve(cwd, `${extName}-ext`);
+  // Check if directory specified exists, otherwise create it.
+  // TODO: Handle error cases (permissions?)
+  function checkDirectorySync(directory) {
+    try {
+      fs.statSync(directory);
+    } catch(e) {
+      fs.mkdirSync(directory);
+    }
+  }
+  // if user has provided an output directory check if it exists, strip trailing slash, and compose extension directory path
+  const outputDirectory = argv.output ? checkDirectorySync(`${(argv.output).replace(/\/$/, "")}`) : undefined;
+  // define targetDirectory if outputDirectory is defined, otherwise create extension in CWD
+  const targetDirectory = outputDirectory ?  `${(argv.output).replace(/\/$/, "")}/${extName}-ext}` : path.resolve(cwd, `${extName}-ext`);
 
   let extDefinition = path.resolve(__dirname, '../src/ext-definition');
 
