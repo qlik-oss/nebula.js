@@ -1,7 +1,6 @@
 {
   "private": true,
   "description": "",
-  "name": "@nebula.js/cli",
   "scripts": {
     "build": "cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
     "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream --concurrency 99 --no-sort",
