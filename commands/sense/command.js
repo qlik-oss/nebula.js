@@ -23,7 +23,6 @@ module.exports = {
     yargs.option('output', {
       type: 'string',
       required: false,
-      default: true,
       desc: 'Specify the output location',
     });
   },
