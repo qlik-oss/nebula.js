@@ -25,7 +25,7 @@ async function build(argv) {
   const outputDirectory = argv.output ? checkDirectorySync(`${argv.output.replace(/\/$/, '')}`) : undefined;
   // define targetDirectory if outputDirectory is defined, otherwise create extension in CWD
   const targetDirectory = outputDirectory
-    ? `${argv.output.replace(/\/$/, '')}/${extName}-ext}`
+    ? path.resolve(argv.output, `${extName}-ext`)
     : path.resolve(cwd, `${extName}-ext`);
 
   let extDefinition = path.resolve(__dirname, '../src/ext-definition');
