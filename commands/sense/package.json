@@ -27,13 +27,13 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "^7.5.5",
-    "@babel/core": "^7.5.5",
-    "@babel/preset-env": "^7.5.5",
+    "@babel/cli": "^7.6.0",
+    "@babel/core": "^7.6.0",
+    "@babel/preset-env": "^7.6.0",
     "@nebula.js/supernova": "0.1.0-alpha.18",
     "chalk": "^2.4.2",
     "node-event-emitter": "^0.0.1",
-    "rollup": "^1.20.3",
+    "rollup": "^1.21.2",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
