@@ -14,7 +14,7 @@ async function build(argv) {
   const extName = supernovaPkg.name.replace(/\//, '-').replace('@', '');
 
   const outputDirectory = argv.output ? argv.output : undefined;
-  // define targetDirectory if outputDirectory is defined, otherwise create extension in CWD
+  // define targetDirectory: use outputDirectory if defined, otherwise create extension in CWD
   const targetDirectory = outputDirectory
     ? path.resolve(argv.output, `${extName}-ext`)
     : path.resolve(cwd, `${extName}-ext`);
