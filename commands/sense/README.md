@@ -17,5 +17,6 @@ Options:
   --version   Show version number                                      [boolean]
   --ext       Extension definition                                      [string]
   --meta      Extension meta information                                [string]
+  --output    Output directory of extension
   -h, --help  Show help                                                [boolean]
 ```

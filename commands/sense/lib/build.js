@@ -12,7 +12,12 @@ async function build(argv) {
   const supernovaPkg = require(path.resolve(cwd, 'package.json')); // eslint-disable-line
 
   const extName = supernovaPkg.name.replace(/\//, '-').replace('@', '');
-  const targetDirectory = path.resolve(cwd, `${extName}-ext`);
+
+  const outputDirectory = argv.output ? argv.output : undefined;
+  // define targetDirectory: use outputDirectory if defined, otherwise create extension in CWD
+  const targetDirectory = outputDirectory
+    ? path.resolve(argv.output, `${extName}-ext`)
+    : path.resolve(cwd, `${extName}-ext`);
 
   let extDefinition = path.resolve(__dirname, '../src/ext-definition');
 

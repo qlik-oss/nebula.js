@@ -20,6 +20,11 @@ module.exports = {
       default: true,
       desc: 'Minify and uglify code',
     });
+    yargs.option('output', {
+      type: 'string',
+      required: false,
+      desc: 'Specify the output location',
+    });
   },
   handler(argv) {
     build(argv);
