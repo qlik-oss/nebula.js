@@ -3,7 +3,10 @@ import qae from '../../src/qae';
 describe('qae', () => {
   it('should have empty defaults', () => {
     expect(qae()).to.eql({
-      properties: {},
+      properties: {
+        initial: {},
+        onChange: undefined,
+      },
       data: {
         targets: [],
       },
@@ -14,7 +17,7 @@ describe('qae', () => {
     expect(
       qae({
         properties: { p: 'p' },
-      }).properties
+      }).properties.initial
     ).to.eql({ p: 'p' });
   });
 

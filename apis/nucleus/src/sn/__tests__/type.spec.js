@@ -52,7 +52,7 @@ describe('type', () => {
   describe('supernova()', () => {
     it('should load a supernova definition and return a supernova', async () => {
       const def = Promise.resolve('def');
-      const normalized = { qae: {} };
+      const normalized = { qae: { properties: {} } };
 
       load.withArgs('pie', '1.1.0', 'c', 'customLoader').returns(def);
       SNFactory.withArgs('def').returns(normalized);
@@ -65,7 +65,7 @@ describe('type', () => {
   describe('initialProperties()', () => {
     it('should return initial props', async () => {
       const def = Promise.resolve('def');
-      const normalized = { qae: { properties: { a: 'a', b: 'b' } } };
+      const normalized = { qae: { properties: { initial: { a: 'a', b: 'b' } } } };
 
       load.withArgs('pie', '1.1.0', 'c').returns(def);
       SNFactory.withArgs('def').returns(normalized);

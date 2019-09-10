@@ -24,6 +24,7 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "devDependencies": {
-    "node-event-emitter": "^0.0.1"
+    "node-event-emitter": "^0.0.1",
+    "extend": "^3.0.1"
   }
 }

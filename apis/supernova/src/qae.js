@@ -28,9 +28,16 @@ function target(def) {
 }
 
 export default function qae(def = {}) {
+  let initial = def.properties || {};
+  let onChange;
+  if (def.properties && (def.properties.initial || def.properties.onChange)) {
+    initial = def.properties.initial;
+    onChange = def.properties.onChange;
+  }
   const q = {
     properties: {
-      ...def.properties,
+      initial,
+      onChange,
     },
     data: {
       targets: ((def.data || {}).targets || []).map(target),
