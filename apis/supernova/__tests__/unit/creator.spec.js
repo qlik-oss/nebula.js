@@ -5,6 +5,9 @@ describe('creator', () => {
     const generator = {
       component: {},
       definition: {},
+      qae: {
+        properties: {},
+      },
     };
     const env = {};
     const params = {
@@ -34,6 +37,9 @@ describe('creator', () => {
         custom: sinon.spy(),
       },
       definition: {},
+      qae: {
+        properties: {},
+      },
     };
     const env = {};
     const params = {
