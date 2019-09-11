@@ -48,6 +48,7 @@ export default {
       app: this.backendApi.model.session.app,
       selections: selectionAPI,
     });
+    this.sn = sn;
     this.snComponent = sn.component;
     this.snComponent.created({
       options: this.options || {},
@@ -63,6 +64,7 @@ export default {
     });
   },
   destroy() {
+    this.sn.destroy();
     if (this.snComponent) {
       this.snComponent.willUnmount();
       this.snComponent.destroy();
