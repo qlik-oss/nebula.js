@@ -36,7 +36,7 @@ export default {
 
   // =============================================
   // non-overridable properties
-  initialProperties: snGenerator.qae.properties,
+  initialProperties: snGenerator.qae.properties.initial,
   importProperties: null, // Disable conversion to/from this object
   exportProperties: null, // Disable conversion to/from this object
   template: '<div style="height: 100%;position: relative"></div>',

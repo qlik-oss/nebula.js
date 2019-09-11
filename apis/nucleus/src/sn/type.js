@@ -18,7 +18,7 @@ export default function create(info, config, opts = {}) {
     supernova: () =>
       load(type.name, type.version, config, opts.load).then(SNDefinition => {
         sn = sn || SNFactory(SNDefinition, config.env);
-        stringified = JSON.stringify(sn.qae.properties);
+        stringified = JSON.stringify(sn.qae.properties.initial);
         return sn;
       }),
     initialProperties(initial) {
