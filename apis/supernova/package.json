@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/supernova",
-  "version": "0.1.0-alpha.18",
+  "version": "0.1.0-alpha.19",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -24,7 +24,7 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "devDependencies": {
-    "node-event-emitter": "^0.0.1",
-    "extend": "^3.0.1"
+    "extend": "^3.0.1",
+    "node-event-emitter": "^0.0.1"
   }
 }
