@@ -4,8 +4,8 @@ import { Grid, Typography } from '@nebula.js/ui/components';
 
 import { makeStyles } from '@nebula.js/ui/theme';
 
-import Lock from '@nebula.js/ui/icons/Lock';
-import Tick from '@nebula.js/ui/icons/Tick';
+import Lock from '@nebula.js/ui/icons/lock';
+import Tick from '@nebula.js/ui/icons/tick';
 
 const useStyles = makeStyles(theme => ({
   row: {

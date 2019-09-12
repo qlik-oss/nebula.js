@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react';
 
-import Lock from '@nebula.js/ui/icons/Lock';
-import Unlock from '@nebula.js/ui/icons/Unlock';
+import Lock from '@nebula.js/ui/icons/lock';
+import Unlock from '@nebula.js/ui/icons/unlock';
 
 import { IconButton, Popover, Grid } from '@nebula.js/ui/components';
 

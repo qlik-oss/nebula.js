@@ -2,9 +2,9 @@ import React from 'react';
 
 import { IconButton, Button } from '@nebula.js/ui/components';
 
-import CloseIcon from '@nebula.js/ui/icons/Close';
-import TickIcon from '@nebula.js/ui/icons/Tick';
-import ClearSelections from '@nebula.js/ui/icons/ClearSelections';
+import CloseIcon from '@nebula.js/ui/icons/close';
+import TickIcon from '@nebula.js/ui/icons/tick';
+import ClearSelections from '@nebula.js/ui/icons/clear-selections';
 
 const ICONS = {
   close: CloseIcon,

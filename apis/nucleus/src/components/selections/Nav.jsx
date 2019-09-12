@@ -2,9 +2,9 @@ import React, { useEffect, useState, useContext } from 'react';
 
 import { IconButton, Grid } from '@nebula.js/ui/components';
 
-import SelectionsBack from '@nebula.js/ui/icons/SelectionsBack';
-import SelectionsForward from '@nebula.js/ui/icons/SelectionsForward';
-import ClearSelections from '@nebula.js/ui/icons/ClearSelections';
+import SelectionsBack from '@nebula.js/ui/icons/selections-back';
+import SelectionsForward from '@nebula.js/ui/icons/selections-forward';
+import ClearSelections from '@nebula.js/ui/icons/clear-selections';
 
 import LocaleContext from '../../contexts/LocaleContext';
 
