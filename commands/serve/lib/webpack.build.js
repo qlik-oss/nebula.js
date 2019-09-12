@@ -4,6 +4,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const babelPath = require.resolve('babel-loader');
 const babelPresetEnvPath = require.resolve('@babel/preset-env');
 const babelPresetReactPath = require.resolve('@babel/preset-react');
+const sourceMapLoaderPath = require.resolve('source-map-loader');
 
 const cfg = ({ srcDir, distDir, snPath, dev = false }) => {
   const config = {
@@ -21,12 +22,26 @@ const cfg = ({ srcDir, distDir, snPath, dev = false }) => {
     resolve: {
       alias: {
         snDefinition: snPath,
+        ...(dev
+          ? {
+              // For local nebula.js development use aliasing to be able to debug nucleus / supernova
+              '@nebula.js/nucleus/src/hooks': path.resolve(process.cwd(), 'apis/nucleus/src/hooks'),
+              '@nebula.js/nucleus/src/object': path.resolve(process.cwd(), 'apis/nucleus/src/object'),
+              '@nebula.js/nucleus': path.resolve(process.cwd(), 'apis/nucleus/src'),
+              '@nebula.js/supernova': path.resolve(process.cwd(), 'apis/supernova/src'),
+            }
+          : {}),
       },
       extensions: ['.js', '.jsx'],
     },
     externals: dev ? {} : 'snDefinition',
     module: {
       rules: [
+        {
+          enforce: 'pre',
+          test: /\.js?$/,
+          loader: sourceMapLoaderPath,
+        },
         {
           test: /\.jsx?$/,
           sideEffects: false,
