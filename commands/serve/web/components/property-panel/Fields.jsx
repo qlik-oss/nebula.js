@@ -15,7 +15,7 @@ import {
   Typography,
 } from '@nebula.js/ui/components';
 
-import Remove from '@nebula.js/ui/icons/Remove';
+import Remove from '@nebula.js/ui/icons/remove';
 
 import useLibraryList from '../../hooks/useLibraryList';
 

@@ -1,7 +1,7 @@
 import React, { useRef, useState, useContext } from 'react';
 
-import Remove from '@nebula.js/ui/icons/Remove';
-import Lock from '@nebula.js/ui/icons/Lock';
+import Remove from '@nebula.js/ui/icons/remove';
+import Lock from '@nebula.js/ui/icons/lock';
 // import themes from '@nebula.js/ui/theme';
 
 import { IconButton, Grid, Typography } from '@nebula.js/ui/components';
