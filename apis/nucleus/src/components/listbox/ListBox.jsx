@@ -32,7 +32,6 @@ export default function ListBox({ model, selections }) {
     e => {
       const elemNumber = +e.currentTarget.getAttribute('data-n');
       if (!Number.isNaN(elemNumber)) {
-        // model.selectListObjectValues('/qListObjectDef', [elemNumber], true);
         selections.select({
           method: 'selectListObjectValues',
           params: ['/qListObjectDef', [elemNumber], true],

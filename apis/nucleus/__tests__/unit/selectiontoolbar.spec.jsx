@@ -20,7 +20,7 @@ describe('<SelectionToolbar />', () => {
         model: {},
         sn: {
           component,
-          selectionToolbar: { items: [{ key: 'mine', type: 'random' }] },
+          selectionToolbar: { xItems: [{ key: 'mine', type: 'random' }] },
         },
       };
       const STItem = () => '';
@@ -40,7 +40,7 @@ describe('<SelectionToolbar />', () => {
 
       const c = renderer.create(
         <LocaleContext.Provider value={translator}>
-          <STB api={props.sn.component.selections} items={props.sn.selectionToolbar.items} />
+          <STB api={props.sn.component.selections} xItems={props.sn.selectionToolbar.xItems} />
         </LocaleContext.Provider>
       );
 
@@ -110,10 +110,9 @@ describe('<SelectionToolbar />', () => {
         selectionToolbar: { items: [{ key: 'mine' }] },
       },
     };
-    const STItem = ({ isCustom }) => `-${isCustom}-`;
     const LocaleContext = React.createContext();
     const [{ default: STB }] = aw.mock(
-      [['**/SelectionToolbarItem.jsx', () => STItem], ['**/LocaleContext.js', () => LocaleContext]],
+      [['**/SelectionToolbarItem.jsx', () => () => ''], ['**/LocaleContext.js', () => LocaleContext]],
       ['../../src/components/SelectionToolbar']
     );
 
@@ -127,10 +126,6 @@ describe('<SelectionToolbar />', () => {
       </LocaleContext.Provider>
     );
 
-    expect(c.toJSON()).to.eql({
-      type: 'div',
-      props: {},
-      children: ['-true-', '-false-', '-false-', '-false-'],
-    });
+    expect(c.toJSON()).to.deep.eql(['', '', '']);
   });
 });

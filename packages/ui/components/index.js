@@ -23,11 +23,18 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
+import MenuList from '@material-ui/core/MenuList';
+import Select from '@material-ui/core/Select';
+
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
 import TextField from '@material-ui/core/TextField';
+
+import { makeStyles } from '@material-ui/styles';
 
 export {
   Button,
@@ -58,4 +65,9 @@ export {
   FormControlLabel,
   Switch,
   TextField,
+  Menu,
+  MenuItem,
+  Select,
+  makeStyles,
+  MenuList,
 };

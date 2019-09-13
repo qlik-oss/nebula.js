@@ -30,7 +30,13 @@ const create = app => {
         // TODO check model state
         modalObject = object;
         api.emit('modal', modalObject._selections);
-        return modalObject.beginSelections(Array.isArray(path) ? path : [path]);
+        return modalObject.beginSelections(Array.isArray(path) ? path : [path]).catch(err => {
+          if (err.code === 6003) {
+            // If another object already is in modal -> abort and take over
+            return api.abortModal().then(() => object.beginSelections(Array.isArray(path) ? path : [path]));
+          }
+          throw err;
+        });
       }
       modalObject = null;
       api.emit('modal-unset');

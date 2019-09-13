@@ -79,6 +79,7 @@ export default function(model, app) {
     isModal: () => appAPI().isModal(model),
     goModal: paths => appAPI().switchModal(model, paths, false),
     noModal: (accept = false) => appAPI().switchModal(null, null, accept),
+    abortModal: () => appAPI().abortModal(true),
   };
 
   eventmixin(api);
