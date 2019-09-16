@@ -18,3 +18,5 @@ There are a number of arguments you can supply:
 | `--meta`     | Extension meta information         | [string] |
 | `--output`   |  Output directory of Extension     | [string] |
 | `-h, --help` | Show help                          | [boolean]|
+
+> When creating a Sense Visualization extension, make sure you provide an extension definition file.  
