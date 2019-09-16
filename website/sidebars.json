@@ -1,6 +1,10 @@
 {
   "docs": {
     "Introduction": ["introduction"],
-    "CLI": ["cli/sense", "cli/create"]
+    "CLI": [
+      "cli/create",
+      "cli/sense",
+      "cli/serve"
+    ]
   }
 }

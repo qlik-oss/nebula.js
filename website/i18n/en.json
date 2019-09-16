@@ -11,6 +11,9 @@
       "cli/sense": {
         "title": "Sense"
       },
+      "cli/serve": {
+        "title": "Serve"
+      },
       "introduction": {
         "title": "Introduction"
       }
