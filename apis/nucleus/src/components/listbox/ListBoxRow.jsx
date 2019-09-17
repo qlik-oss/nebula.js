@@ -34,6 +34,9 @@ const useStyles = makeStyles(theme => ({
   X: {
     background: theme.palette.background.darker,
   },
+  highlighted: {
+    backgroundColor: '#ffce26',
+  },
 }));
 
 export default function Row({ index, style, data }) {
@@ -66,6 +69,33 @@ export default function Row({ index, style, data }) {
       classArr.push(classes.X);
     }
   }
+
+  // Handle search highlights
+  const ranges =
+    (cell && cell.qHighlightRanges && cell.qHighlightRanges.qRanges.sort((a, b) => a.qCharPos - b.qCharPos)) || [];
+
+  const labels = ranges.reduce((acc, curr, ix) => {
+    // First non highlighted segment
+    if (curr.qCharPos > 0 && ix === 0) {
+      acc.push([label.slice(0, curr.qCharPos)]);
+    }
+
+    // Previous non highlighted segment
+    const prev = ranges[ix - 1];
+    if (prev) {
+      acc.push([label.slice(prev.qCharPos + prev.qCharPos + 1, curr.qCharPos)]);
+    }
+
+    // Highlighted segment
+    acc.push([label.slice(curr.qCharPos, curr.qCharPos + curr.qCharCount), classes.highlighted]);
+
+    // Last non highlighted segment
+    if (ix === ranges.length - 1 && curr.qCharPos + curr.qCharCount < label.length) {
+      acc.push([label.slice(curr.qCharPos + curr.qCharCount)]);
+    }
+    return acc;
+  }, []);
+
   return (
     <Grid
       container
@@ -78,9 +108,18 @@ export default function Row({ index, style, data }) {
       data-n={cell && cell.qElemNumber}
     >
       <Grid item style={{ minWidth: 0, flexGrow: 1 }}>
-        <Typography className={classes.cell} noWrap>
-          {cell ? `${label}` : ''}
-        </Typography>
+        {ranges.length === 0 ? (
+          <Typography className={classes.cell} noWrap>
+            {`${label}`}
+          </Typography>
+        ) : (
+          labels.map(([l, highlighted], ix) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Typography key={ix} className={highlighted} noWrap display="inline">
+              {`${l}`}
+            </Typography>
+          ))
+        )}
       </Grid>
       <Grid item className={classes.icon}>
         {locked && <Lock size="small" />}
