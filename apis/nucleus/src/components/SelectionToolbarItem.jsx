@@ -13,10 +13,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Item = props => {
-  const [disabled, setDisabled] = useState(props.item.enabled && !props.item.enabled());
+  const initialValue =
+    typeof props.item.disabled !== 'undefined' ? props.item.disabled : props.item.enabled && !props.item.enabled();
+  const [disabled, setDisabled] = useState(initialValue);
+  if (disabled !== props.item.disabled) {
+    setDisabled(props.item.disabled);
+  }
+
   useEffect(() => {
     let onChange;
-    if (props.item.active && props.item.action && props.item.on) {
+    if (props.item && props.item.action && props.item.on) {
       onChange = () => {
         setDisabled(props.item.enabled && !props.item.enabled());
       };
@@ -32,6 +38,7 @@ const Item = props => {
       onChange = null;
     };
   }, []);
+
   const { icon } = useStyles();
   const { item } = props;
   const hasSvgIconShape = typeof item.getSvgIconShape === 'function';
