@@ -14,9 +14,11 @@ const useStyles = makeStyles(theme => ({
   },
   cell: {
     padding: '8px',
-    whiteSpace: 'nowrap',
-    fontSize: '12px',
-    lineHeight: '16px',
+    '& span': {
+      whiteSpace: 'nowrap',
+      fontSize: '12px',
+      lineHeight: '16px',
+    }
   },
   icon: {
     padding: theme.spacing(1),
@@ -107,18 +109,21 @@ export default function Row({ index, style, data }) {
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
     >
-      <Grid item style={{ minWidth: 0, flexGrow: 1 }}>
+      <Grid item style={{ minWidth: 0, flexGrow: 1 }} className={classes.cell}>
         {ranges.length === 0 ? (
-          <Typography className={classes.cell} noWrap>
-            {`${label}`}
-          </Typography>
+          <Typography component="span" noWrap>{`${label}`}</Typography>
         ) : (
-          labels.map(([l, highlighted], ix) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <Typography key={ix} className={highlighted} noWrap display="inline">
-              {`${l}`}
-            </Typography>
-          ))
+            labels.map(([l, highlighted], ix) => (
+              // eslint-disable-next-line react/no-array-index-key
+              <Typography
+                component="span"
+                key={ix}
+                className={highlighted}
+                noWrap
+              >
+                {`${l}`}
+              </Typography>
+            ))
         )}
       </Grid>
       <Grid item className={classes.icon}>
