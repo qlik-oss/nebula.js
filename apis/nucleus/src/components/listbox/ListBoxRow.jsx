@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
       whiteSpace: 'nowrap',
       fontSize: '12px',
       lineHeight: '16px',
-    }
+    },
   },
   icon: {
     padding: theme.spacing(1),
@@ -113,17 +113,10 @@ export default function Row({ index, style, data }) {
         {ranges.length === 0 ? (
           <Typography component="span" noWrap>{`${label}`}</Typography>
         ) : (
-            labels.map(([l, highlighted], ix) => (
-              // eslint-disable-next-line react/no-array-index-key
-              <Typography
-                component="span"
-                key={ix}
-                className={highlighted}
-                noWrap
-              >
-                {`${l}`}
-              </Typography>
-            ))
+          labels.map(([l, highlighted], ix) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Typography component="span" key={ix} className={highlighted} noWrap>{`${l}`}</Typography>
+          ))
         )}
       </Grid>
       <Grid item className={classes.icon}>
