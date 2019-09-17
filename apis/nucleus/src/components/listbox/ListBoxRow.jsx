@@ -35,7 +35,7 @@ const useStyles = makeStyles(theme => ({
     background: theme.palette.background.darker,
   },
   highlighted: {
-    backgroundColor: '#ffce26',
+    backgroundColor: '#FFC72A',
   },
 }));
 
