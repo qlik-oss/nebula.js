@@ -6,12 +6,12 @@ import { makeStyles } from '@nebula.js/ui/theme';
 
 import LocaleContext from '../../contexts/LocaleContext';
 
-const useStyles = makeStyles((/* theme */) => ({
+const useStyles = makeStyles(theme => ({
   gridContainer: {
-    padding: '0 8px 0 8px',
+    padding: theme.spacing(0, 1, 0, 1),
   },
   gridItem: {
-    padding: '0 8px 0px 8px',
+    padding: theme.spacing(0, 1, 0, 1),
   },
 }));
 
