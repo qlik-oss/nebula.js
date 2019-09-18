@@ -23,30 +23,26 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
   const [model] = useModel(
     {
       qInfo: {
-        qType: 'dummy',
+        qType: 'njsListbox',
       },
       qListObjectDef: {
         qStateName: stateName,
         qShowAlternatives: true,
-        qFrequencyMode: 'N',
-        qReverseSort: false,
         qInitialDataFetch: [
           {
             qTop: 0,
             qLeft: 0,
+            qWidth: 0,
             qHeight: 0,
-            qWidth: 1,
           },
         ],
         qDef: {
           qSortCriterias: [
             {
-              qSortByExpression: 0,
-              qSortByFrequency: 0,
-              qSortByGreyness: 0,
-              qSortByLoadOrder: 1,
-              qSortByNumeric: 1,
               qSortByState: 1,
+              qSortByAscii: 1,
+              qSortByNumeric: 1,
+              qSortByLoadOrder: 1,
             },
           ],
           qFieldDefs: [fieldName],
