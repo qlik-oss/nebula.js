@@ -25,6 +25,7 @@ const DEFAULT_CONFIG = {
 };
 
 const mergeConfigs = (base, c) => ({
+  direction: c.direction || base.direction,
   theme: c.theme || base.theme,
   load: c.load || base.load,
   locale: {
@@ -61,6 +62,7 @@ function nuked(configuration = {}) {
       app,
       translator: locale.translator(),
       theme: currentConfig.theme,
+      direction: currentConfig.direction,
     });
 
     const context = {
@@ -94,6 +96,9 @@ function nuked(configuration = {}) {
       theme(t) {
         root.theme(t);
         return api;
+      },
+      direction(d) {
+        root.direction(d);
       },
       selections: () => {
         if (!selectionsApi) {
