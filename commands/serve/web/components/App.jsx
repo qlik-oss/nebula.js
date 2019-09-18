@@ -9,13 +9,14 @@ import React, {
 import nucleus from '@nebula.js/nucleus';
 import snDefinition from 'snDefinition'; // eslint-disable-line
 
+import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
+
 import {
   createTheme,
   ThemeProvider,
 } from '@nebula.js/ui/theme';
 
 import {
-  ChevronLeft,
   WbSunny,
   Brightness3,
 } from '@nebula.js/ui/icons';
@@ -26,7 +27,8 @@ import {
   Button,
   Divider,
   Switch,
-  FormControlLabel,
+  IconButton,
+  Typography,
 } from '@nebula.js/ui/components';
 
 import { observe } from '@nebula.js/nucleus/src/object/observer';
@@ -36,6 +38,21 @@ import Stage from './Stage';
 
 import AppContext from '../contexts/AppContext';
 import NebulaContext from '../contexts/NebulaContext';
+
+const rtlShape = {
+  size: 'large',
+  viewBox: '0 0 20 20',
+  d: 'M9 10v5h2V4h2v11h2V4h2V2H9C6.79 2 5 3.79 5 6s1.79 4 4 4zm12 8l-4-4v3H5v2h12v3l4-4z',
+};
+const ltrShape = {
+  size: 'large',
+  viewBox: '0 0 20 20',
+  d: 'M10 10v5h2V4h2v11h2V4h2V2h-8C7.79 2 6 3.79 6 6s1.79 4 4 4zm-2 7v-3l-4 4 4 4v-3h12v-2H8z',
+};
+const directionShape = {
+  ltr: ltrShape,
+  rtl: rtlShape,
+};
 
 const storage = (() => {
   const stored = window.localStorage.getItem('nebula-dev');
@@ -70,6 +87,7 @@ export default function App({
   const [sn, setSupernova] = useState(null);
   const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
   const [darkMode, setDarkMode] = useState(storage.get('darkMode') === true);
+  const [direction, setDirection] = useState('ltr');
   const currentSelectionsRef = useRef(null);
   const uid = useRef();
 
@@ -150,6 +168,19 @@ export default function App({
     setDarkMode(e.target.checked);
   };
 
+  const toggleDirection = () => {
+    setDirection((dir) => {
+      let nextDir;
+      if (dir === 'ltr') {
+        nextDir = 'rtl';
+      } else {
+        nextDir = 'ltr';
+      }
+      document.body.setAttribute('dir', nextDir);
+      return nextDir;
+    });
+  };
+
   return (
     <AppContext.Provider value={app}>
       <ThemeProvider theme={theme}>
@@ -160,28 +191,30 @@ export default function App({
                 <Grid container>
                   <Grid item>
                     <Button variant="outlined" href={window.location.origin}>
-                      <ChevronLeft style={{ marginLeft: -theme.spacing(1 * 1.5) }} />
-                      Hub
+                      {/* <IconButton style={{ padding: '0px' }}>
+                        <ChevronLeft style={{ verticalAlign: 'middle' }} />
+                      </IconButton> */}
+                      Go to Hub
                     </Button>
                   </Grid>
                   <Grid item xs />
                   <Grid item>
-                    <FormControlLabel
-                      control={
+                    <Grid container>
+                      <Grid item>
+                        <Typography component="span">Cache</Typography>
                         <Switch checked={isReadCacheEnabled} onChange={handleCacheChange} value="isReadFromCacheEnabled" />
-                      }
-                      label="Cache"
-                    />
-                    <FormControlLabel
-                      label=""
-                      control={(
-                        <>
-                          <WbSunny fontSize="small" style={{ color: theme.palette.text.secondary, marginLeft: theme.spacing(2) }} />
-                          <Switch checked={darkMode} onChange={handleThemeChange} value="darkMode" />
-                          <Brightness3 fontSize="small" style={{ color: theme.palette.text.secondary }} />
-                        </>
-                      )}
-                    />
+                      </Grid>
+                      <Grid item>
+                        <WbSunny fontSize="small" style={{ color: theme.palette.text.secondary, marginLeft: theme.spacing(2), verticalAlign: 'middle' }} />
+                        <Switch checked={darkMode} onChange={handleThemeChange} value="darkMode" />
+                        <Brightness3 fontSize="small" style={{ color: theme.palette.text.secondary, verticalAlign: 'middle' }} />
+                      </Grid>
+                      <Grid item>
+                        <IconButton title="Toggle right-to-left/left-to-right" onClick={toggleDirection}>
+                          {SvgIcon(directionShape[direction])}
+                        </IconButton>
+                      </Grid>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Toolbar>
