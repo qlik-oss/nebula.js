@@ -1,3 +1,4 @@
+import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
 import IconButton from '@material-ui/core/IconButton';
@@ -29,14 +30,16 @@ import MenuList from '@material-ui/core/MenuList';
 import Select from '@material-ui/core/Select';
 
 import FormGroup from '@material-ui/core/FormGroup';
+import FormControl from '@material-ui/core/FormControl';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 
 import TextField from '@material-ui/core/TextField';
-
+import AppBar from '@material-ui/core/AppBar';
 import { makeStyles } from '@material-ui/styles';
 
 export {
+  Box,
   Button,
   ButtonBase,
   IconButton,
@@ -62,6 +65,7 @@ export {
   ListItemText,
   ListItemSecondaryAction,
   FormGroup,
+  FormControl,
   FormControlLabel,
   Switch,
   TextField,
@@ -70,4 +74,5 @@ export {
   Select,
   makeStyles,
   MenuList,
+  AppBar,
 };
