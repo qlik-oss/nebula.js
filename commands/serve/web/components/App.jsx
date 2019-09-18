@@ -38,6 +38,7 @@ import Stage from './Stage';
 
 import AppContext from '../contexts/AppContext';
 import NebulaContext from '../contexts/NebulaContext';
+import DirectionContext from '../contexts/DirectionContext';
 
 const rtlShape = {
   size: 'large',
@@ -99,6 +100,7 @@ export default function App({
     const n = nucleus(app, {
       load: (type, config) => config.Promise.resolve(window.snDefinition || snDefinition),
       theme: themeName,
+      direction,
     });
     return n;
   }, [app]);
@@ -177,6 +179,7 @@ export default function App({
         nextDir = 'ltr';
       }
       document.body.setAttribute('dir', nextDir);
+      nebbie.direction(nextDir);
       return nextDir;
     });
   };
@@ -184,58 +187,60 @@ export default function App({
   return (
     <AppContext.Provider value={app}>
       <ThemeProvider theme={theme}>
-        <NebulaContext.Provider value={nebbie}>
-          <Grid container wrap="nowrap" direction="column" style={{ background: theme.palette.background.darkest }}>
-            <Grid item>
-              <Toolbar variant="dense" style={{ background: theme.palette.background.paper }}>
-                <Grid container>
-                  <Grid item>
-                    <Button variant="outlined" href={window.location.origin}>
-                      {/* <IconButton style={{ padding: '0px' }}>
+        <DirectionContext.Provider value={direction}>
+          <NebulaContext.Provider value={nebbie}>
+            <Grid container wrap="nowrap" direction="column" style={{ background: theme.palette.background.darkest }}>
+              <Grid item>
+                <Toolbar variant="dense" style={{ background: theme.palette.background.paper }}>
+                  <Grid container>
+                    <Grid item>
+                      <Button variant="outlined" href={window.location.origin}>
+                        {/* <IconButton style={{ padding: '0px' }}>
                         <ChevronLeft style={{ verticalAlign: 'middle' }} />
                       </IconButton> */}
                       Go to Hub
-                    </Button>
-                  </Grid>
-                  <Grid item xs />
-                  <Grid item>
-                    <Grid container>
-                      <Grid item>
-                        <Typography component="span">Cache</Typography>
-                        <Switch checked={isReadCacheEnabled} onChange={handleCacheChange} value="isReadFromCacheEnabled" />
-                      </Grid>
-                      <Grid item>
-                        <WbSunny fontSize="small" style={{ color: theme.palette.text.secondary, marginLeft: theme.spacing(2), verticalAlign: 'middle' }} />
-                        <Switch checked={darkMode} onChange={handleThemeChange} value="darkMode" />
-                        <Brightness3 fontSize="small" style={{ color: theme.palette.text.secondary, verticalAlign: 'middle' }} />
-                      </Grid>
-                      <Grid item>
-                        <IconButton title="Toggle right-to-left/left-to-right" onClick={toggleDirection}>
-                          {SvgIcon(directionShape[direction])}
-                        </IconButton>
+                      </Button>
+                    </Grid>
+                    <Grid item xs />
+                    <Grid item>
+                      <Grid container>
+                        <Grid item>
+                          <Typography component="span">Cache</Typography>
+                          <Switch checked={isReadCacheEnabled} onChange={handleCacheChange} value="isReadFromCacheEnabled" />
+                        </Grid>
+                        <Grid item>
+                          <WbSunny fontSize="small" style={{ color: theme.palette.text.secondary, marginLeft: theme.spacing(2), verticalAlign: 'middle' }} />
+                          <Switch checked={darkMode} onChange={handleThemeChange} value="darkMode" />
+                          <Brightness3 fontSize="small" style={{ color: theme.palette.text.secondary, verticalAlign: 'middle' }} />
+                        </Grid>
+                        <Grid item>
+                          <IconButton title="Toggle right-to-left/left-to-right" onClick={toggleDirection}>
+                            {SvgIcon(directionShape[direction])}
+                          </IconButton>
+                        </Grid>
                       </Grid>
                     </Grid>
                   </Grid>
-                </Grid>
-              </Toolbar>
-              <Divider />
-            </Grid>
-            <Grid item>
-              <div ref={currentSelectionsRef} style={{ flex: '0 0 auto' }} />
-              <Divider />
-            </Grid>
-            <Grid item xs>
-              <Grid container wrap="nowrap" style={{ height: '100%' }}>
-                <Grid item xs style={{ overflow: 'hidden' }}>
-                  <Stage viz={viz} />
-                </Grid>
-                <Grid item style={{ background: theme.palette.background.paper }}>
-                  <Properties sn={sn} viz={viz} />
+                </Toolbar>
+                <Divider />
+              </Grid>
+              <Grid item>
+                <div ref={currentSelectionsRef} style={{ flex: '0 0 auto' }} />
+                <Divider />
+              </Grid>
+              <Grid item xs>
+                <Grid container wrap="nowrap" style={{ height: '100%' }}>
+                  <Grid item xs style={{ overflow: 'hidden' }}>
+                    <Stage viz={viz} />
+                  </Grid>
+                  <Grid item style={{ background: theme.palette.background.paper }}>
+                    <Properties sn={sn} viz={viz} />
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </NebulaContext.Provider>
+          </NebulaContext.Provider>
+        </DirectionContext.Provider>
       </ThemeProvider>
     </AppContext.Provider>
   );

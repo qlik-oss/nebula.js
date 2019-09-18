@@ -4,12 +4,13 @@ import ReactDOM from 'react-dom';
 import { createTheme, ThemeProvider, StylesProvider, createGenerateClassName } from '@nebula.js/ui/theme';
 
 import LocaleContext from '../contexts/LocaleContext';
+import DirectionContext from '../contexts/DirectionContext';
 
 const THEME_PREFIX = (process.env.NEBULA_VERSION || '').replace(/[.-]/g, '_');
 
 let counter = 0;
 
-function NebulaApp({ children, themeName, translator }) {
+function NebulaApp({ children, themeName, translator, direction }) {
   const { theme, generator } = useMemo(
     () => ({
       theme: createTheme(themeName),
@@ -26,14 +27,16 @@ function NebulaApp({ children, themeName, translator }) {
     <StylesProvider generateClassName={generator}>
       <ThemeProvider theme={theme}>
         <LocaleContext.Provider value={translator}>
-          <>{children}</>
+          <DirectionContext.Provider value={direction}>
+            <>{children}</>
+          </DirectionContext.Provider>
         </LocaleContext.Provider>
       </ThemeProvider>
     </StylesProvider>
   );
 }
 
-export default function boot({ app, theme = 'light', translator }) {
+export default function boot({ app, theme = 'light', translator, direction }) {
   const element = document.createElement('div');
   element.style.display = 'none';
   element.setAttribute('data-nebulajs-version', process.env.NEBULA_VERSION || '');
@@ -41,10 +44,11 @@ export default function boot({ app, theme = 'light', translator }) {
   document.body.appendChild(element);
   const components = [];
   let themeName = theme;
+  let dir = direction;
 
   const update = () => {
     ReactDOM.render(
-      <NebulaApp themeName={themeName} app={app} translator={translator}>
+      <NebulaApp themeName={themeName} app={app} translator={translator} direction={dir}>
         {components}
       </NebulaApp>,
       element
@@ -71,6 +75,10 @@ export default function boot({ app, theme = 'light', translator }) {
     },
     theme(name) {
       themeName = name;
+      update();
+    },
+    direction(d) {
+      dir = d;
       update();
     },
   };
