@@ -19,6 +19,8 @@ const useStyles = makeStyles(theme => ({
       fontSize: '12px',
       lineHeight: '16px',
     },
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   icon: {
     padding: theme.spacing(1),
