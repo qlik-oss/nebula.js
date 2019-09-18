@@ -14,9 +14,13 @@ const useStyles = makeStyles(theme => ({
   },
   cell: {
     padding: '8px',
-    whiteSpace: 'nowrap',
-    fontSize: '12px',
-    lineHeight: '16px',
+    '& span': {
+      whiteSpace: 'nowrap',
+      fontSize: '12px',
+      lineHeight: '16px',
+    },
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
   },
   icon: {
     padding: theme.spacing(1),
@@ -33,6 +37,9 @@ const useStyles = makeStyles(theme => ({
   },
   X: {
     background: theme.palette.background.darker,
+  },
+  highlighted: {
+    backgroundColor: '#FFC72A',
   },
 }));
 
@@ -66,6 +73,33 @@ export default function Row({ index, style, data }) {
       classArr.push(classes.X);
     }
   }
+
+  // Handle search highlights
+  const ranges =
+    (cell && cell.qHighlightRanges && cell.qHighlightRanges.qRanges.sort((a, b) => a.qCharPos - b.qCharPos)) || [];
+
+  const labels = ranges.reduce((acc, curr, ix) => {
+    // First non highlighted segment
+    if (curr.qCharPos > 0 && ix === 0) {
+      acc.push([label.slice(0, curr.qCharPos)]);
+    }
+
+    // Previous non highlighted segment
+    const prev = ranges[ix - 1];
+    if (prev) {
+      acc.push([label.slice(prev.qCharPos + prev.qCharPos + 1, curr.qCharPos)]);
+    }
+
+    // Highlighted segment
+    acc.push([label.slice(curr.qCharPos, curr.qCharPos + curr.qCharCount), classes.highlighted]);
+
+    // Last non highlighted segment
+    if (ix === ranges.length - 1 && curr.qCharPos + curr.qCharCount < label.length) {
+      acc.push([label.slice(curr.qCharPos + curr.qCharCount)]);
+    }
+    return acc;
+  }, []);
+
   return (
     <Grid
       container
@@ -77,10 +111,15 @@ export default function Row({ index, style, data }) {
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
     >
-      <Grid item style={{ minWidth: 0, flexGrow: 1 }}>
-        <Typography className={classes.cell} noWrap>
-          {cell ? `${label}` : ''}
-        </Typography>
+      <Grid item style={{ minWidth: 0, flexGrow: 1 }} className={classes.cell}>
+        {ranges.length === 0 ? (
+          <Typography component="span" noWrap>{`${label}`}</Typography>
+        ) : (
+          labels.map(([l, highlighted], ix) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Typography component="span" key={ix} className={highlighted} noWrap>{`${l}`}</Typography>
+          ))
+        )}
       </Grid>
       <Grid item className={classes.icon}>
         {locked && <Lock size="small" />}

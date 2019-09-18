@@ -17,6 +17,8 @@ import SelectionToolbarWithDefault, { SelectionToolbar } from '../SelectionToolb
 
 import LocaleContext from '../../contexts/LocaleContext';
 
+import ListBoxSearch from './ListBoxSearch';
+
 export default function ListBoxPopover({ alignTo, show, close, app, fieldName, stateName = '$' }) {
   const [model] = useModel(
     {
@@ -84,8 +86,9 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
   if (open) {
     sel.goModal('/qListObjectDef');
   }
-  const popoverClose = () => {
-    sel.noModal(true);
+  const popoverClose = (e, reason) => {
+    const accept = reason !== 'escapeKeyDown';
+    sel.noModal(accept);
     close();
   };
 
@@ -124,7 +127,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
     >
       <Grid container direction="column" spacing={0}>
         <Grid item>
-          <Grid container direction="row">
+          <Grid container direction="row" justify="flex-end">
             <Grid item>
               {isLocked ? (
                 <IconButton onClick={unlock}>
@@ -143,6 +146,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
         </Grid>
         <Grid item xs>
           <div ref={moreAlignTo} />
+          <ListBoxSearch model={model} />
           <ListBox model={model} selections={sel} />
           {showSelectionsMenu && (
             <Popover

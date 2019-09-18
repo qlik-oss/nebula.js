@@ -4,6 +4,9 @@ export default {
   'Common.English': 'English',
   'CurrentSelections.All': 'ALL',
   'CurrentSelections.Of': '{0} of {1}',
+  'Listbox.Search': 'Search in listbox',
+  'Navigate.Forward': 'Step forward',
+  'Navigate.Back': 'Step back',
   'Selection.ClearAll': 'Clear all selections',
   'Selection.Confirm': 'Confirm selection',
   'Selection.Cancel': 'Cancel selection',
@@ -13,6 +16,4 @@ export default {
   'Selection.SelectExcluded': 'Select excluded',
   'Selection.SelectPossible': 'Select possible',
   'Selection.Menu': 'Selection menu',
-  'Navigate.Back': 'Step back',
-  'Navigate.Forward': 'Step forward',
 };
