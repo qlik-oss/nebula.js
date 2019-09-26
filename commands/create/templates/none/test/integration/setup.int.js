@@ -2,7 +2,8 @@ const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
 
 let s;
 
-before(async () => {
+before(async function setup() {
+  this.timeout(15000);
   s = await serve({
     open: false,
   });

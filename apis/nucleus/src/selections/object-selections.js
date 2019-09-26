@@ -55,16 +55,18 @@ export default function(model, app) {
       return appAPI().switchModal(null, null, false, false);
     },
     select(s) {
-      this.begin([s.params[0]]);
+      const b = this.begin([s.params[0]]);
       if (!appAPI().isModal()) {
         return;
       }
       hasSelected = true;
-      model[s.method](...s.params).then(qSuccess => {
-        if (!qSuccess) {
-          this.clear();
-        }
-      });
+      b.then(() =>
+        model[s.method](...s.params).then(qSuccess => {
+          if (!qSuccess) {
+            this.clear();
+          }
+        })
+      );
     },
     canClear() {
       return hasSelected && layout.qSelectionInfo.qMadeSelections;
