@@ -1,56 +1,63 @@
 import React, {
   useEffect,
-  useRef,
-  useCallback,
   useState,
+  useContext,
 } from 'react';
+import { observe } from '@nebula.js/nucleus/src/object/observer';
 
-import {
-  Button,
-  Grid,
-  Card,
-  Toolbar,
-  Divider,
-} from '@nebula.js/ui/components';
-
-import PropsDialog from './PropertiesDialog';
+import Cell from './Cell';
+import NebulaContext from '../contexts/NebulaContext';
 
 export default function Stage({
-  viz,
+  info,
+  storage,
+  uid,
+  setViz,
 }) {
-  const c = useRef(null);
-  const model = viz && viz.model;
-
-  const [dialogOpen, setDialogOpen] = useState(false);
+  const nebbie = useContext(NebulaContext);
+  const [model, setModel] = useState(null);
 
   useEffect(() => {
-    viz && viz.mount(c.current);
-  }, [viz]);
+    let propertyObserver = () => {};
+    let m;
+    if (!uid) {
+      return undefined;
+    }
+    nebbie.create({
+      type: info.supernova.name,
+    }, {
+      context: {
+        permissions: ['passive', 'interact', 'select', 'fetch'],
+      },
+      properties: {
+        ...(storage.get('readFromCache') !== false ? storage.props(info.supernova.name) : {}),
+        qInfo: {
+          qId: uid,
+          qType: info.supernova.name,
+        },
+      },
+    }).then((v) => {
+      setModel(v.model);
+      setViz(v);
+      m = v.model;
+      propertyObserver = observe(v.model, (p) => {
+        storage.props(info.supernova.name, p);
+      }, 'properties');
+    });
 
-  const closeDialog = useCallback(() => { setDialogOpen(false); }, []);
+    return () => {
+      m && m.emit('close');
+      propertyObserver();
+    };
+  }, [uid]);
+
+  if (!model) {
+    return null;
+  }
 
   return (
     <div style={{ padding: '12px', height: '100%', boxSizing: 'border-box' }}>
-      <Card style={{ height: '100%' }}>
-        <Grid container direction="column" style={{ height: '100%' }}>
-          <Grid item>
-            <Toolbar>
-              <Button
-                variant="outlined"
-                disabled={!model}
-                onClick={() => setDialogOpen(true)}
-              >
-                Props
-              </Button>
-              <PropsDialog model={model} show={dialogOpen} close={closeDialog} />
-            </Toolbar>
-            <Divider />
-          </Grid>
-          <Grid item xs>
-            <div ref={c} style={{ position: 'relative', height: '100%' }} />
-          </Grid>
-        </Grid>
-      </Card>
+      <Cell id={model.id} />
     </div>
   );
 }

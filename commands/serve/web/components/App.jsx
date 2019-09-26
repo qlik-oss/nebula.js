@@ -31,10 +31,9 @@ import {
   Typography,
 } from '@nebula.js/ui/components';
 
-import { observe } from '@nebula.js/nucleus/src/object/observer';
-
 import Properties from './Properties';
 import Stage from './Stage';
+import Collection from './Collection';
 
 import AppContext from '../contexts/AppContext';
 import NebulaContext from '../contexts/NebulaContext';
@@ -55,9 +54,23 @@ const directionShape = {
   rtl: rtlShape,
 };
 
-const storage = (() => {
+const gridShape = {
+  on: {
+    size: 'large',
+    viewBox: '0 0 24 24',
+    d: 'M20 2H4c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM8 20H4v-4h4v4zm0-6H4v-4h4v4zm0-6H4V4h4v4zm6 12h-4v-4h4v4zm0-6h-4v-4h4v4zm0-6h-4V4h4v4zm6 12h-4v-4h4v4zm0-6h-4v-4h4v4zm0-6h-4V4h4v4z',
+  },
+  off: {
+    size: 'large',
+    viewBox: '0 0 24 24',
+    d: 'M8 4v1.45l2 2V4h4v4h-3.45l2 2H14v1.45l2 2V10h4v4h-3.45l2 2H20v1.45l2 2V4c0-1.1-.9-2-2-2H4.55l2 2H8zm8 0h4v4h-4V4zM1.27 1.27L0 2.55l2 2V20c0 1.1.9 2 2 2h15.46l2 2 1.27-1.27L1.27 1.27zM10 12.55L11.45 14H10v-1.45zm-6-6L5.45 8H4V6.55zM8 20H4v-4h4v4zm0-6H4v-4h3.45l.55.55V14zm6 6h-4v-4h3.45l.55.54V20zm2 0v-1.46L17.46 20H16z',
+  },
+};
+
+const storageFn = (app) => {
   const stored = window.localStorage.getItem('nebula-dev');
   const parsed = stored ? JSON.parse(stored) : {};
+  const appid = app.id;
 
   const s = {
     save(name, value) {
@@ -69,28 +82,31 @@ const storage = (() => {
     },
     props(name, v) {
       if (v) {
-        s.save(`props:${name}`, JSON.stringify(v)); // TODO add app id to key to avoid using fields that don't exist
+        s.save(`props:${appid}:${name}`, JSON.stringify(v));
         return undefined;
       }
-      const p = s.get(`props:${name}`);
+      const p = s.get(`props:${appid}:${name}`);
       return p ? JSON.parse(p) : {};
     },
   };
 
   return s;
-})();
+};
 
 export default function App({
   app,
   info,
 }) {
+  const storage = useMemo(() => storageFn(app), [app]);
   const [viz, setViz] = useState(null);
   const [sn, setSupernova] = useState(null);
   const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
   const [darkMode, setDarkMode] = useState(storage.get('darkMode') === true);
+  const [objectListMode, setObjectListMode] = useState(storage.get('objectListMode') === true);
   const [direction, setDirection] = useState('ltr');
   const currentSelectionsRef = useRef(null);
   const uid = useRef();
+  const [currentId, setCurrentId] = useState();
 
   const themeName = darkMode ? 'dark' : 'light';
 
@@ -102,48 +118,29 @@ export default function App({
       theme: themeName,
       direction,
     });
+    n.types.register(info.supernova);
     return n;
   }, [app]);
-
 
   useLayoutEffect(() => {
     nebbie.theme(themeName);
   }, [nebbie, theme]);
 
   useEffect(() => {
-    let propertyObserver = () => {};
-
     const create = () => {
       uid.current = String(Date.now());
-      nebbie.create({
-        type: info.supernova.name,
-      }, {
-        context: {
-          permissions: ['passive', 'interact', 'select', 'fetch'],
-        },
-        properties: {
-          ...(storage.get('readFromCache') !== false ? storage.props(info.supernova.name) : {}),
-          qInfo: {
-            qId: uid.current,
-            qType: info.supernova.name,
-          },
-        },
-      }).then((v) => {
-        setViz(v);
-        propertyObserver = observe(v.model, (p) => {
-          storage.props(info.supernova.name, p);
-        }, 'properties');
-      });
+      setCurrentId(uid.current);
     };
 
     nebbie.types.get({
       name: info.supernova.name,
     }).supernova().then(setSupernova);
+
     nebbie.selections().mount(currentSelectionsRef.current);
     if (window.hotReload) {
       window.hotReload(() => {
-        propertyObserver();
         nebbie.types.clearFromCache(info.supernova.name);
+        nebbie.types.register(info.supernova);
         app.destroySessionObject(uid.current).then(create);
       });
     }
@@ -155,7 +152,6 @@ export default function App({
     };
     window.addEventListener('beforeunload', unload);
     return () => {
-      propertyObserver();
       window.removeEventListener('beforeunload', unload);
     };
   }, []);
@@ -184,6 +180,11 @@ export default function App({
     });
   };
 
+  const toggleObjectListMode = () => {
+    storage.save('objectListMode', !objectListMode);
+    setObjectListMode(!objectListMode);
+  };
+
   return (
     <AppContext.Provider value={app}>
       <ThemeProvider theme={theme}>
@@ -204,6 +205,11 @@ export default function App({
                     <Grid item xs />
                     <Grid item>
                       <Grid container>
+                        <Grid item>
+                          <IconButton title="Toggle get/create objects" onClick={toggleObjectListMode}>
+                            {SvgIcon(gridShape[objectListMode ? 'off' : 'on'])}
+                          </IconButton>
+                        </Grid>
                         <Grid item>
                           <Typography component="span">Cache</Typography>
                           <Switch checked={isReadCacheEnabled} onChange={handleCacheChange} value="isReadFromCacheEnabled" />
@@ -231,10 +237,10 @@ export default function App({
               <Grid item xs>
                 <Grid container wrap="nowrap" style={{ height: '100%' }}>
                   <Grid item xs style={{ overflow: 'hidden' }}>
-                    <Stage viz={viz} />
+                    {objectListMode ? <Collection cache={currentId} types={[info.supernova.name]} /> : <Stage info={info} storage={storage} uid={currentId} setViz={setViz} /> }
                   </Grid>
                   <Grid item style={{ background: theme.palette.background.paper }}>
-                    <Properties sn={sn} viz={viz} />
+                    {!objectListMode && <Properties sn={sn} viz={viz} />}
                   </Grid>
                 </Grid>
               </Grid>
