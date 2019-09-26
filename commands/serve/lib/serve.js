@@ -51,7 +51,7 @@ module.exports = async argv => {
     host,
     port,
     enigmaConfig,
-    snName,
+    snName: argv.type || snName,
     snPath,
     dev: process.env.MONO === 'true',
     open: argv.open !== false,

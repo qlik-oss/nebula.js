@@ -9,6 +9,10 @@ module.exports = {
         type: 'string',
         description: 'File entrypoint',
       })
+      .option('type', {
+        type: 'string',
+        description: 'Generic object type',
+      })
       .option('build', {
         type: 'boolean',
         default: true,

@@ -18,14 +18,16 @@ nebula serve -h
 Dev server
 
 Options:
-  --version      Show version number                                   [boolean]
-  --entry        File entrypoint                                        [string]
+  --version          Show version number                               [boolean]
+  --entry            File entrypoint                                    [string]
+  --type             Generic object type                                [string]
   --build                                              [boolean] [default: true]
   --host                                                                [string]
   --port                                                                [number]
   --enigma.host                                                         [string]
   --enigma.port                                                  [default: 9076]
-  -h, --help     Show help                                             [boolean]
+  --ACCEPT_EULA, -a                                   [boolean] [default: false]
+  -h, --help         Show help                                         [boolean]
 ```
 
 #### Example
