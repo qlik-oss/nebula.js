@@ -13,7 +13,6 @@ export default function Chart({
 }) {
   const nebbie = useContext(NebulaContext);
   const el = useRef();
-  // const [viz, setViz] = useState(null);
   useEffect(() => {
     const n = nebbie.get({
       id,
@@ -23,7 +22,6 @@ export default function Chart({
       },
       element: el.current,
     });
-    // n.then(setViz);
     return () => {
       n.then((v) => {
         v.close();
