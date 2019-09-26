@@ -15,11 +15,13 @@ const create = app => {
   let modalObject;
   // let mounted;
   let lyt;
+  let currentSelectionsModel;
+  let prom;
   const api = {
     model: app,
     switchModal(object, path, accept = true) {
       if (object === modalObject) {
-        return Promise.resolve();
+        return prom || Promise.resolve();
       }
       if (modalObject) {
         modalObject.endSelections(accept);
@@ -30,17 +32,22 @@ const create = app => {
         // TODO check model state
         modalObject = object;
         api.emit('modal', modalObject._selections);
-        return modalObject.beginSelections(Array.isArray(path) ? path : [path]).catch(err => {
-          if (err.code === 6003) {
-            // If another object already is in modal -> abort and take over
-            return api.abortModal().then(() => object.beginSelections(Array.isArray(path) ? path : [path]));
-          }
-          throw err;
+        prom = currentSelectionsModel.then(() => {
+          // do not return the call to beginSelection to avoid waiting for it's response
+          modalObject.beginSelections(Array.isArray(path) ? path : [path]).catch(err => {
+            if (err.code === 6003) {
+              // If another object already is in modal -> abort and take over
+              return api.abortModal().then(() => object.beginSelections(Array.isArray(path) ? path : [path]));
+            }
+            throw err;
+          });
         });
+        return prom;
       }
       modalObject = null;
       api.emit('modal-unset');
-      return Promise.resolve();
+      prom = Promise.resolve();
+      return prom;
     },
     isModal(objectModel) {
       // TODO check model state
@@ -83,7 +90,7 @@ const create = app => {
 
   eventmixin(api);
 
-  modelCache(
+  currentSelectionsModel = modelCache(
     {
       qInfo: {
         qType: 'current-selections',
@@ -94,47 +101,51 @@ const create = app => {
       alternateStates: [],
     },
     app
-  ).then(model => {
-    observe(app, appLayout => {
-      const states = [...appLayout.qStateNames].map(s => ({
-        stateName: s, // need this as reference in selection toolbar since qSelectionObject.qStateName is not in the layout
-        qSelectionObjectDef: {
-          qStateName: s,
-        },
-      }));
-      const existingStates = (lyt ? lyt.alternateStates.map(s => s.stateName) : []).join('::');
-      const newStates = appLayout.qStateNames.map(s => s).join('::');
-      if (existingStates !== newStates) {
-        model.applyPatches(
-          [
-            {
-              qOp: 'replace',
-              qPath: '/alternateStates',
-              qValue: JSON.stringify(states),
-            },
-          ],
-          true
-        );
-      }
-    });
-
-    observe(model, layout => {
-      canGoBack = false;
-      canGoForward = false;
-      canClear = false;
-      [layout, ...layout.alternateStates].forEach(state => {
-        canGoBack = canGoBack || state.qSelectionObject.qBackCount > 0;
-        canGoForward = canGoForward || state.qSelectionObject.qForwardCount > 0;
-        canClear = canClear || state.qSelectionObject.qSelections.filter(s => s.qLocked !== true).length > 0;
+  )
+    .then(model => {
+      observe(app, appLayout => {
+        const states = [...appLayout.qStateNames].map(s => ({
+          stateName: s, // need this as reference in selection toolbar since qSelectionObject.qStateName is not in the layout
+          qSelectionObjectDef: {
+            qStateName: s,
+          },
+        }));
+        const existingStates = (lyt ? lyt.alternateStates.map(s => s.stateName) : []).join('::');
+        const newStates = appLayout.qStateNames.map(s => s).join('::');
+        if (existingStates !== newStates) {
+          model.applyPatches(
+            [
+              {
+                qOp: 'replace',
+                qPath: '/alternateStates',
+                qValue: JSON.stringify(states),
+              },
+            ],
+            true
+          );
+        }
       });
-      lyt = layout;
-      api.emit('changed');
+
+      observe(model, layout => {
+        canGoBack = false;
+        canGoForward = false;
+        canClear = false;
+        [layout, ...layout.alternateStates].forEach(state => {
+          canGoBack = canGoBack || state.qSelectionObject.qBackCount > 0;
+          canGoForward = canGoForward || state.qSelectionObject.qForwardCount > 0;
+          canClear = canClear || state.qSelectionObject.qSelections.filter(s => s.qLocked !== true).length > 0;
+        });
+        lyt = layout;
+        api.emit('changed');
+      });
+      model.once('closed', () => {
+        app._selections = null; // eslint-disable-line no-param-reassign
+        cache[app.id] = null;
+      });
+    })
+    .catch(() => {
+      // do something
     });
-    model.once('closed', () => {
-      app._selections = null; // eslint-disable-line no-param-reassign
-      cache[app.id] = null;
-    });
-  });
 
   return api;
 };

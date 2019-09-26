@@ -1,19 +1,6 @@
 import vizualizationAPI from '../viz';
 import ObjectAPI from './object-api';
-
-export function observe(model, objectAPI) {
-  const onChanged = () =>
-    model.getLayout().then(layout => {
-      objectAPI.setLayout(layout);
-    });
-  model.on('changed', onChanged);
-  model.once('closed', () => {
-    model.removeListener('changed', onChanged);
-    objectAPI.close();
-  });
-
-  onChanged();
-}
+import { observe } from './observer';
 
 export default function initiate(getCfg, optional, context) {
   return context.app.getObject(getCfg.id).then(model => {
@@ -24,7 +11,7 @@ export default function initiate(getCfg, optional, context) {
 
     const objectAPI = new ObjectAPI(model, context, viz);
 
-    observe(model, objectAPI);
+    observe(model, layout => objectAPI.setLayout(layout)); // TODO - call unobserve when viz is destroyed
 
     const api = objectAPI.getPublicAPI();
 

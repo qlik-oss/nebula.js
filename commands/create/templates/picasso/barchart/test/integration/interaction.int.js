@@ -9,7 +9,11 @@ describe('interaction', () => {
 
     await page.click('rect[data-label="K"]');
     await page.click('rect[data-label="S"]');
+
+    await page.waitForSelector('button[title="Confirm selection"]');
     await page.click('button[title="Confirm selection"]');
+
+    await page.waitFor(100); // wait a bit to make sure websocket traffic has gone through
 
     const rects = await page.$$eval('rect[data-label]', sel => sel.map(r => r.getAttribute('data-label')));
     expect(rects).to.eql(['K', 'S']);
