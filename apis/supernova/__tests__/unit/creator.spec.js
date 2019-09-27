@@ -55,4 +55,51 @@ describe('creator', () => {
     });
     expect(c.custom).to.be.undefined;
   });
+
+  it('should call onChange on setProperties and applyPatches', async () => {
+    const generator = {
+      component: {},
+      definition: {},
+      qae: {
+        properties: {
+          onChange: sinon.spy(),
+        },
+      },
+    };
+    const env = {};
+    const properties = { dummyPatched: false };
+    const params = {
+      model: {
+        setProperties: () => Promise.resolve(),
+        applyPatches: () => Promise.resolve(),
+        getEffectiveProperties: () => Promise.resolve(properties),
+      },
+      app: {},
+    };
+
+    create(generator, params, env).component;
+
+    await params.model.setProperties(properties);
+
+    expect(
+      generator.qae.properties.onChange.thisValues[0],
+      'incorrect params in this context after setProperties call'
+    ).to.eql({ model: params.model });
+
+    expect(
+      generator.qae.properties.onChange,
+      'incorrect input params after setProperties call'
+    ).to.have.been.calledWith(properties);
+
+    await params.model.applyPatches([{ qOp: 'replace', qValue: true, qPath: 'dummyPatched' }], true);
+
+    expect(
+      generator.qae.properties.onChange.thisValues[0],
+      'incorrect params in this context after applyPatches call'
+    ).to.eql({ model: params.model });
+
+    expect(generator.qae.properties.onChange, 'incorrect input params after applyPatches call').to.have.been.calledWith(
+      { dummyPatched: true }
+    );
+  });
 });
