@@ -234,12 +234,12 @@ export default function App({
                 <div ref={currentSelectionsRef} style={{ flex: '0 0 auto' }} />
                 <Divider />
               </Grid>
-              <Grid item xs>
+              <Grid item xs style={{ overflowX: 'hidden', overflowY: 'auto' }}>
                 <Grid container wrap="nowrap" style={{ height: '100%' }}>
-                  <Grid item xs style={{ overflow: 'hidden' }}>
+                  <Grid item xs>
                     {objectListMode ? <Collection cache={currentId} types={[info.supernova.name]} /> : <Stage info={info} storage={storage} uid={currentId} setViz={setViz} /> }
                   </Grid>
-                  <Grid item style={{ background: theme.palette.background.paper }}>
+                  <Grid item style={{ background: theme.palette.background.paper, overflowY: 'auto' }}>
                     {!objectListMode && <Properties sn={sn} viz={viz} />}
                   </Grid>
                 </Grid>

@@ -24,6 +24,7 @@ import Chart from './Chart';
 export default function ({
   id,
   onSelected,
+  minHeight,
 }) {
   const app = useContext(AppContext);
   const [model, setModel] = useState(null);
@@ -42,7 +43,7 @@ export default function ({
   const closeDialog = useCallback(() => { setDialogOpen(false); }, []);
 
   return (
-    <Card style={{ minHeight: 600, height: '100%' }}>
+    <Card style={{ minHeight, height: '100%' }}>
       <Grid container direction="column" style={{ height: '100%', position: 'relative' }}>
         <Grid item>
           <Toolbar variant="dense" disableGutters style={{ padding: '0 8px' }}>

@@ -38,7 +38,7 @@ export default function Collection({
     <Grid container spacing={2} style={{ padding: '12px' }}>
       {objects.map((c) => (
         <Grid item xs={12} md={6} lg={4} key={`${c.qInfo.qId}::${cache}`}>
-          <Cell id={c.qInfo.qId} onSelected={onSelectedCell} />
+          <Cell id={c.qInfo.qId} onSelected={onSelectedCell} minHeight={600} />
         </Grid>
       ))}
     </Grid>
