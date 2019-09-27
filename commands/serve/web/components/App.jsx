@@ -161,9 +161,9 @@ export default function App({
     setReadCacheEnabled(e.target.checked);
   };
 
-  const handleThemeChange = (e) => {
-    storage.save('darkMode', e.target.checked);
-    setDarkMode(e.target.checked);
+  const toggleDarkMode = () => {
+    storage.save('darkMode', !darkMode);
+    setDarkMode(!darkMode);
   };
 
   const toggleDirection = () => {
@@ -215,9 +215,9 @@ export default function App({
                           <Switch checked={isReadCacheEnabled} onChange={handleCacheChange} value="isReadFromCacheEnabled" />
                         </Grid>
                         <Grid item>
-                          <WbSunny fontSize="small" style={{ color: theme.palette.text.secondary, marginLeft: theme.spacing(2), verticalAlign: 'middle' }} />
-                          <Switch checked={darkMode} onChange={handleThemeChange} value="darkMode" />
-                          <Brightness3 fontSize="small" style={{ color: theme.palette.text.secondary, verticalAlign: 'middle' }} />
+                          <IconButton title="Toggle light/dark mode" onClick={toggleDarkMode}>
+                            {darkMode ? <WbSunny fontSize="small" /> : <Brightness3 fontSize="small" />}
+                          </IconButton>
                         </Grid>
                         <Grid item>
                           <IconButton title="Toggle right-to-left/left-to-right" onClick={toggleDirection}>
