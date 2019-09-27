@@ -15,7 +15,11 @@ serverInfo.then((info) => openApp(params.app).then((app) => {
   let obj;
   let objType;
 
-  const nebbie = nucleus(app, {
+  const nebbie = nucleus.configured({
+    types: [{
+      name: info.supernova.name,
+    }],
+  })(app, {
     load: (type, config) => {
       objType = type.name;
       return config.Promise.resolve(snDefinition);
