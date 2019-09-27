@@ -92,7 +92,7 @@ export default function create(generator, opts) {
     };
 
     opts.model.setProperties = function setProperties(...args) {
-      generator.qae.properties.onChange.call(null, ...args);
+      generator.qae.properties.onChange.call({ model: opts.model }, ...args);
       return opts.model.__snInterceptor.setProperties.call(this, ...args);
     };
 
@@ -104,7 +104,7 @@ export default function create(generator, opts) {
         const patches = qPatches.map(p => ({ op: p.qOp, value: JSON.parse(p.qValue), path: p.qPath }));
         JSONPatch.apply(currentProperties, patches);
 
-        generator.qae.properties.onChange.call({}, currentProperties);
+        generator.qae.properties.onChange.call({ model: opts.model }, currentProperties);
 
         // calculate new patches from after change
         const newPatches = JSONPatch.generate(original, currentProperties).map(p => ({
