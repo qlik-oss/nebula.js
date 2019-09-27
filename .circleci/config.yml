@@ -4,14 +4,13 @@ aliases:
   - &restore_yarn_cache
     name: Restore yarn cache
     keys:
-      - yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      - yarn-packages-{{ .Branch }}
+      - yarn-packages-{{ checksum "yarn.lock" }}
       - yarn-packages-
   - &save_yarn_cache
     name: Save yarn cache
     paths:
       - ~/.cache/yarn
-    key: yarn-packages-{{ .Branch }}-{{ checksum "yarn.lock" }}
+    key: yarn-packages-{{ checksum "yarn.lock" }}
   - &filter_master
     branches:
       only: master
@@ -36,6 +35,8 @@ jobs:
       - run:
           name: Install dependencies
           command: yarn install --frozen-lockfile
+
+      - save_cache: *save_yarn_cache
 
       - run:
           name: Build
@@ -77,5 +78,3 @@ jobs:
             npm i picasso.js picasso-plugin-q
             yarn run build
             APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-
-      - save_cache: *save_yarn_cache
