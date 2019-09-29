@@ -33,7 +33,7 @@
     "@nebula.js/supernova": "0.1.0-alpha.20",
     "chalk": "^2.4.2",
     "node-event-emitter": "^0.0.1",
-    "rollup": "^1.21.4",
+    "rollup": "^1.22.0",
     "rollup-plugin-babel": "^4.3.3",
     "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "^5.2.0",
