@@ -2,6 +2,20 @@ import vizualizationAPI from '../viz';
 import ObjectAPI from './object-api';
 import { observe } from './observer';
 
+/**
+ * @typedef {object} GetObjectConfig
+ * @property {string} id
+ */
+
+/**
+ * @typedef {object} VizConfig
+ * @property {HTMLElement=} element
+ * @property {object=} options
+ * @property {object=} context
+ * @property {Array<'passive'|'select'|'interact'|'fetch'>} [context.permissions]
+ * @property {object=} properties
+ */
+
 export default function initiate(getCfg, optional, context) {
   return context.app.getObject(getCfg.id).then(model => {
     const viz = vizualizationAPI({

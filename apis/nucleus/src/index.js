@@ -11,8 +11,15 @@ import get from './object/get-object';
 import { create as types } from './sn/types';
 import logger from './utils/logger';
 
+/**
+ * @typedef {object}
+ * @alias Configuration
+ */
 const DEFAULT_CONFIG = {
   theme: 'light',
+  /**
+   *
+   */
   load: () => undefined,
   locale: {
     language: 'en-US',
@@ -20,7 +27,11 @@ const DEFAULT_CONFIG = {
   log: {
     level: 4,
   },
+  /**
+   * @type {TypeInfo[]}
+   */
   types: [],
+  /** */
   env: {},
 };
 
@@ -43,6 +54,13 @@ const mergeConfigs = (base, c) => ({
 });
 
 function nuked(configuration = {}) {
+  /**
+   * @entry
+   * @alias nucleus
+   * @param {EnigmaAppModel} app
+   * @param {Configuration=} instanceConfig
+   * @returns {Nebbie}
+   */
   function nucleus(app, instanceConfig = {}) {
     const currentConfig = mergeConfigs(configuration, instanceConfig);
     const lgr = logger(currentConfig.log);
@@ -90,20 +108,43 @@ function nuked(configuration = {}) {
     let selectionsApi = null;
     let selectionsComponentReference = null;
 
-    const api = {
-      get: (getCfg, userProps) => get(getCfg, userProps, context),
-      create: (createCfg, userProps) => create(createCfg, userProps, context),
+    /**
+     * @interface
+     * @alias Nebbie
+     */
+    const api = /** @lends Nebbie */ {
+      /**
+       * @param {GetObjectConfig} getCfg
+       * @param {VizConfig=} vizConfig
+       * @returns {Viz}
+       */
+      get: (getCfg, vizConfig) => get(getCfg, vizConfig, context),
+      /**
+       * @param {CreateObjectConfig} createCfg
+       * @param {VizConfig=} vizConfig
+       * @returns {Viz}
+       */
+      create: (createCfg, vizConfig) => create(createCfg, vizConfig, context),
       theme(t) {
         root.theme(t);
         return api;
       },
+      /**
+       * @param {'ltr'|'rtl'} d
+       */
       direction(d) {
         root.direction(d);
       },
+      /**
+       * @returns {AppSelections}
+       */
       selections: () => {
         if (!selectionsApi) {
-          selectionsApi = {
+          selectionsApi = /** @lends AppSelections */ {
             ...app._selections, // eslint-disable-line no-underscore-dangle
+            /**
+             * @param {HTMLElement} element
+             */
             mount(element) {
               if (selectionsComponentReference) {
                 console.error('Already mounted');
@@ -115,6 +156,9 @@ function nuked(configuration = {}) {
               });
               root.add(selectionsComponentReference);
             },
+            /**
+             *
+             */
             unmount() {
               if (selectionsComponentReference) {
                 root.remove(selectionsComponentReference);
@@ -133,6 +177,10 @@ function nuked(configuration = {}) {
     return api;
   }
 
+  /**
+   * @param {Configuration} configuration
+   * @returns {nucleus}
+   */
   nucleus.configured = c => nuked(mergeConfigs(configuration, c));
 
   return nucleus;
