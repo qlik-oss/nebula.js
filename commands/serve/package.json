@@ -45,8 +45,8 @@
     "@nebula.js/ui": "0.1.0-alpha.20",
     "babel-loader": "^8.0.6",
     "enigma.js": "^2.4.0",
-    "react": "^16.9.0",
-    "react-dom": "^16.9.0",
+    "react": "^16.10.1",
+    "react-dom": "^16.10.1",
     "webpack-cli": "^3.3.9"
   }
 }
