@@ -21,7 +21,8 @@
     "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
     "build:watch": "rollup --config ../../rollup.config.js -w",
     "lint": "eslint --ext .js,.jsx src",
-    "prepublishOnly": "rm -rf dist && yarn run build"
+    "prepublishOnly": "rm -rf dist && yarn run build",
+    "spec": "scriptappy-from-jsdoc -c ./spec/spec.conf.js"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.4.3",

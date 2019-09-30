@@ -2,6 +2,14 @@ import SNFactory from '@nebula.js/supernova';
 import { satisfies } from 'semver';
 import { load } from './load';
 
+/**
+ * @typedef {object} TypeInfo
+ * @property {string} name
+ * @property {string} version
+ * @property {object=} meta
+ * @property {loadType=} load
+ */
+
 export default function create(info, config, opts = {}) {
   let sn;
   let stringified;

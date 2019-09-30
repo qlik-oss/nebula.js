@@ -76,9 +76,20 @@ export default function({ model, context, initialUserProps = {} } = {}) {
     update();
   };
 
-  const api = {
+  /**
+   * @interface
+   * @alias Viz
+   */
+  const api = /** @lends Viz */ {
+    /**
+     * @type {EnigmaObjectModel}
+     */
     model,
     // app,
+    /**
+     * @param {HTMLElement} element
+     * @returns {Promise}
+     */
     mount(element) {
       if (elementReference) {
         throw new Error('Already mounted');
@@ -95,6 +106,9 @@ export default function({ model, context, initialUserProps = {} } = {}) {
         return whenMounted;
       });
     },
+    /**
+     *
+     */
     close() {
       // TODO - destroy session object (if created as such)
       model.emit('closed');

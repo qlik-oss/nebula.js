@@ -17,8 +17,21 @@ const create = app => {
   let lyt;
   let currentSelectionsModel;
   let prom;
-  const api = {
+
+  /**
+   * @interface
+   * @alias AppSelections
+   */
+  const api = /** @lends AppSelections */ {
+    /** @type {EnigmaAppModel} */
     model: app,
+    /**
+     * @param {EnigmaObjectModel} object
+     * @param {string} path
+     * @param {boolean} [accept=true]
+     * @emits AppSelections#modal-unset
+     * @emits AppSelections#modal
+     */
     switchModal(object, path, accept = true) {
       if (object === modalObject) {
         return prom || Promise.resolve();
@@ -49,44 +62,82 @@ const create = app => {
       prom = Promise.resolve();
       return prom;
     },
+    /**
+     * @param {EnigmaObjectModel} objectModel
+     * @returns {boolean}
+     */
     isModal(objectModel) {
       // TODO check model state
       return objectModel ? modalObject === objectModel : modalObject !== null;
     },
+    /**
+     * @param {boolean} [accept=true]
+     * @returns {Promise<EmptyObject>}
+     */
     abortModal(accept = true) {
       if (!modalObject) {
-        return Promise.resolve();
+        return Promise.resolve({});
       }
       // modalObject._selections.
       modalObject = null;
       api.emit('modal-unset');
       return app.abortModal(accept);
     },
+    /**
+     * @returns {boolean}
+     */
     canGoForward() {
       return canGoForward;
     },
+    /**
+     * @returns {boolean}
+     */
     canGoBack() {
       return canGoBack;
     },
+    /**
+     * @returns {boolean}
+     */
     canClear() {
       return canClear;
     },
     layout() {
       return lyt;
     },
+    /**
+     * @returns {Promise<EmptyObject>}
+     */
     forward() {
       return this.switchModal().then(() => app.forward());
     },
+    /**
+     * @returns {Promise<EmptyObject>}
+     */
     back() {
       return this.switchModal().then(() => app.back());
     },
+    /**
+     * @returns {Promise<{}>}
+     */
     clear() {
       return this.switchModal().then(() => app.clearAll());
     },
+    /**
+     * @returns {Promise<boolean>}
+     */
     clearField(field, state = '$') {
       return this.switchModal().then(() => app.getField(field, state).then(f => f.clear()));
     },
   };
+
+  /**
+   * @event AppSelections#modal-unset
+   */
+
+  /**
+   * @event AppSelections#modal
+   * @param {ObjectSelections} selections
+   */
 
   eventmixin(api);
 
