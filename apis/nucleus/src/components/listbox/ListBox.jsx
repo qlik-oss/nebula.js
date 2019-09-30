@@ -99,6 +99,10 @@ export default function ListBox({ model, selections, direction }) {
     local.current.validPages = false;
     if (loaderRef.current) {
       loaderRef.current.resetloadMoreItemsCache(true);
+      // Skip scrollToItem if we are in selections
+      if (layout && layout.qSelectionInfo.qInSelections) {
+        return;
+      }
       loaderRef.current._listRef.scrollToItem(0);
     }
   }, [layout]);
