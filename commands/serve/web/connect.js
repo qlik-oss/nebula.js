@@ -33,26 +33,63 @@ const defaultConfig = {
 let connection;
 const connect = () => {
   if (!connection) {
-    connection = requestInfo.then((info) => enigma.create({
-      schema: qixSchema,
-      url: SenseUtilities.buildUrl({
+    connection = requestInfo.then(async (info) => {
+      const { webIntegrationId } = info;
+      let urlParams = {};
+      if (webIntegrationId) {
+        const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
+        const csrfToken = new Map((await fetch(`${rootPath}/api/v1/csrf-token`, { credentials: 'include', headers: { 'qlik-web-integration-id': webIntegrationId } })).headers).get('qlik-csrf-token');
+        urlParams = {
+          'qlik-web-integration-id': webIntegrationId,
+          'qlik-csrf-token': csrfToken,
+        };
+        return {
+          getDocList: async () => {
+            const { data = [] } = await (await fetch(`${rootPath}/api/v1/items?limit=30&sort=-updatedAt`, { credentials: 'include', headers: { 'qlik-web-integration-id': webIntegrationId, 'qlik-csrf-token': csrfToken, 'content-type': 'application/json' } })).json();
+            return data.map((d) => ({
+              qDocId: d.resourceId,
+              qTitle: d.name,
+            }));
+          },
+        };
+      }
+      const url = SenseUtilities.buildUrl({
         ...defaultConfig,
         ...info.enigma,
-      }),
-    }).open());
+        urlParams,
+      });
+      return enigma.create({
+        schema: qixSchema,
+        url,
+      }).open();
+    });
   }
 
   return connection;
 };
 
-const openApp = (id) => requestInfo.then((info) => enigma.create({
-  schema: qixSchema,
-  url: SenseUtilities.buildUrl({
+const openApp = (id) => requestInfo.then(async (info) => {
+  const { webIntegrationId } = info;
+  let urlParams = {};
+  if (webIntegrationId) {
+    const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
+    const csrfToken = new Map((await fetch(`${rootPath}/api/v1/csrf-token`, { credentials: 'include', headers: { 'qlik-web-integration-id': webIntegrationId } })).headers).get('qlik-csrf-token');
+    urlParams = {
+      'qlik-web-integration-id': webIntegrationId,
+      'qlik-csrf-token': csrfToken,
+    };
+  }
+  const url = SenseUtilities.buildUrl({
     ...defaultConfig,
     ...info.enigma,
+    urlParams,
     appId: id,
-  }),
-}).open().then((global) => global.openDoc(id)));
+  });
+  return enigma.create({
+    schema: qixSchema,
+    url,
+  }).open().then((global) => global.openDoc(id));
+});
 
 export {
   connect,
