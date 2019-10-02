@@ -5,16 +5,26 @@ import EventEmitter from 'node-event-emitter';
 import JSONPatch from './json-patch';
 import actionhero from './action-hero';
 
-const defaultComponent = {
+/**
+ * @interface SnComponent
+ * @alias SnComponent
+ */
+const defaultComponent = /** @lends SnComponent */ {
   app: null,
   model: null,
   actions: null,
   selections: null,
+  /** */
   created: () => {},
+  /** */
   mounted: () => {},
+  /** */
   render: () => {},
+  /** */
   resize: () => {},
+  /** */
   willUnmount: () => {},
+  /** */
   destroy: () => {},
 
   emit: () => {},
@@ -61,12 +71,18 @@ export default function create(generator, opts) {
     component: userInstance,
   });
 
-  Object.assign(userInstance, {
-    model: opts.model,
-    app: opts.app,
-    selections: opts.selections,
-    actions: hero.actions,
-  });
+  Object.assign(
+    userInstance,
+    /** @lends SnComponent */ {
+      /** @type {EnigmaObjectModel} */
+      model: opts.model,
+      /** @type {EnigmaAppModel} */
+      app: opts.app,
+      /** @type {ObjectSelections} */
+      selections: opts.selections,
+      actions: hero.actions,
+    }
+  );
 
   Object.assign(componentInstance, {
     actions: hero.actions,

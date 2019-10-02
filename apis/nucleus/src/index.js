@@ -55,11 +55,15 @@ const mergeConfigs = (base, c) => ({
 
 function nuked(configuration = {}) {
   /**
+   * Initiates a new `nebbie` instance using the specified `app`.
    * @entry
    * @alias nucleus
    * @param {EnigmaAppModel} app
    * @param {Configuration=} instanceConfig
    * @returns {Nebbie}
+   * @example
+   * import nucleus from '@nebula.js/nucleus'
+   * const nebbie = nucleus(app);
    */
   function nucleus(app, instanceConfig = {}) {
     const currentConfig = mergeConfigs(configuration, instanceConfig);
@@ -178,8 +182,30 @@ function nuked(configuration = {}) {
   }
 
   /**
+   * Creates a new `nucleus` instance using the specified configuration.
+   *
+   * The configuration is merged with all previous instances.
    * @param {Configuration} configuration
    * @returns {nucleus}
+   * @example
+   * import nucleus from '@nebula.js/nucleus';
+   * // create a 'master' config which registers all types
+   * const m = nucleus.configured({
+   *   types: [{
+   *     name: 'mekko',
+   *     version: '1.0.0',
+   *   }],
+   * });
+   *
+   * // create an alternate config with dark theme
+   * // and inherit the config from the previous
+   * const d = m.configured({
+   *  theme: 'dark'
+   * });
+   *
+   * m(app).create({ type: 'mekko' }); // will render the object with default theme
+   * d(app).create({ type: 'mekko' }); // will render the object with 'dark' theme
+   * nucleus(app).create({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance
    */
   nucleus.configured = c => nuked(mergeConfigs(configuration, c));
 

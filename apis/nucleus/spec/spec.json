@@ -9,6 +9,7 @@
   },
   "entries": {
     "nucleus": {
+      "description": "Initiates a new `nebbie` instance using the specified `app`.",
       "kind": "function",
       "params": [
         {
@@ -24,8 +25,12 @@
       "returns": {
         "type": "#/definitions/Nebbie"
       },
+      "examples": [
+        "import nucleus from '@nebula.js/nucleus'\nconst nebbie = nucleus(app);"
+      ],
       "entries": {
         "configured": {
+          "description": "Creates a new `nucleus` instance using the specified configuration.\n\nThe configuration is merged with all previous instances.",
           "kind": "function",
           "params": [
             {
@@ -35,7 +40,10 @@
           ],
           "returns": {
             "type": "#/entries/nucleus"
-          }
+          },
+          "examples": [
+            "import nucleus from '@nebula.js/nucleus';\n// create a 'master' config which registers all types\nconst m = nucleus.configured({\n  types: [{\n    name: 'mekko',\n    version: '1.0.0',\n  }],\n});\n\n// create an alternate config with dark theme\n// and inherit the config from the previous\nconst d = m.configured({\n theme: 'dark'\n});\n\nm(app).create({ type: 'mekko' }); // will render the object with default theme\nd(app).create({ type: 'mekko' }); // will render the object with 'dark' theme\nnucleus(app).create({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
+          ]
         }
       }
     }
@@ -149,6 +157,54 @@
         "close": {
           "kind": "function",
           "params": []
+        }
+      }
+    },
+    "loadType": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "type",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        },
+        {
+          "name": "env",
+          "type": "object"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "generics": [
+          {
+            "type": "Supernova"
+          }
+        ]
+      }
+    },
+    "TypeInfo": {
+      "kind": "object",
+      "entries": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "meta": {
+          "optional": true,
+          "type": "object"
+        },
+        "load": {
+          "optional": true,
+          "type": "#/definitions/loadType"
         }
       }
     },
@@ -310,57 +366,142 @@
           "params": [
             {
               "name": "selections",
-              "type": "ObjectSelections"
+              "type": "#/definitions/ObjectSelections"
             }
           ]
         }
       }
     },
-    "loadType": {
-      "kind": "function",
-      "params": [
-        {
-          "name": "type",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "type": "string"
-            },
-            "version": {
-              "type": "string"
-            }
-          }
-        },
-        {
-          "name": "env",
-          "type": "object"
-        }
-      ],
-      "returns": {
-        "type": "Promise",
-        "generics": [
-          {
-            "type": "Supernova"
-          }
-        ]
-      }
-    },
-    "TypeInfo": {
-      "kind": "object",
+    "ObjectSelections": {
+      "kind": "interface",
+      "params": [],
       "entries": {
-        "name": {
-          "type": "string"
+        "begin": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "paths",
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "returns": {
+            "type": "Promise"
+          }
         },
-        "version": {
-          "type": "string"
+        "clear": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "Promise"
+          }
         },
-        "meta": {
-          "optional": true,
-          "type": "object"
+        "confirm": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "Promise"
+          }
         },
-        "load": {
-          "optional": true,
-          "type": "#/definitions/loadType"
+        "cancel": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "Promise"
+          }
+        },
+        "select": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "s",
+              "kind": "object",
+              "entries": {
+                "method": {
+                  "type": "string"
+                },
+                "params": {
+                  "kind": "array",
+                  "items": {
+                    "type": "any"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "canClear": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        "canConfirm": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        "canCancel": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        "isActive": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        "isModal": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        "goModal": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "paths",
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "returns": {
+            "type": "Promise"
+          }
+        },
+        "noModal": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "accept",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "type": "Promise"
+          }
+        },
+        "abortModal": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "Promise"
+          }
         }
       }
     },

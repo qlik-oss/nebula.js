@@ -90,6 +90,7 @@ function emptyObject(obj) {
 
 /**
  * Compare an object with another, could be object, array, number, string, bool.
+ * @private
  *
  * @param {Object} a The first object to compare
  * @param {Object} a The second object to compare
@@ -207,6 +208,7 @@ function patchArray(original, newA, basePath) {
  * See [specification draft](http://tools.ietf.org/html/draft-ietf-appsawg-json-patch-10)
  *
  * Does NOT currently generate patches for arrays (will replace them)
+ * @private
  *
  * @param {Object} original The object to patch to
  * @param {Object} newData The object to patch from
@@ -263,6 +265,7 @@ JSONPatch.generate = function generate(original, newData, basePath) {
 
 /**
  * Apply a list of patches to an object.
+ * @private
  *
  * @param {Object} original The object to patch
  * @param {Array} patches The list of patches to apply
@@ -321,6 +324,7 @@ JSONPatch.apply = function apply(original, patches) {
 
 /**
  * Deep clone an object.
+ * @private
  *
  * @param {Object} obj The object to clone
  * @returns {Object} A new object identical to the `obj`
@@ -331,6 +335,7 @@ JSONPatch.clone = function clone(obj) {
 
 /**
  * Creates a JSON-patch.
+ * @private
  *
  * @param {String} op The operation of the patch. Available values: "add", "remove", "move"
  * @param {Object} [val] The value to set the `path` to. If `op` is `move`, `val`
@@ -354,6 +359,7 @@ JSONPatch.createPatch = function createPatch(op, val, path) {
 /**
  * Apply the differences of two objects (keeping references if possible).
  * Identical to running `JSONPatch.apply(original, JSONPatch.generate(original, newData));`
+ * @private
  *
  * @param {Object} original The object to update/patch
  * @param {Object} newData the object to diff against
