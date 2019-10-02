@@ -71,6 +71,8 @@ export default function create(generator, opts) {
     component: userInstance,
   });
 
+  const qGlobal = opts.app && opts.app.session ? opts.app.session.getObjectApi({ handle: -1 }) : null;
+
   Object.assign(
     userInstance,
     /** @lends SnComponent */ {
@@ -78,6 +80,8 @@ export default function create(generator, opts) {
       model: opts.model,
       /** @type {EnigmaAppModel} */
       app: opts.app,
+      /** @type {?EnigmaGlobalModel} */
+      global: qGlobal, // TODO - calling it 'global' might not be the best thing here
       /** @type {ObjectSelections} */
       selections: opts.selections,
       actions: hero.actions,
