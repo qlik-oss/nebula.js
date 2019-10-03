@@ -49,8 +49,12 @@ export function typeCollection(name, config) {
   };
 }
 
-export function create({ config }) {
+export function create({ config, parent }) {
   const tc = {};
+
+  const p = parent || {
+    get: () => undefined,
+  };
 
   return {
     register: (typeInfo, opts) => {
@@ -70,7 +74,7 @@ export function create({ config }) {
       if (!tc[name] || !tc[name].versions[version]) {
         this.register({ name, version });
       }
-      return tc[name].get(version);
+      return tc[name].get(version) || p.get(typeInfo);
     },
     clearFromCache: name => {
       if (tc[name]) {
