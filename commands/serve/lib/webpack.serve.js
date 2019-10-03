@@ -5,7 +5,17 @@ const chalk = require('chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
-module.exports = async ({ host, port, enigmaConfig, snPath, snName, dev = false, open = true, watcher }) => {
+module.exports = async ({
+  host,
+  port,
+  enigmaConfig,
+  webIntegrationId,
+  snPath,
+  snName,
+  dev = false,
+  open = true,
+  watcher,
+}) => {
   let config;
   let contentBase;
 
@@ -49,6 +59,7 @@ module.exports = async ({ host, port, enigmaConfig, snPath, snName, dev = false,
       app.get('/info', (req, res) => {
         res.json({
           enigma: enigmaConfig,
+          webIntegrationId,
           supernova: {
             name: snName,
           },

@@ -30,6 +30,9 @@ module.exports = {
         type: 'port',
         default: 9076,
       })
+      .option('webIntegrationId', {
+        type: 'string',
+      })
       .option('ACCEPT_EULA', {
         type: 'boolean',
         alias: 'a',
