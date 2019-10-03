@@ -22,7 +22,23 @@ const params = (() => {
   return opts;
 })();
 
-const requestInfo = fetch('/info').then((response) => response.json());
+const requestInfo = fetch('/info').then((response) => response.json()).then(async (info) => {
+  const { webIntegrationId } = info;
+  const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
+  let headers = {};
+  if (webIntegrationId) {
+    const csrfToken = new Map((await fetch(`${rootPath}/api/v1/csrf-token`, { credentials: 'include', headers: { 'qlik-web-integration-id': webIntegrationId } })).headers).get('qlik-csrf-token');
+    headers = {
+      'qlik-web-integration-id': webIntegrationId,
+      'qlik-csrf-token': csrfToken,
+    };
+  }
+  return {
+    ...info,
+    rootPath,
+    headers,
+  };
+});
 
 const defaultConfig = {
   host: window.location.hostname || 'localhost',
@@ -34,18 +50,11 @@ let connection;
 const connect = () => {
   if (!connection) {
     connection = requestInfo.then(async (info) => {
-      const { webIntegrationId } = info;
-      let urlParams = {};
+      const { webIntegrationId, rootPath, headers } = info;
       if (webIntegrationId) {
-        const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
-        const csrfToken = new Map((await fetch(`${rootPath}/api/v1/csrf-token`, { credentials: 'include', headers: { 'qlik-web-integration-id': webIntegrationId } })).headers).get('qlik-csrf-token');
-        urlParams = {
-          'qlik-web-integration-id': webIntegrationId,
-          'qlik-csrf-token': csrfToken,
-        };
         return {
           getDocList: async () => {
-            const { data = [] } = await (await fetch(`${rootPath}/api/v1/items?limit=30&sort=-updatedAt`, { credentials: 'include', headers: { 'qlik-web-integration-id': webIntegrationId, 'qlik-csrf-token': csrfToken, 'content-type': 'application/json' } })).json();
+            const { data = [] } = await (await fetch(`${rootPath}/api/v1/items?limit=30&sort=-updatedAt`, { credentials: 'include', headers: { ...headers, 'content-type': 'application/json' } })).json();
             return data.map((d) => ({
               qDocId: d.resourceId,
               qTitle: d.name,
@@ -56,7 +65,6 @@ const connect = () => {
       const url = SenseUtilities.buildUrl({
         ...defaultConfig,
         ...info.enigma,
-        urlParams,
       });
       return enigma.create({
         schema: qixSchema,
@@ -69,14 +77,11 @@ const connect = () => {
 };
 
 const openApp = (id) => requestInfo.then(async (info) => {
-  const { webIntegrationId } = info;
+  const { webIntegrationId, headers } = info;
   let urlParams = {};
   if (webIntegrationId) {
-    const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
-    const csrfToken = new Map((await fetch(`${rootPath}/api/v1/csrf-token`, { credentials: 'include', headers: { 'qlik-web-integration-id': webIntegrationId } })).headers).get('qlik-csrf-token');
     urlParams = {
-      'qlik-web-integration-id': webIntegrationId,
-      'qlik-csrf-token': csrfToken,
+      ...headers,
     };
   }
   const url = SenseUtilities.buildUrl({
