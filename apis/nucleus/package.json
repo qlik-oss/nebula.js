@@ -25,22 +25,22 @@
     "spec": "scriptappy-from-jsdoc -c ./spec/spec.conf.js"
   },
   "peerDependencies": {
-    "@material-ui/core": "^4.4.3",
+    "@material-ui/core": "^4.5.0",
     "@material-ui/icons": "^4.4.3",
-    "@material-ui/styles": "^4.4.3",
-    "react": "^16.10.1",
-    "react-dom": "^16.10.1"
+    "@material-ui/styles": "^4.5.0",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2"
   },
   "devDependencies": {
-    "@material-ui/core": "^4.4.3",
+    "@material-ui/core": "^4.5.0",
     "@material-ui/icons": "^4.4.3",
-    "@material-ui/styles": "^4.4.3",
+    "@material-ui/styles": "^4.5.0",
     "@nebula.js/supernova": "0.1.0-alpha.20",
     "@nebula.js/ui": "0.1.0-alpha.20",
     "node-event-emitter": "^0.0.1",
-    "react": "^16.10.1",
-    "react-dom": "^16.10.1",
-    "react-test-renderer": "^16.10.1",
+    "react": "^16.10.2",
+    "react-dom": "^16.10.2",
+    "react-test-renderer": "^16.10.2",
     "react-window": "^1.8.5",
     "react-window-infinite-loader": "^1.0.5",
     "semver": "^6.3.0"
