@@ -8,8 +8,8 @@ import AppSelectionsPortal from './components/selections/AppSelections';
 
 import create from './object/create-object';
 import get from './object/get-object';
-import { create as types } from './sn/types';
-import logger from './utils/logger';
+import { create as typesFn } from './sn/types';
+import loggerFn from './utils/logger';
 
 /**
  * @typedef {object}
@@ -25,7 +25,7 @@ const DEFAULT_CONFIG = {
     language: 'en-US',
   },
   log: {
-    level: 4,
+    level: 1,
   },
   /**
    * @type {TypeInfo[]}
@@ -51,9 +51,40 @@ const mergeConfigs = (base, c) => ({
     ...(base.env || {}),
     ...(c.env || {}),
   },
+  log: {
+    ...(base.log || {}),
+    ...(c.log || {}),
+  },
 });
 
-function nuked(configuration = {}) {
+function nuked(configuration = {}, prev = {}) {
+  const logger = loggerFn(configuration.log);
+  const locale = localeFn(configuration.locale);
+
+  const config = {
+    env: {
+      Promise,
+      translator: locale.translator(),
+      nucleus, // eslint-disable-line no-use-before-define
+    },
+    load: configuration.load,
+  };
+
+  const types = typesFn({ logger, config, parent: prev.types });
+
+  configuration.types.forEach(t =>
+    types.register(
+      {
+        name: t.name,
+        version: t.version,
+      },
+      {
+        meta: t.meta,
+        load: t.load,
+      }
+    )
+  );
+
   /**
    * Initiates a new `nebbie` instance using the specified `app`.
    * @entry
@@ -65,49 +96,28 @@ function nuked(configuration = {}) {
    * import nucleus from '@nebula.js/nucleus'
    * const nebbie = nucleus(app);
    */
-  function nucleus(app, instanceConfig = {}) {
-    const currentConfig = mergeConfigs(configuration, instanceConfig);
-    const lgr = logger(currentConfig.log);
-    const locale = localeFn(currentConfig.locale);
-
-    const config = {
-      env: {
-        Promise,
-        translator: locale.translator(),
-      },
-      load: currentConfig.load,
-    };
+  function nucleus(app, instanceConfig) {
+    if (instanceConfig) {
+      return nucleus.configured(instanceConfig)(app);
+    }
 
     createAppSelectionAPI(app);
 
     const root = App({
       app,
       translator: locale.translator(),
-      theme: currentConfig.theme,
-      direction: currentConfig.direction,
+      theme: configuration.theme,
+      direction: configuration.direction,
     });
 
     const context = {
       nebbie: null,
       app,
       config,
-      logger: lgr,
-      types: types({ logger: lgr, config }),
+      logger,
+      types,
       root,
     };
-
-    currentConfig.types.forEach(t =>
-      context.types.register(
-        {
-          name: t.name,
-          version: t.version,
-        },
-        {
-          meta: t.meta,
-          load: t.load,
-        }
-      )
-    );
 
     let selectionsApi = null;
     let selectionsComponentReference = null;
