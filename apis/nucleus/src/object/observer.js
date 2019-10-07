@@ -54,8 +54,10 @@ export function observe(model, callback, property = 'layout') {
                 cache[model.id].props[key].state !== STATES.VALID
               ) {
                 cache[model.id].props[key].state = STATES.VALID;
-                cache[model.id].props[key].value = value;
-                cache[model.id].props[key].callbacks.forEach(cb => cb(value));
+                // create a new reference if necessary to make sure React triggers a change
+                const v = cache[model.id].props[key].value === value ? { ...value } : value;
+                cache[model.id].props[key].value = v;
+                cache[model.id].props[key].callbacks.forEach(cb => cb(v));
               }
             }
           })
