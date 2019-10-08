@@ -5,6 +5,8 @@ const chalk = require('chalk');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
+const snapshotter = require('./snapshot');
+
 module.exports = async ({
   host,
   port,
@@ -18,6 +20,11 @@ module.exports = async ({
 }) => {
   let config;
   let contentBase;
+
+  const snapper = snapshotter({
+    host,
+    port,
+  });
 
   if (dev) {
     const webpackConfig = require('./webpack.build.js');
@@ -56,6 +63,8 @@ module.exports = async ({
       index: '/eHub.html',
     },
     before(app) {
+      snapper.addRoutes(app);
+
       app.get('/info', (req, res) => {
         res.json({
           enigma: enigmaConfig,

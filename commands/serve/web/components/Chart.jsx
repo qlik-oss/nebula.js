@@ -9,6 +9,7 @@ import NebulaContext from '../contexts/NebulaContext';
 
 export default function Chart({
   id,
+  onLoad,
   // onSelected,
 }) {
   const nebbie = useContext(NebulaContext);
@@ -21,6 +22,9 @@ export default function Chart({
         permissions: ['passive', 'interact', 'select', 'fetch'],
       },
       element: el.current,
+    });
+    n.then((viz) => {
+      onLoad(viz, el.current);
     });
     return () => {
       n.then((v) => {

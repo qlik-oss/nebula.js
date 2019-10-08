@@ -27,10 +27,12 @@
   },
   "dependencies": {
     "@nebula.js/cli-build": "0.1.0-alpha.20",
+    "body-parser": "^1.19.0",
     "chalk": "^2.4.2",
     "cross-env": "^6.0.3",
     "html-webpack-plugin": "^3.2.0",
     "portfinder": "^1.0.24",
+    "puppeteer": "^1.20.0",
     "source-map-loader": "^0.2.4",
     "webpack": "^4.41.0",
     "webpack-dev-server": "^3.8.2",
