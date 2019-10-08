@@ -1,6 +1,7 @@
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
 import ButtonBase from '@material-ui/core/ButtonBase';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -42,6 +43,7 @@ export {
   Box,
   Button,
   ButtonBase,
+  CircularProgress,
   IconButton,
   Grid,
   Card,

@@ -3,6 +3,7 @@ import React, {
   useEffect,
   useState,
   useCallback,
+  useRef,
 } from 'react';
 
 import {
@@ -11,6 +12,7 @@ import {
   Toolbar,
   Divider,
   IconButton,
+  CircularProgress,
 } from '@nebula.js/ui/components';
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
@@ -21,6 +23,32 @@ import AppContext from '../contexts/AppContext';
 
 import Chart from './Chart';
 
+const takeAndSendSnapshot = ({
+  ref,
+  route = '/snapshot',
+}) => ref.viz.takeSnapshot().then((snapshot) => {
+  const containerSize = ref.el.getBoundingClientRect();
+  return fetch(route, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      key: snapshot.qInfo.qId,
+      meta: {
+        language: '',
+        theme: '',
+        direction: '',
+        size: {
+          width: Math.round(containerSize.width),
+          height: Math.round(containerSize.height),
+        },
+      },
+      layout: snapshot,
+    }),
+  }).then((response) => response.json());
+});
+
 export default function ({
   id,
   onSelected,
@@ -28,6 +56,9 @@ export default function ({
 }) {
   const app = useContext(AppContext);
   const [model, setModel] = useState(null);
+  const [exporting, setExporting] = useState(false);
+
+  const vizRef = useRef();
   useEffect(() => {
     const v = app.getObject(id).then((m) => {
       setModel(m);
@@ -41,6 +72,38 @@ export default function ({
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const closeDialog = useCallback(() => { setDialogOpen(false); }, []);
+
+  const onLoad = useCallback((viz, el) => {
+    vizRef.current = {
+      viz,
+      el,
+    };
+  }, [id]);
+
+  const takeSnapshot = useCallback(() => {
+    if (!vizRef.current) {
+      return;
+    }
+    const containerSize = vizRef.current.el.getBoundingClientRect();
+    takeAndSendSnapshot({ ref: vizRef.current }).then((res) => {
+      if (res && res.url) {
+        window.open(res.url, 'snapshot', `height=${Math.round(containerSize.height)},width=${Math.round(containerSize.width)}`);
+      }
+    });
+  }, [model]);
+
+  const exportImage = useCallback(() => {
+    if (!vizRef.current) {
+      return;
+    }
+    setExporting(true);
+    takeAndSendSnapshot({ ref: vizRef.current, route: '/image' }).then((res) => {
+      if (res && res.url) {
+        window.open(res.url);
+      }
+      setExporting(false);
+    });
+  }, [model]);
 
   return (
     <Card style={{ minHeight, height: '100%' }}>
@@ -66,11 +129,35 @@ export default function ({
                 d: 'M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z',
               })}
             </IconButton>
+            <IconButton
+              disabled={!model}
+              onClick={() => takeSnapshot()}
+              title="Take and render as snapshot"
+            >
+              {SvgIcon({
+                size: 'large',
+                viewBox: '0 0 24 24',
+                d: 'M9 2L7.17 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2h-3.17L15 2H9zm3 15c-2.76 0-5-2.24-5-5s2.24-5 5-5 5 2.24 5 5-2.24 5-5 5z',
+              })}
+            </IconButton>
+            {exporting ? <CircularProgress size={24} /> : (
+              <IconButton
+                disabled={!model}
+                onClick={() => exportImage()}
+                title="Export as image"
+              >
+                {SvgIcon({
+                  size: 'large',
+                  viewBox: '0 0 24 24',
+                  d: 'M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z',
+                })}
+              </IconButton>
+            )}
           </Toolbar>
           <Divider />
         </Grid>
         <Grid item xs>
-          <Chart id={id} onSelected={onSelected} />
+          <Chart id={id} onSelected={onSelected} onLoad={onLoad} />
         </Grid>
       </Grid>
     </Card>
