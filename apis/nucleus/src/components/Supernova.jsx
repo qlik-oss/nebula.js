@@ -112,7 +112,9 @@ class Supernova extends React.Component {
         this.initial.mount = () => {};
       },
       rendered: () => {
-        // this.props.prom();
+        if (this.props.snOptions && typeof this.props.snOptions.onInitialRender === 'function') {
+          this.props.snOptions.onInitialRender.call(null);
+        }
         this.initial.rendered = () => {};
       },
     };
