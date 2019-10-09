@@ -38,6 +38,7 @@ import Collection from './Collection';
 import AppContext from '../contexts/AppContext';
 import NebulaContext from '../contexts/NebulaContext';
 import DirectionContext from '../contexts/DirectionContext';
+import VizContext from '../contexts/VizContext';
 
 const rtlShape = {
   size: 'large',
@@ -98,7 +99,8 @@ export default function App({
   info,
 }) {
   const storage = useMemo(() => storageFn(app), [app]);
-  const [viz, setViz] = useState(null);
+  const [activeViz, setActiveViz] = useState(null);
+  const [expandedObject, setExpandedObject] = useState(null);
   const [sn, setSupernova] = useState(null);
   const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
   const [darkMode, setDarkMode] = useState(storage.get('darkMode') === true);
@@ -111,6 +113,13 @@ export default function App({
   const themeName = darkMode ? 'dark' : 'light';
 
   const theme = useMemo(() => createTheme(themeName), [themeName]);
+
+  const vizContext = useMemo(() => ({
+    activeViz,
+    setActiveViz,
+    expandedObject,
+    setExpandedObject,
+  }), [activeViz, expandedObject]);
 
   const nebbie = useMemo(() => {
     const n = nucleus(app, {
@@ -182,6 +191,10 @@ export default function App({
 
   const toggleObjectListMode = () => {
     storage.save('objectListMode', !objectListMode);
+    if (!objectListMode) {
+      setActiveViz(null);
+      setExpandedObject(null);
+    }
     setObjectListMode(!objectListMode);
   };
 
@@ -235,14 +248,16 @@ export default function App({
                 <Divider />
               </Grid>
               <Grid item xs style={{ overflowX: 'hidden', overflowY: 'auto' }}>
-                <Grid container wrap="nowrap" style={{ height: '100%' }}>
-                  <Grid item xs>
-                    {objectListMode ? <Collection cache={currentId} types={[info.supernova.name]} /> : <Stage info={info} storage={storage} uid={currentId} setViz={setViz} /> }
+                <VizContext.Provider value={vizContext}>
+                  <Grid container wrap="nowrap" style={{ height: '100%' }}>
+                    <Grid item xs>
+                      {objectListMode ? <Collection cache={currentId} types={[info.supernova.name]} /> : <Stage info={info} storage={storage} uid={currentId} /> }
+                    </Grid>
+                    <Grid item style={{ background: theme.palette.background.paper, overflowY: 'auto' }}>
+                      {activeViz && <Properties sn={sn} viz={activeViz} />}
+                    </Grid>
                   </Grid>
-                  <Grid item style={{ background: theme.palette.background.paper, overflowY: 'auto' }}>
-                    {!objectListMode && <Properties sn={sn} viz={viz} />}
-                  </Grid>
-                </Grid>
+                </VizContext.Provider>
               </Grid>
             </Grid>
           </NebulaContext.Provider>

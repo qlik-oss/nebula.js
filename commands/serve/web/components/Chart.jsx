@@ -10,7 +10,6 @@ import NebulaContext from '../contexts/NebulaContext';
 export default function Chart({
   id,
   onLoad,
-  // onSelected,
 }) {
   const nebbie = useContext(NebulaContext);
   const el = useRef();
@@ -37,7 +36,6 @@ export default function Chart({
   return (
     <div
       ref={el}
-      // onClick={() => onSelected(viz)}
       style={{
         height: '100%',
       }}

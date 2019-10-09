@@ -11,16 +11,18 @@ import {
 } from '@nebula.js/ui/components';
 
 import AppContext from '../contexts/AppContext';
+import VizContext from '../contexts/VizContext';
 import Cell from './Cell';
 
 export default function Collection({
   types,
-  onSelectedCell,
   cache,
 }) {
   const app = useContext(AppContext);
   const [layout] = useLayout(app);
   const [objects, setObjects] = useState([]);
+
+  const { expandedObject } = useContext(VizContext);
 
   useEffect(() => {
     app.getObjects({
@@ -34,11 +36,22 @@ export default function Collection({
     });
   }, [layout, types.join(':')]);
 
+  const current = expandedObject ? objects.filter((o) => o.qInfo.qId === expandedObject) : objects;
+
   return (
-    <Grid container spacing={2} style={{ padding: '12px' }}>
-      {objects.map((c) => (
-        <Grid item xs={12} md={6} lg={4} key={`${c.qInfo.qId}::${cache}`}>
-          <Cell id={c.qInfo.qId} onSelected={onSelectedCell} minHeight={600} />
+    <Grid
+      container
+      spacing={2}
+      style={{
+        padding: expandedObject ? 4 : 12,
+        margin: expandedObject ? 0 : undefined,
+        width: expandedObject ? '100%' : undefined,
+        height: expandedObject ? '100%' : undefined,
+      }}
+    >
+      {current.map((c) => (
+        <Grid item xs={12} md={expandedObject ? 12 : 6} lg={expandedObject ? 12 : 4} key={`${c.qInfo.qId}::${cache}`}>
+          <Cell id={c.qInfo.qId} expandable minHeight={600} />
         </Grid>
       ))}
     </Grid>

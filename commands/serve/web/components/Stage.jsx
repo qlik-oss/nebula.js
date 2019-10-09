@@ -7,15 +7,17 @@ import { observe } from '@nebula.js/nucleus/src/object/observer';
 
 import Cell from './Cell';
 import NebulaContext from '../contexts/NebulaContext';
+import VizContext from '../contexts/VizContext';
 
 export default function Stage({
   info,
   storage,
   uid,
-  setViz,
 }) {
   const nebbie = useContext(NebulaContext);
   const [model, setModel] = useState(null);
+
+  const { setActiveViz } = useContext(VizContext);
 
   useEffect(() => {
     let propertyObserver = () => {};
@@ -38,7 +40,7 @@ export default function Stage({
       },
     }).then((v) => {
       setModel(v.model);
-      setViz(v);
+      setActiveViz(v);
       m = v.model;
       propertyObserver = observe(v.model, (p) => {
         storage.props(info.supernova.name, p);
