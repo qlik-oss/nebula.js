@@ -20,6 +20,7 @@ import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 import PropsDialog from './PropertiesDialog';
 
 import AppContext from '../contexts/AppContext';
+import VizContext from '../contexts/VizContext';
 
 import Chart from './Chart';
 
@@ -51,12 +52,22 @@ const takeAndSendSnapshot = ({
 
 export default function ({
   id,
-  onSelected,
+  expandable,
   minHeight,
 }) {
   const app = useContext(AppContext);
   const [model, setModel] = useState(null);
   const [exporting, setExporting] = useState(false);
+  const [localViz, setLocalViz] = useState(null);
+
+  const {
+    activeViz,
+    setActiveViz,
+    setExpandedObject,
+    expandedObject,
+  } = useContext(VizContext);
+
+  const isExpanded = expandedObject === id;
 
   const vizRef = useRef();
   useEffect(() => {
@@ -78,7 +89,17 @@ export default function ({
       viz,
       el,
     };
+    setLocalViz(viz);
   }, [id]);
+
+  const toggleExpand = () => {
+    if (isExpanded) {
+      setExpandedObject(null);
+    } else {
+      setExpandedObject(id);
+      setActiveViz(localViz);
+    }
+  };
 
   const takeSnapshot = useCallback(() => {
     if (!vizRef.current) {
@@ -105,8 +126,14 @@ export default function ({
     });
   }, [model]);
 
+  const activeStyle = !isExpanded && vizRef.current && activeViz && activeViz === vizRef.current.viz ? {
+    boxShadow: '0px 0px 4px 2px rgba(0,100,200,0.85)',
+  } : {};
+
+  const isActive = activeViz === localViz;
+
   return (
-    <Card style={{ minHeight, height: '100%' }}>
+    <Card style={{ minHeight, height: '100%', ...activeStyle }}>
       <Grid container direction="column" style={{ height: '100%', position: 'relative' }}>
         <Grid item>
           <Toolbar variant="dense" disableGutters style={{ padding: '0 8px' }}>
@@ -153,11 +180,38 @@ export default function ({
                 })}
               </IconButton>
             )}
+            <Grid item xs />
+            {expandable && (
+              <IconButton
+                disabled={!localViz || isActive}
+                onClick={() => setActiveViz(localViz)}
+                title="Edit"
+              >
+                {SvgIcon({
+                  size: 'large',
+                  viewBox: '0 0 24 24',
+                  d: 'M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z',
+                })}
+              </IconButton>
+            )}
+            {expandable && (
+              <IconButton
+                disabled={!model || !localViz}
+                onClick={() => toggleExpand()}
+                title="Expand"
+              >
+                {SvgIcon({
+                  size: 'large',
+                  viewBox: '0 0 24 24',
+                  d: isExpanded ? 'M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z' : 'M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z',
+                })}
+              </IconButton>
+            )}
           </Toolbar>
           <Divider />
         </Grid>
         <Grid item xs>
-          <Chart id={id} onSelected={onSelected} onLoad={onLoad} />
+          <Chart id={id} onLoad={onLoad} />
         </Grid>
       </Grid>
     </Card>
