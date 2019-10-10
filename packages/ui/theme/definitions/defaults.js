@@ -60,5 +60,10 @@ export default {
         borderRadius: 2,
       },
     },
+    MuiExpansionPanelSummary: {
+      content: {
+        margin: '8px 0',
+      },
+    },
   },
 };

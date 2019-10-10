@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 
 import {
   Typography,
@@ -7,12 +7,17 @@ import {
 import useProperties from '@nebula.js/nucleus/src/hooks/useProperties';
 
 import Data from './property-panel/Data';
+import generateComponents from './AutoComponents';
 
 export default function Properties({
   viz,
   sn,
 }) {
   const [properties] = useProperties(viz ? viz.model : null);
+
+  const changed = useCallback(() => {
+    viz.model.setProperties(properties);
+  }, [viz, sn, properties]);
 
   if (!sn) {
     return null;
@@ -37,6 +42,7 @@ export default function Properties({
     }}
     >
       <Data properties={properties} model={viz.model} sn={sn} />
+      {generateComponents(properties, changed)}
     </div>
   );
 }
