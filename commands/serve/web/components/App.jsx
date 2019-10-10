@@ -253,7 +253,7 @@ export default function App({
                     <Grid item xs>
                       {objectListMode ? <Collection cache={currentId} types={[info.supernova.name]} /> : <Stage info={info} storage={storage} uid={currentId} /> }
                     </Grid>
-                    <Grid item style={{ background: theme.palette.background.paper, overflowY: 'auto' }}>
+                    <Grid item style={{ background: theme.palette.background.paper, overflow: 'hidden auto' }}>
                       {activeViz && <Properties sn={sn} viz={activeViz} />}
                     </Grid>
                   </Grid>
