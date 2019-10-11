@@ -155,7 +155,7 @@ export default function({ model, context, initialUserProps = {} } = {}) {
             };
 
             if (typeof objectProps.sn.component.setSnapshotData === 'function') {
-              return objectProps.sn.component.setSnapshotData(snapshot);
+              return Promise.resolve(objectProps.sn.component.setSnapshotData(snapshot)).then(v => v || snapshot);
             }
             return Promise.resolve(snapshot);
           }
