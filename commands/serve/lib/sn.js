@@ -1,3 +1,8 @@
+// Polyfill for using async/await
+// the polyfill is injected here to make sure it exists
+// before the snDefinition is loaded
+import 'regenerator-runtime';
+
 import def from 'snDefinition'; // eslint-disable-line
 
 window.snDefinition = def;
