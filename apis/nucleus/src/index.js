@@ -1,4 +1,6 @@
 /* eslint no-underscore-dangle:0 */
+import 'regenerator-runtime/runtime'; // Polyfill for using async/await
+
 import localeFn from './locale';
 
 import { createAppSelectionAPI } from './selections';

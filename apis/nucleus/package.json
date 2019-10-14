@@ -43,6 +43,7 @@
     "react-test-renderer": "^16.10.2",
     "react-window": "^1.8.5",
     "react-window-infinite-loader": "^1.0.5",
+    "regenerator-runtime": "^0.13.3",
     "semver": "^6.3.0"
   }
 }
