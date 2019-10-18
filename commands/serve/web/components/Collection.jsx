@@ -8,6 +8,7 @@ import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
 
 import {
   Grid,
+  Typography,
 } from '@nebula.js/ui/components';
 
 import AppContext from '../contexts/AppContext';
@@ -20,7 +21,7 @@ export default function Collection({
 }) {
   const app = useContext(AppContext);
   const [layout] = useLayout(app);
-  const [objects, setObjects] = useState([]);
+  const [objects, setObjects] = useState([0]);
 
   const { expandedObject } = useContext(VizContext);
 
@@ -41,6 +42,7 @@ export default function Collection({
   return (
     <Grid
       container
+      justify="center"
       spacing={2}
       style={{
         padding: expandedObject ? 4 : 12,
@@ -49,11 +51,21 @@ export default function Collection({
         height: expandedObject ? '100%' : undefined,
       }}
     >
-      {current.map((c) => (
+      {current[0] ? current.map((c) => ( // eslint-disable-line no-nested-ternary
         <Grid item xs={12} md={expandedObject ? 12 : 6} lg={expandedObject ? 12 : 4} key={`${c.qInfo.qId}::${cache}`}>
           <Cell id={c.qInfo.qId} expandable minHeight={600} />
         </Grid>
-      ))}
+      )) : (
+        current[0] === 0 ? null : (
+          <Grid item>
+            <div>
+              <Typography display="inline">Could not find any components with </Typography>
+              <Typography display="inline"><code>{`qType: "${types[0]}"`}</code></Typography>
+              <Typography display="inline"> in the current app</Typography>
+            </div>
+          </Grid>
+        )
+      )}
     </Grid>
   );
 }
