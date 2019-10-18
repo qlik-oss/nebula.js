@@ -7,7 +7,7 @@ import eventMixin from './selections/event-mixin';
 
 const noopi = () => {};
 
-export default function({ model, context, initialUserProps = {} } = {}) {
+export default function({ model, context: nebulaContext, initialUserProps = {} } = {}) {
   let reference = noopi;
   let elementReference = null;
 
@@ -28,6 +28,7 @@ export default function({ model, context, initialUserProps = {} } = {}) {
   let userProps = {
     options: {},
     context: {
+      theme: nebulaContext.theme,
       permissions: [],
     },
     ...initialUserProps,
@@ -58,6 +59,12 @@ export default function({ model, context, initialUserProps = {} } = {}) {
     userProps = {
       ...userProps,
       ...up,
+      context: {
+        // DO NOT MAKE A DEEP COPY OF THEME AS IT WOULD MESS UP THE INSTANCE
+        ...(userProps || {}).context,
+        ...(up || {}).context,
+        theme: nebulaContext.theme,
+      },
     };
     update();
   };
@@ -100,7 +107,7 @@ export default function({ model, context, initialUserProps = {} } = {}) {
           element,
           model,
           api: cellApi,
-          nebulaContext: context,
+          nebulaContext,
           onInitial: mounted,
         });
         return whenMounted;

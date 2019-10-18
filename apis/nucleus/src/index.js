@@ -1,6 +1,8 @@
 /* eslint no-underscore-dangle:0 */
 import 'regenerator-runtime/runtime'; // Polyfill for using async/await
 
+import themeFn from '@nebula.js/theme';
+
 import localeFn from './locale';
 
 import { createAppSelectionAPI } from './selections';
@@ -112,6 +114,8 @@ function nuked(configuration = {}, prev = {}) {
       direction: configuration.direction,
     });
 
+    const theme = themeFn();
+
     const context = {
       nebbie: null,
       app,
@@ -119,6 +123,7 @@ function nuked(configuration = {}, prev = {}) {
       logger,
       types,
       root,
+      theme: theme.externalAPI,
     };
 
     let selectionsApi = null;
@@ -142,6 +147,9 @@ function nuked(configuration = {}, prev = {}) {
        */
       create: (createCfg, vizConfig) => create(createCfg, vizConfig, context),
       theme(t) {
+        theme.internalAPI.setTheme({
+          type: t,
+        });
         root.theme(t);
         return api;
       },

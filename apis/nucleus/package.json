@@ -36,6 +36,7 @@
     "@material-ui/icons": "^4.5.1",
     "@material-ui/styles": "^4.5.0",
     "@nebula.js/supernova": "0.1.0-alpha.21",
+    "@nebula.js/theme": "0.1.0-alpha.21",
     "@nebula.js/ui": "0.1.0-alpha.21",
     "node-event-emitter": "^0.0.1",
     "react": "^16.10.2",

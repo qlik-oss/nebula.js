@@ -19,6 +19,7 @@ describe('viz', () => {
       const { api: foo } = create({
         model: 'a',
         config: {},
+        context: {},
       });
       api = foo;
     });
@@ -40,7 +41,7 @@ describe('viz', () => {
     it('should not initiate mount when layout and sn are not defined', async () => {
       const boot = sinon.spy();
       const [{ default: create }] = doMock({ boot });
-      const { api, setObjectProps } = create({});
+      const { api, setObjectProps } = create({ context: {} });
 
       api.mount('element');
 
@@ -53,7 +54,7 @@ describe('viz', () => {
     it('should initiate React mount when layout and supernova are valid', async () => {
       const boot = sinon.spy();
       const [{ default: create }] = doMock({ boot });
-      const { api, setObjectProps } = create({});
+      const { api, setObjectProps } = create({ context: {} });
 
       api.mount('element');
 
@@ -73,7 +74,7 @@ describe('viz', () => {
         return {};
       });
       const [{ default: create }] = doMock({ boot });
-      const { api, setObjectProps } = create({});
+      const { api, setObjectProps } = create({ context: {} });
 
       let mounted = false;
 
@@ -102,6 +103,7 @@ describe('viz', () => {
       };
       const { api } = create({
         model,
+        context: {},
       });
       await api.setTemporaryProperties('new');
       expect(getter).to.have.been.calledWithExactly(model, 'effectiveProperties');
@@ -118,6 +120,7 @@ describe('viz', () => {
       };
       const { api } = create({
         model,
+        context: {},
       });
       await api.setTemporaryProperties('new');
       expect(getter).to.have.been.calledWithExactly(model, 'effectiveProperties');
