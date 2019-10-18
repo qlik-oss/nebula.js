@@ -136,8 +136,16 @@ class Supernova extends React.Component {
       resizeObserver.observe(this.element);
     }
 
+    const onThemeChanged = () => {
+      this.setState({});
+    };
+
+    this.props.snContext.theme.on('changed', onThemeChanged);
+    this.theme = this.props.snContext.theme;
+
     this.onUnmount = () => {
       this.onUnmount = null;
+      this.props.snContext.theme.removeListener('changed', onThemeChanged);
       if (resizeObserver) {
         resizeObserver.unobserve(this.element);
         resizeObserver.disconnect();

@@ -3,6 +3,7 @@ const nodeResolve = require('rollup-plugin-node-resolve');
 const commonjs = require('rollup-plugin-commonjs');
 const babel = require('rollup-plugin-babel');
 const replace = require('rollup-plugin-replace');
+const json = require('rollup-plugin-json');
 const { terser } = require('rollup-plugin-terser');
 
 const cwd = process.cwd();
@@ -102,6 +103,7 @@ const config = isEsm => {
       nodeResolve({
         extensions: ['.js', '.jsx'],
       }),
+      json(),
       commonjs({
         namedExports: {
           react: [
