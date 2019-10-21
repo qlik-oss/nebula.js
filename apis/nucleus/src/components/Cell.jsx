@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Grid } from '@nebula.js/ui/components';
+import { useTheme } from '@nebula.js/ui/theme';
 
 import Requirements from './Requirements';
 import CError from './Error';
@@ -41,6 +42,7 @@ const Content = ({ children }) => (
 
 export default function Cell({ api, onInitial }) {
   const [, setChanged] = useState(0);
+  const theme = useTheme();
   useEffect(() => {
     const onChanged = () => setChanged(Date.now());
     api.on('changed', onChanged);
@@ -60,7 +62,12 @@ export default function Cell({ api, onInitial }) {
   const Comp = !objectProps.sn ? Placeholder : SN;
   const err = objectProps.error || false;
   return (
-    <Grid container direction="column" spacing={0} style={{ height: '100%', padding: '8px', boxSixing: 'borderBox' }}>
+    <Grid
+      container
+      direction="column"
+      spacing={0}
+      style={{ height: '100%', padding: '8px', boxSixing: 'border-box', background: theme.palette.background.paper }}
+    >
       <Grid item style={{ maxWidth: '100%' }}>
         <Header layout={objectProps.layout} sn={objectProps.sn}>
           &nbsp;

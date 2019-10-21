@@ -110,7 +110,6 @@ function nuked(configuration = {}, prev = {}) {
     const root = App({
       app,
       translator: locale.translator(),
-      theme: configuration.theme,
       direction: configuration.direction,
     });
 
@@ -125,6 +124,15 @@ function nuked(configuration = {}, prev = {}) {
       root,
       theme: theme.externalAPI,
     };
+
+    const setTheme = t => {
+      theme.internalAPI.setTheme({
+        type: t,
+      });
+      root.theme(t);
+    };
+
+    setTheme(configuration.theme);
 
     let selectionsApi = null;
     let selectionsComponentReference = null;
@@ -147,11 +155,7 @@ function nuked(configuration = {}, prev = {}) {
        */
       create: (createCfg, vizConfig) => create(createCfg, vizConfig, context),
       theme(t) {
-        theme.internalAPI.setTheme({
-          type: t,
-        });
-        root.theme(t);
-        return api;
+        setTheme(t);
       },
       /**
        * @param {'ltr'|'rtl'} d

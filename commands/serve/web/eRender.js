@@ -17,6 +17,7 @@ function renderWithEngine() {
     let objType;
 
     const nebbie = nucleus.configured({
+      theme: params.theme,
       types: [{
         name: info.supernova.name,
       }],
@@ -99,6 +100,7 @@ function renderSnapshot() {
       };
 
       const nebbie = nucleus.configured({
+        theme: snapshot.meta.theme,
         types: [{
           name: info.supernova.name,
           load() {
