@@ -92,28 +92,27 @@ export default function App({
   const [expandedObject, setExpandedObject] = useState(null);
   const [sn, setSupernova] = useState(null);
   const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
-  const [darkMode, setDarkMode] = useState(storage.get('darkMode') === true);
+  const [currentThemeName, setCurrentThemeName] = useState(storage.get('themeName'));
   const [objectListMode, setObjectListMode] = useState(storage.get('objectListMode') === true);
   const [direction, setDirection] = useState('ltr');
   const currentSelectionsRef = useRef(null);
   const uid = useRef();
   const [currentId, setCurrentId] = useState();
 
-  const themeName = darkMode ? 'dark' : 'light';
-
-  const theme = useMemo(() => createTheme(themeName), [themeName]);
+  const theme = useMemo(() => createTheme(currentThemeName), [currentThemeName]);
 
   const vizContext = useMemo(() => ({
+    currentThemeName,
     activeViz,
     setActiveViz,
     expandedObject,
     setExpandedObject,
-  }), [activeViz, expandedObject]);
+  }), [activeViz, expandedObject, currentThemeName]);
 
   const nebbie = useMemo(() => {
     const n = nucleus(app, {
       load: (type, config) => config.Promise.resolve(window.snDefinition || snDefinition),
-      theme: themeName,
+      theme: currentThemeName,
       direction,
     });
     n.types.register(info.supernova);
@@ -121,8 +120,8 @@ export default function App({
   }, [app]);
 
   useLayoutEffect(() => {
-    nebbie.theme(themeName);
-  }, [nebbie, theme]);
+    nebbie.theme(currentThemeName);
+  }, [nebbie, currentThemeName]);
 
   useEffect(() => {
     const create = () => {
@@ -160,8 +159,9 @@ export default function App({
   };
 
   const toggleDarkMode = () => {
-    storage.save('darkMode', !darkMode);
-    setDarkMode(!darkMode);
+    const v = currentThemeName === 'dark' ? 'light' : 'dark';
+    storage.save('themeName', v);
+    setCurrentThemeName(v);
   };
 
   const toggleDirection = () => {
@@ -218,7 +218,7 @@ export default function App({
                       </Grid>
                       <Grid item>
                         <IconButton title="Toggle light/dark mode" onClick={toggleDarkMode}>
-                          {darkMode ? <WbSunny fontSize="small" /> : <Brightness3 fontSize="small" />}
+                          {currentThemeName === 'dark' ? <WbSunny fontSize="small" /> : <Brightness3 fontSize="small" />}
                         </IconButton>
                       </Grid>
                       <Grid item>
