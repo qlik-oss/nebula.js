@@ -10,7 +10,7 @@ import MultiState from './MultiState';
 function collect(qSelectionObject, fields, state = '$') {
   qSelectionObject.qSelections.forEach(selection => {
     const name = selection.qField;
-    const field = fields[name] = fields[name] || { name, states: [], selections: [] }; // eslint-disable-line
+    const field = (fields[name] = fields[name] || { name, states: [], selections: [] }); // eslint-disable-line
     if (field.states.indexOf(state) === -1) {
       field.states.push(state);
       field.selections.push(selection);
@@ -44,12 +44,27 @@ export default function SelectedFields({ api }) {
       return undefined;
     }
     const onChange = () =>
-      setState({
-        items: getItems(api.layout()),
+      setState(currState => {
+        const newItems = getItems(api.layout());
+        // Maintain modal state in app selections
+        if (api.isInModal() && newItems.length !== currState.items.length) {
+          const lastDeselectedField = currState.items.filter(
+            f1 => newItems.some(f2 => f1.name === f2.name) === false
+          )[0];
+          const { qField } = lastDeselectedField.selections[0];
+          lastDeselectedField.selections = [{ qField }];
+          const wasIx = currState.items.indexOf(lastDeselectedField);
+          newItems.splice(wasIx, 0, lastDeselectedField);
+        }
+        return {
+          items: newItems,
+        };
       });
     api.on('changed', onChange);
+    api.on('modal-unset', onChange);
     return () => {
       api.removeListener('changed', onChange);
+      api.removeListener('modal-unset', onChange);
     };
   }, [api]);
 

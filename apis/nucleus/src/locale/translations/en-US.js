@@ -4,6 +4,7 @@ export default {
   'Common.English': 'English',
   'CurrentSelections.All': 'ALL',
   'CurrentSelections.Of': '{0} of {1}',
+  'CurrentSelections.None': 'NONE',
   'Listbox.Search': 'Search in listbox',
   'Navigate.Forward': 'Step forward',
   'Navigate.Back': 'Step back',

@@ -12,7 +12,7 @@ const create = app => {
   let canGoBack = false;
   let canClear = false;
 
-  let modalObject;
+  let modalObject = null;
   // let mounted;
   let lyt;
   let currentSelectionsModel;
@@ -61,6 +61,9 @@ const create = app => {
       api.emit('modal-unset');
       prom = Promise.resolve();
       return prom;
+    },
+    isInModal() {
+      return modalObject !== null;
     },
     /**
      * @param {EnigmaObjectModel} objectModel
