@@ -1,9 +1,8 @@
 /* eslint no-underscore-dangle:0 */
 import 'regenerator-runtime/runtime'; // Polyfill for using async/await
 
-import themeFn from '@nebula.js/theme';
-
 import localeFn from './locale';
+import appThemeFn from './app-theme';
 
 import { createAppSelectionAPI } from './selections';
 
@@ -14,6 +13,13 @@ import create from './object/create-object';
 import get from './object/get-object';
 import { create as typesFn } from './sn/types';
 import loggerFn from './utils/logger';
+
+/**
+ * @interface
+ * @alias ThemeInfo
+ * @property {string} key Theme identifier
+ * @property {function} load A function that should return a Promise that resolve to a raw JSON theme
+ */
 
 /**
  * @typedef {object}
@@ -35,6 +41,11 @@ const DEFAULT_CONFIG = {
    * @type {TypeInfo[]}
    */
   types: [],
+
+  /**
+   * @type {ThemeInfo[]}
+   */
+  themes: [],
   /** */
   env: {},
 };
@@ -50,6 +61,11 @@ const mergeConfigs = (base, c) => ({
     // TODO - filter to avoid duplicates
     ...(base.types || []),
     ...(c.types || []),
+  ],
+  themes: [
+    //
+    ...(base.themes || []),
+    ...(c.themes || []),
   ],
   env: {
     ...(base.env || {}),
@@ -113,7 +129,11 @@ function nuked(configuration = {}, prev = {}) {
       direction: configuration.direction,
     });
 
-    const theme = themeFn();
+    const appTheme = appThemeFn({
+      themes: configuration.themes,
+      logger,
+      root,
+    });
 
     const context = {
       nebbie: null,
@@ -122,17 +142,10 @@ function nuked(configuration = {}, prev = {}) {
       logger,
       types,
       root,
-      theme: theme.externalAPI,
+      theme: appTheme.externalAPI,
     };
 
-    const setTheme = t => {
-      theme.internalAPI.setTheme({
-        type: t,
-      });
-      root.theme(t);
-    };
-
-    setTheme(configuration.theme);
+    let currentThemePromise = appTheme.setTheme(configuration.theme);
 
     let selectionsApi = null;
     let selectionsComponentReference = null;
@@ -147,15 +160,21 @@ function nuked(configuration = {}, prev = {}) {
        * @param {VizConfig=} vizConfig
        * @returns {Viz}
        */
-      get: (getCfg, vizConfig) => get(getCfg, vizConfig, context),
+      get: async (getCfg, vizConfig) => {
+        await currentThemePromise;
+        return get(getCfg, vizConfig, context);
+      },
       /**
        * @param {CreateObjectConfig} createCfg
        * @param {VizConfig=} vizConfig
        * @returns {Viz}
        */
-      create: (createCfg, vizConfig) => create(createCfg, vizConfig, context),
-      theme(t) {
-        setTheme(t);
+      create: async (createCfg, vizConfig) => {
+        await currentThemePromise;
+        return create(createCfg, vizConfig, context);
+      },
+      theme(themeName) {
+        currentThemePromise = appTheme.setTheme(themeName);
       },
       /**
        * @param {'ltr'|'rtl'} d
@@ -175,7 +194,7 @@ function nuked(configuration = {}, prev = {}) {
              */
             mount(element) {
               if (selectionsComponentReference) {
-                console.error('Already mounted');
+                logger.error('Already mounted');
                 return;
               }
               selectionsComponentReference = AppSelectionsPortal({
