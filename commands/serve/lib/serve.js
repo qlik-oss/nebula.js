@@ -2,34 +2,42 @@ const path = require('path');
 const fs = require('fs');
 const chalk = require('chalk');
 const portfinder = require('portfinder');
+const extend = require('extend');
+const yargs = require('yargs');
 const { watch } = require('@nebula.js/cli-build');
 
-const webpackServe = require('./webpack.serve.js');
+const initConfig = require('../init-config');
 
+const webpackServe = require('./webpack.serve.js');
 const useEngine = require('./engine');
 
 module.exports = async argv => {
-  let stopEngine = () => {};
-  if (argv.ACCEPT_EULA) {
-    stopEngine = await useEngine(argv);
-  }
-  const port = argv.port || (await portfinder.getPortPromise());
-  const host = argv.host || 'localhost';
-  const enigmaConfig = {
-    port: 9076,
-    host: 'localhost',
-    ...argv.enigma,
-  };
   const context = process.cwd();
+  let defaultServeConfig = {};
+
+  if (!argv.$0) {
+    defaultServeConfig = initConfig(yargs).parse([]);
+  }
+
+  const serveConfig = extend(true, {}, defaultServeConfig, argv);
+
+  let stopEngine = () => {};
+  if (serveConfig.ACCEPT_EULA) {
+    stopEngine = await useEngine(serveConfig);
+  }
+  const port = serveConfig.port || (await portfinder.getPortPromise());
+  const host = serveConfig.host || 'localhost';
+  const enigmaConfig = serveConfig.enigma;
+
   let snPath;
   let snName;
   let watcher;
-  if (argv.entry) {
-    snPath = path.resolve(context, argv.entry);
+  if (serveConfig.entry) {
+    snPath = path.resolve(context, serveConfig.entry);
     const parsed = path.parse(snPath);
     snName = parsed.name;
   } else {
-    if (argv.build !== false) {
+    if (serveConfig.build !== false) {
       watcher = await watch();
     }
     try {
@@ -51,12 +59,13 @@ module.exports = async argv => {
     host,
     port,
     enigmaConfig,
-    webIntegrationId: argv.webIntegrationId,
-    snName: argv.type || snName,
+    webIntegrationId: serveConfig.webIntegrationId,
+    snName: serveConfig.type || snName,
     snPath,
     dev: process.env.MONO === 'true',
-    open: argv.open !== false,
+    open: serveConfig.open !== false,
     watcher,
+    serveConfig,
   });
 
   const close = async () => {

@@ -43,6 +43,7 @@ import Switch from '@material-ui/core/Switch';
 
 import TextField from '@material-ui/core/TextField';
 import AppBar from '@material-ui/core/AppBar';
+import Paper from '@material-ui/core/Paper';
 import { makeStyles } from '@material-ui/styles';
 
 export {
@@ -89,4 +90,5 @@ export {
   AppBar,
   Tab,
   Tabs,
+  Paper,
 };
