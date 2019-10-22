@@ -17,6 +17,7 @@ module.exports = async ({
   dev = false,
   open = true,
   watcher,
+  serveConfig,
 }) => {
   let config;
   let contentBase;
@@ -25,6 +26,8 @@ module.exports = async ({
     host,
     port,
   });
+
+  const themes = serveConfig.themes || [];
 
   if (dev) {
     const webpackConfig = require('./webpack.build.js');
@@ -65,6 +68,20 @@ module.exports = async ({
     before(app) {
       snapper.addRoutes(app);
 
+      app.get('/themes', (req, res) => {
+        const arr = themes.map(theme => theme.key);
+        res.json(arr);
+      });
+
+      app.get('/theme/:id', (req, res) => {
+        const t = themes.filter(theme => theme.key === req.params.id)[0];
+        if (!t) {
+          res.sendStatus('404');
+        } else {
+          res.json(t.theme);
+        }
+      });
+
       app.get('/info', (req, res) => {
         res.json({
           enigma: enigmaConfig,
@@ -72,6 +89,7 @@ module.exports = async ({
           supernova: {
             name: snName,
           },
+          themes: themes.map(theme => theme.key),
         });
       });
     },

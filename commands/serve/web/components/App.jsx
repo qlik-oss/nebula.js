@@ -19,6 +19,7 @@ import {
 import {
   WbSunny,
   Brightness3,
+  ColorLens,
 } from '@nebula.js/ui/icons';
 
 import {
@@ -31,6 +32,8 @@ import {
   Typography,
   Tab,
   Tabs,
+  Menu,
+  MenuItem,
 } from '@nebula.js/ui/components';
 
 import Properties from './Properties';
@@ -93,13 +96,17 @@ export default function App({
   const [sn, setSupernova] = useState(null);
   const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
   const [currentThemeName, setCurrentThemeName] = useState(storage.get('themeName'));
+  const [currentMuiThemeName, setCurrentMuiThemeName] = useState('light');
   const [objectListMode, setObjectListMode] = useState(storage.get('objectListMode') === true);
   const [direction, setDirection] = useState('ltr');
   const currentSelectionsRef = useRef(null);
   const uid = useRef();
   const [currentId, setCurrentId] = useState();
+  const [themeChooserAnchorEl, setThemeChooserAnchorEl] = React.useState(null);
 
-  const theme = useMemo(() => createTheme(currentThemeName), [currentThemeName]);
+  const customThemes = info.themes && info.themes.length ? ['light', 'dark', ...info.themes] : [];
+
+  const theme = useMemo(() => createTheme(currentMuiThemeName), [currentMuiThemeName]);
 
   const vizContext = useMemo(() => ({
     currentThemeName,
@@ -114,6 +121,13 @@ export default function App({
       load: (type, config) => config.Promise.resolve(window.snDefinition || snDefinition),
       theme: currentThemeName,
       direction,
+      themes: info.themes ? info.themes.map((t) => ({
+        key: t,
+        load: () => fetch(`/theme/${t}`).then((response) => response.json()).then((raw) => {
+          setCurrentMuiThemeName(raw.type === 'dark' ? 'dark' : 'light');
+          return raw;
+        }),
+      })) : null,
     });
     n.types.register(info.supernova);
     return n;
@@ -121,6 +135,9 @@ export default function App({
 
   useLayoutEffect(() => {
     nebbie.theme(currentThemeName);
+    if (currentThemeName === 'light' || currentThemeName === 'dark') {
+      setCurrentMuiThemeName(currentThemeName);
+    }
   }, [nebbie, currentThemeName]);
 
   useEffect(() => {
@@ -156,6 +173,12 @@ export default function App({
   const handleCacheChange = (e) => {
     storage.save('readFromCache', e.target.checked);
     setReadCacheEnabled(e.target.checked);
+  };
+
+  const handleThemeChange = (t) => {
+    setThemeChooserAnchorEl(null);
+    storage.save('themeName', t);
+    setCurrentThemeName(t);
   };
 
   const toggleDarkMode = () => {
@@ -217,9 +240,25 @@ export default function App({
                         <Switch disabled={objectListMode} checked={isReadCacheEnabled} onChange={handleCacheChange} value="isReadFromCacheEnabled" />
                       </Grid>
                       <Grid item>
-                        <IconButton title="Toggle light/dark mode" onClick={toggleDarkMode}>
-                          {currentThemeName === 'dark' ? <WbSunny fontSize="small" /> : <Brightness3 fontSize="small" />}
-                        </IconButton>
+                        {customThemes.length ? (
+                          <>
+                            <IconButton title="Select theme" onClick={(e) => setThemeChooserAnchorEl(e.currentTarget)}>
+                              <ColorLens fontSize="small" />
+                            </IconButton>
+                            <Menu
+                              anchorEl={themeChooserAnchorEl}
+                              open={!!themeChooserAnchorEl}
+                              keepMounted
+                              onClose={() => setThemeChooserAnchorEl(null)}
+                            >
+                              {customThemes.map((t) => <MenuItem key={t} selected={t === currentThemeName} onClick={() => handleThemeChange(t)}>{t}</MenuItem>)}
+                            </Menu>
+                          </>
+                        ) : (
+                          <IconButton title="Toggle light/dark mode" onClick={toggleDarkMode}>
+                            {currentThemeName === 'dark' ? <WbSunny fontSize="small" /> : <Brightness3 fontSize="small" />}
+                          </IconButton>
+                        )}
                       </Grid>
                       <Grid item>
                         <IconButton title="Toggle right-to-left/left-to-right" onClick={toggleDirection}>

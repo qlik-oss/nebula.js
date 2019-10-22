@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Grid } from '@nebula.js/ui/components';
+import { Grid, Paper } from '@nebula.js/ui/components';
 import { useTheme } from '@nebula.js/ui/theme';
 
 import Requirements from './Requirements';
@@ -62,33 +62,30 @@ export default function Cell({ api, onInitial }) {
   const Comp = !objectProps.sn ? Placeholder : SN;
   const err = objectProps.error || false;
   return (
-    <Grid
-      container
-      direction="column"
-      spacing={0}
-      style={{ height: '100%', padding: '8px', boxSixing: 'border-box', background: theme.palette.background.paper }}
-    >
-      <Grid item style={{ maxWidth: '100%' }}>
-        <Header layout={objectProps.layout} sn={objectProps.sn}>
-          &nbsp;
-        </Header>
+    <Paper style={{ height: '100%', position: 'relative' }} elevation={0} square>
+      <Grid container direction="column" spacing={0} style={{ height: '100%', padding: theme.spacing(1) }}>
+        <Grid item style={{ maxWidth: '100%' }}>
+          <Header layout={objectProps.layout} sn={objectProps.sn}>
+            &nbsp;
+          </Header>
+        </Grid>
+        <Grid item xs>
+          <Content>
+            {err ? (
+              <CError message={err.message} />
+            ) : (
+              <Comp
+                key={objectProps.layout.visualization}
+                sn={objectProps.sn}
+                snContext={userProps.context}
+                snOptions={userProps.options}
+                layout={objectProps.layout}
+              />
+            )}
+          </Content>
+        </Grid>
+        <Footer layout={objectProps.layout} />
       </Grid>
-      <Grid item xs>
-        <Content>
-          {err ? (
-            <CError message={err.message} />
-          ) : (
-            <Comp
-              key={objectProps.layout.visualization}
-              sn={objectProps.sn}
-              snContext={userProps.context}
-              snOptions={userProps.options}
-              layout={objectProps.layout}
-            />
-          )}
-        </Content>
-      </Grid>
-      <Footer layout={objectProps.layout} />
-    </Grid>
+    </Paper>
   );
 }

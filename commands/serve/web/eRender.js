@@ -17,6 +17,10 @@ function renderWithEngine() {
     let objType;
 
     const nebbie = nucleus.configured({
+      themes: info.themes ? info.themes.map((t) => ({
+        key: t,
+        load: () => fetch(`/theme/${t}`).then((response) => response.json()),
+      })) : undefined,
       theme: params.theme,
       types: [{
         name: info.supernova.name,
@@ -100,6 +104,10 @@ function renderSnapshot() {
       };
 
       const nebbie = nucleus.configured({
+        themes: info.themes ? info.themes.map((t) => ({
+          key: t,
+          load: () => fetch(`/theme/${t}`).then((response) => response.json()),
+        })) : undefined,
         theme: snapshot.meta.theme,
         types: [{
           name: info.supernova.name,
