@@ -41,6 +41,12 @@
       }
     },
     {
+      "files": ["**/*.int.js"],
+      "env": {
+        "browser": true
+      }
+    },
+    {
       "files": ["**/templates/**/*.js"],
       "rules": {
         "import/no-unresolved": 0,
