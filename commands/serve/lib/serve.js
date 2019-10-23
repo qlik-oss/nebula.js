@@ -6,7 +6,7 @@ const extend = require('extend');
 const yargs = require('yargs');
 const { watch } = require('@nebula.js/cli-build');
 
-const initConfig = require('../init-config');
+const initConfig = require('./init-config');
 
 const webpackServe = require('./webpack.serve.js');
 const useEngine = require('./engine');

@@ -1,5 +1,5 @@
 const serve = require('./lib/serve');
-const init = require('./init-config');
+const init = require('./lib/init-config');
 
 module.exports = {
   command: 'serve',
