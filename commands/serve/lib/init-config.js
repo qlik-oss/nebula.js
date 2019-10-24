@@ -31,6 +31,10 @@ const options = {
   port: {
     type: 'number',
   },
+  assets: {
+    type: 'string',
+    description: 'Path to a folder that will be served as static files under /assets',
+  },
   'enigma.host': {
     type: 'string',
     default: 'localhost',
