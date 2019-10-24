@@ -41,17 +41,31 @@ export default function OneField({
   };
 
   const selection = field.selections[0];
-  const counts = selection.qStateCounts;
+  if (typeof selection.qTotal === 'undefined') {
+    selection.qTotal = 0;
+  }
+  const counts = selection.qStateCounts || {
+    qSelected: 0,
+    qLocked: 0,
+    qExcluded: 0,
+    qLockedExcluded: 0,
+    qSelectedExcluded: 0,
+    qAlternative: 0,
+  };
   const green = (counts.qSelected + counts.qLocked) / selection.qTotal;
   const white = counts.qAlternative / selection.qTotal;
   const grey = (counts.qExcluded + counts.qLockedExcluded + counts.qSelectedExcluded) / selection.qTotal;
 
   const numSelected = counts.qSelected + counts.qSelectedExcluded + counts.qLocked + counts.qLockedExcluded;
+  // Maintain modal state in app selections
+  const noSegments = numSelected === 0 && selection.qTotal === 0;
   let label = '&nbsp;'; // FIXME translate
   if (selection.qTotal === numSelected && selection.qTotal > 1) {
     label = translator.get('CurrentSelections.All');
   } else if (numSelected > 1 && selection.qTotal) {
     label = translator.get('CurrentSelections.Of', [numSelected, selection.qTotal]);
+  } else if (noSegments) {
+    label = translator.get('CurrentSelections.None');
   } else {
     label = selection.qSelectedFieldSelectionInfo.map(v => v.qName).join(', ');
   }
@@ -107,19 +121,20 @@ export default function OneField({
           width: '100%',
         }}
       >
-        {segments.map(s => (
-          <div
-            key={s.color}
-            style={{
-              position: 'absolute',
-              background: s.color,
-              height: '100%',
-              top: 0,
-              width: `${s.ratio * 100}%`,
-              left: `${s.offset * 100}%`,
-            }}
-          />
-        ))}
+        {noSegments === false &&
+          segments.map(s => (
+            <div
+              key={s.color}
+              style={{
+                position: 'absolute',
+                background: s.color,
+                height: '100%',
+                top: 0,
+                width: `${s.ratio * 100}%`,
+                left: `${s.offset * 100}%`,
+              }}
+            />
+          ))}
       </div>
       {isActive && (
         <ListBoxPopover
