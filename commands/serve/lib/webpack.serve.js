@@ -1,6 +1,7 @@
 /* eslint global-require: 0 */
 const path = require('path');
 const chalk = require('chalk');
+const express = require('express');
 
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
@@ -25,6 +26,7 @@ module.exports = async ({
   const snapper = snapshotter({
     host,
     port,
+    images: serveConfig.images || [],
   });
 
   const themes = serveConfig.themes || [];
@@ -92,6 +94,10 @@ module.exports = async ({
           themes: themes.map(theme => theme.key),
         });
       });
+
+      if (serveConfig.assets) {
+        app.use('/assets', express.static(serveConfig.assets));
+      }
     },
     proxy: [
       {
