@@ -4,19 +4,7 @@ import { IconButton, Typography } from '@nebula.js/ui/components';
 import LocaleContext from '../../../contexts/LocaleContext';
 
 const [{ default: OneField }] = aw.mock(
-  [
-    [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({}) })],
-    // [
-    //   require.resolve('@nebula.js/ui/components'),
-    //   () => ({
-    //     IconButton: ({ children }) => <>{children}</>,
-    //     Grid: ({ children }) => <>{children}</>,
-    //     Typography: ({ children }) => <>{children}</>,
-    //   }),
-    // ],
-    // [require.resolve('@nebula.js/ui/icons/remove'), () => () => 'REMOVE'],
-    // [require.resolve('@nebula.js/ui/icons/lock'), () => () => 'LOCK'],
-  ],
+  [[require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({}) })]],
   ['../OneField']
 );
 
