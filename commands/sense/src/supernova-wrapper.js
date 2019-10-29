@@ -1,4 +1,5 @@
 import supernova from '@nebula.js/supernova';
+import themeFn from '@nebula.js/theme';
 
 import permissions from './permissions';
 import selectionsApi from './selections';
@@ -41,6 +42,10 @@ export default {
   exportProperties: null, // Disable conversion to/from this object
   template: '<div style="height: 100%;position: relative"></div>',
   mounted($element) {
+    // create a theme api with default nebula theme
+    // note that this will not consume a Sense theme
+    this.theme = themeFn();
+
     const element = $element[0].children[0];
     const selectionAPI = selectionsApi(this.$scope);
     const sn = snGenerator.create({
@@ -60,6 +65,7 @@ export default {
       layout,
       context: {
         permissions: permissions(this.options, this.backendApi),
+        theme: this.theme.externalAPI,
       },
     });
   },

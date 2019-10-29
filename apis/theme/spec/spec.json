@@ -1,0 +1,225 @@
+{
+  "scriptappy": "1.0.0",
+  "info": {
+    "name": "@nebula.js/theme",
+    "version": "0.1.0-alpha.23",
+    "license": "MIT",
+    "stability": "experimental",
+    "x-qlik-visibility": "public"
+  },
+  "entries": {},
+  "definitions": {
+    "colorPickerPalette": {
+      "kind": "object",
+      "entries": {
+        "key": {
+          "type": "string"
+        },
+        "colors": {
+          "kind": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "dataColorSpecials": {
+      "kind": "object",
+      "entries": {
+        "nil": {
+          "type": "string"
+        },
+        "others": {
+          "type": "string"
+        },
+        "primary": {
+          "type": "string"
+        }
+      }
+    },
+    "dataPalette": {
+      "kind": "object",
+      "entries": {
+        "key": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'pyramid'"
+            },
+            {
+              "kind": "literal",
+              "value": "'row'"
+            }
+          ],
+          "type": "string"
+        },
+        "colors": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            {
+              "kind": "array",
+              "items": {
+                "kind": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "type": "any"
+        }
+      }
+    },
+    "scalePalette": {
+      "kind": "object",
+      "entries": {
+        "key": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'gradient'"
+            },
+            {
+              "kind": "literal",
+              "value": "'class'"
+            }
+          ],
+          "type": "string"
+        },
+        "colors": {
+          "kind": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "Theme": {
+      "kind": "interface",
+      "params": [],
+      "entries": {
+        "getColorPickerColor": {
+          "description": "Resolve a color object using the color picker palette from the provided JSON theme",
+          "kind": "function",
+          "params": [
+            {
+              "name": "c",
+              "kind": "object",
+              "entries": {
+                "index": {
+                  "optional": true,
+                  "type": "number"
+                },
+                "color": {
+                  "optional": true,
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "returns": {
+            "type": "string"
+          },
+          "examples": [
+            "theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"
+          ]
+        },
+        "getContrastingColorTo": {
+          "description": "Get the best contrasting color against the specified `color`.\nThis is typically used to find a suitable text color for a label placed on an arbitrarily colored background.\n\nThe returned colors are derived from the theme.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "color",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "type": "string"
+          },
+          "examples": [
+            "theme.getContrastingColorTo('#400');"
+          ]
+        },
+        "getDataColorPalettes": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/dataPalette"
+            }
+          }
+        },
+        "getDataColorPickerPalettes": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/colorPickerPalette"
+            }
+          }
+        },
+        "getDataColorScales": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/scalePalette"
+            }
+          }
+        },
+        "getDataColorSpecials": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "#/definitions/dataColorSpecials"
+          }
+        },
+        "getStyle": {
+          "description": "Get the value of a style attribute in the theme by searching in the theme's json structure.\nThe search starts at the specified base path and continue upwards until the value is found.\nIf possible it will get the attribute's value using the given path.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "basePath",
+              "description": "Base path in the theme's json structure to start the search in (specified as a name path separated by dots)",
+              "type": "string"
+            },
+            {
+              "name": "path",
+              "description": "Expected path for the attribute (specified as a name path separated by dots)",
+              "type": "string"
+            },
+            {
+              "name": "attribute",
+              "description": "Name of the style attribute",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "The style value",
+            "type": "string"
+          },
+          "examples": [
+            "theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"
+          ]
+        }
+      }
+    }
+  }
+}
