@@ -98,7 +98,7 @@ export default class ObjectAPI {
         this.setState({
           layout,
           error: {
-            message: 'Could not find a version that supports current object version',
+            message: `Could not find a version of '${layout.visualization}' that supports current object version. Did you forget to register ${layout.visualization}?`,
           },
           sn: null,
         });
