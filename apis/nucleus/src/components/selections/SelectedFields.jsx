@@ -47,7 +47,7 @@ export default function SelectedFields({ api }) {
       setState(currState => {
         const newItems = getItems(api.layout());
         // Maintain modal state in app selections
-        if (api.isInModal() && newItems.length !== currState.items.length) {
+        if (api.isInModal() && newItems.length + 1 === currState.items.length) {
           const lastDeselectedField = currState.items.filter(
             f1 => newItems.some(f2 => f1.name === f2.name) === false
           )[0];

@@ -169,4 +169,40 @@ describe('<SelectedFields />', () => {
     expect(types[1].props.field.name).to.equal('my-field1');
     expect(types[2].props.field.name).to.equal('my-field2');
   });
+  it('should not run keep item in modal state when doing new selection', () => {
+    const data = {
+      qSelectionObject: {
+        qSelections: [],
+      },
+    };
+    const newData = {
+      qSelectionObject: {
+        qSelections: [
+          {
+            qField: 'my-field0',
+          },
+        ],
+      },
+    };
+    const on = sinon.stub();
+    const removeListener = sinon.spy();
+    const isInModal = sinon.stub();
+    const api = {
+      layout: sinon.stub(),
+      on,
+      removeListener,
+      isInModal,
+    };
+    api.layout.onFirstCall().returns(data);
+    api.layout.onSecondCall().returns(data);
+    api.layout.onThirdCall().returns(newData);
+    const testRenderer = renderer.create(<SelectedFields api={api} />);
+    testRenderer.update(<SelectedFields api={api} />);
+    const testInstance = testRenderer.root;
+    isInModal.returns(true);
+    on.firstCall.callArg(1);
+    const types = testInstance.findAllByType(MockedOneField);
+    expect(types).to.have.length(1);
+    expect(types[0].props.field.name).to.equal('my-field0');
+  });
 });
