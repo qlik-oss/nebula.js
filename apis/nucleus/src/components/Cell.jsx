@@ -62,7 +62,7 @@ export default function Cell({ api, onInitial }) {
   const Comp = !objectProps.sn ? Placeholder : SN;
   const err = objectProps.error || false;
   return (
-    <Paper style={{ height: '100%', position: 'relative' }} elevation={0} square>
+    <Paper style={{ height: '100%', position: 'relative' }} elevation={0} square className="nebulajs-cell">
       <Grid container direction="column" spacing={0} style={{ height: '100%', padding: theme.spacing(1) }}>
         <Grid item style={{ maxWidth: '100%' }}>
           <Header layout={objectProps.layout} sn={objectProps.sn}>
