@@ -1,3 +1,23 @@
+/**
+ * @typedef {object} scalePalette
+ * @property {string} key
+ * @property {'gradient'|'class'} type
+ * @property {string[]} colors
+ */
+
+/**
+ * @typedef {object} dataPalette
+ * @property {string} key
+ * @property {'pyramid'|'row'} type
+ * @property {string[]|Array<Array<string>>} colors
+ */
+
+/**
+ * @typedef {object} colorPickerPalette
+ * @property {string} key
+ * @property {string[]} colors
+ */
+
 export default function theme(resolvedTheme) {
   let uiPalette;
 
@@ -59,9 +79,13 @@ export default function theme(resolvedTheme) {
       return pals;
     },
     dataColors() {
-      return {
+      /** @typedef {object} dataColorSpecials */
+      return /** @lends dataColorSpecials */ {
+        /** @type {string} */
         primary: resolvedTheme.dataColors.primaryColor,
+        /** @type {string} */
         nil: resolvedTheme.dataColors.nullColor,
+        /** @type {string} */
         others: resolvedTheme.dataColors.othersColor,
       };
     },
