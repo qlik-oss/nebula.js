@@ -131,7 +131,10 @@ describe('ObjectAPI', () => {
       api.setLayout({ visualization: 'viz', version: 'vers' });
       expect(api.setState).to.have.been.calledWithExactly({
         layout: { visualization: 'viz', version: 'vers' },
-        error: { message: 'Could not find a version that supports current object version' },
+        error: {
+          message:
+            "Could not find a version of 'viz' that supports current object version. Did you forget to register viz?",
+        },
         sn: null,
       });
     });
