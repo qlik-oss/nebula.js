@@ -25,8 +25,8 @@
     "spec": "scriptappy-from-jsdoc -c ./spec/spec.conf.js"
   },
   "devDependencies": {
-    "d3-color": "^1.4.0",
-    "extend": "^3.0.2",
-    "node-event-emitter": "^0.0.1"
+    "d3-color": "1.4.0",
+    "extend": "3.0.2",
+    "node-event-emitter": "0.0.1"
   }
 }

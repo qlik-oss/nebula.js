@@ -7,8 +7,14 @@
     "name": "<%= user %>",
     "email": "<%= email %>"
   },
-  "keywords": ["qlik", "nebula", "supernova"],
-  "files": ["dist"],
+  "keywords": [
+    "qlik",
+    "nebula",
+    "supernova"
+  ],
+  "files": [
+    "dist"
+  ],
   "engines": {
     "node": ">=8"
   },
@@ -21,13 +27,13 @@
     "test:integration": "aw puppet --testExt '*.int.js' --glob 'test/integration/**/*.int.js'"
   },
   "devDependencies": {
-    "@after-work.js/aw": "^6.0.3",
+    "@after-work.js/aw": "6.0.10",
     "@nebula.js/cli": "<%= nebulaVersion %>",
-    "eslint": "^5.12.1",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.15.0",
-    "eslint-plugin-mocha": "^5.2.1",
-    "picasso.js": "^0.25.2",
-    "picasso-plugin-q": "^0.25.2"
+    "eslint": "5.12.1",
+    "eslint-config-airbnb-base": "13.1.0",
+    "eslint-plugin-import": "2.15.0",
+    "eslint-plugin-mocha": "5.2.1",
+    "picasso.js": "0.25.2",
+    "picasso-plugin-q": "0.25.2"
   }
 }
