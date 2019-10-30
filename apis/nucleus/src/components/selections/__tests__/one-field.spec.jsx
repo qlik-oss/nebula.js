@@ -1,10 +1,13 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { IconButton, Typography } from '@nebula.js/ui/components';
-import LocaleContext from '../../../contexts/LocaleContext';
 
+const LocaleContext = React.createContext();
 const [{ default: OneField }] = aw.mock(
-  [[require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({}) })]],
+  [
+    [require.resolve('../../../contexts/LocaleContext'), () => LocaleContext],
+    [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({}) })],
+  ],
   ['../OneField']
 );
 

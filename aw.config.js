@@ -3,4 +3,7 @@ module.exports = {
     timeout: 30000,
   },
   mocks: [],
+  nyc: {
+    exclude: ['**/commands/**'],
+  },
 };
