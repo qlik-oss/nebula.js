@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 
 const TREE_PATH = '/qListObjectDef';
 
-const ListBoxSearch = ({ model }) => {
+export default function ListBoxSearch({ model }) {
   const translator = useContext(LocaleContext);
   const [value, setValue] = useState('');
   const onChange = e => {
@@ -39,6 +39,7 @@ const ListBoxSearch = ({ model }) => {
   };
 
   const { gridContainer, gridItem } = useStyles();
+
   return (
     <Grid className={gridContainer} item container direction="row" alignItems="center">
       <Grid item>
@@ -56,6 +57,4 @@ const ListBoxSearch = ({ model }) => {
       </Grid>
     </Grid>
   );
-};
-
-export default ListBoxSearch;
+}
