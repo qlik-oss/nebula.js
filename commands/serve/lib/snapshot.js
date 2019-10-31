@@ -9,7 +9,11 @@ function snapshotter({ host, port }) {
 
   return {
     addRoutes(app) {
-      app.use(bodyParser.json());
+      app.use(
+        bodyParser.json({
+          limit: '10mb',
+        })
+      );
 
       app.get('/image/:id', (req, res) => {
         const p = images[req.params.id];
