@@ -4,7 +4,7 @@ const chalk = require('chalk');
 const portfinder = require('portfinder');
 const extend = require('extend');
 const yargs = require('yargs');
-const { watch } = require('@nebula.js/cli-build');
+const build = require('@nebula.js/cli-build');
 
 const initConfig = require('./init-config');
 
@@ -16,7 +16,7 @@ module.exports = async argv => {
   let defaultServeConfig = {};
 
   if (!argv.$0) {
-    defaultServeConfig = initConfig(yargs).parse([]);
+    defaultServeConfig = initConfig(yargs([])).argv;
   }
 
   const serveConfig = extend(true, {}, defaultServeConfig, argv);
@@ -38,7 +38,10 @@ module.exports = async argv => {
     snName = parsed.name;
   } else {
     if (serveConfig.build !== false) {
-      watcher = await watch();
+      watcher = await build({
+        watch: true,
+        config: serveConfig.config,
+      });
     }
     try {
       const externalPkg = require(path.resolve(context, 'package.json')); // eslint-disable-line global-require
