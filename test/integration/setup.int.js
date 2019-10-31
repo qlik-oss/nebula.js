@@ -1,4 +1,3 @@
-// const build = require('../__serve__/build');
 const path = require('path');
 const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
 

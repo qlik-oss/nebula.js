@@ -12,8 +12,9 @@
     "type": "git",
     "url": "https://github.com/qlik-oss/nebula.js.git"
   },
-  "main": "build.js",
+  "main": "lib/build.js",
   "files": [
+    "lib",
     "command.js"
   ],
   "scripts": {
@@ -24,8 +25,10 @@
     "@babel/core": "7.6.4",
     "@babel/preset-env": "7.6.3",
     "chalk": "2.4.2",
+    "extend": "^3.0.2",
     "rollup": "1.26.0",
     "rollup-plugin-babel": "4.3.3",
+    "rollup-plugin-commonjs": "^10.1.0",
     "rollup-plugin-node-resolve": "5.2.0",
     "rollup-plugin-postcss": "2.0.3",
     "rollup-plugin-replace": "2.2.0",

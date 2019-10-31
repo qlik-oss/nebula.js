@@ -1,14 +1,12 @@
-const { build } = require('./build');
+const build = require('./lib/build');
+
+const init = require('./lib/init-config');
 
 module.exports = {
   command: 'build',
   desc: 'Build supernova',
   builder(yargs) {
-    yargs.option('watch', {
-      type: 'boolean',
-      alias: 'w',
-      default: false,
-    });
+    init(yargs).argv;
   },
   handler(argv) {
     build(argv);

@@ -1,15 +1,27 @@
 const path = require('path');
 
+const extend = require('extend');
+const yargs = require('yargs');
 const rollup = require('rollup');
 const babel = require('rollup-plugin-babel');
 const postcss = require('rollup-plugin-postcss');
 const replace = require('rollup-plugin-replace');
-const node = require('rollup-plugin-node-resolve');
+const nodeResolve = require('rollup-plugin-node-resolve');
+const commonjs = require('rollup-plugin-commonjs');
+
+const babelPreset = require('@babel/preset-env');
+
 const { terser } = require('rollup-plugin-terser');
+
+const initConfig = require('./init-config');
 
 const config = ({ mode = 'production', format = 'umd', cwd = process.cwd() } = {}) => {
   const pkg = require(path.resolve(cwd, 'package.json')); // eslint-disable-line
   const { name, version, license, author } = pkg;
+
+  if (format === 'esm' && !pkg.module) {
+    return false;
+  }
 
   const auth = typeof author === 'object' ? `${author.name} <${author.email}>` : author || '';
   const moduleName = name.split('/').reverse()[0];
@@ -32,16 +44,13 @@ const config = ({ mode = 'production', format = 'umd', cwd = process.cwd() } = {
         replace({
           'process.env.NODE_ENV': JSON.stringify(mode === 'development' ? 'development' : 'production'),
         }),
-        node({
-          customResolveOptions: {
-            moduleDirectory: path.resolve(cwd, 'node_modules'),
-          },
-        }),
+        nodeResolve(),
+        commonjs(),
         babel({
           babelrc: false,
           presets: [
             [
-              '@babel/preset-env',
+              babelPreset,
               {
                 modules: false,
                 targets: {
@@ -76,28 +85,34 @@ const config = ({ mode = 'production', format = 'umd', cwd = process.cwd() } = {
   };
 };
 
-const minified = async () => {
+const minified = async argv => {
   const c = config({
     mode: 'production',
     format: 'umd',
+    argv,
   });
   const bundle = await rollup.rollup(c.input);
   await bundle.write(c.output);
 };
 
-const esm = async () => {
+const esm = async argv => {
   const c = config({
     mode: 'development',
     format: 'esm',
+    argv,
   });
+  if (!c) {
+    return Promise.resolve();
+  }
   const bundle = await rollup.rollup(c.input);
-  await bundle.write(c.output);
+  return bundle.write(c.output);
 };
 
-const watch = async () => {
+const watch = async argv => {
   const c = config({
     mode: 'development',
     format: 'esm',
+    argv,
   });
 
   const watcher = rollup.watch({
@@ -122,16 +137,20 @@ const watch = async () => {
   });
 };
 
-async function build(argv) {
-  if (argv.watch) {
-    watch();
-  } else {
-    await minified();
-    await esm();
+async function build(argv = {}) {
+  let defaultBuildConfig = {};
+
+  // if not runnning via command line, run the config to inject default values
+  if (!argv.$0) {
+    defaultBuildConfig = initConfig(yargs([])).argv;
   }
+
+  const buildConfig = extend(true, {}, defaultBuildConfig, argv);
+  if (buildConfig.watch) {
+    return watch(buildConfig);
+  }
+  await minified(buildConfig);
+  return esm(buildConfig);
 }
 
-module.exports = {
-  build,
-  watch,
-};
+module.exports = build;
