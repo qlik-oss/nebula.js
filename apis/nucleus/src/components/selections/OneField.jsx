@@ -14,6 +14,8 @@ import LocaleContext from '../../contexts/LocaleContext';
 
 const useStyles = makeStyles(theme => ({
   item: {
+    backgroundColor: theme.palette.background.paper,
+    position: 'relative',
     cursor: 'pointer',
     padding: '4px',
     '&:hover': {
