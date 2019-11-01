@@ -92,7 +92,6 @@ export default function create(definition) {
   }
 
   cache[key] = createMuiTheme({
-    type: def.type,
     typography: {
       ...defaults.typography,
     },
@@ -114,6 +113,7 @@ export default function create(definition) {
         dark: '#589f35',
         contrastText: '#fff',
       },
+      type: def.type,
       ...def.palette,
     },
   });
