@@ -11,6 +11,10 @@ const useStyles = makeStyles(theme => ({
   row: {
     flexWrap: 'nowrap',
     borderBottom: `1px solid ${theme.palette.divider}`,
+    '&:focus': {
+      boxShadow: 'inset 0 0 0 2px #3f8ab3',
+      outline: 'none',
+    },
   },
   cell: {
     padding: '8px',
@@ -104,7 +108,7 @@ export default function Row({ index, style, data }) {
     <Grid
       container
       spacing={0}
-      className={classArr.join(' ')}
+      className={classArr.join(' ').trim()}
       style={style}
       onClick={onClick}
       role="row"
