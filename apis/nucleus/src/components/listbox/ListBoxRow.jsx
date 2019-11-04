@@ -108,7 +108,7 @@ export default function Row({ index, style, data }) {
     <Grid
       container
       spacing={0}
-      className={classArr.join(' ')}
+      className={classArr.join(' ').trim()}
       style={style}
       onClick={onClick}
       role="row"
