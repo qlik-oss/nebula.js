@@ -2,7 +2,6 @@ import React, { useRef, useState, useContext } from 'react';
 
 import Remove from '@nebula.js/ui/icons/remove';
 import Lock from '@nebula.js/ui/icons/lock';
-// import themes from '@nebula.js/ui/theme';
 
 import { IconButton, Grid, Typography } from '@nebula.js/ui/components';
 
@@ -24,25 +23,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function OneField({
-  field,
-  api,
-  // theme = themes('light'),
-}) {
+export default function OneField({ field, api, stateIx = 0, skipHandleShowListBoxPopover = false }) {
   const translator = useContext(LocaleContext);
   const alignTo = useRef();
-  const [isActive, setIsActive] = useState(false);
+  const [showListBoxPopover, setShowListBoxPopover] = useState(false);
 
   const classes = useStyles();
 
-  const toggleActive = e => {
+  const handleShowListBoxPopover = e => {
     if (e.currentTarget.contains(e.target)) {
       // because click in popover will propagate to parent
-      setIsActive(!isActive);
+      setShowListBoxPopover(!showListBoxPopover);
     }
   };
 
-  const selection = field.selections[0];
+  const selection = field.selections[stateIx];
   if (typeof selection.qTotal === 'undefined') {
     selection.qTotal = 0;
   }
@@ -71,8 +66,8 @@ export default function OneField({
   } else {
     label = selection.qSelectedFieldSelectionInfo.map(v => v.qName).join(', ');
   }
-  if (field.states[0] !== '$') {
-    label = `${field.states[0]}: ${label}`;
+  if (field.states[stateIx] !== '$') {
+    label = `${field.states[stateIx]}: ${label}`;
   }
 
   const segments = [
@@ -85,7 +80,13 @@ export default function OneField({
   });
 
   return (
-    <Grid container spacing={0} ref={alignTo} className={classes.item} onClick={toggleActive}>
+    <Grid
+      container
+      spacing={0}
+      ref={alignTo}
+      className={classes.item}
+      onClick={(skipHandleShowListBoxPopover === false && handleShowListBoxPopover) || null}
+    >
       <Grid item xs style={{ minWidth: 0, flexGrow: 1, opacity: selection.qLocked ? '0.3' : '' }}>
         <Typography noWrap style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600 }}>
           {selection.qField}
@@ -106,7 +107,7 @@ export default function OneField({
             title={translator.get('Selection.Clear')}
             onClick={e => {
               e.stopPropagation();
-              api.clearField(selection.qField, field.states[0]);
+              api.clearField(selection.qField, field.states[stateIx]);
             }}
             style={{ zIndex: 1 }}
           >
@@ -138,14 +139,14 @@ export default function OneField({
             />
           ))}
       </div>
-      {isActive && (
+      {showListBoxPopover && (
         <ListBoxPopover
           alignTo={alignTo}
-          show={isActive}
-          close={() => setIsActive(false)}
+          show={showListBoxPopover}
+          close={() => setShowListBoxPopover(false)}
           app={api.model}
           fieldName={selection.qField}
-          stateName={field.states[0]}
+          stateName={field.states[stateIx]}
         />
       )}
     </Grid>

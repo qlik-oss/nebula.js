@@ -9,6 +9,7 @@ export default {
   'Navigate.Forward': 'Step forward',
   'Navigate.Back': 'Step back',
   'Selection.ClearAll': 'Clear all selections',
+  'Selection.ClearAllStates': 'Clear all states',
   'Selection.Confirm': 'Confirm selection',
   'Selection.Cancel': 'Cancel selection',
   'Selection.Clear': 'Clear selection',

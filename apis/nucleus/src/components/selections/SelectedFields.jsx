@@ -69,7 +69,7 @@ export default function SelectedFields({ api }) {
   }, [api]);
 
   return (
-    <Grid container spacing={0} wrap="nowrap">
+    <Grid container spacing={0} wrap="nowrap" style={{ height: '100%' }}>
       {state.items.map(s => (
         <Grid
           item
@@ -82,7 +82,7 @@ export default function SelectedFields({ api }) {
             borderRight: `1px solid ${theme.palette.divider}`,
           }}
         >
-          {s.states.length > 1 ? <MultiState field={s} /> : <OneField field={s} api={api} />}
+          {s.states.length > 1 ? <MultiState field={s} api={api} /> : <OneField field={s} api={api} />}
         </Grid>
       ))}
     </Grid>
