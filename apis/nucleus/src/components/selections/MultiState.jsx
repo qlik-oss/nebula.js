@@ -92,7 +92,7 @@ export default function MultiState({ field, api }) {
         >
           <MenuList>
             <MenuItem divider title={clearAllStates} onClick={handleClearAllStates}>
-              <Button variant="outlined" style={{ width: '100%' }}>
+              <Button variant="outlined" fullWidth>
                 <Typography component="span">{clearAllStates}</Typography>
               </Button>
             </MenuItem>
