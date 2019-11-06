@@ -16,7 +16,7 @@ const SelectionToolbar = React.forwardRef(({ items }, ref) => {
   );
 });
 
-const SelectionToolbarWithDefault = ({ api, xItems = [] }) => {
+const SelectionToolbarWithDefault = ({ api, xItems = [], onCancel = () => {}, onConfirm = () => {} }) => {
   const translator = useContext(LocaleContext);
 
   const items = [
@@ -38,7 +38,10 @@ const SelectionToolbarWithDefault = ({ api, xItems = [] }) => {
       icon: 'close',
       enabled: () => api.canCancel(),
       disabled: !api.canCancel(),
-      action: () => api.cancel(),
+      action: () => {
+        api.cancel();
+        onCancel();
+      },
       getSvgIconShape: close,
     },
     {
@@ -48,7 +51,10 @@ const SelectionToolbarWithDefault = ({ api, xItems = [] }) => {
       icon: 'tick',
       enabled: () => api.canConfirm(),
       disabled: !api.canConfirm(),
-      action: () => api.confirm(),
+      action: () => {
+        api.confirm();
+        onConfirm();
+      },
       getSvgIconShape: tick,
     },
   ];

@@ -138,7 +138,12 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
               )}
             </Grid>
             <Grid item>
-              <SelectionToolbarWithDefault api={sel} xItems={[moreItem]} />
+              <SelectionToolbarWithDefault
+                api={sel}
+                xItems={[moreItem]}
+                onConfirm={popoverClose}
+                onCancel={() => popoverClose(null, 'escapeKeyDown')}
+              />
             </Grid>
           </Grid>
         </Grid>
