@@ -5,6 +5,7 @@ const babelPath = require.resolve('babel-loader');
 const babelPresetEnvPath = require.resolve('@babel/preset-env');
 const babelPresetReactPath = require.resolve('@babel/preset-react');
 const sourceMapLoaderPath = require.resolve('source-map-loader');
+const favicon = path.resolve(__dirname, '../../../docs/assets/njs.png');
 
 const cfg = ({ srcDir, distDir, snPath, dev = false }) => {
   const config = {
@@ -72,16 +73,19 @@ const cfg = ({ srcDir, distDir, snPath, dev = false }) => {
         template: path.resolve(srcDir, 'eRender.html'),
         filename: 'eRender.html',
         chunks: ['eRender'],
+        favicon,
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eDev.html'),
         filename: 'eDev.html',
         chunks: ['eDev'],
+        favicon,
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eHub.html'),
         filename: 'eHub.html',
         chunks: ['eHub'],
+        favicon,
       }),
     ],
   };
