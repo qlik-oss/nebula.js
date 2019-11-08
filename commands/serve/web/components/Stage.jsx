@@ -1,19 +1,11 @@
-import React, {
-  useEffect,
-  useState,
-  useContext,
-} from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { observe } from '@nebula.js/nucleus/src/object/observer';
 
 import Cell from './Cell';
 import NebulaContext from '../contexts/NebulaContext';
 import VizContext from '../contexts/VizContext';
 
-export default function Stage({
-  info,
-  storage,
-  uid,
-}) {
+export default function Stage({ info, storage, uid }) {
   const nebbie = useContext(NebulaContext);
   const [model, setModel] = useState(null);
 
@@ -25,27 +17,36 @@ export default function Stage({
     if (!uid) {
       return undefined;
     }
-    nebbie.create({
-      type: info.supernova.name,
-    }, {
-      context: {
-        permissions: ['passive', 'interact', 'select', 'fetch'],
-      },
-      properties: {
-        ...(storage.get('readFromCache') !== false ? storage.props(info.supernova.name) : {}),
-        qInfo: {
-          qId: uid,
-          qType: info.supernova.name,
+    nebbie
+      .create(
+        {
+          type: info.supernova.name,
         },
-      },
-    }).then((v) => {
-      setModel(v.model);
-      setActiveViz(v);
-      m = v.model;
-      propertyObserver = observe(v.model, (p) => {
-        storage.props(info.supernova.name, p);
-      }, 'properties');
-    });
+        {
+          context: {
+            permissions: ['passive', 'interact', 'select', 'fetch'],
+          },
+          properties: {
+            ...(storage.get('readFromCache') !== false ? storage.props(info.supernova.name) : {}),
+            qInfo: {
+              qId: uid,
+              qType: info.supernova.name,
+            },
+          },
+        }
+      )
+      .then(v => {
+        setModel(v.model);
+        setActiveViz(v);
+        m = v.model;
+        propertyObserver = observe(
+          v.model,
+          p => {
+            storage.props(info.supernova.name, p);
+          },
+          'properties'
+        );
+      });
 
     return () => {
       m && m.emit('close');

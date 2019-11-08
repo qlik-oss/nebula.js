@@ -7,26 +7,26 @@ import React, {
 
 import NebulaContext from '../contexts/NebulaContext';
 
-export default function Chart({
-  id,
-  onLoad,
-}) {
+export default function Chart({ id, onLoad }) {
   const nebbie = useContext(NebulaContext);
   const el = useRef();
   useEffect(() => {
-    const n = nebbie.get({
-      id,
-    }, {
-      context: {
-        permissions: ['passive', 'interact', 'select', 'fetch'],
+    const n = nebbie.get(
+      {
+        id,
       },
-      element: el.current,
-    });
-    n.then((viz) => {
+      {
+        context: {
+          permissions: ['passive', 'interact', 'select', 'fetch'],
+        },
+        element: el.current,
+      }
+    );
+    n.then(viz => {
       onLoad(viz, el.current);
     });
     return () => {
-      n.then((v) => {
+      n.then(v => {
         v.close();
         // v.unmount();
       });

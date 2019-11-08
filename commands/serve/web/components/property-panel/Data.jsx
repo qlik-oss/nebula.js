@@ -1,18 +1,10 @@
 import React from 'react';
 
-import {
-  List,
-  ListItem,
-  Typography,
-} from '@nebula.js/ui/components';
+import { List, ListItem, Typography } from '@nebula.js/ui/components';
 
 import HyperCube from './HyperCube';
 
-export default function Data({
-  model,
-  sn,
-  properties,
-}) {
+export default function Data({ model, sn, properties }) {
   if (!sn) {
     return null;
   }
@@ -20,14 +12,12 @@ export default function Data({
   const { targets } = sn.qae.data;
 
   if (!targets.length) {
-    return (
-      <Typography>No data targets found</Typography>
-    );
+    return <Typography>No data targets found</Typography>;
   }
 
   return (
     <List>
-      {targets.map((t) => (
+      {targets.map(t => (
         <ListItem key={t.path} divider disableGutters>
           <HyperCube target={t} properties={properties} model={model} />
         </ListItem>

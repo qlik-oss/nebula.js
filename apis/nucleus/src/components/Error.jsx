@@ -1,9 +1,7 @@
 import React from 'react';
 
-import { prefixer } from '../utils/utils';
-
 const Component = props => (
-  <div className={prefixer('cell__error')}>
+  <div>
     <div>Error</div>
     <div>{props.message}</div>
   </div>

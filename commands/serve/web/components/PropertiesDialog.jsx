@@ -1,24 +1,8 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  useCallback,
-} from 'react';
+import React, { useEffect, useRef, useState, useCallback } from 'react';
 
-import {
-  Button,
-  Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogActions,
-  TextField,
-} from '@nebula.js/ui/components';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@nebula.js/ui/components';
 
-export default function PropertiesDialog({
-  model,
-  show,
-  close,
-}) {
+export default function PropertiesDialog({ model, show, close }) {
   const text = useRef(null);
   const [objectProps, setObjectProps] = useState('');
 
@@ -28,7 +12,7 @@ export default function PropertiesDialog({
     }
   });
 
-  const onChange = (e) => {
+  const onChange = e => {
     setObjectProps(e.target.value);
   };
 
@@ -37,9 +21,11 @@ export default function PropertiesDialog({
       return undefined;
     }
     const onChanged = () => {
-      model && show && model.getProperties().then((props) => {
-        show && setObjectProps(JSON.stringify(props || {}, null, 2));
-      });
+      model &&
+        show &&
+        model.getProperties().then(props => {
+          show && setObjectProps(JSON.stringify(props || {}, null, 2));
+        });
     };
 
     model.on('changed', onChanged);
@@ -61,11 +47,8 @@ export default function PropertiesDialog({
         },
       }}
     >
-      <DialogTitle>
-        Modify object properties
-      </DialogTitle>
+      <DialogTitle>Modify object properties</DialogTitle>
       <DialogContent dividers>
-
         <TextField
           value={objectProps}
           onChange={onChange}
@@ -79,8 +62,12 @@ export default function PropertiesDialog({
         />
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={close}>Cancel</Button>
-        <Button variant="outlined" onClick={onConfirm}>Confirm</Button>
+        <Button variant="outlined" onClick={close}>
+          Cancel
+        </Button>
+        <Button variant="outlined" onClick={onConfirm}>
+          Confirm
+        </Button>
       </DialogActions>
     </Dialog>
   );

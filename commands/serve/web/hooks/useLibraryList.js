@@ -34,5 +34,5 @@ export default function list(app, type = 'dimension') {
 
   const [model] = useModel(def, app);
   const [layout] = useLayout(model, app);
-  return [layout ? ((layout.qDimensionList || layout.qMeasureList).qItems || []) : []];
+  return [layout ? (layout.qDimensionList || layout.qMeasureList).qItems || [] : []];
 }
