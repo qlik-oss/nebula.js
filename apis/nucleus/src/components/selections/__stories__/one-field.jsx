@@ -1,5 +1,5 @@
 import React from 'react';
-import { Grid } from '@nebula.js/ui/components';
+import { Grid } from '@material-ui/core';
 import { text, boolean } from '@storybook/addon-knobs'; // eslint-disable-line
 import OneField from '../OneField';
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { IconButton, Typography } from '@nebula.js/ui/components';
+import { IconButton, Typography } from '@material-ui/core';
 
 const LocaleContext = React.createContext();
 const [{ default: OneField }] = aw.mock(

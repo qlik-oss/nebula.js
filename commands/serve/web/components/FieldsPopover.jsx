@@ -1,6 +1,6 @@
 import React, { useContext, useState, useMemo } from 'react';
 
-import { Popover, List, ListSubheader, ListItem, ListItemText, ListItemIcon, Divider } from '@nebula.js/ui/components';
+import { Popover, List, ListSubheader, ListItem, ListItemText, ListItemIcon, Divider } from '@material-ui/core';
 
 import { ChevronRight, ChevronLeft } from '@nebula.js/ui/icons';
 

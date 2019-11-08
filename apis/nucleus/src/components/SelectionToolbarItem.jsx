@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { IconButton, Button, MenuItem, ListItemIcon, Typography } from '@nebula.js/ui/components';
+import { IconButton, Button, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 

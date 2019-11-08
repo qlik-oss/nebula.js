@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@nebula.js/ui/components';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions, TextField } from '@material-ui/core';
 
 export default function PropertiesDialog({ model, show, close }) {
   const text = useRef(null);

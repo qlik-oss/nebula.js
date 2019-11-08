@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState, useCallback, useRef } from 'react';
 
-import { Grid, Card, Toolbar, Divider, IconButton, CircularProgress } from '@nebula.js/ui/components';
+import { Grid, Card, Toolbar, Divider, IconButton, CircularProgress } from '@material-ui/core';
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 

@@ -12,7 +12,7 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
-} from '@nebula.js/ui/components';
+} from '@material-ui/core';
 
 import { ExpandMore } from '@nebula.js/ui/icons';
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Grid } from '@nebula.js/ui/components';
+import { Grid } from '@material-ui/core';
 
 import { useTheme } from '@nebula.js/ui/theme';
 

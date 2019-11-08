@@ -3,7 +3,7 @@ import React, { useContext, useCallback, useRef, useState } from 'react';
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
 
-import { IconButton, Popover, Grid, MenuList } from '@nebula.js/ui/components';
+import { IconButton, Popover, Grid, MenuList } from '@material-ui/core';
 
 import { more } from '@nebula.js/ui/icons/more';
 import useModel from '../../hooks/useModel';

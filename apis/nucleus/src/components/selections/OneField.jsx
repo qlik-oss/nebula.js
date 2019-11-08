@@ -3,7 +3,7 @@ import React, { useRef, useState, useContext } from 'react';
 import Remove from '@nebula.js/ui/icons/remove';
 import Lock from '@nebula.js/ui/icons/lock';
 
-import { IconButton, Grid, Typography } from '@nebula.js/ui/components';
+import { IconButton, Grid, Typography } from '@material-ui/core';
 
 import { makeStyles } from '@nebula.js/ui/theme';
 
