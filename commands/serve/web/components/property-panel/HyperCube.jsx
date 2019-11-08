@@ -1,12 +1,8 @@
-import React, {
-  useMemo,
-} from 'react';
+import React, { useMemo } from 'react';
 
 import hcHandler from '@nebula.js/nucleus/src/object/hc-handler';
 
-import {
-  Typography,
-} from '@nebula.js/ui/components';
+import { Typography } from '@nebula.js/ui/components';
 
 import Fields from './Fields';
 
@@ -29,40 +25,41 @@ const getValue = (data, reference, defaultValue) => {
   return dataContainer;
 };
 
+export default function HyperCube({ model, target, properties }) {
+  const handler = useMemo(
+    () =>
+      hcHandler({
+        def: target,
+        hc: getValue(properties, target.path),
+      }),
+    [properties]
+  );
 
-export default function HyperCube({
-  model,
-  target,
-  properties,
-}) {
-  const handler = useMemo(() => hcHandler({
-    def: target,
-    hc: getValue(properties, target.path),
-  }), [properties]);
-
-  const onDimensionAdded = (a) => {
+  const onDimensionAdded = a => {
     handler.addDimension(typeof a === 'object' ? { qLibraryId: a.qId } : a);
     model.setProperties(properties);
   };
 
-  const onDimensionRemoved = (idx) => {
+  const onDimensionRemoved = idx => {
     handler.removeDimension(idx);
     model.setProperties(properties);
   };
 
-  const onMeasureAdded = (a) => {
+  const onMeasureAdded = a => {
     handler.addMeasure(typeof a === 'object' ? { qLibraryId: a.qId } : a);
     model.setProperties(properties);
   };
 
-  const onMeasureRemoved = (idx) => {
+  const onMeasureRemoved = idx => {
     handler.removeMeasure(idx);
     model.setProperties(properties);
   };
 
   return (
     <div style={{ width: '100%' }}>
-      <Typography color="textSecondary" style={{ fontFamily: 'Monaco, monospace', fontSize: '0.7rem' }}>{target.path}</Typography>
+      <Typography color="textSecondary" style={{ fontFamily: 'Monaco, monospace', fontSize: '0.7rem' }}>
+        {target.path}
+      </Typography>
       <Fields
         onAdded={onDimensionAdded}
         onRemoved={onDimensionRemoved}

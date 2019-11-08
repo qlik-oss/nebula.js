@@ -1,18 +1,13 @@
 import React, { useCallback } from 'react';
 
-import {
-  Typography,
-} from '@nebula.js/ui/components';
+import { Typography } from '@nebula.js/ui/components';
 
 import useProperties from '@nebula.js/nucleus/src/hooks/useProperties';
 
 import Data from './property-panel/Data';
 import generateComponents from './AutoComponents';
 
-export default function Properties({
-  viz,
-  sn,
-}) {
+export default function Properties({ viz, sn }) {
   const [properties] = useProperties(viz ? viz.model : null);
 
   const changed = useCallback(() => {
@@ -25,10 +20,11 @@ export default function Properties({
 
   if (!viz || !properties) {
     return (
-      <div style={{
-        minWidth: '250px',
-        padding: '8px',
-      }}
+      <div
+        style={{
+          minWidth: '250px',
+          padding: '8px',
+        }}
       >
         <Typography>Nothing selected</Typography>
       </div>
@@ -36,10 +32,11 @@ export default function Properties({
   }
 
   return (
-    <div style={{
-      minWidth: '250px',
-      padding: '8px',
-    }}
+    <div
+      style={{
+        minWidth: '250px',
+        padding: '8px',
+      }}
     >
       <Data properties={properties} model={viz.model} sn={sn} />
       {generateComponents(properties, changed)}

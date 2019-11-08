@@ -1,8 +1,4 @@
-import React, {
-  useRef,
-  useState,
-  useContext,
-} from 'react';
+import React, { useRef, useState, useContext } from 'react';
 
 import {
   IconButton,
@@ -22,12 +18,9 @@ import useLibraryList from '../../hooks/useLibraryList';
 import AppContext from '../../contexts/AppContext';
 import FieldsPopover from '../FieldsPopover';
 
-const FieldTitle = ({
-  field,
-  libraryItems,
-}) => {
+const FieldTitle = ({ field, libraryItems }) => {
   if (field.qLibraryId) {
-    const f = libraryItems.filter((ff) => ff.qInfo.qId === field.qLibraryId)[0];
+    const f = libraryItems.filter(ff => ff.qInfo.qId === field.qLibraryId)[0];
     return f ? f.qData.title : '!!!';
   }
   if (field.qDef && field.qDef.qFieldDefs) {
@@ -57,7 +50,7 @@ export default function Fields({
     setIsActive(!isActive);
   };
 
-  const onSelected = (o) => {
+  const onSelected = o => {
     if (o.qId) {
       onAdded(o);
     } else if (o) {
@@ -69,7 +62,7 @@ export default function Fields({
     }
   };
 
-  const onRemove = (idx) => {
+  const onRemove = idx => {
     onRemoved(idx);
   };
 
@@ -83,18 +76,14 @@ export default function Fields({
               <FieldTitle field={d} libraryItems={libraryItems} type={type} />
             </ListItemText>
             <ListItemSecondaryAction>
-              <IconButton edge="end" onClick={() => onRemove(i)}><Remove /></IconButton>
+              <IconButton edge="end" onClick={() => onRemove(i)}>
+                <Remove />
+              </IconButton>
             </ListItemSecondaryAction>
           </ListItem>
         ))}
       </List>
-      <Button
-        variant="outlined"
-        fullWidth
-        onClick={onAdd}
-        ref={btn}
-        disabled={!canAdd}
-      >
+      <Button variant="outlined" fullWidth onClick={onAdd} ref={btn} disabled={!canAdd}>
         {addLabel}
       </Button>
       {isActive && (

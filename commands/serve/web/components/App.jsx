@@ -1,26 +1,13 @@
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useState,
-  useRef,
-  useMemo,
-} from 'react';
+import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
 
 import nucleus from '@nebula.js/nucleus';
 import snDefinition from 'snDefinition'; // eslint-disable-line
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 
-import {
-  createTheme,
-  ThemeProvider,
-} from '@nebula.js/ui/theme';
+import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
-import {
-  WbSunny,
-  Brightness3,
-  ColorLens,
-} from '@nebula.js/ui/icons';
+import { WbSunny, Brightness3, ColorLens } from '@nebula.js/ui/icons';
 
 import {
   Grid,
@@ -60,7 +47,7 @@ const directionShape = {
   rtl: rtlShape,
 };
 
-const storageFn = (app) => {
+const storageFn = app => {
   const stored = window.localStorage.getItem('nebula-dev');
   const parsed = stored ? JSON.parse(stored) : {};
   const appid = app.id;
@@ -86,10 +73,7 @@ const storageFn = (app) => {
   return s;
 };
 
-export default function App({
-  app,
-  info,
-}) {
+export default function App({ app, info }) {
   const storage = useMemo(() => storageFn(app), [app]);
   const [activeViz, setActiveViz] = useState(null);
   const [expandedObject, setExpandedObject] = useState(null);
@@ -108,26 +92,34 @@ export default function App({
 
   const theme = useMemo(() => createTheme(currentMuiThemeName), [currentMuiThemeName]);
 
-  const vizContext = useMemo(() => ({
-    currentThemeName,
-    activeViz,
-    setActiveViz,
-    expandedObject,
-    setExpandedObject,
-  }), [activeViz, expandedObject, currentThemeName]);
+  const vizContext = useMemo(
+    () => ({
+      currentThemeName,
+      activeViz,
+      setActiveViz,
+      expandedObject,
+      setExpandedObject,
+    }),
+    [activeViz, expandedObject, currentThemeName]
+  );
 
   const nebbie = useMemo(() => {
     const n = nucleus(app, {
       load: (type, config) => config.Promise.resolve(window.snDefinition || snDefinition),
       theme: currentThemeName,
       direction,
-      themes: info.themes ? info.themes.map((t) => ({
-        key: t,
-        load: () => fetch(`/theme/${t}`).then((response) => response.json()).then((raw) => {
-          setCurrentMuiThemeName(raw.type === 'dark' ? 'dark' : 'light');
-          return raw;
-        }),
-      })) : null,
+      themes: info.themes
+        ? info.themes.map(t => ({
+            key: t,
+            load: () =>
+              fetch(`/theme/${t}`)
+                .then(response => response.json())
+                .then(raw => {
+                  setCurrentMuiThemeName(raw.type === 'dark' ? 'dark' : 'light');
+                  return raw;
+                }),
+          }))
+        : null,
     });
     n.types.register(info.supernova);
     return n;
@@ -146,9 +138,12 @@ export default function App({
       setCurrentId(uid.current);
     };
 
-    nebbie.types.get({
-      name: info.supernova.name,
-    }).supernova().then(setSupernova);
+    nebbie.types
+      .get({
+        name: info.supernova.name,
+      })
+      .supernova()
+      .then(setSupernova);
 
     nebbie.selections().mount(currentSelectionsRef.current);
     if (window.hotReload) {
@@ -170,12 +165,12 @@ export default function App({
     };
   }, []);
 
-  const handleCacheChange = (e) => {
+  const handleCacheChange = e => {
     storage.save('readFromCache', e.target.checked);
     setReadCacheEnabled(e.target.checked);
   };
 
-  const handleThemeChange = (t) => {
+  const handleThemeChange = t => {
     setThemeChooserAnchorEl(null);
     storage.save('themeName', t);
     setCurrentThemeName(t);
@@ -188,7 +183,7 @@ export default function App({
   };
 
   const toggleDirection = () => {
-    setDirection((dir) => {
+    setDirection(dir => {
       let nextDir;
       if (dir === 'ltr') {
         nextDir = 'rtl';
@@ -225,11 +220,16 @@ export default function App({
                         {/* <IconButton style={{ padding: '0px' }}>
                         <ChevronLeft style={{ verticalAlign: 'middle' }} />
                       </IconButton> */}
-                      Go to Hub
+                        Go to Hub
                       </Button>
                     </Grid>
                     <Grid item xs>
-                      <Tabs centered value={objectListMode ? 1 : 0} onChange={handleCreateEditChange} aria-label="simple tabs example">
+                      <Tabs
+                        centered
+                        value={objectListMode ? 1 : 0}
+                        onChange={handleCreateEditChange}
+                        aria-label="simple tabs example"
+                      >
                         <Tab label={<Typography>Create</Typography>} value={0} />
                         <Tab label={<Typography>Edit</Typography>} value={1} />
                       </Tabs>
@@ -237,12 +237,17 @@ export default function App({
                     <Grid item container alignItems="center" style={{ width: 'auto' }}>
                       <Grid item container alignItems="center" style={{ width: 'auto' }}>
                         <Typography component="span">Cache</Typography>
-                        <Switch disabled={objectListMode} checked={isReadCacheEnabled} onChange={handleCacheChange} value="isReadFromCacheEnabled" />
+                        <Switch
+                          disabled={objectListMode}
+                          checked={isReadCacheEnabled}
+                          onChange={handleCacheChange}
+                          value="isReadFromCacheEnabled"
+                        />
                       </Grid>
                       <Grid item>
                         {customThemes.length ? (
                           <>
-                            <IconButton title="Select theme" onClick={(e) => setThemeChooserAnchorEl(e.currentTarget)}>
+                            <IconButton title="Select theme" onClick={e => setThemeChooserAnchorEl(e.currentTarget)}>
                               <ColorLens fontSize="small" />
                             </IconButton>
                             <Menu
@@ -251,12 +256,24 @@ export default function App({
                               keepMounted
                               onClose={() => setThemeChooserAnchorEl(null)}
                             >
-                              {customThemes.map((t) => <MenuItem key={t} selected={t === currentThemeName} onClick={() => handleThemeChange(t)}>{t}</MenuItem>)}
+                              {customThemes.map(t => (
+                                <MenuItem
+                                  key={t}
+                                  selected={t === currentThemeName}
+                                  onClick={() => handleThemeChange(t)}
+                                >
+                                  {t}
+                                </MenuItem>
+                              ))}
                             </Menu>
                           </>
                         ) : (
                           <IconButton title="Toggle light/dark mode" onClick={toggleDarkMode}>
-                            {currentThemeName === 'dark' ? <WbSunny fontSize="small" /> : <Brightness3 fontSize="small" />}
+                            {currentThemeName === 'dark' ? (
+                              <WbSunny fontSize="small" />
+                            ) : (
+                              <Brightness3 fontSize="small" />
+                            )}
                           </IconButton>
                         )}
                       </Grid>
@@ -278,7 +295,11 @@ export default function App({
                 <VizContext.Provider value={vizContext}>
                   <Grid container wrap="nowrap" style={{ height: '100%' }}>
                     <Grid item xs>
-                      {objectListMode ? <Collection cache={currentId} types={[info.supernova.name]} /> : <Stage info={info} storage={storage} uid={currentId} /> }
+                      {objectListMode ? (
+                        <Collection cache={currentId} types={[info.supernova.name]} />
+                      ) : (
+                        <Stage info={info} storage={storage} uid={currentId} />
+                      )}
                     </Grid>
                     <Grid item style={{ background: theme.palette.background.paper, overflow: 'hidden auto' }}>
                       {activeViz && <Properties sn={sn} viz={activeViz} />}
