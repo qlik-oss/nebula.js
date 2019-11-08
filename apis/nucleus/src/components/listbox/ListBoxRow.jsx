@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Grid, Typography } from '@nebula.js/ui/components';
+import { Grid, Typography } from '@material-ui/core';
 
 import { makeStyles } from '@nebula.js/ui/theme';
 

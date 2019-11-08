@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { Typography, Grid } from '@nebula.js/ui/components';
+import { Typography, Grid } from '@material-ui/core';
 
 const Footer = ({ layout }) =>
   layout && layout.showTitles && layout.footnote ? (

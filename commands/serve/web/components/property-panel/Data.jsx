@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { List, ListItem, Typography } from '@nebula.js/ui/components';
+import { List, ListItem, Typography } from '@material-ui/core';
 
 import HyperCube from './HyperCube';
 

@@ -1,4 +1,4 @@
-import { Typography } from '@nebula.js/ui/components';
+import { Typography } from '@material-ui/core';
 
 import React from 'react';
 

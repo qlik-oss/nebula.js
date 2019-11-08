@@ -21,7 +21,7 @@ import {
   Tabs,
   Menu,
   MenuItem,
-} from '@nebula.js/ui/components';
+} from '@material-ui/core';
 
 import Properties from './Properties';
 import Stage from './Stage';

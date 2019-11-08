@@ -12,7 +12,7 @@ const mock = ({
   STB = () => <stb />,
 } = {}) =>
   aw.mock(
-    [['**/ui/components/index.js', () => components], ['**/SelectionToolbar.jsx', () => STB]],
+    [[require.resolve('@material-ui/core'), () => components], ['**/SelectionToolbar.jsx', () => STB]],
     ['../../src/components/Header']
   );
 

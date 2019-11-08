@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Grid, TextField } from '@nebula.js/ui/components';
+import { Grid, TextField } from '@material-ui/core';
 import Search from '@nebula.js/ui/icons/search';
 
 import { makeStyles } from '@nebula.js/ui/theme';

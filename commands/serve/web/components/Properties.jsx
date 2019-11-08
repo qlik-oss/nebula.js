@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 
-import { Typography } from '@nebula.js/ui/components';
+import { Typography } from '@material-ui/core';
 
 import useProperties from '@nebula.js/nucleus/src/hooks/useProperties';
 

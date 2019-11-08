@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { TextField } from '@nebula.js/ui/components';
+import { TextField } from '@material-ui/core';
 
 const LocaleContext = React.createContext();
 const [{ default: ListBoxSearch }] = aw.mock(

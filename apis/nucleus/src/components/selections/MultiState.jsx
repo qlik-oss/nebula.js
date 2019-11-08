@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { Badge, IconButton, Grid, Typography, Popover, Button, MenuList, MenuItem } from '@nebula.js/ui/components';
+import { Badge, IconButton, Grid, Typography, Popover, Button, MenuList, MenuItem } from '@material-ui/core';
 import { makeStyles } from '@nebula.js/ui/theme';
 import DownArrow from '@nebula.js/ui/icons/down-arrow';
 

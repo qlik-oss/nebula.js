@@ -2,7 +2,7 @@ import React, { useMemo } from 'react';
 
 import hcHandler from '@nebula.js/nucleus/src/object/hc-handler';
 
-import { Typography } from '@nebula.js/ui/components';
+import { Typography } from '@material-ui/core';
 
 import Fields from './Fields';
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 
-import { IconButton, Grid } from '@nebula.js/ui/components';
+import { IconButton, Grid } from '@material-ui/core';
 
 import SelectionsBack from '@nebula.js/ui/icons/selections-back';
 import SelectionsForward from '@nebula.js/ui/icons/selections-forward';

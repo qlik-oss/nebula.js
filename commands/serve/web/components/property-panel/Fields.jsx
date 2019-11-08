@@ -9,7 +9,7 @@ import {
   ListItemSecondaryAction,
   // Divider,
   Typography,
-} from '@nebula.js/ui/components';
+} from '@material-ui/core';
 
 import Remove from '@nebula.js/ui/icons/remove';
 

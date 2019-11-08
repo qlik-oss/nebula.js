@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { Grid, Typography } from '@nebula.js/ui/components';
+import { Grid, Typography } from '@material-ui/core';
 import Lock from '@nebula.js/ui/icons/lock';
 
 const [{ default: ListBoxRow }] = aw.mock(
