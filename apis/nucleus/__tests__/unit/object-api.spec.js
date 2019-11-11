@@ -25,6 +25,7 @@ describe('ObjectAPI', () => {
       layout: null,
       sn: 'sn',
       error: null,
+      dataErrors: [],
     });
   });
 

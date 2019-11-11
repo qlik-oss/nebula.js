@@ -1,5 +1,6 @@
 import { createObjectSelectionAPI } from '../selections';
 
+const QRX = /^q[A-Z]/;
 export default class ObjectAPI {
   constructor(model, context, viz) {
     this.context = context;
@@ -14,6 +15,7 @@ export default class ObjectAPI {
       layout: null,
       sn: null,
       error: null,
+      dataErrors: [],
     };
   }
 
@@ -31,6 +33,18 @@ export default class ObjectAPI {
       this.context.logger.error(s.error);
     }
     this.viz.setObjectProps(this.state);
+  }
+
+  validateData(layout) {
+    const dataErrors = Object.keys(layout)
+      .filter(k => QRX.test(k))
+      .filter(k => typeof layout[k].qError !== 'undefined')
+      .map(k => layout[k].qError);
+    if (dataErrors.length) {
+      this.setState({
+        dataErrors,
+      });
+    }
   }
 
   updateModal(layout) {
@@ -92,6 +106,7 @@ export default class ObjectAPI {
 
   setLayout(layout) {
     this.updateModal(layout);
+    this.validateData(layout);
     if (layout.visualization !== this.currentObjectType || layout.version !== this.currentPropertyVersion) {
       const v = this.context.nebbie.types.getSupportedVersion(layout.visualization, layout.version);
       if (!v) {
