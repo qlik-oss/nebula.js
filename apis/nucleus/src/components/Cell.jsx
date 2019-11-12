@@ -10,6 +10,8 @@ import Footer from './Footer';
 import Supernova from './Supernova';
 import Placeholder from './Placeholder';
 
+import useRect from '../hooks/useRect';
+
 const useStyles = makeStyles(() => ({
   content: {
     position: 'relative',
@@ -67,7 +69,7 @@ const Content = React.forwardRef(({ children, showError }, ref) => {
 
 export default function Cell({ api, onInitial }) {
   const [, setChanged] = useState(0);
-
+  const [contentRef, contentRect, contentNode] = useRect();
   const theme = useTheme();
   useEffect(() => {
     const onChanged = () => setChanged(Date.now());
@@ -87,7 +89,6 @@ export default function Cell({ api, onInitial }) {
   const SN = showRequirements(objectProps.sn, objectProps.layout) ? Requirements : Supernova;
   const Comp = !objectProps.sn ? Placeholder : SN;
   const showError = objectProps.error || objectProps.dataErrors.length;
-
   return (
     <Paper style={{ height: '100%', position: 'relative' }} elevation={0} square className="nebulajs-cell">
       <Grid container direction="column" spacing={0} style={{ height: '100%', padding: theme.spacing(1) }}>
@@ -97,9 +98,9 @@ export default function Cell({ api, onInitial }) {
           </Header>
         </Grid>
         <Grid item xs>
-          <Content showError={showError}>
+          <Content showError={showError} ref={contentRef}>
             {showError ? (
-              <CError err={objectProps.err} dataErrors={objectProps.dataErrors} />
+              <CError err={objectProps.err} dataErrors={objectProps.dataErrors} rect={contentRect} />
             ) : (
               <Comp
                 key={objectProps.layout.visualization}
@@ -107,6 +108,7 @@ export default function Cell({ api, onInitial }) {
                 snContext={userProps.context}
                 snOptions={userProps.options}
                 layout={objectProps.layout}
+                parentNode={contentNode}
               />
             )}
           </Content>
