@@ -109,6 +109,7 @@ const config = isEsm => {
           react: [
             'useState',
             'useEffect',
+            'useLayoutEffect',
             'useRef',
             'useContext',
             'useCallback',
