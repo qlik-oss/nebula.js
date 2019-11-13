@@ -16,8 +16,13 @@ import { observe } from './observer';
  * @property {object=} properties
  */
 
+const cache = {};
+
 export default function initiate(getCfg, optional, context) {
-  return context.app.getObject(getCfg.id).then(model => {
+  if (cache[getCfg.id]) {
+    return cache[getCfg.id];
+  }
+  const objectApi = context.app.getObject(getCfg.id).then(model => {
     const viz = vizualizationAPI({
       model,
       context,
@@ -41,4 +46,6 @@ export default function initiate(getCfg, optional, context) {
 
     return api;
   });
+  cache[getCfg.id] = objectApi;
+  return objectApi;
 }
