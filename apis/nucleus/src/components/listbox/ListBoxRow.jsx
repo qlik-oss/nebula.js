@@ -121,7 +121,9 @@ export default function Row({ index, style, data }) {
         ) : (
           labels.map(([l, highlighted], ix) => (
             // eslint-disable-next-line react/no-array-index-key
-            <Typography component="span" key={ix} className={highlighted} noWrap>{`${l}`}</Typography>
+            <Typography component="span" key={ix} className={highlighted} noWrap>
+              {l}
+            </Typography>
           ))
         )}
       </Grid>
