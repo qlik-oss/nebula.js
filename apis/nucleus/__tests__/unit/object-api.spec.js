@@ -150,6 +150,7 @@ describe('ObjectAPI', () => {
         layout: { visualization: 'viz', version: 'prop-version' },
         error: null,
         sn: null,
+        dataErrors: [],
       });
       expect(api.setType).to.have.been.calledWithExactly('viz', 'prop-version', 'sn-version');
     });
@@ -164,6 +165,7 @@ describe('ObjectAPI', () => {
       expect(api.setState).to.have.been.calledWithExactly({
         layout: { visualization: 'viz', version: '1.0.0' },
         error: null,
+        dataErrors: [],
       });
       expect(api.setType).to.not.have.been.called;
     });
