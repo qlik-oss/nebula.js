@@ -91,6 +91,8 @@ const Supernova = ({ sn, snOptions: options, snContext, layout, parentNode }) =>
   // Render
   useEffect(() => {
     if (!snRect) return undefined;
+    // Skip render in selections
+    if (layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections) return undefined;
     if (renderCnt === 0) {
       if (typeof options.onInitialRender === 'function') {
         options.onInitialRender.call(null);
