@@ -2,7 +2,10 @@
 
 describe('generator', () => {
   const [{ default: generator }] = aw.mock(
-    [['**/creator.js', () => (...a) => [...a]], ['**/qae.js', () => qae => qae || 'qae']],
+    [
+      ['**/creator.js', () => (...a) => [...a]],
+      ['**/qae.js', () => qae => qae || 'qae'],
+    ],
     ['../../src/generator']
   );
 

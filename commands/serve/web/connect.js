@@ -33,10 +33,12 @@ const requestInfo = fetch('/info')
     let headers = {};
     if (webIntegrationId) {
       const csrfToken = new Map(
-        (await fetch(`${rootPath}/api/v1/csrf-token`, {
-          credentials: 'include',
-          headers: { 'qlik-web-integration-id': webIntegrationId },
-        })).headers
+        (
+          await fetch(`${rootPath}/api/v1/csrf-token`, {
+            credentials: 'include',
+            headers: { 'qlik-web-integration-id': webIntegrationId },
+          })
+        ).headers
       ).get('qlik-csrf-token');
       headers = {
         'qlik-web-integration-id': webIntegrationId,
@@ -64,10 +66,12 @@ const connect = () => {
       if (webIntegrationId) {
         return {
           getDocList: async () => {
-            const { data = [] } = await (await fetch(`${rootPath}/api/v1/items?limit=30&sort=-updatedAt`, {
-              credentials: 'include',
-              headers: { ...headers, 'content-type': 'application/json' },
-            })).json();
+            const { data = [] } = await (
+              await fetch(`${rootPath}/api/v1/items?limit=30&sort=-updatedAt`, {
+                credentials: 'include',
+                headers: { ...headers, 'content-type': 'application/json' },
+              })
+            ).json();
             return data.map(d => ({
               qDocId: d.resourceId,
               qTitle: d.name,

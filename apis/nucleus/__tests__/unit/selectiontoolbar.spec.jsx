@@ -26,7 +26,10 @@ describe('<SelectionToolbar />', () => {
       const STItem = () => '';
       const LocaleContext = React.createContext();
       const [{ default: STB }] = aw.mock(
-        [['**/SelectionToolbarItem.jsx', () => STItem], ['**/LocaleContext.js', () => LocaleContext]],
+        [
+          ['**/SelectionToolbarItem.jsx', () => STItem],
+          ['**/LocaleContext.js', () => LocaleContext],
+        ],
         ['../../src/components/SelectionToolbar']
       );
 
@@ -112,7 +115,10 @@ describe('<SelectionToolbar />', () => {
     };
     const LocaleContext = React.createContext();
     const [{ default: STB }] = aw.mock(
-      [['**/SelectionToolbarItem.jsx', () => () => ''], ['**/LocaleContext.js', () => LocaleContext]],
+      [
+        ['**/SelectionToolbarItem.jsx', () => () => ''],
+        ['**/LocaleContext.js', () => LocaleContext],
+      ],
       ['../../src/components/SelectionToolbar']
     );
 
