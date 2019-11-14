@@ -24,7 +24,7 @@
     "@babel/cli": "7.6.4",
     "@babel/core": "7.6.4",
     "@babel/preset-env": "7.6.3",
-    "chalk": "2.4.2",
+    "chalk": "3.0.0",
     "extend": "^3.0.2",
     "rollup": "1.26.0",
     "rollup-plugin-babel": "4.3.3",

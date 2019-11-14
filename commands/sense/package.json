@@ -32,7 +32,7 @@
     "@babel/preset-env": "7.6.3",
     "@nebula.js/supernova": "0.1.0-alpha.25",
     "@nebula.js/theme": "0.1.0-alpha.25",
-    "chalk": "2.4.2",
+    "chalk": "3.0.0",
     "node-event-emitter": "0.0.1",
     "rollup": "1.26.0",
     "rollup-plugin-babel": "4.3.3",
