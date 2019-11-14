@@ -1,6 +1,8 @@
 import React, { useContext, useState, useMemo } from 'react';
 
 import { Popover, List, ListSubheader, ListItem, ListItemText, ListItemIcon, Divider } from '@material-ui/core';
+import parse from 'autosuggest-highlight/parse';
+import match from 'autosuggest-highlight/match';
 
 import { ChevronRight, ChevronLeft } from '@nebula.js/ui/icons';
 
@@ -12,16 +14,36 @@ import useLibraryList from '../hooks/useLibraryList';
 
 import AppContext from '../contexts/AppContext';
 
-const Field = ({ field, onSelect, sub }) => (
+import Search from './Search';
+
+const Field = ({ field, onSelect, sub, parts }) => (
   <ListItem button onClick={() => onSelect(field.qName)} data-key={field.qName}>
-    <ListItemText>{field.qName}</ListItemText>
+    {parts.map((part, ix) => (
+      <ListItemText
+        component="span"
+        // eslint-disable-next-line react/no-array-index-key
+        key={ix}
+        style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
+      >
+        {part.text}
+      </ListItemText>
+    ))}
     {sub && <ChevronRight fontSize="small" />}
   </ListItem>
 );
 
-const LibraryItem = ({ item, onSelect }) => (
+const LibraryItem = ({ item, onSelect, parts }) => (
   <ListItem button onClick={() => onSelect(item.qInfo)} data-key={item.qInfo.qId}>
-    <ListItemText>{item.qData.title}</ListItemText>
+    {parts.map((part, ix) => (
+      <ListItemText
+        component="span"
+        // eslint-disable-next-line react/no-array-index-key
+        key={ix}
+        style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
+      >
+        {part.text}
+      </ListItemText>
+    ))}
   </ListItem>
 );
 
@@ -31,7 +53,7 @@ const Aggr = ({ aggr, field, onSelect }) => (
   </ListItem>
 );
 
-const LibraryList = ({ app, onSelect, title = '', type = 'dimension' }) => {
+const LibraryList = ({ app, onSelect, title = '', type = 'dimension', searchTerm = '' }) => {
   const [libraryItems] = useLibraryList(app, type);
   const sortedLibraryItems = useMemo(
     () => libraryItems.slice().sort((a, b) => a.qData.title.toLowerCase().localeCompare(b.qData.title.toLowerCase())),
@@ -43,9 +65,12 @@ const LibraryList = ({ app, onSelect, title = '', type = 'dimension' }) => {
       <ListSubheader component="div" style={{ backgroundColor: 'inherit' }}>
         {title}
       </ListSubheader>
-      {sortedLibraryItems.map(item => (
-        <LibraryItem key={item.qInfo.qId} item={item} onSelect={onSelect} />
-      ))}
+      {sortedLibraryItems.map(item => {
+        const matches = match(item.qData.title, searchTerm);
+        const parts = parse(item.qData.title, matches);
+        if (searchTerm && matches.length === 0) return null;
+        return <LibraryItem key={item.qInfo.qId} item={item} onSelect={onSelect} parts={parts} />;
+      })}
     </>
   ) : null;
 };
@@ -53,6 +78,7 @@ const LibraryList = ({ app, onSelect, title = '', type = 'dimension' }) => {
 export default function FieldsPopover({ alignTo, show, close, onSelected, type }) {
   const app = useContext(AppContext);
   const [selectedField, setSelectedField] = useState(null);
+  const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
   const [model] = useModel(
     {
@@ -122,6 +148,7 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
         style: { minWidth: '250px', maxHeight: '300px', background: theme.palette.background.lightest },
       }}
     >
+      <Search onChange={setSearchTerm} />
       {selectedField && (
         <List dense component="nav">
           <ListItem button onClick={() => setSelectedField(null)}>
@@ -144,13 +171,17 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
             onSelect={onSelect}
             type={type}
             title={type === 'measure' ? 'Measures' : 'Dimensions'}
+            searchTerm={searchTerm}
           />
           <ListSubheader component="div" style={{ backgroundColor: 'inherit' }}>
             Fields
           </ListSubheader>
-          {fields.map(field => (
-            <Field key={field.qName} field={field} onSelect={onSelect} sub={type === 'measure'} />
-          ))}
+          {fields.map(field => {
+            const matches = match(field.qName, searchTerm);
+            const parts = parse(field.qName, matches);
+            if (searchTerm && matches.length === 0) return null;
+            return <Field key={field.qName} field={field} onSelect={onSelect} sub={type === 'measure'} parts={parts} />;
+          })}
         </List>
       )}
     </Popover>
