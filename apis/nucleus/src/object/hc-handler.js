@@ -1,6 +1,13 @@
 /* eslint no-param-reassign:0 */
 
-const idGen = [[10, 31], [0, 31], [0, 31], [0, 31], [0, 31], [0, 31]];
+const idGen = [
+  [10, 31],
+  [0, 31],
+  [0, 31],
+  [0, 31],
+  [0, 31],
+  [0, 31],
+];
 function toChar([min, max]) {
   return (min + ((Math.random() * (max - min)) | 0)).toString(32);
 }
