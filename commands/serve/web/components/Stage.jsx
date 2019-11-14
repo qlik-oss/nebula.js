@@ -57,7 +57,6 @@ export default function Stage({ info, storage, uid }) {
   if (!model) {
     return null;
   }
-
   return (
     <div style={{ padding: '12px', height: '100%', boxSizing: 'border-box' }}>
       <Cell id={model.id} />

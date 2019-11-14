@@ -12,7 +12,6 @@ module.exports = async ({
   host,
   port,
   enigmaConfig,
-  webIntegrationId,
   snPath,
   snName,
   dev = false,
@@ -87,7 +86,6 @@ module.exports = async ({
       app.get('/info', (req, res) => {
         res.json({
           enigma: enigmaConfig,
-          webIntegrationId,
           supernova: {
             name: snName,
           },

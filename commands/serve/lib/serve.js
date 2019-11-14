@@ -62,7 +62,6 @@ module.exports = async argv => {
     host,
     port,
     enigmaConfig,
-    webIntegrationId: serveConfig.webIntegrationId,
     snName: serveConfig.type || snName,
     snPath,
     dev: process.env.MONO === 'true',

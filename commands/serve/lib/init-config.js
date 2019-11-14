@@ -43,9 +43,6 @@ const options = {
     type: 'number',
     default: 9076,
   },
-  webIntegrationId: {
-    type: 'string',
-  },
   ACCEPT_EULA: {
     type: 'boolean',
     default: false,

@@ -28,10 +28,15 @@ const params = (() => {
 const requestInfo = fetch('/info')
   .then(response => response.json())
   .then(async info => {
-    const { webIntegrationId } = info;
-    const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
+    const url = new URL(window.location.href);
+    const tenantUrl = url.searchParams.get('tenant');
+    const webIntegrationId = url.searchParams.get('wiid');
     let headers = {};
-    if (webIntegrationId) {
+    let rootPath = '';
+    let server = {};
+    if (tenantUrl && webIntegrationId) {
+      const tenant = new URL(tenantUrl);
+      rootPath = tenant.origin;
       const csrfToken = new Map(
         (
           await fetch(`${rootPath}/api/v1/csrf-token`, {
@@ -44,9 +49,18 @@ const requestInfo = fetch('/info')
         'qlik-web-integration-id': webIntegrationId,
         'qlik-csrf-token': csrfToken,
       };
+      server = {
+        enigma: {
+          host: tenant.hostname,
+          port: tenant.port,
+          secure: tenant.protocol === 'https:',
+        },
+      };
     }
     return {
       ...info,
+      ...server,
+      webIntegrationId,
       rootPath,
       headers,
     };
