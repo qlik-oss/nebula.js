@@ -1,7 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
 
 import nucleus from '@nebula.js/nucleus';
-import snDefinition from 'snDefinition'; // eslint-disable-line
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 
@@ -21,6 +20,7 @@ import {
   Tabs,
   Menu,
   MenuItem,
+  CircularProgress,
 } from '@material-ui/core';
 
 import Properties from './Properties';
@@ -105,7 +105,7 @@ export default function App({ app, info }) {
 
   const nebbie = useMemo(() => {
     const n = nucleus(app, {
-      load: (type, config) => config.Promise.resolve(window.snDefinition || snDefinition),
+      load: (type, config) => config.Promise.resolve(window[type.name]),
       theme: currentThemeName,
       direction,
       themes: info.themes
@@ -134,23 +134,29 @@ export default function App({ app, info }) {
 
   useEffect(() => {
     const create = () => {
-      uid.current = String(Date.now());
-      setCurrentId(uid.current);
+      if (window[info.supernova.name]) {
+        uid.current = String(Date.now());
+        setCurrentId(uid.current);
+      }
     };
-
-    nebbie.types
-      .get({
-        name: info.supernova.name,
-      })
-      .supernova()
-      .then(setSupernova);
 
     nebbie.selections().mount(currentSelectionsRef.current);
     if (window.hotReload) {
       window.hotReload(() => {
         nebbie.types.clearFromCache(info.supernova.name);
         nebbie.types.register(info.supernova);
-        app.destroySessionObject(uid.current).then(create);
+        if (uid.current) {
+          app.destroySessionObject(uid.current).then(create);
+        } else {
+          create();
+        }
+
+        nebbie.types
+          .get({
+            name: info.supernova.name,
+          })
+          .supernova()
+          .then(setSupernova);
       });
     }
 
@@ -293,18 +299,26 @@ export default function App({ app, info }) {
               </Grid>
               <Grid item xs style={{ overflowX: 'hidden', overflowY: 'auto' }}>
                 <VizContext.Provider value={vizContext}>
-                  <Grid container wrap="nowrap" style={{ height: '100%' }}>
-                    <Grid item xs>
-                      {objectListMode ? (
-                        <Collection cache={currentId} types={[info.supernova.name]} />
-                      ) : (
-                        <Stage info={info} storage={storage} uid={currentId} />
-                      )}
+                  {sn ? (
+                    <Grid container wrap="nowrap" style={{ height: '100%' }}>
+                      <Grid item xs>
+                        {objectListMode ? (
+                          <Collection cache={currentId} types={[info.supernova.name]} />
+                        ) : (
+                          <Stage info={info} storage={storage} uid={currentId} />
+                        )}
+                      </Grid>
+                      <Grid item style={{ background: theme.palette.background.paper, overflow: 'hidden auto' }}>
+                        {activeViz && <Properties sn={sn} viz={activeViz} />}
+                      </Grid>
                     </Grid>
-                    <Grid item style={{ background: theme.palette.background.paper, overflow: 'hidden auto' }}>
-                      {activeViz && <Properties sn={sn} viz={activeViz} />}
+                  ) : (
+                    <Grid container wrap="nowrap" style={{ paddingTop: '48px' }} justify="center">
+                      <Grid item>
+                        <CircularProgress />
+                      </Grid>
                     </Grid>
-                  </Grid>
+                  )}
                 </VizContext.Provider>
               </Grid>
             </Grid>

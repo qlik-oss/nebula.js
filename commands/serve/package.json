@@ -29,6 +29,7 @@
     "@nebula.js/cli-build": "0.1.0-alpha.25",
     "body-parser": "1.19.0",
     "chalk": "3.0.0",
+    "chokidar": "3.3.0",
     "cross-env": "6.0.3",
     "express": "4.17.1",
     "extend": "3.0.2",
@@ -39,6 +40,7 @@
     "source-map-loader": "0.2.4",
     "webpack": "4.41.2",
     "webpack-dev-server": "3.9.0",
+    "ws": "7.2.0",
     "yargs": "14.2.0"
   },
   "devDependencies": {
@@ -50,6 +52,7 @@
     "@nebula.js/ui": "0.1.0-alpha.25",
     "autosuggest-highlight": "3.1.1",
     "babel-loader": "8.0.6",
+    "d3-require": "1.2.4",
     "enigma.js": "2.5.0",
     "react": "16.11.0",
     "react-dom": "16.11.0",

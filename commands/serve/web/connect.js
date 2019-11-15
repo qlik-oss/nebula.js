@@ -2,6 +2,8 @@ import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.34.11.json';
 import SenseUtilities from 'enigma.js/sense-utilities';
 
+import { requireFrom } from 'd3-require';
+
 const params = (() => {
   const opts = {};
   const { pathname } = window.location;
@@ -25,9 +27,34 @@ const params = (() => {
   return opts;
 })();
 
+const getModule = name => requireFrom(async n => `/pkg/${encodeURIComponent(n)}`)(name);
+
+let cb = () => {};
+window.hotReload = fn => {
+  cb = fn;
+};
+
+const initiateWatch = info => {
+  const ws = new WebSocket(`ws://localhost:${info.sock.port}`);
+
+  const update = () => {
+    getModule(info.supernova.name).then(mo => {
+      window[info.supernova.name] = mo;
+      cb();
+    });
+  };
+
+  ws.onmessage = () => {
+    update();
+  };
+
+  update();
+};
+
 const requestInfo = fetch('/info')
   .then(response => response.json())
   .then(async info => {
+    initiateWatch(info);
     const { webIntegrationId } = info;
     const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
     let headers = {};

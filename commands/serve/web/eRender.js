@@ -1,5 +1,4 @@
 import nucleus from '@nebula.js/nucleus';
-import snDefinition from 'snDefinition'; // eslint-disable-line
 
 import { openApp, params, info as serverInfo } from './connect';
 
@@ -29,7 +28,7 @@ function renderWithEngine() {
       })(app, {
         load: (type, config) => {
           objType = type.name;
-          return config.Promise.resolve(snDefinition);
+          return config.Promise.resolve(window[objType]);
         },
       });
 
@@ -70,17 +69,18 @@ function renderWithEngine() {
         }
       };
 
-      render();
-
-      if (module.hot) {
-        module.hot.accept('snDefinition', () => {
-          nebbie.types.clearFromCache(objType);
-          obj.then(viz => {
-            viz.close();
-            render();
-          });
-        });
+      if (window[info.supernova.name]) {
+        render();
       }
+
+      window.hotReload(() => {
+        render();
+        nebbie.types.clearFromCache(objType);
+        obj.then(viz => {
+          viz.close();
+          render();
+        });
+      });
     })
   );
 }
@@ -125,28 +125,36 @@ function renderSnapshot() {
             {
               name: info.supernova.name,
               load() {
-                return Promise.resolve(snDefinition);
+                return Promise.resolve(window[info.supernova.name]);
               },
             },
           ],
         })(app);
 
-        nebbie.get(
-          {
-            id: layout.qInfo.qId,
-          },
-          {
-            element: document.querySelector('#chart-container'),
-            context: {
-              permissions: ['passive'],
+        const render = () => {
+          nebbie.get(
+            {
+              id: layout.qInfo.qId,
             },
-            options: {
-              onInitialRender() {
-                document.querySelector('.nebulajs-sn').setAttribute('data-rendered', '1');
+            {
+              element: document.querySelector('#chart-container'),
+              context: {
+                permissions: ['passive'],
               },
-            },
-          }
-        );
+              options: {
+                onInitialRender() {
+                  document.querySelector('.nebulajs-sn').setAttribute('data-rendered', '1');
+                },
+              },
+            }
+          );
+        };
+
+        if (window[info.supernova.name]) {
+          render();
+        }
+
+        window.hotReload(() => render());
       });
     });
 }

@@ -111,7 +111,7 @@ const esm = async argv => {
 const watch = async argv => {
   const c = config({
     mode: 'development',
-    format: 'esm',
+    format: 'umd',
     argv,
   });
 
