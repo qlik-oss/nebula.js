@@ -1,15 +1,12 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
-
-const sourceMapLoaderPath = require.resolve('source-map-loader');
 
 const isSrc = /^([.]{2}\/)/;
 const namespace = /^webpack:\/\/([^/]+)\//;
 const NM = /node_modules/;
 const WP = /\/\(?webpack\)?/;
 
-const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), snPath = path.resolve(__dirname, 'placeholder') }) => {
+const cfg = ({ srcDir = path.resolve(__dirname, '../dist') }) => {
   const folderName = process
     .cwd()
     .split('/')
@@ -44,21 +41,6 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), snPath = path.resolv
         return `webpack://${info.namespace}/${info.resourcePath}`;
       },
     },
-    resolve: {
-      alias: {
-        snDefinition: snPath,
-      },
-    },
-    module: {
-      rules: [
-        {
-          enforce: 'pre',
-          test: /\.js$/,
-          loader: sourceMapLoaderPath,
-          exclude: /node_modules/,
-        },
-      ],
-    },
     plugins: [
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eRender.html'),
@@ -70,7 +52,6 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), snPath = path.resolv
         filename: 'eDev.html',
         inject: 'head',
       }),
-      new webpack.HotModuleReplacementPlugin(),
     ],
   };
 

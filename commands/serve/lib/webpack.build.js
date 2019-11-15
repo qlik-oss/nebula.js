@@ -7,7 +7,7 @@ const babelPresetReactPath = require.resolve('@babel/preset-react');
 const sourceMapLoaderPath = require.resolve('source-map-loader');
 const favicon = path.resolve(__dirname, '../../../docs/assets/njs.png');
 
-const cfg = ({ srcDir, distDir, snPath, dev = false }) => {
+const cfg = ({ srcDir, distDir, dev = false }) => {
   const config = {
     mode: dev ? 'development' : 'production',
     entry: {
@@ -15,14 +15,14 @@ const cfg = ({ srcDir, distDir, snPath, dev = false }) => {
       eDev: [path.resolve(srcDir, 'eDev')],
       eHub: [path.resolve(srcDir, 'eHub')],
     },
-    devtool: 'source-map',
+    // devtool: 'source-map',
+    devtool: false,
     output: {
       path: distDir,
       filename: '[name].js',
     },
     resolve: {
       alias: {
-        snDefinition: snPath,
         ...(dev
           ? {
               // For local nebula.js development use aliasing to be able to debug nucleus / supernova
@@ -36,7 +36,6 @@ const cfg = ({ srcDir, distDir, snPath, dev = false }) => {
       },
       extensions: ['.js', '.jsx'],
     },
-    externals: dev ? {} : 'snDefinition',
     module: {
       rules: [
         {
@@ -99,7 +98,6 @@ if (!process.env.DEFAULTS) {
   module.exports = cfg({
     srcDir: path.resolve(__dirname, '../web'),
     distDir: path.resolve(__dirname, '../dist'),
-    snPath: path.resolve(__dirname, 'placeholder'),
     dev: false,
   });
 }

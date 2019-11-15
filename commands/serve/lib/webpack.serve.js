@@ -13,10 +13,10 @@ module.exports = async ({
   port,
   enigmaConfig,
   webIntegrationId,
-  snPath,
   snName,
   dev = false,
   open = true,
+  entryWatcher,
   watcher,
   serveConfig,
 }) => {
@@ -40,7 +40,6 @@ module.exports = async ({
       srcDir,
       distDir,
       dev: true,
-      snPath,
     });
   } else {
     const webpackConfig = require('./webpack.prod.js');
@@ -48,13 +47,12 @@ module.exports = async ({
     contentBase = srcDir;
     config = webpackConfig({
       srcDir,
-      snPath,
     });
   }
 
   const options = {
     clientLogLevel: 'none',
-    hot: true,
+    hot: dev,
     host,
     port,
     overlay: {
@@ -69,6 +67,8 @@ module.exports = async ({
     },
     before(app) {
       snapper.addRoutes(app);
+
+      entryWatcher.addRoutes(app);
 
       app.get('/themes', (req, res) => {
         const arr = themes.map(theme => theme.key);
@@ -90,6 +90,9 @@ module.exports = async ({
           webIntegrationId,
           supernova: {
             name: snName,
+          },
+          sock: {
+            port: entryWatcher.port,
           },
           themes: themes.map(theme => theme.key),
         });
