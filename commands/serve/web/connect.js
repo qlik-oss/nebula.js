@@ -29,10 +29,32 @@ const params = (() => {
 
 const getModule = name => requireFrom(async n => `/pkg/${encodeURIComponent(n)}`)(name);
 
-let cb = () => {};
-window.hotReload = fn => {
-  cb = fn;
+const hotListeners = {};
+
+const lightItUp = name => {
+  if (!hotListeners[name]) {
+    return;
+  }
+  hotListeners[name].forEach(fn => fn());
 };
+
+const onHotChange = (name, fn) => {
+  if (!hotListeners[name]) {
+    hotListeners[name] = [];
+  }
+
+  hotListeners[name].push(fn);
+  if (window[name]) {
+    fn();
+  }
+  return () => {
+    // removeListener
+    const idx = hotListeners[name].indexOf(fn);
+    hotListeners[name].splice(idx, 1);
+  };
+};
+
+window.onHotChange = onHotChange;
 
 const initiateWatch = info => {
   const ws = new WebSocket(`ws://localhost:${info.sock.port}`);
@@ -40,7 +62,7 @@ const initiateWatch = info => {
   const update = () => {
     getModule(info.supernova.name).then(mo => {
       window[info.supernova.name] = mo;
-      cb();
+      lightItUp(info.supernova.name);
     });
   };
 
