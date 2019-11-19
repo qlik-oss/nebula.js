@@ -141,24 +141,22 @@ export default function App({ app, info }) {
     };
 
     nebbie.selections().mount(currentSelectionsRef.current);
-    if (window.hotReload) {
-      window.hotReload(() => {
-        nebbie.types.clearFromCache(info.supernova.name);
-        nebbie.types.register(info.supernova);
-        if (uid.current) {
-          app.destroySessionObject(uid.current).then(create);
-        } else {
-          create();
-        }
+    window.onHotChange(info.supernova.name, () => {
+      nebbie.types.clearFromCache(info.supernova.name);
+      nebbie.types.register(info.supernova);
+      if (uid.current) {
+        app.destroySessionObject(uid.current).then(create);
+      } else {
+        create();
+      }
 
-        nebbie.types
-          .get({
-            name: info.supernova.name,
-          })
-          .supernova()
-          .then(setSupernova);
-      });
-    }
+      nebbie.types
+        .get({
+          name: info.supernova.name,
+        })
+        .supernova()
+        .then(setSupernova);
+    });
 
     create();
 

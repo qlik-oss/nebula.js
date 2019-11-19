@@ -69,13 +69,9 @@ function renderWithEngine() {
         }
       };
 
-      if (window[info.supernova.name]) {
-        render();
-      }
-
-      window.hotReload(() => {
-        render();
+      window.onHotChange(info.supernova.name, () => {
         nebbie.types.clearFromCache(objType);
+        render();
         obj.then(viz => {
           viz.close();
           render();
@@ -150,11 +146,7 @@ function renderSnapshot() {
           );
         };
 
-        if (window[info.supernova.name]) {
-          render();
-        }
-
-        window.hotReload(() => render());
+        window.onHotChange(info.supernova.name, () => render());
       });
     });
 }
