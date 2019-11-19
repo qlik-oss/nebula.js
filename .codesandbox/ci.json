@@ -1,0 +1,6 @@
+{
+  "buildCommand": "build:codesandbox",
+  "packages": ["apis/nucleus"],
+  "sandboxes": ["/.codesandbox/mekko"],
+  "silent": true
+}

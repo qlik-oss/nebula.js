@@ -90,7 +90,7 @@ const config = isEsm => {
       format: isEsm ? 'esm' : 'umd',
       exports: 'default',
       name: umdName,
-      sourcemap: true,
+      sourcemap: process.env.CODESANDBOX ? 'inline' : true,
       banner,
       globals,
     },
