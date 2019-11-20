@@ -104,6 +104,26 @@ const config = isEsm => {
         extensions: ['.js', '.jsx'],
       }),
       json(),
+      babel({
+        babelrc: false,
+        include: ['/**/apis/nucleus/**', '/**/apis/supernova/**', '/**/apis/theme/**', '/**/packages/ui/**'],
+        presets: [
+          [
+            '@babel/preset-env',
+            {
+              modules: false,
+              targets: {
+                browsers: [...browserList, ...['ie 11', 'chrome 47']],
+              },
+            },
+          ],
+        ],
+        plugins: [
+          ['@babel/plugin-transform-react-jsx'],
+          '@babel/plugin-proposal-optional-chaining',
+          '@babel/plugin-proposal-nullish-coalescing-operator',
+        ],
+      }),
       commonjs({
         namedExports: {
           react: [
@@ -126,22 +146,6 @@ const config = isEsm => {
           'prop-types/index.js': propTypes,
           '@material-ui/utils/node_modules/prop-types': propTypes,
         },
-      }),
-      babel({
-        babelrc: false,
-        include: ['/**/apis/nucleus/**', '/**/apis/supernova/**', '/**/apis/theme/**', '/**/packages/ui/**'],
-        presets: [
-          [
-            '@babel/preset-env',
-            {
-              modules: false,
-              targets: {
-                browsers: [...browserList, ...['ie 11', 'chrome 47']],
-              },
-            },
-          ],
-        ],
-        plugins: [['@babel/plugin-transform-react-jsx']],
       }),
     ],
   };

@@ -4,6 +4,9 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const babelPath = require.resolve('babel-loader');
 const babelPresetEnvPath = require.resolve('@babel/preset-env');
 const babelPresetReactPath = require.resolve('@babel/preset-react');
+const babelOptionalPath = require.resolve('@babel/plugin-proposal-optional-chaining');
+const babelNullishPath = require.resolve('@babel/plugin-proposal-nullish-coalescing-operator');
+
 const sourceMapLoaderPath = require.resolve('source-map-loader');
 const favicon = path.resolve(__dirname, '../../../docs/assets/njs.png');
 
@@ -45,7 +48,7 @@ const cfg = ({ srcDir, distDir, dev = false }) => {
         {
           test: /\.jsx?$/,
           sideEffects: false,
-          include: [srcDir, /nucleus/, /ui\/icons/],
+          include: [srcDir, /nucleus/, /supernova/, /theme/, /ui\/icons/],
           use: {
             loader: babelPath,
             options: {
@@ -61,6 +64,7 @@ const cfg = ({ srcDir, distDir, dev = false }) => {
                 ],
                 babelPresetReactPath,
               ],
+              plugins: [babelOptionalPath, babelNullishPath],
             },
           },
         },

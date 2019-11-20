@@ -7,7 +7,7 @@ import STToolbar from './SelectionToolbar';
 const Header = ({ layout, sn }) => {
   const showTitle = layout && layout.showTitles && !!layout.title;
   const showSubtitle = layout && layout.showTitles && !!layout.subtitle;
-  const showInSelectionActions = sn && layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
+  const showInSelectionActions = sn && layout?.qSelectionInfo?.qInSelections;
   return (
     <Grid container wrap="nowrap" style={{ flexGrow: 0 }}>
       <Grid item zeroMinWidth xs>
