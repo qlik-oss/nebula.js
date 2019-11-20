@@ -15,8 +15,7 @@ const cfg = ({ srcDir, distDir, dev = false }) => {
       eDev: [path.resolve(srcDir, 'eDev')],
       eHub: [path.resolve(srcDir, 'eHub')],
     },
-    // devtool: 'source-map',
-    devtool: false,
+    devtool: 'source-map',
     output: {
       path: distDir,
       filename: '[name].js',

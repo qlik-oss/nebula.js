@@ -8,7 +8,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Component = ({ Title = 'Error', err = { message: '' }, dataErrors }) => {
+export default function Error({ title = 'Error', message = '', data = [] }) {
   const { container } = useStyles();
   return (
     <Grid container direction="column" alignItems="center" justify="center" className={container} spacing={1}>
@@ -17,24 +17,22 @@ const Component = ({ Title = 'Error', err = { message: '' }, dataErrors }) => {
       </Grid>
       <Grid item>
         <Typography variant="h4" align="center">
-          {Title}
+          {title}
         </Typography>
       </Grid>
       <Grid item>
         <Typography variant="h6" align="center">
-          {err.message}
+          {message}
         </Typography>
       </Grid>
       <Grid item>
-        {dataErrors.map((e, ix) => (
+        {data.map((d, ix) => (
           // eslint-disable-next-line react/no-array-index-key
           <Typography key={ix} variant="h6" align="center">
-            {e.qErrorCode}
+            {d.path} - {d.error.qErrorCode}
           </Typography>
         ))}
       </Grid>
     </Grid>
   );
-};
-
-export default Component;
+}

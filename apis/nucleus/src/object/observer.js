@@ -43,28 +43,26 @@ export function observe(model, callback, property = 'layout') {
           }
         });
 
-      affected.forEach(key => {
+      affected.forEach(async key => {
         c.props[key].state = STATES.VALIDATING;
         const method = OBSERVABLE[key].filter(m => model[m])[0];
-        model[method]()
-          .then(value => {
-            if (cache[model.id] && cache[model.id].props[key]) {
-              if (
-                cache[model.id].props[key].state < STATES.CLOSED &&
-                cache[model.id].props[key].state !== STATES.VALID
-              ) {
-                cache[model.id].props[key].state = STATES.VALID;
-                // create a new reference if necessary to make sure React triggers a change
-                const v = cache[model.id].props[key].value === value ? { ...value } : value;
-                cache[model.id].props[key].value = v;
-                cache[model.id].props[key].callbacks.forEach(cb => cb(v));
-              }
+        try {
+          const value = await model[method]();
+          if (cache[model.id] && cache[model.id].props[key]) {
+            if (cache[model.id].props[key].state < STATES.CLOSED && cache[model.id].props[key].state !== STATES.VALID) {
+              cache[model.id].props[key].state = STATES.VALID;
+              // create a new reference if necessary to make sure React triggers a change
+              const v = cache[model.id].props[key].value === value ? { ...value } : value;
+              cache[model.id].props[key].value = v;
             }
-          })
-          .catch(() => {
-            // TODO - retry?
-            cache[model.id].props[key].state = STATES.INVALID;
-          });
+          }
+        } catch (err) {
+          // TODO - retry?
+          cache[model.id].props[key].state = STATES.INVALID;
+        }
+        if (cache[model.id] && cache[model.id].props[key].state === STATES.VALID) {
+          cache[model.id].props[key].callbacks.forEach(cb => cb(cache[model.id].props[key].value));
+        }
       });
     };
 

@@ -1,16 +1,20 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable react/jsx-props-no-spreading */
+import React, { useEffect, useState, useContext } from 'react';
 
 import { Grid, Paper, makeStyles } from '@material-ui/core';
 import { useTheme } from '@nebula.js/ui/theme';
 
-import Requirements from './Requirements';
 import CError from './Error';
 import Header from './Header';
 import Footer from './Footer';
 import Supernova from './Supernova';
-import Placeholder from './Placeholder';
 
 import useRect from '../hooks/useRect';
+import useLayout from '../hooks/useLayout';
+import useSupernova from '../hooks/useSupernova';
+import useSelectionsModal from '../hooks/useSelectionsModal';
+import useLayoutError from '../hooks/useLayoutError';
+import LocaleContext from '../contexts/LocaleContext';
 
 const useStyles = makeStyles(() => ({
   content: {
@@ -33,17 +37,16 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const showRequirements = (sn, layout) => {
-  if (!sn || !sn.generator || !sn.generator.qae || !layout || !layout.qHyperCube) {
-    return false;
-  }
-  const def = sn.generator.qae.data.targets[0];
-  if (!def) {
-    return false;
-  }
-  const minD = def.dimensions.min();
-  const minM = def.measures.min();
-  return layout.qHyperCube.qDimensionInfo.length < minD || layout.qHyperCube.qMeasureInfo.length < minM;
+const Loading = ({ delay = 750 }) => {
+  const [showLoading, setShowLoading] = useState(false);
+
+  useEffect(() => {
+    const handle = setTimeout(() => setShowLoading(true), delay);
+
+    return () => clearTimeout(handle);
+  });
+
+  return showLoading && <div>loading...</div>;
 };
 
 const Content = React.forwardRef(({ children, showError }, ref) => {
@@ -67,53 +70,63 @@ const Content = React.forwardRef(({ children, showError }, ref) => {
   );
 });
 
-export default function Cell({ api, onInitial }) {
-  const [, setChanged] = useState(0);
-  const [contentRef, contentRect, contentNode] = useRect();
-  const theme = useTheme();
-  useEffect(() => {
-    const onChanged = () => setChanged(Date.now());
-    api.on('changed', onChanged);
-    return () => {
-      api.removeListener('changed', onChanged);
-    };
-  }, [api]);
+export default function Cell({ nebulaContext, model, snContext, snOptions, onMount }) {
+  const translator = useContext(LocaleContext);
+  const [err, setErr] = useState(null);
 
-  useEffect(() => {
-    onInitial();
+  const [layout] = useLayout(model);
+  const [sn, snErr] = useSupernova({
+    model,
+    nebulaContext,
+    genericObjectType: layout && layout.visualization,
+    genericObjectVersion: layout && layout.version,
   });
+  const [layoutError, requirementsError] = useLayoutError({ sn, layout });
+  const [contentRef /* contentRect */, , contentNode] = useRect();
+  const theme = useTheme();
+  useSelectionsModal({ sn, model, layout });
 
-  const objectProps = api.objectProps();
-  const userProps = api.userProps();
+  useEffect(() => {
+    onMount();
+  }, []);
 
-  const SN = showRequirements(objectProps.sn, objectProps.layout) ? Requirements : Supernova;
-  const Comp = !objectProps.sn ? Placeholder : SN;
-  const showError = objectProps.error || objectProps.dataErrors.length;
+  useEffect(() => {
+    if (snErr) {
+      setErr(snErr);
+    } else if (layoutError.length) {
+      setErr({ message: '', data: layoutError });
+    } else if (requirementsError.length) {
+      setErr({ message: translator.get('Supernova.Incomplete'), data: [] });
+    } else {
+      setErr(null);
+    }
+  }, [snErr, layoutError, requirementsError]);
+
   return (
     <Paper style={{ height: '100%', position: 'relative' }} elevation={0} square className="nebulajs-cell">
       <Grid container direction="column" spacing={0} style={{ height: '100%', padding: theme.spacing(1) }}>
         <Grid item style={{ maxWidth: '100%' }}>
-          <Header layout={objectProps.layout} sn={objectProps.sn}>
+          <Header layout={layout} sn={sn}>
             &nbsp;
           </Header>
         </Grid>
         <Grid item xs>
-          <Content showError={showError} ref={contentRef}>
-            {showError ? (
-              <CError err={objectProps.err} dataErrors={objectProps.dataErrors} rect={contentRect} />
-            ) : (
-              <Comp
-                key={objectProps.layout.visualization}
-                sn={objectProps.sn}
-                snContext={userProps.context}
-                snOptions={userProps.options}
-                layout={objectProps.layout}
+          <Content showError={!!err} ref={contentRef}>
+            {sn === null && err === null && <Loading />}
+            {err && <CError {...err} />}
+            {sn && !err && (
+              <Supernova
+                key={layout.visualization}
+                sn={sn}
+                snContext={snContext}
+                snOptions={snOptions}
+                layout={layout}
                 parentNode={contentNode}
               />
             )}
           </Content>
         </Grid>
-        <Footer layout={objectProps.layout} />
+        <Footer layout={layout} />
       </Grid>
     </Paper>
   );

@@ -27,7 +27,8 @@ describe('qae', () => {
         targets: [{}],
       },
     }).data.targets[0];
-    expect(t.path).to.eql('/qHyperCubeDef');
+    expect(t.propertyPath).to.eql('/qHyperCubeDef');
+    expect(t.layoutPath).to.eql('/qHyperCube');
     expect(t.dimensions.min()).to.eql(0);
     expect(t.dimensions.max()).to.eql(1000);
     expect(t.dimensions.add()).to.equal(undefined);
@@ -61,7 +62,7 @@ describe('qae', () => {
         ],
       },
     }).data.targets[0];
-    expect(t.path).to.eql('qhc');
+    expect(t.propertyPath).to.eql('qhc');
     expect(t.dimensions.min()).to.eql(3);
     expect(t.dimensions.max()).to.eql(7);
     expect(t.dimensions.add()).to.equal('a');
@@ -73,5 +74,26 @@ describe('qae', () => {
     expect(t.measures.add()).to.equal('b');
     expect(t.measures.description()).to.equal('Angle');
     expect(t.measures.remove()).to.equal('e');
+  });
+  it('should resolve layout', () => {
+    const t = qae({
+      data: {
+        targets: [
+          {
+            path: '/foo/bar/baz/qHyperCubeDef',
+          },
+        ],
+      },
+    }).data.targets[0];
+    const layout = {
+      foo: {
+        bar: {
+          baz: {
+            qHyperCube: 'woho',
+          },
+        },
+      },
+    };
+    expect(t.resolveLayout(layout)).to.eql('woho');
   });
 });

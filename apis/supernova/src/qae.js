@@ -19,9 +19,34 @@ function defFn(def = {}) {
   };
 }
 
+const resolveValue = (data, reference, defaultValue) => {
+  const steps = reference.split('/');
+  let dataContainer = data;
+  if (dataContainer === undefined) {
+    return defaultValue;
+  }
+  for (let i = 0; i < steps.length; ++i) {
+    if (steps[i] === '') {
+      continue; // eslint-disable-line no-continue
+    }
+    if (typeof dataContainer[steps[i]] === 'undefined') {
+      return defaultValue;
+    }
+    dataContainer = dataContainer[steps[i]];
+  }
+
+  return dataContainer;
+};
+
 function target(def) {
+  const propertyPath = def.path || '/qHyperCubeDef';
+  const layoutPath = propertyPath.slice(0, -3);
   return {
-    path: def.path || '/qHyperCubeDef',
+    propertyPath,
+    layoutPath,
+    resolveLayout: layout => {
+      return resolveValue(layout, layoutPath, {});
+    },
     dimensions: defFn(def.dimensions),
     measures: defFn(def.measures),
   };

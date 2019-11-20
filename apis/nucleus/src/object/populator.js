@@ -6,9 +6,9 @@ export default function populateData({ sn, properties, fields }, context) {
     context.logger.warn('Attempting to add fields to an object without a specified data target');
     return;
   }
-  const { path } = target;
+  const { propertyPath } = target;
 
-  const parts = path.split('/');
+  const parts = propertyPath.split('/');
   let p = properties;
   for (let i = 0; i < parts.length; i++) {
     const s = parts[i];
