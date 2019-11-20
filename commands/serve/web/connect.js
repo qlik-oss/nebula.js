@@ -81,14 +81,18 @@ const requestInfo = fetch('/info')
     const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
     let headers = {};
     if (webIntegrationId) {
-      const csrfToken = new Map(
-        (
-          await fetch(`${rootPath}/api/v1/csrf-token`, {
-            credentials: 'include',
-            headers: { 'qlik-web-integration-id': webIntegrationId },
-          })
-        ).headers
-      ).get('qlik-csrf-token');
+      const response = await fetch(`${rootPath}/api/v1/csrf-token`, {
+        credentials: 'include',
+        headers: { 'qlik-web-integration-id': webIntegrationId },
+      });
+      if (response.status === 401) {
+        const loginUrl = new URL(`${rootPath}/login`);
+        loginUrl.searchParams.append('returnto', window.location.href);
+        loginUrl.searchParams.append('qlik-web-integration-id', webIntegrationId);
+        window.location.href = loginUrl;
+        return undefined;
+      }
+      const csrfToken = new Map(response.headers).get('qlik-csrf-token');
       headers = {
         'qlik-web-integration-id': webIntegrationId,
         'qlik-csrf-token': csrfToken,
