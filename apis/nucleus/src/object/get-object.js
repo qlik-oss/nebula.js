@@ -1,6 +1,4 @@
 import vizualizationAPI from '../viz';
-import ObjectAPI from './object-api';
-import { observe } from './observer';
 
 /**
  * @typedef {object} GetObjectConfig
@@ -16,18 +14,12 @@ import { observe } from './observer';
  * @property {object=} properties
  */
 
-export default function initiate(getCfg, optional, context) {
-  return context.app.getObject(getCfg.id).then(model => {
+export default function initiate({ id }, optional, context) {
+  return context.app.getObject(id).then(model => {
     const viz = vizualizationAPI({
       model,
       context,
     });
-
-    const objectAPI = new ObjectAPI(model, context, viz);
-
-    observe(model, layout => objectAPI.setLayout(layout)); // TODO - call unobserve when viz is destroyed
-
-    const api = objectAPI.getPublicAPI();
 
     if (optional.options) {
       viz.api.options(optional.options);
@@ -36,9 +28,9 @@ export default function initiate(getCfg, optional, context) {
       viz.api.context(optional.context);
     }
     if (optional.element) {
-      return viz.api.mount(optional.element).then(() => api);
+      return viz.api.mount(optional.element).then(() => viz.api);
     }
 
-    return api;
+    return viz.api;
   });
 }

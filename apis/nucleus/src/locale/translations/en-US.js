@@ -18,4 +18,5 @@ export default {
   'Selection.SelectExcluded': 'Select excluded',
   'Selection.SelectPossible': 'Select possible',
   'Selection.Menu': 'Selection menu',
+  'Supernova.Incomplete': 'Incomplete visualization',
 };

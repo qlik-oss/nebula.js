@@ -30,7 +30,7 @@ export default function HyperCube({ model, target, properties }) {
     () =>
       hcHandler({
         def: target,
-        hc: getValue(properties, target.path),
+        hc: getValue(properties, target.propertyPath),
       }),
     [properties]
   );
@@ -58,7 +58,7 @@ export default function HyperCube({ model, target, properties }) {
   return (
     <div style={{ width: '100%' }}>
       <Typography color="textSecondary" style={{ fontFamily: 'Monaco, monospace', fontSize: '0.7rem' }}>
-        {target.path}
+        {target.propertyPath}
       </Typography>
       <Fields
         onAdded={onDimensionAdded}

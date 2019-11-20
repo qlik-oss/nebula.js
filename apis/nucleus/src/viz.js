@@ -1,4 +1,4 @@
-import cell from './components/boot';
+import glueCell from './components/glue';
 
 import { get } from './object/observer';
 import getPatches from './utils/patcher';
@@ -7,22 +7,12 @@ import eventMixin from './selections/event-mixin';
 
 const noopi = () => {};
 
-export default function({ model, context: nebulaContext, initialUserProps = {} } = {}) {
-  let reference = noopi;
-  let elementReference = null;
-
-  let supernovaReady;
-  let layoutReady;
-  let mounted;
-
-  const whenLayoutReady = new Promise(resolve => {
-    layoutReady = resolve;
-  });
-  const whenSupernovaReady = new Promise(resolve => {
-    supernovaReady = resolve;
-  });
-  const whenMounted = new Promise(resolve => {
-    mounted = resolve;
+export default function viz({ model, context: nebulaContext, initialUserProps = {} } = {}) {
+  let unmountCell = noopi;
+  let mountedReference = null;
+  let onMount = null;
+  const mounted = new Promise(resolve => {
+    onMount = resolve;
   });
 
   let userProps = {
@@ -40,7 +30,7 @@ export default function({ model, context: nebulaContext, initialUserProps = {} }
     error: null,
   };
 
-  const cellApi = {
+  const vizGlue = {
     userProps() {
       return userProps;
     },
@@ -49,10 +39,10 @@ export default function({ model, context: nebulaContext, initialUserProps = {} }
     },
   };
 
-  eventMixin(cellApi);
+  eventMixin(vizGlue);
 
   const update = () => {
-    cellApi.emit('changed');
+    vizGlue.emit('changed');
   };
 
   const setUserProps = up => {
@@ -74,12 +64,6 @@ export default function({ model, context: nebulaContext, initialUserProps = {} }
       ...objectProps,
       ...p,
     };
-    if (objectProps.layout) {
-      layoutReady();
-    }
-    if (objectProps.sn) {
-      supernovaReady();
-    }
     update();
   };
 
@@ -98,20 +82,19 @@ export default function({ model, context: nebulaContext, initialUserProps = {} }
      * @returns {Promise}
      */
     mount(element) {
-      if (elementReference) {
+      if (mountedReference) {
         throw new Error('Already mounted');
       }
-      elementReference = element;
-      return Promise.all([whenLayoutReady, whenSupernovaReady]).then(() => {
-        reference = cell({
-          element,
-          model,
-          api: cellApi,
-          nebulaContext,
-          onInitial: mounted,
-        });
-        return whenMounted;
+      mountedReference = element;
+      unmountCell = glueCell({
+        nebulaContext,
+        element,
+        model,
+        snContext: userProps.context,
+        snOptions: userProps.options,
+        onMount,
       });
+      return mounted;
     },
     /**
      *
@@ -119,8 +102,8 @@ export default function({ model, context: nebulaContext, initialUserProps = {} }
     close() {
       // TODO - destroy session object (if created as such)
       model.emit('closed');
-      reference();
-      reference = noopi;
+      unmountCell();
+      unmountCell = noopi;
     },
     setTemporaryProperties(props) {
       return get(model, 'effectiveProperties').then(current => {
@@ -144,8 +127,8 @@ export default function({ model, context: nebulaContext, initialUserProps = {} }
       return api;
     },
     takeSnapshot() {
-      if (elementReference) {
-        const content = elementReference.querySelector('.nebulajs-sn');
+      if (mountedReference) {
+        const content = mountedReference.querySelector('.nebulajs-sn');
         if (content) {
           const rect = content.getBoundingClientRect();
           if (objectProps.sn) {
