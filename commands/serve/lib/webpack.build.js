@@ -5,6 +5,8 @@ const babelPath = require.resolve('babel-loader');
 const babelPresetEnvPath = require.resolve('@babel/preset-env');
 const babelPresetReactPath = require.resolve('@babel/preset-react');
 const sourceMapLoaderPath = require.resolve('source-map-loader');
+const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
+
 const favicon = path.resolve(__dirname, '../../../docs/assets/njs.png');
 
 const cfg = ({ srcDir, distDir, dev = false }) => {
@@ -38,6 +40,11 @@ const cfg = ({ srcDir, distDir, dev = false }) => {
     module: {
       rules: [
         {
+          test: /\.css$/,
+          include: [/node_modules\/monaco-editor/],
+          use: ['style-loader', 'css-loader'],
+        },
+        {
           enforce: 'pre',
           test: /\.js?$/,
           loader: sourceMapLoaderPath,
@@ -67,6 +74,7 @@ const cfg = ({ srcDir, distDir, dev = false }) => {
       ],
     },
     plugins: [
+      new MonacoWebpackPlugin({ languages: ['json'] }),
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eRender.html'),
         filename: 'eRender.html',
