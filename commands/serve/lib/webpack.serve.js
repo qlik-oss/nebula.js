@@ -49,7 +49,6 @@ module.exports = async ({
       srcDir,
     });
   }
-
   const options = {
     clientLogLevel: 'none',
     hot: dev,
