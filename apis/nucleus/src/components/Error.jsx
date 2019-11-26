@@ -3,15 +3,34 @@ import { makeStyles, Grid, Typography } from '@material-ui/core';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 
 const useStyles = makeStyles(() => ({
-  container: {
-    height: '100%',
+  contentError: {
+    '&::before': {
+      position: 'absolute',
+      height: '100%',
+      width: '100%',
+      top: 0,
+      left: 0,
+      content: '""',
+      backgroundSize: '14.14px 14.14px',
+      backgroundImage:
+        'linear-gradient(135deg, currentColor 10%, rgba(0,0,0,0) 10%, rgba(0,0,0,0) 50%, currentColor 50%, currentColor 59%, rgba(0,0,0,0) 60%, rgba(0,0,0,0) 103%)',
+      opacity: 0.1,
+    },
   },
 }));
 
 export default function Error({ title = 'Error', message = '', data = [] }) {
-  const { container } = useStyles();
+  const { contentError } = useStyles();
   return (
-    <Grid container direction="column" alignItems="center" justify="center" className={container} spacing={1}>
+    <Grid
+      container
+      direction="column"
+      alignItems="center"
+      justify="center"
+      className={contentError}
+      style={{ position: 'relative', height: '100%' }}
+      spacing={1}
+    >
       <Grid item>
         <WarningTriangle style={{ fontSize: '48px' }} />
       </Grid>

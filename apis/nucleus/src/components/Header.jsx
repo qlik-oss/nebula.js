@@ -9,7 +9,7 @@ const Header = ({ layout, sn }) => {
   const showSubtitle = layout && layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = sn && layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
   return (
-    <Grid container wrap="nowrap" style={{ flexGrow: 0 }}>
+    <Grid item container wrap="nowrap" style={{ flexGrow: 0 }}>
       <Grid item zeroMinWidth xs>
         <Grid container wrap="nowrap" direction="column">
           {showTitle && (

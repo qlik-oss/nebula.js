@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import useRect from '../hooks/useRect';
 
 const setStyle = (el, d) => {
@@ -10,11 +10,11 @@ const setStyle = (el, d) => {
     el.style.left = `${d.left}px`;
   } else {
     el.style.width = undefined;
-    el.style.height = undefined;
-    el.style.top = 0;
-    el.style.left = 0;
-    el.style.right = 0;
-    el.style.bottom = 0;
+    el.style.height = '100%';
+    el.style.top = undefined;
+    el.style.left = undefined;
+    el.style.right = undefined;
+    el.style.bottom = undefined;
   }
   /* eslint-enable no-param-reassign */
 };
@@ -49,18 +49,19 @@ const constrainElement = ({ snNode, parentNode, sn, snContext, layout }) => {
   return logicalSize;
 };
 
-const Supernova = ({ sn, snOptions: options, snContext, layout, parentNode }) => {
+const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
   const { component } = sn;
-  const style = {
-    position: 'absolute',
-    top: 0,
-    bottom: 0,
-    right: 0,
-    left: 0,
-  };
+
   const [renderCnt, setRenderCnt] = useState(0);
   const [snRef, snRect, snNode] = useRect();
   const [logicalSize, setLogicalSize] = useState({ width: 0, height: 0 });
+  const [parentNode, setParentNode] = useState(null);
+  const callbackContainerRef = useCallback(ref => {
+    if (!ref) {
+      return;
+    }
+    setParentNode(ref);
+  }, []);
 
   const render = () =>
     component.render({
@@ -77,7 +78,7 @@ const Supernova = ({ sn, snOptions: options, snContext, layout, parentNode }) =>
 
   // Mount / Unmount / ThemeChanged
   useEffect(() => {
-    if (!snNode) return undefined;
+    if (!snNode || !parentNode) return undefined;
     setLogicalSize(constrainElement({ snNode, parentNode, sn, snContext, layout }));
     component.created({ options, snContext });
     component.mounted(snNode);
@@ -86,7 +87,7 @@ const Supernova = ({ sn, snOptions: options, snContext, layout, parentNode }) =>
       component.willUnmount();
       snContext.theme.removeListener('changed', render);
     };
-  }, [snNode]);
+  }, [snNode, parentNode]);
 
   // Render
   useEffect(() => {
@@ -109,7 +110,16 @@ const Supernova = ({ sn, snOptions: options, snContext, layout, parentNode }) =>
     }
     return undefined;
   }, [snRect, layout]);
-  return <div ref={snRef} style={style} data-render-count={renderCnt} />;
+  return (
+    <div
+      ref={callbackContainerRef}
+      data-render-count={renderCnt}
+      style={{ position: 'relative', height: '100%' }}
+      className="nebulajs-sn"
+    >
+      <div ref={snRef} />
+    </div>
+  );
 };
 
 export default Supernova;
