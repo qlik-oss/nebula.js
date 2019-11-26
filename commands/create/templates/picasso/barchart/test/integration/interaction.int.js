@@ -5,7 +5,7 @@ describe('interaction', () => {
     await page.goto(
       `${process.testServer.url}/render/app/${app}?cols=Alpha,=5+avg(Expression1)&&permissions=interact,select`
     );
-    await page.waitForFunction(`!!document.querySelector('${content}')`);
+    await page.waitForSelector(content, { visible: true });
 
     await page.click('rect[data-label="K"]');
     await page.click('rect[data-label="S"]');

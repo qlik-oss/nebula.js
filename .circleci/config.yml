@@ -21,9 +21,9 @@ jobs:
   build:
     docker:
       - image: circleci/node:10.13.0
-      - image: qlikcore/engine:12.477.0
+      - image: qlikcore/engine:12.515.0
         command: -S AcceptEULA=yes
-      - image: browserless/chrome:1.9-puppeteer-1.13.0
+      - image: browserless/chrome:1.20.0-puppeteer-1.20.0
 
     working_directory: ~/project
 
@@ -75,6 +75,7 @@ jobs:
             ./commands/cli/lib/index.js create generated/barchart --picasso barchart --no-install
             yarn
             cd generated/barchart
-            npm i picasso.js picasso-plugin-q
             yarn run build
-            APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+            APP_ID=$DOC_ID yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - store_artifacts:
+          path: generated/barchart/screenshots
