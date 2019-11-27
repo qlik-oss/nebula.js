@@ -65,7 +65,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const [layout] = useLayout(model);
+  const [layout] = useLayout({ model });
 
   const translator = useContext(LocaleContext);
   const direction = useContext(DirectionContext);

@@ -32,23 +32,23 @@ export default function Error({ title = 'Error', message = '', data = [] }) {
       spacing={1}
     >
       <Grid item>
-        <WarningTriangle style={{ fontSize: '48px' }} />
+        <WarningTriangle style={{ fontSize: '38px' }} />
       </Grid>
       <Grid item>
-        <Typography variant="h4" align="center">
+        <Typography variant="h6" align="center">
           {title}
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant="h6" align="center">
+        <Typography variant="subtitle1" align="center">
           {message}
         </Typography>
       </Grid>
       <Grid item>
         {data.map((d, ix) => (
           // eslint-disable-next-line react/no-array-index-key
-          <Typography key={ix} variant="h6" align="center">
-            {d.path} - {d.error.qErrorCode}
+          <Typography key={ix} variant="subtitle2" align="center">
+            {d.path} {d.error && '-'} {d.error && d.error.qErrorCode}
           </Typography>
         ))}
       </Grid>

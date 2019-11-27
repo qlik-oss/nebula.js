@@ -111,6 +111,7 @@ const config = isEsm => {
             'useEffect',
             'useLayoutEffect',
             'useRef',
+            'useReducer',
             'useContext',
             'useCallback',
             'useMemo',
