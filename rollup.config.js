@@ -129,7 +129,13 @@ const config = isEsm => {
       }),
       babel({
         babelrc: false,
-        include: ['/**/apis/nucleus/**', '/**/apis/supernova/**', '/**/apis/theme/**', '/**/packages/ui/**'],
+        include: [
+          '/**/apis/locale/**',
+          '/**/apis/nucleus/**',
+          '/**/apis/supernova/**',
+          '/**/apis/theme/**',
+          '/**/packages/ui/**',
+        ],
         presets: [
           [
             '@babel/preset-env',

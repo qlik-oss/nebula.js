@@ -32,6 +32,7 @@ const cfg = ({ srcDir, distDir, dev = false }) => {
               '@nebula.js/nucleus': path.resolve(process.cwd(), 'apis/nucleus/src'),
               '@nebula.js/supernova': path.resolve(process.cwd(), 'apis/supernova/src'),
               '@nebula.js/theme': path.resolve(process.cwd(), 'apis/theme/src'),
+              '@nebula.js/locale': path.resolve(process.cwd(), 'apis/locale/src'),
             }
           : {}),
       },

@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 import 'regenerator-runtime/runtime'; // Polyfill for using async/await
 
-import localeFn from './locale';
+import appLocaleFn from './locale/app-locale';
 import appThemeFn from './app-theme';
 
 import { createAppSelectionAPI } from './selections';
@@ -79,12 +79,12 @@ const mergeConfigs = (base, c) => ({
 
 function nuked(configuration = {}, prev = {}) {
   const logger = loggerFn(configuration.log);
-  const locale = localeFn(configuration.locale);
+  const locale = appLocaleFn(configuration.locale);
 
   const config = {
     env: {
       Promise,
-      translator: locale.translator(),
+      translator: locale.translator,
       nucleus, // eslint-disable-line no-use-before-define
     },
     load: configuration.load,
@@ -125,7 +125,7 @@ function nuked(configuration = {}, prev = {}) {
 
     const root = App({
       app,
-      translator: locale.translator(),
+      translator: locale.translator,
       direction: configuration.direction,
     });
 
