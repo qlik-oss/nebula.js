@@ -7,9 +7,11 @@ const babelPresetReactPath = require.resolve('@babel/preset-react');
 const sourceMapLoaderPath = require.resolve('source-map-loader');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
+const Inject = require('./head-injector');
+
 const favicon = path.resolve(__dirname, '../../../docs/assets/njs.png');
 
-const cfg = ({ srcDir, distDir, dev = false }) => {
+const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
   const config = {
     mode: dev ? 'development' : 'production',
     entry: {
@@ -94,6 +96,7 @@ const cfg = ({ srcDir, distDir, dev = false }) => {
         chunks: ['eHub'],
         favicon,
       }),
+      new Inject(serveConfig),
     ],
   };
 

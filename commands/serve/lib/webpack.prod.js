@@ -1,12 +1,14 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
+const Inject = require('./head-injector');
+
 const isSrc = /^([.]{2}\/)/;
 const namespace = /^webpack:\/\/([^/]+)\//;
 const NM = /node_modules/;
 const WP = /\/\(?webpack\)?/;
 
-const cfg = ({ srcDir = path.resolve(__dirname, '../dist') }) => {
+const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) => {
   const folderName = process
     .cwd()
     .split('/')
@@ -15,7 +17,7 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist') }) => {
   const config = {
     mode: 'development',
     entry: path.resolve(__dirname, './sn.js'),
-    devtool: 'source-map',
+    devtool: false,
     output: {
       path: path.resolve(srcDir, 'temp'),
       filename: '[name].js',
@@ -52,6 +54,7 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist') }) => {
         filename: 'eDev.html',
         inject: 'head',
       }),
+      new Inject(serveConfig),
     ],
   };
 

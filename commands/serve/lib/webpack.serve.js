@@ -40,6 +40,7 @@ module.exports = async ({
       srcDir,
       distDir,
       dev: true,
+      serveConfig,
     });
   } else {
     const webpackConfig = require('./webpack.prod.js');
@@ -47,6 +48,7 @@ module.exports = async ({
     contentBase = srcDir;
     config = webpackConfig({
       srcDir,
+      serveConfig,
     });
   }
   const options = {
