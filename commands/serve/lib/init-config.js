@@ -35,6 +35,14 @@ const options = {
     type: 'string',
     description: 'Path to a folder that will be served as static files under /assets',
   },
+  scripts: {
+    type: 'array',
+    description: 'Array of scripts to inject',
+  },
+  stylesheets: {
+    type: 'array',
+    description: 'Array of stylesheets to inject',
+  },
   'enigma.host': {
     type: 'string',
     default: 'localhost',
