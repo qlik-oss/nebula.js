@@ -1,5 +1,6 @@
 import vizualizationAPI from '../viz';
 
+const cache = {};
 /**
  * @typedef {object} GetObjectConfig
  * @property {string} id
@@ -13,24 +14,22 @@ import vizualizationAPI from '../viz';
  * @property {Array<'passive'|'select'|'interact'|'fetch'>} [context.permissions]
  * @property {object=} properties
  */
-
-export default function initiate({ id }, optional, context) {
-  return context.app.getObject(id).then(model => {
-    const viz = vizualizationAPI({
-      model,
-      context,
-    });
-
-    if (optional.options) {
-      viz.api.options(optional.options);
-    }
-    if (optional.context) {
-      viz.api.context(optional.context);
-    }
-    if (optional.element) {
-      return viz.api.mount(optional.element).then(() => viz.api);
-    }
-
-    return viz.api;
+export default async function initiate({ id }, optional, context) {
+  const cacheKey = `${context.app.id}/${id}`;
+  const model = cache[cacheKey] || (await context.app.getObject(id));
+  const [viz] = vizualizationAPI({
+    model,
+    context,
   });
+  if (optional.element) {
+    await viz.mount(optional.element);
+  }
+  if (optional.options) {
+    viz.options(optional.options);
+  }
+  if (optional.context) {
+    viz.context(optional.context);
+  }
+  cache[cacheKey] = model;
+  return viz;
 }

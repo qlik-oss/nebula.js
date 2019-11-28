@@ -16,7 +16,7 @@ import useLayout from '../../hooks/useLayout';
 import Row from './ListBoxRow';
 
 export default function ListBox({ model, selections, direction }) {
-  const [layout] = useLayout(model);
+  const [layout] = useLayout({ model });
   const [pages, setPages] = useState(null);
   const loaderRef = useRef(null);
   const local = useRef({

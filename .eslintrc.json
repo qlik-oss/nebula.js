@@ -22,6 +22,12 @@
   },
   "overrides": [
     {
+      "files": ["apis/**/*"],
+      "rules": {
+        "no-console": "error"
+      }
+    },
+    {
       "files": ["**/*.{int,spec}.{js,jsx}"],
       "env": {
         "browser": false,

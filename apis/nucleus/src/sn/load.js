@@ -33,6 +33,7 @@ export function load(name, version, config, loader) {
         return sn;
       })
       .catch(e => {
+        // eslint-disable-next-line no-console
         console.error(e);
         throw new Error(`Failed to load supernova: ${name}`);
       });

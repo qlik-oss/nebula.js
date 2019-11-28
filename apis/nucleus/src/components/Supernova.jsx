@@ -78,7 +78,7 @@ const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
 
   // Mount / Unmount / ThemeChanged
   useEffect(() => {
-    if (!snNode || !parentNode) return undefined;
+    if (!snNode || !parentNode || !snContext) return undefined;
     setLogicalSize(constrainElement({ snNode, parentNode, sn, snContext, layout }));
     component.created({ options, snContext });
     component.mounted(snNode);
@@ -87,7 +87,7 @@ const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
       component.willUnmount();
       snContext.theme.removeListener('changed', render);
     };
-  }, [snNode, parentNode]);
+  }, [snNode, parentNode, snContext]);
 
   // Render
   useEffect(() => {

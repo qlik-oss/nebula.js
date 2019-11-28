@@ -97,7 +97,7 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
     app
   );
 
-  const [layout] = useLayout(model, app);
+  const [layout] = useLayout({ model, app });
 
   const fields = useMemo(
     () =>

@@ -10,7 +10,7 @@ import Cell from './Cell';
 
 export default function Collection({ types, cache }) {
   const app = useContext(AppContext);
-  const [layout] = useLayout(app);
+  const [layout] = useLayout({ app });
   const [objects, setObjects] = useState(null);
 
   const { expandedObject } = useContext(VizContext);

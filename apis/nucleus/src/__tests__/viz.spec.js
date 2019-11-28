@@ -10,22 +10,16 @@ describe('viz', () => {
       ],
       ['../viz.js']
     );
-
   describe('api', () => {
     let api;
     before(() => {
       const [{ default: create }] = doMock();
 
-      const { api: foo } = create({
+      const [foo] = create({
         model: 'a',
-        config: {},
         context: {},
       });
       api = foo;
-    });
-
-    it('should have a reference to the model', () => {
-      expect(api.model).to.equal('a');
     });
 
     it('should have a mount method', () => {
@@ -100,8 +94,10 @@ describe('viz', () => {
       const [{ default: create }] = doMock({ getter, getPatches });
       const model = {
         applyPatches: sinon.spy(),
+        on: sinon.spy(),
+        once: sinon.spy(),
       };
-      const { api } = create({
+      const [api] = create({
         model,
         context: {},
       });
@@ -117,8 +113,10 @@ describe('viz', () => {
       const [{ default: create }] = doMock({ getter, getPatches });
       const model = {
         applyPatches: sinon.spy(),
+        on: sinon.spy(),
+        once: sinon.spy(),
       };
-      const { api } = create({
+      const [api] = create({
         model,
         context: {},
       });
