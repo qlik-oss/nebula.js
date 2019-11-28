@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useEffect, useState, useContext, useReducer } from 'react';
+import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer } from 'react';
 
 import { Grid, Paper } from '@material-ui/core';
 import { useTheme } from '@nebula.js/ui/theme';
@@ -25,7 +25,7 @@ const initialState = {
 };
 
 const contentReducer = (state, action) => {
-  // console.log(action.type);
+  console.log(action.type);
   switch (action.type) {
     case 'LOADING': {
       return {
@@ -152,7 +152,7 @@ const loadType = async ({ dispatch, types, name, version, layout, model, app }) 
   return undefined;
 };
 
-export default function Cell({ nebulaContext, model, snContext, snOptions, onMount }) {
+const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOptions, onMount }, ref) => {
   const {
     app,
     nebbie: { types },
@@ -162,21 +162,23 @@ export default function Cell({ nebulaContext, model, snContext, snOptions, onMou
   const theme = useTheme();
   const [state, dispatch] = useReducer(contentReducer, initialState);
   const [layout, validating, cancel, retry] = useLayout({ app, model });
-  const [contentRef /* contentRect */, , contentNode] = useRect();
+  const [contentRef, contentRect, , contentNode] = useRect();
+  const [snContext, setSnContext] = useState(initialSnContext);
+  const [snOptions, setSnOptions] = useState(initialSnOptions);
 
   useEffect(() => {
-    const validate = sn => {
-      const [showError, error] = validateTargets(translator, layout, sn.generator.qae.data);
+    const validate = () => {
+      const [showError, error] = validateTargets(translator, layout, state.sn.generator.qae.data);
       if (showError) {
         dispatch({ type: 'ERROR', error });
-      } else {
-        dispatch({ type: 'LOADED', sn });
       }
     };
     const load = async (withLayout, version) => {
       const sn = await loadType({ types, name: withLayout.visualization, version, layout, model, app });
       onMount();
-      validate(sn);
+      dispatch({ type: 'LOADED', sn });
+      // Handle modal
+      handleModal({ sn, layout, model });
     };
 
     if (!layout) {
@@ -185,7 +187,6 @@ export default function Cell({ nebulaContext, model, snContext, snOptions, onMou
     }
     if (state.sn) {
       validate(state.sn);
-      // Handle modal
       handleModal({ sn: state.sn, layout, model });
       return undefined;
     }
@@ -199,7 +200,7 @@ export default function Cell({ nebulaContext, model, snContext, snOptions, onMou
     load(layout, withVersion);
 
     return () => {};
-  }, [layout]);
+  }, [types, state.sn, model, layout]);
 
   // Long running query
   useEffect(() => {
@@ -209,6 +210,33 @@ export default function Cell({ nebulaContext, model, snContext, snOptions, onMou
     const handle = setTimeout(() => dispatch({ type: 'LONG_RUNNING_QUERY' }), 2000);
     return () => clearTimeout(handle);
   }, [validating]);
+
+  // Expose cell ref api
+  useImperativeHandle(
+    ref,
+    () => ({
+      setSnContext,
+      setSnOptions,
+      takeSnapshot: async () => {
+        const snapshot = {
+          ...layout,
+          snapshotData: {
+            object: {
+              size: {
+                w: contentRect.width,
+                h: contentRect.height,
+              },
+            },
+          },
+        };
+        if (typeof state.sn.component.setSnapshotData === 'function') {
+          return (await state.sn.component.setSnapshotData(snapshot)) || snapshot;
+        }
+        return snapshot;
+      },
+    }),
+    [state.sn, contentRect, layout]
+  );
 
   let Content = null;
   if (state.loading) {
@@ -267,4 +295,5 @@ export default function Cell({ nebulaContext, model, snContext, snOptions, onMou
       {state.longRunningQuery && <LongRunningQuery onCancel={cancel} onRetry={retry} />}
     </Paper>
   );
-}
+});
+export default Cell;

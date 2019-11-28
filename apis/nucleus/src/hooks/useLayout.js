@@ -1,5 +1,6 @@
 import { useReducer, useEffect } from 'react';
 
+// eslint-disable-next-line no-unused-vars
 const sleep = delay => {
   return new Promise(resolve => {
     setTimeout(resolve, delay);
@@ -57,7 +58,7 @@ const getLayout = ({ dispatch, app, model }) => {
     canCancel = true;
     try {
       const layout = await rpc;
-      await sleep(15000);
+      // await sleep(15000);
       canCancel = false;
       dispatch({ type: 'VALID', layout });
     } catch (_) {

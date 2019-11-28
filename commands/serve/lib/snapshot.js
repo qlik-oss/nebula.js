@@ -47,7 +47,7 @@ function snapshotter({ host, port }) {
           await page.waitFor(
             () =>
               document.querySelector('.nebulajs-sn') &&
-              document.querySelector('.nebulajs-sn').getAttribute('data-rendered') === '1'
+              +document.querySelector('.nebulajs-sn').getAttribute('data-render-count') > 0
           );
           const image = await page.screenshot();
           images[snap.key] = image;

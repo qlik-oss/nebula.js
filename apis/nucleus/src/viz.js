@@ -3,68 +3,55 @@ import glueCell from './components/glue';
 import { get } from './object/observer';
 import getPatches from './utils/patcher';
 
-import eventMixin from './selections/event-mixin';
-
 const noopi = () => {};
 
-export default function viz({ model, context: nebulaContext, initialUserProps = {} } = {}) {
+export default function viz({ model, context: nebulaContext } = {}) {
   let unmountCell = noopi;
+  let cellRef = null;
   let mountedReference = null;
   let onMount = null;
   const mounted = new Promise(resolve => {
     onMount = resolve;
   });
 
-  let userProps = {
-    options: {},
-    context: {
-      theme: nebulaContext.theme,
-      permissions: [],
-    },
-    ...initialUserProps,
+  let initialSnContext = {
+    theme: nebulaContext.theme,
+  };
+  let initialSnOptions = {};
+
+  const setSnOptions = async opts => {
+    if (mountedReference) {
+      (async () => {
+        await mounted;
+        cellRef.current.setSnOptions({
+          ...initialSnOptions,
+          ...opts,
+        });
+      })();
+    } else {
+      initialSnOptions = {
+        ...initialSnOptions,
+        ...opts,
+      };
+    }
   };
 
-  let objectProps = {
-    layout: null,
-    sn: null,
-    error: null,
-  };
-
-  const vizGlue = {
-    userProps() {
-      return userProps;
-    },
-    objectProps() {
-      return objectProps;
-    },
-  };
-
-  eventMixin(vizGlue);
-
-  const update = () => {
-    vizGlue.emit('changed');
-  };
-
-  const setUserProps = up => {
-    userProps = {
-      ...userProps,
-      ...up,
-      context: {
-        // DO NOT MAKE A DEEP COPY OF THEME AS IT WOULD MESS UP THE INSTANCE
-        ...(userProps || {}).context,
-        ...(up || {}).context,
-        theme: nebulaContext.theme,
-      },
-    };
-    update();
-  };
-
-  const setObjectProps = p => {
-    objectProps = {
-      ...objectProps,
-      ...p,
-    };
-    update();
+  const setSnContext = async ctx => {
+    if (mountedReference) {
+      (async () => {
+        await mounted;
+        cellRef.current.setSnContext({
+          ...initialSnContext,
+          ...ctx,
+          theme: nebulaContext.theme,
+        });
+      })();
+    } else {
+      initialSnContext = {
+        ...initialSnContext,
+        ...ctx,
+      };
+    }
   };
 
   /**
@@ -86,12 +73,12 @@ export default function viz({ model, context: nebulaContext, initialUserProps = 
         throw new Error('Already mounted');
       }
       mountedReference = element;
-      unmountCell = glueCell({
+      [unmountCell, cellRef] = glueCell({
         nebulaContext,
         element,
         model,
-        snContext: userProps.context,
-        snOptions: userProps.options,
+        initialSnContext,
+        initialSnOptions,
         onMount,
       });
       return mounted;
@@ -111,48 +98,19 @@ export default function viz({ model, context: nebulaContext, initialUserProps = 
         if (patches.length) {
           return model.applyPatches(patches, true);
         }
-        return Promise.resolve();
+        return undefined;
       });
     },
     options(opts) {
-      setUserProps({
-        options: opts,
-      });
+      setSnOptions(opts);
       return api;
     },
     context(ctx) {
-      setUserProps({
-        context: ctx,
-      });
+      setSnContext(ctx);
       return api;
     },
     takeSnapshot() {
-      if (mountedReference) {
-        const content = mountedReference.querySelector('.nebulajs-sn');
-        if (content) {
-          const rect = content.getBoundingClientRect();
-          if (objectProps.sn) {
-            const snapshot = {
-              ...objectProps.layout,
-              snapshotData: {
-                object: {
-                  size: {
-                    w: rect.width,
-                    h: rect.height,
-                  },
-                },
-              },
-            };
-
-            if (typeof objectProps.sn.component.setSnapshotData === 'function') {
-              return Promise.resolve(objectProps.sn.component.setSnapshotData(snapshot)).then(v => v || snapshot);
-            }
-            return Promise.resolve(snapshot);
-          }
-          return Promise.reject(new Error('No content'));
-        }
-      }
-      return Promise.reject(new Error('Not mounted yet'));
+      return cellRef.current.takeSnapshot();
     },
 
     // QVisualization API
@@ -166,8 +124,5 @@ export default function viz({ model, context: nebulaContext, initialUserProps = 
     // toggleDataView() {},
   };
 
-  return {
-    setObjectProps,
-    api,
-  };
+  return [api, mounted];
 }
