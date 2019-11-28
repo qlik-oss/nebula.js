@@ -96,6 +96,7 @@ export default function hcHandler({ hc, def }) {
         // TODO - rename 'add' to 'added' since the callback is run after the dimension has been added
         def.dimensions.add(dimension, objectProperties);
       } else {
+        // eslint-disable-next-line no-console
         console.log('Should add dimension to layout exclude');
         // add to layout exclude
       }
@@ -124,6 +125,7 @@ export default function hcHandler({ hc, def }) {
 
         def.measures.add(measure, objectProperties);
       } else {
+        // eslint-disable-next-line no-console
         console.log('Should add measure to layout exclude');
         // add to layout exclude
       }

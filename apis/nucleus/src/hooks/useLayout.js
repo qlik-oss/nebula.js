@@ -61,8 +61,9 @@ const getLayout = ({ dispatch, app, model }) => {
       // await sleep(15000);
       canCancel = false;
       dispatch({ type: 'VALID', layout });
-    } catch (_) {
+    } catch (err) {
       // TODO - this can happen for requested aborted
+      // console.info(err);
     }
   };
 };

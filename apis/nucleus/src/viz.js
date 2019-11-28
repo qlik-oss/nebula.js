@@ -16,6 +16,7 @@ export default function viz({ model, context: nebulaContext } = {}) {
 
   let initialSnContext = {
     theme: nebulaContext.theme,
+    permissions: [],
   };
   let initialSnOptions = {};
 
@@ -29,6 +30,7 @@ export default function viz({ model, context: nebulaContext } = {}) {
         });
       })();
     } else {
+      // Handle setting options before mount
       initialSnOptions = {
         ...initialSnOptions,
         ...opts,
@@ -47,6 +49,7 @@ export default function viz({ model, context: nebulaContext } = {}) {
         });
       })();
     } else {
+      // Handle setting context before mount
       initialSnContext = {
         ...initialSnContext,
         ...ctx,

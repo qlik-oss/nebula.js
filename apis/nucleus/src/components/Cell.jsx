@@ -17,7 +17,6 @@ import { createObjectSelectionAPI } from '../selections';
 
 const initialState = {
   loading: false,
-  loadingError: false,
   loaded: false,
   longRunningQuery: false,
   error: null,
@@ -25,7 +24,7 @@ const initialState = {
 };
 
 const contentReducer = (state, action) => {
-  console.log(action.type);
+  // console.log(action.type);
   switch (action.type) {
     case 'LOADING': {
       return {
@@ -33,21 +32,23 @@ const contentReducer = (state, action) => {
         loading: true,
       };
     }
-    case 'LOAD_ERROR': {
-      return {
-        ...state,
-        loadError: true,
-      };
-    }
     case 'LOADED': {
       return {
         ...state,
         loaded: true,
         loading: false,
-        loadError: false,
         longRunningQuery: false,
         error: null,
         sn: action.sn,
+      };
+    }
+    case 'RENDER': {
+      return {
+        ...state,
+        loaded: true,
+        loading: false,
+        longRunningQuery: false,
+        error: null,
       };
     }
     case 'LONG_RUNNING_QUERY': {
@@ -60,7 +61,6 @@ const contentReducer = (state, action) => {
       return {
         ...state,
         loading: false,
-        loadError: false,
         longRunningQuery: false,
         error: action.error,
       };
@@ -84,14 +84,18 @@ const Loading = ({ delay = 750 }) => {
 };
 
 const handleModal = ({ sn, layout, model }) => {
-  if (sn && sn.component.selections && sn.component.selections.id === model.id) {
-    sn.component.selections.setLayout(layout);
-    if (layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections && !sn.component.selections.isModal()) {
+  const selections = sn && sn.component && sn.component.selections;
+  if (!selections || !selections.id || !model.id) {
+    return;
+  }
+  if (selections.id === model.id) {
+    selections.setLayout(layout);
+    if (layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections && !selections.isModal()) {
       sn.selections.goModal('/qHyperCubeDef'); // TODO - use path from data targets
     }
     if (!layout.qSelectionInfo || !layout.qSelectionInfo.qInSelections) {
-      if (sn.component.selections.isModal()) {
-        sn.component.selections.noModal();
+      if (selections.isModal()) {
+        selections.noModal();
       }
     }
   }
@@ -147,7 +151,7 @@ const loadType = async ({ dispatch, types, name, version, layout, model, app }) 
     });
     return sn;
   } catch (err) {
-    dispatch({ type: 'LOAD_ERROR' });
+    dispatch({ type: 'ERROR', error: { title: err.message } });
   }
   return undefined;
 };
@@ -167,18 +171,22 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
   const [snOptions, setSnOptions] = useState(initialSnOptions);
 
   useEffect(() => {
-    const validate = () => {
-      const [showError, error] = validateTargets(translator, layout, state.sn.generator.qae.data);
+    const validate = sn => {
+      const [showError, error] = validateTargets(translator, layout, sn.generator.qae.data);
       if (showError) {
         dispatch({ type: 'ERROR', error });
+      } else {
+        dispatch({ type: 'RENDER' });
       }
+      handleModal({ sn: state.sn, layout, model });
     };
     const load = async (withLayout, version) => {
-      const sn = await loadType({ types, name: withLayout.visualization, version, layout, model, app });
-      onMount();
-      dispatch({ type: 'LOADED', sn });
-      // Handle modal
-      handleModal({ sn, layout, model });
+      const sn = await loadType({ dispatch, types, name: withLayout.visualization, version, layout, model, app });
+      if (sn) {
+        dispatch({ type: 'LOADED', sn });
+        onMount();
+      }
+      return undefined;
     };
 
     if (!layout) {
@@ -187,14 +195,18 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
     }
     if (state.sn) {
       validate(state.sn);
-      handleModal({ sn: state.sn, layout, model });
       return undefined;
     }
 
-    // Load supernova
+    // Load supernova h
     const withVersion = types.getSupportedVersion(layout.visualization, layout.version);
     if (!withVersion) {
-      dispatch({ type: 'ERROR' });
+      dispatch({
+        type: 'ERROR',
+        error: {
+          title: `Could not find a version of '${layout.visualization}' that supports current object version. Did you forget to register ${layout.visualization}?`,
+        },
+      });
       return undefined;
     }
     load(layout, withVersion);
@@ -241,8 +253,6 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
   let Content = null;
   if (state.loading) {
     Content = <Loading />;
-  } else if (state.loadingError) {
-    Content = <CError {...state.error} />;
   } else if (state.error) {
     Content = <CError {...state.error} />;
   } else if (state.loaded) {

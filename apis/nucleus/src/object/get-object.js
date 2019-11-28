@@ -1,5 +1,6 @@
 import vizualizationAPI from '../viz';
 
+const cache = {};
 /**
  * @typedef {object} GetObjectConfig
  * @property {string} id
@@ -14,7 +15,8 @@ import vizualizationAPI from '../viz';
  * @property {object=} properties
  */
 export default async function initiate({ id }, optional, context) {
-  const model = await context.app.getObject(id);
+  const cacheKey = `${context.app.id}/${id}`;
+  const model = cache[cacheKey] || (await context.app.getObject(id));
   const [viz] = vizualizationAPI({
     model,
     context,
@@ -28,6 +30,6 @@ export default async function initiate({ id }, optional, context) {
   if (optional.context) {
     viz.context(optional.context);
   }
-
+  cache[cacheKey] = model;
   return viz;
 }
