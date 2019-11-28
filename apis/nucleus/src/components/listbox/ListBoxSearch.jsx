@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Grid, TextField } from '@material-ui/core';
+import { InputAdornment, OutlinedInput } from '@material-ui/core';
 import Search from '@nebula.js/ui/icons/search';
 
 import { makeStyles } from '@nebula.js/ui/theme';
@@ -7,14 +7,13 @@ import { makeStyles } from '@nebula.js/ui/theme';
 import LocaleContext from '../../contexts/LocaleContext';
 
 const useStyles = makeStyles(theme => ({
-  gridContainer: {
-    padding: theme.spacing(0, 1, 0, 1),
-  },
-  gridItem: {
-    padding: theme.spacing(0, 1, 0, 1),
+  root: {
+    '& fieldset': {
+      borderRadius: 0,
+      borderColor: `${theme.palette.divider} transparent`,
+    },
   },
 }));
-
 const TREE_PATH = '/qListObjectDef';
 
 export default function ListBoxSearch({ model }) {
@@ -38,23 +37,23 @@ export default function ListBoxSearch({ model }) {
     }
   };
 
-  const { gridContainer, gridItem } = useStyles();
+  const classes = useStyles();
 
   return (
-    <Grid className={gridContainer} item container direction="row" alignItems="center">
-      <Grid item>
-        <Search />
-      </Grid>
-      <Grid className={gridItem} item xs>
-        <TextField
-          fullWidth
-          autoFocus
-          placeholder={translator.get('Listbox.Search')}
-          value={value}
-          onChange={onChange}
-          onKeyDown={onKeyDown}
-        />
-      </Grid>
-    </Grid>
+    <OutlinedInput
+      startAdornment={
+        <InputAdornment position="start">
+          <Search />
+        </InputAdornment>
+      }
+      className={[classes.root].join(' ')}
+      autoFocus
+      margin="dense"
+      fullWidth
+      placeholder={translator.get('Listbox.Search')}
+      value={value}
+      onChange={onChange}
+      onKeyDown={onKeyDown}
+    />
   );
 }
