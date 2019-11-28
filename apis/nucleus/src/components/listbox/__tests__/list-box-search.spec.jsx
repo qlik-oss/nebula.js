@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { TextField } from '@material-ui/core';
+import { OutlinedInput } from '@material-ui/core';
 
 const LocaleContext = React.createContext();
 const [{ default: ListBoxSearch }] = aw.mock(
@@ -24,7 +24,7 @@ describe('<ListBoxSearch />', () => {
       </LocaleContext.Provider>
     );
     const testInstance = testRenderer.root;
-    const types = testInstance.findAllByType(TextField);
+    const types = testInstance.findAllByType(OutlinedInput);
     expect(types).to.have.length(1);
     expect(types[0].props.fullWidth).to.equal(true);
     expect(types[0].props.autoFocus).to.equal(true);
@@ -33,7 +33,7 @@ describe('<ListBoxSearch />', () => {
     expect(types[0].props.onChange).to.be.a('function');
     expect(types[0].props.onKeyDown).to.be.a('function');
   });
-  it('should update `TextField` and search `onChange`', () => {
+  it('should update `OutlinedInput` and search `onChange`', () => {
     const model = {
       searchListObjectFor: sinon.spy(),
       acceptListObjectSearch: sinon.spy(),
@@ -45,7 +45,7 @@ describe('<ListBoxSearch />', () => {
       </LocaleContext.Provider>
     );
     const testInstance = testRenderer.root;
-    let type = testInstance.findByType(TextField);
+    let type = testInstance.findByType(OutlinedInput);
     type.props.onChange({ target: { value: 'foo' } });
     testRenderer.update(
       <LocaleContext.Provider value={{ get: () => 'Search' }}>
@@ -53,10 +53,10 @@ describe('<ListBoxSearch />', () => {
       </LocaleContext.Provider>
     );
     expect(model.searchListObjectFor).to.have.been.calledWith('/qListObjectDef', 'foo');
-    type = testInstance.findByType(TextField);
+    type = testInstance.findByType(OutlinedInput);
     expect(type.props.value).to.equal('foo');
   });
-  it('should reset `TextField` and `acceptListObjectSearch` on `Enter`', () => {
+  it('should reset `OutlinedInput` and `acceptListObjectSearch` on `Enter`', () => {
     const model = {
       searchListObjectFor: sinon.spy(),
       acceptListObjectSearch: sinon.spy(),
@@ -68,7 +68,7 @@ describe('<ListBoxSearch />', () => {
       </LocaleContext.Provider>
     );
     const testInstance = testRenderer.root;
-    const type = testInstance.findByType(TextField);
+    const type = testInstance.findByType(OutlinedInput);
     type.props.onChange({ target: { value: 'foo' } });
     expect(type.props.value).to.equal('foo');
     type.props.onKeyDown({ key: 'Enter' });
@@ -87,7 +87,7 @@ describe('<ListBoxSearch />', () => {
       </LocaleContext.Provider>
     );
     const testInstance = testRenderer.root;
-    const type = testInstance.findByType(TextField);
+    const type = testInstance.findByType(OutlinedInput);
     type.props.onChange({ target: { value: 'foo' } });
     expect(type.props.value).to.equal('foo');
     type.props.onKeyDown({ key: 'Escape' });

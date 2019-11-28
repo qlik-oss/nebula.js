@@ -6,6 +6,7 @@ import Unlock from '@nebula.js/ui/icons/unlock';
 import { IconButton, Popover, Grid, MenuList } from '@material-ui/core';
 
 import { more } from '@nebula.js/ui/icons/more';
+import { useTheme } from '@nebula.js/ui/theme';
 import useModel from '../../hooks/useModel';
 import useLayout from '../../hooks/useLayout';
 
@@ -21,6 +22,7 @@ import DirectionContext from '../../contexts/DirectionContext';
 import ListBoxSearch from './ListBoxSearch';
 
 export default function ListBoxPopover({ alignTo, show, close, app, fieldName, stateName = '$' }) {
+  const theme = useTheme();
   const [model] = useModel(
     {
       qInfo: {
@@ -102,7 +104,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
     type: 'icon-button',
     label: translator.get('Selection.Menu'),
     getSvgIconShape: more,
-    enabled: () => true,
+    disabled: isLocked,
     action: () => setShowSelectionsMenu(!showSelectionsMenu),
   };
 
@@ -124,27 +126,26 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
       }}
     >
       <Grid container direction="column" spacing={0}>
-        <Grid item>
-          <Grid container direction="row" justify="flex-end">
-            <Grid item>
-              {isLocked ? (
-                <IconButton onClick={unlock}>
-                  <Unlock />
-                </IconButton>
-              ) : (
-                <IconButton onClick={lock}>
-                  <Lock />
-                </IconButton>
-              )}
-            </Grid>
-            <Grid item>
-              <SelectionToolbarWithDefault
-                api={sel}
-                xItems={[moreItem]}
-                onConfirm={popoverClose}
-                onCancel={() => popoverClose(null, 'escapeKeyDown')}
-              />
-            </Grid>
+        <Grid item container style={{ padding: theme.spacing(1) }}>
+          <Grid item>
+            {isLocked ? (
+              <IconButton onClick={unlock}>
+                <Lock />
+              </IconButton>
+            ) : (
+              <IconButton onClick={lock}>
+                <Unlock />
+              </IconButton>
+            )}
+          </Grid>
+          <Grid item xs />
+          <Grid item>
+            <SelectionToolbarWithDefault
+              api={sel}
+              xItems={[moreItem]}
+              onConfirm={popoverClose}
+              onCancel={() => popoverClose(null, 'escapeKeyDown')}
+            />
           </Grid>
         </Grid>
         <Grid item xs>
@@ -160,8 +161,11 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
               disablePortal
               hideBackdrop
               style={{ pointerEvents: 'none' }}
+              transitionDuration={0}
+              elevation={0}
               PaperProps={{
                 style: {
+                  boxShadow: '0 12px 8px -8px rgba(0, 0, 0, 0.2)',
                   minWidth: '250px',
                   pointerEvents: 'auto',
                 },

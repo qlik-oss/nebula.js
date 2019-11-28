@@ -107,6 +107,9 @@ export default function(model, app) {
      * @returns {boolean}
      */
     canCancel() {
+      if (layout && layout.qListObject && layout.qListObject.qDimensionInfo) {
+        return !layout.qListObject.qDimensionInfo.qLocked;
+      }
       return true;
     },
     /**
