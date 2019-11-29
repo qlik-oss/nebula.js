@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 
+import Progress from './Progress';
+
 const useStyles = makeStyles(() => ({
   stripes: {
     '&::before': {
@@ -22,10 +24,15 @@ const useStyles = makeStyles(() => ({
 
 const Cancel = ({ cancel, ...props }) => (
   <>
-    <Grid item>
-      <Typography variant="h4" align="center">
-        Long running query...
-      </Typography>
+    <Grid container item direction="column" alignItems="center" spacing={2}>
+      <Grid item>
+        <Progress />
+      </Grid>
+      <Grid item>
+        <Typography variant="h6" align="center">
+          Updating data
+        </Typography>
+      </Grid>
     </Grid>
     <Grid item {...props}>
       <Button variant="contained" onClick={cancel}>
@@ -43,11 +50,6 @@ const Retry = ({ retry, ...props }) => (
     <Grid item>
       <Typography variant="h6" align="center">
         Data update was cancelled
-      </Typography>
-    </Grid>
-    <Grid item>
-      <Typography variant="subtitle1" align="center">
-        Visualization not updated. Please try again.
       </Typography>
     </Grid>
     <Grid item>
@@ -86,7 +88,7 @@ export default function LongRunningQuery({ onCancel, onRetry }) {
         left: 0,
         top: 0,
       }}
-      spacing={1}
+      spacing={2}
     >
       {canCancel && <Cancel cancel={handleCancel} className={cancel} />}
       {canRetry && <Retry retry={handleRetry} className={retry} />}
