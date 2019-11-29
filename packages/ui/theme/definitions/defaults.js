@@ -1,3 +1,6 @@
+const focusBorder = '#469DCD';
+const focusOutline = 'rgba(70, 157, 205, 0.3)';
+
 export default {
   typography: {
     fontSize: 14,
@@ -46,18 +49,29 @@ export default {
   props: {
     MuiButtonBase: {
       disableRipple: true,
+      disableTouchRipple: true,
+      focusRipple: false,
     },
   },
   overrides: {
-    MuiTypography: {
-      root: {
-        color: '#fff',
-      },
-    },
     MuiIconButton: {
       root: {
-        padding: 8,
+        padding: 7,
         borderRadius: 2,
+        border: '1px solid transparent',
+        // should ideally use $focusVisible, but that messes up focus in all other places where Iconbutton is used (Checkbox, Switch etc)
+        '&:focus': {
+          borderColor: focusBorder,
+          boxShadow: `0 0 0 2px ${focusOutline}`,
+        },
+      },
+    },
+    MuiButton: {
+      outlined: {
+        '&$focusVisible': {
+          borderColor: focusBorder,
+          boxShadow: `0 0 0 2px ${focusOutline}`,
+        },
       },
     },
     MuiExpansionPanelSummary: {

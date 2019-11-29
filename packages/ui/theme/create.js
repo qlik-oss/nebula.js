@@ -33,6 +33,11 @@ const dark = {
     },
   },
   overrides: {
+    MuiTypography: {
+      root: {
+        color: '#fff',
+      },
+    },
     MuiIconButton: {
       root: {
         ...defaults.overrides.MuiIconButton.root,
