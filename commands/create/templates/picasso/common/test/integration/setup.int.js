@@ -1,20 +1,22 @@
 const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
 
-let s;
+if (!process.env.BASE_URL) {
+  let s;
 
-before(async function setup() {
-  this.timeout(15000); // to allow time for the server to start
-  s = await serve({
-    build: false,
+  before(async function setup() {
+    this.timeout(15000); // to allow time for the server to start
+    s = await serve({
+      build: false,
+    });
+
+    process.env.BASE_URL = s.url;
+
+    page.on('pageerror', e => {
+      console.log('Error:', e.message, e.stack);
+    });
   });
 
-  process.testServer = s;
-
-  page.on('pageerror', e => {
-    console.log('Error:', e.message, e.stack);
+  after(() => {
+    s.close();
   });
-});
-
-after(() => {
-  s.close();
-});
+}
