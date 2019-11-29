@@ -2,153 +2,116 @@ import nucleus from '@nebula.js/nucleus';
 
 import { openApp, params, info as serverInfo } from './connect';
 
-function renderWithEngine() {
+const nuke = async ({ app, supernova: { name }, themes, theme }) => {
+  const nuked = nucleus.configured({
+    themes: themes
+      ? themes.map(t => ({
+          key: t,
+          load: async () => (await fetch(`/theme/${t}`)).json(),
+        }))
+      : undefined,
+    theme,
+    types: [
+      {
+        name,
+      },
+    ],
+  });
+  const nebbie = nuked(app, {
+    load: (type, config) => config.Promise.resolve(window[type.name]),
+  });
+  return nebbie;
+};
+
+async function renderWithEngine() {
   if (!params.app) {
     location.href = location.origin; //eslint-disable-line
   }
-
-  serverInfo.then(info =>
-    openApp(params.app).then(app => {
-      let obj;
-      let objType;
-
-      const nebbie = nucleus.configured({
-        themes: info.themes
-          ? info.themes.map(t => ({
-              key: t,
-              load: () => fetch(`/theme/${t}`).then(response => response.json()),
-            }))
-          : undefined,
-        theme: params.theme,
-        types: [
-          {
-            name: info.supernova.name,
-          },
-        ],
-      })(app, {
-        load: (type, config) => {
-          objType = type.name;
-          return config.Promise.resolve(window[objType]);
-        },
-      });
-
-      const create = () => {
-        obj = nebbie.create(
-          {
-            type: info.supernova.name,
-            fields: params.cols || [],
-          },
-          {
-            element: document.querySelector('#chart-container'),
-            context: {
-              permissions: params.permissions || [],
-            },
-          }
-        );
+  const info = await serverInfo;
+  const app = await openApp(params.app);
+  const nebbie = await nuke({ app, ...info, theme: params.theme });
+  const element = document.querySelector('#chart-container');
+  const vizCfg = {
+    element,
+    context: {
+      permissions: params.permissions || [],
+    },
+  };
+  const getCfg = params.object
+    ? {
+        id: params.object,
+      }
+    : {
+        type: info.supernova.name,
+        fields: params.cols || [],
       };
 
-      const get = () => {
-        obj = nebbie.get(
-          {
-            id: params.object,
-          },
-          {
-            element: document.querySelector('#chart-container'),
-            context: {
-              permissions: params.permissions || [],
-            },
-          }
-        );
-      };
+  const render = async () => {
+    await nebbie[params.object ? 'get' : 'create'](getCfg, vizCfg);
+  };
 
-      const render = () => {
-        if (params.object) {
-          get();
-        } else {
-          create();
-        }
-      };
-
-      window.onHotChange(info.supernova.name, () => {
-        nebbie.types.clearFromCache(objType);
-        render();
-        obj.then(viz => {
-          viz.close();
-          render();
-        });
-      });
-    })
-  );
+  let viz;
+  window.onHotChange(info.supernova.name, async () => {
+    if (viz) {
+      viz.close();
+      nebbie.types.clearFromCache(info.supernova.name);
+      nebbie.types.register(info.supernova);
+    }
+    viz = await render();
+  });
 }
 
-function renderSnapshot() {
-  document.querySelector('#chart-container').classList.toggle('full', true);
-  fetch(`/snapshot/${params.snapshot}`)
-    .then(response => response.json())
-    .then(snapshot => {
-      serverInfo.then(info => {
-        const layout = {
-          ...snapshot.layout,
-          visualization: info.supernova.name,
-        };
+async function renderSnapshot() {
+  const info = await serverInfo;
+  const element = document.querySelector('#chart-container');
+  element.classList.toggle('full', true);
+  const snapshot = await (await fetch(`/snapshot/${params.snapshot}`)).json();
+  const layout = {
+    ...snapshot.layout,
+    visualization: info.supernova.name,
+  };
 
-        const objectModel = {
-          getLayout() {
-            return Promise.resolve(layout);
-          },
-          on() {},
-          once() {},
-        };
+  const {
+    meta: { theme },
+  } = snapshot;
 
-        const app = {
-          getObject(id) {
-            if (id === layout.qInfo.qId) {
-              return Promise.resolve(objectModel);
-            }
-            return Promise.reject();
-          },
-        };
+  const objectModel = {
+    async getLayout() {
+      return layout;
+    },
+    on() {},
+    once() {},
+  };
 
-        const nebbie = nucleus.configured({
-          themes: info.themes
-            ? info.themes.map(t => ({
-                key: t,
-                load: () => fetch(`/theme/${t}`).then(response => response.json()),
-              }))
-            : undefined,
-          theme: snapshot.meta.theme,
-          types: [
-            {
-              name: info.supernova.name,
-              load() {
-                return Promise.resolve(window[info.supernova.name]);
-              },
-            },
-          ],
-        })(app);
+  const app = {
+    async getObject(id) {
+      if (id === layout.qInfo.qId) {
+        return objectModel;
+      }
+      return Promise.reject();
+    },
+  };
 
-        const render = () => {
-          nebbie.get(
-            {
-              id: layout.qInfo.qId,
-            },
-            {
-              element: document.querySelector('#chart-container'),
-              context: {
-                permissions: ['passive'],
-              },
-              options: {
-                onInitialRender() {
-                  document.querySelector('.nebulajs-sn').setAttribute('data-rendered', '1');
-                },
-              },
-            }
-          );
-        };
+  const nebbie = await nuke({ app, ...info, theme });
+  const getCfg = {
+    id: layout.qInfo.qId,
+  };
+  const vizCfg = {
+    element,
+    context: {
+      permissions: ['passive'],
+    },
+    options: {
+      onInitialRender() {
+        document.querySelector('.nebulajs-sn').setAttribute('data-rendered', '1');
+      },
+    },
+  };
+  const render = () => {
+    nebbie.get(getCfg, vizCfg);
+  };
 
-        window.onHotChange(info.supernova.name, () => render());
-      });
-    });
+  window.onHotChange(info.supernova.name, () => render());
 }
 
 if (params.snapshot) {
