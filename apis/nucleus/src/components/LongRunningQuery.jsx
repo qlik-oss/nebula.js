@@ -28,7 +28,7 @@ const Cancel = ({ cancel, ...props }) => (
       </Typography>
     </Grid>
     <Grid item {...props}>
-      <Button variant="outlined" onClick={cancel}>
+      <Button variant="contained" onClick={cancel}>
         Cancel
       </Button>
     </Grid>
