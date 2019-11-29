@@ -91,7 +91,7 @@ const handleModal = ({ sn, layout, model }) => {
   if (selections.id === model.id) {
     selections.setLayout(layout);
     if (layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections && !selections.isModal()) {
-      sn.selections.goModal('/qHyperCubeDef'); // TODO - use path from data targets
+      selections.goModal('/qHyperCubeDef'); // TODO - use path from data targets
     }
     if (!layout.qSelectionInfo || !layout.qSelectionInfo.qInSelections) {
       if (selections.isModal()) {
