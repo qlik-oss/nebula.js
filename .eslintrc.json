@@ -28,7 +28,7 @@
       }
     },
     {
-      "files": ["**/*.{int,spec}.{js,jsx}"],
+      "files": ["**/*.{int,comp,spec}.{js,jsx}"],
       "env": {
         "browser": false,
         "node": true,
@@ -47,7 +47,7 @@
       }
     },
     {
-      "files": ["**/*.int.js"],
+      "files": ["**/*.{int,comp}.js"],
       "env": {
         "browser": true
       }
@@ -56,7 +56,8 @@
       "files": ["**/templates/**/*.js"],
       "rules": {
         "import/no-unresolved": 0,
-        "import/extensions": 0
+        "import/extensions": 0,
+        "import/no-extraneous-dependencies": 0
       }
     },
     {

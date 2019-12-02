@@ -1,8 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
-const Inject = require('./head-injector');
-
 const isSrc = /^([.]{2}\/)/;
 const namespace = /^webpack:\/\/([^/]+)\//;
 const NM = /node_modules/;
@@ -43,18 +41,24 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
         return `webpack://${info.namespace}/${info.resourcePath}`;
       },
     },
+    resolve: {
+      alias: {
+        fixtures: path.resolve(process.cwd(), 'test/component'),
+      },
+    },
     plugins: [
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eRender.html'),
         filename: 'eRender.html',
         inject: 'head',
+        scripts: serveConfig.scripts,
+        stylesheets: serveConfig.stylesheets,
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eDev.html'),
         filename: 'eDev.html',
         inject: 'head',
       }),
-      new Inject(serveConfig),
     ],
   };
 

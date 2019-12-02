@@ -7,8 +7,6 @@ const babelPresetReactPath = require.resolve('@babel/preset-react');
 const sourceMapLoaderPath = require.resolve('source-map-loader');
 const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
-const Inject = require('./head-injector');
-
 const favicon = path.resolve(__dirname, '../../../docs/assets/njs.png');
 
 const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
@@ -37,6 +35,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
               '@nebula.js/locale': path.resolve(process.cwd(), 'apis/locale/src'),
             }
           : {}),
+        fixtures: path.resolve(process.cwd(), 'test/component'),
       },
       extensions: ['.js', '.jsx'],
     },
@@ -83,6 +82,8 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         filename: 'eRender.html',
         chunks: ['eRender'],
         favicon,
+        scripts: serveConfig.scripts,
+        stylesheets: serveConfig.stylesheets,
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eDev.html'),
@@ -96,7 +97,6 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         chunks: ['eHub'],
         favicon,
       }),
-      new Inject(serveConfig),
     ],
   };
 

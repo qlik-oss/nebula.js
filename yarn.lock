@@ -7829,6 +7829,11 @@ extsprintf@^1.2.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/extsprintf/-/extsprintf-1.4.0.tgz#e2689f8f356fad62cca65a3a91c5df5f9551692f"
 
+faker@^4.1.0:
+  version "4.1.0"
+  resolved "https://registry.yarnpkg.com/faker/-/faker-4.1.0.tgz#1e45bbbecc6774b3c195fad2835109c6d748cc3f"
+  integrity sha1-HkW7vsxndLPBlfrSg1EJxtdIzD8=
+
 fast-deep-equal@^2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/fast-deep-equal/-/fast-deep-equal-2.0.1.tgz#7b05218ddf9667bf7f370bf7fdb2cb15fdd0aa49"
@@ -12302,6 +12307,16 @@ phin@^2.9.1:
   version "2.9.3"
   resolved "https://registry.yarnpkg.com/phin/-/phin-2.9.3.tgz#f9b6ac10a035636fb65dfc576aaaa17b8743125c"
 
+picasso-plugin-q@0.29.0:
+  version "0.29.0"
+  resolved "https://registry.yarnpkg.com/picasso-plugin-q/-/picasso-plugin-q-0.29.0.tgz#5ac428605e7efde8f732079b6d5e5c6614b0c52a"
+  integrity sha512-zNWvGab7V7uw/mpAEuCbG7A6PUvM9bTHmvr9WoYGyT92evvvpcGGVafoTuct9qw6yK2HjK2rDwUjdq6+iZ20fg==
+
+picasso.js@0.29.0:
+  version "0.29.0"
+  resolved "https://registry.yarnpkg.com/picasso.js/-/picasso.js-0.29.0.tgz#9c0b08cdb913ab6d82bf71b44f956a4f6eb00a49"
+  integrity sha512-AincOxuu6rE4Yx3+jY7jDd1wJlfAIYSNPjpfMOlqtn+JWM1Z+QBALpNIa/cWhvhdLxD7rFFVnto1Ciiikjahpg==
+
 picomatch@^2.0.4, picomatch@^2.0.5:
   version "2.0.7"
   resolved "https://registry.yarnpkg.com/picomatch/-/picomatch-2.0.7.tgz#514169d8c7cd0bdbeecc8a2609e34a7163de69f6"
@@ -13089,6 +13104,13 @@ puppeteer@2.0.0:
 q@^1.1.2, q@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/q/-/q-1.5.1.tgz#7e32f75b41381291d04611f1bf14109ac00651d7"
+
+qix-faker@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/qix-faker/-/qix-faker-0.3.0.tgz#63911eff5f2153bf93b6176faea8ffd833922435"
+  integrity sha512-S1oK/8Bl+MhIJHrn0KrPqmP6fqhNPNThPxaOLzKwDYHzF/st0wUfT+UBOhCyxpZJhhKmrp8SwJs0t3rpqRPo4A==
+  dependencies:
+    faker "^4.1.0"
 
 qs@6.7.0:
   version "6.7.0"
