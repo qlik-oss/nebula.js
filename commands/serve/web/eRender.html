@@ -1,45 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <base href="/">
-  <title>Nebula render</title>
+  <head>
+    <meta charset="UTF-8" />
+    <base href="/" />
+    <title>Nebula render</title>
 
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:light" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:semibold" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:light" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:semibold" rel="stylesheet" />
+    <% for (var stylesheet in htmlWebpackPlugin.options.stylesheets) { %>
+    <script type="text/javascript" src="<%= htmlWebpackPlugin.options.stylesheets[stylesheet] %>"></script>
+    <% } %> <% for (var script in htmlWebpackPlugin.options.scripts) { %>
+    <script type="text/javascript" src="<%= htmlWebpackPlugin.options.scripts[script] %>"></script>
+    <% } %>
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        overflow: hidden;
+      }
 
-  <style>
-    html, body {
-      height: 100%;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-    }
+      body {
+        background: linear-gradient(110deg, #92498f 0%, #45b3b2 100%);
+        font: normal 14px/16px 'Source Sans Pro', Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
 
-    body {
-      background: linear-gradient(110deg, #92498F 0%, #45B3B2 100%);
-      font: normal 14px/16px "Source Sans Pro", Arial, sans-serif;
-      -webkit-font-smoothing: antialiased;
-    }
+      #chart-container {
+        position: absolute;
+        left: 8px;
+        bottom: 8px;
+        right: 8px;
+        top: 64px;
+      }
 
-    #chart-container {
-      position: absolute;
-      left: 8px;
-      bottom: 8px;
-      right: 8px;
-      top: 64px;
-    }
-
-    #chart-container.full {
-      top: 0;
-      right: 0;
-      bottom: 0;
-      left: 0;
-    }
-  </style>
-</head>
-<body>
-  <div id="chart-container"></div>
-</body>
+      #chart-container.full {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="chart-container"></div>
+  </body>
 </html>

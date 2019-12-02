@@ -35,12 +35,12 @@ export default function Error({ title = 'Error', message = '', data = [] }) {
         <WarningTriangle style={{ fontSize: '38px' }} />
       </Grid>
       <Grid item>
-        <Typography variant="h6" align="center">
+        <Typography variant="h6" align="center" data-tid="error-title">
           {title}
         </Typography>
       </Grid>
       <Grid item>
-        <Typography variant="subtitle1" align="center">
+        <Typography variant="subtitle1" align="center" data-tid="error-message">
           {message}
         </Typography>
       </Grid>

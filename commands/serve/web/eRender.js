@@ -1,6 +1,6 @@
 import nucleus from '@nebula.js/nucleus';
-
 import { openApp, params, info as serverInfo } from './connect';
+import runFixture from './run-fixture';
 
 const nuke = async ({ app, supernova: { name }, themes, theme }) => {
   const nuked = nucleus.configured({
@@ -11,14 +11,14 @@ const nuke = async ({ app, supernova: { name }, themes, theme }) => {
         }))
       : undefined,
     theme,
+  });
+  const nebbie = nuked(app, {
+    load: (type, config) => config.Promise.resolve(window[type.name]),
     types: [
       {
         name,
       },
     ],
-  });
-  const nebbie = nuked(app, {
-    load: (type, config) => config.Promise.resolve(window[type.name]),
   });
   return nebbie;
 };
@@ -114,7 +114,70 @@ async function renderSnapshot() {
   window.onHotChange(info.supernova.name, () => render());
 }
 
-if (params.snapshot) {
+const renderFixture = async () => {
+  const element = document.querySelector('#chart-container');
+  const { theme } = params;
+  const { themes } = await serverInfo;
+  const fixture = runFixture(params.fixture);
+  const { instanceConfig, type, sn, object, snConfig } = fixture();
+  const config = {
+    themes: themes
+      ? themes.map(t => ({
+          key: t,
+          load: async () => (await fetch(`/theme/${t}`)).json(),
+        }))
+      : undefined,
+    theme,
+  };
+  let mockedProps = {};
+  let mockedLayout = {};
+  const mockedObject = {
+    ...mockedProps,
+    ...object,
+    // beginSelections: async () => {},
+    // selectHyperCubeValues: async (path, dimNo, values, toggleMode) => {
+    //   console.log(path, dimNo, values, toggleMode);
+    // },
+    // resetMadeSelections: async () => {},
+    getLayout:
+      object && object.getLayout
+        ? async () => {
+            const layout = await object.getLayout();
+            mockedLayout = {
+              ...mockedProps,
+              ...layout,
+            };
+            return mockedLayout;
+          }
+        : async () => ({
+            ...mockedProps,
+          }),
+    on() {},
+    once() {},
+  };
+
+  const mockedApp = {
+    // eslint-disable-next-line no-return-assign
+    createSessionObject: async p => (mockedProps = p),
+    getObject: async () => mockedObject,
+  };
+
+  const nebbie = nucleus(mockedApp, {
+    ...config,
+    ...instanceConfig,
+    types: [
+      {
+        name: type,
+        load: async () => sn,
+      },
+    ],
+  });
+  nebbie.create({ type }, { ...snConfig, element });
+};
+
+if (params.fixture) {
+  renderFixture();
+} else if (params.snapshot) {
   renderSnapshot();
 } else {
   renderWithEngine();

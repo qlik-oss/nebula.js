@@ -1,19 +1,13 @@
 module.exports = {
   env: {
     test: {
-      presets: [
-        ['@babel/preset-env', { targets: { node: 'current' } }],
-      ],
+      presets: [['@babel/preset-env', { targets: { node: 'current' } }]],
       plugins: [
         ['@babel/plugin-transform-react-jsx'],
         [
           'istanbul',
           {
-            exclude: [
-              '**/test/**',
-              '**/__test__/**',
-              '**/dist/**',
-            ],
+            exclude: ['**/test/**', '**/__test__/**', '**/dist/**'],
           },
         ],
       ],
