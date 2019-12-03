@@ -124,7 +124,7 @@ const config = isEsm => {
             'cloneElement',
           ],
           'react-dom': ['createPortal', 'findDOMNode'],
-          'react-is': ['ForwardRef'],
+          'react-is': ['ForwardRef', 'isFragment'],
           'react-transition-group/node_modules/prop-types/index.js': propTypes,
           'prop-types/index.js': propTypes,
           '@material-ui/utils/node_modules/prop-types': propTypes,
