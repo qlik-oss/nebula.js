@@ -1,6 +1,23 @@
 import hcHandler from './hc-handler';
 
+export function fieldType(f) {
+  if (
+    // a string starting with '=' is just a convention we use
+    (typeof f === 'string' && f[0] === '=') ||
+    // based on NxMeasure and NxInlineMeasureDef
+    (typeof f === 'object' && f.qDef && f.qDef.qDef) ||
+    // use 'type' instead of 'qType' since this is not a real property
+    (typeof f === 'object' && f.qLibraryId && f.type === 'measure')
+  ) {
+    return 'measure';
+  }
+  return 'dimension';
+}
+
 export default function populateData({ sn, properties, fields }, context) {
+  if (!fields.length) {
+    return;
+  }
   const target = sn.qae.data.targets[0];
   if (!target) {
     context.logger.warn('Attempting to add fields to an object without a specified data target');
@@ -18,17 +35,11 @@ export default function populateData({ sn, properties, fields }, context) {
   const hc = hcHandler({
     hc: p,
     def: target,
+    properties,
   });
 
   fields.forEach(f => {
-    let type = 'dimension';
-    if (
-      (typeof f === 'string' && f[0] === '=') ||
-      (typeof f === 'object' && f.qDef.qDef) ||
-      (typeof f === 'object' && f.qLibraryId && f.qType === 'measure')
-    ) {
-      type = 'measure';
-    }
+    const type = fieldType(f);
 
     if (type === 'measure') {
       hc.addMeasure(f);

@@ -1,20 +1,6 @@
 /* eslint no-param-reassign:0 */
 
-const idGen = [
-  [10, 31],
-  [0, 31],
-  [0, 31],
-  [0, 31],
-  [0, 31],
-  [0, 31],
-];
-function toChar([min, max]) {
-  return (min + ((Math.random() * (max - min)) | 0)).toString(32);
-}
-
-function uid() {
-  return idGen.map(toChar).join('');
-}
+import uid from './uid';
 
 function addIndex(array, index) {
   for (let i = 0; i < array.length; ++i) {
@@ -48,7 +34,6 @@ const nxDimension = f => ({
       },
     ],
   },
-  qOtherTotalSpec: {},
 });
 
 const nxMeasure = f => ({
@@ -61,12 +46,12 @@ const nxMeasure = f => ({
   },
 });
 
-export default function hcHandler({ hc, def }) {
+export default function hcHandler({ hc, def, properties }) {
   hc.qDimensions = hc.qDimensions || [];
   hc.qMeasures = hc.qMeasures || [];
   hc.qInterColumnSortOrder = hc.qInterColumnSortOrder || [];
 
-  const objectProperties = {};
+  const objectProperties = properties;
 
   const h = {
     dimensions() {
@@ -84,7 +69,6 @@ export default function hcHandler({ hc, def }) {
               qDef: d.qDef || {},
             };
       dimension.qDef.cId = dimension.qDef.cId || uid();
-      dimension.qOtherTotalSpec = dimension.qOtherTotalSpec || {};
       if (!dimension.qDef.cId) {
         dimension.qDef.cId = uid();
       }
@@ -93,18 +77,20 @@ export default function hcHandler({ hc, def }) {
         // TODO - apply autosort properties based on tags
         hc.qDimensions.push(dimension);
         addIndex(hc.qInterColumnSortOrder, hc.qDimensions.length - 1);
-        // TODO - rename 'add' to 'added' since the callback is run after the dimension has been added
-        def.dimensions.add(dimension, objectProperties);
+        def.dimensions.added(dimension, objectProperties);
       } else {
-        // eslint-disable-next-line no-console
-        console.log('Should add dimension to layout exclude');
-        // add to layout exclude
+        hc.qLayoutExclude = hc.qLayoutExclude || {};
+        hc.qLayoutExclude.qHyperCubeDef = hc.qLayoutExclude.qHyperCubeDef || {};
+        hc.qLayoutExclude.qHyperCubeDef.qDimensions = hc.qLayoutExclude.qHyperCubeDef.qDimensions || [];
+        hc.qLayoutExclude.qHyperCubeDef.qMeasures = hc.qLayoutExclude.qHyperCubeDef.qMeasures || [];
+
+        hc.qLayoutExclude.qHyperCubeDef.qDimensions.push(dimension);
       }
     },
     removeDimension(idx) {
       const dimension = hc.qDimensions.splice(idx, 1)[0];
       removeIndex(hc.qInterColumnSortOrder, idx);
-      def.dimensions.remove(dimension, objectProperties, idx);
+      def.dimensions.removed(dimension, objectProperties, idx);
     },
     addMeasure(m) {
       const measure =
@@ -122,18 +108,20 @@ export default function hcHandler({ hc, def }) {
       if (hc.qMeasures.length < h.maxMeasures()) {
         hc.qMeasures.push(measure);
         addIndex(hc.qInterColumnSortOrder, hc.qDimensions.length + hc.qMeasures.length - 1);
-
-        def.measures.add(measure, objectProperties);
+        def.measures.added(measure, objectProperties);
       } else {
-        // eslint-disable-next-line no-console
-        console.log('Should add measure to layout exclude');
-        // add to layout exclude
+        hc.qLayoutExclude = hc.qLayoutExclude || {};
+        hc.qLayoutExclude.qHyperCubeDef = hc.qLayoutExclude.qHyperCubeDef || {};
+        hc.qLayoutExclude.qHyperCubeDef.qDimensions = hc.qLayoutExclude.qHyperCubeDef.qDimensions || [];
+        hc.qLayoutExclude.qHyperCubeDef.qMeasures = hc.qLayoutExclude.qHyperCubeDef.qMeasures || [];
+
+        hc.qLayoutExclude.qHyperCubeDef.qMeasures.push(measure);
       }
     },
     removeMeasure(idx) {
       const measure = hc.qMeasures.splice(idx, 1)[0];
       removeIndex(hc.qInterColumnSortOrder, hc.qDimensions.length + idx);
-      def.dimensions.remove(measure, objectProperties, idx);
+      def.measures.removed(measure, objectProperties, idx);
     },
 
     maxDimensions() {
