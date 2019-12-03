@@ -1,5 +1,5 @@
 describe('sn', () => {
-  const selector = '.nebulajs-cell [data-tid="error-title"';
+  const selector = '.nebulajs-cell [data-tid="error-title"]';
   it('should show incomplete visualization', async () => {
     await page.goto('http://localhost:8000/render/?fixture=./object/incomplete-sn.fix.js&theme=dark');
 

@@ -60,7 +60,8 @@ module.exports = async ({
       warnings: false,
       errors: true,
     },
-    quiet: true,
+    quiet: false,
+    noInfo: true,
     open,
     contentBase: [contentBase],
     historyApiFallback: {
@@ -108,19 +109,19 @@ module.exports = async ({
         context: '/render',
         target: `http://${host}:${port}/eRender.html`,
         ignorePath: true,
+        logLevel: 'error',
       },
       {
         context: '/dev',
         target: `http://${host}:${port}/eDev.html`,
         ignorePath: true,
+        logLevel: 'error',
       },
     ],
     watchOptions: {
       ignored: /node_modules/,
     },
   };
-
-  console.log('Starting development server...');
 
   WebpackDevServer.addDevServerEntrypoints(config, options);
   const compiler = webpack(config);
@@ -150,7 +151,7 @@ module.exports = async ({
       if (!initiated) {
         initiated = true;
         const url = `http://${host}:${port}`;
-        console.log(`...running at ${chalk.green(url)}`);
+        console.log(`Development server running at ${chalk.green(url)}`);
 
         resolve({
           context: '',

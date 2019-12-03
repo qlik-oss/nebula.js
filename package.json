@@ -12,6 +12,7 @@
     "spec": "lerna run spec --stream --concurrency 99",
     "test": "yarn run test:unit",
     "test:integration": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/integration/*.int.js'",
+    "test:component": "aw puppet -c aw.config.js --testExt '*.comp.js' --glob 'test/component/**/*.comp.js'",
     "test:unit": "aw -c aw.config.js"
   },
   "repository": {
