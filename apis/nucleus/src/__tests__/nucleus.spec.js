@@ -1,7 +1,7 @@
 const doMock = ({ appThemeFn, getObject, createObject }) =>
   aw.mock(
     [
-      ['**/locale/index.js', () => () => ({ translator: () => ({}) })],
+      ['**/locale/app-locale.js', () => () => ({ translator: () => ({ add: () => {} }) })],
       ['**/selections/index.js', () => ({ createAppSelectionAPI: () => ({}) })],
       ['**/components/NebulaApp.jsx', () => () => ({})],
       ['**/components/selections/AppSelections.jsx', () => () => ({})],

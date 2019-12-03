@@ -13,7 +13,7 @@
     "test": "yarn run test:unit",
     "test:integration": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/integration/*.int.js'",
     "test:component": "aw puppet -c aw.config.js --testExt '*.comp.js' --glob 'test/component/**/*.comp.js'",
-    "test:unit": "aw -c aw.config.js"
+    "test:unit": "aw -c aw.config.js --nyc.reportDir coverage/unit --coverage"
   },
   "repository": {
     "type": "git",
@@ -56,8 +56,9 @@
     "husky": "3.1.0",
     "lerna": "3.18.5",
     "lint-staged": "9.4.3",
-    "picasso.js": "0.29.0",
+    "mocha-junit-reporter": "^1.23.1",
     "picasso-plugin-q": "0.29.0",
+    "picasso.js": "0.29.0",
     "prettier": "1.19.1",
     "qix-faker": "^0.3.0",
     "rollup": "1.27.2",
