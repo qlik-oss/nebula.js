@@ -17,7 +17,7 @@ export default function create(info, config, opts = {}) {
   const type = {
     name: info.name,
     version: info.version,
-    supportsPropertiesVersion: v => {
+    supportsPropertiesVersion(v) {
       if (v && meta && meta.deps && meta.deps.properties) {
         return satisfies(v, meta.deps.properties);
       }

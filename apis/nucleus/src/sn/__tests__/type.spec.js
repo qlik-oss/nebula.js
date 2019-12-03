@@ -13,12 +13,20 @@ describe('type', () => {
   let SNFactory;
   let load;
   let satisfies;
+  let create;
+  let sb;
+  before(() => {
+    sb = sinon.createSandbox();
+    SNFactory = sb.stub();
+    load = sb.stub();
+    satisfies = sb.stub();
+    [{ default: create }] = mock({ SNFactory, load, satisfies });
+  });
   beforeEach(() => {
-    SNFactory = sinon.stub();
-    load = sinon.stub();
-    satisfies = sinon.stub();
-    const [{ default: create }] = mock({ SNFactory, load, satisfies });
     c = create({ name: 'pie', version: '1.1.0' }, 'c', { load: 'customLoader' });
+  });
+  afterEach(() => {
+    sb.reset();
   });
 
   describe('create', () => {
@@ -34,17 +42,17 @@ describe('type', () => {
     });
 
     it('should return true when no meta is provided', () => {
-      const cc = mock({ satisfies })[0].default({});
+      const cc = create({});
       expect(cc.supportsPropertiesVersion('1.2.0')).to.equal(true);
     });
 
     it('should return true when no version is provided', () => {
-      const cc = mock({ satisfies })[0].default({}, { deps: { properties: 'a' } });
-      expect(cc.supportsPropertiesVersion()).to.equal(true);
+      const c3 = create({}, 'c', { meta: { deps: { properties: 'a' } } });
+      expect(c3.supportsPropertiesVersion()).to.equal(true);
     });
 
     it('should return semver satisfaction when version and semver range is provided ', () => {
-      const cc = mock({ satisfies })[0].default({}, 'c', { meta: { deps: { properties: '^1.0.0' } } });
+      const cc = create({}, 'c', { meta: { deps: { properties: '^1.0.0' } } });
       expect(cc.supportsPropertiesVersion('1.2.0')).to.equal('a bool');
     });
   });
@@ -67,7 +75,7 @@ describe('type', () => {
       const def = Promise.resolve('def');
       const normalized = { qae: { properties: { initial: { a: 'a', b: 'b' } } } };
 
-      load.withArgs('pie', '1.1.0', 'c').returns(def);
+      load.withArgs('pie', '1.1.0', 'c', 'customLoader').returns(def);
       SNFactory.withArgs('def').returns(normalized);
 
       const props = await c.initialProperties({ c: 'c', b: 'override' });
