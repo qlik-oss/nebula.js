@@ -23,6 +23,7 @@ export function typeCollection(name, config) {
       if (versions[version]) {
         throw new Error(`Supernova '${name}@${version}' already registered.`);
       }
+
       versions[version] = type(
         {
           name,

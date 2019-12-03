@@ -9,9 +9,10 @@ const LOADED = {};
  * @returns {Promise<Supernova>}
  */
 
-export function load(name, version, config, loader) {
+export async function load(name, version, config, loader) {
   const key = `${name}__${version}`;
   if (!LOADED[key]) {
+    const sKey = `${name}${version && ` v${version}`}`;
     const p = (loader || config.load)(
       {
         name,
@@ -19,23 +20,18 @@ export function load(name, version, config, loader) {
       },
       config.env
     );
-    if (typeof p === 'undefined') {
-      throw new Error(`Failed to load supernova: ${name}`);
-    }
-    if (typeof p === 'string') {
-      throw new Error('Return value must be a Promise');
-    }
-    LOADED[key] = p
+    const prom = Promise.resolve(p);
+    LOADED[key] = prom
       .then(sn => {
         if (!sn) {
-          throw new Error('undefined supernova');
+          // TODO - improve validation
+          throw new Error(`load() of supernova '${sKey}' resolved to an invalid object`);
         }
         return sn;
       })
       .catch(e => {
-        // eslint-disable-next-line no-console
-        console.error(e);
-        throw new Error(`Failed to load supernova: ${name}`);
+        config.logger.warn(e);
+        throw new Error(`Failed to load supernova: '${sKey}'`);
       });
   }
 

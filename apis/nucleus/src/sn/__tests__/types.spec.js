@@ -1,40 +1,48 @@
-import { semverSort } from '../types';
+const mock = ({ createType, clearFromCache = () => {} } = {}) =>
+  aw.mock(
+    [
+      ['**/sn/type.js', () => createType],
+      [
+        '**/sn/load.js',
+        () => ({
+          clearFromCache,
+        }),
+      ],
+    ],
+    ['../types']
+  );
 
 describe('types', () => {
+  let sb;
+  let create;
+  let semverSort;
+  let c;
+  let type;
+  let clearFromCache;
+  before(() => {
+    sb = sinon.createSandbox();
+    type = sb.stub();
+    clearFromCache = sb.stub();
+    [{ create, semverSort }] = mock({ createType: type, clearFromCache });
+  });
+
+  beforeEach(() => {
+    c = create({ config: 'config' });
+    type.returns('t');
+  });
+
+  afterEach(() => {
+    sb.reset();
+  });
+
   describe('semverSort', () => {
-    it('should sort versions', () => {
-      const arr = semverSort(['1.41.0', '0.0.1', '10.4.0', '0.4.0', '1.4.0']);
-      expect(arr).to.eql(['0.0.1', '0.4.0', '1.4.0', '1.41.0', '10.4.0']);
+    it('should sort valid versions', () => {
+      const arr = semverSort(['1.41.0', '0.0.1', 'undefined', '10.4.0', '0.4.0', '1.4.0']);
+      expect(arr).to.eql(['undefined', '0.0.1', '0.4.0', '1.4.0', '1.41.0', '10.4.0']);
     });
   });
 
   describe('factory', () => {
-    const mock = ({ createType = () => ({}), clearFromCache = () => {} } = {}) =>
-      aw.mock(
-        [
-          ['**/sn/type.js', () => createType],
-          [
-            '**/sn/load.js',
-            () => ({
-              clearFromCache,
-            }),
-          ],
-        ],
-        ['../types']
-      );
-
-    let c;
-    let type;
-    beforeEach(() => {
-      type = sinon.stub();
-      type.returns({});
-
-      const [{ create }] = mock({
-        createType: type,
-      });
-      c = create({ config: 'config' });
-    });
-
     it('should instantiate a type when registering', () => {
       c.register({ name: 'pie', version: '1.0.3' }, 'opts');
       expect(type).to.have.been.calledWithExactly(
@@ -58,12 +66,14 @@ describe('types', () => {
       const supportsPropertiesVersion = sinon.stub();
       supportsPropertiesVersion.withArgs('1.2.0').returns(true);
 
-      type = ({ version }) => ({
-        supportsPropertiesVersion: version === '1.5.1' ? supportsPropertiesVersion : () => false,
+      type.returns({
+        supportsPropertiesVersion: () => false,
       });
-      const [{ create }] = mock({
-        createType: type,
+
+      type.withArgs({ name: 'pie', version: '1.5.1' }).returns({
+        supportsPropertiesVersion,
       });
+
       c = create({ config: 'config' });
 
       c.register({ name: 'pie', version: '1.5.0' });
@@ -81,11 +91,15 @@ describe('types', () => {
     });
 
     it('should return the requested type and version', () => {
-      const [{ create }] = mock({
-        createType: ({ name, version }) => ({ name, version }),
-      });
+      type.withArgs({ name: 'bar', version: '1.7.0' }).returns({ name: 'bar', version: '1.7.0' });
       c = create({ config: 'config' });
       expect(c.get({ name: 'bar', version: '1.7.0' })).to.eql({ name: 'bar', version: '1.7.0' });
+    });
+
+    it('should clear cache', () => {
+      c = create({ config: 'config' });
+      c.clearFromCache('pie');
+      expect(clearFromCache).to.have.been.calledWithExactly('pie');
     });
   });
 });
