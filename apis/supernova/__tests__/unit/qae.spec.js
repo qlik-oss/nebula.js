@@ -31,10 +31,10 @@ describe('qae', () => {
     expect(t.layoutPath).to.eql('/qHyperCube');
     expect(t.dimensions.min()).to.eql(0);
     expect(t.dimensions.max()).to.eql(1000);
-    expect(t.dimensions.add()).to.equal(undefined);
+    expect(t.dimensions.added()).to.equal(undefined);
     expect(t.measures.min()).to.eql(0);
     expect(t.measures.max()).to.eql(1000);
-    expect(t.measures.add()).to.equal(undefined);
+    expect(t.measures.added()).to.equal(undefined);
   });
 
   it('should map provided data', () => {
@@ -46,17 +46,17 @@ describe('qae', () => {
             dimensions: {
               min: () => 3,
               max: () => 7,
-              add: () => 'a',
+              added: () => 'a',
               description: () => 'Slice',
-              move: () => 'c',
-              replace: () => 'd',
+              moved: () => 'c',
+              replaced: () => 'd',
             },
             measures: {
               min: 2,
               max: 4,
-              add: () => 'b',
+              added: () => 'b',
               description: () => 'Angle',
-              remove: () => 'e',
+              removed: () => 'e',
             },
           },
         ],
@@ -65,15 +65,15 @@ describe('qae', () => {
     expect(t.propertyPath).to.eql('qhc');
     expect(t.dimensions.min()).to.eql(3);
     expect(t.dimensions.max()).to.eql(7);
-    expect(t.dimensions.add()).to.equal('a');
+    expect(t.dimensions.added()).to.equal('a');
     expect(t.dimensions.description()).to.equal('Slice');
-    expect(t.dimensions.move()).to.equal('c');
-    expect(t.dimensions.replace()).to.equal('d');
+    expect(t.dimensions.moved()).to.equal('c');
+    expect(t.dimensions.replaced()).to.equal('d');
     expect(t.measures.min()).to.eql(2);
     expect(t.measures.max()).to.eql(4);
-    expect(t.measures.add()).to.equal('b');
+    expect(t.measures.added()).to.equal('b');
     expect(t.measures.description()).to.equal('Angle');
-    expect(t.measures.remove()).to.equal('e');
+    expect(t.measures.removed()).to.equal('e');
   });
   it('should resolve layout', () => {
     const t = qae({

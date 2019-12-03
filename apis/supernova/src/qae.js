@@ -11,11 +11,11 @@ function defFn(def = {}) {
   return {
     min: typeof def.min === 'function' ? def.min : fallback(def.min, 0),
     max: typeof def.max === 'function' ? def.max : fallback(def.max, 1000),
-    add: def.add || noop,
+    added: def.added || def.add || noop, // TODO - deprecate add in favour of added
     description: def.description || noop,
-    move: def.move || noop,
-    remove: def.remove || noop,
-    replace: def.replace || noop,
+    moved: def.moved || def.move || noop,
+    removed: def.removed || def.remove || noop,
+    replaced: def.replaced || def.replace || noop,
   };
 }
 
