@@ -117,7 +117,7 @@ const validateTargets = (translator, layout, { targets }) => {
       layoutErrors.push({ path, error: hc.qError });
     }
     if (d.length < minD || m.length < minM) {
-      requirementsError.push(path);
+      requirementsError.push({ path });
     }
   });
   const showError = !!(layoutErrors.length || requirementsError.length);
