@@ -7,29 +7,29 @@ import populateData from './populator';
  * @property {object[]} fields
  */
 
-export default function create({ type, version, fields }, optional, context) {
+export default async function create({ type, version, fields }, optional, context) {
   const t = context.nebbie.types.get({ name: type, version });
-  return t.initialProperties(optional.properties).then(mergedProps =>
-    t.supernova().then(sn => {
-      if (fields) {
-        populateData(
-          {
-            sn,
-            properties: mergedProps,
-            fields,
-          },
-          context
-        );
-      }
+  const mergedProps = await t.initialProperties(optional.properties);
+  const sn = await t.supernova();
+  if (fields) {
+    populateData(
+      {
+        sn,
+        properties: mergedProps,
+        fields,
+      },
+      context
+    );
+  }
+  if (optional.properties && sn && sn.qae.properties.onChange) {
+    sn.qae.properties.onChange.call({}, mergedProps);
+  }
 
-      return context.app.createSessionObject(mergedProps).then(model =>
-        context.nebbie.get(
-          {
-            id: model.id,
-          },
-          { ...optional, properties: {} }
-        )
-      );
-    })
+  const model = await context.app.createSessionObject(mergedProps);
+  return context.nebbie.get(
+    {
+      id: model.id,
+    },
+    { ...optional, properties: {} }
   );
 }
