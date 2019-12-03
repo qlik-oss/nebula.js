@@ -21,12 +21,12 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "7.7.0",
-    "@babel/core": "7.7.2",
-    "@babel/preset-env": "7.7.1",
+    "@babel/cli": "7.7.4",
+    "@babel/core": "7.7.4",
+    "@babel/preset-env": "7.7.4",
     "chalk": "3.0.0",
     "extend": "3.0.2",
-    "rollup": "1.27.2",
+    "rollup": "1.27.8",
     "rollup-plugin-babel": "4.3.3",
     "rollup-plugin-commonjs": "10.1.0",
     "rollup-plugin-node-resolve": "5.2.0",
