@@ -1,27 +1,59 @@
-const flush = () => new Promise(r => setImmediate(r));
+const doMock = ({ glue = () => {}, getter = () => {}, getPatches = () => {} } = {}) =>
+  aw.mock(
+    [
+      ['**/components/glue.jsx', () => glue],
+      ['**/object/observer.js', () => ({ get: getter })],
+      ['**/utils/patcher.js', () => getPatches],
+    ],
+    ['../viz.js']
+  );
 
 describe('viz', () => {
-  const doMock = ({ glue = () => {}, getter = () => {}, getPatches = () => {} } = {}) =>
-    aw.mock(
-      [
-        ['**/components/glue.jsx', () => glue],
-        ['**/object/observer.js', () => ({ get: getter })],
-        ['**/utils/patcher.js', () => getPatches],
-      ],
-      ['../viz.js']
-    );
-  describe('api', () => {
-    let api;
-    before(() => {
-      const [{ default: create }] = doMock();
-
-      const [foo] = create({
-        model: 'a',
-        context: {},
-      });
-      api = foo;
+  let api;
+  let sandbox;
+  let glue;
+  let create;
+  let mounted;
+  let unmount;
+  let model;
+  let getter;
+  let getPatches;
+  let cellRef;
+  let setSnOptions;
+  let setSnContext;
+  let takeSnapshot;
+  before(() => {
+    sandbox = sinon.createSandbox();
+    unmount = sandbox.spy();
+    setSnOptions = sandbox.spy();
+    setSnContext = sandbox.spy();
+    takeSnapshot = sandbox.spy();
+    cellRef = {
+      current: {
+        setSnOptions,
+        setSnContext,
+        takeSnapshot,
+      },
+    };
+    glue = sandbox.stub().returns([unmount, cellRef]);
+    getter = sandbox.stub().returns(Promise.resolve('old'));
+    getPatches = sandbox.stub().returns(['patch']);
+    [{ default: create }] = doMock({ glue, getter, getPatches });
+    model = {
+      applyPatches: sandbox.spy(),
+      on: sandbox.spy(),
+      once: sandbox.spy(),
+      emit: sandbox.spy(),
+    };
+    api = create({
+      model,
+      context: {},
     });
-
+  });
+  after(() => {
+    sandbox.restore();
+  });
+  describe('api', () => {
     it('should have a mount method', () => {
       expect(api.mount).to.be.a('function');
     });
@@ -31,76 +63,21 @@ describe('viz', () => {
     });
   });
 
-  describe.skip('mounting', () => {
-    it('should not initiate mount when layout and sn are not defined', async () => {
-      const glue = sinon.spy();
-      const [{ default: create }] = doMock({ glue });
-      const { api, setObjectProps } = create({ context: {} });
-
-      api.mount('element');
-
-      setObjectProps();
-
-      await flush();
-      expect(glue.callCount).to.equal(0, 'invalid layout, invalid sn');
+  describe('mounting', () => {
+    it('should mount', async () => {
+      mounted = api.mount('element');
+      const { onMount } = glue.getCall(0).args[0];
+      onMount();
+      await mounted;
+      expect(glue.callCount).to.equal(1);
     });
-
-    it('should initiate React mount when layout and supernova are valid', async () => {
-      const glue = sinon.spy();
-      const [{ default: create }] = doMock({ glue });
-      const { api, setObjectProps } = create({ context: {} });
-
-      api.mount('element');
-
-      setObjectProps({ layout: {} });
-      await flush();
-      expect(glue.callCount).to.equal(0, 'valid layout, invalid sn');
-
-      setObjectProps({ layout: {}, sn: {} });
-      await flush();
-      expect(glue.callCount).to.equal(1, 'valid layout, invalid sn');
-    });
-
-    it('should resolve mount when React cell is ready', async () => {
-      let cellIsReady;
-      const glue = sinon.spy(({ onInitial }) => {
-        cellIsReady = onInitial;
-        return {};
-      });
-      const [{ default: create }] = doMock({ glue });
-      const { api, setObjectProps } = create({ context: {} });
-
-      let mounted = false;
-
-      api.mount('element').then(() => {
-        mounted = true;
-      });
-      setObjectProps({ layout: {}, sn: {} });
-
-      await flush();
-      expect(mounted).to.equal(false, 'cell is not ready yet');
-
-      cellIsReady();
-
-      await flush();
-      expect(mounted).to.equal(true, 'cell is ready');
+    it('should throw if already mounted', async () => {
+      expect(api.mount.bind('element2')).to.throw();
     });
   });
 
   describe('setTemporaryProperties', () => {
     it('should apply patches when there are some', async () => {
-      const getter = sinon.stub().returns(Promise.resolve('old'));
-      const getPatches = sinon.stub().returns(['patch']);
-      const [{ default: create }] = doMock({ getter, getPatches });
-      const model = {
-        applyPatches: sinon.spy(),
-        on: sinon.spy(),
-        once: sinon.spy(),
-      };
-      const [api] = create({
-        model,
-        context: {},
-      });
       await api.setTemporaryProperties('new');
       expect(getter).to.have.been.calledWithExactly(model, 'effectiveProperties');
       expect(getPatches).to.have.been.calledWithExactly('/', 'new', 'old');
@@ -108,22 +85,52 @@ describe('viz', () => {
     });
 
     it('should not apply patches when there is no diff', async () => {
-      const getter = sinon.stub().returns(Promise.resolve('old'));
-      const getPatches = sinon.stub().returns([]);
-      const [{ default: create }] = doMock({ getter, getPatches });
-      const model = {
-        applyPatches: sinon.spy(),
-        on: sinon.spy(),
-        once: sinon.spy(),
-      };
-      const [api] = create({
-        model,
-        context: {},
-      });
       await api.setTemporaryProperties('new');
+      getPatches.returns([]);
+      model.applyPatches.resetHistory();
       expect(getter).to.have.been.calledWithExactly(model, 'effectiveProperties');
       expect(getPatches).to.have.been.calledWithExactly('/', 'new', 'old');
       expect(model.applyPatches.callCount).to.equal(0);
+    });
+  });
+
+  describe('close', () => {
+    it('should cleanup', () => {
+      api.close();
+      expect(model.emit).to.have.been.calledWithExactly('closed');
+      expect(unmount).to.have.been.calledWithExactly();
+    });
+  });
+
+  describe('options', () => {
+    it('should set sn options', async () => {
+      const opts = {};
+      const chaining = api.options(opts);
+      await mounted;
+      expect(chaining).to.equal(api);
+      expect(cellRef.current.setSnOptions).to.have.been.calledWithExactly(opts);
+    });
+  });
+
+  describe('context', () => {
+    it('should set sn context', async () => {
+      const ctx = {
+        permissions: [],
+        theme: undefined,
+      };
+      const chaining = api.context(ctx);
+      await mounted;
+      expect(chaining).to.equal(api);
+      expect(cellRef.current.setSnContext).to.have.been.calledWith({
+        ...ctx,
+      });
+    });
+  });
+
+  describe('snapshot', () => {
+    it('should take a snapshot', async () => {
+      api.takeSnapshot();
+      expect(cellRef.current.takeSnapshot).to.have.been.calledWithExactly();
     });
   });
 });

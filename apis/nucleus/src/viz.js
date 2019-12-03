@@ -127,5 +127,5 @@ export default function viz({ model, context: nebulaContext } = {}) {
     // toggleDataView() {},
   };
 
-  return [api, mounted];
+  return api;
 }
