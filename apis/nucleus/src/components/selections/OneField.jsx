@@ -56,12 +56,12 @@ export default function OneField({ field, api, stateIx = 0, skipHandleShowListBo
   const numSelected = counts.qSelected + counts.qSelectedExcluded + counts.qLocked + counts.qLockedExcluded;
   // Maintain modal state in app selections
   const noSegments = numSelected === 0 && selection.qTotal === 0;
-  let label = '&nbsp;'; // FIXME translate
+  let label = '';
   if (selection.qTotal === numSelected && selection.qTotal > 1) {
     label = translator.get('CurrentSelections.All');
   } else if (numSelected > 1 && selection.qTotal) {
     label = translator.get('CurrentSelections.Of', [numSelected, selection.qTotal]);
-  } else {
+  } else if (selection.qSelectedFieldSelectionInfo) {
     label = selection.qSelectedFieldSelectionInfo.map(v => v.qName).join(', ');
   }
   if (field.states[stateIx] !== '$') {
