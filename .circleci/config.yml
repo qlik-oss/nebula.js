@@ -47,6 +47,10 @@ jobs:
           command: yarn run lint
 
       - run:
+          name: Locale
+          command: yarn run locale:verify
+
+      - run:
           name: Unit tests
           command: |
             yarn run test:unit --mocha.bail false --mocha.reporter mocha-junit-reporter --mocha.reporterOptions.mochaFile ./coverage/junit/junit.xml

@@ -91,6 +91,7 @@ describe('<OneField />', () => {
       selections: [
         {
           qField: 'my-field',
+          qSelectedFieldSelectionInfo: [],
         },
       ],
       states: ['$'],
@@ -111,6 +112,7 @@ describe('<OneField />', () => {
         {
           qField: 'my-field',
           qLocked: true,
+          qSelectedFieldSelectionInfo: [],
         },
       ],
       states: ['$'],

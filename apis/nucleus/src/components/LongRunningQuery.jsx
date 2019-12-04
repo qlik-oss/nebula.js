@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
+import LocaleContext from '../contexts/LocaleContext';
 
 import Progress from './Progress';
 
@@ -22,7 +23,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Cancel = ({ cancel, ...props }) => (
+const Cancel = ({ cancel, translator, ...props }) => (
   <>
     <Grid container item direction="column" alignItems="center" spacing={2}>
       <Grid item>
@@ -30,19 +31,19 @@ const Cancel = ({ cancel, ...props }) => (
       </Grid>
       <Grid item>
         <Typography variant="h6" align="center">
-          Updating data
+          {translator.get('Object.Update.Active')}
         </Typography>
       </Grid>
     </Grid>
     <Grid item {...props}>
       <Button variant="contained" onClick={cancel}>
-        Cancel
+        {translator.get('Common.Cancel')}
       </Button>
     </Grid>
   </>
 );
 
-const Retry = ({ retry, ...props }) => (
+const Retry = ({ retry, translator, ...props }) => (
   <>
     <Grid item>
       <WarningTriangle style={{ fontSize: '38px' }} />
@@ -50,11 +51,12 @@ const Retry = ({ retry, ...props }) => (
     <Grid item>
       <Typography variant="h6" align="center">
         Data update was cancelled
+        {translator.get('Object.Update.Cancelled')}
       </Typography>
     </Grid>
     <Grid item>
       <Button variant="contained" onClick={retry} {...props}>
-        Retry
+        {translator.get('Common.Retry')}
       </Button>
     </Grid>
   </>
@@ -64,6 +66,8 @@ export default function LongRunningQuery({ onCancel, onRetry }) {
   const { stripes, cancel, retry } = useStyles();
   const [canCancel, setCanCancel] = useState(!!onCancel);
   const [canRetry, setCanRetry] = useState(!!onRetry);
+  const translator = useContext(LocaleContext);
+
   const handleCancel = () => {
     setCanCancel(false);
     setCanRetry(true);
@@ -90,8 +94,8 @@ export default function LongRunningQuery({ onCancel, onRetry }) {
       }}
       spacing={2}
     >
-      {canCancel && <Cancel cancel={handleCancel} className={cancel} />}
-      {canRetry && <Retry retry={handleRetry} className={retry} />}
+      {canCancel && <Cancel cancel={handleCancel} translator={translator} className={cancel} />}
+      {canRetry && <Retry retry={handleRetry} translator={translator} className={retry} />}
     </Grid>
   );
 }

@@ -1,0 +1,394 @@
+{
+  "Object_Update_Active": {
+    "id": "Object.Update.Active",
+    "locale": {
+      "en-US": "Updating data"
+    }
+  },
+  "Object_Update_Cancelled": {
+    "id": "Object.Update.Cancelled",
+    "locale": {
+      "en-US": "Data update was cancelled"
+    }
+  },
+  "Supernova_Incomplete": {
+    "id": "Supernova.Incomplete",
+    "locale": {
+      "en-US": "Incomplete visualization",
+      "it-IT": "Visualizzazione incompleta",
+      "zh-CN": "不完整的可视化",
+      "zh-TW": "視覺化未完成",
+      "ko-KR": "완료되지 않은 시각화",
+      "de-DE": "Unvollständige Visualisierung",
+      "sv-SE": "Ofullständig visualisering",
+      "es-ES": "Visualización incompleta",
+      "pt-BR": "Visualização incompleta",
+      "ja-JP": "未完了のビジュアライゼーション",
+      "fr-FR": "Visualisation incomplète",
+      "nl-NL": "Onvolledige visualisatie",
+      "tr-TR": "Tamamlanmamış görselleştirme",
+      "pl-PL": "Niekompletna wizualizacja",
+      "ru-RU": "Незавершенная визуализация"
+    }
+  },
+  "Cancel": {
+    "id": "Common.Cancel",
+    "locale": {
+      "en-US": "Cancel",
+      "de-DE": "Abbrechen",
+      "es-ES": "Cancelar",
+      "fr-FR": "Annuler",
+      "ja-JP": "キャンセル",
+      "nl-NL": "Annuleren",
+      "it-IT": "Annulla",
+      "ko-KR": "취소",
+      "pl-PL": "Anuluj",
+      "ru-RU": "Отмена",
+      "pt-BR": "Cancelar",
+      "sv-SE": "Avbryt",
+      "zh-CN": "取消",
+      "tr-TR": "İptal",
+      "zh-TW": "取消"
+    }
+  },
+  "OK": {
+    "id": "Common.OK",
+    "locale": {
+      "en-US": "OK",
+      "de-DE": "OK",
+      "es-ES": "Aceptar",
+      "fr-FR": "OK",
+      "ja-JP": "OK",
+      "nl-NL": "OK",
+      "it-IT": "OK",
+      "ko-KR": "확인",
+      "pl-PL": "OK",
+      "ru-RU": "ОК",
+      "pt-BR": "OK",
+      "sv-SE": "OK",
+      "zh-CN": "确定",
+      "tr-TR": "Tamam",
+      "zh-TW": "確定"
+    }
+  },
+  "Retry": {
+    "id": "Common.Retry",
+    "locale": {
+      "en-US": "Retry",
+      "it-IT": "Riprova",
+      "zh-CN": "重试",
+      "zh-TW": "重試",
+      "ko-KR": "다시 시도",
+      "de-DE": "Wiederholen",
+      "sv-SE": "Försök igen",
+      "es-ES": "Intentar de nuevo",
+      "pt-BR": "Tentar Novamente",
+      "ja-JP": "再試行",
+      "fr-FR": "Réessayer",
+      "nl-NL": "Opnieuw",
+      "tr-TR": "Yeniden dene",
+      "pl-PL": "Ponów próbę",
+      "ru-RU": "Повторить попытку"
+    }
+  },
+  "CurrentSelections_All": {
+    "id": "CurrentSelections.All",
+    "locale": {
+      "en-US": "ALL",
+      "it-IT": "TUTTO",
+      "zh-CN": "全部",
+      "zh-TW": "全部",
+      "ko-KR": "모두",
+      "de-DE": "ALLES",
+      "sv-SE": "ALLA",
+      "es-ES": "TODOS",
+      "pt-BR": "TODOS",
+      "ja-JP": "すべて",
+      "fr-FR": "TOUS",
+      "nl-NL": "ALLE",
+      "tr-TR": "TÜMÜ",
+      "pl-PL": "WSZYSTKO",
+      "ru-RU": "ВСЕ"
+    }
+  },
+  "CurrentSelections_Of": {
+    "id": "CurrentSelections.Of",
+    "locale": {
+      "en-US": "{0} of {1}",
+      "it-IT": "{0} di {1}",
+      "zh-CN": "{0}/{1}",
+      "zh-TW": "{0} / {1}",
+      "ko-KR": "{0} / {1}",
+      "de-DE": "{0} von {1}",
+      "sv-SE": "{0} av {1}",
+      "es-ES": "{0} de {1}",
+      "pt-BR": "{0} de {1}",
+      "ja-JP": "{0} / {1}",
+      "fr-FR": "{0} sur {1}",
+      "nl-NL": "{0} van {1}",
+      "tr-TR": "{0} / {1}",
+      "pl-PL": "{0} z {1}",
+      "ru-RU": "{0} из {1}"
+    }
+  },
+  "Listbox_Search": {
+    "id": "Listbox.Search",
+    "locale": {
+      "en-US": "Search in listbox",
+      "it-IT": "Cerca nella casella di elenco",
+      "zh-CN": "在列表框中搜索",
+      "zh-TW": "在清單方塊中搜尋",
+      "ko-KR": "목록 상자에서 검색",
+      "de-DE": "In Listenfeld suchen",
+      "sv-SE": "Sök i listruta",
+      "es-ES": "Buscar en cuadro de lista",
+      "pt-BR": "Pesquisar na caixa de listagem",
+      "ja-JP": "リストボックス内を検索",
+      "fr-FR": "Rechercher dans la liste de sélection",
+      "nl-NL": "Zoeken in keuzelijst",
+      "tr-TR": "Liste kutusunda ara",
+      "pl-PL": "Wyszukaj w liście wartości",
+      "ru-RU": "Поиск в списке"
+    }
+  },
+  "Navigate_Forward": {
+    "id": "Navigate.Forward",
+    "locale": {
+      "en-US": "Step forward",
+      "it-IT": "Vai avanti",
+      "zh-CN": "前进",
+      "zh-TW": "前進",
+      "ko-KR": "다음 단계",
+      "de-DE": "Schritt vor",
+      "sv-SE": "Gå framåt",
+      "es-ES": "Avanzar",
+      "pt-BR": "Avançar uma etapa",
+      "ja-JP": "1段階進む",
+      "fr-FR": "Étape suivante",
+      "nl-NL": "Stap vooruit",
+      "tr-TR": "Bir adım ileri",
+      "pl-PL": "Krok do przodu",
+      "ru-RU": "Шаг вперед"
+    }
+  },
+  "Navigate_Back": {
+    "id": "Navigate.Back",
+    "locale": {
+      "en-US": "Step back",
+      "it-IT": "Torna indietro",
+      "zh-CN": "后退",
+      "zh-TW": "倒退",
+      "ko-KR": "이전 단계",
+      "de-DE": "Schritt zurück",
+      "sv-SE": "Gå bakåt",
+      "es-ES": "Retroceder",
+      "pt-BR": "Voltar uma etapa",
+      "ja-JP": "1 段階戻る",
+      "fr-FR": "Retour en arrière",
+      "nl-NL": "Stap terug",
+      "tr-TR": "Bir adım geri",
+      "pl-PL": "Krok do tyłu",
+      "ru-RU": "Шаг назад"
+    }
+  },
+  "Selection_ClearAll": {
+    "id": "Selection.ClearAll",
+    "locale": {
+      "en-US": "Clear all selections",
+      "it-IT": "Cancella tutte le selezioni",
+      "zh-CN": "清除所有选择项",
+      "zh-TW": "清除所有選項",
+      "ko-KR": "모든 선택 해제",
+      "de-DE": "Auswahl aufheben (alle Felder)",
+      "sv-SE": "Rensa alla urval",
+      "es-ES": "Borrar todas las selecciones",
+      "pt-BR": "Limpar todas as seleções",
+      "ja-JP": "選択をすべてクリアする",
+      "fr-FR": "Effacer toutes les sélections",
+      "nl-NL": "Alle selecties wissen",
+      "tr-TR": "Tüm seçimleri temizle",
+      "pl-PL": "Wyczyść wszystkie selekcje",
+      "ru-RU": "Очистить от всех выборок"
+    }
+  },
+  "Selection_ClearAllStates": {
+    "id": "Selection.ClearAllStates",
+    "locale": {
+      "en-US": "Clear all states",
+      "it-IT": "Cancella tutti gli stati",
+      "zh-CN": "清除所有状态",
+      "zh-TW": "清除所有狀態",
+      "ko-KR": "모든 상태 지우기",
+      "de-DE": "Alle Status löschen",
+      "sv-SE": "Rensa alla tillstånd",
+      "es-ES": "Borrar todos los estados",
+      "pt-BR": "Limpar todos os estados",
+      "ja-JP": "全ステートをクリア",
+      "fr-FR": "Effacer tous les états",
+      "nl-NL": "Alle states wissen",
+      "tr-TR": "Tüm durumları temizle",
+      "pl-PL": "Wyczyść wszystkie stany",
+      "ru-RU": "Очистить все состояния"
+    }
+  },
+  "Selection_Confirm": {
+    "id": "Selection.Confirm",
+    "locale": {
+      "en-US": "Confirm selection",
+      "it-IT": "Conferma selezione",
+      "zh-CN": "确认选择",
+      "zh-TW": "確認選取",
+      "ko-KR": "선택 확인",
+      "de-DE": "Auswahl bestätigen",
+      "sv-SE": "Bekräfta urval",
+      "es-ES": "Confirmar selección",
+      "pt-BR": "Confirmar seleção",
+      "ja-JP": "選択の確認",
+      "fr-FR": "Confirmer la sélection",
+      "nl-NL": "Selectie bevestigen",
+      "tr-TR": "Seçimi onayla",
+      "pl-PL": "Potwierdź selekcję",
+      "ru-RU": "Подтвердить выборку"
+    }
+  },
+  "Selection_Cancel": {
+    "id": "Selection.Cancel",
+    "locale": {
+      "en-US": "Cancel selection",
+      "it-IT": "Annulla selezione",
+      "zh-CN": "取消选择",
+      "zh-TW": "取消選取",
+      "ko-KR": "선택 취소",
+      "de-DE": "Auswahl abbrechen",
+      "sv-SE": "Avbryt urval",
+      "es-ES": "Cancelar selección",
+      "pt-BR": "Cancelar seleção",
+      "ja-JP": "選択のキャンセル",
+      "fr-FR": "Annuler la sélection",
+      "nl-NL": "Selectie annuleren",
+      "tr-TR": "Seçimi iptal et",
+      "pl-PL": "Anuluj selekcję",
+      "ru-RU": "Отменить выборку"
+    }
+  },
+  "Selection_Clear": {
+    "id": "Selection.Clear",
+    "locale": {
+      "en-US": "Clear selection",
+      "it-IT": "Cancella selezione",
+      "zh-CN": "清除选择",
+      "zh-TW": "清除選項",
+      "ko-KR": "선택 해제",
+      "de-DE": "Auswahl löschen",
+      "sv-SE": "Rensa urval",
+      "es-ES": "Borrar selección",
+      "pt-BR": "Limpar seleção",
+      "ja-JP": "選択をクリア",
+      "fr-FR": "Effacer la sélection",
+      "nl-NL": "Selectie wissen",
+      "tr-TR": "Seçimi temizle",
+      "pl-PL": "Wyczyść selekcję",
+      "ru-RU": "Очистить выбор"
+    }
+  },
+  "Selection_SelectAll": {
+    "id": "Selection.SelectAll",
+    "locale": {
+      "en-US": "Select all",
+      "it-IT": "Seleziona tutto",
+      "zh-CN": "全选",
+      "zh-TW": "全選",
+      "ko-KR": "모두 선택",
+      "de-DE": "Alle Werte auswählen",
+      "sv-SE": "Markera alla",
+      "es-ES": "Seleccionar todo",
+      "pt-BR": "Selecionar todos",
+      "ja-JP": "すべて選択",
+      "fr-FR": "Sélectionner tout",
+      "nl-NL": "Alles selecteren",
+      "tr-TR": "Tümünü seç",
+      "pl-PL": "Wybierz wszystko",
+      "ru-RU": "Выбрать все"
+    }
+  },
+  "Selection_SelectAlternative": {
+    "id": "Selection.SelectAlternative",
+    "locale": {
+      "en-US": "Select alternative",
+      "it-IT": "Seleziona alternativi",
+      "zh-CN": "选择替代项",
+      "zh-TW": "選取替代選項",
+      "ko-KR": "대안 선택",
+      "de-DE": "Alternative Werte auswählen",
+      "sv-SE": "Välj alternativ",
+      "es-ES": "Seleccionar alternativos",
+      "pt-BR": "Selecionar alternativa",
+      "ja-JP": "代替値を選択",
+      "fr-FR": "Sélectionner des valeurs alternatives",
+      "nl-NL": "Alternatief selecteren",
+      "tr-TR": "Alternatifi seç",
+      "pl-PL": "Wybierz alternatywę",
+      "ru-RU": "Выбрать альтернативные"
+    }
+  },
+  "Selection_SelectExcluded": {
+    "id": "Selection.SelectExcluded",
+    "locale": {
+      "en-US": "Select excluded",
+      "it-IT": "Seleziona esclusi",
+      "zh-CN": "选择排除项",
+      "zh-TW": "選取排除值",
+      "ko-KR": "제외 항목 선택",
+      "de-DE": "Ausgeschlossene Werte auswählen",
+      "sv-SE": "Välj uteslutna",
+      "es-ES": "Seleccionar excluidos",
+      "pt-BR": "Selecionar excluído",
+      "ja-JP": "除外値を選択",
+      "fr-FR": "Sélectionner les valeurs exclues",
+      "nl-NL": "Uitgesloten selecteren",
+      "tr-TR": "Hariç tutulanı seç",
+      "pl-PL": "Wybierz wykluczone",
+      "ru-RU": "Выбрать исключенные"
+    }
+  },
+  "Selection_SelectPossible": {
+    "id": "Selection.SelectPossible",
+    "locale": {
+      "en-US": "Select possible",
+      "it-IT": "Seleziona possibili",
+      "zh-CN": "选择可能值",
+      "zh-TW": "選取可能值",
+      "ko-KR": "사용 가능 항목 선택",
+      "de-DE": "Wählbare Werte auswählen",
+      "sv-SE": "Välj möjliga",
+      "es-ES": "Seleccionar posibles",
+      "pt-BR": "Selecionar possível",
+      "ja-JP": "絞込値を選択",
+      "fr-FR": "Sélectionner les valeurs possibles",
+      "nl-NL": "Mogelijke selecteren",
+      "tr-TR": "Olasıyı seç",
+      "pl-PL": "Wybierz możliwe",
+      "ru-RU": "Выбрать возможные"
+    }
+  },
+  "Selection_Menu": {
+    "id": "Selection.Menu",
+    "locale": {
+      "en-US": "Selection menu",
+      "it-IT": "Menu Selezione",
+      "zh-CN": "选择菜单",
+      "zh-TW": "選項功能表",
+      "ko-KR": "선택 메뉴",
+      "de-DE": "Auswahlmenü",
+      "sv-SE": "Urvalsmeny",
+      "es-ES": "Menú de selección",
+      "pt-BR": "Menu de seleção",
+      "ja-JP": "選択メニュー",
+      "fr-FR": "Menu Sélection",
+      "nl-NL": "Selectiemenu",
+      "tr-TR": "Seçim menüsü",
+      "pl-PL": "Menu selekcji",
+      "ru-RU": "Меню \"Выборка\""
+    }
+  }
+}

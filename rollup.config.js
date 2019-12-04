@@ -6,6 +6,8 @@ const replace = require('rollup-plugin-replace');
 const json = require('rollup-plugin-json');
 const { terser } = require('rollup-plugin-terser');
 
+const localeStringValidator = require('./tools/locale-string-validator');
+
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json')); // eslint-disable-line
 const { name, version, license } = pkg;
@@ -150,7 +152,7 @@ const config = isEsm => {
             },
           ],
         ],
-        plugins: [['@babel/plugin-transform-react-jsx']],
+        plugins: [['@babel/plugin-transform-react-jsx'], [localeStringValidator, {}]],
       }),
     ],
   };
