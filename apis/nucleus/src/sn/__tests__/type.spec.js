@@ -1,13 +1,3 @@
-const mock = ({ SNFactory = () => ({}), satisfies = () => false, load = () => null } = {}) =>
-  aw.mock(
-    [
-      ['**/dist/supernova.js', () => SNFactory],
-      ['**/semver.js', () => ({ satisfies })],
-      ['**/load.js', () => ({ load })],
-    ],
-    ['../type']
-  );
-
 describe('type', () => {
   let c;
   let SNFactory;
@@ -20,7 +10,14 @@ describe('type', () => {
     SNFactory = sb.stub();
     load = sb.stub();
     satisfies = sb.stub();
-    [{ default: create }] = mock({ SNFactory, load, satisfies });
+    [{ default: create }] = aw.mock(
+      [
+        ['**/dist/supernova.js', () => SNFactory],
+        ['**/semver.js', () => ({ satisfies })],
+        ['**/load.js', () => ({ load })],
+      ],
+      ['../type']
+    );
   });
   beforeEach(() => {
     c = create({ name: 'pie', version: '1.1.0' }, 'c', { load: 'customLoader' });

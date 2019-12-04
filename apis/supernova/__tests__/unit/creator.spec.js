@@ -1,5 +1,8 @@
 describe('creator', () => {
-  const [{ default: create }] = aw.mock([['**/action-hero.js', () => () => ({})]], ['../../src/creator']);
+  let create;
+  before(() => {
+    [{ default: create }] = aw.mock([['**/action-hero.js', () => () => ({})]], ['../../src/creator']);
+  });
 
   it('should return a default component api', () => {
     const generator = {

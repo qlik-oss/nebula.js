@@ -1,12 +1,10 @@
-const doMock = () => aw.mock([['**/uid.js', () => () => 'uid']], ['../hc-handler.js']);
-
 describe('hc-handler', () => {
   let h;
   let hc;
   let def;
   let handler;
   before(() => {
-    [{ default: handler }] = doMock();
+    [{ default: handler }] = aw.mock([['**/uid.js', () => () => 'uid']], ['../hc-handler.js']);
   });
 
   beforeEach(() => {
