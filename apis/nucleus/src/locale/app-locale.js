@@ -1,18 +1,13 @@
 import localeFn from '@nebula.js/locale';
-import en from './translations/en-US';
+import all from './translations/all.json';
 
 export default function appLocaleFn({ language }) {
   const l = localeFn({
     initial: language,
   });
 
-  Object.keys(en).forEach(id => {
-    l.translator.add({
-      id,
-      locale: {
-        'en-US': en[id],
-      },
-    });
+  Object.keys(all).forEach(key => {
+    l.translator.add(all[key]);
   });
 
   return {

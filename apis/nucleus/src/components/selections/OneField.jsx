@@ -61,8 +61,6 @@ export default function OneField({ field, api, stateIx = 0, skipHandleShowListBo
     label = translator.get('CurrentSelections.All');
   } else if (numSelected > 1 && selection.qTotal) {
     label = translator.get('CurrentSelections.Of', [numSelected, selection.qTotal]);
-  } else if (noSegments) {
-    label = translator.get('CurrentSelections.None');
   } else {
     label = selection.qSelectedFieldSelectionInfo.map(v => v.qName).join(', ');
   }
