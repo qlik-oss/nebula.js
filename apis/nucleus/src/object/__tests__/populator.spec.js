@@ -1,4 +1,3 @@
-const doMock = ({ handler } = {}) => aw.mock([['**/hc-handler.js', () => handler]], ['../populator.js']);
 describe('populator', () => {
   let handler;
   let context;
@@ -19,7 +18,7 @@ describe('populator', () => {
         warn: sb.stub(),
       },
     };
-    [{ default: populate, fieldType: ft }] = doMock({ handler });
+    [{ default: populate, fieldType: ft }] = aw.mock([['**/hc-handler.js', () => handler]], ['../populator.js']);
   });
   beforeEach(() => {
     sb.reset();

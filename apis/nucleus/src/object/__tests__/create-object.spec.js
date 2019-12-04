@@ -1,43 +1,50 @@
 describe('create-object', () => {
-  const doMock = ({ populator = () => {} } = {}) =>
-    aw.mock([['**/populator.js', () => populator]], ['../create-object.js']);
-
   let context = {};
   let types;
   let sn;
   let merged;
+  let create;
+  let populator;
+  let sandbox;
+  before(() => {
+    sandbox = sinon.createSandbox();
+    populator = sandbox.stub();
+    [{ default: create }] = aw.mock([['**/populator.js', () => populator]], ['../create-object.js']);
+  });
 
   beforeEach(() => {
     types = {
-      get: sinon.stub(),
+      get: sandbox.stub(),
     };
     context = {
       app: {
-        createSessionObject: sinon.stub().returns(Promise.resolve({ id: 'id' })),
+        createSessionObject: sandbox.stub().returns(Promise.resolve({ id: 'id' })),
       },
       nebbie: {
-        get: sinon.stub().returns('got it'),
+        get: sandbox.stub().returns('got it'),
         types,
       },
     };
 
-    sn = { qae: { properties: { onChange: sinon.stub() } } };
+    sn = { qae: { properties: { onChange: sandbox.stub() } } };
     merged = { m: 'true' };
     const t = {
-      initialProperties: sinon.stub().returns(Promise.resolve(merged)),
-      supernova: sinon.stub().returns(Promise.resolve(sn)),
+      initialProperties: sandbox.stub().returns(Promise.resolve(merged)),
+      supernova: sandbox.stub().returns(Promise.resolve(sn)),
     };
     types.get.returns(t);
   });
 
+  afterEach(() => {
+    sandbox.reset();
+  });
+
   it('should call types.get with name and version', () => {
-    const [{ default: create }] = doMock();
     create({ type: 't', version: 'v', fields: 'f' }, {}, context);
     expect(types.get).to.have.been.calledWithExactly({ name: 't', version: 'v' });
   });
 
   it('should call initialProperties on returned type', () => {
-    const [{ default: create }] = doMock();
     const t = { initialProperties: sinon.stub() };
     t.initialProperties.returns({ then: () => {} });
     types.get.returns(t);
@@ -46,32 +53,26 @@ describe('create-object', () => {
   });
 
   it('should populate fields', async () => {
-    const p = sinon.stub();
-    const [{ default: create }] = doMock({ populator: p });
     await create({ type: 't', version: 'v', fields: 'f' }, { properties: 'props' }, context);
-    expect(p).to.have.been.calledWithExactly({ sn, properties: merged, fields: 'f' }, context);
+    expect(populator).to.have.been.calledWithExactly({ sn, properties: merged, fields: 'f' }, context);
   });
 
   it('should call properties onChange handler when optional props are provided', async () => {
-    const [{ default: create }] = doMock();
     await create({ type: 't', version: 'v', fields: 'f' }, { properties: 'props' }, context);
     expect(sn.qae.properties.onChange).to.have.been.calledWithExactly(merged);
   });
 
   it('should not call onChange handler when optional props are not provided', async () => {
-    const [{ default: create }] = doMock();
     await create({ type: 't', version: 'v', fields: 'f' }, {}, context);
     expect(sn.qae.properties.onChange.callCount).to.equal(0);
   });
 
   it('should create a session object with merged props', async () => {
-    const [{ default: create }] = doMock();
     await create({ type: 't', version: 'v', fields: 'f' }, { properties: 'props' }, context);
     expect(context.app.createSessionObject).to.have.been.calledWithExactly(merged);
   });
 
   it('should call nebbie get', async () => {
-    const [{ default: create }] = doMock();
     const ret = await create({ type: 't', version: 'v', fields: 'f' }, { properties: 'props', x: 'a' }, context);
     expect(ret).to.equal('got it');
     expect(context.nebbie.get).to.have.been.calledWithExactly(

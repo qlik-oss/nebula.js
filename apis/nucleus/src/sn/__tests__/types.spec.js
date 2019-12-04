@@ -1,17 +1,3 @@
-const mock = ({ createType, clearFromCache = () => {} } = {}) =>
-  aw.mock(
-    [
-      ['**/sn/type.js', () => createType],
-      [
-        '**/sn/load.js',
-        () => ({
-          clearFromCache,
-        }),
-      ],
-    ],
-    ['../types']
-  );
-
 describe('types', () => {
   let sb;
   let create;
@@ -23,7 +9,18 @@ describe('types', () => {
     sb = sinon.createSandbox();
     type = sb.stub();
     clearFromCache = sb.stub();
-    [{ create, semverSort }] = mock({ createType: type, clearFromCache });
+    [{ create, semverSort }] = aw.mock(
+      [
+        ['**/sn/type.js', () => type],
+        [
+          '**/sn/load.js',
+          () => ({
+            clearFromCache,
+          }),
+        ],
+      ],
+      ['../types']
+    );
   });
 
   beforeEach(() => {

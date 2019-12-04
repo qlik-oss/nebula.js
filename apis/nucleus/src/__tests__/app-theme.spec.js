@@ -1,25 +1,28 @@
-const doMock = theme => aw.mock([['**/apis/theme/**/theme.js', () => theme]], ['../app-theme']);
-
 describe('app-theme', () => {
   let appThemeFn;
   let internalAPI;
   let logger;
   let t;
-  beforeEach(() => {
+  const sandbox = sinon.createSandbox();
+  before(() => {
     internalAPI = {
-      setTheme: sinon.spy(),
+      setTheme: sandbox.spy(),
     };
     t = () => ({
       externalAPI: 'external',
       internalAPI,
     });
     logger = {
-      error: sinon.spy(),
-      warn: sinon.spy(),
+      error: sandbox.spy(),
+      warn: sandbox.spy(),
     };
-    const [{ default: create }] = doMock(t);
-    appThemeFn = create;
+    [{ default: appThemeFn }] = aw.mock([['**/apis/theme/**/theme.js', () => t]], ['../app-theme']);
   });
+
+  afterEach(() => {
+    sandbox.reset();
+  });
+
   it('should return external API', () => {
     const at = appThemeFn({});
     expect(at.externalAPI).to.equal('external');
@@ -27,7 +30,7 @@ describe('app-theme', () => {
 
   describe('custom', () => {
     it('should load and apply custom theme', async () => {
-      const root = { theme: sinon.spy() };
+      const root = { theme: sandbox.spy() };
       const at = appThemeFn({
         root,
         logger,
@@ -62,11 +65,11 @@ describe('app-theme', () => {
           },
         ],
       });
-      const sandbox = sinon.createSandbox({ useFakeTimers: true });
+      const sb = sinon.createSandbox({ useFakeTimers: true });
       const prom = at.setTheme('darkish');
-      sandbox.clock.tick(5500);
+      sb.clock.tick(5500);
       await prom;
-      sandbox.restore();
+      sb.restore();
       expect(logger.warn).to.have.been.calledWithExactly("Timeout when loading theme 'darkish'");
     });
   });
