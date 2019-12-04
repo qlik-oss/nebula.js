@@ -11,7 +11,7 @@ import VizContext from '../contexts/VizContext';
 
 import Chart from './Chart';
 
-const takeAndSendSnapshot = ({ ref, route = '/snapshot', theme }) =>
+const takeAndSendSnapshot = ({ ref, route = '/snapshot', theme, language }) =>
   ref.viz.takeSnapshot().then(snapshot => {
     const containerSize = ref.el.getBoundingClientRect();
     return fetch(route, {
@@ -22,7 +22,7 @@ const takeAndSendSnapshot = ({ ref, route = '/snapshot', theme }) =>
       body: JSON.stringify({
         key: snapshot.qInfo.qId,
         meta: {
-          language: '',
+          language,
           theme,
           direction: '',
           size: {
@@ -36,6 +36,7 @@ const takeAndSendSnapshot = ({ ref, route = '/snapshot', theme }) =>
   });
 
 export default function({ id, expandable, minHeight }) {
+  const language = 'en-US'; // TODO - useLocale
   const app = useContext(AppContext);
   const [model, setModel] = useState(null);
   const [exporting, setExporting] = useState(false);
@@ -89,7 +90,7 @@ export default function({ id, expandable, minHeight }) {
       }
       if (doExport) {
         setExporting(true);
-        takeAndSendSnapshot({ ref: vizRef.current, route: '/image', theme: currentThemeName }).then(res => {
+        takeAndSendSnapshot({ ref: vizRef.current, route: '/image', theme: currentThemeName, language }).then(res => {
           if (res && res.url) {
             window.open(res.url);
           }
@@ -97,7 +98,7 @@ export default function({ id, expandable, minHeight }) {
         });
       } else {
         const containerSize = vizRef.current.el.getBoundingClientRect();
-        takeAndSendSnapshot({ ref: vizRef.current, theme: currentThemeName }).then(res => {
+        takeAndSendSnapshot({ ref: vizRef.current, theme: currentThemeName, language }).then(res => {
           if (res && res.url) {
             window.open(
               res.url,
@@ -141,7 +142,7 @@ export default function({ id, expandable, minHeight }) {
                 model
                   ? `${document.location.href.replace(/\/dev\//, '/render/')}?object=${
                       model.id
-                    }&permissions=passive,interact,select&theme=${currentThemeName}`
+                    }&permissions=passive,interact,select&theme=${currentThemeName}&language=${language}`
                   : ''
               }
               target="_blank"

@@ -2,7 +2,7 @@ import nucleus from '@nebula.js/nucleus';
 import { openApp, params, info as serverInfo } from './connect';
 import runFixture from './run-fixture';
 
-const nuke = async ({ app, supernova: { name }, themes, theme }) => {
+const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
   const nuked = nucleus.configured({
     themes: themes
       ? themes.map(t => ({
@@ -11,6 +11,9 @@ const nuke = async ({ app, supernova: { name }, themes, theme }) => {
         }))
       : undefined,
     theme,
+    locale: {
+      language,
+    },
   });
   const nebbie = nuked(app, {
     load: (type, config) => config.Promise.resolve(window[type.name]),
@@ -29,7 +32,7 @@ async function renderWithEngine() {
   }
   const info = await serverInfo;
   const app = await openApp(params.app);
-  const nebbie = await nuke({ app, ...info, theme: params.theme });
+  const nebbie = await nuke({ app, ...info, theme: params.theme, language: params.language });
   const element = document.querySelector('#chart-container');
   const vizCfg = {
     element,
@@ -72,7 +75,7 @@ async function renderSnapshot() {
   };
 
   const {
-    meta: { theme },
+    meta: { theme, language },
   } = snapshot;
 
   const objectModel = {
@@ -92,7 +95,7 @@ async function renderSnapshot() {
     },
   };
 
-  const nebbie = await nuke({ app, ...info, theme });
+  const nebbie = await nuke({ app, ...info, theme, language });
   const getCfg = {
     id: layout.qInfo.qId,
   };
@@ -128,6 +131,9 @@ const renderFixture = async () => {
         }))
       : undefined,
     theme,
+    locale: {
+      language: params.language,
+    },
   };
   let mockedProps = {};
   let mockedLayout = {};
