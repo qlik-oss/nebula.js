@@ -1,20 +1,15 @@
-export default {
-  component: {
-    mounted(element) {
-      element.textContent = 'Hello engine!'; // eslint-disable-line no-param-reassign
+export default function(env) {
+  env.translator.add({
+    id: 'hello',
+    locale: {
+      'sv-SE': 'Hej {0}!',
     },
-  },
-  qae: {
-    data: {
-      targets: [
-        {
-          path: '/qHyperCubeDef',
-          dimensions: {
-            min: 0,
-            max: 0,
-          },
-        },
-      ],
+  });
+  return {
+    component: {
+      mounted(element) {
+        element.textContent = `${env.translator.get('hello', ['motor'])}`; // eslint-disable-line no-param-reassign
+      },
     },
-  },
-};
+  };
+}
