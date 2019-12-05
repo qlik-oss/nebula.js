@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { Badge, IconButton, Grid, Typography, Popover, Button, MenuList, MenuItem } from '@material-ui/core';
+import { Badge, IconButton, Grid, Typography, Popover, Button, List, ListItem, Box } from '@material-ui/core';
 import { makeStyles } from '@nebula.js/ui/theme';
 import DownArrow from '@nebula.js/ui/icons/down-arrow';
 
@@ -90,19 +90,21 @@ export default function MultiState({ field, api }) {
             },
           }}
         >
-          <MenuList>
-            <MenuItem divider title={clearAllStates} onClick={handleClearAllStates}>
-              <Button variant="outlined" fullWidth>
-                <Typography component="span">{clearAllStates}</Typography>
+          <List dense>
+            <ListItem title={clearAllStates} onClick={handleClearAllStates}>
+              <Button variant="contained" fullWidth>
+                {clearAllStates}
               </Button>
-            </MenuItem>
+            </ListItem>
             {field.states.map((s, ix) => (
               // eslint-disable-next-line react/no-array-index-key
-              <MenuItem key={ix} divider title={field.name} onClick={e => handleShowState(e, ix)}>
-                <OneField field={field} api={api} stateIx={ix} skipHandleShowListBoxPopover />
-              </MenuItem>
+              <ListItem key={ix} title={field.name} onClick={e => handleShowState(e, ix)}>
+                <Box border={1} width="100%" borderRadius="borderRadius" borderColor="divider">
+                  <OneField field={field} api={api} stateIx={ix} skipHandleShowListBoxPopover />
+                </Box>
+              </ListItem>
             ))}
-          </MenuList>
+          </List>
         </Popover>
       )}
       {showStateIx > -1 && (

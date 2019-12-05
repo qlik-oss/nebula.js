@@ -1,79 +1,62 @@
-const theme = {
+import colors from './colors';
+
+const light = {
+  type: 'light',
   palette: {
-    grey: {
-      100: '#ffffff',
-      98: '#fafafa',
-      95: '#f2f2f2',
-      90: '#e6e6e6',
-      85: '#D9D9D9',
-      70: '#B3B3B3',
-      25: '#404040',
+    primary: {
+      main: colors.grey25,
+      contrastText: colors.grey100,
     },
-    black: {
-      '03': 'rgba(0, 0, 0, 0.03)',
-      '05': 'rgba(0, 0, 0, 0.05)',
-      10: 'rgba(0, 0, 0, 0.10)',
-      15: 'rgba(0, 0, 0, 0.15)',
-      55: 'rgba(0, 0, 0, 0.55)',
+    secondary: {
+      light: '#0AAF54',
+      main: '#009845',
+      dark: '#006937',
     },
     text: {
-      primary: '$palette.grey.25',
-      secondary: '$palette.black.55',
+      primary: colors.grey25,
+      secondary: 'rgba(0, 0, 0, 0.55)',
+      disabled: 'rgba(0, 0, 0, 0.3)',
     },
-    divider: '$palette.black.15',
+    action: {
+      active: colors.grey25, // color for actionable things like icon buttons
+      hover: 'rgba(0, 0, 0, 0.03)', // color for hoverable things like list items
+      hoverOpacity: 0.08, // used to fade primary/secondary colors
+      selected: 'rgba(0, 0, 0, 0.05)', // focused things like list items
+      disabled: 'rgba(0, 0, 0, 0.3)', // usually text
+      disabledBackground: 'rgba(0, 0, 0, 0.12)',
+    },
     background: {
-      lightest: '$palette.grey.100',
-      lighter: '$palette.grey.98',
-      darker: '$palette.grey.95',
-      darkest: '$palette.grey.90',
-      default: '$palette.background.lightest',
-      hover: '$palette.black.03',
-      focus: '$palette.black.03',
-      active: '$palette.black.05',
+      paper: colors.grey100,
+      default: colors.grey100,
+      // -- custom properties --
+      lightest: colors.grey100,
+      lighter: colors.grey98,
+      darker: colors.grey95,
+      darkest: colors.grey90,
     },
-    green: '#6CB33F',
-  },
-  typography: {
-    fontFamily: '"Source Sans Pro", Arial, sans-serif',
-    weight: {
-      light: '300',
-      regular: '400',
-      semibold: '600',
+    // --- custom stuff ---
+    custom: {
+      focusBorder: colors.blue,
+      focusOutline: 'rgba(70, 157, 205, 0.3)',
+      inputBackground: 'rgba(255, 255, 255, 1)',
     },
-    small: {
-      fontSize: '12px',
-      lineHeight: '16px',
+    selected: {
+      main: colors.green,
+      alternative: '#E4E4E4',
+      excluded: '#BEBEBE',
+      mainContrastText: colors.grey100,
+      alternativeContrastText: colors.grey25,
+      excludedContrastText: colors.grey25,
     },
-    medium: {
-      fontSize: '14px',
-      lineHeight: '16px',
+    btn: {
+      normal: 'rgba(255, 255, 255, 0.6)',
+      hover: 'rgba(0, 0, 0, 0.03)',
+      active: 'rgba(0, 0, 0, 0.1)',
+      disabled: 'rgba(255, 255, 255, 0.6)',
+      border: 'rgba(0, 0, 0, 0.15)',
+      borderHover: 'rgba(0, 0, 0, 0.15)',
     },
-    large: {
-      fontSize: '16px',
-      lineHeight: '24px',
-    },
-    xlarge: {
-      fontSize: '24px',
-      lineHeight: '32px',
-    },
-  },
-  shadows: {
-    0: 'none',
-    1: '0 1px 2px $palette.black.15',
-    2: '0 2px 4px $palette.black.15',
-    3: '0 4px 10px $palette.black.15',
-    4: '0 6px 20px $palette.black.15',
-  },
-  shape: {
-    borderRadius: '2px',
-  },
-  spacing: {
-    0: '0',
-    1: '2px',
-    3: '4px',
-    4: '8px',
-    5: '16px',
   },
 };
 
-export default theme;
+export default light;

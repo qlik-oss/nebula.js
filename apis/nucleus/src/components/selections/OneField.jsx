@@ -5,7 +5,7 @@ import Lock from '@nebula.js/ui/icons/lock';
 
 import { IconButton, Grid, Typography } from '@material-ui/core';
 
-import { makeStyles } from '@nebula.js/ui/theme';
+import { makeStyles, useTheme } from '@nebula.js/ui/theme';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 export default function OneField({ field, api, stateIx = 0, skipHandleShowListBoxPopover = false }) {
   const translator = useContext(LocaleContext);
   const alignTo = useRef();
+  const theme = useTheme();
   const [showListBoxPopover, setShowListBoxPopover] = useState(false);
 
   const classes = useStyles();
@@ -69,9 +70,9 @@ export default function OneField({ field, api, stateIx = 0, skipHandleShowListBo
   }
 
   const segments = [
-    { color: '#6CB33F', ratio: green },
-    { color: '#D8D8D8', ratio: white },
-    { color: '#B4B4B4', ratio: grey },
+    { color: theme.palette.selected.main, ratio: green },
+    { color: theme.palette.selected.alternative, ratio: white },
+    { color: theme.palette.selected.excluded, ratio: grey },
   ];
   segments.forEach((s, i) => {
     s.offset = i ? segments[i - 1].offset + segments[i - 1].ratio : 0; // eslint-disable-line

@@ -6,7 +6,15 @@ const LocaleContext = React.createContext();
 const [{ default: OneField }] = aw.mock(
   [
     [require.resolve('../../../contexts/LocaleContext'), () => LocaleContext],
-    [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({}) })],
+    [
+      require.resolve('@nebula.js/ui/theme'),
+      () => ({
+        useTheme: () => ({
+          palette: { selected: {} },
+        }),
+        makeStyles: () => () => ({}),
+      }),
+    ],
   ],
   ['../OneField']
 );
