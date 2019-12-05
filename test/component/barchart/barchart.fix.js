@@ -16,7 +16,7 @@ export default function fixture() {
         qHyperCube: hypercube({
           seed: 13,
           numRows: 20,
-          dimensions: [{ value: f => f.address.country(), maxCardinalRatio: 0.2 }],
+          dimensions: [{ value: f => f.address.country() }],
           measures: [f => f.commerce.price(10, 5000, 0, '$')],
         }),
       }),
