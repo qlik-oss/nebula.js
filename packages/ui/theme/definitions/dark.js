@@ -1,88 +1,64 @@
-const theme = {
+import colors from './colors';
+
+const dark = {
+  type: 'dark',
   palette: {
-    grey: {
-      100: '#ffffff',
-      98: '#fafafa',
-      95: '#f2f2f2',
-      90: '#e6e6e6',
-      85: '#D9D9D9',
-      70: '#B3B3B3',
-      30: '#4d4d4d',
-      25: '#404040',
-      20: '#333333',
-      15: '#262626',
-      10: '#1a1a1a',
+    primary: {
+      main: colors.grey20,
+      contrastText: colors.grey100,
     },
-    black: {
-      '03': 'rgba(0, 0, 0, 0.03)',
-      '05': 'rgba(0, 0, 0, 0.05)',
-      10: 'rgba(0, 0, 0, 0.10)',
-      15: 'rgba(0, 0, 0, 0.15)',
-      30: 'rgba(0, 0, 0, 0.30)',
-      55: 'rgba(0, 0, 0, 0.55)',
-    },
-    white: {
-      10: 'rgba(255, 255, 255, 0.1)',
-      60: 'rgba(255, 255, 255, 0.6)',
+    secondary: {
+      light: '#0AAF54',
+      main: '#009845',
+      dark: '#006937',
     },
     text: {
-      primary: '$palette.grey.100',
-      secondary: '$palette.white.60',
+      primary: colors.grey100,
+      secondary: 'rgba(255, 255, 255, 0.6)',
+      disabled: 'rgba(255, 255, 255, 0.3)',
     },
-    divider: '$palette.black.30',
+    action: {
+      // active: 'rgba(0, 0, 0, 0.55)',
+      active: colors.grey100,
+      hover: 'rgba(255, 255, 255, 0.05)',
+      hoverOpacity: 0.08,
+      selected: 'rgba(0, 0, 0, 0.03)',
+      disabled: 'rgba(255, 255, 255, 0.3)',
+      disabledBackground: 'rgba(0, 0, 0, 0.12)',
+    },
+    divider: 'rgba(0,0,0,0.3)',
     background: {
-      lightest: '$palette.grey.30',
-      lighter: '$palette.grey.20',
-      darker: '$palette.grey.15',
-      darkest: '$palette.grey.10',
-      default: '$palette.background.lightest',
-      hover: '$palette.white.10',
-      focus: '$palette.white.10 ',
-      active: '$palette.black.10',
+      default: '#323232',
+      paper: '#323232',
+      // -- custom properties --
+      lightest: colors.grey25,
+      lighter: colors.grey20,
+      darker: colors.grey15,
+      darkest: colors.grey10,
     },
-    green: '#6CB33F',
-  },
-  typography: {
-    fontFamily: '"Source Sans Pro", Arial, sans-serif',
-    weight: {
-      light: '300',
-      regular: '400',
-      semibold: '600',
+    // -- custom --
+    custom: {
+      focusBorder: colors.blue,
+      focusOutline: 'rgba(70, 157, 205, 0.3)',
+      inputBackground: 'rgba(0, 0, 0, 0.2)',
     },
-    small: {
-      fontSize: '12px',
-      lineHeight: '16px',
+    selected: {
+      main: colors.green,
+      alternative: colors.grey20,
+      excluded: colors.grey10,
+      mainContrastText: colors.grey100,
+      alternativeContrastText: colors.grey100,
+      excludedContrastText: colors.grey100,
     },
-    medium: {
-      fontSize: '14px',
-      lineHeight: '16px',
+    btn: {
+      normal: 'rgba(255, 255, 255, 0.15)',
+      hover: 'rgba(255, 255, 255, 0.25)',
+      active: 'rgba(0, 0, 0, 0.1)',
+      disabled: 'rgba(255, 255, 255, 0.15)',
+      border: 'rgba(0, 0, 0, 0.15)',
+      borderHover: 'rgba(0, 0, 0, 0.30)',
     },
-    large: {
-      fontSize: '16px',
-      lineHeight: '24px',
-    },
-    xlarge: {
-      fontSize: '24px',
-      lineHeight: '32px',
-    },
-  },
-  shadows: {
-    0: 'none',
-    1: '0 1px 2px $palette.black.15',
-    2: '0 2px 4px $palette.black.15',
-    3: '0 4px 10px $palette.black.15',
-    4: '0 6px 20px $palette.black.15',
-  },
-  shape: {
-    borderRadius: '2px',
-  },
-  spacing: {
-    0: '0',
-    1: '2px',
-    3: '4px',
-    4: '8px',
-    5: '16px',
   },
 };
 
-export default theme;
+export default dark;

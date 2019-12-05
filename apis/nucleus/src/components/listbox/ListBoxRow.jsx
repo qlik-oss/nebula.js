@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'nowrap',
     borderBottom: `1px solid ${theme.palette.divider}`,
     '&:focus': {
-      boxShadow: 'inset 0 0 0 2px #3f8ab3',
+      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
       outline: 'none',
     },
   },
@@ -29,18 +29,21 @@ const useStyles = makeStyles(theme => ({
   icon: {
     padding: theme.spacing(1),
   },
-  D: {
-    // background: '#fff',
-  },
   S: {
-    background: '#6CB33F',
-    color: theme.palette.text.primary,
+    background: theme.palette.selected.main,
+    color: theme.palette.selected.mainContrastText,
+    '&:focus': {
+      boxShadow: `inset 0 0 0 2px rgba(0, 0, 0, 0.3)`,
+      outline: 'none',
+    },
   },
   A: {
-    background: theme.palette.background.lighter,
+    background: theme.palette.selected.alternative,
+    color: theme.palette.selected.alternativeContrastText,
   },
   X: {
-    background: theme.palette.background.darker,
+    background: theme.palette.selected.excluded,
+    color: theme.palette.selected.excludedContrastText,
   },
   highlighted: {
     backgroundColor: '#FFC72A',
@@ -117,7 +120,7 @@ export default function Row({ index, style, data }) {
     >
       <Grid item style={{ minWidth: 0, flexGrow: 1 }} className={classes.cell}>
         {ranges.length === 0 ? (
-          <Typography component="span" noWrap>{`${label}`}</Typography>
+          <Typography component="span" noWrap color="inherit">{`${label}`}</Typography>
         ) : (
           labels.map(([l, highlighted], ix) => (
             // eslint-disable-next-line react/no-array-index-key

@@ -88,10 +88,10 @@ export default function PropertiesDialog({ model, show, close }) {
         <div ref={monacoRef} style={{ overflow: 'hidden', height: '100%' }} />
       </DialogContent>
       <DialogActions>
-        <Button variant="outlined" onClick={close}>
+        <Button variant="contained" onClick={close}>
           Cancel
         </Button>
-        <Button variant="outlined" onClick={onConfirm} disabled={monacoEditorMarkers.length > 0}>
+        <Button variant="contained" onClick={onConfirm} disabled={monacoEditorMarkers.length > 0}>
           Confirm
         </Button>
       </DialogActions>

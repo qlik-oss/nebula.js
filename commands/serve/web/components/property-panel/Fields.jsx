@@ -83,7 +83,7 @@ export default function Fields({
           </ListItem>
         ))}
       </List>
-      <Button variant="outlined" fullWidth onClick={onAdd} ref={btn} disabled={!canAdd}>
+      <Button variant="contained" fullWidth onClick={onAdd} ref={btn} disabled={!canAdd}>
         {addLabel}
       </Button>
       {isActive && (

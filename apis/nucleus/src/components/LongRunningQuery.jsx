@@ -50,7 +50,6 @@ const Retry = ({ retry, translator, ...props }) => (
     </Grid>
     <Grid item>
       <Typography variant="h6" align="center">
-        Data update was cancelled
         {translator.get('Object.Update.Cancelled')}
       </Typography>
     </Grid>

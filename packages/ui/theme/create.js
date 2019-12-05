@@ -1,85 +1,82 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
-import defaults from './definitions/defaults';
+import base from './definitions/base';
+import light from './definitions/light';
+import dark from './definitions/dark';
 
 const cache = {};
 
-const dark = {
-  type: 'dark',
-  palette: {
-    primary: {
-      // light: '#fafafa',
-      main: '#404040',
-      // dark: '#f0f0f0',
-      contrastText: '#fff',
-    },
-    text: {
-      primary: '#fff',
-      secondary: 'rgba(255, 255, 255, 0.6)',
-      disabled: 'rgba(255, 255, 255, 0.3)',
-    },
-    action: {
-      disabled: 'rgba(255, 255, 255, 0.3)',
-    },
-    divider: 'rgba(0,0,0,0.3)',
-    background: {
-      default: '#343434',
-      paper: '#343434',
-      // -- custom properties --
-      lightest: '#404040',
-      lighter: '#333333',
-      darker: '#262626',
-      darkest: '#1A1A1A',
+const overrides = theme => ({
+  MuiTypography: {
+    root: {
+      color: theme.palette.text.primary,
     },
   },
-  overrides: {
-    MuiTypography: {
-      root: {
-        color: '#fff',
-      },
-    },
-    MuiIconButton: {
-      root: {
-        ...defaults.overrides.MuiIconButton.root,
-        color: '#fff',
+  MuiIconButton: {
+    root: {
+      padding: 7,
+      borderRadius: 2,
+      border: '1px solid transparent',
+      // should ideally use $focusVisible, but that messes up focus in all other places where Iconbutton is used (Checkbox, Switch etc)
+      '&:focus': {
+        borderColor: theme.palette.custom.focusBorder,
+        boxShadow: `0 0 0 2px ${theme.palette.custom.focusOutline}`,
       },
     },
   },
-};
-
-const light = {
-  type: 'light',
-  palette: {
-    primary: {
-      light: '#fafafa',
-      main: '#404040',
-      dark: '#f0f0f0',
-      contrastText: '#fff',
-    },
-    text: {
-      primary: '#404040',
-      secondary: 'rgba(0, 0, 0, 0.55)',
-      disabled: 'rgba(0, 0, 0, 0.3)',
-    },
-    action: {
-      disabled: 'rgba(0, 0, 0, 0.3)',
-    },
-    background: {
-      // -- custom properties --
-      lightest: '#fff',
-      lighter: '#fafafa',
-      darker: '#F2F2F2',
-      darkest: '#E6E6E6',
-    },
-  },
-  overrides: {
-    MuiTypography: {
-      root: {
-        color: '#404040',
+  MuiOutlinedInput: {
+    root: {
+      backgroundColor: theme.palette.custom.inputBackground,
+      '&:hover $notchedOutline': {
+        borderColor: theme.palette.btn.border,
+      },
+      '&$focused $notchedOutline': {
+        borderColor: theme.palette.custom.focusBorder,
+        borderWidth: 2,
       },
     },
   },
-};
+  MuiButton: {
+    outlined: {
+      padding: '3px 11px',
+      '&$focusVisible': {
+        borderColor: theme.palette.custom.focusBorder,
+        boxShadow: `0 0 0 2px ${theme.palette.custom.focusOutline}`,
+      },
+    },
+    contained: {
+      color: theme.palette.text.primary,
+      padding: '3px 11px',
+      border: `1px solid ${theme.palette.btn.border}`,
+      backgroundColor: theme.palette.btn.normal,
+      boxShadow: 'none',
+      '&$focusVisible': {
+        borderColor: theme.palette.custom.focusBorder,
+        boxShadow: `0 0 0 2px ${theme.palette.custom.focusOutline}`,
+      },
+      '&:hover': {
+        backgroundColor: theme.palette.btn.hover,
+        borderColor: theme.palette.btn.borderHover,
+        boxShadow: 'none',
+        '&$disabled': {
+          backgroundColor: theme.palette.btn.disabled,
+        },
+      },
+      '&:active': {
+        boxShadow: 'none',
+        backgroundColor: theme.palette.btn.active,
+      },
+      '&$disabled': {
+        backgroundColor: theme.palette.btn.disabled,
+      },
+    },
+  },
+  MuiExpansionPanelSummary: {
+    content: {
+      margin: '8px 0',
+    },
+  },
+});
 
 export default function create(definition) {
   let def = light;
@@ -96,32 +93,55 @@ export default function create(definition) {
     return cache[key];
   }
 
-  cache[key] = createMuiTheme({
-    typography: {
-      ...defaults.typography,
-    },
-    shadows: defaults.shadows,
-    props: {
-      ...defaults.props,
-    },
-    shape: {
-      ...defaults.shape,
-    },
-    overrides: {
-      ...defaults.overrides,
-      ...def.overrides,
-    },
+  const withDefaults = {
     palette: {
-      secondary: {
-        light: '#7cc84c',
-        main: '#6cb33f',
-        dark: '#589f35',
-        contrastText: '#fff',
-      },
       type: def.type,
+      ...base.palette,
       ...def.palette,
     },
+    typography: {
+      ...base.typography,
+    },
+    shadows: base.shadows,
+    props: {
+      ...base.props,
+    },
+    shape: {
+      ...base.shape,
+    },
+  };
+
+  cache[key] = createMuiTheme({
+    ...withDefaults,
+    overrides: overrides(withDefaults),
   });
+
+  // cache[key] = createMuiTheme({
+  //   typography: {
+  //     ...defaults.typography,
+  //   },
+  //   shadows: defaults.shadows,
+  //   props: {
+  //     ...defaults.props,
+  //   },
+  //   shape: {
+  //     ...defaults.shape,
+  //   },
+  //   overrides: {
+  //     ...defaults.overrides,
+  //     ...def.overrides,
+  //   },
+  //   palette: {
+  //     secondary: {
+  //       light: '#0AAF54',
+  //       main: '#009845',
+  //       dark: '#006937',
+  //       contrastText: '#fff',
+  //     },
+  //     type: def.type,
+  //     ...def.palette,
+  //   },
+  // });
 
   return cache[key];
 }
