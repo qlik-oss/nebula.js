@@ -23,7 +23,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Cancel = ({ cancel, translator, ...props }) => (
+export const Cancel = ({ cancel, translator, ...props }) => (
   <>
     <Grid container item direction="column" alignItems="center" spacing={2}>
       <Grid item>
@@ -43,7 +43,7 @@ const Cancel = ({ cancel, translator, ...props }) => (
   </>
 );
 
-const Retry = ({ retry, translator, ...props }) => (
+export const Retry = ({ retry, translator, ...props }) => (
   <>
     <Grid item>
       <WarningTriangle style={{ fontSize: '38px' }} />
