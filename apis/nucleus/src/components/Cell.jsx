@@ -6,6 +6,7 @@ import { useTheme } from '@nebula.js/ui/theme';
 
 import CError from './Error';
 import LongRunningQuery from './LongRunningQuery';
+import Loading from './Loading';
 import Header from './Header';
 import Footer from './Footer';
 import Supernova from './Supernova';
@@ -24,7 +25,7 @@ const initialState = {
 };
 
 const contentReducer = (state, action) => {
-  // console.log(action.type);
+  // console.log('content reducer', action.type);
   switch (action.type) {
     case 'LOADING': {
       return {
@@ -71,16 +72,16 @@ const contentReducer = (state, action) => {
   }
 };
 
-const Loading = ({ delay = 750 }) => {
+const LoadingSn = ({ delay = 750 }) => {
   const [showLoading, setShowLoading] = useState(false);
 
   useEffect(() => {
     const handle = setTimeout(() => setShowLoading(true), delay);
 
     return () => clearTimeout(handle);
-  });
+  }, []);
 
-  return showLoading && <div>loading...</div>;
+  return showLoading && <Loading />;
 };
 
 const handleModal = ({ sn, layout, model }) => {
@@ -188,11 +189,12 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
       }
       return undefined;
     };
-
+    // console.log('layout', layout);
     if (!layout) {
       dispatch({ type: 'LOADING' });
       return undefined;
     }
+
     if (state.sn) {
       validate(state.sn);
       return undefined;
@@ -249,10 +251,10 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
     }),
     [state.sn, contentRect, layout]
   );
-
+  // console.log('content', state);
   let Content = null;
   if (state.loading) {
-    Content = <Loading />;
+    Content = <LoadingSn />;
   } else if (state.error) {
     Content = <CError {...state.error} />;
   } else if (state.loaded) {

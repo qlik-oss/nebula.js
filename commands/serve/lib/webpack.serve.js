@@ -63,6 +63,7 @@ module.exports = async ({
     quiet: false,
     noInfo: true,
     open,
+    progress: true,
     contentBase: [contentBase],
     historyApiFallback: {
       index: '/eHub.html',
