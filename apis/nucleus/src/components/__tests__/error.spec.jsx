@@ -47,6 +47,6 @@ describe('<Error />', () => {
     const data = renderer.root.find(el => {
       return el.props.children && Array.isArray(el.props.children) ? el.props.children[0] === 'baz' : false;
     });
-    expect(data.props).to.deep.equal({ variant: 'subtitle2', align: 'center', children: ['baz', ' ', '-', ' ', 1337] })
+    expect(data.props).to.deep.equal({ variant: 'subtitle2', align: 'center', children: ['baz', ' ', '-', ' ', 1337] });
   });
 });
