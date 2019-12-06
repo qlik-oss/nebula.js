@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
 
 const Item = ({ layout, item }) => {
   const getDisabled = () => (typeof item.enabled === 'function' ? !item.enabled() : false);
-  const [disabled, setDisabled] = useState(getDisabled());
+  const [disabled, setDisabled] = useState(false);
 
   const onChanged = () => {
     setDisabled(getDisabled());
