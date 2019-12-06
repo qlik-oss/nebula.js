@@ -19,8 +19,8 @@ describe('<Error />', () => {
     sandbox.restore();
     renderer.unmount();
   });
-  it('should render default error', () => {
-    render();
+  it('should render default error', async () => {
+    await render();
     const title = renderer.root.find(el => {
       return el.props['data-tid'] === 'error-title';
     });
@@ -31,8 +31,8 @@ describe('<Error />', () => {
     expect(message.props.children).to.equal('');
   });
 
-  it('should render error', () => {
-    render('foo', 'bar', [{ path: 'baz', error: { qErrorCode: 1337 } }]);
+  it('should render error', async () => {
+    await render('foo', 'bar', [{ path: 'baz', error: { qErrorCode: 1337 } }]);
     const title = renderer.root.find(el => {
       return el.props['data-tid'] === 'error-title';
     });

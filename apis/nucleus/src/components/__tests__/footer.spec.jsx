@@ -20,12 +20,12 @@ describe('<Footer />', () => {
     sandbox.restore();
     renderer.unmount();
   });
-  it('should render default', () => {
-    render();
+  it('should render default', async () => {
+    await render();
     expect(renderer.root.props.layout).to.be.an('undefined');
   });
-  it('should render', () => {
-    render({ showTitles: true, footnote: 'foo' });
+  it('should render', async () => {
+    await render({ showTitles: true, footnote: 'foo' });
     const types = renderer.root.findAllByType(Typography);
     expect(types).to.have.length(1);
     expect(types[0].props.children).to.equal('foo');
