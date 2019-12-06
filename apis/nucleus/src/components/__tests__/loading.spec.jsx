@@ -20,8 +20,8 @@ describe('<Loading />', () => {
     sandbox.restore();
     renderer.unmount();
   });
-  it('should render progress', () => {
-    render();
+  it('should render progress', async () => {
+    await render();
     const types = renderer.root.findAllByType(Progress);
     expect(types).to.have.length(1);
   });
