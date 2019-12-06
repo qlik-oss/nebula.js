@@ -1,10 +1,7 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 
-const [{ default: Error }] = aw.mock(
-  [[require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({}) })]],
-  ['../Error']
-);
+const [{ default: Error }] = aw.mock([], ['../Error']);
 
 describe('<Error />', () => {
   let sandbox;
