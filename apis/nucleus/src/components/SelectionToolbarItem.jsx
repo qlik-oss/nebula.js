@@ -12,35 +12,30 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Item = props => {
-  const initialValue =
-    typeof props.item.disabled !== 'undefined' ? props.item.disabled : props.item.enabled && !props.item.enabled();
-  const [disabled, setDisabled] = useState(initialValue);
-  if (disabled !== props.item.disabled) {
-    setDisabled(props.item.disabled);
-  }
+const Item = ({ layout, item }) => {
+  const getDisabled = () => (typeof item.enabled === 'function' ? !item.enabled() : false);
+  const [disabled, setDisabled] = useState(getDisabled());
 
+  const onChanged = () => {
+    setDisabled(getDisabled());
+  };
+  // Handle changed from action-hero
   useEffect(() => {
-    let onChange;
-    if (props.item && props.item.action && props.item.on) {
-      onChange = () => {
-        setDisabled(props.item.enabled && !props.item.enabled());
+    if (item && item.action && item.on) {
+      item.on('changed', onChanged);
+      return () => {
+        item.removeListener('changed', onChanged);
       };
-
-      props.item.on('changed', onChange);
     }
-
-    return () => {
-      if (onChange && props.item.removeListener) {
-        props.item.removeListener('changed', onChange);
-      }
-
-      onChange = null;
-    };
+    return undefined;
   }, []);
 
+  // Handle layout changed
+  useEffect(() => {
+    onChanged();
+  }, [layout]);
+
   const { icon } = useStyles();
-  const { item } = props;
   const hasSvgIconShape = typeof item.getSvgIconShape === 'function';
 
   if (item.type === 'menu-icon-button') {

@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Grid, Typography } from '@material-ui/core';
 
-import STToolbar from './SelectionToolbar';
+import SelectionToolbarWithDefault from './SelectionToolbar';
 
 const Header = ({ layout, sn }) => {
   const showTitle = layout && layout.showTitles && !!layout.title;
@@ -26,7 +26,12 @@ const Header = ({ layout, sn }) => {
       </Grid>
       <Grid item style={{ whiteSpace: 'nowrap', minHeight: '32px' }}>
         {showInSelectionActions && (
-          <STToolbar inline api={sn.component.selections} xItems={sn.selectionToolbar.items} />
+          <SelectionToolbarWithDefault
+            inline
+            layout={layout}
+            api={sn.component.selections}
+            xItems={sn.selectionToolbar.items}
+          />
         )}
       </Grid>
     </Grid>

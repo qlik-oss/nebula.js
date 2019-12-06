@@ -104,7 +104,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
     type: 'icon-button',
     label: translator.get('Selection.Menu'),
     getSvgIconShape: more,
-    disabled: isLocked,
+    enabled: () => isLocked,
     action: () => setShowSelectionsMenu(!showSelectionsMenu),
   };
 
@@ -141,6 +141,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
           <Grid item xs />
           <Grid item>
             <SelectionToolbarWithDefault
+              layout={layout}
               api={sel}
               xItems={[moreItem]}
               onConfirm={popoverClose}
@@ -172,7 +173,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
               }}
             >
               <MenuList>
-                <SelectionToolbar items={listboxSelectionToolbarItems} />
+                <SelectionToolbar layout={layout} items={listboxSelectionToolbarItems} />
               </MenuList>
             </Popover>
           )}

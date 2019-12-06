@@ -6,17 +6,17 @@ import { clearSelections } from '@nebula.js/ui/icons/clear-selections';
 import LocaleContext from '../contexts/LocaleContext';
 import Item from './SelectionToolbarItem';
 
-const SelectionToolbar = React.forwardRef(({ items }, ref) => {
+const SelectionToolbar = React.forwardRef(({ layout, items }, ref) => {
   return (
     <>
       {items.map((e, ix) => (
-        <Item key={e.key} item={e} ref={ix === 0 ? ref : null} />
+        <Item key={e.key} layout={layout} item={e} ref={ix === 0 ? ref : null} />
       ))}
     </>
   );
 });
 
-const SelectionToolbarWithDefault = ({ api, xItems = [], onCancel = () => {}, onConfirm = () => {} }) => {
+const SelectionToolbarWithDefault = ({ layout, api, xItems = [], onCancel = () => {}, onConfirm = () => {} }) => {
   const translator = useContext(LocaleContext);
 
   const items = [
@@ -27,7 +27,6 @@ const SelectionToolbarWithDefault = ({ api, xItems = [], onCancel = () => {}, on
       label: translator.get('Selection.Clear'),
       icon: 'clear-selections',
       enabled: () => api.canClear(),
-      disabled: !api.canClear(),
       action: () => api.clear(),
       getSvgIconShape: clearSelections,
     },
@@ -37,7 +36,6 @@ const SelectionToolbarWithDefault = ({ api, xItems = [], onCancel = () => {}, on
       label: translator.get('Selection.Cancel'),
       icon: 'close',
       enabled: () => api.canCancel(),
-      disabled: !api.canCancel(),
       action: () => {
         api.cancel();
         onCancel();
@@ -50,7 +48,6 @@ const SelectionToolbarWithDefault = ({ api, xItems = [], onCancel = () => {}, on
       label: translator.get('Selection.Confirm'),
       icon: 'tick',
       enabled: () => api.canConfirm(),
-      disabled: !api.canConfirm(),
       action: () => {
         api.confirm();
         onConfirm();
@@ -58,8 +55,7 @@ const SelectionToolbarWithDefault = ({ api, xItems = [], onCancel = () => {}, on
       getSvgIconShape: tick,
     },
   ];
-
-  return <SelectionToolbar items={items} />;
+  return <SelectionToolbar layout={layout} items={items} />;
 };
 
 export default SelectionToolbarWithDefault;
