@@ -54,11 +54,60 @@ describe('<SelectionToolbarWithDefault />', () => {
     expect(api.canConfirm.callCount).to.equal(1);
     const types = renderer.root.findAllByType(IconButton);
     expect(types).to.have.length(3);
-    types.forEach(t => {
-      t.props.onClick();
-    });
-    expect(api.clear.callCount).to.equal(1);
-    expect(api.cancel.callCount).to.equal(1);
+  });
+  it('should confirm', async () => {
+    const api = {
+      canClear: sandbox.stub(),
+      clear: sandbox.stub(),
+      canCancel: sandbox.stub(),
+      cancel: sandbox.stub(),
+      canConfirm: sandbox.stub(),
+      confirm: sandbox.stub(),
+    };
+    const onConfirm = sandbox.spy();
+    await render({}, api, [], undefined, onConfirm);
+    expect(api.canClear.callCount).to.equal(1);
+    expect(api.canCancel.callCount).to.equal(1);
+    expect(api.canConfirm.callCount).to.equal(1);
+    const confirm = renderer.root.findByProps({ title: 'Selection.Confirm' });
+    confirm.props.onClick();
     expect(api.confirm.callCount).to.equal(1);
+    expect(onConfirm.callCount).to.equal(1);
+  });
+  it('should cancel', async () => {
+    const api = {
+      canClear: sandbox.stub(),
+      clear: sandbox.stub(),
+      canCancel: sandbox.stub(),
+      cancel: sandbox.stub(),
+      canConfirm: sandbox.stub(),
+      confirm: sandbox.stub(),
+    };
+    const onCancel = sandbox.spy();
+    await render({}, api, [], onCancel);
+    expect(api.canClear.callCount).to.equal(1);
+    expect(api.canCancel.callCount).to.equal(1);
+    expect(api.canConfirm.callCount).to.equal(1);
+    const confirm = renderer.root.findByProps({ title: 'Selection.Cancel' });
+    confirm.props.onClick();
+    expect(api.cancel.callCount).to.equal(1);
+    expect(onCancel.callCount).to.equal(1);
+  });
+  it('should clear', async () => {
+    const api = {
+      canClear: sandbox.stub(),
+      clear: sandbox.stub(),
+      canCancel: sandbox.stub(),
+      cancel: sandbox.stub(),
+      canConfirm: sandbox.stub(),
+      confirm: sandbox.stub(),
+    };
+    await render({}, api);
+    expect(api.canClear.callCount).to.equal(1);
+    expect(api.canCancel.callCount).to.equal(1);
+    expect(api.canConfirm.callCount).to.equal(1);
+    const confirm = renderer.root.findByProps({ title: 'Selection.Clear' });
+    confirm.props.onClick();
+    expect(api.clear.callCount).to.equal(1);
   });
 });
