@@ -77,30 +77,34 @@ export default function boot({ app, theme: themeName = 'light', translator, dire
     resolveRender
   );
 
-  return {
-    add(component) {
-      (async () => {
-        await rendered;
-        appRef.current.addComponent(component);
-      })();
+  return [
+    {
+      add(component) {
+        (async () => {
+          await rendered;
+          appRef.current.addComponent(component);
+        })();
+      },
+      remove(component) {
+        (async () => {
+          await rendered;
+          appRef.current.removeComponent(component);
+        })();
+      },
+      theme(name) {
+        (async () => {
+          await rendered;
+          appRef.current.setThemeName(name);
+        })();
+      },
+      direction(d) {
+        (async () => {
+          await rendered;
+          appRef.current.setDirection(d);
+        })();
+      },
     },
-    remove(component) {
-      (async () => {
-        await rendered;
-        appRef.current.removeComponent(component);
-      })();
-    },
-    theme(name) {
-      (async () => {
-        await rendered;
-        appRef.current.setThemeName(name);
-      })();
-    },
-    direction(d) {
-      (async () => {
-        await rendered;
-        appRef.current.setDirection(d);
-      })();
-    },
-  };
+    appRef,
+    rendered,
+  ];
 }

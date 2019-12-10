@@ -6,7 +6,7 @@ import appThemeFn from './app-theme';
 
 import { createAppSelectionAPI } from './selections';
 
-import App from './components/NebulaApp';
+import bootNebulaApp from './components/NebulaApp';
 import AppSelectionsPortal from './components/selections/AppSelections';
 
 import create from './object/create-object';
@@ -123,7 +123,7 @@ function nuked(configuration = {}, prev = {}) {
 
     createAppSelectionAPI(app);
 
-    const root = App({
+    const [root] = bootNebulaApp({
       app,
       translator: locale.translator,
       direction: configuration.direction,
