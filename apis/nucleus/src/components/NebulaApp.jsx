@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useState, useMemo, forwardRef, useImperativeHandle } from 'react';
 import ReactDOM from 'react-dom';
 
 import { createTheme, ThemeProvider, StylesProvider, createGenerateClassName } from '@nebula.js/ui/theme';
@@ -10,76 +10,97 @@ const THEME_PREFIX = (process.env.NEBULA_VERSION || '').replace(/[.-]/g, '_');
 
 let counter = 0;
 
-function NebulaApp({ children, themeName, translator, direction }) {
+const NebulaApp = forwardRef(({ translator }, ref) => {
+  const [d, setDirection] = useState();
+  const [tn, setThemeName] = useState();
   const { theme, generator } = useMemo(
     () => ({
-      theme: createTheme(themeName),
+      theme: createTheme(tn),
       generator: createGenerateClassName({
         productionPrefix: `${THEME_PREFIX}-`,
         disableGlobal: true,
         seed: `nebulajs-${counter++}`,
       }),
     }),
-    [themeName]
+    [tn]
   );
+
+  const [components, setComponents] = useState([]);
+
+  useImperativeHandle(ref, () => ({
+    addComponent(component) {
+      setComponents([...components, component]);
+    },
+    removeComponent(component) {
+      const ix = components.indexOf(component);
+      if (ix !== -1) {
+        components.splice(ix, 1);
+        setComponents([...components]);
+      }
+    },
+    setThemeName(name) {
+      setThemeName(name);
+    },
+    setDirection(dir) {
+      setDirection(dir);
+    },
+  }));
 
   return (
     <StylesProvider generateClassName={generator}>
       <ThemeProvider theme={theme}>
         <LocaleContext.Provider value={translator}>
-          <DirectionContext.Provider value={direction}>
-            <>{children}</>
+          <DirectionContext.Provider value={d}>
+            <>{components}</>
           </DirectionContext.Provider>
         </LocaleContext.Provider>
       </ThemeProvider>
     </StylesProvider>
   );
-}
+});
 
-export default function boot({ app, theme = 'light', translator, direction }) {
+export default function boot({ app, theme: themeName = 'light', translator, direction }) {
+  let resolveRender;
+  const rendered = new Promise(resolve => {
+    resolveRender = resolve;
+  });
+  const appRef = React.createRef();
   const element = document.createElement('div');
   element.style.display = 'none';
   element.setAttribute('data-nebulajs-version', process.env.NEBULA_VERSION || '');
   element.setAttribute('data-app-id', app.id);
   document.body.appendChild(element);
-  const components = [];
-  let themeName = theme;
-  let dir = direction;
 
-  const update = () => {
-    ReactDOM.render(
-      <NebulaApp themeName={themeName} app={app} translator={translator} direction={dir}>
-        {components}
-      </NebulaApp>,
-      element
-    );
-  };
-
-  // const unmount = () => {
-  //   ReactDOM.unmountComponentAtNode(element);
-  // };
-
-  update();
+  ReactDOM.render(
+    <NebulaApp ref={appRef} themeName={themeName} translator={translator} direction={direction} />,
+    element,
+    resolveRender
+  );
 
   return {
     add(component) {
-      components.push(component);
-      update();
+      (async () => {
+        await rendered;
+        appRef.current.addComponent(component);
+      })();
     },
     remove(component) {
-      const idx = components.indexOf(component);
-      if (idx !== -1) {
-        components.splice(idx, 1);
-      }
-      update();
+      (async () => {
+        await rendered;
+        appRef.current.removeComponent(component);
+      })();
     },
     theme(name) {
-      themeName = name;
-      update();
+      (async () => {
+        await rendered;
+        appRef.current.setThemeName(name);
+      })();
     },
     direction(d) {
-      dir = d;
-      update();
+      (async () => {
+        await rendered;
+        appRef.current.setDirection(d);
+      })();
     },
   };
 }
