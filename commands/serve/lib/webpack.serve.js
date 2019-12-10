@@ -6,7 +6,8 @@ const express = require('express');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
-const snapshotter = require('./snapshot');
+const snapshooter = require('@nebula.js/snapshooter');
+const snapshotRouter = require('./snapshot-router');
 
 module.exports = async ({
   host,
@@ -23,10 +24,12 @@ module.exports = async ({
   let config;
   let contentBase;
 
-  const snapper = snapshotter({
-    host,
-    port,
-    images: serveConfig.images || [],
+  const snapshotRoute = '/njs';
+
+  const snapRouter = snapshotRouter({
+    base: `http://${host}:${port}${snapshotRoute}`,
+    snapshotUrl: `http://${host}:${port}/eRender.html`,
+    snapshooter: snapshooter({ snapshotUrl: `http://${host}:${port}/eRender.html` }),
   });
 
   const themes = serveConfig.themes || [];
@@ -69,7 +72,7 @@ module.exports = async ({
       index: '/eHub.html',
     },
     before(app) {
-      snapper.addRoutes(app);
+      app.use(snapshotRoute, snapRouter);
 
       entryWatcher.addRoutes(app);
 

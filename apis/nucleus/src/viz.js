@@ -113,7 +113,11 @@ export default function viz({ model, context: nebulaContext } = {}) {
       return api;
     },
     takeSnapshot() {
+      // TODO - decide if this method is useful at all
       return cellRef.current.takeSnapshot();
+    },
+    exportImage(settings) {
+      return cellRef.current.exportImage(settings);
     },
 
     // QVisualization API

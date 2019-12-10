@@ -137,6 +137,7 @@ const config = isEsm => {
         include: [
           '/**/apis/locale/**',
           '/**/apis/nucleus/**',
+          '/**/apis/snapshooter/**',
           '/**/apis/supernova/**',
           '/**/apis/theme/**',
           '/**/packages/ui/**',
@@ -170,4 +171,4 @@ const config = isEsm => {
   return cfg;
 };
 
-module.exports = [watch ? false : config(), config(true)].filter(Boolean);
+module.exports = [watch ? false : config(), pkg.module ? config(true) : false].filter(Boolean);

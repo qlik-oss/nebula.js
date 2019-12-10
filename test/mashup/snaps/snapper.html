@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mashup</title>
+    <script src="/apis/nucleus/dist/nucleus.js"></script>
+    <script src="configured.js"></script>
+
+    <style>
+      body {
+        background: #eee;
+      }
+
+      .object {
+        display: inline-block;
+        position: relative;
+        width: 300px;
+        height: 200px;
+        margin: 16px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="object" data-type="pie"></div>
+    <div class="object" data-type="bar"></div>
+    <script src="snapper.js"></script>
+  </body>
+</html>

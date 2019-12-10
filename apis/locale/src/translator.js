@@ -12,6 +12,9 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
    * @interface Translator
    */
   const api = {
+    language: () => {
+      return currentLocale;
+    },
     /**
      * Register a string in multiple locales
      * @param {object} item
