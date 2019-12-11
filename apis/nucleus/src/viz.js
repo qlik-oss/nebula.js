@@ -112,12 +112,14 @@ export default function viz({ model, context: nebulaContext } = {}) {
       setSnContext(ctx);
       return api;
     },
-    takeSnapshot() {
-      // TODO - decide if this method is useful at all
-      return cellRef.current.takeSnapshot();
+    exportImage() {
+      return cellRef.current.exportImage();
     },
-    exportImage(settings) {
-      return cellRef.current.exportImage(settings);
+
+    // DEBUG MODE ?
+    // TODO - decide if this method is useful as part of public API
+    takeSnapshot() {
+      return cellRef.current.takeSnapshot();
     },
 
     // QVisualization API

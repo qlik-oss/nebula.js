@@ -75,7 +75,7 @@ describe('<Cell />', () => {
       await act(async () => {
         renderer = create(
           <ThemeProvider theme={theme}>
-            <LocaleContext.Provider value={{ get: s => s }}>
+            <LocaleContext.Provider value={{ get: s => s, language: () => 'sv' }}>
               <Cell
                 ref={cellRef}
                 nebulaContext={nebulaContext}
@@ -413,9 +413,21 @@ describe('<Cell />', () => {
       });
       global.window.addEventListener.callArg(1);
       const snapshot = await cellRef.current.takeSnapshot();
+      const { key } = snapshot;
+      delete snapshot.key;
+      expect(key).to.be.a('string');
       expect(snapshot).to.deep.equal({
-        visualization: 'sn',
-        snapshotData: { object: { size: { w: 300, h: 400 } } },
+        layout: {
+          visualization: 'sn',
+        },
+        meta: {
+          language: 'sv',
+          theme: 'dark',
+          size: {
+            height: 400,
+            width: 300,
+          },
+        },
       });
     });
 
@@ -460,7 +472,7 @@ describe('<Cell />', () => {
       });
       global.window.addEventListener.callArg(1);
       const snapshot = await cellRef.current.takeSnapshot();
-      expect(snapshot).to.deep.equal({
+      expect(snapshot.layout).to.deep.equal({
         foo: 'bar',
       });
     });

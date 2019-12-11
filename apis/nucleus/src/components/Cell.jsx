@@ -233,29 +233,15 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
       setSnContext,
       setSnOptions,
       async takeSnapshot() {
-        const snapshot = {
-          ...layout,
-          snapshotData: {
-            object: {
-              size: {
-                w: contentRect.width,
-                h: contentRect.height,
-              },
-            },
-          },
-        };
-        if (typeof state.sn.component.setSnapshotData === 'function') {
-          return (await state.sn.component.setSnapshotData(snapshot)) || snapshot;
-        }
-        return snapshot;
-      },
-      async exportImage() {
-        if (!nebulaContext.snapshot.capture) {
-          throw new Error('Nebula has not been configured with snapshot.capture');
-        }
-        const lyt = await this.takeSnapshot(); // eslint-disable-line
         const { width, height } = cellRef.current.getBoundingClientRect();
-        const s = {
+
+        // clone layout to avoid mutation
+        let clonedLayout = JSON.parse(JSON.stringify(layout));
+        if (typeof state.sn.component.setSnapshotData === 'function') {
+          clonedLayout = (await state.sn.component.setSnapshotData(clonedLayout)) || clonedLayout;
+        }
+        return {
+          key: String(+Date.now()),
           meta: {
             language: translator.language(),
             theme: theme.name,
@@ -265,10 +251,15 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
               height: Math.round(height),
             },
           },
-          layout: lyt,
+          layout: clonedLayout,
         };
-
-        return nebulaContext.snapshot.capture(s);
+      },
+      async exportImage() {
+        if (!nebulaContext.snapshot.capture) {
+          throw new Error('Nebula has not been configured with snapshot.capture');
+        }
+        const snapshot = await this.takeSnapshot(); // eslint-disable-line
+        return nebulaContext.snapshot.capture(snapshot);
       },
     }),
     [state.sn, contentRect, layout, theme.name]

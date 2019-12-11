@@ -22,17 +22,20 @@ describe('viz', () => {
   let setSnOptions;
   let setSnContext;
   let takeSnapshot;
+  let exportImage;
   before(() => {
     sandbox = sinon.createSandbox();
     unmount = sandbox.spy();
     setSnOptions = sandbox.spy();
     setSnContext = sandbox.spy();
     takeSnapshot = sandbox.spy();
+    exportImage = sandbox.spy();
     cellRef = {
       current: {
         setSnOptions,
         setSnContext,
         takeSnapshot,
+        exportImage,
       },
     };
     glue = sandbox.stub().returns([unmount, cellRef]);
@@ -60,6 +63,10 @@ describe('viz', () => {
 
     it('should have a setTemporaryProperties method', () => {
       expect(api.setTemporaryProperties).to.be.a('function');
+    });
+
+    it('should have an exportImage method', () => {
+      expect(api.exportImage).to.be.a('function');
     });
   });
 
@@ -131,6 +138,13 @@ describe('viz', () => {
     it('should take a snapshot', async () => {
       api.takeSnapshot();
       expect(cellRef.current.takeSnapshot).to.have.been.calledWithExactly();
+    });
+  });
+
+  describe('export', () => {
+    it('should export image', async () => {
+      api.exportImage();
+      expect(cellRef.current.exportImage).to.have.been.calledWithExactly();
     });
   });
 });

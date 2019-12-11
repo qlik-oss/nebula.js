@@ -74,15 +74,19 @@ export default function({ id, expandable, minHeight }) {
         });
       } else {
         const containerSize = vizRef.current.el.getBoundingClientRect();
-        vizRef.current.viz.exportImage().then(res => {
-          if (res && res.url) {
-            const key = /\/([A-z0-9_]+)$/.exec(res.url)[1];
-            window.open(
-              `/render?snapshot=${key}`,
-              'snapshot',
-              `height=${Math.round(containerSize.height)},width=${Math.round(containerSize.width)}`
-            );
-          }
+        vizRef.current.viz.takeSnapshot().then(snapshot => {
+          fetch('/njs/snapshot', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(snapshot),
+          });
+          window.open(
+            `/render?snapshot=${snapshot.key}`,
+            'snapshot',
+            `height=${Math.round(containerSize.height)},width=${Math.round(containerSize.width)}`
+          );
         });
       }
     },
