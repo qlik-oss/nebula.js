@@ -80,7 +80,9 @@ const overrides = theme => ({
 
 export default function create(definition) {
   let def = light;
+  let name = '';
   if (typeof definition === 'string') {
+    name = definition;
     if (definition !== 'light' && definition !== 'dark') {
       console.warn(`Invalid theme: '${definition}'`);
     } else if (definition === 'dark') {
@@ -116,32 +118,7 @@ export default function create(definition) {
     overrides: overrides(withDefaults),
   });
 
-  // cache[key] = createMuiTheme({
-  //   typography: {
-  //     ...defaults.typography,
-  //   },
-  //   shadows: defaults.shadows,
-  //   props: {
-  //     ...defaults.props,
-  //   },
-  //   shape: {
-  //     ...defaults.shape,
-  //   },
-  //   overrides: {
-  //     ...defaults.overrides,
-  //     ...def.overrides,
-  //   },
-  //   palette: {
-  //     secondary: {
-  //       light: '#0AAF54',
-  //       main: '#009845',
-  //       dark: '#006937',
-  //       contrastText: '#fff',
-  //     },
-  //     type: def.type,
-  //     ...def.palette,
-  //   },
-  // });
+  cache[key].name = name;
 
   return cache[key];
 }

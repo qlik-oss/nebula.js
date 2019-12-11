@@ -11,30 +11,6 @@ import VizContext from '../contexts/VizContext';
 
 import Chart from './Chart';
 
-const takeAndSendSnapshot = ({ ref, route = '/snapshot', theme, language }) =>
-  ref.viz.takeSnapshot().then(snapshot => {
-    const containerSize = ref.el.getBoundingClientRect();
-    return fetch(route, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        key: snapshot.qInfo.qId,
-        meta: {
-          language,
-          theme,
-          direction: '',
-          size: {
-            width: Math.round(containerSize.width),
-            height: Math.round(containerSize.height),
-          },
-        },
-        layout: snapshot,
-      }),
-    }).then(response => response.json());
-  });
-
 export default function({ id, expandable, minHeight }) {
   const language = 'en-US'; // TODO - useLocale
   const app = useContext(AppContext);
@@ -90,7 +66,7 @@ export default function({ id, expandable, minHeight }) {
       }
       if (doExport) {
         setExporting(true);
-        takeAndSendSnapshot({ ref: vizRef.current, route: '/image', theme: currentThemeName, language }).then(res => {
+        vizRef.current.viz.exportImage().then(res => {
           if (res && res.url) {
             window.open(res.url);
           }
@@ -98,10 +74,11 @@ export default function({ id, expandable, minHeight }) {
         });
       } else {
         const containerSize = vizRef.current.el.getBoundingClientRect();
-        takeAndSendSnapshot({ ref: vizRef.current, theme: currentThemeName, language }).then(res => {
+        vizRef.current.viz.exportImage().then(res => {
           if (res && res.url) {
+            const key = /\/([A-z0-9_]+)$/.exec(res.url)[1];
             window.open(
-              res.url,
+              `/render?snapshot=${key}`,
               'snapshot',
               `height=${Math.round(containerSize.height)},width=${Math.round(containerSize.width)}`
             );

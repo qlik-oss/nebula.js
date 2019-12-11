@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer } from 'react';
+import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer, useRef } from 'react';
 
 import { Grid, Paper } from '@material-ui/core';
 import { useTheme } from '@nebula.js/ui/theme';
@@ -170,6 +170,7 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
   const [contentRef, contentRect, , contentNode] = useRect();
   const [snContext, setSnContext] = useState(initialSnContext);
   const [snOptions, setSnOptions] = useState(initialSnOptions);
+  const cellRef = useRef();
 
   useEffect(() => {
     const validate = sn => {
@@ -231,7 +232,7 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
     () => ({
       setSnContext,
       setSnOptions,
-      takeSnapshot: async () => {
+      async takeSnapshot() {
         const snapshot = {
           ...layout,
           snapshotData: {
@@ -248,8 +249,29 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
         }
         return snapshot;
       },
+      async exportImage() {
+        if (!nebulaContext.snapshot.capture) {
+          throw new Error('Nebula has not been configured with snapshot.capture');
+        }
+        const lyt = await this.takeSnapshot(); // eslint-disable-line
+        const { width, height } = cellRef.current.getBoundingClientRect();
+        const s = {
+          meta: {
+            language: translator.language(),
+            theme: theme.name,
+            // direction: 'ltr',
+            size: {
+              width: Math.round(width),
+              height: Math.round(height),
+            },
+          },
+          layout: lyt,
+        };
+
+        return nebulaContext.snapshot.capture(s);
+      },
     }),
-    [state.sn, contentRect, layout]
+    [state.sn, contentRect, layout, theme.name]
   );
   // console.log('content', state);
   let Content = null;
@@ -276,6 +298,7 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
       elevation={0}
       square
       className="nebulajs-cell"
+      ref={cellRef}
     >
       <Grid
         container

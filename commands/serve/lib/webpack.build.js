@@ -30,6 +30,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
               '@nebula.js/nucleus/src/hooks': path.resolve(process.cwd(), 'apis/nucleus/src/hooks'),
               '@nebula.js/nucleus/src/object': path.resolve(process.cwd(), 'apis/nucleus/src/object'),
               '@nebula.js/nucleus': path.resolve(process.cwd(), 'apis/nucleus/src'),
+              '@nebula.js/snapshooter/dist': path.resolve(process.cwd(), 'apis/snapshooter/src'),
               '@nebula.js/supernova': path.resolve(process.cwd(), 'apis/supernova/src'),
               '@nebula.js/theme': path.resolve(process.cwd(), 'apis/theme/src'),
               '@nebula.js/locale': path.resolve(process.cwd(), 'apis/locale/src'),

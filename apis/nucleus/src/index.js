@@ -48,6 +48,25 @@ const DEFAULT_CONFIG = {
   themes: [],
   /** */
   env: {},
+
+  snapshot: {
+    get: async id => {
+      const res = await fetch(`/njs/snapshot/${id}`);
+      if (!res.ok) {
+        throw new Error(res.statusText);
+      }
+      return res.json();
+    },
+    capture(payload) {
+      return fetch(`/njs/capture`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      }).then(res => res.json());
+    },
+  },
 };
 
 const mergeConfigs = (base, c) => ({
@@ -56,6 +75,9 @@ const mergeConfigs = (base, c) => ({
   load: c.load || base.load,
   locale: {
     language: (c.locale ? c.locale.language : '') || base.locale.language,
+  },
+  snapshot: {
+    ...(c.snapshot || base.snapshot),
   },
   types: [
     // TODO - filter to avoid duplicates
@@ -143,6 +165,7 @@ function nuked(configuration = {}, prev = {}) {
       types,
       root,
       theme: appTheme.externalAPI,
+      snapshot: configuration.snapshot,
     };
 
     let currentThemePromise = appTheme.setTheme(configuration.theme);
@@ -251,6 +274,7 @@ function nuked(configuration = {}, prev = {}) {
    * nucleus(app).create({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance
    */
   nucleus.configured = c => nuked(mergeConfigs(configuration, c));
+  nucleus.config = configuration;
 
   return nucleus;
 }

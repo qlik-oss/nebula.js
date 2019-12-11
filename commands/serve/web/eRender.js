@@ -1,4 +1,6 @@
 import nucleus from '@nebula.js/nucleus';
+import snapshooter from '@nebula.js/snapshooter/dist/renderer';
+
 import { openApp, params, info as serverInfo } from './connect';
 import runFixture from './run-fixture';
 
@@ -65,56 +67,28 @@ async function renderWithEngine() {
 }
 
 async function renderSnapshot() {
-  const info = await serverInfo;
+  const { themes, supernova } = await serverInfo;
   const element = document.querySelector('#chart-container');
   element.classList.toggle('full', true);
-  const snapshot = await (await fetch(`/snapshot/${params.snapshot}`)).json();
-  const layout = {
-    ...snapshot.layout,
-    visualization: info.supernova.name,
-  };
 
-  const {
-    meta: { theme, language },
-  } = snapshot;
-
-  const objectModel = {
-    async getLayout() {
-      return layout;
-    },
-    on() {},
-    once() {},
-  };
-
-  const app = {
-    async getObject(id) {
-      if (id === layout.qInfo.qId) {
-        return objectModel;
-      }
-      return Promise.reject();
-    },
-  };
-
-  const nebbie = await nuke({ app, ...info, theme, language });
-  const getCfg = {
-    id: layout.qInfo.qId,
-  };
-  const vizCfg = {
-    element,
-    context: {
-      permissions: ['passive'],
-    },
-    options: {
-      onInitialRender() {
-        document.querySelector('.nebulajs-sn').setAttribute('data-rendered', '1');
+  const n = nucleus.configured({
+    themes: themes
+      ? themes.map(t => ({
+          key: t,
+          load: async () => (await fetch(`/theme/${t}`)).json(),
+        }))
+      : undefined,
+    types: [
+      {
+        load: (type, config) => config.Promise.resolve(window[type.name]),
+        name: supernova.name,
       },
-    },
-  };
-  const render = () => {
-    nebbie.get(getCfg, vizCfg);
-  };
-
-  window.onHotChange(info.supernova.name, () => render());
+    ],
+  });
+  snapshooter({
+    nucleus: n,
+    element,
+  });
 }
 
 const renderFixture = async () => {
