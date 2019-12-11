@@ -1,4 +1,4 @@
-import vizualizationAPI from '../viz';
+import init from './initiate';
 
 const cache = {};
 /**
@@ -17,19 +17,6 @@ const cache = {};
 export default async function initiate({ id }, optional, context) {
   const cacheKey = `${context.app.id}/${id}`;
   const model = cache[cacheKey] || (await context.app.getObject(id));
-  const api = vizualizationAPI({
-    model,
-    context,
-  });
-  if (optional.element) {
-    await api.mount(optional.element);
-  }
-  if (optional.options) {
-    api.options(optional.options);
-  }
-  if (optional.context) {
-    api.context(optional.context);
-  }
   cache[cacheKey] = model;
-  return api;
+  return init(model, optional, context);
 }

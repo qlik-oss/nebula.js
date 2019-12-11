@@ -1,4 +1,4 @@
-export default {
+const incompleteSn = {
   component: {
     mounted(element) {
       element.textContent = 'Hello engine!'; // eslint-disable-line no-param-reassign
@@ -18,3 +18,15 @@ export default {
     },
   },
 };
+
+export default function fixture() {
+  return {
+    type: 'incomplete-sn',
+    sn: incompleteSn,
+    snConfig: {
+      context: {
+        permissions: ['passive', 'interact'],
+      },
+    },
+  };
+}

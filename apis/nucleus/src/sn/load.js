@@ -12,7 +12,7 @@ const LOADED = {};
 export async function load(name, version, config, loader) {
   const key = `${name}__${version}`;
   if (!LOADED[key]) {
-    const sKey = `${name}${version && ` v${version}`}`;
+    const sKey = `${name}${(version && ` v${version}`) || ''}`;
     const p = (loader || config.load)(
       {
         name,

@@ -5,7 +5,7 @@ import getPatches from './utils/patcher';
 
 const noopi = () => {};
 
-export default function viz({ model, context: nebulaContext } = {}) {
+export default function viz({ model, context: nebulaContext, initialError } = {}) {
   let unmountCell = noopi;
   let cellRef = null;
   let mountedReference = null;
@@ -82,6 +82,7 @@ export default function viz({ model, context: nebulaContext } = {}) {
         model,
         initialSnContext,
         initialSnOptions,
+        initialError,
         onMount,
       });
       return mounted;

@@ -16,13 +16,13 @@ import useLayout from '../hooks/useLayout';
 import LocaleContext from '../contexts/LocaleContext';
 import { createObjectSelectionAPI } from '../selections';
 
-const initialState = {
+const initialState = err => ({
   loading: false,
   loaded: false,
   longRunningQuery: false,
-  error: null,
+  error: err ? { title: err.message } : null,
   sn: null,
-};
+});
 
 const contentReducer = (state, action) => {
   // console.log('content reducer', action.type);
@@ -157,7 +157,7 @@ const loadType = async ({ dispatch, types, name, version, layout, model, app }) 
   return undefined;
 };
 
-const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOptions, onMount }, ref) => {
+const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOptions, initialError, onMount }, ref) => {
   const {
     app,
     nebbie: { types },
@@ -165,7 +165,7 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
 
   const translator = useContext(LocaleContext);
   const theme = useTheme();
-  const [state, dispatch] = useReducer(contentReducer, initialState);
+  const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
   const [layout, validating, cancel, retry] = useLayout({ app, model });
   const [contentRef, contentRect, , contentNode] = useRect();
   const [snContext, setSnContext] = useState(initialSnContext);
@@ -173,6 +173,9 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
   const cellRef = useRef();
 
   useEffect(() => {
+    if (initialError) {
+      return undefined;
+    }
     const validate = sn => {
       const [showError, error] = validateTargets(translator, layout, sn.generator.qae.data);
       if (showError) {
