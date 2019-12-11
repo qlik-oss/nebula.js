@@ -11,12 +11,12 @@ import React, {
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
 
-import useLayout from '../../hooks/useLayout';
+import useLayout from '../../hooks/useLayoutStore';
 
 import Row from './ListBoxRow';
 
 export default function ListBox({ model, selections, direction }) {
-  const [layout] = useLayout({ model });
+  const [{ layout }] = useLayout(model);
   const [pages, setPages] = useState(null);
   const loaderRef = useRef(null);
   const local = useRef({

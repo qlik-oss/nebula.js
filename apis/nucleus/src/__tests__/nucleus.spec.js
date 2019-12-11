@@ -13,7 +13,7 @@ describe('nucleus', () => {
       [
         ['**/locale/app-locale.js', () => () => ({ translator: () => ({ add: () => {} }) })],
         ['**/selections/index.js', () => ({ createAppSelectionAPI: () => ({}) })],
-        ['**/components/NebulaApp.jsx', () => () => [{}]],
+        ['**/components/NebulaApp.jsx', () => () => [{}, {}]],
         ['**/components/selections/AppSelections.jsx', () => () => ({})],
         ['**/object/create-object.js', () => createObject],
         ['**/object/get-object.js', () => getObject],

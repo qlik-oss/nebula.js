@@ -4,6 +4,6 @@ module.exports = {
   },
   mocks: [],
   nyc: {
-    exclude: ['**/commands/**'],
+    exclude: ['**/commands/**', '**/__stories__/**'],
   },
 };

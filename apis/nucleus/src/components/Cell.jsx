@@ -12,7 +12,8 @@ import Footer from './Footer';
 import Supernova from './Supernova';
 
 import useRect from '../hooks/useRect';
-import useLayout from '../hooks/useLayout';
+import useLayout from '../hooks/useLayoutStore';
+
 import LocaleContext from '../contexts/LocaleContext';
 import { createObjectSelectionAPI } from '../selections';
 
@@ -166,7 +167,7 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
   const translator = useContext(LocaleContext);
   const theme = useTheme();
   const [state, dispatch] = useReducer(contentReducer, initialState);
-  const [layout, validating, cancel, retry] = useLayout({ app, model });
+  const [{ layout, validating, cancel, retry }] = useLayout(model);
   const [contentRef, contentRect, , contentNode] = useRect();
   const [snContext, setSnContext] = useState(initialSnContext);
   const [snOptions, setSnOptions] = useState(initialSnOptions);

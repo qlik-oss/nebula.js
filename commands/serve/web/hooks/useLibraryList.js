@@ -1,5 +1,5 @@
 import useModel from '@nebula.js/nucleus/src/hooks/useModel';
-import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
+import useLayout from '@nebula.js/nucleus/src/hooks/useLayoutStore';
 
 const D = {
   qInfo: {
@@ -33,6 +33,6 @@ export default function list(app, type = 'dimension') {
   const def = type === 'dimension' ? D : M;
 
   const [model] = useModel(def, app);
-  const [layout] = useLayout({ model, app });
+  const [{ layout }] = useLayout(model);
   return [layout ? (layout.qDimensionList || layout.qMeasureList).qItems || [] : []];
 }

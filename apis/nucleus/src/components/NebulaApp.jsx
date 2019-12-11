@@ -10,7 +10,7 @@ const THEME_PREFIX = (process.env.NEBULA_VERSION || '').replace(/[.-]/g, '_');
 
 let counter = 0;
 
-const NebulaApp = forwardRef(({ translator }, ref) => {
+export const NebulaApp = forwardRef(({ translator, initialComponents = [] }, ref) => {
   const [d, setDirection] = useState();
   const [tn, setThemeName] = useState();
   const { theme, generator } = useMemo(
@@ -25,7 +25,7 @@ const NebulaApp = forwardRef(({ translator }, ref) => {
     [tn]
   );
 
-  const [components, setComponents] = useState([]);
+  const [components, setComponents] = useState(initialComponents);
 
   useImperativeHandle(ref, () => ({
     addComponent(component) {

@@ -9,7 +9,7 @@ import { ChevronRight, ChevronLeft } from '@nebula.js/ui/icons';
 import { useTheme } from '@nebula.js/ui/theme';
 
 import useModel from '@nebula.js/nucleus/src/hooks/useModel';
-import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
+import useLayout from '@nebula.js/nucleus/src/hooks/useLayoutStore';
 import useLibraryList from '../hooks/useLibraryList';
 
 import AppContext from '../contexts/AppContext';
@@ -97,7 +97,7 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
     app
   );
 
-  const [layout] = useLayout({ model, app });
+  const [layout] = useLayout(model);
 
   const fields = useMemo(
     () =>

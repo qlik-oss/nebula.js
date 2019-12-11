@@ -8,7 +8,7 @@ import { IconButton, Popover, Grid, MenuList } from '@material-ui/core';
 import { more } from '@nebula.js/ui/icons/more';
 import { useTheme } from '@nebula.js/ui/theme';
 import useModel from '../../hooks/useModel';
-import useLayout from '../../hooks/useLayout';
+import useLayout from '../../hooks/useLayoutStore';
 
 import ListBox from './ListBox';
 import createListboxSelectionToolbar from './listbox-selection-toolbar';
@@ -65,7 +65,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const [layout] = useLayout({ model });
+  const [{ layout }] = useLayout(model);
 
   const translator = useContext(LocaleContext);
   const direction = useContext(DirectionContext);
