@@ -85,9 +85,12 @@ async function renderSnapshot() {
       },
     ],
   });
-  snapshooter({
-    nucleus: n,
-    element,
+
+  window.onHotChange(supernova.name, async () => {
+    snapshooter({
+      nucleus: n,
+      element,
+    });
   });
 }
 
