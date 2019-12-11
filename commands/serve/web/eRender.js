@@ -141,7 +141,10 @@ const renderFixture = async () => {
 
   const mockedApp = {
     // eslint-disable-next-line no-return-assign
-    createSessionObject: async p => (mockedProps = p),
+    createSessionObject: async p => {
+      mockedProps = p;
+      return mockedObject;
+    },
     getObject: async () => mockedObject,
   };
 

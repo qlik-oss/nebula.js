@@ -15,7 +15,7 @@
     };
 
     const app = {
-      createSessionObject: () => Promise.resolve({}),
+      createSessionObject: () => Promise.resolve(obj),
       getObject: () => Promise.resolve(obj),
     };
 

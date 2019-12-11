@@ -105,14 +105,17 @@ function nuked(configuration = {}, prev = {}) {
 
   const config = {
     env: {
+      // env is provided as is to the supernova method
+      // consider it part of the public API
       Promise,
       translator: locale.translator,
       nucleus, // eslint-disable-line no-use-before-define
     },
     load: configuration.load,
+    logger,
   };
 
-  const types = typesFn({ logger, config, parent: prev.types });
+  const types = typesFn({ config, parent: prev.types });
 
   configuration.types.forEach(t =>
     types.register(

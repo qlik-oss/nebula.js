@@ -6,25 +6,36 @@ describe('create-object', () => {
   let create;
   let populator;
   let sandbox;
+  let init;
+  let objectModel;
   before(() => {
     sandbox = sinon.createSandbox();
     populator = sandbox.stub();
-    [{ default: create }] = aw.mock([['**/populator.js', () => populator]], ['../create-object.js']);
+    init = sandbox.stub();
+    [{ default: create }] = aw.mock(
+      [
+        ['**/populator.js', () => populator],
+        ['**/initiate.js', () => init],
+      ],
+      ['../create-object.js']
+    );
   });
 
   beforeEach(() => {
+    objectModel = { id: 'id' };
     types = {
       get: sandbox.stub(),
     };
     context = {
       app: {
-        createSessionObject: sandbox.stub().returns(Promise.resolve({ id: 'id' })),
+        createSessionObject: sandbox.stub().returns(Promise.resolve(objectModel)),
       },
       nebbie: {
-        get: sandbox.stub().returns('got it'),
         types,
       },
     };
+
+    init.returns('api');
 
     sn = { qae: { properties: { onChange: sandbox.stub() } } };
     merged = { m: 'true' };
@@ -72,17 +83,28 @@ describe('create-object', () => {
     expect(context.app.createSessionObject).to.have.been.calledWithExactly(merged);
   });
 
-  it('should call nebbie get', async () => {
-    const ret = await create({ type: 't', version: 'v', fields: 'f' }, { properties: 'props', x: 'a' }, context);
-    expect(ret).to.equal('got it');
-    expect(context.nebbie.get).to.have.been.calledWithExactly(
-      {
-        id: 'id',
-      },
-      {
-        x: 'a',
-        properties: {},
-      }
-    );
+  it('should create a dummy session object when error is thrown', async () => {
+    types.get.throws('oops');
+    await create({ type: 't', version: 'v', fields: 'f' }, { properties: 'props' }, context);
+    expect(context.app.createSessionObject).to.have.been.calledWithExactly({
+      qInfo: { qType: 't' },
+      visualization: 't',
+    });
+  });
+
+  it('should call init', async () => {
+    const optional = { properties: 'props', x: 'a' };
+    const ret = await create({ type: 't', version: 'v', fields: 'f' }, optional, context);
+    expect(ret).to.equal('api');
+    expect(init).to.have.been.calledWithExactly(objectModel, optional, context, undefined);
+  });
+
+  it('should catch and pass error', async () => {
+    const err = new Error('oops');
+    types.get.throws(err);
+    const optional = { properties: 'props' };
+    const ret = await create({ type: 't' }, optional, context);
+    expect(ret).to.equal('api');
+    expect(init).to.have.been.calledWithExactly(objectModel, optional, context, err);
   });
 });
