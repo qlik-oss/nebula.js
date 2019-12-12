@@ -1,9 +1,9 @@
 import vizualizationAPI from '../viz';
 
-export default async function(model, optional, context, initialError) {
+export default async function(model, optional, corona, initialError) {
   const api = vizualizationAPI({
     model,
-    context,
+    corona,
     initialError,
   });
   if (optional.element) {

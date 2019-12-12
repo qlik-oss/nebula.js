@@ -157,11 +157,13 @@ const loadType = async ({ dispatch, types, name, version, layout, model, app }) 
   return undefined;
 };
 
-const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOptions, initialError, onMount }, ref) => {
+const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, initialError, onMount }, ref) => {
   const {
     app,
-    nebbie: { types },
-  } = nebulaContext;
+    public: {
+      nebbie: { types },
+    },
+  } = corona;
 
   const translator = useContext(LocaleContext);
   const theme = useTheme();
@@ -258,11 +260,11 @@ const Cell = forwardRef(({ nebulaContext, model, initialSnContext, initialSnOpti
         };
       },
       async exportImage() {
-        if (!nebulaContext.snapshot.capture) {
+        if (!corona.config.snapshot.capture) {
           throw new Error('Nebula has not been configured with snapshot.capture');
         }
         const snapshot = await this.takeSnapshot(); // eslint-disable-line
-        return nebulaContext.snapshot.capture(snapshot);
+        return corona.config.snapshot.capture(snapshot);
       },
     }),
     [state.sn, contentRect, layout, theme.name]

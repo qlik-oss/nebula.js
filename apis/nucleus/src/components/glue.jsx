@@ -2,21 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Cell from './Cell';
 
-export default function glue({
-  nebulaContext,
-  element,
-  model,
-  initialSnContext,
-  initialSnOptions,
-  onMount,
-  initialError,
-}) {
-  const { root } = nebulaContext;
+export default function glue({ corona, element, initialSnContext, model, initialSnOptions, onMount, initialError }) {
+  const { root } = corona;
   const cellRef = React.createRef();
   const portal = ReactDOM.createPortal(
     <Cell
       ref={cellRef}
-      nebulaContext={nebulaContext}
+      corona={corona}
       model={model}
       initialSnContext={initialSnContext}
       initialSnOptions={initialSnOptions}

@@ -13,7 +13,7 @@ describe('glue', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     param = {
-      nebulaContext: {
+      corona: {
         root: {
           add: sandbox.spy(),
           remove: sandbox.spy(),
@@ -34,7 +34,7 @@ describe('glue', () => {
   it('should glue outside world with react world', () => {
     const [dissolve] = glue(param);
     dissolve();
-    expect(param.nebulaContext.root.add.callCount).to.equal(1);
-    expect(param.nebulaContext.root.remove.callCount).to.equal(1);
+    expect(param.corona.root.add.callCount).to.equal(1);
+    expect(param.corona.root.remove.callCount).to.equal(1);
   });
 });

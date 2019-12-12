@@ -9,16 +9,16 @@ const LOADED = {};
  * @returns {Promise<Supernova>}
  */
 
-export async function load(name, version, config, loader) {
+export async function load(name, version, corona, loader) {
   const key = `${name}__${version}`;
   if (!LOADED[key]) {
     const sKey = `${name}${(version && ` v${version}`) || ''}`;
-    const p = (loader || config.load)(
+    const p = (loader || corona.config.load)(
       {
         name,
         version,
       },
-      config.env
+      corona.public.env
     );
     const prom = Promise.resolve(p);
     LOADED[key] = prom
@@ -30,7 +30,7 @@ export async function load(name, version, config, loader) {
         return sn;
       })
       .catch(e => {
-        config.logger.warn(e);
+        corona.logger.warn(e);
         throw new Error(`Failed to load supernova: '${sKey}'`);
       });
   }

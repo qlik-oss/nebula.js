@@ -5,7 +5,7 @@ import getPatches from './utils/patcher';
 
 const noopi = () => {};
 
-export default function viz({ model, context: nebulaContext, initialError } = {}) {
+export default function viz({ model, corona, initialError } = {}) {
   let unmountCell = noopi;
   let cellRef = null;
   let mountedReference = null;
@@ -15,7 +15,7 @@ export default function viz({ model, context: nebulaContext, initialError } = {}
   });
 
   let initialSnContext = {
-    theme: nebulaContext.theme,
+    theme: corona.public.theme,
     permissions: [],
   };
   let initialSnOptions = {};
@@ -45,7 +45,7 @@ export default function viz({ model, context: nebulaContext, initialError } = {}
         cellRef.current.setSnContext({
           ...initialSnContext,
           ...ctx,
-          theme: nebulaContext.theme,
+          theme: corona.public.theme,
         });
       })();
     } else {
@@ -77,7 +77,7 @@ export default function viz({ model, context: nebulaContext, initialError } = {}
       }
       mountedReference = element;
       [unmountCell, cellRef] = glueCell({
-        nebulaContext,
+        corona,
         element,
         model,
         initialSnContext,

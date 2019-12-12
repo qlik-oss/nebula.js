@@ -8,11 +8,11 @@ import init from './initiate';
  * @property {object[]} fields
  */
 
-export default async function create({ type, version, fields }, optional, context) {
+export default async function create({ type, version, fields }, optional, corona) {
   let mergedProps = {};
   let error;
   try {
-    const t = context.nebbie.types.get({ name: type, version });
+    const t = corona.public.nebbie.types.get({ name: type, version });
     mergedProps = await t.initialProperties(optional.properties);
     const sn = await t.supernova();
     if (fields) {
@@ -22,7 +22,7 @@ export default async function create({ type, version, fields }, optional, contex
           properties: mergedProps,
           fields,
         },
-        context
+        corona
       );
     }
     if (optional.properties && sn && sn.qae.properties.onChange) {
@@ -41,7 +41,7 @@ export default async function create({ type, version, fields }, optional, contex
     // console.error(e); // eslint-disable-line
   }
 
-  const model = await context.app.createSessionObject(mergedProps);
+  const model = await corona.app.createSessionObject(mergedProps);
 
-  return init(model, optional, context, error);
+  return init(model, optional, corona, error);
 }

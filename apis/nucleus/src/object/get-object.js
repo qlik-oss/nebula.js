@@ -14,9 +14,9 @@ const cache = {};
  * @property {Array<'passive'|'select'|'interact'|'fetch'>} [context.permissions]
  * @property {object=} properties
  */
-export default async function initiate({ id }, optional, context) {
-  const cacheKey = `${context.app.id}/${id}`;
-  const model = cache[cacheKey] || (await context.app.getObject(id));
+export default async function initiate({ id }, optional, corona) {
+  const cacheKey = `${corona.app.id}/${id}`;
+  const model = cache[cacheKey] || (await corona.app.getObject(id));
   cache[cacheKey] = model;
-  return init(model, optional, context);
+  return init(model, optional, corona);
 }

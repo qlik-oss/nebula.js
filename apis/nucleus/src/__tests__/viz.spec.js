@@ -50,7 +50,7 @@ describe('viz', () => {
     };
     api = create({
       model,
-      context: {},
+      corona: { public: {} },
     });
   });
   after(() => {

@@ -99,36 +99,9 @@ const mergeConfigs = (base, c) => ({
   },
 });
 
-function nuked(configuration = {}, prev = {}) {
+function nuked(configuration = {}) {
   const logger = loggerFn(configuration.log);
   const locale = appLocaleFn(configuration.locale);
-
-  const config = {
-    env: {
-      // env is provided as is to the supernova method
-      // consider it part of the public API
-      Promise,
-      translator: locale.translator,
-      nucleus, // eslint-disable-line no-use-before-define
-    },
-    load: configuration.load,
-    logger,
-  };
-
-  const types = typesFn({ config, parent: prev.types });
-
-  configuration.types.forEach(t =>
-    types.register(
-      {
-        name: t.name,
-        version: t.version,
-      },
-      {
-        meta: t.meta,
-        load: t.load,
-      }
-    )
-  );
 
   /**
    * Initiates a new `nebbie` instance using the specified `app`.
@@ -160,16 +133,40 @@ function nuked(configuration = {}, prev = {}) {
       root,
     });
 
-    const context = {
-      nebbie: null,
-      app,
-      config,
-      logger,
-      types,
-      root,
+    const publicAPIs = {
+      env: {
+        Promise, // TODO - deprecate
+        translator: locale.translator,
+        nucleus, // eslint-disable-line no-use-before-define
+      },
       theme: appTheme.externalAPI,
-      snapshot: configuration.snapshot,
+      translator: locale.translator,
+      nebbie: null, // actual value is set further down
     };
+
+    const corona = {
+      app,
+      root,
+      logger,
+      config: configuration,
+      public: publicAPIs,
+      nebbie: null,
+    };
+
+    const types = typesFn({ corona });
+
+    configuration.types.forEach(t =>
+      types.register(
+        {
+          name: t.name,
+          version: t.version,
+        },
+        {
+          meta: t.meta,
+          load: t.load,
+        }
+      )
+    );
 
     let currentThemePromise = appTheme.setTheme(configuration.theme);
 
@@ -188,7 +185,7 @@ function nuked(configuration = {}, prev = {}) {
        */
       get: async (getCfg, vizConfig) => {
         await currentThemePromise;
-        return get(getCfg, vizConfig, context);
+        return get(getCfg, vizConfig, corona);
       },
       /**
        * @param {CreateObjectConfig} createCfg
@@ -197,7 +194,7 @@ function nuked(configuration = {}, prev = {}) {
        */
       create: async (createCfg, vizConfig) => {
         await currentThemePromise;
-        return create(createCfg, vizConfig, context);
+        return create(createCfg, vizConfig, corona);
       },
       theme(themeName) {
         currentThemePromise = appTheme.setTheme(themeName);
@@ -242,10 +239,10 @@ function nuked(configuration = {}, prev = {}) {
         }
         return selectionsApi;
       },
-      types: context.types,
+      types,
     };
 
-    context.nebbie = api;
+    corona.public.nebbie = api;
 
     return api;
   }
