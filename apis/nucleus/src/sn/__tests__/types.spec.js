@@ -24,7 +24,7 @@ describe('types', () => {
   });
 
   beforeEach(() => {
-    c = create({ config: 'config' });
+    c = create({ corona: 'corona' });
     type.returns('t');
   });
 
@@ -47,7 +47,7 @@ describe('types', () => {
           name: 'pie',
           version: '1.0.3',
         },
-        'config',
+        'corona',
         'opts'
       );
     });

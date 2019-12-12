@@ -43,11 +43,13 @@ describe('<Cell />', () => {
         })
       ),
     };
-    const defaultNebulaContext = {
+    const defaultCorona = {
       app: {},
-      nebbie: {
-        types: {
-          getSupportedVersion: sandbox.stub(),
+      public: {
+        nebbie: {
+          types: {
+            getSupportedVersion: sandbox.stub(),
+          },
         },
       },
     };
@@ -66,10 +68,12 @@ describe('<Cell />', () => {
         ...defaultModel,
         ...model,
       };
-      const nebulaContext = {
-        ...defaultNebulaContext,
+      const corona = {
+        ...defaultCorona,
         ...app,
-        ...(nebbie.types ? { nebbie } : {}),
+        public: {
+          nebbie: nebbie.types ? nebbie : { ...defaultCorona.public.nebbie },
+        },
       };
 
       await act(async () => {
@@ -78,7 +82,7 @@ describe('<Cell />', () => {
             <LocaleContext.Provider value={{ get: s => s, language: () => 'sv' }}>
               <Cell
                 ref={cellRef}
-                nebulaContext={nebulaContext}
+                corona={corona}
                 model={model}
                 initialSnContext={initialSnContext}
                 initialSnOptions={initialSnOptions}
