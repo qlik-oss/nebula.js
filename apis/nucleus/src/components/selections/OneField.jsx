@@ -9,7 +9,7 @@ import { makeStyles, useTheme } from '@nebula.js/ui/theme';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
-import LocaleContext from '../../contexts/LocaleContext';
+import InstanceContext from '../../contexts/InstanceContext';
 
 const useStyles = makeStyles(theme => ({
   item: {
@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function OneField({ field, api, stateIx = 0, skipHandleShowListBoxPopover = false }) {
-  const translator = useContext(LocaleContext);
+  const { translator } = useContext(InstanceContext);
   const alignTo = useRef();
   const theme = useTheme();
   const [showListBoxPopover, setShowListBoxPopover] = useState(false);

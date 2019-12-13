@@ -26,14 +26,15 @@ import loggerFn from './utils/logger';
  * @alias Configuration
  */
 const DEFAULT_CONFIG = {
-  theme: 'light',
+  context: {
+    theme: 'light',
+    language: 'en-US',
+    permissions: ['idle', 'interact', 'select', 'fetch'],
+  },
   /**
    *
    */
   load: () => undefined,
-  locale: {
-    language: 'en-US',
-  },
   log: {
     level: 1,
   },
@@ -70,12 +71,11 @@ const DEFAULT_CONFIG = {
 };
 
 const mergeConfigs = (base, c) => ({
-  direction: c.direction || base.direction,
-  theme: c.theme || base.theme,
-  load: c.load || base.load,
-  locale: {
-    language: (c.locale ? c.locale.language : '') || base.locale.language,
+  context: {
+    ...base.context,
+    ...(c.context || {}),
   },
+  load: c.load || base.load,
   snapshot: {
     ...(c.snapshot || base.snapshot),
   },
@@ -101,7 +101,7 @@ const mergeConfigs = (base, c) => ({
 
 function nuked(configuration = {}) {
   const logger = loggerFn(configuration.log);
-  const locale = appLocaleFn(configuration.locale);
+  const locale = appLocaleFn(configuration.context.language);
 
   /**
    * Initiates a new `nebbie` instance using the specified `app`.
@@ -121,10 +121,14 @@ function nuked(configuration = {}) {
 
     createAppSelectionAPI(app);
 
+    let currentContext = {
+      ...configuration.context,
+      translator: locale.translator,
+    };
+
     const [root] = bootNebulaApp({
       app,
-      translator: locale.translator,
-      direction: configuration.direction,
+      context: currentContext,
     });
 
     const appTheme = appThemeFn({
@@ -135,9 +139,8 @@ function nuked(configuration = {}) {
 
     const publicAPIs = {
       env: {
-        Promise, // TODO - deprecate
         translator: locale.translator,
-        nucleus, // eslint-disable-line no-use-before-define
+        nucleus,
       },
       theme: appTheme.externalAPI,
       translator: locale.translator,
@@ -150,6 +153,7 @@ function nuked(configuration = {}) {
       logger,
       config: configuration,
       public: publicAPIs,
+      context: currentContext,
       nebbie: null,
     };
 
@@ -168,7 +172,7 @@ function nuked(configuration = {}) {
       )
     );
 
-    let currentThemePromise = appTheme.setTheme(configuration.theme);
+    let currentThemePromise = appTheme.setTheme(configuration.context.theme);
 
     let selectionsApi = null;
     let selectionsComponentReference = null;
@@ -196,14 +200,44 @@ function nuked(configuration = {}) {
         await currentThemePromise;
         return create(createCfg, vizConfig, corona);
       },
-      theme(themeName) {
-        currentThemePromise = appTheme.setTheme(themeName);
-      },
       /**
-       * @param {'ltr'|'rtl'} d
+       * @param {object} ctx
+       * @param {string} ctx.theme
+       * @param {string} ctx.language
+       * @param {string[]} ctx.permissions
        */
-      direction(d) {
-        root.direction(d);
+      context: async ctx => {
+        // filter valid values to avoid triggering unnecessary rerender
+        let changes;
+        ['theme', 'language', 'permissions'].forEach(key => {
+          if (ctx[key] && ctx[key] !== currentContext[key]) {
+            if (!changes) {
+              changes = {};
+            }
+            changes[key] = ctx[key];
+          }
+        });
+        if (!changes) {
+          return;
+        }
+        currentContext = {
+          ...currentContext,
+          ...changes,
+          translator: locale.translator,
+        };
+
+        corona.context = currentContext;
+
+        if (changes.theme) {
+          currentThemePromise = appTheme.setTheme(changes.theme);
+          await currentThemePromise;
+        }
+
+        if (changes.language) {
+          corona.public.translator.language(changes.language);
+        }
+
+        root.context(currentContext);
       },
       /**
        * @returns {AppSelections}

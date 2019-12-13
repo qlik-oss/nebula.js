@@ -1,4 +1,5 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useContext, useRef } from 'react';
+import InstanceContext from '../contexts/InstanceContext';
 import useRect from '../hooks/useRect';
 
 const setStyle = (el, d) => {
@@ -52,6 +53,8 @@ const constrainElement = ({ snNode, parentNode, sn, snContext, layout }) => {
 const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
   const { component } = sn;
 
+  const { theme, language, permissions } = useContext(InstanceContext);
+  const renderDebouncer = useRef(null);
   const [renderCnt, setRenderCnt] = useState(0);
   const [snRef, snRect, snNode] = useRect();
   const [logicalSize, setLogicalSize] = useState({ width: 0, height: 0 });
@@ -76,16 +79,14 @@ const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
       },
     });
 
-  // Mount / Unmount / ThemeChanged
+  // Mount / Unmount
   useEffect(() => {
     if (!snNode || !parentNode || !snContext) return undefined;
     setLogicalSize(constrainElement({ snNode, parentNode, sn, snContext, layout }));
     component.created({ options, snContext });
     component.mounted(snNode);
-    snContext.theme.on('changed', render);
     return () => {
       component.willUnmount();
-      snContext.theme.removeListener('changed', render);
     };
   }, [snNode, parentNode, snContext]);
 
@@ -102,14 +103,18 @@ const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
       setRenderCnt(renderCnt + 1);
     } else {
       // Debounce render
-      const handle = setTimeout(() => {
+      // TODO - consider requestAnimationFrame
+      if (renderDebouncer.current) {
+        clearTimeout(renderDebouncer.current);
+      }
+      renderDebouncer.current = setTimeout(() => {
         render();
         setRenderCnt(renderCnt + 1);
       }, 100);
-      return () => clearTimeout(handle);
+      return () => clearTimeout(renderDebouncer.current);
     }
     return undefined;
-  }, [snRect, layout]);
+  }, [snRect, layout, theme, language, permissions]);
   return (
     <div
       ref={callbackContainerRef}

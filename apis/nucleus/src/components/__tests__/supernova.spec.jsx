@@ -48,18 +48,12 @@ describe('<Supernova />', () => {
       render: sandbox.spy(),
       willUnmount: sandbox.spy(),
     };
-    const theme = {
-      on: sandbox.spy(),
-      removeListener: sandbox.spy(),
-    };
     await render({
       sn: {
         logicalSize,
         component,
       },
-      snContext: {
-        theme,
-      },
+      snContext: {},
       rendererOptions: {
         createNodeMock: () => {
           return {
@@ -71,7 +65,6 @@ describe('<Supernova />', () => {
     });
     expect(component.created.callCount).to.equal(1);
     expect(component.mounted.callCount).to.equal(1);
-    expect(theme.on.callCount).to.equal(1);
   });
   it('should constrain element', async () => {
     const logicalSize = sandbox.stub().returns({ width: 1024, height: 768 });
@@ -123,10 +116,6 @@ describe('<Supernova />', () => {
       render: sandbox.spy(),
       willUnmount: sandbox.spy(),
     };
-    const theme = {
-      on: sandbox.spy(),
-      removeListener: sandbox.spy(),
-    };
     const snOptions = {
       onInitialRender() {
         initialRenderResolve(true);
@@ -138,9 +127,7 @@ describe('<Supernova />', () => {
         component,
       },
       snOptions,
-      snContext: {
-        theme,
-      },
+      snContext: {},
       layout: {},
       rendererOptions: {
         createNodeMock: () => {
@@ -154,7 +141,6 @@ describe('<Supernova />', () => {
     global.window.addEventListener.callArg(1);
     expect(component.created.callCount).to.equal(1);
     expect(component.mounted.callCount).to.equal(1);
-    expect(theme.on.callCount).to.equal(1);
     expect(await initialRender).to.equal(true);
     expect(component.render.callCount).to.equal(1);
   });
@@ -167,10 +153,6 @@ describe('<Supernova />', () => {
       render: sandbox.spy(),
       willUnmount: sandbox.spy(),
     };
-    const theme = {
-      on: sandbox.spy(),
-      removeListener: sandbox.spy(),
-    };
     const getBoundingClientRect = sandbox.stub();
     getBoundingClientRect.returns({ left: 100, top: 200, width: 300, height: 400 });
     await render({
@@ -178,9 +160,7 @@ describe('<Supernova />', () => {
         logicalSize,
         component,
       },
-      snContext: {
-        theme,
-      },
+      snContext: {},
       layout: {},
       rendererOptions: {
         createNodeMock: () => {

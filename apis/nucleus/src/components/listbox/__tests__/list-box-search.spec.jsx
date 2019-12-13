@@ -2,10 +2,10 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { OutlinedInput } from '@material-ui/core';
 
-const LocaleContext = React.createContext();
+const InstanceContext = React.createContext();
 const [{ default: ListBoxSearch }] = aw.mock(
   [
-    [require.resolve('../../../contexts/LocaleContext'), () => LocaleContext],
+    [require.resolve('../../../contexts/InstanceContext'), () => InstanceContext],
     [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({}) })],
   ],
   ['../ListBoxSearch']
@@ -19,9 +19,9 @@ describe('<ListBoxSearch />', () => {
       abortListObjectSearch: sinon.spy(),
     };
     const testRenderer = renderer.create(
-      <LocaleContext.Provider value={{ get: () => 'Search' }}>
+      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
         <ListBoxSearch model={model} />
-      </LocaleContext.Provider>
+      </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(OutlinedInput);
@@ -40,17 +40,17 @@ describe('<ListBoxSearch />', () => {
       abortListObjectSearch: sinon.spy(),
     };
     const testRenderer = renderer.create(
-      <LocaleContext.Provider value={{ get: () => 'Search' }}>
+      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
         <ListBoxSearch model={model} />
-      </LocaleContext.Provider>
+      </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     let type = testInstance.findByType(OutlinedInput);
     type.props.onChange({ target: { value: 'foo' } });
     testRenderer.update(
-      <LocaleContext.Provider value={{ get: () => 'Search' }}>
+      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
         <ListBoxSearch model={model} />
-      </LocaleContext.Provider>
+      </InstanceContext.Provider>
     );
     expect(model.searchListObjectFor).to.have.been.calledWith('/qListObjectDef', 'foo');
     type = testInstance.findByType(OutlinedInput);
@@ -63,9 +63,9 @@ describe('<ListBoxSearch />', () => {
       abortListObjectSearch: sinon.spy(),
     };
     const testRenderer = renderer.create(
-      <LocaleContext.Provider value={{ get: () => 'Search' }}>
+      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
         <ListBoxSearch model={model} />
-      </LocaleContext.Provider>
+      </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     const type = testInstance.findByType(OutlinedInput);
@@ -82,9 +82,9 @@ describe('<ListBoxSearch />', () => {
       abortListObjectSearch: sinon.spy(),
     };
     const testRenderer = renderer.create(
-      <LocaleContext.Provider value={{ get: () => 'Search' }}>
+      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
         <ListBoxSearch model={model} />
-      </LocaleContext.Provider>
+      </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     const type = testInstance.findByType(OutlinedInput);

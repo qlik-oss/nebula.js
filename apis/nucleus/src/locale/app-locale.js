@@ -1,7 +1,7 @@
 import localeFn from '@nebula.js/locale';
 import all from './translations/all.json';
 
-export default function appLocaleFn({ language }) {
+export default function appLocaleFn(language) {
   const l = localeFn({
     initial: language,
   });

@@ -30,7 +30,7 @@ describe('app-theme', () => {
 
   describe('custom', () => {
     it('should load and apply custom theme', async () => {
-      const root = { theme: sandbox.spy() };
+      const root = { setMuiThemeName: sandbox.spy() };
       const at = appThemeFn({
         root,
         logger,
@@ -46,7 +46,7 @@ describe('app-theme', () => {
         ],
       });
       await at.setTheme('darkish');
-      expect(root.theme).to.have.been.calledWithExactly('dark');
+      expect(root.setMuiThemeName).to.have.been.calledWithExactly('dark');
       expect(internalAPI.setTheme).to.have.been.calledWithExactly({
         type: 'dark',
         color: 'red',
@@ -54,7 +54,7 @@ describe('app-theme', () => {
     });
 
     it('should timeout after 5sec', async () => {
-      const root = { theme: sinon.spy() };
+      const root = { setMuiThemeName: sinon.spy() };
       const at = appThemeFn({
         root,
         logger,
@@ -76,21 +76,21 @@ describe('app-theme', () => {
 
   describe('defaults', () => {
     it('should apply light theme on React root when themeName is not found', () => {
-      const root = { theme: sinon.spy() };
+      const root = { setMuiThemeName: sinon.spy() };
       const at = appThemeFn({ root });
       at.setTheme('foo');
-      expect(root.theme).to.have.been.calledWithExactly('light');
+      expect(root.setMuiThemeName).to.have.been.calledWithExactly('light');
     });
 
     it('should apply dark theme on React root when themename is "dark"', () => {
-      const root = { theme: sinon.spy() };
+      const root = { setMuiThemeName: sinon.spy() };
       const at = appThemeFn({ root });
       at.setTheme('dark');
-      expect(root.theme).to.have.been.calledWithExactly('dark');
+      expect(root.setMuiThemeName).to.have.been.calledWithExactly('dark');
     });
 
     it('should apply "light" as type on internal theme', () => {
-      const root = { theme: sinon.spy() };
+      const root = { setMuiThemeName: sinon.spy() };
       const at = appThemeFn({ root });
       at.setTheme('light');
       expect(internalAPI.setTheme).to.have.been.calledWithExactly({

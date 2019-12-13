@@ -2,7 +2,7 @@
 import React, { useState, useContext } from 'react';
 import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
-import LocaleContext from '../contexts/LocaleContext';
+import InstanceContext from '../contexts/InstanceContext';
 
 import Progress from './Progress';
 
@@ -65,7 +65,7 @@ export default function LongRunningQuery({ onCancel, onRetry }) {
   const { stripes, cancel, retry } = useStyles();
   const [canCancel, setCanCancel] = useState(!!onCancel);
   const [canRetry, setCanRetry] = useState(!!onRetry);
-  const translator = useContext(LocaleContext);
+  const { translator } = useContext(InstanceContext);
 
   const handleCancel = () => {
     setCanCancel(false);

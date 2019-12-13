@@ -2,10 +2,10 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { IconButton, Typography } from '@material-ui/core';
 
-const LocaleContext = React.createContext();
+const InstanceContext = React.createContext();
 const [{ default: OneField }] = aw.mock(
   [
-    [require.resolve('../../../contexts/LocaleContext'), () => LocaleContext],
+    [require.resolve('../../../contexts/InstanceContext'), () => InstanceContext],
     [
       require.resolve('@nebula.js/ui/theme'),
       () => ({
@@ -39,9 +39,9 @@ describe('<OneField />', () => {
       states: ['$'],
     };
     const testRenderer = renderer.create(
-      <LocaleContext.Provider value={{ get: () => 'ALL' }}>
+      <InstanceContext.Provider value={{ translator: { get: () => 'ALL' } }}>
         <OneField field={field} />
-      </LocaleContext.Provider>
+      </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(Typography);
@@ -76,9 +76,9 @@ describe('<OneField />', () => {
       states: ['$'],
     };
     const testRenderer = renderer.create(
-      <LocaleContext.Provider value={{ get: () => 'Of' }}>
+      <InstanceContext.Provider value={{ translator: { get: () => 'Of' } }}>
         <OneField field={field} />
-      </LocaleContext.Provider>
+      </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(Typography);
@@ -105,9 +105,9 @@ describe('<OneField />', () => {
       states: ['$'],
     };
     const testRenderer = renderer.create(
-      <LocaleContext.Provider value={{ get: () => 'Clear' }}>
+      <InstanceContext.Provider value={{ translator: { get: () => 'Clear' } }}>
         <OneField field={field} />
-      </LocaleContext.Provider>
+      </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(IconButton);
@@ -126,9 +126,9 @@ describe('<OneField />', () => {
       states: ['$'],
     };
     const testRenderer = renderer.create(
-      <LocaleContext.Provider value={{ get: () => 'Lock' }}>
+      <InstanceContext.Provider value={{ translator: { get: () => 'Lock' } }}>
         <OneField field={field} />
-      </LocaleContext.Provider>
+      </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(IconButton);

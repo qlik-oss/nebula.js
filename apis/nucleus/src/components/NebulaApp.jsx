@@ -3,26 +3,25 @@ import ReactDOM from 'react-dom';
 
 import { createTheme, ThemeProvider, StylesProvider, createGenerateClassName } from '@nebula.js/ui/theme';
 
-import LocaleContext from '../contexts/LocaleContext';
-import DirectionContext from '../contexts/DirectionContext';
+import InstanceContext from '../contexts/InstanceContext';
 
 const THEME_PREFIX = (process.env.NEBULA_VERSION || '').replace(/[.-]/g, '_');
 
 let counter = 0;
 
-const NebulaApp = forwardRef(({ translator }, ref) => {
-  const [d, setDirection] = useState();
-  const [tn, setThemeName] = useState();
+const NebulaApp = forwardRef(({ initialContext }, ref) => {
+  const [context, setContext] = useState(initialContext);
+  const [muiThemeName, setMuiThemeName] = useState();
   const { theme, generator } = useMemo(
     () => ({
-      theme: createTheme(tn),
+      theme: createTheme(muiThemeName),
       generator: createGenerateClassName({
         productionPrefix: `${THEME_PREFIX}-`,
         disableGlobal: true,
         seed: `nebulajs-${counter++}`,
       }),
     }),
-    [tn]
+    [muiThemeName]
   );
 
   const [components, setComponents] = useState([]);
@@ -38,28 +37,26 @@ const NebulaApp = forwardRef(({ translator }, ref) => {
         setComponents([...components]);
       }
     },
-    setThemeName(name) {
-      setThemeName(name);
+    setMuiThemeName(name) {
+      setMuiThemeName(name);
     },
-    setDirection(dir) {
-      setDirection(dir);
+    setContext(ctx) {
+      setContext(ctx);
     },
   }));
 
   return (
     <StylesProvider generateClassName={generator}>
       <ThemeProvider theme={theme}>
-        <LocaleContext.Provider value={translator}>
-          <DirectionContext.Provider value={d}>
-            <>{components}</>
-          </DirectionContext.Provider>
-        </LocaleContext.Provider>
+        <InstanceContext.Provider value={context}>
+          <>{components}</>
+        </InstanceContext.Provider>
       </ThemeProvider>
     </StylesProvider>
   );
 });
 
-export default function boot({ app, theme: themeName = 'light', translator, direction }) {
+export default function boot({ app, context }) {
   let resolveRender;
   const rendered = new Promise(resolve => {
     resolveRender = resolve;
@@ -71,11 +68,7 @@ export default function boot({ app, theme: themeName = 'light', translator, dire
   element.setAttribute('data-app-id', app.id);
   document.body.appendChild(element);
 
-  ReactDOM.render(
-    <NebulaApp ref={appRef} themeName={themeName} translator={translator} direction={direction} />,
-    element,
-    resolveRender
-  );
+  ReactDOM.render(<NebulaApp ref={appRef} initialContext={context} />, element, resolveRender);
 
   return [
     {
@@ -91,16 +84,16 @@ export default function boot({ app, theme: themeName = 'light', translator, dire
           appRef.current.removeComponent(component);
         })();
       },
-      theme(name) {
+      setMuiThemeName(themeName) {
         (async () => {
           await rendered;
-          appRef.current.setThemeName(name);
+          appRef.current.setMuiThemeName(themeName);
         })();
       },
-      direction(d) {
+      context(ctx) {
         (async () => {
           await rendered;
-          appRef.current.setDirection(d);
+          appRef.current.setContext(ctx);
         })();
       },
     },

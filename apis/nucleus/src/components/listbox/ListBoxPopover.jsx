@@ -16,8 +16,7 @@ import createListboxSelectionToolbar from './listbox-selection-toolbar';
 import { createObjectSelectionAPI } from '../../selections';
 import SelectionToolbarWithDefault, { SelectionToolbar } from '../SelectionToolbar';
 
-import LocaleContext from '../../contexts/LocaleContext';
-import DirectionContext from '../../contexts/DirectionContext';
+import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './ListBoxSearch';
 
@@ -67,8 +66,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
 
   const [layout] = useLayout({ model });
 
-  const translator = useContext(LocaleContext);
-  const direction = useContext(DirectionContext);
+  const { translator } = useContext(InstanceContext);
 
   const moreAlignTo = useRef();
   const [showSelectionsMenu, setShowSelectionsMenu] = useState(false);
@@ -152,7 +150,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
         <Grid item xs>
           <div ref={moreAlignTo} />
           <ListBoxSearch model={model} />
-          <ListBox model={model} selections={sel} direction={direction} />
+          <ListBox model={model} selections={sel} direction="ltr" />
           {showSelectionsMenu && (
             <Popover
               open={showSelectionsMenu}

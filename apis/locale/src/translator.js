@@ -6,13 +6,16 @@ const format = (message = '', args = []) => {
 
 export default function translator({ initial = 'en-US', fallback = 'en-US' } = {}) {
   const dictionaries = {};
-  const currentLocale = initial;
+  let currentLocale = initial;
 
   /**
    * @interface Translator
    */
   const api = {
-    language: () => {
+    language: lang => {
+      if (lang) {
+        currentLocale = lang;
+      }
       return currentLocale;
     },
     /**

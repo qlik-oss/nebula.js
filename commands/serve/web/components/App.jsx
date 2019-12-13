@@ -6,7 +6,7 @@ import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
-import { WbSunny, Brightness3, ColorLens } from '@nebula.js/ui/icons';
+import { WbSunny, Brightness3, ColorLens, Language } from '@nebula.js/ui/icons';
 
 import {
   Grid,
@@ -29,7 +29,6 @@ import Collection from './Collection';
 
 import AppContext from '../contexts/AppContext';
 import NebulaContext from '../contexts/NebulaContext';
-import DirectionContext from '../contexts/DirectionContext';
 import VizContext from '../contexts/VizContext';
 
 const rtlShape = {
@@ -46,6 +45,24 @@ const directionShape = {
   ltr: ltrShape,
   rtl: rtlShape,
 };
+
+const languages = [
+  'en-US',
+  'it-IT',
+  'zh-CN',
+  'zh-TW',
+  'ko-KR',
+  'de-DE',
+  'sv-SE',
+  'es-ES',
+  'pt-BR',
+  'ja-JP',
+  'fr-FR',
+  'nl-NL',
+  'tr-TR',
+  'pl-PL',
+  'ru-RU',
+];
 
 const storageFn = app => {
   const stored = window.localStorage.getItem('nebula-dev');
@@ -80,6 +97,7 @@ export default function App({ app, info }) {
   const [sn, setSupernova] = useState(null);
   const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
   const [currentThemeName, setCurrentThemeName] = useState(storage.get('themeName'));
+  const [currentLanguage, setCurrentLanguage] = useState(storage.get('language') || 'en-US');
   const [currentMuiThemeName, setCurrentMuiThemeName] = useState('light');
   const [objectListMode, setObjectListMode] = useState(storage.get('objectListMode') === true);
   const [direction, setDirection] = useState('ltr');
@@ -87,6 +105,7 @@ export default function App({ app, info }) {
   const uid = useRef();
   const [currentId, setCurrentId] = useState();
   const [themeChooserAnchorEl, setThemeChooserAnchorEl] = React.useState(null);
+  const [languageChooserAnchorEl, setLanguageChooserAnchorEl] = React.useState(null);
 
   const customThemes = info.themes && info.themes.length ? ['light', 'dark', ...info.themes] : [];
 
@@ -105,9 +124,11 @@ export default function App({ app, info }) {
 
   const nebbie = useMemo(() => {
     const n = nucleus(app, {
-      load: (type, config) => config.Promise.resolve(window[type.name]),
-      theme: currentThemeName,
-      direction,
+      context: {
+        theme: currentThemeName,
+        language: currentLanguage,
+      },
+      load: type => Promise.resolve(window[type.name]),
       themes: info.themes
         ? info.themes.map(t => ({
             key: t,
@@ -126,7 +147,7 @@ export default function App({ app, info }) {
   }, [app]);
 
   useLayoutEffect(() => {
-    nebbie.theme(currentThemeName);
+    nebbie.context({ theme: currentThemeName });
     if (currentThemeName === 'light' || currentThemeName === 'dark') {
       setCurrentMuiThemeName(currentThemeName);
     }
@@ -180,6 +201,13 @@ export default function App({ app, info }) {
     setCurrentThemeName(t);
   };
 
+  const handleLanguageChange = lang => {
+    setLanguageChooserAnchorEl(null);
+    storage.save('language', lang);
+    setCurrentLanguage(lang);
+    nebbie.context({ language: lang });
+  };
+
   const toggleDarkMode = () => {
     const v = currentThemeName === 'dark' ? 'light' : 'dark';
     storage.save('themeName', v);
@@ -195,7 +223,6 @@ export default function App({ app, info }) {
         nextDir = 'ltr';
       }
       document.body.setAttribute('dir', nextDir);
-      nebbie.direction(nextDir);
       return nextDir;
     });
   };
@@ -213,115 +240,130 @@ export default function App({ app, info }) {
   return (
     <AppContext.Provider value={app}>
       <ThemeProvider theme={theme}>
-        <DirectionContext.Provider value={direction}>
-          <NebulaContext.Provider value={nebbie}>
-            <Grid container wrap="nowrap" direction="column" style={{ background: theme.palette.background.darkest }}>
-              <Grid item>
-                <Toolbar variant="dense" style={{ background: theme.palette.background.paper }}>
-                  <Grid container>
-                    <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                      <Button variant="contained" href={window.location.origin}>
-                        {/* <IconButton style={{ padding: '0px' }}>
+        <NebulaContext.Provider value={nebbie}>
+          <Grid container wrap="nowrap" direction="column" style={{ background: theme.palette.background.darkest }}>
+            <Grid item>
+              <Toolbar variant="dense" style={{ background: theme.palette.background.paper }}>
+                <Grid container>
+                  <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                    <Button variant="contained" href={window.location.origin}>
+                      {/* <IconButton style={{ padding: '0px' }}>
                         <ChevronLeft style={{ verticalAlign: 'middle' }} />
                       </IconButton> */}
-                        Go to Hub
-                      </Button>
-                    </Grid>
-                    <Grid item xs>
-                      <Tabs
-                        centered
-                        value={objectListMode ? 1 : 0}
-                        onChange={handleCreateEditChange}
-                        aria-label="simple tabs example"
-                      >
-                        <Tab label={<Typography>Create</Typography>} value={0} />
-                        <Tab label={<Typography>Edit</Typography>} value={1} />
-                      </Tabs>
-                    </Grid>
+                      Go to Hub
+                    </Button>
+                  </Grid>
+                  <Grid item xs>
+                    <Tabs
+                      centered
+                      value={objectListMode ? 1 : 0}
+                      onChange={handleCreateEditChange}
+                      aria-label="simple tabs example"
+                    >
+                      <Tab label={<Typography>Create</Typography>} value={0} />
+                      <Tab label={<Typography>Edit</Typography>} value={1} />
+                    </Tabs>
+                  </Grid>
+                  <Grid item container alignItems="center" style={{ width: 'auto' }}>
                     <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                      <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                        <Typography component="span">Cache</Typography>
-                        <Switch
-                          disabled={objectListMode}
-                          checked={isReadCacheEnabled}
-                          onChange={handleCacheChange}
-                          value="isReadFromCacheEnabled"
-                        />
-                      </Grid>
-                      <Grid item>
-                        {customThemes.length ? (
-                          <>
-                            <IconButton title="Select theme" onClick={e => setThemeChooserAnchorEl(e.currentTarget)}>
-                              <ColorLens fontSize="small" />
-                            </IconButton>
-                            <Menu
-                              anchorEl={themeChooserAnchorEl}
-                              open={!!themeChooserAnchorEl}
-                              keepMounted
-                              onClose={() => setThemeChooserAnchorEl(null)}
-                            >
-                              {customThemes.map(t => (
-                                <MenuItem
-                                  key={t}
-                                  selected={t === currentThemeName}
-                                  onClick={() => handleThemeChange(t)}
-                                >
-                                  {t}
-                                </MenuItem>
-                              ))}
-                            </Menu>
-                          </>
-                        ) : (
-                          <IconButton title="Toggle light/dark mode" onClick={toggleDarkMode}>
-                            {currentThemeName === 'dark' ? (
-                              <WbSunny fontSize="small" />
-                            ) : (
-                              <Brightness3 fontSize="small" />
-                            )}
+                      <Typography component="span">Cache</Typography>
+                      <Switch
+                        disabled={objectListMode}
+                        checked={isReadCacheEnabled}
+                        onChange={handleCacheChange}
+                        value="isReadFromCacheEnabled"
+                      />
+                    </Grid>
+                    <Grid item>
+                      {customThemes.length ? (
+                        <>
+                          <IconButton title="Select theme" onClick={e => setThemeChooserAnchorEl(e.currentTarget)}>
+                            <ColorLens fontSize="small" />
                           </IconButton>
-                        )}
-                      </Grid>
-                      <Grid item>
-                        <IconButton title="Toggle right-to-left/left-to-right" onClick={toggleDirection}>
-                          {SvgIcon(directionShape[direction])}
+                          <Menu
+                            anchorEl={themeChooserAnchorEl}
+                            open={!!themeChooserAnchorEl}
+                            keepMounted
+                            onClose={() => setThemeChooserAnchorEl(null)}
+                          >
+                            {customThemes.map(t => (
+                              <MenuItem key={t} selected={t === currentThemeName} onClick={() => handleThemeChange(t)}>
+                                {t}
+                              </MenuItem>
+                            ))}
+                          </Menu>
+                        </>
+                      ) : (
+                        <IconButton title="Toggle light/dark mode" onClick={toggleDarkMode}>
+                          {currentThemeName === 'dark' ? (
+                            <WbSunny fontSize="small" />
+                          ) : (
+                            <Brightness3 fontSize="small" />
+                          )}
                         </IconButton>
-                      </Grid>
+                      )}
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        startIcon={<Language />}
+                        title="Select language"
+                        onClick={e => setLanguageChooserAnchorEl(e.currentTarget)}
+                      >
+                        {currentLanguage}
+                      </Button>
+                      <Menu
+                        anchorEl={languageChooserAnchorEl}
+                        open={!!languageChooserAnchorEl}
+                        keepMounted
+                        onClose={() => setLanguageChooserAnchorEl(null)}
+                      >
+                        {languages.map(t => (
+                          <MenuItem key={t} selected={t === currentLanguage} onClick={() => handleLanguageChange(t)}>
+                            {t}
+                          </MenuItem>
+                        ))}
+                      </Menu>
+                    </Grid>
+                    <Grid item>
+                      <IconButton title="Toggle right-to-left/left-to-right" onClick={toggleDirection}>
+                        {SvgIcon(directionShape[direction])}
+                      </IconButton>
                     </Grid>
                   </Grid>
-                </Toolbar>
-                <Divider />
-              </Grid>
-              <Grid item>
-                <div ref={currentSelectionsRef} style={{ flex: '0 0 auto' }} />
-                <Divider />
-              </Grid>
-              <Grid item xs style={{ overflowX: 'hidden', overflowY: 'auto' }}>
-                <VizContext.Provider value={vizContext}>
-                  {sn ? (
-                    <Grid container wrap="nowrap" style={{ height: '100%' }}>
-                      <Grid item xs>
-                        {objectListMode ? (
-                          <Collection cache={currentId} types={[info.supernova.name]} />
-                        ) : (
-                          <Stage info={info} storage={storage} uid={currentId} />
-                        )}
-                      </Grid>
-                      <Grid item style={{ background: theme.palette.background.paper, overflow: 'hidden auto' }}>
-                        {activeViz && <Properties sn={sn} viz={activeViz} />}
-                      </Grid>
-                    </Grid>
-                  ) : (
-                    <Grid container wrap="nowrap" style={{ paddingTop: '48px' }} justify="center">
-                      <Grid item>
-                        <CircularProgress />
-                      </Grid>
-                    </Grid>
-                  )}
-                </VizContext.Provider>
-              </Grid>
+                </Grid>
+              </Toolbar>
+              <Divider />
             </Grid>
-          </NebulaContext.Provider>
-        </DirectionContext.Provider>
+            <Grid item>
+              <div ref={currentSelectionsRef} style={{ flex: '0 0 auto' }} />
+              <Divider />
+            </Grid>
+            <Grid item xs style={{ overflowX: 'hidden', overflowY: 'auto' }}>
+              <VizContext.Provider value={vizContext}>
+                {sn ? (
+                  <Grid container wrap="nowrap" style={{ height: '100%' }}>
+                    <Grid item xs>
+                      {objectListMode ? (
+                        <Collection cache={currentId} types={[info.supernova.name]} />
+                      ) : (
+                        <Stage info={info} storage={storage} uid={currentId} />
+                      )}
+                    </Grid>
+                    <Grid item style={{ background: theme.palette.background.paper, overflow: 'hidden auto' }}>
+                      {activeViz && <Properties sn={sn} viz={activeViz} />}
+                    </Grid>
+                  </Grid>
+                ) : (
+                  <Grid container wrap="nowrap" style={{ paddingTop: '48px' }} justify="center">
+                    <Grid item>
+                      <CircularProgress />
+                    </Grid>
+                  </Grid>
+                )}
+              </VizContext.Provider>
+            </Grid>
+          </Grid>
+        </NebulaContext.Provider>
       </ThemeProvider>
     </AppContext.Provider>
   );
