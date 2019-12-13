@@ -36,8 +36,8 @@ describe('Boot NebulaApp', () => {
     const [api] = boot({ app: { id: 'foo' } });
     expect(api.add).to.be.a('function');
     expect(api.remove).to.be.a('function');
-    expect(api.theme).to.be.a('function');
-    expect(api.direction).to.be.a('function');
+    expect(api.setMuiThemeName).to.be.a('function');
+    expect(api.context).to.be.a('function');
   });
   it('should add component', async () => {
     const app = { id: 'foo' };
@@ -69,35 +69,35 @@ describe('Boot NebulaApp', () => {
     });
     expect(appRef.current.removeComponent.callCount).to.equal(1);
   });
-  it('should set theme', async () => {
+  it('should set mui theme', async () => {
     const app = { id: 'foo' };
     const translator = {};
     const [api, appRef, rendered] = boot({ app, translator });
     appRef.current = {
-      setThemeName: sandbox.spy(),
+      setMuiThemeName: sandbox.spy(),
     };
 
     await act(() => {
       mockedReactDOM.render.callArg(2);
-      api.theme('wh0p');
+      api.setMuiThemeName('wh0p');
       return rendered;
     });
-    expect(appRef.current.setThemeName.callCount).to.equal(1);
+    expect(appRef.current.setMuiThemeName.callCount).to.equal(1);
   });
-  it('should set direction', async () => {
+  it('should set context', async () => {
     const app = { id: 'foo' };
     const translator = {};
     const [api, appRef, rendered] = boot({ app, translator });
     appRef.current = {
-      setDirection: sandbox.spy(),
+      setContext: sandbox.spy(),
     };
 
     await act(() => {
       mockedReactDOM.render.callArg(2);
-      api.direction('wingding');
+      api.context('ctx');
       return rendered;
     });
-    expect(appRef.current.setDirection.callCount).to.equal(1);
+    expect(appRef.current.setContext.callCount).to.equal(1);
   });
 });
 

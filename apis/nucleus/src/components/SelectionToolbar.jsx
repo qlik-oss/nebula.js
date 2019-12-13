@@ -3,7 +3,7 @@ import { close } from '@nebula.js/ui/icons/close';
 import { tick } from '@nebula.js/ui/icons/tick';
 import { clearSelections } from '@nebula.js/ui/icons/clear-selections';
 
-import LocaleContext from '../contexts/LocaleContext';
+import InstanceContext from '../contexts/InstanceContext';
 import Item from './SelectionToolbarItem';
 
 const SelectionToolbar = React.forwardRef(({ layout, items }, ref) => {
@@ -17,7 +17,7 @@ const SelectionToolbar = React.forwardRef(({ layout, items }, ref) => {
 });
 
 const SelectionToolbarWithDefault = ({ layout, api, xItems = [], onCancel = () => {}, onConfirm = () => {} }) => {
-  const translator = useContext(LocaleContext);
+  const { translator } = useContext(InstanceContext);
 
   const items = [
     ...xItems,

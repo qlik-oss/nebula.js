@@ -57,8 +57,8 @@ async function renderSnapshot({ nucleus, element }) {
   };
 
   const nebbie = await nucleus(app, {
-    theme,
-    locale: {
+    context: {
+      theme,
       language,
     },
   });

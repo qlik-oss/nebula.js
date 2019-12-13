@@ -8,7 +8,7 @@ const LongRunningQuery = () => 'long-running-query';
 const CError = () => 'error';
 const Supernova = () => 'supernova';
 const Header = () => 'Header';
-const LocaleContext = React.createContext();
+const InstanceContext = React.createContext();
 
 const [{ default: Cell }] = aw.mock(
   [
@@ -17,7 +17,7 @@ const [{ default: Cell }] = aw.mock(
     [require.resolve('../Error'), () => CError],
     [require.resolve('../Supernova'), () => Supernova],
     [require.resolve('../Header'), () => Header],
-    [require.resolve('../../contexts/LocaleContext'), () => LocaleContext],
+    [require.resolve('../../contexts/InstanceContext'), () => InstanceContext],
   ],
   ['../Cell']
 );
@@ -79,7 +79,7 @@ describe('<Cell />', () => {
       await act(async () => {
         renderer = create(
           <ThemeProvider theme={theme}>
-            <LocaleContext.Provider value={{ get: s => s, language: () => 'sv' }}>
+            <InstanceContext.Provider value={{ translator: { get: s => s, language: () => 'sv' } }}>
               <Cell
                 ref={cellRef}
                 corona={corona}
@@ -88,7 +88,7 @@ describe('<Cell />', () => {
                 initialSnOptions={initialSnOptions}
                 onMount={onMount}
               />
-            </LocaleContext.Provider>
+            </InstanceContext.Provider>
           </ThemeProvider>,
           rendererOptions || null
         );

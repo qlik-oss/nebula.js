@@ -19,7 +19,7 @@ export default function appTheme({ themes = [], logger, root } = {}) {
         } else {
           muiTheme = raw.type === 'dark' ? 'dark' : 'light';
           theme.internalAPI.setTheme(raw);
-          root.theme(muiTheme);
+          root.setMuiThemeName(muiTheme);
         }
       } catch (e) {
         logger.error(e);
@@ -28,7 +28,7 @@ export default function appTheme({ themes = [], logger, root } = {}) {
       theme.internalAPI.setTheme({
         type: muiTheme,
       });
-      root.theme(muiTheme);
+      root.setMuiThemeName(muiTheme);
     }
   };
 

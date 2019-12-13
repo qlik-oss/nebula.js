@@ -3,12 +3,12 @@ import { create, act } from 'react-test-renderer';
 import { Grid, Button } from '@material-ui/core';
 
 const Progress = () => 'progress';
-const LocaleContext = React.createContext();
+const InstanceContext = React.createContext();
 
 const [{ default: LongRunningQuery, Cancel, Retry }] = aw.mock(
   [
     [require.resolve('../Progress'), () => Progress],
-    [require.resolve('../../contexts/LocaleContext'), () => LocaleContext],
+    [require.resolve('../../contexts/InstanceContext'), () => InstanceContext],
   ],
   ['../LongRunningQuery']
 );
@@ -22,9 +22,9 @@ describe('<LongRunningQuery />', () => {
     render = async (onCancel, onRetry) => {
       await act(async () => {
         renderer = create(
-          <LocaleContext.Provider value={{ get: s => s }}>
+          <InstanceContext.Provider value={{ translator: { get: s => s } }}>
             <LongRunningQuery onCancel={onCancel} onRetry={onRetry} />
-          </LocaleContext.Provider>
+          </InstanceContext.Provider>
         );
       });
     };

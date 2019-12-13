@@ -12,13 +12,13 @@ const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
           load: async () => (await fetch(`/theme/${t}`)).json(),
         }))
       : undefined,
-    theme,
-    locale: {
+    context: {
+      theme,
       language,
     },
   });
   const nebbie = nuked(app, {
-    load: (type, config) => config.Promise.resolve(window[type.name]),
+    load: type => Promise.resolve(window[type.name]),
     types: [
       {
         name,
@@ -80,7 +80,7 @@ async function renderSnapshot() {
       : undefined,
     types: [
       {
-        load: (type, config) => config.Promise.resolve(window[type.name]),
+        load: type => Promise.resolve(window[type.name]),
         name: supernova.name,
       },
     ],
@@ -107,8 +107,8 @@ const renderFixture = async () => {
           load: async () => (await fetch(`/theme/${t}`)).json(),
         }))
       : undefined,
-    theme,
-    locale: {
+    context: {
+      theme,
       language: params.language,
     },
   };

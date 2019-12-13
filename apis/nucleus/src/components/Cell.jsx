@@ -13,7 +13,7 @@ import Supernova from './Supernova';
 
 import useRect from '../hooks/useRect';
 import useLayout from '../hooks/useLayout';
-import LocaleContext from '../contexts/LocaleContext';
+import InstanceContext from '../contexts/InstanceContext';
 import { createObjectSelectionAPI } from '../selections';
 
 const initialState = err => ({
@@ -165,7 +165,7 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
     },
   } = corona;
 
-  const translator = useContext(LocaleContext);
+  const { translator, language } = useContext(InstanceContext);
   const theme = useTheme();
   const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
   const [layout, validating, cancel, retry] = useLayout({ app, model });
@@ -220,7 +220,7 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
     load(layout, withVersion);
 
     return () => {};
-  }, [types, state.sn, model, layout]);
+  }, [types, state.sn, model, layout, language]);
 
   // Long running query
   useEffect(() => {

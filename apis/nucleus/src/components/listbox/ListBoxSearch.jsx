@@ -4,7 +4,7 @@ import Search from '@nebula.js/ui/icons/search';
 
 import { makeStyles } from '@nebula.js/ui/theme';
 
-import LocaleContext from '../../contexts/LocaleContext';
+import InstanceContext from '../../contexts/InstanceContext';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -17,7 +17,7 @@ const useStyles = makeStyles(theme => ({
 const TREE_PATH = '/qListObjectDef';
 
 export default function ListBoxSearch({ model }) {
-  const translator = useContext(LocaleContext);
+  const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const onChange = e => {
     setValue(e.target.value);

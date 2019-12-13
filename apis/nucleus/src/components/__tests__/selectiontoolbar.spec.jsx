@@ -2,13 +2,13 @@ import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { IconButton } from '@material-ui/core';
 // const SelectionToolbarItem = () => 'selectiontoolbaritem';
-const LocaleContext = React.createContext();
+const InstanceContext = React.createContext();
 
 const [{ default: SelectionToolbarWithDefault }] = aw.mock(
   [
     // [require.resolve('../SelectionToolbarItem'), () => SelectionToolbarItem],
     [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({ pallette: {} }) })],
-    [require.resolve('../../contexts/LocaleContext'), () => LocaleContext],
+    [require.resolve('../../contexts/InstanceContext'), () => InstanceContext],
   ],
   ['../SelectionToolbar']
 );
@@ -22,7 +22,7 @@ describe('<SelectionToolbarWithDefault />', () => {
     render = async (layout, api, xItems, onCancel, onConfirm) => {
       await act(async () => {
         renderer = create(
-          <LocaleContext.Provider value={{ get: s => s }}>
+          <InstanceContext.Provider value={{ translator: { get: s => s } }}>
             <SelectionToolbarWithDefault
               layout={layout}
               api={api}
@@ -30,7 +30,7 @@ describe('<SelectionToolbarWithDefault />', () => {
               onCancel={onCancel}
               onConfirm={onConfirm}
             />
-          </LocaleContext.Provider>
+          </InstanceContext.Provider>
         );
       });
     };

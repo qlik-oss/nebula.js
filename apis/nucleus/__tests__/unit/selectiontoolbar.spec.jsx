@@ -24,11 +24,11 @@ describe('<SelectionToolbar />', () => {
         },
       };
       const STItem = () => '';
-      const LocaleContext = React.createContext();
+      const InstanceContext = React.createContext();
       const [{ default: STB }] = aw.mock(
         [
           ['**/SelectionToolbarItem.jsx', () => STItem],
-          ['**/LocaleContext.js', () => LocaleContext],
+          ['**/InstanceContext.js', () => InstanceContext],
         ],
         ['../../src/components/SelectionToolbar']
       );
@@ -42,9 +42,9 @@ describe('<SelectionToolbar />', () => {
       translator.get.withArgs('Selection.Clear').returns('localized clear');
 
       const c = renderer.create(
-        <LocaleContext.Provider value={translator}>
+        <InstanceContext.Provider value={{ translator }}>
           <STB api={props.sn.component.selections} xItems={props.sn.selectionToolbar.xItems} />
-        </LocaleContext.Provider>
+        </InstanceContext.Provider>
       );
 
       items = c.root.findAllByType(STItem);
@@ -113,11 +113,11 @@ describe('<SelectionToolbar />', () => {
         selectionToolbar: { items: [{ key: 'mine' }] },
       },
     };
-    const LocaleContext = React.createContext();
+    const InstanceContext = React.createContext();
     const [{ default: STB }] = aw.mock(
       [
         ['**/SelectionToolbarItem.jsx', () => () => ''],
-        ['**/LocaleContext.js', () => LocaleContext],
+        ['**/InstanceContext.js', () => InstanceContext],
       ],
       ['../../src/components/SelectionToolbar']
     );
@@ -127,9 +127,9 @@ describe('<SelectionToolbar />', () => {
     };
 
     const c = renderer.create(
-      <LocaleContext.Provider value={translator}>
+      <InstanceContext.Provider value={{ translator }}>
         <STB api={props.sn.component.selections} items={props.sn.selectionToolbar.items} />
-      </LocaleContext.Provider>
+      </InstanceContext.Provider>
     );
 
     expect(c.toJSON()).to.deep.eql(['', '', '']);

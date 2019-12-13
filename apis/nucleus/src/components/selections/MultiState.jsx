@@ -4,7 +4,7 @@ import { makeStyles } from '@nebula.js/ui/theme';
 import DownArrow from '@nebula.js/ui/icons/down-arrow';
 
 import OneField from './OneField';
-import LocaleContext from '../../contexts/LocaleContext';
+import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
@@ -31,7 +31,7 @@ export default function MultiState({ field, api }) {
   const [showStateIx, setShowStateIx] = useState(-1);
   const [anchorEl, setAnchorEl] = useState(null);
   const alignTo = useRef();
-  const translator = useContext(LocaleContext);
+  const { translator } = useContext(InstanceContext);
   const clearAllStates = translator.get('Selection.ClearAllStates');
 
   const handleShowFields = e => {

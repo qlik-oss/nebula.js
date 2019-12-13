@@ -6,10 +6,10 @@ import SelectionsBack from '@nebula.js/ui/icons/selections-back';
 import SelectionsForward from '@nebula.js/ui/icons/selections-forward';
 import ClearSelections from '@nebula.js/ui/icons/clear-selections';
 
-import LocaleContext from '../../contexts/LocaleContext';
+import InstanceContext from '../../contexts/InstanceContext';
 
 export default function Nav({ api }) {
-  const translator = useContext(LocaleContext);
+  const { translator } = useContext(InstanceContext);
 
   const [state, setState] = useState({
     forward: api.canGoForward(),
