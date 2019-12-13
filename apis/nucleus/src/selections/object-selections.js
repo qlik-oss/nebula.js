@@ -50,6 +50,9 @@ export default function(model, app) {
     clear() {
       hasSelected = false;
       this.emit('cleared');
+      if (layout.qListObject) {
+        return model.clearSelections('/qListObjectDef');
+      }
       return model.resetMadeSelections();
     },
     /**
@@ -68,7 +71,7 @@ export default function(model, app) {
     cancel() {
       hasSelected = false;
       isActive = false;
-      this.emit('canceled');
+      this.emit('canceled'); // FIXME - spelling?
       this.emit('deactivated');
       return appAPI().switchModal(null, null, false, false);
     },
@@ -80,10 +83,10 @@ export default function(model, app) {
     select(s) {
       const b = this.begin([s.params[0]]);
       if (!appAPI().isModal()) {
-        return;
+        return Promise.resolve();
       }
       hasSelected = true;
-      b.then(() =>
+      return b.then(() =>
         model[s.method](...s.params).then(qSuccess => {
           if (!qSuccess) {
             this.clear();
@@ -95,12 +98,18 @@ export default function(model, app) {
      * @returns {boolean}
      */
     canClear() {
+      if (layout && layout.qListObject && layout.qListObject.qDimensionInfo) {
+        return !layout.qListObject.qDimensionInfo.qLocked;
+      }
       return hasSelected && layout.qSelectionInfo.qMadeSelections;
     },
     /**
      * @returns {boolean}
      */
     canConfirm() {
+      if (layout && layout.qListObject && layout.qListObject.qDimensionInfo) {
+        return !layout.qListObject.qDimensionInfo.qLocked;
+      }
       return hasSelected && layout.qSelectionInfo.qMadeSelections;
     },
     /**

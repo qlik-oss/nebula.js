@@ -30,6 +30,9 @@ export default function ListBox({ model, selections, direction }) {
 
   const onClick = useCallback(
     e => {
+      if (layout && layout.qListObject.qDimensionInfo.qLocked) {
+        return;
+      }
       const elemNumber = +e.currentTarget.getAttribute('data-n');
       if (!Number.isNaN(elemNumber)) {
         selections.select({
@@ -38,7 +41,7 @@ export default function ListBox({ model, selections, direction }) {
         });
       }
     },
-    [model]
+    [model, layout && layout.qListObject.qDimensionInfo.qLocked]
   );
 
   const isItemLoaded = useCallback(
