@@ -104,9 +104,13 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
     type: 'icon-button',
     label: translator.get('Selection.Menu'),
     getSvgIconShape: more,
-    enabled: () => isLocked,
+    enabled: () => !isLocked,
     action: () => setShowSelectionsMenu(!showSelectionsMenu),
   };
+
+  const counts = layout.qListObject.qDimensionInfo.qStateCounts;
+
+  const hasSelections = counts.qSelected + counts.qSelectedExcluded + counts.qLocked + counts.qLockedExcluded > 0;
 
   return (
     <Popover
@@ -129,11 +133,11 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
         <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (
-              <IconButton onClick={unlock}>
+              <IconButton onClick={unlock} disabled={!isLocked}>
                 <Lock />
               </IconButton>
             ) : (
-              <IconButton onClick={lock}>
+              <IconButton onClick={lock} disabled={!hasSelections}>
                 <Unlock />
               </IconButton>
             )}
