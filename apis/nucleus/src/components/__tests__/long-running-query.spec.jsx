@@ -17,13 +17,18 @@ describe('<LongRunningQuery />', () => {
   let sandbox;
   let renderer;
   let render;
+  let api;
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    render = async (onCancel, onRetry) => {
+    api = {
+      cancel: sandbox.spy(),
+      retry: sandbox.spy(),
+    };
+    render = async (canCancel, canRetry) => {
       await act(async () => {
         renderer = create(
           <InstanceContext.Provider value={{ translator: { get: s => s } }}>
-            <LongRunningQuery onCancel={onCancel} onRetry={onRetry} />
+            <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={api} />
           </InstanceContext.Provider>
         );
       });
@@ -39,27 +44,25 @@ describe('<LongRunningQuery />', () => {
     expect(types).to.have.length(1);
   });
   it('should handle cancel', async () => {
-    const onCancel = sandbox.spy();
-    await render(onCancel);
+    const canCancel = true;
+    await render(canCancel);
     const types = renderer.root.findAllByType(Cancel);
     expect(types).to.have.length(1);
-    let p = renderer.root.findAllByType(Progress);
+    const p = renderer.root.findAllByType(Progress);
     expect(p).to.have.length(1);
     const cancelBtn = renderer.root.findByType(Button);
     cancelBtn.props.onClick();
-    p = renderer.root.findAllByType(Progress);
-    expect(p).to.have.length(0);
+    expect(api.cancel.callCount).to.equal(1);
   });
   it('should handle retry', async () => {
-    const onRetry = sandbox.spy();
-    await render(undefined, onRetry);
+    const canRetry = true;
+    await render(undefined, canRetry);
     const types = renderer.root.findAllByType(Retry);
     expect(types).to.have.length(1);
-    let p = renderer.root.findAllByType(Progress);
+    const p = renderer.root.findAllByType(Progress);
     expect(p).to.have.length(0);
     const retryBtn = renderer.root.findByType(Button);
     retryBtn.props.onClick();
-    p = renderer.root.findAllByType(Progress);
-    expect(p).to.have.length(1);
+    expect(api.retry.callCount).to.equal(1);
   });
 });

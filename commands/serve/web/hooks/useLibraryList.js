@@ -1,4 +1,4 @@
-import useModel from '@nebula.js/nucleus/src/hooks/useModel';
+import useSessionModel from '@nebula.js/nucleus/src/hooks/useSessionModel';
 import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
 
 const D = {
@@ -32,7 +32,7 @@ const M = {
 export default function list(app, type = 'dimension') {
   const def = type === 'dimension' ? D : M;
 
-  const [model] = useModel(def, app);
-  const [layout] = useLayout({ model, app });
+  const [model] = useSessionModel(def, app);
+  const [layout] = useLayout(model);
   return [layout ? (layout.qDimensionList || layout.qMeasureList).qItems || [] : []];
 }

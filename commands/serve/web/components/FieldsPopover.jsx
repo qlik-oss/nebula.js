@@ -8,7 +8,7 @@ import { ChevronRight, ChevronLeft } from '@nebula.js/ui/icons';
 
 import { useTheme } from '@nebula.js/ui/theme';
 
-import useModel from '@nebula.js/nucleus/src/hooks/useModel';
+import useSessionModel from '@nebula.js/nucleus/src/hooks/useSessionModel';
 import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
 import useLibraryList from '../hooks/useLibraryList';
 
@@ -80,7 +80,7 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
   const [selectedField, setSelectedField] = useState(null);
   const [searchTerm, setSearchTerm] = useState('');
   const theme = useTheme();
-  const [model] = useModel(
+  const [model] = useSessionModel(
     {
       qInfo: {
         qType: 'FieldList',
@@ -97,7 +97,7 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
     app
   );
 
-  const [layout] = useLayout({ model, app });
+  const [layout] = useLayout(model);
 
   const fields = useMemo(
     () =>

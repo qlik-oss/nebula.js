@@ -1,6 +1,6 @@
 import init from './initiate';
+import { modelStore } from '../stores/modelStore';
 
-const cache = {};
 /**
  * @typedef {object} GetObjectConfig
  * @property {string} id
@@ -15,8 +15,7 @@ const cache = {};
  * @property {object=} properties
  */
 export default async function initiate({ id }, optional, corona) {
-  const cacheKey = `${corona.app.id}/${id}`;
-  const model = cache[cacheKey] || (await corona.app.getObject(id));
-  cache[cacheKey] = model;
+  const key = `${corona.app.id}/${id}`;
+  const model = modelStore.get(key) || modelStore.set(key, await corona.app.getObject(id));
   return init(model, optional, corona);
 }
