@@ -22,20 +22,6 @@ export default function theme(resolvedTheme) {
   let uiPalette;
 
   return {
-    palettes(type, key = '') {
-      const pals = [];
-      if (type === 'qualitative') {
-        pals.push(...this.dataPalettes());
-      } else if (type === 'scale') {
-        pals.push(...this.dataScales());
-      } else {
-        pals.push(...this.dataPalettes(), ...this.dataScales());
-      }
-      if (key) {
-        return pals.filter(p => p.key === key);
-      }
-      return pals;
-    },
     dataScales() {
       const pals = [];
       resolvedTheme.scales.forEach(s => {
