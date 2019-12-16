@@ -2,11 +2,6 @@
 async function renderSnapshot({ nucleus, element }) {
   const params = (() => {
     const opts = {};
-    const { pathname } = window.location;
-    const am = pathname.match(/\/app\/([^/?&]+)/);
-    if (am) {
-      opts.app = decodeURIComponent(am[1]);
-    }
     window.location.search
       .substring(1)
       .split('&')
@@ -22,9 +17,7 @@ async function renderSnapshot({ nucleus, element }) {
 
   let snapshot = {};
   const renderError = e => {
-    element.innerHTML = `
-    <p>${e.message}</p>
-    `;
+    element.innerHTML = `<p>${e.message}</p>`;
     element.setAttribute('data-njs-error', e.message);
   };
   try {
@@ -52,7 +45,7 @@ async function renderSnapshot({ nucleus, element }) {
       if (id === layout.qInfo.qId) {
         return objectModel;
       }
-      return Promise.reject();
+      return Promise.reject(new Error(`Could not find an object with id: ${id}`));
     },
   };
 
@@ -63,19 +56,19 @@ async function renderSnapshot({ nucleus, element }) {
     },
   });
 
-  nebbie
-    .get(
+  try {
+    await nebbie.get(
       {
         id: layout.qInfo.qId,
       },
       {
         element,
       }
-    )
-    .catch(e => {
-      renderError(e || { message: 'Failed to render supernova' });
-      throw e;
-    });
+    );
+  } catch (e) {
+    renderError(e || { message: 'Failed to render supernova' });
+    throw e;
+  }
 }
 
 export default renderSnapshot;
