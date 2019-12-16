@@ -41,14 +41,14 @@
     "source-map-loader": "0.2.4",
     "webpack": "4.41.2",
     "webpack-dev-server": "3.9.0",
-    "ws": "7.2.0",
+    "ws": "7.2.1",
     "yargs": "15.0.2"
   },
   "devDependencies": {
     "@babel/core": "7.7.5",
     "@babel/preset-env": "7.7.6",
     "@babel/preset-react": "7.7.4",
-    "@material-ui/core": "4.7.2",
+    "@material-ui/core": "4.8.0",
     "@nebula.js/nucleus": "0.1.0-alpha.25",
     "@nebula.js/ui": "0.1.0-alpha.25",
     "autosuggest-highlight": "3.1.1",
