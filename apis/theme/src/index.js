@@ -1,16 +1,12 @@
-import extend from 'extend';
 import EventEmitter from 'node-event-emitter';
 
+import setTheme from './set-theme';
+import paletteResolverFn from './palette-resolver';
 import styleResolverFn from './style-resolver';
-import paletteResolverFn from './paletter-resolver';
-import contrasterFn, { luminance } from './contraster';
-
-import baseRawJSON from './themes/base.json';
-import lightRawJSON from './themes/light.json';
-import darkRawJSON from './themes/dark.json';
+import contrasterFn from './contraster/contraster';
+import luminance from './contraster/luminance';
 
 export default function theme() {
-  let rawThemeJSON;
   let resolvedThemeJSON;
   let styleResolverInstanceCache = {};
 
@@ -38,8 +34,8 @@ export default function theme() {
     /**
      * @returns {colorPickerPalette[]}
      */
-    getDataColorPickerPalettes(...a) {
-      return paletteResolver.uiPalettes(...a);
+    getDataColorPickerPalettes() {
+      return paletteResolver.uiPalettes();
     },
     /**
      * @returns {dataColorSpecials}
@@ -104,22 +100,9 @@ export default function theme() {
      * @param {object} t Raw JSON theme
      */
     setTheme(t) {
-      const colorRawJSON = t.type === 'dark' ? darkRawJSON : lightRawJSON;
-      const root = extend(true, {}, baseRawJSON, colorRawJSON);
-      // avoid merging known array objects as it could cause issues if they are of different types (pyramid vs class) or length
-      rawThemeJSON = extend(true, {}, root, { scales: null, palettes: { data: null, ui: null } }, t);
-      if (!rawThemeJSON.palettes.data) {
-        rawThemeJSON.palettes.data = root.palettes.data;
-      }
-      if (!rawThemeJSON.palettes.ui) {
-        rawThemeJSON.palettes.ui = root.palettes.ui;
-      }
-      if (!rawThemeJSON.scales) {
-        rawThemeJSON.scales = root.scales;
-      }
+      resolvedThemeJSON = setTheme(t, styleResolverFn.resolveRawTheme);
       styleResolverInstanceCache = {};
 
-      resolvedThemeJSON = styleResolverFn.resolveRawTheme(rawThemeJSON);
       paletteResolver = paletteResolverFn(resolvedThemeJSON);
 
       // try to determine if the theme color is light or dark
