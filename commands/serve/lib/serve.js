@@ -90,7 +90,11 @@ module.exports = async argv => {
   let snPath;
   let snName;
   let watcher;
-  if (serveConfig.entry) {
+  let snUrl;
+  if (/^https?/.test(serveConfig.entry)) {
+    snName = 'remote';
+    snUrl = serveConfig.entry;
+  } else if (serveConfig.entry) {
     snPath = path.resolve(context, serveConfig.entry);
     const parsed = path.parse(snPath);
     snName = parsed.name;
@@ -111,7 +115,7 @@ module.exports = async argv => {
     }
   }
 
-  const ww = await initiateWatch({ snPath, snName: serveConfig.type || snName, host });
+  const ww = snUrl ? null : await initiateWatch({ snPath, snName: serveConfig.type || snName, host });
 
   const server = await webpackServe({
     host,
@@ -119,7 +123,7 @@ module.exports = async argv => {
     enigmaConfig,
     webIntegrationId: serveConfig.webIntegrationId,
     snName: serveConfig.type || snName,
-    snPath,
+    snUrl,
     dev: process.env.MONO === 'true',
     open: serveConfig.open !== false,
     entryWatcher: ww,

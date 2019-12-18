@@ -3,6 +3,7 @@ import snapshooter from '@nebula.js/snapshooter/dist/renderer';
 
 import { openApp, params, info as serverInfo } from './connect';
 import runFixture from './run-fixture';
+import initiateWatch from './hot';
 
 const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
   const nuked = nucleus.configured({
@@ -29,11 +30,12 @@ const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
 };
 
 async function renderWithEngine() {
-  if (!params.app) {
+  const info = await serverInfo;
+  initiateWatch(info);
+  if (!info.enigma.appId) {
     location.href = location.origin; //eslint-disable-line
   }
-  const info = await serverInfo;
-  const app = await openApp(params.app);
+  const app = await openApp(info.enigma.appId);
   const nebbie = await nuke({ app, ...info, theme: params.theme, language: params.language });
   const element = document.querySelector('#chart-container');
   const vizCfg = {
@@ -67,7 +69,9 @@ async function renderWithEngine() {
 }
 
 async function renderSnapshot() {
-  const { themes, supernova } = await serverInfo;
+  const info = await serverInfo;
+  const { themes, supernova } = info;
+  initiateWatch(info);
   const element = document.querySelector('#chart-container');
   element.classList.toggle('full', true);
 

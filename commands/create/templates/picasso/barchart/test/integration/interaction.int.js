@@ -3,7 +3,7 @@ describe('interaction', () => {
   it('should select two bars', async () => {
     const app = encodeURIComponent(process.env.APP_ID || '/apps/ctrl00.qvf');
     await page.goto(
-      `${process.env.BASE_URL}/render/app/${app}?cols=Alpha,=5+avg(Expression1)&&permissions=interact,select`
+      `${process.env.BASE_URL}/render/?app=${app}&cols=Alpha,=5+avg(Expression1)&permissions=interact,select`
     );
     await page.waitForSelector(content, { visible: true });
 
