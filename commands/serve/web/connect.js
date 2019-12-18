@@ -2,15 +2,8 @@ import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.34.11.json';
 import SenseUtilities from 'enigma.js/sense-utilities';
 
-import { requireFrom } from 'd3-require';
-
 const params = (() => {
   const opts = {};
-  const { pathname } = window.location;
-  const am = pathname.match(/\/app\/([^/?&]+)/);
-  if (am) {
-    opts.app = decodeURIComponent(am[1]);
-  }
   window.location.search
     .substring(1)
     .split('&')
@@ -27,96 +20,112 @@ const params = (() => {
   return opts;
 })();
 
-const getModule = name => requireFrom(async n => `/pkg/${encodeURIComponent(n)}`)(name);
+// Qlik Core:  ws://<host>:<port>/app/<data-folder>/<app-name>
+// QCS:       wss://<tenant-url>.<region>.qlikcloud.com/app/<app-GUID>
+// QSEoK:     wss://<host>/app/<app-GUID>
+// QSEoW:     wss://<host>/<virtual-proxy-prefix>/app/<app-GUID>
+const RX = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/;
+const parseEngineURL = url => {
+  const m = RX.exec(url);
 
-const hotListeners = {};
-
-const lightItUp = name => {
-  if (!hotListeners[name]) {
-    return;
+  if (!m) {
+    return {
+      engineUrl: url,
+      invalid: true,
+    };
   }
-  hotListeners[name].forEach(fn => fn());
-};
 
-const onHotChange = (name, fn) => {
-  if (!hotListeners[name]) {
-    hotListeners[name] = [];
+  let appId;
+  let engineUrl = url;
+  let appUrl;
+
+  const rxApp = /\/app\/([^?&#:]+)/.exec(url);
+
+  if (rxApp) {
+    [, appId] = rxApp;
+    engineUrl = url.substring(0, rxApp.index);
+    appUrl = url;
   }
 
-  hotListeners[name].push(fn);
-  if (window[name]) {
-    fn();
-  }
-  return () => {
-    // removeListener
-    const idx = hotListeners[name].indexOf(fn);
-    hotListeners[name].splice(idx, 1);
+  return {
+    enigma: {
+      secure: m[1] === 'wss',
+      host: m[2],
+      port: m[3] || undefined,
+      appId,
+    },
+    engineUrl,
+    appUrl,
   };
 };
 
-window.onHotChange = onHotChange;
-
-const initiateWatch = info => {
-  const ws = new WebSocket(`ws://localhost:${info.sock.port}`);
-
-  const update = () => {
-    getModule(info.supernova.name).then(mo => {
-      window[info.supernova.name] = mo;
-      lightItUp(info.supernova.name);
-    });
-  };
-
-  ws.onmessage = () => {
-    update();
-  };
-
-  update();
-};
-
-const requestInfo = fetch('/info')
+const connectionInfo = fetch('/info')
   .then(response => response.json())
-  .then(async info => {
-    initiateWatch(info);
-    const { webIntegrationId } = info;
-    const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
-    let headers = {};
-    if (webIntegrationId) {
-      const response = await fetch(`${rootPath}/api/v1/csrf-token`, {
-        credentials: 'include',
-        headers: { 'qlik-web-integration-id': webIntegrationId },
-      });
-      if (response.status === 401) {
-        const loginUrl = new URL(`${rootPath}/login`);
-        loginUrl.searchParams.append('returnto', window.location.href);
-        loginUrl.searchParams.append('qlik-web-integration-id', webIntegrationId);
-        window.location.href = loginUrl;
-        return undefined;
-      }
-      const csrfToken = new Map(response.headers).get('qlik-csrf-token');
-      headers = {
-        'qlik-web-integration-id': webIntegrationId,
-        'qlik-csrf-token': csrfToken,
+  .then(async n => {
+    let info = n;
+    if (params.engine_url) {
+      info = {
+        ...info,
+        ...parseEngineURL(params.engine_url),
+      };
+    } else if (params.app) {
+      info = {
+        ...info,
+        enigma: {
+          ...info.enigma,
+          appId: params.app,
+        },
       };
     }
+    if (params['web-integration-id']) {
+      info.webIntegrationId = params['web-integration-id'];
+    }
+    if (info.invalid) {
+      return info;
+    }
+    const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
     return {
       ...info,
       rootPath,
-      headers,
     };
   });
 
+let headers;
+
+const getHeaders = async ({ webIntegrationId, rootPath }) => {
+  const response = await fetch(`${rootPath}/api/v1/csrf-token`, {
+    credentials: 'include',
+    headers: { 'qlik-web-integration-id': webIntegrationId },
+  });
+  if (response.status === 401) {
+    const loginUrl = new URL(`${rootPath}/login`);
+    loginUrl.searchParams.append('returnto', window.location.href);
+    loginUrl.searchParams.append('qlik-web-integration-id', webIntegrationId);
+    window.location.href = loginUrl;
+    return undefined;
+  }
+  const csrfToken = new Map(response.headers).get('qlik-csrf-token');
+  headers = {
+    'qlik-web-integration-id': webIntegrationId,
+    'qlik-csrf-token': csrfToken,
+  };
+
+  return headers;
+};
+
 const defaultConfig = {
-  host: window.location.hostname || 'localhost',
-  port: 9076,
   secure: false,
 };
 
 let connection;
 const connect = () => {
   if (!connection) {
-    connection = requestInfo.then(async info => {
-      const { webIntegrationId, rootPath, headers } = info;
+    connection = connectionInfo.then(async info => {
+      const { webIntegrationId, rootPath } = info;
       if (webIntegrationId) {
+        if (!headers) {
+          headers = await getHeaders(info);
+        }
         return {
           getDocList: async () => {
             const { data = [] } = await (
@@ -149,10 +158,12 @@ const connect = () => {
 };
 
 const openApp = id =>
-  requestInfo.then(async info => {
-    const { webIntegrationId, headers } = info;
+  connectionInfo.then(async info => {
     let urlParams = {};
-    if (webIntegrationId) {
+    if (info.webIntegrationId) {
+      if (!headers) {
+        headers = await getHeaders(info);
+      }
       urlParams = {
         ...headers,
       };
@@ -172,4 +183,4 @@ const openApp = id =>
       .then(global => global.openDoc(id));
   });
 
-export { connect, openApp, params, requestInfo as info };
+export { connect, openApp, params, connectionInfo as info };

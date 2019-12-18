@@ -246,7 +246,12 @@ export default function App({ app, info }) {
               <Toolbar variant="dense" style={{ background: theme.palette.background.paper }}>
                 <Grid container>
                   <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                    <Button variant="contained" href={window.location.origin}>
+                    <Button
+                      variant="contained"
+                      href={`${window.location.origin}?engine_url=${info.engineUrl || ''}${
+                        info.webIntegrationId ? `&web-integration-id=${info.webIntegrationId}` : ''
+                      }`}
+                    >
                       {/* <IconButton style={{ padding: '0px' }}>
                         <ChevronLeft style={{ verticalAlign: 'middle' }} />
                       </IconButton> */}

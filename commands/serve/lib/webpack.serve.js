@@ -15,6 +15,7 @@ module.exports = async ({
   enigmaConfig,
   webIntegrationId,
   snName,
+  snUrl,
   dev = false,
   open = true,
   entryWatcher,
@@ -74,7 +75,9 @@ module.exports = async ({
     before(app) {
       app.use(snapshotRoute, snapRouter);
 
-      entryWatcher.addRoutes(app);
+      if (entryWatcher) {
+        entryWatcher.addRoutes(app);
+      }
 
       app.get('/themes', (req, res) => {
         const arr = themes.map(theme => theme.key);
@@ -96,9 +99,10 @@ module.exports = async ({
           webIntegrationId,
           supernova: {
             name: snName,
+            url: snUrl,
           },
           sock: {
-            port: entryWatcher.port,
+            port: entryWatcher && entryWatcher.port,
           },
           themes: themes.map(theme => theme.key),
         });

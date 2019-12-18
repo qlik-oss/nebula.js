@@ -3,14 +3,15 @@ import ReactDOM from 'react-dom';
 
 import App from './components/App';
 
-import { openApp, params, info } from './connect';
+import { openApp, info } from './connect';
+import initiateWatch from './hot';
 
-if (!params.app) {
-  location.href = location.origin; //eslint-disable-line
-}
-
-info.then($ =>
-  openApp(params.app).then(app => {
+info.then($ => {
+  if (!$.enigma.appId) {
+    window.location.href = `/${window.location.search}`;
+  }
+  initiateWatch($);
+  return openApp($.enigma.appId).then(app => {
     ReactDOM.render(<App app={app} info={$} />, document.querySelector('#app'));
-  })
-);
+  });
+});

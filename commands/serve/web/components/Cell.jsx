@@ -121,7 +121,9 @@ export default function({ id, expandable, minHeight }) {
               title="Open in single render view"
               href={
                 model
-                  ? `${document.location.href.replace(/\/dev\//, '/render/')}?object=${
+                  ? `${document.location.href.replace(/\/dev\//, '/render/')}${
+                      window.location.search ? '&' : '?'
+                    }object=${
                       model.id
                     }&permissions=passive,interact,select&theme=${currentThemeName}&language=${language}`
                   : ''
