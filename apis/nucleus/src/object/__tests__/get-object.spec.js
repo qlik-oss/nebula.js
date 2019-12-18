@@ -5,16 +5,21 @@ describe('get-object', () => {
   let sandbox;
   let init;
   let objectModel;
+  let model;
   before(() => {
     sandbox = sinon.createSandbox();
     init = sandbox.stub();
     [{ default: create }] = aw.mock([['**/initiate.js', () => init]], ['../get-object.js']);
+    model = {
+      id: 'model-x',
+      on: sandbox.spy(),
+    };
   });
 
   beforeEach(() => {
     objectModel = sandbox.stub();
     init.returns('api');
-    context = { app: { id: 'appid', getObject: id => Promise.resolve(objectModel(id)) } };
+    context = { app: { id: 'appid', getObject: async id => Promise.resolve(objectModel(id)) } };
   });
 
   afterEach(() => {
@@ -22,7 +27,6 @@ describe('get-object', () => {
   });
 
   it('should get object from app only once', async () => {
-    const model = 'model-x';
     objectModel.withArgs('x').returns(model);
     const spy = sandbox.spy(context.app, 'getObject');
     await create({ id: 'x' }, optional, context);
@@ -33,7 +37,6 @@ describe('get-object', () => {
   });
 
   it('should call init', async () => {
-    const model = 'model-x';
     objectModel.withArgs('x').returns(model);
     const ret = await create({ id: 'x' }, optional, context);
     expect(ret).to.equal('api');

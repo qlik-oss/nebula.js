@@ -1,6 +1,6 @@
 import React, { useEffect, useContext, useState } from 'react';
 
-import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
+import { useAppLayout } from '@nebula.js/nucleus/src/hooks/useLayout';
 
 import { Grid, Typography } from '@material-ui/core';
 
@@ -10,7 +10,7 @@ import Cell from './Cell';
 
 export default function Collection({ types, cache }) {
   const app = useContext(AppContext);
-  const [layout] = useLayout({ app });
+  const [layout] = useAppLayout(app);
   const [objects, setObjects] = useState(null);
 
   const { expandedObject } = useContext(VizContext);

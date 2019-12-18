@@ -1,6 +1,5 @@
 import glueCell from './components/glue';
 
-import { get } from './object/observer';
 import getPatches from './utils/patcher';
 
 const noopi = () => {};
@@ -96,14 +95,13 @@ export default function viz({ model, corona, initialError } = {}) {
       unmountCell();
       unmountCell = noopi;
     },
-    setTemporaryProperties(props) {
-      return get(model, 'effectiveProperties').then(current => {
-        const patches = getPatches('/', props, current);
-        if (patches.length) {
-          return model.applyPatches(patches, true);
-        }
-        return undefined;
-      });
+    async setTemporaryProperties(props) {
+      const current = await model.getEffectiveProperties();
+      const patches = getPatches('/', props, current);
+      if (patches.length) {
+        return model.applyPatches(patches, true);
+      }
+      return undefined;
     },
     options(opts) {
       setSnOptions(opts);

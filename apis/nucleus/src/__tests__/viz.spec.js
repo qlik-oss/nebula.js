@@ -1,8 +1,7 @@
-const doMock = ({ glue = () => {}, getter = () => {}, getPatches = () => {} } = {}) =>
+const doMock = ({ glue = () => {}, getPatches = () => {} } = {}) =>
   aw.mock(
     [
       ['**/components/glue.jsx', () => glue],
-      ['**/object/observer.js', () => ({ get: getter })],
       ['**/utils/patcher.js', () => getPatches],
     ],
     ['../viz.js']
@@ -16,7 +15,6 @@ describe('viz', () => {
   let mounted;
   let unmount;
   let model;
-  let getter;
   let getPatches;
   let cellRef;
   let setSnOptions;
@@ -39,10 +37,10 @@ describe('viz', () => {
       },
     };
     glue = sandbox.stub().returns([unmount, cellRef]);
-    getter = sandbox.stub().returns(Promise.resolve('old'));
     getPatches = sandbox.stub().returns(['patch']);
-    [{ default: create }] = doMock({ glue, getter, getPatches });
+    [{ default: create }] = doMock({ glue, getPatches });
     model = {
+      getEffectiveProperties: sandbox.stub().returns('old'),
       applyPatches: sandbox.spy(),
       on: sandbox.spy(),
       once: sandbox.spy(),
@@ -86,16 +84,17 @@ describe('viz', () => {
   describe('setTemporaryProperties', () => {
     it('should apply patches when there are some', async () => {
       await api.setTemporaryProperties('new');
-      expect(getter).to.have.been.calledWithExactly(model, 'effectiveProperties');
+      expect(model.getEffectiveProperties.callCount).to.equal(1);
       expect(getPatches).to.have.been.calledWithExactly('/', 'new', 'old');
       expect(model.applyPatches).to.have.been.calledWithExactly(['patch'], true);
     });
 
     it('should not apply patches when there is no diff', async () => {
+      model.getEffectiveProperties.resetHistory();
       await api.setTemporaryProperties('new');
       getPatches.returns([]);
       model.applyPatches.resetHistory();
-      expect(getter).to.have.been.calledWithExactly(model, 'effectiveProperties');
+      expect(model.getEffectiveProperties.callCount).to.equal(1);
       expect(getPatches).to.have.been.calledWithExactly('/', 'new', 'old');
       expect(model.applyPatches.callCount).to.equal(0);
     });

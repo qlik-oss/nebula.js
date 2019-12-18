@@ -115,6 +115,7 @@ const renderFixture = async () => {
   let mockedProps = {};
   let mockedLayout = {};
   const mockedObject = {
+    id: `${+new Date()}`,
     ...mockedProps,
     ...object,
     // beginSelections: async () => {},

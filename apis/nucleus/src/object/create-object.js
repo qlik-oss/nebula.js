@@ -1,13 +1,12 @@
 import populateData from './populator';
 import init from './initiate';
-
+import { subscribe } from '../stores/modelStore';
 /**
  * @typedef {object} CreateObjectConfig
  * @property {string} type
  * @property {string} version
  * @property {object[]} fields
  */
-
 export default async function create({ type, version, fields }, optional, corona) {
   let mergedProps = {};
   let error;
@@ -40,8 +39,7 @@ export default async function create({ type, version, fields }, optional, corona
     };
     // console.error(e); // eslint-disable-line
   }
-
   const model = await corona.app.createSessionObject(mergedProps);
-
+  subscribe(model);
   return init(model, optional, corona, error);
 }

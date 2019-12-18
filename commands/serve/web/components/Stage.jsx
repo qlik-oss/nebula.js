@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { observe } from '@nebula.js/nucleus/src/object/observer';
+import useProperties from '@nebula.js/nucleus/src/hooks/useProperties';
 
 import Cell from './Cell';
 import NebulaContext from '../contexts/NebulaContext';
@@ -8,14 +8,12 @@ import VizContext from '../contexts/VizContext';
 export default function Stage({ info, storage, uid }) {
   const nebbie = useContext(NebulaContext);
   const [model, setModel] = useState(null);
-
+  const [properties] = useProperties(model);
   const { setActiveViz } = useContext(VizContext);
 
   useEffect(() => {
-    let propertyObserver = () => {};
-    let m;
     if (!uid) {
-      return undefined;
+      return;
     }
     nebbie
       .create(
@@ -38,21 +36,13 @@ export default function Stage({ info, storage, uid }) {
       .then(v => {
         setModel(v.model);
         setActiveViz(v);
-        m = v.model;
-        propertyObserver = observe(
-          v.model,
-          p => {
-            storage.props(info.supernova.name, p);
-          },
-          'properties'
-        );
       });
-
-    return () => {
-      m && m.emit('close');
-      propertyObserver();
-    };
   }, [uid]);
+
+  useEffect(() => {
+    if (!properties) return;
+    storage.props(info.supernova.name, properties);
+  }, [properties]);
 
   if (!model) {
     return null;

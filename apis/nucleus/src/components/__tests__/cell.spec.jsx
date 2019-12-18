@@ -26,6 +26,7 @@ describe('<Cell />', () => {
   let sandbox;
   let render;
   let renderer;
+  let id = 0;
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     const addEventListener = sandbox.spy();
@@ -35,6 +36,7 @@ describe('<Cell />', () => {
       removeEventListener,
     };
     const defaultModel = {
+      id: ++id,
       on: sandbox.stub(),
       removeListener: sandbox.stub(),
       getLayout: sandbox.stub().returns(
@@ -122,7 +124,6 @@ describe('<Cell />', () => {
       getLayout: sandbox.stub().returns(Promise.resolve({ visualization: 'wh0p' })),
     };
     await render({ model });
-
     const types = renderer.root.findAllByType(CError);
     expect(types).to.have.length(1);
   });
@@ -242,7 +243,7 @@ describe('<Cell />', () => {
     it('should go modal (selections)', async () => {
       const layout = { visualization: 'sn', qSelectionInfo: { qInSelections: true }, foo: {} };
       const model = {
-        id: 'sn',
+        id: 'sn-modal',
         getLayout: sandbox.stub().returns(Promise.resolve(layout)),
       };
       const goModal = sandbox.spy();
@@ -269,7 +270,7 @@ describe('<Cell />', () => {
         },
         component: {
           selections: {
-            id: 'sn',
+            id: 'sn-modal',
             setLayout: sandbox.spy(),
             isModal: sandbox.stub().returns(false),
             goModal,
@@ -295,9 +296,9 @@ describe('<Cell />', () => {
     });
 
     it('should no modal (selections)', async () => {
-      const layout = { visualization: 'sn', qSelectionInfo: { qInSelections: false }, foo: {} };
+      const layout = { visualization: 'sn-no-modal', qSelectionInfo: { qInSelections: false }, foo: {} };
       const model = {
-        id: 'sn',
+        id: 'sn-no-modal',
         getLayout: sandbox.stub().returns(Promise.resolve(layout)),
       };
       const noModal = sandbox.spy();
@@ -324,7 +325,7 @@ describe('<Cell />', () => {
         },
         component: {
           selections: {
-            id: 'sn',
+            id: 'sn-no-modal',
             setLayout: sandbox.spy(),
             isModal: sandbox.stub().returns(true),
             noModal,

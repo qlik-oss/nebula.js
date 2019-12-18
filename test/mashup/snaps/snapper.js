@@ -3,20 +3,21 @@
   document.querySelectorAll('.object').forEach(element => {
     const type = element.getAttribute('data-type');
     const obj = {
-      getLayout: () =>
-        Promise.resolve({
-          qInfo: {
-            qId: 'id:',
-          },
-          visualization: type,
-        }),
+      id: `${type}-${+new Date()}`,
+      getLayout: async () => ({
+        qInfo: {
+          qId: 'id:',
+        },
+        visualization: type,
+      }),
       on() {},
       once() {},
     };
 
     const app = {
-      createSessionObject: () => Promise.resolve(obj),
-      getObject: () => Promise.resolve(obj),
+      id: `${+new Date()}`,
+      createSessionObject: async () => obj,
+      getObject: () => async () => obj,
     };
 
     const n = configured(app);

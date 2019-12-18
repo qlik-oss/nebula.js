@@ -110,7 +110,7 @@ const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
       renderDebouncer.current = setTimeout(() => {
         render();
         setRenderCnt(renderCnt + 1);
-      }, 100);
+      });
       return () => clearTimeout(renderDebouncer.current);
     }
     return undefined;

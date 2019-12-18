@@ -33,6 +33,7 @@ async function renderSnapshot({ nucleus, element }) {
   } = snapshot;
 
   const objectModel = {
+    id: `${+new Date()}`,
     async getLayout() {
       return layout;
     },
@@ -41,6 +42,8 @@ async function renderSnapshot({ nucleus, element }) {
   };
 
   const app = {
+    id: `${+new Date()}`,
+    createSessionObject: async () => ({}),
     async getObject(id) {
       if (id === layout.qInfo.qId) {
         return objectModel;

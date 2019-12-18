@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useState, useContext } from 'react';
+import React, { useContext } from 'react';
 import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 import InstanceContext from '../contexts/InstanceContext';
@@ -61,22 +61,10 @@ export const Retry = ({ retry, translator, ...props }) => (
   </>
 );
 
-export default function LongRunningQuery({ onCancel, onRetry }) {
+export default function LongRunningQuery({ canCancel, canRetry, api }) {
   const { stripes, cancel, retry } = useStyles();
-  const [canCancel, setCanCancel] = useState(!!onCancel);
-  const [canRetry, setCanRetry] = useState(!!onRetry);
   const { translator } = useContext(InstanceContext);
 
-  const handleCancel = () => {
-    setCanCancel(false);
-    setCanRetry(true);
-    onCancel();
-  };
-  const handleRetry = () => {
-    setCanRetry(false);
-    setCanCancel(true);
-    onRetry();
-  };
   return (
     <Grid
       container
@@ -93,8 +81,8 @@ export default function LongRunningQuery({ onCancel, onRetry }) {
       }}
       spacing={2}
     >
-      {canCancel && <Cancel cancel={handleCancel} translator={translator} className={cancel} />}
-      {canRetry && <Retry retry={handleRetry} translator={translator} className={retry} />}
+      {canCancel && <Cancel cancel={api.cancel} translator={translator} className={cancel} />}
+      {canRetry && <Retry retry={api.retry} translator={translator} className={retry} />}
     </Grid>
   );
 }

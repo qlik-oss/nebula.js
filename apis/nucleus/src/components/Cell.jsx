@@ -168,7 +168,7 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
   const { translator, language } = useContext(InstanceContext);
   const theme = useTheme();
   const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
-  const [layout, validating, cancel, retry] = useLayout({ app, model });
+  const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
   const [contentRef, contentRect, , contentNode] = useRect();
   const [snContext, setSnContext] = useState(initialSnContext);
   const [snOptions, setSnOptions] = useState(initialSnOptions);
@@ -195,7 +195,7 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
       }
       return undefined;
     };
-    // console.log('layout', layout);
+
     if (!layout) {
       dispatch({ type: 'LOADING' });
       return undefined;
@@ -323,7 +323,7 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
         </Grid>
         <Footer layout={layout} />
       </Grid>
-      {state.longRunningQuery && <LongRunningQuery onCancel={cancel} onRetry={retry} />}
+      {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
     </Paper>
   );
 });

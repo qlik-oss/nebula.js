@@ -2,7 +2,7 @@
 import eventmixin from './event-mixin';
 // import visual from '../components/selections/AppSelections';
 
-import modelCache from '../object/model-cache';
+import createFromDefinition from '../object/create-from-definition';
 import { observe } from '../object/observer';
 
 const cache = {};
@@ -144,7 +144,7 @@ const create = app => {
 
   eventmixin(api);
 
-  currentSelectionsModel = modelCache(
+  currentSelectionsModel = createFromDefinition(
     {
       qInfo: {
         qType: 'current-selections',
