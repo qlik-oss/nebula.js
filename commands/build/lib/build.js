@@ -5,9 +5,9 @@ const yargs = require('yargs');
 const rollup = require('rollup');
 const babel = require('rollup-plugin-babel');
 const postcss = require('rollup-plugin-postcss');
-const replace = require('rollup-plugin-replace');
-const nodeResolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
+const replace = require('@rollup/plugin-replace');
+const nodeResolve = require('@rollup/plugin-node-resolve');
+const commonjs = require('@rollup/plugin-commonjs');
 
 const babelPreset = require('@babel/preset-env');
 
