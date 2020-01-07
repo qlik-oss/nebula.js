@@ -45,7 +45,7 @@
     "@storybook/addon-knobs": "5.2.8",
     "@storybook/react": "5.2.8",
     "babel-loader": "8.0.6",
-    "babel-plugin-istanbul": "5.2.0",
+    "babel-plugin-istanbul": "6.0.0",
     "body-parser": "1.19.0",
     "cross-env": "6.0.3",
     "enigma.js": "2.6.3",
