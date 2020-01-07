@@ -14,7 +14,7 @@ describe('type', () => {
     [{ default: create }] = aw.mock(
       [
         ['**/dist/supernova.js', () => SNFactory],
-        ['**/semver.js', () => ({ satisfies })],
+        ['**/semver/functions/satisfies.js', () => satisfies],
         ['**/load.js', () => ({ load })],
       ],
       ['../type']

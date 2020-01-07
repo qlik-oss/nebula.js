@@ -48,6 +48,11 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
           use: ['style-loader', 'css-loader'],
         },
         {
+          test: /\.ttf$/,
+          include: [/node_modules\/monaco-editor/],
+          use: ['file-loader'],
+        },
+        {
           enforce: 'pre',
           test: /\.js?$/,
           loader: sourceMapLoaderPath,
