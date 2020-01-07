@@ -1,9 +1,9 @@
 const path = require('path');
-const nodeResolve = require('rollup-plugin-node-resolve');
-const commonjs = require('rollup-plugin-commonjs');
 const babel = require('rollup-plugin-babel');
-const replace = require('rollup-plugin-replace');
-const json = require('rollup-plugin-json');
+const commonjs = require('@rollup/plugin-commonjs');
+const json = require('@rollup/plugin-json');
+const nodeResolve = require('@rollup/plugin-node-resolve');
+const replace = require('@rollup/plugin-replace');
 const { terser } = require('rollup-plugin-terser');
 
 const localeStringValidator = require('./tools/locale-string-validator');
