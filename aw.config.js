@@ -7,3 +7,5 @@ module.exports = {
     exclude: ['**/commands/**', '**/__stories__/**'],
   },
 };
+
+global.__NEBULA_DEV__ = false; // eslint-disable-line

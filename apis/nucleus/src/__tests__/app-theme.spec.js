@@ -16,7 +16,7 @@ describe('app-theme', () => {
       error: sandbox.spy(),
       warn: sandbox.spy(),
     };
-    [{ default: appThemeFn }] = aw.mock([['**/apis/theme/**/theme.js', () => t]], ['../app-theme']);
+    [{ default: appThemeFn }] = aw.mock([[require.resolve('@nebula.js/theme'), () => t]], ['../app-theme']);
   });
 
   afterEach(() => {

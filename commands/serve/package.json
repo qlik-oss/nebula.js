@@ -56,9 +56,9 @@
     "d3-require": "1.2.4",
     "enigma.js": "2.6.3",
     "monaco-editor": "0.19.2",
+    "monaco-editor-webpack-plugin": "1.8.2",
     "react": "16.12.0",
     "react-dom": "16.12.0",
-    "webpack-cli": "3.3.10",
-    "monaco-editor-webpack-plugin": "1.8.2"
+    "webpack-cli": "3.3.10"
   }
 }

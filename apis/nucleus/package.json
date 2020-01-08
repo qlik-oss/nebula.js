@@ -10,10 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/qlik-oss/nebula.js.git"
+    "url": "https://github.com/qlik-oss/nebula.js.git",
+    "directory": "apis/nucleus"
   },
-  "main": "dist/nucleus.js",
-  "module": "dist/nucleus.esm.js",
+  "main": "index.js",
+  "module": "dist/nucleus.esm",
+  "jsdelivr": "dist/nucleus.js",
+  "unpkg": "dist/nucleus.js",
   "files": [
     "dist"
   ],

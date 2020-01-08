@@ -10,10 +10,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/qlik-oss/nebula.js.git"
+    "url": "https://github.com/qlik-oss/nebula.js.git",
+    "directory": "apis/locale"
   },
-  "main": "dist/locale.js",
-  "module": "dist/locale.esm.js",
+  "main": "index.js",
+  "module": "dist/locale.esm",
   "files": [
     "dist"
   ],

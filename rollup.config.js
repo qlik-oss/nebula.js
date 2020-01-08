@@ -12,6 +12,33 @@ const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json')); // eslint-disable-line
 const { name, version, license } = pkg;
 
+const targetName = name.split('/')[1];
+const targetDirName = 'dist';
+const targetDir = path.join(cwd, targetDirName);
+
+const getFileName = (format, dev) => `${targetName}${format ? `.${format}` : ''}${dev ? '.dev' : ''}.js`;
+const getTargetFileName = (format, dev) => `${targetDirName}/${getFileName(format, dev)}`;
+
+// verify package targets and names
+if (pkg.main !== 'index.js') {
+  throw Error(`main target must be index.js`);
+}
+
+// in our webpack/rollup configs we include '.dev.js' as file extension when building
+// a dev distribution, the module target should therefore end with '.esm' and not with '.esm.js'
+// so that the node resolve algorithm finds the correct module based on module format and dev mode
+// e.g. '@nebula.js/supernova' -> '@nebula.js/supernova/dist/supernova.esm.dev.js'
+const moduleTargetName = getTargetFileName('esm').replace(/\.js$/, '');
+if (pkg.module && pkg.module !== moduleTargetName) {
+  throw Error(`module target must be ${moduleTargetName}`);
+}
+if (pkg.unpkg && pkg.unpkg !== getTargetFileName('')) {
+  throw Error(`unpkg target must be ${getTargetFileName('')}`);
+}
+if (pkg.jsdelivr && pkg.jsdelivr !== getTargetFileName('')) {
+  throw Error(`jsdelivr target must be ${getTargetFileName('')}`);
+}
+
 const banner = `/*
 * ${name} v${version}
 * Copyright (c) ${new Date().getFullYear()} QlikTech International AB
@@ -56,11 +83,8 @@ const propTypes = [
 
 const watch = process.argv.indexOf('-w') > 2;
 
-const config = isEsm => {
-  const outputFile = isEsm ? pkg.module : pkg.main;
-  const basename = path.basename(outputFile);
-  const dir = path.dirname(outputFile);
-  const umdName = basename
+const config = (isEsm, dev = false) => {
+  const umdName = targetName
     .replace(/-([a-z])/g, (m, p1) => p1.toUpperCase())
     .split('.js')
     .join('');
@@ -88,22 +112,23 @@ const config = isEsm => {
   const cfg = {
     input: path.resolve(cwd, 'src', 'index'),
     output: {
-      file: path.resolve(dir, basename),
+      file: path.resolve(targetDir, getFileName(isEsm ? 'esm' : '', dev)),
       format: isEsm ? 'esm' : 'umd',
       exports: 'default',
       name: umdName,
-      sourcemap: process.env.CODESANDBOX ? 'inline' : true,
+      sourcemap: false,
       banner,
       globals,
     },
     external,
     plugins: [
       replace({
+        __NEBULA_DEV__: dev,
         'process.env.NODE_ENV': JSON.stringify(isEsm ? 'development' : 'production'),
         'process.env.NEBULA_VERSION': JSON.stringify(version),
       }),
       nodeResolve({
-        extensions: ['.js', '.jsx'],
+        extensions: [dev ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),
       }),
       json(),
       commonjs({
@@ -158,7 +183,7 @@ const config = isEsm => {
     ],
   };
 
-  if (process.env.NODE_ENV === 'production' && !isEsm) {
+  if (!dev) {
     cfg.plugins.push(
       terser({
         output: {
@@ -171,4 +196,16 @@ const config = isEsm => {
   return cfg;
 };
 
-module.exports = [watch ? false : config(), pkg.module ? config(true) : false].filter(Boolean);
+const dist = [
+  // production
+  watch ? false : config(),
+  // dev
+  watch ? false : config(false, true),
+
+  // esm
+  pkg.module ? config(true) : false,
+  // esm dev
+  pkg.module ? config(true, true) : false,
+];
+
+module.exports = dist.filter(Boolean);

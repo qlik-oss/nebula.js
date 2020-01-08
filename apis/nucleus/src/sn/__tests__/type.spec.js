@@ -13,7 +13,7 @@ describe('type', () => {
     satisfies = sb.stub();
     [{ default: create }] = aw.mock(
       [
-        ['**/dist/supernova.js', () => SNFactory],
+        [require.resolve('@nebula.js/supernova'), () => SNFactory],
         ['**/semver/functions/satisfies.js', () => satisfies],
         ['**/load.js', () => ({ load })],
       ],
