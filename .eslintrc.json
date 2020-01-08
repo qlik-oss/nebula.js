@@ -20,11 +20,20 @@
     "import/no-extraneous-dependencies": [2, { "devDependencies": true }],
     "import/no-dynamic-require": 0
   },
+  "globals": {
+    "__NEBULA_DEV__": false
+  },
   "overrides": [
     {
       "files": ["apis/**/*"],
       "rules": {
         "no-console": "error"
+      }
+    },
+    {
+      "files": ["apis/*/index.js"],
+      "rules": {
+        "global-require": 0
       }
     },
     {

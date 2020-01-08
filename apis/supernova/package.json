@@ -10,10 +10,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/qlik-oss/nebula.js.git"
+    "url": "https://github.com/qlik-oss/nebula.js.git",
+    "directory": "apis/supernova"
   },
-  "main": "dist/supernova.js",
-  "module": "dist/supernova.esm.js",
+  "main": "index.js",
+  "module": "dist/supernova.esm",
+  "jsdelivr": "dist/supernova.js",
+  "unpkg": "dist/supernova.js",
   "files": [
     "dist"
   ],

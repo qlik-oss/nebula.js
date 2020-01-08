@@ -1,4 +1,5 @@
 const path = require('path');
+const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 const babelPath = require.resolve('babel-loader');
@@ -38,7 +39,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
           : {}),
         fixtures: path.resolve(process.cwd(), 'test/component'),
       },
-      extensions: ['.js', '.jsx'],
+      extensions: ['.dev.js', '.js', '.jsx'],
     },
     module: {
       rules: [
@@ -82,6 +83,9 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       ],
     },
     plugins: [
+      new webpack.DefinePlugin({
+        __NEBULA_DEV__: true,
+      }),
       new MonacoWebpackPlugin({ languages: ['json'] }),
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eRender.html'),
