@@ -114,7 +114,7 @@ const config = (isEsm, dev = false) => {
     output: {
       file: path.resolve(targetDir, getFileName(isEsm ? 'esm' : '', dev)),
       format: isEsm ? 'esm' : 'umd',
-      exports: 'default',
+      exports: targetName === 'supernova' ? 'named' : 'default',
       name: umdName,
       sourcemap: false,
       banner,
