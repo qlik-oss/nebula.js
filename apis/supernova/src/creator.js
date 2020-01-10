@@ -5,6 +5,8 @@ import EventEmitter from 'node-event-emitter';
 import JSONPatch from './json-patch';
 import actionhero from './action-hero';
 
+import { hook, render } from './hooks';
+
 /**
  * @interface SnComponent
  * @alias SnComponent
@@ -45,7 +47,61 @@ const mixin = obj => {
   return obj;
 };
 
-export default function create(generator, opts) {
+function createWithHooks(generator, opts, env) {
+  if (__NEBULA_DEV__) {
+    if (generator.component.render !== render) {
+      // eslint-disable-next-line no-console
+      console.warn('Detected multiple supernova modules, this might cause problems.');
+    }
+  }
+  const c = {
+    context: {
+      element: undefined,
+      layout: {},
+      model: opts.model,
+      app: opts.app,
+      global: opts.global,
+      selections: opts.selections,
+    },
+    env,
+    fn: generator.component.fn,
+    created() {},
+    mounted(element) {
+      generator.component.initiate(c);
+      this.context = {
+        ...this.context,
+        element,
+      };
+    },
+    render(r) {
+      this.context = {
+        ...this.context,
+        ...r.context,
+        layout: r.layout,
+      };
+
+      generator.component.render(this);
+
+      // TODO - deal with onRenderComplete
+    },
+    resize() {},
+    willUnmount() {
+      generator.component.teardown(this);
+    },
+    setSnapshotData(layout) {
+      return generator.component.runSnaps(this, layout);
+    },
+    destroy() {},
+  };
+
+  return [c, null];
+}
+
+function createClassical(generator, opts) {
+  if (__NEBULA_DEV__) {
+    // eslint-disable-next-line no-console
+    console.warn('Obsolete API - time to get hooked!');
+  }
   const componentInstance = {
     ...defaultComponent,
   };
@@ -94,6 +150,18 @@ export default function create(generator, opts) {
     app: opts.app,
     selections: opts.selections,
   });
+
+  return [componentInstance, hero];
+}
+
+export default function create(generator, opts, env) {
+  if (typeof generator.component === 'function') {
+    generator.component = hook(generator.component);
+  }
+  const [componentInstance, hero] =
+    generator.component && generator.component.__hooked
+      ? createWithHooks(generator, opts, env)
+      : createClassical(generator, opts);
 
   const teardowns = [];
 
@@ -149,7 +217,7 @@ export default function create(generator, opts) {
     generator,
     component: componentInstance,
     selectionToolbar: {
-      items: hero.selectionToolbarItems,
+      items: hero ? hero.selectionToolbarItems : [],
     },
     destroy() {
       teardowns.forEach(t => t());

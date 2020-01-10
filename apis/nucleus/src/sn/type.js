@@ -1,4 +1,4 @@
-import SNFactory from '@nebula.js/supernova';
+import { generator as SNFactory } from '@nebula.js/supernova';
 import satisfies from 'semver/functions/satisfies';
 import { load } from './load';
 
