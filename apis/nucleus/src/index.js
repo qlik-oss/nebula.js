@@ -4,8 +4,6 @@ import 'regenerator-runtime/runtime'; // Polyfill for using async/await
 import appLocaleFn from './locale/app-locale';
 import appThemeFn from './app-theme';
 
-import { createAppSelectionAPI } from './selections';
-
 import bootNebulaApp from './components/NebulaApp';
 import AppSelectionsPortal from './components/selections/AppSelections';
 
@@ -118,8 +116,6 @@ function nuked(configuration = {}) {
     if (instanceConfig) {
       return nucleus.configured(instanceConfig)(app);
     }
-
-    createAppSelectionAPI(app);
 
     let currentContext = {
       ...configuration.context,
@@ -242,10 +238,11 @@ function nuked(configuration = {}) {
       /**
        * @returns {AppSelections}
        */
-      selections: () => {
+      selections: async () => {
         if (!selectionsApi) {
+          const appSelections = await root.getAppSelections();
           selectionsApi = /** @lends AppSelections */ {
-            ...app._selections, // eslint-disable-line no-underscore-dangle
+            ...appSelections,
             /**
              * @param {HTMLElement} element
              */
@@ -256,7 +253,7 @@ function nuked(configuration = {}) {
               }
               selectionsComponentReference = AppSelectionsPortal({
                 element,
-                api: app._selections,
+                app,
               });
               root.add(selectionsComponentReference);
             },

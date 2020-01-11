@@ -4,12 +4,14 @@ import ReactDOM from 'react-dom';
 import { createTheme, ThemeProvider, StylesProvider, createGenerateClassName } from '@nebula.js/ui/theme';
 
 import InstanceContext from '../contexts/InstanceContext';
+import useAppSelections from '../hooks/useAppSelections';
 
 const THEME_PREFIX = (process.env.NEBULA_VERSION || '').replace(/[.-]/g, '_');
 
 let counter = 0;
 
-const NebulaApp = forwardRef(({ initialContext }, ref) => {
+const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
+  const [appSelections] = useAppSelections(app);
   const [context, setContext] = useState(initialContext);
   const [muiThemeName, setMuiThemeName] = useState();
   const { theme, generator } = useMemo(
@@ -37,12 +39,9 @@ const NebulaApp = forwardRef(({ initialContext }, ref) => {
         setComponents([...components]);
       }
     },
-    setMuiThemeName(name) {
-      setMuiThemeName(name);
-    },
-    setContext(ctx) {
-      setContext(ctx);
-    },
+    setMuiThemeName,
+    setContext,
+    getAppSelections: () => appSelections,
   }));
 
   return (
@@ -68,7 +67,7 @@ export default function boot({ app, context }) {
   element.setAttribute('data-app-id', app.id);
   document.body.appendChild(element);
 
-  ReactDOM.render(<NebulaApp ref={appRef} initialContext={context} />, element, resolveRender);
+  ReactDOM.render(<NebulaApp ref={appRef} app={app} initialContext={context} />, element, resolveRender);
 
   return [
     {
@@ -95,6 +94,10 @@ export default function boot({ app, context }) {
           await rendered;
           appRef.current.setContext(ctx);
         })();
+      },
+      getAppSelections: async () => {
+        await rendered;
+        return appRef.current.getAppSelections();
       },
     },
     appRef,

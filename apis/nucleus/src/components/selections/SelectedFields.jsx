@@ -3,6 +3,8 @@ import React, { useEffect, useState } from 'react';
 import { Grid } from '@material-ui/core';
 
 import { useTheme } from '@nebula.js/ui/theme';
+import useCurrentSelectionsModel from '../../hooks/useCurrentSelectionsModel';
+import useLayout from '../../hooks/useLayout';
 
 import OneField from './OneField';
 import MultiState from './MultiState';
@@ -32,41 +34,32 @@ function getItems(layout) {
   return Object.keys(fields).map(key => fields[key]);
 }
 
-export default function SelectedFields({ api }) {
-  const [state, setState] = useState({
-    items: getItems(api.layout()),
-  });
-
+export default function SelectedFields({ api, app }) {
   const theme = useTheme();
+  const [currentSelectionsModel] = useCurrentSelectionsModel(app);
+  const [layout] = useLayout(currentSelectionsModel);
+  const [state, setState] = useState({ items: [] });
 
   useEffect(() => {
-    if (!api) {
-      return undefined;
+    if (!app || !currentSelectionsModel || !layout) {
+      return;
     }
-    const onChange = () =>
-      setState(currState => {
-        const newItems = getItems(api.layout());
-        // Maintain modal state in app selections
-        if (api.isInModal() && newItems.length + 1 === currState.items.length) {
-          const lastDeselectedField = currState.items.filter(
-            f1 => newItems.some(f2 => f1.name === f2.name) === false
-          )[0];
-          const { qField } = lastDeselectedField.selections[0];
-          lastDeselectedField.selections = [{ qField }];
-          const wasIx = currState.items.indexOf(lastDeselectedField);
-          newItems.splice(wasIx, 0, lastDeselectedField);
-        }
-        return {
-          items: newItems,
-        };
-      });
-    api.on('changed', onChange);
-    api.on('modal-unset', onChange);
-    return () => {
-      api.removeListener('changed', onChange);
-      api.removeListener('modal-unset', onChange);
-    };
-  }, [api]);
+    const items = getItems(layout);
+    setState(currState => {
+      const newItems = items;
+      // Maintain modal state in app selections
+      if (api.isInModal() && newItems.length + 1 === currState.items.length) {
+        const lastDeselectedField = currState.items.filter(f1 => newItems.some(f2 => f1.name === f2.name) === false)[0];
+        const { qField } = lastDeselectedField.selections[0];
+        lastDeselectedField.selections = [{ qField }];
+        const wasIx = currState.items.indexOf(lastDeselectedField);
+        newItems.splice(wasIx, 0, lastDeselectedField);
+      }
+      return {
+        items: newItems,
+      };
+    });
+  }, [app, currentSelectionsModel, layout]);
 
   return (
     <Grid container spacing={0} wrap="nowrap" style={{ height: '100%' }}>

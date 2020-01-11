@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import { IconButton, Grid } from '@material-ui/core';
 
@@ -7,31 +7,11 @@ import SelectionsForward from '@nebula.js/ui/icons/selections-forward';
 import ClearSelections from '@nebula.js/ui/icons/clear-selections';
 
 import InstanceContext from '../../contexts/InstanceContext';
+import useAppSelectionsNavigation from '../../hooks/useAppSelectionsNavigation';
 
-export default function Nav({ api }) {
+export default function Nav({ api, app }) {
   const { translator } = useContext(InstanceContext);
-
-  const [state, setState] = useState({
-    forward: api.canGoForward(),
-    back: api.canGoBack(),
-    clear: api.canClear(),
-  });
-
-  useEffect(() => {
-    if (!api) {
-      return undefined;
-    }
-    const onChange = () =>
-      setState({
-        forward: api.canGoForward(),
-        back: api.canGoBack(),
-        clear: api.canClear(),
-      });
-    api.on('changed', onChange);
-    return () => {
-      api.removeListener('changed', onChange);
-    };
-  }, [api]);
+  const [navState] = useAppSelectionsNavigation(app);
 
   return (
     <Grid
@@ -46,7 +26,7 @@ export default function Nav({ api }) {
       <Grid item>
         <IconButton
           style={{ marginRight: '8px' }}
-          disabled={!state.back}
+          disabled={!navState || !navState.canGoBack}
           title={translator.get('Navigate.Back')}
           onClick={() => api.back()}
         >
@@ -56,7 +36,7 @@ export default function Nav({ api }) {
       <Grid item>
         <IconButton
           style={{ marginRight: '8px' }}
-          disabled={!state.forward}
+          disabled={!navState || !navState.canGoForward}
           title={translator.get('Navigate.Forward')}
           onClick={() => api.forward()}
         >
@@ -64,7 +44,11 @@ export default function Nav({ api }) {
         </IconButton>
       </Grid>
       <Grid item>
-        <IconButton disabled={!state.clear} title={translator.get('Selection.ClearAll')} onClick={() => api.clear()}>
+        <IconButton
+          disabled={!navState || !navState.canClear}
+          title={translator.get('Selection.ClearAll')}
+          onClick={() => api.clear()}
+        >
           <ClearSelections />
         </IconButton>
       </Grid>

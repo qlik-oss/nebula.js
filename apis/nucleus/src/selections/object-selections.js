@@ -1,6 +1,8 @@
 /* eslint no-underscore-dangle: 0 */
 import eventmixin from './event-mixin';
 
+import { appSelectionsStore } from '../stores/selectionsStore';
+
 const event = () => {
   let prevented = false;
   return {
@@ -15,7 +17,8 @@ export default function(model, app) {
   if (model._selections) {
     return model._selections;
   }
-  const appAPI = () => app._selections;
+  // const appAPI = () => app._selections;
+  const appAPI = () => appSelectionsStore.get(app.id);
   let hasSelected = false;
   let isActive = false;
   let layout = {};

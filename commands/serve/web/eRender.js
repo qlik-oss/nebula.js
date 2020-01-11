@@ -116,7 +116,13 @@ const renderFixture = async () => {
       language: params.language,
     },
   };
-  let mockedProps = {};
+  let mockedProps = {
+    // qSelectionObject: {
+    //   qBackCount: 0,
+    //   qForwardCount: 0,
+    //   qSelections: [],
+    // },
+  };
   let mockedLayout = {};
   const mockedObject = {
     id: `${+new Date()}`,
@@ -145,12 +151,19 @@ const renderFixture = async () => {
   };
 
   const mockedApp = {
+    id: `${+new Date()}`,
     // eslint-disable-next-line no-return-assign
     createSessionObject: async p => {
-      mockedProps = p;
+      mockedProps = {
+        ...mockedProps,
+        ...p,
+      };
       return mockedObject;
     },
     getObject: async () => mockedObject,
+    getAppLayout: async () => ({
+      // qStateNames: [],
+    }),
   };
 
   const nebbie = nucleus(mockedApp, {

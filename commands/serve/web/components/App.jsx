@@ -161,7 +161,7 @@ export default function App({ app, info }) {
       }
     };
 
-    nebbie.selections().mount(currentSelectionsRef.current);
+    nebbie.selections().then(s => s.mount(currentSelectionsRef.current));
     window.onHotChange(info.supernova.name, () => {
       nebbie.types.clearFromCache(info.supernova.name);
       nebbie.types.register(info.supernova);
