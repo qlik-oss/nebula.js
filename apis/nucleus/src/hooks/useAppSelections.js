@@ -2,49 +2,53 @@
 import { useEffect } from 'react';
 import useAppSelectionsNavigation from './useAppSelectionsNavigation';
 import { useAppSelectionsStore } from '../stores/selectionsStore';
-
-let modalObject;
+import createKeyStore from '../stores/createKeyStore';
 
 function createAppSelections({ app, currentSelectionsLayout, navState }) {
+  const [, modalObjectStore] = createKeyStore({});
+  const key = `${app.id}`;
+
   const appSelections = {
     model: app,
     switchModal(object, path, accept = true) {
-      if (object === modalObject) {
+      if (object === modalObjectStore.get(key)) {
         return Promise.resolve();
       }
-      if (modalObject) {
-        modalObject.endSelections(accept);
-        modalObject._selections.emit('deactivated');
+      if (modalObjectStore.get(key)) {
+        modalObjectStore.get(key).endSelections(accept);
+        modalObjectStore.get(key)._selections.emit('deactivated');
       }
       if (object && object !== null) {
         // TODO check model state
-        modalObject = object;
+        modalObjectStore.set(key, object);
         // do not return the call to beginSelection to avoid waiting for it's response
-        modalObject.beginSelections(Array.isArray(path) ? path : [path]).catch(err => {
-          if (err.code === 6003) {
-            // If another object already is in modal -> abort and take over
-            return appSelections.abortModal().then(() => object.beginSelections(Array.isArray(path) ? path : [path]));
-          }
-          throw err;
-        });
+        modalObjectStore
+          .get(key)
+          .beginSelections(Array.isArray(path) ? path : [path])
+          .catch(err => {
+            if (err.code === 6003) {
+              // If another object already is in modal -> abort and take over
+              return appSelections.abortModal().then(() => object.beginSelections(Array.isArray(path) ? path : [path]));
+            }
+            throw err;
+          });
         return Promise.resolve();
       }
-      modalObject = null;
+      modalObjectStore.set(key, null);
       return Promise.resolve();
     },
     isInModal() {
-      return modalObject !== null;
+      return modalObjectStore.get(key) !== null;
     },
     isModal(objectModel) {
       // TODO check model state
-      return objectModel ? modalObject === objectModel : modalObject !== null;
+      return objectModel ? modalObjectStore.get(key) === objectModel : modalObjectStore.get(key) !== null;
     },
     abortModal(accept = true) {
-      if (!modalObject) {
+      if (!modalObjectStore.get(key)) {
         return Promise.resolve({});
       }
-      // modalObject._selections.
-      modalObject = null;
+      modalObjectStore.set(key, null);
       return app.abortModal(accept);
     },
     canGoForward() {
@@ -76,15 +80,15 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
 }
 export default function useAppSelections(app) {
   const [navState, currentSelectionsModel, currentSelectionsLayout] = useAppSelectionsNavigation(app);
-  const [store] = useAppSelectionsStore();
+  const [appSelectionsStore] = useAppSelectionsStore();
   const key = app ? app.id : null;
-  let appSelections = store.get(key);
+  let appSelections = appSelectionsStore.get(key);
 
   useEffect(() => {
     if (!app || !currentSelectionsModel || !currentSelectionsLayout || !navState || appSelections) return;
 
     appSelections = createAppSelections({ app, currentSelectionsLayout, navState });
-    store.set(key, appSelections);
+    appSelectionsStore.set(key, appSelections);
   }, [app, currentSelectionsModel, currentSelectionsLayout, navState]);
 
   return [appSelections, navState];
