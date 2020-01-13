@@ -253,6 +253,7 @@ describe('<Cell />', () => {
             data: {
               targets: [
                 {
+                  propertyPath: '/qFoo',
                   layoutPath: '/foo',
                   resolveLayout: () => layout.foo,
                   dimensions: {
@@ -293,6 +294,7 @@ describe('<Cell />', () => {
       };
       await render({ model, nebbie });
       expect(goModal.callCount).to.equal(1);
+      expect(goModal).to.have.been.calledWithExactly('/qFoo');
     });
 
     it('should no modal (selections)', async () => {
