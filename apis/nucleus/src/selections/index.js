@@ -1,4 +1,4 @@
-import createAppSelectionAPI from './app-selections';
 import createObjectSelectionAPI from './object-selections';
 
-export { createObjectSelectionAPI, createAppSelectionAPI };
+// eslint-disable-next-line import/prefer-default-export
+export { createObjectSelectionAPI };

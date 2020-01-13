@@ -43,13 +43,19 @@ async function renderSnapshot({ nucleus, element }) {
 
   const app = {
     id: `${+new Date()}`,
-    createSessionObject: async () => ({}),
+    createSessionObject: async () => ({
+      id: `${+new Date()}`,
+      ...objectModel,
+    }),
     async getObject(id) {
       if (id === layout.qInfo.qId) {
         return objectModel;
       }
       return Promise.reject(new Error(`Could not find an object with id: ${id}`));
     },
+    getAppLayout: async () => ({
+      // qStateNames: [],
+    }),
   };
 
   const nebbie = await nucleus(app, {

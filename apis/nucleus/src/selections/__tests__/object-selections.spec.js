@@ -1,10 +1,12 @@
 /* eslint no-param-reassign:0 no-underscore-dangle:0 */
+import { appSelectionsStore } from '../../stores/selectionsStore';
 
 describe('object-selections', () => {
   let create;
   let sandbox;
   let ex;
   let app;
+  let selections;
   let model;
 
   const mixin = api => {
@@ -21,12 +23,14 @@ describe('object-selections', () => {
   });
   beforeEach(() => {
     app = {
-      _selections: {
-        switchModal: sandbox.stub(),
-        isModal: sandbox.stub(),
-        abortModal: sandbox.stub(),
-      },
+      id: 'my-app',
     };
+    selections = {
+      switchModal: sandbox.stub(),
+      isModal: sandbox.stub(),
+      abortModal: sandbox.stub(),
+    };
+    appSelectionsStore.set(app.id, selections);
     model = {
       clearSelections: sandbox.stub(),
       resetMadeSelections: sandbox.stub(),
@@ -50,20 +54,20 @@ describe('object-selections', () => {
   it('begin() should emit events and swith modal', () => {
     const c = create(model, app);
     mixin(c);
-    app._selections.switchModal.returns('switch');
+    selections.switchModal.returns('switch');
 
     expect(c.isActive()).to.equal(false);
     expect(c.begin('paths')).to.equal('switch');
     expect(c.emit.firstCall).to.have.been.calledWith('activate');
     expect(c.emit.secondCall).to.have.been.calledWithExactly('activated');
-    expect(app._selections.switchModal).to.have.been.calledWithExactly(model, 'paths', true);
+    expect(selections.switchModal).to.have.been.calledWithExactly(model, 'paths', true);
     expect(c.isActive()).to.equal(true);
   });
 
   it('clear() should emit events and reset made selections', () => {
     const c = create(model, app);
     mixin(c);
-    app._selections.switchModal.returns('switch');
+    selections.switchModal.returns('switch');
     model.clearSelections.returns('clear');
     model.resetMadeSelections.returns('reset');
 
@@ -75,7 +79,7 @@ describe('object-selections', () => {
   it('clear() should emit events and clear selections', () => {
     const c = create(model, app);
     mixin(c);
-    app._selections.switchModal.returns('switch');
+    selections.switchModal.returns('switch');
     model.clearSelections.returns('clear');
     c.setLayout({ qListObject: {} });
 
@@ -87,29 +91,29 @@ describe('object-selections', () => {
   it('confirm() should emit events and switch modal', () => {
     const c = create(model, app);
     mixin(c);
-    app._selections.switchModal.returns('switch');
+    selections.switchModal.returns('switch');
 
     expect(c.confirm()).to.equal('switch');
     expect(c.emit.firstCall).to.have.been.calledWithExactly('confirmed');
     expect(c.emit.secondCall).to.have.been.calledWithExactly('deactivated');
-    expect(app._selections.switchModal).to.have.been.calledWithExactly(null, null, true);
+    expect(selections.switchModal).to.have.been.calledWithExactly(null, null, true);
   });
 
   it('cancel() should emit events and switch modal', () => {
     const c = create(model, app);
     mixin(c);
-    app._selections.switchModal.returns('switch');
+    selections.switchModal.returns('switch');
 
     expect(c.cancel()).to.equal('switch');
     expect(c.emit.firstCall).to.have.been.calledWithExactly('canceled');
     expect(c.emit.secondCall).to.have.been.calledWithExactly('deactivated');
-    expect(app._selections.switchModal).to.have.been.calledWithExactly(null, null, false, false);
+    expect(selections.switchModal).to.have.been.calledWithExactly(null, null, false, false);
   });
 
   it('select() should return early if app modality is false', () => {
     const c = create(model, app);
     mixin(c);
-    app._selections.isModal.returns(false);
+    selections.isModal.returns(false);
     const begin = sandbox.stub(c, 'begin');
     const b = { then: sandbox.stub() };
     begin.returns(b);
@@ -126,7 +130,7 @@ describe('object-selections', () => {
     const c = create(model, app);
     mixin(c);
     model.myMethod = sandbox.stub();
-    app._selections.isModal.returns(true);
+    selections.isModal.returns(true);
     const begin = sandbox.stub(c, 'begin');
     const b = Promise.resolve();
     begin.returns(b);
@@ -144,7 +148,7 @@ describe('object-selections', () => {
     const c = create(model, app);
     mixin(c);
     model.myMethod = sandbox.stub();
-    app._selections.isModal.returns(true);
+    selections.isModal.returns(true);
     const begin = sandbox.stub(c, 'begin');
     const clear = sandbox.stub(c, 'clear');
     const b = Promise.resolve();
@@ -174,7 +178,7 @@ describe('object-selections', () => {
     mixin(c);
     const begin = sandbox.stub(c, 'begin');
     begin.returns({ then: () => {} });
-    app._selections.isModal.returns(true);
+    selections.isModal.returns(true);
 
     c.setLayout({ qSelectionInfo: { qMadeSelections: true } });
     expect(c.canClear()).to.equal(false);
@@ -197,7 +201,7 @@ describe('object-selections', () => {
     mixin(c);
     const begin = sandbox.stub(c, 'begin');
     begin.returns({ then: () => {} });
-    app._selections.isModal.returns(true);
+    selections.isModal.returns(true);
 
     c.setLayout({ qSelectionInfo: { qMadeSelections: true } });
     expect(c.canConfirm()).to.equal(false);
@@ -223,31 +227,31 @@ describe('object-selections', () => {
 
   it('isModal should return app isModal', () => {
     const c = create(model, app);
-    app._selections.isModal.withArgs(model).returns('maybe');
+    selections.isModal.withArgs(model).returns('maybe');
     expect(c.isModal()).to.equal('maybe');
   });
 
   it('goModal should switch app modality', () => {
     const c = create(model, app);
-    app._selections.switchModal.returns('switch');
+    selections.switchModal.returns('switch');
     expect(c.goModal('paths')).to.equal('switch');
-    expect(app._selections.switchModal).to.have.been.calledWithExactly(model, 'paths', false);
+    expect(selections.switchModal).to.have.been.calledWithExactly(model, 'paths', false);
   });
 
   it('noModal should switch app modality', () => {
     const c = create(model, app);
-    app._selections.switchModal.returns('switch');
+    selections.switchModal.returns('switch');
     expect(c.noModal()).to.equal('switch');
-    expect(app._selections.switchModal).to.have.been.calledWithExactly(null, null, false);
+    expect(selections.switchModal).to.have.been.calledWithExactly(null, null, false);
 
     c.noModal(true);
-    expect(app._selections.switchModal.secondCall).to.have.been.calledWithExactly(null, null, true);
+    expect(selections.switchModal.secondCall).to.have.been.calledWithExactly(null, null, true);
   });
 
   it('abortModal should call app abortModal', () => {
     const c = create(model, app);
-    app._selections.abortModal.returns('ab');
+    selections.abortModal.returns('ab');
     expect(c.abortModal()).to.equal('ab');
-    expect(app._selections.abortModal).to.have.been.calledWithExactly(true);
+    expect(selections.abortModal).to.have.been.calledWithExactly(true);
   });
 });

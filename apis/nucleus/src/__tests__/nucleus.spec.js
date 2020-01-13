@@ -16,7 +16,6 @@ describe('nucleus', () => {
     [{ default: create }] = aw.mock(
       [
         ['**/locale/app-locale.js', () => () => ({ translator })],
-        ['**/selections/index.js', () => ({ createAppSelectionAPI: () => ({}) })],
         ['**/components/NebulaApp.jsx', () => rootApp],
         ['**/components/selections/AppSelections.jsx', () => () => ({})],
         ['**/object/create-object.js', () => createObject],

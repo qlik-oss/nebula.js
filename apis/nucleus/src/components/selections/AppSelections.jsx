@@ -7,10 +7,12 @@ import { useTheme } from '@nebula.js/ui/theme';
 
 import SelectedFields from './SelectedFields';
 import Nav from './Nav';
+import useAppSelections from '../../hooks/useAppSelections';
 
-export function AppSelections({ api }) {
+const AppSelections = ({ app }) => {
   const theme = useTheme();
-
+  const [appSelections] = useAppSelections(app);
+  if (!appSelections) return null;
   return (
     <Grid
       container
@@ -27,15 +29,17 @@ export function AppSelections({ api }) {
           borderRight: `1px solid ${theme.palette.divider}`,
         }}
       >
-        <Nav api={api} />
+        <Nav api={appSelections} app={app} />
       </Grid>
       <Grid item xs style={{ backgroundColor: theme.palette.background.darker, overflow: 'hidden' }}>
-        <SelectedFields api={api} />
+        <SelectedFields api={appSelections} app={app} />
       </Grid>
     </Grid>
   );
-}
+};
 
-export default function mount({ element, api }) {
-  return ReactDOM.createPortal(<AppSelections api={api} />, element);
+export { AppSelections };
+
+export default function mount({ element, app }) {
+  return ReactDOM.createPortal(<AppSelections app={app} />, element);
 }

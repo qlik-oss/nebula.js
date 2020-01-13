@@ -50,27 +50,33 @@ const rpcReducer = (state, action) => {
   return newState;
 };
 
-const call = ({ dispatch, model, store, key, method, params, requestStore }) => {
-  const rpc = requestStore.get(key) || model[method].apply(model, ...params);
-  requestStore.set(key, rpc);
-  dispatch({
-    type: 'INVALID',
-    model,
-    store,
-    canCancel: true,
-  });
-  return async () => {
-    try {
-      // await sleep(10000);
-      const result = await rpc;
-      dispatch({ type: 'VALID', result, model, store });
-    } catch (err) {
-      // TODO - this can happen for requested aborted
-      // console.info(err);
-    } finally {
-      requestStore.set(key, undefined);
+const call = async ({ dispatch, model, store, key, method, params, requestStore }) => {
+  let rpc = requestStore.get(key);
+  if (!rpc) {
+    rpc = model[method].apply(model, ...params);
+    requestStore.set(key, rpc);
+    dispatch({
+      type: 'INVALID',
+      model,
+      store,
+      canCancel: true,
+    });
+  }
+
+  try {
+    // await sleep(10000);
+    if (!requestStore.get(key)) {
+      // useRpc was cleaned up
+      return;
     }
-  };
+    const result = await rpc;
+    dispatch({ type: 'VALID', result, model, store });
+  } catch (err) {
+    // TODO - this can happen for requested aborted
+    // console.info(err);
+  } finally {
+    requestStore.set(key, undefined);
+  }
 };
 
 const initialState = {
@@ -91,12 +97,14 @@ export default function useRpc(model, method, ...params) {
   const [requestStore] = useRpcRequestStore();
 
   useEffect(() => {
-    if (!model) return;
+    if (!model) return undefined;
     // Special case, the state might be updated through the store
     if (storedState === state && (state.valid || state.validating)) {
-      return;
+      return undefined;
     }
-    call({ dispatch, model, store, key, method, params, requestStore })();
+
+    call({ dispatch, model, store, key, method, params, requestStore });
+    return undefined;
   }, [model, modelChangedStore.get(model && model.id)]);
 
   const longrunning = {
@@ -110,7 +118,7 @@ export default function useRpc(model, method, ...params) {
         type: 'CANCELLED',
       });
     },
-    retry: () => call({ dispatch, model, store, key, method, params, requestStore })(),
+    retry: () => call({ dispatch, model, store, key, method, params, requestStore }),
   };
 
   return [
