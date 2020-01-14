@@ -92,7 +92,9 @@ const handleModal = ({ sn, layout, model }) => {
   if (selections.id === model.id) {
     selections.setLayout(layout);
     if (layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections && !selections.isModal()) {
-      selections.goModal('/qHyperCubeDef'); // TODO - use path from data targets
+      const { targets } = sn.generator.qae.data;
+      const firstPropertyPath = targets[0].propertyPath;
+      selections.goModal(firstPropertyPath);
     }
     if (!layout.qSelectionInfo || !layout.qSelectionInfo.qInSelections) {
       if (selections.isModal()) {
