@@ -6,6 +6,21 @@ describe('hooks', () => {
     await page.waitForSelector(snSelector, { visible: true });
   });
 
+  it('usePromise', async () => {
+    await page.waitForFunction(
+      selector => document.querySelector(selector).getAttribute('data-render-count') === '0',
+      {},
+      `${snSelector}`
+    );
+    expect(await page.$eval(`${snSelector} .promise`, el => el.textContent)).to.equal('pending');
+    await page.waitForFunction(
+      selector => document.querySelector(selector).getAttribute('data-render-count') === '1',
+      {},
+      `${snSelector}`
+    );
+    expect(await page.$eval(`${snSelector} .promise`, el => el.textContent)).to.equal('ready!');
+  });
+
   it('should render with initial state', async () => {
     const text = await page.$eval(`${snSelector} .state`, el => el.textContent);
     expect(text).to.equal('0');
@@ -23,19 +38,16 @@ describe('hooks', () => {
   });
 
   it('useLayout', async () => {
-    await page.click(snSelector);
     const text = await page.$eval(`${snSelector} .layout`, el => el.textContent);
     expect(text).to.equal('true');
   });
 
   it('useTranslator', async () => {
-    await page.click(snSelector);
     const text = await page.$eval(`${snSelector} .translator`, el => el.textContent);
     expect(text).to.equal('Cancel');
   });
 
   it('useTheme', async () => {
-    await page.click(snSelector);
     const text = await page.$eval(`${snSelector} .theme`, el => el.textContent);
     expect(text).to.equal('#a54343');
   });

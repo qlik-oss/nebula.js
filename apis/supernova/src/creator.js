@@ -5,7 +5,7 @@ import EventEmitter from 'node-event-emitter';
 import JSONPatch from './json-patch';
 import actionhero from './action-hero';
 
-import { hook, render } from './hooks';
+import { hook, run } from './hooks';
 
 /**
  * @interface SnComponent
@@ -49,7 +49,7 @@ const mixin = obj => {
 
 function createWithHooks(generator, opts, env) {
   if (__NEBULA_DEV__) {
-    if (generator.component.render !== render) {
+    if (generator.component.render !== run) {
       // eslint-disable-next-line no-console
       console.warn('Detected multiple supernova modules, this might cause problems.');
     }
@@ -80,11 +80,11 @@ function createWithHooks(generator, opts, env) {
         layout: r.layout,
       };
 
-      generator.component.render(this);
-
-      // TODO - deal with onRenderComplete
+      return generator.component.run(this);
     },
-    resize() {},
+    resize() {
+      // TODO - hook for resize?
+    },
     willUnmount() {
       generator.component.teardown(this);
     },
