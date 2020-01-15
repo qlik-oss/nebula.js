@@ -1,6 +1,6 @@
 import createKeyStore from './createKeyStore';
 
 const [useAppSelectionsStore, appSelectionsStore] = createKeyStore({});
-const [useObjectSelectionsStore] = createKeyStore({});
+const [useObjectSelectionsStore, objectSelectionsStore] = createKeyStore({});
 
-export { useAppSelectionsStore, useObjectSelectionsStore, appSelectionsStore };
+export { useAppSelectionsStore, useObjectSelectionsStore, appSelectionsStore, objectSelectionsStore };

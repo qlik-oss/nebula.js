@@ -1,7 +1,9 @@
 /* eslint no-underscore-dangle: 0 */
-import eventmixin from './event-mixin';
-
-import { appSelectionsStore } from '../stores/selectionsStore';
+import { useEffect } from 'react';
+import { useObjectSelectionsStore } from '../stores/selectionsStore';
+import useAppSelections from './useAppSelections';
+import eventmixin from '../selections/event-mixin';
+import useLayout from './useLayout';
 
 const event = () => {
   let prevented = false;
@@ -13,15 +15,10 @@ const event = () => {
   };
 };
 
-export default function(model, app) {
-  if (model._selections) {
-    return model._selections;
-  }
-  // const appAPI = () => app._selections;
-  const appAPI = () => appSelectionsStore.get(app.id);
-  let hasSelected = false;
+function createObjectSelections({ appSelections, model }) {
+  let layout;
   let isActive = false;
-  let layout = {};
+  let hasSelected = false;
 
   /**
    * @interface
@@ -45,7 +42,7 @@ export default function(model, app) {
       }
       isActive = true;
       this.emit('activated');
-      return appAPI().switchModal(model, paths, true);
+      return appSelections.switchModal(model, paths, true);
     },
     /**
      * @returns {Promise}
@@ -66,7 +63,7 @@ export default function(model, app) {
       isActive = false;
       this.emit('confirmed');
       this.emit('deactivated');
-      return appAPI().switchModal(null, null, true);
+      return appSelections.switchModal(null, null, true);
     },
     /**
      * @returns {Promise}
@@ -76,7 +73,7 @@ export default function(model, app) {
       isActive = false;
       this.emit('canceled'); // FIXME - spelling?
       this.emit('deactivated');
-      return appAPI().switchModal(null, null, false, false);
+      return appSelections.switchModal(null, null, false, false);
     },
     /**
      * @param {object} s
@@ -85,7 +82,7 @@ export default function(model, app) {
      */
     select(s) {
       const b = this.begin([s.params[0]]);
-      if (!appAPI().isModal()) {
+      if (!appSelections.isModal()) {
         return Promise.resolve();
       }
       hasSelected = true;
@@ -104,7 +101,7 @@ export default function(model, app) {
       if (layout && layout.qListObject && layout.qListObject.qDimensionInfo) {
         return !layout.qListObject.qDimensionInfo.qLocked;
       }
-      return hasSelected && layout.qSelectionInfo.qMadeSelections;
+      return hasSelected || (layout && layout.qSelectionInfo.qMadeSelections);
     },
     /**
      * @returns {boolean}
@@ -113,7 +110,7 @@ export default function(model, app) {
       if (layout && layout.qListObject && layout.qListObject.qDimensionInfo) {
         return !layout.qListObject.qDimensionInfo.qLocked;
       }
-      return hasSelected && layout.qSelectionInfo.qMadeSelections;
+      return hasSelected || (layout && layout.qSelectionInfo.qMadeSelections);
     },
     /**
      * @returns {boolean}
@@ -131,26 +128,46 @@ export default function(model, app) {
     /**
      * @returns {boolean}
      */
-    isModal: () => appAPI().isModal(model),
+    isModal: () => appSelections.isModal(model),
     /**
      * @param {string[]} paths
      * @returns {Promise}
      */
-    goModal: paths => appAPI().switchModal(model, paths, false),
+    goModal: paths => appSelections.switchModal(model, paths, false),
     /**
      * @param {boolean} [accept=false]
      * @returns {Promise}
      */
-    noModal: (accept = false) => appAPI().switchModal(null, null, accept),
+    noModal: (accept = false) => appSelections.switchModal(null, null, accept),
     /**
      * @returns {Promise}
      */
-    abortModal: () => appAPI().abortModal(true),
+    abortModal: () => appSelections.abortModal(true),
   };
 
   eventmixin(api);
 
-  model._selections = api; // eslint-disable-line no-param-reassign
-
   return api;
+}
+
+export default function useObjectSelections(app, model) {
+  const [appSelections] = useAppSelections(app);
+  const [layout] = useLayout(model);
+  const key = model ? model.id : null;
+  const [objectSelectionsStore] = useObjectSelectionsStore();
+  let objectSelections = objectSelectionsStore.get(key);
+
+  useEffect(() => {
+    if (!appSelections || !model || objectSelections) return;
+
+    objectSelections = createObjectSelections({ appSelections, model });
+    objectSelectionsStore.set(key, objectSelections);
+  }, [appSelections, model]);
+
+  useEffect(() => {
+    if (!objectSelections) return;
+    objectSelections.setLayout(layout);
+  }, [objectSelections, layout]);
+
+  return [objectSelections];
 }

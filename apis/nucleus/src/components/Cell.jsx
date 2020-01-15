@@ -14,7 +14,7 @@ import Supernova from './Supernova';
 import useRect from '../hooks/useRect';
 import useLayout from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
-import { createObjectSelectionAPI } from '../selections';
+import useObjectSelections from '../hooks/useObjectSelections';
 
 const initialState = err => ({
   loading: false,
@@ -90,7 +90,6 @@ const handleModal = ({ sn, layout, model }) => {
     return;
   }
   if (selections.id === model.id) {
-    selections.setLayout(layout);
     if (layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections && !selections.isModal()) {
       const { targets } = sn.generator.qae.data;
       const firstPropertyPath = targets[0].propertyPath;
@@ -139,14 +138,14 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const loadType = async ({ dispatch, types, name, version, layout, model, app }) => {
+const loadType = async ({ dispatch, types, name, version, layout, model, app, selections }) => {
   try {
     const snType = await getType({ types, name, version });
     // Layout might have changed since we requested the new type -> quick return
     if (layout.visualization !== name) {
       return undefined;
     }
-    const selections = createObjectSelectionAPI(model, app);
+
     const sn = snType.create({
       model,
       app,
@@ -169,12 +168,13 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
 
   const { translator, language } = useContext(InstanceContext);
   const theme = useTheme();
+  const cellRef = useRef();
   const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
   const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
   const [contentRef, contentRect, , contentNode] = useRect();
   const [snContext, setSnContext] = useState(initialSnContext);
   const [snOptions, setSnOptions] = useState(initialSnOptions);
-  const cellRef = useRef();
+  const [selections] = useObjectSelections(app, model);
 
   useEffect(() => {
     if (initialError) {
@@ -190,7 +190,16 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
       handleModal({ sn: state.sn, layout, model });
     };
     const load = async (withLayout, version) => {
-      const sn = await loadType({ dispatch, types, name: withLayout.visualization, version, layout, model, app });
+      const sn = await loadType({
+        dispatch,
+        types,
+        name: withLayout.visualization,
+        version,
+        layout,
+        model,
+        app,
+        selections,
+      });
       if (sn) {
         dispatch({ type: 'LOADED', sn });
         onMount();
