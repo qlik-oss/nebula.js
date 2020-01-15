@@ -1,4 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
+/* eslint class-methods-use-this: 0 */
+/* eslint lines-between-class-members: 0 */
 import {
   hook,
   initiate,
@@ -10,6 +12,7 @@ import {
   useLayoutEffect,
   useMemo,
   usePromise,
+  useRect,
   useModel,
   useApp,
   useGlobal,
@@ -415,6 +418,131 @@ describe('hooks', () => {
       resolve('res');
       await p;
       expect([v1, v2]).to.eql(['res', 'rej']);
+    });
+  });
+
+  describe('useRect', () => {
+    let element;
+
+    describe('with ResizeObserver', () => {
+      const originalRO = global.ResizeObserver;
+      let RO;
+      let RO_;
+
+      if (typeof ResizeObserver !== 'undefined') {
+        // eslint-disable-next-line
+        console.error('Existing ResizeObserver is about to be overridden');
+      }
+      beforeEach(() => {
+        element = {
+          getBoundingClientRect: sandbox.stub(),
+        };
+
+        RO = sandbox.stub();
+        RO_ = {
+          observe: sandbox.stub(),
+          unobserve: sandbox.stub(),
+          disconnect: sandbox.stub(),
+        };
+        RO.returns(RO_);
+
+        global.ResizeObserver = RO;
+        c = {
+          context: {
+            element,
+          },
+        };
+        initiate(c);
+      });
+      afterEach(() => {
+        teardown(c);
+        global.ResizeObserver = originalRO;
+      });
+
+      it('should return rect', () => {
+        let r;
+        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
+        c.fn = () => {
+          [r] = useRect();
+        };
+
+        run(c);
+        expect(r).to.eql({ left: 1, top: 2, width: 3, height: 4 });
+      });
+
+      it('should observe changes', () => {
+        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
+        c.fn = () => {
+          useRect();
+        };
+
+        run(c);
+        expect(RO_.observe).to.have.been.calledWithExactly(element);
+        teardown(c);
+        expect(RO_.unobserve).to.have.been.calledWithExactly(element);
+        expect(RO_.disconnect).to.have.been.calledWithExactly(element);
+      });
+
+      it('should update rect when size changes ', async () => {
+        let r;
+        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
+        c.fn = () => {
+          [r] = useRect();
+        };
+
+        run(c);
+        const handler = RO.getCall(0).args[0];
+        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 5 });
+        handler();
+        await frame();
+        expect(r).to.eql({ left: 1, top: 2, width: 3, height: 5 });
+      });
+    });
+
+    describe('without ResizeObserver', () => {
+      const originalW = global.window;
+      const originalRO = global.ResizeObserver;
+
+      beforeEach(() => {
+        global.ResizeObserver = undefined;
+        global.window = {
+          addEventListener: sandbox.stub(),
+          removeEventListener: sandbox.stub(),
+        };
+        element = {
+          getBoundingClientRect: sandbox.stub(),
+        };
+
+        c = {
+          context: {
+            element,
+          },
+        };
+        initiate(c);
+      });
+      afterEach(() => {
+        teardown(c);
+        global.window = originalW;
+        global.ResizeObserver = originalRO;
+      });
+
+      it('should observe changes', () => {
+        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
+        c.fn = () => {
+          useRect();
+        };
+
+        run(c);
+        const add = global.window.addEventListener.getCall(0).args;
+        expect(add[0]).to.equal('resize');
+        expect(add[1]).to.be.a('function');
+
+        teardown(c);
+
+        const remove = global.window.removeEventListener.getCall(0).args;
+        expect(remove[0]).to.equal('resize');
+        expect(remove[1]).to.equal(add[1]);
+      });
     });
   });
 

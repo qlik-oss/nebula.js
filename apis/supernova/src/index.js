@@ -11,6 +11,7 @@ export { useMemo } from './hooks';
 export { usePromise } from './hooks';
 
 // composed hooks
+export { useRect } from './hooks';
 export { useModel } from './hooks';
 export { useApp } from './hooks';
 export { useGlobal } from './hooks';
