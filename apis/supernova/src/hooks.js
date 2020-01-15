@@ -335,6 +335,44 @@ export function usePromise(p, deps) {
 }
 
 // ---- composed hooks ------
+export function useRect() {
+  const element = useElement();
+  const [rect, setRect] = useState(() => {
+    const { left, top, width, height } = element.getBoundingClientRect();
+    return { left, top, width, height };
+  });
+
+  const ref = useState(() => ({ current: {} }));
+  ref.current = rect;
+
+  useLayoutEffect(() => {
+    const handleResize = () => {
+      // TODO - should we really care about left/top?
+      const { left, top, width, height } = element.getBoundingClientRect();
+      const r = ref.current;
+
+      if (r.width !== width || r.height !== height || r.left !== left || r.top !== top) {
+        setRect({ left, top, width, height });
+      }
+    };
+    if (typeof ResizeObserver === 'function') {
+      let resizeObserver = new ResizeObserver(handleResize);
+      resizeObserver.observe(element);
+      return () => {
+        resizeObserver.unobserve(element);
+        resizeObserver.disconnect(element);
+        resizeObserver = null;
+      };
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [element]);
+
+  return [rect];
+}
+
 export function useModel() {
   return useInternalContext('model');
 }
