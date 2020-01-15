@@ -13,12 +13,12 @@ import useLayout from '../../hooks/useLayout';
 import ListBox from './ListBox';
 import createListboxSelectionToolbar from './listbox-selection-toolbar';
 
-import { createObjectSelectionAPI } from '../../selections';
 import SelectionToolbarWithDefault, { SelectionToolbar } from '../SelectionToolbar';
 
 import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './ListBoxSearch';
+import useObjectSelections from '../../hooks/useObjectSelections';
 
 export default function ListBoxPopover({ alignTo, show, close, app, fieldName, stateName = '$' }) {
   const theme = useTheme();
@@ -70,23 +70,21 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
 
   const moreAlignTo = useRef();
   const [showSelectionsMenu, setShowSelectionsMenu] = useState(false);
+  const [selections] = useObjectSelections(app, model);
 
-  if (!model || !layout || !translator) {
+  if (!model || !layout || !translator || !selections) {
     return null;
   }
-
-  const sel = createObjectSelectionAPI(model, app);
-  sel.setLayout(layout);
 
   const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
   const open = show && Boolean(alignTo.current);
 
   if (open) {
-    sel.goModal('/qListObjectDef');
+    selections.goModal('/qListObjectDef');
   }
   const popoverClose = (e, reason) => {
     const accept = reason !== 'escapeKeyDown';
-    sel.noModal(accept);
+    selections.noModal(accept);
     close();
   };
 
@@ -144,7 +142,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
           <Grid item>
             <SelectionToolbarWithDefault
               layout={layout}
-              api={sel}
+              api={selections}
               xItems={[moreItem]}
               onConfirm={popoverClose}
               onCancel={() => popoverClose(null, 'escapeKeyDown')}
@@ -154,7 +152,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
         <Grid item xs>
           <div ref={moreAlignTo} />
           <ListBoxSearch model={model} />
-          <ListBox model={model} selections={sel} direction="ltr" />
+          <ListBox model={model} selections={selections} direction="ltr" />
           {showSelectionsMenu && (
             <Popover
               open={showSelectionsMenu}

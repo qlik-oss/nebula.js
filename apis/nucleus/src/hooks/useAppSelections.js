@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle: 0 */
 import { useEffect } from 'react';
 import useAppSelectionsNavigation from './useAppSelectionsNavigation';
-import { useAppSelectionsStore } from '../stores/selectionsStore';
+import { useAppSelectionsStore, objectSelectionsStore } from '../stores/selectionsStore';
 import createKeyStore from '../stores/createKeyStore';
 
 function createAppSelections({ app, currentSelectionsLayout, navState }) {
@@ -14,24 +14,23 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
       if (object === modalObjectStore.get(key)) {
         return Promise.resolve();
       }
-      if (modalObjectStore.get(key)) {
-        modalObjectStore.get(key).endSelections(accept);
-        modalObjectStore.get(key)._selections.emit('deactivated');
+      const currentObject = modalObjectStore.get(key);
+      if (currentObject) {
+        currentObject.endSelections(accept);
+        const objectSelections = objectSelectionsStore.get(currentObject.id);
+        objectSelections.emit('deactivated');
       }
       if (object && object !== null) {
         // TODO check model state
         modalObjectStore.set(key, object);
         // do not return the call to beginSelection to avoid waiting for it's response
-        modalObjectStore
-          .get(key)
-          .beginSelections(Array.isArray(path) ? path : [path])
-          .catch(err => {
-            if (err.code === 6003) {
-              // If another object already is in modal -> abort and take over
-              return appSelections.abortModal().then(() => object.beginSelections(Array.isArray(path) ? path : [path]));
-            }
-            throw err;
-          });
+        object.beginSelections(Array.isArray(path) ? path : [path]).catch(err => {
+          if (err.code === 6003) {
+            // If another object already is in modal -> abort and take over
+            return appSelections.abortModal().then(() => object.beginSelections(Array.isArray(path) ? path : [path]));
+          }
+          throw err;
+        });
         return Promise.resolve();
       }
       modalObjectStore.set(key, null);
@@ -40,9 +39,9 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
     isInModal() {
       return modalObjectStore.get(key) !== null;
     },
-    isModal(objectModel) {
+    isModal(object) {
       // TODO check model state
-      return objectModel ? modalObjectStore.get(key) === objectModel : modalObjectStore.get(key) !== null;
+      return object ? modalObjectStore.get(key) === object : modalObjectStore.get(key) !== null;
     },
     abortModal(accept = true) {
       if (!modalObjectStore.get(key)) {
