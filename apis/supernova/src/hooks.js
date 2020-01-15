@@ -1,6 +1,7 @@
 /* eslint no-underscore-dangle: 0 */
 /* eslint no-param-reassign: 0 */
 /* eslint no-console: 0 */
+/* eslint no-use-before-define: 0 */
 
 // Hooks implementation heavily inspired by prect hooks
 
@@ -28,30 +29,33 @@ export function initiate(component) {
   component.__hooks = {
     obsolete: false,
     error: false,
+    chain: {
+      promise: null,
+      resolve: () => {},
+    },
     list: [],
     snaps: [],
     pendingEffects: [],
+    pendingLayoutEffects: [],
+    pendingPromises: [],
   };
 }
 
 export function teardown(component) {
-  component.__hooks.list.forEach(fx => {
-    try {
-      typeof fx.teardown === 'function' ? fx.teardown() : null;
-    } catch (e) {
-      console.error(e);
-    }
-  });
+  flushPending(component.__hooks.list, true);
 
   component.__hooks.obsolete = true;
   component.__hooks.list.length = 0;
   component.__hooks.pendingEffects.length = 0;
-  cancelAnimationFrame(component.__hooks.scheduled);
+  component.__hooks.pendingLayoutEffects.length = 0;
+
+  clearTimeout(component.__hooks.micro);
+  cancelAnimationFrame(component.__hooks.macro);
 }
 
-export async function render(component) {
-  if (component.__hooks.error || component.__hooks.obsolete) {
-    return;
+export async function run(component) {
+  if (component.__hooks.obsolete) {
+    return Promise.resolve();
   }
 
   currentIndex = -1;
@@ -73,23 +77,61 @@ export async function render(component) {
 
   if (__NEBULA_DEV__) {
     if (num > -1 && num !== currentComponent.__hooks.list.length) {
-      console.warn('Detected a change in the order of hooks called.');
+      console.error('Detected a change in the order of hooks called.');
     }
   }
 
-  const pending = currentComponent.__hooks;
-  pending.scheduled = null;
+  const hooks = currentComponent.__hooks;
 
   currentIndex = undefined;
   currentComponent = undefined;
 
-  // eslint-disable-next-line consistent-return
-  return new Promise(resolve => {
-    setTimeout(() => {
-      afterRender(pending); // eslint-disable-line no-use-before-define
-      resolve();
-    }, 0);
-  });
+  if (!hooks.chain.promise) {
+    hooks.chain.promise = new Promise(resolve => {
+      hooks.chain.resolve = resolve;
+    });
+  }
+
+  flushMicro(hooks);
+  scheduleMacro(hooks);
+
+  return hooks.chain.promise;
+}
+
+function flushPending(list, skipUpdate) {
+  try {
+    list.forEach(fx => {
+      // teardown existing
+      typeof fx.teardown === 'function' ? fx.teardown() : null;
+
+      // update
+      if (!skipUpdate) {
+        fx.teardown = fx.value[0]();
+      }
+    });
+  } catch (e) {
+    console.error(e);
+  }
+
+  list.length = 0;
+}
+
+function flushMicro(hooks) {
+  flushPending(hooks.pendingLayoutEffects);
+}
+function flushMacro(hooks) {
+  flushPending(hooks.pendingEffects);
+  hooks.macro = null;
+
+  maybeEndChain(hooks); // eslint-disable-line no-use-before-define
+}
+
+function maybeEndChain(hooks) {
+  if (hooks.pendingPromises.length || hooks.micro || hooks.macro) {
+    return;
+  }
+  hooks.chain.promise = null;
+  hooks.chain.resolve();
 }
 
 export function runSnaps(component, layout) {
@@ -107,22 +149,6 @@ export function runSnaps(component, layout) {
   return Promise.resolve();
 }
 
-function afterRender(hooks) {
-  try {
-    hooks.pendingEffects.forEach(fx => {
-      // teardown existing
-      typeof fx.teardown === 'function' ? fx.teardown() : null;
-
-      // update
-      fx.teardown = fx.value[0]();
-    });
-  } catch (e) {
-    console.error(e);
-  }
-
-  hooks.pendingEffects.length = 0;
-}
-
 function getHook(idx) {
   if (typeof currentComponent === 'undefined') {
     throw new Error('Invalid nebula hook call. Hooks can only be called inside a supernova component.');
@@ -134,13 +160,24 @@ function getHook(idx) {
   return hooks.list[idx];
 }
 
-function schedule(component) {
-  if (component.__hooks.scheduled) {
+function scheduleMicro(component) {
+  if (component.__hooks.micro) {
     return;
   }
 
-  component.__hooks.scheduled = requestAnimationFrame(() => {
-    render(component, true);
+  component.__hooks.micro = setTimeout(() => {
+    component.__hooks.micro = null;
+    run(component);
+  }, 0);
+}
+
+function scheduleMacro(hooks) {
+  if (hooks.macro) {
+    return;
+  }
+
+  hooks.macro = requestAnimationFrame(() => {
+    flushMacro(hooks);
   });
 }
 
@@ -163,7 +200,7 @@ export function hook(cb) {
     __hooked: true,
     fn: cb,
     initiate,
-    render,
+    run,
     teardown,
     runSnaps,
   };
@@ -186,7 +223,7 @@ export function useState(initial) {
       const v = typeof s === 'function' ? s(h.value[0]) : s;
       if (v !== h.value[0]) {
         h.value[0] = v;
-        schedule(h.component);
+        scheduleMicro(h.component);
       }
     };
     h.value = [typeof initial === 'function' ? initial() : initial, setState];
@@ -203,7 +240,22 @@ export function useEffect(cb, deps) {
   const h = getHook(++currentIndex);
   if (depsChanged(h.value ? h.value[1] : undefined, deps)) {
     h.value = [cb, deps];
-    currentComponent.__hooks.pendingEffects.push(h);
+    if (currentComponent.__hooks.pendingEffects.indexOf(h) === -1) {
+      currentComponent.__hooks.pendingEffects.push(h);
+    }
+  }
+}
+
+export function useLayoutEffect(cb, deps) {
+  if (__NEBULA_DEV__) {
+    if (typeof deps !== 'undefined' && !Array.isArray(deps)) {
+      throw new Error('Invalid dependencies. Second argument must be an array.');
+    }
+  }
+  const h = getHook(++currentIndex);
+  if (depsChanged(h.value ? h.value[1] : undefined, deps)) {
+    h.value = [cb, deps];
+    currentComponent.__hooks.pendingLayoutEffects.push(h);
   }
 }
 
@@ -218,6 +270,68 @@ export function useMemo(cb, deps) {
     h.value = [deps, cb()];
   }
   return h.value[1];
+}
+
+export function usePromise(p, deps) {
+  const [obj, setObj] = useState(() => ({
+    resolved: undefined,
+    rejected: undefined,
+    state: 'pending',
+  }));
+
+  const h = getHook(++currentIndex);
+  if (!h.component) {
+    h.component = currentComponent;
+  }
+
+  useLayoutEffect(() => {
+    let canceled = false;
+    h.teardown = () => {
+      canceled = true;
+      h.teardown = null;
+      const idx = h.component.__hooks.pendingPromises.indexOf(h);
+      if (idx > -1) {
+        h.component.__hooks.pendingPromises.splice(idx, 1);
+      }
+    };
+
+    // setObj({
+    //   ...obj,
+    //   state: 'pending',
+    // });
+
+    p()
+      .then(v => {
+        if (canceled) {
+          return;
+        }
+        h.teardown && h.teardown();
+        setObj({
+          resolved: v,
+          rejected: undefined,
+          state: 'resolved',
+        });
+      })
+      .catch(e => {
+        if (canceled) {
+          return;
+        }
+        h.teardown && h.teardown();
+        setObj({
+          resolved: undefined,
+          rejected: e,
+          state: 'resolved',
+        });
+      });
+
+    h.component.__hooks.pendingPromises.push(h);
+
+    return () => {
+      h.teardown && h.teardown();
+    };
+  }, deps);
+
+  return [obj.resolved, obj.rejected];
 }
 
 // ---- composed hooks ------

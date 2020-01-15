@@ -67,17 +67,19 @@ const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
   }, []);
 
   const render = () =>
-    component.render({
-      layout,
-      options,
-      context: {
-        permissions: (snContext || {}).permissions,
-        theme: (snContext || {}).theme,
-        rtl: (snContext || {}).rtl,
-        localeInfo: (snContext || {}).localeInfo,
-        logicalSize,
-      },
-    });
+    Promise.resolve(
+      component.render({
+        layout,
+        options,
+        context: {
+          permissions: (snContext || {}).permissions,
+          theme: (snContext || {}).theme,
+          rtl: (snContext || {}).rtl,
+          localeInfo: (snContext || {}).localeInfo,
+          logicalSize,
+        },
+      })
+    );
 
   // Mount / Unmount
   useEffect(() => {
@@ -96,11 +98,12 @@ const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
     // Skip render in selections
     if (layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections) return undefined;
     if (renderCnt === 0) {
-      if (typeof options.onInitialRender === 'function') {
-        options.onInitialRender.call(null);
-      }
-      render();
-      setRenderCnt(renderCnt + 1);
+      render().then(() => {
+        if (typeof options.onInitialRender === 'function') {
+          options.onInitialRender.call(null);
+        }
+        setRenderCnt(renderCnt + 1);
+      });
     } else {
       // Debounce render
       // TODO - consider requestAnimationFrame
@@ -108,8 +111,9 @@ const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
         clearTimeout(renderDebouncer.current);
       }
       renderDebouncer.current = setTimeout(() => {
-        render();
-        setRenderCnt(renderCnt + 1);
+        render().then(() => {
+          setRenderCnt(renderCnt + 1);
+        });
       });
       return () => clearTimeout(renderDebouncer.current);
     }

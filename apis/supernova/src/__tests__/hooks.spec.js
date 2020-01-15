@@ -3,11 +3,13 @@ import {
   hook,
   initiate,
   teardown,
-  render,
+  run,
   runSnaps,
   useState,
   useEffect,
+  useLayoutEffect,
   useMemo,
+  usePromise,
   useModel,
   useApp,
   useGlobal,
@@ -30,7 +32,7 @@ describe('hooks', () => {
     DEV = global.__NEBULA_DEV__;
     global.__NEBULA_DEV__ = true;
     if (!global.requestAnimationFrame) {
-      global.requestAnimationFrame = setTimeout;
+      global.requestAnimationFrame = cb => setTimeout(cb, 20);
       global.cancelAnimationFrame = clearTimeout;
     }
   });
@@ -48,7 +50,7 @@ describe('hooks', () => {
       __hooked: true,
       fn: 'fn',
       initiate,
-      render,
+      run,
       teardown,
       runSnaps,
     });
@@ -61,18 +63,20 @@ describe('hooks', () => {
   });
 
   it('should throw when hooks are used outside top level of method context', async () => {
+    sandbox.useFakeTimers();
+    const { clock } = sandbox;
     c = {};
     initiate(c);
     const err = sandbox.stub(console, 'error');
 
     c.fn = () => {
-      useEffect(() => {
+      useLayoutEffect(() => {
         useState(0);
       });
     };
 
-    render(c);
-    await frame();
+    run(c);
+    clock.tick(60);
     expect(err.args[0][0].message).to.equal(
       'Invalid nebula hook call. Hooks can only be called inside a supernova component.'
     );
@@ -85,6 +89,7 @@ describe('hooks', () => {
         __hooks: {
           list: [{ teardown: spy }],
           pendingEffects: [],
+          pendingLayoutEffects: [],
         },
       };
 
@@ -125,7 +130,7 @@ describe('hooks', () => {
         [countValue] = useState(7);
       };
 
-      render(c);
+      run(c);
       expect(countValue).to.equal(7);
     });
 
@@ -135,7 +140,7 @@ describe('hooks', () => {
         [countValue] = useState(() => 7);
       };
 
-      render(c);
+      run(c);
       expect(countValue).to.equal(7);
     });
 
@@ -146,7 +151,7 @@ describe('hooks', () => {
         [countValue, setter] = useState(7);
       };
 
-      render(c);
+      run(c);
       expect(countValue).to.equal(7);
       setter(12);
       await frame();
@@ -160,7 +165,7 @@ describe('hooks', () => {
         [countValue, setter] = useState(7);
       };
 
-      await render(c);
+      await run(c);
       c.__hooks.obsolete = true;
       expect(setter).to.throw(
         'Calling setState on an unmounted component is a no-op and indicates a memory leak in your component.'
@@ -175,7 +180,7 @@ describe('hooks', () => {
         [countValue, setter] = useState(7);
       };
 
-      render(c);
+      run(c);
       expect(countValue).to.equal(7);
       setter(prev => prev + 2);
       await frame();
@@ -190,7 +195,7 @@ describe('hooks', () => {
         ++num;
       };
 
-      render(c);
+      run(c);
       expect(num).to.equal(1);
       setter(7);
       await frame();
@@ -209,7 +214,7 @@ describe('hooks', () => {
         ++num;
       };
 
-      render(c);
+      run(c);
       expect(num).to.equal(1);
       setA(8);
       setB(-3);
@@ -238,17 +243,17 @@ describe('hooks', () => {
         value = useMemo(stub, [dep]);
       };
 
-      render(c);
-      render(c);
+      run(c);
+      run(c);
       expect(value).to.equal(5);
 
       dep = 'b';
-      render(c);
+      run(c);
       expect(value).to.equal(6);
     });
   });
 
-  describe('useEffect', () => {
+  describe('useLayoutEffect', () => {
     beforeEach(() => {
       c = {};
       initiate(c);
@@ -257,46 +262,46 @@ describe('hooks', () => {
       teardown(c);
     });
 
-    it('without deps should run after every render', async () => {
+    it('without deps should run after every render', () => {
       const spy = sandbox.spy();
       c.fn = () => {
-        useEffect(spy);
+        useLayoutEffect(spy);
       };
 
-      await render(c);
-      await render(c);
-      await render(c);
+      run(c);
+      run(c);
+      run(c);
       expect(spy.callCount).to.equal(3);
     });
 
-    it('with empty deps should run after first render', async () => {
+    it('with empty deps should run after first render', () => {
       const spy = sandbox.spy();
       c.fn = () => {
-        useEffect(spy, []);
+        useLayoutEffect(spy, []);
       };
 
-      await render(c);
-      await render(c);
-      await render(c);
+      run(c);
+      run(c);
+      run(c);
       expect(spy.callCount).to.equal(1);
     });
 
-    it('with deps should run only when deps change', async () => {
+    it('with deps should run only when deps change', () => {
       const spy = sandbox.spy();
       let dep1 = 'a';
       let dep2 = 0;
       c.fn = () => {
-        useEffect(spy, [dep1, dep2]);
+        useLayoutEffect(spy, [dep1, dep2]);
       };
 
-      await render(c);
+      run(c);
 
       dep1 = 'b';
-      await render(c);
+      run(c);
       expect(spy.callCount).to.equal(2);
 
       dep2 = false;
-      await render(c);
+      run(c);
       expect(spy.callCount).to.equal(3);
     });
 
@@ -306,12 +311,110 @@ describe('hooks', () => {
         return spy;
       };
       c.fn = () => {
-        useEffect(f);
+        useLayoutEffect(f);
       };
 
-      await render(c); // initial render
-      await render(c); // should cleanup previous effects on second render
+      run(c); // initial render
+      run(c); // should cleanup previous effects on second render
       expect(spy.callCount).to.equal(1);
+    });
+  });
+
+  describe('useEffect', () => {
+    let clock;
+    beforeEach(() => {
+      c = {};
+      initiate(c);
+      sandbox.useFakeTimers();
+      global.requestAnimationFrame = cb => setTimeout(cb, 20);
+      clock = sandbox.clock;
+    });
+    afterEach(() => {
+      teardown(c);
+    });
+
+    it('should run once even when called multiple times', () => {
+      const spy = sandbox.spy();
+      c.fn = () => {
+        useEffect(spy);
+      };
+
+      run(c);
+      run(c);
+      run(c);
+      clock.tick(20);
+      expect(spy.callCount).to.equal(1);
+    });
+
+    it('without deps should run after every "frame"', () => {
+      const spy = sandbox.spy();
+      c.fn = () => {
+        useEffect(spy);
+      };
+
+      run(c);
+      clock.tick(20);
+      run(c);
+      clock.tick(20);
+      run(c);
+      clock.tick(20);
+      expect(spy.callCount).to.equal(3);
+    });
+
+    it('with deps should run only when deps change', () => {
+      const spy = sandbox.spy();
+      let dep1 = 'a';
+      let dep2 = 0;
+      c.fn = () => {
+        useEffect(spy, [dep1, dep2]);
+      };
+
+      run(c);
+      clock.tick(20);
+
+      dep1 = 'b';
+      run(c);
+      clock.tick(20);
+      expect(spy.callCount).to.equal(2);
+
+      dep2 = false;
+      run(c);
+      clock.tick(20);
+      expect(spy.callCount).to.equal(3);
+    });
+  });
+
+  describe('usePromise', () => {
+    beforeEach(() => {
+      c = {};
+      initiate(c);
+    });
+    afterEach(() => {
+      teardown(c);
+    });
+
+    it('should resolve run-phase when pending promises are resolved', async () => {
+      let reject;
+      let resolve;
+      const prom1 = new Promise(r => {
+        resolve = r;
+      });
+      const prom2 = new Promise((r, j) => {
+        reject = j;
+      });
+      let v1;
+      let v2;
+      c.fn = () => {
+        [v1] = usePromise(() => prom1, ['']);
+        [, v2] = usePromise(() => prom2, ['']);
+      };
+
+      const p = run(c);
+
+      reject('rej');
+      resolve('res');
+      await p;
+      expect([v1, v2]).to.eql(['res', 'rej']);
     });
   });
 
@@ -341,7 +444,7 @@ describe('hooks', () => {
       c.fn = () => {
         value = useModel();
       };
-      render(c);
+      run(c);
       expect(value).to.equal('model');
     });
     it('useApp', () => {
@@ -349,7 +452,7 @@ describe('hooks', () => {
       c.fn = () => {
         value = useApp();
       };
-      render(c);
+      run(c);
       expect(value).to.equal('app');
     });
     it('useGlobal', () => {
@@ -357,7 +460,7 @@ describe('hooks', () => {
       c.fn = () => {
         value = useGlobal();
       };
-      render(c);
+      run(c);
       expect(value).to.equal('global');
     });
     it('useElement', () => {
@@ -365,7 +468,7 @@ describe('hooks', () => {
       c.fn = () => {
         value = useElement();
       };
-      render(c);
+      run(c);
       expect(value).to.equal('element');
     });
     it('useSelections', () => {
@@ -373,7 +476,7 @@ describe('hooks', () => {
       c.fn = () => {
         value = useSelections();
       };
-      render(c);
+      run(c);
       expect(value).to.equal('selections');
     });
     it('useTheme', () => {
@@ -381,7 +484,7 @@ describe('hooks', () => {
       c.fn = () => {
         value = useTheme();
       };
-      render(c);
+      run(c);
       expect(value).to.equal('theme');
     });
     it('useLayout', () => {
@@ -389,7 +492,7 @@ describe('hooks', () => {
       c.fn = () => {
         value = useLayout();
       };
-      render(c);
+      run(c);
       expect(value).to.equal('layout');
     });
     it('useTranslator', () => {
@@ -397,7 +500,7 @@ describe('hooks', () => {
       c.fn = () => {
         value = useTranslator();
       };
-      render(c);
+      run(c);
       expect(value).to.equal('translator');
     });
     it('onTakeSnapshot', () => {
@@ -405,7 +508,7 @@ describe('hooks', () => {
       c.fn = () => {
         onTakeSnapshot(spy);
       };
-      render(c);
+      run(c);
       c.__hooks.snaps[0].fn();
       expect(spy.callCount).to.equal(1);
     });

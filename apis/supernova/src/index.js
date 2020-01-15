@@ -4,9 +4,11 @@ export { generator };
 
 // core hooks
 export { hook } from './hooks';
+export { useLayoutEffect } from './hooks';
 export { useEffect } from './hooks';
 export { useState } from './hooks';
 export { useMemo } from './hooks';
+export { usePromise } from './hooks';
 
 // composed hooks
 export { useModel } from './hooks';
