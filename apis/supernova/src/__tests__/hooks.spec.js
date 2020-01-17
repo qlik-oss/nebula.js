@@ -7,11 +7,13 @@ import {
   teardown,
   run,
   runSnaps,
+  observeActions,
   useState,
   useEffect,
   useLayoutEffect,
   useMemo,
   usePromise,
+  useAction,
   useRect,
   useModel,
   useApp,
@@ -57,6 +59,7 @@ describe('hooks', () => {
       run,
       teardown,
       runSnaps,
+      observeActions,
     });
   });
 
@@ -92,13 +95,23 @@ describe('hooks', () => {
       c = {
         __hooks: {
           list: [{ teardown: spy }],
-          pendingEffects: [],
-          pendingLayoutEffects: [],
+          pendingEffects: ['a'],
+          pendingLayoutEffects: ['a'],
+          actions: ['a'],
         },
       };
 
       teardown(c);
       expect(spy.callCount).to.equal(1);
+
+      expect(c.__hooks).to.eql({
+        obsolete: true,
+        list: [],
+        pendingEffects: [],
+        pendingLayoutEffects: [],
+        actions: [],
+        dispatchActions: null,
+      });
     });
   });
 
@@ -422,6 +435,73 @@ describe('hooks', () => {
     });
   });
 
+  describe('useAction', () => {
+    beforeEach(() => {
+      c = {};
+      initiate(c);
+    });
+    afterEach(() => {
+      teardown(c);
+    });
+
+    it('should execute callback', async () => {
+      let act;
+      const stub = sandbox.stub();
+      const spy = sandbox.spy();
+      stub.returns({
+        action: spy,
+      });
+      c.fn = () => {
+        [act] = useAction(stub, []);
+      };
+
+      run(c);
+      expect(stub.callCount).to.eql(1);
+      expect(spy.callCount).to.eql(0);
+
+      act();
+      expect(spy.callCount).to.eql(1);
+    });
+
+    it('should maintain reference', async () => {
+      const stub = sandbox.stub();
+      stub.returns({
+        action: 'action',
+        icon: 'ic',
+        active: true,
+        enabled: true,
+      });
+      c.fn = () => {
+        useAction(stub, []);
+      };
+
+      run(c);
+
+      const ref = c.__hooks.list[0].value[0];
+
+      expect(ref.active).to.eql(true);
+      expect(ref.getSvgIconShape()).to.eql('ic');
+      expect(ref.enabled).to.eql(true);
+    });
+
+    it('should dispatch actions', async () => {
+      const spy = sandbox.spy();
+      c.fn = () => {
+        useAction(() => ({ key: 'nyckel' }), []);
+      };
+
+      observeActions(c, spy);
+      expect(spy.callCount).to.eql(1);
+
+      run(c);
+      expect(spy.callCount).to.eql(2);
+
+      const actions = spy.getCall(1).args[0];
+
+      expect(actions[0].key).to.eql('nyckel');
+    });
+  });
+
   describe('useRect', () => {
     let element;
 
@@ -576,6 +656,7 @@ describe('hooks', () => {
       run(c);
       expect(value).to.equal('model');
     });
+
     it('useApp', () => {
       let value;
       c.fn = () => {

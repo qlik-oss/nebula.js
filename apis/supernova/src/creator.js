@@ -33,6 +33,7 @@ const defaultComponent = /** @lends SnComponent */ {
   getViewState: () => {},
 
   // temporary
+  observeActions() {},
   setSnapshotData: snapshot => Promise.resolve(snapshot),
 };
 
@@ -54,13 +55,14 @@ function createWithHooks(generator, opts, env) {
       console.warn('Detected multiple supernova modules, this might cause problems.');
     }
   }
+  const qGlobal = opts.app && opts.app.session ? opts.app.session.getObjectApi({ handle: -1 }) : null;
   const c = {
     context: {
       element: undefined,
       layout: {},
       model: opts.model,
       app: opts.app,
-      global: opts.global,
+      global: qGlobal,
       selections: opts.selections,
     },
     env,
@@ -92,7 +94,14 @@ function createWithHooks(generator, opts, env) {
       return generator.component.runSnaps(this, layout);
     },
     destroy() {},
+    observeActions(callback) {
+      generator.component.observeActions(this, callback);
+    },
   };
+
+  Object.assign(c, {
+    selections: opts.selections,
+  });
 
   return [c, null];
 }
