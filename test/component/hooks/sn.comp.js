@@ -16,11 +16,13 @@ describe('hooks', () => {
   });
 
   it('should render with initial state', async () => {
-    const text = await page.$eval(`${snSelector} .state`, el => el.textContent);
-    expect(text).to.equal('0');
+    const state = await page.$eval(`${snSelector} .state`, el => el.textContent);
+    expect(state).to.equal('0');
+    const action = await page.$eval(`${snSelector} .action`, el => el.textContent);
+    expect(action).to.equal('false');
   });
 
-  it('should update count state after click', async () => {
+  it('should update count state after first click', async () => {
     await page.click(snSelector);
     await page.waitForFunction(
       selector => document.querySelector(selector).textContent === '1',
@@ -29,6 +31,17 @@ describe('hooks', () => {
     );
     const text = await page.$eval(`${snSelector} .state`, el => el.textContent);
     expect(text).to.equal('1');
+  });
+
+  it('should update action state after second click', async () => {
+    await page.click(snSelector);
+    await page.waitForFunction(
+      selector => document.querySelector(selector).textContent === 'true',
+      {},
+      `${snSelector} .action`
+    );
+    const text = await page.$eval(`${snSelector} .action`, el => el.textContent);
+    expect(text).to.equal('true');
   });
 
   it('useLayout', async () => {

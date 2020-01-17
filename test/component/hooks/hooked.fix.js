@@ -1,6 +1,15 @@
 /* eslint import/no-extraneous-dependencies: 0 */
 
-import { useState, useEffect, useLayout, useElement, useTheme, useTranslator, usePromise } from '@nebula.js/supernova';
+import {
+  useState,
+  useEffect,
+  useLayout,
+  useElement,
+  useTheme,
+  useTranslator,
+  usePromise,
+  useAction,
+} from '@nebula.js/supernova';
 
 function sn() {
   return {
@@ -11,16 +20,31 @@ function sn() {
       const theme = useTheme();
       const layout = useLayout();
 
+      const [acted, setActed] = useState(false);
+
+      const [act] = useAction(
+        () => ({
+          action() {
+            setActed(true);
+          },
+        }),
+        []
+      );
+
       useEffect(() => {
         const listener = () => {
-          setCount(prev => prev + 1);
+          if (count >= 1) {
+            act();
+          } else {
+            setCount(prev => prev + 1);
+          }
         };
         element.addEventListener('click', listener);
 
         return () => {
           element.removeEventListener('click', listener);
         };
-      }, [element]);
+      }, [element, count]);
 
       const [v] = usePromise(
         () =>
@@ -38,6 +62,7 @@ function sn() {
         <div class="translator">${translator.get('Common.Cancel')}</div>
         <div class="theme">${theme.getColorPickerColor({ index: 2 })}</div>
         <div class="promise">${v || 'pending'}</div>
+        <div class="action">${acted}</div>
       </div>
       `;
     },

@@ -35,6 +35,7 @@ export function initiate(component) {
     },
     list: [],
     snaps: [],
+    actions: [],
     pendingEffects: [],
     pendingLayoutEffects: [],
     pendingPromises: [],
@@ -48,6 +49,8 @@ export function teardown(component) {
   component.__hooks.list.length = 0;
   component.__hooks.pendingEffects.length = 0;
   component.__hooks.pendingLayoutEffects.length = 0;
+  component.__hooks.actions.length = 0;
+  component.__hooks.dispatchActions = null;
 
   clearTimeout(component.__hooks.micro);
   cancelAnimationFrame(component.__hooks.macro);
@@ -149,6 +152,18 @@ export function runSnaps(component, layout) {
   return Promise.resolve();
 }
 
+function dispatchActions(component) {
+  component._dispatchActions && component._dispatchActions(component.__hooks.actions.slice());
+}
+
+export function observeActions(component, callback) {
+  component._dispatchActions = callback;
+
+  if (component.__hooks) {
+    dispatchActions(component);
+  }
+}
+
 function getHook(idx) {
   if (typeof currentComponent === 'undefined') {
     throw new Error('Invalid nebula hook call. Hooks can only be called inside a supernova component.');
@@ -203,6 +218,7 @@ export function hook(cb) {
     run,
     teardown,
     runSnaps,
+    observeActions,
   };
 }
 
@@ -261,7 +277,7 @@ export function useLayoutEffect(cb, deps) {
 
 export function useMemo(cb, deps) {
   if (__NEBULA_DEV__) {
-    if (!deps || !deps.length) {
+    if (!deps) {
       console.warn('useMemo called without dependencies.');
     }
   }
@@ -335,6 +351,32 @@ export function usePromise(p, deps) {
 }
 
 // ---- composed hooks ------
+export function useAction(fn, deps) {
+  const [ref] = useState({
+    action() {
+      ref._config.action.call(null);
+    },
+  });
+
+  if (!ref.component) {
+    ref.component = currentComponent;
+    currentComponent.__hooks.actions.push(ref);
+  }
+  useMemo(() => {
+    const a = fn();
+    ref._config = a;
+
+    ref.active = a.active || false;
+    ref.enabled = a.enabled !== false;
+    ref.getSvgIconShape = a.icon ? () => a.icon : undefined;
+
+    ref.key = a.key || ref.component.__hooks.actions.length;
+    dispatchActions(ref.component);
+  }, deps);
+
+  return [ref.action];
+}
+
 export function useRect() {
   const element = useElement();
   const [rect, setRect] = useState(() => {
