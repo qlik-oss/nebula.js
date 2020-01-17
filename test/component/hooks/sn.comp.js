@@ -8,12 +8,6 @@ describe('hooks', () => {
 
   it('usePromise', async () => {
     await page.waitForFunction(
-      selector => document.querySelector(selector).getAttribute('data-render-count') === '0',
-      {},
-      `${snSelector}`
-    );
-    expect(await page.$eval(`${snSelector} .promise`, el => el.textContent)).to.equal('pending');
-    await page.waitForFunction(
       selector => document.querySelector(selector).getAttribute('data-render-count') === '1',
       {},
       `${snSelector}`

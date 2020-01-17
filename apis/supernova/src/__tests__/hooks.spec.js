@@ -20,6 +20,7 @@ import {
   useSelections,
   useTheme,
   useLayout,
+  useLazyLayout,
   useTranslator,
   onTakeSnapshot,
 } from '../hooks';
@@ -622,6 +623,21 @@ describe('hooks', () => {
       };
       run(c);
       expect(value).to.equal('layout');
+    });
+    it('useLazyLayout', () => {
+      let value;
+      c.context.layout = { hc: 'h' };
+      c.fn = () => {
+        value = useLazyLayout();
+      };
+      run(c);
+      c.context.layout = { hc: 'a', qSelectionInfo: { qInSelections: true } };
+      run(c);
+      expect(value).to.eql({ hc: 'h' });
+
+      c.context.layout = { hc: 'a' };
+      run(c);
+      expect(value).to.eql({ hc: 'a' });
     });
     it('useTranslator', () => {
       let value;
