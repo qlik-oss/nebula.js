@@ -401,6 +401,15 @@ export function useLayout() {
   return useInternalContext('layout');
 }
 
+export function useLazyLayout() {
+  const layout = useInternalContext('layout');
+  const [ref] = useState({ current: layout });
+  if (!layout.qSelectionInfo || !layout.qSelectionInfo.qInSelections) {
+    ref.current = layout;
+  }
+  return ref.current;
+}
+
 export function useTranslator() {
   return useInternalEnv('translator');
 }

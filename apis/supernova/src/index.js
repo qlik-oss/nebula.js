@@ -19,6 +19,7 @@ export { useElement } from './hooks';
 export { useSelections } from './hooks';
 export { useTheme } from './hooks';
 export { useLayout } from './hooks';
+export { useLazyLayout } from './hooks';
 export { useTranslator } from './hooks';
 
 export { onTakeSnapshot } from './hooks';
