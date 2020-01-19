@@ -55,7 +55,7 @@
     "babel-loader": "8.0.6",
     "d3-require": "1.2.4",
     "enigma.js": "2.6.3",
-    "monaco-editor": "0.19.2",
+    "monaco-editor": "0.19.3",
     "monaco-editor-webpack-plugin": "1.8.2",
     "react": "16.12.0",
     "react-dom": "16.12.0",
