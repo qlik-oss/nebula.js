@@ -21,11 +21,17 @@ const rpcReducer = (state, action) => {
       break;
     }
     case 'VALID': {
+      const result = {
+        [action.method]: action.result,
+      };
       newState = {
         invalid: false,
         valid: true,
         validating: false,
-        result: action.result,
+        result: {
+          ...state.result,
+          ...result,
+        },
         canCancel: false,
         canRetry: false,
       };
@@ -69,7 +75,7 @@ const call = async ({ dispatch, model, store, key, method, params, requestStore 
   try {
     // await sleep(100);
     const result = await rpc[method];
-    dispatch({ type: 'VALID', result, model, store });
+    dispatch({ type: 'VALID', result, model, method, store });
   } catch (err) {
     // We can end up here multiple times for request aborted
     // Only retry the first time
@@ -121,7 +127,7 @@ export default function useRpc(model, method, ...params) {
 
   return [
     // Result
-    state.result,
+    state.result && state.result[method],
     // Result state
     { validating: state.validating, canCancel: state.canCancel, canRetry: state.canRetry },
     // Long running api e.g cancel retry
