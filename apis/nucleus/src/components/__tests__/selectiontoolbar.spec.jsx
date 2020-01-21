@@ -19,17 +19,11 @@ describe('<SelectionToolbarWithDefault />', () => {
   let render;
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    render = async (layout, api, xItems, onCancel, onConfirm) => {
+    render = async (api, xItems, onCancel, onConfirm) => {
       await act(async () => {
         renderer = create(
           <InstanceContext.Provider value={{ translator: { get: s => s } }}>
-            <SelectionToolbarWithDefault
-              layout={layout}
-              api={api}
-              xItems={xItems}
-              onCancel={onCancel}
-              onConfirm={onConfirm}
-            />
+            <SelectionToolbarWithDefault api={api} xItems={xItems} onCancel={onCancel} onConfirm={onConfirm} />
           </InstanceContext.Provider>
         );
       });
@@ -48,7 +42,7 @@ describe('<SelectionToolbarWithDefault />', () => {
       canConfirm: sandbox.stub(),
       confirm: sandbox.stub(),
     };
-    await render({}, api);
+    await render(api);
     expect(api.canClear.callCount).to.equal(1);
     expect(api.canCancel.callCount).to.equal(1);
     expect(api.canConfirm.callCount).to.equal(1);
@@ -65,7 +59,7 @@ describe('<SelectionToolbarWithDefault />', () => {
       confirm: sandbox.stub(),
     };
     const onConfirm = sandbox.spy();
-    await render({}, api, [], undefined, onConfirm);
+    await render(api, [], undefined, onConfirm);
     expect(api.canClear.callCount).to.equal(1);
     expect(api.canCancel.callCount).to.equal(1);
     expect(api.canConfirm.callCount).to.equal(1);
@@ -84,7 +78,7 @@ describe('<SelectionToolbarWithDefault />', () => {
       confirm: sandbox.stub(),
     };
     const onCancel = sandbox.spy();
-    await render({}, api, [], onCancel);
+    await render(api, [], onCancel);
     expect(api.canClear.callCount).to.equal(1);
     expect(api.canCancel.callCount).to.equal(1);
     expect(api.canConfirm.callCount).to.equal(1);
@@ -102,7 +96,7 @@ describe('<SelectionToolbarWithDefault />', () => {
       canConfirm: sandbox.stub(),
       confirm: sandbox.stub(),
     };
-    await render({}, api);
+    await render(api);
     expect(api.canClear.callCount).to.equal(1);
     expect(api.canCancel.callCount).to.equal(1);
     expect(api.canConfirm.callCount).to.equal(1);

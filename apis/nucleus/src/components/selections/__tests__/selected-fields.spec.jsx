@@ -2,38 +2,46 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 
-const MockedOneField = () => 'OneField';
-const MockedMultiState = () => 'MultiState';
-const currentSelectionsModel = {
-  id: 0,
-  getLayout: sinon.stub(),
-};
-const [{ default: SelectedFields }] = aw.mock(
-  [
-    [
-      require.resolve('@nebula.js/ui/theme'),
-      () => ({ useTheme: () => ({ palette: { divider: 'red', background: { paper: 'pinky' } } }) }),
-    ],
-    [require.resolve('../OneField'), () => MockedOneField],
-    [require.resolve('../MultiState'), () => MockedMultiState],
-    [require.resolve('../../../hooks/useCurrentSelectionsModel'), () => () => [currentSelectionsModel]],
-  ],
-  ['../SelectedFields']
-);
-
 describe('<SelectedFields />', () => {
   let sandbox;
+  const MockedOneField = () => 'OneField';
+  const MockedMultiState = () => 'MultiState';
+  let currentSelectionsModel;
+  let useLayout;
+  let SelectedFields;
+
+  before(() => {
+    sandbox = sinon.createSandbox();
+    useLayout = sandbox.stub();
+    currentSelectionsModel = {
+      id: 'current-selections',
+    };
+    [{ default: SelectedFields }] = aw.mock(
+      [
+        [
+          require.resolve('@nebula.js/ui/theme'),
+          () => ({ useTheme: () => ({ palette: { divider: 'red', background: { paper: 'pinky' } } }) }),
+        ],
+        [require.resolve('../OneField'), () => MockedOneField],
+        [require.resolve('../MultiState'), () => MockedMultiState],
+        [require.resolve('../../../hooks/useCurrentSelectionsModel'), () => () => [currentSelectionsModel]],
+        [require.resolve('../../../hooks/useLayout'), () => useLayout],
+      ],
+      ['../SelectedFields']
+    );
+  });
+
   let render;
   let renderer;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
     const defaultApp = {
       id: 'selected-fields',
     };
     const defaultApi = {
       isInModal: sandbox.stub().returns(false),
     };
+
     render = async ({ api = {}, app = {}, rendererOptions } = {}) => {
       api = {
         ...defaultApi,
@@ -48,10 +56,12 @@ describe('<SelectedFields />', () => {
       });
     };
   });
+
   afterEach(() => {
-    sandbox.restore();
+    sandbox.reset();
     renderer.unmount();
   });
+
   it('should render `<OneField />`', async () => {
     const data = {
       qSelectionObject: {
@@ -62,7 +72,7 @@ describe('<SelectedFields />', () => {
         ],
       },
     };
-    currentSelectionsModel.getLayout.returns(data);
+    useLayout.returns([data]);
     await render();
     const types = renderer.root.findAllByType(MockedOneField);
     expect(types).to.have.length(1);
@@ -92,13 +102,12 @@ describe('<SelectedFields />', () => {
         },
       ],
     };
-    currentSelectionsModel.getLayout.returns(data);
+    useLayout.returns([data]);
     await render();
     const types = renderer.root.findAllByType(MockedMultiState);
     expect(types).to.have.length(1);
   });
   it('should keep item in modal state', async () => {
-    currentSelectionsModel.getLayout.resetHistory();
     const api = {
       isInModal: sandbox.stub().returns(true),
     };
@@ -129,12 +138,11 @@ describe('<SelectedFields />', () => {
         ],
       },
     };
-    currentSelectionsModel.getLayout.onFirstCall().returns(data);
-    currentSelectionsModel.getLayout.onSecondCall().returns(data);
-    currentSelectionsModel.getLayout.onThirdCall().returns(newData);
+    useLayout.onFirstCall().returns([data]);
+    useLayout.onSecondCall().returns([data]);
+    useLayout.onThirdCall().returns([newData]);
     await render();
     api.isInModal.returns(true);
-    await act(async () => renderer.update(<SelectedFields api={api} app={{}} />));
     const types = renderer.root.findAllByType(MockedOneField);
     expect(types).to.have.length(3);
     expect(types[0].props.field.name).to.equal('my-field0');
@@ -142,7 +150,6 @@ describe('<SelectedFields />', () => {
     expect(types[2].props.field.name).to.equal('my-field2');
   });
   it('should not run keep item in modal state when doing new selection', async () => {
-    currentSelectionsModel.getLayout.resetHistory();
     const api = {
       isInModal: sandbox.stub().returns(true),
     };
@@ -160,12 +167,11 @@ describe('<SelectedFields />', () => {
         ],
       },
     };
-    currentSelectionsModel.getLayout.onFirstCall().returns(data);
-    currentSelectionsModel.getLayout.onSecondCall().returns(newData);
-    currentSelectionsModel.getLayout.onThirdCall().returns(newData);
+    useLayout.onFirstCall().returns([data]);
+    useLayout.onSecondCall().returns([newData]);
+    useLayout.onThirdCall().returns([newData]);
     await render();
     api.isInModal.returns(true);
-    await render();
     const types = renderer.root.findAllByType(MockedOneField);
     expect(types).to.have.length(1);
     expect(types[0].props.field.name).to.equal('my-field0');

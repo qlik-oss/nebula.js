@@ -116,54 +116,34 @@ const renderFixture = async () => {
       language: params.language,
     },
   };
-  let mockedProps = {
-    // qSelectionObject: {
-    //   qBackCount: 0,
-    //   qForwardCount: 0,
-    //   qSelections: [],
-    // },
-  };
+  const mockedObjects = {};
   let mockedLayout = {};
-  const mockedObject = {
-    id: `${+new Date()}`,
-    ...mockedProps,
-    ...object,
-    // beginSelections: async () => {},
-    // selectHyperCubeValues: async (path, dimNo, values, toggleMode) => {
-    //   console.log(path, dimNo, values, toggleMode);
-    // },
-    // resetMadeSelections: async () => {},
-    getLayout:
-      object && object.getLayout
-        ? async () => {
-            const layout = await object.getLayout();
-            mockedLayout = {
-              ...mockedProps,
-              ...layout,
-            };
-            return mockedLayout;
-          }
-        : async () => ({
-            ...mockedProps,
-          }),
+  const createObjectModel = layout => ({
+    id: layout.qInfo.qId,
+    getLayout: async () => {
+      const customLayout = object && object.getLayout ? await object.getLayout() : {};
+      mockedLayout = {
+        ...layout,
+        ...(layout.visualization ? customLayout : {}),
+      };
+      return mockedLayout;
+    },
     on() {},
     once() {},
-  };
+  });
 
   const mockedApp = {
     id: `${+new Date()}`,
-    // eslint-disable-next-line no-return-assign
     createSessionObject: async p => {
-      mockedProps = {
-        ...mockedProps,
+      // eslint-disable-next-line no-param-reassign
+      p.qInfo.qId = p.qInfo.qId || +new Date();
+      mockedObjects[p.qInfo.qId] = {
         ...p,
       };
-      return mockedObject;
+      return createObjectModel(mockedObjects[p.qInfo.qId]);
     },
-    getObject: async () => mockedObject,
-    getAppLayout: async () => ({
-      // qStateNames: [],
-    }),
+    getObject: async id => createObjectModel(mockedObjects[id]),
+    getAppLayout: async () => ({}),
   };
 
   const nebbie = nucleus(mockedApp, {

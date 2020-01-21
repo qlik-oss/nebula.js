@@ -53,7 +53,10 @@ const rpcReducer = (state, action) => {
 const call = async ({ dispatch, model, store, key, method, params, requestStore }) => {
   let rpc = requestStore.get(key);
   if (!rpc) {
-    rpc = model[method].apply(model, ...params);
+    rpc = {};
+  }
+  if (!rpc[method]) {
+    rpc[method] = model[method].apply(model, ...params);
     requestStore.set(key, rpc);
     dispatch({
       type: 'INVALID',
@@ -64,18 +67,18 @@ const call = async ({ dispatch, model, store, key, method, params, requestStore 
   }
 
   try {
-    // await sleep(10000);
-    if (!requestStore.get(key)) {
-      // useRpc was cleaned up
-      return;
-    }
-    const result = await rpc;
+    // await sleep(100);
+    const result = await rpc[method];
     dispatch({ type: 'VALID', result, model, store });
   } catch (err) {
-    // TODO - this can happen for requested aborted
-    // console.info(err);
-  } finally {
-    requestStore.set(key, undefined);
+    // We can end up here multiple times for request aborted
+    // Only retry the first time
+    const newRpc = requestStore.get(key);
+    if (newRpc[method] && newRpc[method] === rpc[method]) {
+      newRpc[method] = null;
+      requestStore.set(key, newRpc);
+    }
+    call({ dispatch, model, store, key, method, params, requestStore });
   }
 };
 
@@ -89,7 +92,7 @@ const initialState = {
 };
 
 export default function useRpc(model, method, ...params) {
-  const key = model ? `${model.id}-${method}` : null;
+  const key = model ? `${model.id}` : null;
   const [store] = useRpcStore();
   const storedState = store.get(key);
   const [state, dispatch] = useReducer(rpcReducer, storedState || initialState);
@@ -98,11 +101,6 @@ export default function useRpc(model, method, ...params) {
 
   useEffect(() => {
     if (!model) return undefined;
-    // Special case, the state might be updated through the store
-    if (storedState === state && (state.valid || state.validating)) {
-      return undefined;
-    }
-
     call({ dispatch, model, store, key, method, params, requestStore });
     return undefined;
   }, [model, modelChangedStore.get(model && model.id)]);

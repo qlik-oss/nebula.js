@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useRef, useState } from 'react';
+import React, { useContext, useCallback, useRef, useState, useEffect } from 'react';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
@@ -21,6 +21,7 @@ import ListBoxSearch from './ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 
 export default function ListBoxPopover({ alignTo, show, close, app, fieldName, stateName = '$' }) {
+  const open = show && Boolean(alignTo.current);
   const theme = useTheme();
   const [model] = useSessionModel(
     {
@@ -64,24 +65,27 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const [layout] = useLayout(model);
-
   const { translator } = useContext(InstanceContext);
 
   const moreAlignTo = useRef();
   const [showSelectionsMenu, setShowSelectionsMenu] = useState(false);
   const [selections] = useObjectSelections(app, model);
+  const [layout] = useLayout(model);
 
-  if (!model || !layout || !translator || !selections) {
+  useEffect(() => {
+    if (selections && open) {
+      if (!selections.isModal(model)) {
+        selections.goModal('/qListObjectDef');
+      }
+    }
+  }, [selections, open]);
+
+  if (!model || !layout || !translator) {
     return null;
   }
 
   const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
-  const open = show && Boolean(alignTo.current);
 
-  if (open) {
-    selections.goModal('/qListObjectDef');
-  }
   const popoverClose = (e, reason) => {
     const accept = reason !== 'escapeKeyDown';
     selections.noModal(accept);

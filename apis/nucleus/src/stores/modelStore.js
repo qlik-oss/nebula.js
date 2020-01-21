@@ -1,14 +1,13 @@
 import createKeyStore from './createKeyStore';
 
 const [useRpcStore] = createKeyStore({});
-const [useRpcRequestStore] = createKeyStore({});
+const [useRpcRequestStore, requestStore] = createKeyStore({});
 
-const [useLayoutStore, layoutStore] = createKeyStore({});
-const [useLayoutRpcStore] = createKeyStore({});
 const [useModelChangedStore, modelChangedStore] = createKeyStore({});
 const [, modelInitializedStore] = createKeyStore({});
 
 const modelStoreMiddleware = ({ type, value: model }) => {
+  // return;
   const initialized = modelInitializedStore.get(model.id);
   if (initialized) {
     // console.log('already initialized', model.id);
@@ -16,9 +15,9 @@ const modelStoreMiddleware = ({ type, value: model }) => {
   }
   modelInitializedStore.set(model.id, {});
   const onChanged = () => {
+    // console.log('model changed');
+    requestStore.set(model.id, undefined);
     modelChangedStore.set(model.id, {});
-    const storedState = layoutStore.get(model.id);
-    layoutStore.set(model.id, { ...storedState, valid: false, validating: false });
     modelChangedStore.dispatch();
   };
   switch (type) {
@@ -37,13 +36,4 @@ const subscribe = model => {
   modelStoreMiddleware({ type: 'SET', value: model });
 };
 
-export {
-  subscribe,
-  useModelStore,
-  modelStore,
-  useModelChangedStore,
-  useLayoutRpcStore,
-  useLayoutStore,
-  useRpcStore,
-  useRpcRequestStore,
-};
+export { subscribe, useModelStore, modelStore, useModelChangedStore, useRpcStore, useRpcRequestStore, requestStore };
