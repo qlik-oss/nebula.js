@@ -66,50 +66,13 @@ describe('<Supernova />', () => {
     expect(component.created.callCount).to.equal(1);
     expect(component.mounted.callCount).to.equal(1);
   });
-  it('should constrain element', async () => {
-    const logicalSize = sandbox.stub().returns({ width: 1024, height: 768 });
-    const component = {
-      created: sandbox.spy(),
-      mounted: sandbox.spy(),
-      render: sandbox.spy(),
-      willUnmount: sandbox.spy(),
-    };
-    const theme = {
-      on: sandbox.spy(),
-      removeListener: sandbox.spy(),
-    };
-    const style = {
-      left: 0,
-      top: 0,
-      width: 0,
-      height: 0,
-    };
-    await render({
-      sn: {
-        logicalSize,
-        component,
-      },
-      snContext: {
-        theme,
-      },
-      rendererOptions: {
-        createNodeMock: () => {
-          return {
-            style,
-            getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
-          };
-        },
-      },
-    });
-    expect(style).to.deep.equal({ left: '0px', top: '87.5px', width: '300px', height: '225px' });
-  });
   it('should render', async () => {
     let initialRenderResolve;
     // eslint-disable-next-line no-new
     const initialRender = new Promise(resolve => {
       initialRenderResolve = resolve;
     });
-    const logicalSize = sandbox.stub();
+    const logicalSize = sandbox.stub().returns('logical');
     const component = {
       created: sandbox.spy(),
       mounted: sandbox.spy(),
@@ -127,8 +90,13 @@ describe('<Supernova />', () => {
         component,
       },
       snOptions,
-      snContext: {},
-      layout: {},
+      snContext: {
+        permissions: 'p',
+        theme: 't',
+        rtl: 'rtl',
+        localeInfo: 'loc',
+      },
+      layout: 'layout',
       rendererOptions: {
         createNodeMock: () => {
           return {
@@ -143,6 +111,17 @@ describe('<Supernova />', () => {
     expect(component.mounted.callCount).to.equal(1);
     expect(await initialRender).to.equal(true);
     expect(component.render.callCount).to.equal(1);
+    expect(component.render.getCall(0).args[0]).to.eql({
+      layout: 'layout',
+      options: snOptions,
+      context: {
+        permissions: 'p',
+        theme: 't',
+        rtl: 'rtl',
+        localeInfo: 'loc',
+        logicalSize: 'logical',
+      },
+    });
   });
   it('should re-render', async () => {
     sandbox.useFakeTimers();
@@ -173,9 +152,11 @@ describe('<Supernova />', () => {
     });
     global.window.addEventListener.callArg(1);
     sandbox.clock.tick(200);
+    await Promise.resolve(); // flush pending promises
     getBoundingClientRect.returns({ left: 200, top: 300, width: 400, height: 500 });
     global.window.addEventListener.callArg(1);
     sandbox.clock.tick(200);
+    await Promise.resolve();
     expect(component.render.callCount).to.equal(2);
   });
 });
