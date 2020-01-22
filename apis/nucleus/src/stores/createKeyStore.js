@@ -10,12 +10,15 @@ export default (initialState, applyMiddleware = () => {}) => {
       if (typeof key === 'undefined' || typeof key === 'object') {
         throw new Error(`Invalid key: ${JSON.stringify(key)}`);
       }
+      // console.log('overwriting', key, value);
       sharedState[key] = value;
       applyMiddleware({ type: 'SET', value });
       return value;
     },
-    dispatch: () => {
-      hookListeners.forEach(listener => listener({ ...sharedState }));
+    dispatch: forceNewState => {
+      // console.log('before dispatch', +new Date(), hookListeners.length);
+      hookListeners.forEach(listener => listener(forceNewState ? {} : sharedState));
+      // console.log('after dispatch', +new Date());
     },
   };
 
