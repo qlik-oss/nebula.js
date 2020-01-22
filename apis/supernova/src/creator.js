@@ -97,6 +97,7 @@ function createWithHooks(generator, opts, env) {
     observeActions(callback) {
       generator.component.observeActions(this, callback);
     },
+    isHooked: true,
   };
 
   Object.assign(c, {

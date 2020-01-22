@@ -1,5 +1,5 @@
 describe('interaction', () => {
-  const content = '.nebulajs-sn';
+  const content = '.nebulajs-sn[data-render-count="1"]';
   it('should select two bars', async () => {
     const app = encodeURIComponent(process.env.APP_ID || '/apps/ctrl00.qvf');
     await page.goto(
