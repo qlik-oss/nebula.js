@@ -262,7 +262,8 @@ export function useEffect(cb, deps) {
   }
 }
 
-export function useLayoutEffect(cb, deps) {
+// don't expose this hook since it's no different than useEffect except for the timing
+function useLayoutEffect(cb, deps) {
   if (__NEBULA_DEV__) {
     if (typeof deps !== 'undefined' && !Array.isArray(deps)) {
       throw new Error('Invalid dependencies. Second argument must be an array.');
@@ -443,7 +444,7 @@ export function useLayout() {
   return useInternalContext('layout');
 }
 
-export function useLazyLayout() {
+export function useStaleLayout() {
   const layout = useInternalContext('layout');
   const [ref] = useState({ current: layout });
   if (!layout.qSelectionInfo || !layout.qSelectionInfo.qInSelections) {
@@ -452,12 +453,12 @@ export function useLazyLayout() {
   return ref.current;
 }
 
-export function useTranslator() {
-  return useInternalEnv('translator');
+export function useAppLayout() {
+  return useInternalContext('appLayout');
 }
 
-export function useBehaviour() {
-  return useInternalContext('permissions');
+export function useTranslator() {
+  return useInternalEnv('translator');
 }
 
 export function onTakeSnapshot(cb) {

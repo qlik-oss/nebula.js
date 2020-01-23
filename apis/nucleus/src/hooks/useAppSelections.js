@@ -78,6 +78,10 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
   return appSelections;
 }
 export default function useAppSelections(app) {
+  if (!app.session) {
+    // assume the app is mocked if session is undefined
+    return [];
+  }
   const [navState, currentSelectionsModel, currentSelectionsLayout] = useAppSelectionsNavigation(app);
   const [appSelectionsStore] = useAppSelectionsStore();
   const key = app ? app.id : null;

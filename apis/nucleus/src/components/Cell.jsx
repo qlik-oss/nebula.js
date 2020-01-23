@@ -12,7 +12,7 @@ import Footer from './Footer';
 import Supernova from './Supernova';
 
 import useRect from '../hooks/useRect';
-import useLayout from '../hooks/useLayout';
+import useLayout, { useAppLayout } from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
 
@@ -171,13 +171,14 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
   const cellRef = useRef();
   const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
   const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
+  const [appLayout] = useAppLayout(app);
   const [contentRef, contentRect, , contentNode] = useRect();
   const [snContext, setSnContext] = useState(initialSnContext);
   const [snOptions, setSnOptions] = useState(initialSnOptions);
   const [selections] = useObjectSelections(app, model);
 
   useEffect(() => {
-    if (initialError) {
+    if (initialError || !appLayout) {
       return undefined;
     }
     const validate = sn => {
@@ -231,7 +232,7 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
     load(layout, withVersion);
 
     return () => {};
-  }, [types, state.sn, model, layout, language]);
+  }, [types, state.sn, model, layout, appLayout, language]);
 
   // Long running query
   useEffect(() => {
@@ -261,6 +262,7 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
           meta: {
             language: translator.language(),
             theme: theme.name,
+            appLayout,
             // direction: 'ltr',
             size: {
               width: Math.round(width),
@@ -278,7 +280,7 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
         return corona.config.snapshot.capture(snapshot);
       },
     }),
-    [state.sn, contentRect, layout, theme.name]
+    [state.sn, contentRect, layout, theme.name, appLayout]
   );
   // console.log('content', state);
   let Content = null;
@@ -294,6 +296,7 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
         snContext={snContext}
         snOptions={snOptions}
         layout={layout}
+        appLayout={appLayout}
         parentNode={contentNode}
       />
     );

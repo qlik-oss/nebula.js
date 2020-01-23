@@ -10,7 +10,6 @@ import {
   observeActions,
   useState,
   useEffect,
-  useLayoutEffect,
   useMemo,
   usePromise,
   useAction,
@@ -22,7 +21,8 @@ import {
   useSelections,
   useTheme,
   useLayout,
-  useLazyLayout,
+  useStaleLayout,
+  useAppLayout,
   useTranslator,
   onTakeSnapshot,
 } from '../hooks';
@@ -77,7 +77,7 @@ describe('hooks', () => {
     const err = sandbox.stub(console, 'error');
 
     c.fn = () => {
-      useLayoutEffect(() => {
+      useEffect(() => {
         useState(0);
       });
     };
@@ -270,73 +270,6 @@ describe('hooks', () => {
     });
   });
 
-  describe('useLayoutEffect', () => {
-    beforeEach(() => {
-      c = {};
-      initiate(c);
-    });
-    afterEach(() => {
-      teardown(c);
-    });
-
-    it('without deps should run after every render', () => {
-      const spy = sandbox.spy();
-      c.fn = () => {
-        useLayoutEffect(spy);
-      };
-
-      run(c);
-      run(c);
-      run(c);
-      expect(spy.callCount).to.equal(3);
-    });
-
-    it('with empty deps should run after first render', () => {
-      const spy = sandbox.spy();
-      c.fn = () => {
-        useLayoutEffect(spy, []);
-      };
-
-      run(c);
-      run(c);
-      run(c);
-      expect(spy.callCount).to.equal(1);
-    });
-
-    it('with deps should run only when deps change', () => {
-      const spy = sandbox.spy();
-      let dep1 = 'a';
-      let dep2 = 0;
-      c.fn = () => {
-        useLayoutEffect(spy, [dep1, dep2]);
-      };
-
-      run(c);
-
-      dep1 = 'b';
-      run(c);
-      expect(spy.callCount).to.equal(2);
-
-      dep2 = false;
-      run(c);
-      expect(spy.callCount).to.equal(3);
-    });
-
-    it('should cleanup previous', async () => {
-      const spy = sandbox.spy();
-      const f = () => {
-        return spy;
-      };
-      c.fn = () => {
-        useLayoutEffect(f);
-      };
-
-      run(c); // initial render
-      run(c); // should cleanup previous effects on second render
-      expect(spy.callCount).to.equal(1);
-    });
-  });
-
   describe('useEffect', () => {
     let clock;
     beforeEach(() => {
@@ -398,6 +331,22 @@ describe('hooks', () => {
       run(c);
       clock.tick(20);
       expect(spy.callCount).to.equal(3);
+    });
+
+    it('should cleanup previous', async () => {
+      const spy = sandbox.spy();
+      const f = () => {
+        return spy;
+      };
+      c.fn = () => {
+        useEffect(f);
+      };
+
+      run(c); // initial render
+      clock.tick(20);
+      run(c); // should cleanup previous effects on second render
+      clock.tick(20);
+      expect(spy.callCount).to.equal(1);
     });
   });
 
@@ -638,6 +587,7 @@ describe('hooks', () => {
         selections: 'selections',
         theme: 'theme',
         layout: 'layout',
+        appLayout: 'appLayout',
       };
       c.env = {
         translator: 'translator',
@@ -705,11 +655,11 @@ describe('hooks', () => {
       run(c);
       expect(value).to.equal('layout');
     });
-    it('useLazyLayout', () => {
+    it('useStaleLayout', () => {
       let value;
       c.context.layout = { hc: 'h' };
       c.fn = () => {
-        value = useLazyLayout();
+        value = useStaleLayout();
       };
       run(c);
       c.context.layout = { hc: 'a', qSelectionInfo: { qInSelections: true } };
@@ -719,6 +669,14 @@ describe('hooks', () => {
       c.context.layout = { hc: 'a' };
       run(c);
       expect(value).to.eql({ hc: 'a' });
+    });
+    it('useAppLayout', () => {
+      let value;
+      c.fn = () => {
+        value = useAppLayout();
+      };
+      run(c);
+      expect(value).to.equal('appLayout');
     });
     it('useTranslator', () => {
       let value;

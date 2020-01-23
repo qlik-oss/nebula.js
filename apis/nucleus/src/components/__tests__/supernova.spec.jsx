@@ -15,10 +15,17 @@ describe('<Supernova />', () => {
       addEventListener,
       removeEventListener,
     };
-    render = async ({ sn = { component: {} }, snOptions = {}, snContext = {}, layout = {}, rendererOptions } = {}) => {
+    render = async ({
+      sn = { component: {} },
+      snOptions = {},
+      snContext = {},
+      layout = {},
+      appLayout = {},
+      rendererOptions,
+    } = {}) => {
       await act(async () => {
         renderer = create(
-          <Supernova sn={sn} snOptions={snOptions} snContext={snContext} layout={layout} />,
+          <Supernova sn={sn} snOptions={snOptions} snContext={snContext} layout={layout} appLayout={appLayout} />,
           rendererOptions || null
         );
       });
@@ -38,6 +45,7 @@ describe('<Supernova />', () => {
       snOptions: {},
       snContext: {},
       layout: {},
+      appLayout: {},
     });
   });
   it('should mount', async () => {
@@ -97,6 +105,7 @@ describe('<Supernova />', () => {
         localeInfo: 'loc',
       },
       layout: 'layout',
+      appLayout: 'app-layout',
       rendererOptions: {
         createNodeMock: () => {
           return {
@@ -120,6 +129,7 @@ describe('<Supernova />', () => {
         rtl: 'rtl',
         localeInfo: 'loc',
         logicalSize: 'logical',
+        appLayout: 'app-layout',
       },
     });
   });

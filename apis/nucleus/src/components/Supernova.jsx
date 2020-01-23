@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import InstanceContext from '../contexts/InstanceContext';
 import useRect from '../hooks/useRect';
 
-const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
+const Supernova = ({ sn, snOptions: options, snContext, layout, appLayout }) => {
   const { component } = sn;
 
   const { theme, language, permissions } = useContext(InstanceContext);
@@ -29,7 +29,7 @@ const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
       renderDebouncer.current = null;
       component.willUnmount();
     };
-  }, [snNode]);
+  }, [snNode, component]);
 
   // Render
   useEffect(() => {
@@ -55,8 +55,11 @@ const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
             permissions: (snContext || {}).permissions,
             theme: (snContext || {}).theme,
             rtl: (snContext || {}).rtl,
-            localeInfo: (snContext || {}).localeInfo,
+            appLayout,
             logicalSize: sn.logicalSize({ layout }),
+
+            // TODO - remove when old component api is removed
+            localeInfo: (snContext || {}).localeInfo || (appLayout || {}).qLocaleInfo,
           },
         })
       ).then(() => {
@@ -67,7 +70,19 @@ const Supernova = ({ sn, snOptions: options, snContext, layout }) => {
         setRenderCnt(renderCnt + 1);
       });
     }, 10);
-  }, [containerRect, options, snNode, containerNode, layout, theme, language, permissions, isMounted, snContext]);
+  }, [
+    containerRect,
+    options,
+    snNode,
+    containerNode,
+    layout,
+    appLayout,
+    theme,
+    language,
+    permissions,
+    isMounted,
+    snContext,
+  ]);
 
   return (
     <div

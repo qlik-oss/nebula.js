@@ -46,7 +46,10 @@ describe('<Cell />', () => {
       ),
     };
     const defaultCorona = {
-      app: {},
+      app: {
+        id: 'app-id',
+        getAppLayout: () => Promise.resolve('app-layout'),
+      },
       public: {
         nebbie: {
           types: {
@@ -428,6 +431,7 @@ describe('<Cell />', () => {
           visualization: 'sn',
         },
         meta: {
+          appLayout: 'app-layout',
           language: 'sv',
           theme: 'dark',
           size: {
