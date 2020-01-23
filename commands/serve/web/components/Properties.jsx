@@ -8,7 +8,13 @@ import Data from './property-panel/Data';
 import generateComponents from './AutoComponents';
 
 export default function Properties({ viz, sn }) {
-  const [properties] = useProperties(viz ? viz.model : null);
+  // console.log(viz.model.handle, viz.model);
+  const [properties] = useProperties(viz.model);
+  // const [properties, setProperties] = useState();
+
+  // useEffect(() => {
+  //   viz.model.getProperties().then(setProperties);
+  // }, [viz.model]);
 
   const changed = useCallback(() => {
     viz.model.setProperties(properties);

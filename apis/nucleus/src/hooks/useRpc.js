@@ -9,11 +9,13 @@ const sleep = delay => {
 };
 
 const rpcReducer = (state, action) => {
+  const { store, key, method } = action;
   let newState;
   switch (action.type) {
     case 'INVALID': {
       newState = {
         ...state,
+        valid: false,
         invalid: true,
         validating: true,
         canCancel: true,
@@ -21,17 +23,14 @@ const rpcReducer = (state, action) => {
       break;
     }
     case 'VALID': {
-      const result = {
-        [action.method]: action.result,
-      };
       newState = {
+        result: {
+          // ...state.result,
+          ...action.result,
+        },
         invalid: false,
         valid: true,
         validating: false,
-        result: {
-          ...state.result,
-          ...result,
-        },
         canCancel: false,
         canRetry: false,
       };
@@ -39,7 +38,6 @@ const rpcReducer = (state, action) => {
     }
     case 'CANCELLED': {
       newState = {
-        ...state,
         invalid: true,
         valid: false,
         validating: false,
@@ -49,88 +47,87 @@ const rpcReducer = (state, action) => {
       break;
     }
     default:
-      throw new Error(`Unhandled type: ${action.type}`);
+      throw new Error('Undefined action');
   }
-  const { store, model } = action;
-  store.set(model.id, newState);
+  let sharedState = store.get(key);
+  if (!sharedState) {
+    sharedState = {};
+    // console.log('init state', action.model.handle);
+  }
+  sharedState[method] = newState;
+  // console.log(action.model.handle, method, sharedState, newState);
+  store.set(key, sharedState);
   return newState;
 };
 
-const call = async ({ dispatch, model, store, key, method, params, requestStore }) => {
-  let rpc = requestStore.get(key);
-  if (!rpc) {
-    rpc = {};
-  }
-  if (!rpc[method]) {
-    rpc[method] = model[method].apply(model, ...params);
-    requestStore.set(key, rpc);
-    dispatch({
-      type: 'INVALID',
-      model,
-      store,
-      canCancel: true,
-    });
-  }
-
-  try {
-    // await sleep(100);
-    const result = await rpc[method];
-    dispatch({ type: 'VALID', result, model, method, store });
-  } catch (err) {
-    // We can end up here multiple times for request aborted
-    // Only retry the first time
-    const newRpc = requestStore.get(key);
-    if (newRpc[method] && newRpc[method] === rpc[method]) {
-      newRpc[method] = null;
-      requestStore.set(key, newRpc);
-    }
-    call({ dispatch, model, store, key, method, params, requestStore });
-  }
-};
-
-const initialState = {
-  invalid: false,
-  valid: false,
-  validating: false,
-  canCancel: false,
-  canRetry: false,
-  result: null,
-};
-
-export default function useRpc(model, method, ...params) {
+export default function useRpc(model, method) {
   const key = model ? `${model.id}` : null;
   const [store] = useRpcStore();
-  const storedState = store.get(key);
-  const [state, dispatch] = useReducer(rpcReducer, storedState || initialState);
+  const [state, dispatch] = useReducer(rpcReducer, key ? store.get(key) : null);
   const [modelChangedStore] = useModelChangedStore();
   const [requestStore] = useRpcRequestStore();
-
+  // console.log('userpc');
   useEffect(() => {
     if (!model) return undefined;
-    call({ dispatch, model, store, key, method, params, requestStore });
-    return undefined;
-  }, [model, modelChangedStore.get(model && model.id)]);
+    // const rpcKey = `${key}/${method}`;
+    // let rpc = requestStore.get(rpcKey);
+    let rpcShared = requestStore.get(key);
+    // console.log('rpcShared', rpcShared);
+    if (!rpcShared) {
+      rpcShared = {};
+      requestStore.set(key, rpcShared);
+      // console.log('init rpc');
+    }
 
-  const longrunning = {
-    cancel: async () => {
-      const rpc = requestStore.get(key);
-      const global = model.session.getObjectApi({ handle: -1 });
-      await global.cancelRequest(rpc.requestId);
-      dispatch({
-        model,
-        store,
-        type: 'CANCELLED',
-      });
-    },
-    retry: () => call({ dispatch, model, store, key, method, params, requestStore }),
-  };
+    const call = async skipRetry => {
+      let rpc = rpcShared[method];
+      if (!rpc) {
+        rpc = model[method]();
+        rpcShared[method] = rpc;
+
+        dispatch({
+          type: 'INVALID',
+          method,
+          key,
+          model,
+          store,
+          canCancel: true,
+        });
+      } else {
+        // console.log('ongoing');
+        // return;
+      }
+      try {
+        // await sleep(5000);
+        const result = await rpc;
+        dispatch({ type: 'VALID', result, key, method, model, store });
+      } catch (err) {
+        if (err.code === 15 && !skipRetry) {
+          // Request aborted. This will be called multiple times by hooks only retry once
+          // console.log('retry');
+          rpcShared[method] = null;
+          call(true);
+        }
+      }
+    };
+    call();
+
+    return undefined;
+  }, [model, modelChangedStore.get(model && model.id), key, method]);
+
+  // console.log(model && model.handle, state);
 
   return [
     // Result
-    state.result && state.result[method],
-    // Result state
-    { validating: state.validating, canCancel: state.canCancel, canRetry: state.canRetry },
+    // state && state[method] && state[method].result,
+    state && state.result,
+    // {
+    //   validating: state && state[method] && state[method].validating,
+    //   canCancel: state && state[method] && state[method].canCancel,
+    //   canRetry: state && state[method] && state[method].canRetry,
+    // },
+    { validating: state && state.validating, canCancel: state && state.canCancel, canRetry: state && state.canRetry },
     // Long running api e.g cancel retry
-    longrunning,
+    // longrunning,
   ];
 }

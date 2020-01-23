@@ -1,7 +1,7 @@
 import createKeyStore from './createKeyStore';
 
-const [useRpcStore] = createKeyStore({});
-const [useRpcRequestStore, requestStore] = createKeyStore({});
+const [useRpcStore, rpcStore] = createKeyStore({});
+const [useRpcRequestStore, rpcRequestStore] = createKeyStore({});
 
 const [useModelChangedStore, modelChangedStore] = createKeyStore({});
 const [, modelInitializedStore] = createKeyStore({});
@@ -15,10 +15,10 @@ const modelStoreMiddleware = ({ type, value: model }) => {
   }
   modelInitializedStore.set(model.id, {});
   const onChanged = () => {
-    // console.log('model changed');
-    requestStore.set(model.id, undefined);
+    // console.log('model changed', model.handle, +new Date());
+    rpcRequestStore.set(model.id, undefined);
     modelChangedStore.set(model.id, {});
-    modelChangedStore.dispatch();
+    modelChangedStore.dispatch(true); // Force new state to trigger hooks
   };
   switch (type) {
     case 'SET':
@@ -36,4 +36,14 @@ const subscribe = model => {
   modelStoreMiddleware({ type: 'SET', value: model });
 };
 
-export { subscribe, useModelStore, modelStore, useModelChangedStore, useRpcStore, useRpcRequestStore, requestStore };
+export {
+  subscribe,
+  useModelStore,
+  modelStore,
+  useModelChangedStore,
+  useRpcStore,
+  useRpcRequestStore,
+  modelChangedStore,
+  rpcRequestStore,
+  rpcStore,
+};
