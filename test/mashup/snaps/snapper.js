@@ -17,7 +17,8 @@
     const app = {
       id: `${+new Date()}`,
       createSessionObject: async () => obj,
-      getObject: () => async () => obj,
+      getObject: async () => obj,
+      getAppLayout: async () => ({ qTitle: '', qLocaleInfo: {} }),
     };
 
     const n = configured(app);

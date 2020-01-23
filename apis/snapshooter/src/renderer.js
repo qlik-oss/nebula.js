@@ -28,7 +28,7 @@ async function renderSnapshot({ nucleus, element }) {
   }
 
   const {
-    meta: { theme, language },
+    meta: { theme, language, appLayout },
     layout,
   } = snapshot;
 
@@ -53,9 +53,7 @@ async function renderSnapshot({ nucleus, element }) {
       }
       return Promise.reject(new Error(`Could not find an object with id: ${id}`));
     },
-    getAppLayout: async () => ({
-      // qStateNames: [],
-    }),
+    getAppLayout: async () => appLayout,
   };
 
   const nebbie = await nucleus(app, {

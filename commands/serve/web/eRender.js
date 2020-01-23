@@ -143,7 +143,9 @@ const renderFixture = async () => {
       return createObjectModel(mockedObjects[p.qInfo.qId]);
     },
     getObject: async id => createObjectModel(mockedObjects[id]),
-    getAppLayout: async () => ({}),
+    getAppLayout: async () => ({
+      qTitle: 'app-title',
+    }),
   };
 
   const nebbie = nucleus(mockedApp, {

@@ -4,6 +4,7 @@ import {
   useState,
   useEffect,
   useLayout,
+  useAppLayout,
   useElement,
   useTheme,
   useTranslator,
@@ -19,6 +20,7 @@ function sn() {
       const translator = useTranslator();
       const theme = useTheme();
       const layout = useLayout();
+      const appLayout = useAppLayout();
 
       const [acted, setActed] = useState(false);
 
@@ -59,6 +61,7 @@ function sn() {
       element.innerHTML = `<div>
         <div class="state">${count}</div>
         <div class="layout">${layout.showTitles}</div>
+        <div class="applayout">${appLayout.qTitle}</div>
         <div class="translator">${translator.get('Common.Cancel')}</div>
         <div class="theme">${theme.getColorPickerColor({ index: 2 })}</div>
         <div class="promise">${v || 'pending'}</div>

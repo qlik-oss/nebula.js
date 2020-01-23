@@ -49,6 +49,11 @@ describe('hooks', () => {
     expect(text).to.equal('true');
   });
 
+  it('useAppLayout', async () => {
+    const text = await page.$eval(`${snSelector} .applayout`, el => el.textContent);
+    expect(text).to.equal('app-title');
+  });
+
   it('useTranslator', async () => {
     const text = await page.$eval(`${snSelector} .translator`, el => el.textContent);
     expect(text).to.equal('Cancel');
