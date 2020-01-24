@@ -45,14 +45,37 @@ const initiateWatch = async ({ snPath, snName, host }) => {
     });
   });
 
+  const cache = {};
+
   return {
     addRoutes(app) {
-      const baseDir = path.dirname(snPath);
-
       app.get('/pkg/:name', async (req, res) => {
         const { name } = req.params;
         await done;
-        const file = name === snName ? snPath : path.resolve(baseDir, name);
+
+        let file;
+        if (cache[name]) {
+          file = cache[name];
+        } else if (name === snName) {
+          file = snPath;
+        } else if (/\.map$/.test(name)) {
+          const sources = Object.keys(cache);
+          for (let i = 0; i < sources.length; i++) {
+            const p = cache[sources[i]];
+            const filename = p.split('/').reverse()[0];
+            if (`${filename}.map` === name) {
+              file = path.resolve(path.dirname(p), name);
+              break;
+            }
+          }
+        } else {
+          file = require.resolve(name, {
+            paths: [process.cwd()],
+          });
+        }
+
+        cache[name] = file;
+
         if (fs.existsSync(file)) {
           const f = fs.readFileSync(file);
           res.send(f);

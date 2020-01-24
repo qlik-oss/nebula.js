@@ -1,6 +1,14 @@
+import * as supernova from '@nebula.js/supernova';
+
 import { requireFrom } from 'd3-require';
 
-const getModule = name => requireFrom(async n => `/pkg/${encodeURIComponent(n)}`)(name);
+const getModule = name => {
+  const r = requireFrom(async n => `/pkg/${encodeURIComponent(n)}`);
+  const a = r.alias({
+    '@nebula.js/supernova': supernova,
+  });
+  return a(name);
+};
 
 const getRemoteModule = url => requireFrom(() => url)();
 
