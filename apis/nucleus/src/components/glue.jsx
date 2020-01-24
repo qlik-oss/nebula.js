@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Cell from './Cell';
 
-export default function glue({ corona, element, initialSnContext, model, initialSnOptions, onMount, initialError }) {
+export default function glue({ corona, element, model, initialSnOptions, onMount, initialError }) {
   const { root } = corona;
   const cellRef = React.createRef();
   const portal = ReactDOM.createPortal(
@@ -10,7 +10,6 @@ export default function glue({ corona, element, initialSnContext, model, initial
       ref={cellRef}
       corona={corona}
       model={model}
-      initialSnContext={initialSnContext}
       initialSnOptions={initialSnOptions}
       initialError={initialError}
       onMount={onMount}

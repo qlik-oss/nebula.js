@@ -41,9 +41,4 @@ describe('initiate api', () => {
     await create(model, { options: 'opts' }, corona);
     expect(api.options).to.have.been.calledWithExactly('opts');
   });
-
-  it('should call context when provided ', async () => {
-    await create(model, { context: 'ctx' }, corona);
-    expect(api.context).to.have.been.calledWithExactly('ctx');
-  });
 });

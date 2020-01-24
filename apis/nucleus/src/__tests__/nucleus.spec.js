@@ -89,7 +89,7 @@ describe('nucleus', () => {
       context: {
         language: 'en-US',
         theme: 'light',
-        permissions: ['idle', 'interact', 'select', 'fetch'],
+        constraints: {},
         translator,
       },
     });
@@ -108,7 +108,7 @@ describe('nucleus', () => {
     nuked.context({ foo: 'a' });
     expect(root.context.callCount).to.equal(0);
 
-    nuked.context({ permissions: 'a' });
+    nuked.context({ constraints: 'a' });
     expect(root.context.callCount).to.equal(1);
 
     nuked.context({ language: 'sv-SE' });

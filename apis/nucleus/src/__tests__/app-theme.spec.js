@@ -47,10 +47,13 @@ describe('app-theme', () => {
       });
       await at.setTheme('darkish');
       expect(root.setMuiThemeName).to.have.been.calledWithExactly('dark');
-      expect(internalAPI.setTheme).to.have.been.calledWithExactly({
-        type: 'dark',
-        color: 'red',
-      });
+      expect(internalAPI.setTheme).to.have.been.calledWithExactly(
+        {
+          type: 'dark',
+          color: 'red',
+        },
+        'darkish'
+      );
     });
 
     it('should timeout after 5sec', async () => {
@@ -93,9 +96,12 @@ describe('app-theme', () => {
       const root = { setMuiThemeName: sinon.spy() };
       const at = appThemeFn({ root });
       at.setTheme('light');
-      expect(internalAPI.setTheme).to.have.been.calledWithExactly({
-        type: 'light',
-      });
+      expect(internalAPI.setTheme).to.have.been.calledWithExactly(
+        {
+          type: 'light',
+        },
+        'light'
+      );
     });
   });
 });

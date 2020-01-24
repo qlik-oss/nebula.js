@@ -111,25 +111,9 @@ describe('viz', () => {
   describe('options', () => {
     it('should set sn options', async () => {
       const opts = {};
-      const chaining = api.options(opts);
+      api.options(opts);
       await mounted;
-      expect(chaining).to.equal(api);
       expect(cellRef.current.setSnOptions).to.have.been.calledWithExactly(opts);
-    });
-  });
-
-  describe('context', () => {
-    it('should set sn context', async () => {
-      const ctx = {
-        permissions: [],
-        theme: undefined,
-      };
-      const chaining = api.context(ctx);
-      await mounted;
-      expect(chaining).to.equal(api);
-      expect(cellRef.current.setSnContext).to.have.been.calledWith({
-        ...ctx,
-      });
     });
   });
 

@@ -5,11 +5,7 @@ export default function fixture() {
   return {
     type: 'barchart',
     sn,
-    snConfig: {
-      context: {
-        permissions: ['passive', 'interact'],
-      },
-    },
+    snConfig: {},
     object: {
       getLayout: async () => ({
         qHyperCubeDef: null,

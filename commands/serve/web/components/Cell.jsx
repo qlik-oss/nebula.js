@@ -123,9 +123,7 @@ export default function({ id, expandable, minHeight }) {
                 model
                   ? `${document.location.href.replace(/\/dev\//, '/render/')}${
                       window.location.search ? '&' : '?'
-                    }object=${
-                      model.id
-                    }&permissions=passive,interact,select&theme=${currentThemeName}&language=${language}`
+                    }object=${model.id}&theme=${currentThemeName}&language=${language}`
                   : ''
               }
               target="_blank"

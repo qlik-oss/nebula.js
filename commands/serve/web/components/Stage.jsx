@@ -21,9 +21,6 @@ export default function Stage({ info, storage, uid }) {
           type: info.supernova.name,
         },
         {
-          context: {
-            permissions: ['passive', 'interact', 'select', 'fetch'],
-          },
           properties: {
             ...(storage.get('readFromCache') !== false ? storage.props(info.supernova.name) : {}),
             qInfo: {

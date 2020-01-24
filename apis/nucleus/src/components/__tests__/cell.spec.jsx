@@ -63,7 +63,6 @@ describe('<Cell />', () => {
       model = {},
       app = {},
       nebbie = {},
-      initialSnContext = {},
       initialSnOptions = {},
       onMount = sandbox.spy(),
       theme = createTheme('dark'),
@@ -86,14 +85,7 @@ describe('<Cell />', () => {
         renderer = create(
           <ThemeProvider theme={theme}>
             <InstanceContext.Provider value={{ translator: { get: s => s, language: () => 'sv' } }}>
-              <Cell
-                ref={cellRef}
-                corona={corona}
-                model={model}
-                initialSnContext={initialSnContext}
-                initialSnOptions={initialSnOptions}
-                onMount={onMount}
-              />
+              <Cell ref={cellRef} corona={corona} model={model} initialSnOptions={initialSnOptions} onMount={onMount} />
             </InstanceContext.Provider>
           </ThemeProvider>,
           rendererOptions || null
@@ -382,8 +374,8 @@ describe('<Cell />', () => {
       };
       await render({ model, nebbie, cellRef });
 
-      expect(cellRef.current.setSnContext).to.be.a('function');
       expect(cellRef.current.setSnOptions).to.be.a('function');
+      expect(cellRef.current.exportImage).to.be.a('function');
       expect(cellRef.current.takeSnapshot).to.be.a('function');
     });
 

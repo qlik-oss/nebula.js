@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import InstanceContext from '../contexts/InstanceContext';
 import useRect from '../hooks/useRect';
 
-const Supernova = ({ sn, snOptions: options, snContext, layout, appLayout }) => {
+const Supernova = ({ sn, snOptions: options, layout, appLayout, corona }) => {
   const { component } = sn;
 
-  const { theme, language, permissions } = useContext(InstanceContext);
+  const { theme: themeName, language, constraints } = useContext(InstanceContext);
   const renderDebouncer = useRef(null);
   const [isMounted, setIsMounted] = useState(false);
   const [renderCnt, setRenderCnt] = useState(0);
@@ -47,19 +47,34 @@ const Supernova = ({ sn, snOptions: options, snContext, layout, appLayout }) => 
     }
 
     renderDebouncer.current = setTimeout(() => {
+      // temporarily map constraints to permissions
+      const permissions = [];
+      if (!constraints.passive) {
+        permissions.push('passive');
+      }
+      if (!constraints.active) {
+        permissions.push('interact');
+      }
+      if (!constraints.select) {
+        permissions.push('select');
+      }
+      if (corona.app && corona.app.session) {
+        permissions.push('fetch');
+      }
       Promise.resolve(
         component.render({
           layout,
           options,
           context: {
-            permissions: (snContext || {}).permissions,
-            theme: (snContext || {}).theme,
-            rtl: (snContext || {}).rtl,
+            constraints,
+            // corona.public.theme is a singleton so themeName is used as dep to make sure this effect is triggered
+            theme: corona.public.theme,
             appLayout,
-            logicalSize: sn.logicalSize({ layout }),
 
             // TODO - remove when old component api is removed
-            localeInfo: (snContext || {}).localeInfo || (appLayout || {}).qLocaleInfo,
+            logicalSize: sn.logicalSize({ layout }),
+            localeInfo: (appLayout || {}).qLocaleInfo,
+            permissions,
           },
         })
       ).then(() => {
@@ -70,19 +85,7 @@ const Supernova = ({ sn, snOptions: options, snContext, layout, appLayout }) => 
         setRenderCnt(renderCnt + 1);
       });
     }, 10);
-  }, [
-    containerRect,
-    options,
-    snNode,
-    containerNode,
-    layout,
-    appLayout,
-    theme,
-    language,
-    permissions,
-    isMounted,
-    snContext,
-  ]);
+  }, [containerRect, options, snNode, containerNode, layout, appLayout, themeName, language, constraints, isMounted]);
 
   return (
     <div

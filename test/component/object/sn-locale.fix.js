@@ -18,10 +18,6 @@ export default function fixture() {
   return {
     type: 'sn-locale',
     sn,
-    snConfig: {
-      context: {
-        permissions: ['passive', 'interact'],
-      },
-    },
+    snConfig: {},
   };
 }

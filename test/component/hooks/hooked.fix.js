@@ -10,6 +10,7 @@ import {
   useTranslator,
   usePromise,
   useAction,
+  useConstraints,
 } from '@nebula.js/supernova';
 
 function sn() {
@@ -23,6 +24,8 @@ function sn() {
       const appLayout = useAppLayout();
 
       const [acted, setActed] = useState(false);
+
+      const { passive, active, select } = useConstraints();
 
       const [act] = useAction(
         () => ({
@@ -66,6 +69,7 @@ function sn() {
         <div class="theme">${theme.getColorPickerColor({ index: 2 })}</div>
         <div class="promise">${v || 'pending'}</div>
         <div class="action">${acted}</div>
+        <div class="constraints">${!!passive}:${!!active}:${!!select}</div>
       </div>
       `;
     },
@@ -76,10 +80,6 @@ export default function fixture() {
   return {
     type: 'sn-mounted',
     sn,
-    snConfig: {
-      context: {
-        permissions: ['passive', 'interact'],
-      },
-    },
+    snConfig: {},
   };
 }

@@ -27,7 +27,7 @@ const DEFAULT_CONFIG = {
   context: {
     theme: 'light',
     language: 'en-US',
-    permissions: ['idle', 'interact', 'select', 'fetch'],
+    constraints: {},
   },
   /**
    *
@@ -200,12 +200,12 @@ function nuked(configuration = {}) {
        * @param {object} ctx
        * @param {string} ctx.theme
        * @param {string} ctx.language
-       * @param {string[]} ctx.permissions
+       * @param {string[]} ctx.constraints
        */
       context: async ctx => {
         // filter valid values to avoid triggering unnecessary rerender
         let changes;
-        ['theme', 'language', 'permissions'].forEach(key => {
+        ['theme', 'language', 'constraints'].forEach(key => {
           if (ctx[key] && ctx[key] !== currentContext[key]) {
             if (!changes) {
               changes = {};

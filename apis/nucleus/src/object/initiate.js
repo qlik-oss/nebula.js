@@ -12,9 +12,6 @@ export default async function(model, optional, corona, initialError) {
   if (optional.options) {
     api.options(optional.options);
   }
-  if (optional.context) {
-    api.context(optional.context);
-  }
 
   return api;
 }

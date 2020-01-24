@@ -63,4 +63,9 @@ describe('hooks', () => {
     const text = await page.$eval(`${snSelector} .theme`, el => el.textContent);
     expect(text).to.equal('#a54343');
   });
+
+  it('useConstraints', async () => {
+    const text = await page.$eval(`${snSelector} .constraints`, el => el.textContent);
+    expect(text).to.equal('false:false:true');
+  });
 });

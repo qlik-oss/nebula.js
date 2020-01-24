@@ -417,15 +417,18 @@ export function useRect() {
 }
 
 export function useModel() {
-  return useInternalContext('model');
+  const model = useInternalContext('model');
+  return model && model.session ? model : undefined;
 }
 
 export function useApp() {
-  return useInternalContext('app');
+  const app = useInternalContext('app');
+  return app && app.session ? app : undefined;
 }
 
 export function useGlobal() {
-  return useInternalContext('global');
+  const global = useInternalContext('global');
+  return global && global.session ? global : undefined;
 }
 
 export function useElement() {
@@ -459,6 +462,15 @@ export function useAppLayout() {
 
 export function useTranslator() {
   return useInternalEnv('translator');
+}
+
+export function useConstraints() {
+  return useInternalContext('constraints');
+  // return {
+  //   passive: true,
+  //   active: true,
+  //   select: true,
+  // };
 }
 
 export function onTakeSnapshot(cb) {
