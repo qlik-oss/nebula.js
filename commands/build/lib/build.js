@@ -34,7 +34,15 @@ const config = ({ mode = 'production', format = 'umd', cwd = process.cwd() } = {
 `;
 
   // all peers should be externals for esm bundle
-  const external = format === 'esm' ? Object.keys(pkg.peerDependencies || {}) : [];
+  const peers = pkg.peerDependencies || {};
+  const external = format === 'esm' ? Object.keys(peers) : [];
+
+  // supernova should always be external
+  if (!peers['@nebula.js/supernova']) {
+    console.warn('@nebula.js/supernova should be specified as a peer dependency');
+  } else if (external.indexOf('@nebula.js/supernova') === -1) {
+    external.push('@nebula.js/supernova');
+  }
 
   return {
     input: {
@@ -78,6 +86,9 @@ const config = ({ mode = 'production', format = 'umd', cwd = process.cwd() } = {
       file: format === 'esm' && pkg.module ? pkg.module : pkg.main,
       name: moduleName,
       sourcemap: true,
+      globals: {
+        '@nebula.js/supernova': 'supernova',
+      },
       output: {
         preamble: banner,
       },

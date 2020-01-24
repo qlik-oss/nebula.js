@@ -50,7 +50,7 @@ const mixin = obj => {
 
 function createWithHooks(generator, opts, env) {
   if (__NEBULA_DEV__) {
-    if (generator.component.render !== run) {
+    if (generator.component.run !== run) {
       // eslint-disable-next-line no-console
       console.warn('Detected multiple supernova modules, this might cause problems.');
     }
