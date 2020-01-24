@@ -28,9 +28,6 @@ export default function init({ appId, fields, objectId }) {
     nebbie.types.clearFromCache('dummy');
 
     const params = {
-      context: {
-        permissions: ['passive', 'interact', 'select', 'fetch'],
-      },
       element: document.getElementById('object'),
     };
 

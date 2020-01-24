@@ -99,7 +99,7 @@ export default function theme() {
      * @private
      * @param {object} t Raw JSON theme
      */
-    setTheme(t) {
+    setTheme(t, name) {
       resolvedThemeJSON = setTheme(t, styleResolverFn.resolveRawTheme);
       styleResolverInstanceCache = {};
 
@@ -114,6 +114,7 @@ export default function theme() {
       contraster = contrasterFn([textColor, inverseTextColor]);
 
       externalAPI.emit('changed');
+      externalAPI.name = () => name;
     },
   };
 
@@ -122,7 +123,7 @@ export default function theme() {
   });
   EventEmitter.init(externalAPI);
 
-  internalAPI.setTheme({});
+  internalAPI.setTheme({}, 'light');
 
   return {
     externalAPI,

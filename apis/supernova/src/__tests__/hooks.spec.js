@@ -24,6 +24,7 @@ import {
   useStaleLayout,
   useAppLayout,
   useTranslator,
+  useConstraints,
   onTakeSnapshot,
 } from '../hooks';
 
@@ -580,14 +581,15 @@ describe('hooks', () => {
     beforeEach(() => {
       c = {};
       c.context = {
-        model: 'model',
-        app: 'app',
-        global: 'global',
+        model: { session: 'm' },
+        app: { session: 'a' },
+        global: { session: 'global' },
         element: 'element',
         selections: 'selections',
         theme: 'theme',
         layout: 'layout',
         appLayout: 'appLayout',
+        constraints: 'constraints',
       };
       c.env = {
         translator: 'translator',
@@ -604,7 +606,11 @@ describe('hooks', () => {
         value = useModel();
       };
       run(c);
-      expect(value).to.equal('model');
+      expect(value).to.eql({ session: 'm' });
+
+      c.context.model = {};
+      run(c);
+      expect(value).to.eql(undefined);
     });
 
     it('useApp', () => {
@@ -613,7 +619,11 @@ describe('hooks', () => {
         value = useApp();
       };
       run(c);
-      expect(value).to.equal('app');
+      expect(value).to.eql({ session: 'a' });
+
+      c.context.app = {};
+      run(c);
+      expect(value).to.eql(undefined);
     });
     it('useGlobal', () => {
       let value;
@@ -621,7 +631,11 @@ describe('hooks', () => {
         value = useGlobal();
       };
       run(c);
-      expect(value).to.equal('global');
+      expect(value).to.eql({ session: 'global' });
+
+      c.context.global = {};
+      run(c);
+      expect(value).to.eql(undefined);
     });
     it('useElement', () => {
       let value;
@@ -685,6 +699,14 @@ describe('hooks', () => {
       };
       run(c);
       expect(value).to.equal('translator');
+    });
+    it('useConstraints', () => {
+      let value;
+      c.fn = () => {
+        value = useConstraints();
+      };
+      run(c);
+      expect(value).to.eql('constraints');
     });
     it('onTakeSnapshot', () => {
       const spy = sandbox.spy();

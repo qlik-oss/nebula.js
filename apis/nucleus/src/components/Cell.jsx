@@ -158,7 +158,7 @@ const loadType = async ({ dispatch, types, name, version, layout, model, app, se
   return undefined;
 };
 
-const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, initialError, onMount }, ref) => {
+const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMount }, ref) => {
   const {
     app,
     public: {
@@ -173,7 +173,6 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
   const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
   const [appLayout] = useAppLayout(app);
   const [contentRef, contentRect, , contentNode] = useRect();
-  const [snContext, setSnContext] = useState(initialSnContext);
   const [snOptions, setSnOptions] = useState(initialSnOptions);
   const [selections] = useObjectSelections(app, model);
 
@@ -247,7 +246,6 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
   useImperativeHandle(
     ref,
     () => ({
-      setSnContext,
       setSnOptions,
       async takeSnapshot() {
         const { width, height } = cellRef.current.getBoundingClientRect();
@@ -293,7 +291,7 @@ const Cell = forwardRef(({ corona, model, initialSnContext, initialSnOptions, in
       <Supernova
         key={layout.visualization}
         sn={state.sn}
-        snContext={snContext}
+        corona={corona}
         snOptions={snOptions}
         layout={layout}
         appLayout={appLayout}

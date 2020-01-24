@@ -9,10 +9,9 @@ import { modelStore } from '../stores/modelStore';
 /**
  * @typedef {object} VizConfig
  * @property {HTMLElement=} element
- * @property {object=} options
- * @property {object=} context
- * @property {Array<'passive'|'select'|'interact'|'fetch'>} [context.permissions]
- * @property {object=} properties
+ * @property {object=} optional
+ * @property {object=} optional.options
+ * @property {object=} optional.properties
  */
 export default async function initiate({ id }, optional, corona) {
   const key = `${corona.app.id}/${id}`;

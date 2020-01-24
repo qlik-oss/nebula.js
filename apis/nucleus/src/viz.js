@@ -13,10 +13,6 @@ export default function viz({ model, corona, initialError } = {}) {
     onMount = resolve;
   });
 
-  let initialSnContext = {
-    theme: corona.public.theme,
-    permissions: [],
-  };
   let initialSnOptions = {};
 
   const setSnOptions = async opts => {
@@ -33,25 +29,6 @@ export default function viz({ model, corona, initialError } = {}) {
       initialSnOptions = {
         ...initialSnOptions,
         ...opts,
-      };
-    }
-  };
-
-  const setSnContext = async ctx => {
-    if (mountedReference) {
-      (async () => {
-        await mounted;
-        cellRef.current.setSnContext({
-          ...initialSnContext,
-          ...ctx,
-          theme: corona.public.theme,
-        });
-      })();
-    } else {
-      // Handle setting context before mount
-      initialSnContext = {
-        ...initialSnContext,
-        ...ctx,
       };
     }
   };
@@ -79,7 +56,6 @@ export default function viz({ model, corona, initialError } = {}) {
         corona,
         element,
         model,
-        initialSnContext,
         initialSnOptions,
         initialError,
         onMount,
@@ -105,13 +81,10 @@ export default function viz({ model, corona, initialError } = {}) {
     },
     options(opts) {
       setSnOptions(opts);
-      return api;
-    },
-    context(ctx) {
-      setSnContext(ctx);
-      return api;
+      // return api;
     },
     exportImage() {
+      // TODO - check if exportable
       return cellRef.current.exportImage();
     },
 

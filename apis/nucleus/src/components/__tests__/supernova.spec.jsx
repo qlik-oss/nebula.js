@@ -18,14 +18,14 @@ describe('<Supernova />', () => {
     render = async ({
       sn = { component: {} },
       snOptions = {},
-      snContext = {},
       layout = {},
       appLayout = {},
+      corona = {},
       rendererOptions,
     } = {}) => {
       await act(async () => {
         renderer = create(
-          <Supernova sn={sn} snOptions={snOptions} snContext={snContext} layout={layout} appLayout={appLayout} />,
+          <Supernova sn={sn} snOptions={snOptions} layout={layout} appLayout={appLayout} corona={corona} />,
           rendererOptions || null
         );
       });
@@ -43,9 +43,9 @@ describe('<Supernova />', () => {
         component: {},
       },
       snOptions: {},
-      snContext: {},
       layout: {},
       appLayout: {},
+      corona: {},
     });
   });
   it('should mount', async () => {
@@ -61,7 +61,6 @@ describe('<Supernova />', () => {
         logicalSize,
         component,
       },
-      snContext: {},
       rendererOptions: {
         createNodeMock: () => {
           return {
@@ -98,14 +97,9 @@ describe('<Supernova />', () => {
         component,
       },
       snOptions,
-      snContext: {
-        permissions: 'p',
-        theme: 't',
-        rtl: 'rtl',
-        localeInfo: 'loc',
-      },
       layout: 'layout',
-      appLayout: 'app-layout',
+      appLayout: { qLocaleInfo: 'loc' },
+      corona: { public: { theme: 'theme' }, app: { session: {} } },
       rendererOptions: {
         createNodeMock: () => {
           return {
@@ -124,12 +118,12 @@ describe('<Supernova />', () => {
       layout: 'layout',
       options: snOptions,
       context: {
-        permissions: 'p',
-        theme: 't',
-        rtl: 'rtl',
+        constraints: {},
+        appLayout: { qLocaleInfo: 'loc' },
+        theme: 'theme',
+        permissions: ['passive', 'interact', 'select', 'fetch'],
         localeInfo: 'loc',
         logicalSize: 'logical',
-        appLayout: 'app-layout',
       },
     });
   });
@@ -149,8 +143,8 @@ describe('<Supernova />', () => {
         logicalSize,
         component,
       },
-      snContext: {},
       layout: {},
+      corona: { public: {} },
       rendererOptions: {
         createNodeMock: () => {
           return {

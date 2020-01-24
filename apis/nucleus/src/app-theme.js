@@ -18,16 +18,19 @@ export default function appTheme({ themes = [], logger, root } = {}) {
           logger.warn(`Timeout when loading theme '${themeName}'`);
         } else {
           muiTheme = raw.type === 'dark' ? 'dark' : 'light';
-          theme.internalAPI.setTheme(raw);
+          theme.internalAPI.setTheme(raw, themeName);
           root.setMuiThemeName(muiTheme);
         }
       } catch (e) {
         logger.error(e);
       }
     } else {
-      theme.internalAPI.setTheme({
-        type: muiTheme,
-      });
+      theme.internalAPI.setTheme(
+        {
+          type: muiTheme,
+        },
+        themeName
+      );
       root.setMuiThemeName(muiTheme);
     }
   };

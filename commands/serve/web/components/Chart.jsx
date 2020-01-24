@@ -16,9 +16,6 @@ export default function Chart({ id, onLoad }) {
         id,
       },
       {
-        context: {
-          permissions: ['passive', 'interact', 'select', 'fetch'],
-        },
         element: el.current,
       }
     );

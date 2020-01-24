@@ -64,6 +64,7 @@ function createWithHooks(generator, opts, env) {
       app: opts.app,
       global: qGlobal,
       selections: opts.selections,
+      constraints: {},
     },
     env,
     fn: generator.component.fn,
@@ -81,6 +82,11 @@ function createWithHooks(generator, opts, env) {
         ...r.context,
         layout: r.layout,
       };
+
+      // select should be a constraint when a real model is not available
+      if (!this.context.constraints.select && (!this.context.model || !this.context.model.session)) {
+        this.context.constraints.select = true;
+      }
 
       return generator.component.run(this);
     },
@@ -177,7 +183,7 @@ export default function create(generator, opts, env) {
 
   if (generator.qae.properties.onChange) {
     // TODO - handle multiple sn
-    // TODO - check permissions
+    // TODO - check privileges
     if (opts.model.__snInterceptor) {
       // remove old hook - happens only when proper cleanup hasn't been done
       opts.model.__snInterceptor.teardown();

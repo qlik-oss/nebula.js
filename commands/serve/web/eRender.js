@@ -40,9 +40,6 @@ async function renderWithEngine() {
   const element = document.querySelector('#chart-container');
   const vizCfg = {
     element,
-    context: {
-      permissions: params.permissions || [],
-    },
   };
   const getCfg = params.object
     ? {
@@ -88,6 +85,12 @@ async function renderSnapshot() {
         name: supernova.name,
       },
     ],
+    context: {
+      constraints: {
+        passive: true,
+        active: true,
+      },
+    },
   });
 
   window.onHotChange(supernova.name, async () => {
@@ -114,6 +117,7 @@ const renderFixture = async () => {
     context: {
       theme,
       language: params.language,
+      constraints: {},
     },
   };
   const mockedObjects = {};

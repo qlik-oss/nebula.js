@@ -60,6 +60,11 @@ async function renderSnapshot({ nucleus, element }) {
     context: {
       theme,
       language,
+      constraints: {
+        select: true,
+        passive: true,
+        active: true,
+      },
     },
   });
 
