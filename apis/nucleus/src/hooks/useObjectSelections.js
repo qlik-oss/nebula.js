@@ -32,10 +32,11 @@ function createObjectSelections({ appSelections, model }) {
     },
     /**
      * @param {string[]} paths
-     * @returns {Promise}
+     * @returns {Promise<undefined>}
      */
     begin(paths) {
       const e = event();
+      // TODO - event as parameter?
       this.emit('activate', e);
       if (e.isPrevented()) {
         return Promise.resolve();
@@ -45,7 +46,7 @@ function createObjectSelections({ appSelections, model }) {
       return appSelections.switchModal(model, paths, true);
     },
     /**
-     * @returns {Promise}
+     * @returns {Promise<undefined>}
      */
     clear() {
       hasSelected = false;
@@ -56,7 +57,7 @@ function createObjectSelections({ appSelections, model }) {
       return model.resetMadeSelections();
     },
     /**
-     * @returns {Promise}
+     * @returns {Promise<undefined>}
      */
     confirm() {
       hasSelected = false;
@@ -66,7 +67,7 @@ function createObjectSelections({ appSelections, model }) {
       return appSelections.switchModal(null, null, true);
     },
     /**
-     * @returns {Promise}
+     * @returns {Promise<undefined>}
      */
     cancel() {
       hasSelected = false;
@@ -79,18 +80,21 @@ function createObjectSelections({ appSelections, model }) {
      * @param {object} s
      * @param {string} s.method
      * @param {any[]} s.params
+     * @returns {Promise<boolean>}
      */
     select(s) {
       const b = this.begin([s.params[0]]);
       if (!appSelections.isModal()) {
-        return Promise.resolve();
+        return Promise.resolve(false);
       }
       hasSelected = true;
       return b.then(() =>
         model[s.method](...s.params).then(qSuccess => {
           if (!qSuccess) {
             this.clear();
+            return false;
           }
+          return true;
         })
       );
     },
@@ -131,16 +135,16 @@ function createObjectSelections({ appSelections, model }) {
     isModal: () => appSelections.isModal(model),
     /**
      * @param {string[]} paths
-     * @returns {Promise}
+     * @returns {Promise<undefined>}
      */
     goModal: paths => appSelections.switchModal(model, paths, false),
     /**
      * @param {boolean} [accept=false]
-     * @returns {Promise}
+     * @returns {Promise<undefined>}
      */
     noModal: (accept = false) => appSelections.switchModal(null, null, accept),
     /**
-     * @returns {Promise}
+     * @returns {Promise<undefined>}
      */
     abortModal: () => appSelections.abortModal(true),
   };

@@ -1,5 +1,5 @@
 module.exports = {
-  glob: ['./src/**/*.js', '!./src/**/*.spec.js'],
+  glob: ['./src/**/*.js', '!./src/**/*.spec.js', '!./src/hooks/useObjectSelections.js'],
   api: {
     stability: 'experimental',
     properties: {

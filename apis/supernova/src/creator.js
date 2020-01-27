@@ -7,28 +7,17 @@ import actionhero from './action-hero';
 
 import { hook, run } from './hooks';
 
-/**
- * @interface SnComponent
- * @alias SnComponent
- */
-const defaultComponent = /** @lends SnComponent */ {
+const defaultComponent = {
   app: null,
   model: null,
   actions: null,
   selections: null,
-  /** */
   created: () => {},
-  /** */
   mounted: () => {},
-  /** */
   render: () => {},
-  /** */
   resize: () => {},
-  /** */
   willUnmount: () => {},
-  /** */
   destroy: () => {},
-
   emit: () => {},
   getViewState: () => {},
 
@@ -145,20 +134,13 @@ function createClassical(generator, opts) {
 
   const qGlobal = opts.app && opts.app.session ? opts.app.session.getObjectApi({ handle: -1 }) : null;
 
-  Object.assign(
-    userInstance,
-    /** @lends SnComponent */ {
-      /** @type {EnigmaObjectModel} */
-      model: opts.model,
-      /** @type {EnigmaAppModel} */
-      app: opts.app,
-      /** @type {?EnigmaGlobalModel} */
-      global: qGlobal, // TODO - calling it 'global' might not be the best thing here
-      /** @type {ObjectSelections} */
-      selections: opts.selections,
-      actions: hero.actions,
-    }
-  );
+  Object.assign(userInstance, {
+    model: opts.model,
+    app: opts.app,
+    global: qGlobal,
+    selections: opts.selections,
+    actions: hero.actions,
+  });
 
   Object.assign(componentInstance, {
     actions: hero.actions,

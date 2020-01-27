@@ -8,6 +8,11 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
   const [, modalObjectStore] = createKeyStore({});
   const key = `${app.id}`;
 
+  /**
+   * @interface
+   * @alias AppSelections
+   */
+
   const appSelections = {
     model: app,
     switchModal(object, path, accept = true) {
@@ -45,7 +50,7 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
     },
     abortModal(accept = true) {
       if (!modalObjectStore.get(key)) {
-        return Promise.resolve({});
+        return Promise.resolve();
       }
       modalObjectStore.set(key, null);
       return app.abortModal(accept);

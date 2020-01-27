@@ -11,7 +11,7 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
   /**
    * @interface Translator
    */
-  const api = {
+  const api = /** @lends Translator */ {
     language: lang => {
       if (lang) {
         currentLocale = lang;
@@ -46,7 +46,7 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
     /**
      * Translate string for current locale
      * @param {string} str - Id of the registered string
-     * @param {string[]} [args] - Values passed down for string interpolation
+     * @param {Array<string>=} args - Values passed down for string interpolation
      */
     get(str, args) {
       let v;
