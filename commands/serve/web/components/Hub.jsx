@@ -12,14 +12,25 @@ import Typography from '@material-ui/core/Typography';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { info as connectionInfo, connect } from '../connect';
+import storageFn from '../storage';
 
 const theme = createTheme('light');
+const storage = storageFn({});
 
 function URLInput({ info }) {
+  const [url, setUrl] = useState(storage.get('nebula-ws-url') || 'ws://localhost:9076');
+  let typedUrl;
   const onKeyDown = e => {
     switch (e.key) {
       case 'Enter':
-        window.location.href = `${window.location.origin}?engine_url=${e.target.value}`;
+        typedUrl = e.target.value;
+        if (typedUrl === '') {
+          typedUrl = url;
+        } else {
+          storage.save('nebula-ws-url', typedUrl);
+          setUrl(typedUrl);
+        }
+        window.location.href = `${window.location.origin}?engine_url=${typedUrl}`;
         break;
       case 'Escape':
         break;
@@ -30,14 +41,9 @@ function URLInput({ info }) {
   return (
     <>
       <Box style={{ height: '30vh' }} />
+      <Typography variant="h5">Engine WebSocket URL</Typography>
       <Box boxShadow={24}>
-        <OutlinedInput
-          autoFocus
-          fullWidth
-          placeholder="Engine WebSocket URL"
-          onKeyDown={onKeyDown}
-          defaultValue={info.engineUrl}
-        />
+        <OutlinedInput autoFocus fullWidth placeholder={url} onKeyDown={onKeyDown} defaultValue={info.engineUrl} />
       </Box>
     </>
   );
