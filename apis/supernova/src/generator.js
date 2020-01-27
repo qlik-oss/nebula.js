@@ -9,7 +9,11 @@ import qae from './qae';
 /**
  * @interface SnDefinition
  * @property {object} qae
- * @property {SnComponent} component
+ * @property {function} component
+ */
+
+/**
+ * @typedef {object} env
  */
 
 /**
@@ -23,6 +27,7 @@ import qae from './qae';
  * @param {Supernova} Sn
  * @param {env} env
  * @returns {generator}
+ * @private
  */
 export default function generatorFn(UserSN, env) {
   let sn;
@@ -41,6 +46,7 @@ export default function generatorFn(UserSN, env) {
 
   /**
    * @alias generator
+   * @private
    */
   const generator = /** @lends generator */ {
     /**

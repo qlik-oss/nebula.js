@@ -22,8 +22,7 @@
     "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
     "build:dev": "rollup --config ../../rollup.config.js",
     "build:watch": "rollup --config ../../rollup.config.js -w",
-    "prepublishOnly": "rm -rf dist && yarn run build",
-    "spec": "scriptappy-from-jsdoc -c ./spec/spec.conf.js"
+    "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "devDependencies": {
     "d3-color": "1.4.0",

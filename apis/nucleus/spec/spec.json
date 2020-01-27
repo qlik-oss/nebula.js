@@ -2,7 +2,7 @@
   "scriptappy": "1.0.0",
   "info": {
     "name": "@nebula.js/nucleus",
-    "version": "0.1.0-alpha.20",
+    "version": "0.1.0-alpha.26",
     "license": "MIT",
     "stability": "experimental",
     "x-qlik-visibility": "public"
@@ -49,99 +49,10 @@
     }
   },
   "definitions": {
-    "Configuration": {
-      "kind": "object",
-      "entries": {
-        "load": {
-          "kind": "function",
-          "params": []
-        },
-        "types": {
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/TypeInfo"
-          }
-        },
-        "env": {
-          "kind": "object",
-          "entries": {}
-        }
-      }
-    },
-    "Nebbie": {
+    "AppSelections": {
       "kind": "interface",
       "params": [],
       "entries": {
-        "get": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "getCfg",
-              "type": "#/definitions/GetObjectConfig"
-            },
-            {
-              "name": "vizConfig",
-              "optional": true,
-              "type": "#/definitions/VizConfig"
-            }
-          ],
-          "returns": {
-            "type": "#/definitions/Viz"
-          }
-        },
-        "create": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "createCfg",
-              "type": "#/definitions/CreateObjectConfig"
-            },
-            {
-              "name": "vizConfig",
-              "optional": true,
-              "type": "#/definitions/VizConfig"
-            }
-          ],
-          "returns": {
-            "type": "#/definitions/Viz"
-          }
-        },
-        "direction": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "d",
-              "kind": "union",
-              "items": [
-                {
-                  "kind": "literal",
-                  "value": "'ltr'"
-                },
-                {
-                  "kind": "literal",
-                  "value": "'rtl'"
-                }
-              ],
-              "type": "string"
-            }
-          ]
-        },
-        "selections": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "#/definitions/AppSelections"
-          }
-        }
-      }
-    },
-    "Viz": {
-      "kind": "interface",
-      "params": [],
-      "entries": {
-        "model": {
-          "type": "EnigmaObjectModel"
-        },
         "mount": {
           "kind": "function",
           "params": [
@@ -149,14 +60,61 @@
               "name": "element",
               "type": "HTMLElement"
             }
-          ],
-          "returns": {
-            "type": "Promise"
-          }
+          ]
         },
-        "close": {
+        "unmount": {
           "kind": "function",
           "params": []
+        }
+      }
+    },
+    "Configuration": {
+      "kind": "object",
+      "entries": {
+        "env": {
+          "kind": "object",
+          "entries": {}
+        },
+        "load": {
+          "kind": "function",
+          "params": []
+        },
+        "themes": {
+          "kind": "array",
+          "items": {
+            "type": "ThemeInfo"
+          }
+        },
+        "types": {
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/TypeInfo"
+          }
+        }
+      }
+    },
+    "CreateObjectConfig": {
+      "kind": "object",
+      "entries": {
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "fields": {
+          "kind": "array",
+          "items": {
+            "type": "object"
+          }
+        }
+      }
+    },
+    "GetObjectConfig": {
+      "kind": "object",
+      "entries": {
+        "id": {
+          "type": "string"
         }
       }
     },
@@ -189,6 +147,76 @@
         ]
       }
     },
+    "Nebbie": {
+      "kind": "interface",
+      "params": [],
+      "entries": {
+        "context": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "ctx",
+              "kind": "object",
+              "entries": {
+                "theme": {
+                  "type": "string"
+                },
+                "language": {
+                  "type": "string"
+                },
+                "constraints": {
+                  "kind": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          ]
+        },
+        "create": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "createCfg",
+              "type": "#/definitions/CreateObjectConfig"
+            },
+            {
+              "name": "vizConfig",
+              "optional": true,
+              "type": "#/definitions/VizConfig"
+            }
+          ],
+          "returns": {
+            "type": "#/definitions/Viz"
+          }
+        },
+        "get": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "getCfg",
+              "type": "#/definitions/GetObjectConfig"
+            },
+            {
+              "name": "vizConfig",
+              "optional": true,
+              "type": "#/definitions/VizConfig"
+            }
+          ],
+          "returns": {
+            "type": "#/definitions/Viz"
+          }
+        },
+        "selections": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "#/definitions/AppSelections"
+          }
+        }
+      }
+    },
     "TypeInfo": {
       "kind": "object",
       "entries": {
@@ -208,10 +236,17 @@
         }
       }
     },
-    "AppSelections": {
+    "Viz": {
       "kind": "interface",
       "params": [],
       "entries": {
+        "close": {
+          "kind": "function",
+          "params": []
+        },
+        "model": {
+          "type": "EnigmaObjectModel"
+        },
         "mount": {
           "kind": "function",
           "params": [
@@ -219,314 +254,10 @@
               "name": "element",
               "type": "HTMLElement"
             }
-          ]
-        },
-        "unmount": {
-          "kind": "function",
-          "params": []
-        },
-        "model": {
-          "type": "EnigmaAppModel"
-        },
-        "switchModal": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "object",
-              "type": "EnigmaObjectModel"
-            },
-            {
-              "name": "path",
-              "type": "string"
-            },
-            {
-              "name": "accept",
-              "optional": true,
-              "defaultValue": true,
-              "type": "boolean"
-            }
-          ],
-          "emits": [
-            {
-              "type": "#/definitions/AppSelections/events/modal-unset"
-            },
-            {
-              "type": "#/definitions/AppSelections/events/modal"
-            }
-          ]
-        },
-        "isModal": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "objectModel",
-              "type": "EnigmaObjectModel"
-            }
-          ],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "abortModal": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "accept",
-              "optional": true,
-              "defaultValue": true,
-              "type": "boolean"
-            }
-          ],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "EmptyObject"
-              }
-            ]
-          }
-        },
-        "canGoForward": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "canGoBack": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "canClear": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "forward": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "EmptyObject"
-              }
-            ]
-          }
-        },
-        "back": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "EmptyObject"
-              }
-            ]
-          }
-        },
-        "clear": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "{}"
-              }
-            ]
-          }
-        },
-        "clearField": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "boolean"
-              }
-            ]
-          }
-        }
-      },
-      "events": {
-        "modal-unset": {
-          "kind": "event",
-          "params": []
-        },
-        "modal": {
-          "kind": "event",
-          "params": [
-            {
-              "name": "selections",
-              "type": "#/definitions/ObjectSelections"
-            }
-          ]
-        }
-      }
-    },
-    "ObjectSelections": {
-      "kind": "interface",
-      "params": [],
-      "entries": {
-        "begin": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "paths",
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            }
           ],
           "returns": {
             "type": "Promise"
           }
-        },
-        "clear": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise"
-          }
-        },
-        "confirm": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise"
-          }
-        },
-        "cancel": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise"
-          }
-        },
-        "select": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "s",
-              "kind": "object",
-              "entries": {
-                "method": {
-                  "type": "string"
-                },
-                "params": {
-                  "kind": "array",
-                  "items": {
-                    "type": "any"
-                  }
-                }
-              }
-            }
-          ]
-        },
-        "canClear": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "canConfirm": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "canCancel": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "isActive": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "isModal": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "goModal": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "paths",
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          ],
-          "returns": {
-            "type": "Promise"
-          }
-        },
-        "noModal": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "accept",
-              "optional": true,
-              "defaultValue": false,
-              "type": "boolean"
-            }
-          ],
-          "returns": {
-            "type": "Promise"
-          }
-        },
-        "abortModal": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise"
-          }
-        }
-      }
-    },
-    "CreateObjectConfig": {
-      "kind": "object",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "fields": {
-          "kind": "array",
-          "items": {
-            "type": "object"
-          }
-        }
-      }
-    },
-    "GetObjectConfig": {
-      "kind": "object",
-      "entries": {
-        "id": {
-          "type": "string"
         }
       }
     },
@@ -537,45 +268,19 @@
           "optional": true,
           "type": "HTMLElement"
         },
-        "options": {
-          "optional": true,
-          "type": "object"
-        },
-        "context": {
+        "optional": {
           "optional": true,
           "kind": "object",
           "entries": {
-            "permissions": {
+            "options": {
               "optional": true,
-              "kind": "array",
-              "items": {
-                "kind": "union",
-                "items": [
-                  {
-                    "kind": "literal",
-                    "value": "'passive'"
-                  },
-                  {
-                    "kind": "literal",
-                    "value": "'select'"
-                  },
-                  {
-                    "kind": "literal",
-                    "value": "'interact'"
-                  },
-                  {
-                    "kind": "literal",
-                    "value": "'fetch'"
-                  }
-                ],
-                "type": "string"
-              }
+              "type": "object"
+            },
+            "properties": {
+              "optional": true,
+              "type": "object"
             }
           }
-        },
-        "properties": {
-          "optional": true,
-          "type": "object"
         }
       }
     }

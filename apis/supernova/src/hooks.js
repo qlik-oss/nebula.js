@@ -8,6 +8,11 @@
 let currentComponent;
 let currentIndex;
 
+/**
+ * @module supernova
+ * @alias @nebula.js/supernova
+ */
+
 function depsChanged(prevDeps, deps) {
   if (!prevDeps) {
     return true;
@@ -222,6 +227,26 @@ export function hook(cb) {
   };
 }
 
+/**
+ * @interface SetStateCallback
+ * @param {any} previousState
+ * @returns {any}
+ */
+
+/**
+ * @interface SetState
+ * @param {any|module:supernova~SetStateCallback} state
+ */
+
+/**
+ * @interface Factory
+ * @returns {any}
+ */
+
+/**
+ * @param {any|module:supernova~Factory} initial
+ * @returns {Array<any,module:supernova~SetState>}
+ */
 export function useState(initial) {
   const h = getHook(++currentIndex);
   if (!h.value) {
@@ -247,6 +272,15 @@ export function useState(initial) {
   return h.value;
 }
 
+/**
+ * @interface EffectCallback
+ * @returns {function=}
+ */
+
+/**
+ * @param {module:supernova~EffectCallback} effect
+ * @param {Array<any>=} deps
+ */
 export function useEffect(cb, deps) {
   if (__NEBULA_DEV__) {
     if (typeof deps !== 'undefined' && !Array.isArray(deps)) {
@@ -276,7 +310,12 @@ function useLayoutEffect(cb, deps) {
   }
 }
 
-export function useMemo(cb, deps) {
+/**
+ * @param {module:supernova~Factory} fn
+ * @param {Array<any>} [deps]
+ * @returns {any}
+ */
+export function useMemo(fn, deps) {
   if (__NEBULA_DEV__) {
     if (!deps) {
       console.warn('useMemo called without dependencies.');
@@ -284,11 +323,21 @@ export function useMemo(cb, deps) {
   }
   const h = getHook(++currentIndex);
   if (depsChanged(h.value ? h.value[0] : undefined, deps)) {
-    h.value = [deps, cb()];
+    h.value = [deps, fn()];
   }
   return h.value[1];
 }
 
+/**
+ * @interface PromiseCallback
+ * @returns {Promise<any>}
+ */
+
+/**
+ * @param {module:supernova~PromiseCallback} fn
+ * @param {Array<any>=} deps
+ * @returns {Array<any,any>}
+ */
 export function usePromise(p, deps) {
   const [obj, setObj] = useState(() => ({
     resolved: undefined,
@@ -352,6 +401,25 @@ export function usePromise(p, deps) {
 }
 
 // ---- composed hooks ------
+/**
+ * @interface ActionDefinition
+ * @property {function} action
+ * @property {boolean=} visible
+ * @property {boolean=} disabled
+ * @property {object=} icon
+ * @property {string} icon.d - SVG path
+ */
+
+/**
+ * @interface ActionFactory
+ * @returns {module:supernova~ActionDefinition}
+ */
+
+/**
+ * @param {module:supernova~ActionFactory} fn
+ * @param {Array<any>=} deps
+ * @returns {Array<function>}
+ */
 export function useAction(fn, deps) {
   const [ref] = useState({
     action() {
@@ -368,16 +436,28 @@ export function useAction(fn, deps) {
     ref._config = a;
 
     ref.active = a.active || false;
-    ref.enabled = a.enabled !== false;
+    ref.enabled = !a.disabled;
+    // TODO - use disabled since enabled is true by default
     ref.getSvgIconShape = a.icon ? () => a.icon : undefined;
 
     ref.key = a.key || ref.component.__hooks.actions.length;
     dispatchActions(ref.component);
   }, deps);
 
+  // TODO - return array of just action?
   return [ref.action];
 }
 
+/**
+ * @interface Rect
+ * @property {number} top
+ * @property {number} left
+ * @property {number} width
+ * @property {number} height
+ */
+/**
+ * @returns {Array<module:supernova~Rect>}
+ */
 export function useRect() {
   const element = useElement();
   const [rect, setRect] = useState(() => {
@@ -413,40 +493,65 @@ export function useRect() {
     };
   }, [element]);
 
+  // TODO - return array or just rect?
   return [rect];
 }
 
+/**
+ * @returns {EnigmaObjectModel=}
+ */
 export function useModel() {
   const model = useInternalContext('model');
   return model && model.session ? model : undefined;
 }
 
+/**
+ * @returns {EnigmaAppModel=}
+ */
 export function useApp() {
   const app = useInternalContext('app');
   return app && app.session ? app : undefined;
 }
 
+/**
+ * @returns {EnigmaGlobalModel=}
+ */
 export function useGlobal() {
   const global = useInternalContext('global');
   return global && global.session ? global : undefined;
 }
 
+/**
+ * @returns {HTMLElement}
+ */
 export function useElement() {
   return useInternalContext('element');
 }
 
+/**
+ * @returns {ObjectSelections}
+ */
 export function useSelections() {
   return useInternalContext('selections');
 }
 
+/**
+ * @returns {Theme}
+ */
 export function useTheme() {
   return useInternalContext('theme');
 }
 
+/**
+ * @returns {GenericObjectLayout}
+ */
 export function useLayout() {
   return useInternalContext('layout');
 }
 
+/**
+ * @returns {GenericObjectLayout}
+ */
 export function useStaleLayout() {
   const layout = useInternalContext('layout');
   const [ref] = useState({ current: layout });
@@ -456,23 +561,43 @@ export function useStaleLayout() {
   return ref.current;
 }
 
+/**
+ * @returns {NxAppLayout}
+ */
 export function useAppLayout() {
   return useInternalContext('appLayout');
 }
 
+/**
+ * @returns {Translator}
+ */
 export function useTranslator() {
   return useInternalEnv('translator');
 }
 
+/**
+ * @interface Constraints
+ * @property {boolean=} passive
+ * @property {boolean=} active
+ * @property {boolean=} select
+ */
+
+/**
+ * @returns {module:supernova~Constraints}
+ */
 export function useConstraints() {
   return useInternalContext('constraints');
-  // return {
-  //   passive: true,
-  //   active: true,
-  //   select: true,
-  // };
 }
 
+/**
+ * @interface SnapshotCallback
+ * @param {GenericObjectLayout} layout
+ * @returns {Promise<GenericObjectLayout>}
+ */
+
+/**
+ * @param {module:supernova~SnapshotCallback} cb
+ */
 export function onTakeSnapshot(cb) {
   const h = getHook(++currentIndex);
   if (!h.value) {

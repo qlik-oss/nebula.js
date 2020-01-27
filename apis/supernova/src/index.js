@@ -25,3 +25,23 @@ export { useTranslator } from './hooks';
 export { useConstraints } from './hooks';
 
 export { onTakeSnapshot } from './hooks';
+
+/**
+ * @typedef {object} GenericObjectLayout
+ */
+
+/**
+ * @typedef {object} NxAppLayout
+ */
+
+/**
+ * @interface EnigmaAppModel
+ */
+
+/**
+ * @interface EnigmaObjectModel
+ */
+
+/**
+ * @interface EnigmaGlobalModel
+ */
