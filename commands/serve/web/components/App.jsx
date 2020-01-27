@@ -31,6 +31,8 @@ import AppContext from '../contexts/AppContext';
 import NebulaContext from '../contexts/NebulaContext';
 import VizContext from '../contexts/VizContext';
 
+import storageFn from '../storage';
+
 const rtlShape = {
   size: 'large',
   viewBox: '0 0 20 20',
@@ -63,32 +65,6 @@ const languages = [
   'pl-PL',
   'ru-RU',
 ];
-
-const storageFn = app => {
-  const stored = window.localStorage.getItem('nebula-dev');
-  const parsed = stored ? JSON.parse(stored) : {};
-  const appid = app.id;
-
-  const s = {
-    save(name, value) {
-      parsed[name] = value;
-      window.localStorage.setItem('nebula-dev', JSON.stringify(parsed));
-    },
-    get(name) {
-      return parsed[name];
-    },
-    props(name, v) {
-      if (v) {
-        s.save(`props:${appid}:${name}`, JSON.stringify(v));
-        return undefined;
-      }
-      const p = s.get(`props:${appid}:${name}`);
-      return p ? JSON.parse(p) : {};
-    },
-  };
-
-  return s;
-};
 
 export default function App({ app, info }) {
   const storage = useMemo(() => storageFn(app), [app]);
