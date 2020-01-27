@@ -57,6 +57,7 @@ const browserList = [
 const GLOBALS = {
   react: 'React',
   'react-dom': 'ReactDOM',
+  '@nebula.js/supernova': 'supernova',
 };
 
 const propTypes = [
