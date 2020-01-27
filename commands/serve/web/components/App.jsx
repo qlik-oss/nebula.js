@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
 
-import nucleus from '@nebula.js/nucleus';
+import nucleus from '@nebula.js/nucleus/src/index';
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 

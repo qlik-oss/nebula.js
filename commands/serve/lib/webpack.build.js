@@ -10,6 +10,9 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 const favicon = path.resolve(__dirname, '../../../docs/assets/njs.png');
 
+// console.log(path.resolve(__dirname, '../../apis/nucleus'));
+// process.exit();
+
 const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
   const config = {
     mode: dev ? 'development' : 'production',
@@ -25,19 +28,12 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
     },
     resolve: {
       alias: {
-        ...(dev
-          ? {
-              // For local nebula.js development use aliasing to be able to debug nucleus / supernova
-              '@nebula.js/nucleus/src/hooks': path.resolve(process.cwd(), 'apis/nucleus/src/hooks'),
-              '@nebula.js/nucleus/src/object': path.resolve(process.cwd(), 'apis/nucleus/src/object'),
-              '@nebula.js/nucleus': path.resolve(process.cwd(), 'apis/nucleus/src'),
-              '@nebula.js/snapshooter/dist': path.resolve(process.cwd(), 'apis/snapshooter/src'),
-              '@nebula.js/supernova': path.resolve(process.cwd(), 'apis/supernova/src'),
-              '@nebula.js/theme': path.resolve(process.cwd(), 'apis/theme/src'),
-              '@nebula.js/locale': path.resolve(process.cwd(), 'apis/locale/src'),
-            }
-          : {}),
-        fixtures: path.resolve(process.cwd(), 'test/component'),
+        '@nebula.js/nucleus': path.resolve(__dirname, '../../../apis/nucleus'),
+        '@nebula.js/snapshooter/dist': path.resolve(__dirname, '../../../apis/snapshooter/src'),
+        '@nebula.js/supernova': path.resolve(__dirname, '../../../apis/supernova/src'),
+        '@nebula.js/theme': path.resolve(__dirname, '../../../apis/theme/src'),
+        '@nebula.js/locale': path.resolve(__dirname, '../../../apis/locale/src'),
+        fixtures: path.resolve(__dirname, '../../../test/component'),
       },
       extensions: ['.dev.js', '.js', '.jsx'],
     },
