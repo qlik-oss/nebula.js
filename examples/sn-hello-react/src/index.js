@@ -1,3 +1,5 @@
+import { useElement, useLayout, useEffect } from '@nebula.js/supernova';
+
 import properties from './object-properties';
 import data from './data';
 
@@ -9,21 +11,18 @@ export default function supernova(/* env */) {
       properties,
       data,
     },
-    component: {
-      mounted(element) {
-        this.element = element;
-      },
-      render({
-        layout,
-        context,
-      }) {
-        render(this.element, { layout, context });
-      },
-      resize() {},
-      willUnmount() {
-        teardown(this.element);
-      },
-      destroy() {},
+    component() {
+      const el = useElement();
+      const layout = useLayout();
+
+      useEffect(
+        () => () => {
+          teardown(el);
+        },
+        []
+      );
+
+      render(el, { layout });
     },
   };
 }

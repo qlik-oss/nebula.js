@@ -20,12 +20,15 @@
     "lint": "eslint src",
     "start": "nebula serve --no-build"
   },
+  "peerDependencies": {
+    "@nebula.js/supernova": "0.1.0-alpha.27"
+  },
   "devDependencies": {
     "@babel/cli": "7.4.4",
     "@babel/plugin-transform-react-jsx": "7.3.0",
     "@babel/preset-env": "7.4.5",
     "@babel/preset-react": "7.0.0",
-    "@nebula.js/cli": "0.1.0-alpha.13",
+    "@nebula.js/cli": "0.1.0-alpha.27",
     "eslint": "5.12.1",
     "eslint-config-airbnb": "17.1.0",
     "eslint-plugin-import": "2.15.0",
