@@ -7,12 +7,9 @@ import { useTheme } from '@nebula.js/ui/theme';
 
 import SelectedFields from './SelectedFields';
 import Nav from './Nav';
-import useAppSelections from '../../hooks/useAppSelections';
 
-const AppSelections = ({ app }) => {
+const AppSelections = ({ app, appSelections }) => {
   const theme = useTheme();
-  const [appSelections] = useAppSelections(app);
-  if (!appSelections) return null;
   return (
     <Grid
       container
@@ -40,6 +37,6 @@ const AppSelections = ({ app }) => {
 
 export { AppSelections };
 
-export default function mount({ element, app }) {
-  return ReactDOM.createPortal(<AppSelections app={app} />, element);
+export default function mount({ element, app, appSelections }) {
+  return ReactDOM.createPortal(<AppSelections app={app} appSelections={appSelections} />, element);
 }
