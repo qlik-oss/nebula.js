@@ -24,7 +24,7 @@ export default function init({ appId, fields, objectId }) {
     const nebbie = nucleus(app, {
       load: () => Promise.resolve(mekko),
     });
-    nebbie.selections().mount(document.getElementById('selections'));
+    nebbie.selections().then(s => s.mount(document.getElementById('selections')));
     nebbie.types.clearFromCache('dummy');
 
     const params = {
