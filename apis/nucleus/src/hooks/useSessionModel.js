@@ -5,19 +5,29 @@ export default function useSessionModel(definition, app, ...deps) {
   const key = app ? `${app.id}/${JSON.stringify(definition)}` : null;
   const [modelStore] = useModelStore();
   const [requestStore] = useRpcRequestStore();
-  const [model, setModel] = useState(modelStore.get(key));
+  const [model, setModel] = useState();
+
+  let rpcShared;
+
+  if (key) {
+    rpcShared = requestStore.get(key);
+  }
 
   useEffect(() => {
-    if (!app || modelStore.get(key) || requestStore.get(key)) {
+    if (!app) {
       return;
     }
     // Create new session object
     const create = async () => {
-      const newModel = await app.createSessionObject(definition);
+      if (!rpcShared) {
+        const rpc = app.createSessionObject(definition);
+        rpcShared = rpc;
+        requestStore.set(key, rpcShared);
+      }
+      const newModel = await rpcShared;
       modelStore.set(key, newModel);
       setModel(newModel);
     };
-    requestStore.set(key, true);
     create();
   }, [app, ...deps]);
 
