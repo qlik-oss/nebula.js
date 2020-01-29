@@ -48,6 +48,6 @@
     "react-test-renderer": "16.12.0",
     "react-window": "1.8.5",
     "react-window-infinite-loader": "1.0.5",
-    "semver": "7.1.1"
+    "semver": "6.3.0"
   }
 }

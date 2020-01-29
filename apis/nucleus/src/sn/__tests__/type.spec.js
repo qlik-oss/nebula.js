@@ -14,7 +14,7 @@ describe('type', () => {
     [{ default: create }] = aw.mock(
       [
         [require.resolve('@nebula.js/supernova'), () => ({ generator: SNFactory })],
-        ['**/semver/functions/satisfies.js', () => satisfies],
+        ['**/semver.js', () => ({ satisfies })],
         ['**/load.js', () => ({ load })],
       ],
       ['../type']
