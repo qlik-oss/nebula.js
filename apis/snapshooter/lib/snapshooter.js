@@ -50,6 +50,9 @@ function snapshooter({ snapshotUrl, chrome = {} } = {}) {
     getStoredSnapshot(id) {
       return snapshots[id];
     },
+    getStoredSnapshots() {
+      return Object.keys(snapshots).map(key => snapshots[key]);
+    },
     storeSnapshot(snapshot) {
       if (!snapshot) {
         throw new Error('Empty snapshot');

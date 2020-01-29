@@ -6,7 +6,7 @@ const express = require('express');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
-const snapshooter = require('@nebula.js/snapshooter');
+const snapshooterFn = require('@nebula.js/snapshooter');
 const snapshotRouter = require('./snapshot-router');
 
 module.exports = async ({
@@ -27,10 +27,16 @@ module.exports = async ({
 
   const snapshotRoute = '/njs';
 
+  const snapshooter = snapshooterFn({ snapshotUrl: `http://${host}:${port}/eRender.html` });
+
+  (serveConfig.snapshots || []).forEach(s => {
+    snapshooter.storeSnapshot(s);
+  });
+
   const snapRouter = snapshotRouter({
     base: `http://${host}:${port}${snapshotRoute}`,
     snapshotUrl: `http://${host}:${port}/eRender.html`,
-    snapshooter: snapshooter({ snapshotUrl: `http://${host}:${port}/eRender.html` }),
+    snapshooter,
   });
 
   const themes = serveConfig.themes || [];
