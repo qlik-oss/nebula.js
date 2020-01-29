@@ -115,7 +115,7 @@ const config = (isEsm, dev = false) => {
     output: {
       file: path.resolve(targetDir, getFileName(isEsm ? 'esm' : '', dev)),
       format: isEsm ? 'esm' : 'umd',
-      exports: targetName === 'supernova' ? 'named' : 'default',
+      exports: ['supernova', 'test-utils'].indexOf(targetName) !== -1 ? 'named' : 'default',
       name: umdName,
       sourcemap: false,
       banner,
@@ -197,7 +197,7 @@ const config = (isEsm, dev = false) => {
   return cfg;
 };
 
-const dist = [
+let dist = [
   // production
   watch ? false : config(),
   // dev
@@ -208,5 +208,9 @@ const dist = [
   // esm dev
   pkg.module ? config(true, true) : false,
 ];
+
+if (targetName === 'test-utils') {
+  dist = [config(false)];
+}
 
 module.exports = dist.filter(Boolean);

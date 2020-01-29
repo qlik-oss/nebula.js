@@ -1,0 +1,32 @@
+{
+  "name": "@nebula.js/test-utils",
+  "version": "0.1.0-alpha.27",
+  "description": "",
+  "license": "MIT",
+  "author": "QlikTech International AB",
+  "keywords": [],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qlik-oss/nebula.js.git",
+    "directory": "apis/test-utils"
+  },
+  "main": "index.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
+    "build:dev": "rollup --config ../../rollup.config.js",
+    "build:watch": "rollup --config ../../rollup.config.js -w",
+    "prepublishOnly": "rm -rf dist && yarn run build"
+  },
+  "peerDependencies": {
+    "@nebula.js/supernova": "0.1.0-alpha.27"
+  },
+  "devDependencies": {
+    "regenerator-runtime": "0.13.3"
+  }
+}
