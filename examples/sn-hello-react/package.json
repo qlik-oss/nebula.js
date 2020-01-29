@@ -21,7 +21,7 @@
     "start": "nebula serve --no-build"
   },
   "peerDependencies": {
-    "@nebula.js/supernova": "0.1.0-alpha.27"
+    "@nebula.js/supernova": "^0.1.0-alpha.27"
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",
