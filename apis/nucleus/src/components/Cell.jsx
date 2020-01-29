@@ -256,6 +256,7 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
           clonedLayout = (await state.sn.component.setSnapshotData(clonedLayout)) || clonedLayout;
         }
         return {
+          // TODO - this snapshot format needs to be documented and governed
           key: String(+Date.now()),
           meta: {
             language: translator.language(),

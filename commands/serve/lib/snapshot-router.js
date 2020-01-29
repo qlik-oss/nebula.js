@@ -50,5 +50,9 @@ module.exports = function router({ base, snapshotUrl, snapshooter }) {
     }
   });
 
+  r.get('/snapshots', (req, res) => {
+    res.json(snapshooter.getStoredSnapshots());
+  });
+
   return r;
 };
