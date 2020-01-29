@@ -252,7 +252,6 @@ function nuked(configuration = {}) {
               selectionsComponentReference = AppSelectionsPortal({
                 element,
                 app,
-                appSelections,
               });
               root.add(selectionsComponentReference);
             },
