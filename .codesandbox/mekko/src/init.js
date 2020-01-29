@@ -22,7 +22,7 @@ export default function init({ appId, fields, objectId }) {
 
   appCache[appId].then(app => {
     const nebbie = nucleus(app, {
-      load: (type, config) => config.Promise.resolve(mekko),
+      load: () => Promise.resolve(mekko),
     });
     nebbie.selections().mount(document.getElementById('selections'));
     nebbie.types.clearFromCache('dummy');
