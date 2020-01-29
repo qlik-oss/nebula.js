@@ -1,6 +1,4 @@
 /* eslint no-underscore-dangle:0 */
-import 'regenerator-runtime/runtime'; // Polyfill for using async/await
-
 import appLocaleFn from './locale/app-locale';
 import appThemeFn from './app-theme';
 
