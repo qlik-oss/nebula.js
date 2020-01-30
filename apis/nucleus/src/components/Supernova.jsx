@@ -72,9 +72,13 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, corona }) => {
             appLayout,
 
             // TODO - remove when old component api is removed
-            logicalSize: sn.logicalSize({ layout }),
-            localeInfo: (appLayout || {}).qLocaleInfo,
-            permissions,
+            ...(component.isHooked
+              ? {}
+              : {
+                  logicalSize: sn.logicalSize({ layout }),
+                  localeInfo: (appLayout || {}).qLocaleInfo,
+                  permissions,
+                }),
           },
         })
       ).then(() => {

@@ -1,3 +1,12 @@
+import {
+  useElement,
+  useState,
+  useStaleLayout,
+  useSelections,
+  useRect,
+  useEffect,
+  useConstraints,
+} from '@nebula.js/supernova';
 import picassojs from 'picasso.js';
 import picassoQ from 'picasso-plugin-q';
 
@@ -15,22 +24,41 @@ export default function supernova(/* env */) {
       properties,
       data,
     },
-    component: {
-      created() {},
-      mounted(element) {
-        this.pic = picasso.chart({
+    component() {
+      const element = useElement();
+      const selections = useSelections();
+      const layout = useStaleLayout();
+      const rect = useRect();
+      const constraints = useConstraints();
+
+      const [instance, setInstance] = useState();
+
+      useEffect(() => {
+        const p = picasso.chart({
           element,
           data: [],
           settings: {},
         });
-        this.picsel = picSelections({
-          selections: this.selections,
-          brush: this.pic.brush('selection'),
+
+        const s = picSelections({
+          selections,
+          brush: p.brush('selection'),
           picassoQ,
         });
-      },
-      render({ layout, context }) {
-        this.pic.update({
+
+        setInstance(p);
+
+        return () => {
+          s.release();
+          p.destroy();
+        };
+      }, []);
+
+      useEffect(() => {
+        if (!instance) {
+          return;
+        }
+        instance.update({
           data: [
             {
               type: 'q',
@@ -38,12 +66,16 @@ export default function supernova(/* env */) {
               data: layout.qHyperCube,
             },
           ],
-          settings: definition({ layout, context }),
+          settings: definition({ layout, constraints }),
         });
-      },
-      resize() {},
-      willUnmount() {},
-      destroy() {},
+      }, [layout, instance]);
+
+      useEffect(() => {
+        if (!instance) {
+          return;
+        }
+        instance.update();
+      }, [rect.width, rect.height, instance]);
     },
   };
 }
