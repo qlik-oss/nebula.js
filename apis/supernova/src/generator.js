@@ -34,7 +34,6 @@ export default function generatorFn(UserSN, env) {
 
   const localEnv = {
     translator,
-    Promise,
     ...env,
   };
 

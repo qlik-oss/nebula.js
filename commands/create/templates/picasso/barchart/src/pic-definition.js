@@ -1,4 +1,4 @@
-export default function picassoDefinition({ layout, context }) {
+export default function picassoDefinition({ layout, constraints }) {
   if (!layout.qHyperCube) {
     throw new Error('Layout is missing a hypercube');
   }
@@ -42,7 +42,7 @@ export default function picassoDefinition({ layout, context }) {
           },
         },
         brush:
-          context.permissions.indexOf('interact') !== -1 && context.permissions.indexOf('select') !== -1
+          !constraints.active && !constraints.select
             ? {
                 trigger: [
                   {

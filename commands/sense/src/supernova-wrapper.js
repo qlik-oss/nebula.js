@@ -1,5 +1,6 @@
-import supernova from '@nebula.js/supernova';
+import { generator as supernova } from '@nebula.js/supernova';
 import themeFn from '@nebula.js/theme';
+import localeFn from '@nebula.js/locale';
 
 import permissions from './permissions';
 import selectionsApi from './selections';
@@ -7,10 +8,11 @@ import selectionsApi from './selections';
 import snDefinition from 'snDefinition'; // eslint-disable-line
 import extDefinition from 'extDefinition'; // eslint-disable-line
 
+// TODO - how to initiate with the language used in Sense without importing the translator module from Sense?
+const loc = localeFn();
 const env = {
-  Promise,
+  translator: loc.translator,
 };
-
 const snGenerator = supernova(snDefinition, env);
 
 const ext = typeof extDefinition === 'function' ? extDefinition(env) : extDefinition;
@@ -61,10 +63,19 @@ export default {
     this.snComponent.mounted(element);
   },
   paint($element, layout) {
+    const perms = permissions(this.options, this.backendApi);
+    const constraints = {
+      passive: perms.indexOf('passive') === -1 || undefined,
+      active: perms.indexOf('interact') === -1 || undefined,
+      select: perms.indexOf('select') === -1 || undefined,
+    };
     return this.snComponent.render({
       layout,
       context: {
-        permissions: permissions(this.options, this.backendApi),
+        appLayout: {
+          qLocaleInfo: this.backendApi.localeInfo,
+        },
+        constraints,
         theme: this.theme.externalAPI,
       },
     });

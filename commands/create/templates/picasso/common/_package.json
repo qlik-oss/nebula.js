@@ -7,14 +7,8 @@
     "name": "<%= user %>",
     "email": "<%= email %>"
   },
-  "keywords": [
-    "qlik",
-    "nebula",
-    "supernova"
-  ],
-  "files": [
-    "dist"
-  ],
+  "keywords": ["qlik", "nebula", "supernova"],
+  "files": ["dist"],
   "engines": {
     "node": ">=8"
   },
@@ -35,5 +29,8 @@
     "eslint-plugin-mocha": "5.2.1",
     "picasso.js": "0.25.2",
     "picasso-plugin-q": "0.25.2"
+  },
+  "peerDependencies": {
+    "@nebula.js/supernova": "^0.1.0-alpha.27"
   }
 }
