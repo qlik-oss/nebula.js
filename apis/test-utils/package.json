@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/test-utils",
-  "version": "0.1.0-alpha.27",
+  "version": "0.1.0-alpha.28",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -24,7 +24,7 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "peerDependencies": {
-    "@nebula.js/supernova": "^0.1.0-alpha.27"
+    "@nebula.js/supernova": "^0.1.0-alpha.28"
   },
   "devDependencies": {
     "regenerator-runtime": "0.13.3"

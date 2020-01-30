@@ -31,6 +31,6 @@
     "picasso-plugin-q": "0.25.2"
   },
   "peerDependencies": {
-    "@nebula.js/supernova": "^0.1.0-alpha.27"
+    "@nebula.js/supernova": "^0.1.0-alpha.28"
   }
 }
