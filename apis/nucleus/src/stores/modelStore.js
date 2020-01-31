@@ -10,20 +10,24 @@ const modelStoreMiddleware = ({ type, value: model }) => {
   // return;
   const initialized = modelInitializedStore.get(model.id);
   if (initialized) {
-    // console.log('already initialized', model.id);
     return;
   }
   modelInitializedStore.set(model.id, {});
   const onChanged = () => {
-    // console.log('model changed', model.handle, +new Date());
     rpcRequestStore.set(model.id, undefined);
     modelChangedStore.set(model.id, {});
     modelChangedStore.dispatch(true); // Force new state to trigger hooks
   };
   switch (type) {
     case 'SET':
-      // console.log('changed listener', model.id);
       model.on('changed', onChanged);
+      model.once('closed', () => {
+        model.removeListener('changed', onChanged);
+        rpcStore.set(model.id, undefined);
+        rpcRequestStore.set(model.id, undefined);
+        modelChangedStore.set(model.id, undefined);
+        modelInitializedStore.set(model.id, undefined);
+      });
       break;
     default:
       break;
