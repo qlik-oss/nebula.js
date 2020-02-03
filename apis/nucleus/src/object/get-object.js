@@ -13,8 +13,8 @@ import { modelStore, rpcRequestStore } from '../stores/modelStore';
  * @property {object=} optional.options
  * @property {object=} optional.properties
  */
-export default async function initiate({ id }, optional, corona) {
-  const key = `${id}`;
+export default async function getObject({ id }, optional, corona) {
+  const key = `${id}-get-object`;
   let rpc = rpcRequestStore.get(key);
   if (!rpc) {
     rpc = corona.app.getObject(id);

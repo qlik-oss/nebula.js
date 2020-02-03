@@ -25,6 +25,7 @@ const modelStoreMiddleware = ({ type, value: model }) => {
         model.removeListener('changed', onChanged);
         rpcStore.set(model.id, undefined);
         rpcRequestStore.set(model.id, undefined);
+        rpcRequestStore.set(`${model.id}-get-object`, undefined);
         modelChangedStore.set(model.id, undefined);
         modelInitializedStore.set(model.id, undefined);
       });
