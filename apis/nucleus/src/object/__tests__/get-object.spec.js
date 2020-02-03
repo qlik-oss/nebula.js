@@ -13,6 +13,7 @@ describe('get-object', () => {
     model = {
       id: 'model-x',
       on: sandbox.spy(),
+      once: sandbox.spy(),
     };
   });
 
