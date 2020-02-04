@@ -1,16 +1,16 @@
 import { useEffect, useState } from 'react';
-import { useModelStore, useRpcRequestStore } from '../stores/modelStore';
+import { useModelStore, useRpcRequestSessionModelStore } from '../stores/modelStore';
 
 export default function useSessionModel(definition, app, ...deps) {
   const key = app ? `${app.id}/${JSON.stringify(definition)}` : null;
   const [modelStore] = useModelStore();
-  const [requestStore] = useRpcRequestStore();
+  const [rpcRequestSessionModelStore] = useRpcRequestSessionModelStore();
   const [model, setModel] = useState();
 
   let rpcShared;
 
   if (key) {
-    rpcShared = requestStore.get(key);
+    rpcShared = rpcRequestSessionModelStore.get(key);
   }
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function useSessionModel(definition, app, ...deps) {
       if (!rpcShared) {
         const rpc = app.createSessionObject(definition);
         rpcShared = rpc;
-        requestStore.set(key, rpcShared);
+        rpcRequestSessionModelStore.set(key, rpcShared);
       }
       const newModel = await rpcShared;
       modelStore.set(key, newModel);

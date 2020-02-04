@@ -1,13 +1,23 @@
 import createKeyStore from './createKeyStore';
 
-const [useRpcStore, rpcStore] = createKeyStore({});
+const [useRpcResultStore, rpcResultStore] = createKeyStore({});
 const [useRpcRequestStore, rpcRequestStore] = createKeyStore({});
+const [useRpcRequestSessionModelStore, rpcRequestSessionModelStore] = createKeyStore({});
+const [useRpcRequestModelStore, rpcRequestModelStore] = createKeyStore({});
 
 const [useModelChangedStore, modelChangedStore] = createKeyStore({});
 const [, modelInitializedStore] = createKeyStore({});
 
+const close = model => {
+  rpcResultStore.set(model.id, undefined);
+  rpcRequestStore.set(model.id, undefined);
+  rpcRequestSessionModelStore.set(model.id, undefined);
+  rpcRequestModelStore.set(model.id, undefined);
+  modelChangedStore.set(model.id, undefined);
+  modelInitializedStore.set(model.id, undefined);
+};
+
 const modelStoreMiddleware = ({ type, value: model }) => {
-  // return;
   const initialized = modelInitializedStore.get(model.id);
   if (initialized) {
     return;
@@ -23,11 +33,7 @@ const modelStoreMiddleware = ({ type, value: model }) => {
       model.on('changed', onChanged);
       model.once('closed', () => {
         model.removeListener('changed', onChanged);
-        rpcStore.set(model.id, undefined);
-        rpcRequestStore.set(model.id, undefined);
-        rpcRequestStore.set(`${model.id}-get-object`, undefined);
-        modelChangedStore.set(model.id, undefined);
-        modelInitializedStore.set(model.id, undefined);
+        close(model);
       });
       break;
     default:
@@ -46,9 +52,13 @@ export {
   useModelStore,
   modelStore,
   useModelChangedStore,
-  useRpcStore,
+  useRpcResultStore,
+  rpcResultStore,
   useRpcRequestStore,
-  modelChangedStore,
   rpcRequestStore,
-  rpcStore,
+  useRpcRequestModelStore,
+  rpcRequestModelStore,
+  useRpcRequestSessionModelStore,
+  rpcRequestSessionModelStore,
+  modelChangedStore,
 };

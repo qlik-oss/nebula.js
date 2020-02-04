@@ -1,5 +1,5 @@
 import { useReducer, useEffect } from 'react';
-import { useModelChangedStore, useRpcStore, useRpcRequestStore } from '../stores/modelStore';
+import { useModelChangedStore, useRpcResultStore, useRpcRequestStore } from '../stores/modelStore';
 
 // eslint-disable-next-line no-unused-vars
 const sleep = delay => {
@@ -9,7 +9,7 @@ const sleep = delay => {
 };
 
 const rpcReducer = (state, action) => {
-  const { store, key, method } = action;
+  const { rpcResultStore, key, method } = action;
   let newState;
   switch (action.type) {
     case 'INVALID': {
@@ -52,29 +52,29 @@ const rpcReducer = (state, action) => {
     default:
       throw new Error('Undefined action');
   }
-  let sharedState = store.get(key);
+  let sharedState = rpcResultStore.get(key);
   if (!sharedState) {
     sharedState = {};
   }
   sharedState[method] = newState;
-  store.set(key, sharedState);
+  rpcResultStore.set(key, sharedState);
   return newState;
 };
 
 export default function useRpc(model, method) {
   const key = model ? `${model.id}` : null;
-  const [store] = useRpcStore();
-  const [state, dispatch] = useReducer(rpcReducer, key ? store.get(key) : null);
+  const [rpcResultStore] = useRpcResultStore();
+  const [state, dispatch] = useReducer(rpcReducer, key ? rpcResultStore.get(key) : null);
   const [modelChangedStore] = useModelChangedStore();
-  const [requestStore] = useRpcRequestStore();
+  const [rpcRequestStore] = useRpcRequestStore();
 
   let rpcShared;
 
   if (key) {
-    rpcShared = requestStore.get(key);
+    rpcShared = rpcRequestStore.get(key);
     if (!rpcShared) {
       rpcShared = {};
-      requestStore.set(key, rpcShared);
+      rpcRequestStore.set(key, rpcShared);
     }
   }
 
@@ -93,7 +93,7 @@ export default function useRpc(model, method) {
         method,
         key,
         model,
-        store,
+        rpcResultStore,
         canCancel: true,
       });
     }
@@ -101,7 +101,7 @@ export default function useRpc(model, method) {
     try {
       // await sleep(5000);
       const result = await cache.rpc;
-      dispatch({ type: 'VALID', result, key, method, model, store });
+      dispatch({ type: 'VALID', result, key, method, model, rpcResultStore });
     } catch (err) {
       if (err.code === 15 && !skipRetry) {
         // Request aborted. This will be called multiple times by hooks only retry once
@@ -121,7 +121,7 @@ export default function useRpc(model, method) {
         key,
         method,
         model,
-        store,
+        rpcResultStore,
       });
     },
     retry: () => call(),

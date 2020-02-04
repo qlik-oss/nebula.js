@@ -1,5 +1,5 @@
 import init from './initiate';
-import { modelStore, rpcRequestStore } from '../stores/modelStore';
+import { modelStore, rpcRequestModelStore } from '../stores/modelStore';
 
 /**
  * @typedef {object} GetObjectConfig
@@ -14,11 +14,11 @@ import { modelStore, rpcRequestStore } from '../stores/modelStore';
  * @property {object=} optional.properties
  */
 export default async function getObject({ id }, optional, corona) {
-  const key = `${id}-get-object`;
-  let rpc = rpcRequestStore.get(key);
+  const key = `${id}`;
+  let rpc = rpcRequestModelStore.get(key);
   if (!rpc) {
     rpc = corona.app.getObject(id);
-    rpcRequestStore.set(key, rpc);
+    rpcRequestModelStore.set(key, rpc);
   }
   const model = await rpc;
   modelStore.set(key, model);
