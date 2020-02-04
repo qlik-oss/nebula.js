@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { IconButton, Button, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
 
@@ -12,28 +12,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Item = ({ layout, item }) => {
-  const getDisabled = () => (typeof item.enabled === 'function' ? !item.enabled() : false);
-  const [disabled, setDisabled] = useState(false);
-
-  const onChanged = () => {
-    setDisabled(getDisabled());
-  };
-  // Handle changed from action-hero
-  useEffect(() => {
-    if (item && item.action && item.on) {
-      item.on('changed', onChanged);
-      return () => {
-        item.removeListener('changed', onChanged);
-      };
-    }
-    return undefined;
-  }, []);
-
-  // Handle layout changed
-  useEffect(() => {
-    onChanged();
-  }, [layout]);
+const Item = ({ item }) => {
+  const disabled = typeof item.enabled === 'function' ? !item.enabled() : !!item.disabled;
 
   const { icon } = useStyles();
   const hasSvgIconShape = typeof item.getSvgIconShape === 'function';
@@ -46,6 +26,8 @@ const Item = ({ layout, item }) => {
       </MenuItem>
     );
   }
+
+  // TODO - handle active/toggled state
 
   return item.type === 'button' ? (
     <Button

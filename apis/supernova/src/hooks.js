@@ -436,8 +436,8 @@ export function useAction(fn, deps) {
     ref._config = a;
 
     ref.active = a.active || false;
-    ref.enabled = !a.disabled;
-    // TODO - use disabled since enabled is true by default
+    ref.disabled = a.disabled || false;
+    ref.label = a.label || '';
     ref.getSvgIconShape = a.icon ? () => a.icon : undefined;
 
     ref.key = a.key || ref.component.__hooks.actions.length;

@@ -418,8 +418,9 @@ describe('hooks', () => {
       stub.returns({
         action: 'action',
         icon: 'ic',
+        label: 'meh',
         active: true,
-        enabled: true,
+        disabled: true,
       });
       c.fn = () => {
         useAction(stub, []);
@@ -431,7 +432,8 @@ describe('hooks', () => {
 
       expect(ref.active).to.eql(true);
       expect(ref.getSvgIconShape()).to.eql('ic');
-      expect(ref.enabled).to.eql(true);
+      expect(ref.disabled).to.eql(true);
+      expect(ref.label).to.eql('meh');
     });
 
     it('should dispatch actions', async () => {

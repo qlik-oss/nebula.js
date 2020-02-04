@@ -56,7 +56,6 @@ describe('<SelectionToolbar />', () => {
         key: 'confirm',
         type: 'icon-button',
         label: 'localized confirm',
-        icon: 'tick',
       });
 
       expect(item.enabled()).to.equal('confirmable');
@@ -70,7 +69,6 @@ describe('<SelectionToolbar />', () => {
         key: 'cancel',
         type: 'icon-button',
         label: 'localized cancel',
-        icon: 'close',
       });
       expect(item.enabled()).to.equal('cancelable');
       item.action();
@@ -83,7 +81,6 @@ describe('<SelectionToolbar />', () => {
         key: 'clear',
         type: 'icon-button',
         label: 'localized clear',
-        icon: 'clear-selections',
       });
       expect(item.enabled()).to.equal('clearable');
       item.action();

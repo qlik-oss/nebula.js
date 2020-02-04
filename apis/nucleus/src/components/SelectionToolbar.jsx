@@ -25,7 +25,6 @@ const SelectionToolbarWithDefault = ({ layout, api, xItems = [], onCancel = () =
       key: 'clear',
       type: 'icon-button',
       label: translator.get('Selection.Clear'),
-      icon: 'clear-selections',
       enabled: () => api.canClear(),
       action: () => api.clear(),
       getSvgIconShape: clearSelections,
@@ -34,7 +33,6 @@ const SelectionToolbarWithDefault = ({ layout, api, xItems = [], onCancel = () =
       key: 'cancel',
       type: 'icon-button',
       label: translator.get('Selection.Cancel'),
-      icon: 'close',
       enabled: () => api.canCancel(),
       action: () => {
         api.cancel();
@@ -46,7 +44,6 @@ const SelectionToolbarWithDefault = ({ layout, api, xItems = [], onCancel = () =
       key: 'confirm',
       type: 'icon-button',
       label: translator.get('Selection.Confirm'),
-      icon: 'tick',
       enabled: () => api.canConfirm(),
       action: () => {
         api.confirm();

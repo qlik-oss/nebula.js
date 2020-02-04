@@ -36,20 +36,6 @@ describe('<SelectionToolbarItem />', () => {
     types[0].props.onClick();
     expect(action.callCount).to.equal(1);
   });
-  it('should listen on changed', async () => {
-    const action = sandbox.spy();
-    const getSvgIconShape = sandbox.spy();
-    const on = sandbox.spy();
-    const removeListener = sandbox.spy();
-    const enabled = sandbox.stub().returns(true);
-    await render({ on, removeListener, action, enabled, getSvgIconShape });
-    const types = renderer.root.findAllByType(IconButton);
-    expect(types).to.have.length(1);
-    expect(types[0].props.disabled).to.equal(false);
-    enabled.returns(false);
-    on.callArg(1);
-    expect(types[0].props.disabled).to.equal(true);
-  });
   it('should render button', async () => {
     const action = sandbox.spy();
     await render({ type: 'button', label: 'foo', color: 'purple', action });
