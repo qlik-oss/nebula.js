@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { Grid, Typography } from '@material-ui/core';
 
@@ -8,6 +8,16 @@ const Header = ({ layout, sn }) => {
   const showTitle = layout && layout.showTitles && !!layout.title;
   const showSubtitle = layout && layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = sn && layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
+
+  const [items, setItems] = useState([]);
+
+  useEffect(() => {
+    if (!sn || !sn.component || !sn.component.isHooked) {
+      return;
+    }
+    sn.component.observeActions(actions => setItems(actions));
+  }, [sn]);
+
   return (
     <Grid item container wrap="nowrap" style={{ flexGrow: 0 }}>
       <Grid item zeroMinWidth xs>
@@ -30,7 +40,7 @@ const Header = ({ layout, sn }) => {
             inline
             layout={layout}
             api={sn.component.selections}
-            xItems={sn.selectionToolbar.items}
+            xItems={[...items, ...(sn.selectionToolbar.items || [])]}
           />
         )}
       </Grid>
