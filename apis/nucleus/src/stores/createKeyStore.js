@@ -14,6 +14,10 @@ export default (initialState, applyMiddleware = () => {}) => {
       applyMiddleware({ type: 'SET', value });
       return value;
     },
+    clear: () =>
+      Object.keys(sharedState).forEach(key => {
+        sharedState[key] = null;
+      }),
     dispatch: forceNewState => {
       hookListeners.forEach(listener => listener(forceNewState ? {} : sharedState));
     },

@@ -5,6 +5,7 @@ import { Grid } from '@material-ui/core';
 import { useTheme } from '@nebula.js/ui/theme';
 import useCurrentSelectionsModel from '../../hooks/useCurrentSelectionsModel';
 import useLayout from '../../hooks/useLayout';
+import { useModalObjectStore } from '../../hooks/useAppSelections';
 
 import OneField from './OneField';
 import MultiState from './MultiState';
@@ -39,6 +40,12 @@ export default function SelectedFields({ api, app }) {
   const [currentSelectionsModel] = useCurrentSelectionsModel(app);
   const [layout] = useLayout(currentSelectionsModel);
   const [state, setState] = useState({ items: [] });
+  const [modalObjectStore] = useModalObjectStore();
+
+  const isInListboxPopover = () => {
+    const object = modalObjectStore.get(app.id);
+    return object && object.genericType === 'njsListbox';
+  };
 
   useEffect(() => {
     if (!app || !currentSelectionsModel || !layout) {
@@ -48,7 +55,7 @@ export default function SelectedFields({ api, app }) {
     setState(currState => {
       const newItems = items;
       // Maintain modal state in app selections
-      if (api.isInModal() && newItems.length + 1 === currState.items.length) {
+      if (isInListboxPopover() && newItems.length + 1 === currState.items.length) {
         const lastDeselectedField = currState.items.filter(f1 => newItems.some(f2 => f1.name === f2.name) === false)[0];
         const { qField } = lastDeselectedField.selections[0];
         lastDeselectedField.selections = [{ qField }];
@@ -59,7 +66,7 @@ export default function SelectedFields({ api, app }) {
         items: newItems,
       };
     });
-  }, [app, currentSelectionsModel, layout]);
+  }, [app, currentSelectionsModel, layout, api.isInModal()]);
 
   return (
     <Grid container spacing={0} wrap="nowrap" style={{ height: '100%' }}>

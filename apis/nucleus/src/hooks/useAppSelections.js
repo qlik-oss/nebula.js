@@ -4,8 +4,11 @@ import useAppSelectionsNavigation from './useAppSelectionsNavigation';
 import { useAppSelectionsStore, objectSelectionsStore } from '../stores/selectionsStore';
 import createKeyStore from '../stores/createKeyStore';
 
+const [useModalObjectStore, modalObjectStore] = createKeyStore({});
+
+export { useModalObjectStore };
+
 function createAppSelections({ app, currentSelectionsLayout, navState }) {
-  const [, modalObjectStore] = createKeyStore({});
   const key = `${app.id}`;
 
   /**
@@ -25,7 +28,7 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
         const objectSelections = objectSelectionsStore.get(currentObject.id);
         objectSelections.emit('deactivated');
       }
-      if (object && object !== null) {
+      if (object && typeof object !== 'undefined') {
         // TODO check model state
         modalObjectStore.set(key, object);
         // do not return the call to beginSelection to avoid waiting for it's response
@@ -38,21 +41,21 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
         });
         return Promise.resolve();
       }
-      modalObjectStore.set(key, null);
+      modalObjectStore.set(key, undefined);
       return Promise.resolve();
     },
     isInModal() {
-      return modalObjectStore.get(key) !== null;
+      return !!modalObjectStore.get(key);
     },
     isModal(object) {
       // TODO check model state
-      return object ? modalObjectStore.get(key) === object : modalObjectStore.get(key) !== null;
+      return object ? modalObjectStore.get(key) === object : !!modalObjectStore.get(key);
     },
     abortModal(accept = true) {
       if (!modalObjectStore.get(key)) {
         return Promise.resolve();
       }
-      modalObjectStore.set(key, null);
+      modalObjectStore.set(key, undefined);
       return app.abortModal(accept);
     },
     canGoForward() {
