@@ -19,6 +19,7 @@ const rpcReducer = (state, action) => {
         invalid: true,
         validating: true,
         canCancel: true,
+        canRetry: false,
         rpcRetry: false,
       };
       break;
@@ -26,7 +27,6 @@ const rpcReducer = (state, action) => {
     case 'VALID': {
       newState = {
         result: {
-          // ...state.result,
           ...action.result,
         },
         invalid: false,
@@ -43,8 +43,8 @@ const rpcReducer = (state, action) => {
         invalid: true,
         valid: false,
         validating: false,
-        canRetry: true,
         canCancel: false,
+        canRetry: true,
         rpcRetry: false,
       };
       break;
@@ -124,7 +124,10 @@ export default function useRpc(model, method) {
         rpcResultStore,
       });
     },
-    retry: () => call(),
+    retry: () => {
+      rpcShared[method].rpcRetry = true;
+      call();
+    },
   };
 
   useEffect(() => {
