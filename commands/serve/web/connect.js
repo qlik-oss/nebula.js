@@ -77,8 +77,8 @@ const connectionInfo = fetch('/info')
         },
       };
     }
-    if (params['web-integration-id']) {
-      info.webIntegrationId = params['web-integration-id'];
+    if (params['qlik-web-integration-id']) {
+      info.webIntegrationId = params['qlik-web-integration-id'];
     }
     if (info.invalid) {
       return info;
