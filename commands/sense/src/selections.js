@@ -15,7 +15,6 @@ export default scope => {
   const selectionAPI = {
     begin() {
       scope.selectionsApi.activated();
-      scope.backendApi.beginSelections();
       selectionAPI.emit('activated');
     },
     clear() {
@@ -28,9 +27,6 @@ export default scope => {
       scope.selectionsApi.cancel();
     },
     select(s) {
-      if (s.method !== 'resetMadeSelections' && !scope.selectionsApi.selectionsMade) {
-        scope.backendApi.beginSelections();
-      }
       scope.backendApi.model[s.method](...s.params).then(qSuccess => {
         if (!qSuccess) {
           scope.selectionsApi.selectionsMade = false;
