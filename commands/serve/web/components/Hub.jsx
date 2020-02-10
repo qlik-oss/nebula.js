@@ -1,36 +1,55 @@
 import React, { useState, useEffect } from 'react';
 
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
+import { Help } from '@nebula.js/ui/icons';
+import Remove from '@nebula.js/ui/icons/remove';
 import Box from '@material-ui/core/Box';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import Paper from '@material-ui/core/Paper';
+import Collapse from '@material-ui/core/Collapse';
+import Container from '@material-ui/core/Container';
+import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
+import Link from '@material-ui/core/Link';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemText from '@material-ui/core/ListItemText';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
 import Typography from '@material-ui/core/Typography';
+import Stepper from '@material-ui/core/Stepper';
+import Step from '@material-ui/core/Step';
+import StepLabel from '@material-ui/core/StepLabel';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { info as connectionInfo, connect } from '../connect';
 import storageFn from '../storage';
 
-const theme = createTheme('light');
 const storage = storageFn({});
+const theme = createTheme('light');
+const themeDark = createTheme('dark');
 
-function URLInput({ info }) {
-  const [url, setUrl] = useState(storage.get('nebula-ws-url') || 'ws://localhost:9076');
+function SelectEngine({ info, children }) {
+  const [items, setItems] = useState(storage.get('connections') || []);
+  const [showInstructions, setShowInstructions] = useState(!items.length);
+  const [goTo] = useState(() => u => `${window.location.origin}?engine_url=${u.replace('?', '&')}`);
   let typedUrl;
+
+  const onRemove = li => {
+    const idx = items.indexOf(li);
+    if (li !== -1) {
+      const its = items.slice();
+      its.splice(idx, 1);
+      storage.save('connections', its);
+      setItems(its);
+    }
+  };
+
   const onKeyDown = e => {
     switch (e.key) {
       case 'Enter':
         typedUrl = e.target.value;
-        if (typedUrl === '') {
-          typedUrl = url;
-        } else {
-          storage.save('nebula-ws-url', typedUrl);
-          setUrl(typedUrl);
+        if (typedUrl) {
+          window.location.href = goTo(typedUrl.replace('?', '&'));
         }
-        window.location.href = `${window.location.origin}?engine_url=${typedUrl}`;
         break;
       case 'Escape':
         break;
@@ -40,73 +59,155 @@ function URLInput({ info }) {
   };
   return (
     <>
-      <Box style={{ height: '30vh' }} />
-      <Typography variant="h5">Engine WebSocket URL</Typography>
-      <Box boxShadow={24}>
-        <OutlinedInput autoFocus fullWidth placeholder={url} onKeyDown={onKeyDown} defaultValue={info.engineUrl} />
-      </Box>
+      <Grid container>
+        <Grid item xs>
+          <Typography variant="h5" gutterBottom>
+            Connect to an engine
+          </Typography>
+        </Grid>
+        <Grid item>
+          <IconButton onClick={() => setShowInstructions(s => !s)} size="small">
+            <Help />
+          </IconButton>
+        </Grid>
+      </Grid>
+
+      {items.length ? (
+        <>
+          <Typography variant="h6">Previous connections</Typography>
+          <List>
+            {items.map(li => (
+              <ListItem button key={li} component="a" href={goTo(li)}>
+                <ListItemText primary={li} />
+                <ListItemSecondaryAction>
+                  <IconButton edge="end" onClick={() => onRemove(li)}>
+                    <Remove />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            ))}
+          </List>
+        </>
+      ) : null}
+      <Typography variant="h6" gutterBottom>
+        New connection
+      </Typography>
+      <OutlinedInput
+        autoFocus
+        fullWidth
+        placeholder="Engine WebSocket URL"
+        error={info.invalid}
+        onKeyDown={onKeyDown}
+        defaultValue={info.engineUrl}
+      />
+
+      {children}
+
+      <Collapse in={showInstructions}>
+        <Typography variant="h6" gutterBottom style={{ marginTop: '1rem' }}>
+          WebSocket URL
+        </Typography>
+        <Typography variant="body2" paragraph>
+          The development server needs to connect to and communicate with the Qlik Associative Engine running within any
+          of Qlik&apos;s product offerings. The connection is done through the WebSocket protocol using a WebSocket URL
+          format the differs slightly between products. Enter the WebSocket URL that corresponds to the Qlik product you
+          are using.
+        </Typography>
+
+        <Typography variant="subtitle1" gutterBottom>
+          Qlik Core
+        </Typography>
+        <Typography variant="body2" paragraph>
+          WebSocket URL format: <code>ws://&lt;host&gt;:&lt;port&gt;</code>
+          <br />
+          Example: <code>ws://localhost:9076</code>
+          <br />
+          <br />
+          For more info, visit{' '}
+          <Link
+            color="secondary"
+            underline="always"
+            href="https://core.qlik.com/services/qix-engine/apis/qix/introduction/#websockets"
+          >
+            QIX WebSocket Introduction
+          </Link>
+          .
+        </Typography>
+        <Typography variant="subtitle1" gutterBottom>
+          Qlik Cloud Services
+        </Typography>
+        <Typography variant="body2" paragraph>
+          WebSocket URL format:{' '}
+          <code>
+            wss://&lt;tenant&gt;.&lt;region&gt;.qlikcloud.com?qlik-web-integration-id=&lt;web-integration-id&gt;
+          </code>
+          <br />
+          Example: <code>wss://qlik.eu.qlikclount.com?qlik-web-integration-id=xxx</code>
+          <br />
+          <br />
+          The <code>qlik-web-integration-id</code> must be present in order for Qlik Sense to confirm that the request
+          originates from a whitelisted domain. For more info, visit{' '}
+          <Link
+            color="secondary"
+            underline="always"
+            href="https://help.qlik.com/en-US/cloud-services/Subsystems/Hub/Content/Sense_Hub/Admin/mc-adminster-web-integrations.htm"
+          >
+            Managing web integrations
+          </Link>
+          .
+        </Typography>
+        <Typography variant="subtitle1" gutterBottom>
+          Qlik Sense Enterprise on Windows
+        </Typography>
+        <Typography variant="body2" paragraph>
+          WebSocket URL format: <code>wss://&lt;sense-host.com&gt;/&lt;virtual-proxy-prefix&gt;</code>
+          <br />
+          Example: <code>wss://mycompany.com/bi</code>
+          <br />
+          <br />
+          Note that for the Qlik Sense Proxy to allow sessions from this webpage, <code>
+            {window.location.host}
+          </code>{' '}
+          needs to be whitelisted in QMC in your Qlik Sense Enterprise on Windows deployment.
+          <br />
+          Make sure that you are logged in to Qlik Sense in another browser tab.
+        </Typography>
+        <Typography variant="subtitle1" gutterBottom>
+          Qlik Sense Desktop
+        </Typography>
+        <Typography variant="body2" paragraph>
+          WebSocket URL format: <code>ws://localhost:4848</code>
+        </Typography>
+      </Collapse>
     </>
   );
 }
 
-function AppList({ info }) {
+function AppList({ info, glob }) {
   const [items, setItems] = useState();
-  const [err, setError] = useState();
+  const [waiting, setWaiting] = useState(false);
+
   useEffect(() => {
-    connect()
-      .then(g => g.getDocList().then(setItems))
-      .catch(e => {
-        const oops = {
-          message: 'Something went wrong, check the console',
-          hints: [],
-        };
-        if (e.target instanceof WebSocket) {
-          oops.message = `Connection failed to ${info.engineUrl}`;
-          if (!info.webIntegrationId) {
-            oops.hints.push('If you are connecting to QCS/QSEoK, make sure to provide a web-integration-id');
-          }
-          setError(oops);
-          return;
-        }
-        setError(oops);
-        console.error(e);
-      });
+    const t = setTimeout(() => {
+      setWaiting(true);
+    }, 750);
+    glob.getDocList().then(its => {
+      clearTimeout(t);
+      setWaiting(false);
+      setItems(its);
+    });
+    return () => {
+      clearTimeout(t);
+    };
   }, []);
 
-  if (err) {
-    return (
-      <Paper elevation={24}>
-        <Box p={2}>
-          <Typography variant="h6" color="error" gutterBottom>
-            Error
-          </Typography>
-          <Typography gutterBottom>{err.message} </Typography>
-          {err.hints.map(hint => (
-            <Typography key={hint} variant="body2" color="textSecondary">
-              {hint}
-            </Typography>
-          ))}
-        </Box>
-      </Paper>
-    );
-  }
-
-  if (!items) {
-    return (
-      <Grid container align="center" direction="column" spacing={2}>
-        <Grid item>
-          <CircularProgress size={48} />
-        </Grid>
-        <Grid item>
-          <Typography>Connecting</Typography>
-        </Grid>
-      </Grid>
-    );
-  }
-
   return (
-    <Paper elevation={24}>
-      {items.length ? (
+    <>
+      <Typography variant="h5" gutterBottom>
+        Select an app
+      </Typography>
+      {waiting && <CircularProgress size={32} />}
+      {items && items.length > 0 && (
         <List>
           {items.map(li => (
             <ListItem
@@ -122,35 +223,134 @@ function AppList({ info }) {
             </ListItem>
           ))}
         </List>
-      ) : (
+      )}
+      {items && !items.length && (
         <Box p={2}>
           <Typography component="span">No apps found</Typography>
         </Box>
       )}
-    </Paper>
+    </>
   );
 }
 
+const Err = ({ e: { message, hints } }) => {
+  return (
+    <>
+      <Typography variant="subtitle1" color="error" gutterBottom style={{ marginTop: '1rem' }}>
+        {message}
+      </Typography>
+      {hints.map(hint => (
+        <Typography key={hint} variant="body2">
+          {hint}
+        </Typography>
+      ))}
+    </>
+  );
+};
+
 export default function Hub() {
-  const [n, setInfo] = useState();
+  const [info, setInfo] = useState();
+  const [glob, setGlobal] = useState();
+  const [err, setError] = useState();
+  const steps = ['Connect to an engine', 'Select an app', 'Develop'];
+  const [activeStep, setActiveStep] = useState(0);
+
+  const reset = () => {
+    window.location.href = window.location.origin;
+  };
+
   useEffect(() => {
-    connectionInfo.then(setInfo);
+    connectionInfo.then(i => {
+      if (i.enigma.appId) {
+        window.location.href = `/dev/${window.location.search}`;
+        return;
+      }
+      setInfo(i);
+    });
   }, []);
-  if (!n) {
+
+  useEffect(() => {
+    if (!info || !info.engineUrl) {
+      return;
+    }
+    if (info.invalid) {
+      setError({
+        message: 'Connection failed',
+        hints: ['The WebSocket URL is not valid.'],
+      });
+      return;
+    }
+    connect()
+      .then(g => {
+        setGlobal(g);
+        setActiveStep(1);
+        const conns = storage.get('connections') || [];
+        const url = `${info.engineUrl}${
+          info.webIntegrationId ? `?qlik-web-integration-id=${info.webIntegrationId}` : ''
+        }`;
+        if (conns.indexOf(url) === -1) {
+          conns.push(url);
+          storage.save('connections', conns);
+        }
+      })
+      .catch(e => {
+        const oops = {
+          message: 'Something went wrong, check the devtools console',
+          hints: [],
+        };
+        if (e.target instanceof WebSocket) {
+          oops.message = `Connection failed to ${info.engineUrl}`;
+          if (!info.webIntegrationId) {
+            oops.hints.push('If you are connecting to QCS/QSEoK, make sure to provide a web-integration-id.');
+          }
+          setError(oops);
+          return;
+        }
+        setError(oops);
+        console.error(e);
+      });
+  }, [info]);
+
+  if (!info) {
     return null;
   }
-  if (n.enigma.appId) {
-    window.location.href = `/dev/${window.location.search}`;
+
+  if (info.engineUrl && !(glob || err)) {
+    return null;
   }
+
   return (
     <ThemeProvider theme={theme}>
-      <Box p={[2, 4]}>
-        <Grid container justify="center">
-          <Grid item xs style={{ maxWidth: '800px' }}>
-            {!n.invalid && n.engineUrl ? <AppList info={n} /> : <URLInput info={n} />}
-          </Grid>
-        </Grid>
-      </Box>
+      <Container maxWidth="md">
+        <ThemeProvider theme={themeDark}>
+          <Stepper alternativeLabel activeStep={activeStep} style={{ backgroundColor: 'transparent' }}>
+            {steps.map((label, i) => (
+              <Step key={label}>
+                {i ? (
+                  <StepLabel>{label}</StepLabel>
+                ) : (
+                  <StepLabel
+                    onClick={glob || err ? reset : null}
+                    error={!!err}
+                    style={{
+                      cursor: glob || err ? 'pointer' : 'default',
+                    }}
+                  >
+                    {label}
+                  </StepLabel>
+                )}
+              </Step>
+            ))}
+          </Stepper>
+        </ThemeProvider>
+        <Box p={[2, 2]} m={2} bgcolor="background.paper" boxShadow={24} borderRadius="borderRadius">
+          {glob ? (
+            <AppList info={info} glob={glob} />
+          ) : (
+            <SelectEngine info={info}>{err && <Err e={err} />}</SelectEngine>
+          )}
+        </Box>
+      </Container>
     </ThemeProvider>
   );
 }

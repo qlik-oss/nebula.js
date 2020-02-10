@@ -5,5 +5,6 @@ import WbSunny from '@material-ui/icons/WbSunny';
 import ExpandMore from '@material-ui/icons/ExpandMore';
 import ColorLens from '@material-ui/icons/ColorLens';
 import Language from '@material-ui/icons/Language';
+import Help from '@material-ui/icons/Help';
 
-export { ChevronRight, ChevronLeft, Brightness3, WbSunny, ExpandMore, ColorLens, Language };
+export { ChevronRight, ChevronLeft, Brightness3, WbSunny, ExpandMore, ColorLens, Language, Help };
