@@ -2,7 +2,7 @@
   "scriptappy": "1.0.0",
   "info": {
     "name": "@nebula.js/supernova",
-    "version": "0.1.0-alpha.26",
+    "version": "0.1.0-alpha.29",
     "license": "MIT",
     "stability": "experimental"
   },
@@ -96,6 +96,23 @@
             "type": "#/definitions/EnigmaGlobalModel"
           }
         },
+        "useImperativeHandle": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "fn",
+              "type": "#/entries/supernova/definitions/Factory"
+            },
+            {
+              "name": "deps",
+              "optional": true,
+              "kind": "array",
+              "items": {
+                "type": "any"
+              }
+            }
+          ]
+        },
         "useLayout": {
           "kind": "function",
           "params": [],
@@ -129,6 +146,13 @@
           "returns": {
             "optional": true,
             "type": "#/definitions/EnigmaObjectModel"
+          }
+        },
+        "useOptions": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "object"
           }
         },
         "usePromise": {

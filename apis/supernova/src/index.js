@@ -8,6 +8,7 @@ export { hook } from './hooks';
 export { useState } from './hooks';
 export { useEffect } from './hooks';
 export { useMemo } from './hooks';
+export { useImperativeHandle } from './hooks';
 
 // composed hooks
 export { usePromise } from './hooks';
@@ -24,6 +25,7 @@ export { useStaleLayout } from './hooks';
 export { useAppLayout } from './hooks';
 export { useTranslator } from './hooks';
 export { useConstraints } from './hooks';
+export { useOptions } from './hooks';
 
 export { onTakeSnapshot } from './hooks';
 

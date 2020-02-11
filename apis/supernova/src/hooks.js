@@ -56,6 +56,7 @@ export function teardown(component) {
   component.__hooks.pendingLayoutEffects.length = 0;
   component.__hooks.actions.length = 0;
   component.__hooks.dispatchActions = null;
+  component.__hooks.imperativeHandle = null;
 
   clearTimeout(component.__hooks.micro);
   cancelAnimationFrame(component.__hooks.macro);
@@ -157,6 +158,10 @@ export function runSnaps(component, layout) {
   return Promise.resolve();
 }
 
+export function getImperativeHandle(component) {
+  return component.__hooks.imperativeHandle;
+}
+
 function dispatchActions(component) {
   component._dispatchActions && component._dispatchActions(component.__hooks.actions.slice());
 }
@@ -207,11 +212,11 @@ function useInternalContext(name) {
   return ctx[name];
 }
 
-function useInternalEnv(name) {
-  getHook(++currentIndex);
-  const { env } = currentComponent;
-  return env[name];
-}
+// function useInternalEnv(name) {
+//   getHook(++currentIndex);
+//   const { env } = currentComponent;
+//   return env[name];
+// }
 
 // ========  EXTERNAL =========
 
@@ -224,6 +229,7 @@ export function hook(cb) {
     teardown,
     runSnaps,
     observeActions,
+    getImperativeHandle,
   };
 }
 
@@ -326,6 +332,27 @@ export function useMemo(fn, deps) {
     h.value = [deps, fn()];
   }
   return h.value[1];
+}
+
+/**
+ * @param {module:supernova~Factory} fn
+ * @param {Array<any>} [deps]
+ */
+export function useImperativeHandle(fn, deps) {
+  const h = getHook(++currentIndex);
+  if (__NEBULA_DEV__) {
+    if (currentComponent.__hooks.imperativeHandle) {
+      throw new Error('useImperativeHandle already used.');
+    }
+  }
+  if (!h.component) {
+    h.component = currentComponent;
+  }
+  if (depsChanged(h.value ? h.value[0] : undefined, deps)) {
+    const v = fn();
+    h.value = [deps, v];
+    h.component.__hooks.imperativeHandle = v;
+  }
 }
 
 /**
@@ -572,7 +599,7 @@ export function useAppLayout() {
  * @returns {Translator}
  */
 export function useTranslator() {
-  return useInternalEnv('translator');
+  return useInternalContext('translator');
 }
 
 /**
@@ -587,6 +614,13 @@ export function useTranslator() {
  */
 export function useConstraints() {
   return useInternalContext('constraints');
+}
+
+/**
+ * @returns {object}
+ */
+export function useOptions() {
+  return useInternalContext('options');
 }
 
 /**
