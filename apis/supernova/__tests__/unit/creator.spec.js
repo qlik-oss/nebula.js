@@ -162,7 +162,9 @@ describe('creator', () => {
 
     it('should not run hook when observed values have not changed', () => {
       const c = create(generator, opts, env).component;
+      const layout = 'layout';
       c.render({
+        layout,
         context: {
           appLayout: {
             bla: 'meh',
@@ -179,9 +181,10 @@ describe('creator', () => {
         },
       });
 
-      // use same values as above with new objects
+      // use same values as above with new objects (except layout)
       // to make sure deep values are checked, and not references only
       c.render({
+        layout,
         context: {
           appLayout: {
             bla: 'meh',
@@ -200,13 +203,15 @@ describe('creator', () => {
       expect(hooked.run.callCount).to.equal(1);
     });
 
-    it('should run when layout is provided', () => {
+    it('should run when layout has changed', () => {
       const c = create(generator, opts, env).component;
-      c.render({}); // initial should always run
+      const layout = {};
+      c.render({ layout }); // initial should always run
 
-      c.render({
-        layout: {},
-      });
+      c.render({ layout });
+      expect(hooked.run.callCount).to.equal(1);
+
+      c.render({ layout: {} });
       expect(hooked.run.callCount).to.equal(2);
     });
 
