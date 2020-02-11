@@ -87,8 +87,7 @@ function createWithHooks(generator, opts, env) {
       let changed = !hasRun || false;
 
       if (r) {
-        if (r.layout) {
-          // too expensive to do a deep comparison for large layouts - assume it's always new
+        if (r.layout && r.layout !== this.context.layout) {
           changed = true;
           this.context.layout = r.layout;
         }
@@ -131,7 +130,8 @@ function createWithHooks(generator, opts, env) {
       }
 
       // TODO - observe what hooks are used, and only trigger run if values associated
-      // with those hooks have changed
+      // with those hooks have changed, i.e. if layout has changed but useLayout() isn't called
+      // then there is no need to call run
 
       if (changed) {
         hasRun = true;
