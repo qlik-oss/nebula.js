@@ -11,6 +11,7 @@ import {
   usePromise,
   useAction,
   useConstraints,
+  useOptions,
 } from '@nebula.js/supernova';
 
 function sn() {
@@ -22,6 +23,7 @@ function sn() {
       const theme = useTheme();
       const layout = useLayout();
       const appLayout = useAppLayout();
+      const options = useOptions();
 
       const [acted, setActed] = useState(false);
 
@@ -70,6 +72,7 @@ function sn() {
         <div class="promise">${v || 'pending'}</div>
         <div class="action">${acted}</div>
         <div class="constraints">${!!passive}:${!!active}:${!!select}</div>
+        <div class="options">${options.myOption}</div>
       </div>
       `;
     },
@@ -80,6 +83,10 @@ export default function fixture() {
   return {
     type: 'sn-mounted',
     sn,
-    snConfig: {},
+    snConfig: {
+      options: {
+        myOption: 'opts',
+      },
+    },
   };
 }
