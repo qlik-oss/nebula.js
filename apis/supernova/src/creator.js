@@ -44,43 +44,106 @@ function createWithHooks(generator, opts, env) {
       console.warn('Detected multiple supernova modules, this might cause problems.');
     }
   }
-  const qGlobal = opts.app && opts.app.session ? opts.app.session.getObjectApi({ handle: -1 }) : null;
+  const qGlobal = opts.app && opts.app.session ? opts.app.session.getObjectApi({ handle: -1 }) : undefined;
+
+  // use a deep comparison for 'small' objects
+  let hasRun = false;
+  const current = {};
+  const deepCheck = ['appLayout', 'constraints', 'options'];
+  const forcedConstraints = {};
+
+  // select should be a constraint when a real model is not available
+  if (!opts.model || !opts.model.session) {
+    forcedConstraints.select = true;
+  }
+
   const c = {
     context: {
-      element: undefined,
-      layout: {},
+      // static values that are not expected to
+      // change during the component's life
+      // --------------------
       model: opts.model,
       app: opts.app,
       global: qGlobal,
       selections: opts.selections,
-      constraints: {},
+      element: undefined, // set on mount
+      // ---- singletons ----
+      theme: undefined,
+      translator: env.translator,
+      // --- dynamic values ---
+      layout: {},
+      appLayout: {},
+      constraints: forcedConstraints,
+      options: {},
     },
     env,
     fn: generator.component.fn,
     created() {},
     mounted(element) {
+      this.context.element = element;
       generator.component.initiate(c);
-      this.context = {
-        ...this.context,
-        element,
-      };
     },
     render(r) {
-      this.context = {
-        ...this.context,
-        ...r.context,
-        layout: r.layout,
-      };
+      let changed = !hasRun || false;
 
-      // select should be a constraint when a real model is not available
-      if (!this.context.constraints.select && (!this.context.model || !this.context.model.session)) {
-        this.context.constraints.select = true;
+      if (r) {
+        if (r.layout) {
+          // too expensive to do a deep comparison for large layouts - assume it's always new
+          changed = true;
+          this.context.layout = r.layout;
+        }
+        if (r.context && r.context.theme) {
+          // changed is set further down only if the name is different
+          this.context.theme = r.context.theme;
+        }
+
+        // do a deep check on 'small' objects
+        deepCheck.forEach(key => {
+          const ref = key === 'options' ? r : r.context;
+          if (ref && Object.prototype.hasOwnProperty.call(ref, key)) {
+            let s = JSON.stringify(ref[key]);
+            if (key === 'constraints') {
+              s = JSON.stringify({ ...ref[key], ...forcedConstraints });
+            }
+            if (s !== current[key]) {
+              changed = true;
+              current[key] = s;
+              // create new object reference to ensure useEffect/useMemo/useCallback
+              // is triggered if the object is used a dependency
+              this.context[key] = JSON.parse(s);
+            }
+          }
+        });
+      } else {
+        changed = true;
       }
 
-      return generator.component.run(this);
+      // theme and translator are singletons so their reference won't change, we do
+      // however need to observe if their internal content has changed (name, language) and
+      // trigger an update if they have
+      if (this.context.theme && this.context.theme.name() !== current.themeName) {
+        changed = true;
+        current.themeName = this.context.theme.name();
+      }
+      if (this.context.translator.language() !== current.language) {
+        changed = true;
+        current.language = c.context.translator.language();
+      }
+
+      // TODO - observe what hooks are used, and only trigger run if values associated
+      // with those hooks have changed
+
+      if (changed) {
+        hasRun = true;
+        return generator.component.run(this);
+      }
+      return Promise.resolve();
     },
     resize() {
-      // TODO - hook for resize?
+      // resize should never really by necesseary since the ResizeObserver
+      // in useRect observes changes on the size of the object, the only time it might
+      // be necessary is on IE 11 when the object is resized without the window changing size
+      return this.render();
     },
     willUnmount() {
       generator.component.teardown(this);
@@ -88,12 +151,21 @@ function createWithHooks(generator, opts, env) {
     setSnapshotData(layout) {
       return generator.component.runSnaps(this, layout);
     },
+    getImperativeHandle() {
+      return generator.component.getImperativeHandle(this);
+    },
     destroy() {},
     observeActions(callback) {
       generator.component.observeActions(this, callback);
     },
     isHooked: true,
   };
+
+  deepCheck.forEach(key => {
+    current[key] = JSON.stringify(key === 'options' ? c.options : c.context[key]);
+  });
+  current.themeName = c.context.theme ? c.context.theme.name() : undefined;
+  current.language = c.context.translator ? c.context.translator.language() : undefined;
 
   Object.assign(c, {
     selections: opts.selections,

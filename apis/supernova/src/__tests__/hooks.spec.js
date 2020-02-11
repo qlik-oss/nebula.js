@@ -8,9 +8,11 @@ import {
   run,
   runSnaps,
   observeActions,
+  getImperativeHandle,
   useState,
   useEffect,
   useMemo,
+  useImperativeHandle,
   usePromise,
   useAction,
   useRect,
@@ -25,6 +27,7 @@ import {
   useAppLayout,
   useTranslator,
   useConstraints,
+  useOptions,
   onTakeSnapshot,
 } from '../hooks';
 
@@ -61,6 +64,7 @@ describe('hooks', () => {
       teardown,
       runSnaps,
       observeActions,
+      getImperativeHandle,
     });
   });
 
@@ -112,6 +116,7 @@ describe('hooks', () => {
         pendingLayoutEffects: [],
         actions: [],
         dispatchActions: null,
+        imperativeHandle: null,
       });
     });
   });
@@ -385,6 +390,73 @@ describe('hooks', () => {
     });
   });
 
+  describe('useImperativeHandle', () => {
+    beforeEach(() => {
+      c = {};
+      initiate(c);
+    });
+    afterEach(() => {
+      teardown(c);
+    });
+
+    it('should store handle', async () => {
+      const stub = sandbox.stub();
+      stub.returns({
+        foo: 'meh',
+      });
+      c.fn = () => {
+        useImperativeHandle(stub, []);
+      };
+
+      await run(c);
+      expect(stub.callCount).to.eql(1);
+    });
+
+    it('should maintain reference', async () => {
+      const stub = sandbox.stub();
+      const ret = {
+        foo: 'meh',
+      };
+      stub.returns(ret);
+      c.fn = () => {
+        useImperativeHandle(stub, []);
+      };
+
+      await run(c);
+      expect(c.__hooks.list[0].value[1]).to.eql(ret);
+      expect(c.__hooks.imperativeHandle).to.eql(ret);
+    });
+
+    it('should throw when used multiple times', () => {
+      const stub = sandbox.stub();
+      const ret = {
+        foo: 'meh',
+      };
+      stub.returns(ret);
+      const err = sandbox.stub(console, 'error');
+      c.fn = () => {
+        useImperativeHandle(stub, []);
+        useImperativeHandle(stub, []);
+      };
+
+      run(c);
+      expect(err.args[0][0].message).to.equal('useImperativeHandle already used.');
+    });
+
+    it('should return handle', async () => {
+      const stub = sandbox.stub();
+      stub.returns({
+        foo: 'meh',
+      });
+      c.fn = () => {
+        useImperativeHandle(stub, []);
+      };
+
+      await run(c);
+      expect(getImperativeHandle(c)).to.eql({ foo: 'meh' });
+    });
+  });
+
   describe('useAction', () => {
     beforeEach(() => {
       c = {};
@@ -586,16 +658,16 @@ describe('hooks', () => {
         model: { session: 'm' },
         app: { session: 'a' },
         global: { session: 'global' },
-        element: 'element',
         selections: 'selections',
+        element: 'element',
         theme: 'theme',
+        translator: 'translator',
         layout: 'layout',
         appLayout: 'appLayout',
         constraints: 'constraints',
+        options: 'options',
       };
-      c.env = {
-        translator: 'translator',
-      };
+      c.env = {};
       initiate(c);
     });
     afterEach(() => {
@@ -709,6 +781,14 @@ describe('hooks', () => {
       };
       run(c);
       expect(value).to.eql('constraints');
+    });
+    it('useOptions', () => {
+      let value;
+      c.fn = () => {
+        value = useOptions();
+      };
+      run(c);
+      expect(value).to.eql('options');
     });
     it('onTakeSnapshot', () => {
       const spy = sandbox.spy();
