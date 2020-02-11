@@ -19,7 +19,7 @@ It consists of three parts:
 
 Since nebula.js is still in an early stage we are very much open to input and suggestions. If you think something is missing, an API is weird or have general opinions about anything, let us know.
 
-*Your opinions, requirements and involvement is key to the success of this project.* Click on the linked issues below ([or create you own](https://github.com/qlik-oss/nebula.js/issues/new/choose)), voice your opinion and vote if you would like to see it get implemented. 
+_Your opinions, requirements and involvement is key to the success of this project._ Click on the linked issues below ([or create you own](https://github.com/qlik-oss/nebula.js/issues/new/choose)), voice your opinion and vote if you would like to see it get implemented.
 
 This is a draft of the roadmap ahead:
 
@@ -28,6 +28,7 @@ This is a draft of the roadmap ahead:
 This is the primary task right now as there is currently barely any documentation at all 😬.
 
 **Integration APIs**
+
 - nucleus
   - theming ([#24](https://github.com/qlik-oss/nebula.js/issues/24))
   - translations, localization ([#25](https://github.com/qlik-oss/nebula.js/issues/25))
@@ -46,6 +47,7 @@ This is the primary task right now as there is currently barely any documentatio
   - type definitions ([#40](https://github.com/qlik-oss/nebula.js/issues/40))
 
 **CLI**
+
 - create
   - more templates ([#31](https://github.com/qlik-oss/nebula.js/issues/31))
 - build
@@ -76,6 +78,7 @@ This is the primary task right now as there is currently barely any documentatio
 ### Creating a new project
 
 The easiest way to get started is to create a new project using the nebula CLI through `npx`:
+
 ```sh
 npx @nebula.js/cli@next create hello-sunshine
 ```
@@ -125,12 +128,11 @@ The `package.json` contains a few built-in npm commands:
 
 Please follow the instructions in our [contributing guide](./.github/CONTRIBUTING.md).
 
-
 ## Resources
 
-| name | status | description |
-|---|---|---|
-| [sn-mekko-chart]       | [![mekko-status]][mekko-npm]  | Mekko chart |
+| name             | status                       | description |
+| ---------------- | ---------------------------- | ----------- |
+| [sn-mekko-chart] | [![mekko-status]][mekko-npm] | Mekko chart |
 
 [sn-mekko-chart]: https://github.com/qlik-oss/sn-mekko-chart
 [mekko-status]: https://img.shields.io/npm/v/@nebula.js/sn-mekko-chart.svg

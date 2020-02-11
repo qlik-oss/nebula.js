@@ -25,9 +25,7 @@
       "returns": {
         "type": "#/definitions/Nebbie"
       },
-      "examples": [
-        "import nucleus from '@nebula.js/nucleus'\nconst nebbie = nucleus(app);"
-      ],
+      "examples": ["import nucleus from '@nebula.js/nucleus'\nconst nebbie = nucleus(app);"],
       "entries": {
         "configured": {
           "description": "Creates a new `nucleus` instance using the specified configuration.\n\nThe configuration is merged with all previous instances.",

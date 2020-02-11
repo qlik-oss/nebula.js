@@ -5,7 +5,8 @@ body {
   margin: 12px;
 }
 
-#selections, #object {
+#selections,
+#object {
   background: #fff;
   border-radius: 2px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
