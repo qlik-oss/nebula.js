@@ -27,6 +27,6 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "dependencies": {
-    "puppeteer": "2.0.0"
+    "puppeteer": "2.1.1"
   }
 }
