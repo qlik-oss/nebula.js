@@ -62,7 +62,7 @@ const initiateWatch = async ({ snPath, snName, host }) => {
           const sources = Object.keys(cache);
           for (let i = 0; i < sources.length; i++) {
             const p = cache[sources[i]];
-            const filename = p.split(path.sep).reverse()[0];
+            const filename = path.basename(p);
             if (`${filename}.map` === name) {
               file = path.resolve(path.dirname(p), name);
               break;
