@@ -68,4 +68,9 @@ describe('hooks', () => {
     const text = await page.$eval(`${snSelector} .constraints`, el => el.textContent);
     expect(text).to.equal('false:false:true');
   });
+
+  it('useOptions', async () => {
+    const text = await page.$eval(`${snSelector} .options`, el => el.textContent);
+    expect(text).to.equal('opts');
+  });
 });
