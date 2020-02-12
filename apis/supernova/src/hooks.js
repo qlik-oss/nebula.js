@@ -340,18 +340,19 @@ export function useMemo(fn, deps) {
  */
 export function useImperativeHandle(fn, deps) {
   const h = getHook(++currentIndex);
-  if (__NEBULA_DEV__) {
-    if (currentComponent.__hooks.imperativeHandle) {
-      throw new Error('useImperativeHandle already used.');
+  if (!h.imperative) {
+    if (__NEBULA_DEV__) {
+      if (currentComponent.__hooks.imperativeHandle) {
+        throw new Error('useImperativeHandle already used.');
+      }
     }
+    h.imperative = true;
   }
-  if (!h.component) {
-    h.component = currentComponent;
-  }
+
   if (depsChanged(h.value ? h.value[0] : undefined, deps)) {
     const v = fn();
     h.value = [deps, v];
-    h.component.__hooks.imperativeHandle = v;
+    currentComponent.__hooks.imperativeHandle = v;
   }
 }
 

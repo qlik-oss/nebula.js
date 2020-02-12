@@ -41,6 +41,15 @@ describe('hooks', () => {
     sandbox = sinon.createSandbox();
     DEV = global.__NEBULA_DEV__;
     global.__NEBULA_DEV__ = true;
+
+    // thrown errors are caught in hooks.js and logged instead using console.error,
+    // so if an error occurs we won't know it.
+    // we therefore stub the console.error method and throw the error
+    // so that a test fails properly
+    const err = e => {
+      throw e;
+    };
+    sandbox.stub(console, 'error').callsFake(err);
     if (!global.requestAnimationFrame) {
       global.requestAnimationFrame = cb => setTimeout(cb, 20);
       global.cancelAnimationFrame = clearTimeout;
@@ -422,6 +431,7 @@ describe('hooks', () => {
         useImperativeHandle(stub, []);
       };
 
+      await run(c);
       await run(c);
       expect(c.__hooks.list[0].value[1]).to.eql(ret);
       expect(c.__hooks.imperativeHandle).to.eql(ret);
