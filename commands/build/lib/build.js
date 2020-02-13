@@ -1,4 +1,6 @@
 const path = require('path');
+const chalk = require('chalk');
+const readline = require('readline');
 
 const extend = require('extend');
 const yargs = require('yargs');
@@ -119,6 +121,19 @@ const esm = async argv => {
   return bundle.write(c.output);
 };
 
+function clearScreen(msg) {
+  // source: https://github.com/vuejs/vue-cli/blob/dev/packages/%40vue/cli-shared-utils/lib/logger.js
+  if (process.stdout.isTTY) {
+    const blank = '\n'.repeat(process.stdout.rows);
+    console.log(blank);
+    readline.cursorTo(process.stdout, 0, 0);
+    readline.clearScreenDown(process.stdout);
+    if (msg) {
+      console.log(msg);
+    }
+  }
+}
+
 const watch = async argv => {
   const c = config({
     mode: 'development',
@@ -133,16 +148,26 @@ const watch = async argv => {
 
   return new Promise((resolve, reject) => {
     watcher.on('event', event => {
-      if (event.code === 'FATAL') {
-        console.error(event);
-        reject();
-      }
-      if (event.code === 'ERROR') {
-        console.error(event);
-        reject();
-      }
-      if (event.code === 'END') {
-        resolve(watcher);
+      switch (event.code) {
+        case 'BUNDLE_START':
+          clearScreen();
+          console.log(`${chalk.black.bgBlue(' INFO  ')}  Compiling...\n\n`);
+          break;
+        case 'FATAL':
+        case 'ERROR':
+          clearScreen();
+          console.log(`${chalk.white.bgRed(' ERROR ')} ${chalk.red('Failed to compile\n\n')}`);
+          console.error(event.error.stack);
+          reject(watcher);
+          break;
+        case 'BUNDLE_END':
+          clearScreen();
+          console.log(
+            `${chalk.black.bgGreen(' DONE  ')} ${chalk.green(`Compiled successfully in ${event.duration}ms\n\n`)}`
+          );
+          resolve(watcher);
+          break;
+        default:
       }
     });
   });
