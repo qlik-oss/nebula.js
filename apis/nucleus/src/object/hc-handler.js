@@ -26,13 +26,6 @@ function removeIndex(array, index) {
 const nxDimension = f => ({
   qDef: {
     qFieldDefs: [f],
-    qSortCriterias: [
-      {
-        qSortByLoadOrder: 1,
-        qSortByNumeric: 1,
-        qSortByAscii: 1,
-      },
-    ],
   },
 });
 
@@ -40,16 +33,15 @@ const nxMeasure = f => ({
   qDef: {
     qDef: f,
   },
-  qSortBy: {
-    qSortByLoadOrder: 1,
-    qSortByNumeric: -1,
-  },
 });
 
 export default function hcHandler({ hc, def, properties }) {
   hc.qDimensions = hc.qDimensions || [];
   hc.qMeasures = hc.qMeasures || [];
   hc.qInterColumnSortOrder = hc.qInterColumnSortOrder || [];
+  hc.qInitialDataFetch = hc.qInitialDataFetch || [];
+  hc.qColumnOrder = hc.qColumnOrder || [];
+  hc.qExpansionState = hc.qExpansionState || [];
 
   const objectProperties = properties;
 
@@ -69,12 +61,24 @@ export default function hcHandler({ hc, def, properties }) {
               qDef: d.qDef || {},
             };
       dimension.qDef.cId = dimension.qDef.cId || uid();
-      if (!dimension.qDef.cId) {
-        dimension.qDef.cId = uid();
-      }
+
+      // ====== add default objects and arrays for NxDimension =====
+
+      // TODO - apply autosort properties based on tags
+      dimension.qDef.qSortCriterias = dimension.qDef.qSortCriterias || [
+        {
+          qSortByLoadOrder: 1,
+          qSortByNumeric: 1,
+          qSortByAscii: 1,
+        },
+      ];
+
+      dimension.qOtherTotalSpec = dimension.qOtherTotalSpec || {};
+      dimension.qAttributeExpressions = dimension.qAttributeExpressions || [];
+      dimension.qAttributeDimensions = dimension.qAttributeDimensions || [];
+      // ========= end defaults =============
 
       if (hc.qDimensions.length < h.maxDimensions()) {
-        // TODO - apply autosort properties based on tags
         hc.qDimensions.push(dimension);
         addIndex(hc.qInterColumnSortOrder, hc.qDimensions.length - 1);
         def.dimensions.added(dimension, objectProperties);
@@ -101,9 +105,15 @@ export default function hcHandler({ hc, def, properties }) {
               qDef: m.qDef || {},
             };
       measure.qDef.cId = measure.qDef.cId || uid();
-      if (!measure.qDef.cId) {
-        measure.qDef.cId = uid();
-      }
+
+      // ====== add default objects and arrays for NxMeasure =====
+      measure.qSortBy = measure.qSortBy || {
+        qSortByLoadOrder: 1,
+        qSortByNumeric: -1,
+      };
+
+      measure.qAttributeDimensions = measure.qAttributeDimensions || [];
+      measure.qAttributeExpressions = measure.qAttributeExpressions || [];
 
       if (hc.qMeasures.length < h.maxMeasures()) {
         hc.qMeasures.push(measure);

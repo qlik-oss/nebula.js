@@ -31,6 +31,17 @@ describe('hc-handler', () => {
     });
   });
 
+  it('should add default values', () => {
+    expect(hc).to.eql({
+      qDimensions: [],
+      qMeasures: [],
+      qInterColumnSortOrder: [],
+      qInitialDataFetch: [],
+      qColumnOrder: [],
+      qExpansionState: [],
+    });
+  });
+
   describe('add dimension', () => {
     it('from string', () => {
       h.addDimension('A');
@@ -47,6 +58,9 @@ describe('hc-handler', () => {
               },
             ],
           },
+          qAttributeDimensions: [],
+          qAttributeExpressions: [],
+          qOtherTotalSpec: {},
         },
       ]);
     });
@@ -59,8 +73,18 @@ describe('hc-handler', () => {
         {
           qDef: {
             cId: 'uid',
+            qSortCriterias: [
+              {
+                qSortByLoadOrder: 1,
+                qSortByNumeric: 1,
+                qSortByAscii: 1,
+              },
+            ],
           },
           qTotalLabel: 'total',
+          qAttributeDimensions: [],
+          qAttributeExpressions: [],
+          qOtherTotalSpec: {},
         },
       ]);
     });
@@ -77,7 +101,19 @@ describe('hc-handler', () => {
       expect(def.dimensions.added).to.have.been.calledWithExactly(
         {
           a: 'b',
-          qDef: { cId: 'uid' },
+          qDef: {
+            cId: 'uid',
+            qSortCriterias: [
+              {
+                qSortByLoadOrder: 1,
+                qSortByNumeric: 1,
+                qSortByAscii: 1,
+              },
+            ],
+          },
+          qAttributeDimensions: [],
+          qAttributeExpressions: [],
+          qOtherTotalSpec: {},
         },
         'props'
       );
@@ -87,7 +123,24 @@ describe('hc-handler', () => {
       h.addDimension('A');
       h.addDimension('B');
       h.addDimension({ a: '=a' });
-      expect(hc.qLayoutExclude.qHyperCubeDef.qDimensions).to.eql([{ a: '=a', qDef: { cId: 'uid' } }]);
+      expect(hc.qLayoutExclude.qHyperCubeDef.qDimensions).to.eql([
+        {
+          a: '=a',
+          qDef: {
+            cId: 'uid',
+            qSortCriterias: [
+              {
+                qSortByLoadOrder: 1,
+                qSortByNumeric: 1,
+                qSortByAscii: 1,
+              },
+            ],
+          },
+          qAttributeDimensions: [],
+          qAttributeExpressions: [],
+          qOtherTotalSpec: {},
+        },
+      ]);
     });
 
     it('should update qInterColumnSortOrder', () => {
@@ -132,6 +185,8 @@ describe('hc-handler', () => {
             qSortByLoadOrder: 1,
             qSortByNumeric: -1,
           },
+          qAttributeDimensions: [],
+          qAttributeExpressions: [],
         },
       ]);
     });
@@ -146,6 +201,12 @@ describe('hc-handler', () => {
             cId: 'uid',
           },
           bla: 'meh',
+          qSortBy: {
+            qSortByLoadOrder: 1,
+            qSortByNumeric: -1,
+          },
+          qAttributeDimensions: [],
+          qAttributeExpressions: [],
         },
       ]);
     });
@@ -164,6 +225,12 @@ describe('hc-handler', () => {
         {
           a: 'b',
           qDef: { cId: 'uid' },
+          qSortBy: {
+            qSortByLoadOrder: 1,
+            qSortByNumeric: -1,
+          },
+          qAttributeDimensions: [],
+          qAttributeExpressions: [],
         },
         'props'
       );
@@ -174,7 +241,18 @@ describe('hc-handler', () => {
       h.addMeasure('B');
       h.addMeasure('C');
       h.addMeasure({ a: '=a' });
-      expect(hc.qLayoutExclude.qHyperCubeDef.qMeasures).to.eql([{ a: '=a', qDef: { cId: 'uid' } }]);
+      expect(hc.qLayoutExclude.qHyperCubeDef.qMeasures).to.eql([
+        {
+          a: '=a',
+          qDef: { cId: 'uid' },
+          qSortBy: {
+            qSortByLoadOrder: 1,
+            qSortByNumeric: -1,
+          },
+          qAttributeDimensions: [],
+          qAttributeExpressions: [],
+        },
+      ]);
     });
 
     it('should update qInterColumnSortOrder', () => {
