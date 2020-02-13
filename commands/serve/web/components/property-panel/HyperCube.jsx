@@ -31,6 +31,7 @@ export default function HyperCube({ model, target, properties }) {
       hcHandler({
         def: target,
         hc: getValue(properties, target.propertyPath),
+        properties,
       }),
     [properties]
   );
