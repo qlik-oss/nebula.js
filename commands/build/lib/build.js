@@ -141,8 +141,21 @@ const watch = async argv => {
     argv,
   });
 
+  let hasWarnings = false;
+
   const watcher = rollup.watch({
     ...c.input,
+    onwarn({ loc, message }) {
+      if (!hasWarnings) {
+        clearScreen();
+      }
+      console.log(
+        `${chalk.black.bgYellow(' WARN  ')} ${chalk.yellow(
+          loc ? `${loc.file} (${loc.line}:${loc.column}) ${message}` : message
+        )}`
+      );
+      hasWarnings = true;
+    },
     output: c.output,
   });
 
@@ -150,8 +163,9 @@ const watch = async argv => {
     watcher.on('event', event => {
       switch (event.code) {
         case 'BUNDLE_START':
+          hasWarnings = false;
           clearScreen();
-          console.log(`${chalk.black.bgBlue(' INFO  ')}  Compiling...\n\n`);
+          console.log(`${chalk.black.bgBlue(' INFO  ')}  Compiling...\n`);
           break;
         case 'FATAL':
         case 'ERROR':
@@ -161,9 +175,13 @@ const watch = async argv => {
           reject(watcher);
           break;
         case 'BUNDLE_END':
-          clearScreen();
+          if (!hasWarnings) {
+            clearScreen();
+          } else {
+            console.log();
+          }
           console.log(
-            `${chalk.black.bgGreen(' DONE  ')} ${chalk.green(`Compiled successfully in ${event.duration}ms\n\n`)}`
+            `${chalk.black.bgGreen(' DONE  ')} ${chalk.green(`Compiled successfully in ${event.duration}ms\n`)}`
           );
           resolve(watcher);
           break;
