@@ -33,6 +33,7 @@ Options:
 #### Example
 
 Start the server and connect to enigma on port `9077`
+
 ```sh
 nebula serve --enigma.port 9077
 ```

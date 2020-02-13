@@ -1,4 +1,4 @@
-version: "3.1"
+version: '3.1'
 
 services:
   engine:
@@ -6,4 +6,4 @@ services:
     restart: always
     command: -S AcceptEULA="${ACCEPT_EULA:-no}"
     ports:
-      - "9076:9076"
+      - '9076:9076'

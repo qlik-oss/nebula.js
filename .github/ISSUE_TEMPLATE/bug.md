@@ -23,9 +23,9 @@ about: Something isn't working as expected. 😕
 
 ### Versions
 
-* nebula.js: (x.y.z)
-* Platform: ?
-* Browser: ?
+- nebula.js: (x.y.z)
+- Platform: ?
+- Browser: ?
 
 ### Additional context
 

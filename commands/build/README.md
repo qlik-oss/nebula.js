@@ -18,4 +18,3 @@ Options:
   --watch, -w                                         [boolean] [default: false]
   -h, --help   Show help                                               [boolean]
 ```
-

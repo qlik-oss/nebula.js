@@ -6,13 +6,11 @@
   "parserOptions": {
     "sourceType": "module"
   },
-  "extends": [
-    "airbnb-base"
-  ],
+  "extends": ["airbnb-base"],
   "rules": {
     "max-len": 0,
     "no-plusplus": 0,
-    "no-bitwise" : 0,
+    "no-bitwise": 0,
     "no-unused-expressions": 0,
     "import/no-extraneous-dependencies": [2, { "devDependencies": true }]
   },
@@ -31,9 +29,7 @@
         "aw": false,
         "page": false
       },
-      "plugins": [
-        "mocha"
-      ],
+      "plugins": ["mocha"],
       "rules": {
         "mocha/no-exclusive-tests": "error"
       }

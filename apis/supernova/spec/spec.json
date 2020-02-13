@@ -761,9 +761,7 @@
           "returns": {
             "type": "string"
           },
-          "examples": [
-            "theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"
-          ]
+          "examples": ["theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"]
         },
         "getContrastingColorTo": {
           "description": "Get the best contrasting color against the specified `color`.\nThis is typically used to find a suitable text color for a label placed on an arbitrarily colored background.\n\nThe returned colors are derived from the theme.",
@@ -777,9 +775,7 @@
           "returns": {
             "type": "string"
           },
-          "examples": [
-            "theme.getContrastingColorTo('#400');"
-          ]
+          "examples": ["theme.getContrastingColorTo('#400');"]
         },
         "getDataColorPalettes": {
           "kind": "function",
@@ -842,9 +838,7 @@
             "description": "The style value",
             "type": "string"
           },
-          "examples": [
-            "theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"
-          ]
+          "examples": ["theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"]
         }
       }
     },

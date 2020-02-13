@@ -1,4 +1,5 @@
-connect().then((app) => {
+/* eslint-disable */
+connect().then(app => {
   const sn = {
     component: {
       mounted(element) {
@@ -13,13 +14,16 @@ connect().then((app) => {
 
   nebbie.selections().mount(document.querySelector('.toolbar'));
 
-  document.querySelectorAll('.object').forEach((el) => {
+  document.querySelectorAll('.object').forEach(el => {
     const type = el.getAttribute('data-type');
 
-    nebbie.create({
-      type,
-    }, {
-      element: el,
-    });
+    nebbie.create(
+      {
+        type,
+      },
+      {
+        element: el,
+      }
+    );
   });
 });
