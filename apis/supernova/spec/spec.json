@@ -2,7 +2,7 @@
   "scriptappy": "1.0.0",
   "info": {
     "name": "@nebula.js/supernova",
-    "version": "0.1.0-alpha.29",
+    "version": "0.1.0-alpha.30",
     "license": "MIT",
     "stability": "experimental"
   },
@@ -258,7 +258,7 @@
             "action": {
               "type": "function"
             },
-            "visible": {
+            "hidden": {
               "optional": true,
               "type": "boolean"
             },
@@ -270,9 +270,24 @@
               "optional": true,
               "kind": "object",
               "entries": {
-                "d": {
-                  "description": "SVG path",
+                "viewBox": {
+                  "optional": true,
                   "type": "string"
+                },
+                "shapes": {
+                  "kind": "array",
+                  "items": {
+                    "entries": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "attrs": {
+                        "optional": true,
+                        "type": "object"
+                      }
+                    },
+                    "kind": "object"
+                  }
                 }
               }
             }

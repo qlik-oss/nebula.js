@@ -432,10 +432,13 @@ export function usePromise(p, deps) {
 /**
  * @interface ActionDefinition
  * @property {function} action
- * @property {boolean=} visible
+ * @property {boolean=} hidden
  * @property {boolean=} disabled
  * @property {object=} icon
- * @property {string} icon.d - SVG path
+ * @property {string=} icon.viewBox
+ * @property {Array<object>} icon.shapes
+ * @property {string} icon.shapes[].type
+ * @property {object=} icon.shapes[].attrs
  */
 
 /**
