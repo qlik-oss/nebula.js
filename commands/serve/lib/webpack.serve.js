@@ -150,9 +150,14 @@ module.exports = async ({
   });
 
   if (watcher) {
+    let inError = false;
     watcher.on('event', event => {
       if (event.code === 'ERROR') {
+        inError = true;
         server.sockWrite(server.sockets, 'errors', [event.error.stack]);
+      } else if (event.code === 'BUNDLE_END' && inError) {
+        inError = false;
+        server.sockWrite(server.sockets, 'ok');
       }
     });
   }
