@@ -1,18 +1,18 @@
 /* eslint-disable */
+const { useElement } = supernova;
+
 connect().then(app => {
   const sn = {
-    component: {
-      mounted(element) {
-        element.textContent = 'Hello';
-      },
+    component() {
+      useElement().innerHTML = 'Hello';
     },
   };
 
   const nebbie = window.nucleus(app, {
-    load: (type, config) => config.Promise.resolve(sn),
+    load: (type, config) => Promise.resolve(sn),
   });
 
-  nebbie.selections().mount(document.querySelector('.toolbar'));
+  nebbie.selections().then(s => s.mount(document.querySelector('.toolbar')));
 
   document.querySelectorAll('.object').forEach(el => {
     const type = el.getAttribute('data-type');
