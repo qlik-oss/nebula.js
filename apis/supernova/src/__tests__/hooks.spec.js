@@ -484,7 +484,7 @@ describe('hooks', () => {
         action: spy,
       });
       c.fn = () => {
-        [act] = useAction(stub, []);
+        act = useAction(stub, []);
       };
 
       run(c);
@@ -578,7 +578,7 @@ describe('hooks', () => {
         let r;
         element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
         c.fn = () => {
-          [r] = useRect();
+          r = useRect();
         };
 
         run(c);
@@ -602,7 +602,7 @@ describe('hooks', () => {
         let r;
         element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
         c.fn = () => {
-          [r] = useRect();
+          r = useRect();
         };
 
         run(c);

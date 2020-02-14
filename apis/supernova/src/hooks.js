@@ -449,7 +449,7 @@ export function usePromise(p, deps) {
 /**
  * @param {module:supernova~ActionFactory} fn
  * @param {Array<any>=} deps
- * @returns {Array<function>}
+ * @returns {function}
  */
 export function useAction(fn, deps) {
   const [ref] = useState({
@@ -475,8 +475,7 @@ export function useAction(fn, deps) {
     dispatchActions(ref.component);
   }, deps);
 
-  // TODO - return array of just action?
-  return [ref.action];
+  return ref.action;
 }
 
 /**
@@ -487,7 +486,7 @@ export function useAction(fn, deps) {
  * @property {number} height
  */
 /**
- * @returns {Array<module:supernova~Rect>}
+ * @returns {module:supernova~Rect}
  */
 export function useRect() {
   const element = useElement();
@@ -524,8 +523,7 @@ export function useRect() {
     };
   }, [element]);
 
-  // TODO - return array or just rect?
-  return [rect];
+  return rect;
 }
 
 /**

@@ -29,7 +29,7 @@ function sn() {
 
       const { passive, active, select } = useConstraints();
 
-      const [act] = useAction(
+      const act = useAction(
         () => ({
           action() {
             setActed(true);
