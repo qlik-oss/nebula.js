@@ -254,9 +254,14 @@ describe('creator', () => {
       const c = create(generator, opts, env).component;
       c.render({}); // initial should always run
 
+      const foo = new (class Foo {})();
+      const ref = {};
+
       c.render({
         options: {
           rtl: true,
+          foo,
+          ref,
         },
       });
       expect(hooked.run.callCount).to.equal(2);
@@ -264,9 +269,20 @@ describe('creator', () => {
       c.render({
         options: {
           rtl: true,
+          foo,
+          ref,
         },
       });
       expect(hooked.run.callCount).to.equal(2);
+
+      c.render({
+        options: {
+          rtl: false,
+          foo,
+          ref,
+        },
+      });
+      expect(hooked.run.callCount).to.equal(3);
     });
 
     it('should run when theme name has changed', () => {
