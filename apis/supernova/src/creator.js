@@ -49,7 +49,7 @@ function createWithHooks(generator, opts, env) {
   // use a deep comparison for 'small' objects
   let hasRun = false;
   const current = {};
-  const deepCheck = ['appLayout', 'constraints', 'options'];
+  const deepCheck = ['appLayout', 'constraints'];
   const forcedConstraints = {};
 
   // select should be a constraint when a real model is not available
@@ -96,9 +96,29 @@ function createWithHooks(generator, opts, env) {
           this.context.theme = r.context.theme;
         }
 
+        if (r.options) {
+          // options could contain anything including methods, classes, cyclical references
+          // so we can't use JSON parse for comparison.
+          // but we can do a shallow reference check on the first level to check if
+          // options have changed. if it has changed then create a new reference for
+          // the options object to ensure callbacks are triggered
+          const op = {};
+          let opChanged = false;
+          Object.keys(r.options).forEach(key => {
+            if (this.context.options[key] !== r.options[key]) {
+              op[key] = r.options[key];
+              opChanged = true;
+            }
+          });
+          if (opChanged) {
+            this.context.options = op;
+            changed = true;
+          }
+        }
+
         // do a deep check on 'small' objects
         deepCheck.forEach(key => {
-          const ref = key === 'options' ? r : r.context;
+          const ref = r.context;
           if (ref && Object.prototype.hasOwnProperty.call(ref, key)) {
             let s = JSON.stringify(ref[key]);
             if (key === 'constraints') {
@@ -162,7 +182,7 @@ function createWithHooks(generator, opts, env) {
   };
 
   deepCheck.forEach(key => {
-    current[key] = JSON.stringify(key === 'options' ? c.options : c.context[key]);
+    current[key] = JSON.stringify(c.context[key]);
   });
   current.themeName = c.context.theme ? c.context.theme.name() : undefined;
   current.language = c.context.translator ? c.context.translator.language() : undefined;
