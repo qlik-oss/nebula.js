@@ -6,7 +6,13 @@ const SvgIcon = () => 'svgicon';
 
 const [{ default: SelectionToolbarItem }] = aw.mock(
   [
-    [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({ icon: 'icon' }) })],
+    [
+      require.resolve('@nebula.js/ui/theme'),
+      () => ({
+        makeStyles: () => () => ({ icon: 'icon' }),
+        useTheme: () => ({ palette: { btn: { active: 'pink' } } }),
+      }),
+    ],
     [require.resolve('@nebula.js/ui/icons/SvgIcon'), () => SvgIcon],
   ],
   ['../SelectionToolbarItem']
@@ -45,7 +51,7 @@ describe('<SelectionToolbarItem />', () => {
       title: 'foo',
       variant: 'contained',
       style: {
-        backgroundColor: 'purple',
+        backgroundColor: undefined,
       },
     });
     types[0].props.onClick();
@@ -62,6 +68,22 @@ describe('<SelectionToolbarItem />', () => {
     await render({ type: 'menu-icon-button', action });
     const types = renderer.root.findAllByType(MenuItem);
     expect(types).to.have.length(1);
+    types[0].props.onClick();
+    expect(action.callCount).to.equal(1);
+  });
+
+  it('should render active icon button', async () => {
+    const action = sandbox.spy();
+    await render({ type: 'button', label: 'foo', color: 'purple', action, active: true });
+    const types = renderer.root.findAllByType(Button);
+    expect(types).to.have.length(1);
+    expect(types[0].props).to.containSubset({
+      title: 'foo',
+      variant: 'contained',
+      style: {
+        backgroundColor: 'pink',
+      },
+    });
     types[0].props.onClick();
     expect(action.callCount).to.equal(1);
   });
