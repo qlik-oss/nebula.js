@@ -7,7 +7,13 @@ const InstanceContext = React.createContext();
 const [{ default: SelectionToolbarWithDefault }] = aw.mock(
   [
     // [require.resolve('../SelectionToolbarItem'), () => SelectionToolbarItem],
-    [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({ pallette: {} }) })],
+    [
+      require.resolve('@nebula.js/ui/theme'),
+      () => ({
+        makeStyles: () => () => ({ pallette: {} }),
+        useTheme: () => ({}),
+      }),
+    ],
     [require.resolve('../../contexts/InstanceContext'), () => InstanceContext],
   ],
   ['../SelectionToolbar']

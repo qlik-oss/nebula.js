@@ -53,7 +53,7 @@ const dark = {
     btn: {
       normal: 'rgba(255, 255, 255, 0.15)',
       hover: 'rgba(255, 255, 255, 0.25)',
-      active: 'rgba(0, 0, 0, 0.1)',
+      active: 'rgba(0, 0, 0, 0.6)',
       disabled: 'rgba(255, 255, 255, 0.15)',
       border: 'rgba(0, 0, 0, 0.15)',
       borderHover: 'rgba(0, 0, 0, 0.30)',
