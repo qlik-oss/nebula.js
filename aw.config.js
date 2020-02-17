@@ -4,7 +4,7 @@ module.exports = {
   },
   mocks: [],
   nyc: {
-    exclude: ['**/commands/**', '**/__stories__/**'],
+    exclude: ['**/commands/**', '**/__stories__/**', '**/apis/supernova/index.js', '**/apis/nucleus/index.js'],
   },
 };
 
