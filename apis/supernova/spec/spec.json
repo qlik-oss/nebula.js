@@ -2,7 +2,7 @@
   "scriptappy": "1.0.0",
   "info": {
     "name": "@nebula.js/supernova",
-    "version": "0.1.0-alpha.30",
+    "version": "0.1.0-alpha.31",
     "license": "MIT",
     "stability": "experimental"
   },
@@ -36,10 +36,7 @@
             }
           ],
           "returns": {
-            "kind": "array",
-            "items": {
-              "type": "function"
-            }
+            "type": "function"
           }
         },
         "useApp": {
@@ -187,10 +184,7 @@
           "kind": "function",
           "params": [],
           "returns": {
-            "kind": "array",
-            "items": {
-              "type": "#/entries/supernova/definitions/Rect"
-            }
+            "type": "#/entries/supernova/definitions/Rect"
           }
         },
         "useSelections": {
