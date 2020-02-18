@@ -5,7 +5,7 @@ import { Grid } from '@material-ui/core';
 import { useTheme } from '@nebula.js/ui/theme';
 import useCurrentSelectionsModel from '../../hooks/useCurrentSelectionsModel';
 import useLayout from '../../hooks/useLayout';
-import { useModalObjectStore } from '../../hooks/useAppSelections';
+import { useModalObjectStore } from '../../stores/selectionsStore';
 
 import OneField from './OneField';
 import MultiState from './MultiState';
