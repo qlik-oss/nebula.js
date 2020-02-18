@@ -1,12 +1,7 @@
 /* eslint no-underscore-dangle: 0 */
 import { useEffect } from 'react';
 import useAppSelectionsNavigation from './useAppSelectionsNavigation';
-import { useAppSelectionsStore, objectSelectionsStore } from '../stores/selectionsStore';
-import createKeyStore from '../stores/createKeyStore';
-
-const [useModalObjectStore, modalObjectStore] = createKeyStore({});
-
-export { useModalObjectStore };
+import { useAppSelectionsStore, objectSelectionsStore, modalObjectStore } from '../stores/selectionsStore';
 
 function createAppSelections({ app, currentSelectionsLayout, navState }) {
   const key = `${app.id}`;
@@ -97,7 +92,6 @@ export default function useAppSelections(app) {
 
   useEffect(() => {
     if (!app || !currentSelectionsModel || !currentSelectionsLayout || !navState || appSelections) return;
-
     appSelections = createAppSelections({ app, currentSelectionsLayout, navState });
     appSelectionsStore.set(key, appSelections);
   }, [app, currentSelectionsModel, currentSelectionsLayout, navState]);
