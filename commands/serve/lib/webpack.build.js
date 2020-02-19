@@ -10,8 +10,14 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 const favicon = path.resolve(__dirname, '../../../docs/assets/njs.png');
 
-// console.log(path.resolve(__dirname, '../../apis/nucleus'));
-// process.exit();
+const crypto = require('crypto');
+const { version } = require('../package.json');
+
+const versionHash = crypto
+  .createHash('md5')
+  .update(version)
+  .digest('hex')
+  .slice(0, 4);
 
 const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
   const config = {
@@ -81,6 +87,8 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
     plugins: [
       new webpack.DefinePlugin({
         __NEBULA_DEV__: true,
+        'process.env.NEBULA_VERSION': JSON.stringify(version),
+        'process.env.NEBULA_VERSION_HASH': JSON.stringify(versionHash),
       }),
       new MonacoWebpackPlugin({ languages: ['json'] }),
       new HtmlWebpackPlugin({

@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider, StylesProvider, createGenerateClassName } f
 import InstanceContext from '../contexts/InstanceContext';
 import useAppSelections from '../hooks/useAppSelections';
 
-const THEME_PREFIX = (process.env.NEBULA_VERSION || '').replace(/[.-]/g, '_');
+const NEBULA_VERSION_HASH = process.env.NEBULA_VERSION_HASH || '';
 
 let counter = 0;
 
@@ -14,13 +14,14 @@ const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
   const [appSelections] = useAppSelections(app);
   const [context, setContext] = useState(initialContext);
   const [muiThemeName, setMuiThemeName] = useState();
+
   const { theme, generator } = useMemo(
     () => ({
       theme: createTheme(muiThemeName),
       generator: createGenerateClassName({
-        productionPrefix: `${THEME_PREFIX}-`,
+        productionPrefix: `${NEBULA_VERSION_HASH}`,
         disableGlobal: true,
-        seed: `nebulajs-${counter++}`,
+        seed: `njs-${counter++}`,
       }),
     }),
     [muiThemeName]
