@@ -6,11 +6,18 @@ const nodeResolve = require('@rollup/plugin-node-resolve');
 const replace = require('@rollup/plugin-replace');
 const { terser } = require('rollup-plugin-terser');
 
+const crypto = require('crypto');
 const localeStringValidator = require('./tools/locale-string-validator');
 
 const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json')); // eslint-disable-line
 const { name, version, license } = pkg;
+
+const versionHash = crypto
+  .createHash('md5')
+  .update(version)
+  .digest('hex')
+  .slice(0, 4);
 
 const targetName = name.split('/')[1];
 const targetDirName = 'dist';
@@ -127,6 +134,7 @@ const config = (isEsm, dev = false) => {
         __NEBULA_DEV__: dev,
         'process.env.NODE_ENV': JSON.stringify(isEsm ? 'development' : 'production'),
         'process.env.NEBULA_VERSION': JSON.stringify(version),
+        'process.env.NEBULA_VERSION_HASH': JSON.stringify(versionHash),
       }),
       nodeResolve({
         extensions: [dev ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),
