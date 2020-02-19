@@ -62,7 +62,7 @@ describe('creator', () => {
       hooked = {
         __hooked: true,
         initiate: sinon.spy(),
-        run: sinon.spy(),
+        run: sinon.stub(),
         teardown: sinon.spy(),
         runSnaps: sinon.spy(),
         observeActions: sinon.spy(),
@@ -305,6 +305,26 @@ describe('creator', () => {
 
       c.render({});
       expect(hooked.run.callCount).to.equal(2);
+    });
+
+    it('should return value from run', () => {
+      const c = create(generator, opts, env).component;
+      hooked.run.returns('fast');
+      const r = c.render({});
+      expect(r).to.equal('fast');
+    });
+
+    it('should return previous return value when nothing has changed', () => {
+      const c = create(generator, opts, env).component;
+      // inital run
+      hooked.run.returns('fast');
+      const run1 = c.render({});
+      expect(run1).to.equal('fast');
+
+      const run2 = c.render({});
+      expect(run2).to.equal('fast');
+
+      expect(hooked.run.callCount).to.equal(1);
     });
   });
 

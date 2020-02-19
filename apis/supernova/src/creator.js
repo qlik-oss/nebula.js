@@ -155,9 +155,10 @@ function createWithHooks(generator, opts, env) {
 
       if (changed) {
         hasRun = true;
-        return generator.component.run(this);
+        this.currentResult = generator.component.run(this);
+        return this.currentResult;
       }
-      return Promise.resolve();
+      return this.currentResult || Promise.resolve();
     },
     resize() {
       // resize should never really by necesseary since the ResizeObserver
