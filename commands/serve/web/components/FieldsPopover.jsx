@@ -18,32 +18,34 @@ import Search from './Search';
 
 const Field = ({ field, onSelect, sub, parts }) => (
   <ListItem button onClick={() => onSelect(field.qName)} data-key={field.qName}>
-    {parts.map((part, ix) => (
-      <ListItemText
-        component="span"
-        // eslint-disable-next-line react/no-array-index-key
-        key={ix}
-        style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
-      >
-        {part.text}
-      </ListItemText>
-    ))}
+    <ListItemText>
+      {parts.map((part, ix) => (
+        <span
+          // eslint-disable-next-line react/no-array-index-key
+          key={ix}
+          style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
+        >
+          {part.text}
+        </span>
+      ))}
+    </ListItemText>
     {sub && <ChevronRight fontSize="small" />}
   </ListItem>
 );
 
 const LibraryItem = ({ item, onSelect, parts }) => (
   <ListItem button onClick={() => onSelect(item.qInfo)} data-key={item.qInfo.qId}>
-    {parts.map((part, ix) => (
-      <ListItemText
-        component="span"
-        // eslint-disable-next-line react/no-array-index-key
-        key={ix}
-        style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
-      >
-        {part.text}
-      </ListItemText>
-    ))}
+    <ListItemText>
+      {parts.map((part, ix) => (
+        <span
+          // eslint-disable-next-line react/no-array-index-key
+          key={ix}
+          style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
+        >
+          {part.text}
+        </span>
+      ))}
+    </ListItemText>
   </ListItem>
 );
 
@@ -148,7 +150,7 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
         style: { minWidth: '250px', maxHeight: '300px', background: theme.palette.background.lightest },
       }}
     >
-      <Search onChange={setSearchTerm} />
+      {!selectedField && <Search onChange={setSearchTerm} />}
       {selectedField && (
         <List dense component="nav">
           <ListItem button onClick={() => setSelectedField(null)}>

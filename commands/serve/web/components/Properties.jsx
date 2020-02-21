@@ -1,6 +1,6 @@
 import React, { useCallback, useMemo, useState, useContext } from 'react';
 
-import { Typography, Grid, Checkbox, FormControlLabel } from '@material-ui/core';
+import { Divider, Grid, Checkbox, FormControlLabel } from '@material-ui/core';
 
 import useProperties from '@nebula.js/nucleus/src/hooks/useProperties';
 
@@ -33,16 +33,7 @@ export default function Properties({ viz, sn, isTemp }) {
   }
 
   if (!viz || !properties) {
-    return (
-      <div
-        style={{
-          minWidth: '250px',
-          padding: '8px',
-        }}
-      >
-        <Typography>Nothing selected</Typography>
-      </div>
-    );
+    return null;
   }
 
   return (
@@ -53,15 +44,18 @@ export default function Properties({ viz, sn, isTemp }) {
       }}
     >
       {isTemp && (
-        <Grid item container alignItems="center">
-          <FormControlLabel
-            control={
-              <Checkbox checked={isReadCacheEnabled} onChange={handleCacheChange} value="isReadFromCacheEnabled" />
-            }
-            label="Enable property cache"
-            labelPlacement="end"
-          />
-        </Grid>
+        <>
+          <Grid item container alignItems="center">
+            <FormControlLabel
+              control={
+                <Checkbox checked={isReadCacheEnabled} onChange={handleCacheChange} value="isReadFromCacheEnabled" />
+              }
+              label="Enable property cache"
+              labelPlacement="end"
+            />
+          </Grid>
+          <Divider />
+        </>
       )}
       <Data properties={properties} model={viz.model} sn={sn} />
       {generateComponents(properties, changed)}

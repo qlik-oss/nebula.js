@@ -146,7 +146,7 @@ function generateComponents(properties, changed) {
         property: key,
         target: properties,
         value: properties[key],
-        key,
+        key: `${key}:${properties[key]}`,
       };
     })
     .filter(Boolean);

@@ -289,18 +289,21 @@ export default function App({ app, info }) {
                         <Stage info={info} storage={storage} uid={currentId} />
                       )}
                     </Grid>
-                    <Grid
-                      item
-                      style={{
-                        background: theme.palette.background.paper,
-                        overflow: 'hidden auto',
-                        margin: theme.spacing(SPACING / 2),
-                        marginTop: `${48 + theme.spacing(SPACING / 2)}px`,
-                        boxShadow: theme.shadows[1],
-                      }}
-                    >
-                      {activeViz && <Properties sn={sn} viz={activeViz} isTemp={!objectListMode} />}
-                    </Grid>
+                    {activeViz && (
+                      <Grid
+                        item
+                        style={{
+                          background: theme.palette.background.paper,
+                          overflow: 'hidden auto',
+                          margin: theme.spacing(SPACING / 2),
+                          marginTop: `${48 + theme.spacing(SPACING / 2)}px`,
+                          boxShadow: theme.shadows[1],
+                          padding: 0,
+                        }}
+                      >
+                        <Properties sn={sn} viz={activeViz} isTemp={!objectListMode} />
+                      </Grid>
+                    )}
                   </Grid>
                 ) : (
                   <Grid container wrap="nowrap" style={{ paddingTop: '48px' }} justify="center">
