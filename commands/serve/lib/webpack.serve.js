@@ -114,9 +114,11 @@ module.exports = async ({
         });
       });
 
-      if (serveConfig.assets) {
-        app.use('/assets', express.static(serveConfig.assets));
+      if (serveConfig.resources) {
+        app.use('/resources', express.static(serveConfig.resources));
       }
+
+      app.use('/assets', express.static(path.resolve(__dirname, '../assets')));
     },
     proxy: [
       {

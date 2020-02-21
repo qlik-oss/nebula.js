@@ -39,11 +39,8 @@ export default function Collection({ types, cache }) {
     <Grid
       container
       justify="center"
-      spacing={2}
+      spacing={expandedObject ? 0 : 2}
       style={{
-        padding: expandedObject ? 4 : 12,
-        margin: expandedObject ? 0 : undefined,
-        width: expandedObject ? '100%' : undefined,
         height: expandedObject ? '100%' : undefined,
       }}
     >

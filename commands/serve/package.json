@@ -14,11 +14,12 @@
   },
   "main": "lib/serve.js",
   "files": [
+    "assets",
     "command.js",
     "data",
+    "dist",
     "docker-compose.yml",
-    "lib",
-    "dist"
+    "lib"
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js",

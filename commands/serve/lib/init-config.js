@@ -31,9 +31,9 @@ const options = {
   port: {
     type: 'number',
   },
-  assets: {
+  resources: {
     type: 'string',
-    description: 'Path to a folder that will be served as static files under /assets',
+    description: 'Path to a folder that will be served as static files under /resources',
   },
   scripts: {
     type: 'array',
