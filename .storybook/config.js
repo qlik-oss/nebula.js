@@ -4,7 +4,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { create } from '@storybook/theming';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
-import LocaleContext from '../apis/nucleus/src/contexts/LocaleContext';
+import InstanceContext from '../apis/nucleus/src/contexts/InstanceContext';
 
 const translator = {
   get(s) {
@@ -12,14 +12,14 @@ const translator = {
   },
 };
 
-const t = createTheme();
+const t = createTheme('light');
 
 addDecorator(storyFn => {
   return <ThemeProvider theme={t}>{storyFn()}</ThemeProvider>;
 });
 
 addDecorator(storyFn => {
-  return <LocaleContext.Provider value={translator}>{storyFn()}</LocaleContext.Provider>;
+  return <InstanceContext.Provider value={{ translator }}>{storyFn()}</InstanceContext.Provider>;
 });
 
 addDecorator(withKnobs);

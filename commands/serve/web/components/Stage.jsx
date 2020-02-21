@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import useProperties from '@nebula.js/nucleus/src/hooks/useProperties';
 
+import { Grid } from '@material-ui/core';
+
 import Cell from './Cell';
 import NebulaContext from '../contexts/NebulaContext';
 import VizContext from '../contexts/VizContext';
@@ -46,8 +48,17 @@ export default function Stage({ info, storage, uid }) {
   }
 
   return (
-    <div style={{ padding: '12px', height: '100%', boxSizing: 'border-box' }}>
-      <Cell id={model.id} />
-    </div>
+    <Grid
+      item
+      container
+      justify="center"
+      style={{
+        height: '100%',
+      }}
+    >
+      <Grid item xs>
+        <Cell id={model.id} />
+      </Grid>
+    </Grid>
   );
 }

@@ -1,19 +1,13 @@
 import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
 
 import nucleus from '@nebula.js/nucleus/src/index';
-
-import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
-
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
-
-import { WbSunny, Brightness3, ColorLens, Language } from '@nebula.js/ui/icons';
+import { WbSunny, Brightness3, ColorLens, Language, Home } from '@nebula.js/ui/icons';
 
 import {
   Grid,
   Toolbar,
   Button,
-  Divider,
-  Switch,
   IconButton,
   Typography,
   Tab,
@@ -33,20 +27,7 @@ import VizContext from '../contexts/VizContext';
 
 import storageFn from '../storage';
 
-const rtlShape = {
-  size: 'large',
-  viewBox: '0 0 20 20',
-  d: 'M9 10v5h2V4h2v11h2V4h2V2H9C6.79 2 5 3.79 5 6s1.79 4 4 4zm12 8l-4-4v3H5v2h12v3l4-4z',
-};
-const ltrShape = {
-  size: 'large',
-  viewBox: '0 0 20 20',
-  d: 'M10 10v5h2V4h2v11h2V4h2V2h-8C7.79 2 6 3.79 6 6s1.79 4 4 4zm-2 7v-3l-4 4 4 4v-3h12v-2H8z',
-};
-const directionShape = {
-  ltr: ltrShape,
-  rtl: rtlShape,
-};
+const SPACING = 2;
 
 const languages = [
   'en-US',
@@ -71,12 +52,11 @@ export default function App({ app, info }) {
   const [activeViz, setActiveViz] = useState(null);
   const [expandedObject, setExpandedObject] = useState(null);
   const [sn, setSupernova] = useState(null);
-  const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
+  // const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
   const [currentThemeName, setCurrentThemeName] = useState(storage.get('themeName'));
   const [currentLanguage, setCurrentLanguage] = useState(storage.get('language') || 'en-US');
   const [currentMuiThemeName, setCurrentMuiThemeName] = useState('light');
   const [objectListMode, setObjectListMode] = useState(storage.get('objectListMode') === true);
-  const [direction, setDirection] = useState('ltr');
   const currentSelectionsRef = useRef(null);
   const uid = useRef();
   const [currentId, setCurrentId] = useState();
@@ -166,11 +146,6 @@ export default function App({ app, info }) {
     };
   }, []);
 
-  const handleCacheChange = e => {
-    storage.save('readFromCache', e.target.checked);
-    setReadCacheEnabled(e.target.checked);
-  };
-
   const handleThemeChange = t => {
     setThemeChooserAnchorEl(null);
     storage.save('themeName', t);
@@ -190,19 +165,6 @@ export default function App({ app, info }) {
     setCurrentThemeName(v);
   };
 
-  const toggleDirection = () => {
-    setDirection(dir => {
-      let nextDir;
-      if (dir === 'ltr') {
-        nextDir = 'rtl';
-      } else {
-        nextDir = 'ltr';
-      }
-      document.body.setAttribute('dir', nextDir);
-      return nextDir;
-    });
-  };
-
   const handleCreateEditChange = (e, newValue) => {
     const listMode = newValue === 1;
     storage.save('objectListMode', listMode);
@@ -217,44 +179,48 @@ export default function App({ app, info }) {
     <AppContext.Provider value={app}>
       <ThemeProvider theme={theme}>
         <NebulaContext.Provider value={nebbie}>
-          <Grid container wrap="nowrap" direction="column" style={{ background: theme.palette.background.darkest }}>
+          <Grid
+            container
+            wrap="nowrap"
+            direction="column"
+            style={{ background: theme.palette.background.darkest, height: 'calc(100% + 16px)' }}
+            spacing={SPACING}
+          >
             <Grid item>
-              <Toolbar variant="dense" style={{ background: theme.palette.background.paper }}>
-                <Grid container>
+              <Toolbar
+                variant="dense"
+                style={{ background: theme.palette.background.paper, boxShadow: theme.shadows[1] }}
+              >
+                <Grid container spacing={2}>
                   <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                    <Button
-                      variant="contained"
+                    <Grid item>
+                      <a href="https://github.com/qlik-oss/nebula.js" target="_blank" rel="noopener noreferrer">
+                        <img
+                          src="assets/logo.svg"
+                          alt="nebula.js logo"
+                          href="https://github.com/qlik-oss/nebula.js"
+                          style={{ height: '24px', position: 'relative', top: '2px' }}
+                        />
+                      </a>
+                    </Grid>
+                  </Grid>
+                  <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                    <IconButton
+                      title="Home"
                       href={`${window.location.origin}?engine_url=${info.engineUrl || ''}${
                         info.webIntegrationId ? `&web-integration-id=${info.webIntegrationId}` : ''
                       }`}
                     >
-                      {/* <IconButton style={{ padding: '0px' }}>
-                        <ChevronLeft style={{ verticalAlign: 'middle' }} />
-                      </IconButton> */}
-                      Go to Hub
-                    </Button>
+                      <Home style={{ verticalAlign: 'middle' }} />
+                    </IconButton>
                   </Grid>
                   <Grid item xs>
-                    <Tabs
-                      centered
-                      value={objectListMode ? 1 : 0}
-                      onChange={handleCreateEditChange}
-                      aria-label="simple tabs example"
-                    >
+                    <Tabs value={objectListMode ? 1 : 0} onChange={handleCreateEditChange} aria-label="Navigation">
                       <Tab label={<Typography>Create</Typography>} value={0} />
                       <Tab label={<Typography>Edit</Typography>} value={1} />
                     </Tabs>
                   </Grid>
                   <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                    <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                      <Typography component="span">Cache</Typography>
-                      <Switch
-                        disabled={objectListMode}
-                        checked={isReadCacheEnabled}
-                        onChange={handleCacheChange}
-                        value="isReadFromCacheEnabled"
-                      />
-                    </Grid>
                     <Grid item>
                       {customThemes.length ? (
                         <>
@@ -305,24 +271,17 @@ export default function App({ app, info }) {
                         ))}
                       </Menu>
                     </Grid>
-                    <Grid item>
-                      <IconButton title="Toggle right-to-left/left-to-right" onClick={toggleDirection}>
-                        {SvgIcon(directionShape[direction])}
-                      </IconButton>
-                    </Grid>
                   </Grid>
                 </Grid>
               </Toolbar>
-              <Divider />
             </Grid>
-            <Grid item>
-              <div ref={currentSelectionsRef} style={{ flex: '0 0 auto' }} />
-              <Divider />
+            <Grid item style={{ padding: theme.spacing(0, SPACING) }}>
+              <div ref={currentSelectionsRef} style={{ flex: '0 0 auto', boxShadow: theme.shadows[1] }} />
             </Grid>
-            <Grid item xs style={{ overflowX: 'hidden', overflowY: 'auto' }}>
+            <Grid item xs style={{ overflowX: 'hidden', overflowY: 'auto', padding: theme.spacing(0, SPACING) }}>
               <VizContext.Provider value={vizContext}>
                 {sn ? (
-                  <Grid container wrap="nowrap" style={{ height: '100%' }}>
+                  <Grid container wrap="nowrap" style={{ height: '100%' }} spacing={SPACING}>
                     <Grid item xs>
                       {objectListMode ? (
                         <Collection cache={currentId} types={[info.supernova.name]} />
@@ -330,8 +289,17 @@ export default function App({ app, info }) {
                         <Stage info={info} storage={storage} uid={currentId} />
                       )}
                     </Grid>
-                    <Grid item style={{ background: theme.palette.background.paper, overflow: 'hidden auto' }}>
-                      {activeViz && <Properties sn={sn} viz={activeViz} />}
+                    <Grid
+                      item
+                      style={{
+                        background: theme.palette.background.paper,
+                        overflow: 'hidden auto',
+                        margin: theme.spacing(SPACING / 2),
+                        marginTop: `${48 + theme.spacing(SPACING / 2)}px`,
+                        boxShadow: theme.shadows[1],
+                      }}
+                    >
+                      {activeViz && <Properties sn={sn} viz={activeViz} isTemp={!objectListMode} />}
                     </Grid>
                   </Grid>
                 ) : (
