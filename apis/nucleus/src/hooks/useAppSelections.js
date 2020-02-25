@@ -37,6 +37,7 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
     const beginSelections = async skipRetry => {
       try {
         await model.beginSelections(p);
+        modalObjectStore.set(key, model); // We have a modal
       } catch (err) {
         if (err.code === 6003 && !skipRetry) {
           await app.abortModal(accept);
@@ -45,7 +46,6 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
           modalObjectStore.set(key, undefined); // No modal
         }
       }
-      modalObjectStore.set(key, model); // We have a modal
     };
     await beginSelections();
   };
