@@ -21,6 +21,7 @@ describe('useAppSelections', () => {
   let currentSelectionsModel;
   let currentSelectionsLayout;
   let appSel;
+  let appModal;
   let object;
   let beginSelections;
   let endSelections;
@@ -69,6 +70,11 @@ describe('useAppSelections', () => {
                 emit: sandbox.stub(),
               }),
             },
+            appModalStore: {
+              set: (k, v) => {
+                appModal = v;
+              },
+            },
             modalObjectStore,
           }),
         ],
@@ -101,21 +107,6 @@ describe('useAppSelections', () => {
     expect(ref.current.result[0]).to.equal(appSel);
   });
 
-  it('should not switchModal', async () => {
-    await render();
-    await render();
-
-    await ref.current.result[0].switchModal();
-  });
-
-  it('should switchModal', async () => {
-    await render();
-    await render();
-
-    beginSelections.returns(Promise.resolve());
-    await ref.current.result[0].switchModal(object);
-  });
-
   it('should retry failed beginSelections for error code 6003', async () => {
     await render();
     await render();
@@ -125,7 +116,7 @@ describe('useAppSelections', () => {
     beginSelections.onFirstCall().returns(Promise.reject({ code: 6003 }));
     beginSelections.onSecondCall().returns(res);
     sandbox.stub(appSel, 'abortModal').returns(Promise.resolve());
-    await ref.current.result[0].switchModal(object);
+    await appModal.begin(object);
     await res;
 
     expect(beginSelections.callCount).to.equal(2);
@@ -137,7 +128,7 @@ describe('useAppSelections', () => {
 
     // eslint-disable-next-line prefer-promise-reject-errors
     beginSelections.onFirstCall().returns(Promise.reject({ code: 9999 }));
-    await ref.current.result[0].switchModal(object);
+    await appModal.begin(object);
   });
 
   it('should is in modal', async () => {
@@ -161,6 +152,7 @@ describe('useAppSelections', () => {
   });
 
   it('should abort modal', async () => {
+    app.abortModal.reset();
     await render();
     await render();
 
@@ -204,7 +196,7 @@ describe('useAppSelections', () => {
   it('forward', async () => {
     await render();
     await render();
-    sandbox.stub(appSel, 'switchModal').returns(Promise.resolve());
+    sandbox.stub(appModal, 'end').returns(Promise.resolve());
     await ref.current.result[0].forward();
     expect(app.forward.callCount).to.equal(1);
   });
@@ -212,7 +204,7 @@ describe('useAppSelections', () => {
   it('back', async () => {
     await render();
     await render();
-    sandbox.stub(appSel, 'switchModal').returns(Promise.resolve());
+    sandbox.stub(appModal, 'end').returns(Promise.resolve());
     await ref.current.result[0].back();
     expect(app.back.callCount).to.equal(1);
   });
@@ -220,7 +212,7 @@ describe('useAppSelections', () => {
   it('clear', async () => {
     await render();
     await render();
-    sandbox.stub(appSel, 'switchModal').returns(Promise.resolve());
+    sandbox.stub(appModal, 'end').returns(Promise.resolve());
     await ref.current.result[0].clear();
     expect(app.clearAll.callCount).to.equal(1);
   });
@@ -228,7 +220,7 @@ describe('useAppSelections', () => {
   it('clear field', async () => {
     await render();
     await render();
-    sandbox.stub(appSel, 'switchModal').returns(Promise.resolve());
+    sandbox.stub(appModal, 'end').returns(Promise.resolve());
     const clear = sandbox.spy();
     app.getField.returns(Promise.resolve({ clear }));
     await ref.current.result[0].clearField();

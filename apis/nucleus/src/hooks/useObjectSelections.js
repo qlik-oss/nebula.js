@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
 import { useEffect } from 'react';
-import { useObjectSelectionsStore } from '../stores/selectionsStore';
+import { useObjectSelectionsStore, useAppModalStore } from '../stores/selectionsStore';
 import useAppSelections from './useAppSelections';
 import eventmixin from '../selections/event-mixin';
 import useLayout from './useLayout';
@@ -15,7 +15,7 @@ const event = () => {
   };
 };
 
-function createObjectSelections({ appSelections, model }) {
+function createObjectSelections({ appSelections, appModal, model }) {
   let layout;
   let isActive = false;
   let hasSelected = false;
@@ -43,7 +43,7 @@ function createObjectSelections({ appSelections, model }) {
       }
       isActive = true;
       this.emit('activated');
-      return appSelections.switchModal(model, paths, true);
+      return appModal.begin(model, paths, true);
     },
     /**
      * @returns {Promise<undefined>}
@@ -64,7 +64,7 @@ function createObjectSelections({ appSelections, model }) {
       isActive = false;
       this.emit('confirmed');
       this.emit('deactivated');
-      return appSelections.switchModal(null, null, true);
+      return appModal.end(true);
     },
     /**
      * @returns {Promise<undefined>}
@@ -74,7 +74,7 @@ function createObjectSelections({ appSelections, model }) {
       isActive = false;
       this.emit('canceled'); // FIXME - spelling?
       this.emit('deactivated');
-      return appSelections.switchModal(null, null, false, false);
+      return appModal.end(false);
     },
     /**
      * @param {object} s
@@ -82,18 +82,18 @@ function createObjectSelections({ appSelections, model }) {
      * @param {any[]} s.params
      * @returns {Promise<boolean>}
      */
-    select(s) {
+    async select(s) {
       const b = this.begin([s.params[0]]);
       if (!appSelections.isModal()) {
-        return Promise.resolve(false);
+        return false;
       }
-      hasSelected = true;
       return b.then(() =>
         model[s.method](...s.params).then(qSuccess => {
           if (!qSuccess) {
             this.clear();
             return false;
           }
+          hasSelected = true;
           return true;
         })
       );
@@ -137,12 +137,12 @@ function createObjectSelections({ appSelections, model }) {
      * @param {string[]} paths
      * @returns {Promise<undefined>}
      */
-    goModal: paths => appSelections.switchModal(model, paths, false),
+    goModal: paths => appModal.begin(model, paths, false),
     /**
      * @param {boolean} [accept=false]
      * @returns {Promise<undefined>}
      */
-    noModal: (accept = false) => appSelections.switchModal(null, null, accept),
+    noModal: (accept = false) => appModal.end(accept),
     /**
      * @returns {Promise<undefined>}
      */
@@ -158,13 +158,15 @@ export default function useObjectSelections(app, model) {
   const [appSelections] = useAppSelections(app);
   const [layout] = useLayout(model);
   const key = model ? model.id : null;
+  const [appModalStore] = useAppModalStore();
   const [objectSelectionsStore] = useObjectSelectionsStore();
+  const appModal = appModalStore.get(app.id);
   let objectSelections = objectSelectionsStore.get(key);
 
   useEffect(() => {
     if (!appSelections || !model || objectSelections) return;
 
-    objectSelections = createObjectSelections({ appSelections, model });
+    objectSelections = createObjectSelections({ appSelections, appModal, model });
     objectSelectionsStore.set(key, objectSelections);
   }, [appSelections, model]);
 
