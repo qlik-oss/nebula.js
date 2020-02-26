@@ -87,16 +87,14 @@ function createObjectSelections({ appSelections, appModal, model }) {
       if (!appSelections.isModal()) {
         return false;
       }
-      return b.then(() =>
-        model[s.method](...s.params).then(qSuccess => {
-          if (!qSuccess) {
-            this.clear();
-            return false;
-          }
-          hasSelected = true;
-          return true;
-        })
-      );
+      await b;
+      const qSuccess = await model[s.method](...s.params);
+      if (!qSuccess) {
+        this.clear();
+        return false;
+      }
+      hasSelected = true;
+      return true;
     },
     /**
      * @returns {boolean}
@@ -172,6 +170,7 @@ export default function useObjectSelections(app, model) {
 
   useEffect(() => {
     if (!objectSelections) return;
+
     objectSelections.setLayout(layout);
   }, [objectSelections, layout]);
 
