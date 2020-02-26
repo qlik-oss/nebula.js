@@ -1,44 +1,68 @@
 /* eslint no-underscore-dangle: 0 */
 import { useEffect } from 'react';
 import useAppSelectionsNavigation from './useAppSelectionsNavigation';
-import { useAppSelectionsStore, objectSelectionsStore, modalObjectStore } from '../stores/selectionsStore';
+import {
+  useAppSelectionsStore,
+  objectSelectionsStore,
+  modalObjectStore,
+  appModalStore,
+} from '../stores/selectionsStore';
 
 function createAppSelections({ app, currentSelectionsLayout, navState }) {
   const key = `${app.id}`;
+
+  const end = async (accept = true) => {
+    const model = modalObjectStore.get(key);
+    if (model) {
+      await model.endSelections(accept);
+      modalObjectStore.set(key, undefined);
+      const objectSelections = objectSelectionsStore.get(model.id);
+      objectSelections.emit('deactivated');
+    }
+  };
+
+  const begin = async (model, path, accept = true) => {
+    // Quick return if it's already in modal
+    if (model === modalObjectStore.get(key)) {
+      return;
+    }
+
+    // If other model is in modal state end it
+    end(accept);
+
+    // Pending modal
+    modalObjectStore.set(key, model);
+
+    const p = Array.isArray(path) ? path : [path];
+    const beginSelections = async skipRetry => {
+      try {
+        await model.beginSelections(p);
+      } catch (err) {
+        if (err.code === 6003 && !skipRetry) {
+          await app.abortModal(accept);
+          beginSelections(true);
+        } else {
+          modalObjectStore.set(key, undefined); // No modal
+        }
+      }
+      modalObjectStore.set(key, model); // We have a modal
+    };
+    await beginSelections();
+  };
+
+  const appModal = {
+    begin,
+    end,
+  };
+
+  appModalStore.set(key, appModal);
 
   /**
    * @interface
    * @alias AppSelections
    */
-
   const appSelections = {
     model: app,
-    switchModal(object, path, accept = true) {
-      if (object === modalObjectStore.get(key)) {
-        return Promise.resolve();
-      }
-      const currentObject = modalObjectStore.get(key);
-      if (currentObject) {
-        currentObject.endSelections(accept);
-        const objectSelections = objectSelectionsStore.get(currentObject.id);
-        objectSelections.emit('deactivated');
-      }
-      if (object && typeof object !== 'undefined') {
-        // TODO check model state
-        modalObjectStore.set(key, object);
-        // do not return the call to beginSelection to avoid waiting for it's response
-        object.beginSelections(Array.isArray(path) ? path : [path]).catch(err => {
-          if (err.code === 6003) {
-            // If another object already is in modal -> abort and take over
-            return appSelections.abortModal().then(() => object.beginSelections(Array.isArray(path) ? path : [path]));
-          }
-          throw err;
-        });
-        return Promise.resolve();
-      }
-      modalObjectStore.set(key, undefined);
-      return Promise.resolve();
-    },
     isInModal() {
       return !!modalObjectStore.get(key);
     },
@@ -46,12 +70,12 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
       // TODO check model state
       return object ? modalObjectStore.get(key) === object : !!modalObjectStore.get(key);
     },
-    abortModal(accept = true) {
+    async abortModal(accept = true) {
       if (!modalObjectStore.get(key)) {
-        return Promise.resolve();
+        return;
       }
+      await app.abortModal(accept);
       modalObjectStore.set(key, undefined);
-      return app.abortModal(accept);
     },
     canGoForward() {
       return navState.canGoForward;
@@ -66,16 +90,16 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
       return currentSelectionsLayout;
     },
     forward() {
-      return appSelections.switchModal().then(() => app.forward());
+      return appModal.end().then(() => app.forward());
     },
     back() {
-      return appSelections.switchModal().then(() => app.back());
+      return appModal.end().then(() => app.back());
     },
     clear() {
-      return appSelections.switchModal().then(() => app.clearAll());
+      return appModal.end().then(() => app.clearAll());
     },
     clearField(field, state = '$') {
-      return appSelections.switchModal().then(() => app.getField(field, state).then(f => f.clear()));
+      return appModal.end().then(() => app.getField(field, state).then(f => f.clear()));
     },
   };
   return appSelections;
