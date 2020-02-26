@@ -9,6 +9,7 @@ import {
   runSnaps,
   observeActions,
   getImperativeHandle,
+  updateRectOnNextRun,
   useState,
   useEffect,
   useMemo,
@@ -74,6 +75,7 @@ describe('hooks', () => {
       runSnaps,
       observeActions,
       getImperativeHandle,
+      updateRectOnNextRun,
     });
   });
 
@@ -614,7 +616,7 @@ describe('hooks', () => {
       });
     });
 
-    describe('without ResizeObserver', () => {
+    describe.skip('without ResizeObserver', () => {
       const originalW = global.window;
       const originalRO = global.ResizeObserver;
 
@@ -657,6 +659,58 @@ describe('hooks', () => {
         const remove = global.window.removeEventListener.getCall(0).args;
         expect(remove[0]).to.equal('resize');
         expect(remove[1]).to.equal(add[1]);
+      });
+    });
+
+    describe('with explicit resize', () => {
+      const originalRO = global.ResizeObserver;
+      let RO;
+
+      if (typeof ResizeObserver !== 'undefined') {
+        // eslint-disable-next-line
+        console.error('Existing ResizeObserver is about to be overridden');
+      }
+      beforeEach(() => {
+        element = {
+          getBoundingClientRect: sandbox.stub(),
+        };
+
+        const err = e => {
+          throw e;
+        };
+        sandbox.stub(console, 'error').callsFake(err);
+
+        RO = sandbox.stub();
+        // mock ResizeObserver just to check that the ResizeObserver code in useRect itself isn't reached.
+        // the test should throw due to missing observe method otherwise
+        global.ResizeObserver = RO;
+        c = {
+          context: {
+            element,
+          },
+        };
+        initiate(c, {
+          explicitResize: true,
+        });
+      });
+      afterEach(() => {
+        teardown(c);
+        global.ResizeObserver = originalRO;
+      });
+
+      it('should update rect when scheduled', async () => {
+        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
+        let r;
+        c.fn = () => {
+          r = useRect();
+        };
+        run(c);
+        expect(r).to.eql({ left: 1, top: 2, width: 3, height: 4 });
+
+        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 5 });
+        updateRectOnNextRun(c);
+        await run(c);
+        expect(r).to.eql({ left: 1, top: 2, width: 3, height: 5 });
       });
     });
   });

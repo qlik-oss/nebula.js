@@ -30,7 +30,7 @@ function depsChanged(prevDeps, deps) {
   return false;
 }
 
-export function initiate(component) {
+export function initiate(component, { explicitResize = false } = {}) {
   component.__hooks = {
     obsolete: false,
     error: false,
@@ -44,6 +44,9 @@ export function initiate(component) {
     pendingEffects: [],
     pendingLayoutEffects: [],
     pendingPromises: [],
+    config: {
+      explicitResize,
+    },
   };
 }
 
@@ -218,6 +221,12 @@ function useInternalContext(name) {
 //   return env[name];
 // }
 
+export function updateRectOnNextRun(component) {
+  if (component.__hooks) {
+    component.__hooks.updateRect = true;
+  }
+}
+
 // ========  EXTERNAL =========
 
 export function hook(cb) {
@@ -230,6 +239,7 @@ export function hook(cb) {
     runSnaps,
     observeActions,
     getImperativeHandle,
+    updateRectOnNextRun,
   };
 }
 
@@ -495,9 +505,13 @@ export function useRect() {
     return { left, top, width, height };
   });
 
-  const ref = useState(() => ({ current: {} }));
+  const [ref] = useState(() => ({ current: {}, component: currentComponent }));
   ref.current = rect;
-
+  // a forced resize should alwas update size regardless of whether ResizeObserver is available
+  if (ref.resize && currentComponent.__hooks.updateRect) {
+    currentComponent.__hooks.updateRect = false;
+    ref.resize();
+  }
   useLayoutEffect(() => {
     const handleResize = () => {
       // TODO - should we really care about left/top?
@@ -508,6 +522,20 @@ export function useRect() {
         setRect({ left, top, width, height });
       }
     };
+    ref.resize = () => {
+      handleResize();
+    };
+
+    // if component is configured with explicitResize, then we skip the
+    // size observer and let the user control the resize themselves
+    if (ref.component.__hooks.config.explicitResize) {
+      return () => {
+        ref.resize = undefined;
+      };
+    }
+
+    // TODO - document that ResizeObserver needs to be polyfilled by the user
+    // if they want auto resize to work
     if (typeof ResizeObserver === 'function') {
       let resizeObserver = new ResizeObserver(handleResize);
       resizeObserver.observe(element);
@@ -515,12 +543,10 @@ export function useRect() {
         resizeObserver.unobserve(element);
         resizeObserver.disconnect(element);
         resizeObserver = null;
+        ref.resize = undefined;
       };
     }
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return undefined;
   }, [element]);
 
   return rect;

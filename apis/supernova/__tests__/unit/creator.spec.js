@@ -67,6 +67,7 @@ describe('creator', () => {
         runSnaps: sinon.spy(),
         observeActions: sinon.spy(),
         getImperativeHandle: sinon.stub(),
+        updateRectOnNextRun: sinon.spy(),
       };
       hook.returns(hooked);
       fnComponent = sinon.spy();
@@ -116,7 +117,14 @@ describe('creator', () => {
     it('should initiate hook on mount', () => {
       const c = create(generator, opts, env).component;
       c.mounted('element');
-      expect(hooked.initiate).to.have.been.calledWithExactly(c);
+      expect(hooked.initiate).to.have.been.calledWithExactly(c, { explicitResize: false });
+      expect(c.context.element).to.equal('element');
+    });
+
+    it('should initiate with explicitResize on mount', () => {
+      const c = create(generator, { explicitResize: true, ...opts }, env).component;
+      c.mounted('element');
+      expect(hooked.initiate).to.have.been.calledWithExactly(c, { explicitResize: true });
       expect(c.context.element).to.equal('element');
     });
 
@@ -126,9 +134,10 @@ describe('creator', () => {
       expect(hooked.teardown).to.have.been.calledWithExactly(c);
     });
 
-    it('should run on resize', () => {
+    it('should schedule update on rect and run on resize', () => {
       const c = create(generator, opts, env).component;
       c.resize();
+      expect(hooked.updateRectOnNextRun).to.have.been.calledWithExactly(c);
       expect(hooked.run).to.have.been.calledWithExactly(c);
     });
 

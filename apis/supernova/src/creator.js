@@ -81,7 +81,9 @@ function createWithHooks(generator, opts, env) {
     created() {},
     mounted(element) {
       this.context.element = element;
-      generator.component.initiate(c);
+      generator.component.initiate(c, {
+        explicitResize: !!opts.explicitResize,
+      });
     },
     render(r) {
       let changed = !hasRun || false;
@@ -164,6 +166,7 @@ function createWithHooks(generator, opts, env) {
       // resize should never really by necesseary since the ResizeObserver
       // in useRect observes changes on the size of the object, the only time it might
       // be necessary is on IE 11 when the object is resized without the window changing size
+      generator.component.updateRectOnNextRun(this);
       return this.render();
     },
     willUnmount() {
