@@ -4,7 +4,13 @@ module.exports = {
   },
   mocks: [],
   nyc: {
-    exclude: ['**/commands/**', '**/__stories__/**', '**/apis/supernova/index.js', '**/apis/nucleus/index.js'],
+    exclude: [
+      '**/commands/**',
+      '**/__stories__/**',
+      '**/apis/supernova/index.js',
+      '**/apis/nucleus/index.js',
+      '**/packages/ui/icons/**/*.js', // Exclude the defined icons but test the `<SvgIcon />`
+    ],
   },
 };
 
