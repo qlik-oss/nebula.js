@@ -17,10 +17,10 @@
     "type": "git",
     "url": "https://github.com/qlik-oss/nebula.js.git"
   },
-  "main": "lib/snapshooter.js",
+  "main": "server.js",
   "files": [
-    "lib",
-    "dist"
+    "client",
+    "server"
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --config ./rollup.config.js",

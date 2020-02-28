@@ -1,5 +1,5 @@
 import nucleus from '@nebula.js/nucleus';
-import snapshooter from '@nebula.js/snapshooter/dist/renderer';
+import snapshooter from '@nebula.js/snapshooter/client';
 
 import { openApp, params, info as serverInfo } from './connect';
 import runFixture from './run-fixture';
@@ -97,6 +97,7 @@ async function renderSnapshot() {
     snapshooter({
       nucleus: n,
       element,
+      snapshot: params.snapshot,
     });
   });
 }

@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <script src="/apis/supernova/dist/supernova.js"></script>
     <script src="/apis/nucleus/dist/nucleus.js"></script>
-    <script src="/apis/snapshooter/dist/renderer.js"></script>
+    <script src="/apis/snapshooter/client.js"></script>
     <script src="configured.js"></script>
 
     <style>
@@ -25,9 +25,24 @@
   <body>
     <div id="object"></div>
     <script>
+      const params = (() => {
+        const opts = {};
+        window.location.search
+          .substring(1)
+          .split('&')
+          .forEach(pair => {
+            const idx = pair.indexOf('=');
+            const name = pair.substr(0, idx);
+            const value = decodeURIComponent(pair.substring(idx + 1));
+            opts[name] = value;
+          });
+
+        return opts;
+      })();
       snapshooter({
         nucleus: configured,
         element: document.querySelector('#object'),
+        snapshot: params.snapshot,
       });
     </script>
   </body>
