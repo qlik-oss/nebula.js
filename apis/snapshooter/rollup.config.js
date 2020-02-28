@@ -24,7 +24,7 @@ const browserList = [
 const cfg = {
   input: path.resolve(cwd, 'src', 'renderer'),
   output: {
-    file: path.resolve(cwd, 'dist/renderer.js'),
+    file: path.resolve(cwd, 'client.js'),
     format: 'umd',
     exports: 'default',
     name: 'snapshooter',
