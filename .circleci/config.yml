@@ -34,13 +34,13 @@ jobs:
 
       - run:
           name: Install dependencies
-          command: yarn install --frozen-lockfile
+          command: yarn install --frozen-lockfile --ignore-optional --silent 2> >(grep -v warning 1>&2)
 
       - save_cache: *save_yarn_cache
 
       - run:
           name: Build
-          command: yarn run build
+          command: yarn run build -- -- --silent
 
       - run:
           name: Lint

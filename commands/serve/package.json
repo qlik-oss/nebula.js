@@ -22,7 +22,7 @@
     "lib"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js",
+    "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js --display 'errors-only' --display-error-details",
     "lint": "eslint web",
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
