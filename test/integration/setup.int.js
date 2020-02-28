@@ -8,6 +8,7 @@ if (!process.env.BASE_URL) {
     s = await serve({
       entry: path.resolve(__dirname, 'sn.js'),
       open: false,
+      progress: false,
     });
 
     process.env.BASE_URL = s.url;

@@ -73,7 +73,7 @@ module.exports = async ({
     quiet: false,
     noInfo: true,
     open,
-    progress: true,
+    progress: typeof serveConfig.progress !== 'undefined' ? serveConfig.progress : true,
     contentBase: [contentBase],
     historyApiFallback: {
       index: '/eHub.html',

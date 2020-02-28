@@ -9,6 +9,7 @@ if (!process.env.BASE_URL) {
       entry: path.resolve(__dirname, 'sn.js'),
       open: false,
       build: false,
+      progress: false,
     });
 
     process.env.BASE_URL = s.url;
