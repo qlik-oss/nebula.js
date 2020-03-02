@@ -42,11 +42,10 @@ async function renderSnapshot({ nucleus, element, snapshot: key }) {
     context: {
       theme,
       language,
-      constraints: {
-        select: true,
-        passive: true,
-        active: true,
-      },
+      // do NOT override constraints to allow the passed in nuked config to control it instead,
+      // however, since it's a snapshot the 'select' constraint will always be set to true from
+      // the nucleus internals
+      // constraints: {}
     },
   });
 

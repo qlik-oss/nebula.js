@@ -59,13 +59,12 @@ describe('snapshooter', () => {
     expect(element.innerHTML).to.eql('<p>meh</p>');
   });
 
-  it('should call nucleus with context theme, language and constraints', async () => {
+  it('should call nucleus with context theme and language', async () => {
     await renderer({ nucleus, snapshot: '' });
     expect(nucleus.firstCall.args[1]).to.eql({
       context: {
         theme: 'dark',
         language: 'sv',
-        constraints: { passive: true, active: true, select: true },
       },
     });
   });
