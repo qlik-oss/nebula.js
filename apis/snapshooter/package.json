@@ -19,8 +19,8 @@
   },
   "main": "server.js",
   "files": [
-    "client",
-    "server"
+    "client.js",
+    "server.js"
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --config ./rollup.config.js",
