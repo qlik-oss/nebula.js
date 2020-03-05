@@ -5,7 +5,7 @@ import appThemeFn from './app-theme';
 import bootNebulaApp from './components/NebulaApp';
 import AppSelectionsPortal from './components/selections/AppSelections';
 
-import create from './object/create-object';
+import create from './object/create-session-object';
 import get from './object/get-object';
 import { create as typesFn } from './sn/types';
 import loggerFn from './utils/logger';

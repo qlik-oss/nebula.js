@@ -26,10 +26,5 @@ export default function glue({ corona, element, model, initialSnOptions, onMount
 
   root.add(portal);
 
-  return [
-    () => {
-      unmount();
-    },
-    cellRef,
-  ];
+  return [unmount, cellRef];
 }

@@ -1,4 +1,4 @@
-describe('create-object', () => {
+describe('create-session-object', () => {
   let corona = {};
   let types;
   let sn;
@@ -17,7 +17,7 @@ describe('create-object', () => {
         ['**/populator.js', () => populator],
         ['**/initiate.js', () => init],
       ],
-      ['../create-object.js']
+      ['../create-session-object.js']
     );
   });
 
@@ -98,7 +98,7 @@ describe('create-object', () => {
     const optional = { properties: 'props', x: 'a' };
     const ret = await create({ type: 't', version: 'v', fields: 'f' }, optional, corona);
     expect(ret).to.equal('api');
-    expect(init).to.have.been.calledWithExactly(objectModel, optional, corona, undefined);
+    expect(init).to.have.been.calledWithExactly(objectModel, optional, corona, undefined, sinon.match.func);
   });
 
   it('should catch and pass error', async () => {
@@ -107,6 +107,6 @@ describe('create-object', () => {
     const optional = { properties: 'props' };
     const ret = await create({ type: 't' }, optional, corona);
     expect(ret).to.equal('api');
-    expect(init).to.have.been.calledWithExactly(objectModel, optional, corona, err);
+    expect(init).to.have.been.calledWithExactly(objectModel, optional, corona, err, sinon.match.func);
   });
 });
