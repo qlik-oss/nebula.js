@@ -17,8 +17,7 @@ describe('snapshooter', () => {
     };
 
     nebbie = {
-      get: sandbox.stub().returns(Promise.resolve()),
-      create: sandbox.stub().returns(Promise.resolve()),
+      render: sandbox.stub().returns(Promise.resolve()),
     };
     nucleus.returns(nebbie);
 
@@ -102,37 +101,34 @@ describe('snapshooter', () => {
     }
   });
 
-  it('should call nebbie.get() when qInfo.qId is truthy', async () => {
+  it('should call nebbie.render() with id when qInfo.qId is truthy', async () => {
     const el = 'el';
     await renderer({ nucleus, element: el, snapshot: '' });
-    expect(nebbie.get).to.have.been.calledWithExactly(
-      {
-        id: 'xyz',
-      },
-      { element: el }
-    );
+    expect(nebbie.render).to.have.been.calledWithExactly({
+      id: 'xyz',
+      element: el,
+    });
   });
 
-  it('should call nebbie.create() when qInfo is falsy', async () => {
+  it('should call nebbie.render() with type when qInfo is falsy', async () => {
     const el = 'el';
     await renderer({
       nucleus,
       element: el,
       snapshot: { meta: {}, layout: { myProp: 'yes', visualization: 'legendary' } },
     });
-    expect(nebbie.create).to.have.been.calledWithExactly(
-      {
-        type: 'legendary',
-      },
-      { element: el, properties: { myProp: 'yes', visualization: 'legendary' } }
-    );
+    expect(nebbie.render).to.have.been.calledWithExactly({
+      type: 'legendary',
+      element: el,
+      properties: { myProp: 'yes', visualization: 'legendary' },
+    });
   });
 
-  it('should render error when nebbie.get() throws', async () => {
+  it('should render error when nebbie.render() throws', async () => {
     const el = {
       setAttribute: sandbox.stub(),
     };
-    nebbie.get.throws(new Error('aaaaaaah!'));
+    nebbie.render.throws(new Error('aaaaaaah!'));
     try {
       await renderer({ nucleus, element: el, snapshot: '' });
     } catch (e) {

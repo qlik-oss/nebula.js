@@ -37,9 +37,10 @@ describe('nucleus', () => {
 
   afterEach(() => {
     sandbox.reset();
+    sandbox.restore();
   });
 
-  it('should wait for theme before creating object', async () => {
+  it('should wait for theme before rendering object', async () => {
     let waited = false;
     const delay = 1000;
     appThemeFn.returns({
@@ -53,33 +54,11 @@ describe('nucleus', () => {
     });
 
     const nuked = create();
-    const prom = nuked.create();
+    const prom = nuked.render({});
     sandbox.clock.tick(delay + 100);
     const c = await prom;
     expect(waited).to.equal(true);
     expect(c).to.equal('created object');
-  });
-
-  it('should wait for theme before getting object', async () => {
-    let waited = false;
-    const delay = 2000;
-    appThemeFn.returns({
-      setTheme: () =>
-        new Promise(resolve => {
-          setTimeout(() => {
-            waited = true;
-            resolve();
-          }, delay);
-        }),
-    });
-
-    const nuked = create();
-    const prom = nuked.get();
-    sandbox.clock.tick(delay + 100);
-    const c = await prom;
-    sandbox.clock.restore();
-    expect(waited).to.equal(true);
-    expect(c).to.equal('got object');
   });
 
   it('should initite root app with context', () => {

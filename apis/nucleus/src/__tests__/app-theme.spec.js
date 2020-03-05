@@ -73,6 +73,7 @@ describe('app-theme', () => {
       sb.clock.tick(5500);
       await prom;
       sb.restore();
+      sb.reset();
       expect(logger.warn).to.have.been.calledWithExactly("Timeout when loading theme 'darkish'");
     });
   });

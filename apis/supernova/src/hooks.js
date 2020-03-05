@@ -8,11 +8,6 @@
 let currentComponent;
 let currentIndex;
 
-/**
- * @module supernova
- * @alias @nebula.js/supernova
- */
-
 function depsChanged(prevDeps, deps) {
   if (!prevDeps) {
     return true;
@@ -251,7 +246,7 @@ export function hook(cb) {
 
 /**
  * @interface SetState
- * @param {any|module:supernova~SetStateCallback} state
+ * @param {any|SetStateCallback} state
  */
 
 /**
@@ -260,8 +255,9 @@ export function hook(cb) {
  */
 
 /**
- * @param {any|module:supernova~Factory} initial
- * @returns {Array<any,module:supernova~SetState>}
+ * @entry
+ * @param {any|Factory} initial
+ * @returns {Array<any,SetState>}
  */
 export function useState(initial) {
   const h = getHook(++currentIndex);
@@ -294,7 +290,8 @@ export function useState(initial) {
  */
 
 /**
- * @param {module:supernova~EffectCallback} effect
+ * @entry
+ * @param {EffectCallback} effect
  * @param {Array<any>=} deps
  */
 export function useEffect(cb, deps) {
@@ -327,7 +324,8 @@ function useLayoutEffect(cb, deps) {
 }
 
 /**
- * @param {module:supernova~Factory} fn
+ * @entry
+ * @param {Factory} fn
  * @param {Array<any>} [deps]
  * @returns {any}
  */
@@ -345,7 +343,8 @@ export function useMemo(fn, deps) {
 }
 
 /**
- * @param {module:supernova~Factory} fn
+ * @entry
+ * @param {Factory} fn
  * @param {Array<any>} [deps]
  */
 export function useImperativeHandle(fn, deps) {
@@ -372,7 +371,8 @@ export function useImperativeHandle(fn, deps) {
  */
 
 /**
- * @param {module:supernova~PromiseCallback} fn
+ * @entry
+ * @param {PromiseCallback} fn
  * @param {Array<any>=} deps
  * @returns {Array<any,any>}
  */
@@ -445,7 +445,7 @@ export function usePromise(p, deps) {
  * @property {boolean=} hidden
  * @property {boolean=} disabled
  * @property {object=} icon
- * @property {string=} icon.viewBox
+ * @property {string} [icon.viewBox="0 0 16 16"]
  * @property {Array<object>} icon.shapes
  * @property {string} icon.shapes[].type
  * @property {object=} icon.shapes[].attrs
@@ -453,11 +453,12 @@ export function usePromise(p, deps) {
 
 /**
  * @interface ActionFactory
- * @returns {module:supernova~ActionDefinition}
+ * @returns {ActionDefinition}
  */
 
 /**
- * @param {module:supernova~ActionFactory} fn
+ * @entry
+ * @param {ActionFactory} fn
  * @param {Array<any>=} deps
  * @returns {function}
  */
@@ -495,8 +496,10 @@ export function useAction(fn, deps) {
  * @property {number} width
  * @property {number} height
  */
+
 /**
- * @returns {module:supernova~Rect}
+ * @entry
+ * @returns {Rect}
  */
 export function useRect() {
   const element = useElement();
@@ -553,7 +556,8 @@ export function useRect() {
 }
 
 /**
- * @returns {EnigmaObjectModel=}
+ * @entry
+ * @returns {enigma.GenericObject|undefined}
  */
 export function useModel() {
   const model = useInternalContext('model');
@@ -561,7 +565,8 @@ export function useModel() {
 }
 
 /**
- * @returns {EnigmaAppModel=}
+ * @entry
+ * @returns {enigma.Doc|undefined}
  */
 export function useApp() {
   const app = useInternalContext('app');
@@ -569,7 +574,8 @@ export function useApp() {
 }
 
 /**
- * @returns {EnigmaGlobalModel=}
+ * @entry
+ * @returns {enigma.Global|undefined}
  */
 export function useGlobal() {
   const global = useInternalContext('global');
@@ -577,6 +583,7 @@ export function useGlobal() {
 }
 
 /**
+ * @entry
  * @returns {HTMLElement}
  */
 export function useElement() {
@@ -584,6 +591,7 @@ export function useElement() {
 }
 
 /**
+ * @entry
  * @returns {ObjectSelections}
  */
 export function useSelections() {
@@ -591,6 +599,7 @@ export function useSelections() {
 }
 
 /**
+ * @entry
  * @returns {Theme}
  */
 export function useTheme() {
@@ -598,14 +607,16 @@ export function useTheme() {
 }
 
 /**
- * @returns {GenericObjectLayout}
+ * @entry
+ * @returns {qix.GenericObjectLayout}
  */
 export function useLayout() {
   return useInternalContext('layout');
 }
 
 /**
- * @returns {GenericObjectLayout}
+ * @entry
+ * @returns {qix.GenericObjectLayout}
  */
 export function useStaleLayout() {
   const layout = useInternalContext('layout');
@@ -617,13 +628,15 @@ export function useStaleLayout() {
 }
 
 /**
- * @returns {NxAppLayout}
+ * @entry
+ * @returns {qix.NxAppLayout}
  */
 export function useAppLayout() {
   return useInternalContext('appLayout');
 }
 
 /**
+ * @entry
  * @returns {Translator}
  */
 export function useTranslator() {
@@ -638,13 +651,15 @@ export function useTranslator() {
  */
 
 /**
- * @returns {module:supernova~Constraints}
+ * @entry
+ * @returns {Constraints}
  */
 export function useConstraints() {
   return useInternalContext('constraints');
 }
 
 /**
+ * @entry
  * @returns {object}
  */
 export function useOptions() {
@@ -653,12 +668,13 @@ export function useOptions() {
 
 /**
  * @interface SnapshotCallback
- * @param {GenericObjectLayout} layout
- * @returns {Promise<GenericObjectLayout>}
+ * @param {qix.GenericObjectLayout} layout
+ * @returns {Promise<qix.GenericObjectLayout>}
  */
 
 /**
- * @param {module:supernova~SnapshotCallback} cb
+ * @entry
+ * @param {SnapshotCallback} cb
  */
 export function onTakeSnapshot(cb) {
   const h = getHook(++currentIndex);

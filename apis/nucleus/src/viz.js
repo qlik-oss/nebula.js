@@ -35,11 +35,11 @@ export default function viz({ model, corona, initialError, onDestroy = async () 
 
   /**
    * @interface
-   * @alias Viz
+   * @alias SupernovaController
    */
-  const api = /** @lends Viz */ {
+  const api = /** @lends SupernovaController */ {
     /**
-     * @type {EnigmaObjectModel}
+     * @type {enigma.GenericObject}
      */
     model,
     // app,

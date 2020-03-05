@@ -23,14 +23,10 @@
 
     const n = configured(app);
 
-    n.create(
-      {
-        type,
-      },
-      {
-        element,
-      }
-    ).then(viz => {
+    n.render({
+      type,
+      element,
+    }).then(viz => {
       element.addEventListener('click', () => {
         viz.exportImage().then(res => {
           element.setAttribute('data-captured', res.url);

@@ -50,30 +50,18 @@ async function renderSnapshot({ nucleus, element, snapshot: key }) {
   });
 
   try {
-    // snapshots should preferrable be rendered based on the snapshot of a specific chart
-    // where it should already have a qId
-    if (layout.qInfo && layout.qInfo.qId) {
-      await nebbie.get(
-        {
-          id: layout.qInfo.qId,
-        },
-        {
-          element,
-        }
-      );
-    } else {
-      // otherwise we need to create an object of a specific type to make sure its
-      // initialProperies are generated
-      await nebbie.create(
-        {
-          type: layout.visualization,
-        },
-        {
-          element,
-          properties: layout,
-        }
-      );
-    }
+    await nebbie.render(
+      layout.qInfo && layout.qInfo.qId
+        ? {
+            id: layout.qInfo.qId,
+            element,
+          }
+        : {
+            type: layout.visualization,
+            element,
+            properties: layout,
+          }
+    );
   } catch (e) {
     renderError(e || { message: 'Failed to render supernova' });
     throw e;

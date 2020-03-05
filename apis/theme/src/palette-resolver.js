@@ -1,19 +1,19 @@
 /**
- * @typedef {object} scalePalette
+ * @interface Theme~ScalePalette
  * @property {string} key
  * @property {'gradient'|'class'} type
  * @property {string[]} colors
  */
 
 /**
- * @typedef {object} dataPalette
+ * @interface Theme~DataPalette
  * @property {string} key
  * @property {'pyramid'|'row'} type
  * @property {string[]|Array<Array<string>>} colors
  */
 
 /**
- * @typedef {object} colorPickerPalette
+ * @interface Theme~ColorPickerPalette
  * @property {string} key
  * @property {string[]} colors
  */
@@ -65,8 +65,8 @@ export default function theme(resolvedTheme) {
       return pals;
     },
     dataColors() {
-      /** @typedef {object} dataColorSpecials */
-      return /** @lends dataColorSpecials */ {
+      /** @interface Theme~DataColorSpecials */
+      return /** @lends Theme~DataColorSpecials */ {
         /** @type {string} */
         primary: resolvedTheme.dataColors.primaryColor,
         /** @type {string} */

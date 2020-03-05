@@ -11,14 +11,10 @@ export default function Chart({ id, onLoad }) {
   const nebbie = useContext(NebulaContext);
   const el = useRef();
   useEffect(() => {
-    const n = nebbie.get(
-      {
-        id,
-      },
-      {
-        element: el.current,
-      }
-    );
+    const n = nebbie.render({
+      id,
+      element: el.current,
+    });
     n.then(viz => {
       onLoad(viz, el.current);
     });

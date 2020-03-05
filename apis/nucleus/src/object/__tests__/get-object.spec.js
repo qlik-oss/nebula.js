@@ -1,5 +1,4 @@
 describe('get-object', () => {
-  const optional = 'optional';
   let context = {};
   let create;
   let sandbox;
@@ -30,17 +29,17 @@ describe('get-object', () => {
   it('should get object from app only once', async () => {
     objectModel.withArgs('x').returns(model);
     const spy = sandbox.spy(context.app, 'getObject');
-    await create({ id: 'x' }, optional, context);
-    await create({ id: 'x' }, optional, context);
-    await create({ id: 'x' }, optional, context);
+    await create({ id: 'x' }, context);
+    await create({ id: 'x' }, context);
+    await create({ id: 'x' }, context);
     expect(spy.callCount).to.equal(1);
     expect(spy).to.have.been.calledWithExactly('x');
   });
 
   it('should call init', async () => {
     objectModel.withArgs('x').returns(model);
-    const ret = await create({ id: 'x' }, optional, context);
+    const ret = await create({ id: 'x', options: 'op', element: 'el' }, context);
     expect(ret).to.equal('api');
-    expect(init).to.have.been.calledWithExactly(model, optional, context);
+    expect(init).to.have.been.calledWithExactly(model, { options: 'op', element: 'el' }, context);
   });
 });

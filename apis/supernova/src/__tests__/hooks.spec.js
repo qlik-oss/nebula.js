@@ -32,13 +32,13 @@ import {
   onTakeSnapshot,
 } from '../hooks';
 
-const frame = () => new Promise(resolve => setTimeout(resolve));
-
 describe('hooks', () => {
   let c;
   let sandbox;
   let DEV;
+  let frame;
   before(() => {
+    frame = () => new Promise(resolve => setTimeout(resolve));
     sandbox = sinon.createSandbox();
     DEV = global.__NEBULA_DEV__;
     global.__NEBULA_DEV__ = true;
@@ -61,6 +61,7 @@ describe('hooks', () => {
   });
   afterEach(() => {
     sandbox.restore();
+    sandbox.reset();
   });
 
   it('hook should bind hooks to file scope', () => {
