@@ -18,7 +18,7 @@ describe('nucleus', () => {
         ['**/locale/app-locale.js', () => () => ({ translator })],
         ['**/components/NebulaApp.jsx', () => rootApp],
         ['**/components/selections/AppSelections.jsx', () => () => ({})],
-        ['**/object/create-object.js', () => createObject],
+        ['**/object/create-session-object.js', () => createObject],
         ['**/object/get-object.js', () => getObject],
         ['**/sn/types.js', () => ({ create: () => ({}) })],
         ['**/utils/logger.js', () => () => ({})],

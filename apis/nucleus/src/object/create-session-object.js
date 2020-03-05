@@ -7,7 +7,7 @@ import { subscribe } from '../stores/modelStore';
  * @property {string} version
  * @property {object[]} fields
  */
-export default async function create({ type, version, fields }, optional, corona) {
+export default async function createSessionObject({ type, version, fields }, optional, corona) {
   let mergedProps = {};
   let error;
   try {
@@ -40,6 +40,10 @@ export default async function create({ type, version, fields }, optional, corona
     // console.error(e); // eslint-disable-line
   }
   const model = await corona.app.createSessionObject(mergedProps);
-  subscribe(model);
-  return init(model, optional, corona, error);
+  const unsubscribe = subscribe(model);
+  const onDestroy = async () => {
+    await corona.app.destroySessionObject(model.id);
+    unsubscribe();
+  };
+  return init(model, optional, corona, error, onDestroy);
 }

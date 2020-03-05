@@ -4,7 +4,7 @@ import getPatches from './utils/patcher';
 
 const noopi = () => {};
 
-export default function viz({ model, corona, initialError } = {}) {
+export default function viz({ model, corona, initialError, onDestroy = async () => {} } = {}) {
   let unmountCell = noopi;
   let cellRef = null;
   let mountedReference = null;
@@ -65,9 +65,9 @@ export default function viz({ model, corona, initialError } = {}) {
     /**
      *
      */
-    close() {
+    async destroy() {
       // TODO - destroy session object (if created as such)
-      model.emit('closed');
+      await onDestroy();
       unmountCell();
       unmountCell = noopi;
     },

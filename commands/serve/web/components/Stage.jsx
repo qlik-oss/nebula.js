@@ -15,27 +15,29 @@ export default function Stage({ info, storage, uid }) {
 
   useEffect(() => {
     if (!uid) {
-      return;
+      return undefined;
     }
-    nebbie
-      .create(
-        {
-          type: info.supernova.name,
-        },
-        {
-          properties: {
-            ...(storage.get('readFromCache') !== false ? storage.props(info.supernova.name) : {}),
-            qInfo: {
-              qId: uid,
-              qType: info.supernova.name,
-            },
+    const res = nebbie.create(
+      {
+        type: info.supernova.name,
+      },
+      {
+        properties: {
+          ...(storage.get('readFromCache') !== false ? storage.props(info.supernova.name) : {}),
+          qInfo: {
+            qId: uid,
+            qType: info.supernova.name,
           },
-        }
-      )
-      .then(v => {
-        setModel(v.model);
-        setActiveViz(v);
-      });
+        },
+      }
+    );
+    res.then(v => {
+      setModel(v.model);
+      setActiveViz(v);
+    });
+    return () => {
+      res.then(v => v.destroy());
+    };
   }, [uid]);
 
   useEffect(() => {

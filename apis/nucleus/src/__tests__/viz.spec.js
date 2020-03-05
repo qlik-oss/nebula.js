@@ -100,10 +100,9 @@ describe('viz', () => {
     });
   });
 
-  describe('close', () => {
-    it('should cleanup', () => {
-      api.close();
-      expect(model.emit).to.have.been.calledWithExactly('closed');
+  describe('destroy', () => {
+    it('should cleanup', async () => {
+      await api.destroy();
       expect(unmount).to.have.been.calledWithExactly();
     });
   });

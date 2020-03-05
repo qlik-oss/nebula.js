@@ -27,8 +27,9 @@ describe('initiate api', () => {
 
   it('should call viz api', async () => {
     const initialError = 'err';
-    const ret = await create(model, optional, corona, initialError);
-    expect(viz).to.have.been.calledWithExactly({ model, corona, initialError });
+    const onDestroy = () => {};
+    const ret = await create(model, optional, corona, initialError, onDestroy);
+    expect(viz).to.have.been.calledWithExactly({ model, corona, initialError, onDestroy });
     expect(ret).to.equal(api);
   });
 

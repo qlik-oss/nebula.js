@@ -24,8 +24,7 @@ export default function Chart({ id, onLoad }) {
     });
     return () => {
       n.then(v => {
-        v.close();
-        // v.unmount();
+        v.destroy();
       });
     };
   }, [id]);
