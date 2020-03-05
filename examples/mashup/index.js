@@ -17,13 +17,9 @@ connect().then(app => {
   document.querySelectorAll('.object').forEach(el => {
     const type = el.getAttribute('data-type');
 
-    nebbie.create(
-      {
-        type,
-      },
-      {
-        element: el,
-      }
-    );
+    nebbie.render({
+      type,
+      element: el,
+    });
   });
 });

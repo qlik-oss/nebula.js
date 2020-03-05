@@ -17,20 +17,16 @@ export default function Stage({ info, storage, uid }) {
     if (!uid) {
       return undefined;
     }
-    const res = nebbie.create(
-      {
-        type: info.supernova.name,
-      },
-      {
-        properties: {
-          ...(storage.get('readFromCache') !== false ? storage.props(info.supernova.name) : {}),
-          qInfo: {
-            qId: uid,
-            qType: info.supernova.name,
-          },
+    const res = nebbie.render({
+      type: info.supernova.name,
+      properties: {
+        ...(storage.get('readFromCache') !== false ? storage.props(info.supernova.name) : {}),
+        qInfo: {
+          qId: uid,
+          qType: info.supernova.name,
         },
-      }
-    );
+      },
+    });
     res.then(v => {
       setModel(v.model);
       setActiveViz(v);

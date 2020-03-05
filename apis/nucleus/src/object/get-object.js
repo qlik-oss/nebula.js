@@ -2,18 +2,20 @@ import init from './initiate';
 import { modelStore, rpcRequestModelStore } from '../stores/modelStore';
 
 /**
- * @typedef {object} GetObjectConfig
- * @property {string} id
- */
-
-/**
- * @typedef {object} VizConfig
+ * @interface BaseConfig
  * @property {HTMLElement=} element
  * @property {object=} optional
  * @property {object=} optional.options
  * @property {object=} optional.properties
  */
-export default async function getObject({ id }, optional, corona) {
+
+/**
+ * @interface GetConfig
+ * @extends BaseConfig
+ * @property {string} id
+ */
+
+export default async function getObject({ id, options, element }, corona) {
   const key = `${id}`;
   let rpc = rpcRequestModelStore.get(key);
   if (!rpc) {
@@ -22,5 +24,5 @@ export default async function getObject({ id }, optional, corona) {
   }
   const model = await rpc;
   modelStore.set(key, model);
-  return init(model, optional, corona);
+  return init(model, { options, element }, corona);
 }

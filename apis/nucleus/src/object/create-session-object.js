@@ -2,17 +2,18 @@ import populateData from './populator';
 import init from './initiate';
 import { subscribe } from '../stores/modelStore';
 /**
- * @typedef {object} CreateObjectConfig
+ * @typedef {object} CreateConfig
+ * @extends BaseConfig
  * @property {string} type
  * @property {string} version
  * @property {object[]} fields
  */
-export default async function createSessionObject({ type, version, fields }, optional, corona) {
+export default async function createSessionObject({ type, version, fields, properties, options, element }, corona) {
   let mergedProps = {};
   let error;
   try {
     const t = corona.public.nebbie.types.get({ name: type, version });
-    mergedProps = await t.initialProperties(optional.properties);
+    mergedProps = await t.initialProperties(properties);
     const sn = await t.supernova();
     if (fields) {
       populateData(
@@ -24,7 +25,7 @@ export default async function createSessionObject({ type, version, fields }, opt
         corona
       );
     }
-    if (optional.properties && sn && sn.qae.properties.onChange) {
+    if (properties && sn && sn.qae.properties.onChange) {
       sn.qae.properties.onChange.call({}, mergedProps);
     }
   } catch (e) {
@@ -45,5 +46,5 @@ export default async function createSessionObject({ type, version, fields }, opt
     await corona.app.destroySessionObject(model.id);
     unsubscribe();
   };
-  return init(model, optional, corona, error, onDestroy);
+  return init(model, { options, element }, corona, error, onDestroy);
 }

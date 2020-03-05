@@ -20,35 +20,35 @@ export default function theme() {
    */
   const externalAPI = /** @lends Theme */ {
     /**
-     * @returns {scalePalette[]}
+     * @returns {Theme~ScalePalette[]}
      */
     getDataColorScales() {
       return paletteResolver.dataScales();
     },
     /**
-     * @returns {dataPalette[]}
+     * @returns {Theme~DataPalette[]}
      */
     getDataColorPalettes() {
       return paletteResolver.dataPalettes();
     },
     /**
-     * @returns {colorPickerPalette[]}
+     * @returns {Theme~ColorPickerPalette[]}
      */
     getDataColorPickerPalettes() {
       return paletteResolver.uiPalettes();
     },
     /**
-     * @returns {dataColorSpecials}
+     * @returns {Theme~DataColorSpecials}
      */
     getDataColorSpecials() {
       return paletteResolver.dataColors();
     },
     /**
-     * Resolve a color object using the color picker palette from the provided JSON theme
+     * Resolve a color object using the color picker palette from the provided JSON theme.
      * @param {object} c
      * @param {number=} c.index
      * @param {string=} c.color
-     * @returns {string}
+     * @returns {string} The resolved color.
      *
      * @example
      * theme.getColorPickerColor({ index: 1 });
@@ -63,8 +63,8 @@ export default function theme() {
      * This is typically used to find a suitable text color for a label placed on an arbitrarily colored background.
      *
      * The returned colors are derived from the theme.
-     * @param {string} color
-     * @returns {string}
+     * @param {string} color - A color to measure the contrast against
+     * @returns {string} - The color that has the best contrast against the specified `color`.
      * @example
      * theme.getContrastingColorTo('#400');
      */

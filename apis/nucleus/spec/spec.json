@@ -2,7 +2,7 @@
   "scriptappy": "1.0.0",
   "info": {
     "name": "@nebula.js/nucleus",
-    "version": "0.1.0-alpha.26",
+    "version": "0.2.0-alpha.1",
     "license": "MIT",
     "stability": "experimental",
     "x-qlik-visibility": "public"
@@ -14,7 +14,7 @@
       "params": [
         {
           "name": "app",
-          "type": "EnigmaAppModel"
+          "type": "enigma.Doc"
         },
         {
           "name": "instanceConfig",
@@ -23,7 +23,7 @@
         }
       ],
       "returns": {
-        "type": "#/definitions/Nebbie"
+        "type": "#/definitions/Nucleus"
       },
       "examples": ["import nucleus from '@nebula.js/nucleus'\nconst nebbie = nucleus(app);"],
       "entries": {
@@ -49,7 +49,6 @@
   "definitions": {
     "AppSelections": {
       "kind": "interface",
-      "params": [],
       "entries": {
         "mount": {
           "kind": "function",
@@ -66,6 +65,29 @@
         }
       }
     },
+    "BaseConfig": {
+      "kind": "interface",
+      "entries": {
+        "element": {
+          "optional": true,
+          "type": "HTMLElement"
+        },
+        "optional": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "options": {
+              "optional": true,
+              "type": "object"
+            },
+            "properties": {
+              "optional": true,
+              "type": "object"
+            }
+          }
+        }
+      }
+    },
     "Configuration": {
       "kind": "object",
       "entries": {
@@ -77,10 +99,32 @@
           "kind": "function",
           "params": []
         },
+        "snapshot": {
+          "kind": "object",
+          "entries": {
+            "get": {
+              "kind": "function",
+              "params": [
+                {
+                  "name": "id",
+                  "type": "string"
+                }
+              ],
+              "returns": {
+                "type": "Promise",
+                "generics": [
+                  {
+                    "type": "object"
+                  }
+                ]
+              }
+            }
+          }
+        },
         "themes": {
           "kind": "array",
           "items": {
-            "type": "ThemeInfo"
+            "type": "#/definitions/ThemeInfo"
           }
         },
         "types": {
@@ -91,25 +135,35 @@
         }
       }
     },
-    "CreateObjectConfig": {
+    "CreateConfig": {
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
       "kind": "object",
       "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
         "fields": {
           "kind": "array",
           "items": {
             "type": "object"
           }
+        },
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
         }
       }
     },
-    "GetObjectConfig": {
-      "kind": "object",
+    "GetConfig": {
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
+      "kind": "interface",
       "entries": {
         "id": {
           "type": "string"
@@ -145,9 +199,8 @@
         ]
       }
     },
-    "Nebbie": {
+    "Nucleus": {
       "kind": "interface",
-      "params": [],
       "entries": {
         "context": {
           "kind": "function",
@@ -156,94 +209,66 @@
               "name": "ctx",
               "kind": "object",
               "entries": {
-                "theme": {
-                  "type": "string"
-                },
-                "language": {
-                  "type": "string"
-                },
                 "constraints": {
                   "kind": "array",
                   "items": {
                     "type": "string"
                   }
+                },
+                "language": {
+                  "type": "string"
+                },
+                "theme": {
+                  "type": "string"
                 }
               }
             }
           ]
         },
-        "create": {
+        "render": {
           "kind": "function",
           "params": [
             {
-              "name": "createCfg",
-              "type": "#/definitions/CreateObjectConfig"
-            },
-            {
-              "name": "vizConfig",
-              "optional": true,
-              "type": "#/definitions/VizConfig"
+              "name": "cfg",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "#/definitions/CreateConfig"
+                },
+                {
+                  "type": "#/definitions/GetConfig"
+                }
+              ],
+              "type": "any"
             }
           ],
           "returns": {
-            "type": "#/definitions/Viz"
-          }
-        },
-        "get": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "getCfg",
-              "type": "#/definitions/GetObjectConfig"
-            },
-            {
-              "name": "vizConfig",
-              "optional": true,
-              "type": "#/definitions/VizConfig"
-            }
-          ],
-          "returns": {
-            "type": "#/definitions/Viz"
+            "type": "#/definitions/SupernovaController"
           }
         },
         "selections": {
           "kind": "function",
           "params": [],
           "returns": {
-            "type": "#/definitions/AppSelections"
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "#/definitions/AppSelections"
+              }
+            ]
           }
         }
       }
     },
-    "TypeInfo": {
-      "kind": "object",
-      "entries": {
-        "name": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "meta": {
-          "optional": true,
-          "type": "object"
-        },
-        "load": {
-          "optional": true,
-          "type": "#/definitions/loadType"
-        }
-      }
-    },
-    "Viz": {
+    "SupernovaController": {
       "kind": "interface",
-      "params": [],
       "entries": {
-        "close": {
+        "destroy": {
           "kind": "function",
           "params": []
         },
         "model": {
-          "type": "EnigmaObjectModel"
+          "type": "enigma.GenericObject"
         },
         "mount": {
           "kind": "function",
@@ -259,26 +284,35 @@
         }
       }
     },
-    "VizConfig": {
+    "ThemeInfo": {
+      "kind": "interface",
+      "entries": {
+        "key": {
+          "description": "Theme identifier",
+          "type": "string"
+        },
+        "load": {
+          "description": "A function that should return a Promise that resolve to a raw JSON theme",
+          "type": "function"
+        }
+      }
+    },
+    "TypeInfo": {
       "kind": "object",
       "entries": {
-        "element": {
-          "optional": true,
-          "type": "HTMLElement"
+        "name": {
+          "type": "string"
         },
-        "optional": {
+        "version": {
+          "type": "string"
+        },
+        "load": {
           "optional": true,
-          "kind": "object",
-          "entries": {
-            "options": {
-              "optional": true,
-              "type": "object"
-            },
-            "properties": {
-              "optional": true,
-              "type": "object"
-            }
-          }
+          "type": "#/definitions/loadType"
+        },
+        "meta": {
+          "optional": true,
+          "type": "object"
         }
       }
     }

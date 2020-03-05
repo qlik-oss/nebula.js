@@ -11,8 +11,7 @@ import { create as typesFn } from './sn/types';
 import loggerFn from './utils/logger';
 
 /**
- * @interface
- * @alias ThemeInfo
+ * @interface ThemeInfo
  * @property {string} key Theme identifier
  * @property {function} load A function that should return a Promise that resolve to a raw JSON theme
  */
@@ -46,7 +45,12 @@ const DEFAULT_CONFIG = {
   /** */
   env: {},
 
+  /** */
   snapshot: {
+    /**
+     * @param {string} id
+     * @returns {Promise<object>}
+     */
     get: async id => {
       const res = await fetch(`/njs/snapshot/${id}`);
       if (!res.ok) {
@@ -96,6 +100,7 @@ const mergeConfigs = (base, c) => ({
 });
 
 function nuked(configuration = {}) {
+  // TODO - remove logger
   const logger = loggerFn(configuration.log);
   const locale = appLocaleFn(configuration.context.language);
 
@@ -103,9 +108,9 @@ function nuked(configuration = {}) {
    * Initiates a new `nebbie` instance using the specified `app`.
    * @entry
    * @alias nucleus
-   * @param {EnigmaAppModel} app
+   * @param {enigma.Doc} app
    * @param {Configuration=} instanceConfig
-   * @returns {Nebbie}
+   * @returns {Nucleus}
    * @example
    * import nucleus from '@nebula.js/nucleus'
    * const nebbie = nucleus(app);
@@ -173,26 +178,27 @@ function nuked(configuration = {}) {
 
     /**
      * @interface
-     * @alias Nebbie
+     * @alias Nucleus
      */
-    const api = /** @lends Nebbie */ {
-      /**
-       * @param {GetObjectConfig} getCfg
-       * @param {VizConfig=} vizConfig
-       * @returns {Viz}
-       */
-      get: async (getCfg, vizConfig) => {
-        await currentThemePromise;
-        return get(getCfg, vizConfig, corona);
+    const api = /** @lends Nucleus */ {
+      get: async () => {
+        // eslint-disable-next-line
+        console.warn(new Error('nucleus.get() has been deprecated, use nucleus.render() instead').stack);
+      },
+      create: async () => {
+        // eslint-disable-next-line
+        console.warn(new Error('nucleus.create() has been deprecated, use nucleus.render() instead').stack);
       },
       /**
-       * @param {CreateObjectConfig} createCfg
-       * @param {VizConfig=} vizConfig
-       * @returns {Viz}
+       * @param {CreateConfig | GetConfig} cfg
+       * @returns {SupernovaController}
        */
-      create: async (createCfg, vizConfig) => {
+      render: async cfg => {
         await currentThemePromise;
-        return create(createCfg, vizConfig, corona);
+        if (cfg.id) {
+          return get(cfg, corona);
+        }
+        return create(cfg, corona);
       },
       /**
        * @param {object} ctx
@@ -234,7 +240,7 @@ function nuked(configuration = {}) {
         root.context(currentContext);
       },
       /**
-       * @returns {AppSelections}
+       * @returns {Promise<AppSelections>}
        */
       selections: async () => {
         if (!selectionsApi) {

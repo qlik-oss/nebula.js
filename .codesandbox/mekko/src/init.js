@@ -27,26 +27,18 @@ export default function init({ appId, fields, objectId }) {
     nebbie.selections().then(s => s.mount(document.getElementById('selections')));
     nebbie.types.clearFromCache('dummy');
 
-    const params = {
-      element: document.getElementById('object'),
-    };
-
-    if (objectId) {
-      nebbie.get(
-        {
-          type: 'dummy',
-          id: objectId,
-        },
-        params
-      );
-    } else {
-      nebbie.create(
-        {
-          type: 'dummy',
-          fields,
-        },
-        params
-      );
-    }
+    nebbie.render(
+      objectid
+        ? {
+            type: 'dummy',
+            id: objectId,
+            element: document.getElementById('object'),
+          }
+        : {
+            type: 'dummy',
+            fields,
+            element: document.getElementById('object'),
+          }
+    );
   });
 }

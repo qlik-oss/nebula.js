@@ -2,483 +2,346 @@
   "scriptappy": "1.0.0",
   "info": {
     "name": "@nebula.js/supernova",
-    "version": "0.1.0-alpha.31",
+    "version": "0.1.1",
     "license": "MIT",
     "stability": "experimental"
   },
   "entries": {
-    "supernova": {
-      "kind": "module",
-      "entries": {
-        "onTakeSnapshot": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "cb",
-              "type": "#/entries/supernova/definitions/SnapshotCallback"
-            }
-          ]
-        },
-        "useAction": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "fn",
-              "type": "#/entries/supernova/definitions/ActionFactory"
-            },
-            {
-              "name": "deps",
-              "optional": true,
-              "kind": "array",
-              "items": {
-                "type": "any"
-              }
-            }
-          ],
-          "returns": {
-            "type": "function"
-          }
-        },
-        "useApp": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "optional": true,
-            "type": "#/definitions/EnigmaAppModel"
-          }
-        },
-        "useAppLayout": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "#/definitions/NxAppLayout"
-          }
-        },
-        "useConstraints": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "#/entries/supernova/definitions/Constraints"
-          }
-        },
-        "useEffect": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "effect",
-              "type": "#/entries/supernova/definitions/EffectCallback"
-            },
-            {
-              "name": "deps",
-              "optional": true,
-              "kind": "array",
-              "items": {
-                "type": "any"
-              }
-            }
-          ]
-        },
-        "useElement": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "HTMLElement"
-          }
-        },
-        "useGlobal": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "optional": true,
-            "type": "#/definitions/EnigmaGlobalModel"
-          }
-        },
-        "useImperativeHandle": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "fn",
-              "type": "#/entries/supernova/definitions/Factory"
-            },
-            {
-              "name": "deps",
-              "optional": true,
-              "kind": "array",
-              "items": {
-                "type": "any"
-              }
-            }
-          ]
-        },
-        "useLayout": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "#/definitions/GenericObjectLayout"
-          }
-        },
-        "useMemo": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "fn",
-              "type": "#/entries/supernova/definitions/Factory"
-            },
-            {
-              "name": "deps",
-              "optional": true,
-              "kind": "array",
-              "items": {
-                "type": "any"
-              }
-            }
-          ],
-          "returns": {
-            "type": "any"
-          }
-        },
-        "useModel": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "optional": true,
-            "type": "#/definitions/EnigmaObjectModel"
-          }
-        },
-        "useOptions": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "object"
-          }
-        },
-        "usePromise": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "fn",
-              "type": "#/entries/supernova/definitions/PromiseCallback"
-            },
-            {
-              "name": "deps",
-              "optional": true,
-              "kind": "array",
-              "items": {
-                "type": "any"
-              }
-            }
-          ],
-          "returns": {
-            "kind": "array",
-            "items": [
-              {
-                "type": "any"
-              },
-              {
-                "type": "any"
-              }
-            ]
-          }
-        },
-        "useRect": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "#/entries/supernova/definitions/Rect"
-          }
-        },
-        "useSelections": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "#/definitions/ObjectSelections"
-          }
-        },
-        "useStaleLayout": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "#/definitions/GenericObjectLayout"
-          }
-        },
-        "useState": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "initial",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "any"
-                },
-                {
-                  "type": "#/entries/supernova/definitions/Factory"
-                }
-              ],
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "kind": "array",
-            "items": [
-              {
-                "type": "any"
-              },
-              {
-                "type": "#/entries/supernova/definitions/SetState"
-              }
-            ]
-          }
-        },
-        "useTheme": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "#/definitions/Theme"
-          }
-        },
-        "useTranslator": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "#/definitions/Translator"
-          }
+    "onTakeSnapshot": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "cb",
+          "type": "#/definitions/SnapshotCallback"
         }
-      },
-      "definitions": {
-        "ActionDefinition": {
-          "kind": "interface",
-          "entries": {
-            "action": {
-              "type": "function"
-            },
-            "hidden": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "disabled": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "icon": {
-              "optional": true,
-              "kind": "object",
-              "entries": {
-                "viewBox": {
-                  "optional": true,
-                  "type": "string"
-                },
-                "shapes": {
-                  "kind": "array",
-                  "items": {
-                    "entries": {
-                      "type": {
-                        "type": "string"
-                      },
-                      "attrs": {
-                        "optional": true,
-                        "type": "object"
-                      }
-                    },
-                    "kind": "object"
-                  }
-                }
-              }
-            }
-          }
+      ]
+    },
+    "useAction": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "fn",
+          "type": "#/definitions/ActionFactory"
         },
-        "ActionFactory": {
-          "kind": "interface",
-          "returns": {
-            "type": "#/entries/supernova/definitions/ActionDefinition"
-          },
-          "entries": {}
-        },
-        "Constraints": {
-          "kind": "interface",
-          "entries": {
-            "passive": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "active": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "select": {
-              "optional": true,
-              "type": "boolean"
-            }
-          }
-        },
-        "EffectCallback": {
-          "kind": "interface",
-          "returns": {
-            "optional": true,
-            "type": "function"
-          },
-          "entries": {}
-        },
-        "Factory": {
-          "kind": "interface",
-          "returns": {
-            "type": "any"
-          },
-          "entries": {}
-        },
-        "PromiseCallback": {
-          "kind": "interface",
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "any"
-              }
-            ]
-          },
-          "entries": {}
-        },
-        "Rect": {
-          "kind": "interface",
-          "entries": {
-            "top": {
-              "type": "number"
-            },
-            "left": {
-              "type": "number"
-            },
-            "width": {
-              "type": "number"
-            },
-            "height": {
-              "type": "number"
-            }
-          }
-        },
-        "SetState": {
-          "kind": "interface",
-          "params": [
-            {
-              "name": "state",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "any"
-                },
-                {
-                  "type": "#/entries/supernova/definitions/SetStateCallback"
-                }
-              ],
-              "type": "any"
-            }
-          ],
-          "entries": {}
-        },
-        "SetStateCallback": {
-          "kind": "interface",
-          "params": [
-            {
-              "name": "previousState",
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "any"
-          },
-          "entries": {}
-        },
-        "SnapshotCallback": {
-          "kind": "interface",
-          "params": [
-            {
-              "name": "layout",
-              "type": "#/definitions/GenericObjectLayout"
-            }
-          ],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "#/definitions/GenericObjectLayout"
-              }
-            ]
-          },
-          "entries": {}
-        }
-      }
-    }
-  },
-  "definitions": {
-    "colorPickerPalette": {
-      "kind": "object",
-      "entries": {
-        "key": {
-          "type": "string"
-        },
-        "colors": {
+        {
+          "name": "deps",
+          "optional": true,
           "kind": "array",
           "items": {
-            "type": "string"
+            "type": "any"
           }
         }
+      ],
+      "returns": {
+        "type": "function"
       }
     },
-    "dataColorSpecials": {
-      "kind": "object",
-      "entries": {
-        "nil": {
-          "type": "string"
+    "useApp": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "enigma.Doc"
+          },
+          {
+            "type": "undefined"
+          }
+        ],
+        "type": "any"
+      }
+    },
+    "useAppLayout": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "qix.NxAppLayout"
+      }
+    },
+    "useConstraints": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/Constraints"
+      }
+    },
+    "useEffect": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "effect",
+          "type": "#/definitions/EffectCallback"
         },
-        "others": {
-          "type": "string"
-        },
-        "primary": {
-          "type": "string"
+        {
+          "name": "deps",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "any"
+          }
         }
+      ]
+    },
+    "useElement": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "HTMLElement"
       }
     },
-    "dataPalette": {
-      "kind": "object",
-      "entries": {
-        "key": {
-          "type": "string"
+    "useGlobal": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "enigma.Global"
+          },
+          {
+            "type": "undefined"
+          }
+        ],
+        "type": "any"
+      }
+    },
+    "useImperativeHandle": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "fn",
+          "type": "#/definitions/Factory"
         },
-        "type": {
+        {
+          "name": "deps",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "any"
+          }
+        }
+      ]
+    },
+    "useLayout": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "qix.GenericObjectLayout"
+      }
+    },
+    "useMemo": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "fn",
+          "type": "#/definitions/Factory"
+        },
+        {
+          "name": "deps",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "any"
+          }
+        }
+      ],
+      "returns": {
+        "type": "any"
+      }
+    },
+    "useModel": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "enigma.GenericObject"
+          },
+          {
+            "type": "undefined"
+          }
+        ],
+        "type": "any"
+      }
+    },
+    "useOptions": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "object"
+      }
+    },
+    "usePromise": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "fn",
+          "type": "#/definitions/PromiseCallback"
+        },
+        {
+          "name": "deps",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "any"
+          }
+        }
+      ],
+      "returns": {
+        "kind": "array",
+        "items": [
+          {
+            "type": "any"
+          },
+          {
+            "type": "any"
+          }
+        ]
+      }
+    },
+    "useRect": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/Rect"
+      }
+    },
+    "useSelections": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/ObjectSelections"
+      }
+    },
+    "useStaleLayout": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "qix.GenericObjectLayout"
+      }
+    },
+    "useState": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "initial",
           "kind": "union",
           "items": [
             {
-              "kind": "literal",
-              "value": "'pyramid'"
+              "type": "any"
             },
             {
-              "kind": "literal",
-              "value": "'row'"
-            }
-          ],
-          "type": "string"
-        },
-        "colors": {
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            },
-            {
-              "kind": "array",
-              "items": {
-                "kind": "array",
-                "items": {
-                  "type": "string"
-                }
-              }
+              "type": "#/definitions/Factory"
             }
           ],
           "type": "any"
         }
+      ],
+      "returns": {
+        "kind": "array",
+        "items": [
+          {
+            "type": "any"
+          },
+          {
+            "type": "#/definitions/SetState"
+          }
+        ]
       }
+    },
+    "useTheme": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/Theme"
+      }
+    },
+    "useTranslator": {
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/Translator"
+      }
+    }
+  },
+  "definitions": {
+    "ActionDefinition": {
+      "kind": "interface",
+      "entries": {
+        "action": {
+          "type": "function"
+        },
+        "disabled": {
+          "optional": true,
+          "type": "boolean"
+        },
+        "hidden": {
+          "optional": true,
+          "type": "boolean"
+        },
+        "icon": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "viewBox": {
+              "optional": true,
+              "defaultValue": "\"0 0 16 16\"",
+              "type": "string"
+            },
+            "shapes": {
+              "kind": "array",
+              "items": {
+                "entries": {
+                  "type": {
+                    "type": "string"
+                  },
+                  "attrs": {
+                    "optional": true,
+                    "type": "object"
+                  }
+                },
+                "kind": "object"
+              }
+            }
+          }
+        }
+      }
+    },
+    "ActionFactory": {
+      "kind": "interface",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/ActionDefinition"
+      },
+      "entries": {}
+    },
+    "Constraints": {
+      "kind": "interface",
+      "entries": {
+        "active": {
+          "optional": true,
+          "type": "boolean"
+        },
+        "passive": {
+          "optional": true,
+          "type": "boolean"
+        },
+        "select": {
+          "optional": true,
+          "type": "boolean"
+        }
+      }
+    },
+    "EffectCallback": {
+      "kind": "interface",
+      "params": [],
+      "returns": {
+        "optional": true,
+        "type": "function"
+      },
+      "entries": {}
     },
     "EnigmaAppModel": {
       "kind": "interface",
@@ -496,6 +359,14 @@
       "kind": "object",
       "entries": {}
     },
+    "Factory": {
+      "kind": "interface",
+      "params": [],
+      "returns": {
+        "type": "any"
+      },
+      "entries": {}
+    },
     "GenericObjectLayout": {
       "kind": "object",
       "entries": {}
@@ -506,7 +377,6 @@
     },
     "ObjectSelections": {
       "kind": "interface",
-      "params": [],
       "entries": {
         "abortModal": {
           "kind": "function",
@@ -680,42 +550,94 @@
         }
       }
     },
-    "scalePalette": {
-      "kind": "object",
+    "PromiseCallback": {
+      "kind": "interface",
+      "params": [],
+      "returns": {
+        "type": "Promise",
+        "generics": [
+          {
+            "type": "any"
+          }
+        ]
+      },
+      "entries": {}
+    },
+    "Rect": {
+      "kind": "interface",
       "entries": {
-        "key": {
-          "type": "string"
+        "height": {
+          "type": "number"
         },
-        "type": {
+        "left": {
+          "type": "number"
+        },
+        "top": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        }
+      }
+    },
+    "SetState": {
+      "kind": "interface",
+      "params": [
+        {
+          "name": "state",
           "kind": "union",
           "items": [
             {
-              "kind": "literal",
-              "value": "'gradient'"
+              "type": "any"
             },
             {
-              "kind": "literal",
-              "value": "'class'"
+              "type": "#/definitions/SetStateCallback"
             }
           ],
-          "type": "string"
-        },
-        "colors": {
-          "kind": "array",
-          "items": {
-            "type": "string"
-          }
+          "type": "any"
         }
-      }
+      ],
+      "entries": {}
+    },
+    "SetStateCallback": {
+      "kind": "interface",
+      "params": [
+        {
+          "name": "previousState",
+          "type": "any"
+        }
+      ],
+      "returns": {
+        "type": "any"
+      },
+      "entries": {}
+    },
+    "SnapshotCallback": {
+      "kind": "interface",
+      "params": [
+        {
+          "name": "layout",
+          "type": "qix.GenericObjectLayout"
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "generics": [
+          {
+            "type": "qix.GenericObjectLayout"
+          }
+        ]
+      },
+      "entries": {}
     },
     "SnDefinition": {
       "kind": "interface",
       "entries": {
-        "qae": {
-          "type": "object"
-        },
         "component": {
           "type": "function"
+        },
+        "qae": {
+          "type": "object"
         }
       }
     },
@@ -746,28 +668,28 @@
     },
     "Theme": {
       "kind": "interface",
-      "params": [],
       "entries": {
         "getColorPickerColor": {
-          "description": "Resolve a color object using the color picker palette from the provided JSON theme",
+          "description": "Resolve a color object using the color picker palette from the provided JSON theme.",
           "kind": "function",
           "params": [
             {
               "name": "c",
               "kind": "object",
               "entries": {
-                "index": {
-                  "optional": true,
-                  "type": "number"
-                },
                 "color": {
                   "optional": true,
                   "type": "string"
+                },
+                "index": {
+                  "optional": true,
+                  "type": "number"
                 }
               }
             }
           ],
           "returns": {
+            "description": "The resolved color.",
             "type": "string"
           },
           "examples": ["theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"]
@@ -778,10 +700,12 @@
           "params": [
             {
               "name": "color",
+              "description": "A color to measure the contrast against",
               "type": "string"
             }
           ],
           "returns": {
+            "description": "- The color that has the best contrast against the specified `color`.",
             "type": "string"
           },
           "examples": ["theme.getContrastingColorTo('#400');"]
@@ -792,7 +716,7 @@
           "returns": {
             "kind": "array",
             "items": {
-              "type": "#/definitions/dataPalette"
+              "type": "#/definitions/Theme/definitions/DataPalette"
             }
           }
         },
@@ -802,7 +726,7 @@
           "returns": {
             "kind": "array",
             "items": {
-              "type": "#/definitions/colorPickerPalette"
+              "type": "#/definitions/Theme/definitions/ColorPickerPalette"
             }
           }
         },
@@ -812,7 +736,7 @@
           "returns": {
             "kind": "array",
             "items": {
-              "type": "#/definitions/scalePalette"
+              "type": "#/definitions/Theme/definitions/ScalePalette"
             }
           }
         },
@@ -820,7 +744,7 @@
           "kind": "function",
           "params": [],
           "returns": {
-            "type": "#/definitions/dataColorSpecials"
+            "type": "#/definitions/Theme/definitions/DataColorSpecials"
           }
         },
         "getStyle": {
@@ -848,6 +772,107 @@
             "type": "string"
           },
           "examples": ["theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"]
+        }
+      },
+      "definitions": {
+        "ColorPickerPalette": {
+          "kind": "interface",
+          "entries": {
+            "colors": {
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "key": {
+              "type": "string"
+            }
+          }
+        },
+        "DataColorSpecials": {
+          "kind": "interface",
+          "entries": {
+            "nil": {
+              "type": "string"
+            },
+            "others": {
+              "type": "string"
+            },
+            "primary": {
+              "type": "string"
+            }
+          }
+        },
+        "DataPalette": {
+          "kind": "interface",
+          "entries": {
+            "colors": {
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "kind": "array",
+                  "items": {
+                    "kind": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ],
+              "type": "any"
+            },
+            "key": {
+              "type": "string"
+            },
+            "type": {
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "literal",
+                  "value": "'pyramid'"
+                },
+                {
+                  "kind": "literal",
+                  "value": "'row'"
+                }
+              ],
+              "type": "string"
+            }
+          }
+        },
+        "ScalePalette": {
+          "kind": "interface",
+          "entries": {
+            "colors": {
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "key": {
+              "type": "string"
+            },
+            "type": {
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "literal",
+                  "value": "'gradient'"
+                },
+                {
+                  "kind": "literal",
+                  "value": "'class'"
+                }
+              ],
+              "type": "string"
+            }
+          }
         }
       }
     },

@@ -38,20 +38,19 @@ async function renderWithEngine() {
   const app = await openApp(info.enigma.appId);
   const nebbie = await nuke({ app, ...info, theme: params.theme, language: params.language });
   const element = document.querySelector('#chart-container');
-  const vizCfg = {
-    element,
-  };
-  const getCfg = params.object
+  const cfg = params.object
     ? {
         id: params.object,
+        element,
       }
     : {
         type: info.supernova.name,
         fields: params.cols || [],
+        element,
       };
 
   const render = async () => {
-    await nebbie[params.object ? 'get' : 'create'](getCfg, vizCfg);
+    await nebbie.render(cfg);
   };
 
   let viz;
@@ -163,7 +162,7 @@ const renderFixture = async () => {
       },
     ],
   });
-  nebbie.create({ type }, { ...snConfig, element });
+  nebbie.render({ type, element, ...snConfig });
 };
 
 if (params.fixture) {
