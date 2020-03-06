@@ -244,9 +244,8 @@ function nuked(configuration = {}) {
        */
       selections: async () => {
         if (!selectionsApi) {
-          const appSelections = await root.getAppSelections();
+          // const appSelections = await root.getAppSelections(); // Don't expose this for now
           selectionsApi = /** @lends AppSelections */ {
-            ...appSelections,
             /**
              * @param {HTMLElement} element
              */
