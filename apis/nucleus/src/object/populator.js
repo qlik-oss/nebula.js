@@ -14,13 +14,15 @@ export function fieldType(f) {
   return 'dimension';
 }
 
-export default function populateData({ sn, properties, fields }, corona) {
+export default function populateData({ sn, properties, fields }) {
   if (!fields.length) {
     return;
   }
   const target = sn.qae.data.targets[0];
   if (!target) {
-    corona.logger.warn('Attempting to add fields to an object without a specified data target');
+    if (__NEBULA_DEV__) {
+      console.warn('Attempting to add fields to an object without a specified data target'); // eslint-disable-line no-console
+    }
     return;
   }
   const { propertyPath } = target;

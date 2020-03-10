@@ -21,7 +21,6 @@ describe('nucleus', () => {
         ['**/object/create-session-object.js', () => createObject],
         ['**/object/get-object.js', () => getObject],
         ['**/sn/types.js', () => ({ create: () => ({}) })],
-        ['**/utils/logger.js', () => () => ({})],
         ['**/app-theme.js', () => appThemeFn],
       ],
       ['../index.js']
