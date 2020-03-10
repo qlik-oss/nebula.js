@@ -4,9 +4,6 @@ describe('load', () => {
   let corona = {};
   beforeEach(() => {
     corona = {
-      logger: {
-        warn: sinon.stub(),
-      },
       public: {
         env: 'env',
       },

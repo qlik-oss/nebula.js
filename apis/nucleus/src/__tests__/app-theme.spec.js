@@ -1,7 +1,6 @@
 describe('app-theme', () => {
   let appThemeFn;
   let internalAPI;
-  let logger;
   let t;
   const sandbox = sinon.createSandbox();
   before(() => {
@@ -12,14 +11,11 @@ describe('app-theme', () => {
       externalAPI: 'external',
       internalAPI,
     });
-    logger = {
-      error: sandbox.spy(),
-      warn: sandbox.spy(),
-    };
     [{ default: appThemeFn }] = aw.mock([[require.resolve('@nebula.js/theme'), () => t]], ['../app-theme']);
   });
 
   afterEach(() => {
+    global.__NEBULA_DEV__ = false; // eslint-disable-line no-underscore-dangle
     sandbox.reset();
   });
 
@@ -33,7 +29,6 @@ describe('app-theme', () => {
       const root = { setMuiThemeName: sandbox.spy() };
       const at = appThemeFn({
         root,
-        logger,
         themes: [
           {
             key: 'darkish',
@@ -60,7 +55,6 @@ describe('app-theme', () => {
       const root = { setMuiThemeName: sinon.spy() };
       const at = appThemeFn({
         root,
-        logger,
         themes: [
           {
             key: 'darkish',
@@ -69,12 +63,14 @@ describe('app-theme', () => {
         ],
       });
       const sb = sinon.createSandbox({ useFakeTimers: true });
+      global.__NEBULA_DEV__ = true; // eslint-disable-line no-underscore-dangle
+      const warn = sb.stub(console, 'warn');
       const prom = at.setTheme('darkish');
       sb.clock.tick(5500);
       await prom;
       sb.restore();
       sb.reset();
-      expect(logger.warn).to.have.been.calledWithExactly("Timeout when loading theme 'darkish'");
+      expect(warn).to.have.been.calledWithExactly("Timeout when loading theme 'darkish'");
     });
   });
 

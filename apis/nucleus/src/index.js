@@ -8,7 +8,6 @@ import AppSelectionsPortal from './components/selections/AppSelections';
 import create from './object/create-session-object';
 import get from './object/get-object';
 import { create as typesFn } from './sn/types';
-import loggerFn from './utils/logger';
 
 /**
  * @interface ThemeInfo
@@ -100,8 +99,6 @@ const mergeConfigs = (base, c) => ({
 });
 
 function nuked(configuration = {}) {
-  // TODO - remove logger
-  const logger = loggerFn(configuration.log);
   const locale = appLocaleFn(configuration.context.language);
 
   /**
@@ -132,7 +129,6 @@ function nuked(configuration = {}) {
 
     const appTheme = appThemeFn({
       themes: configuration.themes,
-      logger,
       root,
     });
 
@@ -149,7 +145,6 @@ function nuked(configuration = {}) {
     const corona = {
       app,
       root,
-      logger,
       config: configuration,
       public: publicAPIs,
       context: currentContext,
@@ -251,7 +246,9 @@ function nuked(configuration = {}) {
              */
             mount(element) {
               if (selectionsComponentReference) {
-                logger.error('Already mounted');
+                if (__NEBULA_DEV__) {
+                  console.error('Already mounted'); // eslint-disable-line no-console
+                }
                 return;
               }
               selectionsComponentReference = AppSelectionsPortal({

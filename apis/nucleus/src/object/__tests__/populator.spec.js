@@ -1,10 +1,11 @@
 describe('populator', () => {
   let handler;
-  let context;
   let populate;
   let sb;
   let h;
   let ft;
+  let warn;
+
   before(() => {
     sb = sinon.createSandbox();
     h = {
@@ -13,26 +14,30 @@ describe('populator', () => {
     };
     const fn = () => h;
     handler = sb.spy(fn);
-    context = {
-      logger: {
-        warn: sb.stub(),
-      },
-    };
-    [{ default: populate, fieldType: ft }] = aw.mock([['**/hc-handler.js', () => handler]], ['../populator.js']);
+    [{ default: populate, fieldType: ft }] = aw.mock(
+      [[require.resolve('../hc-handler'), () => handler]],
+      ['../populator']
+    );
   });
   beforeEach(() => {
+    global.__NEBULA_DEV__ = true; // eslint-disable-line no-underscore-dangle
+    warn = sb.stub(console, 'warn');
     sb.reset();
+  });
+  afterEach(() => {
+    global.__NEBULA_DEV__ = false; // eslint-disable-line no-underscore-dangle
+    sb.restore();
   });
 
   it('should not throw if fields are not provided', () => {
-    const fn = () => populate({ sn: null, properties: {}, fields: [] }, context);
+    const fn = () => populate({ sn: null, properties: {}, fields: [] });
     expect(fn).to.not.throw();
   });
 
   it('should log warning if fields is provided but targets are not specified', () => {
     const sn = { qae: { data: { targets: [] } } };
-    populate({ sn, properties: {}, fields: [1] }, context);
-    expect(context.logger.warn).to.have.been.calledWithExactly(
+    populate({ sn, properties: {}, fields: [1] });
+    expect(warn).to.have.been.calledWithExactly(
       'Attempting to add fields to an object without a specified data target'
     );
   });
@@ -49,7 +54,7 @@ describe('populator', () => {
       },
     };
     const resolved = { qDimensions: [] };
-    populate({ sn, properties: { a: { b: { c: resolved } } }, fields: [1] }, context);
+    populate({ sn, properties: { a: { b: { c: resolved } } }, fields: [1] });
     expect(handler).to.have.been.calledWithExactly({
       hc: resolved,
       def: target,
@@ -69,7 +74,7 @@ describe('populator', () => {
       },
     };
     const resolved = { qDimensions: [] };
-    populate({ sn, properties: { a: { b: { c: resolved } } }, fields: ['A'] }, context);
+    populate({ sn, properties: { a: { b: { c: resolved } } }, fields: ['A'] });
     expect(h.addDimension).to.have.been.calledWithExactly('A');
   });
 
@@ -85,7 +90,7 @@ describe('populator', () => {
       },
     };
     const resolved = { qDimensions: [] };
-    populate({ sn, properties: { a: { b: { c: resolved } } }, fields: ['=A'] }, context);
+    populate({ sn, properties: { a: { b: { c: resolved } } }, fields: ['=A'] });
     expect(h.addMeasure).to.have.been.calledWithExactly('=A');
   });
 
