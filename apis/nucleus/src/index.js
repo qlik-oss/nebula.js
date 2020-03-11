@@ -69,33 +69,26 @@ const DEFAULT_CONFIG = {
   },
 };
 
+const mergeObj = (o1 = {}, o2 = {}) => {
+  return {
+    ...o1,
+    ...o2,
+  };
+};
+const mergeArray = (a1 = [], a2 = []) => {
+  // Simple merge and deduplication
+  return [...a1, ...a2].filter((v, i, a) => a.indexOf(v) === i);
+};
+
 const mergeConfigs = (base, c) => ({
-  context: {
-    ...base.context,
-    ...(c.context || {}),
-  },
+  context: mergeObj(base.context, c.context),
   load: c.load || base.load,
   snapshot: {
     ...(c.snapshot || base.snapshot),
   },
-  types: [
-    // TODO - filter to avoid duplicates
-    ...(base.types || []),
-    ...(c.types || []),
-  ],
-  themes: [
-    //
-    ...(base.themes || []),
-    ...(c.themes || []),
-  ],
-  env: {
-    ...(base.env || {}),
-    ...(c.env || {}),
-  },
-  log: {
-    ...(base.log || {}),
-    ...(c.log || {}),
-  },
+  types: mergeArray(base.types, c.types),
+  themes: mergeArray(base.themes, c.themes),
+  env: mergeObj(base.env, c.env),
 });
 
 function nuked(configuration = {}) {
