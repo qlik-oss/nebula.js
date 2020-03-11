@@ -31,7 +31,7 @@ describe('app-theme', () => {
         root,
         themes: [
           {
-            key: 'darkish',
+            id: 'darkish',
             load: () =>
               Promise.resolve({
                 type: 'dark',
@@ -57,7 +57,7 @@ describe('app-theme', () => {
         root,
         themes: [
           {
-            key: 'darkish',
+            id: 'darkish',
             load: () => new Promise(resolve => setTimeout(resolve, 6000)),
           },
         ],

@@ -86,12 +86,12 @@ module.exports = async ({
       }
 
       app.get('/themes', (req, res) => {
-        const arr = themes.map(theme => theme.key);
+        const arr = themes.map(theme => theme.id);
         res.json(arr);
       });
 
       app.get('/theme/:id', (req, res) => {
-        const t = themes.filter(theme => theme.key === req.params.id)[0];
+        const t = themes.filter(theme => theme.id === req.params.id)[0];
         if (!t) {
           res.sendStatus('404');
         } else {
@@ -110,7 +110,7 @@ module.exports = async ({
           sock: {
             port: entryWatcher && entryWatcher.port,
           },
-          themes: themes.map(theme => theme.key),
+          themes: themes.map(theme => theme.id),
         });
       });
 
