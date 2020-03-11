@@ -2,15 +2,16 @@ import * as supernova from '@nebula.js/supernova';
 
 import { requireFrom } from 'd3-require';
 
-const getModule = name => {
-  const r = requireFrom(async n => `/pkg/${encodeURIComponent(n)}`);
+const getModule = (name, url) => {
+  const localResolve = n => `/pkg/${encodeURIComponent(n)}`;
+  const remoteResolve = n => n;
+  const resolve = url ? remoteResolve : localResolve;
+  const r = requireFrom(async n => resolve(n));
   const a = r.alias({
     '@nebula.js/supernova': supernova,
   });
-  return a(name);
+  return a(url || name);
 };
-
-const getRemoteModule = url => requireFrom(() => url)();
 
 const hotListeners = {};
 
@@ -41,7 +42,7 @@ window.onHotChange = onHotChange;
 
 export default function initiateWatch(info) {
   const update = () => {
-    (info.supernova.url ? getRemoteModule(info.supernova.url) : getModule(info.supernova.name)).then(mo => {
+    getModule(info.supernova.name, info.supernova.url).then(mo => {
       window[info.supernova.name] = mo;
       lightItUp(info.supernova.name);
     });

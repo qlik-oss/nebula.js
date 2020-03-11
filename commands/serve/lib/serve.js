@@ -159,7 +159,9 @@ module.exports = async argv => {
     if (watcher) {
       watcher.close();
     }
-    await ww.close();
+    if (ww) {
+      await ww.close();
+    }
     server.close();
   };
 
