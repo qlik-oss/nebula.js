@@ -6,6 +6,7 @@ describe('nucleus', () => {
   let sandbox;
   let rootApp;
   let translator;
+
   before(() => {
     sandbox = sinon.createSandbox({ useFakeTimers: true });
     createObject = sandbox.stub();
@@ -15,13 +16,13 @@ describe('nucleus', () => {
     translator = { add: sandbox.stub(), language: sandbox.stub() };
     [{ default: create }] = aw.mock(
       [
-        ['**/locale/app-locale.js', () => () => ({ translator })],
-        ['**/components/NebulaApp.jsx', () => rootApp],
-        ['**/components/selections/AppSelections.jsx', () => () => ({})],
-        ['**/object/create-session-object.js', () => createObject],
-        ['**/object/get-object.js', () => getObject],
-        ['**/sn/types.js', () => ({ create: () => ({}) })],
-        ['**/app-theme.js', () => appThemeFn],
+        [require.resolve('../locale/app-locale.js'), () => () => ({ translator })],
+        [require.resolve('../components/NebulaApp.jsx'), () => rootApp],
+        [require.resolve('../components/selections/AppSelections.jsx'), () => () => ({})],
+        [require.resolve('../object/create-session-object.js'), () => createObject],
+        [require.resolve('../object/get-object.js'), () => getObject],
+        [require.resolve('../sn/types.js'), () => ({ create: () => ({}) })],
+        [require.resolve('../app-theme.js'), () => appThemeFn],
       ],
       ['../index.js']
     );
@@ -96,5 +97,10 @@ describe('nucleus', () => {
     await nuked.context({ theme: 'sv-SE' });
     expect(root.context.callCount).to.equal(3);
     expect(theme.setTheme).to.have.been.calledWithExactly('sv-SE');
+  });
+
+  it('should avoid type duplication', () => {
+    const nuked = create.configured({ types: ['foo', 'bar', 'foo', 'foo', 'baz'] });
+    expect(nuked.config.types).to.eql(['foo', 'bar', 'baz']);
   });
 });
