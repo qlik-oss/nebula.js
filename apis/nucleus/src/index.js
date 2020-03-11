@@ -11,7 +11,7 @@ import { create as typesFn } from './sn/types';
 
 /**
  * @interface ThemeInfo
- * @property {string} key Theme identifier
+ * @property {string} id Theme identifier
  * @property {function} load A function that should return a Promise that resolve to a raw JSON theme
  */
 
