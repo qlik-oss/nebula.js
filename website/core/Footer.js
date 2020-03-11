@@ -23,7 +23,7 @@ function Footer({ config, language }) {
         <div />
         <div>
           <h5>Docs</h5>
-          <a href={docUrl('introduction.html', language)}>Getting Started</a>
+          <a href={docUrl('introduction', language)}>Getting Started</a>
         </div>
         <div>
           <h5>Links</h5>

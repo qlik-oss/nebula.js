@@ -1,5 +1,6 @@
 {
   "docs": {
-    "Introduction": ["introduction"]
+    "Getting started": ["introduction", "installation", "web-integration"],
+    "Nucleus guide": ["nucleus-configuration", "render-charts", "sn-controller", "app-selections"]
   }
 }

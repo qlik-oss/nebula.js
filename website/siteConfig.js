@@ -25,30 +25,13 @@ const siteConfig = {
     secondaryColor: '#0f0',
   },
 
-  /* Custom fonts for website */
-  /*
-  fonts: {
-    myFont: [
-      "Times New Roman",
-      "Serif"
-    ],
-    myOtherFont: [
-      "-apple-system",
-      "system-ui"
-    ]
-  },
-  */
-
   // This copyright info is used in /core/Footer.js and blog RSS/Atom feeds.
   copyright: `Copyright © ${new Date().getFullYear()} QlikTech International AB`,
 
   highlight: {
-    // Highlight.js theme to use for syntax highlighting in code blocks.
-    theme: 'default',
+    theme: 'atom-one-light',
   },
-
-  // Add custom scripts here that would be placed in <script> tags.
-  scripts: ['https://buttons.github.io/buttons.js'],
+  usePrism: ['jsx', 'js', 'html', 'bash'],
 
   // On page navigation for the current documentation page.
   onPageNav: 'separate',
