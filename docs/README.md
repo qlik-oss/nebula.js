@@ -11,5 +11,5 @@ It consists of :
 
 - `nucleus`: A product and framework agnostic JavaScript library for building mashups.
 - `supernova`: A JavaScript API for consuming and visualizing QIX data.
-- `snapshooter`: A JavaScript API for rendering a `supernova` without a connection to Qlik.
+- `snapshooter`: A JavaScript API for rendering a `supernova` in offline mode.
 - `cli`: Tools to help you create, develop and build a `supernova`.
