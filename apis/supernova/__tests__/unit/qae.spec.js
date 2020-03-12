@@ -35,6 +35,8 @@ describe('qae', () => {
     expect(t.measures.min()).to.eql(0);
     expect(t.measures.max()).to.eql(1000);
     expect(t.measures.added()).to.equal(undefined);
+    expect(t.dimensions.isDefined()).to.equal(false);
+    expect(t.measures.isDefined()).to.equal(false);
   });
 
   it('should map provided data', () => {
@@ -74,6 +76,8 @@ describe('qae', () => {
     expect(t.measures.added()).to.equal('b');
     expect(t.measures.description()).to.equal('Angle');
     expect(t.measures.removed()).to.equal('e');
+    expect(t.dimensions.isDefined()).to.equal(true);
+    expect(t.measures.isDefined()).to.equal(true);
   });
   it('should resolve layout', () => {
     const t = qae({
