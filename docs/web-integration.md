@@ -60,12 +60,13 @@ Load the two core `nebula.js` modules:
 <script src="https://cdn.jsdelivr.net/npm/@nebula.js/nucleus" crossorigin></script>
 ```
 
-## Load chart modules
+## Load visualization modules
 
-The core modules do not contain any charts by themselves, each chart is its own separate module and needs to be loaded and registered before it can be used.
+The core modules do not contain any visualizations by themselves, each visualization is its own separate module and needs to be loaded and registered before it can be used.
 
-Official supernova chart modules from Qlik are published under the `@nebula.js` scope and are prefixed with `sn-`.
-The available charts are as follows:
+Official supernova modules from Qlik are published under the `@nebula.js` scope and are prefixed with `sn-`.
+
+The available visualizations are as follows:
 
 - Bar chart: `@nebula.js/sn-bar-chart`
 - Line chart: `@nebula.js/sn-line-chart`
@@ -74,7 +75,7 @@ The available charts are as follows:
 - Funnel chart: `@nebula.js/sn-funnel-chart`
 - Mekko chart: `@nebula.js/sn-mekko-chart`
 
-You can load a chart through a `<script>` tag:
+You can load a visualization through a `<script>` tag:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@nebula.js/sn-bar-chart" crossorigin></script>
@@ -82,9 +83,9 @@ You can load a chart through a `<script>` tag:
 
 which makes it available to you on the global `window` object as `@nebula.js/sn-bar-chart`.
 
-## Render charts
+## Render visualizations
 
-Before rendering the chart you need to configure `nucleus` with the supernova types you want to support:
+Before rendering the visualization you need to configure `nucleus` with the supernova types you want to support:
 
 ```js
 const n = nucleus.createConfiguration({
@@ -97,7 +98,7 @@ const n = nucleus.createConfiguration({
 });
 ```
 
-You can then render a chart on the fly in an `HTMLElement` that has a fixed size and provide the initial `fields` to it:
+You can then render a visualization on the fly in an `HTMLElement` that has a fixed size and provide the initial `fields` to it:
 
 ```js
 n(enigmaApp).render({

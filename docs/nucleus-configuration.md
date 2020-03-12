@@ -100,7 +100,7 @@ nucles.createConfiguration({
 
 ### Loading on the fly
 
-If you don't know exactly which types you will need and want to avoid installing everything to reduce the size of your bundle, you could load the charts at runtime using a lighweight AMD loader like [d3-require](https://github.com/d3/d3-require).
+If you don't know exactly which types you will need and want to avoid installing everything to reduce the size of your bundle, you could load the visualizations at runtime using a lighweight AMD loader like [d3-require](https://github.com/d3/d3-require).
 
 Start by installing the module:
 
