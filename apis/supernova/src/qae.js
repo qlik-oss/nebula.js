@@ -7,7 +7,8 @@ function fallback(x, value) {
   return () => x;
 }
 
-function defFn(def = {}) {
+function defFn(input) {
+  const def = input || {};
   return {
     min: typeof def.min === 'function' ? def.min : fallback(def.min, 0),
     max: typeof def.max === 'function' ? def.max : fallback(def.max, 1000),
@@ -16,6 +17,7 @@ function defFn(def = {}) {
     moved: def.moved || def.move || noop,
     removed: def.removed || def.remove || noop,
     replaced: def.replaced || def.replace || noop,
+    isDefined: () => !!input,
   };
 }
 
