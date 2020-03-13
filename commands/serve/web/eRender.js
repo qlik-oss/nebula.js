@@ -6,7 +6,7 @@ import runFixture from './run-fixture';
 import initiateWatch from './hot';
 
 const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
-  const nuked = nucleus.configured({
+  const nuked = nucleus.createConfiguration({
     themes: themes
       ? themes.map(t => ({
           key: t,
@@ -71,7 +71,7 @@ async function renderSnapshot() {
   const element = document.querySelector('#chart-container');
   element.classList.toggle('full', true);
 
-  const n = nucleus.configured({
+  const n = nucleus.createConfiguration({
     themes: themes
       ? themes.map(t => ({
           key: t,

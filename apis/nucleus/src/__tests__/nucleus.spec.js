@@ -100,7 +100,7 @@ describe('nucleus', () => {
   });
 
   it('should avoid type duplication', () => {
-    const nuked = create.configured({ types: ['foo', 'bar', 'foo', 'foo', 'baz'] });
+    const nuked = create.createConfiguration({ types: ['foo', 'bar', 'foo', 'foo', 'baz'] });
     expect(nuked.config.types).to.eql(['foo', 'bar', 'baz']);
   });
 });

@@ -27,7 +27,7 @@
       },
       "examples": ["import nucleus from '@nebula.js/nucleus'\nconst nebbie = nucleus(app);"],
       "entries": {
-        "configured": {
+        "createConfiguration": {
           "description": "Creates a new `nucleus` instance using the specified configuration.\n\nThe configuration is merged with all previous instances.",
           "kind": "function",
           "params": [
@@ -40,7 +40,7 @@
             "type": "#/entries/nucleus"
           },
           "examples": [
-            "import nucleus from '@nebula.js/nucleus';\n// create a 'master' config which registers all types\nconst m = nucleus.configured({\n  types: [{\n    name: 'mekko',\n    version: '1.0.0',\n  }],\n});\n\n// create an alternate config with dark theme\n// and inherit the config from the previous\nconst d = m.configured({\n theme: 'dark'\n});\n\nm(app).create({ type: 'mekko' }); // will render the object with default theme\nd(app).create({ type: 'mekko' }); // will render the object with 'dark' theme\nnucleus(app).create({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
+            "import nucleus from '@nebula.js/nucleus';\n// create a 'master' config which registers all types\nconst m = nucleus.createConfiguration({\n  types: [{\n    name: 'mekko',\n    version: '1.0.0',\n  }],\n});\n\n// create an alternate config with dark theme\n// and inherit the config from the previous\nconst d = m.createConfiguration({\n theme: 'dark'\n});\n\nm(app).create({ type: 'mekko' }); // will render the object with default theme\nd(app).create({ type: 'mekko' }); // will render the object with 'dark' theme\nnucleus(app).create({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
           ]
         }
       }
