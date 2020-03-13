@@ -1,5 +1,15 @@
 const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
 
+page.on('pageerror', e => {
+  console.error('Web: ', e.message);
+});
+
+page.on('console', msg => {
+  for (let i = 0; i < msg.args().length; ++i) {
+    console.log(`console ${msg.text()}`);
+  }
+});
+
 if (!process.env.BASE_URL) {
   let s;
 
@@ -10,10 +20,6 @@ if (!process.env.BASE_URL) {
     });
 
     process.env.BASE_URL = s.url;
-
-    page.on('pageerror', e => {
-      console.log('Error:', e.message, e.stack);
-    });
   });
 
   after(() => {
