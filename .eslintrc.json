@@ -37,6 +37,16 @@
       }
     },
     {
+      "files": ["commands/sense/src/*.js"],
+      "rules": {
+        "no-var": 0,
+        "import/no-amd": 0
+      },
+      "globals": {
+        "define": false
+      }
+    },
+    {
       "files": ["**/*.{int,comp,spec}.{js,jsx}"],
       "env": {
         "browser": false,

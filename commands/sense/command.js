@@ -20,10 +20,11 @@ module.exports = {
       default: true,
       desc: 'Minify and uglify code',
     });
-    yargs.option('output', {
-      type: 'string',
+    yargs.option('sourcemap', {
+      type: 'boolean',
       required: false,
-      desc: 'Specify the output location',
+      default: false,
+      desc: 'Generate sourcemaps',
     });
   },
   handler(argv) {
