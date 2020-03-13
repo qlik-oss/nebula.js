@@ -107,7 +107,7 @@ function nuked(configuration = {}) {
    */
   function nucleus(app, instanceConfig) {
     if (instanceConfig) {
-      return nucleus.configured(instanceConfig)(app);
+      return nucleus.createConfiguration(instanceConfig)(app);
     }
 
     let currentContext = {
@@ -280,7 +280,7 @@ function nuked(configuration = {}) {
    * @example
    * import nucleus from '@nebula.js/nucleus';
    * // create a 'master' config which registers all types
-   * const m = nucleus.configured({
+   * const m = nucleus.createConfiguration({
    *   types: [{
    *     name: 'mekko',
    *     version: '1.0.0',
@@ -289,7 +289,7 @@ function nuked(configuration = {}) {
    *
    * // create an alternate config with dark theme
    * // and inherit the config from the previous
-   * const d = m.configured({
+   * const d = m.createConfiguration({
    *  theme: 'dark'
    * });
    *
@@ -297,7 +297,7 @@ function nuked(configuration = {}) {
    * d(app).create({ type: 'mekko' }); // will render the object with 'dark' theme
    * nucleus(app).create({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance
    */
-  nucleus.configured = c => nuked(mergeConfigs(configuration, c));
+  nucleus.createConfiguration = c => nuked(mergeConfigs(configuration, c));
   nucleus.config = configuration;
 
   return nucleus;

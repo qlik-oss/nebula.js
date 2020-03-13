@@ -273,11 +273,11 @@
         "action": {
           "type": "function"
         },
-        "disabled": {
+        "hidden": {
           "optional": true,
           "type": "boolean"
         },
-        "hidden": {
+        "disabled": {
           "optional": true,
           "type": "boolean"
         },
@@ -311,7 +311,6 @@
     },
     "ActionFactory": {
       "kind": "interface",
-      "params": [],
       "returns": {
         "type": "#/definitions/ActionDefinition"
       },
@@ -320,11 +319,11 @@
     "Constraints": {
       "kind": "interface",
       "entries": {
-        "active": {
+        "passive": {
           "optional": true,
           "type": "boolean"
         },
-        "passive": {
+        "active": {
           "optional": true,
           "type": "boolean"
         },
@@ -336,23 +335,10 @@
     },
     "EffectCallback": {
       "kind": "interface",
-      "params": [],
       "returns": {
         "optional": true,
         "type": "function"
       },
-      "entries": {}
-    },
-    "EnigmaAppModel": {
-      "kind": "interface",
-      "entries": {}
-    },
-    "EnigmaGlobalModel": {
-      "kind": "interface",
-      "entries": {}
-    },
-    "EnigmaObjectModel": {
-      "kind": "interface",
       "entries": {}
     },
     "env": {
@@ -361,22 +347,14 @@
     },
     "Factory": {
       "kind": "interface",
-      "params": [],
       "returns": {
         "type": "any"
       },
       "entries": {}
     },
-    "GenericObjectLayout": {
-      "kind": "object",
-      "entries": {}
-    },
-    "NxAppLayout": {
-      "kind": "object",
-      "entries": {}
-    },
     "ObjectSelections": {
       "kind": "interface",
+      "params": [],
       "entries": {
         "abortModal": {
           "kind": "function",
@@ -552,7 +530,6 @@
     },
     "PromiseCallback": {
       "kind": "interface",
-      "params": [],
       "returns": {
         "type": "Promise",
         "generics": [
@@ -566,16 +543,16 @@
     "Rect": {
       "kind": "interface",
       "entries": {
-        "height": {
+        "top": {
           "type": "number"
         },
         "left": {
           "type": "number"
         },
-        "top": {
+        "width": {
           "type": "number"
         },
-        "width": {
+        "height": {
           "type": "number"
         }
       }
@@ -633,11 +610,11 @@
     "SnDefinition": {
       "kind": "interface",
       "entries": {
-        "component": {
-          "type": "function"
-        },
         "qae": {
           "type": "object"
+        },
+        "component": {
+          "type": "function"
         }
       }
     },
@@ -668,6 +645,7 @@
     },
     "Theme": {
       "kind": "interface",
+      "params": [],
       "entries": {
         "getColorPickerColor": {
           "description": "Resolve a color object using the color picker palette from the provided JSON theme.",
@@ -677,13 +655,13 @@
               "name": "c",
               "kind": "object",
               "entries": {
-                "color": {
-                  "optional": true,
-                  "type": "string"
-                },
                 "index": {
                   "optional": true,
                   "type": "number"
+                },
+                "color": {
+                  "optional": true,
+                  "type": "string"
                 }
               }
             }
@@ -778,14 +756,14 @@
         "ColorPickerPalette": {
           "kind": "interface",
           "entries": {
+            "key": {
+              "type": "string"
+            },
             "colors": {
               "kind": "array",
               "items": {
                 "type": "string"
               }
-            },
-            "key": {
-              "type": "string"
             }
           }
         },
@@ -806,6 +784,23 @@
         "DataPalette": {
           "kind": "interface",
           "entries": {
+            "key": {
+              "type": "string"
+            },
+            "type": {
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "literal",
+                  "value": "'pyramid'"
+                },
+                {
+                  "kind": "literal",
+                  "value": "'row'"
+                }
+              ],
+              "type": "string"
+            },
             "colors": {
               "kind": "union",
               "items": [
@@ -826,35 +821,12 @@
                 }
               ],
               "type": "any"
-            },
-            "key": {
-              "type": "string"
-            },
-            "type": {
-              "kind": "union",
-              "items": [
-                {
-                  "kind": "literal",
-                  "value": "'pyramid'"
-                },
-                {
-                  "kind": "literal",
-                  "value": "'row'"
-                }
-              ],
-              "type": "string"
             }
           }
         },
         "ScalePalette": {
           "kind": "interface",
           "entries": {
-            "colors": {
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            },
             "key": {
               "type": "string"
             },
@@ -871,6 +843,12 @@
                 }
               ],
               "type": "string"
+            },
+            "colors": {
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
             }
           }
         }

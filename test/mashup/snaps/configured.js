@@ -23,7 +23,7 @@ const bar = function(env) {
 };
 
 // eslint-disable-next-line
-const configured = nucleus.configured({
+const configured = nucleus.createConfiguration({
   context: {
     theme: 'dark',
     language: 'sv-SE',
