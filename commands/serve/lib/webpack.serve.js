@@ -12,6 +12,7 @@ const snapshotRouter = require('./snapshot-router');
 module.exports = async ({
   host,
   port,
+  disableHostCheck,
   enigmaConfig,
   webIntegrationId,
   snName,
@@ -66,6 +67,7 @@ module.exports = async ({
     hot: dev,
     host,
     port,
+    disableHostCheck,
     overlay: {
       warnings: false,
       errors: true,
