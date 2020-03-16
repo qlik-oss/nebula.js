@@ -60,7 +60,7 @@ n.render({
 
 Read more
 
-- [render() API reference](#TODO)
+- [API reference](./nucleus-reference#nucleusrendercfg)
 - [API reference per supernova](#TODO)
 
 ## Render from existing objects
