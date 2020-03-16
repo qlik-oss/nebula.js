@@ -143,6 +143,7 @@ module.exports = async argv => {
   const server = await webpackServe({
     host,
     port,
+    disableHostCheck: serveConfig.disableHostCheck,
     enigmaConfig,
     webIntegrationId: serveConfig.webIntegrationId,
     snName: serveConfig.type || snName,
