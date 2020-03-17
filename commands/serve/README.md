@@ -5,7 +5,7 @@ Basic web development server for supernovas.
 ## Install
 
 ```sh
-npm install @nebula.js/cli@next -g
+npm install @nebula.js/cli -g
 ```
 
 ## Usage

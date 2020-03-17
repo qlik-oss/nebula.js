@@ -3,7 +3,7 @@
 ## Install
 
 ```sh
-npm install -g @nebula.js/cli@next
+npm install -g @nebula.js/cli
 ```
 
 ## Usage

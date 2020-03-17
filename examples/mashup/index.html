@@ -1,44 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-	<meta charset="UTF-8">
-  <title>Nebula mashup</title>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nebula mashup</title>
 
-  <script src="https://unpkg.com/enigma.js"></script>
-  <script src="https://unpkg.com/@nebula.js/supernova@next"></script>
-  <script src="https://unpkg.com/@nebula.js/nucleus@next"></script>
+    <script src="https://unpkg.com/enigma.js"></script>
+    <script src="https://unpkg.com/@nebula.js/supernova"></script>
+    <script src="https://unpkg.com/@nebula.js/nucleus"></script>
 
-	<style>
-    body {
-      background: #eee;
-    }
+    <style>
+      body {
+        background: #eee;
+      }
 
-    .content {
-      margin: 0 auto;
-      width: 80%;
-      max-width: 800px;
-    }
+      .content {
+        margin: 0 auto;
+        width: 80%;
+        max-width: 800px;
+      }
 
-    .object {
-      position: relative;
-      height: 400px;
-      background-color: white;
-    }
+      .object {
+        position: relative;
+        height: 400px;
+        background-color: white;
+      }
 
-    .toolbar {
-      background-color: white;
-      margin: 12px 0px;
-    }
+      .toolbar {
+        background-color: white;
+        margin: 12px 0px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="content">
+      <div class="toolbar"></div>
+      <div class="object" data-type="foo"></div>
+    </div>
 
-	</style>
-</head>
-<body>
-
-  <div class="content">
-    <div class="toolbar"></div>
-    <div class="object" data-type='foo'></div>
-  </div>
-
-  <script src="connect.js"></script>
-  <script src="index.js"></script>
+    <script src="connect.js"></script>
+    <script src="index.js"></script>
+  </body>
 </html>
