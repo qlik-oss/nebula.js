@@ -33,7 +33,7 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, corona }) => {
 
   // Render
   useEffect(() => {
-    if (!isMounted || !snNode || !containerNode) {
+    if (!isMounted || !snNode || !containerRect) {
       return;
     }
     // TODO remove in-selections guard for old component API
