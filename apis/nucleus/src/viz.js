@@ -34,19 +34,19 @@ export default function viz({ model, corona, initialError, onDestroy = async () 
   };
 
   /**
-   * @interface
+   * @class
    * @alias SupernovaController
+   * @hideconstructor
+   * @classdesc A controller to further modify a supernova after it has been rendered.
+   * @example
+   * const ctl = await nucleus(app).render({
+   *   element,
+   *   type: 'barchart'
+   * });
+   * ctl.destroy();
    */
-  const api = /** @lends SupernovaController */ {
-    /**
-     * @type {enigma.GenericObject}
-     */
-    model,
-    // app,
-    /**
-     * @param {HTMLElement} element
-     * @returns {Promise}
-     */
+  const api = /** @lends SupernovaController# */ {
+    model, // TODO - remove
     mount(element) {
       if (mountedReference) {
         throw new Error('Already mounted');
@@ -63,7 +63,10 @@ export default function viz({ model, corona, initialError, onDestroy = async () 
       return mounted;
     },
     /**
-     *
+     * Destroys the supernova and removes if from the the DOM.
+     * @example
+     * const ctl =
+     * ctl.destroy();
      */
     async destroy() {
       // TODO - destroy session object (if created as such)

@@ -2,12 +2,14 @@ import populateData from './populator';
 import init from './initiate';
 import { subscribe } from '../stores/modelStore';
 /**
- * @typedef {object} CreateConfig
+ * @interface CreateConfig
  * @extends BaseConfig
  * @property {string} type
  * @property {string} version
- * @property {object[]} fields
+ * @property {(Field[])=} fields
+ * @property {qae.GenericObjectProperties=} properties
  */
+
 export default async function createSessionObject({ type, version, fields, properties, options, element }, corona) {
   let mergedProps = {};
   let error;

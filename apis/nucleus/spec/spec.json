@@ -9,7 +9,7 @@
   },
   "entries": {
     "nucleus": {
-      "description": "Initiates a new `nebbie` instance using the specified `app`.",
+      "description": "Initiates a new `Nucleus` instance using the specified `app`.",
       "kind": "function",
       "params": [
         {
@@ -25,14 +25,15 @@
       "returns": {
         "type": "#/definitions/Nucleus"
       },
-      "examples": ["import nucleus from '@nebula.js/nucleus'\nconst nebbie = nucleus(app);"],
+      "examples": ["import nucleus from '@nebula.js/nucleus'\nconst n = nucleus(app);\nn.render({ id: 'abc' });"],
       "entries": {
         "createConfiguration": {
-          "description": "Creates a new `nucleus` instance using the specified configuration.\n\nThe configuration is merged with all previous instances.",
+          "description": "Creates a new `nucleus` scope bound to the specified `configuration`.\n\nThe configuration is merged with all previous scopes.",
           "kind": "function",
           "params": [
             {
               "name": "configuration",
+              "description": "The configuration object",
               "type": "#/definitions/Configuration"
             }
           ],
@@ -40,7 +41,7 @@
             "type": "#/entries/nucleus"
           },
           "examples": [
-            "import nucleus from '@nebula.js/nucleus';\n// create a 'master' config which registers all types\nconst m = nucleus.createConfiguration({\n  types: [{\n    name: 'mekko',\n    version: '1.0.0',\n  }],\n});\n\n// create an alternate config with dark theme\n// and inherit the config from the previous\nconst d = m.createConfiguration({\n theme: 'dark'\n});\n\nm(app).create({ type: 'mekko' }); // will render the object with default theme\nd(app).create({ type: 'mekko' }); // will render the object with 'dark' theme\nnucleus(app).create({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
+            "import nucleus from '@nebula.js/nucleus';\n// create a 'master' config which registers all types\nconst m = nucleus.createConfiguration({\n  types: [{\n    name: 'mekko',\n    version: '1.0.0',\n    load: () => Promise.resolve(mekko)\n  }],\n});\n\n// create an alternate config with dark theme\n// and inherit the config from the previous\nconst d = m.createConfiguration({\n theme: 'dark'\n});\n\nm(app).render({ type: 'mekko' }); // will render the object with default theme\nd(app).render({ type: 'mekko' }); // will render the object with 'dark' theme\nnucleus(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
           ]
         }
       }
@@ -48,20 +49,24 @@
   },
   "definitions": {
     "AppSelections": {
-      "kind": "interface",
+      "kind": "class",
       "entries": {
         "mount": {
+          "description": "Mounts the app selection UI into the provided HTMLElement",
           "kind": "function",
           "params": [
             {
               "name": "element",
               "type": "HTMLElement"
             }
-          ]
+          ],
+          "examples": ["selections.mount(element);"]
         },
         "unmount": {
+          "description": "Unmounts the app selection UI from the DOM",
           "kind": "function",
-          "params": []
+          "params": [],
+          "examples": ["selections.unmount();"]
         }
       }
     },
@@ -69,69 +74,71 @@
       "kind": "interface",
       "entries": {
         "element": {
-          "optional": true,
           "type": "HTMLElement"
         },
-        "optional": {
+        "options": {
           "optional": true,
-          "kind": "object",
-          "entries": {
-            "options": {
-              "optional": true,
-              "type": "object"
-            },
-            "properties": {
-              "optional": true,
-              "type": "object"
-            }
-          }
+          "type": "object"
         }
       }
     },
     "Configuration": {
-      "kind": "object",
+      "kind": "interface",
       "entries": {
+        "context": {
+          "optional": true,
+          "type": "#/definitions/Context"
+        },
         "env": {
-          "kind": "object",
-          "entries": {}
-        },
-        "load": {
-          "kind": "function",
-          "params": []
-        },
-        "snapshot": {
-          "kind": "object",
-          "entries": {
-            "get": {
-              "kind": "function",
-              "params": [
-                {
-                  "name": "id",
-                  "type": "string"
-                }
-              ],
-              "returns": {
-                "type": "Promise",
-                "generics": [
-                  {
-                    "type": "object"
-                  }
-                ]
-              }
-            }
-          }
+          "optional": true,
+          "type": "object"
         },
         "themes": {
+          "optional": true,
           "kind": "array",
           "items": {
             "type": "#/definitions/ThemeInfo"
           }
         },
         "types": {
+          "optional": true,
           "kind": "array",
           "items": {
             "type": "#/definitions/TypeInfo"
           }
+        }
+      }
+    },
+    "Context": {
+      "kind": "interface",
+      "entries": {
+        "constraints": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "active": {
+              "optional": true,
+              "type": "boolean"
+            },
+            "passive": {
+              "optional": true,
+              "type": "boolean"
+            },
+            "select": {
+              "optional": true,
+              "type": "boolean"
+            }
+          }
+        },
+        "language": {
+          "optional": true,
+          "defaultValue": "en-US",
+          "type": "string"
+        },
+        "theme": {
+          "optional": true,
+          "defaultValue": "light",
+          "type": "string"
         }
       }
     },
@@ -141,20 +148,45 @@
           "type": "#/definitions/BaseConfig"
         }
       ],
-      "kind": "object",
+      "kind": "interface",
       "entries": {
-        "fields": {
-          "kind": "array",
-          "items": {
-            "type": "object"
-          }
-        },
         "type": {
           "type": "string"
         },
         "version": {
           "type": "string"
+        },
+        "fields": {
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Field"
+          }
+        },
+        "properties": {
+          "optional": true,
+          "type": "qae.GenericObjectProperties"
         }
+      }
+    },
+    "Field": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "qae.NxDimension"
+          },
+          {
+            "type": "qae.NxMeasure"
+          },
+          {
+            "type": "#/definitions/LibraryField"
+          }
+        ]
       }
     },
     "GetConfig": {
@@ -170,8 +202,29 @@
         }
       }
     },
-    "loadType": {
-      "kind": "function",
+    "LibraryField": {
+      "kind": "interface",
+      "entries": {
+        "qLibraryId": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'dimension'"
+            },
+            {
+              "kind": "literal",
+              "value": "'measure'"
+            }
+          ]
+        }
+      }
+    },
+    "LoadType": {
+      "kind": "interface",
       "params": [
         {
           "name": "type",
@@ -197,39 +250,34 @@
             "type": "Supernova"
           }
         ]
-      }
+      },
+      "entries": {}
     },
     "Nucleus": {
-      "kind": "interface",
+      "kind": "class",
       "entries": {
         "context": {
+          "description": "Updates the current context of this nucleus instance.\nUse this when you want to change some part of the current context, like theme.",
           "kind": "function",
           "params": [
             {
               "name": "ctx",
-              "kind": "object",
-              "entries": {
-                "constraints": {
-                  "kind": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                "language": {
-                  "type": "string"
-                },
-                "theme": {
-                  "type": "string"
-                }
-              }
+              "description": "The context to update.",
+              "type": "#/definitions/Context"
             }
+          ],
+          "examples": [
+            "// change theme\nn.context({ theme: 'dark'});",
+            "// limit constraints\nn.context({ constraints: { active: true } });"
           ]
         },
         "render": {
+          "description": "Renders a supernova into an HTMLElement.",
           "kind": "function",
           "params": [
             {
               "name": "cfg",
+              "description": "The render configuration.",
               "kind": "union",
               "items": [
                 {
@@ -238,15 +286,25 @@
                 {
                   "type": "#/definitions/GetConfig"
                 }
-              ],
-              "type": "any"
+              ]
             }
           ],
           "returns": {
-            "type": "#/definitions/SupernovaController"
-          }
+            "description": "A controller to the rendered supernova",
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "#/definitions/SupernovaController"
+              }
+            ]
+          },
+          "examples": [
+            "// render from existing object\nn.render({\n  element: el,\n  id: 'abcdef'\n});",
+            "// render on the fly\nn.render({\n  type: 'barchart',\n  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\n});"
+          ]
         },
         "selections": {
+          "description": "Gets the app selections of this instance.",
           "kind": "function",
           "params": [],
           "returns": {
@@ -256,38 +314,28 @@
                 "type": "#/definitions/AppSelections"
               }
             ]
-          }
+          },
+          "examples": ["const selections = await n.selections();\nselections.mount(element);"]
         }
       }
     },
     "SupernovaController": {
-      "kind": "interface",
+      "description": "A controller to further modify a supernova after it has been rendered.",
+      "kind": "class",
       "entries": {
         "destroy": {
+          "description": "Destroys the supernova and removes if from the the DOM.",
           "kind": "function",
-          "params": []
-        },
-        "model": {
-          "type": "enigma.GenericObject"
-        },
-        "mount": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "element",
-              "type": "HTMLElement"
-            }
-          ],
-          "returns": {
-            "type": "Promise"
-          }
+          "params": [],
+          "examples": ["const ctl =\nctl.destroy();"]
         }
-      }
+      },
+      "examples": ["const ctl = await nucleus(app).render({\n  element,\n  type: 'barchart'\n});\nctl.destroy();"]
     },
     "ThemeInfo": {
       "kind": "interface",
       "entries": {
-        "key": {
+        "id": {
           "description": "Theme identifier",
           "type": "string"
         },
@@ -298,17 +346,16 @@
       }
     },
     "TypeInfo": {
-      "kind": "object",
+      "kind": "interface",
       "entries": {
+        "load": {
+          "type": "#/definitions/LoadType"
+        },
         "name": {
           "type": "string"
         },
         "version": {
           "type": "string"
-        },
-        "load": {
-          "optional": true,
-          "type": "#/definitions/loadType"
         },
         "meta": {
           "optional": true,

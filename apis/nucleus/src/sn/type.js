@@ -3,11 +3,11 @@ import { satisfies } from 'semver';
 import { load } from './load';
 
 /**
- * @typedef {object} TypeInfo
+ * @interface TypeInfo
  * @property {string} name
  * @property {string} version
+ * @property {LoadType} load
  * @property {object=} meta
- * @property {loadType=} load
  */
 
 export default function create(info, corona, opts = {}) {

@@ -58,7 +58,8 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
   appModalStore.set(key, appModal);
 
   /**
-   * @interface
+   * @class
+   * @hideconstructor
    * @alias AppSelections
    */
   const appSelections = {
