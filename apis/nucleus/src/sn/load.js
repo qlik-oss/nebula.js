@@ -1,7 +1,7 @@
 const LOADED = {};
 
 /**
- * @callback loadType
+ * @interface LoadType
  * @param {object} type
  * @param {string} type.name
  * @param {string} type.version

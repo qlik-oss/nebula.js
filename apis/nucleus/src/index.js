@@ -12,61 +12,77 @@ import { create as typesFn } from './sn/types';
 /**
  * @interface ThemeInfo
  * @property {string} id Theme identifier
- * @property {function} load A function that should return a Promise that resolve to a raw JSON theme
+ * @property {function(): Promise<ThemeJSON>} load A function that should return a Promise that resolve to a raw JSON theme
  */
 
 /**
- * @typedef {object}
- * @alias Configuration
+ * @interface Context
+ * @property {object=} constraints
+ * @property {boolean=} constraints.active
+ * @property {boolean=} constraints.passive
+ * @property {boolean=} constraints.select
  */
-const DEFAULT_CONFIG = {
-  context: {
-    theme: 'light',
-    language: 'en-US',
-    constraints: {},
-  },
+const DEFAULT_CONTEXT = /** @lends Context */ {
+  /** @type {string=} */
+  theme: 'light',
+  /** @type {string=} */
+  language: 'en-US',
+  constraints: {},
+};
+
+/**
+ * @interface SnapshotConfiguration
+ * @private
+ */
+const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
   /**
-   *
+   * @param {string} id
+   * @returns {Promise<SnapshotLayout>}
    */
-  load: () => undefined,
-  log: {
-    level: 1,
+  get: async id => {
+    const res = await fetch(`/njs/snapshot/${id}`);
+    if (!res.ok) {
+      throw new Error(res.statusText);
+    }
+    return res.json();
   },
+  capture(payload) {
+    return fetch(`/njs/capture`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    }).then(res => res.json());
+  },
+};
+
+/**
+ * @interface Configuration
+ */
+const DEFAULT_CONFIG = /** @lends Configuration */ {
   /**
-   * @type {TypeInfo[]}
+   * @type {Context=}
+   */
+  context: DEFAULT_CONTEXT,
+  load: () => undefined,
+  /**
+   * @type {(TypeInfo[])=}
    */
   types: [],
 
   /**
-   * @type {ThemeInfo[]}
+   * @type {(ThemeInfo[])=}
    */
   themes: [],
-  /** */
+  /** @type {object=} */
   env: {},
 
-  /** */
-  snapshot: {
-    /**
-     * @param {string} id
-     * @returns {Promise<object>}
-     */
-    get: async id => {
-      const res = await fetch(`/njs/snapshot/${id}`);
-      if (!res.ok) {
-        throw new Error(res.statusText);
-      }
-      return res.json();
-    },
-    capture(payload) {
-      return fetch(`/njs/capture`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      }).then(res => res.json());
-    },
-  },
+  /**
+   * @type {SnapshotConfiguration=}
+   * @private
+   */
+  snapshot: DEFAULT_SNAPSHOT_CONFIG,
 };
 
 const mergeObj = (o1 = {}, o2 = {}) => {
@@ -95,7 +111,7 @@ function nuked(configuration = {}) {
   const locale = appLocaleFn(configuration.context.language);
 
   /**
-   * Initiates a new `nebbie` instance using the specified `app`.
+   * Initiates a new `Nucleus` instance using the specified `app`.
    * @entry
    * @alias nucleus
    * @param {enigma.Doc} app
@@ -103,7 +119,8 @@ function nuked(configuration = {}) {
    * @returns {Nucleus}
    * @example
    * import nucleus from '@nebula.js/nucleus'
-   * const nebbie = nucleus(app);
+   * const n = nucleus(app);
+   * n.render({ id: 'abc' });
    */
   function nucleus(app, instanceConfig) {
     if (instanceConfig) {
@@ -165,10 +182,11 @@ function nuked(configuration = {}) {
     let selectionsComponentReference = null;
 
     /**
-     * @interface
+     * @class
      * @alias Nucleus
+     * @hideconstructor
      */
-    const api = /** @lends Nucleus */ {
+    const api = /** @lends Nucleus# */ {
       get: async () => {
         // eslint-disable-next-line
         console.warn(new Error('nucleus.get() has been deprecated, use nucleus.render() instead').stack);
@@ -178,8 +196,21 @@ function nuked(configuration = {}) {
         console.warn(new Error('nucleus.create() has been deprecated, use nucleus.render() instead').stack);
       },
       /**
-       * @param {CreateConfig | GetConfig} cfg
-       * @returns {SupernovaController}
+       * Renders a supernova into an HTMLElement.
+       * @param {CreateConfig | GetConfig} cfg - The render configuration.
+       * @returns {Promise<SupernovaController>} A controller to the rendered supernova
+       * @example
+       * // render from existing object
+       * n.render({
+       *   element: el,
+       *   id: 'abcdef'
+       * });
+       * @example
+       * // render on the fly
+       * n.render({
+       *   type: 'barchart',
+       *   fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]
+       * });
        */
       render: async cfg => {
         await currentThemePromise;
@@ -189,10 +220,15 @@ function nuked(configuration = {}) {
         return create(cfg, corona);
       },
       /**
-       * @param {object} ctx
-       * @param {string} ctx.theme
-       * @param {string} ctx.language
-       * @param {string[]} ctx.constraints
+       * Updates the current context of this nucleus instance.
+       * Use this when you want to change some part of the current context, like theme.
+       * @param {Context} ctx - The context to update.
+       * @example
+       * // change theme
+       * n.context({ theme: 'dark'});
+       * @example
+       * // limit constraints
+       * n.context({ constraints: { active: true } });
        */
       context: async ctx => {
         // filter valid values to avoid triggering unnecessary rerender
@@ -228,14 +264,21 @@ function nuked(configuration = {}) {
         root.context(currentContext);
       },
       /**
+       * Gets the app selections of this instance.
        * @returns {Promise<AppSelections>}
+       * @example
+       * const selections = await n.selections();
+       * selections.mount(element);
        */
       selections: async () => {
         if (!selectionsApi) {
           // const appSelections = await root.getAppSelections(); // Don't expose this for now
-          selectionsApi = /** @lends AppSelections */ {
+          selectionsApi = /** @lends AppSelections# */ {
             /**
+             * Mounts the app selection UI into the provided HTMLElement
              * @param {HTMLElement} element
+             * @example
+             * selections.mount(element);
              */
             mount(element) {
               if (selectionsComponentReference) {
@@ -251,7 +294,9 @@ function nuked(configuration = {}) {
               root.add(selectionsComponentReference);
             },
             /**
-             *
+             * Unmounts the app selection UI from the DOM
+             * @example
+             * selections.unmount();
              */
             unmount() {
               if (selectionsComponentReference) {
@@ -272,10 +317,10 @@ function nuked(configuration = {}) {
   }
 
   /**
-   * Creates a new `nucleus` instance using the specified configuration.
+   * Creates a new `nucleus` scope bound to the specified `configuration`.
    *
-   * The configuration is merged with all previous instances.
-   * @param {Configuration} configuration
+   * The configuration is merged with all previous scopes.
+   * @param {Configuration} configuration - The configuration object
    * @returns {nucleus}
    * @example
    * import nucleus from '@nebula.js/nucleus';
@@ -284,6 +329,7 @@ function nuked(configuration = {}) {
    *   types: [{
    *     name: 'mekko',
    *     version: '1.0.0',
+   *     load: () => Promise.resolve(mekko)
    *   }],
    * });
    *
@@ -293,9 +339,9 @@ function nuked(configuration = {}) {
    *  theme: 'dark'
    * });
    *
-   * m(app).create({ type: 'mekko' }); // will render the object with default theme
-   * d(app).create({ type: 'mekko' }); // will render the object with 'dark' theme
-   * nucleus(app).create({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance
+   * m(app).render({ type: 'mekko' }); // will render the object with default theme
+   * d(app).render({ type: 'mekko' }); // will render the object with 'dark' theme
+   * nucleus(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance
    */
   nucleus.createConfiguration = c => nuked(mergeConfigs(configuration, c));
   nucleus.config = configuration;

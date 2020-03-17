@@ -1,5 +1,15 @@
 import hcHandler from './hc-handler';
 
+/**
+ * @typedef {string | qae.NxDimension | qae.NxMeasure | LibraryField} Field
+ */
+
+/**
+ * @interface LibraryField
+ * @property {string} qLibraryId
+ * @property {'dimension'|'measure'} type
+ */
+
 export function fieldType(f) {
   if (
     // a string starting with '=' is just a convention we use
