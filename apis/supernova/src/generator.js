@@ -8,17 +8,13 @@ import qae from './qae';
 
 /**
  * @interface SnDefinition
- * @property {object} qae
+ * @property {QAEDefinition} qae
  * @property {function} component
  */
 
 /**
- * @typedef {object} env
- */
-
-/**
  * @interface SnFn
- * @param {env} env
+ * @param {object} env
  * @returns {SnDefinition}
  */
 
