@@ -9,9 +9,10 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
   let currentLocale = initial;
 
   /**
-   * @interface Translator
+   * @class Translator
+   * @hideconstructor
    */
-  const api = /** @lends Translator */ {
+  const api = /** @lends Translator# */ {
     language: lang => {
       if (lang) {
         currentLocale = lang;
@@ -19,7 +20,7 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
       return currentLocale;
     },
     /**
-     * Register a string in multiple locales
+     * Registers a string in multiple locales
      * @param {object} item
      * @param {string} item.id
      * @param {object<string,string>} item.locale
@@ -44,9 +45,10 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
       });
     },
     /**
-     * Translate string for current locale
+     * Translates a string for current locale
      * @param {string} str - Id of the registered string
      * @param {Array<string>=} args - Values passed down for string interpolation
+     * @returns {string} The translated string
      */
     get(str, args) {
       let v;

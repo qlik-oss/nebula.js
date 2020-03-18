@@ -15,10 +15,11 @@ export default function theme() {
   let contraster;
 
   /**
-   * @interface
+   * @class
    * @alias Theme
+   * @hideconstructor
    */
-  const externalAPI = /** @lends Theme */ {
+  const externalAPI = /** @lends Theme# */ {
     /**
      * @returns {Theme~ScalePalette[]}
      */

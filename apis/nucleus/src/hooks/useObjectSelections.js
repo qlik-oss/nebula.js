@@ -21,10 +21,11 @@ function createObjectSelections({ appSelections, appModal, model }) {
   let hasSelected = false;
 
   /**
-   * @interface
+   * @class
    * @alias ObjectSelections
+   * @hideconstructor
    */
-  const api = /** @lends ObjectSelections */ {
+  const api = /** @lends ObjectSelections# */ {
     // model,
     id: model.id,
     setLayout(lyt) {
