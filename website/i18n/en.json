@@ -26,6 +26,9 @@
       "sn-controller": {
         "title": "Modify charts"
       },
+      "supernova-api": {
+        "title": "supernova-api"
+      },
       "web-integration": {
         "title": "Web integration"
       }

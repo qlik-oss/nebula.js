@@ -1,5 +1,28 @@
 const noop = () => {};
 
+/**
+ * @interface QAEDefinition
+ * @property {qae.GenericObjectProperties=} properties
+ * @property {object=} data
+ * @property {DataTarget[]} data.targets
+ */
+
+/**
+ * @interface DataTarget
+ * @property {string} path
+ * @property {FieldTarget<qae.NxDimension>=} dimensions
+ * @property {FieldTarget<qae.NxMeasure>=} measures
+ */
+
+/**
+ * @interface FieldTarget
+ * @template T
+ * @property {function():number} [min]
+ * @property {function():number} [max]
+ * @property {function(T, qae.GenericObjectProperties)} [added]
+ * @property {function(T, qae.GenericObjectProperties, number)} [removed]
+ */
+
 function fallback(x, value) {
   if (typeof x === 'undefined') {
     return () => value;
