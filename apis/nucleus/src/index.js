@@ -10,12 +10,6 @@ import get from './object/get-object';
 import { create as typesFn } from './sn/types';
 
 /**
- * @interface ThemeInfo
- * @property {string} id Theme identifier
- * @property {function(): Promise<ThemeJSON>} load A function that should return a Promise that resolve to a raw JSON theme
- */
-
-/**
  * @interface Context
  * @property {object=} constraints
  * @property {boolean=} constraints.active
@@ -113,7 +107,7 @@ function nuked(configuration = {}) {
   /**
    * Initiates a new `Nucleus` instance using the specified `app`.
    * @entry
-   * @alias nucleus
+   * @interface nucleus
    * @param {enigma.Doc} app
    * @param {Configuration=} instanceConfig
    * @returns {Nucleus}
@@ -223,6 +217,7 @@ function nuked(configuration = {}) {
        * Updates the current context of this nucleus instance.
        * Use this when you want to change some part of the current context, like theme.
        * @param {Context} ctx - The context to update.
+       * @returns {Promise<undefined>}
        * @example
        * // change theme
        * n.context({ theme: 'dark'});
@@ -320,6 +315,7 @@ function nuked(configuration = {}) {
    * Creates a new `nucleus` scope bound to the specified `configuration`.
    *
    * The configuration is merged with all previous scopes.
+   * @memberof nucleus
    * @param {Configuration} configuration - The configuration object
    * @returns {nucleus}
    * @example
@@ -348,5 +344,11 @@ function nuked(configuration = {}) {
 
   return nucleus;
 }
+
+/**
+ * @interface ThemeInfo
+ * @property {string} id Theme identifier
+ * @property {function(): Promise<ThemeJSON>} load A function that should return a Promise that resolve to a raw JSON theme
+ */
 
 export default nuked(DEFAULT_CONFIG);
