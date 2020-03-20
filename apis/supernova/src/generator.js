@@ -3,19 +3,33 @@ import translator from './translator';
 import qae from './qae';
 
 /**
- * @typedef {SnDefinition|SnFn} Supernova
+ * The entry point for defining a supernova.
+ * @interface Supernova
+ * @param {object=} env
+ * @returns {SupernovaDefinition}
+ * @example
+ * import { useElement, useLayout } from '@nebula.js/supernova';
+ *
+ * export default function() {
+ *   return {
+ *     qae: {
+ *       properties: {
+ *         dude: 'Heisenberg',
+ *       }
+ *     },
+ *     component() {
+ *       const el = useElement();
+ *       const layout = useLayout();
+ *       el.innerHTML = `What's my name? ${layout.dude}!!!`;
+ *     }
+ *   };
+ * }
  */
 
 /**
- * @interface SnDefinition
+ * @interface SupernovaDefinition
  * @property {QAEDefinition} qae
- * @property {function} component
- */
-
-/**
- * @interface SnFn
- * @param {object} env
- * @returns {SnDefinition}
+ * @property {function():void} component
  */
 
 /**
