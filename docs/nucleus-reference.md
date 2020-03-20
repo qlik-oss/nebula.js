@@ -5,31 +5,30 @@ title: API Reference
 
 ## Table of contents
 
-- [function: nucleus(app[, instanceConfig])](#function-nucleusapp-instanceconfig)
-  - [nucleus.createConfiguration(configuration)](#nucleuscreateconfigurationconfiguration)
+- [interface: nucleus(app[, instanceConfig])](#interface-nucleusapp-instanceconfig)
+- [interface: Context](#interface-context)
+- [interface: Configuration](#interface-configuration)
+- [class: Nucleus](#class-nucleus)
+  - [nucleus.render(cfg)](#nucleusrendercfg)
+  - [nucleus.context(ctx)](#nucleuscontextctx)
+  - [nucleus.selections()](#nucleusselections)
+- [interface: ThemeInfo](#interface-themeinfo)
+- [class: SupernovaController](#class-supernovacontroller)
+  - [supernovaController.destroy()](#supernovacontrollerdestroy)
 - [class: AppSelections](#class-appselections)
   - [appSelections.mount(element)](#appselectionsmountelement)
   - [appSelections.unmount()](#appselectionsunmount)
-- [interface: BaseConfig](#interface-baseconfig)
-- [interface: Configuration](#interface-configuration)
-- [interface: Context](#interface-context)
 - [interface: CreateConfig](#interface-createconfig)
-- [type `Field`= <[string]|`qae.NxDimension`|`qae.NxMeasure`|[LibraryField]>](#type-field-stringqaenxdimensionqaenxmeasurelibraryfield)
+- [interface: BaseConfig](#interface-baseconfig)
 - [interface: GetConfig](#interface-getconfig)
+- [type Field = <[string]|[qae.NxDimension]|[qae.NxMeasure]|[LibraryField]>](#type-field-stringqaenxdimensionqaenxmeasurelibraryfield)
 - [interface: LibraryField](#interface-libraryfield)
 - [interface: LoadType(type, env)](#interface-loadtypetype-env)
-- [class: Nucleus](#class-nucleus)
-  - [nucleus.context(ctx)](#nucleuscontextctx)
-  - [nucleus.render(cfg)](#nucleusrendercfg)
-  - [nucleus.selections()](#nucleusselections)
-- [class: SupernovaController](#class-supernovacontroller)
-  - [supernovaController.destroy()](#supernovacontrollerdestroy)
-- [interface: ThemeInfo](#interface-themeinfo)
 - [interface: TypeInfo](#interface-typeinfo)
 
 ## API
 
-### function: nucleus(app[, instanceConfig])
+### interface: nucleus(app[, instanceConfig])
 
 - `app` <`enigma.Doc`>
 - `instanceConfig` <[Configuration]>
@@ -43,70 +42,9 @@ const n = nucleus(app);
 n.render({ id: 'abc' });
 ```
 
-#### nucleus.createConfiguration(configuration)
-
-- `configuration` <[Configuration]> The configuration object
-- `returns:` <[nucleus]>
-
-Creates a new `nucleus` scope bound to the specified `configuration`.
+- `createConfiguration` <[Function]> Creates a new `nucleus` scope bound to the specified `configuration`.
 
 The configuration is merged with all previous scopes.
-
-```js
-import nucleus from '@nebula.js/nucleus';
-// create a 'master' config which registers all types
-const m = nucleus.createConfiguration({
-  types: [
-    {
-      name: 'mekko',
-      version: '1.0.0',
-      load: () => Promise.resolve(mekko),
-    },
-  ],
-});
-
-// create an alternate config with dark theme
-// and inherit the config from the previous
-const d = m.createConfiguration({
-  theme: 'dark',
-});
-
-m(app).render({ type: 'mekko' }); // will render the object with default theme
-d(app).render({ type: 'mekko' }); // will render the object with 'dark' theme
-nucleus(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance
-```
-
-### class: AppSelections
-
-#### appSelections.mount(element)
-
-- `element` <`HTMLElement`>
-
-Mounts the app selection UI into the provided HTMLElement
-
-```js
-selections.mount(element);
-```
-
-#### appSelections.unmount()
-
-Unmounts the app selection UI from the DOM
-
-```js
-selections.unmount();
-```
-
-### interface: BaseConfig
-
-- `element` <`HTMLElement`>
-- `options` <[Object]>
-
-### interface: Configuration
-
-- `context` <[Context]>
-- `env` <[Object]>
-- `themes` <[Array]<[ThemeInfo]>>
-- `types` <[Array]<[TypeInfo]>>
 
 ### interface: Context
 
@@ -114,57 +52,17 @@ selections.unmount();
   - `active` <[boolean]>
   - `passive` <[boolean]>
   - `select` <[boolean]>
-- `language` <[string]> Defaults to `en-US`
 - `theme` <[string]> Defaults to `light`
+- `language` <[string]> Defaults to `en-US`
 
-### interface: CreateConfig
+### interface: Configuration
 
-- extends: <[BaseConfig]>
-
-* `type` <[string]>
-* `version` <[string]>
-* `fields` <[Array]<[Field]>>
-* `properties` <`qae.GenericObjectProperties`>
-
-### type `Field`= <[string]|`qae.NxDimension`|`qae.NxMeasure`|[LibraryField]>
-
-### interface: GetConfig
-
-- extends: <[BaseConfig]>
-
-* `id` <[string]>
-
-### interface: LibraryField
-
-- `qLibraryId` <[string]>
-- `type` <`'dimension'`|`'measure'`>
-
-### interface: LoadType(type, env)
-
-- `type` <[Object]>
-  - `name` <[string]>
-  - `version` <[string]>
+- `context` <[Context]>
+- `types` <[Array]<[TypeInfo]>>
+- `themes` <[Array]<[ThemeInfo]>>
 - `env` <[Object]>
-- `returns:` <[Promise]<`Supernova`>>
 
 ### class: Nucleus
-
-#### nucleus.context(ctx)
-
-- `ctx` <[Context]> The context to update.
-
-Updates the current context of this nucleus instance.
-Use this when you want to change some part of the current context, like theme.
-
-```js
-// change theme
-n.context({ theme: 'dark' });
-```
-
-```js
-// limit constraints
-n.context({ constraints: { active: true } });
-```
 
 #### nucleus.render(cfg)
 
@@ -189,6 +87,24 @@ n.render({
 });
 ```
 
+#### nucleus.context(ctx)
+
+- `ctx` <[Context]> The context to update.
+- `returns:` <[Promise]<[undefined]>>
+
+Updates the current context of this nucleus instance.
+Use this when you want to change some part of the current context, like theme.
+
+```js
+// change theme
+n.context({ theme: 'dark' });
+```
+
+```js
+// limit constraints
+n.context({ constraints: { active: true } });
+```
+
 #### nucleus.selections()
 
 - `returns:` <[Promise]<[AppSelections]>>
@@ -199,6 +115,11 @@ Gets the app selections of this instance.
 const selections = await n.selections();
 selections.mount(element);
 ```
+
+### interface: ThemeInfo
+
+- `id` <[string]> Theme identifier
+- `load` <[Function]> A function that should return a Promise that resolve to a raw JSON theme
 
 ### class: SupernovaController
 
@@ -220,41 +141,90 @@ Destroys the supernova and removes if from the the DOM.
 const ctl = ctl.destroy();
 ```
 
-### interface: ThemeInfo
+### class: AppSelections
 
-- `id` <[string]> Theme identifier
-- `load` <[Function]> A function that should return a Promise that resolve to a raw JSON theme
+#### appSelections.mount(element)
+
+- `element` <`HTMLElement`>
+
+Mounts the app selection UI into the provided HTMLElement
+
+```js
+selections.mount(element);
+```
+
+#### appSelections.unmount()
+
+Unmounts the app selection UI from the DOM
+
+```js
+selections.unmount();
+```
+
+### interface: CreateConfig
+
+- extends: <[BaseConfig]>
+
+* `type` <[string]>
+* `version` <[string]>
+* `fields` <[Array]>
+* `properties` <[qae.GenericObjectProperties]>
+
+### interface: BaseConfig
+
+- `element` <`HTMLElement`>
+- `options` <[Object]>
+
+### interface: GetConfig
+
+- extends: <[BaseConfig]>
+
+* `id` <[string]>
+
+### type Field = <[string]|[qae.NxDimension]|[qae.NxMeasure]|[LibraryField]>
+
+### interface: LibraryField
+
+- `qLibraryId` <[string]>
+- `type` <`dimension`|`measure`>
+
+### interface: LoadType(type, env)
+
+- `type` <[Object]>
+  - `name` <[string]>
+  - `version` <[string]>
+- `env` <[Object]>
+- `returns:` <[Promise]<`Supernova`>>
 
 ### interface: TypeInfo
 
-- `load` <[LoadType]>
 - `name` <[string]>
 - `version` <[string]>
+- `load` <[LoadType]>
 - `meta` <[Object]>
 
 [enigma.doc]: undefined
-[htmlelement]: undefined
+[function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
-[array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type
-[qae.genericobjectproperties]: undefined
-[qae.nxdimension]: undefined
-[qae.nxmeasure]: undefined
-[supernova]: undefined
+[array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-[function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function
-[nucleus]: #function-nucleusapp-instanceconfig
-[appselections]: #class-appselections
-[baseconfig]: #interface-baseconfig
-[configuration]: #interface-configuration
+[undefined]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined
+[htmlelement]: undefined
+[qae.genericobjectproperties]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#genericobjectproperties
+[qae.nxdimension]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxdimension
+[qae.nxmeasure]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxmeasure
+[supernova]: undefined
 [context]: #interface-context
+[configuration]: #interface-configuration
+[nucleus]: #class-nucleus
+[themeinfo]: #interface-themeinfo
+[supernovacontroller]: #class-supernovacontroller
+[appselections]: #class-appselections
 [createconfig]: #interface-createconfig
-[field]: #type-field-stringqaenxdimensionqaenxmeasurelibraryfield
+[baseconfig]: #interface-baseconfig
 [getconfig]: #interface-getconfig
 [libraryfield]: #interface-libraryfield
 [loadtype]: #interface-loadtypetype-env
-[nucleus]: #class-nucleus
-[supernovacontroller]: #class-supernovacontroller
-[themeinfo]: #interface-themeinfo
 [typeinfo]: #interface-typeinfo
