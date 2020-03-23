@@ -46,7 +46,7 @@ const parseAuthor = (str = '') => {
   };
 };
 
-function cpy(root, destination) {
+function copyFactory(root, destination) {
   return (source, target, data) => {
     if (data) {
       const content = fs.readFileSync(path.resolve(root, ...source.split('/')), { encoding: 'utf8' });
@@ -60,6 +60,8 @@ function cpy(root, destination) {
 
 const create = async argv => {
   const { name } = argv;
+
+  const isMashup = argv._.includes('mashup');
 
   const projectFolder = name;
   const packageName = name.split('/').slice(-1)[0];
@@ -90,7 +92,7 @@ const create = async argv => {
         message: 'Pick a picasso template',
         default: 'none',
         choices: ['none', 'minimal', 'barchart'],
-        when: !argv.picasso,
+        when: !isMashup && !argv.picasso,
       },
     ]);
 
@@ -103,27 +105,29 @@ const create = async argv => {
     const { picasso } = options;
     fse.ensureDirSync(destination);
 
-    // ==== common files ====
-    // copy raw files
-    ['editorconfig', 'eslintignore', 'gitignore', 'eslintrc.json'].forEach(filename =>
-      fs.copyFileSync(
-        path.resolve(templatesRoot, 'common', `_${filename}`), // copying dotfiles may not always work, so they are prefixed with an underline
-        path.resolve(destination, `.${filename}`)
-      )
-    );
-
-    const copy = cpy(templatesRoot, destination);
-
-    copy('common/README.md', 'README.md', { name: packageName });
+    const copy = copyFactory(templatesRoot, destination);
 
     // ==== template files ====
-    const folders = [];
-    if (picasso !== 'none') {
-      folders.push('picasso/common');
-      folders.push(`picasso/${picasso}`);
+    const folders = ['common'];
+    if (isMashup) {
+      folders.push('mashup');
     } else {
-      folders.push('none');
+      folders.push('sn/common');
+      if (picasso !== 'none') {
+        folders.push('sn/picasso/common');
+        folders.push(`sn/picasso/${picasso}`);
+      } else {
+        folders.push('sn/none');
+      }
     }
+
+    const data = {
+      name: packageName,
+      description: '',
+      user: options.author.name,
+      email: options.author.email,
+      nebulaVersion: pkg.version,
+    };
 
     const traverse = (sourceFolder, targetFolder = '') => {
       const files = fs.readdirSync(path.resolve(templatesRoot, sourceFolder));
@@ -135,16 +139,11 @@ const create = async argv => {
         if (stats.isDirectory()) {
           fse.ensureDirSync(path.resolve(destination, next));
           traverse(p, next);
-        } else if (file === '_package.json') {
-          copy(`${sourceFolder}/_package.json`, 'package.json', {
-            name: packageName,
-            description: '',
-            user: options.author.name,
-            email: options.author.email,
-            nebulaVersion: pkg.version,
-          });
+        } else if (file[0] === '_') {
+          const newFileName = file === '_package.json' ? 'package.json' : `.${file.substr(1)}`;
+          copy(`${sourceFolder}/${file}`, `${targetFolder}/${newFileName}`.replace(/^\//, ''), data);
         } else {
-          copy(`${sourceFolder}/${file}`, next);
+          copy(`${sourceFolder}/${file}`, next, data);
         }
       });
     };

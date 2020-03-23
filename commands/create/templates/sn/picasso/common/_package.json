@@ -23,6 +23,8 @@
   "devDependencies": {
     "@after-work.js/aw": "6.0.10",
     "@nebula.js/cli": "<%= nebulaVersion %>",
+    "@nebula.js/cli-build": "<%= nebulaVersion %>",
+    "@nebula.js/cli-serve": "<%= nebulaVersion %>",
     "eslint": "5.12.1",
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.15.0",

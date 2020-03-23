@@ -1,0 +1,19 @@
+{
+  "name": "<%= name %>",
+  "version": "0.0.1",
+  "author": {
+    "name": "<%= user %>",
+    "email": "<%= email %>"
+  },
+  "keywords": ["qlik", "nebula"],
+  "scripts": {
+    "start": "parcel src/index.html"
+  },
+  "dependencies": {
+    "@nebula.js/nucleus": "<%= nebulaVersion %>",
+    "@nebula.js/sn-bar-chart": "^0.2.2",
+    "@nebula.js/supernova": "<%= nebulaVersion %>",
+    "enigma.js": "^2.6.3",
+    "parcel-bundler": "^1.12.4"
+  }
+}
