@@ -18,7 +18,7 @@ You can then `mount` the selections UI into that element:
 ```js
 const n = nucleus(enigmaApp);
 
-await (n.selections()).mount(document.querySelector('.curr-selections');
+(await n.selections()).mount(document.querySelector('.curr-selections'));
 ```
 
 Without any selections it should like this:
@@ -34,13 +34,11 @@ As you start applying selections in the various charts, the UI will update to re
 If you are connected to multiple apps, you can show the current selections in each one by mounting the bar into different elements:
 
 ```js
-await nucleus(enigmaApp)
-  .selections()
-  .mount(document.querySelector('.curr-selections'));
+(await nucleus(enigmaApp).selections()).mount(document.querySelector('.curr-selections'));
 
-await nucleus(anotherApp, { context: { theme: 'dark' } })
-  .selections()
-  .mount(document.querySelector('.another-curr-selections'));
+(await nucleus(anotherApp, { context: { theme: 'dark' } }).selections()).mount(
+  document.querySelector('.another-curr-selections')
+);
 ```
 
 ![Multiple selections](assets/selections-multiple.gif)
