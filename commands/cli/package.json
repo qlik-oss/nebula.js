@@ -21,12 +21,14 @@
   "scripts": {
     "lint": "eslint src"
   },
+  "peerDependencies": {
+    "@nebula.js/cli-build": "^0.x",
+    "@nebula.js/cli-sense": "^0.x",
+    "@nebula.js/cli-serve": "^0.x"
+  },
   "dependencies": {
-    "@nebula.js/cli-build": "0.2.0",
     "@nebula.js/cli-create": "0.2.0",
-    "@nebula.js/cli-sense": "0.2.0",
-    "@nebula.js/cli-serve": "0.2.0",
-    "chalk": "3.0.0",
+    "import-cwd": "3.0.0",
     "yargs": "15.1.0"
   }
 }

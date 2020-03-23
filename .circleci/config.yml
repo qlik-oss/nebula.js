@@ -80,13 +80,13 @@ jobs:
           name: Test integration
           command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 
-      - run:
-          name: Create a hello supernova project from latest release
-          command: |
-            set -e
-            npx nebula create temp/hello --pkgm yarn --picasso none
-            cd temp/hello
-            APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      # - run:
+      #     name: Create a hello supernova project from latest release
+      #     command: |
+      #       set -e
+      #       npx nebula create temp/hello --pkgm yarn --picasso none
+      #       cd temp/hello
+      #       APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 
       - run:
           name: Create a picasso barchart supernova project from current commit

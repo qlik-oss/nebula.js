@@ -1,9 +1,25 @@
 const create = require('./lib/create');
 
+const mashup = {
+  command: 'mashup <name>',
+  desc: 'Create a mashup',
+  builder(yargs) {
+    yargs.positional('name', {
+      type: 'string',
+      description: 'name of the project',
+    });
+  },
+  handler(argv) {
+    create(argv);
+  },
+};
+
 module.exports = {
   command: 'create <name>',
   desc: 'Create a supernova',
   builder(yargs) {
+    yargs.command(mashup);
+
     yargs.positional('name', {
       type: 'string',
       description: 'name of the project',
