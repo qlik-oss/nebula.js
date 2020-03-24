@@ -1,0 +1,86 @@
+{
+  "Cancel": {
+    "value": "Cancel",
+    "comment": "Verb, typically button label"
+  },
+  "OK": {
+    "value": "OK",
+    "comment": "Verb, typically button label"
+  },
+  "Retry": {
+    "value": "Retry",
+    "comment": "Verb, typically button label"
+  },
+  "CurrentSelections.All": {
+    "value": "ALL",
+    "comment": "Text shown when all values are selected"
+  },
+  "CurrentSelections.Of": {
+    "value": "{0} of {1}",
+    "comment": "Text shown between the selected fields count {0} and total fields count {1}"
+  },
+  "Listbox.Search": {
+    "value": "Search in listbox",
+    "comment": "Action text to search in listbox"
+  },
+  "Navigate.Back": {
+    "value": "Step back",
+    "comment": "Action text to step back, as opposite to forward, a form of navigation"
+  },
+  "Navigate.Forward": {
+    "value": "Step forward",
+    "comment": "Action text to step forward, a form of navigation"
+  },
+  "Object.Update.Active": {
+    "value": "Updating data",
+    "comment": "Status text shown when a object's data is being updated"
+  },
+  "Object.Update.Cancelled": {
+    "value": "Data update was cancelled",
+    "comment": "Status text shown when data update has been cancelled"
+  },
+  "Selection.Cancel": {
+    "value": "Cancel selection",
+    "comment": "Action text to cancel selections"
+  },
+  "Selection.Clear": {
+    "value": "Clear selection",
+    "comment": "Action text to clear selections"
+  },
+  "Selection.ClearAll": {
+    "value": "Clear all selections",
+    "comment": "Action text to clear all selections"
+  },
+  "Selection.ClearAllStates": {
+    "value": "Clear all states",
+    "comment": "Action text to clear all states"
+  },
+  "Selection.Confirm": {
+    "value": "Confirm selection",
+    "comment": "Action text to confirm selections"
+  },
+  "Selection.Menu": {
+    "value": "Selection menu",
+    "comment": "Action text to toggle selection menu"
+  },
+  "Selection.SelectAll": {
+    "value": "Select all",
+    "comment": "Action text to select all selections"
+  },
+  "Selection.SelectAlternative": {
+    "value": "Select alternative",
+    "comment": "Action text to select alternative selections"
+  },
+  "Selection.SelectExcluded": {
+    "value": "Select excluded",
+    "comment": "Action text to select excluded selections"
+  },
+  "Selection.SelectPossible": {
+    "value": "Select possible",
+    "comment": "Action text to select possible selections"
+  },
+  "Supernova.Incomplete": {
+    "value": "Incomplete visualization",
+    "comment": "Status text shown when a visualization is incomplete"
+  }
+}
