@@ -17,8 +17,8 @@ const options = {
     alias: 'w',
     default: false,
   },
-  sourcemaps: {
-    description: 'Generate source maps',
+  sourcemap: {
+    description: 'Generate source map',
     type: 'boolean',
     alias: 'm',
     default: true,
