@@ -17,9 +17,10 @@ const { terser } = require('rollup-plugin-terser');
 
 const initConfig = require('./init-config');
 
-const config = ({ mode = 'production', format = 'umd', cwd = process.cwd() } = {}) => {
+const config = ({ mode = 'production', format = 'umd', cwd = process.cwd(), argv = { sourcemap: true } } = {}) => {
   const pkg = require(path.resolve(cwd, 'package.json')); // eslint-disable-line
   const { name, version, license, author } = pkg;
+  const { sourcemap } = argv;
 
   if (format === 'esm' && !pkg.module) {
     return false;
@@ -87,7 +88,7 @@ const config = ({ mode = 'production', format = 'umd', cwd = process.cwd() } = {
       format,
       file: format === 'esm' && pkg.module ? pkg.module : pkg.main,
       name: moduleName,
-      sourcemap: true,
+      sourcemap,
       globals: {
         '@nebula.js/supernova': 'supernova',
       },
