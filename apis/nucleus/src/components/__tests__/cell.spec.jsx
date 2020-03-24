@@ -414,7 +414,9 @@ describe('<Cell />', () => {
           },
         },
       });
-      global.window.addEventListener.callArg(1);
+      await act(async () => {
+        global.window.addEventListener.callArg(1);
+      });
       const snapshot = await cellRef.current.takeSnapshot();
       const { key } = snapshot;
       delete snapshot.key;
@@ -474,7 +476,9 @@ describe('<Cell />', () => {
           },
         },
       });
-      global.window.addEventListener.callArg(1);
+      await act(async () => {
+        global.window.addEventListener.callArg(1);
+      });
       const snapshot = await cellRef.current.takeSnapshot();
       expect(snapshot.layout).to.deep.equal({
         foo: 'bar',
