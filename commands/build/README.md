@@ -16,5 +16,6 @@ Build supernova
 Options:
   --version    Show version number                                     [boolean]
   --watch, -w                                         [boolean] [default: false]
+  --sourcemaps, -m                                     [boolean] [default: true]
   -h, --help   Show help                                               [boolean]
 ```

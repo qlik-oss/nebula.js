@@ -17,6 +17,12 @@ const options = {
     alias: 'w',
     default: false,
   },
+  sourcemaps: {
+    description: 'Generate source maps',
+    type: 'boolean',
+    alias: 'm',
+    default: true,
+  },
 };
 
 module.exports = yargs =>
