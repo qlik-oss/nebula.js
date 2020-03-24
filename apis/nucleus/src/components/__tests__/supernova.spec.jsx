@@ -109,7 +109,9 @@ describe('<Supernova />', () => {
         },
       },
     });
-    global.window.addEventListener.callArg(1);
+    await act(async () => {
+      global.window.addEventListener.callArg(1);
+    });
     expect(component.created.callCount).to.equal(1);
     expect(component.mounted.callCount).to.equal(1);
     expect(await initialRender).to.equal(true);
@@ -154,13 +156,15 @@ describe('<Supernova />', () => {
         },
       },
     });
-    global.window.addEventListener.callArg(1);
+    await act(async () => {
+      global.window.addEventListener.callArg(1);
+    });
     sandbox.clock.tick(200);
-    await Promise.resolve(); // flush pending promises
     getBoundingClientRect.returns({ left: 200, top: 300, width: 400, height: 500 });
-    global.window.addEventListener.callArg(1);
+    await act(async () => {
+      global.window.addEventListener.callArg(1);
+    });
     sandbox.clock.tick(200);
-    await Promise.resolve();
     expect(component.render.callCount).to.equal(2);
   });
 });

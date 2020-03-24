@@ -214,7 +214,7 @@ export default function App({ app, info }) {
                       <Home style={{ verticalAlign: 'middle' }} />
                     </IconButton>
                   </Grid>
-                  <Grid item xs>
+                  <Grid item xs zeroMinWidth>
                     <Tabs value={objectListMode ? 1 : 0} onChange={handleCreateEditChange} aria-label="Navigation">
                       <Tab label={<Typography>Create</Typography>} value={0} />
                       <Tab label={<Typography>Edit</Typography>} value={1} />
