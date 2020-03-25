@@ -81,7 +81,7 @@ export default function More({ items = [], api }) {
             color: theme.palette.selected.mainContrastText,
           }}
         >
-          <Typography noWrap style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600 }}>
+          <Typography noWrap style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600 }} color="inherit">
             +{items.length}
           </Typography>
         </Box>
