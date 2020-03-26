@@ -1,11 +1,11 @@
 import create from './creator';
-import translator from './translator';
+// import translator from './translator';
 import qae from './qae';
 
 /**
  * The entry point for defining a supernova.
  * @interface Supernova
- * @param {object=} env
+ * @param {Galaxy} galaxy
  * @returns {SupernovaDefinition}
  * @example
  * import { useElement, useLayout } from '@nebula.js/supernova';
@@ -35,20 +35,17 @@ import qae from './qae';
 /**
  * @interface snGenerator
  * @param {Supernova} Sn
- * @param {env} env
+ * @param {Galaxy} galaxy
  * @returns {generator}
  * @private
  */
-export default function generatorFn(UserSN, env) {
+export default function generatorFn(UserSN, galaxy) {
   let sn;
 
-  const localEnv = {
-    translator,
-    ...env,
-  };
+  // TODO validate galaxy API
 
   if (typeof UserSN === 'function') {
-    sn = UserSN(localEnv);
+    sn = UserSN(galaxy);
   } else {
     sn = UserSN;
   }
@@ -73,7 +70,7 @@ export default function generatorFn(UserSN, env) {
      * @param {ObjectSelections} p.selections
      */
     create(params) {
-      const ss = create(generator, params, localEnv);
+      const ss = create(generator, params, galaxy);
       return ss;
     },
     definition: {},

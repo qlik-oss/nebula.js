@@ -25,7 +25,7 @@ export default function create(info, corona, opts = {}) {
     },
     supernova: () =>
       load(type.name, type.version, corona, opts.load).then(SNDefinition => {
-        sn = sn || SNFactory(SNDefinition, corona.public.env);
+        sn = sn || SNFactory(SNDefinition, corona.public.galaxy);
         stringified = JSON.stringify(sn.qae.properties.initial);
         return sn;
       }),

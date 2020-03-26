@@ -7,6 +7,7 @@ import AppSelectionsPortal from './components/selections/AppSelections';
 
 import create from './object/create-session-object';
 import get from './object/get-object';
+import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
 
 /**
@@ -69,8 +70,9 @@ const DEFAULT_CONFIG = /** @lends Configuration */ {
    * @type {(ThemeInfo[])=}
    */
   themes: [],
+
   /** @type {object=} */
-  env: {},
+  anything: {},
 
   /**
    * @type {SnapshotConfiguration=}
@@ -98,7 +100,8 @@ const mergeConfigs = (base, c) => ({
   },
   types: mergeArray(base.types, c.types),
   themes: mergeArray(base.themes, c.themes),
-  env: mergeObj(base.env, c.env),
+  flags: mergeObj(base.flags, c.flags),
+  anything: mergeObj(base.anything, c.anything),
 });
 
 function nuked(configuration = {}) {
@@ -137,9 +140,14 @@ function nuked(configuration = {}) {
     });
 
     const publicAPIs = {
-      env: {
+      galaxy: /** @lends Galaxy */ {
+        /** @type {Translator} */
         translator: locale.translator,
-        nucleus,
+        // TODO - validate flags input
+        /** @type {Flags} */
+        flags: flagsFn(configuration.flags),
+        /** @type {object} */
+        anything: configuration.anything,
       },
       theme: appTheme.externalAPI,
       translator: locale.translator,
