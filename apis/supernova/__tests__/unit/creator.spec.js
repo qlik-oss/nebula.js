@@ -36,13 +36,13 @@ describe('creator', () => {
           properties: {},
         },
       };
-      const env = {};
+      const galaxy = {};
       const params = {
         model: {},
         app: {},
       };
 
-      const c = create(generator, params, env).component;
+      const c = create(generator, params, galaxy).component;
 
       ['created', 'mounted', 'render', 'resize', 'willUnmount', 'destroy'].forEach(key => {
         c[key]('a');
@@ -56,7 +56,7 @@ describe('creator', () => {
     let fnComponent;
     let generator;
     let opts;
-    let env;
+    let galaxy;
     let hooked;
     beforeEach(() => {
       hooked = {
@@ -78,7 +78,7 @@ describe('creator', () => {
           properties: {},
         },
       };
-      env = {
+      galaxy = {
         translator: { language: () => 'en' },
       };
       opts = {
@@ -90,13 +90,13 @@ describe('creator', () => {
     });
 
     it('should hook into hook API', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       expect(hook).to.have.been.calledWithExactly(fnComponent);
       expect(c.isHooked).to.equal(true);
     });
 
     it('should initiate context', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       expect(c.context).to.eql({
         model: 'model',
         app: 'app',
@@ -104,7 +104,7 @@ describe('creator', () => {
         selections: 'selections',
         element: undefined,
         theme: undefined,
-        translator: env.translator,
+        translator: galaxy.translator,
         layout: {},
         appLayout: {},
         constraints: {
@@ -115,48 +115,48 @@ describe('creator', () => {
     });
 
     it('should initiate hook on mount', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       c.mounted('element');
       expect(hooked.initiate).to.have.been.calledWithExactly(c, { explicitResize: false });
       expect(c.context.element).to.equal('element');
     });
 
     it('should initiate with explicitResize on mount', () => {
-      const c = create(generator, { explicitResize: true, ...opts }, env).component;
+      const c = create(generator, { explicitResize: true, ...opts }, galaxy).component;
       c.mounted('element');
       expect(hooked.initiate).to.have.been.calledWithExactly(c, { explicitResize: true });
       expect(c.context.element).to.equal('element');
     });
 
     it('should teardown on unmount', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       c.willUnmount();
       expect(hooked.teardown).to.have.been.calledWithExactly(c);
     });
 
     it('should schedule update on rect and run on resize', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       c.resize();
       expect(hooked.updateRectOnNextRun).to.have.been.calledWithExactly(c);
       expect(hooked.run).to.have.been.calledWithExactly(c);
     });
 
     it('should setSnapshotData', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       const layout = 'l';
       c.setSnapshotData(layout);
       expect(hooked.runSnaps).to.have.been.calledWithExactly(c, layout);
     });
 
     it('should observeActions', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       const fn = () => {};
       c.observeActions(fn);
       expect(hooked.observeActions).to.have.been.calledWithExactly(c, fn);
     });
 
     it('should get imperative handle', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       hooked.getImperativeHandle.returns('handle');
       const v = c.getImperativeHandle();
       expect(hooked.getImperativeHandle).to.have.been.calledWithExactly(c);
@@ -164,13 +164,13 @@ describe('creator', () => {
     });
 
     it('should run hook on render when params are not provided', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       c.render();
       expect(hooked.run).to.have.been.calledWithExactly(c);
     });
 
     it('should not run hook when observed values have not changed', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       const layout = 'layout';
       c.render({
         layout,
@@ -213,7 +213,7 @@ describe('creator', () => {
     });
 
     it('should run when layout has changed', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       const layout = {};
       c.render({ layout }); // initial should always run
 
@@ -225,7 +225,7 @@ describe('creator', () => {
     });
 
     it('should run when appLayout has changed', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
       c.render({
@@ -239,7 +239,7 @@ describe('creator', () => {
     });
 
     it('should run when constraints have changed', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
       c.render({
@@ -260,7 +260,7 @@ describe('creator', () => {
     });
 
     it('should run when options have changed', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
       const foo = new (class Foo {})();
@@ -295,7 +295,7 @@ describe('creator', () => {
     });
 
     it('should run when theme name has changed', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
       c.render({
@@ -307,24 +307,24 @@ describe('creator', () => {
     });
 
     it('should run when language has changed', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
-      env.translator.language = () => 'sv';
+      galaxy.translator.language = () => 'sv';
 
       c.render({});
       expect(hooked.run.callCount).to.equal(2);
     });
 
     it('should return value from run', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       hooked.run.returns('fast');
       const r = c.render({});
       expect(r).to.equal('fast');
     });
 
     it('should return previous return value when nothing has changed', () => {
-      const c = create(generator, opts, env).component;
+      const c = create(generator, opts, galaxy).component;
       // inital run
       hooked.run.returns('fast');
       const run1 = c.render({});
@@ -345,13 +345,13 @@ describe('creator', () => {
         properties: {},
       },
     };
-    const env = {};
+    const galaxy = {};
     const params = {
       model: {},
       app: {},
     };
 
-    const c = create(generator, params, env).component;
+    const c = create(generator, params, galaxy).component;
 
     ['created', 'mounted', 'render', 'resize', 'willUnmount', 'destroy'].forEach(key =>
       expect(c[key]).to.be.a('function')
@@ -371,7 +371,7 @@ describe('creator', () => {
         },
       },
     };
-    const env = {};
+    const galaxy = {};
     const properties = { dummyPatched: false };
     const params = {
       model: {
@@ -382,7 +382,7 @@ describe('creator', () => {
       app: {},
     };
 
-    create(generator, params, env).component;
+    create(generator, params, galaxy).component;
 
     await params.model.setProperties(properties);
 

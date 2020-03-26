@@ -73,4 +73,9 @@ describe('hooks', () => {
     const text = await page.$eval(`${snSelector} .options`, el => el.textContent);
     expect(text).to.equal('opts');
   });
+
+  it('should have true MAGIC_FLAG', async () => {
+    const text = await page.$eval(`${snSelector} .flags`, el => el.textContent);
+    expect(text).to.equal('true:false');
+  });
 });

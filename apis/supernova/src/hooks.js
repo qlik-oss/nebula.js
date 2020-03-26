@@ -210,12 +210,6 @@ function useInternalContext(name) {
   return ctx[name];
 }
 
-// function useInternalEnv(name) {
-//   getHook(++currentIndex);
-//   const { env } = currentComponent;
-//   return env[name];
-// }
-
 export function updateRectOnNextRun(component) {
   if (component.__hooks) {
     component.__hooks.updateRect = true;

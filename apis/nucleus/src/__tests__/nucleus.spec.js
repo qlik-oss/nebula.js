@@ -6,6 +6,7 @@ describe('nucleus', () => {
   let sandbox;
   let rootApp;
   let translator;
+  let typesFn;
 
   before(() => {
     sandbox = sinon.createSandbox({ useFakeTimers: true });
@@ -14,6 +15,7 @@ describe('nucleus', () => {
     appThemeFn = sandbox.stub();
     rootApp = sandbox.stub();
     translator = { add: sandbox.stub(), language: sandbox.stub() };
+    typesFn = sandbox.stub();
     [{ default: create }] = aw.mock(
       [
         [require.resolve('../locale/app-locale.js'), () => () => ({ translator })],
@@ -21,7 +23,8 @@ describe('nucleus', () => {
         [require.resolve('../components/selections/AppSelections.jsx'), () => () => ({})],
         [require.resolve('../object/create-session-object.js'), () => createObject],
         [require.resolve('../object/get-object.js'), () => getObject],
-        [require.resolve('../sn/types.js'), () => ({ create: () => ({}) })],
+        [require.resolve('../sn/types.js'), () => ({ create: typesFn })],
+        [require.resolve('../flags/flags.js'), () => () => 'flags'],
         [require.resolve('../app-theme.js'), () => appThemeFn],
       ],
       ['../index.js']
@@ -32,12 +35,28 @@ describe('nucleus', () => {
     createObject.returns('created object');
     getObject.returns('got object');
     appThemeFn.returns({ externalAPI: 'internal', setTheme: sandbox.stub() });
+    typesFn.returns({});
     rootApp.returns([{}]);
   });
 
   afterEach(() => {
     sandbox.reset();
     sandbox.restore();
+  });
+
+  it('should initiate types with a public galaxy interface', () => {
+    create('app', {
+      anything: {
+        some: 'thing',
+      },
+    });
+    expect(typesFn.getCall(0).args[0].corona.public.galaxy).to.eql({
+      anything: {
+        some: 'thing',
+      },
+      flags: 'flags',
+      translator,
+    });
   });
 
   it('should wait for theme before rendering object', async () => {

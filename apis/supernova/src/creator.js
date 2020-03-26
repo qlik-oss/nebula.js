@@ -37,7 +37,7 @@ const mixin = obj => {
   return obj;
 };
 
-function createWithHooks(generator, opts, env) {
+function createWithHooks(generator, opts, galaxy) {
   if (__NEBULA_DEV__) {
     if (generator.component.run !== run) {
       // eslint-disable-next-line no-console
@@ -69,14 +69,13 @@ function createWithHooks(generator, opts, env) {
       element: undefined, // set on mount
       // ---- singletons ----
       theme: undefined,
-      translator: env.translator,
+      translator: galaxy.translator,
       // --- dynamic values ---
       layout: {},
       appLayout: {},
       constraints: forcedConstraints,
       options: {},
     },
-    env,
     fn: generator.component.fn,
     created() {},
     mounted(element) {
@@ -248,13 +247,13 @@ function createClassical(generator, opts) {
   return [componentInstance, hero];
 }
 
-export default function create(generator, opts, env) {
+export default function create(generator, opts, galaxy) {
   if (typeof generator.component === 'function') {
     generator.component = hook(generator.component);
   }
   const [componentInstance, hero] =
     generator.component && generator.component.__hooked
-      ? createWithHooks(generator, opts, env)
+      ? createWithHooks(generator, opts, galaxy)
       : createClassical(generator, opts);
 
   const teardowns = [];

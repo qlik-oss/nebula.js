@@ -4,9 +4,6 @@ describe('load', () => {
   let corona = {};
   beforeEach(() => {
     corona = {
-      public: {
-        env: 'env',
-      },
       config: {
         load: sinon.stub(),
       },
@@ -29,7 +26,7 @@ describe('load', () => {
   it('should call load() with name and version', async () => {
     const loader = sinon.stub();
     load('pie', '1.0.0', corona, loader);
-    expect(loader).to.have.been.calledWithExactly({ name: 'pie', version: '1.0.0' }, 'env');
+    expect(loader).to.have.been.calledWithExactly({ name: 'pie', version: '1.0.0' });
   });
 
   it('should load valid sn', async () => {

@@ -14,7 +14,7 @@ import {
   useOptions,
 } from '@nebula.js/supernova';
 
-function sn() {
+function sn({ flags }) {
   return {
     component: () => {
       const [count, setCount] = useState(0);
@@ -73,6 +73,7 @@ function sn() {
         <div class="action">${acted}</div>
         <div class="constraints">${!!passive}:${!!active}:${!!select}</div>
         <div class="options">${options.myOption}</div>
+        <div class="flags">${flags.isEnabled('MAGIC_FLAG')}:${flags.isEnabled('_UNKNOWN_')}</div>
       </div>
       `;
     },
@@ -83,6 +84,11 @@ export default function fixture() {
   return {
     type: 'sn-mounted',
     sn,
+    instanceConfig: {
+      flags: {
+        MAGIC_FLAG: true,
+      },
+    },
     snConfig: {
       options: {
         myOption: 'opts',
