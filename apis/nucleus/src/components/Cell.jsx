@@ -190,6 +190,7 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
       handleModal({ sn: state.sn, layout, model });
     };
     const load = async (withLayout, version) => {
+      dispatch({ type: 'LOADING' });
       const sn = await loadType({
         dispatch,
         types,
@@ -208,7 +209,6 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
     };
 
     if (!layout) {
-      dispatch({ type: 'LOADING' });
       return undefined;
     }
 
@@ -272,8 +272,8 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
         };
       },
       async exportImage() {
-        if (!corona.config.snapshot.capture) {
-          throw new Error('Nebula has not been configured with snapshot.capture');
+        if (typeof corona.config.snapshot.capture !== 'function') {
+          throw new Error('Nebula has not been configured with snapshot.capture callback');
         }
         const snapshot = await this.takeSnapshot(); // eslint-disable-line
         return corona.config.snapshot.capture(snapshot);
@@ -283,7 +283,7 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
   );
   // console.log('content', state);
   let Content = null;
-  if (state.loading) {
+  if (state.loading && !state.longRunningQuery) {
     Content = <LoadingSn />;
   } else if (state.error) {
     Content = <CError {...state.error} />;
