@@ -1,11 +1,17 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
+import { StylesProvider, ThemeProvider, createTheme } from '@nebula.js/ui/theme';
 
 const mockedReactDOM = { render: sinon.spy() };
 const [{ default: boot, NebulaApp }] = aw.mock(
-  [[require.resolve('react-dom'), () => mockedReactDOM]],
+  [
+    [require.resolve('react-dom'), () => mockedReactDOM],
+    [require.resolve('../../hooks/useAppSelections'), () => () => [{}]],
+  ],
   ['../NebulaApp']
 );
+
+const InstanceContext = React.createContext();
 
 describe('Boot NebulaApp', () => {
   let sandbox;
@@ -99,18 +105,41 @@ describe('Boot NebulaApp', () => {
     });
     expect(appRef.current.setContext.callCount).to.equal(1);
   });
+  it('should get app selections', async () => {
+    const app = { id: 'foo' };
+    const translator = {};
+    const [api, appRef, rendered] = boot({ app, translator });
+    appRef.current = {
+      getAppSelections: sandbox.stub().returns('app-selections'),
+    };
+
+    await act(() => {
+      mockedReactDOM.render.callArg(2);
+      api.getAppSelections();
+      return rendered;
+    });
+    expect(await appRef.current.getAppSelections()).to.equal('app-selections');
+  });
 });
 
-describe.skip('<NebulaApp />', () => {
+describe('<NebulaApp />', () => {
   let sandbox;
   let renderer;
   let render;
+  let ref;
   beforeEach(() => {
+    ref = React.createRef();
     sandbox = sinon.createSandbox();
-    render = async ({ translator, initialComponents, rendererOptions } = {}) => {
+    render = async ({ initialContext, app, rendererOptions, theme = createTheme('dark') } = {}) => {
       await act(async () => {
         renderer = create(
-          <NebulaApp translator={translator} initialComponents={initialComponents} />,
+          <StylesProvider>
+            <ThemeProvider theme={theme}>
+              <InstanceContext.Provider value={{ translator: { get: s => s, language: () => 'sv' } }}>
+                <NebulaApp ref={ref} initialContext={initialContext} app={app} />
+              </InstanceContext.Provider>
+            </ThemeProvider>
+          </StylesProvider>,
           rendererOptions || null
         );
       });
@@ -120,20 +149,21 @@ describe.skip('<NebulaApp />', () => {
     sandbox.restore();
     renderer.unmount();
   });
-  it('should render default', async () => {
-    const foo = () => 'foo';
-    const initialComponents = [foo];
-    await render({
-      initialComponents,
-      rendererOptions: {
-        createNodeMock: (/* e */) => {
-          return {};
-        },
-      },
-    });
-    // console.log(renderer.props);
-    // const t = renderer.root.findAllByType(foo);
-    // console.log(t)
-    // console.log(renderer.root.props.children);
+
+  it('should add component', async () => {
+    const Foo = () => 'foo';
+    await render();
+    act(() => ref.current.addComponent(<Foo key="1" />));
+    renderer.root.findByType(Foo);
+  });
+
+  it('should remove component', async () => {
+    const Foo = () => 'foo';
+    const MyFoo = <Foo key="1" />;
+    await render();
+    act(() => ref.current.addComponent(MyFoo));
+    renderer.root.findByType(Foo);
+    act(() => ref.current.removeComponent(MyFoo));
+    expect(() => renderer.root.findByType(MyFoo)).to.throw();
   });
 });
