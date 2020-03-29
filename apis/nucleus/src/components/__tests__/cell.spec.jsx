@@ -3,32 +3,59 @@ import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
-const Loading = () => 'loading';
-const LongRunningQuery = () => 'long-running-query';
-const CError = () => 'error';
-const Supernova = () => 'supernova';
-const Header = () => 'Header';
-const InstanceContext = React.createContext();
-
-const [{ default: Cell }] = aw.mock(
-  [
-    [require.resolve('../Loading'), () => Loading],
-    [require.resolve('../LongRunningQuery'), () => LongRunningQuery],
-    [require.resolve('../Error'), () => CError],
-    [require.resolve('../Supernova'), () => Supernova],
-    [require.resolve('../Header'), () => Header],
-    [require.resolve('../../contexts/InstanceContext'), () => InstanceContext],
-  ],
-  ['../Cell']
-);
-
 describe('<Cell />', () => {
   let sandbox;
   let render;
   let renderer;
   let id = 0;
-  beforeEach(() => {
+  let Loading;
+  let LongRunningQuery;
+  let CError;
+  let Supernova;
+  let Header;
+  let InstanceContext;
+  let useLayout;
+  let layout;
+  let layoutState;
+  let longrunning;
+  let appLayout = {};
+  let Cell;
+
+  before(() => {
     sandbox = sinon.createSandbox();
+    Loading = () => 'loading';
+    LongRunningQuery = () => 'long-running-query';
+    CError = () => 'error';
+    Supernova = () => 'supernova';
+    Header = () => 'Header';
+    InstanceContext = React.createContext();
+    appLayout = { foo: 'app-layout' };
+    layout = { qSelectionInfo: {} };
+    layoutState = { validating: true, canCancel: false, canRetry: false };
+    longrunning = { cancel: sandbox.spy(), retry: sandbox.spy() };
+    useLayout = sandbox.stub().returns([layout, layoutState, longrunning]);
+    [{ default: Cell }] = aw.mock(
+      [
+        [
+          require.resolve('../../hooks/useLayout'),
+          () => ({
+            __esModule: true,
+            default: useLayout,
+            useAppLayout: () => [appLayout],
+          }),
+        ],
+        [require.resolve('../Loading'), () => Loading],
+        [require.resolve('../LongRunningQuery'), () => LongRunningQuery],
+        [require.resolve('../Error'), () => CError],
+        [require.resolve('../Supernova'), () => Supernova],
+        [require.resolve('../Header'), () => Header],
+        [require.resolve('../../contexts/InstanceContext'), () => InstanceContext],
+      ],
+      ['../Cell']
+    );
+  });
+
+  beforeEach(() => {
     const addEventListener = sandbox.spy();
     const removeEventListener = sandbox.spy();
     global.window = {
@@ -45,7 +72,6 @@ describe('<Cell />', () => {
         })
       ),
     };
-    const appLayout = { foo: 'app-layout' };
     const defaultCorona = {
       app: {
         id: 'app-id',
@@ -67,6 +93,7 @@ describe('<Cell />', () => {
       onMount = sandbox.spy(),
       theme = createTheme('dark'),
       cellRef,
+      config = {},
       rendererOptions,
     } = {}) => {
       model = {
@@ -78,6 +105,9 @@ describe('<Cell />', () => {
         ...app,
         public: {
           nebbie: nebbie.types ? nebbie : { ...defaultCorona.public.nebbie },
+        },
+        config: {
+          ...config,
         },
       };
 
@@ -99,36 +129,33 @@ describe('<Cell />', () => {
     delete global.window;
   });
 
-  it('should render loading', async () => {
-    sandbox.useFakeTimers();
-    await render();
-    sandbox.clock.tick(800);
-    const types = renderer.root.findAllByType(Loading);
-    expect(types).to.have.length(1);
-  });
-
-  it('should render long running', async () => {
-    sandbox.useFakeTimers();
-    await render();
-    sandbox.clock.tick(2100);
-    const types = renderer.root.findAllByType(LongRunningQuery);
-    expect(types).to.have.length(1);
-  });
-
   it('should render version error', async () => {
-    const model = {
-      getLayout: sandbox.stub().returns(Promise.resolve({ visualization: 'wh0p' })),
-    };
-    await render({ model });
+    await render();
     const types = renderer.root.findAllByType(CError);
     expect(types).to.have.length(1);
   });
 
   describe('sn', () => {
-    it('should render', async () => {
-      const model = {
-        getLayout: sandbox.stub().returns(Promise.resolve({ visualization: 'sn' })),
+    it('should render loading', async () => {
+      sandbox.useFakeTimers();
+      const nebbie = {
+        types: {
+          get: sandbox.stub().returns({
+            supernova: () => new Promise(() => {}),
+          }),
+          getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        },
       };
+      await render({ nebbie });
+      sandbox.clock.tick(800);
+      const types = renderer.root.findAllByType(Loading);
+      expect(types).to.have.length(1);
+      expect(() => renderer.root.findByType(LongRunningQuery)).to.throw();
+    });
+
+    it('should not render long running', async () => {
+      sandbox.useFakeTimers();
+      sandbox.stub(layoutState, 'validating').value(false);
       const sn = {
         generator: {
           qae: {
@@ -146,16 +173,64 @@ describe('<Cell />', () => {
           getSupportedVersion: sandbox.stub().returns('1.0.0'),
         },
       };
-      await render({ model, nebbie });
+      await render({ nebbie });
+      sandbox.clock.tick(2100);
+      const types = renderer.root.findAllByType(LongRunningQuery);
+      expect(types).to.have.length(0);
+    });
+
+    it('should render long running', async () => {
+      sandbox.useFakeTimers();
+      sandbox.stub(layoutState, 'validating').value(true);
+      const sn = {
+        generator: {
+          qae: {
+            data: {
+              targets: [],
+            },
+          },
+        },
+      };
+      const nebbie = {
+        types: {
+          get: sandbox.stub().returns({
+            supernova: async () => ({ create: () => sn }),
+          }),
+          getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        },
+      };
+      await render({ nebbie });
+      sandbox.clock.tick(2100);
+      const types = renderer.root.findAllByType(LongRunningQuery);
+      expect(types).to.have.length(1);
+      expect(() => renderer.root.findByType(Loading)).to.throw();
+    });
+
+    it('should render', async () => {
+      const sn = {
+        generator: {
+          qae: {
+            data: {
+              targets: [],
+            },
+          },
+        },
+      };
+      const nebbie = {
+        types: {
+          get: sandbox.stub().returns({
+            supernova: async () => ({ create: () => sn }),
+          }),
+          getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        },
+      };
+      await render({ nebbie });
 
       const types = renderer.root.findAllByType(Supernova);
       expect(types).to.have.length(1);
     });
 
     it('should render requirements', async () => {
-      const model = {
-        getLayout: sandbox.stub().returns(Promise.resolve({ visualization: 'sn' })),
-      };
       const sn = {
         generator: {
           qae: {
@@ -185,7 +260,7 @@ describe('<Cell />', () => {
           getSupportedVersion: sandbox.stub().returns('1.0.0'),
         },
       };
-      await render({ model, nebbie });
+      await render({ nebbie });
 
       const types = renderer.root.findAllByType(CError);
       expect(types).to.have.length(1);
@@ -193,10 +268,7 @@ describe('<Cell />', () => {
     });
 
     it('should render hypercube error', async () => {
-      const layout = { visualization: 'sn', foo: { qError: { qErrorCode: 1337 } } };
-      const model = {
-        getLayout: sandbox.stub().returns(Promise.resolve(layout)),
-      };
+      const localLayout = { visualization: 'sn', foo: { qError: { qErrorCode: 1337 } } };
       const sn = {
         generator: {
           qae: {
@@ -204,7 +276,7 @@ describe('<Cell />', () => {
               targets: [
                 {
                   layoutPath: '/foo',
-                  resolveLayout: () => layout.foo,
+                  resolveLayout: () => localLayout.foo,
                   dimensions: {
                     min: () => 0,
                     max: () => 0,
@@ -227,7 +299,7 @@ describe('<Cell />', () => {
           getSupportedVersion: sandbox.stub().returns('1.0.0'),
         },
       };
-      await render({ model, nebbie });
+      await render({ nebbie });
 
       const types = renderer.root.findAllByType(CError);
       expect(types).to.have.length(1);
@@ -237,10 +309,9 @@ describe('<Cell />', () => {
     });
 
     it('should go modal (selections)', async () => {
-      const layout = { visualization: 'sn', qSelectionInfo: { qInSelections: true }, foo: {} };
+      sandbox.stub(layout, 'qSelectionInfo').value({ qInSelections: true });
       const model = {
         id: 'sn-modal',
-        getLayout: sandbox.stub().returns(Promise.resolve(layout)),
       };
       const goModal = sandbox.spy();
       const sn = {
@@ -251,7 +322,7 @@ describe('<Cell />', () => {
                 {
                   propertyPath: '/qFoo',
                   layoutPath: '/foo',
-                  resolveLayout: () => layout.foo,
+                  resolveLayout: () => ({}),
                   dimensions: {
                     min: () => 0,
                     max: () => 0,
@@ -294,10 +365,9 @@ describe('<Cell />', () => {
     });
 
     it('should no modal (selections)', async () => {
-      const layout = { visualization: 'sn-no-modal', qSelectionInfo: { qInSelections: false }, foo: {} };
+      sandbox.stub(layout, 'qSelectionInfo').value({ qInSelections: false });
       const model = {
         id: 'sn-no-modal',
-        getLayout: sandbox.stub().returns(Promise.resolve(layout)),
       };
       const noModal = sandbox.spy();
       const sn = {
@@ -307,7 +377,7 @@ describe('<Cell />', () => {
               targets: [
                 {
                   layoutPath: '/foo',
-                  resolveLayout: () => layout.foo,
+                  resolveLayout: () => ({}),
                   dimensions: {
                     min: () => 0,
                     max: () => 0,
@@ -352,9 +422,7 @@ describe('<Cell />', () => {
   describe('cell ref', () => {
     it('should expose api', async () => {
       const cellRef = React.createRef();
-      const model = {
-        getLayout: sandbox.stub().returns(Promise.resolve({ visualization: 'sn' })),
-      };
+      const model = {};
       const sn = {
         generator: {
           qae: {
@@ -381,9 +449,6 @@ describe('<Cell />', () => {
 
     it('should take snapshot', async () => {
       const cellRef = React.createRef();
-      const model = {
-        getLayout: sandbox.stub().returns(Promise.resolve({ visualization: 'sn' })),
-      };
       const sn = {
         generator: {
           qae: {
@@ -403,7 +468,6 @@ describe('<Cell />', () => {
         },
       };
       await render({
-        model,
         nebbie,
         cellRef,
         rendererOptions: {
@@ -422,9 +486,7 @@ describe('<Cell />', () => {
       delete snapshot.key;
       expect(key).to.be.a('string');
       expect(snapshot).to.deep.equal({
-        layout: {
-          visualization: 'sn',
-        },
+        layout,
         meta: {
           appLayout: { foo: 'app-layout' },
           language: 'sv',
@@ -439,9 +501,6 @@ describe('<Cell />', () => {
 
     it('should take snapshot and call setSnapshotData', async () => {
       const cellRef = React.createRef();
-      const model = {
-        getLayout: sandbox.stub().returns(Promise.resolve({ visualization: 'sn' })),
-      };
       const sn = {
         generator: {
           qae: {
@@ -465,7 +524,6 @@ describe('<Cell />', () => {
         },
       };
       await render({
-        model,
         nebbie,
         cellRef,
         rendererOptions: {
@@ -483,6 +541,78 @@ describe('<Cell />', () => {
       expect(snapshot.layout).to.deep.equal({
         foo: 'bar',
       });
+    });
+
+    it('should not export image', async () => {
+      const config = {
+        snapshot: {
+          capture: false,
+        },
+      };
+      const cellRef = React.createRef();
+      const sn = {
+        generator: {
+          qae: {
+            data: {
+              targets: [],
+            },
+          },
+        },
+        component: {},
+      };
+      const nebbie = {
+        types: {
+          get: sandbox.stub().returns({
+            supernova: async () => ({ create: () => sn }),
+          }),
+          getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        },
+      };
+      await render({
+        nebbie,
+        cellRef,
+        config,
+      });
+      return expect(cellRef.current.exportImage()).to.eventually.be.rejectedWith(
+        Error,
+        'Nebula has not been configured with snapshot.capture callback'
+      );
+    });
+
+    it('should export image', async () => {
+      const config = {
+        snapshot: {
+          capture: sandbox.stub().returns('snapped'),
+        },
+      };
+      const cellRef = React.createRef();
+      const sn = {
+        generator: {
+          qae: {
+            data: {
+              targets: [],
+            },
+          },
+        },
+        component: {},
+      };
+      const nebbie = {
+        types: {
+          get: sandbox.stub().returns({
+            supernova: async () => ({ create: () => sn }),
+          }),
+          getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        },
+      };
+      await render({
+        nebbie,
+        cellRef,
+        config,
+      });
+      sandbox.stub(cellRef.current, 'takeSnapshot').returns('snapshot');
+      const res = await cellRef.current.exportImage();
+      expect(config.snapshot.capture).to.have.been.calledWithExactly('snapshot');
+      expect(res).to.equal('snapped');
     });
   });
 });
