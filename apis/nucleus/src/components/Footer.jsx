@@ -1,16 +1,25 @@
 import React from 'react';
 
-import { Typography, Grid } from '@material-ui/core';
+import { makeStyles, Typography, Grid } from '@material-ui/core';
 
-const Footer = ({ layout }) =>
-  layout && layout.showTitles && layout.footnote ? (
+const useStyles = makeStyles(theme => ({
+  itemStyle: {
+    minWidth: 0,
+    paddingTop: theme.spacing(1),
+  },
+}));
+
+const Footer = ({ layout }) => {
+  const { itemStyle } = useStyles();
+  return layout && layout.showTitles && layout.footnote ? (
     <Grid container>
-      <Grid item style={{ minWidth: 0 }}>
+      <Grid item className={itemStyle}>
         <Typography noWrap variant="body2">
           {layout.footnote}
         </Typography>
       </Grid>
     </Grid>
   ) : null;
+};
 
 export default Footer;

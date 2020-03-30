@@ -1,15 +1,25 @@
 import React, { useEffect, useState } from 'react';
 
-import { Grid, Typography } from '@material-ui/core';
-
+import { makeStyles, Grid, Typography } from '@material-ui/core';
 import SelectionToolbarWithDefault from './SelectionToolbar';
+
+const useStyles = makeStyles(theme => ({
+  containerStyle: {
+    flexGrow: 0,
+    paddingBottom: theme.spacing(1),
+  },
+  itemsStyle: {
+    whiteSpace: 'nowrap',
+    minHeight: '32px',
+  },
+}));
 
 const Header = ({ layout, sn }) => {
   const showTitle = layout && layout.showTitles && !!layout.title;
   const showSubtitle = layout && layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = sn && layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
-
   const [items, setItems] = useState([]);
+  const { containerStyle, itemsStyle } = useStyles();
 
   useEffect(() => {
     if (!sn || !sn.component || !sn.component.isHooked) {
@@ -19,7 +29,7 @@ const Header = ({ layout, sn }) => {
   }, [sn]);
 
   return (
-    <Grid item container wrap="nowrap" style={{ flexGrow: 0 }}>
+    <Grid item container wrap="nowrap" className={containerStyle}>
       <Grid item zeroMinWidth xs>
         <Grid container wrap="nowrap" direction="column">
           {showTitle && (
@@ -34,7 +44,7 @@ const Header = ({ layout, sn }) => {
           )}
         </Grid>
       </Grid>
-      <Grid item style={{ whiteSpace: 'nowrap', minHeight: '32px' }}>
+      <Grid item className={itemsStyle}>
         {showInSelectionActions && (
           <SelectionToolbarWithDefault
             inline
