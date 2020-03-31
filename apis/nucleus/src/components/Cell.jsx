@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer, useRef } from 'react';
+import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer } from 'react';
 
 import { Grid, Paper } from '@material-ui/core';
 import { useTheme } from '@nebula.js/ui/theme';
@@ -168,11 +168,11 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
 
   const { translator, language } = useContext(InstanceContext);
   const theme = useTheme();
-  const cellRef = useRef();
+  const [cellRef] = useRect();
   const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
   const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
   const [appLayout] = useAppLayout(app);
-  const [contentRef, contentRect, , contentNode] = useRect();
+  const [contentRef, contentRect] = useRect();
   const [snOptions, setSnOptions] = useState(initialSnOptions);
   const [selections] = useObjectSelections(app, model);
 
@@ -296,7 +296,6 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
         snOptions={snOptions}
         layout={layout}
         appLayout={appLayout}
-        parentNode={contentNode}
       />
     );
   }
@@ -321,7 +320,7 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
           ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
         }}
       >
-        <Header layout={layout} sn={state.sn}>
+        <Header layout={layout} sn={state.sn} anchorEl={cellRef.current}>
           &nbsp;
         </Header>
         <Grid
