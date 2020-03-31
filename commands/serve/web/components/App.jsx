@@ -282,7 +282,7 @@ export default function App({ app, info }) {
               <VizContext.Provider value={vizContext}>
                 {sn ? (
                   <Grid container wrap="nowrap" style={{ height: '100%' }} spacing={SPACING}>
-                    <Grid item xs>
+                    <Grid item xs zeroMinWidth>
                       {objectListMode ? (
                         <Collection cache={currentId} types={[info.supernova.name]} />
                       ) : (
