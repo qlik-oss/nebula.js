@@ -292,6 +292,12 @@ describe('creator', () => {
         },
       });
       expect(hooked.run.callCount).to.equal(3);
+
+      expect(c.context.options).to.eql({
+        rtl: false,
+        foo,
+        ref,
+      });
     });
 
     it('should run when theme name has changed', () => {

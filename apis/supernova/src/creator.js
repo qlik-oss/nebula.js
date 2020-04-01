@@ -106,8 +106,8 @@ function createWithHooks(generator, opts, galaxy) {
           const op = {};
           let opChanged = false;
           Object.keys(r.options).forEach(key => {
+            op[key] = r.options[key];
             if (this.context.options[key] !== r.options[key]) {
-              op[key] = r.options[key];
               opChanged = true;
             }
           });
