@@ -39,7 +39,8 @@ export function initiate(component, { explicitResize = false } = {}) {
     pendingEffects: [],
     pendingLayoutEffects: [],
     pendingPromises: [],
-    config: {
+    resizer: {
+      setters: [],
       explicitResize,
     },
   };
@@ -55,6 +56,7 @@ export function teardown(component) {
   component.__hooks.actions.length = 0;
   component.__hooks.dispatchActions = null;
   component.__hooks.imperativeHandle = null;
+  component.__hooks.resizer = null;
 
   clearTimeout(component.__hooks.micro);
   cancelAnimationFrame(component.__hooks.macro);
@@ -212,7 +214,7 @@ function useInternalContext(name) {
 
 export function updateRectOnNextRun(component) {
   if (component.__hooks) {
-    component.__hooks.updateRect = true;
+    component.__hooks.resizer.update = true;
   }
 }
 
@@ -470,35 +472,48 @@ export function useElement() {
  */
 export function useRect() {
   const element = useElement();
+  const ref = currentComponent.__hooks.resizer;
+
   const [rect, setRect] = useState(() => {
     const { left, top, width, height } = element.getBoundingClientRect();
     return { left, top, width, height };
   });
 
-  const [ref] = useState(() => ({ current: {}, component: currentComponent }));
   ref.current = rect;
+
+  if (ref.setters.indexOf(setRect) === -1) {
+    ref.setters.push(setRect);
+  }
+
   // a forced resize should alwas update size regardless of whether ResizeObserver is available
-  if (ref.resize && currentComponent.__hooks.updateRect) {
-    currentComponent.__hooks.updateRect = false;
+  if (ref.update && ref.resize) {
+    ref.update = false;
     ref.resize();
   }
+
   useLayoutEffect(() => {
+    if (ref.initiated) {
+      return undefined;
+    }
+    ref.initiated = true;
+
     const handleResize = () => {
       // TODO - should we really care about left/top?
       const { left, top, width, height } = element.getBoundingClientRect();
       const r = ref.current;
 
       if (r.width !== width || r.height !== height || r.left !== left || r.top !== top) {
-        setRect({ left, top, width, height });
+        ref.setters.forEach(setR => setR({ left, top, width, height }));
       }
     };
+
     ref.resize = () => {
       handleResize();
     };
 
     // if component is configured with explicitResize, then we skip the
     // size observer and let the user control the resize themselves
-    if (ref.component.__hooks.config.explicitResize) {
+    if (ref.explicitResize) {
       return () => {
         ref.resize = undefined;
       };

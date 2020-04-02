@@ -129,6 +129,7 @@ describe('hooks', () => {
         actions: [],
         dispatchActions: null,
         imperativeHandle: null,
+        resizer: null,
       });
     });
   });
@@ -702,16 +703,20 @@ describe('hooks', () => {
       it('should update rect when scheduled', async () => {
         element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
         let r;
+        let r2;
         c.fn = () => {
           r = useRect();
+          r2 = useRect();
         };
         run(c);
         expect(r).to.eql({ left: 1, top: 2, width: 3, height: 4 });
+        expect(r2).to.eql({ left: 1, top: 2, width: 3, height: 4 });
 
         element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 5 });
         updateRectOnNextRun(c);
         await run(c);
         expect(r).to.eql({ left: 1, top: 2, width: 3, height: 5 });
+        expect(r2).to.eql({ left: 1, top: 2, width: 3, height: 5 });
       });
     });
   });
