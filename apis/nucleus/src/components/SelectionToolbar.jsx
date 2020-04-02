@@ -1,7 +1,5 @@
 import React, { useContext } from 'react';
 
-import { Grid } from '@material-ui/core';
-
 import { close } from '@nebula.js/ui/icons/close';
 import { tick } from '@nebula.js/ui/icons/tick';
 import { clearSelections } from '@nebula.js/ui/icons/clear-selections';
@@ -11,13 +9,11 @@ import Item from './SelectionToolbarItem';
 
 const SelectionToolbar = React.forwardRef(({ layout, items }, ref) => {
   return (
-    <Grid container spacing={0} wrap="nowrap">
+    <>
       {items.map((e, ix) => (
-        <Grid item key={e.key}>
-          <Item key={e.key} layout={layout} item={e} ref={ix === 0 ? ref : null} />
-        </Grid>
+        <Item key={e.key} layout={layout} item={e} ref={ix === 0 ? ref : null} />
       ))}
-    </Grid>
+    </>
   );
 });
 
