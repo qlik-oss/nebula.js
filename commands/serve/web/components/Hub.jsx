@@ -110,8 +110,8 @@ function SelectEngine({ info, children }) {
         <Typography variant="body2" paragraph>
           The development server needs to connect to and communicate with the Qlik Associative Engine running within any
           of Qlik&apos;s product offerings. The connection is done through the WebSocket protocol using a WebSocket URL
-          format the differs slightly between products. Enter the WebSocket URL that corresponds to the Qlik product you
-          are using.
+          format that differs slightly between products. Enter the WebSocket URL that corresponds to the Qlik product
+          you are using.
         </Typography>
 
         <Typography variant="subtitle1" gutterBottom>
@@ -142,11 +142,14 @@ function SelectEngine({ info, children }) {
             wss://&lt;tenant&gt;.&lt;region&gt;.qlikcloud.com?qlik-web-integration-id=&lt;web-integration-id&gt;
           </code>
           <br />
-          Example: <code>wss://qlik.eu.qlikclount.com?qlik-web-integration-id=xxx</code>
+          Example: <code>wss://qlik.eu.qlikcloud.com?qlik-web-integration-id=xxx</code>
           <br />
           <br />
-          The <code>qlik-web-integration-id</code> must be present in order for Qlik Sense to confirm that the request
-          originates from a whitelisted domain. For more info, visit{' '}
+          The <code>qlik-web-integration-id</code> must be present in order for QCS to confirm that the request
+          originates from a whitelisted domain.
+          <br />
+          <br />
+          For more info, visit{' '}
           <Link
             color="secondary"
             underline="always"
