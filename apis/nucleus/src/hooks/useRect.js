@@ -1,22 +1,26 @@
-import { useState, useCallback, useLayoutEffect, useRef } from 'react';
+import { useState, useCallback, useLayoutEffect } from 'react';
 
 export default function useRect() {
+  const [node, setNode] = useState();
   const [rect, setRect] = useState();
-  const ref = useRef();
-
-  const handleResize = useCallback(() => {
-    const { left, top, width, height } = ref.current.getBoundingClientRect();
+  const callbackRef = useCallback(ref => {
+    if (!ref) {
+      return;
+    }
+    setNode(ref);
+  }, []);
+  const handleResize = () => {
+    const { left, top, width, height } = node.getBoundingClientRect();
     setRect({ left, top, width, height });
-  }, [ref.current]);
-
+  };
   useLayoutEffect(() => {
-    if (!ref.current) return undefined;
+    if (!node) return undefined;
     if (typeof ResizeObserver === 'function') {
       let resizeObserver = new ResizeObserver(handleResize);
-      resizeObserver.observe(ref.current);
+      resizeObserver.observe(node);
       return () => {
-        resizeObserver.unobserve(ref.current);
-        resizeObserver.disconnect(ref.current);
+        resizeObserver.unobserve(node);
+        resizeObserver.disconnect(node);
         resizeObserver = null;
       };
     }
@@ -24,6 +28,6 @@ export default function useRect() {
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, [ref.current]);
-  return [ref, rect, ref.current];
+  }, [node]);
+  return [callbackRef, rect, node];
 }

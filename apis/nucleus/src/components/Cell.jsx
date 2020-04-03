@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer } from 'react';
+import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer, useRef } from 'react';
 
 import { Grid, Paper } from '@material-ui/core';
 import { useTheme } from '@nebula.js/ui/theme';
@@ -168,7 +168,7 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
 
   const { translator, language } = useContext(InstanceContext);
   const theme = useTheme();
-  const [cellRef] = useRect();
+  const cellRef = useRef();
   const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
   const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
   const [appLayout] = useAppLayout(app);
