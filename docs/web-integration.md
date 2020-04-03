@@ -101,7 +101,7 @@ You can render a visualization without having to create it in the app by providi
 n.render({
   element: document.querySelector('.object'),
   type: 'barchart',
-  fields: ['title', '=avg(rating')],
+  fields: ['title', '=avg(rating)'],
 });
 ```
 
