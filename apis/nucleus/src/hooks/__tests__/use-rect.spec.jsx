@@ -1,5 +1,6 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { create, act } from 'react-test-renderer';
+
 import useRect from '../useRect';
 
 const TestHook = forwardRef(({ hook, hookProps = [] }, ref) => {
@@ -40,10 +41,9 @@ describe('useRect - window resize', () => {
 
   it('should set rect', async () => {
     await render();
-    ref.current.result[0].current = {
+    ref.current.result[0]({
       getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
-    };
-    renderer.update(<TestHook ref={ref} hook={useRect} />);
+    });
     await act(async () => {
       global.window.addEventListener.callArg(1);
     });
@@ -52,10 +52,9 @@ describe('useRect - window resize', () => {
 
   it('should cleanup listeners', async () => {
     await render();
-    ref.current.result[0].current = {
+    ref.current.result[0]({
       getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
-    };
-    renderer.update(<TestHook ref={ref} hook={useRect} />);
+    });
     renderer.unmount();
     expect(removeEventListener.callCount).to.equal(1);
   });
@@ -94,20 +93,18 @@ describe('useRect - resize observer', () => {
 
   it('should set rect', async () => {
     await render();
-    ref.current.result[0].current = {
+    ref.current.result[0]({
       getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
-    };
-    renderer.update(<TestHook ref={ref} hook={useRect} />);
+    });
     handleResize();
     expect(ref.current.result[1]).to.deep.equal({ left: 100, top: 200, width: 300, height: 400 });
   });
 
   it('should cleanup listeners', async () => {
     await render();
-    ref.current.result[0].current = {
+    ref.current.result[0]({
       getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
-    };
-    renderer.update(<TestHook ref={ref} hook={useRect} />);
+    });
     renderer.unmount();
     expect(observer.unobserve.callCount).to.equal(1);
     expect(observer.disconnect.callCount).to.equal(1);
