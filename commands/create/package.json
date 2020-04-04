@@ -22,7 +22,7 @@
     "generate": "yo ./generator/index.js"
   },
   "dependencies": {
-    "chalk": "3.0.0",
+    "chalk": "4.0.0",
     "ejs": "3.0.1",
     "fs-extra": "8.1.0",
     "inquirer": "7.0.4"
