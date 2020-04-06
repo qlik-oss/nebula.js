@@ -1,7 +1,7 @@
 /* eslint no-param-reassign: 0 */
 async function renderSnapshot({ nucleus, element, snapshot: key }) {
   let snapshot = {};
-  const renderError = e => {
+  const renderError = (e) => {
     element.innerHTML = `<p>${e.message}</p>`;
     element.setAttribute('data-njs-error', e.message);
   };
@@ -17,7 +17,7 @@ async function renderSnapshot({ nucleus, element, snapshot: key }) {
     layout,
   } = snapshot;
 
-  const objectModel = props => ({
+  const objectModel = (props) => ({
     id: `${+new Date()}-object`,
     async getLayout() {
       return props;
@@ -28,7 +28,7 @@ async function renderSnapshot({ nucleus, element, snapshot: key }) {
 
   const app = {
     id: `${+new Date()}-app`,
-    createSessionObject: async props => objectModel(props),
+    createSessionObject: async (props) => objectModel(props),
     async getObject(id) {
       if (id === layout.qInfo.qId) {
         return objectModel(layout);

@@ -11,7 +11,7 @@ import ListBoxPopover from '../listbox/ListBoxPopover';
 
 import InstanceContext from '../../contexts/InstanceContext';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   item: {
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
@@ -38,7 +38,7 @@ export default function OneField({
 
   const classes = useStyles();
 
-  const handleShowListBoxPopover = e => {
+  const handleShowListBoxPopover = (e) => {
     if (e.currentTarget.contains(e.target)) {
       // because click in popover will propagate to parent
       setShowListBoxPopover(!showListBoxPopover);
@@ -75,7 +75,7 @@ export default function OneField({
   } else if (numSelected > 1 && selection.qTotal) {
     label = translator.get('CurrentSelections.Of', [numSelected, selection.qTotal]);
   } else if (selection.qSelectedFieldSelectionInfo) {
-    label = selection.qSelectedFieldSelectionInfo.map(v => v.qName).join(', ');
+    label = selection.qSelectedFieldSelectionInfo.map((v) => v.qName).join(', ');
   }
   if (field.states[stateIx] !== '$') {
     label = `${field.states[stateIx]}: ${label}`;
@@ -116,7 +116,7 @@ export default function OneField({
       <Grid item>
         <IconButton
           title={translator.get('Selection.Clear')}
-          onClick={e => {
+          onClick={(e) => {
             e.stopPropagation();
             api.clearField(selection.qField, field.states[stateIx]);
           }}
@@ -137,7 +137,7 @@ export default function OneField({
         }}
       >
         {noSegments === false &&
-          segments.map(s => (
+          segments.map((s) => (
             <div
               key={s.color}
               style={{

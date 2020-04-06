@@ -42,7 +42,7 @@ const modelStoreMiddleware = ({ type, value: model }) => {
 
 const [useModelStore, modelStore] = createKeyStore({}, modelStoreMiddleware);
 
-const subscribe = model => {
+const subscribe = (model) => {
   return modelStoreMiddleware({ type: 'SET', value: model });
 };
 

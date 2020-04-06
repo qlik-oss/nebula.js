@@ -1,6 +1,6 @@
 import SvgIcon from './SvgIcon';
 
-const warning = props => ({
+const warning = (props) => ({
   ...props,
   shapes: [
     {
@@ -12,4 +12,4 @@ const warning = props => ({
     },
   ],
 });
-export default props => SvgIcon(warning(props));
+export default (props) => SvgIcon(warning(props));

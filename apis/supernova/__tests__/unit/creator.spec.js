@@ -44,7 +44,7 @@ describe('creator', () => {
 
       const c = create(generator, params, galaxy).component;
 
-      ['created', 'mounted', 'render', 'resize', 'willUnmount', 'destroy'].forEach(key => {
+      ['created', 'mounted', 'render', 'resize', 'willUnmount', 'destroy'].forEach((key) => {
         c[key]('a');
         expect(generator.component[key]).to.have.been.calledWithExactly('a');
       });
@@ -359,7 +359,7 @@ describe('creator', () => {
 
     const c = create(generator, params, galaxy).component;
 
-    ['created', 'mounted', 'render', 'resize', 'willUnmount', 'destroy'].forEach(key =>
+    ['created', 'mounted', 'render', 'resize', 'willUnmount', 'destroy'].forEach((key) =>
       expect(c[key]).to.be.a('function')
     );
 

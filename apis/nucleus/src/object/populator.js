@@ -50,7 +50,7 @@ export default function populateData({ sn, properties, fields }) {
     properties,
   });
 
-  fields.forEach(f => {
+  fields.forEach((f) => {
     const type = fieldType(f);
 
     if (type === 'measure') {

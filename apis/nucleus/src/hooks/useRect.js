@@ -3,7 +3,7 @@ import { useState, useCallback, useLayoutEffect } from 'react';
 export default function useRect() {
   const [node, setNode] = useState();
   const [rect, setRect] = useState();
-  const callbackRef = useCallback(ref => {
+  const callbackRef = useCallback((ref) => {
     if (!ref) {
       return;
     }

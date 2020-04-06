@@ -6,7 +6,7 @@ export default function appLocaleFn(language) {
     initial: language,
   });
 
-  Object.keys(all).forEach(key => {
+  Object.keys(all).forEach((key) => {
     l.translator.add(all[key]);
   });
 

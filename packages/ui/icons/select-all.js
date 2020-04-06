@@ -1,6 +1,6 @@
 import SvgIcon from './SvgIcon';
 
-const selectAll = props => ({
+const selectAll = (props) => ({
   ...props,
   shapes: [
     {
@@ -12,5 +12,5 @@ const selectAll = props => ({
     },
   ],
 });
-export default props => SvgIcon(selectAll(props));
+export default (props) => SvgIcon(selectAll(props));
 export { selectAll };

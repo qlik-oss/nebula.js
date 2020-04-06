@@ -54,7 +54,7 @@ async function build(argv) {
     if (supernovaPkg.files) {
       [extDefinition ? path.basename(qextTargetDir) : false, path.basename(qextFileNameJs), path.basename(qextFileName)]
         .filter(Boolean)
-        .forEach(f => {
+        .forEach((f) => {
           if (!supernovaPkg.files.includes(f)) {
             console.warn(`  \x1b[33mwarn:\x1b[0m \x1b[36m${f}\x1b[0m should be included in package.json 'files' array`);
           }

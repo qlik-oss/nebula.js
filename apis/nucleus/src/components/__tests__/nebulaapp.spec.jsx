@@ -135,7 +135,7 @@ describe('<NebulaApp />', () => {
         renderer = create(
           <StylesProvider>
             <ThemeProvider theme={theme}>
-              <InstanceContext.Provider value={{ translator: { get: s => s, language: () => 'sv' } }}>
+              <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
                 <NebulaApp ref={ref} initialContext={initialContext} app={app} />
               </InstanceContext.Provider>
             </ThemeProvider>

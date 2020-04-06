@@ -67,7 +67,7 @@ const LibraryList = ({ app, onSelect, title = '', type = 'dimension', searchTerm
       <ListSubheader component="div" style={{ backgroundColor: 'inherit' }}>
         {title}
       </ListSubheader>
-      {sortedLibraryItems.map(item => {
+      {sortedLibraryItems.map((item) => {
         const matches = match(item.qData.title, searchTerm);
         const parts = parse(item.qData.title, matches);
         if (searchTerm && matches.length === 0) return null;
@@ -109,7 +109,7 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
     [layout]
   );
 
-  const onSelect = s => {
+  const onSelect = (s) => {
     if (s && s.qId) {
       onSelected(s);
       close();
@@ -123,7 +123,7 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
     }
   };
 
-  const onAggregateSelected = s => {
+  const onAggregateSelected = (s) => {
     onSelected({
       field: selectedField,
       aggregation: s,
@@ -161,7 +161,7 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
           </ListItem>
           <Divider />
           <ListSubheader component="div">Aggregation</ListSubheader>
-          {['sum', 'count', 'avg', 'min', 'max'].map(v => (
+          {['sum', 'count', 'avg', 'min', 'max'].map((v) => (
             <Aggr key={v} aggr={v} field={selectedField} onSelect={onAggregateSelected} />
           ))}
         </List>
@@ -178,7 +178,7 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
           <ListSubheader component="div" style={{ backgroundColor: 'inherit' }}>
             Fields
           </ListSubheader>
-          {fields.map(field => {
+          {fields.map((field) => {
             const matches = match(field.qName, searchTerm);
             const parts = parse(field.qName, matches);
             if (searchTerm && matches.length === 0) return null;

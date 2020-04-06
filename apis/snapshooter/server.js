@@ -51,7 +51,7 @@ function snapshooter({ snapshotUrl, chrome = {} } = {}) {
       return snapshots[id];
     },
     getStoredSnapshots() {
-      return Object.keys(snapshots).map(key => snapshots[key]);
+      return Object.keys(snapshots).map((key) => snapshots[key]);
     },
     storeSnapshot(snapshot) {
       if (!snapshot) {

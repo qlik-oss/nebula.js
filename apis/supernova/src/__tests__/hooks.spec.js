@@ -38,7 +38,7 @@ describe('hooks', () => {
   let DEV;
   let frame;
   before(() => {
-    frame = () => new Promise(resolve => setTimeout(resolve));
+    frame = () => new Promise((resolve) => setTimeout(resolve));
     sandbox = sinon.createSandbox();
     DEV = global.__NEBULA_DEV__;
     global.__NEBULA_DEV__ = true;
@@ -47,12 +47,12 @@ describe('hooks', () => {
     // so if an error occurs we won't know it.
     // we therefore stub the console.error method and throw the error
     // so that a test fails properly
-    const err = e => {
+    const err = (e) => {
       throw e;
     };
     sandbox.stub(console, 'error').callsFake(err);
     if (!global.requestAnimationFrame) {
-      global.requestAnimationFrame = cb => setTimeout(cb, 20);
+      global.requestAnimationFrame = (cb) => setTimeout(cb, 20);
       global.cancelAnimationFrame = clearTimeout;
     }
   });
@@ -136,7 +136,7 @@ describe('hooks', () => {
 
   describe('runSnaps', () => {
     it('should run snaps hooks', async () => {
-      const take1 = layout => {
+      const take1 = (layout) => {
         return Promise.resolve({ take1: 'yes', ...layout });
       };
 
@@ -218,7 +218,7 @@ describe('hooks', () => {
 
       run(c);
       expect(countValue).to.equal(7);
-      setter(prev => prev + 2);
+      setter((prev) => prev + 2);
       await frame();
       expect(countValue).to.equal(9);
     });
@@ -295,7 +295,7 @@ describe('hooks', () => {
       c = {};
       initiate(c);
       sandbox.useFakeTimers();
-      global.requestAnimationFrame = cb => setTimeout(cb, 20);
+      global.requestAnimationFrame = (cb) => setTimeout(cb, 20);
       clock = sandbox.clock;
     });
     afterEach(() => {
@@ -381,7 +381,7 @@ describe('hooks', () => {
     it('should resolve run-phase when pending promises are resolved', async () => {
       let reject;
       let resolve;
-      const prom1 = new Promise(r => {
+      const prom1 = new Promise((r) => {
         resolve = r;
       });
       const prom2 = new Promise((r, j) => {
@@ -677,7 +677,7 @@ describe('hooks', () => {
           getBoundingClientRect: sandbox.stub(),
         };
 
-        const err = e => {
+        const err = (e) => {
           throw e;
         };
         sandbox.stub(console, 'error').callsFake(err);

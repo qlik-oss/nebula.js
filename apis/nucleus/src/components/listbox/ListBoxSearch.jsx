@@ -6,7 +6,7 @@ import { makeStyles } from '@nebula.js/ui/theme';
 
 import InstanceContext from '../../contexts/InstanceContext';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     '& fieldset': {
       borderRadius: 0,
@@ -19,11 +19,11 @@ const TREE_PATH = '/qListObjectDef';
 export default function ListBoxSearch({ model }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
-  const onChange = e => {
+  const onChange = (e) => {
     setValue(e.target.value);
     model.searchListObjectFor(TREE_PATH, e.target.value);
   };
-  const onKeyDown = e => {
+  const onKeyDown = (e) => {
     switch (e.key) {
       case 'Enter':
         model.acceptListObjectSearch(TREE_PATH, true);

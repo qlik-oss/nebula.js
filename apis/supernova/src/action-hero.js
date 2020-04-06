@@ -1,15 +1,15 @@
 import EventEmitter from 'node-event-emitter';
 
-const mixin = obj => {
+const mixin = (obj) => {
   /* eslint no-param-reassign: 0 */
-  Object.keys(EventEmitter.prototype).forEach(key => {
+  Object.keys(EventEmitter.prototype).forEach((key) => {
     obj[key] = EventEmitter.prototype[key];
   });
   EventEmitter.init(obj);
   return obj;
 };
 
-const actionWrapper = component => item => {
+const actionWrapper = (component) => (item) => {
   const wrapped = mixin({
     ...item,
     action() {
@@ -35,18 +35,18 @@ const actionWrapper = component => item => {
   return wrapped;
 };
 
-export default function({ sn, component }) {
+export default function ({ sn, component }) {
   const actions = {};
   const selectionToolbarItems = [];
   const w = actionWrapper(component);
-  ((sn.definition.selectionToolbar || {}).items || []).forEach(item => {
+  ((sn.definition.selectionToolbar || {}).items || []).forEach((item) => {
     const wrapped = w(item);
     // TODO - check if key exists
     actions[item.key] = wrapped;
     selectionToolbarItems.push(wrapped);
   });
 
-  (sn.definition.actions || []).forEach(item => {
+  (sn.definition.actions || []).forEach((item) => {
     const wrapped = w(item);
     // TODO - check if key exists
     actions[item.key] = wrapped;

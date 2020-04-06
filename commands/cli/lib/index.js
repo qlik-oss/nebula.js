@@ -9,7 +9,7 @@ const importCwd = require('import-cwd');
 
 yargs.usage('nebula <command> [options]');
 
-const tryAddCommand = m => {
+const tryAddCommand = (m) => {
   let cmd;
   try {
     cmd = require(`${m}/command`); // eslint-disable-line
@@ -37,7 +37,4 @@ const tryAddCommand = m => {
   tryAddCommand
 );
 
-yargs
-  .demandCommand()
-  .alias('h', 'help')
-  .wrap(Math.min(80, yargs.terminalWidth())).argv;
+yargs.demandCommand().alias('h', 'help').wrap(Math.min(80, yargs.terminalWidth())).argv;

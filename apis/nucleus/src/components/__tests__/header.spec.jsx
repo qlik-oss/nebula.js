@@ -2,7 +2,7 @@ import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { makeStyles, Grid, Typography } from '@material-ui/core';
 
-const Popover = props => props.children;
+const Popover = (props) => props.children;
 const SelectionToolbar = () => 'selectiontoolbar';
 
 describe('<Header />', () => {

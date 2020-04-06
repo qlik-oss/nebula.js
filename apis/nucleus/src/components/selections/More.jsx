@@ -6,7 +6,7 @@ import DownArrow from '@nebula.js/ui/icons/down-arrow';
 import OneField from './OneField';
 import MultiState from './MultiState';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   item: {
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
@@ -31,7 +31,7 @@ export default function More({ items = [], api }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const alignTo = useRef();
 
-  const handleShowMoreItems = e => {
+  const handleShowMoreItems = (e) => {
     if (e.currentTarget.contains(e.target)) {
       // because click in popover will propagate to parent
       setAnchorEl(e.currentTarget);
@@ -115,7 +115,7 @@ export default function More({ items = [], api }) {
           <List dense>
             {items.map((s, ix) => (
               // eslint-disable-next-line react/no-array-index-key
-              <ListItem key={ix} title={s.name} onClick={e => handleShowItem(e, ix)}>
+              <ListItem key={ix} title={s.name} onClick={(e) => handleShowItem(e, ix)}>
                 <Box border={1} width="100%" borderRadius="borderRadius" borderColor="divider">
                   {s.states.length > 1 ? <MultiState field={s} api={api} /> : <OneField field={s} api={api} />}
                 </Box>

@@ -76,7 +76,7 @@ export default function generatorFn(UserSN, galaxy) {
     definition: {},
   };
 
-  Object.keys(sn).forEach(key => {
+  Object.keys(sn).forEach((key) => {
     if (!generator[key]) {
       generator.definition[key] = sn[key];
     }

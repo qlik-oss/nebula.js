@@ -13,11 +13,7 @@ const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json')); // eslint-disable-line
 const { name, version, license } = pkg;
 
-const versionHash = crypto
-  .createHash('md5')
-  .update(version)
-  .digest('hex')
-  .slice(0, 4);
+const versionHash = crypto.createHash('md5').update(version).digest('hex').slice(0, 4);
 
 const targetName = name.split('/')[1];
 const targetDirName = 'dist';
@@ -107,11 +103,11 @@ const config = (isEsm, dev = false) => {
   const esmExternals = peers;
 
   // peers that are not devDeps should be externals for full bundle
-  const bundleExternals = peers.filter(p => typeof (pkg.devDependencies || {})[p] === 'undefined');
+  const bundleExternals = peers.filter((p) => typeof (pkg.devDependencies || {})[p] === 'undefined');
 
   const external = isEsm ? esmExternals : bundleExternals;
   const globals = {};
-  external.forEach(e => {
+  external.forEach((e) => {
     if ([GLOBALS[e]]) {
       globals[e] = GLOBALS[e];
     }
@@ -153,14 +149,19 @@ const config = (isEsm, dev = false) => {
             'useContext',
             'useCallback',
             'useMemo',
+            'memo',
             'createElement',
+            'createContext',
             'PureComponent',
+            'Component',
             'isValidElement',
             'Children',
+            'Fragment',
             'cloneElement',
+            'useDebugValue',
           ],
           'react-dom': ['createPortal', 'findDOMNode'],
-          'react-is': ['ForwardRef', 'isFragment'],
+          'react-is': ['ForwardRef', 'Memo', 'isFragment'],
           'react-transition-group/node_modules/prop-types/index.js': propTypes,
           'prop-types/index.js': propTypes,
           '@material-ui/utils/node_modules/prop-types': propTypes,

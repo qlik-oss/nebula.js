@@ -34,7 +34,7 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
     modalObjectStore.set(key, model);
 
     const p = Array.isArray(path) ? path : [path];
-    const beginSelections = async skipRetry => {
+    const beginSelections = async (skipRetry) => {
       try {
         await model.beginSelections(p);
         modalObjectStore.set(key, model); // We have a modal
@@ -100,7 +100,7 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
       return appModal.end().then(() => app.clearAll());
     },
     clearField(field, state = '$') {
-      return appModal.end().then(() => app.getField(field, state).then(f => f.clear()));
+      return appModal.end().then(() => app.getField(field, state).then((f) => f.clear()));
     },
   };
   return appSelections;

@@ -28,7 +28,7 @@ describe('<SelectionToolbarWithDefault />', () => {
     render = async (api, xItems, onCancel, onConfirm) => {
       await act(async () => {
         renderer = create(
-          <InstanceContext.Provider value={{ translator: { get: s => s } }}>
+          <InstanceContext.Provider value={{ translator: { get: (s) => s } }}>
             <SelectionToolbarWithDefault api={api} xItems={xItems} onCancel={onCancel} onConfirm={onConfirm} />
           </InstanceContext.Provider>
         );

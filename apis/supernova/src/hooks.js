@@ -96,7 +96,7 @@ export async function run(component) {
   currentComponent = undefined;
 
   if (!hooks.chain.promise) {
-    hooks.chain.promise = new Promise(resolve => {
+    hooks.chain.promise = new Promise((resolve) => {
       hooks.chain.resolve = resolve;
     });
   }
@@ -109,7 +109,7 @@ export async function run(component) {
 
 function flushPending(list, skipUpdate) {
   try {
-    list.forEach(fx => {
+    list.forEach((fx) => {
       // teardown existing
       typeof fx.teardown === 'function' ? fx.teardown() : null;
 
@@ -146,10 +146,10 @@ function maybeEndChain(hooks) {
 export function runSnaps(component, layout) {
   try {
     return Promise.all(
-      component.__hooks.snaps.map(h => {
+      component.__hooks.snaps.map((h) => {
         return Promise.resolve(h.fn(layout));
       })
-    ).then(snaps => {
+    ).then((snaps) => {
       return snaps[snaps.length - 1];
     });
   } catch (e) {
@@ -264,7 +264,7 @@ export function useState(initial) {
   if (!h.value) {
     // initiate
     h.component = currentComponent;
-    const setState = s => {
+    const setState = (s) => {
       if (h.component.__hooks.obsolete) {
         if (__NEBULA_DEV__) {
           throw new Error(
@@ -402,7 +402,7 @@ export function usePromise(p, deps) {
     // });
 
     p()
-      .then(v => {
+      .then((v) => {
         if (canceled) {
           return;
         }
@@ -413,7 +413,7 @@ export function usePromise(p, deps) {
           state: 'resolved',
         });
       })
-      .catch(e => {
+      .catch((e) => {
         if (canceled) {
           return;
         }
@@ -503,7 +503,7 @@ export function useRect() {
       const r = ref.current;
 
       if (r.width !== width || r.height !== height || r.left !== left || r.top !== top) {
-        ref.setters.forEach(setR => setR({ left, top, width, height }));
+        ref.setters.forEach((setR) => setR({ left, top, width, height }));
       }
     };
 

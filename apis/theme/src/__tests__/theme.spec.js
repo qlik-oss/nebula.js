@@ -81,14 +81,14 @@ describe('theme', () => {
         dataPalettes: () => 'p data palettes',
         uiPalettes: () => `p ui palettes`,
         dataColors: () => 'p data colors',
-        uiColor: a => `p ui ${a}`,
+        uiColor: (a) => `p ui ${a}`,
       });
 
       styleResolverFn.withArgs('', 'resolved').returns({
         getStyle: () => '#eeeeee',
       });
 
-      contrasterFn.returns({ getBestContrastColor: c => `contrast ${c}` });
+      contrasterFn.returns({ getBestContrastColor: (c) => `contrast ${c}` });
 
       t = create().externalAPI;
     });

@@ -6,7 +6,7 @@ import OneField from '../OneField';
 export default {
   title: 'Selections|One field',
   component: OneField,
-  decorators: [story => <div style={{ backgroundColor: '#eee', padding: '16px' }}>{story()}</div>],
+  decorators: [(story) => <div style={{ backgroundColor: '#eee', padding: '16px' }}>{story()}</div>],
 };
 
 const api = {
@@ -54,7 +54,7 @@ const states = [
   },
 ];
 
-const stateFn = state => (
+const stateFn = (state) => (
   <OneField
     api={api}
     field={{

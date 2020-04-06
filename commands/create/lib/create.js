@@ -18,14 +18,10 @@ const hasYarn = () => {
   }
 };
 
-const author = async cwd => {
+const author = async (cwd) => {
   try {
-    const email = execSync('git config --get user.email', { cwd })
-      .toString()
-      .trim();
-    const name = execSync('git config --get user.name', { cwd })
-      .toString()
-      .trim();
+    const email = execSync('git config --get user.email', { cwd }).toString().trim();
+    const name = execSync('git config --get user.name', { cwd }).toString().trim();
     return {
       email,
       name,
@@ -58,7 +54,7 @@ function copyFactory(root, destination) {
   };
 }
 
-const create = async argv => {
+const create = async (argv) => {
   const { name } = argv;
 
   const isMashup = argv._.includes('mashup');
@@ -132,7 +128,7 @@ const create = async argv => {
     const traverse = (sourceFolder, targetFolder = '') => {
       const files = fs.readdirSync(path.resolve(templatesRoot, sourceFolder));
 
-      files.forEach(file => {
+      files.forEach((file) => {
         const p = `${sourceFolder}/${file}`;
         const stats = fs.lstatSync(path.resolve(templatesRoot, p));
         const next = `${targetFolder}/${file}`.replace(/^\//, '');
@@ -148,7 +144,7 @@ const create = async argv => {
       });
     };
 
-    folders.forEach(folder => {
+    folders.forEach((folder) => {
       traverse(folder);
     });
   };

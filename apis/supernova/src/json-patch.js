@@ -52,10 +52,7 @@ function isSpecialProperty(obj, key) {
  */
 function getParent(data, str) {
   const seperator = '/';
-  const parts = str
-    .substring(1)
-    .split(seperator)
-    .slice(0, -1);
+  const parts = str.substring(1).split(seperator).slice(0, -1);
   let numPart;
 
   parts.forEach((part, i) => {
@@ -79,7 +76,7 @@ function getParent(data, str) {
  * @param {Object} obj The object to clean
  */
 function emptyObject(obj) {
-  Object.keys(obj).forEach(key => {
+  Object.keys(obj).forEach((key) => {
     const config = Object.getOwnPropertyDescriptor(obj, key);
 
     if (config.configurable && !isSpecialProperty(obj, key)) {
@@ -103,7 +100,7 @@ function compare(a, b) {
     if (Object.keys(a).length !== Object.keys(b).length) {
       return false;
     }
-    Object.keys(a).forEach(key => {
+    Object.keys(a).forEach((key) => {
       if (!compare(a[key], b[key])) {
         isIdentical = false;
       }
@@ -220,7 +217,7 @@ JSONPatch.generate = function generate(original, newData, basePath) {
   basePath = basePath || '';
   let patches = [];
 
-  Object.keys(newData).forEach(key => {
+  Object.keys(newData).forEach((key) => {
     const val = generateValue(newData[key]);
     const oldVal = original[key];
     const tmpPath = `${basePath}/${key}`;
@@ -250,7 +247,7 @@ JSONPatch.generate = function generate(original, newData, basePath) {
     }
   });
 
-  Object.keys(original).forEach(key => {
+  Object.keys(original).forEach((key) => {
     if (isUndef(newData[key]) && !isSpecialProperty(original, key)) {
       // this property does not exist anymore
       patches.push({
@@ -271,7 +268,7 @@ JSONPatch.generate = function generate(original, newData, basePath) {
  * @param {Array} patches The list of patches to apply
  */
 JSONPatch.apply = function apply(original, patches) {
-  patches.forEach(patch => {
+  patches.forEach((patch) => {
     let parent = getParent(original, patch.path);
     let key = patch.path.split('/').splice(-1)[0];
     let target = key && isNaN(+key) ? parent[key] : parent[+key] || parent;

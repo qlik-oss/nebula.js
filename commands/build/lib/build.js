@@ -92,14 +92,11 @@ const config = ({ mode = 'production', format = 'umd', cwd = process.cwd(), argv
       globals: {
         '@nebula.js/supernova': 'supernova',
       },
-      output: {
-        preamble: banner,
-      },
     },
   };
 };
 
-const minified = async argv => {
+const minified = async (argv) => {
   const c = config({
     mode: 'production',
     format: 'umd',
@@ -109,7 +106,7 @@ const minified = async argv => {
   await bundle.write(c.output);
 };
 
-const esm = async argv => {
+const esm = async (argv) => {
   const c = config({
     mode: 'development',
     format: 'esm',
@@ -135,7 +132,7 @@ function clearScreen(msg) {
   }
 }
 
-const watch = async argv => {
+const watch = async (argv) => {
   const c = config({
     mode: 'development',
     format: 'umd',
@@ -161,7 +158,7 @@ const watch = async argv => {
   });
 
   return new Promise((resolve, reject) => {
-    watcher.on('event', event => {
+    watcher.on('event', (event) => {
       switch (event.code) {
         case 'BUNDLE_START':
           hasWarnings = false;

@@ -58,7 +58,7 @@ describe('app-theme', () => {
         themes: [
           {
             id: 'darkish',
-            load: () => new Promise(resolve => setTimeout(resolve, 6000)),
+            load: () => new Promise((resolve) => setTimeout(resolve, 6000)),
           },
         ],
       });

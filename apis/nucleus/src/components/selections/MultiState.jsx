@@ -8,7 +8,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   item: {
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
@@ -36,7 +36,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
   const { translator } = useContext(InstanceContext);
   const clearAllStates = translator.get('Selection.ClearAllStates');
 
-  const handleShowFields = e => {
+  const handleShowFields = (e) => {
     if (e.currentTarget.contains(e.target)) {
       // because click in popover will propagate to parent
       setAnchorEl(e.currentTarget);
@@ -62,7 +62,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
   };
 
   const handleClearAllStates = () => {
-    field.states.forEach(s => api.clearField(field.name, s));
+    field.states.forEach((s) => api.clearField(field.name, s));
   };
 
   let Header = null;
@@ -96,7 +96,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
       </ListItem>
       {field.states.map((s, ix) => (
         // eslint-disable-next-line react/no-array-index-key
-        <ListItem key={ix} title={field.name} onClick={e => handleShowState(e, ix)}>
+        <ListItem key={ix} title={field.name} onClick={(e) => handleShowState(e, ix)}>
           <Box border={1} width="100%" borderRadius="borderRadius" borderColor="divider">
             <OneField field={field} api={api} stateIx={ix} skipHandleShowListBoxPopover />
           </Box>

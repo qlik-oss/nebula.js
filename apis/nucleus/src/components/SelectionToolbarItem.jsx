@@ -6,7 +6,7 @@ import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 
 import { makeStyles, useTheme } from '@nebula.js/ui/theme';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   icon: {
     color: theme.palette.text.primary,
   },

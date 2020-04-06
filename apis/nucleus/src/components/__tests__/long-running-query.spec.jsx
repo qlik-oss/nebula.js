@@ -27,7 +27,7 @@ describe('<LongRunningQuery />', () => {
     render = async (canCancel, canRetry) => {
       await act(async () => {
         renderer = create(
-          <InstanceContext.Provider value={{ translator: { get: s => s } }}>
+          <InstanceContext.Provider value={{ translator: { get: (s) => s } }}>
             <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={api} />
           </InstanceContext.Provider>
         );

@@ -30,7 +30,7 @@ module.exports = async ({
 
   const snapshooter = snapshooterFn({ snapshotUrl: `http://${host}:${port}/eRender.html` });
 
-  (serveConfig.snapshots || []).forEach(s => {
+  (serveConfig.snapshots || []).forEach((s) => {
     snapshooter.storeSnapshot(s);
   });
 
@@ -88,12 +88,12 @@ module.exports = async ({
       }
 
       app.get('/themes', (req, res) => {
-        const arr = themes.map(theme => theme.id);
+        const arr = themes.map((theme) => theme.id);
         res.json(arr);
       });
 
       app.get('/theme/:id', (req, res) => {
-        const t = themes.filter(theme => theme.id === req.params.id)[0];
+        const t = themes.filter((theme) => theme.id === req.params.id)[0];
         if (!t) {
           res.sendStatus('404');
         } else {
@@ -112,7 +112,7 @@ module.exports = async ({
           sock: {
             port: entryWatcher && entryWatcher.port,
           },
-          themes: themes.map(theme => theme.id),
+          themes: themes.map((theme) => theme.id),
         });
       });
 
@@ -149,13 +149,13 @@ module.exports = async ({
     server.close();
   };
 
-  ['SIGINT', 'SIGTERM'].forEach(signal => {
+  ['SIGINT', 'SIGTERM'].forEach((signal) => {
     process.on(signal, close);
   });
 
   if (watcher) {
     let inError = false;
-    watcher.on('event', event => {
+    watcher.on('event', (event) => {
       if (event.code === 'ERROR') {
         inError = true;
         server.sockWrite(server.sockets, 'errors', [event.error.stack]);
@@ -170,7 +170,7 @@ module.exports = async ({
 
   return new Promise((resolve, reject) => {
     // eslint-disable-line consistent-return
-    compiler.hooks.done.tap('nebula serve', stats => {
+    compiler.hooks.done.tap('nebula serve', (stats) => {
       if (!initiated) {
         initiated = true;
         const url = `http://${host}:${port}`;
@@ -183,7 +183,7 @@ module.exports = async ({
         });
 
         if (stats.hasErrors()) {
-          stats.compilation.errors.forEach(e => {
+          stats.compilation.errors.forEach((e) => {
             console.log(chalk.red(e));
           });
           process.exit(1);
@@ -191,7 +191,7 @@ module.exports = async ({
       }
     });
 
-    server.listen(port, host, err => {
+    server.listen(port, host, (err) => {
       if (err) {
         reject(err);
       }

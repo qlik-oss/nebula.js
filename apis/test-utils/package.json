@@ -24,9 +24,9 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "peerDependencies": {
-    "@nebula.js/supernova": "^0.1.0-alpha.28"
+    "@nebula.js/supernova": "^0.x"
   },
   "devDependencies": {
-    "regenerator-runtime": "0.13.3"
+    "regenerator-runtime": "0.13.5"
   }
 }

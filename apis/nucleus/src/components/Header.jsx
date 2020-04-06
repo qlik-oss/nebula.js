@@ -9,7 +9,7 @@ const ITEM_SPACING = 4;
 const NUMBER_OF_ITEMS = 6;
 const MIN_WIDTH = (ITEM_WIDTH + ITEM_SPACING) * NUMBER_OF_ITEMS;
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   containerStyle: {
     flexGrow: 0,
   },
@@ -35,7 +35,7 @@ const Header = ({ layout, sn, anchorEl }) => {
     if (!sn || !sn.component || !sn.component.isHooked) {
       return;
     }
-    sn.component.observeActions(actions => setItems(actions));
+    sn.component.observeActions((actions) => setItems(actions));
   }, [sn]);
 
   useEffect(() => {

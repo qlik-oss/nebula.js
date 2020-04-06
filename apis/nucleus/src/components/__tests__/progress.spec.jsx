@@ -13,7 +13,7 @@ describe('<Progress />', () => {
   let render;
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    render = async size => {
+    render = async (size) => {
       await act(async () => {
         renderer = create(<Progress size={size} />);
       });

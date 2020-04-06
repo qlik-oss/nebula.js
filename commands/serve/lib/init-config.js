@@ -64,8 +64,8 @@ const options = {
   },
 };
 
-module.exports = yargs =>
-  yargs.options(options).config('config', configPath => {
+module.exports = (yargs) =>
+  yargs.options(options).config('config', (configPath) => {
     if (configPath === null) {
       return {};
     }

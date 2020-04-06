@@ -16,7 +16,7 @@ const MIN_WIDTH = 120;
 const MIN_WIDTH_MORE = 72;
 
 function collect(qSelectionObject, fields, state = '$') {
-  qSelectionObject.qSelections.forEach(selection => {
+  qSelectionObject.qSelections.forEach((selection) => {
     const name = selection.qField;
     const field = (fields[name] = fields[name] || { name, states: [], selections: [] }); // eslint-disable-line
     if (field.states.indexOf(state) === -1) {
@@ -35,9 +35,9 @@ function getItems(layout) {
     collect(layout.qSelectionObject, fields);
   }
   if (layout.alternateStates) {
-    layout.alternateStates.forEach(s => collect(s.qSelectionObject, fields, s.stateName));
+    layout.alternateStates.forEach((s) => collect(s.qSelectionObject, fields, s.stateName));
   }
-  return Object.keys(fields).map(key => fields[key]);
+  return Object.keys(fields).map((key) => fields[key]);
 }
 
 export default function SelectedFields({ api, app }) {
@@ -67,11 +67,13 @@ export default function SelectedFields({ api, app }) {
       return;
     }
     const items = getItems(layout);
-    setState(currState => {
+    setState((currState) => {
       const newItems = items;
       // Maintain modal state in app selections
       if (isInListboxPopover() && newItems.length + 1 === currState.items.length) {
-        const lastDeselectedField = currState.items.filter(f1 => newItems.some(f2 => f1.name === f2.name) === false)[0];
+        const lastDeselectedField = currState.items.filter(
+          (f1) => newItems.some((f2) => f1.name === f2.name) === false
+        )[0];
         const { qField } = lastDeselectedField.selections[0];
         lastDeselectedField.selections = [{ qField }];
         const wasIx = currState.items.indexOf(lastDeselectedField);
@@ -90,7 +92,7 @@ export default function SelectedFields({ api, app }) {
 
   return (
     <Grid ref={containerRef} container spacing={0} wrap="nowrap" style={{ height: '100%' }}>
-      {state.items.map(s => (
+      {state.items.map((s) => (
         <Grid
           item
           key={`${s.states.join('::')}::${s.name}`}

@@ -8,7 +8,7 @@ import initiateWatch from './hot';
 const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
   const nuked = nucleus.createConfiguration({
     themes: themes
-      ? themes.map(t => ({
+      ? themes.map((t) => ({
           key: t,
           load: async () => (await fetch(`/theme/${t}`)).json(),
         }))
@@ -19,7 +19,7 @@ const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
     },
   });
   const nebbie = nuked(app, {
-    load: type => Promise.resolve(window[type.name]),
+    load: (type) => Promise.resolve(window[type.name]),
     types: [
       {
         name,
@@ -73,14 +73,14 @@ async function renderSnapshot() {
 
   const n = nucleus.createConfiguration({
     themes: themes
-      ? themes.map(t => ({
+      ? themes.map((t) => ({
           key: t,
           load: async () => (await fetch(`/theme/${t}`)).json(),
         }))
       : undefined,
     types: [
       {
-        load: type => Promise.resolve(window[type.name]),
+        load: (type) => Promise.resolve(window[type.name]),
         name: supernova.name,
       },
     ],
@@ -109,7 +109,7 @@ const renderFixture = async () => {
   const { instanceConfig, type, sn, object, snConfig } = fixture();
   const config = {
     themes: themes
-      ? themes.map(t => ({
+      ? themes.map((t) => ({
           key: t,
           load: async () => (await fetch(`/theme/${t}`)).json(),
         }))
@@ -122,7 +122,7 @@ const renderFixture = async () => {
   };
   const mockedObjects = {};
   let mockedLayout = {};
-  const createObjectModel = layout => ({
+  const createObjectModel = (layout) => ({
     id: layout.qInfo.qId,
     getLayout: async () => {
       const customLayout = object && object.getLayout ? await object.getLayout() : {};
@@ -138,7 +138,7 @@ const renderFixture = async () => {
 
   const mockedApp = {
     id: `${+new Date()}`,
-    createSessionObject: async p => {
+    createSessionObject: async (p) => {
       // eslint-disable-next-line no-param-reassign
       p.qInfo.qId = p.qInfo.qId || +new Date();
       mockedObjects[p.qInfo.qId] = {
@@ -146,7 +146,7 @@ const renderFixture = async () => {
       };
       return createObjectModel(mockedObjects[p.qInfo.qId]);
     },
-    getObject: async id => createObjectModel(mockedObjects[id]),
+    getObject: async (id) => createObjectModel(mockedObjects[id]),
     getAppLayout: async () => ({
       qTitle: 'app-title',
     }),

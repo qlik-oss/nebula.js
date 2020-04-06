@@ -26,7 +26,7 @@ export default function PropertiesDialog({ model, show, close }) {
     const onChanged = () => {
       model &&
         show &&
-        model.getProperties().then(props => {
+        model.getProperties().then((props) => {
           show && setObjectProps(JSON.stringify(props || {}, null, 2));
         });
     };

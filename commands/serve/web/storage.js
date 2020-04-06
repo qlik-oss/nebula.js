@@ -1,4 +1,4 @@
-const storageFn = app => {
+const storageFn = (app) => {
   const stored = window.localStorage.getItem('nebula-dev');
   const parsed = stored ? JSON.parse(stored) : {};
   const appid = app.id;

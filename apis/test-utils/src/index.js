@@ -4,8 +4,8 @@ import 'regenerator-runtime/runtime'; // temporary polyfill for transpiled async
 import { hook } from '@nebula.js/supernova';
 
 if (!global.requestAnimationFrame) {
-  global.requestAnimationFrame = cb => setTimeout(cb, 10);
-  global.cancelAnimationFrame = id => clearTimeout(id);
+  global.requestAnimationFrame = (cb) => setTimeout(cb, 10);
+  global.cancelAnimationFrame = (id) => clearTimeout(id);
 }
 export function create(definition, context = {}) {
   const hooked = hook(definition);

@@ -5,7 +5,7 @@ export default (initialState, applyMiddleware = () => {}) => {
   const hookListeners = [];
 
   const store = {
-    get: key => sharedState[key],
+    get: (key) => sharedState[key],
     set: (key, value) => {
       if (typeof key === 'undefined' || typeof key === 'object') {
         throw new Error(`Invalid key: ${JSON.stringify(key)}`);
@@ -15,11 +15,11 @@ export default (initialState, applyMiddleware = () => {}) => {
       return value;
     },
     clear: () =>
-      Object.keys(sharedState).forEach(key => {
+      Object.keys(sharedState).forEach((key) => {
         sharedState[key] = null;
       }),
-    dispatch: forceNewState => {
-      hookListeners.forEach(listener => listener(forceNewState ? {} : sharedState));
+    dispatch: (forceNewState) => {
+      hookListeners.forEach((listener) => listener(forceNewState ? {} : sharedState));
     },
   };
 

@@ -69,7 +69,7 @@ function target(def) {
   return {
     propertyPath,
     layoutPath,
-    resolveLayout: layout => {
+    resolveLayout: (layout) => {
       return resolveValue(layout, layoutPath, {});
     },
     dimensions: defFn(def.dimensions),

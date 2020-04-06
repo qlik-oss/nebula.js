@@ -6,7 +6,7 @@ import dark from './definitions/dark';
 
 const cache = {};
 
-const overrides = theme => ({
+const overrides = (theme) => ({
   MuiTypography: {
     root: {
       color: theme.palette.text.primary,

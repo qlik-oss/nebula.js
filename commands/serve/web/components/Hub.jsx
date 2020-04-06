@@ -30,10 +30,10 @@ const themeDark = createTheme('dark');
 function SelectEngine({ info, children }) {
   const [items, setItems] = useState(storage.get('connections') || []);
   const [showInstructions, setShowInstructions] = useState(!items.length);
-  const [goTo] = useState(() => u => `${window.location.origin}?engine_url=${u.replace('?', '&')}`);
+  const [goTo] = useState(() => (u) => `${window.location.origin}?engine_url=${u.replace('?', '&')}`);
   let typedUrl;
 
-  const onRemove = li => {
+  const onRemove = (li) => {
     const idx = items.indexOf(li);
     if (li !== -1) {
       const its = items.slice();
@@ -43,7 +43,7 @@ function SelectEngine({ info, children }) {
     }
   };
 
-  const onKeyDown = e => {
+  const onKeyDown = (e) => {
     switch (e.key) {
       case 'Enter':
         typedUrl = e.target.value;
@@ -66,7 +66,7 @@ function SelectEngine({ info, children }) {
           </Typography>
         </Grid>
         <Grid item>
-          <IconButton onClick={() => setShowInstructions(s => !s)} size="small">
+          <IconButton onClick={() => setShowInstructions((s) => !s)} size="small">
             <Help />
           </IconButton>
         </Grid>
@@ -76,7 +76,7 @@ function SelectEngine({ info, children }) {
         <>
           <Typography variant="h6">Previous connections</Typography>
           <List>
-            {items.map(li => (
+            {items.map((li) => (
               <ListItem button key={li} component="a" href={goTo(li)}>
                 <ListItemText primary={li} />
                 <ListItemSecondaryAction>
@@ -194,7 +194,7 @@ function AppList({ info, glob }) {
     const t = setTimeout(() => {
       setWaiting(true);
     }, 750);
-    glob.getDocList().then(its => {
+    glob.getDocList().then((its) => {
       clearTimeout(t);
       setWaiting(false);
       setItems(its);
@@ -212,7 +212,7 @@ function AppList({ info, glob }) {
       {waiting && <CircularProgress size={32} />}
       {items && items.length > 0 && (
         <List>
-          {items.map(li => (
+          {items.map((li) => (
             <ListItem
               button
               key={li.qDocId}
@@ -242,7 +242,7 @@ const Err = ({ e: { message, hints } }) => {
       <Typography variant="subtitle1" color="error" gutterBottom style={{ marginTop: '1rem' }}>
         {message}
       </Typography>
-      {hints.map(hint => (
+      {hints.map((hint) => (
         <Typography key={hint} variant="body2">
           {hint}
         </Typography>
@@ -263,7 +263,7 @@ export default function Hub() {
   };
 
   useEffect(() => {
-    connectionInfo.then(i => {
+    connectionInfo.then((i) => {
       if (i.enigma.appId) {
         window.location.href = `/dev/${window.location.search}`;
         return;
@@ -284,7 +284,7 @@ export default function Hub() {
       return;
     }
     connect()
-      .then(g => {
+      .then((g) => {
         setGlobal(g);
         setActiveStep(1);
         const conns = storage.get('connections') || [];
@@ -296,7 +296,7 @@ export default function Hub() {
           storage.save('connections', conns);
         }
       })
-      .catch(e => {
+      .catch((e) => {
         const oops = {
           message: 'Something went wrong, check the devtools console',
           hints: [],

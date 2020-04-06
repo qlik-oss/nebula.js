@@ -18,14 +18,14 @@ export async function load(name, version, { config }, loader) {
     });
     const prom = Promise.resolve(p);
     LOADED[key] = prom
-      .then(sn => {
+      .then((sn) => {
         if (!sn) {
           // TODO - improve validation
           throw new Error(`load() of supernova '${sKey}' resolved to an invalid object`);
         }
         return sn;
       })
-      .catch(e => {
+      .catch((e) => {
         if (__NEBULA_DEV__) {
           console.warn(e); // eslint-disable-line no-console
         }
@@ -37,7 +37,7 @@ export async function load(name, version, { config }, loader) {
 }
 
 export function clearFromCache(name) {
-  Object.keys(LOADED).forEach(key => {
+  Object.keys(LOADED).forEach((key) => {
     if (key.split('__')[0] === name) {
       LOADED[key] = undefined;
     }

@@ -121,7 +121,7 @@ export default function styleResolver(basePath, themeJSON) {
  * @param {Object} - variables
  */
 function resolveVariables(objTree, variables) {
-  Object.keys(objTree).forEach(key => {
+  Object.keys(objTree).forEach((key) => {
     if (typeof objTree[key] === 'object' && objTree[key] !== null) {
       resolveVariables(objTree[key], variables);
     } else if (typeof objTree[key] === 'string' && objTree[key].charAt(0) === '@') {
@@ -131,7 +131,7 @@ function resolveVariables(objTree, variables) {
   });
 }
 
-styleResolver.resolveRawTheme = raw => {
+styleResolver.resolveRawTheme = (raw) => {
   // TODO - validate format
   // TODO - generate class-pyramid
   const c = extend(true, {}, raw);

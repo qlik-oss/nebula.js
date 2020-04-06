@@ -1,6 +1,6 @@
 import SvgIcon from './SvgIcon';
 
-const clearSelections = props => ({
+const clearSelections = (props) => ({
   ...props,
   shapes: [
     {
@@ -13,5 +13,5 @@ const clearSelections = props => ({
   ],
 });
 
-export default props => SvgIcon(clearSelections(props));
+export default (props) => SvgIcon(clearSelections(props));
 export { clearSelections };

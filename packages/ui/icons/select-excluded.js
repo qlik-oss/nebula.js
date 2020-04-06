@@ -1,6 +1,6 @@
 import SvgIcon from './SvgIcon';
 
-const selectExcluded = props => ({
+const selectExcluded = (props) => ({
   ...props,
   shapes: [
     {
@@ -12,5 +12,5 @@ const selectExcluded = props => ({
     },
   ],
 });
-export default props => SvgIcon(selectExcluded(props));
+export default (props) => SvgIcon(selectExcluded(props));
 export { selectExcluded };

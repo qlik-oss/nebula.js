@@ -11,7 +11,7 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, corona }) => {
   const [renderCnt, setRenderCnt] = useState(0);
   const [containerRef, containerRect, containerNode] = useRect();
   const [snNode, setSnNode] = useState(null);
-  const snRef = useCallback(ref => {
+  const snRef = useCallback((ref) => {
     if (!ref) {
       return;
     }

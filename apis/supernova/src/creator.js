@@ -23,14 +23,14 @@ const defaultComponent = {
 
   // temporary
   observeActions() {},
-  setSnapshotData: snapshot => Promise.resolve(snapshot),
+  setSnapshotData: (snapshot) => Promise.resolve(snapshot),
 };
 
 const reservedKeys = Object.keys(defaultComponent);
 
-const mixin = obj => {
+const mixin = (obj) => {
   /* eslint no-param-reassign: 0 */
-  Object.keys(EventEmitter.prototype).forEach(key => {
+  Object.keys(EventEmitter.prototype).forEach((key) => {
     obj[key] = EventEmitter.prototype[key];
   });
   EventEmitter.init(obj);
@@ -105,7 +105,7 @@ function createWithHooks(generator, opts, galaxy) {
           // the options object to ensure callbacks are triggered
           const op = {};
           let opChanged = false;
-          Object.keys(r.options).forEach(key => {
+          Object.keys(r.options).forEach((key) => {
             op[key] = r.options[key];
             if (this.context.options[key] !== r.options[key]) {
               opChanged = true;
@@ -118,7 +118,7 @@ function createWithHooks(generator, opts, galaxy) {
         }
 
         // do a deep check on 'small' objects
-        deepCheck.forEach(key => {
+        deepCheck.forEach((key) => {
           const ref = r.context;
           if (ref && Object.prototype.hasOwnProperty.call(ref, key)) {
             let s = JSON.stringify(ref[key]);
@@ -184,7 +184,7 @@ function createWithHooks(generator, opts, galaxy) {
     isHooked: true,
   };
 
-  deepCheck.forEach(key => {
+  deepCheck.forEach((key) => {
     current[key] = JSON.stringify(c.context[key]);
   });
   current.themeName = c.context.theme ? c.context.theme.name() : undefined;
@@ -214,7 +214,7 @@ function createClassical(generator, opts) {
     },
   };
 
-  Object.keys(generator.component || {}).forEach(key => {
+  Object.keys(generator.component || {}).forEach((key) => {
     if (reservedKeys.indexOf(key) !== -1) {
       componentInstance[key] = generator.component[key].bind(userInstance);
     } else {
@@ -279,16 +279,16 @@ export default function create(generator, opts, galaxy) {
 
     opts.model.applyPatches = function applyPatches(qPatches, qSoftPatch) {
       const method = qSoftPatch ? 'getEffectiveProperties' : 'getProperties';
-      return opts.model[method]().then(currentProperties => {
+      return opts.model[method]().then((currentProperties) => {
         // apply patches to current props
         const original = JSONPatch.clone(currentProperties);
-        const patches = qPatches.map(p => ({ op: p.qOp, value: JSON.parse(p.qValue), path: p.qPath }));
+        const patches = qPatches.map((p) => ({ op: p.qOp, value: JSON.parse(p.qValue), path: p.qPath }));
         JSONPatch.apply(currentProperties, patches);
 
         generator.qae.properties.onChange.call({ model: opts.model }, currentProperties);
 
         // calculate new patches from after change
-        const newPatches = JSONPatch.generate(original, currentProperties).map(p => ({
+        const newPatches = JSONPatch.generate(original, currentProperties).map((p) => ({
           qOp: p.op,
           qValue: JSON.stringify(p.value),
           qPath: p.path,
@@ -313,7 +313,7 @@ export default function create(generator, opts, galaxy) {
       items: hero ? hero.selectionToolbarItems : [],
     },
     destroy() {
-      teardowns.forEach(t => t());
+      teardowns.forEach((t) => t());
     },
     logicalSize: generator.definition.logicalSize || (() => false),
   };

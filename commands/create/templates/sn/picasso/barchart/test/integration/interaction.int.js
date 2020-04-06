@@ -11,9 +11,9 @@ describe('interaction', () => {
     await page.waitForSelector('button[title="Confirm selection"]:not([disabled])', { visible: true });
     await page.click('button[title="Confirm selection"]');
 
-    await page.waitForFunction(selector => document.querySelectorAll(selector).length === 2, {}, 'rect[data-label]');
+    await page.waitForFunction((selector) => document.querySelectorAll(selector).length === 2, {}, 'rect[data-label]');
 
-    const rects = await page.$$eval('rect[data-label]', sel => sel.map(r => r.getAttribute('data-label')));
+    const rects = await page.$$eval('rect[data-label]', (sel) => sel.map((r) => r.getAttribute('data-label')));
     expect(rects).to.eql(['K', 'S']);
   });
 });

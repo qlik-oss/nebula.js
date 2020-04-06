@@ -30,6 +30,6 @@
   "devDependencies": {
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1",
-    "regenerator-runtime": "0.13.3"
+    "regenerator-runtime": "0.13.5"
   }
 }

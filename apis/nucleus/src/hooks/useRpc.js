@@ -2,8 +2,8 @@ import { useReducer, useEffect } from 'react';
 import { useModelChangedStore, useRpcResultStore, useRpcRequestStore } from '../stores/modelStore';
 
 // eslint-disable-next-line no-unused-vars
-const sleep = delay => {
-  return new Promise(resolve => {
+const sleep = (delay) => {
+  return new Promise((resolve) => {
     setTimeout(resolve, delay);
   });
 };
@@ -78,7 +78,7 @@ export default function useRpc(model, method) {
     }
   }
 
-  const call = async skipRetry => {
+  const call = async (skipRetry) => {
     let cache = rpcShared[method];
     if (!cache || (cache && cache.rpcRetry)) {
       const rpc = model[method]();
