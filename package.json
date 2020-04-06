@@ -71,7 +71,7 @@
     "mocha-junit-reporter": "1.23.3",
     "picasso-plugin-q": "0.29.2",
     "picasso.js": "0.29.2",
-    "prettier": "1.19.1",
+    "prettier": "2.0.4",
     "pretty-quick": "^2.0.1",
     "qix-faker": "0.3.0",
     "rollup": "1.30.0",
