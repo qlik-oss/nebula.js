@@ -10,11 +10,11 @@
   "dependencies": {
     "@nebula.js/nucleus": "next",
     "@nebula.js/supernova": "next",
-    "@nebula.js/sn-mekko-chart": "1.0.0",
+    "@nebula.js/sn-mekko-chart": "1.0.2",
     "enigma.js": "2.6.3"
   },
   "devDependencies": {
-    "@babel/core": "7.8.3",
+    "@babel/core": "7.9.0",
     "parcel-bundler": "^1.12.4"
   }
 }
