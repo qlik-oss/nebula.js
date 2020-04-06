@@ -76,7 +76,7 @@ describe('<Supernova />', () => {
   it('should render', async () => {
     let initialRenderResolve;
     // eslint-disable-next-line no-new
-    const initialRender = new Promise(resolve => {
+    const initialRender = new Promise((resolve) => {
       initialRenderResolve = resolve;
     });
     const logicalSize = sandbox.stub().returns('logical');

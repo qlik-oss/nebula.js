@@ -4,7 +4,7 @@ import SearchIcon from '@nebula.js/ui/icons/search';
 
 import { makeStyles } from '@nebula.js/ui/theme';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   gridContainer: {
     padding: theme.spacing(0, 1, 0, 1),
   },
@@ -15,11 +15,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function Search({ onChange = () => {}, onEnter = () => {}, onEscape = () => {} }) {
   const [value, setValue] = useState('');
-  const handleChange = e => {
+  const handleChange = (e) => {
     setValue(e.target.value);
     onChange(e.target.value);
   };
-  const onKeyDown = e => {
+  const onKeyDown = (e) => {
     switch (e.key) {
       case 'Enter':
         onEnter();

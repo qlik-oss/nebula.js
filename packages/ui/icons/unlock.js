@@ -1,6 +1,6 @@
 import SvgIcon from './SvgIcon';
 
-const unlock = props => ({
+const unlock = (props) => ({
   ...props,
   shapes: [
     {
@@ -12,4 +12,4 @@ const unlock = props => ({
     },
   ],
 });
-export default props => SvgIcon(unlock(props));
+export default (props) => SvgIcon(unlock(props));

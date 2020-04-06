@@ -22,7 +22,7 @@ async function getQCSHeaders({ webIntegrationId, url }) {
 
 async function getEnigmaApp({ host, appId, headers }) {
   const params = Object.keys(headers)
-    .map(key => `${key}=${headers[key]}`)
+    .map((key) => `${key}=${headers[key]}`)
     .join('&');
 
   const enigmaGlobal = await enigma

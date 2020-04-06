@@ -1,6 +1,6 @@
 import SvgIcon from './SvgIcon';
 
-const search = props => ({
+const search = (props) => ({
   ...props,
   shapes: [
     {
@@ -12,5 +12,5 @@ const search = props => ({
     },
   ],
 });
-export default props => SvgIcon(search(props));
+export default (props) => SvgIcon(search(props));
 export { search as remove };

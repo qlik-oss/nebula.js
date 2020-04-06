@@ -36,22 +36,22 @@ export default function HyperCube({ model, target, properties }) {
     [properties]
   );
 
-  const onDimensionAdded = a => {
+  const onDimensionAdded = (a) => {
     handler.addDimension(typeof a === 'object' ? { qLibraryId: a.qId } : a);
     model.setProperties(properties);
   };
 
-  const onDimensionRemoved = idx => {
+  const onDimensionRemoved = (idx) => {
     handler.removeDimension(idx);
     model.setProperties(properties);
   };
 
-  const onMeasureAdded = a => {
+  const onMeasureAdded = (a) => {
     handler.addMeasure(typeof a === 'object' ? { qLibraryId: a.qId } : a);
     model.setProperties(properties);
   };
 
-  const onMeasureRemoved = idx => {
+  const onMeasureRemoved = (idx) => {
     handler.removeMeasure(idx);
     model.setProperties(properties);
   };

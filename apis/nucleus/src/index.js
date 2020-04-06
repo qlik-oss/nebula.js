@@ -34,7 +34,7 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
    * @param {string} id
    * @returns {Promise<SnapshotLayout>}
    */
-  get: async id => {
+  get: async (id) => {
     const res = await fetch(`/njs/snapshot/${id}`);
     if (!res.ok) {
       throw new Error(res.statusText);
@@ -48,7 +48,7 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
-    }).then(res => res.json());
+    }).then((res) => res.json());
   },
 };
 
@@ -165,7 +165,7 @@ function nuked(configuration = {}) {
 
     const types = typesFn({ corona });
 
-    configuration.types.forEach(t =>
+    configuration.types.forEach((t) =>
       types.register(
         {
           name: t.name,
@@ -214,7 +214,7 @@ function nuked(configuration = {}) {
        *   fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]
        * });
        */
-      render: async cfg => {
+      render: async (cfg) => {
         await currentThemePromise;
         if (cfg.id) {
           return get(cfg, corona);
@@ -233,10 +233,10 @@ function nuked(configuration = {}) {
        * // limit constraints
        * n.context({ constraints: { active: true } });
        */
-      context: async ctx => {
+      context: async (ctx) => {
         // filter valid values to avoid triggering unnecessary rerender
         let changes;
-        ['theme', 'language', 'constraints'].forEach(key => {
+        ['theme', 'language', 'constraints'].forEach((key) => {
           if (ctx[key] && ctx[key] !== currentContext[key]) {
             if (!changes) {
               changes = {};
@@ -347,7 +347,7 @@ function nuked(configuration = {}) {
    * d(app).render({ type: 'mekko' }); // will render the object with 'dark' theme
    * nucleus(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance
    */
-  nucleus.createConfiguration = c => nuked(mergeConfigs(configuration, c));
+  nucleus.createConfiguration = (c) => nuked(mergeConfigs(configuration, c));
   nucleus.config = configuration;
 
   return nucleus;

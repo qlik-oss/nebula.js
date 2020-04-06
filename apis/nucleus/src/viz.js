@@ -9,13 +9,13 @@ export default function viz({ model, corona, initialError, onDestroy = async () 
   let cellRef = null;
   let mountedReference = null;
   let onMount = null;
-  const mounted = new Promise(resolve => {
+  const mounted = new Promise((resolve) => {
     onMount = resolve;
   });
 
   let initialSnOptions = {};
 
-  const setSnOptions = async opts => {
+  const setSnOptions = async (opts) => {
     if (mountedReference) {
       (async () => {
         await mounted;

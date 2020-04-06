@@ -12,7 +12,7 @@ export default function Properties({ viz, sn, isTemp, storage }) {
 
   const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
 
-  const handleCacheChange = e => {
+  const handleCacheChange = (e) => {
     storage.save('readFromCache', e.target.checked);
     setReadCacheEnabled(e.target.checked);
   };

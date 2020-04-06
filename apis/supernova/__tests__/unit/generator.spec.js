@@ -6,7 +6,7 @@ describe('generator', () => {
     [{ default: generator }] = aw.mock(
       [
         ['**/creator.js', () => (...a) => [...a]],
-        ['**/qae.js', () => qae => qae || 'qae'],
+        ['**/qae.js', () => (qae) => qae || 'qae'],
       ],
       ['../../src/generator']
     );

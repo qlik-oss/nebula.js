@@ -1,4 +1,4 @@
-export default function(flags = {}) {
+export default function (flags = {}) {
   /**
    * @interface Flags
    */
@@ -9,6 +9,6 @@ export default function(flags = {}) {
      * @param {string} flag - The value flag to check.
      * @returns {boolean} True if the specified flag is enabled, false otherwise.
      */
-    isEnabled: f => flags[f] === true,
+    isEnabled: (f) => flags[f] === true,
   };
 }

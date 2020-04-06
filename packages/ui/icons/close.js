@@ -1,6 +1,6 @@
 import SvgIcon from './SvgIcon';
 
-const close = props => ({
+const close = (props) => ({
   ...props,
   shapes: [
     {
@@ -13,5 +13,5 @@ const close = props => ({
   ],
 });
 
-export default props => SvgIcon(close(props));
+export default (props) => SvgIcon(close(props));
 export { close };

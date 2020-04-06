@@ -119,7 +119,7 @@ export default function theme() {
     },
   };
 
-  Object.keys(EventEmitter.prototype).forEach(key => {
+  Object.keys(EventEmitter.prototype).forEach((key) => {
     externalAPI[key] = EventEmitter.prototype[key];
   });
   EventEmitter.init(externalAPI);

@@ -1,6 +1,6 @@
 import SvgIcon from './SvgIcon';
 
-const remove = props => ({
+const remove = (props) => ({
   ...props,
   shapes: [
     {
@@ -12,5 +12,5 @@ const remove = props => ({
     },
   ],
 });
-export default props => SvgIcon(remove(props));
+export default (props) => SvgIcon(remove(props));
 export { remove };

@@ -20,7 +20,7 @@ import FieldsPopover from '../FieldsPopover';
 
 const FieldTitle = ({ field, libraryItems }) => {
   if (field.qLibraryId) {
-    const f = libraryItems.filter(ff => ff.qInfo.qId === field.qLibraryId)[0];
+    const f = libraryItems.filter((ff) => ff.qInfo.qId === field.qLibraryId)[0];
     return f ? f.qData.title : '!!!';
   }
   if (field.qDef && field.qDef.qFieldDefs) {
@@ -50,7 +50,7 @@ export default function Fields({
     setIsActive(!isActive);
   };
 
-  const onSelected = o => {
+  const onSelected = (o) => {
     if (o.qId) {
       onAdded(o);
     } else if (o) {
@@ -62,7 +62,7 @@ export default function Fields({
     }
   };
 
-  const onRemove = idx => {
+  const onRemove = (idx) => {
     onRemoved(idx);
   };
 

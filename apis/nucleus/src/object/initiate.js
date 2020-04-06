@@ -1,6 +1,6 @@
 import vizualizationAPI from '../viz';
 
-export default async function(model, optional, corona, initialError, onDestroy = async () => {}) {
+export default async function (model, optional, corona, initialError, onDestroy = async () => {}) {
   const api = vizualizationAPI({
     model,
     corona,

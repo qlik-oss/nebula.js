@@ -13,11 +13,7 @@ const favicon = path.resolve(__dirname, '../../../docs/assets/njs.png');
 const crypto = require('crypto');
 const { version } = require('../package.json');
 
-const versionHash = crypto
-  .createHash('md5')
-  .update(version)
-  .digest('hex')
-  .slice(0, 4);
+const versionHash = crypto.createHash('md5').update(version).digest('hex').slice(0, 4);
 
 const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
   const config = {

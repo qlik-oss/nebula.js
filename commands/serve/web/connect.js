@@ -7,7 +7,7 @@ const params = (() => {
   window.location.search
     .substring(1)
     .split('&')
-    .forEach(pair => {
+    .forEach((pair) => {
       const idx = pair.indexOf('=');
       const name = pair.substr(0, idx);
       let value = decodeURIComponent(pair.substring(idx + 1));
@@ -25,7 +25,7 @@ const params = (() => {
 // QSEoK:     wss://<host>/app/<app-GUID>
 // QSEoW:     wss://<host>/<virtual-proxy-prefix>/app/<app-GUID>
 const RX = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/;
-const parseEngineURL = url => {
+const parseEngineURL = (url) => {
   const m = RX.exec(url);
 
   if (!m) {
@@ -60,8 +60,8 @@ const parseEngineURL = url => {
 };
 
 const connectionInfo = fetch('/info')
-  .then(response => response.json())
-  .then(async n => {
+  .then((response) => response.json())
+  .then(async (n) => {
     let info = n;
     if (params.engine_url) {
       info = {
@@ -120,7 +120,7 @@ const defaultConfig = {
 let connection;
 const connect = () => {
   if (!connection) {
-    connection = connectionInfo.then(async info => {
+    connection = connectionInfo.then(async (info) => {
       const { webIntegrationId, rootPath } = info;
       if (webIntegrationId) {
         if (!headers) {
@@ -134,7 +134,7 @@ const connect = () => {
                 headers: { ...headers, 'content-type': 'application/json' },
               })
             ).json();
-            return data.map(d => ({
+            return data.map((d) => ({
               qDocId: d.resourceId,
               qTitle: d.name,
             }));
@@ -157,8 +157,8 @@ const connect = () => {
   return connection;
 };
 
-const openApp = id =>
-  connectionInfo.then(async info => {
+const openApp = (id) =>
+  connectionInfo.then(async (info) => {
     let urlParams = {};
     if (info.webIntegrationId) {
       if (!headers) {
@@ -180,7 +180,7 @@ const openApp = id =>
         url,
       })
       .open()
-      .then(global => global.openDoc(id));
+      .then((global) => global.openDoc(id));
   });
 
 export { connect, openApp, params, connectionInfo as info };

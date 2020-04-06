@@ -9,7 +9,7 @@ describe('<SvgIcon />', () => {
   let render;
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    render = async props => {
+    render = async (props) => {
       await act(async () => {
         // eslint-disable-next-line react/jsx-props-no-spreading
         renderer = create(<SvgIcon {...props} />);
@@ -154,7 +154,7 @@ describe('<SvgIcon />', () => {
       ],
     });
     const shapes = renderer.root.findAllByType('rect');
-    expect(shapes.map(s => s.props)).to.eql([
+    expect(shapes.map((s) => s.props)).to.eql([
       { x: 0, y: 0, width: 100, height: 100 },
       { x: 1, y: 0, width: 100, height: 100 },
       { x: 2, y: 0, width: 100, height: 100 },

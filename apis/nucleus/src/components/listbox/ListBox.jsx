@@ -29,7 +29,7 @@ export default function ListBox({ model, selections, direction }) {
   });
 
   const onClick = useCallback(
-    e => {
+    (e) => {
       if (layout && layout.qListObject.qDimensionInfo.qLocked) {
         return;
       }
@@ -45,12 +45,12 @@ export default function ListBox({ model, selections, direction }) {
   );
 
   const isItemLoaded = useCallback(
-    index => {
+    (index) => {
       if (!pages || !local.current.validPages) {
         return false;
       }
       local.current.checkIdx = index;
-      const page = pages.filter(p => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
+      const page = pages.filter((p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
       return page && page.qArea.qTop <= index && index < page.qArea.qTop + page.qArea.qHeight;
     },
     [layout, pages]
@@ -69,21 +69,21 @@ export default function ListBox({ model, selections, direction }) {
         local.current.queue.shift();
       }
       clearTimeout(local.current.timeout);
-      return new Promise(resolve => {
+      return new Promise((resolve) => {
         local.current.timeout = setTimeout(
           () => {
             const sorted = local.current.queue.slice(-2).sort((a, b) => a.start - b.start);
             model
               .getListObjectData(
                 '/qListObjectDef',
-                sorted.map(s => ({
+                sorted.map((s) => ({
                   qTop: s.start,
                   qHeight: s.stop - s.start + 1,
                   qLeft: 0,
                   qWidth: 1,
                 }))
               )
-              .then(p => {
+              .then((p) => {
                 local.current.validPages = true;
                 listData.current.pages = p;
                 setPages(p);

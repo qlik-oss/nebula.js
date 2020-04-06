@@ -24,7 +24,7 @@ export default function Collection({ types, cache }) {
           title: '/qMetaDef/title',
         },
       })
-      .then(list => {
+      .then((list) => {
         setObjects(list.slice(0, 20)); // don't show too many to avoid slow UI
       });
   }, [layout, types.join(':')]);
@@ -33,7 +33,7 @@ export default function Collection({ types, cache }) {
     return null;
   }
 
-  const current = expandedObject ? objects.filter(o => o.qInfo.qId === expandedObject) : objects;
+  const current = expandedObject ? objects.filter((o) => o.qInfo.qId === expandedObject) : objects;
 
   return (
     <Grid
@@ -45,7 +45,7 @@ export default function Collection({ types, cache }) {
       }}
     >
       {current[0] ? (
-        current.map(c => (
+        current.map((c) => (
           <Grid item xs={12} md={expandedObject ? 12 : 6} lg={expandedObject ? 12 : 4} key={`${c.qInfo.qId}::${cache}`}>
             <Cell id={c.qInfo.qId} expandable minHeight={600} />
           </Grid>

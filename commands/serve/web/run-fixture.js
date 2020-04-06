@@ -1,4 +1,4 @@
-const runFixture = key => {
+const runFixture = (key) => {
   // const info = await serverInfo;
   // see: https://webpack.js.org/guides/dependency-management/#requirecontext
   try {

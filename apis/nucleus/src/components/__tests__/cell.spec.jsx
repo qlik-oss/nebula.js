@@ -114,7 +114,7 @@ describe('<Cell />', () => {
       await act(async () => {
         renderer = create(
           <ThemeProvider theme={theme}>
-            <InstanceContext.Provider value={{ translator: { get: s => s, language: () => 'sv' } }}>
+            <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
               <Cell ref={cellRef} corona={corona} model={model} initialSnOptions={initialSnOptions} onMount={onMount} />
             </InstanceContext.Provider>
           </ThemeProvider>,

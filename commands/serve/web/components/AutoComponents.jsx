@@ -18,7 +18,7 @@ import { ExpandMore } from '@nebula.js/ui/icons';
 
 import { makeStyles } from '@nebula.js/ui/theme';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   summary: {
     padding: theme.spacing(0, 1),
     backgroundColor: theme.palette.background.lighter,
@@ -29,7 +29,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const usePanelStyles = makeStyles(theme => ({
+const usePanelStyles = makeStyles((theme) => ({
   root: {
     boxShadow: 'none',
     marginLeft: -theme.spacing(1),
@@ -42,7 +42,7 @@ const usePanelStyles = makeStyles(theme => ({
   expanded: {},
 }));
 
-const getType = value => {
+const getType = (value) => {
   if (Array.isArray(value)) {
     return 'array';
   }
@@ -62,7 +62,7 @@ const getType = value => {
 };
 
 const Bool = ({ property, value, target, changed }) => {
-  const handleChange = e => {
+  const handleChange = (e) => {
     target[property] = e.target.checked;
     changed();
   };
@@ -77,7 +77,7 @@ const Bool = ({ property, value, target, changed }) => {
 
 const Str = ({ property, value, target, changed }) => {
   const [s, setS] = useState(value);
-  const handleChange = e => {
+  const handleChange = (e) => {
     setS(e.target.value);
   };
   const onBlur = () => {
@@ -92,7 +92,7 @@ const Str = ({ property, value, target, changed }) => {
 
 const Num = ({ property, value, target, changed }) => {
   const [s, setS] = useState(+value);
-  const handleChange = e => {
+  const handleChange = (e) => {
     setS(e.target.value);
   };
   const onBlur = () => {
@@ -129,7 +129,7 @@ const QRX = /^q[A-Z]/;
 
 function generateComponents(properties, changed) {
   const components = Object.keys(properties)
-    .map(key => {
+    .map((key) => {
       if (['visualization', 'version'].indexOf(key) !== -1) {
         return false;
       }
@@ -153,7 +153,7 @@ function generateComponents(properties, changed) {
 
   return (
     <Grid container direction="column" spacing={0} alignItems="stretch">
-      {components.map(c => (
+      {components.map((c) => (
         <Grid item xs key={c.key} style={{ width: '100%' }}>
           <c.Component key={c.key} property={c.property} value={c.value} target={properties} changed={changed} />
         </Grid>

@@ -7,10 +7,7 @@ const NM = /node_modules/;
 const WP = /\/\(?webpack\)?/;
 
 const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) => {
-  const folderName = process
-    .cwd()
-    .split('/')
-    .slice(-1)[0];
+  const folderName = process.cwd().split('/').slice(-1)[0];
 
   const config = {
     mode: 'development',
@@ -19,7 +16,7 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
     output: {
       path: path.resolve(srcDir, 'temp'),
       filename: '[name].js',
-      devtoolModuleFilenameTemplate: info => {
+      devtoolModuleFilenameTemplate: (info) => {
         // attempt to improve the mapping of multiple libraries into
         // a better folder structure for easier debugging
 

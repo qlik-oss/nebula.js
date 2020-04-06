@@ -10,7 +10,7 @@ describe('<Footer />', () => {
   let render;
   beforeEach(() => {
     sandbox = sinon.createSandbox();
-    render = async layout => {
+    render = async (layout) => {
       await act(async () => {
         renderer = create(<Footer layout={layout} />);
       });

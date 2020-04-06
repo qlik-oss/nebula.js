@@ -1,6 +1,6 @@
 import SvgIcon from './SvgIcon';
 
-const more = props => ({
+const more = (props) => ({
   ...props,
   shapes: [
     {
@@ -13,5 +13,5 @@ const more = props => ({
   ],
 });
 
-export default props => SvgIcon(more(props));
+export default (props) => SvgIcon(more(props));
 export { more };

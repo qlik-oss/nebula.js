@@ -6,7 +6,7 @@ import { CircularProgress } from '@material-ui/core';
 
 import { makeStyles } from '@nebula.js/ui/theme';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
     display: 'inline-block',

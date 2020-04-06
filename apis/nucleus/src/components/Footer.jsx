@@ -2,7 +2,7 @@ import React from 'react';
 
 import { makeStyles, Typography, Grid } from '@material-ui/core';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   itemStyle: {
     minWidth: 0,
     paddingTop: theme.spacing(1),

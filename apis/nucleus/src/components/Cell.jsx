@@ -16,7 +16,7 @@ import useLayout, { useAppLayout } from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
 
-const initialState = err => ({
+const initialState = (err) => ({
   loading: false,
   loaded: false,
   longRunningQuery: false,
@@ -103,12 +103,12 @@ const handleModal = ({ sn, layout, model }) => {
   }
 };
 
-const filterData = d => (d.qError ? d.qError.qErrorCode === 7005 : true);
+const filterData = (d) => (d.qError ? d.qError.qErrorCode === 7005 : true);
 
 const validateTargets = (translator, layout, { targets }) => {
   const layoutErrors = [];
   const requirementsError = [];
-  targets.forEach(def => {
+  targets.forEach((def) => {
     const minD = def.dimensions.min();
     const minM = def.measures.min();
     const hc = def.resolveLayout(layout);
@@ -180,7 +180,7 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
     if (initialError || !appLayout) {
       return undefined;
     }
-    const validate = sn => {
+    const validate = (sn) => {
       const [showError, error] = validateTargets(translator, layout, sn.generator.qae.data);
       if (showError) {
         dispatch({ type: 'ERROR', error });

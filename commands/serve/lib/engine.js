@@ -12,13 +12,13 @@ const execCmd = (cmd, cmdArgs = [], opts) => {
       err: '',
     };
     child.on('error', reject);
-    child.stdout.on('data', chunk => {
+    child.stdout.on('data', (chunk) => {
       res.out += chunk.toString();
     });
-    child.stderr.on('data', chunk => {
+    child.stderr.on('data', (chunk) => {
       res.err += chunk.toString();
     });
-    child.on('exit', exitCode => {
+    child.on('exit', (exitCode) => {
       res.exitCode = exitCode;
       if (exitCode === 0) {
         resolve(res);

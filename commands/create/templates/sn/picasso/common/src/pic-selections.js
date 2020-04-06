@@ -11,15 +11,15 @@ const KEYS = {
 
 const instances = [];
 let expando = 0;
-const confirmOrCancelSelection = e => {
-  const active = instances.filter(a => a.selections && a.selections.isActive());
+const confirmOrCancelSelection = (e) => {
+  const active = instances.filter((a) => a.selections && a.selections.isActive());
   if (!active.length) {
     return;
   }
   if (e.key === KEYS.ENTER) {
-    active.forEach(a => a.selections.confirm());
+    active.forEach((a) => a.selections.confirm());
   } else if (e.key === KEYS.ESCAPE || e.key === KEYS.IE11_ESC) {
-    active.forEach(a => a.selections.cancel());
+    active.forEach((a) => a.selections.cancel());
   }
 };
 
@@ -33,18 +33,18 @@ const teardown = () => {
 // ------------------------------------------------------
 
 const addListeners = (emitter, listeners) => {
-  Object.keys(listeners).forEach(type => {
+  Object.keys(listeners).forEach((type) => {
     emitter.on(type, listeners[type]);
   });
 };
 
 const removeListeners = (emitter, listeners) => {
-  Object.keys(listeners).forEach(type => {
+  Object.keys(listeners).forEach((type) => {
     emitter.removeListener(type, listeners[type]);
   });
 };
 
-export default function({ selections, brush, picassoQ } = {}, { path = '/qHyperCubeDef' } = {}) {
+export default function ({ selections, brush, picassoQ } = {}, { path = '/qHyperCubeDef' } = {}) {
   if (!selections) {
     return {
       layout: () => {},
@@ -56,9 +56,9 @@ export default function({ selections, brush, picassoQ } = {}, { path = '/qHyperC
   let layout = null;
 
   // interceptors primary job is to ensure selections only occur on either values OR ranges
-  const valueInterceptor = added => {
+  const valueInterceptor = (added) => {
     const brushes = brush.brushes();
-    brushes.forEach(b => {
+    brushes.forEach((b) => {
       if (b.type === 'range') {
         // has range selections
         brush.clear([]);
@@ -67,11 +67,11 @@ export default function({ selections, brush, picassoQ } = {}, { path = '/qHyperC
         brush.clear([]);
       }
     });
-    return added.filter(t => t.value !== -2); // do not allow selection on null value
+    return added.filter((t) => t.value !== -2); // do not allow selection on null value
   };
 
-  const rangeInterceptor = a => {
-    const v = brush.brushes().filter(b => b.type === 'value');
+  const rangeInterceptor = (a) => {
+    const v = brush.brushes().filter((b) => b.type === 'value');
     if (v.length) {
       // has dimension values selected
       brush.clear([]);
@@ -101,7 +101,7 @@ export default function({ selections, brush, picassoQ } = {}, { path = '/qHyperC
 
   brush.on('update', () => {
     const generated = picassoQ.selections(brush, {}, layout);
-    generated.forEach(s => selections.select(s));
+    generated.forEach((s) => selections.select(s));
   });
 
   if (instances.length === 0) {
@@ -114,12 +114,12 @@ export default function({ selections, brush, picassoQ } = {}, { path = '/qHyperC
   });
 
   return {
-    layout: lt => {
+    layout: (lt) => {
       layout = lt;
     },
     release: () => {
       layout = null;
-      const idx = instances.indexOf(instances.filter(i => i.key === key)[0]);
+      const idx = instances.indexOf(instances.filter((i) => i.key === key)[0]);
       if (idx !== -1) {
         instances.splice(idx, 1);
       }

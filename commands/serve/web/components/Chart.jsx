@@ -15,11 +15,11 @@ export default function Chart({ id, onLoad }) {
       id,
       element: el.current,
     });
-    n.then(viz => {
+    n.then((viz) => {
       onLoad(viz, el.current);
     });
     return () => {
-      n.then(v => {
+      n.then((v) => {
         v.destroy();
       });
     };

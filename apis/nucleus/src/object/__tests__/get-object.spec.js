@@ -19,7 +19,7 @@ describe('get-object', () => {
   beforeEach(() => {
     objectModel = sandbox.stub();
     init.returns('api');
-    context = { app: { id: 'appid', getObject: async id => Promise.resolve(objectModel(id)) } };
+    context = { app: { id: 'appid', getObject: async (id) => Promise.resolve(objectModel(id)) } };
   });
 
   afterEach(() => {

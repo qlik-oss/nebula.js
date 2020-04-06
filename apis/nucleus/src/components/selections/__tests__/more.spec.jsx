@@ -2,7 +2,7 @@ import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { Badge, IconButton, Grid, Typography, Button, List, ListItem, Box } from '@material-ui/core';
 
-const Popover = props => props.children;
+const Popover = (props) => props.children;
 const MockedOneField = () => 'OneField';
 const MockedMultiState = () => 'MultiState';
 

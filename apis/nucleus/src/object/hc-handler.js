@@ -23,13 +23,13 @@ function removeIndex(array, index) {
   return removeIdx;
 }
 
-const nxDimension = f => ({
+const nxDimension = (f) => ({
   qDef: {
     qFieldDefs: [f],
   },
 });
 
-const nxMeasure = f => ({
+const nxMeasure = (f) => ({
   qDef: {
     qDef: f,
   },

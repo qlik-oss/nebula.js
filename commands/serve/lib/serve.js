@@ -15,7 +15,7 @@ const useEngine = require('./engine');
 const initiateWatch = async ({ snPath, snName, host }) => {
   // TODO - timeout
   let onInitiated;
-  const done = new Promise(resolve => {
+  const done = new Promise((resolve) => {
     onInitiated = resolve;
   });
 
@@ -36,7 +36,7 @@ const initiateWatch = async ({ snPath, snName, host }) => {
   });
 
   choker.on('change', () => {
-    [...ws.clients].forEach(client => {
+    [...ws.clients].forEach((client) => {
       client.send(
         JSON.stringify({
           changed: [snName],
@@ -92,7 +92,7 @@ const initiateWatch = async ({ snPath, snName, host }) => {
   };
 };
 
-module.exports = async argv => {
+module.exports = async (argv) => {
   const context = process.cwd();
   let defaultServeConfig = {};
 
@@ -166,7 +166,7 @@ module.exports = async argv => {
     server.close();
   };
 
-  ['SIGINT', 'SIGTERM'].forEach(signal => {
+  ['SIGINT', 'SIGTERM'].forEach((signal) => {
     process.on(signal, close);
   });
 

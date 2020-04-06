@@ -1,6 +1,6 @@
 import SvgIcon from './SvgIcon';
 
-const selectionsForward = props => ({
+const selectionsForward = (props) => ({
   ...props,
   shapes: [
     {
@@ -12,5 +12,5 @@ const selectionsForward = props => ({
     },
   ],
 });
-export default props => SvgIcon(selectionsForward(props));
+export default (props) => SvgIcon(selectionsForward(props));
 export { selectionsForward };

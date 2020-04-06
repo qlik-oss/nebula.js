@@ -27,12 +27,12 @@ export default function Stage({ info, storage, uid }) {
         },
       },
     });
-    res.then(v => {
+    res.then((v) => {
       setModel(v.model);
       setActiveViz(v);
     });
     return () => {
-      res.then(v => v.destroy());
+      res.then((v) => v.destroy());
     };
   }, [uid]);
 

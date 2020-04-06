@@ -13,7 +13,7 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
    * @hideconstructor
    */
   const api = /** @lends Translator# */ {
-    language: lang => {
+    language: (lang) => {
       if (lang) {
         currentLocale = lang;
       }
@@ -34,10 +34,10 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
      * });
      * translator.get('company.hello_user', ['John']); // Hello John
      */
-    add: item => {
+    add: (item) => {
       // TODO - disallow override?
       const { id, locale } = item;
-      Object.keys(locale).forEach(lang => {
+      Object.keys(locale).forEach((lang) => {
         if (!dictionaries[lang]) {
           dictionaries[lang] = {};
         }

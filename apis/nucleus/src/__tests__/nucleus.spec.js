@@ -64,7 +64,7 @@ describe('nucleus', () => {
     const delay = 1000;
     appThemeFn.returns({
       setTheme: () =>
-        new Promise(resolve => {
+        new Promise((resolve) => {
           setTimeout(() => {
             waited = true;
             resolve();

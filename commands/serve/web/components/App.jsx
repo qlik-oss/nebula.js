@@ -84,14 +84,14 @@ export default function App({ app, info }) {
         theme: currentThemeName,
         language: currentLanguage,
       },
-      load: type => Promise.resolve(window[type.name]),
+      load: (type) => Promise.resolve(window[type.name]),
       themes: info.themes
-        ? info.themes.map(t => ({
+        ? info.themes.map((t) => ({
             key: t,
             load: () =>
               fetch(`/theme/${t}`)
-                .then(response => response.json())
-                .then(raw => {
+                .then((response) => response.json())
+                .then((raw) => {
                   setCurrentMuiThemeName(raw.type === 'dark' ? 'dark' : 'light');
                   return raw;
                 }),
@@ -117,7 +117,7 @@ export default function App({ app, info }) {
       }
     };
 
-    nebbie.selections().then(s => s.mount(currentSelectionsRef.current));
+    nebbie.selections().then((s) => s.mount(currentSelectionsRef.current));
     window.onHotChange(info.supernova.name, () => {
       nebbie.types.clearFromCache(info.supernova.name);
       nebbie.types.register(info.supernova);
@@ -146,13 +146,13 @@ export default function App({ app, info }) {
     };
   }, []);
 
-  const handleThemeChange = t => {
+  const handleThemeChange = (t) => {
     setThemeChooserAnchorEl(null);
     storage.save('themeName', t);
     setCurrentThemeName(t);
   };
 
-  const handleLanguageChange = lang => {
+  const handleLanguageChange = (lang) => {
     setLanguageChooserAnchorEl(null);
     storage.save('language', lang);
     setCurrentLanguage(lang);
@@ -224,7 +224,7 @@ export default function App({ app, info }) {
                     <Grid item>
                       {customThemes.length ? (
                         <>
-                          <IconButton title="Select theme" onClick={e => setThemeChooserAnchorEl(e.currentTarget)}>
+                          <IconButton title="Select theme" onClick={(e) => setThemeChooserAnchorEl(e.currentTarget)}>
                             <ColorLens fontSize="small" />
                           </IconButton>
                           <Menu
@@ -233,7 +233,7 @@ export default function App({ app, info }) {
                             keepMounted
                             onClose={() => setThemeChooserAnchorEl(null)}
                           >
-                            {customThemes.map(t => (
+                            {customThemes.map((t) => (
                               <MenuItem key={t} selected={t === currentThemeName} onClick={() => handleThemeChange(t)}>
                                 {t}
                               </MenuItem>
@@ -254,7 +254,7 @@ export default function App({ app, info }) {
                       <Button
                         startIcon={<Language />}
                         title="Select language"
-                        onClick={e => setLanguageChooserAnchorEl(e.currentTarget)}
+                        onClick={(e) => setLanguageChooserAnchorEl(e.currentTarget)}
                       >
                         {currentLanguage}
                       </Button>
@@ -264,7 +264,7 @@ export default function App({ app, info }) {
                         keepMounted
                         onClose={() => setLanguageChooserAnchorEl(null)}
                       >
-                        {languages.map(t => (
+                        {languages.map((t) => (
                           <MenuItem key={t} selected={t === currentLanguage} onClick={() => handleLanguageChange(t)}>
                             {t}
                           </MenuItem>

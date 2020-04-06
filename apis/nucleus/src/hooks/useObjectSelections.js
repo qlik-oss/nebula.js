@@ -136,7 +136,7 @@ function createObjectSelections({ appSelections, appModal, model }) {
      * @param {string[]} paths
      * @returns {Promise<undefined>}
      */
-    goModal: paths => appModal.begin(model, paths, false),
+    goModal: (paths) => appModal.begin(model, paths, false),
     /**
      * @param {boolean} [accept=false]
      * @returns {Promise<undefined>}

@@ -1,15 +1,15 @@
 /* eslint no-underscore-dangle:0 */
 import themeFn from '@nebula.js/theme';
 
-const timed = (t, v) => new Promise(resolve => setTimeout(() => resolve(v), t));
+const timed = (t, v) => new Promise((resolve) => setTimeout(() => resolve(v), t));
 
 const LOAD_THEME_TIMEOUT = 5000;
 
 export default function appTheme({ themes = [], root } = {}) {
   const wrappedTheme = themeFn();
 
-  const setTheme = async themeId => {
-    const found = themes.filter(t => t.id === themeId)[0];
+  const setTheme = async (themeId) => {
+    const found = themes.filter((t) => t.id === themeId)[0];
     let muiTheme = themeId === 'dark' ? 'dark' : 'light';
     if (found && found.load) {
       try {

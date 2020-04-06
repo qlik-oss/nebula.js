@@ -1,6 +1,6 @@
 import SvgIcon from './SvgIcon';
 
-const lasso = props => ({
+const lasso = (props) => ({
   ...props,
   shapes: [
     {
@@ -13,5 +13,5 @@ const lasso = props => ({
   ],
 });
 
-export default props => SvgIcon(lasso(props));
+export default (props) => SvgIcon(lasso(props));
 export { lasso };
