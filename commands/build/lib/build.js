@@ -92,9 +92,6 @@ const config = ({ mode = 'production', format = 'umd', cwd = process.cwd(), argv
       globals: {
         '@nebula.js/supernova': 'supernova',
       },
-      output: {
-        preamble: banner,
-      },
     },
   };
 };
