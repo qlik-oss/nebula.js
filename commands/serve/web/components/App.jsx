@@ -62,7 +62,7 @@ export default function App({ app, info }) {
   const [currentId, setCurrentId] = useState();
   const [themeChooserAnchorEl, setThemeChooserAnchorEl] = React.useState(null);
   const [languageChooserAnchorEl, setLanguageChooserAnchorEl] = React.useState(null);
-
+  const [nebbie, setNebbie] = useState(null);
   const customThemes = info.themes && info.themes.length ? ['light', 'dark', ...info.themes] : [];
 
   const theme = useMemo(() => createTheme(currentMuiThemeName), [currentMuiThemeName]);
@@ -78,7 +78,7 @@ export default function App({ app, info }) {
     [activeViz, expandedObject, currentThemeName]
   );
 
-  const nebbie = useMemo(() => {
+  useEffect(() => {
     const n = nucleus(app, {
       context: {
         theme: currentThemeName,
@@ -99,10 +99,11 @@ export default function App({ app, info }) {
         : null,
     });
     n.types.register(info.supernova);
-    return n;
+    setNebbie(n);
   }, [app]);
 
   useLayoutEffect(() => {
+    if (!nebbie) return;
     nebbie.context({ theme: currentThemeName });
     if (currentThemeName === 'light' || currentThemeName === 'dark') {
       setCurrentMuiThemeName(currentThemeName);
@@ -110,6 +111,7 @@ export default function App({ app, info }) {
   }, [nebbie, currentThemeName]);
 
   useEffect(() => {
+    if (!nebbie) return undefined;
     const create = () => {
       if (window[info.supernova.name]) {
         uid.current = String(Date.now());
@@ -144,7 +146,7 @@ export default function App({ app, info }) {
     return () => {
       window.removeEventListener('beforeunload', unload);
     };
-  }, []);
+  }, [nebbie]);
 
   const handleThemeChange = (t) => {
     setThemeChooserAnchorEl(null);
