@@ -130,6 +130,8 @@ describe('hooks', () => {
         imperativeHandle: null,
         resizer: null,
       });
+
+      expect(c.__actionsDispatch).to.eql(null);
     });
   });
 
@@ -519,6 +521,15 @@ describe('hooks', () => {
       expect(ref.getSvgIconShape()).to.eql('ic');
       expect(ref.disabled).to.eql(true);
       expect(ref.label).to.eql('meh');
+    });
+
+    it('should observe actions before init ', async () => {
+      const spy = sandbox.spy();
+
+      const unitiatedComponent = {};
+
+      observeActions(unitiatedComponent, spy);
+      expect(unitiatedComponent.__actionsDispatch).to.eql(spy);
     });
 
     it('should dispatch actions immediately', async () => {
