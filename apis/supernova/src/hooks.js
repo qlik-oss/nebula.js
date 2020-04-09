@@ -59,6 +59,8 @@ export function teardown(component) {
   component.__hooks.imperativeHandle = null;
   component.__hooks.resizer = null;
 
+  component.__actionsDispatch = null;
+
   clearTimeout(component.__hooks.micro);
   cancelAnimationFrame(component.__hooks.macro);
 }
@@ -165,15 +167,15 @@ export function getImperativeHandle(component) {
 }
 
 function dispatchActions(component) {
-  if (component.__hooks.actions.dispatch && component.__hooks.actions.changed) {
-    component.__hooks.actions.dispatch(component.__hooks.actions.list.slice());
+  if (component.__actionsDispatch && component.__hooks.actions.changed) {
+    component.__actionsDispatch(component.__hooks.actions.list.slice());
     component.__hooks.actions.changed = false;
   }
 }
 
 export function observeActions(component, callback) {
+  component.__actionsDispatch = callback;
   if (component.__hooks) {
-    component.__hooks.actions.dispatch = callback;
     component.__hooks.actions.changed = true;
     dispatchActions(component);
   }
