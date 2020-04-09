@@ -114,7 +114,7 @@ describe('hooks', () => {
           list: [{ teardown: spy }],
           pendingEffects: ['a'],
           pendingLayoutEffects: ['a'],
-          actions: ['a'],
+          actions: { list: [] },
         },
       };
 
@@ -126,8 +126,7 @@ describe('hooks', () => {
         list: [],
         pendingEffects: [],
         pendingLayoutEffects: [],
-        actions: [],
-        dispatchActions: null,
+        actions: null,
         imperativeHandle: null,
         resizer: null,
       });
@@ -522,21 +521,34 @@ describe('hooks', () => {
       expect(ref.label).to.eql('meh');
     });
 
-    it('should dispatch actions', async () => {
+    it('should dispatch actions immediately', async () => {
+      const spy = sandbox.spy();
+
+      observeActions(c, spy);
+      expect(spy.callCount).to.eql(1);
+
+      const actions = spy.getCall(0).args[0];
+      expect(actions).to.eql([]);
+    });
+
+    it('should dispatch actions only once after initial', async () => {
       const spy = sandbox.spy();
       c.fn = () => {
         useAction(() => ({ key: 'nyckel' }), []);
+        useAction(() => ({ key: 'nyckel2' }), []);
+        useAction(() => ({ key: 'nyckel3' }), []);
       };
 
       observeActions(c, spy);
       expect(spy.callCount).to.eql(1);
 
       run(c);
+      run(c);
       expect(spy.callCount).to.eql(2);
 
       const actions = spy.getCall(1).args[0];
 
-      expect(actions[0].key).to.eql('nyckel');
+      expect(actions.map((a) => a.key)).to.eql(['nyckel', 'nyckel2', 'nyckel3']);
     });
   });
 

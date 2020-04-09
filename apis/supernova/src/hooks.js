@@ -35,7 +35,9 @@ export function initiate(component, { explicitResize = false } = {}) {
     },
     list: [],
     snaps: [],
-    actions: [],
+    actions: {
+      list: [],
+    },
     pendingEffects: [],
     pendingLayoutEffects: [],
     pendingPromises: [],
@@ -53,8 +55,7 @@ export function teardown(component) {
   component.__hooks.list.length = 0;
   component.__hooks.pendingEffects.length = 0;
   component.__hooks.pendingLayoutEffects.length = 0;
-  component.__hooks.actions.length = 0;
-  component.__hooks.dispatchActions = null;
+  component.__hooks.actions = null;
   component.__hooks.imperativeHandle = null;
   component.__hooks.resizer = null;
 
@@ -91,6 +92,7 @@ export async function run(component) {
   }
 
   const hooks = currentComponent.__hooks;
+  dispatchActions(currentComponent);
 
   currentIndex = undefined;
   currentComponent = undefined;
@@ -163,13 +165,16 @@ export function getImperativeHandle(component) {
 }
 
 function dispatchActions(component) {
-  component._dispatchActions && component._dispatchActions(component.__hooks.actions.slice());
+  if (component.__hooks.actions.dispatch && component.__hooks.actions.changed) {
+    component.__hooks.actions.dispatch(component.__hooks.actions.list.slice());
+    component.__hooks.actions.changed = false;
+  }
 }
 
 export function observeActions(component, callback) {
-  component._dispatchActions = callback;
-
   if (component.__hooks) {
+    component.__hooks.actions.dispatch = callback;
+    component.__hooks.actions.changed = true;
     dispatchActions(component);
   }
 }
@@ -744,7 +749,7 @@ export function useAction(fn, deps) {
 
   if (!ref.component) {
     ref.component = currentComponent;
-    currentComponent.__hooks.actions.push(ref);
+    currentComponent.__hooks.actions.list.push(ref);
   }
   useMemo(() => {
     const a = fn();
@@ -755,8 +760,9 @@ export function useAction(fn, deps) {
     ref.label = a.label || '';
     ref.getSvgIconShape = a.icon ? () => a.icon : undefined;
 
-    ref.key = a.key || ref.component.__hooks.actions.length;
-    dispatchActions(ref.component);
+    ref.key = a.key || ref.component.__hooks.actions.list.length;
+
+    ref.component.__hooks.actions.changed = true;
   }, deps);
 
   return ref.action;
