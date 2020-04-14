@@ -1,6 +1,7 @@
-# @nebula.js/supernova
-
-> version: 0.2.0
+---
+id: sn-reference
+title: API Reference
+---
 
 ## Table of contents
 
@@ -219,7 +220,7 @@ import { useModel } from '@nebula.js/supernova';
 // ...
 const model = useModel();
 useEffect(() => {
-  model.getInfo().then(info => {
+  model.getInfo().then((info) => {
     console.log(info);
   });
 }, []);
@@ -236,7 +237,7 @@ import { useApp } from '@nebula.js/supernova';
 // ...
 const app = useApp();
 useEffect(() => {
-  app.getAllInfos().then(infos => {
+  app.getAllInfos().then((infos) => {
     console.log(infos);
   });
 }, []);
@@ -254,7 +255,7 @@ import { useGlobal } from '@nebula.js/supernova';
 // ...
 const g = useGlobal();
 useEffect(() => {
-  g.engineVersion().then(version => {
+  g.engineVersion().then((version) => {
     console.log(version);
   });
 }, []);
@@ -327,7 +328,7 @@ const act = useAction(
     hidden: false,
     disabled: zoomed,
     action() {
-      setZoomed(prev => !prev);
+      setZoomed((prev) => !prev);
     },
     icon: {},
   }),
@@ -422,7 +423,7 @@ import { useLayout } from '@nebula.js/supernova';
 const layout = useLayout();
 const [zoomed] = useState(layout.isZoomed || false);
 
-onTakeSnapshot(copyOfLayout => {
+onTakeSnapshot((copyOfLayout) => {
   copyOfLayout.isZoomed = zoomed;
   return Promise.resolve(copyOfLayout);
 });
@@ -438,7 +439,7 @@ The entry point for defining a supernova.
 ```js
 import { useElement, useLayout } from '@nebula.js/supernova';
 
-export default function() {
+export default function () {
   return {
     qae: {
       properties: {

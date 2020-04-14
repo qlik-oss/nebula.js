@@ -23,11 +23,29 @@
       "render-charts": {
         "title": "Rendering supernovae"
       },
+      "sn-component": {
+        "title": "Rendering"
+      },
+      "sn-configure-data": {
+        "title": "Configuring data"
+      },
       "sn-controller": {
         "title": "Modify charts"
       },
-      "supernova-api": {
-        "title": "supernova-api"
+      "sn-create": {
+        "title": "Quick start"
+      },
+      "sn-introduction": {
+        "title": "Introduction"
+      },
+      "sn-reference": {
+        "title": "API Reference"
+      },
+      "sn-selections": {
+        "title": "Selecting data"
+      },
+      "sn-using-data": {
+        "title": "Using data"
       },
       "web-integration": {
         "title": "Web integration"
@@ -36,7 +54,8 @@
     "links": {},
     "categories": {
       "Getting started": "Getting started",
-      "Nucleus guide": "Nucleus guide"
+      "Nucleus guide": "Nucleus guide",
+      "Supernova guide": "Supernova guide"
     }
   },
   "pages-strings": {
