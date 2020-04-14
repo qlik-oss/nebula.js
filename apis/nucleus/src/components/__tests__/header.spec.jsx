@@ -3,7 +3,7 @@ import { create, act } from 'react-test-renderer';
 import { makeStyles, Grid, Typography } from '@material-ui/core';
 
 const Popover = (props) => props.children;
-const SelectionToolbar = () => 'selectiontoolbar';
+const ActionsToolbar = () => 'ActionsToolbar';
 
 describe('<Header />', () => {
   let sandbox;
@@ -16,7 +16,7 @@ describe('<Header />', () => {
     rect = { width: 900 };
     [{ default: Header }] = aw.mock(
       [
-        [require.resolve('../SelectionToolbar'), () => SelectionToolbar],
+        [require.resolve('../ActionsToolbar'), () => ActionsToolbar],
         [require.resolve('../../hooks/useRect'), () => () => [() => {}, rect]],
         [
           require.resolve('@material-ui/core'),
@@ -32,7 +32,7 @@ describe('<Header />', () => {
     );
   });
   beforeEach(() => {
-    render = async (layout, sn) => {
+    render = async (layout = {}, sn = { component: {}, selectionToolbar: {} }) => {
       await act(async () => {
         renderer = create(<Header layout={layout} sn={sn} />);
       });
@@ -61,37 +61,7 @@ describe('<Header />', () => {
   });
   it('should render selection toolbar', async () => {
     await render({ qSelectionInfo: { qInSelections: true } }, { component: {}, selectionToolbar: {} });
-    const types = renderer.root.findAllByType(SelectionToolbar);
+    const types = renderer.root.findAllByType(ActionsToolbar);
     expect(types).to.have.length(1);
-  });
-  it('should not render popover toolbar', async () => {
-    await render(
-      { showTitles: true, title: 'popover', qSelectionInfo: { qInSelections: true } },
-      { component: {}, selectionToolbar: {} }
-    );
-    expect(() => renderer.root.findByType(Popover)).to.throw();
-  });
-  it('should render popover toolbar if no title', async () => {
-    await render(
-      { showTitles: false, title: 'popover', qSelectionInfo: { qInSelections: true } },
-      { component: {}, selectionToolbar: {} }
-    );
-    renderer.root.findByType(Popover);
-  });
-  it('should not render popover toolbar if to small with title', async () => {
-    sandbox.stub(rect, 'width').value(20);
-    await render(
-      { showTitles: true, title: 'popover', qSelectionInfo: { qInSelections: true } },
-      { component: {}, selectionToolbar: {} }
-    );
-    renderer.root.findByType(Popover);
-  });
-  it('should not render popover toolbar if to small with no title', async () => {
-    sandbox.stub(rect, 'width').value(20);
-    await render(
-      { showTitles: false, title: 'popover', qSelectionInfo: { qInSelections: true } },
-      { component: {}, selectionToolbar: {} }
-    );
-    renderer.root.findByType(Popover);
   });
 });

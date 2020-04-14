@@ -1,11 +1,10 @@
-import React, { useContext, useCallback, useRef, useState, useEffect } from 'react';
+import React, { useContext, useCallback, useRef, useEffect } from 'react';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
 
-import { IconButton, Popover, Grid, MenuList } from '@material-ui/core';
+import { IconButton, Popover, Grid } from '@material-ui/core';
 
-import { more } from '@nebula.js/ui/icons/more';
 import { useTheme } from '@nebula.js/ui/theme';
 import useSessionModel from '../../hooks/useSessionModel';
 import useLayout from '../../hooks/useLayout';
@@ -13,7 +12,7 @@ import useLayout from '../../hooks/useLayout';
 import ListBox from './ListBox';
 import createListboxSelectionToolbar from './listbox-selection-toolbar';
 
-import SelectionToolbarWithDefault, { SelectionToolbar } from '../SelectionToolbar';
+import ActionsToolbar from '../ActionsToolbar';
 
 import InstanceContext from '../../contexts/InstanceContext';
 
@@ -66,9 +65,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
   }, [model]);
 
   const { translator } = useContext(InstanceContext);
-
   const moreAlignTo = useRef();
-  const [showSelectionsMenu, setShowSelectionsMenu] = useState(false);
   const [selections] = useObjectSelections(app, model);
   const [layout] = useLayout(model);
 
@@ -96,17 +93,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
     layout,
     model,
     translator,
-    onSelected: () => setShowSelectionsMenu(false),
   });
-
-  const moreItem = {
-    key: 'more',
-    type: 'icon-button',
-    label: translator.get('Selection.Menu'),
-    getSvgIconShape: more,
-    enabled: () => !isLocked,
-    action: () => setShowSelectionsMenu(!showSelectionsMenu),
-  };
 
   const counts = layout.qListObject.qDimensionInfo.qStateCounts;
 
@@ -144,12 +131,25 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
           </Grid>
           <Grid item xs />
           <Grid item>
-            <SelectionToolbarWithDefault
-              layout={layout}
-              api={selections}
-              xItems={[moreItem]}
-              onConfirm={popoverClose}
-              onCancel={() => popoverClose(null, 'escapeKeyDown')}
+            <ActionsToolbar
+              more={{
+                enabled: !isLocked,
+                actions: listboxSelectionToolbarItems,
+                alignTo: moreAlignTo,
+                popoverProps: {
+                  elevation: 0,
+                },
+                popoverPaperStyle: {
+                  boxShadow: '0 12px 8px -8px rgba(0, 0, 0, 0.2)',
+                  minWidth: '250px',
+                },
+              }}
+              selections={{
+                show: true,
+                api: selections,
+                onConfirm: popoverClose,
+                onCancel: () => popoverClose(null, 'escapeKeyDown'),
+              }}
             />
           </Grid>
         </Grid>
@@ -157,30 +157,6 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
           <div ref={moreAlignTo} />
           <ListBoxSearch model={model} />
           <ListBox model={model} selections={selections} direction="ltr" />
-          {showSelectionsMenu && (
-            <Popover
-              open={showSelectionsMenu}
-              anchorEl={moreAlignTo.current}
-              getContentAnchorEl={null}
-              container={moreAlignTo.current}
-              disablePortal
-              hideBackdrop
-              style={{ pointerEvents: 'none' }}
-              transitionDuration={0}
-              elevation={0}
-              PaperProps={{
-                style: {
-                  boxShadow: '0 12px 8px -8px rgba(0, 0, 0, 0.2)',
-                  minWidth: '250px',
-                  pointerEvents: 'auto',
-                },
-              }}
-            >
-              <MenuList>
-                <SelectionToolbar layout={layout} items={listboxSelectionToolbarItems} />
-              </MenuList>
-            </Popover>
-          )}
         </Grid>
       </Grid>
     </Popover>
