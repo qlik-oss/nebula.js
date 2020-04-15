@@ -3,7 +3,7 @@ import { selectAlternative } from '@nebula.js/ui/icons/select-alternative';
 import { selectPossible } from '@nebula.js/ui/icons/select-possible';
 import { selectExcluded } from '@nebula.js/ui/icons/select-excluded';
 
-export default ({ layout, model, translator, onSelected = () => {} }) => {
+export default ({ layout, model, translator }) => {
   const canSelectAll = () => {
     return ['qOption', 'qAlternative', 'qExcluded', 'qDeselected'].some((sc) => {
       return layout.qListObject.qDimensionInfo.qStateCounts[sc] > 0;
@@ -34,7 +34,6 @@ export default ({ layout, model, translator, onSelected = () => {} }) => {
       enabled: canSelectAll,
       action: () => {
         model.selectListObjectAll('/qListObjectDef');
-        onSelected();
       },
     },
     {
@@ -45,7 +44,6 @@ export default ({ layout, model, translator, onSelected = () => {} }) => {
       enabled: canSelectPossible,
       action: () => {
         model.selectListObjectPossible('/qListObjectDef');
-        onSelected();
       },
     },
     {
@@ -56,7 +54,6 @@ export default ({ layout, model, translator, onSelected = () => {} }) => {
       enabled: canSelectAlternative,
       action: () => {
         model.selectListObjectAlternative('/qListObjectDef');
-        onSelected();
       },
     },
     {
@@ -67,7 +64,6 @@ export default ({ layout, model, translator, onSelected = () => {} }) => {
       enabled: canSelectExcluded,
       action: () => {
         model.selectListObjectExcluded('/qListObjectDef');
-        onSelected();
       },
     },
   ];

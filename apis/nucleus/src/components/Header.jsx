@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 
-import { makeStyles, Grid, Typography, Popover } from '@material-ui/core';
-import SelectionToolbarWithDefault from './SelectionToolbar';
+import { makeStyles, Grid, Typography } from '@material-ui/core';
+import ActionsToolbar from './ActionsToolbar';
 import useRect from '../hooks/useRect';
 
 const ITEM_WIDTH = 32;
 const ITEM_SPACING = 4;
+const DIVIDER = 1;
 const NUMBER_OF_ITEMS = 6;
-const MIN_WIDTH = (ITEM_WIDTH + ITEM_SPACING) * NUMBER_OF_ITEMS;
+const MIN_WIDTH = (ITEM_WIDTH + ITEM_SPACING) * NUMBER_OF_ITEMS + DIVIDER + ITEM_SPACING;
 
 const useStyles = makeStyles((theme) => ({
   containerStyle: {
@@ -16,18 +17,14 @@ const useStyles = makeStyles((theme) => ({
   containerTitleStyle: {
     paddingBottom: theme.spacing(1),
   },
-  itemsStyle: {
-    whiteSpace: 'nowrap',
-    minHeight: '32px',
-  },
 }));
 
-const Header = ({ layout, sn, anchorEl }) => {
-  const showTitle = layout && layout.showTitles && !!layout.title;
-  const showSubtitle = layout && layout.showTitles && !!layout.subtitle;
-  const showInSelectionActions = sn && layout && layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
-  const [items, setItems] = useState([]);
-  const { containerStyle, containerTitleStyle, itemsStyle } = useStyles();
+const Header = ({ layout, sn, anchorEl, hovering }) => {
+  const showTitle = layout.showTitles && !!layout.title;
+  const showSubtitle = layout.showTitles && !!layout.subtitle;
+  const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
+  const [actions, setActions] = useState([]);
+  const { containerStyle, containerTitleStyle } = useStyles();
   const [containerRef, containerRect] = useRect();
   const [shouldShowPopoverToolbar, setShouldShowPopoverToolbar] = useState(false);
 
@@ -35,7 +32,9 @@ const Header = ({ layout, sn, anchorEl }) => {
     if (!sn || !sn.component || !sn.component.isHooked) {
       return;
     }
-    sn.component.observeActions((actions) => setItems(actions));
+    sn.component.observeActions((a) => {
+      setActions([...a, ...((sn && sn.selectionToolbar && sn.selectionToolbar.items) || [])]);
+    });
   }, [sn]);
 
   useEffect(() => {
@@ -44,19 +43,19 @@ const Header = ({ layout, sn, anchorEl }) => {
     setShouldShowPopoverToolbar(width < MIN_WIDTH);
   }, [containerRect]);
 
+  const showTitles = showTitle || showSubtitle;
+  const classes = [containerStyle, ...(showTitles ? [containerTitleStyle] : [])];
+  const showPopoverToolbar = (hovering || showInSelectionActions) && (shouldShowPopoverToolbar || !showTitles);
+  const showToolbar = showTitles && !showPopoverToolbar && !shouldShowPopoverToolbar;
+
   const Toolbar = (
-    <SelectionToolbarWithDefault
-      inline
-      layout={layout}
-      api={sn && sn.component.selections}
-      xItems={[...items, ...((sn && sn.selectionToolbar.items) || [])]}
+    <ActionsToolbar
+      show={showToolbar}
+      selections={{ show: showInSelectionActions, api: sn.component.selections }}
+      actions={actions}
+      popover={{ show: showPopoverToolbar, anchorEl }}
     />
   );
-
-  const classes = [containerStyle, ...(showTitle ? [containerTitleStyle] : [])];
-  const showPopoverToolbar =
-    (!showTitle && showInSelectionActions) || (shouldShowPopoverToolbar && showInSelectionActions);
-  const showToolbar = showInSelectionActions && !showPopoverToolbar;
 
   return (
     <Grid ref={containerRef} item container wrap="nowrap" className={classes.join(' ')}>
@@ -74,34 +73,7 @@ const Header = ({ layout, sn, anchorEl }) => {
           )}
         </Grid>
       </Grid>
-      {showToolbar && (
-        <Grid item className={itemsStyle}>
-          {Toolbar}
-        </Grid>
-      )}
-      {showPopoverToolbar && (
-        <Popover
-          open={showInSelectionActions}
-          anchorEl={anchorEl}
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-          transformOrigin={{
-            vertical: 'bottom',
-            horizontal: 'center',
-          }}
-          hideBackdrop
-          style={{ pointerEvents: 'none' }}
-          PaperProps={{
-            style: {
-              pointerEvents: 'auto',
-            },
-          }}
-        >
-          {Toolbar}
-        </Popover>
-      )}
+      <Grid item>{Toolbar}</Grid>
     </Grid>
   );
 };

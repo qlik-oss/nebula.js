@@ -168,13 +168,32 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
 
   const { translator, language } = useContext(InstanceContext);
   const theme = useTheme();
-  const cellRef = useRef();
+  const [cellRef, cellRect, cellNode] = useRect();
   const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
   const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
   const [appLayout] = useAppLayout(app);
   const [contentRef, contentRect] = useRect();
   const [snOptions, setSnOptions] = useState(initialSnOptions);
   const [selections] = useObjectSelections(app, model);
+  const [hovering, setHover] = useState(false);
+  const hoveringDebouncer = useRef({ enter: null, leave: null });
+
+  const handleOnMouseEnter = () => {
+    if (hoveringDebouncer.current.leave) {
+      clearTimeout(hoveringDebouncer.current.leave);
+    }
+    if (hoveringDebouncer.enter) return;
+    hoveringDebouncer.current.enter = setTimeout(() => {
+      setHover(true);
+      hoveringDebouncer.current.enter = null;
+    }, 250);
+  };
+  const handleOnMouseLeave = () => {
+    hoveringDebouncer.current.leave = setTimeout(() => {
+      setHover(false);
+      hoveringDebouncer.current.leave = null;
+    }, 750);
+  };
 
   useEffect(() => {
     if (initialError || !appLayout) {
@@ -248,7 +267,7 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
     () => ({
       setSnOptions,
       async takeSnapshot() {
-        const { width, height } = cellRef.current.getBoundingClientRect();
+        const { width, height } = cellRect;
 
         // clone layout to avoid mutation
         let clonedLayout = JSON.parse(JSON.stringify(layout));
@@ -281,6 +300,7 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
     }),
     [state.sn, contentRect, layout, theme.name, appLayout]
   );
+
   // console.log('content', state);
   let Content = null;
   if (state.loading && !state.longRunningQuery) {
@@ -307,6 +327,8 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
       square
       className="nebulajs-cell"
       ref={cellRef}
+      onMouseEnter={handleOnMouseEnter}
+      onMouseLeave={handleOnMouseLeave}
     >
       <Grid
         container
@@ -320,9 +342,11 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
           ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
         }}
       >
-        <Header layout={layout} sn={state.sn} anchorEl={cellRef.current}>
-          &nbsp;
-        </Header>
+        {cellNode && layout && state.sn && (
+          <Header layout={layout} sn={state.sn} anchorEl={cellNode} hovering={hovering}>
+            &nbsp;
+          </Header>
+        )}
         <Grid
           item
           xs
