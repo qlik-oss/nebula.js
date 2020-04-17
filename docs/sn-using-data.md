@@ -1,11 +1,11 @@
 ---
 id: sn-using-data
-title: Using data
+title: Consuming data
 ---
 
 ## Access layout
 
-You can access the layout of the Generic Object through a set of predefined hooks.
+You can access the _layout_ of the Generic Object through a set of predefined hooks.
 
 ### useLayout
 
