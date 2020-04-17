@@ -1,0 +1,107 @@
+{
+  "Cancel": {
+    "value": "Annuleren",
+    "comment": "Verb, typically button label",
+    "version": "xepUYpi/K4YBC6rYI72I/g=="
+  },
+  "CurrentSelections.All": {
+    "value": "ALLE",
+    "comment": "Text shown when all values are selected",
+    "version": "fk65TEKNv/WPAAGR12wvHw=="
+  },
+  "CurrentSelections.Of": {
+    "value": "{0} van {1}",
+    "comment": "Text shown between the selected fields count {0} and total fields count {1}",
+    "version": "l99iJM6C+Sm7L6wu1tXfOQ=="
+  },
+  "Listbox.Search": {
+    "value": "Zoeken in keuzelijst",
+    "comment": "Action text to search in listbox",
+    "version": "XqaXqel4sY8npmjHCNH24Q=="
+  },
+  "Navigate.Back": {
+    "value": "Stap terug",
+    "comment": "Action text to step back, as opposite to forward, a form of navigation",
+    "version": "oDZ2xM9nmJfn3fZ8IUxOWg=="
+  },
+  "Navigate.Forward": {
+    "value": "Stap vooruit",
+    "comment": "Action text to step forward, a form of navigation",
+    "version": "Zao/kpqn8++ptVhhOi2IYA=="
+  },
+  "OK": {
+    "value": "OK",
+    "comment": "Verb, typically button label",
+    "version": "2COCF0f9Drb54EThSLR/WQ=="
+  },
+  "Object.Update.Active": {
+    "value": "Gegevens worden geladen",
+    "comment": "Status text shown when a object's data is being updated",
+    "version": "QD21OoMPzESzOjMqrRs53Q=="
+  },
+  "Object.Update.Cancelled": {
+    "value": "Gegevensupdate is geannuleerd",
+    "comment": "Status text shown when data update has been cancelled",
+    "version": "K+VsoedryUo6EV8gXBN7Cg=="
+  },
+  "Retry": {
+    "value": "Opnieuw",
+    "comment": "Verb, typically button label",
+    "version": "57j2gQLhNkHSlTwlN2lEqA=="
+  },
+  "Selection.Cancel": {
+    "value": "Selectie annuleren",
+    "comment": "Action text to cancel selections",
+    "version": "Hq4r6KjpxCnGPFblBX5PKQ=="
+  },
+  "Selection.Clear": {
+    "value": "Selectie wissen",
+    "comment": "Action text to clear selections",
+    "version": "/YCR3eBUUx+fS6lPwzb9zg=="
+  },
+  "Selection.ClearAll": {
+    "value": "Alle selecties wissen",
+    "comment": "Action text to clear all selections",
+    "version": "thrBuqZXiAY4996WyiWKYA=="
+  },
+  "Selection.ClearAllStates": {
+    "value": "Alle states wissen",
+    "comment": "Action text to clear all states",
+    "version": "PxBt5eIeMH4qia4in7ZxfQ=="
+  },
+  "Selection.Confirm": {
+    "value": "Selectie bevestigen",
+    "comment": "Action text to confirm selections",
+    "version": "I0pcv4Npgy3JHMP4sVqOsA=="
+  },
+  "Selection.Menu": {
+    "value": "Selectiemenu",
+    "comment": "Action text to toggle selection menu",
+    "version": "nDCUXVXdm/A1LY1AXhtHpQ=="
+  },
+  "Selection.SelectAll": {
+    "value": "Alles selecteren",
+    "comment": "Action text to select all selections",
+    "version": "aQFJibEVO/2enO+G4h7rzA=="
+  },
+  "Selection.SelectAlternative": {
+    "value": "Alternatief selecteren",
+    "comment": "Action text to select alternative selections",
+    "version": "HDy2isqI6jmzm3Ut3S8lqQ=="
+  },
+  "Selection.SelectExcluded": {
+    "value": "Uitgesloten waarden selecteren",
+    "comment": "Action text to select excluded selections",
+    "version": "+NXcu+39fboxO3y3zLnW6A=="
+  },
+  "Selection.SelectPossible": {
+    "value": "Mogelijke waarden selecteren",
+    "comment": "Action text to select possible selections",
+    "version": "UYEx1K96g9h4HCK3GH/6kg=="
+  },
+  "Supernova.Incomplete": {
+    "value": "Onvolledige visualisatie",
+    "comment": "Status text shown when a visualization is incomplete",
+    "version": "SOyzXWKRgL1+6AqW/QkZOA=="
+  }
+}

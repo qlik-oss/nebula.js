@@ -1,0 +1,107 @@
+{
+  "Cancel": {
+    "value": "Отмена",
+    "comment": "Verb, typically button label",
+    "version": "xepUYpi/K4YBC6rYI72I/g=="
+  },
+  "CurrentSelections.All": {
+    "value": "ВСЕ",
+    "comment": "Text shown when all values are selected",
+    "version": "fk65TEKNv/WPAAGR12wvHw=="
+  },
+  "CurrentSelections.Of": {
+    "value": "{0} из {1}",
+    "comment": "Text shown between the selected fields count {0} and total fields count {1}",
+    "version": "l99iJM6C+Sm7L6wu1tXfOQ=="
+  },
+  "Listbox.Search": {
+    "value": "Поиск в списке",
+    "comment": "Action text to search in listbox",
+    "version": "XqaXqel4sY8npmjHCNH24Q=="
+  },
+  "Navigate.Back": {
+    "value": "Шаг назад",
+    "comment": "Action text to step back, as opposite to forward, a form of navigation",
+    "version": "oDZ2xM9nmJfn3fZ8IUxOWg=="
+  },
+  "Navigate.Forward": {
+    "value": "Шаг вперед",
+    "comment": "Action text to step forward, a form of navigation",
+    "version": "Zao/kpqn8++ptVhhOi2IYA=="
+  },
+  "OK": {
+    "value": "ОК",
+    "comment": "Verb, typically button label",
+    "version": "2COCF0f9Drb54EThSLR/WQ=="
+  },
+  "Object.Update.Active": {
+    "value": "Загрузка данных",
+    "comment": "Status text shown when a object's data is being updated",
+    "version": "QD21OoMPzESzOjMqrRs53Q=="
+  },
+  "Object.Update.Cancelled": {
+    "value": "Обновление данных отменено",
+    "comment": "Status text shown when data update has been cancelled",
+    "version": "K+VsoedryUo6EV8gXBN7Cg=="
+  },
+  "Retry": {
+    "value": "Повторить попытку",
+    "comment": "Verb, typically button label",
+    "version": "57j2gQLhNkHSlTwlN2lEqA=="
+  },
+  "Selection.Cancel": {
+    "value": "Отменить выборку",
+    "comment": "Action text to cancel selections",
+    "version": "Hq4r6KjpxCnGPFblBX5PKQ=="
+  },
+  "Selection.Clear": {
+    "value": "Очистить выбор",
+    "comment": "Action text to clear selections",
+    "version": "/YCR3eBUUx+fS6lPwzb9zg=="
+  },
+  "Selection.ClearAll": {
+    "value": "Очистить от всех выборок",
+    "comment": "Action text to clear all selections",
+    "version": "thrBuqZXiAY4996WyiWKYA=="
+  },
+  "Selection.ClearAllStates": {
+    "value": "Очистить все состояния",
+    "comment": "Action text to clear all states",
+    "version": "PxBt5eIeMH4qia4in7ZxfQ=="
+  },
+  "Selection.Confirm": {
+    "value": "Подтвердить выборку",
+    "comment": "Action text to confirm selections",
+    "version": "I0pcv4Npgy3JHMP4sVqOsA=="
+  },
+  "Selection.Menu": {
+    "value": "Меню \"Выборка\"",
+    "comment": "Action text to toggle selection menu",
+    "version": "nDCUXVXdm/A1LY1AXhtHpQ=="
+  },
+  "Selection.SelectAll": {
+    "value": "Выбрать все",
+    "comment": "Action text to select all selections",
+    "version": "aQFJibEVO/2enO+G4h7rzA=="
+  },
+  "Selection.SelectAlternative": {
+    "value": "Выбрать альтернативные",
+    "comment": "Action text to select alternative selections",
+    "version": "HDy2isqI6jmzm3Ut3S8lqQ=="
+  },
+  "Selection.SelectExcluded": {
+    "value": "Выбрать исключенные",
+    "comment": "Action text to select excluded selections",
+    "version": "+NXcu+39fboxO3y3zLnW6A=="
+  },
+  "Selection.SelectPossible": {
+    "value": "Выбрать возможные",
+    "comment": "Action text to select possible selections",
+    "version": "UYEx1K96g9h4HCK3GH/6kg=="
+  },
+  "Supernova.Incomplete": {
+    "value": "Незавершенная визуализация",
+    "comment": "Status text shown when a visualization is incomplete",
+    "version": "SOyzXWKRgL1+6AqW/QkZOA=="
+  }
+}
