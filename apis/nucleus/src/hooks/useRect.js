@@ -14,7 +14,9 @@ export default function useRect() {
     setRect({ left, top, width, height });
   };
   useLayoutEffect(() => {
-    if (!node) return undefined;
+    if (!node) {
+      return undefined;
+    }
     if (typeof ResizeObserver === 'function') {
       let resizeObserver = new ResizeObserver(handleResize);
       resizeObserver.observe(node);
@@ -24,6 +26,8 @@ export default function useRect() {
         resizeObserver = null;
       };
     }
+
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
