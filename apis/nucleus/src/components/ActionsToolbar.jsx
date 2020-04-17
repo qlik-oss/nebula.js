@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect } from 'react';
+import React, { useState, useContext, useRef, useEffect, useMemo } from 'react';
 
 import { Grid, Divider, makeStyles, Popover } from '@material-ui/core';
 
@@ -68,7 +68,6 @@ const ActionsToolbar = ({
   const defaultSelectionActions = useDefaultSelectionActions(selections);
   const { itemSpacing } = useStyles();
   const { translator } = useContext(InstanceContext);
-  const [newActions, setNewActions] = useState([]);
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [moreEnabled, setMoreEnabled] = useState(more.enabled);
   const [moreActions, setMoreActions] = useState(more.actions);
@@ -77,12 +76,10 @@ const ActionsToolbar = ({
   const theme = useTheme();
 
   useEffect(() => {
-    setNewActions([...actions.filter((a) => !a.hidden)]);
-  }, [actions]);
-
-  useEffect(() => {
     return () => setShowMoreItems(false);
   }, [popover.show]);
+
+  const newActions = useMemo(() => actions.filter((a) => !a.hidden), [actions]);
 
   if (!selections.show && newActions.length === 0) return null;
 
