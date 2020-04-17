@@ -23,6 +23,9 @@
       "render-charts": {
         "title": "Rendering supernovae"
       },
+      "sn-associations": {
+        "title": "sn-associations"
+      },
       "sn-component": {
         "title": "Rendering"
       },
@@ -35,6 +38,9 @@
       "sn-create": {
         "title": "Quick start"
       },
+      "sn-hypercube": {
+        "title": "HyperCube introduction"
+      },
       "sn-introduction": {
         "title": "Introduction"
       },
@@ -45,7 +51,7 @@
         "title": "Selecting data"
       },
       "sn-using-data": {
-        "title": "Using data"
+        "title": "Consuming data"
       },
       "web-integration": {
         "title": "Web integration"

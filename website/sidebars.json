@@ -2,6 +2,14 @@
   "docs": {
     "Getting started": ["introduction", "installation", "web-integration", "sn-create"],
     "Nucleus guide": ["nucleus-configuration", "render-charts", "app-selections", "nucleus-reference"],
-    "Supernova guide": ["sn-introduction", "sn-component", "sn-configure-data", "sn-using-data", "sn-reference"]
+    "Supernova guide": [
+      "sn-introduction",
+      "sn-component",
+      "sn-configure-data",
+      "sn-using-data",
+      "sn-hypercube",
+      "sn-selections",
+      "sn-reference"
+    ]
   }
 }
