@@ -39,6 +39,14 @@ describe('useRect - window resize', () => {
     delete global.window;
   });
 
+  it('should set initial rect', async () => {
+    await render();
+    ref.current.result[0]({
+      getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
+    });
+    expect(ref.current.result[1]).to.deep.equal({ left: 100, top: 200, width: 300, height: 400 });
+  });
+
   it('should set rect', async () => {
     await render();
     ref.current.result[0]({
