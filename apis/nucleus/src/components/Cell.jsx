@@ -298,7 +298,7 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
         return corona.config.snapshot.capture(snapshot);
       },
     }),
-    [state.sn, contentRect, layout, theme.name, appLayout]
+    [state.sn, contentRect, cellRect, layout, theme.name, appLayout]
   );
 
   // console.log('content', state);
