@@ -27,14 +27,20 @@ const ActionsGroup = React.forwardRef(({ actions = [], first = false, last = fal
   return actions.length > 0 ? (
     <Grid item container spacing={0} wrap="nowrap">
       {actions.map((e, ix) => {
-        let cls = itemSpacing;
-        if (first && ix === 0) {
-          cls = firstItemSpacing;
-        } else if (last && actions.length - 1 === ix) {
-          cls = lastItemSpacing;
+        let cls = [];
+        const isFirstItem = first && ix === 0;
+        const isLastItem = last && actions.length - 1 === ix;
+        if (isFirstItem && !isLastItem) {
+          cls = [firstItemSpacing];
+        }
+        if (isLastItem && !isFirstItem) {
+          cls = [...cls, lastItemSpacing];
+        }
+        if (!isFirstItem && !isLastItem && cls.length === 0) {
+          cls = [itemSpacing];
         }
         return (
-          <Grid item key={e.key} className={cls}>
+          <Grid item key={e.key} className={cls.join(' ').trim()}>
             <Item key={e.key} item={e} ref={ix === 0 ? ref : null} addAnchor={addAnchor} />
           </Grid>
         );
@@ -103,18 +109,18 @@ const ActionsToolbar = ({
     setMoreAlignTo(moreRef);
   }
 
-  const showActions = !!(newActions.length > 0 || selections.show);
+  const showActions = newActions.length > 0;
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
 
   const Actions = (
     <Grid container spacing={0} wrap="nowrap">
-      {showActions && <ActionsGroup actions={newActions} first />}
+      {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
         <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />
       )}
       {showDivider && (
-        <Grid item className={itemSpacing}>
+        <Grid item className={itemSpacing} style={{ margin: theme.spacing(0.5, 0) }}>
           <Divider orientation="vertical" />
         </Grid>
       )}
