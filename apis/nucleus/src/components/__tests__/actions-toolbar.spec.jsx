@@ -169,9 +169,11 @@ describe('<ActionsToolbar />', () => {
       items.forEach((item, ix) => {
         if (ix === 0) {
           expect(item.props.className).to.match(/^makeStyles-firstItemSpacing-\d+$/);
-        } else if (ix === items.length - 1) {
+        }
+        if (ix === items.length - 1) {
           expect(item.props.className).to.match(/^makeStyles-lastItemSpacing-\d+$/);
-        } else {
+        }
+        if (ix !== 0 && ix !== items.length - 1) {
           expect(item.props.className).to.match(/^makeStyles-itemSpacing-\d+$/);
         }
       });
@@ -191,6 +193,10 @@ describe('<ActionsToolbar />', () => {
     await render({ actions, selections });
     // 2 custom actions + more + divider + 3 selection actions
     validate(7);
+
+    // 1 custom action
+    await render({ actions: [actions[0]] });
+    expect(renderer.root.findAllByType(Grid).filter((i) => i.props.className)).to.have.length(0);
   });
 
   it('should render as popover', async () => {

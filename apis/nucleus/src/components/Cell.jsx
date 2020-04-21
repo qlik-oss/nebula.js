@@ -189,6 +189,10 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
     }, 250);
   };
   const handleOnMouseLeave = () => {
+    if (hoveringDebouncer.current.enter) {
+      clearTimeout(hoveringDebouncer.current.enter);
+    }
+    if (hoveringDebouncer.current.leave) return;
     hoveringDebouncer.current.leave = setTimeout(() => {
       setHover(false);
       hoveringDebouncer.current.leave = null;
