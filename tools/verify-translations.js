@@ -18,7 +18,7 @@ const languages = [
   'ru-RU',
 ];
 
-Object.keys(vars).forEach(key => {
+Object.keys(vars).forEach((key) => {
   const supportLanguagesForString = Object.keys(vars[key].locale);
   if (supportLanguagesForString.indexOf('en-US') === -1) {
     // en-US must exist

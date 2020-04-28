@@ -1,8 +1,8 @@
-import nucleus from '@nebula.js/nucleus/dist/nucleus';
+import { embed } from '@nebula.js/stardust/dist/stardust';
 
 import barchart from '@nebula.js/sn-bar-chart';
 
-const n = nucleus.createConfiguration({
+const n = embed.createConfiguration({
   context: {
     theme: 'light',
     language: 'en-US',

@@ -1,4 +1,4 @@
-import * as supernova from '@nebula.js/supernova';
+import * as stardust from '@nebula.js/stardust';
 
 import { requireFrom } from 'd3-require';
 
@@ -8,7 +8,7 @@ const getModule = (name, url) => {
   const resolve = url ? remoteResolve : localResolve;
   const r = requireFrom(async (n) => resolve(n));
   const a = r.alias({
-    '@nebula.js/supernova': supernova,
+    '@nebula.js/stardust': stardust,
   });
   return a(url || name);
 };

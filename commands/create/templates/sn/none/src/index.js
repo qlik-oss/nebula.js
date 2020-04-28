@@ -1,4 +1,4 @@
-import { useElement } from '@nebula.js/supernova';
+import { useElement } from '@nebula.js/stardust';
 import properties from './object-properties';
 import data from './data';
 

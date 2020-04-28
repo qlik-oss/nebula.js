@@ -108,20 +108,20 @@ function nuked(configuration = {}) {
   const locale = appLocaleFn(configuration.context.language);
 
   /**
-   * Initiates a new `Nucleus` instance using the specified `app`.
+   * Initiates a new embed instance using the specified `app`.
    * @entry
-   * @interface nucleus
+   * @function embed
    * @param {enigma.Doc} app
    * @param {Configuration=} instanceConfig
-   * @returns {Nucleus}
+   * @returns {Embed}
    * @example
-   * import nucleus from '@nebula.js/nucleus'
-   * const n = nucleus(app);
+   * import { embed } from '@nebula.js/stardust'
+   * const n = embed(app);
    * n.render({ id: 'abc' });
    */
-  function nucleus(app, instanceConfig) {
+  function embed(app, instanceConfig) {
     if (instanceConfig) {
-      return nucleus.createConfiguration(instanceConfig)(app);
+      return embed.createConfiguration(instanceConfig)(app);
     }
 
     let currentContext = {
@@ -185,22 +185,14 @@ function nuked(configuration = {}) {
 
     /**
      * @class
-     * @alias Nucleus
+     * @alias Embed
      * @hideconstructor
      */
-    const api = /** @lends Nucleus# */ {
-      get: async () => {
-        // eslint-disable-next-line
-        console.warn(new Error('nucleus.get() has been deprecated, use nucleus.render() instead').stack);
-      },
-      create: async () => {
-        // eslint-disable-next-line
-        console.warn(new Error('nucleus.create() has been deprecated, use nucleus.render() instead').stack);
-      },
+    const api = /** @lends Embed# */ {
       /**
-       * Renders a supernova into an HTMLElement.
+       * Renders a visualization into an HTMLElement.
        * @param {CreateConfig | GetConfig} cfg - The render configuration.
-       * @returns {Promise<SupernovaController>} A controller to the rendered supernova
+       * @returns {Promise<SupernovaController>} A controller to the rendered visualization
        * @example
        * // render from existing object
        * n.render({
@@ -222,7 +214,7 @@ function nuked(configuration = {}) {
         return create(cfg, corona);
       },
       /**
-       * Updates the current context of this nucleus instance.
+       * Updates the current context of this embed instance.
        * Use this when you want to change some part of the current context, like theme.
        * @param {Context} ctx - The context to update.
        * @returns {Promise<undefined>}
@@ -320,16 +312,16 @@ function nuked(configuration = {}) {
   }
 
   /**
-   * Creates a new `nucleus` scope bound to the specified `configuration`.
+   * Creates a new `embed` scope bound to the specified `configuration`.
    *
    * The configuration is merged with all previous scopes.
-   * @memberof nucleus
+   * @memberof embed
    * @param {Configuration} configuration - The configuration object
-   * @returns {nucleus}
+   * @returns {Embed}
    * @example
-   * import nucleus from '@nebula.js/nucleus';
+   * import { embed } from '@nebula.js/stardust';
    * // create a 'master' config which registers all types
-   * const m = nucleus.createConfiguration({
+   * const m = embed.createConfiguration({
    *   types: [{
    *     name: 'mekko',
    *     version: '1.0.0',
@@ -345,12 +337,12 @@ function nuked(configuration = {}) {
    *
    * m(app).render({ type: 'mekko' }); // will render the object with default theme
    * d(app).render({ type: 'mekko' }); // will render the object with 'dark' theme
-   * nucleus(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance
+   * embed(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance
    */
-  nucleus.createConfiguration = (c) => nuked(mergeConfigs(configuration, c));
-  nucleus.config = configuration;
+  embed.createConfiguration = (c) => nuked(mergeConfigs(configuration, c));
+  embed.config = configuration;
 
-  return nucleus;
+  return embed;
 }
 
 /**

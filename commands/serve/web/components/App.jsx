@@ -1,6 +1,6 @@
 import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
 
-import nucleus from '@nebula.js/nucleus/src/index';
+import { embed } from '@nebula.js/stardust';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import { WbSunny, Brightness3, ColorLens, Language, Home } from '@nebula.js/ui/icons';
 
@@ -79,7 +79,7 @@ export default function App({ app, info }) {
   );
 
   useEffect(() => {
-    const n = nucleus(app, {
+    const n = embed(app, {
       context: {
         theme: currentThemeName,
         language: currentLanguage,

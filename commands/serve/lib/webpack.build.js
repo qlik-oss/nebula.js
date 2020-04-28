@@ -30,9 +30,8 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
     },
     resolve: {
       alias: {
-        '@nebula.js/nucleus': path.resolve(__dirname, '../../../apis/nucleus'),
+        '@nebula.js/stardust': path.resolve(__dirname, '../../../apis/stardust/src'),
         '@nebula.js/snapshooter/client': path.resolve(__dirname, '../../../apis/snapshooter/src/renderer'),
-        '@nebula.js/supernova': path.resolve(__dirname, '../../../apis/supernova/src'),
         '@nebula.js/theme': path.resolve(__dirname, '../../../apis/theme/src'),
         '@nebula.js/locale': path.resolve(__dirname, '../../../apis/locale/src'),
         fixtures: path.resolve(__dirname, '../../../test/component'),

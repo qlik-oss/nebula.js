@@ -16,10 +16,10 @@ module.exports = [
       exports: 'default',
       sourcemap: true,
       globals: {
-        '@nebula.js/supernova': 'supernova',
+        '@nebula.js/stardust': 'stardust',
       },
     },
-    external: ['@nebula.js/supernova'],
+    external: ['@nebula.js/stardust'],
     plugins: [
       nodeResolve({
         extensions: ['.js', '.jsx'],

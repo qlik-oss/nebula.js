@@ -1,4 +1,4 @@
-import nucleus from '@nebula.js/nucleus';
+import { embed } from '@nebula.js/stardust';
 import snapshooter from '@nebula.js/snapshooter/client';
 
 import { openApp, params, info as serverInfo } from './connect';
@@ -6,7 +6,7 @@ import runFixture from './run-fixture';
 import initiateWatch from './hot';
 
 const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
-  const nuked = nucleus.createConfiguration({
+  const nuked = embed.createConfiguration({
     themes: themes
       ? themes.map((t) => ({
           key: t,
@@ -71,7 +71,7 @@ async function renderSnapshot() {
   const element = document.querySelector('#chart-container');
   element.classList.toggle('full', true);
 
-  const n = nucleus.createConfiguration({
+  const n = embed.createConfiguration({
     themes: themes
       ? themes.map((t) => ({
           key: t,
@@ -94,7 +94,7 @@ async function renderSnapshot() {
 
   window.onHotChange(supernova.name, async () => {
     snapshooter({
-      nucleus: n,
+      embed: n,
       element,
       snapshot: params.snapshot,
     });
@@ -152,7 +152,7 @@ const renderFixture = async () => {
     }),
   };
 
-  const nebbie = nucleus(mockedApp, {
+  const nebbie = embed(mockedApp, {
     ...config,
     ...instanceConfig,
     types: [

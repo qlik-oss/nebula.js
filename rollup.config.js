@@ -30,7 +30,7 @@ if (pkg.main !== 'index.js') {
 // in our webpack/rollup configs we include '.dev.js' as file extension when building
 // a dev distribution, the module target should therefore end with '.esm' and not with '.esm.js'
 // so that the node resolve algorithm finds the correct module based on module format and dev mode
-// e.g. '@nebula.js/supernova' -> '@nebula.js/supernova/dist/supernova.esm.dev.js'
+// e.g. '@nebula.js/stardust' -> '@nebula.js/stardust/dist/stardust.esm.dev.js'
 const moduleTargetName = getTargetFileName('esm').replace(/\.js$/, '');
 if (pkg.module && pkg.module !== moduleTargetName) {
   throw Error(`module target must be ${moduleTargetName}`);
@@ -60,7 +60,7 @@ const browserList = [
 const GLOBALS = {
   react: 'React',
   'react-dom': 'ReactDOM',
-  '@nebula.js/supernova': 'supernova',
+  '@nebula.js/stardust': 'stardust',
 };
 
 const propTypes = [
@@ -118,7 +118,7 @@ const config = (isEsm, dev = false) => {
     output: {
       file: path.resolve(targetDir, getFileName(isEsm ? 'esm' : '', dev)),
       format: isEsm ? 'esm' : 'umd',
-      exports: ['supernova', 'test-utils'].indexOf(targetName) !== -1 ? 'named' : 'default',
+      exports: ['test-utils', 'stardust'].indexOf(targetName) !== -1 ? 'named' : 'default',
       name: umdName,
       sourcemap: false,
       banner,
@@ -173,6 +173,7 @@ const config = (isEsm, dev = false) => {
           '/**/apis/locale/**',
           '/**/apis/nucleus/**',
           '/**/apis/snapshooter/**',
+          '/**/apis/stardust/**',
           '/**/apis/supernova/**',
           '/**/apis/theme/**',
           '/**/packages/ui/**',

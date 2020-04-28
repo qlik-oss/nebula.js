@@ -3,14 +3,14 @@ const { declare } = require('@babel/helper-plugin-utils');
 const vars = require('../apis/nucleus/src/locale/translations/all.json');
 
 const ids = {};
-Object.keys(vars).forEach(key => {
+Object.keys(vars).forEach((key) => {
   ids[vars[key].id] = key;
 });
 
 const used = [];
 const warnings = {};
 
-const warn = s => console.warn(`\x1b[43m\x1b[30m WARN \x1b[0m \x1b[1m\x1b[33m ${s}\x1b[0m`);
+const warn = (s) => console.warn(`\x1b[43m\x1b[30m WARN \x1b[0m \x1b[1m\x1b[33m ${s}\x1b[0m`);
 
 const find = declare((/* api, options */) => {
   function useString(id) {

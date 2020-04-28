@@ -1,7 +1,8 @@
 /* eslint import/prefer-default-export:0 */
 
-import 'regenerator-runtime/runtime'; // temporary polyfill for transpiled async/await in supernova
-import { hook } from '@nebula.js/supernova';
+import { __DO_NOT_USE__ } from '@nebula.js/stardust';
+
+const { hook } = __DO_NOT_USE__;
 
 if (!global.requestAnimationFrame) {
   global.requestAnimationFrame = (cb) => setTimeout(cb, 10);

@@ -6,7 +6,7 @@ const pie = {
   },
 };
 
-const bar = function(env) {
+const bar = function (env) {
   env.translator.add({
     id: 'hello',
     locale: {
@@ -23,7 +23,7 @@ const bar = function(env) {
 };
 
 // eslint-disable-next-line
-const configured = nucleus.createConfiguration({
+const configured = stardust.embed.createConfiguration({
   context: {
     theme: 'dark',
     language: 'sv-SE',
