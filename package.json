@@ -3,7 +3,7 @@
   "description": "",
   "scripts": {
     "build": "cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
-    "build:codesandbox": "cross-env NODE_ENV=production CODESANDBOX=1 FORCE_COLOR=1 lerna run build --stream --scope \"@nebula.js/{nucleus,supernova,theme,locale}\"",
+    "build:codesandbox": "cross-env NODE_ENV=production CODESANDBOX=1 FORCE_COLOR=1 lerna run build --stream --scope \"@nebula.js/{stardust,theme,locale}\"",
     "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream --concurrency 99 --no-sort",
     "format": "prettier --write '**/**/*'",
     "locale:verify": "node tools/verify-translations.js",

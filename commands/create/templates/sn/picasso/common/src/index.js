@@ -6,7 +6,7 @@ import {
   useRect,
   useEffect,
   useConstraints,
-} from '@nebula.js/supernova';
+} from '@nebula.js/stardust';
 import picassojs from 'picasso.js';
 import picassoQ from 'picasso-plugin-q';
 

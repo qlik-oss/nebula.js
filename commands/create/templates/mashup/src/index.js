@@ -1,5 +1,5 @@
 /* eslint-disable */
-import nucleus from './configure';
+import embed from './configure';
 import connect from './connect';
 
 async function run() {
@@ -9,7 +9,7 @@ async function run() {
     appId: '<App id>',
   });
 
-  const n = nucleus(app);
+  const n = embed(app);
 
   (await n.selections()).mount(document.querySelector('.toolbar'));
 

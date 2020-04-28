@@ -8,7 +8,7 @@ import qae from './qae';
  * @param {Galaxy} galaxy
  * @returns {SupernovaDefinition}
  * @example
- * import { useElement, useLayout } from '@nebula.js/supernova';
+ * import { useElement, useLayout } from '@nebula.js/stardust';
  *
  * export default function() {
  *   return {

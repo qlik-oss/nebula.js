@@ -2,8 +2,7 @@
 <html>
   <head>
     <meta charset="UTF-8" />
-    <script src="/apis/supernova/dist/supernova.js"></script>
-    <script src="/apis/nucleus/dist/nucleus.js"></script>
+    <script src="/apis/stardust/dist/stardust.js"></script>
     <script src="/apis/snapshooter/client.js"></script>
     <script src="configured.js"></script>
 
@@ -30,7 +29,7 @@
         window.location.search
           .substring(1)
           .split('&')
-          .forEach(pair => {
+          .forEach((pair) => {
             const idx = pair.indexOf('=');
             const name = pair.substr(0, idx);
             const value = decodeURIComponent(pair.substring(idx + 1));
@@ -40,7 +39,7 @@
         return opts;
       })();
       snapshooter({
-        nucleus: configured,
+        embed: configured,
         element: document.querySelector('#object'),
         snapshot: params.snapshot,
       });

@@ -1,17 +1,17 @@
 import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.34.11.json';
 
-import nucleus from '@nebula.js/nucleus';
+import { embed } from '@nebula.js/stardust';
 import mekko from '@nebula.js/sn-mekko-chart';
 
-const openApp = id =>
+const openApp = (id) =>
   enigma
     .create({
       schema: qixSchema,
       url: `wss://apps.core.qlik.com/app/${id}`,
     })
     .open()
-    .then(global => global.getActiveDoc());
+    .then((global) => global.getActiveDoc());
 
 const appCache = (window.appCache = window.appCache || {});
 
@@ -20,11 +20,11 @@ export default function init({ appId, fields, objectId }) {
     appCache[appId] = openApp(appId);
   }
 
-  appCache[appId].then(app => {
-    const nebbie = nucleus(app, {
+  appCache[appId].then((app) => {
+    const nebbie = embed(app, {
       load: () => Promise.resolve(mekko),
     });
-    nebbie.selections().then(s => s.mount(document.getElementById('selections')));
+    nebbie.selections().then((s) => s.mount(document.getElementById('selections')));
     nebbie.types.clearFromCache('dummy');
 
     nebbie.render(

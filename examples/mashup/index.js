@@ -1,20 +1,20 @@
 /* eslint-disable */
-const { useElement } = supernova;
+const { useElement } = stardust;
 
-connect().then(app => {
+connect().then((app) => {
   const sn = {
     component() {
       useElement().innerHTML = 'Hello';
     },
   };
 
-  const nebbie = window.nucleus(app, {
+  const nebbie = stardust.embed(app, {
     load: (type, config) => Promise.resolve(sn),
   });
 
-  nebbie.selections().then(s => s.mount(document.querySelector('.toolbar')));
+  nebbie.selections().then((s) => s.mount(document.querySelector('.toolbar')));
 
-  document.querySelectorAll('.object').forEach(el => {
+  document.querySelectorAll('.object').forEach((el) => {
     const type = el.getAttribute('data-type');
 
     nebbie.render({

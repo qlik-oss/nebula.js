@@ -4,7 +4,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { create } from '@storybook/theming';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
-import InstanceContext from '../apis/nucleus/src/contexts/InstanceContext';
+import InstanceContext from '../apis/stardust/src/embed/contexts/InstanceContext';
 
 const translator = {
   get(s) {
@@ -14,11 +14,11 @@ const translator = {
 
 const t = createTheme('light');
 
-addDecorator(storyFn => {
+addDecorator((storyFn) => {
   return <ThemeProvider theme={t}>{storyFn()}</ThemeProvider>;
 });
 
-addDecorator(storyFn => {
+addDecorator((storyFn) => {
   return <InstanceContext.Provider value={{ translator }}>{storyFn()}</InstanceContext.Provider>;
 });
 

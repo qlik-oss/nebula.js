@@ -1,45 +1,14 @@
 {
   "name": "@nebula.js/nucleus",
+  "private": true,
   "version": "0.5.0",
-  "description": "",
-  "license": "MIT",
-  "author": "QlikTech International AB",
-  "keywords": [],
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/qlik-oss/nebula.js.git",
-    "directory": "apis/nucleus"
-  },
-  "main": "index.js",
-  "module": "dist/nucleus.esm",
-  "jsdelivr": "dist/nucleus.js",
-  "unpkg": "dist/nucleus.js",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
-    "build:watch": "rollup --config ../../rollup.config.js -w",
-    "lint": "eslint --ext .js,.jsx src",
-    "prepublishOnly": "rm -rf dist && yarn run build",
-    "spec": "scriptappy-from-jsdoc -c ./spec/spec.conf.js"
-  },
-  "peerDependencies": {
-    "@material-ui/core": "^4.9.0",
-    "@material-ui/icons": "^4.5.1",
-    "@material-ui/styles": "^4.9.0",
-    "@nebula.js/supernova": "^0.x",
-    "react": "^16.12.0",
-    "react-dom": "^16.12.0"
-  },
+  "main": "src/index.js",
   "devDependencies": {
     "@material-ui/core": "4.9.9",
     "@material-ui/icons": "4.9.1",
     "@material-ui/styles": "4.9.6",
     "@nebula.js/locale": "0.5.0",
+    "@nebula.js/supernova": "0.5.0",
     "@nebula.js/theme": "0.5.0",
     "@nebula.js/ui": "0.5.0",
     "node-event-emitter": "0.0.1",

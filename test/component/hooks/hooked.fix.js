@@ -12,7 +12,7 @@ import {
   useAction,
   useConstraints,
   useOptions,
-} from '@nebula.js/supernova';
+} from '@nebula.js/stardust';
 
 function sn({ flags }) {
   return {
@@ -43,7 +43,7 @@ function sn({ flags }) {
           if (count >= 1) {
             act();
           } else {
-            setCount(prev => prev + 1);
+            setCount((prev) => prev + 1);
           }
         };
         element.addEventListener('click', listener);
@@ -55,7 +55,7 @@ function sn({ flags }) {
 
       const [v] = usePromise(
         () =>
-          new Promise(r => {
+          new Promise((r) => {
             setTimeout(() => {
               r('ready!');
             }, 100);

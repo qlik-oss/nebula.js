@@ -40,11 +40,11 @@ const config = ({ mode = 'production', format = 'umd', cwd = process.cwd(), argv
   const peers = pkg.peerDependencies || {};
   const external = format === 'esm' ? Object.keys(peers) : [];
 
-  // supernova should always be external
-  if (!peers['@nebula.js/supernova']) {
-    console.warn('@nebula.js/supernova should be specified as a peer dependency');
-  } else if (external.indexOf('@nebula.js/supernova') === -1) {
-    external.push('@nebula.js/supernova');
+  // stardust should always be external
+  if (!peers['@nebula.js/stardust']) {
+    console.warn('@nebula.js/stardust should be specified as a peer dependency');
+  } else if (external.indexOf('@nebula.js/stardust') === -1) {
+    external.push('@nebula.js/stardust');
   }
 
   return {
@@ -90,7 +90,7 @@ const config = ({ mode = 'production', format = 'umd', cwd = process.cwd(), argv
       name: moduleName,
       sourcemap,
       globals: {
-        '@nebula.js/supernova': 'supernova',
+        '@nebula.js/stardust': 'stardust',
       },
     },
   };

@@ -19,7 +19,7 @@ describe('test-utils', () => {
       updateRectOnNextRun: sandbox.stub(),
     };
     hook = sandbox.stub().returns(hooked);
-    [{ create }] = aw.mock([['@nebula.js/supernova', () => ({ hook })]], ['../index']);
+    [{ create }] = aw.mock([['@nebula.js/stardust', () => ({ __DO_NOT_USE__: { hook } })]], ['../index']);
   });
 
   afterEach(() => {
