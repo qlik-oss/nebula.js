@@ -1,6 +1,6 @@
 ---
 id: render-charts
-title: Rendering supernovae
+title: Rendering supernova
 ---
 
 You can render a supernova in two ways:
