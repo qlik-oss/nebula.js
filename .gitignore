@@ -14,3 +14,4 @@ dist/
 temp/
 test/**/__artifacts__/regression
 test/**/__artifacts__/diff
+apis/*/core/**/*.js

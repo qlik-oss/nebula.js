@@ -13,6 +13,13 @@ const cwd = process.cwd();
 const pkg = require(path.join(cwd, 'package.json')); // eslint-disable-line
 const { name, version, license } = pkg;
 
+let corePkg;
+try {
+  corePkg = require(path.join(cwd, 'core', 'package.json')); // eslint-disable-line
+} catch (e) {
+  // do nothing
+}
+
 const versionHash = crypto.createHash('md5').update(version).digest('hex').slice(0, 4);
 
 const targetName = name.split('/')[1];
@@ -87,37 +94,40 @@ const propTypes = [
 
 const watch = process.argv.indexOf('-w') > 2;
 
-const config = (isEsm, dev = false) => {
+const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
   const umdName = targetName
     .replace(/-([a-z])/g, (m, p1) => p1.toUpperCase())
     .split('.js')
     .join('');
 
-  if (Object.keys(pkg.dependencies || {}).length) {
+  if (Object.keys(targetPkg.dependencies || {}).length) {
     throw new Error('Dependencies for a web javascript library makes no sense');
   }
 
-  const peers = Object.keys(pkg.peerDependencies || {});
+  const peers = Object.keys(targetPkg.peerDependencies || {});
 
   // all peers should be externals for esm bundle
-  const esmExternals = peers;
+  // const esmExternals = peers;
 
   // peers that are not devDeps should be externals for full bundle
-  const bundleExternals = peers.filter((p) => typeof (pkg.devDependencies || {})[p] === 'undefined');
+  // const bundleExternals = peers.filter((p) => typeof (pkg.devDependencies || {})[p] === 'undefined');
 
-  const external = isEsm ? esmExternals : bundleExternals;
+  const external = peers;
   const globals = {};
   external.forEach((e) => {
     if ([GLOBALS[e]]) {
       globals[e] = GLOBALS[e];
+    } else {
+      console.warn(`External '${e}' has no global value`);
     }
   });
 
   const cfg = {
     input: path.resolve(cwd, 'src', 'index'),
     output: {
-      file: path.resolve(targetDir, getFileName(isEsm ? 'esm' : '', dev)),
-      format: isEsm ? 'esm' : 'umd',
+      // file: path.resolve(targetDir, getFileName(isEsm ? 'esm' : '', dev)),
+      file,
+      format,
       exports: ['test-utils', 'stardust'].indexOf(targetName) !== -1 ? 'named' : 'default',
       name: umdName,
       sourcemap: false,
@@ -127,13 +137,13 @@ const config = (isEsm, dev = false) => {
     external,
     plugins: [
       replace({
-        __NEBULA_DEV__: dev,
-        'process.env.NODE_ENV': JSON.stringify(isEsm ? 'development' : 'production'),
+        __NEBULA_DEV__: debug,
+        'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV === 'development' ? 'development' : 'production'),
         'process.env.NEBULA_VERSION': JSON.stringify(version),
         'process.env.NEBULA_VERSION_HASH': JSON.stringify(versionHash),
       }),
       nodeResolve({
-        extensions: [dev ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),
+        extensions: [debug ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),
       }),
       json(),
       commonjs({
@@ -194,7 +204,7 @@ const config = (isEsm, dev = false) => {
     ],
   };
 
-  if (!dev) {
+  if (!debug) {
     cfg.plugins.push(
       terser({
         output: {
@@ -209,18 +219,65 @@ const config = (isEsm, dev = false) => {
 
 let dist = [
   // production
-  watch ? false : config(),
+  watch
+    ? false
+    : config({
+        targetPkg: pkg,
+        file: path.resolve(targetDir, getFileName()),
+      }),
   // dev
-  watch ? false : config(false, true),
-
+  watch
+    ? false
+    : config({
+        debug: true,
+        targetPkg: pkg,
+        file: path.resolve(targetDir, getFileName('', true)),
+      }),
   // esm
-  pkg.module ? config(true) : false,
+  pkg.module
+    ? config({
+        format: 'esm',
+        targetPkg: pkg,
+        file: path.resolve(targetDir, getFileName('esm', false)),
+      })
+    : false,
+
   // esm dev
-  pkg.module ? config(true, true) : false,
+  pkg.module
+    ? config({
+        debug: true,
+        format: 'esm',
+        targetPkg: pkg,
+        file: path.resolve(targetDir, getFileName('esm', true)),
+      })
+    : false,
+
+  // core esm
+  corePkg && corePkg.module
+    ? config({
+        format: 'esm',
+        targetPkg: corePkg,
+        file: path.resolve(cwd, 'core', corePkg.module),
+      })
+    : false,
+  // core esm dev
+  corePkg && corePkg.module
+    ? config({
+        debug: true,
+        format: 'esm',
+        targetPkg: corePkg,
+        file: path.resolve(cwd, 'core', 'esm', 'dev.js'),
+      })
+    : false,
 ];
 
 if (targetName === 'test-utils') {
-  dist = [config(false)];
+  dist = [
+    config({
+      targetPkg: pkg,
+      file: path.resolve(targetDir, getFileName()),
+    }),
+  ];
 }
 
 module.exports = dist.filter(Boolean);
