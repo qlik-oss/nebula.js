@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/stardust",
-  "version": "0.5.0",
+  "version": "0.6.0-alpha.0",
   "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -39,8 +39,8 @@
     "@material-ui/icons": "4.9.1",
     "@material-ui/styles": "4.9.6",
     "@nebula.js/locale": "0.5.0",
-    "@nebula.js/nucleus": "0.5.0",
-    "@nebula.js/supernova": "0.5.0",
+    "@nebula.js/nucleus": "0.6.0-alpha.0",
+    "@nebula.js/supernova": "0.6.0-alpha.0",
     "@nebula.js/theme": "0.5.0",
     "@nebula.js/ui": "0.5.0",
     "extend": "3.0.2",
