@@ -138,7 +138,7 @@ nucles.createConfiguration({
     // ...
     {
       name: 'piechart',
-      load: () = Promise.resolve(piechart)
+      load: () => Promise.resolve(piechart)
     }
   ]
 }
