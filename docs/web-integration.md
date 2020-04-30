@@ -141,5 +141,5 @@ nucleus.createConfiguration({
       load: () => Promise.resolve(piechart)
     }
   ]
-}
+});
 ```
