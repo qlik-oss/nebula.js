@@ -48,7 +48,7 @@ describe('viz', () => {
     };
     api = create({
       model,
-      corona: { public: {} },
+      halo: { public: {} },
     });
   });
   after(() => {

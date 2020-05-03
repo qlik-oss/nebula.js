@@ -7,7 +7,7 @@
     "name": "<%= user %>",
     "email": "<%= email %>"
   },
-  "keywords": ["qlik", "nebula", "supernova"],
+  "keywords": ["qlik", "nebula", "stardust"],
   "files": ["dist"],
   "engines": {
     "node": ">=8"

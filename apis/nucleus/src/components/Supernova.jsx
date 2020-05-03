@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import InstanceContext from '../contexts/InstanceContext';
 import useRect from '../hooks/useRect';
 
-const Supernova = ({ sn, snOptions: options, layout, appLayout, corona }) => {
+const Supernova = ({ sn, snOptions: options, layout, appLayout, halo }) => {
   const { component } = sn;
 
   const { theme: themeName, language, constraints } = useContext(InstanceContext);
@@ -58,7 +58,7 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, corona }) => {
       if (!constraints.select) {
         permissions.push('select');
       }
-      if (corona.app && corona.app.session) {
+      if (halo.app && halo.app.session) {
         permissions.push('fetch');
       }
       Promise.resolve(
@@ -67,8 +67,8 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, corona }) => {
           options,
           context: {
             constraints,
-            // corona.public.theme is a singleton so themeName is used as dep to make sure this effect is triggered
-            theme: corona.public.theme,
+            // halo.public.theme is a singleton so themeName is used as dep to make sure this effect is triggered
+            theme: halo.public.theme,
             appLayout,
 
             // TODO - remove when old component api is removed

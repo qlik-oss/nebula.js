@@ -4,7 +4,7 @@ import getPatches from './utils/patcher';
 
 const noopi = () => {};
 
-export default function viz({ model, corona, initialError, onDestroy = async () => {} } = {}) {
+export default function viz({ model, halo, initialError, onDestroy = async () => {} } = {}) {
   let unmountCell = noopi;
   let cellRef = null;
   let mountedReference = null;
@@ -39,7 +39,7 @@ export default function viz({ model, corona, initialError, onDestroy = async () 
    * @hideconstructor
    * @classdesc A controller to further modify a supernova after it has been rendered.
    * @example
-   * const ctl = await nucleus(app).render({
+   * const ctl = await embed(app).render({
    *   element,
    *   type: 'barchart'
    * });
@@ -53,7 +53,7 @@ export default function viz({ model, corona, initialError, onDestroy = async () 
       }
       mountedReference = element;
       [unmountCell, cellRef] = glueCell({
-        corona,
+        halo,
         element,
         model,
         initialSnOptions,

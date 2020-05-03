@@ -13,7 +13,7 @@ export function semverSort(arr) {
   ];
 }
 
-export function typeCollection(name, corona) {
+export function typeCollection(name, halo) {
   const versions = {};
   let sortedVersions = null;
 
@@ -29,7 +29,7 @@ export function typeCollection(name, corona) {
           name,
           version,
         },
-        corona,
+        halo,
         opts
       );
       sortedVersions = null;
@@ -50,7 +50,7 @@ export function typeCollection(name, corona) {
   };
 }
 
-export function create({ corona, parent }) {
+export function create({ halo, parent }) {
   const tc = {};
 
   const p = parent || {
@@ -60,7 +60,7 @@ export function create({ corona, parent }) {
   return {
     register: (typeInfo, opts) => {
       if (!tc[typeInfo.name]) {
-        tc[typeInfo.name] = typeCollection(typeInfo.name, corona);
+        tc[typeInfo.name] = typeCollection(typeInfo.name, halo);
       }
       tc[typeInfo.name].register(typeInfo.version, opts);
     },

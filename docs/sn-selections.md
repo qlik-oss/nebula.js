@@ -12,7 +12,7 @@ Selections can be applied with methods exposed on the model returned from the `u
 Since a generic object can hold multiple hypercubes, you always need to specify which hypercube you want to select in by providing the JSON path of it as the first argument:
 
 ```js
-import { useModel } from '@nebula.js/supernova';
+import { useModel } from '@nebula.js/stardust';
 // ...
 component() {
   const model = useModel();
@@ -51,7 +51,7 @@ To implement this type of pattern you need to `useSelections` in combination wit
 1. Keep track of when the modal state has been exited in order to reset the visual feedback.
 
 ```js
-import { useModel, useSelections, useElement } from '@nebula.js/supernova';
+import { useModel, useSelections, useElement } from '@nebula.js/stardust';
 // ...
 component() {
   const element = useElement();

@@ -1,5 +1,5 @@
 describe('create-session-object', () => {
-  let corona = {};
+  let halo = {};
   let types;
   let sn;
   let merged;
@@ -26,7 +26,7 @@ describe('create-session-object', () => {
     types = {
       get: sandbox.stub(),
     };
-    corona = {
+    halo = {
       app: {
         createSessionObject: sandbox.stub().returns(Promise.resolve(objectModel)),
       },
@@ -53,7 +53,7 @@ describe('create-session-object', () => {
   });
 
   it('should call types.get with name and version', () => {
-    create({ type: 't', version: 'v', fields: 'f' }, corona);
+    create({ type: 't', version: 'v', fields: 'f' }, halo);
     expect(types.get).to.have.been.calledWithExactly({ name: 't', version: 'v' });
   });
 
@@ -61,46 +61,46 @@ describe('create-session-object', () => {
     const t = { initialProperties: sinon.stub() };
     t.initialProperties.returns({ then: () => {} });
     types.get.returns(t);
-    create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, corona);
+    create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
     expect(t.initialProperties).to.have.been.calledWithExactly('props');
   });
 
   it('should populate fields', async () => {
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, corona);
-    expect(populator).to.have.been.calledWithExactly({ sn, properties: merged, fields: 'f' }, corona);
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
+    expect(populator).to.have.been.calledWithExactly({ sn, properties: merged, fields: 'f' }, halo);
   });
 
   it('should call properties onChange handler when optional props are provided', async () => {
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, corona);
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
     expect(sn.qae.properties.onChange).to.have.been.calledWithExactly(merged);
   });
 
   it('should not call onChange handler when optional props are not provided', async () => {
-    await create({ type: 't', version: 'v', fields: 'f' }, corona);
+    await create({ type: 't', version: 'v', fields: 'f' }, halo);
     expect(sn.qae.properties.onChange.callCount).to.equal(0);
   });
 
   it('should create a session object with merged props', async () => {
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, corona);
-    expect(corona.app.createSessionObject).to.have.been.calledWithExactly(merged);
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
+    expect(halo.app.createSessionObject).to.have.been.calledWithExactly(merged);
   });
 
   it('should create a dummy session object when error is thrown', async () => {
     types.get.throws('oops');
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, corona);
-    expect(corona.app.createSessionObject).to.have.been.calledWithExactly({
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
+    expect(halo.app.createSessionObject).to.have.been.calledWithExactly({
       qInfo: { qType: 't' },
       visualization: 't',
     });
   });
 
   it('should call init', async () => {
-    const ret = await create({ type: 't', version: 'v', fields: 'f', properties: 'props', options: 'a' }, corona);
+    const ret = await create({ type: 't', version: 'v', fields: 'f', properties: 'props', options: 'a' }, halo);
     expect(ret).to.equal('api');
     expect(init).to.have.been.calledWithExactly(
       objectModel,
       { options: 'a', element: undefined },
-      corona,
+      halo,
       undefined,
       sinon.match.func
     );
@@ -110,12 +110,12 @@ describe('create-session-object', () => {
     const err = new Error('oops');
     types.get.throws(err);
     const optional = { properties: 'props', element: 'el', options: 'opts' };
-    const ret = await create({ type: 't', ...optional }, corona);
+    const ret = await create({ type: 't', ...optional }, halo);
     expect(ret).to.equal('api');
     expect(init).to.have.been.calledWithExactly(
       objectModel,
       { options: 'opts', element: 'el' },
-      corona,
+      halo,
       err,
       sinon.match.func
     );

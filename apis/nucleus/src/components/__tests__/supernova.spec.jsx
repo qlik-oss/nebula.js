@@ -20,12 +20,12 @@ describe('<Supernova />', () => {
       snOptions = {},
       layout = {},
       appLayout = {},
-      corona = {},
+      halo = {},
       rendererOptions,
     } = {}) => {
       await act(async () => {
         renderer = create(
-          <Supernova sn={sn} snOptions={snOptions} layout={layout} appLayout={appLayout} corona={corona} />,
+          <Supernova sn={sn} snOptions={snOptions} layout={layout} appLayout={appLayout} halo={halo} />,
           rendererOptions || null
         );
       });
@@ -45,7 +45,7 @@ describe('<Supernova />', () => {
       snOptions: {},
       layout: {},
       appLayout: {},
-      corona: {},
+      halo: {},
     });
   });
   it('should mount', async () => {
@@ -99,7 +99,7 @@ describe('<Supernova />', () => {
       snOptions,
       layout: 'layout',
       appLayout: { qLocaleInfo: 'loc' },
-      corona: { public: { theme: 'theme' }, app: { session: {} } },
+      halo: { public: { theme: 'theme' }, app: { session: {} } },
       rendererOptions: {
         createNodeMock: () => {
           return {
@@ -146,7 +146,7 @@ describe('<Supernova />', () => {
         component,
       },
       layout: {},
-      corona: { public: {} },
+      halo: { public: {} },
       rendererOptions: {
         createNodeMock: () => {
           return {

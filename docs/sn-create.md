@@ -3,7 +3,7 @@ id: sn-create
 title: Quick start
 ---
 
-This guide will walk you through creating a simple supernova project that renders a table.
+This guide will walk you through creating a simple project that renders a table.
 
 It will include the following steps:
 
@@ -29,13 +29,13 @@ $ npx @nebula.js/cli create hello --picasso none
 The command will scaffold a project into the `hello` folder with the following structure:
 
 - `/src`
-  - `index.js` - Main entry point of this supernova
+  - `index.js` - Main entry point of this visualization
   - `object-properties.js` - Object properties stored in the app
   - `data.js` - Data configuration
 - `/test` - Integration tests
 - `package.json`
 
-The folder contains some additional dotfiles files that provides linting and formatting of code.
+The folder contains some additional dotfiles that provides linting and formatting of code.
 
 ### Start the development server
 
@@ -50,17 +50,17 @@ The command will start a local development server and open up http://localhost:8
 
 ![Connect to engine](./assets/hub-connect.png)
 
-The development server needs to connect to a Qlik Associative Engine running in any of the Qlik's deployments. Enter the WebSocket URL that corresponds to the Qlik product you are using.
+The development server needs to connect to a Qlik Associative Engine running in any Qlik deployment. Enter the WebSocket URL that corresponds to the Qlik product you are using.
 
 Next, select an app to connect to.
 
 ![Connect to app](./assets/hub-app.png)
 
-You will then be redirected to the main developer UI where you should see your supernova rendered:
+You will then be redirected to the main developer UI where you should see your visualization rendered:
 
 ![Dev](./assets/hub-dev.png)
 
-Any updates in `/src/index.js` that affects the output will automatically cause a refresh of the supernova and you will see the changes immediately.
+Any updates in `/src/index.js` that affects the output will automatically cause a refresh of the visualization and you will see the changes immediately.
 
 ## Configure data structure
 
@@ -100,7 +100,7 @@ Add a dimension by clicking on **Add dimension** and selecting a value in the me
 In order to render the data you first need to access it through the `useLayout` hook:
 
 ```js
-import { useElement, useLayout } from `@nebula.js/nucleus`;
+import { useElement, useLayout } from `@nebula.js/stardust`;
 
 // ...
 component() {
@@ -190,7 +190,7 @@ useEffect(() => {
 }, [element]);
 ```
 
-Next, we update the styling of the selected rows in the table whenever they change:
+Next, update the styling of the selected rows in the table whenever they change:
 
 ```js
 useEffect(() => {
@@ -226,7 +226,3 @@ useEffect(() => {
   }
 }, [selections.isActive(), selectedRows]);
 ```
-
-## Next steps
-
-- [Supernova introduction](./sn-component.md)

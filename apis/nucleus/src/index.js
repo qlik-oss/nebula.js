@@ -154,7 +154,7 @@ function nuked(configuration = {}) {
       nebbie: null, // actual value is set further down
     };
 
-    const corona = {
+    const halo = {
       app,
       root,
       config: configuration,
@@ -163,7 +163,7 @@ function nuked(configuration = {}) {
       nebbie: null,
     };
 
-    const types = typesFn({ corona });
+    const types = typesFn({ halo });
 
     configuration.types.forEach((t) =>
       types.register(
@@ -209,9 +209,9 @@ function nuked(configuration = {}) {
       render: async (cfg) => {
         await currentThemePromise;
         if (cfg.id) {
-          return get(cfg, corona);
+          return get(cfg, halo);
         }
-        return create(cfg, corona);
+        return create(cfg, halo);
       },
       /**
        * Updates the current context of this embed instance.
@@ -245,7 +245,7 @@ function nuked(configuration = {}) {
           translator: locale.translator,
         };
 
-        corona.context = currentContext;
+        halo.context = currentContext;
 
         if (changes.theme) {
           currentThemePromise = appTheme.setTheme(changes.theme);
@@ -253,7 +253,7 @@ function nuked(configuration = {}) {
         }
 
         if (changes.language) {
-          corona.public.translator.language(changes.language);
+          halo.public.translator.language(changes.language);
         }
 
         root.context(currentContext);
@@ -306,7 +306,7 @@ function nuked(configuration = {}) {
       types,
     };
 
-    corona.public.nebbie = api;
+    halo.public.nebbie = api;
 
     return api;
   }

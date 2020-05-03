@@ -12,7 +12,7 @@ You can access the _layout_ of the Generic Object through a set of predefined ho
 `useLayout` returns the evalutated layout of the Generic Object's properties:
 
 ```js
-import { useLayout } from '@nebula.js/supernova';
+import { useLayout } from '@nebula.js/stardust';
 
 export default function () {
   return {
@@ -49,7 +49,7 @@ useEffect(() => {
 `useAppLayout` returns the [NxAppLayout](https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxapplayout) you are currently connected to:
 
 ```js
-import { useAppLayout } from '@nebula.js/supernova';
+import { useAppLayout } from '@nebula.js/stardust';
 
 export default function () {
   return {
@@ -69,10 +69,10 @@ In addition to the layouts of the app and generic object, you have full access t
 
 ### useModel
 
-`useModel` returns the generated API of the [Generic Object](https://core.qlik.com/services/qix-engine/apis/qix/genericobject/) of your supernova:
+`useModel` returns the generated API of the [Generic Object](https://core.qlik.com/services/qix-engine/apis/qix/genericobject/):
 
 ```js
-import { useModel } from '@nebula.js/supernova';
+import { useModel } from '@nebula.js/stardust';
 
 export default function () {
   return {
@@ -93,10 +93,10 @@ Common operations in this API is to:
 
 ### useApp
 
-`useApp` returns the generated API of the [Doc](https://core.qlik.com/services/qix-engine/apis/qix/doc/) your supernova belongs to:
+`useApp` returns the generated API of the [Doc](https://core.qlik.com/services/qix-engine/apis/qix/doc/):
 
 ```js
-import { useApp } from '@nebula.js/supernova';
+import { useApp } from '@nebula.js/stardust';
 
 export default function () {
   return {
@@ -115,10 +115,10 @@ Common operations in this API is to:
 
 ### useGlobal
 
-`useGlobal` returns the generated API of the [Global](https://core.qlik.com/services/qix-engine/apis/qix/global/) your supernova belongs to:
+`useGlobal` returns the generated API of the [Global](https://core.qlik.com/services/qix-engine/apis/qix/global/):
 
 ```js
-import { useGlobal } from '@nebula.js/supernova';
+import { useGlobal } from '@nebula.js/stardust';
 
 export default function () {
   return {

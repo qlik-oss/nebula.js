@@ -5,19 +5,15 @@
 
 # !!EXPERIMENTAL!!
 
-`nebula.js` is a collection of JavaScript libraries and APIs that helps developers integrate visualizations and mashups on top of Qlik's Associative Engine.
+NebulaJS is a collection of JavaScript libraries, charts and CLIs that helps developers build and integrate visualizations on top of Qlik's Associative Engine. The collection is organized under the `@nebula.js` npm scope.
 
-It consists of three parts:
-
-- `nucleus`: A product and framework agnostic JavaScript library for building mashups.
-- `supernova`: A JavaScript API for consuming and visualizing QIX data.
-- `cli`: Tools to help you create, develop and build a `supernova`.
+The primary package is `@nebula.js/stardust` which contains APIs for integrating existing visualizations into mashups, as well as APIs for building custom visualizations.
 
 ![nebula-overview](docs/assets/nebula-overview.png)
 
 ## Roadmap
 
-Since nebula.js is still in an early stage we are very much open to input and suggestions. If you think something is missing, an API is weird or have general opinions about anything, let us know.
+Since `stardust` is still in an early stage we are very much open to input and suggestions. If you think something is missing, an API is weird or have general opinions about anything, let us know.
 
 _Your opinions, requirements and involvement is key to the success of this project._ Click on the linked issues below ([or create you own](https://github.com/qlik-oss/nebula.js/issues/new/choose)), voice your opinion and vote if you would like to see it get implemented.
 
@@ -29,12 +25,11 @@ This is the primary task right now as there is currently barely any documentatio
 
 **Integration APIs**
 
-- nucleus
+- stardust
   - theming ([#24](https://github.com/qlik-oss/nebula.js/issues/24))
   - translations, localization ([#25](https://github.com/qlik-oss/nebula.js/issues/25))
   - error handling
   - export ([#26](https://github.com/qlik-oss/nebula.js/issues/26))
-- supernova
   - consume theme ([#27](https://github.com/qlik-oss/nebula.js/issues/27))
   - consume translator ([#28](https://github.com/qlik-oss/nebula.js/issues/28))
   - actions api

@@ -1,6 +1,6 @@
 describe('initiate api', () => {
   const optional = 'optional';
-  const corona = 'corona';
+  const halo = 'halo';
   const model = 'model';
   let create;
   let sandbox;
@@ -28,18 +28,18 @@ describe('initiate api', () => {
   it('should call viz api', async () => {
     const initialError = 'err';
     const onDestroy = () => {};
-    const ret = await create(model, optional, corona, initialError, onDestroy);
-    expect(viz).to.have.been.calledWithExactly({ model, corona, initialError, onDestroy });
+    const ret = await create(model, optional, halo, initialError, onDestroy);
+    expect(viz).to.have.been.calledWithExactly({ model, halo, initialError, onDestroy });
     expect(ret).to.equal(api);
   });
 
   it('should call mount when element is provided ', async () => {
-    await create(model, { element: 'el' }, corona);
+    await create(model, { element: 'el' }, halo);
     expect(api.mount).to.have.been.calledWithExactly('el');
   });
 
   it('should call options when provided ', async () => {
-    await create(model, { options: 'opts' }, corona);
+    await create(model, { options: 'opts' }, halo);
     expect(api.options).to.have.been.calledWithExactly('opts');
   });
 });

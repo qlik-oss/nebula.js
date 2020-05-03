@@ -158,13 +158,13 @@ const loadType = async ({ dispatch, types, name, version, layout, model, app, se
   return undefined;
 };
 
-const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMount }, ref) => {
+const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount }, ref) => {
   const {
     app,
     public: {
       nebbie: { types },
     },
-  } = corona;
+  } = halo;
 
   const { translator, language } = useContext(InstanceContext);
   const theme = useTheme();
@@ -295,11 +295,11 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
         };
       },
       async exportImage() {
-        if (typeof corona.config.snapshot.capture !== 'function') {
+        if (typeof halo.config.snapshot.capture !== 'function') {
           throw new Error('Nebula has not been configured with snapshot.capture callback');
         }
         const snapshot = await this.takeSnapshot(); // eslint-disable-line
-        return corona.config.snapshot.capture(snapshot);
+        return halo.config.snapshot.capture(snapshot);
       },
     }),
     [state.sn, contentRect, cellRect, layout, theme.name, appLayout]
@@ -316,7 +316,7 @@ const Cell = forwardRef(({ corona, model, initialSnOptions, initialError, onMoun
       <Supernova
         key={layout.visualization}
         sn={state.sn}
-        corona={corona}
+        halo={halo}
         snOptions={snOptions}
         layout={layout}
         appLayout={appLayout}

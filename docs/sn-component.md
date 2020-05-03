@@ -15,10 +15,10 @@ export default function () {
 }
 ```
 
-In order to render something you need to access the DOM element the supernova is assigned to, you can do so by importing the `useElement` function:
+In order to render something you need to access the DOM element the visualization is assigned to, you can do so by importing the `useElement` function:
 
 ```js
-import { useElement } from '@nebula.js/supernova';
+import { useElement } from '@nebula.js/stardust';
 ```
 
 This function returns a simple HTMLElement which is your entry point to the visual world:
@@ -30,11 +30,11 @@ component() {
 }
 ```
 
-`useElement` is one of many functions that provide you with the most common requirements when developing a chart, they allow you to _hook_ into the resources provided by both `nebula.js` and Qlik's Associative Engine.
+`useElement` is one of many functions that provide you with the most common requirements when developing a visualization, they allow you to _hook_ into the resources provided by both `stardust` and Qlik's Associative Engine.
 
 ## Hooks
 
-If you have been working with [React](https://reactjs.org/) you might recognize this as _hooks_. Hooks is a concept which emphasizes reusable composable functions rather than classical object oriented classes and inheritance. While our implementation is completely custom with our own hooks, the concept and rules are very similar, so much so that you can read the [React hooks documentation](https://reactjs.org/docs/hooks-intro.html) to understand how to use nebula's own hooks.
+If you have been working with [React](https://reactjs.org/) you might recognize this as _hooks_. Hooks is a concept which emphasizes reusable composable functions rather than classical object oriented classes and inheritance. While our implementation is completely custom with our own hooks, the concept and rules are very similar, so much so that you can read the [React hooks documentation](https://reactjs.org/docs/hooks-intro.html) to understand how to use stardust's own hooks.
 
 ### useElement
 
@@ -58,7 +58,7 @@ The `component()` function is executed every time something that might be connec
 `useEffect` is a hook that accepts a callback function which will be run only when the value you specify changes. This enables you to not only batch updates but to also implement your own form of lifecycle management in your component.
 
 ```js
-import { useEffect } from '@nebula.js/supernova';
+import { useEffect } from '@nebula.js/stardust';
 // ...
 component() {
   const element = useElement();
@@ -98,7 +98,7 @@ In the example above, `element` is provided as an observable value as the second
 Since `component()` is a function and not a class or object instance, you can not use `this` to store instance values as you would otherwise. The way to store state is through `useState`:
 
 ```js
-import { useState } from '@nebula.js/supernova';
+import { useState } from '@nebula.js/stardust';
 
 export default function () {
   return {

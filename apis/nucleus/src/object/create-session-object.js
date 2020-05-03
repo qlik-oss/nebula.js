@@ -10,11 +10,11 @@ import { subscribe } from '../stores/modelStore';
  * @property {qae.GenericObjectProperties=} properties
  */
 
-export default async function createSessionObject({ type, version, fields, properties, options, element }, corona) {
+export default async function createSessionObject({ type, version, fields, properties, options, element }, halo) {
   let mergedProps = {};
   let error;
   try {
-    const t = corona.public.nebbie.types.get({ name: type, version });
+    const t = halo.public.nebbie.types.get({ name: type, version });
     mergedProps = await t.initialProperties(properties);
     const sn = await t.supernova();
     if (fields) {
@@ -24,7 +24,7 @@ export default async function createSessionObject({ type, version, fields, prope
           properties: mergedProps,
           fields,
         },
-        corona
+        halo
       );
     }
     if (properties && sn && sn.qae.properties.onChange) {
@@ -42,11 +42,11 @@ export default async function createSessionObject({ type, version, fields, prope
     };
     // console.error(e); // eslint-disable-line
   }
-  const model = await corona.app.createSessionObject(mergedProps);
+  const model = await halo.app.createSessionObject(mergedProps);
   const unsubscribe = subscribe(model);
   const onDestroy = async () => {
-    await corona.app.destroySessionObject(model.id);
+    await halo.app.destroySessionObject(model.id);
     unsubscribe();
   };
-  return init(model, { options, element }, corona, error, onDestroy);
+  return init(model, { options, element }, halo, error, onDestroy);
 }

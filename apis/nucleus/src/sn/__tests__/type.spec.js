@@ -5,7 +5,7 @@ describe('type', () => {
   let satisfies;
   let create;
   let sb;
-  let corona;
+  let halo;
   before(() => {
     sb = sinon.createSandbox();
     SNFactory = sb.stub();
@@ -21,8 +21,8 @@ describe('type', () => {
     );
   });
   beforeEach(() => {
-    corona = { public: { env: 'env' } };
-    c = create({ name: 'pie', version: '1.1.0' }, corona, { load: 'customLoader' });
+    halo = { public: { env: 'env' } };
+    c = create({ name: 'pie', version: '1.1.0' }, halo, { load: 'customLoader' });
   });
   afterEach(() => {
     sb.reset();
@@ -61,7 +61,7 @@ describe('type', () => {
       const def = Promise.resolve('def');
       const normalized = { qae: { properties: {} } };
 
-      load.withArgs('pie', '1.1.0', corona, 'customLoader').returns(def);
+      load.withArgs('pie', '1.1.0', halo, 'customLoader').returns(def);
       SNFactory.withArgs('def').returns(normalized);
 
       const sn = await c.supernova();
@@ -74,7 +74,7 @@ describe('type', () => {
       const def = Promise.resolve('def');
       const normalized = { qae: { properties: { initial: { a: 'a', b: 'b' } } } };
 
-      load.withArgs('pie', '1.1.0', corona, 'customLoader').returns(def);
+      load.withArgs('pie', '1.1.0', halo, 'customLoader').returns(def);
       SNFactory.withArgs('def').returns(normalized);
 
       const props = await c.initialProperties({ c: 'c', b: 'override' });
