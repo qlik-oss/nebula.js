@@ -33,14 +33,17 @@ If the proposal includes new designs or bigger changes, please be prepared to di
 
 This is a multi-package repository which uses [lerna](https://github.com/lerna/lerna) for package task management and publishing.
 
-- `packages` - all packages are in this folder
+- `apis` - JavaScript APIs
+  - `nucleus`: JavaScript library for mashups
+  - `supernova`: JavaScript API for consuming and visualizing QIX data
+  - `stardust`: Public JavaScript API which exposes the nucleus and supernova APIs
+- `commands` - CLI commands
   - `build`: cli command to build a supernova
   - `cli`: entry point for all cli commands
   - `create`: cli command for creating a supernova project
-  - `nucleus`: JavaScript library for mashups
   - `sense`: cli command to build a Qlik Sense extension from a supernova
   - `serve`: cli command to start a development server for rapid prototyping of a supernova
-  - `supernova`: JavaScript API for consuming and visualizing QIX data
+- `packages`
   - `ui`: [private] ui components
 - `test/`: contains test configs
 

@@ -50,7 +50,7 @@ describe('nucleus', () => {
         some: 'thing',
       },
     });
-    expect(typesFn.getCall(0).args[0].corona.public.galaxy).to.eql({
+    expect(typesFn.getCall(0).args[0].halo.public.galaxy).to.eql({
       anything: {
         some: 'thing',
       },

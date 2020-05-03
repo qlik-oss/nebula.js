@@ -5,26 +5,23 @@
     "previous": "Previous",
     "tagline": "A new star on the rise",
     "docs": {
+      "api-reference": {
+        "title": "API Reference"
+      },
       "app-selections": {
         "title": "Current app selections"
+      },
+      "embed-configuration": {
+        "title": "Configuration"
+      },
+      "embedding-visualizations": {
+        "title": "Embedding visualizations"
       },
       "installation": {
         "title": "Installation"
       },
-      "nucleus-configuration": {
-        "title": "Configuration"
-      },
-      "nucleus-reference": {
-        "title": "API Reference"
-      },
       "introduction": {
         "title": "Introduction"
-      },
-      "render-charts": {
-        "title": "Rendering supernovae"
-      },
-      "sn-associations": {
-        "title": "sn-associations"
       },
       "sn-component": {
         "title": "Rendering"
@@ -44,9 +41,6 @@
       "sn-introduction": {
         "title": "Introduction"
       },
-      "sn-reference": {
-        "title": "API Reference"
-      },
       "sn-selections": {
         "title": "Selecting data"
       },
@@ -54,14 +48,14 @@
         "title": "Consuming data"
       },
       "web-integration": {
-        "title": "Web integration"
+        "title": "Quick start"
       }
     },
     "links": {},
     "categories": {
-      "Getting started": "Getting started",
-      "Nucleus guide": "Nucleus guide",
-      "Supernova guide": "Supernova guide"
+      "Introduction": "Introduction",
+      "Embedding visualizations": "Embedding visualizations",
+      "Developing visualizations": "Developing visualizations"
     }
   },
   "pages-strings": {

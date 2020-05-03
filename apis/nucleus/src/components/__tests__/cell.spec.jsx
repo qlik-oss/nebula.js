@@ -100,7 +100,7 @@ describe('<Cell />', () => {
         ...defaultModel,
         ...model,
       };
-      const corona = {
+      const halo = {
         ...defaultCorona,
         ...app,
         public: {
@@ -115,7 +115,7 @@ describe('<Cell />', () => {
         renderer = create(
           <ThemeProvider theme={theme}>
             <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
-              <Cell ref={cellRef} corona={corona} model={model} initialSnOptions={initialSnOptions} onMount={onMount} />
+              <Cell ref={cellRef} halo={halo} model={model} initialSnOptions={initialSnOptions} onMount={onMount} />
             </InstanceContext.Provider>
           </ThemeProvider>,
           rendererOptions || null

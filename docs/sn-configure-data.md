@@ -3,7 +3,7 @@ id: sn-configure-data
 title: Configuring data
 ---
 
-The `qae` section of the supernova definition is where you define the properties of the Generic Object and the shape of the data you expect to consume.
+The `qae` section of the definition is where you define the properties of the Generic Object and the shape of the data you expect to consume.
 
 ```json
 {
@@ -15,9 +15,9 @@ The `qae` section of the supernova definition is where you define the properties
 
 ## Generic Object
 
-Every supernova is connected to the entire data model and Qlik's Associative Engine through a Generic Object. This is a JSON object containing _properties_ which result in a _layout_ that describe the state of the backend portion of your supernova.
+Every visualization is connected to the entire data model and Qlik's Associative Engine through a _Generic Object_. This is a JSON object containing _properties_ which result in a _layout_ that describe the state of the backend portion of the visualization.
 
-Every time someone wants to render your supernova, an instance of the generic object will be created in the data model. If the creator has the right permissions, they can choose to store and persist this object in their data model.
+Every time someone wants to render your visualization, an instance of the generic object will be created in the data model. If the creator has the right permissions, they can choose to store and persist this object in their data model.
 
 ### Properties
 
@@ -30,9 +30,9 @@ What properties you set is entirely up to you, it must however be a valid JSON o
 }
 ```
 
-These are static properties only, what goes in comes out exactly the same. The true power of the Generic Object are the dynamic properties you can set that enables you to leverage Qlik's Associative Engine and access the data inside it.
+These properties are _static_, what goes in comes out exactly the same. The true power of the Generic Object are the _dynamic_ properties you can set that enables you to leverage Qlik's Associative Engine and access the data inside it.
 
-Dynamic properties have a specific structure that enables the backend to differentiate between dynamic properties and static. They also have a naming convention where they all begin with a `q` followed by a capital letter, this makes it easy for both humans and machines to distinguish between the two property types.
+Dynamic properties have a specific structure that enables the backend to differentiate between dynamic properties and static. They also have a naming convention: they all begin with a `q` followed by a capital letter, this makes it easy for both humans and machines to distinguish between the two property types.
 
 There are a lot of different [predefined](https://core.qlik.com/services/qix-engine/apis/qix/definitions/) dynamic properties for various purposes, you can for example use [ValueExpression](https://core.qlik.com/services/qix-engine/apis/qix/definitions/#valueexpression) to do simple calculations:
 
@@ -93,7 +93,7 @@ In this case the dimensions and measures are hardcoded to a predefined value tha
 
 ### Data targets
 
-A data target is a way for you to define where the dynamic HyperCubeDefs are located in the Generic Object's properties. While `nebula.js` could traverse the properties and locate all usages of `qHyperCubeDef`, you may not want all of those to be dynamic, or you may generate them for internal use only.
+A data target is a way for you to define where the dynamic HyperCubeDefs are located in the Generic Object's properties. While `stardust` could traverse the properties and locate all usages of `qHyperCubeDef`, you may not want all of those to be dynamic, or you may generate them for internal use only.
 
 You specify data targets with the `data.targets` key in `qae`, each target must have a `path` key which indicates the JSON path of the HyperCubeDef from the root of the properties object:
 
@@ -118,7 +118,7 @@ qae: {
 
 You can for each data target specify additional details like the maximum/minimum amount of dimensions and measures, and make modifications when they are added.
 
-This is useful when you now the limitations of what a chart can render, a pie chart for example is mostly usable when it has exactly one dimension and one measure, but you might also be implementing support for a second measure. This also saves you some code since `nebula.js` won't attempt to render a chart whose limitations have not been fulfilled, and will instead show that some fields are missing.
+This is useful when you know the limitations of what a chart can render, a pie chart for example is mostly usable when it has exactly one dimension and one measure, but you might also be implementing support for a second measure. This also saves you some code logic since `stardust` won't attempt to render a chart whose limitations have not been fulfilled, and will instead show that some fields are missing.
 
 ### Field limitations
 

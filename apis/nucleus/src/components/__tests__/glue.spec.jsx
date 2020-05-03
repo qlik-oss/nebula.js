@@ -13,7 +13,7 @@ describe('glue', () => {
   beforeEach(() => {
     sandbox = sinon.createSandbox();
     param = {
-      corona: {
+      halo: {
         root: {
           add: sandbox.spy(),
           remove: sandbox.spy(),
@@ -34,7 +34,7 @@ describe('glue', () => {
   it('should glue outside world with react world', () => {
     const [dissolve] = glue(param);
     dissolve();
-    expect(param.corona.root.add.callCount).to.equal(1);
-    expect(param.corona.root.remove.callCount).to.equal(1);
+    expect(param.halo.root.add.callCount).to.equal(1);
+    expect(param.halo.root.remove.callCount).to.equal(1);
   });
 });

@@ -1,0 +1,11 @@
+{
+  "scriptappy": "1.0.0",
+  "info": {
+    "name": "@nebula.js/stardust",
+    "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
+    "version": "0.6.0-alpha.0",
+    "license": "MIT"
+  },
+  "entries": {},
+  "definitions": {}
+}

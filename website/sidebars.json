@@ -1,15 +1,20 @@
 {
   "docs": {
-    "Getting started": ["introduction", "installation", "web-integration", "sn-create"],
-    "Nucleus guide": ["nucleus-configuration", "render-charts", "app-selections", "nucleus-reference"],
-    "Supernova guide": [
+    "Introduction": ["introduction", "installation", "api-reference"],
+    "Embedding visualizations": [
+      "web-integration",
+      "embed-configuration",
+      "embedding-visualizations",
+      "app-selections"
+    ],
+    "Developing visualizations": [
+      "sn-create",
       "sn-introduction",
       "sn-component",
       "sn-configure-data",
       "sn-using-data",
       "sn-hypercube",
-      "sn-selections",
-      "sn-reference"
+      "sn-selections"
     ]
   }
 }

@@ -1,18 +1,20 @@
 ---
-id: nucleus-configuration
+id: embed-configuration
 title: Configuration
 ---
 
 When you are building a website, whether it's a company wide site or a small personal project, you most likely have your own design guidelines, UX patterns and requirements, and would want to apply those guidelines on the things you integrate with it; charts should use your color schemes, fonts, locale and respect any restrictions you may have on interactivty. You may also want to control how charts and themes are loaded based on whether your solution is online or offline.
 
-You can control most of these through the `Configuration` object for `nucleus`.
+You can control most of these through the `Configuration` object.
 
 ## Temporary config
 
-The `nucleus` module is a function that requires an `enigmaApp` and an optional `config` object, which you then can use to render charts:
+The `Configuration` object is an optional argument that you can provide when instantiating the `embed` instance:
 
 ```js
-const n = nucleus(enigmaApp, {
+import { embed } from '@nebula.js/stardust';
+
+const n = embed(enigmaApp, {
   context: {
     theme: 'dark',
   },
@@ -32,7 +34,7 @@ If you are working with multiple apps, or want to have multiple different config
 Create a `baseConfig` which does the heavy lifting of registering types and themes:
 
 ```js
-const baseConfig = nucleus.createConfiguration({
+const baseConfig = embed.createConfiguration({
   types: [
     /* register type once*/
   ],
@@ -72,19 +74,19 @@ swedishPink.render(/* chart config */);
 
 ## Registering types
 
-Before rendering a supernova type, its module needs to be loaded and registered. You can load the modules you know you will need from npm:
+Before rendering a visualization, its module needs to be loaded and registered. You can load the modules you know you will need from npm:
 
 ```bash
 $ npm install @nebula.js/sn-bar-chart @nebula.js/sn-pie-chart
 ```
 
-And then register each one individually:
+And then register each `type` individually:
 
 ```js
 import barchart from '@nebula.js/sn-bar-chart';
 import piechart from '@nebula.js/sn-pie-chart';
 
-nucles.createConfiguration({
+embed.createConfiguration({
   types: [
     {
       type: 'bar',
@@ -108,25 +110,25 @@ Start by installing the module:
 npm install d3-require
 ```
 
-and then configure it to load modules from a CDN like `https://unpkg.com`, as well as specify an alias to use the local version of `@nebula.js/supernova`:
+and then configure it to load modules from a CDN like `https://unpkg.com`, as well as specify an alias to use the local version of `@nebula.js/stardust`:
 
 ```js
 import { requireFrom } from 'd3-require';
-import * as supernova from '@nebula.js/supernova';
+import * as stardust from '@nebula.js/stardust';
 
-const loadSnType = requireFrom(name => `https://unpkg.com/@nebula.js/sn-${name}-chart`).alias({
-  '@nebula.js/supernova': supernova,
+const loadSnType = requireFrom((name) => `https://unpkg.com/@nebula.js/sn-${name}-chart`).alias({
+  '@nebula.js/stardust': stardust,
 });
 ```
 
 You can then configure all types you expect might be used:
 
 ```js
-const types = ['bar', 'line', 'pie', 'sankey'].map(t => ({
+const types = ['bar', 'line', 'pie', 'sankey'].map((t) => ({
   type: t,
   load: () => loadSnType(t),
 }));
-const baseConfig = nucleus.createConfiguration({ types });
+const baseConfig = stardust.embed.createConfiguration({ types });
 ```
 
 The type will be loaded from the remote url the first time you render it:
@@ -140,23 +142,23 @@ baseConfig(enigmaApp).render({
 
 ## Context
 
-When setting up the configuration you can apply a `context` which controls the language, theme and constraints in the supernova types you render:
+When setting up the configuration you can apply a `context` which controls the language, theme and constraints in each visualization you render:
 
 ```js
-nucleus.createConfiguration({
+embed.createConfiguration({
   context: {},
 });
 ```
 
 ### Constraints
 
-Constraints enables you to instruct supernova types to disable certain types of interactions and behaviour.
+Constraints enables you to instruct a visualization to disable certain types of interactions and behaviour.
 
 There are three different constraints you can apply:
 
 - `passive`: disable interactions like tooltips.
 - `active`: disable interactions that affect the state of the visual representation like zoom, scroll, etc.
-- `select`: disable selections
+- `select`: disable selections.
 
 ```js
 {
@@ -170,11 +172,11 @@ There are three different constraints you can apply:
 };
 ```
 
-`nucleus` does not enforce these constraints in any way, instead it is up to the supernova developer to respect and implement them.
+`stardust` does not enforce these constraints in any way, instead it is up to the visualization developer to respect and implement them.
 
 ### Language
 
-`nucleus` supports 15 languages:
+`stardust` supports 15 languages:
 
 - `'en-US'` - American English
 - `'sv-SE'` - Swedish
@@ -242,12 +244,3 @@ You can also register custom themes and apply one of those on the context:
 ```
 
 ![Pinkish theme](assets/theme-pinkish.png)
-
-## Snapshots
-
-TODO
-
-Read more:
-
-- [API reference](./nucleus-reference#interface-configuration)
-- [Theme API](#TODO)

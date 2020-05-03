@@ -1,10 +1,16 @@
 ---
-id: sn-reference
+id: api-reference
 title: API Reference
 ---
 
+# @nebula.js/stardust
+
+> version: 0.6.0-alpha.0
+
 ## Table of contents
 
+- [function: embed(app[, instanceConfig])](#function-embedapp-instanceconfig)
+  - [embed.createConfiguration(configuration)](#embedcreateconfigurationconfiguration)
 - [function: useState(initialState)](#function-usestateinitialstate)
 - [function: useEffect(effect[, deps])](#function-useeffecteffect-deps)
 - [function: useMemo(factory, deps)](#function-usememofactory-deps)
@@ -24,16 +30,27 @@ title: API Reference
 - [function: useConstraints()](#function-useconstraints)
 - [function: useOptions()](#function-useoptions)
 - [function: onTakeSnapshot(snapshotCallback)](#function-ontakesnapshotsnapshotcallback)
-- [interface: Supernova([env])](#interface-supernovaenv)
-- [interface: SupernovaDefinition](#interface-supernovadefinition)
-- [interface: SetStateFn(newState)](#interface-setstatefnnewstate)
-- [type EffectCallback = <[Function]>](#type-effectcallback-function)
-- [interface: Rect](#interface-rect)
-- [interface: ActionDefinition](#interface-actiondefinition)
-- [interface: Constraints](#interface-constraints)
-- [interface: QAEDefinition](#interface-qaedefinition)
-- [interface: DataTarget](#interface-datatarget)
-- [interface: FieldTarget](#interface-fieldtarget)
+- [interface: Context](#interface-context)
+- [interface: Configuration](#interface-configuration)
+- [undefined: Galaxy.translator](#undefined-galaxytranslator)
+- [undefined: Galaxy.flags](#undefined-galaxyflags)
+- [undefined: Galaxy.anything](#undefined-galaxyanything)
+- [class: Embed](#class-embed)
+  - [embed.render(cfg)](#embedrendercfg)
+  - [embed.context(ctx)](#embedcontextctx)
+  - [embed.selections()](#embedselections)
+- [interface: ThemeInfo](#interface-themeinfo)
+- [class: SupernovaController](#class-supernovacontroller)
+  - [supernovaController.destroy()](#supernovacontrollerdestroy)
+- [interface: Flags](#interface-flags)
+- [interface: CreateConfig](#interface-createconfig)
+- [interface: BaseConfig](#interface-baseconfig)
+- [interface: GetConfig](#interface-getconfig)
+- [type Field = <[string]|`qae.NxDimension`|`qae.NxMeasure`|[LibraryField]>](#type-field-stringqaenxdimensionqaenxmeasurelibraryfield)
+- [interface: LibraryField](#interface-libraryfield)
+- [class: AppSelections](#class-appselections)
+  - [appSelections.mount(element)](#appselectionsmountelement)
+  - [appSelections.unmount()](#appselectionsunmount)
 - [class: ObjectSelections](#class-objectselections)
   - [objectSelections.begin(paths)](#objectselectionsbeginpaths)
   - [objectSelections.clear()](#objectselectionsclear)
@@ -48,6 +65,18 @@ title: API Reference
   - [objectSelections.goModal(paths)](#objectselectionsgomodalpaths)
   - [objectSelections.noModal([accept])](#objectselectionsnomodalaccept)
   - [objectSelections.abortModal()](#objectselectionsabortmodal)
+- [interface: LoadType(type)](#interface-loadtypetype)
+- [interface: TypeInfo](#interface-typeinfo)
+- [interface: Supernova(galaxy)](#interface-supernovagalaxy)
+- [interface: SupernovaDefinition](#interface-supernovadefinition)
+- [interface: SetStateFn(newState)](#interface-setstatefnnewstate)
+- [type EffectCallback = <[Function]>](#type-effectcallback-function)
+- [interface: Rect](#interface-rect)
+- [interface: ActionDefinition](#interface-actiondefinition)
+- [interface: Constraints](#interface-constraints)
+- [interface: QAEDefinition](#interface-qaedefinition)
+- [interface: DataTarget](#interface-datatarget)
+- [interface: FieldTarget](#interface-fieldtarget)
 - [class: Translator](#class-translator)
   - [translator.add(item)](#translatoradditem)
   - [translator.get(str[, args])](#translatorgetstr-args)
@@ -66,6 +95,53 @@ title: API Reference
 
 ## API
 
+### function: embed(app[, instanceConfig])
+
+- `app` <`enigma.Doc`>
+- `instanceConfig` <[Configuration]>
+- `returns:` <[Embed]>
+
+Initiates a new embed instance using the specified `app`.
+
+```js
+import { embed } from '@nebula.js/stardust';
+const n = embed(app);
+n.render({ id: 'abc' });
+```
+
+#### embed.createConfiguration(configuration)
+
+- `configuration` <[Configuration]> The configuration object
+- `returns:` <[Embed]>
+
+Creates a new `embed` scope bound to the specified `configuration`.
+
+The configuration is merged with all previous scopes.
+
+```js
+import { embed } from '@nebula.js/stardust';
+// create a 'master' config which registers all types
+const m = embed.createConfiguration({
+  types: [
+    {
+      name: 'mekko',
+      version: '1.0.0',
+      load: () => Promise.resolve(mekko),
+    },
+  ],
+});
+
+// create an alternate config with dark theme
+// and inherit the config from the previous
+const d = m.createConfiguration({
+  theme: 'dark',
+});
+
+m(app).render({ type: 'mekko' }); // will render the object with default theme
+d(app).render({ type: 'mekko' }); // will render the object with 'dark' theme
+embed(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance
+```
+
 ### function: useState(initialState)
 
 - `initialState` <`S`|[Function]> The initial state.
@@ -74,7 +150,7 @@ title: API Reference
 Creates a stateful value.
 
 ```js
-import { useState } from '@nebula.js/supernova';
+import { useState } from '@nebula.js/stardust';
 // ...
 // initiate with simple primitive value
 const [zoomed, setZoomed] = useState(false);
@@ -94,7 +170,7 @@ const [value, setValue] = useState(() => heavy());
 Triggers a callback function when a dependant value changes.
 
 ```js
-import { useEffect } from '@nebula.js/supernova';
+import { useEffect } from '@nebula.js/stardust';
 // ...
 useEffect(() => {
   console.log('mounted');
@@ -113,7 +189,7 @@ useEffect(() => {
 Creates a stateful value when a dependant changes.
 
 ```js
-import { useMemo } from '@nebula.js/supernova';
+import { useMemo } from '@nebula.js/stardust';
 // ...
 const v = useMemo(() => {
   return doSomeHeavyCalculation();
@@ -129,8 +205,8 @@ const v = useMemo(() => {
 Runs a callback function when a dependant changes.
 
 ```js
-import { usePromise } from '@nebula.js/supernova';
-import { useModel } from '@nebula.js/supernova';
+import { usePromise } from '@nebula.js/stardust';
+import { useModel } from '@nebula.js/stardust';
 // ...
 const model = useModel();
 const [resolved, rejected] = usePromise(() => model.getLayout(), []);
@@ -143,7 +219,7 @@ const [resolved, rejected] = usePromise(() => model.getLayout(), []);
 Gets the HTMLElement this supernova is rendered into.
 
 ```js
-import { useElement } from '@nebula.js/supernova';
+import { useElement } from '@nebula.js/stardust';
 // ...
 const el = useElement();
 el.innerHTML = 'Hello!';
@@ -156,7 +232,7 @@ el.innerHTML = 'Hello!';
 Gets the size of the HTMLElement the supernova is rendered into.
 
 ```js
-import { useRect } from '@nebula.js/supernova';
+import { useRect } from '@nebula.js/stardust';
 // ...
 const rect = useRect();
 useEffect(() => {
@@ -166,12 +242,12 @@ useEffect(() => {
 
 ### function: useLayout()
 
-- `returns:` <[qae.GenericObjectLayout]>
+- `returns:` <`qae.GenericObjectLayout`>
 
 Gets the layout of the generic object associated with this supernova.
 
 ```js
-import { useLayout } from '@nebula.js/supernova';
+import { useLayout } from '@nebula.js/stardust';
 // ...
 const layout = useLayout();
 console.log(layout);
@@ -179,7 +255,7 @@ console.log(layout);
 
 ### function: useStaleLayout()
 
-- `returns:` <[qae.GenericObjectLayout]>
+- `returns:` <`qae.GenericObjectLayout`>
 
 Gets the layout of the generic object associated with this supernova.
 
@@ -190,7 +266,7 @@ The returned value from `useStaleLayout()` and `useLayout()` are identical when 
 is not in a modal state.
 
 ```js
-import { useStaleLayout } from '@nebula.js/supernova';
+import { useStaleLayout } from '@nebula.js/stardust';
 // ...
 const staleLayout = useStaleLayout();
 console.log(staleLayout);
@@ -198,12 +274,12 @@ console.log(staleLayout);
 
 ### function: useAppLayout()
 
-- `returns:` <[qae.NxAppLayout]> The app layout
+- `returns:` <`qae.NxAppLayout`> The app layout
 
 Gets the layout of the app associated with this supernova.
 
 ```js
-import { useAppLayout } from '@nebula.js/supernova';
+import { useAppLayout } from '@nebula.js/stardust';
 // ...
 const appLayout = useAppLayout();
 console.log(appLayout.qLocaleInfo);
@@ -211,12 +287,12 @@ console.log(appLayout.qLocaleInfo);
 
 ### function: useModel()
 
-- `returns:` <`enigma.GenericObject`|[undefined]>
+- `returns:` <`enigma.GenericObject`|`undefined`>
 
 Gets the generic object API of the generic object connected to this supernova.
 
 ```js
-import { useModel } from '@nebula.js/supernova';
+import { useModel } from '@nebula.js/stardust';
 // ...
 const model = useModel();
 useEffect(() => {
@@ -228,12 +304,12 @@ useEffect(() => {
 
 ### function: useApp()
 
-- `returns:` <`enigma.Doc`|[undefined]> The doc API.
+- `returns:` <`enigma.Doc`|`undefined`> The doc API.
 
 Gets the doc API.
 
 ```js
-import { useApp } from '@nebula.js/supernova';
+import { useApp } from '@nebula.js/stardust';
 // ...
 const app = useApp();
 useEffect(() => {
@@ -245,12 +321,12 @@ useEffect(() => {
 
 ### function: useGlobal()
 
-- `returns:` <`enigma.Global`|[undefined]> The global API.
+- `returns:` <`enigma.Global`|`undefined`> The global API.
 
 Gets the global API.
 
 ```js
-import { useGlobal } from '@nebula.js/supernova';
+import { useGlobal } from '@nebula.js/stardust';
 
 // ...
 const g = useGlobal();
@@ -268,9 +344,9 @@ useEffect(() => {
 Gets the object selections.
 
 ```js
-import { useSelections } from '@nebula.js/supernova';
-import { useElement } from '@nebula.js/supernova';
-import { useEffect } from '@nebula.js/supernova';
+import { useSelections } from '@nebula.js/stardust';
+import { useElement } from '@nebula.js/stardust';
+import { useEffect } from '@nebula.js/stardust';
 // ...
 const selections = useSelections();
 const element = useElement();
@@ -292,7 +368,7 @@ useEffect(() => {
 Gets the theme.
 
 ```js
-import { useTheme } from '@nebula.js/supernova';
+import { useTheme } from '@nebula.js/stardust';
 
 const theme = useTheme();
 console.log(theme.getContrastinColorTo('#ff0000'));
@@ -305,7 +381,7 @@ console.log(theme.getContrastinColorTo('#ff0000'));
 Gets the translator.
 
 ```js
-import { useTranslator } from '@nebula.js/supernova';
+import { useTranslator } from '@nebula.js/stardust';
 // ...
 const translator = useTranslator();
 console.log(translator.get('SomeString'));
@@ -320,7 +396,7 @@ console.log(translator.get('SomeString'));
 Registers a custom action.
 
 ```js
-import { useAction } from '@nebula.js/supernova';
+import { useAction } from '@nebula.js/stardust';
 // ...
 const [zoomed, setZoomed] = useState(false);
 const act = useAction(
@@ -346,8 +422,8 @@ The constraints are set on the nuclues configuration before the supernova is ren
 and should respected by you when implementing the supernova.
 
 ```js
-// configure nucleus to disallow active interactions when rendering
-nucleus(app, {
+// configure embed to disallow active interactions when rendering
+embed(app, {
   constraints: {
     active: true, // do not allow interactions
   },
@@ -355,7 +431,7 @@ nucleus(app, {
 ```
 
 ```js
-import { useConstraints } from '@nebula.js/supernova';
+import { useConstraints } from '@nebula.js/stardust';
 // ...
 const constraints = useConstraints();
 useEffect(() => {
@@ -384,8 +460,8 @@ are only temporary settings applied to the supernova when rendered.
 You have the responsibility to provide documentation of the options you support, if any.
 
 ```js
-// when rendering the supernova with nucleus, anything can be set in options
-nucleus(app).render({
+// when embedding the supernova, anything can be set in options
+embed(app).render({
   element,
   type: 'my-chart',
   options: {
@@ -396,8 +472,8 @@ nucleus(app).render({
 
 ```js
 // it is up to you use and implement the provided options
-import { useOptions } from '@nebula.js/supernova';
-import { useEffect } from '@nebula.js/supernova';
+import { useOptions } from '@nebula.js/stardust';
+import { useEffect } from '@nebula.js/stardust';
 // ...
 const options = useOptions();
 useEffect(() => {
@@ -416,9 +492,9 @@ useEffect(() => {
 Registers a callback that is called when a snapshot is taken.
 
 ```js
-import { onTakeSnapshot } from '@nebula.js/supernova';
-import { useState } from '@nebula.js/supernova';
-import { useLayout } from '@nebula.js/supernova';
+import { onTakeSnapshot } from '@nebula.js/stardust';
+import { useState } from '@nebula.js/stardust';
+import { useLayout } from '@nebula.js/stardust';
 
 const layout = useLayout();
 const [zoomed] = useState(layout.isZoomed || false);
@@ -429,15 +505,241 @@ onTakeSnapshot((copyOfLayout) => {
 });
 ```
 
-### interface: Supernova([env])
+### interface: Context
 
-- `env` <[Object]>
+- `constraints` <[Object]>
+  - `active` <[boolean]>
+  - `passive` <[boolean]>
+  - `select` <[boolean]>
+- `theme` <[string]> Defaults to `light`
+- `language` <[string]> Defaults to `en-US`
+
+### interface: Configuration
+
+- `context` <[Context]>
+- `types` <[Array]<[TypeInfo]>>
+- `themes` <[Array]<[ThemeInfo]>>
+- `anything` <[Object]>
+
+### undefined: Galaxy.translator
+
+### undefined: Galaxy.flags
+
+### undefined: Galaxy.anything
+
+### class: Embed
+
+#### embed.render(cfg)
+
+- `cfg` <[CreateConfig]|[GetConfig]> The render configuration.
+- `returns:` <[Promise]<[SupernovaController]>> A controller to the rendered visualization
+
+Renders a visualization into an HTMLElement.
+
+```js
+// render from existing object
+n.render({
+  element: el,
+  id: 'abcdef',
+});
+```
+
+```js
+// render on the fly
+n.render({
+  type: 'barchart',
+  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }],
+});
+```
+
+#### embed.context(ctx)
+
+- `ctx` <[Context]> The context to update.
+- `returns:` <[Promise]<`undefined`>>
+
+Updates the current context of this embed instance.
+Use this when you want to change some part of the current context, like theme.
+
+```js
+// change theme
+n.context({ theme: 'dark' });
+```
+
+```js
+// limit constraints
+n.context({ constraints: { active: true } });
+```
+
+#### embed.selections()
+
+- `returns:` <[Promise]<[AppSelections]>>
+
+Gets the app selections of this instance.
+
+```js
+const selections = await n.selections();
+selections.mount(element);
+```
+
+### interface: ThemeInfo
+
+- `id` <[string]> Theme identifier
+- `load` <[Function]> A function that should return a Promise that resolve to a raw JSON theme
+
+### class: SupernovaController
+
+A controller to further modify a supernova after it has been rendered.
+
+```js
+const ctl = await embed(app).render({
+  element,
+  type: 'barchart',
+});
+ctl.destroy();
+```
+
+#### supernovaController.destroy()
+
+Destroys the supernova and removes if from the the DOM.
+
+```js
+const ctl = ctl.destroy();
+```
+
+### interface: Flags
+
+- `isEnabled` <[Function]> Checks whether the specified flag is enabled.
+
+### interface: CreateConfig
+
+- extends: <[BaseConfig]>
+
+* `type` <[string]>
+* `version` <[string]>
+* `fields` <[Array]>
+* `properties` <`qae.GenericObjectProperties`>
+
+### interface: BaseConfig
+
+- `element` <`HTMLElement`>
+- `options` <[Object]>
+
+### interface: GetConfig
+
+- extends: <[BaseConfig]>
+
+* `id` <[string]>
+
+### type Field = <[string]|`qae.NxDimension`|`qae.NxMeasure`|[LibraryField]>
+
+### interface: LibraryField
+
+- `qLibraryId` <[string]>
+- `type` <`'dimension'`|`'measure'`>
+
+### class: AppSelections
+
+#### appSelections.mount(element)
+
+- `element` <`HTMLElement`>
+
+Mounts the app selection UI into the provided HTMLElement
+
+```js
+selections.mount(element);
+```
+
+#### appSelections.unmount()
+
+Unmounts the app selection UI from the DOM
+
+```js
+selections.unmount();
+```
+
+### class: ObjectSelections
+
+#### objectSelections.begin(paths)
+
+- `paths` <[Array]<[string]>>
+- `returns:` <[Promise]<`undefined`>>
+
+#### objectSelections.clear()
+
+- `returns:` <[Promise]<`undefined`>>
+
+#### objectSelections.confirm()
+
+- `returns:` <[Promise]<`undefined`>>
+
+#### objectSelections.cancel()
+
+- `returns:` <[Promise]<`undefined`>>
+
+#### objectSelections.select(s)
+
+- `s` <[Object]>
+  - `method` <[string]>
+  - `params` <[Array]<`any`>>
+- `returns:` <[Promise]<[boolean]>>
+
+#### objectSelections.canClear()
+
+- `returns:` <[boolean]>
+
+#### objectSelections.canConfirm()
+
+- `returns:` <[boolean]>
+
+#### objectSelections.canCancel()
+
+- `returns:` <[boolean]>
+
+#### objectSelections.isActive()
+
+- `returns:` <[boolean]>
+
+#### objectSelections.isModal()
+
+- `returns:` <[boolean]>
+
+#### objectSelections.goModal(paths)
+
+- `paths` <[Array]<[string]>>
+- `returns:` <[Promise]<`undefined`>>
+
+#### objectSelections.noModal([accept])
+
+- `accept` <[boolean]>
+- `returns:` <[Promise]<`undefined`>>
+
+#### objectSelections.abortModal()
+
+- `returns:` <[Promise]<`undefined`>>
+
+### interface: LoadType(type)
+
+- `type` <[Object]>
+  - `name` <[string]>
+  - `version` <[string]>
+- `returns:` <[Promise]<[Supernova]>>
+
+### interface: TypeInfo
+
+- `name` <[string]>
+- `version` <[string]>
+- `load` <[LoadType]>
+- `meta` <[Object]>
+
+### interface: Supernova(galaxy)
+
+- `galaxy` <`Galaxy`>
 - `returns:` <[SupernovaDefinition]>
 
 The entry point for defining a supernova.
 
 ```js
-import { useElement, useLayout } from '@nebula.js/supernova';
+import { useElement, useLayout } from '@nebula.js/stardust';
 
 export default function () {
   return {
@@ -490,15 +792,15 @@ export default function () {
 
 ### interface: QAEDefinition
 
-- `properties` <[qae.GenericObjectProperties]>
+- `properties` <`qae.GenericObjectProperties`>
 - `data` <[Object]>
   - `targets` <[Array]<[DataTarget]>>
 
 ### interface: DataTarget
 
 - `path` <[string]>
-- `dimensions` <[FieldTarget]<[qae.NxDimension]>>
-- `measures` <[FieldTarget]<[qae.NxMeasure]>>
+- `dimensions` <[FieldTarget]<`qae.NxDimension`>>
+- `measures` <[FieldTarget]<`qae.NxMeasure`>>
 
 ### interface: FieldTarget
 
@@ -506,66 +808,6 @@ export default function () {
 - `max` <[Function]>
 - `added` <[Function]>
 - `removed` <[Function]>
-
-### class: ObjectSelections
-
-#### objectSelections.begin(paths)
-
-- `paths` <[Array]<[string]>>
-- `returns:` <[Promise]<[undefined]>>
-
-#### objectSelections.clear()
-
-- `returns:` <[Promise]<[undefined]>>
-
-#### objectSelections.confirm()
-
-- `returns:` <[Promise]<[undefined]>>
-
-#### objectSelections.cancel()
-
-- `returns:` <[Promise]<[undefined]>>
-
-#### objectSelections.select(s)
-
-- `s` <[Object]>
-  - `method` <[string]>
-  - `params` <[Array]<`any`>>
-- `returns:` <[Promise]<[boolean]>>
-
-#### objectSelections.canClear()
-
-- `returns:` <[boolean]>
-
-#### objectSelections.canConfirm()
-
-- `returns:` <[boolean]>
-
-#### objectSelections.canCancel()
-
-- `returns:` <[boolean]>
-
-#### objectSelections.isActive()
-
-- `returns:` <[boolean]>
-
-#### objectSelections.isModal()
-
-- `returns:` <[boolean]>
-
-#### objectSelections.goModal(paths)
-
-- `paths` <[Array]<[string]>>
-- `returns:` <[Promise]<[undefined]>>
-
-#### objectSelections.noModal([accept])
-
-- `accept` <[boolean]>
-- `returns:` <[Promise]<[undefined]>>
-
-#### objectSelections.abortModal()
-
-- `returns:` <[Promise]<[undefined]>>
 
 ### class: Translator
 
@@ -661,13 +903,13 @@ theme.getStyle('', '', 'fontSize'));
 #### interface: ScalePalette
 
 - `key` <[string]>
-- `type` <`gradient`|`class`>
+- `type` <`'gradient'`|`'class'`>
 - `colors` <[Array]<[string]>>
 
 #### interface: DataPalette
 
 - `key` <[string]>
-- `type` <`pyramid`|`row`>
+- `type` <`'pyramid'`|`'row'`>
 - `colors` <[Array]|[Array]>
 
 #### interface: ColorPickerPalette
@@ -681,27 +923,42 @@ theme.getStyle('', '', 'fontSize'));
 - `nil` <[string]>
 - `others` <[string]>
 
+[enigma.doc]: undefined
 [s]: undefined
 [function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function
 [array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
 [any]: undefined
 [t]: undefined
 [htmlelement]: undefined
-[qae.genericobjectlayout]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#genericobjectlayout
-[qae.nxapplayout]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxapplayout
+[qae.genericobjectlayout]: undefined
+[qae.nxapplayout]: undefined
 [enigma.genericobject]: undefined
-[undefined]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/undefined
-[enigma.doc]: undefined
+[undefined]: undefined
 [enigma.global]: undefined
 [a]: undefined
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
-[number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type
-[qae.genericobjectproperties]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#genericobjectproperties
-[qae.nxdimension]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxdimension
-[qae.nxmeasure]: https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxmeasure
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
+[qae.genericobjectproperties]: undefined
+[qae.nxdimension]: undefined
+[qae.nxmeasure]: undefined
+[galaxy]: undefined
+[number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type
+[context]: #interface-context
+[configuration]: #interface-configuration
+[embed]: #class-embed
+[themeinfo]: #interface-themeinfo
+[supernovacontroller]: #class-supernovacontroller
+[createconfig]: #interface-createconfig
+[baseconfig]: #interface-baseconfig
+[getconfig]: #interface-getconfig
+[libraryfield]: #interface-libraryfield
+[appselections]: #class-appselections
+[objectselections]: #class-objectselections
+[loadtype]: #interface-loadtypetype
+[typeinfo]: #interface-typeinfo
+[supernova]: #interface-supernovagalaxy
 [supernovadefinition]: #interface-supernovadefinition
 [effectcallback]: #type-effectcallback-function
 [rect]: #interface-rect
@@ -709,7 +966,6 @@ theme.getStyle('', '', 'fontSize'));
 [qaedefinition]: #interface-qaedefinition
 [datatarget]: #interface-datatarget
 [fieldtarget]: #interface-fieldtarget
-[objectselections]: #class-objectselections
 [translator]: #class-translator
 [theme]: #class-theme
 [scalepalette]: #interface-scalepalette

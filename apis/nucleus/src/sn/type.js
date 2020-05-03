@@ -10,7 +10,7 @@ import { load } from './load';
  * @property {object=} meta
  */
 
-export default function create(info, corona, opts = {}) {
+export default function create(info, halo, opts = {}) {
   let sn;
   let stringified;
   const { meta } = opts;
@@ -24,8 +24,8 @@ export default function create(info, corona, opts = {}) {
       return true;
     },
     supernova: () =>
-      load(type.name, type.version, corona, opts.load).then((SNDefinition) => {
-        sn = sn || SNFactory(SNDefinition, corona.public.galaxy);
+      load(type.name, type.version, halo, opts.load).then((SNDefinition) => {
+        sn = sn || SNFactory(SNDefinition, halo.public.galaxy);
         stringified = JSON.stringify(sn.qae.properties.initial);
         return sn;
       }),

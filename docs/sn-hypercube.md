@@ -7,7 +7,7 @@ The `HyperCubeDef` is the fundamental structure which you configure before you a
 
 ## HyperCubeDef configuration
 
-Not all properties are equally important, but there are a few key ones that you need to keep in mind when configuring the `HyperCubeDef`.
+Not all properties are equally important, and there are a few key ones that you need to keep in mind when configuring the `HyperCubeDef`.
 
 ### qMode
 
@@ -123,7 +123,7 @@ Due to the limitation of the amount of data you can get in the initial layout, t
 When paging data in straight mode, you should begin by looking at the `qHyperCubeDef.qSize` property which contains information on the width and height of the full hypercube. You can from that calculate the number of pages you need to fetch:
 
 ```js
-import { useModel, useLayout, useEffect } from '@nebula.js/supernova';
+import { useModel, useLayout, useEffect } from '@nebula.js/stardust';
 
 const NUM_CELLS_PER_PAGE = 10000;
 const MAX_PAGES = 10;
@@ -132,18 +132,18 @@ component() {
   const model = useModel();
   const layout = useLayout();
 
-  const Y = layout.qHyperCube.qSize.qcy;
-  const X = layout.qHyperCube.qSize.qcx;
-
-  const HEIGHT_PER_PAGE = Math.ceil(NUM_CELLS_PER_PAGE / X);
-  const NUM_PAGES = Math.floor(MAX_PAGES, Math.ceil(Y / HEIGHT_PER_PAGE));
-
-  const pagesToFetch = [];
-  for (let i = 0; i < NUM_PAGES; i++) {
-    pagesToFetch.push({ qLeft: 0, qTop: i * HEIGHT_PER_PAGE, qHeight: HEIGHT_PER_PAGE, qWidth: X });
-  }
-
   useEffect(() => {
+    const Y = layout.qHyperCube.qSize.qcy;
+    const X = layout.qHyperCube.qSize.qcx;
+
+    const HEIGHT_PER_PAGE = Math.ceil(NUM_CELLS_PER_PAGE / X);
+    const NUM_PAGES = Math.floor(MAX_PAGES, Math.ceil(Y / HEIGHT_PER_PAGE));
+
+    const pagesToFetch = [];
+    for (let i = 0; i < NUM_PAGES; i++) {
+      pagesToFetch.push({ qLeft: 0, qTop: i * HEIGHT_PER_PAGE, qHeight: HEIGHT_PER_PAGE, qWidth: X });
+    }
+
     Promise.all(pagesToFetch.map((page) => model.getHyperCubeData('/qHyperCubeDef', [page]))).then((pages) => {
       console.log(pages);
     });

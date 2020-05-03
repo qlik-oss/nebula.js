@@ -7,7 +7,7 @@ An essential part of the Qlik experience is filtering data through selections. M
 
 ## Current app selections bar
 
-The current app selections bar shows you the currently active selections in the specified app. To render this bar you need an `HTMLElement` first:
+The current app selections bar shows you the currently active selections in the specified app. To render this bar you first need an `HTMLElement`:
 
 ```html
 <div class="curr-selections"></div>
@@ -16,7 +16,7 @@ The current app selections bar shows you the currently active selections in the 
 You can then `mount` the selections UI into that element:
 
 ```js
-const n = nucleus(enigmaApp);
+const n = embed(enigmaApp);
 
 (await n.selections()).mount(document.querySelector('.curr-selections'));
 ```
@@ -34,9 +34,9 @@ As you start applying selections in the various charts, the UI will update to re
 If you are connected to multiple apps, you can show the current selections in each one by mounting the bar into different elements:
 
 ```js
-(await nucleus(enigmaApp).selections()).mount(document.querySelector('.curr-selections'));
+(await embed(enigmaApp).selections()).mount(document.querySelector('.curr-selections'));
 
-(await nucleus(anotherApp, { context: { theme: 'dark' } }).selections()).mount(
+(await embed(anotherApp, { context: { theme: 'dark' } }).selections()).mount(
   document.querySelector('.another-curr-selections')
 );
 ```
