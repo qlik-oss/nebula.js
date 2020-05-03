@@ -17,14 +17,29 @@ const { terser } = require('rollup-plugin-terser');
 
 const initConfig = require('./init-config');
 
-const config = ({ mode = 'production', format = 'umd', cwd = process.cwd(), argv = { sourcemap: true } } = {}) => {
-  const pkg = require(path.resolve(cwd, 'package.json')); // eslint-disable-line
+const config = ({
+  mode = 'production',
+  format = 'umd',
+  cwd = process.cwd(),
+  argv = { sourcemap: true },
+  core,
+} = {}) => {
+  let dir = cwd;
+  let pkg = require(path.resolve(cwd, 'package.json')); // eslint-disable-line
+  const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
   const { name, version, license, author } = pkg;
   const { sourcemap } = argv;
+
+  if (corePkg) {
+    pkg = corePkg;
+    dir = core;
+  }
 
   if (format === 'esm' && !pkg.module) {
     return false;
   }
+
+  const fileTarget = format === 'esm' ? pkg.module : pkg.main;
 
   const auth = typeof author === 'object' ? `${author.name} <${author.email}>` : author || '';
   const moduleName = name.split('/').reverse()[0];
@@ -36,9 +51,8 @@ const config = ({ mode = 'production', format = 'umd', cwd = process.cwd(), argv
 */
 `;
 
-  // all peers should be externals for esm bundle
   const peers = pkg.peerDependencies || {};
-  const external = format === 'esm' ? Object.keys(peers) : [];
+  const external = Object.keys(peers);
 
   // stardust should always be external
   if (!peers['@nebula.js/stardust']) {
@@ -86,7 +100,7 @@ const config = ({ mode = 'production', format = 'umd', cwd = process.cwd(), argv
     output: {
       banner,
       format,
-      file: format === 'esm' && pkg.module ? pkg.module : pkg.main,
+      file: path.resolve(dir, fileTarget), // fileTargetformat === 'esm' && pkg.module ? pkg.module : pkg.main,
       name: moduleName,
       sourcemap,
       globals: {
@@ -106,11 +120,12 @@ const minified = async (argv) => {
   await bundle.write(c.output);
 };
 
-const esm = async (argv) => {
+const esm = async (argv, core) => {
   const c = config({
     mode: 'development',
     format: 'esm',
     argv,
+    core,
   });
   if (!c) {
     return Promise.resolve();
@@ -202,6 +217,11 @@ async function build(argv = {}) {
     return watch(buildConfig);
   }
   await minified(buildConfig);
+
+  if (argv.core) {
+    const core = path.resolve(process.cwd(), argv.core);
+    await esm(buildConfig, core);
+  }
   return esm(buildConfig);
 }
 
