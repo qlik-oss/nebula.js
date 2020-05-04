@@ -508,6 +508,7 @@ describe('hooks', () => {
         label: 'meh',
         active: true,
         disabled: true,
+        hidden: true,
       });
       c.fn = () => {
         useAction(stub, []);
@@ -520,6 +521,7 @@ describe('hooks', () => {
       expect(ref.active).to.eql(true);
       expect(ref.getSvgIconShape()).to.eql('ic');
       expect(ref.disabled).to.eql(true);
+      expect(ref.hidden).to.eql(true);
       expect(ref.label).to.eql('meh');
     });
 
