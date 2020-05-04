@@ -759,6 +759,7 @@ export function useAction(fn, deps) {
 
     ref.active = a.active || false;
     ref.disabled = a.disabled || false;
+    ref.hidden = a.hidden || false;
     ref.label = a.label || '';
     ref.getSvgIconShape = a.icon ? () => a.icon : undefined;
 
