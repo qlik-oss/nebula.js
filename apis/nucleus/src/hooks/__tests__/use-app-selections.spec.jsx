@@ -115,7 +115,6 @@ describe('useAppSelections', () => {
     // eslint-disable-next-line prefer-promise-reject-errors
     beginSelections.onFirstCall().returns(Promise.reject({ code: 6003 }));
     beginSelections.onSecondCall().returns(res);
-    sandbox.stub(appSel, 'abortModal').returns(Promise.resolve());
     await appModal.begin(object);
     await res;
 
@@ -149,16 +148,6 @@ describe('useAppSelections', () => {
     expect(ref.current.result[0].isModal(obj)).to.equal(true);
     expect(ref.current.result[0].isModal({})).to.equal(false);
     expect(ref.current.result[0].isModal()).to.equal(true);
-  });
-
-  it('should abort modal', async () => {
-    app.abortModal.reset();
-    await render();
-    await render();
-
-    modalObjectStore.get.returns(true);
-    await ref.current.result[0].abortModal();
-    expect(app.abortModal.callCount).to.equal(1);
   });
 
   it('can go forward', async () => {

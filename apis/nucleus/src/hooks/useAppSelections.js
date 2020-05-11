@@ -71,13 +71,6 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
       // TODO check model state
       return object ? modalObjectStore.get(key) === object : !!modalObjectStore.get(key);
     },
-    async abortModal(accept = true) {
-      if (!modalObjectStore.get(key)) {
-        return;
-      }
-      await app.abortModal(accept);
-      modalObjectStore.set(key, undefined);
-    },
     canGoForward() {
       return navState.canGoForward;
     },

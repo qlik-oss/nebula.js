@@ -142,10 +142,6 @@ function createObjectSelections({ appSelections, appModal, model }) {
      * @returns {Promise<undefined>}
      */
     noModal: (accept = false) => appModal.end(accept),
-    /**
-     * @returns {Promise<undefined>}
-     */
-    abortModal: () => appSelections.abortModal(true),
   };
 
   eventmixin(api);

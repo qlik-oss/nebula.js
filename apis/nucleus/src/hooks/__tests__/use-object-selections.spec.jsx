@@ -40,7 +40,6 @@ describe('useObjectSelections', () => {
     };
     appSel = {
       isModal: sandbox.stub(),
-      abortModal: sandbox.stub(),
     };
     layout = {};
     modalObjectStore = {
@@ -248,13 +247,5 @@ describe('useObjectSelections', () => {
 
     ref.current.result[0].noModal(true);
     expect(appModal.end).to.have.been.calledWithExactly(true);
-  });
-
-  it('abort modal state', async () => {
-    await render();
-    await render();
-
-    ref.current.result[0].abortModal();
-    expect(appSel.abortModal).to.have.been.calledWithExactly(true);
   });
 });
