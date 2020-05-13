@@ -11,9 +11,14 @@ const {
 class Index extends React.Component {
   render() {
     // const { config: siteConfig, language = '' } = this.props;
-    // const { baseUrl } = siteConfig;
+    const { baseUrl, docsUrl } = this.props.config;
 
-    const Block = props => (
+    const docUrl = (doc) => {
+      const docsPart = `${docsUrl ? `${docsUrl}/` : ''}`;
+      return `${baseUrl}${docsPart}${doc}`;
+    };
+
+    const Block = (props) => (
       <Container padding={['bottom', 'top']} id={props.id} background={props.background}>
         <GridBlock align="center" contents={props.children} layout={props.layout} />
       </Container>
@@ -25,7 +30,7 @@ class Index extends React.Component {
           <Block>
             {[
               {
-                title: 'Under construction',
+                title: `[Getting Started](${docUrl('introduction')})`,
               },
             ]}
           </Block>

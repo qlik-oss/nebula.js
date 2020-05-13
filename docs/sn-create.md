@@ -100,7 +100,7 @@ Add a dimension by clicking on **Add dimension** and selecting a value in the me
 In order to render the data you first need to access it through the `useLayout` hook:
 
 ```js
-import { useElement, useLayout } from `@nebula.js/stardust`;
+import { useElement, useLayout } from '@nebula.js/stardust';
 
 // ...
 component() {
