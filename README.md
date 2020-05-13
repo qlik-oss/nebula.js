@@ -9,37 +9,30 @@ NebulaJS is a collection of JavaScript libraries, charts and CLIs that helps dev
 
 The primary package is `@nebula.js/stardust` which contains APIs for integrating existing visualizations into mashups, as well as APIs for building custom visualizations.
 
-![nebula-overview](docs/assets/nebula-overview.png)
-
 ## Roadmap
 
 Since `stardust` is still in an early stage we are very much open to input and suggestions. If you think something is missing, an API is weird or have general opinions about anything, let us know.
 
 _Your opinions, requirements and involvement is key to the success of this project._ Click on the linked issues below ([or create you own](https://github.com/qlik-oss/nebula.js/issues/new/choose)), voice your opinion and vote if you would like to see it get implemented.
 
-This is a draft of the roadmap ahead:
-
 **Documentation**
 
-This is the primary task right now as there is currently barely any documentation at all 😬.
+Documentation is about 60% complete and is temporarily hosted on https://rising-star-62d64c.netlify.app/ .
 
-**Integration APIs**
+---
 
-- stardust
-  - theming ([#24](https://github.com/qlik-oss/nebula.js/issues/24))
-  - translations, localization ([#25](https://github.com/qlik-oss/nebula.js/issues/25))
-  - error handling
-  - export ([#26](https://github.com/qlik-oss/nebula.js/issues/26))
-  - consume theme ([#27](https://github.com/qlik-oss/nebula.js/issues/27))
-  - consume translator ([#28](https://github.com/qlik-oss/nebula.js/issues/28))
-  - actions api
-  - options api
-  - context menu ([#41](https://github.com/qlik-oss/nebula.js/issues/41))
-  - take and consume snapshot ([#29](https://github.com/qlik-oss/nebula.js/issues/29))
-  - versioning ([#39](https://github.com/qlik-oss/nebula.js/issues/39))
-  - hooks ([#30](https://github.com/qlik-oss/nebula.js/issues/30))
-  - deduce data targets from properties
-  - type definitions ([#40](https://github.com/qlik-oss/nebula.js/issues/40))
+This is a draft of the roadmap ahead:
+
+**Integration API (stardust)**
+
+- theming ([#24](https://github.com/qlik-oss/nebula.js/issues/24))
+- translations, localization ([#25](https://github.com/qlik-oss/nebula.js/issues/25))
+- error handling
+- export ([#26](https://github.com/qlik-oss/nebula.js/issues/26))
+- take and consume snapshot ([#29](https://github.com/qlik-oss/nebula.js/issues/29))
+- versioning ([#39](https://github.com/qlik-oss/nebula.js/issues/39))
+- deduce data targets from properties
+- type definitions ([#40](https://github.com/qlik-oss/nebula.js/issues/40))
 
 **CLI**
 
@@ -49,9 +42,7 @@ This is the primary task right now as there is currently barely any documentatio
   - support more loaders ([#32](https://github.com/qlik-oss/nebula.js/issues/32))
 - serve
   - assets ([#35](https://github.com/qlik-oss/nebula.js/issues/35))
-  - printing/export ([#33](https://github.com/qlik-oss/nebula.js/issues/33))
   - generate property panel from properties ([#34](https://github.com/qlik-oss/nebula.js/issues/34))
-  - ui overlay on failure ([#36](https://github.com/qlik-oss/nebula.js/issues/36))
   - developer hints
   - theme editor ([#37](https://github.com/qlik-oss/nebula.js/issues/37))
 - sense
