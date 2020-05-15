@@ -1,14 +1,14 @@
 {
   "name": "@nebula.js/nucleus",
   "private": true,
-  "version": "0.6.0",
+  "version": "0.6.1",
   "main": "src/index.js",
   "devDependencies": {
     "@material-ui/core": "4.9.9",
     "@material-ui/icons": "4.9.1",
     "@material-ui/styles": "4.9.6",
-    "@nebula.js/locale": "0.6.0",
-    "@nebula.js/supernova": "0.6.0",
+    "@nebula.js/locale": "0.6.1",
+    "@nebula.js/supernova": "0.6.1",
     "@nebula.js/theme": "0.6.0",
     "@nebula.js/ui": "0.6.0",
     "node-event-emitter": "0.0.1",
