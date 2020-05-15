@@ -1,6 +1,6 @@
 const { declare } = require('@babel/helper-plugin-utils');
 
-const vars = require('../apis/nucleus/src/locale/translations/all.json');
+const vars = require('../apis/locale/all.json');
 
 const ids = {};
 Object.keys(vars).forEach((key) => {

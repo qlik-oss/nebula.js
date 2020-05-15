@@ -25,6 +25,12 @@
   },
   "overrides": [
     {
+      "files": ["scripts/**/*", "**/apis/*/scripts/**/*"],
+      "rules": {
+        "no-restricted-syntax": 0
+      }
+    },
+    {
       "files": ["apis/**/*"],
       "rules": {
         "no-console": "error"

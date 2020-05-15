@@ -1,6 +1,6 @@
 import translator from './translator';
 
-export default function locale({ initial = 'en-US', fallback = 'en-US' } = {}) {
+const locale = ({ initial = 'en-US', fallback = 'en-US' } = {}) => {
   const t = translator({
     initial,
     fallback,
@@ -9,4 +9,6 @@ export default function locale({ initial = 'en-US', fallback = 'en-US' } = {}) {
   return {
     translator: t,
   };
-}
+};
+
+export default locale;
