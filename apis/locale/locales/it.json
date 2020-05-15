@@ -1,0 +1,107 @@
+{
+  "Cancel": {
+    "value": "Annulla",
+    "comment": "Verb, typically button label",
+    "version": "xepUYpi/K4YBC6rYI72I/g=="
+  },
+  "CurrentSelections.All": {
+    "value": "TUTTI",
+    "comment": "Text shown when all values are selected",
+    "version": "fk65TEKNv/WPAAGR12wvHw=="
+  },
+  "CurrentSelections.Of": {
+    "value": "{0} di {1}",
+    "comment": "Text shown between the selected fields count {0} and total fields count {1}",
+    "version": "l99iJM6C+Sm7L6wu1tXfOQ=="
+  },
+  "Listbox.Search": {
+    "value": "Cerca nella casella di elenco",
+    "comment": "Action text to search in listbox",
+    "version": "XqaXqel4sY8npmjHCNH24Q=="
+  },
+  "Navigate.Back": {
+    "value": "Torna indietro",
+    "comment": "Action text to step back, as opposite to forward, a form of navigation",
+    "version": "oDZ2xM9nmJfn3fZ8IUxOWg=="
+  },
+  "Navigate.Forward": {
+    "value": "Vai avanti",
+    "comment": "Action text to step forward, a form of navigation",
+    "version": "Zao/kpqn8++ptVhhOi2IYA=="
+  },
+  "OK": {
+    "value": "OK",
+    "comment": "Verb, typically button label",
+    "version": "2COCF0f9Drb54EThSLR/WQ=="
+  },
+  "Object.Update.Active": {
+    "value": "Caricamento dati in corso",
+    "comment": "Status text shown when a object's data is being updated",
+    "version": "QD21OoMPzESzOjMqrRs53Q=="
+  },
+  "Object.Update.Cancelled": {
+    "value": "Aggiornamento dati annullato",
+    "comment": "Status text shown when data update has been cancelled",
+    "version": "K+VsoedryUo6EV8gXBN7Cg=="
+  },
+  "Retry": {
+    "value": "Riprova",
+    "comment": "Verb, typically button label",
+    "version": "57j2gQLhNkHSlTwlN2lEqA=="
+  },
+  "Selection.Cancel": {
+    "value": "Annulla selezione",
+    "comment": "Action text to cancel selections",
+    "version": "Hq4r6KjpxCnGPFblBX5PKQ=="
+  },
+  "Selection.Clear": {
+    "value": "Cancella selezione",
+    "comment": "Action text to clear selections",
+    "version": "/YCR3eBUUx+fS6lPwzb9zg=="
+  },
+  "Selection.ClearAll": {
+    "value": "Cancella tutte le selezioni",
+    "comment": "Action text to clear all selections",
+    "version": "thrBuqZXiAY4996WyiWKYA=="
+  },
+  "Selection.ClearAllStates": {
+    "value": "Cancella tutti gli stati",
+    "comment": "Action text to clear all states",
+    "version": "PxBt5eIeMH4qia4in7ZxfQ=="
+  },
+  "Selection.Confirm": {
+    "value": "Conferma selezione",
+    "comment": "Action text to confirm selections",
+    "version": "I0pcv4Npgy3JHMP4sVqOsA=="
+  },
+  "Selection.Menu": {
+    "value": "Menu Selezione",
+    "comment": "Action text to toggle selection menu",
+    "version": "nDCUXVXdm/A1LY1AXhtHpQ=="
+  },
+  "Selection.SelectAll": {
+    "value": "Seleziona tutto",
+    "comment": "Action text to select all selections",
+    "version": "aQFJibEVO/2enO+G4h7rzA=="
+  },
+  "Selection.SelectAlternative": {
+    "value": "Seleziona alternativi",
+    "comment": "Action text to select alternative selections",
+    "version": "HDy2isqI6jmzm3Ut3S8lqQ=="
+  },
+  "Selection.SelectExcluded": {
+    "value": "Seleziona esclusi",
+    "comment": "Action text to select excluded selections",
+    "version": "+NXcu+39fboxO3y3zLnW6A=="
+  },
+  "Selection.SelectPossible": {
+    "value": "Seleziona possibili",
+    "comment": "Action text to select possible selections",
+    "version": "UYEx1K96g9h4HCK3GH/6kg=="
+  },
+  "Supernova.Incomplete": {
+    "value": "Visualizzazione incompleta",
+    "comment": "Status text shown when a visualization is incomplete",
+    "version": "SOyzXWKRgL1+6AqW/QkZOA=="
+  }
+}

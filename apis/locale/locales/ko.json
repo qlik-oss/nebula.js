@@ -1,0 +1,107 @@
+{
+  "Cancel": {
+    "value": "취소",
+    "comment": "Verb, typically button label",
+    "version": "xepUYpi/K4YBC6rYI72I/g=="
+  },
+  "CurrentSelections.All": {
+    "value": "모두",
+    "comment": "Text shown when all values are selected",
+    "version": "fk65TEKNv/WPAAGR12wvHw=="
+  },
+  "CurrentSelections.Of": {
+    "value": "{0} / {1}",
+    "comment": "Text shown between the selected fields count {0} and total fields count {1}",
+    "version": "l99iJM6C+Sm7L6wu1tXfOQ=="
+  },
+  "Listbox.Search": {
+    "value": "목록 상자에서 검색",
+    "comment": "Action text to search in listbox",
+    "version": "XqaXqel4sY8npmjHCNH24Q=="
+  },
+  "Navigate.Back": {
+    "value": "이전 단계",
+    "comment": "Action text to step back, as opposite to forward, a form of navigation",
+    "version": "oDZ2xM9nmJfn3fZ8IUxOWg=="
+  },
+  "Navigate.Forward": {
+    "value": "다음 단계",
+    "comment": "Action text to step forward, a form of navigation",
+    "version": "Zao/kpqn8++ptVhhOi2IYA=="
+  },
+  "OK": {
+    "value": "확인",
+    "comment": "Verb, typically button label",
+    "version": "2COCF0f9Drb54EThSLR/WQ=="
+  },
+  "Object.Update.Active": {
+    "value": "데이터 로드 중",
+    "comment": "Status text shown when a object's data is being updated",
+    "version": "QD21OoMPzESzOjMqrRs53Q=="
+  },
+  "Object.Update.Cancelled": {
+    "value": "데이터 업데이트가 취소되었습니다.",
+    "comment": "Status text shown when data update has been cancelled",
+    "version": "K+VsoedryUo6EV8gXBN7Cg=="
+  },
+  "Retry": {
+    "value": "다시 시도",
+    "comment": "Verb, typically button label",
+    "version": "57j2gQLhNkHSlTwlN2lEqA=="
+  },
+  "Selection.Cancel": {
+    "value": "선택 취소",
+    "comment": "Action text to cancel selections",
+    "version": "Hq4r6KjpxCnGPFblBX5PKQ=="
+  },
+  "Selection.Clear": {
+    "value": "선택 해제",
+    "comment": "Action text to clear selections",
+    "version": "/YCR3eBUUx+fS6lPwzb9zg=="
+  },
+  "Selection.ClearAll": {
+    "value": "모든 선택 해제",
+    "comment": "Action text to clear all selections",
+    "version": "thrBuqZXiAY4996WyiWKYA=="
+  },
+  "Selection.ClearAllStates": {
+    "value": "모든 상태 지우기",
+    "comment": "Action text to clear all states",
+    "version": "PxBt5eIeMH4qia4in7ZxfQ=="
+  },
+  "Selection.Confirm": {
+    "value": "선택 확인",
+    "comment": "Action text to confirm selections",
+    "version": "I0pcv4Npgy3JHMP4sVqOsA=="
+  },
+  "Selection.Menu": {
+    "value": "선택 메뉴",
+    "comment": "Action text to toggle selection menu",
+    "version": "nDCUXVXdm/A1LY1AXhtHpQ=="
+  },
+  "Selection.SelectAll": {
+    "value": "모두 선택",
+    "comment": "Action text to select all selections",
+    "version": "aQFJibEVO/2enO+G4h7rzA=="
+  },
+  "Selection.SelectAlternative": {
+    "value": "대안 선택",
+    "comment": "Action text to select alternative selections",
+    "version": "HDy2isqI6jmzm3Ut3S8lqQ=="
+  },
+  "Selection.SelectExcluded": {
+    "value": "제외 항목 선택",
+    "comment": "Action text to select excluded selections",
+    "version": "+NXcu+39fboxO3y3zLnW6A=="
+  },
+  "Selection.SelectPossible": {
+    "value": "사용 가능 항목 선택",
+    "comment": "Action text to select possible selections",
+    "version": "UYEx1K96g9h4HCK3GH/6kg=="
+  },
+  "Supernova.Incomplete": {
+    "value": "완료되지 않은 시각화",
+    "comment": "Status text shown when a visualization is incomplete",
+    "version": "SOyzXWKRgL1+6AqW/QkZOA=="
+  }
+}
