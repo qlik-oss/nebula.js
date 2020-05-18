@@ -16,12 +16,16 @@
   "main": "index.js",
   "module": "dist/locale.esm",
   "files": [
-    "dist"
+    "dist",
+    "all.json"
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
     "build:dev": "rollup --config ../../rollup.config.js",
     "build:watch": "rollup --config ../../rollup.config.js -w",
-    "prepublishOnly": "rm -rf dist && yarn run build"
+    "prepublishOnly": "node scripts/generate-all.js && rm -rf dist && yarn run build"
+  },
+  "devDependencies": {
+    "globby": "11.0.0"
   }
 }

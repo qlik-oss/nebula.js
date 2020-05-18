@@ -67,7 +67,7 @@ function sn({ flags }) {
         <div class="state">${count}</div>
         <div class="layout">${layout.showTitles}</div>
         <div class="applayout">${appLayout.qTitle}</div>
-        <div class="translator">${translator.get('Common.Cancel')}</div>
+        <div class="translator">${translator.get('Cancel')}</div>
         <div class="theme">${theme.getColorPickerColor({ index: 2 })}</div>
         <div class="promise">${v || 'pending'}</div>
         <div class="action">${acted}</div>

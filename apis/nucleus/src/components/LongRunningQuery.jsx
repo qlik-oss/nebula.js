@@ -37,7 +37,7 @@ export const Cancel = ({ cancel, translator, ...props }) => (
     </Grid>
     <Grid item {...props}>
       <Button variant="contained" onClick={cancel}>
-        {translator.get('Common.Cancel')}
+        {translator.get('Cancel')}
       </Button>
     </Grid>
   </>
@@ -55,7 +55,7 @@ export const Retry = ({ retry, translator, ...props }) => (
     </Grid>
     <Grid item>
       <Button variant="contained" onClick={retry} {...props}>
-        {translator.get('Common.Retry')}
+        {translator.get('Retry')}
       </Button>
     </Grid>
   </>
