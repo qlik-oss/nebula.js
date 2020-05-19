@@ -23,6 +23,10 @@
     "value": "Search in listbox",
     "comment": "Action text to search in listbox"
   },
+  "Menu.More": {
+    "value": "More",
+    "comment": "$"
+  },
   "Navigate.Back": {
     "value": "Step back",
     "comment": "Action text to step back, as opposite to forward, a form of navigation"
