@@ -186,7 +186,7 @@ function SelectEngine({ info, children }) {
   );
 }
 
-function AppList({ info, glob }) {
+function AppList({ info, glob, treatAsDesktop }) {
   const [items, setItems] = useState();
   const [waiting, setWaiting] = useState(false);
 
@@ -194,11 +194,13 @@ function AppList({ info, glob }) {
     const t = setTimeout(() => {
       setWaiting(true);
     }, 750);
+
     glob.getDocList().then((its) => {
       clearTimeout(t);
       setWaiting(false);
       setItems(its);
     });
+
     return () => {
       clearTimeout(t);
     };
@@ -219,7 +221,7 @@ function AppList({ info, glob }) {
               component="a"
               href={`/dev/${window.location.search.replace(
                 info.engineUrl,
-                `${info.engineUrl}/app/${encodeURIComponent(li.qDocId)}`
+                `${info.engineUrl}/app/${encodeURIComponent(treatAsDesktop ? li.qDocName : li.qDocId)}`
               )}`}
             >
               <ListItemText primary={li.qTitle} secondary={li.qDocId} />
@@ -254,6 +256,7 @@ const Err = ({ e: { message, hints } }) => {
 export default function Hub() {
   const [info, setInfo] = useState();
   const [glob, setGlobal] = useState();
+  const [treatAsDesktop, setTreatAsDesktop] = useState(false);
   const [err, setError] = useState();
   const steps = ['Connect to an engine', 'Select an app', 'Develop'];
   const [activeStep, setActiveStep] = useState(0);
@@ -286,6 +289,7 @@ export default function Hub() {
     connect()
       .then((g) => {
         setGlobal(g);
+
         setActiveStep(1);
         const conns = storage.get('connections') || [];
         const url = `${info.engineUrl}${
@@ -295,6 +299,11 @@ export default function Hub() {
           conns.push(url);
           storage.save('connections', conns);
         }
+        g.getConfiguration().then((c) => {
+          if (c.qFeatures && c.qFeatures.qIsDesktop) {
+            setTreatAsDesktop(true);
+          }
+        });
       })
       .catch((e) => {
         const oops = {
@@ -348,7 +357,7 @@ export default function Hub() {
         </ThemeProvider>
         <Box p={[2, 2]} m={2} bgcolor="background.paper" boxShadow={24} borderRadius="borderRadius">
           {glob ? (
-            <AppList info={info} glob={glob} />
+            <AppList info={info} glob={glob} treatAsDesktop={treatAsDesktop} />
           ) : (
             <SelectEngine info={info}>{err && <Err e={err} />}</SelectEngine>
           )}
