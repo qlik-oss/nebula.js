@@ -19,6 +19,11 @@
     "comment": "Action text to search in listbox",
     "version": "XqaXqel4sY8npmjHCNH24Q=="
   },
+  "Menu.More": {
+    "value": "Więcej",
+    "comment": "Menu option to display list of additional actions to choose from (ffd 20200520)",
+    "version": "jiJrffSuPx8BgEKJE7MlEQ=="
+  },
   "Navigate.Back": {
     "value": "Krok do tyłu",
     "comment": "Action text to step back, as opposite to forward, a form of navigation",
