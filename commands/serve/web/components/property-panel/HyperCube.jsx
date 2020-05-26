@@ -25,7 +25,7 @@ const getValue = (data, reference, defaultValue) => {
   return dataContainer;
 };
 
-export default function HyperCube({ model, target, properties }) {
+export default function HyperCube({ setProperties, target, properties }) {
   const handler = useMemo(
     () =>
       hcHandler({
@@ -38,22 +38,22 @@ export default function HyperCube({ model, target, properties }) {
 
   const onDimensionAdded = (a) => {
     handler.addDimension(typeof a === 'object' ? { qLibraryId: a.qId } : a);
-    model.setProperties(properties);
+    setProperties(properties);
   };
 
   const onDimensionRemoved = (idx) => {
     handler.removeDimension(idx);
-    model.setProperties(properties);
+    setProperties(properties);
   };
 
   const onMeasureAdded = (a) => {
     handler.addMeasure(typeof a === 'object' ? { qLibraryId: a.qId } : a);
-    model.setProperties(properties);
+    setProperties(properties);
   };
 
   const onMeasureRemoved = (idx) => {
     handler.removeMeasure(idx);
-    model.setProperties(properties);
+    setProperties(properties);
   };
 
   return (
