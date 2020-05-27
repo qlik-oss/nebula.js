@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
-import useProperties from '@nebula.js/nucleus/src/hooks/useProperties';
 
 import { Grid } from '@material-ui/core';
+
+import usePropertiesById from '@nebula.js/nucleus/src/hooks/usePropertiesById';
 
 import Cell from './Cell';
 import NebulaContext from '../contexts/NebulaContext';
@@ -9,9 +10,9 @@ import VizContext from '../contexts/VizContext';
 
 export default function Stage({ info, storage, uid }) {
   const nebbie = useContext(NebulaContext);
-  const [model, setModel] = useState(null);
-  const [properties] = useProperties(model);
+  const [hasViz, setHasViz] = useState(false);
   const { setActiveViz } = useContext(VizContext);
+  const [properties] = usePropertiesById(uid);
 
   useEffect(() => {
     if (!uid) {
@@ -28,8 +29,8 @@ export default function Stage({ info, storage, uid }) {
       },
     });
     res.then((v) => {
-      setModel(v.model);
       setActiveViz(v);
+      setHasViz(true);
     });
     return () => {
       res.then((v) => v.destroy());
@@ -41,22 +42,20 @@ export default function Stage({ info, storage, uid }) {
     storage.props(info.supernova.name, properties);
   }, [properties]);
 
-  if (!model) {
-    return null;
-  }
-
   return (
-    <Grid
-      item
-      container
-      justify="center"
-      style={{
-        height: '100%',
-      }}
-    >
-      <Grid item xs>
-        <Cell id={model.id} />
+    hasViz && (
+      <Grid
+        item
+        container
+        justify="center"
+        style={{
+          height: '100%',
+        }}
+      >
+        <Grid item xs>
+          <Cell id={uid} />
+        </Grid>
       </Grid>
-    </Grid>
+    )
   );
 }

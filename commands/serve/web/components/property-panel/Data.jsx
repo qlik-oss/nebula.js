@@ -4,7 +4,7 @@ import { List, ListItem, Typography } from '@material-ui/core';
 
 import HyperCube from './HyperCube';
 
-export default function Data({ model, sn, properties }) {
+export default function Data({ setProperties, sn, properties }) {
   if (!sn) {
     return null;
   }
@@ -19,7 +19,7 @@ export default function Data({ model, sn, properties }) {
     <List>
       {targets.map((t) => (
         <ListItem key={t.propertyPath} divider disableGutters>
-          <HyperCube target={t} properties={properties} model={model} />
+          <HyperCube target={t} properties={properties} setProperties={setProperties} />
         </ListItem>
       ))}
     </List>

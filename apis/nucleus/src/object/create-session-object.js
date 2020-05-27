@@ -1,6 +1,6 @@
 import populateData from './populator';
 import init from './initiate';
-import { subscribe } from '../stores/modelStore';
+import { subscribe, modelStore } from '../stores/modelStore';
 /**
  * @interface CreateConfig
  * @extends BaseConfig
@@ -43,10 +43,12 @@ export default async function createSessionObject({ type, version, fields, prope
     // console.error(e); // eslint-disable-line
   }
   const model = await halo.app.createSessionObject(mergedProps);
+  modelStore.set(model.id, model);
   const unsubscribe = subscribe(model);
   const onDestroy = async () => {
     await halo.app.destroySessionObject(model.id);
     unsubscribe();
+    modelStore.set(model.id, undefined);
   };
   return init(model, { options, element }, halo, error, onDestroy);
 }

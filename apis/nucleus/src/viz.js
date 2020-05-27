@@ -46,7 +46,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
    * ctl.destroy();
    */
   const api = /** @lends SupernovaController# */ {
-    model, // TODO - remove
+    id: model.id,
     mount(element) {
       if (mountedReference) {
         throw new Error('Already mounted');
@@ -69,7 +69,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      * ctl.destroy();
      */
     async destroy() {
-      // TODO - destroy session object (if created as such)
       await onDestroy();
       unmountCell();
       unmountCell = noopi;
@@ -84,7 +83,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     },
     options(opts) {
       setSnOptions(opts);
-      // return api;
     },
     exportImage() {
       // TODO - check if exportable
