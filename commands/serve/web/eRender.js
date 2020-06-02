@@ -38,16 +38,29 @@ async function renderWithEngine() {
   const app = await openApp(info.enigma.appId);
   const nebbie = await nuke({ app, ...info, theme: params.theme, language: params.language });
   const element = document.querySelector('#chart-container');
-  const cfg = params.object
-    ? {
-        id: params.object,
-        element,
-      }
-    : {
-        type: info.supernova.name,
-        fields: params.cols || [],
-        element,
-      };
+  let cfg;
+  if (params['render-config']) {
+    const rc = await (await fetch(`/render-config/${params['render-config']}`)).json();
+    cfg = {
+      ...rc,
+      // eslint-disable-next-line no-nested-ternary
+      ...(params.object ? { id: params.object } : rc.id ? { id: rc.id } : {}),
+      type: rc.type ? rc.type : info.supernova.name,
+      fields: params.cols ? params.cols : rc.fields,
+      element,
+    };
+  } else if (params.object) {
+    cfg = {
+      id: params.object,
+      element,
+    };
+  } else {
+    cfg = {
+      type: info.supernova.name,
+      fields: params.cols || [],
+      element,
+    };
+  }
 
   const render = async () => {
     await nebbie.render(cfg);

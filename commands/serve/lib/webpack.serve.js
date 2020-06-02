@@ -41,6 +41,7 @@ module.exports = async ({
   });
 
   const themes = serveConfig.themes || [];
+  const renderConfigs = serveConfig.renderConfigs || [];
 
   if (dev) {
     const webpackConfig = require('./webpack.build.js');
@@ -98,6 +99,19 @@ module.exports = async ({
           res.sendStatus('404');
         } else {
           res.json(t.theme);
+        }
+      });
+
+      app.get('/render-configs', (_, res) => {
+        res.json(renderConfigs);
+      });
+
+      app.get('/render-config/:id', (req, res) => {
+        const renderConfig = renderConfigs.filter((r) => r.id === req.params.id)[0];
+        if (!renderConfig) {
+          res.sendStatus('404');
+        } else {
+          res.json(renderConfig.render);
         }
       });
 
