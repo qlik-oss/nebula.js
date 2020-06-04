@@ -1,8 +1,9 @@
+const buildLegacy = require('./lib/build-legacy');
 const build = require('./lib/build');
 
 module.exports = {
   command: 'sense',
-  desc: 'Build a supernova as a Qlik Sense extension',
+  desc: 'Build a nebula visualization as a Qlik Sense extension',
   builder(yargs) {
     yargs.option('ext', {
       type: 'string',
@@ -13,6 +14,12 @@ module.exports = {
       type: 'string',
       required: false,
       desc: 'Extension meta information',
+    });
+    yargs.option('output', {
+      type: 'string',
+      required: false,
+      default: '<name>-ext',
+      desc: 'Destination directory',
     });
     yargs.option('minify', {
       type: 'boolean',
@@ -26,8 +33,18 @@ module.exports = {
       default: false,
       desc: 'Generate sourcemaps',
     });
+    yargs.option('partial', {
+      type: 'boolean',
+      required: false,
+      default: false,
+      desc: 'Generate partial extension',
+    });
   },
   handler(argv) {
-    build(argv);
+    if (argv.partial) {
+      build(argv);
+    } else {
+      buildLegacy(argv);
+    }
   },
 };
