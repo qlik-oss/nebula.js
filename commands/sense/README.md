@@ -1,5 +1,7 @@
 # @nebula.js/cli-sense
 
+The `nebula sense` command builds a nebula visualization so that it can be used as an extension in Qlik Sense.
+
 ## Install
 
 ```sh
@@ -11,14 +13,16 @@ npm install @nebula.js/cli
 ```sh
 nebula sense
 
-Build a supernova as a Qlik Sense extension
+Build a nebula visualization as a Qlik Sense extension
 
 Options:
   --version    Show version number                                     [boolean]
   --ext        Extension definition                                     [string]
   --meta       Extension meta information                               [string]
+  --output     Destination directory            [string] [default: "<name>-ext"]
   --minify     Minify and uglify code                  [boolean] [default: true]
   --sourcemap  Generate sourcemaps                    [boolean] [default: false]
+  --partial    Generate partial extension             [boolean] [default: false]
   -h, --help   Show help                                               [boolean]
 ```
 
@@ -42,19 +46,7 @@ export default {
 nebula sense --ext def.js
 ```
 
-The provided file will be transpiled and placed in the folder `/dist-ext`. Two additional files will be created which are the entrypoints for the extension in Qlik Sense; If your supernova module is named `banana-chart`, the files `banana-chart.js` and `banana-chart.qext` will be created in the root of your project. If you have a `files` property in your `package.json` you should include these files in addition to the already existing ones:
-
-```json
-{
-  "name": "banana-chart",
-  "files": [
-    "// other files",
-    "dist-ext",
-    "banana-chart.js"
-    "banana-chart.qext"
-  ]
-}
-```
+The command generates all required files into the specified `--output` folder. You can the zip the folder and upload it as an extension on [Qlik Sense Enterprise for Windows](https://help.qlik.com/en-US/sense-developer/April2020/Subsystems/Extensions/Content/Sense_Extensions/Howtos/deploy-extensions.htm) or [Qlik Sense Enterprise on Kubernetes](https://help.qlik.com/en-US/sense-admin/April2020/Subsystems/DeployAdministerQSE/Content/Sense_DeployAdminister/QSEoK/Administer_QSEoK/mc-extensions.htm)
 
 ### Meta
 
@@ -71,4 +63,4 @@ You can add more meta about the extension by providing a `.json` formatted file 
 nebula sense --meta meta.json
 ```
 
-The rest of the required information will be populated automatically.
+The rest of the required information is populated automatically based on the content in `package.json`.
