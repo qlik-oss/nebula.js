@@ -56,7 +56,7 @@
     "body-parser": "1.19.0",
     "cross-env": "7.0.2",
     "enigma.js": "2.6.3",
-    "eslint": "6.8.0",
+    "eslint": "7.1.0",
     "eslint-config-airbnb": "18.1.0",
     "eslint-config-prettier": "6.10.1",
     "eslint-plugin-import": "2.20.2",
