@@ -34,7 +34,7 @@
     "@nebula.js/stardust": "0.6.1",
     "@nebula.js/theme": "0.6.0",
     "@rollup/plugin-commonjs": "11.0.2",
-    "@rollup/plugin-node-resolve": "7.1.1",
+    "@rollup/plugin-node-resolve": "8.0.0",
     "@rollup/plugin-replace": "^2.3.2",
     "fs-extra": "9.0.0",
     "node-event-emitter": "0.0.1",
