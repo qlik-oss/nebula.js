@@ -19,7 +19,7 @@ describe('load', () => {
       await load('pie', '1.0.0', halo, loader);
       expect(0).to.equal(1);
     } catch (e) {
-      expect(e.message).to.equal("Failed to load supernova: 'pie v1.0.0'");
+      expect(e.message).to.equal("Failed to load visualization: 'pie v1.0.0'");
     }
   });
 

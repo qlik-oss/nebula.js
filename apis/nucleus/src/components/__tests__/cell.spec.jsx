@@ -575,7 +575,7 @@ describe('<Cell />', () => {
       });
       return expect(cellRef.current.exportImage()).to.eventually.be.rejectedWith(
         Error,
-        'Nebula has not been configured with snapshot.capture callback'
+        'Stardust embed has not been configured with snapshot.capture callback'
       );
     });
 

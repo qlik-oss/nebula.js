@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "0.6.0-alpha.0",
+    "version": "0.6.1",
     "license": "MIT",
     "stability": "experimental"
   },
@@ -202,7 +202,7 @@
       ]
     },
     "useElement": {
-      "description": "Gets the HTMLElement this supernova is rendered into.",
+      "description": "Gets the HTMLElement this visualization is rendered into.",
       "kind": "function",
       "params": [],
       "returns": {
@@ -213,7 +213,7 @@
       ]
     },
     "useRect": {
-      "description": "Gets the size of the HTMLElement the supernova is rendered into.",
+      "description": "Gets the size of the HTMLElement the visualization is rendered into.",
       "kind": "function",
       "params": [],
       "returns": {
@@ -225,7 +225,7 @@
       ]
     },
     "useLayout": {
-      "description": "Gets the layout of the generic object associated with this supernova.",
+      "description": "Gets the layout of the generic object associated with this visualization.",
       "kind": "function",
       "params": [],
       "returns": {
@@ -236,7 +236,7 @@
       ]
     },
     "useStaleLayout": {
-      "description": "Gets the layout of the generic object associated with this supernova.\n\nUnlike the regular layout, a _stale_ layout is not changed when a generic object enters\nthe modal state. This is mostly notable in that `qSelectionInfo.qInSelections` in the layout is\nalways `false`.\nThe returned value from `useStaleLayout()` and `useLayout()` are identical when the object\nis not in a modal state.",
+      "description": "Gets the layout of the generic object associated with this visualization.\n\nUnlike the regular layout, a _stale_ layout is not changed when a generic object enters\nthe modal state. This is mostly notable in that `qSelectionInfo.qInSelections` in the layout is\nalways `false`.\nThe returned value from `useStaleLayout()` and `useLayout()` are identical when the object\nis not in a modal state.",
       "kind": "function",
       "params": [],
       "returns": {
@@ -247,7 +247,7 @@
       ]
     },
     "useAppLayout": {
-      "description": "Gets the layout of the app associated with this supernova.",
+      "description": "Gets the layout of the app associated with this visualization.",
       "kind": "function",
       "params": [],
       "returns": {
@@ -259,7 +259,7 @@
       ]
     },
     "useModel": {
-      "description": "Gets the generic object API of the generic object connected to this supernova.",
+      "description": "Gets the generic object API of the generic object connected to this visualization.",
       "kind": "function",
       "params": [],
       "returns": {
@@ -392,7 +392,7 @@
       ]
     },
     "useConstraints": {
-      "description": "Gets the desired constraints that should be applied when rendering the supernova.\n\nThe constraints are set on the nuclues configuration before the supernova is rendered\nand should respected by you when implementing the supernova.",
+      "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should respected by you when implementing the visualization.",
       "kind": "function",
       "params": [],
       "returns": {
@@ -404,14 +404,14 @@
       ]
     },
     "useOptions": {
-      "description": "Gets the options object provided when rendering the supernova.\n\nThis is an empty object by default but enables customization of the supernova through this object.\nOptions are different from setting properties on the generic object in that options\nare only temporary settings applied to the supernova when rendered.\n\nYou have the responsibility to provide documentation of the options you support, if any.",
+      "description": "Gets the options object provided when rendering the visualization.\n\nThis is an empty object by default but enables customization of the visualization through this object.\nOptions are different from setting properties on the generic object in that options\nare only temporary settings applied to the visualization when rendered.\n\nYou have the responsibility to provide documentation of the options you support, if any.",
       "kind": "function",
       "params": [],
       "returns": {
         "type": "object"
       },
       "examples": [
-        "// when embedding the supernova, anything can be set in options\nembed(app).render({\n  element,\n  type: 'my-chart',\n  options: {\n    showNavigation: true,\n  }\n});",
+        "// when embedding the visualization, anything can be set in options\nembed(app).render({\n  element,\n  type: 'my-chart',\n  options: {\n    showNavigation: true,\n  }\n});",
         "// it is up to you use and implement the provided options\nimport { useOptions } from '@nebula.js/stardust';\nimport { useEffect } from '@nebula.js/stardust';\n// ...\nconst options = useOptions();\nuseEffect(() => {\n  if (!options.showNavigation) {\n    // hide navigation\n  } else {\n    // show navigation\n  }\n}, [options.showNavigation]);"
       ]
     },
@@ -503,14 +503,19 @@
         }
       }
     },
-    "Galaxy.translator": {
-      "type": "#/definitions/Translator"
-    },
-    "Galaxy.flags": {
-      "type": "#/definitions/Flags"
-    },
-    "Galaxy.anything": {
-      "type": "object"
+    "Galaxy": {
+      "kind": "interface",
+      "entries": {
+        "translator": {
+          "type": "#/definitions/Translator"
+        },
+        "flags": {
+          "type": "#/definitions/Flags"
+        },
+        "anything": {
+          "type": "object"
+        }
+      }
     },
     "Embed": {
       "kind": "class",
@@ -534,17 +539,17 @@
             }
           ],
           "returns": {
-            "description": "A controller to the rendered visualization",
+            "description": "A controller to the rendered visualization.",
             "type": "Promise",
             "generics": [
               {
-                "type": "#/definitions/SupernovaController"
+                "type": "#/definitions/Viz"
               }
             ]
           },
           "examples": [
             "// render from existing object\nn.render({\n  element: el,\n  id: 'abcdef'\n});",
-            "// render on the fly\nn.render({\n  type: 'barchart',\n  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\n});"
+            "// render on the fly\nn.render({\n  element: el,\n  type: 'barchart',\n  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\n});"
           ]
         },
         "context": {
@@ -608,18 +613,22 @@
         }
       }
     },
-    "SupernovaController": {
-      "description": "A controller to further modify a supernova after it has been rendered.",
+    "Viz": {
+      "description": "A controller to further modify a visualization after it has been rendered.",
       "kind": "class",
       "entries": {
+        "id": {
+          "description": "The id of this visualization's generic object.",
+          "type": "string"
+        },
         "destroy": {
-          "description": "Destroys the supernova and removes if from the the DOM.",
+          "description": "Destroys the visualization and removes if from the the DOM.",
           "kind": "function",
           "params": [],
-          "examples": ["const ctl =\nctl.destroy();"]
+          "examples": ["const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"]
         }
       },
-      "examples": ["const ctl = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nctl.destroy();"]
+      "examples": ["const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"]
     },
     "Flags": {
       "kind": "interface",
@@ -638,104 +647,6 @@
             "description": "True if the specified flag is enabled, false otherwise.",
             "type": "boolean"
           }
-        }
-      }
-    },
-    "CreateConfig": {
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "fields": {
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "properties": {
-          "optional": true,
-          "type": "qae.GenericObjectProperties"
-        }
-      }
-    },
-    "BaseConfig": {
-      "kind": "interface",
-      "entries": {
-        "element": {
-          "type": "HTMLElement"
-        },
-        "options": {
-          "optional": true,
-          "type": "object"
-        }
-      }
-    },
-    "GetConfig": {
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "id": {
-          "type": "string"
-        }
-      }
-    },
-    "Field": {
-      "kind": "alias",
-      "items": {
-        "kind": "union",
-        "items": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "qae.NxDimension"
-          },
-          {
-            "type": "qae.NxMeasure"
-          },
-          {
-            "type": "#/definitions/LibraryField"
-          }
-        ]
-      }
-    },
-    "LibraryField": {
-      "kind": "interface",
-      "entries": {
-        "qLibraryId": {
-          "type": "string"
-        },
-        "type": {
-          "kind": "union",
-          "items": [
-            {
-              "kind": "literal",
-              "value": "'dimension'"
-            },
-            {
-              "kind": "literal",
-              "value": "'measure'"
-            }
-          ]
         }
       }
     },
@@ -921,18 +832,104 @@
               }
             ]
           }
+        }
+      }
+    },
+    "CreateConfig": {
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "type": {
+          "type": "string"
         },
-        "abortModal": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "undefined"
+        "version": {
+          "type": "string"
+        },
+        "fields": {
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
               }
-            ]
+            }
+          ]
+        },
+        "properties": {
+          "optional": true,
+          "type": "qae.GenericObjectProperties"
+        }
+      }
+    },
+    "BaseConfig": {
+      "kind": "interface",
+      "entries": {
+        "element": {
+          "type": "HTMLElement"
+        },
+        "options": {
+          "optional": true,
+          "type": "object"
+        }
+      }
+    },
+    "GetConfig": {
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "Field": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "qae.NxDimension"
+          },
+          {
+            "type": "qae.NxMeasure"
+          },
+          {
+            "type": "#/definitions/LibraryField"
           }
+        ]
+      }
+    },
+    "LibraryField": {
+      "kind": "interface",
+      "entries": {
+        "qLibraryId": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'dimension'"
+            },
+            {
+              "kind": "literal",
+              "value": "'measure'"
+            }
+          ]
         }
       }
     },
@@ -956,7 +953,7 @@
         "type": "Promise",
         "generics": [
           {
-            "type": "#/definitions/Supernova"
+            "type": "#/definitions/Visualization"
           }
         ]
       },
@@ -980,24 +977,24 @@
         }
       }
     },
-    "Supernova": {
-      "description": "The entry point for defining a supernova.",
+    "Visualization": {
+      "description": "The entry point for defining a visualization.",
       "kind": "interface",
       "params": [
         {
           "name": "galaxy",
-          "type": "Galaxy"
+          "type": "#/definitions/Galaxy"
         }
       ],
       "returns": {
-        "type": "#/definitions/SupernovaDefinition"
+        "type": "#/definitions/VisualizationDefinition"
       },
       "entries": {},
       "examples": [
         "import { useElement, useLayout } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      properties: {\n        dude: 'Heisenberg',\n      }\n    },\n    component() {\n      const el = useElement();\n      const layout = useLayout();\n      el.innerHTML = `What's my name? ${layout.dude}!!!`;\n    }\n  };\n}"
       ]
     },
-    "SupernovaDefinition": {
+    "VisualizationDefinition": {
       "kind": "interface",
       "entries": {
         "qae": {
@@ -1276,7 +1273,7 @@
             }
           ],
           "examples": [
-            "translator.add({\n  id: 'company.hello_user',\n  locale: {\n    'en-US': 'Hello {0}',\n    'sv-SE': 'Hej {0}\n  }\n});\ntranslator.get('company.hello_user', ['John']); // Hello John"
+            "translator.add({\n  id: 'company.hello_user',\n  locale: {\n    'en-US': 'Hello {0}',\n    'sv-SE': 'Hej {0}'\n  }\n});\ntranslator.get('company.hello_user', ['John']); // Hello John"
           ]
         },
         "get": {

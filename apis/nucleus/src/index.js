@@ -81,6 +81,10 @@ const DEFAULT_CONFIG = /** @lends Configuration */ {
   snapshot: DEFAULT_SNAPSHOT_CONFIG,
 };
 
+/**
+ * @interface Galaxy
+ */
+
 const mergeObj = (o1 = {}, o2 = {}) => {
   return {
     ...o1,
@@ -192,7 +196,7 @@ function nuked(configuration = {}) {
       /**
        * Renders a visualization into an HTMLElement.
        * @param {CreateConfig | GetConfig} cfg - The render configuration.
-       * @returns {Promise<SupernovaController>} A controller to the rendered visualization
+       * @returns {Promise<Viz>} A controller to the rendered visualization.
        * @example
        * // render from existing object
        * n.render({
@@ -202,6 +206,7 @@ function nuked(configuration = {}) {
        * @example
        * // render on the fly
        * n.render({
+       *   element: el,
        *   type: 'barchart',
        *   fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]
        * });

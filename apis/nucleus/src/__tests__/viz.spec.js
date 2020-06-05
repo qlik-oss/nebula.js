@@ -59,8 +59,8 @@ describe('viz', () => {
       expect(api.mount).to.be.a('function');
     });
 
-    it('should have a setTemporaryProperties method', () => {
-      expect(api.setTemporaryProperties).to.be.a('function');
+    it('should have an applyProperties method', () => {
+      expect(api.applyProperties).to.be.a('function');
     });
 
     it('should have an exportImage method', () => {
@@ -83,7 +83,7 @@ describe('viz', () => {
 
   describe('setTemporaryProperties', () => {
     it('should apply patches when there are some', async () => {
-      await api.setTemporaryProperties('new');
+      await api.applyProperties('new');
       expect(model.getEffectiveProperties.callCount).to.equal(1);
       expect(getPatches).to.have.been.calledWithExactly('/', 'new', 'old');
       expect(model.applyPatches).to.have.been.calledWithExactly(['patch'], true);
@@ -91,7 +91,7 @@ describe('viz', () => {
 
     it('should not apply patches when there is no diff', async () => {
       model.getEffectiveProperties.resetHistory();
-      await api.setTemporaryProperties('new');
+      await api.applyProperties('new');
       getPatches.returns([]);
       model.applyPatches.resetHistory();
       expect(model.getEffectiveProperties.callCount).to.equal(1);

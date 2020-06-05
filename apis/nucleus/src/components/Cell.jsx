@@ -296,7 +296,7 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
       },
       async exportImage() {
         if (typeof halo.config.snapshot.capture !== 'function') {
-          throw new Error('Nebula has not been configured with snapshot.capture callback');
+          throw new Error('Stardust embed has not been configured with snapshot.capture callback');
         }
         const snapshot = await this.takeSnapshot(); // eslint-disable-line
         return halo.config.snapshot.capture(snapshot);
