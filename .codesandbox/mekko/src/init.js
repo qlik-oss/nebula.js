@@ -25,7 +25,6 @@ export default function init({ appId, fields, objectId }) {
       load: () => Promise.resolve(mekko),
     });
     nebbie.selections().then((s) => s.mount(document.getElementById('selections')));
-    nebbie.types.clearFromCache('dummy');
 
     nebbie.render(
       objectid

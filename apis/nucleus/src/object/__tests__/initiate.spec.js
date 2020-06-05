@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle:0 */
 describe('initiate api', () => {
   const optional = 'optional';
   const halo = 'halo';
@@ -14,9 +15,10 @@ describe('initiate api', () => {
 
   beforeEach(() => {
     api = {
-      mount: sandbox.stub(),
-      options: sandbox.stub(),
-      context: sandbox.stub(),
+      __DO_NOT_USE__: {
+        mount: sandbox.stub(),
+        options: sandbox.stub(),
+      },
     };
     viz.returns(api);
   });
@@ -35,11 +37,11 @@ describe('initiate api', () => {
 
   it('should call mount when element is provided ', async () => {
     await create(model, { element: 'el' }, halo);
-    expect(api.mount).to.have.been.calledWithExactly('el');
+    expect(api.__DO_NOT_USE__.mount).to.have.been.calledWithExactly('el');
   });
 
   it('should call options when provided ', async () => {
     await create(model, { options: 'opts' }, halo);
-    expect(api.options).to.have.been.calledWithExactly('opts');
+    expect(api.__DO_NOT_USE__.options).to.have.been.calledWithExactly('opts');
   });
 });

@@ -14,7 +14,7 @@ export default async function createSessionObject({ type, version, fields, prope
   let mergedProps = {};
   let error;
   try {
-    const t = halo.public.nebbie.types.get({ name: type, version });
+    const t = halo.types.get({ name: type, version });
     mergedProps = await t.initialProperties(properties);
     const sn = await t.supernova();
     if (fields) {

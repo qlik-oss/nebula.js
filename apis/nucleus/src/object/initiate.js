@@ -1,6 +1,7 @@
+/* eslint no-underscore-dangle:0 */
 import vizualizationAPI from '../viz';
 
-export default async function (model, optional, halo, initialError, onDestroy = async () => {}) {
+export default async function init(model, optional, halo, initialError, onDestroy = async () => {}) {
   const api = vizualizationAPI({
     model,
     halo,
@@ -8,10 +9,10 @@ export default async function (model, optional, halo, initialError, onDestroy = 
     onDestroy,
   });
   if (optional.options) {
-    api.options(optional.options);
+    api.__DO_NOT_USE__.options(optional.options);
   }
   if (optional.element) {
-    await api.mount(optional.element);
+    await api.__DO_NOT_USE__.mount(optional.element);
   }
 
   return api;

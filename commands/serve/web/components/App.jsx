@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle:0 */
 import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
 
 import { embed } from '@nebula.js/stardust';
@@ -98,7 +99,7 @@ export default function App({ app, info }) {
           }))
         : null,
     });
-    n.types.register(info.supernova);
+    n.__DO_NOT_USE__.types.register(info.supernova);
     setNebbie(n);
   }, [app]);
 
@@ -121,15 +122,15 @@ export default function App({ app, info }) {
 
     nebbie.selections().then((s) => s.mount(currentSelectionsRef.current));
     window.onHotChange(info.supernova.name, () => {
-      nebbie.types.clearFromCache(info.supernova.name);
-      nebbie.types.register(info.supernova);
+      nebbie.__DO_NOT_USE__.types.clearFromCache(info.supernova.name);
+      nebbie.__DO_NOT_USE__.types.register(info.supernova);
       if (uid.current) {
         app.destroySessionObject(uid.current).then(create);
       } else {
         create();
       }
 
-      nebbie.types
+      nebbie.__DO_NOT_USE__.types
         .get({
           name: info.supernova.name,
         })

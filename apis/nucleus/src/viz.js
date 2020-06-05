@@ -66,37 +66,39 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       unmountCell = noopi;
     },
     // ===== unexposed experimental API - use at own risk ======
-    mount(element) {
-      if (mountedReference) {
-        throw new Error('Already mounted');
-      }
-      mountedReference = element;
-      [unmountCell, cellRef] = glueCell({
-        halo,
-        element,
-        model,
-        initialSnOptions,
-        initialError,
-        onMount,
-      });
-      return mounted;
-    },
-    async applyProperties(props) {
-      const current = await model.getEffectiveProperties();
-      const patches = getPatches('/', props, current);
-      if (patches.length) {
-        return model.applyPatches(patches, true);
-      }
-      return undefined;
-    },
-    options(opts) {
-      setSnOptions(opts);
-    },
-    exportImage() {
-      return cellRef.current.exportImage();
-    },
-    takeSnapshot() {
-      return cellRef.current.takeSnapshot();
+    __DO_NOT_USE__: {
+      mount(element) {
+        if (mountedReference) {
+          throw new Error('Already mounted');
+        }
+        mountedReference = element;
+        [unmountCell, cellRef] = glueCell({
+          halo,
+          element,
+          model,
+          initialSnOptions,
+          initialError,
+          onMount,
+        });
+        return mounted;
+      },
+      async applyProperties(props) {
+        const current = await model.getEffectiveProperties();
+        const patches = getPatches('/', props, current);
+        if (patches.length) {
+          return model.applyPatches(patches, true);
+        }
+        return undefined;
+      },
+      options(opts) {
+        setSnOptions(opts);
+      },
+      exportImage() {
+        return cellRef.current.exportImage();
+      },
+      takeSnapshot() {
+        return cellRef.current.takeSnapshot();
+      },
     },
 
     // old QVisualization API

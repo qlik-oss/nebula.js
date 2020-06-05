@@ -112,7 +112,7 @@ function nuked(configuration = {}) {
   const locale = appLocaleFn(configuration.context.language);
 
   /**
-   * Initiates a new embed instance using the specified `app`.
+   * Initiates a new `Embed` instance using the specified enigma `app`.
    * @entry
    * @function embed
    * @param {enigma.Doc} app
@@ -165,6 +165,7 @@ function nuked(configuration = {}) {
       public: publicAPIs,
       context: currentContext,
       nebbie: null,
+      types: null,
     };
 
     const types = typesFn({ halo });
@@ -275,7 +276,7 @@ function nuked(configuration = {}) {
           // const appSelections = await root.getAppSelections(); // Don't expose this for now
           selectionsApi = /** @lends AppSelections# */ {
             /**
-             * Mounts the app selection UI into the provided HTMLElement
+             * Mounts the app selection UI into the provided HTMLElement.
              * @param {HTMLElement} element
              * @example
              * selections.mount(element);
@@ -294,7 +295,7 @@ function nuked(configuration = {}) {
               root.add(selectionsComponentReference);
             },
             /**
-             * Unmounts the app selection UI from the DOM
+             * Unmounts the app selection UI from the DOM.
              * @example
              * selections.unmount();
              */
@@ -308,10 +309,13 @@ function nuked(configuration = {}) {
         }
         return selectionsApi;
       },
-      types,
+      __DO_NOT_USE__: {
+        types,
+      },
     };
 
     halo.public.nebbie = api;
+    halo.types = types;
 
     return api;
   }
@@ -322,7 +326,7 @@ function nuked(configuration = {}) {
    * The configuration is merged with all previous scopes.
    * @memberof embed
    * @param {Configuration} configuration - The configuration object
-   * @returns {Embed}
+   * @returns {embed}
    * @example
    * import { embed } from '@nebula.js/stardust';
    * // create a 'master' config which registers all types

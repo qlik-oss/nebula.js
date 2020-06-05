@@ -72,23 +72,23 @@ describe('<Cell />', () => {
         })
       ),
     };
-    const defaultCorona = {
+    const defaultHalo = {
       app: {
         id: 'app-id',
         getAppLayout: () => Promise.resolve(appLayout),
       },
       public: {
-        nebbie: {
-          types: {
-            getSupportedVersion: sandbox.stub(),
-          },
-        },
+        nebbie: {},
+      },
+      types: {
+        getSupportedVersion: sandbox.stub(),
       },
     };
     render = async ({
       model = {},
       app = {},
       nebbie = {},
+      types = defaultHalo.types,
       initialSnOptions = {},
       onMount = sandbox.spy(),
       theme = createTheme('dark'),
@@ -101,14 +101,15 @@ describe('<Cell />', () => {
         ...model,
       };
       const halo = {
-        ...defaultCorona,
+        ...defaultHalo,
         ...app,
         public: {
-          nebbie: nebbie.types ? nebbie : { ...defaultCorona.public.nebbie },
+          nebbie,
         },
         config: {
           ...config,
         },
+        types,
       };
 
       await act(async () => {
@@ -138,18 +139,16 @@ describe('<Cell />', () => {
   describe('sn', () => {
     it('should render loading', async () => {
       sandbox.useFakeTimers();
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: () => new Promise(() => {}),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: () => new Promise(() => {}),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
-      await render({ nebbie });
+      await render({ types });
       sandbox.clock.tick(800);
-      const types = renderer.root.findAllByType(Loading);
-      expect(types).to.have.length(1);
+      const ftypes = renderer.root.findAllByType(Loading);
+      expect(ftypes).to.have.length(1);
       expect(() => renderer.root.findByType(LongRunningQuery)).to.throw();
     });
 
@@ -165,18 +164,16 @@ describe('<Cell />', () => {
           },
         },
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
-      await render({ nebbie });
+      await render({ types });
       sandbox.clock.tick(2100);
-      const types = renderer.root.findAllByType(LongRunningQuery);
-      expect(types).to.have.length(0);
+      const ftypes = renderer.root.findAllByType(LongRunningQuery);
+      expect(ftypes).to.have.length(0);
     });
 
     it('should render long running', async () => {
@@ -191,18 +188,16 @@ describe('<Cell />', () => {
           },
         },
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
-      await render({ nebbie });
+      await render({ types });
       sandbox.clock.tick(2100);
-      const types = renderer.root.findAllByType(LongRunningQuery);
-      expect(types).to.have.length(1);
+      const ftypes = renderer.root.findAllByType(LongRunningQuery);
+      expect(ftypes).to.have.length(1);
       expect(() => renderer.root.findByType(Loading)).to.throw();
     });
 
@@ -216,18 +211,16 @@ describe('<Cell />', () => {
           },
         },
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
-      await render({ nebbie });
+      await render({ types });
 
-      const types = renderer.root.findAllByType(Supernova);
-      expect(types).to.have.length(1);
+      const ftypes = renderer.root.findAllByType(Supernova);
+      expect(ftypes).to.have.length(1);
     });
 
     it('should render requirements', async () => {
@@ -252,19 +245,17 @@ describe('<Cell />', () => {
           },
         },
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
-      await render({ nebbie });
+      await render({ types });
 
-      const types = renderer.root.findAllByType(CError);
-      expect(types).to.have.length(1);
-      expect(types[0].props.title).to.equal('Supernova.Incomplete');
+      const ftypes = renderer.root.findAllByType(CError);
+      expect(ftypes).to.have.length(1);
+      expect(ftypes[0].props.title).to.equal('Supernova.Incomplete');
     });
 
     it('should render hypercube error', async () => {
@@ -291,21 +282,19 @@ describe('<Cell />', () => {
           },
         },
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
-      await render({ nebbie });
+      await render({ types });
 
-      const types = renderer.root.findAllByType(CError);
-      expect(types).to.have.length(1);
-      expect(types[0].props.title).to.equal('Error');
-      expect(types[0].props.data[0].path).to.equal('/foo');
-      expect(types[0].props.data[0].error).to.deep.equal({ qErrorCode: 1337 });
+      const ftypes = renderer.root.findAllByType(CError);
+      expect(ftypes).to.have.length(1);
+      expect(ftypes[0].props.title).to.equal('Error');
+      expect(ftypes[0].props.data[0].path).to.equal('/foo');
+      expect(ftypes[0].props.data[0].error).to.deep.equal({ qErrorCode: 1337 });
     });
 
     it('should go modal (selections)', async () => {
@@ -351,15 +340,13 @@ describe('<Cell />', () => {
           items: [],
         },
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
-      await render({ model, nebbie });
+      await render({ model, types });
       expect(goModal.callCount).to.equal(1);
       expect(goModal).to.have.been.calledWithExactly('/qFoo');
     });
@@ -406,15 +393,13 @@ describe('<Cell />', () => {
           items: [],
         },
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
-      await render({ model, nebbie });
+      await render({ model, types });
       expect(noModal.callCount).to.equal(1);
     });
   });
@@ -432,15 +417,13 @@ describe('<Cell />', () => {
           },
         },
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
-      await render({ model, nebbie, cellRef });
+      await render({ model, types, cellRef });
 
       expect(cellRef.current.setSnOptions).to.be.a('function');
       expect(cellRef.current.exportImage).to.be.a('function');
@@ -459,16 +442,14 @@ describe('<Cell />', () => {
         },
         component: {},
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
       await render({
-        nebbie,
+        types,
         cellRef,
         rendererOptions: {
           createNodeMock: (/* e */) => {
@@ -515,16 +496,14 @@ describe('<Cell />', () => {
           }),
         },
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
       await render({
-        nebbie,
+        types,
         cellRef,
         rendererOptions: {
           createNodeMock: (/* e */) => {
@@ -560,16 +539,14 @@ describe('<Cell />', () => {
         },
         component: {},
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
       await render({
-        nebbie,
+        types,
         cellRef,
         config,
       });
@@ -596,16 +573,14 @@ describe('<Cell />', () => {
         },
         component: {},
       };
-      const nebbie = {
-        types: {
-          get: sandbox.stub().returns({
-            supernova: async () => ({ create: () => sn }),
-          }),
-          getSupportedVersion: sandbox.stub().returns('1.0.0'),
-        },
+      const types = {
+        get: sandbox.stub().returns({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
       await render({
-        nebbie,
+        types,
         cellRef,
         config,
       });

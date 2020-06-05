@@ -159,12 +159,7 @@ const loadType = async ({ dispatch, types, name, version, layout, model, app, se
 };
 
 const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount }, ref) => {
-  const {
-    app,
-    public: {
-      nebbie: { types },
-    },
-  } = halo;
+  const { app, types } = halo;
 
   const { translator, language } = useContext(InstanceContext);
   const theme = useTheme();
