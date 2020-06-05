@@ -9,7 +9,7 @@
   },
   "entries": {
     "embed": {
-      "description": "Initiates a new embed instance using the specified `app`.",
+      "description": "Initiates a new `Embed` instance using the specified enigma `app`.",
       "kind": "function",
       "params": [
         {
@@ -38,7 +38,7 @@
             }
           ],
           "returns": {
-            "type": "#/definitions/Embed"
+            "type": "#/entries/embed"
           },
           "examples": [
             "import { embed } from '@nebula.js/stardust';\n// create a 'master' config which registers all types\nconst m = embed.createConfiguration({\n  types: [{\n    name: 'mekko',\n    version: '1.0.0',\n    load: () => Promise.resolve(mekko)\n  }],\n});\n\n// create an alternate config with dark theme\n// and inherit the config from the previous\nconst d = m.createConfiguration({\n theme: 'dark'\n});\n\nm(app).render({ type: 'mekko' }); // will render the object with default theme\nd(app).render({ type: 'mekko' }); // will render the object with 'dark' theme\nembed(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
@@ -654,7 +654,7 @@
       "kind": "class",
       "entries": {
         "mount": {
-          "description": "Mounts the app selection UI into the provided HTMLElement",
+          "description": "Mounts the app selection UI into the provided HTMLElement.",
           "kind": "function",
           "params": [
             {
@@ -665,7 +665,7 @@
           "examples": ["selections.mount(element);"]
         },
         "unmount": {
-          "description": "Unmounts the app selection UI from the DOM",
+          "description": "Unmounts the app selection UI from the DOM.",
           "kind": "function",
           "params": [],
           "examples": ["selections.unmount();"]

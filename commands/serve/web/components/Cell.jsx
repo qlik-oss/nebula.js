@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle:0 */
 import React, { useContext, useEffect, useState, useCallback, useRef } from 'react';
 
 import { Grid, Toolbar, IconButton, CircularProgress } from '@material-ui/core';
@@ -79,7 +80,7 @@ export default function ({ id, expandable, minHeight }) {
       }
       if (doExport) {
         setExporting(true);
-        vizRef.current.viz.exportImage().then((res) => {
+        vizRef.current.viz.__DO_NOT_USE__.exportImage().then((res) => {
           if (res && res.url) {
             window.open(res.url);
           }
@@ -87,7 +88,7 @@ export default function ({ id, expandable, minHeight }) {
         });
       } else {
         const containerSize = vizRef.current.el.getBoundingClientRect();
-        vizRef.current.viz.takeSnapshot().then((snapshot) => {
+        vizRef.current.viz.__DO_NOT_USE__.takeSnapshot().then((snapshot) => {
           fetch('/njs/snapshot', {
             method: 'POST',
             headers: {

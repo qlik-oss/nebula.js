@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle:0 */
 import { embed } from '@nebula.js/stardust';
 import snapshooter from '@nebula.js/snapshooter/client';
 
@@ -70,8 +71,8 @@ async function renderWithEngine() {
   window.onHotChange(info.supernova.name, async () => {
     if (viz) {
       viz.close();
-      nebbie.types.clearFromCache(info.supernova.name);
-      nebbie.types.register(info.supernova);
+      nebbie.__DO_NOT_USE__.types.clearFromCache(info.supernova.name);
+      nebbie.__DO_NOT_USE__.types.register(info.supernova);
     }
     viz = await render();
   });

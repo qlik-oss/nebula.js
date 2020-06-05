@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle:0 */
 const doMock = ({ glue = () => {}, getPatches = () => {} } = {}) =>
   aw.mock(
     [
@@ -45,6 +46,7 @@ describe('viz', () => {
       on: sandbox.spy(),
       once: sandbox.spy(),
       emit: sandbox.spy(),
+      id: 'uid',
     };
     api = create({
       model,
@@ -54,36 +56,41 @@ describe('viz', () => {
   after(() => {
     sandbox.restore();
   });
-  describe('api', () => {
-    it('should have a mount method', () => {
-      expect(api.mount).to.be.a('function');
+  describe('public api', () => {
+    it('should have an id', () => {
+      expect(api.id).to.be.a('string');
     });
 
+    it('should have a destroy method', () => {
+      expect(api.destroy).to.be.a('function');
+    });
+  });
+  describe('internal api', () => {
     it('should have an applyProperties method', () => {
-      expect(api.applyProperties).to.be.a('function');
+      expect(api.__DO_NOT_USE__.applyProperties).to.be.a('function');
     });
 
     it('should have an exportImage method', () => {
-      expect(api.exportImage).to.be.a('function');
+      expect(api.__DO_NOT_USE__.exportImage).to.be.a('function');
     });
   });
 
   describe('mounting', () => {
     it('should mount', async () => {
-      mounted = api.mount('element');
+      mounted = api.__DO_NOT_USE__.mount('element');
       const { onMount } = glue.getCall(0).args[0];
       onMount();
       await mounted;
       expect(glue.callCount).to.equal(1);
     });
     it('should throw if already mounted', async () => {
-      expect(api.mount.bind('element2')).to.throw();
+      expect(api.__DO_NOT_USE__.mount.bind('element2')).to.throw();
     });
   });
 
-  describe('setTemporaryProperties', () => {
+  describe('applyProperties', () => {
     it('should apply patches when there are some', async () => {
-      await api.applyProperties('new');
+      await api.__DO_NOT_USE__.applyProperties('new');
       expect(model.getEffectiveProperties.callCount).to.equal(1);
       expect(getPatches).to.have.been.calledWithExactly('/', 'new', 'old');
       expect(model.applyPatches).to.have.been.calledWithExactly(['patch'], true);
@@ -91,7 +98,7 @@ describe('viz', () => {
 
     it('should not apply patches when there is no diff', async () => {
       model.getEffectiveProperties.resetHistory();
-      await api.applyProperties('new');
+      await api.__DO_NOT_USE__.applyProperties('new');
       getPatches.returns([]);
       model.applyPatches.resetHistory();
       expect(model.getEffectiveProperties.callCount).to.equal(1);
@@ -110,7 +117,7 @@ describe('viz', () => {
   describe('options', () => {
     it('should set sn options', async () => {
       const opts = {};
-      api.options(opts);
+      api.__DO_NOT_USE__.options(opts);
       await mounted;
       expect(cellRef.current.setSnOptions).to.have.been.calledWithExactly(opts);
     });
@@ -118,14 +125,14 @@ describe('viz', () => {
 
   describe('snapshot', () => {
     it('should take a snapshot', async () => {
-      api.takeSnapshot();
+      api.__DO_NOT_USE__.takeSnapshot();
       expect(cellRef.current.takeSnapshot).to.have.been.calledWithExactly();
     });
   });
 
   describe('export', () => {
     it('should export image', async () => {
-      api.exportImage();
+      api.__DO_NOT_USE__.exportImage();
       expect(cellRef.current.exportImage).to.have.been.calledWithExactly();
     });
   });

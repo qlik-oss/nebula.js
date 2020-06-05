@@ -30,11 +30,7 @@ describe('create-session-object', () => {
       app: {
         createSessionObject: sandbox.stub().returns(Promise.resolve(objectModel)),
       },
-      public: {
-        nebbie: {
-          types,
-        },
-      },
+      types,
     };
 
     init.returns('api');
