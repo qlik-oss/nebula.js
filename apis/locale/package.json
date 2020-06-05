@@ -26,6 +26,6 @@
     "prepublishOnly": "node scripts/generate-all.js && rm -rf dist && yarn run build"
   },
   "devDependencies": {
-    "globby": "11.0.0"
+    "globby": "11.0.1"
   }
 }

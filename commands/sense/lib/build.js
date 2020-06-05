@@ -2,7 +2,7 @@ const path = require('path');
 const fs = require('fs-extra');
 
 const rollup = require('rollup');
-const nodeResolve = require('@rollup/plugin-node-resolve');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const common = require('@rollup/plugin-commonjs');
 const babel = require('rollup-plugin-babel');
 const { terser } = require('rollup-plugin-terser');

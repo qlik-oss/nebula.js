@@ -25,7 +25,7 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "devDependencies": {
-    "d3-color": "1.4.0",
+    "d3-color": "1.4.1",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1"
   }

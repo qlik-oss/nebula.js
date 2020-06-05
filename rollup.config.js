@@ -2,7 +2,7 @@ const path = require('path');
 const babel = require('rollup-plugin-babel');
 const commonjs = require('@rollup/plugin-commonjs');
 const json = require('@rollup/plugin-json');
-const nodeResolve = require('@rollup/plugin-node-resolve');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const replace = require('@rollup/plugin-replace');
 const { terser } = require('rollup-plugin-terser');
 
@@ -70,28 +70,6 @@ const GLOBALS = {
   '@nebula.js/stardust': 'stardust',
 };
 
-const propTypes = [
-  'array',
-  'bool',
-  'func',
-  'number',
-  'object',
-  'string',
-  'symbol',
-
-  'any',
-  'arrayOf',
-  'element',
-  'instanceOf',
-  'node',
-  'objectOf',
-  'oneOf',
-  'oneOfType',
-  'shape',
-  'exact',
-  'elementType',
-];
-
 const watch = process.argv.indexOf('-w') > 2;
 
 const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
@@ -146,37 +124,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
         extensions: [debug ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),
       }),
       json(),
-      commonjs({
-        namedExports: {
-          react: [
-            'useState',
-            'useEffect',
-            'useLayoutEffect',
-            'useRef',
-            'useReducer',
-            'useImperativeHandle',
-            'forwardRef',
-            'useContext',
-            'useCallback',
-            'useMemo',
-            'memo',
-            'createElement',
-            'createContext',
-            'PureComponent',
-            'Component',
-            'isValidElement',
-            'Children',
-            'Fragment',
-            'cloneElement',
-            'useDebugValue',
-          ],
-          'react-dom': ['createPortal', 'findDOMNode'],
-          'react-is': ['ForwardRef', 'Memo', 'isFragment'],
-          'react-transition-group/node_modules/prop-types/index.js': propTypes,
-          'prop-types/index.js': propTypes,
-          '@material-ui/utils/node_modules/prop-types': propTypes,
-        },
-      }),
+      commonjs(),
       babel({
         babelrc: false,
         include: [
