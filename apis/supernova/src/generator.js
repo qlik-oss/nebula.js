@@ -3,10 +3,10 @@ import create from './creator';
 import qae from './qae';
 
 /**
- * The entry point for defining a supernova.
- * @interface Supernova
+ * The entry point for defining a visualization.
+ * @interface Visualization
  * @param {Galaxy} galaxy
- * @returns {SupernovaDefinition}
+ * @returns {VisualizationDefinition}
  * @example
  * import { useElement, useLayout } from '@nebula.js/stardust';
  *
@@ -27,14 +27,14 @@ import qae from './qae';
  */
 
 /**
- * @interface SupernovaDefinition
+ * @interface VisualizationDefinition
  * @property {QAEDefinition} qae
  * @property {function():void} component
  */
 
 /**
  * @interface snGenerator
- * @param {Supernova} Sn
+ * @param {Visualization} Sn
  * @param {Galaxy} galaxy
  * @returns {generator}
  * @private

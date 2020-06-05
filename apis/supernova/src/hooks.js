@@ -183,7 +183,7 @@ export function observeActions(component, callback) {
 
 function getHook(idx) {
   if (typeof currentComponent === 'undefined') {
-    throw new Error('Invalid nebula hook call. Hooks can only be called inside a supernova component.');
+    throw new Error('Invalid stardust hook call. Hooks can only be called inside a visualization component.');
   }
   const hooks = currentComponent.__hooks;
   if (idx >= hooks.list.length) {
@@ -444,7 +444,7 @@ export function usePromise(p, deps) {
 
 // ---- composed hooks ------
 /**
- * Gets the HTMLElement this supernova is rendered into.
+ * Gets the HTMLElement this visualization is rendered into.
  * @entry
  * @returns {HTMLElement}
  * @example
@@ -466,7 +466,7 @@ export function useElement() {
  */
 
 /**
- * Gets the size of the HTMLElement the supernova is rendered into.
+ * Gets the size of the HTMLElement the visualization is rendered into.
  * @entry
  * @returns {Rect} The size of the element.
  * @example
@@ -545,7 +545,7 @@ export function useRect() {
 }
 
 /**
- * Gets the layout of the generic object associated with this supernova.
+ * Gets the layout of the generic object associated with this visualization.
  * @entry
  * @returns {qae.GenericObjectLayout}
  * @example
@@ -559,7 +559,7 @@ export function useLayout() {
 }
 
 /**
- * Gets the layout of the generic object associated with this supernova.
+ * Gets the layout of the generic object associated with this visualization.
  *
  * Unlike the regular layout, a _stale_ layout is not changed when a generic object enters
  * the modal state. This is mostly notable in that `qSelectionInfo.qInSelections` in the layout is
@@ -584,7 +584,7 @@ export function useStaleLayout() {
 }
 
 /**
- * Gets the layout of the app associated with this supernova.
+ * Gets the layout of the app associated with this visualization.
  * @entry
  * @returns {qae.NxAppLayout} The app layout
  * @example
@@ -598,7 +598,7 @@ export function useAppLayout() {
 }
 
 /**
- * Gets the generic object API of the generic object connected to this supernova.
+ * Gets the generic object API of the generic object connected to this visualization.
  * @entry
  * @returns {enigma.GenericObject|undefined}
  * @example
@@ -779,10 +779,10 @@ export function useAction(fn, deps) {
  */
 
 /**
- * Gets the desired constraints that should be applied when rendering the supernova.
+ * Gets the desired constraints that should be applied when rendering the visualization.
  *
- * The constraints are set on the nuclues configuration before the supernova is rendered
- * and should respected by you when implementing the supernova.
+ * The constraints are set on the embed configuration before the visualization is rendered
+ * and should respected by you when implementing the visualization.
  * @entry
  * @returns {Constraints}
  * @example
@@ -815,18 +815,18 @@ export function useConstraints() {
 }
 
 /**
- * Gets the options object provided when rendering the supernova.
+ * Gets the options object provided when rendering the visualization.
  *
- * This is an empty object by default but enables customization of the supernova through this object.
+ * This is an empty object by default but enables customization of the visualization through this object.
  * Options are different from setting properties on the generic object in that options
- * are only temporary settings applied to the supernova when rendered.
+ * are only temporary settings applied to the visualization when rendered.
  *
  * You have the responsibility to provide documentation of the options you support, if any.
  * @entry
  * @returns {object}
  *
  * @example
- * // when embedding the supernova, anything can be set in options
+ * // when embedding the visualization, anything can be set in options
  * embed(app).render({
  *   element,
  *   type: 'my-chart',
@@ -855,10 +855,10 @@ export function useOptions() {
 }
 
 /**
- * TODO before making public - expose getImperativeHandle on SupernovaController
+ * TODO before making public - expose getImperativeHandle on Viz
  * Exposes an API to the external environment.
  *
- * This is an empty object by default, but enables you to provide a custom API of your supernova to
+ * This is an empty object by default, but enables you to provide a custom API of your visualization to
  * make it possible to control after it has been rendered.
  *
  * You can only use this hook once, calling it more than once is considered an error.
@@ -877,8 +877,8 @@ export function useOptions() {
  * }));
  *
  * @example
- * // when embedding the supernova, you can get a handle to this API
- * // and use it to control the supernova
+ * // when embedding the visualization, you can get a handle to this API
+ * // and use it to control the visualization
  * const ctl = await embed(app).render({
  *   element,
  *   type: 'my-chart',

@@ -5,7 +5,7 @@ const LOADED = {};
  * @param {object} type
  * @param {string} type.name
  * @param {string} type.version
- * @returns {Promise<Supernova>}
+ * @returns {Promise<Visualization>}
  */
 
 export async function load(name, version, { config }, loader) {
@@ -21,7 +21,7 @@ export async function load(name, version, { config }, loader) {
       .then((sn) => {
         if (!sn) {
           // TODO - improve validation
-          throw new Error(`load() of supernova '${sKey}' resolved to an invalid object`);
+          throw new Error(`load() of visualization '${sKey}' resolved to an invalid object`);
         }
         return sn;
       })
@@ -29,7 +29,7 @@ export async function load(name, version, { config }, loader) {
         if (__NEBULA_DEV__) {
           console.warn(e); // eslint-disable-line no-console
         }
-        throw new Error(`Failed to load supernova: '${sKey}'`);
+        throw new Error(`Failed to load visualization: '${sKey}'`);
       });
   }
 

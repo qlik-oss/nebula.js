@@ -35,18 +35,37 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
 
   /**
    * @class
-   * @alias SupernovaController
+   * @alias Viz
    * @hideconstructor
-   * @classdesc A controller to further modify a supernova after it has been rendered.
+   * @classdesc A controller to further modify a visualization after it has been rendered.
    * @example
-   * const ctl = await embed(app).render({
+   * const viz = await embed(app).render({
    *   element,
    *   type: 'barchart'
    * });
-   * ctl.destroy();
+   * viz.destroy();
    */
-  const api = /** @lends SupernovaController# */ {
+  const api = /** @lends Viz# */ {
+    /**
+     * The id of this visualization's generic object.
+     * @type {string}
+     */
     id: model.id,
+    /**
+     * Destroys the visualization and removes if from the the DOM.
+     * @example
+     * const viz = await embed(app).render({
+     *   element,
+     *   id: 'abc'
+     * });
+     * viz.destroy();
+     */
+    async destroy() {
+      await onDestroy();
+      unmountCell();
+      unmountCell = noopi;
+    },
+    // ===== unexposed experimental API - use at own risk ======
     mount(element) {
       if (mountedReference) {
         throw new Error('Already mounted');
@@ -62,18 +81,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       });
       return mounted;
     },
-    /**
-     * Destroys the supernova and removes if from the the DOM.
-     * @example
-     * const ctl =
-     * ctl.destroy();
-     */
-    async destroy() {
-      await onDestroy();
-      unmountCell();
-      unmountCell = noopi;
-    },
-    async setTemporaryProperties(props) {
+    async applyProperties(props) {
       const current = await model.getEffectiveProperties();
       const patches = getPatches('/', props, current);
       if (patches.length) {
@@ -85,17 +93,13 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       setSnOptions(opts);
     },
     exportImage() {
-      // TODO - check if exportable
       return cellRef.current.exportImage();
     },
-
-    // DEBUG MODE ?
-    // TODO - decide if this method is useful as part of public API
     takeSnapshot() {
       return cellRef.current.takeSnapshot();
     },
 
-    // QVisualization API
+    // old QVisualization API
     // close() {},
     // exportData() {},
     // exportImg() {},

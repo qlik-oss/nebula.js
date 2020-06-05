@@ -83,7 +83,7 @@ describe('hooks', () => {
   it('should throw when hook is used outside method context', () => {
     const fn = () => useState(0);
 
-    expect(fn).to.throw('Invalid nebula hook call. Hooks can only be called inside a supernova component.');
+    expect(fn).to.throw('Invalid stardust hook call. Hooks can only be called inside a visualization component.');
   });
 
   it('should throw when hooks are used outside top level of method context', async () => {
@@ -102,7 +102,7 @@ describe('hooks', () => {
     run(c);
     clock.tick(60);
     expect(err.args[0][0].message).to.equal(
-      'Invalid nebula hook call. Hooks can only be called inside a supernova component.'
+      'Invalid stardust hook call. Hooks can only be called inside a visualization component.'
     );
   });
 
