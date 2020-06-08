@@ -30,8 +30,8 @@ function snapshooter({ snapshotUrl, chrome = {} } = {}) {
     try {
       await page.waitFor(
         () =>
-          (document.querySelector('.nebulajs-sn') &&
-            +document.querySelector('.nebulajs-sn').getAttribute('data-render-count') > 0) ||
+          (document.querySelector('.njs-viz') &&
+            +document.querySelector('.njs-viz').getAttribute('data-render-count') > 0) ||
           document.querySelector('[data-njs-error]')
       );
     } catch (e) {

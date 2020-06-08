@@ -1,5 +1,5 @@
 describe('interaction', () => {
-  const content = '.nebulajs-sn[data-render-count="1"]';
+  const content = '.njs-viz[data-render-count="1"]';
   it('should select two bars', async () => {
     const app = encodeURIComponent(process.env.APP_ID || '/apps/ctrl00.qvf');
     await page.goto(`${process.env.BASE_URL}/render/?app=${app}&cols=Alpha,=5+avg(Expression1)`);

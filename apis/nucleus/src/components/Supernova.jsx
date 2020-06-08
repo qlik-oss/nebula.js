@@ -2,6 +2,16 @@ import React, { useState, useEffect, useCallback, useContext, useRef } from 'rea
 import InstanceContext from '../contexts/InstanceContext';
 import useRect from '../hooks/useRect';
 
+/**
+ * @interface
+ * @extends HTMLElement
+ * @property {string} attributes.data-render-count
+ */
+const VizElement = {
+  /** @type {'njs-viz'} */
+  className: 'njs-viz',
+};
+
 const Supernova = ({ sn, snOptions: options, layout, appLayout, halo }) => {
   const { component } = sn;
 
@@ -96,7 +106,7 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, halo }) => {
       ref={containerRef}
       data-render-count={renderCnt}
       style={{ position: 'relative', height: '100%' }}
-      className="nebulajs-sn"
+      className={VizElement.className}
     >
       <div ref={snRef} style={{ position: 'absolute', width: '100%', height: '100%' }} />
     </div>

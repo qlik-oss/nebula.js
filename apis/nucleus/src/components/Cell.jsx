@@ -16,6 +16,15 @@ import useLayout, { useAppLayout } from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
 
+/**
+ * @interface
+ * @extends HTMLElement
+ */
+const CellElement = {
+  /** @type {'njs-cell'} */
+  className: 'njs-cell',
+};
+
 const initialState = (err) => ({
   loading: false,
   loaded: false,
@@ -324,7 +333,7 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
       style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}
       elevation={0}
       square
-      className="nebulajs-cell"
+      className={CellElement.className}
       ref={cellRef}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
