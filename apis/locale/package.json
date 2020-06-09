@@ -1,29 +1,10 @@
 {
   "name": "@nebula.js/locale",
   "version": "0.6.1",
-  "description": "",
-  "license": "MIT",
-  "author": "QlikTech International AB",
-  "keywords": [],
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/qlik-oss/nebula.js.git",
-    "directory": "apis/locale"
-  },
-  "main": "index.js",
-  "module": "dist/locale.esm",
-  "files": [
-    "dist",
-    "all.json"
-  ],
+  "private": true,
+  "main": "src/index.js",
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
-    "build:dev": "rollup --config ../../rollup.config.js",
-    "build:watch": "rollup --config ../../rollup.config.js -w",
-    "prepublishOnly": "node scripts/generate-all.js && rm -rf dist && yarn run build"
+    "build": "node scripts/generate-all.js"
   },
   "devDependencies": {
     "globby": "11.0.1"

@@ -6,7 +6,7 @@ const express = require('express');
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
-const snapshooterFn = require('@nebula.js/snapshooter');
+const snapshooterFn = require('./snapshot-server');
 const snapshotRouter = require('./snapshot-router');
 
 module.exports = async ({

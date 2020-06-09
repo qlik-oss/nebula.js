@@ -42,14 +42,6 @@ async function build(argv) {
       path.resolve(path.dirname(require.resolve('@nebula.js/stardust')), 'dist'),
       path.resolve(qextLegacyTargetDir, 'nlib/@nebula.js/stardust/dist')
     );
-    await fs.copy(
-      path.resolve(path.dirname(require.resolve('@nebula.js/theme')), 'dist'),
-      path.resolve(qextLegacyTargetDir, 'nlib/@nebula.js/theme/dist')
-    );
-    await fs.copy(
-      path.resolve(path.dirname(require.resolve('@nebula.js/locale')), 'dist'),
-      path.resolve(qextLegacyTargetDir, 'nlib/@nebula.js/locale/dist')
-    );
   }
 
   async function createQextFiles() {
@@ -74,14 +66,7 @@ async function build(argv) {
   async function wrapIt() {
     const bundle = await rollup.rollup({
       input: path.resolve(__dirname, '../src/legacy/sn-ext.js'),
-      external: [
-        'translator',
-        'qlik',
-        './nlib/@nebula.js/stardust/dist/stardust',
-        './nlib/@nebula.js/theme/dist/theme',
-        './nlib/@nebula.js/locale/dist/locale',
-        relativeMainFile,
-      ],
+      external: ['translator', 'qlik', './nlib/@nebula.js/stardust/dist/stardust', relativeMainFile],
       plugins: [
         replace({
           __SN_DEF__: `${relativeMainFile}`,

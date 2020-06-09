@@ -12,14 +12,12 @@ import extDefinition from '__EXT_DEF__';
 
 // lib dependencies
 import { __DO_NOT_USE__ } from './nlib/@nebula.js/stardust/dist/stardust';
-import themeFn from './nlib/@nebula.js/theme/dist/theme';
-import localeFn from './nlib/@nebula.js/locale/dist/locale';
 
 // wrapper code
 import permissions from './permissions';
 import selectionsApi from './selections';
 
-const { generator: supernova } = __DO_NOT_USE__;
+const { generator: supernova, theme: themeFn, locale: localeFn } = __DO_NOT_USE__;
 
 // ------- locale ---------
 // use nebula locale API to ensure all viz get the same API regardless

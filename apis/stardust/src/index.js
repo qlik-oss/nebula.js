@@ -2,6 +2,8 @@
 import 'regenerator-runtime/runtime'; // Polyfill for using async/await
 import embed from '@nebula.js/nucleus';
 import { generator, hook } from '@nebula.js/supernova';
+import theme from '@nebula.js/theme';
+import locale from '@nebula.js/locale';
 
 // mashup api
 export { embed };
@@ -31,5 +33,5 @@ export {
 } from '@nebula.js/supernova';
 
 // component internals
-const __DO_NOT_USE__ = { generator, hook };
+const __DO_NOT_USE__ = { generator, hook, theme, locale };
 export { __DO_NOT_USE__ };
