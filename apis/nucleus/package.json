@@ -1,7 +1,7 @@
 {
   "name": "@nebula.js/nucleus",
-  "private": true,
   "version": "0.6.1",
+  "private": true,
   "main": "src/index.js",
   "devDependencies": {
     "@material-ui/core": "4.10.1",
