@@ -22,14 +22,14 @@ const d = differ();
 
 describe('snapper', () => {
   const object = '[data-type="bar"]';
-  const selector = `${object} .nebulajs-sn`;
+  const selector = `${object} .njs-viz`;
   it('should capture an image of a bar', async () => {
     await page.goto(`${process.env.BASE_URL}/snaps/snapper.html`);
 
     await page.waitForSelector(selector, { visible: true });
     await page.click(selector);
     await page.waitForSelector(`${object}[data-captured]`, { visible: true });
-    const imgSrc = await page.$eval(`${object}[data-captured]`, el => el.getAttribute('data-captured'));
+    const imgSrc = await page.$eval(`${object}[data-captured]`, (el) => el.getAttribute('data-captured'));
 
     const captured = await jimp.read(`${process.env.BASE_URL}${imgSrc}`);
     await d.looksLike('bar.png', captured);

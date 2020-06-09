@@ -3,6 +3,7 @@ module.exports = {
     glob: [
       '!*.spec.js',
       '../nucleus/src/**/*.js',
+      '../nucleus/src/**/*.jsx',
       '../supernova/src/**/*.js',
       '../locale/src/translator.js',
       '../theme/src/**/*.js',

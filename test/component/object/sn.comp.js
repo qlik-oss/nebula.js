@@ -1,12 +1,12 @@
 describe('sn', () => {
-  const snSelector = '.nebulajs-sn';
-  const errorSelector = '.nebulajs-cell [data-tid="error-title"]';
+  const snSelector = '.njs-viz';
+  const errorSelector = '.njs-cell [data-tid="error-title"]';
 
   it('should render with translation', async () => {
     await page.goto(`${process.env.BASE_URL}/render/?fixture=./object/sn-locale.fix.js&language=sv-SE`);
 
     await page.waitForSelector(snSelector, { visible: true });
-    const text = await page.$eval(snSelector, el => el.textContent);
+    const text = await page.$eval(snSelector, (el) => el.textContent);
     expect(text).to.equal('Hej motor!');
   });
 
@@ -14,7 +14,7 @@ describe('sn', () => {
     await page.goto(`${process.env.BASE_URL}/render/?fixture=./object/sn-incomplete.fix.js&theme=dark `);
 
     await page.waitForSelector(errorSelector, { visible: true });
-    const text = await page.$eval(errorSelector, el => el.textContent);
+    const text = await page.$eval(errorSelector, (el) => el.textContent);
     expect(text).to.equal('Incomplete visualization');
   });
 
@@ -22,7 +22,7 @@ describe('sn', () => {
     await page.goto(`${process.env.BASE_URL}/render/?fixture=./object/sn-error.fix.js`);
 
     await page.waitForSelector(errorSelector, { visible: true });
-    const text = await page.$eval(errorSelector, el => el.textContent);
+    const text = await page.$eval(errorSelector, (el) => el.textContent);
     expect(text).to.equal('hahaha');
   });
 });

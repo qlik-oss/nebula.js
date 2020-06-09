@@ -835,6 +835,50 @@
         }
       }
     },
+    "LoadType": {
+      "kind": "interface",
+      "params": [
+        {
+          "name": "type",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "generics": [
+          {
+            "type": "#/definitions/Visualization"
+          }
+        ]
+      },
+      "entries": {}
+    },
+    "TypeInfo": {
+      "kind": "interface",
+      "entries": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "load": {
+          "type": "#/definitions/LoadType"
+        },
+        "meta": {
+          "optional": true,
+          "type": "object"
+        }
+      }
+    },
     "CreateConfig": {
       "extends": [
         {
@@ -933,47 +977,39 @@
         }
       }
     },
-    "LoadType": {
-      "kind": "interface",
-      "params": [
+    "CellElement": {
+      "extends": [
         {
-          "name": "type",
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell'",
+          "kind": "literal"
+        }
+      }
+    },
+    "VizElement": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "attributes": {
           "kind": "object",
           "entries": {
-            "name": {
-              "type": "string"
-            },
-            "version": {
+            "data-render-count": {
               "type": "string"
             }
           }
-        }
-      ],
-      "returns": {
-        "type": "Promise",
-        "generics": [
-          {
-            "type": "#/definitions/Visualization"
-          }
-        ]
-      },
-      "entries": {}
-    },
-    "TypeInfo": {
-      "kind": "interface",
-      "entries": {
-        "name": {
-          "type": "string"
         },
-        "version": {
-          "type": "string"
-        },
-        "load": {
-          "type": "#/definitions/LoadType"
-        },
-        "meta": {
-          "optional": true,
-          "type": "object"
+        "className": {
+          "value": "'njs-viz'",
+          "kind": "literal"
         }
       }
     },
