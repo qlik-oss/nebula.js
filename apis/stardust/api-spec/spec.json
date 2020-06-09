@@ -3,9 +3,9 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "0.6.1",
+    "version": "1.0.0-alpha.0",
     "license": "MIT",
-    "stability": "experimental"
+    "stability": "stable"
   },
   "entries": {
     "embed": {
@@ -835,50 +835,6 @@
         }
       }
     },
-    "LoadType": {
-      "kind": "interface",
-      "params": [
-        {
-          "name": "type",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "type": "string"
-            },
-            "version": {
-              "type": "string"
-            }
-          }
-        }
-      ],
-      "returns": {
-        "type": "Promise",
-        "generics": [
-          {
-            "type": "#/definitions/Visualization"
-          }
-        ]
-      },
-      "entries": {}
-    },
-    "TypeInfo": {
-      "kind": "interface",
-      "entries": {
-        "name": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "load": {
-          "type": "#/definitions/LoadType"
-        },
-        "meta": {
-          "optional": true,
-          "type": "object"
-        }
-      }
-    },
     "CreateConfig": {
       "extends": [
         {
@@ -974,6 +930,50 @@
               "value": "'measure'"
             }
           ]
+        }
+      }
+    },
+    "LoadType": {
+      "kind": "interface",
+      "params": [
+        {
+          "name": "type",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "generics": [
+          {
+            "type": "#/definitions/Visualization"
+          }
+        ]
+      },
+      "entries": {}
+    },
+    "TypeInfo": {
+      "kind": "interface",
+      "entries": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "load": {
+          "type": "#/definitions/LoadType"
+        },
+        "meta": {
+          "optional": true,
+          "type": "object"
         }
       }
     },

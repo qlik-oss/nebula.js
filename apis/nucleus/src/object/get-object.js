@@ -3,7 +3,7 @@ import { modelStore, rpcRequestModelStore } from '../stores/modelStore';
 
 /**
  * @interface BaseConfig
- * @property {CellElement} element
+ * @property {HTMLElement} element
  * @property {object=} options
  */
 

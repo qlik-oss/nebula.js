@@ -9,7 +9,7 @@ module.exports = {
       '../theme/src/**/*.js',
     ],
     api: {
-      stability: 'experimental',
+      stability: 'stable',
     },
     output: {
       sort: {
