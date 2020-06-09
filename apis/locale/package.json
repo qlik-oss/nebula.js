@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/locale",
-  "version": "0.6.1",
+  "version": "1.0.0-alpha.0",
   "private": true,
   "main": "src/index.js",
   "scripts": {
