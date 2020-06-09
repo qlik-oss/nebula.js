@@ -33,6 +33,6 @@
     "eslint-plugin-mocha": "5.2.1"
   },
   "peerDependencies": {
-    "@nebula.js/stardust": "^0.x"
+    "@nebula.js/stardust": "^1.x"
   }
 }
