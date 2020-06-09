@@ -22,7 +22,6 @@ Options:
   --output     Destination directory            [string] [default: "<name>-ext"]
   --minify     Minify and uglify code                  [boolean] [default: true]
   --sourcemap  Generate sourcemaps                    [boolean] [default: false]
-  --partial    Generate partial extension             [boolean] [default: false]
   -h, --help   Show help                                               [boolean]
 ```
 

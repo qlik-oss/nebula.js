@@ -38,6 +38,7 @@ module.exports = {
       required: false,
       default: false,
       desc: 'Generate partial extension',
+      hidden: true,
     });
   },
   handler(argv) {

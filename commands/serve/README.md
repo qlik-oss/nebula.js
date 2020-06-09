@@ -1,11 +1,11 @@
 # @nebula.js/cli-serve
 
-Basic web development server for supernovas.
+Basic web development server for nebula.js visualizations.
 
 ## Install
 
 ```sh
-npm install @nebula.js/cli -g
+npm install @nebula.js/cli @nebula.js/cli-serve -g
 ```
 
 ## Usage
@@ -18,16 +18,24 @@ nebula serve -h
 Dev server
 
 Options:
-  --version          Show version number                               [boolean]
-  --entry            File entrypoint                                    [string]
-  --type             Generic object type                                [string]
+  --version           Show version number                              [boolean]
+  --config, -c        Path to JSON config file
+                                          [string] [default: "nebula.config.js"]
+  --entry             File entrypoint                                   [string]
+  --type              Generic object type                               [string]
   --build                                              [boolean] [default: true]
-  --host                                                                [string]
+  --host                                         [string] [default: "localhost"]
   --port                                                                [number]
-  --enigma.host                                                         [string]
-  --enigma.port                                                  [default: 9076]
-  --ACCEPT_EULA, -a                                   [boolean] [default: false]
-  -h, --help         Show help                                         [boolean]
+  --disableHostCheck                                  [boolean] [default: false]
+  --resources         Path to a folder that will be served as static files under
+                      /resources                                        [string]
+  --scripts           Array of scripts to inject                         [array]
+  --stylesheets       Array of stylesheets to inject                     [array]
+  --enigma.host                                  [string] [default: "localhost"]
+  --enigma.port                                         [number] [default: 9076]
+  --webIntegrationId                                                    [string]
+  --ACCEPT_EULA                                       [boolean] [default: false]
+  -h, --help          Show help                                        [boolean]
 ```
 
 #### Example
