@@ -1,6 +1,7 @@
 {
   "name": "@nebula.js/test-utils",
   "version": "0.6.0",
+  "private": true,
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
