@@ -4,7 +4,7 @@ const init = require('./lib/init-config');
 
 module.exports = {
   command: 'build',
-  desc: 'Build supernova',
+  desc: 'Build visualization',
   builder(yargs) {
     init(yargs).argv;
   },

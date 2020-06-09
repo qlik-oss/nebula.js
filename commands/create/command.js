@@ -16,7 +16,7 @@ const mashup = {
 
 module.exports = {
   command: 'create <name>',
-  desc: 'Create a supernova',
+  desc: 'Create a visualization',
   builder(yargs) {
     yargs.command(mashup);
 
