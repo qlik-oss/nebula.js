@@ -105,7 +105,6 @@ async function build(argv) {
     });
   }
 
-  await fs.remove(qextLegacyTargetDir);
   await moveSnBundle();
   await moveResources();
   await wrapIt();
