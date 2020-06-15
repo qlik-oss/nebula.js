@@ -15,7 +15,7 @@ To quickly get started, check out the tutorial on how to [embed visualization in
 
 You can also walk through the tutorial on how to [build your own extension](https://qlik.dev/tutorials/build-a-helloworld-extension-using-nebulajs).
 
-Explore the full [stardust API reference](https://qlik.dev/apis/javascript/nebulajsstardust).
+Explore the full [stardust API reference](https://qlik.dev/apis/javascript/nebulajs-stardust).
 
 ## Contributing
 
