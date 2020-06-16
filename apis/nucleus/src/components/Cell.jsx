@@ -114,26 +114,112 @@ const handleModal = ({ sn, layout, model }) => {
 
 const filterData = (d) => (d.qError ? d.qError.qErrorCode === 7005 : true);
 
-const validateTargets = (translator, layout, { targets }) => {
+const validateInfo = (min, info, getDescription, translatedError, translatedCalcCond) => {
+  return [...Array(min).keys()].map((i) => {
+    const exists = !!(info && info[i]);
+    const softError = exists && info[i].qError && info[i].qError.qErrorCode === 7005;
+    const error = exists && !softError && info[i].qError;
+    const delimiter = ':';
+    const calcCondMsg = softError && info[i].qCalcCondMsg;
+    const label = `${
+      // eslint-disable-next-line no-nested-ternary
+      error ? translatedError : softError ? calcCondMsg || translatedCalcCond : (exists && info[i].qFallbackTitle) || ''
+    }`;
+    const description = `${getDescription(i)}${label.length ? delimiter : ''}`;
+
+    return {
+      description,
+      label,
+      missing: (info && !exists && !error && i >= info.length) || softError,
+      error,
+    };
+  });
+};
+
+const validateTarget = (translator, layout, properties, def) => {
+  const minD = def.dimensions.min();
+  const minM = def.measures.min();
+  const hc = def.resolveLayout(layout);
+
+  const reqDimErrors = validateInfo(
+    minD,
+    hc.qDimensionInfo,
+    (i) => def.dimensions.description(properties, i),
+    translator.get('Visualization.Invalid.Dimension'),
+    translator.get('Visualization.Invalid.Dimension.CalculationCondition')
+  );
+  const reqMeasErrors = validateInfo(
+    minM,
+    hc.qMeasureInfo,
+    (i) => def.measures.description(properties, i),
+    translator.get('Visualization.Invalid.Measure'),
+    translator.get('Visualization.Invalid.Measure.CalculationCondition')
+  );
+  return {
+    reqDimErrors,
+    reqMeasErrors,
+  };
+};
+
+const validateTargets = async (translator, layout, { targets }, model) => {
   const layoutErrors = [];
-  const requirementsError = [];
-  targets.forEach((def) => {
+  // Use a flattened requirements structure to combine all targets
+  const allRequirements = {
+    hasErrors: false,
+    d: {
+      title: '',
+      descriptions: [],
+      min: 0,
+    },
+    m: {
+      title: '',
+      descriptions: [],
+      min: 0,
+    },
+  };
+  let loopCacheProperties = null;
+
+  for (let i = 0; i < targets.length; ++i) {
+    const def = targets[i];
     const minD = def.dimensions.min();
     const minM = def.measures.min();
     const hc = def.resolveLayout(layout);
-    const d = (hc.qDimensionInfo || []).filter(filterData);
-    const m = (hc.qMeasureInfo || []).filter(filterData);
+    const d = (hc.qDimensionInfo || []).filter(filterData); // Filter out optional calc conditions
+    const m = (hc.qMeasureInfo || []).filter(filterData); // Filter out optional calc conditions
     const path = def.layoutPath;
+
+    // layout error
     if (hc.qError) {
-      layoutErrors.push({ path, error: hc.qError });
+      layoutErrors.push({ title: path, descriptions: [{ message: hc.qError }] });
     }
     if (d.length < minD || m.length < minM) {
-      requirementsError.push({ path });
+      allRequirements.hasErrors = true;
+      allRequirements.d.min += minD;
+      allRequirements.m.min += minM;
+
+      // eslint-disable-next-line no-await-in-loop
+      const properties = loopCacheProperties || (await model.getProperties());
+      loopCacheProperties = properties;
+
+      const res = validateTarget(translator, layout, properties, def);
+      allRequirements.d.descriptions.push(...res.reqDimErrors);
+      allRequirements.m.descriptions.push(...res.reqMeasErrors);
     }
-  });
-  const showError = !!(layoutErrors.length || requirementsError.length);
-  const title = requirementsError.length ? translator.get('Supernova.Incomplete') : 'Error';
-  const data = requirementsError.length ? requirementsError : layoutErrors;
+  }
+  const fulfilledDims = allRequirements.d.descriptions.filter((e) => !(e.missing || e.error)).length;
+  allRequirements.d.title = translator.get('Visualization.Incomplete.Dimensions', [
+    fulfilledDims,
+    allRequirements.d.min,
+  ]);
+  const fulfilledMeas = allRequirements.m.descriptions.filter((e) => !(e.missing || e.error)).length;
+  allRequirements.m.title = translator.get('Visualization.Incomplete.Measures', [fulfilledMeas, allRequirements.m.min]);
+
+  const showError = !!(layoutErrors.length || allRequirements.hasErrors);
+  const title = allRequirements.hasErrors
+    ? translator.get('Visualization.Incomplete')
+    : translator.get('Visualization.LayoutError');
+  const data = allRequirements.hasErrors ? [allRequirements.d, allRequirements.m] : layoutErrors;
+
   return [showError, { title, data }];
 };
 
@@ -207,8 +293,8 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
     if (initialError || !appLayout) {
       return undefined;
     }
-    const validate = (sn) => {
-      const [showError, error] = validateTargets(translator, layout, sn.generator.qae.data);
+    const validate = async (sn) => {
+      const [showError, error] = await validateTargets(translator, layout, sn.generator.qae.data, model);
       if (showError) {
         dispatch({ type: 'ERROR', error });
       } else {
