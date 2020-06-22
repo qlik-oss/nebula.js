@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.1](https://github.com/qlik-oss/nebula.js/compare/v1.0.0...v1.0.1) (2020-06-22)
+
+### Bug Fixes
+
+- **cli-sense:** do not remove target dir ([#451](https://github.com/qlik-oss/nebula.js/issues/451)) ([0f5432e](https://github.com/qlik-oss/nebula.js/commit/0f5432e))
+
 # [1.0.0](https://github.com/qlik-oss/nebula.js/compare/v1.0.0-alpha.0...v1.0.0) (2020-06-09)
 
 **Note:** Version bump only for package @nebula.js/cli-sense
