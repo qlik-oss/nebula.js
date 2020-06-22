@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-// import { modalObjectStore } from '../../../stores/selectionsStore';
+// import { modalObjectStore } from '../../../stores/selections-store';
 
 describe('<SelectedFields />', () => {
   let sandbox;
@@ -37,7 +37,10 @@ describe('<SelectedFields />', () => {
         [require.resolve('../../../hooks/useCurrentSelectionsModel'), () => () => [currentSelectionsModel]],
         [require.resolve('../../../hooks/useLayout'), () => useLayout],
         [require.resolve('../../../hooks/useRect'), () => () => [() => {}, rect]],
-        [require.resolve('../../../stores/selectionsStore'), () => ({ useModalObjectStore: () => [modalObjectStore] })],
+        [
+          require.resolve('../../../stores/selections-store'),
+          () => ({ useModalObjectStore: () => [modalObjectStore] }),
+        ],
       ],
       ['../SelectedFields']
     );

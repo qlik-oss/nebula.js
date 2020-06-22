@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-export default (initialState, applyMiddleware = () => {}) => {
+export default (initialState = {}, applyMiddleware = () => {}) => {
   const sharedState = initialState;
   const hookListeners = [];
 
@@ -14,10 +14,12 @@ export default (initialState, applyMiddleware = () => {}) => {
       applyMiddleware({ type: 'SET', value });
       return value;
     },
-    clear: () =>
-      Object.keys(sharedState).forEach((key) => {
-        sharedState[key] = null;
-      }),
+    clear: (key) => {
+      if (typeof key === 'undefined' || typeof key === 'object') {
+        throw new Error(`Invalid key: ${JSON.stringify(key)}`);
+      }
+      sharedState[key] = null;
+    },
     dispatch: (forceNewState) => {
       hookListeners.forEach((listener) => listener(forceNewState ? {} : sharedState));
     },

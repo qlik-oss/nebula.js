@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
 import { useEffect } from 'react';
-import { useObjectSelectionsStore, useAppModalStore } from '../stores/selectionsStore';
+import { useObjectSelectionsStore, useAppModalStore } from '../stores/selections-store';
 import useAppSelections from './useAppSelections';
 import eventmixin from '../selections/event-mixin';
 import useLayout from './useLayout';

@@ -1,6 +1,6 @@
 import populateData from './populator';
 import init from './initiate';
-import { subscribe, modelStore } from '../stores/modelStore';
+import { subscribe, modelStore } from '../stores/model-store';
 /**
  * @interface CreateConfig
  * @extends BaseConfig
@@ -48,7 +48,6 @@ export default async function createSessionObject({ type, version, fields, prope
   const onDestroy = async () => {
     await halo.app.destroySessionObject(model.id);
     unsubscribe();
-    modelStore.set(model.id, undefined);
   };
   return init(model, { options, element }, halo, error, onDestroy);
 }

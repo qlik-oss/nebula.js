@@ -6,7 +6,7 @@ import {
   objectSelectionsStore,
   modalObjectStore,
   appModalStore,
-} from '../stores/selectionsStore';
+} from '../stores/selections-store';
 
 function createAppSelections({ app, currentSelectionsLayout, navState }) {
   const key = `${app.id}`;
@@ -15,7 +15,7 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
     const model = modalObjectStore.get(key);
     if (model) {
       await model.endSelections(accept);
-      modalObjectStore.set(key, undefined);
+      modalObjectStore.clear(key);
       const objectSelections = objectSelectionsStore.get(model.id);
       objectSelections.emit('deactivated');
     }
@@ -43,7 +43,7 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
           await app.abortModal(accept);
           beginSelections(true);
         } else {
-          modalObjectStore.set(key, undefined); // No modal
+          modalObjectStore.clear(key); // No modal
         }
       }
     };

@@ -2,7 +2,7 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { create, act } from 'react-test-renderer';
 
 import useRpc from '../useRpc';
-import { rpcRequestStore } from '../../stores/modelStore';
+import { rpcRequestStore } from '../../stores/model-store';
 
 const TestHook = forwardRef(({ hook, hookProps }, ref) => {
   const result = hook(...hookProps);
@@ -37,7 +37,7 @@ describe('useRpc', () => {
   afterEach(() => {
     sandbox.restore();
     renderer.unmount();
-    rpcRequestStore.set('useRpc', undefined);
+    rpcRequestStore.clear('useRpc');
   });
 
   it('should call method', async () => {
