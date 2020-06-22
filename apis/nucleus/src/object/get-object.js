@@ -1,5 +1,5 @@
 import init from './initiate';
-import { modelStore, rpcRequestModelStore } from '../stores/modelStore';
+import { modelStore, rpcRequestModelStore } from '../stores/model-store';
 
 /**
  * @interface BaseConfig

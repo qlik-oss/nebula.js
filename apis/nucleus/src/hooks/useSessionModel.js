@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useModelStore, useRpcRequestSessionModelStore } from '../stores/modelStore';
+import { useModelStore, useRpcRequestSessionModelStore } from '../stores/model-store';
 
 export default function useSessionModel(definition, app, ...deps) {
   const key = app ? `${app.id}/${JSON.stringify(definition)}` : null;

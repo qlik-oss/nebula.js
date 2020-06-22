@@ -1,5 +1,5 @@
 import { useReducer, useEffect } from 'react';
-import { useModelChangedStore, useRpcResultStore, useRpcRequestStore } from '../stores/modelStore';
+import { useModelChangedStore, useRpcResultStore, useRpcRequestStore } from '../stores/model-store';
 
 // eslint-disable-next-line no-unused-vars
 const sleep = (delay) => {

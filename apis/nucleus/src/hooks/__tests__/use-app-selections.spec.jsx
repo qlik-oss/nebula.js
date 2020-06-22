@@ -47,6 +47,7 @@ describe('useAppSelections', () => {
     modalObjectStore = {
       get: sandbox.stub(),
       set: sandbox.spy(),
+      clear: sandbox.spy(),
     };
     [{ default: useAppSelections }] = aw.mock(
       [
@@ -55,7 +56,7 @@ describe('useAppSelections', () => {
           () => () => [navState, currentSelectionsModel, currentSelectionsLayout],
         ],
         [
-          require.resolve('../../stores/selectionsStore'),
+          require.resolve('../../stores/selections-store'),
           () => ({
             useAppSelectionsStore: () => [
               {

@@ -6,7 +6,7 @@ import { useTheme } from '@nebula.js/ui/theme';
 import useCurrentSelectionsModel from '../../hooks/useCurrentSelectionsModel';
 import useLayout from '../../hooks/useLayout';
 import useRect from '../../hooks/useRect';
-import { useModalObjectStore } from '../../stores/selectionsStore';
+import { useModalObjectStore } from '../../stores/selections-store';
 
 import OneField from './OneField';
 import MultiState from './MultiState';

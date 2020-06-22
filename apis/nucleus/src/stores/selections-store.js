@@ -1,4 +1,4 @@
-import createKeyStore from './createKeyStore';
+import createKeyStore from './create-key-store';
 
 const [useAppSelectionsStore, appSelectionsStore] = createKeyStore({});
 const [useAppModalStore, appModalStore] = createKeyStore({});

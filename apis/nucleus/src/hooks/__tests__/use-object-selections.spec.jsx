@@ -58,7 +58,7 @@ describe('useObjectSelections', () => {
         [require.resolve('../useAppSelections'), () => () => [appSel]],
         [require.resolve('../useLayout'), () => () => [layout]],
         [
-          require.resolve('../../stores/selectionsStore'),
+          require.resolve('../../stores/selections-store'),
           () => ({
             useAppSelectionsStore: () => [
               {
