@@ -1,5 +1,5 @@
 {
-  "extends": ["qlik-oss"],
+  "extends": ["qlik-oss", "schedule:monthly"],
   "circleci": {
     "ignoreDeps": ["circleci/node"]
   },
