@@ -97,7 +97,7 @@
   },
   "Visualization.Incomplete.Measures": {
     "value": "{0} of {1} measures",
-    "comment": "Status text shown when a visualization is incomplete"
+    "comment": "Text showing the number of current {0} measures over the total {1} number of measures"
   },
   "Visualization.Invalid.Dimension": {
     "value": "Invalid dimension",
