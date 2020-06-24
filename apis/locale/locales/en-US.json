@@ -103,9 +103,9 @@
     "value": "Invalid dimension",
     "comment": "Status text shown when a dimension is not valid"
   },
-  "Visualization.Invalid.Dimension.CalculationCondition": {
-    "value": "Invalid dimension",
-    "comment": "Status text shown when a dimension has a unfulfilled calculation condition"
+  "Visualization.UnfulfilledCalculationCondition": {
+    "value": "The calculation condition is not fulfilled",
+    "comment": "Message displayed when a calculation condition is not fulfilled"
   },
   "Visualization.Invalid.Measure": {
     "value": "Invalid measure",
