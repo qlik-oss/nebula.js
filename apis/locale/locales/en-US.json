@@ -93,7 +93,7 @@
   },
   "Visualization.Incomplete.Dimensions": {
     "value": "{0} of {1} dimensions",
-    "comment": "Status text shown when a visualization is incomplete"
+    "comment": "Text showing the number of current {0} dimensions over the total {1} number of dimensions"
   },
   "Visualization.Incomplete.Measures": {
     "value": "{0} of {1} measures",
@@ -110,9 +110,5 @@
   "Visualization.Invalid.Measure": {
     "value": "Invalid measure",
     "comment": "Status text shown when a measure is not valid"
-  },
-  "Visualization.Invalid.Measure.CalculationCondition": {
-    "value": "Invalid dimension",
-    "comment": "Status text shown when a measure has a unfulfilled calculation condition"
   }
 }

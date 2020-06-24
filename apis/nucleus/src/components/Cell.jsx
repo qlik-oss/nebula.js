@@ -146,14 +146,14 @@ const validateTarget = (translator, layout, properties, def) => {
     hc.qDimensionInfo,
     (i) => def.dimensions.description(properties, i),
     translator.get('Visualization.Invalid.Dimension'),
-    translator.get('Visualization.Invalid.Dimension.CalculationCondition')
+    translator.get('Visualization.UnfulfilledCalculationCondition')
   );
   const reqMeasErrors = validateInfo(
     minM,
     hc.qMeasureInfo,
     (i) => def.measures.description(properties, i),
     translator.get('Visualization.Invalid.Measure'),
-    translator.get('Visualization.Invalid.Measure.CalculationCondition')
+    translator.get('Visualization.UnfulfilledCalculationCondition')
   );
   return {
     reqDimErrors,
