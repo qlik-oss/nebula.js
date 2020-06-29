@@ -17,7 +17,9 @@ const DescriptionRow = ({ d }) => {
   }
   const style = { color: styleColor };
   const Icon = (
-    <IconButton>{d.missing || d.error ? <WarningTriangle style={style} /> : <Tick style={style} />}</IconButton>
+    <IconButton disabled>
+      {d.missing || d.error ? <WarningTriangle style={style} /> : <Tick style={style} />}
+    </IconButton>
   );
   return (
     <Grid item container alignItems="center" wrap="nowrap">
