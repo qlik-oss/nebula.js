@@ -10,7 +10,7 @@
     "locale:generate": "node apis/locale/scripts/generate-all.js",
     "lint": "eslint packages apis commands --ext .js,.jsx",
     "lint:check": "eslint --print-config ./aw.config.js | eslint-config-prettier-check",
-    "start": "MONO=true ./commands/cli/lib/index.js serve --entry ./test/integration/sn.js",
+    "start": "MONO=true ./commands/cli/lib/index.js serve --entry ./test/viz/simple",
     "start:ui": "start-storybook",
     "spec": "lerna run spec --stream --concurrency 99",
     "test": "yarn run test:unit",

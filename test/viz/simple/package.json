@@ -1,0 +1,7 @@
+{
+  "name": "hi",
+  "main": "dist/ello.js",
+  "peerDependencies": {
+    "@nebula.js/stardust": "*"
+  }
+}
