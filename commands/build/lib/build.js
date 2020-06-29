@@ -8,6 +8,7 @@ const rollup = require('rollup');
 const babel = require('rollup-plugin-babel');
 const postcss = require('rollup-plugin-postcss');
 const replace = require('@rollup/plugin-replace');
+const json = require('@rollup/plugin-json');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 
@@ -24,8 +25,9 @@ const config = ({
   argv = { sourcemap: true },
   core,
 } = {}) => {
-  let dir = cwd;
-  let pkg = require(path.resolve(cwd, 'package.json')); // eslint-disable-line
+  const CWD = argv.cwd || cwd;
+  let dir = CWD;
+  let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
   const { name, version, license, author } = pkg;
   const { sourcemap } = argv;
@@ -63,7 +65,7 @@ const config = ({
 
   return {
     input: {
-      input: path.resolve(cwd, 'src/index'),
+      input: path.resolve(CWD, 'src/index'),
       external,
       plugins: [
         replace({
@@ -71,6 +73,7 @@ const config = ({
         }),
         nodeResolve(),
         commonjs(),
+        json(),
         babel({
           babelrc: false,
           presets: [

@@ -93,8 +93,9 @@ const initiateWatch = async ({ snPath, snName, host }) => {
 };
 
 module.exports = async (argv) => {
-  const context = process.cwd();
+  let context = process.cwd();
   let defaultServeConfig = {};
+  let runFromDirectory = false;
 
   if (!argv.$0) {
     defaultServeConfig = initConfig(yargs([])).argv;
@@ -119,13 +120,24 @@ module.exports = async (argv) => {
     snUrl = serveConfig.entry;
   } else if (serveConfig.entry) {
     snPath = path.resolve(context, serveConfig.entry);
-    const parsed = path.parse(snPath);
-    snName = parsed.name;
+    const stat = fs.statSync(snPath);
+    if (stat.isDirectory()) {
+      runFromDirectory = true;
+      context = snPath;
+    } else {
+      const parsed = path.parse(snPath);
+      snName = parsed.name;
+    }
   } else {
+    runFromDirectory = true;
+  }
+
+  if (runFromDirectory) {
     if (serveConfig.build !== false) {
       watcher = await build({
         watch: true,
         config: serveConfig.config,
+        cwd: context,
       });
     }
     try {
