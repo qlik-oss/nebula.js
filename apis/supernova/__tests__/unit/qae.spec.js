@@ -44,7 +44,7 @@ describe('qae', () => {
       data: {
         targets: [
           {
-            path: 'qhc',
+            path: '/qHyperCubeDef',
             dimensions: {
               min: () => 3,
               max: () => 7,
@@ -64,7 +64,7 @@ describe('qae', () => {
         ],
       },
     }).data.targets[0];
-    expect(t.propertyPath).to.eql('qhc');
+    expect(t.propertyPath).to.eql('/qHyperCubeDef');
     expect(t.dimensions.min()).to.eql(3);
     expect(t.dimensions.max()).to.eql(7);
     expect(t.dimensions.added()).to.equal('a');
@@ -78,6 +78,34 @@ describe('qae', () => {
     expect(t.measures.removed()).to.equal('e');
     expect(t.dimensions.isDefined()).to.equal(true);
     expect(t.measures.isDefined()).to.equal(true);
+  });
+  it('should throw with incorrect hypercube def', () => {
+    expect(() =>
+      qae({
+        data: {
+          targets: [
+            {
+              path: 'qhc',
+              dimensions: {
+                min: () => 3,
+                max: () => 7,
+                added: () => 'a',
+                description: () => 'Slice',
+                moved: () => 'c',
+                replaced: () => 'd',
+              },
+              measures: {
+                min: 2,
+                max: 4,
+                added: () => 'b',
+                description: () => 'Angle',
+                removed: () => 'e',
+              },
+            },
+          ],
+        },
+      })
+    ).to.throw('Incorrect definition for qHyperCubeDef at qhc');
   });
   it('should resolve layout', () => {
     const t = qae({

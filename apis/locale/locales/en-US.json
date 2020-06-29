@@ -83,8 +83,32 @@
     "value": "Select possible",
     "comment": "Action text to select possible selections"
   },
-  "Supernova.Incomplete": {
+  "Visualization.LayoutError": {
+    "value": "Error",
+    "comment": "Status text shown when a visualization has layout errors"
+  },
+  "Visualization.Incomplete": {
     "value": "Incomplete visualization",
     "comment": "Status text shown when a visualization is incomplete"
+  },
+  "Visualization.Incomplete.Dimensions": {
+    "value": "{0} of {1} dimensions",
+    "comment": "Text showing the number of current {0} dimensions over the total {1} number of dimensions"
+  },
+  "Visualization.Incomplete.Measures": {
+    "value": "{0} of {1} measures",
+    "comment": "Text showing the number of current {0} measures over the total {1} number of measures"
+  },
+  "Visualization.Invalid.Dimension": {
+    "value": "Invalid dimension",
+    "comment": "Status text shown when a dimension is not valid"
+  },
+  "Visualization.UnfulfilledCalculationCondition": {
+    "value": "The calculation condition is not fulfilled",
+    "comment": "Message displayed when a calculation condition is not fulfilled"
+  },
+  "Visualization.Invalid.Measure": {
+    "value": "Invalid measure",
+    "comment": "Status text shown when a measure is not valid"
   }
 }

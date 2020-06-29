@@ -66,6 +66,9 @@ const resolveValue = (data, reference, defaultValue) => {
 function target(def) {
   const propertyPath = def.path || '/qHyperCubeDef';
   const layoutPath = propertyPath.slice(0, -3);
+  if (/\/qHyperCube$/.test(layoutPath) === false) {
+    throw new Error(`Incorrect definition for qHyperCubeDef at ${propertyPath}`);
+  }
   return {
     propertyPath,
     layoutPath,

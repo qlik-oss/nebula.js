@@ -224,20 +224,26 @@ describe('<Cell />', () => {
     });
 
     it('should render requirements', async () => {
+      const localLayout = { visualization: 'sn', foo: { qDimensionInfo: [], qMeasureInfo: [] } };
       const sn = {
         generator: {
           qae: {
             data: {
               targets: [
                 {
-                  resolveLayout: () => '/foo',
+                  resolveLayout: () => localLayout.foo,
                   dimensions: {
                     min: () => 1,
                     max: () => 1,
+                    description: (_properties, ix) =>
+                      ix === 0
+                        ? 'Column'
+                        : 'Cells - dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd ',
                   },
                   measures: {
                     min: () => 1,
                     max: () => 1,
+                    description: () => 'Size',
                   },
                 },
               ],
@@ -251,11 +257,14 @@ describe('<Cell />', () => {
         }),
         getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
-      await render({ types });
+      const model = {
+        getProperties: async () => {},
+      };
+      await render({ types, model });
 
       const ftypes = renderer.root.findAllByType(CError);
       expect(ftypes).to.have.length(1);
-      expect(ftypes[0].props.title).to.equal('Supernova.Incomplete');
+      expect(ftypes[0].props.title).to.equal('Visualization.Incomplete');
     });
 
     it('should render hypercube error', async () => {
@@ -271,10 +280,15 @@ describe('<Cell />', () => {
                   dimensions: {
                     min: () => 0,
                     max: () => 0,
+                    description: (_properties, ix) =>
+                      ix === 0
+                        ? 'Column'
+                        : 'Cells - dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd ',
                   },
                   measures: {
                     min: () => 0,
                     max: () => 0,
+                    description: () => 'Size',
                   },
                 },
               ],
@@ -292,9 +306,8 @@ describe('<Cell />', () => {
 
       const ftypes = renderer.root.findAllByType(CError);
       expect(ftypes).to.have.length(1);
-      expect(ftypes[0].props.title).to.equal('Error');
-      expect(ftypes[0].props.data[0].path).to.equal('/foo');
-      expect(ftypes[0].props.data[0].error).to.deep.equal({ qErrorCode: 1337 });
+      expect(ftypes[0].props.data[0].title).to.equal('/foo');
+      expect(ftypes[0].props.data[0].descriptions[0].message).to.deep.equal({ qErrorCode: 1337 });
     });
 
     it('should go modal (selections)', async () => {

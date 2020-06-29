@@ -146,6 +146,7 @@ const renderFixture = async () => {
       };
       return mockedLayout;
     },
+    getProperties: () => null,
     on() {},
     once() {},
   });
