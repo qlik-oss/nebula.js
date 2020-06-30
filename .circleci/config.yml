@@ -4,13 +4,20 @@ aliases:
   - &restore_yarn_cache
     name: Restore yarn cache
     keys:
-      - yarn-packages-{{ checksum "yarn.lock" }}
-      - yarn-packages-
+      - yarn-packages-v2-{{ checksum "yarn.lock" }}
   - &save_yarn_cache
     name: Save yarn cache
     paths:
       - ~/.cache/yarn
-    key: yarn-packages-{{ checksum "yarn.lock" }}
+      - ./node_modules
+      - ./apis/locale/node_modules
+      - ./apis/stardust/node_modules
+      - ./apis/nucleus/node_modules
+      - ./commands/sense/node_modules
+      - ./commands/build/node_modules
+      - ./commands/serve/node_modules
+      - ./commands/create/node_modules
+    key: yarn-packages-v2-{{ checksum "yarn.lock" }}
   - &filter_master
     branches:
       only: master
@@ -34,22 +41,18 @@ jobs:
 
       - run:
           name: Install dependencies
-          command: yarn install --frozen-lockfile
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
 
       - save_cache: *save_yarn_cache
-
       - run:
           name: Build
           command: yarn run build
-
       - run:
           name: Lint
           command: yarn run lint
-
       - run:
           name: Locale
           command: yarn run locale:verify
-
       - run:
           name: Unit tests
           command: |
@@ -58,28 +61,22 @@ jobs:
               echo "Uploading coverage results to coveralls.io..."
               cat ./coverage/unit/lcov.info | npx coveralls
             fi
-
       - store_test_results:
           path: coverage/junit
-
       - run:
           name: Import app
           command: |
             DocId=$(curl -s --data-binary @commands/serve/data/apps/ctrl00.qvf http://localhost:9076/v1/apps/import | jq -r '.attributes.id')
             echo "export DOC_ID=$DocId" >> $BASH_ENV
-
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-
       - run:
           name: Test mashup
           command: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-
       - run:
           name: Test integration
           command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-
       # - run:
       #     name: Create a hello supernova project from latest release
       #     command: |
@@ -87,7 +84,6 @@ jobs:
       #       npx nebula create temp/hello --pkgm yarn --picasso none
       #       cd temp/hello
       #       APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-
       - run:
           name: Create a picasso barchart supernova project from current commit
           command: |
@@ -102,9 +98,7 @@ jobs:
             ls -la node_modules/@nebula.js
             yarn run build
             APP_ID=$DOC_ID yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-
       - store_artifacts:
           path: generated/barchart/screenshots
-
       - store_artifacts:
           path: test/mashup/__artifacts__
