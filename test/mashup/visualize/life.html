@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="/node_modules/enigma.js/enigma.min.js"></script>
+    <script src="/apis/stardust/dist/stardust.dev.js"></script>
+
+    <style>
+      html,
+      body {
+        margin: 20px;
+        padding: 0;
+        background-color: #fafafa;
+        color: red;
+      }
+
+      .wrapper {
+        display: flex;
+      }
+
+      .viz {
+        flex: 0 0 600px;
+        position: relative;
+        width: 600px;
+        height: 400px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .actions {
+        margin-left: 16px;
+        flex: 0 0 200px;
+      }
+
+      .actions > button {
+        display: block;
+        width: 100%;
+        margin-bottom: 8px;
+        padding: 8px 4px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="viz"></div>
+      <div class="actions"></div>
+    </div>
+    <script type="module">
+      import connect from './connect.js';
+      import phases from './phases.js';
+
+      connect().then(async (app) => {
+        const actionsElement = document.querySelector('.actions');
+        const p = phases({ app }).phases;
+        p.forEach((phase) => {
+          const btn = document.createElement('button');
+          btn.textContent = phase.name;
+          btn.setAttribute('data-phase', phase.name.toLowerCase().replace(/\s+/g, '-'));
+          btn.addEventListener('click', phase.action);
+
+          actionsElement.appendChild(btn);
+        });
+      });
+    </script>
+  </body>
+</html>

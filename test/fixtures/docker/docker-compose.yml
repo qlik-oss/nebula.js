@@ -7,7 +7,8 @@ services:
     command: |
       -S AcceptEULA=${ACCEPT_EULA:-no}
       -S DocumentDirectory=/apps
+      -S SSEPlugin=sse,host.docker.internal:50051
     ports:
-      - ${ENGINE_PORT:-9076}:9076
+      - '9076:9076'
     volumes:
-      - ${APPS_PATH:-./data/apps}:/apps
+      - ${APPS_PATH:-../data/apps}:/apps

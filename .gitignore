@@ -16,3 +16,5 @@ test/**/__artifacts__/regression
 test/**/__artifacts__/diff
 apis/*/core/**/*.js
 apis/locale/all.json
+
+Search/

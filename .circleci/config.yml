@@ -29,13 +29,27 @@ jobs:
     docker:
       - image: circleci/node:10.19.0
       - image: qlikcore/engine:12.700.0
-        command: -S AcceptEULA=yes
+        command: |
+          -S AcceptEULA=yes
+          -S SSEPlugin=sse,localhost:50051
       - image: browserless/chrome:1.34.0-puppeteer-1.20.0
 
     working_directory: ~/project
 
     steps:
       - checkout
+
+      # start the SSE plugin as early as possible so that the engine
+      # image has enough time to connect to it before tests are run
+      - run:
+          name: Initiate SSE plugin
+          command: |
+            cd test/fixtures/sse
+            echo "{}" > package.json
+            npm install qlik-sse@0.3.0 --no-package-lock
+            rm package.json
+            node start.js
+          background: true
 
       - restore_cache: *restore_yarn_cache
 
