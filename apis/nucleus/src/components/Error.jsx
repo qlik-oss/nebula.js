@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { Grid, Typography, IconButton } from '@material-ui/core';
+import { Grid, Typography, Icon } from '@material-ui/core';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 import Tick from '@nebula.js/ui/icons/tick';
 import { useTheme } from '@nebula.js/ui/theme';
@@ -16,12 +16,14 @@ const DescriptionRow = ({ d }) => {
     styleColor = theme.palette.error.main;
   }
   const style = { color: styleColor };
-  const Icon = (
-    <IconButton>{d.missing || d.error ? <WarningTriangle style={style} /> : <Tick style={style} />}</IconButton>
+  const WrappedIcon = (
+    <Typography style={{ lineHeight: '30px', paddingRight: theme.spacing(1) }}>
+      <Icon>{d.missing || d.error ? <WarningTriangle style={style} /> : <Tick style={style} />}</Icon>
+    </Typography>
   );
   return (
     <Grid item container alignItems="center" wrap="nowrap">
-      <Grid item>{Icon}</Grid>
+      <Grid item>{WrappedIcon}</Grid>
       <Grid container item zeroMinWidth wrap="nowrap">
         <Typography noWrap component="p">
           <Typography component="span" variant="subtitle2" color={color}>
@@ -45,24 +47,26 @@ const DescriptionRow = ({ d }) => {
 const Descriptions = ({ data }) => {
   const theme = useTheme();
   return (
-    <Grid item style={{ maxWidth: '80%', overflow: 'hidden' }}>
+    <Grid container item style={{ maxWidth: '300px', overflow: 'hidden' }}>
       {data.map((e, ix) => {
         const Rows = e.descriptions.map((d, dix) => <DescriptionRow d={d} key={dix} />);
         return (
-          <Grid
-            container
-            item
-            key={ix}
-            direction="column"
-            style={{
-              paddingBottom: `${theme.spacing(2)}px`,
-            }}
-          >
-            <Typography noWrap key={ix} variant="subtitle1" align="left" color="textSecondary">
-              {e.title}
-            </Typography>
-            {Rows}
-          </Grid>
+          Rows.length > 0 && (
+            <Grid
+              container
+              item
+              key={ix}
+              direction="column"
+              style={{
+                paddingBottom: theme.spacing(2),
+              }}
+            >
+              <Typography noWrap key={ix} variant="subtitle1" align="left" color="textSecondary">
+                {e.title}
+              </Typography>
+              {Rows}
+            </Grid>
+          )
         );
       })}
     </Grid>
