@@ -125,7 +125,8 @@ const validateInfo = (min, info, getDescription, translatedError, translatedCalc
       // eslint-disable-next-line no-nested-ternary
       error ? translatedError : softError ? calcCondMsg || translatedCalcCond : (exists && info[i].qFallbackTitle) || ''
     }`;
-    const description = `${getDescription(i)}${label.length ? delimiter : ''}`;
+    const customDescription = getDescription(i);
+    const description = customDescription ? `${customDescription}${label.length ? delimiter : ''}` : null;
 
     return {
       description,
@@ -161,24 +162,13 @@ const validateTarget = (translator, layout, properties, def) => {
   };
 };
 
-const validateTargets = async (translator, layout, { targets }, model) => {
+const validateCubes = (translator, targets, layout) => {
+  let hasUnfulfilledErrors = false;
+  let aggMinD = 0;
+  let aggMinM = 0;
+  let hasLayoutErrors = false;
+  let hasLayoutUnfulfilledCalculcationCondition = false;
   const layoutErrors = [];
-  // Use a flattened requirements structure to combine all targets
-  const allRequirements = {
-    hasErrors: false,
-    d: {
-      title: '',
-      descriptions: [],
-      min: 0,
-    },
-    m: {
-      title: '',
-      descriptions: [],
-      min: 0,
-    },
-  };
-  let loopCacheProperties = null;
-
   for (let i = 0; i < targets.length; ++i) {
     const def = targets[i];
     const minD = def.dimensions.min();
@@ -186,39 +176,69 @@ const validateTargets = async (translator, layout, { targets }, model) => {
     const hc = def.resolveLayout(layout);
     const d = (hc.qDimensionInfo || []).filter(filterData); // Filter out optional calc conditions
     const m = (hc.qMeasureInfo || []).filter(filterData); // Filter out optional calc conditions
-    const path = def.layoutPath;
-
-    // layout error
-    if (hc.qError) {
-      layoutErrors.push({ title: path, descriptions: [{ message: hc.qError }] });
-    }
+    aggMinD += minD;
+    aggMinM += minM;
     if (d.length < minD || m.length < minM) {
-      allRequirements.hasErrors = true;
-      allRequirements.d.min += minD;
-      allRequirements.m.min += minM;
+      hasUnfulfilledErrors = true;
+    }
+    if (hc.qError) {
+      hasLayoutErrors = true;
+      hasLayoutUnfulfilledCalculcationCondition = hc.qError.qErrorCode === 7005;
+      const title =
+        // eslint-disable-next-line no-nested-ternary
+        hasLayoutUnfulfilledCalculcationCondition && hc.qCalcCondMsg
+          ? hc.qCalcCondMsg
+          : hasLayoutUnfulfilledCalculcationCondition
+          ? translator.get('Visualization.UnfulfilledCalculationCondition')
+          : translator.get('Visualization.LayoutError');
 
+      layoutErrors.push({ title, descriptions: [] });
+    }
+  }
+  return {
+    hasUnfulfilledErrors,
+    aggMinD,
+    aggMinM,
+    hasLayoutErrors,
+    layoutErrors,
+  };
+};
+
+const validateTargets = async (translator, layout, { targets }, model) => {
+  // Use a flattened requirements structure to combine all targets
+  const { hasUnfulfilledErrors, aggMinD, aggMinM, hasLayoutErrors, layoutErrors } = validateCubes(
+    translator,
+    targets,
+    layout
+  );
+
+  const reqDimErrors = [];
+  const reqMeasErrors = [];
+  let loopCacheProperties = null;
+
+  for (let i = 0; i < targets.length; ++i) {
+    const def = targets[i];
+    if (!hasLayoutErrors && hasUnfulfilledErrors) {
       // eslint-disable-next-line no-await-in-loop
       const properties = loopCacheProperties || (await model.getProperties());
       loopCacheProperties = properties;
-
       const res = validateTarget(translator, layout, properties, def);
-      allRequirements.d.descriptions.push(...res.reqDimErrors);
-      allRequirements.m.descriptions.push(...res.reqMeasErrors);
+      reqDimErrors.push(...res.reqDimErrors);
+      reqMeasErrors.push(...res.reqMeasErrors);
     }
   }
-  const fulfilledDims = allRequirements.d.descriptions.filter((e) => !(e.missing || e.error)).length;
-  allRequirements.d.title = translator.get('Visualization.Incomplete.Dimensions', [
-    fulfilledDims,
-    allRequirements.d.min,
-  ]);
-  const fulfilledMeas = allRequirements.m.descriptions.filter((e) => !(e.missing || e.error)).length;
-  allRequirements.m.title = translator.get('Visualization.Incomplete.Measures', [fulfilledMeas, allRequirements.m.min]);
+  const fulfilledDims = reqDimErrors.filter((e) => !(e.missing || e.error)).length;
+  const reqDimErrorsTitle = translator.get('Visualization.Incomplete.Dimensions', [fulfilledDims, aggMinD]);
+  const fulfilledMeas = reqMeasErrors.filter((e) => !(e.missing || e.error)).length;
+  const reqMeasErrorsTitle = translator.get('Visualization.Incomplete.Measures', [fulfilledMeas, aggMinM]);
+  const reqErrors = [
+    { title: reqDimErrorsTitle, descriptions: [...reqDimErrors] },
+    { title: reqMeasErrorsTitle, descriptions: [...reqMeasErrors] },
+  ];
 
-  const showError = !!(layoutErrors.length || allRequirements.hasErrors);
-  const title = allRequirements.hasErrors
-    ? translator.get('Visualization.Incomplete')
-    : translator.get('Visualization.LayoutError');
-  const data = allRequirements.hasErrors ? [allRequirements.d, allRequirements.m] : layoutErrors;
+  const showError = hasLayoutErrors || hasUnfulfilledErrors;
+  const data = hasLayoutErrors ? layoutErrors : reqErrors;
+  const title = hasLayoutErrors ? layoutErrors[0].title : translator.get('Visualization.Incomplete');
 
   return [showError, { title, data }];
 };
