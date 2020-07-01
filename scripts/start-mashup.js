@@ -65,7 +65,7 @@ if (engine) {
       });
     },
     stop: async () => {
-      await e();
+      e && (await e());
     },
   });
 }
@@ -75,7 +75,7 @@ function cleanup() {
     return;
   }
   hasCleanedUp = true;
-  console.log('Stopping services');
+  console.log('> Stopping services');
   services.forEach(async (service) => {
     console.log(`${service.name}`);
     await service.stop();
@@ -83,16 +83,16 @@ function cleanup() {
 }
 
 async function run() {
-  console.log('Starting services');
+  console.log('> Starting services');
 
   try {
-    services.forEach(async (service) => {
+    for await (const service of services) {
       console.log(`${service.name}`);
       await service.start();
-    });
-    console.log('All up and running');
+    }
+    console.log('> All up and running');
   } catch (err) {
-    console.log(err);
+    console.error(`\x1b[31m${JSON.stringify(err)}\x1b[0m`);
     cleanup();
     throw err;
   }
