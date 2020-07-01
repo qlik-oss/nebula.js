@@ -32,6 +32,11 @@ describe('object lifecycle', () => {
     await waitForTextStatus('[data-tid="error-title"]', 'The calculation condition is not fulfilled');
   });
 
+  it('should render error when a hypercube contains a qError', async () => {
+    await page.click('button[data-phase="hypercube-error"]');
+    await waitForTextStatus('[data-tid="error-title"]', 'Error');
+  });
+
   it('should render when requirements are fulfilled', async () => {
     await page.click('button[data-phase="fulfill-requirements"]');
     await waitForTextStatus('.rendered', 'Success!');

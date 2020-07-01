@@ -22,6 +22,15 @@ const calcCond = {
   },
 };
 
+const cubeError = {
+  ...baseProps,
+  qHyperCubeDef: {
+    qMode: 'S',
+    qMeasures: [{}],
+    qInterColumnSortOrder: [-2],
+  },
+};
+
 const fulfilled = {
   ...baseProps,
   qHyperCubeDef: {
@@ -110,6 +119,12 @@ export default function phases({ app }) {
         name: 'Set calc condition',
         action: () => {
           obj.setProperties(calcCond);
+        },
+      },
+      {
+        name: 'Hypercube error',
+        action: () => {
+          obj.setProperties(cubeError);
         },
       },
       {

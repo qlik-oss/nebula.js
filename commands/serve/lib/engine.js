@@ -31,7 +31,7 @@ const useEngine = ({ ACCEPT_EULA = false, cwd = path.resolve(__dirname, '../'), 
   if (ACCEPT_EULA !== true) {
     throw new Error('Need to accept EULA in order to start engine container');
   }
-  console.error('Starting engine container...', cwd);
+  console.error('Starting engine container...');
   const f = (files || []).reduce((acc, curr) => [...acc, '-f', curr], []);
   process.env.ACCEPT_EULA = 'yes';
   const stopEngine = async () => {
