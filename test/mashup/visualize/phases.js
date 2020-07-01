@@ -11,6 +11,11 @@ const badType = {
   visualization: 'voooz',
 };
 
+const otherType = {
+  ...baseProps,
+  visualization: 'my-other-chart',
+};
+
 const calcCond = {
   ...baseProps,
   qHyperCubeDef: {
@@ -81,12 +86,27 @@ const chart = {
   },
 };
 
+const myOtherChart = {
+  component() {
+    useElement().innerText = 'The other one!';
+  },
+};
+
 // eslint-disable-next-line
 const configured = stardust.embed.createConfiguration({
   types: [
     {
       name: 'my-chart',
-      load: () => Promise.resolve(chart),
+      load: () =>
+        new Promise((resolve) => {
+          setTimeout(() => {
+            resolve(chart);
+          }, 1500);
+        }),
+    },
+    {
+      name: 'my-other-chart',
+      load: () => Promise.resolve(myOtherChart),
     },
   ],
 });
@@ -137,6 +157,12 @@ export default function phases({ app }) {
         name: 'Long running query',
         action: () => {
           obj.setProperties(longRunning);
+        },
+      },
+      {
+        name: 'Set the other type',
+        action: () => {
+          obj.setProperties(otherType);
         },
       },
       {
