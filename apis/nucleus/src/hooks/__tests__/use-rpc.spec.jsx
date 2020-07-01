@@ -67,11 +67,14 @@ describe('useRpc', () => {
   });
 
   it('should dispatch cancelled', async () => {
-    model.getLayout = sandbox.stub().returns(new Promise(() => {}));
     await render(useRpc, model, 'getLayout');
-    ref.current.result[2].cancel();
-    await render(useRpc, model, 'getLayout');
-    expect(ref.current.result[1]).to.deep.equal({ validating: false, canCancel: false, canRetry: true });
+    await act(async () => ref.current.result[2].cancel());
+    expect(ref.current.result[0]).to.deep.equal({ foo: 'bar' });
+    expect(ref.current.result[1]).to.deep.equal({
+      validating: false,
+      canCancel: false,
+      canRetry: true,
+    });
   });
 
   it('should retry', async () => {
