@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 
 import { Grid } from '@material-ui/core';
 
@@ -10,8 +10,7 @@ import VizContext from '../contexts/VizContext';
 
 export default function Stage({ info, storage, uid }) {
   const nebbie = useContext(NebulaContext);
-  const [hasViz, setHasViz] = useState(false);
-  const { setActiveViz } = useContext(VizContext);
+  const { activeViz, setActiveViz } = useContext(VizContext);
   const [properties] = usePropertiesById(uid);
 
   useEffect(() => {
@@ -30,7 +29,6 @@ export default function Stage({ info, storage, uid }) {
     });
     res.then((v) => {
       setActiveViz(v);
-      setHasViz(true);
     });
     return () => {
       res.then((v) => v.destroy());
@@ -42,20 +40,20 @@ export default function Stage({ info, storage, uid }) {
     storage.props(info.supernova.name, properties);
   }, [properties]);
 
+  if (!activeViz || activeViz.id !== uid) return null;
+
   return (
-    hasViz && (
-      <Grid
-        item
-        container
-        justify="center"
-        style={{
-          height: '100%',
-        }}
-      >
-        <Grid item xs>
-          <Cell id={uid} />
-        </Grid>
+    <Grid
+      item
+      container
+      justify="center"
+      style={{
+        height: '100%',
+      }}
+    >
+      <Grid item xs>
+        <Cell id={uid} />
       </Grid>
-    )
+    </Grid>
   );
 }

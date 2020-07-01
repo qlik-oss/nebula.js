@@ -124,11 +124,8 @@ export default function App({ app, info }) {
     window.onHotChange(info.supernova.name, () => {
       nebbie.__DO_NOT_USE__.types.clearFromCache(info.supernova.name);
       nebbie.__DO_NOT_USE__.types.register(info.supernova);
-      if (uid.current) {
-        app.destroySessionObject(uid.current).then(create);
-      } else {
-        create();
-      }
+
+      create();
 
       nebbie.__DO_NOT_USE__.types
         .get({
