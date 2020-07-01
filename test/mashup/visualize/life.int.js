@@ -21,8 +21,12 @@ describe('object lifecycle', () => {
     );
   });
 
-  it('should show requirements for known type', async () => {
+  it('should show spinner and requirements for known type', async () => {
     await page.click('button[data-phase="set-proper-type"]');
+
+    // should show loading spinner
+    await page.waitForSelector('.njs-cell [role="progressbar"]', { timeout: 3000 });
+
     await waitForTextStatus('[data-tid="error-title"]', 'Incomplete visualization');
   });
 
@@ -52,6 +56,11 @@ describe('object lifecycle', () => {
     // await waitForTextStatus('.njs-cell button', 'Retry');
 
     await waitForTextStatus('.pages', '4001', { timeout: 5000 });
+  });
+
+  it.skip('should render when requirements are fulfilled', async () => {
+    await page.click('button[data-phase="set-the-other-type"]');
+    await waitForTextStatus('.njs-viz', 'The other type!');
   });
 
   it('should destroy', async () => {
