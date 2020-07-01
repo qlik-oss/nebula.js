@@ -1,17 +1,17 @@
 describe('Simple visualization', () => {
-  const content = '.simple-viz';
+  const content = '.simple-table';
 
   describe('basic', () => {
     before(async () => {
       const app = encodeURIComponent(process.env.APP_ID || '/apps/ctrl00.qvf');
-      await page.goto(`${process.env.BASE_URL}/render/?app=${app}`);
+      await page.goto(`${process.env.BASE_URL}/render/?app=${app}&cols=Alpha`);
 
       await page.waitForSelector(content, { visible: true });
     });
 
-    it('should say hello', async () => {
+    it('should render a div', async () => {
       const text = await page.$eval('.hello', (el) => el.textContent);
-      expect(text).to.equal('Hello engine!');
+      expect(text).to.equal('A simple table');
     });
 
     it('should be able to load json file', async () => {
@@ -24,9 +24,9 @@ describe('Simple visualization', () => {
       expect(bg).to.equal('rgb(144, 41, 140)');
     });
 
-    it('should have a dynamically calculated lavout value', async () => {
-      const text = await page.$eval('.layout-value', (el) => el.textContent);
-      expect(text).to.equal('3');
+    it('should have some data', async () => {
+      const text = await page.$eval('.table table tbody td', (el) => el.textContent);
+      expect(text).to.equal('A');
     });
   });
 });

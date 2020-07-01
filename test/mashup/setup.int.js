@@ -1,10 +1,11 @@
 const server = require('./server');
 
-page.on('pageerror', e => {
+page.on('pageerror', (e) => {
   console.error('Web: ', e.message);
+  process.exit(1);
 });
 
-page.on('console', msg => {
+page.on('console', (msg) => {
   for (let i = 0; i < msg.args().length; ++i) {
     console.log(`console ${msg.text()}`);
   }

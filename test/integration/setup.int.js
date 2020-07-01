@@ -16,7 +16,7 @@ if (!process.env.BASE_URL) {
 
   before(async () => {
     s = await serve({
-      entry: path.resolve(__dirname, '../viz/simple'),
+      entry: path.resolve(__dirname, '../fixtures/viz/table'),
       open: false,
     });
 
