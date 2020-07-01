@@ -40,6 +40,7 @@ const rpcReducer = (state, action) => {
     }
     case 'CANCELLED': {
       newState = {
+        ...state,
         invalid: true,
         valid: false,
         validating: false,
