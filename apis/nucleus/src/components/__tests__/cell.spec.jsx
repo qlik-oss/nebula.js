@@ -30,7 +30,7 @@ describe('<Cell />', () => {
     Header = () => 'Header';
     InstanceContext = React.createContext();
     appLayout = { foo: 'app-layout' };
-    layout = { qSelectionInfo: {} };
+    layout = { qSelectionInfo: {}, visualization: '' };
     layoutState = { validating: true, canCancel: false, canRetry: false };
     longrunning = { cancel: sandbox.spy(), retry: sandbox.spy() };
     useLayout = sandbox.stub().returns([layout, layoutState, longrunning]);
@@ -221,6 +221,42 @@ describe('<Cell />', () => {
 
       const ftypes = renderer.root.findAllByType(Supernova);
       expect(ftypes).to.have.length(1);
+    });
+
+    it('should render new type', async () => {
+      const sn = {
+        generator: {
+          qae: {
+            data: {
+              targets: [],
+            },
+          },
+        },
+      };
+      const sn1 = {
+        generator: {
+          qae: {
+            data: {
+              targets: [],
+            },
+          },
+        },
+      };
+      const types = {
+        get: sandbox.stub().callsFake(({ name }) => {
+          return {
+            supernova: async () => ({ create: () => (name === 'sn1' ? sn1 : sn) }),
+          };
+        }),
+        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+      };
+      await render({ types });
+      const renderedSn = renderer.root.findByType(Supernova);
+      expect(renderedSn.props.sn).to.equal(sn);
+      sandbox.stub(layout, 'visualization').value('sn1');
+      await render({ types });
+      const renderedSn1 = renderer.root.findByType(Supernova);
+      expect(renderedSn1.props.sn).to.equal(sn1);
     });
 
     it('should render requirements', async () => {

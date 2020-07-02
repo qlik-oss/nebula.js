@@ -58,9 +58,9 @@ describe('object lifecycle', () => {
     await waitForTextStatus('.pages', '4001', { timeout: 5000 });
   });
 
-  it.skip('should render when requirements are fulfilled', async () => {
+  it('should render other type', async () => {
     await page.click('button[data-phase="set-the-other-type"]');
-    await waitForTextStatus('.njs-viz', 'The other type!');
+    await waitForTextStatus('.njs-viz', 'The other one!');
   });
 
   it('should destroy', async () => {

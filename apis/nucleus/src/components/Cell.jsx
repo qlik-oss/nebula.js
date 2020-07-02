@@ -31,6 +31,7 @@ const initialState = (err) => ({
   longRunningQuery: false,
   error: err ? { title: err.message } : null,
   sn: null,
+  visualization: null,
 });
 
 const contentReducer = (state, action) => {
@@ -50,6 +51,7 @@ const contentReducer = (state, action) => {
         longRunningQuery: false,
         error: null,
         sn: action.sn,
+        visualization: action.visualization,
       };
     }
     case 'RENDER': {
@@ -253,14 +255,9 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const loadType = async ({ dispatch, types, name, version, layout, model, app, selections }) => {
+const loadType = async ({ dispatch, types, visualization, version, model, app, selections }) => {
   try {
-    const snType = await getType({ types, name, version });
-    // Layout might have changed since we requested the new type -> quick return
-    if (layout.visualization !== name) {
-      return undefined;
-    }
-
+    const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
       model,
       app,
@@ -310,7 +307,7 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
   };
 
   useEffect(() => {
-    if (initialError || !appLayout) {
+    if (initialError || !appLayout || !layout) {
       return undefined;
     }
     const validate = async (sn) => {
@@ -322,35 +319,31 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
       }
       handleModal({ sn: state.sn, layout, model });
     };
-    const load = async (withLayout, version) => {
+    const load = async (visualization, version) => {
       dispatch({ type: 'LOADING' });
       const sn = await loadType({
         dispatch,
         types,
-        name: withLayout.visualization,
+        visualization,
         version,
-        layout,
         model,
         app,
         selections,
       });
       if (sn) {
-        dispatch({ type: 'LOADED', sn });
+        dispatch({ type: 'LOADED', sn, visualization });
         onMount();
       }
       return undefined;
     };
 
-    if (!layout) {
-      return undefined;
-    }
-
-    if (state.sn) {
+    // Validate if it's still the same type
+    if (state.visualization === layout.visualization && state.sn) {
       validate(state.sn);
       return undefined;
     }
 
-    // Load supernova h
+    // Load supernova
     const withVersion = types.getSupportedVersion(layout.visualization, layout.version);
     if (!withVersion) {
       dispatch({
@@ -361,7 +354,7 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
       });
       return undefined;
     }
-    load(layout, withVersion);
+    load(layout.visualization, withVersion);
 
     return () => {};
   }, [types, state.sn, model, layout, appLayout, language]);
