@@ -107,6 +107,36 @@
   "Visualization.Incomplete": {
     "value": "Tamamlanmamış görselleştirme",
     "comment": "Status text shown when a visualization is incomplete",
-    "version": "SOyzXWKRgL1+6AqW/QkZOA=="
+    "version": "e43DhEHmw0rg9reP7gGR/w=="
+  },
+  "Visualization.Incomplete.Dimensions": {
+    "value": "{0}/{1} boyut",
+    "comment": "Text showing the number of current {0} dimensions over the total {1} number of dimensions",
+    "version": "5sNpFZSWnaPBLcsfvp6U9Q=="
+  },
+  "Visualization.Incomplete.Measures": {
+    "value": "{0}/{1} hesaplama",
+    "comment": "Text showing the number of current {0} measures over the total {1} number of measures",
+    "version": "IJqIrqfli22JMSiCEIw36g=="
+  },
+  "Visualization.Invalid.Dimension": {
+    "value": "Geçersiz boyut",
+    "comment": "Status text shown when a dimension is not valid",
+    "version": "4fUmk2asmoQRF7rbS4T9hQ=="
+  },
+  "Visualization.Invalid.Measure": {
+    "value": "Geçersiz hesaplama",
+    "comment": "Status text shown when a measure is not valid",
+    "version": "mtJsFdDPR5DM0WeijBn7MA=="
+  },
+  "Visualization.LayoutError": {
+    "value": "Hata",
+    "comment": "Status text shown when a visualization has layout errors",
+    "version": "a5/zvy8kVRtuPTFFkunhhw=="
+  },
+  "Visualization.UnfulfilledCalculationCondition": {
+    "value": "Hesaplama koşulu yerine getirilmedi",
+    "comment": "Message displayed when a calculation condition is not fulfilled",
+    "version": "Hj3EiDijTWZ+MhDaqSx/uQ=="
   }
 }

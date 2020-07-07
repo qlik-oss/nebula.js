@@ -107,6 +107,36 @@
   "Visualization.Incomplete": {
     "value": "不完整的可视化",
     "comment": "Status text shown when a visualization is incomplete",
-    "version": "SOyzXWKRgL1+6AqW/QkZOA=="
+    "version": "e43DhEHmw0rg9reP7gGR/w=="
+  },
+  "Visualization.Incomplete.Dimensions": {
+    "value": "{0} / {1} 个维度",
+    "comment": "Text showing the number of current {0} dimensions over the total {1} number of dimensions",
+    "version": "5sNpFZSWnaPBLcsfvp6U9Q=="
+  },
+  "Visualization.Incomplete.Measures": {
+    "value": "{0} / {1} 个度量",
+    "comment": "Text showing the number of current {0} measures over the total {1} number of measures",
+    "version": "IJqIrqfli22JMSiCEIw36g=="
+  },
+  "Visualization.Invalid.Dimension": {
+    "value": "无效维度",
+    "comment": "Status text shown when a dimension is not valid",
+    "version": "4fUmk2asmoQRF7rbS4T9hQ=="
+  },
+  "Visualization.Invalid.Measure": {
+    "value": "无效度量项",
+    "comment": "Status text shown when a measure is not valid",
+    "version": "mtJsFdDPR5DM0WeijBn7MA=="
+  },
+  "Visualization.LayoutError": {
+    "value": "错误",
+    "comment": "Status text shown when a visualization has layout errors",
+    "version": "a5/zvy8kVRtuPTFFkunhhw=="
+  },
+  "Visualization.UnfulfilledCalculationCondition": {
+    "value": "不满足计算条件",
+    "comment": "Message displayed when a calculation condition is not fulfilled",
+    "version": "Hj3EiDijTWZ+MhDaqSx/uQ=="
   }
 }
