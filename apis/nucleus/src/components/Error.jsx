@@ -81,7 +81,6 @@ export default function Error({ title = 'Error', message = '', data = [] }) {
       alignItems="center"
       justify="center"
       style={{ position: 'relative', height: '100%', width: '100%' }}
-      spacing={1}
     >
       <Grid item>
         <WarningTriangle style={{ fontSize: '38px' }} />
