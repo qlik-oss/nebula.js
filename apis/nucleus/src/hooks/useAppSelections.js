@@ -112,6 +112,7 @@ export default function useAppSelections(app) {
     if (!app || !currentSelectionsModel || !currentSelectionsLayout || !navState || appSelections) return;
     appSelections = createAppSelections({ app, currentSelectionsLayout, navState });
     appSelectionsStore.set(key, appSelections);
+    appSelectionsStore.dispatch(true);
   }, [app, currentSelectionsModel, currentSelectionsLayout, navState]);
 
   return [appSelections, navState];

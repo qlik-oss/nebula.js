@@ -163,6 +163,7 @@ export default function useObjectSelections(app, model) {
 
     objectSelections = createObjectSelections({ appSelections, appModal, model });
     objectSelectionsStore.set(key, objectSelections);
+    objectSelectionsStore.dispatch(true);
   }, [appSelections, model]);
 
   useEffect(() => {
