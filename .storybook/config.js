@@ -4,7 +4,7 @@ import { withKnobs } from '@storybook/addon-knobs';
 import { create } from '@storybook/theming';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
-import InstanceContext from '../apis/stardust/src/embed/contexts/InstanceContext';
+import InstanceContext from '../apis/nucleus/src/contexts/InstanceContext';
 
 const translator = {
   get(s) {

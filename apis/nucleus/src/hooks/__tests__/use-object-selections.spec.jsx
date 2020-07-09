@@ -74,6 +74,12 @@ describe('useObjectSelections', () => {
                 set: (k, v) => {
                   objectSel = v;
                 },
+                dispatch: async (b) => {
+                  if (!b) return;
+                  await act(async () => {
+                    renderer.update(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, object]} />);
+                  });
+                },
               },
             ],
             useAppModalStore: () => [
@@ -107,19 +113,16 @@ describe('useObjectSelections', () => {
 
   it('should create object selections', async () => {
     await render();
-    await render();
     expect(ref.current.result[0]).to.equal(objectSel);
   });
 
   it('should begin', async () => {
-    await render();
     await render();
     await ref.current.result[0].begin(['/foo']);
     expect(appModal.begin).to.have.been.calledWithExactly(object, ['/foo'], true);
   });
 
   it('should clear', async () => {
-    await render();
     await render();
     ref.current.result[0].clear();
     expect(object.resetMadeSelections).to.have.been.calledWithExactly();
@@ -131,20 +134,17 @@ describe('useObjectSelections', () => {
 
   it('should confirm', async () => {
     await render();
-    await render();
     await ref.current.result[0].confirm();
     expect(appModal.end).to.have.been.calledWithExactly(true);
   });
 
   it('should cancel', async () => {
     await render();
-    await render();
     await ref.current.result[0].cancel();
     expect(appModal.end).to.have.been.calledWithExactly(false);
   });
 
   it('should select', async () => {
-    await render();
     await render();
 
     appSel.isModal.returns(true);
@@ -155,7 +155,6 @@ describe('useObjectSelections', () => {
 
   it('should clear on non successful select', async () => {
     await render();
-    await render();
 
     appSel.isModal.returns(true);
     object.select.returns(false);
@@ -164,7 +163,6 @@ describe('useObjectSelections', () => {
   });
 
   it('can clear', async () => {
-    await render();
     await render();
     layout = {
       qListObject: {
@@ -187,7 +185,6 @@ describe('useObjectSelections', () => {
 
   it('can confirm', async () => {
     await render();
-    await render();
     layout = {
       qListObject: {
         qDimensionInfo: {
@@ -209,7 +206,6 @@ describe('useObjectSelections', () => {
 
   it('can cancel', async () => {
     await render();
-    await render();
     layout = {
       qListObject: {
         qDimensionInfo: {
@@ -227,7 +223,6 @@ describe('useObjectSelections', () => {
 
   it('return modal state', async () => {
     await render();
-    await render();
 
     appSel.isModal.returns(true);
     expect(ref.current.result[0].isModal()).to.equal(true);
@@ -235,14 +230,12 @@ describe('useObjectSelections', () => {
 
   it('begin modal state', async () => {
     await render();
-    await render();
 
     ref.current.result[0].goModal(['/bar']);
     expect(appModal.begin).to.have.been.calledWithExactly(object, ['/bar'], false);
   });
 
   it('end modal state', async () => {
-    await render();
     await render();
 
     ref.current.result[0].noModal(true);
