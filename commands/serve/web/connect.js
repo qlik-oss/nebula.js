@@ -139,6 +139,7 @@ const connect = () => {
               qTitle: d.name,
             }));
           },
+          getConfiguration: async () => ({}),
         };
       }
       const url = SenseUtilities.buildUrl({
