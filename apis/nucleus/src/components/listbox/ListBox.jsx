@@ -37,11 +37,15 @@ export default function ListBox({ model, selections, direction }) {
       if (!Number.isNaN(elemNumber)) {
         selections.select({
           method: 'selectListObjectValues',
-          params: ['/qListObjectDef', [elemNumber], true],
+          params: ['/qListObjectDef', [elemNumber], !layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne],
         });
       }
     },
-    [model, layout && layout.qListObject.qDimensionInfo.qLocked]
+    [
+      model,
+      layout && !!layout.qListObject.qDimensionInfo.qLocked,
+      layout && !!layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne,
+    ]
   );
 
   const isItemLoaded = useCallback(
