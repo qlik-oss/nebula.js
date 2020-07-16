@@ -49,6 +49,16 @@ const ActionsGroup = React.forwardRef(({ actions = [], first = false, last = fal
   ) : null;
 });
 
+const popoverStyle = { pointerEvents: 'none' };
+const popoverAnchorOrigin = {
+  vertical: 'top',
+  horizontal: 'right',
+};
+const popoverTransformOrigin = {
+  vertical: 'bottom',
+  horizontal: 'right',
+};
+
 const ActionsToolbar = ({
   show = true,
   actions = [],
@@ -80,10 +90,15 @@ const ActionsToolbar = ({
   const [moreAlignTo, setMoreAlignTo] = useState(more.alignTo);
   const moreRef = useRef();
   const theme = useTheme();
+  const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
 
   useEffect(() => {
     return () => setShowMoreItems(false);
   }, [popover.show]);
+
+  useEffect(() => {
+    setMoreEnabled(more.enabled);
+  }, [more.enabled]);
 
   const newActions = useMemo(() => actions.filter((a) => !a.hidden), [actions]);
 
@@ -120,7 +135,7 @@ const ActionsToolbar = ({
         <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />
       )}
       {showDivider && (
-        <Grid item className={itemSpacing} style={{ margin: theme.spacing(0.5, 0) }}>
+        <Grid item className={itemSpacing} style={dividerStyle}>
           <Divider orientation="vertical" />
         </Grid>
       )}
@@ -142,16 +157,10 @@ const ActionsToolbar = ({
     <Popover
       open={popover.show}
       anchorEl={popover.anchorEl}
-      anchorOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
+      anchorOrigin={popoverAnchorOrigin}
+      transformOrigin={popoverTransformOrigin}
       hideBackdrop
-      style={{ pointerEvents: 'none' }}
+      style={popoverStyle}
       PaperProps={{
         style: {
           pointerEvents: 'auto',
