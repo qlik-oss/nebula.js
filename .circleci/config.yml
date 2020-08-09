@@ -28,11 +28,11 @@ jobs:
   build:
     docker:
       - image: circleci/node:10.19.0
-      - image: qlikcore/engine:12.700.0
+      - image: qlikcore/engine:12.754.0
         command: |
           -S AcceptEULA=yes
           -S SSEPlugin=sse,localhost:50051
-      - image: browserless/chrome:1.35.0-puppeteer-1.20.0
+      - image: browserless/chrome:1.37.2-puppeteer-1.20.0
 
     working_directory: ~/project
 
