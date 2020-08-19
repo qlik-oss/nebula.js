@@ -1,4 +1,4 @@
-import { embed } from '@nebula.js/stardust/dist/stardust';
+import { embed } from '@nebula.js/stardust';
 
 import barchart from '@nebula.js/sn-bar-chart';
 
