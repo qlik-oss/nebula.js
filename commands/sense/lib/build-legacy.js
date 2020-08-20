@@ -70,7 +70,7 @@ async function build(argv) {
       plugins: [
         replace({
           __SN_DEF__: `${relativeMainFile}`,
-          __EXT_DEF__: `${extDefinition}`,
+          __EXT_DEF__: `${extDefinition.replace(/\\/g, '/')}`,
         }),
         nodeResolve(),
         common(),
