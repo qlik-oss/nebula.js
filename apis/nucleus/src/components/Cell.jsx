@@ -129,7 +129,6 @@ const validateInfo = (min, info, getDescription, translatedError, translatedCalc
     }`;
     const customDescription = getDescription(i);
     const description = customDescription ? `${customDescription}${label.length ? delimiter : ''}` : null;
-
     return {
       description,
       label,
@@ -142,18 +141,18 @@ const validateInfo = (min, info, getDescription, translatedError, translatedCalc
 const validateTarget = (translator, layout, properties, def) => {
   const minD = def.dimensions.min();
   const minM = def.measures.min();
-  const hc = def.resolveLayout(layout);
-
+  const c = def.resolveLayout(layout);
+  const dimInfo = Array.isArray(c.qDimensionInfo) ? c.qDimensionInfo : [c.qDimensionInfo];
   const reqDimErrors = validateInfo(
     minD,
-    hc.qDimensionInfo,
+    dimInfo,
     (i) => def.dimensions.description(properties, i),
     translator.get('Visualization.Invalid.Dimension'),
     translator.get('Visualization.UnfulfilledCalculationCondition')
   );
   const reqMeasErrors = validateInfo(
     minM,
-    hc.qMeasureInfo,
+    c.qMeasureInfo,
     (i) => def.measures.description(properties, i),
     translator.get('Visualization.Invalid.Measure'),
     translator.get('Visualization.UnfulfilledCalculationCondition')
@@ -175,21 +174,22 @@ const validateCubes = (translator, targets, layout) => {
     const def = targets[i];
     const minD = def.dimensions.min();
     const minM = def.measures.min();
-    const hc = def.resolveLayout(layout);
-    const d = (hc.qDimensionInfo || []).filter(filterData); // Filter out optional calc conditions
-    const m = (hc.qMeasureInfo || []).filter(filterData); // Filter out optional calc conditions
+    const c = def.resolveLayout(layout);
+    const d = (c.qDimensionInfo && (Array.isArray(c.qDimensionInfo) ? c.qDimensionInfo : [c.qDimensionInfo])) || [];
+    const fd = d.filter(filterData); // Filter out optional calc conditions
+    const m = (c.qMeasureInfo || []).filter(filterData); // Filter out optional calc conditions
     aggMinD += minD;
     aggMinM += minM;
-    if (d.length < minD || m.length < minM) {
+    if (fd.length < minD || m.length < minM) {
       hasUnfulfilledErrors = true;
     }
-    if (hc.qError) {
+    if (c.qError) {
       hasLayoutErrors = true;
-      hasLayoutUnfulfilledCalculcationCondition = hc.qError.qErrorCode === 7005;
+      hasLayoutUnfulfilledCalculcationCondition = c.qError.qErrorCode === 7005;
       const title =
         // eslint-disable-next-line no-nested-ternary
-        hasLayoutUnfulfilledCalculcationCondition && hc.qCalcCondMsg
-          ? hc.qCalcCondMsg
+        hasLayoutUnfulfilledCalculcationCondition && c.qCalcCondMsg
+          ? c.qCalcCondMsg
           : hasLayoutUnfulfilledCalculcationCondition
           ? translator.get('Visualization.UnfulfilledCalculationCondition')
           : translator.get('Visualization.LayoutError');

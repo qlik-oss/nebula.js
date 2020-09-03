@@ -1,6 +1,7 @@
 import React, { useMemo } from 'react';
 
 import hcHandler from '@nebula.js/nucleus/src/object/hc-handler';
+import loHandler from '@nebula.js/nucleus/src/object/lo-handler';
 
 import { Typography } from '@material-ui/core';
 
@@ -25,12 +26,13 @@ const getValue = (data, reference, defaultValue) => {
   return dataContainer;
 };
 
-export default function HyperCube({ setProperties, target, properties }) {
+export default function DataCube({ setProperties, target, properties }) {
+  const createHandler = target.propertyPath.match('/qHyperCube') ? hcHandler : loHandler;
   const handler = useMemo(
     () =>
-      hcHandler({
+      createHandler({
         def: target,
-        hc: getValue(properties, target.propertyPath),
+        h: getValue(properties, target.propertyPath),
         properties,
       }),
     [properties]

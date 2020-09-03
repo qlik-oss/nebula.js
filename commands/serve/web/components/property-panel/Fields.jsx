@@ -71,7 +71,7 @@ export default function Fields({
       <Typography variant="overline">{label}</Typography>
       <List dense>
         {items.map((d, i) => (
-          <ListItem disableGutters key={d.qDef.cId || i}>
+          <ListItem disableGutters key={(d.qDef && d.qDef.cId) || i}>
             <ListItemText>
               <FieldTitle field={d} libraryItems={libraryItems} type={type} />
             </ListItemText>
