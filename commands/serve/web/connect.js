@@ -102,7 +102,7 @@ const getHeaders = async ({ webIntegrationId, rootPath }) => {
     loginUrl.searchParams.append('returnto', window.location.href);
     loginUrl.searchParams.append('qlik-web-integration-id', webIntegrationId);
     window.location.href = loginUrl;
-    return undefined;
+    return 401;
   }
   const csrfToken = new Map(response.headers).get('qlik-csrf-token');
   headers = {
@@ -125,6 +125,9 @@ const connect = () => {
       if (webIntegrationId) {
         if (!headers) {
           headers = await getHeaders(info);
+        }
+        if (headers === 401) {
+          return { status: 401 };
         }
         return {
           getDocList: async () => {

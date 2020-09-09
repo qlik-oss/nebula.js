@@ -1,3 +1,4 @@
+/* eslint no-nested-ternary: 0 */
 import React, { useState, useEffect } from 'react';
 
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
@@ -115,25 +116,6 @@ function SelectEngine({ info, children }) {
         </Typography>
 
         <Typography variant="subtitle1" gutterBottom>
-          Qlik Core
-        </Typography>
-        <Typography variant="body2" paragraph>
-          WebSocket URL format: <code>ws://&lt;host&gt;:&lt;port&gt;</code>
-          <br />
-          Example: <code>ws://localhost:9076</code>
-          <br />
-          <br />
-          For more info, visit{' '}
-          <Link
-            color="secondary"
-            underline="always"
-            href="https://core.qlik.com/services/qix-engine/apis/qix/introduction/#websockets"
-          >
-            QIX WebSocket Introduction
-          </Link>
-          .
-        </Typography>
-        <Typography variant="subtitle1" gutterBottom>
           Qlik Cloud Services
         </Typography>
         <Typography variant="body2" paragraph>
@@ -171,9 +153,29 @@ function SelectEngine({ info, children }) {
           Note that for the Qlik Sense Proxy to allow sessions from this webpage, <code>
             {window.location.host}
           </code>{' '}
-          needs to be whitelisted in QMC in your Qlik Sense Enterprise on Windows deployment.
+          needs to be whitelisted in QMC in your Qlik Sense Enterprise on Windows deployment. In addition, you need to
+          enable <i>Has secure attribute</i> and set <i>SameSite attribute</i> to <i>None</i>.
           <br />
-          Make sure that you are logged in to Qlik Sense in another browser tab.
+          Make sure you are logged in to Qlik Sense in another browser tab.
+        </Typography>
+        <Typography variant="subtitle1" gutterBottom>
+          Qlik Core
+        </Typography>
+        <Typography variant="body2" paragraph>
+          WebSocket URL format: <code>ws://&lt;host&gt;:&lt;port&gt;</code>
+          <br />
+          Example: <code>ws://localhost:9076</code>
+          <br />
+          <br />
+          For more info, visit{' '}
+          <Link
+            color="secondary"
+            underline="always"
+            href="https://core.qlik.com/services/qix-engine/apis/qix/introduction/#websockets"
+          >
+            QIX WebSocket Introduction
+          </Link>
+          .
         </Typography>
         <Typography variant="subtitle1" gutterBottom>
           Qlik Sense Desktop
@@ -288,7 +290,25 @@ export default function Hub() {
     }
     connect()
       .then((g) => {
+        if (g.session) {
+          g.session.on('notification:OnAuthenticationInformation', (e) => {
+            if (e.mustAuthenticate) {
+              setError({
+                message: 'Could not authenticate.',
+                hints: [
+                  `In your virtual proxy advanced settings in the QMC, make sure to whitelist ${window.location.host}, ensure "Has secure attribute" is enabled and that "SameSite attribute" is set to "None".`,
+                ],
+              });
+              setGlobal(null);
+            }
+          });
+        }
+
         setGlobal(g);
+
+        if (!g.getDocList) {
+          return;
+        }
 
         setActiveStep(1);
         const conns = storage.get('connections') || [];
@@ -312,8 +332,10 @@ export default function Hub() {
         };
         if (e.target instanceof WebSocket) {
           oops.message = `Connection failed to ${info.engineUrl}`;
-          if (!info.webIntegrationId) {
-            oops.hints.push('If you are connecting to QCS/QSEoK, make sure to provide a web-integration-id.');
+          if (/\.qlik[A-Za-z0-9-]+\.com/.test(info.engineUrl) && !info.webIntegrationId) {
+            oops.hints.push(
+              'If you are connecting to Qlik Cloud Services, make sure to provide a qlik-web-integration-id.'
+            );
           }
           setError(oops);
           return;
@@ -357,7 +379,11 @@ export default function Hub() {
         </ThemeProvider>
         <Box p={[2, 2]} m={2} bgcolor="background.paper" boxShadow={24} borderRadius="borderRadius">
           {glob ? (
-            <AppList info={info} glob={glob} treatAsDesktop={treatAsDesktop} />
+            glob.status === 401 ? (
+              <Typography variant="h5">Connecting...</Typography>
+            ) : (
+              <AppList info={info} glob={glob} treatAsDesktop={treatAsDesktop} />
+            )
           ) : (
             <SelectEngine info={info}>{err && <Err e={err} />}</SelectEngine>
           )}
