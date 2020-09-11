@@ -1,8 +1,8 @@
 /**
  * @interface Theme~ScalePalette
  * @property {string} key
- * @property {'gradient'|'class'} type
- * @property {string[]} colors
+ * @property {'gradient'|'class-pyramid'} type
+ * @property {string[]|Array<Array<string>>} colors
  */
 
 /**

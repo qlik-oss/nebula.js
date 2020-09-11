@@ -1,4 +1,5 @@
 import extend from 'extend';
+import generateScales from './theme-scale-generator';
 
 /**
  * Creates the follwing array of paths
@@ -133,9 +134,13 @@ function resolveVariables(objTree, variables) {
 
 styleResolver.resolveRawTheme = (raw) => {
   // TODO - validate format
-  // TODO - generate class-pyramid
   const c = extend(true, {}, raw);
   resolveVariables(c, c._variables); // eslint-disable-line
+
+  // generate class-pyramid
+  if (c.scales) {
+    generateScales(c.scales, c.dataColors && c.dataColors.nullColor);
+  }
 
   return c;
 };
