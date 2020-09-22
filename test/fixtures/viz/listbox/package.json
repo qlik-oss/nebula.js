@@ -1,0 +1,7 @@
+{
+  "name": "listbox",
+  "main": "dist/listbox.js",
+  "peerDependencies": {
+    "@nebula.js/stardust": "*"
+  }
+}
