@@ -9,11 +9,11 @@
   },
   "dependencies": {
     "@nebula.js/stardust": "next",
-    "@nebula.js/sn-mekko-chart": "1.0.0",
-    "enigma.js": "2.6.3"
+    "@nebula.js/sn-mekko-chart": "1.0.4",
+    "enigma.js": "2.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.8.3",
+    "@babel/core": "7.11.6",
     "parcel-bundler": "^1.12.4"
   }
 }

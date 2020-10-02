@@ -22,7 +22,7 @@
     "test:integration": "aw puppet --testExt '*.int.js' --glob 'test/integration/**/*.int.js'"
   },
   "devDependencies": {
-    "@after-work.js/aw": "6.0.10",
+    "@after-work.js/aw": "6.0.14",
     "@nebula.js/cli": "<%= nebulaVersion %>",
     "@nebula.js/cli-build": "<%= nebulaVersion %>",
     "@nebula.js/cli-serve": "<%= nebulaVersion %>",
@@ -31,8 +31,8 @@
     "eslint-config-airbnb-base": "13.1.0",
     "eslint-plugin-import": "2.15.0",
     "eslint-plugin-mocha": "5.2.1",
-    "picasso.js": "0.25.2",
-    "picasso-plugin-q": "0.25.2"
+    "picasso.js": "0.34.0",
+    "picasso-plugin-q": "0.34.0"
   },
   "peerDependencies": {
     "@nebula.js/stardust": "^1.x"
