@@ -15,7 +15,7 @@ export default function setTheme(t, resolve) {
   if (!rawThemeJSON.palettes.ui || !rawThemeJSON.palettes.ui.length) {
     rawThemeJSON.palettes.ui = root.palettes.ui;
   }
-  if (!rawThemeJSON.scales) {
+  if (!rawThemeJSON.scales || !rawThemeJSON.scales.length) {
     rawThemeJSON.scales = root.scales;
   }
 

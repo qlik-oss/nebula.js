@@ -76,7 +76,7 @@ describe('set theme', () => {
 
   it('should add defaults if custom scales and palettes are empty', () => {
     const root = { color: 'pink', palettes: { data: 'data', ui: 'ui' }, scales: 'scales' };
-    const merged = { palettes: { data: [], ui: [] } };
+    const merged = { palettes: { data: [], ui: [] }, scales: [] };
     extend.onFirstCall().returns(root);
     extend.onSecondCall().returns(merged);
     const custom = { color: 'red' };
@@ -88,7 +88,7 @@ describe('set theme', () => {
   });
 
   it('should return resolved theme', () => {
-    extend.onFirstCall().returns({ palettes: { data: 'data', ui: 'ui' }, scales: [] });
+    extend.onFirstCall().returns({ palettes: { data: [], ui: [] }, scales: [] });
     extend.onSecondCall().returns({ palettes: { data: [], ui: [] }, scales: [] });
     resolve.returns('resolved');
     expect(create({}, resolve)).to.equal('resolved');
