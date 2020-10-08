@@ -43,12 +43,12 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       rules: [
         {
           test: /\.css$/,
-          include: [/node_modules\/monaco-editor/],
+          include: [/node_modules[/\\]monaco-editor/],
           use: ['style-loader', 'css-loader'],
         },
         {
           test: /\.ttf$/,
-          include: [/node_modules\/monaco-editor/],
+          include: [/node_modules[/\\]monaco-editor/],
           use: ['file-loader'],
         },
         {
@@ -59,7 +59,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         {
           test: /\.jsx?$/,
           sideEffects: false,
-          include: [srcDir, /nucleus/, /ui\/icons/],
+          include: [srcDir, /nucleus/, /ui[/\\]icons/],
           use: {
             loader: babelPath,
             options: {
