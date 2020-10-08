@@ -20,9 +20,10 @@ export default function glue({ halo, element, model, initialSnOptions, onMount, 
 
   const unmount = () => {
     root.remove(portal);
+    model.removeListener('closed', unmount);
   };
 
-  model.once('closed', unmount);
+  model.on('closed', unmount);
 
   root.add(portal);
 
