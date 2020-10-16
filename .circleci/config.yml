@@ -25,19 +25,6 @@ aliases:
     at: ~/project
 
 jobs:
-  apiGov:
-    - run:
-        name: API Governance Compliance
-        command: |
-          docker pull qlik/asmquery
-          docker create -v /specs --name specs alpine:3.4 /bin/true
-          docker cp ./src/doc/api-docs.json specs:/specs
-          docker run --volumes-from specs
-          -e target=Colony
-          -e runMode=failBuild
-          -e apiId=abdc47c2-921a-45d3-ba5c-80d448574c5b
-          -e specPath='/specs/api-docs.json'
-          -e commit="$CIRCLE_SHA1" qlik/asmquery
   build:
     docker:
       - image: circleci/node:10.19.0
@@ -77,6 +64,18 @@ jobs:
       - run:
           name: Lint
           command: yarn run lint
+      - run:
+          name: API Governance Compliance
+          command: |
+            docker pull qlik/asmquery
+            docker create -v /specs --name specs alpine:3.4 /bin/true
+            docker cp ./src/doc/api-docs.json specs:/specs
+            docker run --volumes-from specs
+            -e target=Colony
+            -e runMode=failBuild
+            -e apiId=abdc47c2-921a-45d3-ba5c-80d448574c5b
+            -e specPath='/apis/stardust/api-spec/spec.json'
+            -e commit="$CIRCLE_SHA1" qlik/asmquery
       - run:
           name: Locale
           command: yarn run locale:verify
