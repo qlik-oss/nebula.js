@@ -40,8 +40,6 @@ jobs:
       - checkout
       - setup_remote_docker:
           version: 18.09.3
-          docker_layer_caching: true
-
       # start the SSE plugin as early as possible so that the engine
       # image has enough time to connect to it before tests are run
       - run:
