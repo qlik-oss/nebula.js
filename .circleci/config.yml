@@ -38,6 +38,9 @@ jobs:
 
     steps:
       - checkout
+      - setup_remote_docker:
+          version: 18.09.3
+          docker_layer_caching: true
 
       # start the SSE plugin as early as possible so that the engine
       # image has enough time to connect to it before tests are run
@@ -67,14 +70,12 @@ jobs:
       - run:
           name: API Governance Compliance
           command: |
+            echo $DOCKERHUB_PASSWORD | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            echo $ARTIFACTORY_PASSWORD | docker login -u "$ARTIFACTORY_USERNAME" --password-stdin qliktech-docker.jfrog.io
             docker pull qlik/asmquery
             docker create -v /specs --name specs alpine:3.4 /bin/true
-            docker cp ./src/doc/api-docs.json specs:/specs
-            docker run --volumes-from specs
-            -e target=Colony
-            -e runMode=failBuild
-            -e apiId=abdc47c2-921a-45d3-ba5c-80d448574c5b
-            -e specPath='/apis/stardust/api-spec/spec.json'
+            docker cp ./NebulaJS/api-docs.json specs:/specs
+            docker run --volumes-from specs -e target=Colony -e runMode=failBuild -e apiId=abdc47c2-921a-45d3-ba5c-80d448574c5b -e specPath='/apis/stardust/api-spec/spec.json'
             -e commit="$CIRCLE_SHA1" qlik/asmquery
       - run:
           name: Locale
