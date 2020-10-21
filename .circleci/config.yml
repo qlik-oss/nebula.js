@@ -129,8 +129,7 @@ jobs:
           command: |
             docker pull qlik/asmquery
             docker create -v /specs --name specs alpine:3.4 /bin/true
-            docker run --volumes-from specs -e target=Colony -e runMode=failBuild -e apiId=abdc47c2-921a-45d3-ba5c-80d448574c5b -e specPath='/apis/stardust/api-spec/spec.json'
-            -e commit="$CIRCLE_SHA1" qlik/asmquery
+            docker run --volumes-from specs -e target=Colony -e runMode=failBuild -e apiId=abdc47c2-921a-45d3-ba5c-80d448574c5b -e specPath='/apis/stardust/api-spec/spec.json' -e commit="$CIRCLE_SHA1" qlik/asmquery
 workflows:
   version: 2
   build-deploy:
