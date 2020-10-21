@@ -122,11 +122,8 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          name: Login for Artifactory
-          command: curl -u${ARTIFACTORY_USER}:${ARTIFACTORY_PWD} "${ARTIFACTORY_URL}/api/npm/npm-local/auth/qlik" > ./.npmrc
-      - run:
           name: Login for Docker
-          command: docker login -u "$DOCKER_USER" -p "$DOCKER_PASSWORD"
+          command: echo $DOCKER_TOKEN | docker login -u "$DOCKER_USER" --password-stdin
       - run:
           name: API Governance Compliance
           command: |
