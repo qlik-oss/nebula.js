@@ -119,6 +119,7 @@ jobs:
     machine: true
     working_directory: ~/project
     steps:
+      - checkout
       - attach_workspace:
           at: ~/project
       - run:
@@ -141,8 +142,6 @@ workflows:
               only:
                 - /v.*/
       - api-governance:
-          requires:
-            - build
           filters:
             tags:
               only:
