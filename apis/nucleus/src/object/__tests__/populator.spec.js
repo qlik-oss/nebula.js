@@ -56,7 +56,7 @@ describe('populator', () => {
     const resolved = { qDimensions: [] };
     populate({ sn, properties: { a: { b: { c: resolved } } }, fields: [1] });
     expect(handler).to.have.been.calledWithExactly({
-      h: resolved,
+      dc: resolved,
       def: target,
       properties: { a: { b: { c: resolved } } },
     });

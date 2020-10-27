@@ -45,7 +45,7 @@ export default function populateData({ sn, properties, fields }) {
   }
 
   const hc = hcHandler({
-    h: p,
+    dc: p,
     def: target,
     properties,
   });

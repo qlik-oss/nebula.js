@@ -8,15 +8,15 @@ const nxDimension = (f) => ({
   },
 });
 
-export default function loHandler({ h, def, properties }) {
-  h.qInitialDataFetch = h.qInitialDataFetch || [];
+export default function loHandler({ dc: lo, def, properties }) {
+  lo.qInitialDataFetch = lo.qInitialDataFetch || [];
 
   const objectProperties = properties;
 
   const handler = {
     dimensions() {
-      if (!h.qDef || !h.qDef.qFieldDefs || h.qDef.qFieldDefs.length === 0) return [];
-      return [h];
+      if (!lo.qDef || !lo.qDef.qFieldDefs || lo.qDef.qFieldDefs.length === 0) return [];
+      return [lo];
     },
     measures() {
       return [];
@@ -40,14 +40,14 @@ export default function loHandler({ h, def, properties }) {
         },
       ];
       Object.keys(dimension).forEach((k) => {
-        h[k] = dimension[k];
+        lo[k] = dimension[k];
       });
       def.dimensions.added(dimension, objectProperties);
     },
     removeDimension(idx) {
-      const dimension = h;
+      const dimension = lo;
       Object.keys(dimension).forEach((k) => {
-        delete h[k];
+        delete lo[k];
       });
       def.dimensions.removed(dimension, objectProperties, idx);
     },
@@ -61,7 +61,7 @@ export default function loHandler({ h, def, properties }) {
       return 0;
     },
     canAddDimension() {
-      return h.qDef && h.qDef.qFieldDefs ? h.qDef.qFieldDefs.length === 0 : !h.qDef;
+      return lo.qDef && lo.qDef.qFieldDefs ? lo.qDef.qFieldDefs.length === 0 : !lo.qDef;
     },
     canAddMeasure() {
       return false;

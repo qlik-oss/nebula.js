@@ -25,7 +25,7 @@ describe('hc-handler', () => {
     };
 
     h = handler({
-      h: hc,
+      dc: hc,
       def,
       properties: 'props',
     });

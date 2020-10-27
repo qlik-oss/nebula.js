@@ -35,22 +35,22 @@ const nxMeasure = (f) => ({
   },
 });
 
-export default function hcHandler({ h, def, properties }) {
-  h.qDimensions = h.qDimensions || [];
-  h.qMeasures = h.qMeasures || [];
-  h.qInterColumnSortOrder = h.qInterColumnSortOrder || [];
-  h.qInitialDataFetch = h.qInitialDataFetch || [];
-  h.qColumnOrder = h.qColumnOrder || [];
-  h.qExpansionState = h.qExpansionState || [];
+export default function hcHandler({ dc: hc, def, properties }) {
+  hc.qDimensions = hc.qDimensions || [];
+  hc.qMeasures = hc.qMeasures || [];
+  hc.qInterColumnSortOrder = hc.qInterColumnSortOrder || [];
+  hc.qInitialDataFetch = hc.qInitialDataFetch || [];
+  hc.qColumnOrder = hc.qColumnOrder || [];
+  hc.qExpansionState = hc.qExpansionState || [];
 
   const objectProperties = properties;
 
   const handler = {
     dimensions() {
-      return h.qDimensions;
+      return hc.qDimensions;
     },
     measures() {
-      return h.qMeasures;
+      return hc.qMeasures;
     },
     addDimension(d) {
       const dimension =
@@ -78,22 +78,22 @@ export default function hcHandler({ h, def, properties }) {
       dimension.qAttributeDimensions = dimension.qAttributeDimensions || [];
       // ========= end defaults =============
 
-      if (h.qDimensions.length < handler.maxDimensions()) {
-        h.qDimensions.push(dimension);
-        addIndex(h.qInterColumnSortOrder, h.qDimensions.length - 1);
+      if (hc.qDimensions.length < handler.maxDimensions()) {
+        hc.qDimensions.push(dimension);
+        addIndex(hc.qInterColumnSortOrder, hc.qDimensions.length - 1);
         def.dimensions.added(dimension, objectProperties);
       } else {
-        h.qLayoutExclude = h.qLayoutExclude || {};
-        h.qLayoutExclude.qHyperCubeDef = h.qLayoutExclude.qHyperCubeDef || {};
-        h.qLayoutExclude.qHyperCubeDef.qDimensions = h.qLayoutExclude.qHyperCubeDef.qDimensions || [];
-        h.qLayoutExclude.qHyperCubeDef.qMeasures = h.qLayoutExclude.qHyperCubeDef.qMeasures || [];
+        hc.qLayoutExclude = hc.qLayoutExclude || {};
+        hc.qLayoutExclude.qHyperCubeDef = hc.qLayoutExclude.qHyperCubeDef || {};
+        hc.qLayoutExclude.qHyperCubeDef.qDimensions = hc.qLayoutExclude.qHyperCubeDef.qDimensions || [];
+        hc.qLayoutExclude.qHyperCubeDef.qMeasures = hc.qLayoutExclude.qHyperCubeDef.qMeasures || [];
 
-        h.qLayoutExclude.qHyperCubeDef.qDimensions.push(dimension);
+        hc.qLayoutExclude.qHyperCubeDef.qDimensions.push(dimension);
       }
     },
     removeDimension(idx) {
-      const dimension = h.qDimensions.splice(idx, 1)[0];
-      removeIndex(h.qInterColumnSortOrder, idx);
+      const dimension = hc.qDimensions.splice(idx, 1)[0];
+      removeIndex(hc.qInterColumnSortOrder, idx);
       def.dimensions.removed(dimension, objectProperties, idx);
     },
     addMeasure(m) {
@@ -115,36 +115,36 @@ export default function hcHandler({ h, def, properties }) {
       measure.qAttributeDimensions = measure.qAttributeDimensions || [];
       measure.qAttributeExpressions = measure.qAttributeExpressions || [];
 
-      if (h.qMeasures.length < handler.maxMeasures()) {
-        h.qMeasures.push(measure);
-        addIndex(h.qInterColumnSortOrder, h.qDimensions.length + h.qMeasures.length - 1);
+      if (hc.qMeasures.length < handler.maxMeasures()) {
+        hc.qMeasures.push(measure);
+        addIndex(hc.qInterColumnSortOrder, hc.qDimensions.length + hc.qMeasures.length - 1);
         def.measures.added(measure, objectProperties);
       } else {
-        h.qLayoutExclude = h.qLayoutExclude || {};
-        h.qLayoutExclude.qHyperCubeDef = h.qLayoutExclude.qHyperCubeDef || {};
-        h.qLayoutExclude.qHyperCubeDef.qDimensions = h.qLayoutExclude.qHyperCubeDef.qDimensions || [];
-        h.qLayoutExclude.qHyperCubeDef.qMeasures = h.qLayoutExclude.qHyperCubeDef.qMeasures || [];
+        hc.qLayoutExclude = hc.qLayoutExclude || {};
+        hc.qLayoutExclude.qHyperCubeDef = hc.qLayoutExclude.qHyperCubeDef || {};
+        hc.qLayoutExclude.qHyperCubeDef.qDimensions = hc.qLayoutExclude.qHyperCubeDef.qDimensions || [];
+        hc.qLayoutExclude.qHyperCubeDef.qMeasures = hc.qLayoutExclude.qHyperCubeDef.qMeasures || [];
 
-        h.qLayoutExclude.qHyperCubeDef.qMeasures.push(measure);
+        hc.qLayoutExclude.qHyperCubeDef.qMeasures.push(measure);
       }
     },
     removeMeasure(idx) {
-      const measure = h.qMeasures.splice(idx, 1)[0];
-      removeIndex(h.qInterColumnSortOrder, h.qDimensions.length + idx);
+      const measure = hc.qMeasures.splice(idx, 1)[0];
+      removeIndex(hc.qInterColumnSortOrder, hc.qDimensions.length + idx);
       def.measures.removed(measure, objectProperties, idx);
     },
 
     maxDimensions() {
-      return def.dimensions.max(h.qMeasures.length);
+      return def.dimensions.max(hc.qMeasures.length);
     },
     maxMeasures() {
-      return def.measures.max(h.qDimensions.length);
+      return def.measures.max(hc.qDimensions.length);
     },
     canAddDimension() {
-      return h.qDimensions.length < handler.maxDimensions();
+      return hc.qDimensions.length < handler.maxDimensions();
     },
     canAddMeasure() {
-      return h.qMeasures.length < handler.maxMeasures();
+      return hc.qMeasures.length < handler.maxMeasures();
     },
   };
 

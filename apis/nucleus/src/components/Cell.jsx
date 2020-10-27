@@ -163,6 +163,8 @@ const validateTarget = (translator, layout, properties, def) => {
   };
 };
 
+const getInfo = (info) => (info && (Array.isArray(info) ? info : [info])) || [];
+
 const validateCubes = (translator, targets, layout) => {
   let hasUnfulfilledErrors = false;
   let aggMinD = 0;
@@ -175,12 +177,11 @@ const validateCubes = (translator, targets, layout) => {
     const minD = def.dimensions.min();
     const minM = def.measures.min();
     const c = def.resolveLayout(layout);
-    const d = (c.qDimensionInfo && (Array.isArray(c.qDimensionInfo) ? c.qDimensionInfo : [c.qDimensionInfo])) || [];
-    const fd = d.filter(filterData); // Filter out optional calc conditions
-    const m = (c.qMeasureInfo || []).filter(filterData); // Filter out optional calc conditions
+    const d = getInfo(c.qDimensionInfo).filter(filterData); // Filter out optional calc conditions
+    const m = getInfo(c.qMeasureInfo).filter(filterData); // Filter out optional calc conditions
     aggMinD += minD;
     aggMinM += minM;
-    if (fd.length < minD || m.length < minM) {
+    if (d.length < minD || m.length < minM) {
       hasUnfulfilledErrors = true;
     }
     if (c.qError) {
