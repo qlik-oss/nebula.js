@@ -138,21 +138,22 @@ const validateInfo = (min, info, getDescription, translatedError, translatedCalc
   });
 };
 
+const getInfo = (info) => (info && (Array.isArray(info) ? info : [info])) || [];
+
 const validateTarget = (translator, layout, properties, def) => {
   const minD = def.dimensions.min();
   const minM = def.measures.min();
   const c = def.resolveLayout(layout);
-  const dimInfo = Array.isArray(c.qDimensionInfo) ? c.qDimensionInfo : [c.qDimensionInfo];
   const reqDimErrors = validateInfo(
     minD,
-    dimInfo,
+    getInfo(c.qDimensionInfo),
     (i) => def.dimensions.description(properties, i),
     translator.get('Visualization.Invalid.Dimension'),
     translator.get('Visualization.UnfulfilledCalculationCondition')
   );
   const reqMeasErrors = validateInfo(
     minM,
-    c.qMeasureInfo,
+    getInfo(c.qMeasureInfo),
     (i) => def.measures.description(properties, i),
     translator.get('Visualization.Invalid.Measure'),
     translator.get('Visualization.UnfulfilledCalculationCondition')
@@ -162,8 +163,6 @@ const validateTarget = (translator, layout, properties, def) => {
     reqMeasErrors,
   };
 };
-
-const getInfo = (info) => (info && (Array.isArray(info) ? info : [info])) || [];
 
 const validateCubes = (translator, targets, layout) => {
   let hasUnfulfilledErrors = false;
