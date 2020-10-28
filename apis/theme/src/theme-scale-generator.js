@@ -67,6 +67,7 @@ function generateLevel(scale, current, size) {
 /**
  * Generates a pyramid of colors from a minimum of 2 colors
  *
+ * @ignore
  * @internal
  * @param {Array} colors an array of colors to generate from
  * @param {number} size the integer size of the base of the pyramid

@@ -484,56 +484,6 @@
         }
       }
     },
-    "ColorScale#addColorPart": {
-      "description": "Adds a part to this color scale. The input colors span one part of the gradient, colors between them are interpolated. Input two equal colors for a solid scale part.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "color1",
-          "description": "First color to be used, in formats defined by Color",
-          "kind": "union",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            }
-          ],
-          "type": "any"
-        },
-        {
-          "name": "color2",
-          "description": "Second color to be used, in formats defined by Color",
-          "kind": "union",
-          "items": [
-            {
-              "type": "string"
-            },
-            {
-              "type": "number"
-            }
-          ],
-          "type": "any"
-        },
-        {
-          "name": "level",
-          "description": "Which level of the color pyramid to add this part to.",
-          "type": "number"
-        }
-      ]
-    },
-    "ColorScale#getColor": {
-      "description": "Gets the color which represents the input value",
-      "kind": "function",
-      "params": [
-        {
-          "name": "scaledValue",
-          "description": "A value between 0 and 1 representing a value in the data scaled between the max and min boundaries of the data. Values are clamped to 0 and 1.",
-          "type": "number"
-        }
-      ]
-    },
     "Configuration": {
       "kind": "interface",
       "entries": {
@@ -637,27 +587,6 @@
           "optional": true,
           "type": "qae.GenericObjectProperties"
         }
-      }
-    },
-    "createPyramidFromColors": {
-      "description": "Generates a pyramid of colors from a minimum of 2 colors",
-      "x-internal": true,
-      "kind": "function",
-      "params": [
-        {
-          "name": "colors",
-          "description": "an array of colors to generate from",
-          "type": "Array"
-        },
-        {
-          "name": "size",
-          "description": "the integer size of the base of the pyramid",
-          "type": "number"
-        }
-      ],
-      "returns": {
-        "description": "A 2 dimensional array containing the levels of the color pyramid",
-        "type": "Array"
       }
     },
     "DataTarget": {
@@ -877,22 +806,6 @@
           "type": "string"
         }
       }
-    },
-    "limitFunction": {
-      "description": "Gets this mapping between the scaled value and the color parts",
-      "kind": "function",
-      "params": [
-        {
-          "name": "scaledValue",
-          "description": "A value between 0 and 1 representing a value in the data scaled between the max and min boundaries of the data. Values are clamped to 0 and 1.",
-          "type": "number"
-        },
-        {
-          "name": "numEdges",
-          "description": "Number of parts that makes up this scale",
-          "type": "number"
-        }
-      ]
     },
     "LoadType": {
       "kind": "interface",

@@ -2,6 +2,7 @@ import { color, rgb } from 'd3-color';
 
 /**
  * Gets this mapping between the scaled value and the color parts
+ * @ignore
  * @param {Number} scaledValue - A value between 0 and 1 representing a value in the data scaled between the max and min boundaries of the data. Values are clamped to 0 and 1.
  * @param {Number} numEdges - Number of parts that makes up this scale
  */
@@ -42,6 +43,7 @@ class ColorScale {
 
   /**
    * Adds a part to this color scale. The input colors span one part of the gradient, colors between them are interpolated. Input two equal colors for a solid scale part.
+   * @ignore
    * @param {String|Number} color1 - First color to be used, in formats defined by Color
    * @param {String|Number} color2 - Second color to be used, in formats defined by Color
    * @param {Number} level - Which level of the color pyramid to add this part to.
@@ -58,6 +60,7 @@ class ColorScale {
 
   /**
    * Gets the color which represents the input value
+   * @ignore
    * @param {Number} scaledValue - A value between 0 and 1 representing a value in the data scaled between the max and min boundaries of the data. Values are clamped to 0 and 1.
    */
   getColor(value, level) {
