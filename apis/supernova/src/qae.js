@@ -68,7 +68,9 @@ function target(def) {
   const layoutPath = propertyPath.slice(0, -3);
   if (/\/(qHyperCube|qListObject)$/.test(layoutPath) === false) {
     const d = layoutPath.includes('/qHyperCube') ? 'qHyperCubeDef' : 'qListObjectDef';
-    throw new Error(`Incorrect definition for ${d} at ${propertyPath}`);
+    throw new Error(
+      `Incorrect definition for ${d} at ${propertyPath}. Valid paths include /qHyperCubeDef or /qListObjectDef, e.g. data/qHyperCubeDef`
+    );
   }
   return {
     propertyPath,
