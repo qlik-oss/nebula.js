@@ -32,7 +32,7 @@
     "build:dev": "rollup --config ../../rollup.config.js",
     "build:watch": "rollup --config ../../rollup.config.js -w",
     "prepublishOnly": "rm -rf dist && yarn run build",
-    "spec": "scriptappy-from-jsdoc -c ./spec/spec.conf.js"
+    "spec": "scriptappy-from-jsdoc -c ./api-spec/spec.conf.js"
   },
   "devDependencies": {
     "@material-ui/core": "4.11.0",

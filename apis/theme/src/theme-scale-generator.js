@@ -67,9 +67,10 @@ function generateLevel(scale, current, size) {
 /**
  * Generates a pyramid of colors from a minimum of 2 colors
  *
+ * @ignore
  * @internal
  * @param {Array} colors an array of colors to generate from
- * @param {Int} size the size of the base of the pyramid
+ * @param {number} size the integer size of the base of the pyramid
  * @returns {Array} A 2 dimensional array containing the levels of the color pyramid
  */
 function createPyramidFromColors(colors, size, nanColor) {
