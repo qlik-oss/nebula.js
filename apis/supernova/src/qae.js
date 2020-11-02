@@ -66,8 +66,11 @@ const resolveValue = (data, reference, defaultValue) => {
 function target(def) {
   const propertyPath = def.path || '/qHyperCubeDef';
   const layoutPath = propertyPath.slice(0, -3);
-  if (/\/qHyperCube$/.test(layoutPath) === false) {
-    throw new Error(`Incorrect definition for qHyperCubeDef at ${propertyPath}`);
+  if (/\/(qHyperCube|qListObject)$/.test(layoutPath) === false) {
+    const d = layoutPath.includes('/qHyperCube') ? 'qHyperCubeDef' : 'qListObjectDef';
+    throw new Error(
+      `Incorrect definition for ${d} at ${propertyPath}. Valid paths include /qHyperCubeDef or /qListObjectDef, e.g. data/qHyperCubeDef`
+    );
   }
   return {
     propertyPath,

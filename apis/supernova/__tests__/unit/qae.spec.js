@@ -85,7 +85,7 @@ describe('qae', () => {
         data: {
           targets: [
             {
-              path: 'qhc',
+              path: '/qHyperCubeDefFoo',
               dimensions: {
                 min: () => 3,
                 max: () => 7,
@@ -105,7 +105,35 @@ describe('qae', () => {
           ],
         },
       })
-    ).to.throw('Incorrect definition for qHyperCubeDef at qhc');
+    ).to.throw('Incorrect definition for qHyperCubeDef at /qHyperCubeDefFoo');
+  });
+  it('should throw with incorrect listobject def', () => {
+    expect(() =>
+      qae({
+        data: {
+          targets: [
+            {
+              path: '/qListObjectDefFoo',
+              dimensions: {
+                min: () => 3,
+                max: () => 7,
+                added: () => 'a',
+                description: () => 'Slice',
+                moved: () => 'c',
+                replaced: () => 'd',
+              },
+              measures: {
+                min: 2,
+                max: 4,
+                added: () => 'b',
+                description: () => 'Angle',
+                removed: () => 'e',
+              },
+            },
+          ],
+        },
+      })
+    ).to.throw('Incorrect definition for qListObjectDef at /qListObjectDefFoo');
   });
   it('should resolve layout', () => {
     const t = qae({

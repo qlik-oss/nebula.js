@@ -35,7 +35,7 @@ const nxMeasure = (f) => ({
   },
 });
 
-export default function hcHandler({ hc, def, properties }) {
+export default function hcHandler({ dc: hc, def, properties }) {
   hc.qDimensions = hc.qDimensions || [];
   hc.qMeasures = hc.qMeasures || [];
   hc.qInterColumnSortOrder = hc.qInterColumnSortOrder || [];
@@ -45,7 +45,7 @@ export default function hcHandler({ hc, def, properties }) {
 
   const objectProperties = properties;
 
-  const h = {
+  const handler = {
     dimensions() {
       return hc.qDimensions;
     },
@@ -78,7 +78,7 @@ export default function hcHandler({ hc, def, properties }) {
       dimension.qAttributeDimensions = dimension.qAttributeDimensions || [];
       // ========= end defaults =============
 
-      if (hc.qDimensions.length < h.maxDimensions()) {
+      if (hc.qDimensions.length < handler.maxDimensions()) {
         hc.qDimensions.push(dimension);
         addIndex(hc.qInterColumnSortOrder, hc.qDimensions.length - 1);
         def.dimensions.added(dimension, objectProperties);
@@ -115,7 +115,7 @@ export default function hcHandler({ hc, def, properties }) {
       measure.qAttributeDimensions = measure.qAttributeDimensions || [];
       measure.qAttributeExpressions = measure.qAttributeExpressions || [];
 
-      if (hc.qMeasures.length < h.maxMeasures()) {
+      if (hc.qMeasures.length < handler.maxMeasures()) {
         hc.qMeasures.push(measure);
         addIndex(hc.qInterColumnSortOrder, hc.qDimensions.length + hc.qMeasures.length - 1);
         def.measures.added(measure, objectProperties);
@@ -141,12 +141,12 @@ export default function hcHandler({ hc, def, properties }) {
       return def.measures.max(hc.qDimensions.length);
     },
     canAddDimension() {
-      return hc.qDimensions.length < h.maxDimensions();
+      return hc.qDimensions.length < handler.maxDimensions();
     },
     canAddMeasure() {
-      return hc.qMeasures.length < h.maxMeasures();
+      return hc.qMeasures.length < handler.maxMeasures();
     },
   };
 
-  return h;
+  return handler;
 }
