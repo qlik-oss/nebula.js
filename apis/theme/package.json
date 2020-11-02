@@ -1,10 +1,10 @@
 {
   "name": "@nebula.js/theme",
-  "version": "1.0.0",
+  "version": "1.0.2-alpha.0",
   "private": true,
   "main": "src/index.js",
   "devDependencies": {
-    "d3-color": "1.4.1",
+    "d3-color": "2.0.0",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1"
   }

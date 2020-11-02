@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "1.0.0",
+    "version": "1.0.2-alpha.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -46,52 +46,86 @@
         }
       }
     },
-    "useState": {
-      "description": "Creates a stateful value.",
-      "templates": [
-        {
-          "name": "S"
-        }
-      ],
+    "onTakeSnapshot": {
+      "description": "Registers a callback that is called when a snapshot is taken.",
       "kind": "function",
       "params": [
         {
-          "name": "initialState",
-          "description": "The initial state.",
-          "kind": "union",
-          "items": [
-            {
-              "type": "S"
-            },
-            {
-              "kind": "function",
-              "params": [],
-              "returns": {
-                "type": "S"
-              }
-            }
-          ]
+          "name": "snapshotCallback",
+          "type": "function"
+        }
+      ],
+      "examples": [
+        "import { onTakeSnapshot } from '@nebula.js/stardust';\nimport { useState } from '@nebula.js/stardust';\nimport { useLayout } from '@nebula.js/stardust';\n\nconst layout = useLayout();\nconst [zoomed] = useState(layout.isZoomed || false);\n\nonTakeSnapshot((copyOfLayout) => {\n  copyOfLayout.isZoomed = zoomed;\n  return Promise.resolve(copyOfLayout);\n});"
+      ]
+    },
+    "useAction": {
+      "description": "Registers a custom action.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "factory",
+          "type": "function"
+        },
+        {
+          "name": "deps",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "any"
+          }
         }
       ],
       "returns": {
-        "description": "The value and a function to update it.",
-        "kind": "array",
-        "items": [
-          {
-            "type": "S"
-          },
-          {
-            "type": "#/definitions/SetStateFn",
-            "generics": [
-              {
-                "type": "S"
-              }
-            ]
-          }
-        ]
+        "type": "A"
       },
       "examples": [
-        "import { useState } from '@nebula.js/stardust';\n// ...\n// initiate with simple primitive value\nconst [zoomed, setZoomed] = useState(false);\n\n// update\nsetZoomed(true);\n\n// lazy initiation\nconst [value, setValue] = useState(() => heavy());"
+        "import { useAction } from '@nebula.js/stardust';\n// ...\nconst [zoomed, setZoomed] = useState(false);\nconst act = useAction(() => ({\n  hidden: false,\n  disabled: zoomed,\n  action() {\n    setZoomed(prev => !prev);\n  },\n  icon: {}\n}), [zoomed]);"
+      ]
+    },
+    "useApp": {
+      "description": "Gets the doc API.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "description": "The doc API.",
+        "kind": "union",
+        "items": [
+          {
+            "type": "enigma.Doc"
+          },
+          {
+            "type": "undefined"
+          }
+        ],
+        "type": "any"
+      },
+      "examples": [
+        "import { useApp } from '@nebula.js/stardust';\n// ...\nconst app = useApp();\nuseEffect(() => {\n  app.getAllInfos().then(infos => {\n    console.log(infos);\n  })\n}, []);"
+      ]
+    },
+    "useAppLayout": {
+      "description": "Gets the layout of the app associated with this visualization.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "description": "The app layout",
+        "type": "qae.NxAppLayout"
+      },
+      "examples": [
+        "import { useAppLayout } from '@nebula.js/stardust';\n// ...\nconst appLayout = useAppLayout();\nconsole.log(appLayout.qLocaleInfo);"
+      ]
+    },
+    "useConstraints": {
+      "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should respected by you when implementing the visualization.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/Constraints"
+      },
+      "examples": [
+        "// configure embed to disallow active interactions when rendering\nembed(app, {\n  constraints: {\n    active: true, // do not allow interactions\n  }\n}).render({ element, id: 'sdfsdf' });",
+        "import { useConstraints } from '@nebula.js/stardust';\n// ...\nconst constraints = useConstraints();\nuseEffect(() => {\n  if (constraints.active) {\n    // do not add any event listener if active constraint is set\n    return undefined;\n  }\n  const listener = () => {};\n  element.addEventListener('click', listener);\n  return () => {\n    element.removeEventListener('click', listener);\n  };\n}, [constraints])"
       ]
     },
     "useEffect": {
@@ -117,23 +151,57 @@
         "import { useEffect } from '@nebula.js/stardust';\n// ...\nuseEffect(() => {\n  console.log('mounted');\n  return () => {\n    console.log('unmounted');\n  };\n}, []);"
       ]
     },
+    "useElement": {
+      "description": "Gets the HTMLElement this visualization is rendered into.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "HTMLElement"
+      },
+      "examples": [
+        "import { useElement } from '@nebula.js/stardust';\n// ...\nconst el = useElement();\nel.innerHTML = 'Hello!';"
+      ]
+    },
+    "useGlobal": {
+      "description": "Gets the global API.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "description": "The global API.",
+        "kind": "union",
+        "items": [
+          {
+            "type": "enigma.Global"
+          },
+          {
+            "type": "undefined"
+          }
+        ],
+        "type": "any"
+      },
+      "examples": [
+        "import { useGlobal } from '@nebula.js/stardust';\n\n// ...\nconst g = useGlobal();\nuseEffect(() => {\n  g.engineVersion().then(version => {\n    console.log(version);\n  })\n}, []);"
+      ]
+    },
+    "useLayout": {
+      "description": "Gets the layout of the generic object associated with this visualization.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "qae.GenericObjectLayout"
+      },
+      "examples": [
+        "import { useLayout } from '@nebula.js/stardust';\n// ...\nconst layout = useLayout();\nconsole.log(layout);"
+      ]
+    },
     "useMemo": {
       "description": "Creates a stateful value when a dependant changes.",
-      "templates": [
-        {
-          "name": "T"
-        }
-      ],
       "kind": "function",
       "params": [
         {
           "name": "factory",
           "description": "The factory function.",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "T"
-          }
+          "type": "function"
         },
         {
           "name": "deps",
@@ -152,28 +220,46 @@
         "import { useMemo } from '@nebula.js/stardust';\n// ...\nconst v = useMemo(() => {\n  return doSomeHeavyCalculation();\n}), []);"
       ]
     },
+    "useModel": {
+      "description": "Gets the generic object API of the generic object connected to this visualization.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "enigma.GenericObject"
+          },
+          {
+            "type": "undefined"
+          }
+        ],
+        "type": "any"
+      },
+      "examples": [
+        "import { useModel } from '@nebula.js/stardust';\n// ...\nconst model = useModel();\nuseEffect(() => {\n  model.getInfo().then(info => {\n    console.log(info);\n  })\n}, []);"
+      ]
+    },
+    "useOptions": {
+      "description": "Gets the options object provided when rendering the visualization.\n\nThis is an empty object by default but enables customization of the visualization through this object.\nOptions are different from setting properties on the generic object in that options\nare only temporary settings applied to the visualization when rendered.\n\nYou have the responsibility to provide documentation of the options you support, if any.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "object"
+      },
+      "examples": [
+        "// when embedding the visualization, anything can be set in options\nembed(app).render({\n  element,\n  type: 'my-chart',\n  options: {\n    showNavigation: true,\n  }\n});",
+        "// it is up to you use and implement the provided options\nimport { useOptions } from '@nebula.js/stardust';\nimport { useEffect } from '@nebula.js/stardust';\n// ...\nconst options = useOptions();\nuseEffect(() => {\n  if (!options.showNavigation) {\n    // hide navigation\n  } else {\n    // show navigation\n  }\n}, [options.showNavigation]);"
+      ]
+    },
     "usePromise": {
       "description": "Runs a callback function when a dependant changes.",
-      "templates": [
-        {
-          "name": "P"
-        }
-      ],
       "kind": "function",
       "params": [
         {
           "name": "factory",
           "description": "The factory function that calls the promise.",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "P"
-              }
-            ]
-          }
+          "type": "function"
         },
         {
           "name": "deps",
@@ -201,17 +287,6 @@
         "import { usePromise } from '@nebula.js/stardust';\nimport { useModel } from '@nebula.js/stardust';\n// ...\nconst model = useModel();\nconst [resolved, rejected] = usePromise(() => model.getLayout(), []);"
       ]
     },
-    "useElement": {
-      "description": "Gets the HTMLElement this visualization is rendered into.",
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "type": "HTMLElement"
-      },
-      "examples": [
-        "import { useElement } from '@nebula.js/stardust';\n// ...\nconst el = useElement();\nel.innerHTML = 'Hello!';"
-      ]
-    },
     "useRect": {
       "description": "Gets the size of the HTMLElement the visualization is rendered into.",
       "kind": "function",
@@ -224,15 +299,16 @@
         "import { useRect } from '@nebula.js/stardust';\n// ...\nconst rect = useRect();\nuseEffect(() => {\n  console.log('resize');\n}, [rect.width, rect.height])"
       ]
     },
-    "useLayout": {
-      "description": "Gets the layout of the generic object associated with this visualization.",
+    "useSelections": {
+      "description": "Gets the object selections.",
       "kind": "function",
       "params": [],
       "returns": {
-        "type": "qae.GenericObjectLayout"
+        "description": "The object selections.",
+        "type": "#/definitions/ObjectSelections"
       },
       "examples": [
-        "import { useLayout } from '@nebula.js/stardust';\n// ...\nconst layout = useLayout();\nconsole.log(layout);"
+        "import { useSelections } from '@nebula.js/stardust';\nimport { useElement } from '@nebula.js/stardust';\nimport { useEffect } from '@nebula.js/stardust';\n// ...\nconst selections = useSelections();\nconst element = useElement();\nuseEffect(() => {\n  const onClick = () => {\n    selections.begin('/qHyperCubeDef');\n  };\n  element.addEventListener('click', onClick);\n  return () => {\n    element.removeEventListener('click', onClick);\n  };\n}, []);"
       ]
     },
     "useStaleLayout": {
@@ -246,87 +322,44 @@
         "import { useStaleLayout } from '@nebula.js/stardust';\n// ...\nconst staleLayout = useStaleLayout();\nconsole.log(staleLayout);"
       ]
     },
-    "useAppLayout": {
-      "description": "Gets the layout of the app associated with this visualization.",
+    "useState": {
+      "description": "Creates a stateful value.",
       "kind": "function",
-      "params": [],
+      "params": [
+        {
+          "name": "initialState",
+          "description": "The initial state.",
+          "kind": "union",
+          "items": [
+            {
+              "type": "S"
+            },
+            {
+              "type": "function"
+            }
+          ],
+          "type": "any"
+        }
+      ],
       "returns": {
-        "description": "The app layout",
-        "type": "qae.NxAppLayout"
-      },
-      "examples": [
-        "import { useAppLayout } from '@nebula.js/stardust';\n// ...\nconst appLayout = useAppLayout();\nconsole.log(appLayout.qLocaleInfo);"
-      ]
-    },
-    "useModel": {
-      "description": "Gets the generic object API of the generic object connected to this visualization.",
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "kind": "union",
+        "description": "The value and a function to update it.",
+        "kind": "array",
         "items": [
           {
-            "type": "enigma.GenericObject"
+            "type": "S"
           },
           {
-            "type": "undefined"
+            "type": "#/definitions/SetStateFn",
+            "generics": [
+              {
+                "type": "S"
+              }
+            ]
           }
         ]
       },
       "examples": [
-        "import { useModel } from '@nebula.js/stardust';\n// ...\nconst model = useModel();\nuseEffect(() => {\n  model.getInfo().then(info => {\n    console.log(info);\n  })\n}, []);"
-      ]
-    },
-    "useApp": {
-      "description": "Gets the doc API.",
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "description": "The doc API.",
-        "kind": "union",
-        "items": [
-          {
-            "type": "enigma.Doc"
-          },
-          {
-            "type": "undefined"
-          }
-        ]
-      },
-      "examples": [
-        "import { useApp } from '@nebula.js/stardust';\n// ...\nconst app = useApp();\nuseEffect(() => {\n  app.getAllInfos().then(infos => {\n    console.log(infos);\n  })\n}, []);"
-      ]
-    },
-    "useGlobal": {
-      "description": "Gets the global API.",
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "description": "The global API.",
-        "kind": "union",
-        "items": [
-          {
-            "type": "enigma.Global"
-          },
-          {
-            "type": "undefined"
-          }
-        ]
-      },
-      "examples": [
-        "import { useGlobal } from '@nebula.js/stardust';\n\n// ...\nconst g = useGlobal();\nuseEffect(() => {\n  g.engineVersion().then(version => {\n    console.log(version);\n  })\n}, []);"
-      ]
-    },
-    "useSelections": {
-      "description": "Gets the object selections.",
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "description": "The object selections.",
-        "type": "#/definitions/ObjectSelections"
-      },
-      "examples": [
-        "import { useSelections } from '@nebula.js/stardust';\nimport { useElement } from '@nebula.js/stardust';\nimport { useEffect } from '@nebula.js/stardust';\n// ...\nconst selections = useSelections();\nconst element = useElement();\nuseEffect(() => {\n  const onClick = () => {\n    selections.begin('/qHyperCubeDef');\n  };\n  element.addEventListener('click', onClick);\n  return () => {\n    element.removeEventListener('click', onClick);\n  };\n}, []);"
+        "import { useState } from '@nebula.js/stardust';\n// ...\n// initiate with simple primitive value\nconst [zoomed, setZoomed] = useState(false);\n\n// update\nsetZoomed(true);\n\n// lazy initiation\nconst [value, setValue] = useState(() => heavy());"
       ]
     },
     "useTheme": {
@@ -352,776 +385,10 @@
       "examples": [
         "import { useTranslator } from '@nebula.js/stardust';\n// ...\nconst translator = useTranslator();\nconsole.log(translator.get('SomeString'));"
       ]
-    },
-    "useAction": {
-      "description": "Registers a custom action.",
-      "templates": [
-        {
-          "name": "A"
-        }
-      ],
-      "kind": "function",
-      "params": [
-        {
-          "name": "factory",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "#/definitions/ActionDefinition",
-            "generics": [
-              {
-                "type": "A"
-              }
-            ]
-          }
-        },
-        {
-          "name": "deps",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "any"
-          }
-        }
-      ],
-      "returns": {
-        "type": "A"
-      },
-      "examples": [
-        "import { useAction } from '@nebula.js/stardust';\n// ...\nconst [zoomed, setZoomed] = useState(false);\nconst act = useAction(() => ({\n  hidden: false,\n  disabled: zoomed,\n  action() {\n    setZoomed(prev => !prev);\n  },\n  icon: {}\n}), [zoomed]);"
-      ]
-    },
-    "useConstraints": {
-      "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should respected by you when implementing the visualization.",
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "type": "#/definitions/Constraints"
-      },
-      "examples": [
-        "// configure embed to disallow active interactions when rendering\nembed(app, {\n  constraints: {\n    active: true, // do not allow interactions\n  }\n}).render({ element, id: 'sdfsdf' });",
-        "import { useConstraints } from '@nebula.js/stardust';\n// ...\nconst constraints = useConstraints();\nuseEffect(() => {\n  if (constraints.active) {\n    // do not add any event listener if active constraint is set\n    return undefined;\n  }\n  const listener = () => {};\n  element.addEventListener('click', listener);\n  return () => {\n    element.removeEventListener('click', listener);\n  };\n}, [constraints])"
-      ]
-    },
-    "useOptions": {
-      "description": "Gets the options object provided when rendering the visualization.\n\nThis is an empty object by default but enables customization of the visualization through this object.\nOptions are different from setting properties on the generic object in that options\nare only temporary settings applied to the visualization when rendered.\n\nYou have the responsibility to provide documentation of the options you support, if any.",
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "type": "object"
-      },
-      "examples": [
-        "// when embedding the visualization, anything can be set in options\nembed(app).render({\n  element,\n  type: 'my-chart',\n  options: {\n    showNavigation: true,\n  }\n});",
-        "// it is up to you use and implement the provided options\nimport { useOptions } from '@nebula.js/stardust';\nimport { useEffect } from '@nebula.js/stardust';\n// ...\nconst options = useOptions();\nuseEffect(() => {\n  if (!options.showNavigation) {\n    // hide navigation\n  } else {\n    // show navigation\n  }\n}, [options.showNavigation]);"
-      ]
-    },
-    "onTakeSnapshot": {
-      "description": "Registers a callback that is called when a snapshot is taken.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "snapshotCallback",
-          "kind": "function",
-          "params": [
-            {
-              "type": "qae.GenericObjectLayout"
-            }
-          ],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "qae.GenericObjectLayout"
-              }
-            ]
-          }
-        }
-      ],
-      "examples": [
-        "import { onTakeSnapshot } from '@nebula.js/stardust';\nimport { useState } from '@nebula.js/stardust';\nimport { useLayout } from '@nebula.js/stardust';\n\nconst layout = useLayout();\nconst [zoomed] = useState(layout.isZoomed || false);\n\nonTakeSnapshot((copyOfLayout) => {\n  copyOfLayout.isZoomed = zoomed;\n  return Promise.resolve(copyOfLayout);\n});"
-      ]
     }
   },
   "definitions": {
-    "Context": {
-      "kind": "interface",
-      "entries": {
-        "constraints": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "active": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "passive": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "select": {
-              "optional": true,
-              "type": "boolean"
-            }
-          }
-        },
-        "theme": {
-          "optional": true,
-          "defaultValue": "light",
-          "type": "string"
-        },
-        "language": {
-          "optional": true,
-          "defaultValue": "en-US",
-          "type": "string"
-        }
-      }
-    },
-    "Configuration": {
-      "kind": "interface",
-      "entries": {
-        "context": {
-          "optional": true,
-          "type": "#/definitions/Context"
-        },
-        "types": {
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/TypeInfo"
-          }
-        },
-        "themes": {
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/ThemeInfo"
-          }
-        },
-        "anything": {
-          "optional": true,
-          "type": "object"
-        }
-      }
-    },
-    "Galaxy": {
-      "kind": "interface",
-      "entries": {
-        "translator": {
-          "type": "#/definitions/Translator"
-        },
-        "flags": {
-          "type": "#/definitions/Flags"
-        },
-        "anything": {
-          "type": "object"
-        }
-      }
-    },
-    "Embed": {
-      "kind": "class",
-      "entries": {
-        "render": {
-          "description": "Renders a visualization into an HTMLElement.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "cfg",
-              "description": "The render configuration.",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "#/definitions/CreateConfig"
-                },
-                {
-                  "type": "#/definitions/GetConfig"
-                }
-              ]
-            }
-          ],
-          "returns": {
-            "description": "A controller to the rendered visualization.",
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "#/definitions/Viz"
-              }
-            ]
-          },
-          "examples": [
-            "// render from existing object\nn.render({\n  element: el,\n  id: 'abcdef'\n});",
-            "// render on the fly\nn.render({\n  element: el,\n  type: 'barchart',\n  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\n});"
-          ]
-        },
-        "context": {
-          "description": "Updates the current context of this embed instance.\nUse this when you want to change some part of the current context, like theme.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "ctx",
-              "description": "The context to update.",
-              "type": "#/definitions/Context"
-            }
-          ],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "undefined"
-              }
-            ]
-          },
-          "examples": [
-            "// change theme\nn.context({ theme: 'dark'});",
-            "// limit constraints\nn.context({ constraints: { active: true } });"
-          ]
-        },
-        "selections": {
-          "description": "Gets the app selections of this instance.",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "#/definitions/AppSelections"
-              }
-            ]
-          },
-          "examples": ["const selections = await n.selections();\nselections.mount(element);"]
-        }
-      }
-    },
-    "ThemeInfo": {
-      "kind": "interface",
-      "entries": {
-        "id": {
-          "description": "Theme identifier",
-          "type": "string"
-        },
-        "load": {
-          "description": "A function that should return a Promise that resolve to a raw JSON theme",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "ThemeJSON"
-              }
-            ]
-          }
-        }
-      }
-    },
-    "Viz": {
-      "description": "A controller to further modify a visualization after it has been rendered.",
-      "kind": "class",
-      "entries": {
-        "id": {
-          "description": "The id of this visualization's generic object.",
-          "type": "string"
-        },
-        "destroy": {
-          "description": "Destroys the visualization and removes if from the the DOM.",
-          "kind": "function",
-          "params": [],
-          "examples": ["const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"]
-        }
-      },
-      "examples": ["const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"]
-    },
-    "Flags": {
-      "kind": "interface",
-      "entries": {
-        "isEnabled": {
-          "description": "Checks whether the specified flag is enabled.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "flag",
-              "description": "The value flag to check.",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "True if the specified flag is enabled, false otherwise.",
-            "type": "boolean"
-          }
-        }
-      }
-    },
-    "AppSelections": {
-      "kind": "class",
-      "entries": {
-        "mount": {
-          "description": "Mounts the app selection UI into the provided HTMLElement.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "element",
-              "type": "HTMLElement"
-            }
-          ],
-          "examples": ["selections.mount(element);"]
-        },
-        "unmount": {
-          "description": "Unmounts the app selection UI from the DOM.",
-          "kind": "function",
-          "params": [],
-          "examples": ["selections.unmount();"]
-        }
-      }
-    },
-    "ObjectSelections": {
-      "kind": "class",
-      "entries": {
-        "begin": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "paths",
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          ],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "undefined"
-              }
-            ]
-          }
-        },
-        "clear": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "undefined"
-              }
-            ]
-          }
-        },
-        "confirm": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "undefined"
-              }
-            ]
-          }
-        },
-        "cancel": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "undefined"
-              }
-            ]
-          }
-        },
-        "select": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "s",
-              "kind": "object",
-              "entries": {
-                "method": {
-                  "type": "string"
-                },
-                "params": {
-                  "kind": "array",
-                  "items": {
-                    "type": "any"
-                  }
-                }
-              }
-            }
-          ],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "boolean"
-              }
-            ]
-          }
-        },
-        "canClear": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "canConfirm": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "canCancel": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "isActive": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "isModal": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "boolean"
-          }
-        },
-        "goModal": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "paths",
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          ],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "undefined"
-              }
-            ]
-          }
-        },
-        "noModal": {
-          "kind": "function",
-          "params": [
-            {
-              "name": "accept",
-              "optional": true,
-              "defaultValue": false,
-              "type": "boolean"
-            }
-          ],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "undefined"
-              }
-            ]
-          }
-        }
-      }
-    },
-    "CreateConfig": {
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "fields": {
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "properties": {
-          "optional": true,
-          "type": "qae.GenericObjectProperties"
-        }
-      }
-    },
-    "BaseConfig": {
-      "kind": "interface",
-      "entries": {
-        "element": {
-          "type": "HTMLElement"
-        },
-        "options": {
-          "optional": true,
-          "type": "object"
-        }
-      }
-    },
-    "GetConfig": {
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "id": {
-          "type": "string"
-        }
-      }
-    },
-    "Field": {
-      "kind": "alias",
-      "items": {
-        "kind": "union",
-        "items": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "qae.NxDimension"
-          },
-          {
-            "type": "qae.NxMeasure"
-          },
-          {
-            "type": "#/definitions/LibraryField"
-          }
-        ]
-      }
-    },
-    "LibraryField": {
-      "kind": "interface",
-      "entries": {
-        "qLibraryId": {
-          "type": "string"
-        },
-        "type": {
-          "kind": "union",
-          "items": [
-            {
-              "kind": "literal",
-              "value": "'dimension'"
-            },
-            {
-              "kind": "literal",
-              "value": "'measure'"
-            }
-          ]
-        }
-      }
-    },
-    "LoadType": {
-      "kind": "interface",
-      "params": [
-        {
-          "name": "type",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "type": "string"
-            },
-            "version": {
-              "type": "string"
-            }
-          }
-        }
-      ],
-      "returns": {
-        "type": "Promise",
-        "generics": [
-          {
-            "type": "#/definitions/Visualization"
-          }
-        ]
-      },
-      "entries": {}
-    },
-    "TypeInfo": {
-      "kind": "interface",
-      "entries": {
-        "name": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "load": {
-          "type": "#/definitions/LoadType"
-        },
-        "meta": {
-          "optional": true,
-          "type": "object"
-        }
-      }
-    },
-    "CellElement": {
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell'",
-          "kind": "literal"
-        }
-      }
-    },
-    "VizElement": {
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "attributes": {
-          "kind": "object",
-          "entries": {
-            "data-render-count": {
-              "type": "string"
-            }
-          }
-        },
-        "className": {
-          "value": "'njs-viz'",
-          "kind": "literal"
-        }
-      }
-    },
-    "Visualization": {
-      "description": "The entry point for defining a visualization.",
-      "kind": "interface",
-      "params": [
-        {
-          "name": "galaxy",
-          "type": "#/definitions/Galaxy"
-        }
-      ],
-      "returns": {
-        "type": "#/definitions/VisualizationDefinition"
-      },
-      "entries": {},
-      "examples": [
-        "import { useElement, useLayout } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      properties: {\n        dude: 'Heisenberg',\n      }\n    },\n    component() {\n      const el = useElement();\n      const layout = useLayout();\n      el.innerHTML = `What's my name? ${layout.dude}!!!`;\n    }\n  };\n}"
-      ]
-    },
-    "VisualizationDefinition": {
-      "kind": "interface",
-      "entries": {
-        "qae": {
-          "type": "#/definitions/QAEDefinition"
-        },
-        "component": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "void"
-          }
-        }
-      }
-    },
-    "SetStateFn": {
-      "templates": [
-        {
-          "name": "S"
-        }
-      ],
-      "kind": "interface",
-      "params": [
-        {
-          "name": "newState",
-          "description": "The new state",
-          "kind": "union",
-          "items": [
-            {
-              "type": "S"
-            },
-            {
-              "kind": "function",
-              "params": [
-                {
-                  "type": "S"
-                }
-              ],
-              "returns": {
-                "type": "S"
-              }
-            }
-          ]
-        }
-      ],
-      "entries": {}
-    },
-    "EffectCallback": {
-      "kind": "alias",
-      "items": {
-        "kind": "function",
-        "params": [],
-        "returns": {
-          "kind": "union",
-          "items": [
-            {
-              "type": "void"
-            },
-            {
-              "kind": "function",
-              "params": [],
-              "returns": {
-                "type": "void"
-              }
-            }
-          ]
-        }
-      }
-    },
-    "Rect": {
-      "kind": "interface",
-      "entries": {
-        "top": {
-          "type": "number"
-        },
-        "left": {
-          "type": "number"
-        },
-        "width": {
-          "type": "number"
-        },
-        "height": {
-          "type": "number"
-        }
-      }
-    },
     "ActionDefinition": {
-      "templates": [
-        {
-          "name": "A"
-        }
-      ],
       "kind": "interface",
       "entries": {
         "action": {
@@ -1163,6 +430,88 @@
         }
       }
     },
+    "AppSelections": {
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {
+        "mount": {
+          "description": "Mounts the app selection UI into the provided HTMLElement.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "element",
+              "type": "HTMLElement"
+            }
+          ],
+          "examples": ["selections.mount(element);"]
+        },
+        "unmount": {
+          "description": "Unmounts the app selection UI from the DOM.",
+          "kind": "function",
+          "params": [],
+          "examples": ["selections.unmount();"]
+        }
+      }
+    },
+    "BaseConfig": {
+      "kind": "interface",
+      "entries": {
+        "element": {
+          "type": "HTMLElement"
+        },
+        "options": {
+          "optional": true,
+          "type": "object"
+        }
+      }
+    },
+    "CellElement": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "params": [],
+      "entries": {
+        "className": {
+          "defaultValue": "njs-cell",
+          "kind": "literal",
+          "value": "'njs-cell'"
+        }
+      }
+    },
+    "Configuration": {
+      "kind": "interface",
+      "entries": {
+        "anything": {
+          "optional": true,
+          "kind": "object",
+          "entries": {}
+        },
+        "context": {
+          "optional": true,
+          "type": "#/definitions/Context"
+        },
+        "themes": {
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/ThemeInfo"
+          }
+        },
+        "types": {
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/TypeInfo"
+          }
+        }
+      }
+    },
     "Constraints": {
       "kind": "interface",
       "entries": {
@@ -1180,24 +529,63 @@
         }
       }
     },
-    "QAEDefinition": {
+    "Context": {
       "kind": "interface",
       "entries": {
-        "properties": {
-          "optional": true,
-          "type": "qae.GenericObjectProperties"
-        },
-        "data": {
+        "constraints": {
           "optional": true,
           "kind": "object",
           "entries": {
-            "targets": {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/DataTarget"
-              }
+            "active": {
+              "optional": true,
+              "type": "boolean"
+            },
+            "passive": {
+              "optional": true,
+              "type": "boolean"
+            },
+            "select": {
+              "optional": true,
+              "type": "boolean"
             }
           }
+        },
+        "language": {
+          "optional": true,
+          "defaultValue": "en-US",
+          "type": "string"
+        },
+        "theme": {
+          "optional": true,
+          "defaultValue": "light",
+          "type": "string"
+        }
+      }
+    },
+    "CreateConfig": {
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "fields": {
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Field"
+          }
+        },
+        "properties": {
+          "optional": true,
+          "type": "qae.GenericObjectProperties"
         }
       }
     },
@@ -1227,61 +615,697 @@
         }
       }
     },
-    "FieldTarget": {
-      "templates": [
+    "EffectCallback": {
+      "kind": "function",
+      "params": []
+    },
+    "Embed": {
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {
+        "context": {
+          "description": "Updates the current context of this embed instance.\nUse this when you want to change some part of the current context, like theme.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "ctx",
+              "description": "The context to update.",
+              "type": "#/definitions/Context"
+            }
+          ],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "undefined"
+              }
+            ]
+          },
+          "examples": [
+            "// change theme\nn.context({ theme: 'dark'});",
+            "// limit constraints\nn.context({ constraints: { active: true } });"
+          ]
+        },
+        "render": {
+          "description": "Renders a visualization into an HTMLElement.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "cfg",
+              "description": "The render configuration.",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "#/definitions/CreateConfig"
+                },
+                {
+                  "type": "#/definitions/GetConfig"
+                }
+              ],
+              "type": "any"
+            }
+          ],
+          "returns": {
+            "description": "A controller to the rendered visualization.",
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "#/definitions/Viz"
+              }
+            ]
+          },
+          "examples": [
+            "// render from existing object\nn.render({\n  element: el,\n  id: 'abcdef'\n});",
+            "// render on the fly\nn.render({\n  element: el,\n  type: 'barchart',\n  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\n});"
+          ]
+        },
+        "selections": {
+          "description": "Gets the app selections of this instance.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "#/definitions/AppSelections"
+              }
+            ]
+          },
+          "examples": ["const selections = await n.selections();\nselections.mount(element);"]
+        }
+      }
+    },
+    "Field": {
+      "kind": "union",
+      "items": [
         {
-          "name": "T"
+          "type": "string"
+        },
+        {
+          "type": "qae.NxDimension"
+        },
+        {
+          "type": "qae.NxMeasure"
+        },
+        {
+          "type": "#/definitions/LibraryField"
         }
       ],
+      "type": "any"
+    },
+    "FieldTarget": {
       "kind": "interface",
       "entries": {
         "min": {
           "optional": true,
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "number"
-          }
+          "type": "function"
         },
         "max": {
           "optional": true,
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "number"
-          }
+          "type": "function"
         },
         "added": {
           "optional": true,
-          "kind": "function",
-          "params": [
-            {
-              "type": "T"
-            },
-            {
-              "type": "qae.GenericObjectProperties"
-            }
-          ]
+          "type": "function"
         },
         "removed": {
           "optional": true,
+          "type": "function"
+        }
+      }
+    },
+    "Flags": {
+      "kind": "interface",
+      "entries": {
+        "isEnabled": {
+          "description": "Checks whether the specified flag is enabled.",
           "kind": "function",
           "params": [
             {
-              "type": "T"
-            },
-            {
-              "type": "qae.GenericObjectProperties"
-            },
-            {
-              "type": "number"
+              "name": "flag",
+              "description": "The value flag to check.",
+              "type": "string"
             }
-          ]
+          ],
+          "returns": {
+            "description": "True if the specified flag is enabled, false otherwise.",
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "Galaxy": {
+      "kind": "interface",
+      "entries": {
+        "anything": {
+          "kind": "object",
+          "entries": {}
+        },
+        "flags": {
+          "type": "#/definitions/Flags"
+        },
+        "translator": {
+          "type": "#/definitions/Translator"
+        }
+      }
+    },
+    "GetConfig": {
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "LibraryField": {
+      "kind": "interface",
+      "entries": {
+        "qLibraryId": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'dimension'"
+            },
+            {
+              "kind": "literal",
+              "value": "'measure'"
+            }
+          ],
+          "type": "string"
+        }
+      }
+    },
+    "LoadType": {
+      "kind": "interface",
+      "params": [
+        {
+          "name": "type",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "generics": [
+          {
+            "type": "#/definitions/Visualization"
+          }
+        ]
+      },
+      "entries": {}
+    },
+    "ObjectSelections": {
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {
+        "begin": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "paths",
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "undefined"
+              }
+            ]
+          }
+        },
+        "canCancel": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        "cancel": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "undefined"
+              }
+            ]
+          }
+        },
+        "canClear": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        "canConfirm": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        "clear": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "undefined"
+              }
+            ]
+          }
+        },
+        "confirm": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "undefined"
+              }
+            ]
+          }
+        },
+        "goModal": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "paths",
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "undefined"
+              }
+            ]
+          }
+        },
+        "isActive": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        "isModal": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "boolean"
+          }
+        },
+        "noModal": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "accept",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "undefined"
+              }
+            ]
+          }
+        },
+        "select": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "s",
+              "kind": "object",
+              "entries": {
+                "method": {
+                  "type": "string"
+                },
+                "params": {
+                  "kind": "array",
+                  "items": {
+                    "type": "any"
+                  }
+                }
+              }
+            }
+          ],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "boolean"
+              }
+            ]
+          }
+        }
+      }
+    },
+    "QAEDefinition": {
+      "kind": "interface",
+      "entries": {
+        "properties": {
+          "optional": true,
+          "type": "qae.GenericObjectProperties"
+        },
+        "data": {
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "targets": {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/DataTarget"
+              }
+            }
+          }
+        }
+      }
+    },
+    "Rect": {
+      "kind": "interface",
+      "entries": {
+        "top": {
+          "type": "number"
+        },
+        "left": {
+          "type": "number"
+        },
+        "width": {
+          "type": "number"
+        },
+        "height": {
+          "type": "number"
+        }
+      }
+    },
+    "SetStateFn": {
+      "kind": "interface",
+      "params": [
+        {
+          "name": "newState",
+          "description": "The new state",
+          "kind": "union",
+          "items": [
+            {
+              "type": "S"
+            },
+            {
+              "type": "function"
+            }
+          ],
+          "type": "any"
+        }
+      ],
+      "entries": {}
+    },
+    "Theme": {
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {
+        "getColorPickerColor": {
+          "description": "Resolve a color object using the color picker palette from the provided JSON theme.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "c",
+              "kind": "object",
+              "entries": {
+                "index": {
+                  "optional": true,
+                  "type": "number"
+                },
+                "color": {
+                  "optional": true,
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "returns": {
+            "description": "The resolved color.",
+            "type": "string"
+          },
+          "examples": ["theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"]
+        },
+        "getContrastingColorTo": {
+          "description": "Get the best contrasting color against the specified `color`.\nThis is typically used to find a suitable text color for a label placed on an arbitrarily colored background.\n\nThe returned colors are derived from the theme.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "color",
+              "description": "A color to measure the contrast against",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "- The color that has the best contrast against the specified `color`.",
+            "type": "string"
+          },
+          "examples": ["theme.getContrastingColorTo('#400');"]
+        },
+        "getDataColorPalettes": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/Theme/definitions/DataPalette"
+            }
+          }
+        },
+        "getDataColorPickerPalettes": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/Theme/definitions/ColorPickerPalette"
+            }
+          }
+        },
+        "getDataColorScales": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "array",
+            "items": {
+              "type": "#/definitions/Theme/definitions/ScalePalette"
+            }
+          }
+        },
+        "getDataColorSpecials": {
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "#/definitions/Theme/definitions/DataColorSpecials"
+          }
+        },
+        "getStyle": {
+          "description": "Get the value of a style attribute in the theme by searching in the theme's json structure.\nThe search starts at the specified base path and continue upwards until the value is found.\nIf possible it will get the attribute's value using the given path.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "basePath",
+              "description": "Base path in the theme's json structure to start the search in (specified as a name path separated by dots)",
+              "type": "string"
+            },
+            {
+              "name": "path",
+              "description": "Expected path for the attribute (specified as a name path separated by dots)",
+              "type": "string"
+            },
+            {
+              "name": "attribute",
+              "description": "Name of the style attribute",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "The style value",
+            "type": "string"
+          },
+          "examples": ["theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"]
+        }
+      },
+      "definitions": {
+        "ColorPickerPalette": {
+          "kind": "interface",
+          "entries": {
+            "key": {
+              "type": "string"
+            },
+            "colors": {
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "DataColorSpecials": {
+          "kind": "interface",
+          "entries": {
+            "nil": {
+              "type": "string"
+            },
+            "others": {
+              "type": "string"
+            },
+            "primary": {
+              "type": "string"
+            }
+          }
+        },
+        "DataPalette": {
+          "kind": "interface",
+          "entries": {
+            "key": {
+              "type": "string"
+            },
+            "type": {
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "literal",
+                  "value": "'pyramid'"
+                },
+                {
+                  "kind": "literal",
+                  "value": "'row'"
+                }
+              ],
+              "type": "string"
+            },
+            "colors": {
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "kind": "array",
+                  "items": {
+                    "kind": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ],
+              "type": "any"
+            }
+          }
+        },
+        "ScalePalette": {
+          "kind": "interface",
+          "entries": {
+            "key": {
+              "type": "string"
+            },
+            "type": {
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "literal",
+                  "value": "'gradient'"
+                },
+                {
+                  "kind": "literal",
+                  "value": "'class-pyramid'"
+                }
+              ],
+              "type": "string"
+            },
+            "colors": {
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "kind": "array",
+                  "items": {
+                    "kind": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ],
+              "type": "any"
+            }
+          }
+        }
+      }
+    },
+    "ThemeInfo": {
+      "kind": "interface",
+      "entries": {
+        "id": {
+          "description": "Theme identifier",
+          "type": "string"
+        },
+        "load": {
+          "description": "A function that should return a Promise that resolve to a raw JSON theme",
+          "type": "function"
         }
       }
     },
     "Translator": {
       "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
       "entries": {
         "add": {
           "description": "Registers a string in multiple locales",
@@ -1338,210 +1362,94 @@
         }
       }
     },
-    "Theme": {
-      "kind": "class",
+    "TypeInfo": {
+      "kind": "interface",
       "entries": {
-        "getDataColorScales": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "load": {
+          "type": "#/definitions/LoadType"
+        },
+        "meta": {
+          "optional": true,
+          "type": "object"
+        }
+      }
+    },
+    "Visualization": {
+      "description": "The entry point for defining a visualization.",
+      "kind": "interface",
+      "params": [
+        {
+          "name": "galaxy",
+          "type": "#/definitions/Galaxy"
+        }
+      ],
+      "returns": {
+        "type": "#/definitions/VisualizationDefinition"
+      },
+      "entries": {},
+      "examples": [
+        "import { useElement, useLayout } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      properties: {\n        dude: 'Heisenberg',\n      }\n    },\n    component() {\n      const el = useElement();\n      const layout = useLayout();\n      el.innerHTML = `What's my name? ${layout.dude}!!!`;\n    }\n  };\n}"
+      ]
+    },
+    "VisualizationDefinition": {
+      "kind": "interface",
+      "entries": {
+        "qae": {
+          "type": "#/definitions/QAEDefinition"
+        },
+        "component": {
+          "type": "function"
+        }
+      }
+    },
+    "Viz": {
+      "description": "A controller to further modify a visualization after it has been rendered.",
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {
+        "destroy": {
+          "description": "Destroys the visualization and removes if from the the DOM.",
           "kind": "function",
           "params": [],
-          "returns": {
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/Theme/definitions/ScalePalette"
-            }
-          }
+          "examples": ["const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"]
         },
-        "getDataColorPalettes": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/Theme/definitions/DataPalette"
-            }
-          }
-        },
-        "getDataColorPickerPalettes": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "kind": "array",
-            "items": {
-              "type": "#/definitions/Theme/definitions/ColorPickerPalette"
-            }
-          }
-        },
-        "getDataColorSpecials": {
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "#/definitions/Theme/definitions/DataColorSpecials"
-          }
-        },
-        "getColorPickerColor": {
-          "description": "Resolve a color object using the color picker palette from the provided JSON theme.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "c",
-              "kind": "object",
-              "entries": {
-                "index": {
-                  "optional": true,
-                  "type": "number"
-                },
-                "color": {
-                  "optional": true,
-                  "type": "string"
-                }
-              }
-            }
-          ],
-          "returns": {
-            "description": "The resolved color.",
-            "type": "string"
-          },
-          "examples": ["theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"]
-        },
-        "getContrastingColorTo": {
-          "description": "Get the best contrasting color against the specified `color`.\nThis is typically used to find a suitable text color for a label placed on an arbitrarily colored background.\n\nThe returned colors are derived from the theme.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "color",
-              "description": "A color to measure the contrast against",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "- The color that has the best contrast against the specified `color`.",
-            "type": "string"
-          },
-          "examples": ["theme.getContrastingColorTo('#400');"]
-        },
-        "getStyle": {
-          "description": "Get the value of a style attribute in the theme by searching in the theme's json structure.\nThe search starts at the specified base path and continue upwards until the value is found.\nIf possible it will get the attribute's value using the given path.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "basePath",
-              "description": "Base path in the theme's json structure to start the search in (specified as a name path separated by dots)",
-              "type": "string"
-            },
-            {
-              "name": "path",
-              "description": "Expected path for the attribute (specified as a name path separated by dots)",
-              "type": "string"
-            },
-            {
-              "name": "attribute",
-              "description": "Name of the style attribute",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "The style value",
-            "type": "string"
-          },
-          "examples": ["theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"]
+        "id": {
+          "description": "The id of this visualization's generic object.",
+          "type": "string"
         }
       },
-      "definitions": {
-        "ScalePalette": {
-          "kind": "interface",
+      "examples": ["const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"]
+    },
+    "VizElement": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "params": [],
+      "entries": {
+        "attributes": {
+          "kind": "object",
           "entries": {
-            "key": {
+            "data-render-count": {
               "type": "string"
-            },
-            "type": {
-              "kind": "union",
-              "items": [
-                {
-                  "kind": "literal",
-                  "value": "'gradient'"
-                },
-                {
-                  "kind": "literal",
-                  "value": "'class'"
-                }
-              ]
-            },
-            "colors": {
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
             }
           }
         },
-        "DataPalette": {
-          "kind": "interface",
-          "entries": {
-            "key": {
-              "type": "string"
-            },
-            "type": {
-              "kind": "union",
-              "items": [
-                {
-                  "kind": "literal",
-                  "value": "'pyramid'"
-                },
-                {
-                  "kind": "literal",
-                  "value": "'row'"
-                }
-              ]
-            },
-            "colors": {
-              "kind": "union",
-              "items": [
-                {
-                  "kind": "array",
-                  "items": {
-                    "type": "string"
-                  }
-                },
-                {
-                  "kind": "array",
-                  "items": {
-                    "kind": "array",
-                    "items": {
-                      "type": "string"
-                    }
-                  }
-                }
-              ]
-            }
-          }
-        },
-        "ColorPickerPalette": {
-          "kind": "interface",
-          "entries": {
-            "key": {
-              "type": "string"
-            },
-            "colors": {
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          }
-        },
-        "DataColorSpecials": {
-          "kind": "interface",
-          "entries": {
-            "primary": {
-              "type": "string"
-            },
-            "nil": {
-              "type": "string"
-            },
-            "others": {
-              "type": "string"
-            }
-          }
+        "className": {
+          "defaultValue": "njs-viz",
+          "kind": "literal",
+          "value": "'njs-viz'"
         }
       }
     }

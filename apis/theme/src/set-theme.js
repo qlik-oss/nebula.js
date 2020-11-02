@@ -9,13 +9,13 @@ export default function setTheme(t, resolve) {
   const root = extend(true, {}, baseRawJSON, colorRawJSON);
   // avoid merging known array objects as it could cause issues if they are of different types (pyramid vs class) or length
   const rawThemeJSON = extend(true, {}, root, { scales: null, palettes: { data: null, ui: null } }, t);
-  if (!rawThemeJSON.palettes.data) {
+  if (!rawThemeJSON.palettes.data || !rawThemeJSON.palettes.data.length) {
     rawThemeJSON.palettes.data = root.palettes.data;
   }
-  if (!rawThemeJSON.palettes.ui) {
+  if (!rawThemeJSON.palettes.ui || !rawThemeJSON.palettes.ui.length) {
     rawThemeJSON.palettes.ui = root.palettes.ui;
   }
-  if (!rawThemeJSON.scales) {
+  if (!rawThemeJSON.scales || !rawThemeJSON.scales.length) {
     rawThemeJSON.scales = root.scales;
   }
 

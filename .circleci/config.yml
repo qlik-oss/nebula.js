@@ -27,18 +27,17 @@ aliases:
 jobs:
   build:
     docker:
-      - image: circleci/node:10.19.0
+      - image: circleci/node:12.15.0
       - image: qlikcore/engine:12.792.0
         command: |
           -S AcceptEULA=yes
           -S SSEPlugin=sse,localhost:50051
-      - image: browserless/chrome:1.37.2-puppeteer-1.20.0
+      - image: browserless/chrome:1.38.0-puppeteer-1.20.0
 
     working_directory: ~/project
 
     steps:
       - checkout
-
       # start the SSE plugin as early as possible so that the engine
       # image has enough time to connect to it before tests are run
       - run:
@@ -98,21 +97,52 @@ jobs:
       #       npx nebula create temp/hello --pkgm yarn --picasso none
       #       cd temp/hello
       #       APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      - run:
-          name: Create a picasso barchart supernova project from current commit
-          command: |
-            set -e
-            ./commands/cli/lib/index.js create generated/barchart --picasso barchart --no-install
-            echo "Yarn"
-            yarn
-            echo "Linking packages"
-            npx lerna link --force-local
-            cd generated/barchart
-            echo "Log node_modules/@nebula.js"
-            ls -la node_modules/@nebula.js
-            yarn run build
-            APP_ID=$DOC_ID yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      #- run:
+      #    name: Create a picasso barchart supernova project from current commit
+      #    command: |
+      #      set -e
+      #      ./commands/cli/lib/index.js create generated/barchart --picasso barchart --no-install
+      #      echo "Yarn"
+      #      yarn
+      #      echo "Linking packages"
+      #      npx lerna link --force-local
+      #      cd generated/barchart
+      #      echo "Log node_modules/@nebula.js"
+      #      ls -la node_modules/@nebula.js
+      #      yarn run build
+      #      APP_ID=$DOC_ID yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - store_artifacts:
           path: generated/barchart/screenshots
       - store_artifacts:
           path: test/mashup/__artifacts__
+  api-governance:
+    machine: true
+    working_directory: ~/project
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Login for Docker
+          command: echo $DOCKER_TOKEN | docker login -u "$DOCKER_USER" --password-stdin
+      - run:
+          name: API Governance Compliance
+          command: |
+            docker pull qlik/asmquery
+            docker create -v /specs --name specs alpine:3.4 /bin/true
+            docker cp ./apis/stardust/api-spec/spec.json specs:/specs
+            docker run --volumes-from specs -e target=Colony -e runMode=failBuild -e apiId=abdc47c2-921a-45d3-ba5c-80d448574c5b -e specPath='/specs/spec.json' -e commit="$CIRCLE_SHA1" qlik/asmquery
+workflows:
+  version: 2
+  build-deploy:
+    jobs:
+      - build:
+          filters:
+            tags:
+              only:
+                - /v.*/
+      - api-governance:
+          filters:
+            tags:
+              only:
+                - /v.*/

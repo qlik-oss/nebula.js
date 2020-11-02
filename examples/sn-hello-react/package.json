@@ -21,14 +21,14 @@
     "start": "nebula serve --no-build"
   },
   "peerDependencies": {
-    "@nebula.js/stardust": ">=0.6.0"
+    "@nebula.js/stardust": ">=1.0.2-alpha.0"
   },
   "devDependencies": {
     "@babel/cli": "7.4.4",
     "@babel/plugin-transform-react-jsx": "7.3.0",
     "@babel/preset-env": "7.4.5",
     "@babel/preset-react": "7.0.0",
-    "@nebula.js/cli": "0.6.0",
+    "@nebula.js/cli": "1.0.2-alpha.0",
     "eslint": "5.12.1",
     "eslint-config-airbnb": "17.1.0",
     "eslint-plugin-import": "2.15.0",
