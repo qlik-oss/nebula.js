@@ -10,7 +10,6 @@ if (!global.requestAnimationFrame) {
 }
 export function create(definition, context = {}) {
   const hooked = hook(definition);
-
   const component = {
     context: {
       ...context,
@@ -20,6 +19,11 @@ export function create(definition, context = {}) {
     },
     fn: hooked.fn,
   };
+
+  let actions = [];
+  hooked.observeActions(component, (updatedActions) => {
+    actions = updatedActions;
+  });
 
   hooked.initiate(component);
 
@@ -40,8 +44,7 @@ export function create(definition, context = {}) {
       return hooked.runSnaps(component, component.context.layout);
     },
     actions() {
-      // TODO
-      return [];
+      return actions;
     },
   };
 }

@@ -63,7 +63,9 @@ describe('test-utils', () => {
   });
 
   it('should do actions', () => {
+    hooked.observeActions.callsArgWith(1, ['action']);
     const c = create();
-    expect(c.actions()).to.have.length(0);
+    hooked.observeActions.reset();
+    expect(c.actions()).to.deep.equals(['action']);
   });
 });
