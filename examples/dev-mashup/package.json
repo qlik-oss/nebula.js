@@ -7,10 +7,8 @@
     "start": "parcel index.html --open",
     "build": "parcel build index.html"
   },
-  "peerDependencies": {
-    "@nebula.js/stardust": "1.0.2-alpha.0"
-  },
   "dependencies": {
+    "@nebula.js/stardust": "latest",
     "@nebula.js/sn-bar-chart": "latest",
     "@nebula.js/sn-line-chart": "latest",
     "enigma.js": "2.7.2"
