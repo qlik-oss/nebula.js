@@ -4,7 +4,7 @@ import line from '@nebula.js/sn-line-chart';
 import connect from './connect';
 
 function init() {
-  connect().then(async (app) => {
+  connect().then((app) => {
     const nebbie = embed(app, {
       types: [
         {
