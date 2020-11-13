@@ -4,16 +4,17 @@ Example mashup for nebula development
 
 ## Install
 
-Update dependencies
+To use a local nebula version, run this in the stardust folder to allow linking your local version.
+
+```
+yarn link
+```
+
+Update dependencies and link nebula
 
 ```
 yarn
-```
-
-To use a local nebula version, run this in the stardust folder to link you local version.
-
-```
-yarn link @nebula.js/stardust
+yarn link "@nebula.js/stardust"
 ```
 
 ## Run
