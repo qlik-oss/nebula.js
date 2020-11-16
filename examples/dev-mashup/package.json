@@ -1,0 +1,20 @@
+{
+  "name": "local-mashup",
+  "version": "1.0.0",
+  "description": "Simple local mashup",
+  "main": "index.html",
+  "scripts": {
+    "start": "parcel index.html --open",
+    "build": "parcel build index.html"
+  },
+  "dependencies": {
+    "@nebula.js/stardust": "latest",
+    "@nebula.js/sn-bar-chart": "latest",
+    "@nebula.js/sn-line-chart": "latest",
+    "enigma.js": "2.7.2"
+  },
+  "devDependencies": {
+    "@babel/core": "7.12.3",
+    "parcel-bundler": "^1.12.4"
+  }
+}
