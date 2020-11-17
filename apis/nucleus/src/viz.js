@@ -1,6 +1,6 @@
+import conversion from '@nebula.js/conversion';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
-import objectConversion from './object-conversion';
 
 const noopi = () => {};
 
@@ -100,11 +100,11 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
         return cellRef.current.takeSnapshot();
       },
       async convertTo({ newType, forceUpdate = true }) {
-        const importedPropertyTree = await objectConversion.convertTo({ halo, model, cellRef, newType });
+        const propertyTree = await conversion.convertTo({ halo, model, cellRef, newType });
         if (forceUpdate) {
-          await model.setProperties(importedPropertyTree.qProperty);
+          await model.setProperties(propertyTree.qProperty);
         }
-        return importedPropertyTree;
+        return propertyTree;
       },
     },
 

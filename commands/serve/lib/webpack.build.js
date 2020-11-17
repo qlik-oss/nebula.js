@@ -33,6 +33,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         '@nebula.js/stardust': path.resolve(__dirname, '../../../apis/stardust/src'),
         '@nebula.js/snapshooter/client': path.resolve(__dirname, '../../../apis/snapshooter/src/renderer'),
         '@nebula.js/theme': path.resolve(__dirname, '../../../apis/theme/src'),
+        '@nebula.js/conversion': path.resolve(__dirname, '../../../apis/conversion/src'),
         '@nebula.js/locale/all.json$': path.resolve(__dirname, '../../../apis/locale/all.json'),
         '@nebula.js/locale': path.resolve(__dirname, '../../../apis/locale/src'),
         fixtures: path.resolve(__dirname, '../../../test/component'),

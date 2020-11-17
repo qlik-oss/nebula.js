@@ -42,6 +42,7 @@
     "@nebula.js/nucleus": "1.0.2-alpha.0",
     "@nebula.js/supernova": "1.0.2-alpha.0",
     "@nebula.js/theme": "1.0.2-alpha.0",
+    "@nebula.js/conversion": "1.0.0",
     "@nebula.js/ui": "1.0.2-alpha.0",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1",
