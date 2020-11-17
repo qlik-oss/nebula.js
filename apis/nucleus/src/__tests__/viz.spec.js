@@ -1,9 +1,10 @@
 /* eslint no-underscore-dangle:0 */
-const doMock = ({ glue = () => {}, getPatches = () => {} } = {}) =>
+const doMock = ({ glue = () => {}, getPatches = () => {}, objectConversion = {} } = {}) =>
   aw.mock(
     [
       ['**/components/glue.jsx', () => glue],
       ['**/utils/patcher.js', () => getPatches],
+      ['**/object-conversion/index.js', () => objectConversion],
     ],
     ['../viz.js']
   );
@@ -22,6 +23,7 @@ describe('viz', () => {
   let setSnContext;
   let takeSnapshot;
   let exportImage;
+  let objectConversion;
   before(() => {
     sandbox = sinon.createSandbox();
     unmount = sandbox.spy();
@@ -39,13 +41,15 @@ describe('viz', () => {
     };
     glue = sandbox.stub().returns([unmount, cellRef]);
     getPatches = sandbox.stub().returns(['patch']);
-    [{ default: create }] = doMock({ glue, getPatches });
+    objectConversion = { convertTo: sandbox.stub().returns('props') };
+    [{ default: create }] = doMock({ glue, getPatches, objectConversion });
     model = {
       getEffectiveProperties: sandbox.stub().returns('old'),
       applyPatches: sandbox.spy(),
       on: sandbox.spy(),
       once: sandbox.spy(),
       emit: sandbox.spy(),
+      setProperties: sandbox.spy(),
       id: 'uid',
     };
     api = create({
@@ -72,6 +76,10 @@ describe('viz', () => {
 
     it('should have an exportImage method', () => {
       expect(api.__DO_NOT_USE__.exportImage).to.be.a('function');
+    });
+
+    it('should have an convertTo method', () => {
+      expect(api.__DO_NOT_USE__.convertTo).to.be.a('function');
     });
   });
 
@@ -134,6 +142,24 @@ describe('viz', () => {
     it('should export image', async () => {
       api.__DO_NOT_USE__.exportImage();
       expect(cellRef.current.exportImage).to.have.been.calledWithExactly();
+    });
+  });
+
+  describe('convertTo', () => {
+    it('should run setProperties when forceUpdate = true', async () => {
+      const props = await api.__DO_NOT_USE__.convertTo({ newType: 'type', forceUpdate: true });
+      expect(objectConversion.convertTo.callCount).to.equal(1);
+      expect(model.setProperties.callCount).to.equal(1);
+      expect(props).to.equal('props');
+    });
+
+    it('should not run setProperties when forceUpdate = false', async () => {
+      objectConversion.convertTo.resetHistory();
+      model.setProperties.resetHistory();
+      const props = await api.__DO_NOT_USE__.convertTo({ newType: 'type', forceUpdate: false });
+      expect(objectConversion.convertTo.callCount).to.equal(1);
+      expect(model.setProperties.callCount).to.equal(0);
+      expect(props).to.equal('props');
     });
   });
 });

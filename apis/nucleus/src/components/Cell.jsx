@@ -372,6 +372,9 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
   useImperativeHandle(
     ref,
     () => ({
+      getQae() {
+        return state.sn.generator.qae;
+      },
       setSnOptions,
       async takeSnapshot() {
         const { width, height } = cellRect;

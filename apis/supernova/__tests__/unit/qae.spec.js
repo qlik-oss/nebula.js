@@ -10,6 +10,8 @@ describe('qae', () => {
       data: {
         targets: [],
       },
+      exportProperties: undefined,
+      importProperties: undefined,
     });
   });
 

@@ -578,6 +578,7 @@ describe('<Cell />', () => {
       expect(cellRef.current.setSnOptions).to.be.a('function');
       expect(cellRef.current.exportImage).to.be.a('function');
       expect(cellRef.current.takeSnapshot).to.be.a('function');
+      expect(cellRef.current.getQae).to.be.a('function');
     });
 
     it('should take snapshot', async () => {

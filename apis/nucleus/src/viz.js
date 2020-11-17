@@ -1,6 +1,6 @@
 import glueCell from './components/glue';
-
 import getPatches from './utils/patcher';
+import objectConversion from './object-conversion';
 
 const noopi = () => {};
 
@@ -98,6 +98,13 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       },
       takeSnapshot() {
         return cellRef.current.takeSnapshot();
+      },
+      async convertTo({ newType, forceUpdate = true }) {
+        const importedPropertyTree = await objectConversion.convertTo({ halo, model, cellRef, newType });
+        if (forceUpdate) {
+          await model.setProperties(importedPropertyTree.qProperty);
+        }
+        return importedPropertyTree;
       },
     },
 

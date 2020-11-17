@@ -98,6 +98,8 @@ export default function qae(def = {}) {
     data: {
       targets: ((def.data || {}).targets || []).map(target),
     },
+    exportProperties: def.exportProperties,
+    importProperties: def.importProperties,
   };
 
   return q;
