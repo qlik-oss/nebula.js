@@ -10,19 +10,20 @@ import libraryUtils from './library-utils';
  * @returns {*} The default value if specified, otherwise undefined.
  */
 const getValue = (data, reference, defaultValue) => {
-  const steps = reference.split('/');
-  let dataContainer = data;
-  if (dataContainer === undefined || dataContainer === null) {
+  if (data === undefined || data === null || reference === undefined) {
     return defaultValue;
   }
+  const steps = reference.split('.');
+  let dataContainer = data;
   for (let i = 0; i < steps.length; ++i) {
-    if (steps[i] === '') {
+    const step = steps[i];
+    if (step === '') {
       continue; // eslint-disable-line no-continue
     }
-    if (dataContainer[steps[i]] === undefined || dataContainer[steps[i]] === null) {
+    if (dataContainer[step] === undefined || dataContainer[step] === null) {
       return defaultValue;
     }
-    dataContainer = dataContainer[steps[i]];
+    dataContainer = dataContainer[step];
   }
   return dataContainer;
 };
@@ -40,25 +41,25 @@ const getValue = (data, reference, defaultValue) => {
  * @param value Arbitrary value to set. If the value is set to undefined, the value property will be removed.
  */
 const setValue = (data, reference, value) => {
-  if (!reference) {
+  if (data === undefined || data === null || reference === undefined) {
     return;
   }
   const steps = reference.split('.');
+  const propertyName = steps[steps.length - 1];
   let dataContainer = data;
-  const dataName = steps[steps.length - 1];
-  let i;
 
-  for (i = 0; i < steps.length - 1; ++i) {
-    if (dataContainer[steps[i]] == null) {
-      dataContainer[steps[i]] = Number.isNaN(+steps[i + 1]) ? {} : [];
+  for (let i = 0; i < steps.length - 1; ++i) {
+    const step = steps[i];
+    if (dataContainer[step] === undefined || dataContainer[step] === null) {
+      dataContainer[step] = Number.isNaN(+steps[i + 1]) ? {} : [];
     }
-    dataContainer = dataContainer[steps[i]];
+    dataContainer = dataContainer[step];
   }
 
   if (typeof value !== 'undefined') {
-    dataContainer[dataName] = value;
+    dataContainer[propertyName] = value;
   } else {
-    delete dataContainer[dataName];
+    delete dataContainer[propertyName];
   }
 };
 

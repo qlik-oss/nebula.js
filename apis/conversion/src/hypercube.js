@@ -13,8 +13,6 @@ export default {
     const hcd = utils.getValue(properties, hypercubePath);
     const dataGroup = exportFormat.data[0];
     let i;
-    let key;
-    let propName;
 
     if (!hcd.qInterColumnSortOrder) {
       hcd.qInterColumnSortOrder = [];
@@ -45,7 +43,6 @@ export default {
     }
 
     // export sort order
-
     dataGroup.interColumnSortOrder = hcd.qInterColumnSortOrder.concat();
 
     // if we have a excluded sort order, try apply that instead
@@ -63,9 +60,10 @@ export default {
 
     delete hcd.qLayoutExclude;
 
-    for (key in properties) {
-      exportFormat.properties[key] = properties[key];
-    }
+    Object.keys(properties).forEach((prop) => {
+      exportFormat.properties[prop] = properties[prop];
+    });
+
     if (hypercubePath) {
       exportFormat.properties.qHyperCubeDef = utils.getValue(properties, hypercubePath);
       delete utils.getValue(properties, hypercubePath);
@@ -76,12 +74,12 @@ export default {
     }
 
     if (properties.qLayoutExclude.disabled) {
-      for (key in properties.qLayoutExclude.disabled) {
-        propName = key;
-        if (!exportFormat.properties.hasOwnProperty(propName)) {
-          exportFormat.properties[propName] = properties.qLayoutExclude.disabled[key];
+      Object.keys(properties.qLayoutExclude.disabled).forEach((prop) => {
+        if (!exportFormat.properties.hasOwnProperty(prop)) {
+          exportFormat.properties[prop] = properties.qLayoutExclude.disabled[prop];
         }
-      }
+      });
+
       delete properties.qLayoutExclude.disabled;
     }
 
