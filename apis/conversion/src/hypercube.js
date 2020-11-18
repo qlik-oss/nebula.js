@@ -7,7 +7,7 @@ import arrayUtils from './array-util';
 import helpers from './helpers';
 
 export default {
-  exportProperties({ propertyTree, hypercubePath = '/qHyperCubeDef' }) {
+  exportProperties({ propertyTree, hypercubePath = 'qHyperCubeDef' }) {
     const exportFormat = createExportFormat();
     const properties = propertyTree.qProperty;
     const hcd = utils.getValue(properties, hypercubePath);
