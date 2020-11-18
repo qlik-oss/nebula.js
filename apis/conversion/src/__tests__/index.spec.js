@@ -37,35 +37,22 @@ describe('objectConversion', () => {
     afterEach(() => {
       sandbox.restore();
     });
-    it('should do convert correctly when there is no exportProperties and importProperties', async () => {
+    it('should throw an error when there is no source exportProperties and no target importProperties', async () => {
       newType = 'bar';
-      const convertedTree = await objectConversion.convertTo({ halo, model, cellRef, newType });
-      expect(cellRef.current.getQae.callCount).to.equal(1);
-      expect(model.getFullPropertyTree.callCount).to.equal(1);
-      expect(halo.types.get.callCount).to.equal(1);
-      expect(halo.types.get().supernova.callCount).to.equal(1);
-      expect(convertedTree.qProperty.visualization).to.equal('bar');
+      try {
+        await objectConversion.convertTo({ halo, model, cellRef, newType });
+        expect(cellRef.current.getQae.callCount).to.equal(1);
+        expect(model.getFullPropertyTree.callCount).to.equal(1);
+        expect(halo.types.get.callCount).to.equal(0);
+        expect(halo.types.get().supernova.callCount).to.equal(0);
+      } catch (err) {
+        expect(err.message).to.equal(
+          `Converting from ${propertyTree.qProperty.visualization} is not supported since there is no exportProperties method.`
+        );
+      }
     });
 
-    it('should do convert correctly when there is source exportProperties', async () => {
-      newType = 'bar';
-      sourceQae = { exportProperties: sandbox.stub().returns({ qProperty: { xyz: 1 } }) };
-      cellRef = {
-        current: {
-          getQae: sandbox.stub().returns(sourceQae),
-        },
-      };
-      const convertedTree = await objectConversion.convertTo({ halo, model, cellRef, newType });
-      expect(cellRef.current.getQae.callCount).to.equal(1);
-      expect(model.getFullPropertyTree.callCount).to.equal(1);
-      expect(halo.types.get.callCount).to.equal(1);
-      expect(halo.types.get().supernova.callCount).to.equal(1);
-      expect(convertedTree.qProperty.visualization).to.equal('bar');
-      expect(sourceQae.exportProperties.callCount).to.equal(1);
-      expect(convertedTree.qProperty.xyz).to.equal(1);
-    });
-
-    it('should do convert correctly when there is target importProperties', async () => {
+    it('should throw an error when there is no source exportProperties but target importProperties', async () => {
       newType = 'bar';
       targetQae = { importProperties: sandbox.stub().returns({ qProperty: { mnp: 10 } }) };
       halo = {
@@ -75,14 +62,38 @@ describe('objectConversion', () => {
           }),
         },
       };
-      const convertedTree = await objectConversion.convertTo({ halo, model, cellRef, newType });
-      expect(cellRef.current.getQae.callCount).to.equal(1);
-      expect(model.getFullPropertyTree.callCount).to.equal(1);
-      expect(halo.types.get.callCount).to.equal(1);
-      expect(halo.types.get().supernova.callCount).to.equal(1);
-      expect(convertedTree.qProperty.visualization).to.equal('bar');
-      expect(targetQae.importProperties.callCount).to.equal(1);
-      expect(convertedTree.qProperty.mnp).to.equal(10);
+      try {
+        await objectConversion.convertTo({ halo, model, cellRef, newType });
+        expect(cellRef.current.getQae.callCount).to.equal(1);
+        expect(model.getFullPropertyTree.callCount).to.equal(1);
+        expect(halo.types.get.callCount).to.equal(0);
+        expect(halo.types.get().supernova.callCount).to.equal(0);
+      } catch (err) {
+        expect(err.message).to.equal(
+          `Converting from ${propertyTree.qProperty.visualization} is not supported since there is no exportProperties method.`
+        );
+      }
+    });
+
+    it('should throw an error when there is source exportProperties but no target importProperties', async () => {
+      newType = 'bar';
+      sourceQae = { exportProperties: sandbox.stub().returns({ qProperty: { xyz: 1 } }) };
+      cellRef = {
+        current: {
+          getQae: sandbox.stub().returns(sourceQae),
+        },
+      };
+      try {
+        await objectConversion.convertTo({ halo, model, cellRef, newType });
+        expect(cellRef.current.getQae.callCount).to.equal(1);
+        expect(model.getFullPropertyTree.callCount).to.equal(1);
+        expect(halo.types.get.callCount).to.equal(1);
+        expect(halo.types.get().supernova.callCount).to.equal(1);
+      } catch (err) {
+        expect(err.message).to.equal(
+          `Converting to ${newType} is not supported since there is no importProperties method.`
+        );
+      }
     });
 
     it('should do convert correctly when there are source exportProperties and target importProperties', async () => {

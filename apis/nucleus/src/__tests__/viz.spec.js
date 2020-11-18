@@ -4,7 +4,7 @@ const doMock = ({ glue = () => {}, getPatches = () => {}, objectConversion = {} 
     [
       ['**/components/glue.jsx', () => glue],
       ['**/utils/patcher.js', () => getPatches],
-      ['**/object-conversion/index.js', () => objectConversion],
+      ['@nebula.js/conversion', () => objectConversion],
     ],
     ['../viz.js']
   );
