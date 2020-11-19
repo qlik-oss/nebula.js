@@ -8,7 +8,7 @@
  * @returns {*} The default value if specified, otherwise undefined.
  */
 const getValue = (data, reference, defaultValue) => {
-  if (data === undefined || data === null || reference === undefined) {
+  if (data === undefined || data === null || reference === undefined || reference === null) {
     return defaultValue;
   }
   const steps = reference.split('.');
@@ -39,7 +39,7 @@ const getValue = (data, reference, defaultValue) => {
  * @param value Arbitrary value to set. If the value is set to undefined, the value property will be removed.
  */
 const setValue = (data, reference, value) => {
-  if (data === undefined || data === null || reference === undefined) {
+  if (data === undefined || data === null || reference === undefined || reference === null) {
     return;
   }
   const steps = reference.split('.');

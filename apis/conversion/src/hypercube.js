@@ -7,10 +7,11 @@ import arrayUtils from './array-util';
 import helpers from './helpers';
 
 export default {
-  exportProperties({ propertyTree, hypercubePath = 'qHyperCubeDef' }) {
+  exportProperties({ propertyTree, hypercubePath }) {
     const exportFormat = createExportFormat();
     const properties = propertyTree.qProperty;
-    const hcd = utils.getValue(properties, hypercubePath);
+    const hcdParent = utils.getValue(properties, hypercubePath || '');
+    const hcd = hcdParent.qHyperCubeDef;
     const dataGroup = exportFormat.data[0];
     let i;
 
@@ -65,8 +66,8 @@ export default {
     });
 
     if (hypercubePath) {
-      exportFormat.properties.qHyperCubeDef = utils.getValue(properties, hypercubePath);
-      delete utils.getValue(properties, hypercubePath);
+      exportFormat.properties.qHyperCubeDef = hcdParent.qHyperCubeDef;
+      delete hcdParent.qHyperCubeDef;
     }
 
     if (!properties.qLayoutExclude) {

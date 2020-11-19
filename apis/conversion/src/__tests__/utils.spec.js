@@ -30,11 +30,27 @@ describe('utils', () => {
     });
 
     it('should return fallback value if object is undefined', () => {
+      expect(getValue(undefined, undefined, 'fallback')).to.equal('fallback');
       expect(getValue(undefined, '', 'fallback')).to.equal('fallback');
+      expect(getValue(undefined, null, 'fallback')).to.equal('fallback');
+    });
+
+    it('should return fallback value if object is null', () => {
+      expect(getValue(null, undefined, 'fallback')).to.equal('fallback');
+      expect(getValue(null, '', 'fallback')).to.equal('fallback');
+      expect(getValue(null, null, 'fallback')).to.equal('fallback');
     });
 
     it('should return fallback value if reference is undefined', () => {
       expect(getValue(object, undefined, 'fallback')).to.equal('fallback');
+    });
+
+    it('should return fallback value if reference is null', () => {
+      expect(getValue(object, null, 'fallback')).to.equal('fallback');
+    });
+
+    it('should return object value if reference is an empty string', () => {
+      expect(getValue(object, '', 'fallback')).to.deep.equal(object);
     });
 
     it('should get correct values from first level', () => {
