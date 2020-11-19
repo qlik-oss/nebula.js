@@ -1,7 +1,7 @@
 import utils from '../utils';
 
-describe('get-value', () => {
-  describe('get-value', () => {
+describe('utils', () => {
+  describe('getValue', () => {
     const { getValue } = utils;
     let object;
 
@@ -68,7 +68,7 @@ describe('get-value', () => {
     });
   });
 
-  describe('set-value', () => {
+  describe('setValue', () => {
     const { setValue } = utils;
     let object;
 
@@ -173,6 +173,26 @@ describe('get-value', () => {
           },
         },
       });
+    });
+  });
+
+  describe('isEmpty', () => {
+    const { isEmpty } = utils;
+    it('should return false if it is not an object', () => {
+      expect(isEmpty(0)).to.equal(false);
+      expect(isEmpty('')).to.equal(false);
+      expect(isEmpty('0')).to.equal(false);
+      expect(isEmpty([])).to.equal(false);
+    });
+
+    it('should return false if it is an object which is not empty', () => {
+      expect(isEmpty({ a: 0 })).to.equal(false);
+      expect(isEmpty({ b: '' })).to.equal(false);
+      expect(isEmpty({ c: [] })).to.equal(false);
+    });
+
+    it('should return true if it is an empyt object', () => {
+      expect(isEmpty({})).to.equal(true);
     });
   });
 });

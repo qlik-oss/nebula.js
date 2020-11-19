@@ -1,5 +1,3 @@
-import libraryUtils from './library-utils';
-
 /**
  * Gets a value from a data object structure.
  *
@@ -67,56 +65,8 @@ const isEmpty = (object) => {
   return Object.keys(object).length === 0 && object.constructor === Object;
 };
 
-const checkLibraryObjects = (exportFormat, dimensionList, measureList) => {
-  let i;
-  let j;
-  let dim;
-  let meas;
-  let libDim;
-  let libMeas;
-  for (i = 0; i < exportFormat.data.length; ++i) {
-    for (j = 0; j < exportFormat.data[i].dimensions.length; ++j) {
-      dim = exportFormat.data[i].dimensions[j];
-      if (dim.qLibraryId) {
-        libDim = libraryUtils.findLibraryDimension(dim.qLibraryId, dimensionList);
-        if (libDim) {
-          dim.title = libDim.qData.title;
-        }
-      }
-    }
-    for (j = 0; j < exportFormat.data[i].measures.length; ++j) {
-      meas = exportFormat.data[i].measures[j];
-      if (meas.qLibraryId) {
-        libMeas = libraryUtils.findLibraryMeasure(meas.qLibraryId, measureList);
-        if (libMeas) {
-          meas.title = libMeas.qData.title;
-        }
-      }
-    }
-    for (j = 0; j < exportFormat.data[i].excludedDimensions.length; ++j) {
-      dim = exportFormat.data[i].excludedDimensions[j];
-      if (dim.qLibraryId) {
-        libDim = libraryUtils.findLibraryDimension(dim.qLibraryId, dimensionList);
-        if (libDim) {
-          dim.title = libDim.qData.title;
-        }
-      }
-    }
-    for (j = 0; j < exportFormat.data[i].excludedMeasures.length; ++j) {
-      meas = exportFormat.data[i].excludedMeasures[j];
-      if (meas.qLibraryId) {
-        libMeas = libraryUtils.findLibraryMeasure(meas.qLibraryId, measureList);
-        if (libMeas) {
-          meas.title = libMeas.qData.title;
-        }
-      }
-    }
-  }
-};
-
 export default {
   getValue,
   setValue,
   isEmpty,
-  checkLibraryObjects,
 };
