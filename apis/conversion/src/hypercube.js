@@ -13,34 +13,25 @@ export default {
     const hcdParent = utils.getValue(properties, hypercubePath || '');
     const hcd = hcdParent.qHyperCubeDef;
     const dataGroup = exportFormat.data[0];
-    let i;
 
     if (!hcd.qInterColumnSortOrder) {
       hcd.qInterColumnSortOrder = [];
     }
 
     // export dimensions
-    for (i = 0; i < hcd.qDimensions.length; ++i) {
-      dataGroup.dimensions.push(hcd.qDimensions[i]);
-    }
+    dataGroup.dimensions.push(...hcd.qDimensions);
 
     // excluded dimensions
     if (hcd.qLayoutExclude && hcd.qLayoutExclude.qHyperCubeDef && hcd.qLayoutExclude.qHyperCubeDef.qDimensions) {
-      for (i = 0; i < hcd.qLayoutExclude.qHyperCubeDef.qDimensions.length; ++i) {
-        dataGroup.excludedDimensions.push(hcd.qLayoutExclude.qHyperCubeDef.qDimensions[i]);
-      }
+      dataGroup.excludedDimensions.push(...hcd.qLayoutExclude.qHyperCubeDef.qDimensions);
     }
 
     // export measures
-    for (i = 0; i < hcd.qMeasures.length; ++i) {
-      dataGroup.measures.push(hcd.qMeasures[i]);
-    }
+    dataGroup.measures.push(...hcd.qMeasures);
 
     // excluded measures
     if (hcd.qLayoutExclude && hcd.qLayoutExclude.qHyperCubeDef && hcd.qLayoutExclude.qHyperCubeDef.qMeasures) {
-      for (i = 0; i < hcd.qLayoutExclude.qHyperCubeDef.qMeasures.length; ++i) {
-        dataGroup.excludedMeasures.push(hcd.qLayoutExclude.qHyperCubeDef.qMeasures[i]);
-      }
+      dataGroup.excludedMeasures.push(...hcd.qLayoutExclude.qHyperCubeDef.qMeasures);
     }
 
     // export sort order
