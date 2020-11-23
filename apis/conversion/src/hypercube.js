@@ -7,6 +7,13 @@ import arrayUtils from './array-util';
 import helpers from './helpers';
 
 export default {
+  /**
+   * Exports properties for a chart with a hypercube.
+   *
+   * @ignore
+   * @param propertyTree The properties tree. Must be an object.
+   * @param hypercubePath Reference to the qHyperCubeDef.
+   */
   exportProperties({ propertyTree, hypercubePath }) {
     const exportFormat = createExportFormat();
     const properties = propertyTree.qProperty;
@@ -86,6 +93,13 @@ export default {
 
     return exportFormat;
   },
+
+  /**
+   * Imports properties for a chart with a hypercube.
+   *
+   * @ignore
+   * @param exportFormat The export object which is the output of exportProperties.
+   */
   importProperties({ exportFormat }) {
     const newPropertyTree = { qChildren: [] };
     newPropertyTree.qProperty = exportFormat.properties;

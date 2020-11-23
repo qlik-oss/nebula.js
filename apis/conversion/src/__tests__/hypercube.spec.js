@@ -1,6 +1,17 @@
-import hypercube from '../hypercube';
+const doMock = ({ helpers = {} } = {}) => aw.mock([['**/helpers/index.js', () => helpers]], ['../hypercube.js']);
 
 describe('hypercube', () => {
+  let sandbox;
+  let hypercube;
+  let helpers;
+  beforeEach(() => {
+    sandbox = sinon.createSandbox();
+    helpers = {
+      restoreChangedProperties: sandbox.stub(),
+    };
+    [{ default: hypercube }] = doMock({ helpers });
+  });
+
   describe('exportProperties', () => {
     describe('interColumnSortOrder', () => {
       describe('without qLayoutExclude', () => {
@@ -218,6 +229,172 @@ describe('hypercube', () => {
           { qDef: { qDef: 'Mes4' } },
         ]);
         expect(propertyTree.qProperty.qHyperCubeDef.qLayoutExclude).to.equal(undefined);
+      });
+    });
+
+    describe('properties and qHyperCubeDef.qLayoutExclude', () => {
+      let propertyTree;
+      beforeEach(() => {
+        propertyTree = {
+          qProperty: {
+            qHyperCubeDef: {
+              qDimensions: [],
+              qMeasures: [],
+              qInterColumnSortOrder: [],
+              qLayoutExclude: {
+                qHyperCubeDef: {
+                  qInterColumnSortOrder: [2, 1, 3, 0],
+                },
+              },
+            },
+            prop1: {
+              prop11: {
+                prop111: 111,
+              },
+            },
+          },
+        };
+      });
+
+      it('should be copied to exportFormat', () => {
+        const exportFormat = hypercube.exportProperties({ propertyTree });
+        expect(exportFormat.properties.qHyperCubeDef).to.deep.equal({
+          qDimensions: [],
+          qMeasures: [],
+          qInterColumnSortOrder: [],
+        });
+        expect(exportFormat.properties.prop1).to.deep.equal({
+          prop11: {
+            prop111: 111,
+          },
+        });
+      });
+
+      it('propertyTree.qProperty.qHyperCubeDef.qLayoutExclude should be deleted', () => {
+        hypercube.exportProperties({ propertyTree });
+        expect(propertyTree.qProperty.qHyperCubeDef.qLayoutExclude).to.equal(undefined);
+      });
+    });
+
+    describe('hypercubePath', () => {
+      let propertyTree;
+      let hypercubePath;
+      beforeEach(() => {
+        propertyTree = {
+          qProperty: {
+            boxPlotDef: {
+              qHyperCubeDef: {
+                qDimensions: [],
+                qMeasures: [],
+                qInterColumnSortOrder: [],
+                qLayoutExclude: {
+                  qHyperCubeDef: {
+                    qInterColumnSortOrder: [2, 1, 3, 0],
+                  },
+                },
+              },
+            },
+            prop1: {
+              prop11: {
+                prop111: 111,
+              },
+            },
+          },
+        };
+
+        hypercubePath = 'boxPlotDef';
+      });
+
+      it('should be copied to exportFormat', () => {
+        const exportFormat = hypercube.exportProperties({ propertyTree, hypercubePath });
+        expect(exportFormat.properties.qHyperCubeDef).to.deep.equal({
+          qDimensions: [],
+          qMeasures: [],
+          qInterColumnSortOrder: [],
+        });
+        expect(exportFormat.properties.prop1).to.deep.equal({
+          prop11: {
+            prop111: 111,
+          },
+        });
+      });
+
+      it('qLayoutExclude should be deleted', () => {
+        hypercube.exportProperties({ propertyTree, hypercubePath });
+        expect(propertyTree.qProperty.boxPlotDef.qHyperCubeDef).to.equal(undefined);
+      });
+    });
+
+    describe('properties.qLayoutExclude', () => {
+      let propertyTree;
+      beforeEach(() => {
+        propertyTree = {
+          qProperty: {
+            qHyperCubeDef: {
+              qDimensions: [],
+              qMeasures: [],
+              qInterColumnSortOrder: [],
+              qLayoutExclude: {
+                qHyperCubeDef: {
+                  qInterColumnSortOrder: [2, 1, 3, 0],
+                },
+              },
+            },
+            qLayoutExclude: {},
+            prop1: {
+              prop11: {
+                prop111: 111,
+              },
+            },
+          },
+        };
+      });
+
+      it('properties.qLayoutExclude should be deleted if there is no quarantine', () => {
+        hypercube.exportProperties({ propertyTree });
+        expect(propertyTree.qProperty.qLayoutExclude).to.equal(undefined);
+      });
+
+      it('properties.qLayoutExclude should be deleted if quarantine is an empty object', () => {
+        propertyTree.qProperty.qLayoutExclude.quarantine = {};
+        hypercube.exportProperties({ propertyTree });
+        expect(propertyTree.qProperty.qLayoutExclude).to.equal(undefined);
+      });
+
+      it('properties.qLayoutExclude should be kept if quarantine is an object which is not empty', () => {
+        propertyTree.qProperty.qLayoutExclude.quarantine = { prop1: 1 };
+        hypercube.exportProperties({ propertyTree });
+        expect(propertyTree.qProperty.qLayoutExclude).to.deep.equal({ quarantine: { prop1: 1 } });
+      });
+
+      it('properties.qLayoutExclude.disabled should be copied to exportFormat.properties', () => {
+        propertyTree.qProperty.qLayoutExclude.quarantine = { prop3: 3 };
+        propertyTree.qProperty.qLayoutExclude.disabled = {
+          prop1: {
+            prop11: 110,
+          },
+          prop2: {
+            prop21: 21,
+          },
+        };
+        const exportFormat = hypercube.exportProperties({ propertyTree });
+        expect(propertyTree.qProperty.qLayoutExclude.disabled).to.equal(undefined);
+        expect(exportFormat.properties.prop1).to.deep.equal({ prop11: { prop111: 111 } });
+        expect(exportFormat.properties.prop2).to.deep.equal({ prop21: 21 });
+      });
+
+      it('helpers.restoreChangedProperties should not be called if there is no properties.qLayoutExclude.changed', () => {
+        propertyTree.qProperty.qLayoutExclude.quarantine = { prop3: 3 };
+        hypercube.exportProperties({ propertyTree });
+        expect(helpers.restoreChangedProperties.callCount).to.equal(0);
+      });
+
+      it('helpers.restoreChangedProperties should be called if there is properties.qLayoutExclude.changed', () => {
+        propertyTree.qProperty.qLayoutExclude.quarantine = { prop3: 3 };
+        propertyTree.qProperty.qLayoutExclude.changed = { prop4: 4 };
+        hypercube.exportProperties({ propertyTree });
+        expect(helpers.restoreChangedProperties.callCount).to.equal(1);
+        expect(propertyTree.qProperty.qLayoutExclude.changed).to.equal(undefined);
       });
     });
   });

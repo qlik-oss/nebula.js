@@ -5,6 +5,7 @@
  * An object that imports from this structure is responsible for putting the existing properties where they should be
  * in the new model.
  *
+ * @param nDataGroups The number of hypercubes.
  */
 function createExportFormat(nDataGroups = 1) {
   const exportFormat = {
