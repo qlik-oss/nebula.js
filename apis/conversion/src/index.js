@@ -15,7 +15,7 @@ const getPath = (qae) => {
   return qae && qae.data && qae.data.targets && qae.data.targets[0] && qae.data.targets[0].propertyPath;
 };
 
-const getDefaultExportPropertiesFnc = (path) => {
+const getDefaultExportPropertiesFn = (path) => {
   const steps = path.split('/');
   if (steps.indexOf('qHyperCubeDef') > -1) {
     return hypercube.exportProperties;
@@ -28,7 +28,7 @@ const getExportPropertiesFnc = (qae) => {
     return qae.exportProperties;
   }
   const path = getPath(qae);
-  return getDefaultExportPropertiesFnc(path);
+  return getDefaultExportPropertiesFn(path);
 };
 
 const getDefaultImportPropertiesFnc = (path) => {
