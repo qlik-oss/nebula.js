@@ -4,8 +4,9 @@
  * each of the cubes should export dimensions and measures in two separate data groups.
  * An object that imports from this structure is responsible for putting the existing properties where they should be
  * in the new model.
- *
- * @param nDataGroups The number of hypercubes.
+ * @interface ExportFormat
+ * @property {Array<object>} data
+ * @property {object=} properties
  */
 function createExportFormat(nDataGroups = 1) {
   const exportFormat = {

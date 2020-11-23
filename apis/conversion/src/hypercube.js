@@ -13,6 +13,7 @@ export default {
    * @ignore
    * @param propertyTree The properties tree. Must be an object.
    * @param hypercubePath Reference to the qHyperCubeDef.
+   * @returns {ExportFormat}
    */
   exportProperties({ propertyTree, hypercubePath }) {
     const exportFormat = createExportFormat();
@@ -98,7 +99,8 @@ export default {
    * Imports properties for a chart with a hypercube.
    *
    * @ignore
-   * @param exportFormat The export object which is the output of exportProperties.
+   * @param {ExportFormat} exportFormat The export object which is the output of exportProperties.
+   * @returns {Object} A properties tree
    */
   importProperties({ exportFormat }) {
     const newPropertyTree = { qChildren: [] };
