@@ -1,6 +1,6 @@
+import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
-import objectConversion from './object-conversion';
 
 const noopi = () => {};
 
@@ -99,12 +99,25 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       takeSnapshot() {
         return cellRef.current.takeSnapshot();
       },
+      /**
+       * Converts the visualization to a different registred type
+       * @ignore
+       * @param {string} newType - Which registered type to convert to
+       * @param {boolean=} forceUpdate - Whether to run setProperties or not, defaults to true.
+       * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualizatiom
+       * @example
+       * const viz = await embed(app).render({
+       *   element,
+       *   id: 'abc'
+       * });
+       * viz.convertTo('barChart');
+       */
       async convertTo({ newType, forceUpdate = true }) {
-        const importedPropertyTree = await objectConversion.convertTo({ halo, model, cellRef, newType });
+        const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
         if (forceUpdate) {
-          await model.setProperties(importedPropertyTree.qProperty);
+          await model.setProperties(propertyTree.qProperty);
         }
-        return importedPropertyTree;
+        return propertyTree;
       },
     },
 
