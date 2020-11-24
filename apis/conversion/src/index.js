@@ -47,7 +47,7 @@ const getImportPropertiesFnc = (qae) => {
   return getDefaultImportPropertiesFnc(path);
 };
 
-const convertTo = async ({ halo, model, cellRef, newType }) => {
+export const convertTo = async ({ halo, model, cellRef, newType }) => {
   const propertyTree = await model.getFullPropertyTree();
   const sourceQae = cellRef.current.getQae();
   const exportProperties = getExportPropertiesFnc(sourceQae);
@@ -60,4 +60,4 @@ const convertTo = async ({ halo, model, cellRef, newType }) => {
   return newPropertyTree;
 };
 
-export default { convertTo, hypercube };
+export default { hypercube };

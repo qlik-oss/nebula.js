@@ -1,4 +1,4 @@
-import conversion from '@nebula.js/conversion';
+import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
 
@@ -113,7 +113,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
        * viz.convertTo('barChart');
        */
       async convertTo({ newType, forceUpdate = true }) {
-        const propertyTree = await conversion.convertTo({ halo, model, cellRef, newType });
+        const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
         if (forceUpdate) {
           await model.setProperties(propertyTree.qProperty);
         }
