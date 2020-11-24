@@ -5,14 +5,32 @@
  * An object that imports from this structure is responsible for putting the existing properties where they should be
  * in the new model.
  * @interface ExportFormat
- * @property {Array<object>} data
+ * @ignore
+ * @property {(ExportDataDef[])=} data
  * @property {object=} properties
+ */
+
+/**
+ * @ignore
+ * @interface ExportDataDef
+ * @property {qae.NxDimension[]} dimensions
+ * @property {qae.NxMeasure[]} measures
+ * @property {qae.NxDimension[]} excludedDimensions
+ * @property {qae.NxMeasure[]} excludedMeasures
+ * @property {number[]} interColumnSortOrder
+ */
+
+/**
+ * @ignore
+ * @param {number} nDataGroups
+ * @return {ExportFormat}
  */
 function createExportFormat(nDataGroups = 1) {
   const exportFormat = {
     data: [],
     properties: {},
   };
+
   for (let i = 0; i < nDataGroups; ++i) {
     exportFormat.data.push({
       dimensions: [],
