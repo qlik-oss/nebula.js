@@ -10,7 +10,7 @@ describe('objectConversion', () => {
     let sourceQae;
     let targetQae;
     let hypercube;
-    let conversion;
+    let convertTo;
 
     beforeEach(() => {
       sandbox = sinon.createSandbox();
@@ -46,7 +46,7 @@ describe('objectConversion', () => {
         exportProperties: sandbox.stub().returns({ properties: { prop1: 'value 1' } }),
         importProperties: sandbox.stub().returns({ qProperty: { prop2: 'value 2' } }),
       };
-      [{ default: conversion }] = doMock({ hypercube });
+      [{ convertTo }] = doMock({ hypercube });
     });
 
     afterEach(() => {
@@ -55,7 +55,7 @@ describe('objectConversion', () => {
 
     it('should use hypercube.exportProperties and hypercube.importProperties when there is no source exportProperties and no target importProperties', async () => {
       newType = 'bar';
-      const newPropertyTree = await conversion.convertTo({ halo, model, cellRef, newType });
+      const newPropertyTree = await convertTo({ halo, model, cellRef, newType });
       expect(cellRef.current.getQae.callCount).to.equal(1);
       expect(model.getFullPropertyTree.callCount).to.equal(1);
       expect(halo.types.get.callCount).to.equal(1);
@@ -79,7 +79,7 @@ describe('objectConversion', () => {
           }),
         },
       };
-      const newPropertyTree = await conversion.convertTo({ halo, model, cellRef, newType });
+      const newPropertyTree = await convertTo({ halo, model, cellRef, newType });
       expect(cellRef.current.getQae.callCount).to.equal(1);
       expect(model.getFullPropertyTree.callCount).to.equal(1);
       expect(halo.types.get.callCount).to.equal(1);
@@ -102,7 +102,7 @@ describe('objectConversion', () => {
           getQae: sandbox.stub().returns(sourceQae),
         },
       };
-      const newPropertyTree = await conversion.convertTo({ halo, model, cellRef, newType });
+      const newPropertyTree = await convertTo({ halo, model, cellRef, newType });
       expect(cellRef.current.getQae.callCount).to.equal(1);
       expect(model.getFullPropertyTree.callCount).to.equal(1);
       expect(halo.types.get.callCount).to.equal(1);
@@ -133,7 +133,7 @@ describe('objectConversion', () => {
           }),
         },
       };
-      const newPropertyTree = await conversion.convertTo({ halo, model, cellRef, newType });
+      const newPropertyTree = await convertTo({ halo, model, cellRef, newType });
       expect(cellRef.current.getQae.callCount).to.equal(1);
       expect(model.getFullPropertyTree.callCount).to.equal(1);
       expect(halo.types.get.callCount).to.equal(1);
