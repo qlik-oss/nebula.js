@@ -6,6 +6,7 @@ module.exports = {
     '../supernova/src/**/*.js',
     '../locale/src/translator.js',
     '../theme/src/**/*.js',
+    '../conversion/src/**/*.js',
   ],
   api: {
     stability: 'stable',
