@@ -1,4 +1,6 @@
 import hypercube from './hypercube';
+import utils from './utils';
+import helpers from './helpers';
 
 const getType = async ({ halo, name, version }) => {
   const { types } = halo;
@@ -12,7 +14,7 @@ const getType = async ({ halo, name, version }) => {
 };
 
 const getPath = (qae) => {
-  return qae && qae.data && qae.data.targets && qae.data.targets[0] && qae.data.targets[0].propertyPath;
+  return utils.getValue(qae, 'data.targets.0.propertyPath');
 };
 
 const getDefaultExportPropertiesFn = (path) => {
@@ -54,9 +56,24 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
   const targetSnType = await getType({ halo, name: newType });
   const targetQae = targetSnType.qae;
   const importProperties = getImportPropertiesFnc(targetQae);
-  const exportFormat = exportProperties({ propertyTree });
-  const newPropertyTree = importProperties({ exportFormat });
-  newPropertyTree.qProperty.visualization = newType;
+  const exportFormat = exportProperties({
+    propertyTree,
+    hypercubePath: helpers.getHypercubePath(sourceQae),
+  });
+  const initial = utils.getValue(targetQae, 'properties.initial', {});
+  const initialProperties = {
+    qInfo: {
+      qType: newType,
+    },
+    visualization: newType,
+    ...initial,
+  };
+  const newPropertyTree = importProperties({
+    exportFormat,
+    initialProperties,
+    dataDefinition: utils.getValue(targetQae, 'data.targets.0.', {}),
+    hypercubePath: helpers.getHypercubePath(targetQae),
+  });
   return newPropertyTree;
 };
 
