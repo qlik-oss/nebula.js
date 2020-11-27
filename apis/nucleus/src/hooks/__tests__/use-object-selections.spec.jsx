@@ -153,13 +153,42 @@ describe('useObjectSelections', () => {
     expect(res).to.equal(true);
   });
 
-  it('should clear on non successful select', async () => {
+  it('should return false on non successful select', async () => {
     await render();
 
     appSel.isModal.returns(true);
     object.select.returns(false);
     const res = await ref.current.result[0].select({ method: 'select', params: [] });
     expect(res).to.equal(false);
+  });
+
+  it('should not emit cleared on non successful select', async () => {
+    await render();
+    const cleared = sandbox.stub();
+    objectSel.on('cleared', cleared);
+
+    appSel.isModal.returns(true);
+    object.select.returns(false);
+    await objectSel.select({ method: 'select', params: [] });
+    expect(cleared).to.not.be.called;
+  });
+
+  it('should call resetMadeSelections on non successful select', async () => {
+    await render();
+
+    appSel.isModal.returns(true);
+    object.select.returns(false);
+    await objectSel.select({ method: 'select', params: [] });
+    expect(object.resetMadeSelections).to.have.been.calledWithExactly();
+  });
+
+  it('should not be possible to clear after select has be called with resetMadeSelections', async () => {
+    await render();
+    appSel.isModal.returns(true);
+    object.select.returns(true);
+    await objectSel.select({ method: 'resetMadeSelections', params: [] });
+
+    expect(objectSel.canClear()).to.equal(false);
   });
 
   it('can clear', async () => {
@@ -174,12 +203,11 @@ describe('useObjectSelections', () => {
     objectSel.setLayout(layout);
     expect(ref.current.result[0].canClear()).to.equal(true);
 
-    layout = {
-      qSelectionInfo: {
-        qMadeSelections: true,
-      },
-    };
+    layout = {};
     objectSel.setLayout(layout);
+    appSel.isModal.returns(true);
+    object.select.returns(true);
+    await objectSel.select({ method: 'select', params: [] });
     expect(ref.current.result[0].canClear()).to.equal(true);
   });
 
@@ -195,12 +223,11 @@ describe('useObjectSelections', () => {
     objectSel.setLayout(layout);
     expect(ref.current.result[0].canConfirm()).to.equal(true);
 
-    layout = {
-      qSelectionInfo: {
-        qMadeSelections: true,
-      },
-    };
+    layout = {};
     objectSel.setLayout(layout);
+    appSel.isModal.returns(true);
+    object.select.returns(true);
+    await objectSel.select({ method: 'select', params: [] });
     expect(ref.current.result[0].canConfirm()).to.equal(true);
   });
 
