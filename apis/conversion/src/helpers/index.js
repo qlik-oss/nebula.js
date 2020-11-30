@@ -53,6 +53,10 @@ function copyPropertyOrSetDefault(propertyName, source, target, defaultValue) {
   }
 }
 
+function getOthersLabel() {
+  return 'Others'; // TODO: translator.get('properties.dimensionLimits.others')
+}
+
 function createDefaultDimension(dimensionDef, dimensionProperties) {
   const def = extend(true, {}, dimensionProperties, dimensionDef);
   if (!utils.getValue(def, 'qOtherTotalSpec.qOtherCounted')) {
@@ -62,7 +66,7 @@ function createDefaultDimension(dimensionDef, dimensionProperties) {
     utils.setValue(def, 'qOtherTotalSpec.qOtherLimit', { qv: '0' });
   }
   if (!def.hasOwnProperty('othersLabel')) {
-    def.othersLabel = 'Others'; // TODO: translator.get('properties.dimensionLimits.others')
+    def.othersLabel = getOthersLabel();
   }
   return def;
 }
@@ -92,7 +96,7 @@ function getDefaultDimension() {
     qDef: {
       autoSort: true,
       cId: '',
-      othersLabel: 'Others', // TODO: translator.get('properties.dimensionLimits.others')
+      othersLabel: getOthersLabel(),
     },
     qLibraryId: '',
     qNullSuppression: false,
