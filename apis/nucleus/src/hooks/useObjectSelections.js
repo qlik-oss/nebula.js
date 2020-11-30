@@ -90,11 +90,11 @@ function createObjectSelections({ appSelections, appModal, model }) {
       }
       await b;
       const qSuccess = await model[s.method](...s.params);
+      hasSelected = s.method !== 'resetMadeSelections';
       if (!qSuccess) {
-        this.clear();
+        model.resetMadeSelections();
         return false;
       }
-      hasSelected = true;
       return true;
     },
     /**
@@ -104,7 +104,7 @@ function createObjectSelections({ appSelections, appModal, model }) {
       if (layout && layout.qListObject && layout.qListObject.qDimensionInfo) {
         return !layout.qListObject.qDimensionInfo.qLocked;
       }
-      return hasSelected || (layout && layout.qSelectionInfo.qMadeSelections);
+      return hasSelected;
     },
     /**
      * @returns {boolean}
@@ -113,7 +113,7 @@ function createObjectSelections({ appSelections, appModal, model }) {
       if (layout && layout.qListObject && layout.qListObject.qDimensionInfo) {
         return !layout.qListObject.qDimensionInfo.qLocked;
       }
-      return hasSelected || (layout && layout.qSelectionInfo.qMadeSelections);
+      return hasSelected;
     },
     /**
      * @returns {boolean}
