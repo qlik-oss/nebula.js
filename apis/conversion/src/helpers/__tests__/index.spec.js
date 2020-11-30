@@ -385,4 +385,63 @@ describe('helpers', () => {
       });
     });
   });
+
+  describe('setInterColumnSortOrder', () => {
+    let exportFormat;
+    let newHyperCubeDef;
+
+    beforeEach(() => {
+      exportFormat = {
+        data: [
+          {
+            interColumnSortOrder: [1, 0, 2],
+          },
+        ],
+      };
+      newHyperCubeDef = {
+        qDimensions: [{}],
+        qMeasures: [{}, {}],
+      };
+    });
+
+    it('should set correct qInterColumnSortOrder when its size match the number of dimensions and measures', () => {
+      helpers.setInterColumnSortOrder({ exportFormat, newHyperCubeDef });
+      expect(newHyperCubeDef).to.deep.equal({
+        qDimensions: [{}],
+        qMeasures: [{}, {}],
+        qInterColumnSortOrder: [1, 0, 2],
+      });
+    });
+
+    it('should set correct qInterColumnSortOrder when its size is bigger than the number of dimensions and measures', () => {
+      exportFormat.data[0].interColumnSortOrder = [0, 3, 2, 1];
+      helpers.setInterColumnSortOrder({ exportFormat, newHyperCubeDef });
+      expect(newHyperCubeDef).to.deep.equal({
+        qDimensions: [{}],
+        qMeasures: [{}, {}],
+        qInterColumnSortOrder: [0, 2, 1],
+      });
+    });
+
+    it('should set correct qInterColumnSortOrder when its size is smaller than the number of dimensions and measures', () => {
+      exportFormat.data[0].interColumnSortOrder = [0, 1];
+      helpers.setInterColumnSortOrder({ exportFormat, newHyperCubeDef });
+      expect(newHyperCubeDef).to.deep.equal({
+        qDimensions: [{}],
+        qMeasures: [{}, {}],
+        qInterColumnSortOrder: [0, 1, 2],
+      });
+    });
+
+    it('should set correct qInterColumnSortOrder when its size is smaller than the number of dimensions and measures, case 2', () => {
+      exportFormat.data[0].interColumnSortOrder = [0, 2, 1];
+      newHyperCubeDef.qMeasures = [{}, {}, {}];
+      helpers.setInterColumnSortOrder({ exportFormat, newHyperCubeDef });
+      expect(newHyperCubeDef).to.deep.equal({
+        qDimensions: [{}],
+        qMeasures: [{}, {}, {}],
+        qInterColumnSortOrder: [0, 2, 1, 3],
+      });
+    });
+  });
 });
