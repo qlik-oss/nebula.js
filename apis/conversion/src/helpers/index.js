@@ -31,11 +31,11 @@ function isMasterItemPropperty(propertyName) {
 
 function importCommonProperties(newProperties, exportFormat, initialProperties) {
   // always copy type and visualization
-  if (exportFormat.properties.qInfo.qType === 'masterobject') {
-    newProperties.qInfo.qType = 'masterobject';
-  } else {
-    newProperties.qInfo.qType = initialProperties.qInfo.qType;
-  }
+  const qType =
+    utils.getValue(exportFormat, 'properties.qInfo.qType') === 'masterobject'
+      ? 'masterobject'
+      : utils.getValue(initialProperties, 'qInfo.qType');
+  utils.setValue(newProperties, 'qInfo.qType', qType);
   newProperties.visualization = initialProperties.visualization;
 }
 
