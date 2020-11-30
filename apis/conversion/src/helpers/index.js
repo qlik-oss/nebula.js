@@ -2,6 +2,9 @@
 /* eslint-disable no-param-reassign */
 import extend from 'extend';
 import utils from '../utils';
+import arrayUtils from '../array-util';
+
+const MAX_SAFE_INTEGER = 2 ** 53 - 1;
 
 /**
  * Restore properties that were temporarily changed during conversion.
@@ -122,6 +125,70 @@ function getDefaultMeasure() {
   };
 }
 
+function setInterColumnSortOrder({ exportFormat, newHyperCubeDef }) {
+  const dataGroup = exportFormat.data[0];
+  const nCols = newHyperCubeDef.qDimensions.length + newHyperCubeDef.qMeasures.length;
+  newHyperCubeDef.qInterColumnSortOrder = dataGroup.interColumnSortOrder.concat();
+
+  let i = newHyperCubeDef.qInterColumnSortOrder.length;
+  if (i !== nCols) {
+    if (newHyperCubeDef.qLayoutExclude) {
+      // Store them if needed
+      newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qInterColumnSortOrder = dataGroup.interColumnSortOrder.concat();
+    }
+    while (i !== nCols) {
+      if (i < nCols) {
+        arrayUtils.indexAdded(newHyperCubeDef.qInterColumnSortOrder, i);
+        ++i;
+      } else {
+        --i;
+        arrayUtils.indexRemoved(newHyperCubeDef.qInterColumnSortOrder, i);
+      }
+    }
+  }
+}
+
+function createNewProperties({ exportFormat, initialProperties, hypercubePath }) {
+  let newProperties = { qLayoutExclude: { disabled: {}, quarantine: {} } };
+
+  Object.keys(exportFormat.properties).forEach((key) => {
+    if (key === 'qLayoutExclude') {
+      if (exportFormat.properties[key].quarantine) {
+        newProperties.qLayoutExclude.quarantine = extend(true, {}, exportFormat.properties[key].quarantine);
+      }
+    } else if (key === 'qHyperCubeDef' && hypercubePath) {
+      // handle later
+    } else if (initialProperties.hasOwnProperty(key) || isMasterItemPropperty(key)) {
+      // todo: qExtendsId ??
+      newProperties[key] = exportFormat.properties[key];
+    } else {
+      newProperties.qLayoutExclude.disabled[key] = exportFormat.properties[key];
+    }
+  });
+
+  if (hypercubePath && exportFormat.properties.qHyperCubeDef) {
+    newProperties[hypercubePath] = newProperties[hypercubePath] || {};
+    newProperties[hypercubePath].qHyperCubeDef = exportFormat.properties.qHyperCubeDef;
+  }
+
+  newProperties = extend(true, {}, initialProperties, newProperties);
+  if (newProperties.components === null) {
+    newProperties.components = [];
+  }
+  return newProperties;
+}
+
+function getMaxMinDimensionMeasure({ exportFormat, dataDefinition = {} }) {
+  const dataGroup = exportFormat.data[0];
+  const dimensionDef = dataDefinition.dimensions || { max: 0 };
+  const measureDef = dataDefinition.measures || { max: 0 };
+  const maxMeasures = resolveValue(measureDef.max, dataGroup.dimensions.length, MAX_SAFE_INTEGER);
+  const minMeasures = resolveValue(measureDef.min, dataGroup.dimensions.length, 0);
+  const maxDimensions = resolveValue(dimensionDef.max, maxMeasures, MAX_SAFE_INTEGER);
+  const minDimensions = resolveValue(dimensionDef.min, minMeasures, 0);
+  return { maxDimensions, minDimensions, maxMeasures, minMeasures };
+}
+
 export default {
   restoreChangedProperties,
   isMasterItemPropperty,
@@ -134,4 +201,7 @@ export default {
   getHypercubePath,
   getDefaultDimension,
   getDefaultMeasure,
+  setInterColumnSortOrder,
+  createNewProperties,
+  getMaxMinDimensionMeasure,
 };
