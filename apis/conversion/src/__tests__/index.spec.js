@@ -1,4 +1,4 @@
-const doMock = ({ hypercube = {} } = {}) => aw.mock([['**/hypercube.js', () => hypercube]], ['../index.js']);
+const doMock = ({ hypercube = {} } = {}) => aw.mock([['**/hypercube/index.js', () => hypercube]], ['../index.js']);
 describe('objectConversion', () => {
   describe('convertTo', () => {
     let sandbox;
@@ -53,6 +53,7 @@ describe('objectConversion', () => {
     });
 
     afterEach(() => {
+      sandbox.reset();
       sandbox.restore();
     });
 
