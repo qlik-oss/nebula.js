@@ -4,142 +4,6 @@
 import utils from '../utils';
 import helpers from '../helpers';
 
-function checkForLayoutExclude({ dataGroup, maxDimensions, minDimensions, maxMeasures, minMeasures }) {
-  return (
-    (dataGroup.dimensions.length > maxDimensions && maxDimensions > 0) ||
-    (dataGroup.measures.length > maxMeasures && maxMeasures > 0) ||
-    (dataGroup.excludedDimensions.length &&
-      dataGroup.dimensions.length + dataGroup.excludedDimensions.length > minDimensions) ||
-    (dataGroup.excludedMeasures.length &&
-      dataGroup.measures.length + dataGroup.excludedMeasures.length > minMeasures) ||
-    (!maxMeasures && dataGroup.measures.length) ||
-    (!maxDimensions && dataGroup.dimensions.length)
-  );
-}
-
-function initHyerCubeLayoutExclude({
-  dataGroup,
-  maxDimensions,
-  minDimensions,
-  maxMeasures,
-  minMeasures,
-  newHyperCubeDef,
-}) {
-  if (checkForLayoutExclude({ dataGroup, maxDimensions, minDimensions, maxMeasures, minMeasures })) {
-    if (!newHyperCubeDef.qLayoutExclude) {
-      newHyperCubeDef.qLayoutExclude = {};
-    }
-
-    if (!newHyperCubeDef.qLayoutExclude.qHyperCubeDef) {
-      newHyperCubeDef.qLayoutExclude.qHyperCubeDef = {};
-    }
-
-    if (
-      (dataGroup.dimensions.length > maxDimensions && maxDimensions > 0) ||
-      (dataGroup.excludedDimensions &&
-        dataGroup.excludedDimensions.length &&
-        dataGroup.dimensions.length + dataGroup.excludedDimensions.length > minDimensions)
-    ) {
-      if (!newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions) {
-        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [];
-      }
-    }
-
-    if (
-      (dataGroup.measures.length > maxMeasures && maxMeasures > 0) ||
-      (dataGroup.excludedMeasures &&
-        dataGroup.excludedMeasures.length &&
-        dataGroup.measures.length + dataGroup.excludedMeasures.length > minMeasures)
-    ) {
-      if (!newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures) {
-        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures = [];
-      }
-    }
-
-    if (!maxMeasures && dataGroup.measures.length) {
-      // if the object don't support measures put them in alternative measures instead
-      if (!newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures) {
-        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures = [];
-      }
-    }
-
-    if (!maxDimensions && dataGroup.dimensions.length) {
-      // if the object don't support dimensions put them in alternative dimensions instead
-      if (!newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions) {
-        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [];
-      }
-    }
-  }
-}
-
-function addDefaultDimensions({ dataGroup, maxDimensions, minDimensions, newHyperCubeDef, defaultDimension }) {
-  let i;
-  if (maxDimensions > 0) {
-    for (i = 0; i < dataGroup.dimensions.length; ++i) {
-      if (newHyperCubeDef.qDimensions.length < maxDimensions) {
-        newHyperCubeDef.qDimensions.push(helpers.createDefaultDimension(dataGroup.dimensions[i], defaultDimension));
-      } else {
-        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions.push(
-          helpers.createDefaultDimension(dataGroup.dimensions[i], defaultDimension)
-        );
-      }
-    }
-  } else if (dataGroup.dimensions.length) {
-    for (i = 0; i < dataGroup.dimensions.length; ++i) {
-      newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions.push(
-        helpers.createDefaultDimension(dataGroup.dimensions[i], defaultDimension)
-      );
-    }
-  }
-
-  if (dataGroup.excludedDimensions.length) {
-    for (i = 0; i < dataGroup.excludedDimensions.length; ++i) {
-      if (newHyperCubeDef.qDimensions.length < minDimensions) {
-        newHyperCubeDef.qDimensions.push(
-          helpers.createDefaultDimension(dataGroup.excludedDimensions[i], defaultDimension)
-        );
-      } else {
-        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions.push(
-          helpers.createDefaultDimension(dataGroup.excludedDimensions[i], defaultDimension)
-        );
-      }
-    }
-  }
-}
-
-function addDefaultMeasures({ dataGroup, maxMeasures, minMeasures, newHyperCubeDef, defaultMeasure }) {
-  let i;
-  if (maxMeasures > 0) {
-    for (i = 0; i < dataGroup.measures.length; ++i) {
-      if (newHyperCubeDef.qMeasures.length < maxMeasures) {
-        newHyperCubeDef.qMeasures.push(helpers.createDefaultMeasure(dataGroup.measures[i], defaultMeasure));
-      } else {
-        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures.push(
-          helpers.createDefaultMeasure(dataGroup.measures[i], defaultMeasure)
-        );
-      }
-    }
-  } else if (dataGroup.measures.length) {
-    for (i = 0; i < dataGroup.measures.length; ++i) {
-      newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures.push(
-        helpers.createDefaultMeasure(dataGroup.measures[i], defaultMeasure)
-      );
-    }
-  }
-
-  if (dataGroup.excludedMeasures.length) {
-    for (i = 0; i < dataGroup.excludedMeasures.length; ++i) {
-      if (newHyperCubeDef.qMeasures.length < minMeasures) {
-        newHyperCubeDef.qMeasures.push(helpers.createDefaultMeasure(dataGroup.excludedMeasures[i], defaultMeasure));
-      } else {
-        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures.push(
-          helpers.createDefaultMeasure(dataGroup.excludedMeasures[i], defaultMeasure)
-        );
-      }
-    }
-  }
-}
-
 /**
  * Imports properties for a chart with a hypercube.
  *
@@ -162,7 +26,6 @@ export default function importProperties({
   const newProperties = helpers.createNewProperties({ exportFormat, initialProperties, hypercubePath });
   const initHyperCubeDef = utils.getValue(initialProperties, hypercubePath || '').qHyperCubeDef;
   const newHyperCubeDef = utils.getValue(newProperties, hypercubePath || '').qHyperCubeDef;
-  const dataGroup = exportFormat.data[0];
   const { maxDimensions, minDimensions, maxMeasures, minMeasures } = helpers.getMaxMinDimensionMeasure({
     exportFormat,
     dataDefinition,
@@ -177,18 +40,20 @@ export default function importProperties({
   newHyperCubeDef.qMeasures.length = 0;
 
   // create layout exclude structures if needed
-  initHyerCubeLayoutExclude({
-    dataGroup,
-    maxDimensions,
-    minDimensions,
-    maxMeasures,
-    minMeasures,
-    newHyperCubeDef,
-  });
+  if (helpers.shouldInitLayoutExclude({ exportFormat, maxDimensions, minDimensions, maxMeasures, minMeasures })) {
+    helpers.initLayoutExclude({
+      exportFormat,
+      maxDimensions,
+      minDimensions,
+      maxMeasures,
+      minMeasures,
+      newHyperCubeDef,
+    });
+  }
 
   // and now fill them in.
-  addDefaultDimensions({ dataGroup, maxDimensions, minDimensions, newHyperCubeDef, defaultDimension });
-  addDefaultMeasures({ dataGroup, maxMeasures, minMeasures, newHyperCubeDef, defaultMeasure });
+  helpers.addDefaultDimensions({ exportFormat, maxDimensions, minDimensions, newHyperCubeDef, defaultDimension });
+  helpers.addDefaultMeasures({ exportFormat, maxMeasures, minMeasures, newHyperCubeDef, defaultMeasure });
 
   helpers.setInterColumnSortOrder({ exportFormat, newHyperCubeDef });
 

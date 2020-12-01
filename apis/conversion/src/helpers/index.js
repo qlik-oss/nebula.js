@@ -184,6 +184,135 @@ function getMaxMinDimensionMeasure({ exportFormat, dataDefinition = {} }) {
   return { maxDimensions, minDimensions, maxMeasures, minMeasures };
 }
 
+function shouldInitLayoutExclude({ exportFormat, maxDimensions, minDimensions, maxMeasures, minMeasures }) {
+  const dataGroup = exportFormat.data[0];
+  return (
+    (dataGroup.dimensions.length > maxDimensions && maxDimensions > 0) ||
+    (dataGroup.measures.length > maxMeasures && maxMeasures > 0) ||
+    (dataGroup.excludedDimensions.length &&
+      dataGroup.dimensions.length + dataGroup.excludedDimensions.length > minDimensions) ||
+    (dataGroup.excludedMeasures.length &&
+      dataGroup.measures.length + dataGroup.excludedMeasures.length > minMeasures) ||
+    (!maxMeasures && dataGroup.measures.length) ||
+    (!maxDimensions && dataGroup.dimensions.length)
+  );
+}
+
+function initLayoutExclude({ exportFormat, maxDimensions, minDimensions, maxMeasures, minMeasures, newHyperCubeDef }) {
+  const dataGroup = exportFormat.data[0];
+  if (!newHyperCubeDef.qLayoutExclude) {
+    newHyperCubeDef.qLayoutExclude = {};
+  }
+
+  if (!newHyperCubeDef.qLayoutExclude.qHyperCubeDef) {
+    newHyperCubeDef.qLayoutExclude.qHyperCubeDef = {};
+  }
+
+  if (
+    (dataGroup.dimensions.length > maxDimensions && maxDimensions > 0) ||
+    (dataGroup.excludedDimensions &&
+      dataGroup.excludedDimensions.length &&
+      dataGroup.dimensions.length + dataGroup.excludedDimensions.length > minDimensions)
+  ) {
+    if (!newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions) {
+      newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [];
+    }
+  }
+
+  if (
+    (dataGroup.measures.length > maxMeasures && maxMeasures > 0) ||
+    (dataGroup.excludedMeasures &&
+      dataGroup.excludedMeasures.length &&
+      dataGroup.measures.length + dataGroup.excludedMeasures.length > minMeasures)
+  ) {
+    if (!newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures) {
+      newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures = [];
+    }
+  }
+
+  if (!maxMeasures && dataGroup.measures.length) {
+    // if the object don't support measures put them in alternative measures instead
+    if (!newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures) {
+      newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures = [];
+    }
+  }
+
+  if (!maxDimensions && dataGroup.dimensions.length) {
+    // if the object don't support dimensions put them in alternative dimensions instead
+    if (!newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions) {
+      newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [];
+    }
+  }
+}
+
+function addDefaultDimensions({ exportFormat, maxDimensions, minDimensions, newHyperCubeDef, defaultDimension }) {
+  const dataGroup = exportFormat.data[0];
+  let i;
+  if (maxDimensions > 0) {
+    for (i = 0; i < dataGroup.dimensions.length; ++i) {
+      if (newHyperCubeDef.qDimensions.length < maxDimensions) {
+        newHyperCubeDef.qDimensions.push(createDefaultDimension(dataGroup.dimensions[i], defaultDimension));
+      } else {
+        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions.push(
+          createDefaultDimension(dataGroup.dimensions[i], defaultDimension)
+        );
+      }
+    }
+  } else if (dataGroup.dimensions.length) {
+    for (i = 0; i < dataGroup.dimensions.length; ++i) {
+      newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions.push(
+        createDefaultDimension(dataGroup.dimensions[i], defaultDimension)
+      );
+    }
+  }
+
+  if (dataGroup.excludedDimensions.length) {
+    for (i = 0; i < dataGroup.excludedDimensions.length; ++i) {
+      if (newHyperCubeDef.qDimensions.length < minDimensions) {
+        newHyperCubeDef.qDimensions.push(createDefaultDimension(dataGroup.excludedDimensions[i], defaultDimension));
+      } else {
+        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions.push(
+          createDefaultDimension(dataGroup.excludedDimensions[i], defaultDimension)
+        );
+      }
+    }
+  }
+}
+
+function addDefaultMeasures({ exportFormat, maxMeasures, minMeasures, newHyperCubeDef, defaultMeasure }) {
+  const dataGroup = exportFormat.data[0];
+  let i;
+  if (maxMeasures > 0) {
+    for (i = 0; i < dataGroup.measures.length; ++i) {
+      if (newHyperCubeDef.qMeasures.length < maxMeasures) {
+        newHyperCubeDef.qMeasures.push(createDefaultMeasure(dataGroup.measures[i], defaultMeasure));
+      } else {
+        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures.push(
+          createDefaultMeasure(dataGroup.measures[i], defaultMeasure)
+        );
+      }
+    }
+  } else if (dataGroup.measures.length) {
+    for (i = 0; i < dataGroup.measures.length; ++i) {
+      newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures.push(
+        createDefaultMeasure(dataGroup.measures[i], defaultMeasure)
+      );
+    }
+  }
+
+  if (dataGroup.excludedMeasures.length) {
+    for (i = 0; i < dataGroup.excludedMeasures.length; ++i) {
+      if (newHyperCubeDef.qMeasures.length < minMeasures) {
+        newHyperCubeDef.qMeasures.push(createDefaultMeasure(dataGroup.excludedMeasures[i], defaultMeasure));
+      } else {
+        newHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures.push(
+          createDefaultMeasure(dataGroup.excludedMeasures[i], defaultMeasure)
+        );
+      }
+    }
+  }
+}
+
 export default {
   restoreChangedProperties,
   isMasterItemPropperty,
@@ -199,4 +328,8 @@ export default {
   setInterColumnSortOrder,
   createNewProperties,
   getMaxMinDimensionMeasure,
+  shouldInitLayoutExclude,
+  initLayoutExclude,
+  addDefaultDimensions,
+  addDefaultMeasures,
 };

@@ -53,6 +53,7 @@ describe('objectConversion', () => {
     });
 
     afterEach(() => {
+      sandbox.reset();
       sandbox.restore();
     });
 

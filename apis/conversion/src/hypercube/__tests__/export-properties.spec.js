@@ -14,6 +14,11 @@ describe('exportProperties', () => {
     [{ default: exportProperties }] = doMock({ helpers });
   });
 
+  afterEach(() => {
+    sandbox.reset();
+    sandbox.restore();
+  });
+
   describe('interColumnSortOrder', () => {
     describe('without qLayoutExclude', () => {
       let propertyTree;
