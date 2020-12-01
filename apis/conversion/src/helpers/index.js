@@ -189,12 +189,12 @@ function shouldInitLayoutExclude({ exportFormat, maxDimensions, minDimensions, m
   return (
     (dataGroup.dimensions.length > maxDimensions && maxDimensions > 0) ||
     (dataGroup.measures.length > maxMeasures && maxMeasures > 0) ||
-    (dataGroup.excludedDimensions.length &&
+    (dataGroup.excludedDimensions.length > 0 &&
       dataGroup.dimensions.length + dataGroup.excludedDimensions.length > minDimensions) ||
-    (dataGroup.excludedMeasures.length &&
+    (dataGroup.excludedMeasures.length > 0 &&
       dataGroup.measures.length + dataGroup.excludedMeasures.length > minMeasures) ||
-    (!maxMeasures && dataGroup.measures.length) ||
-    (!maxDimensions && dataGroup.dimensions.length)
+    (!maxMeasures && dataGroup.measures.length > 0) ||
+    (!maxDimensions && dataGroup.dimensions.length > 0)
   );
 }
 
