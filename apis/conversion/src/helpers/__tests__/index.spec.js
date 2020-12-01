@@ -72,6 +72,7 @@ describe('helpers', () => {
     let newProperties;
     let exportFormat;
     let initialProperties;
+
     describe('visualization', () => {
       beforeEach(() => {
         newProperties = {};
@@ -112,6 +113,7 @@ describe('helpers', () => {
   describe('copyPropertyIfExist', () => {
     let source;
     let target;
+
     beforeEach(() => {
       source = {
         prop1: 1,
@@ -144,6 +146,7 @@ describe('helpers', () => {
   describe('copyPropertyOrSetDefault', () => {
     let source;
     let target;
+
     beforeEach(() => {
       source = {
         prop1: 1,
@@ -179,6 +182,7 @@ describe('helpers', () => {
   describe('createDefaultDimension', () => {
     let dimensionDef;
     let dimensionProperties;
+
     beforeEach(() => {
       dimensionDef = {
         prop1: 1,
@@ -277,6 +281,7 @@ describe('helpers', () => {
   describe('createDefaultMeasure', () => {
     let measureDef;
     let measureProperties;
+
     beforeEach(() => {
       measureDef = {
         prop1: 1,
@@ -406,6 +411,7 @@ describe('helpers', () => {
 
     it('should set correct qInterColumnSortOrder when its size match the number of dimensions and measures', () => {
       helpers.setInterColumnSortOrder({ exportFormat, newHyperCubeDef });
+
       expect(newHyperCubeDef).to.deep.equal({
         qDimensions: [{}],
         qMeasures: [{}, {}],
@@ -416,6 +422,7 @@ describe('helpers', () => {
     it('should set correct qInterColumnSortOrder when its size is bigger than the number of dimensions and measures', () => {
       exportFormat.data[0].interColumnSortOrder = [0, 3, 2, 1];
       helpers.setInterColumnSortOrder({ exportFormat, newHyperCubeDef });
+
       expect(newHyperCubeDef).to.deep.equal({
         qDimensions: [{}],
         qMeasures: [{}, {}],
@@ -426,6 +433,7 @@ describe('helpers', () => {
     it('should set correct qInterColumnSortOrder when its size is smaller than the number of dimensions and measures', () => {
       exportFormat.data[0].interColumnSortOrder = [0, 1];
       helpers.setInterColumnSortOrder({ exportFormat, newHyperCubeDef });
+
       expect(newHyperCubeDef).to.deep.equal({
         qDimensions: [{}],
         qMeasures: [{}, {}],
@@ -433,15 +441,562 @@ describe('helpers', () => {
       });
     });
 
-    it('should set correct qInterColumnSortOrder when its size is smaller than the number of dimensions and measures, case 2', () => {
+    it('should set correct qInterColumnSortOrder when its size is smaller than the number of dimensions and measures, and the interColumnSortOrder is not sorted', () => {
       exportFormat.data[0].interColumnSortOrder = [0, 2, 1];
       newHyperCubeDef.qMeasures = [{}, {}, {}];
       helpers.setInterColumnSortOrder({ exportFormat, newHyperCubeDef });
+
       expect(newHyperCubeDef).to.deep.equal({
         qDimensions: [{}],
         qMeasures: [{}, {}, {}],
         qInterColumnSortOrder: [0, 2, 1, 3],
       });
+    });
+  });
+
+  describe('createNewProperties', () => {
+    let exportFormat;
+    let initialProperties;
+
+    describe('No hypercubePath', () => {
+      describe('No exportFormat.properties', () => {
+        describe('No initialProperties', () => {
+          beforeEach(() => {
+            exportFormat = {
+              properties: {},
+            };
+            initialProperties = {};
+          });
+
+          it('should return correct outcome', () => {
+            const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+            expect(newProperties).to.deep.equal({
+              qLayoutExclude: { disabled: {}, quarantine: {} },
+            });
+          });
+        });
+
+        describe('Have initialProperties', () => {
+          beforeEach(() => {
+            exportFormat = {
+              properties: {},
+            };
+            initialProperties = {
+              prop1: 1,
+            };
+          });
+
+          it('should return correct outcome if initialProperties have no components', () => {
+            const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+            expect(newProperties).to.deep.equal({
+              qLayoutExclude: { disabled: {}, quarantine: {} },
+              prop1: 1,
+            });
+          });
+
+          it('should return correct outcome if initialProperties have components', () => {
+            initialProperties.components = [1, 2];
+            const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+            expect(newProperties).to.deep.equal({
+              qLayoutExclude: { disabled: {}, quarantine: {} },
+              prop1: 1,
+              components: [1, 2],
+            });
+          });
+
+          it('should return correct outcome if initialProperties have components as null', () => {
+            initialProperties.components = null;
+            const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+            expect(newProperties).to.deep.equal({
+              qLayoutExclude: { disabled: {}, quarantine: {} },
+              prop1: 1,
+              components: [],
+            });
+          });
+        });
+      });
+
+      describe('Have exportFormat.properties', () => {
+        describe('No initialProperties', () => {
+          describe('qLayoutExclude', () => {
+            beforeEach(() => {
+              exportFormat = {
+                properties: {
+                  qLayoutExclude: {
+                    prop1: 1,
+                  },
+                },
+              };
+              initialProperties = {};
+            });
+
+            it('should return correct outcome if there is no qLayoutExclude.quarantine', () => {
+              const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+              expect(newProperties).to.deep.equal({
+                qLayoutExclude: { disabled: {}, quarantine: {} },
+              });
+            });
+
+            it('should return correct outcome if there is qLayoutExclude.quarantine', () => {
+              exportFormat.properties.qLayoutExclude.quarantine = { prop2: 2, prop3: 3 };
+              const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+              expect(newProperties).to.deep.equal({
+                qLayoutExclude: { disabled: {}, quarantine: { prop2: 2, prop3: 3 } },
+              });
+            });
+          });
+
+          describe('qHyperCubeDef', () => {
+            beforeEach(() => {
+              exportFormat = {
+                properties: {
+                  qHyperCubeDef: {
+                    prop1: 1,
+                  },
+                },
+              };
+              initialProperties = {};
+            });
+
+            it('should return correct outcome', () => {
+              const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+              expect(newProperties).to.deep.equal({
+                qLayoutExclude: {
+                  disabled: {
+                    qHyperCubeDef: {
+                      prop1: 1,
+                    },
+                  },
+                  quarantine: {},
+                },
+              });
+            });
+          });
+
+          describe('master item propperty', () => {
+            beforeEach(() => {
+              exportFormat = {
+                properties: {
+                  qMetaDef: {
+                    prop1: 1,
+                  },
+                  descriptionExpression: {
+                    prop2: 2,
+                  },
+                  labelExpression: {
+                    prop3: 3,
+                  },
+                },
+              };
+              initialProperties = {};
+            });
+
+            it('should return correct outcome', () => {
+              const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+              expect(newProperties).to.deep.equal({
+                qLayoutExclude: {
+                  disabled: {},
+                  quarantine: {},
+                },
+                qMetaDef: {
+                  prop1: 1,
+                },
+                descriptionExpression: {
+                  prop2: 2,
+                },
+                labelExpression: {
+                  prop3: 3,
+                },
+              });
+            });
+          });
+
+          describe('other propperties', () => {
+            beforeEach(() => {
+              exportFormat = {
+                properties: {
+                  prop1: {
+                    prop11: 11,
+                  },
+                },
+              };
+              initialProperties = {};
+            });
+
+            it('should return correct outcome', () => {
+              const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+              expect(newProperties).to.deep.equal({
+                qLayoutExclude: {
+                  disabled: {
+                    prop1: {
+                      prop11: 11,
+                    },
+                  },
+                  quarantine: {},
+                },
+              });
+            });
+          });
+        });
+
+        describe('Have initialProperties', () => {
+          describe('qLayoutExclude', () => {
+            beforeEach(() => {
+              exportFormat = {
+                properties: {
+                  qLayoutExclude: {
+                    prop1: 1,
+                  },
+                },
+              };
+              initialProperties = {
+                prop100: 100,
+              };
+            });
+
+            it('should return correct outcome if there is no qLayoutExclude.quarantine', () => {
+              const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+              expect(newProperties).to.deep.equal({
+                qLayoutExclude: { disabled: {}, quarantine: {} },
+                prop100: 100,
+              });
+            });
+
+            it('should return correct outcome if there is qLayoutExclude.quarantine', () => {
+              exportFormat.properties.qLayoutExclude.quarantine = { prop2: 2, prop3: 3 };
+              const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+              expect(newProperties).to.deep.equal({
+                qLayoutExclude: { disabled: {}, quarantine: { prop2: 2, prop3: 3 } },
+                prop100: 100,
+              });
+            });
+          });
+
+          describe('qHyperCubeDef', () => {
+            beforeEach(() => {
+              exportFormat = {
+                properties: {
+                  qHyperCubeDef: {
+                    prop1: 1,
+                  },
+                },
+              };
+              initialProperties = {
+                prop100: 100,
+              };
+            });
+
+            it('should return correct outcome if there is no initialProperties.qHyperCubeDef', () => {
+              const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+              expect(newProperties).to.deep.equal({
+                qLayoutExclude: {
+                  disabled: {
+                    qHyperCubeDef: {
+                      prop1: 1,
+                    },
+                  },
+                  quarantine: {},
+                },
+                prop100: 100,
+              });
+            });
+
+            it('should return correct outcome if there is initialProperties.qHyperCubeDef', () => {
+              initialProperties.qHyperCubeDef = { prop1: 10, prop2: 20 };
+              const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+              expect(newProperties).to.deep.equal({
+                qLayoutExclude: {
+                  disabled: {},
+                  quarantine: {},
+                },
+                qHyperCubeDef: {
+                  prop1: 1,
+                  prop2: 20,
+                },
+                prop100: 100,
+              });
+            });
+          });
+
+          describe('master item propperty', () => {
+            beforeEach(() => {
+              exportFormat = {
+                properties: {
+                  qMetaDef: {
+                    prop1: 1,
+                  },
+                  descriptionExpression: {
+                    prop2: 2,
+                  },
+                  labelExpression: {
+                    prop3: 3,
+                  },
+                },
+              };
+              initialProperties = {
+                prop100: 100,
+              };
+            });
+
+            it('should return correct outcome', () => {
+              const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+              expect(newProperties).to.deep.equal({
+                qLayoutExclude: {
+                  disabled: {},
+                  quarantine: {},
+                },
+                qMetaDef: {
+                  prop1: 1,
+                },
+                descriptionExpression: {
+                  prop2: 2,
+                },
+                labelExpression: {
+                  prop3: 3,
+                },
+                prop100: 100,
+              });
+            });
+          });
+
+          describe('other propperties', () => {
+            beforeEach(() => {
+              exportFormat = {
+                properties: {
+                  prop1: {
+                    prop11: 11,
+                  },
+                  prop2: {
+                    prop21: 11,
+                  },
+                },
+              };
+              initialProperties = {
+                prop1: 1,
+                prop3: 3,
+              };
+            });
+
+            it('should return correct outcome', () => {
+              const newProperties = helpers.createNewProperties({ exportFormat, initialProperties });
+
+              expect(newProperties).to.deep.equal({
+                qLayoutExclude: {
+                  disabled: {
+                    prop2: {
+                      prop21: 11,
+                    },
+                  },
+                  quarantine: {},
+                },
+                prop1: {
+                  prop11: 11,
+                },
+                prop3: 3,
+              });
+            });
+          });
+        });
+      });
+    });
+
+    describe('Have 1-step hypercubePath', () => {
+      let hypercubePath;
+      describe('qHyperCubeDef', () => {
+        beforeEach(() => {
+          exportFormat = {
+            properties: {
+              qHyperCubeDef: {
+                prop1: 1,
+              },
+            },
+          };
+          initialProperties = {};
+          hypercubePath = 'boxplotDef';
+        });
+
+        it('should return correct outcome if there is no initialProperties.qHyperCubeDef', () => {
+          const newProperties = helpers.createNewProperties({ exportFormat, initialProperties, hypercubePath });
+
+          expect(newProperties).to.deep.equal({
+            qLayoutExclude: {
+              disabled: {},
+              quarantine: {},
+            },
+            boxplotDef: {
+              qHyperCubeDef: {
+                prop1: 1,
+              },
+            },
+          });
+        });
+
+        it('should return correct outcome if there is initialProperties.qHyperCubeDef', () => {
+          initialProperties.qHyperCubeDef = { prop1: 10, prop2: 20 };
+          const newProperties = helpers.createNewProperties({ exportFormat, initialProperties, hypercubePath });
+
+          expect(newProperties).to.deep.equal({
+            qLayoutExclude: {
+              disabled: {},
+              quarantine: {},
+            },
+            qHyperCubeDef: {
+              prop1: 10,
+              prop2: 20,
+            },
+            boxplotDef: {
+              qHyperCubeDef: {
+                prop1: 1,
+              },
+            },
+          });
+        });
+      });
+    });
+
+    describe('Have 2-step hypercubePath', () => {
+      let hypercubePath;
+      describe('qHyperCubeDef', () => {
+        beforeEach(() => {
+          exportFormat = {
+            properties: {
+              qHyperCubeDef: {
+                prop1: 1,
+              },
+            },
+          };
+          initialProperties = {};
+          hypercubePath = 'somePath.boxplotDef';
+        });
+
+        it('should return correct outcome if there is no initialProperties.qHyperCubeDef', () => {
+          const newProperties = helpers.createNewProperties({ exportFormat, initialProperties, hypercubePath });
+
+          expect(newProperties).to.deep.equal({
+            qLayoutExclude: {
+              disabled: {},
+              quarantine: {},
+            },
+            somePath: {
+              boxplotDef: {
+                qHyperCubeDef: {
+                  prop1: 1,
+                },
+              },
+            },
+          });
+        });
+
+        it('should return correct outcome if there is initialProperties.qHyperCubeDef', () => {
+          initialProperties.qHyperCubeDef = { prop1: 10, prop2: 20 };
+          const newProperties = helpers.createNewProperties({ exportFormat, initialProperties, hypercubePath });
+
+          expect(newProperties).to.deep.equal({
+            qLayoutExclude: {
+              disabled: {},
+              quarantine: {},
+            },
+            qHyperCubeDef: {
+              prop1: 10,
+              prop2: 20,
+            },
+            somePath: {
+              boxplotDef: {
+                qHyperCubeDef: {
+                  prop1: 1,
+                },
+              },
+            },
+          });
+        });
+      });
+    });
+  });
+});
+
+describe('getMaxMinDimensionMeasure', () => {
+  let exportFormat;
+  let dataDefinition;
+
+  beforeEach(() => {
+    exportFormat = {
+      data: [
+        {
+          dimensions: [],
+        },
+      ],
+    };
+    dataDefinition = {};
+  });
+
+  it('should return correct values if there is no dataDefinition', () => {
+    const result = helpers.getMaxMinDimensionMeasure({ exportFormat, dataDefinition });
+
+    expect(result).to.deep.equal({
+      maxDimensions: 0,
+      minDimensions: 0,
+      maxMeasures: 0,
+      minMeasures: 0,
+    });
+  });
+
+  it('should return correct values if there is max, min are numbers', () => {
+    dataDefinition = {
+      dimensions: { max: 2, min: 1 },
+      measures: { max: 10, min: 0 },
+    };
+    const result = helpers.getMaxMinDimensionMeasure({ exportFormat, dataDefinition });
+
+    expect(result).to.deep.equal({
+      maxDimensions: 2,
+      minDimensions: 1,
+      maxMeasures: 10,
+      minMeasures: 0,
+    });
+  });
+
+  it('should return correct values if there is max, min are functions without parameter', () => {
+    dataDefinition = {
+      dimensions: { max: () => 2, min: () => 1 },
+      measures: { max: () => 10, min: () => 0 },
+    };
+    const result = helpers.getMaxMinDimensionMeasure({ exportFormat, dataDefinition });
+
+    expect(result).to.deep.equal({
+      maxDimensions: 2,
+      minDimensions: 1,
+      maxMeasures: 10,
+      minMeasures: 0,
+    });
+  });
+
+  it('should return correct values if there is max, min are functions with parameter', () => {
+    dataDefinition = {
+      dimensions: { max: (x) => x + 4, min: (x) => x + 2 },
+      measures: { max: (x) => x + 3, min: (x) => x + 1 },
+    };
+    exportFormat.data[0].dimensions.length = 2;
+    const result = helpers.getMaxMinDimensionMeasure({ exportFormat, dataDefinition });
+
+    expect(result).to.deep.equal({
+      maxDimensions: 9,
+      minDimensions: 5,
+      maxMeasures: 5,
+      minMeasures: 3,
     });
   });
 });

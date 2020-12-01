@@ -157,19 +157,14 @@ function createNewProperties({ exportFormat, initialProperties, hypercubePath })
         newProperties.qLayoutExclude.quarantine = extend(true, {}, exportFormat.properties[key].quarantine);
       }
     } else if (key === 'qHyperCubeDef' && hypercubePath) {
-      // handle later
+      utils.setValue(newProperties, `${hypercubePath}.qHyperCubeDef`, exportFormat.properties.qHyperCubeDef);
     } else if (initialProperties.hasOwnProperty(key) || isMasterItemPropperty(key)) {
-      // todo: qExtendsId ??
+      // TODO: qExtendsId ??
       newProperties[key] = exportFormat.properties[key];
     } else {
       newProperties.qLayoutExclude.disabled[key] = exportFormat.properties[key];
     }
   });
-
-  if (hypercubePath && exportFormat.properties.qHyperCubeDef) {
-    newProperties[hypercubePath] = newProperties[hypercubePath] || {};
-    newProperties[hypercubePath].qHyperCubeDef = exportFormat.properties.qHyperCubeDef;
-  }
 
   newProperties = extend(true, {}, initialProperties, newProperties);
   if (newProperties.components === null) {
