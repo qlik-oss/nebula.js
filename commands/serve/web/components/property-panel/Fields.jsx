@@ -13,7 +13,7 @@ import {
 
 import Remove from '@nebula.js/ui/icons/remove';
 
-import useLibraryList from '../../hooks/useLibraryList';
+import useLibraryList from '@nebula.js/nucleus/src/hooks/useLibraryList';
 
 import AppContext from '../../contexts/AppContext';
 import FieldsPopover from '../FieldsPopover';

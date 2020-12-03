@@ -3,6 +3,7 @@
 import extend from 'extend';
 import utils from '../utils';
 import arrayUtils from '../array-util';
+import libraryUtils from '../library-utils';
 
 const MAX_SAFE_INTEGER = 2 ** 53 - 1;
 
@@ -313,6 +314,23 @@ function addDefaultMeasures({ exportFormat, maxMeasures, minMeasures, newHyperCu
   }
 }
 
+function updateTitle(item, libraryItemList) {
+  if (item.qLibraryId) {
+    const libItem = libraryUtils.findLibraryItem(item.qLibraryId, libraryItemList);
+    if (libItem) {
+      item.title = libItem.qData.title;
+    }
+  }
+}
+
+function checkLibraryObjects({ exportFormat, dimensionList, measureList }) {
+  for (let i = 0; i < exportFormat.data.length; ++i) {
+    const { dimensions, measures, excludedDimensions, excludedMeasures } = exportFormat.data[i];
+    [...dimensions, ...excludedDimensions].forEach((item) => updateTitle(item, dimensionList));
+    [...measures, ...excludedMeasures].forEach((item) => updateTitle(item, measureList));
+  }
+}
+
 export default {
   restoreChangedProperties,
   isMasterItemPropperty,
@@ -332,4 +350,5 @@ export default {
   initLayoutExclude,
   addDefaultDimensions,
   addDefaultMeasures,
+  checkLibraryObjects,
 };

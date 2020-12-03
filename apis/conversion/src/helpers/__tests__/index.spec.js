@@ -1261,3 +1261,90 @@ describe('shouldInitLayoutExclude', () => {
     });
   });
 });
+
+describe('checkLibraryObjects', () => {
+  let exportFormat;
+  let dimensionList;
+  let measureList;
+
+  beforeEach(() => {
+    exportFormat = {
+      data: [
+        {
+          dimensions: [
+            {
+              title: 'title0',
+            },
+            {
+              qLibraryId: 'id1',
+            },
+            {
+              qLibraryId: 'id2',
+            },
+          ],
+          measures: [
+            {
+              title: 'title10',
+            },
+            {
+              qLibraryId: 'id11',
+            },
+            {
+              qLibraryId: 'id12',
+            },
+          ],
+          excludedDimensions: [],
+          excludedMeasures: [],
+        },
+      ],
+    };
+    dimensionList = [
+      {
+        qInfo: { qId: 'id1' },
+        qData: { title: 'title1' },
+      },
+    ];
+    measureList = [
+      {
+        qInfo: { qId: 'id11' },
+        qData: { title: 'title11' },
+      },
+    ];
+  });
+
+  it('should return false if measures.length + excludedMeasures.length < minMeasures', () => {
+    helpers.checkLibraryObjects({ exportFormat, dimensionList, measureList });
+    expect(exportFormat).to.deep.equal({
+      data: [
+        {
+          dimensions: [
+            {
+              title: 'title0',
+            },
+            {
+              qLibraryId: 'id1',
+              title: 'title1',
+            },
+            {
+              qLibraryId: 'id2',
+            },
+          ],
+          measures: [
+            {
+              title: 'title10',
+            },
+            {
+              qLibraryId: 'id11',
+              title: 'title11',
+            },
+            {
+              qLibraryId: 'id12',
+            },
+          ],
+          excludedDimensions: [],
+          excludedMeasures: [],
+        },
+      ],
+    });
+  });
+});

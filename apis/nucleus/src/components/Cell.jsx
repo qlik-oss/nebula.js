@@ -15,6 +15,7 @@ import useRect from '../hooks/useRect';
 import useLayout, { useAppLayout } from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
+import useLibraryList from '../hooks/useLibraryList';
 
 /**
  * @interface
@@ -284,6 +285,8 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
   const [selections] = useObjectSelections(app, model);
   const [hovering, setHover] = useState(false);
   const hoveringDebouncer = useRef({ enter: null, leave: null });
+  const [dimensionList] = useLibraryList(app, 'dimension');
+  const [measureList] = useLibraryList(app, 'measure');
 
   const handleOnMouseEnter = () => {
     if (hoveringDebouncer.current.leave) {
@@ -372,6 +375,9 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
   useImperativeHandle(
     ref,
     () => ({
+      getLibraryList(type = 'dimension') {
+        return type === 'dimension' ? dimensionList : measureList;
+      },
       getQae() {
         return state.sn.generator.qae;
       },

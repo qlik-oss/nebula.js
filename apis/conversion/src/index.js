@@ -50,16 +50,21 @@ const getImportPropertiesFnc = (qae) => {
 };
 
 export const convertTo = async ({ halo, model, cellRef, newType }) => {
-  const propertyTree = await model.getFullPropertyTree();
+  const [propertyTree, targetSnType] = await Promise.all([
+    model.getFullPropertyTree(),
+    getType({ halo, name: newType }),
+  ]);
   const sourceQae = cellRef.current.getQae();
   const exportProperties = getExportPropertiesFnc(sourceQae);
-  const targetSnType = await getType({ halo, name: newType });
   const targetQae = targetSnType.qae;
   const importProperties = getImportPropertiesFnc(targetQae);
   const exportFormat = exportProperties({
     propertyTree,
     hypercubePath: helpers.getHypercubePath(sourceQae),
   });
+  const dimensionList = cellRef.current.getLibraryList('dimension');
+  const measureList = cellRef.current.getLibraryList('measure');
+  helpers.checkLibraryObjects({ exportFormat, dimensionList, measureList });
   const initial = utils.getValue(targetQae, 'properties.initial', {});
   const initialProperties = {
     qInfo: {

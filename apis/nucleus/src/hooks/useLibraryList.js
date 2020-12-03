@@ -1,5 +1,5 @@
-import useSessionModel from '@nebula.js/nucleus/src/hooks/useSessionModel';
-import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
+import useSessionModel from './useSessionModel';
+import useLayout from './useLayout';
 
 const D = {
   qInfo: {

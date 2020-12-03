@@ -10,7 +10,7 @@ import { useTheme } from '@nebula.js/ui/theme';
 
 import useSessionModel from '@nebula.js/nucleus/src/hooks/useSessionModel';
 import useLayout from '@nebula.js/nucleus/src/hooks/useLayout';
-import useLibraryList from '../hooks/useLibraryList';
+import useLibraryList from '@nebula.js/nucleus/src/hooks/useLibraryList';
 
 import AppContext from '../contexts/AppContext';
 

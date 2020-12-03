@@ -1,4 +1,11 @@
-const doMock = ({ hypercube = {} } = {}) => aw.mock([['**/hypercube/index.js', () => hypercube]], ['../index.js']);
+const doMock = ({ hypercube = {}, helpers = {} } = {}) =>
+  aw.mock(
+    [
+      ['**/hypercube/index.js', () => hypercube],
+      ['**/helpers/index.js', () => helpers],
+    ],
+    ['../index.js']
+  );
 describe('objectConversion', () => {
   describe('convertTo', () => {
     let sandbox;
@@ -10,6 +17,7 @@ describe('objectConversion', () => {
     let sourceQae;
     let targetQae;
     let hypercube;
+    let helpers;
     let convertTo;
 
     beforeEach(() => {
@@ -43,18 +51,43 @@ describe('objectConversion', () => {
       cellRef = {
         current: {
           getQae: sandbox.stub().returns(sourceQae),
+          getLibraryList: sandbox.stub().returns(),
         },
       };
       hypercube = {
         exportProperties: sandbox.stub().returns({ properties: { prop1: 'value 1' } }),
         importProperties: sandbox.stub().returns({ qProperty: { prop2: 'value 2' } }),
       };
-      [{ convertTo }] = doMock({ hypercube });
+      helpers = {
+        checkLibraryObjects: sandbox.stub(),
+        getHypercubePath: sandbox.stub().returns(''),
+      };
+      [{ convertTo }] = doMock({ hypercube, helpers });
     });
 
     afterEach(() => {
       sandbox.reset();
       sandbox.restore();
+    });
+
+    it('should use helpers functions', async () => {
+      newType = 'new type';
+      await convertTo({ halo, model, cellRef, newType });
+      expect(helpers.checkLibraryObjects.callCount).to.equal(1);
+      expect(helpers.getHypercubePath.callCount).to.equal(2);
+      expect(helpers.getHypercubePath.getCall(0)).to.have.been.calledWithExactly({
+        data: {
+          targets: [{ propertyPath: '/qHyperCubeDef' }],
+        },
+      });
+      expect(helpers.getHypercubePath.getCall(1)).to.have.been.calledWithExactly({
+        data: {
+          targets: [{ propertyPath: '/qHyperCubeDef' }],
+        },
+        properties: {
+          initial: {},
+        },
+      });
     });
 
     it('should use hypercube.exportProperties and hypercube.importProperties when there is no source exportProperties and no target importProperties', async () => {
@@ -112,11 +145,7 @@ describe('objectConversion', () => {
     it('should use hypercube.importProperties when there is no target importProperties', async () => {
       newType = 'new type';
       sourceQae = { exportProperties: sandbox.stub().returns({ qProperty: { prop3: 'value 3' } }) };
-      cellRef = {
-        current: {
-          getQae: sandbox.stub().returns(sourceQae),
-        },
-      };
+      cellRef.current.getQae = sandbox.stub().returns(sourceQae);
       const newPropertyTree = await convertTo({ halo, model, cellRef, newType });
       expect(cellRef.current.getQae.callCount).to.equal(1);
       expect(model.getFullPropertyTree.callCount).to.equal(1);
@@ -138,11 +167,7 @@ describe('objectConversion', () => {
     it('should do convert correctly when there are source exportProperties and target importProperties', async () => {
       newType = 'new type';
       sourceQae = { exportProperties: sandbox.stub().returns({ qProperty: { prop3: 'value 3' } }) };
-      cellRef = {
-        current: {
-          getQae: sandbox.stub().returns(sourceQae),
-        },
-      };
+      cellRef.current.getQae = sandbox.stub().returns(sourceQae);
       targetQae = {
         importProperties: sandbox.stub().returns({ qProperty: { prop4: 'value 4' } }),
         properties: {
