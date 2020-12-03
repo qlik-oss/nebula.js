@@ -267,9 +267,9 @@ function nuked(configuration = {}) {
       },
       /**
        * Gets the app selections of this instance.
-       * @returns {Promise<AppSelections>}
+       * @returns {AppSelections}
        * @example
-       * const selections = await n.selections();
+       * const selections = n.selections();
        * selections.mount(element);
        */
       selections: async () => {
@@ -312,18 +312,40 @@ function nuked(configuration = {}) {
       },
       __DO_NOT_USE__: {
         types,
+        /**
+         * Gets the instance of the specified field
+         * @returns {FieldSelections}
+         * @example
+         * const field = await n.selections();
+         * field.mount(element, { title: "Hello Field"});
+         */
         field: (fieldName) => {
-          return {
-            mount(element) {
+          return /** @lends FieldSelections# */ {
+            fieldName,
+            /**
+             * Mounts the field as a listbox into the provided HTMLElement.
+             * @param {HTMLElement} element
+             * @example
+             * field.mount(element);
+             */
+            mount(element, options = {}) {
+              if (this._instance) {
+                throw new Error(`Field ${fieldName} already mounted`);
+              }
               this._instance = ListBoxPortal({
                 element,
                 app,
                 fieldName,
+                options,
               });
               root.add(this._instance);
             },
+            /**
+             * Unmounts the field listbox from the DOM.
+             * @example
+             * field.unmount();
+             */
             unmount() {
-              // se
               if (this._instance) {
                 root.remove(this._instance);
                 this._instance = null;

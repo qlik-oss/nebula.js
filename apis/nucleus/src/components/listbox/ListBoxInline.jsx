@@ -1,5 +1,6 @@
 import React, { useContext, useCallback, useRef, useEffect } from 'react';
 import ReactDOM from 'react-dom';
+import AutoSizer from 'react-virtualized-auto-sizer';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
@@ -20,12 +21,16 @@ import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 
-export default function ListBoxPortal({ app, fieldName, stateName, element }) {
-  return ReactDOM.createPortal(<ListBoxInline app={app} fieldName={fieldName} stateName={stateName} />, element);
+export default function ListBoxPortal({ app, fieldName, stateName, element, options }) {
+  return ReactDOM.createPortal(
+    <ListBoxInline app={app} fieldName={fieldName} stateName={stateName} options={options} />,
+    element
+  );
 }
 
-export function ListBoxInline({ app, fieldName, stateName = '$' }) {
+export function ListBoxInline({ app, fieldName, stateName = '$', options = {} }) {
   const theme = useTheme();
+  const { title } = options;
   const [model] = useSessionModel(
     {
       qInfo: {
@@ -57,6 +62,7 @@ export function ListBoxInline({ app, fieldName, stateName = '$' }) {
     },
     app,
     fieldName,
+    title,
     stateName
   );
 
@@ -100,7 +106,7 @@ export function ListBoxInline({ app, fieldName, stateName = '$' }) {
   const showTitle = true;
 
   return (
-    <Grid container direction="column" spacing={0}>
+    <Grid container direction="column" spacing={0} style={{ height: '100%' }}>
       <Grid item container style={{ padding: theme.spacing(1) }}>
         <Grid item>
           {isLocked ? (
@@ -144,10 +150,14 @@ export function ListBoxInline({ app, fieldName, stateName = '$' }) {
           />
         </Grid>
       </Grid>
-      <Grid item xs>
-        <div ref={moreAlignTo} />
+      <Grid item>
         <ListBoxSearch model={model} />
-        <ListBox model={model} selections={selections} direction="ltr" />
+      </Grid>
+      <Grid item xs style={{ height: 'calc(100% - 32px)' }}>
+        <div ref={moreAlignTo} />
+        <AutoSizer disableWidth>
+          {({ height }) => <ListBox model={model} selections={selections} direction="ltr" height={height} />}
+        </AutoSizer>
       </Grid>
     </Grid>
   );

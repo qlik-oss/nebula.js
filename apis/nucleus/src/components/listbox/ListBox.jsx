@@ -15,7 +15,7 @@ import useLayout from '../../hooks/useLayout';
 
 import Row from './ListBoxRow';
 
-export default function ListBox({ model, selections, direction }) {
+export default function ListBox({ model, selections, direction, height }) {
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
   const loaderRef = useRef(null);
@@ -120,6 +120,7 @@ export default function ListBox({ model, selections, direction }) {
 
   const count = layout.qListObject.qSize.qcy;
   const ITEM_HEIGHT = 33;
+  const listHeight = height || 8 * ITEM_HEIGHT;
 
   return (
     <InfiniteLoader
@@ -137,7 +138,7 @@ export default function ListBox({ model, selections, direction }) {
             direction={direction}
             useIsScrolling
             style={{}}
-            height={8 * ITEM_HEIGHT}
+            height={listHeight}
             itemCount={count}
             itemData={{ onClick, pages }}
             itemSize={ITEM_HEIGHT}
