@@ -687,16 +687,20 @@
           "kind": "function",
           "params": [],
           "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "#/definitions/AppSelections"
-              }
-            ]
+            "type": "#/definitions/AppSelections"
           },
-          "examples": ["const selections = await n.selections();\nselections.mount(element);"]
+          "examples": ["const selections = n.selections();\nselections.mount(element);"]
         }
       }
+    },
+    "Embed#__DO_NOT_USE__.field": {
+      "description": "Gets the instance of the specified field",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/FieldSelections"
+      },
+      "examples": ["const field = await n.selections();\nfield.mount(element, { title: \"Hello Field\"});"]
     },
     "Field": {
       "kind": "union",
@@ -715,6 +719,33 @@
         }
       ],
       "type": "any"
+    },
+    "FieldSelections": {
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {},
+      "staticEntries": {
+        "mount": {
+          "description": "Mounts the field as a listbox into the provided HTMLElement.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "element",
+              "type": "HTMLElement"
+            }
+          ],
+          "examples": ["field.mount(element);"]
+        },
+        "unmount": {
+          "description": "Unmounts the field listbox from the DOM.",
+          "kind": "function",
+          "params": [],
+          "examples": ["field.unmount();"]
+        }
+      }
     },
     "FieldTarget": {
       "kind": "interface",

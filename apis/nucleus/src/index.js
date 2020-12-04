@@ -320,7 +320,12 @@ function nuked(configuration = {}) {
          * field.mount(element, { title: "Hello Field"});
          */
         field: (fieldName) => {
-          return /** @lends FieldSelections# */ {
+          /**
+           * @class
+           * @hideconstructor
+           * @alias FieldSelections
+           */
+          const fieldSels = {
             fieldName,
             /**
              * Mounts the field as a listbox into the provided HTMLElement.
@@ -352,6 +357,7 @@ function nuked(configuration = {}) {
               }
             },
           };
+          return fieldSels;
         },
       },
     };
