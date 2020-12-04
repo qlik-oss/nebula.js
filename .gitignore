@@ -18,3 +18,5 @@ apis/*/core/**/*.js
 apis/locale/all.json
 
 Search/
+
+local-dev/
