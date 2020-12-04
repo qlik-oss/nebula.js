@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.0.2-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v1.0.2-alpha.0...v1.0.2-alpha.1) (2020-12-04)
+
+### Bug Fixes
+
+- **nucleus:** disable enforce focus on actions toolbar ([#540](https://github.com/qlik-oss/nebula.js/issues/540)) ([2dde426](https://github.com/qlik-oss/nebula.js/commit/2dde426))
+- object-selections ([#539](https://github.com/qlik-oss/nebula.js/issues/539)) ([b5ba2d0](https://github.com/qlik-oss/nebula.js/commit/b5ba2d0))
+- **cli-create:** add missing / in template ([#522](https://github.com/qlik-oss/nebula.js/issues/522)) ([f0575f3](https://github.com/qlik-oss/nebula.js/commit/f0575f3))
+- remove listener on unmount ([#520](https://github.com/qlik-oss/nebula.js/issues/520)) ([73e5c87](https://github.com/qlik-oss/nebula.js/commit/73e5c87))
+
+### Features
+
+- add basic support for object conversion ([#535](https://github.com/qlik-oss/nebula.js/issues/535)) ([d8c83ca](https://github.com/qlik-oss/nebula.js/commit/d8c83ca))
+- add exportProperties for hypercube conversion ([#537](https://github.com/qlik-oss/nebula.js/issues/537)) ([5ec6a8a](https://github.com/qlik-oss/nebula.js/commit/5ec6a8a))
+- add importProperties for hypercube conversion ([#538](https://github.com/qlik-oss/nebula.js/issues/538)) ([0071d3c](https://github.com/qlik-oss/nebula.js/commit/0071d3c))
+- **test-utils:** add support for actions ([#534](https://github.com/qlik-oss/nebula.js/issues/534)) ([18db348](https://github.com/qlik-oss/nebula.js/commit/18db348))
+- support ListObject ([#526](https://github.com/qlik-oss/nebula.js/issues/526)) ([c0daa04](https://github.com/qlik-oss/nebula.js/commit/c0daa04))
+
 ## [1.0.1](https://github.com/qlik-oss/nebula.js/compare/v1.0.0...v1.0.1) (2020-06-22)
 
 ### Bug Fixes
