@@ -31,30 +31,30 @@
     "body-parser": "1.19.0",
     "chalk": "4.1.0",
     "chokidar": "3.4.3",
-    "cross-env": "7.0.2",
+    "cross-env": "7.0.3",
     "express": "4.17.1",
     "extend": "3.0.2",
     "html-webpack-plugin": "4.5.0",
     "portfinder": "1.0.28",
-    "puppeteer": "5.4.1",
+    "puppeteer": "5.5.0",
     "regenerator-runtime": "0.13.7",
-    "source-map-loader": "1.1.2",
+    "source-map-loader": "1.1.3",
     "webpack": "4.44.2",
     "webpack-dev-server": "3.11.0",
-    "ws": "7.3.1",
-    "yargs": "16.1.0"
+    "ws": "7.4.1",
+    "yargs": "16.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.12.3",
-    "@babel/preset-env": "7.12.1",
-    "@babel/preset-react": "7.12.1",
-    "@material-ui/core": "4.11.0",
+    "@babel/core": "7.12.9",
+    "@babel/preset-env": "7.12.7",
+    "@babel/preset-react": "7.12.7",
+    "@material-ui/core": "4.11.2",
     "@nebula.js/nucleus": "^1.0.2-alpha.1",
     "@nebula.js/snapshooter": "1.0.0",
     "@nebula.js/stardust": "^1.0.2-alpha.1",
     "@nebula.js/ui": "^1.0.2-alpha.1",
     "autosuggest-highlight": "3.1.1",
-    "babel-loader": "8.1.0",
+    "babel-loader": "8.2.2",
     "d3-require": "1.2.4",
     "enigma.js": "2.7.2",
     "eslint-import-resolver-alias": "1.1.2",
@@ -63,6 +63,6 @@
     "monaco-editor-webpack-plugin": "2.0.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "webpack-cli": "4.1.0"
+    "webpack-cli": "4.2.0"
   }
 }
