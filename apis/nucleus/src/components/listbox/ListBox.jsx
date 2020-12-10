@@ -14,8 +14,9 @@ import InfiniteLoader from 'react-window-infinite-loader';
 import useLayout from '../../hooks/useLayout';
 
 import Row from './ListBoxRow';
+import Column from './ListBoxColumn';
 
-export default function ListBox({ model, selections, direction, height }) {
+export default function ListBox({ model, selections, direction, height, width, listLayout = 'vertical' }) {
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
   const loaderRef = useRef(null);
@@ -117,10 +118,10 @@ export default function ListBox({ model, selections, direction, height }) {
   if (!layout) {
     return null;
   }
-
+  const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
-  const ITEM_HEIGHT = 33;
-  const listHeight = height || 8 * ITEM_HEIGHT;
+  const ITEM_SIZE = isVertical ? 33 : 200;
+  const listHeight = height || 8 * ITEM_SIZE;
 
   return (
     <InfiniteLoader
@@ -139,13 +140,15 @@ export default function ListBox({ model, selections, direction, height }) {
             useIsScrolling
             style={{}}
             height={listHeight}
+            width={width}
             itemCount={count}
+            layout={listLayout}
             itemData={{ onClick, pages }}
-            itemSize={ITEM_HEIGHT}
+            itemSize={ITEM_SIZE}
             onItemsRendered={onItemsRendered}
             ref={ref}
           >
-            {Row}
+            {isVertical ? Row : Column}
           </FixedSizeList>
         );
       }}

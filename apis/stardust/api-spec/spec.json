@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "1.0.2-alpha.0",
+    "version": "1.0.2-alpha.1",
     "license": "MIT",
     "stability": "stable"
   },
@@ -649,6 +649,16 @@
             "// limit constraints\nn.context({ constraints: { active: true } });"
           ]
         },
+        "field": {
+          "description": "Gets the instance of the specified field",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "#/definitions/FieldSelections"
+          },
+          "examples": ["const field = await n.selections();\nfield.mount(element, { title: \"Hello Field\"});"]
+        },
         "render": {
           "description": "Renders a visualization into an HTMLElement.",
           "kind": "function",
@@ -693,15 +703,6 @@
         }
       }
     },
-    "Embed#__DO_NOT_USE__.field": {
-      "description": "Gets the instance of the specified field",
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "type": "#/definitions/FieldSelections"
-      },
-      "examples": ["const field = await n.selections();\nfield.mount(element, { title: \"Hello Field\"});"]
-    },
     "Field": {
       "kind": "union",
       "items": [
@@ -735,6 +736,37 @@
             {
               "name": "element",
               "type": "HTMLElement"
+            },
+            {
+              "name": "options",
+              "description": "Settings for the embedded listbox",
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "title": {
+                  "description": "Custom title, defaults to fieldname",
+                  "optional": true,
+                  "type": "string"
+                },
+                "direction": {
+                  "description": "Direction setting ltr|rtl.",
+                  "optional": true,
+                  "defaultValue": "ltr",
+                  "type": "string"
+                },
+                "listLayout": {
+                  "description": "Layout direction vertical|horizontal",
+                  "optional": true,
+                  "defaultValue": "vertical",
+                  "type": "string"
+                },
+                "search": {
+                  "description": "To show the search bar",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                }
+              }
             }
           ],
           "examples": ["field.mount(element);"]

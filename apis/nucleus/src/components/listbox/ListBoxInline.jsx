@@ -30,7 +30,7 @@ export default function ListBoxPortal({ app, fieldName, stateName, element, opti
 
 export function ListBoxInline({ app, fieldName, stateName = '$', options = {} }) {
   const theme = useTheme();
-  const { title } = options;
+  const { title, direction, listLayout, search = true } = options;
   const [model] = useSessionModel(
     {
       qInfo: {
@@ -105,9 +105,11 @@ export function ListBoxInline({ app, fieldName, stateName = '$', options = {} })
 
   const showTitle = true;
 
+  const minHeight = 49 + (search ? 40 : 0) + 49;
+
   return (
-    <Grid container direction="column" spacing={0} style={{ height: '100%' }}>
-      <Grid item container style={{ padding: theme.spacing(1) }}>
+    <Grid container direction="column" spacing={0} style={{ height: '100%', minHeight: `${minHeight}px` }}>
+      <Grid item container style={{ padding: theme.spacing(1), borderBottom: `1px solid ${theme.palette.divider}` }}>
         <Grid item>
           {isLocked ? (
             <IconButton onClick={unlock} disabled={!isLocked}>
@@ -150,13 +152,26 @@ export function ListBoxInline({ app, fieldName, stateName = '$', options = {} })
           />
         </Grid>
       </Grid>
-      <Grid item>
-        <ListBoxSearch model={model} />
-      </Grid>
-      <Grid item xs style={{ height: 'calc(100% - 32px)' }}>
+      {search ? (
+        <Grid item>
+          <ListBoxSearch model={model} />
+        </Grid>
+      ) : (
+        ''
+      )}
+      <Grid item xs>
         <div ref={moreAlignTo} />
-        <AutoSizer disableWidth>
-          {({ height }) => <ListBox model={model} selections={selections} direction="ltr" height={height} />}
+        <AutoSizer>
+          {({ height, width }) => (
+            <ListBox
+              model={model}
+              selections={selections}
+              direction={direction}
+              listLayout={listLayout}
+              height={height}
+              width={width}
+            />
+          )}
         </AutoSizer>
       </Grid>
     </Grid>

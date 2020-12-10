@@ -310,55 +310,64 @@ function nuked(configuration = {}) {
         }
         return selectionsApi;
       },
+      /**
+       * Gets the instance of the specified field
+       * @returns {FieldSelections}
+       * @experimental
+       * @example
+       * const field = await n.selections();
+       * field.mount(element, { title: "Hello Field"});
+       */
+      field: (fieldName) => {
+        /**
+         * @class
+         * @hideconstructor
+         * @alias FieldSelections
+         */
+        const fieldSels = {
+          fieldName,
+          /**
+           * Mounts the field as a listbox into the provided HTMLElement.
+           * @param {HTMLElement} element
+           * @param {object=} options Settings for the embedded listbox
+           * @param {string=} options.title Custom title, defaults to fieldname
+           * @param {string=} [options.direction=ltr] Direction setting ltr|rtl.
+           * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal
+           * @param {boolean=} [options.search=true] To show the search bar
+           * @example
+           * field.mount(element);
+           */
+          mount(element, options = {}) {
+            if (!element) {
+              throw new Error(`Element for ${fieldName} not provided`);
+            }
+            if (this._instance) {
+              throw new Error(`Field ${fieldName} already mounted`);
+            }
+            this._instance = ListBoxPortal({
+              element,
+              app,
+              fieldName,
+              options,
+            });
+            root.add(this._instance);
+          },
+          /**
+           * Unmounts the field listbox from the DOM.
+           * @example
+           * field.unmount();
+           */
+          unmount() {
+            if (this._instance) {
+              root.remove(this._instance);
+              this._instance = null;
+            }
+          },
+        };
+        return fieldSels;
+      },
       __DO_NOT_USE__: {
         types,
-        /**
-         * Gets the instance of the specified field
-         * @returns {FieldSelections}
-         * @example
-         * const field = await n.selections();
-         * field.mount(element, { title: "Hello Field"});
-         */
-        field: (fieldName) => {
-          /**
-           * @class
-           * @hideconstructor
-           * @alias FieldSelections
-           */
-          const fieldSels = {
-            fieldName,
-            /**
-             * Mounts the field as a listbox into the provided HTMLElement.
-             * @param {HTMLElement} element
-             * @example
-             * field.mount(element);
-             */
-            mount(element, options = {}) {
-              if (this._instance) {
-                throw new Error(`Field ${fieldName} already mounted`);
-              }
-              this._instance = ListBoxPortal({
-                element,
-                app,
-                fieldName,
-                options,
-              });
-              root.add(this._instance);
-            },
-            /**
-             * Unmounts the field listbox from the DOM.
-             * @example
-             * field.unmount();
-             */
-            unmount() {
-              if (this._instance) {
-                root.remove(this._instance);
-                this._instance = null;
-              }
-            },
-          };
-          return fieldSels;
-        },
       },
     };
 
