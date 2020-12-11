@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useRef, useEffect } from 'react';
+import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
@@ -78,12 +78,25 @@ export function ListBoxInline({ app, fieldName, stateName = '$', options = {} })
   const moreAlignTo = useRef();
   const [selections] = useObjectSelections(app, model);
   const [layout] = useLayout(model);
+  const [showToolbar, setShowToolbar] = useState(false);
 
   useEffect(() => {
     if (selections) {
       if (!selections.isModal(model)) {
         selections.goModal('/qListObjectDef');
+        selections.on('deactivated', () => {
+          setShowToolbar(false);
+        });
+        selections.on('activated', () => {
+          setShowToolbar(true);
+        });
       }
+    }
+  }, [selections]);
+
+  useEffect(() => {
+    if (selections) {
+      setShowToolbar(selections.isActive());
     }
   }, [selections]);
 
@@ -144,7 +157,7 @@ export function ListBoxInline({ app, fieldName, stateName = '$', options = {} })
               },
             }}
             selections={{
-              show: selections.isActive(),
+              show: showToolbar,
               api: selections,
               onConfirm: () => {},
               onCancel: () => {},

@@ -8,9 +8,9 @@ import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 
 const useStyles = makeStyles((theme) => ({
-  row: {
+  column: {
     flexWrap: 'nowrap',
-    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderRight: `1px solid ${theme.palette.divider}`,
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
       outline: 'none',
@@ -50,9 +50,9 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Row({ index, style, data }) {
+export default function Column({ index, style, data }) {
   const classes = useStyles();
-  const classArr = [classes.row];
+  const classArr = [classes.column];
 
   let label = '';
   const { onClick, pages } = data;
@@ -114,6 +114,7 @@ export default function Row({ index, style, data }) {
       className={classArr.join(' ').trim()}
       style={style}
       onClick={onClick}
+      alignItems="center"
       role="row"
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
