@@ -267,9 +267,9 @@ function nuked(configuration = {}) {
       },
       /**
        * Gets the app selections of this instance.
-       * @returns {AppSelections}
+       * @returns {Promise<AppSelections>}
        * @example
-       * const selections = n.selections();
+       * const selections = await n.selections();
        * selections.mount(element);
        */
       selections: async () => {
@@ -312,17 +312,19 @@ function nuked(configuration = {}) {
       },
       /**
        * Gets the instance of the specified field
-       * @returns {FieldSelections}
+       * @param {string} fieldName
+       * @returns {Promise<FieldSelections>}
        * @experimental
        * @example
-       * const field = await n.selections();
+       * const field = await n.field("MyField");
        * field.mount(element, { title: "Hello Field"});
        */
-      field: (fieldName) => {
+      field: async (fieldName) => {
         /**
          * @class
          * @hideconstructor
          * @alias FieldSelections
+         * @experimental
          */
         const fieldSels = {
           fieldName,
@@ -334,6 +336,7 @@ function nuked(configuration = {}) {
            * @param {string=} [options.direction=ltr] Direction setting ltr|rtl.
            * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal
            * @param {boolean=} [options.search=true] To show the search bar
+           * @experimental
            * @example
            * field.mount(element);
            */
@@ -354,6 +357,7 @@ function nuked(configuration = {}) {
           },
           /**
            * Unmounts the field listbox from the DOM.
+           * @experimental
            * @example
            * field.unmount();
            */

@@ -653,11 +653,21 @@
           "description": "Gets the instance of the specified field",
           "stability": "experimental",
           "kind": "function",
-          "params": [],
+          "params": [
+            {
+              "name": "fieldName",
+              "type": "string"
+            }
+          ],
           "returns": {
-            "type": "#/definitions/FieldSelections"
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "#/definitions/FieldSelections"
+              }
+            ]
           },
-          "examples": ["const field = await n.selections();\nfield.mount(element, { title: \"Hello Field\"});"]
+          "examples": ["const field = await n.field(\"MyField\");\nfield.mount(element, { title: \"Hello Field\"});"]
         },
         "render": {
           "description": "Renders a visualization into an HTMLElement.",
@@ -697,9 +707,14 @@
           "kind": "function",
           "params": [],
           "returns": {
-            "type": "#/definitions/AppSelections"
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "#/definitions/AppSelections"
+              }
+            ]
           },
-          "examples": ["const selections = n.selections();\nselections.mount(element);"]
+          "examples": ["const selections = await n.selections();\nselections.mount(element);"]
         }
       }
     },
@@ -722,6 +737,7 @@
       "type": "any"
     },
     "FieldSelections": {
+      "stability": "experimental",
       "kind": "class",
       "constructor": {
         "kind": "function",
@@ -731,6 +747,7 @@
       "staticEntries": {
         "mount": {
           "description": "Mounts the field as a listbox into the provided HTMLElement.",
+          "stability": "experimental",
           "kind": "function",
           "params": [
             {
@@ -773,6 +790,7 @@
         },
         "unmount": {
           "description": "Unmounts the field listbox from the DOM.",
+          "stability": "experimental",
           "kind": "function",
           "params": [],
           "examples": ["field.unmount();"]
