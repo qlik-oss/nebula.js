@@ -4,6 +4,7 @@ import appThemeFn from './app-theme';
 
 import bootNebulaApp from './components/NebulaApp';
 import AppSelectionsPortal from './components/selections/AppSelections';
+import ListBoxPortal from './components/listbox/ListBoxInline';
 
 import create from './object/create-session-object';
 import get from './object/get-object';
@@ -308,6 +309,66 @@ function nuked(configuration = {}) {
           };
         }
         return selectionsApi;
+      },
+      /**
+       * Gets the instance of the specified field
+       * @param {string} fieldName
+       * @returns {Promise<FieldSelections>}
+       * @experimental
+       * @example
+       * const field = await n.field("MyField");
+       * field.mount(element, { title: "Hello Field"});
+       */
+      field: async (fieldName) => {
+        /**
+         * @class
+         * @hideconstructor
+         * @alias FieldSelections
+         * @experimental
+         */
+        const fieldSels = {
+          fieldName,
+          /**
+           * Mounts the field as a listbox into the provided HTMLElement.
+           * @param {HTMLElement} element
+           * @param {object=} options Settings for the embedded listbox
+           * @param {string=} options.title Custom title, defaults to fieldname
+           * @param {string=} [options.direction=ltr] Direction setting ltr|rtl.
+           * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal
+           * @param {boolean=} [options.search=true] To show the search bar
+           * @experimental
+           * @example
+           * field.mount(element);
+           */
+          mount(element, options = {}) {
+            if (!element) {
+              throw new Error(`Element for ${fieldName} not provided`);
+            }
+            if (this._instance) {
+              throw new Error(`Field ${fieldName} already mounted`);
+            }
+            this._instance = ListBoxPortal({
+              element,
+              app,
+              fieldName,
+              options,
+            });
+            root.add(this._instance);
+          },
+          /**
+           * Unmounts the field listbox from the DOM.
+           * @experimental
+           * @example
+           * field.unmount();
+           */
+          unmount() {
+            if (this._instance) {
+              root.remove(this._instance);
+              this._instance = null;
+            }
+          },
+        };
+        return fieldSels;
       },
       __DO_NOT_USE__: {
         types,

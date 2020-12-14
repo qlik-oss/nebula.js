@@ -120,7 +120,6 @@ export default function OneField({
             e.stopPropagation();
             api.clearField(selection.qField, field.states[stateIx]);
           }}
-          style={{ zIndex: 1 }}
         >
           <Remove />
         </IconButton>

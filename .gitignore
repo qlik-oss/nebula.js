@@ -15,6 +15,7 @@ temp/
 test/**/__artifacts__/regression
 test/**/__artifacts__/diff
 apis/*/core/**/*.js
+apis/*/core/**/*.js.map
 apis/locale/all.json
 
 Search/

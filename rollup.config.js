@@ -108,7 +108,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       format,
       exports: ['test-utils', 'stardust'].indexOf(targetName) !== -1 ? 'named' : 'default',
       name: umdName,
-      sourcemap: false,
+      sourcemap: true,
       banner,
       globals,
     },
