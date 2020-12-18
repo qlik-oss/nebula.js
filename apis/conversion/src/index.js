@@ -77,4 +77,11 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
   return newPropertyTree;
 };
 
-export default { hypercube };
+/**
+ * @interface Conversion
+ */
+const conversion = /** @lends Conversion */ {
+  /** @type {HyperCubeConversion} */
+  hypercube,
+};
+export default conversion;

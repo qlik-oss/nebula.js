@@ -59,10 +59,10 @@ export function ListBoxInline({ app, fieldName, stateName = '$', options = {} })
           qFieldDefs: [fieldName],
         },
       },
+      title,
     },
     app,
     fieldName,
-    title,
     stateName
   );
 

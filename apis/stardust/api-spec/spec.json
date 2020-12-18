@@ -562,6 +562,14 @@
         }
       }
     },
+    "Conversion": {
+      "kind": "interface",
+      "entries": {
+        "hypercube": {
+          "type": "#/definitions/HyperCubeConversion"
+        }
+      }
+    },
     "CreateConfig": {
       "extends": [
         {
@@ -587,6 +595,20 @@
           "optional": true,
           "type": "qae.GenericObjectProperties"
         }
+      }
+    },
+    "createExportFormat": {
+      "stability": "experimental",
+      "kind": "function",
+      "params": [
+        {
+          "name": "nDataGroups",
+          "defaultValue": 1,
+          "type": "number"
+        }
+      ],
+      "returns": {
+        "type": "#/definitions/ExportFormat"
       }
     },
     "DataTarget": {
@@ -715,6 +737,60 @@
             ]
           },
           "examples": ["const selections = await n.selections();\nselections.mount(element);"]
+        }
+      }
+    },
+    "ExportDataDef": {
+      "stability": "experimental",
+      "kind": "interface",
+      "entries": {
+        "dimensions": {
+          "kind": "array",
+          "items": {
+            "type": "qae.NxDimension"
+          }
+        },
+        "measures": {
+          "kind": "array",
+          "items": {
+            "type": "qae.NxMeasure"
+          }
+        },
+        "excludedDimensions": {
+          "kind": "array",
+          "items": {
+            "type": "qae.NxDimension"
+          }
+        },
+        "excludedMeasures": {
+          "kind": "array",
+          "items": {
+            "type": "qae.NxMeasure"
+          }
+        },
+        "interColumnSortOrder": {
+          "kind": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "ExportFormat": {
+      "description": "Used for exporting and importing properties between backend models. An object that exports to\nExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes\neach of the cubes should export dimensions and measures in two separate data groups.\nAn object that imports from this structure is responsible for putting the existing properties where they should be\nin the new model.",
+      "stability": "experimental",
+      "kind": "interface",
+      "entries": {
+        "data": {
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/ExportDataDef"
+          }
+        },
+        "properties": {
+          "optional": true,
+          "type": "object"
         }
       }
     },
@@ -863,6 +939,65 @@
       "entries": {
         "id": {
           "type": "string"
+        }
+      }
+    },
+    "HyperCubeConversion": {
+      "kind": "interface",
+      "entries": {
+        "exportProperties": {
+          "description": "Exports properties for a chart with a hypercube.",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [
+            {
+              "name": "args",
+              "type": "Object"
+            }
+          ],
+          "returns": {
+            "type": "#/definitions/ExportFormat"
+          }
+        },
+        "importProperties": {
+          "description": "Imports properties for a chart with a hypercube.",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [
+            {
+              "name": "args",
+              "kind": "object",
+              "entries": {
+                "exportFormat": {
+                  "description": "The export object which is the output of exportProperties.",
+                  "type": "#/definitions/ExportFormat"
+                },
+                "initialProperties": {
+                  "description": "Initial properties of the target chart.",
+                  "optional": true,
+                  "type": "Object"
+                },
+                "dataDefinition": {
+                  "description": "Data definition of the target chart.",
+                  "optional": true,
+                  "type": "Object"
+                },
+                "defaultPropertyValues": {
+                  "description": "Default values for a number of properties of the target chart.",
+                  "optional": true,
+                  "type": "Object"
+                },
+                "hypercubePath": {
+                  "description": "Reference to the qHyperCubeDef.",
+                  "type": "string"
+                }
+              }
+            }
+          ],
+          "returns": {
+            "description": "A properties tree",
+            "type": "Object"
+          }
         }
       }
     },
@@ -1497,6 +1632,36 @@
         "params": []
       },
       "entries": {
+        "convertTo": {
+          "description": "Converts the visualization to a different registred type",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [
+            {
+              "name": "newType",
+              "description": "Which registered type to convert to",
+              "type": "string"
+            },
+            {
+              "name": "forceUpdate",
+              "description": "Whether to run setProperties or not, defaults to true.",
+              "optional": true,
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "description": "Promise object that resolves to the full property tree of the converted visualizatiom",
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "object"
+              }
+            ]
+          },
+          "examples": [
+            "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.convertTo('barChart');"
+          ]
+        },
         "destroy": {
           "description": "Destroys the visualization and removes if from the the DOM.",
           "kind": "function",

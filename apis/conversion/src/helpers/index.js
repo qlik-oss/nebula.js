@@ -28,7 +28,7 @@ function restoreChangedProperties(properties) {
  * @param propertyName Name of the key in the properties object
  * @returns {boolean}
  */
-function isMasterItemPropperty(propertyName) {
+function isMasterItemProperty(propertyName) {
   return ['qMetaDef', 'descriptionExpression', 'labelExpression'].indexOf(propertyName) !== -1;
 }
 
@@ -158,7 +158,7 @@ function createNewProperties({ exportFormat, initialProperties, hypercubePath })
       }
     } else if (key === 'qHyperCubeDef' && hypercubePath) {
       utils.setValue(newProperties, `${hypercubePath}.qHyperCubeDef`, exportFormat.properties.qHyperCubeDef);
-    } else if (initialProperties.hasOwnProperty(key) || isMasterItemPropperty(key)) {
+    } else if (initialProperties.hasOwnProperty(key) || isMasterItemProperty(key)) {
       // TODO: qExtendsId ??
       newProperties[key] = exportFormat.properties[key];
     } else {
@@ -315,7 +315,7 @@ function addDefaultMeasures({ exportFormat, maxMeasures, minMeasures, newHyperCu
 
 export default {
   restoreChangedProperties,
-  isMasterItemPropperty,
+  isMasterItemProperty,
   importCommonProperties,
   copyPropertyIfExist,
   copyPropertyOrSetDefault,

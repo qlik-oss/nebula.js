@@ -5,13 +5,13 @@
  * An object that imports from this structure is responsible for putting the existing properties where they should be
  * in the new model.
  * @interface ExportFormat
- * @ignore
+ * @experimental
  * @property {(ExportDataDef[])=} data
  * @property {object=} properties
  */
 
 /**
- * @ignore
+ * @experimental
  * @interface ExportDataDef
  * @property {qae.NxDimension[]} dimensions
  * @property {qae.NxMeasure[]} measures
@@ -21,7 +21,7 @@
  */
 
 /**
- * @ignore
+ * @experimental
  * @param {number} nDataGroups
  * @return {ExportFormat}
  */
