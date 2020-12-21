@@ -3,12 +3,14 @@ import { modelStore, rpcRequestModelStore } from '../stores/model-store';
 
 /**
  * @interface BaseConfig
+ * @description Basic rendering configuration for rendering an object
  * @property {HTMLElement} element
  * @property {object=} options
  */
 
 /**
  * @interface GetConfig
+ * @description Rendering configuration for rendering an existing object
  * @extends BaseConfig
  * @property {string} id
  */

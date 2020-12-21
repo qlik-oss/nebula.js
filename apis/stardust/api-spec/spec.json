@@ -46,6 +46,14 @@
         }
       }
     },
+    "conversion": {
+      "description": "Provides conversion functionality to extensions",
+      "kind": "module",
+      "entries": {},
+      "examples": [
+        "import { conversion } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      ...\n      importProperties: ( exportFormat, initialProperties ) =>  conversion.hyperCube.importProperties(exportFormat, initialProperties),\n      exportProperties: ( fullPropertyTree ) => conversion.hyperCube.exportProperties(fullPropertyTree)\n    },\n    ...\n  };\n}"
+      ]
+    },
     "onTakeSnapshot": {
       "description": "Registers a callback that is called when a snapshot is taken.",
       "kind": "function",
@@ -457,6 +465,7 @@
       }
     },
     "BaseConfig": {
+      "description": "Basic rendering configuration for rendering an object",
       "kind": "interface",
       "entries": {
         "element": {
@@ -562,7 +571,23 @@
         }
       }
     },
+    "conversion.hypercube": {
+      "description": "Provides conversion functionality for extensions with hyperCubes",
+      "type": "#/definitions/hyperCubeConversion"
+    },
+    "ConversionType": {
+      "kind": "interface",
+      "entries": {
+        "importProperties": {
+          "type": "#/definitions/importProperties"
+        },
+        "exportProperties": {
+          "type": "#/definitions/exportProperties"
+        }
+      }
+    },
     "CreateConfig": {
+      "description": "Rendering configuration for creating and rendering a new object",
       "extends": [
         {
           "type": "#/definitions/BaseConfig"
@@ -580,13 +605,27 @@
           "optional": true,
           "kind": "array",
           "items": {
-            "type": "#/definitions/Field"
+            "type": "Field"
           }
         },
         "properties": {
           "optional": true,
           "type": "qae.GenericObjectProperties"
         }
+      }
+    },
+    "createExportFormat": {
+      "stability": "experimental",
+      "kind": "function",
+      "params": [
+        {
+          "name": "nDataGroups",
+          "defaultValue": 1,
+          "type": "number"
+        }
+      ],
+      "returns": {
+        "type": "#/definitions/ExportFormat"
       }
     },
     "DataTarget": {
@@ -718,23 +757,82 @@
         }
       }
     },
-    "Field": {
-      "kind": "union",
-      "items": [
-        {
-          "type": "string"
+    "ExportDataDef": {
+      "stability": "experimental",
+      "kind": "interface",
+      "entries": {
+        "dimensions": {
+          "kind": "array",
+          "items": {
+            "type": "qae.NxDimension"
+          }
         },
-        {
-          "type": "qae.NxDimension"
+        "measures": {
+          "kind": "array",
+          "items": {
+            "type": "qae.NxMeasure"
+          }
         },
-        {
-          "type": "qae.NxMeasure"
+        "excludedDimensions": {
+          "kind": "array",
+          "items": {
+            "type": "qae.NxDimension"
+          }
         },
+        "excludedMeasures": {
+          "kind": "array",
+          "items": {
+            "type": "qae.NxMeasure"
+          }
+        },
+        "interColumnSortOrder": {
+          "kind": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "ExportFormat": {
+      "description": "Used for exporting and importing properties between backend models. An object that exports to\nExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes\neach of the cubes should export dimensions and measures in two separate data groups.\nAn object that imports from this structure is responsible for putting the existing properties where they should be\nin the new model.",
+      "stability": "experimental",
+      "kind": "interface",
+      "entries": {
+        "data": {
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/ExportDataDef"
+          }
+        },
+        "properties": {
+          "optional": true,
+          "type": "object"
+        }
+      }
+    },
+    "exportProperties": {
+      "description": "Exports properties for a chart with a hypercube.",
+      "stability": "experimental",
+      "kind": "function",
+      "params": [
         {
-          "type": "#/definitions/LibraryField"
+          "name": "args",
+          "kind": "object",
+          "entries": {
+            "propertyTree": {
+              "type": "Object"
+            },
+            "hypercubePath": {
+              "description": "Reference to the qHyperCubeDef.",
+              "type": "string"
+            }
+          }
         }
       ],
-      "type": "any"
+      "returns": {
+        "type": "#/definitions/ExportFormat"
+      }
     },
     "FieldSelections": {
       "stability": "experimental",
@@ -854,6 +952,7 @@
       }
     },
     "GetConfig": {
+      "description": "Rendering configuration for rendering an existing object",
       "extends": [
         {
           "type": "#/definitions/BaseConfig"
@@ -864,6 +963,55 @@
         "id": {
           "type": "string"
         }
+      }
+    },
+    "hyperCubeConversion": {
+      "implements": [
+        {
+          "type": "#/definitions/ConversionType"
+        }
+      ],
+      "kind": "interface",
+      "entries": {}
+    },
+    "importProperties": {
+      "description": "Imports properties for a chart with a hypercube.",
+      "stability": "experimental",
+      "kind": "function",
+      "params": [
+        {
+          "name": "args",
+          "kind": "object",
+          "entries": {
+            "exportFormat": {
+              "description": "The export object which is the output of exportProperties.",
+              "type": "#/definitions/ExportFormat"
+            },
+            "initialProperties": {
+              "description": "Initial properties of the target chart.",
+              "optional": true,
+              "type": "Object"
+            },
+            "dataDefinition": {
+              "description": "Data definition of the target chart.",
+              "optional": true,
+              "type": "Object"
+            },
+            "defaultPropertyValues": {
+              "description": "Default values for a number of properties of the target chart.",
+              "optional": true,
+              "type": "Object"
+            },
+            "hypercubePath": {
+              "description": "Reference to the qHyperCubeDef.",
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "returns": {
+        "description": "A properties tree",
+        "type": "Object"
       }
     },
     "LibraryField": {
@@ -1099,6 +1247,14 @@
               }
             }
           }
+        },
+        "importProperties": {
+          "optional": true,
+          "type": "#/definitions/importProperties"
+        },
+        "exportProperties": {
+          "optional": true,
+          "type": "#/definitions/exportProperties"
         }
       }
     },
@@ -1497,6 +1653,36 @@
         "params": []
       },
       "entries": {
+        "convertTo": {
+          "description": "Converts the visualization to a different registred type",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [
+            {
+              "name": "newType",
+              "description": "Which registered type to convert to",
+              "type": "string"
+            },
+            {
+              "name": "forceUpdate",
+              "description": "Whether to run setProperties or not, defaults to true.",
+              "optional": true,
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "description": "Promise object that resolves to the full property tree of the converted visualizatiom",
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "object"
+              }
+            ]
+          },
+          "examples": [
+            "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.convertTo('barChart');"
+          ]
+        },
         "destroy": {
           "description": "Destroys the visualization and removes if from the the DOM.",
           "kind": "function",

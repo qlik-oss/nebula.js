@@ -19,6 +19,7 @@ module.exports = {
   },
   parse: {
     types: {
+      undefined: {},
       'qae.NxAppLayout': {},
       'enigma.GenericObject': {},
       'enigma.Global': {},

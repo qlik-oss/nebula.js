@@ -4,17 +4,6 @@
 import utils from '../utils';
 import helpers from '../helpers';
 
-/**
- * Imports properties for a chart with a hypercube.
- *
- * @ignore
- * @param {ExportFormat} exportFormat The export object which is the output of exportProperties.
- * @param initialProperties Initial properties of the target chart.
- * @param dataDefinition Data definition of the target chart.
- * @param defaultPropertyValues Default values for a number of properties of the target chart.
- * @param hypercubePath Reference to the qHyperCubeDef.
- * @returns {Object} A properties tree
- */
 export default function importProperties({
   exportFormat,
   initialProperties = {},

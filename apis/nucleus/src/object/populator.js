@@ -1,7 +1,7 @@
 import hcHandler from './hc-handler';
 
 /**
- * @typedef {string | qae.NxDimension | qae.NxMeasure | LibraryField} Field
+ * @typedef {(string | qae.NxDimension | qae.NxMeasure | LibraryField)} Field
  */
 
 /**

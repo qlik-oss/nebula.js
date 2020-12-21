@@ -7,7 +7,7 @@ import locale from '@nebula.js/locale';
 import conversion from '@nebula.js/conversion';
 
 // mashup api
-export { embed };
+export { embed, conversion };
 
 // component api
 export {
@@ -34,5 +34,5 @@ export {
 } from '@nebula.js/supernova';
 
 // component internals
-const __DO_NOT_USE__ = { generator, hook, theme, locale, conversion };
+const __DO_NOT_USE__ = { generator, hook, theme, locale };
 export { __DO_NOT_USE__ };

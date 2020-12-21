@@ -46,24 +46,24 @@ describe('restoreChangedProperties', () => {
   });
 });
 
-describe('isMasterItemPropperty', () => {
+describe('isMasterItemProperty', () => {
   it('should return true for qMetaDef', () => {
-    expect(helpers.isMasterItemPropperty('qMetaDef')).to.equal(true);
+    expect(helpers.isMasterItemProperty('qMetaDef')).to.equal(true);
   });
 
   it('should return true for descriptionExpression', () => {
-    expect(helpers.isMasterItemPropperty('descriptionExpression')).to.equal(true);
+    expect(helpers.isMasterItemProperty('descriptionExpression')).to.equal(true);
   });
 
   it('should return true for labelExpression', () => {
-    expect(helpers.isMasterItemPropperty('labelExpression')).to.equal(true);
+    expect(helpers.isMasterItemProperty('labelExpression')).to.equal(true);
   });
 
   it('should return false for everything else', () => {
-    expect(helpers.isMasterItemPropperty('qMetaDef1')).to.equal(false);
-    expect(helpers.isMasterItemPropperty('descriptionExpression1')).to.equal(false);
-    expect(helpers.isMasterItemPropperty('labelExpression1')).to.equal(false);
-    expect(helpers.isMasterItemPropperty('abc')).to.equal(false);
+    expect(helpers.isMasterItemProperty('qMetaDef1')).to.equal(false);
+    expect(helpers.isMasterItemProperty('descriptionExpression1')).to.equal(false);
+    expect(helpers.isMasterItemProperty('labelExpression1')).to.equal(false);
+    expect(helpers.isMasterItemProperty('abc')).to.equal(false);
   });
 });
 

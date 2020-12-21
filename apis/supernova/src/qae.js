@@ -1,10 +1,35 @@
 const noop = () => {};
 
 /**
+ * @function importProperties
+ * @description Imports properties for a chart with a hypercube.
+ * @experimental
+ * @param {Object} args
+ * @param {ExportFormat} args.exportFormat The export object which is the output of exportProperties.
+ * @param {Object=} args.initialProperties Initial properties of the target chart.
+ * @param {Object=} args.dataDefinition Data definition of the target chart.
+ * @param {Object=} args.defaultPropertyValues Default values for a number of properties of the target chart.
+ * @param {string} args.hypercubePath Reference to the qHyperCubeDef.
+ * @returns {Object} A properties tree
+ */
+
+/**
+ * @function exportProperties
+ * @description Exports properties for a chart with a hypercube.
+ * @experimental
+ * @param {Object} args
+ * @param {Object} args.propertyTree
+ * @param {string} args.hypercubePath Reference to the qHyperCubeDef.
+ * @returns {ExportFormat}
+ */
+
+/**
  * @interface QAEDefinition
  * @property {qae.GenericObjectProperties=} properties
  * @property {object=} data
  * @property {DataTarget[]} data.targets
+ * @property {importProperties=} importProperties
+ * @property {exportProperties=} exportProperties
  */
 
 /**

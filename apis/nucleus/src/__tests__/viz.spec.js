@@ -79,7 +79,7 @@ describe('viz', () => {
     });
 
     it('should have an convertTo method', () => {
-      expect(api.__DO_NOT_USE__.convertTo).to.be.a('function');
+      expect(api.convertTo).to.be.a('function');
     });
   });
 
@@ -147,7 +147,7 @@ describe('viz', () => {
 
   describe('convertTo', () => {
     it('should run setProperties when forceUpdate = true', async () => {
-      const props = await api.__DO_NOT_USE__.convertTo({ newType: 'type', forceUpdate: true });
+      const props = await api.convertTo({ newType: 'type', forceUpdate: true });
       expect(objectConversion.convertTo.callCount).to.equal(1);
       expect(model.setProperties.callCount).to.equal(1);
       expect(props).to.equal('props');
@@ -156,7 +156,7 @@ describe('viz', () => {
     it('should not run setProperties when forceUpdate = false', async () => {
       objectConversion.convertTo.resetHistory();
       model.setProperties.resetHistory();
-      const props = await api.__DO_NOT_USE__.convertTo({ newType: 'type', forceUpdate: false });
+      const props = await api.convertTo({ newType: 'type', forceUpdate: false });
       expect(objectConversion.convertTo.callCount).to.equal(1);
       expect(model.setProperties.callCount).to.equal(0);
       expect(props).to.equal('props');
