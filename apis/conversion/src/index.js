@@ -76,12 +76,35 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
   });
   return newPropertyTree;
 };
+/**
+ * @interface ConversionType
+ * @property {importProperties} importProperties
+ * @property {exportProperties} exportProperties
+ */
 
 /**
- * @interface Conversion
+ * @module conversion
+ * @description Provides conversion functionality to extensions
+ * @example
+ * import { conversion } from '@nebula.js/stardust';
+ *
+ * export default function() {
+ *   return {
+ *     qae: {
+ *       ...
+ *       importProperties: ( exportFormat, initialProperties ) =>  conversion.hyperCube.importProperties(exportFormat, initialProperties),
+ *       exportProperties: ( fullPropertyTree ) => conversion.hyperCube.exportProperties(fullPropertyTree)
+ *     },
+ *     ...
+ *   };
+ * }
+ *
  */
-const conversion = /** @lends Conversion */ {
-  /** @type {HyperCubeConversion} */
+const conversion = /** @lends conversion */ {
+  /**
+   * @type {hyperCubeConversion}
+   * @description Provides conversion functionality for extensions with hyperCubes
+   */
   hypercube,
 };
 export default conversion;

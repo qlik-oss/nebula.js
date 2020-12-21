@@ -46,6 +46,14 @@
         }
       }
     },
+    "conversion": {
+      "description": "Provides conversion functionality to extensions",
+      "kind": "module",
+      "entries": {},
+      "examples": [
+        "import { conversion } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      ...\n      importProperties: ( exportFormat, initialProperties ) =>  conversion.hyperCube.importProperties(exportFormat, initialProperties),\n      exportProperties: ( fullPropertyTree ) => conversion.hyperCube.exportProperties(fullPropertyTree)\n    },\n    ...\n  };\n}"
+      ]
+    },
     "onTakeSnapshot": {
       "description": "Registers a callback that is called when a snapshot is taken.",
       "kind": "function",
@@ -457,6 +465,7 @@
       }
     },
     "BaseConfig": {
+      "description": "Basic rendering configuration for rendering an object",
       "kind": "interface",
       "entries": {
         "element": {
@@ -562,15 +571,23 @@
         }
       }
     },
-    "Conversion": {
+    "conversion.hypercube": {
+      "description": "Provides conversion functionality for extensions with hyperCubes",
+      "type": "#/definitions/hyperCubeConversion"
+    },
+    "ConversionType": {
       "kind": "interface",
       "entries": {
-        "hypercube": {
-          "type": "#/definitions/HyperCubeConversion"
+        "importProperties": {
+          "type": "#/definitions/importProperties"
+        },
+        "exportProperties": {
+          "type": "#/definitions/exportProperties"
         }
       }
     },
     "CreateConfig": {
+      "description": "Rendering configuration for creating and rendering a new object",
       "extends": [
         {
           "type": "#/definitions/BaseConfig"
@@ -588,7 +605,7 @@
           "optional": true,
           "kind": "array",
           "items": {
-            "type": "#/definitions/Field"
+            "type": "Field"
           }
         },
         "properties": {
@@ -794,23 +811,28 @@
         }
       }
     },
-    "Field": {
-      "kind": "union",
-      "items": [
+    "exportProperties": {
+      "description": "Exports properties for a chart with a hypercube.",
+      "stability": "experimental",
+      "kind": "function",
+      "params": [
         {
-          "type": "string"
-        },
-        {
-          "type": "qae.NxDimension"
-        },
-        {
-          "type": "qae.NxMeasure"
-        },
-        {
-          "type": "#/definitions/LibraryField"
+          "name": "args",
+          "kind": "object",
+          "entries": {
+            "propertyTree": {
+              "type": "Object"
+            },
+            "hypercubePath": {
+              "description": "Reference to the qHyperCubeDef.",
+              "type": "string"
+            }
+          }
         }
       ],
-      "type": "any"
+      "returns": {
+        "type": "#/definitions/ExportFormat"
+      }
     },
     "FieldSelections": {
       "stability": "experimental",
@@ -930,6 +952,7 @@
       }
     },
     "GetConfig": {
+      "description": "Rendering configuration for rendering an existing object",
       "extends": [
         {
           "type": "#/definitions/BaseConfig"
@@ -942,63 +965,53 @@
         }
       }
     },
-    "HyperCubeConversion": {
+    "hyperCubeConversion": {
+      "implements": [
+        {
+          "type": "#/definitions/ConversionType"
+        }
+      ],
       "kind": "interface",
-      "entries": {
-        "exportProperties": {
-          "description": "Exports properties for a chart with a hypercube.",
-          "stability": "experimental",
-          "kind": "function",
-          "params": [
-            {
-              "name": "args",
+      "entries": {}
+    },
+    "importProperties": {
+      "description": "Imports properties for a chart with a hypercube.",
+      "stability": "experimental",
+      "kind": "function",
+      "params": [
+        {
+          "name": "args",
+          "kind": "object",
+          "entries": {
+            "exportFormat": {
+              "description": "The export object which is the output of exportProperties.",
+              "type": "#/definitions/ExportFormat"
+            },
+            "initialProperties": {
+              "description": "Initial properties of the target chart.",
+              "optional": true,
               "type": "Object"
+            },
+            "dataDefinition": {
+              "description": "Data definition of the target chart.",
+              "optional": true,
+              "type": "Object"
+            },
+            "defaultPropertyValues": {
+              "description": "Default values for a number of properties of the target chart.",
+              "optional": true,
+              "type": "Object"
+            },
+            "hypercubePath": {
+              "description": "Reference to the qHyperCubeDef.",
+              "type": "string"
             }
-          ],
-          "returns": {
-            "type": "#/definitions/ExportFormat"
-          }
-        },
-        "importProperties": {
-          "description": "Imports properties for a chart with a hypercube.",
-          "stability": "experimental",
-          "kind": "function",
-          "params": [
-            {
-              "name": "args",
-              "kind": "object",
-              "entries": {
-                "exportFormat": {
-                  "description": "The export object which is the output of exportProperties.",
-                  "type": "#/definitions/ExportFormat"
-                },
-                "initialProperties": {
-                  "description": "Initial properties of the target chart.",
-                  "optional": true,
-                  "type": "Object"
-                },
-                "dataDefinition": {
-                  "description": "Data definition of the target chart.",
-                  "optional": true,
-                  "type": "Object"
-                },
-                "defaultPropertyValues": {
-                  "description": "Default values for a number of properties of the target chart.",
-                  "optional": true,
-                  "type": "Object"
-                },
-                "hypercubePath": {
-                  "description": "Reference to the qHyperCubeDef.",
-                  "type": "string"
-                }
-              }
-            }
-          ],
-          "returns": {
-            "description": "A properties tree",
-            "type": "Object"
           }
         }
+      ],
+      "returns": {
+        "description": "A properties tree",
+        "type": "Object"
       }
     },
     "LibraryField": {
@@ -1234,6 +1247,14 @@
               }
             }
           }
+        },
+        "importProperties": {
+          "optional": true,
+          "type": "#/definitions/importProperties"
+        },
+        "exportProperties": {
+          "optional": true,
+          "type": "#/definitions/exportProperties"
         }
       }
     },
