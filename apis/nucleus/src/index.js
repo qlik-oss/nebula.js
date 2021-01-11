@@ -86,17 +86,13 @@ const DEFAULT_CONFIG = /** @lends Configuration */ {
  * @interface Galaxy
  */
 
-const mergeObj = (o1 = {}, o2 = {}) => {
-  return {
-    ...o1,
-    ...o2,
-  };
-};
-const mergeArray = (a1 = [], a2 = []) => {
+const mergeObj = (o1 = {}, o2 = {}) => ({
+  ...o1,
+  ...o2,
+});
+const mergeArray = (a1 = [], a2 = []) =>
   // Simple merge and deduplication
-  return [...a1, ...a2].filter((v, i, a) => a.indexOf(v) === i);
-};
-
+  [...a1, ...a2].filter((v, i, a) => a.indexOf(v) === i);
 const mergeConfigs = (base, c) => ({
   context: mergeObj(base.context, c.context),
   load: c.load || base.load,

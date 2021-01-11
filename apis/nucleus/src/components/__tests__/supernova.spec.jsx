@@ -62,12 +62,10 @@ describe('<Supernova />', () => {
         component,
       },
       rendererOptions: {
-        createNodeMock: () => {
-          return {
-            style: {},
-            getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
-          };
-        },
+        createNodeMock: () => ({
+          style: {},
+          getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
+        }),
       },
     });
     expect(component.created.callCount).to.equal(1);
@@ -101,12 +99,10 @@ describe('<Supernova />', () => {
       appLayout: { qLocaleInfo: 'loc' },
       halo: { public: { theme: 'theme' }, app: { session: {} } },
       rendererOptions: {
-        createNodeMock: () => {
-          return {
-            style: {},
-            getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
-          };
-        },
+        createNodeMock: () => ({
+          style: {},
+          getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
+        }),
       },
     });
     await act(async () => {
@@ -148,12 +144,10 @@ describe('<Supernova />', () => {
       layout: {},
       halo: { public: {} },
       rendererOptions: {
-        createNodeMock: () => {
-          return {
-            style: {},
-            getBoundingClientRect,
-          };
-        },
+        createNodeMock: () => ({
+          style: {},
+          getBoundingClientRect,
+        }),
       },
     });
     await act(async () => {

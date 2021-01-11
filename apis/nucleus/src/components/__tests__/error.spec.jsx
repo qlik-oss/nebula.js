@@ -47,25 +47,17 @@ describe('<Error />', () => {
   });
   it('should render default error', async () => {
     await render();
-    const title = renderer.root.find((el) => {
-      return el.props['data-tid'] === 'error-title';
-    });
+    const title = renderer.root.find((el) => el.props['data-tid'] === 'error-title');
     expect(title.props.children).to.equal('Error');
-    const message = renderer.root.find((el) => {
-      return el.props['data-tid'] === 'error-message';
-    });
+    const message = renderer.root.find((el) => el.props['data-tid'] === 'error-message');
     expect(message.props.children).to.equal('');
   });
 
   it('should render error', async () => {
     await render('foo', 'bar', [{ title: 'foo', descriptions: [] }]);
-    const title = renderer.root.find((el) => {
-      return el.props['data-tid'] === 'error-title';
-    });
+    const title = renderer.root.find((el) => el.props['data-tid'] === 'error-title');
     expect(title.props.children).to.equal('foo');
-    const msg = renderer.root.find((el) => {
-      return el.props['data-tid'] === 'error-message';
-    });
+    const msg = renderer.root.find((el) => el.props['data-tid'] === 'error-message');
     expect(msg.props.children).to.equal('bar');
   });
 

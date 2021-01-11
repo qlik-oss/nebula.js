@@ -116,8 +116,8 @@ const handleModal = ({ sn, layout, model }) => {
 
 const filterData = (d) => (d.qError ? d.qError.qErrorCode === 7005 : true);
 
-const validateInfo = (min, info, getDescription, translatedError, translatedCalcCond) => {
-  return [...Array(min).keys()].map((i) => {
+const validateInfo = (min, info, getDescription, translatedError, translatedCalcCond) =>
+  [...Array(min).keys()].map((i) => {
     const exists = !!(info && info[i]);
     const softError = exists && info[i].qError && info[i].qError.qErrorCode === 7005;
     const error = exists && !softError && info[i].qError;
@@ -136,7 +136,6 @@ const validateInfo = (min, info, getDescription, translatedError, translatedCalc
       error,
     };
   });
-};
 
 const getInfo = (info) => (info && (Array.isArray(info) ? info : [info])) || [];
 

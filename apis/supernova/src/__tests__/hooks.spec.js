@@ -137,9 +137,7 @@ describe('hooks', () => {
 
   describe('runSnaps', () => {
     it('should run snaps hooks', async () => {
-      const take1 = (layout) => {
-        return Promise.resolve({ take1: 'yes', ...layout });
-      };
+      const take1 = (layout) => Promise.resolve({ take1: 'yes', ...layout });
 
       c = {
         __hooks: {
@@ -355,9 +353,7 @@ describe('hooks', () => {
 
     it('should cleanup previous', async () => {
       const spy = sandbox.spy();
-      const f = () => {
-        return spy;
-      };
+      const f = () => spy;
       c.fn = () => {
         useEffect(f);
       };

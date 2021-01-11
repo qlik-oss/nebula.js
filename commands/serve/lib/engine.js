@@ -1,8 +1,8 @@
 const path = require('path');
 const { spawn } = require('child_process');
 
-const execCmd = (cmd, cmdArgs = [], opts) => {
-  return new Promise((resolve, reject) => {
+const execCmd = (cmd, cmdArgs = [], opts) =>
+  new Promise((resolve, reject) => {
     const child = spawn(cmd, cmdArgs, opts);
     const res = {
       exitCode: null,
@@ -25,7 +25,6 @@ const execCmd = (cmd, cmdArgs = [], opts) => {
       }
     });
   });
-};
 
 const useEngine = ({ ACCEPT_EULA = false, cwd = path.resolve(__dirname, '../'), files }) => {
   if (ACCEPT_EULA !== true) {

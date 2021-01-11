@@ -1,3 +1,1 @@
-define(['{{DIST}}'], function m(supernova) {
-  return supernova;
-});
+define(['{{DIST}}'], (supernova) => supernova);

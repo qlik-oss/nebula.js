@@ -2,11 +2,10 @@ import { useReducer, useEffect } from 'react';
 import { useModelChangedStore, useRpcResultStore, useRpcRequestStore } from '../stores/model-store';
 
 // eslint-disable-next-line no-unused-vars
-const sleep = (delay) => {
-  return new Promise((resolve) => {
+const sleep = (delay) =>
+  new Promise((resolve) => {
     setTimeout(resolve, delay);
   });
-};
 
 const rpcReducer = (state, action) => {
   const { rpcResultStore, key, method } = action;
