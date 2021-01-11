@@ -4,26 +4,15 @@ import { selectPossible } from '@nebula.js/ui/icons/select-possible';
 import { selectExcluded } from '@nebula.js/ui/icons/select-excluded';
 
 export default ({ layout, model, translator }) => {
-  const canSelectAll = () => {
-    return ['qOption', 'qAlternative', 'qExcluded', 'qDeselected'].some((sc) => {
-      return layout.qListObject.qDimensionInfo.qStateCounts[sc] > 0;
-    });
-  };
-  const canSelectPossible = () => {
-    return ['qOption'].some((sc) => {
-      return layout.qListObject.qDimensionInfo.qStateCounts[sc] > 0;
-    });
-  };
-  const canSelectAlternative = () => {
-    return ['qAlternative'].some((sc) => {
-      return layout.qListObject.qDimensionInfo.qStateCounts[sc] > 0;
-    });
-  };
-  const canSelectExcluded = () => {
-    return ['qAlternative', 'qExcluded'].some((sc) => {
-      return layout.qListObject.qDimensionInfo.qStateCounts[sc] > 0;
-    });
-  };
+  const canSelectAll = () =>
+    ['qOption', 'qAlternative', 'qExcluded', 'qDeselected'].some(
+      (sc) => layout.qListObject.qDimensionInfo.qStateCounts[sc] > 0
+    );
+  const canSelectPossible = () => ['qOption'].some((sc) => layout.qListObject.qDimensionInfo.qStateCounts[sc] > 0);
+  const canSelectAlternative = () =>
+    ['qAlternative'].some((sc) => layout.qListObject.qDimensionInfo.qStateCounts[sc] > 0);
+  const canSelectExcluded = () =>
+    ['qAlternative', 'qExcluded'].some((sc) => layout.qListObject.qDimensionInfo.qStateCounts[sc] > 0);
 
   return [
     {

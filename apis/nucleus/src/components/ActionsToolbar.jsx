@@ -92,9 +92,7 @@ const ActionsToolbar = ({
   const theme = useTheme();
   const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
 
-  useEffect(() => {
-    return () => setShowMoreItems(false);
-  }, [popover.show]);
+  useEffect(() => () => setShowMoreItems(false), [popover.show]);
 
   useEffect(() => {
     setMoreEnabled(more.enabled);

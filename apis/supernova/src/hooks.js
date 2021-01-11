@@ -149,13 +149,9 @@ function maybeEndChain(hooks) {
 
 export function runSnaps(component, layout) {
   try {
-    return Promise.all(
-      component.__hooks.snaps.map((h) => {
-        return Promise.resolve(h.fn(layout));
-      })
-    ).then((snaps) => {
-      return snaps[snaps.length - 1];
-    });
+    return Promise.all(component.__hooks.snaps.map((h) => Promise.resolve(h.fn(layout)))).then(
+      (snaps) => snaps[snaps.length - 1]
+    );
   } catch (e) {
     console.error(e);
   }

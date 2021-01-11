@@ -61,9 +61,7 @@ const setValue = (data, reference, value) => {
   }
 };
 
-const isEmpty = (object) => {
-  return Object.keys(object).length === 0 && object.constructor === Object;
-};
+const isEmpty = (object) => Object.keys(object).length === 0 && object.constructor === Object;
 
 export default {
   getValue,

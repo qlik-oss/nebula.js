@@ -243,11 +243,9 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().callsFake(({ name }) => {
-          return {
-            supernova: async () => ({ create: () => (name === 'sn1' ? sn1 : sn) }),
-          };
-        }),
+        get: sandbox.stub().callsFake(({ name }) => ({
+          supernova: async () => ({ create: () => (name === 'sn1' ? sn1 : sn) }),
+        })),
         getSupportedVersion: sandbox.stub().returns('1.0.0'),
       };
       await render({ types });
@@ -603,11 +601,9 @@ describe('<Cell />', () => {
         types,
         cellRef,
         rendererOptions: {
-          createNodeMock: (/* e */) => {
-            return {
-              getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
-            };
-          },
+          createNodeMock: (/* e */) => ({
+            getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
+          }),
         },
       });
       await act(async () => {
@@ -657,11 +653,9 @@ describe('<Cell />', () => {
         types,
         cellRef,
         rendererOptions: {
-          createNodeMock: (/* e */) => {
-            return {
-              getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
-            };
-          },
+          createNodeMock: (/* e */) => ({
+            getBoundingClientRect: () => ({ left: 100, top: 200, width: 300, height: 400 }),
+          }),
         },
       });
       await act(async () => {

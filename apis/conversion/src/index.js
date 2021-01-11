@@ -13,9 +13,7 @@ const getType = async ({ halo, name, version }) => {
   return SN;
 };
 
-const getPath = (qae) => {
-  return utils.getValue(qae, 'data.targets.0.propertyPath');
-};
+const getPath = (qae) => utils.getValue(qae, 'data.targets.0.propertyPath');
 
 const getDefaultExportPropertiesFn = (path) => {
   const steps = path.split('/');
