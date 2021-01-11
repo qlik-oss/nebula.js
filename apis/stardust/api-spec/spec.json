@@ -605,7 +605,7 @@
           "optional": true,
           "kind": "array",
           "items": {
-            "type": "Field"
+            "type": "#/definitions/Field"
           }
         },
         "properties": {
@@ -688,25 +688,37 @@
             "// limit constraints\nn.context({ constraints: { active: true } });"
           ]
         },
-        "field": {
-          "description": "Gets the instance of the specified field",
+        "listbox": {
+          "description": "Gets the listbox instance of the specified field",
           "stability": "experimental",
           "kind": "function",
           "params": [
             {
-              "name": "fieldName",
-              "type": "string"
+              "name": "fieldIdentifier",
+              "description": "Fieldname as a string or a Library dimension",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "#/definitions/LibraryField"
+                }
+              ],
+              "type": "any"
             }
           ],
           "returns": {
             "type": "Promise",
             "generics": [
               {
-                "type": "#/definitions/FieldSelections"
+                "type": "#/definitions/ListboxInstance"
               }
             ]
           },
-          "examples": ["const field = await n.field(\"MyField\");\nfield.mount(element, { title: \"Hello Field\"});"]
+          "examples": [
+            "const listbox = await n.listbox(\"MyField\");\nlistbox.mount(element, { title: \"Hello Field\"});"
+          ]
         },
         "render": {
           "description": "Renders a visualization into an HTMLElement.",
@@ -834,66 +846,23 @@
         "type": "#/definitions/ExportFormat"
       }
     },
-    "FieldSelections": {
-      "stability": "experimental",
-      "kind": "class",
-      "constructor": {
-        "kind": "function",
-        "params": []
-      },
-      "entries": {},
-      "staticEntries": {
-        "mount": {
-          "description": "Mounts the field as a listbox into the provided HTMLElement.",
-          "stability": "experimental",
-          "kind": "function",
-          "params": [
-            {
-              "name": "element",
-              "type": "HTMLElement"
-            },
-            {
-              "name": "options",
-              "description": "Settings for the embedded listbox",
-              "optional": true,
-              "kind": "object",
-              "entries": {
-                "title": {
-                  "description": "Custom title, defaults to fieldname",
-                  "optional": true,
-                  "type": "string"
-                },
-                "direction": {
-                  "description": "Direction setting ltr|rtl.",
-                  "optional": true,
-                  "defaultValue": "ltr",
-                  "type": "string"
-                },
-                "listLayout": {
-                  "description": "Layout direction vertical|horizontal",
-                  "optional": true,
-                  "defaultValue": "vertical",
-                  "type": "string"
-                },
-                "search": {
-                  "description": "To show the search bar",
-                  "optional": true,
-                  "defaultValue": true,
-                  "type": "boolean"
-                }
-              }
-            }
-          ],
-          "examples": ["field.mount(element);"]
+    "Field": {
+      "kind": "union",
+      "items": [
+        {
+          "type": "string"
         },
-        "unmount": {
-          "description": "Unmounts the field listbox from the DOM.",
-          "stability": "experimental",
-          "kind": "function",
-          "params": [],
-          "examples": ["field.unmount();"]
+        {
+          "type": "qae.NxDimension"
+        },
+        {
+          "type": "qae.NxMeasure"
+        },
+        {
+          "type": "#/definitions/LibraryField"
         }
-      }
+      ],
+      "type": "any"
     },
     "FieldTarget": {
       "kind": "interface",
@@ -1033,6 +1002,67 @@
             }
           ],
           "type": "string"
+        }
+      }
+    },
+    "ListboxInstance": {
+      "stability": "experimental",
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {},
+      "staticEntries": {
+        "mount": {
+          "description": "Mounts the field as a listbox into the provided HTMLElement.",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [
+            {
+              "name": "element",
+              "type": "HTMLElement"
+            },
+            {
+              "name": "options",
+              "description": "Settings for the embedded listbox",
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "title": {
+                  "description": "Custom title, defaults to fieldname",
+                  "optional": true,
+                  "type": "string"
+                },
+                "direction": {
+                  "description": "Direction setting ltr|rtl.",
+                  "optional": true,
+                  "defaultValue": "ltr",
+                  "type": "string"
+                },
+                "listLayout": {
+                  "description": "Layout direction vertical|horizontal",
+                  "optional": true,
+                  "defaultValue": "vertical",
+                  "type": "string"
+                },
+                "search": {
+                  "description": "To show the search bar",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                }
+              }
+            }
+          ],
+          "examples": ["listbox.mount(element);"]
+        },
+        "unmount": {
+          "description": "Unmounts the field listbox from the DOM.",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [],
+          "examples": ["listbox.unmount();"]
         }
       }
     },

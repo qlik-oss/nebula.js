@@ -311,19 +311,24 @@ function nuked(configuration = {}) {
         return selectionsApi;
       },
       /**
-       * Gets the instance of the specified field
-       * @param {string} fieldName
-       * @returns {Promise<FieldSelections>}
+       * Gets the listbox instance of the specified field
+       * @param {string|LibraryField} fieldIdentifier Fieldname as a string or a Library dimension
+       * @returns {Promise<ListboxInstance>}
        * @experimental
        * @example
-       * const field = await n.field("MyField");
-       * field.mount(element, { title: "Hello Field"});
+       * const listbox = await n.listbox("MyField");
+       * listbox.mount(element, { title: "Hello Field"});
        */
-      field: async (fieldName) => {
+      listbox: async (fieldIdentifier) => {
+        const fieldName = typeof fieldIdentifier === 'string' ? fieldIdentifier : fieldIdentifier.qLibraryId;
+        if (!fieldName) {
+          throw new Error(`Field identifier must be provided`);
+        }
+
         /**
          * @class
          * @hideconstructor
-         * @alias FieldSelections
+         * @alias ListboxInstance
          * @experimental
          */
         const fieldSels = {
@@ -338,7 +343,7 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.search=true] To show the search bar
            * @experimental
            * @example
-           * field.mount(element);
+           * listbox.mount(element);
            */
           mount(element, options = {}) {
             if (!element) {
@@ -350,7 +355,7 @@ function nuked(configuration = {}) {
             this._instance = ListBoxPortal({
               element,
               app,
-              fieldName,
+              fieldIdentifier,
               options,
             });
             root.add(this._instance);
@@ -359,7 +364,7 @@ function nuked(configuration = {}) {
            * Unmounts the field listbox from the DOM.
            * @experimental
            * @example
-           * field.unmount();
+           * listbox.unmount();
            */
           unmount() {
             if (this._instance) {

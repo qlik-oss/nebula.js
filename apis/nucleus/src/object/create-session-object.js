@@ -1,6 +1,11 @@
 import populateData from './populator';
 import init from './initiate';
 import { subscribe, modelStore } from '../stores/model-store';
+
+/**
+ * @typedef {string | qae.NxDimension | qae.NxMeasure | LibraryField} Field
+ */
+
 /**
  * @interface CreateConfig
  * @description Rendering configuration for creating and rendering a new object
@@ -10,7 +15,6 @@ import { subscribe, modelStore } from '../stores/model-store';
  * @property {(Field[])=} fields
  * @property {qae.GenericObjectProperties=} properties
  */
-
 export default async function createSessionObject({ type, version, fields, properties, options, element }, halo) {
   let mergedProps = {};
   let error;
