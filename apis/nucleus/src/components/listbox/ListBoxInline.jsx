@@ -146,7 +146,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
         <Grid item>
           {showTitle && (
             <Typography variant="h6" noWrap>
-              {!isMaster ? layout.title || fieldName : layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
+              {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
             </Typography>
           )}
         </Grid>
