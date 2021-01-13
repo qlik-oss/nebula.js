@@ -26,6 +26,8 @@ The quickest way to get started is to use the `nebula.js` CLI:
 $ npx @nebula.js/cli create hello --picasso none
 ```
 
+The `--picasso none` option tells the command to not create a picasso visualization template, other options are `minimal` and `barchart`.
+
 The command will scaffold a project into the `hello` folder with the following structure:
 
 - `/src`
@@ -100,7 +102,7 @@ Add a dimension by clicking on **Add dimension** and selecting a value in the me
 In order to render the data you first need to access it through the `useLayout` hook:
 
 ```js
-import { useElement, useLayout } from '@nebula.js/stardust';
+import { useLayout, useElement, useEffect } from '@nebula.js/stardust';
 
 // ...
 component() {
@@ -202,7 +204,7 @@ useEffect(() => {
     const idx = +tr.getAttribute('data-row');
     tr.style.backgroundColor = selectedRows.includes(idx) ? '#eee' : '';
   });
-}, [element, selectedRows]);
+}, [element, selectedRows, layout]);
 ```
 
 Finally, apply the selected values through the `selections` API:
