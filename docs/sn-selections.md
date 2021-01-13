@@ -12,7 +12,7 @@ Selections can be applied with methods exposed on the model returned from the `u
 Since a generic object can hold multiple hypercubes, you always need to specify which hypercube you want to select in by providing the JSON path of it as the first argument:
 
 ```js
-import { useModel } from '@nebula.js/stardust';
+import { useModel, useEffect } from '@nebula.js/stardust';
 // ...
 component() {
   const model = useModel();
@@ -43,7 +43,8 @@ In the following example, the user first selects one value in the bar chart, at 
 
 ![Modal selections](./assets/selections-modal.gif)
 
-To implement this type of pattern you need to `useSelections` in combination with `useModel` and follow a few simple steps:
+To implement this type of pattern you need to `useSelections` instead of
+`useModel` and follow a few simple steps:
 
 1. Enter the modal state by calling `beginSelections`.
 1. Select values.
@@ -51,11 +52,10 @@ To implement this type of pattern you need to `useSelections` in combination wit
 1. Keep track of when the modal state has been exited in order to reset the visual feedback.
 
 ```js
-import { useModel, useSelections, useElement } from '@nebula.js/stardust';
+import { useSelections, useElement } from '@nebula.js/stardust';
 // ...
 component() {
   const element = useElement();
-  const model = useModel();
   const selections = useSelections();
 
   useEffect(() => {
@@ -67,7 +67,10 @@ component() {
         selections.beginSelections(['/qHyperCubeDef']);
       }
       // 2. select the clicked row
-      model.selectHyperCubeCells('/qHyperCubeDef', [clickedOnRow], []);
+      selections.select({
+        method: "selectHyperCubeCells",
+        params: ['/qHyperCubeDef', [clickedOnRow], [column]]
+      });
     }
 
     element.addEventListener('click', clicked);
