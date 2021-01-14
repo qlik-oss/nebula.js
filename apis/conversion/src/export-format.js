@@ -6,12 +6,14 @@
  * in the new model.
  * @interface ExportFormat
  * @experimental
+ * @since 1.1.0
  * @property {(ExportDataDef[])=} data
  * @property {object=} properties
  */
 
 /**
  * @experimental
+ * @since 1.1.0
  * @interface ExportDataDef
  * @property {qae.NxDimension[]} dimensions
  * @property {qae.NxMeasure[]} measures
@@ -22,6 +24,7 @@
 
 /**
  * @experimental
+ * @since 1.1.0
  * @param {number} nDataGroups
  * @return {ExportFormat}
  */
