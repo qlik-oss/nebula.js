@@ -78,7 +78,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      * });
      * viz.convertTo('barChart');
      */
-    async convertTo({ newType, forceUpdate = true }) {
+    async convertTo(newType, forceUpdate = true) {
       const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
       if (forceUpdate) {
         await model.setProperties(propertyTree.qProperty);

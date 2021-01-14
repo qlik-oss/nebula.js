@@ -59,7 +59,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     title,
   };
 
-  let fieldName
+  let fieldName;
 
   // Something something lib dimension
   if (fieldIdentifier.qLibraryId) {

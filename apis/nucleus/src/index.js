@@ -341,6 +341,7 @@ function nuked(configuration = {}) {
            * @param {string=} [options.direction=ltr] Direction setting ltr|rtl.
            * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal
            * @param {boolean=} [options.search=true] To show the search bar
+           * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
            * @experimental
            * @example
            * listbox.mount(element);
@@ -357,6 +358,7 @@ function nuked(configuration = {}) {
               app,
               fieldIdentifier,
               options,
+              stateName: options.stateName || '$',
             });
             root.add(this._instance);
           },
