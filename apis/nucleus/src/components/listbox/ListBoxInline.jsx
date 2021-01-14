@@ -59,14 +59,12 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     title,
   };
 
-  let fieldName;
-  let isMaster = false;
+  let fieldName
 
   // Something something lib dimension
   if (fieldIdentifier.qLibraryId) {
     listdef.qListObjectDef.qLibraryId = fieldIdentifier.qLibraryId;
     fieldName = fieldIdentifier.qLibraryId;
-    isMaster = true;
   } else {
     listdef.qListObjectDef.qDef.qFieldDefs = [fieldIdentifier];
     fieldName = fieldIdentifier;
