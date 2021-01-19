@@ -313,14 +313,14 @@ function nuked(configuration = {}) {
       /**
        * Gets the listbox instance of the specified field
        * @param {string|LibraryField} fieldIdentifier Fieldname as a string or a Library dimension
-       * @returns {Promise<ListboxInstance>}
+       * @returns {Promise<FieldInstance>}
        * @experimental
        * @since 1.1.0
        * @example
-       * const listbox = await n.listbox("MyField");
-       * listbox.mount(element, { title: "Hello Field"});
+       * const fieldInstance = await n.field("MyField");
+       * fieldInstance.mount(element, { title: "Hello Field"});
        */
-      listbox: async (fieldIdentifier) => {
+      field: async (fieldIdentifier) => {
         const fieldName = typeof fieldIdentifier === 'string' ? fieldIdentifier : fieldIdentifier.qLibraryId;
         if (!fieldName) {
           throw new Error(`Field identifier must be provided`);
@@ -329,7 +329,7 @@ function nuked(configuration = {}) {
         /**
          * @class
          * @hideconstructor
-         * @alias ListboxInstance
+         * @alias FieldInstance
          * @experimental
          * @since 1.1.0
          */
@@ -347,7 +347,7 @@ function nuked(configuration = {}) {
            * @experimental
            * @since 1.1.0
            * @example
-           * listbox.mount(element);
+           * fieldInstance.mount(element);
            */
           mount(element, options = {}) {
             if (!element) {

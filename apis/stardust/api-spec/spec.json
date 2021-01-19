@@ -50,6 +50,7 @@
     },
     "conversion": {
       "description": "Provides conversion functionality to extensions",
+      "stability": "experimental",
       "kind": "module",
       "entries": {},
       "examples": [
@@ -579,9 +580,11 @@
     },
     "conversion.hypercube": {
       "description": "Provides conversion functionality for extensions with hyperCubes",
+      "stability": "experimental",
       "type": "#/definitions/hyperCubeConversion"
     },
     "ConversionType": {
+      "stability": "experimental",
       "kind": "interface",
       "entries": {
         "importProperties": {
@@ -697,7 +700,7 @@
             "// limit constraints\nn.context({ constraints: { active: true } });"
           ]
         },
-        "listbox": {
+        "field": {
           "description": "Gets the listbox instance of the specified field",
           "stability": "experimental",
           "availability": {
@@ -724,12 +727,12 @@
             "type": "Promise",
             "generics": [
               {
-                "type": "#/definitions/ListboxInstance"
+                "type": "#/definitions/FieldInstance"
               }
             ]
           },
           "examples": [
-            "const listbox = await n.listbox(\"MyField\");\nlistbox.mount(element, { title: \"Hello Field\"});"
+            "const fieldInstance = await n.field(\"MyField\");\nfieldInstance.mount(element, { title: \"Hello Field\"});"
           ]
         },
         "render": {
@@ -887,6 +890,86 @@
       ],
       "type": "any"
     },
+    "FieldInstance": {
+      "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {},
+      "staticEntries": {
+        "mount": {
+          "description": "Mounts the field as a listbox into the provided HTMLElement.",
+          "stability": "experimental",
+          "availability": {
+            "since": "1.1.0"
+          },
+          "kind": "function",
+          "params": [
+            {
+              "name": "element",
+              "type": "HTMLElement"
+            },
+            {
+              "name": "options",
+              "description": "Settings for the embedded listbox",
+              "optional": true,
+              "kind": "object",
+              "entries": {
+                "title": {
+                  "description": "Custom title, defaults to fieldname",
+                  "optional": true,
+                  "type": "string"
+                },
+                "direction": {
+                  "description": "Direction setting ltr|rtl.",
+                  "optional": true,
+                  "defaultValue": "ltr",
+                  "type": "string"
+                },
+                "listLayout": {
+                  "description": "Layout direction vertical|horizontal",
+                  "optional": true,
+                  "defaultValue": "vertical",
+                  "type": "string"
+                },
+                "search": {
+                  "description": "To show the search bar",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
+                "stateName": {
+                  "description": "Sets the state to make selections in",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                }
+              }
+            }
+          ],
+          "examples": [
+            "fieldInstance.mount(element);"
+          ]
+        },
+        "unmount": {
+          "description": "Unmounts the field listbox from the DOM.",
+          "stability": "experimental",
+          "availability": {
+            "since": "1.1.0"
+          },
+          "kind": "function",
+          "params": [],
+          "examples": [
+            "listbox.unmount();"
+          ]
+        }
+      }
+    },
     "FieldTarget": {
       "kind": "interface",
       "entries": {
@@ -958,6 +1041,7 @@
       }
     },
     "hyperCubeConversion": {
+      "stability": "experimental",
       "implements": [
         {
           "type": "#/definitions/ConversionType"
@@ -1028,86 +1112,6 @@
             }
           ],
           "type": "string"
-        }
-      }
-    },
-    "ListboxInstance": {
-      "stability": "experimental",
-      "availability": {
-        "since": "1.1.0"
-      },
-      "kind": "class",
-      "constructor": {
-        "kind": "function",
-        "params": []
-      },
-      "entries": {},
-      "staticEntries": {
-        "mount": {
-          "description": "Mounts the field as a listbox into the provided HTMLElement.",
-          "stability": "experimental",
-          "availability": {
-            "since": "1.1.0"
-          },
-          "kind": "function",
-          "params": [
-            {
-              "name": "element",
-              "type": "HTMLElement"
-            },
-            {
-              "name": "options",
-              "description": "Settings for the embedded listbox",
-              "optional": true,
-              "kind": "object",
-              "entries": {
-                "title": {
-                  "description": "Custom title, defaults to fieldname",
-                  "optional": true,
-                  "type": "string"
-                },
-                "direction": {
-                  "description": "Direction setting ltr|rtl.",
-                  "optional": true,
-                  "defaultValue": "ltr",
-                  "type": "string"
-                },
-                "listLayout": {
-                  "description": "Layout direction vertical|horizontal",
-                  "optional": true,
-                  "defaultValue": "vertical",
-                  "type": "string"
-                },
-                "search": {
-                  "description": "To show the search bar",
-                  "optional": true,
-                  "defaultValue": true,
-                  "type": "boolean"
-                },
-                "stateName": {
-                  "description": "Sets the state to make selections in",
-                  "optional": true,
-                  "defaultValue": false,
-                  "type": "boolean"
-                }
-              }
-            }
-          ],
-          "examples": [
-            "listbox.mount(element);"
-          ]
-        },
-        "unmount": {
-          "description": "Unmounts the field listbox from the DOM.",
-          "stability": "experimental",
-          "availability": {
-            "since": "1.1.0"
-          },
-          "kind": "function",
-          "params": [],
-          "examples": [
-            "listbox.unmount();"
-          ]
         }
       }
     },
