@@ -572,12 +572,18 @@
     "Conversion": {
       "description": "Provides conversion functionality to extensions",
       "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
       "kind": "interface",
       "params": [],
       "entries": {
         "hypercube": {
           "description": "Provides conversion functionality for extensions with hyperCubes",
           "stability": "experimental",
+          "availability": {
+            "since": "1.1.0"
+          },
           "type": "#/definitions/hyperCubeConversion"
         }
       },
@@ -587,6 +593,9 @@
     },
     "ConversionType": {
       "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
       "kind": "interface",
       "entries": {
         "importProperties": {
@@ -1044,6 +1053,9 @@
     },
     "hyperCubeConversion": {
       "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
       "implements": [
         {
           "type": "#/definitions/ConversionType"
