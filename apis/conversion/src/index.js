@@ -76,12 +76,17 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
 };
 /**
  * @interface ConversionType
+ * @experimental
+ * @since 1.1.0
  * @property {importProperties} importProperties
  * @property {exportProperties} exportProperties
  */
 
 /**
- * @module conversion
+ * @interface
+ * @alias Conversion
+ * @experimental
+ * @since 1.1.0
  * @description Provides conversion functionality to extensions
  * @example
  * import { conversion } from '@nebula.js/stardust';
@@ -98,9 +103,11 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
  * }
  *
  */
-const conversion = /** @lends conversion */ {
+const conversion = {
   /**
    * @type {hyperCubeConversion}
+   * @experimental
+   * @since 1.1.0
    * @description Provides conversion functionality for extensions with hyperCubes
    */
   hypercube,

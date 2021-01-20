@@ -68,6 +68,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     /**
      * Converts the visualization to a different registred type
      * @experimental
+     * @since 1.1.0
      * @param {string} newType - Which registered type to convert to
      * @param {boolean=} forceUpdate - Whether to run setProperties or not, defaults to true.
      * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualizatiom
@@ -78,7 +79,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      * });
      * viz.convertTo('barChart');
      */
-    async convertTo({ newType, forceUpdate = true }) {
+    async convertTo(newType, forceUpdate = true) {
       const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
       if (forceUpdate) {
         await model.setProperties(propertyTree.qProperty);

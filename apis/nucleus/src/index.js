@@ -307,20 +307,27 @@ function nuked(configuration = {}) {
         return selectionsApi;
       },
       /**
-       * Gets the instance of the specified field
-       * @param {string} fieldName
-       * @returns {Promise<FieldSelections>}
+       * Gets the listbox instance of the specified field
+       * @param {string|LibraryField} fieldIdentifier Fieldname as a string or a Library dimension
+       * @returns {Promise<FieldInstance>}
        * @experimental
+       * @since 1.1.0
        * @example
-       * const field = await n.field("MyField");
-       * field.mount(element, { title: "Hello Field"});
+       * const fieldInstance = await n.field("MyField");
+       * fieldInstance.mount(element, { title: "Hello Field"});
        */
-      field: async (fieldName) => {
+      field: async (fieldIdentifier) => {
+        const fieldName = typeof fieldIdentifier === 'string' ? fieldIdentifier : fieldIdentifier.qLibraryId;
+        if (!fieldName) {
+          throw new Error(`Field identifier must be provided`);
+        }
+
         /**
          * @class
          * @hideconstructor
-         * @alias FieldSelections
+         * @alias FieldInstance
          * @experimental
+         * @since 1.1.0
          */
         const fieldSels = {
           fieldName,
@@ -332,9 +339,11 @@ function nuked(configuration = {}) {
            * @param {string=} [options.direction=ltr] Direction setting ltr|rtl.
            * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal
            * @param {boolean=} [options.search=true] To show the search bar
+           * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
            * @experimental
+           * @since 1.1.0
            * @example
-           * field.mount(element);
+           * fieldInstance.mount(element);
            */
           mount(element, options = {}) {
             if (!element) {
@@ -346,16 +355,18 @@ function nuked(configuration = {}) {
             this._instance = ListBoxPortal({
               element,
               app,
-              fieldName,
+              fieldIdentifier,
               options,
+              stateName: options.stateName || '$',
             });
             root.add(this._instance);
           },
           /**
            * Unmounts the field listbox from the DOM.
            * @experimental
+           * @since 1.1.0
            * @example
-           * field.unmount();
+           * listbox.unmount();
            */
           unmount() {
             if (this._instance) {

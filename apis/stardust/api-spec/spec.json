@@ -25,7 +25,9 @@
       "returns": {
         "type": "#/definitions/Embed"
       },
-      "examples": ["import { embed } from '@nebula.js/stardust'\nconst n = embed(app);\nn.render({ id: 'abc' });"],
+      "examples": [
+        "import { embed } from '@nebula.js/stardust'\nconst n = embed(app);\nn.render({ id: 'abc' });"
+      ],
       "entries": {
         "createConfiguration": {
           "description": "Creates a new `embed` scope bound to the specified `configuration`.\n\nThe configuration is merged with all previous scopes.",
@@ -45,14 +47,6 @@
           ]
         }
       }
-    },
-    "conversion": {
-      "description": "Provides conversion functionality to extensions",
-      "kind": "module",
-      "entries": {},
-      "examples": [
-        "import { conversion } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      ...\n      importProperties: ( exportFormat, initialProperties ) =>  conversion.hyperCube.importProperties(exportFormat, initialProperties),\n      exportProperties: ( fullPropertyTree ) => conversion.hyperCube.exportProperties(fullPropertyTree)\n    },\n    ...\n  };\n}"
-      ]
     },
     "onTakeSnapshot": {
       "description": "Registers a callback that is called when a snapshot is taken.",
@@ -454,13 +448,17 @@
               "type": "HTMLElement"
             }
           ],
-          "examples": ["selections.mount(element);"]
+          "examples": [
+            "selections.mount(element);"
+          ]
         },
         "unmount": {
           "description": "Unmounts the app selection UI from the DOM.",
           "kind": "function",
           "params": [],
-          "examples": ["selections.unmount();"]
+          "examples": [
+            "selections.unmount();"
+          ]
         }
       }
     },
@@ -571,11 +569,33 @@
         }
       }
     },
-    "conversion.hypercube": {
-      "description": "Provides conversion functionality for extensions with hyperCubes",
-      "type": "#/definitions/hyperCubeConversion"
+    "Conversion": {
+      "description": "Provides conversion functionality to extensions",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
+      "kind": "interface",
+      "params": [],
+      "entries": {
+        "hypercube": {
+          "description": "Provides conversion functionality for extensions with hyperCubes",
+          "stability": "experimental",
+          "availability": {
+            "since": "1.1.0"
+          },
+          "type": "#/definitions/hyperCubeConversion"
+        }
+      },
+      "examples": [
+        "import { conversion } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      ...\n      importProperties: ( exportFormat, initialProperties ) =>  conversion.hyperCube.importProperties(exportFormat, initialProperties),\n      exportProperties: ( fullPropertyTree ) => conversion.hyperCube.exportProperties(fullPropertyTree)\n    },\n    ...\n  };\n}"
+      ]
     },
     "ConversionType": {
+      "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
       "kind": "interface",
       "entries": {
         "importProperties": {
@@ -605,7 +625,7 @@
           "optional": true,
           "kind": "array",
           "items": {
-            "type": "Field"
+            "type": "#/definitions/Field"
           }
         },
         "properties": {
@@ -616,6 +636,9 @@
     },
     "createExportFormat": {
       "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
       "kind": "function",
       "params": [
         {
@@ -689,24 +712,39 @@
           ]
         },
         "field": {
-          "description": "Gets the instance of the specified field",
+          "description": "Gets the listbox instance of the specified field",
           "stability": "experimental",
+          "availability": {
+            "since": "1.1.0"
+          },
           "kind": "function",
           "params": [
             {
-              "name": "fieldName",
-              "type": "string"
+              "name": "fieldIdentifier",
+              "description": "Fieldname as a string or a Library dimension",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "#/definitions/LibraryField"
+                }
+              ],
+              "type": "any"
             }
           ],
           "returns": {
             "type": "Promise",
             "generics": [
               {
-                "type": "#/definitions/FieldSelections"
+                "type": "#/definitions/FieldInstance"
               }
             ]
           },
-          "examples": ["const field = await n.field(\"MyField\");\nfield.mount(element, { title: \"Hello Field\"});"]
+          "examples": [
+            "const fieldInstance = await n.field(\"MyField\");\nfieldInstance.mount(element, { title: \"Hello Field\"});"
+          ]
         },
         "render": {
           "description": "Renders a visualization into an HTMLElement.",
@@ -753,12 +791,17 @@
               }
             ]
           },
-          "examples": ["const selections = await n.selections();\nselections.mount(element);"]
+          "examples": [
+            "const selections = await n.selections();\nselections.mount(element);"
+          ]
         }
       }
     },
     "ExportDataDef": {
       "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
       "kind": "interface",
       "entries": {
         "dimensions": {
@@ -796,6 +839,9 @@
     "ExportFormat": {
       "description": "Used for exporting and importing properties between backend models. An object that exports to\nExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes\neach of the cubes should export dimensions and measures in two separate data groups.\nAn object that imports from this structure is responsible for putting the existing properties where they should be\nin the new model.",
       "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
       "kind": "interface",
       "entries": {
         "data": {
@@ -814,6 +860,9 @@
     "exportProperties": {
       "description": "Exports properties for a chart with a hypercube.",
       "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
       "kind": "function",
       "params": [
         {
@@ -834,8 +883,29 @@
         "type": "#/definitions/ExportFormat"
       }
     },
-    "FieldSelections": {
+    "Field": {
+      "kind": "union",
+      "items": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "qae.NxDimension"
+        },
+        {
+          "type": "qae.NxMeasure"
+        },
+        {
+          "type": "#/definitions/LibraryField"
+        }
+      ],
+      "type": "any"
+    },
+    "FieldInstance": {
       "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
       "kind": "class",
       "constructor": {
         "kind": "function",
@@ -846,6 +916,9 @@
         "mount": {
           "description": "Mounts the field as a listbox into the provided HTMLElement.",
           "stability": "experimental",
+          "availability": {
+            "since": "1.1.0"
+          },
           "kind": "function",
           "params": [
             {
@@ -880,18 +953,31 @@
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
+                },
+                "stateName": {
+                  "description": "Sets the state to make selections in",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
                 }
               }
             }
           ],
-          "examples": ["field.mount(element);"]
+          "examples": [
+            "fieldInstance.mount(element);"
+          ]
         },
         "unmount": {
           "description": "Unmounts the field listbox from the DOM.",
           "stability": "experimental",
+          "availability": {
+            "since": "1.1.0"
+          },
           "kind": "function",
           "params": [],
-          "examples": ["field.unmount();"]
+          "examples": [
+            "listbox.unmount();"
+          ]
         }
       }
     },
@@ -966,6 +1052,10 @@
       }
     },
     "hyperCubeConversion": {
+      "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
       "implements": [
         {
           "type": "#/definitions/ConversionType"
@@ -977,6 +1067,9 @@
     "importProperties": {
       "description": "Imports properties for a chart with a hypercube.",
       "stability": "experimental",
+      "availability": {
+        "since": "1.1.0"
+      },
       "kind": "function",
       "params": [
         {
@@ -1325,7 +1418,9 @@
             "description": "The resolved color.",
             "type": "string"
           },
-          "examples": ["theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"]
+          "examples": [
+            "theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"
+          ]
         },
         "getContrastingColorTo": {
           "description": "Get the best contrasting color against the specified `color`.\nThis is typically used to find a suitable text color for a label placed on an arbitrarily colored background.\n\nThe returned colors are derived from the theme.",
@@ -1341,7 +1436,9 @@
             "description": "- The color that has the best contrast against the specified `color`.",
             "type": "string"
           },
-          "examples": ["theme.getContrastingColorTo('#400');"]
+          "examples": [
+            "theme.getContrastingColorTo('#400');"
+          ]
         },
         "getDataColorPalettes": {
           "kind": "function",
@@ -1404,7 +1501,9 @@
             "description": "The style value",
             "type": "string"
           },
-          "examples": ["theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"]
+          "examples": [
+            "theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"
+          ]
         }
       },
       "definitions": {
@@ -1656,6 +1755,9 @@
         "convertTo": {
           "description": "Converts the visualization to a different registred type",
           "stability": "experimental",
+          "availability": {
+            "since": "1.1.0"
+          },
           "kind": "function",
           "params": [
             {
@@ -1687,14 +1789,18 @@
           "description": "Destroys the visualization and removes if from the the DOM.",
           "kind": "function",
           "params": [],
-          "examples": ["const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"]
+          "examples": [
+            "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"
+          ]
         },
         "id": {
           "description": "The id of this visualization's generic object.",
           "type": "string"
         }
       },
-      "examples": ["const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"]
+      "examples": [
+        "const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"
+      ]
     },
     "VizElement": {
       "extends": [

@@ -3,6 +3,8 @@ import importProperties from './import-properties';
 
 /**
  * @interface hyperCubeConversion
+ * @experimental
+ * @since 1.1.0
  * @implements {ConversionType}
  */
 

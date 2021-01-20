@@ -21,50 +21,57 @@ import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 
-export default function ListBoxPortal({ app, fieldName, stateName, element, options }) {
+export default function ListBoxPortal({ app, fieldIdentifier, stateName, element, options }) {
   return ReactDOM.createPortal(
-    <ListBoxInline app={app} fieldName={fieldName} stateName={stateName} options={options} />,
+    <ListBoxInline app={app} fieldIdentifier={fieldIdentifier} stateName={stateName} options={options} />,
     element
   );
 }
 
-export function ListBoxInline({ app, fieldName, stateName = '$', options = {} }) {
-  const theme = useTheme();
+export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {} }) {
   const { title, direction, listLayout, search = true } = options;
-  const [model] = useSessionModel(
-    {
-      qInfo: {
-        qType: 'njsListbox',
-      },
-      qListObjectDef: {
-        qStateName: stateName,
-        qShowAlternatives: true,
-        qInitialDataFetch: [
+  const listdef = {
+    qInfo: {
+      qType: 'njsListbox',
+    },
+    qListObjectDef: {
+      qStateName: stateName,
+      qShowAlternatives: true,
+      qInitialDataFetch: [
+        {
+          qTop: 0,
+          qLeft: 0,
+          qWidth: 0,
+          qHeight: 0,
+        },
+      ],
+      qDef: {
+        qSortCriterias: [
           {
-            qTop: 0,
-            qLeft: 0,
-            qWidth: 0,
-            qHeight: 0,
+            qSortByState: 1,
+            qSortByAscii: 1,
+            qSortByNumeric: 1,
+            qSortByLoadOrder: 1,
           },
         ],
-        qDef: {
-          qSortCriterias: [
-            {
-              qSortByState: 1,
-              qSortByAscii: 1,
-              qSortByNumeric: 1,
-              qSortByLoadOrder: 1,
-            },
-          ],
-          qFieldDefs: [fieldName],
-        },
       },
-      title,
     },
-    app,
-    fieldName,
-    stateName
-  );
+    title,
+  };
+
+  let fieldName;
+
+  // Something something lib dimension
+  if (fieldIdentifier.qLibraryId) {
+    listdef.qListObjectDef.qLibraryId = fieldIdentifier.qLibraryId;
+    fieldName = fieldIdentifier.qLibraryId;
+  } else {
+    listdef.qListObjectDef.qDef.qFieldDefs = [fieldIdentifier];
+    fieldName = fieldIdentifier;
+  }
+
+  const theme = useTheme();
+  const [model] = useSessionModel(listdef, app, fieldName, stateName);
 
   const lock = useCallback(() => {
     model.lock('/qListObjectDef');
@@ -137,7 +144,7 @@ export function ListBoxInline({ app, fieldName, stateName = '$', options = {} })
         <Grid item>
           {showTitle && (
             <Typography variant="h6" noWrap>
-              {layout.title || fieldName}
+              {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
             </Typography>
           )}
         </Grid>

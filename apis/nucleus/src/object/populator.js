@@ -1,10 +1,6 @@
 import hcHandler from './hc-handler';
 
 /**
- * @typedef {(string | qae.NxDimension | qae.NxMeasure | LibraryField)} Field
- */
-
-/**
  * @interface LibraryField
  * @property {string} qLibraryId
  * @property {'dimension'|'measure'} type
