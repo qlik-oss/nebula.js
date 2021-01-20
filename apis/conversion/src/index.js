@@ -84,7 +84,8 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
  */
 
 /**
- * @module conversion
+ * @interface
+ * @alias Conversion
  * @experimental
  * @description Provides conversion functionality to extensions
  * @example
@@ -102,7 +103,7 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
  * }
  *
  */
-const conversion = /** @lends conversion */ {
+const conversion = {
   /**
    * @type {hyperCubeConversion}
    * @experimental

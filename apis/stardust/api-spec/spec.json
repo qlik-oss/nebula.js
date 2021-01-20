@@ -48,15 +48,6 @@
         }
       }
     },
-    "conversion": {
-      "description": "Provides conversion functionality to extensions",
-      "stability": "experimental",
-      "kind": "module",
-      "entries": {},
-      "examples": [
-        "import { conversion } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      ...\n      importProperties: ( exportFormat, initialProperties ) =>  conversion.hyperCube.importProperties(exportFormat, initialProperties),\n      exportProperties: ( fullPropertyTree ) => conversion.hyperCube.exportProperties(fullPropertyTree)\n    },\n    ...\n  };\n}"
-      ]
-    },
     "onTakeSnapshot": {
       "description": "Registers a callback that is called when a snapshot is taken.",
       "kind": "function",
@@ -578,10 +569,21 @@
         }
       }
     },
-    "conversion.hypercube": {
-      "description": "Provides conversion functionality for extensions with hyperCubes",
+    "Conversion": {
+      "description": "Provides conversion functionality to extensions",
       "stability": "experimental",
-      "type": "#/definitions/hyperCubeConversion"
+      "kind": "interface",
+      "params": [],
+      "entries": {
+        "hypercube": {
+          "description": "Provides conversion functionality for extensions with hyperCubes",
+          "stability": "experimental",
+          "type": "#/definitions/hyperCubeConversion"
+        }
+      },
+      "examples": [
+        "import { conversion } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      ...\n      importProperties: ( exportFormat, initialProperties ) =>  conversion.hyperCube.importProperties(exportFormat, initialProperties),\n      exportProperties: ( fullPropertyTree ) => conversion.hyperCube.exportProperties(fullPropertyTree)\n    },\n    ...\n  };\n}"
+      ]
     },
     "ConversionType": {
       "stability": "experimental",
