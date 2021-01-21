@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0-alpha0](https://github.com/qlik-oss/nebula.js/compare/v1.0.2-alpha.1...v1.1.0-alpha0) (2021-01-21)
+
+### Bug Fixes
+
+- **deps:** update dependency rollup-plugin-postcss to v4 ([#554](https://github.com/qlik-oss/nebula.js/issues/554)) ([542bbfc](https://github.com/qlik-oss/nebula.js/commit/542bbfc))
+
 ## [1.0.2-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v1.0.2-alpha.0...v1.0.2-alpha.1) (2020-12-04)
 
 **Note:** Version bump only for package @nebula.js/cli-build
