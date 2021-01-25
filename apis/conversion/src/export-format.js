@@ -25,6 +25,7 @@
 /**
  * @experimental
  * @since 1.1.0
+ * @ignore
  * @param {number} nDataGroups
  * @return {ExportFormat}
  */
