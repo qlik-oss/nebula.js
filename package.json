@@ -83,7 +83,8 @@
     "rollup-plugin-sass": "1.2.2",
     "rollup-plugin-terser": "7.0.2",
     "scriptappy-from-jsdoc": "0.7.0",
-    "yargs": "16.2.0"
+    "yargs": "16.2.0",
+    "@scriptappy/cli": "0.1.0"
   },
   "resolutions": {
     "**/caniuse-lite": "1.0.30001173",
