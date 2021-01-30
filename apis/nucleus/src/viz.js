@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
@@ -82,6 +83,9 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     async convertTo(newType, forceUpdate = true) {
       const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
       if (forceUpdate) {
+        if (model.__snInterceptor) {
+          model.__snInterceptor.teardown();
+        }
         await model.setProperties(propertyTree.qProperty);
       }
       return propertyTree;
