@@ -258,13 +258,14 @@ export default function create(generator, opts, galaxy) {
 
   const teardowns = [];
 
+  if (opts.model.__snInterceptor) {
+    // remove old hook - happens only when proper cleanup hasn't been done
+    opts.model.__snInterceptor.teardown();
+  }
+
   if (generator.qae.properties.onChange) {
     // TODO - handle multiple sn
     // TODO - check privileges
-    if (opts.model.__snInterceptor) {
-      // remove old hook - happens only when proper cleanup hasn't been done
-      opts.model.__snInterceptor.teardown();
-    }
 
     opts.model.__snInterceptor = {
       setProperties: opts.model.setProperties,
