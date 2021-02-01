@@ -84,9 +84,10 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
       if (forceUpdate) {
         if (model.__snInterceptor) {
-          model.__snInterceptor.teardown();
+          await model.__snInterceptor.setProperties.call(model, propertyTree.qProperty);
+        } else {
+          await model.setProperties(propertyTree.qProperty);
         }
-        await model.setProperties(propertyTree.qProperty);
       }
       return propertyTree;
     },
