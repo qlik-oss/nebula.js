@@ -36,15 +36,16 @@ const parseEngineURL = (url) => {
   }
 
   let appId;
-  let engineUrl = url;
+  const trimmedUrl = url.trim();
+  let engineUrl = trimmedUrl;
   let appUrl;
 
-  const rxApp = /\/app\/([^?&#:]+)/.exec(url);
+  const rxApp = /\/app\/([^?&#:]+)/.exec(trimmedUrl);
 
   if (rxApp) {
     [, appId] = rxApp;
-    engineUrl = url.substring(0, rxApp.index);
-    appUrl = url;
+    engineUrl = trimmedUrl.substring(0, rxApp.index);
+    appUrl = trimmedUrl;
   }
 
   return {
