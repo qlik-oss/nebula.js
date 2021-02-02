@@ -313,6 +313,20 @@ function addDefaultMeasures({ exportFormat, maxMeasures, minMeasures, newHyperCu
   }
 }
 
+function updateDimensionsOnAdded({ newProperties, dataDefinition, hypercubePath }) {
+  if (dataDefinition.dimensions && typeof dataDefinition.dimensions.added === 'function') {
+    const newHyperCubeDef = utils.getValue(newProperties, hypercubePath || '').qHyperCubeDef;
+    newHyperCubeDef.qDimensions.forEach((dimension) => dataDefinition.dimensions.added(dimension, newProperties));
+  }
+}
+
+function updateMeasuresOnAdded({ newProperties, dataDefinition, hypercubePath }) {
+  if (dataDefinition.measures && typeof dataDefinition.measures.added === 'function') {
+    const newHyperCubeDef = utils.getValue(newProperties, hypercubePath || '').qHyperCubeDef;
+    newHyperCubeDef.qMeasures.forEach((measure) => dataDefinition.measures.added(measure, newProperties));
+  }
+}
+
 export default {
   restoreChangedProperties,
   isMasterItemProperty,
@@ -332,4 +346,6 @@ export default {
   initLayoutExclude,
   addDefaultDimensions,
   addDefaultMeasures,
+  updateDimensionsOnAdded,
+  updateMeasuresOnAdded,
 };
