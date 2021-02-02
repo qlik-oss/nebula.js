@@ -61,6 +61,9 @@ export default function importProperties({
   // always copy type and visualization
   helpers.importCommonProperties(newProperties, exportFormat, initialProperties);
 
+  helpers.updateDimensionsOnAdded({ newProperties, dataDefinition, hypercubePath });
+  helpers.updateMeasuresOnAdded({ newProperties, dataDefinition, hypercubePath });
+
   newPropertyTree.qProperty = newProperties;
 
   return newPropertyTree;
