@@ -1,10 +1,10 @@
 const path = require('path');
 
-const commonjs = require('rollup-plugin-commonjs');
+const commonjs = require('@rollup/plugin-commonjs');
 const babel = require('rollup-plugin-babel');
-const nodeResolve = require('rollup-plugin-node-resolve');
+const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const postcss = require('rollup-plugin-postcss');
-const replace = require('rollup-plugin-replace');
+const replace = require('@rollup/plugin-replace');
 
 module.exports = [
   {
