@@ -24,10 +24,10 @@
     "@nebula.js/stardust": ">=1.1.0"
   },
   "devDependencies": {
-    "@babel/cli": "7.4.4",
-    "@babel/plugin-transform-react-jsx": "7.3.0",
-    "@babel/preset-env": "7.4.5",
-    "@babel/preset-react": "7.0.0",
+    "@babel/cli": "7.12.10",
+    "@babel/plugin-transform-react-jsx": "7.12.12",
+    "@babel/preset-env": "7.12.11",
+    "@babel/preset-react": "7.12.10",
     "@nebula.js/cli": "1.1.0",
     "eslint": "7.17.0",
     "eslint-config-airbnb": "18.2.1",
@@ -41,7 +41,7 @@
     "rollup-plugin-babel": "4.4.0",
     "@rollup/plugin-commonjs": "17.0.0",
     "@rollup/plugin-node-resolve": "11.0.1",
-    "rollup-plugin-postcss": "2.0.3",
+    "rollup-plugin-postcss": "3.1.8",
     "@rollup/plugin-replace": "2.3.4"
   }
 }
