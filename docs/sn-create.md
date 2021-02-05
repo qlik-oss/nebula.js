@@ -215,7 +215,7 @@ useEffect(() => {
     if (selectedRows.length) {
       selections.select({
         method: 'selectHyperCubeCells',
-        params: ['/qHyperCubeDef', selectedRows, []],
+        params: ['/qHyperCubeDef', selectedRows, [0]],
       });
     } else {
       selections.select({
