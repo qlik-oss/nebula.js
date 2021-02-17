@@ -27,6 +27,7 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
   /** @type {string=} */
   deviceType: 'auto',
   constraints: {},
+  keyboardNavigation: false,
 };
 
 /**
@@ -234,8 +235,8 @@ function nuked(configuration = {}) {
       context: async (ctx) => {
         // filter valid values to avoid triggering unnecessary rerender
         let changes;
-        ['theme', 'language', 'constraints'].forEach((key) => {
-          if (ctx[key] && ctx[key] !== currentContext[key]) {
+        ['theme', 'language', 'constraints', 'keyboardNavigation'].forEach((key) => {
+          if (Object.prototype.hasOwnProperty.call(ctx, key) && ctx[key] !== currentContext[key]) {
             if (!changes) {
               changes = {};
             }

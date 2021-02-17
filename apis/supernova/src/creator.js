@@ -75,6 +75,7 @@ function createWithHooks(generator, opts, galaxy) {
       // --- dynamic values ---
       layout: {},
       appLayout: {},
+      keyboardNavigation: opts.keyboardNavigation,
       constraints: forcedConstraints,
       options: {},
       plugins: [],
@@ -98,6 +99,11 @@ function createWithHooks(generator, opts, galaxy) {
         if (r.context && r.context.theme) {
           // changed is set further down only if the name is different
           this.context.theme = r.context.theme;
+        }
+
+        if (r.context && r.context.keyboardNavigation !== this.context.keyboardNavigation) {
+          changed = true;
+          this.context.keyboardNavigation = r.context.keyboardNavigation;
         }
 
         if (r.options) {
@@ -189,6 +195,9 @@ function createWithHooks(generator, opts, galaxy) {
     },
     setSnapshotData(layout) {
       return generator.component.runSnaps(this, layout);
+    },
+    toggleFocus(inFocus, relinquishFocus) {
+      generator.component.toggleFocus(this, inFocus, relinquishFocus);
     },
     getImperativeHandle() {
       return generator.component.getImperativeHandle(this);

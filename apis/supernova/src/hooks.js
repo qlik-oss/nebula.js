@@ -45,6 +45,9 @@ export function initiate(component, { explicitResize = false } = {}) {
       setters: [],
       explicitResize,
     },
+    accessibility: {
+      setter: null,
+    },
   };
 }
 
@@ -58,6 +61,7 @@ export function teardown(component) {
   component.__hooks.actions = null;
   component.__hooks.imperativeHandle = null;
   component.__hooks.resizer = null;
+  component.__hooks.accessibility = null;
 
   component.__actionsDispatch = null;
 
@@ -231,6 +235,7 @@ export function hook(cb) {
     run,
     teardown,
     runSnaps,
+    toggleFocus,
     observeActions,
     getImperativeHandle,
     updateRectOnNextRun,
@@ -979,4 +984,31 @@ export function onTakeSnapshot(cb) {
     currentComponent.__hooks.snaps.push(h);
   }
   h.fn = cb;
+}
+
+export function useKeyboard() {
+  const keyboardNavigation = useInternalContext('keyboardNavigation');
+  const [acc, setAcc] = useState({ focus: false, enabled: keyboardNavigation });
+
+  currentComponent.__hooks.accessibility.inFocus = false;
+  currentComponent.__hooks.accessibility.setter = setAcc;
+  currentComponent.__hooks.accessibility.enabled = keyboardNavigation;
+
+  useEffect(() => setAcc({ focus: false, enabled: keyboardNavigation, exit: () => {} }), [keyboardNavigation]);
+
+  return acc;
+}
+
+function toggleFocus(component, inFocus, relinquishFocus) {
+  const acc = component.__hooks.accessibility;
+  acc.inFocus = inFocus;
+
+  if (!acc.exitFunction) {
+    acc.exitFunction = function () {
+      this.inFocus && relinquishFocus();
+    };
+  }
+  if (acc && acc.setter) {
+    acc.setter({ inFocus, enabled: acc.enabled, exit: acc.exitFunction });
+  }
 }

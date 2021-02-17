@@ -16,8 +16,9 @@ const VizElement = {
 const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo }) => {
   const { component } = sn;
 
-  const { theme: themeName, language, constraints } = useContext(InstanceContext);
+  const { theme: themeName, language, constraints, keyboardNavigation } = useContext(InstanceContext);
   const [renderDebouncer] = useState(() => new RenderDebouncer());
+
   const [isMounted, setIsMounted] = useState(false);
   const [renderCnt, setRenderCnt] = useState(0);
   const [containerRef, containerRect, containerNode] = useRect();
@@ -76,6 +77,7 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
             // halo.public.theme is a singleton so themeName is used as dep to make sure this effect is triggered
             theme: halo.public.theme,
             appLayout,
+            keyboardNavigation,
 
             // TODO - remove when old component api is removed
             ...(component.isHooked
@@ -106,6 +108,7 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     language,
     constraints,
     isMounted,
+    keyboardNavigation,
   ]);
 
   return (

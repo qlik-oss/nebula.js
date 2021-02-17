@@ -254,7 +254,7 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const loadType = async ({ dispatch, types, visualization, version, model, app, selections, nebbie }) => {
+const loadType = async ({ dispatch, types, visualization, version, model, app, selections, keyboardNavigation, nebbie }) => {
   try {
     const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
@@ -262,6 +262,7 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
       app,
       selections,
       nebbie,
+      keyboardNavigation,
     });
     return sn;
   } catch (err) {
@@ -308,6 +309,17 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialSnPlugins, init
     }, 750);
   };
 
+  const handleKeyDown = (e) => {
+    if ([13, 32].includes(e.keyCode)) {
+      // Enter or space
+      halo.root.toggleFocusOfCell(currentId);
+    }
+  };
+
+  const relinquishFocus = () => {
+    halo.root.toggleFocusOfCell();
+  };
+
   useEffect(() => {
     if (initialError || !appLayout || !layout) {
       return undefined;
@@ -332,6 +344,7 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialSnPlugins, init
         app,
         selections,
         nebbie,
+        keyboardNavigation,
       });
       if (sn) {
         dispatch({ type: 'LOADED', sn, visualization });
@@ -362,120 +375,128 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialSnPlugins, init
     return () => {};
   }, [types, state.sn, model, layout, appLayout, language]);
 
-  // Long running query
-  useEffect(() => {
-    if (!validating) {
-      return undefined;
-    }
-    const handle = setTimeout(() => dispatch({ type: 'LONG_RUNNING_QUERY' }), 2000);
-    return () => clearTimeout(handle);
-  }, [validating]);
+    // Long running query
+    useEffect(() => {
+      if (!validating) {
+        return undefined;
+      }
+      const handle = setTimeout(() => dispatch({ type: 'LONG_RUNNING_QUERY' }), 2000);
+      return () => clearTimeout(handle);
+    }, [validating]);
 
-  // Expose cell ref api
-  useImperativeHandle(
-    ref,
-    () => ({
-      getQae() {
-        return state.sn.generator.qae;
-      },
-      setSnOptions,
-      setSnPlugins,
-      async takeSnapshot() {
-        const { width, height } = cellRect;
+    // Expose cell ref api
+    useImperativeHandle(
+      ref,
+      () => ({
+        getQae() {
+          return state.sn.generator.qae;
+        },
+        toggleFocus(inFocus) {
+          if (typeof state.sn.component.toggleFocus === 'function') {
+            state.sn.component.toggleFocus(inFocus, relinquishFocus);
+          }
+        },
+        setSnOptions,
+        setSnPlugins,
+        async takeSnapshot() {
+          const { width, height } = cellRect;
 
-        // clone layout to avoid mutation
-        let clonedLayout = JSON.parse(JSON.stringify(layout));
-        if (typeof state.sn.component.setSnapshotData === 'function') {
-          clonedLayout = (await state.sn.component.setSnapshotData(clonedLayout)) || clonedLayout;
-        }
-        return {
-          // TODO - this snapshot format needs to be documented and governed
-          key: String(+Date.now()),
-          meta: {
-            language: translator.language(),
-            theme: theme.name,
-            appLayout,
-            // direction: 'ltr',
-            size: {
-              width: Math.round(width),
-              height: Math.round(height),
+          // clone layout to avoid mutation
+          let clonedLayout = JSON.parse(JSON.stringify(layout));
+          if (typeof state.sn.component.setSnapshotData === 'function') {
+            clonedLayout = (await state.sn.component.setSnapshotData(clonedLayout)) || clonedLayout;
+          }
+          return {
+            // TODO - this snapshot format needs to be documented and governed
+            key: String(+Date.now()),
+            meta: {
+              language: translator.language(),
+              theme: theme.name,
+              appLayout,
+              // direction: 'ltr',
+              size: {
+                width: Math.round(width),
+                height: Math.round(height),
+              },
             },
-          },
-          layout: clonedLayout,
-        };
-      },
-      async exportImage() {
-        if (typeof halo.config.snapshot.capture !== 'function') {
-          throw new Error('Stardust embed has not been configured with snapshot.capture callback');
-        }
-        const snapshot = await this.takeSnapshot(); // eslint-disable-line
-        return halo.config.snapshot.capture(snapshot);
-      },
-    }),
-    [state.sn, contentRect, cellRect, layout, theme.name, appLayout]
-  );
+            layout: clonedLayout,
+          };
+        },
+        async exportImage() {
+          if (typeof halo.config.snapshot.capture !== 'function') {
+            throw new Error('Stardust embed has not been configured with snapshot.capture callback');
+          }
+          const snapshot = await this.takeSnapshot(); // eslint-disable-line
+          return halo.config.snapshot.capture(snapshot);
+        },
+      }),
+      [state.sn, contentRect, cellRect, layout, theme.name, appLayout]
+    );
 
-  // console.log('content', state);
-  let Content = null;
-  if (state.loading && !state.longRunningQuery) {
-    Content = <LoadingSn />;
-  } else if (state.error) {
-    Content = <CError {...state.error} />;
-  } else if (state.loaded) {
-    Content = (
-      <Supernova
-        key={layout.visualization}
-        sn={state.sn}
-        halo={halo}
-        snOptions={snOptions}
-        snPlugins={snPlugins}
-        layout={layout}
-        appLayout={appLayout}
-      />
+    // console.log('content', state);
+    let Content = null;
+    if (state.loading && !state.longRunningQuery) {
+      Content = <LoadingSn />;
+    } else if (state.error) {
+      Content = <CError {...state.error} />;
+    } else if (state.loaded) {
+      Content = (
+        <Supernova
+          key={layout.visualization}
+          sn={state.sn}
+          halo={halo}
+          snOptions={snOptions}
+          snPlugins={snPlugins}
+          layout={layout}
+          appLayout={appLayout}
+        />
+      );
+    }
+
+    return (
+      <Paper
+        style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}
+        tabIndex={keyboardNavigation ? 0 : -1}
+        elevation={0}
+        square
+        className={CellElement.className}
+        ref={cellRef}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+        onKeyDown={keyboardNavigation ? handleKeyDown : null}
+      >
+        <Grid
+          container
+          direction="column"
+          spacing={0}
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            padding: theme.spacing(1),
+            ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
+          }}
+        >
+          {cellNode && layout && state.sn && (
+            <Header layout={layout} sn={state.sn} anchorEl={cellNode} hovering={hovering}>
+              &nbsp;
+            </Header>
+          )}
+          <Grid
+            item
+            xs
+            style={{
+              height: '100%',
+            }}
+            ref={contentRef}
+          >
+            {Content}
+          </Grid>
+          <Footer layout={layout} />
+        </Grid>
+        {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
+      </Paper>
     );
   }
-
-  return (
-    <Paper
-      style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}
-      elevation={0}
-      square
-      className={CellElement.className}
-      ref={cellRef}
-      onMouseEnter={handleOnMouseEnter}
-      onMouseLeave={handleOnMouseLeave}
-    >
-      <Grid
-        container
-        direction="column"
-        spacing={0}
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          padding: theme.spacing(1),
-          ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
-        }}
-      >
-        {cellNode && layout && state.sn && (
-          <Header layout={layout} sn={state.sn} anchorEl={cellNode} hovering={hovering}>
-            &nbsp;
-          </Header>
-        )}
-        <Grid
-          item
-          xs
-          style={{
-            height: '100%',
-          }}
-          ref={contentRef}
-        >
-          {Content}
-        </Grid>
-        <Footer layout={layout} />
-      </Grid>
-      {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
-    </Paper>
-  );
-});
+);
 export default Cell;
