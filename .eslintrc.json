@@ -6,7 +6,7 @@
   "parserOptions": {
     "sourceType": "module"
   },
-  "extends": ["airbnb", "prettier", "prettier/react"],
+  "extends": ["airbnb", "prettier"],
   "plugins": ["prettier"],
   "rules": {
     "max-len": 0,
