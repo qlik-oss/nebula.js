@@ -59,8 +59,8 @@
     "enigma.js": "2.7.2",
     "eslint-import-resolver-alias": "1.1.2",
     "eslint-import-resolver-webpack": "0.13.0",
-    "monaco-editor": "0.21.2",
-    "monaco-editor-webpack-plugin": "2.1.0",
+    "monaco-editor": "0.22.3",
+    "monaco-editor-webpack-plugin": "3.0.0",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "webpack-cli": "4.3.1"
