@@ -13,7 +13,7 @@
     "enigma.js": "2.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.12.10",
+    "@babel/core": "7.13.8",
     "parcel-bundler": "^1.12.4"
   }
 }
