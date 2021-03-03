@@ -2,9 +2,10 @@ describe('nucleus', () => {
   let appThemeFn;
   let create;
   let createObject;
+  let deviceTypeFn;
   let getObject;
-  let sandbox;
   let rootApp;
+  let sandbox;
   let translator;
   let typesFn;
 
@@ -13,6 +14,7 @@ describe('nucleus', () => {
     createObject = sandbox.stub();
     getObject = sandbox.stub();
     appThemeFn = sandbox.stub();
+    deviceTypeFn = sandbox.stub();
     rootApp = sandbox.stub();
     translator = { add: sandbox.stub(), language: sandbox.stub() };
     typesFn = sandbox.stub();
@@ -26,6 +28,7 @@ describe('nucleus', () => {
         [require.resolve('../sn/types.js'), () => ({ create: typesFn })],
         [require.resolve('../flags/flags.js'), () => () => 'flags'],
         [require.resolve('../app-theme.js'), () => appThemeFn],
+        [require.resolve('../device-type.js'), () => deviceTypeFn],
       ],
       ['../index.js']
     );
@@ -35,6 +38,7 @@ describe('nucleus', () => {
     createObject.returns('created object');
     getObject.returns('got object');
     appThemeFn.returns({ externalAPI: 'internal', setTheme: sandbox.stub() });
+    deviceTypeFn.returns('desktop');
     typesFn.returns({});
     rootApp.returns([{}]);
   });
@@ -55,6 +59,7 @@ describe('nucleus', () => {
         some: 'thing',
       },
       flags: 'flags',
+      deviceType: 'desktop',
       translator,
     });
   });
@@ -85,9 +90,10 @@ describe('nucleus', () => {
     expect(rootApp).to.have.been.calledWithExactly({
       app: 'app',
       context: {
+        constraints: {},
+        deviceType: 'auto',
         language: 'en-US',
         theme: 'light',
-        constraints: {},
         translator,
       },
     });

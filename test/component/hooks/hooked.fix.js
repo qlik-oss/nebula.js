@@ -8,6 +8,7 @@ import {
   useElement,
   useTheme,
   useTranslator,
+  useDeviceType,
   usePromise,
   useAction,
   useConstraints,
@@ -20,6 +21,7 @@ function sn({ flags }) {
       const [count, setCount] = useState(0);
       const element = useElement();
       const translator = useTranslator();
+      const deviceType = useDeviceType();
       const theme = useTheme();
       const layout = useLayout();
       const appLayout = useAppLayout();
@@ -68,6 +70,7 @@ function sn({ flags }) {
         <div class="layout">${layout.showTitles}</div>
         <div class="applayout">${appLayout.qTitle}</div>
         <div class="translator">${translator.get('Cancel')}</div>
+        <div class="deviceType">${deviceType}</div>
         <div class="theme">${theme.getColorPickerColor({ index: 2 })}</div>
         <div class="promise">${v || 'pending'}</div>
         <div class="action">${acted}</div>
