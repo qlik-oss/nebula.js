@@ -705,6 +705,20 @@ export function useTranslator() {
 }
 
 /**
+ * Gets the device type. ('touch' or 'desktop')
+ * @entry
+ * @returns {string} device type.
+ * @example
+ * import { useDeviceType } from '@nebula.js/stardust';
+ * // ...
+ * const deviceType = useDeviceType();
+ * if (deviceType === 'touch') { ... };
+ */
+export function useDeviceType() {
+  return useInternalContext('deviceType');
+}
+
+/**
  * @template A
  * @interface ActionDefinition
  * @property {A} action

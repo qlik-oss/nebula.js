@@ -42,6 +42,7 @@ const translator = {
 // Since nucleus is not being used in Sense yet, this interface MUST be provided explicitly here
 // and it MUST have the same interface as the one provided by nucleus.
 const galaxy = {
+  deviceType: 'auto',
   translator,
   flags: {
     isEnabled: () => false,

@@ -59,6 +59,11 @@ describe('hooks', () => {
     expect(text).to.equal('Cancel');
   });
 
+  it('useDeviceType', async () => {
+    const text = await page.$eval(`${snSelector} .deviceType`, (el) => el.textContent);
+    expect(text).to.equal('desktop');
+  });
+
   it('useTheme', async () => {
     const text = await page.$eval(`${snSelector} .theme`, (el) => el.textContent);
     expect(text).to.equal('#a54343');

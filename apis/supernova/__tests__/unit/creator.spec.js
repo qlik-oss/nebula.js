@@ -79,6 +79,7 @@ describe('creator', () => {
         },
       };
       galaxy = {
+        deviceType: 'desktop',
         translator: { language: () => 'en' },
       };
       opts = {
@@ -110,6 +111,7 @@ describe('creator', () => {
         constraints: {
           select: true,
         },
+        deviceType: 'desktop',
         options: {},
       });
     });

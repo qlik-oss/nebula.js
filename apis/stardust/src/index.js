@@ -28,6 +28,7 @@ export {
   useStaleLayout,
   useAppLayout,
   useTranslator,
+  useDeviceType,
   useConstraints,
   useOptions,
   onTakeSnapshot,

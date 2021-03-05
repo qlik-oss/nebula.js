@@ -1,6 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 import appLocaleFn from './locale/app-locale';
 import appThemeFn from './app-theme';
+import deviceTypeFn from './device-type';
 
 import bootNebulaApp from './components/NebulaApp';
 import AppSelectionsPortal from './components/selections/AppSelections';
@@ -23,6 +24,8 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
   theme: 'light',
   /** @type {string=} */
   language: 'en-US',
+  /** @type {string=} */
+  deviceType: 'auto',
   constraints: {},
 };
 
@@ -147,6 +150,8 @@ function nuked(configuration = {}) {
         // TODO - validate flags input
         /** @type {Flags} */
         flags: flagsFn(configuration.flags),
+        /** @type {string} */
+        deviceType: deviceTypeFn(configuration.context.deviceType),
         /** @type {object} */
         anything: configuration.anything,
       },

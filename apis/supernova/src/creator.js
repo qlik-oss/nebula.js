@@ -68,6 +68,7 @@ function createWithHooks(generator, opts, galaxy) {
       selections: opts.selections,
       element: undefined, // set on mount
       // ---- singletons ----
+      deviceType: galaxy.deviceType,
       theme: undefined,
       translator: galaxy.translator,
       // --- dynamic values ---
