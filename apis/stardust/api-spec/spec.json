@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "license": "MIT",
     "stability": "stable"
   },
@@ -95,7 +95,7 @@
       ]
     },
     "useEffect": {
-      "description": "Triggers a callback function when a dependant value changes.",
+      "description": "Triggers a callback function when a dependent value changes.",
       "kind": "function",
       "params": [
         {
@@ -105,7 +105,7 @@
         },
         {
           "name": "deps",
-          "description": "The dependencies which should trigger the callback.",
+          "description": "The dependencies that should trigger the callback.",
           "optional": true,
           "kind": "array",
           "items": {
@@ -118,7 +118,7 @@
       ]
     },
     "useMemo": {
-      "description": "Creates a stateful value when a dependant changes.",
+      "description": "Creates a stateful value when a dependent changes.",
       "templates": [
         {
           "name": "T"
@@ -153,7 +153,7 @@
       ]
     },
     "usePromise": {
-      "description": "Runs a callback function when a dependant changes.",
+      "description": "Runs a callback function when a dependent changes.",
       "templates": [
         {
           "name": "P"
@@ -202,7 +202,7 @@
       ]
     },
     "useElement": {
-      "description": "Gets the HTMLElement this visualization is rendered into.",
+      "description": "Gets the HTML element this visualization is rendered into.",
       "kind": "function",
       "params": [],
       "returns": {
@@ -213,7 +213,7 @@
       ]
     },
     "useRect": {
-      "description": "Gets the size of the HTMLElement the visualization is rendered into.",
+      "description": "Gets the size of the HTML Element the visualization is rendered into.",
       "kind": "function",
       "params": [],
       "returns": {
@@ -392,7 +392,7 @@
       ]
     },
     "useConstraints": {
-      "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should respected by you when implementing the visualization.",
+      "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should be respected by you when implementing the visualization.",
       "kind": "function",
       "params": [],
       "returns": {
@@ -521,7 +521,7 @@
       "kind": "class",
       "entries": {
         "render": {
-          "description": "Renders a visualization into an HTMLElement.",
+          "description": "Renders a visualization into an HTML Element.",
           "kind": "function",
           "params": [
             {
@@ -634,7 +634,7 @@
       "entries": {},
       "staticEntries": {
         "mount": {
-          "description": "Mounts the field as a listbox into the provided HTMLElement.",
+          "description": "Mounts the field as a listbox into the provided HTML Element.",
           "stability": "experimental",
           "availability": {
             "since": "1.1.0"
@@ -705,7 +705,7 @@
           "type": "string"
         },
         "load": {
-          "description": "A function that should return a Promise that resolve to a raw JSON theme",
+          "description": "A function that should return a Promise that resolves to a raw JSON theme.",
           "kind": "function",
           "params": [],
           "returns": {
@@ -728,13 +728,13 @@
           "type": "string"
         },
         "destroy": {
-          "description": "Destroys the visualization and removes if from the the DOM.",
+          "description": "Destroys the visualization and removes it from the the DOM.",
           "kind": "function",
           "params": [],
           "examples": ["const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"]
         },
         "convertTo": {
-          "description": "Converts the visualization to a different registred type",
+          "description": "Converts the visualization to a different registered type",
           "stability": "experimental",
           "availability": {
             "since": "1.1.0"
@@ -743,7 +743,7 @@
           "params": [
             {
               "name": "newType",
-              "description": "Which registered type to convert to",
+              "description": "Which registered type to convert to.",
               "type": "string"
             },
             {
@@ -754,7 +754,7 @@
             }
           ],
           "returns": {
-            "description": "Promise object that resolves to the full property tree of the converted visualizatiom",
+            "description": "Promise object that resolves to the full property tree of the converted visualization.",
             "type": "Promise",
             "generics": [
               {
@@ -793,7 +793,7 @@
       "kind": "class",
       "entries": {
         "mount": {
-          "description": "Mounts the app selection UI into the provided HTMLElement.",
+          "description": "Mounts the app selection UI into the provided HTML Element.",
           "kind": "function",
           "params": [
             {
@@ -995,7 +995,7 @@
       }
     },
     "CreateConfig": {
-      "description": "Rendering configuration for creating and rendering a new object",
+      "description": "Rendering configuration for creating and rendering a new object.",
       "extends": [
         {
           "type": "#/definitions/BaseConfig"
@@ -1028,7 +1028,7 @@
       }
     },
     "BaseConfig": {
-      "description": "Basic rendering configuration for rendering an object",
+      "description": "Basic rendering configuration for rendering an object.",
       "kind": "interface",
       "entries": {
         "element": {
@@ -1041,7 +1041,7 @@
       }
     },
     "GetConfig": {
-      "description": "Rendering configuration for rendering an existing object",
+      "description": "Rendering configuration for rendering an existing object.",
       "extends": [
         {
           "type": "#/definitions/BaseConfig"
@@ -1503,7 +1503,7 @@
       "kind": "class",
       "entries": {
         "add": {
-          "description": "Registers a string in multiple locales",
+          "description": "Registers a string in multiple locales.",
           "kind": "function",
           "params": [
             {
@@ -1532,17 +1532,17 @@
           ]
         },
         "get": {
-          "description": "Translates a string for current locale",
+          "description": "Translates a string for current locale.",
           "kind": "function",
           "params": [
             {
               "name": "str",
-              "description": "Id of the registered string",
+              "description": "ID of the registered string.",
               "type": "string"
             },
             {
               "name": "args",
-              "description": "Values passed down for string interpolation",
+              "description": "Values passed down for string interpolation.",
               "optional": true,
               "kind": "array",
               "items": {
@@ -1551,7 +1551,7 @@
             }
           ],
           "returns": {
-            "description": "The translated string",
+            "description": "The translated string.",
             "type": "string"
           }
         }
@@ -1639,27 +1639,27 @@
           "examples": ["theme.getContrastingColorTo('#400');"]
         },
         "getStyle": {
-          "description": "Get the value of a style attribute in the theme by searching in the theme's json structure.\nThe search starts at the specified base path and continue upwards until the value is found.\nIf possible it will get the attribute's value using the given path.",
+          "description": "Get the value of a style attribute in the theme by searching in the theme's JSON structure.\nThe search starts at the specified base path and continues upwards until the value is found.\nIf possible, it will get the attribute's value using the given path.",
           "kind": "function",
           "params": [
             {
               "name": "basePath",
-              "description": "Base path in the theme's json structure to start the search in (specified as a name path separated by dots)",
+              "description": "Base path in the theme's JSON structure to start the search in (specified as a name path separated by dots).",
               "type": "string"
             },
             {
               "name": "path",
-              "description": "Expected path for the attribute (specified as a name path separated by dots)",
+              "description": "Expected path for the attribute (specified as a name path separated by dots).",
               "type": "string"
             },
             {
               "name": "attribute",
-              "description": "Name of the style attribute",
+              "description": "Name of the style attribute.",
               "type": "string"
             }
           ],
           "returns": {
-            "description": "The style value",
+            "description": "The style value.",
             "type": "string"
           },
           "examples": ["theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"]
@@ -1779,7 +1779,7 @@
       }
     },
     "ExportFormat": {
-      "description": "Used for exporting and importing properties between backend models. An object that exports to\nExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes\neach of the cubes should export dimensions and measures in two separate data groups.\nAn object that imports from this structure is responsible for putting the existing properties where they should be\nin the new model.",
+      "description": "Used for exporting and importing properties between backend models. An object that exports to\nExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes,\neach of the cubes should export dimensions and measures in two separate data groups.\nAn object that imports from this structure is responsible for putting the existing properties where they should be\nin the new model.",
       "stability": "experimental",
       "availability": {
         "since": "1.1.0"
@@ -1859,7 +1859,7 @@
       }
     },
     "Conversion": {
-      "description": "Provides conversion functionality to extensions",
+      "description": "Provides conversion functionality to extensions.",
       "stability": "experimental",
       "availability": {
         "since": "1.1.0"
@@ -1867,7 +1867,7 @@
       "kind": "interface",
       "entries": {
         "hypercube": {
-          "description": "Provides conversion functionality for extensions with hyperCubes",
+          "description": "Provides conversion functionality to extensions with hyperCubes.",
           "stability": "experimental",
           "availability": {
             "since": "1.1.0"
