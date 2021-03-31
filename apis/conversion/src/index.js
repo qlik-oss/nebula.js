@@ -87,7 +87,7 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
  * @alias Conversion
  * @experimental
  * @since 1.1.0
- * @description Provides conversion functionality to extensions
+ * @description Provides conversion functionality to extensions.
  * @example
  * import { conversion } from '@nebula.js/stardust';
  *
@@ -108,7 +108,7 @@ const conversion = {
    * @type {hyperCubeConversion}
    * @experimental
    * @since 1.1.0
-   * @description Provides conversion functionality for extensions with hyperCubes
+   * @description Provides conversion functionality to extensions with hyperCubes.
    */
   hypercube,
 };
