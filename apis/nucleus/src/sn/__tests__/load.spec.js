@@ -13,6 +13,16 @@ describe('load', () => {
     clearFromCache('pie');
   });
 
+  it('should throw when load is not a function', async () => {
+    const loader = { then: {} }; // fake promise
+    try {
+      await load('pie', '1.0.0', halo, loader);
+      expect(0).to.equal(1);
+    } catch (e) {
+      expect(e.message).to.equal(`load of visualization 'pie v1.0.0' is not a fuction, wrap load promise in function`);
+    }
+  });
+
   it('should throw when resolving to a falsy value', async () => {
     const loader = () => false;
     try {
