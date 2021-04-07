@@ -10,7 +10,6 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
 
   /**
    * @class Translator
-   * @hideconstructor
    */
   const api = /** @lends Translator# */ {
     language: (lang) => {

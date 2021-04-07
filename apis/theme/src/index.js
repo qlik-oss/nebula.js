@@ -17,7 +17,6 @@ export default function theme() {
   /**
    * @class
    * @alias Theme
-   * @hideconstructor
    */
   const externalAPI = /** @lends Theme# */ {
     /**

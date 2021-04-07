@@ -37,7 +37,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
   /**
    * @class
    * @alias Viz
-   * @hideconstructor
    * @classdesc A controller to further modify a visualization after it has been rendered.
    * @example
    * const viz = await embed(app).render({

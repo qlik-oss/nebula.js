@@ -193,7 +193,6 @@ function nuked(configuration = {}) {
     /**
      * @class
      * @alias Embed
-     * @hideconstructor
      */
     const api = /** @lends Embed# */ {
       /**
@@ -329,7 +328,6 @@ function nuked(configuration = {}) {
 
         /**
          * @class
-         * @hideconstructor
          * @alias FieldInstance
          * @experimental
          * @since 1.1.0

@@ -59,7 +59,6 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
 
   /**
    * @class
-   * @hideconstructor
    * @alias AppSelections
    */
   const appSelections = {

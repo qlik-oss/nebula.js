@@ -95,7 +95,7 @@
       ]
     },
     "useEffect": {
-      "description": "Triggers a callback function when a dependant value changes.",
+      "description": "Triggers a callback function when a dependent value changes.",
       "kind": "function",
       "params": [
         {
@@ -105,7 +105,7 @@
         },
         {
           "name": "deps",
-          "description": "The dependencies which should trigger the callback.",
+          "description": "The dependencies that should trigger the callback.",
           "optional": true,
           "kind": "array",
           "items": {
@@ -118,7 +118,7 @@
       ]
     },
     "useMemo": {
-      "description": "Creates a stateful value when a dependant changes.",
+      "description": "Creates a stateful value when a dependent changes.",
       "templates": [
         {
           "name": "T"
@@ -153,7 +153,7 @@
       ]
     },
     "usePromise": {
-      "description": "Runs a callback function when a dependant changes.",
+      "description": "Runs a callback function when a dependent changes.",
       "templates": [
         {
           "name": "P"
@@ -353,6 +353,18 @@
         "import { useTranslator } from '@nebula.js/stardust';\n// ...\nconst translator = useTranslator();\nconsole.log(translator.get('SomeString'));"
       ]
     },
+    "useDeviceType": {
+      "description": "Gets the device type. ('touch' or 'desktop')",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "description": "device type.",
+        "type": "string"
+      },
+      "examples": [
+        "import { useDeviceType } from '@nebula.js/stardust';\n// ...\nconst deviceType = useDeviceType();\nif (deviceType === 'touch') { ... };"
+      ]
+    },
     "useAction": {
       "description": "Registers a custom action.",
       "templates": [
@@ -450,15 +462,15 @@
           "optional": true,
           "kind": "object",
           "entries": {
-            "select": {
-              "optional": true,
-              "type": "boolean"
-            },
             "active": {
               "optional": true,
               "type": "boolean"
             },
             "passive": {
+              "optional": true,
+              "type": "boolean"
+            },
+            "select": {
               "optional": true,
               "type": "boolean"
             }
@@ -472,6 +484,11 @@
         "language": {
           "optional": true,
           "defaultValue": "en-US",
+          "type": "string"
+        },
+        "deviceType": {
+          "optional": true,
+          "defaultValue": "auto",
           "type": "string"
         }
       }
@@ -512,6 +529,9 @@
         "flags": {
           "type": "#/definitions/Flags"
         },
+        "deviceType": {
+          "type": "string"
+        },
         "anything": {
           "type": "object"
         }
@@ -519,6 +539,10 @@
     },
     "Embed": {
       "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
       "entries": {
         "render": {
           "description": "Renders a visualization into an HTMLElement.",
@@ -631,6 +655,10 @@
         "since": "1.1.0"
       },
       "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
       "entries": {},
       "staticEntries": {
         "mount": {
@@ -705,7 +733,7 @@
           "type": "string"
         },
         "load": {
-          "description": "A function that should return a Promise that resolve to a raw JSON theme",
+          "description": "A function that should return a Promise that resolves to a raw JSON theme.",
           "kind": "function",
           "params": [],
           "returns": {
@@ -722,19 +750,23 @@
     "Viz": {
       "description": "A controller to further modify a visualization after it has been rendered.",
       "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
       "entries": {
         "id": {
           "description": "The id of this visualization's generic object.",
           "type": "string"
         },
         "destroy": {
-          "description": "Destroys the visualization and removes if from the the DOM.",
+          "description": "Destroys the visualization and removes it from the the DOM.",
           "kind": "function",
           "params": [],
           "examples": ["const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"]
         },
         "convertTo": {
-          "description": "Converts the visualization to a different registred type",
+          "description": "Converts the visualization to a different registered type",
           "stability": "experimental",
           "availability": {
             "since": "1.1.0"
@@ -743,7 +775,7 @@
           "params": [
             {
               "name": "newType",
-              "description": "Which registered type to convert to",
+              "description": "Which registered type to convert to.",
               "type": "string"
             },
             {
@@ -754,7 +786,7 @@
             }
           ],
           "returns": {
-            "description": "Promise object that resolves to the full property tree of the converted visualizatiom",
+            "description": "Promise object that resolves to the full property tree of the converted visualization.",
             "type": "Promise",
             "generics": [
               {
@@ -791,6 +823,10 @@
     },
     "AppSelections": {
       "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
       "entries": {
         "mount": {
           "description": "Mounts the app selection UI into the provided HTMLElement.",
@@ -813,6 +849,10 @@
     },
     "ObjectSelections": {
       "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
       "entries": {
         "begin": {
           "kind": "function",
@@ -1501,6 +1541,10 @@
     },
     "Translator": {
       "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
       "entries": {
         "add": {
           "description": "Registers a string in multiple locales",
@@ -1532,17 +1576,17 @@
           ]
         },
         "get": {
-          "description": "Translates a string for current locale",
+          "description": "Translates a string for current locale.",
           "kind": "function",
           "params": [
             {
               "name": "str",
-              "description": "Id of the registered string",
+              "description": "ID of the registered string.",
               "type": "string"
             },
             {
               "name": "args",
-              "description": "Values passed down for string interpolation",
+              "description": "Values passed down for string interpolation.",
               "optional": true,
               "kind": "array",
               "items": {
@@ -1551,7 +1595,7 @@
             }
           ],
           "returns": {
-            "description": "The translated string",
+            "description": "The translated string.",
             "type": "string"
           }
         }
@@ -1559,6 +1603,10 @@
     },
     "Theme": {
       "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
       "entries": {
         "getDataColorScales": {
           "kind": "function",
@@ -1639,22 +1687,22 @@
           "examples": ["theme.getContrastingColorTo('#400');"]
         },
         "getStyle": {
-          "description": "Get the value of a style attribute in the theme by searching in the theme's json structure.\nThe search starts at the specified base path and continue upwards until the value is found.\nIf possible it will get the attribute's value using the given path.",
+          "description": "Get the value of a style attribute in the theme by searching in the theme's JSON structure.\nThe search starts at the specified base path and continues upwards until the value is found.\nIf possible it will get the attribute's value using the given path.",
           "kind": "function",
           "params": [
             {
               "name": "basePath",
-              "description": "Base path in the theme's json structure to start the search in (specified as a name path separated by dots)",
+              "description": "Base path in the theme's JSON structure to start the search in (specified as a name path separated by dots).",
               "type": "string"
             },
             {
               "name": "path",
-              "description": "Expected path for the attribute (specified as a name path separated by dots)",
+              "description": "Expected path for the attribute (specified as a name path separated by dots).",
               "type": "string"
             },
             {
               "name": "attribute",
-              "description": "Name of the style attribute",
+              "description": "Name of the style attribute.",
               "type": "string"
             }
           ],
@@ -1779,7 +1827,7 @@
       }
     },
     "ExportFormat": {
-      "description": "Used for exporting and importing properties between backend models. An object that exports to\nExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes\neach of the cubes should export dimensions and measures in two separate data groups.\nAn object that imports from this structure is responsible for putting the existing properties where they should be\nin the new model.",
+      "description": "Used for exporting and importing properties between backend models. An object that exports to\nExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes,\neach of the cubes should export dimensions and measures in two separate data groups.\nAn object that imports from this structure is responsible for putting the existing properties where they should be\nin the new model.",
       "stability": "experimental",
       "availability": {
         "since": "1.1.0"
@@ -1859,7 +1907,7 @@
       }
     },
     "Conversion": {
-      "description": "Provides conversion functionality to extensions",
+      "description": "Provides conversion functionality to extensions.",
       "stability": "experimental",
       "availability": {
         "since": "1.1.0"
@@ -1867,7 +1915,7 @@
       "kind": "interface",
       "entries": {
         "hypercube": {
-          "description": "Provides conversion functionality for extensions with hyperCubes",
+          "description": "Provides conversion functionality to extensions with hyperCubes.",
           "stability": "experimental",
           "availability": {
             "since": "1.1.0"
