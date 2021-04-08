@@ -193,7 +193,6 @@ function nuked(configuration = {}) {
     /**
      * @class
      * @alias Embed
-     * @hideconstructor
      */
     const api = /** @lends Embed# */ {
       /**
@@ -329,7 +328,6 @@ function nuked(configuration = {}) {
 
         /**
          * @class
-         * @hideconstructor
          * @alias FieldInstance
          * @experimental
          * @since 1.1.0
@@ -430,7 +428,7 @@ function nuked(configuration = {}) {
 /**
  * @interface ThemeInfo
  * @property {string} id Theme identifier
- * @property {function(): Promise<ThemeJSON>} load A function that should return a Promise that resolve to a raw JSON theme
+ * @property {function(): Promise<ThemeJSON>} load A function that should return a Promise that resolves to a raw JSON theme.
  */
 
 export default nuked(DEFAULT_CONFIG);

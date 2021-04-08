@@ -10,7 +10,6 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
 
   /**
    * @class Translator
-   * @hideconstructor
    */
   const api = /** @lends Translator# */ {
     language: (lang) => {
@@ -45,10 +44,10 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
       });
     },
     /**
-     * Translates a string for current locale
-     * @param {string} str - Id of the registered string
-     * @param {Array<string>=} args - Values passed down for string interpolation
-     * @returns {string} The translated string
+     * Translates a string for current locale.
+     * @param {string} str - ID of the registered string.
+     * @param {Array<string>=} args - Values passed down for string interpolation.
+     * @returns {string} The translated string.
      */
     get(str, args) {
       let v;

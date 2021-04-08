@@ -1,6 +1,6 @@
 /**
  * Used for exporting and importing properties between backend models. An object that exports to
- * ExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes
+ * ExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes,
  * each of the cubes should export dimensions and measures in two separate data groups.
  * An object that imports from this structure is responsible for putting the existing properties where they should be
  * in the new model.

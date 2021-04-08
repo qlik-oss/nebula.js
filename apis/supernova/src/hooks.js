@@ -292,10 +292,10 @@ export function useState(initial) {
  */
 
 /**
- * Triggers a callback function when a dependant value changes.
+ * Triggers a callback function when a dependent value changes.
  * @entry
  * @param {EffectCallback} effect - The callback.
- * @param {Array<any>=} deps - The dependencies which should trigger the callback.
+ * @param {Array<any>=} deps - The dependencies that should trigger the callback.
  * @example
  * import { useEffect } from '@nebula.js/stardust';
  * // ...
@@ -336,7 +336,7 @@ function useLayoutEffect(cb, deps) {
 }
 
 /**
- * Creates a stateful value when a dependant changes.
+ * Creates a stateful value when a dependent changes.
  * @entry
  * @template T
  * @param {function():T} factory - The factory function.
@@ -363,7 +363,7 @@ export function useMemo(fn, deps) {
 }
 
 /**
- * Runs a callback function when a dependant changes.
+ * Runs a callback function when a dependent changes.
  * @entry
  * @template P
  * @param {function():Promise<P>} factory - The factory function that calls the promise.

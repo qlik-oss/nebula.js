@@ -37,7 +37,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
   /**
    * @class
    * @alias Viz
-   * @hideconstructor
    * @classdesc A controller to further modify a visualization after it has been rendered.
    * @example
    * const viz = await embed(app).render({
@@ -53,7 +52,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      */
     id: model.id,
     /**
-     * Destroys the visualization and removes if from the the DOM.
+     * Destroys the visualization and removes it from the the DOM.
      * @example
      * const viz = await embed(app).render({
      *   element,
@@ -67,12 +66,12 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       unmountCell = noopi;
     },
     /**
-     * Converts the visualization to a different registred type
+     * Converts the visualization to a different registered type
      * @experimental
      * @since 1.1.0
-     * @param {string} newType - Which registered type to convert to
+     * @param {string} newType - Which registered type to convert to.
      * @param {boolean=} forceUpdate - Whether to run setProperties or not, defaults to true.
-     * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualizatiom
+     * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualization.
      * @example
      * const viz = await embed(app).render({
      *   element,

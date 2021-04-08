@@ -17,7 +17,6 @@ export default function theme() {
   /**
    * @class
    * @alias Theme
-   * @hideconstructor
    */
   const externalAPI = /** @lends Theme# */ {
     /**
@@ -74,13 +73,13 @@ export default function theme() {
     },
 
     /**
-     * Get the value of a style attribute in the theme by searching in the theme's json structure.
-     * The search starts at the specified base path and continue upwards until the value is found.
+     * Get the value of a style attribute in the theme by searching in the theme's JSON structure.
+     * The search starts at the specified base path and continues upwards until the value is found.
      * If possible it will get the attribute's value using the given path.
      *
-     * @param {string} basePath - Base path in the theme's json structure to start the search in (specified as a name path separated by dots)
-     * @param {string} path - Expected path for the attribute (specified as a name path separated by dots)
-     * @param {string} attribute - Name of the style attribute
+     * @param {string} basePath - Base path in the theme's JSON structure to start the search in (specified as a name path separated by dots).
+     * @param {string} path - Expected path for the attribute (specified as a name path separated by dots).
+     * @param {string} attribute - Name of the style attribute.
      * @returns {string} The style value
      *
      * @example

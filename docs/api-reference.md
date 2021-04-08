@@ -167,7 +167,7 @@ const [value, setValue] = useState(() => heavy());
 - `effect` <[EffectCallback]> The callback.
 - `deps` <[Array]<`any`>> The dependencies which should trigger the callback.
 
-Triggers a callback function when a dependant value changes.
+Triggers a callback function when a dependent value changes.
 
 ```js
 import { useEffect } from '@nebula.js/stardust';
@@ -186,7 +186,7 @@ useEffect(() => {
 - `deps` <[Array]<`any`>> The dependencies.
 - `returns:` <`T`> The value returned from the factory function.
 
-Creates a stateful value when a dependant changes.
+Creates a stateful value when a dependent changes.
 
 ```js
 import { useMemo } from '@nebula.js/stardust';
@@ -202,7 +202,7 @@ const v = useMemo(() => {
 - `deps` <[Array]<`any`>> The dependencies.
 - `returns:` <[Array]> The resolved value.
 
-Runs a callback function when a dependant changes.
+Runs a callback function when a dependent changes.
 
 ```js
 import { usePromise } from '@nebula.js/stardust';
