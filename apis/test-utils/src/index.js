@@ -37,6 +37,9 @@ export function create(definition, context = {}) {
       }
       return hooked.run(component);
     },
+    updateRectOnNextUpdate() {
+      hooked.updateRectOnNextRun(component);
+    },
     unmount() {
       return hooked.teardown(component);
     },
