@@ -18,17 +18,12 @@
     "test:mashup": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/mashup/**/*.int.js'",
     "test:integration": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/integration/*.int.js'",
     "test:component": "aw puppet -c aw.config.js --testExt '*.comp.js' --glob 'test/component/**/*.comp.js'",
-    "test:unit": "aw -c aw.config.js --nyc.reportDir coverage/unit --coverage"
+    "test:unit": "aw -c aw.config.js --nyc.reportDir coverage/unit --coverage",
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
     "url": "https://github.com/qlik-oss/nebula.js.git"
-  },
-  "husky": {
-    "hooks": {
-      "pre-commit": "pretty-quick --staged",
-      "commit-msg": "commitlint -E HUSKY_GIT_PARAMS && lint-staged"
-    }
   },
   "lint-staged": {
     "*.{js,jsx}": [
@@ -66,7 +61,7 @@
     "eslint-plugin-prettier": "3.3.1",
     "eslint-plugin-react": "7.23.1",
     "express": "4.17.1",
-    "husky": "4.3.8",
+    "husky": "^6.0.0",
     "jimp": "0.16.1",
     "lerna": "4.0.0",
     "lint-staged": "10.5.4",
