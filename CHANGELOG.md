@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/qlik-oss/nebula.js/compare/v1.1.0...v1.1.1) (2021-04-19)
+
+### Bug Fixes
+
+- make sure ActionsTooblar doesn't steal focus ([#597](https://github.com/qlik-oss/nebula.js/issues/597)) ([20846e9](https://github.com/qlik-oss/nebula.js/commit/20846e9667c1dfc93d46e17a9e44a1060489226a))
+- **deps:** update dependency inquirer to v8 ([#585](https://github.com/qlik-oss/nebula.js/issues/585)) ([153b319](https://github.com/qlik-oss/nebula.js/commit/153b31964d4f3e587f8a6e9e5b09085df8d506a6))
+- **deps:** update dependency puppeteer to v8 ([#586](https://github.com/qlik-oss/nebula.js/issues/586)) ([24888f1](https://github.com/qlik-oss/nebula.js/commit/24888f1ab2d800edf3ae9ffa5a9b64bc9ee61c8f))
+- update dimensions and measures on object conversion ([#563](https://github.com/qlik-oss/nebula.js/issues/563)) ([7e2b8f4](https://github.com/qlik-oss/nebula.js/commit/7e2b8f486a2706fd4416c8c32eed2ad4406a674b))
+
+### Features
+
+- **test-utils:** support testing components using useRect ([#561](https://github.com/qlik-oss/nebula.js/issues/561)) ([cefed02](https://github.com/qlik-oss/nebula.js/commit/cefed020af0f79bdf65b050f034c89f89a42abc1))
+- add device type ([#587](https://github.com/qlik-oss/nebula.js/issues/587)) ([f6e1ead](https://github.com/qlik-oss/nebula.js/commit/f6e1ead7e14f029b1f78fa354fb98b2e089b52a9))
+
 # [1.1.0](https://github.com/qlik-oss/nebula.js/compare/v1.1.0-alpha0...v1.1.0) (2021-02-01)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/qlik-oss/nebula.js/compare/v1.1.0...v1.1.1) (2021-04-19)
+
+### Bug Fixes
+
+- **deps:** update dependency inquirer to v8 ([#585](https://github.com/qlik-oss/nebula.js/issues/585)) ([153b319](https://github.com/qlik-oss/nebula.js/commit/153b31964d4f3e587f8a6e9e5b09085df8d506a6))
+
 # [1.1.0](https://github.com/qlik-oss/nebula.js/compare/v1.1.0-alpha0...v1.1.0) (2021-02-01)
 
 **Note:** Version bump only for package @nebula.js/cli-create

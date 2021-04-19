@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.1.1](https://github.com/qlik-oss/nebula.js/compare/v1.1.0...v1.1.1) (2021-04-19)
+
+### Bug Fixes
+
+- make sure ActionsTooblar doesn't steal focus ([#597](https://github.com/qlik-oss/nebula.js/issues/597)) ([20846e9](https://github.com/qlik-oss/nebula.js/commit/20846e9667c1dfc93d46e17a9e44a1060489226a))
+- **deps:** update dependency puppeteer to v8 ([#586](https://github.com/qlik-oss/nebula.js/issues/586)) ([24888f1](https://github.com/qlik-oss/nebula.js/commit/24888f1ab2d800edf3ae9ffa5a9b64bc9ee61c8f))
+
 # [1.1.0](https://github.com/qlik-oss/nebula.js/compare/v1.1.0-alpha0...v1.1.0) (2021-02-01)
 
 ### Bug Fixes
