@@ -719,6 +719,32 @@ export function useDeviceType() {
 }
 
 /**
+ * Gets the array of plugins provided when rendering the visualization.
+ * @entry
+ * @returns {Plugin[]} array of plugins.
+ * @example
+ * // provide plugins that can be used when rendering
+ * embed(app).render({
+ *   element,
+ *   type: 'my-chart',
+ *   plugins: [plugin]
+ * });
+ *
+ * @example
+ * // It's up to the chart implementation to make use of plugins in any way
+ * import { usePlugins } from '@nebula.js/stardust';
+ * // ...
+ * const plugins = usePlugins();
+ * plugins.forEach((plugin) => {
+ *   // Invoke plugin
+ *   plugin.fn();
+ * });
+ */
+export function usePlugins() {
+  return useInternalContext('plugins');
+}
+
+/**
  * @template A
  * @interface ActionDefinition
  * @property {A} action

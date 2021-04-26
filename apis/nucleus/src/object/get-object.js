@@ -6,6 +6,7 @@ import { modelStore, rpcRequestModelStore } from '../stores/model-store';
  * @description Basic rendering configuration for rendering an object
  * @property {HTMLElement} element
  * @property {object=} options
+ * @property {(Plugin[])=} plugins
  */
 
 /**
@@ -15,7 +16,7 @@ import { modelStore, rpcRequestModelStore } from '../stores/model-store';
  * @property {string} id
  */
 
-export default async function getObject({ id, options, element }, halo) {
+export default async function getObject({ id, options, plugins, element }, halo) {
   const key = `${id}`;
   let rpc = rpcRequestModelStore.get(key);
   if (!rpc) {
@@ -24,5 +25,5 @@ export default async function getObject({ id, options, element }, halo) {
   }
   const model = await rpc;
   modelStore.set(key, model);
-  return init(model, { options, element }, halo);
+  return init(model, { options, plugins, element }, halo);
 }

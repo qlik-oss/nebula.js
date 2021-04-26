@@ -1,10 +1,11 @@
 /* eslint no-underscore-dangle:0 */
-const doMock = ({ glue = () => {}, getPatches = () => {}, objectConversion = {} } = {}) =>
+const doMock = ({ glue = () => {}, getPatches = () => {}, objectConversion = {}, validatePlugins = () => {} } = {}) =>
   aw.mock(
     [
       ['**/components/glue.jsx', () => glue],
       ['**/utils/patcher.js', () => getPatches],
       ['@nebula.js/conversion', () => objectConversion],
+      ['**/plugins/plugins.js', () => validatePlugins],
     ],
     ['../viz.js']
   );
@@ -21,20 +22,24 @@ describe('viz', () => {
   let cellRef;
   let setSnOptions;
   let setSnContext;
+  let setSnPlugins;
   let takeSnapshot;
   let exportImage;
   let objectConversion;
+  let validatePlugins;
   before(() => {
     sandbox = sinon.createSandbox();
     unmount = sandbox.spy();
     setSnOptions = sandbox.spy();
     setSnContext = sandbox.spy();
+    setSnPlugins = sandbox.spy();
     takeSnapshot = sandbox.spy();
     exportImage = sandbox.spy();
     cellRef = {
       current: {
         setSnOptions,
         setSnContext,
+        setSnPlugins,
         takeSnapshot,
         exportImage,
       },
@@ -42,7 +47,8 @@ describe('viz', () => {
     glue = sandbox.stub().returns([unmount, cellRef]);
     getPatches = sandbox.stub().returns(['patch']);
     objectConversion = { convertTo: sandbox.stub().returns('props') };
-    [{ default: create }] = doMock({ glue, getPatches, objectConversion });
+    validatePlugins = sandbox.spy();
+    [{ default: create }] = doMock({ glue, getPatches, objectConversion, validatePlugins });
     model = {
       getEffectiveProperties: sandbox.stub().returns('old'),
       applyPatches: sandbox.spy(),
@@ -128,6 +134,22 @@ describe('viz', () => {
       api.__DO_NOT_USE__.options(opts);
       await mounted;
       expect(cellRef.current.setSnOptions).to.have.been.calledWithExactly(opts);
+    });
+  });
+
+  describe('plugins', () => {
+    it('should set sn plugins', async () => {
+      const plugins = [{ info: { name: 'testplugin' }, fn: () => {} }];
+      api.__DO_NOT_USE__.plugins(plugins);
+      await mounted;
+      expect(cellRef.current.setSnPlugins).to.have.been.calledWithExactly(plugins);
+    });
+
+    it('should validate plugins', async () => {
+      const plugins = [{ info: { name: 'testplugin' }, fn: () => {} }];
+      api.__DO_NOT_USE__.plugins(plugins);
+      await mounted;
+      expect(validatePlugins).to.have.been.calledWithExactly(plugins);
     });
   });
 

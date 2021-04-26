@@ -12,7 +12,7 @@ const VizElement = {
   className: 'njs-viz',
 };
 
-const Supernova = ({ sn, snOptions: options, layout, appLayout, halo }) => {
+const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo }) => {
   const { component } = sn;
 
   const { theme: themeName, language, constraints } = useContext(InstanceContext);
@@ -75,6 +75,7 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, halo }) => {
         component.render({
           layout,
           options,
+          plugins,
           context: {
             constraints,
             // halo.public.theme is a singleton so themeName is used as dep to make sure this effect is triggered
@@ -99,7 +100,19 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, halo }) => {
         setRenderCnt(renderCnt + 1);
       });
     }, 10);
-  }, [containerRect, options, snNode, containerNode, layout, appLayout, themeName, language, constraints, isMounted]);
+  }, [
+    containerRect,
+    options,
+    plugins,
+    snNode,
+    containerNode,
+    layout,
+    appLayout,
+    themeName,
+    language,
+    constraints,
+    isMounted,
+  ]);
 
   return (
     <div
