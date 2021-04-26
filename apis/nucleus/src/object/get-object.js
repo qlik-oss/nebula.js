@@ -6,7 +6,7 @@ import { modelStore, rpcRequestModelStore } from '../stores/model-store';
  * @description Basic rendering configuration for rendering an object
  * @property {HTMLElement} element
  * @property {object=} options
- * @property {(Plugin[])=} plugins
+ * @property {Plugin[]} [plugins]
  */
 
 /**

@@ -1,5 +1,5 @@
 /**
- * @typedef {object} Plugin
+ * @interface Plugin
  * @property {object} info Object that can hold various meta info about the plugin
  * @property {string} info.name The name of the plugin
  * @property {function} fn The implementation of the plugin. Input and return value of this function can be whatever is necessery for This can be called from the chart implementation with necessary input.
