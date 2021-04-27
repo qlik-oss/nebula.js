@@ -1,8 +1,9 @@
 /**
+ * An object literal containing meta information about the plugin and a function containing the plugin implementation.
  * @interface Plugin
  * @property {object} info Object that can hold various meta info about the plugin
  * @property {string} info.name The name of the plugin
- * @property {function} fn The implementation of the plugin. Input and return value of this function can be whatever is necessery for This can be called from the chart implementation with necessary input.
+ * @property {function} fn The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.
  * @experimental
  * @since 1.2.0
  * @example

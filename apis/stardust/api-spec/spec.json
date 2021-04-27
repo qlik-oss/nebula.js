@@ -1139,6 +1139,7 @@
       }
     },
     "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
       "stability": "experimental",
       "availability": {
         "since": "1.2.0"
@@ -1156,7 +1157,7 @@
           }
         },
         "fn": {
-          "description": "The implementation of the plugin. Input and return value of this function can be whatever is necessery for This can be called from the chart implementation with necessary input.",
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
           "type": "function"
         }
       },
