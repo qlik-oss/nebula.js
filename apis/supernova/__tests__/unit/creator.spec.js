@@ -113,6 +113,7 @@ describe('creator', () => {
         },
         deviceType: 'desktop',
         options: {},
+        plugins: [],
       });
     });
 
@@ -300,6 +301,43 @@ describe('creator', () => {
         foo,
         ref,
       });
+    });
+
+    it('should run when plugins have changed', () => {
+      const c = create(generator, opts, galaxy).component;
+      c.render({}); // initial should always run
+
+      const plugins1 = [
+        { info: { name: 'a' }, fn() {} },
+        { info: { name: 'b' }, fn() {} },
+      ];
+      const plugins2 = [
+        { info: { name: 'a' }, fn() {} },
+        { info: { name: 'b' }, fn() {} },
+      ];
+
+      c.render({
+        plugins: plugins1,
+      });
+      expect(hooked.run.callCount).to.equal(2);
+
+      c.render({
+        plugins: plugins1,
+      });
+      expect(hooked.run.callCount).to.equal(2);
+
+      c.render({
+        plugins: plugins2,
+      });
+      expect(hooked.run.callCount).to.equal(3);
+
+      plugins2.pop();
+      c.render({
+        plugins: plugins2,
+      });
+      expect(hooked.run.callCount).to.equal(4);
+
+      expect(c.context.plugins).to.eql(plugins2);
     });
 
     it('should run when theme name has changed', () => {

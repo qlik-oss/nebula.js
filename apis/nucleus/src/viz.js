@@ -2,6 +2,7 @@
 import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
+import validatePlugins from './plugins/plugins';
 
 const noopi = () => {};
 
@@ -15,6 +16,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
   });
 
   let initialSnOptions = {};
+  let initialSnPlugins = [];
 
   const setSnOptions = async (opts) => {
     if (mountedReference) {
@@ -31,6 +33,19 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
         ...initialSnOptions,
         ...opts,
       };
+    }
+  };
+
+  const setSnPlugins = async (plugins) => {
+    validatePlugins(plugins);
+    if (mountedReference) {
+      (async () => {
+        await mounted;
+        cellRef.current.setSnPlugins(plugins);
+      })();
+    } else {
+      // Handle setting plugins before mount
+      initialSnPlugins = plugins;
     }
   };
 
@@ -102,6 +117,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
           element,
           model,
           initialSnOptions,
+          initialSnPlugins,
           initialError,
           onMount,
         });
@@ -117,6 +133,9 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       },
       options(opts) {
         setSnOptions(opts);
+      },
+      plugins(plugins) {
+        setSnPlugins(plugins);
       },
       exportImage() {
         return cellRef.current.exportImage();

@@ -27,6 +27,7 @@ import {
   useStaleLayout,
   useAppLayout,
   useTranslator,
+  usePlugins,
   useConstraints,
   useOptions,
   onTakeSnapshot,
@@ -753,6 +754,7 @@ describe('hooks', () => {
         element: 'element',
         theme: 'theme',
         translator: 'translator',
+        plugins: 'plugins',
         layout: 'layout',
         appLayout: 'appLayout',
         constraints: 'constraints',
@@ -864,6 +866,14 @@ describe('hooks', () => {
       };
       run(c);
       expect(value).to.equal('translator');
+    });
+    it('usePlugins', () => {
+      let value;
+      c.fn = () => {
+        value = usePlugins();
+      };
+      run(c);
+      expect(value).to.eql('plugins');
     });
     it('useConstraints', () => {
       let value;

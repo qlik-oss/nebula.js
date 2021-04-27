@@ -269,7 +269,7 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
   return undefined;
 };
 
-const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount }, ref) => {
+const Cell = forwardRef(({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount }, ref) => {
   const { app, types } = halo;
 
   const { translator, language } = useContext(InstanceContext);
@@ -280,6 +280,7 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
   const [appLayout] = useAppLayout(app);
   const [contentRef, contentRect] = useRect();
   const [snOptions, setSnOptions] = useState(initialSnOptions);
+  const [snPlugins, setSnPlugins] = useState(initialSnPlugins);
   const [selections] = useObjectSelections(app, model);
   const [hovering, setHover] = useState(false);
   const hoveringDebouncer = useRef({ enter: null, leave: null });
@@ -375,6 +376,7 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
         return state.sn.generator.qae;
       },
       setSnOptions,
+      setSnPlugins,
       async takeSnapshot() {
         const { width, height } = cellRect;
 
@@ -423,6 +425,7 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount 
         sn={state.sn}
         halo={halo}
         snOptions={snOptions}
+        snPlugins={snPlugins}
         layout={layout}
         appLayout={appLayout}
       />

@@ -18,6 +18,7 @@ describe('initiate api', () => {
       __DO_NOT_USE__: {
         mount: sandbox.stub(),
         options: sandbox.stub(),
+        plugins: sandbox.stub(),
       },
     };
     viz.returns(api);
@@ -43,5 +44,11 @@ describe('initiate api', () => {
   it('should call options when provided ', async () => {
     await create(model, { options: 'opts' }, halo);
     expect(api.__DO_NOT_USE__.options).to.have.been.calledWithExactly('opts');
+  });
+
+  it('should call plugins when provided ', async () => {
+    const plugins = [{ info: { name: 'plugino' }, fn() {} }];
+    await create(model, { plugins }, halo);
+    expect(api.__DO_NOT_USE__.plugins).to.have.been.calledWithExactly(plugins);
   });
 });

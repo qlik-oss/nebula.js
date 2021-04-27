@@ -76,6 +76,7 @@ function createWithHooks(generator, opts, galaxy) {
       appLayout: {},
       constraints: forcedConstraints,
       options: {},
+      plugins: [],
     },
     fn: generator.component.fn,
     created() {},
@@ -114,6 +115,19 @@ function createWithHooks(generator, opts, galaxy) {
           });
           if (opChanged) {
             this.context.options = op;
+            changed = true;
+          }
+        }
+
+        if (r.plugins) {
+          let pluginsChanged = this.context.plugins.length !== r.plugins.length;
+          r.plugins.forEach((plugin, index) => {
+            if (this.context.plugins[index] !== plugin) {
+              pluginsChanged = true;
+            }
+          });
+          if (pluginsChanged) {
+            this.context.plugins = [...r.plugins];
             changed = true;
           }
         }
