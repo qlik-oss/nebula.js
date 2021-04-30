@@ -66,6 +66,6 @@ describe('object lifecycle', () => {
   it('should destroy', async () => {
     await page.click('button[data-phase="destroy"]');
     // wait for some time to ensure destroy has been run and no errors are thrown
-    await page.waitFor(100);
+    await page.waitForTimeout(100);
   });
 });

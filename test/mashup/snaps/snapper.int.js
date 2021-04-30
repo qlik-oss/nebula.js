@@ -12,6 +12,7 @@ const differ = () => {
       const diff = jimp.diff(stored, captured);
       if (distance > 0.001 || diff.percent > 0.001) {
         await captured.writeAsync(path.resolve(artifacts, 'regression', file));
+        await diff.image.writeAsync(path.resolve(artifacts, 'diff', file));
         throw new Error(`Images differ too much - distance: ${distance}, percent: ${diff.percent}`);
       }
     },

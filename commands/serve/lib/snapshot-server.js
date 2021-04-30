@@ -28,7 +28,7 @@ function snapshooter({ snapshotUrl, chrome = {} } = {}) {
     });
     await page.goto(`${snapshotUrl}?snapshot=${snapshot.key}`);
     try {
-      await page.waitFor(
+      await page.waitForTimeout(
         () =>
           (document.querySelector('.njs-viz') &&
             +document.querySelector('.njs-viz').getAttribute('data-render-count') > 0) ||
