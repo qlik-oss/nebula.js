@@ -29,7 +29,7 @@
   "dependencies": {
     "@nebula.js/cli-build": "^1.1.1",
     "body-parser": "1.19.0",
-    "chalk": "4.1.0",
+    "chalk": "4.1.1",
     "chokidar": "3.5.1",
     "cross-env": "7.0.3",
     "express": "4.17.1",
@@ -41,14 +41,14 @@
     "source-map-loader": "1.1.3",
     "webpack": "4.46.0",
     "webpack-dev-server": "3.11.2",
-    "ws": "7.4.4",
+    "ws": "7.4.5",
     "yargs": "16.2.0"
   },
   "devDependencies": {
-    "@babel/core": "7.13.14",
-    "@babel/preset-env": "7.13.12",
+    "@babel/core": "7.14.0",
+    "@babel/preset-env": "7.14.0",
     "@babel/preset-react": "7.13.13",
-    "@material-ui/core": "4.11.3",
+    "@material-ui/core": "4.11.4",
     "@nebula.js/nucleus": "^1.1.1",
     "@nebula.js/snapshooter": "1.0.0",
     "@nebula.js/stardust": "^1.1.1",
