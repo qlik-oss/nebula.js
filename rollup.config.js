@@ -128,6 +128,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       babel({
         babelrc: false,
         include: [
+          '/**/apis/conversion/**',
           '/**/apis/locale/**',
           '/**/apis/nucleus/**',
           '/**/apis/snapshooter/**',
