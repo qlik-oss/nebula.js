@@ -35,9 +35,9 @@
     "spec": "sy from-jsdoc -c ./api-spec/spec.conf.js"
   },
   "devDependencies": {
-    "@material-ui/core": "4.11.3",
+    "@material-ui/core": "4.11.4",
     "@material-ui/icons": "4.11.2",
-    "@material-ui/styles": "4.11.3",
+    "@material-ui/styles": "4.11.4",
     "@nebula.js/conversion": "^1.1.1",
     "@nebula.js/locale": "^1.1.1",
     "@nebula.js/nucleus": "^1.1.1",
