@@ -46,7 +46,7 @@ describe('object lifecycle', () => {
     await waitForTextStatus('.rendered', 'Success!');
   });
 
-  it('should render long running query', async () => {
+  it.skip('should render long running query', async () => {
     await page.click('button[data-phase="long-running-query"]');
 
     // the cancel button should appear after 2000ms
