@@ -90,27 +90,27 @@ jobs:
       - run:
           name: Test integration
           command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      # - run:
-      #     name: Create a hello supernova project from latest release
-      #     command: |
-      #       set -e
-      #       npx nebula create temp/hello --pkgm yarn --picasso none
-      #       cd temp/hello
-      #       APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      #- run:
-      #    name: Create a picasso barchart supernova project from current commit
-      #    command: |
-      #      set -e
-      #      ./commands/cli/lib/index.js create generated/barchart --picasso barchart --no-install
-      #      echo "Yarn"
-      #      yarn
-      #      echo "Linking packages"
-      #      npx lerna link --force-local
-      #      cd generated/barchart
-      #      echo "Log node_modules/@nebula.js"
-      #      ls -la node_modules/@nebula.js
-      #      yarn run build
-      #      APP_ID=$DOC_ID yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - run:
+          name: Create a hello supernova project from latest release
+          command: |
+            set -e
+            npx nebula create temp/hello --pkgm yarn --picasso none
+            cd temp/hello
+            APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - run:
+          name: Create a picasso barchart supernova project from current commit
+          command: |
+            set -e
+            ./commands/cli/lib/index.js create generated/barchart --picasso barchart --no-install
+            echo "Yarn"
+            yarn
+            echo "Linking packages"
+            npx lerna link --force-local
+            cd generated/barchart
+            echo "Log node_modules/@nebula.js"
+            ls -la node_modules/@nebula.js
+            yarn run build
+            APP_ID=$DOC_ID yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - store_artifacts:
           path: generated/barchart/screenshots
       - store_artifacts:
