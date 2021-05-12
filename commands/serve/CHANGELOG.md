@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/qlik-oss/nebula.js/compare/v1.1.1...v1.2.0) (2021-05-12)
+
+### Bug Fixes
+
+- **deps:** update dependency puppeteer to v9 ([#604](https://github.com/qlik-oss/nebula.js/issues/604)) ([c1eb3fb](https://github.com/qlik-oss/nebula.js/commit/c1eb3fbd16fbe19d97a46d2631eb608183290176))
+
 ## [1.1.1](https://github.com/qlik-oss/nebula.js/compare/v1.1.0...v1.1.1) (2021-04-19)
 
 ### Bug Fixes
