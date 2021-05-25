@@ -386,6 +386,7 @@ function nuked(configuration = {}) {
     };
 
     halo.public.nebbie = api;
+    halo.public.galaxy.nebbie = api;
     halo.types = types;
 
     return api;

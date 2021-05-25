@@ -24,5 +24,6 @@ export {
   usePlugins,
   useConstraints,
   useOptions,
+  useEmbed,
   onTakeSnapshot,
 } from './hooks';
