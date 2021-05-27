@@ -90,7 +90,6 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   useEffect(() => {
     if (selections) {
       if (!selections.isModal(model)) {
-        selections.goModal('/qListObjectDef');
         selections.on('deactivated', () => {
           setShowToolbar(false);
         });
