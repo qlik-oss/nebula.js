@@ -86,6 +86,7 @@ export default function App({ app, info }) {
         language: currentLanguage,
       },
       load: (type) => Promise.resolve(window[type.name]),
+      flags: info.flags,
       themes: info.themes
         ? info.themes.map((t) => ({
             key: t,
