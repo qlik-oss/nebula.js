@@ -126,6 +126,7 @@ module.exports = async ({
           sock: {
             port: entryWatcher && entryWatcher.port,
           },
+          flags: serveConfig.flags,
           themes: themes.map((theme) => theme.id),
         });
       });

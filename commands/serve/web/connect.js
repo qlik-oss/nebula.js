@@ -81,13 +81,6 @@ const connectionInfo = fetch('/info')
     if (params['qlik-web-integration-id']) {
       info.webIntegrationId = params['qlik-web-integration-id'];
     }
-    if (params.flags) {
-      const flags = {};
-      params.flags.split('+').forEach((f) => {
-        flags[f] = true;
-      });
-      info.flags = flags;
-    }
     if (info.invalid) {
       return info;
     }
