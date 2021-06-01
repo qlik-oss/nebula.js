@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/qlik-oss/nebula.js/compare/v1.2.0...v1.3.0) (2021-06-01)
+
+### Bug Fixes
+
+- **serve:** fix themes to use id, not key ([#608](https://github.com/qlik-oss/nebula.js/issues/608)) ([76189a7](https://github.com/qlik-oss/nebula.js/commit/76189a7d06de6a0f5b8eb23a587e86ef52526246))
+
 # [1.2.0](https://github.com/qlik-oss/nebula.js/compare/v1.1.1...v1.2.0) (2021-05-12)
 
 ### Bug Fixes
