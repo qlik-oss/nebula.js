@@ -23,6 +23,11 @@ const options = {
     alias: 'm',
     default: true,
   },
+  mode: {
+    description: 'Explicitly set mode ("developer"|"production")',
+    type: 'string',
+    default: undefined,
+  },
 };
 
 module.exports = (yargs) =>

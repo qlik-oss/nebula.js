@@ -21,4 +21,6 @@ Options:
                                           [string] [default: "nebula.config.js"]
   --watch, -w      Watch source files                 [boolean] [default: false]
   --sourcemap, -m  Generate source map                 [boolean] [default: true]
+  --mode           Explicitly set mode
+                                 [string] [choices: "production", "development"]
 ```

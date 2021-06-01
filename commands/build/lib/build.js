@@ -115,7 +115,7 @@ const config = ({
 
 const minified = async (argv) => {
   const c = config({
-    mode: 'production',
+    mode: argv.mode || 'production',
     format: 'umd',
     argv,
   });
@@ -125,7 +125,7 @@ const minified = async (argv) => {
 
 const esm = async (argv, core) => {
   const c = config({
-    mode: 'development',
+    mode: argv.mode || 'development',
     format: 'esm',
     argv,
     core,
@@ -152,7 +152,7 @@ function clearScreen(msg) {
 
 const watch = async (argv) => {
   const c = config({
-    mode: 'development',
+    mode: argv.mode || 'development',
     format: 'umd',
     argv,
   });
