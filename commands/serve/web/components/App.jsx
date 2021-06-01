@@ -89,7 +89,7 @@ export default function App({ app, info }) {
       flags: info.flags,
       themes: info.themes
         ? info.themes.map((t) => ({
-            key: t,
+            id: t,
             load: () =>
               fetch(`/theme/${t}`)
                 .then((response) => response.json())
