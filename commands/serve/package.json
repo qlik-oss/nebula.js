@@ -42,7 +42,7 @@
     "webpack": "4.46.0",
     "webpack-dev-server": "3.11.2",
     "ws": "7.4.6",
-    "yargs": "16.2.0"
+    "yargs": "17.0.1"
   },
   "devDependencies": {
     "@babel/core": "7.14.0",
