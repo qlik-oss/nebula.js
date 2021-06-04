@@ -44,7 +44,7 @@ module.exports = async ({
   const renderConfigs = serveConfig.renderConfigs || [];
 
   if (dev) {
-    const webpackConfig = require('./webpack.build.js');
+    const webpackConfig = require('./webpack.build');
     const srcDir = path.resolve(__dirname, '../web');
     const distDir = path.resolve(srcDir, '../dist');
     contentBase = distDir;
@@ -55,7 +55,7 @@ module.exports = async ({
       serveConfig,
     });
   } else {
-    const webpackConfig = require('./webpack.prod.js');
+    const webpackConfig = require('./webpack.prod');
     const srcDir = path.resolve(__dirname, '../dist');
     contentBase = srcDir;
     config = webpackConfig({

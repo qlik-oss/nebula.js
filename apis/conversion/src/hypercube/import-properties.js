@@ -19,10 +19,8 @@ export default function importProperties({
     exportFormat,
     dataDefinition,
   });
-  const {
-    defaultDimension = helpers.getDefaultDimension(),
-    defaultMeasure = helpers.getDefaultMeasure(),
-  } = defaultPropertyValues;
+  const { defaultDimension = helpers.getDefaultDimension(), defaultMeasure = helpers.getDefaultMeasure() } =
+    defaultPropertyValues;
 
   // empty dimensions and measures of new hypercube
   newHyperCubeDef.qDimensions.length = 0;
