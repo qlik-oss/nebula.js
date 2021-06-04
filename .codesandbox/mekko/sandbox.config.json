@@ -1,3 +1,4 @@
 {
-  "hardReloadOnChange": true
+  "hardReloadOnChange": true,
+  "node": "12"
 }

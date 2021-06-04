@@ -9,9 +9,10 @@ const patchAlternateState = (currentSelectionsModel, currentSelectionsLayout, ap
       qStateName: s,
     },
   }));
-  const existingStates = (currentSelectionsLayout && currentSelectionsLayout.alternateStates
-    ? currentSelectionsLayout.alternateStates.map((s) => s.stateName)
-    : []
+  const existingStates = (
+    currentSelectionsLayout && currentSelectionsLayout.alternateStates
+      ? currentSelectionsLayout.alternateStates.map((s) => s.stateName)
+      : []
   ).join('::');
   const newStates = (appLayout.qStateNames || []).map((s) => s).join('::');
   if (existingStates !== newStates) {

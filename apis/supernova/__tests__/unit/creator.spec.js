@@ -449,9 +449,8 @@ describe('creator', () => {
       'incorrect params in this context after applyPatches call'
     ).to.eql({ model: params.model });
 
-    expect(
-      generator.qae.properties.onChange,
-      'incorrect input params after applyPatches call'
-    ).to.have.been.calledWith({ dummyPatched: true });
+    expect(generator.qae.properties.onChange, 'incorrect input params after applyPatches call').to.have.been.calledWith(
+      { dummyPatched: true }
+    );
   });
 });

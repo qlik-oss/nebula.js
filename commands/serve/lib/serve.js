@@ -9,7 +9,7 @@ const build = require('@nebula.js/cli-build');
 
 const initConfig = require('./init-config');
 
-const webpackServe = require('./webpack.serve.js');
+const webpackServe = require('./webpack.serve');
 const useEngine = require('./engine');
 
 const initiateWatch = async ({ snPath, snName, host }) => {

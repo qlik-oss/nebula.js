@@ -2,5 +2,6 @@
   "buildCommand": "build:codesandbox",
   "packages": ["apis/stardust"],
   "sandboxes": ["/.codesandbox/mekko"],
-  "silent": true
+  "silent": true,
+  "node": "12"
 }
