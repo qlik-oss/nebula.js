@@ -76,6 +76,7 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
           layout,
           options,
           plugins,
+          embed: halo.public.galaxy.nebbie,
           context: {
             constraints,
             // halo.public.theme is a singleton so themeName is used as dep to make sure this effect is triggered
