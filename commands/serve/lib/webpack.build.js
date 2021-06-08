@@ -23,7 +23,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       eDev: [path.resolve(srcDir, 'eDev')],
       eHub: [path.resolve(srcDir, 'eHub')],
     },
-    devtool: dev ? 'cheap-module-eval-source-map' : false,
+    devtool: dev ? 'eval-cheap-module-source-map' : false,
     output: {
       path: distDir,
       filename: '[name].js',
