@@ -71,6 +71,7 @@ async function build(argv) {
         replace({
           __SN_DEF__: `${relativeMainFile}`,
           __EXT_DEF__: `${extDefinition.replace(/\\/g, '/')}`,
+          preventAssignment: true,
         }),
         nodeResolve(),
         common(),

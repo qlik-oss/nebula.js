@@ -71,6 +71,7 @@ const config = ({
       plugins: [
         replace({
           'process.env.NODE_ENV': JSON.stringify(mode === 'development' ? 'development' : 'production'),
+          preventAssignment: true,
         }),
         nodeResolve(),
         commonjs(),

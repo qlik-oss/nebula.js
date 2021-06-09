@@ -26,6 +26,7 @@ module.exports = [
       }),
       replace({
         'process.env.NODE_ENV': JSON.stringify('production'),
+        preventAssignment: true,
       }),
       babel({
         babelrc: false,
