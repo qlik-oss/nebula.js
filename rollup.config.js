@@ -119,6 +119,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
         'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV === 'development' ? 'development' : 'production'),
         'process.env.NEBULA_VERSION': JSON.stringify(version),
         'process.env.NEBULA_VERSION_HASH': JSON.stringify(versionHash),
+        preventAssignment: true,
       }),
       nodeResolve({
         extensions: [debug ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),

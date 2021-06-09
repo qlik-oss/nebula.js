@@ -27,12 +27,12 @@
     "@nebula.js/cli-build": "<%= nebulaVersion %>",
     "@nebula.js/cli-serve": "<%= nebulaVersion %>",
     "@nebula.js/cli-sense": "<%= nebulaVersion %>",
-    "eslint": "5.12.1",
-    "eslint-config-airbnb-base": "13.1.0",
-    "eslint-plugin-import": "2.15.0",
-    "eslint-plugin-mocha": "5.2.1",
-    "picasso.js": "0.34.0",
-    "picasso-plugin-q": "0.34.0"
+    "eslint": "7.27.0",
+    "eslint-config-airbnb-base": "14.2.1",
+    "eslint-plugin-import": "2.23.4",
+    "eslint-plugin-mocha": "9.0.0",
+    "picasso.js": "1.2.1",
+    "picasso-plugin-q": "1.2.1"
   },
   "peerDependencies": {
     "@nebula.js/stardust": "^1.x"
