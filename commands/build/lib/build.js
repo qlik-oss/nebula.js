@@ -9,6 +9,7 @@ const babel = require('rollup-plugin-babel');
 const postcss = require('rollup-plugin-postcss');
 const replace = require('@rollup/plugin-replace');
 const sourcemaps = require('rollup-plugin-sourcemaps');
+const jsxPlugin = require('@babel/plugin-transform-react-jsx');
 const json = require('@rollup/plugin-json');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
@@ -66,14 +67,22 @@ const config = ({
 
   return {
     input: {
+      onwarn(warning, warn) {
+        // Suppress circular dep. warnings to avoid noise (d3 circular dep. warnings...)
+        if (warning.code === 'CIRCULAR_DEPENDENCY') return;
+        warn(warning);
+      },
       input: path.resolve(CWD, 'src/index'),
       external,
       plugins: [
         replace({
           'process.env.NODE_ENV': JSON.stringify(mode === 'development' ? 'development' : 'production'),
           preventAssignment: true,
+          ...(typeof argv.replacementStrings === 'function' ? argv.replacementStrings() : {}),
         }),
-        nodeResolve(),
+        nodeResolve({
+          extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
+        }),
         commonjs(),
         json(),
         babel({
@@ -90,6 +99,7 @@ const config = ({
               },
             ],
           ],
+          plugins: [[jsxPlugin]],
         }),
         sourcemaps(),
         postcss({}),
@@ -165,10 +175,14 @@ const watch = async (argv) => {
 
   const watcher = rollup.watch({
     ...c.input,
-    onwarn({ loc, message }) {
+    onwarn({ loc, message, code }) {
       if (!hasWarnings) {
         clearScreen();
       }
+
+      // Suppress circular dep. warnings to avoid noise (d3 circular dep. warnings...)
+      if (code === 'CIRCULAR_DEPENDENCY') return;
+
       console.log(
         `${chalk.black.bgYellow(' WARN  ')} ${chalk.yellow(
           loc ? `${loc.file} (${loc.line}:${loc.column}) ${message}` : message

@@ -86,6 +86,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         __NEBULA_DEV__: true,
         'process.env.NEBULA_VERSION': JSON.stringify(version),
         'process.env.NEBULA_VERSION_HASH': JSON.stringify(versionHash),
+        ...(typeof serveConfig.replacementStrings === 'function' ? serveConfig.replacementStrings() : {}),
       }),
       new MonacoWebpackPlugin({ languages: ['json'] }),
       new HtmlWebpackPlugin({

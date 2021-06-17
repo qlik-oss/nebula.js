@@ -1,10 +1,14 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
+const crypto = require('crypto');
+const { version } = require('../package.json');
 
 const isSrc = /^([.]{2}\/)/;
 const namespace = /^webpack:\/\/([^/]+)\//;
 const NM = /node_modules/;
 const WP = /\/\(?webpack\)?/;
+const versionHash = crypto.createHash('md5').update(version).digest('hex').slice(0, 4);
 
 const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) => {
   const folderName = process.cwd().split('/').slice(-1)[0];
@@ -44,6 +48,11 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
       },
     },
     plugins: [
+      new webpack.DefinePlugin({
+        'process.env.NEBULA_VERSION': JSON.stringify(version),
+        'process.env.NEBULA_VERSION_HASH': JSON.stringify(versionHash),
+        ...(typeof serveConfig.replacementStrings === 'function' ? serveConfig.replacementStrings() : {}),
+      }),
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eRender.html'),
         filename: 'eRender.html',

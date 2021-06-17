@@ -138,6 +138,7 @@ module.exports = async (argv) => {
         watch: true,
         config: serveConfig.config,
         cwd: context,
+        replacementStrings: serveConfig.replacementStrings,
       });
     }
     try {
