@@ -20,6 +20,13 @@ const { terser } = require('rollup-plugin-terser');
 
 const initConfig = require('./init-config');
 
+const resolveReplacementStrings = (replacementStrings) => {
+  if (typeof replacementStrings !== 'function' || typeof replacementStrings() !== 'object') {
+    throw new Error('replacementStrings should be a function returning an object with key value pairs of strings!');
+  }
+  return replacementStrings();
+};
+
 const config = ({
   mode = 'production',
   format = 'umd',
@@ -32,7 +39,7 @@ const config = ({
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
   const { name, version, license, author } = pkg;
-  const { sourcemap } = argv;
+  const { sourcemap, replacementStrings = () => ({}) } = argv;
 
   if (corePkg) {
     pkg = corePkg;
@@ -67,18 +74,13 @@ const config = ({
 
   return {
     input: {
-      onwarn(warning, warn) {
-        // Suppress circular dep. warnings to avoid noise (d3 circular dep. warnings...)
-        if (warning.code === 'CIRCULAR_DEPENDENCY') return;
-        warn(warning);
-      },
       input: path.resolve(CWD, 'src/index'),
       external,
       plugins: [
         replace({
           'process.env.NODE_ENV': JSON.stringify(mode === 'development' ? 'development' : 'production'),
           preventAssignment: true,
-          ...(typeof argv.replacementStrings === 'function' ? argv.replacementStrings() : {}),
+          ...resolveReplacementStrings(replacementStrings),
         }),
         nodeResolve({
           extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
@@ -175,14 +177,10 @@ const watch = async (argv) => {
 
   const watcher = rollup.watch({
     ...c.input,
-    onwarn({ loc, message, code }) {
+    onwarn({ loc, message }) {
       if (!hasWarnings) {
         clearScreen();
       }
-
-      // Suppress circular dep. warnings to avoid noise (d3 circular dep. warnings...)
-      if (code === 'CIRCULAR_DEPENDENCY') return;
-
       console.log(
         `${chalk.black.bgYellow(' WARN  ')} ${chalk.yellow(
           loc ? `${loc.file} (${loc.line}:${loc.column}) ${message}` : message
