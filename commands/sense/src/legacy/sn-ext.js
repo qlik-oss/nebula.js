@@ -123,7 +123,10 @@ function updateTheme(ref) {
 // ============= EXTENSON =====================================================
 
 const snGenerator = supernova(snDefinition, galaxy);
-const ext = extDefinition || {};
+const ext =
+  snGenerator.definition.ext ||
+  (typeof extDefinition === 'function' ? extDefinition({ translator }) : extDefinition) ||
+  {};
 let data;
 
 if (snGenerator.qae.data.targets[0]) {

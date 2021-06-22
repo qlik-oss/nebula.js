@@ -102,7 +102,7 @@ async function build(argv) {
     await bundle.write({
       file: qextFileNameJs,
       format: 'amd',
-      sourcemap: argv.ext && argv.sourcemap,
+      sourcemap: argv.sourcemap,
     });
   }
 
