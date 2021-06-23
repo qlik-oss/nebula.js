@@ -26,7 +26,7 @@ async function build(argv) {
   const qextFileName = path.resolve(qextLegacyTargetDir, `${extName}.qext`);
   const qextFileNameJs = qextFileName.replace(/\.qext$/, '.js');
 
-  const extDefinition = argv.ext ? path.resolve(argv.ext) : path.resolve(__dirname, '../src/legacy/empty-ext.js');
+  const extDefinition = argv.ext ? path.resolve(argv.ext) : '';
 
   const relativeMainFile = `./${main.replace(/\.js$/, '')}`;
 
