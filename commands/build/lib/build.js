@@ -21,10 +21,10 @@ const { terser } = require('rollup-plugin-terser');
 const initConfig = require('./init-config');
 
 const resolveReplacementStrings = (replacementStrings) => {
-  if (typeof replacementStrings !== 'function' || typeof replacementStrings() !== 'object') {
-    throw new Error('replacementStrings should be a function returning an object with key value pairs of strings!');
+  if (typeof replacementStrings !== 'object') {
+    throw new Error('replacementStrings should be an object with key value pairs of strings!');
   }
-  return replacementStrings();
+  return replacementStrings;
 };
 
 const config = ({
@@ -39,7 +39,7 @@ const config = ({
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
   const { name, version, license, author } = pkg;
-  const { sourcemap, replacementStrings = () => ({}) } = argv;
+  const { sourcemap, replacementStrings = {} } = argv;
 
   if (corePkg) {
     pkg = corePkg;
@@ -228,7 +228,8 @@ async function build(argv = {}) {
 
   // if not runnning via command line, run the config to inject default values
   if (!argv.$0) {
-    defaultBuildConfig = initConfig(yargs([])).argv;
+    const yargsArgs = argv.config ? ['--config', argv.config] : [];
+    defaultBuildConfig = initConfig(yargs(yargsArgs)).argv;
   }
 
   const buildConfig = extend(true, {}, defaultBuildConfig, argv);
