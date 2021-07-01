@@ -70,17 +70,9 @@ async function build(argv) {
   };
 
   const copySource = () => {
-    try {
-      fs.copySync(path.resolve(main), path.resolve(targetDir, main));
-    } catch (e) {
-      console.error(e);
-    }
+    fs.copySync(path.resolve(main), path.resolve(targetDir, main));
     if (sourcemap) {
-      try {
-        fs.copySync(path.resolve(`${main}.map`), path.resolve(targetDir, `${main}.map`));
-      } catch (e) {
-        console.error(e);
-      }
+      fs.copySync(path.resolve(`${main}.map`), path.resolve(targetDir, `${main}.map`));
     }
   };
 
