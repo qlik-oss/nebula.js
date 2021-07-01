@@ -9,6 +9,7 @@ import senseTranslator from 'translator';
 // injected
 import snDefinition from '__SN_DEF__';
 import extDefinition from '__EXT_DEF__';
+import emptyExtDefinition from './empty-ext';
 
 // lib dependencies
 import { __DO_NOT_USE__ } from './nlib/@nebula.js/stardust/dist/stardust';
@@ -123,7 +124,10 @@ function updateTheme(ref) {
 // ============= EXTENSON =====================================================
 
 const snGenerator = supernova(snDefinition, galaxy);
-const ext = extDefinition || {};
+const ext =
+  typeof extDefinition === 'function'
+    ? extDefinition({ translator })
+    : extDefinition || snGenerator.definition.ext || emptyExtDefinition || {};
 let data;
 
 if (snGenerator.qae.data.targets[0]) {

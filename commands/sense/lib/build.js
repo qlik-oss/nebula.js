@@ -19,11 +19,11 @@ async function build(argv) {
   if (extName === main) {
     extName = extName.replace(/\.js$/, '-ext.js');
   }
-
-  const targetDir = argv.output || 'dist';
+  const { sourcemap } = argv;
+  const targetDir = argv.output !== '<name>-ext' ? argv.output : `${extName}-ext`;
   const targetFile = 'ext';
   const qextLegacyTargetDir = path.resolve(cwd, targetDir);
-  const qextFileName = path.resolve(cwd, `${extName}.qext`);
+  const qextFileName = path.resolve(qextLegacyTargetDir, `${extName}.qext`);
   const qextFileNameJs = qextFileName.replace(/\.qext$/, '.js');
 
   const extDefinition = argv.ext ? path.resolve(argv.ext) : undefined;
@@ -69,6 +69,14 @@ async function build(argv) {
     }
   };
 
+  const copySource = () => {
+    fs.copySync(path.resolve(main), path.resolve(targetDir, main));
+
+    if (sourcemap) {
+      fs.copySync(path.resolve(`${main}.map`), path.resolve(targetDir, `${main}.map`));
+    }
+  };
+
   if (extDefinition) {
     const bundle = await rollup.rollup({
       input: extDefinition,
@@ -102,10 +110,11 @@ async function build(argv) {
     await bundle.write({
       file: path.resolve(qextLegacyTargetDir, `${targetFile}.js`),
       format: 'amd',
-      sourcemap: argv.ext && argv.sourcemap,
+      sourcemap,
     });
   }
 
+  copySource();
   createQextFiles();
 }
 
