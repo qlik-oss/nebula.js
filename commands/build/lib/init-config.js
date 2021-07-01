@@ -30,8 +30,12 @@ const options = {
   },
 };
 
-module.exports = (yargs) =>
-  yargs.options(options).config('config', (configPath) => {
+module.exports = (yargs) => {
+  yargs.parserConfiguration({
+    'dot-notation': false, // To avoid parsing "replacementStrings" with dot-notation into objects
+  });
+
+  return yargs.options(options).config('config', (configPath) => {
     if (configPath === null) {
       return {};
     }
@@ -42,5 +46,6 @@ module.exports = (yargs) =>
       }
       throw new Error(`Config ${configPath} not found`);
     }
-    return require(configPath).build;
+    return require(configPath).build || {};
   });
+};

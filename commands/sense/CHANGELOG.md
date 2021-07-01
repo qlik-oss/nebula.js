@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/qlik-oss/nebula.js/compare/v1.3.0...v1.4.0) (2021-06-28)
+
+### Bug Fixes
+
+- **deps:** update dependency fs-extra to v10 ([#616](https://github.com/qlik-oss/nebula.js/issues/616)) ([73bf35f](https://github.com/qlik-oss/nebula.js/commit/73bf35f53f1882f89207a1215c35fc3c59f9c35a))
+
 # [1.2.0](https://github.com/qlik-oss/nebula.js/compare/v1.1.1...v1.2.0) (2021-05-12)
 
 **Note:** Version bump only for package @nebula.js/cli-sense
