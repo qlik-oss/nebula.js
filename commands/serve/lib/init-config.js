@@ -76,5 +76,5 @@ module.exports = (yargs) =>
       }
       throw new Error(`Config ${configPath} not found`);
     }
-    return require(configPath).serve;
+    return require(configPath).serve || {};
   });

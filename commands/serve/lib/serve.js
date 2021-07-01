@@ -98,7 +98,8 @@ module.exports = async (argv) => {
   let runFromDirectory = false;
 
   if (!argv.$0) {
-    defaultServeConfig = initConfig(yargs([])).argv;
+    const yargsArgs = argv.config ? ['--config', argv.config] : [];
+    defaultServeConfig = initConfig(yargs(yargsArgs)).argv;
   }
 
   const serveConfig = extend(true, {}, defaultServeConfig, argv);
