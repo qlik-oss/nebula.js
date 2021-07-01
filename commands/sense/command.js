@@ -33,19 +33,18 @@ module.exports = {
       default: false,
       desc: 'Generate sourcemaps',
     });
-    yargs.option('partial', {
+    yargs.option('legacy', {
       type: 'boolean',
       required: false,
       default: false,
-      desc: 'Generate partial extension',
-      hidden: true,
+      desc: 'Generate legacy extension',
     });
   },
   handler(argv) {
-    if (argv.partial) {
-      build(argv);
-    } else {
+    if (argv.legacy) {
       buildLegacy(argv);
+    } else {
+      build(argv);
     }
   },
 };
