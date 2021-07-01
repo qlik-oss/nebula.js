@@ -42,10 +42,10 @@ module.exports = {
     });
   },
   handler(argv) {
-    if (argv.partial) {
-      build(argv);
-    } else {
+    if (argv.legacy) {
       buildLegacy(argv);
+    } else {
+      build(argv);
     }
   },
 };
