@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-serve",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -27,7 +27,7 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "dependencies": {
-    "@nebula.js/cli-build": "^1.4.0",
+    "@nebula.js/cli-build": "^1.5.0",
     "body-parser": "1.19.0",
     "chalk": "4.1.1",
     "chokidar": "3.5.1",

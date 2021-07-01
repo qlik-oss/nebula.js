@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/qlik-oss/nebula.js/compare/v1.4.0...v1.5.0) (2021-07-01)
+
+### Features
+
+- update build and build legacy for nebula sense ([#627](https://github.com/qlik-oss/nebula.js/issues/627)) ([da61276](https://github.com/qlik-oss/nebula.js/commit/da61276431d3356aca98781a4be736251d08e384))
+
 # [1.4.0](https://github.com/qlik-oss/nebula.js/compare/v1.3.0...v1.4.0) (2021-06-28)
 
 ### Bug Fixes
