@@ -42,6 +42,9 @@ export default (scope) => {
     isActive() {
       return scope.selectionsApi.active;
     },
+    isModal() {
+      return scope.backendApi.model === (scope.backendApi.model.app && scope.backendApi.model.app.modalSelectionObject);
+    },
     refreshToolbar() {
       scope.selectionsApi.refreshToolbar();
     },
