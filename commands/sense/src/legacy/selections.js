@@ -13,9 +13,14 @@ export default (scope) => {
   // TODO one and only one
 
   const selectionAPI = {
-    begin() {
-      scope.selectionsApi.activated();
-      scope.backendApi.beginSelections();
+    begin(paths) {
+      const suppressBeginSelections = true;
+      scope.selectionsApi.activated(suppressBeginSelections);
+      if (paths) {
+        scope.backendApi.model.app.switchModalSelection(scope.backendApi.model, paths);
+      } else {
+        scope.backendApi.beginSelections();
+      }
       selectionAPI.emit('activated');
     },
     clear() {
