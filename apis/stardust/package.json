@@ -35,7 +35,7 @@
     "spec": "sy from-jsdoc -c ./api-spec/spec.conf.js"
   },
   "devDependencies": {
-    "@material-ui/core": "4.11.4",
+    "@material-ui/core": "4.12.3",
     "@material-ui/icons": "4.11.2",
     "@material-ui/styles": "4.11.4",
     "@nebula.js/conversion": "^1.4.0",
@@ -52,7 +52,7 @@
     "react-virtualized-auto-sizer": "^1.0.5",
     "react-window": "1.8.6",
     "react-window-infinite-loader": "1.0.7",
-    "regenerator-runtime": "0.13.7",
+    "regenerator-runtime": "0.13.9",
     "semver": "6.3.0"
   }
 }
