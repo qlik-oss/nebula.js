@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 import { globbySync } from 'globby';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath } from 'url';
 import fs from 'fs';
 import path from 'path';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
