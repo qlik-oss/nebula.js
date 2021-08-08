@@ -63,19 +63,23 @@ You can add more meta about the extension by providing a `.json` formatted file 
 nebula sense --meta meta.json
 ```
 
+The meta data will be ended up in the `.qext` file used by the Qlik Sense.
+
 The rest of the required information is populated automatically based on the content in `package.json`.
 
 ### Output
 
-The command generates all required files into the specified `--output` folder. You can the zip the folder and upload it as an extension on [Qlik Sense Enterprise for Windows](https://help.qlik.com/en-US/sense-developer/April2020/Subsystems/Extensions/Content/Sense_Extensions/Howtos/deploy-extensions.htm) or [Qlik Sense Enterprise on Kubernetes](https://help.qlik.com/en-US/sense-admin/April2020/Subsystems/DeployAdministerQSE/Content/Sense_DeployAdminister/QSEoK/Administer_QSEoK/mc-extensions.htm)
+Generate all required files into the specified `--output` folder called sn-table-ext:
 
 ```bash
 nebula sense --output sn-table-ext
 ```
 
+You can upload that folder as an extension on [Qlik Sense Enterprise for Windows](https://help.qlik.com/en-US/sense-developer/April2020/Subsystems/Extensions/Content/Sense_Extensions/Howtos/deploy-extensions.htm) or [Qlik Sense Enterprise on Kubernetes](https://help.qlik.com/en-US/sense-admin/April2020/Subsystems/DeployAdministerQSE/Content/Sense_DeployAdminister/QSEoK/Administer_QSEoK/mc-extensions.htm)
+
 ### Legacy
 
- Explictly declaring legacy to generate legacy extension to run in old qlik sense which does not support nebula supernova
+Explicitly declaring legacy to generate legacy extension to run in old Qlik Sense which does not support nebula supernova:
 
 ```bash
 nebula sense --legacy
