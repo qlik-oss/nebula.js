@@ -1,11 +1,12 @@
 #! /usr/bin/env node
-
-const fs = require('fs');
-const path = require('path');
-const globby = require('globby');
+import { globbySync } from 'globby';
+import { fileURLToPath } from 'url';
+import fs from 'fs';
+import path from 'path';
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const LOCALES_DIR = path.resolve(__dirname, '../locales');
-const LOCALES_FILES = globby.sync([`${LOCALES_DIR}/*.json`]);
+const LOCALES_FILES = globbySync([`${LOCALES_DIR}/*.json`]);
 const LOCALE_PKG_DIR = path.resolve(__dirname, '..');
 const ALL = path.resolve(`${LOCALE_PKG_DIR}`, 'all.json');
 
@@ -47,12 +48,6 @@ for (const file of LOCALES_FILES) {
     }
     acc[key].locale[locale] = content[curr].value;
     const localeObj = acc[key].locale[locale];
-    Object.keys(acc[key].locale[locale])
-      .sort()
-      .reduce((a, c) => {
-        a[c] = localeObj[c]; // eslint-disable-line no-param-reassign
-        return a;
-      }, localeObj);
     return acc;
   }, merged);
 }
