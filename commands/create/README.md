@@ -50,15 +50,15 @@ Options:
   -h, --help     Show help                                             [boolean]
 ```
 
-#### Example
+### Example
 
-**Create a visualization**
+#### Create a visualization
 
 ```sh
 nebula create hello-sunshine
 ```
 
-**Create a mashup**
+#### Create a mashup
 
 ```sh
 nebula create mashup hello-mashie

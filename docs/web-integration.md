@@ -83,7 +83,7 @@ n.render({
 
 Start the web development server by executing the following in a terminal:
 
-```
+```sh
 npm run start
 ```
 
@@ -142,8 +142,8 @@ embed.createConfiguration({
     // ...
     {
       name: 'piechart',
-      load: () => Promise.resolve(piechart)
-    }
-  ]
+      load: () => Promise.resolve(piechart),
+    },
+  ],
 });
 ```
