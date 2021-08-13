@@ -31,7 +31,7 @@ Requirements:
 - Node.js
 - yarn
 
-Clone the application:
+Clone the repository
 
 ```sh
 git clone https://github.com/qlik-oss/nebula.js
