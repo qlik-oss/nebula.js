@@ -77,6 +77,11 @@ export function create({ halo, parent }) {
       }
       return tc[name].get(version) || p.get(typeInfo);
     },
+    getList: () =>
+      Object.keys(tc).map((key) => ({
+        name: key,
+        versions: Object.keys(tc[key].versions).map((v) => (v === 'undefined' ? undefined : v)),
+      })),
     clearFromCache: (name) => {
       if (tc[name]) {
         tc[name] = undefined;

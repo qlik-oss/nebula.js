@@ -380,6 +380,20 @@ function nuked(configuration = {}) {
         };
         return fieldSels;
       },
+      /**
+       * Gets a list of registered visualization types and versions
+       * @returns {Array<Object>} types
+       * @example
+       * const types = n.getRegisteredTypes();
+       * // Contains
+       * //[
+       * // {
+       * //   name: "barchart"
+       * //   versions:[undefined, "1.2.0"]
+       * // }
+       * //]
+       */
+      getRegisteredTypes: types.getList,
       __DO_NOT_USE__: {
         types,
       },
