@@ -60,6 +60,7 @@ export default (scope) => {
   scope.selectionsApi.confirm = () => {
     scope.backendApi.endSelections(true).then(() => {
       scope.selectionsApi.deactivated();
+      selectionAPI.emit('confirmed');
       selectionAPI.emit('deactivated');
     });
   };
@@ -74,6 +75,7 @@ export default (scope) => {
     scope.backendApi.endSelections(false);
     scope.selectionsApi.deactivated();
     selectionAPI.emit('canceled');
+    selectionAPI.emit('deactivated');
   };
 
   return selectionAPI;
