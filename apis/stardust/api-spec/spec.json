@@ -749,6 +749,12 @@
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
+                },
+                "properties": {
+                  "description": "Properties object to extend default properties with",
+                  "optional": true,
+                  "defaultValue": "{}",
+                  "type": "object"
                 }
               }
             }
