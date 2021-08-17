@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/qlik-oss/nebula.js/compare/v1.5.0...v1.6.0) (2021-08-16)
+
+### Bug Fixes
+
+- **deps:** update dependency ws to v8 ([#646](https://github.com/qlik-oss/nebula.js/issues/646)) ([f493307](https://github.com/qlik-oss/nebula.js/commit/f4933076d9b3a46c642944edb0790d7452a69a77))
+
+# [1.5.0](https://github.com/qlik-oss/nebula.js/compare/v1.4.0...v1.5.0) (2021-07-01)
+
+### Bug Fixes
+
+- **cli-serve:** apply config when using javascript API and handle missing serve ([#631](https://github.com/qlik-oss/nebula.js/issues/631)) ([e321c18](https://github.com/qlik-oss/nebula.js/commit/e321c186dfefa5deb01fd0cc6e24eae296d38147))
+
 # [1.4.0](https://github.com/qlik-oss/nebula.js/compare/v1.3.0...v1.4.0) (2021-06-28)
 
 ### Bug Fixes

@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/qlik-oss/nebula.js/compare/v1.5.0...v1.6.0) (2021-08-16)
+
+### Bug Fixes
+
+- update mashup dependencies ([#652](https://github.com/qlik-oss/nebula.js/issues/652)) ([876f529](https://github.com/qlik-oss/nebula.js/commit/876f529c2ef14c5837e16c9e88b1444f89ad3b06))
+- use same event in extensionwrapper ([#651](https://github.com/qlik-oss/nebula.js/issues/651)) ([f70c575](https://github.com/qlik-oss/nebula.js/commit/f70c575ecab3916e89bd4d5dbc7c5b76b1afe11e))
+- **cli-sense:** apply default when using javascript api ([#633](https://github.com/qlik-oss/nebula.js/issues/633)) ([8eded30](https://github.com/qlik-oss/nebula.js/commit/8eded3055e2074a1ff718af69920f0eea0ea6462))
+- **deps:** update dependency ws to v8 ([#646](https://github.com/qlik-oss/nebula.js/issues/646)) ([f493307](https://github.com/qlik-oss/nebula.js/commit/f4933076d9b3a46c642944edb0790d7452a69a77))
+- **extension-wrapper:** support paths argument in begin ([#639](https://github.com/qlik-oss/nebula.js/issues/639)) ([dbf7ea9](https://github.com/qlik-oss/nebula.js/commit/dbf7ea97ecec73c00d7a1e1a3d49ec57806cd763))
+- add isModal for sense legacy extension ([#637](https://github.com/qlik-oss/nebula.js/issues/637)) ([54171df](https://github.com/qlik-oss/nebula.js/commit/54171dfed03f42d71d825127104090777a38fe53))
+
+### Features
+
+- switch --partial to default and add --legacy option ([#632](https://github.com/qlik-oss/nebula.js/issues/632)) ([6381cf6](https://github.com/qlik-oss/nebula.js/commit/6381cf6e796787823b888c08dae33342ca6606c7))
+
+# [1.5.0](https://github.com/qlik-oss/nebula.js/compare/v1.4.0...v1.5.0) (2021-07-01)
+
+### Bug Fixes
+
+- **cli-serve:** apply config when using javascript API and handle missing serve ([#631](https://github.com/qlik-oss/nebula.js/issues/631)) ([e321c18](https://github.com/qlik-oss/nebula.js/commit/e321c186dfefa5deb01fd0cc6e24eae296d38147))
+- do not return undefined build config ([#626](https://github.com/qlik-oss/nebula.js/issues/626)) ([ba3c823](https://github.com/qlik-oss/nebula.js/commit/ba3c8238a78e5098f9138add3a5a1bbdc7055cb7))
+
+### Features
+
+- update build and build legacy for nebula sense ([#627](https://github.com/qlik-oss/nebula.js/issues/627)) ([da61276](https://github.com/qlik-oss/nebula.js/commit/da61276431d3356aca98781a4be736251d08e384))
+
 # [1.4.0](https://github.com/qlik-oss/nebula.js/compare/v1.3.0...v1.4.0) (2021-06-28)
 
 ### Bug Fixes

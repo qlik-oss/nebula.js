@@ -6,13 +6,13 @@ Example mashup for nebula development
 
 To use a local nebula version, run this in the stardust folder to allow linking your local version.
 
-```
+```sh
 yarn link
 ```
 
 Update dependencies and link nebula
 
-```
+```sh
 yarn
 yarn link "@nebula.js/stardust"
 ```
@@ -21,7 +21,7 @@ yarn link "@nebula.js/stardust"
 
 Run parcel server
 
-```
+```sh
 yarn start
 ```
 

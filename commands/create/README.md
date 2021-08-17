@@ -32,15 +32,33 @@ Options:
   -h, --help  Show help                                                [boolean]
 ```
 
-#### Example
+```sh
+nebula create mashup <name>
 
-**Create a visualization**
+Create a mashup
+
+Positionals:
+  name  name of the project                                  [string] [required]
+
+Options:
+      --version  Show version number                                   [boolean]
+      --install  Run package installation step         [boolean] [default: true]
+      --pkgm     Package manager               [string] [choices: "npm", "yarn"]
+      --picasso  Picasso template
+                               [string] [choices: "none", "minimal", "barchart"]
+      --author   Package author                                         [string]
+  -h, --help     Show help                                             [boolean]
+```
+
+### Example
+
+#### Create a visualization
 
 ```sh
 nebula create hello-sunshine
 ```
 
-**Create a mashup**
+#### Create a mashup
 
 ```sh
 nebula create mashup hello-mashie

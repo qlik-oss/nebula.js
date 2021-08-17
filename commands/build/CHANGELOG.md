@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/qlik-oss/nebula.js/compare/v1.5.0...v1.6.0) (2021-08-16)
+
+**Note:** Version bump only for package @nebula.js/cli-build
+
+# [1.5.0](https://github.com/qlik-oss/nebula.js/compare/v1.4.0...v1.5.0) (2021-07-01)
+
+### Bug Fixes
+
+- do not return undefined build config ([#626](https://github.com/qlik-oss/nebula.js/issues/626)) ([ba3c823](https://github.com/qlik-oss/nebula.js/commit/ba3c8238a78e5098f9138add3a5a1bbdc7055cb7))
+
 # [1.4.0](https://github.com/qlik-oss/nebula.js/compare/v1.3.0...v1.4.0) (2021-06-28)
 
 ### Features
