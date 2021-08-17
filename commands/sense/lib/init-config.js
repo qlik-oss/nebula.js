@@ -27,12 +27,11 @@ const options = {
     default: false,
     desc: 'Generate sourcemaps',
   },
-  partial: {
+  legacy: {
     type: 'boolean',
     required: false,
     default: false,
-    desc: 'Generate partial extension',
-    hidden: true,
+    desc: 'Generate legacy extension',
   },
 };
 

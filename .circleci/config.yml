@@ -27,8 +27,8 @@ aliases:
 jobs:
   build:
     docker:
-      - image: circleci/node:12.15.0
-      - image: qlikcore/engine:12.1016.0
+      - image: circleci/node:14.14.0
+      - image: qlikcore/engine:12.1050.0
         command: |
           -S AcceptEULA=yes
           -S SSEPlugin=sse,localhost:50051
@@ -97,6 +97,13 @@ jobs:
             npx nebula create temp/hello --pkgm yarn --picasso none
             cd temp/hello
             APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - run:
+          name: Create a hello mashup project from latest release
+          command: |
+            set -e
+            npx nebula create mashup hello-mashup --pkgm yarn
+            cd hello-mashup
+            yarn build
       - run:
           name: Create a picasso barchart supernova project from current commit
           command: |

@@ -49,7 +49,7 @@ async function build(argv) {
       encoding: 'utf8',
     });
     qextjs = qextjs.replace('{{DIST}}', `./${main.replace(/^[./]*/, '').replace(/\.js$/, '')}`);
-    qextjs = qextjs.replace('{{EXT}}', `./${targetDir}/${targetFile}`);
+    qextjs = qextjs.replace('{{EXT}}', `./${targetFile}`);
 
     fs.writeFileSync(qextFileName, JSON.stringify(contents, null, 2));
     fs.writeFileSync(qextFileNameJs, qextjs);
