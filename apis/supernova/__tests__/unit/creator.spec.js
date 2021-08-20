@@ -81,9 +81,9 @@ describe('creator', () => {
       galaxy = {
         deviceType: 'desktop',
         translator: { language: () => 'en' },
-        nebbie: 'embedAPI',
       };
       opts = {
+        nebbie: 'embedAPI',
         model: 'model',
         app: 'app',
         selections: 'selections',
