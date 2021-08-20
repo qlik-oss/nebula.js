@@ -55,8 +55,6 @@ describe('nucleus', () => {
       },
     });
     const { galaxy } = typesFn.getCall(0).args[0].halo.public;
-    expect(galaxy.nebbie).to.be.ok;
-    delete galaxy.nebbie;
     expect(galaxy).to.eql({
       anything: {
         some: 'thing',

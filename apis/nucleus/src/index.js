@@ -166,7 +166,6 @@ function nuked(configuration = {}) {
       config: configuration,
       public: publicAPIs,
       context: currentContext,
-      nebbie: null,
       types: null,
     };
 
@@ -382,6 +381,7 @@ function nuked(configuration = {}) {
       },
       /**
        * Gets a list of registered visualization types and versions
+       * @function
        * @returns {Array<Object>} types
        * @example
        * const types = n.getRegisteredTypes();
@@ -400,7 +400,6 @@ function nuked(configuration = {}) {
     };
 
     halo.public.nebbie = api;
-    halo.public.galaxy.nebbie = api;
     halo.types = types;
 
     return api;

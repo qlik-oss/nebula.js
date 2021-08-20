@@ -66,7 +66,7 @@ function createWithHooks(generator, opts, galaxy) {
       app: opts.app,
       global: qGlobal,
       selections: opts.selections,
-      nebbie: galaxy.nebbie,
+      nebbie: opts.nebbie,
       element: undefined, // set on mount
       // ---- singletons ----
       deviceType: galaxy.deviceType,

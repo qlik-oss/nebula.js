@@ -254,13 +254,14 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const loadType = async ({ dispatch, types, visualization, version, model, app, selections }) => {
+const loadType = async ({ dispatch, types, visualization, version, model, app, selections, nebbie }) => {
   try {
     const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
       model,
       app,
       selections,
+      nebbie,
     });
     return sn;
   } catch (err) {
@@ -271,6 +272,7 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
 
 const Cell = forwardRef(({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount }, ref) => {
   const { app, types } = halo;
+  const { nebbie } = halo.public;
 
   const { translator, language } = useContext(InstanceContext);
   const theme = useTheme();
@@ -329,6 +331,7 @@ const Cell = forwardRef(({ halo, model, initialSnOptions, initialSnPlugins, init
         model,
         app,
         selections,
+        nebbie,
       });
       if (sn) {
         dispatch({ type: 'LOADED', sn, visualization });
