@@ -31,6 +31,7 @@ import {
   useConstraints,
   useOptions,
   onTakeSnapshot,
+  useEmbed,
 } from '../hooks';
 
 describe('hooks', () => {
@@ -755,6 +756,7 @@ describe('hooks', () => {
         theme: 'theme',
         translator: 'translator',
         plugins: 'plugins',
+        embed: 'embed',
         layout: 'layout',
         appLayout: 'appLayout',
         constraints: 'constraints',
@@ -899,6 +901,14 @@ describe('hooks', () => {
       run(c);
       c.__hooks.snaps[0].fn();
       expect(spy.callCount).to.equal(1);
+    });
+    it('useEmbed', () => {
+      let value;
+      c.fn = () => {
+        value = useEmbed();
+      };
+      run(c);
+      expect(value).to.eql('embed');
     });
   });
 });
