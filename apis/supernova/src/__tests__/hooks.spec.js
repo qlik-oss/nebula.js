@@ -756,7 +756,7 @@ describe('hooks', () => {
         theme: 'theme',
         translator: 'translator',
         plugins: 'plugins',
-        embed: 'embed',
+        nebbie: 'embed',
         layout: 'layout',
         appLayout: 'appLayout',
         constraints: 'constraints',
