@@ -32,6 +32,7 @@ export {
   usePlugins,
   useConstraints,
   useOptions,
+  useEmbed,
   onTakeSnapshot,
 } from '@nebula.js/supernova';
 

@@ -83,6 +83,7 @@ describe('creator', () => {
         translator: { language: () => 'en' },
       };
       opts = {
+        nebbie: 'embedAPI',
         model: 'model',
         app: 'app',
         selections: 'selections',
@@ -103,6 +104,7 @@ describe('creator', () => {
         app: 'app',
         global: undefined,
         selections: 'selections',
+        nebbie: 'embedAPI',
         element: undefined,
         theme: undefined,
         translator: galaxy.translator,

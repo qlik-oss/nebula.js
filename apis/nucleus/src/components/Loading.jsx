@@ -10,7 +10,7 @@ export default function Loading() {
       container
       direction="column"
       alignItems="center"
-      justify="center"
+      justifyContent="center"
       style={{
         position: 'absolute',
         width: '100%',

@@ -70,7 +70,7 @@ export default function LongRunningQuery({ canCancel, canRetry, api }) {
       container
       direction="column"
       alignItems="center"
-      justify="center"
+      justifyContent="center"
       className={stripes}
       style={{
         position: 'absolute',

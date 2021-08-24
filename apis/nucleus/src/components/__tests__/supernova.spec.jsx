@@ -107,7 +107,7 @@ describe('<Supernova />', () => {
       snPlugins: [],
       layout: 'layout',
       appLayout: { qLocaleInfo: 'loc' },
-      halo: { public: { theme: 'theme' }, app: { session: {} } },
+      halo: { public: { theme: 'theme', nebbie: 'embedAPI' }, app: { session: {} } },
       rendererOptions: {
         createNodeMock: () => ({
           style: {},
@@ -126,6 +126,7 @@ describe('<Supernova />', () => {
       layout: 'layout',
       options: snOptions,
       plugins: [],
+      embed: 'embedAPI',
       context: {
         constraints: {},
         appLayout: { qLocaleInfo: 'loc' },

@@ -166,7 +166,6 @@ function nuked(configuration = {}) {
       config: configuration,
       public: publicAPIs,
       context: currentContext,
-      nebbie: null,
       types: null,
     };
 
@@ -380,6 +379,21 @@ function nuked(configuration = {}) {
         };
         return fieldSels;
       },
+      /**
+       * Gets a list of registered visualization types and versions
+       * @function
+       * @returns {Array<Object>} types
+       * @example
+       * const types = n.getRegisteredTypes();
+       * // Contains
+       * //[
+       * // {
+       * //   name: "barchart"
+       * //   versions:[undefined, "1.2.0"]
+       * // }
+       * //]
+       */
+      getRegisteredTypes: types.getList,
       __DO_NOT_USE__: {
         types,
       },

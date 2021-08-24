@@ -307,7 +307,7 @@ export default function App({ app, info }) {
                     )}
                   </Grid>
                 ) : (
-                  <Grid container wrap="nowrap" style={{ paddingTop: '48px' }} justify="center">
+                  <Grid container wrap="nowrap" style={{ paddingTop: '48px' }} justifyContent="center">
                     <Grid item>
                       <CircularProgress />
                     </Grid>

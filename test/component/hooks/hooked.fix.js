@@ -7,6 +7,7 @@ import {
   useAppLayout,
   useElement,
   useTheme,
+  useEmbed,
   useTranslator,
   useDeviceType,
   usePromise,
@@ -26,6 +27,7 @@ function sn({ flags }) {
       const layout = useLayout();
       const appLayout = useAppLayout();
       const options = useOptions();
+      const embed = useEmbed();
 
       const [acted, setActed] = useState(false);
 
@@ -76,6 +78,7 @@ function sn({ flags }) {
         <div class="action">${acted}</div>
         <div class="constraints">${!!passive}:${!!active}:${!!select}</div>
         <div class="options">${options.myOption}</div>
+        <div class="embed">${typeof embed.render}</div>
         <div class="flags">${flags.isEnabled('MAGIC_FLAG')}:${flags.isEnabled('_UNKNOWN_')}</div>
       </div>
       `;

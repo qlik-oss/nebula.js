@@ -79,6 +79,11 @@ describe('hooks', () => {
     expect(text).to.equal('opts');
   });
 
+  it('useEmbed', async () => {
+    const text = await page.$eval(`${snSelector} .embed`, (el) => el.textContent);
+    expect(text).to.equal('function'); // typeof embed.render
+  });
+
   it('should have true MAGIC_FLAG', async () => {
     const text = await page.$eval(`${snSelector} .flags`, (el) => el.textContent);
     expect(text).to.equal('true:false');

@@ -691,6 +691,21 @@ export function useTheme() {
 }
 
 /**
+ * Gets the embed instance used.
+ * @entry
+ * @experimental
+ * @returns {Embed} The embed instance used.
+ * @example
+ * import { useEmbed } from '@nebula.js/stardust';
+ *
+ * const embed = useEmbed();
+ * embed.render(...)
+ */
+export function useEmbed() {
+  return useInternalContext('nebbie');
+}
+
+/**
  * Gets the translator.
  * @entry
  * @returns {Translator} The translator.
