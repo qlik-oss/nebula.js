@@ -29,7 +29,7 @@ export default function ListBoxPortal({ app, fieldIdentifier, stateName, element
 }
 
 export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {} }) {
-  const { title, direction, listLayout, search = true } = options;
+  const { title, direction, listLayout, search = true, properties = {} } = options;
   const listdef = {
     qInfo: {
       qType: 'njsListbox',
@@ -57,8 +57,8 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
       },
     },
     title,
+    ...properties,
   };
-
   let fieldName;
 
   // Something something lib dimension
