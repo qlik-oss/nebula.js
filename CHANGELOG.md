@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/qlik-oss/nebula.js/compare/v1.6.0...v1.7.0) (2021-08-24)
+
+### Features
+
+- add properties option to Field function ([#654](https://github.com/qlik-oss/nebula.js/issues/654)) ([65d402e](https://github.com/qlik-oss/nebula.js/commit/65d402e0ba129cf68a0a254746c04fccf7c9953b))
+- adjust generation of ext and meta files on creating template ([#656](https://github.com/qlik-oss/nebula.js/issues/656)) ([c940d8b](https://github.com/qlik-oss/nebula.js/commit/c940d8b4b8a0ff0eda63c53ecfbeb0e7cf87f85e))
+- give charts access to the nebula instance through useEmbed ([#650](https://github.com/qlik-oss/nebula.js/issues/650)) ([0d19f69](https://github.com/qlik-oss/nebula.js/commit/0d19f698ad3f88edc9459dcb721d9744e5c44c01))
+
 # [1.6.0](https://github.com/qlik-oss/nebula.js/compare/v1.5.0...v1.6.0) (2021-08-16)
 
 ### Bug Fixes

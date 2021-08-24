@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/qlik-oss/nebula.js/compare/v1.6.0...v1.7.0) (2021-08-24)
+
+### Features
+
+- adjust generation of ext and meta files on creating template ([#656](https://github.com/qlik-oss/nebula.js/issues/656)) ([c940d8b](https://github.com/qlik-oss/nebula.js/commit/c940d8b4b8a0ff0eda63c53ecfbeb0e7cf87f85e))
+
 # [1.6.0](https://github.com/qlik-oss/nebula.js/compare/v1.5.0...v1.6.0) (2021-08-16)
 
 ### Bug Fixes
