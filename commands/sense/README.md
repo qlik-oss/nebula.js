@@ -75,7 +75,7 @@ Generate all required files into the specified `--output` folder called sn-table
 nebula sense --output sn-table-ext
 ```
 
-You can upload that folder as an extension on [Qlik Sense Enterprise for Windows](https://help.qlik.com/en-US/sense-developer/April2020/Subsystems/Extensions/Content/Sense_Extensions/Howtos/deploy-extensions.htm) or [Qlik Sense Enterprise on Kubernetes](https://help.qlik.com/en-US/sense-admin/April2020/Subsystems/DeployAdministerQSE/Content/Sense_DeployAdminister/QSEoK/Administer_QSEoK/mc-extensions.htm)
+You can upload that folder as an extension on [Qlik Sense Enterprise for Windows](https://help.qlik.com/en-US/sense-developer/August2021/Subsystems/Extensions/Content/Sense_Extensions/Howtos/deploy-extensions.htm) or [SaaS editions of Qlik Sense](https://help.qlik.com/en-US/cloud-services/Subsystems/Hub/Content/Sense_Hub/Admin/mc-extensions.htm)
 
 ### Legacy
 
