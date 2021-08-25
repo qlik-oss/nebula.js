@@ -44,6 +44,12 @@ export default function OneField({
       setShowListBoxPopover(!showListBoxPopover);
     }
   };
+  const handleShowKeyDown = (e) => {
+    if ([13, 32].includes(e.keyCode)) {
+      // because click in popover will propagate to parent
+      handleShowListBoxPopover(e);
+    }
+  };
 
   const handleCloseShowListBoxPopover = () => {
     setShowListBoxPopover(false);
@@ -120,6 +126,12 @@ export default function OneField({
             e.stopPropagation();
             api.clearField(selection.qField, field.states[stateIx]);
           }}
+          onKeyDown={(e) => {
+            if ([13, 32].includes(e.keyCode)) {
+              e.stopPropagation();
+              api.clearField(selection.qField, field.states[stateIx]);
+            }
+          }}
         >
           <Remove />
         </IconButton>
@@ -156,7 +168,10 @@ export default function OneField({
         container
         spacing={0}
         ref={alignTo}
+        role="button"
+        tabindex={0}
         className={classes.item}
+        onKeyDown={(skipHandleShowListBoxPopover === false && handleShowKeyDown) || null}
         onClick={(skipHandleShowListBoxPopover === false && handleShowListBoxPopover) || null}
       >
         {Header}

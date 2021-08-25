@@ -23,6 +23,14 @@
     "value": "Search in listbox",
     "comment": "Action text to search in listbox"
   },
+  "Listbox.Lock": {
+    "value": "Lock selections",
+    "comment": "Accessible text for locking selections in listbox"
+  },
+  "Listbox.Unlock": {
+    "value": "Unlock selections",
+    "comment": "Accessible text for unlocking selections in listbox"
+  },
   "Menu.More": {
     "value": "More",
     "comment": "Menu option to display list of additional actions to choose from (ffd 20200520)"

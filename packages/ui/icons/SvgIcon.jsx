@@ -26,8 +26,15 @@ export default function SvgIcon({ size, style = {}, viewBox = '0 0 16 16', shape
     ...style,
   };
   return (
-    <i style={s}>
-      <svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox={viewBox} fill="currentColor">
+    <i style={s} aria-hidden="true">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="1em"
+        height="1em"
+        aria-hidden="true"
+        viewBox={viewBox}
+        fill="currentColor"
+      >
         {shapes.map(({ type: Type, attrs }, ix) => (
           // eslint-disable-next-line react/no-array-index-key
           <Type key={ix} {...attrs} />

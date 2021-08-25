@@ -131,11 +131,11 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
       <Grid item container style={{ padding: theme.spacing(1), borderBottom: `1px solid ${theme.palette.divider}` }}>
         <Grid item>
           {isLocked ? (
-            <IconButton onClick={unlock} disabled={!isLocked}>
+            <IconButton onClick={unlock} disabled={!isLocked} aria-label={translator.get('Listbox.Lock')}>
               <Lock />
             </IconButton>
           ) : (
-            <IconButton onClick={lock} disabled={!hasSelections}>
+            <IconButton onClick={lock} disabled={!hasSelections} aria-label={translator.get('Listbox.Unlock')}>
               <Unlock />
             </IconButton>
           )}
