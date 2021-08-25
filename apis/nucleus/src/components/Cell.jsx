@@ -254,7 +254,17 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const loadType = async ({ dispatch, types, visualization, version, model, app, selections, keyboardNavigation, nebbie }) => {
+const loadType = async ({
+  dispatch,
+  types,
+  visualization,
+  version,
+  model,
+  app,
+  selections,
+  keyboardNavigation,
+  nebbie,
+}) => {
   try {
     const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
@@ -271,109 +281,110 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
   return undefined;
 };
 
-const Cell = forwardRef(({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount }, ref) => {
-  const { app, types } = halo;
-  const { nebbie } = halo.public;
+const Cell = forwardRef(
+  ({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount, currentId }, ref) => {
+    const { app, types } = halo;
+    const { nebbie } = halo.public;
 
-  const { translator, language } = useContext(InstanceContext);
-  const theme = useTheme();
-  const [cellRef, cellRect, cellNode] = useRect();
-  const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
-  const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
-  const [appLayout] = useAppLayout(app);
-  const [contentRef, contentRect] = useRect();
-  const [snOptions, setSnOptions] = useState(initialSnOptions);
-  const [snPlugins, setSnPlugins] = useState(initialSnPlugins);
-  const [selections] = useObjectSelections(app, model);
-  const [hovering, setHover] = useState(false);
-  const hoveringDebouncer = useRef({ enter: null, leave: null });
+    const { translator, language, keyboardNavigation } = useContext(InstanceContext);
+    const theme = useTheme();
+    const [cellRef, cellRect, cellNode] = useRect();
+    const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
+    const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
+    const [appLayout] = useAppLayout(app);
+    const [contentRef, contentRect] = useRect();
+    const [snOptions, setSnOptions] = useState(initialSnOptions);
+    const [snPlugins, setSnPlugins] = useState(initialSnPlugins);
+    const [selections] = useObjectSelections(app, model);
+    const [hovering, setHover] = useState(false);
+    const hoveringDebouncer = useRef({ enter: null, leave: null });
 
-  const handleOnMouseEnter = () => {
-    if (hoveringDebouncer.current.leave) {
-      clearTimeout(hoveringDebouncer.current.leave);
-    }
-    if (hoveringDebouncer.enter) return;
-    hoveringDebouncer.current.enter = setTimeout(() => {
-      setHover(true);
-      hoveringDebouncer.current.enter = null;
-    }, 250);
-  };
-  const handleOnMouseLeave = () => {
-    if (hoveringDebouncer.current.enter) {
-      clearTimeout(hoveringDebouncer.current.enter);
-    }
-    if (hoveringDebouncer.current.leave) return;
-    hoveringDebouncer.current.leave = setTimeout(() => {
-      setHover(false);
-      hoveringDebouncer.current.leave = null;
-    }, 750);
-  };
-
-  const handleKeyDown = (e) => {
-    if ([13, 32].includes(e.keyCode)) {
-      // Enter or space
-      halo.root.toggleFocusOfCell(currentId);
-    }
-  };
-
-  const relinquishFocus = () => {
-    halo.root.toggleFocusOfCell();
-  };
-
-  useEffect(() => {
-    if (initialError || !appLayout || !layout) {
-      return undefined;
-    }
-    const validate = async (sn) => {
-      const [showError, error] = await validateTargets(translator, layout, sn.generator.qae.data, model);
-      if (showError) {
-        dispatch({ type: 'ERROR', error });
-      } else {
-        dispatch({ type: 'RENDER' });
+    const handleOnMouseEnter = () => {
+      if (hoveringDebouncer.current.leave) {
+        clearTimeout(hoveringDebouncer.current.leave);
       }
-      handleModal({ sn: state.sn, layout, model });
+      if (hoveringDebouncer.enter) return;
+      hoveringDebouncer.current.enter = setTimeout(() => {
+        setHover(true);
+        hoveringDebouncer.current.enter = null;
+      }, 250);
     };
-    const load = async (visualization, version) => {
-      dispatch({ type: 'LOADING' });
-      const sn = await loadType({
-        dispatch,
-        types,
-        visualization,
-        version,
-        model,
-        app,
-        selections,
-        nebbie,
-        keyboardNavigation,
-      });
-      if (sn) {
-        dispatch({ type: 'LOADED', sn, visualization });
-        onMount();
+    const handleOnMouseLeave = () => {
+      if (hoveringDebouncer.current.enter) {
+        clearTimeout(hoveringDebouncer.current.enter);
       }
-      return undefined;
+      if (hoveringDebouncer.current.leave) return;
+      hoveringDebouncer.current.leave = setTimeout(() => {
+        setHover(false);
+        hoveringDebouncer.current.leave = null;
+      }, 750);
     };
 
-    // Validate if it's still the same type
-    if (state.visualization === layout.visualization && state.sn) {
-      validate(state.sn);
-      return undefined;
-    }
+    const handleKeyDown = (e) => {
+      if ([13, 32].includes(e.keyCode)) {
+        // Enter or space
+        halo.root.toggleFocusOfCell(currentId);
+      }
+    };
 
-    // Load supernova
-    const withVersion = types.getSupportedVersion(layout.visualization, layout.version);
-    if (!withVersion) {
-      dispatch({
-        type: 'ERROR',
-        error: {
-          title: `Could not find a version of '${layout.visualization}' that supports current object version. Did you forget to register ${layout.visualization}?`,
-        },
-      });
-      return undefined;
-    }
-    load(layout.visualization, withVersion);
+    const relinquishFocus = () => {
+      halo.root.toggleFocusOfCell();
+    };
 
-    return () => {};
-  }, [types, state.sn, model, layout, appLayout, language]);
+    useEffect(() => {
+      if (initialError || !appLayout || !layout) {
+        return undefined;
+      }
+      const validate = async (sn) => {
+        const [showError, error] = await validateTargets(translator, layout, sn.generator.qae.data, model);
+        if (showError) {
+          dispatch({ type: 'ERROR', error });
+        } else {
+          dispatch({ type: 'RENDER' });
+        }
+        handleModal({ sn: state.sn, layout, model });
+      };
+      const load = async (visualization, version) => {
+        dispatch({ type: 'LOADING' });
+        const sn = await loadType({
+          dispatch,
+          types,
+          visualization,
+          version,
+          model,
+          app,
+          selections,
+          nebbie,
+          keyboardNavigation,
+        });
+        if (sn) {
+          dispatch({ type: 'LOADED', sn, visualization });
+          onMount();
+        }
+        return undefined;
+      };
+
+      // Validate if it's still the same type
+      if (state.visualization === layout.visualization && state.sn) {
+        validate(state.sn);
+        return undefined;
+      }
+
+      // Load supernova
+      const withVersion = types.getSupportedVersion(layout.visualization, layout.version);
+      if (!withVersion) {
+        dispatch({
+          type: 'ERROR',
+          error: {
+            title: `Could not find a version of '${layout.visualization}' that supports current object version. Did you forget to register ${layout.visualization}?`,
+          },
+        });
+        return undefined;
+      }
+      load(layout.visualization, withVersion);
+
+      return () => {};
+    }, [types, state.sn, model, layout, appLayout, language]);
 
     // Long running query
     useEffect(() => {
