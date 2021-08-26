@@ -22,7 +22,7 @@ describe('create-session-object', () => {
   });
 
   beforeEach(() => {
-    objectModel = { id: 'id' };
+    objectModel = { id: 'id', on: () => {}, once: () => {} };
     types = {
       get: sandbox.stub(),
     };

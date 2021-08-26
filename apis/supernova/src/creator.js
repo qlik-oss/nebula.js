@@ -100,10 +100,10 @@ function createWithHooks(generator, opts, galaxy) {
           // changed is set further down only if the name is different
           this.context.theme = r.context.theme;
         }
-
-        if (r.context && r.context.keyboardNavigation !== this.context.keyboardNavigation) {
+        // false equals undefined, so we to cast to bool here
+        if (r.context && !!r.context.keyboardNavigation !== !!this.context.keyboardNavigation) {
+          this.context.keyboardNavigation = !!r.context.keyboardNavigation;
           changed = true;
-          this.context.keyboardNavigation = r.context.keyboardNavigation;
         }
 
         if (r.options) {
