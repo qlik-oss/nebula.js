@@ -999,7 +999,7 @@ export function useKeyboard() {
   return acc;
 }
 
-function toggleFocus(component, inFocus, relinquishFocus) {
+export function toggleFocus(component, inFocus, relinquishFocus) {
   const acc = component.__hooks.accessibility;
   acc.inFocus = inFocus;
 

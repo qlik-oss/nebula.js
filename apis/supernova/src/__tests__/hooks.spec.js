@@ -8,6 +8,7 @@ import {
   run,
   runSnaps,
   observeActions,
+  toggleFocus,
   getImperativeHandle,
   updateRectOnNextRun,
   useState,
@@ -76,6 +77,7 @@ describe('hooks', () => {
       run,
       teardown,
       runSnaps,
+      toggleFocus,
       observeActions,
       getImperativeHandle,
       updateRectOnNextRun,
@@ -117,6 +119,9 @@ describe('hooks', () => {
           pendingEffects: ['a'],
           pendingLayoutEffects: ['a'],
           actions: { list: [] },
+          accessibility: {
+            setter: null,
+          },
         },
       };
 
@@ -131,6 +136,7 @@ describe('hooks', () => {
         actions: null,
         imperativeHandle: null,
         resizer: null,
+        accessibility: null,
       });
 
       expect(c.__actionsDispatch).to.eql(null);
