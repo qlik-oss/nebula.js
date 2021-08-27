@@ -23,4 +23,5 @@ Options:
   --sourcemap, -m  Generate source map                 [boolean] [default: true]
   --mode           Explicitly set mode
                                  [string] [choices: "production", "development"]
+  --core           Set a core build target            [string] [default: "core"]
 ```
