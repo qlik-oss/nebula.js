@@ -14,8 +14,8 @@ npm install -g @nebula.js/cli
 nebula <command> [options]
 
 Commands:
-  nebula build          Build visualization
   nebula create <name>  Create a visualization
+  nebula build          Build visualization
   nebula serve          Dev server
   nebula sense          Build a nebula visualization as a Qlik Sense extension
 
@@ -24,7 +24,46 @@ Options:
   -h, --help  Show help                                                [boolean]
 ```
 
-## How to run nebula CLI locally and globally
+## How to use nebula CLI in your visualization
+
+You can use the package.json script variant of these commands, which are exposed for you with`nebula create`
+
+When you want to make the `nebula serve`, `nebula build`, and `nebula sense` commands available in your visualization by yourself, run the following command.
+
+```bash
+npm install @nebula.js/cli @nebula.js/cli-build @nebula.js/cli-sense @nebula.js/cli-serve
+```
+
+or
+
+```bash
+yarn add @nebula.js/cli @nebula.js/cli-build @nebula.js/cli-sense @nebula.js/cli-serve
+```
+
+Open up package.json, those dependencies are added in your package.json file.
+
+```json
+{
+  "devDependencies": {
+    "@nebula.js/cli": "1.7.0",
+    "@nebula.js/cli-build": "1.6.0",
+    "@nebula.js/cli-sense": "1.7.0",
+    "@nebula.js/cli-serve": "1.7.0"
+  }
+}
+```
+
+and add a script like so:
+
+```json
+"scripts": {
+    "build": "nebula build",
+    "start": "nebula serve",
+    "sense": "nebula sense"
+  },
+```
+
+## How to test your modified nebula CLI locally and globally
 
 Requirements:
 
@@ -43,12 +82,18 @@ From the root directory, run the following command to install all the necessary 
 yarn
 ```
 
-Test nebula CLI out locally to see help info using node.js:
+You can modify code in commands directory and do the following to test modified nebula CLI locally and globally:
+
+### Test nebula CLI locally
+
+Run nebula CLI locally to see help info using node.js:
 
 ```sh
 cd commands/cli
 node lib/index.js -h
 ```
+
+### Test nebula CLI globally
 
 From the commands/cli directory, run the following command to create a global symlik to the binary:
 
@@ -56,7 +101,7 @@ From the commands/cli directory, run the following command to create a global sy
 yarn link
 ```
 
-Run nebula globally to see help info to check whether it works:
+Run nebula CLI globally to see help info to check whether it works:
 
 ```sh
 nebula -h
