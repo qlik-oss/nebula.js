@@ -46,7 +46,7 @@ Open up package.json, those dependencies are added in your package.json file.
 {
   "devDependencies": {
     "@nebula.js/cli": "1.7.0",
-    "@nebula.js/cli-build": "1.6.0",
+    "@nebula.js/cli-build": "1.7.0",
     "@nebula.js/cli-sense": "1.7.0",
     "@nebula.js/cli-serve": "1.7.0"
   }
