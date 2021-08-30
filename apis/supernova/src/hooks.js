@@ -986,6 +986,42 @@ export function onTakeSnapshot(cb) {
   h.fn = cb;
 }
 
+/**
+ * @interface Keyboard
+ * @property {boolean} enabled Whether or not Nebula handles keyboard navigation or not.
+ * @property {boolean} inFocus Set to true when the chart is activated, ie a user tabs to the chart and presses Enter or Space.
+ * @property {function=} exit Function used by the visualization to tell Nebula to it wants to relinquish focus
+ */
+
+/**
+ * Gets the desired keyboard settings and status to applied when rendering the visualization.
+ * A visualization should in general only have tab stops if either `keyboard.enabled` is false or if inFocus is true.
+ * This means that either Nebula isn't configured to handle keyboard input or the chart is currently focused.
+ * Enabling or disabling keyboardNavigation are set on the embed configuration and
+ * should be respected by the visualization.
+ * @entry
+ * @returns {Keyboard}
+ * @example
+ * // configure nebula to enable navigation between charts
+ * embed(app, {
+ *   context: {
+ *     keyboardNavigation: true, // tell Nebula to handle navigation
+ *   }
+ * }).render({ element, id: 'sdfsdf' });
+ *
+ * @example
+ * import { useKeyboard } from '@nebula.js/stardust';
+ * // ...
+ * const keyboard = useKeyboard();
+ * useEffect(() => {
+ *  // Set a tab stop on our button if in focus or if Nebulas navigation is disabled
+ *  button.setAttribute('tabIndex', keyboard.inFocus || !keyboard.enabled ? 0 : -1);
+ *  // If navigation is enabled and focus has shifted, lets focus the button
+ *  keyboard.enabled && keyboard.inFocus && button.focus();
+ * }, [keyboard])
+ *
+ */
+
 export function useKeyboard() {
   const keyboardNavigation = useInternalContext('keyboardNavigation');
   const [acc, setAcc] = useState({ focus: false, enabled: keyboardNavigation });

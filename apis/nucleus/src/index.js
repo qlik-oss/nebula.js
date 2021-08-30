@@ -14,6 +14,7 @@ import { create as typesFn } from './sn/types';
 
 /**
  * @interface Context
+ * @property {boolean=} keyboardNavigation
  * @property {object=} constraints
  * @property {boolean=} constraints.active
  * @property {boolean=} constraints.passive
