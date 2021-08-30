@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Cell from './Cell';
+import uid from '../object/uid';
 
 export default function glue({ halo, element, model, initialSnOptions, initialSnPlugins, onMount, initialError }) {
   const { root } = halo;
   const cellRef = React.createRef();
-  const currentId = String(Date.now()); // TODO: different ID generator?
+  const currentId = uid(); // TODO: different ID generator?
   const portal = ReactDOM.createPortal(
     <Cell
       ref={cellRef}
