@@ -40,7 +40,7 @@ or
 yarn add @nebula.js/cli @nebula.js/cli-build @nebula.js/cli-sense @nebula.js/cli-serve
 ```
 
-Open up package.json, those dependencies are added in your package.json file.
+Open up your package.json, those dependencies are added.
 
 ```json
 {
@@ -61,6 +61,29 @@ and add a script like so:
     "start": "nebula serve",
     "sense": "nebula sense"
   },
+```
+
+You can also run nebula cli commands with Node.js. Create a js file called build.js
+and add the following:
+
+```js
+const build = require('@nebula.js/cli-build');
+const sense = require('@nebula.js/cli-sense');
+
+await build({
+  config: '../nebula.config.js',
+  sourcemap: false,
+  core: 'core',
+  mode: 'production',
+  watch: false,
+});
+await sense({ output: 'sn-table-ext', sourcemap: true });
+```
+
+and run the following command:
+
+```bash
+node build.js
 ```
 
 ## How to test your modified nebula CLI locally and globally
