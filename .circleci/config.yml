@@ -28,7 +28,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:14.14.0
-      - image: qlikcore/engine:12.1050.0
+      - image: qlikcore/engine:12.1070.0
         command: |
           -S AcceptEULA=yes
           -S SSEPlugin=sse,localhost:50051
