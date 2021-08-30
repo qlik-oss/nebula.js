@@ -58,8 +58,48 @@ Options:
 nebula create hello-sunshine
 ```
 
+Running nebula create without --picasso promotes a selection of the available
+options.
+
+- none: without the picasso.js template
+- minimal: a basic setup of picasso.js is ready
+- barchart: a bar chart component created by picasso.js is ready
+
+You can find the [tutorial](https://qlik.dev/tutorials/build-a-helloworld-extension-using-nebulajs) to build a basic nebula visualization using nebula.js.
+
 #### Create a mashup
 
 ```sh
 nebula create mashup hello-mashie
+```
+
+You can find the [tutorial](https://qlik.dev/tutorials/build-a-simple-mashup-using-nebulajs) to build a basic mashup using nebula.js.
+
+#### Package manager
+
+Create a nebula visualization project called `sn-table` with the npm package manager
+instead of yarn
+
+```sh
+nebula create sn-table --pkgm npm
+```
+
+Create a mashup called `table-mashup` with the npm package manager instead of yarn
+
+```sh
+nebula create mashup table-mashup --pkgm npm
+```
+
+#### Package installation step
+
+Create a nebula visualization project and do not install any dependencies yet
+
+```sh
+nebula create sn-table --install false
+```
+
+Create a mashup and do not install any dependencies yet
+
+```sh
+nebula create mashup table-mashup --install false
 ```
