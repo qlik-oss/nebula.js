@@ -32,10 +32,10 @@ Options:
 Build the bundle with a nebula configuration json file in a new path
 
 ```sh
-nebula build --config ../../nebula.config.js
+nebula build --config config/my-nebula-config.js
 ```
 
-In nebula.config.js, there are five available options that can be configured.
+In the config file there are five available options that can be configured.
 
 - Version
 - Sourcemap
@@ -43,7 +43,7 @@ In nebula.config.js, there are five available options that can be configured.
 - Core
 - Theme
 
-The following code in a nebula.config.js file demonstrates an example to set the nebula configuration.
+The following code in a config file demonstrates an example to set the nebula configuration.
 
 ```js
 const path = require('path');
