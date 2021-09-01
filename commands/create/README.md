@@ -58,7 +58,7 @@ Options:
 nebula create hello-sunshine
 ```
 
-Running nebula create without --picasso promotes a selection of the available
+Running nebula create without --picasso prompts a selection of the available
 options.
 
 - none: without the picasso.js template
