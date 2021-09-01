@@ -35,15 +35,14 @@ Build the bundle with a nebula configuration json file in a new path
 nebula build --config config/my-nebula-config.js
 ```
 
-In the config file there are five available options that can be configured.
+In the config file, build properties:
 
 - Version
 - Sourcemap
 - Mode
 - Core
-- Theme
 
-The following code in a config file demonstrates an example to set the nebula configuration.
+The following code in a config file demonstrates an example to set the nebula build configuration.
 
 ```js
 const path = require('path');
@@ -61,9 +60,6 @@ module.exports = {
     sourcemap,
     mode,
     core: 'core',
-  },
-  serve: {
-    themes: [{ id: 'sense', theme: defaultTheme }],
   },
 };
 ```
