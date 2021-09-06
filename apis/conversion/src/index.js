@@ -2,6 +2,8 @@ import hypercube from './hypercube';
 import utils from './utils';
 import helpers from './helpers';
 
+export { default as getMatch } from './type-alias';
+
 const getType = async ({ halo, name, version }) => {
   const { types } = halo;
   const SN = await types

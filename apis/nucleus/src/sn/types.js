@@ -1,3 +1,4 @@
+import { getMatch } from '@nebula.js/conversion';
 import type from './type';
 import { clearFromCache } from './load';
 
@@ -71,15 +72,24 @@ export function create({ halo, parent }) {
       return tc[name].getMatchingVersionFromProperties(propertyVersion);
     },
     get(typeInfo) {
-      const { name } = typeInfo;
-      let { version } = typeInfo;
+      let { name, version } = typeInfo;
       if (!tc[name]) {
-        // Fall back to existing version
+        // Try find matching name
+        const matchingName = getMatch(name, Object.keys(tc));
         if (__NEBULA_DEV__) {
-          console.warn(`Visualization ${name} is not registered.`); // eslint-disable-line no-console
+          if (matchingName) {
+            console.warn(`Visualization ${name} is not registered. Using ${matchingName}`); // eslint-disable-line no-console
+          } else {
+            console.warn(`Visualization ${name} is not registered.`); // eslint-disable-line no-console
+          }
         }
-        this.register({ name, version });
-      } else if (!tc[name].versions[version]) {
+        if (!matchingName) {
+          this.register({ name, version });
+        } else {
+          name = matchingName;
+        }
+      }
+      if (!tc[name].versions[version]) {
         // Fall back to existing version
         const versionToUse = Object.keys(tc[name].versions)[0];
         if (__NEBULA_DEV__) {
