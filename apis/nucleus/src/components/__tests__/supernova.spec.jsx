@@ -21,7 +21,7 @@ describe('<Supernova />', () => {
       snPlugins = [],
       layout = {},
       appLayout = {},
-      halo = {},
+      halo = { public: { theme: { getStyle: () => {} } } },
       rendererOptions,
     } = {}) => {
       await act(async () => {
