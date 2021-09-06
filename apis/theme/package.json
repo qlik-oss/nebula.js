@@ -4,7 +4,7 @@
   "private": true,
   "main": "src/index.js",
   "devDependencies": {
-    "@nebula.js/conversion": "latest",
+    "@nebula.js/conversion": "^1.4.0",
     "d3-color": "2.0.0",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1"
