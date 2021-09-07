@@ -7,7 +7,9 @@ describe('<Supernova />', () => {
   let sandbox;
   let renderer;
   let render;
+  let initializedHalo;
   beforeEach(() => {
+    initializedHalo = { public: { theme: { getStyle: () => {} }, nebbie: 'embedAPI' }, app: { session: {} } };
     sandbox = sinon.createSandbox();
     const addEventListener = sandbox.spy();
     const removeEventListener = sandbox.spy();
@@ -21,7 +23,7 @@ describe('<Supernova />', () => {
       snPlugins = [],
       layout = {},
       appLayout = {},
-      halo = { public: { theme: { getStyle: () => {} } } },
+      halo = initializedHalo,
       rendererOptions,
     } = {}) => {
       await act(async () => {
@@ -45,7 +47,7 @@ describe('<Supernova />', () => {
     delete global.window;
   });
   it('should render default', async () => {
-    await render();
+    await render({ halo: initializedHalo });
     expect(renderer.root.props).to.deep.equal({
       sn: {
         component: {},
@@ -54,7 +56,7 @@ describe('<Supernova />', () => {
       snPlugins: [],
       layout: {},
       appLayout: {},
-      halo: {},
+      halo: initializedHalo,
     });
   });
   it('should mount', async () => {
@@ -107,7 +109,6 @@ describe('<Supernova />', () => {
       snPlugins: [],
       layout: 'layout',
       appLayout: { qLocaleInfo: 'loc' },
-      halo: { public: { theme: 'theme', nebbie: 'embedAPI' }, app: { session: {} } },
       rendererOptions: {
         createNodeMock: () => ({
           style: {},
@@ -130,7 +131,7 @@ describe('<Supernova />', () => {
       context: {
         constraints: {},
         appLayout: { qLocaleInfo: 'loc' },
-        theme: 'theme',
+        theme: initializedHalo.public.theme,
         permissions: ['passive', 'interact', 'select', 'fetch'],
         localeInfo: 'loc',
         logicalSize: 'logical',
@@ -154,7 +155,6 @@ describe('<Supernova />', () => {
         component,
       },
       layout: {},
-      halo: { public: {} },
       rendererOptions: {
         createNodeMock: () => ({
           style: {},
