@@ -80,10 +80,12 @@ function searchValue(path, attribute, baseSteps, component) {
 export default function styleResolver(basePath, themeJSON) {
   const basePathSteps = basePath.split('.');
   if (basePathSteps && basePathSteps[0] === 'object' && basePathSteps.length > 1) {
-    const types = Object.keys(themeJSON.object);
-    const matchedType = getMatch(basePathSteps[1], types);
-    if (matchedType) {
-      basePathSteps[1] = matchedType;
+    const types = themeJSON && themeJSON.object ? Object.keys(themeJSON.object) : [];
+    if (types) {
+      const matchedType = getMatch(basePathSteps[1], types);
+      if (matchedType) {
+        basePathSteps[1] = matchedType;
+      }
     }
   }
 
