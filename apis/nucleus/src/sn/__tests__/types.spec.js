@@ -86,6 +86,15 @@ describe('types', () => {
       expect(c.get({ name: 'pie', version: '1.7.0' })).to.eql({ name: 'pie', version: '1.0.3' });
     });
 
+    it('should match against similar types', () => {
+      type.withArgs({ name: 'piechart', version: '1.0.3' }).returns({ name: 'piechart', version: '1.0.3' });
+      type.withArgs({ name: 'sn-bar-chart', version: '1.0.3' }).returns({ name: 'sn-bar-chart', version: '1.0.3' });
+      c.register({ name: 'piechart', version: '1.0.3' }, 'opts');
+      c.register({ name: 'sn-bar-chart', version: '1.0.3' }, 'opts');
+      expect(c.get({ name: 'pie-chart', version: '1.0.3' })).to.eql({ name: 'piechart', version: '1.0.3' });
+      expect(c.get({ name: 'barchart', version: '2.0.0' })).to.eql({ name: 'sn-bar-chart', version: '1.0.3' });
+    });
+
     it('should find 1.5.1 as matching version from properties', () => {
       const supportsPropertiesVersion = sinon.stub();
       supportsPropertiesVersion.withArgs('1.2.0').returns(true);
