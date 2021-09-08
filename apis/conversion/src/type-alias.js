@@ -38,6 +38,10 @@ function split(s) {
     return s.split('_');
   }
 
+  if (s.indexOf(' ') !== -1) {
+    return s.split(' ');
+  }
+
   const camelOrPascalSplit = s.match(/([A-Z]?[^A-Z]*)/g).slice(0, -1);
   if (camelOrPascalSplit.length > 1) {
     return camelOrPascalSplit;
@@ -52,8 +56,14 @@ export default function getMatch(type, list) {
 
   const possibleForms = [type];
   if (inSplitForm) {
+    if (inSplitForm[0] === 'sn') {
+      // Remove the sn prefix to re-add later
+      inSplitForm.shift();
+    }
     // Kebab-case
     possibleForms.push(inSplitForm.join('-'));
+    // Kebab with sn-prefix
+    possibleForms.push(`sn-${inSplitForm.join('-')}`);
     // nocase
     possibleForms.push(inSplitForm.join(''));
     // camelCase
