@@ -70,6 +70,10 @@ Serve properties:
 - resources: Adds path to /resources
 - snapshots: Snapshots property structure, generally used for automated tests.
 
+When themes are correctly set, you can select the themes at the top-right corner of the running app.
+
+<img width="500" src="../../docs/assets/theme-selection.png" alt="theme selection in a nebula app" /> />
+
 ### node.js API
 
 ```js
@@ -86,3 +90,5 @@ serve({
   s.close(); // close the server
 });
 ```
+
+It can be used for automated tests.
