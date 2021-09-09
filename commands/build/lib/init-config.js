@@ -31,7 +31,7 @@ const options = {
   core: {
     description: 'Set a core build target',
     type: 'string',
-    default: 'core',
+    default: undefined,
   },
 };
 
