@@ -28,6 +28,10 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       path: distDir,
       filename: '[name].js',
     },
+    infrastructureLogging: {
+      level: 'error',
+    },
+    stats: 'errors-only',
     resolve: {
       alias: {
         '@nebula.js/stardust': path.resolve(__dirname, '../../../apis/stardust/src'),
