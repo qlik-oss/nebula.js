@@ -64,24 +64,30 @@ module.exports = async ({
     });
   }
   const options = {
-    clientLogLevel: 'none',
+    client: {
+      logging: 'none',
+      overlay: {
+        warnings: false,
+        errors: true,
+      },
+      progress: true,
+    },
     hot: dev,
     host,
     port,
-    disableHostCheck,
-    overlay: {
-      warnings: false,
-      errors: true,
-    },
-    quiet: false,
-    noInfo: true,
+    allowedHosts: disableHostCheck ? 'all' : 'auto',
     open,
-    progress: true,
-    contentBase: [contentBase],
     historyApiFallback: {
       index: '/eHub.html',
     },
-    before(app) {
+    static: {
+      directory: contentBase,
+      watch: {
+        ignored: /node_modules/,
+      },
+    },
+    onBeforeSetupMiddleware(devServer) {
+      const { app } = devServer;
       app.use(snapshotRoute, snapRouter);
 
       if (entryWatcher) {
@@ -152,17 +158,13 @@ module.exports = async ({
         logLevel: 'error',
       },
     ],
-    watchOptions: {
-      ignored: /node_modules/,
-    },
   };
 
-  WebpackDevServer.addDevServerEntrypoints(config, options);
   const compiler = webpack(config);
-  const server = new WebpackDevServer(compiler, options);
+  const server = new WebpackDevServer(options, compiler);
 
   const close = () => {
-    server.close();
+    server.stop();
   };
 
   ['SIGINT', 'SIGTERM'].forEach((signal) => {
@@ -184,7 +186,7 @@ module.exports = async ({
 
   let initiated = false;
 
-  return new Promise((resolve, reject) => {
+  return new Promise((resolve) => {
     // eslint-disable-line consistent-return
     compiler.hooks.done.tap('nebula serve', (stats) => {
       if (!initiated) {
@@ -207,10 +209,6 @@ module.exports = async ({
       }
     });
 
-    server.listen(port, host, (err) => {
-      if (err) {
-        reject(err);
-      }
-    });
+    server.start();
   });
 };
