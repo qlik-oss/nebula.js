@@ -19,6 +19,7 @@ const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
       onClick={item.action}
       disabled={disabled}
       style={style}
+      className="njs-cell-action"
     >
       {hasSvgIconShape && SvgIcon(item.getSvgIconShape())}
       {addAnchor && (

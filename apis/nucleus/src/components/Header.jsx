@@ -10,6 +10,24 @@ const DIVIDER = 1;
 const NUMBER_OF_ITEMS = 6;
 const MIN_WIDTH = (ITEM_WIDTH + ITEM_SPACING) * NUMBER_OF_ITEMS + DIVIDER + ITEM_SPACING;
 
+/**
+ * @interface
+ * @extends HTMLElement
+ */
+const CellTitle = {
+  /** @type {'njs-cell-title'} */
+  className: 'njs-cell-title',
+};
+
+/**
+ * @interface
+ * @extends HTMLElement
+ */
+const CellSubTitle = {
+  /** @type {'njs-cell-sub-title'} */
+  className: 'njs-cell-sub-title',
+};
+
 const useStyles = makeStyles((theme) => ({
   containerStyle: {
     flexGrow: 0,
@@ -62,12 +80,12 @@ const Header = ({ layout, sn, anchorEl, hovering }) => {
       <Grid item zeroMinWidth xs>
         <Grid container wrap="nowrap" direction="column">
           {showTitle && (
-            <Typography variant="h6" noWrap>
+            <Typography variant="h6" noWrap className={CellTitle.className}>
               {layout.title}
             </Typography>
           )}
           {showSubtitle && (
-            <Typography variant="body2" noWrap>
+            <Typography variant="body2" noWrap className={CellSubTitle.className}>
               {layout.subtitle}
             </Typography>
           )}
