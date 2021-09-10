@@ -1255,6 +1255,48 @@
         }
       }
     },
+    "CellFooter": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-footer'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellTitle": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-title'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellSubTitle": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-sub-title'",
+          "kind": "literal"
+        }
+      }
+    },
     "VizElement": {
       "extends": [
         {
