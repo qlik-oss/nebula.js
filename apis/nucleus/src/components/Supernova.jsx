@@ -15,7 +15,6 @@ const VizElement = {
 
 const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo }) => {
   const { component } = sn;
-  const { theme: chartTheme } = halo.public;
 
   const { theme: themeName, language, constraints } = useContext(InstanceContext);
   const [renderDebouncer] = useState(() => new RenderDebouncer());
@@ -116,7 +115,6 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       style={{
         position: 'relative',
         height: '100%',
-        backgroundColor: chartTheme.getStyle(`object.${layout.visualization}`, '', 'backgroundColor'),
       }}
       className={VizElement.className}
     >
