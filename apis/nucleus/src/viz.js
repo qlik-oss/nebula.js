@@ -142,9 +142,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       takeSnapshot() {
         return cellRef.current.takeSnapshot();
       },
-      toggleFocus(inFocus = true) {
-        return cellRef.current.toggleFocus(inFocus);
-      },
     },
 
     // old QVisualization API
