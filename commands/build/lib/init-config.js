@@ -28,6 +28,11 @@ const options = {
     type: 'string',
     default: undefined,
   },
+  core: {
+    description: 'Set a core build target',
+    type: 'string',
+    default: undefined,
+  },
 };
 
 module.exports = (yargs) => {

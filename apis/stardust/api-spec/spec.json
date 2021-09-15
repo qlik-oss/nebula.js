@@ -1,5 +1,5 @@
 {
-  "scriptappy": "1.0.0",
+  "scriptappy": "1.1.0",
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
@@ -869,6 +869,114 @@
         }
       }
     },
+    "Field": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "qae.NxDimension"
+          },
+          {
+            "type": "qae.NxMeasure"
+          },
+          {
+            "type": "#/definitions/LibraryField"
+          }
+        ]
+      }
+    },
+    "CreateConfig": {
+      "description": "Rendering configuration for creating and rendering a new object",
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "fields": {
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "properties": {
+          "optional": true,
+          "type": "qae.GenericObjectProperties"
+        }
+      }
+    },
+    "BaseConfig": {
+      "description": "Basic rendering configuration for rendering an object",
+      "kind": "interface",
+      "entries": {
+        "element": {
+          "type": "HTMLElement"
+        },
+        "options": {
+          "optional": true,
+          "type": "object"
+        },
+        "plugins": {
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Plugin"
+          }
+        }
+      }
+    },
+    "GetConfig": {
+      "description": "Rendering configuration for rendering an existing object",
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "LibraryField": {
+      "kind": "interface",
+      "entries": {
+        "qLibraryId": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'dimension'"
+            },
+            {
+              "kind": "literal",
+              "value": "'measure'"
+            }
+          ]
+        }
+      }
+    },
     "AppSelections": {
       "kind": "class",
       "constructor": {
@@ -1062,141 +1170,6 @@
         }
       }
     },
-    "Field": {
-      "kind": "alias",
-      "items": {
-        "kind": "union",
-        "items": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "qae.NxDimension"
-          },
-          {
-            "type": "qae.NxMeasure"
-          },
-          {
-            "type": "#/definitions/LibraryField"
-          }
-        ]
-      }
-    },
-    "CreateConfig": {
-      "description": "Rendering configuration for creating and rendering a new object",
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "fields": {
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "properties": {
-          "optional": true,
-          "type": "qae.GenericObjectProperties"
-        }
-      }
-    },
-    "BaseConfig": {
-      "description": "Basic rendering configuration for rendering an object",
-      "kind": "interface",
-      "entries": {
-        "element": {
-          "type": "HTMLElement"
-        },
-        "options": {
-          "optional": true,
-          "type": "object"
-        },
-        "plugins": {
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/Plugin"
-          }
-        }
-      }
-    },
-    "GetConfig": {
-      "description": "Rendering configuration for rendering an existing object",
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "id": {
-          "type": "string"
-        }
-      }
-    },
-    "LibraryField": {
-      "kind": "interface",
-      "entries": {
-        "qLibraryId": {
-          "type": "string"
-        },
-        "type": {
-          "kind": "union",
-          "items": [
-            {
-              "kind": "literal",
-              "value": "'dimension'"
-            },
-            {
-              "kind": "literal",
-              "value": "'measure'"
-            }
-          ]
-        }
-      }
-    },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
-    },
     "LoadType": {
       "kind": "interface",
       "params": [
@@ -1241,6 +1214,47 @@
         }
       }
     },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
+    "ActionElement": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-action'",
+          "kind": "literal"
+        }
+      }
+    },
     "CellElement": {
       "extends": [
         {
@@ -1251,6 +1265,48 @@
       "entries": {
         "className": {
           "value": "'njs-cell'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellFooter": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-footer'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellTitle": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-title'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellSubTitle": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-sub-title'",
           "kind": "literal"
         }
       }

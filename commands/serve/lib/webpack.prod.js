@@ -13,6 +13,10 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
     mode: 'development',
     entry: path.resolve(__dirname, './sn.js'),
     devtool: false,
+    infrastructureLogging: {
+      level: 'error',
+    },
+    stats: 'errors-only',
     output: {
       path: path.resolve(srcDir, 'temp'),
       filename: '[name].js',

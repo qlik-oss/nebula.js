@@ -16,7 +16,7 @@
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "react-test-renderer": "17.0.2",
-    "react-virtualized-auto-sizer": "^1.0.5",
+    "react-virtualized-auto-sizer": "^1.0.6",
     "react-window": "1.8.6",
     "react-window-infinite-loader": "1.0.7",
     "semver": "6.3.0"

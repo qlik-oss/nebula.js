@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@babel/cli": "7.14.8",
-    "@babel/core": "7.14.8",
-    "@babel/preset-env": "7.14.9",
+    "@babel/core": "7.15.0",
+    "@babel/preset-env": "7.15.0",
     "@nebula.js/stardust": "^1.7.0",
     "@rollup/plugin-commonjs": "20.0.0",
     "@rollup/plugin-node-resolve": "13.0.4",
@@ -37,9 +37,9 @@
     "extend": "3.0.2",
     "fs-extra": "10.0.0",
     "node-event-emitter": "0.0.1",
-    "rollup": "2.55.1",
+    "rollup": "2.56.3",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-terser": "7.0.2",
-    "yargs": "17.0.1"
+    "yargs": "17.1.1"
   }
 }

@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback, useContext, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import InstanceContext from '../contexts/InstanceContext';
 import useRect from '../hooks/useRect';
+import RenderDebouncer from '../utils/render-debouncer';
 
 /**
  * @interface
@@ -16,7 +17,7 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
   const { component } = sn;
 
   const { theme: themeName, language, constraints } = useContext(InstanceContext);
-  const renderDebouncer = useRef(null);
+  const [renderDebouncer] = useState(() => new RenderDebouncer());
   const [isMounted, setIsMounted] = useState(false);
   const [renderCnt, setRenderCnt] = useState(0);
   const [containerRef, containerRect, containerNode] = useRect();
@@ -35,8 +36,7 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     component.mounted(snNode);
     setIsMounted(true);
     return () => {
-      clearTimeout(renderDebouncer.current);
-      renderDebouncer.current = null;
+      renderDebouncer.stop();
       component.willUnmount();
     };
   }, [snNode, component]);
@@ -51,13 +51,7 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       return;
     }
 
-    if (renderDebouncer.current) {
-      // rendering already scheduled
-      return;
-    }
-
-    renderDebouncer.current = setTimeout(() => {
-      // temporarily map constraints to permissions
+    renderDebouncer.schedule(() => {
       const permissions = [];
       if (!constraints.passive) {
         permissions.push('passive');
@@ -71,7 +65,7 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       if (halo.app && halo.app.session) {
         permissions.push('fetch');
       }
-      Promise.resolve(
+      return Promise.resolve(
         component.render({
           layout,
           options,
@@ -94,13 +88,12 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
           },
         })
       ).then(() => {
-        renderDebouncer.current = null;
         if (renderCnt === 0 && typeof options.onInitialRender === 'function') {
           options.onInitialRender.call(null);
         }
         setRenderCnt(renderCnt + 1);
       });
-    }, 10);
+    });
   }, [
     containerRect,
     options,
