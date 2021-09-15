@@ -1241,6 +1241,20 @@
         }
       }
     },
+    "ActionElement": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-action'",
+          "kind": "literal"
+        }
+      }
+    },
     "CellElement": {
       "extends": [
         {
