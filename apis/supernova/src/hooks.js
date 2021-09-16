@@ -1025,24 +1025,25 @@ export function onTakeSnapshot(cb) {
 
 export function useKeyboard() {
   const keyboardNavigation = useInternalContext('keyboardNavigation');
-
-  const exitFunction = function (resetFocus) {
-    this.inFocus && this.relinquishFocus && this.relinquishFocus(resetFocus);
-  }.bind(currentComponent.__hooks.accessibility);
-
   const [acc, setAcc] = useState({ inFocus: false, enabled: keyboardNavigation });
-
-  currentComponent.__hooks.accessibility.inFocus = false;
   currentComponent.__hooks.accessibility.setter = setAcc;
   currentComponent.__hooks.accessibility.enabled = keyboardNavigation;
-  currentComponent.__hooks.accessibility.exitFunction = exitFunction;
+
+  if (!currentComponent.__hooks.accessibility.exitFunction) {
+    const exitFunction = function (resetFocus) {
+      this.inFocus && this.relinquishFocus && this.relinquishFocus(resetFocus);
+    }.bind(currentComponent.__hooks.accessibility);
+
+    currentComponent.__hooks.accessibility.exitFunction = exitFunction;
+  }
+  const exitFunc = currentComponent.__hooks.accessibility.exitFunction;
 
   useEffect(
     () =>
       setAcc({
         inFocus: false,
         enabled: keyboardNavigation,
-        exit: exitFunction,
+        exit: exitFunc,
       }),
     [keyboardNavigation]
   );

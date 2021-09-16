@@ -327,8 +327,11 @@ const Cell = forwardRef(
       }
     };
 
-    const relinquishFocus = () => {
-      halo.root.toggleFocusOfCell();
+    const relinquishFocus = (resetFocus) => {
+      halo.root.toggleFocusOfCell(resetFocus);
+      if (resetFocus && cellNode) {
+        cellNode.focus();
+      }
     };
 
     useEffect(() => {
