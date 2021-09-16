@@ -107,7 +107,7 @@ function createWithHooks(generator, opts, galaxy) {
           changed = true;
         }
 
-        if (r.blurCallback) {
+        if (r.context.blurCallback) {
           // Needs to be added here due to how the client renders
           this.context.blurCallback = r.context.blurCallback;
         }
