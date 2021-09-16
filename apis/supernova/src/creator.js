@@ -196,8 +196,11 @@ function createWithHooks(generator, opts, galaxy) {
     setSnapshotData(layout) {
       return generator.component.runSnaps(this, layout);
     },
-    toggleFocus(inFocus, relinquishFocus) {
-      generator.component.toggleFocus(this, inFocus, relinquishFocus);
+    focus(relinquishFocus) {
+      generator.component.focus(this, relinquishFocus);
+    },
+    blur() {
+      generator.component.blur(this);
     },
     getImperativeHandle() {
       return generator.component.getImperativeHandle(this);

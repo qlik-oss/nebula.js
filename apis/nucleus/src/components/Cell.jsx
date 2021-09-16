@@ -323,12 +323,12 @@ const Cell = forwardRef(
     const handleKeyDown = (e) => {
       if ([13, 32].includes(e.keyCode)) {
         // Enter or space
-        halo.root.toggleFocusOfCell(currentId);
+        halo.root.toggleFocusOfCells(currentId);
       }
     };
 
     const relinquishFocus = (resetFocus) => {
-      halo.root.toggleFocusOfCell(resetFocus);
+      halo.root.toggleFocusOfCells(resetFocus);
       if (resetFocus && cellNode) {
         cellNode.focus();
       }
@@ -405,9 +405,13 @@ const Cell = forwardRef(
         getQae() {
           return state.sn.generator.qae;
         },
-        toggleFocus(inFocus) {
-          if (typeof state.sn.component.toggleFocus === 'function') {
-            state.sn.component.toggleFocus(inFocus, relinquishFocus);
+        toggleFocus(active) {
+          if (typeof state.sn.component.focus === 'function') {
+            if (active) {
+              state.sn.component.focus(relinquishFocus);
+            } else {
+              state.sn.component.blur();
+            }
           }
         },
         setSnOptions,
