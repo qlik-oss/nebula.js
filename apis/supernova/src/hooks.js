@@ -987,6 +987,7 @@ export function onTakeSnapshot(cb) {
 }
 
 /**
+ * @experimental
  * @interface Keyboard
  * @property {boolean} enabled Whether or not Nebula handles keyboard navigation or not.
  * @property {boolean} inFocus Set to true when the chart is activated, ie a user tabs to the chart and presses Enter or Space.
@@ -1029,8 +1030,19 @@ export function useKeyboard() {
   currentComponent.__hooks.accessibility.inFocus = false;
   currentComponent.__hooks.accessibility.setter = setAcc;
   currentComponent.__hooks.accessibility.enabled = keyboardNavigation;
+  currentComponent.__hooks.accessibility.exitFunction = function (resetFocus) {
+    this.inFocus && this.relinquishFocus && this.relinquishFocus(resetFocus);
+  };
 
-  useEffect(() => setAcc({ inFocus: false, enabled: keyboardNavigation, exit: () => {} }), [keyboardNavigation]);
+  useEffect(
+    () =>
+      setAcc({
+        inFocus: false,
+        enabled: keyboardNavigation,
+        exit: currentComponent.__hooks.accessibility.exitFunction,
+      }),
+    [keyboardNavigation]
+  );
 
   return acc;
 }
@@ -1039,10 +1051,8 @@ export function toggleFocus(component, inFocus, relinquishFocus) {
   const acc = component.__hooks.accessibility;
   acc.inFocus = inFocus;
 
-  if (!acc.exitFunction) {
-    acc.exitFunction = function () {
-      this.inFocus && relinquishFocus();
-    };
+  if (!acc.relinquishFocus) {
+    acc.relinquishFocus = relinquishFocus;
   }
   if (acc && acc.setter) {
     acc.setter({ inFocus, enabled: acc.enabled, exit: acc.exitFunction });
