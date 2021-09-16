@@ -694,6 +694,7 @@ export function useTheme() {
  * Gets the embed instance used.
  * @entry
  * @experimental
+ * @since 1.7.0
  * @returns {Embed} The embed instance used.
  * @example
  * import { useEmbed } from '@nebula.js/stardust';

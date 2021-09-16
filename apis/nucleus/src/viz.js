@@ -82,7 +82,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     },
     /**
      * Converts the visualization to a different registered type
-     * @experimental
      * @since 1.1.0
      * @param {string} newType - Which registered type to convert to.
      * @param {boolean=} forceUpdate - Whether to run setProperties or not, defaults to true.

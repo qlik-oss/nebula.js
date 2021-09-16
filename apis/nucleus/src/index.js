@@ -313,7 +313,6 @@ function nuked(configuration = {}) {
        * Gets the listbox instance of the specified field
        * @param {string|LibraryField} fieldIdentifier Fieldname as a string or a Library dimension
        * @returns {Promise<FieldInstance>}
-       * @experimental
        * @since 1.1.0
        * @example
        * const fieldInstance = await n.field("MyField");
@@ -328,7 +327,6 @@ function nuked(configuration = {}) {
         /**
          * @class
          * @alias FieldInstance
-         * @experimental
          * @since 1.1.0
          */
         const fieldSels = {
@@ -343,7 +341,6 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.search=true] To show the search bar
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
            * @param {object=} [options.properties={}] Properties object to extend default properties with
-           * @experimental
            * @since 1.1.0
            * @example
            * fieldInstance.mount(element);
@@ -366,7 +363,6 @@ function nuked(configuration = {}) {
           },
           /**
            * Unmounts the field listbox from the DOM.
-           * @experimental
            * @since 1.1.0
            * @example
            * listbox.unmount();
