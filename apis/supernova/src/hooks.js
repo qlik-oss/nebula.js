@@ -993,6 +993,7 @@ export function onTakeSnapshot(cb) {
  * @property {boolean} enabled Whether or not Nebula handles keyboard navigation or not.
  * @property {boolean} active Set to true when the chart is activated, ie a user tabs to the chart and presses Enter or Space.
  * @property {function=} blur Function used by the visualization to tell Nebula to it wants to relinquish focus
+ * @property {function=} focus Function used by the visualization to tell Nebula to it wants focus
  */
 
 /**
@@ -1026,18 +1027,35 @@ export function onTakeSnapshot(cb) {
 
 export function useKeyboard() {
   const keyboardNavigation = useInternalContext('keyboardNavigation');
-  const [acc, setAcc] = useState({ active: false, enabled: keyboardNavigation });
-  currentComponent.__hooks.accessibility.setter = setAcc;
-  currentComponent.__hooks.accessibility.enabled = keyboardNavigation;
+  const blurCallback = useInternalContext('blurCallback');
 
   if (!currentComponent.__hooks.accessibility.exitFunction) {
     const exitFunction = function (resetFocus) {
-      this.active && this.relinquishFocus && this.relinquishFocus(resetFocus);
-    }.bind(currentComponent.__hooks.accessibility);
+      const acc = this.__hooks.accessibility;
+      if (acc.active) {
+        blur(this);
+        blurCallback && blurCallback(resetFocus);
+      }
+    }.bind(currentComponent);
 
     currentComponent.__hooks.accessibility.exitFunction = exitFunction;
+
+    const focusFunction = function () {
+      const acc = this.__hooks.accessibility;
+      if (acc.enabled) {
+        blurCallback && blurCallback(false);
+        focus(this);
+      }
+    }.bind(currentComponent);
+
+    currentComponent.__hooks.accessibility.focusFunction = focusFunction;
   }
+  const focusFunc = currentComponent.__hooks.accessibility.focusFunction;
   const exitFunc = currentComponent.__hooks.accessibility.exitFunction;
+
+  const [acc, setAcc] = useState({ active: false, enabled: keyboardNavigation, blur: exitFunc, focus: focusFunc });
+  currentComponent.__hooks.accessibility.setter = setAcc;
+  currentComponent.__hooks.accessibility.enabled = keyboardNavigation;
 
   useEffect(
     () =>
@@ -1045,6 +1063,7 @@ export function useKeyboard() {
         active: false,
         enabled: keyboardNavigation,
         blur: exitFunc,
+        focus: focusFunc,
       }),
     [keyboardNavigation]
   );
@@ -1052,23 +1071,26 @@ export function useKeyboard() {
   return acc;
 }
 
-export function focus(component, relinquishFocus) {
+export function focus(component) {
   const acc = component.__hooks.accessibility;
-  acc.active = true;
 
-  if (!acc.relinquishFocus) {
-    acc.relinquishFocus = relinquishFocus;
+  if (acc.active) {
+    return;
   }
+  acc.active = true;
   if (acc && acc.setter) {
-    acc.setter({ active: true, enabled: acc.enabled, blur: acc.exitFunction });
+    acc.setter({ active: true, enabled: acc.enabled, blur: acc.exitFunction, focus: acc.focusFunction });
   }
 }
 
 export function blur(component) {
   const acc = component.__hooks.accessibility;
+  if (!acc.active) {
+    return;
+  }
   acc.active = false;
 
   if (acc && acc.setter) {
-    acc.setter({ active: false, enabled: acc.enabled, blur: acc.exitFunction });
+    acc.setter({ active: false, enabled: acc.enabled, blur: acc.exitFunction, focus: acc.focusFunction });
   }
 }

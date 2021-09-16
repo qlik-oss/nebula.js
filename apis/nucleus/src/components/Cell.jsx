@@ -254,17 +254,7 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const loadType = async ({
-  dispatch,
-  types,
-  visualization,
-  version,
-  model,
-  app,
-  selections,
-  keyboardNavigation,
-  nebbie,
-}) => {
+const loadType = async ({ dispatch, types, visualization, version, model, app, selections, blurCallback, nebbie }) => {
   try {
     const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
@@ -272,7 +262,7 @@ const loadType = async ({
       app,
       selections,
       nebbie,
-      keyboardNavigation,
+      blurCallback,
     });
     return sn;
   } catch (err) {
@@ -328,7 +318,7 @@ const Cell = forwardRef(
     };
 
     const relinquishFocus = (resetFocus) => {
-      halo.root.toggleFocusOfCells(resetFocus);
+      halo.root.toggleFocusOfCells();
       if (resetFocus && cellNode) {
         cellNode.focus();
       }
@@ -358,7 +348,7 @@ const Cell = forwardRef(
           app,
           selections,
           nebbie,
-          keyboardNavigation,
+          blurCallback: relinquishFocus,
         });
         if (sn) {
           dispatch({ type: 'LOADED', sn, visualization });
@@ -408,7 +398,7 @@ const Cell = forwardRef(
         toggleFocus(active) {
           if (typeof state.sn.component.focus === 'function') {
             if (active) {
-              state.sn.component.focus(relinquishFocus);
+              state.sn.component.focus();
             } else {
               state.sn.component.blur();
             }

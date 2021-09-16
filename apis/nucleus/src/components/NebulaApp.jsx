@@ -73,17 +73,13 @@ export default function boot({ app, context }) {
   ReactDOM.render(<NebulaApp ref={appRef} app={app} initialContext={context} />, element, resolveRender);
 
   const cells = {};
-  let currentlyFocusedCell;
 
   return [
     {
       toggleFocusOfCells(cellIdToFocus) {
-        if (currentlyFocusedCell !== cellIdToFocus) {
-          currentlyFocusedCell = cellIdToFocus;
-          Object.keys(cells).forEach((i) => {
-            cells[i].current.toggleFocus(i === cellIdToFocus);
-          });
-        }
+        Object.keys(cells).forEach((i) => {
+          cells[i].current.toggleFocus(i === cellIdToFocus);
+        });
       },
       cells,
       addCell(id, cell) {

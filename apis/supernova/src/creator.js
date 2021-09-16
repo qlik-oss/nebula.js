@@ -76,6 +76,7 @@ function createWithHooks(generator, opts, galaxy) {
       layout: {},
       appLayout: {},
       keyboardNavigation: opts.keyboardNavigation,
+      blurCallback: opts.blurCallback,
       constraints: forcedConstraints,
       options: {},
       plugins: [],
@@ -196,8 +197,8 @@ function createWithHooks(generator, opts, galaxy) {
     setSnapshotData(layout) {
       return generator.component.runSnaps(this, layout);
     },
-    focus(relinquishFocus) {
-      generator.component.focus(this, relinquishFocus);
+    focus() {
+      generator.component.focus(this);
     },
     blur() {
       generator.component.blur(this);
