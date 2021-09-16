@@ -5,6 +5,7 @@ import { makeStyles, Typography, Grid } from '@material-ui/core';
 /**
  * @interface
  * @extends HTMLElement
+ * @since 2.0.0
  */
 const CellFooter = {
   /** @type {'njs-cell-footer'} */

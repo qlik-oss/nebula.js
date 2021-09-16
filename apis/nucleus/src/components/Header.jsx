@@ -13,6 +13,7 @@ const MIN_WIDTH = (ITEM_WIDTH + ITEM_SPACING) * NUMBER_OF_ITEMS + DIVIDER + ITEM
 /**
  * @interface
  * @extends HTMLElement
+ * @since 2.0.0
  */
 const CellTitle = {
   /** @type {'njs-cell-title'} */
@@ -22,6 +23,7 @@ const CellTitle = {
 /**
  * @interface
  * @extends HTMLElement
+ * @since 2.0.0
  */
 const CellSubTitle = {
   /** @type {'njs-cell-sub-title'} */
