@@ -824,8 +824,8 @@ translator.add({
   id: 'company.hello_user',
   locale: {
     'en-US': 'Hello {0}',
-    'sv-SE': 'Hej {0}
-  }
+    'sv-SE': 'Hej {0}',
+  },
 });
 translator.get('company.hello_user', ['John']); // Hello John
 ```
