@@ -3,7 +3,6 @@ const noop = () => {};
 /**
  * @function importProperties
  * @description Imports properties for a chart with a hypercube.
- * @experimental
  * @since 1.1.0
  * @param {Object} args
  * @param {ExportFormat} args.exportFormat The export object which is the output of exportProperties.
@@ -17,7 +16,6 @@ const noop = () => {};
 /**
  * @function exportProperties
  * @description Exports properties for a chart with a hypercube.
- * @experimental
  * @since 1.1.0
  * @param {Object} args
  * @param {Object} args.propertyTree
