@@ -107,6 +107,11 @@ function createWithHooks(generator, opts, galaxy) {
           changed = true;
         }
 
+        if (r.blurCallback) {
+          // Needs to be added here due to how the client renders
+          this.context.blurCallback = r.context.blurCallback;
+        }
+
         if (r.options) {
           // options could contain anything including methods, classes, cyclical references
           // so we can't use JSON parse for comparison.
