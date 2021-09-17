@@ -988,14 +988,35 @@ export function onTakeSnapshot(cb) {
   h.fn = cb;
 }
 
-export function useWaitOn() {
+/**
+ * Gets render state instance.
+ *
+ * Used to update properties and get a new layout without triggering onInitialRender.
+ * @entry
+ * @experimental
+ * @returns {{ setPending, restore }} The render state.
+ * @example
+ * import { useRenderState } from '@nebula.js/stardust';
+ *
+ * const renderState = useRenderState();
+ * useState(() => {
+ *   if(needProperteisUpdate(...)) {
+ *      useRenderState.setPending();
+ *      updateProperties(...);
+ *   } else {
+ *      useRenderState.restore();
+ *      ...
+ *   }
+ * }, [...]);
+ */
+export function useRenderState() {
   getHook(++currentIndex);
   const hooks = currentComponent.__hooks;
   return {
-    wait: () => {
+    setPending: () => {
       hooks.waitForData = true;
     },
-    continue: () => {
+    restore: () => {
       hooks.waitForData = false;
     },
   };

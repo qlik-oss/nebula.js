@@ -26,6 +26,6 @@ export {
   useKeyboard,
   useOptions,
   useEmbed,
-  useWaitOn,
+  useRenderState,
   onTakeSnapshot,
 } from './hooks';
