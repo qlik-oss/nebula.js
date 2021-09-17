@@ -85,6 +85,7 @@ describe('creator', () => {
       opts = {
         nebbie: 'embedAPI',
         keyboardNavigation: false,
+        blurCallback: 'bcb',
         model: 'model',
         app: 'app',
         selections: 'selections',
@@ -107,6 +108,7 @@ describe('creator', () => {
         selections: 'selections',
         nebbie: 'embedAPI',
         keyboardNavigation: false,
+        blurCallback: 'bcb',
         element: undefined,
         theme: undefined,
         translator: galaxy.translator,
