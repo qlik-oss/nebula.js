@@ -10,6 +10,7 @@ import useActionState from '../hooks/useActionState';
 /**
  * @interface
  * @extends HTMLElement
+ * @since 2.0.0
  */
 const ActionElement = {
   /** @type {'njs-cell-action'} */
