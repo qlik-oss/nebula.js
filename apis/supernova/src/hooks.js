@@ -29,6 +29,7 @@ export function initiate(component, { explicitResize = false } = {}) {
   component.__hooks = {
     obsolete: false,
     error: false,
+    waitForData: false,
     chain: {
       promise: null,
       resolve: () => {},
@@ -148,7 +149,7 @@ function maybeEndChain(hooks) {
     return;
   }
   hooks.chain.promise = null;
-  hooks.chain.resolve();
+  hooks.chain.resolve(!hooks.waitForData);
 }
 
 export function runSnaps(component, layout) {
@@ -985,6 +986,19 @@ export function onTakeSnapshot(cb) {
     currentComponent.__hooks.snaps.push(h);
   }
   h.fn = cb;
+}
+
+export function useWaitOn() {
+  getHook(++currentIndex);
+  const hooks = currentComponent.__hooks;
+  return {
+    wait: () => {
+      hooks.waitForData = true;
+    },
+    continue: () => {
+      hooks.waitForData = false;
+    },
+  };
 }
 
 /**
