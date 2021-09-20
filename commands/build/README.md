@@ -67,7 +67,7 @@ module.exports = {
 
 ### Watch files
 
-Rebuild the bundle when files in `/src` folder change on the disk
+Rebuild the bundle when files in `/src` folder have been change on the disk
 
 ```sh
 nebula build --watch
@@ -75,7 +75,7 @@ nebula build --watch
 
 ### Source map
 
-Build the bundle no need of generating source maps - `.js.map` files
+Build the bundle without a source map file - `.js.map` file
 
 ```sh
 nebula build --sourcemap false
@@ -86,7 +86,7 @@ source files, enabling the browser to reconstruct and present the original sourc
 code in the debugger. So if there is an error in a file in the `/dist` directory,
 the source map can tell you the original source file location.
 
-Basically, sourcemap is helpful for debugging and should be removed for production.
+Basically, source map is helpful for debugging and should be removed for production.
 
 ### Mode
 
@@ -113,6 +113,9 @@ from the build is required:
 ```json
 "module": "dist/hello.esm.js",
 ```
+
+The package.json can also have a different list of peerDependencies changing
+what dependencies are included in the output file.
 
 Then run the following command:
 
