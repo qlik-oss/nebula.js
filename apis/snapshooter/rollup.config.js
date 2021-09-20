@@ -39,7 +39,7 @@ const cfg = {
           {
             modules: false,
             targets: {
-              browsers: [...browserList, ...['ie 11', 'chrome 47']],
+              browsers: [...browserList, ...['chrome 47']],
             },
           },
         ],

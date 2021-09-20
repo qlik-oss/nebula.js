@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 
 import { useAppLayout } from '@nebula.js/nucleus/src/hooks/useLayout';
 
-import { Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
 
 import AppContext from '../contexts/AppContext';
 import VizContext from '../contexts/VizContext';

@@ -46,13 +46,13 @@ const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
   }));
 
   return (
-    <StylesProvider generateClassName={generator}>
-      <ThemeProvider theme={theme}>
+    <ThemeProvider theme={theme}>
+      <StylesProvider generateClassName={generator}>
         <InstanceContext.Provider value={context}>
           <>{components}</>
         </InstanceContext.Provider>
-      </ThemeProvider>
-    </StylesProvider>
+      </StylesProvider>
+    </ThemeProvider>
   );
 });
 

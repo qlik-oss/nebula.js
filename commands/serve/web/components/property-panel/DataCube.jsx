@@ -3,7 +3,7 @@ import React, { useMemo } from 'react';
 import hcHandler from '@nebula.js/nucleus/src/object/hc-handler';
 import loHandler from '@nebula.js/nucleus/src/object/lo-handler';
 
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 import Fields from './Fields';
 

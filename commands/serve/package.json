@@ -22,7 +22,8 @@
     "lib"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js",
+    "build": "cross-env NODE_ENV=production DEFAULTS=true yarn run webpack --config ./lib/webpack.build.js",
+    "build:dev": "cross-env NODE_ENV=development DEFAULTS=true yarn run webpack --config ./lib/webpack.build.js",
     "lint": "eslint web",
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
@@ -41,6 +42,7 @@
     "source-map-loader": "3.0.0",
     "webpack": "5.51.1",
     "webpack-dev-server": "4.1.1",
+    "webpack-cli": "4.8.0",
     "ws": "8.2.1",
     "yargs": "17.1.1"
   },
@@ -48,11 +50,13 @@
     "@babel/core": "7.15.0",
     "@babel/preset-env": "7.15.0",
     "@babel/preset-react": "7.14.5",
-    "@material-ui/core": "4.12.3",
     "@nebula.js/nucleus": "^2.0.0-beta.1",
     "@nebula.js/snapshooter": "^2.0.0-beta.1",
     "@nebula.js/stardust": "^2.0.0-beta.1",
     "@nebula.js/ui": "^2.0.0-beta.1",
+    "@mui/material": "5.0.0",
+    "@emotion/react": "11.4.1",
+    "@emotion/styled": "11.3.0",
     "autosuggest-highlight": "3.1.1",
     "babel-loader": "8.2.2",
     "d3-require": "1.2.4",
@@ -62,7 +66,6 @@
     "monaco-editor": "0.27.0",
     "monaco-editor-webpack-plugin": "4.1.2",
     "react": "17.0.2",
-    "react-dom": "17.0.2",
-    "webpack-cli": "4.8.0"
+    "react-dom": "17.0.2"
   }
 }

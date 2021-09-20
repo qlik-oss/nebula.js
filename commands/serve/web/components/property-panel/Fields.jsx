@@ -9,7 +9,7 @@ import {
   ListItemSecondaryAction,
   // Divider,
   Typography,
-} from '@material-ui/core';
+} from '@mui/material';
 
 import Remove from '@nebula.js/ui/icons/remove';
 
@@ -76,7 +76,7 @@ export default function Fields({
               <FieldTitle field={d} libraryItems={libraryItems} type={type} />
             </ListItemText>
             <ListItemSecondaryAction>
-              <IconButton edge="end" onClick={() => onRemove(i)}>
+              <IconButton edge="end" onClick={() => onRemove(i)} size="large">
                 <Remove />
               </IconButton>
             </ListItemSecondaryAction>

@@ -9,10 +9,10 @@ import {
   Checkbox,
   FormControlLabel,
   TextField,
-  ExpansionPanel,
-  ExpansionPanelSummary,
-  ExpansionPanelDetails,
-} from '@material-ui/core';
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@mui/material';
 
 import { ExpandMore } from '@nebula.js/ui/icons';
 
@@ -109,12 +109,12 @@ const Obj = ({ property, value, changed }) => {
   const classes = useStyles();
   const panelClasses = usePanelStyles();
   return (
-    <ExpansionPanel square className={[panelClasses.root, panelClasses.expanded].join(' ')}>
-      <ExpansionPanelSummary expandIcon={<ExpandMore />} className={classes.summary}>
+    <Accordion square className={[panelClasses.root, panelClasses.expanded].join(' ')}>
+      <AccordionSummary expandIcon={<ExpandMore />} className={classes.summary}>
         <Typography>{property}</Typography>
-      </ExpansionPanelSummary>
-      <ExpansionPanelDetails className={classes.details}>{generateComponents(value, changed)}</ExpansionPanelDetails>
-    </ExpansionPanel>
+      </AccordionSummary>
+      <AccordionDetails className={classes.details}>{generateComponents(value, changed)}</AccordionDetails>
+    </Accordion>
   );
 };
 
