@@ -70,10 +70,10 @@ jobs:
           name: Unit tests
           command: |
             yarn run test:unit --mocha.bail false --mocha.reporter mocha-junit-reporter --mocha.reporterOptions.mochaFile ./coverage/junit/junit.xml
-          #  if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
-          #    echo "Uploading coverage results to coveralls.io..."
-          #    cat ./coverage/unit/lcov.info | npx coveralls
-          #  fi
+            if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
+              echo "Uploading coverage results to coveralls.io..."
+              cat ./coverage/unit/lcov.info | npx coveralls
+            fi
       - store_test_results:
           path: coverage/junit
       - run:
