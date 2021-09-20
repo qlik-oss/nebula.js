@@ -88,7 +88,10 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
                 }),
           },
         })
-      ).then(() => {
+      ).then((done) => {
+        if (done === false) {
+          return;
+        }
         if (renderCnt === 0 && typeof options.onInitialRender === 'function') {
           options.onInitialRender.call(null);
         }

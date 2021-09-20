@@ -29,6 +29,7 @@ export function initiate(component, { explicitResize = false } = {}) {
   component.__hooks = {
     obsolete: false,
     error: false,
+    waitForData: false,
     chain: {
       promise: null,
       resolve: () => {},
@@ -148,7 +149,7 @@ function maybeEndChain(hooks) {
     return;
   }
   hooks.chain.promise = null;
-  hooks.chain.resolve();
+  hooks.chain.resolve(!hooks.waitForData);
 }
 
 export function runSnaps(component, layout) {
@@ -985,6 +986,40 @@ export function onTakeSnapshot(cb) {
     currentComponent.__hooks.snaps.push(h);
   }
   h.fn = cb;
+}
+
+/**
+ * Gets render state instance.
+ *
+ * Used to update properties and get a new layout without triggering onInitialRender.
+ * @entry
+ * @experimental
+ * @returns {{ pending, restore }} The render state.
+ * @example
+ * import { useRenderState } from '@nebula.js/stardust';
+ *
+ * const renderState = useRenderState();
+ * useState(() => {
+ *   if(needProperteisUpdate(...)) {
+ *      useRenderState.pending();
+ *      updateProperties(...);
+ *   } else {
+ *      useRenderState.restore();
+ *      ...
+ *   }
+ * }, [...]);
+ */
+export function useRenderState() {
+  getHook(++currentIndex);
+  const hooks = currentComponent.__hooks;
+  return {
+    pending: () => {
+      hooks.waitForData = true;
+    },
+    restore: () => {
+      hooks.waitForData = false;
+    },
+  };
 }
 
 /**
