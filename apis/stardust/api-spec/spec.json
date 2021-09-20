@@ -1561,6 +1561,12 @@
           "optional": true,
           "kind": "function",
           "params": []
+        },
+        "focus": {
+          "description": "Function used by the visualization to tell Nebula to it wants focus",
+          "optional": true,
+          "kind": "function",
+          "params": []
         }
       }
     },

@@ -18,7 +18,6 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
 
   const { theme: themeName, language, constraints, keyboardNavigation } = useContext(InstanceContext);
   const [renderDebouncer] = useState(() => new RenderDebouncer());
-
   const [isMounted, setIsMounted] = useState(false);
   const [renderCnt, setRenderCnt] = useState(0);
   const [containerRef, containerRect, containerNode] = useRect();
