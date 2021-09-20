@@ -23,6 +23,7 @@ export {
   useDeviceType,
   usePlugins,
   useConstraints,
+  useKeyboard,
   useOptions,
   useEmbed,
   onTakeSnapshot,

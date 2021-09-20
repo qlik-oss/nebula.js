@@ -84,6 +84,8 @@ describe('creator', () => {
       };
       opts = {
         nebbie: 'embedAPI',
+        keyboardNavigation: false,
+        blurCallback: 'bcb',
         model: 'model',
         app: 'app',
         selections: 'selections',
@@ -105,6 +107,8 @@ describe('creator', () => {
         global: undefined,
         selections: 'selections',
         nebbie: 'embedAPI',
+        keyboardNavigation: false,
+        blurCallback: 'bcb',
         element: undefined,
         theme: undefined,
         translator: galaxy.translator,
@@ -238,6 +242,25 @@ describe('creator', () => {
           appLayout: {
             locale: 'meh',
           },
+        },
+      });
+      expect(hooked.run.callCount).to.equal(2);
+    });
+
+    it('should run when keyboardNavigation have changed', () => {
+      const c = create(generator, opts, galaxy).component;
+      c.render({}); // initial should always run
+
+      c.render({
+        context: {
+          keyboardNavigation: false,
+        },
+      });
+      expect(hooked.run.callCount).to.equal(1);
+
+      c.render({
+        context: {
+          keyboardNavigation: true,
         },
       });
       expect(hooked.run.callCount).to.equal(2);

@@ -173,7 +173,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
       </Grid>
       {search ? (
         <Grid item>
-          <ListBoxSearch model={model} />
+          <ListBoxSearch model={model} autoFocus={false} />
         </Grid>
       ) : (
         ''

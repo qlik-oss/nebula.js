@@ -131,6 +131,7 @@ describe('<Supernova />', () => {
         constraints: {},
         appLayout: { qLocaleInfo: 'loc' },
         theme: 'theme',
+        keyboardNavigation: undefined,
         permissions: ['passive', 'interact', 'select', 'fetch'],
         localeInfo: 'loc',
         logicalSize: 'logical',
