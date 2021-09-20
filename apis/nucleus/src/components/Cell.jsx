@@ -311,8 +311,8 @@ const Cell = forwardRef(
     };
 
     const handleKeyDown = (e) => {
-      if ([13, 32].includes(e.keyCode)) {
-        // Enter or space
+      // Enter or space
+      if (['Enter', ' ', 'Spacebar'].includes(e.key)) {
         halo.root.toggleFocusOfCells(currentId);
       }
     };
