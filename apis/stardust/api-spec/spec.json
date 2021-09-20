@@ -25,7 +25,9 @@
       "returns": {
         "type": "#/definitions/Embed"
       },
-      "examples": ["import { embed } from '@nebula.js/stardust'\nconst n = embed(app);\nn.render({ id: 'abc' });"],
+      "examples": [
+        "import { embed } from '@nebula.js/stardust'\nconst n = embed(app);\nn.render({ id: 'abc' });"
+      ],
       "entries": {
         "createConfiguration": {
           "description": "Creates a new `embed` scope bound to the specified `configuration`.\n\nThe configuration is merged with all previous scopes.",
@@ -344,13 +346,18 @@
     "useEmbed": {
       "description": "Gets the embed instance used.",
       "stability": "experimental",
+      "availability": {
+        "since": "1.7.0"
+      },
       "kind": "function",
       "params": [],
       "returns": {
         "description": "The embed instance used.",
         "type": "#/definitions/Embed"
       },
-      "examples": ["import { useEmbed } from '@nebula.js/stardust';\n\nconst embed = useEmbed();\nembed.render(...)"]
+      "examples": [
+        "import { useEmbed } from '@nebula.js/stardust';\n\nconst embed = useEmbed();\nembed.render(...)"
+      ]
     },
     "useTranslator": {
       "description": "Gets the translator.",
@@ -479,12 +486,28 @@
       "examples": [
         "import { onTakeSnapshot } from '@nebula.js/stardust';\nimport { useState } from '@nebula.js/stardust';\nimport { useLayout } from '@nebula.js/stardust';\n\nconst layout = useLayout();\nconst [zoomed] = useState(layout.isZoomed || false);\n\nonTakeSnapshot((copyOfLayout) => {\n  copyOfLayout.isZoomed = zoomed;\n  return Promise.resolve(copyOfLayout);\n});"
       ]
+    },
+    "useKeyboard": {
+      "description": "Gets the desired keyboard settings and status to applied when rendering the visualization.\nA visualization should in general only have tab stops if either `keyboard.enabled` is false or if active is true.\nThis means that either Nebula isn't configured to handle keyboard input or the chart is currently focused.\nEnabling or disabling keyboardNavigation are set on the embed configuration and\nshould be respected by the visualization.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/Keyboard"
+      },
+      "examples": [
+        "// configure nebula to enable navigation between charts\nembed(app, {\n  context: {\n    keyboardNavigation: true, // tell Nebula to handle navigation\n  }\n}).render({ element, id: 'sdfsdf' });",
+        "import { useKeyboard } from '@nebula.js/stardust';\n// ...\nconst keyboard = useKeyboard();\nuseEffect(() => {\n // Set a tab stop on our button if in focus or if Nebulas navigation is disabled\n button.setAttribute('tabIndex', keyboard.active || !keyboard.enabled ? 0 : -1);\n // If navigation is enabled and focus has shifted, lets focus the button\n keyboard.enabled && keyboard.active && button.focus();\n}, [keyboard])"
+      ]
     }
   },
   "definitions": {
     "Context": {
       "kind": "interface",
       "entries": {
+        "keyboardNavigation": {
+          "optional": true,
+          "type": "boolean"
+        },
         "constraints": {
           "optional": true,
           "kind": "object",
@@ -638,11 +661,12 @@
               }
             ]
           },
-          "examples": ["const selections = await n.selections();\nselections.mount(element);"]
+          "examples": [
+            "const selections = await n.selections();\nselections.mount(element);"
+          ]
         },
         "field": {
           "description": "Gets the listbox instance of the specified field",
-          "stability": "experimental",
           "availability": {
             "since": "1.1.0"
           },
@@ -692,7 +716,6 @@
       }
     },
     "FieldInstance": {
-      "stability": "experimental",
       "availability": {
         "since": "1.1.0"
       },
@@ -705,7 +728,6 @@
       "staticEntries": {
         "mount": {
           "description": "Mounts the field as a listbox into the provided HTMLElement.",
-          "stability": "experimental",
           "availability": {
             "since": "1.1.0"
           },
@@ -759,17 +781,20 @@
               }
             }
           ],
-          "examples": ["fieldInstance.mount(element);"]
+          "examples": [
+            "fieldInstance.mount(element);"
+          ]
         },
         "unmount": {
           "description": "Unmounts the field listbox from the DOM.",
-          "stability": "experimental",
           "availability": {
             "since": "1.1.0"
           },
           "kind": "function",
           "params": [],
-          "examples": ["listbox.unmount();"]
+          "examples": [
+            "listbox.unmount();"
+          ]
         }
       }
     },
@@ -811,11 +836,12 @@
           "description": "Destroys the visualization and removes it from the the DOM.",
           "kind": "function",
           "params": [],
-          "examples": ["const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"]
+          "examples": [
+            "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"
+          ]
         },
         "convertTo": {
           "description": "Converts the visualization to a different registered type",
-          "stability": "experimental",
           "availability": {
             "since": "1.1.0"
           },
@@ -847,7 +873,9 @@
           ]
         }
       },
-      "examples": ["const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"]
+      "examples": [
+        "const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"
+      ]
     },
     "Flags": {
       "kind": "interface",
@@ -869,114 +897,6 @@
         }
       }
     },
-    "Field": {
-      "kind": "alias",
-      "items": {
-        "kind": "union",
-        "items": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "qae.NxDimension"
-          },
-          {
-            "type": "qae.NxMeasure"
-          },
-          {
-            "type": "#/definitions/LibraryField"
-          }
-        ]
-      }
-    },
-    "CreateConfig": {
-      "description": "Rendering configuration for creating and rendering a new object",
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "type": "string"
-        },
-        "fields": {
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "properties": {
-          "optional": true,
-          "type": "qae.GenericObjectProperties"
-        }
-      }
-    },
-    "BaseConfig": {
-      "description": "Basic rendering configuration for rendering an object",
-      "kind": "interface",
-      "entries": {
-        "element": {
-          "type": "HTMLElement"
-        },
-        "options": {
-          "optional": true,
-          "type": "object"
-        },
-        "plugins": {
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/Plugin"
-          }
-        }
-      }
-    },
-    "GetConfig": {
-      "description": "Rendering configuration for rendering an existing object",
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "id": {
-          "type": "string"
-        }
-      }
-    },
-    "LibraryField": {
-      "kind": "interface",
-      "entries": {
-        "qLibraryId": {
-          "type": "string"
-        },
-        "type": {
-          "kind": "union",
-          "items": [
-            {
-              "kind": "literal",
-              "value": "'dimension'"
-            },
-            {
-              "kind": "literal",
-              "value": "'measure'"
-            }
-          ]
-        }
-      }
-    },
     "AppSelections": {
       "kind": "class",
       "constructor": {
@@ -993,13 +913,17 @@
               "type": "HTMLElement"
             }
           ],
-          "examples": ["selections.mount(element);"]
+          "examples": [
+            "selections.mount(element);"
+          ]
         },
         "unmount": {
           "description": "Unmounts the app selection UI from the DOM.",
           "kind": "function",
           "params": [],
-          "examples": ["selections.unmount();"]
+          "examples": [
+            "selections.unmount();"
+          ]
         }
       }
     },
@@ -1170,6 +1094,141 @@
         }
       }
     },
+    "Field": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "qae.NxDimension"
+          },
+          {
+            "type": "qae.NxMeasure"
+          },
+          {
+            "type": "#/definitions/LibraryField"
+          }
+        ]
+      }
+    },
+    "CreateConfig": {
+      "description": "Rendering configuration for creating and rendering a new object",
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "fields": {
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "properties": {
+          "optional": true,
+          "type": "qae.GenericObjectProperties"
+        }
+      }
+    },
+    "BaseConfig": {
+      "description": "Basic rendering configuration for rendering an object",
+      "kind": "interface",
+      "entries": {
+        "element": {
+          "type": "HTMLElement"
+        },
+        "options": {
+          "optional": true,
+          "type": "object"
+        },
+        "plugins": {
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Plugin"
+          }
+        }
+      }
+    },
+    "GetConfig": {
+      "description": "Rendering configuration for rendering an existing object",
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "LibraryField": {
+      "kind": "interface",
+      "entries": {
+        "qLibraryId": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'dimension'"
+            },
+            {
+              "kind": "literal",
+              "value": "'measure'"
+            }
+          ]
+        }
+      }
+    },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
     "LoadType": {
       "kind": "interface",
       "params": [
@@ -1214,34 +1273,10 @@
         }
       }
     },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
-    },
     "ActionElement": {
+      "availability": {
+        "since": "2.0.0"
+      },
       "extends": [
         {
           "type": "HTMLElement"
@@ -1270,6 +1305,9 @@
       }
     },
     "CellFooter": {
+      "availability": {
+        "since": "2.0.0"
+      },
       "extends": [
         {
           "type": "HTMLElement"
@@ -1284,6 +1322,9 @@
       }
     },
     "CellTitle": {
+      "availability": {
+        "since": "2.0.0"
+      },
       "extends": [
         {
           "type": "HTMLElement"
@@ -1298,6 +1339,9 @@
       }
     },
     "CellSubTitle": {
+      "availability": {
+        "since": "2.0.0"
+      },
       "extends": [
         {
           "type": "HTMLElement"
@@ -1500,9 +1544,34 @@
         }
       }
     },
+    "Keyboard": {
+      "stability": "experimental",
+      "kind": "interface",
+      "entries": {
+        "enabled": {
+          "description": "Whether or not Nebula handles keyboard navigation or not.",
+          "type": "boolean"
+        },
+        "active": {
+          "description": "Set to true when the chart is activated, ie a user tabs to the chart and presses Enter or Space.",
+          "type": "boolean"
+        },
+        "blur": {
+          "description": "Function used by the visualization to tell Nebula to it wants to relinquish focus",
+          "optional": true,
+          "kind": "function",
+          "params": []
+        },
+        "focus": {
+          "description": "Function used by the visualization to tell Nebula to it wants focus",
+          "optional": true,
+          "kind": "function",
+          "params": []
+        }
+      }
+    },
     "importProperties": {
       "description": "Imports properties for a chart with a hypercube.",
-      "stability": "experimental",
       "availability": {
         "since": "1.1.0"
       },
@@ -1545,7 +1614,6 @@
     },
     "exportProperties": {
       "description": "Exports properties for a chart with a hypercube.",
-      "stability": "experimental",
       "availability": {
         "since": "1.1.0"
       },
@@ -1806,7 +1874,9 @@
             "description": "The resolved color.",
             "type": "string"
           },
-          "examples": ["theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"]
+          "examples": [
+            "theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"
+          ]
         },
         "getContrastingColorTo": {
           "description": "Get the best contrasting color against the specified `color`.\nThis is typically used to find a suitable text color for a label placed on an arbitrarily colored background.\n\nThe returned colors are derived from the theme.",
@@ -1822,7 +1892,9 @@
             "description": "- The color that has the best contrast against the specified `color`.",
             "type": "string"
           },
-          "examples": ["theme.getContrastingColorTo('#400');"]
+          "examples": [
+            "theme.getContrastingColorTo('#400');"
+          ]
         },
         "getStyle": {
           "description": "Get the value of a style attribute in the theme by searching in the theme's JSON structure.\nThe search starts at the specified base path and continues upwards until the value is found.\nIf possible it will get the attribute's value using the given path.",
@@ -1848,7 +1920,9 @@
             "description": "The style value",
             "type": "string"
           },
-          "examples": ["theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"]
+          "examples": [
+            "theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"
+          ]
         }
       },
       "definitions": {
@@ -1966,7 +2040,6 @@
     },
     "ExportFormat": {
       "description": "Used for exporting and importing properties between backend models. An object that exports to\nExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes,\neach of the cubes should export dimensions and measures in two separate data groups.\nAn object that imports from this structure is responsible for putting the existing properties where they should be\nin the new model.",
-      "stability": "experimental",
       "availability": {
         "since": "1.1.0"
       },
@@ -1991,7 +2064,6 @@
       }
     },
     "ExportDataDef": {
-      "stability": "experimental",
       "availability": {
         "since": "1.1.0"
       },
@@ -2030,7 +2102,6 @@
       }
     },
     "ConversionType": {
-      "stability": "experimental",
       "availability": {
         "since": "1.1.0"
       },
@@ -2046,7 +2117,6 @@
     },
     "Conversion": {
       "description": "Provides conversion functionality to extensions.",
-      "stability": "experimental",
       "availability": {
         "since": "1.1.0"
       },
@@ -2054,7 +2124,6 @@
       "entries": {
         "hypercube": {
           "description": "Provides conversion functionality to extensions with hyperCubes.",
-          "stability": "experimental",
           "availability": {
             "since": "1.1.0"
           },
@@ -2066,7 +2135,6 @@
       ]
     },
     "hyperCubeConversion": {
-      "stability": "experimental",
       "availability": {
         "since": "1.1.0"
       },

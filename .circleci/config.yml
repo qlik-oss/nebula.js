@@ -148,11 +148,11 @@ workflows:
             tags:
               only:
                 - /v.*/
-      # - api-governance:
-      #     filters:
-      #       branches:
-      #         # Forked pull requests have CIRCLE_BRANCH set to pull/XXX
-      #         ignore: /pull\/[0-9]+/
-      #       tags:
-      #         only:
-      #           - /v.*/
+      - api-governance:
+          filters:
+            branches:
+              # Forked pull requests have CIRCLE_BRANCH set to pull/XXX
+              ignore: /pull\/[0-9]+/
+            tags:
+              only:
+                - /v.*/

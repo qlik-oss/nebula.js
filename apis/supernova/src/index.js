@@ -23,7 +23,9 @@ export {
   useDeviceType,
   usePlugins,
   useConstraints,
+  useKeyboard,
   useOptions,
   useEmbed,
+  useRenderState,
   onTakeSnapshot,
 } from './hooks';

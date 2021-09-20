@@ -76,7 +76,6 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
 };
 /**
  * @interface ConversionType
- * @experimental
  * @since 1.1.0
  * @property {importProperties} importProperties
  * @property {exportProperties} exportProperties
@@ -85,7 +84,6 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
 /**
  * @interface
  * @alias Conversion
- * @experimental
  * @since 1.1.0
  * @description Provides conversion functionality to extensions.
  * @example
@@ -106,7 +104,6 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
 const conversion = {
   /**
    * @type {hyperCubeConversion}
-   * @experimental
    * @since 1.1.0
    * @description Provides conversion functionality to extensions with hyperCubes.
    */

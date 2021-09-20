@@ -14,6 +14,7 @@ import { create as typesFn } from './sn/types';
 
 /**
  * @interface Context
+ * @property {boolean=} keyboardNavigation
  * @property {object=} constraints
  * @property {boolean=} constraints.active
  * @property {boolean=} constraints.passive
@@ -27,6 +28,7 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
   /** @type {string=} */
   deviceType: 'auto',
   constraints: {},
+  keyboardNavigation: false,
 };
 
 /**
@@ -234,8 +236,8 @@ function nuked(configuration = {}) {
       context: async (ctx) => {
         // filter valid values to avoid triggering unnecessary rerender
         let changes;
-        ['theme', 'language', 'constraints'].forEach((key) => {
-          if (ctx[key] && ctx[key] !== currentContext[key]) {
+        ['theme', 'language', 'constraints', 'keyboardNavigation'].forEach((key) => {
+          if (Object.prototype.hasOwnProperty.call(ctx, key) && ctx[key] !== currentContext[key]) {
             if (!changes) {
               changes = {};
             }
@@ -313,7 +315,6 @@ function nuked(configuration = {}) {
        * Gets the listbox instance of the specified field
        * @param {string|LibraryField} fieldIdentifier Fieldname as a string or a Library dimension
        * @returns {Promise<FieldInstance>}
-       * @experimental
        * @since 1.1.0
        * @example
        * const fieldInstance = await n.field("MyField");
@@ -328,7 +329,6 @@ function nuked(configuration = {}) {
         /**
          * @class
          * @alias FieldInstance
-         * @experimental
          * @since 1.1.0
          */
         const fieldSels = {
@@ -343,7 +343,6 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.search=true] To show the search bar
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
            * @param {object=} [options.properties={}] Properties object to extend default properties with
-           * @experimental
            * @since 1.1.0
            * @example
            * fieldInstance.mount(element);
@@ -366,7 +365,6 @@ function nuked(configuration = {}) {
           },
           /**
            * Unmounts the field listbox from the DOM.
-           * @experimental
            * @since 1.1.0
            * @example
            * listbox.unmount();
