@@ -35,6 +35,7 @@ describe('load', () => {
 
   it('should call load() with name and version', async () => {
     const loader = sinon.stub();
+    loader.returns({ component: {} });
     load('pie', '1.0.0', halo, loader);
     expect(loader).to.have.been.calledWithExactly({ name: 'pie', version: '1.0.0' });
   });
