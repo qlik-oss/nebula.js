@@ -354,37 +354,35 @@ export default function Hub() {
   // TODO MUI5: dark theme not applied correctly to stepper
 
   return (
-    <StyledEngineProvider injectFirst>
+    <StyledEngineProvider>
       <ThemeProvider theme={theme}>
         <Container maxWidth="md">
-          <StyledEngineProvider injectFirst>
-            <ThemeProvider theme={themeDark}>
-              <Stepper
-                alternativeLabel
-                activeStep={activeStep}
-                elevation={2}
-                style={{ backgroundColor: 'transparent', padding: 24 }}
-              >
-                {steps.map((label, i) => (
-                  <Step key={label}>
-                    {i ? (
-                      <StepLabel>{label}</StepLabel>
-                    ) : (
-                      <StepLabel
-                        onClick={glob || err ? reset : null}
-                        error={!!err}
-                        style={{
-                          cursor: glob || err ? 'pointer' : 'default',
-                        }}
-                      >
-                        {label}
-                      </StepLabel>
-                    )}
-                  </Step>
-                ))}
-              </Stepper>
-            </ThemeProvider>
-          </StyledEngineProvider>
+          <ThemeProvider theme={themeDark}>
+            <Stepper
+              alternativeLabel
+              activeStep={activeStep}
+              elevation={2}
+              style={{ backgroundColor: 'transparent', padding: 24 }}
+            >
+              {steps.map((label, i) => (
+                <Step key={label}>
+                  {i ? (
+                    <StepLabel>{label}</StepLabel>
+                  ) : (
+                    <StepLabel
+                      onClick={glob || err ? reset : null}
+                      error={!!err}
+                      style={{
+                        cursor: glob || err ? 'pointer' : 'default',
+                      }}
+                    >
+                      {label}
+                    </StepLabel>
+                  )}
+                </Step>
+              ))}
+            </Stepper>
+          </ThemeProvider>
           <Box p={[2, 2]} m={2} bgcolor="background.paper" boxShadow={24} borderRadius={1}>
             {glob ? (
               glob.status === 401 ? (

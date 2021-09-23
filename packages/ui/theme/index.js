@@ -1,5 +1,5 @@
-import { ThemeProvider, useTheme, StylesProvider, createGenerateClassName, makeStyles } from '@mui/styles';
-
+import { useTheme, StylesProvider, createGenerateClassName, makeStyles } from '@mui/styles';
+import { ThemeProvider } from '@mui/material/styles';
 import StyledEngineProvider from '@mui/styled-engine/StyledEngineProvider';
 
 import createTheme from './create';
