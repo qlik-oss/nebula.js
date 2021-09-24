@@ -133,7 +133,7 @@ const connect = () => {
         return {
           getDocList: async () => {
             const { data = [] } = await (
-              await fetch(`${rootPath}/api/v1/items?limit=30&sort=-updatedAt`, {
+              await fetch(`${rootPath}/api/v1/items?resourceType=app&limit=30&sort=-updatedAt`, {
                 credentials: 'include',
                 headers: { ...headers, 'content-type': 'application/json' },
               })

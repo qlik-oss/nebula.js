@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-beta.1](https://github.com/qlik-oss/nebula.js/compare/v1.7.0...v2.0.0-beta.1) (2021-09-21)
+
+### Bug Fixes
+
+- **deps:** update dependency webpack-dev-server to v4 ([#667](https://github.com/qlik-oss/nebula.js/issues/667)) ([d3c9602](https://github.com/qlik-oss/nebula.js/commit/d3c96029bf583a0e60c8ef3add1e3f6e5f3766ef))
+- **docs:** missing ' in translator.add docs ([#675](https://github.com/qlik-oss/nebula.js/issues/675)) ([885135a](https://github.com/qlik-oss/nebula.js/commit/885135ab2f19f1bd7ec309ec12d21a5d6fb3bced))
+- do not skip all updates if the rendering take long time ([#664](https://github.com/qlik-oss/nebula.js/issues/664)) ([4811d14](https://github.com/qlik-oss/nebula.js/commit/4811d1429661dd027fc042df3857ebcffebef881))
+
+### Features
+
+- add keyboard navigation support to nebula mashup ([#655](https://github.com/qlik-oss/nebula.js/issues/655)) ([417c8b2](https://github.com/qlik-oss/nebula.js/commit/417c8b221872f6d19d2fc1c72534ac28e6308541))
+- add types to nebula serve ([#658](https://github.com/qlik-oss/nebula.js/issues/658)) ([29e8730](https://github.com/qlik-oss/nebula.js/commit/29e8730020f3491c34643a19335ad12ae1c2de08))
+- expose classnames ([#673](https://github.com/qlik-oss/nebula.js/issues/673)) ([74fde09](https://github.com/qlik-oss/nebula.js/commit/74fde092f06cd40f0bf3e55f1ccbd346a12636d1))
+- set conversion api to stable ([64d54b3](https://github.com/qlik-oss/nebula.js/commit/64d54b366b807c5d256ab32144acebfb19a12898))
+- useRenderState hook ([#677](https://github.com/qlik-oss/nebula.js/issues/677)) ([b6388de](https://github.com/qlik-oss/nebula.js/commit/b6388de764bbf17ae4dd4ae250206db51026e536))
+- **nebula-build-core:** add docs and help info ([#659](https://github.com/qlik-oss/nebula.js/issues/659)) ([210b672](https://github.com/qlik-oss/nebula.js/commit/210b6726782f281c6e155a2a0e8654b3439674ea))
+
 # [1.7.0](https://github.com/qlik-oss/nebula.js/compare/v1.6.0...v1.7.0) (2021-08-24)
 
 ### Features

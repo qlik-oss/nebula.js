@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-beta.1](https://github.com/qlik-oss/nebula.js/compare/v1.7.0...v2.0.0-beta.1) (2021-09-21)
+
+### Features
+
+- add keyboard navigation support to nebula mashup ([#655](https://github.com/qlik-oss/nebula.js/issues/655)) ([417c8b2](https://github.com/qlik-oss/nebula.js/commit/417c8b221872f6d19d2fc1c72534ac28e6308541))
+- set conversion api to stable ([64d54b3](https://github.com/qlik-oss/nebula.js/commit/64d54b366b807c5d256ab32144acebfb19a12898))
+- useRenderState hook ([#677](https://github.com/qlik-oss/nebula.js/issues/677)) ([b6388de](https://github.com/qlik-oss/nebula.js/commit/b6388de764bbf17ae4dd4ae250206db51026e536))
+
 # [1.7.0](https://github.com/qlik-oss/nebula.js/compare/v1.6.0...v1.7.0) (2021-08-24)
 
 ### Features

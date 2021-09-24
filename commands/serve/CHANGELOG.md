@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-beta.1](https://github.com/qlik-oss/nebula.js/compare/v1.7.0...v2.0.0-beta.1) (2021-09-21)
+
+### Bug Fixes
+
+- **deps:** update dependency webpack-dev-server to v4 ([#667](https://github.com/qlik-oss/nebula.js/issues/667)) ([d3c9602](https://github.com/qlik-oss/nebula.js/commit/d3c96029bf583a0e60c8ef3add1e3f6e5f3766ef))
+
+### Features
+
+- add types to nebula serve ([#658](https://github.com/qlik-oss/nebula.js/issues/658)) ([29e8730](https://github.com/qlik-oss/nebula.js/commit/29e8730020f3491c34643a19335ad12ae1c2de08))
+
 # [1.7.0](https://github.com/qlik-oss/nebula.js/compare/v1.6.0...v1.7.0) (2021-08-24)
 
 ### Features

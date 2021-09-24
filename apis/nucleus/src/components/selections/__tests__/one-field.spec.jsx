@@ -10,7 +10,13 @@ const [{ default: OneField }] = aw.mock(
       require.resolve('@nebula.js/ui/theme'),
       () => ({
         useTheme: () => ({
-          palette: { selected: {} },
+          palette: {
+            selected: {
+              main: '#009845',
+              alternative: '#E4E4E4',
+              excluded: '#BEBEBE',
+            },
+          },
         }),
         makeStyles: () => () => ({}),
       }),

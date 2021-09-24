@@ -10,13 +10,13 @@ Install dependencies:
 yarn install
 ```
 
-Watch build:
+Build:
 
 ```sh
-yarn run build:watch
+yarn run build
 ```
 
-Serve build
+Watch and Serve build
 
 ```sh
 yarn run start
