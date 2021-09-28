@@ -43,6 +43,7 @@ export default function Search({ onChange = () => {}, onEnter = () => {}, onEsca
       </Grid>
       <Grid className={gridItem} item xs>
         <TextField
+          variant="standard"
           fullWidth
           autoFocus
           placeholder={placeholder}

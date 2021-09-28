@@ -46,6 +46,7 @@ export default function ListBoxSearch({ model, autoFocus = true }) {
           <Search />
         </InputAdornment>
       }
+      size="small"
       className={[classes.root].join(' ')}
       autoFocus={autoFocus}
       margin="dense"

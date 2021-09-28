@@ -59,7 +59,7 @@ const overrides = (theme) => ({
   MuiButton: {
     outlined: {
       padding: '3px 11px',
-      [`&.${buttonClasses['focusVisible']}`]: {
+      [`&.${buttonClasses.focusVisible}`]: {
         borderColor: theme.palette.custom.focusBorder,
         boxShadow: `0 0 0 2px ${theme.palette.custom.focusOutline}`,
       },
@@ -70,7 +70,7 @@ const overrides = (theme) => ({
       border: `1px solid ${theme.palette.btn.border}`,
       backgroundColor: theme.palette.btn.normal,
       boxShadow: 'none',
-      [`&.${buttonClasses['focusVisible']}`]: {
+      [`&.${buttonClasses.focusVisible}`]: {
         borderColor: theme.palette.custom.focusBorder,
         boxShadow: `0 0 0 2px ${theme.palette.custom.focusOutline}`,
       },
@@ -78,7 +78,7 @@ const overrides = (theme) => ({
         backgroundColor: theme.palette.btn.hover,
         borderColor: theme.palette.btn.borderHover,
         boxShadow: 'none',
-        [`&.${buttonClasses['disabled']}`]: {
+        [`&.${buttonClasses.disabled}`]: {
           backgroundColor: theme.palette.btn.disabled,
         },
       },
@@ -86,12 +86,12 @@ const overrides = (theme) => ({
         boxShadow: 'none',
         backgroundColor: theme.palette.btn.active,
       },
-      [`&.${buttonClasses['disabled']}`]: {
+      [`&.${buttonClasses.disabled}`]: {
         backgroundColor: theme.palette.btn.disabled,
       },
     },
   },
-  MuiExpansionPanelSummary: {
+  MuiAccordionSummary: {
     content: {
       margin: '8px 0',
     },
@@ -139,21 +139,6 @@ export default function create(definition) {
       overrides: overrides(withDefaults),
     })
   );
-
-  /*cache[key] = createTheme({
-    components: {
-      MuiCheckbox: {
-        styleOverrides: {
-          root: {
-            padding: 9,
-            backgroundColor: '#00ff00',
-          },
-        },
-      },
-    },
-  });*/
-
-  console.log(cache[key]);
 
   cache[key].name = name;
 

@@ -87,7 +87,7 @@ const Str = ({ property, value, target, changed }) => {
     }
   };
 
-  return <TextField fullWidth onChange={handleChange} onBlur={onBlur} label={property} value={s} />;
+  return <TextField variant="standard" fullWidth onChange={handleChange} onBlur={onBlur} label={property} value={s} />;
 };
 
 const Num = ({ property, value, target, changed }) => {
@@ -102,7 +102,7 @@ const Num = ({ property, value, target, changed }) => {
     }
   };
 
-  return <TextField fullWidth onChange={handleChange} onBlur={onBlur} label={property} value={s} />;
+  return <TextField variant="standard" fullWidth onChange={handleChange} onBlur={onBlur} label={property} value={s} />;
 };
 
 const Obj = ({ property, value, changed }) => {
