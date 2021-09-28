@@ -1,13 +1,11 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { OutlinedInput } from '@mui/material';
+import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
 const InstanceContext = React.createContext();
 const [{ default: ListBoxSearch }] = aw.mock(
-  [
-    [require.resolve('../../../contexts/InstanceContext'), () => InstanceContext],
-    [require.resolve('@nebula.js/ui/theme'), () => ({})],
-  ],
+  [[require.resolve('../../../contexts/InstanceContext'), () => InstanceContext]],
   ['../ListBoxSearch']
 );
 
@@ -18,10 +16,13 @@ describe('<ListBoxSearch />', () => {
       acceptListObjectSearch: sinon.spy(),
       abortListObjectSearch: sinon.spy(),
     };
+    const theme = createTheme('dark');
     const testRenderer = renderer.create(
-      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} />
-      </InstanceContext.Provider>
+      <ThemeProvider theme={theme}>
+        <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+          <ListBoxSearch model={model} />
+        </InstanceContext.Provider>
+      </ThemeProvider>
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(OutlinedInput);
@@ -39,18 +40,23 @@ describe('<ListBoxSearch />', () => {
       acceptListObjectSearch: sinon.spy(),
       abortListObjectSearch: sinon.spy(),
     };
+    const theme = createTheme('dark');
     const testRenderer = renderer.create(
-      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} />
-      </InstanceContext.Provider>
+      <ThemeProvider theme={theme}>
+        <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+          <ListBoxSearch model={model} />
+        </InstanceContext.Provider>
+      </ThemeProvider>
     );
     const testInstance = testRenderer.root;
     let type = testInstance.findByType(OutlinedInput);
     type.props.onChange({ target: { value: 'foo' } });
     testRenderer.update(
-      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} />
-      </InstanceContext.Provider>
+      <ThemeProvider theme={theme}>
+        <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+          <ListBoxSearch model={model} />
+        </InstanceContext.Provider>
+      </ThemeProvider>
     );
     expect(model.searchListObjectFor).to.have.been.calledWith('/qListObjectDef', 'foo');
     type = testInstance.findByType(OutlinedInput);
@@ -62,10 +68,13 @@ describe('<ListBoxSearch />', () => {
       acceptListObjectSearch: sinon.spy(),
       abortListObjectSearch: sinon.spy(),
     };
+    const theme = createTheme('dark');
     const testRenderer = renderer.create(
-      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} />
-      </InstanceContext.Provider>
+      <ThemeProvider theme={theme}>
+        <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+          <ListBoxSearch model={model} />
+        </InstanceContext.Provider>
+      </ThemeProvider>
     );
     const testInstance = testRenderer.root;
     const type = testInstance.findByType(OutlinedInput);
@@ -81,10 +90,13 @@ describe('<ListBoxSearch />', () => {
       acceptListObjectSearch: sinon.spy(),
       abortListObjectSearch: sinon.spy(),
     };
+    const theme = createTheme('dark');
     const testRenderer = renderer.create(
-      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} />
-      </InstanceContext.Provider>
+      <ThemeProvider theme={theme}>
+        <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+          <ListBoxSearch model={model} />
+        </InstanceContext.Provider>
+      </ThemeProvider>
     );
     const testInstance = testRenderer.root;
     const type = testInstance.findByType(OutlinedInput);

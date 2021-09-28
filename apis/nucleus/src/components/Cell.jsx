@@ -467,8 +467,8 @@ const Cell = forwardRef(
         tabIndex={keyboardNavigation ? 0 : -1}
         elevation={0}
         square
-        className={CellElement.className}
         ref={cellRef}
+        className={CellElement.className}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
         onKeyDown={keyboardNavigation ? handleKeyDown : null}

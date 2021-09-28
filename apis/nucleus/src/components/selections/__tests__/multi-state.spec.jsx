@@ -14,7 +14,8 @@ const [{ default: MultiState }] = aw.mock(
       require.resolve('@nebula.js/ui/theme'),
       () => ({
         useTheme: () => ({
-          palette: { selected: {} },
+          palette: { selected: {}, background: {}, action: {} },
+          spacing: () => {},
         }),
       }),
     ],

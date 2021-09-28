@@ -12,7 +12,7 @@ const [{ default: More }] = aw.mock(
       require.resolve('@nebula.js/ui/theme'),
       () => ({
         useTheme: () => ({
-          palette: { selected: {} },
+          palette: { selected: {}, background: {}, action: {} },
           shape: { borderRadius: '2px' },
         }),
       }),

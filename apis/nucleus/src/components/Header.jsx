@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
-import { useTheme } from '@nebula.js/ui/theme';
 import ActionsToolbar from './ActionsToolbar';
 import useRect from '../hooks/useRect';
 
@@ -36,7 +35,6 @@ const Header = ({ layout, sn, anchorEl, hovering }) => {
   const showSubtitle = layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
   const [actions, setActions] = useState([]);
-  const theme = useTheme();
   const [containerRef, containerRect] = useRect();
   const [shouldShowPopoverToolbar, setShouldShowPopoverToolbar] = useState(false);
 
@@ -56,7 +54,7 @@ const Header = ({ layout, sn, anchorEl, hovering }) => {
   }, [containerRect]);
 
   const showTitles = showTitle || showSubtitle;
-  const sx = { flexGrow: 0, ...(showTitles ? { paddingBottom: theme.spacing(1) } : {}) };
+  const sx = { flexGrow: 0, ...(showTitles ? { pb: 1 } : {}) };
   const showPopoverToolbar = (hovering || showInSelectionActions) && (shouldShowPopoverToolbar || !showTitles);
   const showToolbar = showTitles && !showPopoverToolbar && !shouldShowPopoverToolbar;
 

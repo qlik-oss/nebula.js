@@ -16,6 +16,8 @@ const [{ default: OneField }] = aw.mock(
               alternative: '#E4E4E4',
               excluded: '#BEBEBE',
             },
+            background: {},
+            action: {},
           },
         }),
       }),

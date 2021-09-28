@@ -2,8 +2,6 @@ import React from 'react';
 
 import { Typography, Grid } from '@mui/material';
 
-import { useTheme } from '@nebula.js/ui/theme';
-
 /**
  * @interface
  * @extends HTMLElement
@@ -14,17 +12,15 @@ const CellFooter = {
   className: 'njs-cell-footer',
 };
 
-const Footer = ({ layout }) => {
-  const theme = useTheme();
-  return layout && layout.showTitles && layout.footnote ? (
+const Footer = ({ layout }) =>
+  layout && layout.showTitles && layout.footnote ? (
     <Grid container>
-      <Grid item sx={{ minWidth: 0, paddingTop: theme.spacing(1) }}>
+      <Grid item sx={{ minWidth: 0, pt: 1 }}>
         <Typography noWrap variant="body2" className={CellFooter.className}>
           {layout.footnote}
         </Typography>
       </Grid>
     </Grid>
   ) : null;
-};
 
 export default Footer;
