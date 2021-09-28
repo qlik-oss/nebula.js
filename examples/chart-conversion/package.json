@@ -9,14 +9,14 @@
   },
   "dependencies": {
     "@nebula.js/sn-bar-chart": "latest",
-    "@nebula.js/sn-combo-chart": "^1.4.1",
+    "@nebula.js/sn-combo-chart": "latest",
     "@nebula.js/sn-line-chart": "latest",
-    "@nebula.js/sn-pie-chart": "^1.9.1",
+    "@nebula.js/sn-pie-chart": "latest",
     "@nebula.js/stardust": "latest",
     "enigma.js": "2.7.2"
   },
   "devDependencies": {
     "@babel/core": "7.12.3",
-    "parcel-bundler": "^1.12.4"
+    "parcel": "^2.0.0-rc.0"
   }
 }
