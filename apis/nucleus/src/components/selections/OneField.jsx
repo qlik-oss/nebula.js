@@ -5,23 +5,11 @@ import Lock from '@nebula.js/ui/icons/lock';
 
 import { IconButton, Grid, Typography } from '@mui/material';
 
-import { makeStyles, useTheme } from '@nebula.js/ui/theme';
+import { useTheme } from '@nebula.js/ui/theme';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
 import InstanceContext from '../../contexts/InstanceContext';
-
-const useStyles = makeStyles((theme) => ({
-  item: {
-    backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-    cursor: 'pointer',
-    padding: '4px',
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}));
 
 export default function OneField({
   field,
@@ -35,8 +23,6 @@ export default function OneField({
   const alignTo = moreAlignTo || useRef();
   const theme = useTheme();
   const [showListBoxPopover, setShowListBoxPopover] = useState(false);
-
-  const classes = useStyles();
 
   const handleShowListBoxPopover = (e) => {
     if (e.currentTarget.contains(e.target)) {
@@ -120,7 +106,8 @@ export default function OneField({
             e.stopPropagation();
             api.clearField(selection.qField, field.states[stateIx]);
           }}
-          size="large">
+          size="large"
+        >
           <Remove />
         </IconButton>
       </Grid>
@@ -156,7 +143,15 @@ export default function OneField({
         container
         spacing={0}
         ref={alignTo}
-        className={classes.item}
+        sx={{
+          backgroundColor: theme.palette.background.paper,
+          position: 'relative',
+          cursor: 'pointer',
+          padding: '4px',
+          '&:hover': {
+            backgroundColor: theme.palette.action.hover,
+          },
+        }}
         onClick={(skipHandleShowListBoxPopover === false && handleShowListBoxPopover) || null}
       >
         {Header}

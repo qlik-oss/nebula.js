@@ -2,23 +2,16 @@ import React, { useContext, useState } from 'react';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import Search from '@nebula.js/ui/icons/search';
 
-import { makeStyles } from '@nebula.js/ui/theme';
+import { useTheme } from '@nebula.js/ui/theme';
 
 import InstanceContext from '../../contexts/InstanceContext';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    '& fieldset': {
-      borderRadius: 0,
-      borderColor: `${theme.palette.divider} transparent`,
-    },
-  },
-}));
 const TREE_PATH = '/qListObjectDef';
 
 export default function ListBoxSearch({ model, autoFocus = true }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
+  const theme = useTheme();
   const onChange = (e) => {
     setValue(e.target.value);
     model.searchListObjectFor(TREE_PATH, e.target.value);
@@ -37,8 +30,6 @@ export default function ListBoxSearch({ model, autoFocus = true }) {
     }
   };
 
-  const classes = useStyles();
-
   return (
     <OutlinedInput
       startAdornment={
@@ -47,7 +38,12 @@ export default function ListBoxSearch({ model, autoFocus = true }) {
         </InputAdornment>
       }
       size="small"
-      className={[classes.root].join(' ')}
+      sx={{
+        '& fieldset': {
+          borderRadius: 0,
+          borderColor: `${theme.palette.divider} transparent`,
+        },
+      }}
       autoFocus={autoFocus}
       margin="dense"
       fullWidth

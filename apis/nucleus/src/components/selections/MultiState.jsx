@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef } from 'react';
 import { Badge, IconButton, Grid, Typography, Popover, Button, List, ListItem, Box } from '@mui/material';
-import { makeStyles } from '@nebula.js/ui/theme';
+import { useTheme } from '@nebula.js/ui/theme';
 import DownArrow from '@nebula.js/ui/icons/down-arrow';
 
 import OneField from './OneField';
@@ -8,25 +8,8 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
-const useStyles = makeStyles((theme) => ({
-  item: {
-    backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-    cursor: 'pointer',
-    padding: '4px',
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-    },
-    height: '100%',
-    alignItems: 'center',
-  },
-  badge: {
-    padding: theme.spacing(0, 1),
-  },
-}));
-
 export default function MultiState({ field, api, moreAlignTo = null, onClose = () => {} }) {
-  const classes = useStyles();
+  const theme = useTheme();
   // If originated from the `more` item show fields directly
   const [showFields, setShowFields] = useState(!!moreAlignTo);
   const [showStateIx, setShowStateIx] = useState(-1);
@@ -70,7 +53,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
     Header = (
       <>
         <Grid item xs zeroMinWidth>
-          <Badge className={classes.badge} color="secondary" badgeContent={field.states.length}>
+          <Badge sx={{ padding: theme.spacing(0, 1) }} color="secondary" badgeContent={field.states.length}>
             <Typography component="span" noWrap style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600 }}>
               {field.name}
             </Typography>
@@ -132,7 +115,22 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
   const Component = moreAlignTo ? (
     PopoverFields
   ) : (
-    <Grid container spacing={0} className={classes.item} onClick={handleShowFields}>
+    <Grid
+      container
+      spacing={0}
+      sx={{
+        backgroundColor: theme.palette.background.paper,
+        position: 'relative',
+        cursor: 'pointer',
+        padding: '4px',
+        '&:hover': {
+          backgroundColor: theme.palette.action.hover,
+        },
+        height: '100%',
+        alignItems: 'center',
+      }}
+      onClick={handleShowFields}
+    >
       {Header}
       {showFields && PopoverFields}
       {showStateIx > -1 && (

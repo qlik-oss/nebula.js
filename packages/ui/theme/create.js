@@ -14,12 +14,20 @@ const overrides = (theme) => ({
     },
   },
   MuiGrid: {
-    variants: {
-      props: { alignItems: 'center' },
-      style: {
-        'align-items': 'center',
+    variants: [
+      {
+        props: { alignItems: 'center' },
+        style: {
+          'align-items': 'center',
+        },
       },
-    },
+      {
+        props: { alignItems: 'center' },
+        style: {
+          'align-items': 'center',
+        },
+      },
+    ],
   },
   MuiButtonBase: {
     root: {

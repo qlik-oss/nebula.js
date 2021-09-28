@@ -1,30 +1,12 @@
 import React, { useState, useRef } from 'react';
 import { IconButton, Grid, Popover, List, ListItem, Box, Typography } from '@mui/material';
-import { makeStyles, useTheme } from '@nebula.js/ui/theme';
+import { useTheme } from '@nebula.js/ui/theme';
 import DownArrow from '@nebula.js/ui/icons/down-arrow';
 
 import OneField from './OneField';
 import MultiState from './MultiState';
 
-const useStyles = makeStyles((theme) => ({
-  item: {
-    backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-    cursor: 'pointer',
-    padding: '4px',
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-    },
-    height: '100%',
-    alignItems: 'center',
-  },
-  badge: {
-    padding: theme.spacing(0, 1),
-  },
-}));
-
 export default function More({ items = [], api }) {
-  const classes = useStyles();
   const theme = useTheme();
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [showItemIx, setShowItemIx] = useState(-1);
@@ -71,10 +53,24 @@ export default function More({ items = [], api }) {
   }
 
   return (
-    <Grid container spacing={0} className={classes.item} onClick={handleShowMoreItems}>
+    <Grid
+      container
+      spacing={0}
+      sx={{
+        backgroundColor: theme.palette.background.paper,
+        position: 'relative',
+        cursor: 'pointer',
+        padding: '4px',
+        '&:hover': {
+          backgroundColor: theme.palette.action.hover,
+        },
+        height: '100%',
+        alignItems: 'center',
+      }}
+      onClick={handleShowMoreItems}
+    >
       <Grid item>
         <Box
-          borderRadius="undefinedpx"
           style={{
             padding: '4px 8px 4px 8px',
             backgroundColor: theme.palette.selected.main,

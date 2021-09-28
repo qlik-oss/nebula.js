@@ -2,8 +2,6 @@ import React, { useState, useContext, useRef, useEffect, useMemo } from 'react';
 
 import { Grid, Divider, Popover } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
-
 import { more as moreIcon } from '@nebula.js/ui/icons/more';
 import { useTheme } from '@nebula.js/ui/theme';
 
@@ -12,37 +10,26 @@ import useDefaultSelectionActions from '../hooks/useDefaultSelectionActions';
 import InstanceContext from '../contexts/InstanceContext';
 import More from './ActionsToolbarMore';
 
-const useStyles = makeStyles((theme) => ({
-  itemSpacing: {
-    padding: theme.spacing(0, 0.5),
-  },
-  firstItemSpacing: {
-    padding: theme.spacing(0, 0.5, 0, 0),
-  },
-  lastItemSpacing: {
-    padding: theme.spacing(0, 0, 0, 0.5),
-  },
-}));
-
 const ActionsGroup = React.forwardRef(({ actions = [], first = false, last = false, addAnchor = false }, ref) => {
-  const { itemSpacing, firstItemSpacing, lastItemSpacing } = useStyles();
+  const theme = useTheme();
+
   return actions.length > 0 ? (
     <Grid item container spacing={0} wrap="nowrap">
       {actions.map((e, ix) => {
-        let cls = [];
+        const sx = {};
         const isFirstItem = first && ix === 0;
         const isLastItem = last && actions.length - 1 === ix;
         if (isFirstItem && !isLastItem) {
-          cls = [firstItemSpacing];
+          sx.padding = theme.spacing(0, 0.5, 0, 0);
         }
         if (isLastItem && !isFirstItem) {
-          cls = [...cls, lastItemSpacing];
+          sx.padding = theme.spacing(0, 0, 0, 0.5);
         }
-        if (!isFirstItem && !isLastItem && cls.length === 0) {
-          cls = [itemSpacing];
+        if (!isFirstItem && !isLastItem && !sx.padding) {
+          sx.padding = theme.spacing(0, 0.5);
         }
         return (
-          <Grid item key={e.key} className={cls.join(' ').trim()}>
+          <Grid item key={e.key} sx={sx}>
             <Item key={e.key} item={e} ref={ix === 0 ? ref : null} addAnchor={addAnchor} />
           </Grid>
         );
@@ -84,7 +71,6 @@ const ActionsToolbar = ({
   },
 }) => {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
-  const { itemSpacing } = useStyles();
   const { translator } = useContext(InstanceContext);
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [moreEnabled, setMoreEnabled] = useState(more.enabled);
@@ -134,7 +120,7 @@ const ActionsToolbar = ({
         <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />
       )}
       {showDivider && (
-        <Grid item className={itemSpacing} style={dividerStyle}>
+        <Grid item sx={{ padding: theme.spacing(0, 0.5), ...dividerStyle }}>
           <Divider orientation="vertical" />
         </Grid>
       )}
@@ -164,7 +150,7 @@ const ActionsToolbar = ({
       hideBackdrop
       style={popoverStyle}
       PaperProps={{
-        style: {
+        sx: {
           pointerEvents: 'auto',
           padding: theme.spacing(1, 1),
         },

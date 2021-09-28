@@ -2,7 +2,7 @@
 import React, { useContext, useEffect, useState, useCallback, useRef } from 'react';
 
 import { Grid, Toolbar, IconButton, CircularProgress } from '@mui/material';
-import { makeStyles } from '@nebula.js/ui/theme';
+import { useTheme } from '@nebula.js/ui/theme';
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 
@@ -13,7 +13,7 @@ import VizContext from '../contexts/VizContext';
 
 import Chart from './Chart';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = (theme) => ({
   secondaryIcon: {
     color: theme.palette.text.secondary,
   },
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     boxShadow: theme.shadows[1],
     borderRadius: `${theme.shape.borderRadius}px`,
   },
-}));
+});
 
 export default function ({ id, expandable, minHeight }) {
   const language = 'en-US'; // TODO - useLocale
@@ -29,8 +29,9 @@ export default function ({ id, expandable, minHeight }) {
   const [model, setModel] = useState(null);
   const [exporting, setExporting] = useState(false);
   const [localViz, setLocalViz] = useState(null);
+  const theme = useTheme();
 
-  const classes = useStyles();
+  const styles = useStyles(theme);
 
   const { currentThemeName, activeViz, setActiveViz, setExpandedObject, expandedObject } = useContext(VizContext);
 
@@ -119,11 +120,11 @@ export default function ({ id, expandable, minHeight }) {
   return (
     <Grid container direction="column" style={{ minHeight, height: '100%', position: 'relative' }}>
       <Grid item>
-        <Toolbar variant="dense" disableGutters style={{ padding: '0 0px', opacity: 1, "margin-top": "-8px" }}>
+        <Toolbar variant="dense" disableGutters style={{ padding: '0 0px', opacity: 1, 'margin-top': '-8px' }}>
           <PropsDialog model={model} show={dialogOpen} close={closeDialog} />
           <IconButton
             title="Modify object properties"
-            className={classes.secondaryIcon}
+            sx={styles.secondaryIcon}
             disabled={!model}
             onClick={() => setDialogOpen(true)}
             size="large"
@@ -143,7 +144,7 @@ export default function ({ id, expandable, minHeight }) {
           </IconButton>
           <IconButton
             title="Open in single render view"
-            className={classes.secondaryIcon}
+            sx={styles.secondaryIcon}
             disabled={!model}
             href={
               model
@@ -170,7 +171,7 @@ export default function ({ id, expandable, minHeight }) {
           </IconButton>
           <IconButton
             title="Take and render as snapshot"
-            className={classes.secondaryIcon}
+            sx={styles.secondaryIcon}
             disabled={!model}
             onClick={() => snapIt()}
             size="large"
@@ -193,7 +194,7 @@ export default function ({ id, expandable, minHeight }) {
           ) : (
             <IconButton
               title="Export as image"
-              className={classes.secondaryIcon}
+              sx={styles.secondaryIcon}
               disabled={!model}
               onClick={() => snapIt(true)}
               size="large"
@@ -216,7 +217,7 @@ export default function ({ id, expandable, minHeight }) {
           {expandable && (
             <IconButton
               title="Edit"
-              className={classes.secondaryIcon}
+              sx={styles.secondaryIcon}
               disabled={!localViz || isActive}
               onClick={() => setActiveViz(localViz)}
               size="large"
@@ -239,7 +240,7 @@ export default function ({ id, expandable, minHeight }) {
             <IconButton
               title="Expand"
               disabled={!model || !localViz}
-              className={classes.secondaryIcon}
+              sx={styles.secondaryIcon}
               onClick={() => toggleExpand()}
               size="large"
             >
@@ -261,7 +262,7 @@ export default function ({ id, expandable, minHeight }) {
           )}
         </Toolbar>
       </Grid>
-      <Grid item xs style={{ ...activeStyle }} className={classes.drop}>
+      <Grid item xs style={{ ...activeStyle }} sx={styles.drop}>
         <Chart id={id} onLoad={onLoad} />
       </Grid>
     </Grid>

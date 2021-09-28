@@ -2,16 +2,7 @@ import React, { useState } from 'react';
 import { Grid, TextField } from '@mui/material';
 import SearchIcon from '@nebula.js/ui/icons/search';
 
-import { makeStyles } from '@nebula.js/ui/theme';
-
-const useStyles = makeStyles((theme) => ({
-  gridContainer: {
-    padding: theme.spacing(0, 1, 0, 1),
-  },
-  gridItem: {
-    padding: theme.spacing(0, 1, 0, 1),
-  },
-}));
+import { useTheme } from '@nebula.js/ui/theme';
 
 export default function Search({ onChange = () => {}, onEnter = () => {}, onEscape = () => {} }) {
   const [value, setValue] = useState('');
@@ -33,15 +24,15 @@ export default function Search({ onChange = () => {}, onEnter = () => {}, onEsca
     }
   };
 
-  const { gridContainer, gridItem } = useStyles();
+  const theme = useTheme();
   const placeholder = 'Search';
 
   return (
-    <Grid className={gridContainer} item container direction="row" alignItems="center">
+    <Grid sx={{ padding: theme.spacing(0, 1, 0, 1) }} item container direction="row" alignItems="center">
       <Grid item>
         <SearchIcon />
       </Grid>
-      <Grid className={gridItem} item xs>
+      <Grid sx={{ padding: theme.spacing(0, 1, 0, 1) }} item xs>
         <TextField
           variant="standard"
           fullWidth

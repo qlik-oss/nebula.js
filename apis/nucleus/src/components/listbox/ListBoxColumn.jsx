@@ -2,12 +2,12 @@ import React from 'react';
 
 import { Grid, Typography } from '@mui/material';
 
-import { makeStyles } from '@nebula.js/ui/theme';
+import { useTheme } from '@nebula.js/ui/theme';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = (theme) => ({
   column: {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
@@ -48,11 +48,12 @@ const useStyles = makeStyles((theme) => ({
   highlighted: {
     backgroundColor: '#FFC72A',
   },
-}));
+});
 
 export default function Column({ index, style, data }) {
-  const classes = useStyles();
-  const classArr = [classes.column];
+  const theme = useTheme();
+  const styles = useStyles(theme);
+  let sxProp = styles.column;
 
   let label = '';
   const { onClick, pages } = data;
@@ -73,11 +74,11 @@ export default function Column({ index, style, data }) {
     locked = cell.qState === 'L' || cell.qState === 'XL';
     selected = cell.qState === 'S' || cell.qState === 'XS';
     if (cell.qState === 'S' || cell.qState === 'L') {
-      classArr.push(classes.S);
+      sxProp = { ...sxProp, ...styles.S };
     } else if (cell.qState === 'A') {
-      classArr.push(classes.A);
+      sxProp = { ...sxProp, ...styles.A };
     } else if (cell.qState === 'X' || cell.qState === 'XS' || cell.qState === 'XL') {
-      classArr.push(classes.X);
+      sxProp = { ...sxProp, ...styles.X };
     }
   }
 
@@ -98,7 +99,7 @@ export default function Column({ index, style, data }) {
     }
 
     // Highlighted segment
-    acc.push([label.slice(curr.qCharPos, curr.qCharPos + curr.qCharCount), classes.highlighted]);
+    acc.push([label.slice(curr.qCharPos, curr.qCharPos + curr.qCharCount), styles.highlighted]);
 
     // Last non highlighted segment
     if (ix === ranges.length - 1 && curr.qCharPos + curr.qCharCount < label.length) {
@@ -111,7 +112,7 @@ export default function Column({ index, style, data }) {
     <Grid
       container
       spacing={0}
-      className={classArr.join(' ').trim()}
+      sx={sxProp}
       style={style}
       onClick={onClick}
       alignItems="center"
@@ -119,19 +120,19 @@ export default function Column({ index, style, data }) {
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
     >
-      <Grid item style={{ minWidth: 0, flexGrow: 1 }} className={classes.cell} title={`${label}`}>
+      <Grid item style={{ minWidth: 0, flexGrow: 1 }} sx={styles.cell} title={`${label}`}>
         {ranges.length === 0 ? (
           <Typography component="span" noWrap color="inherit">{`${label}`}</Typography>
         ) : (
           labels.map(([l, highlighted], ix) => (
             // eslint-disable-next-line react/no-array-index-key
-            <Typography component="span" key={ix} className={highlighted} noWrap>
+            <Typography component="span" key={ix} sx={highlighted} noWrap>
               {l}
             </Typography>
           ))
         )}
       </Grid>
-      <Grid item className={classes.icon}>
+      <Grid item sx={styles.icon}>
         {locked && <Lock size="small" />}
         {selected && <Tick size="small" />}
       </Grid>

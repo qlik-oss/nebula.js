@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import { Grid, Typography } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
+import { useTheme } from '@nebula.js/ui/theme';
 import ActionsToolbar from './ActionsToolbar';
 import useRect from '../hooks/useRect';
 
@@ -31,21 +31,12 @@ const CellSubTitle = {
   className: 'njs-cell-sub-title',
 };
 
-const useStyles = makeStyles((theme) => ({
-  containerStyle: {
-    flexGrow: 0,
-  },
-  containerTitleStyle: {
-    paddingBottom: theme.spacing(1),
-  },
-}));
-
 const Header = ({ layout, sn, anchorEl, hovering }) => {
   const showTitle = layout.showTitles && !!layout.title;
   const showSubtitle = layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
   const [actions, setActions] = useState([]);
-  const { containerStyle, containerTitleStyle } = useStyles();
+  const theme = useTheme();
   const [containerRef, containerRect] = useRect();
   const [shouldShowPopoverToolbar, setShouldShowPopoverToolbar] = useState(false);
 
@@ -65,7 +56,7 @@ const Header = ({ layout, sn, anchorEl, hovering }) => {
   }, [containerRect]);
 
   const showTitles = showTitle || showSubtitle;
-  const classes = [containerStyle, ...(showTitles ? [containerTitleStyle] : [])];
+  const sx = { flexGrow: 0, ...(showTitles ? { paddingBottom: theme.spacing(1) } : {}) };
   const showPopoverToolbar = (hovering || showInSelectionActions) && (shouldShowPopoverToolbar || !showTitles);
   const showToolbar = showTitles && !showPopoverToolbar && !shouldShowPopoverToolbar;
 
@@ -79,7 +70,7 @@ const Header = ({ layout, sn, anchorEl, hovering }) => {
   );
 
   return (
-    <Grid ref={containerRef} item container wrap="nowrap" className={classes.join(' ')}>
+    <Grid ref={containerRef} item container wrap="nowrap" sx={sx}>
       <Grid item zeroMinWidth xs>
         <Grid container wrap="nowrap" direction="column">
           {showTitle && (

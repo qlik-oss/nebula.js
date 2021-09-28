@@ -2,7 +2,7 @@
 import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
 
 import { embed } from '@nebula.js/stardust';
-import { createTheme, ThemeProvider, StyledEngineProvider, StylesProvider } from '@nebula.js/ui/theme';
+import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 import { WbSunny, Brightness3, ColorLens, Language, Home } from '@nebula.js/ui/icons';
 
 import {
@@ -190,7 +190,7 @@ export default function App({ app, info }) {
               container
               wrap="nowrap"
               direction="column"
-              sx={{ background: theme.palette.background.darkest, height: 'calc(100% + 16px)' }}
+              sx={{ background: theme.palette.background.darkest, height: '100%', paddingBottom: 1 }}
               gap={SPACING}
             >
               <Grid item>
@@ -268,6 +268,9 @@ export default function App({ app, info }) {
                       </Grid>
                       <Grid item>
                         <Button
+                          sx={{
+                            color: 'text.primary',
+                          }}
                           startIcon={<Language />}
                           title="Select language"
                           onClick={(e) => setLanguageChooserAnchorEl(e.currentTarget)}
@@ -311,8 +314,9 @@ export default function App({ app, info }) {
                           sx={{
                             background: theme.palette.background.paper,
                             overflow: 'hidden auto',
-                            margin: theme.spacing(SPACING / 2),
-                            marginTop: `${36 + parseInt(theme.spacing(SPACING/2))}px`,
+                            margin: 0,
+                            marginLeft: 0.5,
+                            marginTop: theme.spacing(5),
                             boxShadow: theme.shadows[1],
                             padding: 0,
                           }}

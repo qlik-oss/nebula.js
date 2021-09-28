@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Typography, Grid } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
+import { useTheme } from '@nebula.js/ui/theme';
 
 /**
  * @interface
@@ -14,18 +14,11 @@ const CellFooter = {
   className: 'njs-cell-footer',
 };
 
-const useStyles = makeStyles((theme) => ({
-  itemStyle: {
-    minWidth: 0,
-    paddingTop: theme.spacing(1),
-  },
-}));
-
 const Footer = ({ layout }) => {
-  const { itemStyle } = useStyles();
+  const theme = useTheme();
   return layout && layout.showTitles && layout.footnote ? (
     <Grid container>
-      <Grid item className={itemStyle}>
+      <Grid item sx={{ minWidth: 0, paddingTop: theme.spacing(1) }}>
         <Typography noWrap variant="body2" className={CellFooter.className}>
           {layout.footnote}
         </Typography>

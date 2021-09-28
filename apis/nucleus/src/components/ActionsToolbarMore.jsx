@@ -2,28 +2,19 @@ import React from 'react';
 
 import { Popover, MenuList, MenuItem, ListItemIcon, Typography } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
-
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 
 import useActionState from '../hooks/useActionState';
 
-const useStyles = makeStyles((theme) => ({
-  icon: {
-    color: theme.palette.text.primary,
-  },
-}));
-
 const MoreItem = ({ item, onActionClick = () => {} }) => {
   const { hidden, disabled, hasSvgIconShape } = useActionState(item);
-  const { icon } = useStyles();
   const handleClick = () => {
     item.action();
     onActionClick();
   };
   return !hidden ? (
     <MenuItem title={item.label} onClick={handleClick} disabled={disabled}>
-      {hasSvgIconShape && <ListItemIcon className={icon}>{SvgIcon(item.getSvgIconShape())}</ListItemIcon>}
+      {hasSvgIconShape && <ListItemIcon sx={{ color: 'text.primary' }}>{SvgIcon(item.getSvgIconShape())}</ListItemIcon>}
       <Typography noWrap>{item.label}</Typography>
     </MenuItem>
   ) : null;

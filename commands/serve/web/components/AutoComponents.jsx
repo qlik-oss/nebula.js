@@ -16,31 +16,7 @@ import {
 
 import { ExpandMore } from '@nebula.js/ui/icons';
 
-import { makeStyles } from '@nebula.js/ui/theme';
-
-const useStyles = makeStyles((theme) => ({
-  summary: {
-    padding: theme.spacing(0, 1),
-    backgroundColor: theme.palette.background.lighter,
-    borderBottom: `1px solid ${theme.palette.divider}`,
-  },
-  details: {
-    padding: theme.spacing(1),
-  },
-}));
-
-const usePanelStyles = makeStyles((theme) => ({
-  root: {
-    boxShadow: 'none',
-    marginLeft: -theme.spacing(1),
-    marginRight: -theme.spacing(1),
-    '&$expanded': {
-      marginLeft: -theme.spacing(1),
-      marginRight: -theme.spacing(1),
-    },
-  },
-  expanded: {},
-}));
+import { useTheme } from '@nebula.js/ui/theme';
 
 const getType = (value) => {
   if (Array.isArray(value)) {
@@ -106,14 +82,31 @@ const Num = ({ property, value, target, changed }) => {
 };
 
 const Obj = ({ property, value, changed }) => {
-  const classes = useStyles();
-  const panelClasses = usePanelStyles();
+  const theme = useTheme();
   return (
-    <Accordion square className={[panelClasses.root, panelClasses.expanded].join(' ')}>
-      <AccordionSummary expandIcon={<ExpandMore />} className={classes.summary}>
+    <Accordion
+      square
+      sx={{
+        boxShadow: 'none',
+        marginLeft: -theme.spacing(1),
+        marginRight: -theme.spacing(1),
+        '&.Mui-expanded': {
+          marginLeft: -theme.spacing(1),
+          marginRight: -theme.spacing(1),
+        },
+      }}
+    >
+      <AccordionSummary
+        expandIcon={<ExpandMore />}
+        sx={{
+          padding: theme.spacing(0, 1),
+          backgroundColor: theme.palette.background.lighter,
+          borderBottom: `1px solid ${theme.palette.divider}`,
+        }}
+      >
         <Typography>{property}</Typography>
       </AccordionSummary>
-      <AccordionDetails className={classes.details}>{generateComponents(value, changed)}</AccordionDetails>
+      <AccordionDetails sx={{ padding: theme.spacing(1) }}>{generateComponents(value, changed)}</AccordionDetails>
     </Accordion>
   );
 };

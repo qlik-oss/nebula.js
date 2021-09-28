@@ -1,28 +1,10 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react';
 import { Grid, Typography, Button } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 import InstanceContext from '../contexts/InstanceContext';
 
 import Progress from './Progress';
-
-const useStyles = makeStyles(() => ({
-  stripes: {
-    '&::before': {
-      position: 'absolute',
-      height: '100%',
-      width: '100%',
-      top: 0,
-      left: 0,
-      content: '""',
-      backgroundSize: '14.14px 14.14px',
-      backgroundImage:
-        'linear-gradient(135deg, currentColor 10%, rgba(0,0,0,0) 10%, rgba(0,0,0,0) 50%, currentColor 50%, currentColor 59%, rgba(0,0,0,0) 60%, rgba(0,0,0,0) 103%)',
-      opacity: 0.1,
-    },
-  },
-}));
 
 export const Cancel = ({ cancel, translator, ...props }) => (
   <>
@@ -63,7 +45,6 @@ export const Retry = ({ retry, translator, ...props }) => (
 );
 
 export default function LongRunningQuery({ canCancel, canRetry, api }) {
-  const { stripes, cancel, retry } = useStyles();
   const { translator } = useContext(InstanceContext);
 
   return (
@@ -72,18 +53,29 @@ export default function LongRunningQuery({ canCancel, canRetry, api }) {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      className={stripes}
-      style={{
+      sx={{
         position: 'absolute',
         width: '100%',
         height: '100%',
         left: 0,
         top: 0,
+        '&::before': {
+          position: 'absolute',
+          height: '100%',
+          width: '100%',
+          top: 0,
+          left: 0,
+          content: '""',
+          backgroundSize: '14.14px 14.14px',
+          backgroundImage:
+            'linear-gradient(135deg, currentColor 10%, rgba(0,0,0,0) 10%, rgba(0,0,0,0) 50%, currentColor 50%, currentColor 59%, rgba(0,0,0,0) 60%, rgba(0,0,0,0) 103%)',
+          opacity: 0.1,
+        },
       }}
       spacing={2}
     >
-      {canCancel && <Cancel cancel={api.cancel} translator={translator} className={cancel} />}
-      {canRetry && <Retry retry={api.retry} translator={translator} className={retry} />}
+      {canCancel && <Cancel cancel={api.cancel} translator={translator} />}
+      {canRetry && <Retry retry={api.retry} translator={translator} />}
     </Grid>
   );
 }
