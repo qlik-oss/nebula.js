@@ -30,7 +30,8 @@ const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
       disabled={disabled}
       style={style}
       className={ActionElement.className}
-      size="large">
+      size="large"
+    >
       {hasSvgIconShape && SvgIcon(item.getSvgIconShape())}
       {addAnchor && (
         <div

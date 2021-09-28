@@ -29,7 +29,8 @@ export default function Nav({ api, app }) {
           disabled={!navState || !navState.canGoBack}
           title={translator.get('Navigate.Back')}
           onClick={() => api.back()}
-          size="large">
+          size="large"
+        >
           <SelectionsBack />
         </IconButton>
       </Grid>
@@ -39,7 +40,8 @@ export default function Nav({ api, app }) {
           disabled={!navState || !navState.canGoForward}
           title={translator.get('Navigate.Forward')}
           onClick={() => api.forward()}
-          size="large">
+          size="large"
+        >
           <SelectionsForward />
         </IconButton>
       </Grid>
@@ -48,7 +50,8 @@ export default function Nav({ api, app }) {
           disabled={!navState || !navState.canClear}
           title={translator.get('Selection.ClearAll')}
           onClick={() => api.clear()}
-          size="large">
+          size="large"
+        >
           <ClearSelections />
         </IconButton>
       </Grid>
