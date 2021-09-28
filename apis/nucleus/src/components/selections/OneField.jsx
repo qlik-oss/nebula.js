@@ -3,7 +3,7 @@ import React, { useRef, useState, useContext } from 'react';
 import Remove from '@nebula.js/ui/icons/remove';
 import Lock from '@nebula.js/ui/icons/lock';
 
-import { IconButton, Grid, Typography } from '@material-ui/core';
+import { IconButton, Grid, Typography } from '@mui/material';
 
 import { makeStyles, useTheme } from '@nebula.js/ui/theme';
 
@@ -108,7 +108,7 @@ export default function OneField({
 
     Icon = selection.qLocked ? (
       <Grid item>
-        <IconButton>
+        <IconButton size="large">
           <Lock />
         </IconButton>
       </Grid>
@@ -120,7 +120,7 @@ export default function OneField({
             e.stopPropagation();
             api.clearField(selection.qField, field.states[stateIx]);
           }}
-        >
+          size="large">
           <Remove />
         </IconButton>
       </Grid>

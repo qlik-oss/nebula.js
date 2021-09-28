@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { IconButton } from '@material-ui/core';
+import { IconButton } from '@mui/material';
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 import { useTheme } from '@nebula.js/ui/theme';
@@ -30,7 +30,7 @@ const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
       disabled={disabled}
       style={style}
       className={ActionElement.className}
-    >
+      size="large">
       {hasSvgIconShape && SvgIcon(item.getSvgIconShape())}
       {addAnchor && (
         <div

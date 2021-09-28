@@ -1,6 +1,6 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { Typography } from '@material-ui/core';
+import { Typography } from '@mui/material';
 
 const [{ default: Footer }] = aw.mock([], ['../Footer']);
 

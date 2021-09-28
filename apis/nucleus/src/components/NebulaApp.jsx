@@ -1,7 +1,7 @@
 import React, { useState, useMemo, forwardRef, useImperativeHandle } from 'react';
 import ReactDOM from 'react-dom';
 
-import { createTheme, ThemeProvider, StylesProvider, createGenerateClassName } from '@nebula.js/ui/theme';
+import { createTheme, ThemeProvider, StylesProvider, StyledEngineProvider, createGenerateClassName } from '@nebula.js/ui/theme';
 
 import InstanceContext from '../contexts/InstanceContext';
 import useAppSelections from '../hooks/useAppSelections';
@@ -46,13 +46,13 @@ const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
   }));
 
   return (
-    <ThemeProvider theme={theme}>
-      <StylesProvider generateClassName={generator}>
-        <InstanceContext.Provider value={context}>
-          <>{components}</>
-        </InstanceContext.Provider>
-      </StylesProvider>
-    </ThemeProvider>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+          <InstanceContext.Provider value={context}>
+            <>{components}</>
+          </InstanceContext.Provider>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 });
 

@@ -1,7 +1,9 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { IconButton, Divider, Grid, makeStyles } from '@material-ui/core';
+import { IconButton, Divider, Grid } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 const InstanceContext = React.createContext();
 
@@ -22,7 +24,7 @@ const [{ default: ActionsToolbar }] = aw.mock(
     ],
     [require.resolve('../ActionsToolbarMore'), () => Popover],
     [
-      require.resolve('@material-ui/core'),
+      require.resolve('@mui/material'),
       () => ({
         makeStyles,
         IconButton,

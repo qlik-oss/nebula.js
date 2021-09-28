@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { OutlinedInput } from '@material-ui/core';
+import { OutlinedInput } from '@mui/material';
 
 const InstanceContext = React.createContext();
 const [{ default: ListBoxSearch }] = aw.mock(

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { InputAdornment, OutlinedInput } from '@material-ui/core';
+import { InputAdornment, OutlinedInput } from '@mui/material';
 import Search from '@nebula.js/ui/icons/search';
 
 import { makeStyles } from '@nebula.js/ui/theme';

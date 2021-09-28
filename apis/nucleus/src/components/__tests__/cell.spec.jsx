@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
+import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 
 describe('<Cell />', () => {
   let sandbox;
@@ -114,11 +114,13 @@ describe('<Cell />', () => {
 
       await act(async () => {
         renderer = create(
-          <ThemeProvider theme={theme}>
-            <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
-              <Cell ref={cellRef} halo={halo} model={model} initialSnOptions={initialSnOptions} onMount={onMount} />
-            </InstanceContext.Provider>
-          </ThemeProvider>,
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
+                <Cell ref={cellRef} halo={halo} model={model} initialSnOptions={initialSnOptions} onMount={onMount} />
+              </InstanceContext.Provider>
+            </ThemeProvider>
+          </StyledEngineProvider>,
           rendererOptions || null
         );
       });

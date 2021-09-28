@@ -1,5 +1,5 @@
 import React, { useState, useContext, useRef } from 'react';
-import { Badge, IconButton, Grid, Typography, Popover, Button, List, ListItem, Box } from '@material-ui/core';
+import { Badge, IconButton, Grid, Typography, Popover, Button, List, ListItem, Box } from '@mui/material';
 import { makeStyles } from '@nebula.js/ui/theme';
 import DownArrow from '@nebula.js/ui/icons/down-arrow';
 
@@ -80,7 +80,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
           <div style={{ width: '12px' }} />
         </Grid>
         <Grid item>
-          <IconButton>
+          <IconButton size="large">
             <DownArrow />
           </IconButton>
         </Grid>
@@ -97,7 +97,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
       {field.states.map((s, ix) => (
         // eslint-disable-next-line react/no-array-index-key
         <ListItem key={ix} title={field.name} onClick={(e) => handleShowState(e, ix)}>
-          <Box border={1} width="100%" borderRadius="borderRadius" borderColor="divider">
+          <Box border={1} width="100%" borderRadius={1} borderColor="divider">
             <OneField field={field} api={api} stateIx={ix} skipHandleShowListBoxPopover />
           </Box>
         </ListItem>

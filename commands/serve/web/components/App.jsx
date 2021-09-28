@@ -2,7 +2,7 @@
 import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
 
 import { embed } from '@nebula.js/stardust';
-import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
+import { createTheme, ThemeProvider, StyledEngineProvider, StylesProvider } from '@nebula.js/ui/theme';
 import { WbSunny, Brightness3, ColorLens, Language, Home } from '@nebula.js/ui/icons';
 
 import {
@@ -28,7 +28,7 @@ import VizContext from '../contexts/VizContext';
 
 import storageFn from '../storage';
 
-const SPACING = 2;
+const SPACING = 1;
 
 const languages = [
   'en-US',
@@ -190,16 +190,16 @@ export default function App({ app, info }) {
               container
               wrap="nowrap"
               direction="column"
-              style={{ background: theme.palette.background.darkest, height: 'calc(100% + 16px)' }}
-              spacing={SPACING}
+              sx={{ background: theme.palette.background.darkest, height: 'calc(100% + 16px)' }}
+              gap={SPACING}
             >
               <Grid item>
                 <Toolbar
                   variant="dense"
-                  style={{ background: theme.palette.background.paper, boxShadow: theme.shadows[1] }}
+                  sx={{ background: theme.palette.background.paper, boxShadow: theme.shadows[1] }}
                 >
-                  <Grid container spacing={2}>
-                    <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                  <Grid container gap={2}>
+                    <Grid item container alignItems="center" sx={{ width: 'auto' }}>
                       <Grid item>
                         <a href="https://github.com/qlik-oss/nebula.js" target="_blank" rel="noopener noreferrer">
                           <img
@@ -297,7 +297,7 @@ export default function App({ app, info }) {
               <Grid item xs style={{ overflowX: 'hidden', overflowY: 'auto', padding: theme.spacing(0, SPACING) }}>
                 <VizContext.Provider value={vizContext}>
                   {sn ? (
-                    <Grid container wrap="nowrap" style={{ height: '100%' }} spacing={SPACING}>
+                    <Grid container wrap="nowrap" style={{ height: '100%' }} gap={SPACING}>
                       <Grid item xs zeroMinWidth>
                         {objectListMode ? (
                           <Collection cache={currentId} types={[info.supernova.name]} />
@@ -308,11 +308,11 @@ export default function App({ app, info }) {
                       {activeViz && (
                         <Grid
                           item
-                          style={{
+                          sx={{
                             background: theme.palette.background.paper,
                             overflow: 'hidden auto',
                             margin: theme.spacing(SPACING / 2),
-                            marginTop: `${48 + theme.spacing(SPACING / 2)}px`,
+                            marginTop: `${36 + parseInt(theme.spacing(SPACING/2))}px`,
                             boxShadow: theme.shadows[1],
                             padding: 0,
                           }}

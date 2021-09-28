@@ -5,7 +5,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
 
-import { IconButton, Grid, Typography } from '@material-ui/core';
+import { IconButton, Grid, Typography } from '@mui/material';
 
 import { useTheme } from '@nebula.js/ui/theme';
 import useSessionModel from '../../hooks/useSessionModel';
@@ -131,11 +131,11 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
       <Grid item container style={{ padding: theme.spacing(1), borderBottom: `1px solid ${theme.palette.divider}` }}>
         <Grid item>
           {isLocked ? (
-            <IconButton onClick={unlock} disabled={!isLocked}>
+            <IconButton onClick={unlock} disabled={!isLocked} size="large">
               <Lock />
             </IconButton>
           ) : (
-            <IconButton onClick={lock} disabled={!hasSelections}>
+            <IconButton onClick={lock} disabled={!hasSelections} size="large">
               <Unlock />
             </IconButton>
           )}

@@ -8,8 +8,8 @@ const light = {
       contrastText: colors.grey100,
     },
     secondary: {
-      light: '#0AAF54',
       main: '#009845',
+      light: '#0AAF54',
       dark: '#006937',
     },
     text: {

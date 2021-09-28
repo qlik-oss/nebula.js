@@ -119,7 +119,7 @@ export default function ({ id, expandable, minHeight }) {
   return (
     <Grid container direction="column" style={{ minHeight, height: '100%', position: 'relative' }}>
       <Grid item>
-        <Toolbar variant="dense" disableGutters style={{ padding: '0 0px', opacity: 1 }}>
+        <Toolbar variant="dense" disableGutters style={{ padding: '0 0px', opacity: 1, "margin-top": "-8px" }}>
           <PropsDialog model={model} show={dialogOpen} close={closeDialog} />
           <IconButton
             title="Modify object properties"

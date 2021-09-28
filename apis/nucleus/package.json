@@ -4,9 +4,9 @@
   "private": true,
   "main": "src/index.js",
   "devDependencies": {
-    "@material-ui/core": "4.12.3",
-    "@material-ui/icons": "4.11.2",
-    "@material-ui/styles": "4.11.4",
+    "@mui/material": "^5.0.0",
+    "@mui/icons-material": "^5.0.0",
+    "@mui/styles": "^5.0.0",
     "@nebula.js/conversion": "^2.0.0-beta.1",
     "@nebula.js/locale": "^2.0.0-beta.1",
     "@nebula.js/supernova": "^2.0.0-beta.1",

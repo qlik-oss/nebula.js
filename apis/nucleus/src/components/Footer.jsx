@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { makeStyles, Typography, Grid } from '@material-ui/core';
+import { Typography, Grid } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 /**
  * @interface

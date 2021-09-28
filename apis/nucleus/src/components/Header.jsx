@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
-import { makeStyles, Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import ActionsToolbar from './ActionsToolbar';
 import useRect from '../hooks/useRect';
 

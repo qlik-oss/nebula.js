@@ -1,6 +1,6 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { IconButton } from '@material-ui/core';
+import { IconButton } from '@mui/material';
 
 const SvgIcon = () => 'svgicon';
 

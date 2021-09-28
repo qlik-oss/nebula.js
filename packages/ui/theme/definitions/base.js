@@ -52,5 +52,11 @@ export default {
       disableTouchRipple: true,
       focusRipple: false,
     },
+    MuiCheckbox: {
+      color: 'secondary',
+    },
+    MuiTabs: {
+      indicatorColor: 'secondary',
+    },
   },
 };

@@ -13,6 +13,25 @@ const overrides = (theme) => ({
       color: theme.palette.text.primary,
     },
   },
+  MuiGrid: {
+    variants: {
+      props: { alignItems: 'center' },
+      style: {
+        'align-items': 'center',
+      },
+    },
+  },
+  MuiButtonBase: {
+    root: {
+      borderRadius: 2,
+      border: '1px solid transparent',
+      // should ideally use $focusVisible, but that messes up focus in all other places where Iconbutton is used (Checkbox, Switch etc)
+      '&:focus': {
+        borderColor: theme.palette.custom.focusBorder,
+        boxShadow: `0 0 0 2px ${theme.palette.custom.focusOutline}`,
+      },
+    },
+  },
   MuiIconButton: {
     root: {
       padding: 7,
@@ -120,6 +139,21 @@ export default function create(definition) {
       overrides: overrides(withDefaults),
     })
   );
+
+  /*cache[key] = createTheme({
+    components: {
+      MuiCheckbox: {
+        styleOverrides: {
+          root: {
+            padding: 9,
+            backgroundColor: '#00ff00',
+          },
+        },
+      },
+    },
+  });*/
+
+  console.log(cache[key]);
 
   cache[key].name = name;
 
