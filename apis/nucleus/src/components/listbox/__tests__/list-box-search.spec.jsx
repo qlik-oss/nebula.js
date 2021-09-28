@@ -6,7 +6,7 @@ const InstanceContext = React.createContext();
 const [{ default: ListBoxSearch }] = aw.mock(
   [
     [require.resolve('../../../contexts/InstanceContext'), () => InstanceContext],
-    [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({}) })],
+    [require.resolve('@nebula.js/ui/theme'), () => ({})],
   ],
   ['../ListBoxSearch']
 );

@@ -16,7 +16,6 @@ const [{ default: MultiState }] = aw.mock(
         useTheme: () => ({
           palette: { selected: {} },
         }),
-        makeStyles: () => () => ({}),
       }),
     ],
     [

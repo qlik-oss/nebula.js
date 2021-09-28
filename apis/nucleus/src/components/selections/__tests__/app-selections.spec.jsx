@@ -9,8 +9,6 @@ const mock = ({
   theme = {
     createTheme: () => ({}),
     ThemeProvider: ({ children }) => <tp>{children}</tp>,
-    StylesProvider: ({ children }) => <sp>{children}</sp>,
-    createGenerateClassName: () => () => 'gen',
   },
   SelectedFields = () => <sf />,
   Nav = () => <nav />,

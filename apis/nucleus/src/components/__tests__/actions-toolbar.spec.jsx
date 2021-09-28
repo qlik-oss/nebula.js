@@ -3,8 +3,6 @@ import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { IconButton, Divider, Grid } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
-
 const InstanceContext = React.createContext();
 
 const Popover = (props) => props.children || 'popover';
@@ -14,7 +12,9 @@ const [{ default: ActionsToolbar }] = aw.mock(
     [
       require.resolve('@nebula.js/ui/theme'),
       () => ({
-        useTheme: () => ({ spacing: () => {} }),
+        useTheme: () => ({
+          spacing: (a, b, c, d) => (c !== undefined ? `${a} ${b} ${c} ${d}` : `${a} ${b} ${a} ${b}`),
+        }),
       }),
     ],
     [require.resolve('../../contexts/InstanceContext'), () => InstanceContext],
@@ -26,7 +26,6 @@ const [{ default: ActionsToolbar }] = aw.mock(
     [
       require.resolve('@mui/material'),
       () => ({
-        makeStyles,
         IconButton,
         Grid,
         Divider,
@@ -166,17 +165,17 @@ describe('<ActionsToolbar />', () => {
 
   it('should set spacing', async () => {
     const validate = (cnt) => {
-      const items = renderer.root.findAllByType(Grid).filter((i) => i.props.className);
+      const items = renderer.root.findAllByType(Grid).filter((i) => i.props.sx);
       expect(items).to.have.length(cnt);
       items.forEach((item, ix) => {
         if (ix === 0) {
-          expect(item.props.className).to.match(/^makeStyles-firstItemSpacing-\d+$/);
+          expect(item.props.sx.padding).to.equal('0 0.5 0 0');
         }
         if (ix === items.length - 1) {
-          expect(item.props.className).to.match(/^makeStyles-lastItemSpacing-\d+$/);
+          expect(item.props.sx.padding).to.equal('0 0 0 0.5');
         }
         if (ix !== 0 && ix !== items.length - 1) {
-          expect(item.props.className).to.match(/^makeStyles-itemSpacing-\d+$/);
+          expect(item.props.sx.padding).to.equal('0 0.5 0 0.5');
         }
       });
     };

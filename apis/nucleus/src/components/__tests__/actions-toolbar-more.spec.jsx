@@ -3,8 +3,6 @@ import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { MenuList, MenuItem, ListItemIcon, Typography } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
-
 const Popover = (p) => p.children;
 const SvgIconMock = '<div>/div>';
 
@@ -14,7 +12,6 @@ const [{ default: ActionsToolbarMore }] = aw.mock(
     [
       require.resolve('@mui/material'),
       () => ({
-        makeStyles,
         MenuList,
         MenuItem,
         ListItemIcon,

@@ -3,22 +3,7 @@ import renderer from 'react-test-renderer';
 import { Grid, Typography } from '@mui/material';
 import Lock from '@nebula.js/ui/icons/lock';
 
-const [{ default: ListBoxRow }] = aw.mock(
-  [
-    [
-      require.resolve('@nebula.js/ui/theme'),
-      () => ({
-        makeStyles: () => () => ({
-          S: 'selected',
-          A: 'alternative',
-          X: 'excluded',
-          highlighted: 'highlighted',
-        }),
-      }),
-    ],
-  ],
-  ['../ListBoxRow']
-);
+const [{ default: ListBoxRow }] = aw.mock([[require.resolve('@nebula.js/ui/theme')]], ['../ListBoxRow']);
 
 describe('<ListBoxRow />', () => {
   it('should have default props', () => {

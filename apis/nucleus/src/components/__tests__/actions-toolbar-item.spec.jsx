@@ -9,7 +9,6 @@ const [{ default: ActionsToolbarItem }] = aw.mock(
     [
       require.resolve('@nebula.js/ui/theme'),
       () => ({
-        makeStyles: () => () => ({ icon: 'icon' }),
         useTheme: () => ({ spacing: () => 0, palette: { btn: { active: 'pink' } } }),
       }),
     ],

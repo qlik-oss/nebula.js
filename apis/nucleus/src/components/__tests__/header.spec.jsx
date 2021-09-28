@@ -2,8 +2,6 @@ import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { Grid, Typography } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
-
 const Popover = (props) => props.children;
 const ActionsToolbar = () => 'ActionsToolbar';
 
@@ -23,7 +21,6 @@ describe('<Header />', () => {
         [
           require.resolve('@mui/material'),
           () => ({
-            makeStyles,
             Grid,
             Typography,
             Popover,

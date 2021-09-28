@@ -15,7 +15,6 @@ const [{ default: More }] = aw.mock(
           palette: { selected: {} },
           shape: { borderRadius: '2px' },
         }),
-        makeStyles: () => () => ({}),
       }),
     ],
     [
