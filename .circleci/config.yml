@@ -31,7 +31,7 @@ jobs:
       - image: $QLIK_DOCKER_DEV_REGISTRY/engine:12.1125.0
         auth:
           username: $DOCKER_USER # can specify string literal values
-          password: $DOCKER_TOKEN # or project environment variable reference
+          password: $PRIV_DOCKER_TOKEN # or project environment variable reference
         command: |
           -S AcceptEULA=yes
           -S SSEPlugin=sse,localhost:50051
