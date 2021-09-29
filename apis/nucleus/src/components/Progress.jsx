@@ -15,8 +15,8 @@ export default function Progress({ size = 'medium', ...props }) {
   const s = SIZES[size];
 
   return (
-    <div sx={{ position: 'relative', display: 'inline-block' }}>
-      <CircularProgress variant="determinate" value={100} sx={{ color: 'divider' }} size={s} thickness={3} {...props} />
+    <div style={{ position: 'relative', display: 'inline-block' }}>
+      <CircularProgress variant="static" value={100} sx={{ color: 'divider' }} size={s} thickness={3} {...props} />
       <CircularProgress
         variant="indeterminate"
         sx={{ color: 'secondary.main', animationDuration: '1500ms', position: 'absolute', left: 0 }}
