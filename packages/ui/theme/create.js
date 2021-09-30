@@ -21,12 +21,6 @@ const overrides = (theme) => ({
           'align-items': 'center',
         },
       },
-      {
-        props: { alignItems: 'center' },
-        style: {
-          'align-items': 'center',
-        },
-      },
     ],
   },
   MuiButtonBase: {

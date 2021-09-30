@@ -28,10 +28,7 @@ jobs:
   build:
     docker:
       - image: circleci/node:14.14.0
-      - image: $QLIK_DOCKER_DEV_REGISTRY/engine:12.1125.0
-        auth:
-          username: $DOCKER_USER # can specify string literal values
-          password: $PRIV_DOCKER_TOKEN # or project environment variable reference
+      - image: qlikcore/engine:12.1126.0
         command: |
           -S AcceptEULA=yes
           -S SSEPlugin=sse,localhost:50051
