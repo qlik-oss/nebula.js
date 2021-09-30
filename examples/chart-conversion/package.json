@@ -8,9 +8,11 @@
     "build": "parcel build index.html"
   },
   "dependencies": {
-    "@nebula.js/stardust": "latest",
     "@nebula.js/sn-bar-chart": "latest",
+    "@nebula.js/sn-combo-chart": "latest",
     "@nebula.js/sn-line-chart": "latest",
+    "@nebula.js/sn-pie-chart": "latest",
+    "@nebula.js/stardust": "latest",
     "enigma.js": "2.7.2"
   },
   "devDependencies": {

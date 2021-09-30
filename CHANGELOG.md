@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/qlik-oss/nebula.js/compare/v2.0.0-beta.1...v2.0.0) (2021-09-30)
+
+### Bug Fixes
+
+- only fetch apps from qlikcloud ([#680](https://github.com/qlik-oss/nebula.js/issues/680)) ([4d53c7e](https://github.com/qlik-oss/nebula.js/commit/4d53c7e757111c37aaa34062b4562534ff58a333))
+
 # [2.0.0-beta.1](https://github.com/qlik-oss/nebula.js/compare/v1.7.0...v2.0.0-beta.1) (2021-09-21)
 
 ### Bug Fixes
