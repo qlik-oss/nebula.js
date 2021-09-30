@@ -33,6 +33,11 @@ const options = {
     type: 'string',
     default: undefined,
   },
+  typescriptEnabled: {
+    description: 'Enable typescript parsing',
+    type: 'boolean',
+    default: false,
+  },
 };
 
 module.exports = (yargs) => {

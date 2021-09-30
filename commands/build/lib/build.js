@@ -40,7 +40,7 @@ const config = ({
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
   const { name, version, license, author } = pkg;
-  const { sourcemap, replacementStrings = {} } = argv;
+  const { sourcemap, replacementStrings = {}, typescriptEnabled } = argv;
 
   if (corePkg) {
     pkg = corePkg;
@@ -108,7 +108,7 @@ const config = ({
         }),
         sourcemaps(),
         postcss({}),
-        typescript(),
+        ...[typescriptEnabled ? typescript() : false],
         ...[
           mode === 'production'
             ? terser({
