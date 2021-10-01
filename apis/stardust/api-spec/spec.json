@@ -1534,14 +1534,17 @@
       "kind": "interface",
       "entries": {
         "passive": {
+          "description": "Whether or not passive constraints are on. Should block any passive interaction by users, ie: tooltips",
           "optional": true,
           "type": "boolean"
         },
         "active": {
+          "description": "Whether or not active constraints are on. Should block any active interaction by users, ie: scroll, click",
           "optional": true,
           "type": "boolean"
         },
         "select": {
+          "description": "Whether or not active select are on. Should block any selection action. Implied when active is true.",
           "optional": true,
           "type": "boolean"
         }
