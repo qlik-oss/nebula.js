@@ -35,6 +35,10 @@ const options = {
     type: 'boolean',
     default: false,
   },
+  keyboardNavigation: {
+    type: 'boolean',
+    default: false,
+  },
   resources: {
     type: 'string',
     description: 'Path to a folder that will be served as static files under /resources',
