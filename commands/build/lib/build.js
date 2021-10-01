@@ -10,7 +10,7 @@ const postcss = require('rollup-plugin-postcss');
 const replace = require('@rollup/plugin-replace');
 const sourcemaps = require('rollup-plugin-sourcemaps');
 const jsxPlugin = require('@babel/plugin-transform-react-jsx');
-const typescript = require('@rollup/plugin-typescript');
+const typescriptPlugin = require('@rollup/plugin-typescript');
 const json = require('@rollup/plugin-json');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
@@ -40,7 +40,7 @@ const config = ({
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
   const { name, version, license, author } = pkg;
-  const { sourcemap, replacementStrings = {}, typescriptEnabled } = argv;
+  const { sourcemap, replacementStrings = {}, typescript } = argv;
 
   if (corePkg) {
     pkg = corePkg;
@@ -55,7 +55,10 @@ const config = ({
 
   const auth = typeof author === 'object' ? `${author.name} <${author.email}>` : author || '';
   const moduleName = name.split('/').reverse()[0];
-  const extensions = ['.mjs', '.js', '.jsx', '.json', '.node', '.tsx', '.ts'];
+  const extensions = ['.mjs', '.js', '.jsx', '.json', '.node'];
+  if (typescript) {
+    extensions.push('.tsx', '.ts');
+  }
 
   const banner = `/*
 * ${name} v${version}
@@ -108,7 +111,7 @@ const config = ({
         }),
         sourcemaps(),
         postcss({}),
-        ...[typescriptEnabled ? typescript() : false],
+        ...[typescript ? typescriptPlugin() : false],
         ...[
           mode === 'production'
             ? terser({

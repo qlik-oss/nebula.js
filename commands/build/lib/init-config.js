@@ -33,7 +33,7 @@ const options = {
     type: 'string',
     default: undefined,
   },
-  typescriptEnabled: {
+  typescript: {
     description: 'Enable typescript parsing',
     type: 'boolean',
     default: false,
