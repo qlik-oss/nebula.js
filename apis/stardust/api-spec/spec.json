@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "2.0.0",
+    "version": "2.1.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -1534,14 +1534,17 @@
       "kind": "interface",
       "entries": {
         "passive": {
+          "description": "Whether or not passive constraints are on. Should block any passive interaction by users, ie: tooltips",
           "optional": true,
           "type": "boolean"
         },
         "active": {
+          "description": "Whether or not active constraints are on. Should block any active interaction by users, ie: scroll, click",
           "optional": true,
           "type": "boolean"
         },
         "select": {
+          "description": "Whether or not active select are on. Should block any selection action. Implied when active is true.",
           "optional": true,
           "type": "boolean"
         }

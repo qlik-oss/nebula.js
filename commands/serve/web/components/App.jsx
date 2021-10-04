@@ -84,6 +84,7 @@ export default function App({ app, info }) {
       context: {
         theme: currentThemeName,
         language: currentLanguage,
+        keyboardNavigation: info.keyboardNavigation,
       },
       load: (type) => Promise.resolve(window[type.name]),
       flags: info.flags,
