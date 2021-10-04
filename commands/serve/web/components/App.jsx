@@ -104,7 +104,7 @@ export default function App({ app, info }) {
     n.__DO_NOT_USE__.types.register(info.supernova);
     if (info.types) {
       info.types.forEach((t) => {
-        n.__DO_NOT_USE__.types.register(t.name);
+        n.__DO_NOT_USE__.types.register(t);
       });
     }
     setNebbie(n);
