@@ -1,4 +1,4 @@
-import { createMuiTheme } from '@material-ui/core/styles';
+import { createTheme } from '@material-ui/core/styles';
 
 import base from './definitions/base';
 import light from './definitions/light';
@@ -113,7 +113,7 @@ export default function create(definition) {
     },
   };
 
-  cache[key] = createMuiTheme({
+  cache[key] = createTheme({
     ...withDefaults,
     overrides: overrides(withDefaults),
   });

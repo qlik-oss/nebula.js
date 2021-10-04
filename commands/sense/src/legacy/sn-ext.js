@@ -9,6 +9,7 @@ import senseTranslator from 'translator';
 // injected
 import snDefinition from '__SN_DEF__';
 import extDefinition from '__EXT_DEF__';
+import emptyExtDefinition from './empty-ext';
 
 // lib dependencies
 import { __DO_NOT_USE__ } from './nlib/@nebula.js/stardust/dist/stardust';
@@ -42,6 +43,7 @@ const translator = {
 // Since nucleus is not being used in Sense yet, this interface MUST be provided explicitly here
 // and it MUST have the same interface as the one provided by nucleus.
 const galaxy = {
+  deviceType: 'auto',
   translator,
   flags: {
     isEnabled: () => false,
@@ -122,7 +124,10 @@ function updateTheme(ref) {
 // ============= EXTENSON =====================================================
 
 const snGenerator = supernova(snDefinition, galaxy);
-const ext = extDefinition || {};
+const ext =
+  typeof extDefinition === 'function'
+    ? extDefinition({ translator })
+    : extDefinition || snGenerator.definition.ext || emptyExtDefinition || {};
 let data;
 
 if (snGenerator.qae.data.targets[0]) {

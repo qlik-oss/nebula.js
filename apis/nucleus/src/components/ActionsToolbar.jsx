@@ -125,7 +125,6 @@ const ActionsToolbar = ({
   const showActions = newActions.length > 0;
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
-
   const Actions = (
     <Grid container spacing={0} wrap="nowrap">
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
@@ -154,6 +153,8 @@ const ActionsToolbar = ({
   return popover.show ? (
     <Popover
       disableEnforceFocus
+      disableAutoFocus
+      disableRestoreFocus
       open={popover.show}
       anchorEl={popover.anchorEl}
       anchorOrigin={popoverAnchorOrigin}

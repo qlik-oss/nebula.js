@@ -8,6 +8,8 @@ const rollup = require('rollup');
 const babel = require('rollup-plugin-babel');
 const postcss = require('rollup-plugin-postcss');
 const replace = require('@rollup/plugin-replace');
+const sourcemaps = require('rollup-plugin-sourcemaps');
+const jsxPlugin = require('@babel/plugin-transform-react-jsx');
 const json = require('@rollup/plugin-json');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
@@ -17,6 +19,13 @@ const babelPreset = require('@babel/preset-env');
 const { terser } = require('rollup-plugin-terser');
 
 const initConfig = require('./init-config');
+
+const resolveReplacementStrings = (replacementStrings) => {
+  if (typeof replacementStrings !== 'object') {
+    throw new Error('replacementStrings should be an object with key value pairs of strings!');
+  }
+  return replacementStrings;
+};
 
 const config = ({
   mode = 'production',
@@ -30,7 +39,7 @@ const config = ({
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
   const { name, version, license, author } = pkg;
-  const { sourcemap } = argv;
+  const { sourcemap, replacementStrings = {} } = argv;
 
   if (corePkg) {
     pkg = corePkg;
@@ -70,12 +79,17 @@ const config = ({
       plugins: [
         replace({
           'process.env.NODE_ENV': JSON.stringify(mode === 'development' ? 'development' : 'production'),
+          preventAssignment: true,
+          ...resolveReplacementStrings(replacementStrings),
         }),
-        nodeResolve(),
+        nodeResolve({
+          extensions: ['.mjs', '.js', '.jsx', '.json', '.node'],
+        }),
         commonjs(),
         json(),
         babel({
           babelrc: false,
+          inputSourceMap: false, // without this you get wrong source maps, but I don't know why
           presets: [
             [
               babelPreset,
@@ -87,7 +101,9 @@ const config = ({
               },
             ],
           ],
+          plugins: [[jsxPlugin]],
         }),
+        sourcemaps(),
         postcss({}),
         ...[
           mode === 'production'
@@ -115,7 +131,7 @@ const config = ({
 
 const minified = async (argv) => {
   const c = config({
-    mode: 'production',
+    mode: argv.mode || 'production',
     format: 'umd',
     argv,
   });
@@ -125,7 +141,7 @@ const minified = async (argv) => {
 
 const esm = async (argv, core) => {
   const c = config({
-    mode: 'development',
+    mode: argv.mode || 'development',
     format: 'esm',
     argv,
     core,
@@ -152,7 +168,7 @@ function clearScreen(msg) {
 
 const watch = async (argv) => {
   const c = config({
-    mode: 'development',
+    mode: argv.mode || 'development',
     format: 'umd',
     argv,
   });
@@ -212,7 +228,8 @@ async function build(argv = {}) {
 
   // if not runnning via command line, run the config to inject default values
   if (!argv.$0) {
-    defaultBuildConfig = initConfig(yargs([])).argv;
+    const yargsArgs = argv.config ? ['--config', argv.config] : [];
+    defaultBuildConfig = initConfig(yargs(yargsArgs)).argv;
   }
 
   const buildConfig = extend(true, {}, defaultBuildConfig, argv);

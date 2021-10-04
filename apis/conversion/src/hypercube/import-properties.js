@@ -19,10 +19,8 @@ export default function importProperties({
     exportFormat,
     dataDefinition,
   });
-  const {
-    defaultDimension = helpers.getDefaultDimension(),
-    defaultMeasure = helpers.getDefaultMeasure(),
-  } = defaultPropertyValues;
+  const { defaultDimension = helpers.getDefaultDimension(), defaultMeasure = helpers.getDefaultMeasure() } =
+    defaultPropertyValues;
 
   // empty dimensions and measures of new hypercube
   newHyperCubeDef.qDimensions.length = 0;
@@ -60,6 +58,9 @@ export default function importProperties({
 
   // always copy type and visualization
   helpers.importCommonProperties(newProperties, exportFormat, initialProperties);
+
+  helpers.updateDimensionsOnAdded({ newProperties, dataDefinition, hypercubePath });
+  helpers.updateMeasuresOnAdded({ newProperties, dataDefinition, hypercubePath });
 
   newPropertyTree.qProperty = newProperties;
 

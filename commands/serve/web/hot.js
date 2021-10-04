@@ -46,6 +46,13 @@ export default function initiateWatch(info) {
       window[info.supernova.name] = mo;
       lightItUp(info.supernova.name);
     });
+    if (info.types) {
+      info.types.forEach((t) => {
+        getModule(t.name, t.url).then((mo) => {
+          window[t.name] = mo;
+        });
+      });
+    }
   };
 
   if (info.sock.port) {

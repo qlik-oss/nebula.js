@@ -18,6 +18,7 @@ describe('<Supernova />', () => {
     render = async ({
       sn = { component: {} },
       snOptions = {},
+      snPlugins = [],
       layout = {},
       appLayout = {},
       halo = {},
@@ -25,7 +26,14 @@ describe('<Supernova />', () => {
     } = {}) => {
       await act(async () => {
         renderer = create(
-          <Supernova sn={sn} snOptions={snOptions} layout={layout} appLayout={appLayout} halo={halo} />,
+          <Supernova
+            sn={sn}
+            snOptions={snOptions}
+            snPlugins={snPlugins}
+            layout={layout}
+            appLayout={appLayout}
+            halo={halo}
+          />,
           rendererOptions || null
         );
       });
@@ -43,6 +51,7 @@ describe('<Supernova />', () => {
         component: {},
       },
       snOptions: {},
+      snPlugins: [],
       layout: {},
       appLayout: {},
       halo: {},
@@ -95,9 +104,10 @@ describe('<Supernova />', () => {
         component,
       },
       snOptions,
+      snPlugins: [],
       layout: 'layout',
       appLayout: { qLocaleInfo: 'loc' },
-      halo: { public: { theme: 'theme' }, app: { session: {} } },
+      halo: { public: { theme: 'theme', nebbie: 'embedAPI' }, app: { session: {} } },
       rendererOptions: {
         createNodeMock: () => ({
           style: {},
@@ -115,10 +125,13 @@ describe('<Supernova />', () => {
     expect(component.render.getCall(0).args[0]).to.eql({
       layout: 'layout',
       options: snOptions,
+      plugins: [],
+      embed: 'embedAPI',
       context: {
         constraints: {},
         appLayout: { qLocaleInfo: 'loc' },
         theme: 'theme',
+        keyboardNavigation: undefined,
         permissions: ['passive', 'interact', 'select', 'fetch'],
         localeInfo: 'loc',
         logicalSize: 'logical',

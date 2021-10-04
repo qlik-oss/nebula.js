@@ -2,6 +2,16 @@ import React from 'react';
 
 import { makeStyles, Typography, Grid } from '@material-ui/core';
 
+/**
+ * @interface
+ * @extends HTMLElement
+ * @since 2.0.0
+ */
+const CellFooter = {
+  /** @type {'njs-cell-footer'} */
+  className: 'njs-cell-footer',
+};
+
 const useStyles = makeStyles((theme) => ({
   itemStyle: {
     minWidth: 0,
@@ -14,7 +24,7 @@ const Footer = ({ layout }) => {
   return layout && layout.showTitles && layout.footnote ? (
     <Grid container>
       <Grid item className={itemStyle}>
-        <Typography noWrap variant="body2">
+        <Typography noWrap variant="body2" className={CellFooter.className}>
           {layout.footnote}
         </Typography>
       </Grid>

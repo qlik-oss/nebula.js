@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-build",
-  "version": "1.1.0-alpha0",
+  "version": "2.0.0",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -21,20 +21,22 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "7.12.10",
-    "@babel/core": "7.12.10",
-    "@babel/preset-env": "7.12.11",
-    "@rollup/plugin-commonjs": "17.0.0",
+    "@babel/cli": "7.15.7",
+    "@babel/core": "7.15.5",
+    "@babel/plugin-transform-react-jsx": "7.14.9",
+    "@babel/preset-env": "7.15.6",
+    "@rollup/plugin-commonjs": "20.0.0",
     "@rollup/plugin-json": "4.1.0",
-    "@rollup/plugin-node-resolve": "11.0.1",
-    "@rollup/plugin-replace": "2.3.4",
-    "chalk": "4.1.0",
+    "@rollup/plugin-node-resolve": "13.0.5",
+    "@rollup/plugin-replace": "3.0.0",
+    "chalk": "4.1.2",
     "extend": "3.0.2",
-    "postcss": "^8.2.4",
-    "rollup": "2.35.1",
+    "postcss": "^8.3.8",
+    "rollup": "2.57.0",
     "rollup-plugin-babel": "4.4.0",
-    "rollup-plugin-postcss": "4.0.0",
+    "rollup-plugin-postcss": "4.0.1",
+    "rollup-plugin-sourcemaps": "0.6.3",
     "rollup-plugin-terser": "7.0.2",
-    "yargs": "16.2.0"
+    "yargs": "17.2.1"
   }
 }

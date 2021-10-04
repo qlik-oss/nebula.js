@@ -66,15 +66,20 @@ function createWithHooks(generator, opts, galaxy) {
       app: opts.app,
       global: qGlobal,
       selections: opts.selections,
+      nebbie: opts.nebbie,
       element: undefined, // set on mount
       // ---- singletons ----
+      deviceType: galaxy.deviceType,
       theme: undefined,
       translator: galaxy.translator,
       // --- dynamic values ---
       layout: {},
       appLayout: {},
+      keyboardNavigation: opts.keyboardNavigation,
+      blurCallback: opts.blurCallback,
       constraints: forcedConstraints,
       options: {},
+      plugins: [],
     },
     fn: generator.component.fn,
     created() {},
@@ -96,6 +101,16 @@ function createWithHooks(generator, opts, galaxy) {
           // changed is set further down only if the name is different
           this.context.theme = r.context.theme;
         }
+        // false equals undefined, so we to cast to bool here
+        if (r.context && !!r.context.keyboardNavigation !== !!this.context.keyboardNavigation) {
+          this.context.keyboardNavigation = !!r.context.keyboardNavigation;
+          changed = true;
+        }
+
+        if (r.context && r.context.blurCallback) {
+          // Needs to be added here due to how the client renders
+          this.context.blurCallback = r.context.blurCallback;
+        }
 
         if (r.options) {
           // options could contain anything including methods, classes, cyclical references
@@ -113,6 +128,19 @@ function createWithHooks(generator, opts, galaxy) {
           });
           if (opChanged) {
             this.context.options = op;
+            changed = true;
+          }
+        }
+
+        if (r.plugins) {
+          let pluginsChanged = this.context.plugins.length !== r.plugins.length;
+          r.plugins.forEach((plugin, index) => {
+            if (this.context.plugins[index] !== plugin) {
+              pluginsChanged = true;
+            }
+          });
+          if (pluginsChanged) {
+            this.context.plugins = [...r.plugins];
             changed = true;
           }
         }
@@ -173,6 +201,12 @@ function createWithHooks(generator, opts, galaxy) {
     },
     setSnapshotData(layout) {
       return generator.component.runSnaps(this, layout);
+    },
+    focus() {
+      generator.component.focus(this);
+    },
+    blur() {
+      generator.component.blur(this);
     },
     getImperativeHandle() {
       return generator.component.getImperativeHandle(this);
@@ -258,13 +292,14 @@ export default function create(generator, opts, galaxy) {
 
   const teardowns = [];
 
+  if (opts.model.__snInterceptor) {
+    // remove old hook - happens only when proper cleanup hasn't been done
+    opts.model.__snInterceptor.teardown();
+  }
+
   if (generator.qae.properties.onChange) {
     // TODO - handle multiple sn
     // TODO - check privileges
-    if (opts.model.__snInterceptor) {
-      // remove old hook - happens only when proper cleanup hasn't been done
-      opts.model.__snInterceptor.teardown();
-    }
 
     opts.model.__snInterceptor = {
       setProperties: opts.model.setProperties,

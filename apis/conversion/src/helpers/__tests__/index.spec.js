@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import helpers from '../index';
 
 describe('restoreChangedProperties', () => {
@@ -1259,5 +1260,103 @@ describe('shouldInitLayoutExclude', () => {
         helpers.shouldInitLayoutExclude({ exportFormat, maxDimensions, minDimensions, maxMeasures, minMeasures })
       ).to.equal(true);
     });
+  });
+});
+
+describe('updateDimensionsOnAdded', () => {
+  let newProperties;
+  let dataDefinition;
+  let added;
+  beforeEach(() => {
+    newProperties = {
+      qHyperCubeDef: {
+        qDimensions: [
+          {
+            qDef: {},
+          },
+          {
+            qDef: {},
+          },
+        ],
+      },
+    };
+    added = ({ qDef }, properties) => {
+      qDef.xyz = properties.qHyperCubeDef.qDimensions.length * 10;
+    };
+    dataDefinition = { dimensions: { added } };
+  });
+
+  it('should update dimensions correctly if there is added function', () => {
+    helpers.updateDimensionsOnAdded({ newProperties, dataDefinition });
+    expect(newProperties.qHyperCubeDef.qDimensions).to.deep.equal([
+      {
+        qDef: { xyz: 10 },
+      },
+      {
+        qDef: { xyz: 20 },
+      },
+    ]);
+  });
+
+  it('should do nothing if there is no added function', () => {
+    dataDefinition.dimensions.added = undefined;
+    helpers.updateDimensionsOnAdded({ newProperties, dataDefinition });
+    expect(newProperties.qHyperCubeDef.qDimensions).to.deep.equal([
+      {
+        qDef: {},
+      },
+      {
+        qDef: {},
+      },
+    ]);
+  });
+});
+
+describe('updateMeasuresOnAdded', () => {
+  let newProperties;
+  let dataDefinition;
+  let added;
+  beforeEach(() => {
+    newProperties = {
+      qHyperCubeDef: {
+        qMeasures: [
+          {
+            qDef: {},
+          },
+          {
+            qDef: {},
+          },
+        ],
+      },
+    };
+    added = ({ qDef }, properties) => {
+      qDef.xyz = properties.qHyperCubeDef.qMeasures.length * 10;
+    };
+    dataDefinition = { measures: { added } };
+  });
+
+  it('should update measures correctly if there is added function', () => {
+    helpers.updateMeasuresOnAdded({ newProperties, dataDefinition });
+    expect(newProperties.qHyperCubeDef.qMeasures).to.deep.equal([
+      {
+        qDef: { xyz: 10 },
+      },
+      {
+        qDef: { xyz: 20 },
+      },
+    ]);
+  });
+
+  it('should do nothing if there is no added function', () => {
+    dataDefinition.measures.added = undefined;
+    helpers.updateMeasuresOnAdded({ newProperties, dataDefinition });
+    expect(newProperties.qHyperCubeDef.qMeasures).to.deep.equal([
+      {
+        qDef: {},
+      },
+      {
+        qDef: {},
+      },
+    ]);
   });
 });

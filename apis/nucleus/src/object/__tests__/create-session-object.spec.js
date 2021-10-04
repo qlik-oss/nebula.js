@@ -22,7 +22,7 @@ describe('create-session-object', () => {
   });
 
   beforeEach(() => {
-    objectModel = { id: 'id' };
+    objectModel = { id: 'id', on: () => {}, once: () => {} };
     types = {
       get: sandbox.stub(),
     };
@@ -91,11 +91,14 @@ describe('create-session-object', () => {
   });
 
   it('should call init', async () => {
-    const ret = await create({ type: 't', version: 'v', fields: 'f', properties: 'props', options: 'a' }, halo);
+    const ret = await create(
+      { type: 't', version: 'v', fields: 'f', properties: 'props', options: 'a', plugins: [] },
+      halo
+    );
     expect(ret).to.equal('api');
     expect(init).to.have.been.calledWithExactly(
       objectModel,
-      { options: 'a', element: undefined },
+      { options: 'a', plugins: [], element: undefined },
       halo,
       undefined,
       sinon.match.func
@@ -110,7 +113,7 @@ describe('create-session-object', () => {
     expect(ret).to.equal('api');
     expect(init).to.have.been.calledWithExactly(
       objectModel,
-      { options: 'opts', element: 'el' },
+      { options: 'opts', plugins: undefined, element: 'el' },
       halo,
       err,
       sinon.match.func

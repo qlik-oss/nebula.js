@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Nebula local mashup</title>
+    <style>
+      body {
+        background: #eee;
+      }
+
+      .content {
+        margin: 0 auto;
+        width: 80%;
+        max-width: 1200px;
+        display: flex;
+        flex-direction: row;
+      }
+
+      .column {
+        margin: 0 auto;
+        width: 80%;
+      }
+
+      .object {
+        position: relative;
+        height: 400px;
+        background-color: white;
+      }
+
+      .toolbar {
+        background-color: white;
+        margin: 12px 0px;
+        margin: 0 auto;
+        width: 70%;
+        max-width: 1200px;
+      }
+
+      .listbox {
+        position: relative;
+        height: 400px;
+        width: 30%;
+        background-color: white;
+      }
+
+      .buttons {
+        position: relative;
+        height: 400px;
+        width: 30%;
+        background-color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="toolbar"></div>
+    <div class="content">
+      <div class="column">
+        <div class="object" id="pie"></div>
+      </div>
+      <div class="buttons">
+        <br />
+        <div class="d-grid gap-2 col-11 mx-auto">
+          <button type="button" class="btn btn-secondary btn-sm" id="convertToPieChart">Convert to Pie Chart</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="convertToBarChart">Convert to Bar Chart</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="convertToLineChart">Convert to Line Chart</button>
+          <button type="button" class="btn btn-secondary btn-sm" id="convertToComboChart">
+            Convert to Combo Chart
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript" src="index.js"></script>
+  </body>
+</html>

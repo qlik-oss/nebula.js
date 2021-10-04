@@ -46,7 +46,7 @@ export default function Stage({ info, storage, uid }) {
     <Grid
       item
       container
-      justify="center"
+      justifyContent="center"
       style={{
         height: '100%',
       }}

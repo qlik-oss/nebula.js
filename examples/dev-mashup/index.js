@@ -19,6 +19,7 @@ function init() {
     });
 
     nebbie.selections().then((s) => s.mount(document.querySelector('.toolbar')));
+    nebbie.field('Alpha').then((s) => s.mount(document.querySelector('.listbox')));
 
     document.querySelectorAll('.object').forEach((el) => {
       const type = el.getAttribute('data-type');

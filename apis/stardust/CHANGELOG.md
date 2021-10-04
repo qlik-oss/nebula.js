@@ -3,6 +3,50 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0](https://github.com/qlik-oss/nebula.js/compare/v2.0.0-beta.1...v2.0.0) (2021-09-30)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [2.0.0-beta.1](https://github.com/qlik-oss/nebula.js/compare/v1.7.0...v2.0.0-beta.1) (2021-09-21)
+
+### Features
+
+- add keyboard navigation support to nebula mashup ([#655](https://github.com/qlik-oss/nebula.js/issues/655)) ([417c8b2](https://github.com/qlik-oss/nebula.js/commit/417c8b221872f6d19d2fc1c72534ac28e6308541))
+- expose classnames ([#673](https://github.com/qlik-oss/nebula.js/issues/673)) ([74fde09](https://github.com/qlik-oss/nebula.js/commit/74fde092f06cd40f0bf3e55f1ccbd346a12636d1))
+- set conversion api to stable ([64d54b3](https://github.com/qlik-oss/nebula.js/commit/64d54b366b807c5d256ab32144acebfb19a12898))
+- useRenderState hook ([#677](https://github.com/qlik-oss/nebula.js/issues/677)) ([b6388de](https://github.com/qlik-oss/nebula.js/commit/b6388de764bbf17ae4dd4ae250206db51026e536))
+
+# [1.7.0](https://github.com/qlik-oss/nebula.js/compare/v1.6.0...v1.7.0) (2021-08-24)
+
+### Features
+
+- add properties option to Field function ([#654](https://github.com/qlik-oss/nebula.js/issues/654)) ([65d402e](https://github.com/qlik-oss/nebula.js/commit/65d402e0ba129cf68a0a254746c04fccf7c9953b))
+- give charts access to the nebula instance through useEmbed ([#650](https://github.com/qlik-oss/nebula.js/issues/650)) ([0d19f69](https://github.com/qlik-oss/nebula.js/commit/0d19f698ad3f88edc9459dcb721d9744e5c44c01))
+
+# [1.6.0](https://github.com/qlik-oss/nebula.js/compare/v1.5.0...v1.6.0) (2021-08-16)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [1.4.0](https://github.com/qlik-oss/nebula.js/compare/v1.3.0...v1.4.0) (2021-06-28)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [1.2.0](https://github.com/qlik-oss/nebula.js/compare/v1.1.1...v1.2.0) (2021-05-12)
+
+### Features
+
+- add support for chart plugins ([#599](https://github.com/qlik-oss/nebula.js/issues/599)) ([ae75817](https://github.com/qlik-oss/nebula.js/commit/ae758174261124afc8e70d026ab9a841b5dee4d5))
+
+## [1.1.1](https://github.com/qlik-oss/nebula.js/compare/v1.1.0...v1.1.1) (2021-04-19)
+
+### Features
+
+- add device type ([#587](https://github.com/qlik-oss/nebula.js/issues/587)) ([f6e1ead](https://github.com/qlik-oss/nebula.js/commit/f6e1ead7e14f029b1f78fa354fb98b2e089b52a9))
+
+# [1.1.0](https://github.com/qlik-oss/nebula.js/compare/v1.1.0-alpha0...v1.1.0) (2021-02-01)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
 # [1.1.0-alpha0](https://github.com/qlik-oss/nebula.js/compare/v1.0.2-alpha.1...v1.1.0-alpha0) (2021-01-21)
 
 ### Bug Fixes

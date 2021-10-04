@@ -254,13 +254,15 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const loadType = async ({ dispatch, types, visualization, version, model, app, selections }) => {
+const loadType = async ({ dispatch, types, visualization, version, model, app, selections, blurCallback, nebbie }) => {
   try {
     const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
       model,
       app,
       selections,
+      nebbie,
+      blurCallback,
     });
     return sn;
   } catch (err) {
@@ -269,207 +271,240 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
   return undefined;
 };
 
-const Cell = forwardRef(({ halo, model, initialSnOptions, initialError, onMount }, ref) => {
-  const { app, types } = halo;
+const Cell = forwardRef(
+  ({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount, currentId }, ref) => {
+    const { app, types } = halo;
+    const { nebbie } = halo.public;
 
-  const { translator, language } = useContext(InstanceContext);
-  const theme = useTheme();
-  const [cellRef, cellRect, cellNode] = useRect();
-  const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
-  const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
-  const [appLayout] = useAppLayout(app);
-  const [contentRef, contentRect] = useRect();
-  const [snOptions, setSnOptions] = useState(initialSnOptions);
-  const [selections] = useObjectSelections(app, model);
-  const [hovering, setHover] = useState(false);
-  const hoveringDebouncer = useRef({ enter: null, leave: null });
+    const { translator, language, keyboardNavigation } = useContext(InstanceContext);
+    const theme = useTheme();
+    const [cellRef, cellRect, cellNode] = useRect();
+    const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
+    const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
+    const [appLayout] = useAppLayout(app);
+    const [contentRef, contentRect] = useRect();
+    const [snOptions, setSnOptions] = useState(initialSnOptions);
+    const [snPlugins, setSnPlugins] = useState(initialSnPlugins);
+    const [selections] = useObjectSelections(app, model);
+    const [hovering, setHover] = useState(false);
+    const hoveringDebouncer = useRef({ enter: null, leave: null });
 
-  const handleOnMouseEnter = () => {
-    if (hoveringDebouncer.current.leave) {
-      clearTimeout(hoveringDebouncer.current.leave);
-    }
-    if (hoveringDebouncer.enter) return;
-    hoveringDebouncer.current.enter = setTimeout(() => {
-      setHover(true);
-      hoveringDebouncer.current.enter = null;
-    }, 250);
-  };
-  const handleOnMouseLeave = () => {
-    if (hoveringDebouncer.current.enter) {
-      clearTimeout(hoveringDebouncer.current.enter);
-    }
-    if (hoveringDebouncer.current.leave) return;
-    hoveringDebouncer.current.leave = setTimeout(() => {
-      setHover(false);
-      hoveringDebouncer.current.leave = null;
-    }, 750);
-  };
-
-  useEffect(() => {
-    if (initialError || !appLayout || !layout) {
-      return undefined;
-    }
-    const validate = async (sn) => {
-      const [showError, error] = await validateTargets(translator, layout, sn.generator.qae.data, model);
-      if (showError) {
-        dispatch({ type: 'ERROR', error });
-      } else {
-        dispatch({ type: 'RENDER' });
+    const handleOnMouseEnter = () => {
+      if (hoveringDebouncer.current.leave) {
+        clearTimeout(hoveringDebouncer.current.leave);
       }
-      handleModal({ sn: state.sn, layout, model });
+      if (hoveringDebouncer.enter) return;
+      hoveringDebouncer.current.enter = setTimeout(() => {
+        setHover(true);
+        hoveringDebouncer.current.enter = null;
+      }, 250);
     };
-    const load = async (visualization, version) => {
-      dispatch({ type: 'LOADING' });
-      const sn = await loadType({
-        dispatch,
-        types,
-        visualization,
-        version,
-        model,
-        app,
-        selections,
-      });
-      if (sn) {
-        dispatch({ type: 'LOADED', sn, visualization });
-        onMount();
+    const handleOnMouseLeave = () => {
+      if (hoveringDebouncer.current.enter) {
+        clearTimeout(hoveringDebouncer.current.enter);
       }
-      return undefined;
+      if (hoveringDebouncer.current.leave) return;
+      hoveringDebouncer.current.leave = setTimeout(() => {
+        setHover(false);
+        hoveringDebouncer.current.leave = null;
+      }, 750);
     };
 
-    // Validate if it's still the same type
-    if (state.visualization === layout.visualization && state.sn) {
-      validate(state.sn);
-      return undefined;
-    }
+    const handleKeyDown = (e) => {
+      // Enter or space
+      if (['Enter', ' ', 'Spacebar'].includes(e.key)) {
+        halo.root.toggleFocusOfCells(currentId);
+      }
+    };
 
-    // Load supernova
-    const withVersion = types.getSupportedVersion(layout.visualization, layout.version);
-    if (!withVersion) {
-      dispatch({
-        type: 'ERROR',
-        error: {
-          title: `Could not find a version of '${layout.visualization}' that supports current object version. Did you forget to register ${layout.visualization}?`,
-        },
-      });
-      return undefined;
-    }
-    load(layout.visualization, withVersion);
+    const relinquishFocus = (resetFocus) => {
+      halo.root.toggleFocusOfCells();
+      if (resetFocus && cellNode) {
+        cellNode.focus();
+      }
+    };
 
-    return () => {};
-  }, [types, state.sn, model, layout, appLayout, language]);
-
-  // Long running query
-  useEffect(() => {
-    if (!validating) {
-      return undefined;
-    }
-    const handle = setTimeout(() => dispatch({ type: 'LONG_RUNNING_QUERY' }), 2000);
-    return () => clearTimeout(handle);
-  }, [validating]);
-
-  // Expose cell ref api
-  useImperativeHandle(
-    ref,
-    () => ({
-      getQae() {
-        return state.sn.generator.qae;
-      },
-      setSnOptions,
-      async takeSnapshot() {
-        const { width, height } = cellRect;
-
-        // clone layout to avoid mutation
-        let clonedLayout = JSON.parse(JSON.stringify(layout));
-        if (typeof state.sn.component.setSnapshotData === 'function') {
-          clonedLayout = (await state.sn.component.setSnapshotData(clonedLayout)) || clonedLayout;
+    useEffect(() => {
+      if (initialError || !appLayout || !layout) {
+        return undefined;
+      }
+      const validate = async (sn) => {
+        const [showError, error] = await validateTargets(translator, layout, sn.generator.qae.data, model);
+        if (showError) {
+          dispatch({ type: 'ERROR', error });
+        } else {
+          dispatch({ type: 'RENDER' });
         }
-        return {
-          // TODO - this snapshot format needs to be documented and governed
-          key: String(+Date.now()),
-          meta: {
-            language: translator.language(),
-            theme: theme.name,
-            appLayout,
-            // direction: 'ltr',
-            size: {
-              width: Math.round(width),
-              height: Math.round(height),
-            },
+        handleModal({ sn: state.sn, layout, model });
+      };
+      const load = async (visualization, version) => {
+        dispatch({ type: 'LOADING' });
+        const sn = await loadType({
+          dispatch,
+          types,
+          visualization,
+          version,
+          model,
+          app,
+          selections,
+          nebbie,
+          blurCallback: relinquishFocus,
+        });
+        if (sn) {
+          dispatch({ type: 'LOADED', sn, visualization });
+          onMount();
+        }
+        return undefined;
+      };
+
+      // Validate if it's still the same type
+      if (state.visualization === layout.visualization && state.sn) {
+        validate(state.sn);
+        return undefined;
+      }
+
+      // Load supernova
+      const withVersion = types.getSupportedVersion(layout.visualization, layout.version);
+      if (!withVersion) {
+        dispatch({
+          type: 'ERROR',
+          error: {
+            title: `Could not find a version of '${layout.visualization}' that supports current object version. Did you forget to register ${layout.visualization}?`,
           },
-          layout: clonedLayout,
-        };
-      },
-      async exportImage() {
-        if (typeof halo.config.snapshot.capture !== 'function') {
-          throw new Error('Stardust embed has not been configured with snapshot.capture callback');
-        }
-        const snapshot = await this.takeSnapshot(); // eslint-disable-line
-        return halo.config.snapshot.capture(snapshot);
-      },
-    }),
-    [state.sn, contentRect, cellRect, layout, theme.name, appLayout]
-  );
+        });
+        return undefined;
+      }
+      load(layout.visualization, withVersion);
 
-  // console.log('content', state);
-  let Content = null;
-  if (state.loading && !state.longRunningQuery) {
-    Content = <LoadingSn />;
-  } else if (state.error) {
-    Content = <CError {...state.error} />;
-  } else if (state.loaded) {
-    Content = (
-      <Supernova
-        key={layout.visualization}
-        sn={state.sn}
-        halo={halo}
-        snOptions={snOptions}
-        layout={layout}
-        appLayout={appLayout}
-      />
+      return () => {};
+    }, [types, state.sn, model, layout, appLayout, language]);
+
+    // Long running query
+    useEffect(() => {
+      if (!validating) {
+        return undefined;
+      }
+      const handle = setTimeout(() => dispatch({ type: 'LONG_RUNNING_QUERY' }), 2000);
+      return () => clearTimeout(handle);
+    }, [validating]);
+
+    // Expose cell ref api
+    useImperativeHandle(
+      ref,
+      () => ({
+        getQae() {
+          return state.sn.generator.qae;
+        },
+        toggleFocus(active) {
+          if (typeof state.sn.component.focus === 'function') {
+            if (active) {
+              state.sn.component.focus();
+            } else {
+              state.sn.component.blur();
+            }
+          }
+        },
+        setSnOptions,
+        setSnPlugins,
+        async takeSnapshot() {
+          const { width, height } = cellRect;
+
+          // clone layout to avoid mutation
+          let clonedLayout = JSON.parse(JSON.stringify(layout));
+          if (typeof state.sn.component.setSnapshotData === 'function') {
+            clonedLayout = (await state.sn.component.setSnapshotData(clonedLayout)) || clonedLayout;
+          }
+          return {
+            // TODO - this snapshot format needs to be documented and governed
+            key: String(+Date.now()),
+            meta: {
+              language: translator.language(),
+              theme: theme.name,
+              appLayout,
+              // direction: 'ltr',
+              size: {
+                width: Math.round(width),
+                height: Math.round(height),
+              },
+            },
+            layout: clonedLayout,
+          };
+        },
+        async exportImage() {
+          if (typeof halo.config.snapshot.capture !== 'function') {
+            throw new Error('Stardust embed has not been configured with snapshot.capture callback');
+          }
+          const snapshot = await this.takeSnapshot(); // eslint-disable-line
+          return halo.config.snapshot.capture(snapshot);
+        },
+      }),
+      [state.sn, contentRect, cellRect, layout, theme.name, appLayout]
+    );
+
+    // console.log('content', state);
+    let Content = null;
+    if (state.loading && !state.longRunningQuery) {
+      Content = <LoadingSn />;
+    } else if (state.error) {
+      Content = <CError {...state.error} />;
+    } else if (state.loaded) {
+      Content = (
+        <Supernova
+          key={layout.visualization}
+          sn={state.sn}
+          halo={halo}
+          snOptions={snOptions}
+          snPlugins={snPlugins}
+          layout={layout}
+          appLayout={appLayout}
+        />
+      );
+    }
+
+    return (
+      <Paper
+        style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}
+        tabIndex={keyboardNavigation ? 0 : -1}
+        elevation={0}
+        square
+        className={CellElement.className}
+        ref={cellRef}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+        onKeyDown={keyboardNavigation ? handleKeyDown : null}
+      >
+        <Grid
+          container
+          direction="column"
+          spacing={0}
+          style={{
+            position: 'relative',
+            width: '100%',
+            height: '100%',
+            padding: theme.spacing(1),
+            ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
+          }}
+        >
+          {cellNode && layout && state.sn && (
+            <Header layout={layout} sn={state.sn} anchorEl={cellNode} hovering={hovering}>
+              &nbsp;
+            </Header>
+          )}
+          <Grid
+            item
+            xs
+            style={{
+              height: '100%',
+            }}
+            ref={contentRef}
+          >
+            {Content}
+          </Grid>
+          <Footer layout={layout} />
+        </Grid>
+        {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
+      </Paper>
     );
   }
-
-  return (
-    <Paper
-      style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}
-      elevation={0}
-      square
-      className={CellElement.className}
-      ref={cellRef}
-      onMouseEnter={handleOnMouseEnter}
-      onMouseLeave={handleOnMouseLeave}
-    >
-      <Grid
-        container
-        direction="column"
-        spacing={0}
-        style={{
-          position: 'relative',
-          width: '100%',
-          height: '100%',
-          padding: theme.spacing(1),
-          ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
-        }}
-      >
-        {cellNode && layout && state.sn && (
-          <Header layout={layout} sn={state.sn} anchorEl={cellNode} hovering={hovering}>
-            &nbsp;
-          </Header>
-        )}
-        <Grid
-          item
-          xs
-          style={{
-            height: '100%',
-          }}
-          ref={contentRef}
-        >
-          {Content}
-        </Grid>
-        <Footer layout={layout} />
-      </Grid>
-      {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
-    </Paper>
-  );
-});
+);
 export default Cell;

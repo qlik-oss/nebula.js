@@ -13,9 +13,14 @@ export default (scope) => {
   // TODO one and only one
 
   const selectionAPI = {
-    begin() {
-      scope.selectionsApi.activated();
-      scope.backendApi.beginSelections();
+    begin(paths) {
+      const suppressBeginSelections = true;
+      scope.selectionsApi.activated(suppressBeginSelections);
+      if (paths) {
+        scope.backendApi.model.app.switchModalSelection(scope.backendApi.model, paths);
+      } else {
+        scope.backendApi.beginSelections();
+      }
       selectionAPI.emit('activated');
     },
     clear() {
@@ -42,6 +47,9 @@ export default (scope) => {
     isActive() {
       return scope.selectionsApi.active;
     },
+    isModal() {
+      return scope.backendApi.model === (scope.backendApi.model.app && scope.backendApi.model.app.modalSelectionObject);
+    },
     refreshToolbar() {
       scope.selectionsApi.refreshToolbar();
     },
@@ -52,6 +60,7 @@ export default (scope) => {
   scope.selectionsApi.confirm = () => {
     scope.backendApi.endSelections(true).then(() => {
       scope.selectionsApi.deactivated();
+      selectionAPI.emit('confirmed');
       selectionAPI.emit('deactivated');
     });
   };
@@ -66,6 +75,7 @@ export default (scope) => {
     scope.backendApi.endSelections(false);
     scope.selectionsApi.deactivated();
     selectionAPI.emit('canceled');
+    selectionAPI.emit('deactivated');
   };
 
   return selectionAPI;

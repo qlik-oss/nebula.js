@@ -29,6 +29,7 @@ export function initiate(component, { explicitResize = false } = {}) {
   component.__hooks = {
     obsolete: false,
     error: false,
+    waitForData: false,
     chain: {
       promise: null,
       resolve: () => {},
@@ -45,6 +46,9 @@ export function initiate(component, { explicitResize = false } = {}) {
       setters: [],
       explicitResize,
     },
+    accessibility: {
+      setter: null,
+    },
   };
 }
 
@@ -58,6 +62,7 @@ export function teardown(component) {
   component.__hooks.actions = null;
   component.__hooks.imperativeHandle = null;
   component.__hooks.resizer = null;
+  component.__hooks.accessibility = null;
 
   component.__actionsDispatch = null;
 
@@ -144,7 +149,7 @@ function maybeEndChain(hooks) {
     return;
   }
   hooks.chain.promise = null;
-  hooks.chain.resolve();
+  hooks.chain.resolve(!hooks.waitForData);
 }
 
 export function runSnaps(component, layout) {
@@ -231,6 +236,8 @@ export function hook(cb) {
     run,
     teardown,
     runSnaps,
+    focus,
+    blur,
     observeActions,
     getImperativeHandle,
     updateRectOnNextRun,
@@ -292,10 +299,10 @@ export function useState(initial) {
  */
 
 /**
- * Triggers a callback function when a dependant value changes.
+ * Triggers a callback function when a dependent value changes.
  * @entry
  * @param {EffectCallback} effect - The callback.
- * @param {Array<any>=} deps - The dependencies which should trigger the callback.
+ * @param {Array<any>=} deps - The dependencies that should trigger the callback.
  * @example
  * import { useEffect } from '@nebula.js/stardust';
  * // ...
@@ -336,7 +343,7 @@ function useLayoutEffect(cb, deps) {
 }
 
 /**
- * Creates a stateful value when a dependant changes.
+ * Creates a stateful value when a dependent changes.
  * @entry
  * @template T
  * @param {function():T} factory - The factory function.
@@ -363,7 +370,7 @@ export function useMemo(fn, deps) {
 }
 
 /**
- * Runs a callback function when a dependant changes.
+ * Runs a callback function when a dependent changes.
  * @entry
  * @template P
  * @param {function():Promise<P>} factory - The factory function that calls the promise.
@@ -691,6 +698,22 @@ export function useTheme() {
 }
 
 /**
+ * Gets the embed instance used.
+ * @entry
+ * @experimental
+ * @since 1.7.0
+ * @returns {Embed} The embed instance used.
+ * @example
+ * import { useEmbed } from '@nebula.js/stardust';
+ *
+ * const embed = useEmbed();
+ * embed.render(...)
+ */
+export function useEmbed() {
+  return useInternalContext('nebbie');
+}
+
+/**
  * Gets the translator.
  * @entry
  * @returns {Translator} The translator.
@@ -702,6 +725,46 @@ export function useTheme() {
  */
 export function useTranslator() {
   return useInternalContext('translator');
+}
+
+/**
+ * Gets the device type. ('touch' or 'desktop')
+ * @entry
+ * @returns {string} device type.
+ * @example
+ * import { useDeviceType } from '@nebula.js/stardust';
+ * // ...
+ * const deviceType = useDeviceType();
+ * if (deviceType === 'touch') { ... };
+ */
+export function useDeviceType() {
+  return useInternalContext('deviceType');
+}
+
+/**
+ * Gets the array of plugins provided when rendering the visualization.
+ * @entry
+ * @returns {Plugin[]} array of plugins.
+ * @example
+ * // provide plugins that can be used when rendering
+ * embed(app).render({
+ *   element,
+ *   type: 'my-chart',
+ *   plugins: [plugin]
+ * });
+ *
+ * @example
+ * // It's up to the chart implementation to make use of plugins in any way
+ * import { usePlugins } from '@nebula.js/stardust';
+ * // ...
+ * const plugins = usePlugins();
+ * plugins.forEach((plugin) => {
+ *   // Invoke plugin
+ *   plugin.fn();
+ * });
+ */
+export function usePlugins() {
+  return useInternalContext('plugins');
 }
 
 /**
@@ -769,9 +832,9 @@ export function useAction(fn, deps) {
 
 /**
  * @interface Constraints
- * @property {boolean=} passive
- * @property {boolean=} active
- * @property {boolean=} select
+ * @property {boolean=} passive Whether or not passive constraints are on. Should block any passive interaction by users, ie: tooltips
+ * @property {boolean=} active Whether or not active constraints are on. Should block any active interaction by users, ie: scroll, click
+ * @property {boolean=} select Whether or not active select are on. Should block any selection action. Implied when active is true.
  */
 
 /**
@@ -923,4 +986,147 @@ export function onTakeSnapshot(cb) {
     currentComponent.__hooks.snaps.push(h);
   }
   h.fn = cb;
+}
+
+/**
+ * Gets render state instance.
+ *
+ * Used to update properties and get a new layout without triggering onInitialRender.
+ * @entry
+ * @experimental
+ * @returns {{ pending, restore }} The render state.
+ * @example
+ * import { useRenderState } from '@nebula.js/stardust';
+ *
+ * const renderState = useRenderState();
+ * useState(() => {
+ *   if(needProperteisUpdate(...)) {
+ *      useRenderState.pending();
+ *      updateProperties(...);
+ *   } else {
+ *      useRenderState.restore();
+ *      ...
+ *   }
+ * }, [...]);
+ */
+export function useRenderState() {
+  getHook(++currentIndex);
+  const hooks = currentComponent.__hooks;
+  return {
+    pending: () => {
+      hooks.waitForData = true;
+    },
+    restore: () => {
+      hooks.waitForData = false;
+    },
+  };
+}
+
+/**
+ * @experimental
+ * @interface Keyboard
+ * @property {boolean} enabled Whether or not Nebula handles keyboard navigation or not.
+ * @property {boolean} active Set to true when the chart is activated, ie a user tabs to the chart and presses Enter or Space.
+ * @property {function=} blur Function used by the visualization to tell Nebula to it wants to relinquish focus
+ * @property {function=} focus Function used by the visualization to tell Nebula to it wants focus
+ */
+
+/**
+ * Gets the desired keyboard settings and status to applied when rendering the visualization.
+ * A visualization should in general only have tab stops if either `keyboard.enabled` is false or if active is true.
+ * This means that either Nebula isn't configured to handle keyboard input or the chart is currently focused.
+ * Enabling or disabling keyboardNavigation are set on the embed configuration and
+ * should be respected by the visualization.
+ * @entry
+ * @returns {Keyboard}
+ * @example
+ * // configure nebula to enable navigation between charts
+ * embed(app, {
+ *   context: {
+ *     keyboardNavigation: true, // tell Nebula to handle navigation
+ *   }
+ * }).render({ element, id: 'sdfsdf' });
+ *
+ * @example
+ * import { useKeyboard } from '@nebula.js/stardust';
+ * // ...
+ * const keyboard = useKeyboard();
+ * useEffect(() => {
+ *  // Set a tab stop on our button if in focus or if Nebulas navigation is disabled
+ *  button.setAttribute('tabIndex', keyboard.active || !keyboard.enabled ? 0 : -1);
+ *  // If navigation is enabled and focus has shifted, lets focus the button
+ *  keyboard.enabled && keyboard.active && button.focus();
+ * }, [keyboard])
+ *
+ */
+
+export function useKeyboard() {
+  const keyboardNavigation = useInternalContext('keyboardNavigation');
+  const blurCallback = useInternalContext('blurCallback');
+
+  if (!currentComponent.__hooks.accessibility.exitFunction) {
+    const exitFunction = function (resetFocus) {
+      const acc = this.__hooks.accessibility;
+      if (acc.enabled && acc.active) {
+        blur(this);
+        blurCallback && blurCallback(resetFocus);
+      }
+    }.bind(currentComponent);
+
+    currentComponent.__hooks.accessibility.exitFunction = exitFunction;
+
+    const focusFunction = function () {
+      const acc = this.__hooks.accessibility;
+      if (acc.enabled && !acc.active) {
+        blurCallback && blurCallback(false);
+        focus(this);
+      }
+    }.bind(currentComponent);
+
+    currentComponent.__hooks.accessibility.focusFunction = focusFunction;
+  }
+  const focusFunc = currentComponent.__hooks.accessibility.focusFunction;
+  const exitFunc = currentComponent.__hooks.accessibility.exitFunction;
+
+  const [acc, setAcc] = useState({ active: false, enabled: keyboardNavigation, blur: exitFunc, focus: focusFunc });
+  currentComponent.__hooks.accessibility.setter = setAcc;
+  currentComponent.__hooks.accessibility.enabled = keyboardNavigation;
+
+  useEffect(
+    () =>
+      setAcc({
+        active: false,
+        enabled: keyboardNavigation,
+        blur: exitFunc,
+        focus: focusFunc,
+      }),
+    [keyboardNavigation]
+  );
+
+  return acc;
+}
+
+export function focus(component) {
+  const acc = component.__hooks.accessibility;
+
+  if (acc.active) {
+    return;
+  }
+  acc.active = true;
+  if (acc && acc.setter) {
+    acc.setter({ active: true, enabled: acc.enabled, blur: acc.exitFunction, focus: acc.focusFunction });
+  }
+}
+
+export function blur(component) {
+  const acc = component.__hooks.accessibility;
+  // Incomplete/Invalid/Legacy viz hasn't been initialized with hooks
+  if (!acc || !acc.active) {
+    return;
+  }
+  acc.active = false;
+
+  if (acc && acc.setter) {
+    acc.setter({ active: false, enabled: acc.enabled, blur: acc.exitFunction, focus: acc.focusFunction });
+  }
 }

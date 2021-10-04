@@ -9,7 +9,7 @@ const build = require('@nebula.js/cli-build');
 
 const initConfig = require('./init-config');
 
-const webpackServe = require('./webpack.serve.js');
+const webpackServe = require('./webpack.serve');
 const useEngine = require('./engine');
 
 const initiateWatch = async ({ snPath, snName, host }) => {
@@ -98,7 +98,8 @@ module.exports = async (argv) => {
   let runFromDirectory = false;
 
   if (!argv.$0) {
-    defaultServeConfig = initConfig(yargs([])).argv;
+    const yargsArgs = argv.config ? ['--config', argv.config] : [];
+    defaultServeConfig = initConfig(yargs(yargsArgs)).argv;
   }
 
   const serveConfig = extend(true, {}, defaultServeConfig, argv);

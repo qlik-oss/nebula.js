@@ -20,7 +20,12 @@ export {
   useStaleLayout,
   useAppLayout,
   useTranslator,
+  useDeviceType,
+  usePlugins,
   useConstraints,
+  useKeyboard,
   useOptions,
+  useEmbed,
+  useRenderState,
   onTakeSnapshot,
 } from './hooks';

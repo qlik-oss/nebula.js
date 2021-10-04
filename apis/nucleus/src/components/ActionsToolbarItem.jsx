@@ -7,6 +7,16 @@ import { useTheme } from '@nebula.js/ui/theme';
 
 import useActionState from '../hooks/useActionState';
 
+/**
+ * @interface
+ * @extends HTMLElement
+ * @since 2.0.0
+ */
+const ActionElement = {
+  /** @type {'njs-cell-action'} */
+  className: 'njs-cell-action',
+};
+
 const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
   const theme = useTheme();
   const { hidden, disabled, style, hasSvgIconShape } = useActionState(item);
@@ -19,6 +29,7 @@ const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
       onClick={item.action}
       disabled={disabled}
       style={style}
+      className={ActionElement.className}
     >
       {hasSvgIconShape && SvgIcon(item.getSvgIconShape())}
       {addAnchor && (

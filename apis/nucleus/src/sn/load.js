@@ -12,6 +12,9 @@ export async function load(name, version, { config }, loader) {
   const key = `${name}__${version}`;
   if (!LOADED[key]) {
     const sKey = `${name}${(version && ` v${version}`) || ''}`;
+    if (loader && typeof loader !== 'function') {
+      throw new Error(`load of visualization '${sKey}' is not a fuction, wrap load promise in function`);
+    }
     const p = (loader || config.load)({
       name,
       version,

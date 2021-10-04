@@ -59,6 +59,11 @@ describe('hooks', () => {
     expect(text).to.equal('Cancel');
   });
 
+  it('useDeviceType', async () => {
+    const text = await page.$eval(`${snSelector} .deviceType`, (el) => el.textContent);
+    expect(text).to.equal('desktop');
+  });
+
   it('useTheme', async () => {
     const text = await page.$eval(`${snSelector} .theme`, (el) => el.textContent);
     expect(text).to.equal('#a54343');
@@ -72,6 +77,11 @@ describe('hooks', () => {
   it('useOptions', async () => {
     const text = await page.$eval(`${snSelector} .options`, (el) => el.textContent);
     expect(text).to.equal('opts');
+  });
+
+  it('useEmbed', async () => {
+    const text = await page.$eval(`${snSelector} .embed`, (el) => el.textContent);
+    expect(text).to.equal('function'); // typeof embed.render
   });
 
   it('should have true MAGIC_FLAG', async () => {

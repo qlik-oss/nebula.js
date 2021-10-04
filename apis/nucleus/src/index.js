@@ -1,6 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 import appLocaleFn from './locale/app-locale';
 import appThemeFn from './app-theme';
+import deviceTypeFn from './device-type';
 
 import bootNebulaApp from './components/NebulaApp';
 import AppSelectionsPortal from './components/selections/AppSelections';
@@ -13,6 +14,7 @@ import { create as typesFn } from './sn/types';
 
 /**
  * @interface Context
+ * @property {boolean=} keyboardNavigation
  * @property {object=} constraints
  * @property {boolean=} constraints.active
  * @property {boolean=} constraints.passive
@@ -23,7 +25,10 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
   theme: 'light',
   /** @type {string=} */
   language: 'en-US',
+  /** @type {string=} */
+  deviceType: 'auto',
   constraints: {},
+  keyboardNavigation: false,
 };
 
 /**
@@ -147,6 +152,8 @@ function nuked(configuration = {}) {
         // TODO - validate flags input
         /** @type {Flags} */
         flags: flagsFn(configuration.flags),
+        /** @type {string} */
+        deviceType: deviceTypeFn(configuration.context.deviceType),
         /** @type {object} */
         anything: configuration.anything,
       },
@@ -161,7 +168,6 @@ function nuked(configuration = {}) {
       config: configuration,
       public: publicAPIs,
       context: currentContext,
-      nebbie: null,
       types: null,
     };
 
@@ -188,7 +194,6 @@ function nuked(configuration = {}) {
     /**
      * @class
      * @alias Embed
-     * @hideconstructor
      */
     const api = /** @lends Embed# */ {
       /**
@@ -231,8 +236,8 @@ function nuked(configuration = {}) {
       context: async (ctx) => {
         // filter valid values to avoid triggering unnecessary rerender
         let changes;
-        ['theme', 'language', 'constraints'].forEach((key) => {
-          if (ctx[key] && ctx[key] !== currentContext[key]) {
+        ['theme', 'language', 'constraints', 'keyboardNavigation'].forEach((key) => {
+          if (Object.prototype.hasOwnProperty.call(ctx, key) && ctx[key] !== currentContext[key]) {
             if (!changes) {
               changes = {};
             }
@@ -310,7 +315,6 @@ function nuked(configuration = {}) {
        * Gets the listbox instance of the specified field
        * @param {string|LibraryField} fieldIdentifier Fieldname as a string or a Library dimension
        * @returns {Promise<FieldInstance>}
-       * @experimental
        * @since 1.1.0
        * @example
        * const fieldInstance = await n.field("MyField");
@@ -324,9 +328,7 @@ function nuked(configuration = {}) {
 
         /**
          * @class
-         * @hideconstructor
          * @alias FieldInstance
-         * @experimental
          * @since 1.1.0
          */
         const fieldSels = {
@@ -340,7 +342,7 @@ function nuked(configuration = {}) {
            * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal
            * @param {boolean=} [options.search=true] To show the search bar
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
-           * @experimental
+           * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @since 1.1.0
            * @example
            * fieldInstance.mount(element);
@@ -363,7 +365,6 @@ function nuked(configuration = {}) {
           },
           /**
            * Unmounts the field listbox from the DOM.
-           * @experimental
            * @since 1.1.0
            * @example
            * listbox.unmount();
@@ -377,6 +378,21 @@ function nuked(configuration = {}) {
         };
         return fieldSels;
       },
+      /**
+       * Gets a list of registered visualization types and versions
+       * @function
+       * @returns {Array<Object>} types
+       * @example
+       * const types = n.getRegisteredTypes();
+       * // Contains
+       * //[
+       * // {
+       * //   name: "barchart"
+       * //   versions:[undefined, "1.2.0"]
+       * // }
+       * //]
+       */
+      getRegisteredTypes: types.getList,
       __DO_NOT_USE__: {
         types,
       },
@@ -425,7 +441,7 @@ function nuked(configuration = {}) {
 /**
  * @interface ThemeInfo
  * @property {string} id Theme identifier
- * @property {function(): Promise<ThemeJSON>} load A function that should return a Promise that resolve to a raw JSON theme
+ * @property {function(): Promise<ThemeJSON>} load A function that should return a Promise that resolves to a raw JSON theme.
  */
 
 export default nuked(DEFAULT_CONFIG);

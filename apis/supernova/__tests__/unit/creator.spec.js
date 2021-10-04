@@ -79,9 +79,13 @@ describe('creator', () => {
         },
       };
       galaxy = {
+        deviceType: 'desktop',
         translator: { language: () => 'en' },
       };
       opts = {
+        nebbie: 'embedAPI',
+        keyboardNavigation: false,
+        blurCallback: 'bcb',
         model: 'model',
         app: 'app',
         selections: 'selections',
@@ -102,6 +106,9 @@ describe('creator', () => {
         app: 'app',
         global: undefined,
         selections: 'selections',
+        nebbie: 'embedAPI',
+        keyboardNavigation: false,
+        blurCallback: 'bcb',
         element: undefined,
         theme: undefined,
         translator: galaxy.translator,
@@ -110,7 +117,9 @@ describe('creator', () => {
         constraints: {
           select: true,
         },
+        deviceType: 'desktop',
         options: {},
+        plugins: [],
       });
     });
 
@@ -238,6 +247,25 @@ describe('creator', () => {
       expect(hooked.run.callCount).to.equal(2);
     });
 
+    it('should run when keyboardNavigation have changed', () => {
+      const c = create(generator, opts, galaxy).component;
+      c.render({}); // initial should always run
+
+      c.render({
+        context: {
+          keyboardNavigation: false,
+        },
+      });
+      expect(hooked.run.callCount).to.equal(1);
+
+      c.render({
+        context: {
+          keyboardNavigation: true,
+        },
+      });
+      expect(hooked.run.callCount).to.equal(2);
+    });
+
     it('should run when constraints have changed', () => {
       const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
@@ -298,6 +326,43 @@ describe('creator', () => {
         foo,
         ref,
       });
+    });
+
+    it('should run when plugins have changed', () => {
+      const c = create(generator, opts, galaxy).component;
+      c.render({}); // initial should always run
+
+      const plugins1 = [
+        { info: { name: 'a' }, fn() {} },
+        { info: { name: 'b' }, fn() {} },
+      ];
+      const plugins2 = [
+        { info: { name: 'a' }, fn() {} },
+        { info: { name: 'b' }, fn() {} },
+      ];
+
+      c.render({
+        plugins: plugins1,
+      });
+      expect(hooked.run.callCount).to.equal(2);
+
+      c.render({
+        plugins: plugins1,
+      });
+      expect(hooked.run.callCount).to.equal(2);
+
+      c.render({
+        plugins: plugins2,
+      });
+      expect(hooked.run.callCount).to.equal(3);
+
+      plugins2.pop();
+      c.render({
+        plugins: plugins2,
+      });
+      expect(hooked.run.callCount).to.equal(4);
+
+      expect(c.context.plugins).to.eql(plugins2);
     });
 
     it('should run when theme name has changed', () => {
@@ -409,9 +474,8 @@ describe('creator', () => {
       'incorrect params in this context after applyPatches call'
     ).to.eql({ model: params.model });
 
-    expect(
-      generator.qae.properties.onChange,
-      'incorrect input params after applyPatches call'
-    ).to.have.been.calledWith({ dummyPatched: true });
+    expect(generator.qae.properties.onChange, 'incorrect input params after applyPatches call').to.have.been.calledWith(
+      { dummyPatched: true }
+    );
   });
 });

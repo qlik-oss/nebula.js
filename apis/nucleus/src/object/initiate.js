@@ -11,6 +11,9 @@ export default async function init(model, optional, halo, initialError, onDestro
   if (optional.options) {
     api.__DO_NOT_USE__.options(optional.options);
   }
+  if (optional.plugins) {
+    api.__DO_NOT_USE__.plugins(optional.plugins);
+  }
   if (optional.element) {
     await api.__DO_NOT_USE__.mount(optional.element);
   }

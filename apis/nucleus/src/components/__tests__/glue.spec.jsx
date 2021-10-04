@@ -16,6 +16,7 @@ describe('glue', () => {
       halo: {
         root: {
           add: sandbox.spy(),
+          addCell: sandbox.spy(),
           remove: sandbox.spy(),
         },
       },
@@ -36,6 +37,7 @@ describe('glue', () => {
     const [dissolve] = glue(param);
     dissolve();
     expect(param.halo.root.add.callCount).to.equal(1);
+    expect(param.halo.root.addCell.callCount).to.equal(1);
     expect(param.halo.root.remove.callCount).to.equal(1);
     expect(param.model.on.callCount).to.equal(1);
     expect(param.model.removeListener.callCount).to.equal(1);

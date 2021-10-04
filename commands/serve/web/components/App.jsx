@@ -84,11 +84,13 @@ export default function App({ app, info }) {
       context: {
         theme: currentThemeName,
         language: currentLanguage,
+        keyboardNavigation: info.keyboardNavigation,
       },
       load: (type) => Promise.resolve(window[type.name]),
+      flags: info.flags,
       themes: info.themes
         ? info.themes.map((t) => ({
-            key: t,
+            id: t,
             load: () =>
               fetch(`/theme/${t}`)
                 .then((response) => response.json())
@@ -100,6 +102,11 @@ export default function App({ app, info }) {
         : null,
     });
     n.__DO_NOT_USE__.types.register(info.supernova);
+    if (info.types) {
+      info.types.forEach((t) => {
+        n.__DO_NOT_USE__.types.register(t.name);
+      });
+    }
     setNebbie(n);
   }, [app]);
 
@@ -306,7 +313,7 @@ export default function App({ app, info }) {
                     )}
                   </Grid>
                 ) : (
-                  <Grid container wrap="nowrap" style={{ paddingTop: '48px' }} justify="center">
+                  <Grid container wrap="nowrap" style={{ paddingTop: '48px' }} justifyContent="center">
                     <Grid item>
                       <CircularProgress />
                     </Grid>

@@ -23,6 +23,7 @@ Options:
                                           [string] [default: "nebula.config.js"]
   --entry             File entrypoint                                   [string]
   --type              Generic object type                               [string]
+  --keyboardNavigation                                [boolean] [default: false]
   --build                                              [boolean] [default: true]
   --host                                         [string] [default: "localhost"]
   --port                                                                [number]
@@ -45,6 +46,30 @@ Start the server and connect to enigma on port `9077`
 ```sh
 nebula serve --enigma.port 9077
 ```
+
+### Config file
+
+nebula.config.js
+
+```js
+module.exports = {
+  serve: {
+    ...,
+  },
+};
+```
+
+Serve properties:
+
+- types: Additional types to load into the serve instance. Useful in conjunction with useEmbed.
+  - `ex: types: [{ name: 'barchart', url: "https://unpkg.com/@nebula.js/sn-bar-chart"}],`
+- themes: Theme files to load
+  - `ex: themes: [{ id: 'sense', theme: { /* valid sense json theme */ } }],`
+- renderConfigs: configuration for the test renderer
+- flags: Additional flag settings for feature toggling
+  - `flags: { SOME_FEATURE: true }`
+- resources: Adds path to /resources
+- snapshots: Snapshots property structure, generally used for automated tests.
 
 ### node.js API
 

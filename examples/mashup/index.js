@@ -9,7 +9,12 @@ connect().then((app) => {
   };
 
   const nebbie = stardust.embed(app, {
-    load: (type, config) => Promise.resolve(sn),
+    types: [
+      {
+        name: 'foo',
+        load: () => Promise.resolve(sn),
+      },
+    ],
   });
 
   nebbie.selections().then((s) => s.mount(document.querySelector('.toolbar')));

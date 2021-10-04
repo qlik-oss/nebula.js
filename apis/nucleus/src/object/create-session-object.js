@@ -15,7 +15,10 @@ import { subscribe, modelStore } from '../stores/model-store';
  * @property {(Field[])=} fields
  * @property {qae.GenericObjectProperties=} properties
  */
-export default async function createSessionObject({ type, version, fields, properties, options, element }, halo) {
+export default async function createSessionObject(
+  { type, version, fields, properties, options, plugins, element },
+  halo
+) {
   let mergedProps = {};
   let error;
   try {
@@ -54,5 +57,5 @@ export default async function createSessionObject({ type, version, fields, prope
     await halo.app.destroySessionObject(model.id);
     unsubscribe();
   };
-  return init(model, { options, element }, halo, error, onDestroy);
+  return init(model, { options, plugins, element }, halo, error, onDestroy);
 }

@@ -79,7 +79,7 @@ export default function Error({ title = 'Error', message = '', data = [] }) {
       container
       direction="column"
       alignItems="center"
-      justify="center"
+      justifyContent="center"
       style={{ position: 'relative', height: '100%', width: '100%' }}
     >
       <Grid item>

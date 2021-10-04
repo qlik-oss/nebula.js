@@ -8,6 +8,8 @@ import {
   run,
   runSnaps,
   observeActions,
+  focus,
+  blur,
   getImperativeHandle,
   updateRectOnNextRun,
   useState,
@@ -27,9 +29,11 @@ import {
   useStaleLayout,
   useAppLayout,
   useTranslator,
+  usePlugins,
   useConstraints,
   useOptions,
   onTakeSnapshot,
+  useEmbed,
 } from '../hooks';
 
 describe('hooks', () => {
@@ -74,6 +78,8 @@ describe('hooks', () => {
       run,
       teardown,
       runSnaps,
+      focus,
+      blur,
       observeActions,
       getImperativeHandle,
       updateRectOnNextRun,
@@ -115,6 +121,9 @@ describe('hooks', () => {
           pendingEffects: ['a'],
           pendingLayoutEffects: ['a'],
           actions: { list: [] },
+          accessibility: {
+            setter: null,
+          },
         },
       };
 
@@ -129,6 +138,7 @@ describe('hooks', () => {
         actions: null,
         imperativeHandle: null,
         resizer: null,
+        accessibility: null,
       });
 
       expect(c.__actionsDispatch).to.eql(null);
@@ -753,6 +763,8 @@ describe('hooks', () => {
         element: 'element',
         theme: 'theme',
         translator: 'translator',
+        plugins: 'plugins',
+        nebbie: 'embed',
         layout: 'layout',
         appLayout: 'appLayout',
         constraints: 'constraints',
@@ -865,6 +877,14 @@ describe('hooks', () => {
       run(c);
       expect(value).to.equal('translator');
     });
+    it('usePlugins', () => {
+      let value;
+      c.fn = () => {
+        value = usePlugins();
+      };
+      run(c);
+      expect(value).to.eql('plugins');
+    });
     it('useConstraints', () => {
       let value;
       c.fn = () => {
@@ -889,6 +909,14 @@ describe('hooks', () => {
       run(c);
       c.__hooks.snaps[0].fn();
       expect(spy.callCount).to.equal(1);
+    });
+    it('useEmbed', () => {
+      let value;
+      c.fn = () => {
+        value = useEmbed();
+      };
+      run(c);
+      expect(value).to.eql('embed');
     });
   });
 });

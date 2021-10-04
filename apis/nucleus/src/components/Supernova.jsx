@@ -1,6 +1,7 @@
-import React, { useState, useEffect, useCallback, useContext, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useContext } from 'react';
 import InstanceContext from '../contexts/InstanceContext';
 import useRect from '../hooks/useRect';
+import RenderDebouncer from '../utils/render-debouncer';
 
 /**
  * @interface
@@ -12,11 +13,11 @@ const VizElement = {
   className: 'njs-viz',
 };
 
-const Supernova = ({ sn, snOptions: options, layout, appLayout, halo }) => {
+const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo }) => {
   const { component } = sn;
 
-  const { theme: themeName, language, constraints } = useContext(InstanceContext);
-  const renderDebouncer = useRef(null);
+  const { theme: themeName, language, constraints, keyboardNavigation } = useContext(InstanceContext);
+  const [renderDebouncer] = useState(() => new RenderDebouncer());
   const [isMounted, setIsMounted] = useState(false);
   const [renderCnt, setRenderCnt] = useState(0);
   const [containerRef, containerRect, containerNode] = useRect();
@@ -35,8 +36,7 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, halo }) => {
     component.mounted(snNode);
     setIsMounted(true);
     return () => {
-      clearTimeout(renderDebouncer.current);
-      renderDebouncer.current = null;
+      renderDebouncer.stop();
       component.willUnmount();
     };
   }, [snNode, component]);
@@ -51,13 +51,7 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, halo }) => {
       return;
     }
 
-    if (renderDebouncer.current) {
-      // rendering already scheduled
-      return;
-    }
-
-    renderDebouncer.current = setTimeout(() => {
-      // temporarily map constraints to permissions
+    renderDebouncer.schedule(() => {
       const permissions = [];
       if (!constraints.passive) {
         permissions.push('passive');
@@ -71,15 +65,18 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, halo }) => {
       if (halo.app && halo.app.session) {
         permissions.push('fetch');
       }
-      Promise.resolve(
+      return Promise.resolve(
         component.render({
           layout,
           options,
+          plugins,
+          embed: halo.public.nebbie,
           context: {
             constraints,
             // halo.public.theme is a singleton so themeName is used as dep to make sure this effect is triggered
             theme: halo.public.theme,
             appLayout,
+            keyboardNavigation,
 
             // TODO - remove when old component api is removed
             ...(component.isHooked
@@ -91,15 +88,30 @@ const Supernova = ({ sn, snOptions: options, layout, appLayout, halo }) => {
                 }),
           },
         })
-      ).then(() => {
-        renderDebouncer.current = null;
+      ).then((done) => {
+        if (done === false) {
+          return;
+        }
         if (renderCnt === 0 && typeof options.onInitialRender === 'function') {
           options.onInitialRender.call(null);
         }
         setRenderCnt(renderCnt + 1);
       });
-    }, 10);
-  }, [containerRect, options, snNode, containerNode, layout, appLayout, themeName, language, constraints, isMounted]);
+    });
+  }, [
+    containerRect,
+    options,
+    plugins,
+    snNode,
+    containerNode,
+    layout,
+    appLayout,
+    themeName,
+    language,
+    constraints,
+    isMounted,
+    keyboardNavigation,
+  ]);
 
   return (
     <div

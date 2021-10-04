@@ -71,12 +71,29 @@ export function create({ halo, parent }) {
       return tc[name].getMatchingVersionFromProperties(propertyVersion);
     },
     get(typeInfo) {
-      const { name, version } = typeInfo;
-      if (!tc[name] || !tc[name].versions[version]) {
+      const { name } = typeInfo;
+      let { version } = typeInfo;
+      if (!tc[name]) {
+        // Fall back to existing version
+        if (__NEBULA_DEV__) {
+          console.warn(`Visualization ${name} is not registered.`); // eslint-disable-line no-console
+        }
         this.register({ name, version });
+      } else if (!tc[name].versions[version]) {
+        // Fall back to existing version
+        const versionToUse = Object.keys(tc[name].versions)[0];
+        if (__NEBULA_DEV__) {
+          console.warn(`Version ${version} of ${name} is not registered. Falling back to version ${versionToUse}`); // eslint-disable-line no-console
+        }
+        version = versionToUse;
       }
       return tc[name].get(version) || p.get(typeInfo);
     },
+    getList: () =>
+      Object.keys(tc).map((key) => ({
+        name: key,
+        versions: Object.keys(tc[key].versions).map((v) => (v === 'undefined' ? undefined : v)),
+      })),
     clearFromCache: (name) => {
       if (tc[name]) {
         tc[name] = undefined;

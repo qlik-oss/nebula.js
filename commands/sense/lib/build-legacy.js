@@ -26,7 +26,7 @@ async function build(argv) {
   const qextFileName = path.resolve(qextLegacyTargetDir, `${extName}.qext`);
   const qextFileNameJs = qextFileName.replace(/\.qext$/, '.js');
 
-  const extDefinition = argv.ext ? path.resolve(argv.ext) : path.resolve(__dirname, '../src/legacy/empty-ext.js');
+  const extDefinition = argv.ext ? path.resolve(argv.ext) : '';
 
   const relativeMainFile = `./${main.replace(/\.js$/, '')}`;
 
@@ -71,6 +71,7 @@ async function build(argv) {
         replace({
           __SN_DEF__: `${relativeMainFile}`,
           __EXT_DEF__: `${extDefinition.replace(/\\/g, '/')}`,
+          preventAssignment: true,
         }),
         nodeResolve(),
         common(),
@@ -101,7 +102,7 @@ async function build(argv) {
     await bundle.write({
       file: qextFileNameJs,
       format: 'amd',
-      sourcemap: argv.ext && argv.sourcemap,
+      sourcemap: argv.sourcemap,
     });
   }
 

@@ -52,11 +52,38 @@ describe('types', () => {
       );
     });
 
+    it('should instantiate a type when calling get the first time', () => {
+      type.withArgs({ name: 'pie', version: '1.0.3' }).returns({ name: 'pie', version: '1.0.3' });
+      expect(c.get({ name: 'pie', version: '1.0.3' })).to.eql({ name: 'pie', version: '1.0.3' });
+      expect(type).to.have.been.calledWithExactly(
+        {
+          name: 'pie',
+          version: '1.0.3',
+        },
+        'halo',
+        undefined
+      );
+    });
+
+    it('should only instantiate a type when calling get the first time', () => {
+      type.withArgs({ name: 'pie', version: '1.0.3' }).returns({ name: 'pie', version: '1.0.3' });
+      c.get({ name: 'pie', version: '1.0.3' }, 'opts');
+      expect(c.get({ name: 'pie', version: '1.7.0' })).to.eql({ name: 'pie', version: '1.0.3' });
+    });
+
     it('should throw when registering an already registered version', () => {
       c.register({ name: 'pie', version: '1.0.3' }, 'opts');
       const fn = () => c.register({ name: 'pie', version: '1.0.3' }, 'opts');
 
       expect(fn).to.throw("Supernova 'pie@1.0.3' already registered.");
+    });
+
+    it('should fallback to first registered version when getting unknown version', () => {
+      type.withArgs({ name: 'pie', version: '1.0.3' }).returns({ name: 'pie', version: '1.0.3' });
+      type.withArgs({ name: 'pie', version: '1.0.4' }).returns({ name: 'pie', version: '1.0.4' });
+      c.register({ name: 'pie', version: '1.0.3' }, 'opts');
+      c.register({ name: 'pie', version: '1.0.4' }, 'opts');
+      expect(c.get({ name: 'pie', version: '1.7.0' })).to.eql({ name: 'pie', version: '1.0.3' });
     });
 
     it('should find 1.5.1 as matching version from properties', () => {

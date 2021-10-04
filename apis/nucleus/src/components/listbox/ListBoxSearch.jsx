@@ -16,7 +16,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TREE_PATH = '/qListObjectDef';
 
-export default function ListBoxSearch({ model }) {
+export default function ListBoxSearch({ model, autoFocus = true }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const onChange = (e) => {
@@ -47,7 +47,7 @@ export default function ListBoxSearch({ model }) {
         </InputAdornment>
       }
       className={[classes.root].join(' ')}
-      autoFocus
+      autoFocus={autoFocus}
       margin="dense"
       fullWidth
       placeholder={translator.get('Listbox.Search')}

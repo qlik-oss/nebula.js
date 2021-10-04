@@ -23,7 +23,6 @@ function createObjectSelections({ appSelections, appModal, model }) {
   /**
    * @class
    * @alias ObjectSelections
-   * @hideconstructor
    */
   const api = /** @lends ObjectSelections# */ {
     // model,

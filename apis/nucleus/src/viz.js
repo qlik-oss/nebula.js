@@ -1,6 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
+import validatePlugins from './plugins/plugins';
 
 const noopi = () => {};
 
@@ -14,6 +16,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
   });
 
   let initialSnOptions = {};
+  let initialSnPlugins = [];
 
   const setSnOptions = async (opts) => {
     if (mountedReference) {
@@ -33,10 +36,22 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     }
   };
 
+  const setSnPlugins = async (plugins) => {
+    validatePlugins(plugins);
+    if (mountedReference) {
+      (async () => {
+        await mounted;
+        cellRef.current.setSnPlugins(plugins);
+      })();
+    } else {
+      // Handle setting plugins before mount
+      initialSnPlugins = plugins;
+    }
+  };
+
   /**
    * @class
    * @alias Viz
-   * @hideconstructor
    * @classdesc A controller to further modify a visualization after it has been rendered.
    * @example
    * const viz = await embed(app).render({
@@ -52,7 +67,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      */
     id: model.id,
     /**
-     * Destroys the visualization and removes if from the the DOM.
+     * Destroys the visualization and removes it from the the DOM.
      * @example
      * const viz = await embed(app).render({
      *   element,
@@ -66,12 +81,11 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       unmountCell = noopi;
     },
     /**
-     * Converts the visualization to a different registred type
-     * @experimental
+     * Converts the visualization to a different registered type
      * @since 1.1.0
-     * @param {string} newType - Which registered type to convert to
+     * @param {string} newType - Which registered type to convert to.
      * @param {boolean=} forceUpdate - Whether to run setProperties or not, defaults to true.
-     * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualizatiom
+     * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualization.
      * @example
      * const viz = await embed(app).render({
      *   element,
@@ -82,7 +96,11 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     async convertTo(newType, forceUpdate = true) {
       const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
       if (forceUpdate) {
-        await model.setProperties(propertyTree.qProperty);
+        if (model.__snInterceptor) {
+          await model.__snInterceptor.setProperties.call(model, propertyTree.qProperty);
+        } else {
+          await model.setProperties(propertyTree.qProperty);
+        }
       }
       return propertyTree;
     },
@@ -98,6 +116,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
           element,
           model,
           initialSnOptions,
+          initialSnPlugins,
           initialError,
           onMount,
         });
@@ -113,6 +132,9 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       },
       options(opts) {
         setSnOptions(opts);
+      },
+      plugins(plugins) {
+        setSnPlugins(plugins);
       },
       exportImage() {
         return cellRef.current.exportImage();

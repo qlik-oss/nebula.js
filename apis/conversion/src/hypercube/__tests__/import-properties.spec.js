@@ -26,6 +26,8 @@ describe('importProperties', () => {
       copyPropertyIfExist: sandbox.stub(),
       copyPropertyOrSetDefault: sandbox.stub(),
       importCommonProperties: sandbox.stub(),
+      updateDimensionsOnAdded: sandbox.stub(),
+      updateMeasuresOnAdded: sandbox.stub(),
     };
     [{ default: importProperties }] = doMock({ helpers });
     exportFormat = {
@@ -63,6 +65,8 @@ describe('importProperties', () => {
     expect(helpers.copyPropertyIfExist.callCount).to.equal(2);
     expect(helpers.copyPropertyOrSetDefault.callCount).to.equal(6);
     expect(helpers.importCommonProperties.callCount).to.equal(1);
+    expect(helpers.updateDimensionsOnAdded.callCount).to.equal(1);
+    expect(helpers.updateMeasuresOnAdded.callCount).to.equal(1);
   });
 
   it('should run helpers correctly if there is defaultPropertyValues', () => {
@@ -80,6 +84,8 @@ describe('importProperties', () => {
     expect(helpers.copyPropertyIfExist.callCount).to.equal(2);
     expect(helpers.copyPropertyOrSetDefault.callCount).to.equal(6);
     expect(helpers.importCommonProperties.callCount).to.equal(1);
+    expect(helpers.updateDimensionsOnAdded.callCount).to.equal(1);
+    expect(helpers.updateMeasuresOnAdded.callCount).to.equal(1);
   });
 
   it('should run helpers correctly if layoutExlcude is disabled', () => {
@@ -99,5 +105,7 @@ describe('importProperties', () => {
     expect(helpers.copyPropertyIfExist.callCount).to.equal(2);
     expect(helpers.copyPropertyOrSetDefault.callCount).to.equal(6);
     expect(helpers.importCommonProperties.callCount).to.equal(1);
+    expect(helpers.updateDimensionsOnAdded.callCount).to.equal(1);
+    expect(helpers.updateMeasuresOnAdded.callCount).to.equal(1);
   });
 });

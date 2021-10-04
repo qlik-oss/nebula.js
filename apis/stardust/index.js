@@ -1,5 +1,5 @@
 if (process.env.NODE_ENV === 'production') {
-  module.exports = require('./dist/stardust.js');
+  module.exports = require('./dist/stardust');
 } else {
-  module.exports = require('./dist/stardust.dev.js');
+  module.exports = require('./dist/stardust.dev');
 }

@@ -19,11 +19,11 @@ async function build(argv) {
   if (extName === main) {
     extName = extName.replace(/\.js$/, '-ext.js');
   }
-
-  const targetDir = argv.output || 'dist';
+  const { sourcemap } = argv;
+  const targetDir = argv.output !== '<name>-ext' ? argv.output : `${extName}-ext`;
   const targetFile = 'ext';
   const qextLegacyTargetDir = path.resolve(cwd, targetDir);
-  const qextFileName = path.resolve(cwd, `${extName}.qext`);
+  const qextFileName = path.resolve(qextLegacyTargetDir, `${extName}.qext`);
   const qextFileNameJs = qextFileName.replace(/\.qext$/, '.js');
 
   const extDefinition = argv.ext ? path.resolve(argv.ext) : undefined;
@@ -49,7 +49,7 @@ async function build(argv) {
       encoding: 'utf8',
     });
     qextjs = qextjs.replace('{{DIST}}', `./${main.replace(/^[./]*/, '').replace(/\.js$/, '')}`);
-    qextjs = qextjs.replace('{{EXT}}', `./${targetDir}/${targetFile}`);
+    qextjs = qextjs.replace('{{EXT}}', `./${targetFile}`);
 
     fs.writeFileSync(qextFileName, JSON.stringify(contents, null, 2));
     fs.writeFileSync(qextFileNameJs, qextjs);
@@ -66,6 +66,14 @@ async function build(argv) {
             console.warn(`  \x1b[33mwarn:\x1b[0m \x1b[36m${f}\x1b[0m should be included in package.json 'files' array`);
           }
         });
+    }
+  };
+
+  const copySource = () => {
+    fs.copySync(path.resolve(main), path.resolve(targetDir, main));
+
+    if (sourcemap) {
+      fs.copySync(path.resolve(`${main}.map`), path.resolve(targetDir, `${main}.map`));
     }
   };
 
@@ -102,10 +110,11 @@ async function build(argv) {
     await bundle.write({
       file: path.resolve(qextLegacyTargetDir, `${targetFile}.js`),
       format: 'amd',
-      sourcemap: argv.ext && argv.sourcemap,
+      sourcemap,
     });
   }
 
+  copySource();
   createQextFiles();
 }
 

@@ -15,6 +15,7 @@ export {
   useEffect,
   useMemo,
   useImperativeHandle,
+  useKeyboard,
   usePromise,
   useAction,
   useRect,
@@ -28,8 +29,12 @@ export {
   useStaleLayout,
   useAppLayout,
   useTranslator,
+  useDeviceType,
+  usePlugins,
   useConstraints,
   useOptions,
+  useEmbed,
+  useRenderState,
   onTakeSnapshot,
 } from '@nebula.js/supernova';
 

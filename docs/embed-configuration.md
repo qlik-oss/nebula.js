@@ -89,11 +89,11 @@ import piechart from '@nebula.js/sn-pie-chart';
 embed.createConfiguration({
   types: [
     {
-      type: 'bar',
+      name: 'bar',
       load: () => Promise.resolve(barchart),
     },
     {
-      type: 'pie',
+      name: 'pie',
       load: () => Promise.resolve(piechart),
     },
   ],
@@ -125,7 +125,7 @@ You can then configure all types you expect might be used:
 
 ```js
 const types = ['bar', 'line', 'pie', 'sankey'].map((t) => ({
-  type: t,
+  name: t,
   load: () => loadSnType(t),
 }));
 const baseConfig = stardust.embed.createConfiguration({ types });
@@ -135,7 +135,7 @@ The type will be loaded from the remote url the first time you render it:
 
 ```js
 baseConfig(enigmaApp).render({
-  type: 'bar',
+  name: 'bar',
   fields: ['Product', '=sum(Sales)'],
 });
 ```
