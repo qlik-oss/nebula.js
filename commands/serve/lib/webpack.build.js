@@ -120,6 +120,6 @@ if (!process.env.DEFAULTS) {
   module.exports = cfg({
     srcDir: path.resolve(__dirname, '../web'),
     distDir: path.resolve(__dirname, '../dist'),
-    dev: false,
+    dev: process.env.NODE_ENV !== 'production',
   });
 }
