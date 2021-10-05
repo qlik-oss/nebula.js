@@ -832,9 +832,9 @@ export function useAction(fn, deps) {
 
 /**
  * @interface Constraints
- * @property {boolean=} passive
- * @property {boolean=} active
- * @property {boolean=} select
+ * @property {boolean=} passive Whether or not passive constraints are on. Should block any passive interaction by users, ie: tooltips
+ * @property {boolean=} active Whether or not active constraints are on. Should block any active interaction by users, ie: scroll, click
+ * @property {boolean=} select Whether or not active select are on. Should block any selection action. Implied when active is true.
  */
 
 /**
@@ -1120,7 +1120,8 @@ export function focus(component) {
 
 export function blur(component) {
   const acc = component.__hooks.accessibility;
-  if (!acc.active) {
+  // Incomplete/Invalid/Legacy viz hasn't been initialized with hooks
+  if (!acc || !acc.active) {
     return;
   }
   acc.active = false;

@@ -135,6 +135,7 @@ module.exports = async ({
           flags: serveConfig.flags,
           themes: themes.map((theme) => theme.id),
           types: serveConfig.types,
+          keyboardNavigation: serveConfig.keyboardNavigation,
         });
       });
 

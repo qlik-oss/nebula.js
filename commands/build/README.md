@@ -24,6 +24,7 @@ Options:
   --mode           Explicitly set mode
                                  [string] [choices: "production", "development"]
   --core           Set a core build target            [string] [default: "core"]
+  --typescript     Enable typescript bundling         [boolean] [default: false]
 ```
 
 ## Example
@@ -42,6 +43,7 @@ In the config file, build properties:
 - Sourcemap
 - Mode
 - Core
+- Typescript
 
 The following code in a config file demonstrates an example to set the nebula build configuration.
 
@@ -61,6 +63,7 @@ module.exports = {
     sourcemap,
     mode,
     core: 'core',
+    typescript: true,
   },
 };
 ```
@@ -106,7 +109,7 @@ nebula build --mode production
 
 You can export only the esm bundle by adding --core parameter.
 
-To achive that, you need to add a package.json file in the `/core` directory.
+To achieve that, you need to add a package.json file in the `/core` directory.
 In the package.json file, a `module` field which specifies the output file
 from the build is required:
 
@@ -138,3 +141,12 @@ Tips:
 In the package.json file, the main field makes sure that Node users using require
 can be served the umd version. The module field is a common convention to designate
 how to import an esm version of your code.
+
+### Typescript
+
+With this option you can enable typescript bundling of your code. Add a `tsconfig.json`
+file to configure typescript to your own preferences.
+
+```sh
+nebula build --typescript
+```

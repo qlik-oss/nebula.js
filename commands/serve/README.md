@@ -23,6 +23,7 @@ Options:
                                           [string] [default: "nebula.config.js"]
   --entry             File entrypoint                                   [string]
   --type              Generic object type                               [string]
+  --keyboardNavigation                                [boolean] [default: false]
   --build                                              [boolean] [default: true]
   --host                                         [string] [default: "localhost"]
   --port                                                                [number]
