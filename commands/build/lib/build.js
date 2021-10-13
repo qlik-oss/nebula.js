@@ -40,7 +40,7 @@ const config = ({
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
   const { name, version, license, author } = pkg;
-  const { sourcemap, replacementStrings = {}, typescript } = argv;
+  const { sourcemap, replacementStrings = {}, typescript, babelPlugins = [] } = argv;
 
   if (corePkg) {
     pkg = corePkg;
@@ -50,6 +50,20 @@ const config = ({
   if (format === 'esm' && !pkg.module) {
     return false;
   }
+
+  const pluginsInBabel = [[jsxPlugin]];
+  const resolveBabelPlugins = (babelPluginsOption) => {
+    if (!Array.isArray(babelPluginsOption)) {
+      throw new Error('babelPlugins should be an array contains each babel plugin');
+    }
+    babelPluginsOption.forEach((babelPlugin) => {
+      if (!Array.isArray(babelPlugin)) {
+        throw new Error('babelPlugin should be an array');
+      }
+      pluginsInBabel.push(babelPlugin);
+    });
+    return pluginsInBabel;
+  };
 
   const fileTarget = format === 'esm' ? pkg.module : pkg.main;
 
@@ -107,7 +121,7 @@ const config = ({
               },
             ],
           ],
-          plugins: [[jsxPlugin]],
+          plugins: resolveBabelPlugins(babelPlugins),
         }),
         sourcemaps(),
         postcss({}),
