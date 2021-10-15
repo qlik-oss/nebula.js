@@ -10,6 +10,16 @@ import useDefaultSelectionActions from '../hooks/useDefaultSelectionActions';
 import InstanceContext from '../contexts/InstanceContext';
 import More from './ActionsToolbarMore';
 
+/**
+ * @interface
+ * @extends HTMLElement
+ * @since 2.1.0
+ */
+const ActionToolbarElement = {
+  /** @type {'njs-action-toolbar-popover'} */
+  className: 'njs-action-toolbar-popover',
+};
+
 const useStyles = makeStyles((theme) => ({
   itemSpacing: {
     padding: theme.spacing(0, 0.5),
@@ -162,6 +172,7 @@ const ActionsToolbar = ({
       hideBackdrop
       style={popoverStyle}
       PaperProps={{
+        className: ActionToolbarElement.className,
         style: {
           pointerEvents: 'auto',
           padding: theme.spacing(1, 1),
