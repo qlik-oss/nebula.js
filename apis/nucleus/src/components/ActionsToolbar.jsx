@@ -16,8 +16,8 @@ import More from './ActionsToolbarMore';
  * @since 2.1.0
  */
 const ActionToolbarElement = {
-  /** @type {'njs-cell-action-toolbar'} */
-  className: 'njs-cell-action-toolbar',
+  /** @type {'njs-action-toolbar-popover'} */
+  className: 'njs-action-toolbar-popover',
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -136,7 +136,7 @@ const ActionsToolbar = ({
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
   const Actions = (
-    <Grid container spacing={0} wrap="nowrap" className={popover.show ? '' : ActionToolbarElement.className}>
+    <Grid container spacing={0} wrap="nowrap">
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
         <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />
