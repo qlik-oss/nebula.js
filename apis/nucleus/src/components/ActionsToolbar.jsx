@@ -10,6 +10,16 @@ import useDefaultSelectionActions from '../hooks/useDefaultSelectionActions';
 import InstanceContext from '../contexts/InstanceContext';
 import More from './ActionsToolbarMore';
 
+/**
+ * @interface
+ * @extends HTMLElement
+ * @since 2.1.0
+ */
+const ActionToolbarElement = {
+  /** @type {'njs-cell-action-toolbar'} */
+  className: 'njs-cell-action-toolbar',
+};
+
 const useStyles = makeStyles((theme) => ({
   itemSpacing: {
     padding: theme.spacing(0, 0.5),
@@ -126,7 +136,7 @@ const ActionsToolbar = ({
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
   const Actions = (
-    <Grid container spacing={0} wrap="nowrap">
+    <Grid container spacing={0} wrap="nowrap" className={popover.show ? '' : ActionToolbarElement.className}>
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
         <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />
@@ -162,6 +172,7 @@ const ActionsToolbar = ({
       hideBackdrop
       style={popoverStyle}
       PaperProps={{
+        className: ActionToolbarElement.className,
         style: {
           pointerEvents: 'auto',
           padding: theme.spacing(1, 1),
