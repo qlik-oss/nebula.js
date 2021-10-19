@@ -30,8 +30,6 @@
     "@rollup/plugin-node-resolve": "13.0.5",
     "@rollup/plugin-replace": "3.0.0",
     "@rollup/plugin-typescript": "8.2.5",
-    "tslib": "*",
-    "typescript": ">=3.7.0",
     "chalk": "4.1.2",
     "extend": "3.0.2",
     "postcss": "^8.3.8",
@@ -41,5 +39,9 @@
     "rollup-plugin-sourcemaps": "0.6.3",
     "rollup-plugin-terser": "7.0.2",
     "yargs": "17.2.1"
+  },
+  "devDependencies": {
+    "tslib": "*",
+    "typescript": ">=3.7.0"
   }
 }
