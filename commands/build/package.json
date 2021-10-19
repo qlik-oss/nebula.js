@@ -30,6 +30,8 @@
     "@rollup/plugin-node-resolve": "13.0.5",
     "@rollup/plugin-replace": "3.0.0",
     "@rollup/plugin-typescript": "8.2.5",
+    "tslib": "*",
+    "typescript": ">=3.7.0",
     "chalk": "4.1.2",
     "extend": "3.0.2",
     "postcss": "^8.3.8",
