@@ -39,5 +39,9 @@
     "rollup-plugin-sourcemaps": "0.6.3",
     "rollup-plugin-terser": "7.0.2",
     "yargs": "17.2.1"
+  },
+  "devDependencies": {
+    "tslib": "*",
+    "typescript": ">=3.7.0"
   }
 }
