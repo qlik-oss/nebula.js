@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/qlik-oss/nebula.js/compare/v2.0.0...v2.1.0) (2021-10-20)
+
+### Bug Fixes
+
+- bug in serve types ([#687](https://github.com/qlik-oss/nebula.js/issues/687)) ([2d72fdb](https://github.com/qlik-oss/nebula.js/commit/2d72fdb2a53a79753128832c0f6fc0ec3d84eebb))
+
 # [2.0.0](https://github.com/qlik-oss/nebula.js/compare/v2.0.0-beta.1...v2.0.0) (2021-09-30)
 
 ### Bug Fixes

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/qlik-oss/nebula.js/compare/v2.0.0...v2.1.0) (2021-10-20)
+
+### Features
+
+- **build:** add typescript support in build ([#683](https://github.com/qlik-oss/nebula.js/issues/683)) ([f8c7201](https://github.com/qlik-oss/nebula.js/commit/f8c7201149d7f80f875a029a79b4d739e924dcc8))
+
 # [2.0.0](https://github.com/qlik-oss/nebula.js/compare/v2.0.0-beta.1...v2.0.0) (2021-09-30)
 
 **Note:** Version bump only for package @nebula.js/cli-build
