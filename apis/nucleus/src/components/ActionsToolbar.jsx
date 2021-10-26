@@ -32,32 +32,45 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ActionsGroup = React.forwardRef(({ actions = [], first = false, last = false, addAnchor = false }, ref) => {
-  const { itemSpacing, firstItemSpacing, lastItemSpacing } = useStyles();
-  return actions.length > 0 ? (
-    <Grid item container spacing={0} wrap="nowrap">
-      {actions.map((e, ix) => {
-        let cls = [];
-        const isFirstItem = first && ix === 0;
-        const isLastItem = last && actions.length - 1 === ix;
-        if (isFirstItem && !isLastItem) {
-          cls = [firstItemSpacing];
-        }
-        if (isLastItem && !isFirstItem) {
-          cls = [...cls, lastItemSpacing];
-        }
-        if (!isFirstItem && !isLastItem && cls.length === 0) {
-          cls = [itemSpacing];
-        }
-        return (
-          <Grid item key={e.key} className={cls.join(' ').trim()}>
-            <Item key={e.key} item={e} ref={ix === 0 ? ref : null} addAnchor={addAnchor} />
-          </Grid>
-        );
-      })}
-    </Grid>
-  ) : null;
-});
+const ActionsGroup = React.forwardRef(
+  ({ actions = [], first = false, last = false, addAnchor = false, refocusContent = null }, ref) => {
+    const { itemSpacing, firstItemSpacing, lastItemSpacing } = useStyles();
+    const tabCallback = (evt, shouldBeShift) => {
+      if (typeof refocusContent === 'function' && evt.key === 'Tab' && evt.shiftKey === shouldBeShift) {
+        evt.preventDefault();
+        evt.stopPropagation();
+        refocusContent();
+      }
+    };
+
+    return actions.length > 0 ? (
+      <Grid item container spacing={0} wrap="nowrap">
+        {actions.map((e, ix) => {
+          let cls = [];
+          let handleTab = null;
+          const isFirstItem = first && ix === 0;
+          const isLastItem = last && actions.length - 1 === ix;
+          if (isFirstItem && !isLastItem) {
+            cls = [firstItemSpacing];
+            handleTab = (evt) => tabCallback(evt, true);
+          }
+          if (isLastItem && !isFirstItem) {
+            cls = [...cls, lastItemSpacing];
+            handleTab = (evt) => tabCallback(evt, false);
+          }
+          if (!isFirstItem && !isLastItem && cls.length === 0) {
+            cls = [itemSpacing];
+          }
+          return (
+            <Grid item key={e.key} className={cls.join(' ').trim()}>
+              <Item key={e.key} item={e} ref={ix === 0 ? ref : null} addAnchor={addAnchor} handleTab={handleTab} />
+            </Grid>
+          );
+        })}
+      </Grid>
+    ) : null;
+  }
+);
 
 const popoverStyle = { pointerEvents: 'none' };
 const popoverAnchorOrigin = {
@@ -90,10 +103,11 @@ const ActionsToolbar = ({
     show: false,
     anchorEl: null,
   },
+  refocusContent = null,
 }) => {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
   const { itemSpacing } = useStyles();
-  const { translator } = useContext(InstanceContext);
+  const { translator, keyboardNavigation } = useContext(InstanceContext);
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [moreEnabled, setMoreEnabled] = useState(more.enabled);
   const [moreActions, setMoreActions] = useState(more.actions);
@@ -139,14 +153,28 @@ const ActionsToolbar = ({
     <Grid container spacing={0} wrap="nowrap">
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
-        <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />
+        <ActionsGroup
+          ref={moreRef}
+          actions={[moreItem]}
+          first={!showActions}
+          last={!selections.show}
+          refocusContent={keyboardNavigation && refocusContent}
+          addAnchor
+        />
       )}
       {showDivider && (
         <Grid item className={itemSpacing} style={dividerStyle}>
           <Divider orientation="vertical" />
         </Grid>
       )}
-      {selections.show && <ActionsGroup actions={defaultSelectionActions} first={!showActions && !showMore} last />}
+      {selections.show && (
+        <ActionsGroup
+          actions={defaultSelectionActions}
+          first={!showActions && !showMore}
+          refocusContent={keyboardNavigation && refocusContent}
+          last
+        />
+      )}
       {showMoreItems && (
         <More
           show={showMoreItems}

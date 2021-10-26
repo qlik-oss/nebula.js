@@ -17,7 +17,7 @@ const ActionElement = {
   className: 'njs-cell-action',
 };
 
-const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
+const Item = React.forwardRef(({ item, addAnchor = false, handleTab }, ref) => {
   const theme = useTheme();
   const { hidden, disabled, style, hasSvgIconShape } = useActionState(item);
   if (hidden) return null;
@@ -30,6 +30,7 @@ const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
       disabled={disabled}
       style={style}
       className={ActionElement.className}
+      onKeyDown={handleTab}
     >
       {hasSvgIconShape && SvgIcon(item.getSvgIconShape())}
       {addAnchor && (
