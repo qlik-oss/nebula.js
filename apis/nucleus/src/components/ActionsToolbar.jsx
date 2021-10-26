@@ -93,7 +93,7 @@ const ActionsToolbar = ({
 }) => {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
   const { itemSpacing } = useStyles();
-  const { translator } = useContext(InstanceContext);
+  const { translator, focusHandler } = useContext(InstanceContext);
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [moreEnabled, setMoreEnabled] = useState(more.enabled);
   const [moreActions, setMoreActions] = useState(more.actions);
@@ -101,6 +101,12 @@ const ActionsToolbar = ({
   const moreRef = useRef();
   const theme = useTheme();
   const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
+
+  useEffect(() => {
+    focusHandler.on('do_focus', () => {
+      console.log('HERE WE ARE!');
+    });
+  }, [focusHandler]);
 
   useEffect(() => () => setShowMoreItems(false), [popover.show]);
 

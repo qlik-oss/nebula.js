@@ -5,4 +5,5 @@ export default React.createContext({
   theme: null,
   translator: null,
   constraints: {},
+  focusHandler: null,
 });

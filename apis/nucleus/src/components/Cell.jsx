@@ -254,7 +254,18 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const loadType = async ({ dispatch, types, visualization, version, model, app, selections, blurCallback, nebbie }) => {
+const loadType = async ({
+  dispatch,
+  types,
+  visualization,
+  version,
+  model,
+  app,
+  selections,
+  blurCallback,
+  focusHandler,
+  nebbie,
+}) => {
   try {
     const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
@@ -263,6 +274,7 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
       selections,
       nebbie,
       blurCallback,
+      focusHandler,
     });
     return sn;
   } catch (err) {
@@ -276,7 +288,7 @@ const Cell = forwardRef(
     const { app, types } = halo;
     const { nebbie } = halo.public;
 
-    const { translator, language, keyboardNavigation } = useContext(InstanceContext);
+    const { translator, language, keyboardNavigation, focusHandler } = useContext(InstanceContext);
     const theme = useTheme();
     const [cellRef, cellRect, cellNode] = useRect();
     const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
@@ -349,6 +361,7 @@ const Cell = forwardRef(
           selections,
           nebbie,
           blurCallback: relinquishFocus,
+          focusHandler,
         });
         if (sn) {
           dispatch({ type: 'LOADED', sn, visualization });

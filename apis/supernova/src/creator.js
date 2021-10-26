@@ -77,6 +77,7 @@ function createWithHooks(generator, opts, galaxy) {
       appLayout: {},
       keyboardNavigation: opts.keyboardNavigation,
       blurCallback: opts.blurCallback,
+      focusHandler: opts.focusHandler,
       constraints: forcedConstraints,
       options: {},
       plugins: [],
@@ -110,6 +111,7 @@ function createWithHooks(generator, opts, galaxy) {
         if (r.context && r.context.blurCallback) {
           // Needs to be added here due to how the client renders
           this.context.blurCallback = r.context.blurCallback;
+          this.context.focusHandler = r.context.focusHandler;
         }
 
         if (r.options) {

@@ -6,6 +6,16 @@ import { createTheme, ThemeProvider, StylesProvider, createGenerateClassName } f
 import InstanceContext from '../contexts/InstanceContext';
 import useAppSelections from '../hooks/useAppSelections';
 
+import eventmixin from '../selections/event-mixin';
+
+const focusHandler = {
+  setFocus() {
+    this.emit('do_focus');
+  },
+};
+
+eventmixin(focusHandler);
+
 const NEBULA_VERSION_HASH = process.env.NEBULA_VERSION_HASH || '';
 
 let counter = 0;
@@ -69,6 +79,8 @@ export default function boot({ app, context }) {
   element.setAttribute('data-nebulajs-version', process.env.NEBULA_VERSION || '');
   element.setAttribute('data-app-id', app.id);
   document.body.appendChild(element);
+
+  context.focusHandler = focusHandler;
 
   ReactDOM.render(<NebulaApp ref={appRef} app={app} initialContext={context} />, element, resolveRender);
 

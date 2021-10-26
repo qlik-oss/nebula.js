@@ -1063,6 +1063,7 @@ export function useRenderState() {
 export function useKeyboard() {
   const keyboardNavigation = useInternalContext('keyboardNavigation');
   const blurCallback = useInternalContext('blurCallback');
+  const focusHandler = useInternalContext('focusHandler');
 
   if (!currentComponent.__hooks.accessibility.exitFunction) {
     const exitFunction = function (resetFocus) {
@@ -1084,11 +1085,27 @@ export function useKeyboard() {
     }.bind(currentComponent);
 
     currentComponent.__hooks.accessibility.focusFunction = focusFunction;
+
+    const jumpFunction = function () {
+      const acc = this.__hooks.accessibility;
+      //if (acc.enabled && !acc.active) {
+      focusHandler && focusHandler.setFocus();
+      //}
+    }.bind(currentComponent);
+
+    currentComponent.__hooks.accessibility.jumpFunction = jumpFunction;
   }
   const focusFunc = currentComponent.__hooks.accessibility.focusFunction;
   const exitFunc = currentComponent.__hooks.accessibility.exitFunction;
+  const jumpFunc = currentComponent.__hooks.accessibility.jumpFunction;
 
-  const [acc, setAcc] = useState({ active: false, enabled: keyboardNavigation, blur: exitFunc, focus: focusFunc });
+  const [acc, setAcc] = useState({
+    active: false,
+    enabled: keyboardNavigation,
+    blur: exitFunc,
+    focus: focusFunc,
+    jump: jumpFunc,
+  });
   currentComponent.__hooks.accessibility.setter = setAcc;
   currentComponent.__hooks.accessibility.enabled = keyboardNavigation;
 
@@ -1099,6 +1116,7 @@ export function useKeyboard() {
         enabled: keyboardNavigation,
         blur: exitFunc,
         focus: focusFunc,
+        jump: jumpFunc,
       }),
     [keyboardNavigation]
   );
@@ -1114,7 +1132,13 @@ export function focus(component) {
   }
   acc.active = true;
   if (acc && acc.setter) {
-    acc.setter({ active: true, enabled: acc.enabled, blur: acc.exitFunction, focus: acc.focusFunction });
+    acc.setter({
+      active: true,
+      enabled: acc.enabled,
+      blur: acc.exitFunction,
+      focus: acc.focusFunction,
+      jump: acc.jumpFunction,
+    });
   }
 }
 
@@ -1127,6 +1151,12 @@ export function blur(component) {
   acc.active = false;
 
   if (acc && acc.setter) {
-    acc.setter({ active: false, enabled: acc.enabled, blur: acc.exitFunction, focus: acc.focusFunction });
+    acc.setter({
+      active: false,
+      enabled: acc.enabled,
+      blur: acc.exitFunction,
+      focus: acc.focusFunction,
+      jump: acc.jumpFunction,
+    });
   }
 }
