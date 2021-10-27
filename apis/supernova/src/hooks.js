@@ -1029,6 +1029,7 @@ export function useRenderState() {
  * @property {boolean} active Set to true when the chart is activated, ie a user tabs to the chart and presses Enter or Space.
  * @property {function=} blur Function used by the visualization to tell Nebula to it wants to relinquish focus
  * @property {function=} focus Function used by the visualization to tell Nebula to it wants focus
+ * @property {function=} focusSelection Function used by the visualization to tell Nebula to focus the selection toolbar
  */
 
 /**
@@ -1087,12 +1088,8 @@ export function useKeyboard() {
     currentComponent.__hooks.accessibility.focusFunction = focusFunction;
 
     const focusSelectionFunction = function (focusLast) {
-      // const acc = this.__hooks.accessibility;
-      // if (acc.enabled && !acc.active) {
       focusHandler && focusHandler.focusToolbarButton(focusLast);
-      // }
     };
-    // .bind(currentComponent);
 
     currentComponent.__hooks.accessibility.focusSelectionFunction = focusSelectionFunction;
   }

@@ -199,16 +199,17 @@ const ActionsToolbar = ({
     }
   };
 
-  focusHandler.on('focus_toolbar_first', () => {
-    if (!actionsRef.current) return;
-    focusActionButton(actionsRef.current.getElementsByTagName('BUTTON'));
-  });
-
-  focusHandler.on('focus_toolbar_last', () => {
-    if (!actionsRef.current) return;
-    const actionButtons = actionsRef.current.getElementsByTagName('BUTTON');
-    focusActionButton([...actionButtons].reverse());
-  });
+  if (focusHandler) {
+    focusHandler.on('focus_toolbar_first', () => {
+      if (!actionsRef.current) return;
+      focusActionButton(actionsRef.current.getElementsByTagName('BUTTON'));
+    });
+    focusHandler.on('focus_toolbar_last', () => {
+      if (!actionsRef.current) return;
+      const actionButtons = actionsRef.current.getElementsByTagName('BUTTON');
+      focusActionButton([...actionButtons].reverse());
+    });
+  }
 
   return popover.show ? (
     <Popover

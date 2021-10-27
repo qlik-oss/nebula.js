@@ -255,15 +255,15 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const focusHandlerObj = {
+const focusHandler = {
   focusToolbarButton(last) {
     this.emit(last ? 'focus_toolbar_last' : 'focus_toolbar_first');
   },
 };
 
-eventmixin(focusHandlerObj);
+eventmixin(focusHandler);
 
-const loadType = async ({ dispatch, types, visualization, version, model, app, selections, focusHandler, nebbie }) => {
+const loadType = async ({ dispatch, types, visualization, version, model, app, selections, nebbie }) => {
   try {
     const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
@@ -326,15 +326,16 @@ const Cell = forwardRef(
       }
     };
 
-    focusHandlerObj.blurCallback = (resetFocus) => {
+    focusHandler.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
       if (resetFocus && cellNode) {
         cellNode.focus();
       }
     };
 
-    focusHandlerObj.refocusContent = () =>
+    focusHandler.refocusContent = () => {
       state.sn.component && typeof state.sn.component.focus === 'function' && state.sn.component.focus();
+    };
 
     useEffect(() => {
       if (initialError || !appLayout || !layout) {
@@ -360,7 +361,6 @@ const Cell = forwardRef(
           app,
           selections,
           nebbie,
-          focusHandler: focusHandlerObj,
         });
         if (sn) {
           dispatch({ type: 'LOADED', sn, visualization });
@@ -498,13 +498,7 @@ const Cell = forwardRef(
           }}
         >
           {cellNode && layout && state.sn && (
-            <Header
-              layout={layout}
-              sn={state.sn}
-              anchorEl={cellNode}
-              hovering={hovering}
-              focusHandler={focusHandlerObj}
-            >
+            <Header layout={layout} sn={state.sn} anchorEl={cellNode} hovering={hovering} focusHandler={focusHandler}>
               &nbsp;
             </Header>
           )}
