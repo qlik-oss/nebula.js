@@ -103,7 +103,7 @@ const ActionsToolbar = ({
     show: false,
     anchorEl: null,
   },
-  refocusContent = null,
+  focusHandler = null,
 }) => {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
   const { itemSpacing } = useStyles();
@@ -113,6 +113,7 @@ const ActionsToolbar = ({
   const [moreActions, setMoreActions] = useState(more.actions);
   const [moreAlignTo, setMoreAlignTo] = useState(more.alignTo);
   const moreRef = useRef();
+  const actionsRef = useRef();
   const theme = useTheme();
   const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
 
@@ -150,7 +151,7 @@ const ActionsToolbar = ({
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
   const Actions = (
-    <Grid container spacing={0} wrap="nowrap">
+    <Grid ref={actionsRef} container spacing={0} wrap="nowrap">
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
         <ActionsGroup
@@ -158,7 +159,7 @@ const ActionsToolbar = ({
           actions={[moreItem]}
           first={!showActions}
           last={!selections.show}
-          refocusContent={keyboardNavigation && refocusContent}
+          refocusContent={keyboardNavigation && focusHandler && focusHandler.refocusContent}
           addAnchor
         />
       )}
@@ -171,7 +172,7 @@ const ActionsToolbar = ({
         <ActionsGroup
           actions={defaultSelectionActions}
           first={!showActions && !showMore}
-          refocusContent={keyboardNavigation && refocusContent}
+          refocusContent={keyboardNavigation && focusHandler && focusHandler.refocusContent}
           last
         />
       )}
@@ -187,6 +188,27 @@ const ActionsToolbar = ({
       )}
     </Grid>
   );
+
+  const focusActionButton = (buttons) => {
+    // Since some buttons may be disabled, find and focus the first non-disabled one
+    for (let i = 0; i < buttons.length; i++) {
+      if (!buttons[i].classList.contains('Mui-disabled')) {
+        buttons[i].focus();
+        break;
+      }
+    }
+  };
+
+  focusHandler.on('focus_toolbar_first', () => {
+    if (!actionsRef.current) return;
+    focusActionButton(actionsRef.current.getElementsByTagName('BUTTON'));
+  });
+
+  focusHandler.on('focus_toolbar_last', () => {
+    if (!actionsRef.current) return;
+    const actionButtons = actionsRef.current.getElementsByTagName('BUTTON');
+    focusActionButton([...actionButtons].reverse());
+  });
 
   return popover.show ? (
     <Popover

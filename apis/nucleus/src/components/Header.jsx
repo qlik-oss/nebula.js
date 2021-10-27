@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = ({ layout, sn, anchorEl, hovering }) => {
+const Header = ({ layout, sn, anchorEl, hovering, focusHandler }) => {
   const showTitle = layout.showTitles && !!layout.title;
   const showSubtitle = layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
@@ -67,7 +67,6 @@ const Header = ({ layout, sn, anchorEl, hovering }) => {
   const classes = [containerStyle, ...(showTitles ? [containerTitleStyle] : [])];
   const showPopoverToolbar = (hovering || showInSelectionActions) && (shouldShowPopoverToolbar || !showTitles);
   const showToolbar = showTitles && !showPopoverToolbar && !shouldShowPopoverToolbar;
-  const refocusContent = () => sn.component && typeof sn.component.focus === 'function' && sn.component.focus();
 
   const Toolbar = (
     <ActionsToolbar
@@ -75,7 +74,7 @@ const Header = ({ layout, sn, anchorEl, hovering }) => {
       selections={{ show: showInSelectionActions, api: sn.component.selections }}
       actions={actions}
       popover={{ show: showPopoverToolbar, anchorEl }}
-      refocusContent={refocusContent}
+      focusHandler={focusHandler}
     />
   );
 

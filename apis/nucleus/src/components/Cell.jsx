@@ -15,6 +15,7 @@ import useRect from '../hooks/useRect';
 import useLayout, { useAppLayout } from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
+import eventmixin from '../selections/event-mixin';
 
 /**
  * @interface
@@ -254,7 +255,15 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const loadType = async ({ dispatch, types, visualization, version, model, app, selections, blurCallback, nebbie }) => {
+const focusHandlerObj = {
+  focusToolbarButton(last) {
+    this.emit(last ? 'focus_toolbar_last' : 'focus_toolbar_first');
+  },
+};
+
+eventmixin(focusHandlerObj);
+
+const loadType = async ({ dispatch, types, visualization, version, model, app, selections, focusHandler, nebbie }) => {
   try {
     const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
@@ -262,7 +271,7 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
       app,
       selections,
       nebbie,
-      blurCallback,
+      focusHandler,
     });
     return sn;
   } catch (err) {
@@ -317,12 +326,15 @@ const Cell = forwardRef(
       }
     };
 
-    const relinquishFocus = (resetFocus) => {
+    focusHandlerObj.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
       if (resetFocus && cellNode) {
         cellNode.focus();
       }
     };
+
+    focusHandlerObj.refocusContent = () =>
+      state.sn.component && typeof state.sn.component.focus === 'function' && state.sn.component.focus();
 
     useEffect(() => {
       if (initialError || !appLayout || !layout) {
@@ -348,7 +360,7 @@ const Cell = forwardRef(
           app,
           selections,
           nebbie,
-          blurCallback: relinquishFocus,
+          focusHandler: focusHandlerObj,
         });
         if (sn) {
           dispatch({ type: 'LOADED', sn, visualization });
@@ -486,7 +498,13 @@ const Cell = forwardRef(
           }}
         >
           {cellNode && layout && state.sn && (
-            <Header layout={layout} sn={state.sn} anchorEl={cellNode} hovering={hovering}>
+            <Header
+              layout={layout}
+              sn={state.sn}
+              anchorEl={cellNode}
+              hovering={hovering}
+              focusHandler={focusHandlerObj}
+            >
               &nbsp;
             </Header>
           )}
