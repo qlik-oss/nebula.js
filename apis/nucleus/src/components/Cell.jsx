@@ -476,14 +476,12 @@ const Cell = forwardRef(
     return (
       <Paper
         style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}
-        tabIndex={keyboardNavigation ? 0 : -1}
         elevation={0}
         square
         className={CellElement.className}
         ref={cellRef}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
-        onKeyDown={keyboardNavigation ? handleKeyDown : null}
       >
         <Grid
           container
@@ -503,6 +501,8 @@ const Cell = forwardRef(
             </Header>
           )}
           <Grid
+            tabIndex={keyboardNavigation ? 0 : -1}
+            onKeyDown={keyboardNavigation ? handleKeyDown : null}
             item
             xs
             style={{
