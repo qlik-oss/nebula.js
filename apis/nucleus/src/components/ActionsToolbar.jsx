@@ -150,18 +150,12 @@ const ActionsToolbar = ({
   const showActions = newActions.length > 0;
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
+  const refocusContent = keyboardNavigation && focusHandler ? focusHandler.refocusContent : null;
   const Actions = (
     <Grid ref={actionsRef} container spacing={0} wrap="nowrap">
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
-        <ActionsGroup
-          ref={moreRef}
-          actions={[moreItem]}
-          first={!showActions}
-          last={!selections.show}
-          refocusContent={keyboardNavigation && focusHandler && focusHandler.refocusContent}
-          addAnchor
-        />
+        <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />
       )}
       {showDivider && (
         <Grid item className={itemSpacing} style={dividerStyle}>
@@ -172,7 +166,7 @@ const ActionsToolbar = ({
         <ActionsGroup
           actions={defaultSelectionActions}
           first={!showActions && !showMore}
-          refocusContent={keyboardNavigation && focusHandler && focusHandler.refocusContent}
+          refocusContent={refocusContent}
           last
         />
       )}
