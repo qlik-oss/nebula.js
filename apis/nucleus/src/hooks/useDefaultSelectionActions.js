@@ -21,9 +21,9 @@ export default function useDefaultSelectionActions({ api, onConfirm = () => {}, 
       type: 'icon-button',
       label: translator.get('Selection.Cancel'),
       enabled: () => api.canCancel(),
-      action: (evt) => {
+      action: () => {
         api.cancel();
-        onCancel(evt);
+        onCancel();
       },
       getSvgIconShape: close,
     },
@@ -32,9 +32,9 @@ export default function useDefaultSelectionActions({ api, onConfirm = () => {}, 
       type: 'icon-button',
       label: translator.get('Selection.Confirm'),
       enabled: () => api.canConfirm(),
-      action: (evt) => {
+      action: () => {
         api.confirm();
-        onConfirm(evt);
+        onConfirm();
       },
       getSvgIconShape: tick,
     },

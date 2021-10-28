@@ -34,7 +34,6 @@ const useStyles = makeStyles((theme) => ({
 
 const ActionsGroup = React.forwardRef(({ actions = [], first = false, last = false, addAnchor = false }, ref) => {
   const { itemSpacing, firstItemSpacing, lastItemSpacing } = useStyles();
-
   return actions.length > 0 ? (
     <Grid item container spacing={0} wrap="nowrap">
       {actions.map((e, ix) => {
@@ -167,14 +166,7 @@ const ActionsToolbar = ({
           <Divider orientation="vertical" />
         </Grid>
       )}
-      {selections.show && (
-        <ActionsGroup
-          actions={defaultSelectionActions}
-          first={!showActions && !showMore}
-          // refocusContent={refocusContent}
-          last
-        />
-      )}
+      {selections.show && <ActionsGroup actions={defaultSelectionActions} first={!showActions && !showMore} last />}
       {showMoreItems && (
         <More
           show={showMoreItems}
