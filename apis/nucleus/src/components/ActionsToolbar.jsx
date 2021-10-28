@@ -32,45 +32,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ActionsGroup = React.forwardRef(
-  ({ actions = [], first = false, last = false, addAnchor = false, refocusContent = null }, ref) => {
-    const { itemSpacing, firstItemSpacing, lastItemSpacing } = useStyles();
-    const tabCallback = (evt, shouldBeShift) => {
-      if (typeof refocusContent === 'function' && evt.key === 'Tab' && evt.shiftKey === shouldBeShift) {
-        evt.preventDefault();
-        evt.stopPropagation();
-        refocusContent();
-      }
-    };
+const ActionsGroup = React.forwardRef(({ actions = [], first = false, last = false, addAnchor = false }, ref) => {
+  const { itemSpacing, firstItemSpacing, lastItemSpacing } = useStyles();
 
-    return actions.length > 0 ? (
-      <Grid item container spacing={0} wrap="nowrap">
-        {actions.map((e, ix) => {
-          let cls = [];
-          let handleTab = null;
-          const isFirstItem = first && ix === 0;
-          const isLastItem = last && actions.length - 1 === ix;
-          if (isFirstItem && !isLastItem) {
-            cls = [firstItemSpacing];
-            handleTab = (evt) => tabCallback(evt, true);
-          }
-          if (isLastItem && !isFirstItem) {
-            cls = [...cls, lastItemSpacing];
-            handleTab = (evt) => tabCallback(evt, false);
-          }
-          if (!isFirstItem && !isLastItem && cls.length === 0) {
-            cls = [itemSpacing];
-          }
-          return (
-            <Grid item key={e.key} className={cls.join(' ').trim()}>
-              <Item key={e.key} item={e} ref={ix === 0 ? ref : null} addAnchor={addAnchor} handleTab={handleTab} />
-            </Grid>
-          );
-        })}
-      </Grid>
-    ) : null;
-  }
-);
+  return actions.length > 0 ? (
+    <Grid item container spacing={0} wrap="nowrap">
+      {actions.map((e, ix) => {
+        let cls = [];
+        const isFirstItem = first && ix === 0;
+        const isLastItem = last && actions.length - 1 === ix;
+        if (isFirstItem && !isLastItem) {
+          cls = [firstItemSpacing];
+        }
+        if (isLastItem && !isFirstItem) {
+          cls = [...cls, lastItemSpacing];
+        }
+        if (!isFirstItem && !isLastItem && cls.length === 0) {
+          cls = [itemSpacing];
+        }
+        return (
+          <Grid item key={e.key} className={cls.join(' ').trim()}>
+            <Item key={e.key} item={e} ref={ix === 0 ? ref : null} addAnchor={addAnchor} />
+          </Grid>
+        );
+      })}
+    </Grid>
+  ) : null;
+});
 
 const popoverStyle = { pointerEvents: 'none' };
 const popoverAnchorOrigin = {
@@ -131,6 +119,24 @@ const ActionsToolbar = ({
     setShowMoreItems(false);
   };
 
+  const getFirstEnabledButton = (buttons) => buttons.find((b) => !b.classList.contains('Mui-disabled'));
+  const tabCallback =
+    // if there keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
+    keyboardNavigation && focusHandler && focusHandler.refocusContent
+      ? (evt) => {
+          if (evt.key !== 'Tab') return;
+          const buttons = actionsRef.current.getElementsByTagName('button');
+          const isTabbingOut =
+            (evt.shiftKey && getFirstEnabledButton([...buttons]) === evt.target) ||
+            (!evt.shiftKey && getFirstEnabledButton([...buttons].reverse()) === evt.target);
+          if (isTabbingOut) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            focusHandler.refocusContent();
+          }
+        }
+      : null;
+
   const moreItem = {
     key: 'more',
     label: translator.get('Menu.More'), // TODO: Add translation
@@ -150,9 +156,8 @@ const ActionsToolbar = ({
   const showActions = newActions.length > 0;
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
-  const refocusContent = keyboardNavigation && focusHandler ? focusHandler.refocusContent : null;
   const Actions = (
-    <Grid ref={actionsRef} container spacing={0} wrap="nowrap">
+    <Grid ref={actionsRef} onKeyDown={tabCallback} container spacing={0} wrap="nowrap">
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
         <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />
@@ -166,7 +171,7 @@ const ActionsToolbar = ({
         <ActionsGroup
           actions={defaultSelectionActions}
           first={!showActions && !showMore}
-          refocusContent={refocusContent}
+          // refocusContent={refocusContent}
           last
         />
       )}
@@ -183,25 +188,16 @@ const ActionsToolbar = ({
     </Grid>
   );
 
-  const focusActionButton = (buttons) => {
-    // Since some buttons may be disabled, find and focus the first non-disabled one
-    for (let i = 0; i < buttons.length; i++) {
-      if (!buttons[i].classList.contains('Mui-disabled')) {
-        buttons[i].focus();
-        break;
-      }
-    }
-  };
-
   if (focusHandler) {
     focusHandler.on('focus_toolbar_first', () => {
       if (!actionsRef.current) return;
-      focusActionButton(actionsRef.current.getElementsByTagName('BUTTON'));
+      const buttons = actionsRef.current.getElementsByTagName('button');
+      getFirstEnabledButton([...buttons]).focus();
     });
     focusHandler.on('focus_toolbar_last', () => {
       if (!actionsRef.current) return;
-      const actionButtons = actionsRef.current.getElementsByTagName('BUTTON');
-      focusActionButton([...actionButtons].reverse());
+      const buttons = actionsRef.current.getElementsByTagName('button');
+      getFirstEnabledButton([...buttons].reverse()).focus();
     });
   }
 
