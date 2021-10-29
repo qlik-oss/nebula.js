@@ -8,7 +8,7 @@ function getHyperCubeData(key, pages, meta) {
   return meta.layout.qHyperCube.qDataPages;
 }
 
-export default function createEnigmaMock(fixture, { overrides } = {}) {
+export default (fixture, { overrides } = {}) => {
   if (!fixture) {
     throw new Error('No "fixture" specified');
   }
@@ -61,8 +61,8 @@ export default function createEnigmaMock(fixture, { overrides } = {}) {
     },
   };
 
-  const appOverrides = overrides({ fixture, base });
+  const appOverrides = overrides ? overrides({ fixture, base }) : {};
   const app = { ...base, ...appOverrides };
 
-  return Promise.resolve({ app, spy });
-}
+  return Promise.resolve({ app, base, spy });
+};
