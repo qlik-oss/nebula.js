@@ -8,6 +8,7 @@ const WebpackDevServer = require('webpack-dev-server');
 
 const snapshooterFn = require('./snapshot-server');
 const snapshotRouter = require('./snapshot-router');
+const fixtureRouter = require('./fixture-router');
 
 module.exports = async ({
   host,
@@ -89,6 +90,7 @@ module.exports = async ({
     onBeforeSetupMiddleware(devServer) {
       const { app } = devServer;
       app.use(snapshotRoute, snapRouter);
+      app.use('/fixture', fixtureRouter({ host, port }));
 
       if (entryWatcher) {
         entryWatcher.addRoutes(app);

@@ -3,8 +3,8 @@ import { embed } from '@nebula.js/stardust';
 import snapshooter from '@nebula.js/snapshooter/client';
 
 import { openApp, params, info as serverInfo } from './connect';
-import runFixture from './run-fixture';
 import initiateWatch from './hot';
+import renderFixture from './renderFixture';
 
 const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
   const nuked = embed.createConfiguration({
@@ -115,73 +115,8 @@ async function renderSnapshot() {
   });
 }
 
-const renderFixture = async () => {
-  const element = document.querySelector('#chart-container');
-  const { theme } = params;
-  const { themes } = await serverInfo;
-  const fixture = runFixture(params.fixture);
-  const { instanceConfig, type, sn, object, snConfig } = fixture();
-  const config = {
-    themes: themes
-      ? themes.map((t) => ({
-          key: t,
-          load: async () => (await fetch(`/theme/${t}`)).json(),
-        }))
-      : undefined,
-    context: {
-      theme,
-      language: params.language,
-      constraints: {},
-    },
-  };
-  const mockedObjects = {};
-  let mockedLayout = {};
-  const createObjectModel = (layout) => ({
-    id: layout.qInfo.qId,
-    getLayout: async () => {
-      const customLayout = object && object.getLayout ? await object.getLayout() : {};
-      mockedLayout = {
-        ...layout,
-        ...(layout.visualization ? customLayout : {}),
-      };
-      return mockedLayout;
-    },
-    getProperties: () => null,
-    on() {},
-    once() {},
-  });
-
-  const mockedApp = {
-    id: `${+new Date()}`,
-    createSessionObject: async (p) => {
-      // eslint-disable-next-line no-param-reassign
-      p.qInfo.qId = p.qInfo.qId || +new Date();
-      mockedObjects[p.qInfo.qId] = {
-        ...p,
-      };
-      return createObjectModel(mockedObjects[p.qInfo.qId]);
-    },
-    getObject: async (id) => createObjectModel(mockedObjects[id]),
-    getAppLayout: async () => ({
-      qTitle: 'app-title',
-    }),
-  };
-
-  const nebbie = embed(mockedApp, {
-    ...config,
-    ...instanceConfig,
-    types: [
-      {
-        name: type,
-        load: async () => sn,
-      },
-    ],
-  });
-  nebbie.render({ type, element, ...snConfig });
-};
-
 if (params.fixture) {
-  renderFixture();
+  renderFixture(params);
 } else if (params.snapshot) {
   renderSnapshot();
 } else {
