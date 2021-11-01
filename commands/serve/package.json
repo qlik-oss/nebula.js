@@ -61,7 +61,7 @@
     "eslint-import-resolver-alias": "1.1.2",
     "eslint-import-resolver-webpack": "0.13.1",
     "monaco-editor": "0.28.1",
-    "monaco-editor-webpack-plugin": "4.2.0",
+    "monaco-editor-webpack-plugin": "5.0.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
     "webpack-cli": "4.8.0"
