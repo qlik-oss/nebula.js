@@ -90,23 +90,44 @@ const ActionsToolbar = ({
     show: false,
     anchorEl: null,
   },
+  focusHandler = null,
 }) => {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
   const { itemSpacing } = useStyles();
-  const { translator } = useContext(InstanceContext);
+  const { translator, keyboardNavigation } = useContext(InstanceContext);
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [moreEnabled, setMoreEnabled] = useState(more.enabled);
   const [moreActions, setMoreActions] = useState(more.actions);
   const [moreAlignTo, setMoreAlignTo] = useState(more.alignTo);
   const moreRef = useRef();
+  const actionsRef = useRef();
   const theme = useTheme();
   const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
+
+  const getFirstEnabledButton = (reverse) => {
+    if (!actionsRef.current) return null;
+    const buttons = actionsRef.current.querySelectorAll('button:not(Mui-disabled)');
+    return reverse ? buttons[buttons.length - 1] : buttons[0];
+  };
 
   useEffect(() => () => setShowMoreItems(false), [popover.show]);
 
   useEffect(() => {
     setMoreEnabled(more.enabled);
   }, [more.enabled]);
+
+  useEffect(() => {
+    if (!focusHandler) return () => {};
+
+    const focusFirst = () => getFirstEnabledButton(false).focus();
+    const focusLast = () => getFirstEnabledButton(true).focus();
+    focusHandler.on('focus_toolbar_first', focusFirst);
+    focusHandler.on('focus_toolbar_last', focusLast);
+    return () => {
+      focusHandler.remove('focus_toolbar_first', focusFirst);
+      focusHandler.remove('focus_toolbar_last', focusLast);
+    };
+  }, []);
 
   const newActions = useMemo(() => actions.filter((a) => !a.hidden), [actions]);
 
@@ -132,11 +153,27 @@ const ActionsToolbar = ({
     setMoreAlignTo(moreRef);
   }
 
+  const tabCallback =
+    // if there keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
+    keyboardNavigation && focusHandler && focusHandler.refocusContent
+      ? (evt) => {
+          if (evt.key !== 'Tab') return;
+          const isTabbingOut =
+            (evt.shiftKey && getFirstEnabledButton(false) === evt.target) ||
+            (!evt.shiftKey && getFirstEnabledButton(true) === evt.target);
+          if (isTabbingOut) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            focusHandler.refocusContent();
+          }
+        }
+      : null;
+
   const showActions = newActions.length > 0;
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
   const Actions = (
-    <Grid container spacing={0} wrap="nowrap">
+    <Grid ref={actionsRef} onKeyDown={tabCallback} container spacing={0} wrap="nowrap">
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
         <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />

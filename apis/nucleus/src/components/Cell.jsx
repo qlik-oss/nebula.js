@@ -15,6 +15,7 @@ import useRect from '../hooks/useRect';
 import useLayout, { useAppLayout } from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
+import eventmixin from '../selections/event-mixin';
 
 /**
  * @interface
@@ -254,7 +255,15 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const loadType = async ({ dispatch, types, visualization, version, model, app, selections, blurCallback, nebbie }) => {
+const focusHandler = {
+  focusToolbarButton(last) {
+    this.emit(last ? 'focus_toolbar_last' : 'focus_toolbar_first');
+  },
+};
+
+eventmixin(focusHandler);
+
+const loadType = async ({ dispatch, types, visualization, version, model, app, selections, nebbie }) => {
   try {
     const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
@@ -262,7 +271,7 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
       app,
       selections,
       nebbie,
-      blurCallback,
+      focusHandler,
     });
     return sn;
   } catch (err) {
@@ -282,7 +291,7 @@ const Cell = forwardRef(
     const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
     const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
     const [appLayout] = useAppLayout(app);
-    const [contentRef, contentRect] = useRect();
+    const [contentRef, contentRect, contentNode] = useRect();
     const [snOptions, setSnOptions] = useState(initialSnOptions);
     const [snPlugins, setSnPlugins] = useState(initialSnPlugins);
     const [selections] = useObjectSelections(app, model);
@@ -317,11 +326,15 @@ const Cell = forwardRef(
       }
     };
 
-    const relinquishFocus = (resetFocus) => {
+    focusHandler.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
-      if (resetFocus && cellNode) {
-        cellNode.focus();
+      if (resetFocus && contentNode) {
+        contentNode.focus();
       }
+    };
+
+    focusHandler.refocusContent = () => {
+      state.sn.component && typeof state.sn.component.focus === 'function' && state.sn.component.focus();
     };
 
     useEffect(() => {
@@ -348,7 +361,6 @@ const Cell = forwardRef(
           app,
           selections,
           nebbie,
-          blurCallback: relinquishFocus,
         });
         if (sn) {
           dispatch({ type: 'LOADED', sn, visualization });
@@ -464,14 +476,12 @@ const Cell = forwardRef(
     return (
       <Paper
         style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}
-        tabIndex={keyboardNavigation ? 0 : -1}
         elevation={0}
         square
         className={CellElement.className}
         ref={cellRef}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
-        onKeyDown={keyboardNavigation ? handleKeyDown : null}
       >
         <Grid
           container
@@ -486,11 +496,13 @@ const Cell = forwardRef(
           }}
         >
           {cellNode && layout && state.sn && (
-            <Header layout={layout} sn={state.sn} anchorEl={cellNode} hovering={hovering}>
+            <Header layout={layout} sn={state.sn} anchorEl={cellNode} hovering={hovering} focusHandler={focusHandler}>
               &nbsp;
             </Header>
           )}
           <Grid
+            tabIndex={keyboardNavigation ? 0 : -1}
+            onKeyDown={keyboardNavigation ? handleKeyDown : null}
             item
             xs
             style={{
