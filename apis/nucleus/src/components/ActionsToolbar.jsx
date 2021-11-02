@@ -123,7 +123,7 @@ const ActionsToolbar = ({
     // if there keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
     keyboardNavigation && focusHandler && focusHandler.refocusContent
       ? (evt) => {
-          if (evt.key !== 'Tab') return;
+          if (evt.key !== 'Tab' || !actionsRef.current) return;
           const buttons = actionsRef.current.getElementsByTagName('button');
           const isTabbingOut =
             (evt.shiftKey && getFirstEnabledButton([...buttons]) === evt.target) ||

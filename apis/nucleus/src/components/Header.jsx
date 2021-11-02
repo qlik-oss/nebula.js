@@ -71,7 +71,11 @@ const Header = ({ layout, sn, anchorEl, hovering, focusHandler }) => {
   const Toolbar = (
     <ActionsToolbar
       show={showToolbar}
-      selections={{ show: showInSelectionActions, api: sn.component.selections }}
+      selections={{
+        show: showInSelectionActions,
+        api: sn.component.selections,
+        onCancel: focusHandler.refocusContent,
+      }}
       actions={actions}
       popover={{ show: showPopoverToolbar, anchorEl }}
       focusHandler={focusHandler}

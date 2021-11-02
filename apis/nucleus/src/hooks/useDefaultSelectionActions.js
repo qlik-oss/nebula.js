@@ -12,15 +12,15 @@ export default function useDefaultSelectionActions({ api, onConfirm = () => {}, 
       key: 'clear',
       type: 'icon-button',
       label: translator.get('Selection.Clear'),
-      enabled: () => api.canClear(),
-      action: () => api.clear(),
+      enabled: api.canClear,
+      action: api.clear,
       getSvgIconShape: clearSelections,
     },
     {
       key: 'cancel',
       type: 'icon-button',
       label: translator.get('Selection.Cancel'),
-      enabled: () => api.canCancel(),
+      enabled: api.canCancel,
       action: () => {
         api.cancel();
         onCancel();
@@ -31,11 +31,12 @@ export default function useDefaultSelectionActions({ api, onConfirm = () => {}, 
       key: 'confirm',
       type: 'icon-button',
       label: translator.get('Selection.Confirm'),
-      enabled: () => api.canConfirm(),
+      enabled: api.canConfirm,
       action: () => {
         api.confirm();
         onConfirm();
       },
+      // keyboardAction: onKeyDown,
       getSvgIconShape: tick,
     },
   ];

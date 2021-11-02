@@ -291,7 +291,7 @@ const Cell = forwardRef(
     const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
     const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
     const [appLayout] = useAppLayout(app);
-    const [contentRef, contentRect] = useRect();
+    const [contentRef, contentRect, contentNode] = useRect();
     const [snOptions, setSnOptions] = useState(initialSnOptions);
     const [snPlugins, setSnPlugins] = useState(initialSnPlugins);
     const [selections] = useObjectSelections(app, model);
@@ -328,8 +328,8 @@ const Cell = forwardRef(
 
     focusHandler.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
-      if (resetFocus && cellNode) {
-        cellNode.focus();
+      if (resetFocus && contentNode) {
+        contentNode.focus();
       }
     };
 

@@ -1069,8 +1069,8 @@ export function useKeyboard() {
   if (!currentComponent.__hooks.accessibility.exitFunction) {
     const exitFunction = function (resetFocus) {
       const acc = this.__hooks.accessibility;
-      if (acc.enabled && acc.active) {
-        blur(this);
+      if (acc.enabled) {
+        acc.active && blur(this);
         focusHandler && focusHandler.blurCallback && focusHandler.blurCallback(resetFocus);
       }
     }.bind(currentComponent);
