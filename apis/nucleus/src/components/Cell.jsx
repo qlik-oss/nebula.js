@@ -93,7 +93,7 @@ const LoadingSn = ({ delay = 750 }) => {
     return () => clearTimeout(handle);
   }, []);
 
-  return showLoading && <Loading />;
+  return showLoading ? <Loading /> : null;
 };
 
 const handleModal = ({ sn, layout, model }) => {
@@ -334,7 +334,7 @@ const Cell = forwardRef(
     };
 
     focusHandler.refocusContent = () => {
-      state.sn.component && typeof state.sn.component.focus === 'function' && state.sn.component.focus();
+      typeof state.sn.component?.focus === 'function' && state.sn.component.focus();
     };
 
     useEffect(() => {

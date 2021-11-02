@@ -1070,7 +1070,7 @@ export function useKeyboard() {
       const acc = this.__hooks.accessibility;
       if (acc.enabled && acc.active) {
         blur(this);
-        focusHandler && focusHandler.blurCallback && focusHandler.blurCallback(resetFocus);
+        focusHandler?.blurCallback && focusHandler.blurCallback(resetFocus);
       }
     }.bind(currentComponent);
 
@@ -1079,7 +1079,7 @@ export function useKeyboard() {
     const focusFunction = function () {
       const acc = this.__hooks.accessibility;
       if (acc.enabled && !acc.active) {
-        focusHandler && focusHandler.blurCallback && focusHandler.blurCallback(false);
+        focusHandler?.blurCallback?.(false);
         focus(this);
       }
     }.bind(currentComponent);
@@ -1089,7 +1089,7 @@ export function useKeyboard() {
     const focusSelectionFunction = function (focusLast) {
       const acc = this.__hooks.accessibility;
       if (acc.enabled) {
-        focusHandler && focusHandler.focusToolbarButton(focusLast);
+        focusHandler?.focusToolbarButton?.(focusLast);
       }
     }.bind(currentComponent);
 
