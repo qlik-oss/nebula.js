@@ -1,3 +1,4 @@
+const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const fixtureServer = require('./fixture-server');
@@ -30,10 +31,10 @@ module.exports = function router({ host, port }) {
     })
   );
 
-  r.use((req, res, next) => {
-    console.log(`${req.method} - ${req.originalUrl} (use)`);
-    next();
-  });
+  // r.use((req, _, next) => {
+  //   console.log(`${req.method} - ${req.originalUrl}`);
+  //   next();
+  // });
 
   r.post('/', (req, res) => {
     try {
@@ -47,6 +48,16 @@ module.exports = function router({ host, port }) {
 
   r.get('/', async (req, res) => {
     res.send({ data: fixtureUrls.decorate(fixtureServer.getFixtures()) });
+  });
+
+  r.get('/fromFile', (req, res) => {
+    const { path } = req.query;
+    if (fs.existsSync(path)) {
+      const fixture = JSON.parse(fs.readFileSync(path));
+      res.json(fixture);
+    } else {
+      res.sendStatus(404);
+    }
   });
 
   r.get('/:key', (req, res) => {

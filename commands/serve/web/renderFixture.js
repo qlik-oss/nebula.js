@@ -3,13 +3,23 @@ import createEnigmaMock from '@nebula.js/enigma-mock';
 import { info as serverInfo } from './connect';
 import initiateWatch from './hot';
 
+/**
+ * Get url to retrieve fixture. Provide either the fixture's key or a path to the fixture file. If providing a key the fixture needs to be uploaded previously.
+ *
+ * @param {string} fixture Fixture key or path to fixture file
+ * @returns Url to fetch fixture
+ */
+function getFixtureUrl(fixture) {
+  const isPath = fixture.endsWith('.json');
+  return isPath ? `/fixture/fromFile?path=${fixture}` : `/fixture/${fixture}`;
+}
+
 export default async (params) => {
-  console.log('renderFixture()', params);
+  const url = getFixtureUrl(params.fixture);
 
   // TODO Handle 404
-  const fixture = await fetch(`/fixture/${params.fixture}`).then((res) => res.json());
+  const fixture = await fetch(url).then((res) => res.json());
   const id = fixture.layout.qInfo.qId;
-  console.log('  -- fixture', fixture);
 
   const element = document.querySelector('#chart-container');
   const { theme, language } = params;
