@@ -1070,7 +1070,7 @@ export function useKeyboard() {
       const acc = this.__hooks.accessibility;
       if (acc.enabled && acc.active) {
         blur(this);
-        focusHandler?.blurCallback && focusHandler.blurCallback(resetFocus);
+        focusHandler?.blurCallback?.(resetFocus);
       }
     }.bind(currentComponent);
 

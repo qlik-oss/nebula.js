@@ -34,7 +34,7 @@ describe('<Header />', () => {
   beforeEach(() => {
     render = async (layout = {}, sn = { component: {}, selectionToolbar: {} }, focusHandler = {}) => {
       await act(async () => {
-        renderer = create(<Header layout={layout} sn={sn} focusHandler={focusHandler} fo />);
+        renderer = create(<Header layout={layout} sn={sn} focusHandler={focusHandler} />);
       });
     };
   });
