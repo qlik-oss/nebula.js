@@ -173,6 +173,7 @@ workflows:
               only:
                 - /v.*/
       - api-governance:
+          context: api-governance
           filters:
             branches:
               # Forked pull requests have CIRCLE_BRANCH set to pull/XXX
