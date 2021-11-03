@@ -117,16 +117,12 @@ const ActionsToolbar = ({
   }, [more.enabled]);
 
   useEffect(() => {
-    if (!focusHandler) return () => {};
+    if (!focusHandler) return;
 
     const focusFirst = () => getFirstEnabledButton(false)?.focus?.();
     const focusLast = () => getFirstEnabledButton(true)?.focus?.();
     focusHandler.on('focus_toolbar_first', focusFirst);
     focusHandler.on('focus_toolbar_last', focusLast);
-    return () => {
-      focusHandler.remove('focus_toolbar_first', focusFirst);
-      focusHandler.remove('focus_toolbar_last', focusLast);
-    };
   }, []);
 
   const newActions = useMemo(() => actions.filter((a) => !a.hidden), [actions]);
@@ -154,7 +150,7 @@ const ActionsToolbar = ({
   }
 
   const tabCallback =
-    // if there keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
+    // if keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
     keyboardNavigation && focusHandler?.refocusContent
       ? (evt) => {
           if (evt.key !== 'Tab') return;
