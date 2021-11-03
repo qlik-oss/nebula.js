@@ -255,15 +255,7 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const focusHandler = {
-  focusToolbarButton(last) {
-    this.emit(last ? 'focus_toolbar_last' : 'focus_toolbar_first');
-  },
-};
-
-eventmixin(focusHandler);
-
-const loadType = async ({ dispatch, types, visualization, version, model, app, selections, nebbie }) => {
+const loadType = async ({ dispatch, types, visualization, version, model, app, selections, nebbie, focusHandler }) => {
   try {
     const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
@@ -297,6 +289,26 @@ const Cell = forwardRef(
     const [selections] = useObjectSelections(app, model);
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
+    const focusHandler = useRef({
+      focusToolbarButton(last) {
+        // eslint-disable-next-line react/no-this-in-sfc
+        this.emit(last ? 'focus_toolbar_last' : 'focus_toolbar_first');
+      },
+    });
+
+    useEffect(() => {
+      eventmixin(focusHandler.current);
+    }, []);
+
+    focusHandler.current.blurCallback = (resetFocus) => {
+      halo.root.toggleFocusOfCells();
+      if (resetFocus && contentNode) {
+        contentNode.focus();
+      }
+    };
+    focusHandler.current.refocusContent = () => {
+      typeof state.sn.component?.focus === 'function' && state.sn.component.focus();
+    };
 
     const handleOnMouseEnter = () => {
       if (hoveringDebouncer.current.leave) {
@@ -326,17 +338,6 @@ const Cell = forwardRef(
       }
     };
 
-    focusHandler.blurCallback = (resetFocus) => {
-      halo.root.toggleFocusOfCells();
-      if (resetFocus && contentNode) {
-        contentNode.focus();
-      }
-    };
-
-    focusHandler.refocusContent = () => {
-      typeof state.sn.component?.focus === 'function' && state.sn.component.focus();
-    };
-
     useEffect(() => {
       if (initialError || !appLayout || !layout) {
         return undefined;
@@ -361,6 +362,7 @@ const Cell = forwardRef(
           app,
           selections,
           nebbie,
+          focusHandler: focusHandler.current,
         });
         if (sn) {
           dispatch({ type: 'LOADED', sn, visualization });
@@ -496,7 +498,13 @@ const Cell = forwardRef(
           }}
         >
           {cellNode && layout && state.sn && (
-            <Header layout={layout} sn={state.sn} anchorEl={cellNode} hovering={hovering} focusHandler={focusHandler}>
+            <Header
+              layout={layout}
+              sn={state.sn}
+              anchorEl={cellNode}
+              hovering={hovering}
+              focusHandler={focusHandler.current}
+            >
               &nbsp;
             </Header>
           )}
