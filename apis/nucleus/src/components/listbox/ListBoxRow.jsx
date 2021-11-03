@@ -114,7 +114,7 @@ export default function Row({ index, style, data }) {
       className={classArr.join(' ').trim()}
       style={style}
       onClick={onClick}
-      role="row"
+      role="button"
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
     >
