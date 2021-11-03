@@ -115,7 +115,7 @@ export default function Column({ index, style, data }) {
       style={style}
       onClick={onClick}
       alignItems="center"
-      role="row"
+      role="button"
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
     >
