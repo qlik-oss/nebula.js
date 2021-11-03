@@ -104,10 +104,10 @@ const ActionsToolbar = ({
   const theme = useTheme();
   const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
 
-  const getFirstEnabledButton = (reverse) => {
+  const getEnabledButton = (last) => {
     if (!actionsRef.current) return null;
-    const buttons = actionsRef.current.querySelectorAll('button:not(Mui-disabled)');
-    return reverse ? buttons[buttons.length - 1] : buttons[0];
+    const buttons = actionsRef.current.querySelectorAll('button:not(.Mui-disabled)');
+    return buttons[last ? buttons.length - 1 : 0];
   };
 
   useEffect(() => () => setShowMoreItems(false), [popover.show]);
@@ -119,8 +119,8 @@ const ActionsToolbar = ({
   useEffect(() => {
     if (!focusHandler) return;
 
-    const focusFirst = () => getFirstEnabledButton(false)?.focus?.();
-    const focusLast = () => getFirstEnabledButton(true)?.focus?.();
+    const focusFirst = () => getEnabledButton(false)?.focus?.();
+    const focusLast = () => getEnabledButton(true)?.focus?.();
     focusHandler.on('focus_toolbar_first', focusFirst);
     focusHandler.on('focus_toolbar_last', focusLast);
   }, []);
@@ -155,8 +155,8 @@ const ActionsToolbar = ({
       ? (evt) => {
           if (evt.key !== 'Tab') return;
           const isTabbingOut =
-            (evt.shiftKey && getFirstEnabledButton(false) === evt.target) ||
-            (!evt.shiftKey && getFirstEnabledButton(true) === evt.target);
+            (evt.shiftKey && getEnabledButton(false) === evt.target) ||
+            (!evt.shiftKey && getEnabledButton(true) === evt.target);
           if (isTabbingOut) {
             evt.preventDefault();
             evt.stopPropagation();
