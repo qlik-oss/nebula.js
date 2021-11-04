@@ -130,8 +130,9 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          name: Login for Docker
-          command: echo $DOCKER_TOKEN | docker login -u "$DOCKER_USER" --password-stdin
+          name: Log into Github Docker Registry
+          command: |
+              echo $QLIK_DOCKER_DEV_PASSWORD | docker login -u $QLIK_DOCKER_DEV_USERNAME --password-stdin $QLIK_DOCKER_DEV_REGISTRY
       - run:
           name: Create version.txt
           command: |
