@@ -20,7 +20,13 @@ const MoreItem = ({ item, onActionClick = () => {} }) => {
     onActionClick();
   };
   return !hidden ? (
-    <MenuItem title={item.label} onClick={handleClick} disabled={disabled}>
+    <MenuItem
+      title={item.label}
+      onClick={handleClick}
+      disabled={disabled}
+      aria-expanded="true"
+      aria-controls="more-menu-list-expand"
+    >
       {hasSvgIconShape && <ListItemIcon className={icon}>{SvgIcon(item.getSvgIconShape())}</ListItemIcon>}
       <Typography noWrap>{item.label}</Typography>
     </MenuItem>
@@ -39,6 +45,7 @@ const More = React.forwardRef(
         <Popover
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...popoverProps}
+          id="more-menu-list-expand"
           onClose={onCloseOrActionClick}
           ref={ref}
           open={show}
