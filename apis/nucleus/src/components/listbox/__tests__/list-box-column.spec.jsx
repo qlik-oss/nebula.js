@@ -35,7 +35,7 @@ describe('<ListBoxColumn />', () => {
     expect(type.props.container).to.equal(true);
     expect(type.props.spacing).to.equal(0);
     expect(type.props.style).to.deep.equal({});
-    expect(type.props.role).to.equal('button');
+    expect(type.props.role).to.equal('row');
     expect(type.props.className).to.equal('');
     expect(type.props.onClick.callCount).to.equal(0);
 
