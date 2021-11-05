@@ -9,33 +9,36 @@ import initiateWatch from './hot';
  * @param {string} fixture Fixture key or path to fixture file
  * @returns Url to fetch fixture
  */
-function getFixtureUrl(fixture) {
-  const isPath = fixture.endsWith('.json');
-  return isPath ? `/fixture/fromFile?path=${fixture}` : `/fixture/${fixture}`;
+function getFixtureUrl(fixtureParam) {
+  const isPath = fixtureParam.endsWith('.json');
+  return isPath ? `/fixture/fromFile?path=${fixtureParam}` : `/fixture/${fixtureParam}`;
 }
 
-export default async (params) => {
-  const url = getFixtureUrl(params.fixture);
+async function fetchFixture(fixtureParam) {
+  const url = getFixtureUrl(fixtureParam);
 
   // TODO Handle 404
-  const fixture = await fetch(url).then((res) => res.json());
-  const id = fixture.layout.qInfo.qId;
+  return fetch(url).then((res) => res.json());
+}
 
+export default async ({ fixture: fixtureParam, theme, language }) => {
+  const fixture = await fetchFixture(fixtureParam);
+  if (!fixture.layout.qInfo.qId) {
+    throw new Error('Fixture is missing "layout.qInfo.qId"');
+  }
   const element = document.querySelector('#chart-container');
-  const { theme, language } = params;
   const info = await serverInfo;
+  const { themes = [] } = info;
   const { name } = info.supernova;
 
   // Used to load module to test
   initiateWatch(info);
 
   const config = {
-    themes: info.themes
-      ? info.themes.map((t) => ({
-          key: t,
-          load: async () => (await fetch(`/theme/${t}`)).json(),
-        }))
-      : undefined,
+    themes: themes.map((t) => ({
+      key: t,
+      load: async () => (await fetch(`/theme/${t}`)).json(),
+    })),
     context: {
       theme,
       language,
@@ -43,8 +46,7 @@ export default async (params) => {
     },
   };
 
-  const enigmaMock = await createEnigmaMock(fixture);
-  const { app } = enigmaMock;
+  const { app } = await createEnigmaMock(fixture);
   const nebbie = embed(app, {
     ...config,
     types: [
@@ -56,6 +58,6 @@ export default async (params) => {
   });
 
   window.onHotChange(name, async () => {
-    nebbie.render({ type: name, element, id });
+    nebbie.render({ type: name, element, id: fixture.layout.qInfo.qId });
   });
 };
