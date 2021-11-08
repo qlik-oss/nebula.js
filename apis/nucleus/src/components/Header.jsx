@@ -74,8 +74,7 @@ const Header = ({ layout, sn, anchorEl, hovering, focusHandler }) => {
       selections={{
         show: showInSelectionActions,
         api: sn.component.selections,
-        onConfirm: focusHandler.refocusContent,
-        onCancel: focusHandler.refocusContent,
+        onKeyDeactivate: focusHandler.refocusContent,
       }}
       actions={actions}
       popover={{ show: showPopoverToolbar, anchorEl }}

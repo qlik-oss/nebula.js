@@ -5,7 +5,12 @@ import { tick } from '@nebula.js/ui/icons/tick';
 import { clearSelections } from '@nebula.js/ui/icons/clear-selections';
 import InstanceContext from '../contexts/InstanceContext';
 
-export default function useDefaultSelectionActions({ api, onConfirm = () => {}, onCancel = () => {} }) {
+export default function useDefaultSelectionActions({
+  api,
+  onConfirm = () => {},
+  onCancel = () => {},
+  onKeyDeactivate = () => {},
+}) {
   const { translator } = useContext(InstanceContext);
   return [
     {
@@ -25,6 +30,11 @@ export default function useDefaultSelectionActions({ api, onConfirm = () => {}, 
         onCancel();
         api.cancel();
       },
+      keyboardAction: (e) => {
+        onKeyDeactivate(e);
+        onCancel();
+        api.cancel();
+      },
       getSvgIconShape: close,
     },
     {
@@ -33,6 +43,11 @@ export default function useDefaultSelectionActions({ api, onConfirm = () => {}, 
       label: translator.get('Selection.Confirm'),
       enabled: () => api.canConfirm(),
       action: () => {
+        onConfirm();
+        api.confirm();
+      },
+      keyboardAction: (e) => {
+        onKeyDeactivate(e);
         onConfirm();
         api.confirm();
       },
