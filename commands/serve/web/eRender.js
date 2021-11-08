@@ -4,7 +4,7 @@ import snapshooter from '@nebula.js/snapshooter/client';
 
 import { openApp, params, info as serverInfo } from './connect';
 import initiateWatch from './hot';
-import renderFixture from './renderFixture';
+import renderFixture from './render-fixture';
 
 const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
   const nuked = embed.createConfiguration({

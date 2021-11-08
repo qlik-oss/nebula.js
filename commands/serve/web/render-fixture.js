@@ -3,29 +3,16 @@ import createEnigmaMock from '@nebula.js/enigma-mock';
 import { info as serverInfo } from './connect';
 import initiateWatch from './hot';
 
-/**
- * Get url to retrieve fixture. Provide either the fixture's key or a path to the fixture file. If providing a key the fixture needs to be uploaded previously.
- *
- * @param {string} fixture Fixture key or path to fixture file
- * @returns Url to fetch fixture
- */
-function getFixtureUrl(fixtureParam) {
-  const isPath = fixtureParam.endsWith('.json');
-  return isPath ? `/fixture/fromFile?path=${fixtureParam}` : `/fixture/${fixtureParam}`;
-}
-
-async function fetchFixture(fixtureParam) {
-  const url = getFixtureUrl(fixtureParam);
-
-  // TODO Handle 404
-  return fetch(url).then((res) => res.json());
+async function getFixture(fixturePath) {
+  if (fixturePath.endsWith('.js')) {
+    return import(/* webpackIgnore: true */ `/fixture/loadScript?path=${fixturePath}`).then((module) => module.default);
+  }
+  return fetch(`fixture/loadJson?path=${fixturePath}`).then((res) => res.json());
 }
 
 export default async ({ fixture: fixtureParam, theme, language }) => {
-  const fixture = await fetchFixture(fixtureParam);
-  if (!fixture.layout.qInfo.qId) {
-    throw new Error('Fixture is missing "layout.qInfo.qId"');
-  }
+  const fixture = await getFixture(fixtureParam);
+  console.log('fixture', fixture);
   const element = document.querySelector('#chart-container');
   const info = await serverInfo;
   const { themes = [] } = info;
@@ -57,7 +44,13 @@ export default async ({ fixture: fixtureParam, theme, language }) => {
     ],
   });
 
+  console.log('qId', { app, getObject: app.getObject() });
+  const object = await app.getObject();
+  const layout = await object.getLayout();
+  const { qId } = layout.qInfo;
+  console.log({ object, layout, qId });
+
   window.onHotChange(name, async () => {
-    nebbie.render({ type: name, element, id: fixture.layout.qInfo.qId });
+    nebbie.render({ type: name, element, id: qId });
   });
 };

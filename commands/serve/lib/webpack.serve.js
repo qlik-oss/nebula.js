@@ -90,7 +90,7 @@ module.exports = async ({
     onBeforeSetupMiddleware(devServer) {
       const { app } = devServer;
       app.use(snapshotRoute, snapRouter);
-      app.use('/fixture', fixtureRouter({ host, port }));
+      app.use('/fixture', fixtureRouter());
 
       if (entryWatcher) {
         entryWatcher.addRoutes(app);
