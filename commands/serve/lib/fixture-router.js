@@ -30,24 +30,5 @@ module.exports = function router() {
     }
   });
 
-  r.get('/loadJson', (req, res) => {
-    const { path } = req.query;
-    try {
-      if (!path.endsWith('.json')) {
-        res.status(400).json({ error: 'Specify a file with extension ".json"' });
-        return;
-      }
-      if (fs.existsSync(path)) {
-        const fixture = fs.readFileSync(path);
-        res.json(JSON.parse(fixture));
-      } else {
-        res.sendStatus(404);
-      }
-    } catch (e) {
-      console.error(e);
-      res.sendStatus(500);
-    }
-  });
-
   return r;
 };

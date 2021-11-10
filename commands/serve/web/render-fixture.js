@@ -4,15 +4,14 @@ import { info as serverInfo } from './connect';
 import initiateWatch from './hot';
 
 async function getFixture(fixturePath) {
-  if (fixturePath.endsWith('.js')) {
-    return import(/* webpackIgnore: true */ `/fixture/loadScript?path=${fixturePath}`).then((module) => module.default);
+  if (!/.+\.js$/i.test(fixturePath)) {
+    throw new Error('Invalid file type of fixture. Specify a javascript file with extension ".js".');
   }
-  return fetch(`fixture/loadJson?path=${fixturePath}`).then((res) => res.json());
+  return import(/* webpackIgnore: true */ `/fixture/loadScript?path=${fixturePath}`).then((module) => module.default);
 }
 
 export default async ({ fixture: fixtureParam, theme, language }) => {
   const fixture = await getFixture(fixtureParam);
-  console.log('fixture', fixture);
   const element = document.querySelector('#chart-container');
   const info = await serverInfo;
   const { themes = [] } = info;
@@ -44,11 +43,9 @@ export default async ({ fixture: fixtureParam, theme, language }) => {
     ],
   });
 
-  console.log('qId', { app, getObject: app.getObject() });
   const object = await app.getObject();
   const layout = await object.getLayout();
   const { qId } = layout.qInfo;
-  console.log({ object, layout, qId });
 
   window.onHotChange(name, async () => {
     nebbie.render({ type: name, element, id: qId });
