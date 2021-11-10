@@ -44,6 +44,29 @@ function GetObjectMock(fixture) {
   };
 }
 
+/**
+ * Mocks Engima functionality. It accepts a fixture as input argument and returns the mocked Enigma app and a spy.
+ *
+ * The fixture is a JS object with a number of properties. The property names correlates to the name of the functions available in Enigma. For example the property `getLayout` in the fixture is used to define how the `enigma.getObject().getLayout()`. Any property may be added to the fixture (just make sure it exists and behaves as in Enigma!).
+ *
+ * Each property value in the fixture is either fixed (string / JS object / boolean / number) or a function. Arguments are forwarded to the function. For example, this can be used to return different hypercube data when scrolling in the chart.
+ *
+ * Example:
+ * ```js
+ * const fixture = {
+ *   getLayout() {
+ *     return {
+ *       qInfo: {
+ *         qId: 'qqj4zx',
+ *         qType: 'sn-grid-chart'
+ *       },
+ *       ...
+ *     }
+ *   }
+ * };
+ * const { app } = await createEnigmaApp(fixture);
+ * ```
+ */
 export default (fixture) => {
   if (!fixture) {
     throw new Error('No "fixture" specified');
