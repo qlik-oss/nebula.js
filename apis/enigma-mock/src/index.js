@@ -23,24 +23,50 @@ function GetObjectMock(fixture) {
     ...rest
   } = fixture;
 
+  return () =>
+    Promise.resolve({
+      id: getPropValue(id, { defaultValue: `object - ${+Date.now()}` }),
+      session: getPropValue(session, { defaultValue: true }),
+      on: () => {},
+      once: () => {},
+      getEffectiveProperties: getPropFn(getEffectiveProperties, { defaultValue: {} }),
+      getLayout: getPropFn(getLayout),
+      selectHyperCubeValues: getPropFn(selectHyperCubeValues, { defaultValue: true }),
+      rangeSelectHyperCubeValues: getPropFn(rangeSelectHyperCubeValues, { defaultValue: true }),
+      beginSelections: getPropFn(beginSelections, { defaultValue: true }),
+      resetMadeSelections: getPropFn(resetMadeSelections, { defaultValue: true }),
+      getHyperCubeTreeData: getPropFn(getHyperCubeTreeData, { defaultValue: [] }),
+      getHyperCubeData: getPropFn(getHyperCubeData, { defaultValue: [] }),
+      getHyperCubeReducedData: getPropFn(getHyperCubeReducedData),
+      getHyperCubeContinuousData: getPropFn(getHyperCubeContinuousData),
+      getHyperCubeStackData: getPropFn(getHyperCubeStackData),
+      ...rest,
+    });
+}
+
+function CreateSessionObjectMock() {
+  return (props) =>
+    Promise.resolve({
+      on: () => {},
+      once: () => {},
+      getLayout: () => Promise.resolve({}),
+      id: props?.qInfo?.qId ? props.qInfo.qId : `sel - ${+Date.now()}`,
+      ...props,
+    });
+}
+
+function SessionMock() {
   return {
-    id: getPropValue(id, { defaultValue: `object - ${+Date.now()}` }),
-    session: getPropValue(session, { defaultValue: true }),
-    on: () => {},
-    once: () => {},
-    getEffectiveProperties: getPropFn(getEffectiveProperties, { defaultValue: {} }),
-    getLayout: getPropFn(getLayout),
-    selectHyperCubeValues: getPropFn(selectHyperCubeValues, { defaultValue: true }),
-    rangeSelectHyperCubeValues: getPropFn(rangeSelectHyperCubeValues, { defaultValue: true }),
-    beginSelections: getPropFn(beginSelections, { defaultValue: true }),
-    resetMadeSelections: getPropFn(resetMadeSelections, { defaultValue: true }),
-    getHyperCubeTreeData: getPropFn(getHyperCubeTreeData, { defaultValue: [] }),
-    getHyperCubeData: getPropFn(getHyperCubeData, { defaultValue: [] }),
-    getHyperCubeReducedData: getPropFn(getHyperCubeReducedData),
-    getHyperCubeContinuousData: getPropFn(getHyperCubeContinuousData),
-    getHyperCubeStackData: getPropFn(getHyperCubeStackData),
-    ...rest,
+    getObjectApi() {
+      return Promise.resolve({
+        id: `sessapi - ${+Date.now()}`,
+      });
+    },
   };
+}
+
+function GetAppLayoutMock() {
+  return () => Promise.resolve({ id: 'app-layout' });
 }
 
 /**
@@ -71,32 +97,17 @@ export default (fixture) => {
     throw new Error('No "fixture" specified');
   }
 
-  const getObjectMock = new GetObjectMock(fixture);
+  const session = new SessionMock();
+  const createSessionObject = new CreateSessionObjectMock();
+  const getObject = new GetObjectMock(fixture);
+  const getAppLayout = new GetAppLayoutMock();
 
   const app = {
     id: `app - ${+Date.now()}`,
-    session: {
-      getObjectApi() {
-        return Promise.resolve({
-          id: `sessapi - ${+Date.now()}`,
-        });
-      },
-    },
-    createSessionObject(props) {
-      return Promise.resolve({
-        on: () => {},
-        once: () => {},
-        getLayout: () => Promise.resolve({}),
-        id: props?.qInfo?.qId ? props.qInfo.qId : `sel - ${+Date.now()}`,
-        ...props,
-      });
-    },
-    getObject() {
-      return Promise.resolve(getObjectMock);
-    },
-    getAppLayout() {
-      return Promise.resolve({ id: 'app-layout' });
-    },
+    session,
+    createSessionObject,
+    getObject,
+    getAppLayout,
   };
 
   return Promise.resolve({ app });
