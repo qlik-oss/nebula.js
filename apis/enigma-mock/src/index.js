@@ -1,28 +1,5 @@
 import spy from './spy';
-
-/**
- * Get value for a fixture property.
- *
- * The value is either static (e.g. pass a string / object / similar) or dynamic when passing a function.
- *
- * It falls back to the default value in case the fixture has no value specified.
- *
- * @param {any} value Fixture value. Either a static value (string / object / boolean / ...) or a function invoked when the value is needed.
- * @param {object} options Options.
- * @param {Array<any>} options.args Arguments used to invoke value function
- * @param {any} options.defaultValu Default value in case value in fixture is undefined.
- *
- * @returns The value.
- */
-const getValue = (value, { args = [], defaultValue } = {}) => {
-  if (typeof value === 'function') {
-    return value(...args);
-  }
-  if (value !== undefined) {
-    return value;
-  }
-  return defaultValue;
-};
+import { getPropValue, getPropFn } from './prop';
 
 function GetObjectMock(fixture) {
   // TODO Add more validations
@@ -30,27 +7,40 @@ function GetObjectMock(fixture) {
     throw new Error('Fixture is missing "getLayout"');
   }
 
+  const {
+    id,
+    session,
+    getEffectiveProperties,
+    getLayout,
+    selectHyperCubeValues,
+    rangeSelectHyperCubeValues,
+    beginSelections,
+    resetMadeSelections,
+    getHyperCubeTreeData,
+    getHyperCubeData,
+    getHyperCubeReducedData,
+    getHyperCubeContinuousData,
+    getHyperCubeStackData,
+    ...rest
+  } = fixture;
+
   return {
-    id: getValue(fixture.id, { defaultValue: `object - ${+Date.now()}` }),
+    id: getPropValue(id, { defaultValue: `object - ${+Date.now()}` }),
+    session: getPropValue(session, { defaultValue: true }),
     on: () => {},
     once: () => {},
-    getEffectiveProperties: (...args) =>
-      Promise.resolve(getValue(fixture.getEffectiveProperties, { args, defaultValue: {} })),
-    session: getValue(fixture.session, { defaultValue: true }),
-    getLayout: (...args) => Promise.resolve(getValue(fixture.getLayout, args)),
-    selectHyperCubeValues: (...args) =>
-      Promise.resolve(getValue(fixture.selectHyperCubeValues, { args, defaultValue: true })),
-    rangeSelectHyperCubeValues: (...args) =>
-      Promise.resolve(getValue(fixture.rangeSelectHyperCubeValues, { args, defaultValue: true })),
-    beginSelections: (...args) => Promise.resolve(getValue(fixture.beginSelections, { args, defaultValue: true })),
-    resetMadeSelections: (...args) =>
-      Promise.resolve(getValue(fixture.resetMadeSelections, { args, defaultValue: true })),
-    getHyperCubeTreeData: (...args) =>
-      Promise.resolve(getValue(fixture.getHyperCubeTreeData, { args, defaultValue: [] })),
-    getHyperCubeData: (...args) => Promise.resolve(getValue(fixture.getHyperCubeData, { args, defaultValue: [] })),
-    getHyperCubeReducedData: (...args) => Promise.resolve(getValue(fixture.getHyperCubeReducedData, { args })),
-    getHyperCubeContinuousData: (...args) => Promise.resolve(getValue(fixture.getHyperCubeContinuousData, { args })),
-    getHyperCubeStackData: (...args) => Promise.resolve(getValue(fixture.getHyperCubeStackData, { args })),
+    getEffectiveProperties: getPropFn(getEffectiveProperties, { defaultValue: {} }),
+    getLayout: getPropFn(getLayout),
+    selectHyperCubeValues: getPropFn(selectHyperCubeValues, { defaultValue: true }),
+    rangeSelectHyperCubeValues: getPropFn(rangeSelectHyperCubeValues, { defaultValue: true }),
+    beginSelections: getPropFn(beginSelections, { defaultValue: true }),
+    resetMadeSelections: getPropFn(resetMadeSelections, { defaultValue: true }),
+    getHyperCubeTreeData: getPropFn(getHyperCubeTreeData, { defaultValue: [] }),
+    getHyperCubeData: getPropFn(getHyperCubeData, { defaultValue: [] }),
+    getHyperCubeReducedData: getPropFn(getHyperCubeReducedData),
+    getHyperCubeContinuousData: getPropFn(getHyperCubeContinuousData),
+    getHyperCubeStackData: getPropFn(getHyperCubeStackData),
+    ...rest,
   };
 }
 
@@ -75,7 +65,7 @@ export default (fixture) => {
         on: () => {},
         once: () => {},
         getLayout: () => Promise.resolve({}),
-        id: props && props.qInfo && props.qInfo.qId ? props.qInfo.qId : `sel - ${+Date.now()}`,
+        id: props?.qInfo?.qId ? props.qInfo.qId : `sel - ${+Date.now()}`,
         ...props,
       });
     },
