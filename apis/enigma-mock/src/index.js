@@ -1,4 +1,3 @@
-import spy from './spy';
 import { getPropValue, getPropFn } from './prop';
 
 function GetObjectMock(fixture) {
@@ -93,12 +92,12 @@ export default (fixture) => {
       });
     },
     getObject() {
-      return Promise.resolve(spy(getObjectMock));
+      return Promise.resolve(getObjectMock);
     },
     getAppLayout() {
       return Promise.resolve({ id: 'app-layout' });
     },
   };
 
-  return Promise.resolve({ app, spy });
+  return Promise.resolve({ app });
 };
