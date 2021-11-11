@@ -1,5 +1,5 @@
 import { embed } from '@nebula.js/stardust';
-import createEnigmaMock from '@nebula.js/enigma-mock';
+import EnigmaMock from '@nebula.js/enigma-mock';
 import { info as serverInfo } from './connect';
 import initiateWatch from './hot';
 
@@ -32,7 +32,7 @@ export default async ({ fixture: fixtureParam, theme, language }) => {
     },
   };
 
-  const { app } = await createEnigmaMock(fixture);
+  const { app } = await EnigmaMock.fromFixture(fixture);
   const nebbie = embed(app, {
     ...config,
     types: [
