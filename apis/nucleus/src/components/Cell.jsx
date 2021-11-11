@@ -307,7 +307,7 @@ const Cell = forwardRef(
       }
     };
     focusHandler.current.refocusContent = () => {
-      typeof state.sn.component?.focus === 'function' && state.sn.component.focus();
+      state.sn.component && typeof state.sn.component.focus === 'function' && state.sn.component.focus();
     };
 
     const handleOnMouseEnter = () => {

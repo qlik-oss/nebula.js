@@ -107,7 +107,7 @@ function createWithHooks(generator, opts, galaxy) {
           changed = true;
         }
 
-        if (r.context?.focusHandler) {
+        if (r.context && r.context.focusHandler) {
           // Needs to be added here due to how the client renders
           this.context.focusHandler = r.context.focusHandler;
         }

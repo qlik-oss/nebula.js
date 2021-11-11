@@ -1,14 +1,10 @@
 {
   "root": true,
-  "parser": "@babel/eslint-parser",
   "env": {
     "browser": true
   },
   "parserOptions": {
-    "sourceType": "module",
-    "babelOptions": {
-      "presets": ["@babel/preset-react"]
-    }
+    "sourceType": "module"
   },
   "extends": ["airbnb", "prettier"],
   "plugins": ["prettier"],

@@ -3,22 +3,6 @@ module.exports = {
     timeout: 30000,
   },
   mocks: [],
-  babel: {
-    options: {
-      presets: [
-        [
-          '@babel/preset-env',
-          {
-            targets: {
-              node: 'current',
-            },
-          },
-        ],
-        '@babel/preset-react',
-      ],
-      // plugins: ['@babel/plugin-syntax-dynamic-import'],
-    },
-  },
   nyc: {
     exclude: [
       '**/commands/**',
