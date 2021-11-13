@@ -32,7 +32,7 @@ jobs:
         command: |
           -S AcceptEULA=yes
           -S SSEPlugin=sse,localhost:50051
-      - image: browserless/chrome:1.48.0-puppeteer-1.20.0
+      - image: browserless/chrome:1.49.1-puppeteer-1.20.0
 
     working_directory: ~/project
 
