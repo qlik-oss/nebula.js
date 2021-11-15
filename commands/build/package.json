@@ -21,19 +21,19 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "7.15.7",
-    "@babel/core": "7.15.5",
-    "@babel/plugin-transform-react-jsx": "7.14.9",
-    "@babel/preset-env": "7.15.6",
+    "@babel/cli": "7.16.0",
+    "@babel/core": "7.16.0",
+    "@babel/plugin-transform-react-jsx": "7.16.0",
+    "@babel/preset-env": "7.16.0",
     "@rollup/plugin-commonjs": "20.0.0",
     "@rollup/plugin-json": "4.1.0",
-    "@rollup/plugin-node-resolve": "13.0.5",
+    "@rollup/plugin-node-resolve": "13.0.6",
     "@rollup/plugin-replace": "3.0.0",
-    "@rollup/plugin-typescript": "8.2.5",
+    "@rollup/plugin-typescript": "8.3.0",
     "chalk": "4.1.2",
     "extend": "3.0.2",
-    "postcss": "^8.3.8",
-    "rollup": "2.57.0",
+    "postcss": "^8.3.11",
+    "rollup": "2.60.0",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-postcss": "4.0.1",
     "rollup-plugin-sourcemaps": "0.6.3",
@@ -42,6 +42,6 @@
   },
   "devDependencies": {
     "tslib": "*",
-    "typescript": ">=3.7.0"
+    "typescript": ">=3.9.10"
   }
 }
