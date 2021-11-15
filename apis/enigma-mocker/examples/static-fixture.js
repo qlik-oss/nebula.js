@@ -541,6 +541,6 @@ const fixture = {
 };
 
 (async () => {
-  const { app } = await EnigmaMocker.fromFixture(fixture);
+  const app = await EnigmaMocker.fromFixture(fixture);
   // const nebbie = embed(app, { ... config });
 })();
