@@ -27,7 +27,7 @@ aliases:
 jobs:
   build:
     docker:
-      - image: circleci/node:14.14.0
+      - image: circleci/node:14.18.1
       - image: qlikcore/engine:12.1126.0
         command: |
           -S AcceptEULA=yes
