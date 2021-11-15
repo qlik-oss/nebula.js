@@ -1,5 +1,5 @@
 import { embed } from '@nebula.js/stardust';
-import EnigmaMock from '@nebula.js/enigma-mock';
+import EnigmaMock from '@nebula.js/enigma-mocker';
 import { info as serverInfo } from './connect';
 import initiateWatch from './hot';
 

@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import EnigmaMock from '..';
+import EnigmaMocker from '..';
 
 function Data() {
   const entries = [];
@@ -1675,6 +1675,6 @@ const fixture = {
 };
 
 (async () => {
-  const { app } = await EnigmaMock.fromFixture(fixture);
+  const { app } = await EnigmaMocker.fromFixture(fixture);
   // const nebbie = embed(app, { ... config });
 })();

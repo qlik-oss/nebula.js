@@ -14,7 +14,7 @@ module.exports = {
       '**/apis/theme/index.js',
       '**/apis/conversion/index.js',
       '**/apis/test-utils/index.js',
-      '**/apis/enigma-mock/index.js',
+      '**/apis/enigma-mocker/index.js',
       '**/packages/ui/icons/**/*.js', // Exclude the defined icons but test the `<SvgIcon />`
     ],
   },

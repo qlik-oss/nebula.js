@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import EnigmaMock from '../src';
+import EnigmaMocker from '../src';
 
 const fixture = {
   getLayout: {
@@ -541,6 +541,6 @@ const fixture = {
 };
 
 (async () => {
-  const { app } = await EnigmaMock.fromFixture(fixture);
+  const { app } = await EnigmaMocker.fromFixture(fixture);
   // const nebbie = embed(app, { ... config });
 })();

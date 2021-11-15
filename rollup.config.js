@@ -130,7 +130,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
         babelrc: false,
         include: [
           '/**/apis/conversion/**',
-          '/**/apis/enigma-mock/**',
+          '/**/apis/enigma-mocker/**',
           '/**/apis/locale/**',
           '/**/apis/nucleus/**',
           '/**/apis/snapshooter/**',

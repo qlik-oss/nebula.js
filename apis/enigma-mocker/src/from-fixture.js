@@ -106,7 +106,7 @@ function GetAppLayoutMock() {
  *     }
  *   }
  * };
- * const { app } = await EnigmaMock.fromFixture(fixture);
+ * const { app } = await EnigmaMocker.fromFixture(fixture);
  * ```
  */
 export default (fixture) => {
