@@ -1674,6 +1674,10 @@ const fixture = {
   },
 };
 
-const { app } = await EnigmaMock.fromFixture(fixture);
+async function getEnigmaMock() {
+  const { app } = await EnigmaMock.fromFixture(fixture);
+  return app;
+}
 
+const app = await getEnigmaMock();
 // const nebbie = embed(app, { ... config });

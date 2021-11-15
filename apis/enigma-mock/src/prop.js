@@ -51,12 +51,12 @@ export const getPropValue = (prop, { args = [], defaultValue } = {}) => {
  * @param {any} prop Fixture property. Either a fixed value (string / object / boolean / ...) or a function invoked when the value is needed.
  * @param {object} options Options.
  * @param {any} options.defaultValue Default value in case not value is defined in fixture.
- * @param {boolean} options.usePromise When `true` the returns value is wrapped in a promise, otherwise the value is directly returned.
+ * @param {boolean} options.async When `true` the returns value is wrapped in a promise, otherwise the value is directly returned.
  * @returns A fixture property function
  */
 export const getPropFn =
-  (prop, { defaultValue, usePromise = true } = {}) =>
+  (prop, { defaultValue, async = true } = {}) =>
   (...args) => {
     const value = getPropValue(prop, { defaultValue, args });
-    return usePromise ? Promise.resolve(value) : value;
+    return async ? Promise.resolve(value) : value;
   };

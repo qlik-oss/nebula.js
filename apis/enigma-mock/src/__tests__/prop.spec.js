@@ -66,11 +66,11 @@ describe('getPropFn', () => {
     expect(value).to.equal(10);
   });
 
-  describe('use promise is enabled', () => {
+  describe('async is enabled', () => {
     it('returns promise', async () => {
       const prop = sinon.stub();
       prop.returns(500);
-      const fn = getPropFn(prop, { usePromise: true });
+      const fn = getPropFn(prop, { async: true });
       const valuePromise = fn();
       expect(valuePromise).to.be.a('promise');
       const value = await valuePromise;
@@ -78,11 +78,11 @@ describe('getPropFn', () => {
     });
   });
 
-  describe('use promise is disabled', () => {
+  describe('async is disabled', () => {
     it('returns the value', () => {
       const prop = sinon.stub();
       prop.returns(500);
-      const fn = getPropFn(prop, { usePromise: false });
+      const fn = getPropFn(prop, { async: false });
       const value = fn();
       expect(value).to.equal(500);
     });

@@ -1,4 +1,4 @@
-import createEnigmaMock from '..';
+import createEnigmaMock from '../from-fixture';
 
 const fixture = {
   getLayout: {
@@ -25,7 +25,7 @@ describe('enigma-mock', () => {
     it('supports getObject functionality', async () => {
       const { app } = await createEnigmaMock(fixture);
       const object = await app.getObject();
-      expect(object).to.include.keys('id', 'getHyperCubeData', 'getLayout');
+      expect(object).to.include.keys('id', 'getLayout');
     });
 
     it('id should be a string', async () => {
@@ -69,17 +69,8 @@ describe('enigma-mock', () => {
         });
       });
 
-      it('should have empty array as default value', async () => {
-        const { app } = await createEnigmaMock(fixture);
-        const object = await app.getObject();
-        const hypercubeData = await object.getHyperCubeData();
-
-        expect(hypercubeData).to.be.an('array');
-        expect(hypercubeData).to.be.of.length(0);
-      });
-
       it('should return a promise', async () => {
-        const { app } = await createEnigmaMock(fixture);
+        const { app } = await createEnigmaMock({ ...fixture, getHyperCubeData: [] });
         const object = await app.getObject();
         const hypercubeDataPromise = object.getHyperCubeData();
 
@@ -107,22 +98,90 @@ describe('enigma-mock', () => {
         expect(getLayout).to.have.been.calledOnce;
       });
 
+      it('should return a promise', async () => {
+        const { app } = await createEnigmaMock(fixture);
+        const object = await app.getObject();
+        const getLayoutPromise = object.getLayout();
+
+        expect(getLayoutPromise).to.be.a('promise');
+      });
+
       it('throws if no getLayout is specified', async () => {
         expect(() => createEnigmaMock({})).to.throw();
       });
     });
 
-    describe('extensibility', () => {
-      it('supports custom fixture prop', async () => {
+    describe('custom property (extensibility)', () => {
+      it('should return value', async () => {
         const getCustomThing = sinon.stub();
         getCustomThing.returns({ foo: 'bar' });
 
         const { app } = await createEnigmaMock({ ...fixture, getCustomThing });
         const object = await app.getObject();
-        const customThing = object.getCustomThing();
+        const customThing = await object.getCustomThing();
 
         expect(customThing).to.eql({ foo: 'bar' });
         expect(getCustomThing).to.have.been.calledOnce;
+      });
+
+      it('should return a promise', async () => {
+        const getCustomThing = sinon.stub();
+        const { app } = await createEnigmaMock({ ...fixture, getCustomThing });
+        const object = await app.getObject();
+        const customThingPromise = object.getCustomThing();
+
+        expect(customThingPromise).to.be.a('promise');
+      });
+    });
+
+    describe('framework functions', () => {
+      it('`addListener` is synchronous', async () => {
+        const { app } = await createEnigmaMock({ ...fixture, addListener: () => true });
+        const object = await app.getObject();
+        const result = object.addListener();
+        expect(result).to.not.be.a('promise');
+      });
+
+      it('`emit` is synchronous', async () => {
+        const { app } = await createEnigmaMock({ ...fixture, emit: () => true });
+        const object = await app.getObject();
+        const result = object.emit();
+        expect(result).to.not.be.a('promise');
+      });
+
+      it('`on` is synchronous', async () => {
+        const { app } = await createEnigmaMock({ ...fixture, on: () => true });
+        const object = await app.getObject();
+        const result = object.on();
+        expect(result).to.not.be.a('promise');
+      });
+
+      it('`once` is synchronous', async () => {
+        const { app } = await createEnigmaMock({ ...fixture, once: () => true });
+        const object = await app.getObject();
+        const result = object.once();
+        expect(result).to.not.be.a('promise');
+      });
+
+      it('`removeAllListeners` is synchronous', async () => {
+        const { app } = await createEnigmaMock({ ...fixture, removeAllListeners: () => true });
+        const object = await app.getObject();
+        const result = object.removeAllListeners();
+        expect(result).to.not.be.a('promise');
+      });
+
+      it('`removeListener` is synchronous', async () => {
+        const { app } = await createEnigmaMock({ ...fixture, removeListener: () => true });
+        const object = await app.getObject();
+        const result = object.removeListener();
+        expect(result).to.not.be.a('promise');
+      });
+
+      it('`setMaxListerners` is synchronous', async () => {
+        const { app } = await createEnigmaMock({ ...fixture, setMaxListerners: () => true });
+        const object = await app.getObject();
+        const result = object.setMaxListerners();
+        expect(result).to.not.be.a('promise');
       });
     });
   });
