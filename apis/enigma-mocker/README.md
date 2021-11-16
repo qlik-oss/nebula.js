@@ -1,6 +1,6 @@
 # @nebula.js/enigma-mocker
 
-The purpose of the Enigma mocker is to be able to render visualizations without a connected engine. This is useful for example when running rendering tests or to make runnable code examples.
+The purpose of the Enigma mocker is to be able to render visualizations without a connected Qlik engine. This could be useful for example when running rendering tests or to make runnable code examples.
 
 ## Installation
 
