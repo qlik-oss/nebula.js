@@ -79,6 +79,26 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
             },
           },
         },
+        {
+          test: /\.js/,
+          include: [srcDir],
+          use: {
+            loader: babelPath,
+            options: {
+              presets: [
+                [
+                  babelPresetEnvPath,
+                  {
+                    modules: false,
+                    targets: {
+                      browsers: ['last 2 chrome versions'],
+                    },
+                  },
+                ],
+              ],
+            },
+          },
+        },
       ],
     },
     plugins: [
