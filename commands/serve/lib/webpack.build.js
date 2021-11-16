@@ -80,7 +80,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
           },
         },
         {
-          test: /\.js/,
+          test: /\.js$/,
           include: [srcDir],
           use: {
             loader: babelPath,
