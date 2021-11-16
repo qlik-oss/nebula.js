@@ -91,6 +91,7 @@ const ActionsToolbar = ({
     anchorEl: null,
   },
   focusHandler = null,
+  actionsRefMock = null, // for testing
 }) => {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
   const { itemSpacing } = useStyles();
@@ -105,8 +106,10 @@ const ActionsToolbar = ({
   const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
 
   const getEnabledButton = (last) => {
-    if (!actionsRef.current) return null;
-    const buttons = actionsRef.current.querySelectorAll('button:not(.Mui-disabled)');
+    const actionsElement = actionsRef.current || actionsRefMock;
+    if (!actionsElement) return null;
+    const buttons = actionsElement.querySelectorAll('button:not(.Mui-disabled)');
+
     return buttons[last ? buttons.length - 1 : 0];
   };
 
@@ -120,12 +123,12 @@ const ActionsToolbar = ({
     if (!focusHandler) return;
 
     const focusFirst = () => {
-      const enabledButon = getEnabledButton(false);
-      enabledButon && enabledButon.focus();
+      const enabledButton = getEnabledButton(false);
+      enabledButton && enabledButton.focus();
     };
     const focusLast = () => {
-      const enabledButon = getEnabledButton(true);
-      enabledButon && enabledButon.focus();
+      const enabledButton = getEnabledButton(true);
+      enabledButton && enabledButton.focus();
     };
     focusHandler.on('focus_toolbar_first', focusFirst);
     focusHandler.on('focus_toolbar_last', focusLast);

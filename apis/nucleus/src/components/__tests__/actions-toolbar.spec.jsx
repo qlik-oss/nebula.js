@@ -64,7 +64,7 @@ describe('<ActionsToolbar />', () => {
       };
       await act(async () => {
         renderer = create(
-          <InstanceContext.Provider value={{ translator: { get: (s) => s } }}>
+          <InstanceContext.Provider value={{ translator: { get: (s) => s }, keyboardNavigation: true }}>
             <ActionsToolbar {...props} />
           </InstanceContext.Provider>
         );
@@ -73,7 +73,7 @@ describe('<ActionsToolbar />', () => {
     update = async (props) => {
       await act(async () => {
         renderer.update(
-          <InstanceContext.Provider value={{ translator: { get: (s) => s } }}>
+          <InstanceContext.Provider value={{ translator: { get: (s) => s }, keyboardNavigation: true }}>
             <ActionsToolbar {...props} />
           </InstanceContext.Provider>
         );
@@ -223,5 +223,89 @@ describe('<ActionsToolbar />', () => {
     await update({ actions, popover: { show: true } });
     const popovers = renderer.root.findAllByType(Popover);
     expect(popovers).to.have.length(1);
+  });
+
+  describe('keyboard navigation', () => {
+    let buttonsMock;
+    const actionsRefMock = { querySelectorAll: () => buttonsMock };
+    let focusHandler;
+    let actions;
+    let focusCallbacks;
+
+    beforeEach(() => {
+      focusCallbacks = {};
+      buttonsMock = ['target-0', 'target-1'];
+      focusHandler = {
+        refocusContent: sandbox.spy(),
+        on: (name, cb) => {
+          focusCallbacks[name] = cb;
+        },
+      };
+      actions = [1, 2].map((key) => ({
+        key,
+        enabled: true,
+        action: sandbox.spy(),
+      }));
+    });
+
+    it('should call focusHandler.refocusContent when tabbing from last button', async () => {
+      await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
+      const container = renderer.root.findAllByType(Grid).find((i) => i.props && i.props.container);
+      const tabEvent = {
+        key: 'Tab',
+        preventDefault: sandbox.spy(),
+        stopPropagation: sandbox.spy(),
+        target: buttonsMock[1], // last button
+      };
+      container.props.onKeyDown(tabEvent);
+
+      expect(focusHandler.refocusContent).to.have.been.calledOnce;
+      expect(tabEvent.preventDefault).to.have.been.calledOnce;
+      expect(tabEvent.stopPropagation).to.have.been.calledOnce;
+    });
+
+    it('should call focusHandler.refocusContent when shift tabbing from first button', async () => {
+      await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
+      const container = renderer.root.findAllByType(Grid).find((i) => i.props && i.props.container);
+      const tabEvent = {
+        key: 'Tab',
+        shiftKey: true,
+        preventDefault: sandbox.spy(),
+        stopPropagation: sandbox.spy(),
+        target: buttonsMock[0], // first button
+      };
+      container.props.onKeyDown(tabEvent);
+
+      expect(focusHandler.refocusContent).to.have.been.calledOnce;
+      expect(tabEvent.preventDefault).to.have.been.calledOnce;
+      expect(tabEvent.stopPropagation).to.have.been.calledOnce;
+    });
+
+    it('should not call focusHandler.refocusContent when shift tabbing from last button', async () => {
+      await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
+      const container = renderer.root.findAllByType(Grid).find((i) => i.props && i.props.container);
+      const tabEvent = {
+        key: 'Tab',
+        shiftKey: true,
+        preventDefault: sandbox.spy(),
+        stopPropagation: sandbox.spy(),
+        target: buttonsMock[1], // first button
+      };
+      container.props.onKeyDown(tabEvent);
+
+      expect(focusHandler.refocusContent).to.not.have.been.called;
+      expect(tabEvent.preventDefault).to.not.have.been.called;
+      expect(tabEvent.stopPropagation).to.not.have.been.called;
+    });
+
+    it('should add event listeners to focusHandler, with callbacks that focus buttons', async () => {
+      buttonsMock = [{ focus: sandbox.spy() }, { focus: sandbox.spy() }];
+      await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
+      focusCallbacks.focus_toolbar_first();
+      focusCallbacks.focus_toolbar_first();
+
+      expect(buttonsMock[0].focus).to.have.been.calledOnce;
+      expect(buttonsMock[1].focus).to.have.been.calledOnce;
+    });
   });
 });
