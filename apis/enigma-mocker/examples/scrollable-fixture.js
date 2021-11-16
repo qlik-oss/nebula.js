@@ -1480,7 +1480,7 @@ const hyperCubeTreeData = new Data()
     ]
   );
 
-const fixture = {
+const genericObject = {
   getLayout() {
     return {
       qInfo: { qId: 'emSB', qType: 'sn-grid-chart' },
@@ -1675,6 +1675,6 @@ const fixture = {
 };
 
 (async () => {
-  const app = await EnigmaMocker.fromFixture(fixture);
+  const app = await EnigmaMocker.fromGenericObjects(genericObject);
   // const nebbie = embed(app, { ... config });
 })();

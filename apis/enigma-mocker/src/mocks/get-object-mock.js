@@ -20,7 +20,7 @@ function isPropAsync(name) {
 
 function validate(object) {
   if (!object.getLayout) {
-    throw new Error('Fixture is missing "getLayout" for path "getObject"');
+    throw new Error('Generic object is missing "getLayout"');
   }
 }
 

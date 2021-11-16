@@ -1,4 +1,4 @@
-import createEnigmaMocker from '../from-fixture';
+import createEnigmaMocker from '../from-generic-objects';
 
 const fixture = {
   getLayout: {

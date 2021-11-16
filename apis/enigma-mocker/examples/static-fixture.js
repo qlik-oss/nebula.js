@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import EnigmaMocker from '../src';
 
-const fixture = {
+const genericObject = {
   getLayout: {
     qInfo: {
       qId: '454d4be2-603e-487e-98ae-2ada9f851694',
@@ -541,6 +541,6 @@ const fixture = {
 };
 
 (async () => {
-  const app = await EnigmaMocker.fromFixture(fixture);
+  const app = await EnigmaMocker.fromGenericObjects(genericObject);
   // const nebbie = embed(app, { ... config });
 })();

@@ -1,6 +1,6 @@
 # @nebula.js/enigma-mocker
 
-The purpose of the Enigma mocker is to be able to render charts without a connected engine. This is useful for example when running rendering tests or in code examples.
+The purpose of the Enigma mocker is to be able to render visualizations without a connected engine. This is useful for example when running rendering tests or to make runnable code examples.
 
 ## Installation
 
@@ -15,7 +15,7 @@ import { embed } from '@nebula.js/stardust';
 import EnigmaMocker from '@nebula.js/enigma-mocker';
 import mekko from '@nebula.js/sn-mekko-chart';
 
-const fixture = {
+const genericObject = {
   getLayout() {
     return {
       qInfo: {
@@ -29,7 +29,7 @@ const fixture = {
      return [ ... ];
    }
  };
-const app = await EnigmaMocker.fromFixture(fixture);
+const app = await EnigmaMocker.fromGenericObjects(genericObject);
 
 const orion = embed(app, {
   types: [{
@@ -45,13 +45,24 @@ orion.render({
 });
 ```
 
-## Fixture
+## Generic objects
 
-The fixture specifies how the mock should behave. For example, what layout to use and the data to present.
+The mocked enigma app can be created from one or more generic objects using `EnigmaMocker.fromGenericObjects(genericObjects)`. Each generic object represents one visulization and specifies how it behaves. For example, what layout to use the data to present.
 
-The fixture is a JavaScript object with a number of properties. The name of the property correlates to the function name in Enigma. For example the property `getLayout` in the fixture is used to define `app.getObject().getLayout()` . Any property can be added to the fixture (just make sure it exists and behaves as in Enigma!).
+The generic object is represented by a Javascript object with a number of properties. The name of the property correlates to the name in the Enigma model for `app.getObject(id)`. For example, the property `getLayout` in the generic object is used to define `app.getObject(id).getLayout()`. Any property can be added to the fixture (just make sure it exists and behaves as in the Enigma model!).
 
-The property value in the fixture is either fixed (string / boolean / number / object) or a function. Arguments are forwarded to the function to allow for greater flexibility. For example, this can be used to return different hypercube data when scrolling in the chart.
+Structure of mocked enigma app:
+
+```js
+{
+  id: ...,
+  getObject(id) {
+    // Properties of generic object is added here
+  },
+};
+```
+
+The value for each property is either fixed (string / boolean / number / object) or a function. Arguments are forwarded to the function to allow for greater flexibility. For example, this can be used to return different hypercube data when scrolling in the chart.
 
 Example with fixed values:
 

@@ -1,5 +1,5 @@
-import fromFixture from './from-fixture';
+import fromGenericObjects from './from-generic-objects';
 
 export default {
-  fromFixture,
+  fromGenericObjects,
 };

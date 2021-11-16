@@ -32,7 +32,7 @@ export default async ({ fixture: fixtureParam, theme, language }) => {
     },
   };
 
-  const app = await EnigmaMocker.fromFixture(fixture);
+  const app = await EnigmaMocker.fromGenericObjects(fixture);
   const nebbie = embed(app, {
     ...config,
     types: [
