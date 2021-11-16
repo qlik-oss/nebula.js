@@ -180,6 +180,9 @@ const renderFixture = async () => {
   nebbie.render({ type, element, ...snConfig });
 };
 
+const optionalChainingTest = renderFixture?.will?.it?.work;
+console.log('render()', optionalChainingTest);
+
 if (params.fixture) {
   renderFixture();
 } else if (params.snapshot) {
