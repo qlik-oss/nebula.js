@@ -227,10 +227,10 @@ describe('<ActionsToolbar />', () => {
 
   describe('keyboard navigation', () => {
     let buttonsMock;
-    const actionsRefMock = { querySelectorAll: () => buttonsMock };
     let focusHandler;
     let actions;
     let focusCallbacks;
+    const actionsRefMock = { querySelectorAll: () => buttonsMock };
 
     beforeEach(() => {
       focusCallbacks = {};
@@ -302,7 +302,7 @@ describe('<ActionsToolbar />', () => {
       buttonsMock = [{ focus: sandbox.spy() }, { focus: sandbox.spy() }];
       await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
       focusCallbacks.focus_toolbar_first();
-      focusCallbacks.focus_toolbar_first();
+      focusCallbacks.focus_toolbar_last();
 
       expect(buttonsMock[0].focus).to.have.been.calledOnce;
       expect(buttonsMock[1].focus).to.have.been.calledOnce;

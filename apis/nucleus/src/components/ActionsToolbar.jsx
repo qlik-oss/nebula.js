@@ -109,7 +109,6 @@ const ActionsToolbar = ({
     const actionsElement = actionsRef.current || actionsRefMock;
     if (!actionsElement) return null;
     const buttons = actionsElement.querySelectorAll('button:not(.Mui-disabled)');
-
     return buttons[last ? buttons.length - 1 : 0];
   };
 
