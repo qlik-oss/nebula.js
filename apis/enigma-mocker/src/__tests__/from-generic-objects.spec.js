@@ -2,6 +2,7 @@ import createEnigmaMocker from '../from-generic-objects';
 
 const fixture = {
   getLayout: {
+    qInfo: { qId: 'b488pz' },
     qHyperCube: {},
   },
 };
@@ -51,7 +52,7 @@ describe('enigma-mocker', () => {
         const layout = await object.getLayout();
 
         expect(layout.qInfo.qId).to.equal('2pz14');
-        expect(getLayout).to.have.been.calledOnce;
+        expect(getLayout).to.have.been.called;
       });
 
       it('is asynchronous', async () => {
@@ -64,6 +65,10 @@ describe('enigma-mocker', () => {
 
       it('throws if no getLayout is specified', async () => {
         expect(() => createEnigmaMocker({})).to.throw();
+      });
+
+      it('throws if no qId is specified', async () => {
+        expect(() => createEnigmaMocker({ getLayout: { qInfo: {} } })).to.throw();
       });
     });
 
@@ -126,7 +131,7 @@ describe('enigma-mocker', () => {
         const object = await app.getObject();
         const result = await object.on();
         expect(result).to.equal(false);
-        expect(onStub).to.have.been.calledOnce;
+        expect(onStub).to.have.been.called;
       });
     });
 
@@ -145,7 +150,7 @@ describe('enigma-mocker', () => {
         const object = await app.getObject();
         const result = await object.once();
         expect(result).to.equal(false);
-        expect(onceStub).to.have.been.calledOnce;
+        expect(onceStub).to.have.been.called;
       });
     });
 
@@ -204,7 +209,7 @@ describe('enigma-mocker', () => {
         const customThing = await object.getCustomThing();
 
         expect(customThing).to.eql({ foo: 'bar' });
-        expect(getCustomThing).to.have.been.calledOnce;
+        expect(getCustomThing).to.have.been.called;
       });
 
       it('is asynchronous', async () => {
@@ -257,7 +262,7 @@ describe('enigma-mocker', () => {
         const customThing = sessionObject.getCustomThing();
 
         expect(customThing).to.eql({ foo: 'bar' });
-        expect(getCustomThing).to.have.been.calledOnce;
+        expect(getCustomThing).to.have.been.called;
       });
     });
   });
