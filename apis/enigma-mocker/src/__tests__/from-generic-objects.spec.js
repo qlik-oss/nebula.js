@@ -1,6 +1,6 @@
 import createEnigmaMocker from '../from-generic-objects';
 
-const fixture = {
+const genericObject = {
   getLayout: {
     qInfo: { qId: 'b488pz' },
     qHyperCube: {},
@@ -9,12 +9,13 @@ const fixture = {
 
 describe('enigma-mocker', () => {
   it('supports engima functionlity', async () => {
-    const app = await createEnigmaMocker(fixture);
+    const app = await createEnigmaMocker(genericObject);
+
     expect(app).to.include.keys('id', 'session', 'createSessionObject', 'getObject', 'getAppLayout');
   });
 
   it('id should be a string', async () => {
-    const app = await createEnigmaMocker(fixture);
+    const app = await createEnigmaMocker(genericObject);
     expect(app.id).to.be.a.string;
   });
 
@@ -23,24 +24,44 @@ describe('enigma-mocker', () => {
   });
 
   describe('getObject', () => {
+    it('returns undefined when id does not exist', async () => {
+      const app = await createEnigmaMocker(genericObject);
+      const object = await app.getObject('p55ez');
+
+      expect(object).to.be.undefined;
+    });
+
     it('supports getObject functionality', async () => {
-      const app = await createEnigmaMocker(fixture);
-      const object = await app.getObject();
+      const app = await createEnigmaMocker(genericObject);
+      const object = await app.getObject('b488pz');
       expect(object).to.include.keys('id', 'getLayout', 'on', 'once');
     });
 
     it('id should be a string', async () => {
-      const app = await createEnigmaMocker(fixture);
-      const object = await app.getObject();
+      const app = await createEnigmaMocker(genericObject);
+      const object = await app.getObject('b488pz');
       expect(object.id).to.be.a.string;
+    });
+
+    it('supports multiple generic objects', async () => {
+      const genericObjectA = {
+        getLayout: { qInfo: { qId: '112233' } },
+      };
+      const genericObjectB = {
+        getLayout: { qInfo: { qId: 'aabbcc' } },
+      };
+      const app = await createEnigmaMocker([genericObjectA, genericObjectB]);
+
+      expect(await app.getObject('112233')).to.not.be.undefined;
+      expect(await app.getObject('aabbcc')).to.not.be.undefined;
     });
 
     describe('getLayout', () => {
       it('shoud support fixed value', async () => {
-        const app = await createEnigmaMocker(fixture);
-        const object = await app.getObject();
+        const app = await createEnigmaMocker(genericObject);
+        const object = await app.getObject('b488pz');
         const layout = await object.getLayout();
-        expect(layout).to.equal(fixture.getLayout);
+        expect(layout).to.equal(genericObject.getLayout);
       });
 
       it('should support dynamic value', async () => {
@@ -48,7 +69,7 @@ describe('enigma-mocker', () => {
         getLayout.returns({ qInfo: { qId: '2pz14' } });
 
         const app = await createEnigmaMocker({ getLayout });
-        const object = await app.getObject();
+        const object = await app.getObject('2pz14');
         const layout = await object.getLayout();
 
         expect(layout.qInfo.qId).to.equal('2pz14');
@@ -56,8 +77,8 @@ describe('enigma-mocker', () => {
       });
 
       it('is asynchronous', async () => {
-        const app = await createEnigmaMocker(fixture);
-        const object = await app.getObject();
+        const app = await createEnigmaMocker(genericObject);
+        const object = await app.getObject('b488pz');
         const getLayoutPromise = object.getLayout();
 
         expect(getLayoutPromise).to.be.a('promise');
@@ -74,8 +95,8 @@ describe('enigma-mocker', () => {
 
     describe('getHyperCubeData', () => {
       it('should support fixed value', async () => {
-        const app = await createEnigmaMocker({ ...fixture, getHyperCubeData: [{ foo: 'bar' }] });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, getHyperCubeData: [{ foo: 'bar' }] });
+        const object = await app.getObject('b488pz');
         const hypercubeData = await object.getHyperCubeData();
 
         expect(hypercubeData).to.be.an('array');
@@ -87,8 +108,8 @@ describe('enigma-mocker', () => {
         const getHyperCubeData = sinon.stub();
         getHyperCubeData.returns([{ foo: 'baz' }]);
 
-        const app = await createEnigmaMocker({ ...fixture, getHyperCubeData });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, getHyperCubeData });
+        const object = await app.getObject('b488pz');
         const hypercubeData = await object.getHyperCubeData('/qHyperCubeDef', {
           width: 10,
           height: 8,
@@ -108,8 +129,8 @@ describe('enigma-mocker', () => {
       });
 
       it('is asynchronous', async () => {
-        const app = await createEnigmaMocker({ ...fixture, getHyperCubeData: [] });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, getHyperCubeData: [] });
+        const object = await app.getObject('b488pz');
         const hypercubeDataPromise = object.getHyperCubeData();
 
         expect(hypercubeDataPromise).to.be.a('promise');
@@ -118,8 +139,8 @@ describe('enigma-mocker', () => {
 
     describe('on', () => {
       it('is synchronous', async () => {
-        const app = await createEnigmaMocker({ ...fixture, on: () => true });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, on: () => true });
+        const object = await app.getObject('b488pz');
         const result = object.on();
         expect(result).to.not.be.a('promise');
       });
@@ -127,8 +148,8 @@ describe('enigma-mocker', () => {
       it('is extensible', async () => {
         const onStub = sinon.stub();
         onStub.returns(false);
-        const app = await createEnigmaMocker({ ...fixture, on: onStub });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, on: onStub });
+        const object = await app.getObject('b488pz');
         const result = await object.on();
         expect(result).to.equal(false);
         expect(onStub).to.have.been.called;
@@ -137,8 +158,8 @@ describe('enigma-mocker', () => {
 
     describe('once', () => {
       it('is synchronous', async () => {
-        const app = await createEnigmaMocker(fixture);
-        const object = await app.getObject();
+        const app = await createEnigmaMocker(genericObject);
+        const object = await app.getObject('b488pz');
         const result = object.once();
         expect(result).to.not.be.a('promise');
       });
@@ -146,8 +167,8 @@ describe('enigma-mocker', () => {
       it('is extensible', async () => {
         const onceStub = sinon.stub();
         onceStub.returns(false);
-        const app = await createEnigmaMocker({ ...fixture, once: onceStub });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, once: onceStub });
+        const object = await app.getObject('b488pz');
         const result = await object.once();
         expect(result).to.equal(false);
         expect(onceStub).to.have.been.called;
@@ -156,8 +177,8 @@ describe('enigma-mocker', () => {
 
     describe('addListener', () => {
       it('is synchronous', async () => {
-        const app = await createEnigmaMocker({ ...fixture, addListener: () => true });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, addListener: () => true });
+        const object = await app.getObject('b488pz');
         const result = object.addListener();
         expect(result).to.not.be.a('promise');
       });
@@ -165,8 +186,8 @@ describe('enigma-mocker', () => {
 
     describe('emit', () => {
       it('is synchronous', async () => {
-        const app = await createEnigmaMocker({ ...fixture, emit: () => true });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, emit: () => true });
+        const object = await app.getObject('b488pz');
         const result = object.emit();
         expect(result).to.not.be.a('promise');
       });
@@ -174,8 +195,8 @@ describe('enigma-mocker', () => {
 
     describe('removeAllListeners', () => {
       it('is synchronous', async () => {
-        const app = await createEnigmaMocker({ ...fixture, removeAllListeners: () => true });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, removeAllListeners: () => true });
+        const object = await app.getObject('b488pz');
         const result = object.removeAllListeners();
         expect(result).to.not.be.a('promise');
       });
@@ -183,8 +204,8 @@ describe('enigma-mocker', () => {
 
     describe('removeListener', () => {
       it('is synchronous', async () => {
-        const app = await createEnigmaMocker({ ...fixture, removeListener: () => true });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, removeListener: () => true });
+        const object = await app.getObject('b488pz');
         const result = object.removeListener();
         expect(result).to.not.be.a('promise');
       });
@@ -192,8 +213,8 @@ describe('enigma-mocker', () => {
 
     describe('setMaxListerners', () => {
       it('is synchronous', async () => {
-        const app = await createEnigmaMocker({ ...fixture, setMaxListerners: () => true });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, setMaxListerners: () => true });
+        const object = await app.getObject('b488pz');
         const result = object.setMaxListerners();
         expect(result).to.not.be.a('promise');
       });
@@ -204,8 +225,8 @@ describe('enigma-mocker', () => {
         const getCustomThing = sinon.stub();
         getCustomThing.returns({ foo: 'bar' });
 
-        const app = await createEnigmaMocker({ ...fixture, getCustomThing });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, getCustomThing });
+        const object = await app.getObject('b488pz');
         const customThing = await object.getCustomThing();
 
         expect(customThing).to.eql({ foo: 'bar' });
@@ -214,8 +235,8 @@ describe('enigma-mocker', () => {
 
       it('is asynchronous', async () => {
         const getCustomThing = sinon.stub();
-        const app = await createEnigmaMocker({ ...fixture, getCustomThing });
-        const object = await app.getObject();
+        const app = await createEnigmaMocker({ ...genericObject, getCustomThing });
+        const object = await app.getObject('b488pz');
         const customThingPromise = object.getCustomThing();
 
         expect(customThingPromise).to.be.a('promise');
@@ -226,7 +247,7 @@ describe('enigma-mocker', () => {
   describe('session', () => {
     describe('getObjectApi', () => {
       it('id should be a string', async () => {
-        const app = await createEnigmaMocker(fixture);
+        const app = await createEnigmaMocker(genericObject);
         const objectApi = await app.session.getObjectApi();
         expect(objectApi.id).to.be.a.string;
       });
@@ -235,19 +256,19 @@ describe('enigma-mocker', () => {
 
   describe('createSessionObject', () => {
     it('supports create session functionality', async () => {
-      const app = await createEnigmaMocker(fixture);
+      const app = await createEnigmaMocker(genericObject);
       const sessionObject = await app.createSessionObject();
       expect(sessionObject).to.include.keys('on', 'once', 'getLayout', 'id');
     });
 
     it('is asynchronous', async () => {
-      const app = await createEnigmaMocker(fixture);
+      const app = await createEnigmaMocker(genericObject);
       const sessionObjectPromise = app.createSessionObject();
       expect(sessionObjectPromise).to.be.a('promise');
     });
 
     it('uses "qInfo.qId" as id', async () => {
-      const app = await createEnigmaMocker(fixture);
+      const app = await createEnigmaMocker(genericObject);
       const sessionObject = await app.createSessionObject({ qInfo: { qId: 'foo' } });
       expect(sessionObject.id).to.equal('foo');
     });
@@ -257,7 +278,7 @@ describe('enigma-mocker', () => {
         const getCustomThing = sinon.stub();
         getCustomThing.returns({ foo: 'bar' });
 
-        const app = await createEnigmaMocker(fixture);
+        const app = await createEnigmaMocker(genericObject);
         const sessionObject = await app.createSessionObject({ getCustomThing });
         const customThing = sessionObject.getCustomThing();
 
@@ -269,13 +290,13 @@ describe('enigma-mocker', () => {
 
   describe('getAppLayout', () => {
     it('is asynchronous', async () => {
-      const app = await createEnigmaMocker(fixture);
+      const app = await createEnigmaMocker(genericObject);
       const appLayoutPromise = app.getAppLayout();
       expect(appLayoutPromise).to.be.a('promise');
     });
 
     it('id should be a string', async () => {
-      const app = await createEnigmaMocker(fixture);
+      const app = await createEnigmaMocker(genericObject);
       const appLayout = await app.getAppLayout();
       expect(appLayout.id).to.be.a.string;
     });

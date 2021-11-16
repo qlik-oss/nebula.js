@@ -1,4 +1,5 @@
 import { getPropValue, getPropFn } from '../prop';
+import { findAsync } from '../util';
 
 /**
  * Properties on `getObject()` operating synchronously.
@@ -24,7 +25,7 @@ function isPropAsync(name) {
 }
 
 /**
- * Create a mock from a generic object. Mandatory properties are added, function returns async values where applicable etc.
+ * Create a mock of a generic object. Mandatory properties are added, functions returns async values where applicable etc.
  * @param {object} genericObject Generic object describing behaviour of mock
  * @returns The mocked object
  */
@@ -42,22 +43,6 @@ function createMock(genericObject) {
       }),
       {}
     ),
-  };
-}
-
-/**
- * Registry of mocks for generic objects. Mocks are created with the `initializer` argument to apply mock.
- * @param {Array<object>} genericObjects Generic objects.
- * @param {function} initializer Initializes entries in the registry.
- * @returns The registry api
- */
-function Registry(genericObjects, initializer) {
-  const items = genericObjects.map(initializer);
-
-  return {
-    find(id) {
-      return items.find(async (object) => (await object.getLayout()).qInfo.qId === id);
-    },
   };
 }
 
@@ -87,9 +72,12 @@ function validate(genericObject) {
  */
 function GetObjectMock(genericObjects = []) {
   genericObjects.forEach(validate);
-  const objectRegistry = new Registry(genericObjects, createMock);
+  const genericObjectMocks = genericObjects.map(createMock);
 
-  return (id) => Promise.resolve(objectRegistry.find(id));
+  return async (id) => {
+    const mock = findAsync(genericObjectMocks, async (m) => (await m.getLayout()).qInfo.qId === id);
+    return Promise.resolve(mock);
+  };
 }
 
 export default GetObjectMock;
