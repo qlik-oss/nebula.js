@@ -54,7 +54,6 @@
     "@nebula.js/snapshooter": "^2.1.0",
     "@nebula.js/stardust": "^2.1.0",
     "@nebula.js/ui": "^2.1.0",
-    "@nebula.js/enigma-mocker": "0.0.1",
     "autosuggest-highlight": "3.2.0",
     "babel-loader": "8.2.3",
     "d3-require": "1.2.4",
