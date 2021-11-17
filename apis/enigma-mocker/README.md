@@ -47,7 +47,7 @@ orion.render({
 
 ## Generic objects
 
-The mocked enigma app can be created from one or more generic objects using `EnigmaMocker.fromGenericObjects(genericObjects)`. Each generic object represents one visulization and specifies how it behaves. For example, what layout to use the data to present.
+The mocked enigma app can be created from one or more generic objects using `EnigmaMocker.fromGenericObjects(genericObjects)`. Each generic object represents one visualization and specifies how it behaves. For example, what layout to use the data to present.
 
 The generic object is represented by a Javascript object with a number of properties. The name of the property correlates to the name in the Enigma model for `app.getObject(id)`. For example, the property `getLayout` in the generic object is used to define `app.getObject(id).getLayout()`. Any property can be added to the fixture (just make sure it exists and behaves as in the Enigma model!).
 
