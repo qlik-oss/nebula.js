@@ -4,7 +4,7 @@ function CreateSessionObjectMock() {
       on: () => {},
       once: () => {},
       getLayout: () => Promise.resolve({}),
-      id: props?.qInfo?.qId ? props.qInfo.qId : `sel - ${+Date.now()}`,
+      id: props && props.qInfo && props.qInfo.qId ? props.qInfo.qId : `sel - ${+Date.now()}`,
       ...props,
     });
 }

@@ -11,7 +11,7 @@ import GetAppLayoutMock from './mocks/get-app-layout-mock';
  * The value for each property is either fixed (string / boolean / number / object) or a function. Arguments are forwarded to the function to allow for greater flexibility. For example, this can be used to return different hypercube data when scrolling in the chart.
  *
  * @param {object|Array<object>} genericObjects Generic object(s) controling behaviour of visualizations.
- * @returns {Promise<enigma.Dock>}
+ * @returns {Promise<enigma.Doc>}
  * @example
  * const genericObject = {
  *   getLayout() {

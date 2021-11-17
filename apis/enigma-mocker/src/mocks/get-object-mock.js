@@ -60,7 +60,7 @@ function validate(genericObject) {
     throw new Error('Generic object is missing "getLayout"');
   }
   const layout = getPropValue(genericObject.getLayout);
-  if (!layout.qInfo?.qId) {
+  if (!(layout.qInfo && layout.qInfo.qId)) {
     throw new Error('Generic object is missing "qId" for path "getLayout().qInfo.qId"');
   }
 }
