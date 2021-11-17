@@ -1029,6 +1029,7 @@ export function useRenderState() {
  * @property {boolean} active Set to true when the chart is activated, ie a user tabs to the chart and presses Enter or Space.
  * @property {function=} blur Function used by the visualization to tell Nebula to it wants to relinquish focus
  * @property {function=} focus Function used by the visualization to tell Nebula to it wants focus
+ * @property {function=} focusSelection Function used by the visualization to tell Nebula to focus the selection toolbar
  */
 
 /**
@@ -1062,14 +1063,14 @@ export function useRenderState() {
 
 export function useKeyboard() {
   const keyboardNavigation = useInternalContext('keyboardNavigation');
-  const blurCallback = useInternalContext('blurCallback');
+  const focusHandler = useInternalContext('focusHandler');
 
   if (!currentComponent.__hooks.accessibility.exitFunction) {
     const exitFunction = function (resetFocus) {
       const acc = this.__hooks.accessibility;
       if (acc.enabled && acc.active) {
         blur(this);
-        blurCallback && blurCallback(resetFocus);
+        focusHandler && focusHandler.blurCallback && focusHandler.blurCallback(resetFocus);
       }
     }.bind(currentComponent);
 
@@ -1078,17 +1079,33 @@ export function useKeyboard() {
     const focusFunction = function () {
       const acc = this.__hooks.accessibility;
       if (acc.enabled && !acc.active) {
-        blurCallback && blurCallback(false);
+        focusHandler && focusHandler.blurCallback && focusHandler.blurCallback(false);
         focus(this);
       }
     }.bind(currentComponent);
 
     currentComponent.__hooks.accessibility.focusFunction = focusFunction;
+
+    const focusSelectionFunction = function (focusLast) {
+      const acc = this.__hooks.accessibility;
+      if (acc.enabled) {
+        focusHandler && focusHandler.focusToolbarButton && focusHandler.focusToolbarButton(focusLast);
+      }
+    }.bind(currentComponent);
+
+    currentComponent.__hooks.accessibility.focusSelectionFunction = focusSelectionFunction;
   }
   const focusFunc = currentComponent.__hooks.accessibility.focusFunction;
   const exitFunc = currentComponent.__hooks.accessibility.exitFunction;
+  const focusSelectionFunc = currentComponent.__hooks.accessibility.focusSelectionFunction;
 
-  const [acc, setAcc] = useState({ active: false, enabled: keyboardNavigation, blur: exitFunc, focus: focusFunc });
+  const [acc, setAcc] = useState({
+    active: false,
+    enabled: keyboardNavigation,
+    blur: exitFunc,
+    focus: focusFunc,
+    focusSelection: focusSelectionFunc,
+  });
   currentComponent.__hooks.accessibility.setter = setAcc;
   currentComponent.__hooks.accessibility.enabled = keyboardNavigation;
 
@@ -1099,6 +1116,7 @@ export function useKeyboard() {
         enabled: keyboardNavigation,
         blur: exitFunc,
         focus: focusFunc,
+        focusSelection: focusSelectionFunc,
       }),
     [keyboardNavigation]
   );
@@ -1114,7 +1132,13 @@ export function focus(component) {
   }
   acc.active = true;
   if (acc && acc.setter) {
-    acc.setter({ active: true, enabled: acc.enabled, blur: acc.exitFunction, focus: acc.focusFunction });
+    acc.setter({
+      active: true,
+      enabled: acc.enabled,
+      blur: acc.exitFunction,
+      focus: acc.focusFunction,
+      focusSelection: acc.focusSelectionFunction,
+    });
   }
 }
 
@@ -1127,6 +1151,12 @@ export function blur(component) {
   acc.active = false;
 
   if (acc && acc.setter) {
-    acc.setter({ active: false, enabled: acc.enabled, blur: acc.exitFunction, focus: acc.focusFunction });
+    acc.setter({
+      active: false,
+      enabled: acc.enabled,
+      blur: acc.exitFunction,
+      focus: acc.focusFunction,
+      focusSelection: acc.focusSelectionFunction,
+    });
   }
 }
