@@ -29,6 +29,7 @@ const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
   });
   return nebbie;
 };
+
 async function renderWithEngine() {
   const info = await serverInfo;
   initiateWatch(info);
@@ -61,9 +62,11 @@ async function renderWithEngine() {
       element,
     };
   }
+
   const render = async () => {
     await nebbie.render(cfg);
   };
+
   let viz;
   window.onHotChange(info.supernova.name, async () => {
     if (viz) {
@@ -74,6 +77,7 @@ async function renderWithEngine() {
     viz = await render();
   });
 }
+
 async function renderSnapshot() {
   const info = await serverInfo;
   const { themes, supernova } = info;
@@ -100,6 +104,7 @@ async function renderSnapshot() {
       },
     },
   });
+
   window.onHotChange(supernova.name, async () => {
     snapshooter({
       embed: n,
