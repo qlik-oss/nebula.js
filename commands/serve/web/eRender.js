@@ -84,6 +84,7 @@ async function renderSnapshot() {
   initiateWatch(info);
   const element = document.querySelector('#chart-container');
   element.classList.toggle('full', true);
+
   const n = embed.createConfiguration({
     themes: themes
       ? themes.map((t) => ({
