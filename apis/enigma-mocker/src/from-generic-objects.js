@@ -10,7 +10,7 @@ import GetAppLayoutMock from './mocks/get-app-layout-mock';
  *
  * The value for each property is either fixed (string / boolean / number / object) or a function. Arguments are forwarded to the function to allow for greater flexibility. For example, this can be used to return different hypercube data when scrolling in the chart.
  *
- * @param {object|Array<object>} genericObjects Generic object(s) controling behaviour of visualizations.
+ * @param {Array<object>} genericObjects Generic objects controling behaviour of visualizations.
  * @returns {Promise<enigma.Doc>}
  * @example
  * const genericObject = {
@@ -27,18 +27,16 @@ import GetAppLayoutMock from './mocks/get-app-layout-mock';
  *     return [ ... ];
  *   }
  * };
- * const app = await EnigmaMocker.fromGenericObjects(genericObject);
+ * const app = await EnigmaMocker.fromGenericObjects([genericObject]);
  */
 export default (genericObjects) => {
-  if (!genericObjects || genericObjects.length === 0) {
+  if (!Array.isArray(genericObjects) || genericObjects.length === 0) {
     throw new Error('No "genericObjects" specified');
   }
 
-  const objects = Array.isArray(genericObjects) ? genericObjects : [genericObjects];
-
   const session = new SessionMock();
   const createSessionObject = new CreateSessionObjectMock();
-  const getObject = new GetObjectMock(objects);
+  const getObject = new GetObjectMock(genericObjects);
   const getAppLayout = new GetAppLayoutMock();
 
   const app = {

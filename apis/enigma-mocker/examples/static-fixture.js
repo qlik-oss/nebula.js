@@ -541,6 +541,6 @@ const genericObject = {
 };
 
 (async () => {
-  const app = await EnigmaMocker.fromGenericObjects(genericObject);
+  const app = await EnigmaMocker.fromGenericObjects([genericObject]);
   // const nebbie = embed(app, { ... config });
 })();

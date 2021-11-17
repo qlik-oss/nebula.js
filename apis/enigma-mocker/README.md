@@ -29,7 +29,7 @@ const genericObject = {
      return [ ... ];
    }
  };
-const app = await EnigmaMocker.fromGenericObjects(genericObject);
+const app = await EnigmaMocker.fromGenericObjects([genericObject]);
 
 const orion = embed(app, {
   types: [{
