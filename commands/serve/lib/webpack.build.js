@@ -91,7 +91,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
                   {
                     modules: false,
                     targets: {
-                      browsers: ['last 2 chrome versions'],
+                      browsers: ['chrome 89'], // Needs to match version of Chrome running unit tests (on docker image browserless/chrome:1.49.1-puppeteer-1.20.0)
                     },
                   },
                 ],
