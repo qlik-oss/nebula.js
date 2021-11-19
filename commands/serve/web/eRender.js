@@ -1,6 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 import { embed } from '@nebula.js/stardust';
 import snapshooter from '@nebula.js/snapshooter/client';
+import EnigmaMocker from '@nebula.js/enigma-mocker';
 
 import { openApp, params, info as serverInfo } from './connect';
 import runFixture from './run-fixture';
@@ -117,55 +118,25 @@ async function renderSnapshot() {
 
 const renderFixture = async () => {
   const element = document.querySelector('#chart-container');
-  const { theme } = params;
-  const { themes } = await serverInfo;
+  const { theme, language } = params;
+  const { themes = [] } = await serverInfo;
+
   const fixture = runFixture(params.fixture);
-  const { instanceConfig, type, sn, object, snConfig } = fixture();
+  const { instanceConfig, type, sn, genericObjects, snConfig } = fixture();
+
   const config = {
-    themes: themes
-      ? themes.map((t) => ({
-          key: t,
-          load: async () => (await fetch(`/theme/${t}`)).json(),
-        }))
-      : undefined,
+    themes: themes.map((t) => ({
+      key: t,
+      load: async () => (await fetch(`/theme/${t}`)).json(),
+    })),
     context: {
       theme,
-      language: params.language,
+      language,
       constraints: {},
     },
   };
-  const mockedObjects = {};
-  let mockedLayout = {};
-  const createObjectModel = (layout) => ({
-    id: layout.qInfo.qId,
-    getLayout: async () => {
-      const customLayout = object && object.getLayout ? await object.getLayout() : {};
-      mockedLayout = {
-        ...layout,
-        ...(layout.visualization ? customLayout : {}),
-      };
-      return mockedLayout;
-    },
-    getProperties: () => null,
-    on() {},
-    once() {},
-  });
 
-  const mockedApp = {
-    id: `${+new Date()}`,
-    createSessionObject: async (p) => {
-      // eslint-disable-next-line no-param-reassign
-      p.qInfo.qId = p.qInfo.qId || +new Date();
-      mockedObjects[p.qInfo.qId] = {
-        ...p,
-      };
-      return createObjectModel(mockedObjects[p.qInfo.qId]);
-    },
-    getObject: async (id) => createObjectModel(mockedObjects[id]),
-    getAppLayout: async () => ({
-      qTitle: 'app-title',
-    }),
-  };
+  const mockedApp = await EnigmaMocker.fromGenericObjects(genericObjects);
 
   const nebbie = embed(mockedApp, {
     ...config,
@@ -177,7 +148,10 @@ const renderFixture = async () => {
       },
     ],
   });
-  nebbie.render({ type, element, ...snConfig });
+
+  // TODO Improve
+  const { qId } = genericObjects[0].getLayout.qInfo;
+  nebbie.render({ type, element, id: qId, ...snConfig });
 };
 
 if (params.fixture) {

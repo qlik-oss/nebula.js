@@ -1,3 +1,5 @@
+import { createGenericObject } from '../generic-object-util';
+
 const incompleteSn = {
   component: {
     mounted(element) {
@@ -24,5 +26,6 @@ export default function fixture() {
     type: 'incomplete-sn',
     sn: incompleteSn,
     snConfig: {},
+    genericObjects: [createGenericObject('incomplete-sn', { getProperties: null })],
   };
 }

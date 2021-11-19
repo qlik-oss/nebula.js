@@ -51,7 +51,7 @@ describe('hooks', () => {
 
   it('useAppLayout', async () => {
     const text = await page.$eval(`${snSelector} .applayout`, (el) => el.textContent);
-    expect(text).to.equal('app-title');
+    expect(text).to.equal('app-layout');
   });
 
   it('useTranslator', async () => {
@@ -71,7 +71,8 @@ describe('hooks', () => {
 
   it('useConstraints', async () => {
     const text = await page.$eval(`${snSelector} .constraints`, (el) => el.textContent);
-    expect(text).to.equal('false:false:true');
+    // TODO Investigate why constraint: { select: true } always is provided with previous engima mock
+    expect(text).to.equal('false:false:false');
   });
 
   it('useOptions', async () => {
