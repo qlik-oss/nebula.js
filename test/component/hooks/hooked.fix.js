@@ -90,7 +90,7 @@ function sn({ flags }) {
 export default function fixture() {
   return {
     type: 'sn-mounted',
-    sn,
+    load: async () => sn,
     instanceConfig: {
       flags: {
         MAGIC_FLAG: true,

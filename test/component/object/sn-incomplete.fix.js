@@ -24,7 +24,7 @@ const incompleteSn = {
 export default function fixture() {
   return {
     type: 'incomplete-sn',
-    sn: incompleteSn,
+    load: async () => incompleteSn,
     snConfig: {},
     genericObjects: [createGenericObject('incomplete-sn', { getProperties: null })],
   };

@@ -1,11 +1,10 @@
 /* eslint no-underscore-dangle:0 */
 import { embed } from '@nebula.js/stardust';
 import snapshooter from '@nebula.js/snapshooter/client';
-import EnigmaMocker from '@nebula.js/enigma-mocker';
 
 import { openApp, params, info as serverInfo } from './connect';
-import runFixture from './run-fixture';
 import initiateWatch from './hot';
+import renderFixture from './render-fixture';
 
 const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
   const nuked = embed.createConfiguration({
@@ -116,46 +115,8 @@ async function renderSnapshot() {
   });
 }
 
-const renderFixture = async () => {
-  const element = document.querySelector('#chart-container');
-  const { theme, language } = params;
-  const { themes = [] } = await serverInfo;
-
-  const fixture = runFixture(params.fixture);
-  const { instanceConfig, type, sn, genericObjects, snConfig } = fixture();
-
-  const config = {
-    themes: themes.map((t) => ({
-      key: t,
-      load: async () => (await fetch(`/theme/${t}`)).json(),
-    })),
-    context: {
-      theme,
-      language,
-      constraints: {},
-    },
-  };
-
-  const mockedApp = await EnigmaMocker.fromGenericObjects(genericObjects);
-
-  const nebbie = embed(mockedApp, {
-    ...config,
-    ...instanceConfig,
-    types: [
-      {
-        name: type,
-        load: async () => sn,
-      },
-    ],
-  });
-
-  // TODO Improve
-  const { qId } = genericObjects[0].getLayout.qInfo;
-  nebbie.render({ type, element, id: qId, ...snConfig });
-};
-
 if (params.fixture) {
-  renderFixture();
+  renderFixture(params);
 } else if (params.snapshot) {
   renderSnapshot();
 } else {

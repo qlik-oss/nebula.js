@@ -19,7 +19,7 @@ function sn(env) {
 export default function fixture() {
   return {
     type: 'sn-locale',
-    sn,
+    load: async () => sn,
     snConfig: {},
     genericObjects: [createGenericObject('sn-locale')],
   };
