@@ -1,5 +1,5 @@
 {
-  "name": "@nebula.js/test-utils",
+  "name": "@nebula.js/enigma-mocker",
   "version": "2.2.0",
   "private": true,
   "description": "",
@@ -12,7 +12,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/qlik-oss/nebula.js.git",
-    "directory": "apis/test-utils"
+    "directory": "apis/enigma-mocker"
   },
   "main": "index.js",
   "files": [
@@ -23,8 +23,5 @@
     "build:dev": "rollup --config ../../rollup.config.js",
     "build:watch": "rollup --config ../../rollup.config.js -w",
     "prepublishOnly": "rm -rf dist && yarn run build"
-  },
-  "peerDependencies": {
-    "@nebula.js/stardust": "^2.x"
   }
 }
