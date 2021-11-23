@@ -23,7 +23,7 @@ const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
   if (hidden) return null;
 
   const handleKeyDown = item.keyboardAction
-    ? (e) => ['Enter', ' ', 'Spacebar'].includes(e.key) && item.keyboardAction
+    ? (e) => ['Enter', ' ', 'Spacebar'].includes(e.key) && item.keyboardAction()
     : null;
 
   return (
