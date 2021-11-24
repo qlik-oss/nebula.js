@@ -8,10 +8,15 @@ const WP = /\/\(?webpack\)?/;
 
 const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) => {
   const folderName = process.cwd().split('/').slice(-1)[0];
+  const fixturePath = path.resolve(process.cwd(), 'test/component');
 
   const config = {
     mode: 'development',
-    entry: path.resolve(__dirname, './sn.js'),
+    entry: {
+      // TODO Look into if sn chunk can be removed
+      sn: [path.resolve(__dirname, './sn.js')],
+      fixtures: [path.resolve(__dirname, './fixtures.js')],
+    },
     devtool: false,
     infrastructureLogging: {
       level: 'error',
@@ -44,7 +49,7 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
     },
     resolve: {
       alias: {
-        fixtures: path.resolve(process.cwd(), 'test/component'),
+        fixtures: fixturePath,
       },
     },
     plugins: [
@@ -54,13 +59,19 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
         inject: 'head',
         scripts: serveConfig.scripts,
         stylesheets: serveConfig.stylesheets,
+        chunks: ['fixtures'],
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eDev.html'),
         filename: 'eDev.html',
         inject: 'head',
+        chunks: [],
       }),
     ],
+    // Stardust is an external dependency in order to share the dep between the fixture and when rendering the visualization.
+    externals: {
+      '@nebula.js/stardust': 'stardust',
+    },
   };
 
   return config;

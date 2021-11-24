@@ -109,6 +109,10 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         favicon,
       }),
     ],
+    // Stardust is an external dependency in order to share the dep between the fixture and when rendering the visualization.
+    externals: {
+      '@nebula.js/stardust': 'stardust',
+    },
   };
 
   return config;

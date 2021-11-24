@@ -1,104 +1,40 @@
+import * as stardust from '@nebula.js/stardust';
 import { embed } from '@nebula.js/stardust';
 import EnigmaMocker from '@nebula.js/enigma-mocker';
 import extend from 'extend';
-import runFixture from './run-fixture';
+import { requireFrom } from 'd3-require';
 import { info as getServerInfo } from './connect';
 
-/**
- * Options when rendering visualization from fixture.
- *
- * The options can be provided in the;
- *  * fixture,
- *  * URL as query param, or
- *  * Nebula serve configuration.
- *
- * If an option is specified in multiple ways the priority order is: URL parameters -> fixture -> Nebula serve config.
- *
- * For example, in case the fixture has dark theme configured and the URL param has light specified the visualization will use the light theme.
- *
- * Not every option is available for each source. For example, theme and language can be added as URL parameters but it's not possible to specify how to load the visualization.
- *
- * Options:
- *
- * type: name of visualization
- * @example
- * "sn-grid-chart"
- *
- * load: function loading visualization
- * @example
- * import gridChart from '@nebula.js/grid-chart';
- * async () => gridChart
- * @example
- * async (type) => ({ flags, ...what else ? }) => ({
- *   qae: {
- *     properties: {
- *       qHyperCubeDef: {},
- *       simpleMath: {
- *         qValueExpression: {
- *           qExpr: '1+1',
- *         },
- *       },
- *     },
- *   },
- *   component() {
- *     const layout = useLayout();
- *     console.log(layout); // { qHyperCube: , simpleMath: 2 }
- *   },
- * })
- * @example
- * async (type) => window[type.name] // Default
- *
- * instanceConfig: configurations when initating embed instance, `embed(app, instanceConfig)`.
- * @example
- * {
- *   context: {
- *     theme: 'dark'
- *   }
- * }
- * @example
- * {
- *   context: {
- *     constraints: {
- *       select: true
- *     }
- *   }
- * }
- *
- * snConfig: configurations when rendering supernova visualization, `nebbie.render({ snConfig })`
- * @example
- * {
- *   goodExample: {
- *     enable: true
- *   }
- * }
- *
- * genericObjects: generic objects to render visualization with. Injected into `EnigmaMocker`.
- * @example
- * [{
- *    getLayout() {
- *      return {
- *        qInfo: { qId: 'uttss2' }
- *      };
- *    }
- *    getHyperCubeData() {
- *      return [ ... ];
- *    }
- * }]
- */
+// Refactor; move elsewhere
+const getModule = (name, url) => {
+  const localResolve = (n) => `/pkg/${encodeURIComponent(n)}`;
+  const remoteResolve = (n) => n;
+  const resolve = url ? remoteResolve : localResolve;
+  const r = requireFrom(async (n) => resolve(n));
+  const a = r.alias({
+    '@nebula.js/stardust': stardust,
+  });
+  return a(url || name);
+};
 
-const getDefaultOptions = ({ themes = [], supernova }) => ({
-  type: supernova.name,
-  load: async (t) => window[t.name],
-  instanceConfig: {
-    themes: themes.map((t) => ({
-      key: t,
-      load: async () => (await fetch(`/theme/${t}`)).json(),
-    })),
-    context: {
-      constraints: {},
+const getDefaultOptions = async ({ themes = [], supernova }) => {
+  // load js artifact provided as entry
+  const mo = await getModule(supernova.name, supernova.url);
+
+  return {
+    type: supernova.name,
+    load: async () => mo,
+    instanceConfig: {
+      themes: themes.map((t) => ({
+        key: t,
+        load: async () => (await fetch(`/theme/${t}`)).json(),
+      })),
+      context: {
+        constraints: {},
+      },
     },
-  },
-});
+  };
+};
 
 const getUrlParamOptions = (params) => ({
   instanceConfig: {
@@ -110,8 +46,8 @@ const getUrlParamOptions = (params) => ({
 });
 
 // Priority: URL params -> fixture -> defaults (including nebula serve config)
-function getOptions({ params, fixture, serverInfo }) {
-  return extend(true, {}, getDefaultOptions(serverInfo), fixture, getUrlParamOptions(params));
+async function getOptions({ params, fixture, serverInfo }) {
+  return extend(true, {}, await getDefaultOptions(serverInfo), fixture, getUrlParamOptions(params));
 }
 
 function validateFixture({ genericObjects } = {}) {
@@ -122,7 +58,7 @@ function validateFixture({ genericObjects } = {}) {
     throw new Error('Invalid getLayout of generic object');
   }
   const { getLayout } = genericObjects[0];
-  const layout = getLayout === 'function' ? getLayout() : getLayout;
+  const layout = typeof getLayout === 'function' ? getLayout() : getLayout;
   if (!layout.visualization) {
     throw new Error('No "visualization" specified on generic object on path "getLayout"');
   }
@@ -131,15 +67,51 @@ function validateFixture({ genericObjects } = {}) {
   }
 }
 
-function getFixture(fixturePath) {
-  const fixture = runFixture(fixturePath)();
+async function loadFixture(key) {
+  return new Promise((resolve, reject) => {
+    // eslint-disable-next-line no-use-before-define
+    const interval = setInterval(locateFixture, 1000);
+
+    // Handle timeout
+    const timeout = setTimeout(() => {
+      clearInterval(interval);
+      reject(new Error('Unable to locate fixture provider'));
+    }, 10000);
+
+    function locateFixture() {
+      console.log('locateFixture()');
+      if (window.fixtures) {
+        console.log('window.fixtures() exists');
+        const fixtureFn = window.fixtures.get(key);
+        console.log('  -- fixtureFn', fixtureFn);
+        clearInterval(interval);
+        clearTimeout(timeout);
+        resolve(fixtureFn);
+      } else {
+        console.log('No `window.fixtures` available. Try again soon...');
+      }
+    }
+  });
+}
+
+async function getFixture(fixturePath) {
+  console.log('About to get fixture', fixturePath, window.runFixture);
+  const fixtureFn = await loadFixture(fixturePath);
+
+  if (!fixtureFn) {
+    throw new Error(`Unable to load fixture ${fixturePath}`);
+  }
+
+  const fixture = fixtureFn();
+  console.log('  -- fixture', fixture);
   validateFixture(fixture);
+
   return fixture;
 }
 
 function getQId(genericObjects = []) {
   const { getLayout } = genericObjects[0];
-  const layout = getLayout === 'function' ? getLayout() : getLayout;
+  const layout = typeof getLayout === 'function' ? getLayout() : getLayout;
 
   return layout.qInfo.qId;
 }
@@ -147,8 +119,8 @@ function getQId(genericObjects = []) {
 const renderFixture = async (params) => {
   const element = document.querySelector('#chart-container');
   const serverInfo = await getServerInfo;
-  const fixture = getFixture(params.fixture);
-  const { type, load, genericObjects, instanceConfig, snConfig } = getOptions({ fixture, params, serverInfo });
+  const fixture = await getFixture(params.fixture);
+  const { type, load, genericObjects, instanceConfig, snConfig } = await getOptions({ fixture, params, serverInfo });
   const qId = getQId(genericObjects);
   const mockedApp = await EnigmaMocker.fromGenericObjects(genericObjects);
 
