@@ -10,6 +10,16 @@ import useDefaultSelectionActions from '../hooks/useDefaultSelectionActions';
 import InstanceContext from '../contexts/InstanceContext';
 import More from './ActionsToolbarMore';
 
+/**
+ * @interface
+ * @extends HTMLElement
+ * @since 2.1.0
+ */
+const ActionToolbarElement = {
+  /** @type {'njs-action-toolbar-popover'} */
+  className: 'njs-action-toolbar-popover',
+};
+
 const useStyles = makeStyles((theme) => ({
   itemSpacing: {
     padding: theme.spacing(0, 0.5),
@@ -80,23 +90,48 @@ const ActionsToolbar = ({
     show: false,
     anchorEl: null,
   },
+  focusHandler = null,
+  actionsRefMock = null, // for testing
 }) => {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
   const { itemSpacing } = useStyles();
-  const { translator } = useContext(InstanceContext);
+  const { translator, keyboardNavigation } = useContext(InstanceContext);
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [moreEnabled, setMoreEnabled] = useState(more.enabled);
   const [moreActions, setMoreActions] = useState(more.actions);
   const [moreAlignTo, setMoreAlignTo] = useState(more.alignTo);
   const moreRef = useRef();
+  const actionsRef = useRef();
   const theme = useTheme();
   const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
+
+  const getEnabledButton = (last) => {
+    const actionsElement = actionsRef.current || actionsRefMock;
+    if (!actionsElement) return null;
+    const buttons = actionsElement.querySelectorAll('button:not(.Mui-disabled)');
+    return buttons[last ? buttons.length - 1 : 0];
+  };
 
   useEffect(() => () => setShowMoreItems(false), [popover.show]);
 
   useEffect(() => {
     setMoreEnabled(more.enabled);
   }, [more.enabled]);
+
+  useEffect(() => {
+    if (!focusHandler) return;
+
+    const focusFirst = () => {
+      const enabledButton = getEnabledButton(false);
+      enabledButton && enabledButton.focus();
+    };
+    const focusLast = () => {
+      const enabledButton = getEnabledButton(true);
+      enabledButton && enabledButton.focus();
+    };
+    focusHandler.on('focus_toolbar_first', focusFirst);
+    focusHandler.on('focus_toolbar_last', focusLast);
+  }, []);
 
   const newActions = useMemo(() => actions.filter((a) => !a.hidden), [actions]);
 
@@ -122,11 +157,27 @@ const ActionsToolbar = ({
     setMoreAlignTo(moreRef);
   }
 
+  const tabCallback =
+    // if keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
+    keyboardNavigation && focusHandler && focusHandler.refocusContent
+      ? (evt) => {
+          if (evt.key !== 'Tab') return;
+          const isTabbingOut =
+            (evt.shiftKey && getEnabledButton(false) === evt.target) ||
+            (!evt.shiftKey && getEnabledButton(true) === evt.target);
+          if (isTabbingOut) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            focusHandler.refocusContent();
+          }
+        }
+      : null;
+
   const showActions = newActions.length > 0;
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
   const Actions = (
-    <Grid container spacing={0} wrap="nowrap">
+    <Grid ref={actionsRef} onKeyDown={tabCallback} container spacing={0} wrap="nowrap">
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
         <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />
@@ -162,6 +213,7 @@ const ActionsToolbar = ({
       hideBackdrop
       style={popoverStyle}
       PaperProps={{
+        className: ActionToolbarElement.className,
         style: {
           pointerEvents: 'auto',
           padding: theme.spacing(1, 1),

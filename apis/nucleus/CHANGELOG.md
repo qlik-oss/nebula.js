@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.2.0](https://github.com/qlik-oss/nebula.js/compare/v2.1.0...v2.2.0) (2021-11-17)
+
+### Features
+
+- focus in and out of selection toolbar ([#701](https://github.com/qlik-oss/nebula.js/issues/701)) ([9b2a038](https://github.com/qlik-oss/nebula.js/commit/9b2a03804f35ad60303362a47fca217ba232de5b))
+
+# [2.1.0](https://github.com/qlik-oss/nebula.js/compare/v2.0.0...v2.1.0) (2021-10-20)
+
+### Features
+
+- expose additional element ([#691](https://github.com/qlik-oss/nebula.js/issues/691)) ([a1faabf](https://github.com/qlik-oss/nebula.js/commit/a1faabfc7994a75dbd4f62aa743f02fb29e5919d))
+
 # [2.0.0](https://github.com/qlik-oss/nebula.js/compare/v2.0.0-beta.1...v2.0.0) (2021-09-30)
 
 **Note:** Version bump only for package @nebula.js/nucleus
