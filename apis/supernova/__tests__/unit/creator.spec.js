@@ -85,7 +85,7 @@ describe('creator', () => {
       opts = {
         nebbie: 'embedAPI',
         keyboardNavigation: false,
-        blurCallback: 'bcb',
+        focusHandler: 'focusHandler',
         model: 'model',
         app: 'app',
         selections: 'selections',
@@ -108,7 +108,7 @@ describe('creator', () => {
         selections: 'selections',
         nebbie: 'embedAPI',
         keyboardNavigation: false,
-        blurCallback: 'bcb',
+        focusHandler: 'focusHandler',
         element: undefined,
         theme: undefined,
         translator: galaxy.translator,
