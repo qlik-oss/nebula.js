@@ -8,7 +8,6 @@ const WP = /\/\(?webpack\)?/;
 
 const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) => {
   const folderName = process.cwd().split('/').slice(-1)[0];
-  const fixturePath = path.resolve(process.cwd(), 'test/component');
 
   const config = {
     mode: 'development',
@@ -49,7 +48,7 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
     },
     resolve: {
       alias: {
-        fixtures: fixturePath,
+        fixtures: path.resolve(process.cwd(), serveConfig.fixturePath),
       },
     },
     plugins: [
