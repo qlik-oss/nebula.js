@@ -10,7 +10,7 @@ const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
   const nuked = embed.createConfiguration({
     themes: themes
       ? themes.map((t) => ({
-          key: t,
+          id: t,
           load: async () => (await fetch(`/theme/${t}`)).json(),
         }))
       : undefined,

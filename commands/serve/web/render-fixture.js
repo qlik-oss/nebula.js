@@ -13,7 +13,7 @@ const getDefaultOptions = async ({ themes = [], supernova, flags }) => {
     load: async () => mo,
     instanceConfig: {
       themes: themes.map((t) => ({
-        key: t,
+        id: t,
         load: async () => (await fetch(`/theme/${t}`)).json(),
       })),
       context: {
