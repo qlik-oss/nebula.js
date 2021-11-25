@@ -1,24 +1,12 @@
-import * as stardust from '@nebula.js/stardust';
 import { embed } from '@nebula.js/stardust';
 import EnigmaMocker from '@nebula.js/enigma-mocker';
 import extend from 'extend';
-import { requireFrom } from 'd3-require';
 import { info as getServerInfo } from './connect';
-
-// Refactor; move elsewhere
-const getModule = (name, url) => {
-  const localResolve = (n) => `/pkg/${encodeURIComponent(n)}`;
-  const remoteResolve = (n) => n;
-  const resolve = url ? remoteResolve : localResolve;
-  const r = requireFrom(async (n) => resolve(n));
-  const a = r.alias({
-    '@nebula.js/stardust': stardust,
-  });
-  return a(url || name);
-};
+import { getModule } from './hot';
 
 const getDefaultOptions = async ({ themes = [], supernova }) => {
   // load js artifact provided as entry
+  console.log('supernova', supernova);
   const mo = await getModule(supernova.name, supernova.url);
 
   return {
