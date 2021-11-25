@@ -6,7 +6,6 @@ import { getModule } from './hot';
 
 const getDefaultOptions = async ({ themes = [], supernova }) => {
   // load js artifact provided as entry
-  console.log('supernova', supernova);
   const mo = await getModule(supernova.name, supernova.url);
 
   return {

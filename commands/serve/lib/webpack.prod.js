@@ -12,8 +12,6 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
   const config = {
     mode: 'development',
     entry: {
-      // TODO Look into if sn chunk can be removed
-      sn: [path.resolve(__dirname, './sn.js')],
       fixtures: [path.resolve(__dirname, './fixtures.js')],
     },
     devtool: false,
