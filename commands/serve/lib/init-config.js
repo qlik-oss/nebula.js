@@ -69,7 +69,7 @@ const options = {
   fixturePath: {
     type: 'string',
     default: 'test/component',
-    description: 'Path to fixture files, either absolute or relative to working directory',
+    description: 'Path to a folder that will be used as basis when locating fixtures',
   },
 };
 

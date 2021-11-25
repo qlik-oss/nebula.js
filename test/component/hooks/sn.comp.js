@@ -2,7 +2,9 @@ describe('hooks', () => {
   const snSelector = '.njs-viz';
 
   before(async () => {
-    await page.goto(`${process.env.BASE_URL}/render/?fixture=./hooks/hooked.fix.js`);
+    const url = `${process.env.BASE_URL}/render/?fixture=./hooks/hooked.fix.js`;
+    console.log('url', url);
+    await page.goto(url);
     await page.waitForSelector(snSelector, { visible: true });
   });
 

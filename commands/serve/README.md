@@ -36,6 +36,8 @@ Options:
   --enigma.port                                         [number] [default: 9076]
   --webIntegrationId                                                    [string]
   --ACCEPT_EULA                                       [boolean] [default: false]
+  --fixturePath       Path to a folder that will be used as basis when locating
+                      fixtures              [string] [default: "test/component"]
   -h, --help          Show help                                        [boolean]
 ```
 

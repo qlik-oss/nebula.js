@@ -67,43 +67,14 @@ function validateFixture({ genericObjects } = {}) {
   }
 }
 
-async function loadFixture(key) {
-  return new Promise((resolve, reject) => {
-    // eslint-disable-next-line no-use-before-define
-    const interval = setInterval(locateFixture, 1000);
-
-    // Handle timeout
-    const timeout = setTimeout(() => {
-      clearInterval(interval);
-      reject(new Error('Unable to locate fixture provider'));
-    }, 10000);
-
-    function locateFixture() {
-      console.log('locateFixture()');
-      if (window.fixtures) {
-        console.log('window.fixtures() exists');
-        const fixtureFn = window.fixtures.get(key);
-        console.log('  -- fixtureFn', fixtureFn);
-        clearInterval(interval);
-        clearTimeout(timeout);
-        resolve(fixtureFn);
-      } else {
-        console.log('No `window.fixtures` available. Try again soon...');
-      }
-    }
-  });
-}
-
 async function getFixture(fixturePath) {
-  console.log('About to get fixture', fixturePath, window.runFixture);
-  const fixtureFn = await loadFixture(fixturePath);
+  const fixtureFn = window.fixtures.get(fixturePath);
 
   if (!fixtureFn) {
     throw new Error(`Unable to load fixture ${fixturePath}`);
   }
 
   const fixture = fixtureFn();
-  console.log('  -- fixture', fixture);
   validateFixture(fixture);
 
   return fixture;
@@ -121,8 +92,8 @@ const renderFixture = async (params) => {
   const serverInfo = await getServerInfo;
   const fixture = await getFixture(params.fixture);
   const { type, load, genericObjects, instanceConfig, snConfig } = await getOptions({ fixture, params, serverInfo });
-  const qId = getQId(genericObjects);
   const mockedApp = await EnigmaMocker.fromGenericObjects(genericObjects);
+  const qId = getQId(genericObjects);
 
   const nebbie = embed(mockedApp, {
     ...instanceConfig,

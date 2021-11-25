@@ -24,7 +24,7 @@ describe('hooks', () => {
       entry: path.resolve(__dirname, './dist/sn-grid-chart.js'),
       open: false,
       build: false,
-      fixturePath: 'test/rendering',
+      fixturePath: 'test/rendering/sn-grid-chart/__fixtures__',
     });
   });
 
@@ -33,7 +33,7 @@ describe('hooks', () => {
   });
 
   it('renders with artifact imported in fixture', async () => {
-    const url = `${s.url}/render?fixture=./sn-grid-chart/__fixtures__/scenario-1.fix.js`;
+    const url = `${s.url}/render?fixture=scenario-1.fix.js`;
     await page.goto(url);
     console.log('url', url);
     await page.waitForSelector(snSelector, { visible: true });
@@ -41,7 +41,7 @@ describe('hooks', () => {
   });
 
   it('renders with artifact provided in nebula config', async () => {
-    const url = `${s.url}/render?fixture=./sn-grid-chart/__fixtures__/scenario-2.fix.js`;
+    const url = `${s.url}/render?fixture=scenario-2.fix.js`;
     await page.goto(url);
     console.log('url', url);
     expect(true).to.equal(true);

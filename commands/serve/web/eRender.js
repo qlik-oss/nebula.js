@@ -63,7 +63,7 @@ async function renderWithEngine() {
     };
   }
 
-  const render = async () => {
+  const renderViz = async () => {
     await nebbie.render(cfg);
   };
 
@@ -74,7 +74,7 @@ async function renderWithEngine() {
       nebbie.__DO_NOT_USE__.types.clearFromCache(info.supernova.name);
       nebbie.__DO_NOT_USE__.types.register(info.supernova);
     }
-    viz = await render();
+    viz = await renderViz();
   });
 }
 
@@ -115,10 +115,14 @@ async function renderSnapshot() {
   });
 }
 
-if (params.fixture) {
-  renderFixture(params);
-} else if (params.snapshot) {
-  renderSnapshot();
-} else {
-  renderWithEngine();
+function render() {
+  if (params.fixture) {
+    renderFixture(params);
+  } else if (params.snapshot) {
+    renderSnapshot();
+  } else {
+    renderWithEngine();
+  }
 }
+
+window.addEventListener('load', render);
