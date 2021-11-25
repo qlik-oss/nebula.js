@@ -3,7 +3,7 @@ const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
 
 if (!process.env.BASE_URL) {
   let s;
-  // process.env.MONO = true;
+  process.env.MONO = true;
   before(async () => {
     s = await serve({
       entry: path.resolve(__dirname, 'sn.js'),

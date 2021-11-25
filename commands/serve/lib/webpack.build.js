@@ -22,6 +22,8 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       eRender: [path.resolve(srcDir, 'eRender')],
       eDev: [path.resolve(srcDir, 'eDev')],
       eHub: [path.resolve(srcDir, 'eHub')],
+      // Include fixtures only when starting nebula serve
+      fixtures: [path.resolve(__dirname, dev ? './fixtures.js' : './sn.js')],
     },
     devtool: dev ? 'eval-cheap-module-source-map' : false,
     output: {
@@ -36,7 +38,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         '@nebula.js/conversion': path.resolve(__dirname, '../../../apis/conversion/src'),
         '@nebula.js/locale/all.json$': path.resolve(__dirname, '../../../apis/locale/all.json'),
         '@nebula.js/locale': path.resolve(__dirname, '../../../apis/locale/src'),
-        fixtures: path.resolve(__dirname, '../../../test/component'),
+        fixtures: dev ? path.resolve(process.cwd(), serveConfig.fixturePath) : '/empty',
       },
       extensions: ['.dev.js', '.js', '.jsx'],
     },
@@ -91,7 +93,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eRender.html'),
         filename: 'eRender.html',
-        chunks: ['eRender'],
+        chunks: ['eRender', 'fixtures'],
         favicon,
         scripts: serveConfig.scripts,
         stylesheets: serveConfig.stylesheets,
