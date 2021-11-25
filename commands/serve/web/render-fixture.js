@@ -4,7 +4,7 @@ import extend from 'extend';
 import { info as getServerInfo } from './connect';
 import { getModule } from './hot';
 
-const getDefaultOptions = async ({ themes = [], supernova }) => {
+const getDefaultOptions = async ({ themes = [], supernova, flags }) => {
   // load js artifact provided as entry
   const mo = await getModule(supernova.name, supernova.url);
 
@@ -19,6 +19,7 @@ const getDefaultOptions = async ({ themes = [], supernova }) => {
       context: {
         constraints: {},
       },
+      flags,
     },
   };
 };
