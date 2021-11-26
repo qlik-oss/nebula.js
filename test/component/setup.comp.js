@@ -30,6 +30,6 @@ if (!process.env.BASE_URL) {
   });
 
   after(() => {
-    // s.close();
+    s.close();
   });
 }

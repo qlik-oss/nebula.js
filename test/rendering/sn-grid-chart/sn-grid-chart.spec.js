@@ -35,7 +35,7 @@ describe('grid chart', () => {
   });
 
   after(() => {
-    // s.close();
+    s.close();
   });
 
   it('renders with artifact imported in fixture', async () => {
