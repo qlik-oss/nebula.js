@@ -33,7 +33,6 @@ const getUrlParamOptions = (params) => ({
   },
 });
 
-// Priority: serve options -> fixture -> URL params
 async function getOptions({ params, fixture, serverInfo }) {
   return extend(true, {}, await getServeOptions(serverInfo), fixture, getUrlParamOptions(params));
 }

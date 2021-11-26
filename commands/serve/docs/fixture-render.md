@@ -1,6 +1,6 @@
 # Render visualization from fixture
 
-Nebula serve supports rendering a visuzaliation from a fixture. The fixture specifies which visualization to render and how it should look and behave. See `fixture-format.md` for details about fixtures.
+Nebula serve supports rendering a visualization from a fixture. The fixture specifies which visualization to render and how it should look and behave. See `fixture-format.md` for details about fixtures.
 
 Render a visualization by providing the fixture parameter value to the rendering service.
 
@@ -49,9 +49,9 @@ This can be accieved by specifying URL query parameters. See below for supported
 
 ### `theme`
 
-Theme to use when rendering visuzaliation.
+Theme to use when rendering visualization.
 
-Specify an array of available themes in the instance config. Pprovide the `id` of theme to use as the parameter value.
+Specify an array of available themes in the instance config. Provide the `id` of theme to use as the parameter value.
 
 ### `langauge`
 

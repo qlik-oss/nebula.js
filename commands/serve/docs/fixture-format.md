@@ -4,7 +4,7 @@
 
 The fixture is a set of configurations which specifies the visualization to render and how it behaves. For example, title of the visuzalition, what data to display, theme to use and which feature flags to activate.
 
-Rendering a visuzaliation from a fixture multiple times yields the same result. This makes fixture rendering ideal to use in tests to verify that no the visualziation works as expected.
+Rendering a visualization from a fixture multiple times yields the same result. This makes fixture rendering ideal to use in tests to verify that the visualziation works as expected.
 
 ## Example
 
@@ -51,7 +51,7 @@ export default () => ({
 Example:
 
 ```js
-const visuzalition = (env) => ({
+const visualization = (env) => ({
   qae: {
     properties: {
       qHyperCubeDef: {},
@@ -76,7 +76,7 @@ export default () => ({
 
 ### `instanceConfig`
 
-Configurations when initating embed instance (`embed(app, instanceConfig)`).
+Configurations when initiating embed instance (`embed(app, instanceConfig)`).
 
 ```js
 export default () => ({
