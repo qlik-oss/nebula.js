@@ -4,7 +4,7 @@ import extend from 'extend';
 import { info as getServerInfo } from './connect';
 import { getModule } from './hot';
 
-const getDefaultOptions = async ({ themes = [], supernova, flags }) => {
+const getServeOptions = async ({ themes = [], supernova, flags }) => {
   // load js artifact provided as entry
   const mo = await getModule(supernova.name, supernova.url);
 
@@ -33,9 +33,9 @@ const getUrlParamOptions = (params) => ({
   },
 });
 
-// Priority: URL params -> fixture -> defaults (including nebula serve config)
+// Priority: serve options -> fixture -> URL params
 async function getOptions({ params, fixture, serverInfo }) {
-  return extend(true, {}, await getDefaultOptions(serverInfo), fixture, getUrlParamOptions(params));
+  return extend(true, {}, await getServeOptions(serverInfo), fixture, getUrlParamOptions(params));
 }
 
 function validateFixture({ genericObjects } = {}) {
@@ -57,7 +57,6 @@ function validateFixture({ genericObjects } = {}) {
 
 async function getFixture(fixturePath) {
   const fixtureFn = window.fixtures.get(fixturePath);
-
   if (!fixtureFn) {
     throw new Error(`Unable to load fixture ${fixturePath}`);
   }

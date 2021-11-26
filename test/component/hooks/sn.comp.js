@@ -73,7 +73,6 @@ describe('hooks', () => {
 
   it('useConstraints', async () => {
     const text = await page.$eval(`${snSelector} .constraints`, (el) => el.textContent);
-    // TODO Investigate why constraint: { select: true } always is provided with previous engima mock
     expect(text).to.equal('false:false:false');
   });
 

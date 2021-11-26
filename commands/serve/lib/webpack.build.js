@@ -93,7 +93,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eRender.html'),
         filename: 'eRender.html',
-        // Include fixture only when running nebula serve
+        // Include fixture only when running Nebula serve
         chunks: dev ? ['eRender', 'fixtures'] : ['eRender'],
         favicon,
         scripts: serveConfig.scripts,

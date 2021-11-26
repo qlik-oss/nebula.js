@@ -5,15 +5,14 @@
  */
 window.fixtures = {
   get(key = '') {
-    // const info = await serverInfo;
-    // see: https://webpack.js.org/guides/dependency-management/#requirecontext
     const k = key.startsWith('./') ? key : `./${key}`;
     try {
+      // see: https://webpack.js.org/guides/dependency-management/#requirecontext
       const context = require.context('fixtures', true, /\.fix\.js$/);
       // context.keys().forEach(console.log);
       return context(k).default;
     } catch (_) {
-      return () => console.log(`No fixture found at "${k}". Specify "--fixturePath" to nebula serve ?`);
+      return () => console.log(`No fixture found at "${k}". Specify "--fixturePath" to Nebula serve ?`);
     }
   },
 };
