@@ -2,7 +2,9 @@
 
 ## Purpose
 
-...
+The fixture is a set of configurations which specifies the visualization to render and how it behaves. For example, title of the visuzalition, what data to display, theme to use and which feature flags to activate.
+
+Rendering a visuzaliation from a fixture multiple times yields the same result. This makes fixture rendering ideal to use in tests to verify that no the visualziation works as expected.
 
 ## Example
 
@@ -26,7 +28,7 @@ export default () => {
 }
 ```
 
-## Options
+## Fixture configurations
 
 ### `type`
 
@@ -135,7 +137,7 @@ export default () => ({
 
 ## Serve configurations
 
-When starting Nebula serve a number of configurations may be added, e.g. type of visualization. These configurations are used as fallback values in case no value is present in the fixture.
+When starting Nebula serve a number of configurations may be added, e.g. type of visualization. These configurations are used as fallback values in case no value is present in the fixture. This is useful to reduce the amount of boilerplate config in the fixtures.
 
 ### `type`
 
@@ -155,43 +157,4 @@ nebula serve --entry ./dist/sn-grid-chart.js
 
 ### `flags`
 
-## URL query params
-
-### `theme`
-
-### `langauge`
-
-## Render fixture
-
-Base url: `http://host:port/render`
-
-Provide fixture as query param. The fixture param value is relative path to the working directory where `nebula serve` is run.
-
-Given project structure:
-
-```
-sn-grid-chart
-│   README.md
-│   package.json
-│
-└───src
-│   │   index.js
-│   │   ...
-│
-└───test
-    └───rendering
-        │   └───__fixtures__
-        │       │   scenario-1.fix.js
-        │       │   scenario-2.fix.js
-        │       │   ...
-        |
-        │   grid-chart.spec.js
-```
-
-...and `package.json` including test script launching Nebula serve the URL to launch a fixture is:
-
-```
-http://localhost:8000/render?fixture=./test/rendering/__fixtures__/scenario-1.fix.js
-```
-
-Improvement: Provide path to fixture location as Nebula serve config
+Specify feature flags to enable / disable.

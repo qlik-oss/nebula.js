@@ -38,7 +38,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         '@nebula.js/conversion': path.resolve(__dirname, '../../../apis/conversion/src'),
         '@nebula.js/locale/all.json$': path.resolve(__dirname, '../../../apis/locale/all.json'),
         '@nebula.js/locale': path.resolve(__dirname, '../../../apis/locale/src'),
-        fixtures: dev ? path.resolve(process.cwd(), serveConfig.fixturePath) : '/empty',
+        fixtures: path.resolve(process.cwd(), serveConfig.fixturePath || ''),
       },
       extensions: ['.dev.js', '.js', '.jsx'],
     },
