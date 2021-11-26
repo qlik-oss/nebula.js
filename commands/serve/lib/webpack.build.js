@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const babelPath = require.resolve('babel-loader');
 const babelPresetEnvPath = require.resolve('@babel/preset-env');
@@ -22,8 +23,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       eRender: [path.resolve(srcDir, 'eRender')],
       eDev: [path.resolve(srcDir, 'eDev')],
       eHub: [path.resolve(srcDir, 'eHub')],
-      // Include fixtures only when starting nebula serve
-      fixtures: [path.resolve(__dirname, dev ? './fixtures.js' : './sn.js')],
+      fixtures: [path.resolve(__dirname, './fixtures.js')],
     },
     devtool: dev ? 'eval-cheap-module-source-map' : false,
     output: {
@@ -93,7 +93,8 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eRender.html'),
         filename: 'eRender.html',
-        chunks: ['eRender', 'fixtures'],
+        // Include fixture only when running nebula serve
+        chunks: dev ? ['eRender', 'fixtures'] : ['eRender'],
         favicon,
         scripts: serveConfig.scripts,
         stylesheets: serveConfig.stylesheets,
@@ -110,9 +111,15 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         chunks: ['eHub'],
         favicon,
       }),
+      new CopyWebpackPlugin({
+        patterns: ['stardust.js', 'stardust.js.map'].map((filename) => ({
+          from: path.resolve(__dirname, `../../../apis/stardust/dist/${filename}`),
+          to: distDir,
+        })),
+      }),
     ],
-    // Stardust is an external dependency in order to share the dep between the fixture and when rendering the visualization.
     externals: {
+      // Ensure dependency is shared for rendering, fixtures and elsewhere.
       '@nebula.js/stardust': 'stardust',
     },
   };

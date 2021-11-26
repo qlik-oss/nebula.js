@@ -57,6 +57,7 @@
     "@nebula.js/ui": "^2.2.0",
     "autosuggest-highlight": "3.2.0",
     "babel-loader": "8.2.3",
+    "copy-webpack-plugin": "^10.0.0",
     "d3-require": "1.2.4",
     "enigma.js": "2.7.3",
     "eslint-import-resolver-alias": "1.1.2",

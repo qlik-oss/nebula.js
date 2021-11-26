@@ -65,8 +65,8 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
         chunks: [],
       }),
     ],
-    // Stardust is an external dependency in order to share the dep between the fixture and when rendering the visualization.
     externals: {
+      // Ensure dependency is shared for rendering, fixtures and elsewhere.
       '@nebula.js/stardust': 'stardust',
     },
   };

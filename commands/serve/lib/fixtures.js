@@ -1,9 +1,8 @@
 /**
- * Manage loading and delivering fixtures.
+ * Manages loading and delivering fixtures.
  *
- * Fixtures are transpiled and included when nebula serve is starting. Fixtures in the specified `fixturePath` with the extension `.fix.js` are included.
+ * Fixtures are transpiled and included when Nebula serve is starting. Fixtures in the specified `--fixturePath` with the extension `.fix.js` are included.
  */
-
 window.fixtures = {
   get(key = '') {
     // const info = await serverInfo;
