@@ -2,14 +2,14 @@
 
 ## Purpose
 
-The fixture is a set of configurations which specifies the visualization to render and how it behaves. For example, title of the visuzalition, what data to display, theme to use and which feature flags to activate.
+The fixture is a set of configurations which specifies the visualization to render and how it behaves. For example, type of visualization, what data to display, theme to use and which feature flags to activate.
 
-Rendering a visualization from a fixture multiple times yields the same result. This makes fixture rendering ideal to use in tests to verify that the visualziation works as expected.
+Rendering a visualization from a fixture multiple times yields the same result. This makes fixture rendering ideal to use in tests to verify that the visualization works as expected.
 
 ## Example
 
 ```js
-import gridChart from '@nebula.js/grid-chart';
+import gridChart from '@nebula.js/sn-grid-chart';
 
 export default () => {
   return {
@@ -41,38 +41,11 @@ Function loading visualization to render.
 Example using imports:
 
 ```js
-import gridChart from '@nebula.js/grid-chart';
+import simpleVisualization from './simpleVisualization';
 export default () => ({
   load: async () => gridChart,
   ...
 });
-```
-
-Example:
-
-```js
-const visualization = (env) => ({
-  qae: {
-    properties: {
-      qHyperCubeDef: {},
-      simpleMath: {
-        qValueExpression: {
-          qExpr: '1+1'
-        }
-      }
-    },
-  },
-  component() {
-    const layout = useLayout();
-    console.log(layout); // { qHyperCube: , simpleMath: 2 }
-  },
-});
-
-export default () => ({
-  load: async () => visualization,
-  ...
-});
-```
 
 ### `instanceConfig`
 
@@ -103,18 +76,17 @@ export default () => ({
 
 ### `snConfig`
 
-Configurations when rendering supernova visualization (`nebbie.render({ snConfig })`).
+Configurations when rendering supernova visualization (`nebbie.render(snConfig)`).
 
 ```js
 export default () => ({
   snConfig: {
-    examples: {
-      ...
-    }
+    options: {
+      myOption: 'option'
+    },
+    // ...
   },
-  ...
 });
-```
 
 ### `genericObjects`
 
