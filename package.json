@@ -18,7 +18,6 @@
     "test:mashup": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/mashup/**/*.int.js'",
     "test:integration": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/integration/*.int.js'",
     "test:component": "aw puppet -c aw.config.js --testExt '*.comp.js' --glob 'test/component/**/*.comp.js'",
-    "test:rendering": "aw puppet -c aw.config.js --testExt '*.spec.js' --glob 'test/rendering/**/*.spec.js'",
     "test:unit": "aw -c aw.config.js --nyc.reportDir coverage/unit --coverage",
     "prepare": "husky install"
   },
