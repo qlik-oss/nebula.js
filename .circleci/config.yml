@@ -87,9 +87,9 @@ jobs:
       # - run:
       #     name: Test mashup
       #     command: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      - run:
-          name: Test integration
-          command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      # - run:
+      #     name: Test integration
+      #     command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - run:
           name: Create a hello supernova project from latest release
           command: |
