@@ -28,10 +28,6 @@ jobs:
   build:
     docker:
       - image: circleci/node:14.18.1
-      - image: qlikcore/engine:12.1126.0
-        command: |
-          -S AcceptEULA=yes
-          -S SSEPlugin=sse,localhost:50051
       - image: browserless/chrome:1.49.1-puppeteer-1.20.0
 
     working_directory: ~/project
@@ -84,17 +80,17 @@ jobs:
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      # - run:
-      #     name: Test mashup
-      #     command: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - run:
+          name: Test mashup
+          command: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       # - run:
       #     name: Test integration
       #     command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      # - run:
-      #     name: Create a hello supernova project from latest release
-      #     command: |
-      #       set -e
-      #       npx nebula create temp/hello --pkgm yarn --picasso none
+      - run:
+          name: Create a hello supernova project from latest release
+          command: |
+            set -e
+            npx nebula create temp/hello --pkgm yarn --picasso none
       #       cd temp/hello
       #       APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - run:
@@ -104,19 +100,19 @@ jobs:
             npx nebula create mashup hello-mashup --pkgm yarn
             cd hello-mashup
             yarn build
-      # - run:
-      #     name: Create a picasso barchart supernova project from current commit
-      #     command: |
-      #       set -e
-      #       ./commands/cli/lib/index.js create generated/barchart --picasso barchart --no-install
-      #       echo "Yarn"
-      #       yarn
-      #       echo "Linking packages"
-      #       npx lerna link --force-local
-      #       cd generated/barchart
-      #       echo "Log node_modules/@nebula.js"
-      #       ls -la node_modules/@nebula.js
-      #       yarn run build
+      - run:
+          name: Create a picasso barchart supernova project from current commit
+          command: |
+            set -e
+            ./commands/cli/lib/index.js create generated/barchart --picasso barchart --no-install
+            echo "Yarn"
+            yarn
+            echo "Linking packages"
+            npx lerna link --force-local
+            cd generated/barchart
+            echo "Log node_modules/@nebula.js"
+            ls -la node_modules/@nebula.js
+            yarn run build
       #       APP_ID=$DOC_ID yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - store_artifacts:
           path: generated/barchart/screenshots
