@@ -55,7 +55,7 @@ function validateFixture({ genericObjects } = {}) {
 }
 
 async function getFixture(fixturePath) {
-  const fixtureFn = window.fixtures.get(fixturePath);
+  const fixtureFn = window.serveFixtures.get(fixturePath);
   if (!fixtureFn) {
     throw new Error(`Unable to load fixture ${fixturePath}`);
   }

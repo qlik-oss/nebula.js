@@ -3,7 +3,7 @@
  *
  * Fixtures are transpiled and included when Nebula serve is starting. Fixtures in the specified `--fixturePath` with the extension `.fix.js` are included.
  */
-window.fixtures = {
+window.serveFixtures = {
   get(key = '') {
     const k = key.startsWith('./') ? key : `./${key}`;
     try {
