@@ -11,21 +11,19 @@ Rendering a visualization from a fixture multiple times yields the same result. 
 ```js
 import gridChart from '@nebula.js/sn-grid-chart';
 
-export default () => {
-  return {
-    type: 'sn-grid-chart',
-    load: async () => gridChart,
-    instanceConfig: {
-      context: {
-        theme: 'dark',
-      }
-    },
-    snConfig: {
-      ...
-    },
-    genericObjects: [ ... ]
-  };
-}
+export default () => ({
+  type: 'sn-grid-chart',
+  load: async () => gridChart,
+  instanceConfig: {
+    context: {
+      theme: 'dark',
+    }
+  },
+  snConfig: {
+    ...
+  },
+  genericObjects: [ ... ]
+});
 ```
 
 ## Fixture configurations
@@ -43,9 +41,10 @@ Example using imports:
 ```js
 import simpleVisualization from './simpleVisualization';
 export default () => ({
-  load: async () => gridChart,
+  load: async () => simpleVisualization,
   ...
 });
+```
 
 ### `instanceConfig`
 
@@ -82,11 +81,12 @@ Configurations when rendering supernova visualization (`nebbie.render(snConfig)`
 export default () => ({
   snConfig: {
     options: {
-      myOption: 'option'
+      myOption: 'option',
     },
     // ...
   },
 });
+```
 
 ### `genericObjects`
 
