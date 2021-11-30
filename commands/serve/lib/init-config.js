@@ -66,6 +66,11 @@ const options = {
     type: 'boolean',
     default: false,
   },
+  fixturePath: {
+    type: 'string',
+    default: 'test/component',
+    description: 'Path to a folder that will be used as basis when locating fixtures',
+  },
 };
 
 module.exports = (yargs) =>
