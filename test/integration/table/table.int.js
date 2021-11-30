@@ -1,10 +1,28 @@
-describe('Simple visualization', () => {
+const path = require('path');
+const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
+const puppeteerUtil = require('../../utils/puppeteer-util');
+
+describe('Table visualization', () => {
   const content = '.simple-table';
+  let s;
+
+  before(async () => {
+    s = await serve({
+      entry: path.resolve(__dirname, 'sn-table'),
+      open: false,
+      fixturePath: 'test/integration/table',
+    });
+    puppeteerUtil.addListeners(page);
+  });
+
+  after(() => {
+    s.close();
+  });
 
   describe('basic', () => {
     before(async () => {
-      const app = encodeURIComponent(process.env.APP_ID || '/apps/ctrl00.qvf');
-      await page.goto(`${process.env.BASE_URL}/render/?app=${app}&cols=Alpha`);
+      const url = `${s.url}/render?fixture=table.fix.js`;
+      await page.goto(url);
 
       await page.waitForSelector(content, { visible: true });
     });
