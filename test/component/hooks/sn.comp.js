@@ -3,7 +3,6 @@ describe('hooks', () => {
 
   before(async () => {
     const url = `${process.env.BASE_URL}/render/?fixture=./hooks/hooked.fix.js`;
-    console.log('url', url);
     await page.goto(url);
     await page.waitForSelector(snSelector, { visible: true });
   });
