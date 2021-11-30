@@ -1,6 +1,7 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const babelPath = require.resolve('babel-loader');
 const babelPresetEnvPath = require.resolve('@babel/preset-env');
@@ -22,6 +23,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       eRender: [path.resolve(srcDir, 'eRender')],
       eDev: [path.resolve(srcDir, 'eDev')],
       eHub: [path.resolve(srcDir, 'eHub')],
+      fixtures: [path.resolve(__dirname, './fixtures.js')],
     },
     devtool: dev ? 'eval-cheap-module-source-map' : false,
     output: {
@@ -36,7 +38,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         '@nebula.js/conversion': path.resolve(__dirname, '../../../apis/conversion/src'),
         '@nebula.js/locale/all.json$': path.resolve(__dirname, '../../../apis/locale/all.json'),
         '@nebula.js/locale': path.resolve(__dirname, '../../../apis/locale/src'),
-        fixtures: path.resolve(__dirname, '../../../test/component'),
+        fixtures: path.resolve(process.cwd(), serveConfig.fixturePath || ''),
       },
       extensions: ['.dev.js', '.js', '.jsx'],
     },
@@ -91,7 +93,8 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eRender.html'),
         filename: 'eRender.html',
-        chunks: ['eRender'],
+        // Include fixture only when running Nebula serve
+        chunks: dev ? ['eRender', 'fixtures'] : ['eRender'],
         favicon,
         scripts: serveConfig.scripts,
         stylesheets: serveConfig.stylesheets,
@@ -108,7 +111,17 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         chunks: ['eHub'],
         favicon,
       }),
+      new CopyWebpackPlugin({
+        patterns: ['stardust.js', 'stardust.js.map'].map((filename) => ({
+          from: path.resolve(__dirname, `../../../apis/stardust/dist/${filename}`),
+          to: distDir,
+        })),
+      }),
     ],
+    externals: {
+      // Ensure dependency is shared for rendering, fixtures and elsewhere.
+      '@nebula.js/stardust': 'stardust',
+    },
   };
 
   return config;

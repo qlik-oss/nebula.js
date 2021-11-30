@@ -11,7 +11,9 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
 
   const config = {
     mode: 'development',
-    entry: path.resolve(__dirname, './sn.js'),
+    entry: {
+      fixtures: [path.resolve(__dirname, './fixtures.js')],
+    },
     devtool: false,
     infrastructureLogging: {
       level: 'error',
@@ -44,7 +46,7 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
     },
     resolve: {
       alias: {
-        fixtures: path.resolve(process.cwd(), 'test/component'),
+        fixtures: path.resolve(process.cwd(), serveConfig.fixturePath),
       },
     },
     plugins: [
@@ -54,13 +56,19 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
         inject: 'head',
         scripts: serveConfig.scripts,
         stylesheets: serveConfig.stylesheets,
+        chunks: ['fixtures'],
       }),
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eDev.html'),
         filename: 'eDev.html',
         inject: 'head',
+        chunks: [],
       }),
     ],
+    externals: {
+      // Ensure dependency is shared for rendering, fixtures and elsewhere.
+      '@nebula.js/stardust': 'stardust',
+    },
   };
 
   return config;

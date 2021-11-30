@@ -2,7 +2,8 @@ describe('hooks', () => {
   const snSelector = '.njs-viz';
 
   before(async () => {
-    await page.goto(`${process.env.BASE_URL}/render/?fixture=./hooks/hooked.fix.js`);
+    const url = `${process.env.BASE_URL}/render/?fixture=./hooks/hooked.fix.js`;
+    await page.goto(url);
     await page.waitForSelector(snSelector, { visible: true });
   });
 
@@ -51,7 +52,7 @@ describe('hooks', () => {
 
   it('useAppLayout', async () => {
     const text = await page.$eval(`${snSelector} .applayout`, (el) => el.textContent);
-    expect(text).to.equal('app-title');
+    expect(text).to.equal('app-layout');
   });
 
   it('useTranslator', async () => {
@@ -71,7 +72,7 @@ describe('hooks', () => {
 
   it('useConstraints', async () => {
     const text = await page.$eval(`${snSelector} .constraints`, (el) => el.textContent);
-    expect(text).to.equal('false:false:true');
+    expect(text).to.equal('false:false:false');
   });
 
   it('useOptions', async () => {

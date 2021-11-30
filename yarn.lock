@@ -6206,6 +6206,11 @@
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.8.tgz#edf1bf1dbf4e04413ca8e5b17b3b7d7d54b59818"
   integrity sha512-YSBPTLTVm2e2OoQIDYx8HaeWJ5tTToLH67kXR7zYNGupXMEHa2++G8k+DczX2cFVgalypqtyZIcU19AFcmOpmg==
 
+"@types/json-schema@^7.0.9":
+  version "7.0.9"
+  resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
+  integrity sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==
+
 "@types/json5@^0.0.29":
   version "0.0.29"
   resolved "https://registry.yarnpkg.com/@types/json5/-/json5-0.0.29.tgz#ee28707ae94e11d2b827bcbe5270bcea7f3e71ee"
@@ -6854,6 +6859,13 @@ ajv-errors@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/ajv-errors/-/ajv-errors-1.0.1.tgz#f35986aceb91afadec4102fbd85014950cefa64d"
 
+ajv-formats@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/ajv-formats/-/ajv-formats-2.1.1.tgz#6e669400659eb74973bbf2e33327180a0996b520"
+  integrity sha512-Wx0Kx52hxE7C18hkMEggYlEifqWZtYaRgouJor+WMdPnQyEK13vgEWyVNup7SoeeoLMsr4kf5h6dOW11I15MUA==
+  dependencies:
+    ajv "^8.0.0"
+
 ajv-keywords@^3.1.0:
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.4.0.tgz#4b831e7b531415a7cc518cd404e73f6193c6349d"
@@ -6867,6 +6879,13 @@ ajv-keywords@^3.5.2:
   version "3.5.2"
   resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-3.5.2.tgz#31f29da5ab6e00d1c2d329acf7b5929614d5014d"
   integrity sha512-5p6WTN0DdTGVQk6VjcEju19IgaHudalcfabD7yhDGeA6bcQnmL+CpveLJq/3hvfwd1aof6L386Ougkx6RfyMIQ==
+
+ajv-keywords@^5.0.0:
+  version "5.1.0"
+  resolved "https://registry.yarnpkg.com/ajv-keywords/-/ajv-keywords-5.1.0.tgz#69d4d385a4733cdbeab44964a1170a88f87f0e16"
+  integrity sha512-YCS/JNFAUyr5vAuhk1DWm1CBxRHW9LbJ2ozWeemrIqpbsqKjHVxYPyi5GC0rjZIT5JxJ3virVTS8wk4i/Z+krw==
+  dependencies:
+    fast-deep-equal "^3.1.3"
 
 ajv@^6.1.0:
   version "6.9.2"
@@ -6944,6 +6963,16 @@ ajv@^6.5.5:
     fast-deep-equal "^2.0.1"
     fast-json-stable-stringify "^2.0.0"
     json-schema-traverse "^0.4.1"
+    uri-js "^4.2.2"
+
+ajv@^8.0.0, ajv@^8.8.0:
+  version "8.8.2"
+  resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.8.2.tgz#01b4fef2007a28bf75f0b7fc009f62679de4abbb"
+  integrity sha512-x9VuX+R/jcFj1DHo/fCp99esgGDWiHENrKxaCENuCxpoMCmAt/COCGVDwA7kleEpEzJjDnvh3yGoOuLu0Dtllw==
+  dependencies:
+    fast-deep-equal "^3.1.1"
+    json-schema-traverse "^1.0.0"
+    require-from-string "^2.0.2"
     uri-js "^4.2.2"
 
 alphanum-sort@^1.0.2:
@@ -9072,6 +9101,18 @@ copy-to-clipboard@^3.3.1:
   integrity sha512-i13qo6kIHTTpCm8/Wup+0b1mVWETvu2kIMzKoK8FpkLkFxlt0znUAHcMzox+T8sPlqtZXq3CulEjQHsYiGFJUw==
   dependencies:
     toggle-selection "^1.0.6"
+
+copy-webpack-plugin@^10.0.0:
+  version "10.0.0"
+  resolved "https://registry.yarnpkg.com/copy-webpack-plugin/-/copy-webpack-plugin-10.0.0.tgz#f25a29ca2398a6ca31183b62e76adacb53b981d1"
+  integrity sha512-tuCVuFMBbRsb7IH0q1CUb50/Skv+7a6c7DJ+xi4fAbOzNLTYVMUTPnf8uGvKPtmqTvzYBrfEFo7YgP4TsUWmtg==
+  dependencies:
+    fast-glob "^3.2.7"
+    glob-parent "^6.0.1"
+    globby "^12.0.2"
+    normalize-path "^3.0.0"
+    schema-utils "^4.0.0"
+    serialize-javascript "^6.0.0"
 
 core-js-compat@^3.18.0, core-js-compat@^3.19.0:
   version "3.19.1"
@@ -12046,7 +12087,7 @@ globby@11.0.1:
     merge2 "^1.3.0"
     slash "^3.0.0"
 
-globby@12.0.2:
+globby@12.0.2, globby@^12.0.2:
   version "12.0.2"
   resolved "https://registry.yarnpkg.com/globby/-/globby-12.0.2.tgz#53788b2adf235602ed4cabfea5c70a1139e1ab11"
   integrity sha512-lAsmb/5Lww4r7MM9nCCliDZVIKbZTavrsunAsHLr9oHthrZP1qi7/gAnHOsUs9bLvEt2vKVJhHmxuL7QbDuPdQ==
@@ -13958,6 +13999,11 @@ json-parse-even-better-errors@^2.3.0:
 json-schema-traverse@^0.4.1:
   version "0.4.1"
   resolved "https://registry.yarnpkg.com/json-schema-traverse/-/json-schema-traverse-0.4.1.tgz#69f6a87d9513ab8bb8fe63bdb0979c448e684660"
+
+json-schema-traverse@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/json-schema-traverse/-/json-schema-traverse-1.0.0.tgz#ae7bcb3656ab77a73ba5c49bf654f38e6b6860e2"
+  integrity sha512-NM8/P9n3XjXhIZn1lLhkFaACTOURQXjWhV4BA/RnOv8xvgqtqpAX9IO4mRQxSx1Rlo4tqzeqb0sOlruaOy3dug==
 
 json-schema@0.2.3:
   version "0.2.3"
@@ -18457,7 +18503,7 @@ require-directory@^2.1.1:
   resolved "https://registry.yarnpkg.com/require-directory/-/require-directory-2.1.1.tgz#8c64ad5fd30dab1c976e2344ffe7f792a6a6df42"
   integrity sha1-jGStX9MNqxyXbiNE/+f3kqam30I=
 
-require-from-string@2.0.2:
+require-from-string@2.0.2, require-from-string@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/require-from-string/-/require-from-string-2.0.2.tgz#89a7fdd938261267318eafe14f9c32e598c36909"
 
@@ -18875,6 +18921,16 @@ schema-utils@^3.1.0:
     "@types/json-schema" "^7.0.8"
     ajv "^6.12.5"
     ajv-keywords "^3.5.2"
+
+schema-utils@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/schema-utils/-/schema-utils-4.0.0.tgz#60331e9e3ae78ec5d16353c467c34b3a0a1d3df7"
+  integrity sha512-1edyXKgh6XnJsJSQ8mKWXnN/BVaIbFMLpouRUrXgVq7WYne5kw3MW7UPhO44uRXQSIpTSXoJbmrR2X0w9kUTyg==
+  dependencies:
+    "@types/json-schema" "^7.0.9"
+    ajv "^8.8.0"
+    ajv-formats "^2.1.1"
+    ajv-keywords "^5.0.0"
 
 scriptappy-from-jsdoc@0.7.0:
   version "0.7.0"
