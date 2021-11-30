@@ -1,9 +1,10 @@
+/* eslint import/no-extraneous-dependencies: 0 */
+
+import { useEffect, useElement, useLayout } from '@nebula.js/stardust';
 import picassojs from 'picasso.js';
 import picassoQ from 'picasso-plugin-q';
 
 import properties from './object-properties';
-import data from './data';
-import picSelections from './pic-selections';
 import definition from './pic-definition';
 
 export default function supernova(/* env */) {
@@ -13,24 +14,18 @@ export default function supernova(/* env */) {
   return {
     qae: {
       properties,
-      data,
     },
-    component: {
-      created() {},
-      mounted(element) {
-        this.pic = picasso.chart({
+    component() {
+      const element = useElement();
+      const layout = useLayout();
+
+      useEffect(() => {
+        const picassoInstance = picasso.chart({
           element,
           data: [],
           settings: {},
         });
-        this.picsel = picSelections({
-          selections: this.selections,
-          brush: this.pic.brush('selection'),
-          picassoQ,
-        });
-      },
-      render({ layout, context }) {
-        this.pic.update({
+        picassoInstance.update({
           data: [
             {
               type: 'q',
@@ -38,12 +33,9 @@ export default function supernova(/* env */) {
               data: layout.qHyperCube,
             },
           ],
-          settings: definition({ layout, context }),
+          settings: definition({ layout }),
         });
-      },
-      resize() {},
-      willUnmount() {},
-      destroy() {},
+      }, []);
     },
   };
 }

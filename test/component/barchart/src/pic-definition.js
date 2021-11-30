@@ -1,4 +1,4 @@
-export default function picassoDefinition({ layout, context }) {
+export default function picassoDefinition({ layout }) {
   if (!layout.qHyperCube) {
     throw new Error('Layout is missing a hypercube');
   }
@@ -10,6 +10,7 @@ export default function picassoDefinition({ layout, context }) {
         expand: 0.2,
         include: [0],
         invert: true,
+        min: 0,
       },
     },
     components: [
@@ -41,27 +42,6 @@ export default function picassoDefinition({ layout, context }) {
             width: 0.7,
           },
         },
-        brush:
-          context.permissions.indexOf('interact') !== -1 && context.permissions.indexOf('select') !== -1
-            ? {
-                trigger: [
-                  {
-                    contexts: ['selection'],
-                  },
-                ],
-                consume: [
-                  {
-                    context: 'selection',
-                    data: ['', 'end'],
-                    style: {
-                      inactive: {
-                        opacity: 0.3,
-                      },
-                    },
-                  },
-                ],
-              }
-            : {},
       },
     ],
   };

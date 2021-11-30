@@ -2,7 +2,7 @@ import * as stardust from '@nebula.js/stardust';
 
 import { requireFrom } from 'd3-require';
 
-const getModule = (name, url) => {
+export const getModule = (name, url) => {
   const localResolve = (n) => `/pkg/${encodeURIComponent(n)}`;
   const remoteResolve = (n) => n;
   const resolve = url ? remoteResolve : localResolve;

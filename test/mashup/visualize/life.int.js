@@ -1,4 +1,4 @@
-describe('object lifecycle', () => {
+describe.skip('object lifecycle', () => {
   const waitForTextStatus = async (selector, text, options = { timeout: 1000 }) => {
     await page.waitForSelector(selector, { visible: true });
     await page.waitForFunction(
