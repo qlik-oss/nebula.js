@@ -27,7 +27,7 @@ aliases:
 jobs:
   build:
     docker:
-      - image: circleci/node:14.18.1
+      - image: circleci/node:17.1.0
       - image: browserless/chrome:1.49.1-puppeteer-1.20.0
 
     working_directory: ~/project
