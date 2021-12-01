@@ -108,7 +108,7 @@ jobs:
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
             yarn run build
-      #       APP_ID=$DOC_ID yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+            yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - store_artifacts:
           path: generated/barchart/screenshots
       - store_artifacts:
