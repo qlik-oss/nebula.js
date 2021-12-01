@@ -4,7 +4,6 @@ const yargs = require('yargs');
 
 const mashupServer = require('../test/mashup/server');
 const sseServer = require('../test/fixtures/sse');
-const useEngine = require('../commands/serve/lib/engine');
 
 const args = yargs
   .option('start', {
@@ -16,14 +15,9 @@ const args = yargs
     default: true,
     type: 'boolean',
     describe: 'Start the SSE plugin',
-  })
-  .option('engine', {
-    default: false,
-    type: 'boolean',
-    describe: 'Start the engine',
   }).argv;
 
-const { start, sse, engine } = args;
+const { start, sse } = args;
 
 let hasCleanedUp = false;
 const services = [];
@@ -50,23 +44,6 @@ if (sse) {
       s.start();
     },
     stop: () => s.close(),
-  });
-}
-
-if (engine) {
-  let e;
-  services.push({
-    name: 'Qlik Engine',
-    start: async () => {
-      e = await useEngine({
-        ACCEPT_EULA: true,
-        files: ['./test/fixtures/docker/docker-compose.yml'],
-        cwd: process.cwd(),
-      });
-    },
-    stop: async () => {
-      e && (await e());
-    },
   });
 }
 

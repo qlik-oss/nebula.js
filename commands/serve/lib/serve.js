@@ -10,7 +10,6 @@ const build = require('@nebula.js/cli-build');
 const initConfig = require('./init-config');
 
 const webpackServe = require('./webpack.serve');
-const useEngine = require('./engine');
 
 const initiateWatch = async ({ snPath, snName, host }) => {
   // TODO - timeout
@@ -103,11 +102,6 @@ module.exports = async (argv) => {
   }
 
   const serveConfig = extend(true, {}, defaultServeConfig, argv);
-
-  let stopEngine = () => {};
-  if (serveConfig.ACCEPT_EULA) {
-    stopEngine = await useEngine(serveConfig);
-  }
   const host = serveConfig.host || 'localhost';
   const port = serveConfig.port || (await portfinder.getPortPromise({ host }));
   const enigmaConfig = serveConfig.enigma;
@@ -169,7 +163,6 @@ module.exports = async (argv) => {
   });
 
   const close = async () => {
-    await stopEngine();
     if (watcher) {
       watcher.close();
     }
