@@ -3,21 +3,15 @@
 const yargs = require('yargs');
 
 const mashupServer = require('../test/mashup/server');
-const sseServer = require('../test/fixtures/sse');
 
 const args = yargs
   .option('start', {
     default: true,
     type: 'boolean',
     describe: 'Start the mashup server',
-  })
-  .option('sse', {
-    default: true,
-    type: 'boolean',
-    describe: 'Start the SSE plugin',
   }).argv;
 
-const { start, sse } = args;
+const { start } = args;
 
 let hasCleanedUp = false;
 const services = [];
@@ -33,17 +27,6 @@ if (start) {
     stop: async () => {
       await m.close();
     },
-  });
-}
-
-if (sse) {
-  const s = sseServer;
-  services.push({
-    name: 'SSE plugin server',
-    start: () => {
-      s.start();
-    },
-    stop: () => s.close(),
   });
 }
 
