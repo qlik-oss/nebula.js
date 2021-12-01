@@ -40,14 +40,14 @@
     "puppeteer": "12.0.1",
     "regenerator-runtime": "0.13.9",
     "source-map-loader": "3.0.0",
-    "webpack": "5.64.0",
-    "webpack-dev-server": "4.5.0",
-    "ws": "8.2.3",
-    "yargs": "17.2.1"
+    "webpack": "5.64.4",
+    "webpack-dev-server": "4.6.0",
+    "ws": "8.3.0",
+    "yargs": "17.3.0"
   },
   "devDependencies": {
     "@babel/core": "7.16.0",
-    "@babel/preset-env": "7.16.0",
+    "@babel/preset-env": "7.16.4",
     "@babel/preset-react": "7.16.0",
     "@material-ui/core": "4.12.3",
     "@nebula.js/enigma-mocker": "^2.2.0",
