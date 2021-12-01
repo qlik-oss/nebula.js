@@ -17,6 +17,7 @@ describe('Table visualization', () => {
 
   after(() => {
     s.close();
+    puppeteerUtil.removeListeners(page);
   });
 
   describe('basic', () => {
