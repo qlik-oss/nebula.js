@@ -85,16 +85,9 @@ jobs:
           name: Create a hello supernova project from latest release
           command: |
             set -e
-            ./commands/cli/lib/index.js create temp/hello --pkgm yarn --picasso none --no-install
-            echo "Yarn"
-            yarn
-            echo "Linking packages"
-            npx lerna link --force-local
-            cd temp/hello
-            echo "Log node_modules/@nebula.js"
-            ls -la node_modules/@nebula.js
-            yarn run build
-            yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+            npx nebula create temp/hello --pkgm yarn --picasso none
+      #      cd temp/hello
+      #      yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - run:
           name: Create a hello mashup project from latest release
           command: |
