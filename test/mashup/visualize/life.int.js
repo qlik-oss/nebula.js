@@ -55,6 +55,6 @@ describe('object lifecycle', () => {
     const url = getScenarioUrl('destroy');
     await page.goto(url);
     // wait for some time to ensure destroy has been run and no errors are thrown
-    await page.waitFor(1000);
+    await page.waitFor(5000);
   });
 });
