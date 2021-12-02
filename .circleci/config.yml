@@ -34,17 +34,6 @@ jobs:
 
     steps:
       - checkout
-      # start the SSE plugin as early as possible so that the engine
-      # image has enough time to connect to it before tests are run
-      - run:
-          name: Initiate SSE plugin
-          command: |
-            cd test/fixtures/sse
-            echo "{}" > package.json
-            npm install qlik-sse@0.3.0 --no-package-lock
-            rm package.json
-            node start.js
-          background: true
 
       - restore_cache: *restore_yarn_cache
 
