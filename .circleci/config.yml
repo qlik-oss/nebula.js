@@ -81,20 +81,24 @@ jobs:
       # - run:
       #     name: Test integration
       #     command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      - run:
-          name: Create a hello supernova project from latest release
-          command: |
-            set -e
-            ./commands/cli/lib/index.js create generated/hello --picasso none --no-install
-            echo "Yarn"
-            yarn
-            echo "Linking packages"
-            npx lerna link --force-local
-            cd generated/hello
-            echo "Log node_modules/@nebula.js"
-            ls -la node_modules/@nebula.js
-            yarn run build
-            yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      # - run:
+      #     name: Create a hello supernova project from latest release
+      #     command: |
+      #       set -e
+      #       ./commands/cli/lib/index.js create generated/hello --picasso none --no-install
+      #       echo "Yarn"
+      #       yarn
+      #       echo "Linking packages"
+      #       npx lerna link --force-local
+      #       cd generated/hello
+      #       echo "Log node_modules/@nebula.js"
+      #       ls -la node_modules/@nebula.js
+      #       yarn run build
+      #       yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - nebula-create:
+        name: 'generated/hello'
+        template: 'none'
+        install: false
       - run:
           name: Create a hello mashup project from latest release
           command: |
@@ -154,3 +158,32 @@ workflows:
             tags:
               only:
                 - /v.*/
+
+commands:
+  nebula-create:
+    description: 'Create Nebula visualization project'
+    parameters:
+      name:
+        type: string
+        description: 'Name of project'
+      picasso:
+        type: string
+        description: 'Picasso template'
+      install:
+        type: boolean
+        default: true
+      steps:
+        - run:
+          command: |
+            set -e
+            echo "--Nebula create---"
+            ./commands/cli/lib/index.js create << parameters.name >> --picasso barchart --install << parameters.install >> --pkgm yarn
+            echo "Yarn"
+            yarn
+            echo "Linking packages"
+            npx lerna link --force-local
+            cd << parameters.name >>
+            echo "Log node_modules/@nebula.js"
+            ls -la node_modules/@nebula.js
+            yarn run build
+            yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
