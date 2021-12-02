@@ -28,22 +28,26 @@ commands:
   nebula_create:
     description: 'Create Nebula visualization project'
     parameters:
-      path:
+      projectName:
         type: string
-        description: 'Path to project'
+        description: 'Project name'
       picasso:
         type: string
         description: 'Picasso template'
       install:
         type: boolean
         default: true
+        description: 'Run package installation step'
+      after:
+        description: 'Steps executed after the project has been created'
+        type: steps
+        default: []
     steps:
       - run:
-          name: 'Create Nebula visualization project'
+          name: 'Create Nebula visualization project: << parameters.projectName >> Picasso template << parameters.picasso >>'
           command: |
             set -e
-            echo "--Nebula create---"
-            ./commands/cli/lib/index.js create << parameters.path >> --picasso barchart --install << parameters.install >> --pkgm yarn
+            ./commands/cli/lib/index.js create << parameters.projectName >> --picasso << parameters.picasso >> --install << parameters.install >> --pkgm yarn
             echo "Yarn"
             yarn
             echo "Linking packages"
@@ -51,8 +55,7 @@ commands:
             cd << parameters.path >>
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
-            yarn run build
-            yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - steps: << parameters.after >>
 
 jobs:
   build:
@@ -111,10 +114,18 @@ jobs:
       # - run:
       #     name: Test integration
       #     command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+
       - nebula_create:
-          path: 'generated/hello'
+          projectName: 'generated/hello'
           picasso: 'none'
           install: false
+          after:
+            - run:
+                command: |
+                  pwd
+                  yarn run build
+                  yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+
       - run:
           name: Create a hello mashup project from latest release
           command: |
@@ -122,10 +133,18 @@ jobs:
             npx nebula create mashup hello-mashup --pkgm yarn
             cd hello-mashup
             yarn build
+
       - nebula_create:
-          path: generated/barchart
+          projectName: generated/barchart
           picasso: 'barchart'
           install: false
+          after:
+            - run:
+                command: |
+                  pwd
+                  yarn run build
+                  yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+
       - store_artifacts:
           path: generated/barchart/screenshots
       - store_artifacts:
