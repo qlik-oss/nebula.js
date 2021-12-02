@@ -99,8 +99,8 @@ jobs:
           name: Create a hello mashup project from latest release
           command: |
             set -e
-            npx nebula create mashup hello-mashup --pkgm yarn
-            cd hello-mashup
+            npx nebula create mashup generated/hello-mashup --pkgm yarn
+            cd generated/hello-mashup
             yarn build
       - run:
           name: Create a picasso barchart supernova project from current commit
