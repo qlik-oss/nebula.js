@@ -34,6 +34,10 @@ commands:
       picasso:
         type: string
         description: 'Picasso template'
+        default: 'none'
+      mashup:
+        type: boolean
+        default: false
       install:
         type: boolean
         default: false
@@ -48,10 +52,11 @@ commands:
         description: 'Run tests'
     steps:
       - run:
-          name: 'Create Nebula visualization project: << parameters.project_name >> Picasso template << parameters.picasso >>'
+          name: 'Create Nebula visualization project:<<# parameters.mashup >>Mashup<</ parameters.mashup >> <<^ parameters.mashup >>Picasso template << parameters.picasso >> <</ parameters.mashup >> in << parameters.project_name >>'
           command: |
             set -e
-            ./commands/cli/lib/index.js create << parameters.project_name >> --picasso << parameters.picasso >> --install << parameters.install >> --pkgm yarn
+            <<^ parameters.mashup >> ./commands/cli/lib/index.js create << parameters.project_name >> --picasso << parameters.picasso >> --install << parameters.install >> --pkgm yarn <</ parameters.mashup >>
+            <<# parameters.mashup >> ./commands/cli/lib/index.js create mashup << parameters.project_name >> --install << parameters.install >> --pkgm yarn <</ parameters.mashup >>
             echo "Yarn"
             yarn
             echo "Linking packages"
@@ -124,13 +129,11 @@ jobs:
           project_name: 'generated/hello'
           picasso: 'none'
 
-      - run:
-          name: Create a hello mashup project from latest release
-          command: |
-            set -e
-            npx nebula create mashup hello-mashup --pkgm yarn
-            cd hello-mashup
-            yarn build
+      - nebula_create:
+          project_name: 'hello-mashup'
+          mashup: true
+          install: true
+          test: false
 
       - nebula_create:
           project_name: generated/barchart
