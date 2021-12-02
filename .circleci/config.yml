@@ -126,7 +126,7 @@ jobs:
       #       yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - nebula_create:
           path: 'generated/hello'
-          template: 'none'
+          picasso: 'none'
           install: false
       - run:
           name: Create a hello mashup project from latest release
