@@ -39,19 +39,20 @@ commands:
         default: true
     steps:
       - run:
-        command: |
-          set -e
-          echo "--Nebula create---"
-          ./commands/cli/lib/index.js create << parameters.path >> --picasso barchart --install << parameters.install >> --pkgm yarn
-          echo "Yarn"
-          yarn
-          echo "Linking packages"
-          npx lerna link --force-local
-          cd << parameters.path >>
-          echo "Log node_modules/@nebula.js"
-          ls -la node_modules/@nebula.js
-          yarn run build
-          yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+          name: 'Create Nebula visualization project'
+          command: |
+            set -e
+            echo "--Nebula create---"
+            ./commands/cli/lib/index.js create << parameters.path >> --picasso barchart --install << parameters.install >> --pkgm yarn
+            echo "Yarn"
+            yarn
+            echo "Linking packages"
+            npx lerna link --force-local
+            cd << parameters.path >>
+            echo "Log node_modules/@nebula.js"
+            ls -la node_modules/@nebula.js
+            yarn run build
+            yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 
 jobs:
   build:
@@ -110,10 +111,10 @@ jobs:
       # - run:
       #     name: Test integration
       #     command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      # - nebula_create:
-      #     path: 'generated/hello'
-      #     picasso: 'none'
-      #     install: false
+      - nebula_create:
+          path: 'generated/hello'
+          picasso: 'none'
+          install: false
       - run:
           name: Create a hello mashup project from latest release
           command: |
