@@ -36,12 +36,16 @@ commands:
         description: 'Picasso template'
       install:
         type: boolean
-        default: true
+        default: false
         description: 'Run package installation step'
-      after:
-        description: 'Steps executed after project has been created'
-        type: steps
-        default: []
+      build:
+        type: boolean
+        default: true
+        description: 'Build project'
+      test:
+        type: boolean
+        default: true
+        description: 'Run tests'
     steps:
       - run:
           name: 'Create Nebula visualization project: << parameters.project_name >> Picasso template << parameters.picasso >>'
@@ -55,7 +59,8 @@ commands:
             cd << parameters.project_name >>
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
-      - steps: << parameters.after >>
+            <<# parameters.build >> yarn run build <</ parameters.build >>
+            <<# parameters.test >> yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch <</ parameters.test >>
 
 jobs:
   build:
@@ -118,13 +123,6 @@ jobs:
       - nebula_create:
           project_name: 'generated/hello'
           picasso: 'none'
-          install: false
-          after:
-            - run:
-                command: |
-                  pwd
-                  yarn run build
-                  yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 
       - run:
           name: Create a hello mashup project from latest release
@@ -137,13 +135,6 @@ jobs:
       - nebula_create:
           project_name: generated/barchart
           picasso: 'barchart'
-          install: false
-          after:
-            - run:
-                command: |
-                  pwd
-                  yarn run build
-                  yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
 
       - store_artifacts:
           path: generated/barchart/screenshots
