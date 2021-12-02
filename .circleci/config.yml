@@ -42,12 +42,12 @@ commands:
         command: |
           set -e
           echo "--Nebula create---"
-          ./commands/cli/lib/index.js create << parameters.name >> --picasso barchart --install << parameters.install >> --pkgm yarn
+          ./commands/cli/lib/index.js create << parameters.path >> --picasso barchart --install << parameters.install >> --pkgm yarn
           echo "Yarn"
           yarn
           echo "Linking packages"
           npx lerna link --force-local
-          cd << parameters.name >>
+          cd << parameters.path >>
           echo "Log node_modules/@nebula.js"
           ls -la node_modules/@nebula.js
           yarn run build
