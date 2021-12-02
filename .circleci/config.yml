@@ -123,7 +123,6 @@ jobs:
             cd hello-mashup
             yarn build
       - nebula_create:
-          name: Create a picasso barchart supernova project from current commit
           path: generated/barchart
           picasso: 'barchart'
           install: false
