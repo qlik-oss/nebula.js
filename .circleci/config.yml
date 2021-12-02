@@ -25,7 +25,7 @@ aliases:
     at: ~/project
 
 commands:
-  nebula-create:
+  nebula_create:
     description: 'Create Nebula visualization project'
     parameters:
       name:
@@ -124,7 +124,7 @@ jobs:
       #       ls -la node_modules/@nebula.js
       #       yarn run build
       #       yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      - nebula-create:
+      - nebula_create:
           name: 'generated/hello'
           template: 'none'
           install: false
