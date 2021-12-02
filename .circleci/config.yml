@@ -85,12 +85,12 @@ jobs:
           name: Create a hello supernova project from latest release
           command: |
             set -e
-            ./commands/cli/lib/index.js create temp/hello --picasso none --no-install
+            ./commands/cli/lib/index.js create generated/hello --picasso none --no-install
             echo "Yarn"
             yarn
             echo "Linking packages"
             npx lerna link --force-local
-            cd temp/hello
+            cd generated/hello
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
             yarn run build
