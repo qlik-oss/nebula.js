@@ -172,18 +172,18 @@ commands:
       install:
         type: boolean
         default: true
-      steps:
-        - run:
-          command: |
-            set -e
-            echo "--Nebula create---"
-            ./commands/cli/lib/index.js create << parameters.name >> --picasso barchart --install << parameters.install >> --pkgm yarn
-            echo "Yarn"
-            yarn
-            echo "Linking packages"
-            npx lerna link --force-local
-            cd << parameters.name >>
-            echo "Log node_modules/@nebula.js"
-            ls -la node_modules/@nebula.js
-            yarn run build
-            yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+    steps:
+      - run:
+        command: |
+          set -e
+          echo "--Nebula create---"
+          ./commands/cli/lib/index.js create << parameters.name >> --picasso barchart --install << parameters.install >> --pkgm yarn
+          echo "Yarn"
+          yarn
+          echo "Linking packages"
+          npx lerna link --force-local
+          cd << parameters.name >>
+          echo "Log node_modules/@nebula.js"
+          ls -la node_modules/@nebula.js
+          yarn run build
+          yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
