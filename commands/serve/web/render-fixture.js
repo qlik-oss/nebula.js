@@ -11,20 +11,28 @@ const getDefaultGenericObject = ({ type }) => ({
   },
 });
 
-const getServeOptions = ({ themes = [], supernova, flags }) => ({
-  type: supernova.name,
-  load: async () => getModule(supernova.name, supernova.url),
-  instanceConfig: {
-    themes: themes.map((t) => ({
-      id: t,
-      load: async () => (await fetch(`/theme/${t}`)).json(),
-    })),
-    context: {
-      constraints: {},
+const getServeOptions = ({ themes = [], supernova = {}, flags }) => {
+  const options = {
+    instanceConfig: {
+      themes: themes.map((t) => ({
+        id: t,
+        load: async () => (await fetch(`/theme/${t}`)).json(),
+      })),
+      context: {
+        constraints: {},
+      },
+      flags,
     },
-    flags,
-  },
-});
+  };
+  if (supernova.name) {
+    options.type = supernova.name;
+  }
+  if (supernova.name || supernova.url) {
+    options.load = async () => getModule(supernova.name, supernova.url);
+  }
+
+  return options;
+};
 
 const getUrlParamOptions = (params) => ({
   instanceConfig: {
@@ -35,9 +43,25 @@ const getUrlParamOptions = (params) => ({
   },
 });
 
+function validateOptions(options) {
+  if (!options.type) {
+    throw new Error(
+      'No visualization type. Specify it either in fixture in the property "type" or as "--type" to Nebula serve.'
+    );
+  }
+  if (!options.load) {
+    throw new Error(
+      'Unable to load the visualization. Specify it either in fixture in the property "load" or as "--entry" to Nebula serve.'
+    );
+  }
+}
+
 async function getOptions({ params, fixture, serverInfo }) {
   const options = extend(true, {}, getServeOptions(serverInfo), fixture, getUrlParamOptions(params));
   options.genericObjects = options.genericObjects || [getDefaultGenericObject({ type: options.type })];
+
+  validateOptions(options);
+
   return options;
 }
 

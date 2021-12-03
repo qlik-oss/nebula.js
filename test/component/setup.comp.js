@@ -1,4 +1,3 @@
-const path = require('path');
 const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
 const puppeteerUtil = require('../utils/puppeteer-util');
 
@@ -7,7 +6,6 @@ if (!process.env.BASE_URL) {
   process.env.MONO = true;
   before(async () => {
     s = await serve({
-      entry: path.resolve(__dirname, 'sn.js'),
       open: false,
       build: false,
       fixturePath: 'test/component',
