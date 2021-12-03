@@ -4,25 +4,27 @@ import extend from 'extend';
 import { info as getServerInfo } from './connect';
 import { getModule } from './hot';
 
-const getServeOptions = async ({ themes = [], supernova, flags }) => {
-  // load js artifact provided as entry
-  const mo = await getModule(supernova.name, supernova.url);
+const getDefaultGenericObject = ({ type }) => ({
+  getLayout: {
+    qInfo: { qId: +Date.now() },
+    visualization: type,
+  },
+});
 
-  return {
-    type: supernova.name,
-    load: async () => mo,
-    instanceConfig: {
-      themes: themes.map((t) => ({
-        id: t,
-        load: async () => (await fetch(`/theme/${t}`)).json(),
-      })),
-      context: {
-        constraints: {},
-      },
-      flags,
+const getServeOptions = ({ themes = [], supernova, flags }) => ({
+  type: supernova.name,
+  load: async () => getModule(supernova.name, supernova.url),
+  instanceConfig: {
+    themes: themes.map((t) => ({
+      id: t,
+      load: async () => (await fetch(`/theme/${t}`)).json(),
+    })),
+    context: {
+      constraints: {},
     },
-  };
-};
+    flags,
+  },
+});
 
 const getUrlParamOptions = (params) => ({
   instanceConfig: {
@@ -34,12 +36,14 @@ const getUrlParamOptions = (params) => ({
 });
 
 async function getOptions({ params, fixture, serverInfo }) {
-  return extend(true, {}, await getServeOptions(serverInfo), fixture, getUrlParamOptions(params));
+  const options = extend(true, {}, getServeOptions(serverInfo), fixture, getUrlParamOptions(params));
+  options.genericObjects = options.genericObjects || [getDefaultGenericObject({ type: options.type })];
+  return options;
 }
 
 function validateFixture({ genericObjects } = {}) {
-  if (!genericObjects || !genericObjects.length === 0) {
-    throw new Error('No "genericObjects" specified in fixture');
+  if (!genericObjects || genericObjects.length === 0) {
+    return;
   }
   if (!genericObjects[0] || !genericObjects[0].getLayout) {
     throw new Error('Invalid getLayout of generic object');
@@ -82,13 +86,13 @@ const renderFixture = async (params) => {
   const qId = getQId(genericObjects);
 
   const nebbie = embed(mockedApp, {
-    ...instanceConfig,
     types: [
       {
         name: type,
         load,
       },
     ],
+    ...instanceConfig,
   });
   nebbie.render({ type, element, id: qId, ...snConfig });
 };

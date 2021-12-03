@@ -1,5 +1,3 @@
-import { createGenericObject } from '../generic-object-util';
-
 function sn(env) {
   env.translator.add({
     id: 'hello',
@@ -20,7 +18,5 @@ export default function fixture() {
   return {
     type: 'sn-locale',
     load: async () => sn,
-    snConfig: {},
-    genericObjects: [createGenericObject('sn-locale')],
   };
 }

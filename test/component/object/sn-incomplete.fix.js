@@ -1,9 +1,7 @@
-import { createGenericObject } from '../generic-object-util';
-
 const incompleteSn = {
   component: {
     mounted(element) {
-      element.textContent = 'Hello engine!'; // eslint-disable-line no-param-reassign
+      element.textContent = 'Hello engine2!'; // eslint-disable-line no-param-reassign
     },
   },
   qae: {
@@ -25,7 +23,18 @@ export default function fixture() {
   return {
     type: 'incomplete-sn',
     load: async () => incompleteSn,
-    snConfig: {},
-    genericObjects: [createGenericObject('incomplete-sn', { getProperties: null })],
+    genericObjects: [
+      {
+        getLayout() {
+          return {
+            qInfo: { qId: 'bb8' },
+            visualization: 'incomplete-sn',
+          };
+        },
+        getProperties() {
+          return null;
+        },
+      },
+    ],
   };
 }

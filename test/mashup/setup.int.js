@@ -1,24 +1,16 @@
+const puppeteerUtil = require('../utils/puppeteer-util');
 const server = require('./server');
-
-page.on('pageerror', (e) => {
-  console.error('Web: ', e.message);
-  process.exit(1);
-});
-
-page.on('console', (msg) => {
-  for (let i = 0; i < msg.args().length; ++i) {
-    console.log(`console ${msg.text()}`);
-  }
-});
 
 if (!process.env.BASE_URL) {
   let s;
   before(async () => {
     s = await server();
     process.env.BASE_URL = s.url;
+    puppeteerUtil.addListeners(page);
   });
 
   after(async () => {
     await s.close();
+    puppeteerUtil.removeListeners(page);
   });
 }
