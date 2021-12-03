@@ -1,4 +1,4 @@
-version: 2
+version: 2.1
 
 aliases:
   - &restore_yarn_cache
@@ -23,6 +23,55 @@ aliases:
       only: master
   - &attach
     at: ~/project
+
+commands:
+  nebula_create:
+    description: 'Create Nebula visualization project'
+    parameters:
+      project_name:
+        type: string
+        description: 'Project name'
+      picasso_template:
+        type: string
+        description: 'Picasso template'
+        default: 'none'
+      mashup:
+        type: boolean
+        default: false
+      install:
+        type: boolean
+        default: false
+        description: 'Run package installation step'
+      build:
+        type: boolean
+        default: true
+        description: 'Build project'
+      test:
+        type: boolean
+        default: true
+        description: 'Run tests'
+    steps:
+      - run:
+          name: 'Create Nebula visualization project: <<# parameters.mashup >>Mashup<</ parameters.mashup >><<^ parameters.mashup >>Picasso template "<< parameters.picasso_template >>" <</ parameters.mashup >> in << parameters.project_name >>'
+          command: |
+            set -e
+            <<# parameters.mashup >>
+              echo "Create mashup project"
+              ./commands/cli/lib/index.js create mashup << parameters.project_name >> --install << parameters.install >> --pkgm yarn
+            <</ parameters.mashup >>
+            <<^ parameters.mashup >>
+              echo "Create project based on Picasso template"
+              ./commands/cli/lib/index.js create << parameters.project_name >> --picasso << parameters.picasso_template >> --install << parameters.install >> --pkgm yarn
+            <</ parameters.mashup >>
+            echo "Yarn"
+            yarn
+            echo "Linking packages"
+            npx lerna link --force-local
+            cd << parameters.project_name >>
+            echo "Log node_modules/@nebula.js"
+            ls -la node_modules/@nebula.js
+            <<# parameters.build >> yarn run build <</ parameters.build >>
+            <<# parameters.test >> yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch <</ parameters.test >>
 
 jobs:
   build:
@@ -65,37 +114,25 @@ jobs:
       - run:
           name: Test mashup
           command: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      # - run:
-      #     name: Test integration
-      #     command: APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - run:
-          name: Create a hello supernova project from latest release
-          command: |
-            set -e
-            npx nebula create temp/hello --pkgm yarn --picasso none
-      #       cd temp/hello
-      #       APP_ID=$DOC_ID yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      - run:
-          name: Create a hello mashup project from latest release
-          command: |
-            set -e
-            npx nebula create mashup hello-mashup --pkgm yarn
-            cd hello-mashup
-            yarn build
-      - run:
-          name: Create a picasso barchart supernova project from current commit
-          command: |
-            set -e
-            ./commands/cli/lib/index.js create generated/barchart --picasso barchart --no-install
-            echo "Yarn"
-            yarn
-            echo "Linking packages"
-            npx lerna link --force-local
-            cd generated/barchart
-            echo "Log node_modules/@nebula.js"
-            ls -la node_modules/@nebula.js
-            yarn run build
-      #       APP_ID=$DOC_ID yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+          name: Test integration
+          command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - nebula_create:
+          project_name: 'generated/hello'
+          picasso_template: 'none'
+          build: true
+          test: true
+      - nebula_create:
+          project_name: generated/barchart
+          picasso_template: 'barchart'
+          build: true
+          test: true
+      - nebula_create:
+          project_name: 'hello-mashup'
+          mashup: true
+          install: true
+          build: true
+          test: false
       - store_artifacts:
           path: generated/barchart/screenshots
       - store_artifacts:
