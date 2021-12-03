@@ -1,7 +1,7 @@
 const incompleteSn = {
   component: {
     mounted(element) {
-      element.textContent = 'Hello engine2!'; // eslint-disable-line no-param-reassign
+      element.textContent = 'Hello engine!'; // eslint-disable-line no-param-reassign
     },
   },
   qae: {
