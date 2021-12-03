@@ -6,12 +6,31 @@
 window.serveFixtures = {
   get(key = '') {
     const k = key.startsWith('./') ? key : `./${key}`;
+    let context;
     try {
       // see: https://webpack.js.org/guides/dependency-management/#requirecontext
-      const context = require.context('fixtures', true, /\.fix\.js$/);
-      return context(k).default;
+      context = require.context('fixtures', true, /\.fix\.js$/);
     } catch (_) {
-      return () => console.log(`No fixture found at "${k}". Specify "--fixturePath" to Nebula serve ?`);
+      throw new Error('Specified "--fixturePath" does not exist');
     }
+
+    if (context.keys().includes(k)) {
+      return context(k).default;
+    }
+
+    console.groupCollapsed(`No fixture found at "${k}"`);
+    if (context.keys().length === 0) {
+      console.info('No fixtures available.');
+    } else {
+      console.info('Fixtures available:');
+      console.info(context.keys());
+      console.info('Is the fixture you are looking for not in the list?');
+    }
+    console.info(
+      'Specify "--fixturePath" to Nebula serve to specify their loction. Note that the fixture\'s file name must end with ".fix.js".'
+    );
+    console.groupEnd();
+
+    throw new Error(`No fixture found at "${k}"`);
   },
 };
