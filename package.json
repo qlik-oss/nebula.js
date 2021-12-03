@@ -70,7 +70,6 @@
     "prettier": "2.5.0",
     "pretty-quick": "3.1.2",
     "qix-faker": "0.3.0",
-    "qlik-sse": "0.3.0",
     "rollup": "2.60.2",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-dependency-flow": "0.3.0",

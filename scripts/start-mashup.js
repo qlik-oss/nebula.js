@@ -3,7 +3,6 @@
 const yargs = require('yargs');
 
 const mashupServer = require('../test/mashup/server');
-const sseServer = require('../test/fixtures/sse');
 const useEngine = require('../commands/serve/lib/engine');
 
 const args = yargs
@@ -12,18 +11,13 @@ const args = yargs
     type: 'boolean',
     describe: 'Start the mashup server',
   })
-  .option('sse', {
-    default: true,
-    type: 'boolean',
-    describe: 'Start the SSE plugin',
-  })
   .option('engine', {
     default: false,
     type: 'boolean',
     describe: 'Start the engine',
   }).argv;
 
-const { start, sse, engine } = args;
+const { start, engine } = args;
 
 let hasCleanedUp = false;
 const services = [];
@@ -39,17 +33,6 @@ if (start) {
     stop: async () => {
       await m.close();
     },
-  });
-}
-
-if (sse) {
-  const s = sseServer;
-  services.push({
-    name: 'SSE plugin server',
-    start: () => {
-      s.start();
-    },
-    stop: () => s.close(),
   });
 }
 
