@@ -1,5 +1,3 @@
-import { createGenericObject } from '../generic-object-util';
-
 export default function fixture() {
   return {
     type: 'error-sn',
@@ -7,6 +5,5 @@ export default function fixture() {
       function sn() {
         throw new Error('hahaha');
       },
-    genericObjects: [createGenericObject('error-sn')],
   };
 }

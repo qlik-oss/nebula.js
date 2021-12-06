@@ -3,7 +3,7 @@ describe('sn', () => {
   const errorSelector = '.njs-cell [data-tid="error-title"]';
 
   it('should render with translation', async () => {
-    await page.goto(`${process.env.BASE_URL}/render/?fixture=./object/sn-locale.fix.js&language=sv-SE`);
+    await page.goto(`${process.env.BASE_URL}/render?fixture=./object/sn-locale.fix.js&language=sv-SE`);
 
     await page.waitForSelector(snSelector, { visible: true });
     const text = await page.$eval(snSelector, (el) => el.textContent);
@@ -11,7 +11,7 @@ describe('sn', () => {
   });
 
   it('should show incomplete visualization', async () => {
-    await page.goto(`${process.env.BASE_URL}/render/?fixture=./object/sn-incomplete.fix.js&theme=dark `);
+    await page.goto(`${process.env.BASE_URL}/render?fixture=./object/sn-incomplete.fix.js&theme=dark`);
 
     await page.waitForSelector(errorSelector, { visible: true });
     const text = await page.$eval(errorSelector, (el) => el.textContent);
@@ -19,7 +19,7 @@ describe('sn', () => {
   });
 
   it('should show error caused during load', async () => {
-    await page.goto(`${process.env.BASE_URL}/render/?fixture=./object/sn-error.fix.js`);
+    await page.goto(`${process.env.BASE_URL}/render?fixture=./object/sn-error.fix.js`);
 
     await page.waitForSelector(errorSelector, { visible: true });
     const text = await page.$eval(errorSelector, (el) => el.textContent);

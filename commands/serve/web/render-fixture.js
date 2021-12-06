@@ -4,13 +4,15 @@ import extend from 'extend';
 import { info as getServerInfo } from './connect';
 import { getModule } from './hot';
 
-const getServeOptions = async ({ themes = [], supernova, flags }) => {
-  // load js artifact provided as entry
-  const mo = await getModule(supernova.name, supernova.url);
+const getDefaultGenericObject = ({ type }) => ({
+  getLayout: {
+    qInfo: { qId: +Date.now() },
+    visualization: type,
+  },
+});
 
-  return {
-    type: supernova.name,
-    load: async () => mo,
+const getServeOptions = ({ themes = [], supernova = {}, flags }) => {
+  const options = {
     instanceConfig: {
       themes: themes.map((t) => ({
         id: t,
@@ -22,6 +24,14 @@ const getServeOptions = async ({ themes = [], supernova, flags }) => {
       flags,
     },
   };
+  if (supernova.name) {
+    options.type = supernova.name;
+  }
+  if (supernova.name || supernova.url) {
+    options.load = async () => getModule(supernova.name, supernova.url);
+  }
+
+  return options;
 };
 
 const getUrlParamOptions = (params) => ({
@@ -33,13 +43,31 @@ const getUrlParamOptions = (params) => ({
   },
 });
 
+function validateOptions(options) {
+  if (!options.type) {
+    throw new Error(
+      'No visualization type. Specify it either in fixture in the property "type" or as "--type" to Nebula serve.'
+    );
+  }
+  if (!options.load) {
+    throw new Error(
+      'Unable to load the visualization. Specify it either in fixture in the property "load" or as "--entry" to Nebula serve.'
+    );
+  }
+}
+
 async function getOptions({ params, fixture, serverInfo }) {
-  return extend(true, {}, await getServeOptions(serverInfo), fixture, getUrlParamOptions(params));
+  const options = extend(true, {}, getServeOptions(serverInfo), fixture, getUrlParamOptions(params));
+  options.genericObjects = options.genericObjects || [getDefaultGenericObject({ type: options.type })];
+
+  validateOptions(options);
+
+  return options;
 }
 
 function validateFixture({ genericObjects } = {}) {
-  if (!genericObjects || !genericObjects.length === 0) {
-    throw new Error('No "genericObjects" specified in fixture');
+  if (!genericObjects || genericObjects.length === 0) {
+    return;
   }
   if (!genericObjects[0] || !genericObjects[0].getLayout) {
     throw new Error('Invalid getLayout of generic object');
@@ -82,13 +110,13 @@ const renderFixture = async (params) => {
   const qId = getQId(genericObjects);
 
   const nebbie = embed(mockedApp, {
-    ...instanceConfig,
     types: [
       {
         name: type,
         load,
       },
     ],
+    ...instanceConfig,
   });
   nebbie.render({ type, element, id: qId, ...snConfig });
 };

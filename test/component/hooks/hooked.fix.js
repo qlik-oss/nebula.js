@@ -15,7 +15,6 @@ import {
   useConstraints,
   useOptions,
 } from '@nebula.js/stardust';
-import { createGenericObject } from '../generic-object-util';
 
 function sn({ flags }) {
   return {
@@ -101,6 +100,16 @@ export default function fixture() {
         myOption: 'opts',
       },
     },
-    genericObjects: [createGenericObject('sn-mounted', { getLayout: { showTitles: true } })],
+    genericObjects: [
+      {
+        getLayout() {
+          return {
+            qInfo: { qId: 'bb8' },
+            visualization: 'sn-mounted',
+            showTitles: true,
+          };
+        },
+      },
+    ],
   };
 }

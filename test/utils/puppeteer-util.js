@@ -2,7 +2,11 @@
 
 async function consoleEvent(msg) {
   for (let i = 0; i < msg.args().length; ++i) {
-    console.log(`console ${msg.text()}`);
+    const text = msg.text();
+    if (text.includes('WDS') || text.includes('React DevTools')) {
+      return;
+    }
+    console.log(`console ${text}`);
   }
 }
 
