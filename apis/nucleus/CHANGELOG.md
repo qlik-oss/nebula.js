@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/qlik-oss/nebula.js/compare/v2.2.0...v2.3.0) (2021-12-06)
+
+### Bug Fixes
+
+- **ActionsToolbar:** set keyDown to null when no keyboardAction ([#709](https://github.com/qlik-oss/nebula.js/issues/709)) ([8d69bd5](https://github.com/qlik-oss/nebula.js/commit/8d69bd56e265a8ec09fb1e863f9885faae80fbc7))
+
 # [2.2.0](https://github.com/qlik-oss/nebula.js/compare/v2.1.0...v2.2.0) (2021-11-17)
 
 ### Features

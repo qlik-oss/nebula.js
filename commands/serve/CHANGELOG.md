@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/qlik-oss/nebula.js/compare/v2.2.0...v2.3.0) (2021-12-06)
+
+### Bug Fixes
+
+- **deps:** update dependency puppeteer to v12 ([#722](https://github.com/qlik-oss/nebula.js/issues/722)) ([2100656](https://github.com/qlik-oss/nebula.js/commit/21006562e78f3659c73e5a00831f0f3f0d132379))
+
+### Features
+
+- **cli-serve:** generic object is optional when rendering from fixture ([#726](https://github.com/qlik-oss/nebula.js/issues/726)) ([72a4e3c](https://github.com/qlik-oss/nebula.js/commit/72a4e3c10a68b2b7f4b9b926502e979a9353ce87))
+- **serve:** use enigma mocker when rendering fixture ([#710](https://github.com/qlik-oss/nebula.js/issues/710)) ([d2b64a8](https://github.com/qlik-oss/nebula.js/commit/d2b64a8a1ca978a77142b2660b55307cef5f1a94))
+
 # [2.2.0](https://github.com/qlik-oss/nebula.js/compare/v2.1.0...v2.2.0) (2021-11-17)
 
 **Note:** Version bump only for package @nebula.js/cli-serve
