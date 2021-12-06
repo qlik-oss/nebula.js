@@ -1,5 +1,5 @@
 import enigma from 'enigma.js';
-import qixSchema from 'enigma.js/schemas/12.34.11.json';
+import qixSchema from 'enigma.js/schemas/12.936.0.json';
 import SenseUtilities from 'enigma.js/sense-utilities';
 
 const params = (() => {

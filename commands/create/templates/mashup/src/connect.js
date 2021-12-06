@@ -1,5 +1,5 @@
 import enigma from 'enigma.js';
-import schema from 'enigma.js/schemas/12.170.2.json';
+import schema from 'enigma.js/schemas/12.936.0.json';
 
 async function getQCSHeaders({ webIntegrationId, url }) {
   const response = await fetch(`${url}/api/v1/csrf-token`, {
