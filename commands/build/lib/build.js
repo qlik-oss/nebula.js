@@ -102,7 +102,7 @@ const config = ({
               {
                 modules: false,
                 targets: {
-                  browsers: ['ie 11', 'chrome 47'],
+                  browsers: ['chrome 62'],
                 },
               },
             ],

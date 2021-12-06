@@ -17,8 +17,8 @@ const browserList = [
   'last 2 Chrome versions',
   'last 2 Firefox versions',
   'last 2 Edge versions',
-  'Safari >= 10.0',
-  'iOS >= 11.2',
+  'Safari >= 11.0',
+  'iOS >= 12.2',
 ];
 
 const cfg = {
@@ -39,7 +39,7 @@ const cfg = {
           {
             modules: false,
             targets: {
-              browsers: [...browserList, ...['ie 11', 'chrome 47']],
+              browsers: [...browserList, 'chrome 62'],
             },
           },
         ],
