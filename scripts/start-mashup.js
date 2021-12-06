@@ -3,21 +3,15 @@
 const yargs = require('yargs');
 
 const mashupServer = require('../test/mashup/server');
-const useEngine = require('../commands/serve/lib/engine');
 
 const args = yargs
   .option('start', {
     default: true,
     type: 'boolean',
     describe: 'Start the mashup server',
-  })
-  .option('engine', {
-    default: false,
-    type: 'boolean',
-    describe: 'Start the engine',
   }).argv;
 
-const { start, engine } = args;
+const { start } = args;
 
 let hasCleanedUp = false;
 const services = [];
@@ -32,23 +26,6 @@ if (start) {
     },
     stop: async () => {
       await m.close();
-    },
-  });
-}
-
-if (engine) {
-  let e;
-  services.push({
-    name: 'Qlik Engine',
-    start: async () => {
-      e = await useEngine({
-        ACCEPT_EULA: true,
-        files: ['./test/fixtures/docker/docker-compose.yml'],
-        cwd: process.cwd(),
-      });
-    },
-    stop: async () => {
-      e && (await e());
     },
   });
 }

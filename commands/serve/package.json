@@ -18,7 +18,6 @@
     "command.js",
     "data",
     "dist",
-    "docker-compose.yml",
     "lib"
   ],
   "scripts": {

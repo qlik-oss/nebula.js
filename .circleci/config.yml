@@ -83,9 +83,7 @@ jobs:
 
     steps:
       - checkout
-
       - restore_cache: *restore_yarn_cache
-
       - run:
           name: Install dependencies
           command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn

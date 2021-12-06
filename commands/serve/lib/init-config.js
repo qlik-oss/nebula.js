@@ -62,10 +62,6 @@ const options = {
   webIntegrationId: {
     type: 'string',
   },
-  ACCEPT_EULA: {
-    type: 'boolean',
-    default: false,
-  },
   fixturePath: {
     type: 'string',
     default: 'test/component',
