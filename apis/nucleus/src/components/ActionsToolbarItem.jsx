@@ -22,12 +22,16 @@ const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
   const { hidden, disabled, style, hasSvgIconShape } = useActionState(item);
   if (hidden) return null;
 
+  const handleKeyDown = item.keyboardAction
+    ? (e) => ['Enter', ' ', 'Spacebar'].includes(e.key) && item.keyboardAction()
+    : null;
+
   return (
     <IconButton
       ref={!addAnchor ? ref : null}
       title={item.label}
       onClick={item.action}
-      onKeyDown={(e) => ['Enter', ' ', 'Spacebar'].includes(e.key) && item.keyboardAction()}
+      onKeyDown={handleKeyDown}
       disabled={disabled}
       style={style}
       className={ActionElement.className}

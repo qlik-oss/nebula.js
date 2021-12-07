@@ -22,7 +22,19 @@ const incompleteSn = {
 export default function fixture() {
   return {
     type: 'incomplete-sn',
-    sn: incompleteSn,
-    snConfig: {},
+    load: async () => incompleteSn,
+    genericObjects: [
+      {
+        getLayout() {
+          return {
+            qInfo: { qId: 'bb8' },
+            visualization: 'incomplete-sn',
+          };
+        },
+        getProperties() {
+          return null;
+        },
+      },
+    ],
   };
 }

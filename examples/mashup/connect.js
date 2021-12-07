@@ -1,18 +1,19 @@
 window.connect = function connect() {
-  const loadSchema = () => fetch('https://unpkg.com/enigma.js/schemas/3.2.json').then(response => response.json());
+  const loadSchema = () =>
+    fetch('https://unpkg.com/enigma.js/schemas/12.936.0.json').then((response) => response.json());
 
   const createConnection = () =>
-    loadSchema().then(schema =>
+    loadSchema().then((schema) =>
       window.enigma
         .create({
           schema,
           url: `ws://${window.location.hostname || 'localhost'}:9076/app/${Date.now()}`,
         })
         .open()
-        .then(qix => qix.createSessionApp())
+        .then((qix) => qix.createSessionApp())
     );
 
-  return createConnection().then(app =>
+  return createConnection().then((app) =>
     app
       .setScript(
         `

@@ -54,6 +54,15 @@ async function build(argv) {
     fs.writeFileSync(qextFileName, JSON.stringify(contents, null, 2));
     fs.writeFileSync(qextFileNameJs, qextjs);
 
+    if (qext.preview) {
+      const previewLocation = path.resolve(cwd, qext.preview);
+      if (fs.existsSync(previewLocation)) {
+        fs.copySync(previewLocation, path.resolve(qextLegacyTargetDir, qext.preview));
+      } else {
+        console.warn(`  \x1b[33mwarn:\x1b[0m \x1b[36m${qext.preview}\x1b[0m was not found`);
+      }
+    }
+
     if (supernovaPkg.files) {
       [
         extDefinition ? path.basename(qextLegacyTargetDir) : false,
@@ -92,7 +101,7 @@ async function build(argv) {
               {
                 modules: false,
                 targets: {
-                  browsers: ['ie 11', 'chrome 47'],
+                  browsers: ['chrome 62'],
                 },
               },
             ],

@@ -70,7 +70,7 @@ function sn({ flags }) {
       element.innerHTML = `<div>
         <div class="state">${count}</div>
         <div class="layout">${layout.showTitles}</div>
-        <div class="applayout">${appLayout.qTitle}</div>
+        <div class="applayout">${appLayout.id}</div>
         <div class="translator">${translator.get('Cancel')}</div>
         <div class="deviceType">${deviceType}</div>
         <div class="theme">${theme.getColorPickerColor({ index: 2 })}</div>
@@ -89,7 +89,7 @@ function sn({ flags }) {
 export default function fixture() {
   return {
     type: 'sn-mounted',
-    sn,
+    load: async () => sn,
     instanceConfig: {
       flags: {
         MAGIC_FLAG: true,
@@ -100,5 +100,16 @@ export default function fixture() {
         myOption: 'opts',
       },
     },
+    genericObjects: [
+      {
+        getLayout() {
+          return {
+            qInfo: { qId: 'bb8' },
+            visualization: 'sn-mounted',
+            showTitles: true,
+          };
+        },
+      },
+    ],
   };
 }

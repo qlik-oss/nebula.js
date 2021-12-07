@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.3.0](https://github.com/qlik-oss/nebula.js/compare/v2.2.0...v2.3.0) (2021-12-06)
+
+### Bug Fixes
+
+- **ActionsToolbar:** set keyDown to null when no keyboardAction ([#709](https://github.com/qlik-oss/nebula.js/issues/709)) ([8d69bd5](https://github.com/qlik-oss/nebula.js/commit/8d69bd56e265a8ec09fb1e863f9885faae80fbc7))
+- **deps:** update dependency puppeteer to v12 ([#722](https://github.com/qlik-oss/nebula.js/issues/722)) ([2100656](https://github.com/qlik-oss/nebula.js/commit/21006562e78f3659c73e5a00831f0f3f0d132379))
+- **enigma-mocker:** remove build watch script ([#711](https://github.com/qlik-oss/nebula.js/issues/711)) ([8e2a3c9](https://github.com/qlik-oss/nebula.js/commit/8e2a3c962133db4d7c0e34071a313f36a25506d7))
+
+### Features
+
+- **cli-serve:** generic object is optional when rendering from fixture ([#726](https://github.com/qlik-oss/nebula.js/issues/726)) ([72a4e3c](https://github.com/qlik-oss/nebula.js/commit/72a4e3c10a68b2b7f4b9b926502e979a9353ce87))
+- **serve:** use enigma mocker when rendering fixture ([#710](https://github.com/qlik-oss/nebula.js/issues/710)) ([d2b64a8](https://github.com/qlik-oss/nebula.js/commit/d2b64a8a1ca978a77142b2660b55307cef5f1a94))
+
 # [2.2.0](https://github.com/qlik-oss/nebula.js/compare/v2.1.0...v2.2.0) (2021-11-17)
 
 ### Features

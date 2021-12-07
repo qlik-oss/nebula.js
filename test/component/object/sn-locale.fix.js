@@ -17,7 +17,6 @@ function sn(env) {
 export default function fixture() {
   return {
     type: 'sn-locale',
-    sn,
-    snConfig: {},
+    load: async () => sn,
   };
 }

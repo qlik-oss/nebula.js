@@ -2,7 +2,7 @@ import enigma from 'enigma.js';
 
 export default function connect() {
   const loadSchema = () =>
-    fetch('https://unpkg.com/enigma.js/schemas/12.612.0.json').then((response) => response.json());
+    fetch('https://unpkg.com/enigma.js/schemas/12.936.0.json').then((response) => response.json());
 
   const createConnection = () =>
     loadSchema().then((schema) =>
