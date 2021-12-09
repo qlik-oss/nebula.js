@@ -1,0 +1,7 @@
+{
+  "name": "sn-barchart",
+  "main": "dist/sn-barchart.js",
+  "peerDependencies": {
+    "@nebula.js/stardust": "*"
+  }
+}

@@ -65,10 +65,6 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
         chunks: [],
       }),
     ],
-    externals: {
-      // Ensure dependency is shared for rendering, fixtures and elsewhere.
-      '@nebula.js/stardust': 'stardust',
-    },
   };
 
   return config;
