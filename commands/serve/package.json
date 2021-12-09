@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-serve",
-  "version": "2.3.0",
+  "version": "2.3.1",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -27,7 +27,7 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "dependencies": {
-    "@nebula.js/cli-build": "^2.3.0",
+    "@nebula.js/cli-build": "^2.3.1",
     "body-parser": "1.19.0",
     "chalk": "4.1.2",
     "chokidar": "3.5.2",
@@ -49,11 +49,11 @@
     "@babel/preset-env": "7.16.4",
     "@babel/preset-react": "7.16.0",
     "@material-ui/core": "4.12.3",
-    "@nebula.js/enigma-mocker": "^2.3.0",
-    "@nebula.js/nucleus": "^2.3.0",
-    "@nebula.js/snapshooter": "^2.3.0",
-    "@nebula.js/stardust": "^2.3.0",
-    "@nebula.js/ui": "^2.3.0",
+    "@nebula.js/enigma-mocker": "^2.3.1",
+    "@nebula.js/nucleus": "^2.3.1",
+    "@nebula.js/snapshooter": "^2.3.1",
+    "@nebula.js/stardust": "^2.3.1",
+    "@nebula.js/ui": "^2.3.1",
     "autosuggest-highlight": "3.2.0",
     "babel-loader": "8.2.3",
     "d3-require": "1.2.4",
