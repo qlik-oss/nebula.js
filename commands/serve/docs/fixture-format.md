@@ -9,11 +9,8 @@ Rendering a visualization from a fixture multiple times yields the same result. 
 ## Example
 
 ```js
-import gridChart from '@nebula.js/sn-grid-chart';
-
 export default () => ({
   type: 'sn-grid-chart',
-  load: async () => gridChart,
   instanceConfig: {
     context: {
       theme: 'dark',
@@ -31,20 +28,6 @@ export default () => ({
 ### `type`
 
 Name of visualization. For example, `sn-grid-chart`.
-
-### `load`
-
-Function loading visualization to render.
-
-Example using imports:
-
-```js
-import simpleVisualization from './simpleVisualization';
-export default () => ({
-  load: async () => simpleVisualization,
-  ...
-});
-```
 
 ### `instanceConfig`
 

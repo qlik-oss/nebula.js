@@ -1,10 +1,28 @@
+const path = require('path');
+const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
+const puppeteerUtil = require('../../utils/puppeteer-util');
+
 describe('hooks', () => {
   const snSelector = '.njs-viz';
+  let s;
 
   before(async () => {
-    const url = `${process.env.BASE_URL}/render?fixture=./hooks/hooked.fix.js`;
+    s = await serve({
+      entry: path.resolve(__dirname, 'sn-hooks'),
+      open: false,
+      build: true,
+      fixturePath: 'test/component/hooks',
+    });
+    puppeteerUtil.addListeners(page);
+
+    const url = `${s.url}/render?fixture=hooked.fix.js`;
     await page.goto(url);
     await page.waitForSelector(snSelector, { visible: true });
+  });
+
+  after(() => {
+    s.close();
+    puppeteerUtil.removeListeners(page);
   });
 
   it('usePromise', async () => {
