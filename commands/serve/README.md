@@ -15,7 +15,7 @@ npm install @nebula.js/cli @nebula.js/cli-serve -g
 ```sh
 nebula serve -h
 
-Dev server
+Start a development server
 
 Options:
   --version           Show version number                              [boolean]

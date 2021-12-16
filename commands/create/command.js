@@ -15,8 +15,8 @@ const mashup = {
 };
 
 module.exports = {
-  command: 'create <name>',
-  desc: 'Create a visualization',
+  command: 'create <name> / create mashup <name>',
+  desc: 'Create a visualization / Create a mashup',
   builder(yargs) {
     yargs.command(mashup);
 
