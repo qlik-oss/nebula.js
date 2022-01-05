@@ -1939,7 +1939,7 @@
             "description": "The style value",
             "type": "string"
           },
-          "examples": ["theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"]
+          "examples": ["theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize');"]
         }
       },
       "definitions": {
