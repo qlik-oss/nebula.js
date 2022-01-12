@@ -83,8 +83,8 @@ export default function theme() {
      * @returns {string} The style value
      *
      * @example
-     * theme.getStyle('object', 'title.main', 'fontSize'));
-     * theme.getStyle('', '', 'fontSize'));
+     * theme.getStyle('object', 'title.main', 'fontSize');
+     * theme.getStyle('', '', 'fontSize');
      */
     getStyle(basePath, path, attribute) {
       if (!styleResolverInstanceCache[basePath]) {
