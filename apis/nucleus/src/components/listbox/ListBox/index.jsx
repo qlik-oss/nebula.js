@@ -1,24 +1,34 @@
 /* eslint no-underscore-dangle:0 */
 
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  // useMemo,
-} from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
 
-import useLayout from '../../hooks/useLayout';
+import useLayout from '../../../hooks/useLayout';
 
-import Row from './ListBoxRow';
-import Column from './ListBoxColumn';
+import Row from '../ListBoxRow';
+import Column from '../ListBoxColumn';
 
-export default function ListBox({ model, selections, direction, height, width, listLayout = 'vertical' }) {
+import useSelectionInteractions from './useSelectionInteractions';
+
+export default function ListBox({
+  model,
+  selections,
+  direction,
+  height,
+  width,
+  listLayout = 'vertical',
+  refreshTrigger,
+}) {
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
+  const {
+    onMouseDown,
+    onMouseUp,
+    onMouseEnter,
+    instantPages = [],
+  } = useSelectionInteractions({ layout, selections, model, pages });
   const loaderRef = useRef(null);
   const local = useRef({
     queue: [],
@@ -28,26 +38,6 @@ export default function ListBox({ model, selections, direction, height, width, l
   const listData = useRef({
     pages: [],
   });
-
-  const onClick = useCallback(
-    (e) => {
-      if (layout && layout.qListObject.qDimensionInfo.qLocked) {
-        return;
-      }
-      const elemNumber = +e.currentTarget.getAttribute('data-n');
-      if (!Number.isNaN(elemNumber)) {
-        selections.select({
-          method: 'selectListObjectValues',
-          params: ['/qListObjectDef', [elemNumber], !layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne],
-        });
-      }
-    },
-    [
-      model,
-      layout && !!layout.qListObject.qDimensionInfo.qLocked,
-      layout && !!layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne,
-    ]
-  );
 
   const isItemLoaded = useCallback(
     (index) => {
@@ -67,7 +57,6 @@ export default function ListBox({ model, selections, direction, height, width, l
         start: startIndex,
         stop: stopIndex,
       });
-
       const isScrolling = loaderRef.current ? loaderRef.current._listRef.state.isScrolling : false;
 
       if (local.current.queue.length > 10) {
@@ -113,7 +102,14 @@ export default function ListBox({ model, selections, direction, height, width, l
       }
       loaderRef.current._listRef.scrollToItem(0);
     }
-  }, [layout]);
+  }, [layout, refreshTrigger]);
+
+  useEffect(() => {
+    if (!instantPages) {
+      return;
+    }
+    setPages(instantPages);
+  }, [instantPages]);
 
   if (!layout) {
     return null;
@@ -143,7 +139,7 @@ export default function ListBox({ model, selections, direction, height, width, l
             width={width}
             itemCount={count}
             layout={listLayout}
-            itemData={{ onClick, pages }}
+            itemData={{ onMouseDown, onMouseUp, onMouseEnter, pages }}
             itemSize={ITEM_SIZE}
             onItemsRendered={onItemsRendered}
             ref={ref}

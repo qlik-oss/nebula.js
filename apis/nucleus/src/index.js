@@ -336,11 +336,15 @@ function nuked(configuration = {}) {
           /**
            * Mounts the field as a listbox into the provided HTMLElement.
            * @param {HTMLElement} element
-           * @param {object=} options Settings for the embedded listbox
-           * @param {string=} options.title Custom title, defaults to fieldname
+           * @param {object=} options Settings for the embedded listbox.
+           * @param {string=} options.title Custom title, defaults to fieldname.
            * @param {string=} [options.direction=ltr] Direction setting ltr|rtl.
-           * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal
-           * @param {boolean=} [options.search=true] To show the search bar
+           * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal.
+           * @param {boolean=} [options.search=true] To show the search bar.
+           * @param {boolean=} [options.toolbar=true] To show the toolbar.
+           * @param {object} [options.sessionModel] Use a custom sessionModel.
+           * @param {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
+           * @param {object=} [options.triggerRefresh=() => void] Trigger fetching new data by subsequently altering this function's return value.
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @since 1.1.0

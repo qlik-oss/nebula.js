@@ -29,7 +29,17 @@ export default function ListBoxPortal({ app, fieldIdentifier, stateName, element
 }
 
 export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {} }) {
-  const { title, direction, listLayout, search = true, properties = {} } = options;
+  const {
+    title,
+    direction,
+    listLayout,
+    search = true,
+    toolbar = true,
+    properties = {},
+    sessionModel = undefined,
+    selectionsApi = undefined,
+    triggerRefresh = () => undefined, // triggerRefresh can trigger fetching new data by returning value changes
+  } = options;
   const listdef = {
     qInfo: {
       qType: 'njsListbox',
@@ -71,25 +81,32 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   }
 
   const theme = useTheme();
-  const [model] = useSessionModel(listdef, app, fieldName, stateName);
 
-  const lock = useCallback(() => {
+  let model;
+  if (sessionModel) {
+    model = sessionModel;
+  } else {
+    [model] = useSessionModel(listdef, app, fieldName, stateName);
+  }
+
+  const lockFunc = useCallback(() => {
     model.lock('/qListObjectDef');
   }, [model]);
 
-  const unlock = useCallback(() => {
+  const unlockFunc = useCallback(() => {
     model.unlock('/qListObjectDef');
   }, [model]);
 
   const { translator } = useContext(InstanceContext);
   const moreAlignTo = useRef();
-  const [selections] = useObjectSelections(app, model);
+  const selections = selectionsApi || useObjectSelections(app, model)[0];
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
 
   useEffect(() => {
     if (selections) {
-      if (!selections.isModal(model)) {
+      const isModal = selections.isModal(model);
+      if (!isModal) {
         selections.on('deactivated', () => {
           setShowToolbar(false);
         });
@@ -97,12 +114,6 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
           setShowToolbar(true);
         });
       }
-    }
-  }, [selections]);
-
-  useEffect(() => {
-    if (selections) {
-      setShowToolbar(selections.isActive());
     }
   }, [selections]);
 
@@ -122,55 +133,53 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const hasSelections = counts.qSelected + counts.qSelectedExcluded + counts.qLocked + counts.qLockedExcluded > 0;
 
-  const showTitle = true;
-
   const minHeight = 49 + (search ? 40 : 0) + 49;
 
   return (
     <Grid container direction="column" spacing={0} style={{ height: '100%', minHeight: `${minHeight}px` }}>
-      <Grid item container style={{ padding: theme.spacing(1), borderBottom: `1px solid ${theme.palette.divider}` }}>
-        <Grid item>
-          {isLocked ? (
-            <IconButton onClick={unlock} disabled={!isLocked}>
-              <Lock />
-            </IconButton>
-          ) : (
-            <IconButton onClick={lock} disabled={!hasSelections}>
-              <Unlock />
-            </IconButton>
-          )}
-        </Grid>
-        <Grid item>
-          {showTitle && (
+      {toolbar && (
+        <Grid item container style={{ padding: theme.spacing(1), borderBottom: `1px solid ${theme.palette.divider}` }}>
+          <Grid item>
+            {isLocked ? (
+              <IconButton onClick={unlockFunc} disabled={!isLocked}>
+                <Lock />
+              </IconButton>
+            ) : (
+              <IconButton onClick={lockFunc} disabled={!hasSelections}>
+                <Unlock />
+              </IconButton>
+            )}
+          </Grid>
+          <Grid item>
             <Typography variant="h6" noWrap>
               {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
             </Typography>
-          )}
+          </Grid>
+          <Grid item xs />
+          <Grid item>
+            <ActionsToolbar
+              more={{
+                enabled: !isLocked,
+                actions: listboxSelectionToolbarItems,
+                alignTo: moreAlignTo,
+                popoverProps: {
+                  elevation: 0,
+                },
+                popoverPaperStyle: {
+                  boxShadow: '0 12px 8px -8px rgba(0, 0, 0, 0.2)',
+                  minWidth: '250px',
+                },
+              }}
+              selections={{
+                show: showToolbar,
+                api: selections,
+                onConfirm: () => {},
+                onCancel: () => {},
+              }}
+            />
+          </Grid>
         </Grid>
-        <Grid item xs />
-        <Grid item>
-          <ActionsToolbar
-            more={{
-              enabled: !isLocked,
-              actions: listboxSelectionToolbarItems,
-              alignTo: moreAlignTo,
-              popoverProps: {
-                elevation: 0,
-              },
-              popoverPaperStyle: {
-                boxShadow: '0 12px 8px -8px rgba(0, 0, 0, 0.2)',
-                minWidth: '250px',
-              },
-            }}
-            selections={{
-              show: showToolbar,
-              api: selections,
-              onConfirm: () => {},
-              onCancel: () => {},
-            }}
-          />
-        </Grid>
-      </Grid>
+      )}
       {search ? (
         <Grid item>
           <ListBoxSearch model={model} autoFocus={false} />
@@ -189,6 +198,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
               listLayout={listLayout}
               height={height}
               width={width}
+              refreshTrigger={triggerRefresh && triggerRefresh()}
             />
           )}
         </AutoSizer>

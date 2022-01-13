@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
       outline: 'none',
     },
+    userSelect: 'none',
   },
   cell: {
     padding: '8px',
@@ -55,7 +56,7 @@ export default function Row({ index, style, data }) {
   const classArr = [classes.row];
 
   let label = '';
-  const { onClick, pages } = data;
+  const { onMouseDown, onMouseUp, onMouseEnter, pages } = data;
   let cell;
   if (pages) {
     const page = pages.filter((p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
@@ -113,7 +114,9 @@ export default function Row({ index, style, data }) {
       spacing={0}
       className={classArr.join(' ').trim()}
       style={style}
-      onClick={onClick}
+      onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseEnter={onMouseEnter}
       role="row"
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
