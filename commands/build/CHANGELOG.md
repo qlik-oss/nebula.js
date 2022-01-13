@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.3.1](https://github.com/qlik-oss/nebula.js/compare/v2.3.0...v2.3.1) (2021-12-09)
+
+### Bug Fixes
+
+- **cli-build:** mitigate problem with require inside try catch blocks ([#729](https://github.com/qlik-oss/nebula.js/issues/729)) ([05abf73](https://github.com/qlik-oss/nebula.js/commit/05abf7384df2831ed32719ac22faf3f25ed6ef5c))
+
 # [2.3.0](https://github.com/qlik-oss/nebula.js/compare/v2.2.0...v2.3.0) (2021-12-06)
 
 **Note:** Version bump only for package @nebula.js/cli-build

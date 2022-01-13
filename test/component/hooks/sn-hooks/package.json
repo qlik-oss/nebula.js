@@ -1,0 +1,7 @@
+{
+  "name": "sn-hooks",
+  "main": "dist/hooks.js",
+  "peerDependencies": {
+    "@nebula.js/stardust": "*"
+  }
+}

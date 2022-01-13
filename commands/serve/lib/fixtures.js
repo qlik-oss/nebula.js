@@ -5,7 +5,7 @@
  */
 window.serveFixtures = {
   get(key = '') {
-    const k = key.startsWith('./') ? key : `./${key}`;
+    const k = ['/', './'].some((v) => key.startsWith(v)) ? key : `./${key}`;
     let context;
     try {
       // see: https://webpack.js.org/guides/dependency-management/#requirecontext

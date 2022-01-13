@@ -896,8 +896,8 @@ The search starts at the specified base path and continue upwards until the valu
 If possible it will get the attribute's value using the given path.
 
 ```js
-theme.getStyle('object', 'title.main', 'fontSize'));
-theme.getStyle('', '', 'fontSize'));
+theme.getStyle('object', 'title.main', 'fontSize');
+theme.getStyle('', '', 'fontSize');
 ```
 
 #### interface: ScalePalette

@@ -50,9 +50,7 @@ function validateOptions(options) {
     );
   }
   if (!options.load) {
-    throw new Error(
-      'Unable to load the visualization. Specify it either in fixture in the property "load" or as "--entry" to Nebula serve.'
-    );
+    throw new Error('Unable to load the visualization. Specify it in option "--entry" to Nebula serve.');
   }
 }
 

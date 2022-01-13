@@ -485,7 +485,7 @@ function addButtons() {
     const btn = document.createElement('button');
     btn.textContent = scenario.name;
     btn.addEventListener('click', () => {
-      window.location = `/visualize/life-mocked.html?scenario=${id}`;
+      window.location = `/visualize/life.html?scenario=${id}`;
     });
     actionsElement.appendChild(btn);
   });
