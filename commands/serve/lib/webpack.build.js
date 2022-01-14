@@ -1,7 +1,6 @@
 const path = require('path');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const babelPath = require.resolve('babel-loader');
 const babelPresetEnvPath = require.resolve('@babel/preset-env');
@@ -111,17 +110,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         chunks: ['eHub'],
         favicon,
       }),
-      new CopyWebpackPlugin({
-        patterns: ['stardust.js', 'stardust.js.map'].map((filename) => ({
-          from: path.resolve(__dirname, `../../../apis/stardust/dist/${filename}`),
-          to: distDir,
-        })),
-      }),
     ],
-    externals: {
-      // Ensure dependency is shared for rendering, fixtures and elsewhere.
-      '@nebula.js/stardust': 'stardust',
-    },
   };
 
   return config;

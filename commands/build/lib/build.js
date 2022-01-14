@@ -90,7 +90,9 @@ const config = ({
         nodeResolve({
           extensions,
         }),
-        commonjs(),
+        commonjs({
+          ignoreTryCatch: false, // Avoids problems with require() inside try catch (https://github.com/rollup/plugins/issues/1004)
+        }),
         json(),
         babel({
           babelrc: false,

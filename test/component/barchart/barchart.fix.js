@@ -1,10 +1,8 @@
 import { hypercube } from 'qix-faker';
-import sn from './src';
 
 export default function fixture() {
   return {
     type: 'barchart',
-    load: async () => sn,
     snConfig: {},
     instanceConfig: {
       context: {
