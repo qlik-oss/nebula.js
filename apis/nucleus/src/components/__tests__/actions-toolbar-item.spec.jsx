@@ -18,7 +18,7 @@ const [{ default: ActionsToolbarItem }] = aw.mock(
   ['../ActionsToolbarItem']
 );
 
-describe('<ActionsToolbarItem />', () => {
+describe.skip('<ActionsToolbarItem />', () => {
   let sandbox;
   let renderer;
   let render;
