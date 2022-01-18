@@ -1,8 +1,8 @@
 import React from 'react';
 import { IconButton, Grid, Typography } from '@material-ui/core';
 
-describe.skip('<ListboxInline />', () => {
-  const sandbox = sinon.createSandbox({ useFakeTimers: true });
+describe('<ListboxInline />', () => {
+  let sandbox;
   const app = {};
   const fieldIdentifier = { qLibraryId: 'qLibraryId' };
   const stateName = '$';
@@ -15,48 +15,63 @@ describe.skip('<ListboxInline />', () => {
     properties: {},
   };
 
-  const useState = sandbox.stub(React, 'useState');
-  const useEffect = sandbox.stub(React, 'useEffect');
-  const useCallback = sandbox.stub(React, 'useCallback');
-  const useContext = sandbox.stub(React, 'useContext');
-  const useRef = sandbox.stub(React, 'useRef');
-
-  const sessionModel = {
-    lock: sandbox.stub(),
-    unlock: sandbox.stub(),
-  };
-
-  const selections = {
-    key: 'selections',
-    isModal: () => false,
-    isActive: () => 'isActive',
-    on: sandbox.stub().callsFake((event, func) => (eventTriggered) => {
-      if (event === eventTriggered) func();
-    }),
-  };
-
   let ListBoxInline;
-  const ActionsToolbar = sandbox.stub();
-  const ListBoxSearch = sandbox.stub();
-  const createListboxSelectionToolbar = sandbox.stub();
-  const useTheme = sandbox.stub();
-  const theme = {
-    spacing: sandbox.stub(),
-    palette: { divider: 'red' },
-  };
-  const layout = {
-    title: 'title',
-
-    qListObject: {
-      qDimensionInfo: {
-        qFallbackTitle: 'qFallbackTitle',
-        qLocked: false,
-        qStateCounts: { qSelected: 2, qSelectedExcluded: 10, qLocked: 0, qLockedExcluded: 0 },
-      },
-    },
-  };
+  let useState;
+  let useEffect;
+  let useCallback;
+  let useContext;
+  let useRef;
+  let sessionModel;
+  let selections;
+  let ActionsToolbar;
+  let ListBoxSearch;
+  let createListboxSelectionToolbar;
+  let useTheme;
+  let theme;
+  let layout;
 
   before(() => {
+    sandbox = sinon.createSandbox({ useFakeTimers: true });
+
+    useState = sandbox.stub(React, 'useState');
+    useEffect = sandbox.stub(React, 'useEffect');
+    useCallback = sandbox.stub(React, 'useCallback');
+    useContext = sandbox.stub(React, 'useContext');
+    useRef = sandbox.stub(React, 'useRef');
+
+    sessionModel = {
+      lock: sandbox.stub(),
+      unlock: sandbox.stub(),
+    };
+
+    selections = {
+      key: 'selections',
+      isModal: () => false,
+      isActive: () => 'isActive',
+      on: sandbox.stub().callsFake((event, func) => (eventTriggered) => {
+        if (event === eventTriggered) func();
+      }),
+    };
+    ActionsToolbar = sandbox.stub();
+    ListBoxSearch = sandbox.stub();
+    createListboxSelectionToolbar = sandbox.stub();
+    useTheme = sandbox.stub();
+    theme = {
+      spacing: sandbox.stub(),
+      palette: { divider: 'red' },
+    };
+    layout = {
+      title: 'title',
+
+      qListObject: {
+        qDimensionInfo: {
+          qFallbackTitle: 'qFallbackTitle',
+          qLocked: false,
+          qStateCounts: { qSelected: 2, qSelectedExcluded: 10, qLocked: 0, qLockedExcluded: 0 },
+        },
+      },
+    };
+
     [{ ListBoxInline }] = aw.mock(
       [
         [
