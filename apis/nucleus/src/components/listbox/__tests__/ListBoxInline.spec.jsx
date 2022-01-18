@@ -1,7 +1,7 @@
 import React from 'react';
 import { IconButton, Grid, Typography } from '@material-ui/core';
 
-describe('<ListboxInline />', () => {
+describe.skip('<ListboxInline />', () => {
   const sandbox = sinon.createSandbox({ useFakeTimers: true });
   const app = {};
   const fieldIdentifier = { qLibraryId: 'qLibraryId' };
