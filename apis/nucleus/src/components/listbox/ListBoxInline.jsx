@@ -29,7 +29,7 @@ export default function ListBoxPortal({ app, fieldIdentifier, stateName, element
 }
 
 export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {} }) {
-  const { title, direction, listLayout, search = true, properties = {} } = options;
+  const { title, direction, listLayout, search = true, toolbar = true, properties = {} } = options;
   const listdef = {
     qInfo: {
       qType: 'njsListbox',
@@ -112,11 +112,13 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
 
-  const listboxSelectionToolbarItems = createListboxSelectionToolbar({
-    layout,
-    model,
-    translator,
-  });
+  const listboxSelectionToolbarItems = toolbar
+    ? createListboxSelectionToolbar({
+        layout,
+        model,
+        translator,
+      })
+    : [];
 
   const counts = layout.qListObject.qDimensionInfo.qStateCounts;
 
@@ -128,49 +130,51 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   return (
     <Grid container direction="column" spacing={0} style={{ height: '100%', minHeight: `${minHeight}px` }}>
-      <Grid item container style={{ padding: theme.spacing(1), borderBottom: `1px solid ${theme.palette.divider}` }}>
-        <Grid item>
-          {isLocked ? (
-            <IconButton onClick={unlock} disabled={!isLocked}>
-              <Lock />
-            </IconButton>
-          ) : (
-            <IconButton onClick={lock} disabled={!hasSelections}>
-              <Unlock />
-            </IconButton>
-          )}
+      {toolbar && (
+        <Grid item container style={{ padding: theme.spacing(1), borderBottom: `1px solid ${theme.palette.divider}` }}>
+          <Grid item>
+            {isLocked ? (
+              <IconButton onClick={unlock} disabled={!isLocked}>
+                <Lock />
+              </IconButton>
+            ) : (
+              <IconButton onClick={lock} disabled={!hasSelections}>
+                <Unlock />
+              </IconButton>
+            )}
+          </Grid>
+          <Grid item>
+            {showTitle && (
+              <Typography variant="h6" noWrap>
+                {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
+              </Typography>
+            )}
+          </Grid>
+          <Grid item xs />
+          <Grid item>
+            <ActionsToolbar
+              more={{
+                enabled: !isLocked,
+                actions: listboxSelectionToolbarItems,
+                alignTo: moreAlignTo,
+                popoverProps: {
+                  elevation: 0,
+                },
+                popoverPaperStyle: {
+                  boxShadow: '0 12px 8px -8px rgba(0, 0, 0, 0.2)',
+                  minWidth: '250px',
+                },
+              }}
+              selections={{
+                show: showToolbar,
+                api: selections,
+                onConfirm: () => {},
+                onCancel: () => {},
+              }}
+            />
+          </Grid>
         </Grid>
-        <Grid item>
-          {showTitle && (
-            <Typography variant="h6" noWrap>
-              {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
-            </Typography>
-          )}
-        </Grid>
-        <Grid item xs />
-        <Grid item>
-          <ActionsToolbar
-            more={{
-              enabled: !isLocked,
-              actions: listboxSelectionToolbarItems,
-              alignTo: moreAlignTo,
-              popoverProps: {
-                elevation: 0,
-              },
-              popoverPaperStyle: {
-                boxShadow: '0 12px 8px -8px rgba(0, 0, 0, 0.2)',
-                minWidth: '250px',
-              },
-            }}
-            selections={{
-              show: showToolbar,
-              api: selections,
-              onConfirm: () => {},
-              onCancel: () => {},
-            }}
-          />
-        </Grid>
-      </Grid>
+      )}
       {search ? (
         <Grid item>
           <ListBoxSearch model={model} autoFocus={false} />
