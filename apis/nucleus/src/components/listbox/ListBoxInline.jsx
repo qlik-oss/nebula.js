@@ -29,7 +29,16 @@ export default function ListBoxPortal({ app, fieldIdentifier, stateName, element
 }
 
 export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {} }) {
-  const { title, direction, listLayout, search = true, properties = {} } = options;
+  const {
+    title,
+    direction,
+    listLayout,
+    search = true,
+    properties = {},
+    sessionModel = undefined,
+    selectionsApi = undefined,
+    triggerRefresh = () => undefined, // triggerRefresh can trigger fetching new data by returning value changes
+  } = options;
   const listdef = {
     qInfo: {
       qType: 'njsListbox',
@@ -71,7 +80,13 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   }
 
   const theme = useTheme();
-  const [model] = useSessionModel(listdef, app, fieldName, stateName);
+
+  let model;
+  if (sessionModel) {
+    model = sessionModel;
+  } else {
+    [model] = useSessionModel(listdef, app, fieldName, stateName);
+  }
 
   const lock = useCallback(() => {
     model.lock('/qListObjectDef');
@@ -83,7 +98,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const { translator } = useContext(InstanceContext);
   const moreAlignTo = useRef();
-  const [selections] = useObjectSelections(app, model);
+  const selections = selectionsApi || useObjectSelections(app, model)[0];
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
 
@@ -189,6 +204,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
               listLayout={listLayout}
               height={height}
               width={width}
+              refreshTrigger={triggerRefresh && triggerRefresh()}
             />
           )}
         </AutoSizer>

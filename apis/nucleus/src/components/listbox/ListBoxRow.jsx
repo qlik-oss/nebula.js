@@ -15,6 +15,7 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
       outline: 'none',
     },
+    userSelect: 'none',
   },
   cell: {
     padding: '8px',

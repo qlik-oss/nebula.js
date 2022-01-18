@@ -342,6 +342,9 @@ function nuked(configuration = {}) {
            * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal
            * @param {boolean=} [options.search=true] To show the search bar
            * @param {boolean=} [options.toolbar=true] To show the toolbar
+           * @param {object} [options.sessionModel] Use a custom sessionModel.
+           * @param {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
+           * @param {object=} [options.triggerRefresh=() => void] Trigger fetching new data by subsequently altering the returned value.
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @since 1.1.0
