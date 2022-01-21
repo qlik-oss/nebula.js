@@ -40,12 +40,27 @@ const noop = () => {};
  */
 
 /**
+ * @callback fieldTargetAddedCallback
+ * @template T
+ * @param {T} field TODO validate param name
+ * @param {qae.GenericObjectProperties} properties
+ */
+
+/**
+ * @callback fieldTargetRemovedCallback
+ * @template T
+ * @param {T} field TODO validate param name
+ * @param {qae.GenericObjectProperties} properties
+ * @param {number} index TODO validate param name
+ */
+
+/**
  * @interface FieldTarget
  * @template T
  * @property {function():number} [min]
  * @property {function():number} [max]
- * @property {function(T, qae.GenericObjectProperties)} [added]
- * @property {function(T, qae.GenericObjectProperties, number)} [removed]
+ * @property {fieldTargetAddedCallback<T>} [added]
+ * @property {fieldTargetRemovedCallback<T>} [removed]
  */
 
 function fallback(x, value) {
