@@ -64,8 +64,9 @@ export default function ListBox({
         return false;
       }
       local.current.checkIdx = index;
-      const page = pages.filter((p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
-      return page && page.qArea.qTop <= index && index < page.qArea.qTop + page.qArea.qHeight;
+      const isLoaded = (p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight;
+      const page = pages.filter((p) => isLoaded(p))[0];
+      return page && isLoaded(page);
     },
     [layout, pages]
   );
@@ -155,6 +156,7 @@ export default function ListBox({
         return (
           <FixedSizeList
             direction={direction}
+            data-testid="fixed-size-list"
             useIsScrolling
             style={{}}
             height={listHeight}
