@@ -130,10 +130,6 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          name: Log into Github Docker Registry
-          command: |
-              echo $QLIK_DOCKER_DEV_PASSWORD | docker login -u $QLIK_DOCKER_DEV_USERNAME --password-stdin $QLIK_DOCKER_DEV_REGISTRY
-      - run:
           name: Create version.txt
           command: |
               set -x
@@ -148,7 +144,7 @@ jobs:
       - run:
           name: Prepare API Compliance
           command: |
-            docker pull ghcr.io/qlik-trial/api-compliance
+            docker pull ghcr.io/qlik-download/api-compliance
             docker create -v /specs --name specs alpine:3.4 /bin/true
             docker cp ./apis/stardust/api-spec/spec.json specs:/specs
       - run:
@@ -163,7 +159,7 @@ jobs:
             -e CREDENTIALS_S3_SECRETKEY="$APICULTURIST_S3"
             -e CREDENTIALS_GITHUB="$APICULTURIST_GITHUB"
             -e CREDENTIALS_COLONY="$APICULTURIST_TOKEN"
-            ghcr.io/qlik-trial/api-compliance
+            ghcr.io/qlik-download/api-compliance
 workflows:
   version: 2
   build-deploy:
