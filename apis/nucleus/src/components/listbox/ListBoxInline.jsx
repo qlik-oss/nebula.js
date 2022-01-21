@@ -38,7 +38,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     properties = {},
     sessionModel = undefined,
     selectionsApi = undefined,
-    triggerRefresh = () => undefined,
+    update = undefined,
   } = options;
 
   const listdef = {
@@ -210,7 +210,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
               listLayout={listLayout}
               height={height}
               width={width}
-              refreshTrigger={triggerRefresh && triggerRefresh()}
+              update={update}
             />
           )}
         </AutoSizer>

@@ -1,34 +1,36 @@
 import React from 'react';
+import { create, act } from 'react-test-renderer';
 import { IconButton, Grid, Typography } from '@material-ui/core';
 
 describe('<ListboxInline />', () => {
   let sandbox;
+
   const app = {};
   const fieldIdentifier = { qLibraryId: 'qLibraryId' };
   const stateName = '$';
-  const options = {
-    title: 'title',
-    direction: 'vertical',
-    listLayout: 'vertical',
-    search: true,
-    toolbar: true,
-    properties: {},
-  };
+  let customSelectionsKey;
+  let customSessionModelKey;
 
+  let options;
   let ListBoxInline;
   let useState;
   let useEffect;
   let useCallback;
-  let useContext;
   let useRef;
   let sessionModel;
-  let selections;
   let ActionsToolbar;
   let ListBoxSearch;
   let createListboxSelectionToolbar;
   let useTheme;
   let theme;
   let layout;
+  let useSessionModel;
+  let useObjectSelections;
+  let selections;
+  let renderer;
+  let render;
+
+  const InstanceContext = React.createContext();
 
   before(() => {
     sandbox = sinon.createSandbox({ useFakeTimers: true });
@@ -36,22 +38,16 @@ describe('<ListboxInline />', () => {
     useState = sandbox.stub(React, 'useState');
     useEffect = sandbox.stub(React, 'useEffect');
     useCallback = sandbox.stub(React, 'useCallback');
-    useContext = sandbox.stub(React, 'useContext');
     useRef = sandbox.stub(React, 'useRef');
+    useSessionModel = sandbox.stub();
+    useObjectSelections = sandbox.stub();
 
     sessionModel = {
+      key: 'session-model',
       lock: sandbox.stub(),
       unlock: sandbox.stub(),
     };
 
-    selections = {
-      key: 'selections',
-      isModal: () => false,
-      isActive: () => 'isActive',
-      on: sandbox.stub().callsFake((event, func) => (eventTriggered) => {
-        if (event === eventTriggered) func();
-      }),
-    };
     ActionsToolbar = sandbox.stub();
     ListBoxSearch = sandbox.stub();
     createListboxSelectionToolbar = sandbox.stub();
@@ -82,15 +78,16 @@ describe('<ListboxInline />', () => {
             Typography,
           }),
         ],
-        [require.resolve('react-virtualized-auto-sizer'), () => (props) => props.children],
+        [require.resolve('react-virtualized-auto-sizer'), () => () => <div data-testid="virtualized-auto-sizer" />],
         [require.resolve('@nebula.js/ui/icons/unlock'), () => () => 'unlock'],
         [require.resolve('@nebula.js/ui/icons/lock'), () => () => 'lock'],
         [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({ icon: 'icon' }), useTheme })],
-        [require.resolve('../../../contexts/InstanceContext'), () => 'context'],
-        [require.resolve('../../../hooks/useObjectSelections'), () => () => [selections]],
-        [require.resolve('../../../hooks/useSessionModel'), () => () => [sessionModel]],
+        [require.resolve('../../../contexts/InstanceContext'), () => InstanceContext],
+        [require.resolve('../../../hooks/useObjectSelections'), () => useObjectSelections],
+        [require.resolve('../../../hooks/useSessionModel'), () => useSessionModel],
         [require.resolve('../../../hooks/useLayout'), () => () => [layout]],
         [require.resolve('../../ActionsToolbar'), () => ActionsToolbar],
+        [require.resolve('../ListBox'), () => <div className="TheListBox" />],
         [require.resolve('../ListBoxSearch'), () => ListBoxSearch],
         [require.resolve('../listbox-selection-toolbar'), () => createListboxSelectionToolbar],
       ],
@@ -99,9 +96,31 @@ describe('<ListboxInline />', () => {
   });
 
   beforeEach(() => {
+    selections = {
+      key: 'selections',
+      isModal: () => false,
+      isActive: () => 'isActive',
+      on: sandbox.stub().callsFake((event, func) => (eventTriggered) => {
+        if (event === eventTriggered) func();
+      }),
+    };
+    useSessionModel.returns([sessionModel]);
+    useObjectSelections.returns([selections]);
+
+    options = {
+      title: 'title',
+      direction: 'vertical',
+      listLayout: 'vertical',
+      search: true,
+      toolbar: true,
+      properties: {},
+      sessionModel: undefined,
+      selectionsApi: undefined,
+      update: undefined,
+    };
+
     theme.spacing.returns('padding');
     useState.callsFake((startValue) => [startValue, () => {}]);
-    useContext.returns({ translator: 'translator' });
     useRef.returns({ current: 'current' });
     useTheme.returns(theme);
     createListboxSelectionToolbar.returns('actions');
@@ -112,24 +131,24 @@ describe('<ListboxInline />', () => {
     useEffect
       .onCall(0)
       .callsFake((effectFunc, watchArr) => {
-        expect(watchArr[0].key).to.equal('selections');
+        expect(watchArr[0].key).to.equal(customSelectionsKey || 'selections');
         effectFunc();
       })
       .onCall(1)
       .callsFake((effectFunc, watchArr) => {
-        expect(watchArr[0].key).to.equal('selections');
+        expect(watchArr[0].key).to.equal(customSelectionsKey || 'selections');
         effectFunc();
       });
 
     useCallback
       .onCall(0)
       .callsFake((effectFunc, watchArr) => {
-        expect(watchArr).to.deep.equal([sessionModel]);
+        expect(watchArr[0].key).to.equal(customSessionModelKey || 'session-model');
         return effectFunc;
       })
       .onCall(1)
       .callsFake((effectFunc, watchArr) => {
-        expect(watchArr).to.deep.equal([sessionModel]);
+        expect(watchArr[0].key).to.equal(customSessionModelKey || 'session-model');
         return effectFunc;
       });
   });
@@ -142,16 +161,90 @@ describe('<ListboxInline />', () => {
     sandbox.restore();
   });
 
-  it('should call expected stuff', () => {
-    const response = ListBoxInline({ app, fieldIdentifier, stateName, options });
+  describe('Check rendering with different options', () => {
+    beforeEach(() => {
+      render = async () => {
+        await act(async () => {
+          renderer = create(
+            <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
+              <ListBoxInline app={app} fieldIdentifier={fieldIdentifier} stateName={stateName} options={options} />
+            </InstanceContext.Provider>
+          );
+        });
+      };
+    });
 
-    expect(response).to.be.an('object');
-    expect(useEffect).calledTwice;
-    expect(useState).calledOnce.calledWith(false);
-    expect(useCallback).calledTwice;
-    expect(theme.spacing).calledOnce;
-    expect(sessionModel.lock).not.called;
-    expect(sessionModel.unlock).not.called;
-    expect(selections.on).calledTwice;
+    it('should render with everything included', async () => {
+      await render();
+      const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
+      expect(actionToolbars.length).to.equal(1);
+
+      const typographs = renderer.root.findAllByType(Typography);
+      expect(typographs.length).to.equal(1);
+
+      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
+      expect(listBoxSearches.length).to.equal(1);
+
+      const autoSizers = renderer.root.findAllByProps({ 'data-testid': 'virtualized-auto-sizer' });
+      expect(autoSizers.length).to.equal(1);
+
+      expect(useSessionModel).calledOnce;
+      expect(useObjectSelections).calledOnce;
+    });
+
+    it('should render without toolbar', async () => {
+      options.toolbar = false;
+      await render();
+      const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
+      expect(actionToolbars.length).to.equal(0);
+
+      const typographs = renderer.root.findAllByType(Typography);
+      expect(typographs.length).to.equal(0);
+
+      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
+      expect(listBoxSearches.length).to.equal(1);
+    });
+
+    it('should render without search', async () => {
+      options.search = false;
+      await render();
+      const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
+      expect(actionToolbars.length).to.equal(1);
+
+      const typographs = renderer.root.findAllByType(Typography);
+      expect(typographs.length).to.equal(1);
+
+      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
+      expect(listBoxSearches.length).to.equal(0);
+    });
+
+    it('should use a custom selectionsApi and sessionModel', async () => {
+      const isModal = sandbox.stub();
+      const on = sandbox.stub();
+      const isActive = sandbox.stub();
+      customSelectionsKey = 'custom-selections';
+      customSessionModelKey = 'custom-session-model';
+      options.selectionsApi = {
+        key: 'custom-selections',
+        isModal,
+        on,
+        isActive,
+      };
+      options.sessionModel = {
+        key: 'custom-session-model',
+        lock: sandbox.stub(),
+        unlock: sandbox.stub(),
+      };
+      await render();
+
+      const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
+      expect(actionToolbars.length).to.equal(1);
+
+      expect(isModal).calledOnce;
+      expect(on).calledTwice;
+      expect(isActive).calledOnce;
+      expect(useSessionModel).not.called;
+      expect(useObjectSelections).not.called;
+    });
   });
 });
