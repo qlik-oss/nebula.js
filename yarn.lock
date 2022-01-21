@@ -5374,6 +5374,13 @@
   resolved "https://registry.yarnpkg.com/@scriptappy/schema/-/schema-1.1.0.tgz#ad3ddffb81ed0e3ffdbfb9e86ef575f3feb0429e"
   integrity sha512-HiiW0niupVqK3qbIyWyMLIQoyjCjAzl2DqwSdWap6Cm97xN3XqW2wDKMIzsGCeSYCjaMY+dGaRK2ENSMW2mdlA==
 
+"@scriptappy/to-dts@1.0.0-beta.3":
+  version "1.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@scriptappy/to-dts/-/to-dts-1.0.0-beta.3.tgz#92c4b2ed77796a2715a57485df15361a7bb7edbe"
+  integrity sha512-tv4QZ+eEPqt7vwvn1BOFHyiTSKyHwqeD38/zrY53Ojj7U/wiLaUnzKBLqwdYV2w/kTxenlfzkvgyifA8Ezd0Dg==
+  dependencies:
+    dts-dom "^3.1.0"
+
 "@sinonjs/commons@^1", "@sinonjs/commons@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.4.0.tgz#7b3ec2d96af481d7a0321252e7b1c94724ec5a78"
@@ -10149,6 +10156,11 @@ downshift@^6.0.15:
     compute-scroll-into-view "^1.0.17"
     prop-types "^15.7.2"
     react-is "^17.0.2"
+
+dts-dom@^3.1.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/dts-dom/-/dts-dom-3.6.0.tgz#0e8beaf6240e699d623bf4d7dcf0e6216222459a"
+  integrity sha512-on5jxTgt+A6r0Zyyz6ZRHXaAO7J1VPnOd6+AmvI1vH440AlAZZNc5rUHzgPuTjGlrVr1rOWQYNl7ZJK6rDohbw==
 
 duplexer@^0.1.1:
   version "0.1.1"
