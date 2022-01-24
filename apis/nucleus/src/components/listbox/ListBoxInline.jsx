@@ -81,12 +81,12 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     fieldName = fieldIdentifier;
   }
 
-  let [model] = useSessionModel(listdef, app, fieldName, stateName);
+  let [model] = useSessionModel(listdef, sessionModel ? null : app, fieldName, stateName);
   if (sessionModel) {
     model = sessionModel;
   }
 
-  let selections = useObjectSelections(app, model)[0];
+  let selections = useObjectSelections(selectionsApi ? {} : app, model)[0];
   if (selectionsApi) {
     selections = selectionsApi;
   }

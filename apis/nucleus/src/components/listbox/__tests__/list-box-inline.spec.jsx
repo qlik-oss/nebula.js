@@ -5,7 +5,7 @@ import { IconButton, Grid, Typography } from '@material-ui/core';
 describe('<ListboxInline />', () => {
   let sandbox;
 
-  const app = {};
+  const app = { key: 'app' };
   const fieldIdentifier = { qLibraryId: 'qLibraryId' };
   const stateName = '$';
   let customSelectionsKey;
@@ -189,6 +189,9 @@ describe('<ListboxInline />', () => {
       expect(autoSizers.length).to.equal(1);
 
       expect(useSessionModel).calledOnce;
+      expect(useSessionModel.args[0][1], 'app should not be null as when using a custom sessionModel').to.deep.equal({
+        key: 'app',
+      });
       expect(useObjectSelections).calledOnce;
     });
 
@@ -245,6 +248,7 @@ describe('<ListboxInline />', () => {
       expect(on, 'should use custom selections api').calledTwice;
       expect(isActive).calledOnce;
       expect(useSessionModel).calledOnce;
+      expect(useSessionModel.args[0][1], 'app should be null to prevent unncessary rendering').to.equal(null);
       expect(useObjectSelections).calledOnce;
       const [, ourSessionModel] = useObjectSelections.args[0];
       expect(ourSessionModel.key, 'should use custom session model').to.equal('custom-session-model');
