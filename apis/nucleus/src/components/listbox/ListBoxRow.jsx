@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
       outline: 'none',
     },
-    userSelect: 'none',
   },
   cell: {
     padding: '8px',
@@ -23,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
       whiteSpace: 'nowrap',
       fontSize: '12px',
       lineHeight: '16px',
+      userSelect: 'none',
     },
     overflow: 'hidden',
     textOverflow: 'ellipsis',
