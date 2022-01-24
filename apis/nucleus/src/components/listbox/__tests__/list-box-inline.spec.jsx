@@ -241,10 +241,13 @@ describe('<ListboxInline />', () => {
       expect(actionToolbars.length).to.equal(1);
 
       expect(isModal).calledOnce;
-      expect(on).calledTwice;
+      expect(selections.on, 'should not use default selections api').not.called;
+      expect(on, 'should use custom selections api').calledTwice;
       expect(isActive).calledOnce;
-      expect(useSessionModel).not.called;
-      expect(useObjectSelections).not.called;
+      expect(useSessionModel).calledOnce;
+      expect(useObjectSelections).calledOnce;
+      const [, ourSessionModel] = useObjectSelections.args[0];
+      expect(ourSessionModel.key, 'should use custom session model').to.equal('custom-session-model');
     });
   });
 });

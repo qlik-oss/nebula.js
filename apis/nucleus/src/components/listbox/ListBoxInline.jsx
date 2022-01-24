@@ -70,9 +70,9 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     title,
     ...properties,
   };
-  let fieldName;
 
   // Something something lib dimension
+  let fieldName;
   if (fieldIdentifier.qLibraryId) {
     listdef.qListObjectDef.qLibraryId = fieldIdentifier.qLibraryId;
     fieldName = fieldIdentifier.qLibraryId;
@@ -81,14 +81,17 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     fieldName = fieldIdentifier;
   }
 
-  const theme = useTheme();
-
-  let model;
+  let [model] = useSessionModel(listdef, app, fieldName, stateName);
   if (sessionModel) {
     model = sessionModel;
-  } else {
-    [model] = useSessionModel(listdef, app, fieldName, stateName);
   }
+
+  let selections = useObjectSelections(app, model)[0];
+  if (selectionsApi) {
+    selections = selectionsApi;
+  }
+
+  const theme = useTheme();
 
   const lock = useCallback(() => {
     model.lock('/qListObjectDef');
@@ -100,7 +103,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const { translator } = useContext(InstanceContext);
   const moreAlignTo = useRef();
-  const selections = selectionsApi || useObjectSelections(app, model)[0];
+
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
 
