@@ -1,6 +1,6 @@
 // eslint-disable-next-line import/prefer-default-export
 export async function selectValues({ selections, elemNumbers, isSingleSelect = false }) {
-  const SUCCESS = false; // start pessimistic
+  const SUCCESS = false;
   let resolved = Promise.resolve(SUCCESS);
   const hasNanValues = elemNumbers.some((elemNumber) => Number.isNaN(elemNumber));
   if (!hasNanValues) {

@@ -327,8 +327,7 @@ function nuked(configuration = {}) {
         }
 
         /**
-         * @typedef {function(function)} ReceiverFunction A receiver function.
-         * A function which receives another function as a parameter for interacting with the component.
+         * @typedef {function(function)} ReceiverFunction A callback function which receives another function as input.
          */
 
         /**
@@ -351,7 +350,7 @@ function nuked(configuration = {}) {
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @param {object} [options.sessionModel] Use a custom sessionModel.
            * @param {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
-           * @param {ReceiverFunction} [options.update=undefined] A function which (when defined) will receive an update function for triggering data refresh manually.
+           * @param {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
            * @since 1.1.0
            * @example
            * fieldInstance.mount(element);
