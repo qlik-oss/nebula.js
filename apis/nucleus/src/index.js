@@ -327,6 +327,10 @@ function nuked(configuration = {}) {
         }
 
         /**
+         * @typedef {function(function)} ReceiverFunction A callback function which receives another function as input.
+         */
+
+        /**
          * @class
          * @alias FieldInstance
          * @since 1.1.0
@@ -344,6 +348,9 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.toolbar=true] To show the toolbar
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
            * @param {object=} [options.properties={}] Properties object to extend default properties with
+           * @param {object} [options.sessionModel] Use a custom sessionModel.
+           * @param {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
+           * @param {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
            * @since 1.1.0
            * @example
            * fieldInstance.mount(element);

@@ -29,7 +29,18 @@ export default function ListBoxPortal({ app, fieldIdentifier, stateName, element
 }
 
 export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {} }) {
-  const { title, direction, listLayout, search = true, toolbar = true, properties = {} } = options;
+  const {
+    title,
+    direction,
+    listLayout,
+    search = true,
+    toolbar = true,
+    properties = {},
+    sessionModel = undefined,
+    selectionsApi = undefined,
+    update = undefined,
+  } = options;
+
   const listdef = {
     qInfo: {
       qType: 'njsListbox',
@@ -59,9 +70,9 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     title,
     ...properties,
   };
-  let fieldName;
 
   // Something something lib dimension
+  let fieldName;
   if (fieldIdentifier.qLibraryId) {
     listdef.qListObjectDef.qLibraryId = fieldIdentifier.qLibraryId;
     fieldName = fieldIdentifier.qLibraryId;
@@ -70,8 +81,17 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     fieldName = fieldIdentifier;
   }
 
+  let [model] = useSessionModel(listdef, sessionModel ? null : app, fieldName, stateName);
+  if (sessionModel) {
+    model = sessionModel;
+  }
+
+  let selections = useObjectSelections(selectionsApi ? {} : app, model)[0];
+  if (selectionsApi) {
+    selections = selectionsApi;
+  }
+
   const theme = useTheme();
-  const [model] = useSessionModel(listdef, app, fieldName, stateName);
 
   const lock = useCallback(() => {
     model.lock('/qListObjectDef');
@@ -83,7 +103,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const { translator } = useContext(InstanceContext);
   const moreAlignTo = useRef();
-  const [selections] = useObjectSelections(app, model);
+
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
 
@@ -193,6 +213,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
               listLayout={listLayout}
               height={height}
               width={width}
+              update={update}
             />
           )}
         </AutoSizer>

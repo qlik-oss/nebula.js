@@ -15,8 +15,17 @@ import useLayout from '../../hooks/useLayout';
 
 import Row from './ListBoxRow';
 import Column from './ListBoxColumn';
+import { selectValues } from './listbox-selections';
 
-export default function ListBox({ model, selections, direction, height, width, listLayout = 'vertical' }) {
+export default function ListBox({
+  model,
+  selections,
+  direction,
+  height,
+  width,
+  listLayout = 'vertical',
+  update = undefined,
+}) {
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
   const loaderRef = useRef(null);
@@ -35,11 +44,11 @@ export default function ListBox({ model, selections, direction, height, width, l
         return;
       }
       const elemNumber = +e.currentTarget.getAttribute('data-n');
+      const elemNumbers = [elemNumber];
+      const isSingleSelect = layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne;
+
       if (!Number.isNaN(elemNumber)) {
-        selections.select({
-          method: 'selectListObjectValues',
-          params: ['/qListObjectDef', [elemNumber], !layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne],
-        });
+        selectValues({ selections, elemNumbers, isSingleSelect });
       }
     },
     [
@@ -55,8 +64,9 @@ export default function ListBox({ model, selections, direction, height, width, l
         return false;
       }
       local.current.checkIdx = index;
-      const page = pages.filter((p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
-      return page && page.qArea.qTop <= index && index < page.qArea.qTop + page.qArea.qHeight;
+      const isLoaded = (p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight;
+      const page = pages.filter((p) => isLoaded(p))[0];
+      return page && isLoaded(page);
     },
     [layout, pages]
   );
@@ -102,7 +112,7 @@ export default function ListBox({ model, selections, direction, height, width, l
     [layout]
   );
 
-  useEffect(() => {
+  const fetchData = () => {
     local.current.queue = [];
     local.current.validPages = false;
     if (loaderRef.current) {
@@ -113,6 +123,15 @@ export default function ListBox({ model, selections, direction, height, width, l
       }
       loaderRef.current._listRef.scrollToItem(0);
     }
+  };
+
+  if (update) {
+    // Hand over the update function for manual refresh from hosting application.
+    update.call(null, fetchData);
+  }
+
+  useEffect(() => {
+    fetchData();
   }, [layout]);
 
   if (!layout) {
@@ -137,6 +156,7 @@ export default function ListBox({ model, selections, direction, height, width, l
         return (
           <FixedSizeList
             direction={direction}
+            data-testid="fixed-size-list"
             useIsScrolling
             style={{}}
             height={listHeight}

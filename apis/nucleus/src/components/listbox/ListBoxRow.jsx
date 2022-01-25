@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
       whiteSpace: 'nowrap',
       fontSize: '12px',
       lineHeight: '16px',
+      userSelect: 'none',
     },
     overflow: 'hidden',
     textOverflow: 'ellipsis',
