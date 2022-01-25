@@ -12,19 +12,19 @@ module.exports = {
   },
   parse: {
     types: {
-      'enigma.Doc': {
+      'EngineAPI.IApp': {
         url: 'https://github.com/qlik-oss/enigma.js/blob/master/docs/api.md#generated-api',
       },
-      'qae.GenericObjectLayout': {
+      'EngineAPI.IGenericObjectLayout': {
         url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#genericobjectlayout',
       },
-      'qae.GenericObjectProperties': {
+      'EngineAPI.IGenericObjectProperties': {
         url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#genericobjectproperties',
       },
-      'qae.NxDimension': {
+      'EngineAPI.INxDimension': {
         url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxdimension',
       },
-      'qae.NxMeasure': {
+      'EngineAPI.INxMeasure': {
         url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxmeasure',
       },
     },
