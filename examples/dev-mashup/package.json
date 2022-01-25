@@ -15,7 +15,6 @@
   },
   "devDependencies": {
     "@babel/core": "7.12.3",
-    "parcel": "^2.2.1",
     "parcel-bundler": "^1.12.5"
   }
 }
