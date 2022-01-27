@@ -145,6 +145,18 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
+        name: Create version.txt
+        command: |
+          set -x
+          if [ -n "${CIRCLE_TAG}" ]; then
+            version=${CIRCLE_TAG#v}
+          else
+            version=$(git describe --tags --abbrev=7 --match "v*")
+            version=${version#v}
+          fi
+          echo "$version" > ./version.txt
+          echo "Building $version"
+      - run:
           name: Prepare API Compliance
           command: |
             docker pull ghcr.io/qlik-download/api-compliance
@@ -154,7 +166,7 @@ jobs:
       - run:
           name: Run API Compliance
           command: >
-            cd ~/project && VER=v$(cat  package.json | jq -r .version) && cd -
+            VER=v$(cat version.txt)
             
             docker run --volumes-from specs
             -e SPEC_PATHS="abdc47c2-921a-45d3-ba5c-80d448574c5b@/specs/spec.json"
