@@ -35,6 +35,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     listLayout,
     search = true,
     toolbar = true,
+    rangeSelect = false,
     properties = {},
     sessionModel = undefined,
     selectionsApi = undefined,
@@ -209,6 +210,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
             <ListBox
               model={model}
               selections={selections}
+              rangeSelect={rangeSelect}
               direction={direction}
               listLayout={listLayout}
               height={height}
