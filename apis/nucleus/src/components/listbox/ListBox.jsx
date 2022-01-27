@@ -13,9 +13,10 @@ import InfiniteLoader from 'react-window-infinite-loader';
 
 import useLayout from '../../hooks/useLayout';
 
+import useSelectionsInteractions from './use-selections-interactions';
+
 import Row from './ListBoxRow';
 import Column from './ListBoxColumn';
-import { selectValues } from './listbox-selections';
 
 export default function ListBox({
   model,
@@ -24,10 +25,18 @@ export default function ListBox({
   height,
   width,
   listLayout = 'vertical',
+  rangeSelect = true,
   update = undefined,
 }) {
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
+  const [isLoadingData, setIsLoadingData] = useState(false);
+  const { instantPages = [], interactionEvents } = useSelectionsInteractions({
+    layout,
+    selections,
+    pages,
+    rangeSelect,
+  });
   const loaderRef = useRef(null);
   const local = useRef({
     queue: [],
@@ -37,26 +46,6 @@ export default function ListBox({
   const listData = useRef({
     pages: [],
   });
-
-  const onClick = useCallback(
-    (e) => {
-      if (layout && layout.qListObject.qDimensionInfo.qLocked) {
-        return;
-      }
-      const elemNumber = +e.currentTarget.getAttribute('data-n');
-      const elemNumbers = [elemNumber];
-      const isSingleSelect = layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne;
-
-      if (!Number.isNaN(elemNumber)) {
-        selectValues({ selections, elemNumbers, isSingleSelect });
-      }
-    },
-    [
-      model,
-      layout && !!layout.qListObject.qDimensionInfo.qLocked,
-      layout && !!layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne,
-    ]
-  );
 
   const isItemLoaded = useCallback(
     (index) => {
@@ -84,6 +73,7 @@ export default function ListBox({
         local.current.queue.shift();
       }
       clearTimeout(local.current.timeout);
+      setIsLoadingData(true);
       return new Promise((resolve) => {
         local.current.timeout = setTimeout(
           () => {
@@ -102,6 +92,7 @@ export default function ListBox({
                 local.current.validPages = true;
                 listData.current.pages = p;
                 setPages(p);
+                setIsLoadingData(false);
                 resolve();
               });
           },
@@ -134,6 +125,13 @@ export default function ListBox({
     fetchData();
   }, [layout]);
 
+  useEffect(() => {
+    if (!instantPages && isLoadingData) {
+      return;
+    }
+    setPages(instantPages);
+  }, [instantPages]);
+
   if (!layout) {
     return null;
   }
@@ -163,7 +161,7 @@ export default function ListBox({
             width={width}
             itemCount={count}
             layout={listLayout}
-            itemData={{ onClick, pages }}
+            itemData={{ ...interactionEvents, pages }}
             itemSize={ITEM_SIZE}
             onItemsRendered={onItemsRendered}
             ref={ref}
