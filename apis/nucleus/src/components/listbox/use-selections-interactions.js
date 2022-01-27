@@ -2,7 +2,6 @@ import { useEffect, useState, useCallback } from 'react';
 import { getUniques, selectValues, applySelectionsOnPages } from './listbox-selections';
 
 export default function useSelectionInteractions({ layout, selections, pages = [] }) {
-  // eslint-disable-next-line no-param-reassign
   const [mouseDown, setMouseDown] = useState(false);
   const [selectedElementNumbers, setSelectedElementNumbers] = useState([]);
   const [selectingValues, setSelectingValues] = useState(false);
@@ -49,9 +48,8 @@ export default function useSelectionInteractions({ layout, selections, pages = [
     };
   }, []);
 
-  // Effect for instant UI update of selection states by modifying pages directly.
   useEffect(() => {
-    if (selectingValues || !pages /*  || !selectedElementNumbers.length */) {
+    if (selectingValues || !pages) {
       return;
     }
     const newPages = applySelectionsOnPages(

@@ -25,7 +25,6 @@ export default function ListBox({
   height,
   width,
   listLayout = 'vertical',
-  rangeSelect = true,
   update = undefined,
 }) {
   const [layout] = useLayout(model);
@@ -35,7 +34,6 @@ export default function ListBox({
     layout,
     selections,
     pages,
-    rangeSelect,
   });
   const loaderRef = useRef(null);
   const local = useRef({
