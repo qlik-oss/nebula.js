@@ -145,17 +145,17 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-        name: Create version.txt
-        command: |
-          set -x
-          if [ -n "${CIRCLE_TAG}" ]; then
-            version=${CIRCLE_TAG#v}
-          else
-            version=$(git describe --tags --abbrev=7 --match "v*")
-            version=${version#v}
-          fi
-          echo "$version" > ./version.txt
-          echo "Building $version"
+          name: Create version.txt
+          command: |
+            set -x
+            if [ -n "${CIRCLE_TAG}" ]; then
+              version=${CIRCLE_TAG#v}
+            else
+              version=$(git describe --tags --abbrev=7 --match "v*")
+              version=${version#v}
+            fi
+            echo "$version" > ./version.txt
+            echo "Building $version"
       - run:
           name: Prepare API Compliance
           command: |
