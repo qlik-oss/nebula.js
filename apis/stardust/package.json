@@ -26,7 +26,8 @@
   "files": [
     "LICENSE",
     "core",
-    "dist"
+    "dist",
+    "types/index.d.ts"
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
