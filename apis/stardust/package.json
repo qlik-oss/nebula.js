@@ -37,6 +37,9 @@
     "postspec": "prettier --write ./api-spec/spec.json",
     "ts": "sy to-dts --spec ./api-spec/spec.json -o ./types/index.d.ts"
   },
+  "dependencies": {
+    "@types/qlik-engineapi": "12.67.11"
+  },
   "devDependencies": {
     "@material-ui/core": "4.12.3",
     "@material-ui/icons": "4.11.2",
