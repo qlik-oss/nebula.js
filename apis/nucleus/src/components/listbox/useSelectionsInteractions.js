@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import { getUniques, selectValues, applySelectionsOnPages } from './listbox-selections';
 
-export default function useSelectionInteractions({ layout, selections, pages = [] }) {
+export default function useSelectionsInteractions({ layout, selections, pages = [], doc = document }) {
   const [mouseDown, setMouseDown] = useState(false);
   const [selectedElementNumbers, setSelectedElementNumbers] = useState([]);
   const [selectingValues, setSelectingValues] = useState(false);
@@ -42,9 +42,9 @@ export default function useSelectionInteractions({ layout, selections, pages = [
   }, [selectedElementNumbers, mouseDown]);
 
   useEffect(() => {
-    document.addEventListener('mouseup', onMouseUpDoc);
+    doc.addEventListener('mouseup', onMouseUpDoc);
     return () => {
-      document.removeEventListener('mouseup', onMouseUpDoc);
+      doc.removeEventListener('mouseup', onMouseUpDoc);
     };
   }, []);
 

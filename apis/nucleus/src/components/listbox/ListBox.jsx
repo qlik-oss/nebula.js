@@ -13,7 +13,7 @@ import InfiniteLoader from 'react-window-infinite-loader';
 
 import useLayout from '../../hooks/useLayout';
 
-import useSelectionsInteractions from './use-selections-interactions';
+import useSelectionsInteractions from './useSelectionsInteractions';
 
 import Row from './ListBoxRow';
 import Column from './ListBoxColumn';
@@ -34,6 +34,7 @@ export default function ListBox({
     layout,
     selections,
     pages,
+    doc: document,
   });
   const loaderRef = useRef(null);
   const local = useRef({

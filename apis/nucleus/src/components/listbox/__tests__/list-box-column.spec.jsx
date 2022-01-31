@@ -25,7 +25,7 @@ describe('<ListBoxColumn />', () => {
     const index = 0;
     const style = {};
     const data = {
-      onClick: sinon.spy(),
+      onMouseDown: sinon.spy(),
       pages: [],
     };
     const testRenderer = renderer.create(<ListBoxColumn index={index} style={style} data={data} />);
@@ -37,7 +37,7 @@ describe('<ListBoxColumn />', () => {
     expect(type.props.style).to.deep.equal({});
     expect(type.props.role).to.equal('row');
     expect(type.props.className).to.equal('');
-    expect(type.props.onClick.callCount).to.equal(0);
+    expect(type.props.onMouseDown.callCount).to.equal(0);
 
     const types = testInstance.findAllByType(Typography);
     expect(types).to.have.length(1);
@@ -49,7 +49,7 @@ describe('<ListBoxColumn />', () => {
     const index = 0;
     const style = {};
     const data = {
-      onClick: sinon.spy(),
+      onMouseDown: sinon.spy(),
       pages: [
         {
           qArea: {
@@ -78,7 +78,7 @@ describe('<ListBoxColumn />', () => {
     const index = 0;
     const style = {};
     const data = {
-      onClick: sinon.spy(),
+      onMouseDown: sinon.spy(),
       pages: [
         {
           qArea: {
@@ -106,7 +106,7 @@ describe('<ListBoxColumn />', () => {
     const index = 0;
     const style = {};
     const data = {
-      onClick: sinon.spy(),
+      onMouseDown: sinon.spy(),
       pages: [
         {
           qArea: {
@@ -134,7 +134,7 @@ describe('<ListBoxColumn />', () => {
     const index = 0;
     const style = {};
     const data = {
-      onClick: sinon.spy(),
+      onMouseDown: sinon.spy(),
       pages: [
         {
           qArea: {
@@ -162,7 +162,7 @@ describe('<ListBoxColumn />', () => {
     const index = 0;
     const style = {};
     const data = {
-      onClick: sinon.spy(),
+      onMouseDown: sinon.spy(),
       pages: [
         {
           qArea: {
@@ -190,7 +190,7 @@ describe('<ListBoxColumn />', () => {
     const index = 0;
     const style = {};
     const data = {
-      onClick: sinon.spy(),
+      onMouseDown: sinon.spy(),
       pages: [
         {
           qArea: {
@@ -218,7 +218,7 @@ describe('<ListBoxColumn />', () => {
     const index = 0;
     const style = {};
     const data = {
-      onClick: sinon.spy(),
+      onMouseDown: sinon.spy(),
       pages: [
         {
           qArea: {
@@ -252,7 +252,7 @@ describe('<ListBoxColumn />', () => {
     const index = 0;
     const style = {};
     const data = {
-      onClick: sinon.spy(),
+      onMouseDown: sinon.spy(),
       pages: [
         {
           qArea: {
@@ -286,7 +286,7 @@ describe('<ListBoxColumn />', () => {
     const index = 0;
     const style = {};
     const data = {
-      onClick: sinon.spy(),
+      onMouseDown: sinon.spy(),
       pages: [
         {
           qArea: {

@@ -7,7 +7,7 @@ function isStateSelected(qState) {
 }
 
 export function getUniques(arr) {
-  return Array.from(new Set(arr));
+  return Array.isArray(arr) ? Array.from(new Set(arr)) : undefined;
 }
 
 export function getSelectedValues(pages) {
@@ -24,9 +24,8 @@ export function getSelectedValues(pages) {
   return flattenArr(elementNbrs);
 }
 
-export function applySelectionsOnPages(pages, elmNumbers, mouseDown, toggle = false) {
-  const getNewSelectionState = (qState) =>
-    /* !mouseDown &&  */ toggle && elmNumbers.length === 1 && isStateSelected(qState) ? 'A' : 'S';
+export function applySelectionsOnPages(pages, elmNumbers, toggle = false) {
+  const getNewSelectionState = (qState) => (toggle && elmNumbers.length === 1 && isStateSelected(qState) ? 'A' : 'S');
   const matrices = pages.map((page) => {
     const qMatrix = page.qMatrix.map((p) => {
       const [p0] = p;
@@ -41,8 +40,7 @@ export function applySelectionsOnPages(pages, elmNumbers, mouseDown, toggle = fa
 }
 
 export async function selectValues({ selections, elemNumbers, isSingleSelect = false }) {
-  const SUCCESS = false;
-  let resolved = Promise.resolve(SUCCESS);
+  let resolved = Promise.resolve(false);
   const hasNanValues = elemNumbers.some((elemNumber) => Number.isNaN(elemNumber));
   if (!hasNanValues) {
     const elemNumbersToSelect = elemNumbers;
