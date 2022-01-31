@@ -7,8 +7,6 @@ describe('use-listbox-interactions', () => {
     sandbox = sinon.createSandbox();
   });
 
-  beforeEach(() => {});
-
   afterEach(() => {
     sandbox.reset();
   });
