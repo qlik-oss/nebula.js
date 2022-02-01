@@ -33,10 +33,9 @@ export function applySelectionsOnPages(pages, elmNumbers, toggle = false) {
       const qState = selectionMatchesElement ? getNewSelectionState(p0.qState) : p0.qState;
       return [{ ...p0, qState }, p.slice(1)];
     });
-    return qMatrix;
+    return { ...page, qMatrix };
   });
-  const newPages = pages.map((page, i) => ({ ...page, qMatrix: matrices[i] }));
-  return newPages;
+  return matrices;
 }
 
 export async function selectValues({ selections, elemNumbers, isSingleSelect = false }) {
