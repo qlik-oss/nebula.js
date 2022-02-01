@@ -6,18 +6,18 @@ describe('<Listbox />', () => {
 
   let args;
   let layout;
-  let selectValues;
   let selections;
   let renderer;
   let ListBox;
   let render;
   let pages;
   let FixedSizeList;
+  let useSelectionsInteractions;
 
   before(() => {
     sandbox = sinon.createSandbox({ useFakeTimers: true });
 
-    selectValues = sandbox.stub();
+    global.document = 'document';
 
     layout = {
       qSelectionInfo: { qInSelections: false },
@@ -27,6 +27,8 @@ describe('<Listbox />', () => {
         qStateCounts: { qSelected: 2, qSelectedExcluded: 10, qLocked: 0, qLockedExcluded: 0 },
       },
     };
+
+    useSelectionsInteractions = sandbox.stub();
 
     FixedSizeList = sandbox.stub().callsFake((funcArgs) => {
       const { children } = funcArgs;
@@ -38,12 +40,12 @@ describe('<Listbox />', () => {
       [
         [require.resolve('react-window'), () => ({ FixedSizeList })],
         [require.resolve('../../../hooks/useLayout'), () => () => [layout]],
-        [require.resolve('../listbox-selections'), () => ({ selectValues })],
+        [require.resolve('../useSelectionsInteractions'), () => useSelectionsInteractions],
         [
           require.resolve('react-window-infinite-loader'),
           () => (props) => {
             const func = props.children;
-            return func({ onItemsRendered: {}, ref: {} });
+            return func({ onItemsRendered: {} });
           },
         ],
         [require.resolve('../ListBoxRow'), () => () => <div className="a-value-row" />],
@@ -55,6 +57,11 @@ describe('<Listbox />', () => {
 
   beforeEach(() => {
     pages = [{ qArea: { qTop: 1, qHeight: 100 } }];
+
+    useSelectionsInteractions.returns({
+      instantPages: [],
+      interactionEvents: { onMouseDown: () => {} },
+    });
 
     selections = { key: 'selections' };
     args = {
@@ -113,26 +120,12 @@ describe('<Listbox />', () => {
       const columns = Container.findAllByProps({ className: 'a-value-column' });
       expect(rows.length).to.equal(1);
       expect(columns.length).to.equal(0);
-
-      // onClick with valid numbers should call selectValues
-      const { onClick } = Container.props.itemData;
-      expect(selectValues).not.called;
-      onClick({
-        currentTarget: { getAttribute: () => 1 },
-      });
-      expect(selectValues).calledOnce.calledWithExactly({
+      expect(useSelectionsInteractions.args[1][0]).to.deep.equal({
+        layout,
         selections,
-        elemNumbers: [1],
-        isSingleSelect: false,
+        pages: [],
+        doc: 'document',
       });
-
-      // Test on click with NaN values
-      selectValues.reset();
-      expect(selectValues).not.called;
-      onClick({
-        currentTarget: { getAttribute: () => NaN },
-      });
-      expect(selectValues).not.called;
     });
   });
 });
