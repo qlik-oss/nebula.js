@@ -36,7 +36,7 @@
     "prepublishOnly": "rm -rf dist && yarn run build",
     "spec": "sy from-jsdoc -c ./api-spec/spec.conf.js",
     "postspec": "prettier --write ./api-spec/spec.json",
-    "ts": "sy to-dts --spec ./api-spec/spec.json -o ./types/index.d.ts"
+    "ts": "sy to-dts -c ./api-spec/spec.conf.js"
   },
   "dependencies": {
     "@types/qlik-engineapi": "12.67.11"
