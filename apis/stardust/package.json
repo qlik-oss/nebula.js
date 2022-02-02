@@ -35,7 +35,6 @@
     "build:watch": "rollup --config ../../rollup.config.js -w",
     "prepublishOnly": "rm -rf dist && yarn run build",
     "spec": "sy from-jsdoc -c ./api-spec/spec.conf.js",
-    "postspec": "prettier --write ./api-spec/spec.json",
     "ts": "sy to-dts -c ./api-spec/spec.conf.js"
   },
   "dependencies": {
