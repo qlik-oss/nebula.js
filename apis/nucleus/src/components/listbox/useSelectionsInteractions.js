@@ -1,17 +1,49 @@
 import { useEffect, useState, useCallback } from 'react';
-import { getUniques, selectValues, applySelectionsOnPages } from './listbox-selections';
+import {
+  getUniques,
+  selectValues,
+  applySelectionsOnPages,
+  fillRange,
+  getSelectedValues,
+  getElemNumbersFromPages,
+  containEquals,
+} from './listbox-selections';
 
-export default function useSelectionsInteractions({ layout, selections, pages = [], doc = document }) {
-  const [mouseDown, setMouseDown] = useState(false);
-  const [selectedElementNumbers, setSelectedElementNumbers] = useState([]);
-  const [selectingValues, setSelectingValues] = useState(false);
+export default function useSelectionsInteractions({
+  layout,
+  selections,
+  pages = [],
+  rangeSelect = true,
+  doc = document,
+}) {
   const [instantPages, setInstantPages] = useState(pages);
+  const [mouseDown, setMouseDown] = useState(false);
+  const [selectingValues, setSelectingValues] = useState(false);
+  const [selected, setSelected] = useState([]);
+  const [isRangeSelection, setIsRangeSelection] = useState(false);
+  const [preSelected, setPreSelected] = useState([]);
 
-  const select = ({ elemNumbers }) => {
+  const elemNumbersOrdered = getElemNumbersFromPages(pages);
+
+  const select = async (elemNumbers = []) => {
     setSelectingValues(true);
     const isSingleSelect = layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne;
-    return selectValues({ selections, elemNumbers, isSingleSelect }).then(() => {
-      setSelectingValues(false);
+    const toggle = !isSingleSelect; // && elemNumbers.length === 1;
+    const filtered = elemNumbers.length === 1 ? elemNumbers : elemNumbers.filter((n) => !selected.includes(n));
+    await selectValues({ selections, elemNumbers: filtered, toggle });
+    setSelectingValues(false);
+  };
+
+  const addToPreSelections = (elemNumbers, additive) => {
+    const alreadyAdded = additive && [...preSelected, ...selected].includes(elemNumbers[0]);
+    if (alreadyAdded) {
+      return;
+    }
+    setPreSelected((existing) => {
+      const uniques = getUniques([...existing, ...elemNumbers]);
+      const filtered = additive ? uniques.filter((n) => !selected.includes(n)) : uniques;
+      const items = additive ? fillRange(uniques, elemNumbersOrdered) : filtered;
+      return items;
     });
   };
 
@@ -20,26 +52,52 @@ export default function useSelectionsInteractions({ layout, selections, pages = 
       if (selectingValues) {
         return;
       }
-      const elemNumber = +event.currentTarget.getAttribute('data-n');
-      setSelectedElementNumbers([elemNumber]);
+      setIsRangeSelection(false);
       setMouseDown(true);
+
+      const elemNumber = +event.currentTarget.getAttribute('data-n');
+      setPreSelected([elemNumber]);
     },
-    [selectingValues, layout]
+    [selectingValues]
+  );
+
+  const onMouseUp = useCallback(
+    (event) => {
+      const elemNumbers = [+event.currentTarget.getAttribute('data-n')];
+      if (!rangeSelect || !mouseDown || selectingValues || containEquals(elemNumbers, preSelected)) {
+        return;
+      }
+      addToPreSelections(elemNumbers);
+    },
+    [mouseDown, selectingValues, preSelected, selected, isRangeSelection]
   );
 
   const onMouseUpDoc = useCallback(() => {
     setMouseDown(false);
+    setSelectingValues(false);
+    setPreSelected([]);
   }, []);
 
+  const onMouseEnter = useCallback(
+    (event) => {
+      if (mouseDown && !selectingValues) {
+        setIsRangeSelection(true);
+        const elemNumber = +event.currentTarget.getAttribute('data-n');
+        addToPreSelections([elemNumber], true);
+      }
+    },
+    [mouseDown, selectingValues, isRangeSelection, preSelected, selected]
+  );
+
   useEffect(() => {
-    if (!mouseDown) {
+    // Perform selections of pre-selected values only when
+    // interactions have finished (mouseup).
+    const interactionIsFinished = !mouseDown;
+    if (!interactionIsFinished || !layout) {
       return;
     }
-    const elemNumbers = getUniques(selectedElementNumbers);
-    if (elemNumbers.length) {
-      select({ elemNumbers });
-    }
-  }, [selectedElementNumbers, mouseDown]);
+    select(preSelected);
+  }, [preSelected, mouseDown]);
 
   useEffect(() => {
     doc.addEventListener('mouseup', onMouseUpDoc);
@@ -49,22 +107,30 @@ export default function useSelectionsInteractions({ layout, selections, pages = 
   }, []);
 
   useEffect(() => {
-    if (selectingValues || !pages) {
+    if (selectingValues || mouseDown) {
       return;
     }
-    const newPages = applySelectionsOnPages(
-      pages,
-      selectedElementNumbers,
-      mouseDown,
-      selectedElementNumbers.length === 1
-    );
+    // Keep track of (truely) selected fields so we can prevent toggling them on range select.
+    const alreadySelected = getSelectedValues(pages);
+    setSelected(alreadySelected);
+  }, [pages]);
+
+  useEffect(() => {
+    if (selectingValues || !pages || !mouseDown) {
+      return;
+    }
+    // Render pre-selections before they have been selected in Engine.
+    const newPages = applySelectionsOnPages(pages, preSelected);
     setInstantPages(newPages);
-  }, [selectedElementNumbers]);
+  }, [preSelected]);
 
   return {
     instantPages,
+    isSelecting: selectingValues, // TODO: Compare times rendering with and without this
     interactionEvents: {
       onMouseDown,
+      onMouseUp,
+      onMouseEnter,
     },
   };
 }

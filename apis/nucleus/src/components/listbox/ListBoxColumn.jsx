@@ -56,7 +56,7 @@ export default function Column({ index, style, data }) {
   const classArr = [classes.column];
 
   let label = '';
-  const { onMouseDown, pages } = data;
+  const { onMouseDown, onMouseUp, onMouseEnter, pages } = data;
   let cell;
   if (pages) {
     const page = pages.filter((p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
@@ -116,6 +116,8 @@ export default function Column({ index, style, data }) {
       style={style}
       alignItems="center"
       onMouseDown={onMouseDown}
+      onMouseUp={onMouseUp}
+      onMouseEnter={onMouseEnter}
       role="row"
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
