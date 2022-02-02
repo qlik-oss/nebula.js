@@ -447,9 +447,13 @@ function nuked(configuration = {}) {
 }
 
 /**
+ * @typedef {any} ThemeJSON
+ */
+
+/**
  * @interface ThemeInfo
  * @property {string} id Theme identifier
- * @property {function(): Promise<string>} load A function that should return a Promise that resolves to a raw JSON theme.
+ * @property {function(): Promise<ThemeJSON>} load A function that should return a Promise that resolves to a raw JSON theme.
  */
 
 export default nuked(DEFAULT_CONFIG);
