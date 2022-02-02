@@ -989,12 +989,18 @@ export function onTakeSnapshot(cb) {
 }
 
 /**
+ * @interface RenderState
+ * @property {any} pending
+ * @property {any} restore
+ */
+
+/**
  * Gets render state instance.
  *
  * Used to update properties and get a new layout without triggering onInitialRender.
  * @entry
  * @experimental
- * @returns {{ pending, restore }} The render state.
+ * @returns {RenderState} The render state.
  * @example
  * import { useRenderState } from '@nebula.js/stardust';
  *
