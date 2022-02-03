@@ -10,10 +10,6 @@ export function getUniques(arr) {
   return Array.isArray(arr) ? Array.from(new Set(arr)) : undefined;
 }
 
-export function containEquals(arr1, arr2) {
-  return Array.from(new Set(arr1.sort())).join(',') === Array.from(new Set(arr2.sort())).join(',');
-}
-
 export function getSelectedValues(pages) {
   if (!pages) {
     return [];
@@ -42,7 +38,7 @@ export function applySelectionsOnPages(pages, elmNumbers) {
   return matrices;
 }
 
-export async function selectValues({ selections, elemNumbers, toggle = false }) {
+export async function selectValues({ selections, elemNumbers, isSingleSelect = false }) {
   let resolved = Promise.resolve(false);
   const hasNanValues = elemNumbers.some((elemNumber) => Number.isNaN(elemNumber));
   if (!hasNanValues) {
@@ -50,7 +46,7 @@ export async function selectValues({ selections, elemNumbers, toggle = false }) 
     resolved = selections
       .select({
         method: 'selectListObjectValues',
-        params: ['/qListObjectDef', elemNumbersToSelect, toggle],
+        params: ['/qListObjectDef', elemNumbersToSelect, !isSingleSelect],
       })
       .then((success) => success !== false)
       .catch(() => false);

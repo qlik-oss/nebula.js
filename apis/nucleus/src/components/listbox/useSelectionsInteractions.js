@@ -6,7 +6,6 @@ import {
   fillRange,
   getSelectedValues,
   getElemNumbersFromPages,
-  containEquals,
 } from './listbox-selections';
 
 export default function useSelectionsInteractions({
@@ -25,25 +24,24 @@ export default function useSelectionsInteractions({
 
   const elemNumbersOrdered = getElemNumbersFromPages(pages);
 
-  const select = async (elemNumbers = []) => {
+  const getIsSingleSelect = () => !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
+
+  // Select values for real, by calling the backend.
+  const select = async (elemNumbers = [], additive = false) => {
     setSelectingValues(true);
-    const isSingleSelect = layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne;
-    const toggle = !isSingleSelect; // && elemNumbers.length === 1;
-    const filtered = elemNumbers.length === 1 ? elemNumbers : elemNumbers.filter((n) => !selected.includes(n));
-    await selectValues({ selections, elemNumbers: filtered, toggle });
+    const isSingleSelect = getIsSingleSelect();
+    const filtered = additive ? elemNumbers.filter((n) => !selected.includes(n)) : elemNumbers;
+    await selectValues({ selections, elemNumbers: filtered, isSingleSelect });
     setSelectingValues(false);
   };
 
-  const addToPreSelections = (elemNumbers, additive) => {
-    const alreadyAdded = additive && [...preSelected, ...selected].includes(elemNumbers[0]);
-    if (alreadyAdded) {
-      return;
-    }
+  // Show estimated selection states instantly before applying the selections for real.
+  const preSelect = (elemNumbers, additive = false) => {
     setPreSelected((existing) => {
       const uniques = getUniques([...existing, ...elemNumbers]);
       const filtered = additive ? uniques.filter((n) => !selected.includes(n)) : uniques;
-      const items = additive ? fillRange(uniques, elemNumbersOrdered) : filtered;
-      return items;
+      const filled = additive ? fillRange(uniques, elemNumbersOrdered) : filtered;
+      return filled;
     });
   };
 
@@ -63,16 +61,23 @@ export default function useSelectionsInteractions({
 
   const onMouseUp = useCallback(
     (event) => {
-      const elemNumbers = [+event.currentTarget.getAttribute('data-n')];
-      if (!rangeSelect || !mouseDown || selectingValues || containEquals(elemNumbers, preSelected)) {
+      const elemNumber = +event.currentTarget.getAttribute('data-n');
+      if (
+        getIsSingleSelect() ||
+        !rangeSelect ||
+        !mouseDown ||
+        selectingValues ||
+        (preSelected.length === 1 && preSelected[0] === elemNumber) // prevent toggling again on mouseup
+      ) {
         return;
       }
-      addToPreSelections(elemNumbers);
+      preSelect([elemNumber]);
     },
     [mouseDown, selectingValues, preSelected, selected, isRangeSelection]
   );
 
   const onMouseUpDoc = useCallback(() => {
+    // Ensure we end interactions when mouseup happens outside the Listbox.
     setMouseDown(false);
     setSelectingValues(false);
     setPreSelected([]);
@@ -80,23 +85,31 @@ export default function useSelectionsInteractions({
 
   const onMouseEnter = useCallback(
     (event) => {
-      if (mouseDown && !selectingValues) {
-        setIsRangeSelection(true);
-        const elemNumber = +event.currentTarget.getAttribute('data-n');
-        addToPreSelections([elemNumber], true);
+      if (getIsSingleSelect() || !mouseDown || selectingValues) {
+        return;
       }
+      setIsRangeSelection(true);
+      const elemNumber = +event.currentTarget.getAttribute('data-n');
+      preSelect([elemNumber], true);
     },
-    [mouseDown, selectingValues, isRangeSelection, preSelected, selected]
+    [
+      mouseDown,
+      selectingValues,
+      isRangeSelection,
+      preSelected,
+      selected,
+      layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne,
+    ]
   );
 
   useEffect(() => {
-    // Perform selections of pre-selected values only when
-    // interactions have finished (mouseup).
+    // Perform selections of pre-selected values. This can
+    // happen only when interactions have finished (mouseup).
     const interactionIsFinished = !mouseDown;
-    if (!interactionIsFinished || !layout) {
+    if (selectingValues || !interactionIsFinished || !layout) {
       return;
     }
-    select(preSelected);
+    select(preSelected, isRangeSelection);
   }, [preSelected, mouseDown]);
 
   useEffect(() => {
