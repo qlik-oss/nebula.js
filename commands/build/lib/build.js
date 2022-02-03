@@ -163,7 +163,6 @@ const config = ({
       file: path.resolve(dir, fileTarget), // fileTargetformat === 'esm' && pkg.module ? pkg.module : pkg.main,
       name: moduleName,
       sourcemap,
-      plugins: carbonCopy,
       globals: {
         '@nebula.js/stardust': 'stardust',
       },
