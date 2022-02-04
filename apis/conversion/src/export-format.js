@@ -13,10 +13,10 @@
 /**
  * @since 1.1.0
  * @interface ExportDataDef
- * @property {qae.NxDimension[]} dimensions
- * @property {qae.NxMeasure[]} measures
- * @property {qae.NxDimension[]} excludedDimensions
- * @property {qae.NxMeasure[]} excludedMeasures
+ * @property {EngineAPI.INxDimension[]} dimensions
+ * @property {EngineAPI.INxMeasure[]} measures
+ * @property {EngineAPI.INxDimension[]} excludedDimensions
+ * @property {EngineAPI.INxMeasure[]} excludedMeasures
  * @property {number[]} interColumnSortOrder
  */
 

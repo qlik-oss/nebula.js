@@ -14,7 +14,7 @@
       "params": [
         {
           "name": "app",
-          "type": "enigma.Doc"
+          "type": "EngineAPI.IApp"
         },
         {
           "name": "instanceConfig",
@@ -229,7 +229,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "type": "qae.GenericObjectLayout"
+        "type": "EngineAPI.IGenericObjectLayout"
       },
       "examples": [
         "import { useLayout } from '@nebula.js/stardust';\n// ...\nconst layout = useLayout();\nconsole.log(layout);"
@@ -240,7 +240,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "type": "qae.GenericObjectLayout"
+        "type": "EngineAPI.IGenericObjectLayout"
       },
       "examples": [
         "import { useStaleLayout } from '@nebula.js/stardust';\n// ...\nconst staleLayout = useStaleLayout();\nconsole.log(staleLayout);"
@@ -252,7 +252,7 @@
       "params": [],
       "returns": {
         "description": "The app layout",
-        "type": "qae.NxAppLayout"
+        "type": "EngineAPI.INxAppLayout"
       },
       "examples": [
         "import { useAppLayout } from '@nebula.js/stardust';\n// ...\nconst appLayout = useAppLayout();\nconsole.log(appLayout.qLocaleInfo);"
@@ -266,7 +266,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "enigma.GenericObject"
+            "type": "EngineAPI.IGenericObject"
           },
           {
             "type": "undefined"
@@ -286,7 +286,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "enigma.Doc"
+            "type": "EngineAPI.IApp"
           },
           {
             "type": "undefined"
@@ -306,7 +306,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "enigma.Global"
+            "type": "EngineAPI.IGlobal"
           },
           {
             "type": "undefined"
@@ -466,14 +466,14 @@
           "kind": "function",
           "params": [
             {
-              "type": "qae.GenericObjectLayout"
+              "type": "EngineAPI.IGenericObjectLayout"
             }
           ],
           "returns": {
             "type": "Promise",
             "generics": [
               {
-                "type": "qae.GenericObjectLayout"
+                "type": "EngineAPI.IGenericObjectLayout"
               }
             ]
           }
@@ -490,15 +490,7 @@
       "params": [],
       "returns": {
         "description": "The render state.",
-        "kind": "object",
-        "entries": {
-          "pending": {
-            "type": "any"
-          },
-          "restore": {
-            "type": "any"
-          }
-        }
+        "type": "#/definitions/RenderState"
       },
       "examples": [
         "import { useRenderState } from '@nebula.js/stardust';\n\nconst renderState = useRenderState();\nuseState(() => {\n  if(needProperteisUpdate(...)) {\n     useRenderState.pending();\n     updateProperties(...);\n  } else {\n     useRenderState.restore();\n     ...\n  }\n}, [...]);"
@@ -730,6 +722,19 @@
         }
       }
     },
+    "ReceiverFunction": {
+      "description": "A callback function which receives another function as input.",
+      "kind": "alias",
+      "items": {
+        "kind": "function",
+        "params": [
+          {
+            "kind": "function",
+            "params": []
+          }
+        ]
+      }
+    },
     "FieldInstance": {
       "availability": {
         "since": "1.1.0"
@@ -798,6 +803,21 @@
                   "optional": true,
                   "defaultValue": "{}",
                   "type": "object"
+                },
+                "sessionModel": {
+                  "description": "Use a custom sessionModel.",
+                  "optional": true,
+                  "type": "object"
+                },
+                "selectionsApi": {
+                  "description": "Use a custom selectionsApi to customize how values are selected.",
+                  "optional": true,
+                  "type": "object"
+                },
+                "update": {
+                  "description": "A function which receives an update function which upon call will trigger a data fetch.",
+                  "optional": true,
+                  "type": "#/definitions/ReceiverFunction"
                 }
               }
             }
@@ -815,6 +835,12 @@
         }
       }
     },
+    "ThemeJSON": {
+      "kind": "alias",
+      "items": {
+        "type": "any"
+      }
+    },
     "ThemeInfo": {
       "kind": "interface",
       "entries": {
@@ -830,7 +856,7 @@
             "type": "Promise",
             "generics": [
               {
-                "type": "ThemeJSON"
+                "type": "#/definitions/ThemeJSON"
               }
             ]
           }
@@ -1112,10 +1138,10 @@
             "type": "string"
           },
           {
-            "type": "qae.NxDimension"
+            "type": "EngineAPI.INxDimension"
           },
           {
-            "type": "qae.NxMeasure"
+            "type": "EngineAPI.INxMeasure"
           },
           {
             "type": "#/definitions/LibraryField"
@@ -1152,7 +1178,7 @@
         },
         "properties": {
           "optional": true,
-          "type": "qae.GenericObjectProperties"
+          "type": "EngineAPI.IGenericObjectProperties"
         }
       }
     },
@@ -1381,6 +1407,19 @@
         }
       }
     },
+    "VizElementAttributes": {
+      "extends": [
+        {
+          "type": "NamedNodeMap"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "data-render-count": {
+          "type": "string"
+        }
+      }
+    },
     "VizElement": {
       "extends": [
         {
@@ -1390,12 +1429,7 @@
       "kind": "interface",
       "entries": {
         "attributes": {
-          "kind": "object",
-          "entries": {
-            "data-render-count": {
-              "type": "string"
-            }
-          }
+          "type": "#/definitions/VizElementAttributes"
         },
         "className": {
           "value": "'njs-viz'",
@@ -1573,6 +1607,17 @@
         }
       }
     },
+    "RenderState": {
+      "kind": "interface",
+      "entries": {
+        "pending": {
+          "type": "any"
+        },
+        "restore": {
+          "type": "any"
+        }
+      }
+    },
     "Keyboard": {
       "stability": "experimental",
       "kind": "interface",
@@ -1677,7 +1722,7 @@
       "entries": {
         "properties": {
           "optional": true,
-          "type": "qae.GenericObjectProperties"
+          "type": "EngineAPI.IGenericObjectProperties"
         },
         "data": {
           "optional": true,
@@ -1712,7 +1757,7 @@
           "type": "#/definitions/FieldTarget",
           "generics": [
             {
-              "type": "qae.NxDimension"
+              "type": "EngineAPI.INxDimension"
             }
           ]
         },
@@ -1721,11 +1766,54 @@
           "type": "#/definitions/FieldTarget",
           "generics": [
             {
-              "type": "qae.NxMeasure"
+              "type": "EngineAPI.INxMeasure"
             }
           ]
         }
       }
+    },
+    "fieldTargetAddedCallback": {
+      "templates": [
+        {
+          "name": "T"
+        }
+      ],
+      "kind": "function",
+      "params": [
+        {
+          "name": "field",
+          "description": "TODO validate param name",
+          "type": "T"
+        },
+        {
+          "name": "properties",
+          "type": "EngineAPI.IGenericObjectProperties"
+        }
+      ]
+    },
+    "fieldTargetRemovedCallback": {
+      "templates": [
+        {
+          "name": "T"
+        }
+      ],
+      "kind": "function",
+      "params": [
+        {
+          "name": "field",
+          "description": "TODO validate param name",
+          "type": "T"
+        },
+        {
+          "name": "properties",
+          "type": "EngineAPI.IGenericObjectProperties"
+        },
+        {
+          "name": "index",
+          "description": "TODO validate param name",
+          "type": "number"
+        }
+      ]
     },
     "FieldTarget": {
       "templates": [
@@ -1753,28 +1841,19 @@
         },
         "added": {
           "optional": true,
-          "kind": "function",
-          "params": [
+          "type": "#/definitions/fieldTargetAddedCallback",
+          "generics": [
             {
               "type": "T"
-            },
-            {
-              "type": "qae.GenericObjectProperties"
             }
           ]
         },
         "removed": {
           "optional": true,
-          "kind": "function",
-          "params": [
+          "type": "#/definitions/fieldTargetRemovedCallback",
+          "generics": [
             {
               "type": "T"
-            },
-            {
-              "type": "qae.GenericObjectProperties"
-            },
-            {
-              "type": "number"
             }
           ]
         }
@@ -2101,25 +2180,25 @@
         "dimensions": {
           "kind": "array",
           "items": {
-            "type": "qae.NxDimension"
+            "type": "EngineAPI.INxDimension"
           }
         },
         "measures": {
           "kind": "array",
           "items": {
-            "type": "qae.NxMeasure"
+            "type": "EngineAPI.INxMeasure"
           }
         },
         "excludedDimensions": {
           "kind": "array",
           "items": {
-            "type": "qae.NxDimension"
+            "type": "EngineAPI.INxDimension"
           }
         },
         "excludedMeasures": {
           "kind": "array",
           "items": {
-            "type": "qae.NxMeasure"
+            "type": "EngineAPI.INxMeasure"
           }
         },
         "interColumnSortOrder": {

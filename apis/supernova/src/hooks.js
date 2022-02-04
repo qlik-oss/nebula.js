@@ -550,7 +550,7 @@ export function useRect() {
 /**
  * Gets the layout of the generic object associated with this visualization.
  * @entry
- * @returns {qae.GenericObjectLayout}
+ * @returns {EngineAPI.IGenericObjectLayout}
  * @example
  * import { useLayout } from '@nebula.js/stardust';
  * // ...
@@ -570,7 +570,7 @@ export function useLayout() {
  * The returned value from `useStaleLayout()` and `useLayout()` are identical when the object
  * is not in a modal state.
  * @entry
- * @returns {qae.GenericObjectLayout}
+ * @returns {EngineAPI.IGenericObjectLayout}
  * @example
  * import { useStaleLayout } from '@nebula.js/stardust';
  * // ...
@@ -589,7 +589,7 @@ export function useStaleLayout() {
 /**
  * Gets the layout of the app associated with this visualization.
  * @entry
- * @returns {qae.NxAppLayout} The app layout
+ * @returns {EngineAPI.INxAppLayout} The app layout
  * @example
  * import { useAppLayout } from '@nebula.js/stardust';
  * // ...
@@ -603,7 +603,7 @@ export function useAppLayout() {
 /**
  * Gets the generic object API of the generic object connected to this visualization.
  * @entry
- * @returns {enigma.GenericObject|undefined}
+ * @returns {EngineAPI.IGenericObject|undefined}
  * @example
  * import { useModel } from '@nebula.js/stardust';
  * // ...
@@ -622,7 +622,7 @@ export function useModel() {
 /**
  * Gets the doc API.
  * @entry
- * @returns {enigma.Doc|undefined} The doc API.
+ * @returns {EngineAPI.IApp|undefined} The doc API.
  * @example
  * import { useApp } from '@nebula.js/stardust';
  * // ...
@@ -641,7 +641,7 @@ export function useApp() {
 /**
  * Gets the global API.
  * @entry
- * @returns {enigma.Global|undefined} The global API.
+ * @returns {EngineAPI.IGlobal|undefined} The global API.
  * @example
  * import { useGlobal } from '@nebula.js/stardust';
  *
@@ -965,7 +965,7 @@ export function useImperativeHandle(fn, deps) {
 /**
  * Registers a callback that is called when a snapshot is taken.
  * @entry
- * @param {function(qae.GenericObjectLayout): Promise<qae.GenericObjectLayout>} snapshotCallback
+ * @param {function(EngineAPI.IGenericObjectLayout): Promise<EngineAPI.IGenericObjectLayout>} snapshotCallback
  * @example
  * import { onTakeSnapshot } from '@nebula.js/stardust';
  * import { useState } from '@nebula.js/stardust';
@@ -989,12 +989,18 @@ export function onTakeSnapshot(cb) {
 }
 
 /**
+ * @interface RenderState
+ * @property {any} pending
+ * @property {any} restore
+ */
+
+/**
  * Gets render state instance.
  *
  * Used to update properties and get a new layout without triggering onInitialRender.
  * @entry
  * @experimental
- * @returns {{ pending, restore }} The render state.
+ * @returns {RenderState} The render state.
  * @example
  * import { useRenderState } from '@nebula.js/stardust';
  *

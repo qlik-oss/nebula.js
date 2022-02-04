@@ -25,7 +25,7 @@ const noop = () => {};
 
 /**
  * @interface QAEDefinition
- * @property {qae.GenericObjectProperties=} properties
+ * @property {EngineAPI.IGenericObjectProperties=} properties
  * @property {object=} data
  * @property {DataTarget[]} data.targets
  * @property {importProperties=} importProperties
@@ -35,8 +35,23 @@ const noop = () => {};
 /**
  * @interface DataTarget
  * @property {string} path
- * @property {FieldTarget<qae.NxDimension>=} dimensions
- * @property {FieldTarget<qae.NxMeasure>=} measures
+ * @property {FieldTarget<EngineAPI.INxDimension>=} dimensions
+ * @property {FieldTarget<EngineAPI.INxMeasure>=} measures
+ */
+
+/**
+ * @callback fieldTargetAddedCallback
+ * @template T
+ * @param {T} field TODO validate param name
+ * @param {EngineAPI.IGenericObjectProperties} properties
+ */
+
+/**
+ * @callback fieldTargetRemovedCallback
+ * @template T
+ * @param {T} field TODO validate param name
+ * @param {EngineAPI.IGenericObjectProperties} properties
+ * @param {number} index TODO validate param name
  */
 
 /**
@@ -44,8 +59,8 @@ const noop = () => {};
  * @template T
  * @property {function():number} [min]
  * @property {function():number} [max]
- * @property {function(T, qae.GenericObjectProperties)} [added]
- * @property {function(T, qae.GenericObjectProperties, number)} [removed]
+ * @property {fieldTargetAddedCallback<T>} [added]
+ * @property {fieldTargetRemovedCallback<T>} [removed]
  */
 
 function fallback(x, value) {
