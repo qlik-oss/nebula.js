@@ -31,18 +31,18 @@ const resolveReplacementStrings = (replacementStrings) => {
   return replacementStrings;
 };
 
-const doINeedACarbonCopy = (argv) => {
-  const { carbon } = argv;
-  if (carbon) {
+const doINeedAReactNativeCopy = (argv) => {
+  const { reactNative } = argv;
+  if (reactNative) {
     if (!fs.existsSync('./react-native/package.json')) {
       // eslint-disable-next-line no-console
       console.warn(
-        'WARNING: No react-native/package.json was found.  If you really intended to build a react-native version of this package, please provide one.\nOther wise, to supress this warning, omitt the --carbon flag.'
+        'WARNING: No react-native/package.json was found.  If you really intended to build a react-native version of this package, please provide one.\nOther wise, to supress this warning, omitt the --reactNative flag.'
       );
       return false;
     }
   }
-  return carbon;
+  return reactNative;
 };
 
 const config = ({
@@ -53,18 +53,18 @@ const config = ({
   core,
 } = {}) => {
   const CWD = argv.cwd || cwd;
-  const carbon = doINeedACarbonCopy(argv);
+  const reactNative = doINeedAReactNativeCopy(argv);
   let dir = CWD;
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
-  pkg = carbon ? require(path.resolve('./react-native', 'package.json')) : pkg; // eslint-disable-line
+  pkg = reactNative ? require(path.resolve('./react-native', 'package.json')) : pkg; // eslint-disable-line
   const { name, version, license, author } = pkg;
   const { sourcemap, replacementStrings = {}, typescript } = argv;
-  let carbonCopy = [];
+  let reactNativePlugins = [];
 
   // setup copy to copy to react-native folder for package if user desires.
-  if (carbon) {
-    carbonCopy = [
+  if (reactNative) {
+    reactNativePlugins = [
       copy({
         targets: [{ src: 'core/esm/', dest: 'react-native/dist' }],
       }),
@@ -112,7 +112,7 @@ const config = ({
       input: path.resolve(CWD, 'src/index'),
       external,
       plugins: [
-        resolveNative({ carbon }),
+        resolveNative({ reactNative }),
         replace({
           'process.env.NODE_ENV': JSON.stringify(mode === 'development' ? 'development' : 'production'),
           preventAssignment: true,
@@ -154,7 +154,7 @@ const config = ({
               })
             : false,
         ],
-        ...carbonCopy,
+        ...reactNativePlugins,
       ].filter(Boolean),
     },
     output: {
