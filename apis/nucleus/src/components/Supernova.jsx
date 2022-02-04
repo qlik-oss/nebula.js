@@ -4,9 +4,15 @@ import useRect from '../hooks/useRect';
 import RenderDebouncer from '../utils/render-debouncer';
 
 /**
+ * @interface VizElementAttributes
+ * @extends NamedNodeMap
+ * @property {string} data-render-count
+ */
+
+/**
  * @interface
  * @extends HTMLElement
- * @property {string} attributes.data-render-count
+ * @property {VizElementAttributes} attributes
  */
 const VizElement = {
   /** @type {'njs-viz'} */

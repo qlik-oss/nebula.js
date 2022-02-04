@@ -117,7 +117,7 @@ function nuked(configuration = {}) {
    * Initiates a new `Embed` instance using the specified enigma `app`.
    * @entry
    * @function embed
-   * @param {enigma.Doc} app
+   * @param {EngineAPI.IApp} app
    * @param {Configuration=} instanceConfig
    * @returns {Embed}
    * @example
@@ -445,6 +445,10 @@ function nuked(configuration = {}) {
 
   return embed;
 }
+
+/**
+ * @typedef {any} ThemeJSON
+ */
 
 /**
  * @interface ThemeInfo

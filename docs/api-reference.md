@@ -46,7 +46,7 @@ title: API Reference
 - [interface: CreateConfig](#interface-createconfig)
 - [interface: BaseConfig](#interface-baseconfig)
 - [interface: GetConfig](#interface-getconfig)
-- [type Field = <[string]|`qae.NxDimension`|`qae.NxMeasure`|[LibraryField]>](#type-field-stringqaenxdimensionqaenxmeasurelibraryfield)
+- [type Field = <[string]|`EngineAPI.INxDimension`|`EngineAPI.INxMeasure`|[LibraryField]>](#type-field-stringqaenxdimensionqaenxmeasurelibraryfield)
 - [interface: LibraryField](#interface-libraryfield)
 - [class: AppSelections](#class-appselections)
   - [appSelections.mount(element)](#appselectionsmountelement)
@@ -97,7 +97,7 @@ title: API Reference
 
 ### function: embed(app[, instanceConfig])
 
-- `app` <`enigma.Doc`>
+- `app` <`EngineAPI.IApp`>
 - `instanceConfig` <[Configuration]>
 - `returns:` <[Embed]>
 
@@ -242,7 +242,7 @@ useEffect(() => {
 
 ### function: useLayout()
 
-- `returns:` <`qae.GenericObjectLayout`>
+- `returns:` <`EngineAPI.IGenericObjectLayout`>
 
 Gets the layout of the generic object associated with this supernova.
 
@@ -255,7 +255,7 @@ console.log(layout);
 
 ### function: useStaleLayout()
 
-- `returns:` <`qae.GenericObjectLayout`>
+- `returns:` <`EngineAPI.IGenericObjectLayout`>
 
 Gets the layout of the generic object associated with this supernova.
 
@@ -274,7 +274,7 @@ console.log(staleLayout);
 
 ### function: useAppLayout()
 
-- `returns:` <`qae.NxAppLayout`> The app layout
+- `returns:` <`EngineAPI.INxAppLayout`> The app layout
 
 Gets the layout of the app associated with this supernova.
 
@@ -287,7 +287,7 @@ console.log(appLayout.qLocaleInfo);
 
 ### function: useModel()
 
-- `returns:` <`enigma.GenericObject`|`undefined`>
+- `returns:` <`EngineAPI.IGenericObject`|`undefined`>
 
 Gets the generic object API of the generic object connected to this supernova.
 
@@ -304,7 +304,7 @@ useEffect(() => {
 
 ### function: useApp()
 
-- `returns:` <`enigma.Doc`|`undefined`> The doc API.
+- `returns:` <`EngineAPI.IApp`|`undefined`> The doc API.
 
 Gets the doc API.
 
@@ -321,7 +321,7 @@ useEffect(() => {
 
 ### function: useGlobal()
 
-- `returns:` <`enigma.Global`|`undefined`> The global API.
+- `returns:` <`EngineAPI.IGlobal`|`undefined`> The global API.
 
 Gets the global API.
 
@@ -617,7 +617,7 @@ const ctl = ctl.destroy();
 * `type` <[string]>
 * `version` <[string]>
 * `fields` <[Array]>
-* `properties` <`qae.GenericObjectProperties`>
+* `properties` <`EngineAPI.IGenericObjectProperties`>
 
 ### interface: BaseConfig
 
@@ -630,7 +630,7 @@ const ctl = ctl.destroy();
 
 * `id` <[string]>
 
-### type Field = <[string]|`qae.NxDimension`|`qae.NxMeasure`|[LibraryField]>
+### type Field = <[string]|`EngineAPI.INxDimension`|`EngineAPI.INxMeasure`|[LibraryField]>
 
 ### interface: LibraryField
 
@@ -792,15 +792,15 @@ export default function () {
 
 ### interface: QAEDefinition
 
-- `properties` <`qae.GenericObjectProperties`>
+- `properties` <`EngineAPI.IGenericObjectProperties`>
 - `data` <[Object]>
   - `targets` <[Array]<[DataTarget]>>
 
 ### interface: DataTarget
 
 - `path` <[string]>
-- `dimensions` <[FieldTarget]<`qae.NxDimension`>>
-- `measures` <[FieldTarget]<`qae.NxMeasure`>>
+- `dimensions` <[FieldTarget]<`EngineAPI.INxDimension`>>
+- `measures` <[FieldTarget]<`EngineAPI.INxMeasure`>>
 
 ### interface: FieldTarget
 
@@ -923,26 +923,26 @@ theme.getStyle('', '', 'fontSize');
 - `nil` <[string]>
 - `others` <[string]>
 
-[enigma.doc]: undefined
+[engineapi.iapp]: undefined
 [s]: undefined
 [function]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function
 [array]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array
 [any]: undefined
 [t]: undefined
 [htmlelement]: undefined
-[qae.genericobjectlayout]: undefined
-[qae.nxapplayout]: undefined
-[enigma.genericobject]: undefined
+[engineapi.igenericobjectlayout]: undefined
+[engineapi.inxapplayout]: undefined
+[engineapi.igenericobject]: undefined
 [undefined]: undefined
-[enigma.global]: undefined
+[engineapi.iglobal]: undefined
 [a]: undefined
 [object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Boolean_type
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#String_type
 [promise]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise
-[qae.genericobjectproperties]: undefined
-[qae.nxdimension]: undefined
-[qae.nxmeasure]: undefined
+[engineapi.igenericobjectproperties]: undefined
+[engineapi.inxdimension]: undefined
+[engineapi.inxmeasure]: undefined
 [galaxy]: undefined
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures#Number_type
 [context]: #interface-context
