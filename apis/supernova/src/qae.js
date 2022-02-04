@@ -42,16 +42,16 @@ const noop = () => {};
 /**
  * @callback fieldTargetAddedCallback
  * @template T
- * @param {T} field TODO validate param name
+ * @param {T} field
  * @param {EngineAPI.IGenericObjectProperties} properties
  */
 
 /**
  * @callback fieldTargetRemovedCallback
  * @template T
- * @param {T} field TODO validate param name
+ * @param {T} field
  * @param {EngineAPI.IGenericObjectProperties} properties
- * @param {number} index TODO validate param name
+ * @param {number} index
  */
 
 /**
