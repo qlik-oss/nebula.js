@@ -3,7 +3,6 @@ const chalk = require('chalk');
 const readline = require('readline');
 
 const fs = require('fs');
-const copy = require('rollup-plugin-copy');
 const extend = require('extend');
 const yargs = require('yargs');
 const rollup = require('rollup');
@@ -31,18 +30,20 @@ const resolveReplacementStrings = (replacementStrings) => {
   return replacementStrings;
 };
 
-const doINeedAReactNativeCopy = (argv) => {
+const setupReactnative = (argv) => {
   const { reactNative } = argv;
+  let reactNativePath;
   if (reactNative) {
-    if (!fs.existsSync('./react-native/package.json')) {
+    reactNativePath = argv.reactNativePath || './react-native';
+    if (!fs.existsSync(`${reactNativePath}/package.json`)) {
       // eslint-disable-next-line no-console
       console.warn(
-        'WARNING: No react-native/package.json was found.  If you really intended to build a react-native version of this package, please provide one.\nOther wise, to supress this warning, omitt the --reactNative flag.'
+        `WARNING: No ${reactNativePath}/package.json was found.  If you really intended to build a react-native version of this package, please provide one.\nOther wise, to supress this warning, omitt the --reactNative flag.`
       );
       return false;
     }
   }
-  return reactNative;
+  return { reactNative, reactNativePath };
 };
 
 const config = ({
@@ -53,25 +54,17 @@ const config = ({
   core,
 } = {}) => {
   const CWD = argv.cwd || cwd;
-  const reactNative = doINeedAReactNativeCopy(argv);
+  const { reactNative, reactNativePath } = setupReactnative(argv);
   let dir = CWD;
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
-  pkg = reactNative ? require(path.resolve('./react-native', 'package.json')) : pkg; // eslint-disable-line
+  pkg = reactNative ? require(path.resolve(reactNativePath, 'package.json')) : pkg; // eslint-disable-line
   const { name, version, license, author } = pkg;
   const { sourcemap, replacementStrings = {}, typescript } = argv;
-  let reactNativePlugins = [];
 
-  // setup copy to copy to react-native folder for package if user desires.
   if (reactNative) {
-    reactNativePlugins = [
-      copy({
-        targets: [{ src: 'core/esm/', dest: 'react-native/dist' }],
-      }),
-    ];
-  }
-
-  if (corePkg) {
+    dir = `${dir}/${reactNativePath}`;
+  } else if (corePkg) {
     pkg = corePkg;
     dir = core;
   }
@@ -154,7 +147,6 @@ const config = ({
               })
             : false,
         ],
-        ...reactNativePlugins,
       ].filter(Boolean),
     },
     output: {
