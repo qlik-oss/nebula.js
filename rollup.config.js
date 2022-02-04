@@ -72,13 +72,15 @@ const GLOBALS = {
 
 const watch = process.argv.indexOf('-w') > 2;
 
+const TYPES_SCOPE_RX = /^@types\//;
+
 const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
   const umdName = targetName
     .replace(/-([a-z])/g, (m, p1) => p1.toUpperCase())
     .split('.js')
     .join('');
 
-  if (Object.keys(targetPkg.dependencies || {}).length) {
+  if (Object.keys(targetPkg.dependencies || {}).filter((dep) => !TYPES_SCOPE_RX.test(dep)).length) {
     throw new Error('Dependencies for a web javascript library makes no sense');
   }
 
