@@ -80,7 +80,6 @@ export default function useSelectionsInteractions({
     // Ensure we end interactions when mouseup happens outside the Listbox.
     setMouseDown(false);
     setSelectingValues(false);
-    setPreSelected([]);
   }, []);
 
   const onMouseEnter = useCallback(
@@ -106,7 +105,7 @@ export default function useSelectionsInteractions({
     // Perform selections of pre-selected values. This can
     // happen only when interactions have finished (mouseup).
     const interactionIsFinished = !mouseDown;
-    if (selectingValues || !interactionIsFinished || !layout) {
+    if (!preSelected || !preSelected.length || selectingValues || !interactionIsFinished || !layout) {
       return;
     }
     select(preSelected, isRangeSelection);
@@ -137,13 +136,13 @@ export default function useSelectionsInteractions({
     setInstantPages(newPages);
   }, [preSelected]);
 
+  const rangeSelectEvents = rangeSelect ? { onMouseUp, onMouseEnter } : {};
+
   return {
     instantPages,
-    isSelecting: selectingValues, // TODO: Compare times rendering with and without this
     interactionEvents: {
       onMouseDown,
-      onMouseUp,
-      onMouseEnter,
+      ...rangeSelectEvents,
     },
   };
 }

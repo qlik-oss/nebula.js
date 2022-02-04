@@ -25,11 +25,7 @@ export default function ListBox({
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
-  const {
-    instantPages = [],
-    isSelecting,
-    interactionEvents,
-  } = useSelectionsInteractions({
+  const { instantPages = [], interactionEvents } = useSelectionsInteractions({
     layout,
     selections,
     pages,
@@ -125,7 +121,7 @@ export default function ListBox({
   }, [layout]);
 
   useEffect(() => {
-    if (!instantPages || isLoadingData || isSelecting) {
+    if (!instantPages || isLoadingData) {
       return;
     }
     setPages(instantPages);

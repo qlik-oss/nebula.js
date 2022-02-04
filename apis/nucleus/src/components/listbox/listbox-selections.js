@@ -11,7 +11,7 @@ export function getUniques(arr) {
 }
 
 export function getSelectedValues(pages) {
-  if (!pages) {
+  if (!pages || !pages.length) {
     return [];
   }
   const elementNbrs = pages.map((page) => {
@@ -55,7 +55,7 @@ export async function selectValues({ selections, elemNumbers, isSingleSelect = f
 }
 
 export function getElemNumbersFromPages(pages) {
-  if (!pages) {
+  if (!pages || !pages.length) {
     return [];
   }
   const elemNumbersArr = pages.map((page) => {

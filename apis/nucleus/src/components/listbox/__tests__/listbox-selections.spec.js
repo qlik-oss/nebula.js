@@ -176,4 +176,44 @@ describe('use-listbox-interactions', () => {
       }).not.to.throw();
     });
   });
+
+  describe('getElemNumbersFromPages', () => {
+    let pages;
+
+    beforeEach(() => {
+      pages = [
+        {
+          qMatrix: [
+            [{ qState: 'S', qElemNumber: 0 }],
+            [{ qState: 'XS', qElemNumber: 1 }],
+            [{ qState: 'L', qElemNumber: 2 }],
+            [{ qState: 'A', qElemNumber: 3 }],
+            [{ qState: 'XL', qElemNumber: 4 }],
+            [{ qState: 'XS', qElemNumber: 5 }],
+            [{ qState: 'A', qElemNumber: 6 }],
+          ],
+        },
+      ];
+    });
+
+    it('listboxSelections', () => {
+      expect(listboxSelections.getElemNumbersFromPages(undefined)).to.deep.equal([]);
+      const resp = listboxSelections.getElemNumbersFromPages(pages);
+      expect(resp).to.deep.equal([0, 1, 2, 3, 4, 5, 6]);
+    });
+  });
+
+  describe('fillRange', () => {
+    it('should fill the numbers according to ground-truth array', () => {
+      expect(listboxSelections.fillRange([], [])).to.deep.equal([]);
+      expect(listboxSelections.fillRange([1, 10], []), 'without ground-truth no range').to.deep.equal([]);
+
+      expect(listboxSelections.fillRange([0, 5], [0, 1, 2, 3, 4, 5, 6])).to.deep.equal([0, 1, 2, 3, 4, 5]);
+      expect(listboxSelections.fillRange([0], [0, 1, 2, 3, 4, 5, 6])).to.deep.equal([0]);
+      expect(listboxSelections.fillRange([], [0, 1, 2, 3, 4, 5, 6])).to.deep.equal([]);
+      expect(listboxSelections.fillRange([1, 6], [0, 1, 8, 16, 6, 2]), 'should fill using ground-truth').to.deep.equal([
+        1, 8, 16, 6,
+      ]);
+    });
+  });
 });
