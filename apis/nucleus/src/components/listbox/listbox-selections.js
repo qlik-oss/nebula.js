@@ -63,7 +63,7 @@ export function getElemNumbersFromPages(pages) {
       const [{ qElemNumber }] = p;
       return qElemNumber;
     });
-    return [...qElemNumbers];
+    return qElemNumbers;
   });
   const elemNumbers = flatten(elemNumbersArr);
   return elemNumbers;
