@@ -1,12 +1,6 @@
 /* eslint no-underscore-dangle:0 */
 
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  // useMemo,
-} from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
@@ -25,6 +19,7 @@ export default function ListBox({
   height,
   width,
   listLayout = 'vertical',
+  rangeSelect = true,
   update = undefined,
 }) {
   const [layout] = useLayout(model);
@@ -34,6 +29,7 @@ export default function ListBox({
     layout,
     selections,
     pages,
+    rangeSelect,
     doc: document,
   });
   const loaderRef = useRef(null);
@@ -125,7 +121,7 @@ export default function ListBox({
   }, [layout]);
 
   useEffect(() => {
-    if (!instantPages && isLoadingData) {
+    if (!instantPages || isLoadingData) {
       return;
     }
     setPages(instantPages);

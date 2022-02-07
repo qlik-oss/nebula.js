@@ -74,6 +74,7 @@ describe('<Listbox />', () => {
       width: 100,
       listLayout: 'vertical',
       update: sandbox.stub(),
+      rangeSelect: false,
     };
   });
 
@@ -86,7 +87,7 @@ describe('<Listbox />', () => {
   });
 
   describe('Check rendering with different options', () => {
-    beforeEach(() => {
+    before(() => {
       render = async () => {
         await act(async () => {
           renderer = create(
@@ -95,6 +96,7 @@ describe('<Listbox />', () => {
               direction={args.direction}
               height={args.height}
               width={args.width}
+              rangeSelect={args.rangeSelect}
               listLayout={args.listLayout}
               update={args.update}
             />
@@ -104,11 +106,12 @@ describe('<Listbox />', () => {
     });
 
     afterEach(() => {
-      sandbox.reset();
+      sandbox.restore();
       renderer.unmount();
     });
 
     it('should render and call stuff', async () => {
+      args.rangeSelect = false;
       await render();
 
       // check rendering
@@ -124,6 +127,19 @@ describe('<Listbox />', () => {
         layout,
         selections,
         pages: [],
+        rangeSelect: false,
+        doc: 'document',
+      });
+    });
+
+    it('should call useSelectionsInteractions with rangeSelect true', async () => {
+      args.rangeSelect = true;
+      await render();
+      expect(useSelectionsInteractions.args[useSelectionsInteractions.callCount - 1][0]).to.deep.equal({
+        layout,
+        selections,
+        pages: [],
+        rangeSelect: true,
         doc: 'document',
       });
     });
