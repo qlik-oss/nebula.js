@@ -70,12 +70,18 @@ export function getElemNumbersFromPages(pages) {
 }
 
 /**
+ * @typedef {object} MinMaxResult
+ * @property {number} min
+ * @property {number} max
+ */
+
+/**
  * Returns the min and max indices of elemNumbersOrdered which contains
  * all numbers in elementNbrs.
  *
- * @param {array(number)} elementNbrs
- * @param {array(number)} elemNumbersOrdered
- * @returns { min: {number}, max: {number} }
+ * @param {number[]} elementNbrs
+ * @param {number[]} elemNumbersOrdered
+ * @returns {MinMaxResult}
  */
 function getMinMax(elementNbrs, elemNumbersOrdered) {
   let min = Infinity;

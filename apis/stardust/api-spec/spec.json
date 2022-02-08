@@ -1308,6 +1308,43 @@
         }
       }
     },
+    "MinMaxResult": {
+      "kind": "alias",
+      "items": {
+        "kind": "object",
+        "entries": {
+          "min": {
+            "type": "number"
+          },
+          "max": {
+            "type": "number"
+          }
+        }
+      }
+    },
+    "getMinMax": {
+      "description": "Returns the min and max indices of elemNumbersOrdered which contains\nall numbers in elementNbrs.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "elementNbrs",
+          "kind": "array",
+          "items": {
+            "type": "number"
+          }
+        },
+        {
+          "name": "elemNumbersOrdered",
+          "kind": "array",
+          "items": {
+            "type": "number"
+          }
+        }
+      ],
+      "returns": {
+        "type": "#/definitions/MinMaxResult"
+      }
+    },
     "ActionToolbarElement": {
       "availability": {
         "since": "2.1.0"
