@@ -22,17 +22,23 @@
   "main": "index.js",
   "jsdelivr": "dist/stardust.js",
   "unpkg": "dist/stardust.js",
+  "types": "types/index.d.ts",
   "files": [
     "LICENSE",
     "core",
-    "dist"
+    "dist",
+    "types/index.d.ts"
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
     "build:dev": "rollup --config ../../rollup.config.js",
     "build:watch": "rollup --config ../../rollup.config.js -w",
     "prepublishOnly": "rm -rf dist && yarn run build",
-    "spec": "sy from-jsdoc -c ./api-spec/spec.conf.js"
+    "spec": "sy from-jsdoc -c ./api-spec/spec.conf.js",
+    "ts": "sy to-dts -c ./api-spec/spec.conf.js"
+  },
+  "dependencies": {
+    "@types/qlik-engineapi": "12.67.11"
   },
   "devDependencies": {
     "@material-ui/core": "4.12.3",
@@ -46,6 +52,7 @@
     "@nebula.js/ui": "^2.3.1",
     "@scriptappy/cli": "0.0.1",
     "@scriptappy/from-jsdoc": "0.7.0",
+    "@scriptappy/to-dts": "1.0.0-beta.4",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1",
     "react": "17.0.2",

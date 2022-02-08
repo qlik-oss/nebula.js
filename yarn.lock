@@ -5374,6 +5374,14 @@
   resolved "https://registry.yarnpkg.com/@scriptappy/schema/-/schema-1.1.0.tgz#ad3ddffb81ed0e3ffdbfb9e86ef575f3feb0429e"
   integrity sha512-HiiW0niupVqK3qbIyWyMLIQoyjCjAzl2DqwSdWap6Cm97xN3XqW2wDKMIzsGCeSYCjaMY+dGaRK2ENSMW2mdlA==
 
+"@scriptappy/to-dts@1.0.0-beta.4":
+  version "1.0.0-beta.4"
+  resolved "https://registry.yarnpkg.com/@scriptappy/to-dts/-/to-dts-1.0.0-beta.4.tgz#0b366a62022f87a17b1abde1964656df8a121a56"
+  integrity sha512-YbaoUzQrwxePOFCqVtlbrdsmrP4u5haBp5seHEw5WdrZx/jEALeEenw63xLkLQmUfTPLZ+R8rRSZFyvFb7z8SQ==
+  dependencies:
+    dts-dom "^3.1.0"
+    extend "3.0.2"
+
 "@sinonjs/commons@^1", "@sinonjs/commons@^1.4.0":
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/@sinonjs/commons/-/commons-1.4.0.tgz#7b3ec2d96af481d7a0321252e7b1c94724ec5a78"
@@ -6377,6 +6385,11 @@
 "@types/prop-types@*":
   version "15.7.1"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.1.tgz#f1a11e7babb0c3cad68100be381d1e064c68f1f6"
+
+"@types/qlik-engineapi@12.67.11":
+  version "12.67.11"
+  resolved "https://registry.yarnpkg.com/@types/qlik-engineapi/-/qlik-engineapi-12.67.11.tgz#279da931e9cbd2a2d4d9d17220f3f12a482027eb"
+  integrity sha512-zMzI2+TibE4XHImPvBA2iQi2RE0XYhe5MdXaT1ViPfjbT7qgIfWoy58idOsOPbPtGupvE+gCw4TtFx069ClAdQ==
 
 "@types/qs@^6.9.5":
   version "6.9.6"
@@ -10149,6 +10162,11 @@ downshift@^6.0.15:
     compute-scroll-into-view "^1.0.17"
     prop-types "^15.7.2"
     react-is "^17.0.2"
+
+dts-dom@^3.1.0:
+  version "3.6.0"
+  resolved "https://registry.yarnpkg.com/dts-dom/-/dts-dom-3.6.0.tgz#0e8beaf6240e699d623bf4d7dcf0e6216222459a"
+  integrity sha512-on5jxTgt+A6r0Zyyz6ZRHXaAO7J1VPnOd6+AmvI1vH440AlAZZNc5rUHzgPuTjGlrVr1rOWQYNl7ZJK6rDohbw==
 
 duplexer@^0.1.1:
   version "0.1.1"
