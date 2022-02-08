@@ -835,6 +835,12 @@
         }
       }
     },
+    "ThemeJSON": {
+      "kind": "alias",
+      "items": {
+        "type": "any"
+      }
+    },
     "ThemeInfo": {
       "kind": "interface",
       "entries": {
@@ -850,7 +856,7 @@
             "type": "Promise",
             "generics": [
               {
-                "type": "ThemeJSON"
+                "type": "#/definitions/ThemeJSON"
               }
             ]
           }
