@@ -14,7 +14,7 @@
       "params": [
         {
           "name": "app",
-          "type": "qae.IApp"
+          "type": "enigma.Doc"
         },
         {
           "name": "instanceConfig",
@@ -229,7 +229,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "type": "qae.IGenericObjectLayout"
+        "type": "qae.GenericObjectLayout"
       },
       "examples": [
         "import { useLayout } from '@nebula.js/stardust';\n// ...\nconst layout = useLayout();\nconsole.log(layout);"
@@ -240,7 +240,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "type": "qae.IGenericObjectLayout"
+        "type": "qae.GenericObjectLayout"
       },
       "examples": [
         "import { useStaleLayout } from '@nebula.js/stardust';\n// ...\nconst staleLayout = useStaleLayout();\nconsole.log(staleLayout);"
@@ -252,7 +252,7 @@
       "params": [],
       "returns": {
         "description": "The app layout",
-        "type": "qae.INxAppLayout"
+        "type": "qae.NxAppLayout"
       },
       "examples": [
         "import { useAppLayout } from '@nebula.js/stardust';\n// ...\nconst appLayout = useAppLayout();\nconsole.log(appLayout.qLocaleInfo);"
@@ -266,7 +266,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "qae.IGenericObject"
+            "type": "enigma.GenericObject"
           },
           {
             "type": "undefined"
@@ -286,7 +286,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "qae.IApp"
+            "type": "enigma.Doc"
           },
           {
             "type": "undefined"
@@ -306,7 +306,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "qae.IGlobal"
+            "type": "enigma.Global"
           },
           {
             "type": "undefined"
@@ -466,14 +466,14 @@
           "kind": "function",
           "params": [
             {
-              "type": "qae.IGenericObjectLayout"
+              "type": "qae.GenericObjectLayout"
             }
           ],
           "returns": {
             "type": "Promise",
             "generics": [
               {
-                "type": "qae.IGenericObjectLayout"
+                "type": "qae.GenericObjectLayout"
               }
             ]
           }
@@ -490,7 +490,15 @@
       "params": [],
       "returns": {
         "description": "The render state.",
-        "type": "#/definitions/RenderState"
+        "kind": "object",
+        "entries": {
+          "pending": {
+            "type": "any"
+          },
+          "restore": {
+            "type": "any"
+          }
+        }
       },
       "examples": [
         "import { useRenderState } from '@nebula.js/stardust';\n\nconst renderState = useRenderState();\nuseState(() => {\n  if(needProperteisUpdate(...)) {\n     useRenderState.pending();\n     updateProperties(...);\n  } else {\n     useRenderState.restore();\n     ...\n  }\n}, [...]);"
@@ -722,19 +730,6 @@
         }
       }
     },
-    "ReceiverFunction": {
-      "description": "A callback function which receives another function as input.",
-      "kind": "alias",
-      "items": {
-        "kind": "function",
-        "params": [
-          {
-            "kind": "function",
-            "params": []
-          }
-        ]
-      }
-    },
     "FieldInstance": {
       "availability": {
         "since": "1.1.0"
@@ -786,12 +781,6 @@
                   "defaultValue": true,
                   "type": "boolean"
                 },
-                "toolbar": {
-                  "description": "To show the toolbar",
-                  "optional": true,
-                  "defaultValue": true,
-                  "type": "boolean"
-                },
                 "stateName": {
                   "description": "Sets the state to make selections in",
                   "optional": true,
@@ -803,21 +792,6 @@
                   "optional": true,
                   "defaultValue": "{}",
                   "type": "object"
-                },
-                "sessionModel": {
-                  "description": "Use a custom sessionModel.",
-                  "optional": true,
-                  "type": "object"
-                },
-                "selectionsApi": {
-                  "description": "Use a custom selectionsApi to customize how values are selected.",
-                  "optional": true,
-                  "type": "object"
-                },
-                "update": {
-                  "description": "A function which receives an update function which upon call will trigger a data fetch.",
-                  "optional": true,
-                  "type": "#/definitions/ReceiverFunction"
                 }
               }
             }
@@ -835,12 +809,6 @@
         }
       }
     },
-    "ThemeJSON": {
-      "kind": "alias",
-      "items": {
-        "type": "any"
-      }
-    },
     "ThemeInfo": {
       "kind": "interface",
       "entries": {
@@ -856,7 +824,7 @@
             "type": "Promise",
             "generics": [
               {
-                "type": "#/definitions/ThemeJSON"
+                "type": "ThemeJSON"
               }
             ]
           }
@@ -1129,6 +1097,33 @@
         }
       }
     },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
     "Field": {
       "kind": "alias",
       "items": {
@@ -1138,10 +1133,10 @@
             "type": "string"
           },
           {
-            "type": "qae.INxDimension"
+            "type": "qae.NxDimension"
           },
           {
-            "type": "qae.INxMeasure"
+            "type": "qae.NxMeasure"
           },
           {
             "type": "#/definitions/LibraryField"
@@ -1178,7 +1173,7 @@
         },
         "properties": {
           "optional": true,
-          "type": "qae.IGenericObjectProperties"
+          "type": "qae.GenericObjectProperties"
         }
       }
     },
@@ -1237,33 +1232,6 @@
         }
       }
     },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
-    },
     "LoadType": {
       "kind": "interface",
       "params": [
@@ -1306,43 +1274,6 @@
           "optional": true,
           "type": "object"
         }
-      }
-    },
-    "MinMaxResult": {
-      "kind": "alias",
-      "items": {
-        "kind": "object",
-        "entries": {
-          "min": {
-            "type": "number"
-          },
-          "max": {
-            "type": "number"
-          }
-        }
-      }
-    },
-    "getMinMax": {
-      "description": "Returns the min and max indices of elemNumbersOrdered which contains\nall numbers in elementNbrs.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "elementNbrs",
-          "kind": "array",
-          "items": {
-            "type": "number"
-          }
-        },
-        {
-          "name": "elemNumbersOrdered",
-          "kind": "array",
-          "items": {
-            "type": "number"
-          }
-        }
-      ],
-      "returns": {
-        "type": "#/definitions/MinMaxResult"
       }
     },
     "ActionToolbarElement": {
@@ -1636,17 +1567,6 @@
         }
       }
     },
-    "RenderState": {
-      "kind": "interface",
-      "entries": {
-        "pending": {
-          "type": "any"
-        },
-        "restore": {
-          "type": "any"
-        }
-      }
-    },
     "Keyboard": {
       "stability": "experimental",
       "kind": "interface",
@@ -1667,12 +1587,6 @@
         },
         "focus": {
           "description": "Function used by the visualization to tell Nebula to it wants focus",
-          "optional": true,
-          "kind": "function",
-          "params": []
-        },
-        "focusSelection": {
-          "description": "Function used by the visualization to tell Nebula to focus the selection toolbar",
           "optional": true,
           "kind": "function",
           "params": []
@@ -1751,7 +1665,7 @@
       "entries": {
         "properties": {
           "optional": true,
-          "type": "qae.IGenericObjectProperties"
+          "type": "qae.GenericObjectProperties"
         },
         "data": {
           "optional": true,
@@ -1786,7 +1700,7 @@
           "type": "#/definitions/FieldTarget",
           "generics": [
             {
-              "type": "qae.INxDimension"
+              "type": "qae.NxDimension"
             }
           ]
         },
@@ -1795,51 +1709,11 @@
           "type": "#/definitions/FieldTarget",
           "generics": [
             {
-              "type": "qae.INxMeasure"
+              "type": "qae.NxMeasure"
             }
           ]
         }
       }
-    },
-    "fieldTargetAddedCallback": {
-      "templates": [
-        {
-          "name": "T"
-        }
-      ],
-      "kind": "function",
-      "params": [
-        {
-          "name": "field",
-          "type": "T"
-        },
-        {
-          "name": "properties",
-          "type": "qae.IGenericObjectProperties"
-        }
-      ]
-    },
-    "fieldTargetRemovedCallback": {
-      "templates": [
-        {
-          "name": "T"
-        }
-      ],
-      "kind": "function",
-      "params": [
-        {
-          "name": "field",
-          "type": "T"
-        },
-        {
-          "name": "properties",
-          "type": "qae.IGenericObjectProperties"
-        },
-        {
-          "name": "index",
-          "type": "number"
-        }
-      ]
     },
     "FieldTarget": {
       "templates": [
@@ -1867,19 +1741,28 @@
         },
         "added": {
           "optional": true,
-          "type": "#/definitions/fieldTargetAddedCallback",
-          "generics": [
+          "kind": "function",
+          "params": [
             {
               "type": "T"
+            },
+            {
+              "type": "qae.GenericObjectProperties"
             }
           ]
         },
         "removed": {
           "optional": true,
-          "type": "#/definitions/fieldTargetRemovedCallback",
-          "generics": [
+          "kind": "function",
+          "params": [
             {
               "type": "T"
+            },
+            {
+              "type": "qae.GenericObjectProperties"
+            },
+            {
+              "type": "number"
             }
           ]
         }
@@ -2056,7 +1939,7 @@
             "description": "The style value",
             "type": "string"
           },
-          "examples": ["theme.getStyle('object', 'title.main', 'fontSize');\ntheme.getStyle('', '', 'fontSize');"]
+          "examples": ["theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize');"]
         }
       },
       "definitions": {
@@ -2206,25 +2089,25 @@
         "dimensions": {
           "kind": "array",
           "items": {
-            "type": "qae.INxDimension"
+            "type": "qae.NxDimension"
           }
         },
         "measures": {
           "kind": "array",
           "items": {
-            "type": "qae.INxMeasure"
+            "type": "qae.NxMeasure"
           }
         },
         "excludedDimensions": {
           "kind": "array",
           "items": {
-            "type": "qae.INxDimension"
+            "type": "qae.NxDimension"
           }
         },
         "excludedMeasures": {
           "kind": "array",
           "items": {
-            "type": "qae.INxMeasure"
+            "type": "qae.NxMeasure"
           }
         },
         "interColumnSortOrder": {
