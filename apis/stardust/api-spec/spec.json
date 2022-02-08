@@ -1453,8 +1453,11 @@
       "kind": "interface",
       "entries": {
         "attributes": {
-          "data-render-count": {
-            "type": "string"
+          "kind": "object",
+          "entries": {
+            "data-render-count": {
+              "type": "string"
+            }
           }
         },
         "className": {
