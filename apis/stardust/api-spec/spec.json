@@ -1407,6 +1407,19 @@
         }
       }
     },
+    "VizElementAttributes": {
+      "extends": [
+        {
+          "type": "NamedNodeMap"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "data-render-count": {
+          "type": "string"
+        }
+      }
+    },
     "VizElement": {
       "extends": [
         {
@@ -1416,12 +1429,7 @@
       "kind": "interface",
       "entries": {
         "attributes": {
-          "kind": "object",
-          "entries": {
-            "data-render-count": {
-              "type": "string"
-            }
-          }
+          "type": "#/definitions/VizElementAttributes"
         },
         "className": {
           "value": "'njs-viz'",
