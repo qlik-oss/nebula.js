@@ -1772,6 +1772,49 @@
         }
       }
     },
+    "fieldTargetAddedCallback": {
+      "templates": [
+        {
+          "name": "T"
+        }
+      ],
+      "kind": "function",
+      "params": [
+        {
+          "name": "field",
+          "description": "TODO validate param name",
+          "type": "T"
+        },
+        {
+          "name": "properties",
+          "type": "EngineAPI.IGenericObjectProperties"
+        }
+      ]
+    },
+    "fieldTargetRemovedCallback": {
+      "templates": [
+        {
+          "name": "T"
+        }
+      ],
+      "kind": "function",
+      "params": [
+        {
+          "name": "field",
+          "description": "TODO validate param name",
+          "type": "T"
+        },
+        {
+          "name": "properties",
+          "type": "EngineAPI.IGenericObjectProperties"
+        },
+        {
+          "name": "index",
+          "description": "TODO validate param name",
+          "type": "number"
+        }
+      ]
+    },
     "FieldTarget": {
       "templates": [
         {
@@ -1798,28 +1841,19 @@
         },
         "added": {
           "optional": true,
-          "kind": "function",
-          "params": [
+          "type": "#/definitions/fieldTargetAddedCallback",
+          "generics": [
             {
               "type": "T"
-            },
-            {
-              "type": "EngineAPI.IGenericObjectProperties"
             }
           ]
         },
         "removed": {
           "optional": true,
-          "kind": "function",
-          "params": [
+          "type": "#/definitions/fieldTargetRemovedCallback",
+          "generics": [
             {
               "type": "T"
-            },
-            {
-              "type": "EngineAPI.IGenericObjectProperties"
-            },
-            {
-              "type": "number"
             }
           ]
         }
