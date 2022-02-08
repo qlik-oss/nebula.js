@@ -490,15 +490,7 @@
       "params": [],
       "returns": {
         "description": "The render state.",
-        "kind": "object",
-        "entries": {
-          "pending": {
-            "type": "any"
-          },
-          "restore": {
-            "type": "any"
-          }
-        }
+        "type": "#/definitions/RenderState"
       },
       "examples": [
         "import { useRenderState } from '@nebula.js/stardust';\n\nconst renderState = useRenderState();\nuseState(() => {\n  if(needProperteisUpdate(...)) {\n     useRenderState.pending();\n     updateProperties(...);\n  } else {\n     useRenderState.restore();\n     ...\n  }\n}, [...]);"
@@ -1570,6 +1562,17 @@
           "description": "Whether or not active select are on. Should block any selection action. Implied when active is true.",
           "optional": true,
           "type": "boolean"
+        }
+      }
+    },
+    "RenderState": {
+      "kind": "interface",
+      "entries": {
+        "pending": {
+          "type": "any"
+        },
+        "restore": {
+          "type": "any"
         }
       }
     },
