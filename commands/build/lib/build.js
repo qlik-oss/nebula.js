@@ -2,6 +2,7 @@ const path = require('path');
 const chalk = require('chalk');
 const readline = require('readline');
 
+const fs = require('fs');
 const extend = require('extend');
 const yargs = require('yargs');
 const rollup = require('rollup');
@@ -18,6 +19,7 @@ const commonjs = require('@rollup/plugin-commonjs');
 const babelPreset = require('@babel/preset-env');
 
 const { terser } = require('rollup-plugin-terser');
+const resolveNative = require('./resolveNative');
 
 const initConfig = require('./init-config');
 
@@ -28,6 +30,22 @@ const resolveReplacementStrings = (replacementStrings) => {
   return replacementStrings;
 };
 
+const setupReactnative = (argv) => {
+  const { reactNative } = argv;
+  let reactNativePath;
+  if (reactNative) {
+    reactNativePath = argv.reactNativePath || './react-native';
+    if (!fs.existsSync(`${reactNativePath}/package.json`)) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `WARNING: No ${reactNativePath}/package.json was found.  If you really intended to build a react-native version of this package, please provide one.\nOther wise, to supress this warning, omitt the --reactNative flag.`
+      );
+      return false;
+    }
+  }
+  return { reactNative, reactNativePath };
+};
+
 const config = ({
   mode = 'production',
   format = 'umd',
@@ -36,13 +54,17 @@ const config = ({
   core,
 } = {}) => {
   const CWD = argv.cwd || cwd;
+  const { reactNative, reactNativePath } = setupReactnative(argv);
   let dir = CWD;
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
+  pkg = reactNative ? require(path.resolve(reactNativePath, 'package.json')) : pkg; // eslint-disable-line
   const { name, version, license, author } = pkg;
   const { sourcemap, replacementStrings = {}, typescript } = argv;
 
-  if (corePkg) {
+  if (reactNative) {
+    dir = `${dir}/${reactNativePath}`;
+  } else if (corePkg) {
     pkg = corePkg;
     dir = core;
   }
@@ -72,6 +94,7 @@ const config = ({
 
   // stardust should always be external
   if (!peers['@nebula.js/stardust']) {
+    // eslint-disable-next-line no-console
     console.warn('@nebula.js/stardust should be specified as a peer dependency');
   } else if (external.indexOf('@nebula.js/stardust') === -1) {
     external.push('@nebula.js/stardust');
@@ -82,6 +105,7 @@ const config = ({
       input: path.resolve(CWD, 'src/index'),
       external,
       plugins: [
+        resolveNative({ reactNative }),
         replace({
           'process.env.NODE_ENV': JSON.stringify(mode === 'development' ? 'development' : 'production'),
           preventAssignment: true,
