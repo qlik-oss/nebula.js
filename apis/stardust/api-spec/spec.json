@@ -722,6 +722,19 @@
         }
       }
     },
+    "ReceiverFunction": {
+      "description": "A callback function which receives another function as input.",
+      "kind": "alias",
+      "items": {
+        "kind": "function",
+        "params": [
+          {
+            "kind": "function",
+            "params": []
+          }
+        ]
+      }
+    },
     "FieldInstance": {
       "availability": {
         "since": "1.1.0"
@@ -790,6 +803,21 @@
                   "optional": true,
                   "defaultValue": "{}",
                   "type": "object"
+                },
+                "sessionModel": {
+                  "description": "Use a custom sessionModel.",
+                  "optional": true,
+                  "type": "object"
+                },
+                "selectionsApi": {
+                  "description": "Use a custom selectionsApi to customize how values are selected.",
+                  "optional": true,
+                  "type": "object"
+                },
+                "update": {
+                  "description": "A function which receives an update function which upon call will trigger a data fetch.",
+                  "optional": true,
+                  "type": "#/definitions/ReceiverFunction"
                 }
               }
             }
