@@ -490,7 +490,15 @@
       "params": [],
       "returns": {
         "description": "The render state.",
-        "type": "#/definitions/RenderState"
+        "kind": "object",
+        "entries": {
+          "pending": {
+            "type": "any"
+          },
+          "restore": {
+            "type": "any"
+          }
+        }
       },
       "examples": [
         "import { useRenderState } from '@nebula.js/stardust';\n\nconst renderState = useRenderState();\nuseState(() => {\n  if(needProperteisUpdate(...)) {\n     useRenderState.pending();\n     updateProperties(...);\n  } else {\n     useRenderState.restore();\n     ...\n  }\n}, [...]);"
@@ -722,19 +730,6 @@
         }
       }
     },
-    "ReceiverFunction": {
-      "description": "A callback function which receives another function as input.",
-      "kind": "alias",
-      "items": {
-        "kind": "function",
-        "params": [
-          {
-            "kind": "function",
-            "params": []
-          }
-        ]
-      }
-    },
     "FieldInstance": {
       "availability": {
         "since": "1.1.0"
@@ -803,21 +798,6 @@
                   "optional": true,
                   "defaultValue": "{}",
                   "type": "object"
-                },
-                "sessionModel": {
-                  "description": "Use a custom sessionModel.",
-                  "optional": true,
-                  "type": "object"
-                },
-                "selectionsApi": {
-                  "description": "Use a custom selectionsApi to customize how values are selected.",
-                  "optional": true,
-                  "type": "object"
-                },
-                "update": {
-                  "description": "A function which receives an update function which upon call will trigger a data fetch.",
-                  "optional": true,
-                  "type": "#/definitions/ReceiverFunction"
                 }
               }
             }
@@ -835,12 +815,6 @@
         }
       }
     },
-    "ThemeJSON": {
-      "kind": "alias",
-      "items": {
-        "type": "any"
-      }
-    },
     "ThemeInfo": {
       "kind": "interface",
       "entries": {
@@ -856,7 +830,7 @@
             "type": "Promise",
             "generics": [
               {
-                "type": "#/definitions/ThemeJSON"
+                "type": "ThemeJSON"
               }
             ]
           }
@@ -1407,19 +1381,6 @@
         }
       }
     },
-    "VizElementAttributes": {
-      "extends": [
-        {
-          "type": "NamedNodeMap"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "data-render-count": {
-          "type": "string"
-        }
-      }
-    },
     "VizElement": {
       "extends": [
         {
@@ -1429,7 +1390,12 @@
       "kind": "interface",
       "entries": {
         "attributes": {
-          "type": "#/definitions/VizElementAttributes"
+          "kind": "object",
+          "entries": {
+            "data-render-count": {
+              "type": "string"
+            }
+          }
         },
         "className": {
           "value": "'njs-viz'",
@@ -1607,17 +1573,6 @@
         }
       }
     },
-    "RenderState": {
-      "kind": "interface",
-      "entries": {
-        "pending": {
-          "type": "any"
-        },
-        "restore": {
-          "type": "any"
-        }
-      }
-    },
     "Keyboard": {
       "stability": "experimental",
       "kind": "interface",
@@ -1772,49 +1727,6 @@
         }
       }
     },
-    "fieldTargetAddedCallback": {
-      "templates": [
-        {
-          "name": "T"
-        }
-      ],
-      "kind": "function",
-      "params": [
-        {
-          "name": "field",
-          "description": "TODO validate param name",
-          "type": "T"
-        },
-        {
-          "name": "properties",
-          "type": "EngineAPI.IGenericObjectProperties"
-        }
-      ]
-    },
-    "fieldTargetRemovedCallback": {
-      "templates": [
-        {
-          "name": "T"
-        }
-      ],
-      "kind": "function",
-      "params": [
-        {
-          "name": "field",
-          "description": "TODO validate param name",
-          "type": "T"
-        },
-        {
-          "name": "properties",
-          "type": "EngineAPI.IGenericObjectProperties"
-        },
-        {
-          "name": "index",
-          "description": "TODO validate param name",
-          "type": "number"
-        }
-      ]
-    },
     "FieldTarget": {
       "templates": [
         {
@@ -1841,19 +1753,28 @@
         },
         "added": {
           "optional": true,
-          "type": "#/definitions/fieldTargetAddedCallback",
-          "generics": [
+          "kind": "function",
+          "params": [
             {
               "type": "T"
+            },
+            {
+              "type": "EngineAPI.IGenericObjectProperties"
             }
           ]
         },
         "removed": {
           "optional": true,
-          "type": "#/definitions/fieldTargetRemovedCallback",
-          "generics": [
+          "kind": "function",
+          "params": [
             {
               "type": "T"
+            },
+            {
+              "type": "EngineAPI.IGenericObjectProperties"
+            },
+            {
+              "type": "number"
             }
           ]
         }
