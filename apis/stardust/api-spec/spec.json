@@ -14,7 +14,7 @@
       "params": [
         {
           "name": "app",
-          "type": "EngineAPI.IApp"
+          "type": "qae.IApp"
         },
         {
           "name": "instanceConfig",
@@ -229,7 +229,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "type": "EngineAPI.IGenericObjectLayout"
+        "type": "qae.IGenericObjectLayout"
       },
       "examples": [
         "import { useLayout } from '@nebula.js/stardust';\n// ...\nconst layout = useLayout();\nconsole.log(layout);"
@@ -240,7 +240,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "type": "EngineAPI.IGenericObjectLayout"
+        "type": "qae.IGenericObjectLayout"
       },
       "examples": [
         "import { useStaleLayout } from '@nebula.js/stardust';\n// ...\nconst staleLayout = useStaleLayout();\nconsole.log(staleLayout);"
@@ -252,7 +252,7 @@
       "params": [],
       "returns": {
         "description": "The app layout",
-        "type": "EngineAPI.INxAppLayout"
+        "type": "qae.INxAppLayout"
       },
       "examples": [
         "import { useAppLayout } from '@nebula.js/stardust';\n// ...\nconst appLayout = useAppLayout();\nconsole.log(appLayout.qLocaleInfo);"
@@ -266,7 +266,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "EngineAPI.IGenericObject"
+            "type": "qae.IGenericObject"
           },
           {
             "type": "undefined"
@@ -286,7 +286,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "EngineAPI.IApp"
+            "type": "qae.IApp"
           },
           {
             "type": "undefined"
@@ -306,7 +306,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "EngineAPI.IGlobal"
+            "type": "qae.IGlobal"
           },
           {
             "type": "undefined"
@@ -466,14 +466,14 @@
           "kind": "function",
           "params": [
             {
-              "type": "EngineAPI.IGenericObjectLayout"
+              "type": "qae.IGenericObjectLayout"
             }
           ],
           "returns": {
             "type": "Promise",
             "generics": [
               {
-                "type": "EngineAPI.IGenericObjectLayout"
+                "type": "qae.IGenericObjectLayout"
               }
             ]
           }
@@ -1138,10 +1138,10 @@
             "type": "string"
           },
           {
-            "type": "EngineAPI.INxDimension"
+            "type": "qae.INxDimension"
           },
           {
-            "type": "EngineAPI.INxMeasure"
+            "type": "qae.INxMeasure"
           },
           {
             "type": "#/definitions/LibraryField"
@@ -1178,7 +1178,7 @@
         },
         "properties": {
           "optional": true,
-          "type": "EngineAPI.IGenericObjectProperties"
+          "type": "qae.IGenericObjectProperties"
         }
       }
     },
@@ -1751,7 +1751,7 @@
       "entries": {
         "properties": {
           "optional": true,
-          "type": "EngineAPI.IGenericObjectProperties"
+          "type": "qae.IGenericObjectProperties"
         },
         "data": {
           "optional": true,
@@ -1786,7 +1786,7 @@
           "type": "#/definitions/FieldTarget",
           "generics": [
             {
-              "type": "EngineAPI.INxDimension"
+              "type": "qae.INxDimension"
             }
           ]
         },
@@ -1795,7 +1795,7 @@
           "type": "#/definitions/FieldTarget",
           "generics": [
             {
-              "type": "EngineAPI.INxMeasure"
+              "type": "qae.INxMeasure"
             }
           ]
         }
@@ -1815,7 +1815,7 @@
         },
         {
           "name": "properties",
-          "type": "EngineAPI.IGenericObjectProperties"
+          "type": "qae.IGenericObjectProperties"
         }
       ]
     },
@@ -1833,7 +1833,7 @@
         },
         {
           "name": "properties",
-          "type": "EngineAPI.IGenericObjectProperties"
+          "type": "qae.IGenericObjectProperties"
         },
         {
           "name": "index",
@@ -2206,25 +2206,25 @@
         "dimensions": {
           "kind": "array",
           "items": {
-            "type": "EngineAPI.INxDimension"
+            "type": "qae.INxDimension"
           }
         },
         "measures": {
           "kind": "array",
           "items": {
-            "type": "EngineAPI.INxMeasure"
+            "type": "qae.INxMeasure"
           }
         },
         "excludedDimensions": {
           "kind": "array",
           "items": {
-            "type": "EngineAPI.INxDimension"
+            "type": "qae.INxDimension"
           }
         },
         "excludedMeasures": {
           "kind": "array",
           "items": {
-            "type": "EngineAPI.INxMeasure"
+            "type": "qae.INxMeasure"
           }
         },
         "interColumnSortOrder": {
