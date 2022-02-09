@@ -1774,17 +1774,7 @@
     },
     "FieldTargetAddedCallback": {
       "kind": "function",
-      "params": [
-        {
-          "name": "field",
-          "description": "",
-          "type": "any"
-        },
-        {
-          "name": "properties",
-          "type": "EngineAPI.IGenericObjectProperties"
-        }
-      ]
+      "params": []
     },
     "FieldTarget": {
       "templates": [
