@@ -1798,7 +1798,15 @@
         },
         "added": {
           "optional": true,
-          "type": "string"
+          "kind": "function",
+          "params": [
+            {
+              "type": "T"
+            },
+            {
+              "type": "qae.GenericObjectProperties"
+            }
+          ]
         },
         "removed": {
           "optional": true,
