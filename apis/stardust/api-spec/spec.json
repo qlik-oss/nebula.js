@@ -1791,7 +1791,7 @@
             "type": "number"
           }
         },
-        "added": {
+        "importProperties": {
           "optional": true,
           "type": "#/definitions/importProperties"
         },
