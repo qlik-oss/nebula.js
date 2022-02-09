@@ -1773,11 +1773,6 @@
       }
     },
     "FieldTarget": {
-      "templates": [
-        {
-          "name": "T"
-        }
-      ],
       "kind": "interface",
       "entries": {
         "min": {
@@ -1805,9 +1800,6 @@
           "optional": true,
           "kind": "function",
           "params": [
-            {
-              "type": "T"
-            },
             {
               "type": "qae.GenericObjectProperties"
             },
