@@ -1773,16 +1773,12 @@
       }
     },
     "fieldTargetAddedCallback": {
-      "templates": [
-        {
-          "name": "T"
-        }
-      ],
       "kind": "function",
       "params": [
         {
           "name": "field",
-          "type": "T"
+          "description": "",
+          "type": "any"
         },
         {
           "name": "properties",
@@ -1791,16 +1787,12 @@
       ]
     },
     "fieldTargetRemovedCallback": {
-      "templates": [
-        {
-          "name": "T"
-        }
-      ],
       "kind": "function",
       "params": [
         {
           "name": "field",
-          "type": "T"
+          "description": "",
+          "type": "any"
         },
         {
           "name": "properties",
@@ -1838,21 +1830,11 @@
         },
         "added": {
           "optional": true,
-          "type": "#/definitions/fieldTargetAddedCallback",
-          "generics": [
-            {
-              "type": "T"
-            }
-          ]
+          "type": "#/definitions/fieldTargetAddedCallback"
         },
         "removed": {
           "optional": true,
-          "type": "#/definitions/fieldTargetRemovedCallback",
-          "generics": [
-            {
-              "type": "T"
-            }
-          ]
+          "type": "#/definitions/fieldTargetRemovedCallback"
         }
       }
     },
