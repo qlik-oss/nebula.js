@@ -1798,15 +1798,7 @@
         },
         "added": {
           "optional": true,
-          "kind": "function",
-          "params": [
-            {
-              "type": "T"
-            },
-            {
-              "type": "qae.GenericObjectProperties"
-            }
-          ]
+          "type": "#/definitions/importProperties"
         },
         "removed": {
           "optional": true,
