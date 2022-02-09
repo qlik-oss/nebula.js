@@ -1786,24 +1786,6 @@
         }
       ]
     },
-    "FieldTargetRemovedCallback": {
-      "kind": "function",
-      "params": [
-        {
-          "name": "field",
-          "description": "",
-          "type": "any"
-        },
-        {
-          "name": "properties",
-          "type": "EngineAPI.IGenericObjectProperties"
-        },
-        {
-          "name": "index",
-          "type": "number"
-        }
-      ]
-    },
     "FieldTarget": {
       "templates": [
         {
