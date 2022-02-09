@@ -1774,7 +1774,10 @@
     },
     "fieldTargetAddedCallback": {
       "kind": "function",
-      "params": []
+      "params": [],
+      "returns": {
+        "type": "void"
+      }
     },
     "FieldTarget": {
       "templates": [
