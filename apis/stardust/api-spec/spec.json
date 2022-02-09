@@ -850,16 +850,7 @@
         },
         "load": {
           "description": "A function that should return a Promise that resolves to a raw JSON theme.",
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "#/definitions/ThemeJSON"
-              }
-            ]
-          }
+          "type": "string"
         }
       }
     },
