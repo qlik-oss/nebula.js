@@ -1247,13 +1247,7 @@
       "entries": {
         "info": {
           "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
+          "type": "string"
         },
         "fn": {
           "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
