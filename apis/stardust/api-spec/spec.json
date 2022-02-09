@@ -1772,6 +1772,10 @@
         }
       }
     },
+    "fieldTargetAddedCallback": {
+      "kind": "function",
+      "params": []
+    },
     "FieldTarget": {
       "templates": [
         {
