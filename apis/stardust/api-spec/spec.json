@@ -850,7 +850,7 @@
         },
         "load": {
           "description": "A function that should return a Promise that resolves to a raw JSON theme.",
-          "type": "string"
+          "type": "#/definitions/importProperties"
         }
       }
     },
