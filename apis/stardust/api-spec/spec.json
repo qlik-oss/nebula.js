@@ -1802,15 +1802,7 @@
         },
         "added": {
           "optional": true,
-          "kind": "function",
-          "params": [
-            {
-              "type": "T"
-            },
-            {
-              "type": "EngineAPI.IGenericObjectProperties"
-            }
-          ]
+          "type": "#/definitions/fieldTargetAddedCallback"
         },
         "removed": {
           "optional": true,
