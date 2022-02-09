@@ -1791,6 +1791,10 @@
             "type": "number"
           }
         },
+        "added": {
+          "optional": true,
+          "type": "string"
+        },
         "removed": {
           "optional": true,
           "kind": "function",
