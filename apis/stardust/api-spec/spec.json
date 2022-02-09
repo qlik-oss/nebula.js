@@ -1793,7 +1793,8 @@
         },
         "added": {
           "optional": true,
-          "type": "string"
+          "kind": "function",
+          "params": []
         },
         "removed": {
           "optional": true,
