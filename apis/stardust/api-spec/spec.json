@@ -1798,7 +1798,7 @@
         },
         "added": {
           "optional": true,
-          "type": "#/definitions/importProperties"
+          "type": "string"
         },
         "removed": {
           "optional": true,
