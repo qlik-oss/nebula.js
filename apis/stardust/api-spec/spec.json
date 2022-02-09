@@ -1772,13 +1772,6 @@
         }
       }
     },
-    "fieldTargetAddedCallback": {
-      "kind": "function",
-      "params": [],
-      "returns": {
-        "type": "void"
-      }
-    },
     "FieldTarget": {
       "templates": [
         {
@@ -1802,21 +1795,6 @@
           "returns": {
             "type": "number"
           }
-        },
-        "removed": {
-          "optional": true,
-          "kind": "function",
-          "params": [
-            {
-              "type": "T"
-            },
-            {
-              "type": "EngineAPI.IGenericObjectProperties"
-            },
-            {
-              "type": "number"
-            }
-          ]
         }
       }
     },
