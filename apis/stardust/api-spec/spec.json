@@ -1800,10 +1800,6 @@
             "type": "number"
           }
         },
-        "added": {
-          "optional": true,
-          "type": "EngineAPI.IGenericObjectProperties"
-        },
         "removed": {
           "optional": true,
           "kind": "function",
