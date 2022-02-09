@@ -1802,7 +1802,7 @@
         },
         "added": {
           "optional": true,
-          "type": "#/definitions/fieldTargetAddedCallback"
+          "type": "#/definitions/importProperties"
         },
         "removed": {
           "optional": true,
