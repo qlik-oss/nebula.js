@@ -1772,7 +1772,7 @@
         }
       }
     },
-    "fieldTargetAddedCallback": {
+    "FieldTargetAddedCallback": {
       "kind": "function",
       "params": [
         {
@@ -1786,7 +1786,7 @@
         }
       ]
     },
-    "fieldTargetRemovedCallback": {
+    "FieldTargetRemovedCallback": {
       "kind": "function",
       "params": [
         {
@@ -1830,11 +1830,11 @@
         },
         "added": {
           "optional": true,
-          "type": "#/definitions/fieldTargetAddedCallback"
+          "type": "#/definitions/FieldTargetAddedCallback"
         },
         "removed": {
           "optional": true,
-          "type": "#/definitions/fieldTargetRemovedCallback"
+          "type": "#/definitions/FieldTargetRemovedCallback"
         }
       }
     },
