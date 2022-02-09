@@ -1793,8 +1793,7 @@
         },
         "added": {
           "optional": true,
-          "kind": "function",
-          "params": []
+          "type": "#/definitions/importProperties"
         },
         "removed": {
           "optional": true,
