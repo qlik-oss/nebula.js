@@ -1799,14 +1799,7 @@
         "added": {
           "optional": true,
           "kind": "function",
-          "params": [
-            {
-              "type": "T"
-            },
-            {
-              "type": "qae.GenericObjectProperties"
-            }
-          ]
+          "params": []
         },
         "removed": {
           "optional": true,
