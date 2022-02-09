@@ -1827,14 +1827,6 @@
           "returns": {
             "type": "number"
           }
-        },
-        "added": {
-          "optional": true,
-          "type": "#/definitions/FieldTargetAddedCallback"
-        },
-        "removed": {
-          "optional": true,
-          "type": "#/definitions/FieldTargetRemovedCallback"
         }
       }
     },
