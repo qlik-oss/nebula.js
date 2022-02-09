@@ -1775,9 +1775,48 @@
     "FieldTarget": {
       "kind": "interface",
       "entries": {
-        "importProperties": {
+        "min": {
           "optional": true,
-          "type": "#/definitions/importProperties"
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "number"
+          }
+        },
+        "max": {
+          "optional": true,
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "number"
+          }
+        },
+        "added": {
+          "optional": true,
+          "kind": "function",
+          "params": [
+            {
+              "type": "T"
+            },
+            {
+              "type": "qae.GenericObjectProperties"
+            }
+          ]
+        },
+        "removed": {
+          "optional": true,
+          "kind": "function",
+          "params": [
+            {
+              "type": "T"
+            },
+            {
+              "type": "qae.GenericObjectProperties"
+            },
+            {
+              "type": "number"
+            }
+          ]
         }
       }
     },
