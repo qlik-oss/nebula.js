@@ -1775,37 +1775,9 @@
     "FieldTarget": {
       "kind": "interface",
       "entries": {
-        "min": {
-          "optional": true,
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "number"
-          }
-        },
-        "max": {
-          "optional": true,
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "number"
-          }
-        },
         "importProperties": {
           "optional": true,
           "type": "#/definitions/importProperties"
-        },
-        "removed": {
-          "optional": true,
-          "kind": "function",
-          "params": [
-            {
-              "type": "qae.GenericObjectProperties"
-            },
-            {
-              "type": "number"
-            }
-          ]
         }
       }
     },
