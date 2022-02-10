@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/qlik-oss/nebula.js/compare/v2.3.1...v2.4.0) (2022-02-10)
+
+### Bug Fixes
+
+- ignore api spec and checkin with scriptappy format ([#757](https://github.com/qlik-oss/nebula.js/issues/757)) ([80c7f89](https://github.com/qlik-oss/nebula.js/commit/80c7f899edb940db92d77309cf5568852e32c574))
+
+### Features
+
+- add --carbon flag to build react-native supernova packages ([#749](https://github.com/qlik-oss/nebula.js/issues/749)) ([369844d](https://github.com/qlik-oss/nebula.js/commit/369844d722f7fa8873674d9320d7f047065211da))
+- **stardust:** generate typescript definitions ([#752](https://github.com/qlik-oss/nebula.js/issues/752)) ([016b6bd](https://github.com/qlik-oss/nebula.js/commit/016b6bd5c72c0d31c880d6b72bab7a2cde5ba49e))
+
 ## [2.3.1](https://github.com/qlik-oss/nebula.js/compare/v2.3.0...v2.3.1) (2021-12-09)
 
 ### Bug Fixes

@@ -420,6 +420,15 @@ declare namespace stardust {
         meta?: object;
     }
 
+    type MinMaxResult = {
+    };
+
+    /**
+     * Returns the min and max indices of elemNumbersOrdered which contains
+     * all numbers in elementNbrs.
+     */
+    type getMinMax = (elementNbrs: number[], elemNumbersOrdered: number[])=>stardust.MinMaxResult;
+
     interface ActionToolbarElement extends HTMLElement{
         className: "njs-action-toolbar-popover";
     }

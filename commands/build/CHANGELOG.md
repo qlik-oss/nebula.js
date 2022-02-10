@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.4.0](https://github.com/qlik-oss/nebula.js/compare/v2.3.1...v2.4.0) (2022-02-10)
+
+### Features
+
+- add --carbon flag to build react-native supernova packages ([#749](https://github.com/qlik-oss/nebula.js/issues/749)) ([369844d](https://github.com/qlik-oss/nebula.js/commit/369844d722f7fa8873674d9320d7f047065211da))
+
 ## [2.3.1](https://github.com/qlik-oss/nebula.js/compare/v2.3.0...v2.3.1) (2021-12-09)
 
 ### Bug Fixes
