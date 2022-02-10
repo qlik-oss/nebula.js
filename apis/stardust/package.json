@@ -35,7 +35,8 @@
     "build:watch": "rollup --config ../../rollup.config.js -w",
     "prepublishOnly": "rm -rf dist && yarn run build",
     "spec": "sy from-jsdoc -c ./api-spec/spec.conf.js",
-    "ts": "sy to-dts -c ./api-spec/spec.conf.js"
+    "ts": "sy to-dts -c ./api-spec/spec.conf.js",
+    "version": "yarn run spec && yarn run ts && git add ./api-spec/spec.json ./types/index.d.ts"
   },
   "dependencies": {
     "@types/qlik-engineapi": "12.67.11"
