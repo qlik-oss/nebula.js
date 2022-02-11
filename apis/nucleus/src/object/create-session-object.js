@@ -11,7 +11,7 @@ import { subscribe, modelStore } from '../stores/model-store';
  * @description Rendering configuration for creating and rendering a new object
  * @extends BaseConfig
  * @property {string} type
- * @property {string} version
+ * @property {string=} version
  * @property {(Field[])=} fields
  * @property {EngineAPI.IGenericObjectProperties=} properties
  */
