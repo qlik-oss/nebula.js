@@ -5,7 +5,7 @@ import { load } from './load';
 /**
  * @interface TypeInfo
  * @property {string} name
- * @property {string} version
+ * @property {string=} version
  * @property {LoadType} load
  * @property {object=} meta
  */
