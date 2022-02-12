@@ -3,9 +3,10 @@ const fs = require('fs');
 // this plugin will check if there is a corresponding .native file for the input file and output the contents of the native file
 // This plugin should be loaded first.
 
-module.exports = ({ carbon }) => ({
+module.exports = ({ reactNative }) => ({
+
   async load(id) {
-    if (!carbon) {
+    if (!reactNative) {
       return null;
     }
     if (id) {
