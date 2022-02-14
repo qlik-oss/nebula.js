@@ -116,7 +116,7 @@ export default function RowColumn({ index, style, data, column = false }) {
       }
     }
     setClassArr(clazzArr);
-  }, [cell]);
+  }, [cell && cell.qState]);
 
   const getCheckboxField = ({ lbl, highlighted, color, qElemNumber }) => {
     const cb = <ListBoxCheckbox label={lbl} highlighted={highlighted} checked={isSelected} />;
@@ -187,7 +187,7 @@ export default function RowColumn({ index, style, data, column = false }) {
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseEnter={onMouseEnter}
-      role="row"
+      role={column ? 'column' : 'row'}
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
     >
