@@ -19,7 +19,8 @@ export default function ListBox({
   height,
   width,
   listLayout = 'vertical',
-  rangeSelect = true,
+  rangeSelect = false,
+  checkboxes = false, // true while debugging
   update = undefined,
 }) {
   const [layout] = useLayout(model);
@@ -30,6 +31,7 @@ export default function ListBox({
     selections,
     pages,
     rangeSelect,
+    checkboxes,
     doc: document,
   });
   const loaderRef = useRef(null);
@@ -132,7 +134,8 @@ export default function ListBox({
   }
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
-  const ITEM_SIZE = isVertical ? 33 : 200;
+  const SIZE_VERTICAL = 40;
+  const ITEM_SIZE = isVertical ? SIZE_VERTICAL : 200;
   const listHeight = height || 8 * ITEM_SIZE;
 
   return (
@@ -156,7 +159,7 @@ export default function ListBox({
             width={width}
             itemCount={count}
             layout={listLayout}
-            itemData={{ ...interactionEvents, pages }}
+            itemData={{ pages, ...interactionEvents, checkboxes }}
             itemSize={ITEM_SIZE}
             onItemsRendered={onItemsRendered}
             ref={ref}

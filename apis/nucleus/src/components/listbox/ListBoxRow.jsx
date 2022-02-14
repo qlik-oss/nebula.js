@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { Grid, Typography } from '@material-ui/core';
+import { FormControlLabel, Grid, Typography } from '@material-ui/core';
 
 import { makeStyles } from '@nebula.js/ui/theme';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
+import ListBoxCheckbox from './ListBoxCheckbox';
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -17,18 +18,28 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   cell: {
-    padding: '8px',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: 'flex',
+    alignItems: 'center',
+    minWidth: 0,
+    flexGrow: 1,
     '& span': {
       whiteSpace: 'nowrap',
       fontSize: '12px',
       lineHeight: '16px',
       userSelect: 'none',
     },
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
+  },
+  valueLabel: {
+    paddingLeft: '6px',
+    paddingRight: '6px',
   },
   icon: {
     padding: theme.spacing(1),
+  },
+  checkboxLabel: {
+    margin: 0,
   },
   S: {
     background: theme.palette.selected.main,
@@ -52,35 +63,77 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function Row({ index, style, data }) {
-  const classes = useStyles();
-  const classArr = [classes.row];
+  const { onClick, onMouseDown, onMouseUp, onMouseEnter, pages, checkboxes = false } = data;
 
-  let label = '';
-  const { onMouseDown, onMouseUp, onMouseEnter, pages } = data;
-  let cell;
-  if (pages) {
+  const [isSelected, setSelected] = useState(false);
+  const [isLocked, setLocked] = useState(false);
+  const [cell, setCell] = useState();
+
+  const classes = useStyles();
+  const [classArr, setClassArr] = useState([]);
+
+  useEffect(() => {
+    if (!pages) {
+      return;
+    }
+    let c;
     const page = pages.filter((p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
     if (page) {
       const area = page.qArea;
       if (index >= area.qTop && index < area.qTop + area.qHeight) {
-        [cell] = page.qMatrix[index - area.qTop];
+        [c] = page.qMatrix[index - area.qTop];
       }
     }
-  }
-  let locked = false;
-  let selected = false;
-  if (cell) {
-    label = cell.qText;
-    locked = cell.qState === 'L' || cell.qState === 'XL';
-    selected = cell.qState === 'S' || cell.qState === 'XS';
-    if (cell.qState === 'S' || cell.qState === 'L') {
-      classArr.push(classes.S);
-    } else if (cell.qState === 'A') {
-      classArr.push(classes.A);
-    } else if (cell.qState === 'X' || cell.qState === 'XS' || cell.qState === 'XL') {
-      classArr.push(classes.X);
+    setCell(c);
+  }, [pages]);
+
+  useEffect(() => {
+    if (!cell) {
+      return;
     }
-  }
+    const locked = cell.qState === 'L' || cell.qState === 'XL';
+    const selected = cell.qState === 'S' || cell.qState === 'XS';
+    setLocked(locked);
+    setSelected(selected);
+
+    const clazzArr = [classes.row];
+    if (!checkboxes) {
+      if (cell.qState === 'S' || cell.qState === 'L') {
+        clazzArr.push(classes.S);
+      } else if (cell.qState === 'A') {
+        clazzArr.push(classes.A);
+      } else if (cell.qState === 'X' || cell.qState === 'XS' || cell.qState === 'XL') {
+        clazzArr.push(classes.X);
+      }
+    }
+    setClassArr(clazzArr);
+  }, [cell]);
+
+  const getCheckboxField = ({ lbl, highlighted, color, qElemNumber }) => {
+    const cb = <ListBoxCheckbox label={lbl} highlighted={highlighted} checked={isSelected} />;
+    return (
+      <FormControlLabel
+        color={color}
+        control={cb}
+        className={classes.checkboxLabel}
+        label={<Typography>{lbl}</Typography>}
+        key={qElemNumber}
+      />
+    );
+  };
+  const getValueField = ({ lbl, highlighted, ix, color }) => (
+    <Typography
+      component="span"
+      key={ix}
+      className={[classes.valueLabel, highlighted].join(' ').trim()}
+      noWrap
+      color={color}
+    >
+      {lbl}
+    </Typography>
+  );
+
+  const label = cell ? cell.qText : '';
 
   // Handle search highlights
   const ranges =
@@ -108,12 +161,15 @@ export default function Row({ index, style, data }) {
     return acc;
   }, []);
 
+  const getField = checkboxes ? getCheckboxField : getValueField;
+
   return (
     <Grid
       container
       spacing={0}
       className={classArr.join(' ').trim()}
       style={style}
+      onClick={onClick}
       onMouseDown={onMouseDown}
       onMouseUp={onMouseUp}
       onMouseEnter={onMouseEnter}
@@ -121,21 +177,19 @@ export default function Row({ index, style, data }) {
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
     >
-      <Grid item style={{ minWidth: 0, flexGrow: 1 }} className={classes.cell} title={`${label}`}>
-        {ranges.length === 0 ? (
-          <Typography component="span" noWrap color="inherit">{`${label}`}</Typography>
-        ) : (
-          labels.map(([l, highlighted], ix) => (
-            // eslint-disable-next-line react/no-array-index-key
-            <Typography component="span" key={ix} className={highlighted} noWrap>
-              {l}
-            </Typography>
-          ))
-        )}
+      <Grid
+        item
+        style={{ display: 'flex', alignItems: 'center', minWidth: 0, flexGrow: 1 }}
+        className={classes.cell}
+        title={`${label}`}
+      >
+        {ranges.length === 0
+          ? getField({ lbl: label, color: 'inherit' })
+          : labels.map(([lbl, highlighted], ix) => getField({ ix, highlighted, lbl }))}
       </Grid>
-      <Grid item className={classes.icon}>
-        {locked && <Lock size="small" />}
-        {selected && <Tick size="small" />}
+      <Grid item className={!checkboxes && classes.icon}>
+        {isLocked && <Lock sx={{ verticalAlign: 'middle' }} size="small" />}
+        {!checkboxes && isSelected && <Tick sx={{ verticalAlign: 'middle' }} size="small" />}
       </Grid>
     </Grid>
   );
