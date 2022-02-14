@@ -4,7 +4,6 @@ const fs = require('fs');
 // This plugin should be loaded first.
 
 module.exports = ({ reactNative }) => ({
-
   async load(id) {
     if (!reactNative) {
       return null;
