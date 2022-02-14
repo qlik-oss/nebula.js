@@ -140,7 +140,7 @@ export default function useSelectionsInteractions({
   }, [pages]);
 
   useEffect(() => {
-    if (selectingValues || !pages || !mouseDown) {
+    if (selectingValues || !pages || (!checkboxes && !mouseDown)) {
       return;
     }
     // Render pre-selections before they have been selected in Engine.

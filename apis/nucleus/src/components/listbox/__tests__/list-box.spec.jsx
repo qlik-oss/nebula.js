@@ -48,8 +48,12 @@ describe('<Listbox />', () => {
             return func({ onItemsRendered: {} });
           },
         ],
-        [require.resolve('../ListBoxRow'), () => () => <div className="a-value-row" />],
-        [require.resolve('../ListBoxColumn'), () => () => <div className="a-value-column" />],
+        [
+          require.resolve('../ListBoxRowColumn'),
+          () =>
+            ({ checkboxes }) =>
+              <div className={checkboxes ? 'a-value-column' : 'a-value-row'} />,
+        ],
       ],
       ['../ListBox']
     );
@@ -60,7 +64,11 @@ describe('<Listbox />', () => {
 
     useSelectionsInteractions.returns({
       instantPages: [],
-      interactionEvents: { onMouseDown: () => {} },
+      interactionEvents: {
+        onMouseDown: () => {},
+        onMouseUp: () => {},
+        onMouseEnter: () => {},
+      },
     });
 
     selections = { key: 'selections' };
@@ -75,6 +83,7 @@ describe('<Listbox />', () => {
       listLayout: 'vertical',
       update: sandbox.stub(),
       rangeSelect: false,
+      checkboxes: false,
     };
   });
 
@@ -99,6 +108,7 @@ describe('<Listbox />', () => {
               rangeSelect={args.rangeSelect}
               listLayout={args.listLayout}
               update={args.update}
+              checkboxes={args.checkboxes}
             />
           );
         });
@@ -124,23 +134,65 @@ describe('<Listbox />', () => {
       expect(rows.length).to.equal(1);
       expect(columns.length).to.equal(0);
       expect(useSelectionsInteractions.args[1][0]).to.deep.equal({
+        checkboxes: false,
         layout,
         selections,
         pages: [],
         rangeSelect: false,
         doc: 'document',
       });
+      const { itemData } = FixedSizeList.args[FixedSizeList.callCount - 1][0];
+      expect(itemData).to.containSubset({
+        checkboxes: false,
+        column: false,
+        pages: [],
+      });
+
+      expect(itemData.onMouseDown).to.be.a('function');
+      expect(itemData.onMouseUp).to.be.a('function');
+      expect(itemData.onMouseEnter).to.be.a('function');
+      expect(itemData.onClick).to.equal(undefined);
     });
 
     it('should call useSelectionsInteractions with rangeSelect true', async () => {
       args.rangeSelect = true;
       await render();
       expect(useSelectionsInteractions.args[useSelectionsInteractions.callCount - 1][0]).to.deep.equal({
+        checkboxes: false,
         layout,
         selections,
         pages: [],
         rangeSelect: true,
         doc: 'document',
+      });
+    });
+
+    it('should call with checkboxes true', async () => {
+      args.checkboxes = true;
+      await render();
+      expect(useSelectionsInteractions.args[useSelectionsInteractions.callCount - 1][0]).to.deep.equal({
+        checkboxes: true,
+        layout,
+        selections,
+        pages: [],
+        rangeSelect: false,
+        doc: 'document',
+      });
+      const { itemData } = FixedSizeList.args[FixedSizeList.callCount - 1][0];
+      expect(itemData).to.containSubset({
+        checkboxes: true,
+        column: false,
+        pages: [],
+      });
+    });
+    it('should use columns for horizontal layout', async () => {
+      args.listLayout = 'horizontal';
+      await render();
+      const { itemData } = FixedSizeList.args[FixedSizeList.callCount - 1][0];
+      expect(itemData).to.containSubset({
+        checkboxes: false,
+        column: true,
+        pages: [],
       });
     });
   });
