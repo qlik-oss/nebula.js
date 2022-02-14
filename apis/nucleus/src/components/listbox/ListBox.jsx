@@ -9,8 +9,7 @@ import useLayout from '../../hooks/useLayout';
 
 import useSelectionsInteractions from './useSelectionsInteractions';
 
-import Row from './ListBoxRow';
-import Column from './ListBoxColumn';
+import RowColumn from './ListBoxRowColumn';
 
 export default function ListBox({
   model,
@@ -159,12 +158,12 @@ export default function ListBox({
             width={width}
             itemCount={count}
             layout={listLayout}
-            itemData={{ pages, ...interactionEvents, checkboxes }}
+            itemData={{ column: !isVertical, pages, ...interactionEvents, checkboxes }}
             itemSize={ITEM_SIZE}
             onItemsRendered={onItemsRendered}
             ref={ref}
           >
-            {isVertical ? Row : Column}
+            {RowColumn}
           </FixedSizeList>
         );
       }}

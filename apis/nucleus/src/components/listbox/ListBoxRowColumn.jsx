@@ -17,6 +17,14 @@ const useStyles = makeStyles((theme) => ({
       outline: 'none',
     },
   },
+  column: {
+    flexWrap: 'nowrap',
+    borderRight: `1px solid ${theme.palette.divider}`,
+    '&:focus': {
+      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
+      outline: 'none',
+    },
+  },
   cell: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -36,6 +44,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: '6px',
   },
   icon: {
+    display: 'flex',
     padding: theme.spacing(1),
   },
   checkboxLabel: {
@@ -62,7 +71,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Row({ index, style, data }) {
+export default function RowColumn({ index, style, data, column = false }) {
   const { onClick, onMouseDown, onMouseUp, onMouseEnter, pages, checkboxes = false } = data;
 
   const [isSelected, setSelected] = useState(false);
@@ -96,7 +105,7 @@ export default function Row({ index, style, data }) {
     setLocked(locked);
     setSelected(selected);
 
-    const clazzArr = [classes.row];
+    const clazzArr = [column ? classes.column : classes.row];
     if (!checkboxes) {
       if (cell.qState === 'S' || cell.qState === 'L') {
         clazzArr.push(classes.S);
@@ -163,6 +172,11 @@ export default function Row({ index, style, data }) {
 
   const getField = checkboxes ? getCheckboxField : getValueField;
 
+  const iconStyles = {
+    alignItems: 'center',
+    display: 'flex',
+  };
+
   return (
     <Grid
       container
@@ -188,8 +202,8 @@ export default function Row({ index, style, data }) {
           : labels.map(([lbl, highlighted], ix) => getField({ ix, highlighted, lbl }))}
       </Grid>
       <Grid item className={!checkboxes && classes.icon}>
-        {isLocked && <Lock sx={{ verticalAlign: 'middle' }} size="small" />}
-        {!checkboxes && isSelected && <Tick sx={{ verticalAlign: 'middle' }} size="small" />}
+        {isLocked && <Lock style={iconStyles} size="small" />}
+        {!checkboxes && isSelected && <Tick style={iconStyles} size="small" />}
       </Grid>
     </Grid>
   );
