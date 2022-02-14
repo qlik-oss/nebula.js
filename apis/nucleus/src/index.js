@@ -352,6 +352,7 @@ function nuked(configuration = {}) {
            * @param {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
            * @param {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
            * @since 1.1.0
+           * @instance
            * @example
            * fieldInstance.mount(element);
            */
@@ -374,6 +375,7 @@ function nuked(configuration = {}) {
           /**
            * Unmounts the field listbox from the DOM.
            * @since 1.1.0
+           * @instance
            * @example
            * listbox.unmount();
            */

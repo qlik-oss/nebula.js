@@ -750,8 +750,7 @@
         "kind": "function",
         "params": []
       },
-      "entries": {},
-      "staticEntries": {
+      "entries": {
         "mount": {
           "description": "Mounts the field as a listbox into the provided HTMLElement.",
           "availability": {
@@ -1180,6 +1179,7 @@
           "type": "string"
         },
         "version": {
+          "optional": true,
           "type": "string"
         },
         "fields": {
@@ -1315,6 +1315,7 @@
           "type": "string"
         },
         "version": {
+          "optional": true,
           "type": "string"
         },
         "load": {
