@@ -243,7 +243,7 @@ declare namespace stardust {
          * @param element
          * @param options Settings for the embedded listbox
          */
-        static mount(element: HTMLElement, options?: {
+        mount(element: HTMLElement, options?: {
             title?: string;
             direction?: string;
             listLayout?: string;
@@ -259,7 +259,7 @@ declare namespace stardust {
         /**
          * Unmounts the field listbox from the DOM.
          */
-        static unmount(): void;
+        unmount(): void;
 
     }
 
@@ -370,7 +370,7 @@ declare namespace stardust {
      */
     interface CreateConfig extends stardust.BaseConfig{
         type: string;
-        version: string;
+        version?: string;
         fields?: stardust.Field[];
         properties?: EngineAPI.IGenericObjectProperties;
     }
@@ -415,7 +415,7 @@ declare namespace stardust {
 
     interface TypeInfo {
         name: string;
-        version: string;
+        version?: string;
         load: stardust.LoadType;
         meta?: object;
     }
