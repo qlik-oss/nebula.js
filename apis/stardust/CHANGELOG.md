@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/qlik-oss/nebula.js/compare/v2.4.1...v2.5.0) (2022-02-15)
+
+### Bug Fixes
+
+- **jsdoc:** mark mount and unmount as instance functions ([#763](https://github.com/qlik-oss/nebula.js/issues/763)) ([51be0a4](https://github.com/qlik-oss/nebula.js/commit/51be0a4c580357c23defea37c00cca2798234fa8))
+
+### Features
+
+- option to disable cell padding for each object ([#765](https://github.com/qlik-oss/nebula.js/issues/765)) ([31d9ab8](https://github.com/qlik-oss/nebula.js/commit/31d9ab8bd66349e7d407ec357fe443a72586abe6))
+
 ## [2.4.1](https://github.com/qlik-oss/nebula.js/compare/v2.4.0...v2.4.1) (2022-02-10)
 
 **Note:** Version bump only for package @nebula.js/stardust
