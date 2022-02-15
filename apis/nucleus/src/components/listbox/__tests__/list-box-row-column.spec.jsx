@@ -108,6 +108,7 @@ describe('<ListBoxRowColumn />', () => {
         const index = 0;
         const style = {};
         const data = {
+          isLocked: true,
           onMouseDown: sinon.spy(),
           onMouseUp: sinon.spy(),
           onMouseEnter: sinon.spy(),

@@ -72,10 +72,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RowColumn({ index, style, data, column = false }) {
-  const { onClick, onMouseDown, onMouseUp, onMouseEnter, pages, checkboxes = false } = data;
+  const { onClick, onMouseDown, onMouseUp, onMouseEnter, pages, isLocked, checkboxes = false } = data;
 
   const [isSelected, setSelected] = useState(false);
-  const [isLocked, setLocked] = useState(false);
   const [cell, setCell] = useState();
 
   const classes = useStyles();
@@ -100,9 +99,7 @@ export default function RowColumn({ index, style, data, column = false }) {
     if (!cell) {
       return;
     }
-    const locked = cell.qState === 'L' || cell.qState === 'XL';
-    const selected = cell.qState === 'S' || cell.qState === 'XS';
-    setLocked(locked);
+    const selected = cell.qState === 'S' || cell.qState === 'XS' || cell.qState === 'L';
     setSelected(selected);
 
     const clazzArr = [column ? classes.column : classes.row];
@@ -177,6 +174,9 @@ export default function RowColumn({ index, style, data, column = false }) {
     display: 'flex',
   };
 
+  const showLock = isSelected && isLocked;
+  const showTick = !checkboxes && isSelected && !isLocked;
+
   return (
     <Grid
       container
@@ -201,10 +201,12 @@ export default function RowColumn({ index, style, data, column = false }) {
           ? getField({ lbl: label, color: 'inherit' })
           : labels.map(([lbl, highlighted], ix) => getField({ ix, highlighted, lbl }))}
       </Grid>
-      <Grid item className={!checkboxes && classes.icon}>
-        {isLocked && <Lock style={iconStyles} size="small" />}
-        {!checkboxes && isSelected && <Tick style={iconStyles} size="small" />}
-      </Grid>
+      {(showLock || showTick) && (
+        <Grid item className={classes.icon}>
+          {showLock && <Lock style={iconStyles} size="small" />}
+          {showTick && <Tick style={iconStyles} size="small" />}
+        </Grid>
+      )}
     </Grid>
   );
 }

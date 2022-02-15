@@ -137,6 +137,8 @@ export default function ListBox({
   const ITEM_SIZE = isVertical ? SIZE_VERTICAL : 200;
   const listHeight = height || 8 * ITEM_SIZE;
 
+  const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
+
   return (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}
@@ -158,7 +160,7 @@ export default function ListBox({
             width={width}
             itemCount={count}
             layout={listLayout}
-            itemData={{ column: !isVertical, pages, ...interactionEvents, checkboxes }}
+            itemData={{ isLocked, column: !isVertical, pages, ...(isLocked ? {} : interactionEvents), checkboxes }}
             itemSize={ITEM_SIZE}
             onItemsRendered={onItemsRendered}
             ref={ref}

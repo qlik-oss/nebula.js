@@ -146,6 +146,7 @@ describe('<Listbox />', () => {
         checkboxes: false,
         column: false,
         pages: [],
+        isLocked: false,
       });
 
       expect(itemData.onMouseDown).to.be.a('function');
@@ -194,6 +195,12 @@ describe('<Listbox />', () => {
         column: true,
         pages: [],
       });
+    });
+    it('should set isLocked to true', async () => {
+      layout.qListObject.qDimensionInfo.qLocked = true;
+      await render();
+      const { itemData } = FixedSizeList.args[FixedSizeList.callCount - 1][0];
+      expect(itemData.isLocked).to.equal(true);
     });
   });
 });
