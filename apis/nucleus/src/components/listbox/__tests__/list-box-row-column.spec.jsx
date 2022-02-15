@@ -16,8 +16,6 @@ const [{ default: ListBoxRowColumn }] = aw.mock(
           highlighted: 'highlighted',
         }),
       }),
-      // require.resolve('../ListBoxCheckbox'),
-      // () => React.createElement('div', { type: 'checkbox' }),
     ],
   ],
   ['../ListBoxRowColumn']
