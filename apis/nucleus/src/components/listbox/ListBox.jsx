@@ -19,7 +19,7 @@ export default function ListBox({
   width,
   listLayout = 'vertical',
   rangeSelect = false,
-  checkboxes = false, // true while debugging
+  checkboxes = false,
   update = undefined,
 }) {
   const [layout] = useLayout(model);
