@@ -276,6 +276,7 @@ const Cell = forwardRef(
   ({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount, currentId }, ref) => {
     const { app, types } = halo;
     const { nebbie } = halo.public;
+    const { disableCellPadding = false } = halo.context || {};
 
     const { translator, language, keyboardNavigation } = useContext(InstanceContext);
     const theme = useTheme();
@@ -493,7 +494,7 @@ const Cell = forwardRef(
             position: 'relative',
             width: '100%',
             height: '100%',
-            padding: theme.spacing(1),
+            ...(!disableCellPadding ? { padding: theme.spacing(1) } : {}),
             ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
           }}
         >
