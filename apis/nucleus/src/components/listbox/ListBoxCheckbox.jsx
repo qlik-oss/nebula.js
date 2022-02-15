@@ -13,6 +13,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))',
   },
   cbIconChecked: {
+    borderRadius: 3,
     backgroundColor: theme.palette.selected.main,
     backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
     '&:before': {

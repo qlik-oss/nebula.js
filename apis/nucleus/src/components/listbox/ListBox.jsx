@@ -133,7 +133,7 @@ export default function ListBox({
   }
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
-  const SIZE_VERTICAL = 40;
+  const SIZE_VERTICAL = checkboxes ? 40 : 33;
   const ITEM_SIZE = isVertical ? SIZE_VERTICAL : 200;
   const listHeight = height || 8 * ITEM_SIZE;
 
