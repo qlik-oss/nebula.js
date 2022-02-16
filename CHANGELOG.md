@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.5.0](https://github.com/qlik-oss/nebula.js/compare/v2.4.1...v2.5.0) (2022-02-15)
+
+### Bug Fixes
+
+- change carbon to reactNative ([#762](https://github.com/qlik-oss/nebula.js/issues/762)) ([4aeaa5a](https://github.com/qlik-oss/nebula.js/commit/4aeaa5aa96a51492fa3c5755957fed563bba1a80))
+- **jsdoc:** mark mount and unmount as instance functions ([#763](https://github.com/qlik-oss/nebula.js/issues/763)) ([51be0a4](https://github.com/qlik-oss/nebula.js/commit/51be0a4c580357c23defea37c00cca2798234fa8))
+- mark version as optional ([#761](https://github.com/qlik-oss/nebula.js/issues/761)) ([5bc52b0](https://github.com/qlik-oss/nebula.js/commit/5bc52b04c2fc250a09e777d0b2c6d306b20dc9af))
+
+### Features
+
+- option to disable cell padding for each object ([#765](https://github.com/qlik-oss/nebula.js/issues/765)) ([31d9ab8](https://github.com/qlik-oss/nebula.js/commit/31d9ab8bd66349e7d407ec357fe443a72586abe6))
+
 ## [2.4.1](https://github.com/qlik-oss/nebula.js/compare/v2.4.0...v2.4.1) (2022-02-10)
 
 **Note:** Version bump only for package nebula.js

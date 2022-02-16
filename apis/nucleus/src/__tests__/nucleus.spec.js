@@ -93,6 +93,7 @@ describe('nucleus', () => {
       context: {
         constraints: {},
         deviceType: 'auto',
+        disableCellPadding: false,
         keyboardNavigation: false,
         language: 'en-US',
         theme: 'light',
