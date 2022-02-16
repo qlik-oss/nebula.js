@@ -18,7 +18,7 @@ export default function ListBox({
   height,
   width,
   listLayout = 'vertical',
-  rangeSelect = false,
+  rangeSelect = true,
   checkboxes = false,
   update = undefined,
 }) {
