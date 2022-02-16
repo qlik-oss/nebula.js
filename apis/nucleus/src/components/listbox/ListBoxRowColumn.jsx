@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
   row: {
     flexWrap: 'nowrap',
     borderBottom: `1px solid ${theme.palette.divider}`,
+    color: theme.palette.text.primary,
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
       outline: 'none',
@@ -20,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   column: {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
+    color: theme.palette.text.primary,
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
       outline: 'none',
@@ -32,16 +34,14 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     minWidth: 0,
     flexGrow: 1,
+    paddingLeft: '6px',
+    paddingRight: '6px',
     '& span': {
+      fontSize: '0.9rem',
       whiteSpace: 'nowrap',
-      fontSize: '12px',
       lineHeight: '16px',
       userSelect: 'none',
     },
-  },
-  valueLabel: {
-    paddingLeft: '6px',
-    paddingRight: '6px',
   },
   icon: {
     display: 'flex',
@@ -115,26 +115,28 @@ export default function RowColumn({ index, style, data, column = false }) {
     setClassArr(clazzArr);
   }, [cell && cell.qState]);
 
-  const getCheckboxField = ({ lbl, highlighted, color, qElemNumber }) => {
-    const cb = <ListBoxCheckbox label={lbl} highlighted={highlighted} checked={isSelected} />;
+  const getCheckboxField = ({ lbl, color, qElemNumber }) => {
+    const cb = <ListBoxCheckbox label={lbl} checked={isSelected} />;
+    const labelTag =
+      typeof lbl === 'string' ? (
+        <Typography component="span" noWrap>
+          {lbl}
+        </Typography>
+      ) : (
+        lbl
+      );
     return (
       <FormControlLabel
         color={color}
         control={cb}
-        className={classes.checkboxLabel}
-        label={<Typography>{lbl}</Typography>}
+        className={[classes.checkboxLabel].join(' ').trim()}
+        label={labelTag}
         key={qElemNumber}
       />
     );
   };
   const getValueField = ({ lbl, highlighted, ix, color }) => (
-    <Typography
-      component="span"
-      key={ix}
-      className={[classes.valueLabel, highlighted].join(' ').trim()}
-      noWrap
-      color={color}
-    >
+    <Typography component="span" key={ix} className={highlighted} noWrap color={color}>
       {lbl}
     </Typography>
   );
@@ -168,6 +170,10 @@ export default function RowColumn({ index, style, data, column = false }) {
   }, []);
 
   const getField = checkboxes ? getCheckboxField : getValueField;
+  const getFieldWithRanges = ({ lbls }) => {
+    const labelsWithRanges = lbls.map(([lbl, highlighted], ix) => getValueField({ ix, highlighted, lbl }));
+    return checkboxes ? getCheckboxField({ lbl: labelsWithRanges }) : labelsWithRanges;
+  };
 
   const iconStyles = {
     alignItems: 'center',
@@ -176,6 +182,14 @@ export default function RowColumn({ index, style, data, column = false }) {
 
   const showLock = isSelected && isLocked;
   const showTick = !checkboxes && isSelected && !isLocked;
+
+  const cellStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    minWidth: 0,
+    flexGrow: 1,
+    padding: checkboxes ? 0 : undefined,
+  };
 
   return (
     <Grid
@@ -191,15 +205,8 @@ export default function RowColumn({ index, style, data, column = false }) {
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
     >
-      <Grid
-        item
-        style={{ display: 'flex', alignItems: 'center', minWidth: 0, flexGrow: 1 }}
-        className={classes.cell}
-        title={`${label}`}
-      >
-        {ranges.length === 0
-          ? getField({ lbl: label, color: 'inherit' })
-          : labels.map(([lbl, highlighted], ix) => getField({ ix, highlighted, lbl }))}
+      <Grid item style={cellStyle} className={classes.cell} title={`${label}`}>
+        {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
       </Grid>
       {(showLock || showTick) && (
         <Grid item className={classes.icon}>
