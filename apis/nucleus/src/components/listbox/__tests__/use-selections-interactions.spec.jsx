@@ -80,12 +80,28 @@ describe('use-listbox-interactions', () => {
   });
 
   describe('it should behave without range select', () => {
-    it('should return expected stuff', async () => {
-      await render();
-      const arg0 = ref.current.result;
-      expect(Object.keys(arg0)).to.deep.equal(['instantPages', 'interactionEvents']);
-      expect(arg0.instantPages).to.deep.equal([]);
-      expect(Object.keys(arg0.interactionEvents)).to.deep.equal(['onMouseDown']);
+    describe('should return expected listeners', () => {
+      it('Without range', async () => {
+        await render();
+        const arg0 = ref.current.result;
+        expect(Object.keys(arg0).sort()).to.deep.equal(['instantPages', 'interactionEvents']);
+        expect(arg0.instantPages).to.deep.equal([]);
+        expect(Object.keys(arg0.interactionEvents).sort()).to.deep.equal(['onMouseDown', 'onMouseUp']);
+      });
+      it('With range', async () => {
+        await render({ rangeSelect: true });
+        const arg0 = ref.current.result;
+        expect(Object.keys(arg0).sort()).to.deep.equal(['instantPages', 'interactionEvents']);
+        expect(arg0.instantPages).to.deep.equal([]);
+        expect(Object.keys(arg0.interactionEvents).sort()).to.deep.equal(['onMouseDown', 'onMouseEnter', 'onMouseUp']);
+      });
+      it('With checkboxes', async () => {
+        await render({ checkboxes: true });
+        const arg0 = ref.current.result;
+        expect(Object.keys(arg0).sort()).to.deep.equal(['instantPages', 'interactionEvents']);
+        expect(arg0.instantPages).to.deep.equal([]);
+        expect(Object.keys(arg0.interactionEvents).sort()).to.deep.equal(['onClick']);
+      });
     });
 
     it('should select a value', async () => {
@@ -99,7 +115,7 @@ describe('use-listbox-interactions', () => {
 
       expect(listboxSelections.selectValues).not.called;
 
-      act(() => {
+      await act(() => {
         arg0.interactionEvents.onMouseDown({
           currentTarget: {
             getAttribute: sandbox.stub().withArgs('data-n').returns(23),
@@ -112,7 +128,7 @@ describe('use-listbox-interactions', () => {
       expect(listboxSelections.selectValues, 'since mouseup has not been called yet').not.called;
       expect(arg1.instantPages).to.deep.equal([]);
 
-      act(() => {
+      await act(() => {
         docMouseUpListener(); // trigger doc mouseup listener to set mouseDown => false
       });
 
@@ -133,7 +149,7 @@ describe('use-listbox-interactions', () => {
       await render();
       const arg0 = ref.current.result;
 
-      act(() => {
+      await act(() => {
         arg0.interactionEvents.onMouseDown({
           currentTarget: {
             getAttribute: sandbox.stub().withArgs('data-n').returns(24), // fake mousedown on element nbr 24
@@ -146,7 +162,7 @@ describe('use-listbox-interactions', () => {
       expect(listboxSelections.selectValues, 'should only preselect - not select - while mousedown').not.called;
       const [, docMouseUpListener] = global.document.addEventListener.args[0];
 
-      act(() => {
+      await act(() => {
         docMouseUpListener();
       });
 
@@ -166,7 +182,7 @@ describe('use-listbox-interactions', () => {
       const arg0 = ref.current.result;
       expect(Object.keys(arg0)).to.deep.equal(['instantPages', 'interactionEvents']);
       expect(arg0.instantPages).to.deep.equal([]);
-      expect(Object.keys(arg0.interactionEvents)).to.deep.equal(['onMouseDown', 'onMouseUp', 'onMouseEnter']);
+      expect(Object.keys(arg0.interactionEvents).sort()).to.deep.equal(['onMouseDown', 'onMouseEnter', 'onMouseUp']);
     });
 
     it('should select a range (in theory)', async () => {
@@ -177,7 +193,7 @@ describe('use-listbox-interactions', () => {
       expect(applySelectionsOnPages.callCount).to.equal(0);
 
       // Simulate a typical select range scenario.
-      act(() => {
+      await act(() => {
         ref.current.result.interactionEvents.onMouseDown({
           currentTarget: {
             getAttribute: sandbox.stub().withArgs('data-n').returns(24),
@@ -185,7 +201,7 @@ describe('use-listbox-interactions', () => {
         });
       });
       expect(applySelectionsOnPages.callCount).to.equal(1);
-      act(() => {
+      await act(() => {
         ref.current.result.interactionEvents.onMouseEnter({
           currentTarget: {
             getAttribute: sandbox.stub().withArgs('data-n').returns(25),
@@ -193,21 +209,21 @@ describe('use-listbox-interactions', () => {
         });
       });
       expect(applySelectionsOnPages.callCount).to.equal(2);
-      act(() => {
+      await act(() => {
         ref.current.result.interactionEvents.onMouseEnter({
           currentTarget: {
             getAttribute: sandbox.stub().withArgs('data-n').returns(28),
           },
         });
       });
-      act(() => {
+      await act(() => {
         ref.current.result.interactionEvents.onMouseUp({
           currentTarget: {
             getAttribute: sandbox.stub().withArgs('data-n').returns(30),
           },
         });
       });
-      act(() => {
+      await act(() => {
         const [, docMouseUpListener] = global.document.addEventListener.args.pop();
         docMouseUpListener();
       });
@@ -224,6 +240,28 @@ describe('use-listbox-interactions', () => {
       expect(applySelectionsOnPages.args[1]).to.deep.equal([[], [24, 25]]);
       expect(applySelectionsOnPages.args[2]).to.deep.equal([[], [24, 25, 28]]);
       expect(applySelectionsOnPages.args[3]).to.deep.equal([[], [24, 25, 28, 30]]);
+    });
+
+    it('Should "toggle" checkboxes', async () => {
+      await render({ checkboxes: true });
+      const startCallCount = applySelectionsOnPages.callCount;
+      await act(() => {
+        ref.current.result.interactionEvents.onClick({
+          currentTarget: {
+            getAttribute: sandbox.stub().withArgs('data-n').returns(24),
+          },
+        });
+      });
+      expect(applySelectionsOnPages.callCount).to.equal(startCallCount + 1);
+      expect(applySelectionsOnPages.args[startCallCount]).to.deep.equal([[], [24]]);
+      await act(() => {
+        ref.current.result.interactionEvents.onClick({
+          currentTarget: {
+            getAttribute: sandbox.stub().withArgs('data-n').returns(24),
+          },
+        });
+      });
+      expect(applySelectionsOnPages.args[startCallCount + 1]).to.deep.equal([[], [24]]);
     });
   });
 });

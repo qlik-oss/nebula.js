@@ -9,8 +9,7 @@ import useLayout from '../../hooks/useLayout';
 
 import useSelectionsInteractions from './useSelectionsInteractions';
 
-import Row from './ListBoxRow';
-import Column from './ListBoxColumn';
+import RowColumn from './ListBoxRowColumn';
 
 export default function ListBox({
   model,
@@ -20,6 +19,7 @@ export default function ListBox({
   width,
   listLayout = 'vertical',
   rangeSelect = true,
+  checkboxes = false,
   update = undefined,
 }) {
   const [layout] = useLayout(model);
@@ -30,6 +30,7 @@ export default function ListBox({
     selections,
     pages,
     rangeSelect,
+    checkboxes,
     doc: document,
   });
   const loaderRef = useRef(null);
@@ -132,8 +133,11 @@ export default function ListBox({
   }
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
-  const ITEM_SIZE = isVertical ? 33 : 200;
+  const SIZE_VERTICAL = checkboxes ? 40 : 33;
+  const ITEM_SIZE = isVertical ? SIZE_VERTICAL : 200;
   const listHeight = height || 8 * ITEM_SIZE;
+
+  const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
 
   return (
     <InfiniteLoader
@@ -156,12 +160,12 @@ export default function ListBox({
             width={width}
             itemCount={count}
             layout={listLayout}
-            itemData={{ ...interactionEvents, pages }}
+            itemData={{ isLocked, column: !isVertical, pages, ...(isLocked ? {} : interactionEvents), checkboxes }}
             itemSize={ITEM_SIZE}
             onItemsRendered={onItemsRendered}
             ref={ref}
           >
-            {isVertical ? Row : Column}
+            {RowColumn}
           </FixedSizeList>
         );
       }}

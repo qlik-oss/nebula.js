@@ -13,6 +13,7 @@ export default function useSelectionsInteractions({
   selections,
   pages = [],
   rangeSelect = true,
+  checkboxes = false,
   doc = document,
 }) {
   const [instantPages, setInstantPages] = useState(pages);
@@ -44,6 +45,17 @@ export default function useSelectionsInteractions({
       return filled;
     });
   };
+
+  const onClick = useCallback(
+    (event) => {
+      if (selectingValues) {
+        return;
+      }
+      const elemNumber = +event.currentTarget.getAttribute('data-n');
+      setPreSelected([elemNumber]);
+    },
+    [selectingValues]
+  );
 
   const onMouseDown = useCallback(
     (event) => {
@@ -128,7 +140,7 @@ export default function useSelectionsInteractions({
   }, [pages]);
 
   useEffect(() => {
-    if (selectingValues || !pages || !mouseDown) {
+    if (selectingValues || !pages || (!checkboxes && !mouseDown)) {
       return;
     }
     // Render pre-selections before they have been selected in Engine.
@@ -136,13 +148,18 @@ export default function useSelectionsInteractions({
     setInstantPages(newPages);
   }, [preSelected]);
 
-  const rangeSelectEvents = rangeSelect ? { onMouseUp, onMouseEnter } : {};
+  const interactionEvents = {};
+
+  if (checkboxes) {
+    Object.assign(interactionEvents, { onClick });
+  } else if (rangeSelect) {
+    Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter });
+  } else {
+    Object.assign(interactionEvents, { onMouseUp, onMouseDown });
+  }
 
   return {
     instantPages,
-    interactionEvents: {
-      onMouseDown,
-      ...rangeSelectEvents,
-    },
+    interactionEvents,
   };
 }

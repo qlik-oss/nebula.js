@@ -346,8 +346,10 @@ function nuked(configuration = {}) {
            * @param {string=} options.title Custom title, defaults to fieldname
            * @param {string=} [options.direction=ltr] Direction setting ltr|rtl.
            * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal
-           * @param {boolean=} [options.search=true] To show the search bar
-           * @param {boolean=} [options.toolbar=true] To show the toolbar
+           * @param {boolean=} [options.search=true] Show the search bar
+           * @param {boolean=} [options.toolbar=true] Show the toolbar
+           * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields
+           * @param {boolean=} [options.rangeSelect=true] Enable range selection
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @param {object} [options.sessionModel] Use a custom sessionModel.
