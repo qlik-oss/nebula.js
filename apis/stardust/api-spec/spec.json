@@ -43,7 +43,7 @@
             "type": "#/entries/embed"
           },
           "examples": [
-            "import { embed } from '@nebula.js/stardust';\n// create a 'master' config which registers all types\nconst m = embed.createConfiguration({\n  types: [{\n    name: 'mekko',\n    version: '1.0.0',\n    load: () => Promise.resolve(mekko)\n  }],\n});\n\n// create an alternate config with dark theme\n// and inherit the config from the previous\nconst d = m.createConfiguration({\n theme: 'dark'\n});\n\nm(app).render({ type: 'mekko' }); // will render the object with default theme\nd(app).render({ type: 'mekko' }); // will render the object with 'dark' theme\nembed(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
+            "import { embed } from '@nebula.js/stardust';\n// create a 'master' config which registers all types\nconst m = embed.createConfiguration({\n  types: [{\n    name: 'mekko',\n    version: '1.0.0',\n    load: () => Promise.resolve(mekko)\n  }],\n});\n\n// create an alternate config with dark theme\n// and inherit the config from the previous\nconst d = m.createConfiguration({\n context: {\n   theme: 'dark'\n }\n});\n\nm(app).render({ type: 'mekko' }); // will render the object with default theme\nd(app).render({ type: 'mekko' }); // will render the object with 'dark' theme\nembed(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
           ]
         }
       }
@@ -445,7 +445,7 @@
         "type": "#/definitions/Constraints"
       },
       "examples": [
-        "// configure embed to disallow active interactions when rendering\nembed(app, {\n  constraints: {\n    active: true, // do not allow interactions\n  }\n}).render({ element, id: 'sdfsdf' });",
+        "// configure embed to disallow active interactions when rendering\nembed(app, {\n context: {\n   constraints: {\n     active: true, // do not allow interactions\n   }\n }\n}).render({ element, id: 'sdfsdf' });",
         "import { useConstraints } from '@nebula.js/stardust';\n// ...\nconst constraints = useConstraints();\nuseEffect(() => {\n  if (constraints.active) {\n    // do not add any event listener if active constraint is set\n    return undefined;\n  }\n  const listener = () => {};\n  element.addEventListener('click', listener);\n  return () => {\n    element.removeEventListener('click', listener);\n  };\n}, [constraints])"
       ]
     },
@@ -790,13 +790,25 @@
                   "type": "string"
                 },
                 "search": {
-                  "description": "To show the search bar",
+                  "description": "Show the search bar",
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
                 },
                 "toolbar": {
-                  "description": "To show the toolbar",
+                  "description": "Show the toolbar",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
+                "checkboxes": {
+                  "description": "Show values as checkboxes instead of as fields",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                },
+                "rangeSelect": {
+                  "description": "Enable range selection",
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
