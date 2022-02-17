@@ -7,6 +7,7 @@ import { makeStyles } from '@nebula.js/ui/theme';
 import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 import ListBoxCheckbox from './ListBoxCheckbox';
+import getSegmentsFromRanges from './listbox-search';
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -37,6 +38,9 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '6px',
     paddingRight: '6px',
     '& span': {
+      display: 'inline-block',
+      textOverflow: 'ellipsis',
+      overflow: 'hidden',
       fontSize: '0.9rem',
       whiteSpace: 'nowrap',
       lineHeight: '16px',
@@ -135,8 +139,15 @@ export default function RowColumn({ index, style, data, column = false }) {
       />
     );
   };
-  const getValueField = ({ lbl, highlighted, ix, color }) => (
-    <Typography component="span" key={ix} className={highlighted} noWrap color={color}>
+  const getValueField = ({ lbl, ix, color, highlighted = false }) => (
+    <Typography
+      component="span"
+      key={ix}
+      className={highlighted && classes.highlighted}
+      noWrap
+      color={color}
+      style={{ whiteSpace: 'pre-wrap', overflow: 'hidden', maxWidth: '100%' }}
+    >
       {lbl}
     </Typography>
   );
@@ -147,27 +158,7 @@ export default function RowColumn({ index, style, data, column = false }) {
   const ranges =
     (cell && cell.qHighlightRanges && cell.qHighlightRanges.qRanges.sort((a, b) => a.qCharPos - b.qCharPos)) || [];
 
-  const labels = ranges.reduce((acc, curr, ix) => {
-    // First non highlighted segment
-    if (curr.qCharPos > 0 && ix === 0) {
-      acc.push([label.slice(0, curr.qCharPos)]);
-    }
-
-    // Previous non highlighted segment
-    const prev = ranges[ix - 1];
-    if (prev) {
-      acc.push([label.slice(prev.qCharPos + prev.qCharPos + 1, curr.qCharPos)]);
-    }
-
-    // Highlighted segment
-    acc.push([label.slice(curr.qCharPos, curr.qCharPos + curr.qCharCount), classes.highlighted]);
-
-    // Last non highlighted segment
-    if (ix === ranges.length - 1 && curr.qCharPos + curr.qCharCount < label.length) {
-      acc.push([label.slice(curr.qCharPos + curr.qCharCount)]);
-    }
-    return acc;
-  }, []);
+  const labels = getSegmentsFromRanges(label, ranges);
 
   const getField = checkboxes ? getCheckboxField : getValueField;
   const getFieldWithRanges = ({ lbls }) => {
