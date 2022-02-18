@@ -41,8 +41,6 @@ export default function getSegmentsFromRanges(label, ranges) {
     return [];
   }
   const labels = ranges.reduce((acc, curr, ix) => {
-    // First non highlighted segment
-
     const startIndex = ix === 0 ? 0 : ranges[ix - 1].qCharPos + ranges[ix - 1].qCharCount;
     acc.push(...getSegmentsFromRange(label, curr, startIndex));
 

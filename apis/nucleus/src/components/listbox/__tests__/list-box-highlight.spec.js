@@ -1,11 +1,10 @@
-import getSegmentsFromRanges from '../listbox-search';
+import getSegmentsFromRanges from '../listbox-highlight';
 
-describe('listbox search', () => {
+describe('listbox highlight', () => {
   let sandbox;
 
-  // The label we want to create segments out of. A segment can be either:
-  //   - highlighted, or
-  //   - non-highlighted
+  // The label we want to create segments out of, where each segment
+  // can be either highlighted or non-highlighted.
   let label;
 
   beforeEach(() => {

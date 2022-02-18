@@ -7,7 +7,13 @@ import { makeStyles } from '@nebula.js/ui/theme';
 import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 import ListBoxCheckbox from './ListBoxCheckbox';
-import getSegmentsFromRanges from './listbox-search';
+import getSegmentsFromRanges from './listbox-highlight';
+
+const ellipsis = {
+  width: '100%',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+};
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -28,32 +34,56 @@ const useStyles = makeStyles((theme) => ({
       outline: 'none',
     },
   },
+
+  // The interior wrapper for all field content.
   cell: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
     display: 'flex',
     alignItems: 'center',
     minWidth: 0,
     flexGrow: 1,
-    paddingLeft: '6px',
-    paddingRight: '6px',
-    '& span': {
-      display: 'inline-block',
-      textOverflow: 'ellipsis',
-      overflow: 'hidden',
-      fontSize: '0.9rem',
-      whiteSpace: 'nowrap',
-      lineHeight: '16px',
-      userSelect: 'none',
+    // Note that this padding is overridden when using checkboxes.
+    paddingLeft: '12px',
+    paddingRight: '12px',
+  },
+
+  // The leaf node, containing the label text.
+  labelText: {
+    flexBasis: 'max-content',
+    fontSize: '0.9rem',
+    lineHeight: '16px',
+    userSelect: 'none',
+    whiteSpace: 'pre', // to keep white-space on highlight
+    ...ellipsis,
+  },
+
+  // Highlight is added to labelText spans, which are created as siblings to original labelText,
+  // when a search string is matched.
+  highlighted: {
+    overflow: 'visible',
+    width: '100%',
+    '& > span': {
+      width: '100%',
+      backgroundColor: '#FFC72A',
     },
   },
+
+  // Checkbox and label container.
+  checkboxLabel: {
+    margin: 0,
+    width: '100%',
+    // For checkboxes the first child is the checkbox container, second is the label container.
+    '& > span:nth-child(2)': {
+      ...ellipsis,
+    },
+  },
+
+  // The icons container holding tick and lock, shown inside fields.
   icon: {
     display: 'flex',
     padding: theme.spacing(1),
   },
-  checkboxLabel: {
-    margin: 0,
-  },
+
+  // Selection styles (S=Selected, A=Available, X=Excluded).
   S: {
     background: theme.palette.selected.main,
     color: theme.palette.selected.mainContrastText,
@@ -69,9 +99,6 @@ const useStyles = makeStyles((theme) => ({
   X: {
     background: theme.palette.selected.excluded,
     color: theme.palette.selected.excludedContrastText,
-  },
-  highlighted: {
-    backgroundColor: '#FFC72A',
   },
 }));
 
@@ -119,42 +146,37 @@ export default function RowColumn({ index, style, data, column = false }) {
     setClassArr(clazzArr);
   }, [cell && cell.qState]);
 
+  const getValueField = ({ lbl, ix, color, highlighted = false }) => (
+    <Typography
+      component="span"
+      key={ix}
+      className={[classes.labelText, !!highlighted && classes.highlighted]
+        .filter((c) => !!c)
+        .join(' ')
+        .trim()}
+      color={color}
+    >
+      <span style={{ whiteSpace: 'pre' }}>{lbl}</span>
+    </Typography>
+  );
+
   const getCheckboxField = ({ lbl, color, qElemNumber }) => {
     const cb = <ListBoxCheckbox label={lbl} checked={isSelected} />;
-    const labelTag =
-      typeof lbl === 'string' ? (
-        <Typography component="span" noWrap>
-          {lbl}
-        </Typography>
-      ) : (
-        lbl
-      );
+    const labelTag = typeof lbl === 'string' ? getValueField({ lbl, color, highlighted: false }) : lbl;
     return (
       <FormControlLabel
         color={color}
         control={cb}
-        className={[classes.checkboxLabel].join(' ').trim()}
+        className={classes.checkboxLabel}
         label={labelTag}
         key={qElemNumber}
       />
     );
   };
-  const getValueField = ({ lbl, ix, color, highlighted = false }) => (
-    <Typography
-      component="span"
-      key={ix}
-      className={highlighted && classes.highlighted}
-      noWrap
-      color={color}
-      style={{ whiteSpace: 'pre-wrap', overflow: 'hidden', maxWidth: '100%' }}
-    >
-      {lbl}
-    </Typography>
-  );
 
   const label = cell ? cell.qText : '';
 
-  // Handle search highlights
+  // Search highlights. Split up labelText span into several and add the highlighted class to matching sub-strings.
   const ranges =
     (cell && cell.qHighlightRanges && cell.qHighlightRanges.qRanges.sort((a, b) => a.qCharPos - b.qCharPos)) || [];
 

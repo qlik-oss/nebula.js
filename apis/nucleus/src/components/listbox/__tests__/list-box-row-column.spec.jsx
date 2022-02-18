@@ -63,8 +63,7 @@ describe('<ListBoxRowColumn />', () => {
       const types = testInstance.findAllByType(Typography);
       expect(types).to.have.length(1);
       expect(types[0].props.component).to.equal('span');
-      expect(types[0].props.noWrap).to.equal(true);
-      expect(types[0].props.children).to.equal('');
+      expect(types[0].props.children.type).to.equal('span');
 
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
       expect(cbs).to.have.length(0);
@@ -101,7 +100,6 @@ describe('<ListBoxRowColumn />', () => {
       const types = testInstance.findAllByType(Typography);
       expect(types).to.have.length(2);
       expect(types[0].props.component).to.equal('span');
-      expect(types[0].props.noWrap).not.to.equal(true);
       expect(types[0].props.component).to.equal('span');
 
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
@@ -352,9 +350,9 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(Typography);
-      expect(types[0].props.children).to.equal('nebula.js');
+      expect(types[0].props.children.props.children).to.equal('nebula.js');
       expect(types[0].props.className).to.equal('highlighted');
-      expect(types[1].props.children).to.equal(' ftw');
+      expect(types[1].props.children.props.children).to.equal(' ftw');
       await testRenderer.unmount();
     });
     it('should highlight ranges', async () => {
@@ -392,8 +390,8 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(Typography);
-      expect(types[0].props.children).to.equal('nebula.js ');
-      expect(types[1].props.children).to.equal('ftw');
+      expect(types[0].props.children.props.children).to.equal('nebula.js ');
+      expect(types[1].props.children.props.children).to.equal('ftw');
       expect(types[1].props.className).to.equal('highlighted');
       const hits = testInstance.findAllByProps({ className: 'highlighted' });
       expect(hits).to.have.length(2);
@@ -434,10 +432,10 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(Typography);
-      expect(types[0].props.children).to.equal('nebula.js ftw ');
-      expect(types[1].props.children).to.equal('yeah');
+      expect(types[0].props.children.props.children).to.equal('nebula.js ftw ');
+      expect(types[1].props.children.props.children).to.equal('yeah');
       expect(types[1].props.className).to.equal('highlighted');
-      expect(types[2].props.children).to.equal(' buddy');
+      expect(types[2].props.children.props.children).to.equal(' buddy');
       await testRenderer.unmount();
     });
 
@@ -475,10 +473,10 @@ describe('<ListBoxRowColumn />', () => {
       const cells = testInstance.findAllByProps({ className: 'highlighted' });
       expect(cells).to.have.length(2);
       const types = testInstance.findAllByType(Typography);
-      expect(types[1].props.children).to.equal('nebula.js ftw ');
-      expect(types[2].props.children).to.equal('yeah');
+      expect(types[1].props.children.props.children).to.equal('nebula.js ftw ');
+      expect(types[2].props.children.props.children).to.equal('yeah');
       expect(types[2].props.className).to.equal('highlighted');
-      expect(types[3].props.children).to.equal(' buddy');
+      expect(types[3].props.children.props.children).to.equal(' buddy');
       await testRenderer.unmount();
     });
   });
@@ -515,8 +513,7 @@ describe('<ListBoxRowColumn />', () => {
       const types = testInstance.findAllByType(Typography);
       expect(types).to.have.length(1);
       expect(types[0].props.component).to.equal('span');
-      expect(types[0].props.noWrap).to.equal(true);
-      expect(types[0].props.children).to.equal('');
+      expect(types[0].props.children.props.children).to.equal('');
 
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
       expect(cbs).to.have.length(0);
