@@ -5,7 +5,7 @@
  */
 
 /**
- * @typedef {Array<{segment: string, highlighted: boolean}>} Segment
+ * @typedef {object} Segment
  * @property {string} segment The sub-string/segment cut out from the original label.
  * @property {boolean} highlighted A flag which tells whether the segment should be highlighted or not.
  */
@@ -15,7 +15,7 @@
  * @param {Range} range The indexes which define how to create the segments.
  * @param {number=} [startIndex] An optional index which tells where we want to start the first segment from
  *   (only relevant for creating the first unhighlighted segment of a string/sub-string).
- * @returns {Segment} An array of segments.
+ * @returns {Segment[]} An array of segments.
  */
 function getSegmentsFromRange(label, range, startIndex = 0) {
   const { qCharPos, qCharCount } = range;
@@ -34,7 +34,7 @@ function getSegmentsFromRange(label, range, startIndex = 0) {
 /**
  * @param {string} label The label we want to create segments out of.
  * @param {Range[]} ranges The ranges defining indices for cutting the string into segments.
- * @returns {Segment[]} An array of segments in the same order as the ranges.
+ * @returns {Segment[]} An array of segments, covering the entire string label.
  */
 export default function getSegmentsFromRanges(label, ranges) {
   if (!ranges.length) {
