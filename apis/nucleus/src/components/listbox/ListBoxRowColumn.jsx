@@ -49,7 +49,6 @@ const useStyles = makeStyles((theme) => ({
   // The leaf node, containing the label text.
   labelText: {
     flexBasis: 'max-content',
-    fontSize: '0.9rem',
     lineHeight: '16px',
     userSelect: 'none',
     whiteSpace: 'pre', // to keep white-space on highlight
@@ -149,6 +148,7 @@ export default function RowColumn({ index, style, data, column = false }) {
   const getValueField = ({ lbl, ix, color, highlighted = false }) => (
     <Typography
       component="span"
+      variant="body2"
       key={ix}
       className={[classes.labelText, !!highlighted && classes.highlighted]
         .filter((c) => !!c)
