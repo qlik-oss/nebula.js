@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ListboxCheckbox({ checked, highlighted, label }) {
+export default function ListboxCheckbox({ checked, label }) {
   const styles = useStyles();
 
   return (
@@ -41,7 +41,7 @@ export default function ListboxCheckbox({ checked, highlighted, label }) {
       checked={checked}
       tabIndex={-1}
       disableRipple
-      className={[highlighted, styles.checkbox].join(' ').trim()}
+      className={styles.checkbox}
       inputProps={{ 'aria-labelledby': label }}
       name={label}
       icon={<span className={styles.cbIcon} />}
