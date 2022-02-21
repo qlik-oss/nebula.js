@@ -21,6 +21,8 @@ import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 
+import SwitchButton from './ListBoxToggleButton';
+
 export default function ListBoxPortal({ app, fieldIdentifier, stateName, element, options }) {
   return ReactDOM.createPortal(
     <ListBoxInline app={app} fieldIdentifier={fieldIdentifier} stateName={stateName} options={options} />,
@@ -37,11 +39,23 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     toolbar = true,
     rangeSelect = true,
     checkboxes = false,
+    // switchButton = false,
     properties = {},
     sessionModel = undefined,
     selectionsApi = undefined,
     update = undefined,
   } = options;
+
+  const switchButton = {
+    label: 'Associations',
+    startOn: false,
+    iconOn: '',
+    iconOff: '',
+    change: () => {
+      // args.setTitle('On');
+      // console.log('on', args.isOn);
+    },
+  };
 
   const listdef = {
     qInfo: {
@@ -196,6 +210,11 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
             />
           </Grid>
         </Grid>
+      )}
+      {switchButton ? (
+        <SwitchButton label={switchButton.label} startOn={switchButton.startOn} onChange={switchButton.onChange} />
+      ) : (
+        ''
       )}
       {search ? (
         <Grid item>
