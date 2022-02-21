@@ -15,7 +15,7 @@
  * @param {Range} range The indexes which define how to create the segments.
  * @param {number=} [startIndex] An optional index which tells where we want to start the first segment from
  *   (only relevant for creating the first unhighlighted segment of a string/sub-string).
- * @returns {Segment} A segment.
+ * @returns {Segment} An array of segments.
  */
 function getSegmentsFromRange(label, range, startIndex = 0) {
   const { qCharPos, qCharCount } = range;
