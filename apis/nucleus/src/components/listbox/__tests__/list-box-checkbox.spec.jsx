@@ -31,12 +31,11 @@ describe('<ListBoxCheckbox />', () => {
     );
   });
   it('should render an unchecked checkbox', async () => {
-    const testRenderer = await render(<ListBoxCheckbox highlighted="highlightedClass" label="just check it" />);
+    const testRenderer = await render(<ListBoxCheckbox label="just check it" />);
     const cbs = testRenderer.root.findAllByType(Checkbox);
     expect(cbs).to.have.length(1);
     const [cb] = cbs;
-    expect(cb.props.className).to.equal('highlightedClass checkbox');
-    expect(cb.props.name).to.equal('just check it');
+    expect(cb.props.className).to.equal('checkbox');
     expect(cb.props.checked).to.equal(undefined);
 
     expect(cb.props.icon.props.className).to.equal('cbIcon');
@@ -52,7 +51,6 @@ describe('<ListBoxCheckbox />', () => {
     expect(cbs).to.have.length(1);
     const [cb] = cbs;
     expect(cb.props.className).to.equal('checkbox');
-    expect(cb.props.name).to.equal('just check it');
     expect(cb.props.checked).to.equal(true);
   });
 });
