@@ -350,7 +350,7 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields
            * @param {boolean=} [options.rangeSelect=true] Enable range selection
-           * @param {boolean=} [options.dense] Reduces padding and text size
+           * @param {boolean=} [options.dense=false] Reduces padding and text size
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @param {object} [options.sessionModel] Use a custom sessionModel.
