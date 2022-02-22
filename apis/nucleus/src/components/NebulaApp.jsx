@@ -17,10 +17,8 @@ const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
 
   const { theme, generator } = useMemo(() => {
     const t = createTheme(muiThemeName);
-    const customPrefix = `njs-${counter++}`; // make it possible to override classes
-
-    const addPrefix = (className) => `${customPrefix}-${className}`;
-    t.addPrefix = addPrefix;
+    const customPrefix = `njs-${counter++}`;
+    t.prefix = customPrefix;
 
     return {
       theme: t,
