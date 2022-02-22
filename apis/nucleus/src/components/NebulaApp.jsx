@@ -15,17 +15,22 @@ const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
   const [context, setContext] = useState(initialContext);
   const [muiThemeName, setMuiThemeName] = useState();
 
-  const { theme, generator } = useMemo(
-    () => ({
-      theme: createTheme(muiThemeName),
+  const { theme, generator } = useMemo(() => {
+    const t = createTheme(muiThemeName);
+    const customPrefix = `njs-${counter++}`; // make it possible to override classes
+
+    const addPrefix = (className) => `${customPrefix}-${className}`;
+    t.addPrefix = addPrefix;
+
+    return {
+      theme: t,
       generator: createGenerateClassName({
         productionPrefix: `${NEBULA_VERSION_HASH}`,
-        disableGlobal: true,
-        seed: `njs-${counter++}`,
+        disableGlobal: false,
+        seed: customPrefix,
       }),
-    }),
-    [muiThemeName]
-  );
+    };
+  }, [muiThemeName]);
 
   const [components, setComponents] = useState([]);
 
