@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
-import { Container, FormHelperText, styled } from '@material-ui/core';
-// import IconAssociationsOn from './IconAssociations';
+import { Container, FormHelperText, makeStyles, styled, Typography } from '@material-ui/core';
 
 const AssociationsSwitch = styled(Switch)(({ theme }) => {
   const { prefix: p } = theme;
@@ -75,14 +74,30 @@ const AssociationsSwitch = styled(Switch)(({ theme }) => {
   };
 });
 
-export default function ListBoxToggleButton({ label, startOn, onChange }) {
+const useStyles = makeStyles((theme) => ({
+  label: {
+    marginLeft: '0.4rem',
+  },
+  helpLabel: {
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    '& span': {
+      color: theme.palette.text.secondary,
+    },
+  },
+}));
+
+export default function ListBoxToggleButton({ label, helperText, startOn, onChange }) {
   const [isOn, setOn] = useState(startOn || false);
+  const classes = useStyles();
   const onSwitchChange = (event) => {
-    setOn(event.target.checked);
-    onChange(event.target.checked);
+    const { checked } = event.target;
+    setOn(checked);
+    onChange(checked);
   };
   return (
-    <Container disableGutters sx={{ padding: '1rem' }}>
+    <Container disableGutters style={{ padding: '0.7rem', paddingTop: 0 }}>
       <FormControlLabel
         style={{
           margin: 0,
@@ -96,9 +111,17 @@ export default function ListBoxToggleButton({ label, startOn, onChange }) {
             sx={{ opacity: 1 }}
           />
         }
-        label={label}
+        label={
+          <Typography variant="caption" className={classes.label}>
+            {label}
+          </Typography>
+        }
       />
-      <FormHelperText>Be careful</FormHelperText>
+      {helperText && (
+        <FormHelperText className={classes.helpLabel}>
+          <Typography variant="caption">{helperText}</Typography>
+        </FormHelperText>
+      )}
     </Container>
   );
 }

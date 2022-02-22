@@ -47,7 +47,8 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   } = options;
 
   const switchButton = {
-    label: 'Associations',
+    label: 'Associative',
+    helperText: 'Response times may be affected by turning on Associative.',
     startOn: false,
     iconOn: '',
     iconOff: '',
@@ -167,7 +168,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   return (
     <Grid container direction="column" spacing={0} style={{ height: '100%', minHeight: `${minHeight}px` }}>
       {toolbar && (
-        <Grid item container style={{ padding: theme.spacing(1), borderBottom: `1px solid ${theme.palette.divider}` }}>
+        <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (
               <IconButton onClick={unlock} disabled={!isLocked}>
@@ -212,7 +213,12 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
         </Grid>
       )}
       {switchButton ? (
-        <SwitchButton label={switchButton.label} startOn={switchButton.startOn} onChange={switchButton.onChange} />
+        <SwitchButton
+          label={switchButton.label}
+          helperText={switchButton.helperText}
+          startOn={switchButton.startOn}
+          onChange={switchButton.onChange}
+        />
       ) : (
         ''
       )}
