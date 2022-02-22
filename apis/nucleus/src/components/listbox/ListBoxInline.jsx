@@ -50,6 +50,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     qListObjectDef: {
       qStateName: stateName,
       qShowAlternatives: true,
+      qFrequencyMode: 'V',
       qInitialDataFetch: [
         {
           qTop: 0,

@@ -69,6 +69,13 @@ const useStyles = makeStyles((theme) => ({
   highlighted: {
     backgroundColor: '#FFC72A',
   },
+  frequencyCount: {
+    paddingLeft: '6px',
+    paddingRight: '6px',
+    '& span': {
+      fontSize: '12px',
+    },
+  },
 }));
 
 export default function RowColumn({ index, style, data, column = false }) {
@@ -140,6 +147,7 @@ export default function RowColumn({ index, style, data, column = false }) {
   );
 
   const label = cell ? cell.qText : '';
+  const fequencyText = cell ? cell.qFrequency : '';
 
   // Handle search highlights
   const ranges =
@@ -201,6 +209,15 @@ export default function RowColumn({ index, style, data, column = false }) {
           ? getField({ lbl: label, color: 'inherit' })
           : labels.map(([lbl, highlighted], ix) => getField({ ix, highlighted, lbl }))}
       </Grid>
+
+      {isSelected && fequencyText && (
+        <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>
+          <Typography component={checkboxes ? '' : 'span'} noWrap color="inherit">
+            {fequencyText}
+          </Typography>
+        </Grid>
+      )}
+
       {(showLock || showTick) && (
         <Grid item className={classes.icon}>
           {showLock && <Lock style={iconStyles} size="small" />}
