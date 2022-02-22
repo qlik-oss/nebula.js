@@ -13,10 +13,18 @@ const useStyles = makeStyles((theme) => ({
       borderColor: `${theme.palette.divider} transparent`,
     },
   },
+  dense: {
+    fontSize: 12,
+    paddingLeft: theme.spacing(1),
+    '& input': {
+      paddingTop: '5px',
+      paddingBottom: '5px',
+    },
+  },
 }));
 const TREE_PATH = '/qListObjectDef';
 
-export default function ListBoxSearch({ model, autoFocus = true }) {
+export default function ListBoxSearch({ model, autoFocus = true, dense = false }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const onChange = (e) => {
@@ -43,10 +51,10 @@ export default function ListBoxSearch({ model, autoFocus = true }) {
     <OutlinedInput
       startAdornment={
         <InputAdornment position="start">
-          <Search />
+          <Search size={dense ? 'small' : 'normal'} />
         </InputAdornment>
       }
-      className={[classes.root].join(' ')}
+      className={['search', classes.root, dense && classes.dense].filter(Boolean).join(' ')}
       autoFocus={autoFocus}
       margin="dense"
       fullWidth
