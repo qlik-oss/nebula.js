@@ -7,11 +7,19 @@ import { makeStyles } from '@nebula.js/ui/theme';
 import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 import ListBoxCheckbox from './ListBoxCheckbox';
+import getSegmentsFromRanges from './listbox-highlight';
+
+const ellipsis = {
+  width: '100%',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis',
+};
 
 const useStyles = makeStyles((theme) => ({
   row: {
     flexWrap: 'nowrap',
     borderBottom: `1px solid ${theme.palette.divider}`,
+    color: theme.palette.text.primary,
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
       outline: 'none',
@@ -20,36 +28,61 @@ const useStyles = makeStyles((theme) => ({
   column: {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
+    color: theme.palette.text.primary,
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
       outline: 'none',
     },
   },
+
+  // The interior wrapper for all field content.
   cell: {
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
     display: 'flex',
     alignItems: 'center',
     minWidth: 0,
     flexGrow: 1,
-    '& span': {
-      whiteSpace: 'nowrap',
-      fontSize: '12px',
-      lineHeight: '16px',
-      userSelect: 'none',
+    // Note that this padding is overridden when using checkboxes.
+    paddingLeft: '12px',
+    paddingRight: '12px',
+  },
+
+  // The leaf node, containing the label text.
+  labelText: {
+    flexBasis: 'max-content',
+    lineHeight: '16px',
+    userSelect: 'none',
+    whiteSpace: 'pre', // to keep white-space on highlight
+    ...ellipsis,
+  },
+
+  // Highlight is added to labelText spans, which are created as siblings to original labelText,
+  // when a search string is matched.
+  highlighted: {
+    overflow: 'visible',
+    width: '100%',
+    '& > span': {
+      width: '100%',
+      backgroundColor: '#FFC72A',
     },
   },
-  valueLabel: {
-    paddingLeft: '6px',
-    paddingRight: '6px',
+
+  // Checkbox and label container.
+  checkboxLabel: {
+    margin: 0,
+    width: '100%',
+    // For checkboxes the first child is the checkbox container, second is the label container.
+    '& > span:nth-child(2)': {
+      ...ellipsis,
+    },
   },
+
+  // The icons container holding tick and lock, shown inside fields.
   icon: {
     display: 'flex',
     padding: theme.spacing(1),
   },
-  checkboxLabel: {
-    margin: 0,
-  },
+
+  // Selection styles (S=Selected, A=Available, X=Excluded).
   S: {
     background: theme.palette.selected.main,
     color: theme.palette.selected.mainContrastText,
@@ -65,9 +98,6 @@ const useStyles = makeStyles((theme) => ({
   X: {
     background: theme.palette.selected.excluded,
     color: theme.palette.selected.excludedContrastText,
-  },
-  highlighted: {
-    backgroundColor: '#FFC72A',
   },
   frequencyCount: {
     paddingLeft: '6px',
@@ -122,60 +152,49 @@ export default function RowColumn({ index, style, data, column = false }) {
     setClassArr(clazzArr);
   }, [cell && cell.qState]);
 
-  const getCheckboxField = ({ lbl, highlighted, color, qElemNumber }) => {
-    const cb = <ListBoxCheckbox label={lbl} highlighted={highlighted} checked={isSelected} />;
+  const getValueField = ({ lbl, ix, color, highlighted = false }) => (
+    <Typography
+      component="span"
+      variant="body2"
+      key={ix}
+      className={[classes.labelText, !!highlighted && classes.highlighted]
+        .filter((c) => !!c)
+        .join(' ')
+        .trim()}
+      color={color}
+    >
+      <span style={{ whiteSpace: 'pre' }}>{lbl}</span>
+    </Typography>
+  );
+
+  const getCheckboxField = ({ lbl, color, qElemNumber }) => {
+    const cb = <ListBoxCheckbox label={lbl} checked={isSelected} />;
+    const labelTag = typeof lbl === 'string' ? getValueField({ lbl, color, highlighted: false }) : lbl;
     return (
       <FormControlLabel
         color={color}
         control={cb}
         className={classes.checkboxLabel}
-        label={<Typography>{lbl}</Typography>}
+        label={labelTag}
         key={qElemNumber}
       />
     );
   };
-  const getValueField = ({ lbl, highlighted, ix, color }) => (
-    <Typography
-      component="span"
-      key={ix}
-      className={[classes.valueLabel, highlighted].join(' ').trim()}
-      noWrap
-      color={color}
-    >
-      {lbl}
-    </Typography>
-  );
 
   const label = cell ? cell.qText : '';
   const fequencyText = cell ? cell.qFrequency : '';
 
-  // Handle search highlights
+  // Search highlights. Split up labelText span into several and add the highlighted class to matching sub-strings.
   const ranges =
     (cell && cell.qHighlightRanges && cell.qHighlightRanges.qRanges.sort((a, b) => a.qCharPos - b.qCharPos)) || [];
 
-  const labels = ranges.reduce((acc, curr, ix) => {
-    // First non highlighted segment
-    if (curr.qCharPos > 0 && ix === 0) {
-      acc.push([label.slice(0, curr.qCharPos)]);
-    }
-
-    // Previous non highlighted segment
-    const prev = ranges[ix - 1];
-    if (prev) {
-      acc.push([label.slice(prev.qCharPos + prev.qCharPos + 1, curr.qCharPos)]);
-    }
-
-    // Highlighted segment
-    acc.push([label.slice(curr.qCharPos, curr.qCharPos + curr.qCharCount), classes.highlighted]);
-
-    // Last non highlighted segment
-    if (ix === ranges.length - 1 && curr.qCharPos + curr.qCharCount < label.length) {
-      acc.push([label.slice(curr.qCharPos + curr.qCharCount)]);
-    }
-    return acc;
-  }, []);
+  const labels = getSegmentsFromRanges(label, ranges);
 
   const getField = checkboxes ? getCheckboxField : getValueField;
+  const getFieldWithRanges = ({ lbls }) => {
+    const labelsWithRanges = lbls.map(([lbl, highlighted], ix) => getValueField({ ix, highlighted, lbl }));
+    return checkboxes ? getCheckboxField({ lbl: labelsWithRanges }) : labelsWithRanges;
+  };
 
   const iconStyles = {
     alignItems: 'center',
@@ -184,6 +203,14 @@ export default function RowColumn({ index, style, data, column = false }) {
 
   const showLock = isSelected && isLocked;
   const showTick = !checkboxes && isSelected && !isLocked;
+
+  const cellStyle = {
+    display: 'flex',
+    alignItems: 'center',
+    minWidth: 0,
+    flexGrow: 1,
+    padding: checkboxes ? 0 : undefined,
+  };
 
   return (
     <Grid
@@ -199,15 +226,8 @@ export default function RowColumn({ index, style, data, column = false }) {
       tabIndex={0}
       data-n={cell && cell.qElemNumber}
     >
-      <Grid
-        item
-        style={{ display: 'flex', alignItems: 'center', minWidth: 0, flexGrow: 1 }}
-        className={classes.cell}
-        title={`${label}`}
-      >
-        {ranges.length === 0
-          ? getField({ lbl: label, color: 'inherit' })
-          : labels.map(([lbl, highlighted], ix) => getField({ ix, highlighted, lbl }))}
+      <Grid item style={cellStyle} className={classes.cell} title={`${label}`}>
+        {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
       </Grid>
 
       {isSelected && fequencyText && (

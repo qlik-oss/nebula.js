@@ -35,7 +35,9 @@
         max-width: 1200px;
       }
 
-      .listbox {
+      .listbox,
+      .listbox2,
+      .listbox3 {
         position: relative;
         height: 400px;
         width: 30%;
@@ -47,10 +49,14 @@
     <div class="toolbar"></div>
     <div class="content">
       <div class="column">
-        <div class="object" data-type="bar"></div>
-        <div class="object" data-type="line"></div>
+        <div class="listbox2" style="width: 200px; height: 500px"></div>
       </div>
-      <div class="listbox"></div>
+      <div class="column">
+        <div class="listbox3" style="width: 200px; height: 500px"></div>
+      </div>
+      <div class="column">
+        <div class="listbox" style="width: 200px; height: 500px"></div>
+      </div>
     </div>
 
     <script src="index.js"></script>
