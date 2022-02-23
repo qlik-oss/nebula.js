@@ -61,7 +61,7 @@ describe('<ListBoxRowColumn />', () => {
 
       const types = testInstance.findAllByType(Typography);
       expect(types).to.have.length(1);
-      expect(types[0].props.component).to.equal('div');
+      expect(types[0].props.component).to.equal('span');
       expect(types[0].props.children.type).to.equal('span');
 
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
@@ -529,7 +529,7 @@ describe('<ListBoxRowColumn />', () => {
 
       const types = testInstance.findAllByType(Typography);
       expect(types).to.have.length(1);
-      expect(types[0].props.component).to.equal('div');
+      expect(types[0].props.component).to.equal('span');
       expect(types[0].props.children.props.children).to.equal('');
 
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
