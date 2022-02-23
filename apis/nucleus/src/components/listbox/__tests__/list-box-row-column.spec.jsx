@@ -54,7 +54,6 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.spacing).to.equal(0);
       expect(type.props.style).to.deep.equal({});
       expect(type.props.role).to.equal(rowCol);
-      expect(type.props.className).to.equal('value');
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
@@ -69,7 +68,27 @@ describe('<ListBoxRowColumn />', () => {
       expect(cbs).to.have.length(0);
       await testRenderer.unmount();
     });
+    it('should have css class `value`', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sinon.spy(),
+        onMouseUp: sinon.spy(),
+        onMouseEnter: sinon.spy(),
+        onClick: sinon.spy(),
+        pages: [],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
 
+      const type = testInstance.findByType(Grid);
+      const { className } = type.props;
+      expect(className).to.be.a('string');
+      expect(className.split(' ')).to.include('value');
+      await testRenderer.unmount();
+    });
     it('should render with checkboxes', async () => {
       const index = 0;
       const style = {};
@@ -91,7 +110,6 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.spacing).to.equal(0);
       expect(type.props.style).to.deep.equal({});
       expect(type.props.role).to.equal(rowCol);
-      expect(type.props.className).to.equal('value');
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
@@ -504,7 +522,6 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.spacing).to.equal(0);
       expect(type.props.style).to.deep.equal({});
       expect(type.props.role).to.equal(rowCol);
-      expect(type.props.className).to.equal('value');
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
@@ -517,6 +534,27 @@ describe('<ListBoxRowColumn />', () => {
 
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
       expect(cbs).to.have.length(0);
+      await testRenderer.unmount();
+    });
+    it('should have css class `value`', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sinon.spy(),
+        onMouseUp: sinon.spy(),
+        onMouseEnter: sinon.spy(),
+        onClick: sinon.spy(),
+        pages: [],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
+
+      const type = testInstance.findByType(Grid);
+      const { className } = type.props;
+      expect(className).to.be.a('string');
+      expect(className.split(' ')).to.include('value');
       await testRenderer.unmount();
     });
   });
