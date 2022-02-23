@@ -151,7 +151,7 @@ export default function RowColumn({ index, style, data, column = false }) {
 
   const getValueField = ({ lbl, ix, color, highlighted = false }) => (
     <Typography
-      component="div"
+      component="span"
       variant="body2"
       key={ix}
       className={[classes.labelText, highlighted && classes.highlighted, dense && classes.labelDense]
