@@ -55,6 +55,10 @@ const useStyles = makeStyles((theme) => ({
     ...ellipsis,
   },
 
+  labelDense: {
+    fontSize: 12,
+  },
+
   // Highlight is added to labelText spans, which are created as siblings to original labelText,
   // when a search string is matched.
   highlighted: {
@@ -102,7 +106,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function RowColumn({ index, style, data, column = false }) {
-  const { onClick, onMouseDown, onMouseUp, onMouseEnter, pages, isLocked, checkboxes = false } = data;
+  const { onClick, onMouseDown, onMouseUp, onMouseEnter, pages, isLocked, checkboxes = false, dense = false } = data;
 
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
@@ -150,7 +154,7 @@ export default function RowColumn({ index, style, data, column = false }) {
       component="span"
       variant="body2"
       key={ix}
-      className={[classes.labelText, !!highlighted && classes.highlighted]
+      className={[classes.labelText, highlighted && classes.highlighted, dense && classes.labelDense]
         .filter((c) => !!c)
         .join(' ')
         .trim()}
@@ -161,7 +165,7 @@ export default function RowColumn({ index, style, data, column = false }) {
   );
 
   const getCheckboxField = ({ lbl, color, qElemNumber }) => {
-    const cb = <ListBoxCheckbox label={lbl} checked={isSelected} />;
+    const cb = <ListBoxCheckbox label={lbl} checked={isSelected} dense={dense} />;
     const labelTag = typeof lbl === 'string' ? getValueField({ lbl, color, highlighted: false }) : lbl;
     return (
       <FormControlLabel
@@ -208,7 +212,7 @@ export default function RowColumn({ index, style, data, column = false }) {
     <Grid
       container
       spacing={0}
-      className={classArr.join(' ').trim()}
+      className={['value', ...classArr].join(' ').trim()}
       style={style}
       onClick={onClick}
       onMouseDown={onMouseDown}
