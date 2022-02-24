@@ -156,6 +156,18 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     model.unlock('/qListObjectDef');
   }, [model]);
 
+  const onSwitchButtonChange = useCallback(
+    (on) => {
+      if (switchButton.option) {
+        setOptions({ [switchButton.option]: switchButton.invert ? !on : on });
+      }
+      if (switchButton.onChange) {
+        switchButton.onChange(on, { setOptions });
+      }
+    },
+    [switchButton, setOptions]
+  );
+
   const { translator } = useContext(InstanceContext);
   const moreAlignTo = useRef();
 
@@ -202,15 +214,6 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   const showTitle = true;
 
   const minHeight = 49 + (search ? 40 : 0) + 49;
-
-  const switchButtonOnChange = (on) => {
-    if (switchButton.option) {
-      setOptions({ [switchButton.option]: switchButton.invert ? !on : on });
-    }
-    if (switchButton.onChange) {
-      switchButton.onChange(on, { setOptions });
-    }
-  };
 
   return (
     <Grid container direction="column" spacing={0} style={{ height: '100%', minHeight: `${minHeight}px` }}>
@@ -264,7 +267,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
           label={switchButton.label}
           helperText={switchButton.helperText}
           startOn={switchButton.startOn}
-          onChange={switchButtonOnChange}
+          onChange={onSwitchButtonChange}
           styling={{
             iconOn: switchButton.iconOn,
             iconOff: switchButton.iconOff,

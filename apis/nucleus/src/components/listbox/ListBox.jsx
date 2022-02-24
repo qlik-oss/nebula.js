@@ -119,7 +119,7 @@ export default function ListBox({
 
   useEffect(() => {
     fetchData();
-  }, [layout]);
+  }, [layout, checkboxes]);
 
   useEffect(() => {
     if (!instantPages || isLoadingData) {

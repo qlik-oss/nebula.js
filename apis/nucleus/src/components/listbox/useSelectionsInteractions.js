@@ -120,7 +120,7 @@ export default function useSelectionsInteractions({
     if (!preSelected || !preSelected.length || selectingValues || !interactionIsFinished || !layout) {
       return;
     }
-    select(preSelected, isRangeSelection);
+    select(preSelected, !checkboxes && isRangeSelection);
   }, [preSelected, mouseDown]);
 
   useEffect(() => {

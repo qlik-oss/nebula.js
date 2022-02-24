@@ -122,6 +122,8 @@ export default function RowColumn({ index, style, data, column = false }) {
         [c] = page.qMatrix[index - area.qTop];
       }
     }
+    const selected = !!c && (c.qState === 'S' || c.qState === 'XS' || c.qState === 'L');
+    setSelected(selected);
     setCell(c);
   }, [pages]);
 
@@ -129,8 +131,6 @@ export default function RowColumn({ index, style, data, column = false }) {
     if (!cell) {
       return;
     }
-    const selected = cell.qState === 'S' || cell.qState === 'XS' || cell.qState === 'L';
-    setSelected(selected);
 
     const clazzArr = [column ? classes.column : classes.row];
     if (!checkboxes) {
@@ -143,7 +143,7 @@ export default function RowColumn({ index, style, data, column = false }) {
       }
     }
     setClassArr(clazzArr);
-  }, [cell && cell.qState]);
+  }, [cell && cell.qState, checkboxes]);
 
   const getValueField = ({ lbl, ix, color, highlighted = false }) => (
     <Typography
