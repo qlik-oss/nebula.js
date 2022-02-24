@@ -54,7 +54,6 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.spacing).to.equal(0);
       expect(type.props.style).to.deep.equal({});
       expect(type.props.role).to.equal(rowCol);
-      expect(type.props.className).to.equal('');
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
@@ -69,7 +68,27 @@ describe('<ListBoxRowColumn />', () => {
       expect(cbs).to.have.length(0);
       await testRenderer.unmount();
     });
+    it('should have css class `value`', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sinon.spy(),
+        onMouseUp: sinon.spy(),
+        onMouseEnter: sinon.spy(),
+        onClick: sinon.spy(),
+        pages: [],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
 
+      const type = testInstance.findByType(Grid);
+      const { className } = type.props;
+      expect(className).to.be.a('string');
+      expect(className.split(' ')).to.include('value');
+      await testRenderer.unmount();
+    });
     it('should render with checkboxes', async () => {
       const index = 0;
       const style = {};
@@ -91,7 +110,6 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.spacing).to.equal(0);
       expect(type.props.style).to.deep.equal({});
       expect(type.props.role).to.equal(rowCol);
-      expect(type.props.className).to.equal('');
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
@@ -176,7 +194,7 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.equal('selected');
+      expect(type.props.className).to.include('selected');
       await testRenderer.unmount();
     });
     it('should set alternative', async () => {
@@ -210,7 +228,7 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.equal('alternative');
+      expect(type.props.className).to.include('alternative');
       await testRenderer.unmount();
     });
     it('should set excluded - qState X', async () => {
@@ -244,7 +262,7 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.equal('excluded');
+      expect(type.props.className).to.include('excluded');
       await testRenderer.unmount();
     });
     it('should set excluded - qState XS', async () => {
@@ -278,7 +296,7 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.equal('excluded');
+      expect(type.props.className).to.include('excluded');
       await testRenderer.unmount();
     });
     it('should set excluded - qState XL', async () => {
@@ -312,7 +330,7 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.equal('excluded');
+      expect(type.props.className).to.include('excluded');
       await testRenderer.unmount();
     });
     it('should highlight ranges', async () => {
@@ -351,7 +369,7 @@ describe('<ListBoxRowColumn />', () => {
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(Typography);
       expect(types[0].props.children.props.children).to.equal('nebula.js');
-      expect(types[0].props.className).to.equal('highlighted');
+      expect(types[0].props.className).to.include('highlighted');
       expect(types[1].props.children.props.children).to.equal(' ftw');
       await testRenderer.unmount();
     });
@@ -392,7 +410,7 @@ describe('<ListBoxRowColumn />', () => {
       const types = testInstance.findAllByType(Typography);
       expect(types[0].props.children.props.children).to.equal('nebula.js ');
       expect(types[1].props.children.props.children).to.equal('ftw');
-      expect(types[1].props.className).to.equal('highlighted');
+      expect(types[1].props.className).to.include('highlighted');
       const hits = testInstance.findAllByProps({ className: 'highlighted' });
       expect(hits).to.have.length(2);
       await testRenderer.unmount();
@@ -434,7 +452,7 @@ describe('<ListBoxRowColumn />', () => {
       const types = testInstance.findAllByType(Typography);
       expect(types[0].props.children.props.children).to.equal('nebula.js ftw ');
       expect(types[1].props.children.props.children).to.equal('yeah');
-      expect(types[1].props.className).to.equal('highlighted');
+      expect(types[1].props.className).to.include('highlighted');
       expect(types[2].props.children.props.children).to.equal(' buddy');
       await testRenderer.unmount();
     });
@@ -475,7 +493,7 @@ describe('<ListBoxRowColumn />', () => {
       const types = testInstance.findAllByType(Typography);
       expect(types[1].props.children.props.children).to.equal('nebula.js ftw ');
       expect(types[2].props.children.props.children).to.equal('yeah');
-      expect(types[2].props.className).to.equal('highlighted');
+      expect(types[2].props.className).to.include('highlighted');
       expect(types[3].props.children.props.children).to.equal(' buddy');
       await testRenderer.unmount();
     });
@@ -504,7 +522,6 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.spacing).to.equal(0);
       expect(type.props.style).to.deep.equal({});
       expect(type.props.role).to.equal(rowCol);
-      expect(type.props.className).to.equal('');
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
@@ -517,6 +534,27 @@ describe('<ListBoxRowColumn />', () => {
 
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
       expect(cbs).to.have.length(0);
+      await testRenderer.unmount();
+    });
+    it('should have css class `value`', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sinon.spy(),
+        onMouseUp: sinon.spy(),
+        onMouseEnter: sinon.spy(),
+        onClick: sinon.spy(),
+        pages: [],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
+
+      const type = testInstance.findByType(Grid);
+      const { className } = type.props;
+      expect(className).to.be.a('string');
+      expect(className.split(' ')).to.include('value');
       await testRenderer.unmount();
     });
   });

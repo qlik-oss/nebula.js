@@ -33,6 +33,23 @@ describe('<ListBoxSearch />', () => {
     expect(types[0].props.onChange).to.be.a('function');
     expect(types[0].props.onKeyDown).to.be.a('function');
   });
+  it('should have css class `search`', () => {
+    const model = {
+      searchListObjectFor: sinon.spy(),
+      acceptListObjectSearch: sinon.spy(),
+      abortListObjectSearch: sinon.spy(),
+    };
+    const testRenderer = renderer.create(
+      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+        <ListBoxSearch model={model} />
+      </InstanceContext.Provider>
+    );
+    const testInstance = testRenderer.root;
+    const [input] = testInstance.findAllByType(OutlinedInput);
+    const { className } = input.props;
+    expect(className).to.be.a('string');
+    expect(className.split(' ')).to.include('search');
+  });
   it('should update `OutlinedInput` and search `onChange`', () => {
     const model = {
       searchListObjectFor: sinon.spy(),
