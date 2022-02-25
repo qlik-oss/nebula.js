@@ -11,6 +11,20 @@ import useSelectionsInteractions from './useSelectionsInteractions';
 
 import RowColumn from './ListBoxRowColumn';
 
+function getSizeInfo({ isVertical, checkboxes, dense, height }) {
+  let sizeVertical = checkboxes ? 40 : 33;
+  if (dense) {
+    sizeVertical = 24;
+  }
+  const itemSize = isVertical ? sizeVertical : 200;
+  const listHeight = height || 8 * itemSize;
+
+  return {
+    itemSize,
+    listHeight,
+  };
+}
+
 export default function ListBox({
   model,
   selections,
@@ -21,6 +35,7 @@ export default function ListBox({
   rangeSelect = true,
   checkboxes = false,
   update = undefined,
+  dense = false,
 }) {
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
@@ -131,12 +146,10 @@ export default function ListBox({
   if (!layout) {
     return null;
   }
+
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
-  const SIZE_VERTICAL = checkboxes ? 40 : 33;
-  const ITEM_SIZE = isVertical ? SIZE_VERTICAL : 200;
-  const listHeight = height || 8 * ITEM_SIZE;
-
+  const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
 
   return (
@@ -160,8 +173,15 @@ export default function ListBox({
             width={width}
             itemCount={count}
             layout={listLayout}
-            itemData={{ isLocked, column: !isVertical, pages, ...(isLocked ? {} : interactionEvents), checkboxes }}
-            itemSize={ITEM_SIZE}
+            itemData={{
+              isLocked,
+              column: !isVertical,
+              pages,
+              ...(isLocked ? {} : interactionEvents),
+              checkboxes,
+              dense,
+            }}
+            itemSize={itemSize}
             onItemsRendered={onItemsRendered}
             ref={ref}
           >

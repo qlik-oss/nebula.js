@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.6.1](https://github.com/qlik-oss/nebula.js/compare/v2.6.0...v2.6.1) (2022-02-25)
+
+**Note:** Version bump only for package nebula.js
+
+# [2.6.0](https://github.com/qlik-oss/nebula.js/compare/v2.5.0...v2.6.0) (2022-02-25)
+
+### Features
+
+- **listbox:** dense mode with reduced padding and text size ([#769](https://github.com/qlik-oss/nebula.js/issues/769)) ([86f21c4](https://github.com/qlik-oss/nebula.js/commit/86f21c4b05ac4bea02d589e25960dc6de58f8b5b))
+
 # [2.5.0](https://github.com/qlik-oss/nebula.js/compare/v2.4.1...v2.5.0) (2022-02-15)
 
 ### Bug Fixes

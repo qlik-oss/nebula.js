@@ -350,6 +350,7 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields
            * @param {boolean=} [options.rangeSelect=true] Enable range selection
+           * @param {boolean=} [options.dense=false] Reduces padding and text size
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @param {object} [options.sessionModel] Use a custom sessionModel.
@@ -439,7 +440,9 @@ function nuked(configuration = {}) {
    * // create an alternate config with dark theme
    * // and inherit the config from the previous
    * const d = m.createConfiguration({
-   *  theme: 'dark'
+   *  context: {
+   *    theme: 'dark'
+   *  }
    * });
    *
    * m(app).render({ type: 'mekko' }); // will render the object with default theme

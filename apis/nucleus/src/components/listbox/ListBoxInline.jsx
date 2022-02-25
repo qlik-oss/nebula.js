@@ -41,6 +41,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     sessionModel = undefined,
     selectionsApi = undefined,
     update = undefined,
+    dense = false,
   } = options;
 
   const listdef = {
@@ -200,7 +201,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
       )}
       {search ? (
         <Grid item>
-          <ListBoxSearch model={model} autoFocus={false} />
+          <ListBoxSearch model={model} autoFocus={false} dense={dense} />
         </Grid>
       ) : (
         ''
@@ -219,6 +220,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
               height={height}
               width={width}
               update={update}
+              dense={dense}
             />
           )}
         </AutoSizer>

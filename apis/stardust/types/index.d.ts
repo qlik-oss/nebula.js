@@ -250,6 +250,9 @@ declare namespace stardust {
             listLayout?: string;
             search?: boolean;
             toolbar?: boolean;
+            checkboxes?: boolean;
+            rangeSelect?: boolean;
+            dense?: boolean;
             stateName?: boolean;
             properties?: object;
             sessionModel?: object;
@@ -420,6 +423,14 @@ declare namespace stardust {
         load: stardust.LoadType;
         meta?: object;
     }
+
+    type Range = {
+    };
+
+    type Segment = {
+    };
+
+    type getSegmentsFromRange = (label: string, range: stardust.Range, startIndex?: number)=>stardust.Segment[];
 
     type MinMaxResult = {
     };
