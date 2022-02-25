@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "2.5.0",
+    "version": "2.6.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -813,6 +813,12 @@
                   "defaultValue": true,
                   "type": "boolean"
                 },
+                "dense": {
+                  "description": "Reduces padding and text size",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                },
                 "stateName": {
                   "description": "Sets the state to make selections in",
                   "optional": true,
@@ -1340,6 +1346,67 @@
         "meta": {
           "optional": true,
           "type": "object"
+        }
+      }
+    },
+    "Range": {
+      "kind": "alias",
+      "items": {
+        "kind": "object",
+        "entries": {
+          "qCharPos": {
+            "description": "The (absolute) index where the highlighted range starts.",
+            "type": "number"
+          },
+          "qCharCount": {
+            "description": "The length of the sub-string (starting from qChartPos) that should be highlighted.",
+            "type": "number"
+          }
+        }
+      }
+    },
+    "Segment": {
+      "kind": "alias",
+      "items": {
+        "kind": "object",
+        "entries": {
+          "segment": {
+            "description": "The sub-string/segment cut out from the original label.",
+            "type": "string"
+          },
+          "highlighted": {
+            "description": "A flag which tells whether the segment should be highlighted or not.",
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "getSegmentsFromRange": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "label",
+          "description": "The label we want to create segments out of.",
+          "type": "string"
+        },
+        {
+          "name": "range",
+          "description": "The indexes which define how to create the segments.",
+          "type": "#/definitions/Range"
+        },
+        {
+          "name": "startIndex",
+          "description": "An optional index which tells where we want to start the first segment from\n  (only relevant for creating the first unhighlighted segment of a string/sub-string).",
+          "optional": true,
+          "defaultValue": 0,
+          "type": "number"
+        }
+      ],
+      "returns": {
+        "description": "An array of segments.",
+        "kind": "array",
+        "items": {
+          "type": "#/definitions/Segment"
         }
       }
     },
