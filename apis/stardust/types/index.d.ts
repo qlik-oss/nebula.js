@@ -250,6 +250,8 @@ declare namespace stardust {
             listLayout?: string;
             search?: boolean;
             toolbar?: boolean;
+            checkboxes?: boolean;
+            rangeSelect?: boolean;
             stateName?: boolean;
             properties?: object;
             sessionModel?: object;
