@@ -106,14 +106,21 @@ const useStyles = makeStyles((theme) => ({
   frequencyCount: {
     paddingLeft: '6px',
     paddingRight: '6px',
-    '& span': {
-      fontSize: '12px',
-    },
   },
 }));
 
 export default function RowColumn({ index, style, data, column = false }) {
-  const { onClick, onMouseDown, onMouseUp, onMouseEnter, pages, isLocked, checkboxes = false, dense = false } = data;
+  const {
+    onClick,
+    onMouseDown,
+    onMouseUp,
+    onMouseEnter,
+    pages,
+    isLocked,
+    checkboxes = false,
+    dense = false,
+    frequencyMode = 'N',
+  } = data;
 
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
@@ -186,7 +193,12 @@ export default function RowColumn({ index, style, data, column = false }) {
   };
 
   const label = cell ? cell.qText : '';
-  const fequencyText = cell ? cell.qFrequency : '';
+  const getFrequencyText = () => {
+    if (cell) {
+      return cell.qFrequency ? cell.qFrequency : '-';
+    }
+    return '';
+  };
 
   // Search highlights. Split up labelText span into several and add the highlighted class to matching sub-strings.
   const ranges =
@@ -234,10 +246,10 @@ export default function RowColumn({ index, style, data, column = false }) {
         {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
       </Grid>
 
-      {isSelected && fequencyText && (
+      {frequencyMode !== 'N' && (
         <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>
-          <Typography component={checkboxes ? '' : 'span'} noWrap color="inherit">
-            {fequencyText}
+          <Typography noWrap color="inherit" variant="body2">
+            {getFrequencyText()}
           </Typography>
         </Grid>
       )}

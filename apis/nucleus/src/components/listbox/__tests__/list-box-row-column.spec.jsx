@@ -456,7 +456,7 @@ describe('<ListBoxRowColumn />', () => {
       expect(types[2].props.children.props.children).to.equal(' buddy');
       await testRenderer.unmount();
     });
-    it('should show frequency count when selected', async () => {
+    it('should show frequency when enabled', async () => {
       const index = 0;
       const style = {};
       const data = {
@@ -464,6 +464,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sinon.spy(),
         onMouseEnter: sinon.spy(),
         onClick: sinon.spy(),
+        frequencyMode: 'value',
         pages: [
           {
             qArea: {

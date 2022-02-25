@@ -70,7 +70,7 @@ const GLOBALS = {
   '@nebula.js/stardust': 'stardust',
 };
 
-// const watch = process.argv.indexOf('-w') > 2;
+const watch = process.argv.indexOf('-w') > 2;
 
 const TYPES_SCOPE_RX = /^@types\//;
 
@@ -172,29 +172,20 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
 
 let dist = [
   // production
-  // watch
-  //   ? false
-  //   : config({
-  //       targetPkg: pkg,
-  //       file: path.resolve(targetDir, getFileName()),
-  //     }),
-  config({
-    targetPkg: pkg,
-    file: path.resolve(targetDir, getFileName()),
-  }),
+  watch
+    ? false
+    : config({
+        targetPkg: pkg,
+        file: path.resolve(targetDir, getFileName()),
+      }),
   // dev
-  // watch
-  //   ? false
-  //   : config({
-  //       debug: true,
-  //       targetPkg: pkg,
-  //       file: path.resolve(targetDir, getFileName('', true)),
-  //     }),
-  config({
-    debug: true,
-    targetPkg: pkg,
-    file: path.resolve(targetDir, getFileName('', true)),
-  }),
+  watch
+    ? false
+    : config({
+        debug: true,
+        targetPkg: pkg,
+        file: path.resolve(targetDir, getFileName('', true)),
+      }),
   // esm
   pkg.module
     ? config({
