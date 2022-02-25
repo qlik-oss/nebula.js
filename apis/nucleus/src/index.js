@@ -440,7 +440,9 @@ function nuked(configuration = {}) {
    * // create an alternate config with dark theme
    * // and inherit the config from the previous
    * const d = m.createConfiguration({
-   *  theme: 'dark'
+   *  context: {
+   *    theme: 'dark'
+   *  }
    * });
    *
    * m(app).render({ type: 'mekko' }); // will render the object with default theme

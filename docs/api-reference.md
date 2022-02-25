@@ -134,7 +134,9 @@ const m = embed.createConfiguration({
 // create an alternate config with dark theme
 // and inherit the config from the previous
 const d = m.createConfiguration({
-  theme: 'dark',
+  context: {
+    theme: 'dark',
+  },
 });
 
 m(app).render({ type: 'mekko' }); // will render the object with default theme
@@ -424,8 +426,10 @@ and should respected by you when implementing the supernova.
 ```js
 // configure embed to disallow active interactions when rendering
 embed(app, {
-  constraints: {
-    active: true, // do not allow interactions
+  context: {
+    constraints: {
+      active: true, // do not allow interactions
+    },
   },
 }).render({ element, id: 'sdfsdf' });
 ```
