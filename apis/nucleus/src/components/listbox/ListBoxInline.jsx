@@ -41,7 +41,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     toolbar = true,
     rangeSelect = true,
     checkboxes = false,
-    switchButton = false,
+    switchButton = undefined,
     properties = {},
     sessionModel = undefined,
     selectionsApi = undefined,
