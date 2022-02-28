@@ -1,6 +1,6 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { IconButton, Grid, Typography } from '@material-ui/core';
+import { IconButton, Grid, Typography, Switch } from '@material-ui/core';
 
 describe('<ListboxInline />', () => {
   let sandbox;
@@ -114,6 +114,7 @@ describe('<ListboxInline />', () => {
       search: true,
       toolbar: true,
       properties: {},
+      switchButton: false,
       sessionModel: undefined,
       selectionsApi: undefined,
       update: undefined,
@@ -219,6 +220,31 @@ describe('<ListboxInline />', () => {
 
       const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
       expect(listBoxSearches.length).to.equal(0);
+
+      const switchContainers = renderer.root.findAllByProps({ className: 'switchButton' });
+      expect(switchContainers).to.have.length(0);
+    });
+
+    it('should render with a switch button', async () => {
+      options.switchButton = {
+        option: 'dense',
+        label: 'Toggle me',
+        helperText: 'Toggle help text',
+      };
+      await render();
+
+      const switches = renderer.root.findAllByType(Switch);
+      expect(switches.length).to.equal(1);
+
+      const [switchContainer] = renderer.root.findAllByProps({ className: 'switchButton' });
+      expect(switchContainer).not.to.be.undefined;
+      const labels = switchContainer.findAllByType(Typography);
+      expect(labels).to.have.length(3);
+      const captions = switchContainer.findAllByProps({
+        variant: 'caption',
+      });
+      expect(captions[0].props.children).to.equal('Toggle me');
+      expect(captions[2].props.children).to.equal('Toggle help text');
     });
 
     it('should use a custom selectionsApi and sessionModel', async () => {

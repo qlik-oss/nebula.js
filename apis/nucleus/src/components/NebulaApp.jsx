@@ -15,20 +15,17 @@ const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
   const [context, setContext] = useState(initialContext);
   const [muiThemeName, setMuiThemeName] = useState();
 
-  const { theme, generator } = useMemo(() => {
-    const t = createTheme(muiThemeName);
-    const prefix = `njs-${counter++}`;
-    t.prefix = prefix;
-
-    return {
-      theme: t,
+  const { theme, generator } = useMemo(
+    () => ({
+      theme: createTheme(muiThemeName),
       generator: createGenerateClassName({
         productionPrefix: `${NEBULA_VERSION_HASH}`,
-        disableGlobal: false,
-        seed: prefix,
+        disableGlobal: true,
+        seed: `njs-${counter++}`,
       }),
-    };
-  }, [muiThemeName]);
+    }),
+    [muiThemeName]
+  );
 
   const [components, setComponents] = useState([]);
 
