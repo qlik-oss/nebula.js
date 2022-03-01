@@ -104,8 +104,8 @@ const useStyles = makeStyles((theme) => ({
     color: theme.palette.selected.excludedContrastText,
   },
   frequencyCount: {
-    paddingLeft: '6px',
-    paddingRight: '6px',
+    paddingLeft: '8px',
+    paddingRight: '8px',
   },
 }));
 
