@@ -847,9 +847,11 @@ export function useAction(fn, deps) {
  * @example
  * // configure embed to disallow active interactions when rendering
  * embed(app, {
- *   constraints: {
- *     active: true, // do not allow interactions
- *   }
+ *  context: {
+ *    constraints: {
+ *      active: true, // do not allow interactions
+ *    }
+ *  }
  * }).render({ element, id: 'sdfsdf' });
  *
  * @example
