@@ -32,6 +32,7 @@ export default function ListBox({
   height,
   width,
   listLayout = 'vertical',
+  frequencyMode = 'N',
   rangeSelect = true,
   checkboxes = false,
   update = undefined,
@@ -180,6 +181,7 @@ export default function ListBox({
               ...(isLocked ? {} : interactionEvents),
               checkboxes,
               dense,
+              frequencyMode,
             }}
             itemSize={itemSize}
             onItemsRendered={onItemsRendered}
