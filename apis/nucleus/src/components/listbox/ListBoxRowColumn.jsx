@@ -77,6 +77,8 @@ const useStyles = makeStyles((theme) => ({
     // For checkboxes the first child is the checkbox container, second is the label container.
     '& > span:nth-child(2)': {
       ...ellipsis,
+      display: 'flex',
+      alignItems: 'center',
     },
   },
 
@@ -163,15 +165,18 @@ export default function RowColumn({ index, style, data, column = false }) {
     setClassArr(clazzArr);
   }, [cell && cell.qState]);
 
+  const joinClassNames = (namesArray) =>
+    namesArray
+      .filter((c) => !!c)
+      .join(' ')
+      .trim();
+
   const getValueField = ({ lbl, ix, color, highlighted = false }) => (
     <Typography
       component="span"
       variant="body2"
       key={ix}
-      className={[classes.labelText, highlighted && classes.highlighted, dense && classes.labelDense]
-        .filter((c) => !!c)
-        .join(' ')
-        .trim()}
+      className={joinClassNames([classes.labelText, highlighted && classes.highlighted, dense && classes.labelDense])}
       color={color}
     >
       <span style={{ whiteSpace: 'pre' }}>{lbl}</span>
@@ -232,7 +237,7 @@ export default function RowColumn({ index, style, data, column = false }) {
     <Grid
       container
       spacing={0}
-      className={['value', ...classArr].join(' ').trim()}
+      className={joinClassNames(['value', ...classArr])}
       style={style}
       onClick={onClick}
       onMouseDown={onMouseDown}
@@ -248,7 +253,12 @@ export default function RowColumn({ index, style, data, column = false }) {
 
       {frequencyMode !== 'N' && (
         <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>
-          <Typography noWrap color="inherit" variant="body2">
+          <Typography
+            noWrap
+            color="inherit"
+            variant="body2"
+            className={joinClassNames([dense && classes.labelDense, classes.labelText])}
+          >
             {getFrequencyText()}
           </Typography>
         </Grid>
