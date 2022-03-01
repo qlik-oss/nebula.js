@@ -182,9 +182,6 @@ describe('<ListboxInline />', () => {
       const typographs = renderer.root.findAllByType(Typography);
       expect(typographs.length).to.equal(1);
 
-      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches.length).to.equal(1);
-
       const autoSizers = renderer.root.findAllByProps({ 'data-testid': 'virtualized-auto-sizer' });
       expect(autoSizers.length).to.equal(1);
 
@@ -193,6 +190,11 @@ describe('<ListboxInline />', () => {
         key: 'app',
       });
       expect(useObjectSelections).calledOnce;
+
+      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
+      expect(listBoxSearches).to.have.length(0);
+      const showSearchButtons = renderer.root.findAllByType(IconButton);
+      expect(showSearchButtons).to.have.length(1);
     });
 
     it('should render without toolbar', async () => {
@@ -205,10 +207,10 @@ describe('<ListboxInline />', () => {
       expect(typographs.length).to.equal(0);
 
       const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches.length).to.equal(1);
+      expect(listBoxSearches.length).to.equal(0);
     });
 
-    it('should render without search', async () => {
+    it('should render without search and show search button', async () => {
       options.search = false;
       await render();
       const actionToolbars = renderer.root.findAllByType(ActionsToolbar);

@@ -5,8 +5,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
 
-import { IconButton, Grid, Typography } from '@material-ui/core';
-
+import { IconButton, Grid, Typography /* , makeStyles */ } from '@material-ui/core';
 import { useTheme, makeStyles } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
 import useSessionModel from '../../hooks/useSessionModel';
@@ -103,6 +102,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   }
 
   const theme = useTheme();
+  const classes = useStyles();
 
   const lock = useCallback(() => {
     model.lock('/qListObjectDef');
@@ -161,8 +161,6 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const minHeight = 49 + (search ? 40 : 0) + 49;
 
-  const classes = useStyles();
-
   const onShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
@@ -170,7 +168,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   };
 
   const getSearchOrUnlock = () =>
-    search ? (
+    search && !hasSelections ? (
       <IconButton onClick={onShowSearch} title={translator.get('Listbox.Search')}>
         <SearchIcon />
       </IconButton>
@@ -195,7 +193,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
           </Grid>
           <Grid item className={classes.listBoxHeader}>
             {showTitle && (
-              <Typography variant="body1" noWrap>
+              <Typography variant="caption" noWrap>
                 {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
               </Typography>
             )}
