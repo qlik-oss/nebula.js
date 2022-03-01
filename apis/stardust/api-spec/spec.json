@@ -732,6 +732,62 @@
         }
       }
     },
+    "Direction": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'ltr'"
+          },
+          {
+            "kind": "literal",
+            "value": "'rtl'"
+          }
+        ]
+      }
+    },
+    "ListLayout": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'vertical'"
+          },
+          {
+            "kind": "literal",
+            "value": "'horizontal'"
+          }
+        ]
+      }
+    },
+    "FrequencyMode": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'none'"
+          },
+          {
+            "kind": "literal",
+            "value": "'value'"
+          },
+          {
+            "kind": "literal",
+            "value": "'percent'"
+          },
+          {
+            "kind": "literal",
+            "value": "'relative'"
+          }
+        ]
+      }
+    },
     "ReceiverFunction": {
       "description": "A callback function which receives another function as input.",
       "kind": "alias",
@@ -781,13 +837,19 @@
                   "description": "Direction setting ltr|rtl.",
                   "optional": true,
                   "defaultValue": "ltr",
-                  "type": "string"
+                  "type": "#/definitions/Direction"
                 },
                 "listLayout": {
                   "description": "Layout direction vertical|horizontal",
                   "optional": true,
                   "defaultValue": "vertical",
-                  "type": "string"
+                  "type": "#/definitions/ListLayout"
+                },
+                "frequencyMode": {
+                  "description": "Show frequency none|value|percent|relative",
+                  "optional": true,
+                  "defaultValue": "none",
+                  "type": "#/definitions/FrequencyMode"
                 },
                 "search": {
                   "description": "Show the search bar",
