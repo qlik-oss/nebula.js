@@ -7,7 +7,8 @@ import Unlock from '@nebula.js/ui/icons/unlock';
 
 import { IconButton, Grid, Typography } from '@material-ui/core';
 
-import { useTheme } from '@nebula.js/ui/theme';
+import { useTheme, makeStyles } from '@nebula.js/ui/theme';
+import SearchIcon from '@nebula.js/ui/icons/search';
 import useSessionModel from '../../hooks/useSessionModel';
 import useLayout from '../../hooks/useLayout';
 
@@ -20,6 +21,13 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
+
+const useStyles = makeStyles(() => ({
+  listBoxHeader: {
+    alignSelf: 'center',
+    display: 'inline-flex',
+  },
+}));
 
 export default function ListBoxPortal({ app, fieldIdentifier, stateName, element, options }) {
   return ReactDOM.createPortal(
@@ -109,6 +117,8 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [autoFocusSearch, setAutoFocusSearch] = useState(false);
 
   useEffect(() => {
     if (selections) {
@@ -151,6 +161,25 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const minHeight = 49 + (search ? 40 : 0) + 49;
 
+  const classes = useStyles();
+
+  const onShowSearch = () => {
+    const newValue = !showSearch;
+    setShowSearch(newValue);
+    setAutoFocusSearch(newValue);
+  };
+
+  const getSearchOrUnlock = () =>
+    search ? (
+      <IconButton onClick={onShowSearch} title={translator.get('Listbox.Search')}>
+        <SearchIcon />
+      </IconButton>
+    ) : (
+      <IconButton onClick={lock} disabled={!hasSelections}>
+        <Unlock />
+      </IconButton>
+    );
+
   return (
     <Grid container direction="column" spacing={0} style={{ height: '100%', minHeight: `${minHeight}px` }}>
       {toolbar && (
@@ -158,17 +187,15 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
           <Grid item>
             {isLocked ? (
               <IconButton onClick={unlock} disabled={!isLocked}>
-                <Lock />
+                <Lock title={translator.get('Listbox.Unlock')} />
               </IconButton>
             ) : (
-              <IconButton onClick={lock} disabled={!hasSelections}>
-                <Unlock />
-              </IconButton>
+              getSearchOrUnlock()
             )}
           </Grid>
-          <Grid item>
+          <Grid item className={classes.listBoxHeader}>
             {showTitle && (
-              <Typography variant="h6" noWrap>
+              <Typography variant="body1" noWrap>
                 {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
               </Typography>
             )}
@@ -198,9 +225,9 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
           </Grid>
         </Grid>
       )}
-      {search ? (
+      {search && showSearch ? (
         <Grid item>
-          <ListBoxSearch model={model} autoFocus={false} dense={dense} />
+          <ListBoxSearch model={model} autoFocus={autoFocusSearch} dense={dense} />
         </Grid>
       ) : (
         ''
