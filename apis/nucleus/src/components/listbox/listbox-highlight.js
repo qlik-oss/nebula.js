@@ -1,11 +1,11 @@
 /**
- * @typedef {object} Range
+ * @interface Range
  * @property {number} qCharPos The (absolute) index where the highlighted range starts.
  * @property {number} qCharCount The length of the sub-string (starting from qChartPos) that should be highlighted.
  */
 
 /**
- * @typedef {object} Segment
+ * @interface Segment
  * @property {string} segment The sub-string/segment cut out from the original label.
  * @property {boolean} highlighted A flag which tells whether the segment should be highlighted or not.
  */
