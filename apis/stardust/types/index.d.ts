@@ -231,6 +231,12 @@ declare namespace stardust {
 
     }
 
+    type Direction = "ltr" | "rtl";
+
+    type ListLayout = "vertical" | "horizontal";
+
+    type FrequencyMode = "none" | "value" | "percent" | "relative";
+
     /**
      * A callback function which receives another function as input.
      */
@@ -246,8 +252,9 @@ declare namespace stardust {
          */
         mount(element: HTMLElement, options?: {
             title?: string;
-            direction?: string;
-            listLayout?: string;
+            direction?: stardust.Direction;
+            listLayout?: stardust.ListLayout;
+            frequencyMode?: stardust.FrequencyMode;
             search?: boolean;
             toolbar?: boolean;
             checkboxes?: boolean;
@@ -424,16 +431,22 @@ declare namespace stardust {
         meta?: object;
     }
 
-    type Range = {
-    };
+    interface Range {
+        qCharPos: number;
+        qCharCount: number;
+    }
 
-    type Segment = {
-    };
+    interface Segment {
+        segment: string;
+        highlighted: boolean;
+    }
 
     type getSegmentsFromRange = (label: string, range: stardust.Range, startIndex?: number)=>stardust.Segment[];
 
-    type MinMaxResult = {
-    };
+    interface MinMaxResult {
+        min: number;
+        max: number;
+    }
 
     /**
      * Returns the min and max indices of elemNumbersOrdered which contains
