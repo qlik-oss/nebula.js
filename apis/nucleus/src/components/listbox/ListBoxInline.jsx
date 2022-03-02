@@ -188,7 +188,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   };
 
   const getSearchOrUnlock = () =>
-    search && !hasSelections ? (
+    search === 'toggle' && !hasSelections ? (
       <IconButton onClick={onShowSearch} title={translator.get('Listbox.Search')}>
         <SearchIcon />
       </IconButton>
@@ -243,7 +243,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
           </Grid>
         </Grid>
       )}
-      {search && showSearch ? (
+      {search === true || (search === 'toggle' && showSearch) ? (
         <Grid item>
           <ListBoxSearch model={model} autoFocus={autoFocusSearch} dense={dense} />
         </Grid>

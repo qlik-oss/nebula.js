@@ -14,7 +14,9 @@ const useStyles = makeStyles((theme) => ({
     '& fieldset': {
       borderRadius: 0,
       border: 'none',
-      // borderColor: `${theme.palette.divider} transparent`,
+    },
+    '&:hover': {
+      borderWidth: '0 0 1px 0',
     },
   },
   dense: {

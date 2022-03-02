@@ -192,7 +192,7 @@ describe('<ListboxInline />', () => {
       expect(useObjectSelections).calledOnce;
 
       const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches).to.have.length(0);
+      expect(listBoxSearches).to.have.length(1);
       const showSearchButtons = renderer.root.findAllByType(IconButton);
       expect(showSearchButtons).to.have.length(1);
     });
@@ -207,7 +207,14 @@ describe('<ListboxInline />', () => {
       expect(typographs.length).to.equal(0);
 
       const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches.length).to.equal(0);
+      expect(listBoxSearches.length, 'search is not part of toolbar').to.equal(1);
+    });
+
+    it('should render without toolbar', async () => {
+      options.search = 'toggle';
+      await render();
+      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
+      expect(listBoxSearches.length, 'search should be hidden initially').to.equal(0);
     });
 
     it('should render without search and show search button', async () => {
