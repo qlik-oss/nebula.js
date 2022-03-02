@@ -1412,34 +1412,28 @@
       }
     },
     "Range": {
-      "kind": "alias",
-      "items": {
-        "kind": "object",
-        "entries": {
-          "qCharPos": {
-            "description": "The (absolute) index where the highlighted range starts.",
-            "type": "number"
-          },
-          "qCharCount": {
-            "description": "The length of the sub-string (starting from qChartPos) that should be highlighted.",
-            "type": "number"
-          }
+      "kind": "interface",
+      "entries": {
+        "qCharPos": {
+          "description": "The (absolute) index where the highlighted range starts.",
+          "type": "number"
+        },
+        "qCharCount": {
+          "description": "The length of the sub-string (starting from qChartPos) that should be highlighted.",
+          "type": "number"
         }
       }
     },
     "Segment": {
-      "kind": "alias",
-      "items": {
-        "kind": "object",
-        "entries": {
-          "segment": {
-            "description": "The sub-string/segment cut out from the original label.",
-            "type": "string"
-          },
-          "highlighted": {
-            "description": "A flag which tells whether the segment should be highlighted or not.",
-            "type": "boolean"
-          }
+      "kind": "interface",
+      "entries": {
+        "segment": {
+          "description": "The sub-string/segment cut out from the original label.",
+          "type": "string"
+        },
+        "highlighted": {
+          "description": "A flag which tells whether the segment should be highlighted or not.",
+          "type": "boolean"
         }
       }
     },
@@ -1473,16 +1467,13 @@
       }
     },
     "MinMaxResult": {
-      "kind": "alias",
-      "items": {
-        "kind": "object",
-        "entries": {
-          "min": {
-            "type": "number"
-          },
-          "max": {
-            "type": "number"
-          }
+      "kind": "interface",
+      "entries": {
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
         }
       }
     },

@@ -431,16 +431,22 @@ declare namespace stardust {
         meta?: object;
     }
 
-    type Range = {
-    };
+    interface Range {
+        qCharPos: number;
+        qCharCount: number;
+    }
 
-    type Segment = {
-    };
+    interface Segment {
+        segment: string;
+        highlighted: boolean;
+    }
 
     type getSegmentsFromRange = (label: string, range: stardust.Range, startIndex?: number)=>stardust.Segment[];
 
-    type MinMaxResult = {
-    };
+    interface MinMaxResult {
+        min: number;
+        max: number;
+    }
 
     /**
      * Returns the min and max indices of elemNumbersOrdered which contains
