@@ -48,6 +48,25 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     update = undefined,
     dense = false,
   } = opts;
+  let { frequencyMode } = opts;
+
+  switch (true) {
+    case ['none', 'N', 'NX_FREQUENCY_NONE'].includes(frequencyMode):
+      frequencyMode = 'N';
+      break;
+    case ['value', 'V', 'NX_FREQUENCY_VALUE', 'default'].includes(frequencyMode):
+      frequencyMode = 'V';
+      break;
+    case ['percent', 'P', 'NX_FREQUENCY_PERCENT'].includes(frequencyMode):
+      frequencyMode = 'P';
+      break;
+    case ['relative', 'R', 'NX_FREQUENCY_RELATIVE'].includes(frequencyMode):
+      frequencyMode = 'R';
+      break;
+    default:
+      frequencyMode = 'N';
+      break;
+  }
 
   const listdef = {
     qInfo: {
@@ -56,6 +75,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     qListObjectDef: {
       qStateName: stateName,
       qShowAlternatives: true,
+      qFrequencyMode: frequencyMode,
       qInitialDataFetch: [
         {
           qTop: 0,
@@ -220,6 +240,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
               selections={selections}
               direction={direction}
               listLayout={listLayout}
+              frequencyMode={frequencyMode}
               rangeSelect={rangeSelect}
               checkboxes={checkboxes}
               height={height}

@@ -247,6 +247,24 @@ describe('<ListboxInline />', () => {
       expect(captions[2].props.children).to.equal('Toggle help text');
     });
 
+    it('should use provided frequencyMode', async () => {
+      options.frequencyMode = 'value';
+      await render();
+      expect(
+        useSessionModel.args[0][0].qListObjectDef.qFrequencyMode,
+        'app should use provided frequencyMode'
+      ).to.equal('V');
+    });
+
+    it('should default to none if provided frequencyMode is invalid', async () => {
+      options.frequencyMode = 'invalid value';
+      await render();
+      expect(
+        useSessionModel.args[0][0].qListObjectDef.qFrequencyMode,
+        'app should default to none frequencyMode'
+      ).to.equal('N');
+    });
+
     it('should use a custom selectionsApi and sessionModel', async () => {
       const isModal = sandbox.stub();
       const on = sandbox.stub();

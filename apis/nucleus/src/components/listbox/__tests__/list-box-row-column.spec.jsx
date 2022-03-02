@@ -456,6 +456,41 @@ describe('<ListBoxRowColumn />', () => {
       expect(types[2].props.children.props.children).to.equal(' buddy');
       await testRenderer.unmount();
     });
+    it('should show frequency when enabled', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sinon.spy(),
+        onMouseUp: sinon.spy(),
+        onMouseEnter: sinon.spy(),
+        onClick: sinon.spy(),
+        frequencyMode: 'value',
+        pages: [
+          {
+            qArea: {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 0,
+              qHeight: 100,
+            },
+            qMatrix: [
+              [
+                {
+                  qState: 'S',
+                  qFrequency: '123',
+                },
+              ],
+            ],
+          },
+        ],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
+      const types = testInstance.findAllByType(Typography);
+      expect(types[1].props.children).to.equal('123');
+    });
 
     it('should highlight ranges for checkboxes', async () => {
       const index = 0;
