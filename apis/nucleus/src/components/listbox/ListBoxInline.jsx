@@ -213,7 +213,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
           </Grid>
           <Grid item className={classes.listBoxHeader}>
             {showTitle && (
-              <Typography variant="caption" noWrap>
+              <Typography variant="h6" noWrap>
                 {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
               </Typography>
             )}
