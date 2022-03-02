@@ -329,6 +329,18 @@ function nuked(configuration = {}) {
         }
 
         /**
+         * @typedef { 'ltr' | 'rtl' } Direction
+         */
+
+        /**
+         * @typedef { 'vertical' | 'horizontal' } ListLayout
+         */
+
+        /**
+         * @typedef { 'none' | 'value' | 'percent' | 'relative' } FrequencyMode
+         */
+
+        /**
          * @typedef {function(function)} ReceiverFunction A callback function which receives another function as input.
          */
 
@@ -344,9 +356,9 @@ function nuked(configuration = {}) {
            * @param {HTMLElement} element
            * @param {object=} options Settings for the embedded listbox
            * @param {string=} options.title Custom title, defaults to fieldname
-           * @param {string=} [options.direction=ltr] Direction setting ltr|rtl.
-           * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal
-           * @param {string=} [options.frequencyMode=none] Show frequency none|value|percent|relative
+           * @param {Direction=} [options.direction=ltr] Direction setting ltr|rtl.
+           * @param {ListLayout=} [options.listLayout=vertical] Layout direction vertical|horizontal
+           * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
            * @param {boolean=} [options.search=true] Show the search bar
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields

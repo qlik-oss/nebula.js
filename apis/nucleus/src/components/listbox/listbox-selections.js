@@ -70,7 +70,7 @@ export function getElemNumbersFromPages(pages) {
 }
 
 /**
- * @typedef {object} MinMaxResult
+ * @interface MinMaxResult
  * @property {number} min
  * @property {number} max
  */
