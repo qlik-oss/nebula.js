@@ -333,15 +333,15 @@ function nuked(configuration = {}) {
          */
 
         /**
-         * @typedef {object} SwitchButtonConfig
-         * @param {string} SwitchButtonConfig.option The option to be toggled. Currently supporting: 'checkboxes', 'search', 'toolbar', 'rangeSelect', 'dense'.
-         * @param {boolean=} [SwitchButtonConfig.invert=false] Invert the switch button's value when applied on the option.
-         * @param {boolean=} [SwitchButtonConfig.startOn=false] Start the switch turned on (note that this will not change the initial value of the option).
-         * @param {string} [SwitchButtonConfig.label] A label for the switch.
-         * @param {string} [SwitchButtonConfig.helperText] A helper text label for the switch.
-         * @param {object} [SwitchButtonConfig.iconOn] CSS styling for the switch's on state (applied on span::after).
-         * @param {object} [SwitchButtonConfig.iconOff] CSS styling for the switch's off state (applied on span::before).
-         * @param {function} [SwitchButtonConfig.onChange] A function for defining a custom callback or for setting multiple properties using the provided setOptions function.
+         * @typedef {object} c SwitchButtonConfig
+         * @param {string} c.option The option to be toggled. Currently supporting: 'checkboxes', 'search', 'toolbar', 'rangeSelect', 'dense'.
+         * @param {boolean=} [c.invert=false] Invert the switch button's value when applied on the option.
+         * @param {boolean=} [c.startOn=false] Start the switch turned on (note that this will not change the initial value of the option).
+         * @param {string} [c.label] A label for the switch.
+         * @param {string} [c.helperText] A helper text label for the switch.
+         * @param {object} [c.iconOn] CSS styling for the switch's on state (applied on span::after).
+         * @param {object} [c.iconOff] CSS styling for the switch's off state (applied on span::before).
+         * @param {function} [c.onChange] A function for defining a custom callback or for setting multiple properties using the provided setOptions function.
          * @example
          * const switchButtonConfig = {
          *   option: 'dense',
