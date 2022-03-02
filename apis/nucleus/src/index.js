@@ -341,6 +341,10 @@ function nuked(configuration = {}) {
          */
 
         /**
+         * @typedef { false | true | 'toggle' } SearchMode
+         */
+
+        /**
          * @typedef {function(function)} ReceiverFunction A callback function which receives another function as input.
          */
 
@@ -359,7 +363,7 @@ function nuked(configuration = {}) {
            * @param {Direction=} [options.direction=ltr] Direction setting ltr|rtl.
            * @param {ListLayout=} [options.listLayout=vertical] Layout direction vertical|horizontal
            * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
-           * @param {boolean=} [options.search=true] Show the search bar
+           * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields
            * @param {boolean=} [options.rangeSelect=true] Enable range selection
