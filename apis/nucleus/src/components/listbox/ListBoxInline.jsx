@@ -201,7 +201,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   return (
     <Grid container direction="column" spacing={0} style={{ height: '100%', minHeight: `${minHeight}px` }}>
       {toolbar && (
-        <Grid item container style={{ padding: theme.spacing(1), borderBottom: `1px solid ${theme.palette.divider}` }}>
+        <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (
               <IconButton onClick={unlock} disabled={!isLocked}>
