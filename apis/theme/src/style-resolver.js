@@ -2,7 +2,7 @@ import extend from 'extend';
 import generateScales from './theme-scale-generator';
 
 /**
- * Creates the follwing array of paths
+ * Creates the following array of paths
  * object.barChart - legend.title - fontSize
  * object - legend.title - fontSize
  * legend.title - fontSize
@@ -12,26 +12,33 @@ import generateScales from './theme-scale-generator';
  * object.barChart - fontSize
  * object - fontSize
  * fontSize
+ * When defaultValue is provided,
+ * it only creates array of one path
+ * object.barChart - legend.title - fontSize
  * @ignore
  */
-function constructPaths(pathSteps, baseSteps) {
+function constructPaths(pathSteps, baseSteps, defaultValue) {
   const ret = [];
   let localBaseSteps;
   let baseLength;
   if (pathSteps) {
-    let pathLength = pathSteps.length;
-    while (pathLength >= 0) {
-      localBaseSteps = baseSteps.slice();
-      baseLength = localBaseSteps.length;
-      while (baseLength >= 0) {
-        ret.push(localBaseSteps.concat(pathSteps));
-        localBaseSteps.pop();
-        baseLength--;
+    if (defaultValue === undefined) {
+      let pathLength = pathSteps.length;
+      while (pathLength >= 0) {
+        localBaseSteps = baseSteps.slice();
+        baseLength = localBaseSteps.length;
+        while (baseLength >= 0) {
+          ret.push(localBaseSteps.concat(pathSteps));
+          localBaseSteps.pop();
+          baseLength--;
+        }
+        pathSteps.pop();
+        pathLength--;
       }
-      pathSteps.pop();
-      pathLength--;
+    } else {
+      ret.push(baseSteps.concat(pathSteps));
     }
-  } else {
+  } else if (defaultValue === undefined) {
     localBaseSteps = baseSteps.slice();
     baseLength = localBaseSteps.length;
     while (baseLength >= 0) {
@@ -39,6 +46,8 @@ function constructPaths(pathSteps, baseSteps) {
       localBaseSteps.pop();
       baseLength--;
     }
+  } else {
+    ret.push(baseSteps);
   }
   return ret;
 }
@@ -55,25 +64,28 @@ function getObject(root, steps) {
   return obj;
 }
 
-function searchPathArray(pathArray, attribute, theme) {
+function searchPathArray(pathArray, attribute, theme, defaultValue) {
   for (let i = 0; i < pathArray.length; i++) {
     const target = getObject(theme, pathArray[i]);
     if (target !== null && target[attribute]) {
       return target[attribute];
     }
   }
-  return undefined;
+  if (defaultValue === undefined) {
+    return undefined;
+  }
+  return defaultValue;
 }
 
-function searchValue(path, attribute, baseSteps, component) {
+function searchValue(path, attribute, baseSteps, component, defaultValue) {
   let pathArray;
   if (path === '') {
-    pathArray = constructPaths(null, baseSteps);
+    pathArray = constructPaths(null, baseSteps, defaultValue);
   } else {
     const steps = path.split('.');
-    pathArray = constructPaths(steps, baseSteps);
+    pathArray = constructPaths(steps, baseSteps, defaultValue);
   }
-  return searchPathArray(pathArray, attribute, component);
+  return searchPathArray(pathArray, attribute, component, defaultValue);
 }
 
 export default function styleResolver(basePath, themeJSON) {
@@ -94,18 +106,22 @@ export default function styleResolver(basePath, themeJSON) {
      * object.barChart - fontSize
      * object - fontSize
      * fontSize
+     * When defaultValue is provided,
+     * it get the value of a style attribute with the given base path + path
+     * Ex: object.barChart - legend.title - fontSize
      * @ignore
      *
-     * @param {string} component string of properties seperated by dots to search in
-     * @param {string} attribute to return
-     * @returns {any} value of the resolved path, undefined if not found
+     * @param {string} component String of properties seperated by dots to search in
+     * @param {string} attribute Name of the style attribute
+     * @param {string|null} [defaultValue] Set a default value if no style value found.
+     * @returns {string|undefined|null} The style value of the resolved path, undefined if not found or the default value
      */
-    getStyle(component, attribute) {
+    getStyle(component, attribute, defaultValue) {
       // TODO - object overrides
       // TODO - feature flag on font-family?
       // TODO - caching
       const baseSteps = basePathSteps.concat();
-      const result = searchValue(component, attribute, baseSteps, themeJSON);
+      const result = searchValue(component, attribute, baseSteps, themeJSON, defaultValue);
 
       // TODO - support functions
       return result;
