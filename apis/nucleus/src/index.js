@@ -363,7 +363,9 @@ function nuked(configuration = {}) {
            * @param {Direction=} [options.direction=ltr] Direction setting ltr|rtl.
            * @param {ListLayout=} [options.listLayout=vertical] Layout direction vertical|horizontal
            * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
-           * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle
+           * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow
+           * @param {boolean=} [options.focusSearch=false] Initialize the Listbox with the search input focused. Only applicable when
+           *   search is true, since toggling will always focus the search input on show.
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields
            * @param {boolean=} [options.rangeSelect=true] Enable range selection

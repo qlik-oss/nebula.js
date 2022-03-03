@@ -41,6 +41,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     direction,
     listLayout,
     search = true,
+    focusSearch = false,
     toolbar = true,
     rangeSelect = true,
     checkboxes = false,
@@ -138,7 +139,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [autoFocusSearch, setAutoFocusSearch] = useState(false);
+  const [autoFocusSearch, setAutoFocusSearch] = useState(focusSearch);
 
   useEffect(() => {
     if (selections) {

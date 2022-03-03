@@ -112,6 +112,7 @@ describe('<ListboxInline />', () => {
       direction: 'vertical',
       listLayout: 'vertical',
       search: true,
+      focusSearch: false,
       toolbar: true,
       properties: {},
       sessionModel: undefined,
