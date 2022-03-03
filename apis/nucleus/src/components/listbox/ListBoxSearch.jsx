@@ -8,15 +8,15 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    border: `1px solid ${theme.palette.divider}`,
-    borderWidth: '0 0 1px 0',
+    border: 'none',
     borderRadius: 0,
     '& fieldset': {
+      border: `1px solid ${theme.palette.divider}`,
+      borderWidth: '0 0 1px 0',
       borderRadius: 0,
-      border: 'none',
     },
     '&:hover': {
-      borderWidth: '0 0 1px 0',
+      border: 'none',
     },
   },
   dense: {
