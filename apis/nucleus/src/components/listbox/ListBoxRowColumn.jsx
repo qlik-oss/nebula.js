@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     borderBottom: `1px solid ${theme.palette.divider}`,
     color: theme.palette.text.primary,
     '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
+      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
       outline: 'none',
     },
   },
@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
     borderRight: `1px solid ${theme.palette.divider}`,
     color: theme.palette.text.primary,
     '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusOutline}`,
+      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
       outline: 'none',
     },
   },
