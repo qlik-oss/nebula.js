@@ -179,7 +179,9 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const showTitle = true;
 
-  const minHeight = 49 + (search ? 40 : 0) + 49;
+  const searchVisible = search === true || (search === 'toggle' && showSearch);
+
+  const minHeight = 49 + (searchVisible ? 40 : 0) + 49;
 
   const onShowSearch = () => {
     const newValue = !showSearch;
@@ -243,12 +245,10 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
           </Grid>
         </Grid>
       )}
-      {search === true || (search === 'toggle' && showSearch) ? (
+      {searchVisible && (
         <Grid item>
           <ListBoxSearch model={model} autoFocus={autoFocusSearch} dense={dense} />
         </Grid>
-      ) : (
-        ''
       )}
       <Grid item xs>
         <div ref={moreAlignTo} />
