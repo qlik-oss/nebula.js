@@ -5,7 +5,7 @@ import AutoSizer from 'react-virtualized-auto-sizer';
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
 
-import { IconButton, Grid, Typography /* , makeStyles */ } from '@material-ui/core';
+import { IconButton, Grid, Typography } from '@material-ui/core';
 import { useTheme, makeStyles } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
 import useSessionModel from '../../hooks/useSessionModel';
