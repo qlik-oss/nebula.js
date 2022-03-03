@@ -122,7 +122,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     selections = selectionsApi;
   }
 
-  const { selectionsAllowed = () => true } = selections;
+  const { selectionsAllowed = () => true } = selections || {};
 
   const theme = useTheme();
   const classes = useStyles();

@@ -49,7 +49,7 @@ export default function ListBox({
     checkboxes,
     doc: document,
   });
-  const { selectionsAllowed = () => true } = selections;
+  const { selectionsAllowed = () => true } = selections || {};
   const loaderRef = useRef(null);
   const local = useRef({
     queue: [],
