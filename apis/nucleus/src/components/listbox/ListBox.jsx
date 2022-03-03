@@ -49,6 +49,7 @@ export default function ListBox({
     checkboxes,
     doc: document,
   });
+  const { selectionsAllowed = () => true } = selections;
   const loaderRef = useRef(null);
   const local = useRef({
     queue: [],
@@ -178,7 +179,7 @@ export default function ListBox({
               isLocked,
               column: !isVertical,
               pages,
-              ...(isLocked ? {} : interactionEvents),
+              ...(isLocked || !selectionsAllowed() ? {} : interactionEvents),
               checkboxes,
               dense,
               frequencyMode,

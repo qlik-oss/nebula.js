@@ -122,6 +122,8 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     selections = selectionsApi;
   }
 
+  const { selectionsAllowed = () => true } = selections;
+
   const theme = useTheme();
   const classes = useStyles();
 
@@ -180,7 +182,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const showTitle = true;
 
-  const searchVisible = search === true || (search === 'toggle' && showSearch);
+  const searchVisible = (search === true || (search === 'toggle' && showSearch)) && selectionsAllowed();
 
   const minHeight = 49 + (searchVisible ? 40 : 0) + 49;
 
