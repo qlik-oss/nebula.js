@@ -20,18 +20,15 @@ const useStyles = makeStyles((theme) => ({
     flexWrap: 'nowrap',
     borderBottom: `1px solid ${theme.palette.divider}`,
     color: theme.palette.text.primary,
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
-      outline: 'none',
-    },
   },
   column: {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
     color: theme.palette.text.primary,
+  },
+  fieldRoot: {
     '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
-      outline: 'none',
+      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
     },
   },
 
@@ -237,6 +234,9 @@ export default function RowColumn({ index, style, data, column = false }) {
     <Grid
       container
       spacing={0}
+      classes={{
+        root: classes.fieldRoot,
+      }}
       className={joinClassNames(['value', ...classArr])}
       style={style}
       onClick={onClick}
