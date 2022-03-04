@@ -112,6 +112,7 @@ describe('<ListboxInline />', () => {
       direction: 'vertical',
       listLayout: 'vertical',
       search: true,
+      focusSearch: false,
       toolbar: true,
       properties: {},
       switchButton: false,
@@ -183,9 +184,6 @@ describe('<ListboxInline />', () => {
       const typographs = renderer.root.findAllByType(Typography);
       expect(typographs.length).to.equal(1);
 
-      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches.length).to.equal(1);
-
       const autoSizers = renderer.root.findAllByProps({ 'data-testid': 'virtualized-auto-sizer' });
       expect(autoSizers.length).to.equal(1);
 
@@ -194,6 +192,11 @@ describe('<ListboxInline />', () => {
         key: 'app',
       });
       expect(useObjectSelections).calledOnce;
+
+      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
+      expect(listBoxSearches).to.have.length(1);
+      const showSearchButtons = renderer.root.findAllByType(IconButton);
+      expect(showSearchButtons).to.have.length(1);
     });
 
     it('should render without toolbar', async () => {
@@ -206,10 +209,17 @@ describe('<ListboxInline />', () => {
       expect(typographs.length).to.equal(0);
 
       const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches.length).to.equal(1);
+      expect(listBoxSearches.length, 'search is not part of toolbar').to.equal(1);
     });
 
-    it('should render without search', async () => {
+    it('should render without toolbar', async () => {
+      options.search = 'toggle';
+      await render();
+      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
+      expect(listBoxSearches.length, 'search should be hidden initially').to.equal(0);
+    });
+
+    it('should render without search and show search button', async () => {
       options.search = false;
       await render();
       const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
