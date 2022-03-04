@@ -6,8 +6,8 @@ import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
 
 import { IconButton, Grid, Typography } from '@material-ui/core';
-
-import { useTheme } from '@nebula.js/ui/theme';
+import { useTheme, makeStyles } from '@nebula.js/ui/theme';
+import SearchIcon from '@nebula.js/ui/icons/search';
 import useSessionModel from '../../hooks/useSessionModel';
 import useLayout from '../../hooks/useLayout';
 
@@ -20,6 +20,13 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
+
+const useStyles = makeStyles(() => ({
+  listBoxHeader: {
+    alignSelf: 'center',
+    display: 'inline-flex',
+  },
+}));
 
 export default function ListBoxPortal({ app, fieldIdentifier, stateName, element, options }) {
   return ReactDOM.createPortal(
@@ -34,6 +41,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     direction,
     listLayout,
     search = true,
+    focusSearch = false,
     toolbar = true,
     rangeSelect = true,
     checkboxes = false,
@@ -42,6 +50,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     selectionsApi = undefined,
     update = undefined,
     dense = false,
+    selectDisabled = () => false,
   } = options;
   let { frequencyMode } = options;
 
@@ -115,6 +124,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   }
 
   const theme = useTheme();
+  const classes = useStyles();
 
   const lock = useCallback(() => {
     model.lock('/qListObjectDef');
@@ -129,6 +139,8 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
+  const [showSearch, setShowSearch] = useState(false);
+  const [autoFocusSearch, setAutoFocusSearch] = useState(focusSearch);
 
   useEffect(() => {
     if (selections) {
@@ -169,24 +181,41 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const showTitle = true;
 
-  const minHeight = 49 + (search ? 40 : 0) + 49;
+  const searchVisible = (search === true || (search === 'toggle' && showSearch)) && !selectDisabled();
+
+  const minHeight = 49 + (searchVisible ? 40 : 0) + 49;
+
+  const onShowSearch = () => {
+    const newValue = !showSearch;
+    setShowSearch(newValue);
+    setAutoFocusSearch(newValue);
+  };
+
+  const getSearchOrUnlock = () =>
+    search === 'toggle' && !hasSelections ? (
+      <IconButton onClick={onShowSearch} title={translator.get('Listbox.Search')}>
+        <SearchIcon />
+      </IconButton>
+    ) : (
+      <IconButton onClick={lock} disabled={!hasSelections}>
+        <Unlock />
+      </IconButton>
+    );
 
   return (
     <Grid container direction="column" spacing={0} style={{ height: '100%', minHeight: `${minHeight}px` }}>
       {toolbar && (
-        <Grid item container style={{ padding: theme.spacing(1), borderBottom: `1px solid ${theme.palette.divider}` }}>
+        <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (
               <IconButton onClick={unlock} disabled={!isLocked}>
-                <Lock />
+                <Lock title={translator.get('Listbox.Unlock')} />
               </IconButton>
             ) : (
-              <IconButton onClick={lock} disabled={!hasSelections}>
-                <Unlock />
-              </IconButton>
+              getSearchOrUnlock()
             )}
           </Grid>
-          <Grid item>
+          <Grid item className={classes.listBoxHeader}>
             {showTitle && (
               <Typography variant="h6" noWrap>
                 {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
@@ -218,12 +247,10 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
           </Grid>
         </Grid>
       )}
-      {search ? (
+      {searchVisible && (
         <Grid item>
-          <ListBoxSearch model={model} autoFocus={false} dense={dense} />
+          <ListBoxSearch model={model} autoFocus={autoFocusSearch} dense={dense} />
         </Grid>
-      ) : (
-        ''
       )}
       <Grid item xs>
         <div ref={moreAlignTo} />
@@ -241,6 +268,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
               width={width}
               update={update}
               dense={dense}
+              selectDisabled={selectDisabled}
             />
           )}
         </AutoSizer>

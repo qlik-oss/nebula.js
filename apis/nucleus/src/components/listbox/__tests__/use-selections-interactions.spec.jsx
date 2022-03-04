@@ -17,6 +17,7 @@ describe('use-listbox-interactions', () => {
   let layout;
   let selections;
   let pages;
+  let selectDisabled;
   let ref;
   let render;
   let getUniques;
@@ -55,6 +56,7 @@ describe('use-listbox-interactions', () => {
     };
     selections = { key: 'selections' };
     pages = [];
+    selectDisabled = () => false;
 
     ref = React.createRef();
     render = async (overrides = {}) => {
@@ -63,7 +65,9 @@ describe('use-listbox-interactions', () => {
           <TestHook
             ref={ref}
             hook={useSelectionsInteractions}
-            hookProps={[{ layout, selections, rangeSelect: false, pages, doc: global.document, ...overrides }]}
+            hookProps={[
+              { layout, selections, rangeSelect: false, pages, selectDisabled, doc: global.document, ...overrides },
+            ]}
           />
         );
       });

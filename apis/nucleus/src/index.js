@@ -329,6 +329,22 @@ function nuked(configuration = {}) {
         }
 
         /**
+         * @typedef { 'ltr' | 'rtl' } Direction
+         */
+
+        /**
+         * @typedef { 'vertical' | 'horizontal' } ListLayout
+         */
+
+        /**
+         * @typedef { 'none' | 'value' | 'percent' | 'relative' } FrequencyMode
+         */
+
+        /**
+         * @typedef { false | true | 'toggle' } SearchMode
+         */
+
+        /**
          * @typedef {function(function)} ReceiverFunction A callback function which receives another function as input.
          */
 
@@ -344,10 +360,12 @@ function nuked(configuration = {}) {
            * @param {HTMLElement} element
            * @param {object=} options Settings for the embedded listbox
            * @param {string=} options.title Custom title, defaults to fieldname
-           * @param {string=} [options.direction=ltr] Direction setting ltr|rtl.
-           * @param {string=} [options.listLayout=vertical] Layout direction vertical|horizontal
-           * @param {string=} [options.frequencyMode=none] Show frequency none|value|percent|relative
-           * @param {boolean=} [options.search=true] Show the search bar
+           * @param {Direction=} [options.direction=ltr] Direction setting ltr|rtl.
+           * @param {ListLayout=} [options.listLayout=vertical] Layout direction vertical|horizontal
+           * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
+           * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow
+           * @param {boolean=} [options.focusSearch=false] Initialize the Listbox with the search input focused. Only applicable when
+           *   search is true, since toggling will always focus the search input on show.
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields
            * @param {boolean=} [options.rangeSelect=true] Enable range selection
@@ -356,6 +374,7 @@ function nuked(configuration = {}) {
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @param {object} [options.sessionModel] Use a custom sessionModel.
            * @param {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
+           * @param {function():boolean} [options.selectDisabled=] Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
            * @param {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
            * @since 1.1.0
            * @instance
