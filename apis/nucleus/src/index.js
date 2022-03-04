@@ -374,6 +374,7 @@ function nuked(configuration = {}) {
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @param {object} [options.sessionModel] Use a custom sessionModel.
            * @param {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
+           * @param {function():boolean} [options.selectDisabled=] Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
            * @param {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
            * @since 1.1.0
            * @instance
