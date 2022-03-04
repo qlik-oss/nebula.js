@@ -50,6 +50,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     selectionsApi = undefined,
     update = undefined,
     dense = false,
+    selectDisabled = () => false,
   } = options;
   let { frequencyMode } = options;
 
@@ -122,8 +123,6 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     selections = selectionsApi;
   }
 
-  const { selectionsAllowed = () => true } = selections || {};
-
   const theme = useTheme();
   const classes = useStyles();
 
@@ -182,7 +181,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
 
   const showTitle = true;
 
-  const searchVisible = (search === true || (search === 'toggle' && showSearch)) && selectionsAllowed();
+  const searchVisible = (search === true || (search === 'toggle' && showSearch)) && !selectDisabled();
 
   const minHeight = 49 + (searchVisible ? 40 : 0) + 49;
 
@@ -269,6 +268,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
               width={width}
               update={update}
               dense={dense}
+              selectDisabled={selectDisabled}
             />
           )}
         </AutoSizer>

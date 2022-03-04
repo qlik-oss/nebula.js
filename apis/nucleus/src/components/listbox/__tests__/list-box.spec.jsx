@@ -11,6 +11,7 @@ describe('<Listbox />', () => {
   let ListBox;
   let render;
   let pages;
+  let selectDisabled;
   let FixedSizeList;
   let useSelectionsInteractions;
 
@@ -62,6 +63,8 @@ describe('<Listbox />', () => {
   beforeEach(() => {
     pages = [{ qArea: { qTop: 1, qHeight: 100 } }];
 
+    selectDisabled = () => false;
+
     useSelectionsInteractions.returns({
       instantPages: [],
       interactionEvents: {
@@ -84,6 +87,7 @@ describe('<Listbox />', () => {
       update: sandbox.stub(),
       rangeSelect: false,
       checkboxes: false,
+      selectDisabled,
     };
   });
 
@@ -133,7 +137,7 @@ describe('<Listbox />', () => {
       const columns = Container.findAllByProps({ className: 'a-value-column' });
       expect(rows.length).to.equal(1);
       expect(columns.length).to.equal(0);
-      expect(useSelectionsInteractions.args[1][0]).to.deep.equal({
+      expect(useSelectionsInteractions.args[1][0]).to.containSubset({
         checkboxes: false,
         layout,
         selections,
@@ -141,6 +145,7 @@ describe('<Listbox />', () => {
         rangeSelect: false,
         doc: 'document',
       });
+      expect(typeof useSelectionsInteractions.args[1][0].selectDisabled).to.equal('function');
       const { itemData } = FixedSizeList.args[FixedSizeList.callCount - 1][0];
       expect(itemData).to.containSubset({
         checkboxes: false,
@@ -158,7 +163,7 @@ describe('<Listbox />', () => {
     it('should call useSelectionsInteractions with rangeSelect true', async () => {
       args.rangeSelect = true;
       await render();
-      expect(useSelectionsInteractions.args[useSelectionsInteractions.callCount - 1][0]).to.deep.equal({
+      expect(useSelectionsInteractions.args[useSelectionsInteractions.callCount - 1][0]).to.containSubset({
         checkboxes: false,
         layout,
         selections,
@@ -171,7 +176,7 @@ describe('<Listbox />', () => {
     it('should call with checkboxes true', async () => {
       args.checkboxes = true;
       await render();
-      expect(useSelectionsInteractions.args[useSelectionsInteractions.callCount - 1][0]).to.deep.equal({
+      expect(useSelectionsInteractions.args[useSelectionsInteractions.callCount - 1][0]).to.containSubset({
         checkboxes: true,
         layout,
         selections,
