@@ -349,7 +349,15 @@ function nuked(configuration = {}) {
          */
 
         /**
-         * @typedef {object} c SwitchButtonConfig
+         * @interface SwitchButtonConfig
+         * @property {string} option The option to be toggled. Currently supporting: 'checkboxes', 'search', 'toolbar', 'rangeSelect', 'dense'.
+         * @property {boolean=} [invert=false] Invert the switch button's value when applied on the option.
+         * @property {boolean=} [startOn=false] Start the switch turned on (note that this will not change the initial value of the option).
+         * @property {string} [label] A label for the switch.
+         * @property {string} [helperText] A helper text label for the switch.
+         * @property {object} [iconOn] CSS styling for the switch's on state (applied on span::after).
+         * @property {object} [iconOff] CSS styling for the switch's off state (applied on span::before).
+         * @property {function} [onChange] A function for defining a custom callback or for setting multiple properties using the provided setOptions function.
          * @param {string} c.option The option to be toggled. Currently supporting: 'checkboxes', 'search', 'toolbar', 'rangeSelect', 'dense'.
          * @param {boolean=} [c.invert=false] Invert the switch button's value when applied on the option.
          * @param {boolean=} [c.startOn=false] Start the switch turned on (note that this will not change the initial value of the option).

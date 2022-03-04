@@ -139,7 +139,7 @@ export default function RowColumn({ index, style, data, column = false }) {
         [c] = page.qMatrix[index - area.qTop];
       }
     }
-    const selected = !!c && (c.qState === 'S' || c.qState === 'XS' || c.qState === 'L');
+    const selected = c && ['S', 'XS', 'L'].includes(c.qState);
     setSelected(selected);
     setCell(c);
   }, [pages]);
