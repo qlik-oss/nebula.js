@@ -37,6 +37,7 @@ export default function ListBox({
   checkboxes = false,
   update = undefined,
   dense = false,
+  selectDisabled = () => false,
 }) {
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
@@ -47,6 +48,7 @@ export default function ListBox({
     pages,
     rangeSelect,
     checkboxes,
+    selectDisabled,
     doc: document,
   });
   const loaderRef = useRef(null);
@@ -178,7 +180,7 @@ export default function ListBox({
               isLocked,
               column: !isVertical,
               pages,
-              ...(isLocked ? {} : interactionEvents),
+              ...(isLocked || selectDisabled() ? {} : interactionEvents),
               checkboxes,
               dense,
               frequencyMode,
