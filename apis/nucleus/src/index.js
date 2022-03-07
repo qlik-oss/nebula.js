@@ -5,7 +5,7 @@ import deviceTypeFn from './device-type';
 
 import bootNebulaApp from './components/NebulaApp';
 import AppSelectionsPortal from './components/selections/AppSelections';
-import ListBoxPortal from './components/listbox/ListBoxInline';
+import ListBoxPortal from './components/listbox/ListBoxPortal';
 
 import create from './object/create-session-object';
 import get from './object/get-object';

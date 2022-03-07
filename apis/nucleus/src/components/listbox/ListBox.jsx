@@ -154,6 +154,7 @@ export default function ListBox({
   const count = layout.qListObject.qSize.qcy;
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
+  const { frequencyMax } = layout;
 
   return (
     <InfiniteLoader
@@ -184,6 +185,7 @@ export default function ListBox({
               checkboxes,
               dense,
               frequencyMode,
+              frequencyMax,
             }}
             itemSize={itemSize}
             onItemsRendered={onItemsRendered}

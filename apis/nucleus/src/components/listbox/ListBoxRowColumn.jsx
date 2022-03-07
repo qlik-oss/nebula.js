@@ -106,6 +106,26 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: '8px',
     paddingRight: '8px',
   },
+  barContainer: {
+    position: 'relative',
+  },
+  bar: {
+    border: '1px solid',
+    borderColor: '#bebebe87',
+    height: '57%',
+    position: 'absolute',
+    zIndex: '-1',
+    alignSelf: 'center',
+    left: '1%',
+    background: theme.palette.background.lighter,
+  },
+  barWithCheckbox: {
+    left: '15%',
+  },
+  opaqe: {
+    opacity: '30%',
+    zIndex: '0',
+  },
 }));
 
 export default function RowColumn({ index, style, data, column = false }) {
@@ -119,6 +139,7 @@ export default function RowColumn({ index, style, data, column = false }) {
     checkboxes = false,
     dense = false,
     frequencyMode = 'N',
+    frequencyMax = '',
   } = data;
 
   const [isSelected, setSelected] = useState(false);
@@ -230,46 +251,64 @@ export default function RowColumn({ index, style, data, column = false }) {
     padding: checkboxes ? 0 : undefined,
   };
 
+  const hasHistogramBar = () => cell && frequencyMode !== 'N' && getFrequencyText() !== '-';
+  const getBarWidth = (qFrequency) => {
+    const freqStr = String(qFrequency);
+    const isPercent = freqStr.substring(freqStr.length - 1) === '%';
+    const freq = parseFloat(isPercent ? freqStr.slice(0, -1) : qFrequency);
+    const maxWidth = checkboxes ? 0.82 : 0.97;
+    return `${(isPercent ? freq : (freq / frequencyMax) * 100) * maxWidth}%`;
+  };
+
   return (
-    <Grid
-      container
-      spacing={0}
-      classes={{
-        root: classes.fieldRoot,
-      }}
-      className={joinClassNames(['value', ...classArr])}
-      style={style}
-      onClick={onClick}
-      onMouseDown={onMouseDown}
-      onMouseUp={onMouseUp}
-      onMouseEnter={onMouseEnter}
-      role={column ? 'column' : 'row'}
-      tabIndex={0}
-      data-n={cell && cell.qElemNumber}
-    >
-      <Grid item style={cellStyle} className={classes.cell} title={`${label}`}>
-        {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
+    <div className={classes.barContainer}>
+      <Grid
+        container
+        spacing={0}
+        className={joinClassNames(['value', ...classArr])}
+        style={style}
+        onClick={onClick}
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onMouseEnter={onMouseEnter}
+        role={column ? 'column' : 'row'}
+        tabIndex={0}
+        data-n={cell && cell.qElemNumber}
+      >
+        {hasHistogramBar() && (
+          <div
+            className={joinClassNames([
+              classes.bar,
+              checkboxes && classes.barWithCheckbox,
+              isSelected && !checkboxes && classes.opaqe,
+            ])}
+            style={{ width: getBarWidth(cell.qFrequency) }}
+          />
+        )}
+        <Grid item style={cellStyle} className={classes.cell} title={`${label}`}>
+          {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
+        </Grid>
+
+        {frequencyMode !== 'N' && (
+          <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>
+            <Typography
+              noWrap
+              color="inherit"
+              variant="body2"
+              className={joinClassNames([dense && classes.labelDense, classes.labelText])}
+            >
+              {getFrequencyText()}
+            </Typography>
+          </Grid>
+        )}
+
+        {(showLock || showTick) && (
+          <Grid item className={classes.icon}>
+            {showLock && <Lock style={iconStyles} size="small" />}
+            {showTick && <Tick style={iconStyles} size="small" />}
+          </Grid>
+        )}
       </Grid>
-
-      {frequencyMode !== 'N' && (
-        <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>
-          <Typography
-            noWrap
-            color="inherit"
-            variant="body2"
-            className={joinClassNames([dense && classes.labelDense, classes.labelText])}
-          >
-            {getFrequencyText()}
-          </Typography>
-        </Grid>
-      )}
-
-      {(showLock || showTick) && (
-        <Grid item className={classes.icon}>
-          {showLock && <Lock style={iconStyles} size="small" />}
-          {showTick && <Tick style={iconStyles} size="small" />}
-        </Grid>
-      )}
-    </Grid>
+    </div>
   );
 }

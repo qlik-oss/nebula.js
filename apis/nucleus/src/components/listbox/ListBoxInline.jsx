@@ -1,5 +1,4 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 import Lock from '@nebula.js/ui/icons/lock';
@@ -28,14 +27,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ListBoxPortal({ app, fieldIdentifier, stateName, element, options }) {
-  return ReactDOM.createPortal(
-    <ListBoxInline app={app} fieldIdentifier={fieldIdentifier} stateName={stateName} options={options} />,
-    element
-  );
-}
-
-export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {} }) {
+export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {}, fieldDef }) {
   const {
     title,
     direction,
@@ -111,6 +103,14 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   } else {
     listdef.qListObjectDef.qDef.qFieldDefs = [fieldIdentifier];
     fieldName = fieldIdentifier;
+  }
+
+  // TODO: Remove true, add histogram flag.
+  if (frequencyMode !== 'N' || true) {
+    const field = fieldIdentifier.qLibraryId ? fieldDef : fieldName;
+    listdef.frequencyMax = {
+      qValueExpression: `Max(AGGR(Count([${field}]), [${field}]))`,
+    };
   }
 
   let [model] = useSessionModel(listdef, sessionModel ? null : app, fieldName, stateName);
