@@ -43,6 +43,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     update = undefined,
     dense = false,
     selectDisabled = () => false,
+    histogram = false,
   } = options;
   let { frequencyMode } = options;
 
@@ -64,6 +65,10 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       break;
   }
 
+  const getListdefFrequencyMode = () => {
+    histogram && frequencyMode === 'N' ? 'V' : frequencyMode;
+  };
+
   const listdef = {
     qInfo: {
       qType: 'njsListbox',
@@ -71,7 +76,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     qListObjectDef: {
       qStateName: stateName,
       qShowAlternatives: true,
-      qFrequencyMode: frequencyMode,
+      qFrequencyMode: getListdefFrequencyMode(),
       qInitialDataFetch: [
         {
           qTop: 0,
@@ -105,8 +110,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     fieldName = fieldIdentifier;
   }
 
-  // TODO: Remove true, add histogram flag.
-  if (frequencyMode !== 'N' || true) {
+  if (frequencyMode !== 'N' || histogram) {
     const field = fieldIdentifier.qLibraryId ? fieldDef : fieldName;
     listdef.frequencyMax = {
       qValueExpression: `Max(AGGR(Count([${field}]), [${field}]))`,
@@ -262,6 +266,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               direction={direction}
               listLayout={listLayout}
               frequencyMode={frequencyMode}
+              histogram={histogram}
               rangeSelect={rangeSelect}
               checkboxes={checkboxes}
               height={height}

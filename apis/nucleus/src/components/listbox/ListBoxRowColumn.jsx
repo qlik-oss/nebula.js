@@ -140,6 +140,7 @@ export default function RowColumn({ index, style, data, column = false }) {
     dense = false,
     frequencyMode = 'N',
     frequencyMax = '',
+    histogram = false,
   } = data;
 
   const [isSelected, setSelected] = useState(false);
@@ -251,7 +252,7 @@ export default function RowColumn({ index, style, data, column = false }) {
     padding: checkboxes ? 0 : undefined,
   };
 
-  const hasHistogramBar = () => cell && frequencyMode !== 'N' && getFrequencyText() !== '-';
+  const hasHistogramBar = () => cell && histogram && getFrequencyText() !== '-';
   const getBarWidth = (qFrequency) => {
     const freqStr = String(qFrequency);
     const isPercent = freqStr.substring(freqStr.length - 1) === '%';

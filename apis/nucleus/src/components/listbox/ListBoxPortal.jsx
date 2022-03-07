@@ -4,7 +4,8 @@ import ListBoxInline from './ListBoxInline';
 
 export default function ListBoxPortal({ app, fieldIdentifier, stateName, element, options }) {
   let returnComponent = null;
-  if (fieldIdentifier.qLibraryId) {
+  const isFrequencyMaxNeeded = options.histogram || options.frequencyMode !== 'N';
+  if (fieldIdentifier.qLibraryId && isFrequencyMaxNeeded) {
     returnComponent = (
       <ListBoxFetchMasterItem
         app={app}

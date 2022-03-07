@@ -33,6 +33,7 @@ export default function ListBox({
   width,
   listLayout = 'vertical',
   frequencyMode = 'N',
+  histogram = false,
   rangeSelect = true,
   checkboxes = false,
   update = undefined,
@@ -186,6 +187,7 @@ export default function ListBox({
               dense,
               frequencyMode,
               frequencyMax,
+              histogram,
             }}
             itemSize={itemSize}
             onItemsRendered={onItemsRendered}
