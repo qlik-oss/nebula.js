@@ -30,7 +30,7 @@ export default function ListBoxPortal({ app, fieldIdentifier, stateName, element
   return ReactDOM.createPortal(returnComponent, element);
 }
 
-function ListBoxFetchMasterItem({ app, fieldIdentifier, stateName = '$', options = {} }) {
+export function ListBoxFetchMasterItem({ app, fieldIdentifier, stateName = '$', options = {} }) {
   const [fieldDef, setFieldDef] = useState('');
 
   useEffect(() => {

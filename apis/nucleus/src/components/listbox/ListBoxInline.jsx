@@ -65,9 +65,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       break;
   }
 
-  const getListdefFrequencyMode = () => {
-    histogram && frequencyMode === 'N' ? 'V' : frequencyMode;
-  };
+  const getListdefFrequencyMode = () => (histogram && frequencyMode === 'N' ? 'P' : frequencyMode);
 
   const listdef = {
     qInfo: {

@@ -68,7 +68,7 @@ describe('<ListboxInline />', () => {
       },
     };
 
-    [{ ListBoxInline }] = aw.mock(
+    [{ default: ListBoxInline }] = aw.mock(
       [
         [
           require.resolve('@material-ui/core'),
@@ -247,6 +247,13 @@ describe('<ListboxInline />', () => {
         useSessionModel.args[0][0].qListObjectDef.qFrequencyMode,
         'app should default to none frequencyMode'
       ).to.equal('N');
+    });
+
+    it('should get frequency in percent if histogram is enabled', async () => {
+      options.frequencyMode = 'none';
+      options.histogram = true;
+      await render();
+      expect(useSessionModel.args[0][0].qListObjectDef.qFrequencyMode, 'app should use freuency percent').to.equal('P');
     });
 
     it('should use a custom selectionsApi and sessionModel', async () => {
