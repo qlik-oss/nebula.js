@@ -118,6 +118,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
     left: '1%',
     background: theme.palette.background.lighter,
+    transition: 'width 0.2s',
   },
   barWithCheckbox: {
     left: '15%',
