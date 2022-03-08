@@ -39,7 +39,7 @@
     "version": "yarn run spec && yarn run ts && git add ./api-spec/spec.json ./types/index.d.ts"
   },
   "dependencies": {
-    "@types/qlik-engineapi": "12.67.11"
+    "@types/qlik-engineapi": "12.67.12"
   },
   "devDependencies": {
     "@material-ui/core": "4.12.3",
