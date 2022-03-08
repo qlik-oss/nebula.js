@@ -42,7 +42,11 @@ export default function ListBox({
   const [layout] = useLayout(model);
   const [pages, setPages] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
-  const { instantPages = [], interactionEvents } = useSelectionsInteractions({
+  const {
+    instantPages = [],
+    interactionEvents,
+    select,
+  } = useSelectionsInteractions({
     layout,
     selections,
     pages,
@@ -184,6 +188,11 @@ export default function ListBox({
               checkboxes,
               dense,
               frequencyMode,
+              actions: {
+                select,
+                confirm: () => selections && selections.confirm.call(selections),
+                cancel: () => selections && selections.cancel.call(selections),
+              },
             }}
             itemSize={itemSize}
             onItemsRendered={onItemsRendered}
