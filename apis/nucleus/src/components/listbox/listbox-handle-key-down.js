@@ -37,8 +37,6 @@ export default function getHandleKeyDown({ select, confirm, cancel }) {
     if (elementToFocus) {
       elementToFocus.focus();
     }
-    // event.preventDefault();
-    // event.stopPropagation();
   };
   return handleKeyDown;
 }

@@ -3,6 +3,7 @@ import renderer from 'react-test-renderer';
 import { Grid, Typography } from '@material-ui/core';
 import Lock from '@nebula.js/ui/icons/lock';
 import ListBoxCheckbox from '../ListBoxCheckbox';
+import * as getHandleKeyDown from '../listbox-handle-key-down';
 
 const [{ default: ListBoxRowColumn }] = aw.mock(
   [
@@ -33,15 +34,13 @@ async function render(content) {
 describe('<ListBoxRowColumn />', () => {
   let sandbox;
   let actions;
+  let handleKeyDown;
 
   before(() => {
     global.document = {};
     sandbox = sinon.createSandbox();
-    actions = {
-      select: sandbox.stub(),
-      cancel: sandbox.stub(),
-      confirm: sandbox.stub(),
-    };
+    handleKeyDown = sandbox.stub(getHandleKeyDown, 'default').returns(() => 'handle-key-down-callback');
+    actions = 'actions';
   });
 
   afterEach(() => {
@@ -66,6 +65,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: [],
         actions,
       };
+      expect(handleKeyDown).not.called;
       const testRenderer = await render(
         <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
       );
@@ -90,107 +90,8 @@ describe('<ListBoxRowColumn />', () => {
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
       expect(cbs).to.have.length(0);
       await testRenderer.unmount();
-    });
 
-    describe('keyboard navigation', () => {
-      let data;
-      let testRenderer;
-      let testInstance;
-      let props;
-
-      beforeEach(async () => {
-        data = {
-          onMouseDown: sandbox.spy(),
-          onMouseUp: sandbox.spy(),
-          onMouseEnter: sandbox.spy(),
-          onClick: sandbox.spy(),
-          pages: [],
-          actions,
-        };
-        testRenderer = await render(<ListBoxRowColumn index={0} style={{}} data={data} column={rowCol === 'column'} />);
-        testInstance = testRenderer.root;
-        ({ props } = testInstance.findByType(Grid));
-      });
-
-      it('select values with Space', () => {
-        expect(data.actions.select).not.called;
-        expect(data.actions.confirm).not.called;
-        expect(data.actions.cancel).not.called;
-
-        // Space should select values
-        const event = {
-          nativeEvent: { keyCode: 32 },
-          currentTarget: { getAttribute: sandbox.stub().withArgs('data-n').returns(1) },
-        };
-        props.onKeyDown(event);
-        expect(data.actions.select).calledOnce.calledWithExactly([1]);
-      });
-
-      it('confirm selections with Enter', () => {
-        const eventConfirm = {
-          nativeEvent: { keyCode: 13 },
-        };
-        props.onKeyDown(eventConfirm);
-        expect(data.actions.confirm).calledOnce;
-      });
-
-      it('cancel selections with Escape', () => {
-        const eventCancel = {
-          nativeEvent: { keyCode: 27 },
-        };
-        props.onKeyDown(eventCancel);
-        expect(data.actions.cancel).calledOnce;
-      });
-
-      it('arrow up should move focus upwards', () => {
-        const focus = sandbox.stub();
-        const eventArrowUp = {
-          nativeEvent: { keyCode: 38 },
-          currentTarget: { previousElementSibling: { focus } },
-        };
-        props.onKeyDown(eventArrowUp);
-        expect(focus).calledOnce;
-      });
-
-      it('arrow down should move focus downwards', () => {
-        const focus = sandbox.stub();
-        const eventArrowDown = {
-          nativeEvent: { keyCode: 40 },
-          currentTarget: { nextElementSibling: { focus } },
-        };
-        props.onKeyDown(eventArrowDown);
-        expect(focus).calledOnce;
-      });
-
-      it('arrow down with Shift should range select values downwards (current and next element)', () => {
-        const focus = sandbox.stub();
-        expect(actions.select).not.called;
-        const eventArrowDown = {
-          nativeEvent: { keyCode: 40, shiftKey: true },
-          currentTarget: {
-            nextElementSibling: { focus, getAttribute: sandbox.stub().withArgs('data-n').returns(2) },
-            getAttribute: sandbox.stub().withArgs('data-n').returns(1),
-          },
-        };
-        props.onKeyDown(eventArrowDown);
-        expect(focus).calledOnce;
-        expect(actions.select).calledOnce.calledWithExactly([1, 2], true);
-      });
-
-      it('arrow up with Shift should range select values upwards (current and previous element)', () => {
-        const focus = sandbox.stub();
-        expect(actions.select).not.called;
-        const eventArrowUp = {
-          nativeEvent: { keyCode: 38, shiftKey: true },
-          currentTarget: {
-            previousElementSibling: { focus, getAttribute: sandbox.stub().withArgs('data-n').returns(1) },
-            getAttribute: sandbox.stub().withArgs('data-n').returns(2),
-          },
-        };
-        props.onKeyDown(eventArrowUp);
-        expect(focus).calledOnce;
-        expect(actions.select).calledOnce.calledWithExactly([2, 1], true);
-      });
+      expect(handleKeyDown).calledOnce.calledWith('actions');
     });
 
     it('should have css class `value`', async () => {

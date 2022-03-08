@@ -8,7 +8,7 @@ import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
-import getHandleKeyDown from './handle-key-down';
+import getHandleKeyDown from './listbox-handle-key-down';
 
 const ellipsis = {
   width: '100%',
