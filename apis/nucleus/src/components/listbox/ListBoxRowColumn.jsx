@@ -8,7 +8,7 @@ import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
-import getHandleKeyDown from './listbox-handle-key-down';
+import getKeyboardNavigation from './listbox-keyboard-navigation';
 
 const ellipsis = {
   width: '100%',
@@ -126,7 +126,7 @@ export default function RowColumn({ index, style, data, column = false }) {
     actions,
   } = data;
 
-  const handleKeyDownCallback = useCallback(getHandleKeyDown(actions), [actions]);
+  const handleKeyDownCallback = useCallback(getKeyboardNavigation(actions), [actions]);
 
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();

@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { Grid, Typography } from '@material-ui/core';
 import Lock from '@nebula.js/ui/icons/lock';
 import ListBoxCheckbox from '../ListBoxCheckbox';
-import * as getHandleKeyDown from '../listbox-handle-key-down';
+import * as getKeyboardNavigation from '../listbox-keyboard-navigation';
 
 const [{ default: ListBoxRowColumn }] = aw.mock(
   [
@@ -39,7 +39,7 @@ describe('<ListBoxRowColumn />', () => {
   before(() => {
     global.document = {};
     sandbox = sinon.createSandbox();
-    handleKeyDown = sandbox.stub(getHandleKeyDown, 'default').returns(() => 'handle-key-down-callback');
+    handleKeyDown = sandbox.stub(getKeyboardNavigation, 'default').returns(() => 'handle-key-down-callback');
     actions = 'actions';
   });
 

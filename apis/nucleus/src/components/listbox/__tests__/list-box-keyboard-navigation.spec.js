@@ -1,4 +1,4 @@
-import getHandleKeyDown from '../listbox-handle-key-down';
+import getKeyboardNavigation from '../listbox-keyboard-navigation';
 
 describe('keyboard navigation', () => {
   let actions;
@@ -24,7 +24,7 @@ describe('keyboard navigation', () => {
   });
 
   beforeEach(() => {
-    handleKeyDown = getHandleKeyDown(actions);
+    handleKeyDown = getKeyboardNavigation(actions);
   });
 
   it('select values with Space', () => {
@@ -38,7 +38,7 @@ describe('keyboard navigation', () => {
       currentTarget: { getAttribute: sandbox.stub().withArgs('data-n').returns(1) },
     };
     handleKeyDown(event);
-    expect(actions.select).calledOnce.calledWithExactly([1]);
+    expect(actions.select).calledOnce.calledWithExactly([1], false);
   });
 
   it('confirm selections with Enter', () => {
@@ -53,8 +53,11 @@ describe('keyboard navigation', () => {
     const eventCancel = {
       nativeEvent: { keyCode: 27 },
     };
+    const blur = sandbox.stub();
+    global.document.activeElement = { blur };
     handleKeyDown(eventCancel);
     expect(actions.cancel).calledOnce;
+    expect(blur).calledOnce;
   });
 
   it('arrow up should move focus upwards', () => {
