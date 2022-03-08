@@ -76,8 +76,8 @@ commands:
 jobs:
   build:
     docker:
-      - image: circleci/node:14.18.1
-      - image: browserless/chrome:1.49.1-puppeteer-1.20.0
+      - image: circleci/node:14.18.2
+      - image: browserless/chrome:1.51.1-puppeteer-1.20.0
 
     working_directory: ~/project
 
