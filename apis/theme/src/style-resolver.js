@@ -107,11 +107,12 @@ export default function styleResolver(basePath, themeJSON) {
      * object - fontSize
      * fontSize
      * When defaultValue is provided,
-     * it get the value of a style attribute with the given base path + path
+     * it gets the value of a style attribute with the given base path + path
      * Ex: object.barChart - legend.title - fontSize
+     * if not found, it will fallback to the defaultValue
      * @ignore
      *
-     * @param {string} component String of properties seperated by dots to search in
+     * @param {string} component String of properties separated by dots to search in
      * @param {string} attribute Name of the style attribute
      * @param {string|null} [defaultValue] Set a default value if no style value found.
      * @returns {string|undefined|null} The style value of the resolved path, undefined if not found or the default value
