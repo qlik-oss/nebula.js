@@ -76,6 +76,7 @@ const useStyles = makeStyles((theme) => ({
       ...ellipsis,
       display: 'flex',
       alignItems: 'center',
+      paddingLeft: '8px',
     },
   },
 
@@ -111,21 +112,25 @@ const useStyles = makeStyles((theme) => ({
   },
   bar: {
     border: '1px solid',
-    borderColor: '#bebebe87',
+    borderColor: '#D9D9D9',
     height: '57%',
     position: 'absolute',
     zIndex: '-1',
     alignSelf: 'center',
     left: '1%',
-    background: theme.palette.background.lighter,
     transition: 'width 0.2s',
+  },
+  barSelected: {
+    opacity: '30%',
+    zIndex: '0',
+    background: theme.palette.background.lighter,
   },
   barWithCheckbox: {
     left: '15%',
   },
-  opaqe: {
-    opacity: '30%',
-    zIndex: '0',
+  barSelectedWithCheckbox: {
+    background: '#BFE5D0',
+    borderColor: '#BFE5D0',
   },
 }));
 
@@ -282,7 +287,7 @@ export default function RowColumn({ index, style, data, column = false }) {
             className={joinClassNames([
               classes.bar,
               checkboxes && classes.barWithCheckbox,
-              isSelected && !checkboxes && classes.opaqe,
+              isSelected && (checkboxes ? classes.barSelectedWithCheckbox : classes.barSelected),
             ])}
             style={{ width: getBarWidth(cell.qFrequency) }}
           />
