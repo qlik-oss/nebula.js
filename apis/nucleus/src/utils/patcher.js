@@ -11,7 +11,7 @@ function isEqual(a, b) {
   }
   return a === b;
 }
-
+// eslint-disable-next-line default-param-last
 export default function getPatches(path = '/', obj, old) {
   const patches = [];
   Object.keys(obj).forEach((prop) => {

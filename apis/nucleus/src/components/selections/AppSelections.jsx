@@ -9,7 +9,7 @@ import SelectedFields from './SelectedFields';
 import Nav from './Nav';
 import useAppSelections from '../../hooks/useAppSelections';
 
-const AppSelections = ({ app }) => {
+function AppSelections({ app }) {
   const theme = useTheme();
   const [appSelections] = useAppSelections(app);
   if (!appSelections) return null;
@@ -36,7 +36,7 @@ const AppSelections = ({ app }) => {
       </Grid>
     </Grid>
   );
-};
+}
 
 export { AppSelections };
 

@@ -52,7 +52,7 @@
     "cross-env": "7.0.3",
     "enigma.js": "2.8.0",
     "eslint": "8.10.0",
-    "eslint-config-airbnb": "18.2.1",
+    "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "8.5.0",
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-jsx-a11y": "6.5.1",
