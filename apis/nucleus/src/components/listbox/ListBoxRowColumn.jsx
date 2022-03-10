@@ -15,6 +15,10 @@ const ellipsis = {
   textOverflow: 'ellipsis',
 };
 
+const barPadPx = 4;
+const barBorderWidthPx = 1;
+const barWithCheckboxLeftPadEm = 2;
+
 const useStyles = makeStyles((theme) => ({
   row: {
     flexWrap: 'nowrap',
@@ -111,13 +115,13 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
   },
   bar: {
-    border: '1px solid',
+    border: `${barBorderWidthPx}px solid`,
     borderColor: '#D9D9D9',
-    height: '57%',
+    height: '1em',
     position: 'absolute',
     zIndex: '-1',
     alignSelf: 'center',
-    left: '1%',
+    left: `${barPadPx}px`,
     transition: 'width 0.2s',
   },
   barSelected: {
@@ -126,7 +130,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.lighter,
   },
   barWithCheckbox: {
-    left: '15%',
+    left: `${barWithCheckboxLeftPadEm}em`,
   },
   barSelectedWithCheckbox: {
     background: '#BFE5D0',
@@ -262,9 +266,12 @@ export default function RowColumn({ index, style, data, column = false }) {
   const getBarWidth = (qFrequency) => {
     const freqStr = String(qFrequency);
     const isPercent = freqStr.substring(freqStr.length - 1) === '%';
-    const freq = parseFloat(isPercent ? freqStr.slice(0, -1) : qFrequency);
-    const maxWidth = checkboxes ? 0.82 : 0.97;
-    return `${(isPercent ? freq : (freq / frequencyMax) * 100) * maxWidth}%`;
+    const freq = parseFloat(isPercent ? freqStr : qFrequency);
+    const rightSlice = checkboxes
+      ? `(${barWithCheckboxLeftPadEm}em + ${barPadPx + barBorderWidthPx * 2}px)`
+      : `${barPadPx * 2 + barBorderWidthPx * 2}px`;
+    const width = isPercent ? freq : (freq / frequencyMax) * 100;
+    return `calc(${width}% - ${rightSlice})`;
   };
 
   return (
