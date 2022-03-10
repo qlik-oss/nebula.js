@@ -54,8 +54,11 @@ export default function useSelectionsInteractions({
   };
 
   const selectManually = (elementIds = [], additive = false) => {
+    setMouseDown(true);
     preSelect(elementIds, additive || isRangeSelection);
-    select(elementIds, additive || isRangeSelection);
+    const p = select(elementIds, additive || isRangeSelection);
+    setMouseDown(false);
+    return p;
   };
 
   const onClick = useCallback(

@@ -36,14 +36,19 @@ describe('keyboard navigation', () => {
     const event = {
       nativeEvent: { keyCode: 32 },
       currentTarget: { getAttribute: sandbox.stub().withArgs('data-n').returns(1) },
+      preventDefault: sandbox.stub(),
+      stopPropagation: sandbox.stub(),
     };
     handleKeyDown(event);
-    expect(actions.select).calledOnce.calledWithExactly([1], false);
+    expect(actions.select).calledOnce.calledWithExactly([1]);
+    expect(event.preventDefault).calledOnce;
+    expect(event.stopPropagation).not.called;
   });
 
   it('confirm selections with Enter', () => {
     const eventConfirm = {
       nativeEvent: { keyCode: 13 },
+      preventDefault: sandbox.stub(),
     };
     handleKeyDown(eventConfirm);
     expect(actions.confirm).calledOnce;
@@ -52,6 +57,7 @@ describe('keyboard navigation', () => {
   it('cancel selections with Escape', () => {
     const eventCancel = {
       nativeEvent: { keyCode: 27 },
+      preventDefault: sandbox.stub(),
     };
     const blur = sandbox.stub();
     global.document.activeElement = { blur };
@@ -65,6 +71,7 @@ describe('keyboard navigation', () => {
     const eventArrowUp = {
       nativeEvent: { keyCode: 38 },
       currentTarget: { previousElementSibling: { focus } },
+      preventDefault: sandbox.stub(),
     };
     handleKeyDown(eventArrowUp);
     expect(focus).calledOnce;
@@ -75,6 +82,7 @@ describe('keyboard navigation', () => {
     const eventArrowDown = {
       nativeEvent: { keyCode: 40 },
       currentTarget: { nextElementSibling: { focus } },
+      preventDefault: sandbox.stub(),
     };
     handleKeyDown(eventArrowDown);
     expect(focus).calledOnce;
@@ -89,10 +97,11 @@ describe('keyboard navigation', () => {
         nextElementSibling: { focus, getAttribute: sandbox.stub().withArgs('data-n').returns(2) },
         getAttribute: sandbox.stub().withArgs('data-n').returns(1),
       },
+      preventDefault: sandbox.stub(),
     };
     handleKeyDown(eventArrowDown);
     expect(focus).calledOnce;
-    expect(actions.select).calledOnce.calledWithExactly([1, 2], true);
+    expect(actions.select).calledOnce.calledWithExactly([2], true);
   });
 
   it('arrow up with Shift should range select values upwards (current and previous element)', () => {
@@ -104,9 +113,10 @@ describe('keyboard navigation', () => {
         previousElementSibling: { focus, getAttribute: sandbox.stub().withArgs('data-n').returns(1) },
         getAttribute: sandbox.stub().withArgs('data-n').returns(2),
       },
+      preventDefault: sandbox.stub(),
     };
     handleKeyDown(eventArrowUp);
     expect(focus).calledOnce;
-    expect(actions.select).calledOnce.calledWithExactly([2, 1], true);
+    expect(actions.select).calledOnce.calledWithExactly([1], true);
   });
 });
