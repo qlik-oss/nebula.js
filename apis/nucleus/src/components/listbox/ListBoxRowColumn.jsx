@@ -18,6 +18,7 @@ const ellipsis = {
 const barPadPx = 4;
 const barBorderWidthPx = 1;
 const barWithCheckboxLeftPadEm = 2;
+const frequencyTextNone = '0';
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -136,6 +137,9 @@ const useStyles = makeStyles((theme) => ({
     background: '#BFE5D0',
     borderColor: '#BFE5D0',
   },
+  excludedTextWithCheckbox: {
+    color: '#828282',
+  },
 }));
 
 export default function RowColumn({ index, style, data, column = false }) {
@@ -174,6 +178,9 @@ export default function RowColumn({ index, style, data, column = false }) {
     setCell(c);
   }, [pages]);
 
+  const isExcluded = (c) => (c ? c.qState === 'X' || c.qState === 'XS' || c.qState === 'XL' : null);
+  const isAlternative = (c) => (c ? c.qState === 'A' : null);
+
   useEffect(() => {
     if (!cell) {
       return;
@@ -185,9 +192,9 @@ export default function RowColumn({ index, style, data, column = false }) {
     if (!checkboxes) {
       if (cell.qState === 'S' || cell.qState === 'L') {
         clazzArr.push(classes.S);
-      } else if (cell.qState === 'A') {
+      } else if (isAlternative(cell)) {
         clazzArr.push(classes.A);
-      } else if (cell.qState === 'X' || cell.qState === 'XS' || cell.qState === 'XL') {
+      } else if (isExcluded(cell)) {
         clazzArr.push(classes.X);
       }
     }
@@ -200,12 +207,20 @@ export default function RowColumn({ index, style, data, column = false }) {
       .join(' ')
       .trim();
 
+  const hasGrayText = () =>
+    (isAlternative(cell) || isExcluded(cell)) && checkboxes ? classes.excludedTextWithCheckbox : false;
+
   const getValueField = ({ lbl, ix, color, highlighted = false }) => (
     <Typography
       component="span"
       variant="body2"
       key={ix}
-      className={joinClassNames([classes.labelText, highlighted && classes.highlighted, dense && classes.labelDense])}
+      className={joinClassNames([
+        classes.labelText,
+        highlighted && classes.highlighted,
+        dense && classes.labelDense,
+        hasGrayText(),
+      ])}
       color={color}
     >
       <span style={{ whiteSpace: 'pre' }}>{lbl}</span>
@@ -229,7 +244,7 @@ export default function RowColumn({ index, style, data, column = false }) {
   const label = cell ? cell.qText : '';
   const getFrequencyText = () => {
     if (cell) {
-      return cell.qFrequency ? cell.qFrequency : '-';
+      return cell.qFrequency ? cell.qFrequency : frequencyTextNone;
     }
     return '';
   };
@@ -262,7 +277,7 @@ export default function RowColumn({ index, style, data, column = false }) {
     padding: checkboxes ? 0 : undefined,
   };
 
-  const hasHistogramBar = () => cell && histogram && getFrequencyText() !== '-';
+  const hasHistogramBar = () => cell && histogram && getFrequencyText() !== frequencyTextNone;
   const getBarWidth = (qFrequency) => {
     const freqStr = String(qFrequency);
     const isPercent = freqStr.substring(freqStr.length - 1) === '%';
@@ -309,7 +324,7 @@ export default function RowColumn({ index, style, data, column = false }) {
               noWrap
               color="inherit"
               variant="body2"
-              className={joinClassNames([dense && classes.labelDense, classes.labelText])}
+              className={joinClassNames([dense && classes.labelDense, classes.labelText, hasGrayText()])}
             >
               {getFrequencyText()}
             </Typography>
