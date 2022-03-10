@@ -19,7 +19,7 @@ const VizElement = {
   className: 'njs-viz',
 };
 
-const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo }) => {
+function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo }) {
   const { component } = sn;
 
   const { theme: themeName, language, constraints, keyboardNavigation } = useContext(InstanceContext);
@@ -129,6 +129,6 @@ const Supernova = ({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       <div ref={snRef} style={{ position: 'absolute', width: '100%', height: '100%' }} />
     </div>
   );
-};
+}
 
 export default Supernova;

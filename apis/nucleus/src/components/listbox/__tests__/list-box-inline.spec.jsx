@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { IconButton, Grid, Typography } from '@material-ui/core';
@@ -78,7 +79,13 @@ describe('<ListboxInline />', () => {
             Typography,
           }),
         ],
-        [require.resolve('react-virtualized-auto-sizer'), () => () => <div data-testid="virtualized-auto-sizer" />],
+        [
+          require.resolve('react-virtualized-auto-sizer'),
+          () =>
+            function () {
+              return <div data-testid="virtualized-auto-sizer" />;
+            },
+        ],
         [require.resolve('@nebula.js/ui/icons/unlock'), () => () => 'unlock'],
         [require.resolve('@nebula.js/ui/icons/lock'), () => () => 'lock'],
         [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({ icon: 'icon' }), useTheme })],

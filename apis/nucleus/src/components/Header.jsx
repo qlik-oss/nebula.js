@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = ({ layout, sn, anchorEl, hovering, focusHandler }) => {
+function Header({ layout, sn, anchorEl, hovering, focusHandler }) {
   const showTitle = layout.showTitles && !!layout.title;
   const showSubtitle = layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
@@ -101,6 +101,6 @@ const Header = ({ layout, sn, anchorEl, hovering, focusHandler }) => {
       <Grid item>{Toolbar}</Grid>
     </Grid>
   );
-};
+}
 
 export default Header;

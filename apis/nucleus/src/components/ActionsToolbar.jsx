@@ -69,7 +69,7 @@ const popoverTransformOrigin = {
   horizontal: 'right',
 };
 
-const ActionsToolbar = ({
+function ActionsToolbar({
   show = true,
   actions = [],
   maxItems = 3,
@@ -92,7 +92,7 @@ const ActionsToolbar = ({
   },
   focusHandler = null,
   actionsRefMock = null, // for testing
-}) => {
+}) {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
   const { itemSpacing } = useStyles();
   const { translator, keyboardNavigation } = useContext(InstanceContext);
@@ -225,6 +225,6 @@ const ActionsToolbar = ({
   ) : (
     show && Actions
   );
-};
+}
 
 export default ActionsToolbar;

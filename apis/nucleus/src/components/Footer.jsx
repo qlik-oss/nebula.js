@@ -19,7 +19,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Footer = ({ layout }) => {
+function Footer({ layout }) {
   const { itemStyle } = useStyles();
   return layout && layout.showTitles && layout.footnote ? (
     <Grid container>
@@ -30,6 +30,6 @@ const Footer = ({ layout }) => {
       </Grid>
     </Grid>
   ) : null;
-};
+}
 
 export default Footer;
