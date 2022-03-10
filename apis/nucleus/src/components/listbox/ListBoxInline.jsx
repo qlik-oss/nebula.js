@@ -43,9 +43,13 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     update = undefined,
     dense = false,
     selectDisabled = () => false,
-    histogram = false,
   } = options;
-  let { frequencyMode } = options;
+  let { frequencyMode, histogram = false } = options;
+
+  if (fieldDef && fieldDef.failedToFetchFieldDef) {
+    histogram = false;
+    frequencyMode = 'N';
+  }
 
   switch (true) {
     case ['none', 'N', 'NX_FREQUENCY_NONE'].includes(frequencyMode):
