@@ -1,7 +1,9 @@
 import KEYS from '../../keys';
 
-const getElement = (elm, next = false) =>
-  elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'].querySelector('[role]');
+const getElement = (elm, next = false) => {
+  const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
+  return parentElm && parentElm.querySelector('[role]');
+};
 
 export default function getKeyboardNavigation({ select, confirm, cancel }) {
   let startedRange = false;
