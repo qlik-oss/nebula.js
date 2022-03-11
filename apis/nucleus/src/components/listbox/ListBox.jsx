@@ -33,6 +33,7 @@ export default function ListBox({
   width,
   listLayout = 'vertical',
   frequencyMode = 'N',
+  histogram = false,
   rangeSelect = true,
   checkboxes = false,
   update = undefined,
@@ -158,6 +159,7 @@ export default function ListBox({
   const count = layout.qListObject.qSize.qcy;
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
+  const { frequencyMax } = layout;
 
   return (
     <InfiniteLoader
@@ -193,6 +195,8 @@ export default function ListBox({
                 confirm: () => selections && selections.confirm.call(selections),
                 cancel: () => selections && selections.cancel.call(selections),
               },
+              frequencyMax,
+              histogram,
             }}
             itemSize={itemSize}
             onItemsRendered={onItemsRendered}

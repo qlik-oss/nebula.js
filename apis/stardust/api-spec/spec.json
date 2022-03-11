@@ -851,6 +851,12 @@
                   "defaultValue": "none",
                   "type": "#/definitions/FrequencyMode"
                 },
+                "histogram": {
+                  "description": "Show histogram bar",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                },
                 "search": {
                   "description": "Show the search bar",
                   "optional": true,
