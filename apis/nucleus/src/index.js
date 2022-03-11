@@ -5,7 +5,7 @@ import deviceTypeFn from './device-type';
 
 import bootNebulaApp from './components/NebulaApp';
 import AppSelectionsPortal from './components/selections/AppSelections';
-import ListBoxPortal from './components/listbox/ListBoxInline';
+import ListBoxPortal from './components/listbox/ListBoxPortal';
 
 import create from './object/create-session-object';
 import get from './object/get-object';
@@ -363,6 +363,7 @@ function nuked(configuration = {}) {
            * @param {Direction=} [options.direction=ltr] Direction setting ltr|rtl.
            * @param {ListLayout=} [options.listLayout=vertical] Layout direction vertical|horizontal
            * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
+           * @param {boolean=} [options.histogram=false] Show histogram bar
            * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow
            * @param {boolean=} [options.focusSearch=false] Initialize the Listbox with the search input focused. Only applicable when
            *   search is true, since toggling will always focus the search input on show.
