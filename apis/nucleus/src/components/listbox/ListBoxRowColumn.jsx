@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { FormControlLabel, Grid, Typography } from '@material-ui/core';
 
@@ -8,6 +8,7 @@ import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
+import getKeyboardNavigation from './listbox-keyboard-navigation';
 
 const ellipsis = {
   width: '100%',
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
   fieldRoot: {
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+    },
+    '&:focus-visible': {
+      outline: 'none',
     },
   },
 
@@ -153,9 +157,12 @@ export default function RowColumn({ index, style, data, column = false }) {
     checkboxes = false,
     dense = false,
     frequencyMode = 'N',
+    actions,
     frequencyMax = '',
     histogram = false,
   } = data;
+
+  const handleKeyDownCallback = useCallback(getKeyboardNavigation(actions), [actions]);
 
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
@@ -295,11 +302,15 @@ export default function RowColumn({ index, style, data, column = false }) {
         container
         spacing={0}
         className={joinClassNames(['value', ...classArr])}
+        classes={{
+          root: classes.fieldRoot,
+        }}
         style={style}
         onClick={onClick}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseEnter={onMouseEnter}
+        onKeyDown={handleKeyDownCallback}
         role={column ? 'column' : 'row'}
         tabIndex={0}
         data-n={cell && cell.qElemNumber}

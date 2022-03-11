@@ -3,6 +3,7 @@ import renderer from 'react-test-renderer';
 import { Grid, Typography } from '@material-ui/core';
 import Lock from '@nebula.js/ui/icons/lock';
 import ListBoxCheckbox from '../ListBoxCheckbox';
+import * as getKeyboardNavigation from '../listbox-keyboard-navigation';
 
 const [{ default: ListBoxRowColumn }] = aw.mock(
   [
@@ -31,6 +32,25 @@ async function render(content) {
 }
 
 describe('<ListBoxRowColumn />', () => {
+  let sandbox;
+  let actions;
+  let handleKeyDown;
+
+  before(() => {
+    global.document = {};
+    sandbox = sinon.createSandbox();
+    handleKeyDown = sandbox.stub(getKeyboardNavigation, 'default').returns(() => 'handle-key-down-callback');
+    actions = 'actions';
+  });
+
+  afterEach(() => {
+    sandbox.reset();
+  });
+
+  after(() => {
+    sandbox.restore();
+  });
+
   describe('as row', () => {
     const rowCol = 'row';
 
@@ -38,12 +58,14 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
         pages: [],
+        actions,
       };
+      expect(handleKeyDown).not.called;
       const testRenderer = await render(
         <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
       );
@@ -54,6 +76,7 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.spacing).to.equal(0);
       expect(type.props.style).to.deep.equal({});
       expect(type.props.role).to.equal(rowCol);
+      expect(type.props.onKeyDown).to.be.a('function');
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
@@ -67,16 +90,20 @@ describe('<ListBoxRowColumn />', () => {
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
       expect(cbs).to.have.length(0);
       await testRenderer.unmount();
+
+      expect(handleKeyDown).calledOnce.calledWith('actions');
     });
+
     it('should have css class `value`', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
         pages: [],
+        actions,
       };
       const testRenderer = await render(
         <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
@@ -89,16 +116,18 @@ describe('<ListBoxRowColumn />', () => {
       expect(className.split(' ')).to.include('value');
       await testRenderer.unmount();
     });
+
     it('should render with checkboxes', async () => {
       const index = 0;
       const style = {};
       const data = {
         checkboxes: true,
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
         pages: [],
+        actions,
       };
       const testRenderer = await render(
         <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
@@ -130,10 +159,11 @@ describe('<ListBoxRowColumn />', () => {
       const style = {};
       const data = {
         isLocked: true,
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        actions,
         pages: [
           {
             qArea: {
@@ -163,14 +193,16 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.size).to.equal('small');
       await testRenderer.unmount();
     });
+
     it('should set selected', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        actions,
         pages: [
           {
             qArea: {
@@ -197,14 +229,16 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.className).to.include('selected');
       await testRenderer.unmount();
     });
+
     it('should set alternative', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        actions,
         pages: [
           {
             qArea: {
@@ -231,14 +265,16 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.className).to.include('alternative');
       await testRenderer.unmount();
     });
+
     it('should set excluded - qState X', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        actions,
         pages: [
           {
             qArea: {
@@ -265,14 +301,16 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.className).to.include('excluded');
       await testRenderer.unmount();
     });
+
     it('should set excluded - qState XS', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        actions,
         pages: [
           {
             qArea: {
@@ -299,14 +337,16 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.className).to.include('excluded');
       await testRenderer.unmount();
     });
+
     it('should set excluded - qState XL', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        actions,
         pages: [
           {
             qArea: {
@@ -333,14 +373,16 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.className).to.include('excluded');
       await testRenderer.unmount();
     });
+
     it('should highlight ranges', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        actions,
         pages: [
           {
             qArea: {
@@ -373,14 +415,16 @@ describe('<ListBoxRowColumn />', () => {
       expect(types[1].props.children.props.children).to.equal(' ftw');
       await testRenderer.unmount();
     });
+
     it('should highlight ranges', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        actions,
         pages: [
           {
             qArea: {
@@ -415,14 +459,16 @@ describe('<ListBoxRowColumn />', () => {
       expect(hits).to.have.length(2);
       await testRenderer.unmount();
     });
+
     it('should highlight ranges', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        actions,
         pages: [
           {
             qArea: {
@@ -456,14 +502,16 @@ describe('<ListBoxRowColumn />', () => {
       expect(types[2].props.children.props.children).to.equal(' buddy');
       await testRenderer.unmount();
     });
+
     it('should show frequency when enabled', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        actions,
         frequencyMode: 'value',
         pages: [
           {
@@ -497,6 +545,7 @@ describe('<ListBoxRowColumn />', () => {
       const style = {};
       const data = {
         checkboxes: true,
+        actions,
         pages: [
           {
             qArea: {
@@ -541,11 +590,12 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
         pages: [],
+        actions,
       };
       const testRenderer = await render(
         <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
@@ -571,15 +621,17 @@ describe('<ListBoxRowColumn />', () => {
       expect(cbs).to.have.length(0);
       await testRenderer.unmount();
     });
+
     it('should have css class `value`', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sinon.spy(),
-        onMouseUp: sinon.spy(),
-        onMouseEnter: sinon.spy(),
-        onClick: sinon.spy(),
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
         pages: [],
+        actions,
       };
       const testRenderer = await render(
         <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />

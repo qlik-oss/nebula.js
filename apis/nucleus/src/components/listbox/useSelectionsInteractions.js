@@ -53,6 +53,14 @@ export default function useSelectionsInteractions({
     });
   };
 
+  const selectManually = (elementIds = [], additive = false) => {
+    setMouseDown(true);
+    preSelect(elementIds, additive || isRangeSelection);
+    const p = select(elementIds, additive || isRangeSelection);
+    setMouseDown(false);
+    return p;
+  };
+
   const onClick = useCallback(
     (event) => {
       if (selectingValues || selectDisabled()) {
@@ -169,5 +177,6 @@ export default function useSelectionsInteractions({
   return {
     instantPages,
     interactionEvents,
+    select: selectManually, // preselect and select without having to trigger an event
   };
 }
