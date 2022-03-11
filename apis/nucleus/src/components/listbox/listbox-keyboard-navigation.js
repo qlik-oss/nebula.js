@@ -1,5 +1,8 @@
 import KEYS from '../../keys';
 
+const getElement = (elm, next = false) =>
+  elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'].querySelector('[role]');
+
 export default function getKeyboardNavigation({ select, confirm, cancel }) {
   let startedRange = false;
   const setStartedRange = (val) => {
@@ -20,7 +23,7 @@ export default function getKeyboardNavigation({ select, confirm, cancel }) {
         break;
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_RIGHT:
-        elementToFocus = event.currentTarget && event.currentTarget.nextElementSibling;
+        elementToFocus = getElement(event.currentTarget, true);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
             select([+event.currentTarget.getAttribute('data-n')], true);
@@ -31,7 +34,7 @@ export default function getKeyboardNavigation({ select, confirm, cancel }) {
         break;
       case KEYS.ARROW_UP:
       case KEYS.ARROW_LEFT:
-        elementToFocus = event.currentTarget && event.currentTarget.previousElementSibling;
+        elementToFocus = getElement(event.currentTarget, false);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
             select([+event.currentTarget.getAttribute('data-n')], true);

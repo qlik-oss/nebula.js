@@ -113,7 +113,7 @@ describe('use-listbox-interactions', () => {
       const args = ref.current.result;
       expect(listboxSelections.selectValues).not.called;
       args.select([1]);
-      expect(listboxSelections.selectValues).calledTwice;
+      expect(listboxSelections.selectValues).calledOnce;
       expect(listboxSelections.selectValues.args[0][0]).to.deep.equal({
         elemNumbers: [1],
         isSingleSelect: false,

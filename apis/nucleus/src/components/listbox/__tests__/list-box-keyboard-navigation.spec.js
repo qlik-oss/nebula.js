@@ -70,7 +70,13 @@ describe('keyboard navigation', () => {
     const focus = sandbox.stub();
     const eventArrowUp = {
       nativeEvent: { keyCode: 38 },
-      currentTarget: { previousElementSibling: { focus } },
+      currentTarget: {
+        parentElement: {
+          previousElementSibling: {
+            querySelector: () => ({ focus }),
+          },
+        },
+      },
       preventDefault: sandbox.stub(),
     };
     handleKeyDown(eventArrowUp);
@@ -81,7 +87,13 @@ describe('keyboard navigation', () => {
     const focus = sandbox.stub();
     const eventArrowDown = {
       nativeEvent: { keyCode: 40 },
-      currentTarget: { nextElementSibling: { focus } },
+      currentTarget: {
+        parentElement: {
+          nextElementSibling: {
+            querySelector: () => ({ focus }),
+          },
+        },
+      },
       preventDefault: sandbox.stub(),
     };
     handleKeyDown(eventArrowDown);
@@ -94,7 +106,11 @@ describe('keyboard navigation', () => {
     const eventArrowDown = {
       nativeEvent: { keyCode: 40, shiftKey: true },
       currentTarget: {
-        nextElementSibling: { focus, getAttribute: sandbox.stub().withArgs('data-n').returns(2) },
+        parentElement: {
+          nextElementSibling: {
+            querySelector: () => ({ focus, getAttribute: sandbox.stub().withArgs('data-n').returns(2) }),
+          },
+        },
         getAttribute: sandbox.stub().withArgs('data-n').returns(1),
       },
       preventDefault: sandbox.stub(),
@@ -110,8 +126,12 @@ describe('keyboard navigation', () => {
     const eventArrowUp = {
       nativeEvent: { keyCode: 38, shiftKey: true },
       currentTarget: {
-        previousElementSibling: { focus, getAttribute: sandbox.stub().withArgs('data-n').returns(1) },
         getAttribute: sandbox.stub().withArgs('data-n').returns(2),
+        parentElement: {
+          previousElementSibling: {
+            querySelector: () => ({ focus, getAttribute: sandbox.stub().withArgs('data-n').returns(1) }),
+          },
+        },
       },
       preventDefault: sandbox.stub(),
     };
