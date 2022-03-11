@@ -1,5 +1,4 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
-import ReactDOM from 'react-dom';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 import Lock from '@nebula.js/ui/icons/lock';
@@ -28,14 +27,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ListBoxPortal({ app, fieldIdentifier, stateName, element, options }) {
-  return ReactDOM.createPortal(
-    <ListBoxInline app={app} fieldIdentifier={fieldIdentifier} stateName={stateName} options={options} />,
-    element
-  );
-}
-
-export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {} }) {
+export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {}, fieldDef }) {
   const {
     title,
     direction,
@@ -52,7 +44,12 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     dense = false,
     selectDisabled = () => false,
   } = options;
-  let { frequencyMode } = options;
+  let { frequencyMode, histogram = false } = options;
+
+  if (fieldDef && fieldDef.failedToFetchFieldDef) {
+    histogram = false;
+    frequencyMode = 'N';
+  }
 
   switch (true) {
     case ['none', 'N', 'NX_FREQUENCY_NONE'].includes(frequencyMode):
@@ -72,6 +69,8 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
       break;
   }
 
+  const getListdefFrequencyMode = () => (histogram && frequencyMode === 'N' ? 'V' : frequencyMode);
+
   const listdef = {
     qInfo: {
       qType: 'njsListbox',
@@ -79,7 +78,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
     qListObjectDef: {
       qStateName: stateName,
       qShowAlternatives: true,
-      qFrequencyMode: frequencyMode,
+      qFrequencyMode: getListdefFrequencyMode(),
       qInitialDataFetch: [
         {
           qTop: 0,
@@ -111,6 +110,13 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
   } else {
     listdef.qListObjectDef.qDef.qFieldDefs = [fieldIdentifier];
     fieldName = fieldIdentifier;
+  }
+
+  if (frequencyMode !== 'N' || histogram) {
+    const field = fieldIdentifier.qLibraryId ? fieldDef : fieldName;
+    listdef.frequencyMax = {
+      qValueExpression: `Max(AGGR(Count([${field}]), [${field}]))`,
+    };
   }
 
   let [model] = useSessionModel(listdef, sessionModel ? null : app, fieldName, stateName);
@@ -262,6 +268,7 @@ export function ListBoxInline({ app, fieldIdentifier, stateName = '$', options =
               direction={direction}
               listLayout={listLayout}
               frequencyMode={frequencyMode}
+              histogram={histogram}
               rangeSelect={rangeSelect}
               checkboxes={checkboxes}
               height={height}

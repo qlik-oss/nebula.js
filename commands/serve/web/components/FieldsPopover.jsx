@@ -16,46 +16,52 @@ import AppContext from '../contexts/AppContext';
 
 import Search from './Search';
 
-const Field = ({ field, onSelect, sub, parts }) => (
-  <ListItem button onClick={() => onSelect(field.qName)} data-key={field.qName}>
-    <ListItemText>
-      {parts.map((part, ix) => (
-        <span
-          // eslint-disable-next-line react/no-array-index-key
-          key={ix}
-          style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
-        >
-          {part.text}
-        </span>
-      ))}
-    </ListItemText>
-    {sub && <ChevronRight fontSize="small" />}
-  </ListItem>
-);
+function Field({ field, onSelect, sub, parts }) {
+  return (
+    <ListItem button onClick={() => onSelect(field.qName)} data-key={field.qName}>
+      <ListItemText>
+        {parts.map((part, ix) => (
+          <span
+            // eslint-disable-next-line react/no-array-index-key
+            key={ix}
+            style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
+          >
+            {part.text}
+          </span>
+        ))}
+      </ListItemText>
+      {sub && <ChevronRight fontSize="small" />}
+    </ListItem>
+  );
+}
 
-const LibraryItem = ({ item, onSelect, parts }) => (
-  <ListItem button onClick={() => onSelect(item.qInfo)} data-key={item.qInfo.qId}>
-    <ListItemText>
-      {parts.map((part, ix) => (
-        <span
-          // eslint-disable-next-line react/no-array-index-key
-          key={ix}
-          style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
-        >
-          {part.text}
-        </span>
-      ))}
-    </ListItemText>
-  </ListItem>
-);
+function LibraryItem({ item, onSelect, parts }) {
+  return (
+    <ListItem button onClick={() => onSelect(item.qInfo)} data-key={item.qInfo.qId}>
+      <ListItemText>
+        {parts.map((part, ix) => (
+          <span
+            // eslint-disable-next-line react/no-array-index-key
+            key={ix}
+            style={part.highlight ? { flex: '0 1 auto', backgroundColor: '#FFC72A' } : { flex: '0 1 auto' }}
+          >
+            {part.text}
+          </span>
+        ))}
+      </ListItemText>
+    </ListItem>
+  );
+}
 
-const Aggr = ({ aggr, field, onSelect }) => (
-  <ListItem button onClick={() => onSelect(aggr)} data-key={aggr}>
-    <ListItemText>{`${aggr}(${field})`}</ListItemText>
-  </ListItem>
-);
+function Aggr({ aggr, field, onSelect }) {
+  return (
+    <ListItem button onClick={() => onSelect(aggr)} data-key={aggr}>
+      <ListItemText>{`${aggr}(${field})`}</ListItemText>
+    </ListItem>
+  );
+}
 
-const LibraryList = ({ app, onSelect, title = '', type = 'dimension', searchTerm = '' }) => {
+function LibraryList({ app, onSelect, title = '', type = 'dimension', searchTerm = '' }) {
   const [libraryItems] = useLibraryList(app, type);
   const sortedLibraryItems = useMemo(
     () => libraryItems.slice().sort((a, b) => a.qData.title.toLowerCase().localeCompare(b.qData.title.toLowerCase())),
@@ -75,7 +81,7 @@ const LibraryList = ({ app, onSelect, title = '', type = 'dimension', searchTerm
       })}
     </>
   ) : null;
-};
+}
 
 export default function FieldsPopover({ alignTo, show, close, onSelected, type }) {
   const app = useContext(AppContext);

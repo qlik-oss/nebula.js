@@ -14,10 +14,20 @@
     "comment": "Text shown between the selected fields count {0} and total fields count {1}",
     "version": "l99iJM6C+Sm7L6wu1tXfOQ=="
   },
+  "Listbox.Lock": {
+    "value": "선택 내용 잠금",
+    "comment": "Action text to lock selections in a listbox",
+    "version": "05jY0MA0azu2f6LgrBSpYg=="
+  },
   "Listbox.Search": {
     "value": "목록 상자에서 검색",
     "comment": "Action text to search in listbox",
     "version": "XqaXqel4sY8npmjHCNH24Q=="
+  },
+  "Listbox.Unlock": {
+    "value": "선택 내용 잠금 해제",
+    "comment": "Action text to unlock selections in a listbox",
+    "version": "ieAInFVBAW/R6N6YygxhXQ=="
   },
   "Menu.More": {
     "value": "자세히",

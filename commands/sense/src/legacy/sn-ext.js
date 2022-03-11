@@ -284,4 +284,4 @@ const X = {
   },
 };
 
-export { X as default };
+export default X;

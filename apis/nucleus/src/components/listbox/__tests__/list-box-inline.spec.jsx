@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { IconButton, Grid, Typography } from '@material-ui/core';
@@ -68,7 +69,7 @@ describe('<ListboxInline />', () => {
       },
     };
 
-    [{ ListBoxInline }] = aw.mock(
+    [{ default: ListBoxInline }] = aw.mock(
       [
         [
           require.resolve('@material-ui/core'),
@@ -78,7 +79,13 @@ describe('<ListboxInline />', () => {
             Typography,
           }),
         ],
-        [require.resolve('react-virtualized-auto-sizer'), () => () => <div data-testid="virtualized-auto-sizer" />],
+        [
+          require.resolve('react-virtualized-auto-sizer'),
+          () =>
+            function () {
+              return <div data-testid="virtualized-auto-sizer" />;
+            },
+        ],
         [require.resolve('@nebula.js/ui/icons/unlock'), () => () => 'unlock'],
         [require.resolve('@nebula.js/ui/icons/lock'), () => () => 'lock'],
         [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({ icon: 'icon' }), useTheme })],
@@ -247,6 +254,13 @@ describe('<ListboxInline />', () => {
         useSessionModel.args[0][0].qListObjectDef.qFrequencyMode,
         'app should default to none frequencyMode'
       ).to.equal('N');
+    });
+
+    it('should get frequency value if histogram is enabled', async () => {
+      options.frequencyMode = 'none';
+      options.histogram = true;
+      await render();
+      expect(useSessionModel.args[0][0].qListObjectDef.qFrequencyMode, 'app should use freuency value').to.equal('V');
     });
 
     it('should use a custom selectionsApi and sessionModel', async () => {

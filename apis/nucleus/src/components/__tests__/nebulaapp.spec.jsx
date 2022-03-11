@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { StylesProvider, ThemeProvider, createTheme } from '@nebula.js/ui/theme';

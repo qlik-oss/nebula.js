@@ -256,6 +256,7 @@ declare namespace stardust {
             listLayout?: stardust.ListLayout;
             frequencyMode?: stardust.FrequencyMode;
             search?: boolean;
+            histogram?: boolean;
             toolbar?: boolean;
             checkboxes?: boolean;
             rangeSelect?: boolean;

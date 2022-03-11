@@ -1,4 +1,5 @@
 /* eslint-disable no-param-reassign */
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
