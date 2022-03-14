@@ -4,7 +4,7 @@
   "description": "Simple Parcel Sandbox",
   "main": "index.html",
   "scripts": {
-    "start": "parcel index.html --open",
+    "start": "parcel index.html --open --no-hmr",
     "build": "parcel build index.html"
   },
   "dependencies": {
@@ -14,6 +14,6 @@
   },
   "devDependencies": {
     "@babel/core": "7.17.5",
-    "parcel-bundler": "^1.12.5"
+    "parcel": "^2.3.2"
   }
 }
