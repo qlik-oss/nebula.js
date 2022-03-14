@@ -1,0 +1,68 @@
+{
+  "name": "nebulaservenative",
+  "version": "0.0.1",
+  "description": "a native mobile implementation of nebula serve",
+  "main": "index.jsx",
+  "private": true,
+  "scripts": {
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint .",
+    "bundle-install": "bundle install"
+  },
+  "dependencies": {
+    "@nebula.js/sn-table": "^1.6.0",
+    "@nebula.js/stardust": "^2.6.1",
+    "@qlik-trial/sense-themes-default": "^1.13.0",
+    "@qlik-trial/sn-treemap": "^4.2.2",
+    "@qlik/carbon-core": "^1.0.6",
+    "@qlik/react-native-carbon": "^1.1.16",
+    "@react-native-async-storage/async-storage": "^1.16.1",
+    "@react-navigation/native": "^6.0.8",
+    "@react-navigation/native-stack": "^6.5.0",
+    "axios": "^0.26.1",
+    "color-rgba": "^2.4.0",
+    "d3-color": "^3.0.1",
+    "d3-hierarchy": "^3.1.1",
+    "enigma.js": "^2.8.0",
+    "eventemitter3": "^4.0.7",
+    "extend": "^3.0.2",
+    "jotai": "^1.6.0",
+    "lodash": "^4.17.21",
+    "picasso-plugin-q": "^1.6.0",
+    "picasso.js": "^1.6.0",
+    "react": "17.0.2",
+    "react-native": "0.67.2",
+    "react-native-gesture-handler": "^2.3.1",
+    "react-native-linear-gradient": "^2.5.6",
+    "react-native-paper": "^4.11.2",
+    "react-native-reanimated": "^2.4.1",
+    "react-native-safe-area-context": "^3.4.1",
+    "react-native-screens": "^3.12.0",
+    "react-native-uuid": "^2.0.1",
+    "react-redux": "^7.2.6",
+    "redux": "^4.1.2",
+    "string-pixel-width": "^1.10.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "babel-jest": "^26.6.3",
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "eslint": "7.14.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.66.2",
+    "react-test-renderer": "17.0.2"
+  },
+  "jest": {
+    "preset": "react-native"
+  },
+  "rnpm": {
+    "assets": [
+      "./src/assets/fonts/"
+    ]
+  }
+}

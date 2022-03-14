@@ -1,0 +1,6 @@
+module Pods_NebulaServeNative {
+  umbrella header "Pods-NebulaServeNative-umbrella.h"
+
+  export *
+  module * { export * }
+}

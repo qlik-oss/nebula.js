@@ -1,0 +1,9 @@
+{
+  "host": "ecdp1.us.qlikcloud.com",
+  "appid": "405fc31f-767e-41bb-9c31-cf27be8fddd4",
+  "modelid": "LPaXP",
+  "secure": true,
+  "port": 443,
+  "ttl": 3600,
+  "types": ["treemap", "kpi", "table"]
+}

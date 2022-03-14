@@ -1,0 +1,19 @@
+{
+  "name": "react-native-carbon",
+  "version": "1.1.16",
+  "summary": "React Native nebula engine",
+  "homepage": "git@github.com:qlik-oss/react-native-carbon.git",
+  "license": "MIT",
+  "authors": "Qlik",
+  "platforms": {
+    "ios": "10.0"
+  },
+  "source": {
+    "git": "https://github.com/qlik-oss/react-native-carbon.git",
+    "tag": "1.1.16"
+  },
+  "source_files": ["ios/**/*.{h,m,mm,swift}", "cpp/**/*.{h,cpp}"],
+  "dependencies": {
+    "React-Core": []
+  }
+}

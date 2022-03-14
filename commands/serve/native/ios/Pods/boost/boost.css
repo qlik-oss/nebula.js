@@ -1,0 +1,51 @@
+/*=============================================================================
+    Copyright 2002 William E. Kempf
+    Distributed under the Boost Software License, Version 1.0. (See accompany-
+    ing file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
+=============================================================================*/
+
+H1 {
+  font-size: 200%;
+  color: #00008b;
+}
+H2 {
+  font-size: 150%;
+}
+H3 {
+  font-size: 125%;
+}
+H4 {
+  font-size: 108%;
+}
+BODY {
+  font-size: 100%;
+  background-color: #ffffff;
+  color: #000000;
+}
+PRE {
+  margin-left: 2em;
+  font-family: Courier, monospace;
+}
+CODE {
+  font-family: Courier, monospace;
+}
+CODE.as_pre {
+  white-space: pre;
+}
+.index {
+  text-align: left;
+}
+.page-index {
+  text-align: left;
+}
+.definition {
+  text-align: left;
+}
+.footnote {
+  font-size: 66%;
+  vertical-align: super;
+  text-decoration: none;
+}
+.function-semantics {
+  clear: left;
+}

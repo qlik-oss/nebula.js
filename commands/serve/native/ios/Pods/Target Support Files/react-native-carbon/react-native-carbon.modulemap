@@ -1,0 +1,6 @@
+module react_native_carbon {
+  umbrella header "react-native-carbon-umbrella.h"
+
+  export *
+  module * { export * }
+}
