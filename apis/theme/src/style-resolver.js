@@ -12,33 +12,26 @@ import generateScales from './theme-scale-generator';
  * object.barChart - fontSize
  * object - fontSize
  * fontSize
- * When defaultValue is provided,
- * it only creates array of one path
- * object.barChart - legend.title - fontSize
  * @ignore
  */
-function constructPaths(pathSteps, baseSteps, defaultValue) {
+function constructPaths(pathSteps, baseSteps) {
   const ret = [];
   let localBaseSteps;
   let baseLength;
   if (pathSteps) {
-    if (defaultValue === undefined) {
-      let pathLength = pathSteps.length;
-      while (pathLength >= 0) {
-        localBaseSteps = baseSteps.slice();
-        baseLength = localBaseSteps.length;
-        while (baseLength >= 0) {
-          ret.push(localBaseSteps.concat(pathSteps));
-          localBaseSteps.pop();
-          baseLength--;
-        }
-        pathSteps.pop();
-        pathLength--;
+    let pathLength = pathSteps.length;
+    while (pathLength >= 0) {
+      localBaseSteps = baseSteps.slice();
+      baseLength = localBaseSteps.length;
+      while (baseLength >= 0) {
+        ret.push(localBaseSteps.concat(pathSteps));
+        localBaseSteps.pop();
+        baseLength--;
       }
-    } else {
-      ret.push(baseSteps.concat(pathSteps));
+      pathSteps.pop();
+      pathLength--;
     }
-  } else if (defaultValue === undefined) {
+  } else {
     localBaseSteps = baseSteps.slice();
     baseLength = localBaseSteps.length;
     while (baseLength >= 0) {
@@ -46,8 +39,6 @@ function constructPaths(pathSteps, baseSteps, defaultValue) {
       localBaseSteps.pop();
       baseLength--;
     }
-  } else {
-    ret.push(baseSteps);
   }
   return ret;
 }
@@ -64,28 +55,32 @@ function getObject(root, steps) {
   return obj;
 }
 
-function searchPathArray(pathArray, attribute, theme, defaultValue) {
+function searchPathArray(pathArray, attribute, theme) {
+  const attributeArray = attribute.split('.');
   for (let i = 0; i < pathArray.length; i++) {
     const target = getObject(theme, pathArray[i]);
-    if (target !== null && target[attribute]) {
-      return target[attribute];
+    if (target !== null) {
+      if (attributeArray.length === 1 && target[attribute]) {
+        return target[attribute];
+      }
+      if (attributeArray.length > 1) {
+        return getObject(target, attributeArray);
+      }
     }
   }
-  if (defaultValue === undefined) {
-    return undefined;
-  }
-  return defaultValue;
+
+  return undefined;
 }
 
-function searchValue(path, attribute, baseSteps, component, defaultValue) {
+function searchValue(path, attribute, baseSteps, component) {
   let pathArray;
   if (path === '') {
-    pathArray = constructPaths(null, baseSteps, defaultValue);
+    pathArray = constructPaths(null, baseSteps);
   } else {
     const steps = path.split('.');
-    pathArray = constructPaths(steps, baseSteps, defaultValue);
+    pathArray = constructPaths(steps, baseSteps);
   }
-  return searchPathArray(pathArray, attribute, component, defaultValue);
+  return searchPathArray(pathArray, attribute, component);
 }
 
 export default function styleResolver(basePath, themeJSON) {
@@ -106,23 +101,22 @@ export default function styleResolver(basePath, themeJSON) {
      * object.barChart - fontSize
      * object - fontSize
      * fontSize
-     * When defaultValue is provided,
-     * it gets the value of a style attribute with the given base path + path
-     * Ex: object.barChart - legend.title - fontSize
-     * if not found, it will fallback to the defaultValue
+     * When attributes separated by dots is provided, they are required in the theme JSON file
+     * Ex. Base path: "object" , Path: "legend", ", Attribute: "title.fontSize"
+     * title: {fontSize: ...} must be matched and the rest is the same as above
+     * If you want a exact match, you can use `getStyle('object', '', 'legend.title.fontSize');`
      * @ignore
      *
      * @param {string} component String of properties separated by dots to search in
      * @param {string} attribute Name of the style attribute
-     * @param {string|null} [defaultValue] Set a default value if no style value found.
-     * @returns {string|undefined|null} The style value of the resolved path, undefined if not found or the default value
+     * @returns {string|undefined} The style value of the resolved path, undefined if not found
      */
-    getStyle(component, attribute, defaultValue) {
+    getStyle(component, attribute) {
       // TODO - object overrides
       // TODO - feature flag on font-family?
       // TODO - caching
       const baseSteps = basePathSteps.concat();
-      const result = searchValue(component, attribute, baseSteps, themeJSON, defaultValue);
+      const result = searchValue(component, attribute, baseSteps, themeJSON);
 
       // TODO - support functions
       return result;

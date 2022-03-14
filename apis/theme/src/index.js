@@ -73,29 +73,31 @@ export default function theme() {
     },
 
     /**
-     * Get the value of a style attribute in the theme by searching in the theme's JSON structure.
-     * The search starts at the specified base path and continues upwards until the value is found.
+     * Get the value of a style attribute in the theme
+     * by searching in the theme's JSON structure.
+     * The search starts at the specified base path
+     * and continues upwards until the value is found.
      * If possible it will get the attribute's value using the given path.
-     * When a default value is provided and there is no value of
-     * a style attribute found with that exactly specified path,
-     * the default value will be returned.
+     * When attributes separated by dots are provided, such as 'hover.color',
+     * they are required in the theme JSON file
      *
      * @param {string} basePath - Base path in the theme's JSON structure to start the search in (specified as a name path separated by dots).
      * @param {string} path - Expected path for the attribute (specified as a name path separated by dots).
-     * @param {string} attribute - Name of the style attribute.
-     * @param {string|null} [defaultValue] - Set a default value if no style value found.
-     * @returns {string|undefined|null} The style value or the default value or undefined
+     * @param {string} attribute - Name of the style attribute. (specified as a name attribute separated by dots).
+     * @returns {string|undefined} The style value or undefined if not found
      *
      * @example
      * theme.getStyle('object', 'title.main', 'fontSize');
+     * theme.getStyle('object', 'title', 'main.fontSize');
+     * theme.getStyle('object', '', 'title.main.fontSize');
      * theme.getStyle('', '', 'fontSize');
      */
-    getStyle(basePath, path, attribute, defaultValue) {
+    getStyle(basePath, path, attribute) {
       if (!styleResolverInstanceCache[basePath]) {
         styleResolverInstanceCache[basePath] = styleResolverFn(basePath, resolvedThemeJSON);
       }
 
-      return styleResolverInstanceCache[basePath].getStyle(path, attribute, defaultValue);
+      return styleResolverInstanceCache[basePath].getStyle(path, attribute);
     },
   };
 
