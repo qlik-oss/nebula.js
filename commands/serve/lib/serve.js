@@ -1,4 +1,4 @@
-const { spawn } = require('child_process');
+const { exec } = require('child_process');
 const path = require('path');
 const fs = require('fs');
 const portfinder = require('portfinder');
@@ -93,21 +93,26 @@ const initiateWatch = async ({ snPath, snName, host }) => {
 };
 
 const buildAndRunServeNative = async (platform) => {
-  const proc =
-    platform === 'android'
-      ? await spawn('sh ./native/scripts/run-android.sh')
-      : await spawn('sh ./native/scripts/run-ios.sh');
-
-  proc.stdout.on('data', (data) => {
-    console.log(`stdout: ${data}`);
-  });
-  proc.stderr.on('data', (data) => {
-    console.log(`stderr: ${data}`);
-  });
-  proc.on('close', (code) => {
-    console.log(`child process exited with code ${code}`);
-  });
-  return;
+  try {
+    const executionScript =
+      platform === 'android'
+        ? path.join(__dirname, '..', 'native', 'scripts', 'run-android.sh')
+        : path.join(__dirname, '..', 'native', 'scripts', 'run-ios.sh');
+    const proc = exec(`sh ${executionScript}`, {
+      cwd: path.join(__dirname, '..', 'native', 'scripts'),
+    });
+    proc.on('error', (err) => {
+      console.log('proc error ', err);
+    });
+    proc.stdout.on('data', (data) => {
+      console.log(`stdout: ${data}`);
+    });
+    proc.on('close', (code) => {
+      console.log(`child process exited with code ${code}`);
+    });
+  } catch (error) {
+    console.log(error.message);
+  }
 };
 
 module.exports = async (argv) => {
@@ -119,9 +124,6 @@ module.exports = async (argv) => {
     const yargsArgs = argv.config ? ['--config', argv.config] : [];
     defaultServeConfig = initConfig(yargs(yargsArgs)).argv;
   }
-
-  console.log('argv breakdown');
-  console.log(argv);
 
   if (argv.nativeAndroid) {
     buildAndRunServeNative('android');
