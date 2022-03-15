@@ -4,7 +4,7 @@
   "description": "Simple local mashup",
   "main": "index.html",
   "scripts": {
-    "start": "parcel index.html --open",
+    "start": "parcel index.html --open --no-hmr",
     "build": "parcel build index.html"
   },
   "dependencies": {
@@ -17,6 +17,6 @@
   },
   "devDependencies": {
     "@babel/core": "7.12.3",
-    "parcel": "^2.0.0-rc.0"
+    "parcel": "^2.3.2"
   }
 }
