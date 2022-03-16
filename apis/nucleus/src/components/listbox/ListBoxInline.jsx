@@ -143,7 +143,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
 
   const { translator, keyboardNavigation } = useContext(InstanceContext);
   const moreAlignTo = useRef();
-  const actionsRef = useRef();
 
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
@@ -240,7 +239,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
             )}
           </Grid>
           <Grid item xs />
-          <Grid item ref={actionsRef}>
+          <Grid item>
             <ActionsToolbar
               more={{
                 enabled: !isLocked,
