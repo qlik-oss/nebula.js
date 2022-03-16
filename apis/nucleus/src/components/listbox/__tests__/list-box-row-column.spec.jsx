@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { Grid, Typography } from '@material-ui/core';
 import Lock from '@nebula.js/ui/icons/lock';
 import ListBoxCheckbox from '../ListBoxCheckbox';
-import * as getKeyboardNavigation from '../listbox-keyboard-navigation';
+import * as keyboardNavigation from '../listbox-keyboard-navigation';
 
 const [{ default: ListBoxRowColumn }] = aw.mock(
   [
@@ -34,13 +34,17 @@ async function render(content) {
 describe('<ListBoxRowColumn />', () => {
   let sandbox;
   let actions;
-  let handleKeyDown;
+  let getFieldKeyboardNavigation;
 
   before(() => {
     global.document = {};
     sandbox = sinon.createSandbox();
-    handleKeyDown = sandbox.stub(getKeyboardNavigation, 'default').returns(() => 'handle-key-down-callback');
+    getFieldKeyboardNavigation = sandbox.stub(keyboardNavigation, 'getFieldKeyboardNavigation');
     actions = 'actions';
+  });
+
+  beforeEach(() => {
+    getFieldKeyboardNavigation.returns(() => 'handle-key-down-callback');
   });
 
   afterEach(() => {
@@ -65,7 +69,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: [],
         actions,
       };
-      expect(handleKeyDown).not.called;
+      expect(getFieldKeyboardNavigation).not.called;
       const testRenderer = await render(
         <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
       );
@@ -77,6 +81,7 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.style).to.deep.equal({});
       expect(type.props.role).to.equal(rowCol);
       expect(type.props.onKeyDown).to.be.a('function');
+      expect(type.props.onKeyDown()).to.equal('handle-key-down-callback');
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
@@ -91,7 +96,7 @@ describe('<ListBoxRowColumn />', () => {
       expect(cbs).to.have.length(0);
       await testRenderer.unmount();
 
-      expect(handleKeyDown).calledOnce.calledWith('actions');
+      expect(getFieldKeyboardNavigation).calledOnce.calledWith('actions');
     });
 
     it('should have css class `value`', async () => {
@@ -142,6 +147,7 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
+      expect(type.props.onKeyDown()).to.equal('handle-key-down-callback');
       expect(type.props.onClick.callCount).to.equal(0);
 
       const types = testInstance.findAllByType(Typography);

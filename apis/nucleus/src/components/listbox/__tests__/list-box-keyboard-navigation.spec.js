@@ -1,9 +1,10 @@
-import getKeyboardNavigation from '../listbox-keyboard-navigation';
+import { getFieldKeyboardNavigation, getListboxInlineKeyboardNavigation } from '../listbox-keyboard-navigation';
 
 describe('keyboard navigation', () => {
   let actions;
   let sandbox;
-  let handleKeyDown;
+  let handleKeyDownForField;
+  let handleKeyDownForListbox;
 
   before(() => {
     global.document = {};
@@ -24,119 +25,181 @@ describe('keyboard navigation', () => {
   });
 
   beforeEach(() => {
-    handleKeyDown = getKeyboardNavigation(actions);
+    handleKeyDownForField = getFieldKeyboardNavigation(actions);
+    handleKeyDownForListbox = getListboxInlineKeyboardNavigation();
   });
 
-  it('select values with Space', () => {
-    expect(actions.select).not.called;
-    expect(actions.confirm).not.called;
-    expect(actions.cancel).not.called;
+  describe('handle keyboard navigation on field level', () => {
+    it('select values with Space', () => {
+      expect(actions.select).not.called;
+      expect(actions.confirm).not.called;
+      expect(actions.cancel).not.called;
 
-    // Space should select values
-    const event = {
-      nativeEvent: { keyCode: 32 },
-      currentTarget: { getAttribute: sandbox.stub().withArgs('data-n').returns(1) },
-      preventDefault: sandbox.stub(),
-      stopPropagation: sandbox.stub(),
-    };
-    handleKeyDown(event);
-    expect(actions.select).calledOnce.calledWithExactly([1]);
-    expect(event.preventDefault).calledOnce;
-    expect(event.stopPropagation).not.called;
-  });
+      // Space should select values
+      const event = {
+        nativeEvent: { keyCode: 32 },
+        currentTarget: { getAttribute: sandbox.stub().withArgs('data-n').returns(1) },
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForField(event);
+      expect(actions.select).calledOnce.calledWithExactly([1]);
+      expect(event.preventDefault).calledOnce;
+      expect(event.stopPropagation).calledOnce;
+    });
 
-  it('confirm selections with Enter', () => {
-    const eventConfirm = {
-      nativeEvent: { keyCode: 13 },
-      preventDefault: sandbox.stub(),
-    };
-    handleKeyDown(eventConfirm);
-    expect(actions.confirm).calledOnce;
-  });
+    it('confirm selections with Enter', () => {
+      const eventConfirm = {
+        nativeEvent: { keyCode: 13 },
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForField(eventConfirm);
+      expect(actions.confirm).calledOnce;
+    });
 
-  it('cancel selections with Escape', () => {
-    const eventCancel = {
-      nativeEvent: { keyCode: 27 },
-      preventDefault: sandbox.stub(),
-    };
-    const blur = sandbox.stub();
-    global.document.activeElement = { blur };
-    handleKeyDown(eventCancel);
-    expect(actions.cancel).calledOnce;
-    expect(blur).calledOnce;
-  });
+    it('cancel selections with Escape', () => {
+      const eventCancel = {
+        nativeEvent: { keyCode: 27 },
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForField(eventCancel);
+      expect(actions.cancel).calledOnce;
+    });
 
-  it('arrow up should move focus upwards', () => {
-    const focus = sandbox.stub();
-    const eventArrowUp = {
-      nativeEvent: { keyCode: 38 },
-      currentTarget: {
-        parentElement: {
-          previousElementSibling: {
-            querySelector: () => ({ focus }),
+    it('arrow up should move focus upwards', () => {
+      const focus = sandbox.stub();
+      const eventArrowUp = {
+        nativeEvent: { keyCode: 38 },
+        currentTarget: {
+          parentElement: {
+            previousElementSibling: {
+              querySelector: () => ({ focus }),
+            },
           },
         },
-      },
-      preventDefault: sandbox.stub(),
-    };
-    handleKeyDown(eventArrowUp);
-    expect(focus).calledOnce;
-  });
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForField(eventArrowUp);
+      expect(focus).calledOnce;
+    });
 
-  it('arrow down should move focus downwards', () => {
-    const focus = sandbox.stub();
-    const eventArrowDown = {
-      nativeEvent: { keyCode: 40 },
-      currentTarget: {
-        parentElement: {
-          nextElementSibling: {
-            querySelector: () => ({ focus }),
+    it('arrow down should move focus downwards', () => {
+      const focus = sandbox.stub();
+      const eventArrowDown = {
+        nativeEvent: { keyCode: 40 },
+        currentTarget: {
+          parentElement: {
+            nextElementSibling: {
+              querySelector: () => ({ focus }),
+            },
           },
         },
-      },
-      preventDefault: sandbox.stub(),
-    };
-    handleKeyDown(eventArrowDown);
-    expect(focus).calledOnce;
-  });
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForField(eventArrowDown);
+      expect(focus).calledOnce;
+    });
 
-  it('arrow down with Shift should range select values downwards (current and next element)', () => {
-    const focus = sandbox.stub();
-    expect(actions.select).not.called;
-    const eventArrowDown = {
-      nativeEvent: { keyCode: 40, shiftKey: true },
-      currentTarget: {
-        parentElement: {
-          nextElementSibling: {
-            querySelector: () => ({ focus, getAttribute: sandbox.stub().withArgs('data-n').returns(2) }),
+    it('arrow down with Shift should range select values downwards (current and next element)', () => {
+      const focus = sandbox.stub();
+      expect(actions.select).not.called;
+      const eventArrowDown = {
+        nativeEvent: { keyCode: 40, shiftKey: true },
+        currentTarget: {
+          parentElement: {
+            nextElementSibling: {
+              querySelector: () => ({ focus, getAttribute: sandbox.stub().withArgs('data-n').returns(2) }),
+            },
+          },
+          getAttribute: sandbox.stub().withArgs('data-n').returns(1),
+        },
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForField(eventArrowDown);
+      expect(focus).calledOnce;
+      expect(actions.select).calledOnce.calledWithExactly([2], true);
+    });
+
+    it('arrow up with Shift should range select values upwards (current and previous element)', () => {
+      const focus = sandbox.stub();
+      expect(actions.select).not.called;
+      const eventArrowUp = {
+        nativeEvent: { keyCode: 38, shiftKey: true },
+        currentTarget: {
+          getAttribute: sandbox.stub().withArgs('data-n').returns(2),
+          parentElement: {
+            previousElementSibling: {
+              querySelector: () => ({ focus, getAttribute: sandbox.stub().withArgs('data-n').returns(1) }),
+            },
           },
         },
-        getAttribute: sandbox.stub().withArgs('data-n').returns(1),
-      },
-      preventDefault: sandbox.stub(),
-    };
-    handleKeyDown(eventArrowDown);
-    expect(focus).calledOnce;
-    expect(actions.select).calledOnce.calledWithExactly([2], true);
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForField(eventArrowUp);
+      expect(focus).calledOnce;
+      expect(actions.select).calledOnce.calledWithExactly([1], true);
+    });
   });
 
-  it('arrow up with Shift should range select values upwards (current and previous element)', () => {
-    const focus = sandbox.stub();
-    expect(actions.select).not.called;
-    const eventArrowUp = {
-      nativeEvent: { keyCode: 38, shiftKey: true },
-      currentTarget: {
-        getAttribute: sandbox.stub().withArgs('data-n').returns(2),
-        parentElement: {
-          previousElementSibling: {
-            querySelector: () => ({ focus, getAttribute: sandbox.stub().withArgs('data-n').returns(1) }),
-          },
-        },
-      },
-      preventDefault: sandbox.stub(),
-    };
-    handleKeyDown(eventArrowUp);
-    expect(focus).calledOnce;
-    expect(actions.select).calledOnce.calledWithExactly([1], true);
+  describe('handle keyboard navigation on listbox-inline level', () => {
+    it('should focus value with Space', () => {
+      const element = { focus: sandbox.stub() };
+      const event = {
+        currentTarget: { querySelector: sandbox.stub().withArgs('.value.selector,.value').returns(element) },
+        nativeEvent: { keyCode: 32 },
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForListbox(event);
+      expect(element.focus).calledOnce;
+      expect(event.preventDefault).calledOnce;
+      expect(event.stopPropagation).calledOnce;
+    });
+
+    it('should focus value with Enter', () => {
+      const element = { focus: sandbox.stub() };
+      const event = {
+        currentTarget: { querySelector: sandbox.stub().withArgs('.value.selector,.value').returns(element) },
+        nativeEvent: { keyCode: 13 },
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForListbox(event);
+      expect(element.focus).calledOnce;
+      expect(event.preventDefault).calledOnce;
+      expect(event.stopPropagation).calledOnce;
+    });
+
+    it('should focus container with Escape', () => {
+      const element = { focus: sandbox.stub() };
+      const event = {
+        currentTarget: element,
+        nativeEvent: { keyCode: 27 },
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForListbox(event);
+      expect(element.focus).calledOnce;
+      expect(event.preventDefault).calledOnce;
+      expect(event.stopPropagation).calledOnce;
+    });
+    it('not matched key should not call event methods', () => {
+      const element = { focus: sandbox.stub() };
+      const event = {
+        currentTarget: element,
+        nativeEvent: { keyCode: 99 },
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForListbox(event);
+      expect(event.preventDefault).not.called;
+      expect(event.stopPropagation).not.called;
+    });
   });
 });
