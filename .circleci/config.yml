@@ -139,7 +139,7 @@ jobs:
           path: test/mashup/__artifacts__
   api-governance:
     machine:
-      image: ubuntu-2004
+      image: ubuntu-2004:current
     working_directory: ~/project
     steps:
       - checkout
