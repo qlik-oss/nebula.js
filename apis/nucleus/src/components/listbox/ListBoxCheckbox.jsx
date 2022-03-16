@@ -42,7 +42,6 @@ export default function ListboxCheckbox({ checked, label, dense }) {
     <Checkbox
       edge="start"
       checked={checked}
-      tabIndex={-1}
       disableRipple
       className={[styles.checkbox, dense && styles.dense].filter(Boolean).join(' ')}
       inputProps={{ 'aria-labelledby': label }}

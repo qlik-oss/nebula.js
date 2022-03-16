@@ -1,11 +1,11 @@
 import KEYS from '../../keys';
 
-const getElement = (elm, next = false) => {
-  const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
-  return parentElm && parentElm.querySelector('[role]');
-};
+export function getFieldKeyboardNavigation({ select, confirm, cancel }) {
+  const getElement = (elm, next = false) => {
+    const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
+    return parentElm && parentElm.querySelector('[role]');
+  };
 
-export default function getKeyboardNavigation({ select, confirm, cancel }) {
   let startedRange = false;
   const setStartedRange = (val) => {
     startedRange = val;
@@ -50,16 +50,50 @@ export default function getKeyboardNavigation({ select, confirm, cancel }) {
         break;
       case KEYS.ESCAPE:
         cancel();
-        if (document.activeElement) {
-          document.activeElement.blur();
-        }
-        break;
+        return; // let it propagate to top-level
       default:
+        return; // don't stop propagation since we want to outsource keydown to other handlers.
     }
     if (elementToFocus) {
       elementToFocus.focus();
     }
     event.preventDefault();
+    event.stopPropagation();
   };
+  return handleKeyDown;
+}
+
+export function getListboxInlineKeyboardNavigation() {
+  const focusListbox = (element) => {
+    const fieldElement = element.querySelector('.value.selector,.value');
+    if (fieldElement) {
+      fieldElement.focus();
+    }
+  };
+
+  const focusContainer = (element) => {
+    element.focus();
+  };
+
+  const handleKeyDown = (event) => {
+    const { keyCode } = event.nativeEvent;
+
+    switch (keyCode) {
+      // case KEYS.TAB: TODO: Focus confirm button using keyboard.focusSelection when we can access the useKeyboard hook.
+      case KEYS.ENTER:
+      case KEYS.SPACE:
+        focusListbox(event.currentTarget);
+        break;
+      case KEYS.ESCAPE:
+        focusContainer(event.currentTarget);
+        break;
+      default:
+        return;
+    }
+
+    event.preventDefault();
+    event.stopPropagation();
+  };
+
   return handleKeyDown;
 }

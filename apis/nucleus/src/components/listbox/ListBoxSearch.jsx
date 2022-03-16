@@ -33,6 +33,7 @@ const TREE_PATH = '/qListObjectDef';
 export default function ListBoxSearch({ model, autoFocus = true, dense = false }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
+
   const onChange = (e) => {
     setValue(e.target.value);
     model.searchListObjectFor(TREE_PATH, e.target.value);
@@ -68,6 +69,7 @@ export default function ListBoxSearch({ model, autoFocus = true, dense = false }
       value={value}
       onChange={onChange}
       onKeyDown={onKeyDown}
+      tabIndex={-1}
     />
   );
 }

@@ -19,6 +19,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
+import { getListboxInlineKeyboardNavigation } from './listbox-keyboard-navigation';
 
 const useStyles = makeStyles(() => ({
   listBoxHeader: {
@@ -140,13 +141,16 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const { translator } = useContext(InstanceContext);
+  const { translator, keyboardNavigation } = useContext(InstanceContext);
   const moreAlignTo = useRef();
+  const actionsRef = useRef();
 
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [autoFocusSearch, setAutoFocusSearch] = useState(focusSearch);
+
+  const handleKeyDown = getListboxInlineKeyboardNavigation();
 
   useEffect(() => {
     if (selections) {
@@ -199,22 +203,29 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
 
   const getSearchOrUnlock = () =>
     search === 'toggle' && !hasSelections ? (
-      <IconButton onClick={onShowSearch} title={translator.get('Listbox.Search')}>
+      <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')}>
         <SearchIcon />
       </IconButton>
     ) : (
-      <IconButton onClick={lock} disabled={!hasSelections}>
+      <IconButton onClick={lock} tabIndex={-1} disabled={!hasSelections}>
         <Unlock />
       </IconButton>
     );
 
   return (
-    <Grid container direction="column" spacing={0} style={{ height: '100%', minHeight: `${minHeight}px` }}>
+    <Grid
+      container
+      tabIndex={keyboardNavigation ? 0 : -1}
+      direction="column"
+      spacing={0}
+      style={{ height: '100%', minHeight: `${minHeight}px` }}
+      onKeyDown={handleKeyDown}
+    >
       {toolbar && (
         <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (
-              <IconButton onClick={unlock} disabled={!isLocked}>
+              <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked}>
                 <Lock title={translator.get('Listbox.Unlock')} />
               </IconButton>
             ) : (
@@ -229,7 +240,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
             )}
           </Grid>
           <Grid item xs />
-          <Grid item>
+          <Grid item ref={actionsRef}>
             <ActionsToolbar
               more={{
                 enabled: !isLocked,
