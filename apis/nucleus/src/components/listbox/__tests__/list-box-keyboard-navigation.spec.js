@@ -159,7 +159,7 @@ describe('keyboard navigation', () => {
       handleKeyDownForListbox(event);
       expect(element.focus).calledOnce;
       expect(event.preventDefault).calledOnce;
-      expect(event.stopPropagation).calledOnce;
+      expect(event.stopPropagation).not.called;
     });
 
     it('should focus value with Enter', () => {
@@ -173,7 +173,7 @@ describe('keyboard navigation', () => {
       handleKeyDownForListbox(event);
       expect(element.focus).calledOnce;
       expect(event.preventDefault).calledOnce;
-      expect(event.stopPropagation).calledOnce;
+      expect(event.stopPropagation).not.called;
     });
 
     it('should focus container with Escape', () => {
@@ -187,7 +187,7 @@ describe('keyboard navigation', () => {
       handleKeyDownForListbox(event);
       expect(element.focus).calledOnce;
       expect(event.preventDefault).calledOnce;
-      expect(event.stopPropagation).calledOnce;
+      expect(event.stopPropagation).not.called;
     });
     it('not matched key should not call event methods', () => {
       const element = { focus: sandbox.stub() };

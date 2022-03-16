@@ -91,8 +91,9 @@ export function getListboxInlineKeyboardNavigation() {
         return;
     }
 
+    // Note: We should not stop propagation here as it will block the containing app
+    // from handling keydown events.
     event.preventDefault();
-    event.stopPropagation();
   };
 
   return handleKeyDown;
