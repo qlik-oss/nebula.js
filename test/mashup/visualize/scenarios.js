@@ -36,6 +36,120 @@ scenarios['valid-type'] = {
   },
 };
 
+scenarios['long-running'] = {
+  name: 'Long running query',
+  genericObject: {
+    delay: 5000,
+    session: {
+      getObjectApi() {
+        return {
+          cancelRequest() {
+            return {};
+          },
+        };
+      },
+    },
+    getLayout() {
+      return {
+        qInfo: {
+          qId: 'bb8',
+          qType: 'doesnt matter',
+        },
+        qMeta: {
+          privileges: ['read', 'update', 'delete', 'exportdata'],
+        },
+        qSelectionInfo: {},
+        visualization: 'my-chart',
+        qHyperCube: {
+          qSize: {
+            qcx: 2,
+            qcy: 1,
+          },
+          qDimensionInfo: [
+            {
+              qFallbackTitle: '=a',
+              qApprMaxGlyphCount: 1,
+              qCardinal: 0,
+              qSortIndicator: 'N',
+              qGroupFallbackTitles: ['=a'],
+              qGroupPos: 0,
+              qStateCounts: {
+                qLocked: 0,
+                qSelected: 0,
+                qOption: 0,
+                qDeselected: 0,
+                qAlternative: 0,
+                qExcluded: 0,
+                qSelectedExcluded: 0,
+                qLockedExcluded: 0,
+              },
+              qTags: [],
+              qDimensionType: 'D',
+              qGrouping: 'N',
+              qNumFormat: {
+                qType: 'U',
+                qnDec: 0,
+                qUseThou: 0,
+              },
+              qIsAutoFormat: true,
+              qGroupFieldDefs: ['=a'],
+              qMin: 'NaN',
+              qMax: 'NaN',
+              qAttrExprInfo: [],
+              qAttrDimInfo: [],
+              qIsCalculated: true,
+              qCardinalities: {
+                qCardinal: 0,
+                qHypercubeCardinal: 1,
+                qAllValuesCardinal: -1,
+              },
+            },
+          ],
+          qMeasureInfo: [
+            {
+              qFallbackTitle: '=1',
+              qApprMaxGlyphCount: 1,
+              qCardinal: 0,
+              qSortIndicator: 'N',
+              qNumFormat: {
+                qType: 'U',
+                qnDec: 0,
+                qUseThou: 0,
+              },
+              qMin: 1,
+              qMax: 1,
+              qIsAutoFormat: true,
+              qAttrExprInfo: [],
+              qAttrDimInfo: [],
+              qTrendLines: [],
+            },
+          ],
+          qEffectiveInterColumnSortOrder: [0, 1],
+          qGrandTotalRow: [
+            {
+              qText: '1',
+              qNum: 1,
+              qElemNumber: -1,
+              qState: 'X',
+              qIsTotalCell: true,
+            },
+          ],
+          qDataPages: [],
+          qPivotDataPages: [],
+          qStackedDataPages: [],
+          qMode: 'S',
+          qNoOfLeftDims: -1,
+          qTreeNodesOnDim: [],
+          qColumnOrder: [],
+        },
+      };
+    },
+    getProperties() {
+      return {};
+    },
+  },
+};
+
 scenarios['calc-unfulfilled'] = {
   name: 'Calculations unfulfilled',
   genericObject: {
