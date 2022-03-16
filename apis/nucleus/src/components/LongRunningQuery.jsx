@@ -31,7 +31,7 @@ export function Cancel({ cancel, translator, ...props }) {
           <Progress />
         </Grid>
         <Grid item>
-          <Typography variant="h6" align="center">
+          <Typography variant="h6" align="center" data-tid="update-active">
             {translator.get('Object.Update.Active')}
           </Typography>
         </Grid>
@@ -52,7 +52,7 @@ export function Retry({ retry, translator, ...props }) {
         <WarningTriangle style={{ fontSize: '38px' }} />
       </Grid>
       <Grid item>
-        <Typography variant="h6" align="center">
+        <Typography variant="h6" align="center" data-tid="update-cancelled">
           {translator.get('Object.Update.Cancelled')}
         </Typography>
       </Grid>

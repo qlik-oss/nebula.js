@@ -55,8 +55,12 @@ export const getPropValue = (prop, { args = [], defaultValue } = {}) => {
  * @returns A fixture property function
  */
 export const getPropFn =
-  (prop, { defaultValue, async = true } = {}) =>
+  (prop, { defaultValue, async = true, delay = 0 } = {}) =>
   (...args) => {
     const value = getPropValue(prop, { defaultValue, args });
-    return async ? Promise.resolve(value) : value;
+    return async
+      ? new Promise((resolve) => {
+          setTimeout(() => resolve(value), delay);
+        })
+      : value;
   };

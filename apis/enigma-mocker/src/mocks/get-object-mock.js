@@ -1,5 +1,4 @@
 import { getPropValue, getPropFn } from '../prop';
-import { findAsync } from '../util';
 
 /**
  * Properties on `getObject()` operating synchronously.
@@ -13,6 +12,7 @@ const PROPS_SYNC = [
   'removeAllListeners',
   'removeListener',
   'setMaxListerners',
+  'qId',
 ];
 
 /**
@@ -30,7 +30,7 @@ function isPropAsync(name) {
  * @returns The mocked object
  */
 function createMock(genericObject) {
-  const { id, session, ...props } = genericObject;
+  const { id, session, delay = 0, ...props } = genericObject;
   return {
     id: getPropValue(id, { defaultValue: `object - ${+Date.now()}` }),
     session: getPropValue(session, { defaultValue: true }),
@@ -39,7 +39,7 @@ function createMock(genericObject) {
     ...Object.entries(props).reduce(
       (fns, [name, value]) => ({
         ...fns,
-        [name]: getPropFn(value, { async: isPropAsync(name) }),
+        [name]: getPropFn(value, { async: isPropAsync(name), delay }),
       }),
       {}
     ),
@@ -63,6 +63,7 @@ function validate(genericObject) {
   if (!(layout.qInfo && layout.qInfo.qId)) {
     throw new Error('Generic object is missing "qId" for path "getLayout().qInfo.qId"');
   }
+  genericObject.qId = layout.qInfo.qId; // eslint-disable-line no-param-reassign
 }
 
 /**
@@ -75,7 +76,7 @@ function GetObjectMock(genericObjects = []) {
   const genericObjectMocks = genericObjects.map(createMock);
 
   return async (id) => {
-    const mock = findAsync(genericObjectMocks, async (m) => (await m.getLayout()).qInfo.qId === id);
+    const mock = genericObjectMocks.find((m) => m.qId() === id);
     return Promise.resolve(mock);
   };
 }
