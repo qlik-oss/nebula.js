@@ -138,7 +138,8 @@ jobs:
       - store_artifacts:
           path: test/mashup/__artifacts__
   api-governance:
-    machine: true
+    machine:
+      image: ubuntu-2004:current
     working_directory: ~/project
     steps:
       - checkout
