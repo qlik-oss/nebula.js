@@ -49,7 +49,7 @@ function getObject(root, steps) {
     if (obj[steps[i]]) {
       obj = obj[steps[i]];
     } else {
-      return null;
+      return undefined;
     }
   }
   return obj;
@@ -58,15 +58,8 @@ function getObject(root, steps) {
 function searchPathArray(pathArray, attribute, theme) {
   const attributeArray = attribute.split('.');
   for (let i = 0; i < pathArray.length; i++) {
-    const target = getObject(theme, pathArray[i]);
-    if (target !== null) {
-      if (attributeArray.length === 1 && target[attribute]) {
-        return target[attribute];
-      }
-      if (attributeArray.length > 1) {
-        return getObject(target, attributeArray);
-      }
-    }
+    const restult = getObject(theme, [...pathArray[i], ...attributeArray]);
+    if (restult !== undefined) return restult;
   }
 
   return undefined;
