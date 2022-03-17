@@ -160,6 +160,7 @@ export default function RowColumn({ index, style, data, column = false }) {
     actions,
     frequencyMax = '',
     histogram = false,
+    keyboard,
   } = data;
 
   const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation(actions), [actions]);
@@ -312,7 +313,7 @@ export default function RowColumn({ index, style, data, column = false }) {
         onMouseEnter={onMouseEnter}
         onKeyDown={handleKeyDownCallback}
         role={column ? 'column' : 'row'}
-        tabIndex={-1}
+        tabIndex={!keyboard.enabled || keyboard.active ? 0 : -1}
         data-n={cell && cell.qElemNumber}
       >
         {hasHistogramBar() && (

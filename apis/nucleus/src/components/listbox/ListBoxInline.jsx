@@ -148,8 +148,15 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [autoFocusSearch, setAutoFocusSearch] = useState(focusSearch);
+  const [keyboardActive, setKeyboardActive] = useState(false);
 
-  const handleKeyDown = getListboxInlineKeyboardNavigation();
+  const handleKeyDown = getListboxInlineKeyboardNavigation({ setKeyboardActive });
+
+  // Expose the keyboard flags in the same way as the keyboard hook does.
+  const keyboard = {
+    enabled: keyboardNavigation, // this will be static until we can access the useKeyboard hook
+    active: keyboardActive,
+  };
 
   useEffect(() => {
     if (selections) {
@@ -214,7 +221,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   return (
     <Grid
       container
-      tabIndex={keyboardNavigation ? 0 : -1}
+      tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"
       spacing={0}
       style={{ height: '100%', minHeight: `${minHeight}px` }}
@@ -265,7 +272,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       )}
       {searchVisible && (
         <Grid item>
-          <ListBoxSearch model={model} autoFocus={autoFocusSearch} dense={dense} />
+          <ListBoxSearch model={model} autoFocus={autoFocusSearch} dense={dense} keyboard={keyboard} />
         </Grid>
       )}
       <Grid item xs>
@@ -286,6 +293,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               update={update}
               dense={dense}
               selectDisabled={selectDisabled}
+              keyboard={keyboard}
             />
           )}
         </AutoSizer>

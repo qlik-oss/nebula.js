@@ -5,10 +5,12 @@ describe('keyboard navigation', () => {
   let sandbox;
   let handleKeyDownForField;
   let handleKeyDownForListbox;
+  let setKeyboardActive;
 
   before(() => {
     global.document = {};
     sandbox = sinon.createSandbox();
+    setKeyboardActive = sandbox.stub();
     actions = {
       select: sandbox.stub(),
       cancel: sandbox.stub(),
@@ -26,7 +28,7 @@ describe('keyboard navigation', () => {
 
   beforeEach(() => {
     handleKeyDownForField = getFieldKeyboardNavigation(actions);
-    handleKeyDownForListbox = getListboxInlineKeyboardNavigation();
+    handleKeyDownForListbox = getListboxInlineKeyboardNavigation({ setKeyboardActive });
   });
 
   describe('handle keyboard navigation on field level', () => {
@@ -160,6 +162,7 @@ describe('keyboard navigation', () => {
       expect(element.focus).calledOnce;
       expect(event.preventDefault).calledOnce;
       expect(event.stopPropagation).not.called;
+      expect(setKeyboardActive).calledOnce.calledWith(true);
     });
 
     it('should focus value with Enter', () => {
@@ -174,6 +177,7 @@ describe('keyboard navigation', () => {
       expect(element.focus).calledOnce;
       expect(event.preventDefault).calledOnce;
       expect(event.stopPropagation).not.called;
+      expect(setKeyboardActive).calledOnce.calledWith(true);
     });
 
     it('should focus container with Escape', () => {
@@ -188,6 +192,7 @@ describe('keyboard navigation', () => {
       expect(element.focus).calledOnce;
       expect(event.preventDefault).calledOnce;
       expect(event.stopPropagation).not.called;
+      expect(setKeyboardActive).calledOnce.calledWith(false);
     });
     it('not matched key should not call event methods', () => {
       const element = { focus: sandbox.stub() };
@@ -200,6 +205,7 @@ describe('keyboard navigation', () => {
       handleKeyDownForListbox(event);
       expect(event.preventDefault).not.called;
       expect(event.stopPropagation).not.called;
+      expect(setKeyboardActive).not.called;
     });
   });
 });
