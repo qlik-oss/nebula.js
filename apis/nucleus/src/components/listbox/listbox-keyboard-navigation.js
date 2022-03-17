@@ -89,9 +89,6 @@ export function getListboxInlineKeyboardNavigation({ setKeyboardActive }) {
       case KEYS.ESCAPE:
         focusContainer(event.currentTarget);
         break;
-      case KEYS.TAB:
-        event.stopPropagation();
-        return;
       default:
         return;
     }
