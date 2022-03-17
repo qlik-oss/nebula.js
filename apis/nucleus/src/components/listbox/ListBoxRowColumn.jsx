@@ -124,6 +124,7 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
     left: `${barPadPx}px`,
     transition: 'width 0.2s',
+    willChange: 'width',
   },
   barSelected: {
     opacity: '30%',
@@ -341,3 +342,7 @@ export default function RowColumn({ index, style, data, column = false }) {
     </div>
   );
 }
+
+const propsAreEqual = (prevRow, nextRow) => JSON.stringify(prevRow) === JSON.stringify(nextRow); // TODO: Use itemKey in ListBox instead?
+
+export const MemoRowColumn = React.memo(RowColumn, propsAreEqual);
