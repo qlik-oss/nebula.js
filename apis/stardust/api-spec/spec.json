@@ -788,6 +788,26 @@
         ]
       }
     },
+    "SearchMode": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "false"
+          },
+          {
+            "kind": "literal",
+            "value": "true"
+          },
+          {
+            "kind": "literal",
+            "value": "'toggle'"
+          }
+        ]
+      }
+    },
     "ReceiverFunction": {
       "description": "A callback function which receives another function as input.",
       "kind": "alias",
@@ -858,9 +878,15 @@
                   "type": "boolean"
                 },
                 "search": {
-                  "description": "Show the search bar",
+                  "description": "Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow",
                   "optional": true,
                   "defaultValue": true,
+                  "type": "#/definitions/SearchMode"
+                },
+                "focusSearch": {
+                  "description": "Initialize the Listbox with the search input focused. Only applicable when\n  search is true, since toggling will always focus the search input on show.",
+                  "optional": true,
+                  "defaultValue": false,
                   "type": "boolean"
                 },
                 "toolbar": {
@@ -908,6 +934,15 @@
                   "description": "Use a custom selectionsApi to customize how values are selected.",
                   "optional": true,
                   "type": "object"
+                },
+                "selectDisabled=": {
+                  "description": "Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.",
+                  "optional": true,
+                  "kind": "function",
+                  "params": [],
+                  "returns": {
+                    "type": "boolean"
+                  }
                 },
                 "update": {
                   "description": "A function which receives an update function which upon call will trigger a data fetch.",
@@ -1415,95 +1450,6 @@
           "optional": true,
           "type": "object"
         }
-      }
-    },
-    "Range": {
-      "kind": "interface",
-      "entries": {
-        "qCharPos": {
-          "description": "The (absolute) index where the highlighted range starts.",
-          "type": "number"
-        },
-        "qCharCount": {
-          "description": "The length of the sub-string (starting from qChartPos) that should be highlighted.",
-          "type": "number"
-        }
-      }
-    },
-    "Segment": {
-      "kind": "interface",
-      "entries": {
-        "segment": {
-          "description": "The sub-string/segment cut out from the original label.",
-          "type": "string"
-        },
-        "highlighted": {
-          "description": "A flag which tells whether the segment should be highlighted or not.",
-          "type": "boolean"
-        }
-      }
-    },
-    "getSegmentsFromRange": {
-      "kind": "function",
-      "params": [
-        {
-          "name": "label",
-          "description": "The label we want to create segments out of.",
-          "type": "string"
-        },
-        {
-          "name": "range",
-          "description": "The indexes which define how to create the segments.",
-          "type": "#/definitions/Range"
-        },
-        {
-          "name": "startIndex",
-          "description": "An optional index which tells where we want to start the first segment from\n  (only relevant for creating the first unhighlighted segment of a string/sub-string).",
-          "optional": true,
-          "defaultValue": 0,
-          "type": "number"
-        }
-      ],
-      "returns": {
-        "description": "An array of segments.",
-        "kind": "array",
-        "items": {
-          "type": "#/definitions/Segment"
-        }
-      }
-    },
-    "MinMaxResult": {
-      "kind": "interface",
-      "entries": {
-        "min": {
-          "type": "number"
-        },
-        "max": {
-          "type": "number"
-        }
-      }
-    },
-    "getMinMax": {
-      "description": "Returns the min and max indices of elemNumbersOrdered which contains\nall numbers in elementNbrs.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "elementNbrs",
-          "kind": "array",
-          "items": {
-            "type": "number"
-          }
-        },
-        {
-          "name": "elemNumbersOrdered",
-          "kind": "array",
-          "items": {
-            "type": "number"
-          }
-        }
-      ],
-      "returns": {
-        "type": "#/definitions/MinMaxResult"
       }
     },
     "ActionToolbarElement": {
