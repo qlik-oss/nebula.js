@@ -8,6 +8,7 @@ import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
+import ListBoxRadioButton from './ListBoxRadioButton';
 
 const ellipsis = {
   width: '100%',
@@ -76,6 +77,7 @@ const useStyles = makeStyles((theme) => ({
   checkboxLabel: {
     margin: 0,
     width: '100%',
+    height: '100%',
     // For checkboxes the first child is the checkbox container, second is the label container.
     '& > span:nth-child(2)': {
       ...ellipsis,
@@ -156,6 +158,7 @@ export default function RowColumn({ index, style, data, column = false }) {
     frequencyMode = 'N',
     frequencyMax = '',
     histogram = false,
+    isSingleSelect,
   } = data;
 
   const [isSelected, setSelected] = useState(false);
@@ -230,11 +233,12 @@ export default function RowColumn({ index, style, data, column = false }) {
 
   const getCheckboxField = ({ lbl, color, qElemNumber }) => {
     const cb = <ListBoxCheckbox label={lbl} checked={isSelected} dense={dense} />;
+    const rb = <ListBoxRadioButton label={lbl} checked={isSelected} dense={dense} />;
     const labelTag = typeof lbl === 'string' ? getValueField({ lbl, color, highlighted: false }) : lbl;
     return (
       <FormControlLabel
         color={color}
-        control={cb}
+        control={isSingleSelect ? rb : cb}
         className={classes.checkboxLabel}
         label={labelTag}
         key={qElemNumber}

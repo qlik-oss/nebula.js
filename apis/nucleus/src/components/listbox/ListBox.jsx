@@ -190,6 +190,7 @@ export default function ListBox({
               frequencyMode,
               frequencyMax,
               histogram,
+              isSingleSelect,
             }}
             itemSize={itemSize}
             onItemsRendered={onItemsRendered}
