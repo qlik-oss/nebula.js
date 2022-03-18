@@ -30,6 +30,7 @@ describe('<ListboxInline />', () => {
   let selections;
   let renderer;
   let render;
+  let getListboxInlineKeyboardNavigation;
 
   const InstanceContext = React.createContext();
 
@@ -50,6 +51,7 @@ describe('<ListboxInline />', () => {
     };
 
     ActionsToolbar = sandbox.stub();
+    getListboxInlineKeyboardNavigation = sandbox.stub().returns('keyboard-navigation');
     ListBoxSearch = sandbox.stub();
     createListboxSelectionToolbar = sandbox.stub();
     useTheme = sandbox.stub();
@@ -96,6 +98,12 @@ describe('<ListboxInline />', () => {
         [require.resolve('../../ActionsToolbar'), () => ActionsToolbar],
         [require.resolve('../ListBox'), () => <div className="TheListBox" />],
         [require.resolve('../ListBoxSearch'), () => ListBoxSearch],
+        [
+          require.resolve('../listbox-keyboard-navigation'),
+          () => ({
+            getListboxInlineKeyboardNavigation,
+          }),
+        ],
         [require.resolve('../listbox-selection-toolbar'), () => createListboxSelectionToolbar],
       ],
       ['../ListBoxInline']
@@ -203,6 +211,8 @@ describe('<ListboxInline />', () => {
       expect(listBoxSearches).to.have.length(1);
       const showSearchButtons = renderer.root.findAllByType(IconButton);
       expect(showSearchButtons).to.have.length(1);
+      expect(getListboxInlineKeyboardNavigation).calledOnce;
+      expect(renderer.toJSON().props.onKeyDown).to.equal('keyboard-navigation');
     });
 
     it('should render without toolbar', async () => {

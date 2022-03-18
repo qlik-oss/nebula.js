@@ -42,7 +42,7 @@ describe('<ListBoxCheckbox />', () => {
     expect(cb.props.checkedIcon.props.className).to.equal('cbIconChecked');
     expect(cb.props.edge).to.equal('start');
     expect(cb.props.disableRipple).to.equal(true);
-    expect(cb.props.tabIndex).to.equal(-1);
+    expect(cb.props.tabIndex).to.equal(undefined);
   });
 
   it('should render a checked checkbox', async () => {

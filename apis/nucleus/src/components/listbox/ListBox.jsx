@@ -38,6 +38,7 @@ export default function ListBox({
   checkboxes = false,
   update = undefined,
   dense = false,
+  keyboard = {},
   selectDisabled = () => false,
 }) {
   const [layout] = useLayout(model);
@@ -197,6 +198,7 @@ export default function ListBox({
               },
               frequencyMax,
               histogram,
+              keyboard,
             }}
             itemSize={itemSize}
             onItemsRendered={onItemsRendered}

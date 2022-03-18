@@ -7,13 +7,13 @@
   },
   "keywords": ["qlik", "nebula"],
   "scripts": {
-    "start": "parcel src/index.html --open",
+    "start": "parcel src/index.html --open --no-hmr",
     "build": "parcel build src/index.html --dist-dir ./dist"
   },
   "dependencies": {
     "@nebula.js/stardust": "<%= nebulaVersion %>",
     "@nebula.js/sn-bar-chart": "^0.8.24",
     "enigma.js": "^2.6.3",
-    "parcel": "^2.0.0-rc.0"
+    "parcel": "^2.3.2"
   }
 }

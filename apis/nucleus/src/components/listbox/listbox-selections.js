@@ -70,6 +70,7 @@ export function getElemNumbersFromPages(pages) {
 }
 
 /**
+ * @ignore
  * @interface MinMaxResult
  * @property {number} min
  * @property {number} max
@@ -79,6 +80,7 @@ export function getElemNumbersFromPages(pages) {
  * Returns the min and max indices of elemNumbersOrdered which contains
  * all numbers in elementNbrs.
  *
+ * @ignore
  * @param {number[]} elementNbrs
  * @param {number[]} elemNumbersOrdered
  * @returns {MinMaxResult}

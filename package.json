@@ -11,7 +11,7 @@
     "lint": "eslint packages apis commands --ext .js,.jsx",
     "lint:check": "eslint --print-config ./aw.config.js | eslint-config-prettier-check",
     "start:ui": "start-storybook",
-    "spec": "lerna run spec --stream --concurrency 99",
+    "spec": "lerna run spec --stream --concurrency 99 && lerna run ts --stream --concurrency 99 ",
     "test": "yarn run test:unit",
     "mashup": "node scripts/start-mashup.js",
     "test:mashup": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/mashup/**/*.int.js'",

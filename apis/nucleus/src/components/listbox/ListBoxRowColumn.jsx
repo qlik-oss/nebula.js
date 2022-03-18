@@ -8,7 +8,7 @@ import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
-import getKeyboardNavigation from './listbox-keyboard-navigation';
+import { getFieldKeyboardNavigation } from './listbox-keyboard-navigation';
 
 const ellipsis = {
   width: '100%',
@@ -160,9 +160,10 @@ export default function RowColumn({ index, style, data, column = false }) {
     actions,
     frequencyMax = '',
     histogram = false,
+    keyboard,
   } = data;
 
-  const handleKeyDownCallback = useCallback(getKeyboardNavigation(actions), [actions]);
+  const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation(actions), [actions]);
 
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
@@ -296,6 +297,8 @@ export default function RowColumn({ index, style, data, column = false }) {
     return `calc(${width}% - ${rightSlice})`;
   };
 
+  const isFirstElement = index === 0;
+
   return (
     <div className={classes.barContainer}>
       <Grid
@@ -312,7 +315,7 @@ export default function RowColumn({ index, style, data, column = false }) {
         onMouseEnter={onMouseEnter}
         onKeyDown={handleKeyDownCallback}
         role={column ? 'column' : 'row'}
-        tabIndex={0}
+        tabIndex={isFirstElement && (!keyboard.enabled || keyboard.active) ? 0 : -1}
         data-n={cell && cell.qElemNumber}
       >
         {hasHistogramBar() && (

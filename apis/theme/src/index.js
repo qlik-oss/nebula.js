@@ -73,24 +73,31 @@ export default function theme() {
     },
 
     /**
-     * Get the value of a style attribute in the theme by searching in the theme's JSON structure.
-     * The search starts at the specified base path and continues upwards until the value is found.
+     * Get the value of a style attribute in the theme
+     * by searching in the theme's JSON structure.
+     * The search starts at the specified base path
+     * and continues upwards until the value is found.
      * If possible it will get the attribute's value using the given path.
+     * When attributes separated by dots are provided, such as 'hover.color',
+     * they are required in the theme JSON file
      *
      * @param {string} basePath - Base path in the theme's JSON structure to start the search in (specified as a name path separated by dots).
      * @param {string} path - Expected path for the attribute (specified as a name path separated by dots).
-     * @param {string} attribute - Name of the style attribute.
-     * @returns {string} The style value
+     * @param {string} attribute - Name of the style attribute. (specified as a name attribute separated by dots).
+     * @returns {string|undefined} The style value or undefined if not found
      *
      * @example
      * theme.getStyle('object', 'title.main', 'fontSize');
+     * theme.getStyle('object', 'title', 'main.fontSize');
+     * theme.getStyle('object', '', 'title.main.fontSize');
      * theme.getStyle('', '', 'fontSize');
      */
     getStyle(basePath, path, attribute) {
       if (!styleResolverInstanceCache[basePath]) {
         styleResolverInstanceCache[basePath] = styleResolverFn(basePath, resolvedThemeJSON);
       }
-      return styleResolverInstanceCache[basePath].getStyle(path, attribute, false);
+
+      return styleResolverInstanceCache[basePath].getStyle(path, attribute);
     },
   };
 
