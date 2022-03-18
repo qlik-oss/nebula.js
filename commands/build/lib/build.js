@@ -30,7 +30,7 @@ const resolveReplacementStrings = (replacementStrings) => {
   return replacementStrings;
 };
 
-const setupReactnative = (argv) => {
+const setupReactNative = (argv) => {
   const { reactNative } = argv;
   let reactNativePath;
   if (reactNative) {
@@ -38,7 +38,7 @@ const setupReactnative = (argv) => {
     if (!fs.existsSync(`${reactNativePath}/package.json`)) {
       // eslint-disable-next-line no-console
       console.warn(
-        `WARNING: No ${reactNativePath}/package.json was found.  If you really intended to build a react-native version of this package, please provide one.\nOther wise, to supress this warning, omitt the --reactNative flag.`
+        `WARNING: No ${reactNativePath}/package.json was found.  If you really intended to build a react-native version of this package, please provide one.\nOther wise, to suppress this warning, omit the --reactNative flag.`
       );
       return false;
     }
@@ -54,7 +54,7 @@ const config = ({
   core,
 } = {}) => {
   const CWD = argv.cwd || cwd;
-  const { reactNative, reactNativePath } = setupReactnative(argv);
+  const { reactNative, reactNativePath } = setupReactNative(argv);
   let dir = CWD;
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
@@ -152,7 +152,7 @@ const config = ({
     output: {
       banner,
       format,
-      file: path.resolve(dir, fileTarget), // fileTargetformat === 'esm' && pkg.module ? pkg.module : pkg.main,
+      file: path.resolve(dir, fileTarget),
       name: moduleName,
       sourcemap,
       globals: {
@@ -174,7 +174,7 @@ const minified = async (argv) => {
 
 const esm = async (argv, core) => {
   const c = config({
-    mode: argv.mode || 'development',
+    mode: argv.mode || 'production',
     format: 'esm',
     argv,
     core,
@@ -259,7 +259,7 @@ const watch = async (argv) => {
 async function build(argv = {}) {
   let defaultBuildConfig = {};
 
-  // if not runnning via command line, run the config to inject default values
+  // if not running via command line, run the config to inject default values
   if (!argv.$0) {
     const yargsArgs = argv.config ? ['--config', argv.config] : [];
     defaultBuildConfig = initConfig(yargs(yargsArgs)).argv;
