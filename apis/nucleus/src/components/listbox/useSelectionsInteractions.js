@@ -16,7 +16,7 @@ export default function useSelectionsInteractions({
   checkboxes = false,
   selectDisabled,
   doc = document,
-  isSingleSelect,
+  isSingleSelect = false,
 }) {
   const [instantPages, setInstantPages] = useState(pages);
   const [mouseDown, setMouseDown] = useState(false);

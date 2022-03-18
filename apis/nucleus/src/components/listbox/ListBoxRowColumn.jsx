@@ -361,5 +361,4 @@ function RowColumn({ index, style, data, column = false }) {
 const propsAreEqual = (prevRow, nextRow) => JSON.stringify(prevRow) === JSON.stringify(nextRow);
 
 const MemoRowColumn = React.memo(RowColumn, propsAreEqual);
-// export default {MemoRowColumn, RowColumn};
 export default MemoRowColumn;
