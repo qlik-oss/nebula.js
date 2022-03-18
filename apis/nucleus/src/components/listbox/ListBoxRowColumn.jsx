@@ -347,6 +347,6 @@ export default function RowColumn({ index, style, data, column = false }) {
   );
 }
 
-const propsAreEqual = (prevRow, nextRow) => JSON.stringify(prevRow) === JSON.stringify(nextRow); // TODO: Use itemKey in ListBox instead?
+const propsAreEqual = (prevRow, nextRow) => JSON.stringify(prevRow) === JSON.stringify(nextRow);
 
 export const MemoRowColumn = React.memo(RowColumn, propsAreEqual);
