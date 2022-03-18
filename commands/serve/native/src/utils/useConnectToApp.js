@@ -20,13 +20,15 @@ const useConnectToApp = (connectionRequested) => {
     try {
       if (!enigmaSettings) return;
       const url = SessionUtilities.buildUrl({
-        host: enigmaSettings.tenant,
+        host: enigmaSettings.tenantURL,
         port: config.port,
         secure: config.secure,
         ttl: config.ttl,
         route: `app/${enigmaSettings.appId}`,
       });
+
       const headers = enigmaSettings.apiKey ? { headers: { Authorization: `Bearer ${enigmaSettings.apiKey}` } } : {};
+      console.log('headers: ', headers);
       const connecticonfig = {
         schema,
         url: encodeURI(url),
@@ -35,14 +37,13 @@ const useConnectToApp = (connectionRequested) => {
 
       const globalSession = await enigma.create(connecticonfig);
       console.log('globalSession:', globalSession);
-      globalSession.on('traffic:sent', (data) => console.log('sent:', data));
-      globalSession.on('traffic:received', (data) => console.log('received:', data));
-      globalSession.on('closed', () => console.log('Session was closed, clean up!'));
 
       const session = await globalSession.open();
       console.log('session:', session);
       app = await session.openDoc(enigmaSettings.appId);
+      console.log('app', app);
       model = await app.getObject(enigmaSettings.visId);
+      console.log('model', model);
       layout = await model.getLayout();
       globalSession.close();
     } catch (err) {

@@ -92,23 +92,42 @@ const initiateWatch = async ({ snPath, snName, host }) => {
   };
 };
 
-const buildAndRunServeNative = async (platform) => {
+const buildAndRunServeNative = async ({ platform, context, snName, snPath }) => {
   try {
-    const executionScript =
-      platform === 'android'
-        ? path.join(__dirname, '..', 'native', 'scripts', 'run-android.sh')
-        : path.join(__dirname, '..', 'native', 'scripts', 'run-ios.sh');
-    const proc = exec(`sh ${executionScript}`, {
-      cwd: path.join(__dirname, '..', 'native', 'scripts'),
+    const proc1 = exec(`sh export SN_PATH=${snPath}`);
+    proc1.stdout.on('data', (data) => {
+      console.log(data);
     });
-    proc.on('error', (err) => {
-      console.log('proc error ', err);
+
+    const proc2 = exec(`sh export SN_NAME=${snName}`);
+    proc2.stdout.on('data', (data) => {
+      console.log(data);
     });
-    proc.stdout.on('data', (data) => {
-      console.log(`stdout: ${data}`);
+
+    const proc3 = exec(`react-native start --watchFolders '${context}'`, {
+      cwd: path.join(__dirname, '..', 'native'),
     });
-    proc.on('close', (code) => {
-      console.log(`child process exited with code ${code}`);
+    proc3.stdout.on('data', (data) => {
+      console.log(data);
+    });
+    proc3.stderr.on('data', (data) => {
+      console.log(data);
+    });
+    proc3.on('close', (code) => {
+      `nebula serve process exited with code ${code}`;
+    });
+
+    const proc4 = exec(`react-native run-${platform}`, {
+      cwd: path.join(__dirname, '..', 'native'),
+    });
+    proc4.stdout.on('data', (data) => {
+      console.log(data);
+    });
+    proc4.stderr.on('data', (data) => {
+      console.log(data);
+    });
+    proc4.on('close', (code) => {
+      `nebula serve process exited with code ${code}`;
     });
   } catch (error) {
     console.log(error.message);
@@ -125,25 +144,20 @@ module.exports = async (argv) => {
     defaultServeConfig = initConfig(yargs(yargsArgs)).argv;
   }
 
-  if (argv.nativeAndroid) {
-    buildAndRunServeNative('android');
-    return;
-  }
-
-  if (argv.nativeIos) {
-    buildAndRunServeNative('ios');
-    return;
-  }
-
   const serveConfig = extend(true, {}, defaultServeConfig, argv);
   const host = serveConfig.host || 'localhost';
   const port = serveConfig.port || (await portfinder.getPortPromise({ host }));
   const enigmaConfig = serveConfig.enigma;
 
+  console.log('serveConfig: ', serveConfig);
+  console.log('serveConfig: ', enigmaConfig);
+  console.log('context:', context);
+
   let snPath;
   let snName;
   let watcher;
   let snUrl;
+
   if (/^https?/.test(serveConfig.entry)) {
     snName = 'remote';
     snUrl = serveConfig.entry;
@@ -160,6 +174,8 @@ module.exports = async (argv) => {
   } else {
     runFromDirectory = true;
   }
+
+  console.log('runFromDirectory:', runFromDirectory);
 
   if (runFromDirectory) {
     if (serveConfig.build !== false) {
@@ -180,6 +196,18 @@ module.exports = async (argv) => {
   }
 
   const ww = snUrl ? null : await initiateWatch({ snPath, snName: serveConfig.type || snName, host });
+
+  console.log('snName: ', snName);
+  console.log('snUrl:', snUrl);
+  console.log('snPath', snPath);
+  // if --nativeAndroid or --nativeIos but not both run native version
+  if ((!argv.nativeAndroid && argv.nativeIos) || (argv.nativeAndroid && !argv.nativeIos)) {
+    buildAndRunServeNative({
+      platform: argv.nativeIos ? 'ios' : 'android',
+      context,
+    });
+    return;
+  }
 
   const server = await webpackServe({
     host,

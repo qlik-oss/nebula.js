@@ -5,9 +5,9 @@ import { Supernova } from '@qlik/react-native-carbon';
 import treemap from '@qlik-trial/sn-treemap';
 import snTable from '@nebula.js/sn-table';
 // import { supernova as kpi } from '@qlik/sn-native-kpi';
+import horizon from '@qlik-trial/sense-themes-default/dist/horizon/theme.json';
 import enigmaSettingsAtom from '../atoms/enigmaSettingsAtom';
 
-const tempTheme = 'tempTheme';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   },
   inner: {
     flex: 1,
+    margin: 10,
   },
   activity: {
     flex: 1,
@@ -62,7 +63,7 @@ const SupernovaView = ({ appData, fullScreen }) => {
         id={enigmaSettings.appId}
         sn={getSn({ visualization: 'table' }, appData)}
         app={appData}
-        theme={tempTheme}
+        theme={horizon}
         style={styles.inner}
         onLongPress={handleOnLongPress}
         showLegend={fullScreen}

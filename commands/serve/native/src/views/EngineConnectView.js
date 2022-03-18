@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, TextInput, Text, Pressable, Image } from 'react-native';
 import { useAtom } from 'jotai';
 import AppTemplate from './AppTemplate';
-import testKey from '../utils/testKey';
+import { testKey2 } from '../utils/testKey';
 import enigmaSettingsAtom from '../atoms/enigmaSettingsAtom';
 import useConnectToApp from '../utils/useConnectToApp';
 
@@ -73,7 +73,7 @@ const EngineConnectView = ({ navigation }) => {
   // local state
   const [tenant, setTenant] = useState('ecdp1.us.qlikcloud.com');
   const [appId, setAppId] = useState('375b58fb-ed16-4c50-a291-719f5e9295fb');
-  const [apiKey, setApiKey] = useState(testKey);
+  const [apiKey, setApiKey] = useState(testKey2);
   const [error, setError] = useState(null);
   const [visId, setVisId] = useState('sn-table');
   const [connectionRequested, setConnectionRequested] = useState(false);

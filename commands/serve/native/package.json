@@ -20,6 +20,7 @@
     "@qlik/carbon-core": "^1.0.6",
     "@qlik/react-native-carbon": "^1.1.16",
     "@react-native-async-storage/async-storage": "^1.16.1",
+    "@react-native-community/cli": "^7.0.3",
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "axios": "^0.26.1",
@@ -64,5 +65,10 @@
     "assets": [
       "./src/assets/fonts/"
     ]
+  },
+  "eslintIgnore": {
+    "rules": {
+      "react/jsx-filename-extension": "off"
+    }
   }
 }
