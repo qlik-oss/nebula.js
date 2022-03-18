@@ -112,6 +112,24 @@ describe('use-listbox-interactions', () => {
         },
       ]);
     });
+
+    it('should deselect all exept the new selection', () => {
+      const clearAllButElmNumbers = true;
+      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [3], clearAllButElmNumbers);
+      expect(selectedPages).to.deep.equal([
+        {
+          qMatrix: [
+            [{ qState: 'A', qElemNumber: 0 }, []],
+            [{ qState: 'A', qElemNumber: 1 }, []],
+            [{ qState: 'A', qElemNumber: 2 }, []],
+            [{ qState: 'S', qElemNumber: 3 }, []],
+            [{ qState: 'A', qElemNumber: 4 }, []],
+            [{ qState: 'A', qElemNumber: 5 }, []],
+            [{ qState: 'A', qElemNumber: 6 }, []],
+          ],
+        },
+      ]);
+    });
   });
 
   describe('selectValues should call the select method', () => {
