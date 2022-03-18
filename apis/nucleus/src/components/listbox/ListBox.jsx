@@ -9,7 +9,7 @@ import useLayout from '../../hooks/useLayout';
 
 import useSelectionsInteractions from './useSelectionsInteractions';
 
-import { MemoRowColumn } from './ListBoxRowColumn';
+import MemoRowColumn from './ListBoxRowColumn';
 
 function getSizeInfo({ isVertical, checkboxes, dense, height }) {
   let sizeVertical = checkboxes ? 40 : 33;
@@ -44,7 +44,11 @@ export default function ListBox({
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const [pages, setPages] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
-  const { instantPages = [], interactionEvents } = useSelectionsInteractions({
+  const {
+    instantPages = [],
+    interactionEvents,
+    select,
+  } = useSelectionsInteractions({
     layout,
     selections,
     pages,
@@ -188,9 +192,14 @@ export default function ListBox({
               checkboxes,
               dense,
               frequencyMode,
+              isSingleSelect,
+              actions: {
+                select,
+                confirm: () => selections && selections.confirm.call(selections),
+                cancel: () => selections && selections.cancel.call(selections),
+              },
               frequencyMax,
               histogram,
-              isSingleSelect,
             }}
             itemSize={itemSize}
             onItemsRendered={onItemsRendered}

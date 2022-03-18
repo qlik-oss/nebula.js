@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { FormControlLabel, Grid, Typography } from '@material-ui/core';
 
@@ -9,6 +9,7 @@ import Tick from '@nebula.js/ui/icons/tick';
 import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
 import ListBoxRadioButton from './ListBoxRadioButton';
+import getKeyboardNavigation from './listbox-keyboard-navigation';
 
 const ellipsis = {
   width: '100%',
@@ -35,6 +36,9 @@ const useStyles = makeStyles((theme) => ({
   fieldRoot: {
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+    },
+    '&:focus-visible': {
+      outline: 'none',
     },
   },
 
@@ -145,7 +149,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function RowColumn({ index, style, data, column = false }) {
+function RowColumn({ index, style, data, column = false }) {
   const {
     onClick,
     onMouseDown,
@@ -156,10 +160,13 @@ export default function RowColumn({ index, style, data, column = false }) {
     checkboxes = false,
     dense = false,
     frequencyMode = 'N',
+    isSingleSelect,
+    actions,
     frequencyMax = '',
     histogram = false,
-    isSingleSelect,
   } = data;
+
+  const handleKeyDownCallback = useCallback(getKeyboardNavigation(actions), [actions]);
 
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
@@ -300,11 +307,15 @@ export default function RowColumn({ index, style, data, column = false }) {
         container
         spacing={0}
         className={joinClassNames(['value', ...classArr])}
+        classes={{
+          root: classes.fieldRoot,
+        }}
         style={style}
         onClick={onClick}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseEnter={onMouseEnter}
+        onKeyDown={handleKeyDownCallback}
         role={column ? 'column' : 'row'}
         tabIndex={0}
         data-n={cell && cell.qElemNumber}
@@ -349,4 +360,6 @@ export default function RowColumn({ index, style, data, column = false }) {
 
 const propsAreEqual = (prevRow, nextRow) => JSON.stringify(prevRow) === JSON.stringify(nextRow);
 
-export const MemoRowColumn = React.memo(RowColumn, propsAreEqual);
+const MemoRowColumn = React.memo(RowColumn, propsAreEqual);
+// export default {MemoRowColumn, RowColumn};
+export default MemoRowColumn;

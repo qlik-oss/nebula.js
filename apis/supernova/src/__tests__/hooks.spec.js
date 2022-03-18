@@ -42,7 +42,10 @@ describe('hooks', () => {
   let DEV;
   let frame;
   before(() => {
-    frame = () => new Promise((resolve) => setTimeout(resolve));
+    frame = () =>
+      new Promise((resolve) => {
+        setTimeout(resolve);
+      });
     sandbox = sinon.createSandbox();
     DEV = global.__NEBULA_DEV__;
     global.__NEBULA_DEV__ = true;

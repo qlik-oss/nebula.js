@@ -88,23 +88,36 @@ describe('use-listbox-interactions', () => {
       it('Without range', async () => {
         await render();
         const arg0 = ref.current.result;
-        expect(Object.keys(arg0).sort()).to.deep.equal(['instantPages', 'interactionEvents']);
+        expect(Object.keys(arg0).sort()).to.deep.equal(['instantPages', 'interactionEvents', 'select']);
         expect(arg0.instantPages).to.deep.equal([]);
         expect(Object.keys(arg0.interactionEvents).sort()).to.deep.equal(['onMouseDown', 'onMouseUp']);
       });
       it('With range', async () => {
         await render({ rangeSelect: true });
         const arg0 = ref.current.result;
-        expect(Object.keys(arg0).sort()).to.deep.equal(['instantPages', 'interactionEvents']);
+        expect(Object.keys(arg0).sort()).to.deep.equal(['instantPages', 'interactionEvents', 'select']);
         expect(arg0.instantPages).to.deep.equal([]);
         expect(Object.keys(arg0.interactionEvents).sort()).to.deep.equal(['onMouseDown', 'onMouseEnter', 'onMouseUp']);
       });
       it('With checkboxes', async () => {
         await render({ checkboxes: true });
         const arg0 = ref.current.result;
-        expect(Object.keys(arg0).sort()).to.deep.equal(['instantPages', 'interactionEvents']);
+        expect(Object.keys(arg0).sort()).to.deep.equal(['instantPages', 'interactionEvents', 'select']);
         expect(arg0.instantPages).to.deep.equal([]);
         expect(Object.keys(arg0.interactionEvents).sort()).to.deep.equal(['onClick']);
+      });
+    });
+
+    it('Should manually pre-select and select values when calling the manual select method', async () => {
+      await render();
+      const args = ref.current.result;
+      expect(listboxSelections.selectValues).not.called;
+      args.select([1]);
+      expect(listboxSelections.selectValues).calledOnce;
+      expect(listboxSelections.selectValues.args[0][0]).to.deep.equal({
+        elemNumbers: [1],
+        isSingleSelect: undefined,
+        selections: { key: 'selections' },
       });
     });
 
@@ -141,10 +154,10 @@ describe('use-listbox-interactions', () => {
       expect(listboxSelections.selectValues).calledOnce.calledWithExactly({
         selections: { key: 'selections' },
         elemNumbers: [23],
-        isSingleSelect: false,
+        isSingleSelect: undefined,
       });
       expect(applySelectionsOnPages).calledOnce;
-      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [23]]);
+      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [23], undefined]);
       expect(arg2.instantPages).to.deep.equal([]);
     });
 
@@ -162,7 +175,7 @@ describe('use-listbox-interactions', () => {
       });
 
       expect(applySelectionsOnPages).calledOnce;
-      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [24]]);
+      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [24], undefined]);
       expect(listboxSelections.selectValues, 'should only preselect - not select - while mousedown').not.called;
       const [, docMouseUpListener] = global.document.addEventListener.args[0];
 
@@ -173,7 +186,7 @@ describe('use-listbox-interactions', () => {
       expect(listboxSelections.selectValues).calledOnce.calledWithExactly({
         selections: { key: 'selections' },
         elemNumbers: [24],
-        isSingleSelect: false,
+        isSingleSelect: undefined,
       });
 
       expect(applySelectionsOnPages, 'should not set instant pages again (after mouseup)').calledOnce;
@@ -184,7 +197,7 @@ describe('use-listbox-interactions', () => {
     it('should return expected stuff', async () => {
       await render({ rangeSelect: true });
       const arg0 = ref.current.result;
-      expect(Object.keys(arg0)).to.deep.equal(['instantPages', 'interactionEvents']);
+      expect(Object.keys(arg0)).to.deep.equal(['instantPages', 'interactionEvents', 'select']);
       expect(arg0.instantPages).to.deep.equal([]);
       expect(Object.keys(arg0.interactionEvents).sort()).to.deep.equal(['onMouseDown', 'onMouseEnter', 'onMouseUp']);
     });
@@ -236,14 +249,14 @@ describe('use-listbox-interactions', () => {
       expect(listboxSelections.selectValues).calledOnce.calledWithExactly({
         selections: { key: 'selections' },
         elemNumbers: [24, 25, 28, 30], // without mocking fillRange this range would be filled
-        isSingleSelect: false,
+        isSingleSelect: undefined,
       });
 
       // Should pre-select "cumulative", once for each new value
-      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [24]]);
-      expect(applySelectionsOnPages.args[1]).to.deep.equal([[], [24, 25]]);
-      expect(applySelectionsOnPages.args[2]).to.deep.equal([[], [24, 25, 28]]);
-      expect(applySelectionsOnPages.args[3]).to.deep.equal([[], [24, 25, 28, 30]]);
+      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [24], undefined]);
+      expect(applySelectionsOnPages.args[1]).to.deep.equal([[], [24, 25], undefined]);
+      expect(applySelectionsOnPages.args[2]).to.deep.equal([[], [24, 25, 28], undefined]);
+      expect(applySelectionsOnPages.args[3]).to.deep.equal([[], [24, 25, 28, 30], undefined]);
     });
 
     it('Should "toggle" checkboxes', async () => {
@@ -257,7 +270,7 @@ describe('use-listbox-interactions', () => {
         });
       });
       expect(applySelectionsOnPages.callCount).to.equal(startCallCount + 1);
-      expect(applySelectionsOnPages.args[startCallCount]).to.deep.equal([[], [24]]);
+      expect(applySelectionsOnPages.args[startCallCount]).to.deep.equal([[], [24], undefined]);
       await act(() => {
         ref.current.result.interactionEvents.onClick({
           currentTarget: {
@@ -265,7 +278,7 @@ describe('use-listbox-interactions', () => {
           },
         });
       });
-      expect(applySelectionsOnPages.args[startCallCount + 1]).to.deep.equal([[], [24]]);
+      expect(applySelectionsOnPages.args[startCallCount + 1]).to.deep.equal([[], [24], undefined]);
     });
   });
 });

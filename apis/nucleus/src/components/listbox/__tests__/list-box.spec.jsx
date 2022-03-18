@@ -52,8 +52,9 @@ describe('<Listbox />', () => {
         [
           require.resolve('../ListBoxRowColumn'),
           () =>
-            ({ checkboxes }) =>
-              <div className={checkboxes ? 'a-value-column' : 'a-value-row'} />,
+            function ({ checkboxes }) {
+              return <div className={checkboxes ? 'a-value-column' : 'a-value-row'} />;
+            },
         ],
       ],
       ['../ListBox']

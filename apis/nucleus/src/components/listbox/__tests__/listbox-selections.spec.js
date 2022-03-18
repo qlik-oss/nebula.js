@@ -63,8 +63,7 @@ describe('use-listbox-interactions', () => {
     });
 
     it('should add selection for element number 2', () => {
-      const toggle = false;
-      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [2], toggle);
+      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [2]);
       expect(selectedPages).to.deep.equal([
         {
           qMatrix: [
@@ -81,8 +80,7 @@ describe('use-listbox-interactions', () => {
     });
 
     it('should toggle selection (turn it off)', () => {
-      const toggle = true;
-      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0], toggle);
+      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0]);
       expect(selectedPages).to.deep.equal([
         {
           qMatrix: [
@@ -99,8 +97,7 @@ describe('use-listbox-interactions', () => {
     });
 
     it('should select a range without toggling any already selected values', () => {
-      const toggle = false;
-      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0, 1, 2, 3, 4, 5], toggle);
+      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0, 1, 2, 3, 4, 5]);
       expect(selectedPages).to.deep.equal([
         {
           qMatrix: [

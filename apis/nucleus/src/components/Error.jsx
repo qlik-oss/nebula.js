@@ -5,7 +5,7 @@ import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 import Tick from '@nebula.js/ui/icons/tick';
 import { useTheme } from '@nebula.js/ui/theme';
 
-const DescriptionRow = ({ d }) => {
+function DescriptionRow({ d }) {
   const theme = useTheme();
   let color = 'inherit';
   let styleColor = theme.palette.success.main;
@@ -42,9 +42,9 @@ const DescriptionRow = ({ d }) => {
       </Grid>
     </Grid>
   );
-};
+}
 
-const Descriptions = ({ data }) => {
+function Descriptions({ data }) {
   const theme = useTheme();
   return (
     <Grid container item style={{ maxWidth: '300px', overflow: 'hidden' }}>
@@ -71,7 +71,7 @@ const Descriptions = ({ data }) => {
       })}
     </Grid>
   );
-};
+}
 
 export default function Error({ title = 'Error', message = '', data = [] }) {
   return (
