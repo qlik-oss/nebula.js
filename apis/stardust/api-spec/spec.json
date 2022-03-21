@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "2.6.1",
+    "version": "2.7.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -2152,7 +2152,7 @@
           ]
         },
         "getStyle": {
-          "description": "Get the value of a style attribute in the theme by searching in the theme's JSON structure.\nThe search starts at the specified base path and continues upwards until the value is found.\nIf possible it will get the attribute's value using the given path.",
+          "description": "Get the value of a style attribute in the theme\nby searching in the theme's JSON structure.\nThe search starts at the specified base path\nand continues upwards until the value is found.\nIf possible it will get the attribute's value using the given path.\nWhen attributes separated by dots are provided, such as 'hover.color',\nthey are required in the theme JSON file",
           "kind": "function",
           "params": [
             {
@@ -2167,16 +2167,24 @@
             },
             {
               "name": "attribute",
-              "description": "Name of the style attribute.",
+              "description": "Name of the style attribute. (specified as a name attribute separated by dots).",
               "type": "string"
             }
           ],
           "returns": {
-            "description": "The style value",
-            "type": "string"
+            "description": "The style value or undefined if not found",
+            "kind": "union",
+            "items": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "undefined"
+              }
+            ]
           },
           "examples": [
-            "theme.getStyle('object', 'title.main', 'fontSize');\ntheme.getStyle('', '', 'fontSize');"
+            "theme.getStyle('object', 'title.main', 'fontSize');\ntheme.getStyle('object', 'title', 'main.fontSize');\ntheme.getStyle('object', '', 'title.main.fontSize');\ntheme.getStyle('', '', 'fontSize');"
           ]
         }
       },
