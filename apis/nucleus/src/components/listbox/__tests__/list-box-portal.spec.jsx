@@ -1,7 +1,9 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 
-const ListBoxInlineMock = ({ fieldDef }) => <div>{fieldDef}</div>;
+function ListBoxInlineMock({ fieldDef }) {
+  return <div>{fieldDef}</div>;
+}
 
 const [{ ListBoxFetchMasterItem }] = aw.mock(
   [[require.resolve('../ListBoxInline'), () => ListBoxInlineMock]],
