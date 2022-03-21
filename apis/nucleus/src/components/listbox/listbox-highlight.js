@@ -1,16 +1,19 @@
 /**
+ * @ignore
  * @interface Range
  * @property {number} qCharPos The (absolute) index where the highlighted range starts.
  * @property {number} qCharCount The length of the sub-string (starting from qChartPos) that should be highlighted.
  */
 
 /**
+ * @ignore
  * @interface Segment
  * @property {string} segment The sub-string/segment cut out from the original label.
  * @property {boolean} highlighted A flag which tells whether the segment should be highlighted or not.
  */
 
 /**
+ * @ignore
  * @param {string} label The label we want to create segments out of.
  * @param {Range} range The indexes which define how to create the segments.
  * @param {number=} [startIndex] An optional index which tells where we want to start the first segment from
@@ -32,6 +35,7 @@ function getSegmentsFromRange(label, range, startIndex = 0) {
 }
 
 /**
+ * @ignore
  * @param {string} label The label we want to create segments out of.
  * @param {Range[]} ranges The ranges defining indices for cutting the string into segments.
  * @returns {Segment[]} An array of segments, covering the entire string label.

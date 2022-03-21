@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { Grid, Typography } from '@material-ui/core';
 import Lock from '@nebula.js/ui/icons/lock';
 import ListBoxCheckbox from '../ListBoxCheckbox';
-import * as getKeyboardNavigation from '../listbox-keyboard-navigation';
+import * as keyboardNavigation from '../listbox-keyboard-navigation';
 
 const [{ default: ListBoxRowColumn }] = aw.mock(
   [
@@ -34,13 +34,19 @@ async function render(content) {
 describe('<ListBoxRowColumn />', () => {
   let sandbox;
   let actions;
-  let handleKeyDown;
+  let getFieldKeyboardNavigation;
+  let keyboard;
 
   before(() => {
     global.document = {};
     sandbox = sinon.createSandbox();
-    handleKeyDown = sandbox.stub(getKeyboardNavigation, 'default').returns(() => 'handle-key-down-callback');
+    getFieldKeyboardNavigation = sandbox.stub(keyboardNavigation, 'getFieldKeyboardNavigation');
     actions = 'actions';
+  });
+
+  beforeEach(() => {
+    getFieldKeyboardNavigation.returns(() => 'handle-key-down-callback');
+    keyboard = { active: false, enabled: true };
   });
 
   afterEach(() => {
@@ -62,10 +68,11 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         pages: [],
         actions,
       };
-      expect(handleKeyDown).not.called;
+      expect(getFieldKeyboardNavigation).not.called;
       const testRenderer = await render(
         <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
       );
@@ -77,9 +84,11 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.style).to.deep.equal({});
       expect(type.props.role).to.equal(rowCol);
       expect(type.props.onKeyDown).to.be.a('function');
+      expect(type.props.onKeyDown()).to.equal('handle-key-down-callback');
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
+      expect(type.props.tabIndex).to.equal(-1);
       expect(type.props.onClick.callCount).to.equal(0);
 
       const types = testInstance.findAllByType(Typography);
@@ -91,17 +100,21 @@ describe('<ListBoxRowColumn />', () => {
       expect(cbs).to.have.length(0);
       await testRenderer.unmount();
 
-      expect(handleKeyDown).calledOnce.calledWith('actions');
+      expect(getFieldKeyboardNavigation).calledOnce.calledWith('actions');
     });
 
     it('should have css class `value`', async () => {
       const index = 0;
       const style = {};
+
+      keyboard.enabled = false;
+
       const data = {
         onMouseDown: sandbox.spy(),
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         pages: [],
         actions,
       };
@@ -114,18 +127,23 @@ describe('<ListBoxRowColumn />', () => {
       const { className } = type.props;
       expect(className).to.be.a('string');
       expect(className.split(' ')).to.include('value');
+      expect(type.props.tabIndex).to.equal(0);
       await testRenderer.unmount();
     });
 
     it('should render with checkboxes', async () => {
       const index = 0;
       const style = {};
+
+      keyboard.active = true;
+
       const data = {
         checkboxes: true,
         onMouseDown: sandbox.spy(),
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         pages: [],
         actions,
       };
@@ -142,7 +160,9 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
+      expect(type.props.onKeyDown()).to.equal('handle-key-down-callback');
       expect(type.props.onClick.callCount).to.equal(0);
+      expect(type.props.tabIndex).to.equal(0);
 
       const types = testInstance.findAllByType(Typography);
       expect(types).to.have.length(2);
@@ -163,6 +183,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         actions,
         pages: [
           {
@@ -202,6 +223,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         actions,
         pages: [
           {
@@ -238,6 +260,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         actions,
         pages: [
           {
@@ -274,6 +297,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         actions,
         pages: [
           {
@@ -310,6 +334,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         actions,
         pages: [
           {
@@ -346,6 +371,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         actions,
         pages: [
           {
@@ -382,6 +408,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         actions,
         pages: [
           {
@@ -424,6 +451,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         actions,
         pages: [
           {
@@ -468,6 +496,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         actions,
         pages: [
           {
@@ -511,6 +540,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         actions,
         frequencyMode: 'value',
         pages: [
@@ -544,6 +574,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        keyboard,
         checkboxes: true,
         actions,
         pages: [
@@ -594,6 +625,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         pages: [],
         actions,
       };
@@ -630,6 +662,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseUp: sandbox.spy(),
         onMouseEnter: sandbox.spy(),
         onClick: sandbox.spy(),
+        keyboard,
         pages: [],
         actions,
       };

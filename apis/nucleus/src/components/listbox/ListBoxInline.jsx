@@ -19,6 +19,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
+import { getListboxInlineKeyboardNavigation } from './listbox-keyboard-navigation';
 
 const useStyles = makeStyles(() => ({
   listBoxHeader: {
@@ -140,13 +141,22 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const { translator } = useContext(InstanceContext);
+  const { translator, keyboardNavigation } = useContext(InstanceContext);
   const moreAlignTo = useRef();
 
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [autoFocusSearch, setAutoFocusSearch] = useState(focusSearch);
+  const [keyboardActive, setKeyboardActive] = useState(false);
+
+  const handleKeyDown = getListboxInlineKeyboardNavigation({ setKeyboardActive });
+
+  // Expose the keyboard flags in the same way as the keyboard hook does.
+  const keyboard = {
+    enabled: keyboardNavigation, // this will be static until we can access the useKeyboard hook
+    active: keyboardActive,
+  };
 
   useEffect(() => {
     if (selections) {
@@ -199,22 +209,29 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
 
   const getSearchOrUnlock = () =>
     search === 'toggle' && !hasSelections ? (
-      <IconButton onClick={onShowSearch} title={translator.get('Listbox.Search')}>
+      <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')}>
         <SearchIcon />
       </IconButton>
     ) : (
-      <IconButton onClick={lock} disabled={!hasSelections}>
+      <IconButton onClick={lock} tabIndex={-1} disabled={!hasSelections}>
         <Unlock />
       </IconButton>
     );
 
   return (
-    <Grid container direction="column" spacing={0} style={{ height: '100%', minHeight: `${minHeight}px` }}>
+    <Grid
+      container
+      tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
+      direction="column"
+      spacing={0}
+      style={{ height: '100%', minHeight: `${minHeight}px` }}
+      onKeyDown={handleKeyDown}
+    >
       {toolbar && (
         <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (
-              <IconButton onClick={unlock} disabled={!isLocked}>
+              <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked}>
                 <Lock title={translator.get('Listbox.Unlock')} />
               </IconButton>
             ) : (
@@ -255,7 +272,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       )}
       {searchVisible && (
         <Grid item>
-          <ListBoxSearch model={model} autoFocus={autoFocusSearch} dense={dense} />
+          <ListBoxSearch model={model} autoFocus={autoFocusSearch} dense={dense} keyboard={keyboard} />
         </Grid>
       )}
       <Grid item xs>
@@ -276,6 +293,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               update={update}
               dense={dense}
               selectDisabled={selectDisabled}
+              keyboard={keyboard}
             />
           )}
         </AutoSizer>
