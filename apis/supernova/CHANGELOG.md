@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/qlik-oss/nebula.js/compare/v2.6.1...v2.7.0) (2022-03-21)
+
+### Features
+
+- get the value of style with the exact given attributes seprated by dots ([#776](https://github.com/qlik-oss/nebula.js/issues/776)) ([49f3c8c](https://github.com/qlik-oss/nebula.js/commit/49f3c8c791ae548a9fa219c99d74ad2c2081e10c))
+
 ## [2.6.1](https://github.com/qlik-oss/nebula.js/compare/v2.6.0...v2.6.1) (2022-02-25)
 
 **Note:** Version bump only for package @nebula.js/supernova
