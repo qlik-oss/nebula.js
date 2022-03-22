@@ -10,9 +10,6 @@
   "files": [
     "dist"
   ],
-  "engines": {
-    "node": ">=8"
-  },
   "license": "MIT",
   "main": "dist/hello-react.js",
   "scripts": {
