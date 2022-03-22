@@ -12,7 +12,6 @@ const PROPS_SYNC = [
   'removeAllListeners',
   'removeListener',
   'setMaxListerners',
-  'qId',
 ];
 
 /**
@@ -25,15 +24,26 @@ function isPropAsync(name) {
 }
 
 /**
+ * Get `qId` for visualization.
+ * @param {object} genericObject Generic object describing behaviour of mock
+ * @returns The `qId`, undefined if not present
+ */
+function getQId(genericObject) {
+  const layout = getPropValue(genericObject.getLayout);
+  return layout.qInfo && layout.qInfo.qId;
+}
+
+/**
  * Create a mock of a generic object. Mandatory properties are added, functions returns async values where applicable etc.
  * @param {object} genericObject Generic object describing behaviour of mock
  * @param {EnigmaMockerOptions} options Options.
  * @returns The mocked object
  */
 function createMock(genericObject, options) {
+  const qId = getQId(genericObject);
   const { delay } = options;
   const { id, session, ...props } = genericObject;
-  return {
+  const mock = {
     id: getPropValue(id, { defaultValue: `object - ${+Date.now()}` }),
     session: getPropValue(session, { defaultValue: true }),
     on: () => {},
@@ -46,6 +56,23 @@ function createMock(genericObject, options) {
       {}
     ),
   };
+  return { [qId]: mock };
+}
+
+/**
+ * Create mocked objects from list of generic objects.
+ * @param {Array<object>} genericObjects Generic objects describing behaviour of mock
+ * @param {EnigmaMockerOptions} options options
+ * @returns Object with mocks where key is `qId` and value is the mocked object.
+ */
+function createMocks(genericObjects, options) {
+  return genericObjects.reduce(
+    (mocks, genericObject) => ({
+      ...mocks,
+      ...createMock(genericObject, options),
+    }),
+    {}
+  );
 }
 
 /**
@@ -61,11 +88,10 @@ function validate(genericObject) {
   if (!genericObject.getLayout) {
     throw new Error('Generic object is missing "getLayout"');
   }
-  const layout = getPropValue(genericObject.getLayout);
-  if (!(layout.qInfo && layout.qInfo.qId)) {
+  const qId = getQId(genericObject);
+  if (!qId) {
     throw new Error('Generic object is missing "qId" for path "getLayout().qInfo.qId"');
   }
-  genericObject.qId = layout.qInfo.qId; // eslint-disable-line no-param-reassign
 }
 
 /**
@@ -76,12 +102,9 @@ function validate(genericObject) {
  */
 function GetObjectMock(genericObjects = [], options) {
   genericObjects.forEach(validate);
-  const genericObjectMocks = genericObjects.map((genericObject) => createMock(genericObject, options));
+  const mocks = createMocks(genericObjects, options);
 
-  return async (id) => {
-    const mock = genericObjectMocks.find((m) => m.qId() === id);
-    return Promise.resolve(mock);
-  };
+  return async (id) => Promise.resolve(mocks[id]);
 }
 
 export default GetObjectMock;
