@@ -38,8 +38,10 @@ scenarios['valid-type'] = {
 
 scenarios['long-running'] = {
   name: 'Long running query',
-  genericObject: {
+  options: {
     delay: 5000,
+  },
+  genericObject: {
     session: {
       getObjectApi() {
         return {
@@ -583,7 +585,7 @@ function getScenario() {
 
 async function render() {
   const scenario = getScenario();
-  const app = await window.enigmaMocker.fromGenericObjects([scenario.genericObject]);
+  const app = await window.enigmaMocker.fromGenericObjects([scenario.genericObject], scenario.options);
   const element = document.querySelector('.viz');
   const viz = await configuration(app).render({ element, id: 'bb8' });
 

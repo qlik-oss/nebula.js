@@ -27,10 +27,12 @@ function isPropAsync(name) {
 /**
  * Create a mock of a generic object. Mandatory properties are added, functions returns async values where applicable etc.
  * @param {object} genericObject Generic object describing behaviour of mock
+ * @param {EnigmaMockerOptions} options Options.
  * @returns The mocked object
  */
-function createMock(genericObject) {
-  const { id, session, delay = 0, ...props } = genericObject;
+function createMock(genericObject, options) {
+  const { delay } = options;
+  const { id, session, ...props } = genericObject;
   return {
     id: getPropValue(id, { defaultValue: `object - ${+Date.now()}` }),
     session: getPropValue(session, { defaultValue: true }),
@@ -69,11 +71,12 @@ function validate(genericObject) {
 /**
  * Creates mock of `getObject(id)` based on an array of generic objects.
  * @param {Array<object>} genericObjects Generic objects.
+ * @param {EnigmaMockerOptions} options Options.
  * @returns Function to retrieve the mocked generic object with the corresponding id.
  */
-function GetObjectMock(genericObjects = []) {
+function GetObjectMock(genericObjects = [], options) {
   genericObjects.forEach(validate);
-  const genericObjectMocks = genericObjects.map(createMock);
+  const genericObjectMocks = genericObjects.map((genericObject) => createMock(genericObject, options));
 
   return async (id) => {
     const mock = genericObjectMocks.find((m) => m.qId() === id);
