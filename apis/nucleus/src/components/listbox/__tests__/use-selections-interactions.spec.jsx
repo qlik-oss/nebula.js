@@ -157,7 +157,7 @@ describe('use-listbox-interactions', () => {
         isSingleSelect: false,
       });
       expect(applySelectionsOnPages).calledOnce;
-      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [23]]);
+      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [23], false]);
       expect(arg2.instantPages).to.deep.equal([]);
     });
 
@@ -175,7 +175,7 @@ describe('use-listbox-interactions', () => {
       });
 
       expect(applySelectionsOnPages).calledOnce;
-      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [24]]);
+      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [24], false]);
       expect(listboxSelections.selectValues, 'should only preselect - not select - while mousedown').not.called;
       const [, docMouseUpListener] = global.document.addEventListener.args[0];
 
@@ -253,10 +253,10 @@ describe('use-listbox-interactions', () => {
       });
 
       // Should pre-select "cumulative", once for each new value
-      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [24]]);
-      expect(applySelectionsOnPages.args[1]).to.deep.equal([[], [24, 25]]);
-      expect(applySelectionsOnPages.args[2]).to.deep.equal([[], [24, 25, 28]]);
-      expect(applySelectionsOnPages.args[3]).to.deep.equal([[], [24, 25, 28, 30]]);
+      expect(applySelectionsOnPages.args[0]).to.deep.equal([[], [24], false]);
+      expect(applySelectionsOnPages.args[1]).to.deep.equal([[], [24, 25], false]);
+      expect(applySelectionsOnPages.args[2]).to.deep.equal([[], [24, 25, 28], false]);
+      expect(applySelectionsOnPages.args[3]).to.deep.equal([[], [24, 25, 28, 30], false]);
     });
 
     it('Should "toggle" checkboxes', async () => {
@@ -270,7 +270,7 @@ describe('use-listbox-interactions', () => {
         });
       });
       expect(applySelectionsOnPages.callCount).to.equal(startCallCount + 1);
-      expect(applySelectionsOnPages.args[startCallCount]).to.deep.equal([[], [24]]);
+      expect(applySelectionsOnPages.args[startCallCount]).to.deep.equal([[], [24], false]);
       await act(() => {
         ref.current.result.interactionEvents.onClick({
           currentTarget: {
@@ -278,7 +278,7 @@ describe('use-listbox-interactions', () => {
           },
         });
       });
-      expect(applySelectionsOnPages.args[startCallCount + 1]).to.deep.equal([[], [24]]);
+      expect(applySelectionsOnPages.args[startCallCount + 1]).to.deep.equal([[], [24], false]);
     });
   });
 });
