@@ -130,7 +130,6 @@ const useStyles = makeStyles((theme) => ({
     alignSelf: 'center',
     left: `${barPadPx}px`,
     transition: 'width 0.2s',
-    willChange: 'width',
   },
   barSelected: {
     opacity: '30%',
