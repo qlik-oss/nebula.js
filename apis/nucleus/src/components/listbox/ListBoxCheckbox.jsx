@@ -3,17 +3,21 @@ import { makeStyles } from '@nebula.js/ui/theme';
 import { Checkbox } from '@material-ui/core';
 import CheckboxChecked from './assets/CheckboxChecked';
 
+const borderRadius = 2;
 const useStyles = makeStyles((theme) => ({
   cbIcon: {
-    borderRadius: 3,
+    borderRadius,
     width: 16,
     height: 16,
     boxShadow: 'inset 0 0 0 1px rgba(16,22,26,.2), inset 0 -1px 0 rgba(16,22,26,.1)',
     backgroundColor: '#f5f8fa',
     backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.8),hsla(0,0%,100%,0))',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   cbIconChecked: {
-    borderRadius: 3,
+    borderRadius,
     backgroundColor: theme.palette.selected.main,
     backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
     '&:before': {
@@ -23,6 +27,12 @@ const useStyles = makeStyles((theme) => ({
       backgroundImage: CheckboxChecked,
       content: '""',
     },
+  },
+  cbIconFilled: {
+    borderRadius,
+    width: 12,
+    height: 12,
+    backgroundColor: theme.palette.selected.excluded,
   },
   checkbox: {
     margin: 0,
@@ -35,7 +45,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ListboxCheckbox({ checked, label, dense }) {
+const getIcon = (filled, styles) =>
+  filled ? (
+    <span className={styles.cbIcon}>
+      <span className={styles.cbIconFilled} />
+    </span>
+  ) : (
+    <span className={styles.cbIcon} />
+  );
+
+export default function ListboxCheckbox({ checked, label, dense, filled }) {
   const styles = useStyles();
 
   return (
@@ -46,7 +65,7 @@ export default function ListboxCheckbox({ checked, label, dense }) {
       className={[styles.checkbox, dense && styles.dense].filter(Boolean).join(' ')}
       inputProps={{ 'aria-labelledby': label }}
       name={label}
-      icon={<span className={styles.cbIcon} />}
+      icon={getIcon(filled, styles)}
       checkedIcon={<span className={styles.cbIconChecked} />}
     />
   );
