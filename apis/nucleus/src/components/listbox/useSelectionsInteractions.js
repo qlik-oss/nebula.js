@@ -16,6 +16,7 @@ export default function useSelectionsInteractions({
   checkboxes = false,
   selectDisabled,
   doc = document,
+  isSingleSelect = false,
 }) {
   const [instantPages, setInstantPages] = useState(pages);
   const [mouseDown, setMouseDown] = useState(false);
@@ -26,15 +27,12 @@ export default function useSelectionsInteractions({
 
   const elemNumbersOrdered = getElemNumbersFromPages(pages);
 
-  const getIsSingleSelect = () => !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
-
   // Select values for real, by calling the backend.
   const select = async (elemNumbers = [], additive = false) => {
     if (selectDisabled()) {
       return;
     }
     setSelectingValues(true);
-    const isSingleSelect = getIsSingleSelect();
     const filtered = additive ? elemNumbers.filter((n) => !selected.includes(n)) : elemNumbers;
     await selectValues({ selections, elemNumbers: filtered, isSingleSelect });
     setSelectingValues(false);
@@ -90,7 +88,7 @@ export default function useSelectionsInteractions({
     (event) => {
       const elemNumber = +event.currentTarget.getAttribute('data-n');
       if (
-        getIsSingleSelect() ||
+        isSingleSelect ||
         !rangeSelect ||
         !mouseDown ||
         selectingValues ||
@@ -111,7 +109,7 @@ export default function useSelectionsInteractions({
 
   const onMouseEnter = useCallback(
     (event) => {
-      if (getIsSingleSelect() || !mouseDown || selectingValues || selectDisabled()) {
+      if (isSingleSelect || !mouseDown || selectingValues || selectDisabled()) {
         return;
       }
       setIsRangeSelection(true);
@@ -160,7 +158,7 @@ export default function useSelectionsInteractions({
       return;
     }
     // Render pre-selections before they have been selected in Engine.
-    const newPages = applySelectionsOnPages(pages, preSelected);
+    const newPages = applySelectionsOnPages(pages, preSelected, isSingleSelect);
     setInstantPages(newPages);
   }, [preSelected]);
 

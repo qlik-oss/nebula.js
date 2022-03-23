@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.7.0](https://github.com/qlik-oss/nebula.js/compare/v2.6.1...v2.7.0) (2022-03-21)
+
+### Bug Fixes
+
+- **deps:** update dependency puppeteer to v13 ([#736](https://github.com/qlik-oss/nebula.js/issues/736)) ([7415205](https://github.com/qlik-oss/nebula.js/commit/7415205f807b328d950e1c38ebb5e0cf63cff2b0))
+- update jsdocs for listbox ([#774](https://github.com/qlik-oss/nebula.js/issues/774)) ([c607e37](https://github.com/qlik-oss/nebula.js/commit/c607e372bb47432f53f5eaf16982368b39139223))
+
+### Features
+
+- add frequency count for listbox ([#770](https://github.com/qlik-oss/nebula.js/issues/770)) ([1ab3a4c](https://github.com/qlik-oss/nebula.js/commit/1ab3a4ca54acb17783ed24cadc2371ee22c478f7))
+- get the value of style with the exact given attributes seprated by dots ([#776](https://github.com/qlik-oss/nebula.js/issues/776)) ([49f3c8c](https://github.com/qlik-oss/nebula.js/commit/49f3c8c791ae548a9fa219c99d74ad2c2081e10c))
+
+### Reverts
+
+- Revert "chore: fix test for long running query" ([97b2de7](https://github.com/qlik-oss/nebula.js/commit/97b2de7df91799b7c96004db46b36bd4c6170527))
+
 ## [2.6.1](https://github.com/qlik-oss/nebula.js/compare/v2.6.0...v2.6.1) (2022-02-25)
 
 **Note:** Version bump only for package nebula.js
