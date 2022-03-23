@@ -54,7 +54,7 @@ const setValue = (data, reference, value) => {
     dataContainer = dataContainer[step];
   }
 
-  if (typeof value !== 'undefined') {
+  if (typeof value !== 'undefined' && propertyName !== '__proto__' && propertyName !== 'constructor') {
     dataContainer[propertyName] = value;
   } else {
     delete dataContainer[propertyName];

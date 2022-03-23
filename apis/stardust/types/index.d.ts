@@ -237,6 +237,8 @@ declare namespace stardust {
 
     type FrequencyMode = "none" | "value" | "percent" | "relative";
 
+    type SearchMode = "false" | "true" | "toggle";
+
     /**
      * A callback function which receives another function as input.
      */
@@ -255,8 +257,9 @@ declare namespace stardust {
             direction?: stardust.Direction;
             listLayout?: stardust.ListLayout;
             frequencyMode?: stardust.FrequencyMode;
-            search?: boolean;
             histogram?: boolean;
+            search?: stardust.SearchMode;
+            focusSearch?: boolean;
             toolbar?: boolean;
             checkboxes?: boolean;
             rangeSelect?: boolean;
@@ -265,6 +268,10 @@ declare namespace stardust {
             properties?: object;
             sessionModel?: object;
             selectionsApi?: object;
+            /**
+             * Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
+             */
+            "selectDisabled="?(): boolean;
             update?: stardust.ReceiverFunction;
         }): void;
 
@@ -431,29 +438,6 @@ declare namespace stardust {
         load: stardust.LoadType;
         meta?: object;
     }
-
-    interface Range {
-        qCharPos: number;
-        qCharCount: number;
-    }
-
-    interface Segment {
-        segment: string;
-        highlighted: boolean;
-    }
-
-    type getSegmentsFromRange = (label: string, range: stardust.Range, startIndex?: number)=>stardust.Segment[];
-
-    interface MinMaxResult {
-        min: number;
-        max: number;
-    }
-
-    /**
-     * Returns the min and max indices of elemNumbersOrdered which contains
-     * all numbers in elementNbrs.
-     */
-    type getMinMax = (elementNbrs: number[], elemNumbersOrdered: number[])=>stardust.MinMaxResult;
 
     interface ActionToolbarElement extends HTMLElement{
         className: "njs-action-toolbar-popover";
@@ -648,14 +632,18 @@ declare namespace stardust {
         getContrastingColorTo(color: string): string;
 
         /**
-         * Get the value of a style attribute in the theme by searching in the theme's JSON structure.
-         * The search starts at the specified base path and continues upwards until the value is found.
+         * Get the value of a style attribute in the theme
+         * by searching in the theme's JSON structure.
+         * The search starts at the specified base path
+         * and continues upwards until the value is found.
          * If possible it will get the attribute's value using the given path.
+         * When attributes separated by dots are provided, such as 'hover.color',
+         * they are required in the theme JSON file
          * @param basePath Base path in the theme's JSON structure to start the search in (specified as a name path separated by dots).
          * @param path Expected path for the attribute (specified as a name path separated by dots).
-         * @param attribute Name of the style attribute.
+         * @param attribute Name of the style attribute. (specified as a name attribute separated by dots).
          */
-        getStyle(basePath: string, path: string, attribute: string): string;
+        getStyle(basePath: string, path: string, attribute: string): string | undefined;
 
     }
 
