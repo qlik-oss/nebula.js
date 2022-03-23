@@ -34,7 +34,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     direction,
     listLayout,
     search = true,
-    focusSearch = false,
     toolbar = true,
     rangeSelect = true,
     checkboxes = false,
@@ -143,11 +142,11 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
 
   const { translator, keyboardNavigation } = useContext(InstanceContext);
   const moreAlignTo = useRef();
+  const searchContainer = useRef();
 
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [autoFocusSearch, setAutoFocusSearch] = useState(focusSearch);
   const [keyboardActive, setKeyboardActive] = useState(false);
 
   const handleKeyDown = getListboxInlineKeyboardNavigation({ setKeyboardActive });
@@ -177,6 +176,15 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     }
   }, [selections]);
 
+  useEffect(() => {
+    // Focus search field when toggle-showing it.
+    search === 'toggle' &&
+      showSearch &&
+      searchContainer &&
+      searchContainer.current &&
+      searchContainer.current.querySelector('input').focus();
+  }, [searchContainer, showSearch]);
+
   if (!model || !layout || !translator) {
     return null;
   }
@@ -204,7 +212,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   const onShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
-    setAutoFocusSearch(newValue);
   };
 
   const getSearchOrUnlock = () =>
@@ -271,8 +278,8 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
         </Grid>
       )}
       {searchVisible && (
-        <Grid item>
-          <ListBoxSearch model={model} autoFocus={autoFocusSearch} dense={dense} keyboard={keyboard} />
+        <Grid item ref={searchContainer}>
+          <ListBoxSearch model={model} dense={dense} keyboard={keyboard} />
         </Grid>
       )}
       <Grid item xs>
