@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TREE_PATH = '/qListObjectDef';
 
-export default function ListBoxSearch({ model, keyboard, autoFocus = true, dense = false }) {
+export default function ListBoxSearch({ model, keyboard, dense = false }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
 
@@ -62,7 +62,6 @@ export default function ListBoxSearch({ model, keyboard, autoFocus = true, dense
         </InputAdornment>
       }
       className={['search', classes.root, dense && classes.dense].filter(Boolean).join(' ')}
-      autoFocus={autoFocus}
       margin="dense"
       fullWidth
       placeholder={translator.get('Listbox.Search')}
@@ -70,7 +69,7 @@ export default function ListBoxSearch({ model, keyboard, autoFocus = true, dense
       onChange={onChange}
       onKeyDown={onKeyDown}
       inputProps={{
-        tabIndex: !keyboard.enabled || keyboard.active ? 0 : -1,
+        tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
       }}
     />
   );

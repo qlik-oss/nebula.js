@@ -237,7 +237,7 @@ declare namespace stardust {
 
     type FrequencyMode = "none" | "value" | "percent" | "relative";
 
-    type SearchMode = "false" | "true" | "toggle";
+    type SearchMode = boolean | "toggle";
 
     /**
      * A callback function which receives another function as input.

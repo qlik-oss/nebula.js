@@ -52,6 +52,7 @@ export default function useSelectionsInteractions({
   };
 
   const selectManually = (elementIds = [], additive = false) => {
+    setIsRangeSelection(false); // range is not supported for manual select
     setMouseDown(true);
     preSelect(elementIds, additive || isRangeSelection);
     const p = select(elementIds, additive || isRangeSelection);
@@ -105,6 +106,7 @@ export default function useSelectionsInteractions({
     // Ensure we end interactions when mouseup happens outside the Listbox.
     setMouseDown(false);
     setSelectingValues(false);
+    setIsRangeSelection(false);
   }, []);
 
   const onMouseEnter = useCallback(

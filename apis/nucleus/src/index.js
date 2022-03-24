@@ -341,7 +341,7 @@ function nuked(configuration = {}) {
          */
 
         /**
-         * @typedef { false | true | 'toggle' } SearchMode
+         * @typedef { boolean | 'toggle' } SearchMode
          */
 
         /**

@@ -794,12 +794,7 @@
         "kind": "union",
         "items": [
           {
-            "kind": "literal",
-            "value": "false"
-          },
-          {
-            "kind": "literal",
-            "value": "true"
+            "type": "boolean"
           },
           {
             "kind": "literal",
