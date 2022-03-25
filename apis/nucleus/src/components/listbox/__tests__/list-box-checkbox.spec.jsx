@@ -23,6 +23,8 @@ describe('<ListBoxCheckbox />', () => {
               cbIcon: 'cbIcon',
               cbIconChecked: 'cbIconChecked',
               checkbox: 'checkbox',
+              cbIconAlternative: 'cbIconAlternative',
+              cbIconExcluded: 'cbIconExcluded',
             }),
           }),
         ],
@@ -52,5 +54,19 @@ describe('<ListBoxCheckbox />', () => {
     const [cb] = cbs;
     expect(cb.props.className).to.equal('checkbox');
     expect(cb.props.checked).to.equal(true);
+  });
+
+  it('should render checkbox filled with alternative gray', async () => {
+    const testRenderer = await render(<ListBoxCheckbox alternative label="filled with gray" />);
+    const cb = testRenderer.root.findByType(Checkbox);
+    expect(cb.props.className).to.equal('checkbox');
+    expect(cb.props.icon.props.children.props.className).to.equal('cbIconAlternative');
+  });
+
+  it('should render checkbox filled with excluded gray', async () => {
+    const testRenderer = await render(<ListBoxCheckbox excluded label="filled with gray" />);
+    const cb = testRenderer.root.findByType(Checkbox);
+    expect(cb.props.className).to.equal('checkbox');
+    expect(cb.props.icon.props.children.props.className).to.equal('cbIconExcluded');
   });
 });
