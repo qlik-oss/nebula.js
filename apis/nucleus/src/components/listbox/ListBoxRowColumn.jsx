@@ -22,6 +22,18 @@ const barBorderWidthPx = 1;
 const barWithCheckboxLeftPadEm = 2;
 const frequencyTextNone = '0';
 
+const getSelectedStyle = ({ theme }) => ({
+  background: theme.palette.selected.main,
+  color: theme.palette.selected.mainContrastText,
+  '&:focus': {
+    boxShadow: `inset 0 0 0 2px rgba(0, 0, 0, 0.3)`,
+    outline: 'none',
+  },
+  '& $cell': {
+    paddingRight: 0,
+  },
+});
+
 const useStyles = makeStyles((theme) => ({
   row: {
     flexWrap: 'nowrap',
@@ -102,17 +114,14 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(1, 1, 1, 0),
   },
 
-  // Selection styles (S=Selected, A=Available, X=Excluded).
+  // Selection styles (S=Selected, XS=ExcludedSelected, A=Available, X=Excluded).
   S: {
-    background: theme.palette.selected.main,
+    ...getSelectedStyle({ theme }),
+  },
+  XS: {
+    ...getSelectedStyle({ theme }),
+    background: theme.palette.selected.excluded,
     color: theme.palette.selected.mainContrastText,
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px rgba(0, 0, 0, 0.3)`,
-      outline: 'none',
-    },
-    '& $cell': {
-      paddingRight: 0,
-    },
   },
   A: {
     background: theme.palette.selected.alternative,
@@ -120,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
   },
   X: {
     background: theme.palette.selected.excluded,
-    color: theme.palette.selected.excludedContrastText,
+    color: theme.palette.selected.mainContrastText,
   },
   frequencyCount: {
     paddingLeft: '8px',
@@ -209,7 +218,9 @@ function RowColumn({ index, style, data, column = false }) {
 
     const clazzArr = [column ? classes.column : classes.row];
     if (!checkboxes) {
-      if (cell.qState === 'S' || cell.qState === 'L') {
+      if (cell.qState === 'XS') {
+        clazzArr.push(classes.XS);
+      } else if (cell.qState === 'S' || cell.qState === 'L') {
         clazzArr.push(classes.S);
       } else if (isAlternative(cell)) {
         clazzArr.push(classes.A);

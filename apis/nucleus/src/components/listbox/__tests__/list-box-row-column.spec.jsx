@@ -14,6 +14,7 @@ const [{ default: ListBoxRowColumn }] = aw.mock(
           S: 'selected',
           A: 'alternative',
           X: 'excluded',
+          XS: 'excluded-selected',
           highlighted: 'highlighted',
           cell: 'cell',
         }),
@@ -326,7 +327,7 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
-    it('should set excluded - qState XS', async () => {
+    it('should set excluded-selected - qState XS', async () => {
       const index = 0;
       const style = {};
       const data = {
@@ -359,7 +360,7 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.include('excluded');
+      expect(type.props.className).to.include('excluded-selected');
       await testRenderer.unmount();
     });
 
