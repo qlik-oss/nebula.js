@@ -4,6 +4,7 @@ import { Grid, Typography } from '@material-ui/core';
 import Lock from '@nebula.js/ui/icons/lock';
 import ListBoxCheckbox from '../ListBoxCheckbox';
 import * as keyboardNavigation from '../listbox-keyboard-navigation';
+import ListBoxRadioButton from '../ListBoxRadioButton';
 
 const [{ default: ListBoxRowColumn }] = aw.mock(
   [
@@ -677,6 +678,48 @@ describe('<ListBoxRowColumn />', () => {
       expect(className).to.be.a('string');
       expect(className.split(' ')).to.include('value');
       await testRenderer.unmount();
+    });
+
+    it('should render radio button when isSingleSelect is true', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        keyboard,
+        actions,
+        isSingleSelect: true,
+        checkboxes: true,
+        frequencyMode: 'value',
+        pages: [
+          {
+            qArea: {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 0,
+              qHeight: 100,
+            },
+            qMatrix: [
+              [
+                {
+                  qState: 'S',
+                  qFrequency: '123',
+                  qText: 'nebula',
+                  qElemNumber: 0,
+                },
+              ],
+            ],
+          },
+        ],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
+      const types = testInstance.findAllByType(ListBoxRadioButton);
+      expect(types).to.have.length(1);
     });
   });
 });

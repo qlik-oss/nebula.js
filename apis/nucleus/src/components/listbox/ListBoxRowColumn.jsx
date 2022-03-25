@@ -237,8 +237,7 @@ function RowColumn({ index, style, data, column = false }) {
       .join(' ')
       .trim();
 
-  const hasGrayText = () =>
-    (isAlternative(cell) || isExcluded(cell)) && checkboxes ? classes.excludedTextWithCheckbox : false;
+  const excludedOrAlternative = () => (isAlternative(cell) || isExcluded(cell)) && checkboxes;
 
   const getValueField = ({ lbl, ix, color, highlighted = false }) => (
     <Typography
@@ -249,7 +248,7 @@ function RowColumn({ index, style, data, column = false }) {
         classes.labelText,
         highlighted && classes.highlighted,
         dense && classes.labelDense,
-        hasGrayText(),
+        excludedOrAlternative() && classes.excludedTextWithCheckbox,
       ])}
       color={color}
     >
@@ -258,7 +257,15 @@ function RowColumn({ index, style, data, column = false }) {
   );
 
   const getCheckboxField = ({ lbl, color, qElemNumber }) => {
-    const cb = <ListBoxCheckbox label={lbl} checked={isSelected} dense={dense} />;
+    const cb = (
+      <ListBoxCheckbox
+        label={lbl}
+        checked={isSelected}
+        dense={dense}
+        excluded={isExcluded(cell)}
+        alternative={isAlternative(cell)}
+      />
+    );
     const rb = <ListBoxRadioButton label={lbl} checked={isSelected} dense={dense} />;
     const labelTag = typeof lbl === 'string' ? getValueField({ lbl, color, highlighted: false }) : lbl;
     return (
@@ -366,7 +373,11 @@ function RowColumn({ index, style, data, column = false }) {
               noWrap
               color="inherit"
               variant="body2"
-              className={joinClassNames([dense && classes.labelDense, classes.labelText, hasGrayText()])}
+              className={joinClassNames([
+                dense && classes.labelDense,
+                classes.labelText,
+                excludedOrAlternative() && classes.excludedTextWithCheckbox,
+              ])}
             >
               {getFrequencyText()}
             </Typography>
