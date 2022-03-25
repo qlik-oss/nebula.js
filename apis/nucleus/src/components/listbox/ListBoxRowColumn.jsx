@@ -49,8 +49,8 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 0,
     flexGrow: 1,
     // Note that this padding is overridden when using checkboxes.
-    paddingLeft: '12px',
-    paddingRight: '12px',
+    paddingLeft: '9px',
+    paddingRight: '9px',
   },
 
   // The leaf node, containing the label text.
@@ -82,19 +82,24 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     width: '100%',
     height: '100%',
-    // For checkboxes the first child is the checkbox container, second is the label container.
+
+    // The checkbox's span
+    '& > span:nth-child(1)': {
+      paddingRight: '7px',
+    },
+    // The checkbox's label container.
     '& > span:nth-child(2)': {
       ...ellipsis,
       display: 'flex',
       alignItems: 'center',
-      paddingLeft: '8px',
+      paddingLeft: 0,
     },
   },
 
   // The icons container holding tick and lock, shown inside fields.
   icon: {
     display: 'flex',
-    padding: theme.spacing(1),
+    padding: theme.spacing(1, 1, 1, 0),
   },
 
   // Selection styles (S=Selected, A=Available, X=Excluded).
@@ -104,6 +109,9 @@ const useStyles = makeStyles((theme) => ({
     '&:focus': {
       boxShadow: `inset 0 0 0 2px rgba(0, 0, 0, 0.3)`,
       outline: 'none',
+    },
+    '& $cell': {
+      paddingRight: 0,
     },
   },
   A: {
@@ -332,7 +340,12 @@ function RowColumn({ index, style, data, column = false }) {
             style={{ width: getBarWidth(cell.qFrequency) }}
           />
         )}
-        <Grid item style={cellStyle} className={classes.cell} title={`${label}`}>
+        <Grid
+          item
+          style={cellStyle}
+          className={joinClassNames([classes.cell, classes.selectedCell])}
+          title={`${label}`}
+        >
           {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
         </Grid>
 
