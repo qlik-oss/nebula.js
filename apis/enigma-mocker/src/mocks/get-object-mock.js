@@ -100,7 +100,7 @@ function validate(genericObject) {
  * @param {EnigmaMockerOptions} options Options.
  * @returns Function to retrieve the mocked generic object with the corresponding id.
  */
-function GetObjectMock(genericObjects = [], options) {
+function GetObjectMock(genericObjects = [], options = {}) {
   genericObjects.forEach(validate);
   const mocks = createMocks(genericObjects, options);
 
