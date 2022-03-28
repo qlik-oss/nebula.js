@@ -32,6 +32,21 @@ describe('object lifecycle', () => {
     await waitForTextStatus('[data-tid="error-title"]', 'Incomplete visualization');
   });
 
+  it('should render long running query', async () => {
+    const url = getScenarioUrl('long-running');
+    await page.goto(url);
+    await waitForTextStatus('[data-tid="update-active"]', 'Updating data');
+
+    // the cancel button should appear after 2000ms
+    await page.click('.njs-cell button');
+    await waitForTextStatus('[data-tid="update-cancelled"]', 'Data update was cancelled');
+    // Retry
+    await waitForTextStatus('.njs-cell button', 'Retry');
+    await page.click('.njs-cell button');
+
+    await waitForTextStatus('.rendered', 'Success!', { timeout: 7000 });
+  });
+
   // need to fix calc condition view first
   it('should show calculation unfulfilled', async () => {
     const url = getScenarioUrl('calc-unfulfilled');
