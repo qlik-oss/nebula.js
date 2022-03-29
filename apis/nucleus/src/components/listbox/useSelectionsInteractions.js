@@ -16,11 +16,12 @@ export default function useSelectionsInteractions({
   checkboxes = false,
   selectDisabled,
   doc = document,
-  isSingleSelect = false,
+  isSingleSelect: singleSelect = false,
 }) {
   const [instantPages, setInstantPages] = useState(pages);
   const [mouseDown, setMouseDown] = useState(false);
   const [selectingValues, setSelectingValues] = useState(false);
+  const [isSingleSelect, setIsSingleSelect] = useState(singleSelect);
   const [selected, setSelected] = useState([]);
   const [isRangeSelection, setIsRangeSelection] = useState(false);
   const [preSelected, setPreSelected] = useState([]);
@@ -60,19 +61,28 @@ export default function useSelectionsInteractions({
     return p;
   };
 
+  const handleSingleSelectKey = (event) => {
+    if (event.ctrlKey || event.metaKey) {
+      setIsSingleSelect(true);
+      event.currentTarget.focus(); // will not be focused otherwise
+      event.preventDefault();
+    }
+  };
+
   const onClick = useCallback(
-    (event) => {
+    async (event) => {
       if (selectingValues || selectDisabled()) {
         return;
       }
       const elemNumber = +event.currentTarget.getAttribute('data-n');
       setPreSelected([elemNumber]);
+      handleSingleSelectKey(event);
     },
     [selectingValues, selectDisabled]
   );
 
   const onMouseDown = useCallback(
-    (event) => {
+    async (event) => {
       if (selectingValues || selectDisabled()) {
         return;
       }
@@ -81,6 +91,7 @@ export default function useSelectionsInteractions({
 
       const elemNumber = +event.currentTarget.getAttribute('data-n');
       setPreSelected([elemNumber]);
+      handleSingleSelectKey(event);
     },
     [selectingValues, selectDisabled]
   );
@@ -107,6 +118,7 @@ export default function useSelectionsInteractions({
     setMouseDown(false);
     setSelectingValues(false);
     setIsRangeSelection(false);
+    setIsSingleSelect(singleSelect);
   }, []);
 
   const onMouseEnter = useCallback(

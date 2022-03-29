@@ -90,6 +90,10 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
+      expect(typeof type.props.onContextMenu).to.equal('function');
+      const preventDefault = sandbox.stub();
+      type.props.onContextMenu({ preventDefault });
+      expect(preventDefault.callCount).to.equal(1);
       expect(type.props.tabIndex).to.equal(-1);
       expect(type.props.onClick.callCount).to.equal(0);
 
@@ -165,6 +169,11 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onKeyDown()).to.equal('handle-key-down-callback');
       expect(type.props.onClick.callCount).to.equal(0);
       expect(type.props.tabIndex).to.equal(0);
+
+      const preventDefault = sandbox.stub();
+      type.props.onContextMenu({ preventDefault });
+      expect(preventDefault.callCount).to.equal(1);
+      expect(type.props.onClick.callCount).to.equal(1);
 
       const types = testInstance.findAllByType(Typography);
       expect(types).to.have.length(2);
