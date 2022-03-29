@@ -9,7 +9,7 @@ import useLayout from '../../hooks/useLayout';
 
 import useSelectionsInteractions from './useSelectionsInteractions';
 
-import MemoRowColumn from './ListBoxRowColumn';
+import RowColumn from './ListBoxRowColumn';
 
 function getSizeInfo({ isVertical, checkboxes, dense, height }) {
   let sizeVertical = checkboxes ? 40 : 33;
@@ -207,7 +207,7 @@ export default function ListBox({
             onItemsRendered={onItemsRendered}
             ref={ref}
           >
-            {MemoRowColumn}
+            {RowColumn}
           </FixedSizeList>
         );
       }}

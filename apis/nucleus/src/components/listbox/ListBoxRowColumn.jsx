@@ -22,6 +22,18 @@ const barBorderWidthPx = 1;
 const barWithCheckboxLeftPadEm = 2;
 const frequencyTextNone = '0';
 
+const getSelectedStyle = ({ theme }) => ({
+  background: theme.palette.selected.main,
+  color: theme.palette.selected.mainContrastText,
+  '&:focus': {
+    boxShadow: `inset 0 0 0 2px rgba(0, 0, 0, 0.3)`,
+    outline: 'none',
+  },
+  '& $cell': {
+    paddingRight: 0,
+  },
+});
+
 const useStyles = makeStyles((theme) => ({
   row: {
     flexWrap: 'nowrap',
@@ -49,8 +61,8 @@ const useStyles = makeStyles((theme) => ({
     minWidth: 0,
     flexGrow: 1,
     // Note that this padding is overridden when using checkboxes.
-    paddingLeft: '12px',
-    paddingRight: '12px',
+    paddingLeft: '9px',
+    paddingRight: '9px',
   },
 
   // The leaf node, containing the label text.
@@ -82,29 +94,34 @@ const useStyles = makeStyles((theme) => ({
     margin: 0,
     width: '100%',
     height: '100%',
-    // For checkboxes the first child is the checkbox container, second is the label container.
+
+    // The checkbox's span
+    '& > span:nth-child(1)': {
+      paddingRight: '7px',
+    },
+    // The checkbox's label container.
     '& > span:nth-child(2)': {
       ...ellipsis,
       display: 'flex',
       alignItems: 'center',
-      paddingLeft: '8px',
+      paddingLeft: 0,
     },
   },
 
   // The icons container holding tick and lock, shown inside fields.
   icon: {
     display: 'flex',
-    padding: theme.spacing(1),
+    padding: theme.spacing(1, 1, 1, 0),
   },
 
-  // Selection styles (S=Selected, A=Available, X=Excluded).
+  // Selection styles (S=Selected, XS=ExcludedSelected, A=Available, X=Excluded).
   S: {
-    background: theme.palette.selected.main,
+    ...getSelectedStyle({ theme }),
+  },
+  XS: {
+    ...getSelectedStyle({ theme }),
+    background: theme.palette.selected.excluded,
     color: theme.palette.selected.mainContrastText,
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px rgba(0, 0, 0, 0.3)`,
-      outline: 'none',
-    },
   },
   A: {
     background: theme.palette.selected.alternative,
@@ -112,7 +129,7 @@ const useStyles = makeStyles((theme) => ({
   },
   X: {
     background: theme.palette.selected.excluded,
-    color: theme.palette.selected.excludedContrastText,
+    color: theme.palette.selected.mainContrastText,
   },
   frequencyCount: {
     paddingLeft: '8px',
@@ -201,7 +218,9 @@ function RowColumn({ index, style, data, column = false }) {
 
     const clazzArr = [column ? classes.column : classes.row];
     if (!checkboxes) {
-      if (cell.qState === 'S' || cell.qState === 'L') {
+      if (cell.qState === 'XS') {
+        clazzArr.push(classes.XS);
+      } else if (cell.qState === 'S' || cell.qState === 'L') {
         clazzArr.push(classes.S);
       } else if (isAlternative(cell)) {
         clazzArr.push(classes.A);
@@ -218,8 +237,7 @@ function RowColumn({ index, style, data, column = false }) {
       .join(' ')
       .trim();
 
-  const hasGrayText = () =>
-    (isAlternative(cell) || isExcluded(cell)) && checkboxes ? classes.excludedTextWithCheckbox : false;
+  const excludedOrAlternative = () => (isAlternative(cell) || isExcluded(cell)) && checkboxes;
 
   const getValueField = ({ lbl, ix, color, highlighted = false }) => (
     <Typography
@@ -230,7 +248,7 @@ function RowColumn({ index, style, data, column = false }) {
         classes.labelText,
         highlighted && classes.highlighted,
         dense && classes.labelDense,
-        hasGrayText(),
+        excludedOrAlternative() && classes.excludedTextWithCheckbox,
       ])}
       color={color}
     >
@@ -239,7 +257,15 @@ function RowColumn({ index, style, data, column = false }) {
   );
 
   const getCheckboxField = ({ lbl, color, qElemNumber }) => {
-    const cb = <ListBoxCheckbox label={lbl} checked={isSelected} dense={dense} />;
+    const cb = (
+      <ListBoxCheckbox
+        label={lbl}
+        checked={isSelected}
+        dense={dense}
+        excluded={isExcluded(cell)}
+        alternative={isAlternative(cell)}
+      />
+    );
     const rb = <ListBoxRadioButton label={lbl} checked={isSelected} dense={dense} />;
     const labelTag = typeof lbl === 'string' ? getValueField({ lbl, color, highlighted: false }) : lbl;
     return (
@@ -332,7 +358,12 @@ function RowColumn({ index, style, data, column = false }) {
             style={{ width: getBarWidth(cell.qFrequency) }}
           />
         )}
-        <Grid item style={cellStyle} className={classes.cell} title={`${label}`}>
+        <Grid
+          item
+          style={cellStyle}
+          className={joinClassNames([classes.cell, classes.selectedCell])}
+          title={`${label}`}
+        >
           {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
         </Grid>
 
@@ -342,7 +373,11 @@ function RowColumn({ index, style, data, column = false }) {
               noWrap
               color="inherit"
               variant="body2"
-              className={joinClassNames([dense && classes.labelDense, classes.labelText, hasGrayText()])}
+              className={joinClassNames([
+                dense && classes.labelDense,
+                classes.labelText,
+                excludedOrAlternative() && classes.excludedTextWithCheckbox,
+              ])}
             >
               {getFrequencyText()}
             </Typography>
@@ -360,7 +395,4 @@ function RowColumn({ index, style, data, column = false }) {
   );
 }
 
-const propsAreEqual = (prevRow, nextRow) => JSON.stringify(prevRow) === JSON.stringify(nextRow);
-
-const MemoRowColumn = React.memo(RowColumn, propsAreEqual);
-export default MemoRowColumn;
+export default RowColumn;
