@@ -70,7 +70,7 @@ export default function useSelectionsInteractions({
   };
 
   const onClick = useCallback(
-    async (event) => {
+    (event) => {
       if (selectingValues || selectDisabled()) {
         return;
       }
@@ -82,7 +82,7 @@ export default function useSelectionsInteractions({
   );
 
   const onMouseDown = useCallback(
-    async (event) => {
+    (event) => {
       if (selectingValues || selectDisabled()) {
         return;
       }
