@@ -280,5 +280,41 @@ describe('use-listbox-interactions', () => {
       });
       expect(applySelectionsOnPages.args[startCallCount + 1]).to.deep.equal([[], [24], false]);
     });
+
+    it('Ctrl or cmd button with click should result in single select behaviour', async () => {
+      await render({ checkboxes: true });
+      const preventDefault = sandbox.stub();
+      const focus = sandbox.stub();
+      await act(() => {
+        ref.current.result.interactionEvents.onClick({
+          currentTarget: {
+            focus,
+            getAttribute: sandbox.stub().withArgs('data-n').returns(24),
+          },
+          ctrlKey: true,
+          preventDefault,
+        });
+      });
+      expect(focus.callCount).to.equal(1);
+      expect(preventDefault.callCount).to.equal(1);
+    });
+
+    it('Ctrl or cmd button with mousedown should result in single select behaviour', async () => {
+      await render({ checkboxes: false });
+      const preventDefault = sandbox.stub();
+      const focus = sandbox.stub();
+      await act(() => {
+        ref.current.result.interactionEvents.onMouseDown({
+          currentTarget: {
+            focus,
+            getAttribute: sandbox.stub().withArgs('data-n').returns(24),
+          },
+          ctrlKey: true,
+          preventDefault,
+        });
+      });
+      expect(focus.callCount).to.equal(1);
+      expect(preventDefault.callCount).to.equal(1);
+    });
   });
 });
