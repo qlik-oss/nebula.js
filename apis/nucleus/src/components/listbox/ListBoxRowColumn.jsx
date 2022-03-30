@@ -256,6 +256,13 @@ function RowColumn({ index, style, data, column = false }) {
     </Typography>
   );
 
+  const preventContextMenu = (event) => {
+    if (checkboxes) {
+      // Event will not propagate in the checkbox/radiobutton case
+      onClick(event);
+    }
+    event.preventDefault();
+  };
   const getCheckboxField = ({ lbl, color, qElemNumber }) => {
     const cb = (
       <ListBoxCheckbox
@@ -344,6 +351,7 @@ function RowColumn({ index, style, data, column = false }) {
         onMouseUp={onMouseUp}
         onMouseEnter={onMouseEnter}
         onKeyDown={handleKeyDownCallback}
+        onContextMenu={preventContextMenu}
         role={column ? 'column' : 'row'}
         tabIndex={isFirstElement && (!keyboard.enabled || keyboard.active) ? 0 : -1}
         data-n={cell && cell.qElemNumber}
