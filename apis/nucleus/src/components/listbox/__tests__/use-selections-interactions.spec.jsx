@@ -278,7 +278,7 @@ describe('use-listbox-interactions', () => {
           },
         });
       });
-      expect(applySelectionsOnPages.args[startCallCount + 1]).to.deep.equal([[], [24], false]);
+      expect(applySelectionsOnPages.args[startCallCount + 1]).to.deep.equal([[], [], false]);
     });
 
     it('Ctrl or cmd button with click should result in single select behaviour', async () => {
