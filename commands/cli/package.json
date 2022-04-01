@@ -29,6 +29,6 @@
   "dependencies": {
     "@nebula.js/cli-create": "^2.8.0",
     "import-cwd": "3.0.0",
-    "yargs": "17.3.1"
+    "yargs": "17.4.0"
   }
 }
