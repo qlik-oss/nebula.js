@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Image, Pressable } from 'react-native';
+import { View, StyleSheet, Image, Pressable, Text } from 'react-native';
 import AppTemplate from './AppTemplate';
 import SupernovaView from './SupernovaView';
 
@@ -27,10 +27,12 @@ const SupernovaViewer = ({ navigation, route }) => {
     <AppTemplate useScrollView>
       <Image style={styles.titleImage} source={titleImage} />
       <View>
-        <Pressable onPress={() => goBack()} />{' '}
+        <Pressable onPress={() => goBack()}>
+          <Text>Go Back</Text>
+        </Pressable>
       </View>
       <View style={styles.viewer}>
-        <SupernovaView item={route.params.appData} />
+        <SupernovaView appData={route.params.connection.app} fullScreen={false} />
       </View>
     </AppTemplate>
   );

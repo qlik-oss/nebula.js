@@ -75,7 +75,6 @@ const EngineConnectView = ({ navigation }) => {
   const [appId, setAppId] = useState('375b58fb-ed16-4c50-a291-719f5e9295fb');
   const [apiKey, setApiKey] = useState(testKey2);
   const [error, setError] = useState(null);
-  const [visId, setVisId] = useState('sn-table');
   const [connectionRequested, setConnectionRequested] = useState(false);
 
   // connect to app when global state is updated
@@ -100,7 +99,6 @@ const EngineConnectView = ({ navigation }) => {
       apiKey,
       tenantURL: tenant,
       appId,
-      visId,
     });
     setConnectionRequested(true);
   };
@@ -130,12 +128,6 @@ const EngineConnectView = ({ navigation }) => {
           placeholder="API Key (example: sjzvooiaevpbawefh38ergb2438)"
           onChangeText={(newText) => setApiKey(newText)}
         />
-        <TextInput
-          style={styles.inputText}
-          value={visId}
-          placeholder="Visualization Id (example: kpi)"
-          onChangeText={(newText) => setVisId(newText)}
-        />
         {error && (
           <View>
             <Text style={styles.errorPrompt}> {error.message} </Text>
@@ -149,26 +141,24 @@ const EngineConnectView = ({ navigation }) => {
           <Text style={styles.buttonText}>Connect</Text>
         </Pressable>
         <View>
-          <Text style={styles.subHeading}> WebSocket URL </Text>
+          <Text style={styles.subHeading}> How to find your tenant URL: </Text>
           <Text style={styles.simpleText}>
-            The development server needs to connect to and communicate with the Qlik Associative Engine running within
-            any of Qlik&apos;s product offerings. The connection is done through the WebSocket protocol using a
-            WebSocket URL format that differs slightly between products. Enter the WebSocket URL that corresponds to the
-            Qlik product you are using.{'\n'}
-            {'\n'}
+            Log into the hub and copy the URL {'\n'}
+            (omit https://) ex: ecdp1.us.qlikcloud.com {'\n'}
           </Text>
-
-          <Text style={styles.subHeading}> Qlik Cloud Services </Text>
+          <Text style={styles.subHeading}> How to find your AppId: </Text>
           <Text style={styles.simpleText}>
-            WebSocket URL format: {'\n'}
-            {'wss://<tenant>.<region>'}.qlikcloud.com?qlik-web-integration-id={'<web-integration-id>'} {'\n'}
+            1. Open the hub in a browser window. {'\n'}
+            2. Open the app you want to connect to. {'\n'}
+            3. When the Qlik Sense app has opened, the app ID is visible in the URL: .../sense/app/{'<appId>'}. {'\n'}
+          </Text>
+          <Text style={styles.subHeading}> How to find your API Key: </Text>
+          <Text style={styles.simpleText}>
+            1. Open the hub and go to the management console 2. Click on API keys under Integration 3. If you are an
+            admin, click Generate new 4. Copy the generated key
+          </Text>
+          <Text>
             {'\n'}
-            Example: {'\n'}wss://qlik.eu.qlikcloud.com?qlik-web-integration-id=xxx {'\n'}
-            {'\n'}
-            The qlik-web-integration-id must be present in order for QCS to confirm that the request originates from a
-            whitelisted domain. {'\n'}
-            {'\n'}
-            For more info, visit Managing web integrations.{'\n'}
             {'\n'}
           </Text>
         </View>

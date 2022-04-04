@@ -2,7 +2,7 @@
   "name": "nebulaservenative",
   "version": "0.0.1",
   "description": "a native mobile implementation of nebula serve",
-  "main": "index.jsx",
+  "main": "index.js",
   "private": true,
   "scripts": {
     "android": "react-native run-android",

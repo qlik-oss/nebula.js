@@ -1,0 +1,6 @@
+{
+  "rules": {
+    "react/jsx-filename-extension": "off"
+  },
+  "ignorePatterns": ["src/"]
+}

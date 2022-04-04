@@ -42,16 +42,16 @@ const useConnectToApp = (connectionRequested) => {
       console.log('session:', session);
       app = await session.openDoc(enigmaSettings.appId);
       console.log('app', app);
-      model = await app.getObject(enigmaSettings.visId);
-      console.log('model', model);
-      layout = await model.getLayout();
+      // model = await app.getObject(enigmaSettings.visId);
+      // console.log('model', model);
+      // layout = await model.getLayout();
       globalSession.close();
     } catch (err) {
       error = err;
       console.error('Failed to open app', JSON.stringify(error), err);
     }
 
-    setConnection({ app, error, model, layout });
+    setConnection({ app, error });
   }, [enigmaSettings]);
 
   useEffect(() => {

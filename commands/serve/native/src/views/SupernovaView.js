@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAtom } from 'jotai';
 import { Supernova } from '@qlik/react-native-carbon';
-import treemap from '@qlik-trial/sn-treemap';
-import snTable from '@nebula.js/sn-table';
-// import { supernova as kpi } from '@qlik/sn-native-kpi';
 import horizon from '@qlik-trial/sense-themes-default/dist/horizon/theme.json';
 import enigmaSettingsAtom from '../atoms/enigmaSettingsAtom';
+import sn from '../sn/sn.js';
+// import snapshooter from '../../../lib/snapshot-server';
 
 const styles = StyleSheet.create({
   container: {
@@ -25,28 +24,9 @@ const styles = StyleSheet.create({
   },
 });
 
-const getSn = (layout, item) => {
-  if (!layout) return null;
-  const type = layout.visualization || item.type;
-  switch (type) {
-    case 'kpi': {
-      return '__kpi';
-    }
-    case 'table': {
-      return snTable;
-    }
-    case 'treemap': {
-      return treemap;
-    }
-    default: {
-      return null;
-    }
-  }
-};
-
-const SupernovaView = ({ appData, fullScreen }) => {
+const SupernovaView = (params) => {
+  console.log('sn function object', sn());
   const [enigmaSettings] = useAtom(enigmaSettingsAtom);
-
   const invalidMessage = {
     value: 'invalidParameters',
     comment: 'invalid or incomplete data passed to supernova',
@@ -56,18 +36,20 @@ const SupernovaView = ({ appData, fullScreen }) => {
     console.log('long press occured');
   };
 
+  // pass in fields instead of id
+
   return (
     <View style={[styles.container]}>
       <Supernova
         testID="supernova"
-        id={enigmaSettings.appId}
-        sn={getSn({ visualization: 'table' }, appData)}
-        app={appData}
+        fields={['AsciiNum', 'Dim1']}
+        sn={sn()}
+        app={params.appData}
         theme={horizon}
         style={styles.inner}
+        showLegend={params.fullScreen}
+        disableLoadAnimations={params.fullScreen ? true : undefined}
         onLongPress={handleOnLongPress}
-        showLegend={fullScreen}
-        disableLoadAnimations={fullScreen ? true : undefined}
         invalidMessage={invalidMessage}
       />
     </View>
@@ -77,3 +59,6 @@ const SupernovaView = ({ appData, fullScreen }) => {
 export default React.memo(SupernovaView);
 
 // need to add theme={themeObject}
+
+// object={}
+// loadLayout={}

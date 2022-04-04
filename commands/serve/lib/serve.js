@@ -94,39 +94,28 @@ const initiateWatch = async ({ snPath, snName, host }) => {
 
 const buildAndRunServeNative = async ({ platform, context, snName, snPath }) => {
   try {
-    const proc1 = exec(`sh export SN_PATH=${snPath}`);
+    const proc = exec(`sh ./scripts/runMetro.sh ${snPath} ${snName} ${context}`, {
+      cwd: path.join(__dirname, '..', 'native'),
+    });
+    proc.stdout.on('data', (data) => {
+      console.log(data);
+    });
+    proc.stderr.on('data', (data) => {
+      console.log(data);
+    });
+    proc.on('close', (code) => {
+      `nebula serve process exited with code ${code}`;
+    });
+    const proc1 = exec(`sh ./scripts/runNative.sh  ${platform}`, {
+      cwd: path.join(__dirname, '..', 'native'),
+    });
     proc1.stdout.on('data', (data) => {
       console.log(data);
     });
-
-    const proc2 = exec(`sh export SN_NAME=${snName}`);
-    proc2.stdout.on('data', (data) => {
+    proc1.stderr.on('data', (data) => {
       console.log(data);
     });
-
-    const proc3 = exec(`react-native start --watchFolders '${context}'`, {
-      cwd: path.join(__dirname, '..', 'native'),
-    });
-    proc3.stdout.on('data', (data) => {
-      console.log(data);
-    });
-    proc3.stderr.on('data', (data) => {
-      console.log(data);
-    });
-    proc3.on('close', (code) => {
-      `nebula serve process exited with code ${code}`;
-    });
-
-    const proc4 = exec(`react-native run-${platform}`, {
-      cwd: path.join(__dirname, '..', 'native'),
-    });
-    proc4.stdout.on('data', (data) => {
-      console.log(data);
-    });
-    proc4.stderr.on('data', (data) => {
-      console.log(data);
-    });
-    proc4.on('close', (code) => {
+    proc1.on('close', (code) => {
       `nebula serve process exited with code ${code}`;
     });
   } catch (error) {
@@ -197,14 +186,13 @@ module.exports = async (argv) => {
 
   const ww = snUrl ? null : await initiateWatch({ snPath, snName: serveConfig.type || snName, host });
 
-  console.log('snName: ', snName);
-  console.log('snUrl:', snUrl);
-  console.log('snPath', snPath);
   // if --nativeAndroid or --nativeIos but not both run native version
   if ((!argv.nativeAndroid && argv.nativeIos) || (argv.nativeAndroid && !argv.nativeIos)) {
     buildAndRunServeNative({
       platform: argv.nativeIos ? 'ios' : 'android',
       context,
+      snName,
+      snPath,
     });
     return;
   }
