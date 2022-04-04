@@ -37,6 +37,7 @@ export default function useSelectionsInteractions({
     const filtered = additive ? elemNumbers.filter((n) => !selected.includes(n)) : elemNumbers;
     await selectValues({ selections, elemNumbers: filtered, isSingleSelect });
     setSelectingValues(false);
+    setPreSelected([]);
   };
 
   // Show estimated selection states instantly before applying the selections for real.

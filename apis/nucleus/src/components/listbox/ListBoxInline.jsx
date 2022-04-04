@@ -183,6 +183,12 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
         });
       }
     }
+    return () => {
+      if (selections) {
+        selections.off('deactivated');
+        selections.off('activated');
+      }
+    };
   }, [selections]);
 
   useEffect(() => {

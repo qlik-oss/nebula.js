@@ -118,6 +118,7 @@ describe('<ListboxInline />', () => {
       on: sandbox.stub().callsFake((event, func) => (eventTriggered) => {
         if (event === eventTriggered) func();
       }),
+      off: sandbox.stub(),
     };
     useSessionModel.returns([sessionModel]);
     useObjectSelections.returns([selections]);
@@ -171,6 +172,7 @@ describe('<ListboxInline />', () => {
 
   afterEach(() => {
     sandbox.reset();
+    renderer.unmount();
   });
 
   after(() => {
@@ -213,6 +215,11 @@ describe('<ListboxInline />', () => {
       expect(showSearchButtons).to.have.length(1);
       expect(getListboxInlineKeyboardNavigation).calledOnce;
       expect(renderer.toJSON().props.onKeyDown).to.equal('keyboard-navigation');
+
+      expect(selections.on).calledTwice;
+      expect(selections.on.args[0][0]).to.equal('deactivated');
+      expect(selections.on.args[1][0]).to.equal('activated');
+      expect(selections.off).not.called;
     });
 
     it('should render without toolbar', async () => {
