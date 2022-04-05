@@ -68,7 +68,7 @@ export default function ListBox({
   update = undefined,
   dense = false,
   keyboard = {},
-  scrollTimeout = 10,
+  scrollTimeout = 500,
   selectDisabled = () => false,
 }) {
   const [layout] = useLayout(model);

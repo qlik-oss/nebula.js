@@ -250,7 +250,7 @@ declare namespace stardust {
         /**
          * Mounts the field as a listbox into the provided HTMLElement.
          * @param element
-         * @param options Settings for the embedded listbox
+         * @param options Settings for the embedded listbox.
          */
         mount(element: HTMLElement, options?: {
             title?: string;
@@ -264,6 +264,7 @@ declare namespace stardust {
             checkboxes?: boolean;
             rangeSelect?: boolean;
             dense?: boolean;
+            scrollTimeout?: number;
             stateName?: boolean;
             properties?: object;
             sessionModel?: object;
@@ -382,6 +383,16 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -413,16 +424,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {
