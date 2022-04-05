@@ -32,7 +32,7 @@ const SupernovaViewer = ({ navigation, route }) => {
         </Pressable>
       </View>
       <View style={styles.viewer}>
-        <SupernovaView appData={route.params.connection.app} fullScreen={false} />
+        <SupernovaView connection={route.params.connection} fullScreen={false} />
       </View>
     </AppTemplate>
   );

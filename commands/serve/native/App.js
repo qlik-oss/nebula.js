@@ -13,7 +13,7 @@ function App() {
       <NavigationContainer>
         <Stack.Navigator initialRouteName="EngineConnectView" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="EngineConnectView" component={EngineConnectView} />
-          <Stack.Screen name="SupernovaView" component={SupernovaViewer} />
+          <Stack.Screen name="SupernovaViewer" component={SupernovaViewer} />
         </Stack.Navigator>
       </NavigationContainer>
     </React.Suspense>

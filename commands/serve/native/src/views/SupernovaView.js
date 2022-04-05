@@ -37,14 +37,14 @@ const SupernovaView = (params) => {
     console.log('long press occured');
   };
 
-  console.log('params.appData: ', params.appData);
+  console.log('params.connection: ', params.connection);
 
   return (
     <View style={[styles.container]}>
       <Supernova
         sn={dataViewer}
         style={styles.supernova}
-        app={params.appData}
+        app={params.connection.app}
         fields={['Dim1']}
         measures={['Sum([Expression1])']}
         theme={horizon}
