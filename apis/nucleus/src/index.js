@@ -358,21 +358,22 @@ function nuked(configuration = {}) {
           /**
            * Mounts the field as a listbox into the provided HTMLElement.
            * @param {HTMLElement} element
-           * @param {object=} options Settings for the embedded listbox
-           * @param {string=} options.title Custom title, defaults to fieldname
+           * @param {object=} options Settings for the embedded listbox.
+           * @param {string=} options.title Custom title, defaults to fieldname.
            * @param {Direction=} [options.direction=ltr] Direction setting ltr|rtl.
            * @param {ListLayout=} [options.listLayout=vertical] Layout direction vertical|horizontal
            * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
-           * @param {boolean=} [options.histogram=false] Show histogram bar
+           * @param {boolean=} [options.histogram=false] Show histogram bar.
            * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow
            * @param {boolean=} [options.focusSearch=false] Initialize the Listbox with the search input focused. Only applicable when
            *   search is true, since toggling will always focus the search input on show.
-           * @param {boolean=} [options.toolbar=true] Show the toolbar
-           * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields
-           * @param {boolean=} [options.rangeSelect=true] Enable range selection
-           * @param {boolean=} [options.dense=false] Reduces padding and text size
-           * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
-           * @param {object=} [options.properties={}] Properties object to extend default properties with
+           * @param {boolean=} [options.toolbar=true] Show the toolbar.
+           * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields.
+           * @param {boolean=} [options.rangeSelect=true] Enable range selection.
+           * @param {boolean=} [options.dense=false] Reduces padding and text size.
+           * @param {number=} [options.scrollTimeout=10] The time we should wait to load new data after scrolling has been completed.
+           * @param {boolean=} [options.stateName="$"] Sets the state to make selections in.
+           * @param {object=} [options.properties={}] Properties object to extend default properties with.
            * @param {object} [options.sessionModel] Use a custom sessionModel.
            * @param {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
            * @param {function():boolean} [options.selectDisabled=] Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.

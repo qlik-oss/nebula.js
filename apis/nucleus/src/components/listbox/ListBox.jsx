@@ -4,12 +4,41 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
+import { makeStyles } from '@nebula.js/ui/theme';
 
 import useLayout from '../../hooks/useLayout';
 
 import useSelectionsInteractions from './useSelectionsInteractions';
 
 import RowColumn from './ListBoxRowColumn';
+
+const scrollBarThumb = '#BBB';
+const scrollBarThumbHover = '#555';
+const scrollBarBackground = '#f1f1f1';
+
+const useStyles = makeStyles(() => ({
+  styledScrollbars: {
+    scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
+
+    '&::-webkit-scrollbar': {
+      width: 10,
+      height: 10,
+    },
+
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: scrollBarBackground,
+    },
+
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: scrollBarThumb,
+      borderRadius: '1rem',
+    },
+
+    '&::-webkit-scrollbar-thumb:hover': {
+      backgroundColor: scrollBarThumbHover,
+    },
+  },
+}));
 
 function getSizeInfo({ isVertical, checkboxes, dense, height }) {
   let sizeVertical = checkboxes ? 40 : 33;
@@ -39,12 +68,14 @@ export default function ListBox({
   update = undefined,
   dense = false,
   keyboard = {},
+  scrollTimeout = 10,
   selectDisabled = () => false,
 }) {
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const [pages, setPages] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
+  const styles = useStyles();
   const {
     instantPages = [],
     interactionEvents,
@@ -118,7 +149,7 @@ export default function ListBox({
                 resolve();
               });
           },
-          isScrolling ? 500 : 0
+          isScrolling ? scrollTimeout : 0
         );
       });
     },
@@ -185,6 +216,7 @@ export default function ListBox({
             width={width}
             itemCount={count}
             layout={listLayout}
+            className={styles.styledScrollbars}
             itemData={{
               isLocked,
               column: !isVertical,
