@@ -89,7 +89,7 @@ const EngineConnectView = ({ navigation }) => {
       setConnectionRequested(false);
       return;
     }
-    navigation.navigate('StepThree', {
+    navigation.navigate('SupernovaView', {
       connection,
     });
   }, [connection]);

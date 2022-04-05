@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
 
 const SupernovaViewer = ({ navigation, route }) => {
   const goBack = () => {
-    navigation.navigate('StepOne');
+    navigation.navigate('EngineConnectView');
   };
 
   return (

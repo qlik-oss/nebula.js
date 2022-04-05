@@ -28,7 +28,6 @@ const useConnectToApp = (connectionRequested) => {
       });
 
       const headers = enigmaSettings.apiKey ? { headers: { Authorization: `Bearer ${enigmaSettings.apiKey}` } } : {};
-      console.log('headers: ', headers);
       const connecticonfig = {
         schema,
         url: encodeURI(url),
@@ -36,21 +35,12 @@ const useConnectToApp = (connectionRequested) => {
       };
 
       const globalSession = await enigma.create(connecticonfig);
-      console.log('globalSession:', globalSession);
-
       const session = await globalSession.open();
-      console.log('session:', session);
       app = await session.openDoc(enigmaSettings.appId);
-      console.log('app', app);
-      // model = await app.getObject(enigmaSettings.visId);
-      // console.log('model', model);
-      // layout = await model.getLayout();
       globalSession.close();
     } catch (err) {
       error = err;
-      console.error('Failed to open app', JSON.stringify(error), err);
     }
-
     setConnection({ app, error });
   }, [enigmaSettings]);
 

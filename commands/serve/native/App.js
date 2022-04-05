@@ -11,9 +11,9 @@ function App() {
   return (
     <React.Suspense fallback={<Text>Loading</Text>}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="StepOne" screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="StepOne" component={EngineConnectView} />
-          <Stack.Screen name="StepThree" component={SupernovaViewer} />
+        <Stack.Navigator initialRouteName="EngineConnectView" screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="EngineConnectView" component={EngineConnectView} />
+          <Stack.Screen name="SupernovaView" component={SupernovaViewer} />
         </Stack.Navigator>
       </NavigationContainer>
     </React.Suspense>
