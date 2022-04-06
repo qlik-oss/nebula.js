@@ -839,12 +839,12 @@
             },
             {
               "name": "options",
-              "description": "Settings for the embedded listbox.",
+              "description": "Settings for the embedded listbox",
               "optional": true,
               "kind": "object",
               "entries": {
                 "title": {
-                  "description": "Custom title, defaults to fieldname.",
+                  "description": "Custom title, defaults to fieldname",
                   "optional": true,
                   "type": "string"
                 },
@@ -867,7 +867,7 @@
                   "type": "#/definitions/FrequencyMode"
                 },
                 "histogram": {
-                  "description": "Show histogram bar.",
+                  "description": "Show histogram bar",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
@@ -885,37 +885,37 @@
                   "type": "boolean"
                 },
                 "toolbar": {
-                  "description": "Show the toolbar.",
+                  "description": "Show the toolbar",
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
                 },
                 "checkboxes": {
-                  "description": "Show values as checkboxes instead of as fields.",
+                  "description": "Show values as checkboxes instead of as fields",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
                 },
                 "rangeSelect": {
-                  "description": "Enable range selection.",
+                  "description": "Enable range selection",
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
                 },
                 "dense": {
-                  "description": "Reduces padding and text size.",
+                  "description": "Reduces padding and text size",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
                 },
                 "stateName": {
-                  "description": "Sets the state to make selections in.",
+                  "description": "Sets the state to make selections in",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
                 },
                 "properties": {
-                  "description": "Properties object to extend default properties with.",
+                  "description": "Properties object to extend default properties with",
                   "optional": true,
                   "defaultValue": "{}",
                   "type": "object"
