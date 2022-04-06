@@ -372,6 +372,7 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.rangeSelect=true] Enable range selection
            * @param {boolean=} [options.dense=false] Reduces padding and text size
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
+           * @param {boolean=} [options.showGray=true] Render fields or checkboxes in shades of gray instead of white when their state is excluded or alternative.
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @param {object} [options.sessionModel] Use a custom sessionModel.
            * @param {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
