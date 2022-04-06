@@ -300,6 +300,44 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
+    it('should not add alternative class for A when showGray is false', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        keyboard,
+        actions,
+        showGray: false,
+        pages: [
+          {
+            qArea: {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 0,
+              qHeight: 100,
+            },
+            qMatrix: [
+              [
+                {
+                  qState: 'A',
+                },
+              ],
+            ],
+          },
+        ],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.className).not.to.include('alternative');
+      await testRenderer.unmount();
+    });
+
     it('should set excluded - qState X', async () => {
       const index = 0;
       const style = {};
@@ -337,6 +375,44 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
+    it('should not add excluded class for qState X when showGray is false', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        keyboard,
+        actions,
+        showGray: false,
+        pages: [
+          {
+            qArea: {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 0,
+              qHeight: 100,
+            },
+            qMatrix: [
+              [
+                {
+                  qState: 'X',
+                },
+              ],
+            ],
+          },
+        ],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.className).not.to.include('excluded');
+      await testRenderer.unmount();
+    });
+
     it('should set excluded-selected - qState XS', async () => {
       const index = 0;
       const style = {};
@@ -371,6 +447,44 @@ describe('<ListBoxRowColumn />', () => {
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
       expect(type.props.className).to.include('excluded-selected');
+      await testRenderer.unmount();
+    });
+
+    it('should not add excluded-selected class when showGray is false', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        keyboard,
+        actions,
+        showGray: false,
+        pages: [
+          {
+            qArea: {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 0,
+              qHeight: 100,
+            },
+            qMatrix: [
+              [
+                {
+                  qState: 'XS',
+                },
+              ],
+            ],
+          },
+        ],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.className).not.to.include('excluded-selected');
       await testRenderer.unmount();
     });
 

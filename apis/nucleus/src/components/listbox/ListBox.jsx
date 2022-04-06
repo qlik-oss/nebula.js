@@ -68,6 +68,7 @@ export default function ListBox({
   update = undefined,
   dense = false,
   keyboard = {},
+  showGray = true,
   selectDisabled = () => false,
 }) {
   const [layout] = useLayout(model);
@@ -236,6 +237,7 @@ export default function ListBox({
               frequencyMax,
               histogram,
               keyboard,
+              showGray,
             }}
             itemSize={itemSize}
             onItemsRendered={onItemsRendered}

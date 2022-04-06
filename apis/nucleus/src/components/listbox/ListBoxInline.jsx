@@ -44,6 +44,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     update = undefined,
     dense = false,
     selectDisabled = () => false,
+    showGray = true,
   } = options;
   let { frequencyMode, histogram = false } = options;
 
@@ -324,6 +325,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               dense={dense}
               selectDisabled={selectDisabled}
               keyboard={keyboard}
+              showGray={showGray}
             />
           )}
         </AutoSizer>
