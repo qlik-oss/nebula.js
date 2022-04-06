@@ -371,7 +371,6 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields.
            * @param {boolean=} [options.rangeSelect=true] Enable range selection.
            * @param {boolean=} [options.dense=false] Reduces padding and text size.
-           * @param {number=} [options.scrollTimeout=500] The time we should wait to load new data after scrolling has been completed.
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in.
            * @param {object=} [options.properties={}] Properties object to extend default properties with.
            * @param {object} [options.sessionModel] Use a custom sessionModel.

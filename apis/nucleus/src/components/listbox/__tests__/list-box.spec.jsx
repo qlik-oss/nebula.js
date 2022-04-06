@@ -88,7 +88,6 @@ describe('<Listbox />', () => {
       update: sandbox.stub(),
       rangeSelect: false,
       checkboxes: false,
-      scrollTimeout: undefined,
       selectDisabled,
     };
   });
@@ -115,7 +114,6 @@ describe('<Listbox />', () => {
               listLayout={args.listLayout}
               update={args.update}
               checkboxes={args.checkboxes}
-              scrollTimeout={args.scrollTimeout}
             />
           );
         });

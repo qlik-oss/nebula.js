@@ -68,7 +68,6 @@ export default function ListBox({
   update = undefined,
   dense = false,
   keyboard = {},
-  scrollTimeout = 500,
   selectDisabled = () => false,
 }) {
   const [layout] = useLayout(model);
@@ -112,6 +111,9 @@ export default function ListBox({
     },
     [layout, pages]
   );
+
+  // The time from scroll end until new data is being fetched, may be exposed in API later on.
+  const scrollTimeout = 0;
 
   const loadMoreItems = useCallback(
     (startIndex, stopIndex) => {
