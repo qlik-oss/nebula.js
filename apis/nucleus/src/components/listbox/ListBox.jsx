@@ -66,6 +66,7 @@ export default function ListBox({
   rangeSelect = true,
   checkboxes = false,
   update = undefined,
+  fetchStart = undefined,
   dense = false,
   keyboard = {},
   showGray = true,
@@ -134,7 +135,7 @@ export default function ListBox({
         local.current.timeout = setTimeout(
           () => {
             const sorted = local.current.queue.slice(-2).sort((a, b) => a.start - b.start);
-            model
+            const reqPromise = model
               .getListObjectData(
                 '/qListObjectDef',
                 sorted.map((s) => ({
@@ -151,6 +152,7 @@ export default function ListBox({
                 setIsLoadingData(false);
                 resolve();
               });
+            fetchStart && fetchStart(reqPromise);
           },
           isScrolling ? scrollTimeout : 0
         );

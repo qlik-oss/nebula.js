@@ -42,6 +42,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     sessionModel = undefined,
     selectionsApi = undefined,
     update = undefined,
+    fetchStart = undefined,
     dense = false,
     selectDisabled = () => false,
     showGray = true,
@@ -322,6 +323,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               height={height}
               width={width}
               update={update}
+              fetchStart={fetchStart}
               dense={dense}
               selectDisabled={selectDisabled}
               keyboard={keyboard}
