@@ -345,6 +345,10 @@ function nuked(configuration = {}) {
          */
 
         /**
+         * @typedef {function(promise)} PromiseFunction A callback function which receives a request promise as the first argument.
+         */
+
+        /**
          * @typedef {function(function)} ReceiverFunction A callback function which receives another function as input.
          */
 
@@ -377,6 +381,7 @@ function nuked(configuration = {}) {
            * @param {object} [options.sessionModel] Use a custom sessionModel.
            * @param {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
            * @param {function():boolean} [options.selectDisabled=] Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
+           * @param {PromiseFunction} [options.fetchStart] A function called when the Listbox starts fetching data. Receives the fetch request promise as an argument.
            * @param {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
            * @since 1.1.0
            * @instance
