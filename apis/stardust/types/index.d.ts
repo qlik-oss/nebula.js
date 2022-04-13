@@ -240,6 +240,11 @@ declare namespace stardust {
     type SearchMode = boolean | "toggle";
 
     /**
+     * A callback function which receives a request promise as the first argument.
+     */
+    type PromiseFunction = ($: promise)=>void;
+
+    /**
      * A callback function which receives another function as input.
      */
     type ReceiverFunction = ($: ()=>void)=>void;
@@ -273,6 +278,7 @@ declare namespace stardust {
              * Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
              */
             "selectDisabled="?(): boolean;
+            fetchStart?: stardust.PromiseFunction;
             update?: stardust.ReceiverFunction;
         }): void;
 
@@ -383,16 +389,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -424,6 +420,16 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {
