@@ -96,7 +96,7 @@ describe('<ListboxInline />', () => {
         [require.resolve('../../../hooks/useSessionModel'), () => useSessionModel],
         [require.resolve('../../../hooks/useLayout'), () => () => [layout]],
         [require.resolve('../../ActionsToolbar'), () => ActionsToolbar],
-        [require.resolve('../ListBox'), () => <div className="TheListBox" />],
+        [require.resolve('../ListBox'), () => <div className="theListBox" />],
         [require.resolve('../ListBoxSearch'), () => ListBoxSearch],
         [
           require.resolve('../listbox-keyboard-navigation'),
@@ -134,6 +134,7 @@ describe('<ListboxInline />', () => {
       sessionModel: undefined,
       selectionsApi: undefined,
       update: undefined,
+      fetchStart: 'fetchStart',
     };
 
     theme.spacing.returns('padding');

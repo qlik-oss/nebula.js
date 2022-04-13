@@ -13,10 +13,15 @@ describe('<Listbox />', () => {
   let pages;
   let selectDisabled;
   let FixedSizeList;
+  let fetchStart;
+  let useCallbackStub;
+  let setTimeoutStub;
   let useSelectionsInteractions;
 
   before(() => {
     sandbox = sinon.createSandbox({ useFakeTimers: true });
+
+    setTimeoutStub = sandbox.stub();
 
     global.document = 'document';
 
@@ -31,6 +36,9 @@ describe('<Listbox />', () => {
 
     useSelectionsInteractions = sandbox.stub();
 
+    fetchStart = sandbox.stub();
+    useCallbackStub = sandbox.stub();
+
     FixedSizeList = sandbox.stub().callsFake((funcArgs) => {
       const { children } = funcArgs;
       const RowOrColumn = children;
@@ -41,6 +49,13 @@ describe('<Listbox />', () => {
       [
         [require.resolve('react-window'), () => ({ FixedSizeList })],
         [require.resolve('../../../hooks/useLayout'), () => () => [layout]],
+        [
+          require.resolve('react'),
+          () => ({
+            ...React,
+            useCallback: useCallbackStub,
+          }),
+        ],
         [require.resolve('../useSelectionsInteractions'), () => useSelectionsInteractions],
         [
           require.resolve('react-window-infinite-loader'),
@@ -63,6 +78,8 @@ describe('<Listbox />', () => {
 
   beforeEach(() => {
     pages = [{ qArea: { qTop: 1, qHeight: 100 } }];
+
+    global.window = { setTimeout: setTimeoutStub };
 
     selectDisabled = () => false;
 
@@ -89,6 +106,7 @@ describe('<Listbox />', () => {
       rangeSelect: false,
       checkboxes: false,
       selectDisabled,
+      fetchStart,
     };
   });
 
@@ -102,18 +120,21 @@ describe('<Listbox />', () => {
 
   describe('Check rendering with different options', () => {
     before(() => {
-      render = async () => {
+      render = async (overrides = {}) => {
+        const mergedArgs = { ...args, ...overrides };
         await act(async () => {
           renderer = create(
             <ListBox
-              selections={args.selections}
-              direction={args.direction}
-              height={args.height}
-              width={args.width}
-              rangeSelect={args.rangeSelect}
-              listLayout={args.listLayout}
-              update={args.update}
-              checkboxes={args.checkboxes}
+              selections={mergedArgs.selections}
+              direction={mergedArgs.direction}
+              height={mergedArgs.height}
+              width={mergedArgs.width}
+              rangeSelect={mergedArgs.rangeSelect}
+              listLayout={mergedArgs.listLayout}
+              update={mergedArgs.update}
+              checkboxes={mergedArgs.checkboxes}
+              selectDisabled={mergedArgs.selectDisabled}
+              fetchStart={mergedArgs.fetchStart}
             />
           );
         });
@@ -172,6 +193,26 @@ describe('<Listbox />', () => {
         rangeSelect: true,
         doc: 'document',
       });
+    });
+
+    it('should not call fetchStart unless fetching data', async () => {
+      sandbox
+        .stub(React, 'useRef')
+        .onFirstCall()
+        .returns({
+          loaderRef: {
+            current: {
+              _listRef: { state: { isScrolling: false } },
+            },
+          },
+        })
+        .callsFake((inp) => ({ current: inp }));
+
+      await render();
+      expect(fetchStart).not.called;
+      expect(setTimeoutStub).not.called;
+      const loadMoreItems = useCallbackStub.args[1][0];
+      expect(loadMoreItems).to.be.a('function');
     });
 
     it('should call with checkboxes true', async () => {
