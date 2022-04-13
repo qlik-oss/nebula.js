@@ -803,6 +803,18 @@
         ]
       }
     },
+    "PromiseFunction": {
+      "description": "A callback function which receives a request promise as the first argument.",
+      "kind": "alias",
+      "items": {
+        "kind": "function",
+        "params": [
+          {
+            "type": "promise"
+          }
+        ]
+      }
+    },
     "ReceiverFunction": {
       "description": "A callback function which receives another function as input.",
       "kind": "alias",
@@ -914,6 +926,12 @@
                   "defaultValue": false,
                   "type": "boolean"
                 },
+                "showGray": {
+                  "description": "Render fields or checkboxes in shades of gray instead of white when their state is excluded or alternative.",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
                 "properties": {
                   "description": "Properties object to extend default properties with",
                   "optional": true,
@@ -938,6 +956,11 @@
                   "returns": {
                     "type": "boolean"
                   }
+                },
+                "fetchStart": {
+                  "description": "A function called when the Listbox starts fetching data. Receives the fetch request promise as an argument.",
+                  "optional": true,
+                  "type": "#/definitions/PromiseFunction"
                 },
                 "update": {
                   "description": "A function which receives an update function which upon call will trigger a data fetch.",

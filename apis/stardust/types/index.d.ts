@@ -240,6 +240,11 @@ declare namespace stardust {
     type SearchMode = boolean | "toggle";
 
     /**
+     * A callback function which receives a request promise as the first argument.
+     */
+    type PromiseFunction = ($: promise)=>void;
+
+    /**
      * A callback function which receives another function as input.
      */
     type ReceiverFunction = ($: ()=>void)=>void;
@@ -265,6 +270,7 @@ declare namespace stardust {
             rangeSelect?: boolean;
             dense?: boolean;
             stateName?: boolean;
+            showGray?: boolean;
             properties?: object;
             sessionModel?: object;
             selectionsApi?: object;
@@ -272,6 +278,7 @@ declare namespace stardust {
              * Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
              */
             "selectDisabled="?(): boolean;
+            fetchStart?: stardust.PromiseFunction;
             update?: stardust.ReceiverFunction;
         }): void;
 

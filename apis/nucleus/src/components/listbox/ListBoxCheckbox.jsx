@@ -51,11 +51,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const getIcon = (styles, excluded = false, alternative = false) => (
+const getIcon = (styles, showGray = true, excluded = false, alternative = false) => (
   <span className={styles.cbIcon}>
     {(excluded || alternative) && (
       <span
-        className={[excluded && styles.cbIconExcluded, alternative && styles.cbIconAlternative]
+        className={[showGray && excluded && styles.cbIconExcluded, showGray && alternative && styles.cbIconAlternative]
           .filter(Boolean)
           .join(' ')}
       />
@@ -63,7 +63,7 @@ const getIcon = (styles, excluded = false, alternative = false) => (
   </span>
 );
 
-export default function ListboxCheckbox({ checked, label, dense, excluded, alternative }) {
+export default function ListboxCheckbox({ checked, label, dense, excluded, alternative, showGray = true }) {
   const styles = useStyles();
 
   return (
@@ -74,7 +74,7 @@ export default function ListboxCheckbox({ checked, label, dense, excluded, alter
       className={[styles.checkbox, dense && styles.dense].filter(Boolean).join(' ')}
       inputProps={{ 'aria-labelledby': label }}
       name={label}
-      icon={getIcon(styles, excluded, alternative)}
+      icon={getIcon(styles, showGray, excluded, alternative)}
       checkedIcon={<span className={styles.cbIconChecked} />}
     />
   );

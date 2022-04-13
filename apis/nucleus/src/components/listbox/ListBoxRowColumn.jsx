@@ -181,6 +181,7 @@ function RowColumn({ index, style, data, column = false }) {
     frequencyMax = '',
     histogram = false,
     keyboard,
+    showGray = true,
   } = data;
 
   const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation(actions), [actions]);
@@ -219,12 +220,12 @@ function RowColumn({ index, style, data, column = false }) {
     const clazzArr = [column ? classes.column : classes.row];
     if (!checkboxes) {
       if (cell.qState === 'XS') {
-        clazzArr.push(classes.XS);
+        clazzArr.push(showGray ? classes.XS : classes.S);
       } else if (cell.qState === 'S' || cell.qState === 'L') {
         clazzArr.push(classes.S);
-      } else if (isAlternative(cell)) {
+      } else if (showGray && isAlternative(cell)) {
         clazzArr.push(classes.A);
-      } else if (isExcluded(cell)) {
+      } else if (showGray && isExcluded(cell)) {
         clazzArr.push(classes.X);
       }
     }
@@ -248,7 +249,7 @@ function RowColumn({ index, style, data, column = false }) {
         classes.labelText,
         highlighted && classes.highlighted,
         dense && classes.labelDense,
-        excludedOrAlternative() && classes.excludedTextWithCheckbox,
+        showGray && excludedOrAlternative() && classes.excludedTextWithCheckbox,
       ])}
       color={color}
     >
@@ -271,6 +272,7 @@ function RowColumn({ index, style, data, column = false }) {
         dense={dense}
         excluded={isExcluded(cell)}
         alternative={isAlternative(cell)}
+        showGray={showGray}
       />
     );
     const rb = <ListBoxRadioButton label={lbl} checked={isSelected} dense={dense} />;
@@ -384,7 +386,7 @@ function RowColumn({ index, style, data, column = false }) {
               className={joinClassNames([
                 dense && classes.labelDense,
                 classes.labelText,
-                excludedOrAlternative() && classes.excludedTextWithCheckbox,
+                showGray && excludedOrAlternative() && classes.excludedTextWithCheckbox,
               ])}
             >
               {getFrequencyText()}
