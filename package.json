@@ -3,6 +3,7 @@
   "description": "",
   "scripts": {
     "build": "yarn run locale:generate && cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
+    "build:dev": "yarn run locale:generate && cross-env NODE_ENV=development FORCE_COLOR=1 lerna run build --stream",
     "build:codesandbox": "yarn run locale:generate &&  cross-env NODE_ENV=production CODESANDBOX=1 FORCE_COLOR=1 lerna run build --stream --scope \"@nebula.js/{stardust,theme,locale,conversion}\"",
     "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream --concurrency 99 --no-sort",
     "format": "prettier --write '**/**/*'",
