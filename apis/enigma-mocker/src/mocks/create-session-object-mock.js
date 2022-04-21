@@ -3,9 +3,12 @@ import extend from 'extend';
 
 function CreateSessionObjectMock() {
   return (props) => {
-    const mockedInclusions = props._mock;
-    delete props._mock; // eslint-disable-line no-param-reassign
-    const layout = mockedInclusions ? extend({}, props, mockedInclusions) : props;
+    const mockedInclusions = props ? props._mock : null;
+    let layout = props;
+    if (mockedInclusions) {
+      delete props._mock; // eslint-disable-line no-param-reassign
+      layout = extend({}, props, mockedInclusions);
+    }
     return Promise.resolve({
       on: () => {},
       once: () => {},
