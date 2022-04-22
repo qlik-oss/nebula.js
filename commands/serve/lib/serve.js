@@ -139,7 +139,7 @@ module.exports = async (argv) => {
   const enigmaConfig = serveConfig.enigma;
 
   console.log('serveConfig: ', serveConfig);
-  console.log('serveConfig: ', enigmaConfig);
+  console.log('enigmaConfig: ', enigmaConfig);
   console.log('context:', context);
 
   let snPath;
@@ -168,13 +168,16 @@ module.exports = async (argv) => {
 
   if (runFromDirectory) {
     if (serveConfig.build !== false) {
+      console.log('Setting Watcher');
       watcher = await build({
         watch: true,
         config: serveConfig.config,
         cwd: context,
       });
+      console.log('done setting watcher');
     }
     try {
+      console.log('Trying to require package.json');
       const externalPkg = require(path.resolve(context, 'package.json')); // eslint-disable-line global-require
       const externalEntry = externalPkg.main;
       snName = externalPkg.name;
@@ -188,6 +191,7 @@ module.exports = async (argv) => {
 
   // if --nativeAndroid or --nativeIos but not both run native version
   if ((!argv.nativeAndroid && argv.nativeIos) || (argv.nativeAndroid && !argv.nativeIos)) {
+    console.log('Running native');
     buildAndRunServeNative({
       platform: argv.nativeIos ? 'ios' : 'android',
       context,

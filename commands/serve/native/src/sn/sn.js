@@ -1,3 +1,3 @@
-import sn from '/Users/htx/code/nebula-tutorial/hello/dist/hello.js';
+import sn from '../utils/sample-table/index.js';
 
 export default sn;

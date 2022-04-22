@@ -6,7 +6,6 @@ import horizon from '@qlik-trial/sense-themes-default/dist/horizon/theme.json';
 import enigmaSettingsAtom from '../atoms/enigmaSettingsAtom';
 import sn from '../sn/sn.js';
 // import snapshooter from '../../../lib/snapshot-server';
-import dataViewer from '../utils/dataViewer';
 
 const styles = StyleSheet.create({
   container: {
@@ -42,11 +41,11 @@ const SupernovaView = (params) => {
   return (
     <View style={[styles.container]}>
       <Supernova
-        sn={dataViewer}
+        sn={sn}
         style={styles.supernova}
         app={params.connection.app}
-        fields={['Dim1']}
-        measures={['Sum([Expression1])']}
+        fields={params.fields}
+        measures={params.measures}
         theme={horizon}
       />
     </View>
