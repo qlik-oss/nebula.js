@@ -37,6 +37,7 @@ const useConnectToApp = (connectionRequested) => {
       const globalSession = await enigma.create(connecticonfig);
       const session = await globalSession.open();
       app = await session.openDoc(enigmaSettings.appId);
+      console.log('APP OBJ', app);
     } catch (err) {
       error = err;
     }

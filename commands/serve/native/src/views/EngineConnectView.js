@@ -83,8 +83,6 @@ const EngineConnectView = ({ navigation }) => {
   useEffect(() => {
     if (!connection) return;
     if (connection.error) {
-      console.log('connection.error is true');
-      console.log('Connection: ', connection);
       setError(connection.error);
       setConnectionRequested(false);
       return;
