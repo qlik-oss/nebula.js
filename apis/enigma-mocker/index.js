@@ -1,1 +1,1 @@
-module.exports = require('./dist/enigma-mocker');
+module.exports = require('./dist/enigma-mocker.dev');
