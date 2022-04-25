@@ -171,7 +171,6 @@ export function useKeyboard(): stardust.Keyboard;
 
 declare namespace stardust {
     interface Context {
-        disableCellPadding?: boolean;
         keyboardNavigation?: boolean;
         constraints?: {
             active?: boolean;

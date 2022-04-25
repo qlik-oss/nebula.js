@@ -517,10 +517,6 @@
     "Context": {
       "kind": "interface",
       "entries": {
-        "disableCellPadding": {
-          "optional": true,
-          "type": "boolean"
-        },
         "keyboardNavigation": {
           "optional": true,
           "type": "boolean"

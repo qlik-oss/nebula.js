@@ -14,7 +14,6 @@ import { create as typesFn } from './sn/types';
 
 /**
  * @interface Context
- * @property {boolean=} disableCellPadding
  * @property {boolean=} keyboardNavigation
  * @property {object=} constraints
  * @property {boolean=} constraints.active
