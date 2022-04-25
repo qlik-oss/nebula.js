@@ -12,7 +12,6 @@ export default function useSelectionsInteractions({
   layout,
   selections,
   pages = [],
-  rangeSelect = true,
   checkboxes = false,
   selectDisabled,
   doc = document,
@@ -102,7 +101,6 @@ export default function useSelectionsInteractions({
       const elemNumber = +event.currentTarget.getAttribute('data-n');
       if (
         isSingleSelect ||
-        !rangeSelect ||
         !mouseDown ||
         selectingValues ||
         (preSelected.length === 1 && preSelected[0] === elemNumber) // prevent toggling again on mouseup
@@ -181,10 +179,8 @@ export default function useSelectionsInteractions({
 
   if (checkboxes) {
     Object.assign(interactionEvents, { onClick });
-  } else if (rangeSelect) {
-    Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter });
   } else {
-    Object.assign(interactionEvents, { onMouseUp, onMouseDown });
+    Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter });
   }
 
   return {

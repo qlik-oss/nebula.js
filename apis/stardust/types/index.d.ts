@@ -264,22 +264,11 @@ declare namespace stardust {
             frequencyMode?: stardust.FrequencyMode;
             histogram?: boolean;
             search?: stardust.SearchMode;
-            focusSearch?: boolean;
             toolbar?: boolean;
             checkboxes?: boolean;
-            rangeSelect?: boolean;
             dense?: boolean;
             stateName?: boolean;
-            showGray?: boolean;
             properties?: object;
-            sessionModel?: object;
-            selectionsApi?: object;
-            /**
-             * Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
-             */
-            "selectDisabled="?(): boolean;
-            fetchStart?: stardust.PromiseFunction;
-            update?: stardust.ReceiverFunction;
         }): void;
 
         /**
