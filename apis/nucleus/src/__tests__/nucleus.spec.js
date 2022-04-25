@@ -56,6 +56,10 @@ describe('nucleus', () => {
         fetchStart: undefined,
         showGray: true,
         update: undefined,
+        focusSearch: false,
+        selectDisabled: undefined,
+        selectionsApi: undefined,
+        sessionModel: undefined,
       });
     });
 
@@ -76,6 +80,10 @@ describe('nucleus', () => {
         fetchStart,
         showGray: undefined,
         update,
+        focusSearch: false,
+        selectDisabled: undefined,
+        selectionsApi: undefined,
+        sessionModel: undefined,
       });
     });
 
@@ -89,6 +97,10 @@ describe('nucleus', () => {
         fetchStart: undefined,
         showGray: true,
         update: undefined,
+        focusSearch: false,
+        selectDisabled: undefined,
+        selectionsApi: undefined,
+        sessionModel: undefined,
       });
     });
   });

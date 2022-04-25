@@ -137,6 +137,10 @@ export const getOptions = (usersOptions = {}) => {
     update: undefined,
     fetchStart: undefined,
     showGray: true,
+    focusSearch: false,
+    sessionModel: undefined,
+    selectionsApi: undefined,
+    selectDisabled: undefined,
   };
   const squashedOptions = {
     ...exposedOptions,
