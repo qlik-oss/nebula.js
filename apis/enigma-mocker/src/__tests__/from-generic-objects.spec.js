@@ -21,15 +21,18 @@ describe('enigma-mocker', () => {
   });
 
   it('throws if no generic object is specified', async () => {
-    expect(() => createEnigmaMocker()).to.throw();
+    const app = await createEnigmaMocker();
+    expect(() => app.getObject()).to.throw();
   });
 
   it('throws if generic objects argument is not array', async () => {
-    expect(() => createEnigmaMocker({})).to.throw();
+    const app = await createEnigmaMocker({});
+    expect(() => app.getObject()).to.throw();
   });
 
   it('throws if generic objects argument is empty array', async () => {
-    expect(() => createEnigmaMocker([])).to.throw();
+    const app = await createEnigmaMocker([]);
+    expect(() => app.getObject()).to.throw();
   });
 
   describe('getObject', () => {
@@ -94,11 +97,11 @@ describe('enigma-mocker', () => {
       });
 
       it('throws if no getLayout is specified', async () => {
-        expect(() => createEnigmaMocker({})).to.throw();
+        expect(() => createEnigmaMocker([{}])).to.throw();
       });
 
       it('throws if no qId is specified', async () => {
-        expect(() => createEnigmaMocker({ getLayout: { qInfo: {} } })).to.throw();
+        expect(() => createEnigmaMocker([{ getLayout: { qInfo: {} } }])).to.throw();
       });
     });
 
