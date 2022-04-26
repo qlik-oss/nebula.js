@@ -142,6 +142,9 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       takeSnapshot() {
         return cellRef.current.takeSnapshot();
       },
+      getModel() {
+        return model;
+      },
     },
 
     // old QVisualization API

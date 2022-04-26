@@ -51,6 +51,7 @@
     "@nebula.js/supernova": "^2.9.0",
     "@nebula.js/theme": "^2.9.0",
     "@nebula.js/ui": "^2.9.0",
+    "@nebula.js/enigma-mocker": "^2.9.0",
     "@scriptappy/cli": "0.1.0",
     "@scriptappy/to-dts": "1.0.0-beta.4",
     "extend": "3.0.2",

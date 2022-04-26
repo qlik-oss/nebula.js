@@ -36,10 +36,6 @@ import GetAppLayoutMock from './mocks/get-app-layout-mock';
  * const app = await EnigmaMocker.fromGenericObjects([genericObject]);
  */
 export default (genericObjects, options = {}) => {
-  if (!Array.isArray(genericObjects) || genericObjects.length === 0) {
-    throw new Error('No "genericObjects" specified');
-  }
-
   const session = new SessionMock();
   const createSessionObject = new CreateSessionObjectMock();
   const getObject = new GetObjectMock(genericObjects, options);

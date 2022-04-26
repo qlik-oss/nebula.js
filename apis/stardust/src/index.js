@@ -5,6 +5,7 @@ import { generator, hook } from '@nebula.js/supernova';
 import theme from '@nebula.js/theme';
 import locale from '@nebula.js/locale';
 import conversion from '@nebula.js/conversion';
+import EnigmaMocker from '@nebula.js/enigma-mocker';
 
 // mashup api
 export { embed, conversion };
@@ -39,5 +40,5 @@ export {
 } from '@nebula.js/supernova';
 
 // component internals
-const __DO_NOT_USE__ = { generator, hook, theme, locale };
+const __DO_NOT_USE__ = { generator, hook, theme, locale, EnigmaMocker };
 export { __DO_NOT_USE__ };

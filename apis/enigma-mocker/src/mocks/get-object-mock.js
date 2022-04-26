@@ -101,6 +101,12 @@ function validate(genericObject) {
  * @returns Function to retrieve the mocked generic object with the corresponding id.
  */
 function GetObjectMock(genericObjects = [], options = {}) {
+  if (!Array.isArray(genericObjects) || genericObjects.length === 0) {
+    return () => {
+      throw new Error('No "genericObjects" specified');
+    };
+  }
+
   genericObjects.forEach(validate);
   const mocks = createMocks(genericObjects, options);
 
