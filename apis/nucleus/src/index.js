@@ -113,6 +113,16 @@ const mergeConfigs = (base, c) => ({
 
 /**
  * @ignore
+ * @typedef {function(promise)} PromiseFunction A callback function which receives a request promise as the first argument.
+ */
+
+/**
+ * @ignore
+ * @typedef {function(function)} ReceiverFunction A callback function which receives another function as input.
+ */
+
+/**
+ * @ignore
  * @typedef {object} DoNotUseOptions Options strictly recommended not to use as they might change anytime. Documenting them to keep track of them, but not exposing them to API docs.
  * @property {boolean=} [focusSearch=false] Initialize the Listbox with the search input focused. Only applicable when
  *    search is true, since toggling will always focus the search input on show.
@@ -381,14 +391,6 @@ function nuked(configuration = {}) {
 
         /**
          * @typedef { boolean | 'toggle' } SearchMode
-         */
-
-        /**
-         * @typedef {function(promise)} PromiseFunction A callback function which receives a request promise as the first argument.
-         */
-
-        /**
-         * @typedef {function(function)} ReceiverFunction A callback function which receives another function as input.
          */
 
         /**
