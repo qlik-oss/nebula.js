@@ -238,16 +238,6 @@ declare namespace stardust {
 
     type SearchMode = boolean | "toggle";
 
-    /**
-     * A callback function which receives a request promise as the first argument.
-     */
-    type PromiseFunction = ($: promise)=>void;
-
-    /**
-     * A callback function which receives another function as input.
-     */
-    type ReceiverFunction = ($: ()=>void)=>void;
-
     class FieldInstance {
         constructor();
 
