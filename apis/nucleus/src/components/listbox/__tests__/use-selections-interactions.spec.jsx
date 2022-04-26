@@ -65,9 +65,7 @@ describe('use-listbox-interactions', () => {
           <TestHook
             ref={ref}
             hook={useSelectionsInteractions}
-            hookProps={[
-              { layout, selections, rangeSelect: false, pages, selectDisabled, doc: global.document, ...overrides },
-            ]}
+            hookProps={[{ layout, selections, pages, selectDisabled, doc: global.document, ...overrides }]}
           />
         );
       });
@@ -85,15 +83,8 @@ describe('use-listbox-interactions', () => {
 
   describe('it should behave without range select', () => {
     describe('should return expected listeners', () => {
-      it('Without range', async () => {
-        await render();
-        const arg0 = ref.current.result;
-        expect(Object.keys(arg0).sort()).to.deep.equal(['instantPages', 'interactionEvents', 'select']);
-        expect(arg0.instantPages).to.deep.equal([]);
-        expect(Object.keys(arg0.interactionEvents).sort()).to.deep.equal(['onMouseDown', 'onMouseUp']);
-      });
       it('With range', async () => {
-        await render({ rangeSelect: true });
+        await render();
         const arg0 = ref.current.result;
         expect(Object.keys(arg0).sort()).to.deep.equal(['instantPages', 'interactionEvents', 'select']);
         expect(arg0.instantPages).to.deep.equal([]);
@@ -195,7 +186,7 @@ describe('use-listbox-interactions', () => {
 
   describe('it should behave with range select', () => {
     it('should return expected stuff', async () => {
-      await render({ rangeSelect: true });
+      await render();
       const arg0 = ref.current.result;
       expect(Object.keys(arg0)).to.deep.equal(['instantPages', 'interactionEvents', 'select']);
       expect(arg0.instantPages).to.deep.equal([]);
@@ -205,7 +196,7 @@ describe('use-listbox-interactions', () => {
     it('should select a range (in theory)', async () => {
       getElemNumbersFromPages.returns([24, 25, 26, 27, 28, 29, 30, 31]);
 
-      await render({ rangeSelect: true });
+      await render();
 
       expect(applySelectionsOnPages.callCount).to.equal(0);
 

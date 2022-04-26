@@ -517,10 +517,6 @@
     "Context": {
       "kind": "interface",
       "entries": {
-        "disableCellPadding": {
-          "optional": true,
-          "type": "boolean"
-        },
         "keyboardNavigation": {
           "optional": true,
           "type": "boolean"
@@ -890,12 +886,6 @@
                   "defaultValue": true,
                   "type": "#/definitions/SearchMode"
                 },
-                "focusSearch": {
-                  "description": "Initialize the Listbox with the search input focused. Only applicable when\n  search is true, since toggling will always focus the search input on show.",
-                  "optional": true,
-                  "defaultValue": false,
-                  "type": "boolean"
-                },
                 "toolbar": {
                   "description": "Show the toolbar",
                   "optional": true,
@@ -906,12 +896,6 @@
                   "description": "Show values as checkboxes instead of as fields",
                   "optional": true,
                   "defaultValue": false,
-                  "type": "boolean"
-                },
-                "rangeSelect": {
-                  "description": "Enable range selection",
-                  "optional": true,
-                  "defaultValue": true,
                   "type": "boolean"
                 },
                 "dense": {
@@ -926,46 +910,11 @@
                   "defaultValue": false,
                   "type": "boolean"
                 },
-                "showGray": {
-                  "description": "Render fields or checkboxes in shades of gray instead of white when their state is excluded or alternative.",
-                  "optional": true,
-                  "defaultValue": true,
-                  "type": "boolean"
-                },
                 "properties": {
                   "description": "Properties object to extend default properties with",
                   "optional": true,
                   "defaultValue": "{}",
                   "type": "object"
-                },
-                "sessionModel": {
-                  "description": "Use a custom sessionModel.",
-                  "optional": true,
-                  "type": "object"
-                },
-                "selectionsApi": {
-                  "description": "Use a custom selectionsApi to customize how values are selected.",
-                  "optional": true,
-                  "type": "object"
-                },
-                "selectDisabled=": {
-                  "description": "Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.",
-                  "optional": true,
-                  "kind": "function",
-                  "params": [],
-                  "returns": {
-                    "type": "boolean"
-                  }
-                },
-                "fetchStart": {
-                  "description": "A function called when the Listbox starts fetching data. Receives the fetch request promise as an argument.",
-                  "optional": true,
-                  "type": "#/definitions/PromiseFunction"
-                },
-                "update": {
-                  "description": "A function which receives an update function which upon call will trigger a data fetch.",
-                  "optional": true,
-                  "type": "#/definitions/ReceiverFunction"
                 }
               }
             }

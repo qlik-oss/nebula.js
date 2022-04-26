@@ -103,7 +103,6 @@ describe('<Listbox />', () => {
       width: 100,
       listLayout: 'vertical',
       update: sandbox.stub(),
-      rangeSelect: false,
       checkboxes: false,
       selectDisabled,
       fetchStart,
@@ -129,7 +128,6 @@ describe('<Listbox />', () => {
               direction={mergedArgs.direction}
               height={mergedArgs.height}
               width={mergedArgs.width}
-              rangeSelect={mergedArgs.rangeSelect}
               listLayout={mergedArgs.listLayout}
               update={mergedArgs.update}
               checkboxes={mergedArgs.checkboxes}
@@ -147,7 +145,6 @@ describe('<Listbox />', () => {
     });
 
     it('should render and call stuff', async () => {
-      args.rangeSelect = false;
       await render();
 
       // check rendering
@@ -164,7 +161,6 @@ describe('<Listbox />', () => {
         layout,
         selections,
         pages: [],
-        rangeSelect: false,
         doc: 'document',
       });
       expect(typeof useSelectionsInteractions.args[1][0].selectDisabled).to.equal('function');
@@ -182,15 +178,13 @@ describe('<Listbox />', () => {
       expect(itemData.onClick).to.equal(undefined);
     });
 
-    it('should call useSelectionsInteractions with rangeSelect true', async () => {
-      args.rangeSelect = true;
+    it('should call useSelectionsInteractions', async () => {
       await render();
       expect(useSelectionsInteractions.args[useSelectionsInteractions.callCount - 1][0]).to.containSubset({
         checkboxes: false,
         layout,
         selections,
         pages: [],
-        rangeSelect: true,
         doc: 'document',
       });
     });
@@ -223,7 +217,6 @@ describe('<Listbox />', () => {
         layout,
         selections,
         pages: [],
-        rangeSelect: false,
         doc: 'document',
       });
       const { itemData } = FixedSizeList.args[FixedSizeList.callCount - 1][0];

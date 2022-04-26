@@ -14,7 +14,6 @@ import { create as typesFn } from './sn/types';
 
 /**
  * @interface Context
- * @property {boolean=} disableCellPadding
  * @property {boolean=} keyboardNavigation
  * @property {object=} constraints
  * @property {boolean=} constraints.active
@@ -111,6 +110,46 @@ const mergeConfigs = (base, c) => ({
   flags: mergeObj(base.flags, c.flags),
   anything: mergeObj(base.anything, c.anything),
 });
+
+/**
+ * @ignore
+ * @typedef {object} DoNotUseOptions Options strictly recommended not to use as they might change anytime. Documenting them to keep track of them, but not exposing them to API docs.
+ * @property {boolean=} [focusSearch=false] Initialize the Listbox with the search input focused. Only applicable when
+ *    search is true, since toggling will always focus the search input on show.
+ * @property {boolean=} [options.showGray=true] Render fields or checkboxes in shades of gray instead of white when their state is excluded or alternative.
+ * @property {object} [options.sessionModel] Use a custom sessionModel.
+ * @property {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
+ * @property {function():boolean} [options.selectDisabled=] Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
+ * @property {PromiseFunction} [options.fetchStart] A function called when the Listbox starts fetching data. Receives the fetch request promise as an argument.
+ * @property {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
+ */
+
+/**
+ * @ignore
+ * @param {object} usersOptions Options sent in to fieldInstance.mount.
+ * @param {DoNotUseOptions} __DO_NOT_USE__
+ * @returns {object} Squashed options with defaults given for non-exposed options.
+ */
+export const getOptions = (usersOptions = {}) => {
+  const { __DO_NOT_USE__ = {}, ...exposedOptions } = usersOptions;
+
+  const DO_NOT_USE_DEFAULTS = {
+    update: undefined,
+    fetchStart: undefined,
+    showGray: true,
+    focusSearch: false,
+    sessionModel: undefined,
+    selectionsApi: undefined,
+    selectDisabled: undefined,
+  };
+  const squashedOptions = {
+    ...exposedOptions,
+    ...DO_NOT_USE_DEFAULTS,
+    // eslint-disable-next-line no-underscore-dangle
+    ...__DO_NOT_USE__,
+  };
+  return squashedOptions;
+};
 
 function nuked(configuration = {}) {
   const locale = appLocaleFn(configuration.context.language);
@@ -369,20 +408,12 @@ function nuked(configuration = {}) {
            * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
            * @param {boolean=} [options.histogram=false] Show histogram bar
            * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow
-           * @param {boolean=} [options.focusSearch=false] Initialize the Listbox with the search input focused. Only applicable when
-           *   search is true, since toggling will always focus the search input on show.
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields
-           * @param {boolean=} [options.rangeSelect=true] Enable range selection
            * @param {boolean=} [options.dense=false] Reduces padding and text size
            * @param {boolean=} [options.stateName="$"] Sets the state to make selections in
-           * @param {boolean=} [options.showGray=true] Render fields or checkboxes in shades of gray instead of white when their state is excluded or alternative.
            * @param {object=} [options.properties={}] Properties object to extend default properties with
-           * @param {object} [options.sessionModel] Use a custom sessionModel.
-           * @param {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
-           * @param {function():boolean} [options.selectDisabled=] Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
-           * @param {PromiseFunction} [options.fetchStart] A function called when the Listbox starts fetching data. Receives the fetch request promise as an argument.
-           * @param {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
+           *
            * @since 1.1.0
            * @instance
            * @example
@@ -399,7 +430,7 @@ function nuked(configuration = {}) {
               element,
               app,
               fieldIdentifier,
-              options,
+              options: getOptions(options),
               stateName: options.stateName || '$',
             });
             root.add(this._instance);
