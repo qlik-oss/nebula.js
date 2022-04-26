@@ -799,31 +799,6 @@
         ]
       }
     },
-    "PromiseFunction": {
-      "description": "A callback function which receives a request promise as the first argument.",
-      "kind": "alias",
-      "items": {
-        "kind": "function",
-        "params": [
-          {
-            "type": "promise"
-          }
-        ]
-      }
-    },
-    "ReceiverFunction": {
-      "description": "A callback function which receives another function as input.",
-      "kind": "alias",
-      "items": {
-        "kind": "function",
-        "params": [
-          {
-            "kind": "function",
-            "params": []
-          }
-        ]
-      }
-    },
     "FieldInstance": {
       "availability": {
         "since": "1.1.0"
