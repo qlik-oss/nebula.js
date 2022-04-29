@@ -87,7 +87,7 @@ const EngineConnectView = ({ navigation }) => {
       setConnectionRequested(false);
       return;
     }
-    navigation.navigate('SupernovaViewer', {
+    navigation.navigate('FieldsAndMeasures', {
       connection,
     });
   }, [connection]);
