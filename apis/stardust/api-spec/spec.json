@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "2.9.0",
+    "version": "2.10.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -795,31 +795,6 @@
           {
             "kind": "literal",
             "value": "'toggle'"
-          }
-        ]
-      }
-    },
-    "PromiseFunction": {
-      "description": "A callback function which receives a request promise as the first argument.",
-      "kind": "alias",
-      "items": {
-        "kind": "function",
-        "params": [
-          {
-            "type": "promise"
-          }
-        ]
-      }
-    },
-    "ReceiverFunction": {
-      "description": "A callback function which receives another function as input.",
-      "kind": "alias",
-      "items": {
-        "kind": "function",
-        "params": [
-          {
-            "kind": "function",
-            "params": []
           }
         ]
       }
