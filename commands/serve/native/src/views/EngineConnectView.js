@@ -81,12 +81,14 @@ const EngineConnectView = ({ navigation }) => {
   const connection = useConnectToApp(connectionRequested);
 
   useEffect(() => {
+    console.log('YOYOYOYOYO CONNECTION: ');
     if (!connection) return;
     if (connection.error) {
       setError(connection.error);
       setConnectionRequested(false);
       return;
     }
+
     navigation.navigate('FieldsAndMeasures', {
       connection,
     });
@@ -166,18 +168,5 @@ const EngineConnectView = ({ navigation }) => {
     </AppTemplate>
   );
 };
-
-/* const stringifyCyclicStructure = (obj)  => {
-    var seen = []
-    console.log(JSON.stringify(obj, (key, val) => {
-        if (val != null && typeof val == "object") {
-            if (seen.indexOf(val) >= 0) {
-                return;
-            }
-            seen.push(val);
-        }
-        return val;
-    }, 2));
-} */
 
 export default EngineConnectView;

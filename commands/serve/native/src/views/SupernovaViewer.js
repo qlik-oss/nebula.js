@@ -23,8 +23,7 @@ const styles = StyleSheet.create({
 
 const SupernovaViewer = ({ navigation, route }) => {
   const goBack = () => {
-    route.params.connection.app.session.close();
-    navigation.navigate('EngineConnectView');
+    navigation.navigate('FieldsAndMeasures');
   };
 
   return (

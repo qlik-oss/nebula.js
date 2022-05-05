@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, Image } from 'react-native';
 import { useAtom } from 'jotai';
 import { fieldsAtom, selectedFieldsAtom, measuresAtom, selectedMeasuresAtom } from '../atoms/FieldsAndMeasuresAtom';
 import AppTemplate from './AppTemplate';
 import MultiSelect from 'react-native-multiple-select';
+import { Picker } from '@react-native-picker/picker';
 
 const titleImage = require('../assets/images/nebulaLogo.png');
 
@@ -12,6 +13,11 @@ const styles = {
     flex: 1,
     overflow: 'scroll',
     backgroundColor: 'rgba(0,0,0,0)',
+  },
+  measureBox: {
+    borderWidth: 2,
+    borderColor: '#CCC',
+    margin: 20,
   },
   fieldsContainer: {
     marginTop: 10,
@@ -54,29 +60,34 @@ const styles = {
     borderWidth: 1,
     borderColor: '#990997',
   },
+  buttonSmall: {
+    margin: 20,
+    marginTop: 5,
+    backgroundColor: '#FFFFFF',
+  },
+  buttonSmallPressed: {
+    margin: 20,
+    marginTop: 5,
+    backgroundColor: '#EEEEEE',
+  },
   buttonText: {
     fontFamily: 'Montserrat',
     fontWeight: 'bold',
     textAlign: 'center',
     padding: 15,
   },
+  buttonTextSmall: {
+    fontFamily: 'Montserrat',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    padding: 10,
+  },
 };
 
 const FieldsView = () => {
-  const [fields, setFields] = useAtom(fieldsAtom);
+  const [fields] = useAtom(fieldsAtom);
   const [selectedFields, setSelectedFields] = useAtom(selectedFieldsAtom);
   const multiSelect = useRef();
-  const sampleFields = [
-    { id: 0, name: 'Dim1' },
-    { id: 1, name: 'Dim2' },
-    { id: 2, name: 'Dim3' },
-    { id: 3, name: 'Dim4' },
-  ];
-  useEffect(() => {
-    // fetch the fields from the connection
-    // assign them to the fields state
-    setFields(sampleFields);
-  }, [selectedFields]);
 
   const onSelectedFieldsChange = (sf) => {
     console.log('sf: ', sf);
@@ -92,7 +103,7 @@ const FieldsView = () => {
   }
   return (
     <View style={styles.fieldsContainer}>
-      <Text style={styles.subHeading}> Select Fields </Text>
+      <Text style={styles.subHeading}> Select Dimensions </Text>
       <MultiSelect
         items={fields}
         uniqueKey="id"
@@ -113,23 +124,41 @@ const FieldsView = () => {
 };
 
 const MeasuresView = () => {
-  const [measures, setMeasures] = useAtom(measuresAtom);
-  const [selectedMeasures, setSelectedMeasures] = useAtom(selectedMeasuresAtom);
+  const [fields] = useAtom(fieldsAtom);
+  const [measures] = useAtom(measuresAtom);
+  const [newMeasureSelectedFields, setNewMeasureSelectedFields] = useState([]);
+  const [newMeasureState, setNewMeasureState] = useState({ func: [0], fields: ['Dim1'] });
+  const [, setSelectedFunc] = useState(0); // used to force rerender on newMeasureState change
   const measuresSelect = useRef();
-  const sampleMeasures = [
-    { id: 0, name: 'Dim1' },
-    { id: 1, name: 'Dim2' },
-    { id: 2, name: 'Dim3' },
-    { id: 3, name: 'Dim4' },
+  const functionSelect = useRef();
+
+  const measureFunctions = [
+    { id: 0, name: `\tSum`, text: 'Sum' },
+    { id: 1, name: `\tCount`, text: 'Count' },
+    { id: 2, name: `\tAvg`, text: 'Avg' },
+    { id: 3, name: `\tMin`, text: 'Min' },
+    { id: 4, name: `\tMax`, text: 'Max' },
   ];
-  useEffect(() => {
-    // fetch the fields from the connection
-    // assign them to the fields state
-    setMeasures(sampleMeasures);
-  }, [selectedMeasures]);
+
+  useEffect(() => {}, [newMeasureState.func]);
+
+  const onFuncChange = (newFunc) => {
+    console.log('newFunc: ', newFunc);
+    let nextMeasureState = newMeasureState;
+    nextMeasureState.func = newFunc;
+    setNewMeasureState(nextMeasureState);
+    setSelectedFunc(newFunc[0]);
+  };
 
   const onSelectedMeasuresChange = (sm) => {
-    setSelectedMeasures([...sm]);
+    setNewMeasureSelectedFields([...sm]);
+  };
+
+  const printFullMeasure = () => {
+    const funcString = measureFunctions.filter((m) => m.id === newMeasureState.func[0])[0].text;
+    console.log('funcString: ', funcString);
+    const fieldsList = selectedMeasures.reduce((fieldString, currentField) => fieldString + currentField + ',', '');
+    console.log('fieldListString: ', fieldsList);
   };
 
   if (measures === undefined || selectedMeasures === undefined) {
@@ -139,24 +168,48 @@ const MeasuresView = () => {
       </View>
     );
   }
+
+  console.log(newMeasureState.func);
+  console.log(selectedMeasures);
   return (
     <View style={styles.fieldsContainer}>
       <Text style={styles.subHeading}> Select Measures </Text>
-      <MultiSelect
-        items={measures}
-        uniqueKey="id"
-        onSelectedItemsChange={onSelectedMeasuresChange}
-        selectedItems={selectedMeasures}
-        ref={measuresSelect}
-        selectText={`\t Choose Measures`}
-        searchInputStyle={{ color: '#3232a8', margin: 5, padding: 10 }}
-        styleInputGroup={{ paddingRight: 20 }}
-        styleListContainer={{ paddingLeft: 20 }}
-        styleMainWrapper={{ padding: 20 }}
-        tagBorderColor="#CCC"
-        tagTextColor="#CCC"
-        tagRemoveIconColor="#CCC"
-      />
+
+      <View style={styles.measureBox}>
+        <Text> Select Function </Text>
+        <MultiSelect
+          items={measureFunctions}
+          uniqueKey="id"
+          onSelectedItemsChange={onFuncChange}
+          selectedItems={newMeasureState.func}
+          ref={functionSelect}
+          searchInputPlaceholderText={'Choose Function'}
+          searchInputStyle={{ color: '#3232a8', margin: 5, padding: 10 }}
+          styleInputGroup={{ paddingRight: 20, paddingLeft: 20 }}
+          styleListContainer={{ paddingLeft: 20 }}
+          styleMainWrapper={{ padding: 20, paddingBottom: 0, paddingTop: 10 }}
+          single
+        />
+        <Text> Select Fields </Text>
+        <MultiSelect
+          items={fields}
+          uniqueKey="id"
+          onSelectedItemsChange={onSelectedMeasuresChange}
+          selectedItems={newMeasureSelectedFields}
+          ref={measuresSelect}
+          selectText={`\t Choose Fields`}
+          searchInputStyle={{ color: '#3232a8', margin: 5, padding: 10 }}
+          styleInputGroup={{ paddingRight: 20 }}
+          styleListContainer={{ paddingLeft: 20 }}
+          styleMainWrapper={{ padding: 20, paddingBottom: 0, paddingTop: 10 }}
+          hideTags
+        />
+        <Text> Measure </Text>
+        <Text> {printFullMeasure()} </Text>
+      </View>
+      <Pressable style={({ pressed }) => (pressed ? styles.buttonSmallPressed : styles.buttonSmall)}>
+        <Text style={styles.buttonTextSmall}>+ Create New Meausure</Text>
+      </Pressable>
     </View>
   );
 };
@@ -174,8 +227,14 @@ const FieldsAndMeasuresView = ({ navigation, route }) => {
     });
   };
 
+  const goBack = () => {
+    console.log('Going back to egine connect view');
+    route.params.connection.app.session.close();
+    navigation.navigate('EngineConnectView');
+  };
+
   return (
-    <AppTemplate>
+    <AppTemplate useScrollView>
       <View style={styles.container}>
         <Image style={styles.titleImage} source={titleImage} />
         <Text style={styles.titleText}> Choose Fields and Measures </Text>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, ScrollView, StatusBar } from 'react-native';
+import { StyleSheet, View, ScrollView, StatusBar, Dimensions } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 const styles = StyleSheet.create({
@@ -8,15 +8,31 @@ const styles = StyleSheet.create({
     backgroundColor: '#1A1A1A',
     paddingTop: 20,
     flexDirection: 'column',
+    borderWidth: 5,
+    borderColor: 'red',
+  },
+  scrollContainer: {
+    flexGrow: 1,
+    backgroundColor: '#1A1A1A',
+    paddingTop: 20,
+    flexDirection: 'column',
+    borderWidth: 5,
+    borderColor: 'red',
+  },
+  linearGradient: {
+    minHeight: Dimensions.get('window').height,
+    paddingBottom: 50,
   },
 });
 
 const AppTemplate = ({ useScrollView, children }) => {
   if (useScrollView)
     return (
-      <ScrollView style={styles.container}>
+      <ScrollView style={styles.containerScroll}>
         <StatusBar translucent backgroundColor="#1A1A1A" barStyle="light-content" color="#FFFFFF" />
-        <LinearGradient colors={['#990997', '#f2af29']}>{children}</LinearGradient>
+        <LinearGradient colors={['#990997', '#f2af29']} style={styles.linearGradient}>
+          {children}
+        </LinearGradient>
       </ScrollView>
     );
   return (

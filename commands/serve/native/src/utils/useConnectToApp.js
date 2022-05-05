@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useAtomValue } from 'jotai';
+import { useAtomValue, useAtom } from 'jotai';
+import { fieldsAtom } from '../atoms/FieldsAndMeasuresAtom';
+import { measuresAtom } from '../atoms/FieldsAndMeasuresAtom';
 import enigmaSettingsAtom from '../atoms/enigmaSettingsAtom';
 import config from './config.json';
+import stringifyCyclicStruct from './stringifyCyclicStruct';
+import getFieldsData from './getFieldsData';
 
 const schema = require('enigma.js/schemas/12.612.0.json');
 const enigma = require('enigma.js');
@@ -9,6 +13,8 @@ const SessionUtilities = require('enigma.js/sense-utilities');
 
 const useConnectToApp = (connectionRequested) => {
   const enigmaSettings = useAtomValue(enigmaSettingsAtom);
+  const [fields, setFields] = useAtom(fieldsAtom);
+  const [measures, setMeasures] = useAtom(measuresAtom);
   const [connection, setConnection] = useState(undefined);
 
   const doOpenApp = useCallback(async () => {
@@ -37,7 +43,17 @@ const useConnectToApp = (connectionRequested) => {
       const globalSession = await enigma.create(connecticonfig);
       const session = await globalSession.open();
       app = await session.openDoc(enigmaSettings.appId);
-      console.log('APP OBJ', app);
+      const fd = await getFieldsData(app);
+      let msrs = [];
+      fd.forEach((fdItem) => {
+        msrs.push({ id: fdItem.id * 5 + 1, name: 'Sum[' + fdItem.name + ']' });
+        msrs.push({ id: fdItem.id * 5 + 2, name: 'Count[' + fdItem.name + ']' });
+        msrs.push({ id: fdItem.id * 5 + 3, name: 'Avg[' + fdItem.name + ']' });
+        msrs.push({ id: fdItem.id * 5 + 4, name: 'Min[' + fdItem.name + ']' });
+        msrs.push({ id: fdItem.id * 5 + 5, name: 'Max[' + fdItem.name + ']' });
+      });
+      setFields(fd);
+      setMeasures(msrs);
     } catch (err) {
       error = err;
     }
