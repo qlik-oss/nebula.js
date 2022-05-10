@@ -1,10 +1,10 @@
 import React from 'react';
 import { View, StyleSheet, Image, Pressable, Text } from 'react-native';
+import { useAtom } from 'jotai';
 import AppTemplate from './AppTemplate';
 import SupernovaView from './SupernovaView';
-import { measuresAtom } from '../atoms/FieldsAndMeasuresAtom';
-import { fieldsAtom } from '../atoms/FieldsAndMeasuresAtom';
-import { useAtom } from 'jotai';
+import { measuresAtom, fieldsAtom } from '../atoms/FieldsAndMeasuresAtom';
+
 const titleImage = require('../assets/images/nebulaLogo.png');
 
 const styles = StyleSheet.create({
@@ -38,8 +38,7 @@ const SupernovaViewer = ({ navigation, route }) => {
       connection: route.params.connection,
     });
   };
-  console.log('measures: ', measures);
-  console.log('fields: ', fields);
+
   // returns an array of strings where each item is a representation of a field
   const formatFields = () => {
     const arrayOfStrings = fields.map((f) => f.name);

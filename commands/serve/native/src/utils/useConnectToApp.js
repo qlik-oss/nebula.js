@@ -3,7 +3,6 @@ import { useAtomValue, useAtom } from 'jotai';
 import { fieldsAtom } from '../atoms/FieldsAndMeasuresAtom';
 import enigmaSettingsAtom from '../atoms/enigmaSettingsAtom';
 import config from './config.json';
-import stringifyCyclicStruct from './stringifyCyclicStruct';
 import getFieldsData from './getFieldsData';
 
 const schema = require('enigma.js/schemas/12.612.0.json');
@@ -12,15 +11,12 @@ const SessionUtilities = require('enigma.js/sense-utilities');
 
 const useConnectToApp = (connectionRequested) => {
   const enigmaSettings = useAtomValue(enigmaSettingsAtom);
-  const [fields, setFields] = useAtom(fieldsAtom);
+  const [, setFields] = useAtom(fieldsAtom);
   const [connection, setConnection] = useState(undefined);
 
   const doOpenApp = useCallback(async () => {
     let app;
-    let model;
-    let layout;
     let error;
-    console.log(enigmaSettings);
     try {
       if (!enigmaSettings) return;
       const url = SessionUtilities.buildUrl({

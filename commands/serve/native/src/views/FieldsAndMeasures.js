@@ -1,10 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { View, Text, Pressable, Image } from 'react-native';
 import { useAtom } from 'jotai';
-import { fieldsAtom, selectedFieldsAtom, measuresAtom, selectedMeasuresAtom } from '../atoms/FieldsAndMeasuresAtom';
-import AppTemplate from './AppTemplate';
 import MultiSelect from 'react-native-multiple-select';
-import { Picker } from '@react-native-picker/picker';
+import { fieldsAtom, selectedFieldsAtom, measuresAtom } from '../atoms/FieldsAndMeasuresAtom';
+import AppTemplate from './AppTemplate';
 
 const titleImage = require('../assets/images/nebulaLogo.png');
 
@@ -114,7 +113,6 @@ const FieldsView = () => {
   const multiSelect = useRef();
 
   const onSelectedFieldsChange = (sf) => {
-    console.log('sf: ', sf);
     setSelectedFields([...sf]);
   };
 
@@ -169,8 +167,7 @@ const MeasuresView = () => {
 
   // handles a change to the selected function
   const onFuncChange = (newFunc) => {
-    let nextMeasureState = newMeasureState;
-    nextMeasureState.func = newFunc;
+    const nextMeasureState = { ...newMeasureState, func: newFunc };
     setNewMeasureState(nextMeasureState);
     setSelectedFunc(newFunc[0]); // force rerender
   };
@@ -183,12 +180,17 @@ const MeasuresView = () => {
   };
 
   // gets a measure object from measureFunctions by id
-  const getNewMeasureFunction = () => {
-    return measureFunctions.filter((m) => m.id === newMeasureState.func[0])[0];
-  };
+  const getNewMeasureFunction = () => measureFunctions.filter((m) => m.id === newMeasureState.func[0])[0];
 
-  const getFieldsById = (ids) => {
-    return fields.filter((f) => ids.includes(f.id));
+  const getFieldsById = (ids) => fields.filter((f) => ids.includes(f.id));
+
+  // prints the current new measure as a string
+  const printNewMeasure = () => {
+    const fieldsList = newMeasureState.fields.reduce(
+      (fieldString, currentField) => `${fieldString} ${getFieldsById([currentField])[0].name},`,
+      ''
+    );
+    return `funcString([${fieldsList.slice(0, -1)}])`;
   };
 
   // handles "add measure" button press
@@ -209,20 +211,8 @@ const MeasuresView = () => {
   };
 
   const handleDeleteMeasure = (text) => {
-    const newMeasureList = measures.filter((m) => {
-      return m.text !== text;
-    });
+    const newMeasureList = measures.filter((m) => m.text !== text);
     setMeasures(newMeasureList);
-  };
-
-  // prints the current new measure as a string
-  const printNewMeasure = () => {
-    const funcString = getNewMeasureFunction().text;
-    const fieldsList = newMeasureState.fields.reduce(
-      (fieldString, currentField) => fieldString + getFieldsById([currentField])[0].name + ',',
-      ''
-    );
-    return funcString + '([' + fieldsList.slice(0, -1) + '])';
   };
 
   if (measures === undefined || fields === undefined) {
@@ -233,24 +223,20 @@ const MeasuresView = () => {
     );
   }
 
-  console.log(measures);
-
   return (
     <View style={styles.fieldsContainer}>
       <Text style={styles.subHeading}> Select Measures </Text>
-      {measures.map((m) => {
-        return (
-          <View style={styles.existingMeasure}>
-            <Text key={m.id} style={styles.measureText}>
-              {' '}
-              {m.text}{' '}
-            </Text>
-            <Pressable style={styles.deleteButton} onPress={() => handleDeleteMeasure(m.text)}>
-              <Text>X</Text>
-            </Pressable>
-          </View>
-        );
-      })}
+      {measures.map((m) => (
+        <View style={styles.existingMeasure}>
+          <Text key={m.id} style={styles.measureText}>
+            {' '}
+            {m.text}{' '}
+          </Text>
+          <Pressable style={styles.deleteButton} onPress={() => handleDeleteMeasure(m.text)}>
+            <Text>X</Text>
+          </Pressable>
+        </View>
+      ))}
 
       {isCreating ? (
         <View style={styles.measureBox}>
@@ -261,7 +247,7 @@ const MeasuresView = () => {
             onSelectedItemsChange={onFuncChange}
             selectedItems={newMeasureState.func}
             ref={functionSelect}
-            searchInputPlaceholderText={'Choose Function'}
+            searchInputPlaceholderText="Choose Function"
             searchInputStyle={{ color: '#3232a8', margin: 5, padding: 10 }}
             styleInputGroup={{ paddingRight: 20, paddingLeft: 20 }}
             styleListContainer={{ paddingLeft: 20 }}
@@ -310,19 +296,17 @@ const MeasuresView = () => {
 const FieldsAndMeasuresView = ({ navigation, route }) => {
   const [fields, setFields] = useAtom(fieldsAtom);
   const [measures, setMeasures] = useAtom(measuresAtom);
-  const [selectedFields, setSelectedFields] = useAtom(selectedFieldsAtom);
+  const [, setSelectedFields] = useAtom(selectedFieldsAtom);
 
   const goToSupernovaViewer = () => {
-    console.log('going to supernova viewer:', route);
     navigation.navigate('SupernovaViewer', {
       connection: route.params.connection,
-      fields: fields,
-      measures: measures,
+      fields,
+      measures,
     });
   };
 
   const goBack = async () => {
-    console.log('Going back to egine connect view');
     setMeasures([]);
     setFields([]);
     setSelectedFields([]);

@@ -11,7 +11,6 @@ const defaultSettings = {
 
 class AsyncStorageWrapper {
   static async getItem(key) {
-    console.log('getting item', key);
     let config;
     try {
       const temp = await AsyncStorage.getItem(key);
@@ -19,9 +18,9 @@ class AsyncStorageWrapper {
         config = JSON.parse(temp);
       }
     } catch (err) {
-      console.log('failed to get', err);
+      return;
     }
-    return config;
+    return config; // eslint-disable-line consistent-return
   }
 
   static async setItem(key, value) {
@@ -37,9 +36,9 @@ class AsyncStorageWrapper {
         return true;
       }
     } catch (err) {
-      console.log('failed to remove', err);
+      return false;
     }
-    return false;
+    return false; // eslint-disable-line consistent-return
   }
 }
 

@@ -18,7 +18,6 @@ const getFieldsData = async (app) => {
   let count = 0;
   const multiSelectItems = fieldListObjectLayout.qFieldList.qItems.map((qItem) => {
     count++;
-    console.log('qName: ', qItem.qName);
     return { name: qItem.qName, id: count };
   });
   return multiSelectItems;

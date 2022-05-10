@@ -160,7 +160,7 @@ const EngineConnectView = ({ navigation }) => {
           <Text style={styles.simpleText}>
             1. Open the hub and go to the management console {'\n'}
             2. Click on API keys under Integration {'\n'}
-            3. If you are an admin, click 'Generate new key' {'\n'}
+            3. If you are an admin, click &apos;Generate new key&apos; {'\n'}
             4. Copy the generated key
           </Text>
           <Text>
