@@ -16,8 +16,22 @@ const styles = {
   },
   measureBox: {
     borderWidth: 2,
-    borderColor: '#CCC',
+    borderColor: '#000',
     margin: 20,
+    padding: 10,
+  },
+  measureText: {
+    backgroundColor: '#CCCCCC',
+    margin: 10,
+    marginLeft: 20,
+    marginRight: 20,
+    padding: 10,
+    paddingLeft: 30,
+    flex: 4,
+  },
+  existingMeasure: {
+    flexDirection: 'row',
+    display: 'flex',
   },
   fieldsContainer: {
     marginTop: 10,
@@ -82,6 +96,16 @@ const styles = {
     textAlign: 'center',
     padding: 10,
   },
+  deleteButton: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 9,
+    marginBottom: 9,
+    marginRight: 20,
+    borderRadius: 10,
+    backgroundColor: 'white',
+  },
 };
 
 const FieldsView = () => {
@@ -125,9 +149,10 @@ const FieldsView = () => {
 
 const MeasuresView = () => {
   const [fields] = useAtom(fieldsAtom);
-  const [measures] = useAtom(measuresAtom);
-  const [newMeasureSelectedFields, setNewMeasureSelectedFields] = useState([]);
-  const [newMeasureState, setNewMeasureState] = useState({ func: [0], fields: ['Dim1'] });
+  const [measures, setMeasures] = useAtom(measuresAtom);
+  const [newMeasureSelectedFields, setNewMeasureSelectedFields] = useState([]); // needed for the multiselect
+  const [newMeasureState, setNewMeasureState] = useState({ func: [0], fields: [] }); // func needs to be an array to be compatable with multiselect
+  const [isCreating, setIsCreating] = useState(false);
   const [, setSelectedFunc] = useState(0); // used to force rerender on newMeasureState change
   const measuresSelect = useRef();
   const functionSelect = useRef();
@@ -142,26 +167,65 @@ const MeasuresView = () => {
 
   useEffect(() => {}, [newMeasureState.func]);
 
+  // handles a change to the selected function
   const onFuncChange = (newFunc) => {
-    console.log('newFunc: ', newFunc);
     let nextMeasureState = newMeasureState;
     nextMeasureState.func = newFunc;
     setNewMeasureState(nextMeasureState);
-    setSelectedFunc(newFunc[0]);
+    setSelectedFunc(newFunc[0]); // force rerender
   };
 
-  const onSelectedMeasuresChange = (sm) => {
+  // handles a change to the selected list of fields
+  const onSelectedFieldsChange = (sm) => {
+    const measureState = newMeasureState;
+    setNewMeasureState({ ...measureState, fields: sm });
     setNewMeasureSelectedFields([...sm]);
   };
 
-  const printFullMeasure = () => {
-    const funcString = measureFunctions.filter((m) => m.id === newMeasureState.func[0])[0].text;
-    console.log('funcString: ', funcString);
-    const fieldsList = selectedMeasures.reduce((fieldString, currentField) => fieldString + currentField + ',', '');
-    console.log('fieldListString: ', fieldsList);
+  // gets a measure object from measureFunctions by id
+  const getNewMeasureFunction = () => {
+    return measureFunctions.filter((m) => m.id === newMeasureState.func[0])[0];
   };
 
-  if (measures === undefined || selectedMeasures === undefined) {
+  const getFieldsById = (ids) => {
+    return fields.filter((f) => ids.includes(f.id));
+  };
+
+  // handles "add measure" button press
+  const handleAddMeasurePress = () => {
+    const mFunctionObject = getNewMeasureFunction();
+    const newMeasuresAtomValue = [
+      ...measures,
+      {
+        func: mFunctionObject.text,
+        fields: newMeasureState.fields,
+        text: printNewMeasure(),
+      },
+    ];
+    setMeasures(newMeasuresAtomValue);
+    setNewMeasureSelectedFields([]);
+    setNewMeasureState({ func: [0], fields: [] });
+    setIsCreating(false);
+  };
+
+  const handleDeleteMeasure = (text) => {
+    const newMeasureList = measures.filter((m) => {
+      return m.text !== text;
+    });
+    setMeasures(newMeasureList);
+  };
+
+  // prints the current new measure as a string
+  const printNewMeasure = () => {
+    const funcString = getNewMeasureFunction().text;
+    const fieldsList = newMeasureState.fields.reduce(
+      (fieldString, currentField) => fieldString + getFieldsById([currentField])[0].name + ',',
+      ''
+    );
+    return funcString + '([' + fieldsList.slice(0, -1) + '])';
+  };
+
+  if (measures === undefined || fields === undefined) {
     return (
       <View>
         <Text styles={styles.subHeading}>Loading</Text>
@@ -169,57 +233,87 @@ const MeasuresView = () => {
     );
   }
 
-  console.log(newMeasureState.func);
-  console.log(selectedMeasures);
+  console.log(measures);
+
   return (
     <View style={styles.fieldsContainer}>
       <Text style={styles.subHeading}> Select Measures </Text>
+      {measures.map((m) => {
+        return (
+          <View style={styles.existingMeasure}>
+            <Text key={m.id} style={styles.measureText}>
+              {' '}
+              {m.text}{' '}
+            </Text>
+            <Pressable style={styles.deleteButton} onPress={() => handleDeleteMeasure(m.text)}>
+              <Text>X</Text>
+            </Pressable>
+          </View>
+        );
+      })}
 
-      <View style={styles.measureBox}>
-        <Text> Select Function </Text>
-        <MultiSelect
-          items={measureFunctions}
-          uniqueKey="id"
-          onSelectedItemsChange={onFuncChange}
-          selectedItems={newMeasureState.func}
-          ref={functionSelect}
-          searchInputPlaceholderText={'Choose Function'}
-          searchInputStyle={{ color: '#3232a8', margin: 5, padding: 10 }}
-          styleInputGroup={{ paddingRight: 20, paddingLeft: 20 }}
-          styleListContainer={{ paddingLeft: 20 }}
-          styleMainWrapper={{ padding: 20, paddingBottom: 0, paddingTop: 10 }}
-          single
-        />
-        <Text> Select Fields </Text>
-        <MultiSelect
-          items={fields}
-          uniqueKey="id"
-          onSelectedItemsChange={onSelectedMeasuresChange}
-          selectedItems={newMeasureSelectedFields}
-          ref={measuresSelect}
-          selectText={`\t Choose Fields`}
-          searchInputStyle={{ color: '#3232a8', margin: 5, padding: 10 }}
-          styleInputGroup={{ paddingRight: 20 }}
-          styleListContainer={{ paddingLeft: 20 }}
-          styleMainWrapper={{ padding: 20, paddingBottom: 0, paddingTop: 10 }}
-          hideTags
-        />
-        <Text> Measure </Text>
-        <Text> {printFullMeasure()} </Text>
-      </View>
-      <Pressable style={({ pressed }) => (pressed ? styles.buttonSmallPressed : styles.buttonSmall)}>
-        <Text style={styles.buttonTextSmall}>+ Create New Meausure</Text>
-      </Pressable>
+      {isCreating ? (
+        <View style={styles.measureBox}>
+          <Text> Select Function </Text>
+          <MultiSelect
+            items={measureFunctions}
+            uniqueKey="id"
+            onSelectedItemsChange={onFuncChange}
+            selectedItems={newMeasureState.func}
+            ref={functionSelect}
+            searchInputPlaceholderText={'Choose Function'}
+            searchInputStyle={{ color: '#3232a8', margin: 5, padding: 10 }}
+            styleInputGroup={{ paddingRight: 20, paddingLeft: 20 }}
+            styleListContainer={{ paddingLeft: 20 }}
+            styleMainWrapper={{ padding: 20, paddingBottom: 0, paddingTop: 10 }}
+            single
+          />
+          <Text> Select Fields </Text>
+          <MultiSelect
+            items={fields}
+            uniqueKey="id"
+            onSelectedItemsChange={onSelectedFieldsChange}
+            selectedItems={newMeasureSelectedFields}
+            ref={measuresSelect}
+            selectText={`\t Choose Fields`}
+            searchInputStyle={{ color: '#3232a8', margin: 5, padding: 10 }}
+            styleInputGroup={{ paddingRight: 20 }}
+            styleListContainer={{ paddingLeft: 20 }}
+            styleMainWrapper={{ padding: 20, paddingBottom: 0, paddingTop: 10 }}
+            hideTags
+          />
+          <Text> Measure </Text>
+          <Text style={styles.measureText}> {printNewMeasure()} </Text>
+          <Pressable
+            style={({ pressed }) => (pressed ? styles.buttonSmallPressed : styles.buttonSmall)}
+            onPress={() => {
+              handleAddMeasurePress();
+            }}
+          >
+            <Text style={styles.buttonTextSmall}>Add Measure</Text>
+          </Pressable>
+        </View>
+      ) : (
+        <Pressable
+          style={({ pressed }) => (pressed ? styles.buttonSmallPressed : styles.buttonSmall)}
+          onPress={() => {
+            setIsCreating(true);
+          }}
+        >
+          <Text style={styles.buttonTextSmall}>+ Create New Meausure</Text>
+        </Pressable>
+      )}
     </View>
   );
 };
 
 const FieldsAndMeasuresView = ({ navigation, route }) => {
-  const [fields] = useAtom(fieldsAtom);
-  const [measures] = useAtom(measuresAtom);
+  const [fields, setFields] = useAtom(fieldsAtom);
+  const [measures, setMeasures] = useAtom(measuresAtom);
+  const [selectedFields, setSelectedFields] = useAtom(selectedFieldsAtom);
 
   const goToSupernovaViewer = () => {
-    console.log('going to supernova viewer');
+    console.log('going to supernova viewer:', route);
     navigation.navigate('SupernovaViewer', {
       connection: route.params.connection,
       fields: fields,
@@ -227,8 +321,11 @@ const FieldsAndMeasuresView = ({ navigation, route }) => {
     });
   };
 
-  const goBack = () => {
+  const goBack = async () => {
     console.log('Going back to egine connect view');
+    setMeasures([]);
+    setFields([]);
+    setSelectedFields([]);
     route.params.connection.app.session.close();
     navigation.navigate('EngineConnectView');
   };

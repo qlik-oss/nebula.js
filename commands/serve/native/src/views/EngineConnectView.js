@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Text, Pressable, Image } from 'react-native';
+import { View, TextInput, Text, Pressable, Image, LogBox } from 'react-native';
 import { useAtom } from 'jotai';
 import AppTemplate from './AppTemplate';
 import { testKey2 } from '../utils/testKey';
@@ -39,6 +39,7 @@ const styles = {
     padding: 10,
     backgroundColor: 'white',
     margin: 10,
+    marginTop: 0,
   },
   titleImage: {
     width: '100%',
@@ -81,7 +82,7 @@ const EngineConnectView = ({ navigation }) => {
   const connection = useConnectToApp(connectionRequested);
 
   useEffect(() => {
-    console.log('YOYOYOYOYO CONNECTION: ');
+    LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     if (!connection) return;
     if (connection.error) {
       setError(connection.error);
@@ -108,18 +109,21 @@ const EngineConnectView = ({ navigation }) => {
       <View style={styles.container}>
         <Image style={styles.titleImage} source={titleImage} />
         <Text style={styles.titleText}> Step 1: Connect to an engine </Text>
+        <Text style={styles.subHeading}> Tenant URL </Text>
         <TextInput
           style={styles.inputText}
           value={tenant}
           placeholder="Tenant URL (example: ecdp1.us.qlikcloud.com)"
           onChangeText={(newText) => setTenant(newText)}
         />
+        <Text style={styles.subHeading}> App ID </Text>
         <TextInput
           style={styles.inputText}
           value={appId}
           placeholder="App Id (example: ef6c25de-f02a-4fbd-917e-ead6ee102932)"
           onChangeText={(newText) => setAppId(newText)}
         />
+        <Text style={styles.subHeading}> API Key </Text>
         <TextInput
           multiline
           numberOfLines={5}
