@@ -89,11 +89,5 @@
     "commands/*",
     "apis/*",
     "test/component/*"
-  ],
-  "dependencies": {
-    "@nebula.js/sn-table": "^1.6.0",
-    "@qlik-trial/sense-themes-default": "^1.9.2",
-    "@qlik/react-native-carbon": "^1.1.20",
-    "jotai": "^1.6.0"
-  }
+  ]
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Supernova } from '@qlik/react-native-carbon';
-import horizon from '@qlik-trial/sense-themes-default/dist/horizon/theme.json';
+import horizon from '../assets/themes/horizon.json';
 import sn from '../sn/sn.js';
 // import snapshooter from '../../../lib/snapshot-server';
 

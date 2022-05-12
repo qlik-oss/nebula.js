@@ -15,7 +15,6 @@
   "dependencies": {
     "@nebula.js/sn-table": "^1.6.0",
     "@nebula.js/stardust": "^2.6.1",
-    "@qlik-trial/sense-themes-default": "^1.13.0",
     "@qlik/carbon-core": "^1.0.6",
     "@qlik/react-native-carbon": "^1.1.20",
     "@react-native-async-storage/async-storage": "^1.16.1",
