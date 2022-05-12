@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { View, TextInput, Text, Pressable, Image, LogBox } from 'react-native';
 import { useAtom } from 'jotai';
+import Toast from 'react-native-toast-message';
 import AppTemplate from './AppTemplate';
 import { testKey2 } from '../utils/testKey';
 import enigmaSettingsAtom from '../atoms/enigmaSettingsAtom';
@@ -75,7 +76,6 @@ const EngineConnectView = ({ navigation }) => {
   const [tenant, setTenant] = useState('ecdp1.us.qlikcloud.com');
   const [appId, setAppId] = useState('375b58fb-ed16-4c50-a291-719f5e9295fb');
   const [apiKey, setApiKey] = useState(testKey2);
-  const [error, setError] = useState(null);
   const [connectionRequested, setConnectionRequested] = useState(false);
 
   // connect to app when global state is updated
@@ -85,11 +85,20 @@ const EngineConnectView = ({ navigation }) => {
     LogBox.ignoreLogs(['VirtualizedLists should never be nested']);
     if (!connection) return;
     if (connection.error) {
-      setError(connection.error);
       setConnectionRequested(false);
+      Toast.show({
+        type: 'error',
+        text1: 'Failed to fetch app data',
+        text2: connection.error.message,
+        position: 'bottom',
+      });
       return;
     }
-
+    Toast.show({
+      type: 'success',
+      text1: 'Connected to app',
+      position: 'bottom',
+    });
     navigation.navigate('FieldsAndMeasures', {
       connection,
     });
@@ -132,11 +141,6 @@ const EngineConnectView = ({ navigation }) => {
           placeholder="API Key (example: sjzvooiaevpbawefh38ergb2438)"
           onChangeText={(newText) => setApiKey(newText)}
         />
-        {error && (
-          <View>
-            <Text style={styles.errorPrompt}> {error.message} </Text>
-          </View>
-        )}
         <Pressable
           style={({ pressed }) => (pressed ? styles.buttonPressed : styles.button)}
           disabled={tenant === '' || appId === '' || apiKey === ''}

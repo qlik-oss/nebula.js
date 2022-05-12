@@ -1,1 +1,3 @@
-src/*
+src/assets/*
+src/sn/*
+src/utils/sample-table/*

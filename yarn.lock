@@ -5489,11 +5489,6 @@
   "resolved" "https://npm.pkg.github.com/download/@qlik-trial/sense-themes-default/1.9.2/1bc7dea4c70693d18e060d6776194989672461fdfe1e6da0054a05b03a00176d"
   "version" "1.9.2"
 
-"@qlik-trial/sn-treemap@^4.2.5":
-  "integrity" "sha512-+vhy50y2Iy7dMRcDo///u5Ij3ziFdO+0NgRWIJb1DlV+JgxY/woqpW2lu0HGYh1JUnfs/3gtt6lFZns5Nvd1HQ=="
-  "resolved" "https://npm.pkg.github.com/download/@qlik-trial/sn-treemap/4.2.5/1f940c343613ffabc16cad4fe54535e784d527edda4fea28d38e0e5eaf9fbe4c"
-  "version" "4.2.5"
-
 "@qlik/react-native-carbon@^1.1.20":
   "integrity" "sha512-VsrmC2w/CDqJxBz10nSPzVGRKV1nkS71OTFkZGv/nIN0k+Lbb+QzHbBRMXulZJSF6VIy5brEgVhrAZ/WAM00iQ=="
   "resolved" "https://registry.npmjs.org/@qlik/react-native-carbon/-/react-native-carbon-1.1.20.tgz"

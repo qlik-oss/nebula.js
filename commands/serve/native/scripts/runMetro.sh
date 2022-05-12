@@ -19,6 +19,6 @@ export SN_NAME=${snName}
 echo "SN_PATH = $SN_PATH"
 echo "SN_NAME = $SN_NAME"
 # generate sn.js
-echo "import sn from '${SN_PATH}';\n\nexport default sn;" > $basedir/../src/sn/sn.js
+echo "import sn from '${context}';\n\nexport default sn;" > $basedir/../src/sn/sn.js
 
 react-native start --watchFolders ${context}

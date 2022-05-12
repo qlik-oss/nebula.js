@@ -2,6 +2,7 @@ import React from 'react';
 import { Text } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Toast from 'react-native-toast-message';
 import EngineConnectView from './src/views/EngineConnectView';
 import FieldsAndMeasures from './src/views/FieldsAndMeasures';
 import SupernovaViewer from './src/views/SupernovaViewer';
@@ -18,6 +19,7 @@ function App() {
           <Stack.Screen name="SupernovaViewer" component={SupernovaViewer} />
         </Stack.Navigator>
       </NavigationContainer>
+      <Toast />
     </React.Suspense>
   );
 }
