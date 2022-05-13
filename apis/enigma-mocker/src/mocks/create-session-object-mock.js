@@ -2,7 +2,8 @@
 import extend from 'extend';
 
 // To cover test
-const crt = global.crypto || { getRandomValues: () => 123456 };
+// eslint-disable-next-line no-undef
+const crt = globalThis.crypto || { getRandomValues: () => 123456 };
 
 // https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid
 // Not using crypto.randomUUID due to missing safari support < 15
@@ -14,25 +15,25 @@ function uuidv4() {
 
 function CreateSessionObjectMock() {
   return (props) => {
-    props = props || {}; // eslint-disable-line no-param-reassign
-    props.qInfo = props.qInfo || {}; // eslint-disable-line no-param-reassign
-    props.qInfo.qId = props.qInfo.qId || `mock-${uuidv4()}`; // eslint-disable-line no-param-reassign
+    const properties = extend({}, props);
+    properties.qInfo = properties.qInfo || {};
+    properties.qInfo.qId = properties.qInfo.qId || `mock-${uuidv4()}`;
 
-    const mockedInclusions = props._mock;
-    let layout = props;
+    const mockedInclusions = properties._mock;
+    let layout = properties;
 
     if (mockedInclusions) {
-      delete props._mock; // eslint-disable-line no-param-reassign
-      layout = extend({}, props, mockedInclusions);
+      delete properties._mock;
+      layout = extend({}, properties, mockedInclusions);
     }
     return Promise.resolve({
       on: () => {},
       once: () => {},
       getLayout: () => Promise.resolve(layout),
-      getProperties: () => Promise.resolve(props),
-      getEffectiveProperties: () => Promise.resolve(props),
-      id: props.qInfo.qId,
-      ...props,
+      getProperties: () => Promise.resolve(properties),
+      getEffectiveProperties: () => Promise.resolve(properties),
+      id: properties.qInfo.qId,
+      ...properties,
     });
   };
 }
