@@ -10,7 +10,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint .",
-    "bundle-install": "bundle install"
+    "bundle-install": "bundle install",
+    "resetSN": "./scripts/setEmptySn.sh"
   },
   "dependencies": {
     "@nebula.js/stardust": "^2.6.1",
