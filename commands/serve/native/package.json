@@ -11,7 +11,7 @@
     "test": "jest",
     "lint": "eslint .",
     "bundle-install": "bundle install",
-    "resetSN": "./scripts/setEmptySn.sh"
+    "resetSN": "sh ./scripts/setEmptySn.sh"
   },
   "dependencies": {
     "@nebula.js/stardust": "^2.6.1",
