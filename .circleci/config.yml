@@ -88,8 +88,11 @@ jobs:
           name: Install dependencies
           command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - run:
-          name: Install Serve Native
-          command: cd commands/serve/native && yarn install && yarn resetSN
+          name: Set serve native temp file
+          command: cd commands/serve/native && yarn resetSN
+      - run:
+          name: Install dependancies for serve native
+          command: cd commands/serve/native && yarn install
       - save_cache: *save_yarn_cache
       - run:
           name: Build
