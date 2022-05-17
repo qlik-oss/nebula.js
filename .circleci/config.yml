@@ -89,7 +89,7 @@ jobs:
           command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - run:
           name: Install Serve Native
-          command: cd commands/serve/native && yarn install
+          command: cd commands/serve/native && yarn install && yarn resetSN
       - save_cache: *save_yarn_cache
       - run:
           name: Build
