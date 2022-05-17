@@ -1,0 +1,1 @@
+This is a folder used to create a link to the supernova which calls nebula to render it.
