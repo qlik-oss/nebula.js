@@ -1,4 +1,4 @@
 #!/bin/bash
 
 basedir=$(dirname $0)
-echo "const sn = () => {return (<></>);}export default sn" > sn.js
+echo "const sn = () => {return (<></>);}\nexport default sn" > ./src/sn/sn.js
