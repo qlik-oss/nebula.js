@@ -13,7 +13,6 @@
     "bundle-install": "bundle install"
   },
   "dependencies": {
-    "@nebula.js/sn-table": "^1.6.0",
     "@nebula.js/stardust": "^2.6.1",
     "@qlik/carbon-core": "^1.0.6",
     "@qlik/react-native-carbon": "^1.1.20",
