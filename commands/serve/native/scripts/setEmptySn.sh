@@ -5,4 +5,7 @@ echo $0
 
 basedir=$(dirname $0)
 
+echo "here is basedir"
+echo $basedir
+
 echo "const sn = () => {return (<></>);}\n\nexport default sn" > $basedir/../src/sn/sn.js
