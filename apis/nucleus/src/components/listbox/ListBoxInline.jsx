@@ -20,6 +20,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 import { getListboxInlineKeyboardNavigation } from './listbox-keyboard-navigation';
+import useConfirmUnfocus from './useConfirmUnfocus';
 
 const useStyles = makeStyles(() => ({
   listBoxHeader: {
@@ -177,6 +178,9 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     }
   }, [selections]);
 
+  const listBoxRef = useRef(null);
+  useConfirmUnfocus(listBoxRef, selections);
+
   if (!model || !layout || !translator) {
     return null;
   }
@@ -226,6 +230,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       spacing={0}
       style={{ height: '100%', minHeight: `${minHeight}px` }}
       onKeyDown={handleKeyDown}
+      ref={listBoxRef}
     >
       {toolbar && (
         <Grid item container style={{ padding: theme.spacing(1) }}>
