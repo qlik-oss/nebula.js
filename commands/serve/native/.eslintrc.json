@@ -1,7 +1,8 @@
 {
   "rules": {
     "react/jsx-filename-extension": "off",
-    "import/extensions": "off"
+    "import/extensions": "off",
+    "react/function-component-definition": "off"
   },
   "ignorePatterns": ["src/assets/"]
 }
