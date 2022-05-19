@@ -89,7 +89,7 @@ jobs:
           command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - run:
           name: Set serve native temp file
-          command: echo "'/* eslint-disable */\n\nexport default sn = () => <></>;'" > commands/serve/native/src/sn/sn.js
+          command: echo "'/* eslint-disable */\n\nexport default sn = () => <></>;';" > commands/serve/native/src/sn/sn.js
       - run:
           name: Install dependancies for serve native
           command: cd commands/serve/native && yarn install
