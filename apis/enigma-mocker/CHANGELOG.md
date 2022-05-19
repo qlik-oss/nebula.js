@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/qlik-oss/nebula.js/compare/v2.9.0...v2.10.0) (2022-04-26)
+
+### Features
+
+- allow data insert in mocker ([#816](https://github.com/qlik-oss/nebula.js/issues/816)) ([1d9a0a2](https://github.com/qlik-oss/nebula.js/commit/1d9a0a2f10efd15cdcdf18308d299cd5f6d1b426))
+
+# [2.9.0](https://github.com/qlik-oss/nebula.js/compare/v2.8.0...v2.9.0) (2022-04-01)
+
+**Note:** Version bump only for package @nebula.js/enigma-mocker
+
+# [2.8.0](https://github.com/qlik-oss/nebula.js/compare/v2.7.0...v2.8.0) (2022-03-25)
+
+**Note:** Version bump only for package @nebula.js/enigma-mocker
+
+# [2.7.0](https://github.com/qlik-oss/nebula.js/compare/v2.6.1...v2.7.0) (2022-03-21)
+
+### Reverts
+
+- Revert "chore: fix test for long running query" ([97b2de7](https://github.com/qlik-oss/nebula.js/commit/97b2de7df91799b7c96004db46b36bd4c6170527))
+
 ## [2.6.1](https://github.com/qlik-oss/nebula.js/compare/v2.6.0...v2.6.1) (2022-02-25)
 
 **Note:** Version bump only for package @nebula.js/enigma-mocker

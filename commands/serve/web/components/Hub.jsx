@@ -240,18 +240,20 @@ function AppList({ info, glob, treatAsDesktop }) {
   );
 }
 
-const Err = ({ e: { message, hints } }) => (
-  <>
-    <Typography variant="subtitle1" color="error" gutterBottom style={{ marginTop: '1rem' }}>
-      {message}
-    </Typography>
-    {hints.map((hint) => (
-      <Typography key={hint} variant="body2">
-        {hint}
+function Err({ e: { message, hints } }) {
+  return (
+    <>
+      <Typography variant="subtitle1" color="error" gutterBottom style={{ marginTop: '1rem' }}>
+        {message}
       </Typography>
-    ))}
-  </>
-);
+      {hints.map((hint) => (
+        <Typography key={hint} variant="body2">
+          {hint}
+        </Typography>
+      ))}
+    </>
+  );
+}
 
 export default function Hub() {
   const [info, setInfo] = useState();

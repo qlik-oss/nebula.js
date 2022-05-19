@@ -1,4 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
+/* eslint-disable react/jsx-no-constructed-context-values */
+
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { IconButton, Divider, Grid, makeStyles } from '@material-ui/core';

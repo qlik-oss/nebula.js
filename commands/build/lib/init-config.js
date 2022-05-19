@@ -12,24 +12,24 @@ const options = {
     alias: 'c',
   },
   watch: {
-    description: 'Watch source files',
+    description: 'Rebuild the bundle when its source files change on disk',
     type: 'boolean',
     alias: 'w',
     default: false,
   },
   sourcemap: {
-    description: 'Generate source map',
+    description: 'Generate source maps',
     type: 'boolean',
     alias: 'm',
     default: true,
   },
   mode: {
-    description: 'Explicitly set mode ("developer"|"production")',
+    description: 'Explicitly set mode ("development"|"production")',
     type: 'string',
     default: undefined,
   },
   core: {
-    description: 'Set a core build target',
+    description: 'Set a core build target to compile an ES Module for release',
     type: 'string',
     default: undefined,
   },

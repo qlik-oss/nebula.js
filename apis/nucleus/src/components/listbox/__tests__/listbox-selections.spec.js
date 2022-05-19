@@ -63,8 +63,7 @@ describe('use-listbox-interactions', () => {
     });
 
     it('should add selection for element number 2', () => {
-      const toggle = false;
-      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [2], toggle);
+      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [2]);
       expect(selectedPages).to.deep.equal([
         {
           qMatrix: [
@@ -81,8 +80,7 @@ describe('use-listbox-interactions', () => {
     });
 
     it('should toggle selection (turn it off)', () => {
-      const toggle = true;
-      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0], toggle);
+      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0]);
       expect(selectedPages).to.deep.equal([
         {
           qMatrix: [
@@ -99,8 +97,7 @@ describe('use-listbox-interactions', () => {
     });
 
     it('should select a range without toggling any already selected values', () => {
-      const toggle = false;
-      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0, 1, 2, 3, 4, 5], toggle);
+      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0, 1, 2, 3, 4, 5]);
       expect(selectedPages).to.deep.equal([
         {
           qMatrix: [
@@ -110,6 +107,24 @@ describe('use-listbox-interactions', () => {
             [{ qState: 'S', qElemNumber: 3 }, []],
             [{ qState: 'S', qElemNumber: 4 }, []],
             [{ qState: 'S', qElemNumber: 5 }, []],
+            [{ qState: 'A', qElemNumber: 6 }, []],
+          ],
+        },
+      ]);
+    });
+
+    it('should deselect all exept the new selection', () => {
+      const clearAllButElmNumbers = true;
+      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [3], clearAllButElmNumbers);
+      expect(selectedPages).to.deep.equal([
+        {
+          qMatrix: [
+            [{ qState: 'A', qElemNumber: 0 }, []],
+            [{ qState: 'A', qElemNumber: 1 }, []],
+            [{ qState: 'A', qElemNumber: 2 }, []],
+            [{ qState: 'S', qElemNumber: 3 }, []],
+            [{ qState: 'A', qElemNumber: 4 }, []],
+            [{ qState: 'A', qElemNumber: 5 }, []],
             [{ qState: 'A', qElemNumber: 6 }, []],
           ],
         },

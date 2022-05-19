@@ -84,7 +84,7 @@ const contentReducer = (state, action) => {
   }
 };
 
-const LoadingSn = ({ delay = 750 }) => {
+function LoadingSn({ delay = 750 }) {
   const [showLoading, setShowLoading] = useState(false);
 
   useEffect(() => {
@@ -94,7 +94,7 @@ const LoadingSn = ({ delay = 750 }) => {
   }, []);
 
   return showLoading ? <Loading /> : null;
-};
+}
 
 const handleModal = ({ sn, layout, model }) => {
   const selections = sn && sn.component && sn.component.selections;

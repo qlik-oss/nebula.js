@@ -8,9 +8,15 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    border: 'none',
+    borderRadius: 0,
     '& fieldset': {
+      border: `1px solid ${theme.palette.divider}`,
+      borderWidth: '1px 0 1px 0',
       borderRadius: 0,
-      borderColor: `${theme.palette.divider} transparent`,
+    },
+    '&:hover': {
+      border: 'none',
     },
   },
   dense: {
@@ -24,9 +30,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 const TREE_PATH = '/qListObjectDef';
 
-export default function ListBoxSearch({ model, autoFocus = true, dense = false }) {
+export default function ListBoxSearch({ model, keyboard, dense = false }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
+
   const onChange = (e) => {
     setValue(e.target.value);
     model.searchListObjectFor(TREE_PATH, e.target.value);
@@ -55,13 +62,15 @@ export default function ListBoxSearch({ model, autoFocus = true, dense = false }
         </InputAdornment>
       }
       className={['search', classes.root, dense && classes.dense].filter(Boolean).join(' ')}
-      autoFocus={autoFocus}
       margin="dense"
       fullWidth
       placeholder={translator.get('Listbox.Search')}
       value={value}
       onChange={onChange}
       onKeyDown={onKeyDown}
+      inputProps={{
+        tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
+      }}
     />
   );
 }

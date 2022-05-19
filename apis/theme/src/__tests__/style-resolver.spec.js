@@ -36,7 +36,21 @@ describe('style-resolver', () => {
     };
     const s = create('object.bar', t);
 
+    expect(s.getStyle('', 'fontSize')).to.equal('16px');
+    expect(s.getStyle('legend', 'fontSize')).to.equal('16px');
+    expect(s.getStyle('legend.content', 'fontSize')).to.equal('16px');
+    expect(s.getStyle('title', 'fontSize')).to.equal('16px');
+
     expect(s.getStyle('legend.title', 'fontSize')).to.equal('13px');
+    expect(s.getStyle('legend.content', 'color')).to.equal(undefined);
+
+    expect(s.getStyle('.', 'legend.title.fontSize')).to.equal('13px');
+    expect(s.getStyle('legend.', 'title.fontSize')).to.equal('13px');
+    expect(s.getStyle('legend.', 'content.fontSize')).to.equal(undefined);
+    expect(s.getStyle('legend.', 'content.color')).to.equal(undefined);
+
+    expect(s.getStyle('table', 'fontSize')).to.equal('16px');
+    expect(s.getStyle('table', 'content.fontSize')).to.equal(undefined);
   });
 
   it('resolveRawTheme', () => {

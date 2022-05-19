@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { IconButton, Grid, Typography } from '@material-ui/core';
@@ -29,6 +30,7 @@ describe('<ListboxInline />', () => {
   let selections;
   let renderer;
   let render;
+  let getListboxInlineKeyboardNavigation;
 
   const InstanceContext = React.createContext();
 
@@ -49,6 +51,7 @@ describe('<ListboxInline />', () => {
     };
 
     ActionsToolbar = sandbox.stub();
+    getListboxInlineKeyboardNavigation = sandbox.stub().returns('keyboard-navigation');
     ListBoxSearch = sandbox.stub();
     createListboxSelectionToolbar = sandbox.stub();
     useTheme = sandbox.stub();
@@ -68,7 +71,7 @@ describe('<ListboxInline />', () => {
       },
     };
 
-    [{ ListBoxInline }] = aw.mock(
+    [{ default: ListBoxInline }] = aw.mock(
       [
         [
           require.resolve('@material-ui/core'),
@@ -78,7 +81,13 @@ describe('<ListboxInline />', () => {
             Typography,
           }),
         ],
-        [require.resolve('react-virtualized-auto-sizer'), () => () => <div data-testid="virtualized-auto-sizer" />],
+        [
+          require.resolve('react-virtualized-auto-sizer'),
+          () =>
+            function () {
+              return <div data-testid="virtualized-auto-sizer" />;
+            },
+        ],
         [require.resolve('@nebula.js/ui/icons/unlock'), () => () => 'unlock'],
         [require.resolve('@nebula.js/ui/icons/lock'), () => () => 'lock'],
         [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({ icon: 'icon' }), useTheme })],
@@ -87,8 +96,14 @@ describe('<ListboxInline />', () => {
         [require.resolve('../../../hooks/useSessionModel'), () => useSessionModel],
         [require.resolve('../../../hooks/useLayout'), () => () => [layout]],
         [require.resolve('../../ActionsToolbar'), () => ActionsToolbar],
-        [require.resolve('../ListBox'), () => <div className="TheListBox" />],
+        [require.resolve('../ListBox'), () => <div className="theListBox" />],
         [require.resolve('../ListBoxSearch'), () => ListBoxSearch],
+        [
+          require.resolve('../listbox-keyboard-navigation'),
+          () => ({
+            getListboxInlineKeyboardNavigation,
+          }),
+        ],
         [require.resolve('../listbox-selection-toolbar'), () => createListboxSelectionToolbar],
       ],
       ['../ListBoxInline']
@@ -103,6 +118,7 @@ describe('<ListboxInline />', () => {
       on: sandbox.stub().callsFake((event, func) => (eventTriggered) => {
         if (event === eventTriggered) func();
       }),
+      off: sandbox.stub(),
     };
     useSessionModel.returns([sessionModel]);
     useObjectSelections.returns([selections]);
@@ -112,11 +128,13 @@ describe('<ListboxInline />', () => {
       direction: 'vertical',
       listLayout: 'vertical',
       search: true,
+      focusSearch: false,
       toolbar: true,
       properties: {},
       sessionModel: undefined,
       selectionsApi: undefined,
       update: undefined,
+      fetchStart: 'fetchStart',
     };
 
     theme.spacing.returns('padding');
@@ -155,6 +173,7 @@ describe('<ListboxInline />', () => {
 
   afterEach(() => {
     sandbox.reset();
+    renderer.unmount();
   });
 
   after(() => {
@@ -182,9 +201,6 @@ describe('<ListboxInline />', () => {
       const typographs = renderer.root.findAllByType(Typography);
       expect(typographs.length).to.equal(1);
 
-      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches.length).to.equal(1);
-
       const autoSizers = renderer.root.findAllByProps({ 'data-testid': 'virtualized-auto-sizer' });
       expect(autoSizers.length).to.equal(1);
 
@@ -193,6 +209,18 @@ describe('<ListboxInline />', () => {
         key: 'app',
       });
       expect(useObjectSelections).calledOnce;
+
+      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
+      expect(listBoxSearches).to.have.length(1);
+      const showSearchButtons = renderer.root.findAllByType(IconButton);
+      expect(showSearchButtons).to.have.length(1);
+      expect(getListboxInlineKeyboardNavigation).calledOnce;
+      expect(renderer.toJSON().props.onKeyDown).to.equal('keyboard-navigation');
+
+      expect(selections.on).calledTwice;
+      expect(selections.on.args[0][0]).to.equal('deactivated');
+      expect(selections.on.args[1][0]).to.equal('activated');
+      expect(selections.off).not.called;
     });
 
     it('should render without toolbar', async () => {
@@ -205,10 +233,17 @@ describe('<ListboxInline />', () => {
       expect(typographs.length).to.equal(0);
 
       const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches.length).to.equal(1);
+      expect(listBoxSearches.length, 'search is not part of toolbar').to.equal(1);
     });
 
-    it('should render without search', async () => {
+    it('should render without toolbar', async () => {
+      options.search = 'toggle';
+      await render();
+      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
+      expect(listBoxSearches.length, 'search should be hidden initially').to.equal(0);
+    });
+
+    it('should render without search and show search button', async () => {
       options.search = false;
       await render();
       const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
@@ -237,6 +272,13 @@ describe('<ListboxInline />', () => {
         useSessionModel.args[0][0].qListObjectDef.qFrequencyMode,
         'app should default to none frequencyMode'
       ).to.equal('N');
+    });
+
+    it('should get frequency value if histogram is enabled', async () => {
+      options.frequencyMode = 'none';
+      options.histogram = true;
+      await render();
+      expect(useSessionModel.args[0][0].qListObjectDef.qFrequencyMode, 'app should use freuency value').to.equal('V');
     });
 
     it('should use a custom selectionsApi and sessionModel', async () => {

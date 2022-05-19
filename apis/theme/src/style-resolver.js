@@ -2,7 +2,7 @@ import extend from 'extend';
 import generateScales from './theme-scale-generator';
 
 /**
- * Creates the follwing array of paths
+ * Creates the following array of paths
  * object.barChart - legend.title - fontSize
  * object - legend.title - fontSize
  * legend.title - fontSize
@@ -49,19 +49,19 @@ function getObject(root, steps) {
     if (obj[steps[i]]) {
       obj = obj[steps[i]];
     } else {
-      return null;
+      return undefined;
     }
   }
   return obj;
 }
 
 function searchPathArray(pathArray, attribute, theme) {
+  const attributeArray = attribute.split('.');
   for (let i = 0; i < pathArray.length; i++) {
-    const target = getObject(theme, pathArray[i]);
-    if (target !== null && target[attribute]) {
-      return target[attribute];
-    }
+    const restult = getObject(theme, [...pathArray[i], ...attributeArray]);
+    if (restult !== undefined) return restult;
   }
+
   return undefined;
 }
 
@@ -94,11 +94,15 @@ export default function styleResolver(basePath, themeJSON) {
      * object.barChart - fontSize
      * object - fontSize
      * fontSize
+     * When attributes separated by dots is provided, they are required in the theme JSON file
+     * Ex. Base path: "object" , Path: "legend", ", Attribute: "title.fontSize"
+     * title: {fontSize: ...} must be matched and the rest is the same as above
+     * If you want a exact match, you can use `getStyle('object', '', 'legend.title.fontSize');`
      * @ignore
      *
-     * @param {string} component string of properties seperated by dots to search in
-     * @param {string} attribute to return
-     * @returns {any} value of the resolved path, undefined if not found
+     * @param {string} component String of properties separated by dots to search in
+     * @param {string} attribute Name of the style attribute
+     * @returns {string|undefined} The style value of the resolved path, undefined if not found
      */
     getStyle(component, attribute) {
       // TODO - object overrides
