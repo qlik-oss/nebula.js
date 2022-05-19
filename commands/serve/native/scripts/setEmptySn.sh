@@ -8,4 +8,4 @@ basedir=$(dirname $0)
 echo "here is basedir"
 echo $basedir
 
-echo "import React from 'react'; \n\nconst sn = () => return <></>;\n\nexport default sn" > $basedir/../src/sn/sn.js
+echo "/* eslint-disable */ \n\nimport React from 'react'; \n\nconst sn = () => return <></>;\n\nexport default sn" > $basedir/../src/sn/sn.js
