@@ -61,7 +61,7 @@ const getType = (value) => {
   return 'unknown';
 };
 
-const Bool = ({ property, value, target, changed }) => {
+function Bool({ property, value, target, changed }) {
   const handleChange = (e) => {
     target[property] = e.target.checked;
     changed();
@@ -73,9 +73,9 @@ const Bool = ({ property, value, target, changed }) => {
       labelPlacement="end"
     />
   );
-};
+}
 
-const Str = ({ property, value, target, changed }) => {
+function Str({ property, value, target, changed }) {
   const [s, setS] = useState(value);
   const handleChange = (e) => {
     setS(e.target.value);
@@ -88,9 +88,9 @@ const Str = ({ property, value, target, changed }) => {
   };
 
   return <TextField fullWidth onChange={handleChange} onBlur={onBlur} label={property} value={s} />;
-};
+}
 
-const Num = ({ property, value, target, changed }) => {
+function Num({ property, value, target, changed }) {
   const [s, setS] = useState(+value);
   const handleChange = (e) => {
     setS(e.target.value);
@@ -103,9 +103,9 @@ const Num = ({ property, value, target, changed }) => {
   };
 
   return <TextField fullWidth onChange={handleChange} onBlur={onBlur} label={property} value={s} />;
-};
+}
 
-const Obj = ({ property, value, changed }) => {
+function Obj({ property, value, changed }) {
   const classes = useStyles();
   const panelClasses = usePanelStyles();
   return (
@@ -116,7 +116,7 @@ const Obj = ({ property, value, changed }) => {
       <ExpansionPanelDetails className={classes.details}>{generateComponents(value, changed)}</ExpansionPanelDetails>
     </ExpansionPanel>
   );
-};
+}
 
 const registeredComponents = {
   boolean: Bool,
@@ -127,7 +127,7 @@ const registeredComponents = {
 
 const QRX = /^q[A-Z]/;
 
-function generateComponents(properties, changed) {
+export default function generateComponents(properties, changed) {
   const components = Object.keys(properties)
     .map((key) => {
       if (['visualization', 'version'].indexOf(key) !== -1) {
@@ -161,5 +161,3 @@ function generateComponents(properties, changed) {
     </Grid>
   );
 }
-
-export { generateComponents as default };

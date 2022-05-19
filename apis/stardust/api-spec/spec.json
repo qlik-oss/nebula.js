@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "2.6.1",
+    "version": "2.10.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -517,10 +517,6 @@
     "Context": {
       "kind": "interface",
       "entries": {
-        "disableCellPadding": {
-          "optional": true,
-          "type": "boolean"
-        },
         "keyboardNavigation": {
           "optional": true,
           "type": "boolean"
@@ -732,15 +728,73 @@
         }
       }
     },
-    "ReceiverFunction": {
-      "description": "A callback function which receives another function as input.",
+    "Direction": {
       "kind": "alias",
       "items": {
-        "kind": "function",
-        "params": [
+        "kind": "union",
+        "items": [
           {
-            "kind": "function",
-            "params": []
+            "kind": "literal",
+            "value": "'ltr'"
+          },
+          {
+            "kind": "literal",
+            "value": "'rtl'"
+          }
+        ]
+      }
+    },
+    "ListLayout": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'vertical'"
+          },
+          {
+            "kind": "literal",
+            "value": "'horizontal'"
+          }
+        ]
+      }
+    },
+    "FrequencyMode": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'none'"
+          },
+          {
+            "kind": "literal",
+            "value": "'value'"
+          },
+          {
+            "kind": "literal",
+            "value": "'percent'"
+          },
+          {
+            "kind": "literal",
+            "value": "'relative'"
+          }
+        ]
+      }
+    },
+    "SearchMode": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "boolean"
+          },
+          {
+            "kind": "literal",
+            "value": "'toggle'"
           }
         ]
       }
@@ -781,19 +835,31 @@
                   "description": "Direction setting ltr|rtl.",
                   "optional": true,
                   "defaultValue": "ltr",
-                  "type": "string"
+                  "type": "#/definitions/Direction"
                 },
                 "listLayout": {
                   "description": "Layout direction vertical|horizontal",
                   "optional": true,
                   "defaultValue": "vertical",
-                  "type": "string"
+                  "type": "#/definitions/ListLayout"
+                },
+                "frequencyMode": {
+                  "description": "Show frequency none|value|percent|relative",
+                  "optional": true,
+                  "defaultValue": "none",
+                  "type": "#/definitions/FrequencyMode"
+                },
+                "histogram": {
+                  "description": "Show histogram bar",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
                 },
                 "search": {
-                  "description": "Show the search bar",
+                  "description": "Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow",
                   "optional": true,
                   "defaultValue": true,
-                  "type": "boolean"
+                  "type": "#/definitions/SearchMode"
                 },
                 "toolbar": {
                   "description": "Show the toolbar",
@@ -805,12 +871,6 @@
                   "description": "Show values as checkboxes instead of as fields",
                   "optional": true,
                   "defaultValue": false,
-                  "type": "boolean"
-                },
-                "rangeSelect": {
-                  "description": "Enable range selection",
-                  "optional": true,
-                  "defaultValue": true,
                   "type": "boolean"
                 },
                 "dense": {
@@ -830,21 +890,6 @@
                   "optional": true,
                   "defaultValue": "{}",
                   "type": "object"
-                },
-                "sessionModel": {
-                  "description": "Use a custom sessionModel.",
-                  "optional": true,
-                  "type": "object"
-                },
-                "selectionsApi": {
-                  "description": "Use a custom selectionsApi to customize how values are selected.",
-                  "optional": true,
-                  "type": "object"
-                },
-                "update": {
-                  "description": "A function which receives an update function which upon call will trigger a data fetch.",
-                  "optional": true,
-                  "type": "#/definitions/ReceiverFunction"
                 }
               }
             }
@@ -1347,104 +1392,6 @@
           "optional": true,
           "type": "object"
         }
-      }
-    },
-    "Range": {
-      "kind": "alias",
-      "items": {
-        "kind": "object",
-        "entries": {
-          "qCharPos": {
-            "description": "The (absolute) index where the highlighted range starts.",
-            "type": "number"
-          },
-          "qCharCount": {
-            "description": "The length of the sub-string (starting from qChartPos) that should be highlighted.",
-            "type": "number"
-          }
-        }
-      }
-    },
-    "Segment": {
-      "kind": "alias",
-      "items": {
-        "kind": "object",
-        "entries": {
-          "segment": {
-            "description": "The sub-string/segment cut out from the original label.",
-            "type": "string"
-          },
-          "highlighted": {
-            "description": "A flag which tells whether the segment should be highlighted or not.",
-            "type": "boolean"
-          }
-        }
-      }
-    },
-    "getSegmentsFromRange": {
-      "kind": "function",
-      "params": [
-        {
-          "name": "label",
-          "description": "The label we want to create segments out of.",
-          "type": "string"
-        },
-        {
-          "name": "range",
-          "description": "The indexes which define how to create the segments.",
-          "type": "#/definitions/Range"
-        },
-        {
-          "name": "startIndex",
-          "description": "An optional index which tells where we want to start the first segment from\n  (only relevant for creating the first unhighlighted segment of a string/sub-string).",
-          "optional": true,
-          "defaultValue": 0,
-          "type": "number"
-        }
-      ],
-      "returns": {
-        "description": "An array of segments.",
-        "kind": "array",
-        "items": {
-          "type": "#/definitions/Segment"
-        }
-      }
-    },
-    "MinMaxResult": {
-      "kind": "alias",
-      "items": {
-        "kind": "object",
-        "entries": {
-          "min": {
-            "type": "number"
-          },
-          "max": {
-            "type": "number"
-          }
-        }
-      }
-    },
-    "getMinMax": {
-      "description": "Returns the min and max indices of elemNumbersOrdered which contains\nall numbers in elementNbrs.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "elementNbrs",
-          "kind": "array",
-          "items": {
-            "type": "number"
-          }
-        },
-        {
-          "name": "elemNumbersOrdered",
-          "kind": "array",
-          "items": {
-            "type": "number"
-          }
-        }
-      ],
-      "returns": {
-        "type": "#/definitions/MinMaxResult"
       }
     },
     "ActionToolbarElement": {
@@ -2147,7 +2094,7 @@
           ]
         },
         "getStyle": {
-          "description": "Get the value of a style attribute in the theme by searching in the theme's JSON structure.\nThe search starts at the specified base path and continues upwards until the value is found.\nIf possible it will get the attribute's value using the given path.",
+          "description": "Get the value of a style attribute in the theme\nby searching in the theme's JSON structure.\nThe search starts at the specified base path\nand continues upwards until the value is found.\nIf possible it will get the attribute's value using the given path.\nWhen attributes separated by dots are provided, such as 'hover.color',\nthey are required in the theme JSON file",
           "kind": "function",
           "params": [
             {
@@ -2162,16 +2109,24 @@
             },
             {
               "name": "attribute",
-              "description": "Name of the style attribute.",
+              "description": "Name of the style attribute. (specified as a name attribute separated by dots).",
               "type": "string"
             }
           ],
           "returns": {
-            "description": "The style value",
-            "type": "string"
+            "description": "The style value or undefined if not found",
+            "kind": "union",
+            "items": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "undefined"
+              }
+            ]
           },
           "examples": [
-            "theme.getStyle('object', 'title.main', 'fontSize');\ntheme.getStyle('', '', 'fontSize');"
+            "theme.getStyle('object', 'title.main', 'fontSize');\ntheme.getStyle('object', 'title', 'main.fontSize');\ntheme.getStyle('object', '', 'title.main.fontSize');\ntheme.getStyle('', '', 'fontSize');"
           ]
         }
       },

@@ -1,7 +1,10 @@
 /* eslint no-underscore-dangle:0 */
 import themeFn from '@nebula.js/theme';
 
-const timed = (t, v) => new Promise((resolve) => setTimeout(() => resolve(v), t));
+const timed = (t, v) =>
+  new Promise((resolve) => {
+    setTimeout(() => resolve(v), t);
+  });
 
 const LOAD_THEME_TIMEOUT = 5000;
 

@@ -24,13 +24,18 @@ export function getSelectedValues(pages) {
   return flatten(elementNbrs);
 }
 
-export function applySelectionsOnPages(pages, elmNumbers) {
+export function applySelectionsOnPages(pages, elmNumbers, clearAllButElmNumbers = false) {
   const getNewSelectionState = (qState) => (elmNumbers.length <= 1 && isStateSelected(qState) ? 'A' : 'S');
   const matrices = pages.map((page) => {
     const qMatrix = page.qMatrix.map((p) => {
       const [p0] = p;
       const selectionMatchesElement = elmNumbers.includes(p0.qElemNumber);
-      const qState = selectionMatchesElement ? getNewSelectionState(p0.qState) : p0.qState;
+      let qState;
+      if (clearAllButElmNumbers) {
+        qState = selectionMatchesElement ? 'S' : 'A';
+      } else {
+        qState = selectionMatchesElement ? getNewSelectionState(p0.qState) : p0.qState;
+      }
       return [{ ...p0, qState }, p.slice(1)];
     });
     return { ...page, qMatrix };
@@ -70,7 +75,8 @@ export function getElemNumbersFromPages(pages) {
 }
 
 /**
- * @typedef {object} MinMaxResult
+ * @ignore
+ * @interface MinMaxResult
  * @property {number} min
  * @property {number} max
  */
@@ -79,6 +85,7 @@ export function getElemNumbersFromPages(pages) {
  * Returns the min and max indices of elemNumbersOrdered which contains
  * all numbers in elementNbrs.
  *
+ * @ignore
  * @param {number[]} elementNbrs
  * @param {number[]} elemNumbersOrdered
  * @returns {MinMaxResult}

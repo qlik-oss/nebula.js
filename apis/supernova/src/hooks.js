@@ -3,7 +3,7 @@
 /* eslint no-console: 0 */
 /* eslint no-use-before-define: 0 */
 
-// Hooks implementation heavily inspired by prect hooks
+// Hooks implementation heavily inspired by preact hooks
 
 let currentComponent;
 let currentIndex;

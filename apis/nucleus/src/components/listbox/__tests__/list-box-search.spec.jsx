@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { OutlinedInput } from '@material-ui/core';
@@ -11,7 +12,14 @@ const [{ default: ListBoxSearch }] = aw.mock(
   ['../ListBoxSearch']
 );
 
+const keyboard = { enabled: false, active: true };
+
 describe('<ListBoxSearch />', () => {
+  beforeEach(() => {
+    keyboard.enabled = false;
+    keyboard.active = true;
+  });
+
   it('should have default props', () => {
     const model = {
       searchListObjectFor: sinon.spy(),
@@ -20,18 +28,19 @@ describe('<ListBoxSearch />', () => {
     };
     const testRenderer = renderer.create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} />
+        <ListBoxSearch model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(OutlinedInput);
     expect(types).to.have.length(1);
     expect(types[0].props.fullWidth).to.equal(true);
-    expect(types[0].props.autoFocus).to.equal(true);
+    expect(types[0].props.autoFocus).to.equal(undefined);
     expect(types[0].props.placeholder).to.equal('Search');
     expect(types[0].props.value).to.equal('');
     expect(types[0].props.onChange).to.be.a('function');
     expect(types[0].props.onKeyDown).to.be.a('function');
+    expect(types[0].props.inputProps.tabIndex).to.equal(0);
   });
   it('should have css class `search`', () => {
     const model = {
@@ -39,14 +48,19 @@ describe('<ListBoxSearch />', () => {
       acceptListObjectSearch: sinon.spy(),
       abortListObjectSearch: sinon.spy(),
     };
+
+    keyboard.enabled = true;
+    keyboard.active = false;
+
     const testRenderer = renderer.create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} />
+        <ListBoxSearch model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     const [input] = testInstance.findAllByType(OutlinedInput);
-    const { className } = input.props;
+    const { className, inputProps } = input.props;
+    expect(inputProps.tabIndex).to.equal(-1);
     expect(className).to.be.a('string');
     expect(className.split(' ')).to.include('search');
   });
@@ -58,7 +72,7 @@ describe('<ListBoxSearch />', () => {
     };
     const testRenderer = renderer.create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} />
+        <ListBoxSearch model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
@@ -66,7 +80,7 @@ describe('<ListBoxSearch />', () => {
     type.props.onChange({ target: { value: 'foo' } });
     testRenderer.update(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} />
+        <ListBoxSearch model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
     );
     expect(model.searchListObjectFor).to.have.been.calledWith('/qListObjectDef', 'foo');
@@ -81,7 +95,7 @@ describe('<ListBoxSearch />', () => {
     };
     const testRenderer = renderer.create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} />
+        <ListBoxSearch model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
@@ -100,7 +114,7 @@ describe('<ListBoxSearch />', () => {
     };
     const testRenderer = renderer.create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} />
+        <ListBoxSearch model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;

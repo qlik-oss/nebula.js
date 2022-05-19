@@ -12,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MoreItem = ({ item, onActionClick = () => {} }) => {
+function MoreItem({ item, onActionClick = () => {} }) {
   const { hidden, disabled, hasSvgIconShape } = useActionState(item);
   const { icon } = useStyles();
   const handleClick = () => {
@@ -25,7 +25,7 @@ const MoreItem = ({ item, onActionClick = () => {} }) => {
       <Typography noWrap>{item.label}</Typography>
     </MenuItem>
   ) : null;
-};
+}
 
 const More = React.forwardRef(
   (

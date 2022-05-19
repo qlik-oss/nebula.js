@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/qlik-oss/nebula.js/compare/v2.9.0...v2.10.0) (2022-04-26)
+
+### Features
+
+- allow data insert in mocker ([#816](https://github.com/qlik-oss/nebula.js/issues/816)) ([1d9a0a2](https://github.com/qlik-oss/nebula.js/commit/1d9a0a2f10efd15cdcdf18308d299cd5f6d1b426))
+
+# [2.9.0](https://github.com/qlik-oss/nebula.js/compare/v2.8.0...v2.9.0) (2022-04-01)
+
+### Bug Fixes
+
+- **Listbox:** Fix selections toggling on edit ([#809](https://github.com/qlik-oss/nebula.js/issues/809)) ([567cc28](https://github.com/qlik-oss/nebula.js/commit/567cc28256530b51cf4132412ac9ca0ff6828486))
+- **NebulaListbox:** Minor tweaks ([#807](https://github.com/qlik-oss/nebula.js/issues/807)) ([9b38687](https://github.com/qlik-oss/nebula.js/commit/9b38687136ea917a112fc7bfa2bcf8a023cd471c))
+
+### Features
+
+- **Listbox:** add fill to checkboxes with state excluded or alternative ([#804](https://github.com/qlik-oss/nebula.js/issues/804)) ([b1a308e](https://github.com/qlik-oss/nebula.js/commit/b1a308edddbf4a32adb2b9fd6d7f7c16581b9b15))
+
+# [2.8.0](https://github.com/qlik-oss/nebula.js/compare/v2.7.0...v2.8.0) (2022-03-25)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+# [2.7.0](https://github.com/qlik-oss/nebula.js/compare/v2.6.1...v2.7.0) (2022-03-21)
+
+### Bug Fixes
+
+- update jsdocs for listbox ([#774](https://github.com/qlik-oss/nebula.js/issues/774)) ([c607e37](https://github.com/qlik-oss/nebula.js/commit/c607e372bb47432f53f5eaf16982368b39139223))
+
+### Features
+
+- add frequency count for listbox ([#770](https://github.com/qlik-oss/nebula.js/issues/770)) ([1ab3a4c](https://github.com/qlik-oss/nebula.js/commit/1ab3a4ca54acb17783ed24cadc2371ee22c478f7))
+
+### Reverts
+
+- Revert "chore: fix test for long running query" ([97b2de7](https://github.com/qlik-oss/nebula.js/commit/97b2de7df91799b7c96004db46b36bd4c6170527))
+
 ## [2.6.1](https://github.com/qlik-oss/nebula.js/compare/v2.6.0...v2.6.1) (2022-02-25)
 
 **Note:** Version bump only for package @nebula.js/nucleus

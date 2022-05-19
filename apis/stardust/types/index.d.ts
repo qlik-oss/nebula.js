@@ -171,7 +171,6 @@ export function useKeyboard(): stardust.Keyboard;
 
 declare namespace stardust {
     interface Context {
-        disableCellPadding?: boolean;
         keyboardNavigation?: boolean;
         constraints?: {
             active?: boolean;
@@ -231,10 +230,13 @@ declare namespace stardust {
 
     }
 
-    /**
-     * A callback function which receives another function as input.
-     */
-    type ReceiverFunction = ($: ()=>void)=>void;
+    type Direction = "ltr" | "rtl";
+
+    type ListLayout = "vertical" | "horizontal";
+
+    type FrequencyMode = "none" | "value" | "percent" | "relative";
+
+    type SearchMode = boolean | "toggle";
 
     class FieldInstance {
         constructor();
@@ -246,18 +248,16 @@ declare namespace stardust {
          */
         mount(element: HTMLElement, options?: {
             title?: string;
-            direction?: string;
-            listLayout?: string;
-            search?: boolean;
+            direction?: stardust.Direction;
+            listLayout?: stardust.ListLayout;
+            frequencyMode?: stardust.FrequencyMode;
+            histogram?: boolean;
+            search?: stardust.SearchMode;
             toolbar?: boolean;
             checkboxes?: boolean;
-            rangeSelect?: boolean;
             dense?: boolean;
             stateName?: boolean;
             properties?: object;
-            sessionModel?: object;
-            selectionsApi?: object;
-            update?: stardust.ReceiverFunction;
         }): void;
 
         /**
@@ -423,23 +423,6 @@ declare namespace stardust {
         load: stardust.LoadType;
         meta?: object;
     }
-
-    type Range = {
-    };
-
-    type Segment = {
-    };
-
-    type getSegmentsFromRange = (label: string, range: stardust.Range, startIndex?: number)=>stardust.Segment[];
-
-    type MinMaxResult = {
-    };
-
-    /**
-     * Returns the min and max indices of elemNumbersOrdered which contains
-     * all numbers in elementNbrs.
-     */
-    type getMinMax = (elementNbrs: number[], elemNumbersOrdered: number[])=>stardust.MinMaxResult;
 
     interface ActionToolbarElement extends HTMLElement{
         className: "njs-action-toolbar-popover";
@@ -634,14 +617,18 @@ declare namespace stardust {
         getContrastingColorTo(color: string): string;
 
         /**
-         * Get the value of a style attribute in the theme by searching in the theme's JSON structure.
-         * The search starts at the specified base path and continues upwards until the value is found.
+         * Get the value of a style attribute in the theme
+         * by searching in the theme's JSON structure.
+         * The search starts at the specified base path
+         * and continues upwards until the value is found.
          * If possible it will get the attribute's value using the given path.
+         * When attributes separated by dots are provided, such as 'hover.color',
+         * they are required in the theme JSON file
          * @param basePath Base path in the theme's JSON structure to start the search in (specified as a name path separated by dots).
          * @param path Expected path for the attribute (specified as a name path separated by dots).
-         * @param attribute Name of the style attribute.
+         * @param attribute Name of the style attribute. (specified as a name attribute separated by dots).
          */
-        getStyle(basePath: string, path: string, attribute: string): string;
+        getStyle(basePath: string, path: string, attribute: string): string | undefined;
 
     }
 

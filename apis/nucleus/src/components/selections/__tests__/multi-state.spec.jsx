@@ -1,9 +1,12 @@
+/* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { Badge, IconButton, Grid, Typography, Button, List, ListItem, Box } from '@material-ui/core';
 
 const Popover = (props) => props.children;
-const ListBoxPopover = () => null;
+function ListBoxPopover() {
+  return null;
+}
 const OneField = sinon.stub().returns('one-field');
 
 const InstanceContext = React.createContext();

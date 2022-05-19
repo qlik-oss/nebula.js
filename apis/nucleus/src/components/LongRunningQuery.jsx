@@ -23,43 +23,47 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export const Cancel = ({ cancel, translator, ...props }) => (
-  <>
-    <Grid container item direction="column" alignItems="center" spacing={2}>
+export function Cancel({ cancel, translator, ...props }) {
+  return (
+    <>
+      <Grid container item direction="column" alignItems="center" spacing={2}>
+        <Grid item>
+          <Progress />
+        </Grid>
+        <Grid item>
+          <Typography variant="h6" align="center" data-tid="update-active">
+            {translator.get('Object.Update.Active')}
+          </Typography>
+        </Grid>
+      </Grid>
+      <Grid item {...props}>
+        <Button variant="contained" onClick={cancel}>
+          {translator.get('Cancel')}
+        </Button>
+      </Grid>
+    </>
+  );
+}
+
+export function Retry({ retry, translator, ...props }) {
+  return (
+    <>
       <Grid item>
-        <Progress />
+        <WarningTriangle style={{ fontSize: '38px' }} />
       </Grid>
       <Grid item>
-        <Typography variant="h6" align="center">
-          {translator.get('Object.Update.Active')}
+        <Typography variant="h6" align="center" data-tid="update-cancelled">
+          {translator.get('Object.Update.Cancelled')}
         </Typography>
       </Grid>
-    </Grid>
-    <Grid item {...props}>
-      <Button variant="contained" onClick={cancel}>
-        {translator.get('Cancel')}
-      </Button>
-    </Grid>
-  </>
-);
-
-export const Retry = ({ retry, translator, ...props }) => (
-  <>
-    <Grid item>
-      <WarningTriangle style={{ fontSize: '38px' }} />
-    </Grid>
-    <Grid item>
-      <Typography variant="h6" align="center">
-        {translator.get('Object.Update.Cancelled')}
-      </Typography>
-    </Grid>
-    <Grid item>
-      <Button variant="contained" onClick={retry} {...props}>
-        {translator.get('Retry')}
-      </Button>
-    </Grid>
-  </>
-);
+      <Grid item>
+        <Button variant="contained" onClick={retry} {...props}>
+          {translator.get('Retry')}
+        </Button>
+      </Grid>
+    </>
+  );
+}
 
 export default function LongRunningQuery({ canCancel, canRetry, api }) {
   const { stripes, cancel, retry } = useStyles();
