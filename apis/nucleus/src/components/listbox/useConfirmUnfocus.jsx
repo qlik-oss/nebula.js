@@ -3,9 +3,6 @@ import { useRef, useEffect, useState } from 'react';
 /**
  * Hook that confirms selection when
  * user interact outside of passed element ref.
- *
- * @param ref - Ref to HTMLelement
- * @param selections
  */
 
 export default function useConfirmUnfocus(ref, selections) {
