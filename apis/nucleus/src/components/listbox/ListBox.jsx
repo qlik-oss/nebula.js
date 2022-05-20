@@ -4,12 +4,41 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
+import { makeStyles } from '@nebula.js/ui/theme';
 
 import useLayout from '../../hooks/useLayout';
 
 import useSelectionsInteractions from './useSelectionsInteractions';
 
-import MemoRowColumn from './ListBoxRowColumn';
+import RowColumn from './ListBoxRowColumn';
+
+const scrollBarThumb = '#BBB';
+const scrollBarThumbHover = '#555';
+const scrollBarBackground = '#f1f1f1';
+
+const useStyles = makeStyles(() => ({
+  styledScrollbars: {
+    scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
+
+    '&::-webkit-scrollbar': {
+      width: 10,
+      height: 10,
+    },
+
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: scrollBarBackground,
+    },
+
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: scrollBarThumb,
+      borderRadius: '1rem',
+    },
+
+    '&::-webkit-scrollbar-thumb:hover': {
+      backgroundColor: scrollBarThumbHover,
+    },
+  },
+}));
 
 function getSizeInfo({ isVertical, checkboxes, dense, height }) {
   let sizeVertical = checkboxes ? 40 : 33;
@@ -34,17 +63,19 @@ export default function ListBox({
   listLayout = 'vertical',
   frequencyMode = 'N',
   histogram = false,
-  rangeSelect = true,
   checkboxes = false,
   update = undefined,
+  fetchStart = undefined,
   dense = false,
   keyboard = {},
+  showGray = true,
   selectDisabled = () => false,
 }) {
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const [pages, setPages] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
+  const styles = useStyles();
   const {
     instantPages = [],
     interactionEvents,
@@ -53,7 +84,6 @@ export default function ListBox({
     layout,
     selections,
     pages,
-    rangeSelect,
     checkboxes,
     selectDisabled,
     doc: document,
@@ -82,6 +112,9 @@ export default function ListBox({
     [layout, pages]
   );
 
+  // The time from scroll end until new data is being fetched, may be exposed in API later on.
+  const scrollTimeout = 0;
+
   const loadMoreItems = useCallback(
     (startIndex, stopIndex) => {
       local.current.queue.push({
@@ -100,7 +133,7 @@ export default function ListBox({
         local.current.timeout = setTimeout(
           () => {
             const sorted = local.current.queue.slice(-2).sort((a, b) => a.start - b.start);
-            model
+            const reqPromise = model
               .getListObjectData(
                 '/qListObjectDef',
                 sorted.map((s) => ({
@@ -117,8 +150,9 @@ export default function ListBox({
                 setIsLoadingData(false);
                 resolve();
               });
+            fetchStart && fetchStart(reqPromise);
           },
-          isScrolling ? 500 : 0
+          isScrolling ? scrollTimeout : 0
         );
       });
     },
@@ -185,6 +219,7 @@ export default function ListBox({
             width={width}
             itemCount={count}
             layout={listLayout}
+            className={styles.styledScrollbars}
             itemData={{
               isLocked,
               column: !isVertical,
@@ -202,12 +237,13 @@ export default function ListBox({
               frequencyMax,
               histogram,
               keyboard,
+              showGray,
             }}
             itemSize={itemSize}
             onItemsRendered={onItemsRendered}
             ref={ref}
           >
-            {MemoRowColumn}
+            {RowColumn}
           </FixedSizeList>
         );
       }}

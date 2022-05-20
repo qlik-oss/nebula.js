@@ -4,6 +4,7 @@ import { Grid, Typography } from '@material-ui/core';
 import Lock from '@nebula.js/ui/icons/lock';
 import ListBoxCheckbox from '../ListBoxCheckbox';
 import * as keyboardNavigation from '../listbox-keyboard-navigation';
+import ListBoxRadioButton from '../ListBoxRadioButton';
 
 const [{ default: ListBoxRowColumn }] = aw.mock(
   [
@@ -14,6 +15,7 @@ const [{ default: ListBoxRowColumn }] = aw.mock(
           S: 'selected',
           A: 'alternative',
           X: 'excluded',
+          XS: 'excluded-selected',
           highlighted: 'highlighted',
           cell: 'cell',
         }),
@@ -88,6 +90,10 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
+      expect(typeof type.props.onContextMenu).to.equal('function');
+      const preventDefault = sandbox.stub();
+      type.props.onContextMenu({ preventDefault });
+      expect(preventDefault.callCount).to.equal(1);
       expect(type.props.tabIndex).to.equal(-1);
       expect(type.props.onClick.callCount).to.equal(0);
 
@@ -163,6 +169,11 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onKeyDown()).to.equal('handle-key-down-callback');
       expect(type.props.onClick.callCount).to.equal(0);
       expect(type.props.tabIndex).to.equal(0);
+
+      const preventDefault = sandbox.stub();
+      type.props.onContextMenu({ preventDefault });
+      expect(preventDefault.callCount).to.equal(1);
+      expect(type.props.onClick.callCount).to.equal(1);
 
       const types = testInstance.findAllByType(Typography);
       expect(types).to.have.length(2);
@@ -289,6 +300,44 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
+    it('should not add alternative class for A when showGray is false', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        keyboard,
+        actions,
+        showGray: false,
+        pages: [
+          {
+            qArea: {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 0,
+              qHeight: 100,
+            },
+            qMatrix: [
+              [
+                {
+                  qState: 'A',
+                },
+              ],
+            ],
+          },
+        ],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.className).not.to.include('alternative');
+      await testRenderer.unmount();
+    });
+
     it('should set excluded - qState X', async () => {
       const index = 0;
       const style = {};
@@ -326,7 +375,45 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
-    it('should set excluded - qState XS', async () => {
+    it('should not add excluded class for qState X when showGray is false', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        keyboard,
+        actions,
+        showGray: false,
+        pages: [
+          {
+            qArea: {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 0,
+              qHeight: 100,
+            },
+            qMatrix: [
+              [
+                {
+                  qState: 'X',
+                },
+              ],
+            ],
+          },
+        ],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.className).not.to.include('excluded');
+      await testRenderer.unmount();
+    });
+
+    it('should set excluded-selected - qState XS', async () => {
       const index = 0;
       const style = {};
       const data = {
@@ -359,7 +446,45 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.include('excluded');
+      expect(type.props.className).to.include('excluded-selected');
+      await testRenderer.unmount();
+    });
+
+    it('should not add excluded-selected class when showGray is false', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        keyboard,
+        actions,
+        showGray: false,
+        pages: [
+          {
+            qArea: {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 0,
+              qHeight: 100,
+            },
+            qMatrix: [
+              [
+                {
+                  qState: 'XS',
+                },
+              ],
+            ],
+          },
+        ],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.className).not.to.include('excluded-selected');
       await testRenderer.unmount();
     });
 
@@ -676,6 +801,48 @@ describe('<ListBoxRowColumn />', () => {
       expect(className).to.be.a('string');
       expect(className.split(' ')).to.include('value');
       await testRenderer.unmount();
+    });
+
+    it('should render radio button when isSingleSelect is true', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        keyboard,
+        actions,
+        isSingleSelect: true,
+        checkboxes: true,
+        frequencyMode: 'value',
+        pages: [
+          {
+            qArea: {
+              qLeft: 0,
+              qTop: 0,
+              qWidth: 0,
+              qHeight: 100,
+            },
+            qMatrix: [
+              [
+                {
+                  qState: 'S',
+                  qFrequency: '123',
+                  qText: 'nebula',
+                  qElemNumber: 0,
+                },
+              ],
+            ],
+          },
+        ],
+      };
+      const testRenderer = await render(
+        <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+      );
+      const testInstance = testRenderer.root;
+      const types = testInstance.findAllByType(ListBoxRadioButton);
+      expect(types).to.have.length(1);
     });
   });
 });

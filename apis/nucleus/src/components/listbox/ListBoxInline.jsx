@@ -43,8 +43,10 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     sessionModel = undefined,
     selectionsApi = undefined,
     update = undefined,
+    fetchStart = undefined,
     dense = false,
     selectDisabled = () => false,
+    showGray = true,
   } = options;
   let { frequencyMode, histogram = false } = options;
 
@@ -72,6 +74,20 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   }
 
   const getListdefFrequencyMode = () => (histogram && frequencyMode === 'N' ? 'V' : frequencyMode);
+
+  // Hook that will trigger update when used in useEffects.
+  // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
+  const useRefWithCallback = () => {
+    const [ref, setInternalRef] = useState({});
+    const setRef = useCallback(
+      (node) => {
+        setInternalRef({ current: node });
+      },
+      [setInternalRef]
+    );
+
+    return [ref, setRef];
+  };
 
   const listdef = {
     qInfo: {
@@ -144,11 +160,11 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
 
   const { translator, keyboardNavigation } = useContext(InstanceContext);
   const moreAlignTo = useRef();
+  const [searchContainer, searchContainerRef] = useRefWithCallback();
 
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [autoFocusSearch, setAutoFocusSearch] = useState(focusSearch);
   const [keyboardActive, setKeyboardActive] = useState(false);
 
   const handleKeyDown = getListboxInlineKeyboardNavigation({ setKeyboardActive });
@@ -170,6 +186,12 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
         });
       }
     }
+    return () => {
+      if (selections) {
+        selections.off('deactivated');
+        selections.off('activated');
+      }
+    };
   }, [selections]);
 
   useEffect(() => {
@@ -180,6 +202,17 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
 
   const listBoxRef = useRef(null);
   useConfirmUnfocus(listBoxRef, selections);
+
+  useEffect(() => {
+    if (!searchContainer || !searchContainer.current) {
+      return;
+    }
+    // Focus search field on toggle-show or when focusSearch is true.
+    if ((search && focusSearch) || (search === 'toggle' && showSearch)) {
+      const input = searchContainer.current.querySelector('input');
+      input && input.focus();
+    }
+  }, [searchContainer && searchContainer.current, showSearch, search, focusSearch]);
 
   if (!model || !layout || !translator) {
     return null;
@@ -208,7 +241,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   const onShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
-    setAutoFocusSearch(newValue);
   };
 
   const getSearchOrUnlock = () =>
@@ -276,8 +308,8 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
         </Grid>
       )}
       {searchVisible && (
-        <Grid item>
-          <ListBoxSearch model={model} autoFocus={autoFocusSearch} dense={dense} keyboard={keyboard} />
+        <Grid item ref={searchContainerRef}>
+          <ListBoxSearch model={model} dense={dense} keyboard={keyboard} />
         </Grid>
       )}
       <Grid item xs>
@@ -296,9 +328,11 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               height={height}
               width={width}
               update={update}
+              fetchStart={fetchStart}
               dense={dense}
               selectDisabled={selectDisabled}
               keyboard={keyboard}
+              showGray={showGray}
             />
           )}
         </AutoSizer>

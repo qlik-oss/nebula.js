@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/qlik-oss/nebula.js/compare/v2.9.0...v2.10.0) (2022-04-26)
+
+### Features
+
+- allow data insert in mocker ([#816](https://github.com/qlik-oss/nebula.js/issues/816)) ([1d9a0a2](https://github.com/qlik-oss/nebula.js/commit/1d9a0a2f10efd15cdcdf18308d299cd5f6d1b426))
+
+# [2.9.0](https://github.com/qlik-oss/nebula.js/compare/v2.8.0...v2.9.0) (2022-04-01)
+
+### Bug Fixes
+
+- **Listbox:** Fix selections toggling on edit ([#809](https://github.com/qlik-oss/nebula.js/issues/809)) ([567cc28](https://github.com/qlik-oss/nebula.js/commit/567cc28256530b51cf4132412ac9ca0ff6828486))
+- **NebulaListbox:** Minor tweaks ([#807](https://github.com/qlik-oss/nebula.js/issues/807)) ([9b38687](https://github.com/qlik-oss/nebula.js/commit/9b38687136ea917a112fc7bfa2bcf8a023cd471c))
+
+### Features
+
+- **Listbox:** add fill to checkboxes with state excluded or alternative ([#804](https://github.com/qlik-oss/nebula.js/issues/804)) ([b1a308e](https://github.com/qlik-oss/nebula.js/commit/b1a308edddbf4a32adb2b9fd6d7f7c16581b9b15))
+
+# [2.8.0](https://github.com/qlik-oss/nebula.js/compare/v2.7.0...v2.8.0) (2022-03-25)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
 # [2.7.0](https://github.com/qlik-oss/nebula.js/compare/v2.6.1...v2.7.0) (2022-03-21)
 
 ### Bug Fixes

@@ -171,7 +171,6 @@ export function useKeyboard(): stardust.Keyboard;
 
 declare namespace stardust {
     interface Context {
-        disableCellPadding?: boolean;
         keyboardNavigation?: boolean;
         constraints?: {
             active?: boolean;
@@ -237,12 +236,7 @@ declare namespace stardust {
 
     type FrequencyMode = "none" | "value" | "percent" | "relative";
 
-    type SearchMode = "false" | "true" | "toggle";
-
-    /**
-     * A callback function which receives another function as input.
-     */
-    type ReceiverFunction = ($: ()=>void)=>void;
+    type SearchMode = boolean | "toggle";
 
     class FieldInstance {
         constructor();
@@ -259,20 +253,11 @@ declare namespace stardust {
             frequencyMode?: stardust.FrequencyMode;
             histogram?: boolean;
             search?: stardust.SearchMode;
-            focusSearch?: boolean;
             toolbar?: boolean;
             checkboxes?: boolean;
-            rangeSelect?: boolean;
             dense?: boolean;
             stateName?: boolean;
             properties?: object;
-            sessionModel?: object;
-            selectionsApi?: object;
-            /**
-             * Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
-             */
-            "selectDisabled="?(): boolean;
-            update?: stardust.ReceiverFunction;
         }): void;
 
         /**

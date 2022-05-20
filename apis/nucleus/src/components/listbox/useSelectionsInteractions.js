@@ -12,15 +12,15 @@ export default function useSelectionsInteractions({
   layout,
   selections,
   pages = [],
-  rangeSelect = true,
   checkboxes = false,
   selectDisabled,
   doc = document,
-  isSingleSelect = false,
+  isSingleSelect: singleSelect = false,
 }) {
   const [instantPages, setInstantPages] = useState(pages);
   const [mouseDown, setMouseDown] = useState(false);
   const [selectingValues, setSelectingValues] = useState(false);
+  const [isSingleSelect, setIsSingleSelect] = useState(singleSelect);
   const [selected, setSelected] = useState([]);
   const [isRangeSelection, setIsRangeSelection] = useState(false);
   const [preSelected, setPreSelected] = useState([]);
@@ -36,6 +36,7 @@ export default function useSelectionsInteractions({
     const filtered = additive ? elemNumbers.filter((n) => !selected.includes(n)) : elemNumbers;
     await selectValues({ selections, elemNumbers: filtered, isSingleSelect });
     setSelectingValues(false);
+    setPreSelected([]);
   };
 
   // Show estimated selection states instantly before applying the selections for real.
@@ -52,11 +53,20 @@ export default function useSelectionsInteractions({
   };
 
   const selectManually = (elementIds = [], additive = false) => {
+    setIsRangeSelection(false); // range is not supported for manual select
     setMouseDown(true);
     preSelect(elementIds, additive || isRangeSelection);
     const p = select(elementIds, additive || isRangeSelection);
     setMouseDown(false);
     return p;
+  };
+
+  const handleSingleSelectKey = (event) => {
+    if (event.ctrlKey || event.metaKey) {
+      setIsSingleSelect(true);
+      event.currentTarget.focus(); // will not be focused otherwise
+      event.preventDefault();
+    }
   };
 
   const onClick = useCallback(
@@ -66,6 +76,7 @@ export default function useSelectionsInteractions({
       }
       const elemNumber = +event.currentTarget.getAttribute('data-n');
       setPreSelected([elemNumber]);
+      handleSingleSelectKey(event);
     },
     [selectingValues, selectDisabled]
   );
@@ -80,6 +91,7 @@ export default function useSelectionsInteractions({
 
       const elemNumber = +event.currentTarget.getAttribute('data-n');
       setPreSelected([elemNumber]);
+      handleSingleSelectKey(event);
     },
     [selectingValues, selectDisabled]
   );
@@ -89,7 +101,6 @@ export default function useSelectionsInteractions({
       const elemNumber = +event.currentTarget.getAttribute('data-n');
       if (
         isSingleSelect ||
-        !rangeSelect ||
         !mouseDown ||
         selectingValues ||
         (preSelected.length === 1 && preSelected[0] === elemNumber) // prevent toggling again on mouseup
@@ -105,6 +116,8 @@ export default function useSelectionsInteractions({
     // Ensure we end interactions when mouseup happens outside the Listbox.
     setMouseDown(false);
     setSelectingValues(false);
+    setIsRangeSelection(false);
+    setIsSingleSelect(singleSelect);
   }, []);
 
   const onMouseEnter = useCallback(
@@ -166,10 +179,8 @@ export default function useSelectionsInteractions({
 
   if (checkboxes) {
     Object.assign(interactionEvents, { onClick });
-  } else if (rangeSelect) {
-    Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter });
   } else {
-    Object.assign(interactionEvents, { onMouseUp, onMouseDown });
+    Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter });
   }
 
   return {

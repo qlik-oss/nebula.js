@@ -67,15 +67,38 @@ describe('getPropFn', () => {
   });
 
   describe('async is enabled', () => {
+    let clock;
+
+    before(() => {
+      clock = sinon.useFakeTimers();
+    });
+
+    afterEach(() => {
+      clock.restore();
+    });
+
     it('returns promise', async () => {
       const prop = sinon.stub();
       prop.returns(500);
       const fn = getPropFn(prop, { async: true });
       const valuePromise = fn();
       expect(valuePromise).to.be.a('promise');
+      clock.tick(1);
       const value = await valuePromise;
       expect(value).to.equal(500);
     });
+
+    it('supports delay', async () => {
+      const prop = sinon.stub();
+      prop.returns(600);
+      const promise = getPropFn(prop, { async: true, delay: 500 })();
+
+      clock.tick(510);
+
+      return promise.then((value) => {
+        expect(value).to.equal(600);
+      });
+    }).timeout(2000);
   });
 
   describe('async is disabled', () => {

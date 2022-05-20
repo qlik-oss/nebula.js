@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "2.7.0",
+    "version": "2.10.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -517,10 +517,6 @@
     "Context": {
       "kind": "interface",
       "entries": {
-        "disableCellPadding": {
-          "optional": true,
-          "type": "boolean"
-        },
         "keyboardNavigation": {
           "optional": true,
           "type": "boolean"
@@ -794,29 +790,11 @@
         "kind": "union",
         "items": [
           {
-            "kind": "literal",
-            "value": "false"
-          },
-          {
-            "kind": "literal",
-            "value": "true"
+            "type": "boolean"
           },
           {
             "kind": "literal",
             "value": "'toggle'"
-          }
-        ]
-      }
-    },
-    "ReceiverFunction": {
-      "description": "A callback function which receives another function as input.",
-      "kind": "alias",
-      "items": {
-        "kind": "function",
-        "params": [
-          {
-            "kind": "function",
-            "params": []
           }
         ]
       }
@@ -883,12 +861,6 @@
                   "defaultValue": true,
                   "type": "#/definitions/SearchMode"
                 },
-                "focusSearch": {
-                  "description": "Initialize the Listbox with the search input focused. Only applicable when\n  search is true, since toggling will always focus the search input on show.",
-                  "optional": true,
-                  "defaultValue": false,
-                  "type": "boolean"
-                },
                 "toolbar": {
                   "description": "Show the toolbar",
                   "optional": true,
@@ -899,12 +871,6 @@
                   "description": "Show values as checkboxes instead of as fields",
                   "optional": true,
                   "defaultValue": false,
-                  "type": "boolean"
-                },
-                "rangeSelect": {
-                  "description": "Enable range selection",
-                  "optional": true,
-                  "defaultValue": true,
                   "type": "boolean"
                 },
                 "dense": {
@@ -924,30 +890,6 @@
                   "optional": true,
                   "defaultValue": "{}",
                   "type": "object"
-                },
-                "sessionModel": {
-                  "description": "Use a custom sessionModel.",
-                  "optional": true,
-                  "type": "object"
-                },
-                "selectionsApi": {
-                  "description": "Use a custom selectionsApi to customize how values are selected.",
-                  "optional": true,
-                  "type": "object"
-                },
-                "selectDisabled=": {
-                  "description": "Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.",
-                  "optional": true,
-                  "kind": "function",
-                  "params": [],
-                  "returns": {
-                    "type": "boolean"
-                  }
-                },
-                "update": {
-                  "description": "A function which receives an update function which upon call will trigger a data fetch.",
-                  "optional": true,
-                  "type": "#/definitions/ReceiverFunction"
                 }
               }
             }
