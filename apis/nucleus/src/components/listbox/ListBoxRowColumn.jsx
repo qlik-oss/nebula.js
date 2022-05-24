@@ -35,11 +35,11 @@ const getSelectedStyle = ({ theme }) => ({
 });
 
 const useStyles = makeStyles((theme) => ({
-  row: {
+  row: ({ noBottomBorder }) => ({
     flexWrap: 'nowrap',
-    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderBottom: noBottomBorder ? 0 : `1px solid ${theme.palette.divider}`,
     color: theme.palette.text.primary,
-  },
+  }),
   column: {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
@@ -190,7 +190,7 @@ function RowColumn({ index, style, data, column = false }) {
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
 
-  const classes = useStyles();
+  const classes = useStyles({ noBottomBorder: frequencyMode !== 'N' && dense });
   const [classArr, setClassArr] = useState([]);
 
   useEffect(() => {
