@@ -70,6 +70,7 @@ export default function ListBox({
   keyboard = {},
   showGray = true,
   selectDisabled = () => false,
+  filterValues = undefined,
 }) {
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
@@ -112,8 +113,21 @@ export default function ListBox({
     [layout, pages]
   );
 
+  const applyValueFilter = (logPaginos, filterFunc) => {
+    // After applying filter, adapt qHeight to reflect the filtered values (if any).
+    const filteredPages = logPaginos.map((page) => {
+      const { qMatrix: matrix = [], qArea } = page;
+      const initialLength = matrix.length;
+      const qMatrix = filterFunc(matrix);
+      const nbrValuesRemoved = initialLength - qMatrix.length;
+      const qHeight = qArea.qHeight - nbrValuesRemoved;
+      return { ...page, qMatrix, qArea: { ...qArea, qHeight } };
+    });
+    return filteredPages;
+  };
+
   // The time from scroll end until new data is being fetched, may be exposed in API later on.
-  const scrollTimeout = 0;
+  const SCROLL_TIMEOUT = 20;
 
   const loadMoreItems = useCallback(
     (startIndex, stopIndex) => {
@@ -144,15 +158,19 @@ export default function ListBox({
                 }))
               )
               .then((p) => {
+                let losPaginos = p;
+                if (filterValues && p && p.length) {
+                  losPaginos = applyValueFilter(p, filterValues);
+                }
                 local.current.validPages = true;
-                listData.current.pages = p;
-                setPages(p);
+                listData.current.pages = losPaginos;
+                setPages(losPaginos);
                 setIsLoadingData(false);
                 resolve();
               });
             fetchStart && fetchStart(reqPromise);
           },
-          isScrolling ? scrollTimeout : 0
+          isScrolling ? SCROLL_TIMEOUT : 0
         );
       });
     },
@@ -185,7 +203,7 @@ export default function ListBox({
     if (!instantPages || isLoadingData) {
       return;
     }
-    setPages(instantPages);
+    setPages(filterValues ? applyValueFilter(instantPages, filterValues) : instantPages);
   }, [instantPages]);
 
   if (!layout) {
@@ -194,6 +212,7 @@ export default function ListBox({
 
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
+  const itemCount = filterValues ? (pages && pages.length && pages[0].qArea.qHeight) || count : count;
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
@@ -217,7 +236,7 @@ export default function ListBox({
             style={{}}
             height={listHeight}
             width={width}
-            itemCount={count}
+            itemCount={itemCount}
             layout={listLayout}
             className={styles.styledScrollbars}
             itemData={{

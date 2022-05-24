@@ -45,6 +45,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     update = undefined,
     fetchStart = undefined,
     dense = false,
+    filterValues = undefined,
     selectDisabled = () => false,
     showGray = true,
   } = options;
@@ -333,6 +334,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               selectDisabled={selectDisabled}
               keyboard={keyboard}
               showGray={showGray}
+              filterValues={filterValues}
             />
           )}
         </AutoSizer>

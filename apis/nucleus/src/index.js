@@ -130,6 +130,7 @@ const mergeConfigs = (base, c) => ({
  * @property {object} [options.sessionModel] Use a custom sessionModel.
  * @property {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
  * @property {function():boolean} [options.selectDisabled=] Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
+ * @property {function(object[]):object[]} [options.filterValues] Filter or modify values by returning a modified version of pages from this function. Receives pages and must return valid pages.
  * @property {PromiseFunction} [options.fetchStart] A function called when the Listbox starts fetching data. Receives the fetch request promise as an argument.
  * @property {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
  */
@@ -151,6 +152,7 @@ export const getOptions = (usersOptions = {}) => {
     sessionModel: undefined,
     selectionsApi: undefined,
     selectDisabled: undefined,
+    filterValues: undefined,
   };
   const squashedOptions = {
     ...exposedOptions,
