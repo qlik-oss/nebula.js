@@ -19,7 +19,7 @@ const ellipsis = {
 
 const barPadPx = 4;
 const barBorderWidthPx = 1;
-const barWithCheckboxLeftPadEm = 2;
+const barWithCheckboxLeftPadPx = 29;
 const frequencyTextNone = '0';
 
 const getSelectedStyle = ({ theme }) => ({
@@ -97,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
 
     // The checkbox's span
     '& > span:nth-child(1)': {
-      paddingRight: '7px',
+      paddingRight: '8px',
     },
     // The checkbox's label container.
     '& > span:nth-child(2)': {
@@ -141,12 +141,13 @@ const useStyles = makeStyles((theme) => ({
   bar: {
     border: `${barBorderWidthPx}px solid`,
     borderColor: '#D9D9D9',
-    height: '1em',
+    height: '16px',
     position: 'absolute',
     zIndex: '-1',
     alignSelf: 'center',
     left: `${barPadPx}px`,
     transition: 'width 0.2s',
+    backgroundColor: '#FAFAFA',
   },
   barSelected: {
     opacity: '30%',
@@ -154,7 +155,7 @@ const useStyles = makeStyles((theme) => ({
     background: theme.palette.background.lighter,
   },
   barWithCheckbox: {
-    left: `${barWithCheckboxLeftPadEm}em`,
+    left: `${barWithCheckboxLeftPadPx}px`,
   },
   barSelectedWithCheckbox: {
     background: '#BFE5D0',
@@ -330,7 +331,7 @@ function RowColumn({ index, style, data, column = false }) {
     const isPercent = freqStr.substring(freqStr.length - 1) === '%';
     const freq = parseFloat(isPercent ? freqStr : qFrequency);
     const rightSlice = checkboxes
-      ? `(${barWithCheckboxLeftPadEm}em + ${barPadPx + barBorderWidthPx * 2}px)`
+      ? `(${barWithCheckboxLeftPadPx}px + ${barPadPx + barBorderWidthPx * 2}px)`
       : `${barPadPx * 2 + barBorderWidthPx * 2}px`;
     const width = isPercent ? freq : (freq / frequencyMax) * 100;
     return `calc(${width}% - ${rightSlice})`;
