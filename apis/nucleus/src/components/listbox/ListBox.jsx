@@ -43,7 +43,7 @@ const useStyles = makeStyles(() => ({
 function getSizeInfo({ isVertical, checkboxes, dense, height }) {
   let sizeVertical = checkboxes ? 40 : 33;
   if (dense) {
-    sizeVertical = 24;
+    sizeVertical = 20;
   }
   const itemSize = isVertical ? sizeVertical : 200;
   const listHeight = height || 8 * itemSize;
