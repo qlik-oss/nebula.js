@@ -190,7 +190,7 @@ function RowColumn({ index, style, data, column = false }) {
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
 
-  const classes = useStyles({ noBottomBorder: frequencyMode !== 'N' && dense });
+  const classes = useStyles({ noBottomBorder: histogram && dense });
   const [classArr, setClassArr] = useState([]);
 
   useEffect(() => {
