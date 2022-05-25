@@ -34,12 +34,6 @@ const useStyles = makeStyles((theme) => ({
     height: 12,
     backgroundColor: theme.palette.selected.excluded,
   },
-  cbIconAlternative: {
-    borderRadius: borderRadius - 1,
-    width: 12,
-    height: 12,
-    backgroundColor: theme.palette.selected.alternative,
-  },
   checkbox: {
     margin: 0,
     '&:hover': {
@@ -53,13 +47,7 @@ const useStyles = makeStyles((theme) => ({
 
 const getIcon = (styles, showGray = true, excluded = false, alternative = false) => (
   <span className={styles.cbIcon}>
-    {(excluded || alternative) && (
-      <span
-        className={[showGray && excluded && styles.cbIconExcluded, showGray && alternative && styles.cbIconAlternative]
-          .filter(Boolean)
-          .join(' ')}
-      />
-    )}
+    {(excluded || alternative) && <span className={showGray && excluded && styles.cbIconExcluded} />}
   </span>
 );
 
