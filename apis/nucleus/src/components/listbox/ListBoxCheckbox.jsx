@@ -3,7 +3,7 @@ import { makeStyles } from '@nebula.js/ui/theme';
 import { Checkbox } from '@material-ui/core';
 import CheckboxChecked from './assets/CheckboxChecked';
 
-const borderRadius = 2;
+const borderRadius = 3;
 const useStyles = makeStyles((theme) => ({
   cbIcon: {
     borderRadius,
@@ -29,13 +29,13 @@ const useStyles = makeStyles((theme) => ({
     },
   },
   cbIconExcluded: {
-    borderRadius,
+    borderRadius: borderRadius - 1,
     width: 12,
     height: 12,
     backgroundColor: theme.palette.selected.excluded,
   },
   cbIconAlternative: {
-    borderRadius,
+    borderRadius: borderRadius - 1,
     width: 12,
     height: 12,
     backgroundColor: theme.palette.selected.alternative,

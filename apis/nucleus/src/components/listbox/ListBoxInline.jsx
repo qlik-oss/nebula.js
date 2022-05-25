@@ -176,20 +176,18 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   };
 
   useEffect(() => {
+    const show = () => setShowToolbar(true);
+    const hide = () => setShowToolbar(false);
     if (selections) {
       if (!selections.isModal(model)) {
-        selections.on('deactivated', () => {
-          setShowToolbar(false);
-        });
-        selections.on('activated', () => {
-          setShowToolbar(true);
-        });
+        selections.on('deactivated', hide);
+        selections.on('activated', show);
       }
     }
     return () => {
       if (selections) {
-        selections.off('deactivated');
-        selections.off('activated');
+        selections.removeListener('deactivated', show);
+        selections.removeListener('activated', hide);
       }
     };
   }, [selections]);
