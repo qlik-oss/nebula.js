@@ -113,9 +113,9 @@ export default function ListBox({
     [layout, pages]
   );
 
-  const applyValueFilter = (logPaginos, filterFunc) => {
+  const applyValueFilter = (pagesToFilter, filterFunc) => {
     // After applying filter, adapt qHeight to reflect the filtered values (if any).
-    const filteredPages = logPaginos.map((page) => {
+    const filteredPages = pagesToFilter.map((page) => {
       const { qMatrix: matrix = [], qArea } = page;
       const initialLength = matrix.length;
       const qMatrix = filterFunc(matrix);
@@ -158,13 +158,13 @@ export default function ListBox({
                 }))
               )
               .then((p) => {
-                let losPaginos = p;
+                let receivedPages = p;
                 if (filterValues && p && p.length) {
-                  losPaginos = applyValueFilter(p, filterValues);
+                  receivedPages = applyValueFilter(p, filterValues);
                 }
                 local.current.validPages = true;
-                listData.current.pages = losPaginos;
-                setPages(losPaginos);
+                listData.current.pages = receivedPages;
+                setPages(receivedPages);
                 setIsLoadingData(false);
                 resolve();
               });
