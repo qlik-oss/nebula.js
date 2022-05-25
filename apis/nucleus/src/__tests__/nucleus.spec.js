@@ -54,6 +54,7 @@ describe('nucleus', () => {
       const squashedOptions = getOptions();
       expect(squashedOptions).to.deep.equal({
         fetchStart: undefined,
+        filterValues: undefined,
         showGray: true,
         update: undefined,
         focusSearch: false,
@@ -84,6 +85,7 @@ describe('nucleus', () => {
         selectDisabled: undefined,
         selectionsApi: undefined,
         sessionModel: undefined,
+        filterValues: undefined,
       });
     });
 
@@ -101,6 +103,7 @@ describe('nucleus', () => {
         selectDisabled: undefined,
         selectionsApi: undefined,
         sessionModel: undefined,
+        filterValues: undefined,
       });
     });
   });
