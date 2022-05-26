@@ -37,6 +37,11 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
   - `nucleus`: JavaScript library for mashups
   - `supernova`: JavaScript API for consuming and visualizing QIX data
   - `stardust`: Public JavaScript API which exposes the nucleus and supernova APIs
+  - `enigma-mocker`: Public JavaScript API which creates a mocked enigma app to renders visualizations without a connected Qlik engine
+  - `snapshooter`: Public JavaScript API which captures rendered charts as images
+  - `conversion`: [private] Provides conversion functionality to extensions with hyperCubes.
+  - `theme`: [private] Access/consume the currently applied theme
+  - `locale`: [private] Handle translation string to generate all locales
 - `commands` - CLI commands
   - `build`: cli command to build a supernova
   - `cli`: entry point for all cli commands
@@ -49,9 +54,10 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
 
 ### Development workflow
 
-- `yarn` generates UMD bundles for all packages
-- `yarn run build`
+- `yarn` install all dependencies
+- `yarn run build` generates UMD bundles for all packages and a ESM bundle for stardust
 - `yarn run lint` checks code style
+- `yarn run format` format code style
 - `yarn run test` runs all tests
 
 ### Cutting a release
