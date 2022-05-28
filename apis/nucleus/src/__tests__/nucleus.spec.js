@@ -1,6 +1,7 @@
 describe('nucleus', () => {
   let appThemeFn;
   let create;
+  let getOptions;
   let createObject;
   let deviceTypeFn;
   let getObject;
@@ -18,7 +19,7 @@ describe('nucleus', () => {
     rootApp = sandbox.stub();
     translator = { add: sandbox.stub(), language: sandbox.stub() };
     typesFn = sandbox.stub();
-    [{ default: create }] = aw.mock(
+    [{ default: create, getOptions }] = aw.mock(
       [
         [require.resolve('../locale/app-locale.js'), () => () => ({ translator })],
         [require.resolve('../components/NebulaApp.jsx'), () => rootApp],
@@ -46,6 +47,62 @@ describe('nucleus', () => {
   afterEach(() => {
     sandbox.reset();
     sandbox.restore();
+  });
+
+  describe('should merge Listbox options as expected', () => {
+    it('should give correct defaults', () => {
+      const squashedOptions = getOptions();
+      expect(squashedOptions).to.deep.equal({
+        fetchStart: undefined,
+        showGray: true,
+        update: undefined,
+        focusSearch: false,
+        selectDisabled: undefined,
+        selectionsApi: undefined,
+        sessionModel: undefined,
+      });
+    });
+
+    it('should override defaults', () => {
+      const update = () => {};
+      const fetchStart = (arg) => {
+        arg();
+      };
+
+      const squashedOptions = getOptions({
+        __DO_NOT_USE__: {
+          fetchStart,
+          showGray: undefined,
+          update,
+        },
+      });
+      expect(squashedOptions).to.deep.equal({
+        fetchStart,
+        showGray: undefined,
+        update,
+        focusSearch: false,
+        selectDisabled: undefined,
+        selectionsApi: undefined,
+        sessionModel: undefined,
+      });
+    });
+
+    it('should not allow sneaking in non-exposed options as normal options', () => {
+      const squashedOptions = getOptions({
+        showGray: false,
+        fetchStart: 'hey hey',
+        update: 'nope',
+      });
+      expect(squashedOptions).to.deep.equal({
+        fetchStart: undefined,
+        showGray: true,
+        update: undefined,
+        focusSearch: false,
+        selectDisabled: undefined,
+        selectionsApi: undefined,
+        sessionModel: undefined,
+      });
+    });
   });
 
   it('should initiate types with a public galaxy interface', () => {
@@ -93,6 +150,7 @@ describe('nucleus', () => {
       context: {
         constraints: {},
         deviceType: 'auto',
+        disableCellPadding: false,
         keyboardNavigation: false,
         language: 'en-US',
         theme: 'light',

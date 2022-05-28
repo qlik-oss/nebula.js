@@ -121,11 +121,11 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
           <Grid item>
             {isLocked ? (
               <IconButton onClick={unlock} disabled={!isLocked}>
-                <Lock />
+                <Lock title={translator.get('Listbox.Unlock')} />
               </IconButton>
             ) : (
               <IconButton onClick={lock} disabled={!hasSelections}>
-                <Unlock />
+                <Unlock title={translator.get('Listbox.Lock')} />
               </IconButton>
             )}
           </Grid>

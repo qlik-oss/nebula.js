@@ -3,6 +3,42 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/qlik-oss/nebula.js/compare/v2.9.0...v2.10.0) (2022-04-26)
+
+**Note:** Version bump only for package @nebula.js/cli-build
+
+# [2.9.0](https://github.com/qlik-oss/nebula.js/compare/v2.8.0...v2.9.0) (2022-04-01)
+
+**Note:** Version bump only for package @nebula.js/cli-build
+
+# [2.8.0](https://github.com/qlik-oss/nebula.js/compare/v2.7.0...v2.8.0) (2022-03-25)
+
+**Note:** Version bump only for package @nebula.js/cli-build
+
+# [2.7.0](https://github.com/qlik-oss/nebula.js/compare/v2.6.1...v2.7.0) (2022-03-21)
+
+**Note:** Version bump only for package @nebula.js/cli-build
+
+## [2.6.1](https://github.com/qlik-oss/nebula.js/compare/v2.6.0...v2.6.1) (2022-02-25)
+
+**Note:** Version bump only for package @nebula.js/cli-build
+
+# [2.5.0](https://github.com/qlik-oss/nebula.js/compare/v2.4.1...v2.5.0) (2022-02-15)
+
+### Bug Fixes
+
+- change carbon to reactNative ([#762](https://github.com/qlik-oss/nebula.js/issues/762)) ([4aeaa5a](https://github.com/qlik-oss/nebula.js/commit/4aeaa5aa96a51492fa3c5755957fed563bba1a80))
+
+## [2.4.1](https://github.com/qlik-oss/nebula.js/compare/v2.4.0...v2.4.1) (2022-02-10)
+
+**Note:** Version bump only for package @nebula.js/cli-build
+
+# [2.4.0](https://github.com/qlik-oss/nebula.js/compare/v2.3.1...v2.4.0) (2022-02-10)
+
+### Features
+
+- add --carbon flag to build react-native supernova packages ([#749](https://github.com/qlik-oss/nebula.js/issues/749)) ([369844d](https://github.com/qlik-oss/nebula.js/commit/369844d722f7fa8873674d9320d7f047065211da))
+
 ## [2.3.1](https://github.com/qlik-oss/nebula.js/compare/v2.3.0...v2.3.1) (2021-12-09)
 
 ### Bug Fixes

@@ -1,3 +1,3 @@
 const x = {};
 
-export { x as default };
+export default x;

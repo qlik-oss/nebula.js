@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "2.3.1",
+    "version": "2.10.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -14,7 +14,7 @@
       "params": [
         {
           "name": "app",
-          "type": "enigma.Doc"
+          "type": "EngineAPI.IApp"
         },
         {
           "name": "instanceConfig",
@@ -25,7 +25,9 @@
       "returns": {
         "type": "#/definitions/Embed"
       },
-      "examples": ["import { embed } from '@nebula.js/stardust'\nconst n = embed(app);\nn.render({ id: 'abc' });"],
+      "examples": [
+        "import { embed } from '@nebula.js/stardust'\nconst n = embed(app);\nn.render({ id: 'abc' });"
+      ],
       "entries": {
         "createConfiguration": {
           "description": "Creates a new `embed` scope bound to the specified `configuration`.\n\nThe configuration is merged with all previous scopes.",
@@ -41,7 +43,7 @@
             "type": "#/entries/embed"
           },
           "examples": [
-            "import { embed } from '@nebula.js/stardust';\n// create a 'master' config which registers all types\nconst m = embed.createConfiguration({\n  types: [{\n    name: 'mekko',\n    version: '1.0.0',\n    load: () => Promise.resolve(mekko)\n  }],\n});\n\n// create an alternate config with dark theme\n// and inherit the config from the previous\nconst d = m.createConfiguration({\n theme: 'dark'\n});\n\nm(app).render({ type: 'mekko' }); // will render the object with default theme\nd(app).render({ type: 'mekko' }); // will render the object with 'dark' theme\nembed(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
+            "import { embed } from '@nebula.js/stardust';\n// create a 'master' config which registers all types\nconst m = embed.createConfiguration({\n  types: [{\n    name: 'mekko',\n    version: '1.0.0',\n    load: () => Promise.resolve(mekko)\n  }],\n});\n\n// create an alternate config with dark theme\n// and inherit the config from the previous\nconst d = m.createConfiguration({\n context: {\n   theme: 'dark'\n }\n});\n\nm(app).render({ type: 'mekko' }); // will render the object with default theme\nd(app).render({ type: 'mekko' }); // will render the object with 'dark' theme\nembed(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
           ]
         }
       }
@@ -229,7 +231,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "type": "qae.GenericObjectLayout"
+        "type": "EngineAPI.IGenericObjectLayout"
       },
       "examples": [
         "import { useLayout } from '@nebula.js/stardust';\n// ...\nconst layout = useLayout();\nconsole.log(layout);"
@@ -240,7 +242,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "type": "qae.GenericObjectLayout"
+        "type": "EngineAPI.IGenericObjectLayout"
       },
       "examples": [
         "import { useStaleLayout } from '@nebula.js/stardust';\n// ...\nconst staleLayout = useStaleLayout();\nconsole.log(staleLayout);"
@@ -252,7 +254,7 @@
       "params": [],
       "returns": {
         "description": "The app layout",
-        "type": "qae.NxAppLayout"
+        "type": "EngineAPI.INxAppLayout"
       },
       "examples": [
         "import { useAppLayout } from '@nebula.js/stardust';\n// ...\nconst appLayout = useAppLayout();\nconsole.log(appLayout.qLocaleInfo);"
@@ -266,7 +268,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "enigma.GenericObject"
+            "type": "EngineAPI.IGenericObject"
           },
           {
             "type": "undefined"
@@ -286,7 +288,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "enigma.Doc"
+            "type": "EngineAPI.IApp"
           },
           {
             "type": "undefined"
@@ -306,7 +308,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "enigma.Global"
+            "type": "EngineAPI.IGlobal"
           },
           {
             "type": "undefined"
@@ -353,7 +355,9 @@
         "description": "The embed instance used.",
         "type": "#/definitions/Embed"
       },
-      "examples": ["import { useEmbed } from '@nebula.js/stardust';\n\nconst embed = useEmbed();\nembed.render(...)"]
+      "examples": [
+        "import { useEmbed } from '@nebula.js/stardust';\n\nconst embed = useEmbed();\nembed.render(...)"
+      ]
     },
     "useTranslator": {
       "description": "Gets the translator.",
@@ -441,7 +445,7 @@
         "type": "#/definitions/Constraints"
       },
       "examples": [
-        "// configure embed to disallow active interactions when rendering\nembed(app, {\n  constraints: {\n    active: true, // do not allow interactions\n  }\n}).render({ element, id: 'sdfsdf' });",
+        "// configure embed to disallow active interactions when rendering\nembed(app, {\n context: {\n   constraints: {\n     active: true, // do not allow interactions\n   }\n }\n}).render({ element, id: 'sdfsdf' });",
         "import { useConstraints } from '@nebula.js/stardust';\n// ...\nconst constraints = useConstraints();\nuseEffect(() => {\n  if (constraints.active) {\n    // do not add any event listener if active constraint is set\n    return undefined;\n  }\n  const listener = () => {};\n  element.addEventListener('click', listener);\n  return () => {\n    element.removeEventListener('click', listener);\n  };\n}, [constraints])"
       ]
     },
@@ -466,14 +470,14 @@
           "kind": "function",
           "params": [
             {
-              "type": "qae.GenericObjectLayout"
+              "type": "EngineAPI.IGenericObjectLayout"
             }
           ],
           "returns": {
             "type": "Promise",
             "generics": [
               {
-                "type": "qae.GenericObjectLayout"
+                "type": "EngineAPI.IGenericObjectLayout"
               }
             ]
           }
@@ -490,15 +494,7 @@
       "params": [],
       "returns": {
         "description": "The render state.",
-        "kind": "object",
-        "entries": {
-          "pending": {
-            "type": "any"
-          },
-          "restore": {
-            "type": "any"
-          }
-        }
+        "type": "#/definitions/RenderState"
       },
       "examples": [
         "import { useRenderState } from '@nebula.js/stardust';\n\nconst renderState = useRenderState();\nuseState(() => {\n  if(needProperteisUpdate(...)) {\n     useRenderState.pending();\n     updateProperties(...);\n  } else {\n     useRenderState.restore();\n     ...\n  }\n}, [...]);"
@@ -678,7 +674,9 @@
               }
             ]
           },
-          "examples": ["const selections = await n.selections();\nselections.mount(element);"]
+          "examples": [
+            "const selections = await n.selections();\nselections.mount(element);"
+          ]
         },
         "field": {
           "description": "Gets the listbox instance of the specified field",
@@ -730,6 +728,77 @@
         }
       }
     },
+    "Direction": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'ltr'"
+          },
+          {
+            "kind": "literal",
+            "value": "'rtl'"
+          }
+        ]
+      }
+    },
+    "ListLayout": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'vertical'"
+          },
+          {
+            "kind": "literal",
+            "value": "'horizontal'"
+          }
+        ]
+      }
+    },
+    "FrequencyMode": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'none'"
+          },
+          {
+            "kind": "literal",
+            "value": "'value'"
+          },
+          {
+            "kind": "literal",
+            "value": "'percent'"
+          },
+          {
+            "kind": "literal",
+            "value": "'relative'"
+          }
+        ]
+      }
+    },
+    "SearchMode": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "boolean"
+          },
+          {
+            "kind": "literal",
+            "value": "'toggle'"
+          }
+        ]
+      }
+    },
     "FieldInstance": {
       "availability": {
         "since": "1.1.0"
@@ -739,8 +808,7 @@
         "kind": "function",
         "params": []
       },
-      "entries": {},
-      "staticEntries": {
+      "entries": {
         "mount": {
           "description": "Mounts the field as a listbox into the provided HTMLElement.",
           "availability": {
@@ -767,18 +835,48 @@
                   "description": "Direction setting ltr|rtl.",
                   "optional": true,
                   "defaultValue": "ltr",
-                  "type": "string"
+                  "type": "#/definitions/Direction"
                 },
                 "listLayout": {
                   "description": "Layout direction vertical|horizontal",
                   "optional": true,
                   "defaultValue": "vertical",
-                  "type": "string"
+                  "type": "#/definitions/ListLayout"
+                },
+                "frequencyMode": {
+                  "description": "Show frequency none|value|percent|relative",
+                  "optional": true,
+                  "defaultValue": "none",
+                  "type": "#/definitions/FrequencyMode"
+                },
+                "histogram": {
+                  "description": "Show histogram bar",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
                 },
                 "search": {
-                  "description": "To show the search bar",
+                  "description": "Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow",
                   "optional": true,
                   "defaultValue": true,
+                  "type": "#/definitions/SearchMode"
+                },
+                "toolbar": {
+                  "description": "Show the toolbar",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
+                "checkboxes": {
+                  "description": "Show values as checkboxes instead of as fields",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                },
+                "dense": {
+                  "description": "Reduces padding and text size",
+                  "optional": true,
+                  "defaultValue": false,
                   "type": "boolean"
                 },
                 "stateName": {
@@ -796,7 +894,9 @@
               }
             }
           ],
-          "examples": ["fieldInstance.mount(element);"]
+          "examples": [
+            "fieldInstance.mount(element);"
+          ]
         },
         "unmount": {
           "description": "Unmounts the field listbox from the DOM.",
@@ -805,8 +905,16 @@
           },
           "kind": "function",
           "params": [],
-          "examples": ["listbox.unmount();"]
+          "examples": [
+            "listbox.unmount();"
+          ]
         }
+      }
+    },
+    "ThemeJSON": {
+      "kind": "alias",
+      "items": {
+        "type": "any"
       }
     },
     "ThemeInfo": {
@@ -824,7 +932,7 @@
             "type": "Promise",
             "generics": [
               {
-                "type": "ThemeJSON"
+                "type": "#/definitions/ThemeJSON"
               }
             ]
           }
@@ -847,7 +955,9 @@
           "description": "Destroys the visualization and removes it from the the DOM.",
           "kind": "function",
           "params": [],
-          "examples": ["const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"]
+          "examples": [
+            "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.destroy();"
+          ]
         },
         "convertTo": {
           "description": "Converts the visualization to a different registered type",
@@ -882,7 +992,9 @@
           ]
         }
       },
-      "examples": ["const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"]
+      "examples": [
+        "const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"
+      ]
     },
     "Flags": {
       "kind": "interface",
@@ -920,13 +1032,17 @@
               "type": "HTMLElement"
             }
           ],
-          "examples": ["selections.mount(element);"]
+          "examples": [
+            "selections.mount(element);"
+          ]
         },
         "unmount": {
           "description": "Unmounts the app selection UI from the DOM.",
           "kind": "function",
           "params": [],
-          "examples": ["selections.unmount();"]
+          "examples": [
+            "selections.unmount();"
+          ]
         }
       }
     },
@@ -1097,33 +1213,6 @@
         }
       }
     },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
-    },
     "Field": {
       "kind": "alias",
       "items": {
@@ -1133,10 +1222,10 @@
             "type": "string"
           },
           {
-            "type": "qae.NxDimension"
+            "type": "EngineAPI.INxDimension"
           },
           {
-            "type": "qae.NxMeasure"
+            "type": "EngineAPI.INxMeasure"
           },
           {
             "type": "#/definitions/LibraryField"
@@ -1157,6 +1246,7 @@
           "type": "string"
         },
         "version": {
+          "optional": true,
           "type": "string"
         },
         "fields": {
@@ -1173,7 +1263,7 @@
         },
         "properties": {
           "optional": true,
-          "type": "qae.GenericObjectProperties"
+          "type": "EngineAPI.IGenericObjectProperties"
         }
       }
     },
@@ -1232,6 +1322,33 @@
         }
       }
     },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
     "LoadType": {
       "kind": "interface",
       "params": [
@@ -1265,6 +1382,7 @@
           "type": "string"
         },
         "version": {
+          "optional": true,
           "type": "string"
         },
         "load": {
@@ -1375,6 +1493,19 @@
         }
       }
     },
+    "VizElementAttributes": {
+      "extends": [
+        {
+          "type": "NamedNodeMap"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "data-render-count": {
+          "type": "string"
+        }
+      }
+    },
     "VizElement": {
       "extends": [
         {
@@ -1384,12 +1515,7 @@
       "kind": "interface",
       "entries": {
         "attributes": {
-          "kind": "object",
-          "entries": {
-            "data-render-count": {
-              "type": "string"
-            }
-          }
+          "type": "#/definitions/VizElementAttributes"
         },
         "className": {
           "value": "'njs-viz'",
@@ -1567,6 +1693,17 @@
         }
       }
     },
+    "RenderState": {
+      "kind": "interface",
+      "entries": {
+        "pending": {
+          "type": "any"
+        },
+        "restore": {
+          "type": "any"
+        }
+      }
+    },
     "Keyboard": {
       "stability": "experimental",
       "kind": "interface",
@@ -1587,6 +1724,12 @@
         },
         "focus": {
           "description": "Function used by the visualization to tell Nebula to it wants focus",
+          "optional": true,
+          "kind": "function",
+          "params": []
+        },
+        "focusSelection": {
+          "description": "Function used by the visualization to tell Nebula to focus the selection toolbar",
           "optional": true,
           "kind": "function",
           "params": []
@@ -1665,7 +1808,7 @@
       "entries": {
         "properties": {
           "optional": true,
-          "type": "qae.GenericObjectProperties"
+          "type": "EngineAPI.IGenericObjectProperties"
         },
         "data": {
           "optional": true,
@@ -1700,7 +1843,7 @@
           "type": "#/definitions/FieldTarget",
           "generics": [
             {
-              "type": "qae.NxDimension"
+              "type": "EngineAPI.INxDimension"
             }
           ]
         },
@@ -1709,11 +1852,51 @@
           "type": "#/definitions/FieldTarget",
           "generics": [
             {
-              "type": "qae.NxMeasure"
+              "type": "EngineAPI.INxMeasure"
             }
           ]
         }
       }
+    },
+    "fieldTargetAddedCallback": {
+      "templates": [
+        {
+          "name": "T"
+        }
+      ],
+      "kind": "function",
+      "params": [
+        {
+          "name": "field",
+          "type": "T"
+        },
+        {
+          "name": "properties",
+          "type": "EngineAPI.IGenericObjectProperties"
+        }
+      ]
+    },
+    "fieldTargetRemovedCallback": {
+      "templates": [
+        {
+          "name": "T"
+        }
+      ],
+      "kind": "function",
+      "params": [
+        {
+          "name": "field",
+          "type": "T"
+        },
+        {
+          "name": "properties",
+          "type": "EngineAPI.IGenericObjectProperties"
+        },
+        {
+          "name": "index",
+          "type": "number"
+        }
+      ]
     },
     "FieldTarget": {
       "templates": [
@@ -1741,28 +1924,19 @@
         },
         "added": {
           "optional": true,
-          "kind": "function",
-          "params": [
+          "type": "#/definitions/fieldTargetAddedCallback",
+          "generics": [
             {
               "type": "T"
-            },
-            {
-              "type": "qae.GenericObjectProperties"
             }
           ]
         },
         "removed": {
           "optional": true,
-          "kind": "function",
-          "params": [
+          "type": "#/definitions/fieldTargetRemovedCallback",
+          "generics": [
             {
               "type": "T"
-            },
-            {
-              "type": "qae.GenericObjectProperties"
-            },
-            {
-              "type": "number"
             }
           ]
         }
@@ -1897,7 +2071,9 @@
             "description": "The resolved color.",
             "type": "string"
           },
-          "examples": ["theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"]
+          "examples": [
+            "theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"
+          ]
         },
         "getContrastingColorTo": {
           "description": "Get the best contrasting color against the specified `color`.\nThis is typically used to find a suitable text color for a label placed on an arbitrarily colored background.\n\nThe returned colors are derived from the theme.",
@@ -1913,10 +2089,12 @@
             "description": "- The color that has the best contrast against the specified `color`.",
             "type": "string"
           },
-          "examples": ["theme.getContrastingColorTo('#400');"]
+          "examples": [
+            "theme.getContrastingColorTo('#400');"
+          ]
         },
         "getStyle": {
-          "description": "Get the value of a style attribute in the theme by searching in the theme's JSON structure.\nThe search starts at the specified base path and continues upwards until the value is found.\nIf possible it will get the attribute's value using the given path.",
+          "description": "Get the value of a style attribute in the theme\nby searching in the theme's JSON structure.\nThe search starts at the specified base path\nand continues upwards until the value is found.\nIf possible it will get the attribute's value using the given path.\nWhen attributes separated by dots are provided, such as 'hover.color',\nthey are required in the theme JSON file",
           "kind": "function",
           "params": [
             {
@@ -1931,15 +2109,25 @@
             },
             {
               "name": "attribute",
-              "description": "Name of the style attribute.",
+              "description": "Name of the style attribute. (specified as a name attribute separated by dots).",
               "type": "string"
             }
           ],
           "returns": {
-            "description": "The style value",
-            "type": "string"
+            "description": "The style value or undefined if not found",
+            "kind": "union",
+            "items": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "undefined"
+              }
+            ]
           },
-          "examples": ["theme.getStyle('object', 'title.main', 'fontSize'));\ntheme.getStyle('', '', 'fontSize'));"]
+          "examples": [
+            "theme.getStyle('object', 'title.main', 'fontSize');\ntheme.getStyle('object', 'title', 'main.fontSize');\ntheme.getStyle('object', '', 'title.main.fontSize');\ntheme.getStyle('', '', 'fontSize');"
+          ]
         }
       },
       "definitions": {
@@ -2089,25 +2277,25 @@
         "dimensions": {
           "kind": "array",
           "items": {
-            "type": "qae.NxDimension"
+            "type": "EngineAPI.INxDimension"
           }
         },
         "measures": {
           "kind": "array",
           "items": {
-            "type": "qae.NxMeasure"
+            "type": "EngineAPI.INxMeasure"
           }
         },
         "excludedDimensions": {
           "kind": "array",
           "items": {
-            "type": "qae.NxDimension"
+            "type": "EngineAPI.INxDimension"
           }
         },
         "excludedMeasures": {
           "kind": "array",
           "items": {
-            "type": "qae.NxMeasure"
+            "type": "EngineAPI.INxMeasure"
           }
         },
         "interColumnSortOrder": {

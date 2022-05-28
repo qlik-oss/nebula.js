@@ -1,24 +1,94 @@
 /* eslint no-underscore-dangle:0 */
 
-import React, {
-  useEffect,
-  useState,
-  useCallback,
-  useRef,
-  // useMemo,
-} from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
+import { makeStyles } from '@nebula.js/ui/theme';
 
 import useLayout from '../../hooks/useLayout';
 
-import Row from './ListBoxRow';
-import Column from './ListBoxColumn';
+import useSelectionsInteractions from './useSelectionsInteractions';
 
-export default function ListBox({ model, selections, direction, height, width, listLayout = 'vertical' }) {
+import RowColumn from './ListBoxRowColumn';
+
+const scrollBarThumb = '#BBB';
+const scrollBarThumbHover = '#555';
+const scrollBarBackground = '#f1f1f1';
+
+const useStyles = makeStyles(() => ({
+  styledScrollbars: {
+    scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
+
+    '&::-webkit-scrollbar': {
+      width: 10,
+      height: 10,
+    },
+
+    '&::-webkit-scrollbar-track': {
+      backgroundColor: scrollBarBackground,
+    },
+
+    '&::-webkit-scrollbar-thumb': {
+      backgroundColor: scrollBarThumb,
+      borderRadius: '1rem',
+    },
+
+    '&::-webkit-scrollbar-thumb:hover': {
+      backgroundColor: scrollBarThumbHover,
+    },
+  },
+}));
+
+function getSizeInfo({ isVertical, checkboxes, dense, height }) {
+  let sizeVertical = checkboxes ? 40 : 33;
+  if (dense) {
+    sizeVertical = 20;
+  }
+  const itemSize = isVertical ? sizeVertical : 200;
+  const listHeight = height || 8 * itemSize;
+
+  return {
+    itemSize,
+    listHeight,
+  };
+}
+
+export default function ListBox({
+  model,
+  selections,
+  direction,
+  height,
+  width,
+  listLayout = 'vertical',
+  frequencyMode = 'N',
+  histogram = false,
+  checkboxes = false,
+  update = undefined,
+  fetchStart = undefined,
+  dense = false,
+  keyboard = {},
+  showGray = true,
+  selectDisabled = () => false,
+}) {
   const [layout] = useLayout(model);
+  const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const [pages, setPages] = useState(null);
+  const [isLoadingData, setIsLoadingData] = useState(false);
+  const styles = useStyles();
+  const {
+    instantPages = [],
+    interactionEvents,
+    select,
+  } = useSelectionsInteractions({
+    layout,
+    selections,
+    pages,
+    checkboxes,
+    selectDisabled,
+    doc: document,
+    isSingleSelect,
+  });
   const loaderRef = useRef(null);
   const local = useRef({
     queue: [],
@@ -29,37 +99,21 @@ export default function ListBox({ model, selections, direction, height, width, l
     pages: [],
   });
 
-  const onClick = useCallback(
-    (e) => {
-      if (layout && layout.qListObject.qDimensionInfo.qLocked) {
-        return;
-      }
-      const elemNumber = +e.currentTarget.getAttribute('data-n');
-      if (!Number.isNaN(elemNumber)) {
-        selections.select({
-          method: 'selectListObjectValues',
-          params: ['/qListObjectDef', [elemNumber], !layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne],
-        });
-      }
-    },
-    [
-      model,
-      layout && !!layout.qListObject.qDimensionInfo.qLocked,
-      layout && !!layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne,
-    ]
-  );
-
   const isItemLoaded = useCallback(
     (index) => {
       if (!pages || !local.current.validPages) {
         return false;
       }
       local.current.checkIdx = index;
-      const page = pages.filter((p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
-      return page && page.qArea.qTop <= index && index < page.qArea.qTop + page.qArea.qHeight;
+      const isLoaded = (p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight;
+      const page = pages.filter((p) => isLoaded(p))[0];
+      return page && isLoaded(page);
     },
     [layout, pages]
   );
+
+  // The time from scroll end until new data is being fetched, may be exposed in API later on.
+  const scrollTimeout = 0;
 
   const loadMoreItems = useCallback(
     (startIndex, stopIndex) => {
@@ -74,11 +128,12 @@ export default function ListBox({ model, selections, direction, height, width, l
         local.current.queue.shift();
       }
       clearTimeout(local.current.timeout);
+      setIsLoadingData(true);
       return new Promise((resolve) => {
         local.current.timeout = setTimeout(
           () => {
             const sorted = local.current.queue.slice(-2).sort((a, b) => a.start - b.start);
-            model
+            const reqPromise = model
               .getListObjectData(
                 '/qListObjectDef',
                 sorted.map((s) => ({
@@ -92,17 +147,19 @@ export default function ListBox({ model, selections, direction, height, width, l
                 local.current.validPages = true;
                 listData.current.pages = p;
                 setPages(p);
+                setIsLoadingData(false);
                 resolve();
               });
+            fetchStart && fetchStart(reqPromise);
           },
-          isScrolling ? 500 : 0
+          isScrolling ? scrollTimeout : 0
         );
       });
     },
     [layout]
   );
 
-  useEffect(() => {
+  const fetchData = () => {
     local.current.queue = [];
     local.current.validPages = false;
     if (loaderRef.current) {
@@ -113,15 +170,33 @@ export default function ListBox({ model, selections, direction, height, width, l
       }
       loaderRef.current._listRef.scrollToItem(0);
     }
+  };
+
+  if (update) {
+    // Hand over the update function for manual refresh from hosting application.
+    update.call(null, fetchData);
+  }
+
+  useEffect(() => {
+    fetchData();
   }, [layout]);
+
+  useEffect(() => {
+    if (!instantPages || isLoadingData) {
+      return;
+    }
+    setPages(instantPages);
+  }, [instantPages]);
 
   if (!layout) {
     return null;
   }
+
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
-  const ITEM_SIZE = isVertical ? 33 : 200;
-  const listHeight = height || 8 * ITEM_SIZE;
+  const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
+  const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
+  const { frequencyMax } = layout;
 
   return (
     <InfiniteLoader
@@ -137,18 +212,38 @@ export default function ListBox({ model, selections, direction, height, width, l
         return (
           <FixedSizeList
             direction={direction}
+            data-testid="fixed-size-list"
             useIsScrolling
             style={{}}
             height={listHeight}
             width={width}
             itemCount={count}
             layout={listLayout}
-            itemData={{ onClick, pages }}
-            itemSize={ITEM_SIZE}
+            className={styles.styledScrollbars}
+            itemData={{
+              isLocked,
+              column: !isVertical,
+              pages,
+              ...(isLocked || selectDisabled() ? {} : interactionEvents),
+              checkboxes,
+              dense,
+              frequencyMode,
+              isSingleSelect,
+              actions: {
+                select,
+                confirm: () => selections && selections.confirm.call(selections),
+                cancel: () => selections && selections.cancel.call(selections),
+              },
+              frequencyMax,
+              histogram,
+              keyboard,
+              showGray,
+            }}
+            itemSize={itemSize}
             onItemsRendered={onItemsRendered}
             ref={ref}
           >
-            {isVertical ? Row : Column}
+            {RowColumn}
           </FixedSizeList>
         );
       }}

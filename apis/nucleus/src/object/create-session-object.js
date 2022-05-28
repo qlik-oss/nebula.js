@@ -3,7 +3,7 @@ import init from './initiate';
 import { subscribe, modelStore } from '../stores/model-store';
 
 /**
- * @typedef {string | qae.NxDimension | qae.NxMeasure | LibraryField} Field
+ * @typedef {string | EngineAPI.INxDimension | EngineAPI.INxMeasure | LibraryField} Field
  */
 
 /**
@@ -11,9 +11,9 @@ import { subscribe, modelStore } from '../stores/model-store';
  * @description Rendering configuration for creating and rendering a new object
  * @extends BaseConfig
  * @property {string} type
- * @property {string} version
+ * @property {string=} version
  * @property {(Field[])=} fields
- * @property {qae.GenericObjectProperties=} properties
+ * @property {EngineAPI.IGenericObjectProperties=} properties
  */
 export default async function createSessionObject(
   { type, version, fields, properties, options, plugins, element },

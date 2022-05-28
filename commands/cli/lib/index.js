@@ -11,15 +11,21 @@ yargs.usage('nebula <command> [options]');
 
 const tryAddCommand = (m) => {
   let cmd;
+  let error;
   try {
     cmd = require(`${m}/command`); // eslint-disable-line
   } catch (e) {
+    error = e;
     cmd = importCwd.silent(`${m}/command`);
   }
 
   if (cmd) {
     yargs.command(cmd);
   } else {
+    // Print the error
+    if (error) {
+      console.log(`Error from import: ${error.message}`);
+    }
     // add dummy command in order to instruct user how to install missing package
     const comm = m.split('-')[1];
     yargs.command({

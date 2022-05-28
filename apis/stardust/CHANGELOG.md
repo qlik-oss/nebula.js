@@ -3,6 +3,58 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/qlik-oss/nebula.js/compare/v2.9.0...v2.10.0) (2022-04-26)
+
+### Features
+
+- allow data insert in mocker ([#816](https://github.com/qlik-oss/nebula.js/issues/816)) ([1d9a0a2](https://github.com/qlik-oss/nebula.js/commit/1d9a0a2f10efd15cdcdf18308d299cd5f6d1b426))
+
+# [2.9.0](https://github.com/qlik-oss/nebula.js/compare/v2.8.0...v2.9.0) (2022-04-01)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [2.8.0](https://github.com/qlik-oss/nebula.js/compare/v2.7.0...v2.8.0) (2022-03-25)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [2.7.0](https://github.com/qlik-oss/nebula.js/compare/v2.6.1...v2.7.0) (2022-03-21)
+
+### Bug Fixes
+
+- update jsdocs for listbox ([#774](https://github.com/qlik-oss/nebula.js/issues/774)) ([c607e37](https://github.com/qlik-oss/nebula.js/commit/c607e372bb47432f53f5eaf16982368b39139223))
+
+## [2.6.1](https://github.com/qlik-oss/nebula.js/compare/v2.6.0...v2.6.1) (2022-02-25)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [2.6.0](https://github.com/qlik-oss/nebula.js/compare/v2.5.0...v2.6.0) (2022-02-25)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [2.5.0](https://github.com/qlik-oss/nebula.js/compare/v2.4.1...v2.5.0) (2022-02-15)
+
+### Bug Fixes
+
+- **jsdoc:** mark mount and unmount as instance functions ([#763](https://github.com/qlik-oss/nebula.js/issues/763)) ([51be0a4](https://github.com/qlik-oss/nebula.js/commit/51be0a4c580357c23defea37c00cca2798234fa8))
+
+### Features
+
+- option to disable cell padding for each object ([#765](https://github.com/qlik-oss/nebula.js/issues/765)) ([31d9ab8](https://github.com/qlik-oss/nebula.js/commit/31d9ab8bd66349e7d407ec357fe443a72586abe6))
+
+## [2.4.1](https://github.com/qlik-oss/nebula.js/compare/v2.4.0...v2.4.1) (2022-02-10)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [2.4.0](https://github.com/qlik-oss/nebula.js/compare/v2.3.1...v2.4.0) (2022-02-10)
+
+### Bug Fixes
+
+- ignore api spec and checkin with scriptappy format ([#757](https://github.com/qlik-oss/nebula.js/issues/757)) ([80c7f89](https://github.com/qlik-oss/nebula.js/commit/80c7f899edb940db92d77309cf5568852e32c574))
+
+### Features
+
+- **stardust:** generate typescript definitions ([#752](https://github.com/qlik-oss/nebula.js/issues/752)) ([016b6bd](https://github.com/qlik-oss/nebula.js/commit/016b6bd5c72c0d31c880d6b72bab7a2cde5ba49e))
+
 ## [2.3.1](https://github.com/qlik-oss/nebula.js/compare/v2.3.0...v2.3.1) (2021-12-09)
 
 **Note:** Version bump only for package @nebula.js/stardust

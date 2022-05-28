@@ -2,6 +2,7 @@ const path = require('path');
 const chalk = require('chalk');
 const readline = require('readline');
 
+const fs = require('fs');
 const extend = require('extend');
 const yargs = require('yargs');
 const rollup = require('rollup');
@@ -10,7 +11,6 @@ const postcss = require('rollup-plugin-postcss');
 const replace = require('@rollup/plugin-replace');
 const sourcemaps = require('rollup-plugin-sourcemaps');
 const jsxPlugin = require('@babel/plugin-transform-react-jsx');
-const typescriptPlugin = require('@rollup/plugin-typescript');
 const json = require('@rollup/plugin-json');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
@@ -18,6 +18,7 @@ const commonjs = require('@rollup/plugin-commonjs');
 const babelPreset = require('@babel/preset-env');
 
 const { terser } = require('rollup-plugin-terser');
+const resolveNative = require('./resolveNative');
 
 const initConfig = require('./init-config');
 
@@ -28,6 +29,22 @@ const resolveReplacementStrings = (replacementStrings) => {
   return replacementStrings;
 };
 
+const setupReactNative = (argv) => {
+  const { reactNative } = argv;
+  let reactNativePath;
+  if (reactNative) {
+    reactNativePath = argv.reactNativePath || './react-native';
+    if (!fs.existsSync(`${reactNativePath}/package.json`)) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        `WARNING: No ${reactNativePath}/package.json was found.  If you really intended to build a react-native version of this package, please provide one.\nOther wise, to suppress this warning, omit the --reactNative flag.`
+      );
+      return false;
+    }
+  }
+  return { reactNative, reactNativePath };
+};
+
 const config = ({
   mode = 'production',
   format = 'umd',
@@ -36,13 +53,17 @@ const config = ({
   core,
 } = {}) => {
   const CWD = argv.cwd || cwd;
+  const { reactNative, reactNativePath } = setupReactNative(argv);
   let dir = CWD;
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
+  pkg = reactNative ? require(path.resolve(reactNativePath, 'package.json')) : pkg; // eslint-disable-line
   const { name, version, license, author } = pkg;
   const { sourcemap, replacementStrings = {}, typescript } = argv;
 
-  if (corePkg) {
+  if (reactNative) {
+    dir = `${dir}/${reactNativePath}`;
+  } else if (corePkg) {
     pkg = corePkg;
     dir = core;
   }
@@ -56,8 +77,15 @@ const config = ({
   const auth = typeof author === 'object' ? `${author.name} <${author.email}>` : author || '';
   const moduleName = name.split('/').reverse()[0];
   const extensions = ['.mjs', '.js', '.jsx', '.json', '.node'];
+
+  let typescriptPlugin;
   if (typescript) {
     extensions.push('.tsx', '.ts');
+    try {
+      typescriptPlugin = require('@rollup/plugin-typescript'); // eslint-disable-line
+    } catch (e) {
+      throw new Error(`Please install '@rollup/plugin-typescript' to build using typescript.`);
+    }
   }
 
   const banner = `/*
@@ -72,6 +100,7 @@ const config = ({
 
   // stardust should always be external
   if (!peers['@nebula.js/stardust']) {
+    // eslint-disable-next-line no-console
     console.warn('@nebula.js/stardust should be specified as a peer dependency');
   } else if (external.indexOf('@nebula.js/stardust') === -1) {
     external.push('@nebula.js/stardust');
@@ -82,6 +111,7 @@ const config = ({
       input: path.resolve(CWD, 'src/index'),
       external,
       plugins: [
+        resolveNative({ reactNative }),
         replace({
           'process.env.NODE_ENV': JSON.stringify(mode === 'development' ? 'development' : 'production'),
           preventAssignment: true,
@@ -128,7 +158,7 @@ const config = ({
     output: {
       banner,
       format,
-      file: path.resolve(dir, fileTarget), // fileTargetformat === 'esm' && pkg.module ? pkg.module : pkg.main,
+      file: path.resolve(dir, fileTarget),
       name: moduleName,
       sourcemap,
       globals: {
@@ -150,7 +180,7 @@ const minified = async (argv) => {
 
 const esm = async (argv, core) => {
   const c = config({
-    mode: argv.mode || 'development',
+    mode: argv.mode || 'production',
     format: 'esm',
     argv,
     core,
@@ -235,7 +265,7 @@ const watch = async (argv) => {
 async function build(argv = {}) {
   let defaultBuildConfig = {};
 
-  // if not runnning via command line, run the config to inject default values
+  // if not running via command line, run the config to inject default values
   if (!argv.$0) {
     const yargsArgs = argv.config ? ['--config', argv.config] : [];
     defaultBuildConfig = initConfig(yargs(yargsArgs)).argv;

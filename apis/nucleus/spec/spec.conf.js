@@ -12,20 +12,20 @@ module.exports = {
   },
   parse: {
     types: {
-      'enigma.Doc': {
-        url: 'https://github.com/qlik-oss/enigma.js/blob/master/docs/api.md#generated-api',
+      'EngineAPI.IApp': {
+        url: 'https://qlik.dev/apis/json-rpc/qix/doc#%23%2Fentries%2FDoc',
       },
-      'qae.GenericObjectLayout': {
-        url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#genericobjectlayout',
+      'EngineAPI.IGenericObjectLayout': {
+        url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FGenericObjectLayout',
       },
-      'qae.GenericObjectProperties': {
-        url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#genericobjectproperties',
+      'EngineAPI.IGenericObjectProperties': {
+        url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FGenericObjectProperties',
       },
-      'qae.NxDimension': {
-        url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxdimension',
+      'EngineAPI.INxDimension': {
+        url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FNxDimension',
       },
-      'qae.NxMeasure': {
-        url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxmeasure',
+      'EngineAPI.INxMeasure': {
+        url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FNxMeasure',
       },
     },
   },

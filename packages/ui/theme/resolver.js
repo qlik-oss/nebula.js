@@ -19,19 +19,19 @@ function resolveStyle(style, references, replacer) {
   return s;
 }
 
-function createRefs(obj, s = '', refs) {
+function createRefs(obj, refs, s = '') {
   Object.keys(obj).forEach((key) => {
     if (typeof obj[key] === 'string') {
       refs[`${s}${key}`] = obj[key];
     } else if (typeof obj[key] === 'object') {
-      createRefs(obj[key], `${s}${key}.`, refs);
+      createRefs(obj[key], refs, `${s}${key}.`);
     }
   });
 }
 
 function resolver(theme = {}) {
   const refs = {};
-  createRefs(theme, '', refs);
+  createRefs(theme, refs, '');
   const replacer = (match) => refs[match.substring(1)];
 
   function resolveValueReferences(value, path = []) {

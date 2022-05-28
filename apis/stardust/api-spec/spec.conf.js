@@ -1,43 +1,54 @@
 module.exports = {
-  glob: [
-    '!*.spec.js',
-    '../nucleus/src/**/*.js',
-    '../nucleus/src/**/*.jsx',
-    '../supernova/src/**/*.js',
-    '../locale/src/translator.js',
-    '../theme/src/**/*.js',
-    '../conversion/src/**/*.js',
-  ],
-  api: {
-    stability: 'stable',
-  },
-  output: {
-    sort: {
-      alpha: false,
+  fromJsdoc: {
+    glob: [
+      '!*.spec.js',
+      '../nucleus/src/**/*.js',
+      '../nucleus/src/**/*.jsx',
+      '../supernova/src/**/*.js',
+      '../locale/src/translator.js',
+      '../theme/src/**/*.js',
+      '../conversion/src/**/*.js',
+    ],
+    api: {
+      stability: 'stable',
     },
-    file: './api-spec/spec.json',
+    output: {
+      sort: {
+        alpha: false,
+      },
+      file: './api-spec/spec.json',
+    },
+    parse: {
+      types: {
+        undefined: {},
+        'EngineAPI.INxAppLayout': {},
+        'EngineAPI.IGenericObject': {},
+        'EngineAPI.IGlobal': {},
+        'EngineAPI.IApp': {
+          url: 'https://qlik.dev/apis/json-rpc/qix/doc#%23%2Fentries%2FDoc',
+        },
+        'EngineAPI.IGenericObjectLayout': {
+          url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FGenericObjectLayout',
+        },
+        'EngineAPI.IGenericObjectProperties': {
+          url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FGenericObjectProperties',
+        },
+        'EngineAPI.INxDimension': {
+          url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FNxDimension',
+        },
+        'EngineAPI.INxMeasure': {
+          url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FNxMeasure',
+        },
+      },
+    },
   },
-  parse: {
-    types: {
-      undefined: {},
-      'qae.NxAppLayout': {},
-      'enigma.GenericObject': {},
-      'enigma.Global': {},
-      'enigma.Doc': {
-        url: 'https://github.com/qlik-oss/enigma.js/blob/master/docs/api.md#generated-api',
-      },
-      'qae.GenericObjectLayout': {
-        url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#genericobjectlayout',
-      },
-      'qae.GenericObjectProperties': {
-        url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#genericobjectproperties',
-      },
-      'qae.NxDimension': {
-        url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxdimension',
-      },
-      'qae.NxMeasure': {
-        url: 'https://core.qlik.com/services/qix-engine/apis/qix/definitions/#nxmeasure',
-      },
+  toDts: {
+    spec: './api-spec/spec.json',
+    output: {
+      file: './types/index.d.ts',
+    },
+    dependencies: {
+      references: ['qlik-engineapi'],
     },
   },
 };

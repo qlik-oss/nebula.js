@@ -3,6 +3,46 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/qlik-oss/nebula.js/compare/v2.9.0...v2.10.0) (2022-04-26)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+# [2.9.0](https://github.com/qlik-oss/nebula.js/compare/v2.8.0...v2.9.0) (2022-04-01)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+# [2.8.0](https://github.com/qlik-oss/nebula.js/compare/v2.7.0...v2.8.0) (2022-03-25)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+# [2.7.0](https://github.com/qlik-oss/nebula.js/compare/v2.6.1...v2.7.0) (2022-03-21)
+
+### Features
+
+- get the value of style with the exact given attributes seprated by dots ([#776](https://github.com/qlik-oss/nebula.js/issues/776)) ([49f3c8c](https://github.com/qlik-oss/nebula.js/commit/49f3c8c791ae548a9fa219c99d74ad2c2081e10c))
+
+## [2.6.1](https://github.com/qlik-oss/nebula.js/compare/v2.6.0...v2.6.1) (2022-02-25)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+# [2.6.0](https://github.com/qlik-oss/nebula.js/compare/v2.5.0...v2.6.0) (2022-02-25)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+# [2.5.0](https://github.com/qlik-oss/nebula.js/compare/v2.4.1...v2.5.0) (2022-02-15)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+## [2.4.1](https://github.com/qlik-oss/nebula.js/compare/v2.4.0...v2.4.1) (2022-02-10)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+# [2.4.0](https://github.com/qlik-oss/nebula.js/compare/v2.3.1...v2.4.0) (2022-02-10)
+
+### Features
+
+- **stardust:** generate typescript definitions ([#752](https://github.com/qlik-oss/nebula.js/issues/752)) ([016b6bd](https://github.com/qlik-oss/nebula.js/commit/016b6bd5c72c0d31c880d6b72bab7a2cde5ba49e))
+
 ## [2.3.1](https://github.com/qlik-oss/nebula.js/compare/v2.3.0...v2.3.1) (2021-12-09)
 
 **Note:** Version bump only for package @nebula.js/supernova

@@ -3,6 +3,80 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.10.0](https://github.com/qlik-oss/nebula.js/compare/v2.9.0...v2.10.0) (2022-04-26)
+
+### Features
+
+- allow data insert in mocker ([#816](https://github.com/qlik-oss/nebula.js/issues/816)) ([1d9a0a2](https://github.com/qlik-oss/nebula.js/commit/1d9a0a2f10efd15cdcdf18308d299cd5f6d1b426))
+
+# [2.9.0](https://github.com/qlik-oss/nebula.js/compare/v2.8.0...v2.9.0) (2022-04-01)
+
+### Bug Fixes
+
+- **Listbox:** Fix selections toggling on edit ([#809](https://github.com/qlik-oss/nebula.js/issues/809)) ([567cc28](https://github.com/qlik-oss/nebula.js/commit/567cc28256530b51cf4132412ac9ca0ff6828486))
+- **NebulaListbox:** Minor tweaks ([#807](https://github.com/qlik-oss/nebula.js/issues/807)) ([9b38687](https://github.com/qlik-oss/nebula.js/commit/9b38687136ea917a112fc7bfa2bcf8a023cd471c))
+
+### Features
+
+- **Listbox:** add fill to checkboxes with state excluded or alternative ([#804](https://github.com/qlik-oss/nebula.js/issues/804)) ([b1a308e](https://github.com/qlik-oss/nebula.js/commit/b1a308edddbf4a32adb2b9fd6d7f7c16581b9b15))
+
+# [2.8.0](https://github.com/qlik-oss/nebula.js/compare/v2.7.0...v2.8.0) (2022-03-25)
+
+**Note:** Version bump only for package nebula.js
+
+# [2.7.0](https://github.com/qlik-oss/nebula.js/compare/v2.6.1...v2.7.0) (2022-03-21)
+
+### Bug Fixes
+
+- **deps:** update dependency puppeteer to v13 ([#736](https://github.com/qlik-oss/nebula.js/issues/736)) ([7415205](https://github.com/qlik-oss/nebula.js/commit/7415205f807b328d950e1c38ebb5e0cf63cff2b0))
+- update jsdocs for listbox ([#774](https://github.com/qlik-oss/nebula.js/issues/774)) ([c607e37](https://github.com/qlik-oss/nebula.js/commit/c607e372bb47432f53f5eaf16982368b39139223))
+
+### Features
+
+- add frequency count for listbox ([#770](https://github.com/qlik-oss/nebula.js/issues/770)) ([1ab3a4c](https://github.com/qlik-oss/nebula.js/commit/1ab3a4ca54acb17783ed24cadc2371ee22c478f7))
+- get the value of style with the exact given attributes seprated by dots ([#776](https://github.com/qlik-oss/nebula.js/issues/776)) ([49f3c8c](https://github.com/qlik-oss/nebula.js/commit/49f3c8c791ae548a9fa219c99d74ad2c2081e10c))
+
+### Reverts
+
+- Revert "chore: fix test for long running query" ([97b2de7](https://github.com/qlik-oss/nebula.js/commit/97b2de7df91799b7c96004db46b36bd4c6170527))
+
+## [2.6.1](https://github.com/qlik-oss/nebula.js/compare/v2.6.0...v2.6.1) (2022-02-25)
+
+**Note:** Version bump only for package nebula.js
+
+# [2.6.0](https://github.com/qlik-oss/nebula.js/compare/v2.5.0...v2.6.0) (2022-02-25)
+
+### Features
+
+- **listbox:** dense mode with reduced padding and text size ([#769](https://github.com/qlik-oss/nebula.js/issues/769)) ([86f21c4](https://github.com/qlik-oss/nebula.js/commit/86f21c4b05ac4bea02d589e25960dc6de58f8b5b))
+
+# [2.5.0](https://github.com/qlik-oss/nebula.js/compare/v2.4.1...v2.5.0) (2022-02-15)
+
+### Bug Fixes
+
+- change carbon to reactNative ([#762](https://github.com/qlik-oss/nebula.js/issues/762)) ([4aeaa5a](https://github.com/qlik-oss/nebula.js/commit/4aeaa5aa96a51492fa3c5755957fed563bba1a80))
+- **jsdoc:** mark mount and unmount as instance functions ([#763](https://github.com/qlik-oss/nebula.js/issues/763)) ([51be0a4](https://github.com/qlik-oss/nebula.js/commit/51be0a4c580357c23defea37c00cca2798234fa8))
+- mark version as optional ([#761](https://github.com/qlik-oss/nebula.js/issues/761)) ([5bc52b0](https://github.com/qlik-oss/nebula.js/commit/5bc52b04c2fc250a09e777d0b2c6d306b20dc9af))
+
+### Features
+
+- option to disable cell padding for each object ([#765](https://github.com/qlik-oss/nebula.js/issues/765)) ([31d9ab8](https://github.com/qlik-oss/nebula.js/commit/31d9ab8bd66349e7d407ec357fe443a72586abe6))
+
+## [2.4.1](https://github.com/qlik-oss/nebula.js/compare/v2.4.0...v2.4.1) (2022-02-10)
+
+**Note:** Version bump only for package nebula.js
+
+# [2.4.0](https://github.com/qlik-oss/nebula.js/compare/v2.3.1...v2.4.0) (2022-02-10)
+
+### Bug Fixes
+
+- ignore api spec and checkin with scriptappy format ([#757](https://github.com/qlik-oss/nebula.js/issues/757)) ([80c7f89](https://github.com/qlik-oss/nebula.js/commit/80c7f899edb940db92d77309cf5568852e32c574))
+
+### Features
+
+- add --carbon flag to build react-native supernova packages ([#749](https://github.com/qlik-oss/nebula.js/issues/749)) ([369844d](https://github.com/qlik-oss/nebula.js/commit/369844d722f7fa8873674d9320d7f047065211da))
+- **stardust:** generate typescript definitions ([#752](https://github.com/qlik-oss/nebula.js/issues/752)) ([016b6bd](https://github.com/qlik-oss/nebula.js/commit/016b6bd5c72c0d31c880d6b72bab7a2cde5ba49e))
+
 ## [2.3.1](https://github.com/qlik-oss/nebula.js/compare/v2.3.0...v2.3.1) (2021-12-09)
 
 ### Bug Fixes
