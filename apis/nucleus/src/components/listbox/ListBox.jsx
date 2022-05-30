@@ -69,6 +69,8 @@ export default function ListBox({
   dense = false,
   keyboard = {},
   showGray = true,
+  scrollState,
+  sortByState,
   selectDisabled = () => false,
   filterValues = undefined,
 }) {
@@ -182,8 +184,8 @@ export default function ListBox({
     local.current.validPages = false;
     if (loaderRef.current) {
       loaderRef.current.resetloadMoreItemsCache(true);
-      // Skip scrollToItem if we are in selections
-      if (layout && layout.qSelectionInfo.qInSelections) {
+      // Skip scrollToItem if we are in selections, or if we dont sort by state.
+      if ((layout && layout.qSelectionInfo.qInSelections) || sortByState === 0) {
         return;
       }
       loaderRef.current._listRef.scrollToItem(0);
@@ -205,6 +207,14 @@ export default function ListBox({
     }
     setPages(filterValues ? applyValueFilter(instantPages, filterValues) : instantPages);
   }, [instantPages]);
+
+  const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
+  useEffect(() => {
+    if (scrollState && !initScrollPosIsSet && loaderRef.current) {
+      loaderRef.current._listRef.scrollToItem(scrollState.initScrollPos);
+      setInitScrollPosIsSet(true);
+    }
+  }, [loaderRef.current]);
 
   if (!layout) {
     return null;
@@ -261,7 +271,12 @@ export default function ListBox({
               showGray,
             }}
             itemSize={itemSize}
-            onItemsRendered={onItemsRendered}
+            onItemsRendered={(renderProps) => {
+              if (scrollState) {
+                scrollState.setScrollPos(renderProps.visibleStopIndex);
+              }
+              onItemsRendered({ ...renderProps });
+            }}
             ref={ref}
           >
             {RowColumn}
