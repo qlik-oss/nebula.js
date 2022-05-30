@@ -210,9 +210,11 @@ export default function ListBox({
     return null;
   }
 
+  const getPagesHeight = (ps) => (ps && ps.length ? ps.reduce((h, { qArea }) => h + qArea.qHeight, 0) : 0);
+
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
-  const itemCount = filterValues ? (pages && pages.length && pages[0].qArea.qHeight) || count : count;
+  const itemCount = filterValues ? getPagesHeight(pages) || count : count;
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
