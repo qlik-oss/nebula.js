@@ -37,6 +37,11 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
   - `nucleus`: JavaScript library for mashups
   - `supernova`: JavaScript API for consuming and visualizing QIX data
   - `stardust`: Public JavaScript API which exposes the nucleus and supernova APIs
+  - `enigma-mocker`: Public JavaScript API which creates a mocked enigma app to renders visualizations without a connected Qlik engine
+  - `snapshooter`: Public JavaScript API which captures rendered charts as images
+  - `conversion`: [private] Provides conversion functionality to extensions with hyperCubes.
+  - `theme`: [private] Accesses/consumes the currently applied theme
+  - `locale`: [private] Handles translation string to generate all locales
 - `commands` - CLI commands
   - `build`: cli command to build a supernova
   - `cli`: entry point for all cli commands
@@ -49,14 +54,15 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
 
 ### Development workflow
 
-- `yarn` generates UMD bundles for all packages
-- `yarn run build`
+- `yarn` installs all dependencies
+- `yarn run build` generates UMD bundles for all packages and an ESM bundle for stardust
 - `yarn run lint` checks code style
+- `yarn run format` formats code style
 - `yarn run test` runs all tests
 
 ### Cutting a release
 
-**Prerelase**
+**Pre-release**
 
 ```sh
 npx lerna version --no-git-tag-version --no-push --no-conventional-commits --preid alpha --exact
@@ -130,4 +136,4 @@ The `<scope>` of the commit is optional and can be omitted. When used though, it
 
 ## <a name="cla"></a> Signing the CLA
 
-We need you to sign our Contributor License Agreement (CLA) before we can accept your Pull Request. Visit this link for more information: https://github.com/qlik-oss/open-source/blob/master/sign-cla.md.
+We need you to sign our Contributor License Agreement (CLA) before we can accept your Pull Request. Visit this link for more information: <https://github.com/qlik-oss/open-source/blob/master/sign-cla.md>.
