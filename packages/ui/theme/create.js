@@ -1,4 +1,4 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, adaptV4Theme } from '@mui/material/styles';
 
 import base from './definitions/base';
 import light from './definitions/light';
@@ -97,7 +97,7 @@ export default function create(definition) {
 
   const withDefaults = {
     palette: {
-      type: def.type,
+      type: def.mode,
       ...base.palette,
       ...def.palette,
     },
@@ -113,10 +113,12 @@ export default function create(definition) {
     },
   };
 
-  cache[key] = createTheme({
-    ...withDefaults,
-    overrides: overrides(withDefaults),
-  });
+  cache[key] = createTheme(
+    adaptV4Theme({
+      ...withDefaults,
+      overrides: overrides(withDefaults),
+    })
+  );
 
   cache[key].name = name;
 

@@ -1,6 +1,6 @@
 import React, { useEffect, useContext } from 'react';
 
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 
 import usePropertiesById from '@nebula.js/nucleus/src/hooks/usePropertiesById';
 

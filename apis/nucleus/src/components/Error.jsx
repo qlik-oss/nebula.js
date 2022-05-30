@@ -1,6 +1,6 @@
 /* eslint-disable react/no-array-index-key */
 import React from 'react';
-import { Grid, Typography, Icon } from '@material-ui/core';
+import { Grid, Typography, Icon } from '@mui/material';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 import Tick from '@nebula.js/ui/icons/tick';
 import { useTheme } from '@nebula.js/ui/theme';

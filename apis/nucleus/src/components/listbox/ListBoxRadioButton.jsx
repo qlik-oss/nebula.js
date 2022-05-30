@@ -1,6 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@nebula.js/ui/theme';
-import { Radio } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
+import { Radio } from '@mui/material';
 
 const useStyles = makeStyles(() => ({
   denseRadioButton: {

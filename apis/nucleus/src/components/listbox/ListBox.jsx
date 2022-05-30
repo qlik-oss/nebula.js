@@ -4,7 +4,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
-import { makeStyles } from '@nebula.js/ui/theme';
+import makeStyles from '@mui/styles/makeStyles';
 
 import useLayout from '../../hooks/useLayout';
 

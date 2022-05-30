@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { IconButton, Grid, Typography } from '@material-ui/core';
+import { IconButton, Grid, Typography } from '@mui/material';
 
 describe('<ListboxInline />', () => {
   let sandbox;
@@ -74,7 +74,7 @@ describe('<ListboxInline />', () => {
     [{ default: ListBoxInline }] = aw.mock(
       [
         [
-          require.resolve('@material-ui/core'),
+          require.resolve('@mui/material'),
           () => ({
             IconButton,
             Grid,

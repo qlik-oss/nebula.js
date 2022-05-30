@@ -1,6 +1,8 @@
 import React, { useState, useContext, useRef, useEffect, useMemo } from 'react';
 
-import { Grid, Divider, makeStyles, Popover } from '@material-ui/core';
+import { Grid, Divider, Popover } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 import { more as moreIcon } from '@nebula.js/ui/icons/more';
 import { useTheme } from '@nebula.js/ui/theme';

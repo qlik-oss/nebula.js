@@ -1,6 +1,6 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { Checkbox } from '@material-ui/core';
+import { Checkbox } from '@mui/material';
 
 async function render(content) {
   let testRenderer;

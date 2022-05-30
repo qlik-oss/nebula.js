@@ -1,8 +1,8 @@
 /* eslint no-underscore-dangle:0 */
 import React, { useContext, useEffect, useState, useCallback, useRef } from 'react';
 
-import { Grid, Toolbar, IconButton, CircularProgress } from '@material-ui/core';
-import { makeStyles } from '@nebula.js/ui/theme';
+import { Grid, Toolbar, IconButton, CircularProgress } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 
@@ -126,6 +126,7 @@ export default function ({ id, expandable, minHeight }) {
             className={classes.secondaryIcon}
             disabled={!model}
             onClick={() => setDialogOpen(true)}
+            size="large"
           >
             {SvgIcon({
               size: 'medium',
@@ -152,6 +153,7 @@ export default function ({ id, expandable, minHeight }) {
                 : ''
             }
             target="_blank"
+            size="large"
           >
             {SvgIcon({
               size: 'medium',
@@ -171,6 +173,7 @@ export default function ({ id, expandable, minHeight }) {
             className={classes.secondaryIcon}
             disabled={!model}
             onClick={() => snapIt()}
+            size="large"
           >
             {SvgIcon({
               size: 'medium',
@@ -193,6 +196,7 @@ export default function ({ id, expandable, minHeight }) {
               className={classes.secondaryIcon}
               disabled={!model}
               onClick={() => snapIt(true)}
+              size="large"
             >
               {SvgIcon({
                 size: 'medium',
@@ -215,6 +219,7 @@ export default function ({ id, expandable, minHeight }) {
               className={classes.secondaryIcon}
               disabled={!localViz || isActive}
               onClick={() => setActiveViz(localViz)}
+              size="large"
             >
               {SvgIcon({
                 size: 'medium',
@@ -236,6 +241,7 @@ export default function ({ id, expandable, minHeight }) {
               disabled={!model || !localViz}
               className={classes.secondaryIcon}
               onClick={() => toggleExpand()}
+              size="large"
             >
               {SvgIcon({
                 size: 'medium',

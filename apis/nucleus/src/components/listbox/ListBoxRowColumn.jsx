@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-import { FormControlLabel, Grid, Typography } from '@material-ui/core';
+import { FormControlLabel, Grid, Typography } from '@mui/material';
 
-import { makeStyles } from '@nebula.js/ui/theme';
+import makeStyles from '@mui/styles/makeStyles';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';

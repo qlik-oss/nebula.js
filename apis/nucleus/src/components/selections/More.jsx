@@ -1,6 +1,7 @@
 import React, { useState, useRef } from 'react';
-import { IconButton, Grid, Popover, List, ListItem, Box, Typography } from '@material-ui/core';
-import { makeStyles, useTheme } from '@nebula.js/ui/theme';
+import { IconButton, Grid, Popover, List, ListItem, Box, Typography } from '@mui/material';
+import { useTheme } from '@nebula.js/ui/theme';
+import makeStyles from '@mui/styles/makeStyles';
 import DownArrow from '@nebula.js/ui/icons/down-arrow';
 
 import OneField from './OneField';
@@ -74,7 +75,7 @@ export default function More({ items = [], api }) {
     <Grid container spacing={0} className={classes.item} onClick={handleShowMoreItems}>
       <Grid item>
         <Box
-          borderRadius={theme.shape.borderRadius}
+          borderRadius="undefinedpx"
           style={{
             padding: '4px 8px 4px 8px',
             backgroundColor: theme.palette.selected.main,
@@ -87,7 +88,7 @@ export default function More({ items = [], api }) {
         </Box>
       </Grid>
       <Grid item>
-        <IconButton>
+        <IconButton size="large">
           <DownArrow />
         </IconButton>
       </Grid>
@@ -116,7 +117,7 @@ export default function More({ items = [], api }) {
             {items.map((s, ix) => (
               // eslint-disable-next-line react/no-array-index-key
               <ListItem key={ix} title={s.name} onClick={(e) => handleShowItem(e, ix)}>
-                <Box border={1} width="100%" borderRadius="borderRadius" borderColor="divider">
+                <Box border={1} width="100%" borderRadius={1} borderColor="divider">
                   {s.states.length > 1 ? <MultiState field={s} api={api} /> : <OneField field={s} api={api} />}
                 </Box>
               </ListItem>

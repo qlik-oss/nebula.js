@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
+import { adaptV4Theme } from '@mui/material/styles';
 import { create, act } from 'react-test-renderer';
-import { StylesProvider, ThemeProvider, createTheme } from '@nebula.js/ui/theme';
+import { StylesProvider, ThemeProvider, StyledEngineProvider, createTheme } from '@nebula.js/ui/theme';
 
 const mockedReactDOM = { render: sinon.spy() };
 const [{ default: boot, NebulaApp }] = aw.mock(
@@ -131,15 +132,17 @@ describe('<NebulaApp />', () => {
   beforeEach(() => {
     ref = React.createRef();
     sandbox = sinon.createSandbox();
-    render = async ({ initialContext, app, rendererOptions, theme = createTheme('dark') } = {}) => {
+    render = async ({ initialContext, app, rendererOptions, theme = createTheme(adaptV4Theme('dark')) } = {}) => {
       await act(async () => {
         renderer = create(
           <StylesProvider>
-            <ThemeProvider theme={theme}>
-              <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
-                <NebulaApp ref={ref} initialContext={initialContext} app={app} />
-              </InstanceContext.Provider>
-            </ThemeProvider>
+            <StyledEngineProvider injectFirst>
+              <ThemeProvider theme={theme}>
+                <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
+                  <NebulaApp ref={ref} initialContext={initialContext} app={app} />
+                </InstanceContext.Provider>
+              </ThemeProvider>
+            </StyledEngineProvider>
           </StylesProvider>,
           rendererOptions || null
         );

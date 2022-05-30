@@ -1,6 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react';
-import { makeStyles, Grid, Typography, Button } from '@material-ui/core';
+import { Grid, Typography, Button } from '@mui/material';
+import makeStyles from '@mui/styles/makeStyles';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 import InstanceContext from '../contexts/InstanceContext';
 

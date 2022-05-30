@@ -1,7 +1,7 @@
 /* eslint react/jsx-no-constructed-context-values: 0 */
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { IconButton, Typography } from '@material-ui/core';
+import { IconButton, Typography } from '@mui/material';
 
 const InstanceContext = React.createContext();
 const [{ default: OneField }] = aw.mock(

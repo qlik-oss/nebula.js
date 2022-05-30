@@ -1,6 +1,6 @@
 import React from 'react';
-import { makeStyles } from '@nebula.js/ui/theme';
-import { Checkbox } from '@material-ui/core';
+import makeStyles from '@mui/styles/makeStyles';
+import { Checkbox } from '@mui/material';
 import CheckboxChecked from './assets/CheckboxChecked';
 
 const borderRadius = 3;

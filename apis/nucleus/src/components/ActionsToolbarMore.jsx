@@ -1,6 +1,8 @@
 import React from 'react';
 
-import { makeStyles, Popover, MenuList, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
+import { Popover, MenuList, MenuItem, ListItemIcon, Typography } from '@mui/material';
+
+import makeStyles from '@mui/styles/makeStyles';
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 
