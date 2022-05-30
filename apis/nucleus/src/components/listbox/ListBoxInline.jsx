@@ -47,6 +47,8 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     dense = false,
     selectDisabled = () => false,
     showGray = true,
+    sortByState = 1,
+    scrollState = undefined,
   } = options;
   let { frequencyMode, histogram = false } = options;
 
@@ -108,7 +110,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       qDef: {
         qSortCriterias: [
           {
-            qSortByState: 1,
+            qSortByState: sortByState,
             qSortByAscii: 1,
             qSortByNumeric: 1,
             qSortByLoadOrder: 1,
@@ -331,6 +333,8 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               selectDisabled={selectDisabled}
               keyboard={keyboard}
               showGray={showGray}
+              scrollState={scrollState}
+              sortByState={sortByState}
             />
           )}
         </AutoSizer>
