@@ -40,8 +40,8 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
   - `enigma-mocker`: Public JavaScript API which creates a mocked enigma app to renders visualizations without a connected Qlik engine
   - `snapshooter`: Public JavaScript API which captures rendered charts as images
   - `conversion`: [private] Provides conversion functionality to extensions with hyperCubes.
-  - `theme`: [private] Accesses/consumes the currently applied theme
-  - `locale`: [private] Handles translation string to generate all locales
+  - `theme`: [private] Provides access and consumption of the currently applied theme
+  - `locale`: [private] Handles translation strings and generates all locales
 - `commands` - CLI commands
   - `build`: cli command to build a supernova
   - `cli`: entry point for all cli commands
