@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef } from 'react';
+import { styled } from '@mui/material/styles';
 import { Badge, IconButton, Grid, Typography, Popover, Button, List, ListItem, Box } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import DownArrow from '@nebula.js/ui/icons/down-arrow';
 
 import OneField from './OneField';
@@ -8,8 +8,15 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
-const useStyles = makeStyles((theme) => ({
-  item: {
+const PREFIX = 'MultiState';
+
+const classes = {
+  item: `${PREFIX}-item`,
+  badge: `${PREFIX}-badge`,
+};
+
+const StyledListBoxPopover = styled(ListBoxPopover)(({ theme }) => ({
+  [`& .${classes.item}`]: {
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     cursor: 'pointer',
@@ -20,13 +27,13 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     alignItems: 'center',
   },
-  badge: {
+
+  [`& .${classes.badge}`]: {
     padding: theme.spacing(0, 1),
   },
 }));
 
 export default function MultiState({ field, api, moreAlignTo = null, onClose = () => {} }) {
-  const classes = useStyles();
   // If originated from the `more` item show fields directly
   const [showFields, setShowFields] = useState(!!moreAlignTo);
   const [showStateIx, setShowStateIx] = useState(-1);
@@ -136,7 +143,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
       {Header}
       {showFields && PopoverFields}
       {showStateIx > -1 && (
-        <ListBoxPopover
+        <StyledListBoxPopover
           alignTo={alignTo}
           show={showStateIx > -1}
           close={handleCloseShowState}
@@ -149,7 +156,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
   );
 
   return moreAlignTo && showStateIx > -1 ? (
-    <ListBoxPopover
+    <StyledListBoxPopover
       alignTo={alignTo}
       show={showStateIx > -1}
       close={handleCloseShowState}

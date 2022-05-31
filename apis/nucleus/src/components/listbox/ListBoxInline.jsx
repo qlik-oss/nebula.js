@@ -1,11 +1,12 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
 
 import { IconButton, Grid, Typography } from '@mui/material';
-import { useTheme, makeStyles } from '@nebula.js/ui/theme';
+import { useTheme } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
 import useSessionModel from '../../hooks/useSessionModel';
 import useLayout from '../../hooks/useLayout';
@@ -22,8 +23,14 @@ import useObjectSelections from '../../hooks/useObjectSelections';
 import { getListboxInlineKeyboardNavigation } from './listbox-keyboard-navigation';
 import useConfirmUnfocus from './useConfirmUnfocus';
 
-const useStyles = makeStyles(() => ({
-  listBoxHeader: {
+const PREFIX = 'ListBoxInline';
+
+const classes = {
+  listBoxHeader: `${PREFIX}-listBoxHeader`,
+};
+
+const StyledGrid = styled(Grid)(() => ({
+  [`& .${classes.listBoxHeader}`]: {
     alignSelf: 'center',
     display: 'inline-flex',
   },
@@ -150,7 +157,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   }
 
   const theme = useTheme();
-  const classes = useStyles();
 
   const lock = useCallback(() => {
     model.lock('/qListObjectDef');
@@ -255,7 +261,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     );
 
   return (
-    <Grid
+    <StyledGrid
       container
       tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"
@@ -339,6 +345,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
           )}
         </AutoSizer>
       </Grid>
-    </Grid>
+    </StyledGrid>
   );
 }

@@ -1,14 +1,21 @@
 import React, { useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { Grid, TextField } from '@mui/material';
 import SearchIcon from '@nebula.js/ui/icons/search';
 
-import makeStyles from '@mui/styles/makeStyles';
+const PREFIX = 'Search';
 
-const useStyles = makeStyles((theme) => ({
-  gridContainer: {
+const classes = {
+  gridContainer: `${PREFIX}-gridContainer`,
+  gridItem: `${PREFIX}-gridItem`,
+};
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  [`& .${classes.gridContainer}`]: {
     padding: theme.spacing(0, 1, 0, 1),
   },
-  gridItem: {
+
+  [`& .${classes.gridItem}`]: {
     padding: theme.spacing(0, 1, 0, 1),
   },
 }));
@@ -33,15 +40,14 @@ export default function Search({ onChange = () => {}, onEnter = () => {}, onEsca
     }
   };
 
-  const { gridContainer, gridItem } = useStyles();
   const placeholder = 'Search';
 
   return (
-    <Grid className={gridContainer} item container direction="row" alignItems="center">
+    <StyledGrid className={classes.gridContainer} item container direction="row" alignItems="center">
       <Grid item>
         <SearchIcon />
       </Grid>
-      <Grid className={gridItem} item xs>
+      <Grid className={classes.gridItem} item xs>
         <TextField
           fullWidth
           autoFocus
@@ -51,6 +57,6 @@ export default function Search({ onChange = () => {}, onEnter = () => {}, onEsca
           onKeyDown={onKeyDown}
         />
       </Grid>
-    </Grid>
+    </StyledGrid>
   );
 }

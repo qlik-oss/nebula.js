@@ -1,8 +1,9 @@
 /* eslint no-underscore-dangle:0 */
 import React, { useContext, useEffect, useState, useCallback, useRef } from 'react';
 
+import { styled } from '@mui/material/styles';
+
 import { Grid, Toolbar, IconButton, CircularProgress } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 
@@ -13,11 +14,19 @@ import VizContext from '../contexts/VizContext';
 
 import Chart from './Chart';
 
-const useStyles = makeStyles((theme) => ({
-  secondaryIcon: {
+const PREFIX = 'Cell';
+
+const classes = {
+  secondaryIcon: `${PREFIX}-secondaryIcon`,
+  drop: `${PREFIX}-drop`,
+};
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  [`& .${classes.secondaryIcon}`]: {
     color: theme.palette.text.secondary,
   },
-  drop: {
+
+  [`& .${classes.drop}`]: {
     boxShadow: theme.shadows[1],
     borderRadius: `${theme.shape.borderRadius}px`,
   },
@@ -29,8 +38,6 @@ export default function ({ id, expandable, minHeight }) {
   const [model, setModel] = useState(null);
   const [exporting, setExporting] = useState(false);
   const [localViz, setLocalViz] = useState(null);
-
-  const classes = useStyles();
 
   const { currentThemeName, activeViz, setActiveViz, setExpandedObject, expandedObject } = useContext(VizContext);
 
@@ -117,7 +124,7 @@ export default function ({ id, expandable, minHeight }) {
   const isActive = activeViz === localViz;
 
   return (
-    <Grid container direction="column" style={{ minHeight, height: '100%', position: 'relative' }}>
+    <StyledGrid container direction="column" style={{ minHeight, height: '100%', position: 'relative' }}>
       <Grid item>
         <Toolbar variant="dense" disableGutters style={{ padding: '0 0px', opacity: 1 }}>
           <PropsDialog model={model} show={dialogOpen} close={closeDialog} />
@@ -264,6 +271,6 @@ export default function ({ id, expandable, minHeight }) {
       <Grid item xs style={{ ...activeStyle }} className={classes.drop}>
         <Chart id={id} onLoad={onLoad} />
       </Grid>
-    </Grid>
+    </StyledGrid>
   );
 }

@@ -1,13 +1,19 @@
 import React, { useContext, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import Search from '@nebula.js/ui/icons/search';
 
-import makeStyles from '@mui/styles/makeStyles';
-
 import InstanceContext from '../../contexts/InstanceContext';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+const PREFIX = 'ListBoxSearch';
+
+const classes = {
+  root: `${PREFIX}-root`,
+  dense: `${PREFIX}-dense`,
+};
+
+const StyledInputAdornment = styled(InputAdornment)(({ theme }) => ({
+  [`& .${classes.root}`]: {
     border: 'none',
     borderRadius: 0,
     '& fieldset': {
@@ -19,7 +25,8 @@ const useStyles = makeStyles((theme) => ({
       border: 'none',
     },
   },
-  dense: {
+
+  [`& .${classes.dense}`]: {
     fontSize: 12,
     paddingLeft: theme.spacing(1),
     '& input': {
@@ -28,6 +35,7 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+
 const TREE_PATH = '/qListObjectDef';
 
 export default function ListBoxSearch({ model, keyboard, dense = false }) {
@@ -52,14 +60,12 @@ export default function ListBoxSearch({ model, keyboard, dense = false }) {
     }
   };
 
-  const classes = useStyles();
-
   return (
     <OutlinedInput
       startAdornment={
-        <InputAdornment position="start">
+        <StyledInputAdornment position="start">
           <Search size={dense ? 'small' : 'normal'} />
-        </InputAdornment>
+        </StyledInputAdornment>
       }
       className={['search', classes.root, dense && classes.dense].filter(Boolean).join(' ')}
       margin="dense"

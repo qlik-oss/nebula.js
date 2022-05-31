@@ -3,6 +3,8 @@
 
 import React, { useState } from 'react';
 
+import { styled } from '@mui/material/styles';
+
 import {
   Typography,
   Grid,
@@ -16,21 +18,28 @@ import {
 
 import { ExpandMore } from '@nebula.js/ui/icons';
 
-import makeStyles from '@mui/styles/makeStyles';
+const PREFIX = 'AutoComponents';
 
-const useStyles = makeStyles((theme) => ({
-  summary: {
+const classes = {
+  summary: `${PREFIX}-summary`,
+  details: `${PREFIX}-details`,
+  root: `${PREFIX}-root`,
+};
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  [`& .${classes.summary}`]: {
     padding: theme.spacing(0, 1),
     backgroundColor: theme.palette.background.lighter,
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
-  details: {
+
+  [`& .${classes.details}`]: {
     padding: theme.spacing(1),
   },
 }));
 
-const usePanelStyles = makeStyles((theme) => ({
-  root: {
+const StyledAccordion = styled(Accordion)(({ theme }) => ({
+  [`& .${classes.root}`]: {
     boxShadow: 'none',
     marginLeft: -theme.spacing(1),
     marginRight: -theme.spacing(1),
@@ -39,7 +48,6 @@ const usePanelStyles = makeStyles((theme) => ({
       marginRight: -theme.spacing(1),
     },
   },
-  expanded: {},
 }));
 
 const getType = (value) => {
@@ -106,15 +114,13 @@ function Num({ property, value, target, changed }) {
 }
 
 function Obj({ property, value, changed }) {
-  const classes = useStyles();
-  const panelClasses = usePanelStyles();
   return (
-    <Accordion square className={[panelClasses.root, panelClasses.expanded].join(' ')}>
+    <StyledAccordion square className={classes.root}>
       <AccordionSummary expandIcon={<ExpandMore />} className={classes.summary}>
         <Typography>{property}</Typography>
       </AccordionSummary>
       <AccordionDetails className={classes.details}>{generateComponents(value, changed)}</AccordionDetails>
-    </Accordion>
+    </StyledAccordion>
   );
 }
 
@@ -152,12 +158,12 @@ export default function generateComponents(properties, changed) {
     .filter(Boolean);
 
   return (
-    <Grid container direction="column" spacing={0} alignItems="stretch">
+    <StyledGrid container direction="column" spacing={0} alignItems="stretch">
       {components.map((c) => (
         <Grid item xs key={c.key} style={{ width: '100%' }}>
           <c.Component key={c.key} property={c.property} value={c.value} target={properties} changed={changed} />
         </Grid>
       ))}
-    </Grid>
+    </StyledGrid>
   );
 }

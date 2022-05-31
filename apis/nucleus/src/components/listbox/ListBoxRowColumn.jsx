@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 
-import { FormControlLabel, Grid, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
-import makeStyles from '@mui/styles/makeStyles';
+import { FormControlLabel, Grid, Typography } from '@mui/material';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
@@ -10,6 +10,32 @@ import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
 import ListBoxRadioButton from './ListBoxRadioButton';
 import { getFieldKeyboardNavigation } from './listbox-keyboard-navigation';
+
+const PREFIX = 'RowColumn';
+
+const classes = {
+  row: `${PREFIX}-row`,
+  rowBorderBottom: `${PREFIX}-rowBorderBottom`,
+  column: `${PREFIX}-column`,
+  fieldRoot: `${PREFIX}-fieldRoot`,
+  cell: `${PREFIX}-cell`,
+  labelText: `${PREFIX}-labelText`,
+  labelDense: `${PREFIX}-labelDense`,
+  highlighted: `${PREFIX}-highlighted`,
+  checkboxLabel: `${PREFIX}-checkboxLabel`,
+  icon: `${PREFIX}-icon`,
+  S: `${PREFIX}-S`,
+  XS: `${PREFIX}-XS`,
+  A: `${PREFIX}-A`,
+  X: `${PREFIX}-X`,
+  frequencyCount: `${PREFIX}-frequencyCount`,
+  barContainer: `${PREFIX}-barContainer`,
+  bar: `${PREFIX}-bar`,
+  barSelected: `${PREFIX}-barSelected`,
+  barWithCheckbox: `${PREFIX}-barWithCheckbox`,
+  barSelectedWithCheckbox: `${PREFIX}-barSelectedWithCheckbox`,
+  excludedTextWithCheckbox: `${PREFIX}-excludedTextWithCheckbox`,
+};
 
 const ellipsis = {
   width: '100%',
@@ -34,20 +60,23 @@ const getSelectedStyle = ({ theme }) => ({
   },
 });
 
-const useStyles = makeStyles((theme) => ({
-  row: {
+const Root = styled('div')(({ theme }) => ({
+  [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
     color: theme.palette.text.primary,
   },
-  rowBorderBottom: {
+
+  [`& .${classes.rowBorderBottom}`]: {
     borderBottom: `1px solid ${theme.palette.divider}`,
   },
-  column: {
+
+  [`& .${classes.column}`]: {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
     color: theme.palette.text.primary,
   },
-  fieldRoot: {
+
+  [`& .${classes.fieldRoot}`]: {
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
     },
@@ -57,7 +86,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   // The interior wrapper for all field content.
-  cell: {
+  [`& .${classes.cell}`]: {
     display: 'flex',
     alignItems: 'center',
     minWidth: 0,
@@ -68,7 +97,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   // The leaf node, containing the label text.
-  labelText: {
+  [`& .${classes.labelText}`]: {
     flexBasis: 'max-content',
     lineHeight: '16px',
     userSelect: 'none',
@@ -76,13 +105,13 @@ const useStyles = makeStyles((theme) => ({
     ...ellipsis,
   },
 
-  labelDense: {
+  [`& .${classes.labelDense}`]: {
     fontSize: 12,
   },
 
   // Highlight is added to labelText spans, which are created as siblings to original labelText,
   // when a search string is matched.
-  highlighted: {
+  [`& .${classes.highlighted}`]: {
     overflow: 'visible',
     width: '100%',
     '& > span': {
@@ -92,7 +121,7 @@ const useStyles = makeStyles((theme) => ({
   },
 
   // Checkbox and label container.
-  checkboxLabel: {
+  [`& .${classes.checkboxLabel}`]: {
     margin: 0,
     width: '100%',
     height: '100%',
@@ -111,36 +140,42 @@ const useStyles = makeStyles((theme) => ({
   },
 
   // The icons container holding tick and lock, shown inside fields.
-  icon: {
+  [`& .${classes.icon}`]: {
     display: 'flex',
     padding: theme.spacing(1, 1, 1, 0),
   },
 
   // Selection styles (S=Selected, XS=ExcludedSelected, A=Available, X=Excluded).
-  S: {
+  [`& .${classes.S}`]: {
     ...getSelectedStyle({ theme }),
   },
-  XS: {
+
+  [`& .${classes.XS}`]: {
     ...getSelectedStyle({ theme }),
     background: theme.palette.selected.excluded,
     color: theme.palette.selected.mainContrastText,
   },
-  A: {
+
+  [`& .${classes.A}`]: {
     background: theme.palette.selected.alternative,
     color: theme.palette.selected.alternativeContrastText,
   },
-  X: {
+
+  [`& .${classes.X}`]: {
     background: theme.palette.selected.excluded,
     color: theme.palette.selected.mainContrastText,
   },
-  frequencyCount: {
+
+  [`& .${classes.frequencyCount}`]: {
     paddingLeft: '8px',
     paddingRight: '8px',
   },
-  barContainer: {
+
+  [`&.${classes.barContainer}`]: {
     position: 'relative',
   },
-  bar: {
+
+  [`& .${classes.bar}`]: {
     border: `${barBorderWidthPx}px solid`,
     borderColor: '#D9D9D9',
     height: '16px',
@@ -151,19 +186,23 @@ const useStyles = makeStyles((theme) => ({
     transition: 'width 0.2s',
     backgroundColor: '#FAFAFA',
   },
-  barSelected: {
+
+  [`& .${classes.barSelected}`]: {
     opacity: '30%',
     zIndex: '0',
     background: theme.palette.background.lighter,
   },
-  barWithCheckbox: {
+
+  [`& .${classes.barWithCheckbox}`]: {
     left: `${barWithCheckboxLeftPadPx}px`,
   },
-  barSelectedWithCheckbox: {
+
+  [`& .${classes.barSelectedWithCheckbox}`]: {
     background: '#BFE5D0',
     borderColor: '#BFE5D0',
   },
-  excludedTextWithCheckbox: {
+
+  [`& .${classes.excludedTextWithCheckbox}`]: {
     color: '#828282',
   },
 }));
@@ -192,7 +231,6 @@ function RowColumn({ index, style, data, column = false }) {
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
 
-  const classes = useStyles();
   const [classArr, setClassArr] = useState([]);
 
   useEffect(() => {
@@ -343,7 +381,7 @@ function RowColumn({ index, style, data, column = false }) {
   const isFirstElement = index === 0;
 
   return (
-    <div className={classes.barContainer}>
+    <Root className={classes.barContainer}>
       <Grid
         container
         spacing={0}
@@ -405,7 +443,7 @@ function RowColumn({ index, style, data, column = false }) {
           </Grid>
         )}
       </Grid>
-    </div>
+    </Root>
   );
 }
 

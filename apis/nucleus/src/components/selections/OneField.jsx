@@ -1,19 +1,26 @@
 import React, { useRef, useState, useContext } from 'react';
 
+import { styled } from '@mui/material/styles';
+
 import Remove from '@nebula.js/ui/icons/remove';
 import Lock from '@nebula.js/ui/icons/lock';
 
 import { IconButton, Grid, Typography } from '@mui/material';
 
 import { useTheme } from '@nebula.js/ui/theme';
-import makeStyles from '@mui/styles/makeStyles';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
 import InstanceContext from '../../contexts/InstanceContext';
 
-const useStyles = makeStyles((theme) => ({
-  item: {
+const PREFIX = 'OneField';
+
+const classes = {
+  item: `${PREFIX}-item`,
+};
+
+const StyledListBoxPopover = styled(ListBoxPopover)(({ theme }) => ({
+  [`& .${classes.item}`]: {
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     cursor: 'pointer',
@@ -36,8 +43,6 @@ export default function OneField({
   const alignTo = moreAlignTo || useRef();
   const theme = useTheme();
   const [showListBoxPopover, setShowListBoxPopover] = useState(false);
-
-  const classes = useStyles();
 
   const handleShowListBoxPopover = (e) => {
     if (e.currentTarget.contains(e.target)) {
@@ -165,7 +170,7 @@ export default function OneField({
         {Icon}
         {SegmentsIndicator}
         {showListBoxPopover && (
-          <ListBoxPopover
+          <StyledListBoxPopover
             alignTo={alignTo}
             show={showListBoxPopover}
             close={handleCloseShowListBoxPopover}
@@ -178,7 +183,7 @@ export default function OneField({
     );
   }
   return moreAlignTo ? (
-    <ListBoxPopover
+    <StyledListBoxPopover
       alignTo={alignTo}
       show
       close={handleCloseShowListBoxPopover}

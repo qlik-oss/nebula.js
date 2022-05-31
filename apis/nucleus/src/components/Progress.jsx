@@ -2,22 +2,32 @@
 
 import React from 'react';
 
+import { styled } from '@mui/material/styles';
+
 import { CircularProgress } from '@mui/material';
 
-import makeStyles from '@mui/styles/makeStyles';
+const PREFIX = 'Progress';
 
-const useStyles = makeStyles((theme) => ({
-  root: {
+const classes = {
+  root: `${PREFIX}-root`,
+  front: `${PREFIX}-front`,
+  back: `${PREFIX}-back`,
+};
+
+const Root = styled('div')(({ theme }) => ({
+  [`&.${classes.root}`]: {
     position: 'relative',
     display: 'inline-block',
   },
-  front: {
+
+  [`& .${classes.front}`]: {
     color: theme.palette.secondary.main,
     animationDuration: '1500ms',
     position: 'absolute',
     left: 0,
   },
-  back: {
+
+  [`& .${classes.back}`]: {
     color: theme.palette.divider,
   },
 }));
@@ -30,11 +40,10 @@ const SIZES = {
 };
 
 export default function Progress({ size = 'medium', ...props }) {
-  const classes = useStyles();
   const s = SIZES[size];
 
   return (
-    <div className={classes.root}>
+    <Root className={classes.root}>
       <CircularProgress variant="determinate" value={100} className={classes.back} size={s} thickness={3} {...props} />
       <CircularProgress
         variant="indeterminate"
@@ -44,6 +53,6 @@ export default function Progress({ size = 'medium', ...props }) {
         thickness={3}
         {...props}
       />
-    </div>
+    </Root>
   );
 }

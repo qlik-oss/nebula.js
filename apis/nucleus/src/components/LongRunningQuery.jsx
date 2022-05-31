@@ -1,14 +1,20 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext } from 'react';
+import { styled } from '@mui/material/styles';
 import { Grid, Typography, Button } from '@mui/material';
-import makeStyles from '@mui/styles/makeStyles';
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 import InstanceContext from '../contexts/InstanceContext';
 
 import Progress from './Progress';
 
-const useStyles = makeStyles(() => ({
-  stripes: {
+const PREFIX = 'LongRunningQuery';
+
+const classes = {
+  stripes: `${PREFIX}-stripes`,
+};
+
+const StyledGrid = styled(Grid)(() => ({
+  [`& .${classes.stripes}`]: {
     '&::before': {
       position: 'absolute',
       height: '100%',
@@ -27,7 +33,7 @@ const useStyles = makeStyles(() => ({
 export function Cancel({ cancel, translator, ...props }) {
   return (
     <>
-      <Grid container item direction="column" alignItems="center" spacing={2}>
+      <StyledGrid container item direction="column" alignItems="center" spacing={2}>
         <Grid item>
           <Progress />
         </Grid>
@@ -36,7 +42,7 @@ export function Cancel({ cancel, translator, ...props }) {
             {translator.get('Object.Update.Active')}
           </Typography>
         </Grid>
-      </Grid>
+      </StyledGrid>
       <Grid item {...props}>
         <Button variant="contained" onClick={cancel}>
           {translator.get('Cancel')}
@@ -67,7 +73,6 @@ export function Retry({ retry, translator, ...props }) {
 }
 
 export default function LongRunningQuery({ canCancel, canRetry, api }) {
-  const { stripes, cancel, retry } = useStyles();
   const { translator } = useContext(InstanceContext);
 
   return (
@@ -76,7 +81,7 @@ export default function LongRunningQuery({ canCancel, canRetry, api }) {
       direction="column"
       alignItems="center"
       justifyContent="center"
-      className={stripes}
+      className={classes.stripes}
       style={{
         position: 'absolute',
         width: '100%',
@@ -86,8 +91,8 @@ export default function LongRunningQuery({ canCancel, canRetry, api }) {
       }}
       spacing={2}
     >
-      {canCancel && <Cancel cancel={api.cancel} translator={translator} className={cancel} />}
-      {canRetry && <Retry retry={api.retry} translator={translator} className={retry} />}
+      {canCancel && <Cancel cancel={api.cancel} translator={translator} className={classes.cancel} />}
+      {canRetry && <Retry retry={api.retry} translator={translator} className={classes.retry} />}
     </Grid>
   );
 }

@@ -1,9 +1,16 @@
 import React from 'react';
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 import { Radio } from '@mui/material';
 
-const useStyles = makeStyles(() => ({
-  denseRadioButton: {
+const PREFIX = 'ListBoxRadioButton';
+
+const classes = {
+  denseRadioButton: `${PREFIX}-denseRadioButton`,
+  radioButton: `${PREFIX}-radioButton`,
+};
+
+const StyledRadio = styled(Radio)(() => ({
+  [`& .${classes.denseRadioButton}`]: {
     height: '100%',
     boxSizing: 'border-box',
     '& svg': {
@@ -11,21 +18,20 @@ const useStyles = makeStyles(() => ({
       height: '0.7em',
     },
   },
-  radioButton: {
+
+  [`& .${classes.radioButton}`]: {
     right: '5px',
   },
 }));
 
 export default function ListBoxRadioButton({ checked, label, dense }) {
-  const styles = useStyles();
-
   return (
-    <Radio
+    <StyledRadio
       checked={checked}
       value={label}
       name={label}
       inputProps={{ 'aria-labelledby': label }}
-      className={dense ? styles.denseRadioButton : styles.radioButton}
+      className={dense ? classes.denseRadioButton : classes.radioButton}
       style={{ backgroundColor: 'transparent' }}
       disableRipple
     />
