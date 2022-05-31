@@ -16,7 +16,6 @@ import {
   Menu,
   MenuItem,
   CircularProgress,
-  adaptV4Theme,
 } from '@mui/material';
 
 import Properties from './Properties';
@@ -67,7 +66,7 @@ export default function App({ app, info }) {
   const [nebbie, setNebbie] = useState(null);
   const customThemes = info.themes && info.themes.length ? ['light', 'dark', ...info.themes] : [];
 
-  const theme = useMemo(() => createTheme(adaptV4Theme(currentMuiThemeName)), [currentMuiThemeName]);
+  const theme = useMemo(() => createTheme(currentMuiThemeName), [currentMuiThemeName]);
 
   const vizContext = useMemo(
     () => ({

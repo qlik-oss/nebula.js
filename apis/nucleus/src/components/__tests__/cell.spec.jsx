@@ -1,7 +1,6 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
-import { adaptV4Theme } from '@mui/material/styles';
 import { create, act } from 'react-test-renderer';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 
@@ -93,7 +92,7 @@ describe('<Cell />', () => {
       types = defaultHalo.types,
       initialSnOptions = {},
       onMount = sandbox.spy(),
-      theme = createTheme(adaptV4Theme('dark')),
+      theme = createTheme('dark'),
       cellRef,
       config = {},
       rendererOptions,

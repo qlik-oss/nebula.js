@@ -1,8 +1,6 @@
 /* eslint no-nested-ternary: 0 */
 import React, { useState, useEffect } from 'react';
 
-import { adaptV4Theme } from '@mui/material/styles';
-
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 import { Help } from '@nebula.js/ui/icons';
 import Remove from '@nebula.js/ui/icons/remove';
@@ -27,8 +25,8 @@ import { info as connectionInfo, connect } from '../connect';
 import storageFn from '../storage';
 
 const storage = storageFn({});
-const theme = createTheme(adaptV4Theme('light'));
-const themeDark = createTheme(adaptV4Theme('dark'));
+const theme = createTheme('light');
+const themeDark = createTheme('dark');
 
 function SelectEngine({ info, children }) {
   const [items, setItems] = useState(storage.get('connections') || []);
