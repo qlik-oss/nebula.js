@@ -54,11 +54,11 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
 
 ### Development workflow
 
-- `yarn` installs all dependencies
-- `yarn run build` generates UMD bundles for all packages and an ESM bundle for stardust
-- `yarn run lint` checks code style
-- `yarn run format` formats code style
-- `yarn run test` runs all tests
+- `yarn` install all dependencies
+- `yarn run build` generate UMD bundles for all packages and an ESM bundle for stardust
+- `yarn run lint` check code style
+- `yarn run format` format code style
+- `yarn run test` run all tests
 
 ### Cutting a release
 
