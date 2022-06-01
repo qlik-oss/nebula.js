@@ -163,7 +163,7 @@ const Root = styled('div')(({ theme }) => ({
 
   [`& .${classes.X}`]: {
     background: theme.palette.selected.excluded,
-    color: theme.palette.selected.mainContrastText,
+    color: theme.palette.selected.excludedContrastText,
   },
 
   [`& .${classes.frequencyCount}`]: {
