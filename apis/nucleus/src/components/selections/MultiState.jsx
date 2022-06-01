@@ -139,7 +139,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
   const Component = moreAlignTo ? (
     PopoverFields
   ) : (
-    <Grid container spacing={0} className={classes.item} onClick={handleShowFields}>
+    <Grid container gap={0} className={classes.item} onClick={handleShowFields}>
       {Header}
       {showFields && PopoverFields}
       {showStateIx > -1 && (

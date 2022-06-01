@@ -116,7 +116,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
         style: { minWidth: '250px' },
       }}
     >
-      <Grid container direction="column" spacing={0}>
+      <Grid container direction="column" gap={0}>
         <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (

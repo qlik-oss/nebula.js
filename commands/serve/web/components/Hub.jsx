@@ -359,7 +359,7 @@ export default function Hub() {
         <Container maxWidth="md">
           <StyledEngineProvider injectFirst>
             <ThemeProvider theme={themeDark}>
-              <Stepper alternativeLabel activeStep={activeStep} style={{ backgroundColor: 'transparent' }}>
+              <Stepper alternativeLabel activeStep={activeStep} style={{ backgroundColor: 'transparent', padding: 24 }}>
                 {steps.map((label, i) => (
                   <Step key={label}>
                     {i ? (

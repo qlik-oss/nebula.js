@@ -46,7 +46,7 @@ const ActionToolbarElement = {
 
 const ActionsGroup = React.forwardRef(({ actions = [], first = false, last = false, addAnchor = false }, ref) =>
   actions.length > 0 ? (
-    <Grid item container spacing={0} wrap="nowrap">
+    <Grid item container gap={0} wrap="nowrap">
       {actions.map((e, ix) => {
         let cls = [];
         const isFirstItem = first && ix === 0;
@@ -188,7 +188,7 @@ function ActionsToolbar({
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
   const Actions = (
-    <Grid ref={actionsRef} onKeyDown={tabCallback} container spacing={0} wrap="nowrap">
+    <Grid ref={actionsRef} onKeyDown={tabCallback} container gap={0} wrap="nowrap">
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
         <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />

@@ -79,7 +79,7 @@ export default function More({ items = [], api }) {
   }
 
   return (
-    <StyledGrid container spacing={0} className={classes.item} onClick={handleShowMoreItems}>
+    <StyledGrid container gap={0} className={classes.item} onClick={handleShowMoreItems}>
       <Grid item>
         <Box
           borderRadius="undefinedpx"

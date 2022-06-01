@@ -91,7 +91,7 @@ export default function SelectedFields({ api, app }) {
   }, [app, currentSelectionsModel, layout, api.isInModal(), maxItems]);
 
   return (
-    <Grid ref={containerRef} container spacing={0} wrap="nowrap" style={{ height: '100%' }}>
+    <Grid ref={containerRef} container gap={0} wrap="nowrap" style={{ height: '100%' }}>
       {state.items.map((s) => (
         <Grid
           item

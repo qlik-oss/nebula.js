@@ -95,7 +95,7 @@ function Str({ property, value, target, changed }) {
     }
   };
 
-  return <TextField fullWidth onChange={handleChange} onBlur={onBlur} label={property} value={s} />;
+  return <TextField variant="standard" fullWidth onChange={handleChange} onBlur={onBlur} label={property} value={s} />;
 }
 
 function Num({ property, value, target, changed }) {
@@ -110,7 +110,7 @@ function Num({ property, value, target, changed }) {
     }
   };
 
-  return <TextField fullWidth onChange={handleChange} onBlur={onBlur} label={property} value={s} />;
+  return <TextField variant="standard" fullWidth onChange={handleChange} onBlur={onBlur} label={property} value={s} />;
 }
 
 function Obj({ property, value, changed }) {
@@ -158,7 +158,7 @@ export default function generateComponents(properties, changed) {
     .filter(Boolean);
 
   return (
-    <StyledGrid container direction="column" spacing={0} alignItems="stretch">
+    <StyledGrid container direction="column" gap={0} alignItems="stretch">
       {components.map((c) => (
         <Grid item xs key={c.key} style={{ width: '100%' }}>
           <c.Component key={c.key} property={c.property} value={c.value} target={properties} changed={changed} />

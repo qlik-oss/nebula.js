@@ -191,15 +191,15 @@ export default function App({ app, info }) {
               container
               wrap="nowrap"
               direction="column"
-              style={{ background: theme.palette.background.darkest, height: 'calc(100% + 16px)' }}
-              spacing={SPACING}
+              style={{ background: theme.palette.background.darkest, height: '100%' }}
+              gap={0}
             >
               <Grid item>
                 <Toolbar
                   variant="dense"
                   style={{ background: theme.palette.background.paper, boxShadow: theme.shadows[1] }}
                 >
-                  <Grid container spacing={2}>
+                  <Grid container gap={1}>
                     <Grid item container alignItems="center" style={{ width: 'auto' }}>
                       <Grid item>
                         <a href="https://github.com/qlik-oss/nebula.js" target="_blank" rel="noopener noreferrer">
@@ -292,13 +292,21 @@ export default function App({ app, info }) {
                   </Grid>
                 </Toolbar>
               </Grid>
-              <Grid item style={{ padding: theme.spacing(0, SPACING) }}>
+              <Grid item style={{ padding: theme.spacing(SPACING / 2, SPACING / 2, 0, SPACING / 2) }}>
                 <div ref={currentSelectionsRef} style={{ flex: '0 0 auto', boxShadow: theme.shadows[1] }} />
               </Grid>
-              <Grid item xs style={{ overflowX: 'hidden', overflowY: 'auto', padding: theme.spacing(0, SPACING) }}>
+              <Grid
+                item
+                xs
+                style={{
+                  overflowX: 'hidden',
+                  overflowY: 'auto',
+                  padding: theme.spacing(0, SPACING / 2, SPACING / 2, SPACING / 2),
+                }}
+              >
                 <VizContext.Provider value={vizContext}>
                   {sn ? (
-                    <Grid container wrap="nowrap" style={{ height: '100%' }} spacing={SPACING}>
+                    <Grid container wrap="nowrap" style={{ height: '100%' }} gap={SPACING / 2}>
                       <Grid item xs zeroMinWidth>
                         {objectListMode ? (
                           <Collection cache={currentId} types={[info.supernova.name]} />
@@ -312,8 +320,7 @@ export default function App({ app, info }) {
                           style={{
                             background: theme.palette.background.paper,
                             overflow: 'hidden auto',
-                            margin: theme.spacing(SPACING / 2),
-                            marginTop: `${48 + theme.spacing(SPACING / 2)}px`,
+                            marginTop: 48, // 48 + theme.spacing(SPACING / 2), but theme.spacing returns 8px, making it a string concat
                             boxShadow: theme.shadows[1],
                             padding: 0,
                           }}

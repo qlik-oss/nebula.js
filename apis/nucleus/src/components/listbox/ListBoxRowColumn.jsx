@@ -384,7 +384,7 @@ function RowColumn({ index, style, data, column = false }) {
     <Root className={classes.barContainer}>
       <Grid
         container
-        spacing={0}
+        gap={0}
         className={joinClassNames(['value', ...classArr])}
         classes={{
           root: classes.fieldRoot,

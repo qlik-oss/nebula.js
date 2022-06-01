@@ -33,7 +33,7 @@ const StyledGrid = styled(Grid)(() => ({
 export function Cancel({ cancel, translator, ...props }) {
   return (
     <>
-      <StyledGrid container item direction="column" alignItems="center" spacing={2}>
+      <StyledGrid container item direction="column" alignItems="center" gap={2}>
         <Grid item>
           <Progress />
         </Grid>
@@ -89,7 +89,7 @@ export default function LongRunningQuery({ canCancel, canRetry, api }) {
         left: 0,
         top: 0,
       }}
-      spacing={2}
+      gap={2}
     >
       {canCancel && <Cancel cancel={api.cancel} translator={translator} className={classes.cancel} />}
       {canRetry && <Retry retry={api.retry} translator={translator} className={classes.retry} />}

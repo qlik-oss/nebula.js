@@ -265,7 +265,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       container
       tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"
-      spacing={0}
+      gap={0}
       style={{ height: '100%', minHeight: `${minHeight}px` }}
       onKeyDown={handleKeyDown}
       ref={listBoxRef}

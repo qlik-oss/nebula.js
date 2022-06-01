@@ -16,7 +16,7 @@ function AppSelections({ app }) {
   return (
     <Grid
       container
-      spacing={0}
+      gap={0}
       wrap="nowrap"
       style={{
         backgroundColor: theme.palette.background.paper,

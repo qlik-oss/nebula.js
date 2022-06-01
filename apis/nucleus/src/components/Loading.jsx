@@ -18,7 +18,7 @@ export default function Loading() {
         left: 0,
         top: 0,
       }}
-      spacing={2}
+      gap={2}
     >
       <Progress size="large" />
     </Grid>

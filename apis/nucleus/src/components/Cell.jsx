@@ -489,7 +489,7 @@ const Cell = forwardRef(
         <Grid
           container
           direction="column"
-          spacing={0}
+          gap={0}
           style={{
             position: 'relative',
             width: '100%',

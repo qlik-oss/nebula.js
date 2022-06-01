@@ -76,7 +76,7 @@ export default function Fields({
               <FieldTitle field={d} libraryItems={libraryItems} type={type} />
             </ListItemText>
             <ListItemSecondaryAction>
-              <IconButton edge="end" onClick={() => onRemove(i)} size="large">
+              <IconButton onClick={() => onRemove(i)} size="large">
                 <Remove />
               </IconButton>
             </ListItemSecondaryAction>

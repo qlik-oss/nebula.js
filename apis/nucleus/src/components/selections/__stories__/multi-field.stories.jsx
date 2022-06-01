@@ -48,7 +48,7 @@ const stateFn = (state = {}, num = 0) => (
 );
 
 export const fields = () => (
-  <Grid container spacing={1} wrap="nowrap">
+  <Grid container gap={1} wrap="nowrap">
     <Grid item>{stateFn()}</Grid>
     <Grid item>{stateFn(states[1], 5)}</Grid>
     <Grid item>{stateFn(states[1], 23)}</Grid>

@@ -1,7 +1,4 @@
 import React, { useRef, useState, useContext } from 'react';
-
-import { styled } from '@mui/material/styles';
-
 import Remove from '@nebula.js/ui/icons/remove';
 import Lock from '@nebula.js/ui/icons/lock';
 
@@ -12,24 +9,6 @@ import { useTheme } from '@nebula.js/ui/theme';
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
 import InstanceContext from '../../contexts/InstanceContext';
-
-const PREFIX = 'OneField';
-
-const classes = {
-  item: `${PREFIX}-item`,
-};
-
-const StyledListBoxPopover = styled(ListBoxPopover)(({ theme }) => ({
-  [`& .${classes.item}`]: {
-    backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-    cursor: 'pointer',
-    padding: '4px',
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}));
 
 export default function OneField({
   field,
@@ -161,16 +140,24 @@ export default function OneField({
     Component = (
       <Grid
         container
-        spacing={0}
+        gap={1}
         ref={alignTo}
-        className={classes.item}
+        sx={{
+          backgroundColor: theme.palette.background.paper,
+          position: 'relative',
+          cursor: 'pointer',
+          padding: '4px',
+          '&:hover': {
+            backgroundColor: theme.palette.action.hover,
+          },
+        }}
         onClick={(skipHandleShowListBoxPopover === false && handleShowListBoxPopover) || null}
       >
         {Header}
         {Icon}
         {SegmentsIndicator}
         {showListBoxPopover && (
-          <StyledListBoxPopover
+          <ListBoxPopover
             alignTo={alignTo}
             show={showListBoxPopover}
             close={handleCloseShowListBoxPopover}
@@ -183,7 +170,7 @@ export default function OneField({
     );
   }
   return moreAlignTo ? (
-    <StyledListBoxPopover
+    <ListBoxPopover
       alignTo={alignTo}
       show
       close={handleCloseShowListBoxPopover}
