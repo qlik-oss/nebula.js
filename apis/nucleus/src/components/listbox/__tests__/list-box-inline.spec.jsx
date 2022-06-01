@@ -90,7 +90,6 @@ describe('<ListboxInline />', () => {
         ],
         [require.resolve('@nebula.js/ui/icons/unlock'), () => () => 'unlock'],
         [require.resolve('@nebula.js/ui/icons/lock'), () => () => 'lock'],
-        [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({ icon: 'icon' }), useTheme })],
         [require.resolve('../../../contexts/InstanceContext'), () => InstanceContext],
         [require.resolve('../../../hooks/useObjectSelections'), () => useObjectSelections],
         [require.resolve('../../../hooks/useSessionModel'), () => useSessionModel],

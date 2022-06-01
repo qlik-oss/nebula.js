@@ -1,6 +1,7 @@
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { Checkbox } from '@mui/material';
+import ListBoxCheckbox from '../ListBoxCheckbox';
 
 async function render(content) {
   let testRenderer;
@@ -11,27 +12,6 @@ async function render(content) {
 }
 
 describe('<ListBoxCheckbox />', () => {
-  let ListBoxCheckbox;
-
-  before(() => {
-    [{ default: ListBoxCheckbox }] = aw.mock(
-      [
-        [
-          require.resolve('@nebula.js/ui/theme'),
-          () => ({
-            makeStyles: () => () => ({
-              cbIcon: 'cbIcon',
-              cbIconChecked: 'cbIconChecked',
-              checkbox: 'checkbox',
-              cbIconAlternative: 'cbIconAlternative',
-              cbIconExcluded: 'cbIconExcluded',
-            }),
-          }),
-        ],
-      ],
-      ['../ListBoxCheckbox']
-    );
-  });
   it('should render an unchecked checkbox', async () => {
     const testRenderer = await render(<ListBoxCheckbox label="just check it" />);
     const cbs = testRenderer.root.findAllByType(Checkbox);

@@ -5,25 +5,7 @@ import Lock from '@nebula.js/ui/icons/lock';
 import ListBoxCheckbox from '../ListBoxCheckbox';
 import * as keyboardNavigation from '../listbox-keyboard-navigation';
 import ListBoxRadioButton from '../ListBoxRadioButton';
-
-const [{ default: ListBoxRowColumn }] = aw.mock(
-  [
-    [
-      require.resolve('@nebula.js/ui/theme'),
-      () => ({
-        makeStyles: () => () => ({
-          S: 'selected',
-          A: 'alternative',
-          X: 'excluded',
-          XS: 'excluded-selected',
-          highlighted: 'highlighted',
-          cell: 'cell',
-        }),
-      }),
-    ],
-  ],
-  ['../ListBoxRowColumn']
-);
+import ListBoxRowColumn from '../ListBoxRowColumn';
 
 async function render(content) {
   let testRenderer;

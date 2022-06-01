@@ -2,8 +2,7 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { MenuList, MenuItem, ListItemIcon, Typography } from '@mui/material';
-
-import makeStyles from '@mui/styles/makeStyles';
+import { styled } from '@mui/material/styles';
 
 const Popover = (p) => p.children;
 const SvgIconMock = '<div>/div>';
@@ -11,10 +10,10 @@ const SvgIconMock = '<div>/div>';
 const [{ default: ActionsToolbarMore }] = aw.mock(
   [
     [require.resolve('@nebula.js/ui/icons/SvgIcon'), () => () => SvgIconMock],
+    [require.resolve('@mui/material/styles'), () => ({ styled })],
     [
       require.resolve('@mui/material'),
       () => ({
-        makeStyles,
         MenuList,
         MenuItem,
         ListItemIcon,

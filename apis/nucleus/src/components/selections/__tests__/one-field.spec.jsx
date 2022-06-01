@@ -19,7 +19,6 @@ const [{ default: OneField }] = aw.mock(
             },
           },
         }),
-        makeStyles: () => () => ({}),
       }),
     ],
   ],
