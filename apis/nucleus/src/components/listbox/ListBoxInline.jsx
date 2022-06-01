@@ -96,6 +96,36 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     qInfo: {
       qType: 'njsListbox',
     },
+    qHyperCubeDef: {
+      qDimensions: [],
+      // qMeasures: [],
+      // qSuppressMissing: true,
+      // qMode: 'S',
+      // columnOrder: [],
+      // columnWidths: [],
+      // qColumnOrder: [],
+      qStateName: stateName,
+      qShowAlternatives: true,
+      qFrequencyMode: getListdefFrequencyMode(),
+      qInitialDataFetch: [
+        {
+          qTop: 0,
+          qLeft: 0,
+          qWidth: 0,
+          qHeight: 0,
+        },
+      ],
+      qDef: {
+        qSortCriterias: [
+          {
+            qSortByState: sortByState,
+            qSortByAscii: 1,
+            qSortByNumeric: 1,
+            qSortByLoadOrder: 1,
+          },
+        ],
+      },
+    },
     qListObjectDef: {
       qStateName: stateName,
       qShowAlternatives: true,

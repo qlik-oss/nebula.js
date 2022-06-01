@@ -117,13 +117,16 @@ export default function ListBox({
 
   const applyValueFilter = (pagesToFilter, filterFunc) => {
     // After applying filter, adapt qHeight to reflect the filtered values (if any).
+
+    let count = 0;
     const filteredPages = pagesToFilter.map((page) => {
       const { qMatrix: matrix = [], qArea } = page;
       const initialLength = matrix.length;
-      const qMatrix = filterFunc(matrix);
+      const qMatrix = filterFunc(matrix || []);
       const nbrValuesRemoved = initialLength - qMatrix.length;
-      const qHeight = qArea.qHeight - nbrValuesRemoved;
-      return { ...page, qMatrix, qArea: { ...qArea, qHeight } };
+      count += nbrValuesRemoved;
+      const qHeight = Math.max(0, qArea.qHeight - nbrValuesRemoved);
+      return { ...page, qMatrix, count, qArea: { ...qArea, qHeight } };
     });
     return filteredPages;
   };
@@ -140,6 +143,21 @@ export default function ListBox({
 
       const isScrolling = loaderRef.current ? loaderRef.current._listRef.state.isScrolling : false;
 
+      const fetchData = async () => {
+        const sorted = local.current.queue.slice(-2).sort((a, b) => a.start - b.start);
+        const hasSelections = true;
+        const ps = sorted.map((s) => ({
+          qTop: s.start,
+          qHeight: s.stop - s.start + 1,
+          qLeft: 0,
+          qWidth: 1,
+        }));
+        const dataPages = hasSelections
+          ? await model.getHyperCubeData('/qHyperCubeDef', ps)
+          : await model.getListObjectData('/qListObjectDef', ps);
+        return dataPages;
+      };
+
       if (local.current.queue.length > 10) {
         local.current.queue.shift();
       }
@@ -148,28 +166,17 @@ export default function ListBox({
       return new Promise((resolve) => {
         local.current.timeout = setTimeout(
           () => {
-            const sorted = local.current.queue.slice(-2).sort((a, b) => a.start - b.start);
-            const reqPromise = model
-              .getListObjectData(
-                '/qListObjectDef',
-                sorted.map((s) => ({
-                  qTop: s.start,
-                  qHeight: s.stop - s.start + 1,
-                  qLeft: 0,
-                  qWidth: 1,
-                }))
-              )
-              .then((p) => {
-                let receivedPages = p;
-                if (filterValues && p && p.length) {
-                  receivedPages = applyValueFilter(p, filterValues);
-                }
-                local.current.validPages = true;
-                listData.current.pages = receivedPages;
-                setPages(receivedPages);
-                setIsLoadingData(false);
-                resolve();
-              });
+            const reqPromise = fetchData().then((p) => {
+              let receivedPages = p;
+              if (filterValues && p && p.length) {
+                receivedPages = applyValueFilter(p, filterValues);
+              }
+              local.current.validPages = true;
+              listData.current.pages = receivedPages;
+              setPages(receivedPages);
+              setIsLoadingData(false);
+              resolve();
+            });
             fetchStart && fetchStart(reqPromise);
           },
           isScrolling ? SCROLL_TIMEOUT : 0
@@ -220,14 +227,15 @@ export default function ListBox({
     return null;
   }
 
-  const getPagesHeight = (ps) => (ps && ps.length ? ps.reduce((h, { qArea }) => h + qArea.qHeight, 0) : 0);
+  const count = layout.qListObject.qSize.qcy;
 
   const isVertical = listLayout !== 'horizontal';
-  const count = layout.qListObject.qSize.qcy;
-  const itemCount = filterValues ? getPagesHeight(pages) || count : count;
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
+
+  const getPagesHeight = (ps) => (ps && ps.length ? ps.reduce((h, { qArea }) => h + qArea.qHeight, 0) : 0);
+  const itemCount = filterValues ? getPagesHeight(pages) : count;
 
   return (
     <InfiniteLoader
