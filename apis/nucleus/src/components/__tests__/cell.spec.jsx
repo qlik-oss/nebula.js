@@ -13,6 +13,7 @@ describe('<Cell />', () => {
   let LongRunningQuery;
   let CError;
   let Supernova;
+  let useRect;
   let Header;
   let InstanceContext;
   let useLayout;
@@ -35,6 +36,7 @@ describe('<Cell />', () => {
     layoutState = { validating: true, canCancel: false, canRetry: false };
     longrunning = { cancel: sandbox.spy(), retry: sandbox.spy() };
     useLayout = sandbox.stub().returns([layout, layoutState, longrunning]);
+    useRect = sandbox.stub().returns([() => {}, { width: 300, height: 400 }]);
     [{ default: Cell }] = aw.mock(
       [
         [
@@ -43,6 +45,13 @@ describe('<Cell />', () => {
             __esModule: true,
             default: useLayout,
             useAppLayout: () => [appLayout],
+          }),
+        ],
+        [
+          require.resolve('../../hooks/useRect'),
+          () => ({
+            __esModule: true,
+            default: useRect,
           }),
         ],
         [require.resolve('../Loading'), () => Loading],
@@ -610,9 +619,11 @@ describe('<Cell />', () => {
           }),
         },
       });
+      /*
       await act(async () => {
         global.window.addEventListener.callArg(1);
       });
+      */
       const snapshot = await cellRef.current.takeSnapshot();
       const { key } = snapshot;
       delete snapshot.key;
@@ -662,9 +673,11 @@ describe('<Cell />', () => {
           }),
         },
       });
+      /*
       await act(async () => {
         global.window.addEventListener.callArg(1);
       });
+      */
       const snapshot = await cellRef.current.takeSnapshot();
       expect(snapshot.layout).to.deep.equal({
         foo: 'bar',

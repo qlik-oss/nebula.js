@@ -37,6 +37,7 @@ export default function ListBoxSearch({ model, keyboard, dense = false }) {
           <Search size={dense ? 'small' : 'normal'} />
         </InputAdornment>
       }
+      className="search"
       sx={[
         {
           border: 'none',

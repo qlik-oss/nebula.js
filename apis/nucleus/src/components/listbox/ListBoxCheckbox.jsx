@@ -55,14 +55,14 @@ const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
     backgroundColor: theme.palette.selected.alternative,
   },
 
-  [`& .${classes.checkbox}`]: {
+  [`&.${classes.checkbox}`]: {
     margin: 0,
     '&:hover': {
       backgroundColor: 'inherit !important',
     },
   },
 
-  [`& .${classes.dense}`]: {
+  [`&.${classes.dense}`]: {
     padding: '4px 8px',
   },
 }));
