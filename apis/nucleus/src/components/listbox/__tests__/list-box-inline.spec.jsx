@@ -2,6 +2,7 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { IconButton, Grid, Typography } from '@mui/material';
+import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
 describe('<ListboxInline />', () => {
   let sandbox;
@@ -22,8 +23,6 @@ describe('<ListboxInline />', () => {
   let ActionsToolbar;
   let ListBoxSearch;
   let createListboxSelectionToolbar;
-  let useTheme;
-  let theme;
   let layout;
   let useSessionModel;
   let useObjectSelections;
@@ -54,11 +53,6 @@ describe('<ListboxInline />', () => {
     getListboxInlineKeyboardNavigation = sandbox.stub().returns('keyboard-navigation');
     ListBoxSearch = sandbox.stub();
     createListboxSelectionToolbar = sandbox.stub();
-    useTheme = sandbox.stub();
-    theme = {
-      spacing: sandbox.stub(),
-      palette: { divider: 'red' },
-    };
     layout = {
       title: 'title',
 
@@ -136,10 +130,8 @@ describe('<ListboxInline />', () => {
       fetchStart: 'fetchStart',
     };
 
-    theme.spacing.returns('padding');
     useState.callsFake((startValue) => [startValue, () => {}]);
     useRef.returns({ current: 'current' });
-    useTheme.returns(theme);
     createListboxSelectionToolbar.returns('actions');
 
     ActionsToolbar.returns('ActionsToolbar');
@@ -181,12 +173,16 @@ describe('<ListboxInline />', () => {
 
   describe('Check rendering with different options', () => {
     beforeEach(() => {
+      const theme = createTheme('dark');
+
       render = async () => {
         await act(async () => {
           renderer = create(
-            <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
-              <ListBoxInline app={app} fieldIdentifier={fieldIdentifier} stateName={stateName} options={options} />
-            </InstanceContext.Provider>
+            <ThemeProvider theme={theme}>
+              <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
+                <ListBoxInline app={app} fieldIdentifier={fieldIdentifier} stateName={stateName} options={options} />
+              </InstanceContext.Provider>
+            </ThemeProvider>
           );
         });
       };
