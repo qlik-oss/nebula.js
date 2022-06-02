@@ -1,6 +1,5 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-import { text, boolean } from '@storybook/addon-knobs'; // eslint-disable-line
+
 import OneField from '../OneField';
 
 export default {
@@ -25,8 +24,11 @@ const api = {
     return false;
   },
 };
-
-const states = [
+const info = {
+  states: ['$'],
+  qField: 'Product',
+};
+const selections = [
   { info: 'None', qTotal: 0 },
   {
     info: 'One locked',
@@ -60,28 +62,46 @@ const states = [
   },
 ];
 
-const stateFn = (state) => (
-  <OneField
-    api={api}
-    field={{
-      states: [text('State', '$')],
-      selections: [{ qField: text('Field', 'Product'), ...state, qLocked: !!state.qLocked }],
-    }}
-  />
-);
+function Template(args) {
+  const { states, qLocked, ...rest } = args;
 
-export const fields = () => (
-  <Grid container spacing={1} wrap="nowrap">
-    <Grid item>{stateFn(states[0])}</Grid>
-    <Grid item>{stateFn(states[1])}</Grid>
-    <Grid item>{stateFn(states[2])}</Grid>
-    <Grid item>{stateFn(states[3])}</Grid>
-    <Grid item>{stateFn(states[4])}</Grid>
-  </Grid>
-);
+  return (
+    <OneField
+      api={api}
+      field={{
+        states,
+        selections: [{ ...rest, qLocked: !!qLocked }],
+      }}
+    />
+  );
+}
 
-export const none = () => stateFn(states[0]);
-export const locked = () => stateFn(states[1]);
-export const one = () => stateFn(states[2]);
-export const some = () => stateFn(states[3]);
-export const all = () => stateFn(states[4]);
+export const locked = Template.bind({});
+locked.args = {
+  ...info,
+  ...selections[1],
+};
+
+export const none = Template.bind({});
+none.args = {
+  ...info,
+  ...selections[0],
+};
+
+export const one = Template.bind({});
+one.args = {
+  ...info,
+  ...selections[2],
+};
+
+export const some = Template.bind({});
+some.args = {
+  ...info,
+  ...selections[3],
+};
+
+export const all = Template.bind({});
+all.args = {
+  ...info,
+  ...selections[4],
+};

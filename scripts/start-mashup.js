@@ -4,12 +4,11 @@ const yargs = require('yargs');
 
 const mashupServer = require('../test/mashup/server');
 
-const args = yargs
-  .option('start', {
-    default: true,
-    type: 'boolean',
-    describe: 'Start the mashup server',
-  }).argv;
+const args = yargs.option('start', {
+  default: true,
+  type: 'boolean',
+  describe: 'Start the mashup server',
+}).argv;
 
 const { start } = args;
 

@@ -11,7 +11,6 @@ const postcss = require('rollup-plugin-postcss');
 const replace = require('@rollup/plugin-replace');
 const sourcemaps = require('rollup-plugin-sourcemaps');
 const jsxPlugin = require('@babel/plugin-transform-react-jsx');
-const typescriptPlugin = require('@rollup/plugin-typescript');
 const json = require('@rollup/plugin-json');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
@@ -78,8 +77,15 @@ const config = ({
   const auth = typeof author === 'object' ? `${author.name} <${author.email}>` : author || '';
   const moduleName = name.split('/').reverse()[0];
   const extensions = ['.mjs', '.js', '.jsx', '.json', '.node'];
+
+  let typescriptPlugin;
   if (typescript) {
     extensions.push('.tsx', '.ts');
+    try {
+      typescriptPlugin = require('@rollup/plugin-typescript'); // eslint-disable-line
+    } catch (e) {
+      throw new Error(`Please install '@rollup/plugin-typescript' to build using typescript.`);
+    }
   }
 
   const banner = `/*

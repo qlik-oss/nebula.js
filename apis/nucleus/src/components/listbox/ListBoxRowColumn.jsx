@@ -35,11 +35,13 @@ const getSelectedStyle = ({ theme }) => ({
 });
 
 const useStyles = makeStyles((theme) => ({
-  row: ({ noBottomBorder }) => ({
+  row: {
     flexWrap: 'nowrap',
-    borderBottom: noBottomBorder ? 0 : `1px solid ${theme.palette.divider}`,
     color: theme.palette.text.primary,
-  }),
+  },
+  rowBorderBottom: {
+    borderBottom: `1px solid ${theme.palette.divider}`,
+  },
   column: {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
@@ -190,7 +192,7 @@ function RowColumn({ index, style, data, column = false }) {
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
 
-  const classes = useStyles({ noBottomBorder: histogram && dense });
+  const classes = useStyles();
   const [classArr, setClassArr] = useState([]);
 
   useEffect(() => {
@@ -219,6 +221,7 @@ function RowColumn({ index, style, data, column = false }) {
     setSelected(selected);
 
     const clazzArr = [column ? classes.column : classes.row];
+    if (!(histogram && dense)) clazzArr.push(classes.rowBorderBottom);
     if (!checkboxes) {
       if (cell.qState === 'XS') {
         clazzArr.push(showGray ? classes.XS : classes.S);
