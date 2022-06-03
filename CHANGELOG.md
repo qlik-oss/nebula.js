@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.11.0](https://github.com/qlik-oss/nebula.js/compare/v2.10.0...v2.11.0) (2022-06-01)
+
+### Bug Fixes
+
+- apply color when selecting ([#834](https://github.com/qlik-oss/nebula.js/issues/834)) ([58aa840](https://github.com/qlik-oss/nebula.js/commit/58aa840d8ec5bfb380b223b7b05eb62c4b7482d1))
+- remove event listeners when unmounting ([#828](https://github.com/qlik-oss/nebula.js/issues/828)) ([0457175](https://github.com/qlik-oss/nebula.js/commit/04571756387c53ee554c30844d2f37760e3a2183))
+- storybook does not work ([#838](https://github.com/qlik-oss/nebula.js/issues/838)) ([9f09d0b](https://github.com/qlik-oss/nebula.js/commit/9f09d0be77adc7ee9134d7c90385f38fb6a62117))
+- **ac:** dense rows smaller ([#832](https://github.com/qlik-oss/nebula.js/issues/832)) ([1ea9105](https://github.com/qlik-oss/nebula.js/commit/1ea910544b867b3d77f250d9e990748aa0a60dcd))
+
+### Features
+
+- confirm selection when interacting outside of listbox ([#826](https://github.com/qlik-oss/nebula.js/issues/826)) ([5832698](https://github.com/qlik-oss/nebula.js/commit/5832698b36bb9af8ae686613cebf1f956baaa098))
+- pass current scroll position to hosting app. set initial scroll position ([#837](https://github.com/qlik-oss/nebula.js/issues/837)) ([50fdefa](https://github.com/qlik-oss/nebula.js/commit/50fdefa9c70d4d79b2349ef1a37bf8c2bcf95597))
+
 # [2.10.0](https://github.com/qlik-oss/nebula.js/compare/v2.9.0...v2.10.0) (2022-04-26)
 
 ### Features
