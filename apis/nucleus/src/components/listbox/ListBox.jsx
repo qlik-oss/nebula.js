@@ -66,6 +66,8 @@ export default function ListBox({
   checkboxes = false,
   update = undefined,
   fetchStart = undefined,
+  postProcessPages = undefined,
+  calculatePagesHeight = false,
   dense = false,
   keyboard = {},
   showGray = true,
@@ -146,9 +148,10 @@ export default function ListBox({
                 }))
               )
               .then((p) => {
+                const processedPages = postProcessPages ? postProcessPages(p) : p;
                 local.current.validPages = true;
-                listData.current.pages = p;
-                setPages(p);
+                listData.current.pages = processedPages;
+                setPages(processedPages);
                 setIsLoadingData(false);
                 resolve();
               });
@@ -204,6 +207,11 @@ export default function ListBox({
 
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
+
+  const getAccumulatedHeight = (ps) => ps.reduce((acc, p) => acc + p.qArea.qHeight, 0);
+
+  const listCount = pages && pages.length && calculatePagesHeight ? getAccumulatedHeight(pages) : count;
+
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
@@ -227,7 +235,7 @@ export default function ListBox({
             style={{}}
             height={listHeight}
             width={width}
-            itemCount={count}
+            itemCount={listCount}
             layout={listLayout}
             className={styles.styledScrollbars}
             itemData={{
