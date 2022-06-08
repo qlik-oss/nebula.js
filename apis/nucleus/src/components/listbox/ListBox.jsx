@@ -72,6 +72,7 @@ export default function ListBox({
   scrollState,
   sortByState,
   selectDisabled = () => false,
+  setCount,
 }) {
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
@@ -181,6 +182,9 @@ export default function ListBox({
 
   useEffect(() => {
     fetchData();
+    if (typeof setCount === 'function' && layout) {
+      setCount(layout.qListObject.qSize.qcy);
+    }
   }, [layout]);
 
   useEffect(() => {
