@@ -320,7 +320,7 @@ export default function App({ app, info }) {
                           style={{
                             background: theme.palette.background.paper,
                             overflow: 'hidden auto',
-                            marginTop: 48, // 48 + theme.spacing(SPACING / 2), but theme.spacing returns 8px, making it a string concat
+                            marginTop: 48,
                             boxShadow: theme.shadows[1],
                             padding: 0,
                           }}

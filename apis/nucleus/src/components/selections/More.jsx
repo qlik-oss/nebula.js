@@ -82,7 +82,7 @@ export default function More({ items = [], api }) {
     <StyledGrid container gap={0} className={classes.item} onClick={handleShowMoreItems}>
       <Grid item>
         <Box
-          borderRadius="undefinedpx"
+          borderRadius={theme.shape.borderRadius}
           style={{
             padding: '4px 8px 4px 8px',
             backgroundColor: theme.palette.selected.main,
