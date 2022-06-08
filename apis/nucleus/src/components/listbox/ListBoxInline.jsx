@@ -56,6 +56,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     showGray = true,
     sortByState = 1,
     scrollState = undefined,
+    setCount = undefined,
   } = options;
   let { frequencyMode, histogram = false } = options;
 
@@ -341,6 +342,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               showGray={showGray}
               scrollState={scrollState}
               sortByState={sortByState}
+              setCount={setCount}
             />
           )}
         </AutoSizer>
