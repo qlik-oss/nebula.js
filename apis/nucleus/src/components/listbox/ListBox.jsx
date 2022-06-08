@@ -182,7 +182,7 @@ export default function ListBox({
 
   useEffect(() => {
     fetchData();
-    if (setCount !== undefined && layout) {
+    if (typeof setCount === 'function' && layout) {
       setCount(layout.qListObject.qSize.qcy);
     }
   }, [layout]);
