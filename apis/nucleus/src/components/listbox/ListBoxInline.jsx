@@ -1,11 +1,12 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
+import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
 
-import { IconButton, Grid, Typography } from '@material-ui/core';
-import { useTheme, makeStyles } from '@nebula.js/ui/theme';
+import { IconButton, Grid, Typography } from '@mui/material';
+import { useTheme } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
 import useSessionModel from '../../hooks/useSessionModel';
 import useLayout from '../../hooks/useLayout';
@@ -22,8 +23,14 @@ import useObjectSelections from '../../hooks/useObjectSelections';
 import { getListboxInlineKeyboardNavigation } from './listbox-keyboard-navigation';
 import useConfirmUnfocus from './useConfirmUnfocus';
 
-const useStyles = makeStyles(() => ({
-  listBoxHeader: {
+const PREFIX = 'ListBoxInline';
+
+const classes = {
+  listBoxHeader: `${PREFIX}-listBoxHeader`,
+};
+
+const StyledGrid = styled(Grid)(() => ({
+  [`& .${classes.listBoxHeader}`]: {
     alignSelf: 'center',
     display: 'inline-flex',
   },
@@ -150,7 +157,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   }
 
   const theme = useTheme();
-  const classes = useStyles();
 
   const lock = useCallback(() => {
     model.lock('/qListObjectDef');
@@ -245,21 +251,21 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
 
   const getSearchOrUnlock = () =>
     search === 'toggle' && !hasSelections ? (
-      <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')}>
+      <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
         <SearchIcon />
       </IconButton>
     ) : (
-      <IconButton onClick={lock} tabIndex={-1} disabled={!hasSelections}>
+      <IconButton onClick={lock} tabIndex={-1} disabled={!hasSelections} size="large">
         <Unlock />
       </IconButton>
     );
 
   return (
-    <Grid
+    <StyledGrid
       container
       tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"
-      spacing={0}
+      gap={0}
       style={{ height: '100%', minHeight: `${minHeight}px` }}
       onKeyDown={handleKeyDown}
       ref={listBoxRef}
@@ -268,7 +274,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
         <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (
-              <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked}>
+              <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
                 <Lock title={translator.get('Listbox.Unlock')} />
               </IconButton>
             ) : (
@@ -339,6 +345,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
           )}
         </AutoSizer>
       </Grid>
-    </Grid>
+    </StyledGrid>
   );
 }

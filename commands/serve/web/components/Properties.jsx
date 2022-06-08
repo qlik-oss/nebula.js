@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 
-import { Divider, Grid, Checkbox, FormControlLabel } from '@material-ui/core';
+import { Divider, Grid, Checkbox, FormControlLabel } from '@mui/material';
 
 import usePropertiesById from '@nebula.js/nucleus/src/hooks/usePropertiesById';
 

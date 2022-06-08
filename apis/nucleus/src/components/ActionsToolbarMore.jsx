@@ -1,27 +1,35 @@
 import React from 'react';
 
-import { makeStyles, Popover, MenuList, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+
+import { Popover, MenuList, MenuItem, ListItemIcon, Typography } from '@mui/material';
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 
 import useActionState from '../hooks/useActionState';
 
-const useStyles = makeStyles((theme) => ({
-  icon: {
+const PREFIX = 'More';
+
+const classes = {
+  icon: `${PREFIX}-icon`,
+};
+
+const StyledPopover = styled(Popover)(({ theme }) => ({
+  [`& .${classes.icon}`]: {
     color: theme.palette.text.primary,
   },
 }));
 
 function MoreItem({ item, onActionClick = () => {} }) {
   const { hidden, disabled, hasSvgIconShape } = useActionState(item);
-  const { icon } = useStyles();
+
   const handleClick = () => {
     item.action();
     onActionClick();
   };
   return !hidden ? (
     <MenuItem title={item.label} onClick={handleClick} disabled={disabled}>
-      {hasSvgIconShape && <ListItemIcon className={icon}>{SvgIcon(item.getSvgIconShape())}</ListItemIcon>}
+      {hasSvgIconShape && <ListItemIcon className={classes.icon}>{SvgIcon(item.getSvgIconShape())}</ListItemIcon>}
       <Typography noWrap>{item.label}</Typography>
     </MenuItem>
   ) : null;
@@ -36,7 +44,7 @@ const More = React.forwardRef(
 
     return (
       showActions && (
-        <Popover
+        <StyledPopover
           // eslint-disable-next-line react/jsx-props-no-spreading
           {...popoverProps}
           onClose={onCloseOrActionClick}
@@ -71,7 +79,7 @@ const More = React.forwardRef(
               <MoreItem key={ix} item={item} onActionClick={onCloseOrActionClick} />
             ))}
           </MenuList>
-        </Popover>
+        </StyledPopover>
       )
     );
   }

@@ -1,13 +1,21 @@
 import React, { useState, useRef } from 'react';
-import { IconButton, Grid, Popover, List, ListItem, Box, Typography } from '@material-ui/core';
-import { makeStyles, useTheme } from '@nebula.js/ui/theme';
+import { styled } from '@mui/material/styles';
+import { IconButton, Grid, Popover, List, ListItem, Box, Typography } from '@mui/material';
+import { useTheme } from '@nebula.js/ui/theme';
 import DownArrow from '@nebula.js/ui/icons/down-arrow';
 
 import OneField from './OneField';
 import MultiState from './MultiState';
 
-const useStyles = makeStyles((theme) => ({
-  item: {
+const PREFIX = 'More';
+
+const classes = {
+  item: `${PREFIX}-item`,
+  badge: `${PREFIX}-badge`,
+};
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  [`&.${classes.item}`]: {
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     cursor: 'pointer',
@@ -18,13 +26,13 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     alignItems: 'center',
   },
-  badge: {
+
+  [`& .${classes.badge}`]: {
     padding: theme.spacing(0, 1),
   },
 }));
 
 export default function More({ items = [], api }) {
-  const classes = useStyles();
   const theme = useTheme();
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [showItemIx, setShowItemIx] = useState(-1);
@@ -71,7 +79,7 @@ export default function More({ items = [], api }) {
   }
 
   return (
-    <Grid container spacing={0} className={classes.item} onClick={handleShowMoreItems}>
+    <StyledGrid container gap={0} className={classes.item} onClick={handleShowMoreItems}>
       <Grid item>
         <Box
           borderRadius={theme.shape.borderRadius}
@@ -87,7 +95,7 @@ export default function More({ items = [], api }) {
         </Box>
       </Grid>
       <Grid item>
-        <IconButton>
+        <IconButton size="large">
           <DownArrow />
         </IconButton>
       </Grid>
@@ -116,7 +124,7 @@ export default function More({ items = [], api }) {
             {items.map((s, ix) => (
               // eslint-disable-next-line react/no-array-index-key
               <ListItem key={ix} title={s.name} onClick={(e) => handleShowItem(e, ix)}>
-                <Box border={1} width="100%" borderRadius="borderRadius" borderColor="divider">
+                <Box border={1} width="100%" borderRadius={1} borderColor="divider">
                   {s.states.length > 1 ? <MultiState field={s} api={api} /> : <OneField field={s} api={api} />}
                 </Box>
               </ListItem>
@@ -125,6 +133,6 @@ export default function More({ items = [], api }) {
         </Popover>
       )}
       {CurrentItem}
-    </Grid>
+    </StyledGrid>
   );
 }

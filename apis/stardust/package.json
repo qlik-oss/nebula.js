@@ -42,9 +42,6 @@
     "@types/qlik-engineapi": "12.67.12"
   },
   "devDependencies": {
-    "@material-ui/core": "4.12.4",
-    "@material-ui/icons": "4.11.3",
-    "@material-ui/styles": "4.11.5",
     "@nebula.js/conversion": "^2.11.0",
     "@nebula.js/enigma-mocker": "^2.11.0",
     "@nebula.js/locale": "^2.11.0",
@@ -52,6 +49,11 @@
     "@nebula.js/supernova": "^2.11.0",
     "@nebula.js/theme": "^2.11.0",
     "@nebula.js/ui": "^2.11.0",
+    "@mui/material": "^5.8.1",
+    "@mui/icons-material": "^5.8.0",
+    "@mui/styles": "^5.8.0",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
     "@scriptappy/cli": "0.1.0",
     "@scriptappy/to-dts": "1.0.0-beta.4",
     "extend": "3.0.2",
