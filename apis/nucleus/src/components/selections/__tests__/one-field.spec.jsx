@@ -1,32 +1,19 @@
 /* eslint react/jsx-no-constructed-context-values: 0 */
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { IconButton, Typography } from '@material-ui/core';
+import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
+import { IconButton, Typography } from '@mui/material';
 
 const InstanceContext = React.createContext();
 const [{ default: OneField }] = aw.mock(
-  [
-    [require.resolve('../../../contexts/InstanceContext'), () => InstanceContext],
-    [
-      require.resolve('@nebula.js/ui/theme'),
-      () => ({
-        useTheme: () => ({
-          palette: {
-            selected: {
-              main: '#009845',
-              alternative: '#E4E4E4',
-              excluded: '#BEBEBE',
-            },
-          },
-        }),
-        makeStyles: () => () => ({}),
-      }),
-    ],
-  ],
+  [[require.resolve('../../../contexts/InstanceContext'), () => InstanceContext]],
   ['../OneField']
 );
 
 describe('<OneField />', () => {
+  const theme = createTheme('dark');
+  const create = (component) => renderer.create(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
+
   it('should have `ALL`', () => {
     const field = {
       selections: [
@@ -45,7 +32,7 @@ describe('<OneField />', () => {
       ],
       states: ['$'],
     };
-    const testRenderer = renderer.create(
+    const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'ALL' } }}>
         <OneField field={field} />
       </InstanceContext.Provider>
@@ -82,7 +69,7 @@ describe('<OneField />', () => {
       ],
       states: ['$'],
     };
-    const testRenderer = renderer.create(
+    const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Of' } }}>
         <OneField field={field} />
       </InstanceContext.Provider>
@@ -111,7 +98,7 @@ describe('<OneField />', () => {
       ],
       states: ['$'],
     };
-    const testRenderer = renderer.create(
+    const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Clear' } }}>
         <OneField field={field} />
       </InstanceContext.Provider>
@@ -132,7 +119,7 @@ describe('<OneField />', () => {
       ],
       states: ['$'],
     };
-    const testRenderer = renderer.create(
+    const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Lock' } }}>
         <OneField field={field} />
       </InstanceContext.Provider>

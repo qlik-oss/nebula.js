@@ -1,8 +1,27 @@
 import React, { useEffect, useState } from 'react';
 
-import { makeStyles, Grid, Typography } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+
+import { Grid, Typography } from '@mui/material';
 import ActionsToolbar from './ActionsToolbar';
 import useRect from '../hooks/useRect';
+
+const PREFIX = 'Header';
+
+const classes = {
+  containerStyle: `${PREFIX}-containerStyle`,
+  containerTitleStyle: `${PREFIX}-containerTitleStyle`,
+};
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  [`& .${classes.containerStyle}`]: {
+    flexGrow: 0,
+  },
+
+  [`& .${classes.containerTitleStyle}`]: {
+    paddingBottom: theme.spacing(1),
+  },
+}));
 
 const ITEM_WIDTH = 32;
 const ITEM_SPACING = 4;
@@ -30,21 +49,12 @@ const CellSubTitle = {
   className: 'njs-cell-sub-title',
 };
 
-const useStyles = makeStyles((theme) => ({
-  containerStyle: {
-    flexGrow: 0,
-  },
-  containerTitleStyle: {
-    paddingBottom: theme.spacing(1),
-  },
-}));
-
 function Header({ layout, sn, anchorEl, hovering, focusHandler }) {
   const showTitle = layout.showTitles && !!layout.title;
   const showSubtitle = layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
   const [actions, setActions] = useState([]);
-  const { containerStyle, containerTitleStyle } = useStyles();
+
   const [containerRef, containerRect] = useRect();
   const [shouldShowPopoverToolbar, setShouldShowPopoverToolbar] = useState(false);
 
@@ -64,7 +74,7 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler }) {
   }, [containerRect]);
 
   const showTitles = showTitle || showSubtitle;
-  const classes = [containerStyle, ...(showTitles ? [containerTitleStyle] : [])];
+  const cls = [classes.containerStyle, ...(showTitles ? [classes.containerTitleStyle] : [])];
   const showPopoverToolbar = (hovering || showInSelectionActions) && (shouldShowPopoverToolbar || !showTitles);
   const showToolbar = showTitles && !showPopoverToolbar && !shouldShowPopoverToolbar;
 
@@ -83,7 +93,7 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler }) {
   );
 
   return (
-    <Grid ref={containerRef} item container wrap="nowrap" className={classes.join(' ')}>
+    <StyledGrid ref={containerRef} item container wrap="nowrap" className={cls.join(' ')}>
       <Grid item zeroMinWidth xs>
         <Grid container wrap="nowrap" direction="column">
           {showTitle && (
@@ -99,7 +109,7 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler }) {
         </Grid>
       </Grid>
       <Grid item>{Toolbar}</Grid>
-    </Grid>
+    </StyledGrid>
   );
 }
 

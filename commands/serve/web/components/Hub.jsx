@@ -1,25 +1,25 @@
 /* eslint no-nested-ternary: 0 */
 import React, { useState, useEffect } from 'react';
 
-import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
+import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 import { Help } from '@nebula.js/ui/icons';
 import Remove from '@nebula.js/ui/icons/remove';
-import Box from '@material-ui/core/Box';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import Collapse from '@material-ui/core/Collapse';
-import Container from '@material-ui/core/Container';
-import IconButton from '@material-ui/core/IconButton';
-import Grid from '@material-ui/core/Grid';
-import Link from '@material-ui/core/Link';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
-import Typography from '@material-ui/core/Typography';
-import Stepper from '@material-ui/core/Stepper';
-import Step from '@material-ui/core/Step';
-import StepLabel from '@material-ui/core/StepLabel';
-import CircularProgress from '@material-ui/core/CircularProgress';
+import Box from '@mui/material/Box';
+import OutlinedInput from '@mui/material/OutlinedInput';
+import Collapse from '@mui/material/Collapse';
+import Container from '@mui/material/Container';
+import IconButton from '@mui/material/IconButton';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemText from '@mui/material/ListItemText';
+import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
+import Typography from '@mui/material/Typography';
+import Stepper from '@mui/material/Stepper';
+import Step from '@mui/material/Step';
+import StepLabel from '@mui/material/StepLabel';
+import CircularProgress from '@mui/material/CircularProgress';
 
 import { info as connectionInfo, connect } from '../connect';
 import storageFn from '../storage';
@@ -81,7 +81,7 @@ function SelectEngine({ info, children }) {
               <ListItem button key={li} component="a" href={goTo(li)}>
                 <ListItemText primary={li} />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" onClick={() => onRemove(li)}>
+                  <IconButton edge="end" onClick={() => onRemove(li)} size="large">
                     <Remove />
                   </IconButton>
                 </ListItemSecondaryAction>
@@ -354,41 +354,45 @@ export default function Hub() {
   }
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container maxWidth="md">
-        <ThemeProvider theme={themeDark}>
-          <Stepper alternativeLabel activeStep={activeStep} style={{ backgroundColor: 'transparent' }}>
-            {steps.map((label, i) => (
-              <Step key={label}>
-                {i ? (
-                  <StepLabel>{label}</StepLabel>
-                ) : (
-                  <StepLabel
-                    onClick={glob || err ? reset : null}
-                    error={!!err}
-                    style={{
-                      cursor: glob || err ? 'pointer' : 'default',
-                    }}
-                  >
-                    {label}
-                  </StepLabel>
-                )}
-              </Step>
-            ))}
-          </Stepper>
-        </ThemeProvider>
-        <Box p={[2, 2]} m={2} bgcolor="background.paper" boxShadow={24} borderRadius="borderRadius">
-          {glob ? (
-            glob.status === 401 ? (
-              <Typography variant="h5">Connecting...</Typography>
+    <StyledEngineProvider injectFirst>
+      <ThemeProvider theme={theme}>
+        <Container maxWidth="md">
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={themeDark}>
+              <Stepper alternativeLabel activeStep={activeStep} style={{ backgroundColor: 'transparent', padding: 24 }}>
+                {steps.map((label, i) => (
+                  <Step key={label}>
+                    {i ? (
+                      <StepLabel>{label}</StepLabel>
+                    ) : (
+                      <StepLabel
+                        onClick={glob || err ? reset : null}
+                        error={!!err}
+                        style={{
+                          cursor: glob || err ? 'pointer' : 'default',
+                        }}
+                      >
+                        {label}
+                      </StepLabel>
+                    )}
+                  </Step>
+                ))}
+              </Stepper>
+            </ThemeProvider>
+          </StyledEngineProvider>
+          <Box p={[2, 2]} m={2} bgcolor="background.paper" boxShadow={24} borderRadius={1}>
+            {glob ? (
+              glob.status === 401 ? (
+                <Typography variant="h5">Connecting...</Typography>
+              ) : (
+                <AppList info={info} glob={glob} treatAsDesktop={treatAsDesktop} />
+              )
             ) : (
-              <AppList info={info} glob={glob} treatAsDesktop={treatAsDesktop} />
-            )
-          ) : (
-            <SelectEngine info={info}>{err && <Err e={err} />}</SelectEngine>
-          )}
-        </Box>
-      </Container>
-    </ThemeProvider>
+              <SelectEngine info={info}>{err && <Err e={err} />}</SelectEngine>
+            )}
+          </Box>
+        </Container>
+      </ThemeProvider>
+    </StyledEngineProvider>
   );
 }

@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 
+import { styled } from '@mui/material/styles';
+
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
-import { makeStyles } from '@nebula.js/ui/theme';
 
 import useLayout from '../../hooks/useLayout';
 
@@ -12,12 +13,17 @@ import useSelectionsInteractions from './useSelectionsInteractions';
 
 import RowColumn from './ListBoxRowColumn';
 
+const PREFIX = 'ListBox';
 const scrollBarThumb = '#BBB';
 const scrollBarThumbHover = '#555';
 const scrollBarBackground = '#f1f1f1';
 
-const useStyles = makeStyles(() => ({
-  styledScrollbars: {
+const classes = {
+  styledScrollbars: `${PREFIX}-styledScrollbars`,
+};
+
+const StyledInfiniteLoader = styled(InfiniteLoader)(() => ({
+  [`& .${classes.styledScrollbars}`]: {
     scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
 
     '&::-webkit-scrollbar': {
@@ -74,12 +80,13 @@ export default function ListBox({
   scrollState,
   sortByState,
   selectDisabled = () => false,
+  setCount,
 }) {
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const [pages, setPages] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
-  const styles = useStyles();
+
   const {
     instantPages = [],
     interactionEvents,
@@ -184,6 +191,9 @@ export default function ListBox({
 
   useEffect(() => {
     fetchData();
+    if (typeof setCount === 'function' && layout) {
+      setCount(layout.qListObject.qSize.qcy);
+    }
   }, [layout]);
 
   useEffect(() => {
@@ -217,7 +227,7 @@ export default function ListBox({
   const { frequencyMax } = layout;
 
   return (
-    <InfiniteLoader
+    <StyledInfiniteLoader
       isItemLoaded={isItemLoaded}
       itemCount={count}
       loadMoreItems={loadMoreItems}
@@ -237,7 +247,7 @@ export default function ListBox({
             width={width}
             itemCount={listCount}
             layout={listLayout}
-            className={styles.styledScrollbars}
+            className={classes.styledScrollbars}
             itemData={{
               isLocked,
               column: !isVertical,
@@ -270,6 +280,6 @@ export default function ListBox({
           </FixedSizeList>
         );
       }}
-    </InfiniteLoader>
+    </StyledInfiniteLoader>
   );
 }

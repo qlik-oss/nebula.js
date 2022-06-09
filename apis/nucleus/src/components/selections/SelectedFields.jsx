@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 
 import { useTheme } from '@nebula.js/ui/theme';
 import useCurrentSelectionsModel from '../../hooks/useCurrentSelectionsModel';
@@ -91,7 +91,7 @@ export default function SelectedFields({ api, app }) {
   }, [app, currentSelectionsModel, layout, api.isInModal(), maxItems]);
 
   return (
-    <Grid ref={containerRef} container spacing={0} wrap="nowrap" style={{ height: '100%' }}>
+    <Grid ref={containerRef} container gap={0} wrap="nowrap" style={{ height: '100%' }}>
       {state.items.map((s) => (
         <Grid
           item

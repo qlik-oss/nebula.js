@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer, useRef } from 'react';
 
-import { Grid, Paper } from '@material-ui/core';
+import { Grid, Paper } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 
 import CError from './Error';
@@ -489,7 +489,7 @@ const Cell = forwardRef(
         <Grid
           container
           direction="column"
-          spacing={0}
+          gap={0}
           style={{
             position: 'relative',
             width: '100%',

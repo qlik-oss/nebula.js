@@ -1,6 +1,6 @@
 import React from 'react';
-import { Grid } from '@material-ui/core';
-
+import { Grid } from '@mui/material';
+import { text, boolean } from '@storybook/addon-knobs'; // eslint-disable-line
 import { AppSelections } from '../AppSelections';
 
 export default {
@@ -68,7 +68,7 @@ const app = (numSelectedFields = 0) => ({
 const stateFn = (numSelectedFields = 0) => <AppSelections app={app(numSelectedFields)} />;
 
 export const variations = () => (
-  <Grid container spacing={2} direction="column">
+  <Grid container gap={2} direction="column">
     <Grid item>{stateFn(0)}</Grid>
     <Grid item>{stateFn(2)}</Grid>
     <Grid item>{stateFn(15)}</Grid>

@@ -37,6 +37,7 @@
     "@babel/core": "7.17.10",
     "@babel/helper-plugin-utils": "7.16.7",
     "@babel/plugin-transform-react-jsx": "7.17.3",
+    "@babel/plugin-proposal-object-rest-spread": "7.12.1",
     "@babel/preset-env": "7.17.10",
     "@babel/preset-react": "7.16.7",
     "@commitlint/cli": "16.2.4",
