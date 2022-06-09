@@ -27,6 +27,10 @@ export default function useSelectionsInteractions({
 
   const elemNumbersOrdered = getElemNumbersFromPages(pages);
 
+  useEffect(() => {
+    setIsSingleSelect(singleSelect);
+  }, [singleSelect]);
+
   // Select values for real, by calling the backend.
   const select = async (elemNumbers = [], additive = false) => {
     if (selectDisabled()) {
@@ -118,7 +122,7 @@ export default function useSelectionsInteractions({
     setSelectingValues(false);
     setIsRangeSelection(false);
     setIsSingleSelect(singleSelect);
-  }, []);
+  }, [singleSelect]);
 
   const onMouseEnter = useCallback(
     (event) => {
@@ -155,7 +159,7 @@ export default function useSelectionsInteractions({
     return () => {
       doc.removeEventListener('mouseup', onMouseUpDoc);
     };
-  }, []);
+  }, [onMouseUpDoc]);
 
   useEffect(() => {
     if (selectingValues || mouseDown) {
