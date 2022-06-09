@@ -91,26 +91,31 @@ export default function OneField({
       </Grid>
     );
 
-    Icon = selection.qLocked ? (
-      <Grid item>
-        <IconButton size="large">
-          <Lock />
-        </IconButton>
-      </Grid>
-    ) : (
-      <Grid item>
-        <IconButton
-          title={translator.get('Selection.Clear')}
-          onClick={(e) => {
-            e.stopPropagation();
-            api.clearField(selection.qField, field.states[stateIx]);
-          }}
-          size="large"
-        >
-          <Remove />
-        </IconButton>
-      </Grid>
-    );
+    if (selection.qLocked) {
+      Icon = (
+        <Grid item>
+          <IconButton size="large">
+            <Lock />
+          </IconButton>
+        </Grid>
+      );
+    } else if (!selection.qOneAndOnlyOne) {
+      Icon = (
+        <Grid item>
+          <IconButton
+            title={translator.get('Selection.Clear')}
+            onClick={(e) => {
+              e.stopPropagation();
+              api.clearField(selection.qField, field.states[stateIx]);
+            }}
+            size="large"
+          >
+            <Remove />
+          </IconButton>
+        </Grid>
+      );
+    }
+
     SegmentsIndicator = (
       <div
         style={{
