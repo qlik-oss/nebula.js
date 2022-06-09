@@ -4,6 +4,10 @@ import { selectPossible } from '@nebula.js/ui/icons/select-possible';
 import { selectExcluded } from '@nebula.js/ui/icons/select-excluded';
 
 export default ({ layout, model, translator }) => {
+  if (layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne) {
+    return [];
+  }
+
   const canSelectAll = () =>
     ['qOption', 'qAlternative', 'qExcluded', 'qDeselected'].some(
       (sc) => layout.qListObject.qDimensionInfo.qStateCounts[sc] > 0
