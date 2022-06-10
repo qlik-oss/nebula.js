@@ -1,6 +1,7 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-
+import { createRoot } from 'react-dom/client';
 import Hub from './components/Hub';
 
-ReactDOM.render(<Hub />, document.querySelector('#hub'));
+const container = document.querySelector('#hub');
+const root = createRoot(container);
+root.render(<Hub />);

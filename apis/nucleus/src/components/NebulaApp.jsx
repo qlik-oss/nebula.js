@@ -1,6 +1,5 @@
-import React, { useState, useMemo, forwardRef, useImperativeHandle } from 'react';
-import ReactDOM from 'react-dom';
-
+import React, { useState, useEffect, useMemo, forwardRef, useImperativeHandle } from 'react';
+import { createRoot } from 'react-dom/client';
 import { createTheme, ThemeProvider, StyledEngineProvider, createGenerateClassName } from '@nebula.js/ui/theme';
 
 import InstanceContext from '../contexts/InstanceContext';
@@ -10,10 +9,14 @@ const NEBULA_VERSION_HASH = process.env.NEBULA_VERSION_HASH || '';
 
 let counter = 0;
 
-const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
+const NebulaApp = forwardRef(({ initialContext, app, resolver }, ref) => {
   const [appSelections] = useAppSelections(app);
   const [context, setContext] = useState(initialContext);
   const [muiThemeName, setMuiThemeName] = useState();
+
+  useEffect(() => {
+    resolver && resolver();
+  });
 
   const { theme, generator } = useMemo(
     () => ({
@@ -67,8 +70,11 @@ export default function boot({ app, context }) {
   element.setAttribute('data-nebulajs-version', process.env.NEBULA_VERSION || '');
   element.setAttribute('data-app-id', app.id);
   document.body.appendChild(element);
+  const root = createRoot(element);
 
-  ReactDOM.render(<NebulaApp ref={appRef} app={app} initialContext={context} />, element, resolveRender);
+  root.render(<NebulaApp ref={appRef} app={app} initialContext={context} resolver={resolveRender} />);
+
+  // ReactDOM.render(<NebulaApp ref={appRef} app={app} initialContext={context} />, element, resolveRender);
 
   const cells = {};
 

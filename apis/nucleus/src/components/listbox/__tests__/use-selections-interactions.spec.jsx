@@ -249,8 +249,7 @@ describe('use-listbox-interactions', () => {
       expect(applySelectionsOnPages.args[2]).to.deep.equal([[], [24, 25, 28], false]);
       expect(applySelectionsOnPages.args[3]).to.deep.equal([[], [24, 25, 28, 30], false]);
     });
-    // TODO: MUIv5
-    it.skip('Should "toggle" checkboxes', async () => {
+    it('Should "toggle" checkboxes', async () => {
       await render({ checkboxes: true });
       const startCallCount = applySelectionsOnPages.callCount;
       await act(() => {
