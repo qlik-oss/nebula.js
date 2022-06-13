@@ -39,7 +39,7 @@ const tryAddCommand = (m) => {
   }
 };
 
-['@nebula.js/cli-build', '@nebula.js/cli-create', '@nebula.js/cli-serve', '@nebula.js/cli-sense'].forEach(
+['@nebula.js/cli-create', '@nebula.js/cli-build', '@nebula.js/cli-serve', '@nebula.js/cli-sense'].forEach(
   tryAddCommand
 );
 
