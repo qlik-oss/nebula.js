@@ -218,9 +218,19 @@ export default function ListBox({
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
 
-  const getAccumulatedHeight = (ps) => ps.reduce((acc, p) => acc + p.qArea.qHeight, 0);
+  // const getAccumulatedHeight = (ps) => ps.reduce((acc, p) => acc + p.qArea.qHeight, 0);
 
-  const listCount = pages && pages.length && calculatePagesHeight ? getAccumulatedHeight(pages) : count;
+  const PAGE_MAX_HEIGHT = 100;
+
+  const getCalculatedHeight = (ps) => {
+    // If have a full page
+    const h = ps[0].qArea.qHeight;
+    return h < PAGE_MAX_HEIGHT ? h : count;
+  };
+
+  const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
+
+  // console.log(count, listCount, pages);
 
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
