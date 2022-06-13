@@ -51,7 +51,6 @@
     "@nebula.js/ui": "^2.11.0",
     "@mui/material": "^5.8.3",
     "@mui/icons-material": "^5.8.3",
-    "@mui/styles": "^5.8.3",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
     "@scriptappy/cli": "0.1.0",

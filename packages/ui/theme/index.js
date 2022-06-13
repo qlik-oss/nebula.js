@@ -1,6 +1,5 @@
-import { useTheme, createGenerateClassName } from '@mui/styles';
-import { ThemeProvider, StyledEngineProvider } from '@mui/material/styles';
-
+import { ThemeProvider, StyledEngineProvider, useTheme } from '@mui/material/styles';
+import { unstable_ClassNameGenerator as ClassNameGenerator } from '@mui/material/className';
 import createTheme from './create';
 
-export { createTheme, createGenerateClassName, useTheme, ThemeProvider, StyledEngineProvider };
+export { createTheme, useTheme, ThemeProvider, ClassNameGenerator, StyledEngineProvider };

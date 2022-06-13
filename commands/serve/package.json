@@ -49,7 +49,6 @@
     "@babel/preset-env": "7.18.2",
     "@babel/preset-react": "7.17.12",
     "@mui/material": "^5.8.3",
-    "@mui/styles": "^5.8.3",
     "@nebula.js/enigma-mocker": "^2.11.0",
     "@nebula.js/nucleus": "^2.11.0",
     "@nebula.js/snapshooter": "^2.11.0",
