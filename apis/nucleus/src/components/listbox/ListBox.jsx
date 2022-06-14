@@ -218,20 +218,18 @@ export default function ListBox({
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
 
-  // const getAccumulatedHeight = (ps) => ps.reduce((acc, p) => acc + p.qArea.qHeight, 0);
-
   const PAGE_MAX_HEIGHT = 100;
 
   const getCalculatedHeight = (ps) => {
-    // If have a full page
+    // If values have been filtered in the currently loaded page, we want to
+    // prevent rendering empty rows by assigning the actual number of items to render
+    // since count (qcy) does not reflect this in DQ mode currently.
     const h = ps[0].qArea.qHeight;
-    return h < PAGE_MAX_HEIGHT ? h : count;
+    const hasFilteredValues = h < PAGE_MAX_HEIGHT;
+    return hasFilteredValues ? h : count;
   };
 
-  const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
-
-  // console.log(count, listCount, pages);
-
+  const listCount = pages && pages.length === 1 && calculatePagesHeight ? getCalculatedHeight(pages) : count;
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
