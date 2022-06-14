@@ -18,6 +18,8 @@ const scrollBarThumb = '#BBB';
 const scrollBarThumbHover = '#555';
 const scrollBarBackground = '#f1f1f1';
 
+const MINIMUM_BATCH_SIZE = 100;
+
 const classes = {
   styledScrollbars: `${PREFIX}-styledScrollbars`,
 };
@@ -218,18 +220,16 @@ export default function ListBox({
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
 
-  const PAGE_MAX_HEIGHT = 100;
-
   const getCalculatedHeight = (ps) => {
     // If values have been filtered in the currently loaded page, we want to
     // prevent rendering empty rows by assigning the actual number of items to render
     // since count (qcy) does not reflect this in DQ mode currently.
     const h = ps[0].qArea.qHeight;
-    const hasFilteredValues = h < PAGE_MAX_HEIGHT;
+    const hasFilteredValues = ps.some((page) => page.qArea.qHeight < MINIMUM_BATCH_SIZE);
     return hasFilteredValues ? h : count;
   };
 
-  const listCount = pages && pages.length === 1 && calculatePagesHeight ? getCalculatedHeight(pages) : count;
+  const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
@@ -240,7 +240,7 @@ export default function ListBox({
       itemCount={count}
       loadMoreItems={loadMoreItems}
       threshold={0}
-      minimumBatchSize={100}
+      minimumBatchSize={MINIMUM_BATCH_SIZE}
       ref={loaderRef}
     >
       {({ onItemsRendered, ref }) => {
