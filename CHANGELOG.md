@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.12.0](https://github.com/qlik-oss/nebula.js/compare/v2.11.0...v2.12.0) (2022-06-14)
+
+### Bug Fixes
+
+- fix OneAndOnlyOne in app and object selection toolbar ([#850](https://github.com/qlik-oss/nebula.js/issues/850)) ([9ebc408](https://github.com/qlik-oss/nebula.js/commit/9ebc4085ea628cbeaadbeafe696454200252a73f))
+- **nucleus:** fix layout timing with qIsOneAndOnlyOne ([#849](https://github.com/qlik-oss/nebula.js/issues/849)) ([2059615](https://github.com/qlik-oss/nebula.js/commit/205961557e7e2e6d28b0237e9bcc8eccc97beb2f))
+
+### Features
+
+- data count to hosting app ([#848](https://github.com/qlik-oss/nebula.js/issues/848)) ([80b7ed3](https://github.com/qlik-oss/nebula.js/commit/80b7ed38852c1924cca82adffa41e806554a8993))
+
 # [2.11.0](https://github.com/qlik-oss/nebula.js/compare/v2.10.0...v2.11.0) (2022-06-01)
 
 ### Bug Fixes
