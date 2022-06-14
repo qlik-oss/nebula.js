@@ -60,6 +60,8 @@ describe('nucleus', () => {
         selectDisabled: undefined,
         selectionsApi: undefined,
         sessionModel: undefined,
+        calculatePagesHeight: false,
+        postProcessPages: undefined,
       });
     });
 
@@ -84,6 +86,8 @@ describe('nucleus', () => {
         selectDisabled: undefined,
         selectionsApi: undefined,
         sessionModel: undefined,
+        calculatePagesHeight: false,
+        postProcessPages: undefined,
       });
     });
 
@@ -101,6 +105,8 @@ describe('nucleus', () => {
         selectDisabled: undefined,
         selectionsApi: undefined,
         sessionModel: undefined,
+        calculatePagesHeight: false,
+        postProcessPages: undefined,
       });
     });
   });
