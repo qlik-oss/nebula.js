@@ -237,7 +237,7 @@ export default function ListBox({
   return (
     <StyledInfiniteLoader
       isItemLoaded={isItemLoaded}
-      itemCount={count}
+      itemCount={listCount}
       loadMoreItems={loadMoreItems}
       threshold={0}
       minimumBatchSize={MINIMUM_BATCH_SIZE}
