@@ -225,7 +225,7 @@ export default function ListBox({
     // prevent rendering empty rows by assigning the actual number of items to render
     // since count (qcy) does not reflect this in DQ mode currently.
     const hasFilteredValues = ps.some((page) => page.qArea.qHeight < MINIMUM_BATCH_SIZE);
-    const h = ps.reduce((tot, page) => tot + page.qArea.qHeight, 0);
+    const h = Math.max(...ps.map((page) => page.qArea.qTop + page.qArea.qHeight));
     return hasFilteredValues ? h : count;
   };
 
