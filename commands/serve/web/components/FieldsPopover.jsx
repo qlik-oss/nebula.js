@@ -1,6 +1,6 @@
 import React, { useContext, useState, useMemo } from 'react';
 
-import { Popover, List, ListSubheader, ListItem, ListItemText, ListItemIcon, Divider } from '@material-ui/core';
+import { Popover, List, ListSubheader, ListItem, ListItemText, ListItemIcon, Divider } from '@mui/material';
 import parse from 'autosuggest-highlight/parse';
 import match from 'autosuggest-highlight/match';
 

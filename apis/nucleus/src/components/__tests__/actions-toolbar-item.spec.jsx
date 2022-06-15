@@ -1,6 +1,6 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { IconButton } from '@material-ui/core';
+import { IconButton } from '@mui/material';
 
 const SvgIcon = () => 'svgicon';
 
@@ -9,7 +9,6 @@ const [{ default: ActionsToolbarItem }] = aw.mock(
     [
       require.resolve('@nebula.js/ui/theme'),
       () => ({
-        makeStyles: () => () => ({ icon: 'icon' }),
         useTheme: () => ({ spacing: () => 0, palette: { btn: { active: 'pink' } } }),
       }),
     ],

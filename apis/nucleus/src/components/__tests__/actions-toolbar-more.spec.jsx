@@ -1,7 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { makeStyles, MenuList, MenuItem, ListItemIcon, Typography } from '@material-ui/core';
+import { MenuList, MenuItem, ListItemIcon, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 
 const Popover = (p) => p.children;
 const SvgIconMock = '<div>/div>';
@@ -9,10 +10,10 @@ const SvgIconMock = '<div>/div>';
 const [{ default: ActionsToolbarMore }] = aw.mock(
   [
     [require.resolve('@nebula.js/ui/icons/SvgIcon'), () => () => SvgIconMock],
+    [require.resolve('@mui/material/styles'), () => ({ styled })],
     [
-      require.resolve('@material-ui/core'),
+      require.resolve('@mui/material'),
       () => ({
-        makeStyles,
         MenuList,
         MenuItem,
         ListItemIcon,

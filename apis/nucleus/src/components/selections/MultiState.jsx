@@ -1,6 +1,6 @@
 import React, { useState, useContext, useRef } from 'react';
-import { Badge, IconButton, Grid, Typography, Popover, Button, List, ListItem, Box } from '@material-ui/core';
-import { makeStyles } from '@nebula.js/ui/theme';
+import { styled } from '@mui/material/styles';
+import { Badge, IconButton, Grid, Typography, Popover, Button, List, ListItem, Box } from '@mui/material';
 import DownArrow from '@nebula.js/ui/icons/down-arrow';
 
 import OneField from './OneField';
@@ -8,8 +8,15 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
-const useStyles = makeStyles((theme) => ({
-  item: {
+const PREFIX = 'MultiState';
+
+const classes = {
+  item: `${PREFIX}-item`,
+  badge: `${PREFIX}-badge`,
+};
+
+const StyledListBoxPopover = styled(ListBoxPopover)(({ theme }) => ({
+  [`& .${classes.item}`]: {
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     cursor: 'pointer',
@@ -20,13 +27,13 @@ const useStyles = makeStyles((theme) => ({
     height: '100%',
     alignItems: 'center',
   },
-  badge: {
+
+  [`& .${classes.badge}`]: {
     padding: theme.spacing(0, 1),
   },
 }));
 
 export default function MultiState({ field, api, moreAlignTo = null, onClose = () => {} }) {
-  const classes = useStyles();
   // If originated from the `more` item show fields directly
   const [showFields, setShowFields] = useState(!!moreAlignTo);
   const [showStateIx, setShowStateIx] = useState(-1);
@@ -80,7 +87,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
           <div style={{ width: '12px' }} />
         </Grid>
         <Grid item>
-          <IconButton>
+          <IconButton size="large">
             <DownArrow />
           </IconButton>
         </Grid>
@@ -97,7 +104,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
       {field.states.map((s, ix) => (
         // eslint-disable-next-line react/no-array-index-key
         <ListItem key={ix} title={field.name} onClick={(e) => handleShowState(e, ix)}>
-          <Box border={1} width="100%" borderRadius="borderRadius" borderColor="divider">
+          <Box border={1} width="100%" borderRadius={1} borderColor="divider">
             <OneField field={field} api={api} stateIx={ix} skipHandleShowListBoxPopover />
           </Box>
         </ListItem>
@@ -132,11 +139,11 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
   const Component = moreAlignTo ? (
     PopoverFields
   ) : (
-    <Grid container spacing={0} className={classes.item} onClick={handleShowFields}>
+    <Grid container gap={0} className={classes.item} onClick={handleShowFields}>
       {Header}
       {showFields && PopoverFields}
       {showStateIx > -1 && (
-        <ListBoxPopover
+        <StyledListBoxPopover
           alignTo={alignTo}
           show={showStateIx > -1}
           close={handleCloseShowState}
@@ -149,7 +156,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
   );
 
   return moreAlignTo && showStateIx > -1 ? (
-    <ListBoxPopover
+    <StyledListBoxPopover
       alignTo={alignTo}
       show={showStateIx > -1}
       close={handleCloseShowState}

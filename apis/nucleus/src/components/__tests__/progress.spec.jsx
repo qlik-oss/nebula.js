@@ -1,11 +1,7 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { CircularProgress } from '@material-ui/core';
-
-const [{ default: Progress }] = aw.mock(
-  [[require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({}) })]],
-  ['../Progress']
-);
+import { CircularProgress } from '@mui/material';
+import Progress from '../Progress';
 
 describe('<Progress />', () => {
   let sandbox;

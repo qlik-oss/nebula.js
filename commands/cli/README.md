@@ -14,10 +14,11 @@ npm install -g @nebula.js/cli
 nebula <command> [options]
 
 Commands:
-  nebula create <name>  Create a visualization
-  nebula build          Build visualization
-  nebula serve          Dev server
-  nebula sense          Build a nebula visualization as a Qlik Sense extension
+  nebula create <name>    Create a visualization
+  / create mashup <name>  / Create a mashup
+  nebula build            Build visualization
+  nebula serve            Start a development server
+  nebula sense            Build a nebula visualization as a Qlik Sense extension
 
 Options:
   --version   Show version number                                      [boolean]

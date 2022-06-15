@@ -2,9 +2,10 @@
 
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 
+import { styled } from '@mui/material/styles';
+
 import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
-import { makeStyles } from '@nebula.js/ui/theme';
 
 import useLayout from '../../hooks/useLayout';
 
@@ -12,12 +13,19 @@ import useSelectionsInteractions from './useSelectionsInteractions';
 
 import RowColumn from './ListBoxRowColumn';
 
+const PREFIX = 'ListBox';
 const scrollBarThumb = '#BBB';
 const scrollBarThumbHover = '#555';
 const scrollBarBackground = '#f1f1f1';
 
-const useStyles = makeStyles(() => ({
-  styledScrollbars: {
+const MINIMUM_BATCH_SIZE = 100;
+
+const classes = {
+  styledScrollbars: `${PREFIX}-styledScrollbars`,
+};
+
+const StyledInfiniteLoader = styled(InfiniteLoader)(() => ({
+  [`& .${classes.styledScrollbars}`]: {
     scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
 
     '&::-webkit-scrollbar': {
@@ -66,18 +74,21 @@ export default function ListBox({
   checkboxes = false,
   update = undefined,
   fetchStart = undefined,
+  postProcessPages = undefined,
+  calculatePagesHeight = false,
   dense = false,
   keyboard = {},
   showGray = true,
   scrollState,
   sortByState,
   selectDisabled = () => false,
+  setCount,
 }) {
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const [pages, setPages] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
-  const styles = useStyles();
+
   const {
     instantPages = [],
     interactionEvents,
@@ -146,9 +157,10 @@ export default function ListBox({
                 }))
               )
               .then((p) => {
+                const processedPages = postProcessPages ? postProcessPages(p) : p;
                 local.current.validPages = true;
-                listData.current.pages = p;
-                setPages(p);
+                listData.current.pages = processedPages;
+                setPages(processedPages);
                 setIsLoadingData(false);
                 resolve();
               });
@@ -181,6 +193,9 @@ export default function ListBox({
 
   useEffect(() => {
     fetchData();
+    if (typeof setCount === 'function' && layout) {
+      setCount(layout.qListObject.qSize.qcy);
+    }
   }, [layout]);
 
   useEffect(() => {
@@ -204,17 +219,28 @@ export default function ListBox({
 
   const isVertical = listLayout !== 'horizontal';
   const count = layout.qListObject.qSize.qcy;
+
+  const getCalculatedHeight = (ps) => {
+    // If values have been filtered in the currently loaded page, we want to
+    // prevent rendering empty rows by assigning the actual number of items to render
+    // since count (qcy) does not reflect this in DQ mode currently.
+    const hasFilteredValues = ps.some((page) => page.qArea.qHeight < MINIMUM_BATCH_SIZE);
+    const h = Math.max(...ps.map((page) => page.qArea.qTop + page.qArea.qHeight));
+    return hasFilteredValues ? h : count;
+  };
+
+  const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
 
   return (
-    <InfiniteLoader
+    <StyledInfiniteLoader
       isItemLoaded={isItemLoaded}
       itemCount={count}
       loadMoreItems={loadMoreItems}
       threshold={0}
-      minimumBatchSize={100}
+      minimumBatchSize={MINIMUM_BATCH_SIZE}
       ref={loaderRef}
     >
       {({ onItemsRendered, ref }) => {
@@ -227,9 +253,9 @@ export default function ListBox({
             style={{}}
             height={listHeight}
             width={width}
-            itemCount={count}
+            itemCount={listCount}
             layout={listLayout}
-            className={styles.styledScrollbars}
+            className={classes.styledScrollbars}
             itemData={{
               isLocked,
               column: !isVertical,
@@ -262,6 +288,6 @@ export default function ListBox({
           </FixedSizeList>
         );
       }}
-    </InfiniteLoader>
+    </StyledInfiniteLoader>
   );
 }

@@ -1,6 +1,8 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { makeStyles, Grid, Typography } from '@material-ui/core';
+import { Grid, Typography } from '@mui/material';
+
+import { styled } from '@mui/material/styles';
 
 const Popover = (props) => props.children;
 const ActionsToolbar = () => 'ActionsToolbar';
@@ -18,10 +20,10 @@ describe('<Header />', () => {
       [
         [require.resolve('../ActionsToolbar'), () => ActionsToolbar],
         [require.resolve('../../hooks/useRect'), () => () => [() => {}, rect]],
+        [require.resolve('@mui/material/styles'), () => ({ styled })],
         [
-          require.resolve('@material-ui/core'),
+          require.resolve('@mui/material'),
           () => ({
-            makeStyles,
             Grid,
             Typography,
             Popover,

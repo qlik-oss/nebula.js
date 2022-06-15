@@ -1,6 +1,21 @@
 import React from 'react';
 
-import { makeStyles, Typography, Grid } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+
+import { Typography, Grid } from '@mui/material';
+
+const PREFIX = 'Footer';
+
+const classes = {
+  itemStyle: `${PREFIX}-itemStyle`,
+};
+
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  [`& .${classes.itemStyle}`]: {
+    minWidth: 0,
+    paddingTop: theme.spacing(1),
+  },
+}));
 
 /**
  * @interface
@@ -12,23 +27,15 @@ const CellFooter = {
   className: 'njs-cell-footer',
 };
 
-const useStyles = makeStyles((theme) => ({
-  itemStyle: {
-    minWidth: 0,
-    paddingTop: theme.spacing(1),
-  },
-}));
-
 function Footer({ layout }) {
-  const { itemStyle } = useStyles();
   return layout && layout.showTitles && layout.footnote ? (
-    <Grid container>
-      <Grid item className={itemStyle}>
+    <StyledGrid container>
+      <Grid item className={classes.itemStyle}>
         <Typography noWrap variant="body2" className={CellFooter.className}>
           {layout.footnote}
         </Typography>
       </Grid>
-    </Grid>
+    </StyledGrid>
   ) : null;
 }
 

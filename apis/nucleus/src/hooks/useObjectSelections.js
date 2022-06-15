@@ -101,7 +101,7 @@ function createObjectSelections({ appSelections, appModal, model }) {
      */
     canClear() {
       if (layout && layout.qListObject && layout.qListObject.qDimensionInfo) {
-        return !layout.qListObject.qDimensionInfo.qLocked;
+        return !layout.qListObject.qDimensionInfo.qLocked && !layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne;
       }
       return hasSelected;
     },

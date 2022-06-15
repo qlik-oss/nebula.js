@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { Badge, IconButton, Grid, Typography, Button, List, ListItem, Box } from '@material-ui/core';
+import { Badge, IconButton, Grid, Typography, Button, List, ListItem, Box } from '@mui/material';
 
 const Popover = (props) => props.children;
 function ListBoxPopover() {
@@ -19,11 +19,10 @@ const [{ default: MultiState }] = aw.mock(
         useTheme: () => ({
           palette: { selected: {} },
         }),
-        makeStyles: () => () => ({}),
       }),
     ],
     [
-      require.resolve('@material-ui/core'),
+      require.resolve('@mui/material'),
       () => ({
         Badge,
         IconButton,

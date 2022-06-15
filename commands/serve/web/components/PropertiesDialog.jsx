@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 
-import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@material-ui/core';
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 import useRect from '@nebula.js/nucleus/src/hooks/useRect';
 import * as monaco from 'monaco-editor/esm/vs/editor/editor.api';
@@ -50,7 +50,7 @@ export default function PropertiesDialog({ model, show, close }) {
       value: objectProps,
       language: 'json',
       scrollBeyondLastLine: false,
-      theme: theme.palette.type === 'dark' ? 'vs-dark' : 'vs-light',
+      theme: theme.palette.mode === 'dark' ? 'vs-dark' : 'vs-light',
     });
     editor.layout({ width: monacoRect.width, height: monacoRect.height });
     const subscription = editor.onDidChangeModelDecorations(() => {

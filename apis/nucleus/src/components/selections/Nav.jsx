@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 
-import { IconButton, Grid } from '@material-ui/core';
+import { IconButton, Grid } from '@mui/material';
 
 import SelectionsBack from '@nebula.js/ui/icons/selections-back';
 import SelectionsForward from '@nebula.js/ui/icons/selections-forward';
@@ -29,6 +29,7 @@ export default function Nav({ api, app }) {
           disabled={!navState || !navState.canGoBack}
           title={translator.get('Navigate.Back')}
           onClick={() => api.back()}
+          size="large"
         >
           <SelectionsBack />
         </IconButton>
@@ -39,6 +40,7 @@ export default function Nav({ api, app }) {
           disabled={!navState || !navState.canGoForward}
           title={translator.get('Navigate.Forward')}
           onClick={() => api.forward()}
+          size="large"
         >
           <SelectionsForward />
         </IconButton>
@@ -48,6 +50,7 @@ export default function Nav({ api, app }) {
           disabled={!navState || !navState.canClear}
           title={translator.get('Selection.ClearAll')}
           onClick={() => api.clear()}
+          size="large"
         >
           <ClearSelections />
         </IconButton>

@@ -1,16 +1,17 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { OutlinedInput } from '@material-ui/core';
+import { OutlinedInput } from '@mui/material';
+import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
 const InstanceContext = React.createContext();
 const [{ default: ListBoxSearch }] = aw.mock(
-  [
-    [require.resolve('../../../contexts/InstanceContext'), () => InstanceContext],
-    [require.resolve('@nebula.js/ui/theme'), () => ({ makeStyles: () => () => ({}) })],
-  ],
+  [[require.resolve('../../../contexts/InstanceContext'), () => InstanceContext]],
   ['../ListBoxSearch']
 );
+const theme = createTheme('dark');
+
+const create = (comp) => renderer.create(<ThemeProvider theme={theme}>{comp}</ThemeProvider>);
 
 const keyboard = { enabled: false, active: true };
 
@@ -26,7 +27,7 @@ describe('<ListBoxSearch />', () => {
       acceptListObjectSearch: sinon.spy(),
       abortListObjectSearch: sinon.spy(),
     };
-    const testRenderer = renderer.create(
+    const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
         <ListBoxSearch model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
@@ -52,7 +53,7 @@ describe('<ListBoxSearch />', () => {
     keyboard.enabled = true;
     keyboard.active = false;
 
-    const testRenderer = renderer.create(
+    const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
         <ListBoxSearch model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
@@ -70,7 +71,7 @@ describe('<ListBoxSearch />', () => {
       acceptListObjectSearch: sinon.spy(),
       abortListObjectSearch: sinon.spy(),
     };
-    const testRenderer = renderer.create(
+    const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
         <ListBoxSearch model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
@@ -79,9 +80,11 @@ describe('<ListBoxSearch />', () => {
     let type = testInstance.findByType(OutlinedInput);
     type.props.onChange({ target: { value: 'foo' } });
     testRenderer.update(
-      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} keyboard={keyboard} />
-      </InstanceContext.Provider>
+      <ThemeProvider theme={theme}>
+        <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+          <ListBoxSearch model={model} keyboard={keyboard} />
+        </InstanceContext.Provider>
+      </ThemeProvider>
     );
     expect(model.searchListObjectFor).to.have.been.calledWith('/qListObjectDef', 'foo');
     type = testInstance.findByType(OutlinedInput);
@@ -93,7 +96,7 @@ describe('<ListBoxSearch />', () => {
       acceptListObjectSearch: sinon.spy(),
       abortListObjectSearch: sinon.spy(),
     };
-    const testRenderer = renderer.create(
+    const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
         <ListBoxSearch model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
@@ -112,7 +115,7 @@ describe('<ListBoxSearch />', () => {
       acceptListObjectSearch: sinon.spy(),
       abortListObjectSearch: sinon.spy(),
     };
-    const testRenderer = renderer.create(
+    const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
         <ListBoxSearch model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
