@@ -53,6 +53,8 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     fetchStart = undefined,
     dense = false,
     selectDisabled = () => false,
+    postProcessPages = undefined,
+    calculatePagesHeight,
     showGray = true,
     sortByState = 1,
     scrollState = undefined,
@@ -336,6 +338,8 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               width={width}
               update={update}
               fetchStart={fetchStart}
+              postProcessPages={postProcessPages}
+              calculatePagesHeight={calculatePagesHeight}
               dense={dense}
               selectDisabled={selectDisabled}
               keyboard={keyboard}
