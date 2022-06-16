@@ -55,6 +55,9 @@ export default {
     MuiCheckbox: {
       color: 'secondary',
     },
+    MuiRadio: {
+      color: 'secondary',
+    },
     MuiTabs: {
       indicatorColor: 'secondary',
     },
