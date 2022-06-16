@@ -29,7 +29,7 @@
     "@rollup/plugin-json": "4.1.0",
     "@rollup/plugin-node-resolve": "13.3.0",
     "@rollup/plugin-replace": "4.0.0",
-    "chalk": "4.1.2",
+    "chalk": "5.0.1",
     "extend": "3.0.2",
     "postcss": "^8.4.14",
     "rollup": "2.75.6",
