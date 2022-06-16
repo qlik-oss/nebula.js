@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha0](https://github.com/qlik-oss/nebula.js/compare/v2.11.0...v3.0.0-alpha0) (2022-06-16)
+
+### Bug Fixes
+
+- **deps:** update dependency puppeteer to v14 ([#844](https://github.com/qlik-oss/nebula.js/issues/844)) ([bc9d19e](https://github.com/qlik-oss/nebula.js/commit/bc9d19e729184fb1537a7c6a88df74d94c38e395))
+
 # [2.11.0](https://github.com/qlik-oss/nebula.js/compare/v2.10.0...v2.11.0) (2022-06-01)
 
 **Note:** Version bump only for package @nebula.js/cli-serve

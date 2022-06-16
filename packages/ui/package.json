@@ -1,25 +1,25 @@
 {
   "name": "@nebula.js/ui",
   "private": true,
-  "version": "2.11.0",
+  "version": "3.0.0-alpha0",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
   "keywords": [],
   "scripts": {},
   "peerDependencies": {
-    "@mui/material": "^5.8.3",
-    "@mui/icons-material": "^5.8.3",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.8.3",
+    "@mui/material": "^5.8.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0"
   },
   "devDependencies": {
-    "@mui/material": "^5.8.3",
-    "@mui/icons-material": "^5.8.3",
     "@emotion/react": "^11.9.0",
     "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.8.3",
+    "@mui/material": "^5.8.3",
     "react": "18.1.0",
     "react-dom": "18.1.0"
   }

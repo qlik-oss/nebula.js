@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha0](https://github.com/qlik-oss/nebula.js/compare/v2.11.0...v3.0.0-alpha0) (2022-06-16)
+
+### Bug Fixes
+
+- **deps:** update dependency puppeteer to v14 ([#844](https://github.com/qlik-oss/nebula.js/issues/844)) ([bc9d19e](https://github.com/qlik-oss/nebula.js/commit/bc9d19e729184fb1537a7c6a88df74d94c38e395))
+- fix OneAndOnlyOne in app and object selection toolbar ([#850](https://github.com/qlik-oss/nebula.js/issues/850)) ([ac2689b](https://github.com/qlik-oss/nebula.js/commit/ac2689b693710b7f14ce54294f246e0debc32c2d))
+- listbox radiobuttons fix ([#853](https://github.com/qlik-oss/nebula.js/issues/853)) ([09ddaec](https://github.com/qlik-oss/nebula.js/commit/09ddaeca491cb9578e416f89395f444510c15405))
+- **nucleus:** fix layout timing with qIsOneAndOnlyOne ([#849](https://github.com/qlik-oss/nebula.js/issues/849)) ([6a2c46b](https://github.com/qlik-oss/nebula.js/commit/6a2c46b62e8891321eec356d7647885c0f273f9f))
+- remove light-gray checkboxes in alternative state ([#846](https://github.com/qlik-oss/nebula.js/issues/846)) ([1da5e41](https://github.com/qlik-oss/nebula.js/commit/1da5e41ec25a2d742966773c1a1e59a6c803f6bd))
+
+### Features
+
+- data count to hosting app ([#848](https://github.com/qlik-oss/nebula.js/issues/848)) ([3907480](https://github.com/qlik-oss/nebula.js/commit/3907480a66ceef66997f323a8d135afba3fb92b5))
+- **ListBox:** postProcessPages and calculatePagesHeight options ([#847](https://github.com/qlik-oss/nebula.js/issues/847)) ([715789d](https://github.com/qlik-oss/nebula.js/commit/715789d858094ed338f1c609b817fc2f8572f5bc))
+
 # [2.11.0](https://github.com/qlik-oss/nebula.js/compare/v2.10.0...v2.11.0) (2022-06-01)
 
 ### Bug Fixes
