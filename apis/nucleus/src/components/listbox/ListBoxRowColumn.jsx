@@ -308,14 +308,7 @@ function RowColumn({ index, style, data, column = false }) {
   };
   const getCheckboxField = ({ lbl, color, qElemNumber }) => {
     const cb = (
-      <ListBoxCheckbox
-        label={lbl}
-        checked={isSelected}
-        dense={dense}
-        excluded={isExcluded(cell)}
-        alternative={isAlternative(cell)}
-        showGray={showGray}
-      />
+      <ListBoxCheckbox label={lbl} checked={isSelected} dense={dense} excluded={isExcluded(cell)} showGray={showGray} />
     );
     const rb = <ListBoxRadioButton label={lbl} checked={isSelected} dense={dense} />;
     const labelTag = typeof lbl === 'string' ? getValueField({ lbl, color, highlighted: false }) : lbl;
