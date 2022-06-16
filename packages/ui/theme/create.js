@@ -1,4 +1,5 @@
-import { createTheme } from '@material-ui/core/styles';
+import { createTheme, adaptV4Theme } from '@mui/material/styles';
+import { buttonClasses } from '@mui/material/Button';
 
 import base from './definitions/base';
 import light from './definitions/light';
@@ -10,6 +11,27 @@ const overrides = (theme) => ({
   MuiTypography: {
     root: {
       color: theme.palette.text.primary,
+    },
+  },
+  MuiGrid: {
+    variants: [
+      {
+        props: { alignItems: 'center' },
+        style: {
+          'align-items': 'center',
+        },
+      },
+    ],
+  },
+  MuiButtonBase: {
+    root: {
+      borderRadius: 2,
+      border: '1px solid transparent',
+      // should ideally use $focusVisible, but that messes up focus in all other places where Iconbutton is used (Checkbox, Switch etc)
+      '&:focus': {
+        borderColor: theme.palette.custom.focusBorder,
+        boxShadow: `0 0 0 2px ${theme.palette.custom.focusOutline}`,
+      },
     },
   },
   MuiIconButton: {
@@ -27,10 +49,10 @@ const overrides = (theme) => ({
   MuiOutlinedInput: {
     root: {
       backgroundColor: theme.palette.custom.inputBackground,
-      '&:hover $notchedOutline': {
+      '&:hover .MuiOutlinedInput-notchedOutline': {
         borderColor: theme.palette.btn.border,
       },
-      '&$focused $notchedOutline': {
+      '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
         borderColor: theme.palette.custom.focusBorder,
         borderWidth: 2,
       },
@@ -39,7 +61,7 @@ const overrides = (theme) => ({
   MuiButton: {
     outlined: {
       padding: '3px 11px',
-      '&$focusVisible': {
+      [`&.${buttonClasses.focusVisible}`]: {
         borderColor: theme.palette.custom.focusBorder,
         boxShadow: `0 0 0 2px ${theme.palette.custom.focusOutline}`,
       },
@@ -50,7 +72,7 @@ const overrides = (theme) => ({
       border: `1px solid ${theme.palette.btn.border}`,
       backgroundColor: theme.palette.btn.normal,
       boxShadow: 'none',
-      '&$focusVisible': {
+      [`&.${buttonClasses.focusVisible}`]: {
         borderColor: theme.palette.custom.focusBorder,
         boxShadow: `0 0 0 2px ${theme.palette.custom.focusOutline}`,
       },
@@ -58,7 +80,7 @@ const overrides = (theme) => ({
         backgroundColor: theme.palette.btn.hover,
         borderColor: theme.palette.btn.borderHover,
         boxShadow: 'none',
-        '&$disabled': {
+        [`&.${buttonClasses.disabled}`]: {
           backgroundColor: theme.palette.btn.disabled,
         },
       },
@@ -66,12 +88,12 @@ const overrides = (theme) => ({
         boxShadow: 'none',
         backgroundColor: theme.palette.btn.active,
       },
-      '&$disabled': {
+      [`&.${buttonClasses.disabled}`]: {
         backgroundColor: theme.palette.btn.disabled,
       },
     },
   },
-  MuiExpansionPanelSummary: {
+  MuiAccordionSummary: {
     content: {
       margin: '8px 0',
     },
@@ -97,7 +119,7 @@ export default function create(definition) {
 
   const withDefaults = {
     palette: {
-      type: def.type,
+      type: def.mode,
       ...base.palette,
       ...def.palette,
     },
@@ -113,10 +135,12 @@ export default function create(definition) {
     },
   };
 
-  cache[key] = createTheme({
-    ...withDefaults,
-    overrides: overrides(withDefaults),
-  });
+  cache[key] = createTheme(
+    adaptV4Theme({
+      ...withDefaults,
+      overrides: overrides(withDefaults),
+    })
+  );
 
   cache[key].name = name;
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 
 import { useTheme } from '@nebula.js/ui/theme';
 
@@ -16,7 +16,7 @@ function AppSelections({ app }) {
   return (
     <Grid
       container
-      spacing={0}
+      gap={0}
       wrap="nowrap"
       style={{
         backgroundColor: theme.palette.background.paper,

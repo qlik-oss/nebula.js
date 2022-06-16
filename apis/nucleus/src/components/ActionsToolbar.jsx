@@ -1,6 +1,8 @@
 import React, { useState, useContext, useRef, useEffect, useMemo } from 'react';
 
-import { Grid, Divider, makeStyles, Popover } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+
+import { Grid, Divider, Popover } from '@mui/material';
 
 import { more as moreIcon } from '@nebula.js/ui/icons/more';
 import { useTheme } from '@nebula.js/ui/theme';
@@ -9,6 +11,28 @@ import Item from './ActionsToolbarItem';
 import useDefaultSelectionActions from '../hooks/useDefaultSelectionActions';
 import InstanceContext from '../contexts/InstanceContext';
 import More from './ActionsToolbarMore';
+
+const PREFIX = 'ActionsToolbar';
+
+const classes = {
+  itemSpacing: `${PREFIX}-itemSpacing`,
+  firstItemSpacing: `${PREFIX}-firstItemSpacing`,
+  lastItemSpacing: `${PREFIX}-lastItemSpacing`,
+};
+
+const StyledPopover = styled(Popover)(({ theme }) => ({
+  [`& .${classes.itemSpacing}`]: {
+    padding: theme.spacing(0, 0.5),
+  },
+
+  [`& .${classes.firstItemSpacing}`]: {
+    padding: theme.spacing(0, 0.5, 0, 0),
+  },
+
+  [`& .${classes.lastItemSpacing}`]: {
+    padding: theme.spacing(0, 0, 0, 0.5),
+  },
+}));
 
 /**
  * @interface
@@ -20,34 +44,21 @@ const ActionToolbarElement = {
   className: 'njs-action-toolbar-popover',
 };
 
-const useStyles = makeStyles((theme) => ({
-  itemSpacing: {
-    padding: theme.spacing(0, 0.5),
-  },
-  firstItemSpacing: {
-    padding: theme.spacing(0, 0.5, 0, 0),
-  },
-  lastItemSpacing: {
-    padding: theme.spacing(0, 0, 0, 0.5),
-  },
-}));
-
-const ActionsGroup = React.forwardRef(({ actions = [], first = false, last = false, addAnchor = false }, ref) => {
-  const { itemSpacing, firstItemSpacing, lastItemSpacing } = useStyles();
-  return actions.length > 0 ? (
-    <Grid item container spacing={0} wrap="nowrap">
+const ActionsGroup = React.forwardRef(({ actions = [], first = false, last = false, addAnchor = false }, ref) =>
+  actions.length > 0 ? (
+    <Grid item container gap={0} wrap="nowrap">
       {actions.map((e, ix) => {
         let cls = [];
         const isFirstItem = first && ix === 0;
         const isLastItem = last && actions.length - 1 === ix;
         if (isFirstItem && !isLastItem) {
-          cls = [firstItemSpacing];
+          cls = [classes.firstItemSpacing];
         }
         if (isLastItem && !isFirstItem) {
-          cls = [...cls, lastItemSpacing];
+          cls = [...cls, classes.lastItemSpacing];
         }
         if (!isFirstItem && !isLastItem && cls.length === 0) {
-          cls = [itemSpacing];
+          cls = [classes.itemSpacing];
         }
         return (
           <Grid item key={e.key} className={cls.join(' ').trim()}>
@@ -56,8 +67,8 @@ const ActionsGroup = React.forwardRef(({ actions = [], first = false, last = fal
         );
       })}
     </Grid>
-  ) : null;
-});
+  ) : null
+);
 
 const popoverStyle = { pointerEvents: 'none' };
 const popoverAnchorOrigin = {
@@ -94,7 +105,7 @@ function ActionsToolbar({
   actionsRefMock = null, // for testing
 }) {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
-  const { itemSpacing } = useStyles();
+
   const { translator, keyboardNavigation } = useContext(InstanceContext);
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [moreEnabled, setMoreEnabled] = useState(more.enabled);
@@ -177,13 +188,13 @@ function ActionsToolbar({
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
   const Actions = (
-    <Grid ref={actionsRef} onKeyDown={tabCallback} container spacing={0} wrap="nowrap">
+    <Grid ref={actionsRef} onKeyDown={tabCallback} container gap={0} wrap="nowrap">
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
         <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />
       )}
       {showDivider && (
-        <Grid item className={itemSpacing} style={dividerStyle}>
+        <Grid item className={classes.itemSpacing} style={dividerStyle}>
           <Divider orientation="vertical" />
         </Grid>
       )}
@@ -202,7 +213,7 @@ function ActionsToolbar({
   );
 
   return popover.show ? (
-    <Popover
+    <StyledPopover
       disableEnforceFocus
       disableAutoFocus
       disableRestoreFocus
@@ -221,7 +232,7 @@ function ActionsToolbar({
       }}
     >
       {Actions}
-    </Popover>
+    </StyledPopover>
   ) : (
     show && Actions
   );

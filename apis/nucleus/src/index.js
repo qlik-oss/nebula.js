@@ -127,13 +127,16 @@ const mergeConfigs = (base, c) => ({
  * @property {boolean=} [focusSearch=false] Initialize the Listbox with the search input focused. Only applicable when
  *    search is true, since toggling will always focus the search input on show.
  * @property {boolean=} [options.showGray=true] Render fields or checkboxes in shades of gray instead of white when their state is excluded or alternative.
+ * @property {boolean=} [options.calculatePagesHeight=false] Override each page's qHeight with its actual row count.
  * @property {object} [options.sessionModel] Use a custom sessionModel.
  * @property {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
  * @property {function():boolean} [options.selectDisabled=] Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
+ * @property {function():object[]} [options.postProcessPages] A function for client-side post-processing of returned pages.
  * @property {PromiseFunction} [options.fetchStart] A function called when the Listbox starts fetching data. Receives the fetch request promise as an argument.
  * @property {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
  * @property {{setScrollPos:function(number):void, initScrollPos:number}} [options.scrollState=] Object including a setScrollPos function that sets current scroll position index. A initial scroll position index.
  * @property {number=} [options.sortByState=1] Sort by state, detault 1 = sort descending, 0 = no sorting, -1 sort ascending.
+ * @property {function(number):void} [options.setCount=] A function that gets called with the length of the data in the Listbox.
  */
 
 /**
@@ -153,6 +156,8 @@ export const getOptions = (usersOptions = {}) => {
     sessionModel: undefined,
     selectionsApi: undefined,
     selectDisabled: undefined,
+    postProcessPages: undefined,
+    calculatePagesHeight: false,
   };
   const squashedOptions = {
     ...exposedOptions,

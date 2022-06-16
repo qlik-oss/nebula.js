@@ -3,7 +3,7 @@ const init = require('./lib/init-config');
 
 module.exports = {
   command: 'serve',
-  desc: 'Dev server',
+  desc: 'Start a development server',
   builder(yargs) {
     init(yargs).argv;
   },

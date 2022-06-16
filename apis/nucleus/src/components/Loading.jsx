@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
-import { Grid } from '@material-ui/core';
+import { Grid } from '@mui/material';
 
 import Progress from './Progress';
 
@@ -18,7 +18,7 @@ export default function Loading() {
         left: 0,
         top: 0,
       }}
-      spacing={2}
+      gap={2}
     >
       <Progress size="large" />
     </Grid>

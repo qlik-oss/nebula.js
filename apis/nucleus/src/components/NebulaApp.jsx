@@ -1,28 +1,20 @@
 import React, { useState, useMemo, forwardRef, useImperativeHandle } from 'react';
 import ReactDOM from 'react-dom';
+import './ClassNameSetup';
 
-import { createTheme, ThemeProvider, StylesProvider, createGenerateClassName } from '@nebula.js/ui/theme';
+import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 
 import InstanceContext from '../contexts/InstanceContext';
 import useAppSelections from '../hooks/useAppSelections';
-
-const NEBULA_VERSION_HASH = process.env.NEBULA_VERSION_HASH || '';
-
-let counter = 0;
 
 const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
   const [appSelections] = useAppSelections(app);
   const [context, setContext] = useState(initialContext);
   const [muiThemeName, setMuiThemeName] = useState();
 
-  const { theme, generator } = useMemo(
+  const { theme } = useMemo(
     () => ({
       theme: createTheme(muiThemeName),
-      generator: createGenerateClassName({
-        productionPrefix: `${NEBULA_VERSION_HASH}`,
-        disableGlobal: true,
-        seed: `njs-${counter++}`,
-      }),
     }),
     [muiThemeName]
   );
@@ -46,11 +38,11 @@ const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
   }));
 
   return (
-    <StylesProvider generateClassName={generator}>
+    <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
         <InstanceContext.Provider value={context}>{components}</InstanceContext.Provider>
       </ThemeProvider>
-    </StylesProvider>
+    </StyledEngineProvider>
   );
 });
 

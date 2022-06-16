@@ -1,11 +1,22 @@
 import React from 'react';
-import { makeStyles } from '@nebula.js/ui/theme';
-import { Checkbox } from '@material-ui/core';
+import { styled } from '@mui/material/styles';
+import { Checkbox } from '@mui/material';
 import CheckboxChecked from './assets/CheckboxChecked';
 
+const PREFIX = 'ListBoxCheckbox';
 const borderRadius = 3;
-const useStyles = makeStyles((theme) => ({
-  cbIcon: {
+
+const classes = {
+  cbIcon: `${PREFIX}-cbIcon`,
+  cbIconChecked: `${PREFIX}-cbIconChecked`,
+  cbIconExcluded: `${PREFIX}-cbIconExcluded`,
+  cbIconAlternative: `${PREFIX}-cbIconAlternative`,
+  checkbox: `${PREFIX}-checkbox`,
+  dense: `${PREFIX}-dense`,
+};
+
+const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
+  [`& .${classes.cbIcon}`]: {
     borderRadius,
     width: 16,
     height: 16,
@@ -16,7 +27,8 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  cbIconChecked: {
+
+  [`& .${classes.cbIconChecked}`]: {
     borderRadius,
     backgroundColor: theme.palette.selected.main,
     backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
@@ -28,42 +40,48 @@ const useStyles = makeStyles((theme) => ({
       content: '""',
     },
   },
-  cbIconExcluded: {
+
+  [`& .${classes.cbIconExcluded}`]: {
     borderRadius: borderRadius - 1,
     width: 12,
     height: 12,
     backgroundColor: theme.palette.selected.excluded,
   },
-  checkbox: {
+
+  [`& .${classes.cbIconAlternative}`]: {
+    borderRadius: borderRadius - 1,
+    width: 12,
+    height: 12,
+    backgroundColor: theme.palette.selected.alternative,
+  },
+
+  [`&.${classes.checkbox}`]: {
     margin: 0,
     '&:hover': {
       backgroundColor: 'inherit !important',
     },
   },
-  dense: {
+
+  [`&.${classes.dense}`]: {
     padding: '4px 8px',
   },
 }));
 
-const getIcon = (styles, showGray = true, excluded = false) => (
-  <span className={styles.cbIcon}>
-    {excluded && <span className={showGray && excluded ? styles.cbIconExcluded : ''} />}
-  </span>
+const getIcon = (cls, showGray = true, excluded = false) => (
+  <span className={cls.cbIcon}>{excluded && <span className={showGray && excluded ? cls.cbIconExcluded : ''} />}</span>
 );
 
 export default function ListboxCheckbox({ checked, label, dense, excluded, showGray = true }) {
-  const styles = useStyles();
-
   return (
-    <Checkbox
+    <StyledCheckbox
       edge="start"
       checked={checked}
       disableRipple
-      className={[styles.checkbox, dense && styles.dense].filter(Boolean).join(' ')}
+      className={[classes.checkbox, dense && classes.dense].filter(Boolean).join(' ')}
       inputProps={{ 'aria-labelledby': label }}
       name={label}
-      icon={getIcon(styles, showGray, excluded)}
-      checkedIcon={<span className={styles.cbIconChecked} />}
+      icon={getIcon(classes, showGray, excluded)}
+      checkedIcon={<span className={classes.cbIconChecked} />}
     />
   );
 }

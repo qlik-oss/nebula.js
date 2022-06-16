@@ -1,6 +1,6 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { Badge, IconButton, Grid, Typography, Button, List, ListItem, Box } from '@material-ui/core';
+import { Badge, IconButton, Grid, Typography, Button, List, ListItem, Box } from '@mui/material';
 
 const Popover = (props) => props.children;
 const MockedOneField = () => 'OneField';
@@ -15,11 +15,10 @@ const [{ default: More }] = aw.mock(
           palette: { selected: {} },
           shape: { borderRadius: '2px' },
         }),
-        makeStyles: () => () => ({}),
       }),
     ],
     [
-      require.resolve('@material-ui/core'),
+      require.resolve('@mui/material'),
       () => ({
         Badge,
         IconButton,

@@ -1,7 +1,7 @@
 import colors from './colors';
 
 const light = {
-  type: 'light',
+  mode: 'light',
   palette: {
     primary: {
       main: colors.grey25,

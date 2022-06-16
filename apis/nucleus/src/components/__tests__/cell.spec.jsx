@@ -2,7 +2,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
+import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 
 describe('<Cell />', () => {
   let sandbox;
@@ -13,6 +13,7 @@ describe('<Cell />', () => {
   let LongRunningQuery;
   let CError;
   let Supernova;
+  let useRect;
   let Header;
   let InstanceContext;
   let useLayout;
@@ -35,6 +36,7 @@ describe('<Cell />', () => {
     layoutState = { validating: true, canCancel: false, canRetry: false };
     longrunning = { cancel: sandbox.spy(), retry: sandbox.spy() };
     useLayout = sandbox.stub().returns([layout, layoutState, longrunning]);
+    useRect = sandbox.stub().returns([() => {}, { width: 300, height: 400 }]);
     [{ default: Cell }] = aw.mock(
       [
         [
@@ -43,6 +45,13 @@ describe('<Cell />', () => {
             __esModule: true,
             default: useLayout,
             useAppLayout: () => [appLayout],
+          }),
+        ],
+        [
+          require.resolve('../../hooks/useRect'),
+          () => ({
+            __esModule: true,
+            default: useRect,
           }),
         ],
         [require.resolve('../Loading'), () => Loading],
@@ -115,11 +124,13 @@ describe('<Cell />', () => {
 
       await act(async () => {
         renderer = create(
-          <ThemeProvider theme={theme}>
-            <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
-              <Cell ref={cellRef} halo={halo} model={model} initialSnOptions={initialSnOptions} onMount={onMount} />
-            </InstanceContext.Provider>
-          </ThemeProvider>,
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
+                <Cell ref={cellRef} halo={halo} model={model} initialSnOptions={initialSnOptions} onMount={onMount} />
+              </InstanceContext.Provider>
+            </ThemeProvider>
+          </StyledEngineProvider>,
           rendererOptions || null
         );
       });
@@ -608,9 +619,11 @@ describe('<Cell />', () => {
           }),
         },
       });
+      /*
       await act(async () => {
         global.window.addEventListener.callArg(1);
       });
+      */
       const snapshot = await cellRef.current.takeSnapshot();
       const { key } = snapshot;
       delete snapshot.key;
@@ -660,9 +673,11 @@ describe('<Cell />', () => {
           }),
         },
       });
+      /*
       await act(async () => {
         global.window.addEventListener.callArg(1);
       });
+      */
       const snapshot = await cellRef.current.takeSnapshot();
       expect(snapshot.layout).to.deep.equal({
         foo: 'bar',

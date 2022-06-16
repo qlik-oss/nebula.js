@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { Grid, Button } from '@material-ui/core';
+import { Grid, Button } from '@mui/material';
 
 const Progress = () => 'progress';
 const InstanceContext = React.createContext();

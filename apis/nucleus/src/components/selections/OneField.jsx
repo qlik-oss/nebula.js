@@ -1,27 +1,14 @@
 import React, { useRef, useState, useContext } from 'react';
-
 import Remove from '@nebula.js/ui/icons/remove';
 import Lock from '@nebula.js/ui/icons/lock';
 
-import { IconButton, Grid, Typography } from '@material-ui/core';
+import { IconButton, Grid, Typography } from '@mui/material';
 
-import { makeStyles, useTheme } from '@nebula.js/ui/theme';
+import { useTheme } from '@nebula.js/ui/theme';
 
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
 import InstanceContext from '../../contexts/InstanceContext';
-
-const useStyles = makeStyles((theme) => ({
-  item: {
-    backgroundColor: theme.palette.background.paper,
-    position: 'relative',
-    cursor: 'pointer',
-    padding: '4px',
-    '&:hover': {
-      backgroundColor: theme.palette.action.hover,
-    },
-  },
-}));
 
 export default function OneField({
   field,
@@ -35,8 +22,6 @@ export default function OneField({
   const alignTo = moreAlignTo || useRef();
   const theme = useTheme();
   const [showListBoxPopover, setShowListBoxPopover] = useState(false);
-
-  const classes = useStyles();
 
   const handleShowListBoxPopover = (e) => {
     if (e.currentTarget.contains(e.target)) {
@@ -106,25 +91,31 @@ export default function OneField({
       </Grid>
     );
 
-    Icon = selection.qLocked ? (
-      <Grid item>
-        <IconButton>
-          <Lock />
-        </IconButton>
-      </Grid>
-    ) : (
-      <Grid item>
-        <IconButton
-          title={translator.get('Selection.Clear')}
-          onClick={(e) => {
-            e.stopPropagation();
-            api.clearField(selection.qField, field.states[stateIx]);
-          }}
-        >
-          <Remove />
-        </IconButton>
-      </Grid>
-    );
+    if (selection.qLocked) {
+      Icon = (
+        <Grid item>
+          <IconButton size="large">
+            <Lock />
+          </IconButton>
+        </Grid>
+      );
+    } else if (!selection.qOneAndOnlyOne) {
+      Icon = (
+        <Grid item>
+          <IconButton
+            title={translator.get('Selection.Clear')}
+            onClick={(e) => {
+              e.stopPropagation();
+              api.clearField(selection.qField, field.states[stateIx]);
+            }}
+            size="large"
+          >
+            <Remove />
+          </IconButton>
+        </Grid>
+      );
+    }
+
     SegmentsIndicator = (
       <div
         style={{
@@ -154,9 +145,17 @@ export default function OneField({
     Component = (
       <Grid
         container
-        spacing={0}
+        gap={1}
         ref={alignTo}
-        className={classes.item}
+        sx={{
+          backgroundColor: theme.palette.background.paper,
+          position: 'relative',
+          cursor: 'pointer',
+          padding: '4px',
+          '&:hover': {
+            backgroundColor: theme.palette.action.hover,
+          },
+        }}
         onClick={(skipHandleShowListBoxPopover === false && handleShowListBoxPopover) || null}
       >
         {Header}
