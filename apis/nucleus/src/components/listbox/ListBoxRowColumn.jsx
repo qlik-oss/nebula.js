@@ -204,6 +204,7 @@ const Root = styled('div')(({ theme }) => ({
 
   [`& .${classes.excludedTextWithCheckbox}`]: {
     color: '#828282',
+    fontStyle: 'italic',
   },
 }));
 
