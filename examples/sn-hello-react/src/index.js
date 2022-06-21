@@ -15,14 +15,12 @@ export default function supernova(/* env */) {
       const el = useElement();
       const layout = useLayout();
 
-      useEffect(
-        () => () => {
-          teardown(el);
-        },
-        []
-      );
-
-      render(el, { layout });
+      useEffect(() => {
+        const root = render(el, { layout });
+        return () => {
+          teardown(root);
+        };
+      }, [layout]);
     },
   };
 }

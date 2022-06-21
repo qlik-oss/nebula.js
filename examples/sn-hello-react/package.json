@@ -18,12 +18,12 @@
     "start": "nebula serve"
   },
   "peerDependencies": {
-    "@nebula.js/stardust": ">=2.8.0"
+    "@nebula.js/stardust": ">=2.12.0"
   },
   "devDependencies": {
-    "@nebula.js/cli": "2.8.0",
-    "@nebula.js/cli-build": "2.8.0",
-    "@nebula.js/cli-serve": "2.8.0",
+    "@nebula.js/cli": "2.12.0",
+    "@nebula.js/cli-build": "2.12.0",
+    "@nebula.js/cli-serve": "2.12.0",
     "eslint": "7.32.0",
     "eslint-config-airbnb": "18.2.1",
     "eslint-plugin-import": "2.24.2",
