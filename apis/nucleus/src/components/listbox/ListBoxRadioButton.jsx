@@ -25,7 +25,7 @@ export default function ListBoxRadioButton({ checked, label, dense }) {
       style={{ backgroundColor: 'transparent' }}
       disableRipple
       size={dense ? 'small' : 'medium'}
-      sx={dense && { padding: '0px', paddingLeft: '6px' }}
+      sx={dense && { padding: '0px 0px 0px 12px' }}
     />
   );
 }
