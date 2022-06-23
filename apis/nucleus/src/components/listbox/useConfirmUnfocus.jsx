@@ -15,7 +15,7 @@ export default function useConfirmUnfocus(ref, selections, shouldConfirmOnBlur) 
   };
 
   useEffect(() => {
-    if (!shouldConfirmOnBlur) return () => {};
+    if (!shouldConfirmOnBlur) return undefined;
 
     const handleEvent = (event) => {
       const interactInside = ref.current && ref.current.contains(event.target);
