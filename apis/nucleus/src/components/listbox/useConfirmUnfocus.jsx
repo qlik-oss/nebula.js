@@ -5,7 +5,7 @@ import { useRef, useEffect, useState } from 'react';
  * user interact outside of passed element ref.
  */
 
-export default function useConfirmUnfocus(ref, selections, enabledConfirmOnBlur) {
+export default function useConfirmUnfocus(ref, selections, shouldConfirmOnBlur) {
   const [_isConfirmed, _setIsConfirmed] = useState(false);
   // Wrap state in ref to use inside eventListener callback
   const isConfirmedRef = useRef(_isConfirmed);
@@ -15,7 +15,7 @@ export default function useConfirmUnfocus(ref, selections, enabledConfirmOnBlur)
   };
 
   useEffect(() => {
-    if (!enabledConfirmOnBlur) return () => {};
+    if (!shouldConfirmOnBlur) return () => {};
 
     const handleEvent = (event) => {
       const interactInside = ref.current && ref.current.contains(event.target);
@@ -34,5 +34,5 @@ export default function useConfirmUnfocus(ref, selections, enabledConfirmOnBlur)
       document.removeEventListener('mousedown', handleEvent);
       document.removeEventListener('keydown', handleEvent);
     };
-  }, [ref, selections, enabledConfirmOnBlur]);
+  }, [ref, selections, shouldConfirmOnBlur]);
 }
