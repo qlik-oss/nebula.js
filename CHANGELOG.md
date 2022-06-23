@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha1](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha0...v3.0.0-alpha1) (2022-06-23)
+
+### Bug Fixes
+
+- add italic to checkbox text when excluded ([#855](https://github.com/qlik-oss/nebula.js/issues/855)) ([97dbc77](https://github.com/qlik-oss/nebula.js/commit/97dbc778b3b5a075ea05f9d0155856655a3e4cfe))
+- multistate style ([#856](https://github.com/qlik-oss/nebula.js/issues/856)) ([6de8afa](https://github.com/qlik-oss/nebula.js/commit/6de8afa5bba7a62a00563ce8de43477e00491632))
+
 # [3.0.0-alpha0](https://github.com/qlik-oss/nebula.js/compare/v2.11.0...v3.0.0-alpha0) (2022-06-16)
 
 ### Bug Fixes
