@@ -172,7 +172,8 @@ const Root = styled('div')(({ theme }) => ({
   },
 
   [`&.${classes.barContainer}`]: {
-    position: 'relative',
+    height: '100%',
+    display: 'inline-block',
   },
 
   [`& .${classes.bar}`]: {
@@ -208,7 +209,7 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-function RowColumn({ index, style, data, column = false }) {
+function RowColumn({ index, style, data }) {
   const {
     onClick,
     onMouseDown,
@@ -216,6 +217,7 @@ function RowColumn({ index, style, data, column = false }) {
     onMouseEnter,
     pages,
     isLocked,
+    column = false,
     checkboxes = false,
     dense = false,
     frequencyMode = 'N',

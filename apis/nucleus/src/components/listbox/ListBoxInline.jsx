@@ -244,8 +244,9 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   const showTitle = true;
 
   const searchVisible = (search === true || (search === 'toggle' && showSearch)) && !selectDisabled();
-
-  const minHeight = 49 + (searchVisible ? 40 : 0) + 49;
+  const searchHeight = dense ? 27 : 40;
+  const extraheight = dense ? 39 : 49;
+  const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
 
   const onShowSearch = () => {
     const newValue = !showSearch;
