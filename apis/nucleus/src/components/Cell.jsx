@@ -392,7 +392,7 @@ const Cell = forwardRef(
       load(layout.visualization, withVersion);
 
       return () => {};
-    }, [types, state.sn, model, layout, appLayout, language]);
+    }, [types, state.sn, model, selections, layout, appLayout, language]);
 
     // Long running query
     useEffect(() => {
