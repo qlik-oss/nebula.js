@@ -137,6 +137,7 @@ const mergeConfigs = (base, c) => ({
  * @property {{setScrollPos:function(number):void, initScrollPos:number}} [options.scrollState=] Object including a setScrollPos function that sets current scroll position index. A initial scroll position index.
  * @property {number=} [options.sortByState=1] Sort by state, detault 1 = sort descending, 0 = no sorting, -1 sort ascending.
  * @property {function(number):void} [options.setCount=] A function that gets called with the length of the data in the Listbox.
+ * @property {boolean} [options.shouldConfirmOnBlur=] A boolean that determines if the listbox should actively confirm selections on blur events.
  */
 
 /**
