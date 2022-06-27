@@ -59,7 +59,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     sortByState = 1,
     scrollState = undefined,
     setCount = undefined,
-    shouldConfirmOnBlur,
+    shouldConfirmOnBlur = undefined,
   } = options;
   let { frequencyMode, histogram = false } = options;
 
