@@ -59,6 +59,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     sortByState = 1,
     scrollState = undefined,
     setCount = undefined,
+    shouldConfirmOnBlur = undefined,
   } = options;
   let { frequencyMode, histogram = false } = options;
 
@@ -210,7 +211,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   }, [selections]);
 
   const listBoxRef = useRef(null);
-  useConfirmUnfocus(listBoxRef, selections);
+  useConfirmUnfocus(listBoxRef, selections, shouldConfirmOnBlur);
 
   useEffect(() => {
     if (!searchContainer || !searchContainer.current) {
