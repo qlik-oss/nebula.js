@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.13.0](https://github.com/qlik-oss/nebula.js/compare/v2.12.0...v2.13.0) (2022-06-27)
+
+### Bug Fixes
+
+- the selections is missing in dependency arrays ([#865](https://github.com/qlik-oss/nebula.js/issues/865)) ([579c0d1](https://github.com/qlik-oss/nebula.js/commit/579c0d126d64c330cb6650c71aa81be5d4a1fda4))
+
 # [2.12.0](https://github.com/qlik-oss/nebula.js/compare/v2.11.0...v2.12.0) (2022-06-14)
 
 ### Bug Fixes
