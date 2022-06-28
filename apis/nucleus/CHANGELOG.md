@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha3](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha2...v3.0.0-alpha3) (2022-06-28)
+
+### Bug Fixes
+
+- disabling on enter select on listbox searches ([#870](https://github.com/qlik-oss/nebula.js/issues/870)) ([8d8dd53](https://github.com/qlik-oss/nebula.js/commit/8d8dd53323b7b848612a934fb8188f5508682f18))
+
 # [3.0.0-alpha2](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha1...v3.0.0-alpha2) (2022-06-28)
 
 ### Bug Fixes

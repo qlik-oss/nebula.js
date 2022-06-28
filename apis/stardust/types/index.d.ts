@@ -367,6 +367,30 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
+    interface LoadType {
+        (type: {
+            name: string;
+            version: string;
+        }): Promise<stardust.Visualization>;
+    }
+
+    interface TypeInfo {
+        name: string;
+        version?: string;
+        load: stardust.LoadType;
+        meta?: object;
+    }
+
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -398,30 +422,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
-    interface LoadType {
-        (type: {
-            name: string;
-            version: string;
-        }): Promise<stardust.Visualization>;
-    }
-
-    interface TypeInfo {
-        name: string;
-        version?: string;
-        load: stardust.LoadType;
-        meta?: object;
     }
 
     interface ActionToolbarElement extends HTMLElement{
