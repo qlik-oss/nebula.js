@@ -19,8 +19,9 @@ export default function ListBoxSearch({ model, keyboard, dense = false }) {
   const onKeyDown = (e) => {
     switch (e.key) {
       case 'Enter':
-        model.acceptListObjectSearch(TREE_PATH, true);
-        setValue('');
+        // This is disabled to "solve" QB-10955 with the lowest risk
+        // await model.acceptListObjectSearch(TREE_PATH, true);
+        // setValue('');
         break;
       case 'Escape':
         model.abortListObjectSearch(TREE_PATH);
