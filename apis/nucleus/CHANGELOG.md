@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha2](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha1...v3.0.0-alpha2) (2022-06-28)
+
+### Bug Fixes
+
+- horizontal listbox ([#862](https://github.com/qlik-oss/nebula.js/issues/862)) ([375e36a](https://github.com/qlik-oss/nebula.js/commit/375e36a5272bf6092184ed46879303959126adc0))
+- **listbox:** prop to disable confirming selections on blur events ([#866](https://github.com/qlik-oss/nebula.js/issues/866)) ([d680826](https://github.com/qlik-oss/nebula.js/commit/d6808267717ef76b20dccc1719e170c49e54cc38))
+- the selections is missing in dependency arrays ([#865](https://github.com/qlik-oss/nebula.js/issues/865)) ([#867](https://github.com/qlik-oss/nebula.js/issues/867)) ([88fa194](https://github.com/qlik-oss/nebula.js/commit/88fa194fc76a3ca7f9ec9305147aaf95144ab6c0))
+
 # [3.0.0-alpha1](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha0...v3.0.0-alpha1) (2022-06-23)
 
 ### Bug Fixes
