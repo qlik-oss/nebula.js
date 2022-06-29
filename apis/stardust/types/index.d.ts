@@ -377,20 +377,6 @@ declare namespace stardust {
         fn: ()=>void;
     }
 
-    interface LoadType {
-        (type: {
-            name: string;
-            version: string;
-        }): Promise<stardust.Visualization>;
-    }
-
-    interface TypeInfo {
-        name: string;
-        version?: string;
-        load: stardust.LoadType;
-        meta?: object;
-    }
-
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -422,6 +408,20 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    interface LoadType {
+        (type: {
+            name: string;
+            version: string;
+        }): Promise<stardust.Visualization>;
+    }
+
+    interface TypeInfo {
+        name: string;
+        version?: string;
+        load: stardust.LoadType;
+        meta?: object;
     }
 
     interface ActionToolbarElement extends HTMLElement{

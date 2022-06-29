@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha4](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha3...v3.0.0-alpha4) (2022-06-29)
+
+### Bug Fixes
+
+- **BDI-5122:** empty search calls abort query ([#871](https://github.com/qlik-oss/nebula.js/issues/871)) ([4004dd1](https://github.com/qlik-oss/nebula.js/commit/4004dd12d9079e5bd21799418572d61e8ed0e400))
+- filterBox react on qsize.qcy change when searching ([#872](https://github.com/qlik-oss/nebula.js/issues/872)) ([bff83bf](https://github.com/qlik-oss/nebula.js/commit/bff83bfd2b3f238ffac061fa280bffdf8544b83e))
+
 # [3.0.0-alpha3](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha2...v3.0.0-alpha3) (2022-06-28)
 
 ### Bug Fixes
