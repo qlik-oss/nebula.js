@@ -14,7 +14,11 @@ export default function ListBoxSearch({ model, keyboard, dense = false }) {
 
   const onChange = (e) => {
     setValue(e.target.value);
-    model.searchListObjectFor(TREE_PATH, e.target.value);
+    if (e.target.value.length === 0) {
+      model.abortListObjectSearch(TREE_PATH);
+    } else {
+      model.searchListObjectFor(TREE_PATH, e.target.value);
+    }
   };
   const onKeyDown = (e) => {
     switch (e.key) {
