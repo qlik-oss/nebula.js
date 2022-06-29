@@ -196,7 +196,7 @@ export default function ListBox({
     if (typeof setCount === 'function' && layout) {
       setCount(layout.qListObject.qSize.qcy);
     }
-  }, [layout && layout.qListObject.qSize.qcy]);
+  }, [layout, layout && layout.qListObject.qSize.qcy]);
 
   useEffect(() => {
     if (!instantPages || isLoadingData) {
