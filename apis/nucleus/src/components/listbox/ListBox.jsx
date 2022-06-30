@@ -218,7 +218,14 @@ export default function ListBox({
   }
 
   const isVertical = listLayout !== 'horizontal';
-  const count = layout.qListObject.qSize.qcy;
+
+  let count = layout.qListObject.qSize.qcy;
+
+  // Should not allow a count of zero since it will stop executing loadMoreItems
+  // this could happen if a seach returns an empty result
+  if (count === 0) {
+    count = 1;
+  }
 
   const getCalculatedHeight = (ps) => {
     // If values have been filtered in the currently loaded page, we want to

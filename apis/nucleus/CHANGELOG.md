@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha5](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha4...v3.0.0-alpha5) (2022-06-30)
+
+### Bug Fixes
+
+- issue with empty search results in listbox ([#873](https://github.com/qlik-oss/nebula.js/issues/873)) ([0a28eb7](https://github.com/qlik-oss/nebula.js/commit/0a28eb753a1753129702936991c09339c7f00094))
+
 # [3.0.0-alpha4](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha3...v3.0.0-alpha4) (2022-06-29)
 
 ### Bug Fixes
