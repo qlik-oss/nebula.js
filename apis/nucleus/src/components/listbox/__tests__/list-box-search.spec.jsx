@@ -15,23 +15,29 @@ const create = (comp) => renderer.create(<ThemeProvider theme={theme}>{comp}</Th
 
 const keyboard = { enabled: false, active: true };
 
+const testRender = (model) =>
+  create(
+    <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+      <ListBoxSearch model={model} keyboard={keyboard} />
+    </InstanceContext.Provider>
+  );
+
+let model;
+
 describe('<ListBoxSearch />', () => {
   beforeEach(() => {
     keyboard.enabled = false;
     keyboard.active = true;
-  });
 
-  it('should have default props', () => {
-    const model = {
+    model = {
       searchListObjectFor: sinon.spy(),
       acceptListObjectSearch: sinon.spy(),
       abortListObjectSearch: sinon.spy(),
     };
-    const testRenderer = create(
-      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} keyboard={keyboard} />
-      </InstanceContext.Provider>
-    );
+  });
+
+  it('should have default props', () => {
+    const testRenderer = testRender(model);
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(OutlinedInput);
     expect(types).to.have.length(1);
@@ -44,20 +50,10 @@ describe('<ListBoxSearch />', () => {
     expect(types[0].props.inputProps.tabIndex).to.equal(0);
   });
   it('should have css class `search`', () => {
-    const model = {
-      searchListObjectFor: sinon.spy(),
-      acceptListObjectSearch: sinon.spy(),
-      abortListObjectSearch: sinon.spy(),
-    };
-
     keyboard.enabled = true;
     keyboard.active = false;
 
-    const testRenderer = create(
-      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} keyboard={keyboard} />
-      </InstanceContext.Provider>
-    );
+    const testRenderer = testRender(model);
     const testInstance = testRenderer.root;
     const [input] = testInstance.findAllByType(OutlinedInput);
     const { className, inputProps } = input.props;
@@ -66,16 +62,7 @@ describe('<ListBoxSearch />', () => {
     expect(className.split(' ')).to.include('search');
   });
   it('should update `OutlinedInput` and search `onChange`', () => {
-    const model = {
-      searchListObjectFor: sinon.spy(),
-      acceptListObjectSearch: sinon.spy(),
-      abortListObjectSearch: sinon.spy(),
-    };
-    const testRenderer = create(
-      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} keyboard={keyboard} />
-      </InstanceContext.Provider>
-    );
+    const testRenderer = testRender(model);
     const testInstance = testRenderer.root;
     let type = testInstance.findByType(OutlinedInput);
     type.props.onChange({ target: { value: 'foo' } });
@@ -111,16 +98,7 @@ describe('<ListBoxSearch />', () => {
   //   expect(type.props.value).to.equal('');
   // });
   it('should `abortListObjectSearch` on `Escape`', () => {
-    const model = {
-      searchListObjectFor: sinon.spy(),
-      acceptListObjectSearch: sinon.spy(),
-      abortListObjectSearch: sinon.spy(),
-    };
-    const testRenderer = create(
-      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} keyboard={keyboard} />
-      </InstanceContext.Provider>
-    );
+    const testRenderer = testRender(model);
     const testInstance = testRenderer.root;
     const type = testInstance.findByType(OutlinedInput);
     type.props.onChange({ target: { value: 'foo' } });
@@ -128,5 +106,37 @@ describe('<ListBoxSearch />', () => {
     type.props.onKeyDown({ key: 'Escape' });
     expect(model.abortListObjectSearch).to.have.been.calledWith('/qListObjectDef');
     expect(type.props.value).to.equal('');
+  });
+
+  it('should not render if visible is false', () => {
+    const testRenderer = create(
+      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+        <ListBoxSearch model={model} keyboard={keyboard} visible={false} />
+      </InstanceContext.Provider>
+    );
+    const testInstance = testRenderer.root;
+    const inputBoxes = testInstance.findAllByType(OutlinedInput);
+    expect(inputBoxes.length).to.equal(0);
+  });
+
+  it('should hide search if visible is set to false and abortListObjectSearch should be called', () => {
+    const testRenderer = testRender(model);
+    const testInstance = testRenderer.root;
+    const inputBoxes = testInstance.findAllByType(OutlinedInput);
+    expect(inputBoxes.length).to.equal(1);
+
+    renderer.act(() => {
+      testRenderer.update(
+        <ThemeProvider theme={theme}>
+          <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+            <ListBoxSearch model={model} keyboard={keyboard} visible={false} />
+          </InstanceContext.Provider>
+        </ThemeProvider>
+      );
+    });
+
+    const inputBoxes2 = testInstance.findAllByType(OutlinedInput);
+    expect(inputBoxes2.length).to.equal(0);
+    expect(model.abortListObjectSearch).to.have.been.calledWith('/qListObjectDef');
   });
 });
