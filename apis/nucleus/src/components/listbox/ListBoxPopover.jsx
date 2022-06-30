@@ -155,7 +155,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
         </Grid>
         <Grid item xs>
           <div ref={moreAlignTo} />
-          <ListBoxSearch model={model} />
+          <ListBoxSearch model={model} visible />
           <ListBox model={model} selections={selections} direction="ltr" />
         </Grid>
       </Grid>
