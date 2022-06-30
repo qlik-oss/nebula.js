@@ -127,6 +127,6 @@ describe('<ListBoxSearch />', () => {
     expect(type.props.value).to.equal('foo');
     type.props.onKeyDown({ key: 'Escape' });
     expect(model.abortListObjectSearch).to.have.been.calledWith('/qListObjectDef');
-    expect(type.props.value).to.equal('foo');
+    expect(type.props.value).to.equal('');
   });
 });
