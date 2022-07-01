@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useTheme } from '@nebula.js/ui/theme';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import Search from '@nebula.js/ui/icons/search';
@@ -7,10 +7,16 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 const TREE_PATH = '/qListObjectDef';
 
-export default function ListBoxSearch({ model, keyboard, dense = false }) {
+export default function ListBoxSearch({ model, keyboard, dense = false, visible = true }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const theme = useTheme();
+
+  useEffect(() => {
+    if (!visible) {
+      model.abortListObjectSearch(TREE_PATH);
+    }
+  }, [visible]);
 
   const onChange = (e) => {
     setValue(e.target.value);
@@ -29,11 +35,16 @@ export default function ListBoxSearch({ model, keyboard, dense = false }) {
         break;
       case 'Escape':
         model.abortListObjectSearch(TREE_PATH);
+        setValue('');
         break;
       default:
         break;
     }
   };
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <OutlinedInput
