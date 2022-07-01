@@ -7,7 +7,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 const TREE_PATH = '/qListObjectDef';
 
-export default function ListBoxSearch({ model, keyboard, dense = false, visible = false }) {
+export default function ListBoxSearch({ model, keyboard, dense = false, visible = true }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const theme = useTheme();
