@@ -60,6 +60,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     scrollState = undefined,
     setCount = undefined,
     shouldConfirmOnBlur = undefined,
+    disableSearch = false,
   } = options;
   let { frequencyMode, histogram = false } = options;
 
@@ -318,9 +319,11 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
           </Grid>
         </Grid>
       )}
-      <Grid item ref={searchContainerRef}>
-        <ListBoxSearch model={model} dense={dense} keyboard={keyboard} visible={searchVisible} />
-      </Grid>
+      {!disableSearch && (
+        <Grid item ref={searchContainerRef}>
+          <ListBoxSearch model={model} dense={dense} keyboard={keyboard} visible={searchVisible} />
+        </Grid>
+      )}
       <Grid item xs>
         <div ref={moreAlignTo} />
         <AutoSizer>
