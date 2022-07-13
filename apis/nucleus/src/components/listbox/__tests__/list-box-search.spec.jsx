@@ -114,25 +114,4 @@ describe('<ListBoxSearch />', () => {
     const inputBoxes = testInstance.findAllByType(OutlinedInput);
     expect(inputBoxes.length).to.equal(0);
   });
-
-  it('should hide search if visible is set to false and abortListObjectSearch should be called', () => {
-    const testRenderer = testRender(model);
-    const testInstance = testRenderer.root;
-    const inputBoxes = testInstance.findAllByType(OutlinedInput);
-    expect(inputBoxes.length).to.equal(1);
-
-    renderer.act(() => {
-      testRenderer.update(
-        <ThemeProvider theme={theme}>
-          <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-            <ListBoxSearch model={model} keyboard={keyboard} visible={false} />
-          </InstanceContext.Provider>
-        </ThemeProvider>
-      );
-    });
-
-    const inputBoxes2 = testInstance.findAllByType(OutlinedInput);
-    expect(inputBoxes2.length).to.equal(0);
-    expect(model.abortListObjectSearch).to.have.been.calledWith('/qListObjectDef');
-  });
 });
