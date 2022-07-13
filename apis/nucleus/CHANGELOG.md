@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha6](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha5...v3.0.0-alpha6) (2022-07-01)
+
+### Bug Fixes
+
+- enable enter key to apply selection in searches ([#881](https://github.com/qlik-oss/nebula.js/issues/881)) ([b786a5b](https://github.com/qlik-oss/nebula.js/commit/b786a5be708eabe7e369d31c32f5655a683abec7))
+- reset list if search is exited ([#874](https://github.com/qlik-oss/nebula.js/issues/874)) ([a2c89ea](https://github.com/qlik-oss/nebula.js/commit/a2c89ea6582647a839a6a0f490a01228da26bda8))
+
 # [3.0.0-alpha5](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha4...v3.0.0-alpha5) (2022-06-30)
 
 ### Bug Fixes
