@@ -226,6 +226,7 @@ describe('<Listbox />', () => {
         pages: [],
       });
     });
+
     it('should use columns for horizontal layout', async () => {
       args.listLayout = 'horizontal';
       await render();
@@ -236,11 +237,20 @@ describe('<Listbox />', () => {
         pages: [],
       });
     });
+
     it('should set isLocked to true', async () => {
       layout.qListObject.qDimensionInfo.qLocked = true;
       await render();
       const { itemData } = FixedSizeList.args[FixedSizeList.callCount - 1][0];
       expect(itemData.isLocked).to.equal(true);
+    });
+
+    it('should never set count to lower then 1', async () => {
+      layout.qListObject.qSize.qcy = 0;
+      await render();
+
+      const { itemCount } = FixedSizeList.args[FixedSizeList.callCount - 1][0];
+      expect(itemCount).to.equal(1);
     });
   });
 });
