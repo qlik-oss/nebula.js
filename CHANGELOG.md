@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha10](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha9...v3.0.0-alpha10) (2022-07-13)
+
+**Note:** Version bump only for package nebula.js
+
+**Note:** Version bump only for package nebula.js
+
+# [3.0.0-alpha9](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha8...v3.0.0-alpha9) (2022-07-13)
+
+### Bug Fixes
+
+- resets list when search is exited ([4ecc1ae](https://github.com/qlik-oss/nebula.js/commit/4ecc1ae6ebda609790a2f8a6a445300d8761c144))
+
+**Note:** Version bump only for package nebula.js
+
+# [3.0.0-alpha8](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha7...v3.0.0-alpha8) (2022-07-13)
+
+**Note:** Version bump only for package nebula.js
+
+**Note:** Version bump only for package nebula.js
+
 # [3.0.0-alpha6](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha5...v3.0.0-alpha6) (2022-07-01)
 
 ### Bug Fixes
