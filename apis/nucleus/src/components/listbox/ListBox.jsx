@@ -146,6 +146,8 @@ export default function ListBox({
         local.current.timeout = setTimeout(
           () => {
             const sorted = local.current.queue.slice(-2).sort((a, b) => a.start - b.start);
+            const highestVal = Math.max(...sorted.map((s) => s.stop));
+            const currentPage = Math.ceil(highestVal / MINIMUM_BATCH_SIZE);
             const reqPromise = model
               .getListObjectData(
                 '/qListObjectDef',
@@ -160,7 +162,13 @@ export default function ListBox({
                 const processedPages = postProcessPages ? postProcessPages(p) : p;
                 local.current.validPages = true;
                 listData.current.pages = processedPages;
-                setPages(processedPages);
+
+                if (currentPage === 1) {
+                  setPages(processedPages);
+                } else {
+                  setPages((_pages) => [...(_pages || []), ...processedPages]);
+                }
+
                 setIsLoadingData(false);
                 resolve();
               });
@@ -231,9 +239,11 @@ export default function ListBox({
     // If values have been filtered in the currently loaded page, we want to
     // prevent rendering empty rows by assigning the actual number of items to render
     // since count (qcy) does not reflect this in DQ mode currently.
-    const hasFilteredValues = ps.some((page) => page.qArea.qHeight < MINIMUM_BATCH_SIZE);
+    // If any qMatrix was not 100 length && result of it was less that qcy
+    // then => qTop + qHeight might indicate length of items as long as you scroll and fetch more items
+    const hasFilteredValues = ps.some((p) => p.qArea.qHeight !== MINIMUM_BATCH_SIZE);
     const h = Math.max(...ps.map((page) => page.qArea.qTop + page.qArea.qHeight));
-    return hasFilteredValues ? h : count;
+    return h < count && hasFilteredValues ? h : count;
   };
 
   const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
