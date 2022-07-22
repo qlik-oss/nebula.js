@@ -125,8 +125,8 @@ export default function ListBox({
     [layout, pages]
   );
 
-  // The time from scroll end until new data is being fetched, may be exposed in API later on.
-  const scrollTimeout = 0;
+  // debouncing api call, may be exposed in API later on.
+  const scrollTimeout = 500;
 
   const loadMoreItems = useCallback(
     (startIndex, stopIndex) => {
@@ -146,14 +146,15 @@ export default function ListBox({
         local.current.timeout = setTimeout(
           () => {
             const sorted = local.current.queue.slice(-2).sort((a, b) => a.start - b.start);
-            const highestVal = Math.max(...sorted.map((s) => s.stop));
-            const currentPage = Math.ceil(highestVal / MINIMUM_BATCH_SIZE);
             const reqPromise = model
               .getListObjectData(
                 '/qListObjectDef',
                 sorted.map((s) => ({
                   qTop: s.start,
-                  qHeight: s.stop - s.start + 1,
+                  // we always need to ask for MINUM_BATCH_SIZE
+                  // if backend sens anything less than that
+                  // then we know that is last page for us
+                  qHeight: MINIMUM_BATCH_SIZE,
                   qLeft: 0,
                   qWidth: 1,
                 }))
@@ -162,13 +163,7 @@ export default function ListBox({
                 const processedPages = postProcessPages ? postProcessPages(p) : p;
                 local.current.validPages = true;
                 listData.current.pages = processedPages;
-
-                if (currentPage === 1) {
-                  setPages(processedPages);
-                } else {
-                  setPages((_pages) => [...(_pages || []), ...processedPages]);
-                }
-
+                setPages((_pages) => [...(_pages || []), ...processedPages]);
                 setIsLoadingData(false);
                 resolve();
               });
@@ -184,6 +179,9 @@ export default function ListBox({
   const fetchData = () => {
     local.current.queue = [];
     local.current.validPages = false;
+    // we need to reset pages data here
+    // since we reset the local.current.queue
+    setPages(null);
     if (loaderRef.current) {
       loaderRef.current.resetloadMoreItemsCache(true);
       // Skip scrollToItem if we are in selections, or if we dont sort by state.
@@ -241,8 +239,10 @@ export default function ListBox({
     // since count (qcy) does not reflect this in DQ mode currently.
     // If any qMatrix was not 100 length && result of it was less that qcy
     // then => qTop + qHeight might indicate length of items as long as you scroll and fetch more items
-    const hasFilteredValues = ps.some((p) => p.qArea.qHeight !== MINIMUM_BATCH_SIZE);
-    const h = Math.max(...ps.map((page) => page.qArea.qTop + page.qArea.qHeight));
+    // only last 2 items is important b/c we use last 2 indexes for api call
+    const _ps = ps.slice(-2).sort((a, b) => a.start - b.start);
+    const hasFilteredValues = _ps.some((p) => p.qArea.qHeight !== MINIMUM_BATCH_SIZE);
+    const h = Math.max(..._ps.map((page) => page.qArea.qTop + page.qArea.qHeight));
     return h < count && hasFilteredValues ? h : count;
   };
 
