@@ -126,7 +126,7 @@ export default function ListBox({
   );
 
   // The time from scroll end until new data is being fetched, may be exposed in API later on.
-  const scrollTimeout = 500;
+  const scrollTimeout = 0;
 
   const loadMoreItems = useCallback(
     (startIndex, stopIndex) => {
