@@ -152,7 +152,7 @@ export default function ListBox({
                 sorted.map((s) => ({
                   qTop: s.start,
                   // we always need to ask for MINUM_BATCH_SIZE
-                  // if backend sens anything less than that
+                  // if backend sends anything less than that
                   // then we know that is last page for us
                   qHeight: MINIMUM_BATCH_SIZE,
                   qLeft: 0,
