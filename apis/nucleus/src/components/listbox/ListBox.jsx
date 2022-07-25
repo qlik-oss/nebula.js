@@ -163,7 +163,7 @@ export default function ListBox({
                 const processedPages = postProcessPages ? postProcessPages(p) : p;
                 local.current.validPages = true;
                 listData.current.pages = processedPages;
-                setPages((_pages) => [...(_pages || []), ...processedPages]);
+                setPages(processedPages);
                 setIsLoadingData(false);
                 resolve();
               });
@@ -239,10 +239,8 @@ export default function ListBox({
     // since count (qcy) does not reflect this in DQ mode currently.
     // If any qMatrix was not 100 length && result of it was less that qcy
     // then => qTop + qHeight might indicate length of items as long as you scroll and fetch more items
-    // only last 2 items is important b/c we use last 2 indexes for api call
-    const _ps = ps.slice(-2).sort((a, b) => a.start - b.start);
-    const hasFilteredValues = _ps.some((p) => p.qArea.qHeight !== MINIMUM_BATCH_SIZE);
-    const h = Math.max(..._ps.map((page) => page.qArea.qTop + page.qArea.qHeight));
+    const hasFilteredValues = ps.some((p) => p.qArea.qHeight !== MINIMUM_BATCH_SIZE);
+    const h = Math.max(...ps.map((page) => page.qArea.qTop + page.qArea.qHeight));
     return h < count && hasFilteredValues ? h : count;
   };
 
