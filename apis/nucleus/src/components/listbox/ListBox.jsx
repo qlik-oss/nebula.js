@@ -151,8 +151,8 @@ export default function ListBox({
                 '/qListObjectDef',
                 // we need to ask for two payloads
                 // 2nd one is our starting index + MINIMUM_BATCH_SIZE items
-                // 1st of is 2nd ones stqarting index - MINIMUM_BATCH_SIZE items
-                // we do this because we dont want to miss any items between fast scrolls
+                // 1st one is 2nd ones starting index - MINIMUM_BATCH_SIZE items
+                // we do this because we don't want to miss any items between fast scrolls
                 [
                   {
                     qTop: lastItemInQueue.start > MINIMUM_BATCH_SIZE ? lastItemInQueue.start - MINIMUM_BATCH_SIZE : 0,
