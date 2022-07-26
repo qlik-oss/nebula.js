@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha11](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha10...v3.0.0-alpha11) (2022-07-26)
+
+### Bug Fixes
+
+- correct height calculation of listbox ([#889](https://github.com/qlik-oss/nebula.js/issues/889)) ([35ca9ef](https://github.com/qlik-oss/nebula.js/commit/35ca9ef128b17d80496c7c0425d502c2db98ccc3))
+
 # [3.0.0-alpha10](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha9...v3.0.0-alpha10) (2022-07-13)
 
 **Note:** Version bump only for package nebula.js
