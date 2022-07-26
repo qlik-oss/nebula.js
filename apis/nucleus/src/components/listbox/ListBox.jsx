@@ -145,16 +145,28 @@ export default function ListBox({
       return new Promise((resolve) => {
         local.current.timeout = setTimeout(
           () => {
-            const sorted = local.current.queue.slice(-2).sort((a, b) => a.start - b.start);
+            const lastItemInQueue = local.current.queue.slice(-1)[0];
             const reqPromise = model
               .getListObjectData(
                 '/qListObjectDef',
-                sorted.map((s) => ({
-                  qTop: s.start,
-                  qHeight: s.stop - s.start + 1,
-                  qLeft: 0,
-                  qWidth: 1,
-                }))
+                // we need to ask for two payloads
+                // 2nd one is our starting index + MINIMUM_BATCH_SIZE items
+                // 1st one is 2nd ones starting index - MINIMUM_BATCH_SIZE items
+                // we do this because we don't want to miss any items between fast scrolls
+                [
+                  {
+                    qTop: lastItemInQueue.start > MINIMUM_BATCH_SIZE ? lastItemInQueue.start - MINIMUM_BATCH_SIZE : 0,
+                    qHeight: MINIMUM_BATCH_SIZE,
+                    qLeft: 0,
+                    qWidth: 1,
+                  },
+                  {
+                    qTop: lastItemInQueue.start,
+                    qHeight: MINIMUM_BATCH_SIZE,
+                    qLeft: 0,
+                    qWidth: 1,
+                  },
+                ]
               )
               .then((p) => {
                 const processedPages = postProcessPages ? postProcessPages(p) : p;
@@ -244,7 +256,7 @@ export default function ListBox({
   return (
     <StyledInfiniteLoader
       isItemLoaded={isItemLoaded}
-      itemCount={count}
+      itemCount={listCount}
       loadMoreItems={loadMoreItems}
       threshold={0}
       minimumBatchSize={MINIMUM_BATCH_SIZE}
