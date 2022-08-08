@@ -35,6 +35,6 @@
     "picasso-plugin-q": "1.2.1"
   },
   "peerDependencies": {
-    "@nebula.js/stardust": "^2.x"
+    "@nebula.js/stardust": "^3.x"
   }
 }

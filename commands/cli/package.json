@@ -22,9 +22,9 @@
     "lint": "eslint src"
   },
   "peerDependencies": {
-    "@nebula.js/cli-build": "^2.x",
-    "@nebula.js/cli-sense": "^2.x",
-    "@nebula.js/cli-serve": "^2.x"
+    "@nebula.js/cli-build": "^3.x",
+    "@nebula.js/cli-sense": "^3.x",
+    "@nebula.js/cli-serve": "^3.x"
   },
   "dependencies": {
     "@nebula.js/cli-create": "^3.0.0-alpha11",
