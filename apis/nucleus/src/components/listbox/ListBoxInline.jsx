@@ -59,6 +59,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     sortByState = 1,
     scrollState = undefined,
     setCount = undefined,
+    shouldConfirmOnBlur = undefined,
   } = options;
   let { frequencyMode, histogram = false } = options;
 
@@ -210,7 +211,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   }, [selections]);
 
   const listBoxRef = useRef(null);
-  useConfirmUnfocus(listBoxRef, selections);
+  useConfirmUnfocus(listBoxRef, selections, shouldConfirmOnBlur);
 
   useEffect(() => {
     if (!searchContainer || !searchContainer.current) {
@@ -244,8 +245,9 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   const showTitle = true;
 
   const searchVisible = (search === true || (search === 'toggle' && showSearch)) && !selectDisabled();
-
-  const minHeight = 49 + (searchVisible ? 40 : 0) + 49;
+  const searchHeight = dense ? 27 : 40;
+  const extraheight = dense ? 39 : 49;
+  const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
 
   const onShowSearch = () => {
     const newValue = !showSearch;
@@ -316,11 +318,9 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
           </Grid>
         </Grid>
       )}
-      {searchVisible && (
-        <Grid item ref={searchContainerRef}>
-          <ListBoxSearch model={model} dense={dense} keyboard={keyboard} />
-        </Grid>
-      )}
+      <Grid item ref={searchContainerRef}>
+        <ListBoxSearch model={model} dense={dense} keyboard={keyboard} visible={searchVisible} />
+      </Grid>
       <Grid item xs>
         <div ref={moreAlignTo} />
         <AutoSizer>

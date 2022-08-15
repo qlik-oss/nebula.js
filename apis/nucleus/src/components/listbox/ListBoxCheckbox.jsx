@@ -67,19 +67,11 @@ const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
   },
 }));
 
-const getIcon = (cls, showGray = true, excluded = false, alternative = false) => (
-  <span className={cls.cbIcon}>
-    {(excluded || alternative) && (
-      <span
-        className={[showGray && excluded && cls.cbIconExcluded, showGray && alternative && cls.cbIconAlternative]
-          .filter(Boolean)
-          .join(' ')}
-      />
-    )}
-  </span>
+const getIcon = (cls, showGray = true, excluded = false) => (
+  <span className={cls.cbIcon}>{excluded && <span className={showGray && excluded ? cls.cbIconExcluded : ''} />}</span>
 );
 
-export default function ListboxCheckbox({ checked, label, dense, excluded, alternative, showGray = true }) {
+export default function ListboxCheckbox({ checked, label, dense, excluded, showGray = true }) {
   return (
     <StyledCheckbox
       edge="start"
@@ -88,7 +80,7 @@ export default function ListboxCheckbox({ checked, label, dense, excluded, alter
       className={[classes.checkbox, dense && classes.dense].filter(Boolean).join(' ')}
       inputProps={{ 'aria-labelledby': label }}
       name={label}
-      icon={getIcon(classes, showGray, excluded, alternative)}
+      icon={getIcon(classes, showGray, excluded)}
       checkedIcon={<span className={classes.cbIconChecked} />}
     />
   );

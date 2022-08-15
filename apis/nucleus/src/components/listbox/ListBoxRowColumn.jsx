@@ -172,7 +172,8 @@ const Root = styled('div')(({ theme }) => ({
   },
 
   [`&.${classes.barContainer}`]: {
-    position: 'relative',
+    height: '100%',
+    display: 'inline-block',
   },
 
   [`& .${classes.bar}`]: {
@@ -204,10 +205,11 @@ const Root = styled('div')(({ theme }) => ({
 
   [`& .${classes.excludedTextWithCheckbox}`]: {
     color: '#828282',
+    fontStyle: 'italic',
   },
 }));
 
-function RowColumn({ index, style, data, column = false }) {
+function RowColumn({ index, style, data }) {
   const {
     onClick,
     onMouseDown,
@@ -215,6 +217,7 @@ function RowColumn({ index, style, data, column = false }) {
     onMouseEnter,
     pages,
     isLocked,
+    column = false,
     checkboxes = false,
     dense = false,
     frequencyMode = 'N',
@@ -308,14 +311,7 @@ function RowColumn({ index, style, data, column = false }) {
   };
   const getCheckboxField = ({ lbl, color, qElemNumber }) => {
     const cb = (
-      <ListBoxCheckbox
-        label={lbl}
-        checked={isSelected}
-        dense={dense}
-        excluded={isExcluded(cell)}
-        alternative={isAlternative(cell)}
-        showGray={showGray}
-      />
+      <ListBoxCheckbox label={lbl} checked={isSelected} dense={dense} excluded={isExcluded(cell)} showGray={showGray} />
     );
     const rb = <ListBoxRadioButton label={lbl} checked={isSelected} dense={dense} />;
     const labelTag = typeof lbl === 'string' ? getValueField({ lbl, color, highlighted: false }) : lbl;

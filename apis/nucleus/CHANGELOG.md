@@ -3,6 +3,85 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha11](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha10...v3.0.0-alpha11) (2022-07-26)
+
+### Bug Fixes
+
+- correct height calculation of listbox ([#889](https://github.com/qlik-oss/nebula.js/issues/889)) ([35ca9ef](https://github.com/qlik-oss/nebula.js/commit/35ca9ef128b17d80496c7c0425d502c2db98ccc3))
+
+# [3.0.0-alpha10](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha9...v3.0.0-alpha10) (2022-07-13)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+# [3.0.0-alpha9](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha8...v3.0.0-alpha9) (2022-07-13)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+# [3.0.0-alpha8](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha7...v3.0.0-alpha8) (2022-07-13)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+# [3.0.0-alpha6](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha5...v3.0.0-alpha6) (2022-07-01)
+
+### Bug Fixes
+
+- enable enter key to apply selection in searches ([#881](https://github.com/qlik-oss/nebula.js/issues/881)) ([b786a5b](https://github.com/qlik-oss/nebula.js/commit/b786a5be708eabe7e369d31c32f5655a683abec7))
+- reset list if search is exited ([#874](https://github.com/qlik-oss/nebula.js/issues/874)) ([a2c89ea](https://github.com/qlik-oss/nebula.js/commit/a2c89ea6582647a839a6a0f490a01228da26bda8))
+
+# [3.0.0-alpha5](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha4...v3.0.0-alpha5) (2022-06-30)
+
+### Bug Fixes
+
+- issue with empty search results in listbox ([#873](https://github.com/qlik-oss/nebula.js/issues/873)) ([0a28eb7](https://github.com/qlik-oss/nebula.js/commit/0a28eb753a1753129702936991c09339c7f00094))
+
+# [3.0.0-alpha4](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha3...v3.0.0-alpha4) (2022-06-29)
+
+### Bug Fixes
+
+- **BDI-5122:** empty search calls abort query ([#871](https://github.com/qlik-oss/nebula.js/issues/871)) ([4004dd1](https://github.com/qlik-oss/nebula.js/commit/4004dd12d9079e5bd21799418572d61e8ed0e400))
+- filterBox react on qsize.qcy change when searching ([#872](https://github.com/qlik-oss/nebula.js/issues/872)) ([bff83bf](https://github.com/qlik-oss/nebula.js/commit/bff83bfd2b3f238ffac061fa280bffdf8544b83e))
+
+# [3.0.0-alpha3](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha2...v3.0.0-alpha3) (2022-06-28)
+
+### Bug Fixes
+
+- disabling on enter select on listbox searches ([#870](https://github.com/qlik-oss/nebula.js/issues/870)) ([8d8dd53](https://github.com/qlik-oss/nebula.js/commit/8d8dd53323b7b848612a934fb8188f5508682f18))
+
+# [3.0.0-alpha2](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha1...v3.0.0-alpha2) (2022-06-28)
+
+### Bug Fixes
+
+- horizontal listbox ([#862](https://github.com/qlik-oss/nebula.js/issues/862)) ([375e36a](https://github.com/qlik-oss/nebula.js/commit/375e36a5272bf6092184ed46879303959126adc0))
+- **listbox:** prop to disable confirming selections on blur events ([#866](https://github.com/qlik-oss/nebula.js/issues/866)) ([d680826](https://github.com/qlik-oss/nebula.js/commit/d6808267717ef76b20dccc1719e170c49e54cc38))
+- the selections is missing in dependency arrays ([#865](https://github.com/qlik-oss/nebula.js/issues/865)) ([#867](https://github.com/qlik-oss/nebula.js/issues/867)) ([88fa194](https://github.com/qlik-oss/nebula.js/commit/88fa194fc76a3ca7f9ec9305147aaf95144ab6c0))
+
+# [3.0.0-alpha1](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha0...v3.0.0-alpha1) (2022-06-23)
+
+### Bug Fixes
+
+- add italic to checkbox text when excluded ([#855](https://github.com/qlik-oss/nebula.js/issues/855)) ([97dbc77](https://github.com/qlik-oss/nebula.js/commit/97dbc778b3b5a075ea05f9d0155856655a3e4cfe))
+- multistate style ([#856](https://github.com/qlik-oss/nebula.js/issues/856)) ([6de8afa](https://github.com/qlik-oss/nebula.js/commit/6de8afa5bba7a62a00563ce8de43477e00491632))
+
+# [3.0.0-alpha0](https://github.com/qlik-oss/nebula.js/compare/v2.11.0...v3.0.0-alpha0) (2022-06-16)
+
+### Bug Fixes
+
+- fix OneAndOnlyOne in app and object selection toolbar ([#850](https://github.com/qlik-oss/nebula.js/issues/850)) ([ac2689b](https://github.com/qlik-oss/nebula.js/commit/ac2689b693710b7f14ce54294f246e0debc32c2d))
+- listbox radiobuttons fix ([#853](https://github.com/qlik-oss/nebula.js/issues/853)) ([09ddaec](https://github.com/qlik-oss/nebula.js/commit/09ddaeca491cb9578e416f89395f444510c15405))
+- **nucleus:** fix layout timing with qIsOneAndOnlyOne ([#849](https://github.com/qlik-oss/nebula.js/issues/849)) ([6a2c46b](https://github.com/qlik-oss/nebula.js/commit/6a2c46b62e8891321eec356d7647885c0f273f9f))
+- remove light-gray checkboxes in alternative state ([#846](https://github.com/qlik-oss/nebula.js/issues/846)) ([1da5e41](https://github.com/qlik-oss/nebula.js/commit/1da5e41ec25a2d742966773c1a1e59a6c803f6bd))
+
+### Features
+
+- data count to hosting app ([#848](https://github.com/qlik-oss/nebula.js/issues/848)) ([3907480](https://github.com/qlik-oss/nebula.js/commit/3907480a66ceef66997f323a8d135afba3fb92b5))
+- **ListBox:** postProcessPages and calculatePagesHeight options ([#847](https://github.com/qlik-oss/nebula.js/issues/847)) ([715789d](https://github.com/qlik-oss/nebula.js/commit/715789d858094ed338f1c609b817fc2f8572f5bc))
+
 # [2.11.0](https://github.com/qlik-oss/nebula.js/compare/v2.10.0...v2.11.0) (2022-06-01)
 
 ### Bug Fixes

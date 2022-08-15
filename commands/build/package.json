@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-build",
-  "version": "2.11.0",
+  "version": "3.0.0-alpha11",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -21,18 +21,18 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "7.17.10",
-    "@babel/core": "7.18.2",
-    "@babel/plugin-transform-react-jsx": "7.17.12",
-    "@babel/preset-env": "7.18.2",
-    "@rollup/plugin-commonjs": "22.0.0",
+    "@babel/cli": "7.18.10",
+    "@babel/core": "7.18.10",
+    "@babel/plugin-transform-react-jsx": "7.18.10",
+    "@babel/preset-env": "7.18.10",
+    "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-json": "4.1.0",
     "@rollup/plugin-node-resolve": "13.3.0",
     "@rollup/plugin-replace": "4.0.0",
     "chalk": "4.1.2",
     "extend": "3.0.2",
-    "postcss": "^8.4.14",
-    "rollup": "2.75.6",
+    "postcss": "^8.4.16",
+    "rollup": "2.77.2",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-sourcemaps": "0.6.3",
@@ -40,8 +40,8 @@
     "yargs": "17.5.1"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "8.3.2",
+    "@rollup/plugin-typescript": "8.3.4",
     "tslib": "*",
-    "typescript": ">=4.7.3"
+    "typescript": ">=4.7.4"
   }
 }

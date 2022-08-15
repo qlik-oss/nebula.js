@@ -12,11 +12,10 @@ const PREFIX = 'MultiState';
 
 const classes = {
   item: `${PREFIX}-item`,
-  badge: `${PREFIX}-badge`,
 };
 
-const StyledListBoxPopover = styled(ListBoxPopover)(({ theme }) => ({
-  [`& .${classes.item}`]: {
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  [`&.${classes.item}`]: {
     backgroundColor: theme.palette.background.paper,
     position: 'relative',
     cursor: 'pointer',
@@ -26,10 +25,6 @@ const StyledListBoxPopover = styled(ListBoxPopover)(({ theme }) => ({
     },
     height: '100%',
     alignItems: 'center',
-  },
-
-  [`& .${classes.badge}`]: {
-    padding: theme.spacing(0, 1),
   },
 }));
 
@@ -77,7 +72,7 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
     Header = (
       <>
         <Grid item xs zeroMinWidth>
-          <Badge className={classes.badge} color="secondary" badgeContent={field.states.length}>
+          <Badge style={{ padding: '0px 8px' }} color="secondary" badgeContent={field.states.length}>
             <Typography component="span" noWrap style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600 }}>
               {field.name}
             </Typography>
@@ -139,11 +134,11 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
   const Component = moreAlignTo ? (
     PopoverFields
   ) : (
-    <Grid container gap={0} className={classes.item} onClick={handleShowFields}>
+    <StyledGrid container gap={0} className={classes.item} onClick={handleShowFields}>
       {Header}
       {showFields && PopoverFields}
       {showStateIx > -1 && (
-        <StyledListBoxPopover
+        <ListBoxPopover
           alignTo={alignTo}
           show={showStateIx > -1}
           close={handleCloseShowState}
@@ -152,11 +147,11 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
           stateName={field.states[showStateIx]}
         />
       )}
-    </Grid>
+    </StyledGrid>
   );
 
   return moreAlignTo && showStateIx > -1 ? (
-    <StyledListBoxPopover
+    <ListBoxPopover
       alignTo={alignTo}
       show={showStateIx > -1}
       close={handleCloseShowState}

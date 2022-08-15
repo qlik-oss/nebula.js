@@ -10,16 +10,7 @@ const classes = {
 };
 
 const StyledRadio = styled(Radio)(() => ({
-  [`& .${classes.denseRadioButton}`]: {
-    height: '100%',
-    boxSizing: 'border-box',
-    '& svg': {
-      width: '0.7em',
-      height: '0.7em',
-    },
-  },
-
-  [`& .${classes.radioButton}`]: {
+  [`&.${classes.radioButton}`]: {
     right: '5px',
   },
 }));
@@ -30,10 +21,11 @@ export default function ListBoxRadioButton({ checked, label, dense }) {
       checked={checked}
       value={label}
       name={label}
-      inputProps={{ 'aria-labelledby': label }}
-      className={dense ? classes.denseRadioButton : classes.radioButton}
+      className={classes.radioButton}
       style={{ backgroundColor: 'transparent' }}
       disableRipple
+      size={dense ? 'small' : 'medium'}
+      sx={dense && { padding: '0px 0px 0px 12px' }}
     />
   );
 }
