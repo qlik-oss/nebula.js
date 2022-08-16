@@ -33,7 +33,7 @@ The gitignore is setup to exclude a folder named `local-dev` in the root of this
 
 ## Render a chart in a local app
 
-Assume that there is a local app named Ctrl-00.qvf and there is a bar chart with the id 'QmGpz' in that app. You can change the app and the chart id to match your app and chart id. If the chart is not a bar chart you need to import the correct chart (e.g. import linechart from '@nebula.js/sn-line-chart') otherwise the chart is not rendered.
+Assume that there is a local app named Ctrl-00.qvf and there is a bar chart with the id 'QmGpz' in that app. You can change the app and the chart id to match your app and chart id. If the chart is not a bar chart you need to import the correct chart (e.g. import linechart from '@nebula.js/sn-line-chart') otherwise an error will occur.
 
 Replace connect.js with
 
@@ -44,7 +44,6 @@ export default function connect() {
   const loadSchema = () =>
     fetch('https://unpkg.com/enigma.js/schemas/12.936.0.json').then((response) => response.json());
   const localApp = '/apps/Ctrl-00.qvf';
-  const chartId = 'QmGpz';
 
   const createConnection = () =>
     loadSchema().then((schema) =>
@@ -65,7 +64,9 @@ Replace index.js with
 ```sh
 import { embed } from '@nebula.js/stardust';
 import bar from '@nebula.js/sn-bar-chart';
-import connect from './connect2';
+import connect from './connect';
+
+const chartId = 'QmGpz';
 
 function init() {
   connect().then((app) => {
