@@ -47,6 +47,10 @@ const options = {
     type: 'array',
     description: 'Array of scripts to inject',
   },
+  flags: {
+    type: 'array',
+    description: 'Array of flags to enable',
+  },
   stylesheets: {
     type: 'array',
     description: 'Array of stylesheets to inject',

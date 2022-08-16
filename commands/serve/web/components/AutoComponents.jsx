@@ -57,11 +57,11 @@ const getType = (value, key) => {
     return 'array';
   }
 
-  if (key === 'variable') {
+  if (key === 'variable' && enableExpressions) {
     return 'variable';
   }
 
-  if (value && typeof value === 'object' && 'qStringExpression' in value) {
+  if (value && typeof value === 'object' && 'qStringExpression' in value && enableExpressions) {
     return 'expression';
   }
 
@@ -174,11 +174,16 @@ const registeredComponents = {
 
 const QRX = /^q[A-Z]/;
 
-const whiteListedQ = {
-  qStringExpression: true,
-};
+const whiteListedQ = {};
 
-export default function generateComponents(properties, changed, app) {
+let enableExpressions = false;
+
+export default function generateComponents(properties, changed, app, flags) {
+  if (flags && flags.PP_EXPRESSIONS) {
+    enableExpressions = true;
+    whiteListedQ.qStringExpression = true;
+  }
+
   const components = Object.keys(properties)
     .map((key) => {
       if (['visualization', 'version'].indexOf(key) !== -1) {

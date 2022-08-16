@@ -8,7 +8,7 @@ import AppContext from '../contexts/AppContext';
 import Data from './property-panel/Data';
 import generateComponents from './AutoComponents';
 
-export default function Properties({ viz, sn, isTemp, storage }) {
+export default function Properties({ viz, sn, isTemp, storage, flags }) {
   const [properties, setProperties] = usePropertiesById(viz.id);
   const app = useContext(AppContext);
 
@@ -53,7 +53,7 @@ export default function Properties({ viz, sn, isTemp, storage }) {
         </>
       )}
       <Data properties={properties} setProperties={setProperties} sn={sn} />
-      {generateComponents(properties, changed, app)}
+      {generateComponents(properties, changed, app, flags)}
     </div>
   );
 }
