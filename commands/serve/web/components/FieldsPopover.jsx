@@ -142,7 +142,7 @@ export default function FieldsPopover({ alignTo, show, close, onSelected, type }
       open={show}
       onClose={close}
       anchorEl={alignTo.current}
-      marginThreshold={theme.spacing(1)}
+      marginThreshold={16} // theme.spacing(1)
       elevation={3}
       anchorOrigin={{
         vertical: 'bottom',
