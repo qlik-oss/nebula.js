@@ -57,11 +57,11 @@ const getType = (value, key) => {
     return 'array';
   }
 
-  if (key === 'variable' && enableExpressions) {
+  if (enableExpressions && key === 'variable' && typeof value === 'object' && 'name' in value && 'value' in value) {
     return 'variable';
   }
 
-  if (value && typeof value === 'object' && 'qStringExpression' in value && enableExpressions) {
+  if (enableExpressions && value && typeof value === 'object' && 'qStringExpression' in value) {
     return 'expression';
   }
 
@@ -174,14 +174,11 @@ const registeredComponents = {
 
 const QRX = /^q[A-Z]/;
 
-const whiteListedQ = {};
-
 let enableExpressions = false;
 
 export default function generateComponents(properties, changed, app, flags) {
   if (flags && flags.PP_EXPRESSIONS) {
     enableExpressions = true;
-    whiteListedQ.qStringExpression = true;
   }
 
   const components = Object.keys(properties)
@@ -189,7 +186,7 @@ export default function generateComponents(properties, changed, app, flags) {
       if (['visualization', 'version'].indexOf(key) !== -1) {
         return false;
       }
-      if (!whiteListedQ[key] && QRX.test(key)) {
+      if (QRX.test(key)) {
         // skip q properties for now, but allow qStringExpression
         return false;
       }
