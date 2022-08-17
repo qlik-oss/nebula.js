@@ -43,7 +43,7 @@ export default function Variable({ property, value, target, changed, app }) {
   const handleChange = (e) => {
     setS(e.target.value);
     target[property].name = e.target.value;
-    target[property].value = { qStringExpression: { qExpr: `$(${e.target.value})` } };
+    target[property].value = { qStringExpression: { qExpr: `[${e.target.value}]` } };
     changed();
   };
   return l.length === 0 ? (
