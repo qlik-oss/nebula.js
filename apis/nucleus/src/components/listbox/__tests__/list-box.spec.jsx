@@ -17,6 +17,7 @@ describe('<Listbox />', () => {
   let useCallbackStub;
   let setTimeoutStub;
   let useSelectionsInteractions;
+  let infiniteProps;
 
   before(() => {
     sandbox = sinon.createSandbox({ useFakeTimers: true });
@@ -61,6 +62,7 @@ describe('<Listbox />', () => {
           require.resolve('react-window-infinite-loader'),
           () => (props) => {
             const func = props.children;
+            infiniteProps = props;
             return func({ onItemsRendered: {} });
           },
         ],
@@ -241,6 +243,12 @@ describe('<Listbox />', () => {
       await render();
       const { itemData } = FixedSizeList.args[FixedSizeList.callCount - 1][0];
       expect(itemData.isLocked).to.equal(true);
+    });
+
+    it('should prevent InfiniteLoader to get itemCount == 0', async () => {
+      layout.qListObject.qSize.qcy = 0;
+      await render();
+      expect(infiniteProps.itemCount).to.equal(1);
     });
   });
 });
