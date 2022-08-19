@@ -23,7 +23,6 @@ describe('<Listbox />', () => {
     sandbox = sinon.createSandbox({ useFakeTimers: true });
 
     setTimeoutStub = sandbox.stub();
-
     global.document = 'document';
 
     layout = {
