@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha11](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha10...v3.0.0-alpha11) (2022-07-26)
+
+### Bug Fixes
+
+- correct height calculation of listbox ([#889](https://github.com/qlik-oss/nebula.js/issues/889)) ([35ca9ef](https://github.com/qlik-oss/nebula.js/commit/35ca9ef128b17d80496c7c0425d502c2db98ccc3))
+
+# [3.0.0-alpha10](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha9...v3.0.0-alpha10) (2022-07-13)
+
+**Note:** Version bump only for package nebula.js
+
+**Note:** Version bump only for package nebula.js
+
+# [3.0.0-alpha9](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha8...v3.0.0-alpha9) (2022-07-13)
+
+### Bug Fixes
+
+- resets list when search is exited ([4ecc1ae](https://github.com/qlik-oss/nebula.js/commit/4ecc1ae6ebda609790a2f8a6a445300d8761c144))
+
+**Note:** Version bump only for package nebula.js
+
+# [3.0.0-alpha8](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha7...v3.0.0-alpha8) (2022-07-13)
+
+**Note:** Version bump only for package nebula.js
+
+**Note:** Version bump only for package nebula.js
+
+# [3.0.0-alpha6](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha5...v3.0.0-alpha6) (2022-07-01)
+
+### Bug Fixes
+
+- enable enter key to apply selection in searches ([#881](https://github.com/qlik-oss/nebula.js/issues/881)) ([b786a5b](https://github.com/qlik-oss/nebula.js/commit/b786a5be708eabe7e369d31c32f5655a683abec7))
+- reset list if search is exited ([#874](https://github.com/qlik-oss/nebula.js/issues/874)) ([a2c89ea](https://github.com/qlik-oss/nebula.js/commit/a2c89ea6582647a839a6a0f490a01228da26bda8))
+
 # [3.0.0-alpha5](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha4...v3.0.0-alpha5) (2022-06-30)
 
 ### Bug Fixes

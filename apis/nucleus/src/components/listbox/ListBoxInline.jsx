@@ -318,11 +318,9 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
           </Grid>
         </Grid>
       )}
-      {searchVisible && (
-        <Grid item ref={searchContainerRef}>
-          <ListBoxSearch model={model} dense={dense} keyboard={keyboard} />
-        </Grid>
-      )}
+      <Grid item ref={searchContainerRef}>
+        <ListBoxSearch model={model} dense={dense} keyboard={keyboard} visible={searchVisible} />
+      </Grid>
       <Grid item xs>
         <div ref={moreAlignTo} />
         <AutoSizer>

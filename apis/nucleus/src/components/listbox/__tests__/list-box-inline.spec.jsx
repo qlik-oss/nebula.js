@@ -235,8 +235,7 @@ describe('<ListboxInline />', () => {
     it('should render without toolbar', async () => {
       options.search = 'toggle';
       await render();
-      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches.length, 'search should be hidden initially').to.equal(0);
+      expect(ListBoxSearch).to.have.been.calledWith(sinon.match({ visible: false }));
     });
 
     it('should render without search and show search button', async () => {
@@ -248,8 +247,7 @@ describe('<ListboxInline />', () => {
       const typographs = renderer.root.findAllByType(Typography);
       expect(typographs.length).to.equal(1);
 
-      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches.length).to.equal(0);
+      expect(ListBoxSearch).to.have.been.calledWith(sinon.match({ visible: false }));
     });
 
     it('should use provided frequencyMode', async () => {

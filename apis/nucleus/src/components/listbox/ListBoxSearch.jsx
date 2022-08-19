@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useTheme } from '@nebula.js/ui/theme';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import Search from '@nebula.js/ui/icons/search';
@@ -7,33 +7,51 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 const TREE_PATH = '/qListObjectDef';
 
-export default function ListBoxSearch({ model, keyboard, dense = false }) {
+export default function ListBoxSearch({ model, keyboard, dense = false, visible = true }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
+  const [isSearching, setIsSearching] = useState(false);
   const theme = useTheme();
+
+  const abortSearch = async () => {
+    await model.abortListObjectSearch(TREE_PATH);
+    setIsSearching(false);
+  };
+
+  useEffect(() => {
+    if (!visible && isSearching) {
+      abortSearch();
+    }
+  }, [visible]);
 
   const onChange = (e) => {
     setValue(e.target.value);
     if (e.target.value.length === 0) {
-      model.abortListObjectSearch(TREE_PATH);
+      abortSearch();
     } else {
       model.searchListObjectFor(TREE_PATH, e.target.value);
+      setIsSearching(true);
     }
   };
   const onKeyDown = (e) => {
     switch (e.key) {
       case 'Enter':
-        // This is disabled to "solve" QB-10955 with the lowest risk
-        // await model.acceptListObjectSearch(TREE_PATH, true);
-        // setValue('');
+        // Maybe we only want to accept if isSearching is true
+        model.acceptListObjectSearch(TREE_PATH, true);
+        setValue('');
         break;
       case 'Escape':
-        model.abortListObjectSearch(TREE_PATH);
+        abortSearch();
+        setValue('');
         break;
       default:
         break;
     }
   };
+
+  if (!visible) {
+    return null;
+  }
 
   return (
     <OutlinedInput
