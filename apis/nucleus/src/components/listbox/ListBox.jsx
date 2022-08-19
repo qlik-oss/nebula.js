@@ -231,13 +231,7 @@ export default function ListBox({
 
   const isVertical = listLayout !== 'horizontal';
 
-  let count = layout.qListObject.qSize.qcy;
-
-  // Should not allow a count of zero since it will stop executing loadMoreItems
-  // this could happen if a seach returns an empty result
-  if (count === 0) {
-    count = 1;
-  }
+  const count = layout.qListObject.qSize.qcy;
 
   const getCalculatedHeight = (ps) => {
     // If values have been filtered in the currently loaded page, we want to
@@ -256,7 +250,7 @@ export default function ListBox({
   return (
     <StyledInfiniteLoader
       isItemLoaded={isItemLoaded}
-      itemCount={listCount}
+      itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
       loadMoreItems={loadMoreItems}
       threshold={0}
       minimumBatchSize={MINIMUM_BATCH_SIZE}
