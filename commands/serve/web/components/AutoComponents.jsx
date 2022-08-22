@@ -14,9 +14,11 @@ import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
+  InputAdornment,
 } from '@mui/material';
 
 import { ExpandMore } from '@nebula.js/ui/icons';
+import Variable from './property-panel/Variable';
 
 const PREFIX = 'AutoComponents';
 
@@ -50,10 +52,19 @@ const StyledAccordion = styled(Accordion)(({ theme }) => ({
   },
 }));
 
-const getType = (value) => {
+const getType = (value, key) => {
   if (Array.isArray(value)) {
     return 'array';
   }
+
+  if (enableExpressions && key === 'variable' && typeof value === 'object' && 'name' in value && 'value' in value) {
+    return 'variable';
+  }
+
+  if (enableExpressions && value && typeof value === 'object' && 'qStringExpression' in value) {
+    return 'expression';
+  }
+
   if (typeof value === 'boolean') {
     return 'boolean';
   }
@@ -113,13 +124,41 @@ function Num({ property, value, target, changed }) {
   return <TextField variant="standard" fullWidth onChange={handleChange} onBlur={onBlur} label={property} value={s} />;
 }
 
-function Obj({ property, value, changed }) {
+function Expression({ property, value, target, changed }) {
+  const initial = value.qStringExpression && value.qStringExpression.qExpr ? value.qStringExpression.qExpr : '';
+  const [s, setS] = useState(initial);
+  const handleChange = (e) => {
+    setS(e.target.value);
+  };
+  const onBlur = () => {
+    if (s !== value) {
+      target[property].qStringExpression = { qExpr: `=${s}` };
+      changed();
+    }
+  };
+
+  return (
+    <TextField
+      variant="standard"
+      InputProps={{
+        startAdornment: <InputAdornment position="start">=</InputAdornment>,
+      }}
+      fullWidth
+      onChange={handleChange}
+      onBlur={onBlur}
+      label={property}
+      value={s}
+    />
+  );
+}
+
+function Obj({ property, value, changed, app }) {
   return (
     <StyledAccordion square className={classes.root}>
       <AccordionSummary expandIcon={<ExpandMore />} className={classes.summary}>
         <Typography>{property}</Typography>
       </AccordionSummary>
-      <AccordionDetails className={classes.details}>{generateComponents(value, changed)}</AccordionDetails>
+      <AccordionDetails className={classes.details}>{generateComponents(value, changed, app)}</AccordionDetails>
     </StyledAccordion>
   );
 }
@@ -129,24 +168,33 @@ const registeredComponents = {
   string: Str,
   object: Obj,
   number: Num,
+  expression: Expression,
+  variable: Variable,
 };
 
 const QRX = /^q[A-Z]/;
 
-export default function generateComponents(properties, changed) {
+let enableExpressions = false;
+
+export default function generateComponents(properties, changed, app, flags) {
+  if (flags && flags.PP_EXPRESSIONS) {
+    enableExpressions = true;
+  }
+
   const components = Object.keys(properties)
     .map((key) => {
       if (['visualization', 'version'].indexOf(key) !== -1) {
         return false;
       }
       if (QRX.test(key)) {
-        // skip q properties for now
+        // skip q properties for now, but allow qStringExpression
         return false;
       }
-      const type = getType(properties[key]);
+      const type = getType(properties[key], key);
       if (!registeredComponents[type]) {
         return false;
       }
+
       return {
         Component: registeredComponents[type],
         property: key,
@@ -161,7 +209,14 @@ export default function generateComponents(properties, changed) {
     <StyledGrid container direction="column" gap={0} alignItems="stretch">
       {components.map((c) => (
         <Grid item xs key={c.key} style={{ width: '100%' }}>
-          <c.Component key={c.key} property={c.property} value={c.value} target={properties} changed={changed} />
+          <c.Component
+            key={c.key}
+            app={app}
+            property={c.property}
+            value={c.value}
+            target={properties}
+            changed={changed}
+          />
         </Grid>
       ))}
     </StyledGrid>

@@ -1,14 +1,16 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useState, useContext } from 'react';
 
 import { Divider, Grid, Checkbox, FormControlLabel } from '@mui/material';
 
 import usePropertiesById from '@nebula.js/nucleus/src/hooks/usePropertiesById';
 
+import AppContext from '../contexts/AppContext';
 import Data from './property-panel/Data';
 import generateComponents from './AutoComponents';
 
-export default function Properties({ viz, sn, isTemp, storage }) {
+export default function Properties({ viz, sn, isTemp, storage, flags }) {
   const [properties, setProperties] = usePropertiesById(viz.id);
+  const app = useContext(AppContext);
 
   const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
 
@@ -51,7 +53,7 @@ export default function Properties({ viz, sn, isTemp, storage }) {
         </>
       )}
       <Data properties={properties} setProperties={setProperties} sn={sn} />
-      {generateComponents(properties, changed)}
+      {generateComponents(properties, changed, app, flags)}
     </div>
   );
 }

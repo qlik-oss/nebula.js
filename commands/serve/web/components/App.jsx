@@ -325,7 +325,13 @@ export default function App({ app, info }) {
                             padding: 0,
                           }}
                         >
-                          <Properties sn={sn} viz={activeViz} isTemp={!objectListMode} storage={storage} />
+                          <Properties
+                            sn={sn}
+                            viz={activeViz}
+                            isTemp={!objectListMode}
+                            storage={storage}
+                            flags={info.flags}
+                          />
                         </Grid>
                       )}
                     </Grid>
