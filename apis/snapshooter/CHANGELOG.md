@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha12](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha11...v3.0.0-alpha12) (2022-08-22)
+
+**Note:** Version bump only for package @nebula.js/snapshooter
+
 # [3.0.0-alpha11](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha10...v3.0.0-alpha11) (2022-07-26)
 
 **Note:** Version bump only for package @nebula.js/snapshooter

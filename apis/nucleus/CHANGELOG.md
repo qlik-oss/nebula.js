@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha12](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha11...v3.0.0-alpha12) (2022-08-22)
+
+### Bug Fixes
+
+- **ListBox:** Prevent empty list because of 0 items ([#898](https://github.com/qlik-oss/nebula.js/issues/898)) ([a48dff3](https://github.com/qlik-oss/nebula.js/commit/a48dff3299a590e7e5c1b0d02de658c861d97ad9))
+- merge passed properties. remove sortByState option ([#875](https://github.com/qlik-oss/nebula.js/issues/875)) ([ee2ec3b](https://github.com/qlik-oss/nebula.js/commit/ee2ec3bb35f45e14586e615402418e654749b283))
+
 # [3.0.0-alpha11](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha10...v3.0.0-alpha11) (2022-07-26)
 
 ### Bug Fixes

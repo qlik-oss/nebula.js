@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-alpha12](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha11...v3.0.0-alpha12) (2022-08-22)
+
+### Bug Fixes
+
+- **deps:** update dependency source-map-loader to v4 ([#880](https://github.com/qlik-oss/nebula.js/issues/880)) ([d9b5dd5](https://github.com/qlik-oss/nebula.js/commit/d9b5dd56b3c1f2ce1eaef62da760c88af9085a2d))
+
+### Features
+
+- add variable and expression support to serve props ([#895](https://github.com/qlik-oss/nebula.js/issues/895)) ([3b8dc2e](https://github.com/qlik-oss/nebula.js/commit/3b8dc2ee56c84c118617b224c53776d0f2875f26))
+
 # [3.0.0-alpha11](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha10...v3.0.0-alpha11) (2022-07-26)
 
 **Note:** Version bump only for package @nebula.js/cli-serve
