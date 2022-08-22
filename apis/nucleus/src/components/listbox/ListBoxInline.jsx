@@ -1,6 +1,7 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
+import extend from 'extend';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
@@ -56,7 +57,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     postProcessPages = undefined,
     calculatePagesHeight,
     showGray = true,
-    sortByState = 1,
     scrollState = undefined,
     setCount = undefined,
     shouldConfirmOnBlur = undefined,
@@ -121,7 +121,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       qDef: {
         qSortCriterias: [
           {
-            qSortByState: sortByState,
+            qSortByState: 1,
             qSortByAscii: 1,
             qSortByNumeric: 1,
             qSortByLoadOrder: 1,
@@ -130,8 +130,8 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       },
     },
     title,
-    ...properties,
   };
+  extend(true, listdef, properties);
 
   // Something something lib dimension
   let fieldName;
@@ -345,7 +345,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               keyboard={keyboard}
               showGray={showGray}
               scrollState={scrollState}
-              sortByState={sortByState}
+              sortByState={listdef.qListObjectDef.qDef.qSortCriterias[0].qSortByState}
               setCount={setCount}
             />
           )}
