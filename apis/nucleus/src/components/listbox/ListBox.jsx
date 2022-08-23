@@ -24,8 +24,8 @@ const classes = {
   styledScrollbars: `${PREFIX}-styledScrollbars`,
 };
 
-const StyledInfiniteLoader = styled(InfiniteLoader)(() => ({
-  [`& .${classes.styledScrollbars}`]: {
+const StyledFixedSizeList = styled(FixedSizeList)(() => ({
+  [`&.${classes.styledScrollbars}`]: {
     scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
 
     '&::-webkit-scrollbar': {
@@ -248,7 +248,7 @@ export default function ListBox({
   const { frequencyMax } = layout;
 
   return (
-    <StyledInfiniteLoader
+    <InfiniteLoader
       isItemLoaded={isItemLoaded}
       itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
       loadMoreItems={loadMoreItems}
@@ -259,11 +259,10 @@ export default function ListBox({
       {({ onItemsRendered, ref }) => {
         local.current.listRef = ref;
         return (
-          <FixedSizeList
+          <StyledFixedSizeList
             direction={direction}
             data-testid="fixed-size-list"
             useIsScrolling
-            style={{}}
             height={listHeight}
             width={width}
             itemCount={listCount}
@@ -298,9 +297,9 @@ export default function ListBox({
             ref={ref}
           >
             {RowColumn}
-          </FixedSizeList>
+          </StyledFixedSizeList>
         );
       }}
-    </StyledInfiniteLoader>
+    </InfiniteLoader>
   );
 }
