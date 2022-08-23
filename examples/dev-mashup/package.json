@@ -2,7 +2,6 @@
   "name": "local-mashup",
   "version": "1.0.0",
   "description": "Simple local mashup",
-  "main": "index.js",
   "scripts": {
     "start": "parcel index.html --open --no-hmr",
     "build": "parcel build index.html"
