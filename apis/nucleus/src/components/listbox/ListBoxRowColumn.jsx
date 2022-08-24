@@ -174,7 +174,6 @@ const Root = styled('div')(({ theme }) => ({
   [`&.${classes.barContainer}`]: {
     height: '100%',
     display: 'inline-block',
-    float: 'left',
   },
 
   [`& .${classes.bar}`]: {
