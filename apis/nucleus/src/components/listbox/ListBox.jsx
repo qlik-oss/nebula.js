@@ -49,11 +49,12 @@ const StyledFixedSizeList = styled(FixedSizeList)(() => ({
 }));
 
 function getSizeInfo({ isVertical, checkboxes, dense, height }) {
+  const sizeHorizontal = 50;
   let sizeVertical = checkboxes ? 40 : 33;
   if (dense) {
     sizeVertical = 20;
   }
-  const itemSize = isVertical ? sizeVertical : 200;
+  const itemSize = isVertical ? sizeVertical : sizeHorizontal;
   const listHeight = height || 8 * itemSize;
 
   return {
