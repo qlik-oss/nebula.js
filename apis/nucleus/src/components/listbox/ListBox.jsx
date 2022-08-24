@@ -24,8 +24,8 @@ const classes = {
   styledScrollbars: `${PREFIX}-styledScrollbars`,
 };
 
-const StyledInfiniteLoader = styled(InfiniteLoader)(() => ({
-  [`& .${classes.styledScrollbars}`]: {
+const StyledFixedSizeList = styled(FixedSizeList)(() => ({
+  [`&.${classes.styledScrollbars}`]: {
     scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
 
     '&::-webkit-scrollbar': {
@@ -49,11 +49,12 @@ const StyledInfiniteLoader = styled(InfiniteLoader)(() => ({
 }));
 
 function getSizeInfo({ isVertical, checkboxes, dense, height }) {
+  const sizeHorizontal = 200;
   let sizeVertical = checkboxes ? 40 : 33;
   if (dense) {
     sizeVertical = 20;
   }
-  const itemSize = isVertical ? sizeVertical : 200;
+  const itemSize = isVertical ? sizeVertical : sizeHorizontal;
   const listHeight = height || 8 * itemSize;
 
   return {
@@ -248,7 +249,7 @@ export default function ListBox({
   const { frequencyMax } = layout;
 
   return (
-    <StyledInfiniteLoader
+    <InfiniteLoader
       isItemLoaded={isItemLoaded}
       itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
       loadMoreItems={loadMoreItems}
@@ -259,11 +260,10 @@ export default function ListBox({
       {({ onItemsRendered, ref }) => {
         local.current.listRef = ref;
         return (
-          <FixedSizeList
+          <StyledFixedSizeList
             direction={direction}
             data-testid="fixed-size-list"
             useIsScrolling
-            style={{}}
             height={listHeight}
             width={width}
             itemCount={listCount}
@@ -298,9 +298,9 @@ export default function ListBox({
             ref={ref}
           >
             {RowColumn}
-          </FixedSizeList>
+          </StyledFixedSizeList>
         );
       }}
-    </StyledInfiniteLoader>
+    </InfiniteLoader>
   );
 }
