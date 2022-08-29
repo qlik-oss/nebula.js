@@ -882,8 +882,8 @@
                 "stateName": {
                   "description": "Sets the state to make selections in",
                   "optional": true,
-                  "defaultValue": false,
-                  "type": "boolean"
+                  "defaultValue": "\"$\"",
+                  "type": "string"
                 },
                 "properties": {
                   "description": "Properties object to extend default properties with",
