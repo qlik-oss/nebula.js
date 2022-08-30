@@ -256,7 +256,7 @@ declare namespace stardust {
             toolbar?: boolean;
             checkboxes?: boolean;
             dense?: boolean;
-            stateName?: boolean;
+            stateName?: string;
             properties?: object;
         }): void;
 
