@@ -1,7 +1,7 @@
 {
   "name": "@nebula.js/supernova",
   "private": true,
-  "version": "3.0.0-alpha13",
+  "version": "3.0.0-rc.1",
   "main": "src/index.js",
   "devDependencies": {
     "extend": "3.0.2",

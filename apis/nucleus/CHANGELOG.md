@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-rc.1](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha13...v3.0.0-rc.1) (2022-08-30)
+
+### Bug Fixes
+
+- get back the styled scrollbar ([#899](https://github.com/qlik-oss/nebula.js/issues/899)) ([0743cd0](https://github.com/qlik-oss/nebula.js/commit/0743cd0e84f7806dfa06b8802b7337e3a4f57b37))
+
 # [3.0.0-alpha13](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha12...v3.0.0-alpha13) (2022-08-22)
 
 **Note:** Version bump only for package @nebula.js/nucleus
