@@ -261,7 +261,8 @@ export default function ListBox({
         local.current.listRef = ref;
         return (
           <StyledFixedSizeList
-            direction={direction}
+            // explicitly set this as it accepts horizontal as well, leading to confusion
+            direction={direction === 'rtl' ? 'rtl' : 'ltr'}
             data-testid="fixed-size-list"
             useIsScrolling
             height={listHeight}
