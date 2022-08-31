@@ -15,7 +15,7 @@ export default function loHandler({ dc: lo, def, properties }) {
 
   const handler = {
     dimensions() {
-      if (!lo.qDef || !lo.qDef.qFieldDefs || lo.qDef.qFieldDefs.length === 0) return [];
+      if (!lo.qLibraryId && (!lo.qDef || !lo.qDef.qFieldDefs || lo.qDef.qFieldDefs.length === 0)) return [];
       return [lo];
     },
     measures() {
@@ -31,7 +31,7 @@ export default function loHandler({ dc: lo, def, properties }) {
             };
       dimension.qDef.cId = dimension.qDef.cId || uid();
 
-      dimension.qDef.qSortCriterias = dimension.qDef.qSortCriterias || [
+      dimension.qDef.qSortCriterias = lo.qDef.qSortCriterias || [
         {
           qSortByState: 1,
           qSortByLoadOrder: 1,
@@ -46,9 +46,8 @@ export default function loHandler({ dc: lo, def, properties }) {
     },
     removeDimension(idx) {
       const dimension = lo;
-      Object.keys(dimension).forEach((k) => {
-        delete lo[k];
-      });
+      delete lo.qDef;
+      delete lo.qLibraryId;
       def.dimensions.removed(dimension, objectProperties, idx);
     },
     addMeasure() {},
@@ -61,7 +60,7 @@ export default function loHandler({ dc: lo, def, properties }) {
       return 0;
     },
     canAddDimension() {
-      return lo.qDef && lo.qDef.qFieldDefs ? lo.qDef.qFieldDefs.length === 0 : !lo.qDef;
+      return handler.dimensions().length === 0;
     },
     canAddMeasure() {
       return false;
