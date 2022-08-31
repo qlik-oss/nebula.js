@@ -31,7 +31,7 @@ export default function loHandler({ dc: lo, def, properties }) {
             };
       dimension.qDef.cId = dimension.qDef.cId || uid();
 
-      dimension.qDef.qSortCriterias = dimension.qDef.qSortCriterias || [
+      dimension.qDef.qSortCriterias = lo.qDef.qSortCriterias || [
         {
           qSortByState: 1,
           qSortByLoadOrder: 1,
