@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-rc.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2022-08-31)
+
+### Bug Fixes
+
+- add check for rtl-ltr for direction prop ([#904](https://github.com/qlik-oss/nebula.js/issues/904)) ([f5d9e83](https://github.com/qlik-oss/nebula.js/commit/f5d9e83959f31c04ae9fbe39eae6fd0b40a3252a))
+- listobject pp component issues ([#905](https://github.com/qlik-oss/nebula.js/issues/905)) ([d49b2bd](https://github.com/qlik-oss/nebula.js/commit/d49b2bd7e1daae458a572950b7db63dfa33cdf4c))
+
 # [3.0.0-rc.1](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-alpha13...v3.0.0-rc.1) (2022-08-30)
 
 ### Bug Fixes
