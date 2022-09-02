@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@babel/cli": "7.18.10",
-    "@babel/core": "7.18.10",
+    "@babel/core": "7.18.13",
     "@babel/plugin-transform-react-jsx": "7.18.10",
     "@babel/preset-env": "7.18.10",
     "@rollup/plugin-commonjs": "22.0.2",
@@ -32,7 +32,7 @@
     "chalk": "4.1.2",
     "extend": "3.0.2",
     "postcss": "^8.4.16",
-    "rollup": "2.77.2",
+    "rollup": "2.79.0",
     "rollup-plugin-babel": "4.4.0",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-sourcemaps": "0.6.3",
@@ -40,8 +40,8 @@
     "yargs": "17.5.1"
   },
   "devDependencies": {
-    "@rollup/plugin-typescript": "8.3.4",
+    "@rollup/plugin-typescript": "8.4.0",
     "tslib": "*",
-    "typescript": ">=4.7.4"
+    "typescript": ">=4.8.2"
   }
 }
