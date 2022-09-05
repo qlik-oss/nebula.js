@@ -67,8 +67,7 @@ When you use Nebula.js as a dependency in your project, and you want to edit or 
 
 ### Linking Nebula when using `nebula serve`
 
-With `npm`: When using `nebula serve` to serve your project's files, you must run `npm link` in the folder: `nebula.js/commands/serve`.
-Then use it in your own repo by running `npm link @nebula.js/cli-serve` (run this in your own repo).
+With `npm`: Before using `nebula serve` to serve your project's files, you must run `npm link` in the folder: `nebula.js/commands/serve` and use it in your own repo by running `npm link @nebula.js/cli-serve` (run this in your own repo).
 To include source maps, so you can easier debug the Nebula.js code, you should also run `yarn build:dev` in the `nebula.js/commands/serve` folder.
 
 With `yarn`: Same as for `npm` but replace `npm` with `yarn` in the commands above.
