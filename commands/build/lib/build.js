@@ -330,7 +330,7 @@ async function build(argv = {}) {
     await systemjs(buildConfig, core);
   }
 
-  return Promise.resolve();
+  return undefined;
 }
 
 module.exports = build;
