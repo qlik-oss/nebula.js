@@ -29,6 +29,10 @@ const resolveReplacementStrings = (replacementStrings) => {
   return replacementStrings;
 };
 
+const mergeArray = (a1 = [], a2 = []) =>
+  // Simple merge and deduplication
+  [...a1, ...a2].filter((v, i, a) => a.indexOf(v) === i);
+
 const setupReactNative = (argv) => {
   const { reactNative } = argv;
   let reactNativePath;
@@ -45,12 +49,38 @@ const setupReactNative = (argv) => {
   return { reactNative, reactNativePath };
 };
 
+const getBanner = ({ pkg }) => {
+  const { name, author, version, license } = pkg;
+  const auth = typeof author === 'object' ? `${author.name} <${author.email}>` : author || '';
+
+  return `/*
+* ${name} v${version}
+* Copyright (c) ${new Date().getFullYear()} ${auth}
+* Released under the ${license} license.
+*/
+`;
+};
+
+const getExternalDefault = ({ pkg }) => {
+  const peers = pkg.peerDependencies || {};
+  return Object.keys(peers);
+};
+
+const getOutputFileDefault = ({ pkg }) => pkg.main;
+
+const getOutputNameDefault = ({ pkg }) => pkg.name.split('/').reverse()[0];
+
 const config = ({
   mode = 'production',
   format = 'umd',
   cwd = process.cwd(),
   argv = { sourcemap: true },
   core,
+  behaviours: {
+    getExternal = getExternalDefault,
+    getOutputFile = getOutputFileDefault,
+    getOutputName = getOutputNameDefault,
+  } = {},
 } = {}) => {
   const CWD = argv.cwd || cwd;
   const { reactNative, reactNativePath } = setupReactNative(argv);
@@ -58,8 +88,9 @@ const config = ({
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
   pkg = reactNative ? require(path.resolve(reactNativePath, 'package.json')) : pkg; // eslint-disable-line
-  const { name, version, license, author } = pkg;
   const { sourcemap, replacementStrings = {}, typescript } = argv;
+  const banner = getBanner({ pkg });
+  const outputName = getOutputName({ pkg, config: argv });
 
   if (reactNative) {
     dir = `${dir}/${reactNativePath}`;
@@ -71,11 +102,8 @@ const config = ({
   if (format === 'esm' && !pkg.module) {
     return false;
   }
+  const outputFile = getOutputFile({ pkg, config: argv });
 
-  const fileTarget = format === 'esm' ? pkg.module : pkg.main;
-
-  const auth = typeof author === 'object' ? `${author.name} <${author.email}>` : author || '';
-  const moduleName = name.split('/').reverse()[0];
   const extensions = ['.mjs', '.js', '.jsx', '.json', '.node'];
 
   let typescriptPlugin;
@@ -88,22 +116,11 @@ const config = ({
     }
   }
 
-  const banner = `/*
-* ${name} v${version}
-* Copyright (c) ${new Date().getFullYear()} ${auth}
-* Released under the ${license} license.
-*/
-`;
-
-  const peers = pkg.peerDependencies || {};
-  const external = Object.keys(peers);
-
+  const external = getExternal({ pkg, config: argv });
   // stardust should always be external
-  if (!peers['@nebula.js/stardust']) {
+  if (external.indexOf('@nebula.js/stardust') === -1) {
     // eslint-disable-next-line no-console
     console.warn('@nebula.js/stardust should be specified as a peer dependency');
-  } else if (external.indexOf('@nebula.js/stardust') === -1) {
-    external.push('@nebula.js/stardust');
   }
 
   return {
@@ -158,8 +175,8 @@ const config = ({
     output: {
       banner,
       format,
-      file: path.resolve(dir, fileTarget),
-      name: moduleName,
+      file: path.resolve(dir, outputFile),
+      name: outputName,
       sourcemap,
       globals: {
         '@nebula.js/stardust': 'stardust',
@@ -168,7 +185,7 @@ const config = ({
   };
 };
 
-const minified = async (argv) => {
+const umd = async (argv) => {
   const c = config({
     mode: argv.mode || 'production',
     format: 'umd',
@@ -184,10 +201,36 @@ const esm = async (argv, core) => {
     format: 'esm',
     argv,
     core,
+    behaviours: {
+      getOutputFile: ({ pkg }) => pkg.module,
+    },
   });
   if (!c) {
     return Promise.resolve();
   }
+  const bundle = await rollup.rollup(c.input);
+  return bundle.write(c.output);
+};
+
+const systemjs = async (argv, core) => {
+  const c = config({
+    mode: argv.mode || 'production',
+    format: 'systemjs',
+    argv,
+    core,
+    behaviours: {
+      getExternal: ({ config: cfg }) => {
+        const defaultExternal = ['@nebula.js/stardust', 'picasso.js', 'picasso-plugin-q', 'react', 'react-dom'];
+        const { external = [] } = cfg.systemjs || {};
+        return mergeArray(defaultExternal, external);
+      },
+      getOutputFile: ({ config: cfg }) => {
+        const { outputFile = 'systemjs/index.js' } = cfg.systemjs || {};
+        return outputFile;
+      },
+      getOutputName: () => undefined,
+    },
+  });
   const bundle = await rollup.rollup(c.input);
   return bundle.write(c.output);
 };
@@ -275,13 +318,19 @@ async function build(argv = {}) {
   if (buildConfig.watch) {
     return watch(buildConfig);
   }
-  await minified(buildConfig);
 
+  // Standalone
+  await umd(buildConfig);
+  await esm(buildConfig);
+
+  // Core
   if (argv.core) {
     const core = path.resolve(process.cwd(), argv.core);
     await esm(buildConfig, core);
+    await systemjs(buildConfig, core);
   }
-  return esm(buildConfig);
+
+  return Promise.resolve();
 }
 
 module.exports = build;
