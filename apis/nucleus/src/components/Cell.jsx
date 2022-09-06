@@ -297,6 +297,19 @@ const Cell = forwardRef(
       },
     });
 
+    let bgColor = 'transparent';
+
+    if (
+      layout &&
+      layout.components &&
+      layout.components.find((comp) => comp.key === 'general') &&
+      layout.components.find((comp) => comp.key === 'general').bgColor &&
+      layout.components.find((comp) => comp.key === 'general').bgColor.color &&
+      layout.components.find((comp) => comp.key === 'general').bgColor.color.color
+    ) {
+      bgColor = layout.components.find((comp) => comp.key === 'general').bgColor.color.color;
+    }
+
     useEffect(() => {
       eventmixin(focusHandler.current);
     }, []);
@@ -516,6 +529,7 @@ const Cell = forwardRef(
             xs
             style={{
               height: '100%',
+              backgroundColor: bgColor,
             }}
             ref={contentRef}
           >
