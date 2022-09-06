@@ -80,6 +80,8 @@ const config = ({
     getExternal = getExternalDefault,
     getOutputFile = getOutputFileDefault,
     getOutputName = getOutputNameDefault,
+    // Return false if no build should be done, otherwise true
+    enabled = () => true,
   } = {},
 } = {}) => {
   const CWD = argv.cwd || cwd;
@@ -99,7 +101,7 @@ const config = ({
     dir = core;
   }
 
-  if (format === 'esm' && !pkg.module) {
+  if (!enabled({ pkg })) {
     return false;
   }
   const outputFile = getOutputFile({ pkg, config: argv });
@@ -203,6 +205,7 @@ const esm = async (argv, core) => {
     core,
     behaviours: {
       getOutputFile: ({ pkg }) => pkg.module,
+      enabled: ({ pkg }) => !!pkg.module,
     },
   });
   if (!c) {
@@ -224,13 +227,14 @@ const systemjs = async (argv, core) => {
         const { external = [] } = cfg.systemjs || {};
         return mergeArray(defaultExternal, external);
       },
-      getOutputFile: ({ config: cfg }) => {
-        const { outputFile = 'systemjs/index.js' } = cfg.systemjs || {};
-        return outputFile;
-      },
+      getOutputFile: ({ pkg }) => pkg.systemjs,
       getOutputName: () => undefined,
+      enabled: ({ pkg }) => !!pkg.systemjs,
     },
   });
+  if (!c) {
+    return Promise.resolve();
+  }
   const bundle = await rollup.rollup(c.input);
   return bundle.write(c.output);
 };
