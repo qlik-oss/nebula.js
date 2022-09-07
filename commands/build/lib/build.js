@@ -251,7 +251,7 @@ function clearScreen(msg) {
 
 const getPackage = (argv, cwd = process.cwd()) => require(path.resolve(argv.cwd || cwd, 'package.json')); // eslint-disable-line
 
-const validateWatch = (argv) => {
+const validateWatchInput = (argv) => {
   if (argv.watch === 'systemjs') {
     const pkg = getPackage(argv);
     if (!pkg.systemjs) {
@@ -266,27 +266,31 @@ const validateWatch = (argv) => {
   return true;
 };
 
-const getWatchOptions = (argv) => {
+const getWatchConfig = (argv) => {
   const base = {
     mode: argv.mode || 'development',
     argv,
   };
 
+  let opts;
+
   switch (argv.watch) {
     case 'systemjs':
-      return { ...base, format: 'systemjs', behaviours: systemjsBehaviours };
+      opts = { ...base, format: 'systemjs', behaviours: systemjsBehaviours };
+      break;
     case 'umd':
     default:
-      return { ...base, format: 'umd' };
+      opts = { ...base, format: 'umd' };
+      break;
   }
+  return config(opts);
 };
 
 const watch = async (argv) => {
-  if (!validateWatch(argv)) {
+  if (!validateWatchInput(argv)) {
     return undefined;
   }
-  const options = getWatchOptions(argv);
-  const c = config(options);
+  const c = getWatchConfig(argv);
 
   let hasWarnings = false;
 
