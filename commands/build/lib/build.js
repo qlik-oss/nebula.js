@@ -29,10 +29,6 @@ const resolveReplacementStrings = (replacementStrings) => {
   return replacementStrings;
 };
 
-const mergeArray = (a1 = [], a2 = []) =>
-  // Simple merge and deduplication
-  [...a1, ...a2].filter((v, i, a) => a.indexOf(v) === i);
-
 const setupReactNative = (argv) => {
   const { reactNative } = argv;
   let reactNativePath;
@@ -224,8 +220,8 @@ const systemjs = async (argv, core) => {
     behaviours: {
       getExternal: ({ config: cfg }) => {
         const defaultExternal = ['@nebula.js/stardust', 'picasso.js', 'picasso-plugin-q', 'react', 'react-dom'];
-        const { external = [] } = cfg.systemjs || {};
-        return mergeArray(defaultExternal, external);
+        const { external } = cfg.systemjs || {};
+        return Array.isArray(external) ? external : defaultExternal;
       },
       getOutputFile: ({ pkg }) => pkg.systemjs,
       getOutputName: () => undefined,
