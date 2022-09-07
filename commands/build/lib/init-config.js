@@ -1,4 +1,4 @@
-/* eslint global-require: 0 */
+/* eslint global-require: 0, no-param-reassign: 0 */
 const fs = require('fs');
 
 const defaultFilename = 'nebula.config.js';
@@ -13,9 +13,8 @@ const options = {
   },
   watch: {
     description: 'Rebuild the bundle when its source files change on disk',
-    type: 'boolean',
     alias: 'w',
-    default: false,
+    choices: ['umd', 'systemjs', true],
   },
   sourcemap: {
     description: 'Generate source maps',
@@ -40,22 +39,44 @@ const options = {
   },
 };
 
+// nebula build --watch                - watch umd bundle
+// nebula build --watch umd            - watch umd bundle
+// nebula build --watch systemjs       - watch systemjs bundle
+// nebula build                        - watch disabled
+const watchMiddleware = (argv) => {
+  let value = false;
+
+  if (argv.watch === true) {
+    value = 'umd';
+  } else if (typeof argv.watch === 'string') {
+    value = argv.watch;
+  }
+
+  argv.watch = value;
+  argv.w = value;
+
+  return argv;
+};
+
 module.exports = (yargs) => {
   yargs.parserConfiguration({
     'dot-notation': false, // To avoid parsing "replacementStrings" with dot-notation into objects
   });
 
-  return yargs.options(options).config('config', (configPath) => {
-    if (configPath === null) {
-      return {};
-    }
-    if (!fs.existsSync(configPath)) {
-      if (RX.test(configPath)) {
-        // do nothing if default filename doesn't exist
+  return yargs
+    .options(options)
+    .config('config', (configPath) => {
+      if (configPath === null) {
         return {};
       }
-      throw new Error(`Config ${configPath} not found`);
-    }
-    return require(configPath).build || {};
-  });
+      if (!fs.existsSync(configPath)) {
+        if (RX.test(configPath)) {
+          // do nothing if default filename doesn't exist
+          return {};
+        }
+        throw new Error(`Config ${configPath} not found`);
+      }
+      return require(configPath).build || {};
+    })
+    .middleware(watchMiddleware);
 };

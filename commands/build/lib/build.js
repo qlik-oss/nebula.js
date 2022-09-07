@@ -211,21 +211,23 @@ const esm = async (argv, core) => {
   return bundle.write(c.output);
 };
 
+const systemjsBehaviours = {
+  getExternal: ({ config: cfg }) => {
+    const defaultExternal = ['@nebula.js/stardust', 'picasso.js', 'picasso-plugin-q', 'react', 'react-dom'];
+    const { external } = cfg.systemjs || {};
+    return Array.isArray(external) ? external : defaultExternal;
+  },
+  getOutputFile: ({ pkg }) => pkg.systemjs,
+  getOutputName: () => undefined,
+  enabled: ({ pkg }) => !!pkg.systemjs,
+};
+
 const systemjs = async (argv) => {
   const c = config({
     mode: argv.mode || 'production',
     format: 'systemjs',
     argv,
-    behaviours: {
-      getExternal: ({ config: cfg }) => {
-        const defaultExternal = ['@nebula.js/stardust', 'picasso.js', 'picasso-plugin-q', 'react', 'react-dom'];
-        const { external } = cfg.systemjs || {};
-        return Array.isArray(external) ? external : defaultExternal;
-      },
-      getOutputFile: ({ pkg }) => pkg.systemjs,
-      getOutputName: () => undefined,
-      enabled: ({ pkg }) => !!pkg.systemjs,
-    },
+    behaviours: systemjsBehaviours,
   });
   if (!c) {
     return undefined;
@@ -247,12 +249,20 @@ function clearScreen(msg) {
   }
 }
 
-const watch = async (argv) => {
-  const c = config({
+const getWatchOptions = (argv) => {
+  const base = {
     mode: argv.mode || 'development',
-    format: 'umd',
     argv,
-  });
+  };
+
+  return argv.watch === 'systemjs'
+    ? { ...base, format: 'systemjs', behaviours: systemjsBehaviours }
+    : { ...base, format: 'umd' };
+};
+
+const watch = async (argv) => {
+  const options = getWatchOptions(argv);
+  const c = config(options);
 
   let hasWarnings = false;
 
