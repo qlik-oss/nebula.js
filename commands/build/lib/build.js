@@ -205,18 +205,17 @@ const esm = async (argv, core) => {
     },
   });
   if (!c) {
-    return Promise.resolve();
+    return undefined;
   }
   const bundle = await rollup.rollup(c.input);
   return bundle.write(c.output);
 };
 
-const systemjs = async (argv, core) => {
+const systemjs = async (argv) => {
   const c = config({
     mode: argv.mode || 'production',
     format: 'systemjs',
     argv,
-    core,
     behaviours: {
       getExternal: ({ config: cfg }) => {
         const defaultExternal = ['@nebula.js/stardust', 'picasso.js', 'picasso-plugin-q', 'react', 'react-dom'];
@@ -229,7 +228,7 @@ const systemjs = async (argv, core) => {
     },
   });
   if (!c) {
-    return Promise.resolve();
+    return undefined;
   }
   const bundle = await rollup.rollup(c.input);
   return bundle.write(c.output);
@@ -319,15 +318,13 @@ async function build(argv = {}) {
     return watch(buildConfig);
   }
 
-  // Standalone
   await umd(buildConfig);
   await esm(buildConfig);
+  await systemjs(buildConfig);
 
-  // Core
   if (argv.core) {
     const core = path.resolve(process.cwd(), argv.core);
     await esm(buildConfig, core);
-    await systemjs(buildConfig, core);
   }
 
   return undefined;
