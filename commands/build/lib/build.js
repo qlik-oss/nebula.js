@@ -249,18 +249,42 @@ function clearScreen(msg) {
   }
 }
 
+const getPackage = (argv, cwd = process.cwd()) => require(path.resolve(argv.cwd || cwd, 'package.json')); // eslint-disable-line
+
+const validateWatch = (argv) => {
+  if (argv.watch === 'systemjs') {
+    const pkg = getPackage(argv);
+    if (!pkg.systemjs) {
+      console.log(
+        `${chalk.white.bgRed(' ERROR ')} ${chalk.red(
+          'No "systemjs" field specifying output file found in package.json'
+        )}`
+      );
+      return false;
+    }
+  }
+  return true;
+};
+
 const getWatchOptions = (argv) => {
   const base = {
     mode: argv.mode || 'development',
     argv,
   };
 
-  return argv.watch === 'systemjs'
-    ? { ...base, format: 'systemjs', behaviours: systemjsBehaviours }
-    : { ...base, format: 'umd' };
+  switch (argv.watch) {
+    case 'systemjs':
+      return { ...base, format: 'systemjs', behaviours: systemjsBehaviours };
+    case 'umd':
+    default:
+      return { ...base, format: 'umd' };
+  }
 };
 
 const watch = async (argv) => {
+  if (!validateWatch(argv)) {
+    return undefined;
+  }
   const options = getWatchOptions(argv);
   const c = config(options);
 
