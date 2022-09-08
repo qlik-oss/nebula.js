@@ -80,7 +80,7 @@ export default function DataCube({ setProperties, target, properties }) {
         onAdded={onDimensionAdded}
         onRemoved={onDimensionRemoved}
         canAdd={handler.canAddDimension()}
-        items={dimensions}
+        items={handler.dimensions()}
         type="dimension"
         label="Dimensions"
         addLabel="Add dimension"
