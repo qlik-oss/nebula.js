@@ -14,12 +14,13 @@
  *   id: getValue(fixture.id, { defaultValue: 'object-id-${+Date.now()}'}),
  * }
  * ```
- *
+ * @type function
+ * @ignore
  * @param {any} prop Fixture property. Either a fixed value (string / object / boolean / ...) or a function invoked when the value is needed.
  * @param {object} options Options.
  * @param {Array<any>} options.args Arguments used to evaluate the property value.
  * @param {any} options.defaultValue Default value in case not value is defined in fixture.
- * @returns The property value.
+ * @returns {any} The property value.
  */
 export const getPropValue = (prop, { args = [], defaultValue } = {}) => {
   if (typeof prop === 'function') {
@@ -47,13 +48,14 @@ export const getPropValue = (prop, { args = [], defaultValue } = {}) => {
  *   getHyperCubeData: getPropFn(fixture.getHyperCubeData, { defaultValue: [], usePromise: true })
  * };
  * ```
- *
+ * @type function
+ * @ignore
  * @param {any} prop Fixture property. Either a fixed value (string / object / boolean / ...) or a function invoked when the value is needed.
  * @param {object} options Options.
  * @param {any} options.defaultValue Default value in case not value is defined in fixture.
  * @param {boolean} options.async When `true` the returns value is wrapped in a promise, otherwise the value is directly returned.
  * @param {number} options.number Delay before value is returned.
- * @returns A fixture property function
+ * @returns {function} A fixture property function
  */
 export const getPropFn =
   (prop, { defaultValue, async = true, delay = 0 } = {}) =>
