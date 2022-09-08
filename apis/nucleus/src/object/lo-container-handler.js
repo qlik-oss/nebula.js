@@ -2,25 +2,20 @@
 
 import uid from './uid';
 
-export default function loHandler({ dc: lo, def, properties }) {
-  lo.qInitialDataFetch = lo.qInitialDataFetch || [];
-
+export default function loHandlerContainer({ dc: loc, def, properties, dimensions }) {
   const objectProperties = properties;
 
   const handler = {
     dimensions() {
-      if (!lo.qLibraryId && (!lo.qDef || !lo.qDef.qFieldDefs || lo.qDef.qFieldDefs.length === 0)) return [];
-      return [lo];
+      return dimensions;
     },
     measures() {
       return [];
     },
     addDimension(d) {
       const dimension = { ...d, qDef: d.qDef || {} };
-
       dimension.qDef.cId = dimension.qDef.cId || uid();
-
-      dimension.qDef.qSortCriterias = lo.qDef.qSortCriterias || [
+      dimension.qDef.qSortCriterias = loc.qDef.qSortCriterias || [
         {
           qSortByState: 1,
           qSortByLoadOrder: 1,
@@ -28,24 +23,20 @@ export default function loHandler({ dc: lo, def, properties }) {
           qSortByAscii: 1,
         },
       ];
-      Object.keys(dimension).forEach((k) => {
-        lo[k] = dimension[k];
-      });
+
       def.dimensions.added(dimension, objectProperties);
     },
     removeDimension(idx) {
-      const dimension = lo;
-      delete lo.qDef;
-      delete lo.qLibraryId;
+      const dimension = dimensions[idx];
       def.dimensions.removed(dimension, objectProperties, idx);
     },
-    addMeasure() {},
-    removeMeasure() {},
+    // addMeasure() {},
+    // removeMeasure() {},
 
     maxDimensions() {
       const { max } = def.dimensions || {};
       const maxDims = typeof max === 'function' ? max() : max;
-      return maxDims || 1;
+      return maxDims || 0;
     },
     maxMeasures() {
       return 0;

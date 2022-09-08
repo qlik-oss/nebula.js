@@ -44,7 +44,7 @@ describe('hc-handler', () => {
 
   describe('add dimension', () => {
     it('from string', () => {
-      h.addDimension('A');
+      h.addDimension({ qDef: { qFieldDefs: ['A'] } });
       expect(hc.qDimensions).to.eql([
         {
           qDef: {

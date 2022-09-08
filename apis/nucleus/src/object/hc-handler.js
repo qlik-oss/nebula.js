@@ -23,12 +23,6 @@ function removeIndex(array, index) {
   return removeIdx;
 }
 
-const nxDimension = (f) => ({
-  qDef: {
-    qFieldDefs: [f],
-  },
-});
-
 const nxMeasure = (f) => ({
   qDef: {
     qDef: f,
@@ -53,13 +47,7 @@ export default function hcHandler({ dc: hc, def, properties }) {
       return hc.qMeasures;
     },
     addDimension(d) {
-      const dimension =
-        typeof d === 'string'
-          ? nxDimension(d)
-          : {
-              ...d,
-              qDef: d.qDef || {},
-            };
+      const dimension = { ...d, qDef: d.qDef || {} };
       dimension.qDef.cId = dimension.qDef.cId || uid();
 
       // ====== add default objects and arrays for NxDimension =====
