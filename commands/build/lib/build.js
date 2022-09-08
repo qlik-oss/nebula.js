@@ -119,6 +119,7 @@ const config = ({
   if (external.indexOf('@nebula.js/stardust') === -1) {
     // eslint-disable-next-line no-console
     console.warn('@nebula.js/stardust should be specified as a peer dependency');
+    external.push('@nebula.js/stardust');
   }
 
   return {
