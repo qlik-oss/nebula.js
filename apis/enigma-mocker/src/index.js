@@ -43,7 +43,7 @@ const api = /** @lends EnigmaMocker# */ {
    * const app = await EnigmaMocker.fromGenericObjects([genericObject]);
    */
   fromGenericObjects(genericObjects, options = {}) {
-    fGO(genericObjects, options);
+    return fGO(genericObjects, options);
   },
 };
 
