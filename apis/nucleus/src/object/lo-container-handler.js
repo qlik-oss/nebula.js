@@ -2,7 +2,7 @@
 
 import uid from './uid';
 
-export default function loHandlerContainer({ dc: loc, def, properties, dimensions }) {
+export default function loContainerHandler({ dc: loc, def, properties, dimensions }) {
   const objectProperties = properties;
 
   const handler = {
