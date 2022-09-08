@@ -50,8 +50,9 @@ export default function DataCube({ setProperties, target, properties }) {
   const onDimensionAdded = (a) => {
     const dim = typeof a === 'object' ? { qLibraryId: a.qId } : { qDef: { qFieldDefs: [a] } };
     handler.addDimension(dim);
-    setProperties(properties);
-    setDimensions([...dimensions, dim]);
+    setProperties(properties).then(() => {
+      setDimensions([...dimensions, dim]);
+    });
   };
 
   const onDimensionRemoved = (idx) => {
