@@ -3,7 +3,7 @@ import fGO from './from-generic-objects';
 /**
  * @interface EnigmaMockerOptions
  * @property {number} delay Simulate delay (in ms) for calls in enigma-mocker.
- * @description Mocks Engima app functionality for demo and testing purposes.
+ * @description Options for Enigma Mocker
  * @experimental
  * @since 3.0.0
  */
