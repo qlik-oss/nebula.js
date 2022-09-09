@@ -43,9 +43,7 @@ export default function loHandler({ dc: lo, def, properties }) {
     removeMeasure() {},
 
     maxDimensions() {
-      const { max } = def.dimensions || {};
-      const maxDims = typeof max === 'function' ? max() : max;
-      return maxDims || 1;
+      return 1;
     },
     maxMeasures() {
       return 0;
