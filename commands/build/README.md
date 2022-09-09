@@ -19,7 +19,8 @@ Options:
   --version        Show version number                                 [boolean]
   --config, -c     Path to JSON config file
                                           [string] [default: "nebula.config.js"]
-  --watch, -w      Watch source files                 [boolean] [default: false]
+  --watch, -w      Watch source files
+                                   [choices: "umd", "systemjs"] [default: "umd"]
   --sourcemap, -m  Generate source map                 [boolean] [default: true]
   --mode           Explicitly set mode
                                  [string] [choices: "production", "development"]
@@ -141,6 +142,15 @@ Tips:
 In the package.json file, the main field makes sure that Node users using require
 can be served the umd version. The module field is a common convention to designate
 how to import an esm version of your code.
+
+### SystemJS build
+
+You can build a bundle using the SystemJS format by adding a `systemjs` field in the
+package.json which specifies the output file from the build:
+
+```json
+"systemjs": "dist/hello.systemjs.js"
+```
 
 ### Typescript
 
