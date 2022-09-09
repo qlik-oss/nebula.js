@@ -2,12 +2,17 @@
 const path = require('path');
 const chalk = require('chalk');
 const express = require('express');
+const fs = require('fs');
+const homedir = require('os').homedir();
 
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
 
 const snapshooterFn = require('./snapshot-server');
 const snapshotRouter = require('./snapshot-router');
+
+const httpsKeyPath = path.join(homedir, '.certs/key.pem');
+const httpsCertPath = path.join(homedir, '.certs/cert.pem');
 
 module.exports = async ({
   host,
@@ -25,18 +30,29 @@ module.exports = async ({
 }) => {
   let config;
   let contentBase;
+  const HTTPS = serveConfig.mfe;
+  const url = `${HTTPS ? 'https' : 'http'}://${host}:${port}`;
+
+  if (HTTPS) {
+    if (!fs.existsSync(httpsKeyPath)) {
+      throw new Error(`Failed to start using HTTPS. Missing key cert at path ${httpsKeyPath}`);
+    }
+    if (!fs.existsSync(httpsCertPath)) {
+      throw new Error(`Failed to start using HTTPS. Missing cert at path ${httpsCertPath}`);
+    }
+  }
 
   const snapshotRoute = '/njs';
 
-  const snapshooter = snapshooterFn({ snapshotUrl: `http://${host}:${port}/eRender.html` });
+  const snapshooter = snapshooterFn({ snapshotUrl: `${url}/eRender.html` });
 
   (serveConfig.snapshots || []).forEach((s) => {
     snapshooter.storeSnapshot(s);
   });
 
   const snapRouter = snapshotRouter({
-    base: `http://${host}:${port}${snapshotRoute}`,
-    snapshotUrl: `http://${host}:${port}/eRender.html`,
+    base: `${url}${snapshotRoute}`,
+    snapshotUrl: `${url}/eRender.html`,
     snapshooter,
   });
 
@@ -80,7 +96,8 @@ module.exports = async ({
     historyApiFallback: {
       index: '/eHub.html',
     },
-    static: {
+    // Disable nebula serve dev env when in MFE mode
+    static: !serveConfig.mfe && {
       directory: contentBase,
       watch: {
         ignored: /node_modules/,
@@ -148,17 +165,26 @@ module.exports = async ({
     proxy: [
       {
         context: '/render',
-        target: `http://${host}:${port}/eRender.html`,
+        target: `${url}/eRender.html`,
         ignorePath: true,
         logLevel: 'error',
       },
       {
         context: '/dev',
-        target: `http://${host}:${port}/eDev.html`,
+        target: `${url}/eDev.html`,
         ignorePath: true,
         logLevel: 'error',
       },
     ],
+    server: HTTPS
+      ? {
+          type: 'https',
+          options: {
+            key: httpsKeyPath,
+            cert: httpsCertPath,
+          },
+        }
+      : {},
   };
 
   const compiler = webpack(config);
@@ -192,8 +218,25 @@ module.exports = async ({
     compiler.hooks.done.tap('nebula serve', (stats) => {
       if (!initiated) {
         initiated = true;
-        const url = `http://${host}:${port}`;
-        console.log(`Development server running at ${chalk.green(url)}`);
+
+        console.log(`     _  _________  __  ____   ___
+    / |/ / __/ _ )/ / / / /  / _ |
+   /    / _// _  / /_/ / /__/ __ |
+  /_/|_/___/____/\\____/____/_/ |_|
+    / __/ __/ _ \\ | / / __/
+   _\\ \\/ _// , _/ |/ / _/
+  /___/___/_/|_||___/___/
+         `);
+
+        if (serveConfig.mfe) {
+          const bundleUrl = `${url}/pkg/${snName}`;
+          console.log('Development server running in MFE mode');
+          console.log(`Bundle served at ${chalk.green(bundleUrl)}`);
+          console.log('');
+          console.log('Use the bundle when overriding the import map');
+        } else {
+          console.log(`Development server running at ${chalk.green(url)}`);
+        }
 
         resolve({
           context: '',

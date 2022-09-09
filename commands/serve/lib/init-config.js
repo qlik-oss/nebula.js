@@ -67,6 +67,11 @@ const options = {
     default: 'test/component',
     description: 'Path to a folder that will be used as basis when locating fixtures',
   },
+  mfe: {
+    type: 'boolean',
+    default: false,
+    describe: 'Serves bundle to use in micro frontend',
+  },
 };
 
 module.exports = (yargs) =>
