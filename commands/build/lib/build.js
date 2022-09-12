@@ -212,21 +212,23 @@ const esm = async (argv, core) => {
   return bundle.write(c.output);
 };
 
+const systemjsBehaviours = {
+  getExternal: ({ config: cfg }) => {
+    const defaultExternal = ['@nebula.js/stardust', 'picasso.js', 'picasso-plugin-q', 'react', 'react-dom'];
+    const { external } = cfg.systemjs || {};
+    return Array.isArray(external) ? external : defaultExternal;
+  },
+  getOutputFile: ({ pkg }) => pkg.systemjs,
+  getOutputName: () => undefined,
+  enabled: ({ pkg }) => !!pkg.systemjs,
+};
+
 const systemjs = async (argv) => {
   const c = config({
     mode: argv.mode || 'production',
     format: 'systemjs',
     argv,
-    behaviours: {
-      getExternal: ({ config: cfg }) => {
-        const defaultExternal = ['@nebula.js/stardust', 'picasso.js', 'picasso-plugin-q', 'react', 'react-dom'];
-        const { external } = cfg.systemjs || {};
-        return Array.isArray(external) ? external : defaultExternal;
-      },
-      getOutputFile: ({ pkg }) => pkg.systemjs,
-      getOutputName: () => undefined,
-      enabled: ({ pkg }) => !!pkg.systemjs,
-    },
+    behaviours: systemjsBehaviours,
   });
   if (!c) {
     return undefined;
@@ -248,12 +250,48 @@ function clearScreen(msg) {
   }
 }
 
-const watch = async (argv) => {
-  const c = config({
+const getPackage = (argv, cwd = process.cwd()) => require(path.resolve(argv.cwd || cwd, 'package.json')); // eslint-disable-line
+
+const validateWatchInput = (argv) => {
+  if (argv.watch === 'systemjs') {
+    const pkg = getPackage(argv);
+    if (!pkg.systemjs) {
+      console.log(
+        `${chalk.white.bgRed(' ERROR ')} ${chalk.red(
+          'No "systemjs" field specifying output file found in package.json'
+        )}`
+      );
+      return false;
+    }
+  }
+  return true;
+};
+
+const getWatchConfig = (argv) => {
+  const base = {
     mode: argv.mode || 'development',
-    format: 'umd',
     argv,
-  });
+  };
+
+  let opts;
+
+  switch (argv.watch) {
+    case 'systemjs':
+      opts = { ...base, format: 'systemjs', behaviours: systemjsBehaviours };
+      break;
+    case 'umd':
+    default:
+      opts = { ...base, format: 'umd' };
+      break;
+  }
+  return config(opts);
+};
+
+const watch = async (argv) => {
+  if (!validateWatchInput(argv)) {
+    return undefined;
+  }
+  const c = getWatchConfig(argv);
 
   let hasWarnings = false;
 
