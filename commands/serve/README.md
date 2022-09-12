@@ -102,7 +102,7 @@ https://<host>:<port>/pkg/<module name>
 The module name is by default the name in `package.json` but may be overriden using the
 `--type` option.
 
-The MFE mode requires HTTPS which requires certificates to be installed in the
+The MFE mode runs in HTTPS which requires certificates to be installed in the
 environment running nebula serve.
 
 The regular dev environment in nebula serve is disabled when running in this mode.
