@@ -92,8 +92,8 @@ serve({
 
 ### Micro Frontend (MFE) Mode
 
-The MFE mode, activated with the `--mfe` option, builds a visualisation bundle which is
-used in a micro frontend environemnt. The bundle is served at:
+The MFE mode, activated with the `--mfe` option, builds a visualisation which is
+used in a micro frontend environemnt. The visualisation is served at:
 
 ```
 https://<host>:<port>/pkg/<module name>
