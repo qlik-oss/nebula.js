@@ -112,7 +112,7 @@ The regular dev environment in nebula serve is disabled when running in this mod
 There are a few ways to install local trusted certificates on your machine, The important
 end result is that there are two files `~/.certs/cert.pem` (the certificate) and
 `~/.certs/key.pem` (the public key). Read about how certificates work
-[here](http://www.steves-internet-guide.com/ssl-certificates-explained/) if you already
+[here](http://www.steves-internet-guide.com/ssl-certificates-explained/). If you already
 have a self-signed and trusted certificate in this location, then skip this guide.
 
 ##### Easy step-by-step guide to install and generate certificates locally
