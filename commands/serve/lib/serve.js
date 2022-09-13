@@ -77,6 +77,10 @@ const initiateWatch = async ({ snPath, snName, host }) => {
 
         if (fs.existsSync(file)) {
           const f = fs.readFileSync(file);
+          res.set('Access-Control-Allow-Credentials', 'true');
+          res.set('Access-Control-Allow-Origin', '*');
+          res.set('Access-Control-Allow-Headers', 'x-qlik-xrfkey,qlik-csrf-token');
+
           res.send(f);
         } else {
           res.sendStatus('404');
@@ -130,14 +134,14 @@ module.exports = async (argv) => {
   if (runFromDirectory) {
     if (serveConfig.build !== false) {
       watcher = await build({
-        watch: true,
+        watch: serveConfig.mfe ? 'systemjs' : 'umd',
         config: serveConfig.config,
         cwd: context,
       });
     }
     try {
       const externalPkg = require(path.resolve(context, 'package.json')); // eslint-disable-line global-require
-      const externalEntry = externalPkg.main;
+      const externalEntry = serveConfig.mfe ? externalPkg.systemjs : externalPkg.main;
       snName = externalPkg.name;
       snPath = path.resolve(context, externalEntry);
     } catch (e) {
@@ -156,7 +160,7 @@ module.exports = async (argv) => {
     snName: serveConfig.type || snName,
     snUrl,
     dev: process.env.MONO === 'true',
-    open: serveConfig.open !== false,
+    open: serveConfig.open !== false && !serveConfig.mfe,
     entryWatcher: ww,
     watcher,
     serveConfig,
