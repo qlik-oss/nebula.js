@@ -119,11 +119,55 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     keyboardNavigation,
   ]);
 
+  const imageSizingToCssProperty = {
+    originalSize: 'auto auto',
+    alwaysFit: 'contain',
+    fitWidth: '100% auto',
+    fitHeight: 'auto 100%',
+    stretchFit: '100% 100%',
+    alwaysFill: 'cover',
+  };
+
+  function getBackgroundPosition(data) {
+    let bkgImagePosition = 'center center';
+    if (data && data.components && data.components.length > 0 && data.components !== 'none') {
+      const styling = data.components.find((comp) => comp.key === 'general');
+      if (styling && styling.bgImage && styling.bgImage.position) {
+        bkgImagePosition = styling.bgImage.position.replace('-', ' ');
+      }
+    }
+    return bkgImagePosition;
+  }
+
+  function getBackgroundSize(data) {
+    let bkgImageSize = imageSizingToCssProperty.originalSize;
+    if (data && data.components && data.components.length > 0 && data.components !== 'none') {
+      const styling = data.components.find((comp) => comp.key === 'general');
+      if (styling && styling.bgImage && styling.bgImage.position) {
+        bkgImageSize = imageSizingToCssProperty[styling.bgImage.sizing];
+      }
+    }
+    return bkgImageSize;
+  }
+
   return (
     <div
       ref={containerRef}
       data-render-count={renderCnt}
-      style={{ position: 'relative', height: '100%' }}
+      style={{
+        position: 'relative',
+        height: '100%',
+        backgroundImage: `url(${
+          layout &&
+          layout.components &&
+          layout.components.find((comp) => comp.key === 'general') &&
+          layout.components.find((comp) => comp.key === 'general').bgImage &&
+          layout.components.find((comp) => comp.key === 'general').bgImage.mediaUrl
+        })`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: getBackgroundSize(layout),
+        backgroundPosition: getBackgroundPosition(layout),
+      }}
       className={VizElement.className}
     >
       <div ref={snRef} style={{ position: 'absolute', width: '100%', height: '100%' }} />
