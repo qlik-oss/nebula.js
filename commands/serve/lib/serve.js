@@ -47,7 +47,7 @@ const initiateWatch = async ({ snPath, snName, host }) => {
   const cache = {};
 
   return {
-    addRoutes(app) {
+    addRoutes(app, options) {
       app.get('/pkg/:name', async (req, res) => {
         const { name } = req.params;
         await done;
@@ -77,10 +77,7 @@ const initiateWatch = async ({ snPath, snName, host }) => {
 
         if (fs.existsSync(file)) {
           const f = fs.readFileSync(file);
-          res.set('Access-Control-Allow-Credentials', 'true');
-          res.set('Access-Control-Allow-Origin', '*');
-          res.set('Access-Control-Allow-Headers', 'x-qlik-xrfkey,qlik-csrf-token');
-
+          res.set(options.headers);
           res.send(f);
         } else {
           res.sendStatus('404');
