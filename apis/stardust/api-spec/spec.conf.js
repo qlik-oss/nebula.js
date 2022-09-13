@@ -8,6 +8,7 @@ module.exports = {
       '../locale/src/translator.js',
       '../theme/src/**/*.js',
       '../conversion/src/**/*.js',
+      '../enigma-mocker/src/**/*.js',
     ],
     api: {
       stability: 'stable',

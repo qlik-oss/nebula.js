@@ -511,6 +511,45 @@
         "// configure nebula to enable navigation between charts\nembed(app, {\n  context: {\n    keyboardNavigation: true, // tell Nebula to handle navigation\n  }\n}).render({ element, id: 'sdfsdf' });",
         "import { useKeyboard } from '@nebula.js/stardust';\n// ...\nconst keyboard = useKeyboard();\nuseEffect(() => {\n // Set a tab stop on our button if in focus or if Nebulas navigation is disabled\n button.setAttribute('tabIndex', keyboard.active || !keyboard.enabled ? 0 : -1);\n // If navigation is enabled and focus has shifted, lets focus the button\n keyboard.enabled && keyboard.active && button.focus();\n}, [keyboard])"
       ]
+    },
+    "EnigmaMocker": {
+      "kind": "object",
+      "entries": {
+        "fromGenericObjects": {
+          "description": "Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visulization and specifies how it behaves. For example, what layout to use the data to present.\n\nThe generic object is represented with a Javascript object with a number of properties. The name of the property correlates to the name in the Enigma model for `app.getObject(id)`. For example, the property `getLayout` in the generic object is used to define `app.getObject(id).getLayout()`. Any property can be added to the fixture (just make sure it exists and behaves as in the Enigma model!).\n\nThe value for each property is either fixed (string / boolean / number / object) or a function. Arguments are forwarded to the function to allow for greater flexibility. For example, this can be used to return different hypercube data when scrolling in the chart.",
+          "stability": "experimental",
+          "availability": {
+            "since": "3.0.0"
+          },
+          "kind": "function",
+          "params": [
+            {
+              "name": "genericObjects",
+              "description": "Generic objects controling behaviour of visualizations.",
+              "kind": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            {
+              "name": "options",
+              "description": "Options",
+              "type": "#/definitions/EnigmaMockerOptions"
+            }
+          ],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "EngineAPI.IApp"
+              }
+            ]
+          },
+          "examples": [
+            "const genericObject = {\n  getLayout() {\n    return {\n      qInfo: {\n        qId: 'qqj4zx',\n        qType: 'sn-grid-chart'\n      },\n      ...\n    }\n  },\n  getHyperCubeData(path, page) {\n    return [ ... ];\n  }\n};\nconst app = await EnigmaMocker.fromGenericObjects([genericObject]);"
+          ]
+        }
+      }
     }
   },
   "definitions": {
@@ -1213,33 +1252,6 @@
         }
       }
     },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
-    },
     "Field": {
       "kind": "alias",
       "items": {
@@ -1393,6 +1405,33 @@
           "type": "object"
         }
       }
+    },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
     },
     "ActionToolbarElement": {
       "availability": {
@@ -2350,6 +2389,20 @@
       ],
       "kind": "interface",
       "entries": {}
+    },
+    "EnigmaMockerOptions": {
+      "description": "Mocks Engima app functionality for demo and testing purposes.",
+      "stability": "experimental",
+      "availability": {
+        "since": "3.0.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "delay": {
+          "description": "Simulate delay (in ms) for calls in enigma-mocker.",
+          "type": "number"
+        }
+      }
     }
   }
 }

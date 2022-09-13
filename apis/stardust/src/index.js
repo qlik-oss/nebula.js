@@ -8,7 +8,7 @@ import conversion from '@nebula.js/conversion';
 import EnigmaMocker from '@nebula.js/enigma-mocker';
 
 // mashup api
-export { embed, conversion };
+export { embed, conversion, EnigmaMocker };
 
 // component api
 export {
@@ -40,5 +40,5 @@ export {
 } from '@nebula.js/supernova';
 
 // component internals
-const __DO_NOT_USE__ = { generator, hook, theme, locale, EnigmaMocker };
+const __DO_NOT_USE__ = { generator, hook, theme, locale };
 export { __DO_NOT_USE__ };

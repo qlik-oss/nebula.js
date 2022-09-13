@@ -2,6 +2,8 @@ import { getPropValue, getPropFn } from '../prop';
 
 /**
  * Properties on `getObject()` operating synchronously.
+ * @ignore
+ * @type Array
  */
 const PROPS_SYNC = [
   'addListener',
@@ -17,6 +19,7 @@ const PROPS_SYNC = [
 /**
  * Is property operating asynchrously.
  * @param {string} name Property name.
+ * @ignore
  * @returns `true` if property is operating asynchrously, otherwise `false`.
  */
 function isPropAsync(name) {
@@ -26,6 +29,7 @@ function isPropAsync(name) {
 /**
  * Get `qId` for visualization.
  * @param {object} genericObject Generic object describing behaviour of mock
+ * @ignore
  * @returns The `qId`, undefined if not present
  */
 function getQId(genericObject) {
@@ -37,6 +41,7 @@ function getQId(genericObject) {
  * Create a mock of a generic object. Mandatory properties are added, functions returns async values where applicable etc.
  * @param {object} genericObject Generic object describing behaviour of mock
  * @param {EnigmaMockerOptions} options Options.
+ * @ignore
  * @returns The mocked object
  */
 function createMock(genericObject, options) {
@@ -63,6 +68,7 @@ function createMock(genericObject, options) {
  * Create mocked objects from list of generic objects.
  * @param {Array<object>} genericObjects Generic objects describing behaviour of mock
  * @param {EnigmaMockerOptions} options options
+ * @ignore
  * @returns Object with mocks where key is `qId` and value is the mocked object.
  */
 function createMocks(genericObjects, options) {
@@ -78,6 +84,7 @@ function createMocks(genericObjects, options) {
 /**
  * Validates if mandatory information is available.
  * @param {object} genericObject Generic object to validate
+ * @ignore
  * @throws {}
  * <ul>
  *   <li>{Error} If getLayout is missing</li>
@@ -98,6 +105,7 @@ function validate(genericObject) {
  * Creates mock of `getObject(id)` based on an array of generic objects.
  * @param {Array<object>} genericObjects Generic objects.
  * @param {EnigmaMockerOptions} options Options.
+ * @ignore
  * @returns Function to retrieve the mocked generic object with the corresponding id.
  */
 function GetObjectMock(genericObjects = [], options = {}) {

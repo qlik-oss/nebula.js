@@ -3,6 +3,7 @@ import { useRef, useEffect, useState } from 'react';
 /**
  * Hook that confirms selection when
  * user interact outside of passed element ref.
+ * @ignore
  */
 
 export default function useConfirmUnfocus(ref, selections, shouldConfirmOnBlur) {
