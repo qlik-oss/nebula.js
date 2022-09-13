@@ -297,12 +297,10 @@ const Cell = forwardRef(
       },
     });
 
-    let bgColor = 'transparent';
-
-    const lineComp = layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
-    bgColor =
-      lineComp && lineComp.bgColor && lineComp.bgColor.color
-        ? halo.public.theme.getColorPickerColor(lineComp.bgColor.color)
+    const bgComp = layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
+    const bgColor =
+      bgComp && bgComp.bgColor && bgComp.bgColor.color
+        ? halo.public.theme.getColorPickerColor(bgComp.bgColor.color)
         : 'transparent';
 
     useEffect(() => {

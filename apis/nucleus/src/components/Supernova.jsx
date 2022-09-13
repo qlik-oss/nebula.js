@@ -35,6 +35,9 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     setSnNode(ref);
   }, []);
 
+  const bgComp = layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
+  const bgImage = bgComp && bgComp.bgImage && bgComp.bgImage.mediaUrl ? bgComp.bgImage.mediaUrl : undefined;
+
   // Mount / Unmount
   useEffect(() => {
     if (!snNode) return undefined;
@@ -157,13 +160,7 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       style={{
         position: 'relative',
         height: '100%',
-        backgroundImage: `url(${
-          layout &&
-          layout.components &&
-          layout.components.find((comp) => comp.key === 'general') &&
-          layout.components.find((comp) => comp.key === 'general').bgImage &&
-          layout.components.find((comp) => comp.key === 'general').bgImage.mediaUrl
-        })`,
+        backgroundImage: `url(${bgImage})`,
         backgroundRepeat: 'no-repeat',
         backgroundSize: getBackgroundSize(layout),
         backgroundPosition: getBackgroundPosition(layout),
