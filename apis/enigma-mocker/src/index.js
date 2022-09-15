@@ -11,6 +11,7 @@ import fGO from './from-generic-objects';
 /**
  * @entry
  * @alias EnigmaMocker
+ * @description Mocks Engima app functionality for demo and testing purposes.
  */
 const api = /** @lends EnigmaMocker# */ {
   /**
