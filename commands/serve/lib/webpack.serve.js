@@ -108,7 +108,7 @@ module.exports = async ({
       app.use(snapshotRoute, snapRouter);
 
       if (entryWatcher) {
-        entryWatcher.addRoutes(app);
+        entryWatcher.addRoutes(app, devServer.options);
       }
 
       app.get('/themes', (req, res) => {
@@ -139,6 +139,7 @@ module.exports = async ({
       });
 
       app.get('/info', (req, res) => {
+        res.set(devServer.options.headers);
         res.json({
           enigma: enigmaConfig,
           webIntegrationId,
@@ -185,6 +186,11 @@ module.exports = async ({
           },
         }
       : {},
+    headers: {
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Headers': 'x-qlik-xrfkey,qlik-csrf-token',
+    },
   };
 
   const compiler = webpack(config);
