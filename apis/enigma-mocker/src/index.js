@@ -3,7 +3,6 @@ import fGO from './from-generic-objects';
 /**
  * @interface EnigmaMockerOptions
  * @property {number} delay Simulate delay (in ms) for calls in enigma-mocker.
- * @description Mocks Engima app functionality for demo and testing purposes.
  * @experimental
  * @since 3.0.0
  */
@@ -11,6 +10,7 @@ import fGO from './from-generic-objects';
 /**
  * @entry
  * @alias EnigmaMocker
+ * @description Mocks Engima app functionality for demo and testing purposes.
  */
 const api = /** @lends EnigmaMocker# */ {
   /**
