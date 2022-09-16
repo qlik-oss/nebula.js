@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-rc.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.2...v3.0.0-rc.3) (2022-09-16)
+
+### Bug Fixes
+
+- adjust enigma mocker comment ([#924](https://github.com/qlik-oss/nebula.js/issues/924)) ([6dfbb3d](https://github.com/qlik-oss/nebula.js/commit/6dfbb3d811e6fcab8a7a7e2737b50fd4b893f901))
+
 # [3.0.0-rc.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2022-08-31)
 
 **Note:** Version bump only for package @nebula.js/stardust

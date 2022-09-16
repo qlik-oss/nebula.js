@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-rc.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.2...v3.0.0-rc.3) (2022-09-16)
+
+### Bug Fixes
+
+- add stardust as external dependency (when missing) ([#913](https://github.com/qlik-oss/nebula.js/issues/913)) ([1e0b112](https://github.com/qlik-oss/nebula.js/commit/1e0b112fd0c34cf47f5f59538dc96b05dd2919bc))
+
+### Features
+
+- **build:** add system js build ([#910](https://github.com/qlik-oss/nebula.js/issues/910)) ([283319c](https://github.com/qlik-oss/nebula.js/commit/283319c044812b837b74b7d35694a28dfa4c96ca))
+- **build:** watch systemjs build ([#912](https://github.com/qlik-oss/nebula.js/issues/912)) ([405178f](https://github.com/qlik-oss/nebula.js/commit/405178f308553faec662fb69a8f2823fd9c35c5c))
+
 # [3.0.0-rc.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2022-08-31)
 
 **Note:** Version bump only for package @nebula.js/cli-build

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.0.0-rc.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.2...v3.0.0-rc.3) (2022-09-16)
+
+### Bug Fixes
+
+- add cors headers to /info and /pkg/<name> ([#922](https://github.com/qlik-oss/nebula.js/issues/922)) ([476d7bd](https://github.com/qlik-oss/nebula.js/commit/476d7bdba9423b04426da1163cd5075799538600))
+
+### Features
+
+- **serve:** add mfe mode ([#919](https://github.com/qlik-oss/nebula.js/issues/919)) ([48a7c40](https://github.com/qlik-oss/nebula.js/commit/48a7c40d013673e5dcb165463fb750bbae4fb449))
+
 # [3.0.0-rc.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2022-08-31)
 
 **Note:** Version bump only for package @nebula.js/cli-serve
