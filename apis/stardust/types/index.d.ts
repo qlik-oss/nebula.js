@@ -154,6 +154,13 @@ export function useOptions(): object;
 export function onTakeSnapshot(snapshotCallback: ($: EngineAPI.IGenericObjectLayout)=>Promise<EngineAPI.IGenericObjectLayout>): void;
 
 /**
+ * Registers a callback that is called when a context menu item is added.
+ * @param addItemCallback
+ */
+ export function onContextMenu(addItemCallback: (menu: Menu, event: any)=>Promise<menu>): void;
+
+ 
+/**
  * Gets render state instance.
  * 
  * Used to update properties and get a new layout without triggering onInitialRender.
@@ -693,5 +700,9 @@ declare namespace stardust {
     interface hyperCubeConversion {
     }
 
+}
+
+export interface Menu {
+    addItem: (input: { translation: string; icon: string; tid: string; select: () => Promise<void> }) => void;
 }
 

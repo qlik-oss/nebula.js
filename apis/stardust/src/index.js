@@ -37,6 +37,7 @@ export {
   useEmbed,
   useRenderState,
   onTakeSnapshot,
+  onContextMenu,
 } from '@nebula.js/supernova';
 
 // component internals

@@ -24,6 +24,7 @@ const defaultComponent = {
   // temporary
   observeActions() {},
   setSnapshotData: (snapshot) => Promise.resolve(snapshot),
+  onContextMenu: (menu, event) => Promise.resolve(menu, event),
 };
 
 const reservedKeys = Object.keys(defaultComponent);
@@ -202,8 +203,8 @@ function createWithHooks(generator, opts, galaxy) {
     setSnapshotData(layout) {
       return generator.component.runSnaps(this, layout);
     },
-    focus() {
-      generator.component.focus(this);
+    onContextMenu(menu, event) {
+      return generator.component.runMenu(this, menu, event);
     },
     blur() {
       generator.component.blur(this);
