@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.1](https://github.com/qlik-oss/nebula.js/compare/v3.0.0...v3.0.1) (2022-09-20)
+
+### Reverts
+
+- Revert "refactor: support multiple dims for filterpane (#917)" (#930) ([2e71bc1](https://github.com/qlik-oss/nebula.js/commit/2e71bc1b2686355bc22c9c4a2740ec6d5517a51d)), closes [#917](https://github.com/qlik-oss/nebula.js/issues/917) [#930](https://github.com/qlik-oss/nebula.js/issues/930)
+
+# [3.0.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.3...v3.0.0) (2022-09-19)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+# [3.0.0-rc.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.2...v3.0.0-rc.3) (2022-09-16)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
 # [3.0.0-rc.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2022-08-31)
 
 ### Bug Fixes
