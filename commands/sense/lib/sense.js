@@ -3,9 +3,8 @@ const build = require('./build');
 
 function sense(argv) {
   if (argv.legacy) {
-    buildLegacy(argv);
-  } else {
-    build(argv);
+    return buildLegacy(argv);
   }
+  return build(argv);
 }
 module.exports = sense;
