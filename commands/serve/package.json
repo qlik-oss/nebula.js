@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-serve",
-  "version": "3.0.0-rc.3",
+  "version": "3.0.0",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -27,7 +27,7 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "dependencies": {
-    "@nebula.js/cli-build": "^3.0.0-rc.3",
+    "@nebula.js/cli-build": "^3.0.0",
     "body-parser": "1.20.0",
     "chalk": "4.1.2",
     "chokidar": "3.5.3",
