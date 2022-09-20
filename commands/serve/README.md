@@ -19,7 +19,7 @@ Start a development server
 
 Options:
   --version           Show version number                              [boolean]
-  --config, -c        Path to JSON config file
+  --config, -c        Path to a JavaScript config file
                                           [string] [default: "nebula.config.js"]
   --entry             File entrypoint                                   [string]
   --type              Generic object type                               [string]
