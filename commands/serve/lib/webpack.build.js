@@ -56,6 +56,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         {
           enforce: 'pre',
           test: /\.js?$/,
+          exclude: [/node_modules[/\\]@qlik[/\\]sdk/],
           loader: sourceMapLoaderPath,
         },
         {

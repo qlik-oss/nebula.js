@@ -49,7 +49,6 @@ function SelectEngine({ info, children }) {
       case 'Enter':
         typedUrl = e.target.value;
         if (typedUrl) {
-          console.log(333);
           window.location.href = goTo(typedUrl.replace('?', '&'));
         }
         break;
@@ -64,7 +63,7 @@ function SelectEngine({ info, children }) {
       <Grid container>
         <Grid item xs>
           <Typography variant="h5" gutterBottom>
-            Connect to an engine!!@@@ @
+            Connect to an engine
           </Typography>
         </Grid>
         <Grid item>
@@ -199,7 +198,6 @@ function AppList({ info, glob, treatAsDesktop }) {
     }, 750);
 
     glob.getDocList().then((its) => {
-      console.log(7, { its });
       clearTimeout(t);
       setWaiting(false);
       setItems(its);
@@ -292,8 +290,6 @@ export default function Hub() {
     }
     connect()
       .then((g) => {
-        console.log(5, { g });
-
         if (g.session) {
           g.session.on('notification:OnAuthenticationInformation', (e) => {
             if (e.mustAuthenticate) {
@@ -319,7 +315,6 @@ export default function Hub() {
         const url = `${info.engineUrl}${
           info.webIntegrationId ? `?qlik-web-integration-id=${info.webIntegrationId}` : ''
         }`;
-        console.log(6, { conns, url });
         if (conns.indexOf(url) === -1) {
           conns.push(url);
           storage.save('connections', conns);
