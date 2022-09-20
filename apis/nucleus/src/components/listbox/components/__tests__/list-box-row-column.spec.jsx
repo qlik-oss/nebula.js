@@ -4,7 +4,7 @@ import { Grid, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import Lock from '@nebula.js/ui/icons/lock';
 import ListBoxCheckbox from '../ListBoxCheckbox';
-import * as keyboardNavigation from '../listbox-keyboard-navigation';
+import * as keyboardNavigation from '../../interactions/listbox-keyboard-navigation';
 import ListBoxRadioButton from '../ListBoxRadioButton';
 import ListBoxRowColumn from '../ListBoxRowColumn';
 

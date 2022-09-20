@@ -3,7 +3,7 @@ import { useTheme } from '@nebula.js/ui/theme';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import Search from '@nebula.js/ui/icons/search';
 
-import InstanceContext from '../../contexts/InstanceContext';
+import InstanceContext from '../../../contexts/InstanceContext';
 
 const TREE_PATH = '/qListObjectDef';
 

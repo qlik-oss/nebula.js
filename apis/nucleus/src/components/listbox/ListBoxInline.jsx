@@ -13,16 +13,16 @@ import useSessionModel from '../../hooks/useSessionModel';
 import useLayout from '../../hooks/useLayout';
 
 import ListBox from './ListBox';
-import createListboxSelectionToolbar from './listbox-selection-toolbar';
+import createListboxSelectionToolbar from './interactions/listbox-selection-toolbar';
 
 import ActionsToolbar from '../ActionsToolbar';
 
 import InstanceContext from '../../contexts/InstanceContext';
 
-import ListBoxSearch from './ListBoxSearch';
+import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
-import { getListboxInlineKeyboardNavigation } from './listbox-keyboard-navigation';
-import useConfirmUnfocus from './useConfirmUnfocus';
+import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
+import useConfirmUnfocus from './hooks/useConfirmUnfocus';
 
 const PREFIX = 'ListBoxInline';
 
