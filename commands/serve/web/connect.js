@@ -119,9 +119,9 @@ const getAuthInstance = ({ webIntegrationId, host }) => {
 };
 
 let connection;
-const connect = async () => {
+const connect = () => {
   if (!connection) {
-    connection = connectionInfo.then(async ({ webIntegrationId, enigma: { host } }) => {
+    connection = connectionInfo.then(({ webIntegrationId, enigma: { host } }) => {
       if (webIntegrationId) {
         const authInstance = getAuthInstance({ webIntegrationId, host });
         if (!headers) headers = getHeaders(authInstance);
