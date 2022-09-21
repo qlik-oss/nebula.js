@@ -35,6 +35,7 @@ const classes = {
   barWithCheckbox: `${PREFIX}-barWithCheckbox`,
   barSelectedWithCheckbox: `${PREFIX}-barSelectedWithCheckbox`,
   excludedTextWithCheckbox: `${PREFIX}-excludedTextWithCheckbox`,
+  testTextAlign: `${PREFIX}-testTextAlign`,
 };
 
 const ellipsis = {
@@ -206,6 +207,10 @@ const Root = styled('div')(({ theme }) => ({
   [`& .${classes.excludedTextWithCheckbox}`]: {
     color: '#828282',
     fontStyle: 'italic',
+  },
+
+  [`& .${classes.testTextAlign}`]: {
+    justifyContent: 'center', // work in progress: hardcoded value for text-align
   },
 }));
 
@@ -409,7 +414,7 @@ function RowColumn({ index, style, data }) {
         <Grid
           item
           style={cellStyle}
-          className={joinClassNames([classes.cell, classes.selectedCell])}
+          className={joinClassNames([classes.cell, classes.testTextAlign, classes.selectedCell])}
           title={`${label}`}
         >
           {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
