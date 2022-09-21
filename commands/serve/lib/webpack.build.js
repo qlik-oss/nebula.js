@@ -56,7 +56,6 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         {
           enforce: 'pre',
           test: /\.js?$/,
-          exclude: [/node_modules[/\\]@qlik[/\\]sdk/],
           loader: sourceMapLoaderPath,
         },
         {
@@ -83,6 +82,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         },
       ],
     },
+    ignoreWarnings: [/node_modules[/\\]@qlik[/\\]sdk/],
     plugins: [
       new webpack.DefinePlugin({
         __NEBULA_DEV__: true,
