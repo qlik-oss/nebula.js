@@ -121,7 +121,7 @@ const getAuthInstance = ({ webIntegrationId, host }) => {
 let connection;
 const connect = () => {
   if (!connection) {
-    connection = connectionInfo.then(({ webIntegrationId, enigma: { host } }) => {
+    connection = connectionInfo.then(({ webIntegrationId, enigma: enigmaInfo, enigma: { host } }) => {
       if (webIntegrationId) {
         const authInstance = getAuthInstance({ webIntegrationId, host });
         if (!headers) headers = getHeaders(authInstance);
@@ -142,7 +142,7 @@ const connect = () => {
 
       const url = SenseUtilities.buildUrl({
         ...defaultConfig,
-        ...enigma,
+        ...enigmaInfo,
       });
 
       return enigma
@@ -158,7 +158,7 @@ const connect = () => {
 };
 
 const openApp = (id) =>
-  connectionInfo.then(async ({ webIntegrationId, enigma: { host } }) => {
+  connectionInfo.then(async ({ webIntegrationId, enigma: enigmaInfo, enigma: { host } }) => {
     let urlParams = {};
     if (webIntegrationId) {
       const authInstance = getAuthInstance({ webIntegrationId, host });
@@ -173,7 +173,7 @@ const openApp = (id) =>
 
     const url = SenseUtilities.buildUrl({
       ...defaultConfig,
-      ...enigma,
+      ...enigmaInfo,
       urlParams,
       appId: id,
     });
