@@ -6,7 +6,7 @@ import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
 const InstanceContext = React.createContext();
 const [{ default: ListBoxSearch }] = aw.mock(
-  [[require.resolve('../../../contexts/InstanceContext'), () => InstanceContext]],
+  [[require.resolve('../../../../contexts/InstanceContext'), () => InstanceContext]],
   ['../ListBoxSearch']
 );
 const theme = createTheme('dark');
