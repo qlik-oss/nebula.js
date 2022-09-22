@@ -93,10 +93,6 @@ const getConnectionInfo = () =>
       };
     });
 
-const defaultConfig = {
-  secure: false,
-};
-
 const getAuthInstance = ({ webIntegrationId, host }) => {
   const authInstance = new Auth({
     webIntegrationId,
@@ -104,9 +100,7 @@ const getAuthInstance = ({ webIntegrationId, host }) => {
     authType: AuthType.WebIntegration,
     host,
   });
-  if (!authInstance.isAuthenticated()) {
-    return authInstance.authenticate();
-  }
+  if (!authInstance.isAuthenticated()) authInstance.authenticate();
   return authInstance;
 };
 
@@ -119,7 +113,6 @@ const connect = async () => {
     } = await getConnectionInfo();
 
     if (webIntegrationId) {
-      console.log('222', { host });
       const authInstance = getAuthInstance({ webIntegrationId, host });
 
       return {
@@ -135,7 +128,7 @@ const connect = async () => {
       };
     }
     const url = SenseUtilities.buildUrl({
-      ...defaultConfig,
+      secure: false,
       ...enigmaInfo,
     });
 
@@ -146,7 +139,7 @@ const connect = async () => {
       })
       .open();
   } catch (error) {
-    throw new Error('Failed to get connection info!');
+    throw new Error('Failed to return enigma instance');
   }
 };
 
@@ -166,7 +159,7 @@ const openApp = async (id) => {
     }
 
     const url = SenseUtilities.buildUrl({
-      ...defaultConfig,
+      secure: false,
       ...enigmaInfo,
       urlParams: {},
       appId: id,
