@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { useTheme } from '@nebula.js/ui/theme';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import Search from '@nebula.js/ui/icons/search';
@@ -12,7 +12,6 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
   const [value, setValue] = useState('');
   const [searchApplied, setSearchApplied] = useState(false);
   const theme = useTheme();
-  const searchFieldRef = useRef();
 
   const abortSearch = async () => {
     await model.abortListObjectSearch(TREE_PATH);
@@ -59,7 +58,7 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
         setValue('');
         break;
       case 'Escape':
-        searchFieldRef && searchFieldRef.current && searchFieldRef.current.blur();
+        abortSearch(); // this also turns off modal mode for us
         break;
       default:
         break;
@@ -105,7 +104,6 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
       placeholder={translator.get('Listbox.Search')}
       value={value}
       onFocus={handleFocus}
-      ref={searchFieldRef}
       onChange={onChange}
       onKeyDown={onKeyDown}
       inputProps={{
