@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useTheme } from '@nebula.js/ui/theme';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import Search from '@nebula.js/ui/icons/search';
@@ -7,32 +7,50 @@ import InstanceContext from '../../../contexts/InstanceContext';
 
 const TREE_PATH = '/qListObjectDef';
 
-export default function ListBoxSearch({ model, keyboard, dense = false, visible = true }) {
+export default function ListBoxSearch({ selections, model, keyboard, dense = false, visible = true }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
+  const [searchApplied, setSearchApplied] = useState(false);
   const theme = useTheme();
+  const searchFieldRef = useRef();
 
   const abortSearch = async () => {
     await model.abortListObjectSearch(TREE_PATH);
-    setIsSearching(false);
+  };
+
+  const handleDeactivated = () => {
+    if (!searchApplied) {
+      return;
+    }
+    abortSearch().finally(() => {
+      setValue('');
+      setSearchApplied(false);
+    });
   };
 
   useEffect(() => {
-    if (!visible && isSearching) {
-      abortSearch();
-    }
-  }, [visible]);
+    selections.on('deactivated', handleDeactivated);
+    return () => {
+      selections.removeListener && selections.removeListener('deactivated', handleDeactivated);
+    };
+  }, []);
 
   const onChange = (e) => {
     setValue(e.target.value);
-    if (e.target.value.length === 0) {
-      abortSearch();
-    } else {
+    if (e.target.value.length) {
+      setSearchApplied(true);
       model.searchListObjectFor(TREE_PATH, e.target.value);
-      setIsSearching(true);
     }
   };
+
+  const handleFocus = () => {
+    if (!selections.isModal(model)) {
+      selections.begin(['/qListObjectDef']).then(() => {
+        selections.goModal && selections.goModal('/qListObjectDef');
+      });
+    }
+  };
+
   const onKeyDown = (e) => {
     switch (e.key) {
       case 'Enter':
@@ -41,8 +59,7 @@ export default function ListBoxSearch({ model, keyboard, dense = false, visible 
         setValue('');
         break;
       case 'Escape':
-        abortSearch();
-        setValue('');
+        searchFieldRef && searchFieldRef.current && searchFieldRef.current.blur();
         break;
       default:
         break;
@@ -87,6 +104,8 @@ export default function ListBoxSearch({ model, keyboard, dense = false, visible 
       fullWidth
       placeholder={translator.get('Listbox.Search')}
       value={value}
+      onFocus={handleFocus}
+      ref={searchFieldRef}
       onChange={onChange}
       onKeyDown={onKeyDown}
       inputProps={{
