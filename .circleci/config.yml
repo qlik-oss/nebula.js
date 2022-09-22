@@ -77,7 +77,7 @@ jobs:
   build:
     docker:
       - image: cimg/node:18.8.0
-      - image: browserless/chrome:latest
+      - image: browserless/chrome:1-puppeteer-15.5.0-slim
 
     working_directory: ~/project
 
