@@ -82,6 +82,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         },
       ],
     },
+    ignoreWarnings: [/node_modules[/\\]@qlik[/\\]sdk/],
     plugins: [
       new webpack.DefinePlugin({
         __NEBULA_DEV__: true,
