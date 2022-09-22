@@ -4920,6 +4920,18 @@
     jsonwebtoken "8.5.1"
     ws "8.8.0"
 
+"@qlik/sdk@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@qlik/sdk/-/sdk-0.9.1.tgz#b48575756b31b5f65fd1866da596e24db09b3b98"
+  integrity sha512-6gCy9s+GwD+DjPgtapdRXZHEThlKmrxeM1YawkriSKXpElUl1+Wyq4tt5Y9Ijmg9Dmp3t0w8Ftjv0uBnpFPedw==
+  dependencies:
+    "@types/jsonwebtoken" "8.5.8"
+    cross-fetch "3.1.5"
+    enigma.js "2.9.0"
+    isomorphic-ws "4.0.1"
+    jsonwebtoken "8.5.1"
+    ws "8.8.0"
+
 "@rollup/plugin-commonjs@22.0.2":
   version "22.0.2"
   resolved "https://registry.yarnpkg.com/@rollup/plugin-commonjs/-/plugin-commonjs-22.0.2.tgz#ee8ca8415cda30d383b4096aad5222435b4b69b6"

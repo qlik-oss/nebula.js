@@ -56,7 +56,7 @@ describe('<Listbox />', () => {
             useCallback: useCallbackStub,
           }),
         ],
-        [require.resolve('../useSelectionsInteractions'), () => useSelectionsInteractions],
+        [require.resolve('../hooks/selections/useSelectionsInteractions'), () => useSelectionsInteractions],
         [
           require.resolve('react-window-infinite-loader'),
           () => (props) => {
@@ -66,7 +66,7 @@ describe('<Listbox />', () => {
           },
         ],
         [
-          require.resolve('../ListBoxRowColumn'),
+          require.resolve('../components/ListBoxRowColumn'),
           () =>
             function ({ checkboxes }) {
               return <div className={checkboxes ? 'a-value-column' : 'a-value-row'} />;

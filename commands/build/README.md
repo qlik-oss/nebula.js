@@ -17,7 +17,7 @@ Build nebula.js visualization
 
 Options:
   --version        Show version number                                 [boolean]
-  --config, -c     Path to JSON config file
+  --config, -c     Path to a JavaScript config file
                                           [string] [default: "nebula.config.js"]
   --watch, -w      Watch source files
                                    [choices: "umd", "systemjs"] [default: "umd"]

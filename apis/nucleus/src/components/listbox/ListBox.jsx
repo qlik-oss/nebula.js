@@ -9,9 +9,9 @@ import InfiniteLoader from 'react-window-infinite-loader';
 
 import useLayout from '../../hooks/useLayout';
 
-import useSelectionsInteractions from './useSelectionsInteractions';
+import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 
-import RowColumn from './ListBoxRowColumn';
+import RowColumn from './components/ListBoxRowColumn';
 
 const PREFIX = 'ListBox';
 const scrollBarThumb = '#BBB';

@@ -8,7 +8,7 @@ const RX = new RegExp(`${defaultFilename.replace(/\./g, '\\.')}$`);
 const options = {
   config: {
     type: 'string',
-    description: 'Path to config file',
+    description: 'Path to a JavaScript config file',
     default: defaultFilename,
     alias: 'c',
   },
