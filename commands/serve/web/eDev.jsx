@@ -3,10 +3,10 @@ import ReactDOM from 'react-dom';
 
 import App from './components/App';
 
-import { openApp, info } from './connect';
+import { openApp, getConnectionInfo } from './connect';
 import initiateWatch from './hot';
 
-info.then(($) => {
+getConnectionInfo().then(($) => {
   if (!$.enigma.appId) {
     window.location.href = `/${window.location.search}`;
   }

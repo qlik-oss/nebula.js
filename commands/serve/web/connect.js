@@ -61,47 +61,37 @@ const parseEngineURL = (url) => {
   };
 };
 
-const connectionInfo = fetch('/info')
-  .then((response) => response.json())
-  .then(async (n) => {
-    let info = n;
-    if (params.engine_url) {
-      info = {
+const getConnectionInfo = () =>
+  fetch('/info')
+    .then((response) => response.json())
+    .then(async (n) => {
+      let info = n;
+      if (params.engine_url) {
+        info = {
+          ...info,
+          ...parseEngineURL(params.engine_url),
+        };
+      } else if (params.app) {
+        info = {
+          ...info,
+          enigma: {
+            ...info.enigma,
+            appId: params.app,
+          },
+        };
+      }
+      if (params['qlik-web-integration-id']) {
+        info.webIntegrationId = params['qlik-web-integration-id'];
+      }
+      if (info.invalid) {
+        return info;
+      }
+      const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
+      return {
         ...info,
-        ...parseEngineURL(params.engine_url),
+        rootPath,
       };
-    } else if (params.app) {
-      info = {
-        ...info,
-        enigma: {
-          ...info.enigma,
-          appId: params.app,
-        },
-      };
-    }
-    if (params['qlik-web-integration-id']) {
-      info.webIntegrationId = params['qlik-web-integration-id'];
-    }
-    if (info.invalid) {
-      return info;
-    }
-    const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
-    return {
-      ...info,
-      rootPath,
-    };
-  });
-
-let headers;
-
-const getHeaders = (authInstance) => {
-  if (!authInstance) return 401;
-  headers = {
-    'qlik-web-integration-id': authInstance.config.webIntegrationId,
-    'qlik-csrf-token': authInstance.config.csrfToken,
-  };
-  return headers;
-};
+    });
 
 const defaultConfig = {
   secure: false,
@@ -114,18 +104,23 @@ const getAuthInstance = ({ webIntegrationId, host }) => {
     authType: AuthType.WebIntegration,
     host,
   });
-  if (!authInstance.isAuthenticated()) authInstance.authenticate();
+  if (!authInstance.isAuthenticated()) {
+    console.log('not authenticated');
+    return authInstance.authenticate();
+  }
+  // console.log('AUTH', authInstance);
   return authInstance;
 };
 
 let connection;
 const connect = () => {
+  console.log('>>>> CONNECTION', connect);
   if (!connection) {
-    connection = connectionInfo.then(({ webIntegrationId, enigma: enigmaInfo, enigma: { host } }) => {
+    connection = getConnectionInfo().then(({ webIntegrationId, enigma: enigmaInfo, enigma: { host } }) => {
+      console.log('xxx', { host });
       if (webIntegrationId) {
+        console.log('222', { host });
         const authInstance = getAuthInstance({ webIntegrationId, host });
-        if (!headers) headers = getHeaders(authInstance);
-        if (headers === 401) return { status: 401 };
 
         return {
           getDocList: async () => {
@@ -154,18 +149,15 @@ const connect = () => {
     });
   }
 
-  return connection;
+  // return connection;
+
+  // ----------
 };
 
 const openApp = (id) =>
-  connectionInfo.then(async ({ webIntegrationId, enigma: enigmaInfo, enigma: { host } }) => {
-    let urlParams = {};
+  getConnectionInfo().then(async ({ webIntegrationId, enigma: enigmaInfo, enigma: { host } }) => {
     if (webIntegrationId) {
       const authInstance = getAuthInstance({ webIntegrationId, host });
-
-      if (!headers) headers = getHeaders(authInstance);
-      urlParams = { ...headers };
-
       const url = await authInstance.generateWebsocketUrl(id);
       const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
       return enigmaGlobal.openDoc(id);
@@ -174,7 +166,7 @@ const openApp = (id) =>
     const url = SenseUtilities.buildUrl({
       ...defaultConfig,
       ...enigmaInfo,
-      urlParams,
+      urlParams: {},
       appId: id,
     });
     return enigma
@@ -183,4 +175,4 @@ const openApp = (id) =>
       .then((global) => global.openDoc(id));
   });
 
-export { connect, openApp, params, connectionInfo as info };
+export { connect, openApp, params, getConnectionInfo, connection, getAuthInstance };

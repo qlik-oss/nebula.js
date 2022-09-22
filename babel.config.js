@@ -3,13 +3,13 @@ module.exports = {
     test: {
       presets: [['@babel/preset-env', { targets: { node: 'current' } }]],
       plugins: [
-        ['@babel/plugin-transform-react-jsx'],
-        [
-          'istanbul',
-          {
-            exclude: ['**/test/**', '**/__test__/**', '**/dist/**'],
-          },
-        ],
+        '@babel/plugin-transform-react-jsx',
+        // [
+        //   'istanbul',
+        //   {
+        //     exclude: ['**/test/**', '**/__test__/**', '**/dist/**'],
+        //   },
+        // ],
       ],
     },
   },

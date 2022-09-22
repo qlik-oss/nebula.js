@@ -1,7 +1,7 @@
 import { embed } from '@nebula.js/stardust';
 import EnigmaMocker from '@nebula.js/enigma-mocker';
 import extend from 'extend';
-import { info as getServerInfo } from './connect';
+import { getConnectionInfo } from './connect';
 import { getModule } from './hot';
 
 const getDefaultGenericObject = ({ type }) => ({
@@ -101,7 +101,7 @@ function getQId(genericObjects = []) {
 
 const renderFixture = async (params) => {
   const element = document.querySelector('#chart-container');
-  const serverInfo = await getServerInfo;
+  const serverInfo = await getConnectionInfo();
   const fixture = await getFixture(params.fixture);
   const { type, load, genericObjects, instanceConfig, snConfig } = await getOptions({ fixture, params, serverInfo });
   const mockedApp = await EnigmaMocker.fromGenericObjects(genericObjects);
