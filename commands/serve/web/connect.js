@@ -151,23 +151,16 @@ const openApp = async (id) => {
       enigma: { host },
     } = await getConnectionInfo();
 
+    let url = '';
     if (webIntegrationId) {
       const authInstance = getAuthInstance({ webIntegrationId, host });
-      const url = await authInstance.generateWebsocketUrl(id);
-      const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
-      return enigmaGlobal.openDoc(id);
+      url = await authInstance.generateWebsocketUrl(id);
+    } else {
+      url = SenseUtilities.buildUrl(enigmaInfo);
     }
 
-    const url = SenseUtilities.buildUrl({
-      secure: false,
-      ...enigmaInfo,
-      urlParams: {},
-      appId: id,
-    });
-    return enigma
-      .create({ schema: qixSchema, url })
-      .open()
-      .then((global) => global.openDoc(id));
+    const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
+    return enigmaGlobal.openDoc(id);
   } catch (error) {
     throw new Error('Failed to open app!');
   }
