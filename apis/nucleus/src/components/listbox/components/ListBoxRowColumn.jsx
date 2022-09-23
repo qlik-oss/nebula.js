@@ -219,7 +219,7 @@ function RowColumn({ index, style, data }) {
     isLocked,
     column = false,
     checkboxes = false,
-    testTextAlign,
+    textAlign,
     dense = false,
     frequencyMode = 'N',
     isSingleSelect,
@@ -361,7 +361,7 @@ function RowColumn({ index, style, data }) {
     minWidth: 0,
     flexGrow: 1,
     padding: checkboxes ? 0 : undefined,
-    justifyContent: testTextAlign,
+    justifyContent: textAlign,
   };
 
   const hasHistogramBar = () => cell && histogram && getFrequencyText() !== frequencyTextNone;

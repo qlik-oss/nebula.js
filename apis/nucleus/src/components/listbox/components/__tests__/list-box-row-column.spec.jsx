@@ -834,6 +834,30 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
+    it('should get correct text alignment', async () => {
+      const index = 0;
+      const style = {};
+      const textAlign = 'right';
+      const data = {
+        onMouseDown: sandbox.spy(),
+        onMouseUp: sandbox.spy(),
+        onMouseEnter: sandbox.spy(),
+        onClick: sandbox.spy(),
+        keyboard,
+        pages: [],
+        actions,
+        textAlign,
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).to.equal(textAlign);
+    });
+
     it('should render radio button when isSingleSelect is true', async () => {
       const index = 0;
       const style = {};

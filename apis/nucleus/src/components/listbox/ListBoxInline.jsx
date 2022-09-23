@@ -47,7 +47,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     toolbar = true,
     rangeSelect = true,
     checkboxes = false,
-    testTextAlign,
+    textAlign,
     properties = {},
     sessionModel = undefined,
     selectionsApi = undefined,
@@ -335,7 +335,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               histogram={histogram}
               rangeSelect={rangeSelect}
               checkboxes={checkboxes}
-              testTextAlign={testTextAlign}
+              textAlign={textAlign}
               height={height}
               width={width}
               update={update}
