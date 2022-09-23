@@ -31,6 +31,13 @@
   },
   "overrides": [
     {
+      "files": ["apis/**/*", "packages/**/*", "commands/create/**/*", "commands/sense/src/**/*"],
+      "rules": {
+        "jest/valid-expect": 0,
+        "jest/no-identical-title": 0
+      }
+    },
+    {
       "files": ["scripts/**/*", "**/apis/*/scripts/**/*"],
       "rules": {
         "no-restricted-syntax": 0
