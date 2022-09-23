@@ -837,10 +837,9 @@ describe('<ListBoxRowColumn />', () => {
     it('should get correct text alignment', async () => {
       const index = 0;
       const style = {};
-      const textAlign = 'right';
       const data = {
         keyboard,
-        textAlign,
+        textAlign: 'right',
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
