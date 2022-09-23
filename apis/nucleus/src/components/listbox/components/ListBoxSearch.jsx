@@ -10,7 +10,7 @@ const TREE_PATH = '/qListObjectDef';
 export default function ListBoxSearch({ selections, model, keyboard, dense = false, visible = true }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
-  const [searchApplied, setSearchApplied] = useState(false);
+  const [, setAppliedSearch] = useState(false);
   const theme = useTheme();
 
   const abortSearch = async () => {
@@ -18,28 +18,35 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
       await model.abortListObjectSearch(TREE_PATH);
     } finally {
       setValue('');
-      setSearchApplied(false);
     }
   };
 
-  const handleDeactivated = () => {
-    if (!searchApplied) {
-      return;
-    }
-    abortSearch();
+  const handleDeactivate = () => {
+    setAppliedSearch((hasApplied) => {
+      if (hasApplied) {
+        abortSearch();
+      }
+      return false;
+    });
   };
 
   useEffect(() => {
-    selections.on('deactivated', handleDeactivated);
+    if (!visible) {
+      handleDeactivate(); // always abort when toggling off search
+    }
+  }, [visible]);
+
+  useEffect(() => {
+    selections.on('deactivated', handleDeactivate);
     return () => {
-      selections.removeListener && selections.removeListener('deactivated', handleDeactivated);
+      selections.removeListener && selections.removeListener('deactivated', handleDeactivate);
     };
   }, []);
 
   const onChange = async (e) => {
     setValue(e.target.value);
     if (e.target.value.length) {
-      setSearchApplied(true);
+      setAppliedSearch(true);
       return model.searchListObjectFor(TREE_PATH, e.target.value);
     }
     return undefined;
@@ -47,9 +54,7 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
 
   const handleFocus = () => {
     if (!selections.isModal(model)) {
-      selections.begin(['/qListObjectDef']).then(() => {
-        selections.goModal && selections.goModal('/qListObjectDef');
-      });
+      selections.begin(['/qListObjectDef']);
     }
   };
 

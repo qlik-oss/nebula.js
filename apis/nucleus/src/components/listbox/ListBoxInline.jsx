@@ -202,6 +202,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
         selections.on('deactivated', hide);
         selections.on('activated', show);
       }
+      setShowToolbar(selections.isActive());
     }
     return () => {
       if (selections) {
@@ -209,12 +210,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
         selections.removeListener('activated', hide);
       }
     };
-  }, [selections]);
-
-  useEffect(() => {
-    if (selections) {
-      setShowToolbar(selections.isActive());
-    }
   }, [selections]);
 
   const listBoxRef = useRef(null);
@@ -332,6 +327,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
           dense={dense}
           keyboard={keyboard}
           visible={searchVisible}
+          searchContainerRef={searchContainerRef}
         />
       </Grid>
       <Grid item xs>

@@ -144,8 +144,7 @@ describe('<ListboxInline />', () => {
         effectFunc();
       })
       .onCall(1)
-      .callsFake((effectFunc, watchArr) => {
-        expect(watchArr[0].key).to.equal(customSelectionsKey || 'selections');
+      .callsFake((effectFunc) => {
         effectFunc();
       });
 
