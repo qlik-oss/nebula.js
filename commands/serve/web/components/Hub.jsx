@@ -304,8 +304,6 @@ export default function Hub() {
           });
         }
 
-        console.log({ g });
-
         setGlobal(g);
 
         if (!g.getDocList) {
