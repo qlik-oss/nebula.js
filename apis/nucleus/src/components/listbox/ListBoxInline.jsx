@@ -188,8 +188,15 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   };
 
   useEffect(() => {
-    const show = () => setShowToolbar(true);
-    const hide = () => setShowToolbar(false);
+    const show = () => {
+      setShowToolbar(true);
+    };
+    const hide = () => {
+      setShowToolbar(false);
+      if (search === 'toggle') {
+        setShowSearch(false);
+      }
+    };
     if (selections) {
       if (!selections.isModal(model)) {
         selections.on('deactivated', hide);

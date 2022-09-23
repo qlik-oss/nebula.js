@@ -14,17 +14,19 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
   const theme = useTheme();
 
   const abortSearch = async () => {
-    await model.abortListObjectSearch(TREE_PATH);
+    try {
+      await model.abortListObjectSearch(TREE_PATH);
+    } finally {
+      setValue('');
+      setSearchApplied(false);
+    }
   };
 
   const handleDeactivated = () => {
     if (!searchApplied) {
       return;
     }
-    abortSearch().finally(() => {
-      setValue('');
-      setSearchApplied(false);
-    });
+    abortSearch();
   };
 
   useEffect(() => {
@@ -34,12 +36,13 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
     };
   }, []);
 
-  const onChange = (e) => {
+  const onChange = async (e) => {
     setValue(e.target.value);
     if (e.target.value.length) {
       setSearchApplied(true);
-      model.searchListObjectFor(TREE_PATH, e.target.value);
+      return model.searchListObjectFor(TREE_PATH, e.target.value);
     }
+    return undefined;
   };
 
   const handleFocus = () => {
@@ -51,18 +54,20 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
   };
 
   const onKeyDown = (e) => {
+    let response;
     switch (e.key) {
       case 'Enter':
         // Maybe we only want to accept if isSearching is true
-        model.acceptListObjectSearch(TREE_PATH, true);
+        response = model.acceptListObjectSearch(TREE_PATH, true);
         setValue('');
         break;
       case 'Escape':
-        abortSearch(); // this also turns off modal mode for us
+        response = abortSearch(); // this also turns off modal mode for us
         break;
       default:
         break;
     }
+    return response;
   };
 
   if (!visible) {

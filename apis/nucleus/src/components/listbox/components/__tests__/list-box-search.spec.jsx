@@ -13,12 +13,20 @@ const theme = createTheme('dark');
 
 const create = (comp) => renderer.create(<ThemeProvider theme={theme}>{comp}</ThemeProvider>);
 
+const selections = {
+  on: sinon.stub(),
+  removeListener: sinon.stub(),
+  isModal: sinon.stub().returns(false),
+  begin: sinon.stub().resolves(),
+  goModal: sinon.stub().returns(),
+};
+
 const keyboard = { enabled: false, active: true };
 
 const testRender = (model) =>
   create(
     <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-      <ListBoxSearch model={model} keyboard={keyboard} />
+      <ListBoxSearch selections={selections} model={model} keyboard={keyboard} />
     </InstanceContext.Provider>
   );
 
@@ -32,7 +40,7 @@ describe('<ListBoxSearch />', () => {
     model = {
       searchListObjectFor: sinon.spy(),
       acceptListObjectSearch: sinon.spy(),
-      abortListObjectSearch: sinon.spy(),
+      abortListObjectSearch: sinon.stub().resolves(),
     };
   });
 
@@ -49,6 +57,7 @@ describe('<ListBoxSearch />', () => {
     expect(types[0].props.onKeyDown).to.be.a('function');
     expect(types[0].props.inputProps.tabIndex).to.equal(0);
   });
+
   it('should have css class `search`', () => {
     keyboard.enabled = true;
     keyboard.active = false;
@@ -61,6 +70,7 @@ describe('<ListBoxSearch />', () => {
     expect(className).to.be.a('string');
     expect(className.split(' ')).to.include('search');
   });
+
   it('should update `OutlinedInput` and search `onChange`', () => {
     const testRenderer = testRender(model);
     const testInstance = testRenderer.root;
@@ -69,7 +79,7 @@ describe('<ListBoxSearch />', () => {
     testRenderer.update(
       <ThemeProvider theme={theme}>
         <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-          <ListBoxSearch model={model} keyboard={keyboard} />
+          <ListBoxSearch selections={selections} model={model} keyboard={keyboard} />
         </InstanceContext.Provider>
       </ThemeProvider>
     );
@@ -77,10 +87,11 @@ describe('<ListBoxSearch />', () => {
     type = testInstance.findByType(OutlinedInput);
     expect(type.props.value).to.equal('foo');
   });
+
   it('should reset `OutlinedInput` and `acceptListObjectSearch` on `Enter`', () => {
     const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} keyboard={keyboard} />
+        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
@@ -93,13 +104,14 @@ describe('<ListBoxSearch />', () => {
     expect(model.acceptListObjectSearch).to.have.been.calledWith('/qListObjectDef', true);
     expect(type.props.value).to.equal('');
   });
-  it('should `abortListObjectSearch` on `Escape`', () => {
+
+  it('should `abortListObjectSearch` on `Escape`', async () => {
     const testRenderer = testRender(model);
     const testInstance = testRenderer.root;
     const type = testInstance.findByType(OutlinedInput);
-    type.props.onChange({ target: { value: 'foo' } });
+    await type.props.onChange({ target: { value: 'foo' } });
     expect(type.props.value).to.equal('foo');
-    type.props.onKeyDown({ key: 'Escape' });
+    await type.props.onKeyDown({ key: 'Escape' });
     expect(model.abortListObjectSearch).to.have.been.calledWith('/qListObjectDef');
     expect(type.props.value).to.equal('');
   });
@@ -107,7 +119,7 @@ describe('<ListBoxSearch />', () => {
   it('should not render if visible is false', () => {
     const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch model={model} keyboard={keyboard} visible={false} />
+        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} visible={false} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
