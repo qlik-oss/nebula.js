@@ -35,7 +35,6 @@ const classes = {
   barWithCheckbox: `${PREFIX}-barWithCheckbox`,
   barSelectedWithCheckbox: `${PREFIX}-barSelectedWithCheckbox`,
   excludedTextWithCheckbox: `${PREFIX}-excludedTextWithCheckbox`,
-  testTextAlign: `${PREFIX}-testTextAlign`,
 };
 
 const ellipsis = {
@@ -208,10 +207,6 @@ const Root = styled('div')(({ theme }) => ({
     color: '#828282',
     fontStyle: 'italic',
   },
-
-  [`& .${classes.testTextAlign}`]: {
-    justifyContent: 'center', // work in progress: hardcoded value for text-align
-  },
 }));
 
 function RowColumn({ index, style, data }) {
@@ -224,6 +219,7 @@ function RowColumn({ index, style, data }) {
     isLocked,
     column = false,
     checkboxes = false,
+    testTextAlign,
     dense = false,
     frequencyMode = 'N',
     isSingleSelect,
@@ -365,6 +361,7 @@ function RowColumn({ index, style, data }) {
     minWidth: 0,
     flexGrow: 1,
     padding: checkboxes ? 0 : undefined,
+    justifyContent: testTextAlign,
   };
 
   const hasHistogramBar = () => cell && histogram && getFrequencyText() !== frequencyTextNone;
@@ -414,7 +411,7 @@ function RowColumn({ index, style, data }) {
         <Grid
           item
           style={cellStyle}
-          className={joinClassNames([classes.cell, classes.testTextAlign, classes.selectedCell])}
+          className={joinClassNames([classes.cell, classes.selectedCell])}
           title={`${label}`}
         >
           {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
