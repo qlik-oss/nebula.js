@@ -3,7 +3,7 @@ import qixSchema from 'enigma.js/schemas/12.936.0.json';
 import SenseUtilities from 'enigma.js/sense-utilities';
 import { Auth, AuthType } from '@qlik/sdk';
 
-const params = (() => {
+const getParams = () => {
   const opts = {};
   window.location.search
     .substring(1)
@@ -17,9 +17,8 @@ const params = (() => {
       }
       opts[name] = value;
     });
-
   return opts;
-})();
+};
 
 // Qlik Core:  ws://<host>:<port>/app/<data-folder>/<app-name>
 // QCS:       wss://<tenant-url>.<region>.qlikcloud.com/app/<app-GUID>
@@ -66,6 +65,7 @@ const getConnectionInfo = () =>
     .then((response) => response.json())
     .then(async (n) => {
       let info = n;
+      const params = getParams();
       if (params.engine_url) {
         info = {
           ...info,
@@ -166,4 +166,4 @@ const openApp = async (id) => {
   }
 };
 
-export { connect, openApp, params, getConnectionInfo, getAuthInstance };
+export { connect, openApp, getParams, getConnectionInfo, getAuthInstance, parseEngineURL };

@@ -2,7 +2,7 @@ import * as SDK from '@qlik/sdk';
 import * as ENIGMA from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.936.0.json';
 import * as SenseUtilities from 'enigma.js/sense-utilities';
-import { connect, openApp } from '../connect';
+import { connect, openApp, getConnectionInfo } from '../connect';
 
 jest.mock('@qlik/sdk');
 jest.mock('enigma.js');
@@ -18,12 +18,12 @@ describe('connect.js', () => {
   let generateWebsocketUrlMock;
 
   beforeEach(() => {
-    appId = '#someAppId';
+    appId = 'someAppId';
     authConfig = {
       authType: 'WebIntegration',
       autoRedirect: 'true',
       host: 'some.eu.tenant.pte.qlikdev.com',
-      webIntegrationId: '#someId',
+      webIntegrationId: 'someIntegrationId',
     };
     isAuthenticatedMock = jest.fn();
     authenticateMock = jest.fn();
@@ -64,7 +64,7 @@ describe('connect.js', () => {
       beforeEach(() => {
         jsonResponseMock.mockImplementation(() =>
           Promise.resolve({
-            webIntegrationId: '#someId',
+            webIntegrationId: 'someIntegrationId',
             enigma: {
               secure: false,
               host: 'some.eu.tenant.pte.qlikdev.com',
@@ -185,7 +185,7 @@ describe('connect.js', () => {
         beforeEach(() => {
           jsonResponseMock.mockImplementation(() =>
             Promise.resolve({
-              webIntegrationId: '#someId',
+              webIntegrationId: 'someIntegrationId',
               enigma: {
                 secure: false,
                 host: 'some.eu.tenant.pte.qlikdev.com',
@@ -272,6 +272,99 @@ describe('connect.js', () => {
           expect(enigmaOpenDocMock).toHaveBeenCalledTimes(1);
           expect(enigmaOpenDocMock).toHaveBeenCalledWith(appId);
         });
+      });
+    });
+  });
+
+  describe('getConnectionInfo()', () => {
+    beforeEach(() => {
+      jsonResponseMock.mockImplementation(() =>
+        Promise.resolve({
+          webIntegrationId: 'someIntegrationId',
+          enigma: {
+            secure: false,
+            host: 'some.eu.tenant.pte.qlikdev.com',
+          },
+        })
+      );
+    });
+
+    test('should parse engine url while connecting into SDE', async () => {
+      window.location.assign(
+        `/some-url?engine_url=wss://${authConfig.host}&qlik-web-integration-id=${authConfig.webIntegrationId}`
+      );
+      const result = await getConnectionInfo();
+      expect(result).toEqual(
+        expect.objectContaining({
+          appUrl: undefined,
+          enigma: expect.objectContaining({
+            secure: true, // since it is "wss"
+            host: authConfig.host,
+            port: undefined, // since we are providing link
+            appId: undefined, // since we are providing link
+          }),
+          engineUrl: `wss://${authConfig.host}`,
+          rootPath: `https://${authConfig.host}`,
+        })
+      );
+    });
+
+    test('should pass `qlik-web-integration-id` if it is provided in url', async () => {
+      window.location.assign(
+        `/some-url?engine_url=wss://${authConfig.host}&qlik-web-integration-id=${authConfig.webIntegrationId}`
+      );
+      const result = await getConnectionInfo();
+      expect(result).toEqual(
+        expect.objectContaining({
+          appUrl: undefined,
+          webIntegrationId: authConfig.webIntegrationId,
+          engineUrl: `wss://${authConfig.host}`,
+          rootPath: `https://${authConfig.host}`,
+        })
+      );
+    });
+
+    test('should parse engine url while connecting to local docker engine', async () => {
+      window.location.assign('/?engine_url=ws://localhost:1234');
+      const result = await getConnectionInfo();
+      expect(result).toEqual(
+        expect.objectContaining({
+          enigma: expect.objectContaining({
+            secure: false, // since it is "ws"
+            host: 'localhost',
+            port: '1234',
+            appId: undefined, // there is no appId
+          }),
+          engineUrl: `ws://localhost:1234`,
+          appUrl: undefined,
+        })
+      );
+    });
+
+    test('should pass appId if it is provided in url', async () => {
+      window.location.assign('/?app=SOME_APP_ID');
+      const result = await getConnectionInfo();
+      expect(result).toEqual(
+        expect.objectContaining({
+          enigma: expect.objectContaining({
+            secure: false, // since it is "ws"
+            host: authConfig.host,
+            appId: 'SOME_APP_ID',
+          }),
+          webIntegrationId: authConfig.webIntegrationId,
+        })
+      );
+    });
+
+    test('should return invalid if url was not matching anything', async () => {
+      jsonResponseMock.mockImplementation(() =>
+        Promise.resolve({
+          invalid: true,
+        })
+      );
+      const result = await getConnectionInfo();
+      expect(result).toEqual({
+        invalid: true,
       });
     });
   });
