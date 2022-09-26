@@ -326,6 +326,10 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
         </Grid>
       )}
       <Grid item ref={searchContainerRef}>
+        <div
+          q-translation={translator.get('Listbox.Search.ScreenReaderInstructions')}
+          className={classes.screenReaderOnly}
+        />
         <ListBoxSearch model={model} dense={dense} keyboard={keyboard} visible={searchVisible} />
       </Grid>
       <Grid item xs>
