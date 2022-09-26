@@ -21,7 +21,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { info as connectionInfo, connect } from '../connect';
+import { getConnectionInfo, connect } from '../connect';
 import storageFn from '../storage';
 
 const storage = storageFn({});
@@ -268,7 +268,7 @@ export default function Hub() {
   };
 
   useEffect(() => {
-    connectionInfo.then((i) => {
+    getConnectionInfo().then((i) => {
       if (i.enigma.appId) {
         window.location.href = `/dev/${window.location.search}`;
         return;

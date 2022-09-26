@@ -2,7 +2,7 @@
 import { embed } from '@nebula.js/stardust';
 import snapshooter from '@nebula.js/snapshooter/client';
 
-import { openApp, params, info as serverInfo } from './connect';
+import { openApp, params, getConnectionInfo } from './connect';
 import initiateWatch from './hot';
 import renderFixture from './render-fixture';
 
@@ -31,7 +31,7 @@ const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
 };
 
 async function renderWithEngine() {
-  const info = await serverInfo;
+  const info = await getConnectionInfo();
   initiateWatch(info);
   if (!info.enigma.appId) {
     location.href = location.origin; //eslint-disable-line
@@ -79,7 +79,7 @@ async function renderWithEngine() {
 }
 
 async function renderSnapshot() {
-  const info = await serverInfo;
+  const info = await getConnectionInfo();
   const { themes, supernova } = info;
   initiateWatch(info);
   const element = document.querySelector('#chart-container');
