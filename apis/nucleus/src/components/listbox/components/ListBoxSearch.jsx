@@ -10,7 +10,6 @@ const TREE_PATH = '/qListObjectDef';
 export default function ListBoxSearch({ selections, model, keyboard, dense = false, visible = true }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
-  const [, setAppliedSearch] = useState(false);
   const theme = useTheme();
 
   const cancel = () => selections.isActive() && selections.cancel();
@@ -28,7 +27,6 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
 
   const handleDeactivate = () => {
     cancel();
-    setAppliedSearch(false);
   };
 
   useEffect(() => {
@@ -47,7 +45,6 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
   const onChange = async (e) => {
     setValue(e.target.value);
     if (e.target.value.length) {
-      setAppliedSearch(true);
       return model.searchListObjectFor(TREE_PATH, e.target.value);
     }
     return undefined;
