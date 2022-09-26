@@ -24,11 +24,9 @@ const getParams = () => {
 // QCS:       wss://<tenant-url>.<region>.qlikcloud.com/app/<app-GUID>
 // QSEoK:     wss://<host>/app/<app-GUID>
 // QSEoW:     wss://<host>/<virtual-proxy-prefix>/app/<app-GUID>
-const RX = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/;
-const parseEngineURL = (url) => {
-  const m = RX.exec(url);
-
-  if (!m) {
+const parseEngineURL = (url, urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/, appRegex = /\/app\/([^?&#:]+)/) => {
+  const match = urlRegex.exec(url);
+  if (!match) {
     return {
       engineUrl: url,
       invalid: true,
@@ -40,19 +38,19 @@ const parseEngineURL = (url) => {
   let engineUrl = trimmedUrl;
   let appUrl;
 
-  const rxApp = /\/app\/([^?&#:]+)/.exec(trimmedUrl);
+  const appMatch = appRegex.exec(trimmedUrl);
 
-  if (rxApp) {
-    [, appId] = rxApp;
-    engineUrl = trimmedUrl.substring(0, rxApp.index);
+  if (appMatch) {
+    [, appId] = appMatch;
+    engineUrl = trimmedUrl.substring(0, appMatch.index);
     appUrl = trimmedUrl;
   }
 
   return {
     enigma: {
-      secure: m[1] === 'wss',
-      host: m[2],
-      port: m[3] || undefined,
+      secure: match[1] === 'wss',
+      host: match[2],
+      port: match[3] || undefined,
       appId,
     },
     engineUrl,

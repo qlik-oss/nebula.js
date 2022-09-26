@@ -2,7 +2,7 @@ import * as SDK from '@qlik/sdk';
 import * as ENIGMA from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.936.0.json';
 import * as SenseUtilities from 'enigma.js/sense-utilities';
-import { connect, openApp, getConnectionInfo } from '../connect';
+import { connect, openApp, getConnectionInfo, getParams, parseEngineURL } from '../connect';
 
 jest.mock('@qlik/sdk');
 jest.mock('enigma.js');
@@ -335,7 +335,7 @@ describe('connect.js', () => {
             port: '1234',
             appId: undefined, // there is no appId
           }),
-          engineUrl: `ws://localhost:1234`,
+          engineUrl: 'ws://localhost:1234',
           appUrl: undefined,
         })
       );
@@ -365,6 +365,97 @@ describe('connect.js', () => {
       const result = await getConnectionInfo();
       expect(result).toEqual({
         invalid: true,
+      });
+    });
+  });
+
+  describe('getParams()', () => {
+    beforeEach(() => {
+      jsonResponseMock.mockImplementation(() =>
+        Promise.resolve({
+          webIntegrationId: 'someIntegrationId',
+          enigma: {
+            secure: false,
+            host: 'some.eu.tenant.pte.qlikdev.com',
+          },
+        })
+      );
+    });
+
+    test('should detect engine url and integration id from provided link', () => {
+      window.location.assign(
+        `/some-url?engine_url=wss://${authConfig.host}&qlik-web-integration-id=${authConfig.webIntegrationId}`
+      );
+      expect(getParams()).toEqual({
+        engine_url: `wss://${authConfig.host}`,
+        'qlik-web-integration-id': authConfig.webIntegrationId,
+      });
+    });
+
+    test('should separate columns in to an array in case of any `cols` params in link', () => {
+      window.location.assign('/?engine_url=ws://localhost:1234&cols=col_01,col_02,col_03');
+      expect(getParams()).toEqual({
+        engine_url: 'ws://localhost:1234',
+        cols: ['col_01', 'col_02', 'col_03'],
+      });
+    });
+  });
+
+  describe('parseEngineURL()', () => {
+    let url;
+
+    test('should return invalid object if there was no match', () => {
+      url = '/?someParam=https://localhost:1234';
+      const result = parseEngineURL(url);
+      expect(result).toEqual({
+        engineUrl: url,
+        invalid: true,
+      });
+    });
+
+    test('should return expected info from SDE url', () => {
+      url = `/some-url?engine_url=wss://${authConfig.host}&qlik-web-integration-id=${authConfig.webIntegrationId}`;
+      const result = parseEngineURL(url);
+      expect(result).toMatchObject({
+        enigma: expect.objectContaining({
+          secure: expect.any(Boolean),
+          host: expect.any(String),
+          port: undefined, // because of providing a link
+          appId: undefined, // since there is not appid in link
+        }),
+        engineUrl: expect.any(String),
+        appUrl: undefined, // because no app has been provided
+      });
+    });
+
+    test('should return expected info from Local Docker url', () => {
+      url = '/?engine_url=ws://localhost:1234';
+      const result = parseEngineURL(url);
+      expect(result).toMatchObject({
+        enigma: expect.objectContaining({
+          secure: expect.any(Boolean),
+          host: expect.any(String),
+          port: expect.any(String),
+          appId: undefined, // since there is not appid in link
+        }),
+        engineUrl: expect.any(String),
+        appUrl: undefined, // because no app has been provided
+      });
+    });
+
+    test('should find app url param from provided link', () => {
+      url = `/app/SOME_APP_ID/?engine_url=wss://${authConfig.host}`;
+      const result = parseEngineURL(url);
+      console.log({ result });
+      expect(result).toMatchObject({
+        enigma: expect.objectContaining({
+          secure: expect.any(Boolean),
+          host: expect.any(String),
+          port: undefined, // because of providing a link
+          appId: 'SOME_APP_ID/', // since there is not appid in link
+        }),
+        engineUrl: expect.any(String),
+        appUrl: url,
       });
     });
   });
