@@ -157,7 +157,7 @@ export function onTakeSnapshot(snapshotCallback: ($: EngineAPI.IGenericObjectLay
  * Registers a callback that is called when a context menu item is added.
  * @param addItemCallback
  */
- export function onContextMenu(addItemCallback: (menu: Menu, event: any)=>Promise<menu>): void;
+ export function onContextMenu(addItemCallback: (menu: Menu, event: any) => void): void;
 
  
 /**
@@ -703,6 +703,6 @@ declare namespace stardust {
 }
 
 export interface Menu {
-    addItem: (input: { translation: string; icon: string; tid: string; select: () => Promise<void> }) => void;
+    addItem: (props: { translation: string; icon: string; tid: string; select: () => Promise<void> }) => void;
 }
 

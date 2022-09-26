@@ -487,32 +487,6 @@
         "import { onTakeSnapshot } from '@nebula.js/stardust';\nimport { useState } from '@nebula.js/stardust';\nimport { useLayout } from '@nebula.js/stardust';\n\nconst layout = useLayout();\nconst [zoomed] = useState(layout.isZoomed || false);\n\nonTakeSnapshot((copyOfLayout) => {\n  copyOfLayout.isZoomed = zoomed;\n  return Promise.resolve(copyOfLayout);\n});"
       ]
     },
-    "onContextMenu": {
-      "description": "Registers a callback that is called when a cell value is copied.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "addItemCallback",
-          "kind": "function",
-          "params": [
-            {
-              "type": "any"
-            }
-          ],
-          "returns": {
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "any"
-              }
-            ]
-          }
-        }
-      ],
-      "examples": [
-        "import { onContextMenu } from '@nebula.js/stardust';\nonContextMenu((menu, event) => {\n  return Promise.resolve(menu);\n});"
-      ]
-    },
     "useRenderState": {
       "description": "Gets render state instance.\n\nUsed to update properties and get a new layout without triggering onInitialRender.",
       "stability": "experimental",

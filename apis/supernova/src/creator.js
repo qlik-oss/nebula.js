@@ -24,7 +24,6 @@ const defaultComponent = {
   // temporary
   observeActions() {},
   setSnapshotData: (snapshot) => Promise.resolve(snapshot),
-  onContextMenu: (menu, event) => Promise.resolve(menu, event),
 };
 
 const reservedKeys = Object.keys(defaultComponent);
