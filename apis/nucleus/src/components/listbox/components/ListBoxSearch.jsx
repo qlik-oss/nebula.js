@@ -13,7 +13,12 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
   const [, setAppliedSearch] = useState(false);
   const theme = useTheme();
 
+  const cancel = () => selections.isActive() && selections.cancel();
+
   const abortSearch = async () => {
+    if (!selections.isModal()) {
+      return;
+    }
     try {
       await model.abortListObjectSearch(TREE_PATH);
     } finally {
@@ -22,12 +27,8 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
   };
 
   const handleDeactivate = () => {
-    setAppliedSearch((hasApplied) => {
-      if (hasApplied) {
-        abortSearch();
-      }
-      return false;
-    });
+    cancel();
+    setAppliedSearch(false);
   };
 
   useEffect(() => {
@@ -37,9 +38,9 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
   }, [visible]);
 
   useEffect(() => {
-    selections.on('deactivated', handleDeactivate);
+    selections.on('deactivated', abortSearch);
     return () => {
-      selections.removeListener && selections.removeListener('deactivated', handleDeactivate);
+      selections.removeListener && selections.removeListener('deactivated', abortSearch);
     };
   }, []);
 
@@ -67,7 +68,9 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
         setValue('');
         break;
       case 'Escape':
-        response = abortSearch(); // this also turns off modal mode for us
+        cancel();
+        e.preventDefault();
+        e.stopPropagation();
         break;
       default:
         break;
