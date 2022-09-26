@@ -446,7 +446,6 @@ describe('connect.js', () => {
     test('should find app url param from provided link', () => {
       url = `/app/SOME_APP_ID/?engine_url=wss://${authConfig.host}`;
       const result = parseEngineURL(url);
-      console.log({ result });
       expect(result).toMatchObject({
         enigma: expect.objectContaining({
           secure: expect.any(Boolean),
