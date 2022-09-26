@@ -4,6 +4,8 @@ import qixSchema from 'enigma.js/schemas/12.936.0.json';
 import * as SenseUtilities from 'enigma.js/sense-utilities';
 import { connect, openApp, getConnectionInfo, getParams, parseEngineURL } from '../connect';
 
+console.log(jest);
+
 jest.mock('@qlik/sdk');
 jest.mock('enigma.js');
 jest.mock('enigma.js/sense-utilities');
