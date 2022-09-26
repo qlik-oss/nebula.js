@@ -32,7 +32,7 @@ export default function DataCube({ setProperties, target, properties }) {
     () =>
       createHandler({
         def: target,
-        dc: getValue(properties, target.propertyPath),
+        dc: getValue(properties, target.propertyPath, {}),
         properties,
       }),
     [properties]

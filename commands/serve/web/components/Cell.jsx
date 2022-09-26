@@ -269,7 +269,7 @@ export default function ({ id, expandable, minHeight }) {
         </Toolbar>
       </Grid>
       <Grid item xs style={{ ...activeStyle }} className={classes.drop}>
-        <Chart id={id} onLoad={onLoad} />
+        <Chart id={id} onLoad={onLoad} toggleExpand={toggleExpand} />
       </Grid>
     </StyledGrid>
   );
