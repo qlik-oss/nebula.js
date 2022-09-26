@@ -30,7 +30,6 @@ title: API Reference
 - [function: useConstraints()](#function-useconstraints)
 - [function: useOptions()](#function-useoptions)
 - [function: onTakeSnapshot(snapshotCallback)](#function-ontakesnapshotsnapshotcallback)
-- [function: onContextMenu(addItemCallback)](#function-oncontextmenuadditemcallback)
 - [interface: Context](#interface-context)
 - [interface: Configuration](#interface-configuration)
 - [undefined: Galaxy.translator](#undefined-galaxytranslator)
@@ -507,21 +506,6 @@ const [zoomed] = useState(layout.isZoomed || false);
 onTakeSnapshot((copyOfLayout) => {
   copyOfLayout.isZoomed = zoomed;
   return Promise.resolve(copyOfLayout);
-});
-```
-
-### function: onContextMenu(addItemCallback)
-
-- `addItemCallback` <[Function]>
-
-Registers a callback that is called when a a cell value is copied.
-
-```js
-import { onContextMenu } from '@nebula.js/stardust';
-
-onContextMenu((menu, event) => {
-  menu.addItem(item, index);
-  return Promise.resolve(menu);
 });
 ```
 

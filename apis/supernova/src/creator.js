@@ -206,6 +206,9 @@ function createWithHooks(generator, opts, galaxy) {
     onContextMenu(menu, event) {
       return generator.component.runMenu(this, menu, event);
     },
+    focus() {
+      generator.component.focus(this);
+    },
     blur() {
       generator.component.blur(this);
     },

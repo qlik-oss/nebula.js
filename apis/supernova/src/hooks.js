@@ -1007,8 +1007,8 @@ export function onTakeSnapshot(cb) {
  * Registers a callback that is called when a context menu item is added.
  * @entry
  * @param {function(menu, event): Promise<menu>} addItemCallback
- * @example
  * @ignore
+ * @example
  * import { onContextMenu } from '@nebula.js/stardust';
  
  * onContextMenu((menu, event) => {
