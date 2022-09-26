@@ -31,6 +31,10 @@
     "value": "Unlock selections",
     "comment": "Action text to unlock selections in a listbox"
   },
+  "Listbox.ScreenReaderInstructions": {
+    "value": "Activating the elements below will cause content on the page to be updated",
+    "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content"
+  },
   "Menu.More": {
     "value": "More",
     "comment": "Menu option to display list of additional actions to choose from (ffd 20200520)"

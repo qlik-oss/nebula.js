@@ -28,12 +28,19 @@ const PREFIX = 'ListBoxInline';
 
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
+  screenReaderOnly: `${PREFIX}-screenReaderOnly`,
 };
 
 const StyledGrid = styled(Grid)(() => ({
   [`& .${classes.listBoxHeader}`]: {
     alignSelf: 'center',
     display: 'inline-flex',
+  },
+  [`& .${classes.screenReaderOnly}`]: {
+    position: 'absolute',
+    height: 0,
+    width: 0,
+    overflow: 'hidden',
   },
 }));
 
@@ -323,6 +330,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       </Grid>
       <Grid item xs>
         <div ref={moreAlignTo} />
+        <div q-translation={translator.get('Listbox.ScreenReaderInstructions')} className={classes.screenReaderOnly} />
         <AutoSizer>
           {({ height, width }) => (
             <ListBox
