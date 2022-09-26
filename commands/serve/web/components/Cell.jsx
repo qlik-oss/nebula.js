@@ -114,6 +114,19 @@ export default function ({ id, expandable, minHeight }) {
     [model, currentThemeName]
   );
 
+  const singleRenderUrl = (modelId) => {
+    if (model || modelId) {
+      return `${document.location.href.replace(/\/dev\//, '/render/')}${window.location.search ? '&' : '?'}object=${
+        model ? model.id : modelId
+      }&theme=${currentThemeName}&language=${language}`;
+    }
+    return '';
+  };
+
+  const openInSingleRender = (modelId) => {
+    window.open(singleRenderUrl(modelId), '_blank').focus();
+  };
+
   const activeStyle =
     !isExpanded && vizRef.current && activeViz && activeViz === vizRef.current.viz
       ? {
@@ -152,13 +165,7 @@ export default function ({ id, expandable, minHeight }) {
             title="Open in single render view"
             className={classes.secondaryIcon}
             disabled={!model}
-            href={
-              model
-                ? `${document.location.href.replace(/\/dev\//, '/render/')}${
-                    window.location.search ? '&' : '?'
-                  }object=${model.id}&theme=${currentThemeName}&language=${language}`
-                : ''
-            }
+            href={singleRenderUrl()}
             target="_blank"
             size="large"
           >
@@ -269,7 +276,7 @@ export default function ({ id, expandable, minHeight }) {
         </Toolbar>
       </Grid>
       <Grid item xs style={{ ...activeStyle }} className={classes.drop}>
-        <Chart id={id} onLoad={onLoad} toggleExpand={toggleExpand} />
+        <Chart id={id} onLoad={onLoad} onFullscreen={openInSingleRender} />
       </Grid>
     </StyledGrid>
   );

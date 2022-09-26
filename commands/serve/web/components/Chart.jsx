@@ -7,7 +7,7 @@ import React, {
 
 import NebulaContext from '../contexts/NebulaContext';
 
-export default function Chart({ id, onLoad, toggleExpand }) {
+export default function Chart({ id, onLoad, onFullscreen }) {
   const nebbie = useContext(NebulaContext);
   const el = useRef();
   useEffect(() => {
@@ -15,7 +15,7 @@ export default function Chart({ id, onLoad, toggleExpand }) {
       id,
       element: el.current,
       options: {
-        toggleExpand,
+        onFullscreen,
       },
     });
     n.then((viz) => {
