@@ -47,7 +47,7 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
   };
 
   const handleFocus = () => {
-    if (!selections.isModal(model)) {
+    if (!selections.isModal()) {
       selections.begin(['/qListObjectDef']);
     }
   };
