@@ -25,13 +25,9 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
     }
   };
 
-  const handleDeactivate = () => {
-    cancel();
-  };
-
   useEffect(() => {
     if (!visible) {
-      handleDeactivate(); // always abort when toggling off search
+      cancel(); // cancel and abort when toggling off search
     }
   }, [visible]);
 
@@ -65,7 +61,7 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
         setValue('');
         break;
       case 'Escape':
-        cancel();
+        response = cancel();
         e.preventDefault();
         e.stopPropagation();
         break;

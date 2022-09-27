@@ -13,13 +13,7 @@ const theme = createTheme('dark');
 
 const create = (comp) => renderer.create(<ThemeProvider theme={theme}>{comp}</ThemeProvider>);
 
-const selections = {
-  on: sinon.stub(),
-  removeListener: sinon.stub(),
-  isModal: sinon.stub().returns(false),
-  begin: sinon.stub().resolves(),
-  goModal: sinon.stub().returns(),
-};
+let selections = {};
 
 const keyboard = { enabled: false, active: true };
 
@@ -31,6 +25,7 @@ const testRender = (model) =>
   );
 
 let model;
+let keyEventDefaults;
 
 describe('<ListBoxSearch />', () => {
   beforeEach(() => {
@@ -42,6 +37,23 @@ describe('<ListBoxSearch />', () => {
       acceptListObjectSearch: sinon.spy(),
       abortListObjectSearch: sinon.stub().resolves(),
     };
+    keyEventDefaults = {
+      preventDefault: sinon.stub(),
+      stopPropagation: sinon.stub(),
+    };
+    selections = {
+      on: sinon.stub(),
+      removeListener: sinon.stub(),
+      isModal: sinon.stub().returns(false),
+      begin: sinon.stub().resolves(),
+      cancel: sinon.stub().resolves(),
+      isActive: sinon.stub().returns(true),
+      goModal: sinon.stub().returns(),
+    };
+  });
+
+  afterEach(() => {
+    sinon.reset();
   });
 
   it('should have default props', () => {
@@ -100,20 +112,22 @@ describe('<ListBoxSearch />', () => {
     type.props.onChange({ target: { value: 'foo' } });
     expect(type.props.value).to.equal('foo');
 
-    type.props.onKeyDown({ key: 'Enter' });
+    type.props.onKeyDown({ ...keyEventDefaults, key: 'Enter' });
     expect(model.acceptListObjectSearch).to.have.been.calledWith('/qListObjectDef', true);
     expect(type.props.value).to.equal('');
   });
 
-  it('should `abortListObjectSearch` on `Escape`', async () => {
+  it('should call `cancel` on `Escape`', async () => {
     const testRenderer = testRender(model);
     const testInstance = testRenderer.root;
     const type = testInstance.findByType(OutlinedInput);
     await type.props.onChange({ target: { value: 'foo' } });
     expect(type.props.value).to.equal('foo');
-    await type.props.onKeyDown({ key: 'Escape' });
-    expect(model.abortListObjectSearch).to.have.been.calledWith('/qListObjectDef');
-    expect(type.props.value).to.equal('');
+    await type.props.onKeyDown({ ...keyEventDefaults, key: 'Escape' });
+    expect(selections.isActive).to.have.been.calledOnce;
+    expect(selections.cancel).to.have.been.calledOnce;
+    expect(model.abortListObjectSearch).not.to.have.been.called;
+    expect(type.props.value).to.equal('foo'); // text is not reset in the test since "deactivated" is not triggered on cancel
   });
 
   it('should not render if visible is false', () => {
