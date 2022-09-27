@@ -14,11 +14,11 @@ const classes = {
 };
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
-  [`& .${classes.containerStyle}`]: {
+  [`&.${classes.containerStyle}`]: {
     flexGrow: 0,
   },
 
-  [`& .${classes.containerTitleStyle}`]: {
+  [`&.${classes.containerTitleStyle}`]: {
     paddingBottom: theme.spacing(1),
   },
 }));

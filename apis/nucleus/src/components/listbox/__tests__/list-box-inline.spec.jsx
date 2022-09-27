@@ -90,14 +90,14 @@ describe('<ListboxInline />', () => {
         [require.resolve('../../../hooks/useLayout'), () => () => [layout]],
         [require.resolve('../../ActionsToolbar'), () => ActionsToolbar],
         [require.resolve('../ListBox'), () => <div className="theListBox" />],
-        [require.resolve('../ListBoxSearch'), () => ListBoxSearch],
+        [require.resolve('../components/ListBoxSearch'), () => ListBoxSearch],
         [
-          require.resolve('../listbox-keyboard-navigation'),
+          require.resolve('../interactions/listbox-keyboard-navigation'),
           () => ({
             getListboxInlineKeyboardNavigation,
           }),
         ],
-        [require.resolve('../listbox-selection-toolbar'), () => createListboxSelectionToolbar],
+        [require.resolve('../interactions/listbox-selection-toolbar'), () => createListboxSelectionToolbar],
       ],
       ['../ListBoxInline']
     );

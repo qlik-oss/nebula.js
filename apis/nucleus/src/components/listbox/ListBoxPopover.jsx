@@ -10,13 +10,13 @@ import useSessionModel from '../../hooks/useSessionModel';
 import useLayout from '../../hooks/useLayout';
 
 import ListBox from './ListBox';
-import createListboxSelectionToolbar from './listbox-selection-toolbar';
+import createListboxSelectionToolbar from './interactions/listbox-selection-toolbar';
 
 import ActionsToolbar from '../ActionsToolbar';
 
 import InstanceContext from '../../contexts/InstanceContext';
 
-import ListBoxSearch from './ListBoxSearch';
+import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 
 export default function ListBoxPopover({ alignTo, show, close, app, fieldName, stateName = '$' }) {

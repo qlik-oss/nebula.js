@@ -9,7 +9,7 @@ import Tick from '@nebula.js/ui/icons/tick';
 import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
 import ListBoxRadioButton from './ListBoxRadioButton';
-import { getFieldKeyboardNavigation } from './listbox-keyboard-navigation';
+import { getFieldKeyboardNavigation } from '../interactions/listbox-keyboard-navigation';
 
 const PREFIX = 'RowColumn';
 

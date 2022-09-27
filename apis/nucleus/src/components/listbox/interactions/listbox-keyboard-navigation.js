@@ -1,4 +1,4 @@
-import KEYS from '../../keys';
+import KEYS from '../../../keys';
 
 export function getFieldKeyboardNavigation({ select, confirm, cancel }) {
   const getElement = (elm, next = false) => {
