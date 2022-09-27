@@ -198,7 +198,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       }
     };
     if (selections) {
-      if (!selections.isModal(model)) {
+      if (!selections.isModal()) {
         selections.on('deactivated', hide);
         selections.on('activated', show);
       }
