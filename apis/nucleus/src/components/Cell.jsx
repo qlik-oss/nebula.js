@@ -301,7 +301,7 @@ const Cell = forwardRef(
     const bgColor =
       bgComp && bgComp.bgColor && bgComp.bgColor.color
         ? halo.public.theme.getColorPickerColor(bgComp.bgColor.color)
-        : 'transparent';
+        : undefined;
 
     useEffect(() => {
       eventmixin(focusHandler.current);
