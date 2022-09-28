@@ -73,7 +73,7 @@ const More = React.forwardRef(
             },
           }}
         >
-          <MenuList>
+          <MenuList id="moreMenuList">
             {actions.map((item, ix) => (
               // eslint-disable-next-line react/no-array-index-key
               <MoreItem key={ix} item={item} onActionClick={onCloseOrActionClick} />
