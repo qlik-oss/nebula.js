@@ -1,15 +1,12 @@
 module.exports = {
   clearMocks: true,
   testEnvironment: 'jest-environment-jsdom',
-  testRegex: [
-    'commands/serve/.+\\.(spec|test|inspect)\\.[jt]sx?$',
-    'commands/sense/.+\\.(spec|test|inspect)\\.[jt]sx?$',
-  ],
+  testRegex: ['commands/.+\\.(spec|test|inspect)\\.[jt]sx?$', 'apis/conversion/.+\\.inspect\\.[jt]sx?$'],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   collectCoverageFrom: [
-    'commands/serve/**/*.{js,jsx}',
-    'commands/sense/**/*.{js,jsx}',
-
+    'commands/**/*.{js,jsx}',
+    'apis/conversion/**/*.{js,jsx}',
+    '!**/lib/**',
     '!**/dist/**',
     '!**/node_modules/**',
   ],
