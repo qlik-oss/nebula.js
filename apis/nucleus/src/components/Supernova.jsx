@@ -137,24 +137,18 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     alwaysFill: 'cover',
   };
 
-  function getBackgroundPosition(data) {
+  function getBackgroundPosition() {
     let bkgImagePosition = 'center center';
-    if (data && data.components && data.components.length > 0 && data.components !== 'none') {
-      const styling = data.components.find((comp) => comp.key === 'general');
-      if (styling && styling.bgImage && styling.bgImage.position) {
-        bkgImagePosition = styling.bgImage.position.replace('-', ' ');
-      }
+    if (bgComp && bgComp.bgImage && bgComp.bgImage.position) {
+      bkgImagePosition = bgComp.bgImage.position.replace('-', ' ');
     }
     return bkgImagePosition;
   }
 
-  function getBackgroundSize(data) {
+  function getBackgroundSize() {
     let bkgImageSize = imageSizingToCssProperty.originalSize;
-    if (data && data.components && data.components.length > 0 && data.components !== 'none') {
-      const styling = data.components.find((comp) => comp.key === 'general');
-      if (styling && styling.bgImage && styling.bgImage.position) {
-        bkgImageSize = imageSizingToCssProperty[styling.bgImage.sizing];
-      }
+    if (bgComp && bgComp.bgImage && bgComp.bgImage.position) {
+      bkgImageSize = imageSizingToCssProperty[bgComp.bgImage.sizing];
     }
     return bkgImageSize;
   }
@@ -168,8 +162,8 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
         height: '100%',
         backgroundImage: `url(${bgImage})`,
         backgroundRepeat: 'no-repeat',
-        backgroundSize: getBackgroundSize(layout),
-        backgroundPosition: getBackgroundPosition(layout),
+        backgroundSize: getBackgroundSize(),
+        backgroundPosition: getBackgroundPosition(),
       }}
       className={VizElement.className}
     >
