@@ -27,7 +27,7 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
 
   useEffect(() => {
     if (!visible) {
-      cancel(); // cancel and abort when toggling off search
+      abortSearch(); // abort when toggling off search
     }
   }, [visible]);
 
