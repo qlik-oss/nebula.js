@@ -40,10 +40,10 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
 
   const onChange = async (e) => {
     setValue(e.target.value);
-    if (e.target.value.length) {
-      return model.searchListObjectFor(TREE_PATH, e.target.value);
+    if (!e.target.value.length) {
+      return abortSearch();
     }
-    return undefined;
+    return model.searchListObjectFor(TREE_PATH, e.target.value);
   };
 
   const handleFocus = () => {

@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
-import renderer from 'react-test-renderer';
+import renderer, { act } from 'react-test-renderer';
 import { OutlinedInput } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
@@ -128,6 +128,23 @@ describe('<ListBoxSearch />', () => {
     expect(selections.cancel).to.have.been.calledOnce;
     expect(model.abortListObjectSearch).not.to.have.been.called;
     expect(type.props.value).to.equal('foo'); // text is not reset in the test since "deactivated" is not triggered on cancel
+  });
+
+  it('should abort after performing a search and then removing the text', async () => {
+    const testRenderer = testRender(model);
+    const testInstance = testRenderer.root;
+    const type = testInstance.findByType(OutlinedInput);
+    await act(async () => {
+      await type.props.onChange({ target: { value: 'foo' } });
+    });
+    expect(type.props.value).to.equal('foo');
+    expect(model.abortListObjectSearch).not.called;
+    selections.isModal.returns(true); // so that abort will not be skipped
+    await act(async () => {
+      await type.props.onChange({ target: { value: '' } });
+    });
+    expect(type.props.value).to.equal('');
+    expect(model.abortListObjectSearch).calledOnce;
   });
 
   it('should not render if visible is false', () => {
