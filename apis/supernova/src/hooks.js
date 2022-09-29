@@ -1004,7 +1004,7 @@ export function onTakeSnapshot(cb) {
 }
 
 /**
- * Registers a callback that is called when a context menu item is added.
+ * Registers a callback that is called when the context menu opens
  * @entry
  * @param {function(menu, event): void} addItemCallback
  * @ignore

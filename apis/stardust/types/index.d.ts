@@ -154,10 +154,10 @@ export function useOptions(): object;
 export function onTakeSnapshot(snapshotCallback: ($: EngineAPI.IGenericObjectLayout)=>Promise<EngineAPI.IGenericObjectLayout>): void;
 
 /**
- * Registers a callback that is called when a context menu item is added.
+ * Registers a callback that is called when the context menu opens
  * @param addItemCallback
  */
- export function onContextMenu(addItemCallback: (menu: Menu, event: any) => void): void;
+ export function onContextMenu(addItemCallback: (menu: any, event: any) => void): void;
 
  
 /**
@@ -701,8 +701,3 @@ declare namespace stardust {
     }
 
 }
-
-export interface Menu {
-    addItem: (props: { translation: string; icon: string; tid: string; select: () => Promise<void> }) => void;
-}
-
