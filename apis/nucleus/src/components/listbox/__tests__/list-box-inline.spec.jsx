@@ -106,7 +106,7 @@ describe('<ListboxInline />', () => {
   beforeEach(() => {
     selections = {
       key: 'selections',
-      isModal: () => false,
+      isModal: sandbox.stub().returns(false),
       isActive: () => 'isActive',
       on: sandbox.stub().callsFake((event, func) => (eventTriggered) => {
         if (event === eventTriggered) func();
@@ -144,8 +144,7 @@ describe('<ListboxInline />', () => {
         effectFunc();
       })
       .onCall(1)
-      .callsFake((effectFunc, watchArr) => {
-        expect(watchArr[0].key).to.equal(customSelectionsKey || 'selections');
+      .callsFake((effectFunc) => {
         effectFunc();
       });
 
@@ -236,6 +235,10 @@ describe('<ListboxInline />', () => {
       options.search = 'toggle';
       await render();
       expect(ListBoxSearch).to.have.been.calledWith(sinon.match({ visible: false }));
+      expect(selections.on).calledTwice;
+      expect(selections.isModal).calledOnce;
+      expect(selections.on.args[0][0]).to.equal('deactivated');
+      expect(selections.on.args[1][0]).to.equal('activated');
     });
 
     it('should render without search and show search button', async () => {
