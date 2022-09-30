@@ -28,4 +28,5 @@ export {
   useEmbed,
   useRenderState,
   onTakeSnapshot,
+  onContextMenu,
 } from './hooks';
