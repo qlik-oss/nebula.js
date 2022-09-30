@@ -82,6 +82,7 @@ describe('hooks', () => {
       initiate,
       run,
       teardown,
+      runMenu,
       runSnaps,
       focus,
       blur,
