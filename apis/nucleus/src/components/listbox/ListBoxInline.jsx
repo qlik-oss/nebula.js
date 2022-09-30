@@ -278,7 +278,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"
       gap={0}
-      style={{ height: '100%', minHeight: `${minHeight}px` }}
+      style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
       onKeyDown={handleKeyDown}
       ref={listBoxRef}
     >
@@ -325,43 +325,55 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
           </Grid>
         </Grid>
       )}
-      <Grid item ref={searchContainerRef}>
-        <div
-          q-translation={translator.get('Listbox.Search.ScreenReaderInstructions')}
-          className={classes.screenReaderOnly}
-        />
-        <ListBoxSearch model={model} dense={dense} keyboard={keyboard} visible={searchVisible} />
-      </Grid>
-      <Grid item xs>
-        <div ref={moreAlignTo} />
-        <div q-translation={translator.get('Listbox.ScreenReaderInstructions')} className={classes.screenReaderOnly} />
-        <AutoSizer>
-          {({ height, width }) => (
-            <ListBox
-              model={model}
-              selections={selections}
-              direction={direction}
-              listLayout={listLayout}
-              frequencyMode={frequencyMode}
-              histogram={histogram}
-              rangeSelect={rangeSelect}
-              checkboxes={checkboxes}
-              height={height}
-              width={width}
-              update={update}
-              fetchStart={fetchStart}
-              postProcessPages={postProcessPages}
-              calculatePagesHeight={calculatePagesHeight}
-              dense={dense}
-              selectDisabled={selectDisabled}
-              keyboard={keyboard}
-              showGray={showGray}
-              scrollState={scrollState}
-              sortByState={listdef.qListObjectDef.qDef.qSortCriterias[0].qSortByState}
-              setCount={setCount}
-            />
-          )}
-        </AutoSizer>
+      <Grid
+        item
+        container
+        direction="column"
+        style={{ height: '100%', minHeight: `${minHeight}px` }}
+        role="region"
+        aria-label={translator.get('Listbox.ResultFilterLabel')}
+      >
+        <Grid item ref={searchContainerRef}>
+          <div
+            q-translation={translator.get('Listbox.Search.ScreenReaderInstructions')}
+            className={classes.screenReaderOnly}
+          />
+          <ListBoxSearch model={model} dense={dense} keyboard={keyboard} visible={searchVisible} />
+        </Grid>
+        <Grid item xs>
+          <div ref={moreAlignTo} />
+          <div
+            q-translation={translator.get('Listbox.ScreenReaderInstructions')}
+            className={classes.screenReaderOnly}
+          />
+          <AutoSizer>
+            {({ height, width }) => (
+              <ListBox
+                model={model}
+                selections={selections}
+                direction={direction}
+                listLayout={listLayout}
+                frequencyMode={frequencyMode}
+                histogram={histogram}
+                rangeSelect={rangeSelect}
+                checkboxes={checkboxes}
+                height={height}
+                width={width}
+                update={update}
+                fetchStart={fetchStart}
+                postProcessPages={postProcessPages}
+                calculatePagesHeight={calculatePagesHeight}
+                dense={dense}
+                selectDisabled={selectDisabled}
+                keyboard={keyboard}
+                showGray={showGray}
+                scrollState={scrollState}
+                sortByState={listdef.qListObjectDef.qDef.qSortCriterias[0].qSortByState}
+                setCount={setCount}
+              />
+            )}
+          </AutoSizer>
+        </Grid>
       </Grid>
     </StyledGrid>
   );

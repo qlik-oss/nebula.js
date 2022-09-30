@@ -39,6 +39,10 @@
     "value": "The following search field filters results below as you type",
     "comment": "Instructions to inform screen reader users that the search field filters the listbox results as they type"
   },
+  "Listbox.ResultFilterLabel": {
+    "value": "Search Results Filter",
+    "comment": "Describes the relationship between the search field & the results that are fitlered by the input into the search field"
+  },
   "Menu.More": {
     "value": "More",
     "comment": "Menu option to display list of additional actions to choose from (ffd 20200520)"
