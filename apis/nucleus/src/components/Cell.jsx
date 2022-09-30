@@ -298,10 +298,17 @@ const Cell = forwardRef(
     });
 
     const bgComp = layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
-    const bgColor =
-      bgComp && bgComp.bgColor && bgComp.bgColor.color
-        ? halo.public.theme.getColorPickerColor(bgComp.bgColor.color)
-        : undefined;
+
+    let bgColor;
+
+    if (bgComp && bgComp.bgColor && bgComp.bgColor.useColorExpression) {
+      if (bgComp.bgColor.urlColor) {
+        bgComp.bgColor.urlColor = { color: bgComp.bgColor.urlColor };
+      }
+
+      bgColor = bgComp.bgColor.urlColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.urlColor) : undefined;
+    } else if (bgComp && bgComp.bgColor && !bgComp.bgColor.useColorExpression)
+      bgColor = bgComp.bgColor.cpColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.cpColor) : undefined;
 
     useEffect(() => {
       eventmixin(focusHandler.current);

@@ -37,12 +37,18 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
 
   const bgComp = layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
 
-  const bgImageDef = bgComp && bgComp.bgImage && bgComp.bgImage.mediaUrl ? bgComp.bgImage.mediaUrl : null;
+  const bgImageDef = bgComp && bgComp.bgImage ? bgComp.bgImage : null;
 
-  const bgImage =
-    bgImageDef && bgImageDef.qStaticContentUrl && bgImageDef.qStaticContentUrl.qUrl
-      ? decodeURIComponent(bgImageDef.qStaticContentUrl.qUrl)
-      : undefined;
+  let bgImage;
+
+  if (bgImageDef && bgImageDef.mode === 'media') {
+    bgImage =
+      bgImageDef.mediaUrl && bgImageDef.mediaUrl.qStaticContentUrl && bgImageDef.mediaUrl.qStaticContentUrl.qUrl
+        ? decodeURIComponent(bgImageDef.mediaUrl.qStaticContentUrl.qUrl)
+        : undefined;
+  } else if (bgImageDef && bgImageDef.mode === 'expression') {
+    bgImage = bgImageDef.expressionUrl ? decodeURIComponent(bgImageDef.expressionUrl) : undefined;
+  }
 
   // Mount / Unmount
   useEffect(() => {
