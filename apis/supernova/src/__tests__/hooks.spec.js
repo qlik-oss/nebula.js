@@ -7,6 +7,7 @@ import {
   teardown,
   run,
   runSnaps,
+  runMenu,
   observeActions,
   focus,
   blur,
@@ -33,6 +34,7 @@ import {
   useConstraints,
   useOptions,
   onTakeSnapshot,
+  onContextMenu,
   useEmbed,
 } from '../hooks';
 
@@ -80,6 +82,7 @@ describe('hooks', () => {
       initiate,
       run,
       teardown,
+      runMenu,
       runSnaps,
       focus,
       blur,
@@ -160,6 +163,21 @@ describe('hooks', () => {
 
       const s = await runSnaps(c, { a: '1' });
       expect(s).to.eql({ a: '1', take1: 'yes' });
+    });
+  });
+
+  describe('runMenu', () => {
+    it('should run menu hooks', async () => {
+      const take1 = (menu, event) => Promise.resolve({ take1: 'yes', menu, event });
+
+      c = {
+        __hooks: {
+          menus: [{ fn: take1 }],
+        },
+      };
+
+      const s = await runMenu(c, { a: '1' }, { b: '2' });
+      expect(s).to.eql({ event: { b: '2' }, menu: { a: '1' }, take1: 'yes' });
     });
   });
 
@@ -911,6 +929,15 @@ describe('hooks', () => {
       };
       run(c);
       c.__hooks.snaps[0].fn();
+      expect(spy.callCount).to.equal(1);
+    });
+    it('onContextMenu', () => {
+      const spy = sandbox.spy();
+      c.fn = () => {
+        onContextMenu(spy);
+      };
+      run(c);
+      c.__hooks.menus[0].fn();
       expect(spy.callCount).to.equal(1);
     });
     it('useEmbed', () => {

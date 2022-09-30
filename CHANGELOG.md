@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.2...v3.0.3) (2022-09-30)
+
+### Features
+
+- add support to run callback when context menu opens from sense-client ([#926](https://github.com/qlik-oss/nebula.js/issues/926)) ([a5e578b](https://github.com/qlik-oss/nebula.js/commit/a5e578bfffe501341d988f92b270d03e73cd783c))
+- integrate `@qlik/sdk` into nebula-cli ([#929](https://github.com/qlik-oss/nebula.js/issues/929)) ([dcebeb1](https://github.com/qlik-oss/nebula.js/commit/dcebeb157c97851086766f2302ff121a4abe5dbd))
+
 ## [3.0.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.2-alpha.0...v3.0.2) (2022-09-21)
 
 **Note:** Version bump only for package nebula.js
