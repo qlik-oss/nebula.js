@@ -195,13 +195,21 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   };
 
   useEffect(() => {
-    const show = () => setShowToolbar(true);
-    const hide = () => setShowToolbar(false);
+    const show = () => {
+      setShowToolbar(true);
+    };
+    const hide = () => {
+      setShowToolbar(false);
+      if (search === 'toggle') {
+        setShowSearch(false);
+      }
+    };
     if (selections) {
-      if (!selections.isModal(model)) {
+      if (!selections.isModal()) {
         selections.on('deactivated', hide);
         selections.on('activated', show);
       }
+      setShowToolbar(selections.isActive());
     }
     return () => {
       if (selections) {
@@ -209,12 +217,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
         selections.removeListener('activated', hide);
       }
     };
-  }, [selections]);
-
-  useEffect(() => {
-    if (selections) {
-      setShowToolbar(selections.isActive());
-    }
   }, [selections]);
 
   const listBoxRef = useRef(null);
@@ -338,7 +340,14 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
             q-translation={translator.get('Listbox.Search.ScreenReaderInstructions')}
             className={classes.screenReaderOnly}
           />
-          <ListBoxSearch model={model} dense={dense} keyboard={keyboard} visible={searchVisible} />
+          <ListBoxSearch
+            selections={selections}
+            model={model}
+            dense={dense}
+            keyboard={keyboard}
+            visible={searchVisible}
+            searchContainerRef={searchContainerRef}
+          />
         </Grid>
         <Grid item xs>
           <div ref={moreAlignTo} />
