@@ -1,35 +1,49 @@
+import create from '../../src/creator';
+import * as HooksUtil from '../../src/hooks';
+
 describe('creator', () => {
-  let create;
-  let sandbox;
-  let hook;
-  let run;
-  before(() => {
-    sandbox = sinon.createSandbox();
-    hook = sandbox.stub();
-    run = sandbox.stub();
-    [{ default: create }] = aw.mock(
-      [
-        ['**/action-hero.js', () => () => ({})],
-        ['**/hooks.js', () => ({ hook, run })],
-      ],
-      ['../../src/creator']
-    );
+  let hookMock;
+
+  beforeEach(() => {
+    hookMock = jest.fn();
+    /* eslint-disable no-underscore-dangle */
+    global.__NEBULA_DEV__ = false;
   });
+
   afterEach(() => {
-    sandbox.reset();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
   describe('old component API', () => {
-    it('should call user defined hooks', () => {
+    let createdMock;
+    let mountedMock;
+    let renderMock;
+    let resizeMock;
+    let willUnmountMock;
+    let destroyMock;
+    let customMock;
+
+    beforeEach(() => {
+      createdMock = jest.fn();
+      mountedMock = jest.fn();
+      renderMock = jest.fn();
+      resizeMock = jest.fn();
+      willUnmountMock = jest.fn();
+      destroyMock = jest.fn();
+      customMock = jest.fn();
+    });
+
+    test('should call user defined hooks', () => {
       const generator = {
         component: {
-          created: sinon.spy(),
-          mounted: sinon.spy(),
-          render: sinon.spy(),
-          resize: sinon.spy(),
-          willUnmount: sinon.spy(),
-          destroy: sinon.spy(),
-          custom: sinon.spy(),
+          created: createdMock,
+          mounted: mountedMock,
+          render: renderMock,
+          resize: resizeMock,
+          willUnmount: willUnmountMock,
+          destroy: destroyMock,
+          custom: customMock,
         },
         definition: {},
         qae: {
@@ -46,33 +60,55 @@ describe('creator', () => {
 
       ['created', 'mounted', 'render', 'resize', 'willUnmount', 'destroy'].forEach((key) => {
         c[key]('a');
-        expect(generator.component[key]).to.have.been.calledWithExactly('a');
+        expect(generator.component[key]).toHaveBeenCalledWith('a');
       });
-      expect(c.custom).to.be.undefined;
+      expect(c.custom).toBe(undefined);
     });
   });
 
   describe('hooked component API', () => {
-    let fnComponent;
     let generator;
     let opts;
     let galaxy;
     let hooked;
+
+    let fnComponentMock;
+    let initiateMock;
+    let runMock;
+    let teardownMock;
+    let runSnapsMock;
+    let observeActionsMock;
+    let getImperativeHandleMock;
+    let updateRectOnNextRunMock;
+
     beforeEach(() => {
+      fnComponentMock = jest.fn();
+
+      initiateMock = jest.fn();
+      runMock = jest.fn();
+      teardownMock = jest.fn();
+      runSnapsMock = jest.fn();
+      observeActionsMock = jest.fn();
+      getImperativeHandleMock = jest.fn();
+      updateRectOnNextRunMock = jest.fn();
+
       hooked = {
         __hooked: true,
-        initiate: sinon.spy(),
-        run: sinon.stub(),
-        teardown: sinon.spy(),
-        runSnaps: sinon.spy(),
-        observeActions: sinon.spy(),
-        getImperativeHandle: sinon.stub(),
-        updateRectOnNextRun: sinon.spy(),
+        initiate: initiateMock,
+        run: runMock,
+        teardown: teardownMock,
+        runSnaps: runSnapsMock,
+        observeActions: observeActionsMock,
+        getImperativeHandle: getImperativeHandleMock,
+        updateRectOnNextRun: updateRectOnNextRunMock,
       };
-      hook.returns(hooked);
-      fnComponent = sinon.spy();
+
+      hookMock.mockReturnValue(hooked);
+      jest.spyOn(HooksUtil, 'hook').mockImplementation(hookMock);
+
+      fnComponentMock = jest.fn();
       generator = {
-        component: fnComponent,
+        component: fnComponentMock,
         definition: {},
         qae: {
           properties: {},
@@ -93,15 +129,15 @@ describe('creator', () => {
       };
     });
 
-    it('should hook into hook API', () => {
+    test('should hook into hook API', () => {
       const c = create(generator, opts, galaxy).component;
-      expect(hook).to.have.been.calledWithExactly(fnComponent);
-      expect(c.isHooked).to.equal(true);
+      expect(hookMock).toHaveBeenCalledWith(fnComponentMock);
+      expect(c.isHooked).toBe(true);
     });
 
-    it('should initiate context', () => {
+    test('should initiate context', () => {
       const c = create(generator, opts, galaxy).component;
-      expect(c.context).to.eql({
+      expect(c.context).toEqual({
         model: 'model',
         app: 'app',
         global: undefined,
@@ -123,62 +159,62 @@ describe('creator', () => {
       });
     });
 
-    it('should initiate hook on mount', () => {
+    test('should initiate hook on mount', () => {
       const c = create(generator, opts, galaxy).component;
       c.mounted('element');
-      expect(hooked.initiate).to.have.been.calledWithExactly(c, { explicitResize: false });
-      expect(c.context.element).to.equal('element');
+      expect(hooked.initiate).toHaveBeenCalledWith(c, { explicitResize: false });
+      expect(c.context.element).toBe('element');
     });
 
-    it('should initiate with explicitResize on mount', () => {
+    test('should initiate with explicitResize on mount', () => {
       const c = create(generator, { explicitResize: true, ...opts }, galaxy).component;
       c.mounted('element');
-      expect(hooked.initiate).to.have.been.calledWithExactly(c, { explicitResize: true });
-      expect(c.context.element).to.equal('element');
+      expect(hooked.initiate).toHaveBeenCalledWith(c, { explicitResize: true });
+      expect(c.context.element).toBe('element');
     });
 
-    it('should teardown on unmount', () => {
+    test('should teardown on unmount', () => {
       const c = create(generator, opts, galaxy).component;
       c.willUnmount();
-      expect(hooked.teardown).to.have.been.calledWithExactly(c);
+      expect(hooked.teardown).toHaveBeenCalledWith(c);
     });
 
-    it('should schedule update on rect and run on resize', () => {
+    test('should schedule update on rect and run on resize', () => {
       const c = create(generator, opts, galaxy).component;
       c.resize();
-      expect(hooked.updateRectOnNextRun).to.have.been.calledWithExactly(c);
-      expect(hooked.run).to.have.been.calledWithExactly(c);
+      expect(hooked.updateRectOnNextRun).toHaveBeenCalledWith(c);
+      expect(hooked.run).toHaveBeenCalledWith(c);
     });
 
-    it('should setSnapshotData', () => {
+    test('should setSnapshotData', () => {
       const c = create(generator, opts, galaxy).component;
       const layout = 'l';
       c.setSnapshotData(layout);
-      expect(hooked.runSnaps).to.have.been.calledWithExactly(c, layout);
+      expect(hooked.runSnaps).toHaveBeenCalledWith(c, layout);
     });
 
-    it('should observeActions', () => {
+    test('should observeActions', () => {
       const c = create(generator, opts, galaxy).component;
       const fn = () => {};
       c.observeActions(fn);
-      expect(hooked.observeActions).to.have.been.calledWithExactly(c, fn);
+      expect(hooked.observeActions).toHaveBeenCalledWith(c, fn);
     });
 
-    it('should get imperative handle', () => {
+    test('should get imperative handle', () => {
       const c = create(generator, opts, galaxy).component;
-      hooked.getImperativeHandle.returns('handle');
+      getImperativeHandleMock.mockReturnValue('handle');
       const v = c.getImperativeHandle();
-      expect(hooked.getImperativeHandle).to.have.been.calledWithExactly(c);
-      expect(v).to.equal('handle');
+      expect(hooked.getImperativeHandle).toHaveBeenCalledWith(c);
+      expect(v).toBe('handle');
     });
 
-    it('should run hook on render when params are not provided', () => {
+    test('should run hook on render when params are not provided', () => {
       const c = create(generator, opts, galaxy).component;
       c.render();
-      expect(hooked.run).to.have.been.calledWithExactly(c);
+      expect(hooked.run).toHaveBeenCalledWith(c);
     });
 
-    it('should not run hook when observed values have not changed', () => {
+    test('should not run hook when observed values have not changed', () => {
       const c = create(generator, opts, galaxy).component;
       const layout = 'layout';
       c.render({
@@ -218,22 +254,22 @@ describe('creator', () => {
           rtl: true,
         },
       });
-      expect(hooked.run.callCount).to.equal(1);
+      expect(runMock).toHaveBeenCalledTimes(1);
     });
 
-    it('should run when layout has changed', () => {
+    test('should run when layout has changed', () => {
       const c = create(generator, opts, galaxy).component;
       const layout = {};
       c.render({ layout }); // initial should always run
 
       c.render({ layout });
-      expect(hooked.run.callCount).to.equal(1);
+      expect(runMock).toHaveBeenCalledTimes(1);
 
       c.render({ layout: {} });
-      expect(hooked.run.callCount).to.equal(2);
+      expect(runMock).toHaveBeenCalledTimes(2);
     });
 
-    it('should run when appLayout has changed', () => {
+    test('should run when appLayout has changed', () => {
       const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
@@ -244,10 +280,10 @@ describe('creator', () => {
           },
         },
       });
-      expect(hooked.run.callCount).to.equal(2);
+      expect(runMock).toHaveBeenCalledTimes(2);
     });
 
-    it('should run when keyboardNavigation have changed', () => {
+    test('should run when keyboardNavigation have changed', () => {
       const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
@@ -256,17 +292,17 @@ describe('creator', () => {
           keyboardNavigation: false,
         },
       });
-      expect(hooked.run.callCount).to.equal(1);
+      expect(runMock).toHaveBeenCalledTimes(1);
 
       c.render({
         context: {
           keyboardNavigation: true,
         },
       });
-      expect(hooked.run.callCount).to.equal(2);
+      expect(runMock).toHaveBeenCalledTimes(2);
     });
 
-    it('should run when constraints have changed', () => {
+    test('should run when constraints have changed', () => {
       const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
@@ -275,7 +311,7 @@ describe('creator', () => {
           constraints: {},
         },
       });
-      expect(hooked.run.callCount).to.equal(1);
+      expect(runMock).toHaveBeenCalledTimes(1);
 
       c.render({
         context: {
@@ -284,10 +320,10 @@ describe('creator', () => {
           },
         },
       });
-      expect(hooked.run.callCount).to.equal(2);
+      expect(runMock).toHaveBeenCalledTimes(2);
     });
 
-    it('should run when options have changed', () => {
+    test('should run when options have changed', () => {
       const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
@@ -301,7 +337,7 @@ describe('creator', () => {
           ref,
         },
       });
-      expect(hooked.run.callCount).to.equal(2);
+      expect(runMock).toHaveBeenCalledTimes(2);
 
       c.render({
         options: {
@@ -310,7 +346,7 @@ describe('creator', () => {
           ref,
         },
       });
-      expect(hooked.run.callCount).to.equal(2);
+      expect(runMock).toHaveBeenCalledTimes(2);
 
       c.render({
         options: {
@@ -319,16 +355,16 @@ describe('creator', () => {
           ref,
         },
       });
-      expect(hooked.run.callCount).to.equal(3);
+      expect(runMock).toHaveBeenCalledTimes(3);
 
-      expect(c.context.options).to.eql({
+      expect(c.context.options).toEqual({
         rtl: false,
         foo,
         ref,
       });
     });
 
-    it('should run when plugins have changed', () => {
+    test('should run when plugins have changed', () => {
       const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
@@ -344,28 +380,28 @@ describe('creator', () => {
       c.render({
         plugins: plugins1,
       });
-      expect(hooked.run.callCount).to.equal(2);
+      expect(runMock).toHaveBeenCalledTimes(2);
 
       c.render({
         plugins: plugins1,
       });
-      expect(hooked.run.callCount).to.equal(2);
+      expect(runMock).toHaveBeenCalledTimes(2);
 
       c.render({
         plugins: plugins2,
       });
-      expect(hooked.run.callCount).to.equal(3);
+      expect(runMock).toHaveBeenCalledTimes(3);
 
       plugins2.pop();
       c.render({
         plugins: plugins2,
       });
-      expect(hooked.run.callCount).to.equal(4);
+      expect(runMock).toHaveBeenCalledTimes(4);
 
-      expect(c.context.plugins).to.eql(plugins2);
+      expect(c.context.plugins).toEqual(plugins2);
     });
 
-    it('should run when theme name has changed', () => {
+    test('should run when theme name has changed', () => {
       const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
@@ -374,41 +410,41 @@ describe('creator', () => {
           theme: { name: () => 'red' },
         },
       });
-      expect(hooked.run.callCount).to.equal(2);
+      expect(runMock).toHaveBeenCalledTimes(2);
     });
 
-    it('should run when language has changed', () => {
+    test('should run when language has changed', () => {
       const c = create(generator, opts, galaxy).component;
       c.render({}); // initial should always run
 
       galaxy.translator.language = () => 'sv';
 
       c.render({});
-      expect(hooked.run.callCount).to.equal(2);
+      expect(runMock).toHaveBeenCalledTimes(2);
     });
 
-    it('should return value from run', () => {
+    test('should return value from run', () => {
       const c = create(generator, opts, galaxy).component;
-      hooked.run.returns('fast');
+      runMock.mockReturnValue('fast');
       const r = c.render({});
-      expect(r).to.equal('fast');
+      expect(r).toBe('fast');
     });
 
-    it('should return previous return value when nothing has changed', () => {
+    test('should return previous return value when nothing has changed', () => {
       const c = create(generator, opts, galaxy).component;
       // inital run
-      hooked.run.returns('fast');
+      runMock.mockReturnValue('fast');
       const run1 = c.render({});
-      expect(run1).to.equal('fast');
+      expect(run1).toBe('fast');
 
       const run2 = c.render({});
-      expect(run2).to.equal('fast');
+      expect(run2).toBe('fast');
 
-      expect(hooked.run.callCount).to.equal(1);
+      expect(runMock).toHaveBeenCalledTimes(1);
     });
   });
 
-  it('should return a default component api', () => {
+  test('should return a default component api', () => {
     const generator = {
       component: {},
       definition: {},
@@ -425,20 +461,21 @@ describe('creator', () => {
     const c = create(generator, params, galaxy).component;
 
     ['created', 'mounted', 'render', 'resize', 'willUnmount', 'destroy'].forEach((key) =>
-      expect(c[key]).to.be.a('function')
+      expect(c[key] instanceof Function).toBe(true)
     );
 
-    expect(c.model).to.equal(params.model);
-    expect(c.app).to.equal(params.app);
+    expect(c.model).toEqual(params.model);
+    expect(c.app).toEqual(params.app);
   });
 
-  it('should call onChange on setProperties and applyPatches', async () => {
+  test('should call onChange on setProperties and applyPatches', async () => {
+    const onChangeMock = jest.fn();
     const generator = {
       component: {},
       definition: {},
       qae: {
         properties: {
-          onChange: sinon.spy(),
+          onChange: onChangeMock,
         },
       },
     };
@@ -454,28 +491,16 @@ describe('creator', () => {
     };
 
     create(generator, params, galaxy).component;
-
     await params.model.setProperties(properties);
 
-    expect(
-      generator.qae.properties.onChange.thisValues[0],
-      'incorrect params in this context after setProperties call'
-    ).to.eql({ model: params.model });
-
-    expect(
-      generator.qae.properties.onChange,
-      'incorrect input params after setProperties call'
-    ).to.have.been.calledWith(properties);
+    expect(onChangeMock.mock.instances[0]).toEqual({ model: params.model });
+    expect(onChangeMock).toHaveBeenCalledWith(properties);
 
     await params.model.applyPatches([{ qOp: 'replace', qValue: true, qPath: 'dummyPatched' }], true);
 
-    expect(
-      generator.qae.properties.onChange.thisValues[0],
-      'incorrect params in this context after applyPatches call'
-    ).to.eql({ model: params.model });
-
-    expect(generator.qae.properties.onChange, 'incorrect input params after applyPatches call').to.have.been.calledWith(
-      { dummyPatched: true }
-    );
+    expect(onChangeMock.mock.instances[0]).toEqual({ model: params.model });
+    expect(onChangeMock).toHaveBeenCalledWith({
+      dummyPatched: true,
+    });
   });
 });
