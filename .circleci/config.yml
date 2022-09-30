@@ -106,6 +106,9 @@ jobs:
               echo "Uploading coverage results to coveralls.io..."
               cat ./coverage/unit/lcov.info | npx coveralls
             fi
+      - run:
+          name: Jest Unit Tests
+          command: yarn run test:jest
       - store_test_results:
           path: coverage/junit
       - run:
