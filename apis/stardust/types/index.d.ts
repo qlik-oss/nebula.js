@@ -154,13 +154,6 @@ export function useOptions(): object;
 export function onTakeSnapshot(snapshotCallback: ($: EngineAPI.IGenericObjectLayout)=>Promise<EngineAPI.IGenericObjectLayout>): void;
 
 /**
- * Registers a callback that is called when the context menu opens
- * @param addItemCallback
- */
- export function onContextMenu(addItemCallback: (menu: any, event: any) => void): void;
-
- 
-/**
  * Gets render state instance.
  * 
  * Used to update properties and get a new layout without triggering onInitialRender.
@@ -701,3 +694,4 @@ declare namespace stardust {
     }
 
 }
+
