@@ -1,24 +1,7 @@
-const doMock = ({ helpers = {} } = {}) =>
-  aw.mock([['**/helpers/index.js', () => helpers]], ['../export-properties.js']);
+import exportProperties from '../export-properties';
+import * as Helpers from '../../helpers';
 
 describe('exportProperties', () => {
-  let sandbox;
-  let exportProperties;
-  let helpers;
-
-  beforeEach(() => {
-    sandbox = sinon.createSandbox();
-    helpers = {
-      restoreChangedProperties: sandbox.stub(),
-    };
-    [{ default: exportProperties }] = doMock({ helpers });
-  });
-
-  afterEach(() => {
-    sandbox.reset();
-    sandbox.restore();
-  });
-
   describe('interColumnSortOrder', () => {
     describe('without qLayoutExclude', () => {
       let propertyTree;
@@ -34,21 +17,21 @@ describe('exportProperties', () => {
         };
       });
 
-      it('should have correct qInterColumnSortOrder when qInterColumnSortOrder = undefined', () => {
+      test('should have correct qInterColumnSortOrder when qInterColumnSortOrder = undefined', () => {
         propertyTree.qProperty.qHyperCubeDef.qInterColumnSortOrder = undefined;
         const exportFormat = exportProperties({ propertyTree });
-        expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([]);
+        expect(exportFormat.data[0].interColumnSortOrder).toEqual([]);
       });
 
-      it('should have correct qInterColumnSortOrder when qInterColumnSortOrder = []', () => {
+      test('should have correct qInterColumnSortOrder when qInterColumnSortOrder = []', () => {
         const exportFormat = exportProperties({ propertyTree });
-        expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([]);
+        expect(exportFormat.data[0].interColumnSortOrder).toEqual([]);
       });
 
-      it('should have correct qInterColumnSortOrder when qInterColumnSortOrder is array with values', () => {
+      test('should have correct qInterColumnSortOrder when qInterColumnSortOrder is array with values', () => {
         propertyTree.qProperty.qHyperCubeDef.qInterColumnSortOrder = [2, 1, 3];
         const exportFormat = exportProperties({ propertyTree });
-        expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([2, 1, 3]);
+        expect(exportFormat.data[0].interColumnSortOrder).toEqual([2, 1, 3]);
       });
     });
 
@@ -72,21 +55,21 @@ describe('exportProperties', () => {
           };
         });
 
-        it('should have correct qInterColumnSortOrder when qInterColumnSortOrder = undefined', () => {
+        test('should have correct qInterColumnSortOrder when qInterColumnSortOrder = undefined', () => {
           propertyTree.qProperty.qHyperCubeDef.qInterColumnSortOrder = undefined;
           const exportFormat = exportProperties({ propertyTree });
-          expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([]);
+          expect(exportFormat.data[0].interColumnSortOrder).toEqual([]);
         });
 
-        it('should have correct qInterColumnSortOrder when qInterColumnSortOrder = []', () => {
+        test('should have correct qInterColumnSortOrder when qInterColumnSortOrder = []', () => {
           const exportFormat = exportProperties({ propertyTree });
-          expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([]);
+          expect(exportFormat.data[0].interColumnSortOrder).toEqual([]);
         });
 
-        it('should have correct qInterColumnSortOrder when qInterColumnSortOrder is array with values', () => {
+        test('should have correct qInterColumnSortOrder when qInterColumnSortOrder is array with values', () => {
           propertyTree.qProperty.qHyperCubeDef.qInterColumnSortOrder = [2, 1, 3];
           const exportFormat = exportProperties({ propertyTree });
-          expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([2, 1, 3]);
+          expect(exportFormat.data[0].interColumnSortOrder).toEqual([2, 1, 3]);
         });
       });
 
@@ -109,21 +92,21 @@ describe('exportProperties', () => {
           };
         });
 
-        it('should have correct qInterColumnSortOrder when qInterColumnSortOrder = undefined', () => {
+        test('should have correct qInterColumnSortOrder when qInterColumnSortOrder = undefined', () => {
           propertyTree.qProperty.qHyperCubeDef.qInterColumnSortOrder = undefined;
           const exportFormat = exportProperties({ propertyTree });
-          expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([]);
+          expect(exportFormat.data[0].interColumnSortOrder).toEqual([]);
         });
 
-        it('should have correct qInterColumnSortOrder when qInterColumnSortOrder = []', () => {
+        test('should have correct qInterColumnSortOrder when qInterColumnSortOrder = []', () => {
           const exportFormat = exportProperties({ propertyTree });
-          expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([]);
+          expect(exportFormat.data[0].interColumnSortOrder).toEqual([]);
         });
 
-        it('should have correct qInterColumnSortOrder when qInterColumnSortOrder is array with values', () => {
+        test('should have correct qInterColumnSortOrder when qInterColumnSortOrder is array with values', () => {
           propertyTree.qProperty.qHyperCubeDef.qInterColumnSortOrder = [2, 1, 3];
           const exportFormat = exportProperties({ propertyTree });
-          expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([2, 1, 3]);
+          expect(exportFormat.data[0].interColumnSortOrder).toEqual([2, 1, 3]);
         });
       });
 
@@ -146,27 +129,27 @@ describe('exportProperties', () => {
           };
         });
 
-        it('should have correct qInterColumnSortOrder when qInterColumnSortOrder = undefined', () => {
+        test('should have correct qInterColumnSortOrder when qInterColumnSortOrder = undefined', () => {
           propertyTree.qProperty.qHyperCubeDef.qInterColumnSortOrder = undefined;
           const exportFormat = exportProperties({ propertyTree });
-          expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([]);
+          expect(exportFormat.data[0].interColumnSortOrder).toEqual([]);
         });
 
-        it('should have correct qInterColumnSortOrder when qInterColumnSortOrder = []', () => {
+        test('should have correct qInterColumnSortOrder when qInterColumnSortOrder = []', () => {
           const exportFormat = exportProperties({ propertyTree });
-          expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([]);
+          expect(exportFormat.data[0].interColumnSortOrder).toEqual([]);
         });
 
-        it('should have correct qInterColumnSortOrder when qInterColumnSortOrder is not an ordered-subset of qLayoutExclude.qHyperCubeDef.qInterColumnSortOrder', () => {
+        test('should have correct qInterColumnSortOrder when qInterColumnSortOrder is not an ordered-subset of qLayoutExclude.qHyperCubeDef.qInterColumnSortOrder', () => {
           propertyTree.qProperty.qHyperCubeDef.qInterColumnSortOrder = [1, 0, 2];
           const exportFormat = exportProperties({ propertyTree });
-          expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([1, 0, 2]);
+          expect(exportFormat.data[0].interColumnSortOrder).toEqual([1, 0, 2]);
         });
 
-        it('should have correct qInterColumnSortOrder when qInterColumnSortOrder is an ordered-subset of qLayoutExclude.qHyperCubeDef.qInterColumnSortOrder', () => {
+        test('should have correct qInterColumnSortOrder when qInterColumnSortOrder is an ordered-subset of qLayoutExclude.qHyperCubeDef.qInterColumnSortOrder', () => {
           propertyTree.qProperty.qHyperCubeDef.qInterColumnSortOrder = [1, 0];
           const exportFormat = exportProperties({ propertyTree });
-          expect(exportFormat.data[0].interColumnSortOrder).to.deep.equal([2, 1, 3, 0]);
+          expect(exportFormat.data[0].interColumnSortOrder).toEqual([2, 1, 3, 0]);
         });
       });
     });
@@ -186,55 +169,52 @@ describe('exportProperties', () => {
       };
     });
 
-    it('should have correct dimensions', () => {
+    test('should have correct dimensions', () => {
       const exportFormat = exportProperties({ propertyTree });
-      expect(exportFormat.data[0].dimensions).to.deep.equal([
+      expect(exportFormat.data[0].dimensions).toEqual([
         { qDef: { qFieldDefs: ['Dim1'] } },
         { qDef: { qFieldDefs: ['Dim2'] } },
       ]);
     });
 
-    it('should have correct excludedDimensions when qLayoutExclude is undefined', () => {
+    test('should have correct excludedDimensions when qLayoutExclude is undefined', () => {
       const exportFormat = exportProperties({ propertyTree });
-      expect(exportFormat.data[0].excludedDimensions).to.deep.equal([]);
+      expect(exportFormat.data[0].excludedDimensions).toEqual([]);
     });
 
-    it('should have correct excludedDimensions when qLayoutExclude has dimensions', () => {
+    test('should have correct excludedDimensions when qLayoutExclude has dimensions', () => {
       propertyTree.qProperty.qHyperCubeDef.qLayoutExclude = {
         qHyperCubeDef: {
           qDimensions: [{ qDef: { qFieldDefs: ['Dim3'] } }, { qDef: { qFieldDefs: ['Dim4'] } }],
         },
       };
       const exportFormat = exportProperties({ propertyTree });
-      expect(exportFormat.data[0].excludedDimensions).to.deep.equal([
+      expect(exportFormat.data[0].excludedDimensions).toEqual([
         { qDef: { qFieldDefs: ['Dim3'] } },
         { qDef: { qFieldDefs: ['Dim4'] } },
       ]);
-      expect(propertyTree.qProperty.qHyperCubeDef.qLayoutExclude).to.equal(undefined);
+      expect(propertyTree.qProperty.qHyperCubeDef.qLayoutExclude).toBe(undefined);
     });
 
-    it('should have correct measures', () => {
+    test('should have correct measures', () => {
       const exportFormat = exportProperties({ propertyTree });
-      expect(exportFormat.data[0].measures).to.deep.equal([{ qDef: { qDef: 'Mes1' } }, { qDef: { qDef: 'Mes2' } }]);
+      expect(exportFormat.data[0].measures).toEqual([{ qDef: { qDef: 'Mes1' } }, { qDef: { qDef: 'Mes2' } }]);
     });
 
-    it('should have correct excludedMeasures when qLayoutExclude is undefined', () => {
+    test('should have correct excludedMeasures when qLayoutExclude is undefined', () => {
       const exportFormat = exportProperties({ propertyTree });
-      expect(exportFormat.data[0].excludedMeasures).to.deep.equal([]);
+      expect(exportFormat.data[0].excludedMeasures).toEqual([]);
     });
 
-    it('should have correct excludedMeasures when qLayoutExclude has measures', () => {
+    test('should have correct excludedMeasures when qLayoutExclude has measures', () => {
       propertyTree.qProperty.qHyperCubeDef.qLayoutExclude = {
         qHyperCubeDef: {
           qMeasures: [{ qDef: { qDef: 'Mes3' } }, { qDef: { qDef: 'Mes4' } }],
         },
       };
       const exportFormat = exportProperties({ propertyTree });
-      expect(exportFormat.data[0].excludedMeasures).to.deep.equal([
-        { qDef: { qDef: 'Mes3' } },
-        { qDef: { qDef: 'Mes4' } },
-      ]);
-      expect(propertyTree.qProperty.qHyperCubeDef.qLayoutExclude).to.equal(undefined);
+      expect(exportFormat.data[0].excludedMeasures).toEqual([{ qDef: { qDef: 'Mes3' } }, { qDef: { qDef: 'Mes4' } }]);
+      expect(propertyTree.qProperty.qHyperCubeDef.qLayoutExclude).toBe(undefined);
     });
   });
 
@@ -262,23 +242,23 @@ describe('exportProperties', () => {
       };
     });
 
-    it('should be copied to exportFormat', () => {
+    test('should be copied to exportFormat', () => {
       const exportFormat = exportProperties({ propertyTree });
-      expect(exportFormat.properties.qHyperCubeDef).to.deep.equal({
+      expect(exportFormat.properties.qHyperCubeDef).toEqual({
         qDimensions: [],
         qMeasures: [],
         qInterColumnSortOrder: [],
       });
-      expect(exportFormat.properties.prop1).to.deep.equal({
+      expect(exportFormat.properties.prop1).toEqual({
         prop11: {
           prop111: 111,
         },
       });
     });
 
-    it('propertyTree.qProperty.qHyperCubeDef.qLayoutExclude should be deleted', () => {
+    test('propertyTree.qProperty.qHyperCubeDef.qLayoutExclude should be deleted', () => {
       exportProperties({ propertyTree });
-      expect(propertyTree.qProperty.qHyperCubeDef.qLayoutExclude).to.equal(undefined);
+      expect(propertyTree.qProperty.qHyperCubeDef.qLayoutExclude).toBe(undefined);
     });
   });
 
@@ -311,28 +291,30 @@ describe('exportProperties', () => {
       hypercubePath = 'boxPlotDef';
     });
 
-    it('should be copied to exportFormat', () => {
+    test('should be copied to exportFormat', () => {
       const exportFormat = exportProperties({ propertyTree, hypercubePath });
-      expect(exportFormat.properties.qHyperCubeDef).to.deep.equal({
+      expect(exportFormat.properties.qHyperCubeDef).toEqual({
         qDimensions: [],
         qMeasures: [],
         qInterColumnSortOrder: [],
       });
-      expect(exportFormat.properties.prop1).to.deep.equal({
+      expect(exportFormat.properties.prop1).toEqual({
         prop11: {
           prop111: 111,
         },
       });
     });
 
-    it('qLayoutExclude should be deleted', () => {
+    test('qLayoutExclude should be deleted', () => {
       exportProperties({ propertyTree, hypercubePath });
-      expect(propertyTree.qProperty.boxPlotDef.qHyperCubeDef).to.equal(undefined);
+      expect(propertyTree.qProperty.boxPlotDef.qHyperCubeDef).toBe(undefined);
     });
   });
 
   describe('properties.qLayoutExclude', () => {
     let propertyTree;
+    let restoreChangedPropertiesMock;
+
     beforeEach(() => {
       propertyTree = {
         qProperty: {
@@ -354,26 +336,33 @@ describe('exportProperties', () => {
           },
         },
       };
+      restoreChangedPropertiesMock = jest.fn();
+      jest.spyOn(Helpers.default, 'restoreChangedProperties').mockImplementation(restoreChangedPropertiesMock);
     });
 
-    it('properties.qLayoutExclude should be deleted if there is no quarantine', () => {
+    afterEach(() => {
+      jest.resetAllMocks();
+      jest.restoreAllMocks();
+    });
+
+    test('properties.qLayoutExclude should be deleted if there is no quarantine', () => {
       exportProperties({ propertyTree });
-      expect(propertyTree.qProperty.qLayoutExclude).to.equal(undefined);
+      expect(propertyTree.qProperty.qLayoutExclude).toBe(undefined);
     });
 
-    it('properties.qLayoutExclude should be deleted if quarantine is an empty object', () => {
+    test('properties.qLayoutExclude should be deleted if quarantine is an empty object', () => {
       propertyTree.qProperty.qLayoutExclude.quarantine = {};
       exportProperties({ propertyTree });
-      expect(propertyTree.qProperty.qLayoutExclude).to.equal(undefined);
+      expect(propertyTree.qProperty.qLayoutExclude).toBe(undefined);
     });
 
-    it('properties.qLayoutExclude should be kept if quarantine is an object which is not empty', () => {
+    test('properties.qLayoutExclude should be kept if quarantine is an object which is not empty', () => {
       propertyTree.qProperty.qLayoutExclude.quarantine = { prop1: 1 };
       exportProperties({ propertyTree });
-      expect(propertyTree.qProperty.qLayoutExclude).to.deep.equal({ quarantine: { prop1: 1 } });
+      expect(propertyTree.qProperty.qLayoutExclude).toEqual({ quarantine: { prop1: 1 } });
     });
 
-    it('properties.qLayoutExclude.disabled should be copied to exportFormat.properties', () => {
+    test('properties.qLayoutExclude.disabled should be copied to exportFormat.properties', () => {
       propertyTree.qProperty.qLayoutExclude.quarantine = { prop3: 3 };
       propertyTree.qProperty.qLayoutExclude.disabled = {
         prop1: {
@@ -384,23 +373,23 @@ describe('exportProperties', () => {
         },
       };
       const exportFormat = exportProperties({ propertyTree });
-      expect(propertyTree.qProperty.qLayoutExclude.disabled).to.equal(undefined);
-      expect(exportFormat.properties.prop1).to.deep.equal({ prop11: { prop111: 111 } });
-      expect(exportFormat.properties.prop2).to.deep.equal({ prop21: 21 });
+      expect(propertyTree.qProperty.qLayoutExclude.disabled).toBe(undefined);
+      expect(exportFormat.properties.prop1).toEqual({ prop11: { prop111: 111 } });
+      expect(exportFormat.properties.prop2).toEqual({ prop21: 21 });
     });
 
-    it('helpers.restoreChangedProperties should not be called if there is no properties.qLayoutExclude.changed', () => {
+    test('helpers.restoreChangedProperties should not be called if there is no properties.qLayoutExclude.changed', () => {
       propertyTree.qProperty.qLayoutExclude.quarantine = { prop3: 3 };
       exportProperties({ propertyTree });
-      expect(helpers.restoreChangedProperties.callCount).to.equal(0);
+      expect(restoreChangedPropertiesMock).toHaveBeenCalledTimes(0);
     });
 
-    it('helpers.restoreChangedProperties should be called if there is properties.qLayoutExclude.changed', () => {
+    test('helpers.restoreChangedProperties should be called if there is properties.qLayoutExclude.changed', () => {
       propertyTree.qProperty.qLayoutExclude.quarantine = { prop3: 3 };
       propertyTree.qProperty.qLayoutExclude.changed = { prop4: 4 };
       exportProperties({ propertyTree });
-      expect(helpers.restoreChangedProperties.callCount).to.equal(1);
-      expect(propertyTree.qProperty.qLayoutExclude.changed).to.equal(undefined);
+      expect(restoreChangedPropertiesMock).toHaveBeenCalledTimes(1);
+      expect(propertyTree.qProperty.qLayoutExclude.changed).toBe(undefined);
     });
   });
 });
