@@ -15,7 +15,7 @@
     "build-storybook": "build-storybook",
     "spec": "lerna run spec --stream --concurrency 99 && lerna run ts --stream --concurrency 99 ",
     "test": "yarn run test:unit",
-    "test:jest": "jest",
+    "test:jest": "jest --maxWorkers=2",
     "test:jest:watch": "jest --watch",
     "test:jest:coverage": "jest --coverage",
     "mashup": "node scripts/start-mashup.js",
