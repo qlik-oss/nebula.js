@@ -397,7 +397,6 @@ describe('creator', () => {
         plugins: plugins2,
       });
       expect(runMock).toHaveBeenCalledTimes(4);
-
       expect(c.context.plugins).toEqual(plugins2);
     });
 
