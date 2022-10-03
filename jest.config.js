@@ -8,6 +8,8 @@ module.exports = {
     'apis/locale/.+\\.inspect\\.[jt]sx?$',
     'apis/snapshooter/.+\\.inspect\\.[jt]sx?$',
     'apis/supernova/.+\\.inspect\\.[jt]sx?$',
+    'apis/test-utils/.+\\.inspect\\.[jt]sx?$',
+    'apis/theme/.+\\.inspect\\.[jt]sx?$',
   ],
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
   collectCoverageFrom: [
@@ -17,11 +19,19 @@ module.exports = {
     'apis/locale/**/*.{js,jsx}',
     'apis/snapshooter/**/*.{js,jsx}',
     'apis/supernova/**/*.{js,jsx}',
+    'apis/test-utils/**/*.{js,jsx}',
+    'apis/theme/**/*.{js,jsx}',
 
     '!apis/enigma-mocker/examples/**',
     '!apis/enigma-mocker/index.js',
     '!commands/create/**/*.{js,jsx}',
+    '!commands/build/command.js',
+    '!commands/sense/command.js',
+    '!commands/serve/command.js',
+    '!commands/sense/src/ext.js',
+    '!commands/sense/src/empty-ext.js',
     '!apis/snapshooter/client.js',
+    '!apis/test-utils/index.js',
 
     '!**/lib/**',
     '!**/dist/**',
