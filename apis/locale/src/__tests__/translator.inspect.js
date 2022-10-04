@@ -1,9 +1,7 @@
 import translatorFn from '../translator';
 
 describe('translator', () => {
-  beforeEach(() => {});
-
-  it('should prefer en-US by default', () => {
+  test('should prefer en-US by default', () => {
     const t = translatorFn({
       fallback: 'b',
     });
@@ -15,10 +13,10 @@ describe('translator', () => {
       },
     });
 
-    expect(t.get('x')).to.equal('us');
+    expect(t.get('x')).toBe('us');
   });
 
-  it('should prefer initial locale', () => {
+  test('should prefer initial locale', () => {
     const t = translatorFn({ initial: 'sv-SE' });
 
     t.add({
@@ -28,10 +26,10 @@ describe('translator', () => {
       },
     });
 
-    expect(t.get('x')).to.equal('sv');
+    expect(t.get('x')).toBe('sv');
   });
 
-  it('should fallback to en-US by default', () => {
+  test('should fallback to en-US by default', () => {
     const t = translatorFn({ initial: 'sv-SE' });
 
     t.add({
@@ -41,10 +39,10 @@ describe('translator', () => {
       },
     });
 
-    expect(t.get('x')).to.equal('us');
+    expect(t.get('x')).toBe('us');
   });
 
-  it('should fallback to sv-SE', () => {
+  test('should fallback to sv-SE', () => {
     const t = translatorFn({
       fallback: 'sv-SE',
     });
@@ -57,15 +55,15 @@ describe('translator', () => {
       },
     });
 
-    expect(t.get('x')).to.equal('sv');
+    expect(t.get('x')).toBe('sv');
   });
 
-  it('should return string id when not registered', () => {
+  test('should return string id when not registered', () => {
     const t = translatorFn();
-    expect(t.get('x')).to.equal('x');
+    expect(t.get('x')).toBe('x');
   });
 
-  it('should format strings with args', () => {
+  test('should format strings with args', () => {
     const t = translatorFn();
 
     t.add({
@@ -75,6 +73,6 @@ describe('translator', () => {
       },
     });
 
-    expect(t.get('x', ['a', 'b'])).to.equal('hello a b');
+    expect(t.get('x', ['a', 'b'])).toBe('hello a b');
   });
 });

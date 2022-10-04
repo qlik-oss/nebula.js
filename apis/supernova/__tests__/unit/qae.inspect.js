@@ -1,8 +1,8 @@
 import qae from '../../src/qae';
 
 describe('qae', () => {
-  it('should have empty defaults', () => {
-    expect(qae()).to.eql({
+  test('should have empty defaults', () => {
+    expect(qae()).toEqual({
       properties: {
         initial: {},
         onChange: undefined,
@@ -15,33 +15,33 @@ describe('qae', () => {
     });
   });
 
-  it('should provide properties', () => {
+  test('should provide properties', () => {
     expect(
       qae({
         properties: { p: 'p' },
       }).properties.initial
-    ).to.eql({ p: 'p' });
+    ).toEqual({ p: 'p' });
   });
 
-  it('should map target defaults', () => {
+  test('should map target defaults', () => {
     const t = qae({
       data: {
         targets: [{}],
       },
     }).data.targets[0];
-    expect(t.propertyPath).to.eql('/qHyperCubeDef');
-    expect(t.layoutPath).to.eql('/qHyperCube');
-    expect(t.dimensions.min()).to.eql(0);
-    expect(t.dimensions.max()).to.eql(1000);
-    expect(t.dimensions.added()).to.equal(undefined);
-    expect(t.measures.min()).to.eql(0);
-    expect(t.measures.max()).to.eql(1000);
-    expect(t.measures.added()).to.equal(undefined);
-    expect(t.dimensions.isDefined()).to.equal(false);
-    expect(t.measures.isDefined()).to.equal(false);
+    expect(t.propertyPath).toBe('/qHyperCubeDef');
+    expect(t.layoutPath).toBe('/qHyperCube');
+    expect(t.dimensions.min()).toBe(0);
+    expect(t.dimensions.max()).toBe(1000);
+    expect(t.dimensions.added()).toBe(undefined);
+    expect(t.measures.min()).toBe(0);
+    expect(t.measures.max()).toBe(1000);
+    expect(t.measures.added()).toBe(undefined);
+    expect(t.dimensions.isDefined()).toBe(false);
+    expect(t.measures.isDefined()).toBe(false);
   });
 
-  it('should map provided data', () => {
+  test('should map provided data', () => {
     const t = qae({
       data: {
         targets: [
@@ -66,22 +66,22 @@ describe('qae', () => {
         ],
       },
     }).data.targets[0];
-    expect(t.propertyPath).to.eql('/qHyperCubeDef');
-    expect(t.dimensions.min()).to.eql(3);
-    expect(t.dimensions.max()).to.eql(7);
-    expect(t.dimensions.added()).to.equal('a');
-    expect(t.dimensions.description()).to.equal('Slice');
-    expect(t.dimensions.moved()).to.equal('c');
-    expect(t.dimensions.replaced()).to.equal('d');
-    expect(t.measures.min()).to.eql(2);
-    expect(t.measures.max()).to.eql(4);
-    expect(t.measures.added()).to.equal('b');
-    expect(t.measures.description()).to.equal('Angle');
-    expect(t.measures.removed()).to.equal('e');
-    expect(t.dimensions.isDefined()).to.equal(true);
-    expect(t.measures.isDefined()).to.equal(true);
+    expect(t.propertyPath).toBe('/qHyperCubeDef');
+    expect(t.dimensions.min()).toBe(3);
+    expect(t.dimensions.max()).toBe(7);
+    expect(t.dimensions.added()).toBe('a');
+    expect(t.dimensions.description()).toBe('Slice');
+    expect(t.dimensions.moved()).toBe('c');
+    expect(t.dimensions.replaced()).toBe('d');
+    expect(t.measures.min()).toBe(2);
+    expect(t.measures.max()).toBe(4);
+    expect(t.measures.added()).toBe('b');
+    expect(t.measures.description()).toBe('Angle');
+    expect(t.measures.removed()).toBe('e');
+    expect(t.dimensions.isDefined()).toBe(true);
+    expect(t.measures.isDefined()).toBe(true);
   });
-  it('should throw with incorrect hypercube def', () => {
+  test('should throw with incorrect hypercube def', () => {
     expect(() =>
       qae({
         data: {
@@ -107,9 +107,9 @@ describe('qae', () => {
           ],
         },
       })
-    ).to.throw('Incorrect definition for qHyperCubeDef at /qHyperCubeDefFoo');
+    ).toThrow('Incorrect definition for qHyperCubeDef at /qHyperCubeDefFoo');
   });
-  it('should throw with incorrect listobject def', () => {
+  test('should throw with incorrect listobject def', () => {
     expect(() =>
       qae({
         data: {
@@ -135,9 +135,9 @@ describe('qae', () => {
           ],
         },
       })
-    ).to.throw('Incorrect definition for qListObjectDef at /qListObjectDefFoo');
+    ).toThrow('Incorrect definition for qListObjectDef at /qListObjectDefFoo');
   });
-  it('should resolve layout', () => {
+  test('should resolve layout', () => {
     const t = qae({
       data: {
         targets: [
@@ -156,6 +156,6 @@ describe('qae', () => {
         },
       },
     };
-    expect(t.resolveLayout(layout)).to.eql('woho');
+    expect(t.resolveLayout(layout)).toBe('woho');
   });
 });
