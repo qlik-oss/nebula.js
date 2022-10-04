@@ -1,7 +1,6 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import extend from 'extend';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
@@ -9,7 +8,6 @@ import Unlock from '@nebula.js/ui/icons/unlock';
 import { IconButton, Grid, Typography } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
-import useSessionModel from '../../hooks/useSessionModel';
 import useLayout from '../../hooks/useLayout';
 
 import ListBox from './ListBox';
@@ -20,7 +18,6 @@ import ActionsToolbar from '../ActionsToolbar';
 import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './components/ListBoxSearch';
-import useObjectSelections from '../../hooks/useObjectSelections';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import useConfirmUnfocus from './hooks/useConfirmUnfocus';
 
@@ -37,9 +34,8 @@ const StyledGrid = styled(Grid)(() => ({
   },
 }));
 
-export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {}, fieldDef }) {
+export default function ListBoxInline({ options }) {
   const {
-    title,
     direction,
     listLayout,
     search = true,
@@ -47,9 +43,8 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     toolbar = true,
     rangeSelect = true,
     checkboxes = false,
-    properties = {},
-    sessionModel = undefined,
-    selectionsApi = undefined,
+    model,
+    selections,
     update = undefined,
     fetchStart = undefined,
     dense = false,
@@ -61,32 +56,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     setCount = undefined,
     shouldConfirmOnBlur = undefined,
   } = options;
-  let { frequencyMode, histogram = false } = options;
-
-  if (fieldDef && fieldDef.failedToFetchFieldDef) {
-    histogram = false;
-    frequencyMode = 'N';
-  }
-
-  switch (true) {
-    case ['none', 'N', 'NX_FREQUENCY_NONE'].includes(frequencyMode):
-      frequencyMode = 'N';
-      break;
-    case ['value', 'V', 'NX_FREQUENCY_VALUE', 'default'].includes(frequencyMode):
-      frequencyMode = 'V';
-      break;
-    case ['percent', 'P', 'NX_FREQUENCY_PERCENT'].includes(frequencyMode):
-      frequencyMode = 'P';
-      break;
-    case ['relative', 'R', 'NX_FREQUENCY_RELATIVE'].includes(frequencyMode):
-      frequencyMode = 'R';
-      break;
-    default:
-      frequencyMode = 'N';
-      break;
-  }
-
-  const getListdefFrequencyMode = () => (histogram && frequencyMode === 'N' ? 'V' : frequencyMode);
+  const { frequencyMode, histogram = false } = options;
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
@@ -101,64 +71,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
 
     return [ref, setRef];
   };
-
-  const listdef = {
-    qInfo: {
-      qType: 'njsListbox',
-    },
-    qListObjectDef: {
-      qStateName: stateName,
-      qShowAlternatives: true,
-      qFrequencyMode: getListdefFrequencyMode(),
-      qInitialDataFetch: [
-        {
-          qTop: 0,
-          qLeft: 0,
-          qWidth: 0,
-          qHeight: 0,
-        },
-      ],
-      qDef: {
-        qSortCriterias: [
-          {
-            qSortByState: 1,
-            qSortByAscii: 1,
-            qSortByNumeric: 1,
-            qSortByLoadOrder: 1,
-          },
-        ],
-      },
-    },
-    title,
-  };
-  extend(true, listdef, properties);
-
-  // Something something lib dimension
-  let fieldName;
-  if (fieldIdentifier.qLibraryId) {
-    listdef.qListObjectDef.qLibraryId = fieldIdentifier.qLibraryId;
-    fieldName = fieldIdentifier.qLibraryId;
-  } else {
-    listdef.qListObjectDef.qDef.qFieldDefs = [fieldIdentifier];
-    fieldName = fieldIdentifier;
-  }
-
-  if (frequencyMode !== 'N' || histogram) {
-    const field = fieldIdentifier.qLibraryId ? fieldDef : fieldName;
-    listdef.frequencyMax = {
-      qValueExpression: `Max(AGGR(Count([${field}]), [${field}]))`,
-    };
-  }
-
-  let [model] = useSessionModel(listdef, sessionModel ? null : app, fieldName, stateName);
-  if (sessionModel) {
-    model = sessionModel;
-  }
-
-  let selections = useObjectSelections(selectionsApi ? {} : app, model)[0];
-  if (selectionsApi) {
-    selections = selectionsApi;
-  }
 
   const theme = useTheme();
 
@@ -354,7 +266,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
               keyboard={keyboard}
               showGray={showGray}
               scrollState={scrollState}
-              sortByState={listdef.qListObjectDef.qDef.qSortCriterias[0].qSortByState}
               setCount={setCount}
             />
           )}

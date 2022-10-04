@@ -127,11 +127,11 @@ const Root = styled('div')(({ theme }) => ({
     height: '100%',
 
     // The checkbox's span
-    '& > span:nth-child(1)': {
+    '& > span:nth-of-type(1)': {
       paddingRight: '8px',
     },
     // The checkbox's label container.
-    '& > span:nth-child(2)': {
+    '& > span:nth-of-type(2)': {
       ...ellipsis,
       display: 'flex',
       alignItems: 'center',

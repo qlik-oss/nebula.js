@@ -81,7 +81,6 @@ export default function ListBox({
   keyboard = {},
   showGray = true,
   scrollState,
-  sortByState,
   selectDisabled = () => false,
   setCount,
 }) {
@@ -192,7 +191,7 @@ export default function ListBox({
     if (loaderRef.current) {
       loaderRef.current.resetloadMoreItemsCache(true);
       // Skip scrollToItem if we are in selections, or if we dont sort by state.
-      if ((layout && layout.qSelectionInfo.qInSelections) || sortByState === 0) {
+      if (layout && layout.qSelectionInfo.qInSelections) {
         return;
       }
       loaderRef.current._listRef.scrollToItem(0);

@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
 import 'regenerator-runtime/runtime'; // Polyfill for using async/await
-import embed from '@nebula.js/nucleus';
+import embed, { RenderListBoxComponent } from '@nebula.js/nucleus';
 import { generator, hook } from '@nebula.js/supernova';
 import theme from '@nebula.js/theme';
 import locale from '@nebula.js/locale';
@@ -41,5 +41,5 @@ export {
 } from '@nebula.js/supernova';
 
 // component internals
-const __DO_NOT_USE__ = { generator, hook, theme, locale };
+const __DO_NOT_USE__ = { generator, hook, theme, locale, RenderListBoxComponent };
 export { __DO_NOT_USE__ };
