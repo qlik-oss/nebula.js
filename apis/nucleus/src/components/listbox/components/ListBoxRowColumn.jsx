@@ -136,6 +136,7 @@ const Root = styled('div')(({ theme }) => ({
       display: 'flex',
       alignItems: 'center',
       paddingLeft: 0,
+      minWidth: '70%', // might need proper calculation
     },
   },
 
@@ -298,6 +299,7 @@ function RowColumn({ index, style, data }) {
         showGray && excludedOrAlternative() && classes.excludedTextWithCheckbox,
       ])}
       color={color}
+      justifyContent={textAlign}
     >
       <span style={{ whiteSpace: 'pre' }}>{lbl}</span>
     </Typography>
