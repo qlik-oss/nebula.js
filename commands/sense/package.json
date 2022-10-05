@@ -30,7 +30,7 @@
     "@babel/cli": "7.18.10",
     "@babel/core": "7.18.13",
     "@babel/preset-env": "7.18.10",
-    "@nebula.js/stardust": "^3.0.3",
+    "@nebula.js/stardust": "*",
     "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-node-resolve": "13.3.0",
     "@rollup/plugin-replace": "4.0.0",
