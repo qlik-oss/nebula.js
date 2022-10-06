@@ -294,7 +294,12 @@ function nuked(configuration = {}) {
       context: async (ctx) => {
         // filter valid values to avoid triggering unnecessary rerender
         let changes;
-        ['theme', 'language', 'constraints', 'keyboardNavigation'].forEach((key) => {
+        if (ctx.constraints && JSON.stringify(ctx.constraints) !== JSON.stringify(currentContext.constraints)) {
+          changes = {
+            constraints: ctx.constraints,
+          };
+        }
+        ['theme', 'language', 'keyboardNavigation'].forEach((key) => {
           if (Object.prototype.hasOwnProperty.call(ctx, key) && ctx[key] !== currentContext[key]) {
             if (!changes) {
               changes = {};
