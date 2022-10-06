@@ -32,7 +32,7 @@
     "@babel/preset-env": "7.19.3",
     "@nebula.js/stardust": "^3.0.3",
     "@rollup/plugin-commonjs": "22.0.2",
-    "@rollup/plugin-node-resolve": "13.3.0",
+    "@rollup/plugin-node-resolve": "14.1.0",
     "@rollup/plugin-replace": "4.0.0",
     "extend": "3.0.2",
     "fs-extra": "10.1.0",
