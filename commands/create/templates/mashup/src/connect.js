@@ -1,24 +1,26 @@
-import enigma from 'enigma.js';
-import schema from 'enigma.js/schemas/12.936.0.json';
-import { Auth, AuthType } from '@qlik/sdk';
+import { AuthType } from '@qlik/sdk';
+import Authenticator from './Authenticator';
 
-async function connect({ url, webIntegrationId, appId }) {
-  const authInstance = new Auth({
-    webIntegrationId,
-    autoRedirect: true,
-    authType: AuthType.WebIntegration,
-    host: url.replace(/^https?:\/\//, '').replace(/\/?/, ''),
+async function connect({ connectionType, url, appId, ...rest }) {
+  const AuthenticatorInstance = new Authenticator({
+    url,
+    appId,
   });
 
-  if (!authInstance.isAuthenticated()) {
-    authInstance.authenticate();
-  } else {
-    const wssUrl = await authInstance.generateWebsocketUrl(appId);
-    const enigmaGlobal = await enigma.create({ schema, url: wssUrl }).open();
-    return enigmaGlobal.openDoc(appId);
-  }
+  switch (connectionType) {
+    case AuthType.WebIntegration: {
+      return AuthenticatorInstance.AuthenticateWithWebIntegrationId({
+        ...rest,
+      });
+    }
 
-  return null;
+    case AuthType.OAuth2: {
+      return AuthenticatorInstance.AuthenticateWithOAuth({ ...rest });
+    }
+
+    default:
+      throw new Error('Please Provide a `connectionType` to proceed!');
+  }
 }
 
 export default connect;
