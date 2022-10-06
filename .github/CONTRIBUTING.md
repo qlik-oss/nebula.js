@@ -19,7 +19,7 @@ Bugs can be reported by filing a [new bug issue](https://github.com/qlik-oss/neb
 
 ## <a name="features"></a> Proposing a change
 
-If you want to propose changes to this project, let us know by [filing a issue](https://github.com/qlik-oss/nebula.js/issues/new/choose).
+If you want to propose changes to this project, let us know by [filing an issue](https://github.com/qlik-oss/nebula.js/issues/new/choose).
 
 If the proposal includes new designs or bigger changes, please be prepared to discuss the changes with us so we can cooperate on how to best include them.
 
@@ -37,7 +37,7 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
   - `nucleus`: JavaScript library for mashups
   - `supernova`: JavaScript API for consuming and visualizing QIX data
   - `stardust`: Public JavaScript API which exposes the nucleus and supernova APIs
-  - `enigma-mocker`: Public JavaScript API which creates a mocked enigma app to renders visualizations without a connected Qlik engine
+  - `enigma-mocker`: Public JavaScript API which creates a mocked enigma app to render visualizations without a connected Qlik engine
   - `snapshooter`: Public JavaScript API which captures rendered charts as images
   - `conversion`: [private] Provides conversion functionality to extensions with hyperCubes.
   - `theme`: [private] Provides access and consumption of the currently applied theme
@@ -45,12 +45,20 @@ This is a multi-package repository which uses [lerna](https://github.com/lerna/l
 - `commands` - CLI commands
   - `build`: cli command to build a supernova
   - `cli`: entry point for all cli commands
-  - `create`: cli command for creating a supernova project
-  - `sense`: cli command to build a Qlik Sense extension from a supernova
-  - `serve`: cli command to start a development server for rapid prototyping of a supernova
+  - `create`: CLI command for creating a supernova project
+  - `sense`: CLI command to build a Qlik Sense extension from a supernova
+  - `serve`: CLI command to start a development server for rapid prototyping of a supernova
 - `packages`
-  - `ui`: [private] ui components
+  - `ui`: [private] UI components
 - `test/`: contains test configs
+
+### Visualizing packages
+
+To better understand packages' relations, you can use Nx's capabilities to open an interactive visualization of the package graph.
+
+To open the visualization, run:
+
+    npx nx graph
 
 ### Development workflow
 
@@ -106,7 +114,7 @@ Generally, development should be done directly towards the `master` branch.
 
    > Before creating a Pull Request, make sure to sign the [CLA](#cla)
 
-   In the Github UI of your fork, create a Pull Request to the `master` branch of the master repository.
+   In the GitHub UI of your fork, create a Pull Request to the `master` branch of the master repository.
 
    If the branch has merge conflicts or has been outdated, please do a rebase against the `master` branch.
 
@@ -127,7 +135,7 @@ Should be one of the following:
 - **perf:** A code change that improves performance
 - **refactor:** Changes to production code that is neither a new feature nor a bug fix
 - **revert:** Reverts a previous commit
-- **style:** Changes to code style formatting (white space, commas etc)
+- **style:** Changes to code style formatting (white space, commas, etc)
 - **test:** Changes in test cases of production code
 
 #### Scope
