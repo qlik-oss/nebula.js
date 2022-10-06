@@ -68,7 +68,6 @@ export default class Authenticator {
     if (!(await this.authInstance.isAuthorized())) {
       const { url } = await this.authInstance.generateAuthorizationUrl();
       const protocol = url.includes('https://') ? 'https' : 'http';
-      console.log({ url });
       window.location = `${protocol}://${url}`;
     }
 
