@@ -14,7 +14,6 @@ async function run() {
     clientId: '<Qlik OAuth client id>',
     webIntegrationId: '<Qlik web integration id>',
   });
-  console.log(123);
 
   const n = embed(app);
 
