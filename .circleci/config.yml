@@ -76,8 +76,8 @@ commands:
 jobs:
   build:
     docker:
-      - image: cimg/node:18.8.0
-      - image: browserless/chrome:1.54.0-puppeteer-1.20.0
+      - image: cimg/node:18.10.0
+      - image: browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project
 
@@ -108,6 +108,9 @@ jobs:
             fi
       - store_test_results:
           path: coverage/junit
+      - run:
+          name: Jest Unit Tests
+          command: yarn run test:jest
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch

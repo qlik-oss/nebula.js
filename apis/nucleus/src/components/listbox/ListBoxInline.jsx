@@ -13,16 +13,16 @@ import useSessionModel from '../../hooks/useSessionModel';
 import useLayout from '../../hooks/useLayout';
 
 import ListBox from './ListBox';
-import createListboxSelectionToolbar from './listbox-selection-toolbar';
+import createListboxSelectionToolbar from './interactions/listbox-selection-toolbar';
 
 import ActionsToolbar from '../ActionsToolbar';
 
 import InstanceContext from '../../contexts/InstanceContext';
 
-import ListBoxSearch from './ListBoxSearch';
+import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
-import { getListboxInlineKeyboardNavigation } from './listbox-keyboard-navigation';
-import useConfirmUnfocus from './useConfirmUnfocus';
+import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
+import useConfirmUnfocus from './hooks/useConfirmUnfocus';
 
 const PREFIX = 'ListBoxInline';
 
@@ -188,13 +188,21 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   };
 
   useEffect(() => {
-    const show = () => setShowToolbar(true);
-    const hide = () => setShowToolbar(false);
+    const show = () => {
+      setShowToolbar(true);
+    };
+    const hide = () => {
+      setShowToolbar(false);
+      if (search === 'toggle') {
+        setShowSearch(false);
+      }
+    };
     if (selections) {
-      if (!selections.isModal(model)) {
+      if (!selections.isModal()) {
         selections.on('deactivated', hide);
         selections.on('activated', show);
       }
+      setShowToolbar(selections.isActive());
     }
     return () => {
       if (selections) {
@@ -202,12 +210,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
         selections.removeListener('activated', hide);
       }
     };
-  }, [selections]);
-
-  useEffect(() => {
-    if (selections) {
-      setShowToolbar(selections.isActive());
-    }
   }, [selections]);
 
   const listBoxRef = useRef(null);
@@ -319,7 +321,14 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
         </Grid>
       )}
       <Grid item ref={searchContainerRef}>
-        <ListBoxSearch model={model} dense={dense} keyboard={keyboard} visible={searchVisible} />
+        <ListBoxSearch
+          selections={selections}
+          model={model}
+          dense={dense}
+          keyboard={keyboard}
+          visible={searchVisible}
+          searchContainerRef={searchContainerRef}
+        />
       </Grid>
       <Grid item xs>
         <div ref={moreAlignTo} />

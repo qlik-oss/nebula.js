@@ -90,14 +90,14 @@ describe('<ListboxInline />', () => {
         [require.resolve('../../../hooks/useLayout'), () => () => [layout]],
         [require.resolve('../../ActionsToolbar'), () => ActionsToolbar],
         [require.resolve('../ListBox'), () => <div className="theListBox" />],
-        [require.resolve('../ListBoxSearch'), () => ListBoxSearch],
+        [require.resolve('../components/ListBoxSearch'), () => ListBoxSearch],
         [
-          require.resolve('../listbox-keyboard-navigation'),
+          require.resolve('../interactions/listbox-keyboard-navigation'),
           () => ({
             getListboxInlineKeyboardNavigation,
           }),
         ],
-        [require.resolve('../listbox-selection-toolbar'), () => createListboxSelectionToolbar],
+        [require.resolve('../interactions/listbox-selection-toolbar'), () => createListboxSelectionToolbar],
       ],
       ['../ListBoxInline']
     );
@@ -106,7 +106,7 @@ describe('<ListboxInline />', () => {
   beforeEach(() => {
     selections = {
       key: 'selections',
-      isModal: () => false,
+      isModal: sandbox.stub().returns(false),
       isActive: () => 'isActive',
       on: sandbox.stub().callsFake((event, func) => (eventTriggered) => {
         if (event === eventTriggered) func();
@@ -144,8 +144,7 @@ describe('<ListboxInline />', () => {
         effectFunc();
       })
       .onCall(1)
-      .callsFake((effectFunc, watchArr) => {
-        expect(watchArr[0].key).to.equal(customSelectionsKey || 'selections');
+      .callsFake((effectFunc) => {
         effectFunc();
       });
 
@@ -236,6 +235,10 @@ describe('<ListboxInline />', () => {
       options.search = 'toggle';
       await render();
       expect(ListBoxSearch).to.have.been.calledWith(sinon.match({ visible: false }));
+      expect(selections.on).calledTwice;
+      expect(selections.isModal).calledOnce;
+      expect(selections.on.args[0][0]).to.equal('deactivated');
+      expect(selections.on.args[1][0]).to.equal('activated');
     });
 
     it('should render without search and show search button', async () => {

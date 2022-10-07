@@ -268,6 +268,9 @@ const X = {
   setSnapshotData(layout) {
     return this.snComponent.setSnapshotData(layout);
   },
+  onContextMenu(menu, event) {
+    return this.snComponent.onContextMenu(menu, event);
+  },
   getViewState() {
     const ref = this.snComponent.getImperativeHandle();
     if (ref && typeof ref.getViewState === 'function') {

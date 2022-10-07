@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.2...v3.0.3) (2022-09-30)
+
+### Features
+
+- add support to run callback when context menu opens from sense-client ([#926](https://github.com/qlik-oss/nebula.js/issues/926)) ([a5e578b](https://github.com/qlik-oss/nebula.js/commit/a5e578bfffe501341d988f92b270d03e73cd783c))
+
+## [3.0.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.2-alpha.0...v3.0.2) (2022-09-21)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+## [3.0.2-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.1...v3.0.2-alpha.0) (2022-09-21)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+## [3.0.1](https://github.com/qlik-oss/nebula.js/compare/v3.0.0...v3.0.1) (2022-09-20)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+# [3.0.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.3...v3.0.0) (2022-09-19)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+# [3.0.0-rc.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.2...v3.0.0-rc.3) (2022-09-16)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
 # [3.0.0-rc.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2022-08-31)
 
 **Note:** Version bump only for package @nebula.js/supernova

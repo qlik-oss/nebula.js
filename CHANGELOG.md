@@ -3,6 +3,52 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.2...v3.0.3) (2022-09-30)
+
+### Features
+
+- add support to run callback when context menu opens from sense-client ([#926](https://github.com/qlik-oss/nebula.js/issues/926)) ([a5e578b](https://github.com/qlik-oss/nebula.js/commit/a5e578bfffe501341d988f92b270d03e73cd783c))
+- integrate `@qlik/sdk` into nebula-cli ([#929](https://github.com/qlik-oss/nebula.js/issues/929)) ([dcebeb1](https://github.com/qlik-oss/nebula.js/commit/dcebeb157c97851086766f2302ff121a4abe5dbd))
+
+## [3.0.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.2-alpha.0...v3.0.2) (2022-09-21)
+
+**Note:** Version bump only for package nebula.js
+
+## [3.0.2-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.1...v3.0.2-alpha.0) (2022-09-21)
+
+### Bug Fixes
+
+- apply styles on header element ([#932](https://github.com/qlik-oss/nebula.js/issues/932)) ([6ce2a74](https://github.com/qlik-oss/nebula.js/commit/6ce2a74b8e8079bcd826edc3e40238502a44db0f))
+
+## [3.0.1](https://github.com/qlik-oss/nebula.js/compare/v3.0.0...v3.0.1) (2022-09-20)
+
+### Bug Fixes
+
+- return promise from cli:sense api ([#927](https://github.com/qlik-oss/nebula.js/issues/927)) ([279be69](https://github.com/qlik-oss/nebula.js/commit/279be69c822248687f2d629bdc51c1e27ac47d26))
+
+### Reverts
+
+- Revert "refactor: support multiple dims for filterpane (#917)" (#930) ([2e71bc1](https://github.com/qlik-oss/nebula.js/commit/2e71bc1b2686355bc22c9c4a2740ec6d5517a51d)), closes [#917](https://github.com/qlik-oss/nebula.js/issues/917) [#930](https://github.com/qlik-oss/nebula.js/issues/930)
+
+# [3.0.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.3...v3.0.0) (2022-09-19)
+
+**Note:** Version bump only for package nebula.js
+
+# [3.0.0-rc.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.2...v3.0.0-rc.3) (2022-09-16)
+
+### Bug Fixes
+
+- add cors headers to /info and /pkg/<name> ([#922](https://github.com/qlik-oss/nebula.js/issues/922)) ([476d7bd](https://github.com/qlik-oss/nebula.js/commit/476d7bdba9423b04426da1163cd5075799538600))
+- add stardust as external dependency (when missing) ([#913](https://github.com/qlik-oss/nebula.js/issues/913)) ([1e0b112](https://github.com/qlik-oss/nebula.js/commit/1e0b112fd0c34cf47f5f59538dc96b05dd2919bc))
+- adjust enigma mocker comment ([#924](https://github.com/qlik-oss/nebula.js/issues/924)) ([6dfbb3d](https://github.com/qlik-oss/nebula.js/commit/6dfbb3d811e6fcab8a7a7e2737b50fd4b893f901))
+
+### Features
+
+- **build:** add system js build ([#910](https://github.com/qlik-oss/nebula.js/issues/910)) ([283319c](https://github.com/qlik-oss/nebula.js/commit/283319c044812b837b74b7d35694a28dfa4c96ca))
+- **build:** watch systemjs build ([#912](https://github.com/qlik-oss/nebula.js/issues/912)) ([405178f](https://github.com/qlik-oss/nebula.js/commit/405178f308553faec662fb69a8f2823fd9c35c5c))
+- integrate `@qlik/sdk` into mashup template ([#915](https://github.com/qlik-oss/nebula.js/issues/915)) ([d86932c](https://github.com/qlik-oss/nebula.js/commit/d86932c2c9359b3796856ecf94a7b2ce8c9ccd55))
+- **serve:** add mfe mode ([#919](https://github.com/qlik-oss/nebula.js/issues/919)) ([48a7c40](https://github.com/qlik-oss/nebula.js/commit/48a7c40d013673e5dcb165463fb750bbae4fb449))
+
 # [3.0.0-rc.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2022-08-31)
 
 ### Bug Fixes

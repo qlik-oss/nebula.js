@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.2...v3.0.3) (2022-09-30)
+
+### Features
+
+- integrate `@qlik/sdk` into nebula-cli ([#929](https://github.com/qlik-oss/nebula.js/issues/929)) ([dcebeb1](https://github.com/qlik-oss/nebula.js/commit/dcebeb157c97851086766f2302ff121a4abe5dbd))
+
+## [3.0.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.2-alpha.0...v3.0.2) (2022-09-21)
+
+**Note:** Version bump only for package @nebula.js/cli-serve
+
+## [3.0.2-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.1...v3.0.2-alpha.0) (2022-09-21)
+
+**Note:** Version bump only for package @nebula.js/cli-serve
+
+## [3.0.1](https://github.com/qlik-oss/nebula.js/compare/v3.0.0...v3.0.1) (2022-09-20)
+
+### Reverts
+
+- Revert "refactor: support multiple dims for filterpane (#917)" (#930) ([2e71bc1](https://github.com/qlik-oss/nebula.js/commit/2e71bc1b2686355bc22c9c4a2740ec6d5517a51d)), closes [#917](https://github.com/qlik-oss/nebula.js/issues/917) [#930](https://github.com/qlik-oss/nebula.js/issues/930)
+
+# [3.0.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.3...v3.0.0) (2022-09-19)
+
+**Note:** Version bump only for package @nebula.js/cli-serve
+
+# [3.0.0-rc.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.2...v3.0.0-rc.3) (2022-09-16)
+
+### Bug Fixes
+
+- add cors headers to /info and /pkg/<name> ([#922](https://github.com/qlik-oss/nebula.js/issues/922)) ([476d7bd](https://github.com/qlik-oss/nebula.js/commit/476d7bdba9423b04426da1163cd5075799538600))
+
+### Features
+
+- **serve:** add mfe mode ([#919](https://github.com/qlik-oss/nebula.js/issues/919)) ([48a7c40](https://github.com/qlik-oss/nebula.js/commit/48a7c40d013673e5dcb165463fb750bbae4fb449))
+
 # [3.0.0-rc.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.0-rc.1...v3.0.0-rc.2) (2022-08-31)
 
 **Note:** Version bump only for package @nebula.js/cli-serve

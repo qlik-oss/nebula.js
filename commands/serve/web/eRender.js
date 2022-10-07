@@ -2,7 +2,7 @@
 import { embed } from '@nebula.js/stardust';
 import snapshooter from '@nebula.js/snapshooter/client';
 
-import { openApp, params, info as serverInfo } from './connect';
+import { openApp, getParams, getConnectionInfo } from './connect';
 import initiateWatch from './hot';
 import renderFixture from './render-fixture';
 
@@ -31,11 +31,12 @@ const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
 };
 
 async function renderWithEngine() {
-  const info = await serverInfo;
+  const info = await getConnectionInfo();
   initiateWatch(info);
   if (!info.enigma.appId) {
     location.href = location.origin; //eslint-disable-line
   }
+  const params = getParams();
   const app = await openApp(info.enigma.appId);
   const nebbie = await nuke({ app, ...info, theme: params.theme, language: params.language });
   const element = document.querySelector('#chart-container');
@@ -79,7 +80,7 @@ async function renderWithEngine() {
 }
 
 async function renderSnapshot() {
-  const info = await serverInfo;
+  const info = await getConnectionInfo();
   const { themes, supernova } = info;
   initiateWatch(info);
   const element = document.querySelector('#chart-container');
@@ -107,6 +108,7 @@ async function renderSnapshot() {
   });
 
   window.onHotChange(supernova.name, async () => {
+    const params = getParams();
     snapshooter({
       embed: n,
       element,
@@ -116,6 +118,7 @@ async function renderSnapshot() {
 }
 
 function render() {
+  const params = getParams();
   if (params.fixture) {
     renderFixture(params);
   } else if (params.snapshot) {
