@@ -1,7 +1,7 @@
 import paletteResolverFn from '../palette-resolver';
 
 describe('palette-resolver', () => {
-  it('dataScales()', () => {
+  test('dataScales()', () => {
     expect(
       paletteResolverFn({
         scales: [
@@ -14,7 +14,7 @@ describe('palette-resolver', () => {
           },
         ],
       }).dataScales()
-    ).to.eql([
+    ).toEqual([
       {
         key: 'p',
         name: 'name',
@@ -26,7 +26,7 @@ describe('palette-resolver', () => {
     ]);
   });
 
-  it('dataPalettes()', () => {
+  test('dataPalettes()', () => {
     expect(
       paletteResolverFn({
         palettes: {
@@ -41,7 +41,7 @@ describe('palette-resolver', () => {
           ],
         },
       }).dataPalettes()
-    ).to.eql([
+    ).toEqual([
       {
         key: 'p',
         name: 'name',
@@ -52,7 +52,7 @@ describe('palette-resolver', () => {
     ]);
   });
 
-  it('uiPalettes()', () => {
+  test('uiPalettes()', () => {
     expect(
       paletteResolverFn({
         palettes: {
@@ -65,7 +65,7 @@ describe('palette-resolver', () => {
           ],
         },
       }).uiPalettes()
-    ).to.eql([
+    ).toEqual([
       {
         key: 'ui',
         name: 'name',
@@ -76,7 +76,7 @@ describe('palette-resolver', () => {
     ]);
   });
 
-  it('dataColors()', () => {
+  test('dataColors()', () => {
     expect(
       paletteResolverFn({
         dataColors: {
@@ -85,7 +85,7 @@ describe('palette-resolver', () => {
           othersColor: 'others',
         },
       }).dataColors()
-    ).to.eql({
+    ).toEqual({
       primary: 'primary',
       nil: 'null',
       others: 'others',
@@ -94,40 +94,43 @@ describe('palette-resolver', () => {
 
   describe('uiColor', () => {
     let p;
-    let uiPalettes;
+    let uiPalettesMock;
+
     beforeEach(() => {
+      uiPalettesMock = jest.fn();
       p = paletteResolverFn();
-      uiPalettes = sinon.stub(p, 'uiPalettes');
+      jest.spyOn(p, 'uiPalettes').mockImplementation(uiPalettesMock);
     });
     afterEach(() => {
-      uiPalettes.restore();
+      jest.resetAllMocks();
+      jest.restoreAllMocks();
     });
 
-    it('should return color when index < 0 or undefined', () => {
-      expect(p.uiColor({ color: 'red' })).to.equal('red');
-      expect(p.uiColor({ color: 'red', index: -1 })).to.equal('red');
-      expect(uiPalettes.callCount).to.equal(0);
+    test('should return color when index < 0 or undefined', () => {
+      expect(p.uiColor({ color: 'red' })).toBe('red');
+      expect(p.uiColor({ color: 'red', index: -1 })).toBe('red');
+      expect(uiPalettesMock).toHaveBeenCalledTimes(0);
     });
 
-    it('should return color when ui palette is falsy', () => {
-      uiPalettes.returns([]);
-      expect(p.uiColor({ color: 'red', index: 0 })).to.equal('red');
-      expect(uiPalettes.callCount).to.equal(1);
+    test('should return color when ui palette is falsy', () => {
+      uiPalettesMock.mockReturnValue([]);
+      expect(p.uiColor({ color: 'red', index: 0 })).toEqual('red');
+      expect(uiPalettesMock).toHaveBeenCalledTimes(1);
     });
 
-    it('should return color when index is out of bounds', () => {
-      uiPalettes.returns([{ colors: ['a', 'b', 'c'] }]);
-      expect(p.uiColor({ color: 'red', index: 3 })).to.equal('red');
+    test('should return color when index is out of bounds', () => {
+      uiPalettesMock.mockReturnValue([{ colors: ['a', 'b', 'c'] }]);
+      expect(p.uiColor({ color: 'red', index: 3 })).toEqual('red');
 
-      expect(uiPalettes.callCount).to.equal(1);
+      expect(uiPalettesMock).toHaveBeenCalledTimes(1);
       // should keep cached palette
       p.uiColor({ color: 'red', index: 3 });
-      expect(uiPalettes.callCount).to.equal(1);
+      expect(uiPalettesMock).toHaveBeenCalledTimes(1);
     });
 
-    it('should return index from palette when index is within bounds', () => {
-      uiPalettes.returns([{ colors: ['a', 'b', 'c'] }]);
-      expect(p.uiColor({ color: 'red', index: 1 })).to.equal('b');
+    test('should return index from palette when index is within bounds', () => {
+      uiPalettesMock.mockReturnValue([{ colors: ['a', 'b', 'c'] }]);
+      expect(p.uiColor({ color: 'red', index: 1 })).toBe('b');
     });
   });
 });
