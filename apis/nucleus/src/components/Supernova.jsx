@@ -28,6 +28,8 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
   const [renderCnt, setRenderCnt] = useState(0);
   const [containerRef, containerRect, containerNode] = useRect();
   const [snNode, setSnNode] = useState(null);
+  const [bgImage, setBgImage] = useState(undefined);
+  const [bgComp, setBgComp] = useState(null);
   const snRef = useCallback((ref) => {
     if (!ref) {
       return;
@@ -35,20 +37,19 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     setSnNode(ref);
   }, []);
 
-  const bgComp = layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
+  const resolveBgImage = () => {
+    const bgImageDef = bgComp && bgComp.bgImage ? bgComp.bgImage : null;
 
-  const bgImageDef = bgComp && bgComp.bgImage ? bgComp.bgImage : null;
-
-  let bgImage;
-
-  if (bgImageDef && bgImageDef.mode === 'media') {
-    bgImage =
-      bgImageDef.mediaUrl && bgImageDef.mediaUrl.qStaticContentUrl && bgImageDef.mediaUrl.qStaticContentUrl.qUrl
+    if (bgImageDef && bgImageDef.mode === 'media') {
+      return bgImageDef.mediaUrl && bgImageDef.mediaUrl.qStaticContentUrl && bgImageDef.mediaUrl.qStaticContentUrl.qUrl
         ? decodeURIComponent(bgImageDef.mediaUrl.qStaticContentUrl.qUrl)
         : undefined;
-  } else if (bgImageDef && bgImageDef.mode === 'expression') {
-    bgImage = bgImageDef.expressionUrl ? decodeURIComponent(bgImageDef.expressionUrl) : undefined;
-  }
+    }
+    if (bgImageDef && bgImageDef.mode === 'expression') {
+      return bgImageDef.expressionUrl ? decodeURIComponent(bgImageDef.expressionUrl) : undefined;
+    }
+    return undefined;
+  };
 
   // Mount / Unmount
   useEffect(() => {
@@ -61,6 +62,15 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       component.willUnmount();
     };
   }, [snNode, component]);
+
+  // Resolve Background Image
+  useEffect(() => {
+    setBgComp(layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null);
+  }, [layout]);
+
+  useEffect(() => {
+    setBgImage(resolveBgImage(bgComp));
+  }, [bgComp]);
 
   // Render
   useEffect(() => {

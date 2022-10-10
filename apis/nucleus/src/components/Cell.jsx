@@ -290,6 +290,7 @@ const Cell = forwardRef(
     const [selections] = useObjectSelections(app, model);
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
+    const [bgColor, setBgColor] = useState(undefined);
     const focusHandler = useRef({
       focusToolbarButton(last) {
         // eslint-disable-next-line react/no-this-in-sfc
@@ -297,22 +298,27 @@ const Cell = forwardRef(
       },
     });
 
-    const bgComp = layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
+    const resolveBgColor = () => {
+      const bgComp = layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
 
-    let bgColor;
-
-    if (bgComp && bgComp.bgColor && bgComp.bgColor.useColorExpression) {
-      if (bgComp.bgColor.urlColor) {
-        bgComp.bgColor.urlColor = { color: bgComp.bgColor.urlColor };
-      }
-
-      bgColor = bgComp.bgColor.urlColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.urlColor) : undefined;
-    } else if (bgComp && bgComp.bgColor && !bgComp.bgColor.useColorExpression)
-      bgColor = bgComp.bgColor.cpColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.cpColor) : undefined;
+      if (bgComp && bgComp.bgColor && bgComp.bgColor.useColorExpression) {
+        if (bgComp.bgColor.urlColor) {
+          bgComp.bgColor.urlColor = { color: bgComp.bgColor.urlColor };
+        }
+        setBgColor(
+          bgComp.bgColor.urlColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.urlColor) : undefined
+        );
+      } else if (bgComp && bgComp.bgColor && !bgComp.bgColor.useColorExpression)
+        setBgColor(bgComp.bgColor.cpColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.cpColor) : undefined);
+    };
 
     useEffect(() => {
       eventmixin(focusHandler.current);
     }, []);
+
+    useEffect(() => {
+      resolveBgColor();
+    }, [layout, theme]);
 
     focusHandler.current.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
