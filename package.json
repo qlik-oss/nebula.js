@@ -17,7 +17,7 @@
     "test": "yarn run test:unit",
     "test:jest": "jest --maxWorkers=2",
     "test:jest:watch": "jest --watch",
-    "test:jest:coverage": "jest --coverage --maxWorkers=2",
+    "test:jest:coverage": "jest --coverage",
     "mashup": "node scripts/start-mashup.js",
     "test:mashup": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/mashup/**/*.int.js'",
     "test:integration": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/integration/**/*.int.js'",
