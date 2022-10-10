@@ -105,7 +105,7 @@ jobs:
       - run:
           name: Jest Unit Tests
           command: |
-            yarn test:jest --coverage --reporters=default --reporters=jest-junit
+            yarn test:jest -- --coverage
             if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
               echo "Uploading coverage results to coveralls.io..."
               cat ./coverage/unit/lcov.info | npx coveralls
