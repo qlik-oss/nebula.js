@@ -305,11 +305,11 @@ const Cell = forwardRef(
         if (bgComp.bgColor.urlColor) {
           bgComp.bgColor.urlColor = { color: bgComp.bgColor.urlColor };
         }
-        setBgColor(
-          bgComp.bgColor.urlColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.urlColor) : undefined
-        );
-      } else if (bgComp && bgComp.bgColor && !bgComp.bgColor.useColorExpression)
-        setBgColor(bgComp.bgColor.cpColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.cpColor) : undefined);
+        return bgComp.bgColor.urlColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.urlColor) : undefined;
+      }
+      if (bgComp && bgComp.bgColor && !bgComp.bgColor.useColorExpression)
+        return bgComp.bgColor.cpColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.cpColor) : undefined;
+      return undefined;
     };
 
     useEffect(() => {
@@ -317,7 +317,7 @@ const Cell = forwardRef(
     }, []);
 
     useEffect(() => {
-      resolveBgColor();
+      setBgColor(resolveBgColor());
     }, [layout, theme]);
 
     focusHandler.current.blurCallback = (resetFocus) => {
