@@ -109,8 +109,15 @@ jobs:
       - store_test_results:
           path: coverage/junit
       - run:
-          name: Jest Unit Tests
-          command: yarn run test:jest
+          name: Jest Unit Tests and Upload to code climate
+          command: |
+            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+            chmod +x ./cc-test-reporter
+            ./cc-test-reporter before-build
+            yarn test:jest:coverage
+            ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+      - store_artifacts:
+          path: coverage
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
