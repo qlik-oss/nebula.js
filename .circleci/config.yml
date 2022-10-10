@@ -117,7 +117,7 @@ jobs:
           name: Jest Unit Tests and Upload to code climate
           command: |
             ./cc-test-reporter before-build
-            yarn test:jest:coverage -- --maxWorkers=2
+            yarn jest --coverage --reporters=default --reporters=jest-junit --maxWorkers=2
             ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
