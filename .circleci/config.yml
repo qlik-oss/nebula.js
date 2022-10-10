@@ -102,8 +102,6 @@ jobs:
           name: Unit tests
           command: |
             yarn run test:unit --mocha.bail false --mocha.reporter mocha-junit-reporter --mocha.reporterOptions.mochaFile ./coverage/junit/junit.xml
-      - store_test_results:
-          path: coverage/junit
       - run:
           name: Jest Unit Tests
           command: |
@@ -112,6 +110,8 @@ jobs:
               echo "Uploading coverage results to coveralls.io..."
               cat ./coverage/unit/lcov.info | npx coveralls
             fi
+      - store_test_results:
+          path: coverage/junit
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
