@@ -36,22 +36,23 @@ export default function DataCube({ setProperties, target, properties }) {
   const listBoxHandler = supportsMultipleDims ? loContainerHandler : loHandler;
 
   const createHandler = target.propertyPath.match('/qHyperCube') ? hcHandler : listBoxHandler;
+  const dc = getValue(properties, target.propertyPath);
   const handler = useMemo(
     () =>
       createHandler({
         def: target,
-        dc: getValue(properties, target.propertyPath),
+        dc,
         properties,
         dimensions,
       }),
-    [properties]
+    [dc, target, properties, dimensions]
   );
 
   const onDimensionAdded = (a) => {
-    const dim = typeof a === 'object' ? { qLibraryId: a.qId } : { qDef: { qFieldDefs: [a] } };
-    handler.addDimension(dim);
+    const dim = typeof a === 'object' ? { qLibraryId: a.qId } : a;
+    const addedDim = handler.addDimension(dim);
     setProperties(properties).then(() => {
-      setDimensions([...dimensions, dim]);
+      setDimensions([...dimensions, addedDim]);
     });
   };
 

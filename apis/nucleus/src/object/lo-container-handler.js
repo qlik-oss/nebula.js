@@ -2,6 +2,12 @@
 
 import uid from './uid';
 
+const nxDimension = (f) => ({
+  qDef: {
+    qFieldDefs: [f],
+  },
+});
+
 export default function loContainerHandler({ dc: loc, def, properties, dimensions }) {
   const objectProperties = properties;
 
@@ -13,9 +19,16 @@ export default function loContainerHandler({ dc: loc, def, properties, dimension
       return [];
     },
     addDimension(d) {
-      const dimension = { ...d, qDef: d.qDef || {} };
+      const dimension =
+        typeof d === 'string'
+          ? nxDimension(d)
+          : {
+              ...d,
+              qDef: d.qDef || {},
+            };
+
       dimension.qDef.cId = dimension.qDef.cId || uid();
-      dimension.qDef.qSortCriterias = loc.qDef.qSortCriterias || [
+      dimension.qDef.qSortCriterias = (loc && loc.qDef.qSortCriterias) || [
         {
           qSortByState: 1,
           qSortByLoadOrder: 1,
@@ -25,10 +38,12 @@ export default function loContainerHandler({ dc: loc, def, properties, dimension
       ];
 
       def.dimensions.added(dimension, objectProperties);
+      return dimension;
     },
     removeDimension(idx) {
       const dimension = dimensions[idx];
       def.dimensions.removed(dimension, objectProperties, idx);
+      return dimension;
     },
     // addMeasure() {},
     // removeMeasure() {},

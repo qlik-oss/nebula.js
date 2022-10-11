@@ -2,6 +2,12 @@
 
 import uid from './uid';
 
+const nxDimension = (f) => ({
+  qDef: {
+    qFieldDefs: [f],
+  },
+});
+
 export default function loHandler({ dc: lo, def, properties }) {
   lo.qInitialDataFetch = lo.qInitialDataFetch || [];
 
@@ -16,8 +22,13 @@ export default function loHandler({ dc: lo, def, properties }) {
       return [];
     },
     addDimension(d) {
-      const dimension = { ...d, qDef: d.qDef || {} };
-
+      const dimension =
+        typeof d === 'string'
+          ? nxDimension(d)
+          : {
+              ...d,
+              qDef: d.qDef || {},
+            };
       dimension.qDef.cId = dimension.qDef.cId || uid();
 
       dimension.qDef.qSortCriterias = lo.qDef.qSortCriterias || [
@@ -32,12 +43,14 @@ export default function loHandler({ dc: lo, def, properties }) {
         lo[k] = dimension[k];
       });
       def.dimensions.added(dimension, objectProperties);
+      return dimension;
     },
     removeDimension(idx) {
       const dimension = lo;
       delete lo.qDef;
       delete lo.qLibraryId;
       def.dimensions.removed(dimension, objectProperties, idx);
+      return dimension;
     },
     addMeasure() {},
     removeMeasure() {},
