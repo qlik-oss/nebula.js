@@ -40,4 +40,5 @@ module.exports = {
     '!**/*.conf.js',
   ],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
+  reporters: ['default', ['jest-junit', { outputDirectory: 'coverage/junit/' }]],
 };
