@@ -74,6 +74,16 @@ describe('enigma-mocker', () => {
       expect(await app.getObject('aabbcc')).not.toBe(undefined);
     });
 
+    test('error for unmatched IDs', async () => {
+      const genericObjectA = {
+        id: 'AABBCC',
+        getLayout: { qInfo: { qId: '112233' } },
+      };
+      await expect(async () => {
+        await createEnigmaMocker([genericObjectA]);
+      }).rejects.toThrow();
+    });
+
     describe('getLayout', () => {
       test('shoud support fixed value', async () => {
         const app = await createEnigmaMocker(genericObjects);
