@@ -302,13 +302,15 @@ const Cell = forwardRef(
       const bgComp = layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
 
       if (bgComp && bgComp.bgColor && bgComp.bgColor.useColorExpression) {
-        if (bgComp.bgColor.urlColor) {
-          bgComp.bgColor.urlColor = { color: bgComp.bgColor.urlColor };
+        if (bgComp.bgColor.colorExpression) {
+          bgComp.bgColor.colorExpression = { color: bgComp.bgColor.colorExpression };
         }
-        return bgComp.bgColor.urlColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.urlColor) : undefined;
+        return bgComp.bgColor.colorExpression
+          ? halo.public.theme.getColorPickerColor(bgComp.bgColor.colorExpression)
+          : undefined;
       }
       if (bgComp && bgComp.bgColor && !bgComp.bgColor.useColorExpression)
-        return bgComp.bgColor.cpColor ? halo.public.theme.getColorPickerColor(bgComp.bgColor.cpColor) : undefined;
+        return bgComp.bgColor.color ? halo.public.theme.getColorPickerColor(bgComp.bgColor.color) : undefined;
       return undefined;
     };
 
