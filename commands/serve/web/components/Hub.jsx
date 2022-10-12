@@ -23,6 +23,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { getConnectionInfo, connect } from '../connect';
 import storageFn from '../storage';
+import { Button } from '@mui/material';
 
 const storage = storageFn({});
 const theme = createTheme('light');
@@ -191,28 +192,69 @@ function SelectEngine({ info, children }) {
 function AppList({ info, glob, treatAsDesktop }) {
   const [items, setItems] = useState();
   const [waiting, setWaiting] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const t = setTimeout(() => {
       setWaiting(true);
     }, 750);
 
-    glob.getDocList().then((its) => {
-      clearTimeout(t);
-      setWaiting(false);
-      setItems(its);
-    });
+    const searchParam = new URLSearchParams(window.location.search);
+    if (!searchParam.get('shouldFetchAppList')) {
+      glob.getDocList().then((its) => {
+        clearTimeout(t);
+        setWaiting(false);
+        setItems(its);
+      });
+    }
 
     return () => {
       clearTimeout(t);
     };
   }, []);
 
+  useEffect(() => {
+    const searchParam = new URLSearchParams(window.location.search);
+    if (searchParam.get('shouldFetchAppList')) {
+      getAppList().then((apps) => {
+        setWaiting(false);
+        setItems(apps);
+      });
+      // const url = new URL(window.location);
+      // url.searchParams.delete('shouldFetchAppList');
+      // window.history.replaceState(null, null, url);
+    }
+  }, [window.location.href]);
+
+  const getAppList = async () => {
+    const apps = await (await fetch(`/apps`)).json();
+    return apps;
+  };
+
+  // TODO:
+  // THIS IS TEMP
+  const handleDeAuth = async (evt) => {
+    try {
+      setLoading(true);
+      const result = await (await fetch('/deauthorize')).json();
+      console.log({ result });
+      window.location.href = '/';
+    } catch (error) {
+      console.log({ error });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <>
       <Typography variant="h5" gutterBottom>
         Select an app
       </Typography>
+      <Button disabled={loading} color="error" variant="contained" onClick={handleDeAuth}>
+        {loading ? <CircularProgress size={24} /> : 'Deauthorize'}
+      </Button>
+      <hr />
       {waiting && <CircularProgress size={32} />}
       {items && items.length > 0 && (
         <List>
@@ -312,9 +354,14 @@ export default function Hub() {
 
         setActiveStep(1);
         const conns = storage.get('connections') || [];
-        const url = `${info.engineUrl}${
-          info.webIntegrationId ? `?qlik-web-integration-id=${info.webIntegrationId}` : ''
-        }`;
+        let url = '';
+        if (info.webIntegrationId) {
+          url = `${info.engineUrl}${info.webIntegrationId ? `?qlik-web-integration-id=${info.webIntegrationId}` : ''}`;
+        }
+        if (info.clientId) {
+          url = `${info.engineUrl}${info.clientId ? `?qlik-client-id=${info.clientId}` : ''}`;
+        }
+
         if (conns.indexOf(url) === -1) {
           conns.push(url);
           storage.save('connections', conns);

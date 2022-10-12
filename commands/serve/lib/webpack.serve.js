@@ -14,6 +14,28 @@ const snapshotRouter = require('./snapshot-router');
 const httpsKeyPath = path.join(homedir, '.certs/key.pem');
 const httpsCertPath = path.join(homedir, '.certs/cert.pem');
 
+const { Auth, AuthType } = require('@qlik/sdk');
+
+let authInstance = null;
+const getAuthInstance = (req, host, clientId) => {
+  if (authInstance) return authInstance;
+
+  // const redirectUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
+
+  // console.log({ redirectUrl });
+
+  authInstance = new Auth({
+    authType: AuthType.OAuth2,
+    // TODO: temp, it should be fixed in new releases
+    host: `https://${host}`,
+    clientId: clientId,
+    // TODO:
+    // make this dynamic
+    redirectUri: 'http://localhost:8000/login/callback',
+  });
+  return authInstance;
+};
+
 module.exports = async ({
   host,
   port,
@@ -155,6 +177,87 @@ module.exports = async ({
           types: serveConfig.types,
           keyboardNavigation: serveConfig.keyboardNavigation,
         });
+      });
+
+      let _host = null;
+      let _clientId = null;
+
+      app.get('/oauth', async (req, res) => {
+        const { host, clientId } = req.query;
+        if (!_host && !_clientId) {
+          _host = host;
+          _clientId = clientId;
+        }
+
+        const authInstance = getAuthInstance(req, host, clientId);
+
+        // const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
+
+        const isAuthorized = await authInstance.isAuthorized();
+        if (!isAuthorized) {
+          const { url } = await authInstance.generateAuthorizationUrl();
+          res.status(200).json({
+            redirectUrl: url,
+          });
+        } else {
+          // DO THIS AFTER AUTHCALL
+          const redirectUrl = `${req.protocol}://${req.get(
+            'host'
+          )}/?engine_url=wss://${_host}&qlik-client-id=${_clientId}&shouldFetchAppList=true`;
+          console.log({ _host, _clientId, getApps: true, shouldRedirectToOrigin: true, redirectUrl });
+          _host = null;
+          _clientId = null;
+          res.redirect(redirectUrl);
+          // res.status(200).json({
+          //   shouldGetApps: true,
+          //   link: redirectUrl,
+          // });
+        }
+      });
+
+      app.get('/login/callback', async (req, res) => {
+        const authLink = new URL(req.url, `http://${req.headers.host}`).href;
+        // console.log({ authLink });
+        try {
+          // TODO:
+          // this is a temp fix in front end side
+          // (temp workaround of not presisting origin while backend tries to authorize user)
+          // they need to handle this in qlik-sdk-typescript repo
+          // and will notify us about when they got fixed it,
+          // but until then, we need to take care of it here!
+          authInstance.rest.interceptors.request.use((_req) => {
+            _req[1]['headers'] = { origin: 'http://localhost:8000' };
+            return _req;
+          });
+          const result = await authInstance.authorize(authLink);
+          // console.log({ result });
+          res.redirect(301, '/oauth/');
+          // const redirectPath = `/?engine_url=wss://${_host}&qlik-client-id=${_clientId}`;
+          // _host = null;
+          // _clientId = null;
+          // res.redirect(301, redirectPath);
+        } catch (err) {
+          console.log({ err });
+          res.status(401).send(JSON.stringify(err, null, 2));
+        }
+      });
+
+      app.get('/deauthorize', async (req, res) => {
+        await authInstance.deauthorize();
+        res.status(200).json({
+          deauthorize: true,
+        });
+      });
+
+      app.get('/apps', async (req, res) => {
+        const url = `/items?resourceType=app&limit=30&sort=-updatedAt`;
+        const { data = [] } = await (await authInstance.rest(url)).json();
+        res.status(200).json(
+          data.map((d) => ({
+            qDocId: d.resourceId,
+            qTitle: d.name,
+          }))
+        );
       });
 
       if (serveConfig.resources) {

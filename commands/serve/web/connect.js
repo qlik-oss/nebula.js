@@ -81,6 +81,9 @@ const getConnectionInfo = () =>
       if (params['qlik-web-integration-id']) {
         info.webIntegrationId = params['qlik-web-integration-id'];
       }
+      if (params['qlik-client-id']) {
+        info.clientId = params['qlik-client-id'];
+      }
       if (info.invalid) {
         return info;
       }
@@ -105,6 +108,7 @@ const getAuthInstance = ({ webIntegrationId, host }) => {
 const connect = async () => {
   try {
     const {
+      clientId,
       webIntegrationId,
       enigma: enigmaInfo,
       enigma: { host },
@@ -125,6 +129,37 @@ const connect = async () => {
         getConfiguration: async () => ({}),
       };
     }
+
+    // if we have client id:
+    // 1. call /oauth from dev server
+    // 2. do the autherntication
+    // 3. call /items
+    // 4. return list of app
+    if (clientId) {
+      console.log({
+        clientId,
+        host,
+      });
+      return {
+        getDocList: async () => {
+          const resp = await (await fetch(`/oauth?host=${host}&clientId=${clientId}`)).json();
+          console.log(JSON.stringify({ resp }, null, 2));
+
+          if (resp.redirectUrl) {
+            // TODO:
+            // what happens after redirect!
+            window.location.href = resp.redirectUrl;
+          } else {
+            // TODO: this happens in HUB
+            // const apps = await (await fetch(`/apps`)).json();
+            // console.log({ apps });
+            // return apps;
+          }
+        },
+        getConfiguration: async () => ({}),
+      };
+    }
+
     const url = SenseUtilities.buildUrl({
       secure: false,
       ...enigmaInfo,
@@ -160,6 +195,7 @@ const openApp = async (id) => {
     const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
     return enigmaGlobal.openDoc(id);
   } catch (error) {
+    console.log({ error });
     throw new Error('Failed to open app!');
   }
 };
