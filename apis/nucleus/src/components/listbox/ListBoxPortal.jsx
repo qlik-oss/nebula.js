@@ -44,7 +44,7 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, options }) {
       ? useExistingModel({ app, qId, options })
       : useOnTheFlyModel({ app, fieldIdentifier, stateName, options });
   const selections =
-    selectionsApi === SELECTIONS_API.EXTERNAL ? options.selectionsApi : useObjectSelections(app, model);
+    selectionsApi === SELECTIONS_API.EXTERNAL ? options.selectionsApi : useObjectSelections(app, model)[0];
 
   if (!selections || !model) {
     return null;
