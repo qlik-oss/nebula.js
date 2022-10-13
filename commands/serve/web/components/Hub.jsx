@@ -23,7 +23,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { getConnectionInfo, connect } from '../connect';
 import storageFn from '../storage';
-import { Button } from '@mui/material';
 
 const storage = storageFn({});
 const theme = createTheme('light');
@@ -192,69 +191,41 @@ function SelectEngine({ info, children }) {
 function AppList({ info, glob, treatAsDesktop }) {
   const [items, setItems] = useState();
   const [waiting, setWaiting] = useState(false);
-  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setWaiting(true);
-    }, 750);
-
-    const searchParam = new URLSearchParams(window.location.search);
-    if (!searchParam.get('shouldFetchAppList')) {
-      glob.getDocList().then((its) => {
-        clearTimeout(t);
-        setWaiting(false);
-        setItems(its);
-      });
-    }
-
-    return () => {
-      clearTimeout(t);
-    };
-  }, []);
-
-  useEffect(() => {
-    const searchParam = new URLSearchParams(window.location.search);
-    if (searchParam.get('shouldFetchAppList')) {
-      getAppList().then((apps) => {
-        setWaiting(false);
-        setItems(apps);
-      });
-      // const url = new URL(window.location);
-      // url.searchParams.delete('shouldFetchAppList');
-      // window.history.replaceState(null, null, url);
-    }
-  }, [window.location.href]);
+  const checkIfAuthorized = async () => {
+    const { isAuthorized } = await (await fetch('/isAuthorized')).json();
+    return { isAuthorized };
+  };
 
   const getAppList = async () => {
     const apps = await (await fetch(`/apps`)).json();
-    return apps;
+    return apps || [];
   };
 
-  // TODO:
-  // THIS IS TEMP
-  const handleDeAuth = async (evt) => {
-    try {
-      setLoading(true);
-      const result = await (await fetch('/deauthorize')).json();
-      console.log({ result });
-      window.location.href = '/';
-    } catch (error) {
-      console.log({ error });
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    setWaiting(true);
+    const searchParam = new URLSearchParams(window.location.search);
+
+    // if is already authorized and does not have "shouldFetchAppList" -> append it to the url
+    checkIfAuthorized().then(({ isAuthorized }) => {
+      if (isAuthorized && !searchParam.get('shouldFetchAppList')) {
+        const url = new URL(window.location.href);
+        url.searchParams.append('shouldFetchAppList', true);
+        window.location.href = decodeURIComponent(url.toString());
+      }
+    });
+
+    (searchParam.get('shouldFetchAppList') ? getAppList() : glob.getDocList()).then((apps) => {
+      setItems(apps);
+      if (apps) setWaiting(false);
+    });
+  }, [window.location.search, setWaiting]);
 
   return (
     <>
       <Typography variant="h5" gutterBottom>
         Select an app
       </Typography>
-      <Button disabled={loading} color="error" variant="contained" onClick={handleDeAuth}>
-        {loading ? <CircularProgress size={24} /> : 'Deauthorize'}
-      </Button>
-      <hr />
       {waiting && <CircularProgress size={32} />}
       {items && items.length > 0 && (
         <List>
@@ -263,10 +234,12 @@ function AppList({ info, glob, treatAsDesktop }) {
               button
               key={li.qDocId}
               component="a"
-              href={`/dev/${window.location.search.replace(
-                info.engineUrl,
-                `${info.engineUrl}/app/${encodeURIComponent(treatAsDesktop ? li.qDocName : li.qDocId)}`
-              )}`}
+              href={`/dev/${window.location.search
+                .replace(
+                  info.engineUrl,
+                  `${info.engineUrl}/app/${encodeURIComponent(treatAsDesktop ? li.qDocName : li.qDocId)}`
+                )
+                .replace('&shouldFetchAppList=true', '')}`}
             >
               <ListItemText primary={li.qTitle} secondary={li.qDocId} />
             </ListItem>
@@ -319,6 +292,17 @@ export default function Hub() {
     });
   }, []);
 
+  const manageConnections = (info) => {
+    const conns = storage.get('connections') || [];
+    let url = '';
+    if (info.clientId) url = `${info.engineUrl}?qlik-client-id=${info.clientId}`;
+    if (info.webIntegrationId) url = `${info.engineUrl}?qlik-web-integration-id=${info.webIntegrationId}`;
+    if (conns.indexOf(url) === -1 && url.length !== 0) {
+      conns.push(url);
+      storage.save('connections', conns);
+    }
+  };
+
   useEffect(() => {
     if (!info || !info.engineUrl) {
       return;
@@ -347,25 +331,9 @@ export default function Hub() {
         }
 
         setGlobal(g);
-
-        if (!g.getDocList) {
-          return;
-        }
-
+        if (!g.getDocList) return;
         setActiveStep(1);
-        const conns = storage.get('connections') || [];
-        let url = '';
-        if (info.webIntegrationId) {
-          url = `${info.engineUrl}${info.webIntegrationId ? `?qlik-web-integration-id=${info.webIntegrationId}` : ''}`;
-        }
-        if (info.clientId) {
-          url = `${info.engineUrl}${info.clientId ? `?qlik-client-id=${info.clientId}` : ''}`;
-        }
-
-        if (conns.indexOf(url) === -1) {
-          conns.push(url);
-          storage.save('connections', conns);
-        }
+        manageConnections(info);
         g.getConfiguration().then((c) => {
           if (c.qFeatures && c.qFeatures.qIsDesktop) {
             setTreatAsDesktop(true);

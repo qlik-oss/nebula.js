@@ -114,6 +114,12 @@ const connect = async () => {
       enigma: { host },
     } = await getConnectionInfo();
 
+    // if no clientId + user is already authorized -> deAuthorize user
+    const { isAuthorized } = await (await fetch('/isAuthorized')).json();
+    if (!clientId && isAuthorized) {
+      await (await fetch('/deauthorize')).json();
+    }
+
     if (webIntegrationId) {
       const authInstance = getAuthInstance({ webIntegrationId, host });
 
@@ -136,25 +142,10 @@ const connect = async () => {
     // 3. call /items
     // 4. return list of app
     if (clientId) {
-      console.log({
-        clientId,
-        host,
-      });
       return {
         getDocList: async () => {
           const resp = await (await fetch(`/oauth?host=${host}&clientId=${clientId}`)).json();
-          console.log(JSON.stringify({ resp }, null, 2));
-
-          if (resp.redirectUrl) {
-            // TODO:
-            // what happens after redirect!
-            window.location.href = resp.redirectUrl;
-          } else {
-            // TODO: this happens in HUB
-            // const apps = await (await fetch(`/apps`)).json();
-            // console.log({ apps });
-            // return apps;
-          }
+          if (resp.redirectUrl) window.location.href = resp.redirectUrl;
         },
         getConfiguration: async () => ({}),
       };
@@ -179,6 +170,7 @@ const connect = async () => {
 const openApp = async (id) => {
   try {
     const {
+      clientId,
       webIntegrationId,
       enigma: enigmaInfo,
       enigma: { host },
@@ -188,6 +180,9 @@ const openApp = async (id) => {
     if (webIntegrationId) {
       const authInstance = getAuthInstance({ webIntegrationId, host });
       url = await authInstance.generateWebsocketUrl(id);
+    } else if (clientId) {
+      const { webSocketUrl } = await (await fetch(`/getSocketUrl/${id}`)).json();
+      url = webSocketUrl;
     } else {
       url = SenseUtilities.buildUrl(enigmaInfo);
     }

@@ -4,6 +4,7 @@ const chalk = require('chalk');
 const express = require('express');
 const fs = require('fs');
 const homedir = require('os').homedir();
+const { Auth, AuthType } = require('@qlik/sdk');
 
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
@@ -14,24 +15,16 @@ const snapshotRouter = require('./snapshot-router');
 const httpsKeyPath = path.join(homedir, '.certs/key.pem');
 const httpsCertPath = path.join(homedir, '.certs/cert.pem');
 
-const { Auth, AuthType } = require('@qlik/sdk');
-
 let authInstance = null;
-const getAuthInstance = (req, host, clientId) => {
+const getAuthInstance = (returnToOrigin, host, clientId) => {
   if (authInstance) return authInstance;
-
-  // const redirectUrl = `${req.protocol}://${req.get('host')}${req.originalUrl}`;
-
-  // console.log({ redirectUrl });
 
   authInstance = new Auth({
     authType: AuthType.OAuth2,
-    // TODO: temp, it should be fixed in new releases
+    clientId,
+    // TODO: temp https appending, it should be fixed in new releases of sdk
     host: `https://${host}`,
-    clientId: clientId,
-    // TODO:
-    // make this dynamic
-    redirectUri: 'http://localhost:8000/login/callback',
+    redirectUri: `${returnToOrigin}/login/callback`,
   });
   return authInstance;
 };
@@ -189,10 +182,8 @@ module.exports = async ({
           _clientId = clientId;
         }
 
-        const authInstance = getAuthInstance(req, host, clientId);
-
-        // const fullUrl = req.protocol + '://' + req.get('host') + req.originalUrl;
-
+        const returnTo = `${req.protocol}://${req.get('host')}`;
+        const authInstance = getAuthInstance(returnTo, host, clientId);
         const isAuthorized = await authInstance.isAuthorized();
         if (!isAuthorized) {
           const { url } = await authInstance.generateAuthorizationUrl();
@@ -200,24 +191,17 @@ module.exports = async ({
             redirectUrl: url,
           });
         } else {
-          // DO THIS AFTER AUTHCALL
           const redirectUrl = `${req.protocol}://${req.get(
             'host'
           )}/?engine_url=wss://${_host}&qlik-client-id=${_clientId}&shouldFetchAppList=true`;
-          console.log({ _host, _clientId, getApps: true, shouldRedirectToOrigin: true, redirectUrl });
           _host = null;
           _clientId = null;
           res.redirect(redirectUrl);
-          // res.status(200).json({
-          //   shouldGetApps: true,
-          //   link: redirectUrl,
-          // });
         }
       });
 
       app.get('/login/callback', async (req, res) => {
         const authLink = new URL(req.url, `http://${req.headers.host}`).href;
-        // console.log({ authLink });
         try {
           // TODO:
           // this is a temp fix in front end side
@@ -229,24 +213,45 @@ module.exports = async ({
             _req[1]['headers'] = { origin: 'http://localhost:8000' };
             return _req;
           });
-          const result = await authInstance.authorize(authLink);
-          // console.log({ result });
+          await authInstance.authorize(authLink);
           res.redirect(301, '/oauth/');
-          // const redirectPath = `/?engine_url=wss://${_host}&qlik-client-id=${_clientId}`;
-          // _host = null;
-          // _clientId = null;
-          // res.redirect(301, redirectPath);
         } catch (err) {
           console.log({ err });
           res.status(401).send(JSON.stringify(err, null, 2));
         }
       });
 
-      app.get('/deauthorize', async (req, res) => {
-        await authInstance.deauthorize();
+      app.get('/getSocketUrl/:appId', async (req, res) => {
+        const { appId } = req.params;
+        const url = await authInstance.generateWebsocketUrl(appId);
+        console.log('generated wss link: ', url);
         res.status(200).json({
-          deauthorize: true,
+          webSocketUrl: url,
         });
+      });
+
+      app.get('/deauthorize', async (req, res) => {
+        try {
+          await authInstance.deauthorize();
+          res.status(200).json({
+            deauthorize: true,
+          });
+        } catch (error) {
+          console.log({ error });
+        }
+      });
+
+      app.get('/isAuthorized', async (req, res) => {
+        if (!authInstance) {
+          res.status(200).json({
+            isAuthorized: false,
+          });
+        } else {
+          const isAuthorized = await authInstance.isAuthorized();
+          res.status(200).json({
+            isAuthorized,
+          });
+        }
       });
 
       app.get('/apps', async (req, res) => {
