@@ -310,7 +310,9 @@ const Cell = forwardRef(
           : undefined;
       }
       if (bgComp && bgComp.bgColor && !bgComp.bgColor.useColorExpression)
-        return bgComp.bgColor.color ? halo.public.theme.getColorPickerColor(bgComp.bgColor.color) : undefined;
+        return bgComp.bgColor.color && bgComp.bgColor.color.color !== 'none'
+          ? halo.public.theme.getColorPickerColor(bgComp.bgColor.color)
+          : undefined;
       return undefined;
     };
 
