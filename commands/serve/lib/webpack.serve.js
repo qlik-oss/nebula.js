@@ -21,9 +21,8 @@ const getAuthInstance = (returnToOrigin, host, clientId) => {
 
   authInstance = new Auth({
     authType: AuthType.OAuth2,
+    host,
     clientId,
-    // TODO: temp https appending, it should be fixed in new releases of sdk
-    host: `https://${host}`,
     redirectUri: `${returnToOrigin}/login/callback`,
   });
   return authInstance;
@@ -223,8 +222,7 @@ module.exports = async ({
 
       app.get('/getSocketUrl/:appId', async (req, res) => {
         const { appId } = req.params;
-        const url = await authInstance.generateWebsocketUrl(appId);
-        console.log('generated wss link: ', url);
+        const url = await authInstance.generateWebsocketUrl(appId, true);
         res.status(200).json({
           webSocketUrl: url,
         });
