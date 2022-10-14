@@ -58,8 +58,9 @@ export default function DataCube({ setProperties, target, properties }) {
 
   const onDimensionRemoved = (idx) => {
     handler.removeDimension(idx);
-    setProperties(properties);
-    setDimensions([...dimensions.slice(0, idx), ...dimensions.slice(idx + 1)]);
+    setProperties(properties).then(() => {
+      setDimensions([...dimensions.slice(0, idx), ...dimensions.slice(idx + 1)]);
+    });
   };
 
   const onMeasureAdded = (a) => {
