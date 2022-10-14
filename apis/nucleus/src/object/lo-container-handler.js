@@ -8,15 +8,12 @@ const nxDimension = (f) => ({
   },
 });
 
-export default function loHandler({ dc: lo, def, properties }) {
-  lo.qInitialDataFetch = lo.qInitialDataFetch || [];
-
+export default function loContainerHandler({ dc: loc, def, properties, dimensions }) {
   const objectProperties = properties;
 
   const handler = {
     dimensions() {
-      if (!lo.qLibraryId && (!lo.qDef || !lo.qDef.qFieldDefs || lo.qDef.qFieldDefs.length === 0)) return [];
-      return [lo];
+      return dimensions;
     },
     measures() {
       return [];
@@ -29,9 +26,9 @@ export default function loHandler({ dc: lo, def, properties }) {
               ...d,
               qDef: d.qDef || {},
             };
-      dimension.qDef.cId = dimension.qDef.cId || uid();
 
-      dimension.qDef.qSortCriterias = lo.qDef.qSortCriterias || [
+      dimension.qDef.cId = dimension.qDef.cId || uid();
+      dimension.qDef.qSortCriterias = (loc && loc.qDef.qSortCriterias) || [
         {
           qSortByState: 1,
           qSortByLoadOrder: 1,
@@ -39,30 +36,28 @@ export default function loHandler({ dc: lo, def, properties }) {
           qSortByAscii: 1,
         },
       ];
-      Object.keys(dimension).forEach((k) => {
-        lo[k] = dimension[k];
-      });
+
       def.dimensions.added(dimension, objectProperties);
       return dimension;
     },
     removeDimension(idx) {
-      const dimension = lo;
-      delete lo.qDef;
-      delete lo.qLibraryId;
+      const dimension = dimensions[idx];
       def.dimensions.removed(dimension, objectProperties, idx);
       return dimension;
     },
-    addMeasure() {},
-    removeMeasure() {},
+    // addMeasure() {},
+    // removeMeasure() {},
 
     maxDimensions() {
-      return 1;
+      const { max } = def.dimensions || {};
+      const maxDims = typeof max === 'function' ? max() : max;
+      return maxDims || 0;
     },
     maxMeasures() {
       return 0;
     },
     canAddDimension() {
-      return handler.dimensions().length === 0;
+      return handler.dimensions().length < handler.maxDimensions();
     },
     canAddMeasure() {
       return false;

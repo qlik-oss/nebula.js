@@ -90,11 +90,13 @@ export default function hcHandler({ dc: hc, def, properties }) {
 
         hc.qLayoutExclude.qHyperCubeDef.qDimensions.push(dimension);
       }
+      return dimension;
     },
     removeDimension(idx) {
       const dimension = hc.qDimensions.splice(idx, 1)[0];
       removeIndex(hc.qInterColumnSortOrder, idx);
       def.dimensions.removed(dimension, objectProperties, idx);
+      return dimension;
     },
     addMeasure(m) {
       const measure =
