@@ -153,6 +153,7 @@ module.exports = async (argv) => {
     port,
     disableHostCheck: serveConfig.disableHostCheck,
     enigmaConfig,
+    clientId: serveConfig.clientId,
     webIntegrationId: serveConfig.webIntegrationId,
     snName: serveConfig.type || snName,
     snUrl,
