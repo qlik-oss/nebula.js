@@ -84,6 +84,9 @@ export function getListboxInlineKeyboardNavigation({ setKeyboardActive }) {
       // case KEYS.TAB: TODO: Focus confirm button using keyboard.focusSelection when we can access the useKeyboard hook.
       case KEYS.ENTER:
       case KEYS.SPACE:
+        if (!event.target.classList.contains('listbox-container')) {
+          return; // don't mess with keydown handlers within the listbox
+        }
         focusInsideListbox(event.currentTarget);
         break;
       case KEYS.ESCAPE:

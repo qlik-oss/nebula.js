@@ -182,6 +182,7 @@ export default function ListBoxInline({ options = {} }) {
 
   return (
     <StyledGrid
+      className="listbox-container"
       container
       tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"

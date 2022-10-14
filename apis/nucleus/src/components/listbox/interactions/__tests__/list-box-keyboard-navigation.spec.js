@@ -153,7 +153,32 @@ describe('keyboard navigation', () => {
     it('should focus value with Space', () => {
       const element = { focus: sandbox.stub() };
       const event = {
-        currentTarget: { querySelector: sandbox.stub().withArgs('.value.selector,.value').returns(element) },
+        currentTarget: {
+          querySelector: sandbox.stub().withArgs('.value.selector,.value').returns(element),
+        },
+        target: {
+          classList: { contains: (c) => c === 'listbox-container' },
+        },
+        nativeEvent: { keyCode: 32 },
+        preventDefault: sandbox.stub(),
+        stopPropagation: sandbox.stub(),
+      };
+      handleKeyDownForListbox(event);
+      expect(element.focus).calledOnce;
+      expect(event.preventDefault).calledOnce;
+      expect(event.stopPropagation).not.called;
+      expect(setKeyboardActive).calledOnce.calledWith(true);
+    });
+
+    it('should not focus value with Space when target is not listbox-container', () => {
+      const element = { focus: sandbox.stub() };
+      const event = {
+        currentTarget: {
+          querySelector: sandbox.stub().withArgs('.value.selector,.value').returns(element),
+        },
+        target: {
+          classList: { contains: (c) => c === 'listbox-container' },
+        },
         nativeEvent: { keyCode: 32 },
         preventDefault: sandbox.stub(),
         stopPropagation: sandbox.stub(),
@@ -168,7 +193,12 @@ describe('keyboard navigation', () => {
     it('should focus value with Enter', () => {
       const element = { focus: sandbox.stub() };
       const event = {
-        currentTarget: { querySelector: sandbox.stub().withArgs('.value.selector,.value').returns(element) },
+        currentTarget: {
+          querySelector: sandbox.stub().withArgs('.value.selector,.value').returns(element),
+        },
+        target: {
+          classList: { contains: (c) => c === 'listbox-container' },
+        },
         nativeEvent: { keyCode: 13 },
         preventDefault: sandbox.stub(),
         stopPropagation: sandbox.stub(),

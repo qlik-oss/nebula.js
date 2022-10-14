@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/qlik-oss/nebula.js/compare/v3.0.3...v3.0.4) (2022-10-13)
+
+### Features
+
+- sdk OAuth support in mashup template ([#950](https://github.com/qlik-oss/nebula.js/issues/950)) ([fd9a978](https://github.com/qlik-oss/nebula.js/commit/fd9a978296d17f532b15b9468e754b73defdfddd))
+
 ## [3.0.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.2...v3.0.3) (2022-09-30)
 
 **Note:** Version bump only for package @nebula.js/cli-create
