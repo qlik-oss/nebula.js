@@ -62,7 +62,7 @@ export default function loHandler({ dc: lo, def, properties }) {
       return 0;
     },
     canAddDimension() {
-      return handler.dimensions().length < handler.maxDimensions();
+      return handler.dimensions().length === 0;
     },
     canAddMeasure() {
       return false;
