@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/qlik-oss/nebula.js/compare/v3.0.3...v3.0.4) (2022-10-13)
+
+### Bug Fixes
+
+- correctly check qId in mocker ([#956](https://github.com/qlik-oss/nebula.js/issues/956)) ([5c2bf1b](https://github.com/qlik-oss/nebula.js/commit/5c2bf1b4bcb0703fba711d82d471f9880248e17f))
+
 ## [3.0.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.2...v3.0.3) (2022-09-30)
 
 **Note:** Version bump only for package @nebula.js/enigma-mocker
