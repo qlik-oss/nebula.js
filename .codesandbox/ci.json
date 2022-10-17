@@ -3,5 +3,5 @@
   "packages": ["apis/stardust"],
   "sandboxes": ["/.codesandbox/mekko"],
   "silent": true,
-  "node": "18"
+  "node": "16"
 }
