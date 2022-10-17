@@ -2,14 +2,13 @@ import { useState, useEffect } from 'react';
 import extend from 'extend';
 import useSessionModel from '../../../hooks/useSessionModel';
 
-export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, options }) {
+export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, options = {} }) {
   const [fieldDef, setFieldDef] = useState('');
-  const [isFetching, setIsFetching] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
   const [model, setModel] = useState();
 
   useEffect(() => {
     async function fetchMasterItem() {
-      setIsFetching(true);
       try {
         const dim = await app.getDimension(fieldIdentifier.qLibraryId);
         const dimLayout = await dim.getLayout();
@@ -26,6 +25,8 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
     const shouldFetchMasterItem = fieldIdentifier.qLibraryId && isFrequencyMaxNeeded;
     if (shouldFetchMasterItem) {
       fetchMasterItem();
+    } else {
+      setIsFetching(false);
     }
   }, []);
 
@@ -112,13 +113,8 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
       return;
     }
 
-    const fetch = async (m) => {
-      const prom = await m;
-      setModel(prom);
-    };
-
-    fetch(sessionModel);
-  });
+    setModel(sessionModel);
+  }, [sessionModel]);
 
   return model;
 }
