@@ -292,11 +292,11 @@ export default function Hub() {
     });
   }, []);
 
-  const manageConnections = (info) => {
+  const manageConnections = (i) => {
     const conns = storage.get('connections') || [];
     let url = '';
-    if (info.clientId) url = `${info.engineUrl}?qlik-client-id=${info.clientId}`;
-    if (info.webIntegrationId) url = `${info.engineUrl}?qlik-web-integration-id=${info.webIntegrationId}`;
+    if (i.clientId) url = `${i.engineUrl}?qlik-client-id=${i.clientId}`;
+    if (i.webIntegrationId) url = `${i.engineUrl}?qlik-web-integration-id=${i.webIntegrationId}`;
     if (conns.indexOf(url) === -1 && url.length !== 0) {
       conns.push(url);
       storage.save('connections', conns);
