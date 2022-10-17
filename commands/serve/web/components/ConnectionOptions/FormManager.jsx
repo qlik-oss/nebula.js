@@ -3,7 +3,9 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
-export const FormManager = ({ info, fields, handleSubmit }) => {
+import Error from '../Error';
+
+export default function FormManager({ info, fields, handleSubmit, error }) {
   const [inputs, setInputs] = useState({});
 
   const handleUpdateInputs = (evt) => {
@@ -26,29 +28,33 @@ export const FormManager = ({ info, fields, handleSubmit }) => {
   return (
     <form onSubmit={handleOnSubmit}>
       <Grid container spacing={2} direction="column" justifyContent="center">
-        {fields.map((field) => (
+        {fields.map((field, i) => (
           <Grid item xs={12} key={field}>
             <OutlinedInput
-              autoFocus
               fullWidth
+              autoFocus={i === 0}
               name={field
                 .split(' ')
                 .map((x) => x.toLowerCase())
                 .join('-')}
               placeholder={field}
               error={info.invalid}
-              defaultValue={info.engineUrl}
               onChange={(evt) => handleUpdateInputs(evt)}
             />
           </Grid>
         ))}
 
-        <Grid item xs={12} alignSelf="flex-end">
-          <Button type="submit" variant="contained" size="large" disabled={isBtnDisabled}>
-            Connect
-          </Button>
+        <Grid container item xs={12} alignItems="center">
+          <Grid item xs={10}>
+            {error && <Error error={error} />}
+          </Grid>
+          <Grid container item xs={2} direction="row" alignItems="center" justifyContent="flex-end">
+            <Button type="submit" variant="contained" size="large" disabled={isBtnDisabled}>
+              Connect
+            </Button>
+          </Grid>
         </Grid>
       </Grid>
     </form>
   );
-};
+}

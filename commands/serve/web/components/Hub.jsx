@@ -20,7 +20,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { ConnectionOptions } from './ConnectionOptions';
+import ConnectionOptions from './ConnectionOptions/ConnectionOptions';
 import { getConnectionInfo, connect } from '../connect';
 import storageFn from '../storage';
 
@@ -28,7 +28,7 @@ const storage = storageFn({});
 const theme = createTheme('light');
 const themeDark = createTheme('dark');
 
-function SelectEngine({ info, children }) {
+function SelectEngine({ info, error }) {
   const [items, setItems] = useState(storage.get('connections') || []);
   const [showInstructions, setShowInstructions] = useState(!items.length);
   const [goTo] = useState(() => (u) => `${window.location.origin}?engine_url=${u.replace('?', '&')}`);
@@ -43,9 +43,9 @@ function SelectEngine({ info, children }) {
     }
   };
 
-  console.log(JSON.stringify({ info }, null, 2));
-
-  const onKeyDown = (val) => (window.location.href = goTo(val));
+  const onKeyDown = (val) => {
+    window.location.href = goTo(val);
+  };
 
   return (
     <>
@@ -83,26 +83,7 @@ function SelectEngine({ info, children }) {
         New connection with:
       </Typography>
 
-      <Typography variant="textSecondary">ws://localhost:9076</Typography>
-      <br />
-      <Typography variant="textSecondary">wss://megaman.eu.tsm.pte.qlikdev.com</Typography>
-      <br />
-      <Typography variant="textSecondary">c2t43s6vZQ1ODpBeY41G-UETcK6QeoFF</Typography>
-      <br />
-      <Typography variant="textSecondary">2f2937ded0afa23d45b6d43217b034a0</Typography>
-      <br />
-      {/* <OutlinedInput
-        autoFocus
-        fullWidth
-        placeholder="Engine WebSocket URL"
-        error={info.invalid}
-        onKeyDown={onKeyDown}
-        defaultValue={info.engineUrl}
-      /> */}
-
-      <ConnectionOptions info={info} onKeyDown={onKeyDown} />
-
-      {children}
+      <ConnectionOptions info={info} onKeyDown={onKeyDown} error={error} />
 
       <Collapse in={showInstructions}>
         <Typography variant="h6" gutterBottom style={{ marginTop: '1rem' }}>
@@ -255,21 +236,6 @@ function AppList({ info, glob, treatAsDesktop }) {
   );
 }
 
-function Err({ e: { message, hints } }) {
-  return (
-    <>
-      <Typography variant="subtitle1" color="error" gutterBottom style={{ marginTop: '1rem' }}>
-        {message}
-      </Typography>
-      {hints.map((hint) => (
-        <Typography key={hint} variant="body2">
-          {hint}
-        </Typography>
-      ))}
-    </>
-  );
-}
-
 export default function Hub() {
   const [info, setInfo] = useState();
   const [glob, setGlobal] = useState();
@@ -292,11 +258,11 @@ export default function Hub() {
     });
   }, []);
 
-  const manageConnections = (info) => {
+  const manageConnections = (i) => {
     const conns = storage.get('connections') || [];
     let url = '';
-    if (info.clientId) url = `${info.engineUrl}?qlik-client-id=${info.clientId}`;
-    if (info.webIntegrationId) url = `${info.engineUrl}?qlik-web-integration-id=${info.webIntegrationId}`;
+    if (i.clientId) url = `${i.engineUrl}?qlik-client-id=${i.clientId}`;
+    if (i.webIntegrationId) url = `${i.engineUrl}?qlik-web-integration-id=${i.webIntegrationId}`;
     if (conns.indexOf(url) === -1 && url.length !== 0) {
       conns.push(url);
       storage.save('connections', conns);
@@ -403,7 +369,7 @@ export default function Hub() {
                 <AppList info={info} glob={glob} treatAsDesktop={treatAsDesktop} />
               )
             ) : (
-              <SelectEngine info={info}>{err && <Err e={err} />}</SelectEngine>
+              <SelectEngine info={info} error={err} />
             )}
           </Box>
         </Container>
