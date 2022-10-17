@@ -205,7 +205,7 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
       setShowToolbar(selections.isActive());
     }
     return () => {
-      if (selections) {
+      if (selections && selections.removeListener) {
         selections.removeListener('deactivated', show);
         selections.removeListener('activated', hide);
       }
