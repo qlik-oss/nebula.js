@@ -5,7 +5,6 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/
 import { Help } from '@nebula.js/ui/icons';
 import Remove from '@nebula.js/ui/icons/remove';
 import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Collapse from '@mui/material/Collapse';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
@@ -21,6 +20,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import { ConnectionOptions } from './ConnectionOptions';
 import { getConnectionInfo, connect } from '../connect';
 import storageFn from '../storage';
 
@@ -32,7 +32,6 @@ function SelectEngine({ info, children }) {
   const [items, setItems] = useState(storage.get('connections') || []);
   const [showInstructions, setShowInstructions] = useState(!items.length);
   const [goTo] = useState(() => (u) => `${window.location.origin}?engine_url=${u.replace('?', '&')}`);
-  let typedUrl;
 
   const onRemove = (li) => {
     const idx = items.indexOf(li);
@@ -44,20 +43,10 @@ function SelectEngine({ info, children }) {
     }
   };
 
-  const onKeyDown = (e) => {
-    switch (e.key) {
-      case 'Enter':
-        typedUrl = e.target.value;
-        if (typedUrl) {
-          window.location.href = goTo(typedUrl.replace('?', '&'));
-        }
-        break;
-      case 'Escape':
-        break;
-      default:
-        break;
-    }
-  };
+  console.log(JSON.stringify({ info }, null, 2));
+
+  const onKeyDown = (val) => (window.location.href = goTo(val));
+
   return (
     <>
       <Grid container>
@@ -91,16 +80,27 @@ function SelectEngine({ info, children }) {
         </>
       ) : null}
       <Typography variant="h6" gutterBottom>
-        New connection
+        New connection with:
       </Typography>
-      <OutlinedInput
+
+      <Typography variant="textSecondary">ws://localhost:9076</Typography>
+      <br />
+      <Typography variant="textSecondary">wss://megaman.eu.tsm.pte.qlikdev.com</Typography>
+      <br />
+      <Typography variant="textSecondary">c2t43s6vZQ1ODpBeY41G-UETcK6QeoFF</Typography>
+      <br />
+      <Typography variant="textSecondary">2f2937ded0afa23d45b6d43217b034a0</Typography>
+      <br />
+      {/* <OutlinedInput
         autoFocus
         fullWidth
         placeholder="Engine WebSocket URL"
         error={info.invalid}
         onKeyDown={onKeyDown}
         defaultValue={info.engineUrl}
-      />
+      /> */}
+
+      <ConnectionOptions info={info} onKeyDown={onKeyDown} />
 
       {children}
 
