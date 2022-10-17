@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.0.4](https://github.com/qlik-oss/nebula.js/compare/v3.0.3...v3.0.4) (2022-10-13)
+
+### Bug Fixes
+
+- correctly check qId in mocker ([#956](https://github.com/qlik-oss/nebula.js/issues/956)) ([5c2bf1b](https://github.com/qlik-oss/nebula.js/commit/5c2bf1b4bcb0703fba711d82d471f9880248e17f))
+- only handle space & enter on container focus ([#961](https://github.com/qlik-oss/nebula.js/issues/961)) ([a2a3771](https://github.com/qlik-oss/nebula.js/commit/a2a3771bc44d4b242bec0d3555879b1e1a18a7b6))
+
+### Features
+
+- jest coverage report ([#955](https://github.com/qlik-oss/nebula.js/issues/955)) ([5fb8405](https://github.com/qlik-oss/nebula.js/commit/5fb840517b8c470b37c1f791cee5ef663c578128))
+- sdk OAuth support in mashup template ([#950](https://github.com/qlik-oss/nebula.js/issues/950)) ([fd9a978](https://github.com/qlik-oss/nebula.js/commit/fd9a978296d17f532b15b9468e754b73defdfddd))
+
 ## [3.0.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.2...v3.0.3) (2022-09-30)
 
 ### Features
