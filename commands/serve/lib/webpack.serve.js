@@ -33,6 +33,7 @@ module.exports = async ({
   port,
   disableHostCheck,
   enigmaConfig,
+  clientId,
   webIntegrationId,
   snName,
   snUrl,
@@ -156,6 +157,7 @@ module.exports = async ({
         res.set(devServer.options.headers);
         res.json({
           enigma: enigmaConfig,
+          clientId,
           webIntegrationId,
           supernova: {
             name: snName,
