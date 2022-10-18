@@ -7,6 +7,7 @@ import {
   teardown,
   run,
   runSnaps,
+  runMenu,
   observeActions,
   focus,
   blur,
@@ -33,6 +34,7 @@ import {
   useConstraints,
   useOptions,
   onTakeSnapshot,
+  onContextMenu,
   useEmbed,
 } from '../hooks';
 
@@ -41,12 +43,12 @@ describe('hooks', () => {
   let sandbox;
   let DEV;
   let frame;
-  before(() => {
+
+  beforeAll(() => {
     frame = () =>
       new Promise((resolve) => {
         setTimeout(resolve);
       });
-    sandbox = sinon.createSandbox();
     DEV = global.__NEBULA_DEV__;
     global.__NEBULA_DEV__ = true;
 
@@ -54,32 +56,31 @@ describe('hooks', () => {
     // so if an error occurs we won't know it.
     // we therefore stub the console.error method and throw the error
     // so that a test fails properly
-    const err = (e) => {
-      throw e;
-    };
-    sandbox.stub(console, 'error').callsFake(err);
     if (!global.requestAnimationFrame) {
       global.requestAnimationFrame = (cb) => setTimeout(cb, 20);
       global.cancelAnimationFrame = clearTimeout;
     }
   });
-  after(() => {
+
+  afterAll(() => {
     global.__NEBULA_DEV__ = DEV;
   });
+
   afterEach(() => {
-    sandbox.restore();
-    sandbox.reset();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
-  it('hook should bind hooks to file scope', () => {
+  test('hook should bind hooks to file scope', () => {
     const fn = 'fn';
     const h = hook(fn);
-    expect(h).to.eql({
+    expect(h).toEqual({
       __hooked: true,
       fn: 'fn',
       initiate,
       run,
       teardown,
+      runMenu,
       runSnaps,
       focus,
       blur,
@@ -89,18 +90,22 @@ describe('hooks', () => {
     });
   });
 
-  it('should throw when hook is used outside method context', () => {
+  test('should throw when hook is used outside method context', () => {
     const fn = () => useState(0);
 
-    expect(fn).to.throw('Invalid stardust hook call. Hooks can only be called inside a visualization component.');
+    expect(fn).toThrow('Invalid stardust hook call. Hooks can only be called inside a visualization component.');
   });
 
-  it('should throw when hooks are used outside top level of method context', async () => {
-    sandbox.useFakeTimers();
-    const { clock } = sandbox;
+  test('should throw when hooks are used outside top level of method context', async () => {
+    jest.useFakeTimers();
+    // kill the error message in this test which comes from "../hooks.js:131"
+    global.console = {
+      ...global.console,
+      error: jest.fn(),
+    };
+
     c = {};
     initiate(c);
-    const err = sandbox.stub(console, 'error');
 
     c.fn = () => {
       useEffect(() => {
@@ -109,18 +114,25 @@ describe('hooks', () => {
     };
 
     run(c);
-    clock.tick(60);
-    expect(err.args[0][0].message).to.equal(
-      'Invalid stardust hook call. Hooks can only be called inside a visualization component.'
-    );
+
+    try {
+      run(c);
+      jest.advanceTimersByTime(60);
+    } catch (error) {
+      expect(error.message).toBe(
+        'Invalid stardust hook call. Hooks can only be called inside a visualization component.'
+      );
+    }
+    jest.clearAllTimers();
+    jest.useRealTimers();
   });
 
   describe('teardown', () => {
-    it('should teardown hooks', () => {
-      const spy = sandbox.spy();
+    test('should teardown hooks', () => {
+      const teardownMock = jest.fn();
       c = {
         __hooks: {
-          list: [{ teardown: spy }],
+          list: [{ teardown: teardownMock }],
           pendingEffects: ['a'],
           pendingLayoutEffects: ['a'],
           actions: { list: [] },
@@ -131,9 +143,9 @@ describe('hooks', () => {
       };
 
       teardown(c);
-      expect(spy.callCount).to.equal(1);
+      expect(teardownMock).toHaveBeenCalledTimes(1);
 
-      expect(c.__hooks).to.eql({
+      expect(c.__hooks).toEqual({
         obsolete: true,
         list: [],
         pendingEffects: [],
@@ -144,12 +156,12 @@ describe('hooks', () => {
         accessibility: null,
       });
 
-      expect(c.__actionsDispatch).to.eql(null);
+      expect(c.__actionsDispatch).toBe(null);
     });
   });
 
   describe('runSnaps', () => {
-    it('should run snaps hooks', async () => {
+    test('should run snaps hooks', async () => {
       const take1 = (layout) => Promise.resolve({ take1: 'yes', ...layout });
 
       c = {
@@ -159,7 +171,22 @@ describe('hooks', () => {
       };
 
       const s = await runSnaps(c, { a: '1' });
-      expect(s).to.eql({ a: '1', take1: 'yes' });
+      expect(s).toEqual({ a: '1', take1: 'yes' });
+    });
+  });
+
+  describe('runMenu', () => {
+    it('should run menu hooks', async () => {
+      const take1 = (menu, event) => Promise.resolve({ take1: 'yes', menu, event });
+
+      c = {
+        __hooks: {
+          menus: [{ fn: take1 }],
+        },
+      };
+
+      const s = await runMenu(c, { a: '1' }, { b: '2' });
+      expect(s).toEqual({ event: { b: '2' }, menu: { a: '1' }, take1: 'yes' });
     });
   });
 
@@ -172,27 +199,27 @@ describe('hooks', () => {
       teardown(c);
     });
 
-    it('should initiate state with value', () => {
+    test('should initiate state with value', () => {
       let countValue;
       c.fn = () => {
         [countValue] = useState(7);
       };
 
       run(c);
-      expect(countValue).to.equal(7);
+      expect(countValue).toBe(7);
     });
 
-    it('should initiate state with function', () => {
+    test('should initiate state with function', () => {
       let countValue;
       c.fn = () => {
         [countValue] = useState(() => 7);
       };
 
       run(c);
-      expect(countValue).to.equal(7);
+      expect(countValue).toBe(7);
     });
 
-    it('should update state value', async () => {
+    test('should update state value', async () => {
       let setter;
       let countValue;
       c.fn = () => {
@@ -200,13 +227,13 @@ describe('hooks', () => {
       };
 
       run(c);
-      expect(countValue).to.equal(7);
+      expect(countValue).toBe(7);
       setter(12);
       await frame();
-      expect(countValue).to.equal(12);
+      expect(countValue).toBe(12);
     });
 
-    it('should throw error when setState is called on an unmounted component', async () => {
+    test('should throw error when setState is called on an unmounted component', async () => {
       let setter;
       let countValue;
       c.fn = () => {
@@ -215,13 +242,13 @@ describe('hooks', () => {
 
       await run(c);
       c.__hooks.obsolete = true;
-      expect(setter).to.throw(
+      expect(() => setter()).toThrow(
         'Calling setState on an unmounted component is a no-op and indicates a memory leak in your component.'
       );
-      expect(countValue).to.equal(7);
+      expect(countValue).toBe(7);
     });
 
-    it('should update state value based on previous', async () => {
+    test('should update state value based on previous', async () => {
       let setter;
       let countValue;
       c.fn = () => {
@@ -229,13 +256,13 @@ describe('hooks', () => {
       };
 
       run(c);
-      expect(countValue).to.equal(7);
+      expect(countValue).toBe(7);
       setter((prev) => prev + 2);
       await frame();
-      expect(countValue).to.equal(9);
+      expect(countValue).toBe(9);
     });
 
-    it('should not re-render when state has not changed', async () => {
+    test('should not re-render when state has not changed', async () => {
       let setter;
       let num = 0;
       c.fn = () => {
@@ -244,13 +271,13 @@ describe('hooks', () => {
       };
 
       run(c);
-      expect(num).to.equal(1);
+      expect(num).toBe(1);
       setter(7);
       await frame();
-      expect(num).to.equal(1);
+      expect(num).toBe(1);
     });
 
-    it('should re-render only once when multiple states have changed', async () => {
+    test('should re-render only once when multiple states have changed', async () => {
       let setA;
       let setB;
       let setC;
@@ -263,12 +290,12 @@ describe('hooks', () => {
       };
 
       run(c);
-      expect(num).to.equal(1);
+      expect(num).toBe(1);
       setA(8);
       setB(-3);
       setC(1);
       await frame();
-      expect(num).to.equal(2);
+      expect(num).toBe(2);
     });
   });
 
@@ -281,10 +308,9 @@ describe('hooks', () => {
       teardown(c);
     });
 
-    it('should run only when deps change', () => {
-      const stub = sandbox.stub();
-      stub.onFirstCall().returns(5);
-      stub.onSecondCall().returns(6);
+    test('should run only when deps change', () => {
+      const stub = jest.fn();
+      stub.mockReturnValueOnce(5).mockReturnValueOnce(6);
       let dep = 'a';
       let value;
       c.fn = () => {
@@ -293,29 +319,37 @@ describe('hooks', () => {
 
       run(c);
       run(c);
-      expect(value).to.equal(5);
+      expect(value).toBe(5);
 
       dep = 'b';
       run(c);
-      expect(value).to.equal(6);
+      expect(value).toBe(6);
     });
   });
 
   describe('useEffect', () => {
-    let clock;
+    const originalRequestAnimationFrame = window.requestAnimationFrame;
+    let spy;
+
     beforeEach(() => {
+      spy = jest.fn();
       c = {};
       initiate(c);
-      sandbox.useFakeTimers();
-      global.requestAnimationFrame = (cb) => setTimeout(cb, 20);
-      clock = sandbox.clock;
+      jest.useFakeTimers();
+      jest.spyOn(window, 'requestAnimationFrame').mockImplementation((cb) => setTimeout(cb, 20));
     });
     afterEach(() => {
       teardown(c);
+      jest.useRealTimers();
+      jest.resetAllMocks();
+      jest.restoreAllMocks();
     });
 
-    it('should run once even when called multiple times', () => {
-      const spy = sandbox.spy();
+    afterAll(() => {
+      window.requestAnimationFrame = originalRequestAnimationFrame;
+    });
+
+    test('should run once even when called multiple times', () => {
       c.fn = () => {
         useEffect(spy);
       };
@@ -323,27 +357,25 @@ describe('hooks', () => {
       run(c);
       run(c);
       run(c);
-      clock.tick(20);
-      expect(spy.callCount).to.equal(1);
+      jest.advanceTimersByTime(20);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
-    it('without deps should run after every "frame"', () => {
-      const spy = sandbox.spy();
+    test('without deps should run after every "frame"', () => {
       c.fn = () => {
         useEffect(spy);
       };
 
       run(c);
-      clock.tick(20);
+      jest.advanceTimersByTime(20);
       run(c);
-      clock.tick(20);
+      jest.advanceTimersByTime(20);
       run(c);
-      clock.tick(20);
-      expect(spy.callCount).to.equal(3);
+      jest.advanceTimersByTime(20);
+      expect(spy).toHaveBeenCalledTimes(3);
     });
 
-    it('with deps should run only when deps change', () => {
-      const spy = sandbox.spy();
+    test('with deps should run only when deps change', () => {
       let dep1 = 'a';
       let dep2 = 0;
       c.fn = () => {
@@ -351,31 +383,30 @@ describe('hooks', () => {
       };
 
       run(c);
-      clock.tick(20);
+      jest.advanceTimersByTime(20);
 
       dep1 = 'b';
       run(c);
-      clock.tick(20);
-      expect(spy.callCount).to.equal(2);
+      jest.advanceTimersByTime(20);
+      expect(spy).toHaveBeenCalledTimes(2);
 
       dep2 = false;
       run(c);
-      clock.tick(20);
-      expect(spy.callCount).to.equal(3);
+      jest.advanceTimersByTime(20);
+      expect(spy).toHaveBeenCalledTimes(3);
     });
 
-    it('should cleanup previous', async () => {
-      const spy = sandbox.spy();
+    test('should cleanup previous', async () => {
       const f = () => spy;
       c.fn = () => {
         useEffect(f);
       };
 
       run(c); // initial render
-      clock.tick(20);
+      jest.advanceTimersByTime(20);
       run(c); // should cleanup previous effects on second render
-      clock.tick(20);
-      expect(spy.callCount).to.equal(1);
+      jest.advanceTimersByTime(20);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -388,7 +419,7 @@ describe('hooks', () => {
       teardown(c);
     });
 
-    it('should resolve run-phase when pending promises are resolved', async () => {
+    test('should resolve run-phase when pending promises are resolved', async () => {
       let reject;
       let resolve;
       const prom1 = new Promise((r) => {
@@ -409,22 +440,25 @@ describe('hooks', () => {
       reject('rej');
       resolve('res');
       await p;
-      expect([v1, v2]).to.eql(['res', 'rej']);
+      expect([v1, v2]).toEqual(['res', 'rej']);
     });
   });
 
   describe('useImperativeHandle', () => {
+    let stub;
     beforeEach(() => {
+      stub = jest.fn();
       c = {};
       initiate(c);
     });
     afterEach(() => {
       teardown(c);
+      jest.resetAllMocks();
+      jest.restoreAllMocks();
     });
 
-    it('should store handle', async () => {
-      const stub = sandbox.stub();
-      stub.returns({
+    test('should store handle', async () => {
+      stub.mockReturnValue({
         foo: 'meh',
       });
       c.fn = () => {
@@ -432,44 +466,43 @@ describe('hooks', () => {
       };
 
       await run(c);
-      expect(stub.callCount).to.eql(1);
+      expect(stub).toHaveBeenCalledTimes(1);
     });
 
-    it('should maintain reference', async () => {
-      const stub = sandbox.stub();
+    test('should maintain reference', async () => {
       const ret = {
         foo: 'meh',
       };
-      stub.returns(ret);
+      stub.mockReturnValue(ret);
       c.fn = () => {
         useImperativeHandle(stub, []);
       };
 
       await run(c);
       await run(c);
-      expect(c.__hooks.list[0].value[1]).to.eql(ret);
-      expect(c.__hooks.imperativeHandle).to.eql(ret);
+      expect(c.__hooks.list[0].value[1]).toEqual(ret);
+      expect(c.__hooks.imperativeHandle).toEqual(ret);
     });
 
-    it('should throw when used multiple times', () => {
-      const stub = sandbox.stub();
+    test('should throw when used multiple times', async () => {
       const ret = {
         foo: 'meh',
       };
-      stub.returns(ret);
-      const err = sandbox.stub(console, 'error');
+      stub.mockReturnValue(ret);
       c.fn = () => {
         useImperativeHandle(stub, []);
         useImperativeHandle(stub, []);
       };
 
-      run(c);
-      expect(err.args[0][0].message).to.equal('useImperativeHandle already used.');
+      try {
+        await run(c);
+      } catch (error) {
+        expect(error.message).toBe('useImperativeHandle already used.');
+      }
     });
 
-    it('should return handle', async () => {
-      const stub = sandbox.stub();
-      stub.returns({
+    test('should return handle', async () => {
+      stub.mockReturnValue({
         foo: 'meh',
       });
       c.fn = () => {
@@ -477,12 +510,17 @@ describe('hooks', () => {
       };
 
       await run(c);
-      expect(getImperativeHandle(c)).to.eql({ foo: 'meh' });
+      expect(getImperativeHandle(c)).toEqual({ foo: 'meh' });
     });
   });
 
   describe('useAction', () => {
+    let stub;
+    let spy;
+
     beforeEach(() => {
+      stub = jest.fn();
+      spy = jest.fn();
       c = {};
       initiate(c);
     });
@@ -490,11 +528,9 @@ describe('hooks', () => {
       teardown(c);
     });
 
-    it('should execute callback', async () => {
+    test('should execute callback', async () => {
       let act;
-      const stub = sandbox.stub();
-      const spy = sandbox.spy();
-      stub.returns({
+      stub.mockReturnValue({
         action: spy,
       });
       c.fn = () => {
@@ -502,16 +538,15 @@ describe('hooks', () => {
       };
 
       run(c);
-      expect(stub.callCount).to.eql(1);
-      expect(spy.callCount).to.eql(0);
+      expect(stub).toHaveBeenCalledTimes(1);
+      expect(spy).toHaveBeenCalledTimes(0);
 
       act();
-      expect(spy.callCount).to.eql(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
 
-    it('should maintain reference', async () => {
-      const stub = sandbox.stub();
-      stub.returns({
+    test('should maintain reference', async () => {
+      stub.mockReturnValue({
         action: 'action',
         icon: 'ic',
         label: 'meh',
@@ -527,34 +562,28 @@ describe('hooks', () => {
 
       const ref = c.__hooks.list[0].value[0];
 
-      expect(ref.active).to.eql(true);
-      expect(ref.getSvgIconShape()).to.eql('ic');
-      expect(ref.disabled).to.eql(true);
-      expect(ref.hidden).to.eql(true);
-      expect(ref.label).to.eql('meh');
+      expect(ref.active).toBe(true);
+      expect(ref.getSvgIconShape()).toBe('ic');
+      expect(ref.disabled).toBe(true);
+      expect(ref.hidden).toBe(true);
+      expect(ref.label).toBe('meh');
     });
 
-    it('should observe actions before init ', async () => {
-      const spy = sandbox.spy();
-
+    test('should observe actions before init ', async () => {
       const unitiatedComponent = {};
 
       observeActions(unitiatedComponent, spy);
-      expect(unitiatedComponent.__actionsDispatch).to.eql(spy);
+      expect(unitiatedComponent.__actionsDispatch).toEqual(spy);
     });
 
-    it('should dispatch actions immediately', async () => {
-      const spy = sandbox.spy();
-
+    test('should dispatch actions immediately', async () => {
       observeActions(c, spy);
-      expect(spy.callCount).to.eql(1);
 
-      const actions = spy.getCall(0).args[0];
-      expect(actions).to.eql([]);
+      expect(spy).toHaveBeenCalledTimes(1);
+      expect(spy.mock.lastCall[0]).toEqual([]);
     });
 
-    it('should dispatch actions only once after initial', async () => {
-      const spy = sandbox.spy();
+    test('should dispatch actions only once after initial', async () => {
       c.fn = () => {
         useAction(() => ({ key: 'nyckel' }), []);
         useAction(() => ({ key: 'nyckel2' }), []);
@@ -562,15 +591,13 @@ describe('hooks', () => {
       };
 
       observeActions(c, spy);
-      expect(spy.callCount).to.eql(1);
+      expect(spy).toHaveBeenCalledTimes(1);
 
       run(c);
       run(c);
-      expect(spy.callCount).to.eql(2);
+      expect(spy).toHaveBeenCalledTimes(2);
 
-      const actions = spy.getCall(1).args[0];
-
-      expect(actions.map((a) => a.key)).to.eql(['nyckel', 'nyckel2', 'nyckel3']);
+      expect(spy.mock.lastCall[0].map((a) => a.key)).toEqual(['nyckel', 'nyckel2', 'nyckel3']);
     });
   });
 
@@ -581,23 +608,32 @@ describe('hooks', () => {
       const originalRO = global.ResizeObserver;
       let RO;
       let RO_;
+      let getBoundingClientRectMock;
+      let observeMock;
+      let unobserveMock;
+      let disconnectMock;
 
       if (typeof ResizeObserver !== 'undefined') {
         // eslint-disable-next-line
         console.error('Existing ResizeObserver is about to be overridden');
       }
       beforeEach(() => {
+        getBoundingClientRectMock = jest.fn();
+        observeMock = jest.fn();
+        unobserveMock = jest.fn();
+        disconnectMock = jest.fn();
+
         element = {
-          getBoundingClientRect: sandbox.stub(),
+          getBoundingClientRect: getBoundingClientRectMock,
         };
 
-        RO = sandbox.stub();
+        RO = jest.fn();
         RO_ = {
-          observe: sandbox.stub(),
-          unobserve: sandbox.stub(),
-          disconnect: sandbox.stub(),
+          observe: observeMock,
+          unobserve: unobserveMock,
+          disconnect: disconnectMock,
         };
-        RO.returns(RO_);
+        RO.mockReturnValue(RO_);
 
         global.ResizeObserver = RO;
         c = {
@@ -610,45 +646,50 @@ describe('hooks', () => {
       afterEach(() => {
         teardown(c);
         global.ResizeObserver = originalRO;
+        jest.resetAllMocks();
+        jest.restoreAllMocks();
       });
 
-      it('should return rect', () => {
+      test('should return rect', () => {
         let r;
-        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
+        getBoundingClientRectMock.mockReturnValue({ left: 1, top: 2, width: 3, height: 4 });
         c.fn = () => {
           r = useRect();
         };
 
         run(c);
-        expect(r).to.eql({ left: 1, top: 2, width: 3, height: 4 });
+        expect(r).toEqual({ left: 1, top: 2, width: 3, height: 4 });
       });
 
-      it('should observe changes', () => {
-        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
+      test('should observe changes', () => {
+        getBoundingClientRectMock.mockReturnValue({ left: 1, top: 2, width: 3, height: 4 });
+
         c.fn = () => {
           useRect();
         };
 
         run(c);
-        expect(RO_.observe).to.have.been.calledWithExactly(element);
+        expect(RO_.observe).toHaveBeenCalledWith(element);
         teardown(c);
-        expect(RO_.unobserve).to.have.been.calledWithExactly(element);
-        expect(RO_.disconnect).to.have.been.calledWithExactly(element);
+        expect(RO_.unobserve).toHaveBeenCalledWith(element);
+        expect(RO_.disconnect).toHaveBeenCalledWith(element);
       });
 
-      it('should update rect when size changes ', async () => {
+      test('should update rect when size changes ', async () => {
         let r;
-        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
+        getBoundingClientRectMock.mockReturnValue({ left: 1, top: 2, width: 3, height: 4 });
+
         c.fn = () => {
           r = useRect();
         };
 
         run(c);
-        const handler = RO.getCall(0).args[0];
-        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 5 });
+        const handler = RO.mock.lastCall[0];
+        getBoundingClientRectMock.mockReturnValue({ left: 1, top: 2, width: 3, height: 5 });
+
         handler();
         await frame();
-        expect(r).to.eql({ left: 1, top: 2, width: 3, height: 5 });
+        expect(r).toEqual({ left: 1, top: 2, width: 3, height: 5 });
       });
     });
 
@@ -679,7 +720,7 @@ describe('hooks', () => {
         global.ResizeObserver = originalRO;
       });
 
-      it('should observe changes', () => {
+      test('should observe changes', () => {
         element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
         c.fn = () => {
           useRect();
@@ -701,22 +742,19 @@ describe('hooks', () => {
     describe('with explicit resize', () => {
       const originalRO = global.ResizeObserver;
       let RO;
+      let getBoundingClientRectMock;
 
       if (typeof ResizeObserver !== 'undefined') {
         // eslint-disable-next-line
         console.error('Existing ResizeObserver is about to be overridden');
       }
       beforeEach(() => {
+        getBoundingClientRectMock = jest.fn();
         element = {
-          getBoundingClientRect: sandbox.stub(),
+          getBoundingClientRect: getBoundingClientRectMock,
         };
 
-        const err = (e) => {
-          throw e;
-        };
-        sandbox.stub(console, 'error').callsFake(err);
-
-        RO = sandbox.stub();
+        RO = jest.fn();
         // mock ResizeObserver just to check that the ResizeObserver code in useRect itself isn't reached.
         // the test should throw due to missing observe method otherwise
         global.ResizeObserver = RO;
@@ -734,8 +772,8 @@ describe('hooks', () => {
         global.ResizeObserver = originalRO;
       });
 
-      it('should update rect when scheduled', async () => {
-        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 4 });
+      test('should update rect when scheduled', async () => {
+        getBoundingClientRectMock.mockReturnValue({ left: 1, top: 2, width: 3, height: 4 });
         let r;
         let r2;
         c.fn = () => {
@@ -743,14 +781,14 @@ describe('hooks', () => {
           r2 = useRect();
         };
         run(c);
-        expect(r).to.eql({ left: 1, top: 2, width: 3, height: 4 });
-        expect(r2).to.eql({ left: 1, top: 2, width: 3, height: 4 });
+        expect(r).toEqual({ left: 1, top: 2, width: 3, height: 4 });
+        expect(r2).toEqual({ left: 1, top: 2, width: 3, height: 4 });
 
-        element.getBoundingClientRect.returns({ left: 1, top: 2, width: 3, height: 5 });
+        getBoundingClientRectMock.mockReturnValue({ left: 1, top: 2, width: 3, height: 5 });
         updateRectOnNextRun(c);
         await run(c);
-        expect(r).to.eql({ left: 1, top: 2, width: 3, height: 5 });
-        expect(r2).to.eql({ left: 1, top: 2, width: 3, height: 5 });
+        expect(r).toEqual({ left: 1, top: 2, width: 3, height: 5 });
+        expect(r2).toEqual({ left: 1, top: 2, width: 3, height: 5 });
       });
     });
   });
@@ -780,76 +818,76 @@ describe('hooks', () => {
       teardown(c);
     });
 
-    it('useModel', () => {
+    test('useModel', () => {
       let value;
       c.fn = () => {
         value = useModel();
       };
       run(c);
-      expect(value).to.eql({ session: 'm' });
+      expect(value).toEqual({ session: 'm' });
 
       c.context.model = {};
       run(c);
-      expect(value).to.eql(undefined);
+      expect(value).toBe(undefined);
     });
 
-    it('useApp', () => {
+    test('useApp', () => {
       let value;
       c.fn = () => {
         value = useApp();
       };
       run(c);
-      expect(value).to.eql({ session: 'a' });
+      expect(value).toEqual({ session: 'a' });
 
       c.context.app = {};
       run(c);
-      expect(value).to.eql(undefined);
+      expect(value).toBe(undefined);
     });
-    it('useGlobal', () => {
+    test('useGlobal', () => {
       let value;
       c.fn = () => {
         value = useGlobal();
       };
       run(c);
-      expect(value).to.eql({ session: 'global' });
+      expect(value).toEqual({ session: 'global' });
 
       c.context.global = {};
       run(c);
-      expect(value).to.eql(undefined);
+      expect(value).toBe(undefined);
     });
-    it('useElement', () => {
+    test('useElement', () => {
       let value;
       c.fn = () => {
         value = useElement();
       };
       run(c);
-      expect(value).to.equal('element');
+      expect(value).toBe('element');
     });
-    it('useSelections', () => {
+    test('useSelections', () => {
       let value;
       c.fn = () => {
         value = useSelections();
       };
       run(c);
-      expect(value).to.equal('selections');
+      expect(value).toBe('selections');
     });
-    it('useTheme', () => {
+    test('useTheme', () => {
       let value;
       c.fn = () => {
         value = useTheme();
       };
       run(c);
-      expect(value).to.equal('theme');
+      expect(value).toBe('theme');
     });
-    it('useLayout', () => {
+    test('useLayout', () => {
       let value;
       c.fn = () => {
         value = useLayout();
       };
       run(c);
-      expect(value).to.equal('layout');
+      expect(value).toBe('layout');
     });
-    it('useStaleLayout', () => {
+    test('useStaleLayout', () => {
       let value;
       c.context.layout = { hc: 'h' };
       c.fn = () => {
@@ -858,68 +896,77 @@ describe('hooks', () => {
       run(c);
       c.context.layout = { hc: 'a', qSelectionInfo: { qInSelections: true } };
       run(c);
-      expect(value).to.eql({ hc: 'h' });
+      expect(value).toEqual({ hc: 'h' });
 
       c.context.layout = { hc: 'a' };
       run(c);
-      expect(value).to.eql({ hc: 'a' });
+      expect(value).toEqual({ hc: 'a' });
     });
-    it('useAppLayout', () => {
+    test('useAppLayout', () => {
       let value;
       c.fn = () => {
         value = useAppLayout();
       };
       run(c);
-      expect(value).to.equal('appLayout');
+      expect(value).toBe('appLayout');
     });
-    it('useTranslator', () => {
+    test('useTranslator', () => {
       let value;
       c.fn = () => {
         value = useTranslator();
       };
       run(c);
-      expect(value).to.equal('translator');
+      expect(value).toBe('translator');
     });
-    it('usePlugins', () => {
+    test('usePlugins', () => {
       let value;
       c.fn = () => {
         value = usePlugins();
       };
       run(c);
-      expect(value).to.eql('plugins');
+      expect(value).toBe('plugins');
     });
-    it('useConstraints', () => {
+    test('useConstraints', () => {
       let value;
       c.fn = () => {
         value = useConstraints();
       };
       run(c);
-      expect(value).to.eql('constraints');
+      expect(value).toBe('constraints');
     });
-    it('useOptions', () => {
+    test('useOptions', () => {
       let value;
       c.fn = () => {
         value = useOptions();
       };
       run(c);
-      expect(value).to.eql('options');
+      expect(value).toBe('options');
     });
-    it('onTakeSnapshot', () => {
-      const spy = sandbox.spy();
+    test('onTakeSnapshot', () => {
+      const spy = jest.fn();
       c.fn = () => {
         onTakeSnapshot(spy);
       };
       run(c);
       c.__hooks.snaps[0].fn();
-      expect(spy.callCount).to.equal(1);
+      expect(spy).toHaveBeenCalledTimes(1);
     });
-    it('useEmbed', () => {
+    test('onContextMenu', () => {
+      const spy = jest.fn();
+      c.fn = () => {
+        onContextMenu(spy);
+      };
+      run(c);
+      c.__hooks.menus[0].fn();
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+    test('useEmbed', () => {
       let value;
       c.fn = () => {
         value = useEmbed();
       };
       run(c);
-      expect(value).to.eql('embed');
+      expect(value).toBe('embed');
     });
   });
 });

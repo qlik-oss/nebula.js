@@ -36,6 +36,7 @@ export function initiate(component, { explicitResize = false } = {}) {
     },
     list: [],
     snaps: [],
+    menus: [],
     actions: {
       list: [],
     },
@@ -163,6 +164,17 @@ export function runSnaps(component, layout) {
   return Promise.resolve();
 }
 
+export function runMenu(component, menu, event) {
+  try {
+    return Promise.all(component.__hooks.menus.map((h) => Promise.resolve(h.fn(menu, event)))).then(
+      (menus) => menus[menus.length - 1]
+    );
+  } catch (e) {
+    console.error(e);
+  }
+  return Promise.resolve();
+}
+
 export function getImperativeHandle(component) {
   return component.__hooks.imperativeHandle;
 }
@@ -236,6 +248,7 @@ export function hook(cb) {
     run,
     teardown,
     runSnaps,
+    runMenu,
     focus,
     blur,
     observeActions,
@@ -986,6 +999,27 @@ export function onTakeSnapshot(cb) {
   if (!h.value) {
     h.value = 1;
     currentComponent.__hooks.snaps.push(h);
+  }
+  h.fn = cb;
+}
+
+/**
+ * Registers a callback that is called when the context menu opens
+ * @entry
+ * @param {function(menu, event): void} addItemCallback
+ * @ignore
+ * @example
+ * import { onContextMenu } from '@nebula.js/stardust';
+ 
+ * onContextMenu((menu, event) => {
+ *  menu.addItem(item, index);
+ * });
+ */
+export function onContextMenu(cb) {
+  const h = getHook(++currentIndex);
+  if (!h.value) {
+    h.value = 1;
+    currentComponent.__hooks.menus.push(h);
   }
   h.fn = cb;
 }

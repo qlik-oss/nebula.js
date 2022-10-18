@@ -4,29 +4,27 @@ describe('Theme scale generator', () => {
   const input = ['#ffffff', '#000000'];
   const base8 = ['#ffffff', '#d4d4d4', '#aaaaaa', '#7f7f7f', '#545454', '#2a2a2a', '#000000'];
 
-  beforeEach(() => {});
-
-  it('Should generate a pyramid', () => {
+  test('Should generate a pyramid', () => {
     const scales = [{ type: 'class', scale: input }];
     scaleGenerator(scales);
-    expect(scales).to.have.length(1);
+    expect(scales.length).toBe(1);
     const { scale, type } = scales[0];
 
-    expect(type).to.equals('class-pyramid');
-    expect(scale.length).to.equal(8);
-    expect(scale[scale.length - 1].length).to.equal(7);
+    expect(type).toBe('class-pyramid');
+    expect(scale.length).toBe(8);
+    expect(scale[scale.length - 1].length).toBe(7);
   });
 
-  it('Should generate a correct base of colors', () => {
+  test('Should generate a correct base of colors', () => {
     const scales = [{ type: 'class', scale: input }];
     scaleGenerator(scales);
     const { scale } = scales[0];
 
     const colors = scale[scale.length - 1];
-    expect(colors).to.deep.equal(base8);
+    expect(colors).toEqual(base8);
   });
 
-  it('Should work correctly on a scale from the sense theme', () => {
+  test('Should work correctly on a scale from the sense theme', () => {
     const senseDivergentScale = [
       '#ae1c3e',
       '#d24d3e',
@@ -42,7 +40,7 @@ describe('Theme scale generator', () => {
     const scales = [{ type: 'class', scale: senseDivergentScale }];
     scaleGenerator(scales);
     const { scale } = scales[0];
-    expect(scale).to.deep.equal([
+    expect(scale).toEqual([
       null,
       ['#e6f5fe'],
       ['#ed875e', '#3a89c9'],

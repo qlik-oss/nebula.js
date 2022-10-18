@@ -45,11 +45,18 @@ function getQId(genericObject) {
  * @returns The mocked object
  */
 function createMock(genericObject, options) {
-  const qId = getQId(genericObject);
+  let qId = getQId(genericObject);
   const { delay } = options;
   const { id, session, ...props } = genericObject;
+
+  if (id && qId && id !== qId) {
+    throw new Error(`Generic object has multiple IDs, qInfo.qId: ${qId}, id: ${id}`);
+  }
+
+  qId = qId || id || `object - ${+Date.now()}`;
+
   const mock = {
-    id: getPropValue(id, { defaultValue: `object - ${+Date.now()}` }),
+    id: qId,
     session: getPropValue(session, { defaultValue: true }),
     on: () => {},
     once: () => {},
