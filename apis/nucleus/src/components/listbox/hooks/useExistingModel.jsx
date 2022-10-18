@@ -13,8 +13,7 @@ export default function useExistingModel({ app, qId, options = {} }) {
         setModel(modelFromStore);
       } else {
         const m = await app.getObject(qId);
-        const key = m ? `${m.id}` : null;
-        modelStore.set(key, m);
+        modelStore.set(m.id, m);
         setModel(m);
       }
     }
