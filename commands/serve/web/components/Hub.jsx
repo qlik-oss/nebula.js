@@ -192,21 +192,34 @@ function AppList({ info, glob, treatAsDesktop }) {
   const [items, setItems] = useState();
   const [waiting, setWaiting] = useState(false);
 
-  useEffect(() => {
-    const t = setTimeout(() => {
-      setWaiting(true);
-    }, 750);
+  const checkIfAuthorized = async () => {
+    const { isAuthorized } = await (await fetch('/isAuthorized')).json();
+    return { isAuthorized };
+  };
 
-    glob.getDocList().then((its) => {
-      clearTimeout(t);
-      setWaiting(false);
-      setItems(its);
+  const getAppList = async () => {
+    const apps = await (await fetch(`/apps`)).json();
+    return apps || [];
+  };
+
+  useEffect(() => {
+    setWaiting(true);
+    const searchParam = new URLSearchParams(window.location.search);
+
+    // if is already authorized and does not have "shouldFetchAppList" -> append it to the url
+    checkIfAuthorized().then(({ isAuthorized }) => {
+      if (isAuthorized && !searchParam.get('shouldFetchAppList')) {
+        const url = new URL(window.location.href);
+        url.searchParams.append('shouldFetchAppList', true);
+        window.location.href = decodeURIComponent(url.toString());
+      }
     });
 
-    return () => {
-      clearTimeout(t);
-    };
-  }, []);
+    (searchParam.get('shouldFetchAppList') ? getAppList() : glob.getDocList()).then((apps) => {
+      setItems(apps);
+      if (apps) setWaiting(false);
+    });
+  }, [window.location.search, setWaiting]);
 
   return (
     <>
@@ -221,10 +234,12 @@ function AppList({ info, glob, treatAsDesktop }) {
               button
               key={li.qDocId}
               component="a"
-              href={`/dev/${window.location.search.replace(
-                info.engineUrl,
-                `${info.engineUrl}/app/${encodeURIComponent(treatAsDesktop ? li.qDocName : li.qDocId)}`
-              )}`}
+              href={`/dev/${window.location.search
+                .replace(
+                  info.engineUrl,
+                  `${info.engineUrl}/app/${encodeURIComponent(treatAsDesktop ? li.qDocName : li.qDocId)}`
+                )
+                .replace('&shouldFetchAppList=true', '')}`}
             >
               <ListItemText primary={li.qTitle} secondary={li.qDocId} />
             </ListItem>
@@ -277,6 +292,17 @@ export default function Hub() {
     });
   }, []);
 
+  const manageConnections = (i) => {
+    const conns = storage.get('connections') || [];
+    let url = '';
+    if (i.clientId) url = `${i.engineUrl}?qlik-client-id=${i.clientId}`;
+    if (i.webIntegrationId) url = `${i.engineUrl}?qlik-web-integration-id=${i.webIntegrationId}`;
+    if (conns.indexOf(url) === -1 && url.length !== 0) {
+      conns.push(url);
+      storage.save('connections', conns);
+    }
+  };
+
   useEffect(() => {
     if (!info || !info.engineUrl) {
       return;
@@ -305,20 +331,9 @@ export default function Hub() {
         }
 
         setGlobal(g);
-
-        if (!g.getDocList) {
-          return;
-        }
-
+        if (!g.getDocList) return;
         setActiveStep(1);
-        const conns = storage.get('connections') || [];
-        const url = `${info.engineUrl}${
-          info.webIntegrationId ? `?qlik-web-integration-id=${info.webIntegrationId}` : ''
-        }`;
-        if (conns.indexOf(url) === -1) {
-          conns.push(url);
-          storage.save('connections', conns);
-        }
+        manageConnections(info);
         g.getConfiguration().then((c) => {
           if (c.qFeatures && c.qFeatures.qIsDesktop) {
             setTreatAsDesktop(true);

@@ -4,6 +4,7 @@ const chalk = require('chalk');
 const express = require('express');
 const fs = require('fs');
 const homedir = require('os').homedir();
+const { Auth, AuthType } = require('@qlik/sdk');
 
 const webpack = require('webpack');
 const WebpackDevServer = require('webpack-dev-server');
@@ -13,6 +14,19 @@ const snapshotRouter = require('./snapshot-router');
 
 const httpsKeyPath = path.join(homedir, '.certs/key.pem');
 const httpsCertPath = path.join(homedir, '.certs/cert.pem');
+
+let authInstance = null;
+const getAuthInstance = (returnToOrigin, host, clientId) => {
+  if (authInstance) return authInstance;
+
+  authInstance = new Auth({
+    authType: AuthType.OAuth2,
+    host,
+    clientId,
+    redirectUri: `${returnToOrigin}/login/callback`,
+  });
+  return authInstance;
+};
 
 module.exports = async ({
   host,
@@ -157,6 +171,95 @@ module.exports = async ({
           types: serveConfig.types,
           keyboardNavigation: serveConfig.keyboardNavigation,
         });
+      });
+
+      let cachedHost = null;
+      let cachedClientId = null;
+
+      app.get('/oauth', async (req, res) => {
+        const { host: qHost, clientId: qClientId } = req.query;
+        if (!cachedHost && !cachedClientId) {
+          cachedHost = qHost;
+          cachedClientId = qClientId;
+        }
+
+        const returnTo = `${req.protocol}://${req.get('host')}`;
+        const instacne = getAuthInstance(returnTo, qHost, qClientId);
+        const isAuthorized = await instacne.isAuthorized();
+        if (!isAuthorized) {
+          const { url: redirectUrl } = await instacne.generateAuthorizationUrl();
+          res.status(200).json({ redirectUrl });
+        } else {
+          const redirectUrl = `${req.protocol}://${req.get(
+            'host'
+          )}/?engine_url=wss://${cachedHost}&qlik-client-id=${cachedClientId}&shouldFetchAppList=true`;
+          cachedHost = null;
+          cachedClientId = null;
+          res.redirect(redirectUrl);
+        }
+      });
+
+      app.get('/login/callback', async (req, res) => {
+        const authLink = new URL(req.url, `http://${req.headers.host}`).href;
+        try {
+          // TODO:
+          // this is a temp fix in front end side
+          // (temp workaround of not presisting origin while backend tries to authorize user)
+          // they need to handle this in qlik-sdk-typescript repo
+          // and will notify us about when they got fixed it,
+          // but until then, we need to take care of it here!
+          authInstance.rest.interceptors.request.use((_req) => {
+            // eslint-disable-next-line no-param-reassign, dot-notation
+            _req[1]['headers'] = { origin: 'http://localhost:8000' };
+            return _req;
+          });
+          await authInstance.authorize(authLink);
+          res.redirect(301, '/oauth/');
+        } catch (err) {
+          console.log({ err });
+          res.status(401).send(JSON.stringify(err, null, 2));
+        }
+      });
+
+      app.get('/getSocketUrl/:appId', async (req, res) => {
+        const { appId } = req.params;
+        const webSocketUrl = await authInstance.generateWebsocketUrl(appId, true);
+        res.status(200).json({ webSocketUrl });
+      });
+
+      app.get('/deauthorize', async (req, res) => {
+        try {
+          await authInstance.deauthorize();
+          res.status(200).json({
+            deauthorize: true,
+          });
+        } catch (error) {
+          console.log({ error });
+        }
+      });
+
+      app.get('/isAuthorized', async (req, res) => {
+        if (!authInstance) {
+          res.status(200).json({
+            isAuthorized: false,
+          });
+        } else {
+          const isAuthorized = await authInstance.isAuthorized();
+          res.status(200).json({
+            isAuthorized,
+          });
+        }
+      });
+
+      app.get('/apps', async (req, res) => {
+        const appsListUrl = `/items?resourceType=app&limit=30&sort=-updatedAt`;
+        const { data = [] } = await (await authInstance.rest(appsListUrl)).json();
+        res.status(200).json(
+          data.map((d) => ({
+            qDocId: d.resourceId,
+            qTitle: d.name,
+          }))
+        );
       });
 
       if (serveConfig.resources) {

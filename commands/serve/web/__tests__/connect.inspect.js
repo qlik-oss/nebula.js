@@ -16,6 +16,7 @@ describe('connect.js', () => {
   let restCallMock;
   let jsonResponseMock;
   let generateWebsocketUrlMock;
+  let windowFetchSpy;
 
   beforeEach(() => {
     appId = 'someAppId';
@@ -43,6 +44,7 @@ describe('connect.js', () => {
       rest: restCallMock,
       generateWebsocketUrl: generateWebsocketUrlMock,
     }));
+    windowFetchSpy = jest.spyOn(window, 'fetch');
   });
 
   afterEach(() => {
@@ -51,6 +53,13 @@ describe('connect.js', () => {
   });
 
   describe('connect()', () => {
+    beforeEach(() => {
+      windowFetchSpy.mockResolvedValue({
+        ok: true,
+        json: async () => ({ isAuthorized: false }),
+      });
+    });
+
     test('should throw error if fails to get enigma instance', async () => {
       jsonResponseMock.mockImplementation(() => Promise.reject(new Error('failed')));
       try {
