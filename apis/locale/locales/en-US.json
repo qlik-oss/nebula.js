@@ -41,7 +41,7 @@
   },
   "Listbox.ResultFilterLabel": {
     "value": "Search Results Filter",
-    "comment": "Describes the relationship between the search field & the results that are fitlered by the input into the search field"
+    "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field"
   },
   "Menu.More": {
     "value": "More",
