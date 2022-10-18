@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import * as ReactDOM from 'react-dom/client';
 
 import App from './components/App';
 
@@ -12,6 +12,6 @@ getConnectionInfo().then(($) => {
   }
   initiateWatch($);
   return openApp($.enigma.appId).then((app) => {
-    ReactDOM.render(<App app={app} info={$} />, document.querySelector('#app'));
+    ReactDOM.createRoot(document.querySelector('#app')).render(<App app={app} info={$} />);
   });
 });
