@@ -34,6 +34,7 @@ Options:
   --stylesheets       Array of stylesheets to inject                     [array]
   --enigma.host                                  [string] [default: "localhost"]
   --enigma.port                                         [number] [default: 9076]
+  --clientId                                                            [string]
   --webIntegrationId                                                    [string]
   --fixturePath       Path to a folder that will be used as basis when locating
                       fixtures              [string] [default: "test/component"]
