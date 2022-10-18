@@ -1,4 +1,5 @@
 module.exports = {
+  verbose: true,
   clearMocks: true,
   testEnvironment: 'jest-environment-jsdom',
   testRegex: [
@@ -41,4 +42,5 @@ module.exports = {
   ],
   coverageReporters: ['json', 'lcov', 'text-summary', 'clover'],
   reporters: ['default', ['jest-junit', { outputDirectory: 'coverage/junit/' }]],
+  transformIgnorePatterns: ['/node_modules/(?!@qlik/sdk)'],
 };

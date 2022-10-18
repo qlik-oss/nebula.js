@@ -171,30 +171,28 @@ module.exports = async ({
         });
       });
 
-      let _host = null;
-      let _clientId = null;
+      let cachedHost = null;
+      let cachedClientId = null;
 
       app.get('/oauth', async (req, res) => {
-        const { host, clientId } = req.query;
-        if (!_host && !_clientId) {
-          _host = host;
-          _clientId = clientId;
+        const { host: qHost, clientId: qClientId } = req.query;
+        if (!cachedHost && !cachedClientId) {
+          cachedHost = qHost;
+          cachedClientId = qClientId;
         }
 
         const returnTo = `${req.protocol}://${req.get('host')}`;
-        const authInstance = getAuthInstance(returnTo, host, clientId);
-        const isAuthorized = await authInstance.isAuthorized();
+        const instacne = getAuthInstance(returnTo, qHost, qClientId);
+        const isAuthorized = await instacne.isAuthorized();
         if (!isAuthorized) {
-          const { url } = await authInstance.generateAuthorizationUrl();
-          res.status(200).json({
-            redirectUrl: url,
-          });
+          const { url: redirectUrl } = await instacne.generateAuthorizationUrl();
+          res.status(200).json({ redirectUrl });
         } else {
           const redirectUrl = `${req.protocol}://${req.get(
             'host'
-          )}/?engine_url=wss://${_host}&qlik-client-id=${_clientId}&shouldFetchAppList=true`;
-          _host = null;
-          _clientId = null;
+          )}/?engine_url=wss://${cachedHost}&qlik-client-id=${cachedClientId}&shouldFetchAppList=true`;
+          cachedHost = null;
+          cachedClientId = null;
           res.redirect(redirectUrl);
         }
       });
@@ -209,6 +207,7 @@ module.exports = async ({
           // and will notify us about when they got fixed it,
           // but until then, we need to take care of it here!
           authInstance.rest.interceptors.request.use((_req) => {
+            // eslint-disable-next-line no-param-reassign, dot-notation
             _req[1]['headers'] = { origin: 'http://localhost:8000' };
             return _req;
           });
@@ -222,10 +221,8 @@ module.exports = async ({
 
       app.get('/getSocketUrl/:appId', async (req, res) => {
         const { appId } = req.params;
-        const url = await authInstance.generateWebsocketUrl(appId, true);
-        res.status(200).json({
-          webSocketUrl: url,
-        });
+        const webSocketUrl = await authInstance.generateWebsocketUrl(appId, true);
+        res.status(200).json({ webSocketUrl });
       });
 
       app.get('/deauthorize', async (req, res) => {
@@ -253,8 +250,8 @@ module.exports = async ({
       });
 
       app.get('/apps', async (req, res) => {
-        const url = `/items?resourceType=app&limit=30&sort=-updatedAt`;
-        const { data = [] } = await (await authInstance.rest(url)).json();
+        const appsListUrl = `/items?resourceType=app&limit=30&sort=-updatedAt`;
+        const { data = [] } = await (await authInstance.rest(appsListUrl)).json();
         res.status(200).json(
           data.map((d) => ({
             qDocId: d.resourceId,
