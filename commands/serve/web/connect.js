@@ -190,7 +190,6 @@ const openApp = async (id) => {
     const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
     return enigmaGlobal.openDoc(id);
   } catch (error) {
-    console.log({ error });
     throw new Error('Failed to open app!');
   }
 };
