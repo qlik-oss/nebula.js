@@ -65,7 +65,7 @@ export function getFieldKeyboardNavigation({ select, confirm, cancel }) {
 
 export function getListboxInlineKeyboardNavigation({ setKeyboardActive }) {
   const focusInsideListbox = (element) => {
-    const fieldElement = element.querySelector('.search input, .value.selector, .value');
+    const fieldElement = element.querySelector('.search input, .value.selector, .value, .ActionsToolbar-* button');
     setKeyboardActive(true);
     if (fieldElement) {
       fieldElement.focus();

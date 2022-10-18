@@ -31,6 +31,18 @@
     "value": "Unlock selections",
     "comment": "Action text to unlock selections in a listbox"
   },
+  "Listbox.ScreenReaderInstructions": {
+    "value": "Activating the elements below will cause content on the page to be updated",
+    "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content"
+  },
+  "Listbox.Search.ScreenReaderInstructions": {
+    "value": "The following search field filters results below as you type",
+    "comment": "Instructions to inform screen reader users that the search field filters the listbox results as they type"
+  },
+  "Listbox.ResultFilterLabel": {
+    "value": "Search Results Filter",
+    "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field"
+  },
   "Menu.More": {
     "value": "More",
     "comment": "Menu option to display list of additional actions to choose from (ffd 20200520)"
