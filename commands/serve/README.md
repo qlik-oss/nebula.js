@@ -35,7 +35,7 @@ Options:
   --enigma.host                                  [string] [default: "localhost"]
   --enigma.port                                         [number] [default: 9076]
   --clientId          Your Apps clientId for OAuth connection           [string]
-  --webIntegrationId                                                    [string]
+  --webIntegrationId  Your Apps webIntegrationId for OAuth connection   [string]
   --fixturePath       Path to a folder that will be used as basis when locating
                       fixtures              [string] [default: "test/component"]
   --mfe               Serves bundle to use in micro frontend           [boolean]
