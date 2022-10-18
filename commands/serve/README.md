@@ -34,8 +34,8 @@ Options:
   --stylesheets       Array of stylesheets to inject                     [array]
   --enigma.host                                  [string] [default: "localhost"]
   --enigma.port                                         [number] [default: 9076]
-  --clientId          Your Apps clientId for OAuth connection           [string]
-  --webIntegrationId  Your Apps webIntegrationId for OAuth connection   [string]
+  --clientId          Your tenant's clientId for OAuth connection       [string]
+  --webIntegrationId  Your tenant's webIntegrationId for connection     [string]
   --fixturePath       Path to a folder that will be used as basis when locating
                       fixtures              [string] [default: "test/component"]
   --mfe               Serves bundle to use in micro frontend           [boolean]
