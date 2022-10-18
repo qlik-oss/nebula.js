@@ -81,6 +81,9 @@ const getConnectionInfo = () =>
       if (params['qlik-web-integration-id']) {
         info.webIntegrationId = params['qlik-web-integration-id'];
       }
+      if (params['qlik-client-id']) {
+        info.clientId = params['qlik-client-id'];
+      }
       if (info.invalid) {
         return info;
       }
@@ -105,10 +108,17 @@ const getAuthInstance = ({ webIntegrationId, host }) => {
 const connect = async () => {
   try {
     const {
+      clientId,
       webIntegrationId,
       enigma: enigmaInfo,
       enigma: { host },
     } = await getConnectionInfo();
+
+    // if no clientId + user is already authorized -> deAuthorize user
+    const { isAuthorized } = await (await fetch('/isAuthorized')).json();
+    if (!clientId && isAuthorized) {
+      await (await fetch('/deauthorize')).json();
+    }
 
     if (webIntegrationId) {
       const authInstance = getAuthInstance({ webIntegrationId, host });
@@ -125,6 +135,22 @@ const connect = async () => {
         getConfiguration: async () => ({}),
       };
     }
+
+    // if we have client id:
+    // 1. call /oauth from dev server
+    // 2. do the autherntication
+    // 3. call /items
+    // 4. return list of app
+    if (clientId) {
+      return {
+        getDocList: async () => {
+          const resp = await (await fetch(`/oauth?host=${host}&clientId=${clientId}`)).json();
+          if (resp.redirectUrl) window.location.href = resp.redirectUrl;
+        },
+        getConfiguration: async () => ({}),
+      };
+    }
+
     const url = SenseUtilities.buildUrl({
       secure: false,
       ...enigmaInfo,
@@ -144,6 +170,7 @@ const connect = async () => {
 const openApp = async (id) => {
   try {
     const {
+      clientId,
       webIntegrationId,
       enigma: enigmaInfo,
       enigma: { host },
@@ -153,6 +180,9 @@ const openApp = async (id) => {
     if (webIntegrationId) {
       const authInstance = getAuthInstance({ webIntegrationId, host });
       url = await authInstance.generateWebsocketUrl(id);
+    } else if (clientId) {
+      const { webSocketUrl } = await (await fetch(`/getSocketUrl/${id}`)).json();
+      url = webSocketUrl;
     } else {
       url = SenseUtilities.buildUrl(enigmaInfo);
     }

@@ -10,8 +10,6 @@ describe('<ListboxInline />', () => {
   const app = { key: 'app' };
   const fieldIdentifier = { qLibraryId: 'qLibraryId' };
   const stateName = '$';
-  let customSelectionsKey;
-  let customSessionModelKey;
 
   let options;
   let ListBoxInline;
@@ -19,13 +17,11 @@ describe('<ListboxInline />', () => {
   let useEffect;
   let useCallback;
   let useRef;
-  let sessionModel;
+  let model;
   let ActionsToolbar;
   let ListBoxSearch;
   let createListboxSelectionToolbar;
   let layout;
-  let useSessionModel;
-  let useObjectSelections;
   let selections;
   let renderer;
   let render;
@@ -40,11 +36,9 @@ describe('<ListboxInline />', () => {
     useEffect = sandbox.stub(React, 'useEffect');
     useCallback = sandbox.stub(React, 'useCallback');
     useRef = sandbox.stub(React, 'useRef');
-    useSessionModel = sandbox.stub();
-    useObjectSelections = sandbox.stub();
 
-    sessionModel = {
-      key: 'session-model',
+    model = {
+      key: 'model',
       lock: sandbox.stub(),
       unlock: sandbox.stub(),
     };
@@ -85,8 +79,6 @@ describe('<ListboxInline />', () => {
         [require.resolve('@nebula.js/ui/icons/unlock'), () => () => 'unlock'],
         [require.resolve('@nebula.js/ui/icons/lock'), () => () => 'lock'],
         [require.resolve('../../../contexts/InstanceContext'), () => InstanceContext],
-        [require.resolve('../../../hooks/useObjectSelections'), () => useObjectSelections],
-        [require.resolve('../../../hooks/useSessionModel'), () => useSessionModel],
         [require.resolve('../../../hooks/useLayout'), () => () => [layout]],
         [require.resolve('../../ActionsToolbar'), () => ActionsToolbar],
         [require.resolve('../ListBox'), () => <div className="theListBox" />],
@@ -113,8 +105,6 @@ describe('<ListboxInline />', () => {
       }),
       off: sandbox.stub(),
     };
-    useSessionModel.returns([sessionModel]);
-    useObjectSelections.returns([selections]);
 
     options = {
       title: 'title',
@@ -124,8 +114,8 @@ describe('<ListboxInline />', () => {
       focusSearch: false,
       toolbar: true,
       properties: {},
-      sessionModel: undefined,
-      selectionsApi: undefined,
+      model,
+      selections,
       update: undefined,
       fetchStart: 'fetchStart',
     };
@@ -140,7 +130,7 @@ describe('<ListboxInline />', () => {
     useEffect
       .onCall(0)
       .callsFake((effectFunc, watchArr) => {
-        expect(watchArr[0].key).to.equal(customSelectionsKey || 'selections');
+        expect(watchArr[0].key).to.equal('selections');
         effectFunc();
       })
       .onCall(1)
@@ -151,12 +141,12 @@ describe('<ListboxInline />', () => {
     useCallback
       .onCall(0)
       .callsFake((effectFunc, watchArr) => {
-        expect(watchArr[0].key).to.equal(customSessionModelKey || 'session-model');
+        expect(watchArr[0].key).to.equal('model');
         return effectFunc;
       })
       .onCall(1)
       .callsFake((effectFunc, watchArr) => {
-        expect(watchArr[0].key).to.equal(customSessionModelKey || 'session-model');
+        expect(watchArr[0].key).to.equal('model');
         return effectFunc;
       });
   });
@@ -197,12 +187,6 @@ describe('<ListboxInline />', () => {
 
       const autoSizers = renderer.root.findAllByProps({ 'data-testid': 'virtualized-auto-sizer' });
       expect(autoSizers.length).to.equal(1);
-
-      expect(useSessionModel).calledOnce;
-      expect(useSessionModel.args[0][1], 'app should not be null as when using a custom sessionModel').to.deep.equal({
-        key: 'app',
-      });
-      expect(useObjectSelections).calledOnce;
 
       const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
       expect(listBoxSearches).to.have.length(1);
@@ -251,64 +235,6 @@ describe('<ListboxInline />', () => {
       expect(typographs.length).to.equal(1);
 
       expect(ListBoxSearch).to.have.been.calledWith(sinon.match({ visible: false }));
-    });
-
-    it('should use provided frequencyMode', async () => {
-      options.frequencyMode = 'value';
-      await render();
-      expect(
-        useSessionModel.args[0][0].qListObjectDef.qFrequencyMode,
-        'app should use provided frequencyMode'
-      ).to.equal('V');
-    });
-
-    it('should default to none if provided frequencyMode is invalid', async () => {
-      options.frequencyMode = 'invalid value';
-      await render();
-      expect(
-        useSessionModel.args[0][0].qListObjectDef.qFrequencyMode,
-        'app should default to none frequencyMode'
-      ).to.equal('N');
-    });
-
-    it('should get frequency value if histogram is enabled', async () => {
-      options.frequencyMode = 'none';
-      options.histogram = true;
-      await render();
-      expect(useSessionModel.args[0][0].qListObjectDef.qFrequencyMode, 'app should use freuency value').to.equal('V');
-    });
-
-    it('should use a custom selectionsApi and sessionModel', async () => {
-      const isModal = sandbox.stub();
-      const on = sandbox.stub();
-      const isActive = sandbox.stub();
-      customSelectionsKey = 'custom-selections';
-      customSessionModelKey = 'custom-session-model';
-      options.selectionsApi = {
-        key: 'custom-selections',
-        isModal,
-        on,
-        isActive,
-      };
-      options.sessionModel = {
-        key: 'custom-session-model',
-        lock: sandbox.stub(),
-        unlock: sandbox.stub(),
-      };
-      await render();
-
-      const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
-      expect(actionToolbars.length).to.equal(1);
-
-      expect(isModal).calledOnce;
-      expect(selections.on, 'should not use default selections api').not.called;
-      expect(on, 'should use custom selections api').calledTwice;
-      expect(isActive).calledOnce;
-      expect(useSessionModel).calledOnce;
-      expect(useSessionModel.args[0][1], 'app should be null to prevent unncessary rendering').to.equal(null);
-      expect(useObjectSelections).calledOnce;
-      const [, ourSessionModel] = useObjectSelections.args[0];
-      expect(ourSessionModel.key, 'should use custom session model').to.equal('custom-session-model');
     });
   });
 });

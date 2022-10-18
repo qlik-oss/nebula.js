@@ -4969,17 +4969,15 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
   integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
 
-"@qlik/sdk@^0.10.2":
-  version "0.10.2"
-  resolved "https://registry.yarnpkg.com/@qlik/sdk/-/sdk-0.10.2.tgz#24c8e1d864b81e8837744914825f321da01a5895"
-  integrity sha512-cKpWPgDOi4alWwSQ/1DI40Pj+PhL8hMwBSib/tRwwpVn00iVUoFvjG80SUUmYGbeWLeBV38f/W4pqh+5jghHRA==
+"@qlik/sdk@^0.12.0":
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/@qlik/sdk/-/sdk-0.12.0.tgz#a28c6d06af31b82cf00baff28e90f41c41754795"
+  integrity sha512-3HfYM3XrdeJd4Rjn/zMSNIf8I6clI209qiaOARsdBEsgYwFHcmjJNVT/mGYR33GlDMoUe1+wsmaDDn5WrS4LaQ==
   dependencies:
     "@types/jsonwebtoken" "8.5.9"
-    cross-fetch "3.1.5"
-    enigma.js "2.9.0"
-    isomorphic-ws "5.0.0"
+    enigma.js "2.10.0"
     jsonwebtoken "8.5.1"
-    ws "8.8.1"
+    ws "8.9.0"
 
 "@rollup/plugin-commonjs@22.0.2":
   version "22.0.2"
@@ -10429,11 +10427,6 @@ enigma.js@2.10.0:
   resolved "https://registry.yarnpkg.com/enigma.js/-/enigma.js-2.10.0.tgz#12816dd71aec957a17cca081a63c343c9a655f80"
   integrity sha512-eoVslcv1OtIcOtHP/WwFeemeIIXNJomlv6Obfk6jY7wPBm8/fAPCKB1Gvlyt4bpFgtMssJQ0f+Vq6vt4IgYlmA==
 
-enigma.js@2.9.0:
-  version "2.9.0"
-  resolved "https://registry.yarnpkg.com/enigma.js/-/enigma.js-2.9.0.tgz#85846eb1abcb90b378d11dffbc5b92c52f6d42a8"
-  integrity sha512-R/OttpmWyc6kwYUWTiRIfKrKuV6hrVOirwuLKvoUwhvLfFd5Yyf0gvZRdholvJswhNDDD5UIAbUFNf/o96v+hA==
-
 enquirer@~2.3.6:
   version "2.3.6"
   resolved "https://registry.yarnpkg.com/enquirer/-/enquirer-2.3.6.tgz#2a7fe5dd634a1e4125a975ec994ff5456dc3734d"
@@ -13484,11 +13477,6 @@ isomorphic-unfetch@^3.1.0:
   dependencies:
     node-fetch "^2.6.1"
     unfetch "^4.2.0"
-
-isomorphic-ws@5.0.0:
-  version "5.0.0"
-  resolved "https://registry.yarnpkg.com/isomorphic-ws/-/isomorphic-ws-5.0.0.tgz#e5529148912ecb9b451b46ed44d53dae1ce04bbf"
-  integrity sha512-muId7Zzn9ywDsyXgTIafTry2sV3nySZeUDe6YedVd1Hvuuep5AsIlqK+XefWpYTyJG5e503F2xIuT2lcU6rCSw==
 
 istanbul-lib-coverage@^2.0.5:
   version "2.0.5"
@@ -21323,11 +21311,6 @@ ws@8.7.0:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.7.0.tgz#eaf9d874b433aa00c0e0d8752532444875db3957"
   integrity sha512-c2gsP0PRwcLFzUiA8Mkr37/MI7ilIlHQxaEAtd0uNMbVMoy8puJyafRlm0bV9MbGSabUPeLrRRaqIBcFcA2Pqg==
 
-ws@8.8.1, ws@^8.8.0:
-  version "8.8.1"
-  resolved "https://registry.yarnpkg.com/ws/-/ws-8.8.1.tgz#5dbad0feb7ade8ecc99b830c1d77c913d4955ff0"
-  integrity sha512-bGy2JzvzkPowEJV++hF07hAD6niYSr0JzBNo/J29WsB57A2r7Wlc1UFcTR9IzrPvuNVO4B8LGqF8qcpsVOhJCA==
-
 ws@8.9.0:
   version "8.9.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.9.0.tgz#2a994bb67144be1b53fe2d23c53c028adeb7f45e"
@@ -21349,6 +21332,11 @@ ws@^8.2.3, ws@^8.4.2:
   version "8.8.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.8.0.tgz#8e71c75e2f6348dbf8d78005107297056cb77769"
   integrity sha512-JDAgSYQ1ksuwqfChJusw1LSJ8BizJ2e/vVu5Lxjq3YvNJNlROv1ui4i+c/kUUrPheBvQl4c5UbERhTwKa6QBJQ==
+
+ws@^8.8.0:
+  version "8.8.1"
+  resolved "https://registry.yarnpkg.com/ws/-/ws-8.8.1.tgz#5dbad0feb7ade8ecc99b830c1d77c913d4955ff0"
+  integrity sha512-bGy2JzvzkPowEJV++hF07hAD6niYSr0JzBNo/J29WsB57A2r7Wlc1UFcTR9IzrPvuNVO4B8LGqF8qcpsVOhJCA==
 
 x-default-browser@^0.4.0:
   version "0.4.0"
