@@ -118,7 +118,7 @@ export default function ListBoxInline({ options = {} }) {
       setShowToolbar(selections.isActive());
     }
     return () => {
-      if (selections) {
+      if (selections && selections.removeListener) {
         selections.removeListener('deactivated', show);
         selections.removeListener('activated', hide);
       }
