@@ -5,7 +5,6 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/
 import { Help } from '@nebula.js/ui/icons';
 import Remove from '@nebula.js/ui/icons/remove';
 import Box from '@mui/material/Box';
-import OutlinedInput from '@mui/material/OutlinedInput';
 import Collapse from '@mui/material/Collapse';
 import Container from '@mui/material/Container';
 import IconButton from '@mui/material/IconButton';
@@ -21,6 +20,7 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 import CircularProgress from '@mui/material/CircularProgress';
 
+import ConnectionOptions from './ConnectionOptions/ConnectionOptions';
 import { getConnectionInfo, connect } from '../connect';
 import storageFn from '../storage';
 
@@ -28,11 +28,10 @@ const storage = storageFn({});
 const theme = createTheme('light');
 const themeDark = createTheme('dark');
 
-function SelectEngine({ info, children }) {
+function SelectEngine({ info, error }) {
   const [items, setItems] = useState(storage.get('connections') || []);
   const [showInstructions, setShowInstructions] = useState(!items.length);
   const [goTo] = useState(() => (u) => `${window.location.origin}?engine_url=${u.replace('?', '&')}`);
-  let typedUrl;
 
   const onRemove = (li) => {
     const idx = items.indexOf(li);
@@ -44,20 +43,10 @@ function SelectEngine({ info, children }) {
     }
   };
 
-  const onKeyDown = (e) => {
-    switch (e.key) {
-      case 'Enter':
-        typedUrl = e.target.value;
-        if (typedUrl) {
-          window.location.href = goTo(typedUrl.replace('?', '&'));
-        }
-        break;
-      case 'Escape':
-        break;
-      default:
-        break;
-    }
+  const onKeyDown = (val) => {
+    window.location.href = goTo(val);
   };
+
   return (
     <>
       <Grid container>
@@ -91,18 +80,10 @@ function SelectEngine({ info, children }) {
         </>
       ) : null}
       <Typography variant="h6" gutterBottom>
-        New connection
+        New connection with:
       </Typography>
-      <OutlinedInput
-        autoFocus
-        fullWidth
-        placeholder="Engine WebSocket URL"
-        error={info.invalid}
-        onKeyDown={onKeyDown}
-        defaultValue={info.engineUrl}
-      />
 
-      {children}
+      <ConnectionOptions info={info} onKeyDown={onKeyDown} error={error} />
 
       <Collapse in={showInstructions}>
         <Typography variant="h6" gutterBottom style={{ marginTop: '1rem' }}>
@@ -255,21 +236,6 @@ function AppList({ info, glob, treatAsDesktop }) {
   );
 }
 
-function Err({ e: { message, hints } }) {
-  return (
-    <>
-      <Typography variant="subtitle1" color="error" gutterBottom style={{ marginTop: '1rem' }}>
-        {message}
-      </Typography>
-      {hints.map((hint) => (
-        <Typography key={hint} variant="body2">
-          {hint}
-        </Typography>
-      ))}
-    </>
-  );
-}
-
 export default function Hub() {
   const [info, setInfo] = useState();
   const [glob, setGlobal] = useState();
@@ -403,7 +369,7 @@ export default function Hub() {
                 <AppList info={info} glob={glob} treatAsDesktop={treatAsDesktop} />
               )
             ) : (
-              <SelectEngine info={info}>{err && <Err e={err} />}</SelectEngine>
+              <SelectEngine info={info} error={err} />
             )}
           </Box>
         </Container>
