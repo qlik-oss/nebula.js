@@ -1,41 +1,28 @@
 import React from 'react';
-import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
-// import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 import { ThemeWrapper } from '../ThemeWrapper';
+import { StepperWrapper, CustomStepLabel } from './styles';
 
-// const themeDark = createTheme('dark');
+const ConnectionSteps = ({ activeStep, glob, error }) => {
+  const steps = ['Connect to engine', 'Select app', 'Develop'];
 
-const steps = ['Connect to an engine', 'Select an app', 'Develop'];
+  const handleStepperClick = () => {
+    if (!(glob || error)) return;
+    window.location.href = window.location.origin;
+  };
 
-const ConnectionSteps = ({ activeStep, glob, error, reset }) => {
   return (
-    // <StyledEngineProvider injectFirst>
-    //   <ThemeProvider theme={themeDark}>
     <ThemeWrapper themeName="dark">
-      <Stepper alternativeLabel activeStep={activeStep} style={{ backgroundColor: 'transparent', padding: 24 }}>
+      <StepperWrapper alternativeLabel activeStep={activeStep}>
         {steps.map((label, i) => (
           <Step key={label}>
-            {i ? (
-              <StepLabel>{label}</StepLabel>
-            ) : (
-              <StepLabel
-                onClick={glob || error ? reset : null}
-                error={!!error}
-                style={{
-                  cursor: glob || error ? 'pointer' : 'default',
-                }}
-              >
-                {label}
-              </StepLabel>
-            )}
+            <CustomStepLabel onClick={handleStepperClick} shouldBePointer={glob || error} error={!!error && !i}>
+              {label}
+            </CustomStepLabel>
           </Step>
         ))}
-      </Stepper>
+      </StepperWrapper>
     </ThemeWrapper>
-    //   </ThemeProvider>
-    // </StyledEngineProvider>
   );
 };
 

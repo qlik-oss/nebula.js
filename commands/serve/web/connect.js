@@ -156,12 +156,7 @@ const connect = async () => {
       ...enigmaInfo,
     });
 
-    return enigma
-      .create({
-        schema: qixSchema,
-        url,
-      })
-      .open();
+    return enigma.create({ schema: qixSchema, url }).open();
   } catch (error) {
     throw new Error('Failed to return enigma instance');
   }
