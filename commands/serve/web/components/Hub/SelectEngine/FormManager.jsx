@@ -3,7 +3,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 
-import Error from '../Error';
+import Error from './Error';
 
 export default function FormManager({ info, fields, handleSubmit, error }) {
   const [inputs, setInputs] = useState({});
