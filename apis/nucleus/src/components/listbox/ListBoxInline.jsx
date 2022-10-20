@@ -25,12 +25,19 @@ const PREFIX = 'ListBoxInline';
 
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
+  screenReaderOnly: `${PREFIX}-screenReaderOnly`,
 };
 
 const StyledGrid = styled(Grid)(() => ({
   [`& .${classes.listBoxHeader}`]: {
     alignSelf: 'center',
     display: 'inline-flex',
+  },
+  [`& .${classes.screenReaderOnly}`]: {
+    position: 'absolute',
+    height: 0,
+    width: 0,
+    overflow: 'hidden',
   },
 }));
 
@@ -187,7 +194,7 @@ export default function ListBoxInline({ options = {} }) {
       tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"
       gap={0}
-      style={{ height: '100%', minHeight: `${minHeight}px` }}
+      style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
       onKeyDown={handleKeyDown}
       ref={listBoxRef}
     >
@@ -234,44 +241,55 @@ export default function ListBoxInline({ options = {} }) {
           </Grid>
         </Grid>
       )}
-      <Grid item ref={searchContainerRef}>
-        <ListBoxSearch
-          selections={selections}
-          model={model}
-          dense={dense}
-          keyboard={keyboard}
-          visible={searchVisible}
-          searchContainerRef={searchContainerRef}
-        />
-      </Grid>
-      <Grid item xs>
-        <div ref={moreAlignTo} />
-        <AutoSizer>
-          {({ height, width }) => (
-            <ListBox
-              model={model}
-              selections={selections}
-              direction={direction}
-              listLayout={listLayout}
-              frequencyMode={frequencyMode}
-              histogram={histogram}
-              rangeSelect={rangeSelect}
-              checkboxes={checkboxes}
-              height={height}
-              width={width}
-              update={update}
-              fetchStart={fetchStart}
-              postProcessPages={postProcessPages}
-              calculatePagesHeight={calculatePagesHeight}
-              dense={dense}
-              selectDisabled={selectDisabled}
-              keyboard={keyboard}
-              showGray={showGray}
-              scrollState={scrollState}
-              setCount={setCount}
-            />
-          )}
-        </AutoSizer>
+      <Grid
+        item
+        container
+        direction="column"
+        style={{ height: '100%', minHeight: `${minHeight}px` }}
+        role="region"
+        aria-label={translator.get('Listbox.ResultFilterLabel')}
+      >
+        <Grid item ref={searchContainerRef}>
+          <div className={classes.screenReaderOnly}>{translator.get('Listbox.Search.ScreenReaderInstructions')}</div>
+          <ListBoxSearch
+            selections={selections}
+            model={model}
+            dense={dense}
+            keyboard={keyboard}
+            visible={searchVisible}
+            searchContainerRef={searchContainerRef}
+          />
+        </Grid>
+        <Grid item xs>
+          <div ref={moreAlignTo} />
+          <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
+          <AutoSizer>
+            {({ height, width }) => (
+              <ListBox
+                model={model}
+                selections={selections}
+                direction={direction}
+                listLayout={listLayout}
+                frequencyMode={frequencyMode}
+                histogram={histogram}
+                rangeSelect={rangeSelect}
+                checkboxes={checkboxes}
+                height={height}
+                width={width}
+                update={update}
+                fetchStart={fetchStart}
+                postProcessPages={postProcessPages}
+                calculatePagesHeight={calculatePagesHeight}
+                dense={dense}
+                selectDisabled={selectDisabled}
+                keyboard={keyboard}
+                showGray={showGray}
+                scrollState={scrollState}
+                setCount={setCount}
+              />
+            )}
+          </AutoSizer>
+        </Grid>
       </Grid>
     </StyledGrid>
   );
