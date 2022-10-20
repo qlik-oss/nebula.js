@@ -4,7 +4,6 @@ import SelectEngine from './SelectEngine/SelectEngine';
 import ConnectionSteps from './ConnectionSteps';
 import { ThemeWrapper } from '../ThemeWrapper';
 import { useInfo, useConnection } from '../../hooks';
-import { ConnectionBoxWrapper } from './styles';
 
 export default function Hub() {
   const { info } = useInfo();
@@ -15,10 +14,12 @@ export default function Hub() {
 
   return (
     <ThemeWrapper themeName="light">
-      <ConnectionSteps {...{ glob, error, activeStep }} />
-      <ConnectionBoxWrapper>
-        {glob ? <AppList {...{ info, glob, treatAsDesktop }} /> : <SelectEngine {...{ info, error }} />}
-      </ConnectionBoxWrapper>
+      <ConnectionSteps glob={glob} error={error} activeStep={activeStep} />
+      {glob ? (
+        <AppList info={info} glob={glob} treatAsDesktop={treatAsDesktop} />
+      ) : (
+        <SelectEngine info={info} error={error} />
+      )}
     </ThemeWrapper>
   );
 }

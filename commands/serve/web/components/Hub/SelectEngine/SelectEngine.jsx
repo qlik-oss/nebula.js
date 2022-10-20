@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Help } from '@nebula.js/ui/icons';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
@@ -8,13 +8,12 @@ import ConnectionOptions from './ConnectionOptions';
 import ConnectionGuid from './ConnectionGuid';
 import ConnectionHistory from './ConnectionHistory';
 import storageFn from '../../../storage';
-
-const storage = storageFn({});
+import { ContentWrapper } from '../styles';
 
 const SelectEngine = ({ info, error }) => {
+  const storage = useMemo(() => storageFn({}), []);
   const [items, setItems] = useState(storage.get('connections') || []);
-  const [showInstructions, setShowInstructions] = useState(!items.length);
-  const [goTo] = useState(() => (u) => `${window.location.origin}?engine_url=${u.replace('?', '&')}`);
+  const [showGuid, setShowGuid] = useState(!items.length);
 
   const onRemove = (li) => {
     const idx = items.indexOf(li);
@@ -26,12 +25,8 @@ const SelectEngine = ({ info, error }) => {
     }
   };
 
-  const onKeyDown = (val) => {
-    window.location.href = goTo(val);
-  };
-
   return (
-    <>
+    <ContentWrapper>
       <Grid container>
         <Grid item xs>
           <Typography variant="h5" gutterBottom>
@@ -39,21 +34,16 @@ const SelectEngine = ({ info, error }) => {
           </Typography>
         </Grid>
         <Grid item>
-          <IconButton onClick={() => setShowInstructions((s) => !s)} size="small">
+          <IconButton onClick={() => setShowGuid(!showGuid)} size="small">
             <Help />
           </IconButton>
         </Grid>
       </Grid>
 
-      <ConnectionHistory items={items} onRemove={onRemove} goTo={goTo} />
-
-      <Typography variant="h6" gutterBottom>
-        New connection with:
-      </Typography>
-      <ConnectionOptions info={info} onKeyDown={onKeyDown} error={error} />
-
-      <ConnectionGuid showInstructions={showInstructions} />
-    </>
+      <ConnectionHistory items={items} onRemove={onRemove} />
+      <ConnectionOptions info={info} error={error} />
+      <ConnectionGuid showGuid={showGuid} />
+    </ContentWrapper>
   );
 };
 

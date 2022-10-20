@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-
+import Typography from '@mui/material/Typography';
 import FormManager from './FormManager';
 
 const OptionsToConnect = [
@@ -11,25 +11,30 @@ const OptionsToConnect = [
   { id: 2, label: 'Client Id', formFields: ['Engine WebSocket URL', 'Client Id'] },
 ];
 
-export default function ConnectionOptions({ info, onKeyDown, error }) {
+export default function ConnectionOptions({ info, error }) {
   const [tabIdx, setTabIdx] = useState(0);
   const handleChange = (_, idx) => setTabIdx(idx);
 
   return (
-    <Box sx={{ width: '100%' }}>
-      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-        <Tabs value={tabIdx} onChange={handleChange} aria-label="basic tabs example">
-          {OptionsToConnect.map(({ id, label }) => (
-            <Tab key={id} label={label} />
-          ))}
-        </Tabs>
-      </Box>
+    <Box>
+      <Typography variant="h6" gutterBottom>
+        New connection with:
+      </Typography>
+      <Box sx={{ width: '100%' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={tabIdx} onChange={handleChange} aria-label="basic tabs example">
+            {OptionsToConnect.map(({ id, label }) => (
+              <Tab key={id} label={label} />
+            ))}
+          </Tabs>
+        </Box>
 
-      {OptionsToConnect.map(({ id, formFields }) => (
-        <TabPanel tabIdx={tabIdx} idx={id} key={id}>
-          <FormManager info={info} handleSubmit={onKeyDown} fields={formFields} error={error} />
-        </TabPanel>
-      ))}
+        {OptionsToConnect.map(({ id, formFields }) => (
+          <TabPanel tabIdx={tabIdx} idx={id} key={id}>
+            <FormManager info={info} fields={formFields} error={error} />
+          </TabPanel>
+        ))}
+      </Box>
     </Box>
   );
 }

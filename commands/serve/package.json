@@ -50,6 +50,7 @@
     "@babel/preset-env": "7.19.3",
     "@babel/preset-react": "7.18.6",
     "@mui/material": "^5.10.8",
+    "@mui/system": "^5.10.8",
     "@nebula.js/enigma-mocker": "^3.0.4",
     "@nebula.js/nucleus": "^3.0.4",
     "@nebula.js/snapshooter": "^3.0.4",

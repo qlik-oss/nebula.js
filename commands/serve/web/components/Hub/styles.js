@@ -3,7 +3,7 @@ import { styled } from '@mui/system';
 import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
 
-export const ConnectionBoxWrapper = styled(Box)(({ theme }) => ({
+export const ContentWrapper = styled(Box)(({ theme }) => ({
   position: 'relative',
   padding: theme.spacing(2, 2),
   backgroundColor: 'white',

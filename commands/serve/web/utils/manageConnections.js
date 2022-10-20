@@ -1,11 +1,4 @@
-import storageFn from '../storage';
-
-// TODO:
-// remove global variable
-// for making testing of module much easier
-const storage = storageFn({});
-
-export const manageConnections = (info) => {
+export const manageConnections = ({ info, storage }) => {
   const conns = storage.get('connections') || [];
   let url = '';
   if (info.clientId) url = `${info.engineUrl}?qlik-client-id=${info.clientId}`;
