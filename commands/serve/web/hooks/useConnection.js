@@ -48,7 +48,6 @@ export const handleConnectionSuccess = async ({
   setTreatAsDesktop,
   setError,
 }) => {
-  console.log({ result });
   handleSessionNotification({ result, setError, setGlobal });
   setGlobal(result);
   if (!result.getDocList) return;
