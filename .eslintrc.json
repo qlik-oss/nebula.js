@@ -66,6 +66,15 @@
       }
     },
     {
+      "files": ["commands/serve/web/**/*.{js,jsx}"],
+      "rules": {
+        "arrow-body-style": 1,
+        "no-use-before-define": 1,
+        "react/function-component-definition": 0,
+        "import/prefer-default-export": 1
+      }
+    },
+    {
       "files": ["**/*.{int,comp,spec}.{js,jsx}"],
       "env": {
         "browser": false,
