@@ -19,6 +19,89 @@ const VizElement = {
   className: 'njs-viz',
 };
 
+const imageSizingToCssProperty = {
+  originalSize: 'auto auto',
+  alwaysFit: 'contain',
+  fitWidth: '100% auto',
+  fitHeight: 'auto 100%',
+  stretchFit: '100% 100%',
+  alwaysFill: 'cover',
+};
+
+const positionToCss = {
+  'top-left': 'top left',
+  'top-center': 'top center',
+  'top-right': 'top right',
+  'center-left': 'center left',
+  'center-center': 'center center',
+  'center-right': 'center right',
+  'bottom-left': 'bottom left',
+  'bottom-center': 'bottom center',
+  'bottom-right': 'bottom right',
+};
+
+// TODO: this needs some proper verification
+function getSenseServerUrl(app) {
+  let config;
+  let wsUrl;
+  let protocol;
+  let isSecure;
+
+  if (app?.session?.config) {
+    config = app.session.config;
+    wsUrl = new URL(config.url);
+
+    isSecure = wsUrl.protocol === 'wss:';
+    protocol = isSecure ? 'https://' : 'http://';
+    return protocol + wsUrl.host;
+  }
+  return undefined;
+}
+
+function getBackgroundPosition(bgComp) {
+  let bkgImagePosition = 'center center';
+  if (bgComp?.bgImage?.position) {
+    bkgImagePosition = positionToCss[bgComp.bgImage.position];
+  }
+  return bkgImagePosition;
+}
+
+function getBackgroundSize(bgComp) {
+  let bkgImageSize = imageSizingToCssProperty.originalSize;
+  if (bgComp?.bgImage?.sizing) {
+    bkgImageSize = imageSizingToCssProperty[bgComp.bgImage.sizing];
+  }
+  return bkgImageSize;
+}
+
+function resolveImageUrl(app, relativeUrl) {
+  return relativeUrl ? getSenseServerUrl(app) + relativeUrl : undefined;
+}
+
+const resolveBgImage = (bgComp, app) => {
+  const bgImageDef = bgComp?.bgImage;
+
+  if (bgImageDef) {
+    let url = '';
+    if (bgImageDef.mode === 'media') {
+      url = bgImageDef?.mediaUrl?.qStaticContentUrl?.qUrl
+        ? decodeURIComponent(bgImageDef.mediaUrl.qStaticContentUrl.qUrl)
+        : undefined;
+      url = resolveImageUrl(app, url);
+    }
+    if (bgImageDef.mode === 'expression') {
+      url = bgImageDef.expressionUrl ? decodeURIComponent(bgImageDef.expressionUrl) : undefined;
+    }
+    const pos = getBackgroundPosition(bgComp);
+    const size = getBackgroundSize(bgComp);
+
+    // TODO: need to resolve the URL by the WS path
+
+    return url ? { url, pos, size } : undefined;
+  }
+  return undefined;
+};
+
 function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo }) {
   const { component } = sn;
 
@@ -28,28 +111,14 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
   const [renderCnt, setRenderCnt] = useState(0);
   const [containerRef, containerRect, containerNode] = useRect();
   const [snNode, setSnNode] = useState(null);
-  const [bgImage, setBgImage] = useState(undefined);
-  const [bgComp, setBgComp] = useState(null);
+  const [bgImage, setBgImage] = useState(undefined); // {url: "", size: "", pos: ""}
+
   const snRef = useCallback((ref) => {
     if (!ref) {
       return;
     }
     setSnNode(ref);
   }, []);
-
-  const resolveBgImage = () => {
-    const bgImageDef = bgComp && bgComp.bgImage ? bgComp.bgImage : null;
-
-    if (bgImageDef && bgImageDef.mode === 'media') {
-      return bgImageDef.mediaUrl && bgImageDef.mediaUrl.qStaticContentUrl && bgImageDef.mediaUrl.qStaticContentUrl.qUrl
-        ? decodeURIComponent(bgImageDef.mediaUrl.qStaticContentUrl.qUrl)
-        : undefined;
-    }
-    if (bgImageDef && bgImageDef.mode === 'expression') {
-      return bgImageDef.expressionUrl ? decodeURIComponent(bgImageDef.expressionUrl) : undefined;
-    }
-    return undefined;
-  };
 
   // Mount / Unmount
   useEffect(() => {
@@ -65,12 +134,10 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
 
   // Resolve Background Image
   useEffect(() => {
-    setBgComp(layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null);
-  }, [layout]);
-
-  useEffect(() => {
-    setBgImage(resolveBgImage(bgComp));
-  }, [bgComp]);
+    setBgImage(
+      resolveBgImage(layout?.components ? layout.components.find((comp) => comp.key === 'general') : null, halo.app)
+    );
+  }, [layout, halo.app]);
 
   // Render
   useEffect(() => {
@@ -144,31 +211,6 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     keyboardNavigation,
   ]);
 
-  const imageSizingToCssProperty = {
-    originalSize: 'auto auto',
-    alwaysFit: 'contain',
-    fitWidth: '100% auto',
-    fitHeight: 'auto 100%',
-    stretchFit: '100% 100%',
-    alwaysFill: 'cover',
-  };
-
-  function getBackgroundPosition() {
-    let bkgImagePosition = 'center center';
-    if (bgComp && bgComp.bgImage && bgComp.bgImage.position) {
-      bkgImagePosition = bgComp.bgImage.position.replace('-', ' ');
-    }
-    return bkgImagePosition;
-  }
-
-  function getBackgroundSize() {
-    let bkgImageSize = imageSizingToCssProperty.originalSize;
-    if (bgComp && bgComp.bgImage && bgComp.bgImage.position) {
-      bkgImageSize = imageSizingToCssProperty[bgComp.bgImage.sizing];
-    }
-    return bkgImageSize;
-  }
-
   return (
     <div
       ref={containerRef}
@@ -176,10 +218,10 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       style={{
         position: 'relative',
         height: '100%',
-        backgroundImage: `url(${bgImage})`,
+        backgroundImage: bgImage && bgImage.url ? `url(${bgImage.url})` : undefined,
         backgroundRepeat: 'no-repeat',
-        backgroundSize: getBackgroundSize(),
-        backgroundPosition: getBackgroundPosition(),
+        backgroundSize: bgImage && bgImage.size,
+        backgroundPosition: bgImage && bgImage.pos,
       }}
       className={VizElement.className}
     >

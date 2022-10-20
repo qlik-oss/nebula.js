@@ -1,4 +1,5 @@
 import EventEmitter from 'node-event-emitter';
+import { color as d3color } from 'd3-color';
 
 import setTheme from './set-theme';
 import paletteResolverFn from './palette-resolver';
@@ -98,6 +99,11 @@ export default function theme() {
       }
 
       return styleResolverInstanceCache[basePath].getStyle(path, attribute);
+    },
+
+    validateColor(...args) {
+      const c = d3color(...args);
+      return c ? c.toString() : undefined;
     },
   };
 
