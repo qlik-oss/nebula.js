@@ -17,8 +17,8 @@ const AppList = ({ info, glob, treatAsDesktop }) => {
         Select an app
       </Typography>
       {loading && <CircularProgress size={32} />}
-      {!loading && !appList.length && <Typography component="span">No apps found!</Typography>}
-      {appList.length > 0 && (
+      {!loading && appList && !appList.length && <Typography component="span">No apps found!</Typography>}
+      {appList && appList.length > 0 && (
         <List>
           {appList.map((appData) => (
             <ListItem
