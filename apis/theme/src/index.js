@@ -100,7 +100,18 @@ export default function theme() {
 
       return styleResolverInstanceCache[basePath].getStyle(path, attribute);
     },
-
+    /**
+     * Validates a color string using d3-color.
+     * See https://www.npmjs.com/package/d3-color
+     * @param {string} specifier
+     * @returns {string|undefined} The resolved color or undefined
+     * @ignore
+     *
+     * @example
+     * theme.validateColor("red"); // returns "rgba(255,0,0,1)"
+     * theme.validateColor("#00ff00"); // returns "rgba(0,255,0,1)"
+     * theme.validateColor("FOO"); // returns undefined
+     */
     validateColor(...args) {
       const c = d3color(...args);
       return c ? c.toString() : undefined;
