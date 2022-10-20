@@ -290,6 +290,7 @@ const Cell = forwardRef(
     const [selections] = useObjectSelections(app, model);
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
+    const [bgColor, setBgColor] = useState(undefined);
     const focusHandler = useRef({
       focusToolbarButton(last) {
         // eslint-disable-next-line react/no-this-in-sfc
@@ -297,9 +298,31 @@ const Cell = forwardRef(
       },
     });
 
+    const resolveBgColor = () => {
+      const bgComp = layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
+
+      if (bgComp && bgComp.bgColor && bgComp.bgColor.useColorExpression) {
+        if (bgComp.bgColor.colorExpression) {
+          bgComp.bgColor.colorExpression = { color: bgComp.bgColor.colorExpression };
+        }
+        return bgComp.bgColor.colorExpression
+          ? halo.public.theme.getColorPickerColor(bgComp.bgColor.colorExpression)
+          : undefined;
+      }
+      if (bgComp && bgComp.bgColor && !bgComp.bgColor.useColorExpression)
+        return bgComp.bgColor.color && bgComp.bgColor.color.color !== 'none'
+          ? halo.public.theme.getColorPickerColor(bgComp.bgColor.color)
+          : undefined;
+      return undefined;
+    };
+
     useEffect(() => {
       eventmixin(focusHandler.current);
     }, []);
+
+    useEffect(() => {
+      setBgColor(resolveBgColor());
+    }, [layout, theme]);
 
     focusHandler.current.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
@@ -516,6 +539,7 @@ const Cell = forwardRef(
             xs
             style={{
               height: '100%',
+              backgroundColor: bgColor,
             }}
             ref={contentRef}
           >

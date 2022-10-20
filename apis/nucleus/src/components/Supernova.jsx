@@ -28,12 +28,28 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
   const [renderCnt, setRenderCnt] = useState(0);
   const [containerRef, containerRect, containerNode] = useRect();
   const [snNode, setSnNode] = useState(null);
+  const [bgImage, setBgImage] = useState(undefined);
+  const [bgComp, setBgComp] = useState(null);
   const snRef = useCallback((ref) => {
     if (!ref) {
       return;
     }
     setSnNode(ref);
   }, []);
+
+  const resolveBgImage = () => {
+    const bgImageDef = bgComp && bgComp.bgImage ? bgComp.bgImage : null;
+
+    if (bgImageDef && bgImageDef.mode === 'media') {
+      return bgImageDef.mediaUrl && bgImageDef.mediaUrl.qStaticContentUrl && bgImageDef.mediaUrl.qStaticContentUrl.qUrl
+        ? decodeURIComponent(bgImageDef.mediaUrl.qStaticContentUrl.qUrl)
+        : undefined;
+    }
+    if (bgImageDef && bgImageDef.mode === 'expression') {
+      return bgImageDef.expressionUrl ? decodeURIComponent(bgImageDef.expressionUrl) : undefined;
+    }
+    return undefined;
+  };
 
   // Mount / Unmount
   useEffect(() => {
@@ -46,6 +62,15 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       component.willUnmount();
     };
   }, [snNode, component]);
+
+  // Resolve Background Image
+  useEffect(() => {
+    setBgComp(layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null);
+  }, [layout]);
+
+  useEffect(() => {
+    setBgImage(resolveBgImage(bgComp));
+  }, [bgComp]);
 
   // Render
   useEffect(() => {
@@ -119,11 +144,43 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     keyboardNavigation,
   ]);
 
+  const imageSizingToCssProperty = {
+    originalSize: 'auto auto',
+    alwaysFit: 'contain',
+    fitWidth: '100% auto',
+    fitHeight: 'auto 100%',
+    stretchFit: '100% 100%',
+    alwaysFill: 'cover',
+  };
+
+  function getBackgroundPosition() {
+    let bkgImagePosition = 'center center';
+    if (bgComp && bgComp.bgImage && bgComp.bgImage.position) {
+      bkgImagePosition = bgComp.bgImage.position.replace('-', ' ');
+    }
+    return bkgImagePosition;
+  }
+
+  function getBackgroundSize() {
+    let bkgImageSize = imageSizingToCssProperty.originalSize;
+    if (bgComp && bgComp.bgImage && bgComp.bgImage.position) {
+      bkgImageSize = imageSizingToCssProperty[bgComp.bgImage.sizing];
+    }
+    return bkgImageSize;
+  }
+
   return (
     <div
       ref={containerRef}
       data-render-count={renderCnt}
-      style={{ position: 'relative', height: '100%' }}
+      style={{
+        position: 'relative',
+        height: '100%',
+        backgroundImage: `url(${bgImage})`,
+        backgroundRepeat: 'no-repeat',
+        backgroundSize: getBackgroundSize(),
+        backgroundPosition: getBackgroundPosition(),
+      }}
       className={VizElement.className}
     >
       <div ref={snRef} style={{ position: 'absolute', width: '100%', height: '100%' }} />
