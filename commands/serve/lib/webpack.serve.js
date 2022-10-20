@@ -159,6 +159,8 @@ module.exports = async ({
           enigma: enigmaConfig,
           clientId,
           webIntegrationId,
+          isClientIdProvided: Boolean(clientId),
+          isWebIntegrationIdProvided: Boolean(webIntegrationId),
           supernova: {
             name: snName,
             url: snUrl,

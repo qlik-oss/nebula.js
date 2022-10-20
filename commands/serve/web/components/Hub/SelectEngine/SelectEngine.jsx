@@ -40,7 +40,7 @@ const SelectEngine = ({ info, error }) => {
         </Grid>
       </Grid>
 
-      <ConnectionHistory items={items} onRemove={onRemove} />
+      <ConnectionHistory info={info} items={items} onRemove={onRemove} />
       <ConnectionOptions info={info} error={error} />
       <ConnectionGuid showGuid={showGuid} />
     </ContentWrapper>
