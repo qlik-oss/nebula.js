@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState } from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
@@ -6,7 +6,7 @@ import { goToApp } from '../../../utils';
 
 import Error from './Error';
 
-export default function FormManager({ info, fields, error }) {
+export default function FormManager({ info, fields, error, isCredentialProvided }) {
   const [inputs, setInputs] = useState({});
 
   const handleUpdateInputs = (evt) => {
@@ -24,7 +24,19 @@ export default function FormManager({ info, fields, error }) {
     goToApp(url.toString().replace('?', '&'));
   };
 
-  const isBtnDisabled = Object.entries(inputs).length !== fields.length || Object.values(inputs).some((x) => !x);
+  const isBtnDisabled = useMemo(() => {
+    if (isCredentialProvided) {
+      if (inputs['engine-websocket-url']) return false;
+      return true;
+    }
+
+    return Object.entries(inputs).length !== fields.length || Object.values(inputs).some((x) => !x);
+  }, [inputs, fields, isCredentialProvided]);
+
+  const getFieldPlaceHolder = (field) => {
+    if (isCredentialProvided) return `You have provided "${field}" through cli or nebula.config.js file already!`;
+    return field;
+  };
 
   return (
     <form onSubmit={handleOnSubmit}>
@@ -34,12 +46,13 @@ export default function FormManager({ info, fields, error }) {
             <OutlinedInput
               fullWidth
               autoFocus={i === 0}
+              disabled={isCredentialProvided && i === 1}
               name={field
                 .split(' ')
                 .map((x) => x.toLowerCase())
                 .join('-')}
-              placeholder={field}
               error={info.invalid}
+              placeholder={i === 0 ? field : getFieldPlaceHolder(field)}
               onChange={(evt) => handleUpdateInputs(evt)}
             />
           </Grid>
