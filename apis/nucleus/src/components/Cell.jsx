@@ -272,6 +272,17 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
   return undefined;
 };
 
+const resolveBgColor = (bgComp, theme) => {
+  const bgColor = bgComp?.bgColor;
+  if (bgColor && theme) {
+    if (bgColor.useColorExpression) {
+      return theme.validateColor(bgColor.colorExpression);
+    }
+    return bgColor.color && bgColor.color.color !== 'none' ? theme.getColorPickerColor(bgColor.color) : undefined;
+  }
+  return undefined;
+};
+
 const Cell = forwardRef(
   ({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount, currentId }, ref) => {
     const { app, types } = halo;
@@ -298,31 +309,18 @@ const Cell = forwardRef(
       },
     });
 
-    const resolveBgColor = () => {
-      const bgComp = layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
-
-      if (bgComp && bgComp.bgColor && bgComp.bgColor.useColorExpression) {
-        if (bgComp.bgColor.colorExpression) {
-          bgComp.bgColor.colorExpression = { color: bgComp.bgColor.colorExpression };
-        }
-        return bgComp.bgColor.colorExpression
-          ? halo.public.theme.getColorPickerColor(bgComp.bgColor.colorExpression)
-          : undefined;
-      }
-      if (bgComp && bgComp.bgColor && !bgComp.bgColor.useColorExpression)
-        return bgComp.bgColor.color && bgComp.bgColor.color.color !== 'none'
-          ? halo.public.theme.getColorPickerColor(bgComp.bgColor.color)
-          : undefined;
-      return undefined;
-    };
-
     useEffect(() => {
       eventmixin(focusHandler.current);
     }, []);
 
     useEffect(() => {
-      setBgColor(resolveBgColor());
-    }, [layout, theme]);
+      setBgColor(
+        resolveBgColor(
+          layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null,
+          halo.public.theme
+        )
+      );
+    }, [layout, halo.public.theme]);
 
     focusHandler.current.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
