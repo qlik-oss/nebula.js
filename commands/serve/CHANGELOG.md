@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.4...v3.1.0-alpha.0) (2022-10-21)
+
+### Bug Fixes
+
+- command line input bug ([#968](https://github.com/qlik-oss/nebula.js/issues/968)) ([5907701](https://github.com/qlik-oss/nebula.js/commit/590770160a50aad90a4c427780dc06205918aaf6))
+
+### Features
+
+- `clientId` from `nebula.config.js` support ([#963](https://github.com/qlik-oss/nebula.js/issues/963)) ([9d5e29d](https://github.com/qlik-oss/nebula.js/commit/9d5e29d4d82a922c0fc447fca3b0dc9e3c442a34))
+- new ui for connection string ([#965](https://github.com/qlik-oss/nebula.js/issues/965)) ([e772ed7](https://github.com/qlik-oss/nebula.js/commit/e772ed7143a2024afe0cfa54e3e6ab361a92640b))
+- OAuth integration in nebula mashup ([#962](https://github.com/qlik-oss/nebula.js/issues/962)) ([c354633](https://github.com/qlik-oss/nebula.js/commit/c354633132ff3882f57b82b6856b84314d99c95b))
+
 ## [3.0.4](https://github.com/qlik-oss/nebula.js/compare/v3.0.3...v3.0.4) (2022-10-13)
 
 ### Features
