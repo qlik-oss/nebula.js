@@ -37,7 +37,7 @@ describe('Background property resolver', () => {
 
   it('should resolve background color by expression', () => {
     const color = resolveBgColor(bgCompLayout, t);
-    expect(color).to.equal('rgb(255,0,0)');
+    expect(color).to.equal('rgb(255, 0, 0)');
   });
   it('should resolve background color by picker', () => {
     bgCompLayout.bgColor.useColorExpression = false;
@@ -46,13 +46,13 @@ describe('Background property resolver', () => {
   });
   it('should resolve background image https', () => {
     const { url, pos } = resolveBgImage(bgCompLayout, app);
-    expect(url).to.equal('https://example.com/lots/of/paths/media/Tulips.jpg');
+    expect(url).to.equal('https://example.com/media/Tulips.jpg');
     expect(pos).to.equal('top left');
   });
   it('should resolve background image http', () => {
     app.session.config.url = 'ws://example.com/lots/of/paths';
     const { url, size } = resolveBgImage(bgCompLayout, app);
-    expect(url).to.equal('http://example.com/lots/of/paths/media/Tulips.jpg');
+    expect(url).to.equal('http://example.com/media/Tulips.jpg');
     expect(size).to.equal('contain');
   });
 });
