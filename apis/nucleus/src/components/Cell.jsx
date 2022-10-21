@@ -16,6 +16,7 @@ import useLayout, { useAppLayout } from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
 import eventmixin from '../selections/event-mixin';
+import { resolveBgColor, resolveBgImage } from '../utils/background-props';
 
 /**
  * @interface
@@ -272,17 +273,6 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
   return undefined;
 };
 
-const resolveBgColor = (bgComp, theme) => {
-  const bgColor = bgComp?.bgColor;
-  if (bgColor && theme) {
-    if (bgColor.useColorExpression) {
-      return theme.validateColor(bgColor.colorExpression);
-    }
-    return bgColor.color && bgColor.color.color !== 'none' ? theme.getColorPickerColor(bgColor.color) : undefined;
-  }
-  return undefined;
-};
-
 const Cell = forwardRef(
   ({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount, currentId }, ref) => {
     const { app, types } = halo;
@@ -302,6 +292,8 @@ const Cell = forwardRef(
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
     const [bgColor, setBgColor] = useState(undefined);
+    const [bgImage, setBgImage] = useState(undefined); // {url: "", size: "", pos: ""}
+
     const focusHandler = useRef({
       focusToolbarButton(last) {
         // eslint-disable-next-line react/no-this-in-sfc
@@ -314,13 +306,10 @@ const Cell = forwardRef(
     }, []);
 
     useEffect(() => {
-      setBgColor(
-        resolveBgColor(
-          layout && layout.components ? layout.components.find((comp) => comp.key === 'general') : null,
-          halo.public.theme
-        )
-      );
-    }, [layout, halo.public.theme]);
+      const bgComp = layout?.components ? layout.components.find((comp) => comp.key === 'general') : null;
+      setBgColor(resolveBgColor(bgComp, halo.public.theme));
+      setBgImage(resolveBgImage(bgComp, halo.app));
+    }, [layout, halo.public.theme, halo.app]);
 
     focusHandler.current.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
@@ -499,7 +488,17 @@ const Cell = forwardRef(
 
     return (
       <Paper
-        style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          overflow: 'hidden',
+          backgroundColor: bgColor,
+          backgroundImage: bgImage && bgImage.url ? `url(${bgImage.url})` : undefined,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: bgImage && bgImage.size,
+          backgroundPosition: bgImage && bgImage.pos,
+        }}
         elevation={0}
         square
         className={CellElement.className}
@@ -537,7 +536,6 @@ const Cell = forwardRef(
             xs
             style={{
               height: '100%',
-              backgroundColor: bgColor,
             }}
             ref={contentRef}
           >
