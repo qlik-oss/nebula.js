@@ -3,11 +3,16 @@ import Step from '@mui/material/Step';
 import { ThemeWrapper } from '../ThemeWrapper';
 import { StepperWrapper, CustomStepLabel } from './styles';
 
-const ConnectionSteps = ({ activeStep, glob, error }) => {
+import { useRootContext } from '../../contexts/RootContext';
+
+const ConnectionSteps = () => {
+  const { activeStep, glob, error } = useRootContext();
+
   const steps = ['Connect to engine', 'Select app', 'Develop'];
 
   const handleStepperClick = () => {
     if (!(glob || error)) return;
+    // TODO:
     window.location.href = window.location.origin;
   };
 

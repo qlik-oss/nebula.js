@@ -2,11 +2,13 @@ import React, { useMemo, useState } from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
-import { goToApp } from '../../../utils';
+// import { goToApp } from '../../../utils';
+import { useNavigate } from 'react-router-dom';
 
 import Error from './Error';
 
 export default function FormManager({ info, fields, error, isCredentialProvided }) {
+  const navigate = useNavigate();
   const [inputs, setInputs] = useState({});
 
   const handleUpdateInputs = (evt) => {
@@ -21,7 +23,9 @@ export default function FormManager({ info, fields, error, isCredentialProvided 
     const url = new URL(inputs['engine-websocket-url']);
     if (inputs['web-integration-id']) url.searchParams.append('qlik-web-integration-id', inputs['web-integration-id']);
     if (inputs['client-id']) url.searchParams.append('qlik-client-id', inputs['client-id']);
-    goToApp(url.toString().replace('?', '&'));
+    console.log('>>>', url.toString().replace('?', '&'));
+    navigate(`/app-list?engine_url=${url.toString().replace('?', '&')}`);
+    // goToApp(url.toString().replace('?', '&'));
   };
 
   const isBtnDisabled = useMemo(() => {
@@ -51,7 +55,7 @@ export default function FormManager({ info, fields, error, isCredentialProvided 
                 .split(' ')
                 .map((x) => x.toLowerCase())
                 .join('-')}
-              error={info.invalid}
+              error={info?.invalid}
               placeholder={i === 0 ? field : getFieldPlaceHolder(field)}
               onChange={(evt) => handleUpdateInputs(evt)}
             />

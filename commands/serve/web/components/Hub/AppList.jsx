@@ -8,8 +8,11 @@ import { useAppList } from '../../hooks';
 import { ContentWrapper } from './styles';
 import { getAppLink } from '../../utils';
 
-const AppList = ({ info, glob, treatAsDesktop }) => {
-  const { loading, appList } = useAppList({ glob });
+import { useRootContext } from '../../contexts/RootContext';
+
+const AppList = () => {
+  const { info, glob, treatAsDesktop } = useRootContext();
+  const { loading, appList } = useAppList({ glob, info });
 
   return (
     <ContentWrapper>

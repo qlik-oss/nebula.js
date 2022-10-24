@@ -6,6 +6,9 @@ import App from './components/App';
 import { openApp, getConnectionInfo } from './connect';
 import initiateWatch from './hot';
 
+// TODO:
+// Anti-pattern
+// Soltuion -> react router + use effect
 getConnectionInfo().then(($) => {
   if (!$.enigma.appId) {
     window.location.href = `/${window.location.search}`;

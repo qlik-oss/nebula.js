@@ -23,6 +23,7 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js",
     "build:dev": "cross-env NODE_ENV=development DEFAULTS=true webpack --config ./lib/webpack.build.js",
+    "build:watch": "cross-env NODE_ENV=development DEFAULTS=true webpack --watch --config ./lib/webpack.build.js",
     "lint": "eslint web",
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
@@ -67,6 +68,7 @@
     "monaco-editor-webpack-plugin": "7.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-router-dom": "6.4.2",
     "webpack-cli": "4.10.0"
   }
 }
