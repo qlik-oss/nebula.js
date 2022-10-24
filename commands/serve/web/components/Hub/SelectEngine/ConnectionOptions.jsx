@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
@@ -20,8 +20,13 @@ const detectDefaultStep = (info) => {
 
 export default function ConnectionOptions() {
   const { info, error } = useRootContext();
-  const [tabIdx, setTabIdx] = useState(detectDefaultStep(info));
+  const [tabIdx, setTabIdx] = useState(0);
   const handleChange = (_, idx) => setTabIdx(idx);
+
+  useEffect(() => {
+    const idx = detectDefaultStep(info);
+    if (idx) setTabIdx(idx);
+  }, [info]);
 
   const checkIfTabDisabled = ({ label }) => {
     const labelKey = label

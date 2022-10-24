@@ -1,4 +1,6 @@
 export const getAppLink = ({ appData, treatAsDesktop, engineUrl }) => {
+  // TODO:
+  // use location information from react-router
   const url = window.location.search;
   const newEngineUrl = `${engineUrl}/app/${encodeURIComponent(treatAsDesktop ? appData.qDocName : appData.qDocId)}`;
   const modifiedEngineUrl = url.replace(engineUrl, newEngineUrl);

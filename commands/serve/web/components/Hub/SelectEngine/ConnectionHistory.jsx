@@ -14,7 +14,7 @@ import { useRootContext } from '../../../contexts/RootContext';
 
 const ConnectionHistory = () => {
   const navigate = useNavigate();
-  const { info, storage } = useRootContext();
+  const { info, storage, setError } = useRootContext();
   const [items, setItems] = useState(storage.get('connections') || []);
 
   const onRemove = (li) => {
@@ -42,6 +42,7 @@ const ConnectionHistory = () => {
   };
 
   const handleHistoryItemClick = (item) => {
+    setError();
     navigate(`/app-list?engine_url=${item.replace('?', '&')}`);
   };
 

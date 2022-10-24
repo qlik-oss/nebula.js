@@ -74,10 +74,7 @@ module.exports = async ({
   const themes = serveConfig.themes || [];
   const renderConfigs = serveConfig.renderConfigs || [];
 
-  console.log(0000);
-
   if (dev) {
-    console.log(1111);
     const webpackConfig = require('./webpack.build');
     const srcDir = path.resolve(__dirname, '../web');
     const distDir = path.resolve(srcDir, '../dist');
@@ -89,7 +86,6 @@ module.exports = async ({
       serveConfig,
     });
   } else {
-    console.log(222);
     const webpackConfig = require('./webpack.prod');
     const srcDir = path.resolve(__dirname, '../dist');
     contentBase = srcDir;
@@ -198,7 +194,7 @@ module.exports = async ({
         } else {
           const redirectUrl = `${req.protocol}://${req.get(
             'host'
-          )}/?engine_url=wss://${cachedHost}&qlik-client-id=${cachedClientId}&shouldFetchAppList=true`;
+          )}/app-list?engine_url=wss://${cachedHost}&qlik-client-id=${cachedClientId}&shouldFetchAppList=true`;
           cachedHost = null;
           cachedClientId = null;
           res.redirect(redirectUrl);

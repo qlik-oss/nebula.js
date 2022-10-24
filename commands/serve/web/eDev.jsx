@@ -11,6 +11,7 @@ import initiateWatch from './hot';
 // Soltuion -> react router + use effect
 getConnectionInfo().then(($) => {
   if (!$.enigma.appId) {
+    // TODO:
     window.location.href = `/${window.location.search}`;
   }
   initiateWatch($);

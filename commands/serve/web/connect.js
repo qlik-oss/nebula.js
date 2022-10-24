@@ -94,14 +94,15 @@ const getConnectionInfo = () =>
       };
     });
 
-const getAuthInstance = ({ webIntegrationId, host }) => {
+const getAuthInstance = async ({ webIntegrationId, host }) => {
   const authInstance = new Auth({
     webIntegrationId,
     autoRedirect: true,
     authType: AuthType.WebIntegration,
     host,
   });
-  if (!authInstance.isAuthenticated()) authInstance.authenticate();
+  const isAuth = await authInstance.isAuthenticated();
+  if (!isAuth) await authInstance.authenticate();
   return authInstance;
 };
 
@@ -116,13 +117,18 @@ const connect = async () => {
 
     // if no clientId + user is already authorized -> deAuthorize user
     const { isAuthorized } = await (await fetch('/isAuthorized')).json();
+    // console.log({ isAuthorized });
     if (!clientId && isAuthorized) {
-      await (await fetch('/deauthorize')).json();
+      try {
+        const result = await (await fetch('/deauthorize')).json();
+        console.log('de-authorize: ', result);
+      } catch (error) {
+        console.log('de-authorize: ', error);
+      }
     }
 
     if (webIntegrationId) {
-      const authInstance = getAuthInstance({ webIntegrationId, host });
-
+      const authInstance = await getAuthInstance({ webIntegrationId, host });
       return {
         getDocList: async () => {
           const url = `/items?resourceType=app&limit=30&sort=-updatedAt`;
@@ -136,11 +142,6 @@ const connect = async () => {
       };
     }
 
-    // if we have client id:
-    // 1. call /oauth from dev server
-    // 2. do the autherntication
-    // 3. call /items
-    // 4. return list of app
     if (clientId) {
       return {
         getDocList: async () => {
@@ -173,7 +174,7 @@ const openApp = async (id) => {
 
     let url = '';
     if (webIntegrationId) {
-      const authInstance = getAuthInstance({ webIntegrationId, host });
+      const authInstance = await getAuthInstance({ webIntegrationId, host });
       url = await authInstance.generateWebsocketUrl(id);
     } else if (clientId) {
       const { webSocketUrl } = await (await fetch(`/getSocketUrl/${id}`)).json();
@@ -185,6 +186,7 @@ const openApp = async (id) => {
     const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
     return enigmaGlobal.openDoc(id);
   } catch (error) {
+    console.error({ error });
     throw new Error('Failed to open app!');
   }
 };

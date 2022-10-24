@@ -14,5 +14,5 @@ export const useInfo = () => {
     });
   }, []);
 
-  return { info };
+  return { info, setInfo };
 };

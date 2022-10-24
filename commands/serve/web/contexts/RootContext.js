@@ -1,6 +1,7 @@
-import React, { useMemo, createContext, useContext } from 'react';
+import React, { useMemo, createContext, useContext, useEffect } from 'react';
 import { useInfo, useConnection } from '../hooks';
 import storageFn from '../storage';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const rootContextInitialValue = {
   info: {},
@@ -15,13 +16,23 @@ export const useRootContext = () => {
 };
 
 export const RootContextProvider = ({ children }) => {
-  const { info } = useInfo();
-  const { glob, treatAsDesktop, error, activeStep } = useConnection({ info });
+  const location = useLocation();
+  const navigate = useNavigate();
+  const { info, setInfo } = useInfo();
+  const { glob, setGlobal, treatAsDesktop, error, setError, activeStep, setActiveStep } = useConnection({ info });
   const storage = useMemo(() => storageFn({}), []);
 
+  useEffect(() => {
+    if (error) navigate('/');
+    if (location.pathname === '/') {
+      setActiveStep(0);
+      setGlobal();
+    }
+  }, [location.pathname, error]);
+
   const rootContextValue = useMemo(
-    () => ({ info, glob, treatAsDesktop, error, activeStep, storage }),
-    [info, glob, treatAsDesktop, error, activeStep, storage]
+    () => ({ info, setInfo, glob, setGlobal, treatAsDesktop, error, setError, activeStep, setActiveStep, storage }),
+    [info, setInfo, glob, setGlobal, treatAsDesktop, error, setError, activeStep, setActiveStep, storage]
   );
 
   return <RootContext.Provider value={rootContextValue}>{children}</RootContext.Provider>;
