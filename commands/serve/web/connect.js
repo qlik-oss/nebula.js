@@ -117,14 +117,8 @@ const connect = async () => {
 
     // if no clientId + user is already authorized -> deAuthorize user
     const { isAuthorized } = await (await fetch('/isAuthorized')).json();
-    // console.log({ isAuthorized });
     if (!clientId && isAuthorized) {
-      try {
-        const result = await (await fetch('/deauthorize')).json();
-        console.log('de-authorize: ', result);
-      } catch (error) {
-        console.log('de-authorize: ', error);
-      }
+      await (await fetch('/deauthorize')).json();
     }
 
     if (webIntegrationId) {

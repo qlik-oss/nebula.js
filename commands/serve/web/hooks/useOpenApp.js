@@ -30,7 +30,6 @@ export const useOpenApp = ({ info }) => {
         webIntegrationId: webIntegrationId = null,
         enigma: enigmaInfo = null,
         enigma: { host } = {},
-        // } = await getConnectionInfo();
       } = info;
 
       let url = '';

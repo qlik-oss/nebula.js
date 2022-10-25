@@ -32,7 +32,6 @@ const AppList = () => {
               component="a"
               key={appData.qDocId}
               onClick={() => getAppLink({ navigate, location, appData, treatAsDesktop, engineUrl: info.engineUrl })}
-              // href={getAppLink({ appData, treatAsDesktop, engineUrl: info.engineUrl })}
             >
               <ListItemText primary={appData.qTitle} secondary={appData.qDocId} />
             </ListItem>

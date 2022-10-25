@@ -9,7 +9,6 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 
-// import { goToApp } from '../../../utils';
 import { useRootContext } from '../../../contexts/RootContext';
 
 const ConnectionHistory = () => {
