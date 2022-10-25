@@ -13,7 +13,7 @@ export const useOpenApp = ({ info }) => {
     if (!info) return;
     handleOpenApp(info)
       .then((resultApp) => {
-        console.log(resultApp);
+        console.log({ resultApp });
         setApp(resultApp);
       })
       .catch((err) => {

@@ -84,7 +84,10 @@ export default function App() {
   );
 
   useEffect(() => {
-    if (info) initiateWatch(info);
+    if (info) {
+      console.log(1111);
+      initiateWatch(info);
+    }
   }, [info]);
 
   useEffect(() => {
@@ -122,7 +125,10 @@ export default function App() {
   }, [app, info, waiting]);
 
   useLayoutEffect(() => {
-    if (!nebbie) return;
+    if (!nebbie) {
+      console.log('returning from layout effect');
+      return;
+    }
     nebbie.context({ theme: currentThemeName });
     if (currentThemeName === 'light' || currentThemeName === 'dark') {
       setCurrentMuiThemeName(currentThemeName);
@@ -130,21 +136,17 @@ export default function App() {
   }, [nebbie, currentThemeName]);
 
   useEffect(() => {
-    if (!nebbie) return undefined;
-    const create = () => {
-      if (window[info?.supernova.name]) {
-        uid.current = String(Date.now());
-        setCurrentId(uid.current);
-      }
-    };
+    if (!nebbie) {
+      console.log('returning undefined from effect');
+      return undefined;
+    }
 
     nebbie.selections().then((s) => s.mount(currentSelectionsRef.current));
     window.onHotChange(info?.supernova.name, () => {
       nebbie.__DO_NOT_USE__.types.clearFromCache(info?.supernova.name);
       nebbie.__DO_NOT_USE__.types.register(info?.supernova);
 
-      // console.log(info);
-
+      console.log(2);
       create();
 
       nebbie.__DO_NOT_USE__.types
@@ -153,11 +155,12 @@ export default function App() {
         })
         .supernova()
         .then((spn) => {
-          // console.log({ spn });
+          console.log({ spn });
           setSupernova(spn);
         });
     });
 
+    console.log(1);
     create();
 
     const unload = () => {
@@ -168,6 +171,14 @@ export default function App() {
       window.removeEventListener('beforeunload', unload);
     };
   }, [nebbie, info]);
+
+  const create = () => {
+    // console.log(info, window[info?.supernova.name]);
+    if (window[info?.supernova.name]) {
+      uid.current = String(Date.now());
+      setCurrentId(uid.current);
+    }
+  };
 
   const handleThemeChange = (t) => {
     setThemeChooserAnchorEl(null);
@@ -198,7 +209,7 @@ export default function App() {
     setObjectListMode(listMode);
   };
 
-  console.log({ sn, objectListMode });
+  // console.log({ sn, objectListMode });
 
   return (
     <AppContext.Provider value={app}>
