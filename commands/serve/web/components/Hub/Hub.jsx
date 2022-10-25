@@ -3,13 +3,9 @@ import AppList from './AppList';
 import SelectEngine from './SelectEngine/SelectEngine';
 import ConnectionSteps from './ConnectionSteps';
 import { ThemeWrapper } from '../ThemeWrapper';
-// import { useInfo, useConnection } from '../../hooks';
-
-// import { useRootContext } from '../../contexts/RootContext';
+import { useInfo, useConnection } from '../../hooks';
 
 export default function Hub() {
-  // const { glob, info, treatAsDesktop, error, activeStep } = useRootContext();
-
   const { info } = useInfo();
   const { glob, treatAsDesktop, error, activeStep } = useConnection({ info });
 

@@ -108,9 +108,7 @@ module.exports = async ({
     port,
     allowedHosts: disableHostCheck ? 'all' : 'auto',
     open,
-    historyApiFallback: {
-      index: '/eHub.html',
-    },
+    historyApiFallback: true,
     // Disable nebula serve dev env when in MFE mode
     static: !serveConfig.mfe && {
       directory: contentBase,
@@ -274,12 +272,6 @@ module.exports = async ({
       {
         context: '/render',
         target: `${url}/eRender.html`,
-        ignorePath: true,
-        logLevel: 'error',
-      },
-      {
-        context: '/dev',
-        target: `${url}/eDev.html`,
         ignorePath: true,
         logLevel: 'error',
       },

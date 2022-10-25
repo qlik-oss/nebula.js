@@ -58,12 +58,6 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
         stylesheets: serveConfig.stylesheets,
         chunks: ['fixtures'],
       }),
-      new HtmlWebpackPlugin({
-        template: path.resolve(srcDir, 'eDev.html'),
-        filename: 'eDev.html',
-        inject: 'head',
-        chunks: [],
-      }),
     ],
   };
 

@@ -20,7 +20,6 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
     mode: dev ? 'development' : 'production',
     entry: {
       eRender: [path.resolve(srcDir, 'eRender')],
-      eDev: [path.resolve(srcDir, 'eDev')],
       eHub: [path.resolve(srcDir, 'eHub')],
       fixtures: [path.resolve(__dirname, './fixtures.js')],
     },
@@ -28,6 +27,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
     output: {
       path: distDir,
       filename: '[name].js',
+      publicPath: '/',
     },
     resolve: {
       alias: {
@@ -100,14 +100,8 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
         stylesheets: serveConfig.stylesheets,
       }),
       new HtmlWebpackPlugin({
-        template: path.resolve(srcDir, 'eDev.html'),
-        filename: 'eDev.html',
-        chunks: ['eDev'],
-        favicon,
-      }),
-      new HtmlWebpackPlugin({
-        template: path.resolve(srcDir, 'eHub.html'),
-        filename: 'eHub.html',
+        template: path.resolve(srcDir, 'index.html'),
+        filename: 'index.html',
         chunks: ['eHub'],
         favicon,
       }),

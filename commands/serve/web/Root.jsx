@@ -26,7 +26,7 @@ export const Root = () => {
             <Route path="/" element={<SelectEngine />} />
             <Route path="/app-list" element={<AppList />} />
           </Route>
-          <Route path="/develop" element={<App app={null} />} />
+          <Route path="/dev" element={<App />} />
         </Routes>
       </RootContextProvider>
     </BrowserRouter>

@@ -5,6 +5,7 @@ import { embed } from '@nebula.js/stardust';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 import { WbSunny, Brightness3, ColorLens, Language, Home } from '@nebula.js/ui/icons';
 import initiateWatch from '../hot';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Grid,
@@ -51,19 +52,20 @@ const languages = [
 ];
 
 export default function App() {
+  const uid = useRef();
+  const navigate = useNavigate();
   const { info } = useInfo();
   const { waiting, app } = useOpenApp({ info });
   const storage = useMemo(() => storageFn(app), [app]);
   const [activeViz, setActiveViz] = useState(null);
   const [expandedObject, setExpandedObject] = useState(null);
   const [sn, setSupernova] = useState(null);
-  // const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false); // NOT
+  // const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
   const [currentThemeName, setCurrentThemeName] = useState(storage.get('themeName'));
   const [currentLanguage, setCurrentLanguage] = useState(storage.get('language') || 'en-US');
   const [currentMuiThemeName, setCurrentMuiThemeName] = useState('light');
   const [objectListMode, setObjectListMode] = useState(storage.get('objectListMode') === true);
   const currentSelectionsRef = useRef(null);
-  const uid = useRef();
   const [currentId, setCurrentId] = useState();
   const [themeChooserAnchorEl, setThemeChooserAnchorEl] = React.useState(null);
   const [languageChooserAnchorEl, setLanguageChooserAnchorEl] = React.useState(null);
@@ -85,7 +87,6 @@ export default function App() {
 
   useEffect(() => {
     if (info) {
-      console.log(1111);
       initiateWatch(info);
     }
   }, [info]);
@@ -120,15 +121,12 @@ export default function App() {
       });
     }
 
-    // console.log({ n });
     setNebbie(n);
   }, [app, info, waiting]);
 
   useLayoutEffect(() => {
-    if (!nebbie) {
-      console.log('returning from layout effect');
-      return;
-    }
+    if (!nebbie) return;
+
     nebbie.context({ theme: currentThemeName });
     if (currentThemeName === 'light' || currentThemeName === 'dark') {
       setCurrentMuiThemeName(currentThemeName);
@@ -136,17 +134,13 @@ export default function App() {
   }, [nebbie, currentThemeName]);
 
   useEffect(() => {
-    if (!nebbie) {
-      console.log('returning undefined from effect');
-      return undefined;
-    }
+    if (!nebbie) return;
 
     nebbie.selections().then((s) => s.mount(currentSelectionsRef.current));
     window.onHotChange(info?.supernova.name, () => {
       nebbie.__DO_NOT_USE__.types.clearFromCache(info?.supernova.name);
       nebbie.__DO_NOT_USE__.types.register(info?.supernova);
 
-      console.log(2);
       create();
 
       nebbie.__DO_NOT_USE__.types
@@ -154,26 +148,23 @@ export default function App() {
           name: info?.supernova.name,
         })
         .supernova()
-        .then((spn) => {
-          console.log({ spn });
-          setSupernova(spn);
-        });
+        .then(setSupernova);
     });
 
-    console.log(1);
     create();
+  }, [nebbie, info]);
 
+  useEffect(() => {
     const unload = () => {
-      app.destroySessionObject(uid.current);
+      if (app) app.destroySessionObject(uid.current);
     };
     window.addEventListener('beforeunload', unload);
     return () => {
       window.removeEventListener('beforeunload', unload);
     };
-  }, [nebbie, info]);
+  }, [app]);
 
   const create = () => {
-    // console.log(info, window[info?.supernova.name]);
     if (window[info?.supernova.name]) {
       uid.current = String(Date.now());
       setCurrentId(uid.current);
@@ -209,8 +200,6 @@ export default function App() {
     setObjectListMode(listMode);
   };
 
-  // console.log({ sn, objectListMode });
-
   return (
     <AppContext.Provider value={app}>
       <StyledEngineProvider injectFirst>
@@ -233,7 +222,7 @@ export default function App() {
                       <Grid item>
                         <a href="https://github.com/qlik-oss/nebula.js" target="_blank" rel="noopener noreferrer">
                           <img
-                            src="assets/logo.svg"
+                            src="/assets/logo.svg"
                             alt="nebula.js logo"
                             href="https://github.com/qlik-oss/nebula.js"
                             style={{ height: '24px', position: 'relative', top: '2px' }}
@@ -242,13 +231,7 @@ export default function App() {
                       </Grid>
                     </Grid>
                     <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                      <IconButton
-                        title="Home"
-                        href={`${window.location.origin}?engine_url=${info?.engineUrl || ''}${
-                          info?.webIntegrationId ? `&web-integration-id=${info?.webIntegrationId}` : ''
-                        }`}
-                        size="large"
-                      >
+                      <IconButton title="Home" onClick={() => navigate('/')} size="large">
                         <Home style={{ verticalAlign: 'middle' }} />
                       </IconButton>
                     </Grid>

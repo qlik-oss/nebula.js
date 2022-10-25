@@ -37,7 +37,7 @@ export const useConnection = ({ info }) => {
       .catch((err) => handleConnectionFailure({ error: err, info, setError }));
   }, [info, location.pathname]);
 
-  return { glob, setGlobal, treatAsDesktop, error, setError, activeStep, setActiveStep };
+  return { glob, setGlobal, treatAsDesktop, setTreatAsDesktop, error, setError, activeStep, setActiveStep };
 };
 
 export const handleConnectionSuccess = async ({ result, storage, info, setGlobal, setTreatAsDesktop, setError }) => {

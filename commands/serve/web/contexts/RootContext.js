@@ -19,14 +19,17 @@ export const RootContextProvider = ({ children }) => {
   const location = useLocation();
   const navigate = useNavigate();
   const { info, setInfo } = useInfo();
-  const { glob, setGlobal, treatAsDesktop, error, setError, activeStep, setActiveStep } = useConnection({ info });
+  const { glob, setGlobal, treatAsDesktop, setTreatAsDesktop, error, setError, activeStep, setActiveStep } =
+    useConnection({ info });
   const storage = useMemo(() => storageFn({}), []);
 
   useEffect(() => {
     if (error) navigate('/');
+
     if (location.pathname === '/') {
       setActiveStep(0);
       setGlobal();
+      setTreatAsDesktop(false);
     }
   }, [location.pathname, error]);
 

@@ -13,14 +13,12 @@ export const useOpenApp = ({ info }) => {
     if (!info) return;
     handleOpenApp(info)
       .then((resultApp) => {
-        console.log({ resultApp });
         setApp(resultApp);
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
-        console.log('waiting false');
         setWaiting(false);
       });
   }, [info]);
@@ -54,5 +52,5 @@ export const useOpenApp = ({ info }) => {
     }
   };
 
-  return { waiting, app };
+  return { waiting, app, setApp };
 };
