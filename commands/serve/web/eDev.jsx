@@ -12,7 +12,7 @@ import initiateWatch from './hot';
 getConnectionInfo().then(($) => {
   if (!$.enigma.appId) {
     // TODO:
-    window.location.href = `/${window.location.search}`;
+    // window.location.href = `/${window.location.search}`;
   }
   initiateWatch($);
   return openApp($.enigma.appId).then((app) => {

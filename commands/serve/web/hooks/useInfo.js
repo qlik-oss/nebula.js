@@ -6,10 +6,11 @@ export const useInfo = () => {
 
   useEffect(() => {
     getConnectionInfo().then((i) => {
-      if (i.enigma.appId) {
-        window.location.href = `/dev/${window.location.search}`;
-        return;
-      }
+      // if (i.enigma.appId) {
+      //   window.location.href = `/dev/${window.location.search}`;
+      //   return;
+      // }
+      console.log({ info: i });
       setInfo(i);
     });
   }, []);

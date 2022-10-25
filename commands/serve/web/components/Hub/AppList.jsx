@@ -7,10 +7,13 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useAppList } from '../../hooks';
 import { ContentWrapper } from './styles';
 import { getAppLink } from '../../utils';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useRootContext } from '../../contexts/RootContext';
 
 const AppList = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
   const { info, glob, treatAsDesktop } = useRootContext();
   const { loading, appList } = useAppList({ glob, info });
 
@@ -28,7 +31,8 @@ const AppList = () => {
               button
               component="a"
               key={appData.qDocId}
-              href={getAppLink({ appData, treatAsDesktop, engineUrl: info.engineUrl })}
+              onClick={() => getAppLink({ navigate, location, appData, treatAsDesktop, engineUrl: info.engineUrl })}
+              // href={getAppLink({ appData, treatAsDesktop, engineUrl: info.engineUrl })}
             >
               <ListItemText primary={appData.qTitle} secondary={appData.qDocId} />
             </ListItem>

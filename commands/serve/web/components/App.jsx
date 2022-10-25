@@ -4,6 +4,7 @@ import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 're
 import { embed } from '@nebula.js/stardust';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 import { WbSunny, Brightness3, ColorLens, Language, Home } from '@nebula.js/ui/icons';
+import initiateWatch from '../hot';
 
 import {
   Grid,
@@ -27,6 +28,7 @@ import NebulaContext from '../contexts/NebulaContext';
 import VizContext from '../contexts/VizContext';
 
 import storageFn from '../storage';
+import { useInfo, useOpenApp } from '../hooks';
 
 const SPACING = 2;
 
@@ -48,12 +50,14 @@ const languages = [
   'ru-RU',
 ];
 
-export default function App({ app, info }) {
+export default function App() {
+  const { info } = useInfo();
+  const { waiting, app } = useOpenApp({ info });
   const storage = useMemo(() => storageFn(app), [app]);
   const [activeViz, setActiveViz] = useState(null);
   const [expandedObject, setExpandedObject] = useState(null);
   const [sn, setSupernova] = useState(null);
-  // const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
+  // const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false); // NOT
   const [currentThemeName, setCurrentThemeName] = useState(storage.get('themeName'));
   const [currentLanguage, setCurrentLanguage] = useState(storage.get('language') || 'en-US');
   const [currentMuiThemeName, setCurrentMuiThemeName] = useState('light');
@@ -64,7 +68,7 @@ export default function App({ app, info }) {
   const [themeChooserAnchorEl, setThemeChooserAnchorEl] = React.useState(null);
   const [languageChooserAnchorEl, setLanguageChooserAnchorEl] = React.useState(null);
   const [nebbie, setNebbie] = useState(null);
-  const customThemes = info.themes && info.themes.length ? ['light', 'dark', ...info.themes] : [];
+  const customThemes = info?.themes && info?.themes.length ? ['light', 'dark', ...info?.themes] : [];
 
   const theme = useMemo(() => createTheme(currentMuiThemeName), [currentMuiThemeName]);
 
@@ -80,16 +84,21 @@ export default function App({ app, info }) {
   );
 
   useEffect(() => {
+    if (info) initiateWatch(info);
+  }, [info]);
+
+  useEffect(() => {
+    if (waiting) return;
     const n = embed(app, {
       context: {
         theme: currentThemeName,
         language: currentLanguage,
-        keyboardNavigation: info.keyboardNavigation,
+        keyboardNavigation: info?.keyboardNavigation,
       },
       load: (type) => Promise.resolve(window[type.name]),
-      flags: info.flags,
-      themes: info.themes
-        ? info.themes.map((t) => ({
+      flags: info?.flags,
+      themes: info?.themes
+        ? info?.themes.map((t) => ({
             id: t,
             load: () =>
               fetch(`/theme/${t}`)
@@ -101,14 +110,16 @@ export default function App({ app, info }) {
           }))
         : null,
     });
-    n.__DO_NOT_USE__.types.register(info.supernova);
-    if (info.types) {
-      info.types.forEach((t) => {
+    n.__DO_NOT_USE__.types.register(info?.supernova);
+    if (info?.types) {
+      info?.types.forEach((t) => {
         n.__DO_NOT_USE__.types.register(t);
       });
     }
+
+    // console.log({ n });
     setNebbie(n);
-  }, [app]);
+  }, [app, info, waiting]);
 
   useLayoutEffect(() => {
     if (!nebbie) return;
@@ -121,25 +132,30 @@ export default function App({ app, info }) {
   useEffect(() => {
     if (!nebbie) return undefined;
     const create = () => {
-      if (window[info.supernova.name]) {
+      if (window[info?.supernova.name]) {
         uid.current = String(Date.now());
         setCurrentId(uid.current);
       }
     };
 
     nebbie.selections().then((s) => s.mount(currentSelectionsRef.current));
-    window.onHotChange(info.supernova.name, () => {
-      nebbie.__DO_NOT_USE__.types.clearFromCache(info.supernova.name);
-      nebbie.__DO_NOT_USE__.types.register(info.supernova);
+    window.onHotChange(info?.supernova.name, () => {
+      nebbie.__DO_NOT_USE__.types.clearFromCache(info?.supernova.name);
+      nebbie.__DO_NOT_USE__.types.register(info?.supernova);
+
+      // console.log(info);
 
       create();
 
       nebbie.__DO_NOT_USE__.types
         .get({
-          name: info.supernova.name,
+          name: info?.supernova.name,
         })
         .supernova()
-        .then(setSupernova);
+        .then((spn) => {
+          // console.log({ spn });
+          setSupernova(spn);
+        });
     });
 
     create();
@@ -151,7 +167,7 @@ export default function App({ app, info }) {
     return () => {
       window.removeEventListener('beforeunload', unload);
     };
-  }, [nebbie]);
+  }, [nebbie, info]);
 
   const handleThemeChange = (t) => {
     setThemeChooserAnchorEl(null);
@@ -181,6 +197,8 @@ export default function App({ app, info }) {
     }
     setObjectListMode(listMode);
   };
+
+  console.log({ sn, objectListMode });
 
   return (
     <AppContext.Provider value={app}>
@@ -215,8 +233,8 @@ export default function App({ app, info }) {
                     <Grid item container alignItems="center" style={{ width: 'auto' }}>
                       <IconButton
                         title="Home"
-                        href={`${window.location.origin}?engine_url=${info.engineUrl || ''}${
-                          info.webIntegrationId ? `&web-integration-id=${info.webIntegrationId}` : ''
+                        href={`${window.location.origin}?engine_url=${info?.engineUrl || ''}${
+                          info?.webIntegrationId ? `&web-integration-id=${info?.webIntegrationId}` : ''
                         }`}
                         size="large"
                       >
@@ -292,9 +310,11 @@ export default function App({ app, info }) {
                   </Grid>
                 </Toolbar>
               </Grid>
+
               <Grid item style={{ padding: theme.spacing(SPACING / 2, SPACING / 2, 0, SPACING / 2) }}>
                 <div ref={currentSelectionsRef} style={{ flex: '0 0 auto', boxShadow: theme.shadows[1] }} />
               </Grid>
+
               <Grid
                 item
                 xs
@@ -309,7 +329,7 @@ export default function App({ app, info }) {
                     <Grid container wrap="nowrap" style={{ height: '100%' }} gap={SPACING / 2}>
                       <Grid item xs zeroMinWidth>
                         {objectListMode ? (
-                          <Collection cache={currentId} types={[info.supernova.name]} />
+                          <Collection cache={currentId} types={[info?.supernova.name]} />
                         ) : (
                           <Stage info={info} storage={storage} uid={currentId} />
                         )}
@@ -330,7 +350,7 @@ export default function App({ app, info }) {
                             viz={activeViz}
                             isTemp={!objectListMode}
                             storage={storage}
-                            flags={info.flags}
+                            flags={info?.flags}
                           />
                         </Grid>
                       )}
