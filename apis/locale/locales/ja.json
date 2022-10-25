@@ -19,10 +19,25 @@
     "comment": "Action text to lock selections in a listbox",
     "version": "05jY0MA0azu2f6LgrBSpYg=="
   },
+  "Listbox.ResultFilterLabel": {
+    "value": "検索結果フィルター",
+    "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
+    "version": "ZMijtIFW/Kap65bGmRIp0w=="
+  },
+  "Listbox.ScreenReaderInstructions": {
+    "value": "下記の要素をアクティブ化すると、ページのコンテンツが更新されます",
+    "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content",
+    "version": "ckUyG4fQPA0Z71A2ofI3fg=="
+  },
   "Listbox.Search": {
     "value": "リストボックス内を検索",
     "comment": "Action text to search in listbox",
     "version": "XqaXqel4sY8npmjHCNH24Q=="
+  },
+  "Listbox.Search.ScreenReaderInstructions": {
+    "value": "次の検索フィールドは、入力と同時に下記の結果をフィルターします",
+    "comment": "Instructions to inform screen reader users that the search field filters the listbox results as they type",
+    "version": "NmK/VF5NK36oGSw/Z/VIjA=="
   },
   "Listbox.Unlock": {
     "value": "選択をロック解除",

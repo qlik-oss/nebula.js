@@ -19,10 +19,25 @@
     "comment": "Action text to lock selections in a listbox",
     "version": "05jY0MA0azu2f6LgrBSpYg=="
   },
+  "Listbox.ResultFilterLabel": {
+    "value": "搜尋結果篩選",
+    "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
+    "version": "ZMijtIFW/Kap65bGmRIp0w=="
+  },
+  "Listbox.ScreenReaderInstructions": {
+    "value": "啟用以下元素將會造成更新頁面上的內容",
+    "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content",
+    "version": "ckUyG4fQPA0Z71A2ofI3fg=="
+  },
   "Listbox.Search": {
     "value": "在清單方塊中搜尋",
     "comment": "Action text to search in listbox",
     "version": "XqaXqel4sY8npmjHCNH24Q=="
+  },
+  "Listbox.Search.ScreenReaderInstructions": {
+    "value": "下列搜尋欄位在您輸入時篩選以下結果",
+    "comment": "Instructions to inform screen reader users that the search field filters the listbox results as they type",
+    "version": "NmK/VF5NK36oGSw/Z/VIjA=="
   },
   "Listbox.Unlock": {
     "value": "解鎖選項",
