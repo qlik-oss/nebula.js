@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { getAuthInstance } from '../connect';
-import SenseUtilities from 'enigma.js/sense-utilities';
 import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.936.0.json';
+import SenseUtilities from 'enigma.js/sense-utilities';
+import { getAuthInstance } from '../connect';
 
 export const useOpenApp = ({ info }) => {
   const [app, setApp] = useState(null);
@@ -11,7 +11,7 @@ export const useOpenApp = ({ info }) => {
   useEffect(() => {
     setWaiting(true);
     if (!info) return;
-    handleOpenApp(info)
+    handleOpenApp()
       .then((resultApp) => {
         setApp(resultApp);
       })
@@ -23,14 +23,9 @@ export const useOpenApp = ({ info }) => {
       });
   }, [info]);
 
-  const handleOpenApp = async (info) => {
+  const handleOpenApp = async () => {
     try {
-      const {
-        clientId: clientId = null,
-        webIntegrationId: webIntegrationId = null,
-        enigma: enigmaInfo = null,
-        enigma: { host } = {},
-      } = info;
+      const { clientId, webIntegrationId, enigma: enigmaInfo = null, enigma: { host } = {} } = info;
 
       let url = '';
       if (webIntegrationId) {

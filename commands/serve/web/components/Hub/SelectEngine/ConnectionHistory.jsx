@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState } from 'react';
 import Remove from '@nebula.js/ui/icons/remove';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';

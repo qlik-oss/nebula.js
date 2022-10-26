@@ -68,7 +68,7 @@ export default function Visualize() {
   const [themeChooserAnchorEl, setThemeChooserAnchorEl] = React.useState(null);
   const [languageChooserAnchorEl, setLanguageChooserAnchorEl] = React.useState(null);
   const [nebbie, setNebbie] = useState(null);
-  const customThemes = info?.themes && info?.themes.length ? ['light', 'dark', ...info?.themes] : [];
+  const customThemes = Array.isArray(info?.themes) && info.themes.length ? ['light', 'dark', ...info.themes] : [];
 
   const theme = useMemo(() => createTheme(currentMuiThemeName), [currentMuiThemeName]);
 

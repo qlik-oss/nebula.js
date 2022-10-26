@@ -4,10 +4,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppList } from '../../hooks';
 import { ContentWrapper } from './styles';
 import { getAppLink } from '../../utils';
-import { useNavigate, useLocation } from 'react-router-dom';
 
 import { useRootContext } from '../../contexts/RootContext';
 

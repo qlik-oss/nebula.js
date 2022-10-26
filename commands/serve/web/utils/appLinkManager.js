@@ -1,5 +1,5 @@
 export const getAppLink = ({ navigate, location, targetApp, info }) => {
-  const search = location.search;
+  const { search } = location;
   const protocol = info.enigma.secure ? 'wss' : 'ws';
   const host = info.enigma.host === 'localhost' ? `${info.enigma.host}:${info.enigma.port}` : info.enigma.host;
   const newEngineUrl = `${protocol}://${host}/app/${encodeURIComponent(targetApp)}`;

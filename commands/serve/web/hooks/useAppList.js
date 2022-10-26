@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import { checkIfAuthorized, getAppList } from '../utils';
 import { useNavigate } from 'react-router-dom';
 import { useRootContext } from '../contexts/RootContext';
 import { getConnectionInfo } from '../connect';
+import { checkIfAuthorized, getAppList } from '../utils';
 
 export const useAppList = ({ glob, info }) => {
   const navigate = useNavigate();
