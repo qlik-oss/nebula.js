@@ -4,12 +4,18 @@ import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import Typography from '@mui/material/Typography';
 import CircularProgress from '@mui/material/CircularProgress';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useAppList } from '../../hooks';
 import { ContentWrapper } from './styles';
 import { getAppLink } from '../../utils';
 
-const AppList = ({ info, glob, treatAsDesktop }) => {
-  const { loading, appList } = useAppList({ glob });
+import { useRootContext } from '../../contexts/RootContext';
+
+const AppList = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { info, glob, treatAsDesktop } = useRootContext();
+  const { loading, appList } = useAppList({ glob, info });
 
   return (
     <ContentWrapper>
@@ -25,7 +31,14 @@ const AppList = ({ info, glob, treatAsDesktop }) => {
               button
               component="a"
               key={appData.qDocId}
-              href={getAppLink({ appData, treatAsDesktop, engineUrl: info.engineUrl })}
+              onClick={() =>
+                getAppLink({
+                  info,
+                  navigate,
+                  location,
+                  targetApp: treatAsDesktop ? appData.qDocName : appData.qDocId,
+                })
+              }
             >
               <ListItemText primary={appData.qTitle} secondary={appData.qDocId} />
             </ListItem>

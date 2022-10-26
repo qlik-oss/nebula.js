@@ -1,14 +1,22 @@
 import React from 'react';
 import Step from '@mui/material/Step';
+import { useNavigate } from 'react-router-dom';
 import { ThemeWrapper } from '../ThemeWrapper';
 import { StepperWrapper, CustomStepLabel } from './styles';
 
-const ConnectionSteps = ({ activeStep, glob, error }) => {
+import { useRootContext } from '../../contexts/RootContext';
+
+const ConnectionSteps = () => {
+  const navigate = useNavigate();
+  const { activeStep, glob, error, setError } = useRootContext();
+
   const steps = ['Connect to engine', 'Select app', 'Develop'];
 
   const handleStepperClick = () => {
     if (!(glob || error)) return;
-    window.location.href = window.location.origin;
+
+    setError();
+    navigate('/');
   };
 
   return (

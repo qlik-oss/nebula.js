@@ -4,8 +4,8 @@ import { useAppLayout } from '@nebula.js/nucleus/src/hooks/useLayout';
 
 import { Grid, Typography } from '@mui/material';
 
-import AppContext from '../contexts/AppContext';
-import VizContext from '../contexts/VizContext';
+import AppContext from '../../contexts/AppContext';
+import VizContext from '../../contexts/VizContext';
 import Cell from './Cell';
 
 export default function Collection({ types, cache }) {

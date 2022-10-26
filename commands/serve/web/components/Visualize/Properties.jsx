@@ -4,7 +4,7 @@ import { Divider, Grid, Checkbox, FormControlLabel } from '@mui/material';
 
 import usePropertiesById from '@nebula.js/nucleus/src/hooks/usePropertiesById';
 
-import AppContext from '../contexts/AppContext';
+import AppContext from '../../contexts/AppContext';
 import Data from './property-panel/Data';
 import generateComponents from './AutoComponents';
 

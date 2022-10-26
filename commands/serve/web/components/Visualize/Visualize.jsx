@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle:0 */
 import React, { useEffect, useLayoutEffect, useState, useRef, useMemo } from 'react';
-
+import { useNavigate } from 'react-router-dom';
 import { embed } from '@nebula.js/stardust';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 import { WbSunny, Brightness3, ColorLens, Language, Home } from '@nebula.js/ui/icons';
@@ -17,16 +17,18 @@ import {
   MenuItem,
   CircularProgress,
 } from '@mui/material';
+import initiateWatch from '../../hot';
 
 import Properties from './Properties';
 import Stage from './Stage';
 import Collection from './Collection';
 
-import AppContext from '../contexts/AppContext';
-import NebulaContext from '../contexts/NebulaContext';
-import VizContext from '../contexts/VizContext';
+import AppContext from '../../contexts/AppContext';
+import NebulaContext from '../../contexts/NebulaContext';
+import VizContext from '../../contexts/VizContext';
 
-import storageFn from '../storage';
+import storageFn from '../../storage';
+import { useInfo, useOpenApp } from '../../hooks';
 
 const SPACING = 2;
 
@@ -48,23 +50,25 @@ const languages = [
   'ru-RU',
 ];
 
-export default function App({ app, info }) {
+export default function Visualize() {
+  const uid = useRef();
+  const navigate = useNavigate();
+  const { info } = useInfo();
+  const { waiting, app } = useOpenApp({ info });
   const storage = useMemo(() => storageFn(app), [app]);
   const [activeViz, setActiveViz] = useState(null);
   const [expandedObject, setExpandedObject] = useState(null);
   const [sn, setSupernova] = useState(null);
-  // const [isReadCacheEnabled, setReadCacheEnabled] = useState(storage.get('readFromCache') !== false);
   const [currentThemeName, setCurrentThemeName] = useState(storage.get('themeName'));
   const [currentLanguage, setCurrentLanguage] = useState(storage.get('language') || 'en-US');
   const [currentMuiThemeName, setCurrentMuiThemeName] = useState('light');
   const [objectListMode, setObjectListMode] = useState(storage.get('objectListMode') === true);
   const currentSelectionsRef = useRef(null);
-  const uid = useRef();
   const [currentId, setCurrentId] = useState();
   const [themeChooserAnchorEl, setThemeChooserAnchorEl] = React.useState(null);
   const [languageChooserAnchorEl, setLanguageChooserAnchorEl] = React.useState(null);
   const [nebbie, setNebbie] = useState(null);
-  const customThemes = info.themes && info.themes.length ? ['light', 'dark', ...info.themes] : [];
+  const customThemes = Array.isArray(info?.themes) && info.themes.length ? ['light', 'dark', ...info.themes] : [];
 
   const theme = useMemo(() => createTheme(currentMuiThemeName), [currentMuiThemeName]);
 
@@ -80,16 +84,21 @@ export default function App({ app, info }) {
   );
 
   useEffect(() => {
+    if (info) initiateWatch(info);
+  }, [info]);
+
+  useEffect(() => {
+    if (waiting) return;
     const n = embed(app, {
       context: {
         theme: currentThemeName,
         language: currentLanguage,
-        keyboardNavigation: info.keyboardNavigation,
+        keyboardNavigation: info?.keyboardNavigation,
       },
       load: (type) => Promise.resolve(window[type.name]),
-      flags: info.flags,
-      themes: info.themes
-        ? info.themes.map((t) => ({
+      flags: info?.flags,
+      themes: info?.themes
+        ? info?.themes.map((t) => ({
             id: t,
             load: () =>
               fetch(`/theme/${t}`)
@@ -101,17 +110,19 @@ export default function App({ app, info }) {
           }))
         : null,
     });
-    n.__DO_NOT_USE__.types.register(info.supernova);
-    if (info.types) {
-      info.types.forEach((t) => {
+    n.__DO_NOT_USE__.types.register(info?.supernova);
+    if (info?.types) {
+      info?.types.forEach((t) => {
         n.__DO_NOT_USE__.types.register(t);
       });
     }
+
     setNebbie(n);
-  }, [app]);
+  }, [app, info, waiting]);
 
   useLayoutEffect(() => {
     if (!nebbie) return;
+
     nebbie.context({ theme: currentThemeName });
     if (currentThemeName === 'light' || currentThemeName === 'dark') {
       setCurrentMuiThemeName(currentThemeName);
@@ -119,39 +130,42 @@ export default function App({ app, info }) {
   }, [nebbie, currentThemeName]);
 
   useEffect(() => {
-    if (!nebbie) return undefined;
-    const create = () => {
-      if (window[info.supernova.name]) {
-        uid.current = String(Date.now());
-        setCurrentId(uid.current);
-      }
-    };
+    if (!nebbie) return;
 
     nebbie.selections().then((s) => s.mount(currentSelectionsRef.current));
-    window.onHotChange(info.supernova.name, () => {
-      nebbie.__DO_NOT_USE__.types.clearFromCache(info.supernova.name);
-      nebbie.__DO_NOT_USE__.types.register(info.supernova);
+    window.onHotChange(info?.supernova.name, () => {
+      nebbie.__DO_NOT_USE__.types.clearFromCache(info?.supernova.name);
+      nebbie.__DO_NOT_USE__.types.register(info?.supernova);
 
       create();
 
       nebbie.__DO_NOT_USE__.types
         .get({
-          name: info.supernova.name,
+          name: info?.supernova.name,
         })
         .supernova()
         .then(setSupernova);
     });
 
     create();
+  }, [nebbie, info]);
 
+  useEffect(() => {
     const unload = () => {
-      app.destroySessionObject(uid.current);
+      if (app) app.destroySessionObject(uid.current);
     };
     window.addEventListener('beforeunload', unload);
     return () => {
       window.removeEventListener('beforeunload', unload);
     };
-  }, [nebbie]);
+  }, [app]);
+
+  const create = () => {
+    if (window[info?.supernova.name]) {
+      uid.current = String(Date.now());
+      setCurrentId(uid.current);
+    }
+  };
 
   const handleThemeChange = (t) => {
     setThemeChooserAnchorEl(null);
@@ -204,7 +218,7 @@ export default function App({ app, info }) {
                       <Grid item>
                         <a href="https://github.com/qlik-oss/nebula.js" target="_blank" rel="noopener noreferrer">
                           <img
-                            src="assets/logo.svg"
+                            src="/assets/logo.svg"
                             alt="nebula.js logo"
                             href="https://github.com/qlik-oss/nebula.js"
                             style={{ height: '24px', position: 'relative', top: '2px' }}
@@ -213,13 +227,7 @@ export default function App({ app, info }) {
                       </Grid>
                     </Grid>
                     <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                      <IconButton
-                        title="Home"
-                        href={`${window.location.origin}?engine_url=${info.engineUrl || ''}${
-                          info.webIntegrationId ? `&web-integration-id=${info.webIntegrationId}` : ''
-                        }`}
-                        size="large"
-                      >
+                      <IconButton title="Home" onClick={() => navigate('/')} size="large">
                         <Home style={{ verticalAlign: 'middle' }} />
                       </IconButton>
                     </Grid>
@@ -309,7 +317,7 @@ export default function App({ app, info }) {
                     <Grid container wrap="nowrap" style={{ height: '100%' }} gap={SPACING / 2}>
                       <Grid item xs zeroMinWidth>
                         {objectListMode ? (
-                          <Collection cache={currentId} types={[info.supernova.name]} />
+                          <Collection cache={currentId} types={[info?.supernova.name]} />
                         ) : (
                           <Stage info={info} storage={storage} uid={currentId} />
                         )}
@@ -330,7 +338,7 @@ export default function App({ app, info }) {
                             viz={activeViz}
                             isTemp={!objectListMode}
                             storage={storage}
-                            flags={info.flags}
+                            flags={info?.flags}
                           />
                         </Grid>
                       )}

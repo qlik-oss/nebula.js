@@ -72,7 +72,8 @@
         "arrow-body-style": 1,
         "no-use-before-define": 1,
         "react/function-component-definition": 0,
-        "import/prefer-default-export": 1
+        "import/prefer-default-export": 1,
+        "import/no-cycle": 1
       }
     },
     {

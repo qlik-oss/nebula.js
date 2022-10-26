@@ -6,13 +6,9 @@ export const useInfo = () => {
 
   useEffect(() => {
     getConnectionInfo().then((i) => {
-      if (i.enigma.appId) {
-        window.location.href = `/dev/${window.location.search}`;
-        return;
-      }
       setInfo(i);
     });
   }, []);
 
-  return { info };
+  return { info, setInfo };
 };

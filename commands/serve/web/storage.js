@@ -1,7 +1,7 @@
 const storageFn = (app) => {
   const stored = window.localStorage.getItem('nebula-dev');
   const parsed = stored ? JSON.parse(stored) : {};
-  const appid = app.id;
+  const appid = app?.id;
 
   const s = {
     save(name, value) {

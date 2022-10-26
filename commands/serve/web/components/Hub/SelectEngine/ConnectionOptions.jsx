@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import FormManager from './FormManager';
+import { useRootContext } from '../../../contexts/RootContext';
 
 const OptionsToConnect = [
   { id: 0, label: 'Local Engine', formFields: ['Engine WebSocket URL'] },
@@ -11,14 +12,20 @@ const OptionsToConnect = [
   { id: 2, label: 'Client Id', formFields: ['Engine WebSocket URL', 'Client Id'] },
 ];
 const detectDefaultStep = (info) => {
-  if (info.isWebIntegrationIdProvided) return OptionsToConnect.findIndex((x) => x.label === 'Web Integration Id');
-  if (info.isClientIdProvided) return OptionsToConnect.findIndex((x) => x.label === 'Client Id');
+  if (info?.isWebIntegrationIdProvided) return OptionsToConnect.findIndex((x) => x.label === 'Web Integration Id');
+  if (info?.isClientIdProvided) return OptionsToConnect.findIndex((x) => x.label === 'Client Id');
   return 0;
 };
 
-export default function ConnectionOptions({ info, error }) {
-  const [tabIdx, setTabIdx] = useState(detectDefaultStep(info));
+export default function ConnectionOptions() {
+  const { info, error } = useRootContext();
+  const [tabIdx, setTabIdx] = useState(0);
   const handleChange = (_, idx) => setTabIdx(idx);
+
+  useEffect(() => {
+    const idx = detectDefaultStep(info);
+    if (idx) setTabIdx(idx);
+  }, [info]);
 
   const checkIfTabDisabled = ({ label }) => {
     const labelKey = label
@@ -26,12 +33,12 @@ export default function ConnectionOptions({ info, error }) {
       .map((x) => x.toLowerCase())
       .join('-');
 
-    if (info.isWebIntegrationIdProvided) {
+    if (info?.isWebIntegrationIdProvided) {
       if (labelKey === 'web-integration-id') return false;
       return true;
     }
 
-    if (info.isClientIdProvided) {
+    if (info?.isClientIdProvided) {
       if (labelKey === 'client-id') return false;
       return true;
     }
@@ -59,7 +66,7 @@ export default function ConnectionOptions({ info, error }) {
               info={info}
               error={error}
               fields={formFields}
-              isCredentialProvided={info.isWebIntegrationIdProvided || info.isClientIdProvided}
+              isCredentialProvided={info?.isWebIntegrationIdProvided || info?.isClientIdProvided}
             />
           </TabPanel>
         ))}

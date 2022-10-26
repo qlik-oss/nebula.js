@@ -5,7 +5,7 @@ import React, {
   // useState,
 } from 'react';
 
-import NebulaContext from '../contexts/NebulaContext';
+import NebulaContext from '../../contexts/NebulaContext';
 
 export default function Chart({ id, onLoad }) {
   const nebbie = useContext(NebulaContext);

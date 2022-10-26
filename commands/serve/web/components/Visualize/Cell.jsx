@@ -9,8 +9,8 @@ import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
 
 import PropsDialog from './PropertiesDialog';
 
-import AppContext from '../contexts/AppContext';
-import VizContext from '../contexts/VizContext';
+import AppContext from '../../contexts/AppContext';
+import VizContext from '../../contexts/VizContext';
 
 import Chart from './Chart';
 

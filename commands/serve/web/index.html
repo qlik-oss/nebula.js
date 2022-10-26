@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <base href="/" />
-    <title>Nebula dev</title>
+    <title>Nebula hub</title>
 
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:light" rel="stylesheet" />
@@ -15,13 +15,20 @@
         height: 100%;
         margin: 0;
         padding: 0;
-        overflow: hidden;
+        overflow: auto;
       }
 
       body {
-        background: #ddd;
-        -webkit-font-smoothing: antialiased;
+        color: #404040;
         font: normal 14px/16px 'Source Sans Pro', Arial, sans-serif;
+        -webkit-font-smoothing: antialiased;
+        background: linear-gradient(110deg, #91298c 0%, #45b3b2 100%);
+      }
+      code {
+        background-color: rgba(0, 0, 0, 0.05);
+        padding: 0 2px;
+        font-family: Monaco, monospace;
+        font-size: 0.9em;
       }
       #app {
         height: 100%;

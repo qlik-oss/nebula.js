@@ -5,8 +5,8 @@ import { Grid } from '@mui/material';
 import usePropertiesById from '@nebula.js/nucleus/src/hooks/usePropertiesById';
 
 import Cell from './Cell';
-import NebulaContext from '../contexts/NebulaContext';
-import VizContext from '../contexts/VizContext';
+import NebulaContext from '../../contexts/NebulaContext';
+import VizContext from '../../contexts/VizContext';
 
 export default function Stage({ info, storage, uid }) {
   const nebbie = useContext(NebulaContext);
