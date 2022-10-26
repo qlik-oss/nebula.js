@@ -13,10 +13,6 @@ export const useAppList = ({ glob, info }) => {
   useEffect(() => {
     setActiveStep(1);
     getConnectionInfo().then((i) => {
-      if (i.enigma.appId) {
-        window.location.href = `/dev/${window.location.search}`;
-        return;
-      }
       setInfo(i);
     });
   }, []);

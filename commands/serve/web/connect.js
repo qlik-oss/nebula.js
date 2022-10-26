@@ -67,6 +67,9 @@ const getConnectionInfo = () =>
       if (params.engine_url) {
         info = {
           ...info,
+          // TODO:
+          // instead of calling "/info" and then parsing url inside of `getConnectionInfo()`
+          // we can have a hook which listens on location.search and provides this information for us
           ...parseEngineURL(params.engine_url),
         };
       } else if (params.app) {
@@ -180,7 +183,6 @@ const openApp = async (id) => {
     const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
     return enigmaGlobal.openDoc(id);
   } catch (error) {
-    console.error({ error });
     throw new Error('Failed to open app!');
   }
 };

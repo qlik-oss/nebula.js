@@ -84,9 +84,7 @@ export default function Visualize() {
   );
 
   useEffect(() => {
-    if (info) {
-      initiateWatch(info);
-    }
+    if (info) initiateWatch(info);
   }, [info]);
 
   useEffect(() => {
@@ -302,11 +300,9 @@ export default function Visualize() {
                   </Grid>
                 </Toolbar>
               </Grid>
-
               <Grid item style={{ padding: theme.spacing(SPACING / 2, SPACING / 2, 0, SPACING / 2) }}>
                 <div ref={currentSelectionsRef} style={{ flex: '0 0 auto', boxShadow: theme.shadows[1] }} />
               </Grid>
-
               <Grid
                 item
                 xs

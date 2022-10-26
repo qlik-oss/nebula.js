@@ -4,7 +4,6 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import FormManager from './FormManager';
-
 import { useRootContext } from '../../../contexts/RootContext';
 
 const OptionsToConnect = [

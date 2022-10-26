@@ -12,15 +12,9 @@ export const useOpenApp = ({ info }) => {
     setWaiting(true);
     if (!info) return;
     handleOpenApp()
-      .then((resultApp) => {
-        setApp(resultApp);
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setWaiting(false);
-      });
+      .then((resultApp) => setApp(resultApp))
+      .catch((err) => console.log(err))
+      .finally(() => setWaiting(false));
   }, [info]);
 
   const handleOpenApp = async () => {
@@ -41,7 +35,6 @@ export const useOpenApp = ({ info }) => {
       const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
       return enigmaGlobal.openDoc(info?.enigma.appId);
     } catch (error) {
-      console.error({ error });
       throw new Error('Failed to open app!');
     }
   };
