@@ -4,7 +4,7 @@ import { RootContextProvider } from './contexts/RootContext';
 
 import SelectEngine from './components/Hub/SelectEngine/SelectEngine';
 import AppList from './components/Hub/AppList';
-import App from './components/App';
+import Visualize from './components/Visualize/Visualize';
 import ConnectionSteps from './components/Hub/ConnectionSteps';
 import { ThemeWrapper } from './components/ThemeWrapper';
 
@@ -26,7 +26,7 @@ export const Root = () => {
             <Route path="/" element={<SelectEngine />} />
             <Route path="/app-list" element={<AppList />} />
           </Route>
-          <Route path="/dev" element={<App />} />
+          <Route path="/dev" element={<Visualize />} />
         </Routes>
       </RootContextProvider>
     </BrowserRouter>

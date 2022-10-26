@@ -1,11 +1,9 @@
-export const getAppLink = ({ navigate, location, appData, treatAsDesktop, engineUrl }) => {
+export const getAppLink = ({ navigate, location, targetApp, info }) => {
   const search = location.search;
-  const newEngineUrl = `${engineUrl}app/${encodeURIComponent(treatAsDesktop ? appData.qDocName : appData.qDocId)}`;
-  const modifiedEngineUrl = search.replace(engineUrl, newEngineUrl);
+  const protocol = info.enigma.secure ? 'wss' : 'ws';
+  const host = info.enigma.host === 'localhost' ? `${info.enigma.host}:${info.enigma.port}` : info.enigma.host;
+  const newEngineUrl = `${protocol}://${host}/app/${encodeURIComponent(targetApp)}`;
+  const modifiedEngineUrl = search.replace(info.engineUrl, newEngineUrl);
 
   navigate(`/dev/${modifiedEngineUrl}`.replace('&shouldFetchAppList=true', ''));
-};
-
-export const goToApp = (value) => {
-  window.location.href = `${window.location.origin}?engine_url=${value.replace('?', '&')}`;
 };
