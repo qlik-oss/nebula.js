@@ -1,6 +1,6 @@
 import React, { useMemo, createContext, useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useInfo, useConnection } from '../hooks';
+import { useInfo, useConnection, useCachedConnections } from '../hooks';
 import storageFn from '../storage';
 
 export const rootContextInitialValue = {
@@ -20,7 +20,8 @@ export const RootContextProvider = ({ children }) => {
   const navigate = useNavigate();
   const storage = useMemo(() => storageFn({}), []);
   const { info, setInfo } = useInfo();
-  const connectionData = useConnection({ info });
+  const cachedConnectionsData = useCachedConnections({ storage });
+  const connectionData = useConnection({ info, cachedConnectionsData });
 
   useEffect(() => {
     if (connectionData.error) navigate('/');
@@ -33,8 +34,8 @@ export const RootContextProvider = ({ children }) => {
   }, [location.pathname, connectionData.error]);
 
   const rootContextValue = useMemo(
-    () => ({ info, setInfo, ...connectionData, storage }),
-    [info, setInfo, connectionData, storage]
+    () => ({ info, setInfo, ...connectionData, storage, cachedConnectionsData }),
+    [info, setInfo, connectionData, storage, cachedConnectionsData]
   );
 
   return <RootContext.Provider value={rootContextValue}>{children}</RootContext.Provider>;

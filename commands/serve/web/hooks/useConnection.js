@@ -1,16 +1,13 @@
-import { useState, useEffect, useMemo } from 'react';
+import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import { manageConnections } from '../utils';
 import { connect } from '../connect';
-import storageFn from '../storage';
 
-export const useConnection = ({ info }) => {
+export const useConnection = ({ info, cachedConnectionsData }) => {
   const location = useLocation();
   const [glob, setGlobal] = useState();
   const [treatAsDesktop, setTreatAsDesktop] = useState(false);
   const [error, setError] = useState();
   const [activeStep, setActiveStep] = useState(0);
-  const storage = useMemo(() => storageFn({}), []);
 
   useEffect(() => {
     if (location.pathname === '/' || !info || !info.engineUrl) return;
@@ -24,27 +21,18 @@ export const useConnection = ({ info }) => {
     }
 
     connect()
-      .then((result) =>
-        handleConnectionSuccess({
-          result,
-          storage,
-          info,
-          setGlobal,
-          setError,
-          setTreatAsDesktop,
-        })
-      )
+      .then((result) => handleConnectionSuccess({ result, setGlobal, setError, setTreatAsDesktop }))
+      .then(() => cachedConnectionsData.addCachedConnections({ info }))
       .catch((err) => handleConnectionFailure({ error: err, info, setError }));
   }, [info, location.pathname]);
 
   return { glob, setGlobal, treatAsDesktop, setTreatAsDesktop, error, setError, activeStep, setActiveStep };
 };
 
-export const handleConnectionSuccess = async ({ result, storage, info, setGlobal, setTreatAsDesktop, setError }) => {
+export const handleConnectionSuccess = async ({ result, setGlobal, setTreatAsDesktop, setError }) => {
   handleSessionNotification({ result, setError, setGlobal });
   setGlobal(result);
   if (!result.getDocList) return;
-  manageConnections({ info, storage });
   try {
     const config = await result.getConfiguration();
     if (config && config.qFeatures && config.qFeatures.qIsDesktop) setTreatAsDesktop(true);
