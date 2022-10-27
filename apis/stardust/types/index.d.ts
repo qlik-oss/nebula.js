@@ -232,9 +232,9 @@ declare namespace stardust {
 
         /**
          * Gets the listbox instance of the specified field
-         * @param fieldIdentifier Fieldname as a string or a Library dimension
+         * @param fieldIdentifier Fieldname as a string, a Library dimension or an object id
          */
-        field(fieldIdentifier: string | stardust.LibraryField): Promise<stardust.FieldInstance>;
+        field(fieldIdentifier: string | stardust.LibraryField | stardust.QInfo): Promise<stardust.FieldInstance>;
 
         /**
          * Gets a list of registered visualization types and versions
@@ -288,6 +288,10 @@ declare namespace stardust {
          * A function that should return a Promise that resolves to a raw JSON theme.
          */
         load(): Promise<stardust.ThemeJSON>;
+    }
+
+    interface QInfo {
+        qId: string;
     }
 
     /**

@@ -19,10 +19,25 @@
     "comment": "Action text to lock selections in a listbox",
     "version": "05jY0MA0azu2f6LgrBSpYg=="
   },
+  "Listbox.ResultFilterLabel": {
+    "value": "Filter voor zoekresultaten",
+    "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
+    "version": "ZMijtIFW/Kap65bGmRIp0w=="
+  },
+  "Listbox.ScreenReaderInstructions": {
+    "value": "Door de onderstaande elementen te activeren wordt de inhoud op de pagina bijgewerkt",
+    "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content",
+    "version": "ckUyG4fQPA0Z71A2ofI3fg=="
+  },
   "Listbox.Search": {
     "value": "Zoeken in keuzelijst",
     "comment": "Action text to search in listbox",
     "version": "XqaXqel4sY8npmjHCNH24Q=="
+  },
+  "Listbox.Search.ScreenReaderInstructions": {
+    "value": "Het volgende zoekveld filtert resultaten terwijl u typt",
+    "comment": "Instructions to inform screen reader users that the search field filters the listbox results as they type",
+    "version": "NmK/VF5NK36oGSw/Z/VIjA=="
   },
   "Listbox.Unlock": {
     "value": "Selecties ontgrendelen",
