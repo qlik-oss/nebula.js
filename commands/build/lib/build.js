@@ -110,7 +110,7 @@ const config = ({
     try {
       typescriptPlugin = require('@rollup/plugin-typescript'); // eslint-disable-line
     } catch (e) {
-      throw new Error(`Please install '@rollup/plugin-typescript' to build using typescript.`);
+      throw new Error(`${e}\n '@rollup/plugin-typescript' is required to build using typescript.`);
     }
   }
 
