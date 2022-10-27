@@ -20,6 +20,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import useConfirmUnfocus from './hooks/useConfirmUnfocus';
+import listboxHandleDeactivate from './interactions/listbox-handle-deactivate';
 
 const PREFIX = 'ListBoxInline';
 
@@ -54,6 +55,7 @@ export default function ListBoxInline({ options = {} }) {
     checkboxes = false,
     model,
     selections,
+    element,
     update = undefined,
     fetchStart = undefined,
     dense = false,
@@ -65,6 +67,8 @@ export default function ListBoxInline({ options = {} }) {
     setCount = undefined,
     shouldConfirmOnBlur = undefined,
   } = options;
+
+  listboxHandleDeactivate({ element, selections, options });
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780

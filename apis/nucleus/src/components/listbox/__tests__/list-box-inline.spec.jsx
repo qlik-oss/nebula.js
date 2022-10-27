@@ -21,6 +21,7 @@ describe('<ListboxInline />', () => {
   let ActionsToolbar;
   let ListBoxSearch;
   let createListboxSelectionToolbar;
+  let listboxHandleDeactivate;
   let layout;
   let selections;
   let renderer;
@@ -47,6 +48,7 @@ describe('<ListboxInline />', () => {
     getListboxInlineKeyboardNavigation = sandbox.stub().returns('keyboard-navigation');
     ListBoxSearch = sandbox.stub();
     createListboxSelectionToolbar = sandbox.stub();
+    listboxHandleDeactivate = sandbox.stub();
     layout = {
       title: 'title',
 
@@ -83,6 +85,7 @@ describe('<ListboxInline />', () => {
         [require.resolve('../../ActionsToolbar'), () => ActionsToolbar],
         [require.resolve('../ListBox'), () => <div className="theListBox" />],
         [require.resolve('../components/ListBoxSearch'), () => ListBoxSearch],
+        [require.resolve('../interactions/listbox-handle-deactivate'), () => listboxHandleDeactivate],
         [
           require.resolve('../interactions/listbox-keyboard-navigation'),
           () => ({
@@ -113,6 +116,7 @@ describe('<ListboxInline />', () => {
       search: true,
       focusSearch: false,
       toolbar: true,
+      element: 'element',
       properties: {},
       model,
       selections,
@@ -175,6 +179,15 @@ describe('<ListboxInline />', () => {
           );
         });
       };
+    });
+
+    it('should call listboxHandleDeactivate', async () => {
+      await render();
+      expect(listboxHandleDeactivate).calledOnce.calledWith({
+        element: 'element',
+        selections,
+        options,
+      });
     });
 
     it('should render with everything included', async () => {
