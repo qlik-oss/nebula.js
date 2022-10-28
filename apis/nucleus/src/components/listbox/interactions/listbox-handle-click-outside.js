@@ -24,5 +24,5 @@ export default function listboxHandleDeactivate({ element, selections, options }
     }
   };
 
-  useClickOutside({ element, handler });
+  useClickOutside({ elements: [element], handler });
 }

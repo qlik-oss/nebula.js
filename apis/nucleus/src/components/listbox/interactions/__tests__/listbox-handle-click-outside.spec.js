@@ -38,8 +38,8 @@ describe('handle click outside listbox', () => {
     it('check initial state and should confirm selections', () => {
       listboxHandleDeactivate({ element: 'element', selections, options: 'options' });
       expect(useClickOutside).calledOnce;
-      const { element, handler } = useClickOutside.args[0][0];
-      expect(element).to.equal('element');
+      const { elements, handler } = useClickOutside.args[0][0];
+      expect(elements[0]).to.equal('element');
       expect(handler).to.be.a('function');
       handler({});
       expect(selections.confirm).calledOnce;
