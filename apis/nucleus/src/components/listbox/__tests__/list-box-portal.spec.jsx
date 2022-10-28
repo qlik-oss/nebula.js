@@ -9,6 +9,7 @@ describe('ListBoxPortal', () => {
   let useObjectSelectionsMock;
   let useExistingModel;
   let useOnTheFlyModelMock;
+  let identifyMock;
 
   async function render(content) {
     await renderer.act(async () => {
@@ -24,6 +25,10 @@ describe('ListBoxPortal', () => {
     useObjectSelectionsMock = sandbox.stub().returns([{ id: 'objectSelection' }]);
     useExistingModel = sandbox.stub().returns({});
     useOnTheFlyModelMock = sandbox.stub().returns({});
+    identifyMock = sandbox.stub().returns({
+      hasExternalSessionModel: false,
+      hasExternalSelectionsApi: false,
+    });
 
     [{ default: ListBoxPortal }] = aw.mock(
       [
@@ -31,6 +36,7 @@ describe('ListBoxPortal', () => {
         [require.resolve('../../../hooks/useObjectSelections'), () => useObjectSelectionsMock],
         [require.resolve('../hooks/useExistingModel'), () => useExistingModel],
         [require.resolve('../hooks/useOnTheFlyModel'), () => useOnTheFlyModelMock],
+        [require.resolve('../assets/identify'), () => identifyMock],
         [require.resolve('react-dom'), () => ({ createPortal: (element) => element })],
       ],
       ['../ListBoxPortal']
@@ -42,12 +48,23 @@ describe('ListBoxPortal', () => {
   });
 
   describe('existing generic object', () => {
+    beforeEach(() => {
+      identifyMock.returns({
+        hasExternalSessionModel: true,
+        hasExternalSelectionsApi: false,
+      });
+    });
+
     it('should get object from app and use as model', async () => {
       const qId = '1337';
       const app = {};
       const elem = ListBoxPortal({ app, qId });
       await render(elem);
       expect(useExistingModel).to.have.been.calledWith({ app, qId, options: {} });
+      expect(identifyMock).calledWithExactly({
+        qId: '1337',
+        options: {},
+      });
     });
 
     it('should use provided "sessionModel"', async () => {
@@ -64,6 +81,12 @@ describe('ListBoxPortal', () => {
   });
 
   describe('on the fly', () => {
+    beforeEach(() => {
+      identifyMock.returns({
+        hasExternalSessionModel: false,
+        hasExternalSelectionsApi: false,
+      });
+    });
     it('should create session model when providing field name', async () => {
       const fieldIdentifier = 'Alpha';
       const app = {};
@@ -93,6 +116,13 @@ describe('ListBoxPortal', () => {
   });
 
   describe('external selections Api', () => {
+    beforeEach(() => {
+      identifyMock.returns({
+        hasExternalSessionModel: false,
+        hasExternalSelectionsApi: true,
+      });
+    });
+
     it('should pass in provided selectionApi as "selections" into ListBoxInline', async () => {
       const qId = 'qId';
       const element = 'element';
