@@ -1,8 +1,10 @@
 import { useEffect } from 'react';
 
-export default function useClickOutside(element, handler) {
+export default function useClickOutside(elements, handler) {
+  const elementsArr = Array.isArray(elements) ? elements : [elements];
   const intermediateHandler = (evt) => {
-    const isClickOutside = !element.contains(evt.target);
+    const targetStillExists = document.body.contains(evt.target);
+    const isClickOutside = targetStillExists && !elementsArr.some((element) => element.contains(evt.target));
     if (isClickOutside) {
       handler(evt);
     }
