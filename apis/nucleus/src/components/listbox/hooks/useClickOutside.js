@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-export default function useClickOutside(elements, handler) {
+export default function useClickOutside({ elements, handler }) {
   const elementsArr = Array.isArray(elements) ? elements : [elements];
   const intermediateHandler = (evt) => {
     const targetStillExists = document.body.contains(evt.target);

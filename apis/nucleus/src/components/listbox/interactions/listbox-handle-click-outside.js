@@ -4,7 +4,7 @@ import useClickOutside from '../hooks/useClickOutside';
 export default function listboxHandleDeactivate({ element, selections, options }) {
   const { hasExternalSelections } = identify({ qId: options.qId, options });
 
-  const handleClickOutside = (/* evt */) => {
+  const handler = (/* evt */) => {
     if (hasExternalSelections) {
       // Not our problem.
       return;
@@ -24,5 +24,5 @@ export default function listboxHandleDeactivate({ element, selections, options }
     }
   };
 
-  useClickOutside(element, handleClickOutside);
+  useClickOutside({ element, handler });
 }
