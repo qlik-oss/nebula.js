@@ -2,10 +2,10 @@ import identify from '../assets/identify';
 import useClickOutside from '../hooks/useClickOutside';
 
 export default function listboxHandleDeactivate({ element, selections, options }) {
-  const { hasExternalSelections } = identify({ qId: options.qId, options });
+  const { hasExternalSelectionsApi } = identify({ qId: options.qId, options });
 
   const handler = (/* evt */) => {
-    if (hasExternalSelections) {
+    if (hasExternalSelectionsApi) {
       // Not our problem.
       return;
     }

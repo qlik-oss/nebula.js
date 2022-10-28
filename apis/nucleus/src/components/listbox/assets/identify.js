@@ -4,6 +4,6 @@ export default function identify({ qId, options }) {
     hasExternalSessionModel: !!(qId || options.sessionModel),
 
     // External or internal selectionsApi.
-    hasExternalSelections: !!options.selectionsApi,
+    hasExternalSelectionsApi: !!options.selectionsApi,
   };
 }

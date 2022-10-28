@@ -21,7 +21,7 @@ describe('handle click outside listbox', () => {
   });
 
   beforeEach(() => {
-    identify.returns({ hasExternalSelections: false });
+    identify.returns({ hasExternalSelectionsApi: false });
     selections.isModal.returns(true);
     selections.canConfirm.returns(true);
   });

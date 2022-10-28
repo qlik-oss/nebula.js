@@ -7,7 +7,7 @@ import useOnTheFlyModel from './hooks/useOnTheFlyModel';
 import identify from './assets/identify';
 
 function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options }) {
-  const { hasExternalSessionModel, hasExternalSelections } = identify({ qId, options });
+  const { hasExternalSessionModel, hasExternalSelectionsApi } = identify({ qId, options });
   const [changeCount, setChangeCount] = useState(0);
 
   useEffect(() => {
@@ -16,13 +16,13 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options
     }
 
     setChangeCount(changeCount + 1);
-  }, [hasExternalSessionModel, hasExternalSelections]);
+  }, [hasExternalSessionModel, hasExternalSelectionsApi]);
 
   const model = hasExternalSessionModel
     ? useExistingModel({ app, qId, options })
     : useOnTheFlyModel({ app, fieldIdentifier, stateName, options });
 
-  const selections = hasExternalSelections ? options.selectionsApi : useObjectSelections(app, model)[0];
+  const selections = hasExternalSelectionsApi ? options.selectionsApi : useObjectSelections(app, model)[0];
 
   if (!selections || !model) {
     return null;
