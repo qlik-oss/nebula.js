@@ -21,7 +21,7 @@ describe('<ListboxInline />', () => {
   let ActionsToolbar;
   let ListBoxSearch;
   let createListboxSelectionToolbar;
-  let listboxHandleDeactivate;
+  let handleClickOutside;
   let layout;
   let selections;
   let renderer;
@@ -48,10 +48,9 @@ describe('<ListboxInline />', () => {
     getListboxInlineKeyboardNavigation = sandbox.stub().returns('keyboard-navigation');
     ListBoxSearch = sandbox.stub();
     createListboxSelectionToolbar = sandbox.stub();
-    listboxHandleDeactivate = sandbox.stub();
+    handleClickOutside = sandbox.stub();
     layout = {
       title: 'title',
-
       qListObject: {
         qDimensionInfo: {
           qFallbackTitle: 'qFallbackTitle',
@@ -85,7 +84,7 @@ describe('<ListboxInline />', () => {
         [require.resolve('../../ActionsToolbar'), () => ActionsToolbar],
         [require.resolve('../ListBox'), () => <div className="theListBox" />],
         [require.resolve('../components/ListBoxSearch'), () => ListBoxSearch],
-        [require.resolve('../interactions/listbox-handle-deactivate'), () => listboxHandleDeactivate],
+        [require.resolve('../interactions/listbox-handle-click-outside'), () => handleClickOutside],
         [
           require.resolve('../interactions/listbox-keyboard-navigation'),
           () => ({
@@ -181,9 +180,9 @@ describe('<ListboxInline />', () => {
       };
     });
 
-    it('should call listboxHandleDeactivate', async () => {
+    it('should call handleClickOutside', async () => {
       await render();
-      expect(listboxHandleDeactivate).calledOnce.calledWith({
+      expect(handleClickOutside).calledOnce.calledWith({
         element: 'element',
         selections,
         options,
