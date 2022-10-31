@@ -24,6 +24,7 @@ module.exports = {
     'apis/nucleus/src/sn/*.{js,jsx}',
     'apis/nucleus/src/stores/*.{js,jsx}',
     'apis/nucleus/src/utils/*.{js,jsx}',
+    'apis/nucleus/src/object/*.{js,jsx}',
     'apis/snapshooter/**/*.{js,jsx}',
     'apis/supernova/**/*.{js,jsx}',
     'apis/test-utils/**/*.{js,jsx}',
