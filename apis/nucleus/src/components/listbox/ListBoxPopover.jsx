@@ -18,6 +18,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
+import getHasSelections from './assets/has-selections';
 
 export default function ListBoxPopover({ alignTo, show, close, app, fieldName, stateName = '$' }) {
   const open = show && Boolean(alignTo.current);
@@ -95,9 +96,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
     translator,
   });
 
-  const counts = layout.qListObject.qDimensionInfo.qStateCounts;
-
-  const hasSelections = counts.qSelected + counts.qSelectedExcluded + counts.qLocked + counts.qLockedExcluded > 0;
+  const hasSelections = getHasSelections(layout);
 
   return (
     <Popover

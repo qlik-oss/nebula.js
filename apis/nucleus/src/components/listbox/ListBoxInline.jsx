@@ -20,6 +20,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import handleClickOutside from './interactions/listbox-handle-click-outside';
+import getHasSelections from './assets/has-selections';
 
 const PREFIX = 'ListBoxInline';
 
@@ -159,9 +160,7 @@ export default function ListBoxInline({ options = {} }) {
       })
     : [];
 
-  const counts = layout.qListObject.qDimensionInfo.qStateCounts;
-
-  const hasSelections = counts.qSelected + counts.qSelectedExcluded + counts.qLocked + counts.qLockedExcluded > 0;
+  const hasSelections = getHasSelections(layout);
 
   const showTitle = true;
 
