@@ -30,7 +30,7 @@ export const useAppList = ({ glob, info }) => {
           if (!url.search.includes('shouldFetchAppList')) {
             url.searchParams.append('shouldFetchAppList', true);
           }
-          navigate(`${url.pathname}${url.search}`);
+          navigate(decodeURIComponent(`${url.pathname}${url.search}`));
         }
       });
     }
