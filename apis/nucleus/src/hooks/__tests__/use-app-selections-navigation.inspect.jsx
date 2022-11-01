@@ -1,6 +1,10 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { create, act } from 'react-test-renderer';
 
+import * as useLayoutModule from '../useLayout';
+import * as useCurrentSelectionsModelModule from '../useCurrentSelectionsModel';
+import useAppSelectionsNavigation from '../useAppSelectionsNavigation';
+
 const TestHook = forwardRef(({ hook, hookProps = [] }, ref) => {
   const result = hook(...hookProps);
   useImperativeHandle(ref, () => ({
@@ -10,18 +14,16 @@ const TestHook = forwardRef(({ hook, hookProps = [] }, ref) => {
 });
 
 describe('useAppSelectionsNavigation', () => {
-  let sandbox;
   let renderer;
   let render;
   let ref;
-  let useAppSelectionsNavigation;
   let currentSelectionsModel;
   let currentSelectionsLayout;
   let appLayout;
-  before(() => {
-    sandbox = sinon.createSandbox();
+
+  beforeEach(() => {
     currentSelectionsModel = {
-      applyPatches: sandbox.stub(),
+      applyPatches: jest.fn(),
     };
     currentSelectionsLayout = {
       alternateStates: [],
@@ -30,22 +32,10 @@ describe('useAppSelectionsNavigation', () => {
       qStateNames: [],
     };
 
-    [{ default: useAppSelectionsNavigation }] = aw.mock(
-      [
-        [require.resolve('../useCurrentSelectionsModel'), () => () => [currentSelectionsModel]],
-        [
-          require.resolve('../useLayout'),
-          () => ({
-            __esModule: true,
-            default: () => [currentSelectionsLayout],
-            useAppLayout: () => [appLayout],
-          }),
-        ],
-      ],
-      ['../useAppSelectionsNavigation']
-    );
-  });
-  beforeEach(() => {
+    jest.spyOn(useCurrentSelectionsModelModule, 'default').mockImplementation(() => [currentSelectionsModel]);
+    jest.spyOn(useLayoutModule, 'default').mockImplementation(() => [currentSelectionsLayout]);
+    jest.spyOn(useLayoutModule, 'useAppLayout').mockImplementation(() => [appLayout]);
+
     ref = React.createRef();
     render = async (rendererOptions = null) => {
       await act(async () => {
@@ -54,11 +44,12 @@ describe('useAppSelectionsNavigation', () => {
     };
   });
   afterEach(() => {
-    sandbox.restore();
     renderer.unmount();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
-  it('should patch alternate states', async () => {
+  test('should patch alternate states', async () => {
     appLayout.qStateNames = ['foo'];
     const states = [
       {
@@ -69,7 +60,7 @@ describe('useAppSelectionsNavigation', () => {
       },
     ];
     await render();
-    expect(currentSelectionsModel.applyPatches).to.have.been.calledWithExactly(
+    expect(currentSelectionsModel.applyPatches).toHaveBeenCalledWith(
       [
         {
           qOp: 'replace',
@@ -81,13 +72,13 @@ describe('useAppSelectionsNavigation', () => {
     );
   });
 
-  it('should set default navigation states', async () => {
+  test('should set default navigation states', async () => {
     currentSelectionsLayout.qSelectionObject = {
       qBackCount: 2,
       qForwardCount: 5,
       qSelections: [{ qLocked: false }],
     };
     await render();
-    expect(ref.current.result[0]).to.deep.equal({ canGoBack: true, canGoForward: true, canClear: true });
+    expect(ref.current.result[0]).toEqual({ canGoBack: true, canGoForward: true, canClear: true });
   });
 });
