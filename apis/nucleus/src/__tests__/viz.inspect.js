@@ -120,6 +120,13 @@ describe('viz', () => {
       expect(model.applyPatches).toHaveBeenCalledWith(['patch'], true);
     });
 
+    // TODO:
+    // in original test case, it was mocking model.getEffectiveProperties, we do it here too
+    // but this test case uses a method on that mocked property (in resetHistory() call) and the problem is exactly there.
+    // if we soppoused to mock a function, it will be mocked entierly, and we will not have access to it's methods
+    // one way would be to mock what ever it returns, inbcluding resetHistory as well, but it is not applicable in this test case
+    // because seems like this test cases expects to have some previously stored state from previous tests
+    // that needs to be cleared by calling the actual method!
     test.skip('should not apply patches when there is no diff', async () => {
       model.getEffectiveProperties.resetHistory();
       await api.__DO_NOT_USE__.applyProperties('new');
