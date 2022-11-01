@@ -1,15 +1,7 @@
-import identify from '../assets/identify';
 import useClickOutside from '../hooks/useClickOutside';
 
-export default function listboxHandleDeactivate({ element, selections, options }) {
-  const { hasExternalSelectionsApi } = identify({ qId: options.qId, options });
-
+export default function listboxHandleDeactivate({ element, selections }) {
   const handler = (/* evt */) => {
-    if (hasExternalSelectionsApi) {
-      // Not our problem.
-      return;
-    }
-
     // Confirm or cancel selections when clicking outside of its element,
     // but only if selections exist in the viz of the element which was
     // clicked outside of.

@@ -66,7 +66,7 @@ export default function ListBoxInline({ options = {} }) {
   } = options;
 
   const elementRef = useRef();
-  handleClickOutside({ element: elementRef, selections, options });
+  handleClickOutside({ element: elementRef, selections });
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780

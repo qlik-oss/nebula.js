@@ -185,7 +185,6 @@ describe('<ListboxInline />', () => {
       expect(handleClickOutside).calledOnce.calledWith({
         element: { current: null },
         selections,
-        options,
       });
     });
 

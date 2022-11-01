@@ -6,7 +6,7 @@ import useExistingModel from './hooks/useExistingModel';
 import useOnTheFlyModel from './hooks/useOnTheFlyModel';
 import identify from './assets/identify';
 
-function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options }) {
+function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, options }) {
   const { hasExternalSessionModel, hasExternalSelectionsApi } = identify({ qId, options });
   const [changeCount, setChangeCount] = useState(0);
 
@@ -31,9 +31,7 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options
   const opts = {
     ...options,
     selections,
-    element,
     model,
-    qId,
   };
 
   return <ListBoxInline options={opts} />;
