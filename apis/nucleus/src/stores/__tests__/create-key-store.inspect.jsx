@@ -22,16 +22,14 @@ const TestHook = forwardRef(({ hook, hookProps = [], storeKey }, ref) => {
 });
 
 describe('', () => {
-  let sandbox;
   let renderer;
   let render;
   let ref;
   let useKeyStore;
-  before(() => {
+  beforeAll(() => {
     [useKeyStore] = createKeyStore();
   });
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
     ref = React.createRef();
     render = async (storeKey = 'foo', rendererOptions = null) => {
       await act(async () => {
@@ -40,49 +38,50 @@ describe('', () => {
     };
   });
   afterEach(() => {
-    sandbox.restore();
     renderer.unmount();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
-  it('should cache values', async () => {
+  test('should cache values', async () => {
     await render();
     const foo = {};
     ref.current.store.set('foo', foo);
-    expect(ref.current.store.get('foo')).to.equal(foo);
+    expect(ref.current.store.get('foo')).toEqual(foo);
   });
 
-  it('should throw when caching with invalid key', async () => {
+  test('should throw when caching with invalid key', async () => {
     await render();
     const foo = {};
     const objKey = () => ref.current.store.set({}, foo);
     const undefinedKey = () => ref.current.store.set(undefined, foo);
-    expect(objKey).to.throw();
-    expect(undefinedKey).to.throw();
+    expect(objKey).toThrow();
+    expect(undefinedKey).toThrow();
   });
 
-  it('should clear values', async () => {
+  test('should clear values', async () => {
     await render();
     const foo = {};
     ref.current.store.set('foo', foo);
-    expect(ref.current.store.get('foo')).to.equal(foo);
+    expect(ref.current.store.get('foo')).toEqual(foo);
     ref.current.store.clear('foo');
-    expect(ref.current.store.get('foo')).to.equal(null);
+    expect(ref.current.store.get('foo')).toBe(null);
   });
 
-  it('should throw when clearing with invalid key', async () => {
+  test('should throw when clearing with invalid key', async () => {
     await render();
     const objKey = () => ref.current.store.clear({});
     const undefinedKey = () => ref.current.store.set(undefined);
-    expect(objKey).to.throw();
-    expect(undefinedKey).to.throw();
+    expect(objKey).toThrow();
+    expect(undefinedKey).toThrow();
   });
 
-  it('should dispatch', async () => {
+  test('should dispatch', async () => {
     await render();
     const foo = {};
     ref.current.store.set('foo', foo);
-    expect(ref.current.store.get('foo')).to.equal(foo);
+    expect(ref.current.store.get('foo')).toEqual(foo);
     await act(async () => ref.current.store.dispatch(true));
-    expect(ref.current.count).to.equal(2);
+    expect(ref.current.count).toBe(2);
   });
 });

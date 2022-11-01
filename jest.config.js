@@ -7,6 +7,7 @@ module.exports = {
     'apis/conversion/.+\\.inspect\\.[jt]sx?$',
     'apis/enigma-mocker/.+\\.inspect\\.[jt]sx?$',
     'apis/locale/.+\\.inspect\\.[jt]sx?$',
+    'apis/nucleus/.+\\.inspect\\.[jt]sx?$',
     'apis/snapshooter/.+\\.inspect\\.[jt]sx?$',
     'apis/supernova/.+\\.inspect\\.[jt]sx?$',
     'apis/test-utils/.+\\.inspect\\.[jt]sx?$',
