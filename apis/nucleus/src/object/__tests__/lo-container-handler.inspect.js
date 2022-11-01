@@ -1,12 +1,10 @@
+import * as uidModule from '../uid';
+import handler from '../lo-container-handler';
+
 describe('lo-container-handler', () => {
   let h;
   let loc;
   let def;
-  let handler;
-
-  before(() => {
-    [{ default: handler }] = aw.mock([['**/uid.js', () => () => 'uid']], ['../lo-container-handler.js']);
-  });
 
   const getMockDim = (cId) => ({
     qDef: {
@@ -15,13 +13,14 @@ describe('lo-container-handler', () => {
   });
 
   beforeEach(() => {
+    jest.spyOn(uidModule, 'default').mockImplementation(() => 'uid');
     loc = {
       qDef: {},
     };
     def = {
       dimensions: {
-        added: sinon.stub(),
-        removed: sinon.stub(),
+        added: jest.fn(),
+        removed: jest.fn(),
         min: () => 0,
         max: () => 2,
       },
@@ -35,11 +34,11 @@ describe('lo-container-handler', () => {
     });
   });
 
-  it('addDimension should not update dimensions since it is provided from outside', () => {
+  test('addDimension should not update dimensions since it is provided from outside', () => {
     h.addDimension(getMockDim());
-    expect(def.dimensions.added).calledOnce;
-    expect(h.dimensions()).to.deep.equal([]);
-    expect(def.dimensions.added).calledWithExactly(
+    expect(def.dimensions.added).toHaveBeenCalledTimes(1);
+    expect(h.dimensions()).toEqual([]);
+    expect(def.dimensions.added).toHaveBeenCalledWith(
       {
         qDef: {
           cId: 'uid',
@@ -50,7 +49,7 @@ describe('lo-container-handler', () => {
     );
   });
 
-  it('removeDimension should pick correct dimension', () => {
+  test('removeDimension should pick correct dimension', () => {
     const dim1 = getMockDim('id-1');
     const dim2 = getMockDim('id-2');
     const dim3 = getMockDim('id-3');
@@ -61,10 +60,10 @@ describe('lo-container-handler', () => {
       dimensions: [dim1, dim2, dim3],
     });
     h.removeDimension(1);
-    expect(def.dimensions.removed).calledWithExactly(dim2, 'props', 1);
+    expect(def.dimensions.removed).toHaveBeenCalledWith(dim2, 'props', 1);
   });
 
-  it('maxDimensions should call max func', () => {
+  test('maxDimensions should call max func', () => {
     h = handler({
       dc: loc,
       def: {
@@ -73,10 +72,10 @@ describe('lo-container-handler', () => {
         },
       },
     });
-    expect(h.maxDimensions()).to.equal('max hey hey');
+    expect(h.maxDimensions()).toBe('max hey hey');
   });
 
-  it('maxDimensions should be read as a number when not a func', () => {
+  test('maxDimensions should be read as a number when not a func', () => {
     h = handler({
       dc: loc,
       def: {
@@ -85,15 +84,15 @@ describe('lo-container-handler', () => {
         },
       },
     });
-    expect(h.maxDimensions()).to.equal(3);
+    expect(h.maxDimensions()).toBe(3);
   });
 
-  it('maxMeasures should be 0', () => {
+  test('maxMeasures should be 0', () => {
     h = handler({ dc: loc });
-    expect(h.maxMeasures()).to.equal(0);
+    expect(h.maxMeasures()).toBe(0);
   });
 
-  it('canAddDimension should be true', () => {
+  test('canAddDimension should be true', () => {
     h = handler({
       dc: loc,
       dimensions: [{}, {}, {}],
@@ -103,10 +102,10 @@ describe('lo-container-handler', () => {
         },
       },
     });
-    expect(h.canAddDimension()).to.equal(true);
+    expect(h.canAddDimension()).toBe(true);
   });
 
-  it('canAddDimension should be false', () => {
+  test('canAddDimension should be false', () => {
     h = handler({
       dc: loc,
       dimensions: [{}, {}, {}, {}],
@@ -116,11 +115,11 @@ describe('lo-container-handler', () => {
         },
       },
     });
-    expect(h.canAddDimension()).to.equal(false);
+    expect(h.canAddDimension()).toBe(false);
   });
 
-  it('canAddMeasure should always be false', () => {
+  test('canAddMeasure should always be false', () => {
     h = handler({ dc: loc });
-    expect(h.canAddMeasure()).to.equal(false);
+    expect(h.canAddMeasure()).toBe(false);
   });
 });
