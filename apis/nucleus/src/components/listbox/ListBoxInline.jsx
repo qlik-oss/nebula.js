@@ -54,7 +54,6 @@ export default function ListBoxInline({ options = {} }) {
     checkboxes = false,
     model,
     selections,
-    element,
     update = undefined,
     fetchStart = undefined,
     dense = false,
@@ -66,7 +65,8 @@ export default function ListBoxInline({ options = {} }) {
     setCount = undefined,
   } = options;
 
-  handleClickOutside({ element, selections, options });
+  const elementRef = useRef();
+  handleClickOutside({ element: elementRef, selections, options });
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
@@ -195,6 +195,7 @@ export default function ListBoxInline({ options = {} }) {
       gap={0}
       style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
       onKeyDown={handleKeyDown}
+      ref={elementRef}
     >
       {toolbar && (
         <Grid item container style={{ padding: theme.spacing(1) }}>

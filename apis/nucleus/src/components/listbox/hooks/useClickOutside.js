@@ -7,19 +7,19 @@ export default function useClickOutside({ elements, handler }) {
     return;
   }
   const intermediateHandler = (evt) => {
-    const targetStillExists = document.body.contains(evt.target);
-    const isClickOutside = targetStillExists && !elementsArr.some((element) => element.contains(evt.target));
+    const targetStillExists = document.contains(evt.target);
+    const isClickOutside = targetStillExists && !elementsArr.some((element) => element.current?.contains(evt.target));
     if (isClickOutside) {
       handler(evt);
     }
   };
 
   useEffect(() => {
-    document.body.addEventListener('click', intermediateHandler);
-    document.body.addEventListener('mousedown', intermediateHandler);
+    document.addEventListener('mousedown', intermediateHandler);
+    document.addEventListener('keydown', intermediateHandler);
     return () => {
-      document.body.removeEventListener('click', intermediateHandler);
-      document.body.removeEventListener('mousedown', intermediateHandler);
+      document.removeEventListener('mousedown', intermediateHandler);
+      document.removeEventListener('keydown', intermediateHandler);
     };
   }, []);
 }
