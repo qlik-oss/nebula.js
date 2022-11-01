@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Remove from '@nebula.js/ui/icons/remove';
 import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
@@ -12,18 +12,7 @@ import { useRootContext } from '../../../contexts/RootContext';
 
 const ConnectionHistory = () => {
   const navigate = useNavigate();
-  const { info, storage, setError } = useRootContext();
-  const [items, setItems] = useState(storage.get('connections') || []);
-
-  const onRemove = (li) => {
-    const idx = items.indexOf(li);
-    if (li !== -1) {
-      const its = items.slice();
-      its.splice(idx, 1);
-      storage.save('connections', its);
-      setItems(its);
-    }
-  };
+  const { info, setError, cachedConnectionsData } = useRootContext();
 
   const checkIfDisabled = (item) => {
     if ((info?.isClientIdProvided || info?.isWebIntegrationIdProvided) && item.includes('localhost')) return true;
@@ -44,13 +33,13 @@ const ConnectionHistory = () => {
     navigate(`/app-list?engine_url=${item.replace('?', '&')}`);
   };
 
-  if (!items.length) return null;
+  if (!cachedConnectionsData.cachedConnections.length) return null;
 
   return (
     <Box mb={2}>
       <Typography variant="h6">Previous connections</Typography>
       <List>
-        {items.map((item) => (
+        {cachedConnectionsData.cachedConnections.map((item) => (
           <ListItem
             button
             key={item}
@@ -60,7 +49,7 @@ const ConnectionHistory = () => {
           >
             <ListItemText primary={item} />
             <ListItemSecondaryAction>
-              <IconButton edge="end" onClick={() => onRemove(item)} size="large">
+              <IconButton onClick={() => cachedConnectionsData.removeCachedConnection(item)} size="large" edge="end">
                 <Remove />
               </IconButton>
             </ListItemSecondaryAction>

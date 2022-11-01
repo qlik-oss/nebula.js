@@ -14,9 +14,7 @@ https://github.com/qlik-oss/nebula.js/blob/master/.github/CONTRIBUTING.md#git
 
 - [ ] Api specification
   - [ ] Ran `yarn spec`
-    - [ ] No changes
-     ***OR***
-    - [ ] API changes has been formally approved
+    - [ ] No changes ***OR*** API changes has been formally approved
 - [ ] Unit/Component test coverage
 - [ ] Correct PR title for the changes (fix, chore, feat)
 
