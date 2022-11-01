@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@babel/cli": "7.19.3",
-    "@babel/core": "7.19.3",
-    "@babel/preset-env": "7.19.3",
+    "@babel/core": "7.19.6",
+    "@babel/preset-env": "7.19.4",
     "@nebula.js/stardust": "^3.1.0-alpha.0",
     "@rollup/plugin-commonjs": "22.0.2",
     "@rollup/plugin-node-resolve": "14.1.0",
