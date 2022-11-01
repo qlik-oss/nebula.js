@@ -4,10 +4,10 @@
   "private": true,
   "main": "src/index.js",
   "devDependencies": {
-    "@emotion/react": "^11.10.4",
-    "@emotion/styled": "^11.10.4",
-    "@mui/icons-material": "^5.10.6",
-    "@mui/material": "^5.10.8",
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/icons-material": "^5.10.9",
+    "@mui/material": "^5.10.12",
     "@nebula.js/conversion": "^3.1.0-alpha.0",
     "@nebula.js/locale": "^3.1.0-alpha.0",
     "@nebula.js/supernova": "^3.1.0-alpha.0",
@@ -19,7 +19,7 @@
     "react-dom": "18.2.0",
     "react-test-renderer": "18.2.0",
     "react-virtualized-auto-sizer": "^1.0.7",
-    "react-window": "1.8.7",
+    "react-window": "1.8.8",
     "react-window-infinite-loader": "1.0.8",
     "semver": "6.3.0"
   }
