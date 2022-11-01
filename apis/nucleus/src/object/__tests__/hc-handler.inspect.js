@@ -1,24 +1,24 @@
+import * as uidModule from '../uid';
+import handler from '../hc-handler';
+
 describe('hc-handler', () => {
   let h;
   let hc;
   let def;
-  let handler;
-  before(() => {
-    [{ default: handler }] = aw.mock([['**/uid.js', () => () => 'uid']], ['../hc-handler.js']);
-  });
 
   beforeEach(() => {
+    jest.spyOn(uidModule, 'default').mockImplementation(() => 'uid');
     hc = {};
     def = {
       dimensions: {
-        added: sinon.stub(),
-        removed: sinon.stub(),
+        added: jest.fn(),
+        removed: jest.fn(),
         min: () => 0,
         max: () => 2,
       },
       measures: {
-        added: sinon.stub(),
-        removed: sinon.stub(),
+        added: jest.fn(),
+        removed: jest.fn(),
         min: () => 0,
         max: () => 3,
       },
@@ -31,8 +31,8 @@ describe('hc-handler', () => {
     });
   });
 
-  it('should add default values', () => {
-    expect(hc).to.eql({
+  test('should add default values', () => {
+    expect(hc).toEqual({
       qDimensions: [],
       qMeasures: [],
       qInterColumnSortOrder: [],
@@ -43,9 +43,9 @@ describe('hc-handler', () => {
   });
 
   describe('add dimension', () => {
-    it('from string', () => {
+    test('from string', () => {
       h.addDimension('A');
-      expect(hc.qDimensions).to.eql([
+      expect(hc.qDimensions).toEqual([
         {
           qDef: {
             cId: 'uid',
@@ -65,11 +65,11 @@ describe('hc-handler', () => {
       ]);
     });
 
-    it('from object', () => {
+    test('from object', () => {
       h.addDimension({
         qTotalLabel: 'total',
       });
-      expect(hc.qDimensions).to.eql([
+      expect(hc.qDimensions).toEqual([
         {
           qDef: {
             cId: 'uid',
@@ -89,16 +89,16 @@ describe('hc-handler', () => {
       ]);
     });
 
-    it('should not add more than 2', () => {
+    test('should not add more than 2', () => {
       h.addDimension('A');
       h.addDimension('B');
       h.addDimension('C');
-      expect(hc.qDimensions.length).to.eql(2);
+      expect(hc.qDimensions.length).toBe(2);
     });
 
-    it('should call added hook on definition', () => {
+    test('should call added hook on definition', () => {
       h.addDimension({ a: 'b' });
-      expect(def.dimensions.added).to.have.been.calledWithExactly(
+      expect(def.dimensions.added).toHaveBeenCalledWith(
         {
           a: 'b',
           qDef: {
@@ -119,11 +119,11 @@ describe('hc-handler', () => {
       );
     });
 
-    it('should add overflow to layoutExclude', () => {
+    test('should add overflow to layoutExclude', () => {
       h.addDimension('A');
       h.addDimension('B');
       h.addDimension({ a: '=a' });
-      expect(hc.qLayoutExclude.qHyperCubeDef.qDimensions).to.eql([
+      expect(hc.qLayoutExclude.qHyperCubeDef.qDimensions).toEqual([
         {
           a: '=a',
           qDef: {
@@ -143,10 +143,10 @@ describe('hc-handler', () => {
       ]);
     });
 
-    it('should update qInterColumnSortOrder', () => {
+    test('should update qInterColumnSortOrder', () => {
       h.addDimension('A');
       h.addDimension('B');
-      expect(hc.qInterColumnSortOrder).to.eql([0, 1]);
+      expect(hc.qInterColumnSortOrder).toEqual([0, 1]);
     });
   });
 
@@ -156,26 +156,26 @@ describe('hc-handler', () => {
       hc.qInterColumnSortOrder = [2, 1, 0];
     });
 
-    it('by index', () => {
+    test('by index', () => {
       h.removeDimension(1);
-      expect(hc.qDimensions).to.eql(['a', 'c']);
+      expect(hc.qDimensions).toEqual(['a', 'c']);
     });
 
-    it('should call removed hook on definition', () => {
+    test('should call removed hook on definition', () => {
       h.removeDimension(1);
-      expect(def.dimensions.removed).to.have.been.calledWithExactly('b', 'props', 1);
+      expect(def.dimensions.removed).toHaveBeenCalledWith('b', 'props', 1);
     });
 
-    it('should update qInterColumnSortOrder', () => {
+    test('should update qInterColumnSortOrder', () => {
       h.removeDimension(1);
-      expect(hc.qInterColumnSortOrder).to.eql([1, 0]);
+      expect(hc.qInterColumnSortOrder).toEqual([1, 0]);
     });
   });
 
   describe('add measure', () => {
-    it('from string', () => {
+    test('from string', () => {
       h.addMeasure('A');
-      expect(hc.qMeasures).to.eql([
+      expect(hc.qMeasures).toEqual([
         {
           qDef: {
             cId: 'uid',
@@ -191,11 +191,11 @@ describe('hc-handler', () => {
       ]);
     });
 
-    it('from object', () => {
+    test('from object', () => {
       h.addMeasure({
         bla: 'meh',
       });
-      expect(hc.qMeasures).to.eql([
+      expect(hc.qMeasures).toEqual([
         {
           qDef: {
             cId: 'uid',
@@ -211,17 +211,17 @@ describe('hc-handler', () => {
       ]);
     });
 
-    it('should not add more than 3', () => {
+    test('should not add more than 3', () => {
       h.addMeasure('A');
       h.addMeasure('B');
       h.addMeasure('C');
       h.addMeasure('D');
-      expect(hc.qMeasures.length).to.eql(3);
+      expect(hc.qMeasures.length).toBe(3);
     });
 
-    it('should call added hook on definition', () => {
+    test('should call added hook on definition', () => {
       h.addMeasure({ a: 'b' });
-      expect(def.measures.added).to.have.been.calledWithExactly(
+      expect(def.measures.added).toHaveBeenCalledWith(
         {
           a: 'b',
           qDef: { cId: 'uid' },
@@ -236,12 +236,12 @@ describe('hc-handler', () => {
       );
     });
 
-    it('should add overflow to layoutExclude', () => {
+    test('should add overflow to layoutExclude', () => {
       h.addMeasure('A');
       h.addMeasure('B');
       h.addMeasure('C');
       h.addMeasure({ a: '=a' });
-      expect(hc.qLayoutExclude.qHyperCubeDef.qMeasures).to.eql([
+      expect(hc.qLayoutExclude.qHyperCubeDef.qMeasures).toEqual([
         {
           a: '=a',
           qDef: { cId: 'uid' },
@@ -255,12 +255,12 @@ describe('hc-handler', () => {
       ]);
     });
 
-    it('should update qInterColumnSortOrder', () => {
+    test('should update qInterColumnSortOrder', () => {
       hc.qDimensions = ['a', 'b'];
       hc.qInterColumnSortOrder = [0, 1];
       h.addMeasure('m1');
       h.addMeasure('m2');
-      expect(hc.qInterColumnSortOrder).to.eql([0, 1, 2, 3]);
+      expect(hc.qInterColumnSortOrder).toEqual([0, 1, 2, 3]);
     });
   });
 
@@ -271,19 +271,19 @@ describe('hc-handler', () => {
       hc.qInterColumnSortOrder = [2, 1, 0, 3];
     });
 
-    it('by index', () => {
+    test('by index', () => {
       h.removeMeasure(1);
-      expect(hc.qMeasures).to.eql(['b', 'd']);
+      expect(hc.qMeasures).toEqual(['b', 'd']);
     });
 
-    it('should call removed hook on definition', () => {
+    test('should call removed hook on definition', () => {
       h.removeMeasure(1);
-      expect(def.measures.removed).to.have.been.calledWithExactly('c', 'props', 1);
+      expect(def.measures.removed).toHaveBeenCalledWith('c', 'props', 1);
     });
 
-    it('should update qInterColumnSortOrder', () => {
+    test('should update qInterColumnSortOrder', () => {
       h.removeMeasure(1);
-      expect(hc.qInterColumnSortOrder).to.eql([1, 0, 2]);
+      expect(hc.qInterColumnSortOrder).toEqual([1, 0, 2]);
     });
   });
 });
