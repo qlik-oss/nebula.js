@@ -76,7 +76,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: cimg/node:18.12.0
+      - image: cimg/node:19.0.0
       - image: browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project
