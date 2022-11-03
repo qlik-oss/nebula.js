@@ -1,5 +1,5 @@
 module.exports = {
-  verbose: true,
+  // verbose: true,
   clearMocks: true,
   testEnvironment: 'jest-environment-jsdom',
   testRegex: [
