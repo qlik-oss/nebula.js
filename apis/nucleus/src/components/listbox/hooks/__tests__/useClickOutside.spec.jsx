@@ -49,11 +49,10 @@ describe('useClickOutside', () => {
       handler: sandbox.stub(),
     };
     await render(useClickOutside, props);
-    expect(global.document.addEventListener).calledTwice;
-    const [args0, args1] = global.document.addEventListener.args;
-    expect(args0[0]).to.equal('mousedown');
-    expect(args1[0]).to.equal('keydown');
-    const argHandler = args0[1];
+    expect(global.document.addEventListener).calledOnce;
+    const [args] = global.document.addEventListener.args;
+    expect(args[0]).to.equal('mousedown');
+    const argHandler = args[1];
     const target = 'target';
 
     expect(props.handler).not.called;
@@ -65,10 +64,9 @@ describe('useClickOutside', () => {
     await act(() => {
       renderer.unmount();
     });
-    expect(global.document.removeEventListener).calledTwice;
-    const [rArgs0, rArgs1] = global.document.removeEventListener.args;
-    expect(rArgs0[0]).to.equal('mousedown');
-    expect(rArgs1[0]).to.equal('keydown');
+    expect(global.document.removeEventListener).calledOnce;
+    const [rArgs] = global.document.removeEventListener.args;
+    expect(rArgs[0]).to.equal('mousedown');
   });
 
   it('should not trigger the listener when clicking within the element', async () => {

@@ -16,10 +16,8 @@ export default function useClickOutside({ elements, handler }) {
 
   useEffect(() => {
     document.addEventListener('mousedown', intermediateHandler);
-    document.addEventListener('keydown', intermediateHandler);
     return () => {
       document.removeEventListener('mousedown', intermediateHandler);
-      document.removeEventListener('keydown', intermediateHandler);
     };
   }, []);
 }
