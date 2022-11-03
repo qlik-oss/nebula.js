@@ -15,7 +15,6 @@ jest.mock('react-dom', () => ({
 
 describe('Boot NebulaApp', () => {
   let InstanceContext;
-  let mockedReactDOM;
   let renderMock;
 
   beforeEach(() => {
@@ -37,7 +36,6 @@ describe('Boot NebulaApp', () => {
     };
   });
   afterEach(() => {
-    delete global.document;
     jest.restoreAllMocks();
     jest.resetAllMocks();
   });
@@ -54,91 +52,95 @@ describe('Boot NebulaApp', () => {
     expect(api.context instanceof Function).toBe(true);
   });
 
-  test.skip('should add component', async () => {
-    const app = { id: 'foo' };
-    const translator = {};
-    const [api, appRef, rendered] = boot({ app, translator });
-    appRef.current = {
-      addComponent: jest.fn(),
-    };
+  describe('test api methods', () => {
+    let renderCallback;
 
-    // TODO:
-    // There is no way to implement .callArg(2) in jest
-    await act(() => {
-      mockedReactDOM.render.callArg(2);
-      api.add('foo');
-      return rendered;
+    beforeEach(() => {
+      jest.spyOn(reactDomModule, 'render').mockImplementation((el, container, callback) => {
+        renderCallback = callback;
+      });
     });
-    expect(appRef.current.addComponent).toHaveBeenCalledTimes(1);
-  });
 
-  test.skip('should remove component', async () => {
-    const app = { id: 'foo' };
-    const translator = {};
-    const [api, appRef, rendered] = boot({ app, translator });
-    appRef.current = {
-      removeComponent: jest.fn(),
-    };
-
-    // TODO:
-    // There is no way to implement .callArg(2) in jest
-    await act(() => {
-      mockedReactDOM.render.callArg(2);
-      api.remove('foo');
-      return rendered;
+    afterEach(() => {
+      jest.restoreAllMocks();
+      jest.resetAllMocks();
     });
-    expect(appRef.current.removeComponent.callCount).to.equal(1);
-  });
-  test.skip('should set mui theme', async () => {
-    const app = { id: 'foo' };
-    const translator = {};
-    const [api, appRef, rendered] = boot({ app, translator });
-    appRef.current = {
-      setMuiThemeName: jest.fn(),
-    };
 
-    // TODO:
-    // There is no way to implement .callArg(2) in jest
-    await act(() => {
-      mockedReactDOM.render.callArg(2);
-      api.setMuiThemeName('wh0p');
-      return rendered;
-    });
-    expect(appRef.current.setMuiThemeName.callCount).to.equal(1);
-  });
-  test.skip('should set context', async () => {
-    const app = { id: 'foo' };
-    const translator = {};
-    const [api, appRef, rendered] = boot({ app, translator });
-    appRef.current = {
-      setContext: jest.fn(),
-    };
+    test('should add component', async () => {
+      const app = { id: 'foo' };
+      const translator = {};
+      const [api, appRef, rendered] = boot({ app, translator });
+      appRef.current = {
+        addComponent: jest.fn(),
+      };
 
-    // TODO:
-    // There is no way to implement .callArg(2) in jest
-    await act(() => {
-      mockedReactDOM.render.callArg(2);
-      api.context('ctx');
-      return rendered;
+      await act(() => {
+        renderCallback();
+        api.add('foo');
+        return rendered;
+      });
+      expect(appRef.current.addComponent).toHaveBeenCalledTimes(1);
     });
-    expect(appRef.current.setContext.callCount).to.equal(1);
-  });
-  test.skip('should get app selections', async () => {
-    const app = { id: 'foo' };
-    const translator = {};
-    const [api, appRef, rendered] = boot({ app, translator });
-    appRef.current = {
-      getAppSelections: jest.fn().mockReturnValue('app-selections'),
-    };
+    test('should remove component', async () => {
+      const app = { id: 'foo' };
+      const translator = {};
+      const [api, appRef, rendered] = boot({ app, translator });
+      appRef.current = {
+        removeComponent: jest.fn(),
+      };
 
-    // TODO:
-    // There is no way to implement .callArg(2) in jest
-    await act(() => {
-      mockedReactDOM.render.callArg(2);
-      api.getAppSelections();
-      return rendered;
+      await act(() => {
+        renderCallback();
+        api.remove('foo');
+        return rendered;
+      });
+      expect(appRef.current.removeComponent).toHaveBeenCalledTimes(1);
     });
-    expect(await appRef.current.getAppSelections()).to.equal('app-selections');
+    test('should set mui theme', async () => {
+      const app = { id: 'foo' };
+      const translator = {};
+      const [api, appRef, rendered] = boot({ app, translator });
+      appRef.current = {
+        setMuiThemeName: jest.fn(),
+      };
+
+      await act(() => {
+        renderCallback();
+        api.setMuiThemeName('wh0p');
+        return rendered;
+      });
+      expect(appRef.current.setMuiThemeName).toHaveBeenCalledTimes(1);
+    });
+    test('should set context', async () => {
+      const app = { id: 'foo' };
+      const translator = {};
+      const [api, appRef, rendered] = boot({ app, translator });
+      appRef.current = {
+        setContext: jest.fn(),
+      };
+
+      await act(() => {
+        renderCallback();
+        api.context('ctx');
+        return rendered;
+      });
+      expect(appRef.current.setContext).toHaveBeenCalledTimes(1);
+    });
+    test('should get app selections', async () => {
+      const app = { id: 'foo' };
+      const translator = {};
+      const [api, appRef, rendered] = boot({ app, translator });
+      appRef.current = {
+        getAppSelections: jest.fn().mockReturnValue('app-selections'),
+      };
+
+      await act(() => {
+        renderCallback();
+        api.getAppSelections();
+        return rendered;
+      });
+      expect(await appRef.current.getAppSelections()).toBe('app-selections');
+    });
   });
 });
 
