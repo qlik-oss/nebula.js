@@ -4,7 +4,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 
 import { styled } from '@mui/material/styles';
 
-import { FixedSizeList } from 'react-window';
+import { FixedSizeList, FixedSizeGrid } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
 
 import useLayout from '../../hooks/useLayout';
@@ -12,55 +12,73 @@ import useLayout from '../../hooks/useLayout';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 
 import RowColumn from './components/ListBoxRowColumn';
+import useTextWidth from './hooks/useTextWidth';
 
 const PREFIX = 'ListBox';
 const scrollBarThumb = '#BBB';
 const scrollBarThumbHover = '#555';
 const scrollBarBackground = '#f1f1f1';
 
-const MINIMUM_BATCH_SIZE = 100;
+let MINIMUM_BATCH_SIZE = 100;
 
 const classes = {
   styledScrollbars: `${PREFIX}-styledScrollbars`,
 };
 
-const StyledFixedSizeList = styled(FixedSizeList)(() => ({
-  [`&.${classes.styledScrollbars}`]: {
-    scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
+const scrollbarStyling = {
+  scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
 
-    '&::-webkit-scrollbar': {
-      width: 10,
-      height: 10,
-    },
-
-    '&::-webkit-scrollbar-track': {
-      backgroundColor: scrollBarBackground,
-    },
-
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: scrollBarThumb,
-      borderRadius: '1rem',
-    },
-
-    '&::-webkit-scrollbar-thumb:hover': {
-      backgroundColor: scrollBarThumbHover,
-    },
+  '&::-webkit-scrollbar': {
+    width: 10,
+    height: 10,
   },
+
+  '&::-webkit-scrollbar-track': {
+    backgroundColor: scrollBarBackground,
+  },
+
+  '&::-webkit-scrollbar-thumb': {
+    backgroundColor: scrollBarThumb,
+    borderRadius: '1rem',
+  },
+
+  '&::-webkit-scrollbar-thumb:hover': {
+    backgroundColor: scrollBarThumbHover,
+  },
+};
+
+const StyledFixedSizeList = styled(FixedSizeList)(() => ({
+  [`&.${classes.styledScrollbars}`]: scrollbarStyling,
 }));
 
-function getSizeInfo({ isVertical, checkboxes, dense, height }) {
-  const sizeHorizontal = 200;
-  let sizeVertical = checkboxes ? 40 : 33;
+const StyledFixedSizeGrid = styled(FixedSizeGrid)(() => ({
+  [`&.${classes.styledScrollbars}`]: scrollbarStyling,
+}));
+
+function getSizeInfo({ checkboxes, dense, height }) {
+  let itemSize = checkboxes ? 40 : 33;
   if (dense) {
-    sizeVertical = 20;
+    itemSize = 20;
   }
-  const itemSize = isVertical ? sizeVertical : sizeHorizontal;
   const listHeight = height || 8 * itemSize;
 
   return {
     itemSize,
     listHeight,
   };
+}
+
+function getMeasureText(layout) {
+  if (!layout) {
+    return '';
+  }
+
+  const maxGlyphCount = layout.qListObject.qDimensionInfo.qApprMaxGlyphCount;
+  let measureString = '';
+  for (let i = 0; i < maxGlyphCount; i++) {
+    measureString += 'M';
+  }
+  return measureString;
 }
 
 export default function ListBox({
@@ -88,6 +106,7 @@ export default function ListBox({
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const [pages, setPages] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
+  const textWidth = useTextWidth({ text: getMeasureText(layout), font: '14px Source sans pro' });
 
   const {
     instantPages = [],
@@ -135,7 +154,9 @@ export default function ListBox({
         stop: stopIndex,
       });
 
-      const isScrolling = loaderRef.current ? loaderRef.current._listRef.state.isScrolling : false;
+      const isScrolling = loaderRef.current
+        ? loaderRef.current._listRef && loaderRef.current._listRef.state.isScrolling
+        : false;
 
       if (local.current.queue.length > 10) {
         local.current.queue.shift();
@@ -229,7 +250,9 @@ export default function ListBox({
     return null;
   }
 
-  const isVertical = listLayout !== 'horizontal';
+  const { layouting = {} } = layout.qListObject;
+
+  const isVertical = layouting.dataLayout ? layouting.dataLayout === 'singleColumn' : listLayout !== 'horizontal';
 
   const count = layout.qListObject.qSize.qcy;
 
@@ -247,6 +270,178 @@ export default function ListBox({
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
 
+  const list = ({ onItemsRendered, ref }) => {
+    local.current.listRef = ref;
+    return (
+      <StyledFixedSizeList
+        // explicitly set this as it accepts horizontal as well, leading to confusion
+        direction={direction === 'rtl' ? 'rtl' : 'ltr'}
+        data-testid="fixed-size-list"
+        useIsScrolling
+        height={listHeight}
+        width={width}
+        itemCount={listCount}
+        layout={listLayout}
+        className={classes.styledScrollbars}
+        itemData={{
+          isLocked,
+          column: !isVertical,
+          pages,
+          ...(isLocked || selectDisabled() ? {} : interactionEvents),
+          checkboxes,
+          dense,
+          frequencyMode,
+          isSingleSelect,
+          actions: {
+            select,
+            confirm: () => selections && selections.confirm.call(selections),
+            cancel: () => selections && selections.cancel.call(selections),
+          },
+          frequencyMax,
+          histogram,
+          keyboard,
+          showGray,
+        }}
+        itemSize={itemSize}
+        onItemsRendered={(renderProps) => {
+          if (scrollState) {
+            scrollState.setScrollPos(renderProps.visibleStopIndex);
+          }
+          onItemsRendered({ ...renderProps });
+        }}
+        ref={ref}
+      >
+        {RowColumn}
+      </StyledFixedSizeList>
+    );
+  };
+
+  const grid = ({ onItemsRendered, ref }) => {
+    const { layoutOrder, maxVisibleRows, maxVisibleColumns } = layouting;
+    const columnAutoWidth = Math.min(150, textWidth + 18);
+    const scrollBarWidth = 10; // TODO: ignore this - instead set the styling only show on hover...
+    let columnCount;
+    let rowCount;
+    let columnWidth;
+    let overflowStyling;
+
+    if (layoutOrder === 'row') {
+      overflowStyling = { overflowX: 'hidden' };
+      const maxColumns = maxVisibleColumns.maxColumns || 3;
+
+      if (maxVisibleColumns.auto !== false) {
+        columnCount = Math.min(listCount, Math.ceil((width - scrollBarWidth) / columnAutoWidth)); // TODO: smarter sizing... based on glyph count + font size etc...??
+      } else {
+        columnCount = Math.min(listCount, maxColumns);
+      }
+      rowCount = Math.ceil(listCount / columnCount);
+      columnWidth = (width - scrollBarWidth) / columnCount;
+    } else {
+      overflowStyling = { overflowY: 'hidden' };
+      const maxRows = maxVisibleRows.maxRows || 3;
+
+      if (maxVisibleRows.auto !== false) {
+        rowCount = Math.floor(listHeight / itemSize);
+      } else {
+        rowCount = Math.min(listCount, maxRows);
+      }
+
+      columnCount = Math.ceil(listCount / rowCount);
+      columnWidth = Math.max(columnAutoWidth, width / columnCount);
+    }
+
+    const gridHeight = Math.min(listHeight, rowCount * itemSize + scrollBarWidth);
+
+    local.current.listRef = ref;
+
+    const visibleCellsCount = Math.ceil(width / columnWidth) * Math.ceil(listHeight / itemSize);
+    MINIMUM_BATCH_SIZE = visibleCellsCount * 2;
+
+    const newItemsRendered = (gridData) => {
+      const { overscanRowStartIndex, overscanRowStopIndex, overscanColumnStartIndex, overscanColumnStopIndex } =
+        gridData;
+
+      let toTheLeftOfStart;
+      let aboveStart;
+
+      let toTheLeftOfEnd;
+      let aboveEnd;
+
+      if (layoutOrder === 'column') {
+        toTheLeftOfStart = overscanColumnStartIndex * rowCount;
+        aboveStart = overscanRowStartIndex;
+
+        toTheLeftOfEnd = overscanColumnStopIndex * rowCount;
+        aboveEnd = overscanRowStopIndex;
+      } else {
+        toTheLeftOfStart = overscanColumnStartIndex;
+        aboveStart = overscanRowStartIndex * columnCount;
+
+        toTheLeftOfEnd = overscanColumnStopIndex;
+        aboveEnd = overscanRowStopIndex * columnCount;
+      }
+
+      const visibleStartIndex = toTheLeftOfStart + aboveStart;
+      const visibleStopIndex = toTheLeftOfEnd + aboveEnd;
+
+      onItemsRendered({
+        // call onItemsRendered from InfiniteLoader so it can load more if needed
+        visibleStartIndex,
+        visibleStopIndex,
+      });
+    };
+
+    return (
+      <StyledFixedSizeGrid
+        direction={direction === 'rtl' ? 'rtl' : 'ltr'}
+        data-testid="fixed-size-list"
+        useIsScrolling
+        height={gridHeight}
+        width={width}
+        columnCount={columnCount}
+        columnWidth={columnWidth}
+        rowCount={rowCount}
+        rowHeight={itemSize}
+        className={classes.styledScrollbars}
+        style={{ ...overflowStyling }}
+        // itemCount={listCount}
+        // layout={listLayout}
+        // itemSize={itemSize}
+        itemData={{
+          isLocked,
+          // column: !isVertical,
+          pages,
+          ...(isLocked || selectDisabled() ? {} : interactionEvents),
+          checkboxes,
+          dense,
+          frequencyMode,
+          isSingleSelect,
+          actions: {
+            select,
+            confirm: () => selections && selections.confirm.call(selections),
+            cancel: () => selections && selections.cancel.call(selections),
+          },
+          frequencyMax,
+          histogram,
+          keyboard,
+          showGray,
+          columnCount,
+          rowCount,
+          layoutOrder,
+        }}
+        onItemsRendered={(renderProps) => {
+          if (scrollState) {
+            scrollState.setScrollPos(renderProps.visibleStopIndex);
+          }
+          newItemsRendered({ ...renderProps });
+        }}
+        ref={ref}
+      >
+        {RowColumn}
+      </StyledFixedSizeGrid>
+    );
+  };
+
   return (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}
@@ -256,51 +451,7 @@ export default function ListBox({
       minimumBatchSize={MINIMUM_BATCH_SIZE}
       ref={loaderRef}
     >
-      {({ onItemsRendered, ref }) => {
-        local.current.listRef = ref;
-        return (
-          <StyledFixedSizeList
-            // explicitly set this as it accepts horizontal as well, leading to confusion
-            direction={direction === 'rtl' ? 'rtl' : 'ltr'}
-            data-testid="fixed-size-list"
-            useIsScrolling
-            height={listHeight}
-            width={width}
-            itemCount={listCount}
-            layout={listLayout}
-            className={classes.styledScrollbars}
-            itemData={{
-              isLocked,
-              column: !isVertical,
-              pages,
-              ...(isLocked || selectDisabled() ? {} : interactionEvents),
-              checkboxes,
-              dense,
-              frequencyMode,
-              isSingleSelect,
-              actions: {
-                select,
-                confirm: () => selections && selections.confirm.call(selections),
-                cancel: () => selections && selections.cancel.call(selections),
-              },
-              frequencyMax,
-              histogram,
-              keyboard,
-              showGray,
-            }}
-            itemSize={itemSize}
-            onItemsRendered={(renderProps) => {
-              if (scrollState) {
-                scrollState.setScrollPos(renderProps.visibleStopIndex);
-              }
-              onItemsRendered({ ...renderProps });
-            }}
-            ref={ref}
-          >
-            {RowColumn}
-          </StyledFixedSizeList>
-        );
-      }}
+      {isVertical ? list : grid}
     </InfiniteLoader>
   );
 }

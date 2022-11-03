@@ -209,7 +209,7 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-function RowColumn({ index, style, data }) {
+function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
     onClick,
     onMouseDown,
@@ -227,7 +227,30 @@ function RowColumn({ index, style, data }) {
     histogram = false,
     keyboard,
     showGray = true,
+    columnCount = 1,
+    rowCount = 1,
+    layoutOrder,
   } = data;
+
+  let cellIndex;
+  let styles;
+  if (typeof rowIndex === 'number' && typeof columnIndex === 'number') {
+    if (layoutOrder === 'row') {
+      cellIndex = rowIndex * columnCount + columnIndex;
+    } else {
+      cellIndex = columnIndex * rowCount + rowIndex;
+    }
+    const padding = 0;
+    styles = {
+      ...style,
+      left: padding + (columnIndex === 0 ? style.left : Number(style.left) + columnIndex * padding),
+      // right: columnIndex === columnCount ? style.right : Number(style.right) + columnIndex * padding,
+      top: rowIndex === 0 ? style.top : Number(style.top) + rowIndex * padding,
+    };
+  } else {
+    cellIndex = index;
+    styles = { ...style };
+  }
 
   const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation(actions), [actions]);
 
@@ -241,11 +264,11 @@ function RowColumn({ index, style, data }) {
       return;
     }
     let c;
-    const page = pages.filter((p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
+    const page = pages.filter((p) => p.qArea.qTop <= cellIndex && cellIndex < p.qArea.qTop + p.qArea.qHeight)[0];
     if (page) {
       const area = page.qArea;
-      if (index >= area.qTop && index < area.qTop + area.qHeight) {
-        [c] = page.qMatrix[index - area.qTop];
+      if (cellIndex >= area.qTop && cellIndex < area.qTop + area.qHeight) {
+        [c] = page.qMatrix[cellIndex - area.qTop];
       }
     }
     setCell(c);
@@ -374,7 +397,11 @@ function RowColumn({ index, style, data }) {
     return `calc(${width}% - ${rightSlice})`;
   };
 
-  const isFirstElement = index === 0;
+  const isFirstElement = cellIndex === 0;
+
+  // if (!cell || typeof cell.qElemNumber !== 'number') {
+  //   return null; // Cell is empty - do not render! TODO: improve check for this...
+  // }
 
   return (
     <Root className={classes.barContainer}>
@@ -385,7 +412,7 @@ function RowColumn({ index, style, data }) {
         classes={{
           root: classes.fieldRoot,
         }}
-        style={style}
+        style={styles}
         onClick={onClick}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
@@ -438,6 +465,7 @@ function RowColumn({ index, style, data }) {
             {showTick && <Tick style={iconStyles} size="small" />}
           </Grid>
         )}
+        {/* </div> */}
       </Grid>
     </Root>
   );
