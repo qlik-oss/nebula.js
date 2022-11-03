@@ -1,8 +1,9 @@
 import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.936.0.json';
 import SenseUtilities from 'enigma.js/sense-utilities';
+import { Auth, AuthType } from '@qlik/sdk';
 
-const params = (() => {
+const getParams = () => {
   const opts = {};
   window.location.search
     .substring(1)
@@ -16,19 +17,16 @@ const params = (() => {
       }
       opts[name] = value;
     });
-
   return opts;
-})();
+};
 
 // Qlik Core:  ws://<host>:<port>/app/<data-folder>/<app-name>
 // QCS:       wss://<tenant-url>.<region>.qlikcloud.com/app/<app-GUID>
 // QSEoK:     wss://<host>/app/<app-GUID>
 // QSEoW:     wss://<host>/<virtual-proxy-prefix>/app/<app-GUID>
-const RX = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/;
-const parseEngineURL = (url) => {
-  const m = RX.exec(url);
-
-  if (!m) {
+const parseEngineURL = (url, urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/, appRegex = /\/app\/([^?&#:]+)/) => {
+  const match = urlRegex.exec(url);
+  if (!match) {
     return {
       engineUrl: url,
       invalid: true,
@@ -40,19 +38,19 @@ const parseEngineURL = (url) => {
   let engineUrl = trimmedUrl;
   let appUrl;
 
-  const rxApp = /\/app\/([^?&#:]+)/.exec(trimmedUrl);
+  const appMatch = appRegex.exec(trimmedUrl);
 
-  if (rxApp) {
-    [, appId] = rxApp;
-    engineUrl = trimmedUrl.substring(0, rxApp.index);
+  if (appMatch) {
+    [, appId] = appMatch;
+    engineUrl = trimmedUrl.substring(0, appMatch.index);
     appUrl = trimmedUrl;
   }
 
   return {
     enigma: {
-      secure: m[1] === 'wss',
-      host: m[2],
-      port: m[3] || undefined,
+      secure: match[1] === 'wss',
+      host: match[2],
+      port: match[3] || undefined,
       appId,
     },
     engineUrl,
@@ -60,132 +58,133 @@ const parseEngineURL = (url) => {
   };
 };
 
-const connectionInfo = fetch('/info')
-  .then((response) => response.json())
-  .then(async (n) => {
-    let info = n;
-    if (params.engine_url) {
-      info = {
-        ...info,
-        ...parseEngineURL(params.engine_url),
-      };
-    } else if (params.app) {
-      info = {
-        ...info,
-        enigma: {
-          ...info.enigma,
-          appId: params.app,
-        },
-      };
-    }
-    if (params['qlik-web-integration-id']) {
-      info.webIntegrationId = params['qlik-web-integration-id'];
-    }
-    if (info.invalid) {
-      return info;
-    }
-    const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
-    return {
-      ...info,
-      rootPath,
-    };
-  });
-
-let headers;
-
-const getHeaders = async ({ webIntegrationId, rootPath }) => {
-  const response = await fetch(`${rootPath}/api/v1/csrf-token`, {
-    credentials: 'include',
-    headers: { 'qlik-web-integration-id': webIntegrationId },
-  });
-  if (response.status === 401) {
-    const loginUrl = new URL(`${rootPath}/login`);
-    loginUrl.searchParams.append('returnto', window.location.href);
-    loginUrl.searchParams.append('qlik-web-integration-id', webIntegrationId);
-    window.location.href = loginUrl;
-    return 401;
-  }
-  const csrfToken = new Map(response.headers).get('qlik-csrf-token');
-  headers = {
-    'qlik-web-integration-id': webIntegrationId,
-    'qlik-csrf-token': csrfToken,
-  };
-
-  return headers;
-};
-
-const defaultConfig = {
-  secure: false,
-};
-
-let connection;
-const connect = () => {
-  if (!connection) {
-    connection = connectionInfo.then(async (info) => {
-      const { webIntegrationId, rootPath } = info;
-      if (webIntegrationId) {
-        if (!headers) {
-          headers = await getHeaders(info);
-        }
-        if (headers === 401) {
-          return { status: 401 };
-        }
-        return {
-          getDocList: async () => {
-            const { data = [] } = await (
-              await fetch(`${rootPath}/api/v1/items?resourceType=app&limit=30&sort=-updatedAt`, {
-                credentials: 'include',
-                headers: { ...headers, 'content-type': 'application/json' },
-              })
-            ).json();
-            return data.map((d) => ({
-              qDocId: d.resourceId,
-              qTitle: d.name,
-            }));
+const getConnectionInfo = () =>
+  fetch('/info')
+    .then((response) => response.json())
+    .then(async (n) => {
+      let info = n;
+      const params = getParams();
+      if (params.engine_url) {
+        info = {
+          ...info,
+          // TODO:
+          // instead of calling "/info" and then parsing url inside of `getConnectionInfo()`
+          // we can have a hook which listens on location.search and provides this information for us
+          ...parseEngineURL(params.engine_url),
+        };
+      } else if (params.app) {
+        info = {
+          ...info,
+          enigma: {
+            ...info.enigma,
+            appId: params.app,
           },
-          getConfiguration: async () => ({}),
         };
       }
-      const url = SenseUtilities.buildUrl({
-        ...defaultConfig,
-        ...info.enigma,
-      });
-      return enigma
-        .create({
-          schema: qixSchema,
-          url,
-        })
-        .open();
+      if (params['qlik-web-integration-id']) {
+        info.webIntegrationId = params['qlik-web-integration-id'];
+      }
+      if (params['qlik-client-id']) {
+        info.clientId = params['qlik-client-id'];
+      }
+      if (info.invalid) {
+        return info;
+      }
+      const rootPath = `${info.enigma.secure ? 'https' : 'http'}://${info.enigma.host}`;
+      return {
+        ...info,
+        rootPath,
+      };
     });
-  }
 
-  return connection;
+const getAuthInstance = async ({ webIntegrationId, host }) => {
+  const authInstance = new Auth({
+    webIntegrationId,
+    autoRedirect: true,
+    authType: AuthType.WebIntegration,
+    host,
+  });
+  const isAuth = await authInstance.isAuthenticated();
+  if (!isAuth) await authInstance.authenticate();
+  return authInstance;
 };
 
-const openApp = (id) =>
-  connectionInfo.then(async (info) => {
-    let urlParams = {};
-    if (info.webIntegrationId) {
-      if (!headers) {
-        headers = await getHeaders(info);
-      }
-      urlParams = {
-        ...headers,
+const connect = async () => {
+  try {
+    const {
+      clientId,
+      webIntegrationId,
+      enigma: enigmaInfo,
+      enigma: { host },
+    } = await getConnectionInfo();
+
+    // if no clientId + user is already authorized -> deAuthorize user
+    const { isAuthorized } = await (await fetch('/isAuthorized')).json();
+    if (!clientId && isAuthorized) {
+      await (await fetch('/deauthorize')).json();
+    }
+
+    if (webIntegrationId) {
+      const authInstance = await getAuthInstance({ webIntegrationId, host });
+      return {
+        getDocList: async () => {
+          const url = `/items?resourceType=app&limit=30&sort=-updatedAt`;
+          const { data = [] } = await (await authInstance.rest(url)).json();
+          return data.map((d) => ({
+            qDocId: d.resourceId,
+            qTitle: d.name,
+          }));
+        },
+        getConfiguration: async () => ({}),
       };
     }
-    const url = SenseUtilities.buildUrl({
-      ...defaultConfig,
-      ...info.enigma,
-      urlParams,
-      appId: id,
-    });
-    return enigma
-      .create({
-        schema: qixSchema,
-        url,
-      })
-      .open()
-      .then((global) => global.openDoc(id));
-  });
 
-export { connect, openApp, params, connectionInfo as info };
+    if (clientId) {
+      return {
+        getDocList: async () => {
+          const resp = await (await fetch(`/oauth?host=${host}&clientId=${clientId}`)).json();
+          if (resp.redirectUrl) window.location.href = resp.redirectUrl;
+        },
+        getConfiguration: async () => ({}),
+      };
+    }
+
+    const url = SenseUtilities.buildUrl({
+      secure: false,
+      ...enigmaInfo,
+    });
+
+    return enigma.create({ schema: qixSchema, url }).open();
+  } catch (error) {
+    throw new Error('Failed to return enigma instance');
+  }
+};
+
+const openApp = async (id) => {
+  try {
+    const {
+      clientId,
+      webIntegrationId,
+      enigma: enigmaInfo,
+      enigma: { host },
+    } = await getConnectionInfo();
+
+    let url = '';
+    if (webIntegrationId) {
+      const authInstance = await getAuthInstance({ webIntegrationId, host });
+      url = await authInstance.generateWebsocketUrl(id);
+    } else if (clientId) {
+      const { webSocketUrl } = await (await fetch(`/getSocketUrl/${id}`)).json();
+      url = webSocketUrl;
+    } else {
+      url = SenseUtilities.buildUrl(enigmaInfo);
+    }
+
+    const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
+    return enigmaGlobal.openDoc(id);
+  } catch (error) {
+    throw new Error('Failed to open app!');
+  }
+};
+
+export { connect, openApp, getParams, getConnectionInfo, getAuthInstance, parseEngineURL };

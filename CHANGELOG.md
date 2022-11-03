@@ -3,6 +3,51 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.4...v3.1.0-alpha.0) (2022-10-21)
+
+### Bug Fixes
+
+- **a11y:** Casey's access fixes ([#966](https://github.com/qlik-oss/nebula.js/issues/966)) ([03641e1](https://github.com/qlik-oss/nebula.js/commit/03641e141ac97eed5394d6ad12ef8e950f438fbb))
+- command line input bug ([#968](https://github.com/qlik-oss/nebula.js/issues/968)) ([5907701](https://github.com/qlik-oss/nebula.js/commit/590770160a50aad90a4c427780dc06205918aaf6))
+- prevent error by ensuring removeListener ([#964](https://github.com/qlik-oss/nebula.js/issues/964)) ([0e4bbe6](https://github.com/qlik-oss/nebula.js/commit/0e4bbe6b840790a2f97b27ae9a2d68f5d433b355))
+
+### Features
+
+- `clientId` from `nebula.config.js` support ([#963](https://github.com/qlik-oss/nebula.js/issues/963)) ([9d5e29d](https://github.com/qlik-oss/nebula.js/commit/9d5e29d4d82a922c0fc447fca3b0dc9e3c442a34))
+- enabled support for background image and color ([#921](https://github.com/qlik-oss/nebula.js/issues/921)) ([b005bfb](https://github.com/qlik-oss/nebula.js/commit/b005bfb075098a656ba8b38f9bbe5f18a89a762a))
+- new ui for connection string ([#965](https://github.com/qlik-oss/nebula.js/issues/965)) ([e772ed7](https://github.com/qlik-oss/nebula.js/commit/e772ed7143a2024afe0cfa54e3e6ab361a92640b))
+- OAuth integration in nebula mashup ([#962](https://github.com/qlik-oss/nebula.js/issues/962)) ([c354633](https://github.com/qlik-oss/nebula.js/commit/c354633132ff3882f57b82b6856b84314d99c95b))
+- render existing listbox objects ([#957](https://github.com/qlik-oss/nebula.js/issues/957)) ([f924122](https://github.com/qlik-oss/nebula.js/commit/f9241228885366e8c68086b1e4b06123ff3572bc))
+
+## [3.0.4](https://github.com/qlik-oss/nebula.js/compare/v3.0.3...v3.0.4) (2022-10-13)
+
+### Bug Fixes
+
+- correctly check qId in mocker ([#956](https://github.com/qlik-oss/nebula.js/issues/956)) ([5c2bf1b](https://github.com/qlik-oss/nebula.js/commit/5c2bf1b4bcb0703fba711d82d471f9880248e17f))
+- only handle space & enter on container focus ([#961](https://github.com/qlik-oss/nebula.js/issues/961)) ([a2a3771](https://github.com/qlik-oss/nebula.js/commit/a2a3771bc44d4b242bec0d3555879b1e1a18a7b6))
+
+### Features
+
+- jest coverage report ([#955](https://github.com/qlik-oss/nebula.js/issues/955)) ([5fb8405](https://github.com/qlik-oss/nebula.js/commit/5fb840517b8c470b37c1f791cee5ef663c578128))
+- sdk OAuth support in mashup template ([#950](https://github.com/qlik-oss/nebula.js/issues/950)) ([fd9a978](https://github.com/qlik-oss/nebula.js/commit/fd9a978296d17f532b15b9468e754b73defdfddd))
+
+## [3.0.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.2...v3.0.3) (2022-09-30)
+
+### Features
+
+- add support to run callback when context menu opens from sense-client ([#926](https://github.com/qlik-oss/nebula.js/issues/926)) ([a5e578b](https://github.com/qlik-oss/nebula.js/commit/a5e578bfffe501341d988f92b270d03e73cd783c))
+- integrate `@qlik/sdk` into nebula-cli ([#929](https://github.com/qlik-oss/nebula.js/issues/929)) ([dcebeb1](https://github.com/qlik-oss/nebula.js/commit/dcebeb157c97851086766f2302ff121a4abe5dbd))
+
+## [3.0.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.2-alpha.0...v3.0.2) (2022-09-21)
+
+**Note:** Version bump only for package nebula.js
+
+## [3.0.2-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.1...v3.0.2-alpha.0) (2022-09-21)
+
+### Bug Fixes
+
+- apply styles on header element ([#932](https://github.com/qlik-oss/nebula.js/issues/932)) ([6ce2a74](https://github.com/qlik-oss/nebula.js/commit/6ce2a74b8e8079bcd826edc3e40238502a44db0f))
+
 ## [3.0.1](https://github.com/qlik-oss/nebula.js/compare/v3.0.0...v3.0.1) (2022-09-20)
 
 ### Bug Fixes

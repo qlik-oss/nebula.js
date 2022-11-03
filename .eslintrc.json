@@ -1,13 +1,15 @@
 {
   "root": true,
   "env": {
-    "browser": true
+    "browser": true,
+    "jest/globals": true
   },
   "parserOptions": {
-    "sourceType": "module"
+    "sourceType": "module",
+    "ecmaVersion": 2020
   },
   "extends": ["airbnb", "prettier"],
-  "plugins": ["prettier"],
+  "plugins": ["prettier", "jest"],
   "rules": {
     "max-len": 0,
     "no-plusplus": 0,
@@ -18,12 +20,24 @@
     "react/prop-types": 0,
     "react/no-deprecated": 0,
     "import/no-extraneous-dependencies": [2, { "devDependencies": true }],
-    "import/no-dynamic-require": 0
+    "import/no-dynamic-require": 0,
+    "jest/no-disabled-tests": "warn",
+    "jest/no-focused-tests": "error",
+    "jest/no-identical-title": "error",
+    "jest/prefer-to-have-length": "warn",
+    "jest/valid-expect": "error"
   },
   "globals": {
     "__NEBULA_DEV__": false
   },
   "overrides": [
+    {
+      "files": ["apis/**/*", "packages/**/*", "commands/create/**/*", "commands/sense/src/**/*"],
+      "rules": {
+        "jest/valid-expect": 0,
+        "jest/no-identical-title": 0
+      }
+    },
     {
       "files": ["scripts/**/*", "**/apis/*/scripts/**/*"],
       "rules": {
@@ -50,6 +64,16 @@
       },
       "globals": {
         "define": false
+      }
+    },
+    {
+      "files": ["commands/serve/web/**/*.{js,jsx}"],
+      "rules": {
+        "arrow-body-style": 1,
+        "no-use-before-define": 1,
+        "react/function-component-definition": 0,
+        "import/prefer-default-export": 1,
+        "import/no-cycle": 1
       }
     },
     {

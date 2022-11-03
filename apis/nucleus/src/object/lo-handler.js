@@ -43,12 +43,14 @@ export default function loHandler({ dc: lo, def, properties }) {
         lo[k] = dimension[k];
       });
       def.dimensions.added(dimension, objectProperties);
+      return dimension;
     },
     removeDimension(idx) {
       const dimension = lo;
       delete lo.qDef;
       delete lo.qLibraryId;
       def.dimensions.removed(dimension, objectProperties, idx);
+      return dimension;
     },
     addMeasure() {},
     removeMeasure() {},

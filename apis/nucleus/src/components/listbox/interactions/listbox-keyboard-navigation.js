@@ -65,7 +65,7 @@ export function getFieldKeyboardNavigation({ select, confirm, cancel }) {
 
 export function getListboxInlineKeyboardNavigation({ setKeyboardActive }) {
   const focusInsideListbox = (element) => {
-    const fieldElement = element.querySelector('.search input, .value.selector, .value');
+    const fieldElement = element.querySelector('.search input, .value.selector, .value, .ActionsToolbar-* button');
     setKeyboardActive(true);
     if (fieldElement) {
       fieldElement.focus();
@@ -84,6 +84,9 @@ export function getListboxInlineKeyboardNavigation({ setKeyboardActive }) {
       // case KEYS.TAB: TODO: Focus confirm button using keyboard.focusSelection when we can access the useKeyboard hook.
       case KEYS.ENTER:
       case KEYS.SPACE:
+        if (!event.target.classList.contains('listbox-container')) {
+          return; // don't mess with keydown handlers within the listbox
+        }
         focusInsideListbox(event.currentTarget);
         break;
       case KEYS.ESCAPE:

@@ -1,7 +1,6 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import extend from 'extend';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
@@ -9,7 +8,6 @@ import Unlock from '@nebula.js/ui/icons/unlock';
 import { IconButton, Grid, Typography } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
-import useSessionModel from '../../hooks/useSessionModel';
 import useLayout from '../../hooks/useLayout';
 
 import ListBox from './ListBox';
@@ -20,7 +18,6 @@ import ActionsToolbar from '../ActionsToolbar';
 import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './components/ListBoxSearch';
-import useObjectSelections from '../../hooks/useObjectSelections';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import useConfirmUnfocus from './hooks/useConfirmUnfocus';
 
@@ -28,6 +25,7 @@ const PREFIX = 'ListBoxInline';
 
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
+  screenReaderOnly: `${PREFIX}-screenReaderOnly`,
 };
 
 const StyledGrid = styled(Grid)(() => ({
@@ -35,12 +33,19 @@ const StyledGrid = styled(Grid)(() => ({
     alignSelf: 'center',
     display: 'inline-flex',
   },
+  [`& .${classes.screenReaderOnly}`]: {
+    position: 'absolute',
+    height: 0,
+    width: 0,
+    overflow: 'hidden',
+  },
 }));
 
-export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', options = {}, fieldDef }) {
+export default function ListBoxInline({ options = {} }) {
   const {
-    title,
     direction,
+    frequencyMode,
+    histogram = false,
     listLayout,
     search = true,
     focusSearch = false,
@@ -48,9 +53,8 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     rangeSelect = true,
     checkboxes = false,
     textAlign,
-    properties = {},
-    sessionModel = undefined,
-    selectionsApi = undefined,
+    model,
+    selections,
     update = undefined,
     fetchStart = undefined,
     dense = false,
@@ -62,32 +66,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
     setCount = undefined,
     shouldConfirmOnBlur = undefined,
   } = options;
-  let { frequencyMode, histogram = false } = options;
-
-  if (fieldDef && fieldDef.failedToFetchFieldDef) {
-    histogram = false;
-    frequencyMode = 'N';
-  }
-
-  switch (true) {
-    case ['none', 'N', 'NX_FREQUENCY_NONE'].includes(frequencyMode):
-      frequencyMode = 'N';
-      break;
-    case ['value', 'V', 'NX_FREQUENCY_VALUE', 'default'].includes(frequencyMode):
-      frequencyMode = 'V';
-      break;
-    case ['percent', 'P', 'NX_FREQUENCY_PERCENT'].includes(frequencyMode):
-      frequencyMode = 'P';
-      break;
-    case ['relative', 'R', 'NX_FREQUENCY_RELATIVE'].includes(frequencyMode):
-      frequencyMode = 'R';
-      break;
-    default:
-      frequencyMode = 'N';
-      break;
-  }
-
-  const getListdefFrequencyMode = () => (histogram && frequencyMode === 'N' ? 'V' : frequencyMode);
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
@@ -102,64 +80,6 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
 
     return [ref, setRef];
   };
-
-  const listdef = {
-    qInfo: {
-      qType: 'njsListbox',
-    },
-    qListObjectDef: {
-      qStateName: stateName,
-      qShowAlternatives: true,
-      qFrequencyMode: getListdefFrequencyMode(),
-      qInitialDataFetch: [
-        {
-          qTop: 0,
-          qLeft: 0,
-          qWidth: 0,
-          qHeight: 0,
-        },
-      ],
-      qDef: {
-        qSortCriterias: [
-          {
-            qSortByState: 1,
-            qSortByAscii: 1,
-            qSortByNumeric: 1,
-            qSortByLoadOrder: 1,
-          },
-        ],
-      },
-    },
-    title,
-  };
-  extend(true, listdef, properties);
-
-  // Something something lib dimension
-  let fieldName;
-  if (fieldIdentifier.qLibraryId) {
-    listdef.qListObjectDef.qLibraryId = fieldIdentifier.qLibraryId;
-    fieldName = fieldIdentifier.qLibraryId;
-  } else {
-    listdef.qListObjectDef.qDef.qFieldDefs = [fieldIdentifier];
-    fieldName = fieldIdentifier;
-  }
-
-  if (frequencyMode !== 'N' || histogram) {
-    const field = fieldIdentifier.qLibraryId ? fieldDef : fieldName;
-    listdef.frequencyMax = {
-      qValueExpression: `Max(AGGR(Count([${field}]), [${field}]))`,
-    };
-  }
-
-  let [model] = useSessionModel(listdef, sessionModel ? null : app, fieldName, stateName);
-  if (sessionModel) {
-    model = sessionModel;
-  }
-
-  let selections = useObjectSelections(selectionsApi ? {} : app, model)[0];
-  if (selectionsApi) {
-    selections = selectionsApi;
-  }
 
   const theme = useTheme();
 
@@ -189,26 +109,28 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
   };
 
   useEffect(() => {
-    const show = () => setShowToolbar(true);
-    const hide = () => setShowToolbar(false);
+    const show = () => {
+      setShowToolbar(true);
+    };
+    const hide = () => {
+      setShowToolbar(false);
+      if (search === 'toggle') {
+        setShowSearch(false);
+      }
+    };
     if (selections) {
-      if (!selections.isModal(model)) {
+      if (!selections.isModal()) {
         selections.on('deactivated', hide);
         selections.on('activated', show);
       }
+      setShowToolbar(selections.isActive());
     }
     return () => {
-      if (selections) {
+      if (selections && selections.removeListener) {
         selections.removeListener('deactivated', show);
         selections.removeListener('activated', hide);
       }
     };
-  }, [selections]);
-
-  useEffect(() => {
-    if (selections) {
-      setShowToolbar(selections.isActive());
-    }
   }, [selections]);
 
   const listBoxRef = useRef(null);
@@ -268,11 +190,12 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
 
   return (
     <StyledGrid
+      className="listbox-container"
       container
       tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"
       gap={0}
-      style={{ height: '100%', minHeight: `${minHeight}px` }}
+      style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
       onKeyDown={handleKeyDown}
       ref={listBoxRef}
     >
@@ -319,39 +242,56 @@ export default function ListBoxInline({ app, fieldIdentifier, stateName = '$', o
           </Grid>
         </Grid>
       )}
-      <Grid item ref={searchContainerRef}>
-        <ListBoxSearch model={model} dense={dense} keyboard={keyboard} visible={searchVisible} />
-      </Grid>
-      <Grid item xs>
-        <div ref={moreAlignTo} />
-        <AutoSizer>
-          {({ height, width }) => (
-            <ListBox
-              model={model}
-              selections={selections}
-              direction={direction}
-              listLayout={listLayout}
-              frequencyMode={frequencyMode}
-              histogram={histogram}
-              rangeSelect={rangeSelect}
-              checkboxes={checkboxes}
-              textAlign={textAlign}
-              height={height}
-              width={width}
-              update={update}
-              fetchStart={fetchStart}
-              postProcessPages={postProcessPages}
-              calculatePagesHeight={calculatePagesHeight}
-              dense={dense}
-              selectDisabled={selectDisabled}
-              keyboard={keyboard}
-              showGray={showGray}
-              scrollState={scrollState}
-              sortByState={listdef.qListObjectDef.qDef.qSortCriterias[0].qSortByState}
-              setCount={setCount}
-            />
-          )}
-        </AutoSizer>
+      <Grid
+        item
+        container
+        direction="column"
+        style={{ height: '100%', minHeight: `${minHeight}px` }}
+        role="region"
+        aria-label={translator.get('Listbox.ResultFilterLabel')}
+      >
+        <Grid item ref={searchContainerRef}>
+          <div className={classes.screenReaderOnly}>{translator.get('Listbox.Search.ScreenReaderInstructions')}</div>
+          <ListBoxSearch
+            selections={selections}
+            model={model}
+            dense={dense}
+            keyboard={keyboard}
+            visible={searchVisible}
+            searchContainerRef={searchContainerRef}
+          />
+        </Grid>
+        <Grid item xs>
+          <div ref={moreAlignTo} />
+          <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
+          <AutoSizer>
+            {({ height, width }) => (
+              <ListBox
+                model={model}
+                selections={selections}
+                direction={direction}
+                listLayout={listLayout}
+                frequencyMode={frequencyMode}
+                histogram={histogram}
+                rangeSelect={rangeSelect}
+                checkboxes={checkboxes}
+                textAlign={textAlign}
+                height={height}
+                width={width}
+                update={update}
+                fetchStart={fetchStart}
+                postProcessPages={postProcessPages}
+                calculatePagesHeight={calculatePagesHeight}
+                dense={dense}
+                selectDisabled={selectDisabled}
+                keyboard={keyboard}
+                showGray={showGray}
+                scrollState={scrollState}
+                setCount={setCount}
+              />
+            )}
+          </AutoSizer>
+        </Grid>
       </Grid>
     </StyledGrid>
   );

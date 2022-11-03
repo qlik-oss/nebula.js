@@ -371,7 +371,7 @@ function nuked(configuration = {}) {
       },
       /**
        * Gets the listbox instance of the specified field
-       * @param {string|LibraryField} fieldIdentifier Fieldname as a string or a Library dimension
+       * @param {string|LibraryField|QInfo} fieldIdentifier Fieldname as a string, a Library dimension or an object id
        * @returns {Promise<FieldInstance>}
        * @since 1.1.0
        * @example
@@ -379,9 +379,12 @@ function nuked(configuration = {}) {
        * fieldInstance.mount(element, { title: "Hello Field"});
        */
       field: async (fieldIdentifier) => {
+        let qId;
         const fieldName = typeof fieldIdentifier === 'string' ? fieldIdentifier : fieldIdentifier.qLibraryId;
-        if (!fieldName) {
-          throw new Error(`Field identifier must be provided`);
+        if (fieldIdentifier.qId) {
+          qId = fieldIdentifier.qId;
+        } else if (!fieldName) {
+          throw new Error(`Field identifier or object id must be provided`);
         }
 
         /**
@@ -431,15 +434,16 @@ function nuked(configuration = {}) {
            */
           mount(element, options = {}) {
             if (!element) {
-              throw new Error(`Element for ${fieldName} not provided`);
+              throw new Error(`Element for ${fieldName || qId} not provided`);
             }
             if (this._instance) {
-              throw new Error(`Field ${fieldName} already mounted`);
+              throw new Error(`Field or object ${fieldName || qId} already mounted`);
             }
             this._instance = ListBoxPortal({
               element,
               app,
               fieldIdentifier,
+              qId,
               options: getOptions(options),
               stateName: options.stateName || '$',
             });
@@ -531,6 +535,11 @@ function nuked(configuration = {}) {
  * @interface ThemeInfo
  * @property {string} id Theme identifier
  * @property {function(): Promise<ThemeJSON>} load A function that should return a Promise that resolves to a raw JSON theme.
+ */
+
+/**
+ * @interface QInfo
+ * @property {string} qId Generic object id
  */
 
 export default nuked(DEFAULT_CONFIG);

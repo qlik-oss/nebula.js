@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.4...v3.1.0-alpha.0) (2022-10-21)
+
+### Bug Fixes
+
+- **a11y:** Casey's access fixes ([#966](https://github.com/qlik-oss/nebula.js/issues/966)) ([03641e1](https://github.com/qlik-oss/nebula.js/commit/03641e141ac97eed5394d6ad12ef8e950f438fbb))
+- prevent error by ensuring removeListener ([#964](https://github.com/qlik-oss/nebula.js/issues/964)) ([0e4bbe6](https://github.com/qlik-oss/nebula.js/commit/0e4bbe6b840790a2f97b27ae9a2d68f5d433b355))
+
+### Features
+
+- enabled support for background image and color ([#921](https://github.com/qlik-oss/nebula.js/issues/921)) ([b005bfb](https://github.com/qlik-oss/nebula.js/commit/b005bfb075098a656ba8b38f9bbe5f18a89a762a))
+- render existing listbox objects ([#957](https://github.com/qlik-oss/nebula.js/issues/957)) ([f924122](https://github.com/qlik-oss/nebula.js/commit/f9241228885366e8c68086b1e4b06123ff3572bc))
+
+## [3.0.4](https://github.com/qlik-oss/nebula.js/compare/v3.0.3...v3.0.4) (2022-10-13)
+
+### Bug Fixes
+
+- only handle space & enter on container focus ([#961](https://github.com/qlik-oss/nebula.js/issues/961)) ([a2a3771](https://github.com/qlik-oss/nebula.js/commit/a2a3771bc44d4b242bec0d3555879b1e1a18a7b6))
+
+## [3.0.3](https://github.com/qlik-oss/nebula.js/compare/v3.0.2...v3.0.3) (2022-09-30)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+## [3.0.2](https://github.com/qlik-oss/nebula.js/compare/v3.0.2-alpha.0...v3.0.2) (2022-09-21)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+## [3.0.2-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.1...v3.0.2-alpha.0) (2022-09-21)
+
+### Bug Fixes
+
+- apply styles on header element ([#932](https://github.com/qlik-oss/nebula.js/issues/932)) ([6ce2a74](https://github.com/qlik-oss/nebula.js/commit/6ce2a74b8e8079bcd826edc3e40238502a44db0f))
+
 ## [3.0.1](https://github.com/qlik-oss/nebula.js/compare/v3.0.0...v3.0.1) (2022-09-20)
 
 ### Reverts

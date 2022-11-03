@@ -16,6 +16,7 @@ import useLayout, { useAppLayout } from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
 import eventmixin from '../selections/event-mixin';
+import { resolveBgColor, resolveBgImage } from '../utils/background-props';
 
 /**
  * @interface
@@ -290,6 +291,9 @@ const Cell = forwardRef(
     const [selections] = useObjectSelections(app, model);
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
+    const [bgColor, setBgColor] = useState(undefined);
+    const [bgImage, setBgImage] = useState(undefined); // {url: "", size: "", pos: ""}
+
     const focusHandler = useRef({
       focusToolbarButton(last) {
         // eslint-disable-next-line react/no-this-in-sfc
@@ -300,6 +304,12 @@ const Cell = forwardRef(
     useEffect(() => {
       eventmixin(focusHandler.current);
     }, []);
+
+    useEffect(() => {
+      const bgComp = layout?.components ? layout.components.find((comp) => comp.key === 'general') : null;
+      setBgColor(resolveBgColor(bgComp, halo.public.theme));
+      setBgImage(resolveBgImage(bgComp, halo.app));
+    }, [layout, halo.public.theme, halo.app]);
 
     focusHandler.current.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
@@ -478,7 +488,17 @@ const Cell = forwardRef(
 
     return (
       <Paper
-        style={{ position: 'relative', width: '100%', height: '100%', overflow: 'hidden' }}
+        style={{
+          position: 'relative',
+          width: '100%',
+          height: '100%',
+          overflow: 'hidden',
+          backgroundColor: bgColor,
+          backgroundImage: bgImage && bgImage.url ? `url(${bgImage.url})` : undefined,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: bgImage && bgImage.size,
+          backgroundPosition: bgImage && bgImage.pos,
+        }}
         elevation={0}
         square
         className={CellElement.className}

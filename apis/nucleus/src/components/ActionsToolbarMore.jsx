@@ -28,7 +28,7 @@ function MoreItem({ item, onActionClick = () => {} }) {
     onActionClick();
   };
   return !hidden ? (
-    <MenuItem title={item.label} onClick={handleClick} disabled={disabled}>
+    <MenuItem title={item.label} onClick={handleClick} disabled={disabled} tabindex="0">
       {hasSvgIconShape && <ListItemIcon className={classes.icon}>{SvgIcon(item.getSvgIconShape())}</ListItemIcon>}
       <Typography noWrap>{item.label}</Typography>
     </MenuItem>
@@ -73,7 +73,7 @@ const More = React.forwardRef(
             },
           }}
         >
-          <MenuList>
+          <MenuList id="moreMenuList">
             {actions.map((item, ix) => (
               // eslint-disable-next-line react/no-array-index-key
               <MoreItem key={ix} item={item} onActionClick={onCloseOrActionClick} />

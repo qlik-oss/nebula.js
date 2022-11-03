@@ -19,10 +19,25 @@
     "comment": "Action text to lock selections in a listbox",
     "version": "05jY0MA0azu2f6LgrBSpYg=="
   },
+  "Listbox.ResultFilterLabel": {
+    "value": "검색 결과 필터",
+    "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
+    "version": "ZMijtIFW/Kap65bGmRIp0w=="
+  },
+  "Listbox.ScreenReaderInstructions": {
+    "value": "아래 요소를 활성화하면 페이지의 콘텐츠가 업데이트됩니다.",
+    "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content",
+    "version": "ckUyG4fQPA0Z71A2ofI3fg=="
+  },
   "Listbox.Search": {
     "value": "목록 상자에서 검색",
     "comment": "Action text to search in listbox",
     "version": "XqaXqel4sY8npmjHCNH24Q=="
+  },
+  "Listbox.Search.ScreenReaderInstructions": {
+    "value": "다음 검색 필드는 입력할 때 아래의 결과를 필터링합니다.",
+    "comment": "Instructions to inform screen reader users that the search field filters the listbox results as they type",
+    "version": "NmK/VF5NK36oGSw/Z/VIjA=="
   },
   "Listbox.Unlock": {
     "value": "선택 내용 잠금 해제",

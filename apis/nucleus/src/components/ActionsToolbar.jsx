@@ -44,30 +44,37 @@ const ActionToolbarElement = {
   className: 'njs-action-toolbar-popover',
 };
 
-const ActionsGroup = React.forwardRef(({ actions = [], first = false, last = false, addAnchor = false }, ref) =>
-  actions.length > 0 ? (
-    <Grid item container gap={0} wrap="nowrap">
-      {actions.map((e, ix) => {
-        let cls = [];
-        const isFirstItem = first && ix === 0;
-        const isLastItem = last && actions.length - 1 === ix;
-        if (isFirstItem && !isLastItem) {
-          cls = [classes.firstItemSpacing];
-        }
-        if (isLastItem && !isFirstItem) {
-          cls = [...cls, classes.lastItemSpacing];
-        }
-        if (!isFirstItem && !isLastItem && cls.length === 0) {
-          cls = [classes.itemSpacing];
-        }
-        return (
-          <Grid item key={e.key} className={cls.join(' ').trim()}>
-            <Item key={e.key} item={e} ref={ix === 0 ? ref : null} addAnchor={addAnchor} />
-          </Grid>
-        );
-      })}
-    </Grid>
-  ) : null
+const ActionsGroup = React.forwardRef(
+  ({ ariaExpanded = false, actions = [], first = false, last = false, addAnchor = false }, ref) =>
+    actions.length > 0 ? (
+      <Grid item container gap={0} wrap="nowrap">
+        {actions.map((e, ix) => {
+          let cls = [];
+          const isFirstItem = first && ix === 0;
+          const isLastItem = last && actions.length - 1 === ix;
+          if (isFirstItem && !isLastItem) {
+            cls = [classes.firstItemSpacing];
+          }
+          if (isLastItem && !isFirstItem) {
+            cls = [...cls, classes.lastItemSpacing];
+          }
+          if (!isFirstItem && !isLastItem && cls.length === 0) {
+            cls = [classes.itemSpacing];
+          }
+          return (
+            <Grid item key={e.key} className={cls.join(' ').trim()}>
+              <Item
+                ariaExpanded={ariaExpanded}
+                key={e.key}
+                item={e}
+                ref={ix === 0 ? ref : null}
+                addAnchor={addAnchor}
+              />
+            </Grid>
+          );
+        })}
+      </Grid>
+    ) : null
 );
 
 const popoverStyle = { pointerEvents: 'none' };
@@ -191,7 +198,14 @@ function ActionsToolbar({
     <Grid ref={actionsRef} onKeyDown={tabCallback} container gap={0} wrap="nowrap">
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
-        <ActionsGroup ref={moreRef} actions={[moreItem]} first={!showActions} last={!selections.show} addAnchor />
+        <ActionsGroup
+          ref={moreRef}
+          ariaExpanded={showMoreItems}
+          actions={[moreItem]}
+          first={!showActions}
+          last={!selections.show}
+          addAnchor
+        />
       )}
       {showDivider && (
         <Grid item className={classes.itemSpacing} style={dividerStyle}>

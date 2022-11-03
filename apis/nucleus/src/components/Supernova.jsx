@@ -28,6 +28,7 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
   const [renderCnt, setRenderCnt] = useState(0);
   const [containerRef, containerRect, containerNode] = useRect();
   const [snNode, setSnNode] = useState(null);
+
   const snRef = useCallback((ref) => {
     if (!ref) {
       return;
@@ -123,7 +124,10 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     <div
       ref={containerRef}
       data-render-count={renderCnt}
-      style={{ position: 'relative', height: '100%' }}
+      style={{
+        position: 'relative',
+        height: '100%',
+      }}
       className={VizElement.className}
     >
       <div ref={snRef} style={{ position: 'absolute', width: '100%', height: '100%' }} />

@@ -7,46 +7,68 @@ import InstanceContext from '../../../contexts/InstanceContext';
 
 const TREE_PATH = '/qListObjectDef';
 
-export default function ListBoxSearch({ model, keyboard, dense = false, visible = true }) {
+export default function ListBoxSearch({ selections, model, keyboard, dense = false, visible = true }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
-  const [isSearching, setIsSearching] = useState(false);
   const theme = useTheme();
 
+  const cancel = () => selections.isActive() && selections.cancel();
+
   const abortSearch = async () => {
-    await model.abortListObjectSearch(TREE_PATH);
-    setIsSearching(false);
+    if (!selections.isModal()) {
+      return;
+    }
+    try {
+      await model.abortListObjectSearch(TREE_PATH);
+    } finally {
+      setValue('');
+    }
   };
 
   useEffect(() => {
-    if (!visible && isSearching) {
-      abortSearch();
+    if (!visible) {
+      abortSearch(); // abort when toggling off search
     }
   }, [visible]);
 
-  const onChange = (e) => {
+  useEffect(() => {
+    selections.on('deactivated', abortSearch);
+    return () => {
+      selections.removeListener && selections.removeListener('deactivated', abortSearch);
+    };
+  }, []);
+
+  const onChange = async (e) => {
     setValue(e.target.value);
-    if (e.target.value.length === 0) {
-      abortSearch();
-    } else {
-      model.searchListObjectFor(TREE_PATH, e.target.value);
-      setIsSearching(true);
+    if (!e.target.value.length) {
+      return abortSearch();
+    }
+    return model.searchListObjectFor(TREE_PATH, e.target.value);
+  };
+
+  const handleFocus = () => {
+    if (!selections.isModal()) {
+      selections.begin(['/qListObjectDef']);
     }
   };
+
   const onKeyDown = (e) => {
+    let response;
     switch (e.key) {
       case 'Enter':
         // Maybe we only want to accept if isSearching is true
-        model.acceptListObjectSearch(TREE_PATH, true);
+        response = model.acceptListObjectSearch(TREE_PATH, true);
         setValue('');
         break;
       case 'Escape':
-        abortSearch();
-        setValue('');
+        response = cancel();
+        e.preventDefault();
+        e.stopPropagation();
         break;
       default:
         break;
     }
+    return response;
   };
 
   if (!visible) {
@@ -87,6 +109,7 @@ export default function ListBoxSearch({ model, keyboard, dense = false, visible 
       fullWidth
       placeholder={translator.get('Listbox.Search')}
       value={value}
+      onFocus={handleFocus}
       onChange={onChange}
       onKeyDown={onKeyDown}
       inputProps={{
