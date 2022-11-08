@@ -67,7 +67,8 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
 
   const { translator } = useContext(InstanceContext);
   const moreAlignTo = useRef();
-  const [selections] = useObjectSelections(app, model);
+  const popoverRef = useRef();
+  const [selections] = useObjectSelections(app, model, [popoverRef]);
   const [layout] = useLayout(model);
 
   useEffect(() => {
@@ -102,6 +103,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
     <Popover
       open={open}
       onClose={popoverClose}
+      ref={popoverRef}
       anchorEl={alignTo.current}
       anchorOrigin={{
         vertical: 'bottom',

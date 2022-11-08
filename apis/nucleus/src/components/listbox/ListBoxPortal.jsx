@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import ListBoxInline from './ListBoxInline';
 import useObjectSelections from '../../hooks/useObjectSelections';
@@ -6,7 +6,7 @@ import useExistingModel from './hooks/useExistingModel';
 import useOnTheFlyModel from './hooks/useOnTheFlyModel';
 import identify from './assets/identify';
 
-function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, options }) {
+function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options }) {
   const { hasExternalSessionModel, hasExternalSelectionsApi } = identify({ qId, options });
   const [changeCount, setChangeCount] = useState(0);
 
@@ -22,7 +22,11 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, options }) {
     ? useExistingModel({ app, qId, options })
     : useOnTheFlyModel({ app, fieldIdentifier, stateName, options });
 
-  const selections = hasExternalSelectionsApi ? options.selectionsApi : useObjectSelections(app, model)[0];
+  const elementRef = useRef(element);
+
+  const selections = hasExternalSelectionsApi
+    ? options.selectionsApi
+    : useObjectSelections(app, model, [elementRef])[0];
 
   if (!selections || !model) {
     return null;

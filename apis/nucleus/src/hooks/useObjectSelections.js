@@ -15,7 +15,24 @@ const event = () => {
   };
 };
 
-function createObjectSelections({ appSelections, appModal, model }) {
+function createHandler({ elements, triggerFunc }) {
+  const handler = (evt) => {
+    const targetStillExists = document.contains(evt.target);
+    // const isClickOutside =
+    //   targetStillExists &&
+    //   !elements.some((element) => (document.contains(element.current) ? true : element.current?.contains(evt.target)));
+    const [element] = elements;
+    const isWithin = element.current?.contains(evt.target);
+    const containerStillExists = !!document.contains(element.current);
+    const isClickOutside = targetStillExists && containerStillExists && !isWithin;
+    if (isClickOutside) {
+      triggerFunc(evt);
+    }
+  };
+  return handler;
+}
+
+const createObjectSelections = ({ appSelections, appModal, model }) => {
   let layout;
   let isActive = false;
   let hasSelected = false;
@@ -43,6 +60,8 @@ function createObjectSelections({ appSelections, appModal, model }) {
       }
       isActive = true;
       this.emit('activated');
+      // unbindClickOutside = bindClickOutside({ handler });
+
       return appModal.begin(model, paths, true);
     },
     /**
@@ -74,6 +93,7 @@ function createObjectSelections({ appSelections, appModal, model }) {
       isActive = false;
       this.emit('canceled'); // FIXME - spelling?
       this.emit('deactivated');
+      // unbindClickOutside();
       return appModal.end(false);
     },
     /**
@@ -146,9 +166,25 @@ function createObjectSelections({ appSelections, appModal, model }) {
   eventmixin(api);
 
   return api;
-}
+};
 
-export default function useObjectSelections(app, model) {
+const getClickOutFuncs = ({ elements, objectSelections }) => {
+  const handler = createHandler({ elements, triggerFunc: () => objectSelections.confirm.call(objectSelections) });
+
+  const activateClickOut = () => {
+    document.addEventListener('mousedown', handler);
+  };
+
+  const deactivateClickOut = () => {
+    document.removeEventListener('mousedown', handler);
+  };
+  return {
+    activateClickOut,
+    deactivateClickOut,
+  };
+};
+
+export default function useObjectSelections(app, model, elements) {
   const [appSelections] = useAppSelections(app);
   const [layout] = useLayout(model);
   const key = model ? model.id : null;
@@ -160,7 +196,18 @@ export default function useObjectSelections(app, model) {
   useEffect(() => {
     if (!appSelections || !model || objectSelections) return;
 
-    objectSelections = createObjectSelections({ appSelections, appModal, model });
+    objectSelections = createObjectSelections({
+      appSelections,
+      appModal,
+      model,
+      elements,
+    });
+
+    const { activateClickOut, deactivateClickOut } = getClickOutFuncs({ elements, objectSelections });
+
+    objectSelections.addListener('activated', activateClickOut);
+    objectSelections.addListener('deactivated', deactivateClickOut);
+
     objectSelectionsStore.set(key, objectSelections);
     objectSelectionsStore.dispatch(true);
   }, [appSelections, model]);

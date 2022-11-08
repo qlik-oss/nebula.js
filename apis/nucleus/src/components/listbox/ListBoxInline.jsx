@@ -19,7 +19,6 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
-import handleClickOutside from './interactions/listbox-handle-click-outside';
 import getHasSelections from './assets/has-selections';
 
 const PREFIX = 'ListBoxInline';
@@ -65,9 +64,6 @@ export default function ListBoxInline({ options = {} }) {
     scrollState = undefined,
     setCount = undefined,
   } = options;
-
-  const elementRef = useRef();
-  handleClickOutside({ element: elementRef, selections });
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
@@ -194,7 +190,6 @@ export default function ListBoxInline({ options = {} }) {
       gap={0}
       style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
       onKeyDown={handleKeyDown}
-      ref={elementRef}
     >
       {toolbar && (
         <Grid item container style={{ padding: theme.spacing(1) }}>
