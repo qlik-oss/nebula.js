@@ -260,7 +260,7 @@ describe('use-listbox-interactions', () => {
         });
       });
 
-      expect(applySelectionsOnPages).toHaveBeenCalledTimes(startCallCount + 1);
+      expect(applySelectionsOnPages).toHaveBeenCalledTimes(startCallCount + 2);
       expect(applySelectionsOnPages.mock.calls[1]).toEqual([[], [24], false]);
       await act(() => {
         ref.current.result.interactionEvents.onClick({
