@@ -1,5 +1,5 @@
 module.exports = {
-  verbose: true,
+  // verbose: true,
   clearMocks: true,
   testEnvironment: 'jest-environment-jsdom',
   testRegex: [
@@ -20,6 +20,7 @@ module.exports = {
     'apis/enigma-mocker/**/*.{js,jsx}',
     'apis/locale/**/*.{js,jsx}',
     'apis/nucleus/src/__tests__/*.{js,jsx}',
+    'apis/nucleus/src/components/listbox/hooks/*.{js,jsx}',
     'apis/nucleus/src/plugins/*.{js,jsx}',
     'apis/nucleus/src/sn/*.{js,jsx}',
     'apis/nucleus/src/stores/*.{js,jsx}',
