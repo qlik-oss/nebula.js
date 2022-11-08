@@ -436,8 +436,9 @@ function RowColumn({ index, style, data }) {
           </Grid>
         )}
 
-        {(showLock || showTick) && (
+        {!checkboxes && (
           <Grid item className={classes.icon}>
+            {!showLock && !showTick && <span style={{ minWidth: '12px' }} />}
             {showLock && <Lock style={iconStyles} size="small" />}
             {showTick && <Tick style={iconStyles} size="small" />}
           </Grid>
