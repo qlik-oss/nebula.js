@@ -20,6 +20,9 @@
     "dist",
     "lib"
   ],
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "scripts": {
     "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js",
     "build:dev": "cross-env NODE_ENV=development DEFAULTS=true webpack --config ./lib/webpack.build.js",
