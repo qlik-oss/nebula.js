@@ -42,7 +42,7 @@ module.exports = {
     '!commands/sense/src/empty-ext.js',
     '!apis/snapshooter/client.js',
     '!apis/test-utils/index.js',
-    '!apis/nucleus/src/components/selections/__stories__',
+    '!apis/nucleus/src/components/selections/__stories__/**',
 
     '!**/lib/**',
     '!**/dist/**',
