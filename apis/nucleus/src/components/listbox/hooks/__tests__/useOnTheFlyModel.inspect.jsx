@@ -1,5 +1,7 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { create, act } from 'react-test-renderer';
+import useOnTheFlyModel from '../useOnTheFlyModel';
+import * as useSessionModelModule from '../../../../hooks/useSessionModel';
 
 const TestHook = forwardRef(({ hook, hookProps }, ref) => {
   const result = hook(...hookProps);
@@ -10,8 +12,6 @@ const TestHook = forwardRef(({ hook, hookProps }, ref) => {
 });
 
 describe('useExistingModel', () => {
-  let sandbox;
-  let useOnTheFlyModel;
   let sessionModel;
   let useSessionModel;
   let app;
@@ -20,21 +20,18 @@ describe('useExistingModel', () => {
   let ref;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox({ useFakeTimers: true });
+    jest.useFakeTimers();
 
     sessionModel = {
       key: 'session-model',
-      lock: sandbox.stub(),
-      unlock: sandbox.stub(),
+      lock: jest.fn(),
+      unlock: jest.fn(),
     };
 
     app = {};
-    useSessionModel = sandbox.stub().callsFake((def, appModel) => [appModel === null ? undefined : sessionModel]);
+    useSessionModel = jest.fn().mockImplementation((def, appModel) => [appModel === null ? undefined : sessionModel]);
 
-    [{ default: useOnTheFlyModel }] = aw.mock(
-      [[require.resolve('../../../../hooks/useSessionModel'), () => useSessionModel]],
-      ['../useOnTheFlyModel']
-    );
+    jest.spyOn(useSessionModelModule, 'default').mockImplementation(useSessionModel);
 
     ref = React.createRef();
     render = async (hook, ...hookProps) => {
@@ -45,53 +42,54 @@ describe('useExistingModel', () => {
   });
 
   afterEach(() => {
-    sandbox.reset();
+    jest.useRealTimers();
+    jest.restoreAllMocks();
+    jest.resetAllMocks();
     renderer.unmount();
   });
 
   describe('from field name', () => {
-    it('should use provided frequencyMode', async () => {
+    test('should use provided frequencyMode', async () => {
       const options = {
         frequencyMode: 'value',
       };
       const fieldIdentifier = 'Alpha';
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
-      expect(useSessionModel.args[0][0].qListObjectDef.qFrequencyMode).to.equal('V');
+      expect(useSessionModel.mock.lastCall[0].qListObjectDef.qFrequencyMode).toBe('V');
     });
 
-    it('should default to none if provided frequencyMode is invalid', async () => {
+    test('should default to none if provided frequencyMode is invalid', async () => {
       const options = {
         frequencyMode: 'invalid value',
       };
       const fieldIdentifier = 'Alpha';
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
-      expect(useSessionModel.args[0][0].qListObjectDef.qFrequencyMode).to.equal('N');
+      expect(useSessionModel.mock.lastCall[0].qListObjectDef.qFrequencyMode).toBe('N');
     });
 
-    it('should get frequency value if histogram is enabled', async () => {
+    test('should get frequency value if histogram is enabled', async () => {
       const options = {
         frequencyMode: 'none',
         histogram: true,
       };
       const fieldIdentifier = 'Alpha';
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
-      expect(useSessionModel.args[0][0].qListObjectDef.qFrequencyMode).to.equal('V');
+      expect(useSessionModel.mock.lastCall[0].qListObjectDef.qFrequencyMode).toBe('V');
     });
   });
 
   describe('on the fly library dimension', () => {
-    it('should extract fieldDef from app', async () => {
+    test('should extract fieldDef from app', async () => {
       const options = {
         histogram: true,
       };
       const fieldIdentifier = { qLibraryId: '123' };
       const fakeDimLayout = { qDim: { qFieldDefs: ['Volume'] } };
-      app.getDimension = sinon.stub().returns({ getLayout: async () => fakeDimLayout });
+      app.getDimension = jest.fn().mockReturnValue({ getLayout: async () => fakeDimLayout });
 
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
-      expect(app.getDimension.callCount).to.equal(1);
-      const listdef = useSessionModel.args.pop()[0];
-      expect(listdef.frequencyMax.qValueExpression.includes('Volume')).to.be.true;
+      expect(app.getDimension).toHaveBeenCalledTimes(1);
+      expect(useSessionModel.mock.lastCall[0].frequencyMax.qValueExpression.includes('Volume')).toBe(true);
     });
   });
 });
