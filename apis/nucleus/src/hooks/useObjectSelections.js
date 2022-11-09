@@ -15,13 +15,13 @@ const event = () => {
   };
 };
 
-function createHandler({ elements, triggerFunc }) {
+function createHandler({ element, triggerFunc }) {
   const handler = (evt) => {
     const targetStillExists = document.contains(evt.target);
     // const isClickOutside =
     //   targetStillExists &&
     //   !elements.some((element) => (document.contains(element.current) ? true : element.current?.contains(evt.target)));
-    const [element] = elements;
+    // const [element] = elements;
     const isWithin = element.current?.contains(evt.target);
     const containerStillExists = !!document.contains(element.current);
     const isClickOutside = targetStillExists && containerStillExists && !isWithin;
@@ -168,8 +168,8 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
   return api;
 };
 
-const getClickOutFuncs = ({ elements, objectSelections }) => {
-  const handler = createHandler({ elements, triggerFunc: () => objectSelections.confirm.call(objectSelections) });
+const getClickOutFuncs = ({ element, objectSelections }) => {
+  const handler = createHandler({ element, triggerFunc: () => objectSelections.confirm.call(objectSelections) });
 
   const activateClickOut = () => {
     document.addEventListener('mousedown', handler);
@@ -184,7 +184,7 @@ const getClickOutFuncs = ({ elements, objectSelections }) => {
   };
 };
 
-export default function useObjectSelections(app, model, elements) {
+export default function useObjectSelections(app, model, element) {
   const [appSelections] = useAppSelections(app);
   const [layout] = useLayout(model);
   const key = model ? model.id : null;
@@ -200,17 +200,25 @@ export default function useObjectSelections(app, model, elements) {
       appSelections,
       appModal,
       model,
-      elements,
     });
-
-    const { activateClickOut, deactivateClickOut } = getClickOutFuncs({ elements, objectSelections });
-
-    objectSelections.addListener('activated', activateClickOut);
-    objectSelections.addListener('deactivated', deactivateClickOut);
 
     objectSelectionsStore.set(key, objectSelections);
     objectSelectionsStore.dispatch(true);
   }, [appSelections, model]);
+
+  useEffect(() => {
+    if (!objectSelections) return () => {};
+
+    const { activateClickOut, deactivateClickOut } = getClickOutFuncs({ element, objectSelections });
+
+    objectSelections.addListener('activated', activateClickOut);
+    objectSelections.addListener('deactivated', deactivateClickOut);
+
+    return () => {
+      objectSelections.removeListener('activated', activateClickOut);
+      objectSelections.removeListener('deactivated', deactivateClickOut);
+    };
+  }, [objectSelections, element]);
 
   useEffect(() => {
     if (!objectSelections) return;

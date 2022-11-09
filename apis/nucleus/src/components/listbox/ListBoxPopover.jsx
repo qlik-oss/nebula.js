@@ -68,7 +68,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
   const { translator } = useContext(InstanceContext);
   const moreAlignTo = useRef();
   const popoverRef = useRef();
-  const [selections] = useObjectSelections(app, model, [popoverRef]);
+  const [selections] = useObjectSelections(app, model, popoverRef);
   const [layout] = useLayout(model);
 
   useEffect(() => {

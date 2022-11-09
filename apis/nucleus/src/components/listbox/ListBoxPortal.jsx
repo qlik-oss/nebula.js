@@ -24,9 +24,7 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options
 
   const elementRef = useRef(element);
 
-  const selections = hasExternalSelectionsApi
-    ? options.selectionsApi
-    : useObjectSelections(app, model, [elementRef])[0];
+  const selections = hasExternalSelectionsApi ? options.selectionsApi : useObjectSelections(app, model, elementRef)[0];
 
   if (!selections || !model) {
     return null;
