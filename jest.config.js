@@ -24,6 +24,7 @@ module.exports = {
     'apis/nucleus/src/components/listbox/__tests__/*.{js,jsx}',
     'apis/nucleus/src/components/listbox/components/__tests__/*.{js,jsx}',
     'apis/nucleus/src/components/listbox/hooks/**/*.{js,jsx}',
+    'apis/nucleus/src/components/listbox/interactions/*.{js,jsx}',
     'apis/nucleus/src/plugins/*.{js,jsx}',
     'apis/nucleus/src/sn/*.{js,jsx}',
     'apis/nucleus/src/stores/*.{js,jsx}',
