@@ -1,30 +1,16 @@
 import * as listboxSelections from '../listbox-selections';
 
 describe('use-listbox-interactions', () => {
-  let sandbox;
-
-  before(() => {
-    sandbox = sinon.createSandbox();
+  test('getUniques should return unique values', () => {
+    expect(listboxSelections.getUniques([1, 1, 2, 5, 7, 7, 7, 1000000, 1000000])).toEqual([1, 2, 5, 7, 1000000]);
+    expect(listboxSelections.getUniques([])).toEqual([]);
+    expect(listboxSelections.getUniques(['hey hey', 'hey hey'])).toEqual(['hey hey']);
+    expect(listboxSelections.getUniques(undefined)).toBe(undefined);
+    expect(listboxSelections.getUniques(null)).toBe(undefined);
+    expect(listboxSelections.getUniques({})).toBe(undefined);
   });
 
-  afterEach(() => {
-    sandbox.reset();
-  });
-
-  after(() => {
-    sandbox.restore();
-  });
-
-  it('getUniques should return unique values', () => {
-    expect(listboxSelections.getUniques([1, 1, 2, 5, 7, 7, 7, 1000000, 1000000])).to.deep.equal([1, 2, 5, 7, 1000000]);
-    expect(listboxSelections.getUniques([])).to.deep.equal([]);
-    expect(listboxSelections.getUniques(['hey hey', 'hey hey'])).to.deep.equal(['hey hey']);
-    expect(listboxSelections.getUniques(undefined)).to.equal(undefined);
-    expect(listboxSelections.getUniques(null)).to.equal(undefined);
-    expect(listboxSelections.getUniques({})).to.equal(undefined);
-  });
-
-  it('getSelectedValues should return unique values', () => {
+  test('getSelectedValues should return unique values', () => {
     const pages = [
       {
         qMatrix: [
@@ -39,8 +25,8 @@ describe('use-listbox-interactions', () => {
       },
     ];
 
-    expect(listboxSelections.getSelectedValues(undefined)).to.deep.equal([]);
-    expect(listboxSelections.getSelectedValues(pages)).to.deep.equal([0, 1, 5]);
+    expect(listboxSelections.getSelectedValues(undefined)).toEqual([]);
+    expect(listboxSelections.getSelectedValues(pages)).toEqual([0, 1, 5]);
   });
 
   describe('applySelectionsOnPages should modify pages so that selections are applied', () => {
@@ -62,9 +48,9 @@ describe('use-listbox-interactions', () => {
       ];
     });
 
-    it('should add selection for element number 2', () => {
+    test('should add selection for element number 2', () => {
       const selectedPages = listboxSelections.applySelectionsOnPages(pages, [2]);
-      expect(selectedPages).to.deep.equal([
+      expect(selectedPages).toEqual([
         {
           qMatrix: [
             [{ qState: 'S', qElemNumber: 0 }, []],
@@ -79,9 +65,9 @@ describe('use-listbox-interactions', () => {
       ]);
     });
 
-    it('should toggle selection (turn it off)', () => {
+    test('should toggle selection (turn it off)', () => {
       const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0]);
-      expect(selectedPages).to.deep.equal([
+      expect(selectedPages).toEqual([
         {
           qMatrix: [
             [{ qState: 'A', qElemNumber: 0 }, []],
@@ -96,9 +82,9 @@ describe('use-listbox-interactions', () => {
       ]);
     });
 
-    it('should select a range without toggling any already selected values', () => {
+    test('should select a range without toggling any already selected values', () => {
       const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0, 1, 2, 3, 4, 5]);
-      expect(selectedPages).to.deep.equal([
+      expect(selectedPages).toEqual([
         {
           qMatrix: [
             [{ qState: 'S', qElemNumber: 0 }, []],
@@ -113,10 +99,10 @@ describe('use-listbox-interactions', () => {
       ]);
     });
 
-    it('should deselect all exept the new selection', () => {
+    test('should deselect all exept the new selection', () => {
       const clearAllButElmNumbers = true;
       const selectedPages = listboxSelections.applySelectionsOnPages(pages, [3], clearAllButElmNumbers);
-      expect(selectedPages).to.deep.equal([
+      expect(selectedPages).toEqual([
         {
           qMatrix: [
             [{ qState: 'A', qElemNumber: 0 }, []],
@@ -138,98 +124,102 @@ describe('use-listbox-interactions', () => {
     beforeEach(() => {
       const SUCCESS = true;
       selections = {
-        select: sandbox.stub().resolves(SUCCESS),
+        select: jest.fn().mockResolvedValue(SUCCESS),
       };
     });
 
-    it('should abort if nan values exist', async () => {
+    test('should abort if nan values exist', async () => {
       const promise = listboxSelections.selectValues({
         selections,
         elemNumbers: [1, 2, NaN, 4],
         isSingleSelect: false,
       });
-      expect(promise.then, 'should return a promise').to.be.a('function');
+      expect(typeof promise.then).toBe('function');
       const resp = await promise;
-      expect(resp, 'should return unsuccessful').to.equal(false);
-      expect(selections.select).not.called;
+      expect(resp).toBe(false);
+      expect(selections.select).not.toHaveBeenCalled();
     });
 
-    it('should call select', async () => {
+    test('should call select', async () => {
       const resp = await listboxSelections.selectValues({
         selections,
         elemNumbers: [1, 2, 3, 4],
         isSingleSelect: false,
       });
-      expect(resp, 'success').to.equal(true);
-      expect(selections.select).calledOnce.calledWithExactly({
+      expect(resp).toBe(true);
+      expect(selections.select).toHaveBeenCalledTimes(1);
+      expect(selections.select).toHaveBeenCalledWith({
         method: 'selectListObjectValues',
         params: ['/qListObjectDef', [1, 2, 3, 4], true],
       });
     });
 
-    it('single select true should translate to toggle false', async () => {
+    test('single select true should translate to toggle false', async () => {
       const resp = await listboxSelections.selectValues({
         selections,
         elemNumbers: [4],
         isSingleSelect: true,
       });
-      expect(resp, 'success').to.equal(true);
-      expect(selections.select).calledOnce.calledWithExactly({
+      expect(resp).toBe(true);
+      expect(selections.select).toHaveBeenCalledTimes(1);
+      expect(selections.select).toHaveBeenCalledWith({
         method: 'selectListObjectValues',
         params: ['/qListObjectDef', [4], false],
       });
     });
 
-    it('should catch errors in backend call', async () => {
-      selections.select.rejects('error');
+    test('should catch errors in backend call', async () => {
+      selections.select.mockRejectedValue('error');
       expect(async () => {
         await listboxSelections.selectValues({
           selections,
           elemNumbers: [4],
           isSingleSelect: false,
         });
-      }).not.to.throw();
+      }).not.toThrow();
     });
 
-    it('should call select', () => {
+    test('should call select', () => {
       listboxSelections
         .selectValues({ selections, elemNumbers: [1, 2, 4], isSingleSelect: false })
         .then((successStory) => {
-          expect(successStory).to.equal(true);
+          expect(successStory).toBe(true);
         });
-      expect(selections.select).calledOnce.calledWithExactly({
+      expect(selections.select).toHaveBeenCalledTimes(1);
+      expect(selections.select).toHaveBeenCalledWith({
         method: 'selectListObjectValues',
         params: ['/qListObjectDef', [1, 2, 4], true],
       });
     });
 
-    it('should call select with toggle false when single select', () => {
+    test('should call select with toggle false when single select', () => {
       listboxSelections.selectValues({ selections, elemNumbers: [2], isSingleSelect: true }).then((successStory) => {
-        expect(successStory).to.equal(true);
+        expect(successStory).toBe(true);
       });
-      expect(selections.select).calledOnce.calledWithExactly({
+      expect(selections.select).toHaveBeenCalledTimes(1);
+      expect(selections.select).toHaveBeenCalledWith({
         method: 'selectListObjectValues',
         params: ['/qListObjectDef', [2], false],
       });
     });
 
-    it('should not call select when NaN values exist', () => {
+    test('should not call select when NaN values exist', () => {
       listboxSelections
         .selectValues({ selections, elemNumbers: [1, NaN, 4], isSingleSelect: false })
         .then((successStory) => {
-          expect(successStory).to.equal(false);
+          expect(successStory).toBe(false);
         });
-      expect(selections.select).not.called;
+      expect(selections.select).not.toHaveBeenCalled();
     });
 
-    it('should handle select failure and then resolve false', () => {
-      selections.select.rejects(false);
+    test('should handle select failure and then resolve false', () => {
+      selections.select.mockRejectedValue(false);
       listboxSelections
         .selectValues({ selections, elemNumbers: [1, 2, 4], isSingleSelect: false })
         .then((successStory) => {
-          expect(successStory).to.equal(false);
+          expect(successStory).toBe(false);
         });
-      expect(selections.select).calledOnce;
+      expect(selections.select).toHaveBeenCalledTimes(1);
     });
   });
 
@@ -252,24 +242,22 @@ describe('use-listbox-interactions', () => {
       ];
     });
 
-    it('listboxSelections', () => {
-      expect(listboxSelections.getElemNumbersFromPages(undefined)).to.deep.equal([]);
+    test('listboxSelections', () => {
+      expect(listboxSelections.getElemNumbersFromPages(undefined)).toEqual([]);
       const resp = listboxSelections.getElemNumbersFromPages(pages);
-      expect(resp).to.deep.equal([0, 1, 2, 3, 4, 5, 6]);
+      expect(resp).toEqual([0, 1, 2, 3, 4, 5, 6]);
     });
   });
 
   describe('fillRange', () => {
-    it('should fill the numbers according to ground-truth array', () => {
-      expect(listboxSelections.fillRange([], [])).to.deep.equal([]);
-      expect(listboxSelections.fillRange([1, 10], []), 'without ground-truth no range').to.deep.equal([]);
+    test('should fill the numbers according to ground-truth array', () => {
+      expect(listboxSelections.fillRange([], [])).toEqual([]);
+      expect(listboxSelections.fillRange([1, 10], [])).toEqual([]);
 
-      expect(listboxSelections.fillRange([0, 5], [0, 1, 2, 3, 4, 5, 6])).to.deep.equal([0, 1, 2, 3, 4, 5]);
-      expect(listboxSelections.fillRange([0], [0, 1, 2, 3, 4, 5, 6])).to.deep.equal([0]);
-      expect(listboxSelections.fillRange([], [0, 1, 2, 3, 4, 5, 6])).to.deep.equal([]);
-      expect(listboxSelections.fillRange([1, 6], [0, 1, 8, 16, 6, 2]), 'should fill using ground-truth').to.deep.equal([
-        1, 8, 16, 6,
-      ]);
+      expect(listboxSelections.fillRange([0, 5], [0, 1, 2, 3, 4, 5, 6])).toEqual([0, 1, 2, 3, 4, 5]);
+      expect(listboxSelections.fillRange([0], [0, 1, 2, 3, 4, 5, 6])).toEqual([0]);
+      expect(listboxSelections.fillRange([], [0, 1, 2, 3, 4, 5, 6])).toEqual([]);
+      expect(listboxSelections.fillRange([1, 6], [0, 1, 8, 16, 6, 2])).toEqual([1, 8, 16, 6]);
     });
   });
 });
