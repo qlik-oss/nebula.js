@@ -21,6 +21,7 @@ module.exports = {
     'apis/locale/**/*.{js,jsx}',
     'apis/nucleus/src/__tests__/*.{js,jsx}',
     'apis/nucleus/src/components/listbox/components/__tests__/*.{js,jsx}',
+    'apis/nucleus/src/components/listbox/__tests__/*.{js,jsx}',
     'apis/nucleus/src/plugins/*.{js,jsx}',
     'apis/nucleus/src/sn/*.{js,jsx}',
     'apis/nucleus/src/stores/*.{js,jsx}',
