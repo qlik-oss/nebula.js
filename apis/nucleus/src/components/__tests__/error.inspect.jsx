@@ -1,40 +1,32 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-
 import WarningTriangle from '@nebula.js/ui/icons/warning-triangle-2';
 import Tick from '@nebula.js/ui/icons/tick';
+import * as nebulaUIThemeModule from '@nebula.js/ui/theme';
 
-const [{ default: Error, Descriptions, DescriptionRow }] = aw.mock(
-  [
-    [
-      require.resolve('@nebula.js/ui/theme'),
-      () => ({
-        useTheme: () => ({
-          spacing: () => 0,
-          palette: {
-            success: {
-              main: 'success',
-            },
-            warning: {
-              maing: 'warning',
-            },
-            error: {
-              main: 'error',
-            },
-          },
-        }),
-      }),
-    ],
-  ],
-  ['../Error']
-);
+import Error, { Descriptions, DescriptionRow } from '../Error';
+
+jest.mock('@nebula.js/ui/theme', () => ({ ...jest.requireActual('@nebula.js/ui/theme') }));
 
 describe('<Error />', () => {
-  let sandbox;
   let renderer;
   let render;
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    // for getter functions of a module, we need to mock and jest.requireActual them as well to pass the getter step
+    jest.spyOn(nebulaUIThemeModule, 'useTheme').mockImplementation(() => ({
+      spacing: () => 0,
+      palette: {
+        success: {
+          main: 'success',
+        },
+        warning: {
+          maing: 'warning',
+        },
+        error: {
+          main: 'error',
+        },
+      },
+    }));
     render = async (title, message, data) => {
       await act(async () => {
         renderer = create(<Error title={title} message={message} data={data} />);
@@ -42,26 +34,27 @@ describe('<Error />', () => {
     };
   });
   afterEach(() => {
-    sandbox.restore();
     renderer.unmount();
+    jest.restoreAllMocks();
+    jest.resetAllMocks();
   });
-  it('should render default error', async () => {
+  test('should render default error', async () => {
     await render();
     const title = renderer.root.find((el) => el.props['data-tid'] === 'error-title');
-    expect(title.props.children).to.equal('Error');
+    expect(title.props.children).toBe('Error');
     const message = renderer.root.find((el) => el.props['data-tid'] === 'error-message');
-    expect(message.props.children).to.equal('');
+    expect(message.props.children).toBe('');
   });
 
-  it('should render error', async () => {
+  test('should render error', async () => {
     await render('foo', 'bar', [{ title: 'foo', descriptions: [] }]);
     const title = renderer.root.find((el) => el.props['data-tid'] === 'error-title');
-    expect(title.props.children).to.equal('foo');
+    expect(title.props.children).toBe('foo');
     const msg = renderer.root.find((el) => el.props['data-tid'] === 'error-message');
-    expect(msg.props.children).to.equal('bar');
+    expect(msg.props.children).toBe('bar');
   });
 
-  it('should render error with descriptions', async () => {
+  test('should render error with descriptions', async () => {
     const d = [1, 2, 3, 4, 5, 6].map((n) => ({
       description: `d-${n}`,
       label: `l-${n}`,
@@ -80,10 +73,10 @@ describe('<Error />', () => {
     await render('foo', 'bar', data);
     const list = renderer.root.findByType(Descriptions);
     const rows = list.findAllByType(DescriptionRow);
-    expect(rows).to.have.length(6);
+    expect(rows.length).toBe(6);
     const w = list.findAllByType(WarningTriangle);
     const t = list.findAllByType(Tick);
-    expect(w).to.have.length(3);
-    expect(t).to.have.length(3);
+    expect(w.length).toBe(3);
+    expect(t.length).toBe(3);
   });
 });

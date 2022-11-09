@@ -1,20 +1,28 @@
 /* eslint react/jsx-no-constructed-context-values: 0 */
+/* eslint-disable no-import-assign */
 import React from 'react';
 import renderer from 'react-test-renderer';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import { IconButton, Typography } from '@mui/material';
-
-const InstanceContext = React.createContext();
-const [{ default: OneField }] = aw.mock(
-  [[require.resolve('../../../contexts/InstanceContext'), () => InstanceContext]],
-  ['../OneField']
-);
+import OneField from '../OneField';
+import * as InstanceContextModule from '../../../contexts/InstanceContext';
 
 describe('<OneField />', () => {
+  let InstanceContext;
   const theme = createTheme('dark');
   const create = (component) => renderer.create(<ThemeProvider theme={theme}>{component}</ThemeProvider>);
 
-  it('should have `ALL`', () => {
+  beforeEach(() => {
+    InstanceContext = React.createContext();
+    InstanceContextModule.default = InstanceContext;
+  });
+
+  afterEach(() => {
+    jest.resetAllMocks();
+    jest.resetAllMocks();
+  });
+
+  test('should have `ALL`', () => {
     const field = {
       selections: [
         {
@@ -39,19 +47,19 @@ describe('<OneField />', () => {
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(Typography);
-    expect(types).to.have.length(2);
-    expect(types[0].props).to.deep.equal({
+    expect(types.length).toBe(2);
+    expect(types[0].props).toEqual({
       noWrap: true,
       style: { fontSize: '12px', lineHeight: '16px', fontWeight: 600 },
       children: 'my-field',
     });
-    expect(types[1].props).to.deep.equal({
+    expect(types[1].props).toEqual({
       noWrap: true,
       style: { fontSize: '12px', opacity: 0.55, lineHeight: '16px' },
       children: 'ALL',
     });
   });
-  it('should have `Of`', () => {
+  test('should have `Of`', () => {
     const field = {
       selections: [
         {
@@ -76,19 +84,19 @@ describe('<OneField />', () => {
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(Typography);
-    expect(types).to.have.length(2);
-    expect(types[0].props).to.deep.equal({
+    expect(types.length).toBe(2);
+    expect(types[0].props).toEqual({
       noWrap: true,
       style: { fontSize: '12px', lineHeight: '16px', fontWeight: 600 },
       children: 'my-field',
     });
-    expect(types[1].props).to.deep.equal({
+    expect(types[1].props).toEqual({
       noWrap: true,
       style: { fontSize: '12px', opacity: 0.55, lineHeight: '16px' },
       children: 'Of',
     });
   });
-  it('should have a clear button', () => {
+  test('should have a clear button', () => {
     const field = {
       selections: [
         {
@@ -105,10 +113,10 @@ describe('<OneField />', () => {
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(IconButton);
-    expect(types).to.have.length(1);
-    expect(types[0].props.title).to.equal('Clear');
+    expect(types.length).toBe(1);
+    expect(types[0].props.title).toBe('Clear');
   });
-  it('should have a lock button', () => {
+  test('should have a lock button', () => {
     const field = {
       selections: [
         {
@@ -126,6 +134,6 @@ describe('<OneField />', () => {
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(IconButton);
-    expect(types).to.have.length(1);
+    expect(types.length).toBe(1);
   });
 });

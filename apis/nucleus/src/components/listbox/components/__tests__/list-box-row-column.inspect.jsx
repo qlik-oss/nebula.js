@@ -18,43 +18,35 @@ async function render(content) {
 
 describe('<ListBoxRowColumn />', () => {
   const theme = createTheme('dark');
-
-  let sandbox;
   let actions;
   let getFieldKeyboardNavigation;
   let keyboard;
 
-  before(() => {
-    global.document = {};
-    sandbox = sinon.createSandbox();
-    getFieldKeyboardNavigation = sandbox.stub(keyboardNavigation, 'getFieldKeyboardNavigation');
-    actions = 'actions';
-  });
-
   beforeEach(() => {
-    getFieldKeyboardNavigation.returns(() => 'handle-key-down-callback');
+    global.document = {};
+    getFieldKeyboardNavigation = jest
+      .spyOn(keyboardNavigation, 'getFieldKeyboardNavigation')
+      .mockImplementation(() => 'handle-key-down-callback');
+    actions = 'actions';
     keyboard = { active: false, enabled: true };
   });
 
   afterEach(() => {
-    sandbox.reset();
-  });
-
-  after(() => {
-    sandbox.restore();
+    jest.restoreAllMocks();
+    jest.resetAllMocks();
   });
 
   describe('as row', () => {
     const rowCol = 'row';
 
-    it('should have default props', async () => {
+    test('should have default props', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         pages: [],
         actions,
@@ -79,35 +71,36 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onMouseEnter.callCount).to.equal(0);
       expect(typeof type.props.onContextMenu).to.equal('function');
       */
-      const preventDefault = sandbox.stub();
+      const preventDefault = jest.fn();
       type.props.onContextMenu({ preventDefault });
-      expect(preventDefault.callCount).to.equal(1);
-      expect(type.props.tabIndex).to.equal(-1);
-      expect(type.props.onClick.callCount).to.equal(0);
+      expect(preventDefault).toHaveBeenCalledTimes(1);
+      expect(type.props.tabIndex).toBe(-1);
+      expect(type.props.onClick).toHaveBeenCalledTimes(0);
 
       const types = testInstance.findAllByType(Typography);
-      expect(types).to.have.length(1);
-      expect(types[0].props.component).to.equal('span');
-      expect(types[0].props.children.type).to.equal('span');
+      expect(types.length).toBe(1);
+      expect(types[0].props.component).toBe('span');
+      expect(types[0].props.children.type).toBe('span');
 
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
-      expect(cbs).to.have.length(0);
+      expect(cbs.length).toBe(0);
       await testRenderer.unmount();
 
-      expect(getFieldKeyboardNavigation).calledOnce.calledWith('actions');
+      expect(getFieldKeyboardNavigation).toHaveBeenCalledTimes(1);
+      expect(getFieldKeyboardNavigation).toHaveBeenCalledWith('actions');
     });
 
-    it('should have css class `value`', async () => {
+    test('should have css class `value`', async () => {
       const index = 0;
       const style = {};
 
       keyboard.enabled = false;
 
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         pages: [],
         actions,
@@ -121,13 +114,13 @@ describe('<ListBoxRowColumn />', () => {
 
       const type = testInstance.findByType(Grid);
       const { className } = type.props;
-      expect(className).to.be.a('string');
-      expect(className.split(' ')).to.include('value');
-      expect(type.props.tabIndex).to.equal(0);
+      expect(typeof className).toBe('string');
+      expect(className.split(' ').includes('value')).toBe(true);
+      expect(type.props.tabIndex).toBe(0);
       await testRenderer.unmount();
     });
 
-    it('should render with checkboxes', async () => {
+    test('should render with checkboxes', async () => {
       const index = 0;
       const style = {};
 
@@ -135,10 +128,10 @@ describe('<ListBoxRowColumn />', () => {
 
       const data = {
         checkboxes: true,
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         pages: [],
         actions,
@@ -165,31 +158,31 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onClick.callCount).to.equal(0);
       expect(type.props.tabIndex).to.equal(0);
 */
-      const preventDefault = sandbox.stub();
+      const preventDefault = jest.fn();
       type.props.onContextMenu({ preventDefault });
-      expect(preventDefault.callCount).to.equal(1);
-      expect(type.props.onClick.callCount).to.equal(1);
+      expect(preventDefault).toHaveBeenCalledTimes(1);
+      expect(type.props.onClick).toHaveBeenCalledTimes(1);
 
       const types = testInstance.findAllByType(Typography);
       // TODO: MUIv5 - no idea why this breaks
       // expect(types).to.have.length(2);
-      expect(types[0].props.component).to.equal('span');
-      expect(types[0].props.component).to.equal('span');
+      expect(types[0].props.component).toBe('span');
+      expect(types[0].props.component).toBe('span');
       // TODO: MUIv5 - no idea why this breaks
       // const cbs = testInstance.findAllByType(ListBoxCheckbox);
       // expect(cbs).to.have.length(0);
       await testRenderer.unmount();
     });
 
-    it('should set locked state', async () => {
+    test('should set locked state', async () => {
       const index = 0;
       const style = {};
       const data = {
         isLocked: true,
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         pages: [
@@ -220,18 +213,18 @@ describe('<ListBoxRowColumn />', () => {
       const testInstance = testRenderer.root;
 
       const type = testInstance.findByType(Lock);
-      expect(type.props.size).to.equal('small');
+      expect(type.props.size).toBe('small');
       await testRenderer.unmount();
     });
 
-    it('should set selected', async () => {
+    test('should set selected', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         pages: [
@@ -259,18 +252,18 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.include('RowColumn-S');
+      expect(type.props.className.includes('RowColumn-S')).toBe(true);
       await testRenderer.unmount();
     });
 
-    it('should set alternative', async () => {
+    test('should set alternative', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         pages: [
@@ -298,18 +291,18 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.include('RowColumn-A');
+      expect(type.props.className.includes('RowColumn-A')).toBe(true);
       await testRenderer.unmount();
     });
 
-    it('should not add alternative class for A when showGray is false', async () => {
+    test('should not add alternative class for A when showGray is false', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         showGray: false,
@@ -338,18 +331,18 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).not.to.include('RowColumn-A');
+      expect(type.props.className.includes('RowColumn-A')).toBe(false);
       await testRenderer.unmount();
     });
 
-    it('should set excluded - qState X', async () => {
+    test('should set excluded - qState X', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         pages: [
@@ -377,18 +370,18 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.include('RowColumn-X');
+      expect(type.props.className.includes('RowColumn-X')).toBe(true);
       await testRenderer.unmount();
     });
 
-    it('should not add excluded class for qState X when showGray is false', async () => {
+    test('should not add excluded class for qState X when showGray is false', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         showGray: false,
@@ -417,18 +410,18 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).not.to.include('RowColumn-X');
+      expect(type.props.className.includes('RowColumn-X')).toBe(false);
       await testRenderer.unmount();
     });
 
-    it('should set excluded-selected - qState XS', async () => {
+    test('should set excluded-selected - qState XS', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         pages: [
@@ -456,18 +449,18 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.include('RowColumn-XS');
+      expect(type.props.className.includes('RowColumn-XS')).toBe(true);
       await testRenderer.unmount();
     });
 
-    it('should not add excluded-selected class when showGray is false', async () => {
+    test('should not add excluded-selected class when showGray is false', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         showGray: false,
@@ -496,18 +489,18 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).not.to.include('RowColumn-XS');
+      expect(type.props.className.includes('RowColumn-XS')).toBe(false);
       await testRenderer.unmount();
     });
 
-    it('should set excluded - qState XL', async () => {
+    test('should set excluded - qState XL', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         pages: [
@@ -535,18 +528,18 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.className).to.include('RowColumn-X');
+      expect(type.props.className.includes('RowColumn-X')).toBe(true);
       await testRenderer.unmount();
     });
 
-    it('should highlight ranges', async () => {
+    test('should highlight ranges', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         pages: [
@@ -578,20 +571,20 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(Typography);
-      expect(types[0].props.children.props.children).to.equal('nebula.js');
-      expect(types[0].props.className).to.include('highlighted');
-      expect(types[1].props.children.props.children).to.equal(' ftw');
+      expect(types[0].props.children.props.children).toBe('nebula.js');
+      expect(types[0].props.className.includes('highlighted')).toBe(true);
+      expect(types[1].props.children.props.children).toBe(' ftw');
       await testRenderer.unmount();
     });
 
-    it('should highlight ranges', async () => {
+    test('should highlight ranges', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         pages: [
@@ -623,23 +616,23 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(Typography);
-      expect(types[0].props.children.props.children).to.equal('nebula.js ');
-      expect(types[1].props.children.props.children).to.equal('ftw');
-      expect(types[1].props.className).to.include('highlighted');
+      expect(types[0].props.children.props.children).toBe('nebula.js ');
+      expect(types[1].props.children.props.children).toBe('ftw');
+      expect(types[1].props.className.includes('highlighted')).toBe(true);
       // TODO: MUIv5 - no idea why this breaks
       // const hits = testInstance.findAllByProps({ className: 'RowColumn-highlighted' });
       // expect(hits).to.have.length(2);
       await testRenderer.unmount();
     });
 
-    it('should highlight ranges', async () => {
+    test('should highlight ranges', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         pages: [
@@ -671,21 +664,21 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(Typography);
-      expect(types[0].props.children.props.children).to.equal('nebula.js ftw ');
-      expect(types[1].props.children.props.children).to.equal('yeah');
-      expect(types[1].props.className).to.include('RowColumn-highlighted');
-      expect(types[2].props.children.props.children).to.equal(' buddy');
+      expect(types[0].props.children.props.children).toBe('nebula.js ftw ');
+      expect(types[1].props.children.props.children).toBe('yeah');
+      expect(types[1].props.className.includes('RowColumn-highlighted')).toBe(true);
+      expect(types[2].props.children.props.children).toBe(' buddy');
       await testRenderer.unmount();
     });
 
-    it('should show frequency when enabled', async () => {
+    test('should show frequency when enabled', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         frequencyMode: 'value',
@@ -715,10 +708,10 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(Typography);
-      expect(types[1].props.children).to.equal('123');
+      expect(types[1].props.children).toBe('123');
     });
 
-    it('should highlight ranges for checkboxes', async () => {
+    test('should highlight ranges for checkboxes', async () => {
       const index = 0;
       const style = {};
       const data = {
@@ -757,10 +750,10 @@ describe('<ListBoxRowColumn />', () => {
       // const cells = testInstance.findAllByProps({ className: 'RowColumn-highlighted' });
       // expect(cells).to.have.length(2);
       const types = testInstance.findAllByType(Typography);
-      expect(types[1].props.children.props.children).to.equal('nebula.js ftw ');
-      expect(types[2].props.children.props.children).to.equal('yeah');
-      expect(types[2].props.className).to.include('RowColumn-highlighted');
-      expect(types[3].props.children.props.children).to.equal(' buddy');
+      expect(types[1].props.children.props.children).toBe('nebula.js ftw ');
+      expect(types[2].props.children.props.children).toBe('yeah');
+      expect(types[2].props.className.includes('RowColumn-highlighted')).toBe(true);
+      expect(types[3].props.children.props.children).toBe(' buddy');
       await testRenderer.unmount();
     });
   });
@@ -768,14 +761,14 @@ describe('<ListBoxRowColumn />', () => {
   describe('as column', () => {
     const rowCol = 'column';
 
-    it('should have default props', async () => {
+    test('should have default props', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         pages: [],
         actions,
@@ -799,23 +792,23 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onClick.callCount).to.equal(0);
 */
       const types = testInstance.findAllByType(Typography);
-      expect(types).to.have.length(1);
-      expect(types[0].props.component).to.equal('span');
-      expect(types[0].props.children.props.children).to.equal('');
+      expect(types.length).toBe(1);
+      expect(types[0].props.component).toBe('span');
+      expect(types[0].props.children.props.children).toBe('');
 
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
-      expect(cbs).to.have.length(0);
+      expect(cbs.length).toBe(0);
       await testRenderer.unmount();
     });
 
-    it('should have css class `value`', async () => {
+    test('should have css class `value`', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         pages: [],
         actions,
@@ -829,19 +822,19 @@ describe('<ListBoxRowColumn />', () => {
 
       const type = testInstance.findByType(Grid);
       const { className } = type.props;
-      expect(className).to.be.a('string');
-      expect(className.split(' ')).to.include('value');
+      expect(typeof className).toBe('string');
+      expect(className.split(' ').includes('value')).toBe(true);
       await testRenderer.unmount();
     });
 
-    it('should render radio button when isSingleSelect is true', async () => {
+    test('should render radio button when isSingleSelect is true', async () => {
       const index = 0;
       const style = {};
       const data = {
-        onMouseDown: sandbox.spy(),
-        onMouseUp: sandbox.spy(),
-        onMouseEnter: sandbox.spy(),
-        onClick: sandbox.spy(),
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
         keyboard,
         actions,
         isSingleSelect: true,
@@ -875,7 +868,7 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(ListBoxRadioButton);
-      expect(types).to.have.length(1);
+      expect(types.length).toBe(1);
     });
   });
 });

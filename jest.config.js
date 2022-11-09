@@ -20,6 +20,7 @@ module.exports = {
     'apis/enigma-mocker/**/*.{js,jsx}',
     'apis/locale/**/*.{js,jsx}',
     'apis/nucleus/src/__tests__/*.{js,jsx}',
+    'apis/nucleus/src/components/**/*.{js,jsx}',
     'apis/nucleus/src/plugins/*.{js,jsx}',
     'apis/nucleus/src/hooks/*.{js,jsx}',
     'apis/nucleus/src/sn/*.{js,jsx}',
@@ -41,6 +42,7 @@ module.exports = {
     '!commands/sense/src/empty-ext.js',
     '!apis/snapshooter/client.js',
     '!apis/test-utils/index.js',
+    '!apis/nucleus/src/components/selections/__stories__',
 
     '!**/lib/**',
     '!**/dist/**',
