@@ -1,64 +1,53 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-no-constructed-context-values */
-
+/* eslint-disable no-use-before-define */
+/* eslint-disable no-import-assign */
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { IconButton, Divider, Grid } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import * as InstanceContextModule from '../../contexts/InstanceContext';
+import * as useDefaultSelectionActionsModule from '../../hooks/useDefaultSelectionActions';
+import * as ActionsToolbarMoreModule from '../ActionsToolbarMore';
+import ActionsToolbar from '../ActionsToolbar';
 
-const InstanceContext = React.createContext();
+const nebulaUIThemeModule = require('@nebula.js/ui/theme');
+
+jest.mock('@mui/material', () => ({ ...jest.requireActual('@mui/material'), Popover }));
+jest.mock('@nebula.js/ui/theme', () => ({ ...jest.requireActual('@nebula.js/ui/theme') }));
 
 const Popover = (props) => props.children || 'popover';
-
-const [{ default: ActionsToolbar }] = aw.mock(
-  [
-    [
-      require.resolve('@nebula.js/ui/theme'),
-      () => ({
-        useTheme: () => ({ spacing: () => {} }),
-      }),
-    ],
-    [require.resolve('../../contexts/InstanceContext'), () => InstanceContext],
-    [
-      require.resolve('../../hooks/useDefaultSelectionActions'),
-      () => () => [{ label: 'clear ' }, { label: 'cancel' }, { label: 'confirm' }],
-    ],
-    [require.resolve('../ActionsToolbarMore'), () => Popover],
-    [require.resolve('@mui/material/styles'), () => ({ styled })],
-    [
-      require.resolve('@mui/material'),
-      () => ({
-        IconButton,
-        Grid,
-        Divider,
-        Popover,
-      }),
-    ],
-  ],
-  ['../ActionsToolbar']
-);
+const InstanceContext = React.createContext();
 
 describe('<ActionsToolbar />', () => {
-  let sandbox;
   let renderer;
   let render;
   let update;
   let selections;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    // if spied function is a getter -> you need to use jest.mock(...)
+    // and spread jest.requireActual(<MODULE>) in order to mock it
+    // check here: https://github.com/facebook/jest/issues/6914#issue-355205927
+    jest.spyOn(nebulaUIThemeModule, 'useTheme').mockImplementation(() => ({ spacing: () => {} }));
+    jest
+      .spyOn(useDefaultSelectionActionsModule, 'default')
+      .mockImplementation(() => [{ label: 'clear ' }, { label: 'cancel' }, { label: 'confirm' }]);
+    InstanceContextModule.default = InstanceContext;
+    ActionsToolbarMoreModule.default = Popover;
+
     selections = {
       show: false,
       api: {
-        canClear: sandbox.stub(),
-        clear: sandbox.stub(),
-        canCancel: sandbox.stub(),
-        cancel: sandbox.stub(),
-        canConfirm: sandbox.stub(),
-        confirm: sandbox.stub(),
+        canClear: jest.fn(),
+        clear: jest.fn(),
+        canCancel: jest.fn(),
+        cancel: jest.fn(),
+        canConfirm: jest.fn(),
+        confirm: jest.fn(),
       },
-      onConfirm: sandbox.spy(),
-      onCancel: sandbox.spy(),
+      onConfirm: jest.fn(),
+      onCancel: jest.fn(),
     };
     render = async (p) => {
       const props = {
@@ -85,24 +74,25 @@ describe('<ActionsToolbar />', () => {
   });
 
   afterEach(() => {
-    sandbox.restore();
     renderer.unmount();
+    jest.restoreAllMocks();
+    jest.resetAllMocks();
   });
 
-  it('should render default', async () => {
+  test('should render default', async () => {
     await render();
-    expect(renderer.root.props).to.eql({ actions: [] });
+    expect(renderer.root.props).toEqual({ actions: [] });
   });
 
-  it('should render default selection actions', async () => {
-    sandbox.stub(selections, 'show').value(true);
+  test('should render default selection actions', async () => {
+    selections.show = true;
     await render({ selections });
     const selItems = renderer.root.findAllByType(IconButton);
-    expect(selItems).to.have.length(3);
+    expect(selItems.length).toBe(3);
   });
 
-  it('should render custom actions', async () => {
-    const action = sandbox.spy();
+  test('should render custom actions', async () => {
+    const action = jest.fn();
     const actions = [
       {
         key: 'foo',
@@ -112,60 +102,65 @@ describe('<ActionsToolbar />', () => {
       },
     ];
     await render({ actions });
-    renderer.root.findByType(IconButton);
+    const IconButtons = renderer.root.findAllByType(IconButton);
+    expect(IconButtons.length).toBe(1);
   });
 
-  it('should not render hidden custom actions', async () => {
+  test('should not render hidden custom actions', async () => {
     const actions = [1, 2, 3, 4, 5].map((key) => ({
       key,
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
       hidden: true,
     }));
     await render({ actions, selections });
-    expect(() => renderer.root.findByType(IconButton)).to.throw();
+    expect(() => renderer.root.findByType(IconButton)).toThrow();
   });
 
-  it('should render more', async () => {
+  test('should render more', async () => {
     const actions = [1, 2, 3, 4, 5].map((key) => ({
       key,
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
     }));
     await render({ actions });
     const items = renderer.root.findAllByType(IconButton);
     const more = items[items.length - 1];
-    expect(more.props).to.containSubset({
+    expect(more.props).toMatchObject({
       title: 'Menu.More',
     });
-    expect(items).to.have.length(3);
+    expect(items.length).toBe(3);
   });
 
-  it('should render divider', async () => {
-    sandbox.stub(selections, 'show').value(true);
+  test('should render divider', async () => {
+    selections.show = true;
     const actions = [1, 2, 3, 4, 5].map((key) => ({
       key,
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
     }));
     await render({ actions, selections });
-    renderer.root.findByType(Divider);
+    const _divider = renderer.root.findByType(Divider);
+    expect(_divider).not.toBeNull();
   });
 
-  it('should render more items', async () => {
+  test('should render more items', async () => {
     const actions = [1, 2, 3, 4, 5].map((key) => ({
       key,
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
     }));
     await render({ actions });
     const items = renderer.root.findAllByType(IconButton);
     const more = items[items.length - 1];
-    more.props.onClick();
-    renderer.root.findByType(Popover);
+    act(() => {
+      more.props.onClick();
+    });
+    const _popover = renderer.root.findByType(Popover);
+    expect(_popover).not.toBeNull();
   });
 
-  it.skip('should set spacing', async () => {
+  test.skip('should set spacing', async () => {
     const validate = (cnt) => {
       const items = renderer.root.findAllByType(Grid).filter((i) => i.props.className);
       expect(items).to.have.length(cnt);
@@ -186,13 +181,13 @@ describe('<ActionsToolbar />', () => {
       key,
       label: key,
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
     }));
     await render({ actions, selections });
     // 2 custom actions + more
     validate(3);
 
-    sandbox.stub(selections, 'show').value(true);
+    selections.show = true;
     await render({ actions, selections });
     // 2 custom actions + more + divider + 3 selection actions
     validate(7);
@@ -202,30 +197,33 @@ describe('<ActionsToolbar />', () => {
     expect(renderer.root.findAllByType(Grid).filter((i) => i.props.className)).to.have.length(0);
   });
 
-  it('should render as popover', async () => {
+  test('should render as popover', async () => {
     const actions = [1, 2, 3, 4, 5].map((key) => ({
       key,
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
     }));
     await render({ actions, popover: { show: true } });
-    renderer.root.findByType(Popover);
+    const _popover = renderer.root.findByType(Popover);
+    expect(_popover).not.toBeNull();
   });
 
-  it('should always start with more menu closed in popover', async () => {
+  test('should always start with more menu closed in popover', async () => {
     const actions = [1, 2, 3, 4, 5].map((key) => ({
       key,
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
     }));
     await render({ actions, popover: { show: true } });
     const items = renderer.root.findAllByType(IconButton);
     const more = items[items.length - 1];
-    more.props.onClick();
+    act(() => {
+      more.props.onClick();
+    });
     await update({ actions, popover: { show: false } });
     await update({ actions, popover: { show: true } });
     const popovers = renderer.root.findAllByType(Popover);
-    expect(popovers).to.have.length(1);
+    expect(popovers.length).toBe(1);
   });
 
   describe('keyboard navigation', () => {
@@ -239,7 +237,7 @@ describe('<ActionsToolbar />', () => {
       focusCallbacks = {};
       buttonsMock = ['target-0', 'target-1'];
       focusHandler = {
-        refocusContent: sandbox.spy(),
+        refocusContent: jest.fn(),
         on: (name, cb) => {
           focusCallbacks[name] = cb;
         },
@@ -247,68 +245,68 @@ describe('<ActionsToolbar />', () => {
       actions = [1, 2].map((key) => ({
         key,
         enabled: true,
-        action: sandbox.spy(),
+        action: jest.fn(),
       }));
     });
 
-    it('should call focusHandler.refocusContent when tabbing from last button', async () => {
+    test('should call focusHandler.refocusContent when tabbing from last button', async () => {
       await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
       const container = renderer.root.findAllByType(Grid).find((i) => i.props && i.props.container);
       const tabEvent = {
         key: 'Tab',
-        preventDefault: sandbox.spy(),
-        stopPropagation: sandbox.spy(),
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
         target: buttonsMock[1], // last button
       };
       container.props.onKeyDown(tabEvent);
 
-      expect(focusHandler.refocusContent).to.have.been.calledOnce;
-      expect(tabEvent.preventDefault).to.have.been.calledOnce;
-      expect(tabEvent.stopPropagation).to.have.been.calledOnce;
+      expect(focusHandler.refocusContent).toHaveBeenCalledTimes(1);
+      expect(tabEvent.preventDefault).toHaveBeenCalledTimes(1);
+      expect(tabEvent.stopPropagation).toHaveBeenCalledTimes(1);
     });
 
-    it('should call focusHandler.refocusContent when shift tabbing from first button', async () => {
+    test('should call focusHandler.refocusContent when shift tabbing from first button', async () => {
       await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
       const container = renderer.root.findAllByType(Grid).find((i) => i.props && i.props.container);
       const tabEvent = {
         key: 'Tab',
         shiftKey: true,
-        preventDefault: sandbox.spy(),
-        stopPropagation: sandbox.spy(),
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
         target: buttonsMock[0], // first button
       };
       container.props.onKeyDown(tabEvent);
 
-      expect(focusHandler.refocusContent).to.have.been.calledOnce;
-      expect(tabEvent.preventDefault).to.have.been.calledOnce;
-      expect(tabEvent.stopPropagation).to.have.been.calledOnce;
+      expect(focusHandler.refocusContent).toHaveBeenCalledTimes(1);
+      expect(tabEvent.preventDefault).toHaveBeenCalledTimes(1);
+      expect(tabEvent.stopPropagation).toHaveBeenCalledTimes(1);
     });
 
-    it('should not call focusHandler.refocusContent when shift tabbing from last button', async () => {
+    test('should not call focusHandler.refocusContent when shift tabbing from last button', async () => {
       await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
       const container = renderer.root.findAllByType(Grid).find((i) => i.props && i.props.container);
       const tabEvent = {
         key: 'Tab',
         shiftKey: true,
-        preventDefault: sandbox.spy(),
-        stopPropagation: sandbox.spy(),
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
         target: buttonsMock[1], // first button
       };
       container.props.onKeyDown(tabEvent);
 
-      expect(focusHandler.refocusContent).to.not.have.been.called;
-      expect(tabEvent.preventDefault).to.not.have.been.called;
-      expect(tabEvent.stopPropagation).to.not.have.been.called;
+      expect(focusHandler.refocusContent).not.toHaveBeenCalled();
+      expect(tabEvent.preventDefault).not.toHaveBeenCalled();
+      expect(tabEvent.stopPropagation).not.toHaveBeenCalled();
     });
 
-    it('should add event listeners to focusHandler, with callbacks that focus buttons', async () => {
-      buttonsMock = [{ focus: sandbox.spy() }, { focus: sandbox.spy() }];
+    test('should add event listeners to focusHandler, with callbacks that focus buttons', async () => {
+      buttonsMock = [{ focus: jest.fn() }, { focus: jest.fn() }];
       await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
       focusCallbacks.focus_toolbar_first();
       focusCallbacks.focus_toolbar_last();
 
-      expect(buttonsMock[0].focus).to.have.been.calledOnce;
-      expect(buttonsMock[1].focus).to.have.been.calledOnce;
+      expect(buttonsMock[0].focus).toHaveBeenCalledTimes(1);
+      expect(buttonsMock[1].focus).toHaveBeenCalledTimes(1);
     });
   });
 });

@@ -1,29 +1,29 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
+/* eslint-disable no-import-assign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { Grid, Button } from '@mui/material';
 
-const Progress = () => 'progress';
-const InstanceContext = React.createContext();
-
-const [{ default: LongRunningQuery, Cancel, Retry }] = aw.mock(
-  [
-    [require.resolve('../Progress'), () => Progress],
-    [require.resolve('../../contexts/InstanceContext'), () => InstanceContext],
-  ],
-  ['../LongRunningQuery']
-);
+import LongRunningQuery, { Cancel, Retry } from '../LongRunningQuery';
+import * as ProgressModule from '../Progress';
+import * as InstanceContextModule from '../../contexts/InstanceContext';
 
 describe('<LongRunningQuery />', () => {
-  let sandbox;
   let renderer;
   let render;
   let api;
+  let Progress;
+  let InstanceContext;
+
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    Progress = jest.fn().mockImplementation(() => 'progress');
+    ProgressModule.default = Progress;
+    InstanceContext = React.createContext();
+    InstanceContextModule.default = InstanceContext;
+
     api = {
-      cancel: sandbox.spy(),
-      retry: sandbox.spy(),
+      cancel: jest.fn(),
+      retry: jest.fn(),
     };
     render = async (canCancel, canRetry) => {
       await act(async () => {
@@ -36,34 +36,36 @@ describe('<LongRunningQuery />', () => {
     };
   });
   afterEach(() => {
-    sandbox.restore();
     renderer.unmount();
+    jest.restoreAllMocks();
+    jest.resetAllMocks();
   });
-  it('should render', async () => {
+  test('should render', async () => {
     await render();
     const types = renderer.root.findAllByType(Grid);
-    expect(types).to.have.length(1);
+    expect(types.length).toBe(1);
   });
-  it('should handle cancel', async () => {
+  test('should handle cancel', async () => {
     const canCancel = true;
     await render(canCancel);
     const types = renderer.root.findAllByType(Cancel);
-    expect(types).to.have.length(1);
+    expect(types.length).toBe(1);
     const p = renderer.root.findAllByType(Progress);
-    expect(p).to.have.length(1);
+    expect(p.length).toBe(1);
     const cancelBtn = renderer.root.findByType(Button);
+
     cancelBtn.props.onClick();
-    expect(api.cancel.callCount).to.equal(1);
+    expect(api.cancel).toHaveBeenCalledTimes(1);
   });
-  it('should handle retry', async () => {
+  test('should handle retry', async () => {
     const canRetry = true;
     await render(undefined, canRetry);
     const types = renderer.root.findAllByType(Retry);
-    expect(types).to.have.length(1);
+    expect(types.length).toBe(1);
     const p = renderer.root.findAllByType(Progress);
-    expect(p).to.have.length(0);
+    expect(p.length).toBe(0);
     const retryBtn = renderer.root.findByType(Button);
     retryBtn.props.onClick();
-    expect(api.retry.callCount).to.equal(1);
+    expect(api.retry).toHaveBeenCalledTimes(1);
   });
 });
