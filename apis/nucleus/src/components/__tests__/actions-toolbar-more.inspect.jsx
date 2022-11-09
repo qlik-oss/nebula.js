@@ -1,40 +1,26 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { MenuList, MenuItem, ListItemIcon, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { MenuItem, ListItemIcon } from '@mui/material';
+import * as SVGIconModule from '@nebula.js/ui/icons/SvgIcon';
+import ActionsToolbarMore from '../ActionsToolbarMore';
 
-const Popover = (p) => p.children;
+jest.mock('@mui/material', () => ({
+  ...jest.requireActual('@mui/material'),
+  Popover: (p) => p.children,
+}));
+
 const SvgIconMock = '<div>/div>';
 
-const [{ default: ActionsToolbarMore }] = aw.mock(
-  [
-    [require.resolve('@nebula.js/ui/icons/SvgIcon'), () => () => SvgIconMock],
-    [require.resolve('@mui/material/styles'), () => ({ styled })],
-    [
-      require.resolve('@mui/material'),
-      () => ({
-        MenuList,
-        MenuItem,
-        ListItemIcon,
-        Typography,
-        Popover,
-      }),
-    ],
-  ],
-  ['../ActionsToolbarMore']
-);
-
 describe('<ActionsToolbarMore />', () => {
-  let sandbox;
   let renderer;
   let render;
   let alignTo;
   let onCloseOrActionClick;
 
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
-    onCloseOrActionClick = sandbox.spy();
+    jest.spyOn(SVGIconModule, 'default').mockReturnValue(SvgIconMock);
+    onCloseOrActionClick = jest.fn();
     alignTo = {
       current: {},
     };
@@ -45,75 +31,76 @@ describe('<ActionsToolbarMore />', () => {
     };
   });
   afterEach(() => {
-    sandbox.restore();
     renderer.unmount();
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
-  it('should render default', async () => {
+  test('should render default', async () => {
     await render();
-    expect(renderer.root.props).to.be.empty;
+    expect(Object.entries(renderer.root.props).length).toBe(0);
   });
 
-  it('should render actions', async () => {
+  test('should render actions', async () => {
     const actions = [1, 2, 3, 4, 5].map((key) => ({
       key,
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
     }));
     await render({ actions, alignTo });
     const items = renderer.root.findAllByType(MenuItem);
-    expect(items).to.have.length(5);
+    expect(items.length).toBe(5);
   });
 
-  it('should render svg icon', async () => {
+  test('should render svg icon', async () => {
     const item = {
       key: 'svg',
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
       getSvgIconShape: () => 'svg',
     };
     const actions = [item];
     await render({ actions, alignTo });
     const lii = renderer.root.findByType(ListItemIcon);
-    expect(lii.props.children).to.equal(SvgIconMock);
+    expect(lii.props.children).toEqual(SvgIconMock);
   });
 
-  it('should not render hidden actions', async () => {
+  test('should not render hidden actions', async () => {
     const actions = [1, 2, 3, 4, 5].map((key) => ({
       key,
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
       hidden: key % 2 === 0,
     }));
     await render({ actions, alignTo });
     const items = renderer.root.findAllByType(MenuItem);
-    expect(items).to.have.length(3);
+    expect(items.length).toBe(3);
   });
 
-  it('should handle action click and trigger callback', async () => {
+  test('should handle action click and trigger callback', async () => {
     const item = {
       key: 1,
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
     };
     const actions = [item];
     await render({ actions, alignTo, onCloseOrActionClick });
     const mi = renderer.root.findByType(MenuItem);
     mi.props.onClick();
-    expect(item.action).to.have.been.calledWithExactly();
-    expect(onCloseOrActionClick).to.have.been.calledWithExactly();
+    expect(item.action).toHaveBeenCalledWith();
+    expect(onCloseOrActionClick).toHaveBeenCalledWith();
   });
 
-  it('should handle action click with default callback', async () => {
+  test('should handle action click with default callback', async () => {
     const item = {
       key: 1,
       enabled: true,
-      action: sandbox.spy(),
+      action: jest.fn(),
     };
     const actions = [item];
     await render({ actions, alignTo });
     const mi = renderer.root.findByType(MenuItem);
     mi.props.onClick();
-    expect(item.action).to.have.been.calledWithExactly();
+    expect(item.action).toHaveBeenCalledWith();
   });
 });

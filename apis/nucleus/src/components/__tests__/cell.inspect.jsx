@@ -1,11 +1,20 @@
 /* eslint-disable no-param-reassign */
 /* eslint-disable react/jsx-no-constructed-context-values */
+/* eslint-disable no-import-assign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
+import Cell from '../Cell';
+import * as useLayputModule from '../../hooks/useLayout';
+import * as useRectModule from '../../hooks/useRect';
+import * as LoadingModule from '../Loading';
+import * as LongRunningQueryModule from '../LongRunningQuery';
+import * as ErrorModule from '../Error';
+import * as superNovaModule from '../Supernova';
+import * as HeaderModule from '../Header';
+import * as InstanceContextModule from '../../contexts/InstanceContext';
 
 describe('<Cell />', () => {
-  let sandbox;
   let render;
   let renderer;
   let id = 0;
@@ -21,62 +30,45 @@ describe('<Cell />', () => {
   let layoutState;
   let longrunning;
   let appLayout = {};
-  let Cell;
 
-  before(() => {
-    sandbox = sinon.createSandbox();
-    Loading = () => 'loading';
-    LongRunningQuery = () => 'long-running-query';
-    CError = () => 'error';
-    Supernova = () => 'supernova';
-    Header = () => 'Header';
+  beforeEach(() => {
+    jest.useFakeTimers();
+    Loading = jest.fn().mockImplementation(() => 'loading');
+    LongRunningQuery = jest.fn().mockImplementation(() => 'long-running-query');
+    CError = jest.fn().mockImplementation(() => 'error');
+    Supernova = jest.fn().mockImplementation(() => 'supernova');
+    Header = jest.fn().mockImplementation(() => 'Header');
     InstanceContext = React.createContext();
     appLayout = { foo: 'app-layout' };
     layout = { qSelectionInfo: {}, visualization: '' };
     layoutState = { validating: true, canCancel: false, canRetry: false };
-    longrunning = { cancel: sandbox.spy(), retry: sandbox.spy() };
-    useLayout = sandbox.stub().returns([layout, layoutState, longrunning]);
-    useRect = sandbox.stub().returns([() => {}, { width: 300, height: 400 }]);
-    [{ default: Cell }] = aw.mock(
-      [
-        [
-          require.resolve('../../hooks/useLayout'),
-          () => ({
-            __esModule: true,
-            default: useLayout,
-            useAppLayout: () => [appLayout],
-          }),
-        ],
-        [
-          require.resolve('../../hooks/useRect'),
-          () => ({
-            __esModule: true,
-            default: useRect,
-          }),
-        ],
-        [require.resolve('../Loading'), () => Loading],
-        [require.resolve('../LongRunningQuery'), () => LongRunningQuery],
-        [require.resolve('../Error'), () => CError],
-        [require.resolve('../Supernova'), () => Supernova],
-        [require.resolve('../Header'), () => Header],
-        [require.resolve('../../contexts/InstanceContext'), () => InstanceContext],
-      ],
-      ['../Cell']
-    );
-  });
+    longrunning = { cancel: jest.fn(), retry: jest.fn() };
+    useLayout = jest.fn().mockReturnValue([layout, layoutState, longrunning]);
+    useRect = jest.fn().mockReturnValue([() => {}, { width: 300, height: 400 }]);
 
-  beforeEach(() => {
-    const addEventListener = sandbox.spy();
-    const removeEventListener = sandbox.spy();
+    jest.spyOn(useLayputModule, 'default').mockImplementation(useLayout);
+    jest.spyOn(useLayputModule, 'useAppLayout').mockImplementation(() => [appLayout]);
+    jest.spyOn(useRectModule, 'default').mockImplementation(useRect);
+
+    // jest.spyOn does not working for these
+    LoadingModule.default = Loading;
+    LongRunningQueryModule.default = LongRunningQuery;
+    ErrorModule.default = CError;
+    superNovaModule.default = Supernova;
+    HeaderModule.default = Header;
+    InstanceContextModule.default = InstanceContext;
+
+    const addEventListener = jest.fn();
+    const removeEventListener = jest.fn();
     global.window = {
       addEventListener,
       removeEventListener,
     };
     const defaultModel = {
       id: ++id,
-      on: sandbox.stub(),
-      removeListener: sandbox.stub(),
-      getLayout: sandbox.stub().returns(
+      on: jest.fn(),
+      removeListener: jest.fn(),
+      getLayout: jest.fn().mockReturnValue(
         new Promise(() => {
           // Do not resolve
         })
@@ -91,7 +83,7 @@ describe('<Cell />', () => {
         nebbie: {},
       },
       types: {
-        getSupportedVersion: sandbox.stub(),
+        getSupportedVersion: jest.fn(),
       },
     };
     render = async ({
@@ -100,25 +92,18 @@ describe('<Cell />', () => {
       nebbie = {},
       types = defaultHalo.types,
       initialSnOptions = {},
-      onMount = sandbox.spy(),
+      onMount = jest.fn(),
       theme = createTheme('dark'),
       cellRef,
       config = {},
       rendererOptions,
     } = {}) => {
-      model = {
-        ...defaultModel,
-        ...model,
-      };
+      model = { ...defaultModel, ...model };
       const halo = {
         ...defaultHalo,
         ...app,
-        public: {
-          nebbie,
-        },
-        config: {
-          ...config,
-        },
+        public: { nebbie },
+        config: { ...config },
         types,
       };
 
@@ -137,36 +122,35 @@ describe('<Cell />', () => {
     };
   });
   afterEach(() => {
-    sandbox.restore();
+    jest.useRealTimers();
     renderer.unmount();
-    delete global.window;
+    jest.resetAllMocks();
+    jest.restoreAllMocks();
   });
 
-  it('should render version error', async () => {
+  test('should render version error', async () => {
     await render();
     const types = renderer.root.findAllByType(CError);
-    expect(types).to.have.length(1);
+    expect(types.length).toBe(1);
   });
 
   describe('sn', () => {
-    it('should render loading', async () => {
-      sandbox.useFakeTimers();
+    test('should render loading', async () => {
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: () => new Promise(() => {}),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({ types });
-      sandbox.clock.tick(800);
+      act(() => jest.advanceTimersByTime(800));
       const ftypes = renderer.root.findAllByType(Loading);
-      expect(ftypes).to.have.length(1);
-      expect(() => renderer.root.findByType(LongRunningQuery)).to.throw();
+      expect(ftypes.length).toBe(1);
+      expect(() => renderer.root.findByType(LongRunningQuery)).toThrow();
     });
 
-    it('should not render long running', async () => {
-      sandbox.useFakeTimers();
-      sandbox.stub(layoutState, 'validating').value(false);
+    test('should not render long running', async () => {
+      layoutState.validating = false;
       const sn = {
         generator: {
           qae: {
@@ -177,20 +161,19 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({ types });
-      sandbox.clock.tick(2100);
+      act(() => jest.advanceTimersByTime(2100));
       const ftypes = renderer.root.findAllByType(LongRunningQuery);
-      expect(ftypes).to.have.length(0);
+      expect(ftypes.length).toBe(0);
     });
 
-    it('should render long running', async () => {
-      sandbox.useFakeTimers();
-      sandbox.stub(layoutState, 'validating').value(true);
+    test('should render long running', async () => {
+      layoutState.validating = true;
       const sn = {
         generator: {
           qae: {
@@ -201,19 +184,19 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({ types });
-      sandbox.clock.tick(2100);
+      act(() => jest.advanceTimersByTime(2100));
       const ftypes = renderer.root.findAllByType(LongRunningQuery);
-      expect(ftypes).to.have.length(1);
-      expect(() => renderer.root.findByType(Loading)).to.throw();
+      expect(ftypes.length).toBe(1);
+      expect(() => renderer.root.findByType(Loading)).toThrow();
     });
 
-    it('should render', async () => {
+    test('should render', async () => {
       const sn = {
         generator: {
           qae: {
@@ -224,18 +207,18 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({ types });
 
       const ftypes = renderer.root.findAllByType(Supernova);
-      expect(ftypes).to.have.length(1);
+      expect(ftypes.length).toBe(1);
     });
 
-    it('should render new type', async () => {
+    test('should render new type', async () => {
       const sn = {
         generator: {
           qae: {
@@ -255,21 +238,21 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().callsFake(({ name }) => ({
+        get: jest.fn().mockImplementation(({ name }) => ({
           supernova: async () => ({ create: () => (name === 'sn1' ? sn1 : sn) }),
         })),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({ types });
       const renderedSn = renderer.root.findByType(Supernova);
-      expect(renderedSn.props.sn).to.equal(sn);
-      sandbox.stub(layout, 'visualization').value('sn1');
+      expect(renderedSn.props.sn).toEqual(sn);
+      layout.visualization = 'sn1';
       await render({ types });
       const renderedSn1 = renderer.root.findByType(Supernova);
-      expect(renderedSn1.props.sn).to.equal(sn1);
+      expect(renderedSn1.props.sn).toEqual(sn1);
     });
 
-    it('should render requirements', async () => {
+    test('should render requirements', async () => {
       const localLayout = { visualization: 'sn', foo: { qDimensionInfo: [], qMeasureInfo: [] } };
       const sn = {
         generator: {
@@ -298,10 +281,10 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       const model = {
         getProperties: async () => {},
@@ -309,11 +292,11 @@ describe('<Cell />', () => {
       await render({ types, model });
 
       const ftypes = renderer.root.findAllByType(CError);
-      expect(ftypes).to.have.length(1);
-      expect(ftypes[0].props.title).to.equal('Visualization.Incomplete');
+      expect(ftypes.length).toBe(1);
+      expect(ftypes[0].props.title).toBe('Visualization.Incomplete');
     });
 
-    it('should render requirements for multiple cubes', async () => {
+    test('should render requirements for multiple cubes', async () => {
       const localLayout = { visualization: 'sn', foo: { qDimensionInfo: [], qMeasureInfo: [] } };
       const sn = {
         generator: {
@@ -358,10 +341,10 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       const model = {
         getProperties: async () => {},
@@ -369,11 +352,11 @@ describe('<Cell />', () => {
       await render({ types, model });
 
       const ftypes = renderer.root.findAllByType(CError);
-      expect(ftypes).to.have.length(1);
-      expect(ftypes[0].props.title).to.equal('Visualization.Incomplete');
+      expect(ftypes.length).toBe(1);
+      expect(ftypes[0].props.title).toBe('Visualization.Incomplete');
     });
 
-    it('should render hypercube error', async () => {
+    test('should render hypercube error', async () => {
       const localLayout = { visualization: 'sn', foo: { qError: { qErrorCode: 1337 } } };
       const sn = {
         generator: {
@@ -403,19 +386,19 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({ types });
 
       const ftypes = renderer.root.findAllByType(CError);
-      expect(ftypes).to.have.length(1);
-      expect(ftypes[0].props.data[0].title).to.equal('Visualization.LayoutError');
+      expect(ftypes.length).toBe(1);
+      expect(ftypes[0].props.data[0].title).toBe('Visualization.LayoutError');
     });
 
-    it('should render hypercube unfulfilled calculation condition error', async () => {
+    test('should render hypercube unfulfilled calculation condition error', async () => {
       const localLayout = { visualization: 'sn', foo: { qError: { qErrorCode: 7005 } } };
       const sn = {
         generator: {
@@ -445,24 +428,24 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({ types });
 
       const ftypes = renderer.root.findAllByType(CError);
-      expect(ftypes).to.have.length(1);
-      expect(ftypes[0].props.data[0].title).to.equal('Visualization.UnfulfilledCalculationCondition');
+      expect(ftypes.length).toBe(1);
+      expect(ftypes[0].props.data[0].title).toBe('Visualization.UnfulfilledCalculationCondition');
     });
 
-    it('should go modal (selections)', async () => {
-      sandbox.stub(layout, 'qSelectionInfo').value({ qInSelections: true });
+    test('should go modal (selections)', async () => {
+      layout.qSelectionInfo = { qInSelections: true };
       const model = {
         id: 'sn-modal',
       };
-      const goModal = sandbox.spy();
+      const goModal = jest.fn();
       const sn = {
         generator: {
           qae: {
@@ -488,8 +471,8 @@ describe('<Cell />', () => {
         component: {
           selections: {
             id: 'sn-modal',
-            setLayout: sandbox.spy(),
-            isModal: sandbox.stub().returns(false),
+            setLayout: jest.fn(),
+            isModal: jest.fn().mockReturnValue(false),
             goModal,
             canClear: () => false,
             canCancel: () => false,
@@ -501,22 +484,20 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({ model, types });
-      expect(goModal.callCount).to.equal(1);
-      expect(goModal).to.have.been.calledWithExactly('/qFoo');
+      expect(goModal).toHaveBeenCalledTimes(1);
+      expect(goModal).toHaveBeenCalledWith('/qFoo');
     });
 
-    it('should no modal (selections)', async () => {
-      sandbox.stub(layout, 'qSelectionInfo').value({ qInSelections: false });
-      const model = {
-        id: 'sn-no-modal',
-      };
-      const noModal = sandbox.spy();
+    test('should no modal (selections)', async () => {
+      layout.qSelectionInfo = { qInSelections: false };
+      const model = { id: 'sn-no-modal' };
+      const noModal = jest.fn();
       const sn = {
         generator: {
           qae: {
@@ -541,8 +522,8 @@ describe('<Cell />', () => {
         component: {
           selections: {
             id: 'sn-no-modal',
-            setLayout: sandbox.spy(),
-            isModal: sandbox.stub().returns(true),
+            setLayout: jest.fn(),
+            isModal: jest.fn().mockReturnValue(true),
             noModal,
             canClear: () => false,
             canCancel: () => false,
@@ -554,18 +535,18 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({ model, types });
-      expect(noModal.callCount).to.equal(1);
+      expect(noModal).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('cell ref', () => {
-    it('should expose api', async () => {
+    test('should expose api', async () => {
       const cellRef = React.createRef();
       const model = {};
       const sn = {
@@ -578,21 +559,21 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({ model, types, cellRef });
 
-      expect(cellRef.current.setSnOptions).to.be.a('function');
-      expect(cellRef.current.setSnPlugins).to.be.a('function');
-      expect(cellRef.current.exportImage).to.be.a('function');
-      expect(cellRef.current.takeSnapshot).to.be.a('function');
-      expect(cellRef.current.getQae).to.be.a('function');
+      expect(cellRef.current.setSnOptions instanceof Function).toBe(true);
+      expect(cellRef.current.setSnPlugins instanceof Function).toBe(true);
+      expect(cellRef.current.exportImage instanceof Function).toBe(true);
+      expect(cellRef.current.takeSnapshot instanceof Function).toBe(true);
+      expect(cellRef.current.getQae instanceof Function).toBe(true);
     });
 
-    it('should take snapshot', async () => {
+    test('should take snapshot', async () => {
       const cellRef = React.createRef();
       const sn = {
         generator: {
@@ -605,10 +586,10 @@ describe('<Cell />', () => {
         component: {},
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({
         types,
@@ -627,8 +608,8 @@ describe('<Cell />', () => {
       const snapshot = await cellRef.current.takeSnapshot();
       const { key } = snapshot;
       delete snapshot.key;
-      expect(key).to.be.a('string');
-      expect(snapshot).to.deep.equal({
+      expect(typeof key).toBe('string');
+      expect(snapshot).toEqual({
         layout,
         meta: {
           appLayout: { foo: 'app-layout' },
@@ -642,7 +623,7 @@ describe('<Cell />', () => {
       });
     });
 
-    it('should take snapshot and call setSnapshotData', async () => {
+    test('should take snapshot and call setSnapshotData', async () => {
       const cellRef = React.createRef();
       const sn = {
         generator: {
@@ -659,10 +640,10 @@ describe('<Cell />', () => {
         },
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({
         types,
@@ -679,12 +660,10 @@ describe('<Cell />', () => {
       });
       */
       const snapshot = await cellRef.current.takeSnapshot();
-      expect(snapshot.layout).to.deep.equal({
-        foo: 'bar',
-      });
+      expect(snapshot.layout).toEqual({ foo: 'bar' });
     });
 
-    it('should not export image', async () => {
+    test('should not export image', async () => {
       const config = {
         snapshot: {
           capture: false,
@@ -702,26 +681,27 @@ describe('<Cell />', () => {
         component: {},
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({
         types,
         cellRef,
         config,
       });
-      return expect(cellRef.current.exportImage()).to.eventually.be.rejectedWith(
-        Error,
-        'Stardust embed has not been configured with snapshot.capture callback'
-      );
+      try {
+        await cellRef.current.exportImage();
+      } catch (error) {
+        expect(error.message).toBe('Stardust embed has not been configured with snapshot.capture callback');
+      }
     });
 
-    it('should export image', async () => {
+    test('should export image', async () => {
       const config = {
         snapshot: {
-          capture: sandbox.stub().returns('snapped'),
+          capture: jest.fn().mockReturnValue('snapped'),
         },
       };
       const cellRef = React.createRef();
@@ -736,20 +716,20 @@ describe('<Cell />', () => {
         component: {},
       };
       const types = {
-        get: sandbox.stub().returns({
+        get: jest.fn().mockReturnValue({
           supernova: async () => ({ create: () => sn }),
         }),
-        getSupportedVersion: sandbox.stub().returns('1.0.0'),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
       };
       await render({
         types,
         cellRef,
         config,
       });
-      sandbox.stub(cellRef.current, 'takeSnapshot').returns('snapshot');
+      jest.spyOn(cellRef.current, 'takeSnapshot').mockReturnValue('snapshot');
       const res = await cellRef.current.exportImage();
-      expect(config.snapshot.capture).to.have.been.calledWithExactly('snapshot');
-      expect(res).to.equal('snapped');
+      expect(config.snapshot.capture).toHaveBeenCalledWith('snapshot');
+      expect(res).toBe('snapped');
     });
   });
 });

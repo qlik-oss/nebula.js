@@ -27,6 +27,7 @@
     "@nebula.js/cli-build": "<%= nebulaVersion %>",
     "@nebula.js/cli-serve": "<%= nebulaVersion %>",
     "@nebula.js/cli-sense": "<%= nebulaVersion %>",
+    "@qlik/sdk": "^0.12.0",
     "eslint": "7.27.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-plugin-import": "2.23.4",

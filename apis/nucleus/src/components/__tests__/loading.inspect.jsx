@@ -1,15 +1,18 @@
+/* eslint-disable no-import-assign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-
-const Progress = () => 'progress';
-const [{ default: Loading }] = aw.mock([[require.resolve('../Progress'), () => Progress]], ['../Loading']);
+import Loading from '../Loading';
+import * as ProgressModule from '../Progress';
 
 describe('<Loading />', () => {
-  let sandbox;
   let renderer;
   let render;
+  let Progress;
+
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
+    Progress = jest.fn().mockImplementation(() => 'progress');
+    ProgressModule.default = Progress;
+
     render = async () => {
       await act(async () => {
         renderer = create(<Loading />);
@@ -17,12 +20,11 @@ describe('<Loading />', () => {
     };
   });
   afterEach(() => {
-    sandbox.restore();
     renderer.unmount();
   });
-  it('should render progress', async () => {
+  test('should render progress', async () => {
     await render();
     const types = renderer.root.findAllByType(Progress);
-    expect(types).to.have.length(1);
+    expect(types.length).toBe(1);
   });
 });

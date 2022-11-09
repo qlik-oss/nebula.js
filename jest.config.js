@@ -20,7 +20,7 @@ module.exports = {
     'apis/enigma-mocker/**/*.{js,jsx}',
     'apis/locale/**/*.{js,jsx}',
     'apis/nucleus/src/__tests__/*.{js,jsx}',
-    'apis/nucleus/src/components/selections/*.{js,jsx}',
+    'apis/nucleus/src/components/**/*.{js,jsx}',
     'apis/nucleus/src/plugins/*.{js,jsx}',
     'apis/nucleus/src/sn/*.{js,jsx}',
     'apis/nucleus/src/stores/*.{js,jsx}',
