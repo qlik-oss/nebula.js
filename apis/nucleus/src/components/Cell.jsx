@@ -288,8 +288,8 @@ const Cell = forwardRef(
     const [contentRef, contentRect, contentNode] = useRect();
     const [snOptions, setSnOptions] = useState(initialSnOptions);
     const [snPlugins, setSnPlugins] = useState(initialSnPlugins);
-    const element = useRef(cellNode);
-    const [selections] = useObjectSelections(app, model, element);
+    const [clickOutElement, setClickOutElement] = useState();
+    const [selections] = useObjectSelections(app, model, { current: clickOutElement });
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
     const [bgColor, setBgColor] = useState(undefined);
@@ -305,6 +305,13 @@ const Cell = forwardRef(
     useEffect(() => {
       eventmixin(focusHandler.current);
     }, []);
+
+    useEffect(() => {
+      if (!contentNode) {
+        return;
+      }
+      setClickOutElement(contentNode);
+    }, [cellRect]);
 
     useEffect(() => {
       const bgComp = layout?.components ? layout.components.find((comp) => comp.key === 'general') : null;

@@ -21,7 +21,6 @@ describe('<ListboxInline />', () => {
   let ActionsToolbar;
   let ListBoxSearch;
   let createListboxSelectionToolbar;
-  let handleClickOutside;
   let layout;
   let selections;
   let renderer;
@@ -48,7 +47,6 @@ describe('<ListboxInline />', () => {
     getListboxInlineKeyboardNavigation = sandbox.stub().returns('keyboard-navigation');
     ListBoxSearch = sandbox.stub();
     createListboxSelectionToolbar = sandbox.stub();
-    handleClickOutside = sandbox.stub();
     layout = {
       title: 'title',
       qListObject: {
@@ -84,7 +82,6 @@ describe('<ListboxInline />', () => {
         [require.resolve('../../ActionsToolbar'), () => ActionsToolbar],
         [require.resolve('../ListBox'), () => <div className="theListBox" />],
         [require.resolve('../components/ListBoxSearch'), () => ListBoxSearch],
-        [require.resolve('../interactions/listbox-handle-click-outside'), () => handleClickOutside],
         [
           require.resolve('../interactions/listbox-keyboard-navigation'),
           () => ({
@@ -178,14 +175,6 @@ describe('<ListboxInline />', () => {
           );
         });
       };
-    });
-
-    it('should call handleClickOutside', async () => {
-      await render();
-      expect(handleClickOutside).calledOnce.calledWith({
-        element: { current: null },
-        selections,
-      });
     });
 
     it('should render with everything included', async () => {

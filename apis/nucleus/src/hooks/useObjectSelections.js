@@ -15,18 +15,14 @@ const event = () => {
   };
 };
 
-function createHandler({ element, triggerFunc }) {
+function createHandler({ element, handleClickOutside }) {
   const handler = (evt) => {
     const targetStillExists = document.contains(evt.target);
-    // const isClickOutside =
-    //   targetStillExists &&
-    //   !elements.some((element) => (document.contains(element.current) ? true : element.current?.contains(evt.target)));
-    // const [element] = elements;
-    const isWithin = element.current?.contains(evt.target);
     const containerStillExists = !!document.contains(element.current);
+    const isWithin = !!element.current?.contains(evt.target);
     const isClickOutside = targetStillExists && containerStillExists && !isWithin;
     if (isClickOutside) {
-      triggerFunc(evt);
+      handleClickOutside(evt);
     }
   };
   return handler;
@@ -169,18 +165,15 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
 };
 
 const getClickOutFuncs = ({ element, objectSelections }) => {
-  const handler = createHandler({ element, triggerFunc: () => objectSelections.confirm.call(objectSelections) });
+  const handler = createHandler({ element, handleClickOutside: () => objectSelections.confirm.call(objectSelections) });
 
-  const activateClickOut = () => {
-    document.addEventListener('mousedown', handler);
-  };
-
-  const deactivateClickOut = () => {
-    document.removeEventListener('mousedown', handler);
-  };
   return {
-    activateClickOut,
-    deactivateClickOut,
+    activateClickOut() {
+      document.addEventListener('mousedown', handler);
+    },
+    deactivateClickOut() {
+      document.removeEventListener('mousedown', handler);
+    },
   };
 };
 
@@ -218,7 +211,7 @@ export default function useObjectSelections(app, model, element) {
       objectSelections.removeListener('activated', activateClickOut);
       objectSelections.removeListener('deactivated', deactivateClickOut);
     };
-  }, [objectSelections, element]);
+  }, [objectSelections, element?.current]);
 
   useEffect(() => {
     if (!objectSelections) return;
