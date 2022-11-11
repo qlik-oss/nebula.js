@@ -14,8 +14,11 @@ describe('useObjectSelections', () => {
   let renderer;
   let render;
   let ref;
+  let elements;
   let useObjectSelections;
   let modalObjectStore;
+  let fakeContainer;
+  let fakeContainer2;
   let app;
   let appSel;
   let appModal;
@@ -25,6 +28,19 @@ describe('useObjectSelections', () => {
 
   before(() => {
     sandbox = sinon.createSandbox();
+
+    fakeContainer = {
+      contains: sandbox.stub(),
+    };
+    fakeContainer2 = {
+      contains: sandbox.stub(),
+    };
+    global.document = {
+      contains: sandbox.stub(),
+      addEventListener: sandbox.stub(),
+      removeEventListener: sandbox.stub(),
+      querySelector: sandbox.stub().returns(fakeContainer2),
+    };
     app = {
       id: 'appSel',
       session: {},
@@ -53,6 +69,8 @@ describe('useObjectSelections', () => {
       clearSelections: sandbox.stub(),
       select: sandbox.stub(),
     };
+    elements = [{ current: fakeContainer }, '.selections-toolbar'];
+
     [{ default: useObjectSelections }] = aw.mock(
       [
         [require.resolve('../useAppSelections'), () => () => [appSel]],
@@ -77,7 +95,9 @@ describe('useObjectSelections', () => {
                 dispatch: async (b) => {
                   if (!b) return;
                   await act(async () => {
-                    renderer.update(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, object]} />);
+                    renderer.update(
+                      <TestHook ref={ref} hook={useObjectSelections} hookProps={[app, object, elements]} />
+                    );
                   });
                 },
               },
@@ -95,10 +115,14 @@ describe('useObjectSelections', () => {
     );
   });
   beforeEach(() => {
+    global.document.contains.returns(true);
+    fakeContainer.contains.returns(true);
+    fakeContainer2.contains.returns(true);
+
     ref = React.createRef();
     render = async () => {
       await act(async () => {
-        renderer = create(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, object]} />);
+        renderer = create(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, object, elements]} />);
       });
       objectSel.setLayout(layout);
     };
@@ -267,5 +291,30 @@ describe('useObjectSelections', () => {
 
     ref.current.result[0].noModal(true);
     expect(appModal.end).to.have.been.calledWithExactly(true);
+  });
+
+  it('confirm on click out', async () => {
+    await render();
+
+    ref.current.result[0].goModal(['/bar']);
+    expect(appModal.end).not.called;
+    const objectSelections = ref.current.result[0];
+    expect(global.document.addEventListener).not.called;
+    objectSelections.emit('activated');
+    expect(global.document.addEventListener).calledOnce;
+    expect(appModal.end).not.called;
+    const [name, listener] = global.document.addEventListener.args[0];
+    expect(name).to.equal('mousedown');
+    const evt = {
+      target: 'target',
+    };
+
+    fakeContainer.contains.returns(true);
+    listener(evt);
+    expect(appModal.end, 'since we clicked inside').not.called;
+
+    fakeContainer.contains.returns(false);
+    listener(evt);
+    expect(appModal.end, 'since we clicked outside').calledOnce;
   });
 });

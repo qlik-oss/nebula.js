@@ -28,7 +28,7 @@ function createHandler({ elements, handleClickOutside }) {
         const elm = typeof item === 'string' ? document.querySelector(item) : item?.current;
         return elm;
       })
-      .filter((elm) => !!document.contains(elm));
+      .filter((elm) => !!elm && !!document.contains(elm));
 
     if (!containers.length) {
       return;
