@@ -9,24 +9,11 @@ import ListItemSecondaryAction from '@mui/material/ListItemSecondaryAction';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { useRootContext } from '../../../contexts/RootContext';
+import { checkIfHistoryConnectionDisabled } from '../../../utils/checkIfHistoryConnectionDisabled';
 
 const ConnectionHistory = () => {
   const navigate = useNavigate();
   const { info, setError, cachedConnectionsData } = useRootContext();
-
-  const checkIfDisabled = (item) => {
-    if ((info?.isClientIdProvided || info?.isWebIntegrationIdProvided) && item.includes('localhost')) return true;
-    if (info?.isClientIdProvided) {
-      if (item.includes('qlik-client-id')) return false;
-      return true;
-    }
-    if (info?.isWebIntegrationIdProvided) {
-      if (item.includes('qlik-web-integration-id')) return false;
-      return true;
-    }
-
-    return false;
-  };
 
   const handleHistoryItemClick = (item) => {
     setError();
@@ -45,11 +32,16 @@ const ConnectionHistory = () => {
             key={item}
             component="a"
             onClick={() => handleHistoryItemClick(item)}
-            disabled={checkIfDisabled(item)}
+            disabled={checkIfHistoryConnectionDisabled({ item, info })}
           >
             <ListItemText primary={item} />
             <ListItemSecondaryAction>
-              <IconButton onClick={() => cachedConnectionsData.removeCachedConnection(item)} size="large" edge="end">
+              <IconButton
+                onClick={() => cachedConnectionsData.removeCachedConnection(item)}
+                data-testid="close-btn"
+                size="large"
+                edge="end"
+              >
                 <Remove />
               </IconButton>
             </ListItemSecondaryAction>
