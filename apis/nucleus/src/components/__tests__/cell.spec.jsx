@@ -21,9 +21,14 @@ describe('<Cell />', () => {
   let layoutState;
   let longrunning;
   let appLayout = {};
+  let fakeElement;
+  let useObjectSelections;
+  let defaultHalo;
+  let defaultModel;
   let Cell;
 
   before(() => {
+    fakeElement = 'fakeElement';
     sandbox = sinon.createSandbox();
     Loading = () => 'loading';
     LongRunningQuery = () => 'long-running-query';
@@ -35,8 +40,9 @@ describe('<Cell />', () => {
     layout = { qSelectionInfo: {}, visualization: '' };
     layoutState = { validating: true, canCancel: false, canRetry: false };
     longrunning = { cancel: sandbox.spy(), retry: sandbox.spy() };
-    useLayout = sandbox.stub().returns([layout, layoutState, longrunning]);
-    useRect = sandbox.stub().returns([() => {}, { width: 300, height: 400 }]);
+    useLayout = sandbox.stub();
+    useRect = sandbox.stub();
+    useObjectSelections = sandbox.stub();
     [{ default: Cell }] = aw.mock(
       [
         [
@@ -59,6 +65,7 @@ describe('<Cell />', () => {
         [require.resolve('../Error'), () => CError],
         [require.resolve('../Supernova'), () => Supernova],
         [require.resolve('../Header'), () => Header],
+        [require.resolve('../../hooks/useObjectSelections'), () => useObjectSelections],
         [require.resolve('../../contexts/InstanceContext'), () => InstanceContext],
       ],
       ['../Cell']
@@ -66,13 +73,18 @@ describe('<Cell />', () => {
   });
 
   beforeEach(() => {
+    useLayout.returns([layout, layoutState, longrunning]);
+    useRect.returns([() => {}, { width: 300, height: 400 }, fakeElement]);
+
+    const selections = 'selections';
+    useObjectSelections.returns([selections]);
     const addEventListener = sandbox.spy();
     const removeEventListener = sandbox.spy();
     global.window = {
       addEventListener,
       removeEventListener,
     };
-    const defaultModel = {
+    defaultModel = {
       id: ++id,
       on: sandbox.stub(),
       removeListener: sandbox.stub(),
@@ -82,7 +94,7 @@ describe('<Cell />', () => {
         })
       ),
     };
-    const defaultHalo = {
+    defaultHalo = {
       app: {
         id: 'app-id',
         getAppLayout: () => Promise.resolve(appLayout),
@@ -137,15 +149,33 @@ describe('<Cell />', () => {
     };
   });
   afterEach(() => {
-    sandbox.restore();
+    sandbox.reset();
     renderer.unmount();
     delete global.window;
+  });
+
+  after(() => {
+    sandbox.restore();
   });
 
   it('should render version error', async () => {
     await render();
     const types = renderer.root.findAllByType(CError);
     expect(types).to.have.length(1);
+  });
+
+  it('should call useObjectSelection with expected args', async () => {
+    await render();
+    expect(useObjectSelections).calledTwice;
+    const [, , clickOutElementsFirstRender] = useObjectSelections.args[0];
+    const [app, model, clickOutElements] = useObjectSelections.args[1];
+    expect(app).to.equal(defaultHalo.app);
+    expect(model).to.deep.equal(defaultModel);
+    expect(clickOutElements).to.deep.equal([{ current: 'fakeElement' }, '.njs-action-toolbar-popover']);
+    expect(clickOutElementsFirstRender, 'because setClickOutElement has not yet been set').to.deep.equal([
+      { current: undefined },
+      '.njs-action-toolbar-popover',
+    ]);
   });
 
   describe('sn', () => {

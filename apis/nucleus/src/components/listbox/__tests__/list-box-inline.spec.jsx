@@ -112,7 +112,6 @@ describe('<ListboxInline />', () => {
       search: true,
       focusSearch: false,
       toolbar: true,
-      element: 'element',
       properties: {},
       model,
       selections,
