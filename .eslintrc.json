@@ -77,6 +77,12 @@
       }
     },
     {
+      "files": ["commands/serve/web/**/*.inspect.{js,jsx}", "commands/serve/web/utils/testRenderer.jsx"],
+      "rules": {
+        "import/no-extraneous-dependencies": 0
+      }
+    },
+    {
       "files": ["**/*.{int,comp,spec}.{js,jsx}"],
       "env": {
         "browser": false,
