@@ -7,6 +7,7 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/
 import Cell from '../Cell';
 import * as useLayoutModule from '../../hooks/useLayout';
 import * as useRectModule from '../../hooks/useRect';
+import * as useObjectSelectionsModule from '../../hooks/useObjectSelections';
 import * as LoadingModule from '../Loading';
 import * as LongRunningQueryModule from '../LongRunningQuery';
 import * as ErrorModule from '../Error';
@@ -31,9 +32,9 @@ describe('<Cell />', () => {
   let longrunning;
   let appLayout = {};
   let fakeElement;
-  let useObjectSelections;
   let defaultHalo;
   let defaultModel;
+  let useObjectSelections;
 
   beforeEach(() => {
     fakeElement = 'fakeElement';
@@ -55,11 +56,13 @@ describe('<Cell />', () => {
     longrunning = { cancel: jest.fn(), retry: jest.fn() };
     useLayout = jest.fn().mockReturnValue([layout, layoutState, longrunning]);
     useRect = jest.fn().mockReturnValue([() => {}, { width: 300, height: 400 }]);
-    useObjectSelections = jest.fn();
+    const selections = 'selections';
+    useObjectSelections = jest.fn().mockReturnValue([selections]);
 
     jest.spyOn(useLayoutModule, 'default').mockImplementation(useLayout);
     jest.spyOn(useLayoutModule, 'useAppLayout').mockImplementation(() => [appLayout]);
     jest.spyOn(useRectModule, 'default').mockImplementation(useRect); // jest.spyOn does not working for these
+    jest.spyOn(useObjectSelectionsModule, 'default').mockImplementation(useObjectSelections);
     LoadingModule.default = Loading;
     LongRunningQueryModule.default = LongRunningQuery;
     ErrorModule.default = CError;
@@ -68,8 +71,7 @@ describe('<Cell />', () => {
     InstanceContextModule.default = InstanceContext;
 
     useRect.mockReturnValue([() => {}, { width: 300, height: 400 }, fakeElement]);
-    const selections = 'selections';
-    useObjectSelections.mockReturnValue([selections]);
+
     const addEventListener = jest.fn();
     const removeEventListener = jest.fn();
     global.window = {
@@ -207,15 +209,12 @@ describe('<Cell />', () => {
   test('should call useObjectSelection with expected args', async () => {
     await render();
     expect(useObjectSelections).calledTwice;
-    const [, , clickOutElementsFirstRender] = useObjectSelections.args[0];
-    const [app, model, clickOutElements] = useObjectSelections.args[1];
+    const [, , clickOutElementsFirstRender] = useObjectSelections.mock.calls[0];
+    const [app, model, clickOutElements] = useObjectSelections.mock.calls[1];
     expect(app).toEqual(defaultHalo.app);
     expect(model).toEqual(defaultModel);
     expect(clickOutElements).toEqual([{ current: 'fakeElement' }, '.njs-action-toolbar-popover']);
-    expect(clickOutElementsFirstRender, 'because setClickOutElement has not yet been set').toEqual([
-      { current: undefined },
-      '.njs-action-toolbar-popover',
-    ]);
+    expect(clickOutElementsFirstRender).toEqual([{ current: undefined }, '.njs-action-toolbar-popover']);
   });
 
   describe('sn', () => {
