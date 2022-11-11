@@ -27,7 +27,7 @@
     "@babel/preset-env": "7.19.4",
     "@rollup/plugin-commonjs": "23.0.2",
     "@rollup/plugin-json": "5.0.1",
-    "@rollup/plugin-node-resolve": "14.1.0",
+    "@rollup/plugin-node-resolve": "15.0.1",
     "@rollup/plugin-replace": "5.0.1",
     "chalk": "4.1.2",
     "extend": "3.0.2",
