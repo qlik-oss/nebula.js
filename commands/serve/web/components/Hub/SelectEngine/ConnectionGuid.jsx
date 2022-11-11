@@ -19,14 +19,19 @@ const ConnectionGuid = ({ showGuid }) => (
       Qlik Cloud Services
     </Typography>
     <Typography variant="body2" paragraph>
-      WebSocket URL format:{' '}
+      <b>Web integration id format:</b>
+      There are two ways in order to connect through WebSocket:
+      <br />
+      1. <code>qlik-web-integration-id</code>
+      <br />
+      2. <code>qlik-client-id</code>
+      <br />
+      <br />
+      <b>Web integration id:</b>
+      <br />
       <code>wss://&lt;tenant&gt;.&lt;region&gt;.qlikcloud.com?qlik-web-integration-id=&lt;web-integration-id&gt;</code>
       <br />
       Example: <code>wss://qlik.eu.qlikcloud.com?qlik-web-integration-id=xxx</code>
-      <br />
-      <br />
-      The <code>qlik-web-integration-id</code> must be present in order for QCS to confirm that the request originates
-      from a whitelisted domain.
       <br />
       <br />
       For more info, visit{' '}
@@ -38,6 +43,19 @@ const ConnectionGuid = ({ showGuid }) => (
         Managing web integrations
       </Link>
       .
+    </Typography>
+    <Typography variant="body2" paragraph>
+      <b>OAuth Client ID URL format:</b>
+      <br />
+      <code>wss://&lt;tenant&gt;.&lt;region&gt;.qlikcloud.com?qlik-client-id=&lt;client-id&gt;</code>
+      <br />
+      Example: <code>wss://qlik.eu.qlikcloud.com?qlik-client-id=xxx</code>
+      <br />
+      <br />
+      The <code>qlik-web-integration-id</code> <b>OR</b> <code>qlik-client-id</code> must be present in order for QCS to
+      confirm that the request originates from a whitelisted domain.
+      <br />
+      <br />
     </Typography>
     <Typography variant="subtitle1" gutterBottom>
       Qlik Sense Enterprise on Windows
