@@ -27,7 +27,7 @@ If the proposal includes new designs or bigger changes, please be prepared to di
 
 ### Prerequisites
 
-- [Node.js](https://nodejs.org/) 18+ and [yarn](https://yarnpkg.com) 1+ installed
+- [Node.js](https://nodejs.org/) 18.10.0+ and [yarn](https://yarnpkg.com) 1+ installed
 
 ### Project structure
 
