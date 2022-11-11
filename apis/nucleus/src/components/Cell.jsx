@@ -289,7 +289,8 @@ const Cell = forwardRef(
     const [snOptions, setSnOptions] = useState(initialSnOptions);
     const [snPlugins, setSnPlugins] = useState(initialSnPlugins);
     const [clickOutElement, setClickOutElement] = useState();
-    const [selections] = useObjectSelections(app, model, { current: clickOutElement });
+    const clickOutElements = [{ current: clickOutElement }, '.njs-action-toolbar-popover']; // elements which will not trigger the click out listener
+    const [selections] = useObjectSelections(app, model, clickOutElements);
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
     const [bgColor, setBgColor] = useState(undefined);
@@ -310,7 +311,7 @@ const Cell = forwardRef(
       if (!contentNode) {
         return;
       }
-      setClickOutElement(contentNode);
+      setClickOutElement(cellNode);
     }, [cellRect]);
 
     useEffect(() => {
