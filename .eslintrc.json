@@ -79,7 +79,8 @@
     {
       "files": ["commands/serve/web/**/*.inspect.{js,jsx}", "commands/serve/web/utils/testRenderer.jsx"],
       "rules": {
-        "import/no-extraneous-dependencies": 0
+        "import/no-extraneous-dependencies": 0,
+        "array-callback-return": 0
       }
     },
     {
