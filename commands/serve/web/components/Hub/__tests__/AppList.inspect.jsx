@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import AppList from '../AppList';
-import { TestRenderer } from '../../../utils/testRenderer';
+import { TestRenderer } from '../../../utils';
 import * as useAppListModule from '../../../hooks/useAppList';
 import * as utilsModule from '../../../utils';
 

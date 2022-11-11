@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen, act } from '@testing-library/react';
 import * as reactRouterDomModule from 'react-router-dom';
-import { TestRenderer } from '../../../../utils/testRenderer';
+import { TestRenderer } from '../../../../utils';
 import ConnectionHistory from '../ConnectionHistory';
 
 jest.mock('react-router-dom', () => ({

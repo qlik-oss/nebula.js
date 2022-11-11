@@ -1,7 +1,7 @@
 import React from 'react';
 import { screen } from '@testing-library/react';
 import * as reactRouterDomModule from 'react-router-dom';
-import { TestRenderer } from '../../../utils/testRenderer';
+import { TestRenderer } from '../../../utils';
 import ConnectionSteps from '../ConnectionSteps';
 
 import { steps } from '../../../constants/connectionSteps';

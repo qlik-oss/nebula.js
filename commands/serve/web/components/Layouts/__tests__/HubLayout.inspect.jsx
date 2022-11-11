@@ -2,7 +2,7 @@ import React from 'react';
 import { screen } from '@testing-library/react';
 import * as RouterModule from 'react-router-dom';
 import HubLayout from '../HubLayout';
-import { TestRenderer } from '../../../utils/testRenderer';
+import { TestRenderer } from '../../../utils';
 import { steps } from '../../../constants/connectionSteps';
 
 jest.mock('react-router-dom', () => ({ ...jest.requireActual('react-router-dom') }));
