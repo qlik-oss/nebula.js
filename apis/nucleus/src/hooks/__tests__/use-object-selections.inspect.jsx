@@ -5,7 +5,7 @@ import { create, act } from 'react-test-renderer';
 import useObjectSelections from '../useObjectSelections';
 import * as useAppSelectionsModule from '../useAppSelections';
 import * as useLayoutModule from '../useLayout';
-import * as selectionStoreModule from '../../stores/selections-store';
+import * as selectionsStoreModule from '../../stores/selections-store';
 
 const TestHook = forwardRef(({ hook, hookProps = [] }, ref) => {
   const result = hook(...hookProps);
@@ -28,6 +28,8 @@ describe.skip('useObjectSelections', () => {
   let layout;
 
   beforeAll(() => {
+    const elements = [{ current: undefined }];
+
     app = {
       id: 'appSel',
       session: {},
@@ -36,6 +38,7 @@ describe.skip('useObjectSelections', () => {
       back: jest.fn(),
       clearAll: jest.fn(),
       getField: jest.fn(),
+      createSessionObject: jest.fn(),
     };
     appModal = {
       begin: jest.fn(),
@@ -45,12 +48,17 @@ describe.skip('useObjectSelections', () => {
     appSel = {
       isModal: jest.fn(),
     };
-    layout = {};
+    layout = {
+      qListObject: {
+        qDimensionInfo: { qLocked: false },
+      },
+    };
     modalObjectStore = {
       set: jest.fn(),
       get: jest.fn(),
     };
     object = {
+      id: null,
       beginSelections: jest.fn(),
       endSelections: jest.fn(),
       resetMadeSelections: jest.fn(),
@@ -60,7 +68,7 @@ describe.skip('useObjectSelections', () => {
 
     jest.spyOn(useAppSelectionsModule, 'default').mockImplementation(() => [appSel]);
     jest.spyOn(useLayoutModule, 'default').mockImplementation(() => [layout]);
-    jest.spyOn(selectionStoreModule, 'useAppSelectionsStore').mockImplementation(() => [
+    jest.spyOn(selectionsStoreModule, 'useAppSelectionsStore').mockImplementation(() => [
       {
         get: () => appSel,
         set: (k, v) => {
@@ -68,7 +76,7 @@ describe.skip('useObjectSelections', () => {
         },
       },
     ]);
-    jest.spyOn(selectionStoreModule, 'useObjectSelectionsStore').mockImplementation(() => [
+    jest.spyOn(selectionsStoreModule, 'useObjectSelectionsStore').mockImplementation(() => [
       {
         get: () => objectSel,
         set: (k, v) => {
@@ -77,18 +85,18 @@ describe.skip('useObjectSelections', () => {
         dispatch: async (b) => {
           if (!b) return;
           await act(async () => {
-            renderer.update(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, object]} />);
+            renderer.update(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, object, elements]} />);
           });
         },
       },
     ]);
-    jest.spyOn(selectionStoreModule, 'useAppModalStore').mockImplementation(() => [{ get: () => appModal }]);
-    selectionStoreModule.modalObjectStore = modalObjectStore;
+    selectionsStoreModule.modalObjectStore = modalObjectStore;
+    jest.spyOn(selectionsStoreModule, 'useAppModalStore').mockImplementation(() => [{ get: () => appModal }]);
 
     ref = React.createRef();
     render = async () => {
       await act(async () => {
-        renderer = create(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, object]} />);
+        renderer = create(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, object, elements]} />);
       });
       objectSel.setLayout(layout);
     };
