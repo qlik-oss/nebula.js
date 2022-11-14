@@ -72,8 +72,6 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
       }
       isActive = true;
       this.emit('activated');
-      // unbindClickOutside = bindClickOutside({ handler });
-
       return appModal.begin(model, paths, true);
     },
     /**
@@ -105,7 +103,6 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
       isActive = false;
       this.emit('canceled'); // FIXME - spelling?
       this.emit('deactivated');
-      // unbindClickOutside();
       return appModal.end(false);
     },
     /**
