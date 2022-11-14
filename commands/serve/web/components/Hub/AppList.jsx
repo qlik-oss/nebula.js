@@ -22,7 +22,7 @@ const AppList = () => {
       <Typography variant="h5" gutterBottom>
         Select an app
       </Typography>
-      {loading && <CircularProgress size={32} />}
+      {loading && <CircularProgress data-testid="loading" size={32} />}
       {!loading && appList && !appList.length && <Typography component="span">No apps found!</Typography>}
       {appList && appList.length > 0 && (
         <List>

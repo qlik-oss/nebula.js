@@ -38,6 +38,7 @@ module.exports = {
     '!commands/build/command.js',
     '!commands/sense/command.js',
     '!commands/serve/command.js',
+    '!commands/serve/web/components/Root.jsx',
     '!commands/sense/src/ext.js',
     '!commands/sense/src/empty-ext.js',
     '!apis/snapshooter/client.js',
