@@ -10,7 +10,7 @@
   "keywords": ["qlik", "nebula", "stardust"],
   "files": ["dist"],
   "engines": {
-    "node": ">=18"
+    "node": ">=18.10.0"
   },
   "main": "dist/<%= name %>.js",
   "module": "dist/<%= name %>.esm.js",

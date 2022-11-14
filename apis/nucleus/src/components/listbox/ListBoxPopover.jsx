@@ -18,6 +18,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
+import getHasSelections from './assets/has-selections';
 
 export default function ListBoxPopover({ alignTo, show, close, app, fieldName, stateName = '$' }) {
   const open = show && Boolean(alignTo.current);
@@ -66,7 +67,8 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
 
   const { translator } = useContext(InstanceContext);
   const moreAlignTo = useRef();
-  const [selections] = useObjectSelections(app, model);
+  const containerRef = useRef();
+  const [selections] = useObjectSelections(app, model, containerRef);
   const [layout] = useLayout(model);
 
   useEffect(() => {
@@ -95,9 +97,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
     translator,
   });
 
-  const counts = layout.qListObject.qDimensionInfo.qStateCounts;
-
-  const hasSelections = counts.qSelected + counts.qSelectedExcluded + counts.qLocked + counts.qLockedExcluded > 0;
+  const hasSelections = getHasSelections(layout);
 
   return (
     <Popover
@@ -116,7 +116,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
         style: { minWidth: '250px' },
       }}
     >
-      <Grid container direction="column" gap={0}>
+      <Grid container direction="column" gap={0} ref={containerRef}>
         <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (

@@ -1,34 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import ListBoxInline from './ListBoxInline';
 import useObjectSelections from '../../hooks/useObjectSelections';
 import useExistingModel from './hooks/useExistingModel';
 import useOnTheFlyModel from './hooks/useOnTheFlyModel';
+import identify from './assets/identify';
 
-const OBJECT_SOURCE = {
-  ON_THE_FLY: 'ON_THE_FLY',
-  EXISTING: 'EXISTING',
-};
-
-const SELECTIONS_API = {
-  INTERNAL: 'INTERNAL',
-  EXTERNAL: 'EXTERNAL',
-};
-
-function identify({ qId, options }) {
-  const variant = {};
-
-  // Existing or on the fly
-  variant.objectSource = qId || options.sessionModel ? OBJECT_SOURCE.EXISTING : OBJECT_SOURCE.ON_THE_FLY;
-
-  // Use internal or external selectionsApi
-  variant.selectionsApi = options.selectionsApi ? SELECTIONS_API.EXTERNAL : SELECTIONS_API.INTERNAL;
-
-  return variant;
-}
-
-function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, options }) {
-  const { objectSource, selectionsApi } = identify({ qId, options });
+function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options }) {
+  const { isExistingObject, hasExternalSelectionsApi } = identify({ qId, options });
   const [changeCount, setChangeCount] = useState(0);
 
   useEffect(() => {
@@ -37,14 +16,15 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, options }) {
     }
 
     setChangeCount(changeCount + 1);
-  }, [objectSource, selectionsApi]);
+  }, [isExistingObject, hasExternalSelectionsApi]);
 
-  const model =
-    objectSource === OBJECT_SOURCE.EXISTING
-      ? useExistingModel({ app, qId, options })
-      : useOnTheFlyModel({ app, fieldIdentifier, stateName, options });
-  const selections =
-    selectionsApi === SELECTIONS_API.EXTERNAL ? options.selectionsApi : useObjectSelections(app, model)[0];
+  const model = isExistingObject
+    ? useExistingModel({ app, qId, options })
+    : useOnTheFlyModel({ app, fieldIdentifier, stateName, options });
+
+  const elementRef = useRef(element);
+
+  const selections = hasExternalSelectionsApi ? options.selectionsApi : useObjectSelections(app, model, elementRef)[0];
 
   if (!selections || !model) {
     return null;
@@ -61,7 +41,14 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, options }) {
 
 export default function ListBoxPortal({ element, app, fieldIdentifier, qId, stateName = '$', options = {} }) {
   return ReactDOM.createPortal(
-    <ListBoxWrapper app={app} fieldIdentifier={fieldIdentifier} qId={qId} stateName={stateName} options={options} />,
+    <ListBoxWrapper
+      app={app}
+      element={element}
+      fieldIdentifier={fieldIdentifier}
+      qId={qId}
+      stateName={stateName}
+      options={options}
+    />,
     element
   );
 }

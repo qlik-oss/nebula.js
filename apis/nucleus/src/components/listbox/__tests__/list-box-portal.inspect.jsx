@@ -89,9 +89,12 @@ describe('ListBoxPortal', () => {
       const fieldIdentifier = { qLibraryId: '123' };
       const app = {};
       const options = { sessionModel: {} };
+      const elementRef = {
+        current: undefined,
+      };
       const elem = ListBoxPortal({ app, fieldIdentifier, options });
       await render(elem);
-      expect(useObjectSelectionsMock).toHaveBeenCalledWith(app, options.sessionModel);
+      expect(useObjectSelectionsMock).toHaveBeenCalledWith(app, options.sessionModel, elementRef);
     });
   });
 

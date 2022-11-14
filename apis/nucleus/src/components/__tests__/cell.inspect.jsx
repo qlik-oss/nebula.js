@@ -5,8 +5,9 @@ import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 import Cell from '../Cell';
-import * as useLayputModule from '../../hooks/useLayout';
+import * as useLayoutModule from '../../hooks/useLayout';
 import * as useRectModule from '../../hooks/useRect';
+import * as useObjectSelectionsModule from '../../hooks/useObjectSelections';
 import * as LoadingModule from '../Loading';
 import * as LongRunningQueryModule from '../LongRunningQuery';
 import * as ErrorModule from '../Error';
@@ -30,8 +31,18 @@ describe('<Cell />', () => {
   let layoutState;
   let longrunning;
   let appLayout = {};
+  let fakeElement;
+  let defaultHalo;
+  let defaultModel;
+  let useObjectSelections;
 
   beforeEach(() => {
+    fakeElement = 'fakeElement';
+    Loading = () => 'loading';
+    LongRunningQuery = () => 'long-running-query';
+    CError = () => 'error';
+    Supernova = () => 'supernova';
+    Header = () => 'Header';
     jest.useFakeTimers();
     Loading = jest.fn().mockImplementation(() => 'loading');
     LongRunningQuery = jest.fn().mockImplementation(() => 'long-running-query');
@@ -45,12 +56,13 @@ describe('<Cell />', () => {
     longrunning = { cancel: jest.fn(), retry: jest.fn() };
     useLayout = jest.fn().mockReturnValue([layout, layoutState, longrunning]);
     useRect = jest.fn().mockReturnValue([() => {}, { width: 300, height: 400 }]);
+    const selections = 'selections';
+    useObjectSelections = jest.fn().mockReturnValue([selections]);
 
-    jest.spyOn(useLayputModule, 'default').mockImplementation(useLayout);
-    jest.spyOn(useLayputModule, 'useAppLayout').mockImplementation(() => [appLayout]);
-    jest.spyOn(useRectModule, 'default').mockImplementation(useRect);
-
-    // jest.spyOn does not working for these
+    jest.spyOn(useLayoutModule, 'default').mockImplementation(useLayout);
+    jest.spyOn(useLayoutModule, 'useAppLayout').mockImplementation(() => [appLayout]);
+    jest.spyOn(useRectModule, 'default').mockImplementation(useRect); // jest.spyOn does not working for these
+    jest.spyOn(useObjectSelectionsModule, 'default').mockImplementation(useObjectSelections);
     LoadingModule.default = Loading;
     LongRunningQueryModule.default = LongRunningQuery;
     ErrorModule.default = CError;
@@ -58,13 +70,15 @@ describe('<Cell />', () => {
     HeaderModule.default = Header;
     InstanceContextModule.default = InstanceContext;
 
+    useRect.mockReturnValue([() => {}, { width: 300, height: 400 }, fakeElement]);
+
     const addEventListener = jest.fn();
     const removeEventListener = jest.fn();
     global.window = {
       addEventListener,
       removeEventListener,
     };
-    const defaultModel = {
+    defaultModel = {
       id: ++id,
       on: jest.fn(),
       removeListener: jest.fn(),
@@ -74,7 +88,64 @@ describe('<Cell />', () => {
         })
       ),
     };
-    const defaultHalo = {
+    defaultHalo = {
+      app: {
+        id: 'app-id',
+        getAppLayout: () => Promise.resolve(appLayout),
+      },
+      public: {
+        nebbie: {},
+      },
+      types: {
+        getSupportedVersion: jest.fn(),
+      },
+    };
+    render = async ({
+      model = {},
+      app = {},
+      nebbie = {},
+      types = defaultHalo.types,
+      initialSnOptions = {},
+      onMount = jest.fn(),
+      theme = createTheme('dark'),
+      cellRef,
+      config = {},
+      rendererOptions,
+    } = {}) => {
+      model = { ...defaultModel, ...model };
+      const halo = {
+        ...defaultHalo,
+        ...app,
+        public: { nebbie },
+        config: { ...config },
+        types,
+      };
+
+      await act(async () => {
+        renderer = create(
+          <StyledEngineProvider injectFirst>
+            <ThemeProvider theme={theme}>
+              <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
+                <Cell ref={cellRef} halo={halo} model={model} initialSnOptions={initialSnOptions} onMount={onMount} />
+              </InstanceContext.Provider>
+            </ThemeProvider>
+          </StyledEngineProvider>,
+          rendererOptions || null
+        );
+      });
+    };
+
+    defaultModel = {
+      id: ++id,
+      on: jest.fn(),
+      removeListener: jest.fn(),
+      getLayout: jest.fn().mockReturnValue(
+        new Promise(() => {
+          // Do not resolve
+        })
+      ),
+    };
+    defaultHalo = {
       app: {
         id: 'app-id',
         getAppLayout: () => Promise.resolve(appLayout),
@@ -121,6 +192,7 @@ describe('<Cell />', () => {
       });
     };
   });
+
   afterEach(() => {
     jest.useRealTimers();
     renderer.unmount();
@@ -131,7 +203,18 @@ describe('<Cell />', () => {
   test('should render version error', async () => {
     await render();
     const types = renderer.root.findAllByType(CError);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
+  });
+
+  test('should call useObjectSelection with expected args', async () => {
+    await render();
+    expect(useObjectSelections).calledTwice;
+    const [, , clickOutElementsFirstRender] = useObjectSelections.mock.calls[0];
+    const [app, model, clickOutElements] = useObjectSelections.mock.calls[1];
+    expect(app).toEqual(defaultHalo.app);
+    expect(model).toEqual(defaultModel);
+    expect(clickOutElements).toEqual([{ current: 'fakeElement' }, '.njs-action-toolbar-popover']);
+    expect(clickOutElementsFirstRender).toEqual([{ current: undefined }, '.njs-action-toolbar-popover']);
   });
 
   describe('sn', () => {
@@ -145,7 +228,7 @@ describe('<Cell />', () => {
       await render({ types });
       act(() => jest.advanceTimersByTime(800));
       const ftypes = renderer.root.findAllByType(Loading);
-      expect(ftypes.length).toBe(1);
+      expect(ftypes).toHaveLength(1);
       expect(() => renderer.root.findByType(LongRunningQuery)).toThrow();
     });
 
@@ -169,7 +252,7 @@ describe('<Cell />', () => {
       await render({ types });
       act(() => jest.advanceTimersByTime(2100));
       const ftypes = renderer.root.findAllByType(LongRunningQuery);
-      expect(ftypes.length).toBe(0);
+      expect(ftypes).toHaveLength(0);
     });
 
     test('should render long running', async () => {
@@ -192,7 +275,7 @@ describe('<Cell />', () => {
       await render({ types });
       act(() => jest.advanceTimersByTime(2100));
       const ftypes = renderer.root.findAllByType(LongRunningQuery);
-      expect(ftypes.length).toBe(1);
+      expect(ftypes).toHaveLength(1);
       expect(() => renderer.root.findByType(Loading)).toThrow();
     });
 
@@ -215,7 +298,7 @@ describe('<Cell />', () => {
       await render({ types });
 
       const ftypes = renderer.root.findAllByType(Supernova);
-      expect(ftypes.length).toBe(1);
+      expect(ftypes).toHaveLength(1);
     });
 
     test('should render new type', async () => {
@@ -292,7 +375,7 @@ describe('<Cell />', () => {
       await render({ types, model });
 
       const ftypes = renderer.root.findAllByType(CError);
-      expect(ftypes.length).toBe(1);
+      expect(ftypes).toHaveLength(1);
       expect(ftypes[0].props.title).toBe('Visualization.Incomplete');
     });
 
@@ -352,7 +435,7 @@ describe('<Cell />', () => {
       await render({ types, model });
 
       const ftypes = renderer.root.findAllByType(CError);
-      expect(ftypes.length).toBe(1);
+      expect(ftypes).toHaveLength(1);
       expect(ftypes[0].props.title).toBe('Visualization.Incomplete');
     });
 
@@ -394,7 +477,7 @@ describe('<Cell />', () => {
       await render({ types });
 
       const ftypes = renderer.root.findAllByType(CError);
-      expect(ftypes.length).toBe(1);
+      expect(ftypes).toHaveLength(1);
       expect(ftypes[0].props.data[0].title).toBe('Visualization.LayoutError');
     });
 
@@ -436,7 +519,7 @@ describe('<Cell />', () => {
       await render({ types });
 
       const ftypes = renderer.root.findAllByType(CError);
-      expect(ftypes.length).toBe(1);
+      expect(ftypes).toHaveLength(1);
       expect(ftypes[0].props.data[0].title).toBe('Visualization.UnfulfilledCalculationCondition');
     });
 
