@@ -7,14 +7,7 @@ module.exports = {
     exclude: [
       '**/commands/**',
       '**/__stories__/**',
-      '**/apis/nucleus/index.js',
-      '**/apis/locale/index.js',
-      '**/apis/stardust/index.js',
-      '**/apis/supernova/index.js',
-      '**/apis/theme/index.js',
-      '**/apis/conversion/index.js',
-      '**/apis/test-utils/index.js',
-      '**/apis/enigma-mocker/index.js',
+      '**/apis/**',
       '**/packages/ui/icons/**/*.js', // Exclude the defined icons but test the `<SvgIcon />`
     ],
   },
