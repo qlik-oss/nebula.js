@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useRef, useEffect } from 'react';
+import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
@@ -22,6 +22,7 @@ import getHasSelections from './assets/has-selections';
 
 export default function ListBoxPopover({ alignTo, show, close, app, fieldName, stateName = '$' }) {
   const open = show && Boolean(alignTo.current);
+  const [listCount, setListCount] = useState(0);
   const theme = useTheme();
   const [model] = useSessionModel(
     {
@@ -155,8 +156,8 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
         </Grid>
         <Grid item xs>
           <div ref={moreAlignTo} />
-          <ListBoxSearch selections={selections} model={model} visible />
-          <ListBox model={model} selections={selections} direction="ltr" />
+          <ListBoxSearch selections={selections} model={model} layout={layout} listCount={listCount} visible />
+          <ListBox model={model} selections={selections} direction="ltr" onSetListCount={(c) => setListCount(c)} />
         </Grid>
       </Grid>
     </Popover>

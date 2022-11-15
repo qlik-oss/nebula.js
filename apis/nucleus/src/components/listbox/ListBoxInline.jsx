@@ -97,6 +97,7 @@ export default function ListBoxInline({ options = {} }) {
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
+  const [listCount, setListCount] = useState(0);
 
   const handleKeyDown = getListboxInlineKeyboardNavigation({ setKeyboardActive });
 
@@ -170,8 +171,9 @@ export default function ListBoxInline({ options = {} }) {
     setShowSearch(newValue);
   };
 
-  const getSearchOrUnlock = () =>
-    search === 'toggle' && !hasSelections ? (
+  const getSearchOrUnlock = () => {
+    const showSearchIcon = search === 'toggle' && !hasSelections;
+    return showSearchIcon ? (
       <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
         <SearchIcon />
       </IconButton>
@@ -180,6 +182,7 @@ export default function ListBoxInline({ options = {} }) {
         <Unlock />
       </IconButton>
     );
+  };
 
   return (
     <StyledGrid
@@ -248,6 +251,7 @@ export default function ListBoxInline({ options = {} }) {
             selections={selections}
             model={model}
             dense={dense}
+            listCount={listCount}
             keyboard={keyboard}
             visible={searchVisible}
             searchContainerRef={searchContainerRef}
@@ -263,6 +267,7 @@ export default function ListBoxInline({ options = {} }) {
                 selections={selections}
                 direction={direction}
                 listLayout={listLayout}
+                onSetListCount={(c) => setListCount(c)}
                 frequencyMode={frequencyMode}
                 histogram={histogram}
                 rangeSelect={rangeSelect}
