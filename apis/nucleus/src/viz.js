@@ -67,6 +67,11 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      */
     id: model.id,
     /**
+     * This visualization's Enigma model, a representation of the generic object.
+     * @type {string}
+     */
+    model,
+    /**
      * Destroys the visualization and removes it from the the DOM.
      * @example
      * const viz = await embed(app).render({

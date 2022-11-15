@@ -62,7 +62,7 @@ export const resolveBgImage = (bgComp, app) => {
 
   if (bgImageDef) {
     let url = '';
-    if (bgImageDef.mode === 'media') {
+    if (bgImageDef.mode === 'media' || bgComp.useImage === 'media') {
       url = bgImageDef?.mediaUrl?.qStaticContentUrl?.qUrl
         ? decodeURIComponent(bgImageDef.mediaUrl.qStaticContentUrl.qUrl)
         : undefined;

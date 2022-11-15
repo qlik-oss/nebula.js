@@ -8,7 +8,7 @@ import AppSelectionsPortal from './components/selections/AppSelections';
 import ListBoxPortal from './components/listbox/ListBoxPortal';
 
 import create from './object/create-session-object';
-import get from './object/get-object';
+import get from './object/get-generic-object';
 import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
 
