@@ -50,3 +50,5 @@ export function TestRenderer(component, contextValuesOverride) {
 
   return { ...render(component, { wrapper: Wrapper }), userEvents: userEvents.setup() };
 }
+
+export const RouterWrapper = ({ children }) => <BrowserRouter>{children}</BrowserRouter>;
