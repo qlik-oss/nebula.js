@@ -20,7 +20,7 @@ const keyboard = { enabled: false, active: true };
 const testRender = (model) =>
   create(
     <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-      <ListBoxSearch selections={selections} model={model} keyboard={keyboard} />
+      <ListBoxSearch selections={selections} model={model} listCount={10} keyboard={keyboard} />
     </InstanceContext.Provider>
   );
 
@@ -35,7 +35,7 @@ describe('<ListBoxSearch />', () => {
     keyboard.active = true;
 
     model = {
-      searchListObjectFor: jest.fn(),
+      searchListObjectFor: jest.fn().mockResolvedValue(true),
       acceptListObjectSearch: jest.fn(),
       abortListObjectSearch: jest.fn().mockResolvedValue(),
     };
@@ -64,7 +64,7 @@ describe('<ListBoxSearch />', () => {
     const testRenderer = testRender(model);
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(OutlinedInput);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
     expect(types[0].props.fullWidth).toBe(true);
     expect(types[0].props.autoFocus).toBe(undefined);
     expect(types[0].props.placeholder).toBe('Search');
@@ -95,7 +95,7 @@ describe('<ListBoxSearch />', () => {
     testRenderer.update(
       <ThemeProvider theme={theme}>
         <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-          <ListBoxSearch selections={selections} model={model} keyboard={keyboard} />
+          <ListBoxSearch selections={selections} model={model} keyboard={keyboard} listCount={1} />
         </InstanceContext.Provider>
       </ThemeProvider>
     );
@@ -104,19 +104,23 @@ describe('<ListBoxSearch />', () => {
     expect(type.props.value).toBe('foo');
   });
 
-  test('should reset `OutlinedInput` and `acceptListObjectSearch` on `Enter`', () => {
+  test('should reset `OutlinedInput` and `acceptListObjectSearch` on `Enter`', async () => {
     const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} />
+        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} listCount={1} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     const type = testInstance.findByType(OutlinedInput);
 
-    type.props.onChange({ target: { value: 'foo' } });
+    await act(async () => {
+      await type.props.onChange({ target: { value: 'foo' } });
+    });
     expect(type.props.value).toBe('foo');
 
-    type.props.onKeyDown({ ...keyEventDefaults, key: 'Enter' });
+    await act(async () => {
+      await type.props.onKeyDown({ ...keyEventDefaults, key: 'Enter' });
+    });
     expect(model.acceptListObjectSearch).toHaveBeenCalledWith('/qListObjectDef', true);
     expect(type.props.value).toBe('');
   });
@@ -154,11 +158,11 @@ describe('<ListBoxSearch />', () => {
   test('should not render if visible is false', () => {
     const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} visible={false} />
+        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} visible={false} listCount={1} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
     const inputBoxes = testInstance.findAllByType(OutlinedInput);
-    expect(inputBoxes.length).toBe(0);
+    expect(inputBoxes).toHaveLength(0);
   });
 });
