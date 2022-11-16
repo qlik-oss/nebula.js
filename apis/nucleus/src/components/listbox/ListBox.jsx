@@ -82,6 +82,7 @@ export default function ListBox({
   showGray = true,
   scrollState,
   selectDisabled = () => false,
+  onSetListCount = () => {},
   setCount,
 }) {
   const [layout] = useLayout(model);
@@ -243,6 +244,7 @@ export default function ListBox({
   };
 
   const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
+  onSetListCount?.(listCount);
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
