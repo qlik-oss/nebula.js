@@ -917,7 +917,7 @@
                   "type": "boolean"
                 },
                 "dense": {
-                  "description": "Reduces padding and text size",
+                  "description": "Reduces padding and text size. (Not applicable when rendering existing model)",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
