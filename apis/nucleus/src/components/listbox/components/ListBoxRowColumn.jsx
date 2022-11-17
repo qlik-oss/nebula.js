@@ -60,7 +60,9 @@ const getSelectedStyle = ({ theme }) => ({
   },
 });
 
-const Root = styled('div')(({ theme }) => ({
+const Root = styled('div', {
+  shouldForwardProp: (props) => props !== 'flexBasisProp',
+})(({ theme, flexBasisProp }) => ({
   [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
     color: theme.palette.text.primary,
@@ -98,7 +100,7 @@ const Root = styled('div')(({ theme }) => ({
 
   // The leaf node, containing the label text.
   [`& .${classes.labelText}`]: {
-    flexBasis: 'max-content',
+    flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
     whiteSpace: 'pre', // to keep white-space on highlight
@@ -136,7 +138,6 @@ const Root = styled('div')(({ theme }) => ({
       display: 'flex',
       alignItems: 'center',
       paddingLeft: 0,
-      minWidth: '70%', // might need proper calculation
     },
   },
 
@@ -379,9 +380,10 @@ function RowColumn({ index, style, data }) {
   };
 
   const isFirstElement = index === 0;
+  const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
   return (
-    <Root className={classes.barContainer}>
+    <Root className={classes.barContainer} flexBasisProp={flexBasisVal}>
       <Grid
         container
         gap={0}
