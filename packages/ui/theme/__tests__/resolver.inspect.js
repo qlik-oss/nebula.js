@@ -2,18 +2,18 @@ import resolver from '../resolver';
 
 describe('resolver', () => {
   describe('creator', () => {
-    it('should flatten theme', () => {
+    test('should flatten theme', () => {
       const r = resolver({
         foo: {
           bar: 'red',
         },
       });
-      expect(r.references()).to.eql({
+      expect(r.references()).toEqual({
         'foo.bar': 'red',
       });
     });
 
-    it('should resolve theme variables', () => {
+    test('should resolve theme variables', () => {
       const r = resolver({
         shadow: {
           colorful: '2px $palette.bright.primary',
@@ -25,26 +25,26 @@ describe('resolver', () => {
           light: 'ocean',
         },
       });
-      expect(r.references()).to.eql({
+      expect(r.references()).toEqual({
         'shadow.colorful': '2px ocean',
         'palette.bright.primary': 'ocean',
         'palette.light': 'ocean',
       });
     });
 
-    it('should throw when reference is cyclical', () => {
+    test('should throw when reference is cyclical', () => {
       const fn = () =>
         resolver({
           foo: {
             bar: '4px $foo.bar',
           },
         });
-      expect(fn).to.throw('Cyclical reference for "$foo.bar"');
+      expect(fn).toThrow('Cyclical reference for "$foo.bar"');
     });
   });
 
   describe('resolver', () => {
-    it('should resolve variable references', () => {
+    test('should resolve variable references', () => {
       const r = resolver({
         typography: {
           fontFamily: 'Arial',
@@ -54,18 +54,18 @@ describe('resolver', () => {
         r.resolve({
           font: '16px $typography.fontFamily',
         })
-      ).to.eql({
+      ).toEqual({
         font: '16px Arial',
       });
     });
 
-    it('should resolve value references', () => {
+    test('should resolve value references', () => {
       const r = resolver({
         typography: {
           fontFamily: 'Arial',
         },
       });
-      expect(r.get('16px $typography.fontFamily')).to.eql('16px Arial');
+      expect(r.get('16px $typography.fontFamily')).toBe('16px Arial');
     });
   });
 });
