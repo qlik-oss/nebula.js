@@ -6,15 +6,9 @@ export default function useExistingModel({ app, qId, options = {} }) {
   const [modelStore] = useModelStore();
   const { sessionModel } = options;
 
-  const validateOptions = (opts) => {
-    if (opts.dense) {
-      throw new Error('Option "dense" is not avaliable when rendering existing model.');
-    }
-  };
-
-  useEffect(() => {
-    validateOptions(options);
-  }, []);
+  if (options.dense) {
+    throw new Error('Option "dense" is not avaliable when rendering existing model.');
+  }
 
   useEffect(() => {
     async function fetchObject() {
