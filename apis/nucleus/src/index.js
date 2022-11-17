@@ -421,7 +421,7 @@ function nuked(configuration = {}) {
            * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields
-           * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable when rendering existing model).
+           * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects).
            * @param {string=} [options.stateName="$"] Sets the state to make selections in
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            *

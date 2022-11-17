@@ -7,7 +7,7 @@ export default function useExistingModel({ app, qId, options = {} }) {
   const { sessionModel } = options;
 
   if (options.dense) {
-    throw new Error('Option "dense" is not avaliable when rendering existing model.');
+    throw new Error('Option "dense" is not applicable for existing objects.');
   }
 
   useEffect(() => {
