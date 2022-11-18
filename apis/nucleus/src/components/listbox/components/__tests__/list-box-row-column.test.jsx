@@ -841,7 +841,7 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.children[1].props.style.justifyContent).to.equal('right');
+      expect(type.props.children[1].props.style.justifyContent).toEqual('right');
     });
 
     test('should render radio button when isSingleSelect is true', async () => {
