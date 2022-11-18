@@ -104,6 +104,7 @@ const Root = styled('div', {
     lineHeight: '16px',
     userSelect: 'none',
     whiteSpace: 'pre', // to keep white-space on highlight
+    paddingRight: '9px',
     ...ellipsis,
   },
 
@@ -169,6 +170,7 @@ const Root = styled('div', {
   },
 
   [`& .${classes.frequencyCount}`]: {
+    width: '66px',
     paddingLeft: '8px',
     paddingRight: '8px',
   },
