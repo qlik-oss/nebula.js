@@ -5,17 +5,8 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import FormManager from './FormManager';
 import { useRootContext } from '../../../contexts/RootContext';
-
-const OptionsToConnect = [
-  { id: 0, label: 'Local Engine', formFields: ['Engine WebSocket URL'] },
-  { id: 1, label: 'Web Integration Id', formFields: ['Engine WebSocket URL', 'Web Integration Id'] },
-  { id: 2, label: 'Client Id', formFields: ['Engine WebSocket URL', 'Client Id'] },
-];
-const detectDefaultStep = (info) => {
-  if (info?.isWebIntegrationIdProvided) return OptionsToConnect.findIndex((x) => x.label === 'Web Integration Id');
-  if (info?.isClientIdProvided) return OptionsToConnect.findIndex((x) => x.label === 'Client Id');
-  return 0;
-};
+import { OptionsToConnect } from '../../../constants/optionsToConnect';
+import { detectDefaultConnectionStep, checkIfConnectionOptionDisabled } from '../../../utils';
 
 export default function ConnectionOptions() {
   const { info, error } = useRootContext();
@@ -23,28 +14,9 @@ export default function ConnectionOptions() {
   const handleChange = (_, idx) => setTabIdx(idx);
 
   useEffect(() => {
-    const idx = detectDefaultStep(info);
+    const idx = detectDefaultConnectionStep(info);
     if (idx) setTabIdx(idx);
   }, [info]);
-
-  const checkIfTabDisabled = ({ label }) => {
-    const labelKey = label
-      .split(' ')
-      .map((x) => x.toLowerCase())
-      .join('-');
-
-    if (info?.isWebIntegrationIdProvided) {
-      if (labelKey === 'web-integration-id') return false;
-      return true;
-    }
-
-    if (info?.isClientIdProvided) {
-      if (labelKey === 'client-id') return false;
-      return true;
-    }
-
-    return false;
-  };
 
   return (
     <Box>
@@ -55,7 +27,7 @@ export default function ConnectionOptions() {
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={tabIdx} onChange={handleChange} aria-label="basic tabs example">
             {OptionsToConnect.map(({ id, label }) => (
-              <Tab key={id} label={label} disabled={checkIfTabDisabled({ label })} />
+              <Tab key={id} label={label} disabled={checkIfConnectionOptionDisabled({ info, label })} />
             ))}
           </Tabs>
         </Box>

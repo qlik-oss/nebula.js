@@ -22,6 +22,8 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
   const { hidden, disabled, style, hasSvgIconShape } = useActionState(item);
   if (hidden) return null;
 
+  const spacing = Number.parseInt(theme.spacing(0.5), 10);
+
   const handleKeyDown = item.keyboardAction
     ? (e) => ['Enter', ' ', 'Spacebar'].includes(e.key) && item.keyboardAction()
     : null;
@@ -43,7 +45,13 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
       {addAnchor && (
         <div
           ref={ref}
-          style={{ bottom: -theme.spacing(0.5), right: 0, position: 'absolute', width: '100%', height: 0 }}
+          style={{
+            bottom: -spacing,
+            right: 0,
+            position: 'absolute',
+            width: '100%',
+            height: 0,
+          }}
         />
       )}
     </IconButton>

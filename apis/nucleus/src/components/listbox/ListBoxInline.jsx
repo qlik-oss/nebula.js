@@ -19,7 +19,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
-import useConfirmUnfocus from './hooks/useConfirmUnfocus';
+import getHasSelections from './assets/has-selections';
 
 const PREFIX = 'ListBoxInline';
 
@@ -64,7 +64,6 @@ export default function ListBoxInline({ options = {} }) {
     showGray = true,
     scrollState = undefined,
     setCount = undefined,
-    shouldConfirmOnBlur = undefined,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -99,6 +98,7 @@ export default function ListBoxInline({ options = {} }) {
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
+  const [listCount, setListCount] = useState(0);
 
   const handleKeyDown = getListboxInlineKeyboardNavigation({ setKeyboardActive });
 
@@ -133,9 +133,6 @@ export default function ListBoxInline({ options = {} }) {
     };
   }, [selections]);
 
-  const listBoxRef = useRef(null);
-  useConfirmUnfocus(listBoxRef, selections, shouldConfirmOnBlur);
-
   useEffect(() => {
     if (!searchContainer || !searchContainer.current) {
       return;
@@ -161,9 +158,7 @@ export default function ListBoxInline({ options = {} }) {
       })
     : [];
 
-  const counts = layout.qListObject.qDimensionInfo.qStateCounts;
-
-  const hasSelections = counts.qSelected + counts.qSelectedExcluded + counts.qLocked + counts.qLockedExcluded > 0;
+  const hasSelections = getHasSelections(layout);
 
   const showTitle = true;
 
@@ -177,8 +172,9 @@ export default function ListBoxInline({ options = {} }) {
     setShowSearch(newValue);
   };
 
-  const getSearchOrUnlock = () =>
-    search === 'toggle' && !hasSelections ? (
+  const getSearchOrUnlock = () => {
+    const showSearchIcon = search === 'toggle' && !hasSelections;
+    return showSearchIcon ? (
       <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
         <SearchIcon />
       </IconButton>
@@ -187,6 +183,7 @@ export default function ListBoxInline({ options = {} }) {
         <Unlock />
       </IconButton>
     );
+  };
 
   return (
     <StyledGrid
@@ -197,7 +194,6 @@ export default function ListBoxInline({ options = {} }) {
       gap={0}
       style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
       onKeyDown={handleKeyDown}
-      ref={listBoxRef}
     >
       {toolbar && (
         <Grid item container style={{ padding: theme.spacing(1) }}>
@@ -256,6 +252,7 @@ export default function ListBoxInline({ options = {} }) {
             selections={selections}
             model={model}
             dense={dense}
+            listCount={listCount}
             keyboard={keyboard}
             visible={searchVisible}
             searchContainerRef={searchContainerRef}
@@ -271,6 +268,7 @@ export default function ListBoxInline({ options = {} }) {
                 selections={selections}
                 direction={direction}
                 listLayout={listLayout}
+                onSetListCount={(c) => setListCount(c)}
                 frequencyMode={frequencyMode}
                 histogram={histogram}
                 rangeSelect={rangeSelect}

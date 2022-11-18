@@ -1,9 +1,10 @@
-import React, { useMemo, useState } from 'react';
+import React, { useState } from 'react';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import { useNavigate } from 'react-router-dom';
 import { useRootContext } from '../../../contexts/RootContext';
+import { getFieldPlaceHolder, shouldDisableSubmitBtn } from '../../../utils';
 
 import Error from './Error';
 
@@ -28,20 +29,6 @@ export default function FormManager({ info, fields, error, isCredentialProvided 
     navigate(`/app-list?engine_url=${url.toString().replace('?', '&')}`);
   };
 
-  const isBtnDisabled = useMemo(() => {
-    if (isCredentialProvided) {
-      if (inputs['engine-websocket-url']) return false;
-      return true;
-    }
-
-    return Object.entries(inputs).length !== fields.length || Object.values(inputs).some((x) => !x);
-  }, [inputs, fields, isCredentialProvided]);
-
-  const getFieldPlaceHolder = (field) => {
-    if (isCredentialProvided) return `You have provided "${field}" through cli or nebula.config.js file already!`;
-    return field;
-  };
-
   return (
     <form onSubmit={handleOnSubmit}>
       <Grid container spacing={2} direction="column" justifyContent="center">
@@ -56,7 +43,7 @@ export default function FormManager({ info, fields, error, isCredentialProvided 
                 .map((x) => x.toLowerCase())
                 .join('-')}
               error={info?.invalid}
-              placeholder={i === 0 ? field : getFieldPlaceHolder(field)}
+              placeholder={i === 0 ? field : getFieldPlaceHolder({ field, isCredentialProvided })}
               onChange={(evt) => handleUpdateInputs(evt)}
             />
           </Grid>
@@ -67,7 +54,12 @@ export default function FormManager({ info, fields, error, isCredentialProvided 
             {error && <Error error={error} />}
           </Grid>
           <Grid container item xs={2} direction="row" alignItems="center" justifyContent="flex-end">
-            <Button type="submit" variant="contained" size="large" disabled={isBtnDisabled}>
+            <Button
+              type="submit"
+              variant="contained"
+              size="large"
+              disabled={shouldDisableSubmitBtn({ isCredentialProvided, inputs, fields })}
+            >
               Connect
             </Button>
           </Grid>

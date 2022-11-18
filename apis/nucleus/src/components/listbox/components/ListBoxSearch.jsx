@@ -2,12 +2,11 @@ import React, { useContext, useState, useEffect } from 'react';
 import { useTheme } from '@nebula.js/ui/theme';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import Search from '@nebula.js/ui/icons/search';
-
 import InstanceContext from '../../../contexts/InstanceContext';
 
 const TREE_PATH = '/qListObjectDef';
 
-export default function ListBoxSearch({ selections, model, keyboard, dense = false, visible = true }) {
+export default function ListBoxSearch({ selections, model, keyboard, listCount, dense = false, visible = true }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const theme = useTheme();
@@ -52,13 +51,25 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
     }
   };
 
-  const onKeyDown = (e) => {
+  const hasHits = () => listCount > 0;
+
+  const performSearch = async () => {
+    let response;
+    const success = await model.searchListObjectFor(TREE_PATH, value);
+    if (success && value.length && hasHits()) {
+      response = model.acceptListObjectSearch(TREE_PATH, true);
+      // eslint-disable-next-line no-param-reassign
+      selections.selectionsMade = true;
+      setValue('');
+    }
+    return response;
+  };
+
+  const onKeyDown = async (e) => {
     let response;
     switch (e.key) {
       case 'Enter':
-        // Maybe we only want to accept if isSearching is true
-        response = model.acceptListObjectSearch(TREE_PATH, true);
-        setValue('');
+        response = await performSearch();
         break;
       case 'Escape':
         response = cancel();
