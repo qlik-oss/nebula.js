@@ -4,11 +4,9 @@ import { create, act } from 'react-test-renderer';
 import SvgIcon from '../SvgIcon';
 
 describe('<SvgIcon />', () => {
-  let sandbox;
   let renderer;
   let render;
   beforeEach(() => {
-    sandbox = sinon.createSandbox();
     render = async (props) => {
       await act(async () => {
         // eslint-disable-next-line react/jsx-props-no-spreading
@@ -17,14 +15,13 @@ describe('<SvgIcon />', () => {
     };
   });
   afterEach(() => {
-    sandbox.restore();
     renderer.unmount();
   });
-  it('should render default', async () => {
+  test('should render default', async () => {
     await render();
     const i = renderer.root.findByType('i');
 
-    expect(i.props.style).to.eql({
+    expect(i.props.style).toEqual({
       fontSize: '16px',
       display: 'inline-block',
       fontStyle: 'normal',
@@ -38,7 +35,7 @@ describe('<SvgIcon />', () => {
     });
 
     const svg = renderer.root.findByType('svg');
-    expect(svg.props).to.eql({
+    expect(svg.props).toEqual({
       xmlns: 'http://www.w3.org/2000/svg',
       width: '1em',
       height: '1em',
@@ -48,7 +45,7 @@ describe('<SvgIcon />', () => {
     });
   });
 
-  it('should render custom', async () => {
+  test('should render custom', async () => {
     await render({
       style: {
         foo: 'bar',
@@ -57,7 +54,7 @@ describe('<SvgIcon />', () => {
     });
     const i = renderer.root.findByType('i');
 
-    expect(i.props.style).to.eql({
+    expect(i.props.style).toEqual({
       fontSize: '16px',
       display: 'inline-block',
       fontStyle: 'normal',
@@ -72,7 +69,7 @@ describe('<SvgIcon />', () => {
     });
 
     const svg = renderer.root.findByType('svg');
-    expect(svg.props).to.eql({
+    expect(svg.props).toEqual({
       xmlns: 'http://www.w3.org/2000/svg',
       width: '1em',
       height: '1em',
@@ -82,13 +79,13 @@ describe('<SvgIcon />', () => {
     });
   });
 
-  it('should get font size', async () => {
+  test('should get font size', async () => {
     await render({
       size: 'large',
     });
     let i = renderer.root.findByType('i');
 
-    expect(i.props.style).to.eql({
+    expect(i.props.style).toEqual({
       fontSize: '20px',
       display: 'inline-block',
       fontStyle: 'normal',
@@ -105,7 +102,7 @@ describe('<SvgIcon />', () => {
     });
     i = renderer.root.findByType('i');
 
-    expect(i.props.style).to.eql({
+    expect(i.props.style).toEqual({
       fontSize: '12px',
       display: 'inline-block',
       fontStyle: 'normal',
@@ -122,7 +119,7 @@ describe('<SvgIcon />', () => {
     });
     i = renderer.root.findByType('i');
 
-    expect(i.props.style).to.eql({
+    expect(i.props.style).toEqual({
       fontSize: '16px',
       display: 'inline-block',
       fontStyle: 'normal',
@@ -136,7 +133,7 @@ describe('<SvgIcon />', () => {
     });
   });
 
-  it('should render shapes', async () => {
+  test('should render shapes', async () => {
     await render({
       shapes: [
         {
@@ -154,7 +151,7 @@ describe('<SvgIcon />', () => {
       ],
     });
     const shapes = renderer.root.findAllByType('rect');
-    expect(shapes.map((s) => s.props)).to.eql([
+    expect(shapes.map((s) => s.props)).toEqual([
       { x: 0, y: 0, width: 100, height: 100 },
       { x: 1, y: 0, width: 100, height: 100 },
       { x: 2, y: 0, width: 100, height: 100 },
