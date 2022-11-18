@@ -171,8 +171,7 @@ const Root = styled('div', {
 
   [`& .${classes.frequencyCount}`]: {
     width: '66px',
-    paddingLeft: '8px',
-    paddingRight: '8px',
+    justifyContent: 'flex-end',
   },
 
   [`&.${classes.barContainer}`]: {
