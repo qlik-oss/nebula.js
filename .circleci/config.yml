@@ -99,13 +99,9 @@ jobs:
           name: Locale
           command: yarn run locale:verify
       - run:
-          name: Unit tests
+          name: Unit Tests
           command: |
-            yarn run test:unit --mocha.bail false --mocha.reporter mocha-junit-reporter --mocha.reporterOptions.mochaFile ./coverage/junit/junit.xml
-      - run:
-          name: Jest Unit Tests
-          command: |
-            yarn test:jest -- --coverage
+            yarn test:unit --coverage
             if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
               echo "Uploading coverage results to coveralls.io..."
               cat ./coverage/lcov.info | npx coveralls
