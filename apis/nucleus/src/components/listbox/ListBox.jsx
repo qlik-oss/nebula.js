@@ -78,7 +78,6 @@ export default function ListBox({
   fetchStart = undefined,
   postProcessPages = undefined,
   calculatePagesHeight = false,
-  dense = false,
   keyboard = {},
   showGray = true,
   scrollState,
@@ -246,6 +245,7 @@ export default function ListBox({
 
   const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
   onSetListCount?.(listCount);
+  const dense = layout.layoutOptions?.dense ?? false;
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
