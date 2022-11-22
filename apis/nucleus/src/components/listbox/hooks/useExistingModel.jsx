@@ -6,6 +6,10 @@ export default function useExistingModel({ app, qId, options = {} }) {
   const [modelStore] = useModelStore();
   const { sessionModel } = options;
 
+  if (options.dense) {
+    throw new Error('Option "dense" is not applicable for existing objects.');
+  }
+
   useEffect(() => {
     async function fetchObject() {
       const modelFromStore = modelStore.get(qId);
