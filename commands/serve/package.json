@@ -39,7 +39,7 @@
     "extend": "3.0.2",
     "html-webpack-plugin": "5.5.0",
     "portfinder": "1.0.32",
-    "puppeteer": "14.4.1",
+    "puppeteer": "19.2.2",
     "regenerator-runtime": "0.13.10",
     "source-map-loader": "4.0.1",
     "webpack": "5.74.0",
