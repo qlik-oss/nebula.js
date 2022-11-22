@@ -7,8 +7,9 @@ async function getPage(options = {}) {
   const { width, height } = options;
 
   const browser = await puppeteer.launch({
-    headless: false,
-    slowMo: 200,
+    // Uncomment these for debugging the test visually.
+    // headless: false,
+    // slowMo: 200,
   });
   const page = await browser.newPage();
   await page.setViewport({ width, height });
