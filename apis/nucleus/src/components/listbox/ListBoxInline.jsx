@@ -56,7 +56,6 @@ export default function ListBoxInline({ options = {} }) {
     selections,
     update = undefined,
     fetchStart = undefined,
-    dense = false,
     selectDisabled = () => false,
     postProcessPages = undefined,
     calculatePagesHeight,
@@ -162,6 +161,7 @@ export default function ListBoxInline({ options = {} }) {
   const showTitle = true;
 
   const searchVisible = (search === true || (search === 'toggle' && showSearch)) && !selectDisabled();
+  const dense = layout.layoutOptions?.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
   const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
@@ -278,7 +278,6 @@ export default function ListBoxInline({ options = {} }) {
                 fetchStart={fetchStart}
                 postProcessPages={postProcessPages}
                 calculatePagesHeight={calculatePagesHeight}
-                dense={dense}
                 selectDisabled={selectDisabled}
                 keyboard={keyboard}
                 showGray={showGray}
