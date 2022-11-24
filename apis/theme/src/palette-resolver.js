@@ -75,7 +75,9 @@ export default function theme(resolvedTheme) {
         others: resolvedTheme.dataColors.othersColor,
       };
     },
-    uiColor(c) {
+    uiColor(c, shift) {
+      // eslint-disable-next-line no-param-reassign
+      shift = !!shift;
       if (c.index < 0 || typeof c.index === 'undefined') {
         return c.color;
       }
@@ -85,10 +87,10 @@ export default function theme(resolvedTheme) {
       if (!uiPalette) {
         return c.color;
       }
-      if (typeof uiPalette.colors[c.index] === 'undefined') {
+      if (typeof uiPalette.colors[c.index - shift] === 'undefined') {
         return c.color;
       }
-      return uiPalette.colors[c.index];
+      return uiPalette.colors[c.index - shift];
     },
   };
 }

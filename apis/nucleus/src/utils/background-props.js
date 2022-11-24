@@ -85,7 +85,7 @@ export const resolveBgColor = (bgComp, theme) => {
     if (bgColor.useColorExpression) {
       return theme.validateColor(bgColor.colorExpression);
     }
-    return bgColor.color && bgColor.color.color !== 'none' ? theme.getColorPickerColor(bgColor.color) : undefined;
+    return bgColor.color && bgColor.color.color !== 'none' ? theme.getColorPickerColor(bgColor.color, true) : undefined;
   }
   return undefined;
 };
