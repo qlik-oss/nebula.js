@@ -1,4 +1,3 @@
-// exports.default = function getFuncs() {
 window.getFuncs = function getFuncs() {
   return {
     getMockData: () => [
