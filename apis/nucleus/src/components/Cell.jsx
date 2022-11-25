@@ -495,7 +495,7 @@ const Cell = forwardRef(
           width: '100%',
           height: '100%',
           overflow: 'hidden',
-          backgroundColor: bgColor || 'transparent',
+          backgroundColor: bgColor || 'unset',
           backgroundImage: bgImage && bgImage.url ? `url(${bgImage.url})` : undefined,
           backgroundRepeat: 'no-repeat',
           backgroundSize: bgImage && bgImage.size,
