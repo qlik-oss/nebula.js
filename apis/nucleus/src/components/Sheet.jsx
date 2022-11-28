@@ -38,6 +38,8 @@ function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, 
       const fetchObjects = async () => {
         const lCells = layout.cells;
         const vs = await Promise.all(lCells.map((c) => getObject({ id: c.name }, halo)));
+        // TODO - should try reuse existing objects on subsequent renders
+        // Non-id updates should only change the "css"
         const cs = lCells.map((c, i) => {
           let mounted;
           const mountedPromise = new Promise((resolve) => {
@@ -54,6 +56,7 @@ function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, 
           };
         });
         cs.forEach((c) => {
+          // TODO - these needs to be removed as well
           root.addCell(c.currentId, c.cellRef);
         });
         setCells(cs);
@@ -77,6 +80,7 @@ function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, 
     const height = Number.isNaN(layout.height) ? '100%' : `${Number(layout.height)}%`;
     const promises = cells.map((c) => c.mountedPromise);
     Promise.all(promises).then(() => {
+      // TODO - this should only be called once, when all the initial cells has rendered
       onMount();
     });
     return (
