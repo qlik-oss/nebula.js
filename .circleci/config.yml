@@ -149,7 +149,7 @@ jobs:
       - checkout
       - run:
           name: Install dependencies
-          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn --ignore-engines
       - run:
           name: Build
           command: yarn run build
