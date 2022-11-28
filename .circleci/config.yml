@@ -98,9 +98,44 @@ jobs:
           command: yarn run build
 
   lint-stage:
-    - run:
-        name: Lint
-        command: yarn run lint
+    docker:
+      - image: cimg/node:18.12.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Lint
+          command: yarn run lint
+
+  locale-stage:
+    docker:
+      - image: cimg/node:18.12.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Locale
+          command: yarn run locale:verify
+
+  unit-tests-stage:
+    docker:
+      - image: cimg/node:18.12.0
+    steps:
+      - checkout
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Unit Tests
+          command: |
+            yarn test:unit --coverage
+            if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
+              echo "Uploading coverage results to coveralls.io..."
+              cat ./coverage/lcov.info | npx coveralls
+            fi
+      - store_test_results:
+          path: coverage/junit
 
   build:
     docker:
@@ -249,6 +284,15 @@ workflows:
     jobs:
       - build-stage
       - lint-stage:
+          requires:
+            - build-stage
+      - locale-stage:
+          requires:
+            - build-stage
+      - locale-stage:
+          requires:
+            - build-stage
+      - unit-tests-stage:
           requires:
             - build-stage
 
