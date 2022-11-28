@@ -7,6 +7,7 @@
 .idea/
 .vscode/
 .npmrc
+*.pem
 
 node_modules/
 coverage/
