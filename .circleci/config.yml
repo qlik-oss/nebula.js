@@ -74,7 +74,7 @@ commands:
             npx playwright install
             npx playwright install chrome
             <<# parameters.build >> yarn run build <</ parameters.build >>
-            <<# parameters.test >> yarn run test:e2e  <</ parameters.test >>
+            <<# parameters.test >> yarn run test:e2e <</ parameters.test >>
 
 jobs:
   build:
