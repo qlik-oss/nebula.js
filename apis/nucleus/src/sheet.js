@@ -52,6 +52,8 @@ export default function sheet({ model, halo, initialError, onDestroy = async () 
    * @class
    * @alias Sheet
    * @classdesc A controller to further modify a visualization after it has been rendered.
+   * @experimental
+   * @since 3.1.0
    * @example
    * const sheet = await embed(app).render({
    *   element,

@@ -648,7 +648,7 @@
       },
       "entries": {
         "render": {
-          "description": "Renders a visualization into an HTMLElement.",
+          "description": "Renders a visualization or sheet into an HTMLElement.\nSupport for sense sheets is experimental.",
           "kind": "function",
           "params": [
             {
@@ -666,11 +666,19 @@
             }
           ],
           "returns": {
-            "description": "A controller to the rendered visualization.",
+            "description": "A controller to the rendered visualization or sheet.",
             "type": "Promise",
             "generics": [
               {
-                "type": "#/definitions/Viz"
+                "kind": "union",
+                "items": [
+                  {
+                    "type": "#/definitions/Viz"
+                  },
+                  {
+                    "type": "#/definitions/Sheet"
+                  }
+                ]
               }
             ]
           },
@@ -991,6 +999,35 @@
         }
       }
     },
+    "Sheet": {
+      "description": "A controller to further modify a visualization after it has been rendered.",
+      "stability": "experimental",
+      "availability": {
+        "since": "3.1.0"
+      },
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {
+        "id": {
+          "description": "The id of this sheets's generic object.",
+          "type": "string"
+        },
+        "destroy": {
+          "description": "Destroys the sheet and removes it from the the DOM.",
+          "kind": "function",
+          "params": [],
+          "examples": [
+            "const sheet = await embed(app).render({\n  element,\n  id: \"jD5Gd\"\n});\nsheet.destroy();"
+          ]
+        }
+      },
+      "examples": [
+        "const sheet = await embed(app).render({\n  element,\n  id: \"jD5Gd\"\n});\nsheet.destroy();"
+      ]
+    },
     "Viz": {
       "description": "A controller to further modify a visualization after it has been rendered.",
       "kind": "class",
@@ -1001,6 +1038,10 @@
       "entries": {
         "id": {
           "description": "The id of this visualization's generic object.",
+          "type": "string"
+        },
+        "model": {
+          "description": "This visualization's Enigma model, a representation of the generic object.",
           "type": "string"
         },
         "destroy": {
@@ -2117,6 +2158,12 @@
                   "type": "string"
                 }
               }
+            },
+            {
+              "name": "supportNone",
+              "description": "Shifts the palette index by one to account for the \"none\" color",
+              "optional": true,
+              "type": "boolean"
             }
           ],
           "returns": {
@@ -2124,7 +2171,7 @@
             "type": "string"
           },
           "examples": [
-            "theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"
+            "theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ index: 1 }, true);\ntheme.getColorPickerColor({ color: 'red' });"
           ]
         },
         "getContrastingColorTo": {
