@@ -5,11 +5,11 @@ import uid from '../object/uid';
 
 export default function glue({ halo, element, model, initialSnOptions, initialSnPlugins, onMount, initialError }) {
   const { root } = halo;
-  const cellRef = React.createRef();
+  const sheetRef = React.createRef();
   const currentId = uid();
   const portal = ReactDOM.createPortal(
     <Sheet
-      ref={cellRef}
+      ref={sheetRef}
       halo={halo}
       model={model}
       currentId={currentId}
@@ -31,7 +31,7 @@ export default function glue({ halo, element, model, initialSnOptions, initialSn
 
   root.add(portal);
   // Cannot use model.id as it is not unique in a given mashup
-  root.addCell(currentId, cellRef);
+  root.addCell(currentId, sheetRef);
 
-  return [unmount, cellRef];
+  return [unmount, sheetRef];
 }
