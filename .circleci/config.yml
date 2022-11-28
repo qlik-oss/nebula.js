@@ -156,9 +156,11 @@ jobs:
       - run:
           name: Build
           command: yarn run build
-      - run: yarn add --dev @playwright/test
-      - run: npx playwright install
-      - run: npx playwright install chrome
+      - nebula_create:
+          project_name: generated/barchart
+          picasso_template: 'barchart'
+          build: true
+          test: true
       - run:
           name: Run test
           command: PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml yarn test:e2e --reporter=junit --project=chromium
