@@ -64,6 +64,7 @@ commands:
               ./commands/cli/lib/index.js create << parameters.project_name >> --picasso << parameters.picasso_template >> --install << parameters.install >> --pkgm yarn
             <</ parameters.mashup >>
             echo "Yarn"
+            npx yarn@1.19.0 add @babel/preset-react
             yarn
             echo "Linking packages"
             npx lerna link --force-local
