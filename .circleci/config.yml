@@ -143,10 +143,13 @@ jobs:
 
   run-e2e-test:
     docker:
-      - image: mcr.microsoft.com/playwright:v1.23.1-focal
+      - image: docker pull mcr.microsoft.com/playwright:v1.27.0-focal
     # Steps to the job
     steps:
       - checkout
+      - run:
+          name: Node verions
+          command: node -v
       - run:
           name: Install dependencies
           command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn --ignore-engines
