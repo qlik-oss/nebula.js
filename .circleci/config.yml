@@ -78,6 +78,30 @@ commands:
             <<# parameters.test >> yarn run test:e2e <</ parameters.test >>
 
 jobs:
+  build-stage:
+    docker:
+      - image: cimg/node:18.12.0
+      - image: browserless/chrome:1-puppeteer-7.1.0
+
+    working_directory: ~/project
+
+    steps:
+      - checkout
+      - restore_cache: *restore_yarn_cache
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+
+      - save_cache: *save_yarn_cache
+      - run:
+          name: Build
+          command: yarn run build
+
+  lint-stage:
+    - run:
+        name: Lint
+        command: yarn run lint
+
   build:
     docker:
       - image: cimg/node:18.12.0
@@ -177,11 +201,6 @@ jobs:
           path: generated/barchart/screenshots
       - store_artifacts:
           path: test/mashup/__artifacts__
-      # - run:
-      #     name: Run test
-      #     command: PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml yarn test:e2e --reporter=junit --project=chromium
-      # - store_test_results:
-      #     path: results.xml
 
   api-governance:
     machine:
@@ -228,7 +247,13 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - run-e2e-test
+      - build-stage
+      - lint-stage:
+          requires:
+            - build-stage
+
+      # - run-e2e-test
+
       # - build:
       #     filters:
       #       tags:
