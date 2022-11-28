@@ -121,6 +121,42 @@ jobs:
       - run:
           name: Test integration
           command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      # - nebula_create:
+      #     project_name: 'generated/hello'
+      #     picasso_template: 'none'
+      #     build: true
+      #     test: true
+      # - nebula_create:
+      #     project_name: generated/barchart
+      #     picasso_template: 'barchart'
+      #     build: true
+      #     test: true
+      # - nebula_create:
+      #     project_name: 'hello-mashup'
+      #     mashup: true
+      #     install: true
+      #     build: true
+      #     test: false
+      # - store_artifacts:
+      #     path: generated/barchart/screenshots
+      # - store_artifacts:
+      #     path: test/mashup/__artifacts__
+
+  run-e2e-test:
+    docker:
+      - image: cimg/node:18.12.0
+    # Steps to the job
+    steps:
+      - checkout
+      - run:
+          name: Node version
+          command: node --version
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+      - run:
+          name: Build
+          command: yarn run build
       - nebula_create:
           project_name: 'generated/hello'
           picasso_template: 'none'
@@ -141,32 +177,11 @@ jobs:
           path: generated/barchart/screenshots
       - store_artifacts:
           path: test/mashup/__artifacts__
-
-  run-e2e-test:
-    docker:
-      - image: cimg/node:18.12.0
-    # Steps to the job
-    steps:
-      - checkout
-      - run:
-          name: Node version
-          command: node --version
-      - run:
-          name: Install dependencies
-          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
-      - run:
-          name: Build
-          command: yarn run build
-      - nebula_create:
-          project_name: generated/barchart
-          picasso_template: 'barchart'
-          build: true
-          test: true
-      - run:
-          name: Run test
-          command: PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml yarn test:e2e --reporter=junit --project=chromium
-      - store_test_results:
-          path: results.xml
+      # - run:
+      #     name: Run test
+      #     command: PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml yarn test:e2e --reporter=junit --project=chromium
+      # - store_test_results:
+      #     path: results.xml
 
   api-governance:
     machine:
