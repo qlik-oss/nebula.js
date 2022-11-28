@@ -156,7 +156,7 @@ jobs:
       - run:
           name: Build
           command: yarn run build
-      - run: npm i -D @playwright/test
+      - run: yarn add --dev @playwright/test
       - run: npx playwright install
       - run: npx playwright install chrome
       - run:
