@@ -70,6 +70,9 @@ commands:
             cd << parameters.project_name >>
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
+            yarn i -D @playwright/test
+            npx playwright install
+            npx playwright install chrome
             <<# parameters.build >> yarn run build <</ parameters.build >>
             <<# parameters.test >> yarn run test:e2e  <</ parameters.test >>
 
