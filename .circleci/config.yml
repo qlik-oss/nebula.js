@@ -101,16 +101,16 @@ jobs:
       - run:
           name: Locale
           command: yarn run locale:verify
-      - run:
-          name: Unit Tests
-          command: |
-            yarn test:unit --coverage
-            if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
-              echo "Uploading coverage results to coveralls.io..."
-              cat ./coverage/lcov.info | npx coveralls
-            fi
-      - store_test_results:
-          path: coverage/junit
+      # - run:
+      #     name: Unit Tests
+      #     command: |
+      #       yarn test:unit --coverage
+      #       if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
+      #         echo "Uploading coverage results to coveralls.io..."
+      #         cat ./coverage/lcov.info | npx coveralls
+      #       fi
+      # - store_test_results:
+      #     path: coverage/junit
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
