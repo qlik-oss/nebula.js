@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.0...v3.1.0-alpha.1) (2022-11-28)
+
+### Bug Fixes
+
+- **ListBox:** accept search results only if there are hits ([#1005](https://github.com/qlik-oss/nebula.js/issues/1005)) ([7bab415](https://github.com/qlik-oss/nebula.js/commit/7bab41537b0e481823ee1c8d46e0ef9943b4227e))
+
+### Features
+
+- add dense as a property ([#1010](https://github.com/qlik-oss/nebula.js/issues/1010)) ([7d95042](https://github.com/qlik-oss/nebula.js/commit/7d95042a1d46ff5ccf51326f126f7574f26b94ac))
+- introducing react router to nebula web ([#973](https://github.com/qlik-oss/nebula.js/issues/973)) ([7001a47](https://github.com/qlik-oss/nebula.js/commit/7001a47232591e4549786785dace6dde19bca9bb))
+- show a message to upgrade node when needed ([#999](https://github.com/qlik-oss/nebula.js/issues/999)) ([caa4174](https://github.com/qlik-oss/nebula.js/commit/caa417464eb393ada1e2cea066719a1ccf41e5cb))
+- use cached connections hook ([#975](https://github.com/qlik-oss/nebula.js/issues/975)) ([68c16b8](https://github.com/qlik-oss/nebula.js/commit/68c16b826411719a5610dd0c9b945d0b29a6b436))
+
+# [3.1.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.4...v3.1.0-alpha.0) (2022-10-21)
+
+### Bug Fixes
+
+- **a11y:** Casey's access fixes ([#966](https://github.com/qlik-oss/nebula.js/issues/966)) ([03641e1](https://github.com/qlik-oss/nebula.js/commit/03641e141ac97eed5394d6ad12ef8e950f438fbb))
+- command line input bug ([#968](https://github.com/qlik-oss/nebula.js/issues/968)) ([5907701](https://github.com/qlik-oss/nebula.js/commit/590770160a50aad90a4c427780dc06205918aaf6))
+- prevent error by ensuring removeListener ([#964](https://github.com/qlik-oss/nebula.js/issues/964)) ([0e4bbe6](https://github.com/qlik-oss/nebula.js/commit/0e4bbe6b840790a2f97b27ae9a2d68f5d433b355))
+
+### Features
+
+- `clientId` from `nebula.config.js` support ([#963](https://github.com/qlik-oss/nebula.js/issues/963)) ([9d5e29d](https://github.com/qlik-oss/nebula.js/commit/9d5e29d4d82a922c0fc447fca3b0dc9e3c442a34))
+- enabled support for background image and color ([#921](https://github.com/qlik-oss/nebula.js/issues/921)) ([b005bfb](https://github.com/qlik-oss/nebula.js/commit/b005bfb075098a656ba8b38f9bbe5f18a89a762a))
+- new ui for connection string ([#965](https://github.com/qlik-oss/nebula.js/issues/965)) ([e772ed7](https://github.com/qlik-oss/nebula.js/commit/e772ed7143a2024afe0cfa54e3e6ab361a92640b))
+- OAuth integration in nebula mashup ([#962](https://github.com/qlik-oss/nebula.js/issues/962)) ([c354633](https://github.com/qlik-oss/nebula.js/commit/c354633132ff3882f57b82b6856b84314d99c95b))
+- render existing listbox objects ([#957](https://github.com/qlik-oss/nebula.js/issues/957)) ([f924122](https://github.com/qlik-oss/nebula.js/commit/f9241228885366e8c68086b1e4b06123ff3572bc))
+
 ## [3.0.4](https://github.com/qlik-oss/nebula.js/compare/v3.0.3...v3.0.4) (2022-10-13)
 
 ### Bug Fixes

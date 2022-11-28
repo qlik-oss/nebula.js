@@ -67,6 +67,9 @@ const getConnectionInfo = () =>
       if (params.engine_url) {
         info = {
           ...info,
+          // TODO:
+          // instead of calling "/info" and then parsing url inside of `getConnectionInfo()`
+          // we can have a hook which listens on location.search and provides this information for us
           ...parseEngineURL(params.engine_url),
         };
       } else if (params.app) {
@@ -94,14 +97,15 @@ const getConnectionInfo = () =>
       };
     });
 
-const getAuthInstance = ({ webIntegrationId, host }) => {
+const getAuthInstance = async ({ webIntegrationId, host }) => {
   const authInstance = new Auth({
     webIntegrationId,
     autoRedirect: true,
     authType: AuthType.WebIntegration,
     host,
   });
-  if (!authInstance.isAuthenticated()) authInstance.authenticate();
+  const isAuth = await authInstance.isAuthenticated();
+  if (!isAuth) await authInstance.authenticate();
   return authInstance;
 };
 
@@ -121,8 +125,7 @@ const connect = async () => {
     }
 
     if (webIntegrationId) {
-      const authInstance = getAuthInstance({ webIntegrationId, host });
-
+      const authInstance = await getAuthInstance({ webIntegrationId, host });
       return {
         getDocList: async () => {
           const url = `/items?resourceType=app&limit=30&sort=-updatedAt`;
@@ -136,11 +139,6 @@ const connect = async () => {
       };
     }
 
-    // if we have client id:
-    // 1. call /oauth from dev server
-    // 2. do the autherntication
-    // 3. call /items
-    // 4. return list of app
     if (clientId) {
       return {
         getDocList: async () => {
@@ -156,12 +154,7 @@ const connect = async () => {
       ...enigmaInfo,
     });
 
-    return enigma
-      .create({
-        schema: qixSchema,
-        url,
-      })
-      .open();
+    return enigma.create({ schema: qixSchema, url }).open();
   } catch (error) {
     throw new Error('Failed to return enigma instance');
   }
@@ -178,7 +171,7 @@ const openApp = async (id) => {
 
     let url = '';
     if (webIntegrationId) {
-      const authInstance = getAuthInstance({ webIntegrationId, host });
+      const authInstance = await getAuthInstance({ webIntegrationId, host });
       url = await authInstance.generateWebsocketUrl(id);
     } else if (clientId) {
       const { webSocketUrl } = await (await fetch(`/getSocketUrl/${id}`)).json();

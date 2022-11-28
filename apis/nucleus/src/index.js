@@ -136,7 +136,6 @@ const mergeConfigs = (base, c) => ({
  * @property {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
  * @property {{setScrollPos:function(number):void, initScrollPos:number}} [options.scrollState=] Object including a setScrollPos function that sets current scroll position index. A initial scroll position index.
  * @property {function(number):void} [options.setCount=] A function that gets called with the length of the data in the Listbox.
- * @property {boolean} [options.shouldConfirmOnBlur=] A boolean that determines if the listbox should actively confirm selections on blur events.
  */
 
 /**
@@ -422,7 +421,7 @@ function nuked(configuration = {}) {
            * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields
-           * @param {boolean=} [options.dense=false] Reduces padding and text size
+           * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects).
            * @param {string=} [options.stateName="$"] Sets the state to make selections in
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            *

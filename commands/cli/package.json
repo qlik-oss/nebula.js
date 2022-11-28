@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli",
-  "version": "3.0.4",
+  "version": "3.1.0-alpha.1",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -15,6 +15,9 @@
   "files": [
     "lib"
   ],
+  "engines": {
+    "node": ">=18.10.0"
+  },
   "bin": {
     "nebula": "lib/index.js"
   },
@@ -27,7 +30,7 @@
     "@nebula.js/cli-serve": "^3.0.0"
   },
   "dependencies": {
-    "@nebula.js/cli-create": "^3.0.4",
+    "@nebula.js/cli-create": "^3.1.0-alpha.1",
     "import-cwd": "3.0.0",
     "yargs": "17.6.0"
   }

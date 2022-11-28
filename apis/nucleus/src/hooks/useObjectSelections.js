@@ -15,7 +15,36 @@ const event = () => {
   };
 };
 
-function createObjectSelections({ appSelections, appModal, model }) {
+function createHandler({ elements, handleClickOutside }) {
+  const handler = (evt) => {
+    const targetStillExists = document.contains(evt.target);
+    if (!targetStillExists) {
+      return;
+    }
+
+    // Resolve elements and filter out containers which do not exist.
+    const containers = elements
+      .map((item) => {
+        const elm = typeof item === 'string' ? document.querySelector(item) : item?.current;
+        return elm;
+      })
+      .filter((elm) => !!elm && !!document.contains(elm));
+
+    if (!containers.length) {
+      return;
+    }
+
+    const isWithinSomeContainer = containers.some((elm) => elm.contains(evt.target));
+
+    const isClickOutside = !isWithinSomeContainer;
+    if (isClickOutside) {
+      handleClickOutside(evt);
+    }
+  };
+  return handler;
+}
+
+const createObjectSelections = ({ appSelections, appModal, model }) => {
   let layout;
   let isActive = false;
   let hasSelected = false;
@@ -146,9 +175,27 @@ function createObjectSelections({ appSelections, appModal, model }) {
   eventmixin(api);
 
   return api;
-}
+};
 
-export default function useObjectSelections(app, model) {
+const getClickOutFuncs = ({ elements, objectSelections }) => {
+  const handler = createHandler({
+    elements,
+    handleClickOutside: () => objectSelections.confirm.call(objectSelections),
+  });
+
+  return {
+    activateClickOut() {
+      document.addEventListener('mousedown', handler);
+    },
+    deactivateClickOut() {
+      document.removeEventListener('mousedown', handler);
+    },
+  };
+};
+
+export default function useObjectSelections(app, model, elements) {
+  const elementsArr = Array.isArray(elements) ? elements : [elements];
+
   const [appSelections] = useAppSelections(app);
   const [layout] = useLayout(model);
   const key = model ? model.id : null;
@@ -160,10 +207,29 @@ export default function useObjectSelections(app, model) {
   useEffect(() => {
     if (!appSelections || !model || objectSelections) return;
 
-    objectSelections = createObjectSelections({ appSelections, appModal, model });
+    objectSelections = createObjectSelections({
+      appSelections,
+      appModal,
+      model,
+    });
+
     objectSelectionsStore.set(key, objectSelections);
     objectSelectionsStore.dispatch(true);
   }, [appSelections, model]);
+
+  useEffect(() => {
+    if (!objectSelections) return () => {};
+
+    const { activateClickOut, deactivateClickOut } = getClickOutFuncs({ elements: elementsArr, objectSelections });
+
+    objectSelections.addListener('activated', activateClickOut);
+    objectSelections.addListener('deactivated', deactivateClickOut);
+
+    return () => {
+      objectSelections.removeListener('activated', activateClickOut);
+      objectSelections.removeListener('deactivated', deactivateClickOut);
+    };
+  }, [objectSelections]);
 
   useEffect(() => {
     if (!objectSelections) return;

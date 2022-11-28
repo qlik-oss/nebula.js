@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-create",
-  "version": "3.0.4",
+  "version": "3.1.0-alpha.1",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -25,6 +25,6 @@
     "chalk": "4.1.2",
     "ejs": "3.1.8",
     "fs-extra": "10.1.0",
-    "inquirer": "8.2.4"
+    "inquirer": "8.2.5"
   }
 }

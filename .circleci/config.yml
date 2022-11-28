@@ -76,7 +76,7 @@ commands:
 jobs:
   build:
     docker:
-      - image: cimg/node:18.10.0
+      - image: cimg/node:18.12.0
       - image: browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project
@@ -99,13 +99,9 @@ jobs:
           name: Locale
           command: yarn run locale:verify
       - run:
-          name: Unit tests
+          name: Unit Tests
           command: |
-            yarn run test:unit --mocha.bail false --mocha.reporter mocha-junit-reporter --mocha.reporterOptions.mochaFile ./coverage/junit/junit.xml
-      - run:
-          name: Jest Unit Tests
-          command: |
-            yarn test:jest -- --coverage
+            yarn test:unit --coverage
             if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
               echo "Uploading coverage results to coveralls.io..."
               cat ./coverage/lcov.info | npx coveralls
@@ -177,6 +173,7 @@ jobs:
             -e SPEC_PATHS="abdc47c2-921a-45d3-ba5c-80d448574c5b@/specs/spec.json"
             -e COMMIT_SHA="$CIRCLE_SHA1"
             -e RELEASE_TAG="$VER"
+            -e PRE_RELEASE="true"
             -e CREDENTIALS_S3_SECRETKEY="$APICULTURIST_S3"
             -e CREDENTIALS_GITHUB="$APICULTURIST_GITHUB"
             -e CREDENTIALS_COLONY="$APICULTURIST_TOKEN"

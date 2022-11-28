@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "3.0.4",
+    "version": "3.1.0-alpha.1",
     "license": "MIT",
     "stability": "stable"
   },
@@ -727,7 +727,7 @@
           "params": [
             {
               "name": "fieldIdentifier",
-              "description": "Fieldname as a string or a Library dimension",
+              "description": "Fieldname as a string, a Library dimension or an object id",
               "kind": "union",
               "items": [
                 {
@@ -735,6 +735,9 @@
                 },
                 {
                   "type": "#/definitions/LibraryField"
+                },
+                {
+                  "type": "#/definitions/QInfo"
                 }
               ]
             }
@@ -914,7 +917,7 @@
                   "type": "boolean"
                 },
                 "dense": {
-                  "description": "Reduces padding and text size",
+                  "description": "Reduces padding and text size (not applicable for existing objects).",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
@@ -976,6 +979,15 @@
               }
             ]
           }
+        }
+      }
+    },
+    "QInfo": {
+      "kind": "interface",
+      "entries": {
+        "qId": {
+          "description": "Generic object id",
+          "type": "string"
         }
       }
     },
