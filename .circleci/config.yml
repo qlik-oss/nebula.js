@@ -117,26 +117,41 @@ jobs:
       - run:
           name: Test integration
           command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      - nebula_create:
-          project_name: 'generated/hello'
-          picasso_template: 'none'
-          build: true
-          test: true
-      - nebula_create:
-          project_name: generated/barchart
-          picasso_template: 'barchart'
-          build: true
-          test: true
-      - nebula_create:
-          project_name: 'hello-mashup'
-          mashup: true
-          install: true
-          build: true
-          test: false
-      - store_artifacts:
-          path: generated/barchart/screenshots
-      - store_artifacts:
-          path: test/mashup/__artifacts__
+      # - nebula_create:
+      #     project_name: 'generated/hello'
+      #     picasso_template: 'none'
+      #     build: true
+      #     test: true
+      # - nebula_create:
+      #     project_name: generated/barchart
+      #     picasso_template: 'barchart'
+      #     build: true
+      #     test: true
+      # - nebula_create:
+      #     project_name: 'hello-mashup'
+      #     mashup: true
+      #     install: true
+      #     build: true
+      #     test: false
+      # - store_artifacts:
+      #     path: generated/barchart/screenshots
+      # - store_artifacts:
+      #     path: test/mashup/__artifacts__
+
+  run-e2e-test:
+    docker:
+      - image: mcr.microsoft.com/playwright:v1.23.1-focal
+    steps:
+      - checkout
+      - run: npm i -D @playwright/test
+      - run: npx playwright install
+      - run: npx playwright install chrome
+      - run:
+          name: Run mashup creation test
+          command: PLAYWRIGHT_JUNIT_OUTPUT_NAME=results.xml npx playwright test --reporter=junit --project=chromium
+      - store_test_results:
+          path: results.xml
+
   api-governance:
     machine:
       image: ubuntu-2004:current
@@ -187,6 +202,7 @@ workflows:
             tags:
               only:
                 - /v.*/
+      - run-e2e-test
       - api-governance:
           context: api-compliance
           filters:
