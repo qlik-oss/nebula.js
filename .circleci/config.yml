@@ -78,7 +78,7 @@ commands:
             <<# parameters.test >> yarn run test:e2e <</ parameters.test >>
 
 jobs:
-  build-stage:
+  build:
     docker:
       - image: cimg/node:18.12.0
       - image: browserless/chrome:1-puppeteer-7.1.0
@@ -137,69 +137,69 @@ jobs:
       - store_test_results:
           path: coverage/junit
 
-  build:
-    docker:
-      - image: cimg/node:18.12.0
-      - image: browserless/chrome:1-puppeteer-7.1.0
+  # build:
+  #   docker:
+  #     - image: cimg/node:18.12.0
+  #     - image: browserless/chrome:1-puppeteer-7.1.0
 
-    working_directory: ~/project
+  #   working_directory: ~/project
 
-    steps:
-      - checkout
-      - restore_cache: *restore_yarn_cache
-      - run:
-          name: Install dependencies
-          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+  #   steps:
+  #     - checkout
+  #     - restore_cache: *restore_yarn_cache
+  #     - run:
+  #         name: Install dependencies
+  #         command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
 
-      - save_cache: *save_yarn_cache
-      - run:
-          name: Build
-          command: yarn run build
-      - run:
-          name: Lint
-          command: yarn run lint
-      - run:
-          name: Locale
-          command: yarn run locale:verify
-      - run:
-          name: Unit Tests
-          command: |
-            yarn test:unit --coverage
-            if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
-              echo "Uploading coverage results to coveralls.io..."
-              cat ./coverage/lcov.info | npx coveralls
-            fi
-      - store_test_results:
-          path: coverage/junit
-      - run:
-          name: Test component
-          command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      - run:
-          name: Test mashup
-          command: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      - run:
-          name: Test integration
-          command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-      # - nebula_create:
-      #     project_name: 'generated/hello'
-      #     picasso_template: 'none'
-      #     build: true
-      #     test: true
-      # - nebula_create:
-      #     project_name: generated/barchart
-      #     picasso_template: 'barchart'
-      #     build: true
-      #     test: true
-      # - nebula_create:
-      #     project_name: 'hello-mashup'
-      #     mashup: true
-      #     install: true
-      #     build: true
-      #     test: false
-      # - store_artifacts:
-      #     path: generated/barchart/screenshots
-      # - store_artifacts:
-      #     path: test/mashup/__artifacts__
+  #     - save_cache: *save_yarn_cache
+  #     - run:
+  #         name: Build
+  #         command: yarn run build
+  #     - run:
+  #         name: Lint
+  #         command: yarn run lint
+  #     - run:
+  #         name: Locale
+  #         command: yarn run locale:verify
+  #     - run:
+  #         name: Unit Tests
+  #         command: |
+  #           yarn test:unit --coverage
+  #           if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
+  #             echo "Uploading coverage results to coveralls.io..."
+  #             cat ./coverage/lcov.info | npx coveralls
+  #           fi
+  #     - store_test_results:
+  #         path: coverage/junit
+  #     - run:
+  #         name: Test component
+  #         command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+  #     - run:
+  #         name: Test mashup
+  #         command: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+  #     - run:
+  #         name: Test integration
+  #         command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+  # - nebula_create:
+  #     project_name: 'generated/hello'
+  #     picasso_template: 'none'
+  #     build: true
+  #     test: true
+  # - nebula_create:
+  #     project_name: generated/barchart
+  #     picasso_template: 'barchart'
+  #     build: true
+  #     test: true
+  # - nebula_create:
+  #     project_name: 'hello-mashup'
+  #     mashup: true
+  #     install: true
+  #     build: true
+  #     test: false
+  # - store_artifacts:
+  #     path: generated/barchart/screenshots
+  # - store_artifacts:
+  #     path: test/mashup/__artifacts__
 
   run-e2e-test:
     docker:
@@ -282,19 +282,19 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - build-stage
+      - build
       - lint-stage:
           requires:
-            - build-stage
+            - build
       - locale-stage:
           requires:
-            - build-stage
+            - build
       - locale-stage:
           requires:
-            - build-stage
+            - build
       - unit-tests-stage:
           requires:
-            - build-stage
+            - build
 
       # - run-e2e-test
 
