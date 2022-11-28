@@ -71,7 +71,7 @@ commands:
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
             <<# parameters.build >> yarn run build <</ parameters.build >>
-            <<# parameters.test >> yarn run test:e2e --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch <</ parameters.test >>
+            <<# parameters.test >> yarn run test:e2e --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch <</ parameters.test >>
 
 jobs:
   build:
