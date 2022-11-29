@@ -136,8 +136,7 @@ const create = async (argv) => {
           fse.ensureDirSync(path.resolve(destination, next));
           traverse(p, next);
         } else if (file[0] === '_') {
-          const configFiles = ['_package.json', '_playwright.config.js'];
-          const newFileName = configFiles.includes(file) ? file.slice(1) : `.${file.substr(1)}`;
+          const newFileName = file === '_package.json' ? 'package.json' : `.${file.substr(1)}`;
           copy(`${sourceFolder}/${file}`, `${targetFolder}/${newFileName}`.replace(/^\//, ''), data);
         } else {
           copy(`${sourceFolder}/${file}`, next, data);
