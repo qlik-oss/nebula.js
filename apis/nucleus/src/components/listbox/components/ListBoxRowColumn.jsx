@@ -223,6 +223,7 @@ function RowColumn({ index, style, data }) {
     column = false,
     checkboxes = false,
     textAlign,
+    direction,
     dense = false,
     frequencyMode = 'N',
     isSingleSelect,
@@ -289,6 +290,20 @@ function RowColumn({ index, style, data }) {
 
   const excludedOrAlternative = () => (isAlternative(cell) || isExcluded(cell)) && checkboxes;
 
+  const isNumeric = cell?.qNum !== 'NaN' && cell?.qNum !== undefined;
+  let valueTextAlign;
+  const isAutoTextAlign = textAlign === undefined || textAlign.auto;
+  const dirToTextAlignMap = {
+    rtl: 'right',
+    ltr: 'left',
+  };
+
+  if (isAutoTextAlign) {
+    valueTextAlign = isNumeric ? 'right' : dirToTextAlignMap[direction];
+  } else {
+    valueTextAlign = textAlign?.align || 'left';
+  }
+
   const getValueField = ({ lbl, ix, color, highlighted = false }) => (
     <Typography
       component="span"
@@ -301,7 +316,7 @@ function RowColumn({ index, style, data }) {
         showGray && excludedOrAlternative() && classes.excludedTextWithCheckbox,
       ])}
       color={color}
-      justifyContent={textAlign}
+      justifyContent={valueTextAlign}
     >
       <span style={{ whiteSpace: 'pre' }}>{lbl}</span>
     </Typography>
@@ -332,6 +347,7 @@ function RowColumn({ index, style, data }) {
   };
 
   const label = cell ? cell.qText : '';
+
   const getFrequencyText = () => {
     if (cell) {
       return cell.qFrequency ? cell.qFrequency : frequencyTextNone;
@@ -365,7 +381,7 @@ function RowColumn({ index, style, data }) {
     minWidth: 0,
     flexGrow: 1,
     padding: checkboxes ? 0 : undefined,
-    justifyContent: textAlign,
+    justifyContent: valueTextAlign,
   };
 
   const hasHistogramBar = () => cell && histogram && getFrequencyText() !== frequencyTextNone;

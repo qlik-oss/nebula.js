@@ -832,7 +832,7 @@ describe('<ListBoxRowColumn />', () => {
       const style = {};
       const data = {
         keyboard,
-        textAlign: 'right',
+        textAlign: { align: 'right' },
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>

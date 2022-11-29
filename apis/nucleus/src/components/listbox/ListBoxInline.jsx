@@ -52,7 +52,6 @@ export default function ListBoxInline({ options = {} }) {
     toolbar = true,
     rangeSelect = true,
     checkboxes = false,
-    textAlign,
     model,
     selections,
     update = undefined,
@@ -273,7 +272,6 @@ export default function ListBoxInline({ options = {} }) {
                 histogram={histogram}
                 rangeSelect={rangeSelect}
                 checkboxes={checkboxes}
-                textAlign={textAlign}
                 height={height}
                 width={width}
                 update={update}
