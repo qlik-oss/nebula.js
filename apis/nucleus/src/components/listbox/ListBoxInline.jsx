@@ -20,6 +20,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import getHasSelections from './assets/has-selections';
+import addListboxTheme from './assets/addListboxTheme';
 
 const PREFIX = 'ListBoxInline';
 
@@ -28,7 +29,8 @@ const classes = {
   screenReaderOnly: `${PREFIX}-screenReaderOnly`,
 };
 
-const StyledGrid = styled(Grid)(() => ({
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  backgroundColor: theme.listBox.backgroundColor ?? theme.palette.background.default,
   [`& .${classes.listBoxHeader}`]: {
     alignSelf: 'center',
     display: 'inline-flex',
@@ -39,6 +41,12 @@ const StyledGrid = styled(Grid)(() => ({
     width: 0,
     overflow: 'hidden',
   },
+}));
+
+const Title = styled(Typography)(({ theme }) => ({
+  color: theme.listBox.title.main?.color,
+  fontSize: theme.listBox.title.main?.fontSize,
+  fontFamily: theme.listBox.title.main?.fontFamily,
 }));
 
 export default function ListBoxInline({ options = {} }) {
@@ -88,7 +96,9 @@ export default function ListBoxInline({ options = {} }) {
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const { translator, keyboardNavigation } = useContext(InstanceContext);
+  const { translator, keyboardNavigation, themeApi } = useContext(InstanceContext);
+  theme.listBox = addListboxTheme(themeApi);
+
   const moreAlignTo = useRef();
   const [searchContainer, searchContainerRef] = useRefWithCallback();
 
@@ -207,9 +217,9 @@ export default function ListBoxInline({ options = {} }) {
           </Grid>
           <Grid item className={classes.listBoxHeader}>
             {showTitle && (
-              <Typography variant="h6" noWrap>
+              <Title variant="h6" noWrap>
                 {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
-              </Typography>
+              </Title>
             )}
           </Grid>
           <Grid item xs />

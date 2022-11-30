@@ -63,7 +63,7 @@ const getSelectedStyle = ({ theme }) => ({
 const Root = styled('div')(({ theme }) => ({
   [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
-    color: theme.palette.text.primary,
+    color: theme.listBox.content.color ?? theme.palette.text.primary,
   },
 
   [`& .${classes.rowBorderBottom}`]: {
@@ -73,7 +73,7 @@ const Root = styled('div')(({ theme }) => ({
   [`& .${classes.column}`]: {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
-    color: theme.palette.text.primary,
+    color: theme.listBox.content.color ?? theme.palette.text.primary,
   },
 
   [`& .${classes.fieldRoot}`]: {
@@ -103,6 +103,8 @@ const Root = styled('div')(({ theme }) => ({
     userSelect: 'none',
     whiteSpace: 'pre', // to keep white-space on highlight
     ...ellipsis,
+    fontSize: theme.listBox.content?.fontSize,
+    fontFamily: theme.listBox.content?.fontFamily,
   },
 
   [`& .${classes.labelDense}`]: {
