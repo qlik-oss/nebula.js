@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.0...v3.1.0-alpha.1) (2022-11-28)
+
+### Bug Fixes
+
+- **ListBox:** accept search results only if there are hits ([#1005](https://github.com/qlik-oss/nebula.js/issues/1005)) ([7bab415](https://github.com/qlik-oss/nebula.js/commit/7bab41537b0e481823ee1c8d46e0ef9943b4227e))
+
+### Features
+
+- add dense as a property ([#1010](https://github.com/qlik-oss/nebula.js/issues/1010)) ([7d95042](https://github.com/qlik-oss/nebula.js/commit/7d95042a1d46ff5ccf51326f126f7574f26b94ac))
+
 # [3.1.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.4...v3.1.0-alpha.0) (2022-10-21)
 
 ### Bug Fixes

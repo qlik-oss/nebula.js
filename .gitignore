@@ -7,6 +7,7 @@
 .idea/
 .vscode/
 .npmrc
+*.pem
 
 node_modules/
 coverage/
@@ -14,6 +15,7 @@ dist/
 temp/
 test/**/__artifacts__/regression
 test/**/__artifacts__/diff
+test/**/__artifacts__/temp
 apis/*/core/**/*.js
 apis/*/core/**/*.js.map
 apis/locale/all.json

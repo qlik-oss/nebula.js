@@ -173,6 +173,7 @@ jobs:
             -e SPEC_PATHS="abdc47c2-921a-45d3-ba5c-80d448574c5b@/specs/spec.json"
             -e COMMIT_SHA="$CIRCLE_SHA1"
             -e RELEASE_TAG="$VER"
+            -e PRE_RELEASE="true"
             -e CREDENTIALS_S3_SECRETKEY="$APICULTURIST_S3"
             -e CREDENTIALS_GITHUB="$APICULTURIST_GITHUB"
             -e CREDENTIALS_COLONY="$APICULTURIST_TOKEN"
