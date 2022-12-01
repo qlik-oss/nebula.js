@@ -35,7 +35,7 @@
     "@rollup/plugin-node-resolve": "15.0.1",
     "@rollup/plugin-replace": "5.0.1",
     "extend": "3.0.2",
-    "fs-extra": "10.1.0",
+    "fs-extra": "11.1.0",
     "node-event-emitter": "0.0.1",
     "rollup": "3.2.5",
     "rollup-plugin-babel": "4.4.0",
