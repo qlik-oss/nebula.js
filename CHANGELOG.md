@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.1...v3.1.0-alpha.2) (2022-12-02)
+
+### Bug Fixes
+
+- **deps:** update dependency fs-extra to v11 ([#1019](https://github.com/qlik-oss/nebula.js/issues/1019)) ([394f631](https://github.com/qlik-oss/nebula.js/commit/394f6312013596d1556f5195db812e632a6408b1))
+- **deps:** update dependency webpack-cli to v5 ([#1018](https://github.com/qlik-oss/nebula.js/issues/1018)) ([ae9e83b](https://github.com/qlik-oss/nebula.js/commit/ae9e83bbb73202374e986eb98bc1d48ff1aff35e))
+- fix missing file issue in cli ([#1020](https://github.com/qlik-oss/nebula.js/issues/1020)) ([320e2ff](https://github.com/qlik-oss/nebula.js/commit/320e2ff380189d8336cafd0eb66857e661f7e50d))
+- include webpack-cli ([#1014](https://github.com/qlik-oss/nebula.js/issues/1014)) ([9e4d431](https://github.com/qlik-oss/nebula.js/commit/9e4d4315ab1ea964d0b6c111351e8e336d3ad23e))
+
 # [3.1.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.0...v3.1.0-alpha.1) (2022-11-28)
 
 ### Bug Fixes
