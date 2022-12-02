@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const yargs = require('yargs');
 const importCwd = require('import-cwd');
-const checkNodeVersion = require('../utils/checkNodeVersion');
+const checkNodeVersion = require('./checkNodeVersion');
 const pkg = require('../package.json');
 
 checkNodeVersion(pkg);
