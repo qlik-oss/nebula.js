@@ -19,14 +19,15 @@
     "lint": "eslint src",
     "start": "nebula serve",
     "sense": "nebula sense",
-    "test:integration": "aw puppet --testExt '*.int.js' --glob 'test/integration/**/*.int.js'"
+    "test:e2e": "playwright test",
+    "test:e2e:report": "playwright show-report test/integration/test-report"
   },
   "devDependencies": {
-    "@after-work.js/aw": "6.0.14",
     "@nebula.js/cli": "<%= nebulaVersion %>",
     "@nebula.js/cli-build": "<%= nebulaVersion %>",
     "@nebula.js/cli-serve": "<%= nebulaVersion %>",
     "@nebula.js/cli-sense": "<%= nebulaVersion %>",
+    "@playwright/test": "^1.28.1",
     "eslint": "7.27.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-plugin-import": "2.23.4",
