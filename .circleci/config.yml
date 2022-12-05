@@ -70,13 +70,15 @@ commands:
             cd << parameters.project_name >>
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
+            npx playwright install
+            npx playwright install chrome
             <<# parameters.build >> yarn run build <</ parameters.build >>
-            <<# parameters.test >> yarn run test:integration --mocha.timeout 30000 --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch <</ parameters.test >>
+            <<# parameters.test >>  yarn run test:e2e <</ parameters.test >>
 
 jobs:
   build:
     docker:
-      - image: cimg/node:18.12.0
+      - image: cimg/node:18.12.1
       - image: browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project
@@ -137,6 +139,7 @@ jobs:
           path: generated/barchart/screenshots
       - store_artifacts:
           path: test/mashup/__artifacts__
+
   api-governance:
     machine:
       image: ubuntu-2004:current
