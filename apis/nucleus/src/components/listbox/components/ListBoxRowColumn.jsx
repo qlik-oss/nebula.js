@@ -220,7 +220,6 @@ function RowColumn({ index, style, data }) {
     column = false,
     checkboxes = false,
     dense = false,
-    frequencyMode,
     freqIsAllowed,
     isSingleSelect,
     actions,
@@ -416,7 +415,7 @@ function RowColumn({ index, style, data }) {
           {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
         </Grid>
 
-        {(freqIsAllowed || (frequencyMode !== 'N' && frequencyMode !== undefined)) && (
+        {freqIsAllowed && (
           <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>
             <Typography
               noWrap

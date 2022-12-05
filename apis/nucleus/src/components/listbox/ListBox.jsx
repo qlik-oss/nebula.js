@@ -251,7 +251,8 @@ export default function ListBox({
   const { frequencyMax } = layout;
   const widthPermitsFreq = width > FREQUENCY_MIN_SHOW_WIDTH;
   const { frequencyEnabled = false } = layout.qListObject;
-  const freqIsAllowed = widthPermitsFreq && frequencyEnabled;
+  const freqOption = frequencyMode !== 'N' && frequencyMode !== undefined;
+  const freqIsAllowed = widthPermitsFreq && (freqOption || frequencyEnabled);
 
   return (
     <InfiniteLoader
