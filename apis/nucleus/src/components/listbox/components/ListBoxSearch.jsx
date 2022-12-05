@@ -8,11 +8,11 @@ import InstanceContext from '../../../contexts/InstanceContext';
 const TREE_PATH = '/qListObjectDef';
 
 const StyledInputAdornment = styled(InputAdornment)(({ theme }) => ({
-  color: theme.listBox.content?.color,
+  color: theme.listBox?.content?.color,
 }));
 
 const StyledOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
-  color: theme.listBox.content?.color,
+  color: theme.listBox?.content?.color,
 }));
 
 export default function ListBoxSearch({ selections, model, keyboard, listCount, dense = false, visible = true }) {

@@ -30,7 +30,7 @@ const classes = {
 };
 
 const StyledGrid = styled(Grid)(({ theme }) => ({
-  backgroundColor: theme.listBox.backgroundColor ?? theme.palette.background.default,
+  backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
   [`& .${classes.listBoxHeader}`]: {
     alignSelf: 'center',
     display: 'inline-flex',
@@ -44,9 +44,9 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 }));
 
 const Title = styled(Typography)(({ theme }) => ({
-  color: theme.listBox.title.main?.color,
-  fontSize: theme.listBox.title.main?.fontSize,
-  fontFamily: theme.listBox.title.main?.fontFamily,
+  color: theme.listBox?.title?.main?.color,
+  fontSize: theme.listBox?.title?.main?.fontSize,
+  fontFamily: theme.listBox?.title?.main?.fontFamily,
 }));
 
 export default function ListBoxInline({ options = {} }) {
