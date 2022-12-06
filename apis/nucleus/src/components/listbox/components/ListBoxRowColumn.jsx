@@ -46,7 +46,7 @@ const ellipsis = {
 const barPadPx = 4;
 const barBorderWidthPx = 1;
 const barWithCheckboxLeftPadPx = 29;
-const frequencyTextNone = '0';
+const frequencyTextNone = '-';
 
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,

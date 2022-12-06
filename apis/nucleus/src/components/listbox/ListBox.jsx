@@ -243,16 +243,20 @@ export default function ListBox({
     return hasFilteredValues ? h : count;
   };
 
+  const getFrequencyAllowed = () => {
+    const widthPermitsFreq = width > FREQUENCY_MIN_SHOW_WIDTH;
+    const { frequencyEnabled = false } = layout.qListObject;
+    const freqOption = frequencyMode !== 'N' && frequencyMode !== undefined;
+    return widthPermitsFreq && (freqOption || frequencyEnabled);
+  };
+
   const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
   onSetListCount?.(listCount);
   const dense = layout.layoutOptions?.dense ?? false;
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
-  const widthPermitsFreq = width > FREQUENCY_MIN_SHOW_WIDTH;
-  const { frequencyEnabled = false } = layout.qListObject;
-  const freqOption = frequencyMode !== 'N' && frequencyMode !== undefined;
-  const freqIsAllowed = widthPermitsFreq && (freqOption || frequencyEnabled);
+  const freqIsAllowed = getFrequencyAllowed();
 
   return (
     <InfiniteLoader
