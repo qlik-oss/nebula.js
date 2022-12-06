@@ -246,8 +246,8 @@ export default function ListBox({
   const getFrequencyAllowed = () => {
     const widthPermitsFreq = width > FREQUENCY_MIN_SHOW_WIDTH;
     const { frequencyEnabled = false } = layout.qListObject;
-    const freqOption = frequencyMode !== 'N' && frequencyMode !== undefined;
-    return widthPermitsFreq && (freqOption || frequencyEnabled);
+    const hasValidFreqOption = !['none', undefined].includes(frequencyMode);
+    return widthPermitsFreq && (hasValidFreqOption || frequencyEnabled);
   };
 
   const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
