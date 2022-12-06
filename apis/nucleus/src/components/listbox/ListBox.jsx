@@ -45,7 +45,7 @@ export default function ListBox({
   direction,
   height,
   width,
-  frequencyMode = 'N',
+  frequencyMode,
   histogram = false,
   keyboard = {},
   showGray = true,
