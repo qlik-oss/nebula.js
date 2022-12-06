@@ -416,7 +416,7 @@ function nuked(configuration = {}) {
            * @param {string=} options.title Custom title, defaults to fieldname
            * @param {Direction=} [options.direction=ltr] Direction setting ltr|rtl.
            * @param {ListLayout=} [options.listLayout=vertical] Layout direction vertical|horizontal
-           * @param {FrequencyMode=} [options.frequencyMode=N] Show frequency none|value|percent|relative
+           * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
            * @param {boolean=} [options.histogram=false] Show histogram bar
            * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow
            * @param {boolean=} [options.toolbar=true] Show the toolbar
