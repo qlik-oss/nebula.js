@@ -12,17 +12,16 @@ import getListBoxComponents from './components/GridListComponents';
 import calculateGridListSizes from './components/grid-list-sizes';
 import useTextWidth from './hooks/useTextWidth';
 
-const DEFAULT_BATCH_SIZE = 100;
-
 const getMinimumBatchSize = ({ isVertical, width, columnWidth, listHeight, itemSize }) => {
-  let minimumBatchSize;
+  const DEFAULT_BATCH_SIZE = 100;
+  let minSize;
   if (isVertical) {
-    minimumBatchSize = DEFAULT_BATCH_SIZE;
+    minSize = DEFAULT_BATCH_SIZE;
   } else {
     const visibleCellsCount = Math.ceil(width / columnWidth) * Math.ceil(listHeight / itemSize);
-    minimumBatchSize = visibleCellsCount * 2;
+    minSize = visibleCellsCount * 2;
   }
-  return minimumBatchSize;
+  return minSize;
 };
 
 function getMeasureText(layout) {
@@ -249,9 +248,8 @@ export default function ListBox({
   });
 
   const { columnWidth, listHeight, itemSize, listCount } = sizes || {};
-  minimumBatchSize = getMinimumBatchSize({ isVertical, width, columnWidth, listHeight, itemSize });
-
   onSetListCount?.(listCount);
+  minimumBatchSize = getMinimumBatchSize({ isVertical, width, columnWidth, listHeight, itemSize });
 
   return (
     <InfiniteLoader

@@ -46,7 +46,7 @@ const ellipsis = {
 const barPadPx = 4;
 const barBorderWidthPx = 1;
 const barWithCheckboxLeftPadPx = 29;
-const frequencyTextNone = '0';
+const frequencyTextNone = '-';
 
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
@@ -222,7 +222,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     column = false,
     checkboxes = false,
     dense = false,
-    frequencyMode = 'N',
+    freqIsAllowed,
     isSingleSelect,
     actions,
     frequencyMax = '',
@@ -444,7 +444,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
           {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
         </Grid>
 
-        {frequencyMode !== 'N' && (
+        {freqIsAllowed && (
           <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>
             <Typography
               noWrap

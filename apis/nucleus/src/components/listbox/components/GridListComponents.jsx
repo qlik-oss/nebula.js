@@ -9,6 +9,15 @@ const scrollBarThumb = '#BBB';
 const scrollBarThumbHover = '#555';
 const scrollBarBackground = '#f1f1f1';
 
+const FREQUENCY_MIN_SHOW_WIDTH = 80;
+
+const getFrequencyAllowed = ({ width, layout, frequencyMode }) => {
+  const widthPermitsFreq = width > FREQUENCY_MIN_SHOW_WIDTH;
+  const { frequencyEnabled = false } = layout.qListObject;
+  const hasValidFreqOption = !['none', undefined].includes(frequencyMode);
+  return widthPermitsFreq && (hasValidFreqOption || frequencyEnabled);
+};
+
 const scrollbarStyling = {
   scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
 
@@ -105,6 +114,8 @@ export default function getListBoxComponents({
 
   const { listHeight, listCount, itemSize, scrollBarWidth, rowCount, columnCount } = sizes || {};
 
+  const freqIsAllowed = getFrequencyAllowed({ width, layout, frequencyMode });
+
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
 
@@ -130,6 +141,7 @@ export default function getListBoxComponents({
           checkboxes,
           dense,
           frequencyMode,
+          freqIsAllowed,
           isSingleSelect,
           actions: {
             select,
@@ -223,6 +235,7 @@ export default function getListBoxComponents({
           checkboxes,
           dense,
           frequencyMode,
+          freqIsAllowed,
           isSingleSelect,
           actions: {
             select,
