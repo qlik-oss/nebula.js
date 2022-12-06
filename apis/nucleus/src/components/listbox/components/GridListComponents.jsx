@@ -103,7 +103,7 @@ export default function getListBoxComponents({
   const { layoutOptions = {} } = layout;
   const { dense = false } = layoutOptions;
 
-  const { listHeight, listCount, itemSize, scrollBarWidth, rowCount } = sizes || {};
+  const { listHeight, listCount, itemSize, scrollBarWidth, rowCount, columnCount } = sizes || {};
 
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
@@ -157,8 +157,6 @@ export default function getListBoxComponents({
 
   const Grid = ({ onItemsRendered, ref }) => {
     const { layoutOrder } = layoutOptions || {};
-
-    let columnCount;
 
     const gridHeight = Math.min(listHeight, rowCount * itemSize + scrollBarWidth);
 
