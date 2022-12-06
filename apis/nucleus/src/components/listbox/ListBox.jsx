@@ -41,19 +41,19 @@ function getMeasureText(layout) {
 export default function ListBox({
   model,
   selections,
-  listLayout = 'vertical',
   direction,
   height,
   width,
+  listLayout = 'vertical',
   frequencyMode,
   histogram = false,
-  keyboard = {},
-  showGray = true,
   checkboxes = false,
   update = undefined,
   fetchStart = undefined,
   postProcessPages = undefined,
   calculatePagesHeight = false,
+  keyboard = {},
+  showGray = true,
   scrollState,
   selectDisabled = () => false,
   onSetListCount = () => {},
@@ -73,8 +73,6 @@ export default function ListBox({
   const listData = useRef({
     pages: [],
   });
-
-  let minimumBatchSize = DEFAULT_BATCH_SIZE;
 
   const isItemLoaded = useCallback(
     (index) => {
@@ -105,6 +103,8 @@ export default function ListBox({
 
   // The time from scroll end until new data is being fetched, may be exposed in API later on.
   const scrollTimeout = 0;
+
+  let minimumBatchSize;
 
   const loadMoreItems = useCallback(
     (startIndex, stopIndex) => {
@@ -205,42 +205,17 @@ export default function ListBox({
     }
   }, [loaderRef.current]);
 
-  const { layoutOptions = {} } = layout || {};
-
-  const isVertical = layoutOptions.dataLayout
-    ? layoutOptions.dataLayout === 'singleColumn'
-    : listLayout !== 'horizontal';
-
   const textWidth = useTextWidth({ text: getMeasureText(layout), font: '14px Source sans pro' });
-
-  // const { List, Grid } = useCallback(
-  //   () =>
-  //     getListBoxComponents({
-  //       direction,
-  //       layout,
-  //       height,
-  //       width,
-  //       frequencyMode,
-  //       histogram,
-  //       keyboard,
-  //       showGray,
-  //       interactionEvents,
-  //       select,
-  //       isVertical,
-  //       pages,
-  //       selectDisabled,
-  //       isSingleSelect,
-  //       selections,
-  //       scrollState,
-  //       local,
-  //       sizes,
-  //     }),
-  //   [layout]
-  // );
 
   if (!layout) {
     return undefined;
   }
+
+  const { layoutOptions = {} } = layout;
+
+  const isVertical = layoutOptions.dataLayout
+    ? layoutOptions.dataLayout === 'singleColumn'
+    : listLayout !== 'horizontal';
 
   const sizes = calculateGridListSizes({
     layout,
