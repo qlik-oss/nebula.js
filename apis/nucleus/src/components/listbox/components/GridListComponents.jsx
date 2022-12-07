@@ -2,6 +2,7 @@
 import React from 'react';
 import styled from '@emotion/styled';
 import { FixedSizeList, FixedSizeGrid } from 'react-window';
+
 import RowColumn from './ListBoxRowColumn';
 
 const PREFIX = 'ListBox';
@@ -232,6 +233,9 @@ export default function getListBoxComponents({
         itemData={{
           ...defaultItemData,
           column: undefined,
+          columnCount,
+          rowCount,
+          layoutOrder,
         }}
         onItemsRendered={(renderProps) => {
           if (scrollState) {
