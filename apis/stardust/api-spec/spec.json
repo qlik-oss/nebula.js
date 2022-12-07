@@ -1015,6 +1015,10 @@
           "description": "The id of this sheets's generic object.",
           "type": "string"
         },
+        "model": {
+          "description": "This sheets Enigma model, a representation of the generic object.",
+          "type": "string"
+        },
         "destroy": {
           "description": "Destroys the sheet and removes it from the the DOM.",
           "kind": "function",
@@ -1041,7 +1045,7 @@
           "type": "string"
         },
         "model": {
-          "description": "This visualization's Enigma model, a representation of the generic object.",
+          "description": "This visualizations Enigma model, a representation of the generic object.",
           "type": "string"
         },
         "destroy": {

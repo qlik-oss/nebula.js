@@ -68,6 +68,11 @@ export default function sheet({ model, halo, initialError, onDestroy = async () 
      */
     id: model.id,
     /**
+     * This sheets Enigma model, a representation of the generic object.
+     * @type {string}
+     */
+    model,
+    /**
      * Destroys the sheet and removes it from the the DOM.
      * @example
      * const sheet = await embed(app).render({
@@ -114,10 +119,10 @@ export default function sheet({ model, halo, initialError, onDestroy = async () 
         setSnPlugins(plugins);
       },
       exportImage() {
-        //  return sheetRef.current.exportImage();
+        throw new Error('Not implemented');
       },
       takeSnapshot() {
-        //  return sheetRef.current.takeSnapshot();
+        throw new Error('Not implemented');
       },
       getModel() {
         return model;

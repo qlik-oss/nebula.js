@@ -67,7 +67,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      */
     id: model.id,
     /**
-     * This visualization's Enigma model, a representation of the generic object.
+     * This visualizations Enigma model, a representation of the generic object.
      * @type {string}
      */
     model,

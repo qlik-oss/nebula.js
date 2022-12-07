@@ -303,6 +303,8 @@ declare namespace stardust {
 
         id: string;
 
+        model: string;
+
         /**
          * Destroys the sheet and removes it from the the DOM.
          */
