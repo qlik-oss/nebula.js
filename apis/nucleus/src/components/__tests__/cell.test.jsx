@@ -227,8 +227,8 @@ describe('<Cell />', () => {
     const [app, model, clickOutElements] = useObjectSelections.mock.calls[1];
     expect(app).toEqual(defaultHalo.app);
     expect(model).toEqual(defaultModel);
-    expect(clickOutElements).toEqual(['#currentId', '.njs-action-toolbar-popover']);
-    expect(clickOutElementsFirstRender).toEqual(['#currentId', '.njs-action-toolbar-popover']);
+    expect(clickOutElements).toEqual(['#njs-cell-currentId', '.njs-action-toolbar-popover']);
+    expect(clickOutElementsFirstRender).toEqual(['#njs-cell-currentId', '.njs-action-toolbar-popover']);
   });
 
   describe('sn', () => {
