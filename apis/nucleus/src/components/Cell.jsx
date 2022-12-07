@@ -288,8 +288,7 @@ const Cell = forwardRef(
     const [contentRef, contentRect, contentNode] = useRect();
     const [snOptions, setSnOptions] = useState(initialSnOptions);
     const [snPlugins, setSnPlugins] = useState(initialSnPlugins);
-    const [clickOutElement, setClickOutElement] = useState();
-    const clickOutElements = [{ current: clickOutElement }, '.njs-action-toolbar-popover']; // elements which will not trigger the click out listener
+    const clickOutElements = [`#${currentId}`, '.njs-action-toolbar-popover']; // elements which will not trigger the click out listener
     const [selections] = useObjectSelections(app, model, clickOutElements);
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
@@ -306,13 +305,6 @@ const Cell = forwardRef(
     useEffect(() => {
       eventmixin(focusHandler.current);
     }, []);
-
-    useEffect(() => {
-      if (!contentNode) {
-        return;
-      }
-      setClickOutElement(cellNode);
-    }, [cellRect]);
 
     useEffect(() => {
       const bgComp = layout?.components ? layout.components.find((comp) => comp.key === 'general') : null;
@@ -512,6 +504,7 @@ const Cell = forwardRef(
         square
         className={CellElement.className}
         ref={cellRef}
+        id={currentId}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       >
