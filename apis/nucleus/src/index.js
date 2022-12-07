@@ -201,6 +201,7 @@ function nuked(configuration = {}) {
       themes: configuration.themes,
       root,
     });
+    currentContext.themeApi = appTheme.externalAPI;
 
     const publicAPIs = {
       galaxy: /** @lends Galaxy */ {
