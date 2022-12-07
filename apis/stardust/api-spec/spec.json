@@ -889,7 +889,7 @@
                 "frequencyMode": {
                   "description": "Show frequency none|value|percent|relative",
                   "optional": true,
-                  "defaultValue": "none",
+                  "defaultValue": "N",
                   "type": "#/definitions/FrequencyMode"
                 },
                 "histogram": {
