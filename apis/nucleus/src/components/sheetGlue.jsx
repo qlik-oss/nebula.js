@@ -31,7 +31,7 @@ export default function glue({ halo, element, model, initialSnOptions, initialSn
 
   root.add(portal);
   // Cannot use model.id as it is not unique in a given mashup
-  //root.addCell(currentId, sheetRef); // this is not needed, sheet is not part of the focus stuff
+  // root.addCell(currentId, sheetRef); // this is not needed, sheet is not part of the focus stuff
 
   return [unmount, sheetRef];
 }

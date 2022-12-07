@@ -56,7 +56,7 @@ function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, 
         // TODO - should try reuse existing objects on subsequent renders
         // Non-id updates should only change the "css"
         const cs = await Promise.all(
-          lCells.map(async (c, i) => {
+          lCells.map(async (c) => {
             let mounted;
             const mountedPromise = new Promise((resolve) => {
               mounted = resolve;
@@ -80,21 +80,20 @@ function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, 
             };
           })
         );
-        cs.forEach((c) => {
-          // TODO - these needs to be removed as well
-          root.addCell(c.currentId, c.cellRef);
-        });
+        cs.forEach((c) => root.addCell(c.currentId, c.cellRef));
         setCells(cs);
       };
       fetchObjects();
     }
   }, [layout]);
 
-  const cellRenderers = useMemo(() => {
-    return cells
-      ? cells.map((c) => getCellRenderer(c, halo, initialSnOptions, initialSnPlugins, initialError, c.mounted))
-      : [];
-  }, [cells]);
+  const cellRenderers = useMemo(
+    () =>
+      cells
+        ? cells.map((c) => getCellRenderer(c, halo, initialSnOptions, initialSnPlugins, initialError, c.mounted))
+        : [],
+    [cells]
+  );
 
   useEffect(() => {
     const bgComp = layout?.components ? layout.components.find((comp) => comp.key === 'general') : null;
