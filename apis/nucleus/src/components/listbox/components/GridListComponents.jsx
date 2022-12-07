@@ -112,6 +112,12 @@ export default function getListBoxComponents({
   const { layoutOptions = {} } = layout;
   const { dense = false } = layoutOptions;
 
+  const commonComponentOptions = {
+    direction: direction === 'rtl' ? 'rtl' : 'ltr',
+    useIsScrolling: true,
+    className: classes.styledScrollbars,
+  };
+
   const { listHeight, listCount, itemSize, scrollBarWidth, rowCount, columnCount } = sizes || {};
 
   const freqIsAllowed = getFrequencyAllowed({ width, layout, frequencyMode });
@@ -119,40 +125,40 @@ export default function getListBoxComponents({
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { frequencyMax } = layout;
 
+  const defaultItemData = {
+    isLocked,
+    column: !isVertical,
+    pages,
+    ...(isLocked || selectDisabled() ? {} : interactionEvents),
+    checkboxes,
+    dense,
+    frequencyMode,
+    freqIsAllowed,
+    isSingleSelect,
+    actions: {
+      select,
+      confirm: () => selections && selections.confirm.call(selections),
+      cancel: () => selections && selections.cancel.call(selections),
+    },
+    frequencyMax,
+    histogram,
+    keyboard,
+    showGray,
+  };
+
   const List = ({ onItemsRendered, ref }) => {
     // eslint-disable-next-line no-param-reassign
     local.current.listRef = ref;
     return (
       <StyledFixedSizeList
-        // explicitly set this as it accepts horizontal as well, leading to confusion
-        direction={direction === 'rtl' ? 'rtl' : 'ltr'}
-        data-testid="fixed-size-list"
-        useIsScrolling
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...commonComponentOptions}
+        dataTestid="fixed-size-list"
         height={listHeight}
         width={width}
         itemCount={listCount}
         layout={listLayout}
-        className={classes.styledScrollbars}
-        itemData={{
-          isLocked,
-          column: !isVertical,
-          pages,
-          ...(isLocked || selectDisabled() ? {} : interactionEvents),
-          checkboxes,
-          dense,
-          frequencyMode,
-          freqIsAllowed,
-          isSingleSelect,
-          actions: {
-            select,
-            confirm: () => selections && selections.confirm.call(selections),
-            cancel: () => selections && selections.cancel.call(selections),
-          },
-          frequencyMax,
-          histogram,
-          keyboard,
-          showGray,
-        }}
+        itemData={{ ...defaultItemData }}
         itemSize={itemSize}
         onItemsRendered={(renderProps) => {
           if (scrollState) {
@@ -213,42 +219,19 @@ export default function getListBoxComponents({
 
     return (
       <StyledFixedSizeGrid
-        direction={direction === 'rtl' ? 'rtl' : 'ltr'}
-        data-testid="fixed-size-list"
-        useIsScrolling
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        {...commonComponentOptions}
+        dataTestid="fixed-size-grid"
         height={gridHeight}
         width={width}
         columnCount={columnCount}
         columnWidth={columnWidth}
         rowCount={rowCount}
         rowHeight={itemSize}
-        className={classes.styledScrollbars}
         style={{ ...overflowStyling }}
-        // itemCount={listCount}
-        // layout={listLayout}
-        // itemSize={itemSize}
         itemData={{
-          isLocked,
-          // column: !isVertical,
-          pages,
-          ...(isLocked || selectDisabled() ? {} : interactionEvents),
-          checkboxes,
-          dense,
-          frequencyMode,
-          freqIsAllowed,
-          isSingleSelect,
-          actions: {
-            select,
-            confirm: () => selections && selections.confirm.call(selections),
-            cancel: () => selections && selections.cancel.call(selections),
-          },
-          frequencyMax,
-          histogram,
-          keyboard,
-          showGray,
-          columnCount,
-          rowCount,
-          layoutOrder,
+          ...defaultItemData,
+          column: undefined,
         }}
         onItemsRendered={(renderProps) => {
           if (scrollState) {

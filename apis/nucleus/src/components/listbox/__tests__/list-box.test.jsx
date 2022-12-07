@@ -155,8 +155,8 @@ describe('<Listbox />', () => {
       const Container = renderer.root;
       const rows = Container.findAllByProps({ className: 'a-value-row' });
       const columns = Container.findAllByProps({ className: 'a-value-column' });
-      expect(rows.length).toBe(1);
-      expect(columns.length).toBe(0);
+      expect(rows).toHaveLength(1);
+      expect(columns).toHaveLength(0);
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
         checkboxes: false,
         layout,
