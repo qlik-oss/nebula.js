@@ -1,6 +1,5 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
-
 import RowColumn from '../ListBoxRowColumn';
 import { getFrequencyAllowed } from './derive-options';
 import deriveRenderOptions from './derive-render-options';
