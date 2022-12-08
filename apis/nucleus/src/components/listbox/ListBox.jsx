@@ -8,7 +8,7 @@ import useLayout from '../../hooks/useLayout';
 
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 
-import getListBoxComponents from './components/GridListComponents';
+import getListBoxComponents from './components/grid-list-components';
 import calculateGridListSizes from './components/grid-list-sizes';
 import useTextWidth from './hooks/useTextWidth';
 
@@ -197,6 +197,7 @@ export default function ListBox({
   }, [instantPages]);
 
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
+
   useEffect(() => {
     if (scrollState && !initScrollPosIsSet && loaderRef.current) {
       loaderRef.current._listRef.scrollToItem(scrollState.initScrollPos);
