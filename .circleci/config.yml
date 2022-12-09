@@ -79,7 +79,7 @@ jobs:
   build:
     docker:
       - image: cimg/node:18.12.1
-      - image: browserless/chrome:1-puppeteer-7.1.0
+      - image: docker pull browserless/chrome # browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project
 
@@ -88,7 +88,7 @@ jobs:
       - restore_cache: *restore_yarn_cache
       - run:
           name: Install dependencies
-          command: sudo apt-get install chromium-browser && yarn install --frozen-lockfile --cache-folder ~/.cache/yarn # && node ./node_modules/puppeteer/install.js
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn && sudo node ./node_modules/puppeteer/install.js
 
       - save_cache: *save_yarn_cache
       - run:
