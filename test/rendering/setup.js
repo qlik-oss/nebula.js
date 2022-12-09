@@ -11,6 +11,9 @@ async function getPage(options = {}) {
     // headless: false,
     // slowMo: 200,
   });
+  if (!browser) {
+    throw new Error('puppeteer could not launch browser');
+  }
   const page = await browser.newPage();
   await page.setViewport({ width, height });
   page.setDefaultNavigationTimeout(30000);
