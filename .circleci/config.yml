@@ -119,6 +119,9 @@ jobs:
       - run:
           name: Test integration
           command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - run:
+          name: Test rendering
+          command: yarn run test:rendering
       - nebula_create:
           project_name: 'generated/hello'
           picasso_template: 'none'

@@ -8,10 +8,12 @@ describe('listbox mashup rendering test', () => {
   let takeScreenshot;
   let destroyServer;
   let destroyBrowser;
-  const PAGE_OPTIONS = { width: 300, height: 500 };
+
+  let url;
+  const PAGE_OPTIONS = { width: 600, height: 500 };
 
   beforeEach(async () => {
-    ({ destroy: destroyServer } = await startServer());
+    ({ url, destroy: destroyServer } = await startServer());
     ({ page, takeScreenshot, destroy: destroyBrowser } = await getPage(PAGE_OPTIONS));
   });
 
@@ -20,7 +22,11 @@ describe('listbox mashup rendering test', () => {
   });
 
   it('selecting two values should result in two green rows', async () => {
-    const FILE_NAME = 'sheet_basic_EH.png';
+    const FILE_NAME = 'sheet_basic.png';
+
+    await page.goto(`${url}/sheet/sheet.html`);
+    await page.waitForSelector(object, { visible: true });
+
     const snapshotElement = await page.$(object);
     await page.$('#bar');
     await page.$('#pie');
