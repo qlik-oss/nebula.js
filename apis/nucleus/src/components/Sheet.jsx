@@ -6,6 +6,17 @@ import uid from '../object/uid';
 import { resolveBgColor, resolveBgImage } from '../utils/background-props';
 import InstanceContext from '../contexts/InstanceContext';
 
+/**
+ * @interface
+ * @extends HTMLElement
+ * @experimental
+ * @since 3.1.0
+ */
+const SheetElement = {
+  /** @type {'njs-sheet'} */
+  className: 'njs-sheet',
+};
+
 function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initialError, onMount) {
   const { x, y, width, height } = cell.bounds;
   return (
@@ -117,6 +128,7 @@ function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, 
   }
   return (
     <div
+      className={SheetElement.className}
       style={{
         width: `100%`,
         height,
