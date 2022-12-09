@@ -88,7 +88,7 @@ jobs:
       - restore_cache: *restore_yarn_cache
       - run:
           name: Install dependencies
-          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn && node ./node_modules/puppeteer/install.js
+          command: sudo apt-get install chromium-browser && yarn install --frozen-lockfile --cache-folder ~/.cache/yarn # && node ./node_modules/puppeteer/install.js
 
       - save_cache: *save_yarn_cache
       - run:

@@ -7,6 +7,7 @@ async function getPage(options = {}) {
   const { width, height } = options;
 
   const browser = await puppeteer.launch({
+    executablePath: '/usr/bin/chromium-browser',
     // Uncomment these for debugging the test visually.
     // headless: false,
     // slowMo: 200,
