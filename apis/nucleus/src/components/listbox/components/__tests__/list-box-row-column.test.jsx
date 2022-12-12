@@ -681,7 +681,7 @@ describe('<ListBoxRowColumn />', () => {
         onClick: jest.fn(),
         keyboard,
         actions,
-        frequencyMode: 'value',
+        freqIsAllowed: true,
         pages: [
           {
             qArea: {

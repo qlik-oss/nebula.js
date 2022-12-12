@@ -10,6 +10,10 @@ export default function useExistingModel({ app, qId, options = {} }) {
     throw new Error('Option "dense" is not applicable for existing objects.');
   }
 
+  if (options.frequencyMode) {
+    throw new Error('Option "frequencyMode" is not applicable for existing objects.');
+  }
+
   useEffect(() => {
     async function fetchObject() {
       const modelFromStore = modelStore.get(qId);

@@ -126,7 +126,14 @@ describe('<Cell />', () => {
           <StyledEngineProvider injectFirst>
             <ThemeProvider theme={theme}>
               <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
-                <Cell ref={cellRef} halo={halo} model={model} initialSnOptions={initialSnOptions} onMount={onMount} />
+                <Cell
+                  ref={cellRef}
+                  halo={halo}
+                  model={model}
+                  initialSnOptions={initialSnOptions}
+                  onMount={onMount}
+                  currentId="currentId"
+                />
               </InstanceContext.Provider>
             </ThemeProvider>
           </StyledEngineProvider>,
@@ -183,7 +190,14 @@ describe('<Cell />', () => {
           <StyledEngineProvider injectFirst>
             <ThemeProvider theme={theme}>
               <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
-                <Cell ref={cellRef} halo={halo} model={model} initialSnOptions={initialSnOptions} onMount={onMount} />
+                <Cell
+                  ref={cellRef}
+                  halo={halo}
+                  model={model}
+                  initialSnOptions={initialSnOptions}
+                  onMount={onMount}
+                  currentId="currentId"
+                />
               </InstanceContext.Provider>
             </ThemeProvider>
           </StyledEngineProvider>,
@@ -213,8 +227,8 @@ describe('<Cell />', () => {
     const [app, model, clickOutElements] = useObjectSelections.mock.calls[1];
     expect(app).toEqual(defaultHalo.app);
     expect(model).toEqual(defaultModel);
-    expect(clickOutElements).toEqual([{ current: 'fakeElement' }, '.njs-action-toolbar-popover']);
-    expect(clickOutElementsFirstRender).toEqual([{ current: undefined }, '.njs-action-toolbar-popover']);
+    expect(clickOutElements).toEqual(['#njs-cell-currentId', '.njs-action-toolbar-popover']);
+    expect(clickOutElementsFirstRender).toEqual(['#njs-cell-currentId', '.njs-action-toolbar-popover']);
   });
 
   describe('sn', () => {

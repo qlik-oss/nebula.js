@@ -19,6 +19,7 @@ const scrollBarThumbHover = '#555';
 const scrollBarBackground = '#f1f1f1';
 
 const MINIMUM_BATCH_SIZE = 100;
+const FREQUENCY_MIN_SHOW_WIDTH = 80;
 
 const classes = {
   styledScrollbars: `${PREFIX}-styledScrollbars`,
@@ -70,7 +71,7 @@ export default function ListBox({
   height,
   width,
   listLayout = 'vertical',
-  frequencyMode = 'N',
+  frequencyMode,
   histogram = false,
   checkboxes = false,
   update = undefined,
@@ -242,6 +243,13 @@ export default function ListBox({
     return hasFilteredValues ? h : count;
   };
 
+  const getFrequencyAllowed = () => {
+    const widthPermitsFreq = width > FREQUENCY_MIN_SHOW_WIDTH;
+    const { frequencyEnabled = false } = layout.qListObject;
+    const hasValidFreqOption = !['none', undefined].includes(frequencyMode);
+    return widthPermitsFreq && (hasValidFreqOption || frequencyEnabled);
+  };
+
   const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
   onSetListCount?.(listCount);
   const dense = layout.layoutOptions?.dense ?? false;
@@ -249,6 +257,7 @@ export default function ListBox({
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { textAlign } = layout && layout.qListObject.qDimensionInfo;
   const { frequencyMax } = layout;
+  const freqIsAllowed = getFrequencyAllowed();
 
   return (
     <InfiniteLoader
@@ -282,6 +291,7 @@ export default function ListBox({
               direction,
               dense,
               frequencyMode,
+              freqIsAllowed,
               isSingleSelect,
               actions: {
                 select,

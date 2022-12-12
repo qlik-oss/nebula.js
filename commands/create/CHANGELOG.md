@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.1...v3.1.0-alpha.2) (2022-12-02)
+
+### Bug Fixes
+
+- **deps:** update dependency fs-extra to v11 ([#1019](https://github.com/qlik-oss/nebula.js/issues/1019)) ([394f631](https://github.com/qlik-oss/nebula.js/commit/394f6312013596d1556f5195db812e632a6408b1))
+
+# [3.1.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.0...v3.1.0-alpha.1) (2022-11-28)
+
+### Features
+
+- show a message to upgrade node when needed ([#999](https://github.com/qlik-oss/nebula.js/issues/999)) ([caa4174](https://github.com/qlik-oss/nebula.js/commit/caa417464eb393ada1e2cea066719a1ccf41e5cb))
+
 # [3.1.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.0.4...v3.1.0-alpha.0) (2022-10-21)
 
 **Note:** Version bump only for package @nebula.js/cli-create

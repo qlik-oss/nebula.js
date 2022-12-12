@@ -46,7 +46,7 @@ const ellipsis = {
 const barPadPx = 4;
 const barBorderWidthPx = 1;
 const barWithCheckboxLeftPadPx = 29;
-const frequencyTextNone = '0';
+const frequencyTextNone = '-';
 
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
@@ -65,7 +65,7 @@ const Root = styled('div', {
 })(({ theme, flexBasisProp }) => ({
   [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
-    color: theme.palette.text.primary,
+    color: theme.listBox?.content?.color ?? theme.palette.text.primary,
   },
 
   [`& .${classes.rowBorderBottom}`]: {
@@ -75,7 +75,7 @@ const Root = styled('div', {
   [`& .${classes.column}`]: {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
-    color: theme.palette.text.primary,
+    color: theme.listBox?.content?.color ?? theme.palette.text.primary,
   },
 
   [`& .${classes.fieldRoot}`]: {
@@ -106,6 +106,8 @@ const Root = styled('div', {
     whiteSpace: 'pre', // to keep white-space on highlight
     paddingRight: '9px',
     ...ellipsis,
+    fontSize: theme.listBox?.content?.fontSize,
+    fontFamily: theme.listBox?.content?.fontFamily,
   },
 
   [`& .${classes.labelDense}`]: {
@@ -225,7 +227,7 @@ function RowColumn({ index, style, data }) {
     textAlign,
     direction,
     dense = false,
-    frequencyMode = 'N',
+    freqIsAllowed,
     isSingleSelect,
     actions,
     frequencyMax = '',
@@ -438,7 +440,7 @@ function RowColumn({ index, style, data }) {
           {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
         </Grid>
 
-        {frequencyMode !== 'N' && (
+        {freqIsAllowed && (
           <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>
             <Typography
               noWrap
