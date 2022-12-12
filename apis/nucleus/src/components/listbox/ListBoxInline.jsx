@@ -21,6 +21,7 @@ import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import getHasSelections from './assets/has-selections';
 import addListboxTheme from './assets/addListboxTheme';
+import { useVizDataStore } from '../../stores/viz-store';
 
 const PREFIX = 'ListBoxInline';
 
@@ -69,7 +70,6 @@ export default function ListBoxInline({ options = {} }) {
     calculatePagesHeight,
     showGray = true,
     scrollState = undefined,
-    setCount = undefined,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -106,7 +106,8 @@ export default function ListBoxInline({ options = {} }) {
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
-  const [listCount, setListCount] = useState(0);
+  const [vizDataStore] = useVizDataStore();
+  const listCount = vizDataStore.get(`${model.id}_listCount`);
 
   const handleKeyDown = getListboxInlineKeyboardNavigation({ setKeyboardActive });
 
@@ -277,7 +278,6 @@ export default function ListBoxInline({ options = {} }) {
                 selections={selections}
                 direction={direction}
                 listLayout={listLayout}
-                onSetListCount={(c) => setListCount(c)}
                 frequencyMode={frequencyMode}
                 histogram={histogram}
                 rangeSelect={rangeSelect}
@@ -292,7 +292,6 @@ export default function ListBoxInline({ options = {} }) {
                 keyboard={keyboard}
                 showGray={showGray}
                 scrollState={scrollState}
-                setCount={setCount}
               />
             )}
           </AutoSizer>
