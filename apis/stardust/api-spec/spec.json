@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "3.1.0-alpha.2",
+    "version": "3.1.0-alpha.3",
     "license": "MIT",
     "stability": "stable"
   },
@@ -1586,6 +1586,24 @@
       "entries": {
         "className": {
           "value": "'njs-cell-sub-title'",
+          "kind": "literal"
+        }
+      }
+    },
+    "SheetElement": {
+      "stability": "experimental",
+      "availability": {
+        "since": "3.1.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-sheet'",
           "kind": "literal"
         }
       }

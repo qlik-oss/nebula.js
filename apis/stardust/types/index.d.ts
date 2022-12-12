@@ -485,6 +485,10 @@ declare namespace stardust {
         className: "njs-cell-sub-title";
     }
 
+    interface SheetElement extends HTMLElement{
+        className: "njs-sheet";
+    }
+
     interface VizElementAttributes extends NamedNodeMap{
         "data-render-count": string;
     }
