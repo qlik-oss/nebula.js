@@ -75,6 +75,9 @@ export default function boot({ app, context }) {
       addCell(id, cell) {
         cells[id] = cell;
       },
+      removeCell(id) {
+        delete cells[id];
+      },
       add(component) {
         (async () => {
           await rendered;

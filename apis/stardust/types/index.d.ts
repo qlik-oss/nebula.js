@@ -213,10 +213,11 @@ declare namespace stardust {
         constructor();
 
         /**
-         * Renders a visualization into an HTMLElement.
+         * Renders a visualization or sheet into an HTMLElement.
+         * Support for sense sheets is experimental.
          * @param cfg The render configuration.
          */
-        render(cfg: stardust.CreateConfig | stardust.GetConfig): Promise<stardust.Viz>;
+        render(cfg: stardust.CreateConfig | stardust.GetConfig): Promise<stardust.Viz | stardust.Sheet>;
 
         /**
          * Updates the current context of this embed instance.
@@ -297,10 +298,29 @@ declare namespace stardust {
     /**
      * A controller to further modify a visualization after it has been rendered.
      */
+    class Sheet {
+        constructor();
+
+        id: string;
+
+        model: string;
+
+        /**
+         * Destroys the sheet and removes it from the the DOM.
+         */
+        destroy(): void;
+
+    }
+
+    /**
+     * A controller to further modify a visualization after it has been rendered.
+     */
     class Viz {
         constructor();
 
         id: string;
+
+        model: string;
 
         /**
          * Destroys the visualization and removes it from the the DOM.
@@ -618,11 +638,12 @@ declare namespace stardust {
         /**
          * Resolve a color object using the color picker palette from the provided JSON theme.
          * @param c
+         * @param supportNone Shifts the palette index by one to account for the "none" color
          */
         getColorPickerColor(c: {
             index?: number;
             color?: string;
-        }): string;
+        }, supportNone?: boolean): string;
 
         /**
          * Get the best contrasting color against the specified `color`.

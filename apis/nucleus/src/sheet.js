@@ -1,14 +1,13 @@
 /* eslint-disable no-underscore-dangle */
-import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
-import glueCell from './components/glue';
-import getPatches from './utils/patcher';
+import glueSheet from './components/sheetGlue';
 import validatePlugins from './plugins/plugins';
+import getPatches from './utils/patcher';
 
 const noopi = () => {};
 
-export default function viz({ model, halo, initialError, onDestroy = async () => {} } = {}) {
-  let unmountCell = noopi;
-  let cellRef = null;
+export default function sheet({ model, halo, initialError, onDestroy = async () => {} } = {}) {
+  let unmountSheet = noopi;
+  let sheetRef = null;
   let mountedReference = null;
   let onMount = null;
   const mounted = new Promise((resolve) => {
@@ -22,7 +21,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     if (mountedReference) {
       (async () => {
         await mounted;
-        cellRef.current.setSnOptions({
+        sheetRef.current.setSnOptions({
           ...initialSnOptions,
           ...opts,
         });
@@ -41,7 +40,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     if (mountedReference) {
       (async () => {
         await mounted;
-        cellRef.current.setSnPlugins(plugins);
+        sheetRef.current.setSnPlugins(plugins);
       })();
     } else {
       // Handle setting plugins before mount
@@ -51,63 +50,41 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
 
   /**
    * @class
-   * @alias Viz
+   * @alias Sheet
    * @classdesc A controller to further modify a visualization after it has been rendered.
+   * @experimental
+   * @since 3.1.0
    * @example
-   * const viz = await embed(app).render({
+   * const sheet = await embed(app).render({
    *   element,
-   *   type: 'barchart'
+   *   id: "jD5Gd"
    * });
-   * viz.destroy();
+   * sheet.destroy();
    */
-  const api = /** @lends Viz# */ {
+  const api = /** @lends Sheet# */ {
     /**
-     * The id of this visualization's generic object.
+     * The id of this sheets's generic object.
      * @type {string}
      */
     id: model.id,
     /**
-     * This visualizations Enigma model, a representation of the generic object.
+     * This sheets Enigma model, a representation of the generic object.
      * @type {string}
      */
     model,
     /**
-     * Destroys the visualization and removes it from the the DOM.
+     * Destroys the sheet and removes it from the the DOM.
      * @example
-     * const viz = await embed(app).render({
+     * const sheet = await embed(app).render({
      *   element,
-     *   id: 'abc'
+     *   id: "jD5Gd"
      * });
-     * viz.destroy();
+     * sheet.destroy();
      */
     async destroy() {
       await onDestroy();
-      unmountCell();
-      unmountCell = noopi;
-    },
-    /**
-     * Converts the visualization to a different registered type
-     * @since 1.1.0
-     * @param {string} newType - Which registered type to convert to.
-     * @param {boolean=} forceUpdate - Whether to run setProperties or not, defaults to true.
-     * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualization.
-     * @example
-     * const viz = await embed(app).render({
-     *   element,
-     *   id: 'abc'
-     * });
-     * viz.convertTo('barChart');
-     */
-    async convertTo(newType, forceUpdate = true) {
-      const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
-      if (forceUpdate) {
-        if (model.__snInterceptor) {
-          await model.__snInterceptor.setProperties.call(model, propertyTree.qProperty);
-        } else {
-          await model.setProperties(propertyTree.qProperty);
-        }
-      }
-      return propertyTree;
+      unmountSheet();
+      unmountSheet = noopi;
     },
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {
@@ -116,7 +93,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
           throw new Error('Already mounted');
         }
         mountedReference = element;
-        [unmountCell, cellRef] = glueCell({
+        [unmountSheet, sheetRef] = glueSheet({
           halo,
           element,
           model,
@@ -142,25 +119,15 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
         setSnPlugins(plugins);
       },
       exportImage() {
-        return cellRef.current.exportImage();
+        throw new Error('Not implemented');
       },
       takeSnapshot() {
-        return cellRef.current.takeSnapshot();
+        throw new Error('Not implemented');
       },
       getModel() {
         return model;
       },
     },
-
-    // old QVisualization API
-    // close() {},
-    // exportData() {},
-    // exportImg() {},
-    // exportPdf() {},
-    // setOptions() {}, // applied soft patch
-    // resize() {},
-    // show() {},
-    // toggleDataView() {},
   };
 
   return api;

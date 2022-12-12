@@ -49,10 +49,12 @@ export default function theme() {
      * @param {object} c
      * @param {number=} c.index
      * @param {string=} c.color
+     * @param {boolean=} supportNone Shifts the palette index by one to account for the "none" color
      * @returns {string} The resolved color.
      *
      * @example
      * theme.getColorPickerColor({ index: 1 });
+     * theme.getColorPickerColor({ index: 1 }, true);
      * theme.getColorPickerColor({ color: 'red' });
      */
     getColorPickerColor(...a) {

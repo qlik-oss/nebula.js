@@ -67,6 +67,7 @@ function createMock(genericObject, options) {
       }),
       {}
     ),
+    genericType: genericObject.type,
   };
   return { [qId]: mock };
 }
