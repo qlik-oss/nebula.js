@@ -9,7 +9,6 @@ aliases:
     name: Save yarn cache
     paths:
       - ~/.cache/yarn
-      - ~/.cache/puppeteer
       - ./node_modules
       - ./apis/locale/node_modules
       - ./apis/stardust/node_modules
