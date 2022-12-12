@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.2...v3.1.0-alpha.3) (2022-12-12)
+
+### Bug Fixes
+
+- leave freqmode alone ([#1026](https://github.com/qlik-oss/nebula.js/issues/1026)) ([f644c35](https://github.com/qlik-oss/nebula.js/commit/f644c35e1bb9c789190f5d1502db314b9842df41))
+- make click outside work for an embedded sheet scenario ([#1024](https://github.com/qlik-oss/nebula.js/issues/1024)) ([179ed92](https://github.com/qlik-oss/nebula.js/commit/179ed920bc70eb35308eec9c83b9f59b998b62b1))
+
+### Features
+
+- enable frequency count property ([#1021](https://github.com/qlik-oss/nebula.js/issues/1021)) ([1dd4f9d](https://github.com/qlik-oss/nebula.js/commit/1dd4f9d293bef928d5bcea38c2035ec192ef1a11))
+- Listbox specific theme ([#1022](https://github.com/qlik-oss/nebula.js/issues/1022)) ([8e2ec66](https://github.com/qlik-oss/nebula.js/commit/8e2ec6682672207359ba80cf434a35110ef27a2f))
+- sheet embed support ([#1013](https://github.com/qlik-oss/nebula.js/issues/1013)) ([3dacac5](https://github.com/qlik-oss/nebula.js/commit/3dacac587b4dfa6c3196683a416357ba8dc6a88e))
+
 # [3.1.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.1...v3.1.0-alpha.2) (2022-12-02)
 
 ### Bug Fixes
