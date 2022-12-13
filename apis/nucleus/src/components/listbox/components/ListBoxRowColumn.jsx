@@ -292,7 +292,7 @@ function RowColumn({ index, style, data }) {
 
   const excludedOrAlternative = () => (isAlternative(cell) || isExcluded(cell)) && checkboxes;
 
-  const isNumeric = cell?.qNum !== 'NaN' && cell?.qNum !== undefined;
+  const isNumeric = !['NaN', undefined].includes(cell?.qNum);
   let valueTextAlign;
   const isAutoTextAlign = textAlign === undefined || textAlign.auto;
   const dirToTextAlignMap = {
