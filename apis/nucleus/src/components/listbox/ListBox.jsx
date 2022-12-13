@@ -255,6 +255,7 @@ export default function ListBox({
   const dense = layout.layoutOptions?.dense ?? false;
   const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
+  const { textAlign } = layout?.qListObject.qDimensionInfo || {};
   const { frequencyMax } = layout;
   const freqIsAllowed = getFrequencyAllowed();
 
@@ -286,6 +287,8 @@ export default function ListBox({
               pages,
               ...(isLocked || selectDisabled() ? {} : interactionEvents),
               checkboxes,
+              textAlign,
+              direction,
               dense,
               frequencyMode,
               freqIsAllowed,

@@ -827,6 +827,93 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
     });
 
+    test('should get right text alignment', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        keyboard,
+        textAlign: { align: 'right' },
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('right');
+    });
+
+    test('should get left text alignment', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        keyboard,
+        textAlign: { align: 'left' },
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('left');
+    });
+
+    test('should get center text alignment', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        keyboard,
+        textAlign: { align: 'center' },
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('center');
+    });
+
+    test('should get right text direction', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        keyboard,
+        textAlign: { auto: true },
+        direction: 'rtl',
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('right');
+    });
+
+    test('should get left text direction', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        keyboard,
+        textAlign: { auto: true },
+        direction: 'ltr',
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('left');
+    });
+
     test('should render radio button when isSingleSelect is true', async () => {
       const index = 0;
       const style = {};
