@@ -60,7 +60,9 @@ const getSelectedStyle = ({ theme }) => ({
   },
 });
 
-const Root = styled('div')(({ theme }) => ({
+const Root = styled('div', {
+  shouldForwardProp: (props) => props !== 'flexBasisProp',
+})(({ theme, flexBasisProp }) => ({
   [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
     color: theme.listBox?.content?.color ?? theme.palette.text.primary,
@@ -98,10 +100,11 @@ const Root = styled('div')(({ theme }) => ({
 
   // The leaf node, containing the label text.
   [`& .${classes.labelText}`]: {
-    flexBasis: 'max-content',
+    flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
     whiteSpace: 'pre', // to keep white-space on highlight
+    paddingRight: '9px',
     ...ellipsis,
     fontSize: theme.listBox?.content?.fontSize,
     fontFamily: theme.listBox?.content?.fontFamily,
@@ -169,8 +172,8 @@ const Root = styled('div')(({ theme }) => ({
   },
 
   [`& .${classes.frequencyCount}`]: {
-    paddingLeft: '8px',
-    paddingRight: '8px',
+    width: '66px',
+    justifyContent: 'flex-end',
   },
 
   [`&.${classes.barContainer}`]: {
@@ -221,6 +224,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     isLocked,
     column = false,
     checkboxes = false,
+    textAlign,
+    direction,
     dense = false,
     freqIsAllowed,
     isSingleSelect,
@@ -310,6 +315,20 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const excludedOrAlternative = () => (isAlternative(cell) || isExcluded(cell)) && checkboxes;
 
+  const isNumeric = !['NaN', undefined].includes(cell?.qNum);
+  let valueTextAlign;
+  const isAutoTextAlign = !textAlign || textAlign.auto;
+  const dirToTextAlignMap = {
+    rtl: 'right',
+    ltr: 'left',
+  };
+
+  if (isAutoTextAlign) {
+    valueTextAlign = isNumeric ? 'right' : dirToTextAlignMap[direction];
+  } else {
+    valueTextAlign = textAlign?.align || 'left';
+  }
+
   const getValueField = ({ lbl, ix, color, highlighted = false }) => (
     <Typography
       component="span"
@@ -322,6 +341,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         showGray && excludedOrAlternative() && classes.excludedTextWithCheckbox,
       ])}
       color={color}
+      justifyContent={valueTextAlign}
     >
       <span style={{ whiteSpace: 'pre' }}>{lbl}</span>
     </Typography>
@@ -352,6 +372,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   };
 
   const label = cell ? cell.qText : '';
+
   const getFrequencyText = () => {
     if (cell) {
       return cell.qFrequency ? cell.qFrequency : frequencyTextNone;
@@ -385,6 +406,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     minWidth: 0,
     flexGrow: 1,
     padding: checkboxes ? 0 : undefined,
+    justifyContent: valueTextAlign,
   };
 
   const hasHistogramBar = () => cell && histogram && getFrequencyText() !== frequencyTextNone;
@@ -399,14 +421,11 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     return `calc(${width}% - ${rightSlice})`;
   };
 
-  const isFirstElement = cellIndex === 0;
-
-  // if (!cell || typeof cell.qElemNumber !== 'number') {
-  //   return null; // Cell is empty - do not render! TODO: improve check for this...
-  // }
+  const isFirstElement = index === 0;
+  const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
   return (
-    <Root className={classes.barContainer}>
+    <Root className={classes.barContainer} flexBasisProp={flexBasisVal}>
       <Grid
         container
         gap={0}
@@ -461,8 +480,9 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
           </Grid>
         )}
 
-        {(showLock || showTick) && (
+        {!checkboxes && (
           <Grid item className={classes.icon}>
+            {!showLock && !showTick && <span style={{ minWidth: '12px' }} />}
             {showLock && <Lock style={iconStyles} size="small" />}
             {showTick && <Tick style={iconStyles} size="small" />}
           </Grid>

@@ -182,6 +182,15 @@ export default function ListBox({
     sizes,
   });
 
+  // const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
+  // onSetListCount?.(listCount);
+  // const dense = layout.layoutOptions?.dense ?? false;
+  // const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
+  // const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
+  // const { textAlign } = layout?.qListObject.qDimensionInfo || {};
+  // const { frequencyMax } = layout;
+  // const freqIsAllowed = getFrequencyAllowed();
+
   const { columnWidth, listHeight, itemSize, listCount } = sizes || {};
   minimumBatchSize = getMinimumBatchSize({ isVertical, width, columnWidth, listHeight, itemSize });
 
