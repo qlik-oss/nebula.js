@@ -8,7 +8,7 @@ import AppSelectionsPortal from './components/selections/AppSelections';
 import ListBoxPortal from './components/listbox/ListBoxPortal';
 
 import create from './object/create-session-object';
-import get from './object/get-object';
+import get from './object/get-generic-object';
 import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
 
@@ -255,9 +255,10 @@ function nuked(configuration = {}) {
      */
     const api = /** @lends Embed# */ {
       /**
-       * Renders a visualization into an HTMLElement.
+       * Renders a visualization or sheet into an HTMLElement.
+       * Support for sense sheets is experimental.
        * @param {CreateConfig | GetConfig} cfg - The render configuration.
-       * @returns {Promise<Viz>} A controller to the rendered visualization.
+       * @returns {Promise<Viz|Sheet>} A controller to the rendered visualization or sheet.
        * @example
        * // render from existing object
        * n.render({
