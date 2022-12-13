@@ -294,7 +294,7 @@ function RowColumn({ index, style, data }) {
 
   const isNumeric = !['NaN', undefined].includes(cell?.qNum);
   let valueTextAlign;
-  const isAutoTextAlign = textAlign === undefined || textAlign.auto;
+  const isAutoTextAlign = !textAlign || textAlign.auto;
   const dirToTextAlignMap = {
     rtl: 'right',
     ltr: 'left',
