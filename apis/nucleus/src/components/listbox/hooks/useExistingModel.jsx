@@ -6,12 +6,22 @@ export default function useExistingModel({ app, qId, options = {} }) {
   const [modelStore] = useModelStore();
   const { sessionModel } = options;
 
-  if (options.dense) {
-    throw new Error('Option "dense" is not applicable for existing objects.');
-  }
+  const invalidOptions = {
+    dense: options.dense,
+    frequencyMode: options.frequencyMode,
+    checkboxes: options.checkboxes,
+    histogram: options.histogram,
+  };
 
-  if (options.frequencyMode) {
-    throw new Error('Option "frequencyMode" is not applicable for existing objects.');
+  let usedInvalidOption = null;
+  Object.entries(invalidOptions).forEach(([key, value]) => {
+    if (value) {
+      usedInvalidOption = key;
+    }
+  });
+
+  if (usedInvalidOption) {
+    throw new Error(`Option "${usedInvalidOption}" is not applicable for existing objects.`);
   }
 
   useEffect(() => {
