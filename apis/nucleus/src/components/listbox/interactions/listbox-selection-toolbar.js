@@ -4,7 +4,7 @@ import { selectPossible } from '@nebula.js/ui/icons/select-possible';
 import { selectExcluded } from '@nebula.js/ui/icons/select-excluded';
 
 export default ({ layout, model, translator }) => {
-  if (layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne) {
+  if (layout?.qListObject.qDimensionInfo.qIsOneAndOnlyOne) {
     return [];
   }
 

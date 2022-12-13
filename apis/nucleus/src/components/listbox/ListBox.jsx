@@ -9,7 +9,7 @@ import useLayout from '../../hooks/useLayout';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 
 import getListBoxComponents from './components/grid-list-components/grid-list-components';
-import calculateGridListSizes from './components/grid-list-sizes';
+import useListSizes from './hooks/use-list-sizes';
 import useTextWidth from './hooks/useTextWidth';
 import getMeasureText from './assets/measure-text';
 import getMinimumBatchSize from './assets/minimum-batch-size';
@@ -60,17 +60,17 @@ export default function ListBox({
     postProcessPages,
     listData,
   });
-  const [pages, setPages] = useState();
+  const [pages, setPages] = useState([]);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
   const [vizDataStore] = useVizDataStore();
 
   useEffect(() => {
-    setPages(itemsLoader.pages || []);
-  }, [itemsLoader.pages]);
+    setPages(itemsLoader?.pages || []);
+  }, [itemsLoader?.pages]);
 
   const isItemLoaded = useCallback(
     (index) => {
-      if (!pages || !local.current.validPages) {
+      if (!pages?.length || !local.current.validPages) {
         return false;
       }
       local.current.checkIdx = index;
@@ -143,11 +143,13 @@ export default function ListBox({
 
   const { layoutOptions = {} } = layout;
 
+  let minimumBatchSize;
+
   const isVertical = layoutOptions.dataLayout
     ? layoutOptions.dataLayout === 'singleColumn'
     : listLayout !== 'horizontal';
 
-  const sizes = calculateGridListSizes({
+  const sizes = useListSizes({
     layout,
     width,
     height,
@@ -155,6 +157,7 @@ export default function ListBox({
     pages,
     calculatePagesHeight,
     textWidth,
+    minimumBatchSize,
   });
 
   const { List, Grid } = getListBoxComponents({
@@ -162,6 +165,7 @@ export default function ListBox({
     layout,
     height,
     width,
+    checkboxes,
     frequencyMode,
     histogram,
     keyboard,
@@ -179,7 +183,7 @@ export default function ListBox({
   });
 
   const { columnWidth, listHeight, itemSize, listCount } = sizes || {};
-  const minimumBatchSize = getMinimumBatchSize({ isVertical, width, columnWidth, listHeight, itemSize });
+  minimumBatchSize = getMinimumBatchSize({ isVertical, width, columnWidth, listHeight, itemSize });
 
   return (
     <InfiniteLoader

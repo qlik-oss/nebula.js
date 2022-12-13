@@ -1,27 +1,29 @@
 const scrollBarWidth = 10; // TODO: ignore this - instead set the styling only show on hover...
 
-const getCalculatedHeight = ({ pages, minimumBatchSize, count }) => {
+const getCalculatedHeight = ({ pages = [], minimumBatchSize, count }) => {
   // If values have been filtered in the currently loaded page, we want to
   // prevent rendering empty rows by assigning the actual number of items to render
   // since count (qcy) does not reflect this in DQ mode currently.
   const hasFilteredValues = pages.some((page) => page.qArea.qHeight < minimumBatchSize);
   const h = Math.max(...pages.map((page) => page.qArea.qTop + page.qArea.qHeight));
-  return hasFilteredValues ? h : count;
+  const out = hasFilteredValues ? h : count;
+  return out;
 };
 
-export default function calculateGridListSizes({
+export default function useListSizes({
   layout,
   width,
   height,
   checkboxes,
   pages,
   calculatePagesHeight,
+  minimumBatchSize,
   textWidth,
 }) {
   const { layoutOptions = {}, qListObject = {} } = layout;
 
   const count = qListObject.qSize?.qcy;
-  const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
+
   const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense } = layoutOptions || {};
   const columnAutoWidth = Math.min(150, textWidth + 18);
 
@@ -35,6 +37,8 @@ export default function calculateGridListSizes({
     itemSize = 20;
   }
   const listHeight = height || 8 * itemSize;
+  const listCount =
+    pages?.length && calculatePagesHeight ? getCalculatedHeight({ pages, minimumBatchSize, count }) : count;
 
   if (layoutOrder) {
     if (layoutOrder === 'row') {
