@@ -20,6 +20,7 @@ export default function getListBoxComponents({
   histogram,
   isSingleSelect,
   select,
+  textAlign,
   selections,
   keyboard,
   showGray,
@@ -52,6 +53,7 @@ export default function getListBoxComponents({
     frequencyMode,
     freqIsAllowed: getFrequencyAllowed({ width, layout, frequencyMode }),
     isSingleSelect,
+    textAlign,
     actions: {
       select,
       confirm: () => selections?.confirm.call(selections),

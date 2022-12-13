@@ -160,6 +160,8 @@ export default function ListBox({
     minimumBatchSize,
   });
 
+  const { textAlign } = layout?.qListObject.qDimensionInfo || {};
+
   const { List, Grid } = getListBoxComponents({
     direction,
     layout,
@@ -172,6 +174,7 @@ export default function ListBox({
     showGray,
     interactionEvents,
     select,
+    textAlign,
     isVertical,
     pages,
     selectDisabled,
