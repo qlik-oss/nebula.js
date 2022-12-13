@@ -11,6 +11,9 @@ export default function useExistingModel({ app, qId, options = {} }) {
     frequencyMode: options.frequencyMode,
     checkboxes: options.checkboxes,
     histogram: options.histogram,
+    title: options.title,
+    stateName: options.stateName,
+    listLayout: options.listLayout,
   };
 
   let usedInvalidOption = null;
