@@ -49,12 +49,9 @@ const StyledFixedSizeList = styled(FixedSizeList)(() => ({
   },
 }));
 
-function getSizeInfo({ isVertical, checkboxes, dense, height }) {
+function getSizeInfo({ isVertical, dense, height }) {
   const sizeHorizontal = 200;
-  let sizeVertical = checkboxes ? 40 : 33;
-  if (dense) {
-    sizeVertical = 20;
-  }
+  const sizeVertical = dense ? 20 : 29;
   const itemSize = isVertical ? sizeVertical : sizeHorizontal;
   const listHeight = height || 8 * itemSize;
 
@@ -253,7 +250,7 @@ export default function ListBox({
   const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
   onSetListCount?.(listCount);
   const dense = layout.layoutOptions?.dense ?? false;
-  const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
+  const { itemSize, listHeight } = getSizeInfo({ isVertical, dense, height });
   const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
   const { textAlign } = layout?.qListObject.qDimensionInfo || {};
   const { frequencyMax } = layout;

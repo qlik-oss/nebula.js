@@ -62,7 +62,7 @@ const getSelectedStyle = ({ theme }) => ({
 
 const Root = styled('div', {
   shouldForwardProp: (props) => props !== 'flexBasisProp',
-})(({ theme, flexBasisProp }) => ({
+})(({ theme, flexBasisProp, dense }) => ({
   [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
     color: theme.listBox?.content?.color ?? theme.palette.text.primary,
@@ -130,6 +130,7 @@ const Root = styled('div', {
     margin: 0,
     width: '100%',
     height: '100%',
+    overflow: 'hidden',
 
     // The checkbox's span
     '& > span:nth-of-type(1)': {
@@ -141,6 +142,7 @@ const Root = styled('div', {
       display: 'flex',
       alignItems: 'center',
       paddingLeft: 0,
+      paddingRight: '2px',
     },
   },
 
@@ -184,7 +186,7 @@ const Root = styled('div', {
   [`& .${classes.bar}`]: {
     border: `${barBorderWidthPx}px solid`,
     borderColor: '#D9D9D9',
-    height: '16px',
+    height: dense ? '16px' : '20px',
     position: 'absolute',
     zIndex: '-1',
     alignSelf: 'center',
@@ -269,7 +271,7 @@ function RowColumn({ index, style, data }) {
     setSelected(selected);
 
     const clazzArr = [column ? classes.column : classes.row];
-    if (!(histogram && dense)) clazzArr.push(classes.rowBorderBottom);
+    if (!(histogram && dense) && !checkboxes) clazzArr.push(classes.rowBorderBottom);
     if (!checkboxes) {
       if (cell.qState === 'XS') {
         clazzArr.push(showGray ? classes.XS : classes.S);
@@ -282,7 +284,7 @@ function RowColumn({ index, style, data }) {
       }
     }
     setClassArr(clazzArr);
-  }, [cell && cell.qState]);
+  }, [cell && cell.qState, histogram, dense, checkboxes]);
 
   const joinClassNames = (namesArray) =>
     namesArray
@@ -402,7 +404,7 @@ function RowColumn({ index, style, data }) {
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
   return (
-    <Root className={classes.barContainer} flexBasisProp={flexBasisVal}>
+    <Root className={classes.barContainer} flexBasisProp={flexBasisVal} dense={dense}>
       <Grid
         container
         gap={0}
