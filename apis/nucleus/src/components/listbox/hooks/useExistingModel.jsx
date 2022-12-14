@@ -8,7 +8,7 @@ export default function useExistingModel({ app, qId, options = {} }) {
 
   const forbiddenOptions = ['dense', 'frequencyMode', 'checkboxes', 'histogram', 'title', 'stateName', 'listLayout'];
   const usedOptions = Object.keys(options);
-  const usedForbiddenOptions = usedOptions.filter(Set.prototype.has, new Set(forbiddenOptions));
+  const usedForbiddenOptions = usedOptions.filter((usedOption) => forbiddenOptions.includes(usedOption));
 
   if (usedForbiddenOptions.length) {
     throw new Error(`Option "${usedForbiddenOptions.join(', ')}" is not applicable for existing objects.`);
