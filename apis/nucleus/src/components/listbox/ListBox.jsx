@@ -1,20 +1,18 @@
 /* eslint no-underscore-dangle:0 */
-
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-
 import InfiniteLoader from 'react-window-infinite-loader';
-
 import useLayout from '../../hooks/useLayout';
-
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
-
 import getListBoxComponents from './components/grid-list-components/grid-list-components';
-import useListSizes from './hooks/use-list-sizes';
+import getListSizes from './assets/get-list-sizes';
 import useTextWidth from './hooks/useTextWidth';
 import getMeasureText from './assets/measure-text';
-import getMinimumBatchSize from './assets/minimum-batch-size';
-import useItemsLoader from './hooks/use-items-loader';
-import { useVizDataStore } from '../../stores/viz-store';
+import getHorizontalMinBatchSize from './assets/horizontal-minimum-batch-size';
+import useItemsLoader from './hooks/useItemsLoader';
+import getListCount from './components/list-count';
+import useDataStore from './hooks/useDataStore';
+
+const DEFAULT_MIN_BATCH_SIZE = 100;
 
 export default function ListBox({
   model,
@@ -35,6 +33,7 @@ export default function ListBox({
   scrollState,
   selectDisabled = () => false,
 }) {
+  const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
 
@@ -61,8 +60,8 @@ export default function ListBox({
     listData,
   });
   const [pages, setPages] = useState([]);
+  const { setStoreValue } = useDataStore(model);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
-  const [vizDataStore] = useVizDataStore();
 
   useEffect(() => {
     setPages(itemsLoader?.pages || []);
@@ -113,11 +112,6 @@ export default function ListBox({
     update.call(null, fetchData);
   }
 
-  useEffect(() => {
-    fetchData();
-    vizDataStore.set(`${model.id}_listCount`, layout?.qListObject.qSize.qcy);
-  }, [layout, layout && layout.qListObject.qSize.qcy]);
-
   // Update with "simulated" pages.
   useEffect(() => {
     if (!instantPages || isLoadingData) {
@@ -126,8 +120,6 @@ export default function ListBox({
     setPages(instantPages);
   }, [instantPages]);
 
-  const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
-
   useEffect(() => {
     if (scrollState && !initScrollPosIsSet && loaderRef.current) {
       loaderRef.current._listRef.scrollToItem(scrollState.initScrollPos);
@@ -135,30 +127,25 @@ export default function ListBox({
     }
   }, [loaderRef.current]);
 
+  useEffect(() => {
+    fetchData();
+  }, [layout]);
+
   const textWidth = useTextWidth({ text: getMeasureText(layout), font: '14px Source sans pro' });
 
-  if (!layout) {
-    return undefined;
-  }
+  const { layoutOptions = {} } = layout || {};
 
-  const { layoutOptions = {} } = layout;
-
-  let minimumBatchSize;
+  let minimumBatchSize = DEFAULT_MIN_BATCH_SIZE;
 
   const isVertical = layoutOptions.dataLayout
     ? layoutOptions.dataLayout === 'singleColumn'
     : listLayout !== 'horizontal';
 
-  const sizes = useListSizes({
-    layout,
-    width,
-    height,
-    checkboxes,
-    pages,
-    calculatePagesHeight,
-    textWidth,
-    minimumBatchSize,
-  });
+  const count = layout?.qListObject.qSize?.qcy;
+  const listCount = getListCount({ pages, minimumBatchSize, count, calculatePagesHeight });
+  setStoreValue('listCount', listCount);
+
+  const sizes = getListSizes({ layout, width, height, checkboxes, listCount, count, textWidth });
 
   const { textAlign } = layout?.qListObject.qDimensionInfo || {};
 
@@ -183,19 +170,13 @@ export default function ListBox({
     scrollState,
     local,
     sizes,
+    listCount,
   });
 
-  // const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
-  // onSetListCount?.(listCount);
-  // const dense = layout.layoutOptions?.dense ?? false;
-  // const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
-  // const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
-  // const { textAlign } = layout?.qListObject.qDimensionInfo || {};
-  // const { frequencyMax } = layout;
-  // const freqIsAllowed = getFrequencyAllowed();
-
-  const { columnWidth, listHeight, itemSize, listCount } = sizes || {};
-  minimumBatchSize = getMinimumBatchSize({ isVertical, width, columnWidth, listHeight, itemSize });
+  const { columnWidth, listHeight, itemSize } = sizes || {};
+  if (!isVertical) {
+    minimumBatchSize = getHorizontalMinBatchSize({ width, columnWidth, listHeight, itemSize });
+  }
 
   return (
     <InfiniteLoader

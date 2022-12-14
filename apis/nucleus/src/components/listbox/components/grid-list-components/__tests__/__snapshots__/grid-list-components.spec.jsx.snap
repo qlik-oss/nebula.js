@@ -31,6 +31,7 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "pages": "pages",
       "rowCount": 200,
       "showGray": true,
+      "textAlign": "right",
     }
   }
   onItemsRendered={[Function]}
@@ -54,7 +55,6 @@ exports[`grid-list-components should create a List component 1`] = `
   dataTestid="fixed-size-list"
   direction="ltr"
   height={300}
-  itemCount={100}
   itemData={
     {
       "actions": {
@@ -75,6 +75,7 @@ exports[`grid-list-components should create a List component 1`] = `
       "keyboard": "keyboard",
       "pages": "pages",
       "showGray": true,
+      "textAlign": "right",
     }
   }
   itemSize={100}

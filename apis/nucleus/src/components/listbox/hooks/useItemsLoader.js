@@ -75,10 +75,11 @@ export default function useItemsLoader({
   return {
     loadMoreItems: {
       with({ minimumBatchSize: m }) {
-        minimumBatchSize = m;
+        if (m) {
+          minimumBatchSize = m;
+        }
         return loadMoreItems;
       },
-      withDefaults: () => loadMoreItems,
     },
     pages,
     isLoading,

@@ -1,24 +1,17 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import * as reactWindowInfiniteLoaderModule from 'react-window-infinite-loader';
-import * as styledModule from '@mui/material/styles';
-import * as reactWindowModule from 'react-window';
-
 import * as useLayoutModule from '../../../hooks/useLayout';
 import * as useSelectionsInteractionsModule from '../hooks/selections/useSelectionsInteractions';
-import * as ListBoxRowColumnModule from '../components/ListBoxRowColumn';
+import * as useTextWidth from '../hooks/useTextWidth';
+import * as getListSizes from '../assets/get-list-sizes';
+import * as getListBoxComponents from '../components/grid-list-components/grid-list-components';
 import ListBox from '../ListBox';
 
 jest.mock('react-window-infinite-loader', () => ({
   __esModule: true,
   ...jest.requireActual('react-window-infinite-loader'),
   default: jest.fn(),
-}));
-
-jest.mock('react-window', () => ({
-  __esModule: true,
-  ...jest.requireActual('react-window'),
-  FixedSizeList: jest.fn(),
 }));
 
 jest.mock('@mui/material/styles', () => ({
@@ -40,6 +33,7 @@ describe('<Listbox />', () => {
   let pages;
   let selectDisabled;
   let FixedSizeList;
+  let FixedSizeGrid;
   let fetchStart;
   let useCallbackMock;
   let setTimeoutStub;
@@ -70,44 +64,65 @@ describe('<Listbox />', () => {
     });
 
     fetchStart = jest.fn();
-    useCallbackMock = jest.fn();
-
-    FixedSizeList = jest.fn().mockImplementation((funcArgs) => {
-      const { children } = funcArgs;
-      const RowOrColumn = children;
-      return <RowOrColumn index={funcArgs.itemCount} style={funcArgs.style} data={funcArgs.itemData} />;
+    useCallbackMock = jest.fn().mockReturnValue({
+      with: () => () => {},
     });
 
-    jest.spyOn(reactWindowModule, 'FixedSizeList').mockImplementation(FixedSizeList);
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    FixedSizeList = jest.fn().mockImplementation((props) => <div className="a-value-row" {...props} />);
+    // eslint-disable-next-line react/jsx-props-no-spreading
+    FixedSizeGrid = jest.fn().mockImplementation((props) => <div className="a-column-row" {...props} />);
+
     jest.spyOn(useLayoutModule, 'default').mockImplementation(() => [layout]);
     jest.spyOn(React, 'useCallback').mockImplementation(useCallbackMock);
     jest.spyOn(useSelectionsInteractionsModule, 'default').mockImplementation(useSelectionsInteractions);
+    jest.spyOn(useTextWidth, 'default').mockImplementation(() => 50);
+    jest.spyOn(getListBoxComponents, 'default').mockReturnValue({
+      List: FixedSizeList,
+      Grid: FixedSizeGrid,
+    });
+
+    const sizes = {
+      columnCount: 3,
+      columnWidth: 100,
+      rowCount: 100,
+      overflowStyling: 100,
+      itemSize: 25,
+      listHeight: 200,
+      scrollBarWidth: 10,
+      count: 200,
+      listCount: 100,
+    };
+    jest.spyOn(getListSizes, 'default').mockImplementation(() => sizes);
 
     jest.spyOn(reactWindowInfiniteLoaderModule, 'default').mockImplementation((props) => {
-      const func = props.children;
+      const Component = props.children;
       infiniteProps = props;
-      return func({ onItemsRendered: jest.fn() });
+      // eslint-disable-next-line react/jsx-props-no-spreading
+      return Component({ ...props, onItemsRendered: jest.fn() });
     });
-    jest
-      .spyOn(ListBoxRowColumnModule, 'default')
-      .mockImplementation(({ checkboxes }) => <div className={checkboxes ? 'a-value-column' : 'a-value-row'} />);
-    jest.spyOn(styledModule, 'styled').mockImplementation((el) => () => el);
 
     pages = [{ qArea: { qTop: 1, qHeight: 100 } }];
-
     global.window = { setTimeout: setTimeoutStub };
-
     selectDisabled = () => false;
-
     selections = { key: 'selections' };
+
     args = {
       model: {
         getListObjectData: jest.fn().mockResolvedValue(pages),
+        id: 1234,
       },
+      frequencyMode: 'N',
+      histogram: false,
       selections,
+      postProcessPages: undefined,
+      calculatePagesHeight: false,
+      keyboard: undefined,
       direction: 'ltr',
+      showGray: undefined,
       height: 200,
       width: 100,
+      scrollState: undefined,
       listLayout: 'vertical',
       update: jest.fn(),
       checkboxes: false,
@@ -119,6 +134,9 @@ describe('<Listbox />', () => {
   afterEach(() => {
     jest.useRealTimers();
     jest.resetAllMocks();
+  });
+
+  afterAll(() => {
     jest.restoreAllMocks();
   });
 
@@ -129,6 +147,11 @@ describe('<Listbox />', () => {
         await act(async () => {
           renderer = create(
             <ListBox
+              model={mergedArgs.model}
+              frequencyMode={mergedArgs.frequencyMode}
+              histogram={mergedArgs.histogram}
+              keyboard={mergedArgs.keyboard}
+              showGray={mergedArgs.showGray}
               selections={mergedArgs.selections}
               direction={mergedArgs.direction}
               height={mergedArgs.height}
@@ -166,18 +189,7 @@ describe('<Listbox />', () => {
       });
 
       expect(useSelectionsInteractions.mock.calls[1][0].selectDisabled instanceof Function).toBe(true);
-      const { itemData } = FixedSizeList.mock.lastCall[0];
-      expect(itemData).toMatchObject({
-        checkboxes: false,
-        column: false,
-        pages: [],
-        isLocked: false,
-      });
-
-      expect(itemData.onMouseDown instanceof Function).toBe(true);
-      expect(itemData.onMouseUp instanceof Function).toBe(true);
-      expect(itemData.onMouseEnter instanceof Function).toBe(true);
-      expect(itemData.onClick).toBe(undefined);
+      expect(FixedSizeList.mock.calls.length).toBeGreaterThan(0);
     });
 
     test('should call useSelectionsInteractions', async () => {
@@ -224,30 +236,21 @@ describe('<Listbox />', () => {
         doc: expect.any(Object),
       });
 
-      const { itemData } = FixedSizeList.mock.lastCall[0];
-      expect(itemData).toMatchObject({
-        checkboxes: true,
-        column: false,
-        pages: [],
-      });
+      expect(FixedSizeList.mock.calls.length).toBeGreaterThan(0);
     });
 
     test('should use columns for horizontal layout', async () => {
       args.listLayout = 'horizontal';
       await render();
-      const { itemData } = FixedSizeList.mock.lastCall[0];
-      expect(itemData).toMatchObject({
-        checkboxes: false,
-        column: true,
-        pages: [],
-      });
+      expect(FixedSizeGrid.mock.calls.length).toBeGreaterThan(0);
+      expect(FixedSizeList.mock.calls).toHaveLength(0);
     });
 
     test('should set isLocked to true', async () => {
       layout.qListObject.qDimensionInfo.qLocked = true;
       await render();
-      const { itemData } = FixedSizeList.mock.lastCall[0];
-      expect(itemData.isLocked).toBe(true);
+      expect(FixedSizeList.mock.calls.length).toBeGreaterThan(0);
+      expect(FixedSizeGrid.mock.calls).toHaveLength(0);
     });
 
     test('should prevent InfiniteLoader to get itemCount == 0', async () => {

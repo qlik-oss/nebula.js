@@ -1,27 +1,21 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
-
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
-
 import { IconButton, Grid, Typography } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
 import useLayout from '../../hooks/useLayout';
-
 import ListBox from './ListBox';
 import createListboxSelectionToolbar from './interactions/listbox-selection-toolbar';
-
 import ActionsToolbar from '../ActionsToolbar';
-
 import InstanceContext from '../../contexts/InstanceContext';
-
 import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import getHasSelections from './assets/has-selections';
 import addListboxTheme from './assets/addListboxTheme';
-import { useVizDataStore } from '../../stores/viz-store';
+import useDataStore from './hooks/useDataStore';
 
 const PREFIX = 'ListBoxInline';
 
@@ -72,6 +66,7 @@ export default function ListBoxInline({ options = {} }) {
     scrollState = undefined,
   } = options;
 
+  const [listCount, setListCount] = useState(0);
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
   const useRefWithCallback = () => {
@@ -106,8 +101,13 @@ export default function ListBoxInline({ options = {} }) {
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
-  const [vizDataStore] = useVizDataStore();
-  const listCount = vizDataStore.get(`${model.id}_listCount`);
+  const { getStoreValue } = useDataStore(model);
+
+  useEffect(() => {
+    // Make sure search gets latest listCount to enable or disable the confirm button.
+    const lc = getStoreValue(`listCount`);
+    setListCount(lc);
+  }, [layout]);
 
   const handleKeyDown = getListboxInlineKeyboardNavigation({ setKeyboardActive });
 

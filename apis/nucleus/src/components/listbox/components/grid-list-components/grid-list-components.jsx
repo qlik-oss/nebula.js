@@ -28,10 +28,11 @@ export default function getListBoxComponents({
   direction,
   listLayout,
   sizes,
+  listCount,
 }) {
-  const { layoutOptions = {}, frequencyMax } = layout;
-  const { dense = false } = layoutOptions;
-  const { listHeight, listCount, itemSize, rowCount, columnCount } = sizes || {};
+  const { layoutOptions = {}, frequencyMax } = layout || {};
+  const { dense = false } = layoutOptions || {};
+  const { listHeight, itemSize, rowCount, columnCount } = sizes || {};
 
   // Options common for List and Grid.
   const commonComponentOptions = {

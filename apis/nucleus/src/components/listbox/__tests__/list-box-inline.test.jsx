@@ -8,7 +8,6 @@ import { IconButton, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import * as unlockModule from '@nebula.js/ui/icons/unlock';
 import * as lockModule from '@nebula.js/ui/icons/lock';
-
 import ListBoxInline from '../ListBoxInline';
 import * as InstanceContextModule from '../../../contexts/InstanceContext';
 import * as useLayoutModule from '../../../hooks/useLayout';
@@ -17,6 +16,7 @@ import * as ListBoxModule from '../ListBox';
 import * as ListBoxSearchModule from '../components/ListBoxSearch';
 import * as listboxSelectionToolbarModule from '../interactions/listbox-selection-toolbar';
 import * as addListboxTheme from '../assets/addListboxTheme';
+import * as useDataStore from '../hooks/useDataStore';
 
 const virtualizedModule = require('react-virtualized-auto-sizer');
 const listboxKeyboardNavigationModule = require('../interactions/listbox-keyboard-navigation');
@@ -52,6 +52,7 @@ describe('<ListboxInline />', () => {
   let render;
   let getListboxInlineKeyboardNavigation;
   let InstanceContext;
+  let store;
 
   beforeEach(() => {
     useState = jest.fn();
@@ -97,6 +98,16 @@ describe('<ListboxInline />', () => {
       .spyOn(listboxKeyboardNavigationModule, 'getListboxInlineKeyboardNavigation')
       .mockImplementation(getListboxInlineKeyboardNavigation);
     jest.spyOn(addListboxTheme, 'default').mockImplementation(() => {});
+    store = { getStoreValue: jest.fn(), setStoreValue: jest.fn() };
+    store.getStoreValue.mockImplementation((key) => {
+      switch (key) {
+        case 'listCount':
+          return 321;
+        default:
+          return 'no data';
+      }
+    });
+    jest.spyOn(useDataStore, 'default').mockImplementation(() => store);
 
     ActionsToolbarModule.default = ActionsToolbar;
     ListBoxModule.default = <div className="theListBox" />;
@@ -176,18 +187,18 @@ describe('<ListboxInline />', () => {
     test('should render with everything included', async () => {
       await render();
       const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
-      expect(actionToolbars.length).toBe(1);
+      expect(actionToolbars).toHaveLength(1);
 
       const typographs = renderer.root.findAllByType(Typography);
-      expect(typographs.length).toBe(1);
+      expect(typographs).toHaveLength(1);
 
       const autoSizers = renderer.root.findAllByProps({ 'data-testid': 'virtualized-auto-sizer' });
-      expect(autoSizers.length).toBe(1);
+      expect(autoSizers).toHaveLength(1);
 
       const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches.length).toBe(1);
+      expect(listBoxSearches).toHaveLength(1);
       const showSearchButtons = renderer.root.findAllByType(IconButton);
-      expect(showSearchButtons.length).toBe(1);
+      expect(showSearchButtons).toHaveLength(1);
       expect(getListboxInlineKeyboardNavigation).toHaveBeenCalledTimes(2);
 
       // TODO: MUIv5
@@ -203,26 +214,27 @@ describe('<ListboxInline />', () => {
       options.toolbar = false;
       await render();
       const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
-      expect(actionToolbars.length).toBe(0);
+      expect(actionToolbars).toHaveLength(0);
 
       const typographs = renderer.root.findAllByType(Typography);
-      expect(typographs.length).toBe(0);
+      expect(typographs).toHaveLength(0);
 
       const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches.length).toBe(1);
+      expect(listBoxSearches).toHaveLength(1);
     });
 
     test('should render without toolbar', async () => {
       options.search = 'toggle';
       await render();
 
-      ListBoxSearch.mock.calls
-        .map((x) => x[0])
-        .map((callArgs) => {
-          expect(callArgs).toMatchObject({
-            visible: false,
-          });
-        });
+      expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
+        listCount: 0,
+        visible: false,
+      });
+      expect(ListBoxSearch.mock.calls[1][0]).toMatchObject({
+        listCount: 321, // by second call it should have been retrieved from data store
+        visible: false,
+      });
       expect(selections.on).toHaveBeenCalledTimes(2);
       expect(selections.isModal).toHaveBeenCalledTimes(1);
       expect(selections.on.mock.calls[0][0]).toBe('deactivated');
@@ -233,18 +245,19 @@ describe('<ListboxInline />', () => {
       options.search = false;
       await render();
       const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
-      expect(actionToolbars.length).toBe(1);
+      expect(actionToolbars).toHaveLength(1);
 
       const typographs = renderer.root.findAllByType(Typography);
-      expect(typographs.length).toBe(1);
+      expect(typographs).toHaveLength(1);
 
-      ListBoxSearch.mock.calls
-        .map((x) => x[0])
-        .map((callArgs) => {
-          expect(callArgs).toMatchObject({
-            visible: false,
-          });
-        });
+      expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
+        listCount: 0,
+        visible: false,
+      });
+      expect(ListBoxSearch.mock.calls[1][0]).toMatchObject({
+        listCount: 321, // by second call it should have been retrieved from data store
+        visible: false,
+      });
     });
   });
 });

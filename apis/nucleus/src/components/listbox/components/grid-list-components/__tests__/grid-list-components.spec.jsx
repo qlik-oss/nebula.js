@@ -59,6 +59,7 @@ describe('grid-list-components', () => {
         },
       },
       width: 100,
+      textAlign: 'right',
       checkboxes: false,
       local: { current: { listRef: undefined } },
       isVertical: true,
