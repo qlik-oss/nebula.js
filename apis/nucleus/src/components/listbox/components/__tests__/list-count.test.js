@@ -1,6 +1,6 @@
 import getListCount from '../list-count';
 
-describe('get-list-sizes', () => {
+describe('list-count', () => {
   let args;
   let mockPages;
 

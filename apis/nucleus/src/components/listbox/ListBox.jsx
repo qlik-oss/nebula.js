@@ -112,7 +112,6 @@ export default function ListBox({
     update.call(null, fetchData);
   }
 
-  // Update with "simulated" pages.
   useEffect(() => {
     if (!instantPages || isLoadingData) {
       return;
