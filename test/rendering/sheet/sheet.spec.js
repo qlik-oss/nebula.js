@@ -1,36 +1,32 @@
+import { test, expect } from '@playwright/test';
+
 const getPage = require('../setup');
 const startServer = require('../server');
-const { looksLike } = require('../testUtils');
 
-describe('listbox mashup rendering test', () => {
+test.describe('sheet mashup rendering test', () => {
   const object = '[data-type="sheet"]';
   let page;
-  let takeScreenshot;
   let destroyServer;
   let destroyBrowser;
 
   let url;
   const PAGE_OPTIONS = { width: 600, height: 500 };
 
-  beforeEach(async () => {
-    ({ url, destroy: destroyServer } = await startServer());
-    ({ page, takeScreenshot, destroy: destroyBrowser } = await getPage(PAGE_OPTIONS));
+  test.beforeEach(async () => {
+    ({ url, destroy: destroyServer } = await startServer(8051));
+    ({ page, destroy: destroyBrowser } = await getPage(PAGE_OPTIONS));
   });
 
-  afterEach(async () => {
+  test.afterEach(async () => {
     await Promise.all([destroyServer(), destroyBrowser()]);
   });
 
-  it('selecting two values should result in two green rows', async () => {
+  test('sheet basic test', async () => {
     const FILE_NAME = 'sheet_basic.png';
 
     await page.goto(`${url}/sheet/sheet.html`);
-    await page.waitForSelector(object, { visible: true });
-
-    const snapshotElement = await page.$(object);
-    await page.$('#bar');
-    await page.$('#pie');
-    const { path: capturedPath } = await takeScreenshot(FILE_NAME, snapshotElement);
-    await looksLike(FILE_NAME, capturedPath);
+    const selector = await page.waitForSelector(object, { visible: true });
+    const image = await page.screenshot(selector, page);
+    return expect(image).toMatchSnapshot(FILE_NAME);
   });
 });
