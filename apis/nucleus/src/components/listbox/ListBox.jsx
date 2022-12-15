@@ -67,7 +67,7 @@ function getSizeInfo({ isVertical, checkboxes, dense, height }) {
 function SearchMessage(width) {
   const styleSearchMsg = {
     fontSize: '16px',
-    padding: '16px',
+    padding: '16px 0',
     textAlign: 'center',
     minWidth: width,
   };
