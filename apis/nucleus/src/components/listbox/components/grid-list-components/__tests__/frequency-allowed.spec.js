@@ -1,6 +1,6 @@
-import { getFrequencyAllowed } from '../derive-options';
+import getFrequencyAllowed from '../frequency-allowed';
 
-describe('derive-options', () => {
+describe('frequency allowed', () => {
   const layout = { qListObject: { frequencyEnabled: undefined } };
 
   describe('getFrequencyAllowed', () => {
