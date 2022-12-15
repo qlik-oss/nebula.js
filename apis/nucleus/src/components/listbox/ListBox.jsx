@@ -64,6 +64,17 @@ function getSizeInfo({ isVertical, checkboxes, dense, height }) {
   };
 }
 
+function SearchMessage(width) {
+  const styleSearchMsg = {
+    fontSize: '16px',
+    padding: '16px',
+    textAlign: 'center',
+    minWidth: width,
+  };
+
+  return <div style={styleSearchMsg}>There are no matches for your search.</div>;
+}
+
 export default function ListBox({
   model,
   selections,
@@ -271,49 +282,52 @@ export default function ListBox({
       {({ onItemsRendered, ref }) => {
         local.current.listRef = ref;
         return (
-          <StyledFixedSizeList
-            // explicitly set this as it accepts horizontal as well, leading to confusion
-            direction={direction === 'rtl' ? 'rtl' : 'ltr'}
-            data-testid="fixed-size-list"
-            useIsScrolling
-            height={listHeight}
-            width={width}
-            itemCount={listCount}
-            layout={listLayout}
-            className={classes.styledScrollbars}
-            itemData={{
-              isLocked,
-              column: !isVertical,
-              pages,
-              ...(isLocked || selectDisabled() ? {} : interactionEvents),
-              checkboxes,
-              textAlign,
-              direction,
-              dense,
-              frequencyMode,
-              freqIsAllowed,
-              isSingleSelect,
-              actions: {
-                select,
-                confirm: () => selections && selections.confirm.call(selections),
-                cancel: () => selections && selections.cancel.call(selections),
-              },
-              frequencyMax,
-              histogram,
-              keyboard,
-              showGray,
-            }}
-            itemSize={itemSize}
-            onItemsRendered={(renderProps) => {
-              if (scrollState) {
-                scrollState.setScrollPos(renderProps.visibleStopIndex);
-              }
-              onItemsRendered({ ...renderProps });
-            }}
-            ref={ref}
-          >
-            {RowColumn}
-          </StyledFixedSizeList>
+          <div>
+            {!listCount && SearchMessage(width)}
+            <StyledFixedSizeList
+              // explicitly set this as it accepts horizontal as well, leading to confusion
+              direction={direction === 'rtl' ? 'rtl' : 'ltr'}
+              data-testid="fixed-size-list"
+              useIsScrolling
+              height={listHeight}
+              width={width}
+              itemCount={listCount}
+              layout={listLayout}
+              className={classes.styledScrollbars}
+              itemData={{
+                isLocked,
+                column: !isVertical,
+                pages,
+                ...(isLocked || selectDisabled() ? {} : interactionEvents),
+                checkboxes,
+                textAlign,
+                direction,
+                dense,
+                frequencyMode,
+                freqIsAllowed,
+                isSingleSelect,
+                actions: {
+                  select,
+                  confirm: () => selections && selections.confirm.call(selections),
+                  cancel: () => selections && selections.cancel.call(selections),
+                },
+                frequencyMax,
+                histogram,
+                keyboard,
+                showGray,
+              }}
+              itemSize={itemSize}
+              onItemsRendered={(renderProps) => {
+                if (scrollState) {
+                  scrollState.setScrollPos(renderProps.visibleStopIndex);
+                }
+                onItemsRendered({ ...renderProps });
+              }}
+              ref={ref}
+            >
+              {RowColumn}
+            </StyledFixedSizeList>
+          </div>
         );
       }}
     </InfiniteLoader>
