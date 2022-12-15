@@ -135,7 +135,6 @@ describe('<Listbox />', () => {
               width={mergedArgs.width}
               listLayout={mergedArgs.listLayout}
               update={mergedArgs.update}
-              checkboxes={mergedArgs.checkboxes}
               selectDisabled={mergedArgs.selectDisabled}
               fetchStart={mergedArgs.fetchStart}
             />
@@ -158,7 +157,6 @@ describe('<Listbox />', () => {
       expect(rows.length).toBe(1);
       expect(columns.length).toBe(0);
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        checkboxes: false,
         layout,
         selections,
         pages: [],
@@ -168,7 +166,6 @@ describe('<Listbox />', () => {
       expect(useSelectionsInteractions.mock.calls[1][0].selectDisabled instanceof Function).toBe(true);
       const { itemData } = FixedSizeList.mock.lastCall[0];
       expect(itemData).toMatchObject({
-        checkboxes: false,
         column: false,
         pages: [],
         isLocked: false,
@@ -184,7 +181,6 @@ describe('<Listbox />', () => {
       await render();
 
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        checkboxes: false,
         layout,
         selections,
         pages: [],
@@ -217,7 +213,6 @@ describe('<Listbox />', () => {
       await render();
 
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        checkboxes: true,
         layout,
         selections,
         pages: [],
@@ -226,7 +221,6 @@ describe('<Listbox />', () => {
 
       const { itemData } = FixedSizeList.mock.lastCall[0];
       expect(itemData).toMatchObject({
-        checkboxes: true,
         column: false,
         pages: [],
       });
@@ -237,7 +231,6 @@ describe('<Listbox />', () => {
       await render();
       const { itemData } = FixedSizeList.mock.lastCall[0];
       expect(itemData).toMatchObject({
-        checkboxes: false,
         column: true,
         pages: [],
       });

@@ -53,13 +53,11 @@ export default function ListBoxInline({ options = {} }) {
   const {
     direction,
     frequencyMode,
-    histogram = false,
     listLayout,
     search = true,
     focusSearch = false,
     toolbar = true,
     rangeSelect = true,
-    checkboxes = false,
     model,
     selections,
     update = undefined,
@@ -279,9 +277,7 @@ export default function ListBoxInline({ options = {} }) {
                 listLayout={listLayout}
                 onSetListCount={(c) => setListCount(c)}
                 frequencyMode={frequencyMode}
-                histogram={histogram}
                 rangeSelect={rangeSelect}
-                checkboxes={checkboxes}
                 height={height}
                 width={width}
                 update={update}

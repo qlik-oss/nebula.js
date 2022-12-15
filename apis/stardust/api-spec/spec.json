@@ -878,7 +878,7 @@
               "kind": "object",
               "entries": {
                 "title": {
-                  "description": "Custom title, defaults to fieldname",
+                  "description": "Custom title, defaults to fieldname (not applicable for existing objects)",
                   "optional": true,
                   "type": "string"
                 },
@@ -889,7 +889,7 @@
                   "type": "#/definitions/Direction"
                 },
                 "listLayout": {
-                  "description": "Layout direction vertical|horizontal",
+                  "description": "Layout direction vertical|horizontal (not applicable for existing objects)",
                   "optional": true,
                   "defaultValue": "vertical",
                   "type": "#/definitions/ListLayout"
@@ -901,7 +901,7 @@
                   "type": "#/definitions/FrequencyMode"
                 },
                 "histogram": {
-                  "description": "Show histogram bar",
+                  "description": "Show histogram bar (not applicable for existing objects)",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
@@ -919,19 +919,19 @@
                   "type": "boolean"
                 },
                 "checkboxes": {
-                  "description": "Show values as checkboxes instead of as fields",
+                  "description": "Show values as checkboxes instead of as fields (not applicable for existing objects)",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
                 },
                 "dense": {
-                  "description": "Reduces padding and text size (not applicable for existing objects).",
+                  "description": "Reduces padding and text size (not applicable for existing objects)",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
                 },
                 "stateName": {
-                  "description": "Sets the state to make selections in",
+                  "description": "Sets the state to make selections in (not applicable for existing objects)",
                   "optional": true,
                   "defaultValue": "\"$\"",
                   "type": "string"

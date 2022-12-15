@@ -30,7 +30,7 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
     }
   }, []);
 
-  const { title, dense, properties = {} } = options;
+  const { title, dense, checkboxes, properties = {} } = options;
   let { frequencyMode, histogram = false } = options;
 
   if (fieldDef && fieldDef.failedToFetchFieldDef) {
@@ -85,6 +85,8 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
         ],
       },
     },
+    histogram,
+    checkboxes,
     layoutOptions: {
       dense,
     },
