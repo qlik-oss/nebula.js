@@ -12,6 +12,7 @@ import useLayout from '../../hooks/useLayout';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 
 import RowColumn from './components/ListBoxRowColumn';
+import ListBoxDisclaimer from './components/ListBoxDisclaimer';
 
 const PREFIX = 'ListBox';
 const scrollBarThumb = '#BBB';
@@ -62,17 +63,6 @@ function getSizeInfo({ isVertical, checkboxes, dense, height }) {
     itemSize,
     listHeight,
   };
-}
-
-function SearchMessage(width) {
-  const styleSearchMsg = {
-    fontSize: '16px',
-    padding: '16px 0',
-    textAlign: 'center',
-    minWidth: width,
-  };
-
-  return <div style={styleSearchMsg}>There are no matches for your search.</div>;
 }
 
 export default function ListBox({
@@ -270,7 +260,9 @@ export default function ListBox({
   const { frequencyMax } = layout;
   const freqIsAllowed = getFrequencyAllowed();
 
-  return (
+  return !listCount ? (
+    <ListBoxDisclaimer width={width} />
+  ) : (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}
       itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
@@ -282,52 +274,49 @@ export default function ListBox({
       {({ onItemsRendered, ref }) => {
         local.current.listRef = ref;
         return (
-          <div>
-            {!listCount && SearchMessage(width)}
-            <StyledFixedSizeList
-              // explicitly set this as it accepts horizontal as well, leading to confusion
-              direction={direction === 'rtl' ? 'rtl' : 'ltr'}
-              data-testid="fixed-size-list"
-              useIsScrolling
-              height={listHeight}
-              width={width}
-              itemCount={listCount}
-              layout={listLayout}
-              className={classes.styledScrollbars}
-              itemData={{
-                isLocked,
-                column: !isVertical,
-                pages,
-                ...(isLocked || selectDisabled() ? {} : interactionEvents),
-                checkboxes,
-                textAlign,
-                direction,
-                dense,
-                frequencyMode,
-                freqIsAllowed,
-                isSingleSelect,
-                actions: {
-                  select,
-                  confirm: () => selections && selections.confirm.call(selections),
-                  cancel: () => selections && selections.cancel.call(selections),
-                },
-                frequencyMax,
-                histogram,
-                keyboard,
-                showGray,
-              }}
-              itemSize={itemSize}
-              onItemsRendered={(renderProps) => {
-                if (scrollState) {
-                  scrollState.setScrollPos(renderProps.visibleStopIndex);
-                }
-                onItemsRendered({ ...renderProps });
-              }}
-              ref={ref}
-            >
-              {RowColumn}
-            </StyledFixedSizeList>
-          </div>
+          <StyledFixedSizeList
+            // explicitly set this as it accepts horizontal as well, leading to confusion
+            direction={direction === 'rtl' ? 'rtl' : 'ltr'}
+            data-testid="fixed-size-list"
+            useIsScrolling
+            height={listHeight}
+            width={width}
+            itemCount={listCount}
+            layout={listLayout}
+            className={classes.styledScrollbars}
+            itemData={{
+              isLocked,
+              column: !isVertical,
+              pages,
+              ...(isLocked || selectDisabled() ? {} : interactionEvents),
+              checkboxes,
+              textAlign,
+              direction,
+              dense,
+              frequencyMode,
+              freqIsAllowed,
+              isSingleSelect,
+              actions: {
+                select,
+                confirm: () => selections && selections.confirm.call(selections),
+                cancel: () => selections && selections.cancel.call(selections),
+              },
+              frequencyMax,
+              histogram,
+              keyboard,
+              showGray,
+            }}
+            itemSize={itemSize}
+            onItemsRendered={(renderProps) => {
+              if (scrollState) {
+                scrollState.setScrollPos(renderProps.visibleStopIndex);
+              }
+              onItemsRendered({ ...renderProps });
+            }}
+            ref={ref}
+          >
+            {RowColumn}
+          </StyledFixedSizeList>
         );
       }}
     </InfiniteLoader>
