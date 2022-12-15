@@ -22,8 +22,6 @@ export default function ListBox({
   width,
   listLayout = 'vertical',
   frequencyMode,
-  histogram = false,
-  checkboxes = false,
   update = undefined,
   fetchStart = undefined,
   postProcessPages = undefined,
@@ -36,6 +34,7 @@ export default function ListBox({
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
+  const { checkboxes, histogram } = layout ?? {};
 
   const loaderRef = useRef(null);
   const local = useRef({

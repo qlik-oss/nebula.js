@@ -125,7 +125,6 @@ describe('<Listbox />', () => {
       scrollState: undefined,
       listLayout: 'vertical',
       update: jest.fn(),
-      checkboxes: false,
       selectDisabled,
       fetchStart,
     };
@@ -158,7 +157,6 @@ describe('<Listbox />', () => {
               width={mergedArgs.width}
               listLayout={mergedArgs.listLayout}
               update={mergedArgs.update}
-              checkboxes={mergedArgs.checkboxes}
               selectDisabled={mergedArgs.selectDisabled}
               fetchStart={mergedArgs.fetchStart}
             />
@@ -181,7 +179,6 @@ describe('<Listbox />', () => {
       expect(rows).toHaveLength(1);
       expect(columns).toHaveLength(0);
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        checkboxes: false,
         layout,
         selections,
         pages: [],
@@ -196,7 +193,6 @@ describe('<Listbox />', () => {
       await render();
 
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        checkboxes: false,
         layout,
         selections,
         pages: [],
@@ -229,7 +225,6 @@ describe('<Listbox />', () => {
       await render();
 
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        checkboxes: true,
         layout,
         selections,
         pages: [],
