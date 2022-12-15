@@ -144,27 +144,27 @@ jobs:
       - store_artifacts:
           path: test/mashup/__artifacts__
 
-  test-rendering:
-    docker:
-      - image: circleci/node:16.10.0-browsers
-      - image: mcr.microsoft.com/playwright:focal
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          name: Install Playwright
-          command: |
-            npx playwright install
-      - run:
-          name: Install Fonts
-          command: ./.circleci/install-fonts.sh
-      - run: yarn run test:rendering
-      - store_test_results:
-          path: ./test/rendering/reports/xml/report.xml
-      - store_artifacts:
-          path: ./test/rendering
-      - store_artifacts:
-          path: ./test/rendering/reports/html
+      - test-rendering:
+          docker:
+            - image: circleci/node:16.10.0-browsers
+            - image: mcr.microsoft.com/playwright:focal
+          steps:
+            - attach_workspace:
+                at: ~/project
+            - run:
+                name: Install Playwright
+                command: |
+                  npx playwright install
+            - run:
+                name: Install Fonts
+                command: ./.circleci/install-fonts.sh
+            - run: yarn run test:rendering
+            - store_test_results:
+                path: ./test/rendering/reports/xml/report.xml
+            - store_artifacts:
+                path: ./test/rendering
+            - store_artifacts:
+                path: ./test/rendering/reports/html
 
   api-governance:
     machine:
