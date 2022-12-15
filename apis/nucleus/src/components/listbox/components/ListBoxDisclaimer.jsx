@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
+import InstanceContext from '../../../contexts/InstanceContext';
 
 export default function ListBoxDisclaimer({ width }) {
+  const { translator } = useContext(InstanceContext);
   const style = {
     fontSize: '16px',
     padding: '16px 0',
@@ -8,5 +10,5 @@ export default function ListBoxDisclaimer({ width }) {
     minWidth: width,
   };
 
-  return <div style={style}>There are no matches for your search.</div>;
+  return <div style={style}>{translator.get('There are no matches for your search.')}</div>;
 }
