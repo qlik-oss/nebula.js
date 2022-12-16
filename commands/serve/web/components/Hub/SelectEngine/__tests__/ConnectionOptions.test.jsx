@@ -30,7 +30,7 @@ describe('<ConnectionOptions />', () => {
     OptionsToConnect.map((opt) => {
       expect(screen.queryByText(opt.label)).toBeInTheDocument();
     });
-    expect(screen.getAllByRole('button').length).toBe(1);
+    expect(screen.getAllByRole('button')).toHaveLength(1);
     expect(screen.getByPlaceholderText('Engine WebSocket URL')).toBeInTheDocument();
   });
 
@@ -40,7 +40,7 @@ describe('<ConnectionOptions />', () => {
     await act(() => userEvents.click(screen.queryByText(OptionsToConnect[1].label)));
 
     // only one engine url input
-    expect(screen.queryAllByPlaceholderText(OptionsToConnect[0].formFields[0]).length).toBe(1);
+    expect(screen.queryAllByPlaceholderText(OptionsToConnect[0].formFields[0])).toHaveLength(1);
 
     // integration form inputs
     OptionsToConnect[1].formFields.map((field) => {
@@ -57,7 +57,7 @@ describe('<ConnectionOptions />', () => {
     await act(() => userEvents.click(screen.queryByText(OptionsToConnect[2].label)));
 
     // only one engine url input
-    expect(screen.queryAllByPlaceholderText(OptionsToConnect[0].formFields[0]).length).toBe(1);
+    expect(screen.queryAllByPlaceholderText(OptionsToConnect[0].formFields[0])).toHaveLength(1);
 
     // no integration inputs
     expect(screen.queryByPlaceholderText(OptionsToConnect[1].formFields[1])).not.toBeInTheDocument();
