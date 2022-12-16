@@ -10,5 +10,5 @@ export default function ListBoxDisclaimer({ width }) {
     minWidth: width,
   };
 
-  return <div style={style}>{translator.get('There are no matches for your search.')}</div>;
+  return <div style={style}>{translator.get('Listbox.NoMatchesForYourTerms')}</div>;
 }
