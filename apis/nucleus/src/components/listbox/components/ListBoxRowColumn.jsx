@@ -487,7 +487,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
             {showTick && <Tick style={iconStyles} size="small" />}
           </Grid>
         )}
-        {/* </div> */}
       </Grid>
     </Root>
   );
