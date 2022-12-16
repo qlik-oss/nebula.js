@@ -127,7 +127,7 @@ export default function theme() {
         const a = parseInt(matches[1], 10) / 255;
         const r = parseInt(matches[2], 10);
         const g = parseInt(matches[3], 10);
-        const b = parseFloat(matches[4], 10);
+        const b = parseInt(matches[4], 10);
         return `rgba(${r},${g},${b},${a})`;
       }
       /* eslint-enable no-cond-assign */
