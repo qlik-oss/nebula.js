@@ -12,11 +12,12 @@ test.describe('listbox mashup rendering test', () => {
   let destroyServer;
   let destroyBrowser;
   let url;
-  const PAGE_OPTIONS = { width: 300, height: 500 };
+
+  test.use({ viewport: { width: 300, height: 500 } });
 
   test.beforeEach(async () => {
     ({ url, destroy: destroyServer } = await startServer(8050));
-    ({ page, destroy: destroyBrowser } = await getPage(PAGE_OPTIONS));
+    ({ page, destroy: destroyBrowser } = await getPage());
   });
 
   test.afterEach(async () => {
@@ -29,7 +30,7 @@ test.describe('listbox mashup rendering test', () => {
     await page.goto(`${url}/listbox/listbox.html`);
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
-    const image = await page.screenshot(selector, page);
+    const image = await selector.screenshot();
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 
@@ -46,7 +47,7 @@ test.describe('listbox mashup rendering test', () => {
     };
     await execSequence(selectNumbers, action);
 
-    const image = await page.screenshot(selector, page);
+    const image = await selector.screenshot();
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 });

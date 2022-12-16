@@ -26,7 +26,7 @@ test.describe('sheet mashup rendering test', () => {
 
     await page.goto(`${url}/sheet/sheet.html`);
     const selector = await page.waitForSelector(object, { visible: true });
-    const image = await page.screenshot(selector, page);
+    const image = await selector.screenshot();
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 });
