@@ -16,7 +16,6 @@ import * as ListBoxModule from '../ListBox';
 import * as ListBoxSearchModule from '../components/ListBoxSearch';
 import * as listboxSelectionToolbarModule from '../interactions/listbox-selection-toolbar';
 import * as addListboxTheme from '../assets/addListboxTheme';
-import * as useDataStore from '../hooks/useDataStore';
 
 const virtualizedModule = require('react-virtualized-auto-sizer');
 const listboxKeyboardNavigationModule = require('../interactions/listbox-keyboard-navigation');
@@ -52,7 +51,6 @@ describe('<ListboxInline />', () => {
   let render;
   let getListboxInlineKeyboardNavigation;
   let InstanceContext;
-  let store;
 
   beforeEach(() => {
     useState = jest.fn();
@@ -98,16 +96,6 @@ describe('<ListboxInline />', () => {
       .spyOn(listboxKeyboardNavigationModule, 'getListboxInlineKeyboardNavigation')
       .mockImplementation(getListboxInlineKeyboardNavigation);
     jest.spyOn(addListboxTheme, 'default').mockImplementation(() => {});
-    store = { getStoreValue: jest.fn(), setStoreValue: jest.fn() };
-    store.getStoreValue.mockImplementation((key) => {
-      switch (key) {
-        case 'listCount':
-          return 321;
-        default:
-          return 'no data';
-      }
-    });
-    jest.spyOn(useDataStore, 'default').mockImplementation(() => store);
 
     ActionsToolbarModule.default = ActionsToolbar;
     ListBoxModule.default = <div className="theListBox" />;
@@ -228,11 +216,6 @@ describe('<ListboxInline />', () => {
       await render();
 
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
-        listCount: 0,
-        visible: false,
-      });
-      expect(ListBoxSearch.mock.calls[1][0]).toMatchObject({
-        listCount: 321, // by second call it should have been retrieved from data store
         visible: false,
       });
       expect(selections.on).toHaveBeenCalledTimes(2);
@@ -251,11 +234,6 @@ describe('<ListboxInline />', () => {
       expect(typographs).toHaveLength(1);
 
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
-        listCount: 0,
-        visible: false,
-      });
-      expect(ListBoxSearch.mock.calls[1][0]).toMatchObject({
-        listCount: 321, // by second call it should have been retrieved from data store
         visible: false,
       });
     });
