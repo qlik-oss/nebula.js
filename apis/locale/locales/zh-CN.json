@@ -24,6 +24,10 @@
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
   },
+  "Listbox.NoMatchesForYourTerms": {
+    "value": "您的搜索条件没有任何匹配结果。",
+    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
+  },
   "Listbox.ScreenReaderInstructions": {
     "value": "激活下面的元素将导致页面上的内容更新",
     "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content",

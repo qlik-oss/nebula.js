@@ -24,6 +24,10 @@
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
   },
+  "Listbox.NoMatchesForYourTerms": {
+    "value": "Aramanızla eşleşen sonuç yok.",
+    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
+  },
   "Listbox.ScreenReaderInstructions": {
     "value": "Aşağıdaki öğeleri etkinleştirmek sayfadaki içeriğin güncellenmesine neden olur",
     "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content",
