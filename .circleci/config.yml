@@ -114,6 +114,7 @@ jobs:
           name: Test rendering
           command: |
             npx playwright install
+            sudo npx playwright install-deps
             yarn run test:rendering
       - store_test_results:
           path: ./test/rendering/reports/xml/report.xml
