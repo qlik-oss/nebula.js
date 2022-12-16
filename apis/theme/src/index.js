@@ -105,6 +105,8 @@ export default function theme() {
     /**
      * Validates a color string using d3-color.
      * See https://www.npmjs.com/package/d3-color
+     * Additionally supports the non-standard engine
+     * format ARGB(0-255,0-255,0-255,0-255)
      * @param {string} specifier
      * @returns {string|undefined} The resolved color or undefined
      * @ignore
@@ -112,6 +114,7 @@ export default function theme() {
      * @example
      * theme.validateColor("red"); // returns "rgba(255,0,0,1)"
      * theme.validateColor("#00ff00"); // returns "rgba(0,255,0,1)"
+     * theme.validateColor("ARGB(102,255,50,100)"); // returns "rgba(255,50,100,0.4)"
      * theme.validateColor("FOO"); // returns undefined
      */
     validateColor(...args) {
