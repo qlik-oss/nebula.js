@@ -1,6 +1,6 @@
 import React from 'react';
 import * as RowColumn from '../../ListBoxRowColumn';
-import * as deriveOptions from '../derive-options';
+import * as getFrequencyAllowed from '../frequency-allowed';
 import * as deriveRenderOptions from '../derive-render-options';
 import * as styledComponents from '../styled-components';
 
@@ -19,14 +19,14 @@ describe('grid-list-components', () => {
   let confirm;
   let cancel;
   let response;
-  let deriveOptionsMock;
+  let getFrequencyAllowedMock;
   let RowColumnMock;
   let deriveRenderOptionsMock;
   let styledComponentsMock;
   let onItemsRendered;
 
   beforeAll(() => {
-    deriveOptionsMock = jest.spyOn(deriveOptions, 'getFrequencyAllowed');
+    getFrequencyAllowedMock = jest.spyOn(getFrequencyAllowed, 'default');
     RowColumnMock = jest.spyOn(RowColumn, 'default');
     deriveRenderOptionsMock = jest.spyOn(deriveRenderOptions, 'default');
     styledComponentsMock = jest.spyOn(styledComponents, 'default');
@@ -39,7 +39,7 @@ describe('grid-list-components', () => {
   });
 
   beforeEach(() => {
-    deriveOptionsMock.mockReturnValue(true);
+    getFrequencyAllowedMock.mockReturnValue(true);
     RowColumnMock.mockReturnValue(<div />);
     deriveRenderOptionsMock.mockReturnValue('renderOptions');
 
