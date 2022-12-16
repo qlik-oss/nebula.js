@@ -113,8 +113,8 @@ jobs:
       - run:
           name: Test rendering
           command: |
-            yarn run test:rendering
             npx playwright install
+            yarn run test:rendering
       - store_test_results:
           path: ./test/rendering/reports/xml/report.xml
       - store_artifacts:
