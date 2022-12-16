@@ -112,7 +112,9 @@ jobs:
           path: coverage/junit
       - run:
           name: Test rendering
-          command: yarn run test:rendering
+          command: |
+            yarn run test:rendering
+            npx playwright install
       - store_test_results:
           path: ./test/rendering/reports/xml/report.xml
       - store_artifacts:
