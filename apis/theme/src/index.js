@@ -115,6 +115,23 @@ export default function theme() {
      * theme.validateColor("FOO"); // returns undefined
      */
     validateColor(...args) {
+      /* Added this to support the non-standard ARGB format from engine */
+      const colorString = args[0];
+      let matches;
+      /* eslint-disable no-cond-assign */
+      if (
+        typeof colorString === 'string' &&
+        (matches = /^ARGB\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(colorString))
+      ) {
+        // ARGB(255,255,255,255)
+        const a = parseInt(matches[1], 10) / 255;
+        const r = parseInt(matches[2], 10);
+        const g = parseInt(matches[3], 10);
+        const b = parseFloat(matches[4], 10);
+        return `rgba(${r},${g},${b},${a})`;
+      }
+      /* eslint-enable no-cond-assign */
+
       const c = d3color(...args);
       return c ? c.toString() : undefined;
     },
