@@ -73,8 +73,6 @@ export default function ListBox({
   width,
   listLayout = 'vertical',
   frequencyMode,
-  histogram = false,
-  checkboxes = false,
   update = undefined,
   fetchStart = undefined,
   postProcessPages = undefined,
@@ -90,6 +88,7 @@ export default function ListBox({
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const [pages, setPages] = useState(null);
   const [isLoadingData, setIsLoadingData] = useState(false);
+  const { checkboxes, histogram } = layout ?? {};
 
   const {
     instantPages = [],
