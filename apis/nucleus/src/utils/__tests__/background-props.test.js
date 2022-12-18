@@ -18,7 +18,7 @@ describe('Background property resolver', () => {
     bgCompLayout = {
       key: 'general',
       bgColor: {
-        useColorExpression: true,
+        useExpression: true,
         colorExpression: '#ff0000',
         color: { index: -1, color: 'aqua' },
       },
@@ -40,7 +40,7 @@ describe('Background property resolver', () => {
     expect(color).toBe('rgb(255, 0, 0)');
   });
   test('should resolve background color by picker', () => {
-    bgCompLayout.bgColor.useColorExpression = false;
+    bgCompLayout.bgColor.useExpression = false;
     const color = resolveBgColor(bgCompLayout, t);
     expect(color).toBe('aqua');
   });
