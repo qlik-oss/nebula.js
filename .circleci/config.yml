@@ -213,6 +213,8 @@ workflows:
               only:
                 - /v.*/
       - test-rendering:
+          requires:
+            - build
           filters:
             tags:
               only:
