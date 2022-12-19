@@ -43,6 +43,10 @@
     "value": "Search Results Filter",
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field"
   },
+  "Listbox.NoMatchesForYourTerms": {
+    "value": "There are no matches for your search.",
+    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
+  },
   "Menu.More": {
     "value": "More",
     "comment": "Menu option to display list of additional actions to choose from (ffd 20200520)"

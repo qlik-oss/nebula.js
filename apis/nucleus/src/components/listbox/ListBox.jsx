@@ -12,6 +12,7 @@ import useLayout from '../../hooks/useLayout';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 
 import RowColumn from './components/ListBoxRowColumn';
+import ListBoxDisclaimer from './components/ListBoxDisclaimer';
 
 const PREFIX = 'ListBox';
 const scrollBarThumb = '#BBB';
@@ -258,7 +259,9 @@ export default function ListBox({
   const { frequencyMax } = layout;
   const freqIsAllowed = getFrequencyAllowed();
 
-  return (
+  return !listCount ? (
+    <ListBoxDisclaimer width={width} />
+  ) : (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}
       itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
