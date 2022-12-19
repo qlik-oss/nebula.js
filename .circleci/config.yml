@@ -110,12 +110,6 @@ jobs:
             fi
       - store_test_results:
           path: coverage/junit
-      - run:
-          name: Test rendering
-          command: |
-            npx playwright install
-            sudo npx playwright install-deps
-            yarn run test:rendering
       - store_test_results:
           path: ./test/rendering/reports/xml/report.xml
       - store_artifacts:
@@ -152,6 +146,12 @@ jobs:
           path: generated/barchart/screenshots
       - store_artifacts:
           path: test/mashup/__artifacts__
+      - run:
+          name: Test rendering
+          command: |
+            npx playwright install
+            sudo npx playwright install-deps
+            yarn run test:rendering
 
   api-governance:
     machine:
