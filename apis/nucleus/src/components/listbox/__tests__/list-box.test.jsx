@@ -7,6 +7,7 @@ import * as useTextWidth from '../hooks/useTextWidth';
 import * as getListSizes from '../assets/get-list-sizes';
 import * as getListBoxComponents from '../components/grid-list-components/grid-list-components';
 import ListBox from '../ListBox';
+import ListBoxDisclaimer from '../components/ListBoxDisclaimer';
 import InstanceContext from '../../../contexts/InstanceContext';
 
 jest.mock('react-window-infinite-loader', () => ({
@@ -39,7 +40,6 @@ describe('<Listbox />', () => {
   let useCallbackMock;
   let setTimeoutStub;
   let useSelectionsInteractions;
-  let infiniteProps;
 
   beforeEach(() => {
     jest.useFakeTimers();
@@ -98,7 +98,6 @@ describe('<Listbox />', () => {
 
     jest.spyOn(reactWindowInfiniteLoaderModule, 'default').mockImplementation((props) => {
       const Component = props.children;
-      infiniteProps = props;
       // eslint-disable-next-line react/jsx-props-no-spreading
       return Component({ ...props, onItemsRendered: jest.fn() });
     });
@@ -251,11 +250,22 @@ describe('<Listbox />', () => {
       expect(FixedSizeGrid.mock.calls).toHaveLength(0);
     });
 
-    // Skip for now: InfiniteLoader won't render when !listCount (ListBoxDisclaimer renders instead) - update the test later
-    test.skip('should prevent InfiniteLoader to get itemCount == 0', async () => {
+    test('should render a listbox when list count is >0', async () => {
+      layout.qListObject.qSize.qcy = 1;
+      await render();
+      const disclaimers = renderer.root.findAllByType(ListBoxDisclaimer);
+      expect(disclaimers).toHaveLength(0);
+      const listRows = renderer.root.findAllByProps({ className: 'a-value-row' });
+      expect(listRows).toHaveLength(1);
+    });
+
+    test('should render a disclaimer when list count is 0', async () => {
       layout.qListObject.qSize.qcy = 0;
       await render();
-      expect(infiniteProps.itemCount).toBe(1);
+      const disclaimers = renderer.root.findAllByType(ListBoxDisclaimer);
+      expect(disclaimers).toHaveLength(1);
+      const listRows = renderer.root.findAllByProps({ className: 'a-value-row' });
+      expect(listRows).toHaveLength(0);
     });
   });
 });
