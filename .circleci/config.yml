@@ -119,7 +119,6 @@ jobs:
       - run:
           name: Test integration
           command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-
       - nebula_create:
           project_name: 'generated/hello'
           picasso_template: 'none'
@@ -140,6 +139,7 @@ jobs:
           path: generated/barchart/screenshots
       - store_artifacts:
           path: test/mashup/__artifacts__
+
       - run:
           name: Test rendering
           command: |
