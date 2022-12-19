@@ -177,18 +177,19 @@ export default function ListBox({
     minimumBatchSize = getHorizontalMinBatchSize({ width, columnWidth, listHeight, itemSize });
   }
 
-  return !listCount ? (
-    <ListBoxDisclaimer width={width} />
-  ) : (
-    <InfiniteLoader
-      isItemLoaded={isItemLoaded}
-      itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
-      loadMoreItems={loadMoreItems.with({ minimumBatchSize })}
-      threshold={0}
-      minimumBatchSize={minimumBatchSize}
-      ref={loaderRef}
-    >
-      {isVertical ? List : Grid}
-    </InfiniteLoader>
+  return (
+    <>
+      {!listCount && <ListBoxDisclaimer width={width} />}
+      <InfiniteLoader
+        isItemLoaded={isItemLoaded}
+        itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
+        loadMoreItems={loadMoreItems.with({ minimumBatchSize })}
+        threshold={0}
+        minimumBatchSize={minimumBatchSize}
+        ref={loaderRef}
+      >
+        {isVertical ? List : Grid}
+      </InfiniteLoader>
+    </>
   );
 }
