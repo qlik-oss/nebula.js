@@ -212,6 +212,11 @@ workflows:
             tags:
               only:
                 - /v.*/
+      - test-rendering:
+          filters:
+            tags:
+              only:
+                - /v.*/
       - api-governance:
           context: api-compliance
           filters:
