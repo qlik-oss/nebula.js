@@ -24,6 +24,10 @@
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
   },
+  "Listbox.NoMatchesForYourTerms": {
+    "value": "검색에 대해 일치하는 항목이 없습니다.",
+    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
+  },
   "Listbox.ScreenReaderInstructions": {
     "value": "아래 요소를 활성화하면 페이지의 콘텐츠가 업데이트됩니다.",
     "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content",

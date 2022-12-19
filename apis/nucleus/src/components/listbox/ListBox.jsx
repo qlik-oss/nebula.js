@@ -11,6 +11,7 @@ import getHorizontalMinBatchSize from './assets/horizontal-minimum-batch-size';
 import useItemsLoader from './hooks/useItemsLoader';
 import getListCount from './components/list-count';
 import useDataStore from './hooks/useDataStore';
+import ListBoxDisclaimer from './components/ListBoxDisclaimer';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -176,7 +177,9 @@ export default function ListBox({
     minimumBatchSize = getHorizontalMinBatchSize({ width, columnWidth, listHeight, itemSize });
   }
 
-  return (
+  return !listCount ? (
+    <ListBoxDisclaimer width={width} />
+  ) : (
     <InfiniteLoader
       isItemLoaded={isItemLoaded}
       itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
