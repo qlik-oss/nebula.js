@@ -71,7 +71,6 @@ commands:
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
             npx playwright install
-            npx playwright install-deps
             npx playwright install chrome
             <<# parameters.build >> yarn run build <</ parameters.build >>
             <<# parameters.test >>  yarn run test:e2e <</ parameters.test >>
@@ -111,12 +110,6 @@ jobs:
             fi
       - store_test_results:
           path: coverage/junit
-      - store_test_results:
-          path: ./test/rendering/reports/xml/report.xml
-      - store_artifacts:
-          path: ./test/rendering
-      - store_artifacts:
-          path: ./test/rendering/reports/html
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
@@ -126,7 +119,6 @@ jobs:
       - run:
           name: Test integration
           command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-
       - nebula_create:
           project_name: 'generated/hello'
           picasso_template: 'none'
@@ -151,8 +143,14 @@ jobs:
           name: Test rendering
           command: |
             npx playwright install
-            npx playwright install-deps
+            sudo npx playwright install-deps
             yarn run test:rendering
+      - store_test_results:
+          path: ./test/rendering/reports/xml/report.xml
+      - store_artifacts:
+          path: ./test/rendering
+      - store_artifacts:
+          path: ./test/rendering/reports/html
 
   api-governance:
     machine:
