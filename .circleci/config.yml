@@ -139,15 +139,6 @@ jobs:
           path: generated/barchart/screenshots
       - store_artifacts:
           path: test/mashup/__artifacts__
-
-  test-rendering:
-    working_directory: ~/project
-    docker:
-      - image: cimg/node:18.12.1
-      - image: mcr.microsoft.com/playwright:focal
-    steps:
-      - attach_workspace:
-          at: ~/project
       - run:
           name: Test rendering
           command: |
@@ -208,13 +199,6 @@ workflows:
   build-deploy:
     jobs:
       - build:
-          filters:
-            tags:
-              only:
-                - /v.*/
-      - test-rendering:
-          requires:
-            - build
           filters:
             tags:
               only:
