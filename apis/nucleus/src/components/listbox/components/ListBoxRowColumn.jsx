@@ -307,6 +307,10 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     setClassArr(clazzArr);
   }, [cell && cell.qState]);
 
+  if (!cell) {
+    return null; // prevent rendering empty rows
+  }
+
   const joinClassNames = (namesArray) =>
     namesArray
       .filter((c) => !!c)
