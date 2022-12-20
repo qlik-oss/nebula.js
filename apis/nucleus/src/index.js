@@ -11,7 +11,8 @@ import ListBoxPopoverWrapper, {
   getOptions as getListboxPopoverOptions,
 } from './components/listbox/ListBoxPopoverWrapper';
 
-import create from './object/create-session-object';
+import createSessionObject from './object/create-session-object';
+import createObject from './object/create-object';
 import get from './object/get-generic-object';
 import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
@@ -251,8 +252,9 @@ function nuked(configuration = {}) {
     const api = /** @lends Embed# */ {
       /**
        * Renders a visualization or sheet into an HTMLElement.
+       * Visualizations can either be existing objects or created on the fly.
        * Support for sense sheets is experimental.
-       * @param {CreateConfig | GetConfig} cfg - The render configuration.
+       * @param {RenderConfig} cfg The render configuration.
        * @returns {Promise<Viz|Sheet>} A controller to the rendered visualization or sheet.
        * @example
        * // render from existing object
@@ -273,8 +275,25 @@ function nuked(configuration = {}) {
         if (cfg.id) {
           return get(cfg, halo);
         }
-        return create(cfg, halo);
+        return createSessionObject(cfg, halo);
       },
+      /**
+       * Creates a visualization object
+       * @param {CreateConfig} cfg The create configuration.
+       * @experimental
+       * @param {boolean=} [generateOnly=false] Whether to create an object in the current app or simply return the generated properties
+       * @returns {Promise<EngineAPI.IGenericObject|object>} An engima model OR the objects properties if cfg.dry was passed
+       * @example
+       * // generate properties for a barchart
+       * const properties = await n.create({
+       *     type: 'barchart',
+       *     fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }],
+       *     properties: { showTitle: true }
+       *   },
+       *   true
+       * );
+       */
+      create: async (cfg, generateOnly = false) => createObject(cfg, halo, generateOnly),
       /**
        * Updates the current context of this embed instance.
        * Use this when you want to change some part of the current context, like theme.

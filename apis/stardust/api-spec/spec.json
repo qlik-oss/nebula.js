@@ -692,21 +692,13 @@
       },
       "entries": {
         "render": {
-          "description": "Renders a visualization or sheet into an HTMLElement.\nSupport for sense sheets is experimental.",
+          "description": "Renders a visualization or sheet into an HTMLElement.\nVisualizations can either be existing objects or created on the fly.\nSupport for sense sheets is experimental.",
           "kind": "function",
           "params": [
             {
               "name": "cfg",
               "description": "The render configuration.",
-              "kind": "union",
-              "items": [
-                {
-                  "type": "#/definitions/CreateConfig"
-                },
-                {
-                  "type": "#/definitions/GetConfig"
-                }
-              ]
+              "type": "#/definitions/RenderConfig"
             }
           ],
           "returns": {
@@ -729,6 +721,45 @@
           "examples": [
             "// render from existing object\nn.render({\n  element: el,\n  id: 'abcdef'\n});",
             "// render on the fly\nn.render({\n  element: el,\n  type: 'barchart',\n  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\n});"
+          ]
+        },
+        "create": {
+          "description": "Creates a visualization object",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [
+            {
+              "name": "cfg",
+              "description": "The create configuration.",
+              "type": "#/definitions/CreateConfig"
+            },
+            {
+              "name": "generateOnly",
+              "description": "Whether to create an object in the current app or simply return the generated properties",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "description": "An engima model OR the objects properties if cfg.dry was passed",
+            "type": "Promise",
+            "generics": [
+              {
+                "kind": "union",
+                "items": [
+                  {
+                    "type": "EngineAPI.IGenericObject"
+                  },
+                  {
+                    "type": "object"
+                  }
+                ]
+              }
+            ]
+          },
+          "examples": [
+            "// generate properties for a barchart\nconst properties = await n.create({\n    type: 'barchart',\n    fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }],\n    properties: { showTitle: true }\n  },\n  true\n);"
           ]
         },
         "context": {
@@ -1152,7 +1183,7 @@
         },
         "model": {
           "description": "This visualizations Enigma model, a representation of the generic object.",
-          "type": "string"
+          "type": "EngineAPI.IGenericObject"
         },
         "destroy": {
           "description": "Destroys the visualization and removes it from the the DOM.",
@@ -1474,11 +1505,6 @@
     },
     "CreateConfig": {
       "description": "Rendering configuration for creating and rendering a new object",
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
       "kind": "interface",
       "entries": {
         "type": {
@@ -1500,54 +1526,76 @@
             }
           ]
         },
-        "extendProperties": {
-          "description": "Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
-          "optional": true,
-          "defaultValue": false,
-          "type": "boolean"
-        },
         "properties": {
           "optional": true,
           "type": "EngineAPI.IGenericObjectProperties"
         }
-      },
-      "examples": [
-        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);"
-      ]
+      }
     },
-    "BaseConfig": {
-      "description": "Basic rendering configuration for rendering an object",
+    "RenderConfig": {
+      "description": "Configuration for rendering a visualisation, either creating or fetching an existing object.",
       "kind": "interface",
       "entries": {
         "element": {
+          "description": "Target html element to render in to",
           "type": "HTMLElement"
         },
         "options": {
+          "description": "Options passed into the visualisation",
           "optional": true,
           "type": "object"
         },
         "plugins": {
+          "description": "plugins passed into the visualisation",
           "optional": true,
           "kind": "array",
           "items": {
             "type": "#/definitions/Plugin"
           }
-        }
-      }
-    },
-    "GetConfig": {
-      "description": "Rendering configuration for rendering an existing object",
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
+        },
         "id": {
+          "description": "For existing objects: Engine identifier of object to render",
+          "optional": true,
           "type": "string"
+        },
+        "type": {
+          "description": "For creating objects: Type of visualisation to render",
+          "optional": true,
+          "type": "string"
+        },
+        "version": {
+          "description": "For creating objects: Version of visualization to render",
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "description": "For creating objects: Data fields to use",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "extendProperties": {
+          "description": "For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "properties": {
+          "description": "For creating objects: Explicit properties to set",
+          "optional": true,
+          "type": "EngineAPI.IGenericObjectProperties"
         }
-      }
+      },
+      "examples": [
+        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst createConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(createConfig);"
+      ]
     },
     "LibraryField": {
       "kind": "interface",

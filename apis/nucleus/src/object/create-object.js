@@ -1,0 +1,58 @@
+import populateData from './populator';
+import { modelStore } from '../stores/model-store';
+
+/**
+ * @typedef {string | EngineAPI.INxDimension | EngineAPI.INxMeasure | LibraryField} Field
+ */
+
+/**
+ * @interface CreateConfig
+ * @description Rendering configuration for creating and rendering a new object
+ * @property {string} type
+ * @property {string=} version
+ * @property {(Field[])=} fields
+ * @property {EngineAPI.IGenericObjectProperties=} properties
+ */
+export default async function createObject(
+  { type, version, fields, properties, extendProperties /* , options, plugins, element */ },
+  halo,
+  generateOnly
+) {
+  let mergedProps = {};
+  // let error;
+  try {
+    const t = halo.types.get({ name: type, version });
+    mergedProps = await t.initialProperties(properties, extendProperties);
+    const sn = await t.supernova();
+    if (fields) {
+      populateData(
+        {
+          sn,
+          properties: mergedProps,
+          fields,
+        },
+        halo
+      );
+    }
+    if (properties && sn && sn.qae.properties.onChange) {
+      sn.qae.properties.onChange.call({}, mergedProps);
+    }
+  } catch (e) {
+    // error = e;
+    // minimal dummy object properties to allow it to be created
+    // and rendered with the error
+    mergedProps = {
+      qInfo: {
+        qType: type,
+      },
+      visualization: type,
+    };
+    // console.error(e); // eslint-disable-line
+  }
+  if (!generateOnly) {
+    const model = await halo.app.createObject(mergedProps);
+    modelStore.set(model.id, model);
+    return model;
+  }
+  return mergedProps;
+}
