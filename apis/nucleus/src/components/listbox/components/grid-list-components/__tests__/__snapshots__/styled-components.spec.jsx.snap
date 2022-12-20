@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`styled-components StyledFixedSizeGrid should return a renderable base component for Grid 1`] = `
+{
+  "children": <div>
+    An item
+  </div>,
+  "columnWidth": 50,
+  "direction": "ltr",
+  "height": 100,
+  "itemData": undefined,
+  "itemSize": 1,
+  "rowHeight": 10,
+  "useIsScrolling": false,
+  "width": 150,
+}
+`;
+
+exports[`styled-components StyledFixedSizeGrid should return a renderable base component for Grid 2`] = `
+{
+  "css-qk0o61": "&.ListBox-styledScrollbars{scrollbar-color:#BBB #f1f1f1;&::-webkit-scrollbar{width:10px;height:10px;}&::-webkit-scrollbar-track{background-color:#f1f1f1;}&::-webkit-scrollbar-thumb{background-color:#BBB;border-radius:1rem;}&::-webkit-scrollbar-thumb:hover{background-color:#555;}}&::-webkit-scrollbar{width:10px;height:10px;}&::-webkit-scrollbar-track{background-color:#f1f1f1;}&::-webkit-scrollbar-thumb{background-color:#BBB;border-radius:1rem;}&::-webkit-scrollbar-thumb:hover{background-color:#555;}",
+}
+`;
+
+exports[`styled-components StyledFixedSizeList should return a renderable base component for List 1`] = `
+{
+  "children": <div>
+    An item
+  </div>,
+  "direction": "ltr",
+  "height": 100,
+  "itemData": undefined,
+  "itemSize": 1,
+  "layout": "vertical",
+  "overscanCount": 2,
+  "useIsScrolling": false,
+}
+`;
+
+exports[`styled-components StyledFixedSizeList should return a renderable base component for List 2`] = `
+{
+  "css-qk0o61": "&.ListBox-styledScrollbars{scrollbar-color:#BBB #f1f1f1;&::-webkit-scrollbar{width:10px;height:10px;}&::-webkit-scrollbar-track{background-color:#f1f1f1;}&::-webkit-scrollbar-thumb{background-color:#BBB;border-radius:1rem;}&::-webkit-scrollbar-thumb:hover{background-color:#555;}}&::-webkit-scrollbar{width:10px;height:10px;}&::-webkit-scrollbar-track{background-color:#f1f1f1;}&::-webkit-scrollbar-thumb{background-color:#BBB;border-radius:1rem;}&::-webkit-scrollbar-thumb:hover{background-color:#555;}",
+}
+`;

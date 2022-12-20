@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`grid-list-components should create a Grid component 1`] = `
+<Styled(Grid)
+  className="ListBox-styledScrollbars"
+  columnCount={2}
+  columnWidth={50}
+  dataTestid="fixed-size-grid"
+  direction="ltr"
+  height={300}
+  itemData={
+    {
+      "actions": {
+        "cancel": [Function],
+        "confirm": [Function],
+        "select": [MockFunction],
+      },
+      "checkboxes": false,
+      "column": undefined,
+      "columnCount": 2,
+      "dense": false,
+      "freqIsAllowed": true,
+      "frequencyMax": undefined,
+      "frequencyMode": "N",
+      "heyHey": "hey hey",
+      "histogram": false,
+      "isLocked": false,
+      "isSingleSelect": false,
+      "keyboard": "keyboard",
+      "layoutOrder": "column",
+      "pages": "pages",
+      "rowCount": 200,
+      "showGray": true,
+      "textAlign": "right",
+    }
+  }
+  onItemsRendered={[Function]}
+  rowCount={200}
+  rowHeight={100}
+  style={
+    {
+      "overflowX": "hidden",
+    }
+  }
+  useIsScrolling={true}
+  width={100}
+>
+  [MockFunction]
+</Styled(Grid)>
+`;
+
+exports[`grid-list-components should create a List component 1`] = `
+<Styled(List)
+  className="ListBox-styledScrollbars"
+  dataTestid="fixed-size-list"
+  direction="ltr"
+  height={300}
+  itemData={
+    {
+      "actions": {
+        "cancel": [Function],
+        "confirm": [Function],
+        "select": [MockFunction],
+      },
+      "checkboxes": false,
+      "column": false,
+      "dense": false,
+      "freqIsAllowed": true,
+      "frequencyMax": undefined,
+      "frequencyMode": "N",
+      "heyHey": "hey hey",
+      "histogram": false,
+      "isLocked": false,
+      "isSingleSelect": false,
+      "keyboard": "keyboard",
+      "pages": "pages",
+      "showGray": true,
+      "textAlign": "right",
+    }
+  }
+  itemSize={100}
+  layout="listLayout"
+  onItemsRendered={[Function]}
+  overscanCount={2}
+  useIsScrolling={true}
+  width={100}
+>
+  [MockFunction]
+</Styled(List)>
+`;
