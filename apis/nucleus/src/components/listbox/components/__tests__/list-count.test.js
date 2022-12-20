@@ -35,6 +35,12 @@ describe('list-count', () => {
     expect(listCount).toEqual(200);
   });
 
+  it('when result is undefined the output should always fall back to 0', () => {
+    args.count = undefined;
+    const listCount = getListCount(args);
+    expect(listCount).toEqual(0);
+  });
+
   it('should fall back to count also when sending in pages', () => {
     args.pages = mockPages;
     const listCount = getListCount(args);
