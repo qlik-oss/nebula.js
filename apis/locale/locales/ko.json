@@ -19,14 +19,15 @@
     "comment": "Action text to lock selections in a listbox",
     "version": "05jY0MA0azu2f6LgrBSpYg=="
   },
+  "Listbox.NoMatchesForYourTerms": {
+    "value": "검색에 대해 일치하는 항목이 없습니다.",
+    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)",
+    "version": "0xs0djD9amx8gzW4Ph0l8Q=="
+  },
   "Listbox.ResultFilterLabel": {
     "value": "검색 결과 필터",
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
-  },
-  "Listbox.NoMatchesForYourTerms": {
-    "value": "검색에 대해 일치하는 항목이 없습니다.",
-    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
   },
   "Listbox.ScreenReaderInstructions": {
     "value": "아래 요소를 활성화하면 페이지의 콘텐츠가 업데이트됩니다.",

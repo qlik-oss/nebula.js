@@ -19,14 +19,15 @@
     "comment": "Action text to lock selections in a listbox",
     "version": "05jY0MA0azu2f6LgrBSpYg=="
   },
+  "Listbox.NoMatchesForYourTerms": {
+    "value": "沒有與您搜尋相符的項目。",
+    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)",
+    "version": "0xs0djD9amx8gzW4Ph0l8Q=="
+  },
   "Listbox.ResultFilterLabel": {
     "value": "搜尋結果篩選",
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
-  },
-  "Listbox.NoMatchesForYourTerms": {
-    "value": "沒有與您搜尋相符的項目。",
-    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
   },
   "Listbox.ScreenReaderInstructions": {
     "value": "啟用以下元素將會造成更新頁面上的內容",
