@@ -8,7 +8,7 @@ import AppSelectionsPortal from './components/selections/AppSelections';
 import ListBoxPortal from './components/listbox/ListBoxPortal';
 
 import create from './object/create-session-object';
-import get from './object/get-object';
+import get from './object/get-generic-object';
 import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
 
@@ -201,6 +201,7 @@ function nuked(configuration = {}) {
       themes: configuration.themes,
       root,
     });
+    currentContext.themeApi = appTheme.externalAPI;
 
     const publicAPIs = {
       galaxy: /** @lends Galaxy */ {
@@ -254,9 +255,10 @@ function nuked(configuration = {}) {
      */
     const api = /** @lends Embed# */ {
       /**
-       * Renders a visualization into an HTMLElement.
+       * Renders a visualization or sheet into an HTMLElement.
+       * Support for sense sheets is experimental.
        * @param {CreateConfig | GetConfig} cfg - The render configuration.
-       * @returns {Promise<Viz>} A controller to the rendered visualization.
+       * @returns {Promise<Viz|Sheet>} A controller to the rendered visualization or sheet.
        * @example
        * // render from existing object
        * n.render({
@@ -413,16 +415,16 @@ function nuked(configuration = {}) {
            * Mounts the field as a listbox into the provided HTMLElement.
            * @param {HTMLElement} element
            * @param {object=} options Settings for the embedded listbox
-           * @param {string=} options.title Custom title, defaults to fieldname
+           * @param {string=} options.title Custom title, defaults to fieldname (not applicable for existing objects)
            * @param {Direction=} [options.direction=ltr] Direction setting ltr|rtl.
-           * @param {ListLayout=} [options.listLayout=vertical] Layout direction vertical|horizontal
+           * @param {ListLayout=} [options.listLayout=vertical] Layout direction vertical|horizontal (not applicable for existing objects)
            * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
-           * @param {boolean=} [options.histogram=false] Show histogram bar
+           * @param {boolean=} [options.histogram=false] Show histogram bar (not applicable for existing objects)
            * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow
            * @param {boolean=} [options.toolbar=true] Show the toolbar
-           * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields
-           * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects).
-           * @param {string=} [options.stateName="$"] Sets the state to make selections in
+           * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields (not applicable for existing objects)
+           * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects)
+           * @param {string=} [options.stateName="$"] Sets the state to make selections in (not applicable for existing objects)
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            *
            * @since 1.1.0

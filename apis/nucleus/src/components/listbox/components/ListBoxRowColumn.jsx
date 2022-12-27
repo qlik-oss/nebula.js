@@ -46,7 +46,7 @@ const ellipsis = {
 const barPadPx = 4;
 const barBorderWidthPx = 1;
 const barWithCheckboxLeftPadPx = 29;
-const frequencyTextNone = '0';
+const frequencyTextNone = '-';
 
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
@@ -60,10 +60,12 @@ const getSelectedStyle = ({ theme }) => ({
   },
 });
 
-const Root = styled('div')(({ theme }) => ({
+const Root = styled('div', {
+  shouldForwardProp: (props) => props !== 'flexBasisProp',
+})(({ theme, flexBasisProp }) => ({
   [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
-    color: theme.palette.text.primary,
+    color: theme.listBox?.content?.color ?? theme.palette.text.primary,
   },
 
   [`& .${classes.rowBorderBottom}`]: {
@@ -73,7 +75,7 @@ const Root = styled('div')(({ theme }) => ({
   [`& .${classes.column}`]: {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
-    color: theme.palette.text.primary,
+    color: theme.listBox?.content?.color ?? theme.palette.text.primary,
   },
 
   [`& .${classes.fieldRoot}`]: {
@@ -98,11 +100,14 @@ const Root = styled('div')(({ theme }) => ({
 
   // The leaf node, containing the label text.
   [`& .${classes.labelText}`]: {
-    flexBasis: 'max-content',
+    flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
     whiteSpace: 'pre', // to keep white-space on highlight
+    paddingRight: '9px',
     ...ellipsis,
+    fontSize: theme.listBox?.content?.fontSize,
+    fontFamily: theme.listBox?.content?.fontFamily,
   },
 
   [`& .${classes.labelDense}`]: {
@@ -167,8 +172,8 @@ const Root = styled('div')(({ theme }) => ({
   },
 
   [`& .${classes.frequencyCount}`]: {
-    paddingLeft: '8px',
-    paddingRight: '8px',
+    width: '66px',
+    justifyContent: 'flex-end',
   },
 
   [`&.${classes.barContainer}`]: {
@@ -209,7 +214,7 @@ const Root = styled('div')(({ theme }) => ({
   },
 }));
 
-function RowColumn({ index, style, data }) {
+function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
     onClick,
     onMouseDown,
@@ -219,15 +224,40 @@ function RowColumn({ index, style, data }) {
     isLocked,
     column = false,
     checkboxes = false,
+    textAlign,
+    direction,
     dense = false,
-    frequencyMode = 'N',
+    freqIsAllowed,
     isSingleSelect,
     actions,
     frequencyMax = '',
     histogram = false,
     keyboard,
     showGray = true,
+    columnCount = 1,
+    rowCount = 1,
+    layoutOrder,
   } = data;
+
+  let cellIndex;
+  let styles;
+  if (typeof rowIndex === 'number' && typeof columnIndex === 'number') {
+    if (layoutOrder === 'row') {
+      cellIndex = rowIndex * columnCount + columnIndex;
+    } else {
+      cellIndex = columnIndex * rowCount + rowIndex;
+    }
+    const padding = 0;
+    styles = {
+      ...style,
+      left: padding + (columnIndex === 0 ? style.left : Number(style.left) + columnIndex * padding),
+      // right: columnIndex === columnCount ? style.right : Number(style.right) + columnIndex * padding,
+      top: rowIndex === 0 ? style.top : Number(style.top) + rowIndex * padding,
+    };
+  } else {
+    cellIndex = index;
+    styles = { ...style };
+  }
 
   const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation(actions), [actions]);
 
@@ -241,11 +271,11 @@ function RowColumn({ index, style, data }) {
       return;
     }
     let c;
-    const page = pages.filter((p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight)[0];
+    const page = pages.filter((p) => p.qArea.qTop <= cellIndex && cellIndex < p.qArea.qTop + p.qArea.qHeight)[0];
     if (page) {
       const area = page.qArea;
-      if (index >= area.qTop && index < area.qTop + area.qHeight) {
-        [c] = page.qMatrix[index - area.qTop];
+      if (cellIndex >= area.qTop && cellIndex < area.qTop + area.qHeight) {
+        [c] = page.qMatrix[cellIndex - area.qTop];
       }
     }
     setCell(c);
@@ -277,6 +307,10 @@ function RowColumn({ index, style, data }) {
     setClassArr(clazzArr);
   }, [cell && cell.qState]);
 
+  if (!cell) {
+    return null; // prevent rendering empty rows
+  }
+
   const joinClassNames = (namesArray) =>
     namesArray
       .filter((c) => !!c)
@@ -284,6 +318,20 @@ function RowColumn({ index, style, data }) {
       .trim();
 
   const excludedOrAlternative = () => (isAlternative(cell) || isExcluded(cell)) && checkboxes;
+
+  const isNumeric = !['NaN', undefined].includes(cell?.qNum);
+  let valueTextAlign;
+  const isAutoTextAlign = !textAlign || textAlign.auto;
+  const dirToTextAlignMap = {
+    rtl: 'right',
+    ltr: 'left',
+  };
+
+  if (isAutoTextAlign) {
+    valueTextAlign = isNumeric ? 'right' : dirToTextAlignMap[direction];
+  } else {
+    valueTextAlign = textAlign?.align || 'left';
+  }
 
   const getValueField = ({ lbl, ix, color, highlighted = false }) => (
     <Typography
@@ -297,6 +345,7 @@ function RowColumn({ index, style, data }) {
         showGray && excludedOrAlternative() && classes.excludedTextWithCheckbox,
       ])}
       color={color}
+      justifyContent={valueTextAlign}
     >
       <span style={{ whiteSpace: 'pre' }}>{lbl}</span>
     </Typography>
@@ -327,6 +376,7 @@ function RowColumn({ index, style, data }) {
   };
 
   const label = cell ? cell.qText : '';
+
   const getFrequencyText = () => {
     if (cell) {
       return cell.qFrequency ? cell.qFrequency : frequencyTextNone;
@@ -360,6 +410,7 @@ function RowColumn({ index, style, data }) {
     minWidth: 0,
     flexGrow: 1,
     padding: checkboxes ? 0 : undefined,
+    justifyContent: valueTextAlign,
   };
 
   const hasHistogramBar = () => cell && histogram && getFrequencyText() !== frequencyTextNone;
@@ -375,9 +426,10 @@ function RowColumn({ index, style, data }) {
   };
 
   const isFirstElement = index === 0;
+  const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
   return (
-    <Root className={classes.barContainer}>
+    <Root className={classes.barContainer} flexBasisProp={flexBasisVal}>
       <Grid
         container
         gap={0}
@@ -385,7 +437,7 @@ function RowColumn({ index, style, data }) {
         classes={{
           root: classes.fieldRoot,
         }}
-        style={style}
+        style={styles}
         onClick={onClick}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
@@ -415,7 +467,7 @@ function RowColumn({ index, style, data }) {
           {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
         </Grid>
 
-        {frequencyMode !== 'N' && (
+        {freqIsAllowed && (
           <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>
             <Typography
               noWrap
@@ -432,8 +484,9 @@ function RowColumn({ index, style, data }) {
           </Grid>
         )}
 
-        {(showLock || showTick) && (
+        {!checkboxes && (
           <Grid item className={classes.icon}>
+            {!showLock && !showTick && <span style={{ minWidth: '12px' }} />}
             {showLock && <Lock style={iconStyles} size="small" />}
             {showTick && <Tick style={iconStyles} size="small" />}
           </Grid>

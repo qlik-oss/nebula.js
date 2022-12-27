@@ -1,67 +1,19 @@
 /* eslint no-underscore-dangle:0 */
-
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-
-import { styled } from '@mui/material/styles';
-
-import { FixedSizeList } from 'react-window';
 import InfiniteLoader from 'react-window-infinite-loader';
-
 import useLayout from '../../hooks/useLayout';
-
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
+import getListBoxComponents from './components/grid-list-components/grid-list-components';
+import getListSizes from './assets/get-list-sizes';
+import useTextWidth from './hooks/useTextWidth';
+import getMeasureText from './assets/measure-text';
+import getHorizontalMinBatchSize from './assets/horizontal-minimum-batch-size';
+import useItemsLoader from './hooks/useItemsLoader';
+import getListCount from './components/list-count';
+import useDataStore from './hooks/useDataStore';
+import ListBoxDisclaimer from './components/ListBoxDisclaimer';
 
-import RowColumn from './components/ListBoxRowColumn';
-
-const PREFIX = 'ListBox';
-const scrollBarThumb = '#BBB';
-const scrollBarThumbHover = '#555';
-const scrollBarBackground = '#f1f1f1';
-
-const MINIMUM_BATCH_SIZE = 100;
-
-const classes = {
-  styledScrollbars: `${PREFIX}-styledScrollbars`,
-};
-
-const StyledFixedSizeList = styled(FixedSizeList)(() => ({
-  [`&.${classes.styledScrollbars}`]: {
-    scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
-
-    '&::-webkit-scrollbar': {
-      width: 10,
-      height: 10,
-    },
-
-    '&::-webkit-scrollbar-track': {
-      backgroundColor: scrollBarBackground,
-    },
-
-    '&::-webkit-scrollbar-thumb': {
-      backgroundColor: scrollBarThumb,
-      borderRadius: '1rem',
-    },
-
-    '&::-webkit-scrollbar-thumb:hover': {
-      backgroundColor: scrollBarThumbHover,
-    },
-  },
-}));
-
-function getSizeInfo({ isVertical, checkboxes, dense, height }) {
-  const sizeHorizontal = 200;
-  let sizeVertical = checkboxes ? 40 : 33;
-  if (dense) {
-    sizeVertical = 20;
-  }
-  const itemSize = isVertical ? sizeVertical : sizeHorizontal;
-  const listHeight = height || 8 * itemSize;
-
-  return {
-    itemSize,
-    listHeight,
-  };
-}
+const DEFAULT_MIN_BATCH_SIZE = 100;
 
 export default function ListBox({
   model,
@@ -70,9 +22,7 @@ export default function ListBox({
   height,
   width,
   listLayout = 'vertical',
-  frequencyMode = 'N',
-  histogram = false,
-  checkboxes = false,
+  frequencyMode,
   update = undefined,
   fetchStart = undefined,
   postProcessPages = undefined,
@@ -81,13 +31,54 @@ export default function ListBox({
   showGray = true,
   scrollState,
   selectDisabled = () => false,
-  onSetListCount = () => {},
-  setCount,
 }) {
+  const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
-  const [pages, setPages] = useState(null);
-  const [isLoadingData, setIsLoadingData] = useState(false);
+  const { checkboxes, histogram } = layout ?? {};
+
+  const loaderRef = useRef(null);
+  const local = useRef({
+    queue: [],
+    validPages: false,
+  });
+
+  const listData = useRef({
+    pages: [],
+  });
+
+  // The time from scroll end until new data is being fetched, may be exposed in API later on.
+  const scrollTimeout = 0;
+
+  const { isLoadingData, ...itemsLoader } = useItemsLoader({
+    local,
+    loaderRef,
+    model,
+    fetchStart,
+    scrollTimeout,
+    postProcessPages,
+    listData,
+  });
+  const [pages, setPages] = useState([]);
+  const { setStoreValue } = useDataStore(model);
+  const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
+
+  useEffect(() => {
+    setPages(itemsLoader?.pages || []);
+  }, [itemsLoader?.pages]);
+
+  const isItemLoaded = useCallback(
+    (index) => {
+      if (!pages?.length || !local.current.validPages) {
+        return false;
+      }
+      local.current.checkIdx = index;
+      const isLoaded = (p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight;
+      const page = pages.filter((p) => isLoaded(p))[0];
+      return page && isLoaded(page);
+    },
+    [layout, pages]
+  );
 
   const {
     instantPages = [],
@@ -102,88 +93,6 @@ export default function ListBox({
     doc: document,
     isSingleSelect,
   });
-  const loaderRef = useRef(null);
-  const local = useRef({
-    queue: [],
-    validPages: false,
-  });
-
-  const listData = useRef({
-    pages: [],
-  });
-
-  const isItemLoaded = useCallback(
-    (index) => {
-      if (!pages || !local.current.validPages) {
-        return false;
-      }
-      local.current.checkIdx = index;
-      const isLoaded = (p) => p.qArea.qTop <= index && index < p.qArea.qTop + p.qArea.qHeight;
-      const page = pages.filter((p) => isLoaded(p))[0];
-      return page && isLoaded(page);
-    },
-    [layout, pages]
-  );
-
-  // The time from scroll end until new data is being fetched, may be exposed in API later on.
-  const scrollTimeout = 0;
-
-  const loadMoreItems = useCallback(
-    (startIndex, stopIndex) => {
-      local.current.queue.push({
-        start: startIndex,
-        stop: stopIndex,
-      });
-
-      const isScrolling = loaderRef.current ? loaderRef.current._listRef.state.isScrolling : false;
-
-      if (local.current.queue.length > 10) {
-        local.current.queue.shift();
-      }
-      clearTimeout(local.current.timeout);
-      setIsLoadingData(true);
-      return new Promise((resolve) => {
-        local.current.timeout = setTimeout(
-          () => {
-            const lastItemInQueue = local.current.queue.slice(-1)[0];
-            const reqPromise = model
-              .getListObjectData(
-                '/qListObjectDef',
-                // we need to ask for two payloads
-                // 2nd one is our starting index + MINIMUM_BATCH_SIZE items
-                // 1st one is 2nd ones starting index - MINIMUM_BATCH_SIZE items
-                // we do this because we don't want to miss any items between fast scrolls
-                [
-                  {
-                    qTop: lastItemInQueue.start > MINIMUM_BATCH_SIZE ? lastItemInQueue.start - MINIMUM_BATCH_SIZE : 0,
-                    qHeight: MINIMUM_BATCH_SIZE,
-                    qLeft: 0,
-                    qWidth: 1,
-                  },
-                  {
-                    qTop: lastItemInQueue.start,
-                    qHeight: MINIMUM_BATCH_SIZE,
-                    qLeft: 0,
-                    qWidth: 1,
-                  },
-                ]
-              )
-              .then((p) => {
-                const processedPages = postProcessPages ? postProcessPages(p) : p;
-                local.current.validPages = true;
-                listData.current.pages = processedPages;
-                setPages(processedPages);
-                setIsLoadingData(false);
-                resolve();
-              });
-            fetchStart && fetchStart(reqPromise);
-          },
-          isScrolling ? scrollTimeout : 0
-        );
-      });
-    },
-    [layout]
-  );
 
   const fetchData = () => {
     local.current.queue = [];
@@ -204,20 +113,12 @@ export default function ListBox({
   }
 
   useEffect(() => {
-    fetchData();
-    if (typeof setCount === 'function' && layout) {
-      setCount(layout.qListObject.qSize.qcy);
-    }
-  }, [layout, layout && layout.qListObject.qSize.qcy]);
-
-  useEffect(() => {
     if (!instantPages || isLoadingData) {
       return;
     }
     setPages(instantPages);
   }, [instantPages]);
 
-  const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   useEffect(() => {
     if (scrollState && !initScrollPosIsSet && loaderRef.current) {
       loaderRef.current._listRef.scrollToItem(scrollState.initScrollPos);
@@ -225,84 +126,70 @@ export default function ListBox({
     }
   }, [loaderRef.current]);
 
-  if (!layout) {
-    return null;
+  useEffect(() => {
+    fetchData();
+  }, [layout]);
+
+  const textWidth = useTextWidth({ text: getMeasureText(layout), font: '14px Source sans pro' });
+
+  const { layoutOptions = {} } = layout || {};
+
+  let minimumBatchSize = DEFAULT_MIN_BATCH_SIZE;
+
+  const isVertical = layoutOptions.dataLayout
+    ? layoutOptions.dataLayout === 'singleColumn'
+    : listLayout !== 'horizontal';
+
+  const count = layout?.qListObject.qSize?.qcy;
+  const listCount = getListCount({ pages, minimumBatchSize, count, calculatePagesHeight });
+  setStoreValue('listCount', listCount);
+
+  const sizes = getListSizes({ layout, width, height, checkboxes, listCount, count, textWidth });
+
+  const { textAlign } = layout?.qListObject.qDimensionInfo || {};
+
+  const { List, Grid } = getListBoxComponents({
+    direction,
+    layout,
+    height,
+    width,
+    checkboxes,
+    frequencyMode,
+    histogram,
+    keyboard,
+    showGray,
+    interactionEvents,
+    select,
+    textAlign,
+    isVertical,
+    pages,
+    selectDisabled,
+    isSingleSelect,
+    selections,
+    scrollState,
+    local,
+    sizes,
+    listCount,
+  });
+
+  const { columnWidth, listHeight, itemSize } = sizes || {};
+  if (!isVertical) {
+    minimumBatchSize = getHorizontalMinBatchSize({ width, columnWidth, listHeight, itemSize });
   }
 
-  const isVertical = listLayout !== 'horizontal';
-
-  const count = layout.qListObject.qSize.qcy;
-
-  const getCalculatedHeight = (ps) => {
-    // If values have been filtered in the currently loaded page, we want to
-    // prevent rendering empty rows by assigning the actual number of items to render
-    // since count (qcy) does not reflect this in DQ mode currently.
-    const hasFilteredValues = ps.some((page) => page.qArea.qHeight < MINIMUM_BATCH_SIZE);
-    const h = Math.max(...ps.map((page) => page.qArea.qTop + page.qArea.qHeight));
-    return hasFilteredValues ? h : count;
-  };
-
-  const listCount = pages && pages.length && calculatePagesHeight ? getCalculatedHeight(pages) : count;
-  onSetListCount?.(listCount);
-  const dense = layout.layoutOptions?.dense ?? false;
-  const { itemSize, listHeight } = getSizeInfo({ isVertical, checkboxes, dense, height });
-  const isLocked = layout && layout.qListObject.qDimensionInfo.qLocked;
-  const { frequencyMax } = layout;
-
   return (
-    <InfiniteLoader
-      isItemLoaded={isItemLoaded}
-      itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
-      loadMoreItems={loadMoreItems}
-      threshold={0}
-      minimumBatchSize={MINIMUM_BATCH_SIZE}
-      ref={loaderRef}
-    >
-      {({ onItemsRendered, ref }) => {
-        local.current.listRef = ref;
-        return (
-          <StyledFixedSizeList
-            // explicitly set this as it accepts horizontal as well, leading to confusion
-            direction={direction === 'rtl' ? 'rtl' : 'ltr'}
-            data-testid="fixed-size-list"
-            useIsScrolling
-            height={listHeight}
-            width={width}
-            itemCount={listCount}
-            layout={listLayout}
-            className={classes.styledScrollbars}
-            itemData={{
-              isLocked,
-              column: !isVertical,
-              pages,
-              ...(isLocked || selectDisabled() ? {} : interactionEvents),
-              checkboxes,
-              dense,
-              frequencyMode,
-              isSingleSelect,
-              actions: {
-                select,
-                confirm: () => selections && selections.confirm.call(selections),
-                cancel: () => selections && selections.cancel.call(selections),
-              },
-              frequencyMax,
-              histogram,
-              keyboard,
-              showGray,
-            }}
-            itemSize={itemSize}
-            onItemsRendered={(renderProps) => {
-              if (scrollState) {
-                scrollState.setScrollPos(renderProps.visibleStopIndex);
-              }
-              onItemsRendered({ ...renderProps });
-            }}
-            ref={ref}
-          >
-            {RowColumn}
-          </StyledFixedSizeList>
-        );
-      }}
-    </InfiniteLoader>
+    <>
+      {!listCount && <ListBoxDisclaimer width={width} />}
+      <InfiniteLoader
+        isItemLoaded={isItemLoaded}
+        itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
+        loadMoreItems={loadMoreItems.with({ minimumBatchSize })}
+        threshold={0}
+        minimumBatchSize={minimumBatchSize}
+        ref={loaderRef}
+      >
+        {isVertical ? List : Grid}
+      </InfiniteLoader>
+    </>
   );
 }

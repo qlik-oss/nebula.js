@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "3.1.0-alpha.1",
+    "version": "3.1.0-alpha.3",
     "license": "MIT",
     "stability": "stable"
   },
@@ -648,7 +648,7 @@
       },
       "entries": {
         "render": {
-          "description": "Renders a visualization into an HTMLElement.",
+          "description": "Renders a visualization or sheet into an HTMLElement.\nSupport for sense sheets is experimental.",
           "kind": "function",
           "params": [
             {
@@ -666,11 +666,19 @@
             }
           ],
           "returns": {
-            "description": "A controller to the rendered visualization.",
+            "description": "A controller to the rendered visualization or sheet.",
             "type": "Promise",
             "generics": [
               {
-                "type": "#/definitions/Viz"
+                "kind": "union",
+                "items": [
+                  {
+                    "type": "#/definitions/Viz"
+                  },
+                  {
+                    "type": "#/definitions/Sheet"
+                  }
+                ]
               }
             ]
           },
@@ -870,7 +878,7 @@
               "kind": "object",
               "entries": {
                 "title": {
-                  "description": "Custom title, defaults to fieldname",
+                  "description": "Custom title, defaults to fieldname (not applicable for existing objects)",
                   "optional": true,
                   "type": "string"
                 },
@@ -881,7 +889,7 @@
                   "type": "#/definitions/Direction"
                 },
                 "listLayout": {
-                  "description": "Layout direction vertical|horizontal",
+                  "description": "Layout direction vertical|horizontal (not applicable for existing objects)",
                   "optional": true,
                   "defaultValue": "vertical",
                   "type": "#/definitions/ListLayout"
@@ -893,7 +901,7 @@
                   "type": "#/definitions/FrequencyMode"
                 },
                 "histogram": {
-                  "description": "Show histogram bar",
+                  "description": "Show histogram bar (not applicable for existing objects)",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
@@ -911,19 +919,19 @@
                   "type": "boolean"
                 },
                 "checkboxes": {
-                  "description": "Show values as checkboxes instead of as fields",
+                  "description": "Show values as checkboxes instead of as fields (not applicable for existing objects)",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
                 },
                 "dense": {
-                  "description": "Reduces padding and text size (not applicable for existing objects).",
+                  "description": "Reduces padding and text size (not applicable for existing objects)",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
                 },
                 "stateName": {
-                  "description": "Sets the state to make selections in",
+                  "description": "Sets the state to make selections in (not applicable for existing objects)",
                   "optional": true,
                   "defaultValue": "\"$\"",
                   "type": "string"
@@ -991,6 +999,39 @@
         }
       }
     },
+    "Sheet": {
+      "description": "A controller to further modify a visualization after it has been rendered.",
+      "stability": "experimental",
+      "availability": {
+        "since": "3.1.0"
+      },
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {
+        "id": {
+          "description": "The id of this sheets's generic object.",
+          "type": "string"
+        },
+        "model": {
+          "description": "This sheets Enigma model, a representation of the generic object.",
+          "type": "string"
+        },
+        "destroy": {
+          "description": "Destroys the sheet and removes it from the the DOM.",
+          "kind": "function",
+          "params": [],
+          "examples": [
+            "const sheet = await embed(app).render({\n  element,\n  id: \"jD5Gd\"\n});\nsheet.destroy();"
+          ]
+        }
+      },
+      "examples": [
+        "const sheet = await embed(app).render({\n  element,\n  id: \"jD5Gd\"\n});\nsheet.destroy();"
+      ]
+    },
     "Viz": {
       "description": "A controller to further modify a visualization after it has been rendered.",
       "kind": "class",
@@ -1001,6 +1042,10 @@
       "entries": {
         "id": {
           "description": "The id of this visualization's generic object.",
+          "type": "string"
+        },
+        "model": {
+          "description": "This visualizations Enigma model, a representation of the generic object.",
           "type": "string"
         },
         "destroy": {
@@ -1541,6 +1586,24 @@
       "entries": {
         "className": {
           "value": "'njs-cell-sub-title'",
+          "kind": "literal"
+        }
+      }
+    },
+    "SheetElement": {
+      "stability": "experimental",
+      "availability": {
+        "since": "3.1.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-sheet'",
           "kind": "literal"
         }
       }
@@ -2117,6 +2180,12 @@
                   "type": "string"
                 }
               }
+            },
+            {
+              "name": "supportNone",
+              "description": "Shifts the palette index by one to account for the \"none\" color",
+              "optional": true,
+              "type": "boolean"
             }
           ],
           "returns": {
@@ -2124,7 +2193,7 @@
             "type": "string"
           },
           "examples": [
-            "theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ color: 'red' });"
+            "theme.getColorPickerColor({ index: 1 });\ntheme.getColorPickerColor({ index: 1 }, true);\ntheme.getColorPickerColor({ color: 'red' });"
           ]
         },
         "getContrastingColorTo": {

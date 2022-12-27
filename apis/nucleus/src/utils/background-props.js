@@ -62,7 +62,7 @@ export const resolveBgImage = (bgComp, app) => {
 
   if (bgImageDef) {
     let url = '';
-    if (bgImageDef.mode === 'media') {
+    if (bgImageDef.mode === 'media' || bgComp.useImage === 'media') {
       url = bgImageDef?.mediaUrl?.qStaticContentUrl?.qUrl
         ? decodeURIComponent(bgImageDef.mediaUrl.qStaticContentUrl.qUrl)
         : undefined;
@@ -82,10 +82,10 @@ export const resolveBgImage = (bgComp, app) => {
 export const resolveBgColor = (bgComp, theme) => {
   const bgColor = bgComp?.bgColor;
   if (bgColor && theme) {
-    if (bgColor.useColorExpression) {
+    if (bgColor.useExpression) {
       return theme.validateColor(bgColor.colorExpression);
     }
-    return bgColor.color && bgColor.color.color !== 'none' ? theme.getColorPickerColor(bgColor.color) : undefined;
+    return bgColor.color && bgColor.color.color !== 'none' ? theme.getColorPickerColor(bgColor.color, true) : undefined;
   }
   return undefined;
 };

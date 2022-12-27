@@ -21,8 +21,26 @@ describe('<ListBoxRowColumn />', () => {
   let actions;
   let getFieldKeyboardNavigation;
   let keyboard;
+  let defaultPages;
 
   beforeEach(() => {
+    defaultPages = [
+      {
+        qArea: {
+          qTop: 0,
+          qHeight: 1,
+        },
+        qMatrix: [
+          [
+            {
+              qState: 'A',
+              qNum: 1.0,
+              qText: '1.0',
+            },
+          ],
+        ],
+      },
+    ];
     global.document = {};
     getFieldKeyboardNavigation = jest
       .spyOn(keyboardNavigation, 'getFieldKeyboardNavigation')
@@ -39,7 +57,7 @@ describe('<ListBoxRowColumn />', () => {
   describe('as row', () => {
     const rowCol = 'row';
 
-    test('should have default props', async () => {
+    test('should not render any row when there are no pages', async () => {
       const index = 0;
       const style = {};
       const data = {
@@ -58,19 +76,31 @@ describe('<ListBoxRowColumn />', () => {
         </ThemeProvider>
       );
       const testInstance = testRenderer.root;
+      const grids = testInstance.findAllByType(Grid);
+      expect(grids).toHaveLength(0);
+    });
+
+    test('should have default props', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        onMouseDown: jest.fn(),
+        onMouseUp: jest.fn(),
+        onMouseEnter: jest.fn(),
+        onClick: jest.fn(),
+        keyboard,
+        pages: defaultPages,
+        actions,
+      };
+      expect(getFieldKeyboardNavigation).not.called;
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
 
       const type = testInstance.findByType(Grid);
-      /* expect(type.props.container).to.equal(true);
-      expect(type.props.spacing).to.equal(0);
-      expect(type.props.style).to.deep.equal({});
-      expect(type.props.role).to.equal(rowCol);
-      expect(type.props.onKeyDown).to.be.a('function');
-      expect(type.props.onKeyDown()).to.equal('handle-key-down-callback');
-      expect(type.props.onMouseDown.callCount).to.equal(0);
-      expect(type.props.onMouseUp.callCount).to.equal(0);
-      expect(type.props.onMouseEnter.callCount).to.equal(0);
-      expect(typeof type.props.onContextMenu).to.equal('function');
-      */
       const preventDefault = jest.fn();
       type.props.onContextMenu({ preventDefault });
       expect(preventDefault).toHaveBeenCalledTimes(1);
@@ -78,15 +108,15 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onClick).toHaveBeenCalledTimes(0);
 
       const types = testInstance.findAllByType(Typography);
-      expect(types.length).toBe(1);
+      expect(types).toHaveLength(1);
       expect(types[0].props.component).toBe('span');
       expect(types[0].props.children.type).toBe('span');
 
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
-      expect(cbs.length).toBe(0);
+      expect(cbs).toHaveLength(0);
       await testRenderer.unmount();
 
-      expect(getFieldKeyboardNavigation).toHaveBeenCalledTimes(1);
+      expect(getFieldKeyboardNavigation.mock.calls.length).toBeGreaterThan(0);
       expect(getFieldKeyboardNavigation).toHaveBeenCalledWith('actions');
     });
 
@@ -102,7 +132,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseEnter: jest.fn(),
         onClick: jest.fn(),
         keyboard,
-        pages: [],
+        pages: defaultPages,
         actions,
       };
       const testRenderer = await render(
@@ -133,7 +163,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseEnter: jest.fn(),
         onClick: jest.fn(),
         keyboard,
-        pages: [],
+        pages: defaultPages,
         actions,
       };
       const testRenderer = await render(
@@ -681,7 +711,7 @@ describe('<ListBoxRowColumn />', () => {
         onClick: jest.fn(),
         keyboard,
         actions,
-        frequencyMode: 'value',
+        freqIsAllowed: true,
         pages: [
           {
             qArea: {
@@ -770,7 +800,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseEnter: jest.fn(),
         onClick: jest.fn(),
         keyboard,
-        pages: [],
+        pages: defaultPages,
         actions,
       };
       const testRenderer = await render(
@@ -792,12 +822,12 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onClick.callCount).to.equal(0);
 */
       const types = testInstance.findAllByType(Typography);
-      expect(types.length).toBe(1);
+      expect(types).toHaveLength(1);
       expect(types[0].props.component).toBe('span');
-      expect(types[0].props.children.props.children).toBe('');
+      expect(types[0].props.children.props.children).toBe('1.0');
 
       const cbs = testInstance.findAllByType(ListBoxCheckbox);
-      expect(cbs.length).toBe(0);
+      expect(cbs).toHaveLength(0);
       await testRenderer.unmount();
     });
 
@@ -810,7 +840,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseEnter: jest.fn(),
         onClick: jest.fn(),
         keyboard,
-        pages: [],
+        pages: defaultPages,
         actions,
       };
       const testRenderer = await render(
@@ -825,6 +855,124 @@ describe('<ListBoxRowColumn />', () => {
       expect(typeof className).toBe('string');
       expect(className.split(' ').includes('value')).toBe(true);
       await testRenderer.unmount();
+    });
+
+    test('should get right text alignment', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        keyboard,
+        textAlign: { align: 'right' },
+        pages: defaultPages,
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('right');
+    });
+
+    test('should get left text alignment', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        keyboard,
+        textAlign: { align: 'left' },
+        pages: defaultPages,
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('left');
+    });
+
+    test('should get center text alignment', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        keyboard,
+        textAlign: { align: 'center' },
+        pages: defaultPages,
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('center');
+    });
+
+    test('should get right text direction', async () => {
+      const index = 0;
+      const style = {};
+      const data = {
+        keyboard,
+        textAlign: { auto: true },
+        direction: 'rtl',
+        pages: defaultPages,
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('right');
+    });
+
+    test('should get left text direction', async () => {
+      const index = 0;
+      const style = {};
+
+      // Just replace qNum with 'NaN' so that we can test alignment for non-numeric values.
+      const nonNumericPages = defaultPages.map((p) => ({
+        ...p,
+        qMatrix: p.qMatrix.map(([mx]) => [{ ...mx, qNum: 'NaN' }]),
+      }));
+      const data = {
+        keyboard,
+        textAlign: { auto: true },
+        direction: 'ltr',
+        pages: nonNumericPages,
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('left');
+    });
+
+    test('should align numeric values to the right', async () => {
+      const index = 0;
+      const style = {};
+
+      const data = {
+        keyboard,
+        textAlign: { auto: true },
+        direction: 'ltr',
+        pages: defaultPages, // these value(s) have a qNum so they are interpreted as numeric.
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('right');
     });
 
     test('should render radio button when isSingleSelect is true', async () => {
@@ -868,7 +1016,7 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(ListBoxRadioButton);
-      expect(types.length).toBe(1);
+      expect(types).toHaveLength(1);
     });
   });
 });

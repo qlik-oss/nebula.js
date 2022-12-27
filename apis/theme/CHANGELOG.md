@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.2...v3.1.0-alpha.3) (2022-12-12)
+
+### Features
+
+- sheet embed support ([#1013](https://github.com/qlik-oss/nebula.js/issues/1013)) ([3dacac5](https://github.com/qlik-oss/nebula.js/commit/3dacac587b4dfa6c3196683a416357ba8dc6a88e))
+
+# [3.1.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.1...v3.1.0-alpha.2) (2022-12-02)
+
+**Note:** Version bump only for package @nebula.js/theme
+
 # [3.1.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.0...v3.1.0-alpha.1) (2022-11-28)
 
 **Note:** Version bump only for package @nebula.js/theme

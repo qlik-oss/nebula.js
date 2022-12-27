@@ -49,10 +49,12 @@ export default function theme() {
      * @param {object} c
      * @param {number=} c.index
      * @param {string=} c.color
+     * @param {boolean=} supportNone Shifts the palette index by one to account for the "none" color
      * @returns {string} The resolved color.
      *
      * @example
      * theme.getColorPickerColor({ index: 1 });
+     * theme.getColorPickerColor({ index: 1 }, true);
      * theme.getColorPickerColor({ color: 'red' });
      */
     getColorPickerColor(...a) {
@@ -103,6 +105,8 @@ export default function theme() {
     /**
      * Validates a color string using d3-color.
      * See https://www.npmjs.com/package/d3-color
+     * Additionally supports the non-standard engine
+     * format ARGB(0-255,0-255,0-255,0-255)
      * @param {string} specifier
      * @returns {string|undefined} The resolved color or undefined
      * @ignore
@@ -110,9 +114,27 @@ export default function theme() {
      * @example
      * theme.validateColor("red"); // returns "rgba(255,0,0,1)"
      * theme.validateColor("#00ff00"); // returns "rgba(0,255,0,1)"
+     * theme.validateColor("ARGB(102,255,50,100)"); // returns "rgba(255,50,100,0.4)"
      * theme.validateColor("FOO"); // returns undefined
      */
     validateColor(...args) {
+      /* Added this to support the non-standard ARGB format from engine */
+      const colorString = args[0];
+      let matches;
+      /* eslint-disable no-cond-assign */
+      if (
+        typeof colorString === 'string' &&
+        (matches = /^ARGB\(\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*,\s*(\d{1,3})\s*\)$/i.exec(colorString))
+      ) {
+        // ARGB(255,255,255,255)
+        const a = parseInt(matches[1], 10) / 255;
+        const r = parseInt(matches[2], 10);
+        const g = parseInt(matches[3], 10);
+        const b = parseInt(matches[4], 10);
+        return `rgba(${r},${g},${b},${a})`;
+      }
+      /* eslint-enable no-cond-assign */
+
       const c = d3color(...args);
       return c ? c.toString() : undefined;
     },

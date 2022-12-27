@@ -279,7 +279,7 @@ const Cell = forwardRef(
     const { nebbie } = halo.public;
     const { disableCellPadding = false } = halo.context || {};
 
-    const { translator, language, keyboardNavigation } = useContext(InstanceContext);
+    const { theme: themeName, translator, language, keyboardNavigation } = useContext(InstanceContext);
     const theme = useTheme();
     const [cellRef, cellRect, cellNode] = useRect();
     const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
@@ -288,9 +288,8 @@ const Cell = forwardRef(
     const [contentRef, contentRect, contentNode] = useRect();
     const [snOptions, setSnOptions] = useState(initialSnOptions);
     const [snPlugins, setSnPlugins] = useState(initialSnPlugins);
-    const [clickOutElement, setClickOutElement] = useState();
-    const clickOutElements = [{ current: clickOutElement }, '.njs-action-toolbar-popover']; // elements which will not trigger the click out listener
-    const [selections] = useObjectSelections(app, model, clickOutElements);
+    const cellElementId = `njs-cell-${currentId}`;
+    const [selections] = useObjectSelections(app, model, [`#${cellElementId}`, '.njs-action-toolbar-popover']); // elements which will not trigger the click out listener
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
     const [bgColor, setBgColor] = useState(undefined);
@@ -308,17 +307,10 @@ const Cell = forwardRef(
     }, []);
 
     useEffect(() => {
-      if (!contentNode) {
-        return;
-      }
-      setClickOutElement(cellNode);
-    }, [cellRect]);
-
-    useEffect(() => {
       const bgComp = layout?.components ? layout.components.find((comp) => comp.key === 'general') : null;
       setBgColor(resolveBgColor(bgComp, halo.public.theme));
       setBgImage(resolveBgImage(bgComp, halo.app));
-    }, [layout, halo.public.theme, halo.app]);
+    }, [layout, halo.public.theme, halo.app, themeName]);
 
     focusHandler.current.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
@@ -502,7 +494,7 @@ const Cell = forwardRef(
           width: '100%',
           height: '100%',
           overflow: 'hidden',
-          backgroundColor: bgColor,
+          backgroundColor: bgColor || 'unset',
           backgroundImage: bgImage && bgImage.url ? `url(${bgImage.url})` : undefined,
           backgroundRepeat: 'no-repeat',
           backgroundSize: bgImage && bgImage.size,
@@ -512,6 +504,7 @@ const Cell = forwardRef(
         square
         className={CellElement.className}
         ref={cellRef}
+        id={cellElementId}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
       >

@@ -2,6 +2,7 @@
 *.rej
 *.tmp
 *.log
+*.pem
 .cache/
 .DS_Store
 .idea/

@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/stardust",
-  "version": "3.1.0-alpha.1",
+  "version": "3.1.0-alpha.3",
   "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -44,15 +44,15 @@
   "devDependencies": {
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
-    "@mui/icons-material": "^5.10.9",
-    "@mui/material": "^5.10.12",
-    "@nebula.js/conversion": "^3.1.0-alpha.1",
-    "@nebula.js/enigma-mocker": "^3.1.0-alpha.1",
-    "@nebula.js/locale": "^3.1.0-alpha.1",
-    "@nebula.js/nucleus": "^3.1.0-alpha.1",
-    "@nebula.js/supernova": "^3.1.0-alpha.1",
-    "@nebula.js/theme": "^3.1.0-alpha.1",
-    "@nebula.js/ui": "^3.1.0-alpha.1",
+    "@mui/icons-material": "^5.10.16",
+    "@mui/material": "^5.10.16",
+    "@nebula.js/conversion": "^3.1.0-alpha.3",
+    "@nebula.js/enigma-mocker": "^3.1.0-alpha.3",
+    "@nebula.js/locale": "^3.1.0-alpha.3",
+    "@nebula.js/nucleus": "^3.1.0-alpha.3",
+    "@nebula.js/supernova": "^3.1.0-alpha.3",
+    "@nebula.js/theme": "^3.1.0-alpha.3",
+    "@nebula.js/ui": "^3.1.0-alpha.3",
     "@scriptappy/cli": "0.1.0",
     "@scriptappy/to-dts": "1.0.0-beta.4",
     "extend": "3.0.2",
@@ -63,7 +63,7 @@
     "react-virtualized-auto-sizer": "^1.0.7",
     "react-window": "1.8.8",
     "react-window-infinite-loader": "1.0.8",
-    "regenerator-runtime": "0.13.10",
+    "regenerator-runtime": "0.13.11",
     "semver": "6.3.0"
   }
 }

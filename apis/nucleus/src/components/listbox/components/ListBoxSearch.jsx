@@ -1,15 +1,26 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useTheme } from '@nebula.js/ui/theme';
 import { InputAdornment, OutlinedInput } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import Search from '@nebula.js/ui/icons/search';
 import InstanceContext from '../../../contexts/InstanceContext';
+import useDataStore from '../hooks/useDataStore';
 
 const TREE_PATH = '/qListObjectDef';
 
-export default function ListBoxSearch({ selections, model, keyboard, listCount, dense = false, visible = true }) {
+const StyledInputAdornment = styled(InputAdornment)(({ theme }) => ({
+  color: theme.listBox?.content?.color,
+}));
+
+const StyledOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
+  color: theme.listBox?.content?.color,
+}));
+
+export default function ListBoxSearch({ selections, model, keyboard, dense = false, visible = true }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const theme = useTheme();
+  const { getStoreValue } = useDataStore(model);
 
   const cancel = () => selections.isActive() && selections.cancel();
 
@@ -51,7 +62,10 @@ export default function ListBoxSearch({ selections, model, keyboard, listCount, 
     }
   };
 
-  const hasHits = () => listCount > 0;
+  const hasHits = () => {
+    const listCount = getStoreValue(`listCount`);
+    return listCount > 0;
+  };
 
   const performSearch = async () => {
     let response;
@@ -87,17 +101,18 @@ export default function ListBoxSearch({ selections, model, keyboard, listCount, 
   }
 
   return (
-    <OutlinedInput
+    <StyledOutlinedInput
       startAdornment={
-        <InputAdornment position="start">
+        <StyledInputAdornment position="start">
           <Search size={dense ? 'small' : 'normal'} />
-        </InputAdornment>
+        </StyledInputAdornment>
       }
       className="search"
       sx={[
         {
           border: 'none',
           borderRadius: 0,
+          backgroundColor: 'transparent',
           '& fieldset': {
             border: `1px solid ${theme.palette.divider}`,
             borderWidth: '1px 0 1px 0',
