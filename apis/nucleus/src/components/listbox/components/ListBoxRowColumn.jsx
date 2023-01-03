@@ -10,6 +10,7 @@ import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
 import ListBoxRadioButton from './ListBoxRadioButton';
 import { getFieldKeyboardNavigation } from '../interactions/listbox-keyboard-navigation';
+import getGridItemSizes from './grid-list-components/grid-item-sizes';
 
 const PREFIX = 'RowColumn';
 
@@ -60,8 +61,25 @@ const getSelectedStyle = ({ theme }) => ({
   },
 });
 
+const ItemGrid = styled(Grid, {
+  shouldForwardProp: (prop) => !['dataLayout', 'itemWidth', 'itemHeight', 'layoutOrder'].includes(prop),
+})(({ theme, dataLayout, layoutOrder, itemWidth, itemHeight }) => ({
+  [`&.${classes.fieldRoot}`]: {
+    height: '100%',
+    width: '100%',
+    ...(dataLayout === 'grid' ? getGridItemSizes({ layoutOrder, itemWidth, itemHeight }) : {}),
+
+    '&:focus': {
+      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+    },
+    '&:focus-visible': {
+      outline: 'none',
+    },
+  },
+}));
+
 const Root = styled('div', {
-  shouldForwardProp: (props) => props !== 'flexBasisProp',
+  shouldForwardProp: (prop) => !['flexBasisProp'].includes(prop),
 })(({ theme, flexBasisProp }) => ({
   [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
@@ -76,15 +94,6 @@ const Root = styled('div', {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
     color: theme.listBox?.content?.color ?? theme.palette.text.primary,
-  },
-
-  [`& .${classes.fieldRoot}`]: {
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
-    },
-    '&:focus-visible': {
-      outline: 'none',
-    },
   },
 
   // The interior wrapper for all field content.
@@ -226,7 +235,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     checkboxes = false,
     textAlign,
     direction,
-    dense = false,
+    layoutOptions = {},
     freqIsAllowed,
     isSingleSelect,
     actions,
@@ -236,8 +245,9 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     showGray = true,
     columnCount = 1,
     rowCount = 1,
-    layoutOrder,
   } = data;
+
+  const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
 
   let cellIndex;
   let styles;
@@ -292,7 +302,9 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     setSelected(selected);
 
     const clazzArr = [column ? classes.column : classes.row];
-    if (!(histogram && dense)) clazzArr.push(classes.rowBorderBottom);
+    if (!(histogram && dense)) {
+      clazzArr.push(classes.rowBorderBottom);
+    }
     if (!checkboxes) {
       if (cell.qState === 'XS') {
         clazzArr.push(showGray ? classes.XS : classes.S);
@@ -429,15 +441,18 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
   return (
-    <Root className={classes.barContainer} flexBasisProp={flexBasisVal}>
-      <Grid
+    <Root className={classes.barContainer} flexBasisProp={flexBasisVal} style={styles}>
+      <ItemGrid
         container
+        dataLayout={dataLayout}
+        layoutOrder={layoutOrder}
+        itemWidth={styles.width}
+        itemHeight={styles.height}
         gap={0}
         className={joinClassNames(['value', ...classArr])}
         classes={{
           root: classes.fieldRoot,
         }}
-        style={styles}
         onClick={onClick}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
@@ -491,7 +506,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
             {showTick && <Tick style={iconStyles} size="small" />}
           </Grid>
         )}
-      </Grid>
+      </ItemGrid>
     </Root>
   );
 }

@@ -31,7 +31,6 @@ export default function getListBoxComponents({
   listCount,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
-  const { dense = false } = layoutOptions || {};
   const { listHeight, itemSize, rowCount, columnCount } = sizes || {};
 
   // Options common for List and Grid.
@@ -50,7 +49,7 @@ export default function getListBoxComponents({
     pages,
     ...(isLocked || selectDisabled() ? {} : interactionEvents),
     checkboxes,
-    dense,
+    layoutOptions,
     frequencyMode,
     freqIsAllowed: getFrequencyAllowed({ width, layout, frequencyMode }),
     isSingleSelect,
@@ -128,7 +127,6 @@ export default function getListBoxComponents({
           column: undefined,
           columnCount,
           rowCount,
-          layoutOrder,
         }}
         onItemsRendered={handleGridItemsRendered}
         ref={ref}
