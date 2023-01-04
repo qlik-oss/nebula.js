@@ -7,7 +7,7 @@
     "build:codesandbox": "yarn run locale:generate &&  cross-env NODE_ENV=production CODESANDBOX=1 FORCE_COLOR=1 lerna run build --stream --scope \"@nebula.js/{stardust,theme,locale,conversion,enigma-mocker}\"",
     "install:codesandbox": "yarn --ignore-engines",
     "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream --concurrency 99 --no-sort",
-    "format": "prettier --write '**/**/*'",
+    "format": "prettier --write '**/**/*' --ignore-unknown",
     "locale:verify": "node tools/verify-translations.js",
     "locale:generate": "node apis/locale/scripts/generate-all.mjs",
     "lint": "eslint packages apis commands --ext .js,.jsx",
