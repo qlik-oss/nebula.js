@@ -79,15 +79,16 @@ const ItemGrid = styled(Grid, {
 }));
 
 const Root = styled('div', {
-  shouldForwardProp: (prop) => !['flexBasisProp'].includes(prop),
-})(({ theme, flexBasisProp }) => ({
+  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridCol'].includes(prop),
+})(({ theme, flexBasisProp, isGridCol }) => ({
   [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
     color: theme.listBox?.content?.color ?? theme.palette.text.primary,
   },
 
   [`& .${classes.rowBorderBottom}`]: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderBottom: isGridCol ? 'none' : `1px solid ${theme.palette.divider}`,
+    borderRight: isGridCol ? `1px solid ${theme.palette.divider}` : 'none',
   },
 
   [`& .${classes.column}`]: {
@@ -187,7 +188,8 @@ const Root = styled('div', {
 
   [`&.${classes.barContainer}`]: {
     height: '100%',
-    display: 'inline-block',
+    display: 'flex',
+    alignItems: 'center',
   },
 
   [`& .${classes.bar}`]: {
@@ -439,9 +441,10 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const isFirstElement = index === 0;
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
+  const isGridCol = dataLayout === 'grid' && layoutOrder === 'column';
 
   return (
-    <Root className={classes.barContainer} flexBasisProp={flexBasisVal} style={styles}>
+    <Root className={classes.barContainer} flexBasisProp={flexBasisVal} style={styles} isGridCol={isGridCol}>
       <ItemGrid
         container
         dataLayout={dataLayout}

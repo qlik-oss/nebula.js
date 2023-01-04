@@ -3,7 +3,7 @@ const scrollBarWidth = 10; // TODO: ignore this - instead set the styling only s
 export default function getListSizes({ layout, width, height, checkboxes, listCount, count, textWidth }) {
   const { layoutOptions = {} } = layout || {};
 
-  const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense } = layoutOptions;
+  const { dataLayout, layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense } = layoutOptions;
   const columnAutoWidth = Math.min(150, textWidth + 18);
 
   let overflowStyling;
@@ -14,6 +14,11 @@ export default function getListSizes({ layout, width, height, checkboxes, listCo
   let itemSize = checkboxes ? 40 : 33;
   if (dense) {
     itemSize = 20;
+  }
+  if (dataLayout === 'grid' && layoutOrder === 'column') {
+    // Simulate a row margin by making the row container larger,
+    // since ordinary css margin/padding does not work in this case.
+    itemSize += 12;
   }
   const listHeight = height || 8 * itemSize;
 
