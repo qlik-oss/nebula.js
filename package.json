@@ -36,6 +36,7 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "1.28.1",
     "@after-work.js/aw": "6.0.14",
     "@babel/cli": "7.19.3",
     "@babel/core": "7.20.5",
