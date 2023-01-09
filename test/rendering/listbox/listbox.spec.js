@@ -27,7 +27,7 @@ test.describe('listbox mashup rendering test', () => {
   test('listbox basic', async () => {
     const FILE_NAME = 'listbox_basic.png';
 
-    await page.goto(`${url}/listbox/listbox.html`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
     const image = await selector.screenshot();
