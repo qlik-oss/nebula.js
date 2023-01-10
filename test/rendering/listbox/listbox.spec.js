@@ -27,7 +27,7 @@ test.describe('listbox mashup rendering test', () => {
   test('listbox basic', async () => {
     const FILE_NAME = 'listbox_basic.png';
 
-    await page.goto(`${url}/listbox/listbox.html`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
     const image = await selector.screenshot();
@@ -37,10 +37,27 @@ test.describe('listbox mashup rendering test', () => {
   test('selecting two values should result in two green rows', async () => {
     const FILE_NAME = 'listbox_select_EH.png';
 
-    await page.goto(`${url}/listbox/listbox.html`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
     const selectNumbers = [4, 7];
+    const action = async (nbr) => {
+      const rowSelector = `${listboxSelector} [data-n="${nbr}"]`;
+      await page.click(rowSelector);
+    };
+    await execSequence(selectNumbers, action);
+
+    const image = await selector.screenshot();
+    return expect(image).toMatchSnapshot(FILE_NAME);
+  });
+
+  test('should render checkboxes and check A and I', async () => {
+    const FILE_NAME = 'listbox_checkboxes_select_AI.png';
+
+    await page.goto(`${url}/listbox/listbox.html?scenario=checkboxes`);
+    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+
+    const selectNumbers = [0, 8];
     const action = async (nbr) => {
       const rowSelector = `${listboxSelector} [data-n="${nbr}"]`;
       await page.click(rowSelector);

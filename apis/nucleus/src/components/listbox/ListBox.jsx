@@ -19,6 +19,7 @@ export default function ListBox({
   model,
   selections,
   direction,
+  checkboxes: checkboxOption,
   height,
   width,
   listLayout = 'vertical',
@@ -35,7 +36,7 @@ export default function ListBox({
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
-  const { checkboxes, histogram } = layout ?? {};
+  const { checkboxes = checkboxOption, histogram } = layout ?? {};
 
   const loaderRef = useRef(null);
   const local = useRef({
