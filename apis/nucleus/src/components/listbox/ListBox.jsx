@@ -145,7 +145,7 @@ export default function ListBox({
   const listCount = getListCount({ pages, minimumBatchSize, count, calculatePagesHeight });
   setStoreValue('listCount', listCount);
 
-  const sizes = getListSizes({ layout, width, height, checkboxes, listCount, count, textWidth });
+  const sizes = getListSizes({ layout, width, height, listCount, count, textWidth });
 
   const { textAlign } = layout?.qListObject.qDimensionInfo || {};
 

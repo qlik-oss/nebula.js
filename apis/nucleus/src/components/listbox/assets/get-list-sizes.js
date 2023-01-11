@@ -1,6 +1,6 @@
 const scrollBarWidth = 10; // TODO: ignore this - instead set the styling only show on hover...
 
-export default function getListSizes({ layout, width, height, checkboxes, listCount, count, textWidth }) {
+export default function getListSizes({ layout, width, height, listCount, count, textWidth }) {
   const { layoutOptions = {} } = layout || {};
 
   const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense } = layoutOptions;
@@ -11,10 +11,7 @@ export default function getListSizes({ layout, width, height, checkboxes, listCo
   let columnWidth;
   let rowCount;
 
-  let itemSize = checkboxes ? 40 : 33;
-  if (dense) {
-    itemSize = 20;
-  }
+  const itemSize = dense ? 20 : 29;
   const listHeight = height || 8 * itemSize;
 
   if (layoutOrder) {
