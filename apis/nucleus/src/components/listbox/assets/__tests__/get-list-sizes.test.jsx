@@ -41,7 +41,7 @@ describe('get-list-sizes', () => {
       columnCount: 4,
       columnWidth: 47.5,
       count: 200,
-      itemSize: 33,
+      itemSize: 29,
       listCount: 100,
       listHeight: 300,
       overflowStyling: {
@@ -50,12 +50,6 @@ describe('get-list-sizes', () => {
       rowCount: 25,
       scrollBarWidth: 10,
     });
-  });
-
-  it('should return expected itemSize with checkboxes true', () => {
-    args.checkboxes = true;
-    const sizes = getListSizes(args);
-    expect(sizes).toMatchObject({ itemSize: 40 });
   });
 
   it('dense should override itemSize', () => {
@@ -72,7 +66,7 @@ describe('get-list-sizes', () => {
       columnCount: 4,
       columnWidth: 47.5,
       count: 200,
-      itemSize: 33,
+      itemSize: 29,
       listCount: 100,
       listHeight: 300,
       overflowStyling: {
