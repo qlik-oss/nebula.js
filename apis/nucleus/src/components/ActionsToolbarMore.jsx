@@ -52,18 +52,16 @@ const More = React.forwardRef(
           open={show}
           anchorEl={alignTo.current}
           getContentAnchorEl={null}
-          container={alignTo.current}
-          disablePortal
           hideBackdrop
           style={{ pointerEvents: 'none' }}
           transitionDuration={0}
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'right',
+            horizontal: 'center',
           }}
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'right',
+            horizontal: 'center',
           }}
           PaperProps={{
             style: {
