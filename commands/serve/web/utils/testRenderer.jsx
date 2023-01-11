@@ -38,15 +38,13 @@ export function TestRenderer(component, contextValuesOverride) {
     ...contextValuesOverride,
   };
 
-  const Wrapper = ({ children }) => {
-    return (
-      <BrowserRouter>
-        <RootContext.Provider value={contextValue}>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
-        </RootContext.Provider>
-      </BrowserRouter>
-    );
-  };
+  const Wrapper = ({ children }) => (
+    <BrowserRouter>
+      <RootContext.Provider value={contextValue}>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
+      </RootContext.Provider>
+    </BrowserRouter>
+  );
 
   return { ...render(component, { wrapper: Wrapper }), userEvents: userEvents.setup() };
 }

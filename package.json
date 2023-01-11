@@ -21,7 +21,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:mashup": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/mashup/**/*.int.js'",
-    "test:rendering": "node ./scripts/run-rendering-tests.js",
+    "test:rendering": "playwright test --config=./test/rendering/playwright.config.rendering.js --quiet",
     "test:integration": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/integration/**/*.int.js'",
     "test:component": "aw puppet -c aw.config.js --testExt '*.comp.js' --glob 'test/component/**/*.comp.js'",
     "prepare": "husky install"
@@ -36,6 +36,7 @@
     ]
   },
   "devDependencies": {
+    "@playwright/test": "1.28.1",
     "@after-work.js/aw": "6.0.14",
     "@babel/cli": "7.19.3",
     "@babel/core": "7.20.5",
@@ -106,7 +107,8 @@
     "**/caniuse-lite": "1.0.30001435",
     "**/react": "18.2.0",
     "**/react-dom": "18.2.0",
-    "**/react-is": "18.2.0"
+    "**/react-is": "18.2.0",
+    "@playwright/test": "1.28.1"
   },
   "workspaces": [
     "generated/*",

@@ -24,6 +24,10 @@
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
   },
+  "Listbox.NoMatchesForYourTerms": {
+    "value": "Aucun résultat ne correspond à votre recherche.",
+    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
+  },
   "Listbox.ScreenReaderInstructions": {
     "value": "L'activation des éléments ci-dessous actualisera le contenu de la page.",
     "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content",

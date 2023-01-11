@@ -1,22 +1,16 @@
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
-
 import Lock from '@nebula.js/ui/icons/lock';
 import Unlock from '@nebula.js/ui/icons/unlock';
-
 import { IconButton, Grid, Typography } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
 import useLayout from '../../hooks/useLayout';
-
 import ListBox from './ListBox';
 import createListboxSelectionToolbar from './interactions/listbox-selection-toolbar';
-
 import ActionsToolbar from '../ActionsToolbar';
-
 import InstanceContext from '../../contexts/InstanceContext';
-
 import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import getHasSelections from './assets/has-selections';
@@ -54,6 +48,7 @@ export default function ListBoxInline({ options = {} }) {
     direction,
     frequencyMode,
     listLayout,
+    checkboxes,
     search = true,
     focusSearch = false,
     toolbar = true,
@@ -67,7 +62,6 @@ export default function ListBoxInline({ options = {} }) {
     calculatePagesHeight,
     showGray = true,
     scrollState = undefined,
-    setCount = undefined,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -104,7 +98,6 @@ export default function ListBoxInline({ options = {} }) {
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
-  const [listCount, setListCount] = useState(0);
 
   const handleKeyDown = getListboxInlineKeyboardNavigation({ setKeyboardActive });
 
@@ -259,7 +252,6 @@ export default function ListBoxInline({ options = {} }) {
             selections={selections}
             model={model}
             dense={dense}
-            listCount={listCount}
             keyboard={keyboard}
             visible={searchVisible}
             searchContainerRef={searchContainerRef}
@@ -275,9 +267,9 @@ export default function ListBoxInline({ options = {} }) {
                 selections={selections}
                 direction={direction}
                 listLayout={listLayout}
-                onSetListCount={(c) => setListCount(c)}
                 frequencyMode={frequencyMode}
                 rangeSelect={rangeSelect}
+                checkboxes={checkboxes}
                 height={height}
                 width={width}
                 update={update}
@@ -288,7 +280,6 @@ export default function ListBoxInline({ options = {} }) {
                 keyboard={keyboard}
                 showGray={showGray}
                 scrollState={scrollState}
-                setCount={setCount}
               />
             )}
           </AutoSizer>

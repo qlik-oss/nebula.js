@@ -59,8 +59,13 @@ const options = {
     type: 'number',
     default: 9076,
   },
+  clientId: {
+    type: 'string',
+    description: "Tenant's clientId for OAuth connection",
+  },
   webIntegrationId: {
     type: 'string',
+    description: "Tenant's webIntegrationId for connection",
   },
   fixturePath: {
     type: 'string',

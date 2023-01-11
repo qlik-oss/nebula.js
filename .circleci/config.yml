@@ -110,9 +110,6 @@ jobs:
             fi
       - store_test_results:
           path: coverage/junit
-      # - run:
-      #     name: Test rendering
-      #     command: yarn run test:rendering
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
@@ -122,7 +119,6 @@ jobs:
       - run:
           name: Test integration
           command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
-
       - nebula_create:
           project_name: 'generated/hello'
           picasso_template: 'none'
@@ -143,6 +139,18 @@ jobs:
           path: generated/barchart/screenshots
       - store_artifacts:
           path: test/mashup/__artifacts__
+      - run:
+          name: Test rendering
+          command: |
+            npx playwright install
+            sudo npx playwright install-deps
+            yarn run test:rendering
+      - store_test_results:
+          path: ./test/rendering/reports/xml/report.xml
+      - store_artifacts:
+          path: ./test/rendering
+      - store_artifacts:
+          path: ./test/rendering/reports/html
 
   api-governance:
     machine:
