@@ -1,5 +1,5 @@
 const path = require('path');
-const babel = require('rollup-plugin-babel'); // eslint-disable-line
+const babel = require('@rollup/plugin-babel'); // eslint-disable-line
 const { terser } = require('rollup-plugin-terser'); // eslint-disable-line
 
 const cwd = process.cwd();
