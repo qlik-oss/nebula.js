@@ -117,7 +117,6 @@ function ActionsToolbar({
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [moreEnabled, setMoreEnabled] = useState(more.enabled);
   const [moreActions, setMoreActions] = useState(more.actions);
-  const [moreAlignTo, setMoreAlignTo] = useState(more.alignTo);
   const moreRef = useRef();
   const actionsRef = useRef();
   const theme = useTheme();
@@ -164,6 +163,7 @@ function ActionsToolbar({
     label: translator.get('Menu.More'), // TODO: Add translation
     getSvgIconShape: moreIcon,
     hidden: false,
+    active: showMoreItems,
     enabled: () => moreEnabled,
     action: () => setShowMoreItems(!showMoreItems),
   };
@@ -172,7 +172,6 @@ function ActionsToolbar({
     const newMoreActions = newActions.splice(-(newActions.length - maxItems) - 1);
     setMoreEnabled(true);
     setMoreActions([...newMoreActions, ...more.actions]);
-    setMoreAlignTo(moreRef);
   }
 
   const tabCallback =
@@ -217,7 +216,7 @@ function ActionsToolbar({
         <More
           show={showMoreItems}
           actions={moreActions}
-          alignTo={moreAlignTo}
+          alignTo={moreRef}
           popoverProps={more.popoverProps}
           popoverPaperStyle={more.popoverPaperStyle}
           onCloseOrActionClick={handleCloseShowMoreItems}
