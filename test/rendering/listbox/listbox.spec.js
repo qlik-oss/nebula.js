@@ -67,4 +67,20 @@ test.describe('listbox mashup rendering test', () => {
     const image = await selector.screenshot();
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
+
+  test('listbox search', async () => {
+    const FILE_NAME = 'listbox_search_B.png';
+    const searchSelector = '.search input';
+
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
+    const search = await page.waitForSelector(searchSelector, { visible: true });
+
+    await search.click();
+    await search.fill('B');
+
+    // Note that since we don't have a backend providing search results, we can't test highlighting and selected (green) rows.
+    const selector = await page.$(listboxSelector);
+    const image = await selector.screenshot();
+    return expect(image).toMatchSnapshot(FILE_NAME);
+  });
 });
