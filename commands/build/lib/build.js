@@ -17,7 +17,7 @@ const commonjs = require('@rollup/plugin-commonjs');
 
 const babelPreset = require('@babel/preset-env');
 
-const { terser } = require('rollup-plugin-terser');
+const terser = require('@rollup/plugin-terser');
 const resolveNative = require('./resolveNative');
 
 const initConfig = require('./init-config');

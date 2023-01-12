@@ -5,7 +5,7 @@ const rollup = require('rollup');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const common = require('@rollup/plugin-commonjs');
 const babel = require('@rollup/plugin-babel');
-const { terser } = require('rollup-plugin-terser');
+const terser = require('@rollup/plugin-terser');
 
 async function build(argv) {
   const cwd = process.cwd();

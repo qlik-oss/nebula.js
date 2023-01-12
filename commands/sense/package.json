@@ -39,7 +39,7 @@
     "fs-extra": "11.1.0",
     "node-event-emitter": "0.0.1",
     "rollup": "3.10.0",
-    "rollup-plugin-terser": "7.0.2",
+    "@rollup/plugin-terser": "0.3.0",
     "yargs": "17.6.2"
   }
 }
