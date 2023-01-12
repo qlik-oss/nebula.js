@@ -532,7 +532,7 @@ scenarios.destroy = {
   },
 };
 
-const { useElement, useLayout, embed } = window.stardust;
+const { useElement, useLayout, embed, EnigmaMocker } = window.stardust;
 
 const chart = {
   qae: {
@@ -585,7 +585,7 @@ function getScenario() {
 
 async function render() {
   const scenario = getScenario();
-  const app = await window.enigmaMocker.fromGenericObjects([scenario.genericObject], scenario.options);
+  const app = await EnigmaMocker.fromGenericObjects([scenario.genericObject], scenario.options);
   const element = document.querySelector('.viz');
   const viz = await configuration(app).render({ element, id: 'bb8' });
 
