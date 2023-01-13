@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.4](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.3...v3.1.0-alpha.4) (2023-01-13)
+
+### Bug Fixes
+
+- adding `clientId` in `nebula serve -h` command ([#1041](https://github.com/qlik-oss/nebula.js/issues/1041)) ([bb7f5b7](https://github.com/qlik-oss/nebula.js/commit/bb7f5b70966d755709ed4807ae5c971c8199aadc))
+- error when doing format ([#1044](https://github.com/qlik-oss/nebula.js/issues/1044)) ([8fae65e](https://github.com/qlik-oss/nebula.js/commit/8fae65e39908044a153de4f4897e1969d635dd50))
+- **listbox:** Listobx's selection dropdown anchor issue ([#1048](https://github.com/qlik-oss/nebula.js/issues/1048)) ([270769c](https://github.com/qlik-oss/nebula.js/commit/270769c7a559c5c8cd6c169eb81d726e6fc817cd))
+- prevent rendering empty values ([#1035](https://github.com/qlik-oss/nebula.js/issues/1035)) ([02e1ec3](https://github.com/qlik-oss/nebula.js/commit/02e1ec372d2011a61525478795b3d93d6c6a691f))
+
+### Features
+
+- add checkboxes, histogram as properties ([#1028](https://github.com/qlik-oss/nebula.js/issues/1028)) ([a333cf9](https://github.com/qlik-oss/nebula.js/commit/a333cf9dd175844070acbe89dd23c6b8093565e1))
+- add disclaimer listbox search ([#1030](https://github.com/qlik-oss/nebula.js/issues/1030)) ([4a5b407](https://github.com/qlik-oss/nebula.js/commit/4a5b40723271def71ba42134a76a37f002012100))
+- listbox grid layout ([#994](https://github.com/qlik-oss/nebula.js/issues/994)) ([897275a](https://github.com/qlik-oss/nebula.js/commit/897275ae7c79b8214af9c99ce4e9288bbf288690))
+- listbox text alignment ([#933](https://github.com/qlik-oss/nebula.js/issues/933)) ([4fec8b0](https://github.com/qlik-oss/nebula.js/commit/4fec8b06d35f86c391d6eb972720a9354a44a7ca))
+- **Listbox:** row height ([#1029](https://github.com/qlik-oss/nebula.js/issues/1029)) ([1076ed4](https://github.com/qlik-oss/nebula.js/commit/1076ed4bb5e2a64e9c1592695d99882d42215401))
+
 # [3.1.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.2...v3.1.0-alpha.3) (2022-12-12)
 
 ### Bug Fixes
