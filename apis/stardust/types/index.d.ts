@@ -169,7 +169,21 @@ export function useRenderState(): stardust.RenderState;
  */
 export function useKeyboard(): stardust.Keyboard;
 
-declare type EnigmaMocker = {
+/**
+ * Provides conversion functionality to extensions.
+ */
+export namespace Conversion {
+    /**
+     * Provides conversion functionality to extensions with hyperCubes.
+     */
+    const hypercube: stardust.hyperCubeConversion;
+
+}
+
+/**
+ * Mocks Engima app functionality for demo and testing purposes.
+ */
+export namespace EnigmaMocker {
     /**
      * Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visulization and specifies how it behaves. For example, what layout to use the data to present.
      * 
@@ -179,8 +193,9 @@ declare type EnigmaMocker = {
      * @param genericObjects Generic objects controling behaviour of visualizations.
      * @param options Options
      */
-    fromGenericObjects(genericObjects: object[], options: stardust.EnigmaMockerOptions): Promise<EngineAPI.IApp>;
-};
+    function fromGenericObjects(genericObjects: object[], options?: stardust.EnigmaMockerOptions): Promise<EngineAPI.IApp>;
+
+}
 
 declare namespace stardust {
     interface Context {
@@ -723,13 +738,6 @@ declare namespace stardust {
     interface ConversionType {
         importProperties: stardust.importProperties;
         exportProperties: stardust.exportProperties;
-    }
-
-    /**
-     * Provides conversion functionality to extensions.
-     */
-    interface Conversion {
-        hypercube: stardust.hyperCubeConversion;
     }
 
     interface hyperCubeConversion {
