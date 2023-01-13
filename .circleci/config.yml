@@ -70,8 +70,6 @@ commands:
             cd << parameters.project_name >>
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
-            npx playwright install
-            npx playwright install chrome
             <<# parameters.build >> yarn run build <</ parameters.build >>
             <<# parameters.test >>  yarn run test:e2e <</ parameters.test >>
 
@@ -88,7 +86,9 @@ jobs:
       - restore_cache: *restore_yarn_cache
       - run:
           name: Install dependencies
-          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+          command: |
+            yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+            npx playwright install --with-deps chromium
 
       - save_cache: *save_yarn_cache
       - run:
@@ -141,10 +141,7 @@ jobs:
           path: test/mashup/__artifacts__
       - run:
           name: Test rendering
-          command: |
-            npx playwright install
-            sudo npx playwright install-deps
-            yarn run test:rendering
+          command: yarn run test:rendering
       - store_test_results:
           path: ./test/rendering/reports/xml/report.xml
       - store_artifacts:
