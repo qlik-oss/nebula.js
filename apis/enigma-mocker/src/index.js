@@ -10,10 +10,11 @@ import fGO from './from-generic-objects';
 
 /**
  * @entry
+ * @namespace
  * @alias EnigmaMocker
  * @description Mocks Engima app functionality for demo and testing purposes.
  */
-const api = /** @lends EnigmaMocker# */ {
+const mocker = /** @lends EnigmaMocker# */ {
   /**
    * Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visulization and specifies how it behaves. For example, what layout to use the data to present.
    *
@@ -24,7 +25,7 @@ const api = /** @lends EnigmaMocker# */ {
    * @experimental
    * @since 3.0.0
    * @param {Array<object>} genericObjects Generic objects controling behaviour of visualizations.
-   * @param {EnigmaMockerOptions} options Options
+   * @param {EnigmaMockerOptions=} options Options
    * @returns {Promise<EngineAPI.IApp>}
    * @example
    * const genericObject = {
@@ -48,4 +49,4 @@ const api = /** @lends EnigmaMocker# */ {
   },
 };
 
-export default api;
+export default mocker;
