@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.1.0-alpha.5](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.4...v3.1.0-alpha.5) (2023-01-13)
+
+**Note:** Version bump only for package @nebula.js/cli-serve
+
+# [3.1.0-alpha.4](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.3...v3.1.0-alpha.4) (2023-01-13)
+
+### Bug Fixes
+
+- adding `clientId` in `nebula serve -h` command ([#1041](https://github.com/qlik-oss/nebula.js/issues/1041)) ([bb7f5b7](https://github.com/qlik-oss/nebula.js/commit/bb7f5b70966d755709ed4807ae5c971c8199aadc))
+
+### Features
+
+- listbox grid layout ([#994](https://github.com/qlik-oss/nebula.js/issues/994)) ([897275a](https://github.com/qlik-oss/nebula.js/commit/897275ae7c79b8214af9c99ce4e9288bbf288690))
+
 # [3.1.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.2...v3.1.0-alpha.3) (2022-12-12)
 
 **Note:** Version bump only for package @nebula.js/cli-serve

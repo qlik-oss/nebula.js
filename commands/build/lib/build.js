@@ -6,7 +6,7 @@ const fs = require('fs');
 const extend = require('extend');
 const yargs = require('yargs');
 const rollup = require('rollup');
-const babel = require('rollup-plugin-babel');
+const babel = require('@rollup/plugin-babel');
 const postcss = require('rollup-plugin-postcss');
 const replace = require('@rollup/plugin-replace');
 const sourcemaps = require('rollup-plugin-sourcemaps');
@@ -17,7 +17,7 @@ const commonjs = require('@rollup/plugin-commonjs');
 
 const babelPreset = require('@babel/preset-env');
 
-const { terser } = require('rollup-plugin-terser');
+const terser = require('@rollup/plugin-terser');
 const resolveNative = require('./resolveNative');
 
 const initConfig = require('./init-config');

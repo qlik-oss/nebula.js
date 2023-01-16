@@ -1,28 +1,8 @@
 {
   "name": "@nebula.js/enigma-mocker",
-  "version": "3.1.0-alpha.3",
+  "version": "3.1.0-alpha.5",
   "private": true,
-  "description": "",
-  "license": "MIT",
-  "author": "QlikTech International AB",
-  "keywords": [],
-  "publishConfig": {
-    "access": "public"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/qlik-oss/nebula.js.git",
-    "directory": "apis/enigma-mocker"
-  },
-  "main": "index.js",
-  "files": [
-    "dist"
-  ],
-  "scripts": {
-    "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
-    "build:dev": "rollup --config ../../rollup.config.js",
-    "prepublishOnly": "rm -rf dist && yarn run build"
-  },
+  "main": "src/index.js",
   "devDependencies": {
     "extend": "3.0.2"
   }

@@ -48,6 +48,7 @@ export default function ListBoxInline({ options = {} }) {
     direction,
     frequencyMode,
     listLayout,
+    checkboxes,
     search = true,
     focusSearch = false,
     toolbar = true,
@@ -271,6 +272,7 @@ export default function ListBoxInline({ options = {} }) {
                 listLayout={listLayout}
                 frequencyMode={frequencyMode}
                 rangeSelect={rangeSelect}
+                checkboxes={checkboxes}
                 height={height}
                 width={width}
                 update={update}
