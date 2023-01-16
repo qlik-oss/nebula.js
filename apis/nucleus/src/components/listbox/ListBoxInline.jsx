@@ -61,6 +61,8 @@ export default function ListBoxInline({ options = {} }) {
     calculatePagesHeight,
     showGray = true,
     scrollState = undefined,
+    onSelectionConfirm,
+    onSelectionCancel,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -94,7 +96,6 @@ export default function ListBoxInline({ options = {} }) {
   const [searchContainer, searchContainerRef] = useRefWithCallback();
 
   const [layout] = useLayout(model);
-  const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
 
@@ -107,11 +108,8 @@ export default function ListBoxInline({ options = {} }) {
   };
 
   useEffect(() => {
-    const show = () => {
-      setShowToolbar(true);
-    };
+    const show = () => {};
     const hide = () => {
-      setShowToolbar(false);
       if (search === 'toggle') {
         setShowSearch(false);
       }
@@ -121,7 +119,6 @@ export default function ListBoxInline({ options = {} }) {
         selections.on('deactivated', hide);
         selections.on('activated', show);
       }
-      setShowToolbar(selections.isActive());
     }
     return () => {
       if (selections && selections.removeListener) {
@@ -184,6 +181,12 @@ export default function ListBoxInline({ options = {} }) {
     );
   };
 
+  const popoverClose = (e, reason) => {
+    const accept = reason !== 'escapeKeyDown';
+    selections.noModal(accept);
+    accept ? onSelectionCancel() : onSelectionConfirm();
+  };
+
   return (
     <StyledGrid
       className="listbox-container"
@@ -228,10 +231,10 @@ export default function ListBoxInline({ options = {} }) {
                 },
               }}
               selections={{
-                show: showToolbar,
+                show: true,
                 api: selections,
-                onConfirm: () => {},
-                onCancel: () => {},
+                onConfirm: popoverClose,
+                onCancel: () => popoverClose(null, 'escapeKeyDown'),
               }}
             />
           </Grid>

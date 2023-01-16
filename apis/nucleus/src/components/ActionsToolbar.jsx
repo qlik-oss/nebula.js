@@ -154,10 +154,6 @@ function ActionsToolbar({
 
   if (!selections.show && newActions.length === 0) return null;
 
-  const handleCloseShowMoreItems = () => {
-    setShowMoreItems(false);
-  };
-
   const moreItem = {
     key: 'more',
     label: translator.get('Menu.More'), // TODO: Add translation
@@ -219,7 +215,7 @@ function ActionsToolbar({
           alignTo={moreRef}
           popoverProps={more.popoverProps}
           popoverPaperStyle={more.popoverPaperStyle}
-          onCloseOrActionClick={handleCloseShowMoreItems}
+          onCloseOrActionClick={() => setShowMoreItems(false)}
         />
       )}
     </Grid>

@@ -23,12 +23,13 @@ const StyledPopover = styled(Popover)(({ theme }) => ({
 function MoreItem({ item, onActionClick = () => {} }) {
   const { hidden, disabled, hasSvgIconShape } = useActionState(item);
 
-  const handleClick = () => {
+  const handleClick = (evt) => {
+    evt.stopPropagation();
     item.action();
     onActionClick();
   };
   return !hidden ? (
-    <MenuItem title={item.label} onClick={handleClick} disabled={disabled} tabindex="0">
+    <MenuItem title={item.label} onClick={handleClick} disabled={disabled} tabIndex={0}>
       {hasSvgIconShape && <ListItemIcon className={classes.icon}>{SvgIcon(item.getSvgIconShape())}</ListItemIcon>}
       <Typography noWrap>{item.label}</Typography>
     </MenuItem>
@@ -51,7 +52,6 @@ const More = React.forwardRef(
           ref={ref}
           open={show}
           anchorEl={alignTo.current}
-          getContentAnchorEl={null}
           hideBackdrop
           style={{ pointerEvents: 'none' }}
           transitionDuration={0}
