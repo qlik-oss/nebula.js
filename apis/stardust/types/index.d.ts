@@ -287,6 +287,9 @@ declare namespace stardust {
             dense?: boolean;
             stateName?: string;
             properties?: object;
+            onSelectionConfirm?: stardust.OnSelectionConfirm;
+            OnSelectionCancel?: stardust.OnSelectionCancel;
+            shouldShowToolbar?: boolean;
         }): void;
 
         /**
@@ -295,6 +298,10 @@ declare namespace stardust {
         unmount(): void;
 
     }
+
+    type OnSelectionConfirm = ()=>void;
+
+    type OnSelectionCancel = ()=>void;
 
     type ThemeJSON = any;
 
@@ -419,16 +426,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -460,6 +457,16 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {

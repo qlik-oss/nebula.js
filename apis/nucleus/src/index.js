@@ -411,6 +411,16 @@ function nuked(configuration = {}) {
          */
         const fieldSels = {
           fieldName,
+
+          /**
+           * @name OnSelectionConfirm
+           * @function
+           */
+          /**
+           * @name OnSelectionCancel
+           * @function
+           */
+
           /**
            * Mounts the field as a listbox into the provided HTMLElement.
            * @param {HTMLElement} element
@@ -426,6 +436,9 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects)
            * @param {string=} [options.stateName="$"] Sets the state to make selections in (not applicable for existing objects)
            * @param {object=} [options.properties={}] Properties object to extend default properties with
+           * @param {OnSelectionConfirm=} [options.onSelectionConfirm=()=>{}] Callback function when confirm happens
+           * @param {OnSelectionCancel=} [options.OnSelectionCancel=()=>{}] Callback function when cancel happens
+           * @param {boolean=} [options.shouldShowToolbar=false] Determines that if selection menu might be visible all the time or not
            *
            * @since 1.1.0
            * @instance
