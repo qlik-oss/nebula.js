@@ -62,8 +62,8 @@ export default function ListBoxInline({ options = {} }) {
     calculatePagesHeight,
     showGray = true,
     scrollState = undefined,
-    onSelectionConfirm,
-    onSelectionCancel,
+    onSelectionConfirm = () => {},
+    onSelectionCancel = () => {},
   } = options;
 
   // Hook that will trigger update when used in useEffects.
