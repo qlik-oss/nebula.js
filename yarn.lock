@@ -5246,19 +5246,19 @@
     estree-walker "^2.0.2"
     picomatch "^2.3.1"
 
-"@scriptappy/cli@0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@scriptappy/cli/-/cli-0.5.0.tgz#df0d98ca39725d81a4b35827b565e93de34b6150"
-  integrity sha512-yD96YQdZMO1D2SgBPfI+8XwDPodXRx8Ah/rRE43yYMQ4LGNXyvnYpGPyrxVqIXzgO6mEX3f2xL+5GsKq9PkdbA==
+"@scriptappy/cli@0.6.0":
+  version "0.6.0"
+  resolved "https://registry.yarnpkg.com/@scriptappy/cli/-/cli-0.6.0.tgz#d08a38b4d45973c2229aa69506597c8a4282bc01"
+  integrity sha512-wsN6k4O3Qy68PjSRzhSNqpp/w7ZwbPcusfTOyM3iXZUJoQTh80WJi2jZwb1TMC+1/WS76wWmXuJa0LwrH3Bbrw==
   dependencies:
-    "@scriptappy/from-jsdoc" "0.13.0"
+    "@scriptappy/from-jsdoc" "0.15.0"
     import-cwd "3.0.0"
     yargs "17.6.2"
 
-"@scriptappy/from-jsdoc@0.13.0":
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/@scriptappy/from-jsdoc/-/from-jsdoc-0.13.0.tgz#cff5232f8698c99a0a6fba0be1eea1b6cb5342bb"
-  integrity sha512-2ynHxMF98DU2QcmxbxfxSivmEqmFczRTEvOVQoT6fg/31iU2OTj4zJ3o7d5YNT1Kl8hOsUUG7S+H8KlWNWxnLA==
+"@scriptappy/from-jsdoc@0.15.0":
+  version "0.15.0"
+  resolved "https://registry.yarnpkg.com/@scriptappy/from-jsdoc/-/from-jsdoc-0.15.0.tgz#826f124329368345fd049c16f5fba572476ab25d"
+  integrity sha512-beGa3LIl4LMuMz1nxFa2YOl/AaBizkd8v23nT16ZmIBq5Lu+7X4X+mzWxwMFdmLGHWsnmpfCdAaLpF4OayCtvA==
   dependencies:
     "@scriptappy/schema" "1.1.0"
     chokidar "3.5.3"

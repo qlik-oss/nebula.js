@@ -53,7 +53,7 @@
     "@nebula.js/supernova": "^3.1.0-alpha.5",
     "@nebula.js/theme": "^3.1.0-alpha.5",
     "@nebula.js/ui": "^3.1.0-alpha.5",
-    "@scriptappy/cli": "0.5.0",
+    "@scriptappy/cli": "0.6.0",
     "@scriptappy/to-dts": "1.0.0-beta.4",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1",
