@@ -86,9 +86,10 @@ describe('<ActionsToolbarMore />', () => {
     const actions = [item];
     await render({ actions, alignTo, onCloseOrActionClick });
     const mi = renderer.root.findByType(MenuItem);
-    mi.props.onClick();
+    const someEvtObject = { someEvt: '#someEvt' };
+    mi.props.onClick(someEvtObject);
     expect(item.action).toHaveBeenCalledWith();
-    expect(onCloseOrActionClick).toHaveBeenCalledWith();
+    expect(onCloseOrActionClick).toHaveBeenCalledWith(someEvtObject);
   });
 
   test('should handle action click with default callback', async () => {
