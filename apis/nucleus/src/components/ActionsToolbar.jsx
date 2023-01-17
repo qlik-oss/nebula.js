@@ -154,7 +154,8 @@ function ActionsToolbar({
 
   if (!selections.show && newActions.length === 0) return null;
 
-  const handleCloseShowMoreItems = () => {
+  const handleCloseShowMoreItems = (e) => {
+    e.stopPropagation();
     setShowMoreItems(false);
   };
 
