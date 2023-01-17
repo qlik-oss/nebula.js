@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect, useMemo } from 'react';
+import React, { useState, useContext, useRef, useEffect, useMemo, useCallback } from 'react';
 
 import { styled } from '@mui/material/styles';
 
@@ -154,6 +154,10 @@ function ActionsToolbar({
 
   if (!selections.show && newActions.length === 0) return null;
 
+  const handleCloseShowMoreItems = useCallback(() => {
+    setShowMoreItems(false);
+  }, [setShowMoreItems]);
+
   const moreItem = {
     key: 'more',
     label: translator.get('Menu.More'), // TODO: Add translation
@@ -215,7 +219,7 @@ function ActionsToolbar({
           alignTo={moreRef}
           popoverProps={more.popoverProps}
           popoverPaperStyle={more.popoverPaperStyle}
-          onCloseOrActionClick={() => setShowMoreItems(false)}
+          onCloseOrActionClick={handleCloseShowMoreItems}
         />
       )}
     </Grid>
