@@ -962,18 +962,6 @@
                   "defaultValue": "{}",
                   "type": "object"
                 },
-                "onSelectionConfirm": {
-                  "description": "Callback function when confirm happens",
-                  "optional": true,
-                  "defaultValue": "()=>{}",
-                  "type": "#/definitions/OnSelectionConfirm"
-                },
-                "OnSelectionCancel": {
-                  "description": "Callback function when cancel happens",
-                  "optional": true,
-                  "defaultValue": "()=>{}",
-                  "type": "#/definitions/OnSelectionCancel"
-                },
                 "shouldShowToolbar": {
                   "description": "Determines that if selection menu might be visible all the time or not",
                   "optional": true,
@@ -999,14 +987,6 @@
           ]
         }
       }
-    },
-    "OnSelectionConfirm": {
-      "kind": "function",
-      "params": []
-    },
-    "OnSelectionCancel": {
-      "kind": "function",
-      "params": []
     },
     "ThemeJSON": {
       "kind": "alias",

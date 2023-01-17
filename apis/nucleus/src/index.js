@@ -11,6 +11,7 @@ import create from './object/create-session-object';
 import get from './object/get-generic-object';
 import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
+import eventmixin from './selections/event-mixin';
 
 /**
  * @interface Context
@@ -413,15 +414,6 @@ function nuked(configuration = {}) {
           fieldName,
 
           /**
-           * @name OnSelectionConfirm
-           * @function
-           */
-          /**
-           * @name OnSelectionCancel
-           * @function
-           */
-
-          /**
            * Mounts the field as a listbox into the provided HTMLElement.
            * @param {HTMLElement} element
            * @param {object=} options Settings for the embedded listbox
@@ -436,8 +428,6 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects)
            * @param {string=} [options.stateName="$"] Sets the state to make selections in (not applicable for existing objects)
            * @param {object=} [options.properties={}] Properties object to extend default properties with
-           * @param {OnSelectionConfirm=} [options.onSelectionConfirm=()=>{}] Callback function when confirm happens
-           * @param {OnSelectionCancel=} [options.OnSelectionCancel=()=>{}] Callback function when cancel happens
            * @param {boolean=} [options.shouldShowToolbar=false] Determines that if selection menu might be visible all the time or not
            *
            * @since 1.1.0
@@ -452,12 +442,14 @@ function nuked(configuration = {}) {
             if (this._instance) {
               throw new Error(`Field or object ${fieldName || qId} already mounted`);
             }
+            const onSelectionConfirm = () => this.emit('selectionConfirm');
+            const onSelectionCancel = () => this.emit('selectionCancel');
             this._instance = ListBoxPortal({
               element,
               app,
               fieldIdentifier,
               qId,
-              options: getOptions(options),
+              options: getOptions({ ...options, onSelectionConfirm, onSelectionCancel }),
               stateName: options.stateName || '$',
             });
             root.add(this._instance);
@@ -476,6 +468,7 @@ function nuked(configuration = {}) {
             }
           },
         };
+        eventmixin(fieldSels);
         return fieldSels;
       },
       /**

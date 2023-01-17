@@ -287,8 +287,6 @@ declare namespace stardust {
             dense?: boolean;
             stateName?: string;
             properties?: object;
-            onSelectionConfirm?: stardust.OnSelectionConfirm;
-            OnSelectionCancel?: stardust.OnSelectionCancel;
             shouldShowToolbar?: boolean;
         }): void;
 
@@ -298,10 +296,6 @@ declare namespace stardust {
         unmount(): void;
 
     }
-
-    type OnSelectionConfirm = ()=>void;
-
-    type OnSelectionCancel = ()=>void;
 
     type ThemeJSON = any;
 

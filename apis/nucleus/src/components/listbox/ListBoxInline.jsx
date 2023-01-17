@@ -191,7 +191,7 @@ export default function ListBoxInline({ options = {} }) {
   const popoverClose = (e, reason) => {
     const accept = reason !== 'escapeKeyDown';
     selections.noModal(accept);
-    accept ? onSelectionCancel() : onSelectionConfirm();
+    accept ? onSelectionConfirm() : onSelectionCancel();
   };
 
   return (
