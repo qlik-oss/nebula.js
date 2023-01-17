@@ -1,4 +1,4 @@
-import React, { useState, useContext, useRef, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useContext, useRef, useEffect, useMemo } from 'react';
 
 import { styled } from '@mui/material/styles';
 
@@ -154,9 +154,9 @@ function ActionsToolbar({
 
   if (!selections.show && newActions.length === 0) return null;
 
-  const handleCloseShowMoreItems = useCallback(() => {
+  const handleCloseShowMoreItems = () => {
     setShowMoreItems(false);
-  }, [setShowMoreItems]);
+  };
 
   const moreItem = {
     key: 'more',

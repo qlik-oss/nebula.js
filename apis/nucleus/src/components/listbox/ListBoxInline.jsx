@@ -64,6 +64,7 @@ export default function ListBoxInline({ options = {} }) {
     scrollState = undefined,
     onSelectionConfirm = () => {},
     onSelectionCancel = () => {},
+    shouldShowToolbar = false,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -97,6 +98,7 @@ export default function ListBoxInline({ options = {} }) {
   const [searchContainer, searchContainerRef] = useRefWithCallback();
 
   const [layout] = useLayout(model);
+  const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
 
@@ -109,8 +111,11 @@ export default function ListBoxInline({ options = {} }) {
   };
 
   useEffect(() => {
-    const show = () => {};
+    const show = () => {
+      setShowToolbar(true);
+    };
     const hide = () => {
+      setShowToolbar(false);
       if (search === 'toggle') {
         setShowSearch(false);
       }
@@ -120,6 +125,7 @@ export default function ListBoxInline({ options = {} }) {
         selections.on('deactivated', hide);
         selections.on('activated', show);
       }
+      setShowToolbar(selections.isActive());
     }
     return () => {
       if (selections && selections.removeListener) {
@@ -232,7 +238,7 @@ export default function ListBoxInline({ options = {} }) {
                 },
               }}
               selections={{
-                show: true,
+                show: shouldShowToolbar || showToolbar,
                 api: selections,
                 onConfirm: popoverClose,
                 onCancel: () => popoverClose(null, 'escapeKeyDown'),
