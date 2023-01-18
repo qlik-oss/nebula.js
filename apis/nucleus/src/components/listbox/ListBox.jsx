@@ -32,6 +32,7 @@ export default function ListBox({
   showGray = true,
   scrollState,
   selectDisabled = () => false,
+  overflowDisclaimer,
 }) {
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const [layout] = useLayout(model);
@@ -142,10 +143,25 @@ export default function ListBox({
     : listLayout !== 'horizontal';
 
   const count = layout?.qListObject.qSize?.qcy;
-  const listCount = getListCount({ pages, minimumBatchSize, count, calculatePagesHeight });
+
+  const { listCount, maxCount } = getListCount({
+    pages,
+    minimumBatchSize,
+    count,
+    calculatePagesHeight,
+    layoutOptions,
+    model,
+  });
+
   setStoreValue('listCount', listCount);
 
   const sizes = getListSizes({ layout, width, height, listCount, count, textWidth });
+
+  // TODO:
+  // Refactor getListSizes() to calculate columnCount separately, then pass columnCount to getListCount().
+  // Then setStoreValue('columnCount') wont be needed. Same goes for columnWidth.
+  setStoreValue('columnCount', sizes.columnCount);
+  setStoreValue('columnWidth', sizes.columnWidth);
 
   const { textAlign } = layout?.qListObject.qDimensionInfo || {};
 
@@ -171,6 +187,8 @@ export default function ListBox({
     local,
     sizes,
     listCount,
+    maxCount,
+    overflowDisclaimer,
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};
@@ -180,7 +198,7 @@ export default function ListBox({
 
   return (
     <>
-      {!listCount && <ListBoxDisclaimer width={width} />}
+      {!listCount && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
         itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again

@@ -1,3 +1,5 @@
+import useDataStore from '../hooks/useDataStore';
+
 const getCalculatedHeight = ({ pages = [], minimumBatchSize, count }) => {
   // If values have been filtered in the currently loaded page, we want to
   // prevent rendering empty rows by assigning the actual number of items to render
@@ -8,8 +10,22 @@ const getCalculatedHeight = ({ pages = [], minimumBatchSize, count }) => {
   return out;
 };
 
-export default function getListCount({ pages, minimumBatchSize, count, calculatePagesHeight = false }) {
-  const listCount =
+export default function getListCount({
+  pages,
+  minimumBatchSize,
+  count,
+  layoutOptions,
+  calculatePagesHeight = false,
+  model,
+}) {
+  const { getStoreValue } = useDataStore(model);
+  let listCount =
     pages?.length && calculatePagesHeight ? getCalculatedHeight({ pages, minimumBatchSize, count }) : count;
-  return listCount || 0;
+  const maxRowCount = layoutOptions.dense ? 838000 : 577000; // Styling breaks on items above this number: https://github.com/bvaughn/react-window/issues/659
+  const maxColumnCount = Math.floor(33550000 / getStoreValue('columnWidth'));
+  const itemForDisclaimer = Number(layoutOptions.dataLayout === 'singleColumn');
+  const maxListCount = maxRowCount * (getStoreValue('columnCount') || 1) + itemForDisclaimer;
+  listCount = Math.min(listCount, maxListCount) || 0;
+
+  return { listCount, maxCount: { row: maxRowCount, column: maxColumnCount } };
 }

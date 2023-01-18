@@ -29,6 +29,8 @@ export default function getListBoxComponents({
   listLayout,
   sizes,
   listCount,
+  maxCount,
+  overflowDisclaimer,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
   const { dense = false } = layoutOptions || {};
@@ -78,7 +80,7 @@ export default function getListBoxComponents({
         width={width}
         itemCount={listCount}
         layout={listLayout}
-        itemData={{ ...commonItemData }}
+        itemData={{ ...commonItemData, maxRowCount: maxCount.row }}
         itemSize={itemSize}
         onItemsRendered={(renderProps) => {
           if (scrollState) {
@@ -100,6 +102,19 @@ export default function getListBoxComponents({
     // eslint-disable-next-line no-param-reassign
     local.current.listRef = ref;
 
+    const handleSetOverflowDisclaimer = (renderProps) => {
+      const isColumnLayout = layoutOptions?.layoutOrder === 'column';
+      const index = isColumnLayout ? renderProps?.visibleColumnStopIndex : renderProps?.visibleRowStopIndex;
+      const stopIndex = isColumnLayout ? maxCount.column : maxCount.row;
+      const count = isColumnLayout ? columnCount : rowCount;
+      const overflowPossible = count >= stopIndex;
+      if (!overflowPossible && overflowDisclaimer.state.show) {
+        overflowDisclaimer.set({ show: false });
+      } else if (index >= stopIndex - 1) {
+        overflowDisclaimer.set({ show: true });
+      }
+    };
+
     const handleGridItemsRendered = (renderProps) => {
       const renderOptions = deriveRenderOptions({
         renderProps,
@@ -108,6 +123,7 @@ export default function getListBoxComponents({
         rowCount,
         columnCount,
       });
+      handleSetOverflowDisclaimer(renderProps);
       onItemsRendered(renderOptions);
     };
 

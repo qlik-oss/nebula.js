@@ -3,7 +3,7 @@ const scrollBarWidth = 10; // TODO: ignore this - instead set the styling only s
 export default function getListSizes({ layout, width, height, listCount, count, textWidth }) {
   const { layoutOptions = {} } = layout || {};
 
-  const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense } = layoutOptions;
+  const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense, dataLayout } = layoutOptions;
   const columnAutoWidth = Math.min(150, textWidth + 18);
 
   let overflowStyling;
@@ -40,6 +40,7 @@ export default function getListSizes({ layout, width, height, listCount, count, 
       columnWidth = Math.max(columnAutoWidth, width / columnCount);
     }
   }
+  columnCount = dataLayout === 'singleColumn' ? 1 : columnCount;
 
   return {
     columnCount,

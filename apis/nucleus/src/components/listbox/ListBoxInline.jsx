@@ -1,4 +1,4 @@
-import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
+import React, { useContext, useCallback, useRef, useEffect, useState, useReducer } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import Lock from '@nebula.js/ui/icons/lock';
@@ -15,6 +15,7 @@ import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import getHasSelections from './assets/has-selections';
 import addListboxTheme from './assets/addListboxTheme';
+import ListBoxFooter from './components/ListBoxFooter';
 
 const PREFIX = 'ListBoxInline';
 
@@ -98,6 +99,13 @@ export default function ListBoxInline({ options = {} }) {
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
+
+  const overflowDisclaimerReducer = (state, action) => ({ ...state, ...action });
+  const [overflowDisclaimer, setOverflowDisclaimer] = useReducer(overflowDisclaimerReducer, {
+    show: false,
+    dismissed: false,
+  });
+  const dismissOverflowDisclaimer = () => setOverflowDisclaimer({ dismissed: true });
 
   const handleKeyDown = getListboxInlineKeyboardNavigation({ setKeyboardActive });
 
@@ -280,10 +288,14 @@ export default function ListBoxInline({ options = {} }) {
                 keyboard={keyboard}
                 showGray={showGray}
                 scrollState={scrollState}
+                overflowDisclaimer={{ state: overflowDisclaimer, set: setOverflowDisclaimer }}
               />
             )}
           </AutoSizer>
         </Grid>
+        {overflowDisclaimer.show && !overflowDisclaimer.dismissed && (
+          <ListBoxFooter type={{ noSearchMatch: false, itemsOverFlow: true }} dismiss={dismissOverflowDisclaimer} />
+        )}
       </Grid>
     </StyledGrid>
   );
