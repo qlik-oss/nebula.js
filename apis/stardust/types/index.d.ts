@@ -267,6 +267,8 @@ declare namespace stardust {
 
     type SearchMode = boolean | "toggle";
 
+    type SelectionEventTypes = "selectionConfirm" | "selectionCancel";
+
     class FieldInstance {
         constructor();
 
@@ -275,7 +277,7 @@ declare namespace stardust {
          * @param eventType event type that function needs to listen
          * @param callback a callback function to run when event emits
          */
-        on(eventType: string, callback: ()=>void): void;
+        on(eventType: stardust.SelectionEventTypes, callback: ()=>void): void;
 
         /**
          * Mounts the field as a listbox into the provided HTMLElement.
@@ -427,6 +429,16 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -458,16 +470,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {

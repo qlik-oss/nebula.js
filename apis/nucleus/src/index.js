@@ -406,11 +406,15 @@ function nuked(configuration = {}) {
          */
 
         /**
+         * @typedef { 'selectionConfirm' | 'selectionCancel' } SelectionEventTypes
+         */
+
+        /**
          * Event listener function on instance
          *
          * @method
          * @name FieldInstance#on
-         * @param {string} eventType event type that function needs to listen
+         * @param {SelectionEventTypes} eventType event type that function needs to listen
          * @param {Function} callback a callback function to run when event emits
          * @example
          * fieldInstance.on('someEvent', () => {...});
