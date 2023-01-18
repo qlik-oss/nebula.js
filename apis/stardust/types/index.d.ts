@@ -271,6 +271,13 @@ declare namespace stardust {
         constructor();
 
         /**
+         * Event listener function on instance
+         * @param eventType event type that function needs to listen
+         * @param callback a callback function to run when event emits
+         */
+        on(eventType: string, callback: ()=>void): void;
+
+        /**
          * Mounts the field as a listbox into the provided HTMLElement.
          * @param element
          * @param options Settings for the embedded listbox

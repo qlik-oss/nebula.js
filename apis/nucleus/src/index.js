@@ -406,6 +406,17 @@ function nuked(configuration = {}) {
          */
 
         /**
+         * Event listener function on instance
+         *
+         * @method
+         * @name FieldInstance#on
+         * @param {string} eventType event type that function needs to listen
+         * @param {Function} callback a callback function to run when event emits
+         * @example
+         * fieldInstance.on('someEvent', () => {...});
+         */
+
+        /**
          * @class
          * @alias FieldInstance
          * @since 1.1.0
