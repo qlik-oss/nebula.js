@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "3.1.0-alpha.3",
+    "version": "3.1.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -512,9 +512,28 @@
         "import { useKeyboard } from '@nebula.js/stardust';\n// ...\nconst keyboard = useKeyboard();\nuseEffect(() => {\n // Set a tab stop on our button if in focus or if Nebulas navigation is disabled\n button.setAttribute('tabIndex', keyboard.active || !keyboard.enabled ? 0 : -1);\n // If navigation is enabled and focus has shifted, lets focus the button\n keyboard.enabled && keyboard.active && button.focus();\n}, [keyboard])"
       ]
     },
+    "Conversion": {
+      "description": "Provides conversion functionality to extensions.",
+      "availability": {
+        "since": "1.1.0"
+      },
+      "kind": "namespace",
+      "entries": {
+        "hypercube": {
+          "description": "Provides conversion functionality to extensions with hyperCubes.",
+          "availability": {
+            "since": "1.1.0"
+          },
+          "type": "#/definitions/hyperCubeConversion"
+        }
+      },
+      "examples": [
+        "import { conversion } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      ...\n      importProperties: ( exportFormat, initialProperties ) =>  conversion.hyperCube.importProperties(exportFormat, initialProperties),\n      exportProperties: ( fullPropertyTree ) => conversion.hyperCube.exportProperties(fullPropertyTree)\n    },\n    ...\n  };\n}"
+      ]
+    },
     "EnigmaMocker": {
       "description": "Mocks Engima app functionality for demo and testing purposes.",
-      "kind": "object",
+      "kind": "namespace",
       "entries": {
         "fromGenericObjects": {
           "description": "Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visulization and specifies how it behaves. For example, what layout to use the data to present.\n\nThe generic object is represented with a Javascript object with a number of properties. The name of the property correlates to the name in the Enigma model for `app.getObject(id)`. For example, the property `getLayout` in the generic object is used to define `app.getObject(id).getLayout()`. Any property can be added to the fixture (just make sure it exists and behaves as in the Enigma model!).\n\nThe value for each property is either fixed (string / boolean / number / object) or a function. Arguments are forwarded to the function to allow for greater flexibility. For example, this can be used to return different hypercube data when scrolling in the chart.",
@@ -535,6 +554,7 @@
             {
               "name": "options",
               "description": "Options",
+              "optional": true,
               "type": "#/definitions/EnigmaMockerOptions"
             }
           ],
@@ -2022,20 +2042,30 @@
       "kind": "interface",
       "entries": {
         "min": {
+          "description": "Number or function that returns the minimum number of fields",
           "optional": true,
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "number"
-          }
+          "kind": "union",
+          "items": [
+            {
+              "type": "function"
+            },
+            {
+              "type": "number"
+            }
+          ]
         },
         "max": {
+          "description": "Number or function that returns the maximum number of fields",
           "optional": true,
-          "kind": "function",
-          "params": [],
-          "returns": {
-            "type": "number"
-          }
+          "kind": "union",
+          "items": [
+            {
+              "type": "function"
+            },
+            {
+              "type": "number"
+            }
+          ]
         },
         "added": {
           "optional": true,
@@ -2440,25 +2470,6 @@
           "type": "#/definitions/exportProperties"
         }
       }
-    },
-    "Conversion": {
-      "description": "Provides conversion functionality to extensions.",
-      "availability": {
-        "since": "1.1.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "hypercube": {
-          "description": "Provides conversion functionality to extensions with hyperCubes.",
-          "availability": {
-            "since": "1.1.0"
-          },
-          "type": "#/definitions/hyperCubeConversion"
-        }
-      },
-      "examples": [
-        "import { conversion } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      ...\n      importProperties: ( exportFormat, initialProperties ) =>  conversion.hyperCube.importProperties(exportFormat, initialProperties),\n      exportProperties: ( fullPropertyTree ) => conversion.hyperCube.exportProperties(fullPropertyTree)\n    },\n    ...\n  };\n}"
-      ]
     },
     "hyperCubeConversion": {
       "availability": {

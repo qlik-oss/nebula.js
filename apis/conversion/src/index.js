@@ -82,7 +82,8 @@ export const convertTo = async ({ halo, model, cellRef, newType }) => {
  */
 
 /**
- * @interface
+ * @entry
+ * @namespace
  * @alias Conversion
  * @since 1.1.0
  * @description Provides conversion functionality to extensions.
