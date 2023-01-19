@@ -870,7 +870,7 @@
         ]
       }
     },
-    "SelectionEventTypes": {
+    "FieldInstanceEventTypes": {
       "kind": "alias",
       "items": {
         "kind": "union",
@@ -903,7 +903,7 @@
             {
               "name": "eventType",
               "description": "event type that function needs to listen",
-              "type": "#/definitions/SelectionEventTypes"
+              "type": "#/definitions/FieldInstanceEventTypes"
             },
             {
               "name": "callback",
@@ -1175,6 +1175,115 @@
         }
       }
     },
+    "Field": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "EngineAPI.INxDimension"
+          },
+          {
+            "type": "EngineAPI.INxMeasure"
+          },
+          {
+            "type": "#/definitions/LibraryField"
+          }
+        ]
+      }
+    },
+    "CreateConfig": {
+      "description": "Rendering configuration for creating and rendering a new object",
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "properties": {
+          "optional": true,
+          "type": "EngineAPI.IGenericObjectProperties"
+        }
+      }
+    },
+    "BaseConfig": {
+      "description": "Basic rendering configuration for rendering an object",
+      "kind": "interface",
+      "entries": {
+        "element": {
+          "type": "HTMLElement"
+        },
+        "options": {
+          "optional": true,
+          "type": "object"
+        },
+        "plugins": {
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Plugin"
+          }
+        }
+      }
+    },
+    "GetConfig": {
+      "description": "Rendering configuration for rendering an existing object",
+      "extends": [
+        {
+          "type": "#/definitions/BaseConfig"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "id": {
+          "type": "string"
+        }
+      }
+    },
+    "LibraryField": {
+      "kind": "interface",
+      "entries": {
+        "qLibraryId": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'dimension'"
+            },
+            {
+              "kind": "literal",
+              "value": "'measure'"
+            }
+          ]
+        }
+      }
+    },
     "AppSelections": {
       "kind": "class",
       "constructor": {
@@ -1398,115 +1507,6 @@
       "examples": [
         "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
       ]
-    },
-    "Field": {
-      "kind": "alias",
-      "items": {
-        "kind": "union",
-        "items": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "EngineAPI.INxDimension"
-          },
-          {
-            "type": "EngineAPI.INxMeasure"
-          },
-          {
-            "type": "#/definitions/LibraryField"
-          }
-        ]
-      }
-    },
-    "CreateConfig": {
-      "description": "Rendering configuration for creating and rendering a new object",
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "optional": true,
-          "type": "string"
-        },
-        "fields": {
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "properties": {
-          "optional": true,
-          "type": "EngineAPI.IGenericObjectProperties"
-        }
-      }
-    },
-    "BaseConfig": {
-      "description": "Basic rendering configuration for rendering an object",
-      "kind": "interface",
-      "entries": {
-        "element": {
-          "type": "HTMLElement"
-        },
-        "options": {
-          "optional": true,
-          "type": "object"
-        },
-        "plugins": {
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/Plugin"
-          }
-        }
-      }
-    },
-    "GetConfig": {
-      "description": "Rendering configuration for rendering an existing object",
-      "extends": [
-        {
-          "type": "#/definitions/BaseConfig"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "id": {
-          "type": "string"
-        }
-      }
-    },
-    "LibraryField": {
-      "kind": "interface",
-      "entries": {
-        "qLibraryId": {
-          "type": "string"
-        },
-        "type": {
-          "kind": "union",
-          "items": [
-            {
-              "kind": "literal",
-              "value": "'dimension'"
-            },
-            {
-              "kind": "literal",
-              "value": "'measure'"
-            }
-          ]
-        }
-      }
     },
     "LoadType": {
       "kind": "interface",

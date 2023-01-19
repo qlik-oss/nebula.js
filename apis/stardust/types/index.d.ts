@@ -267,7 +267,7 @@ declare namespace stardust {
 
     type SearchMode = boolean | "toggle";
 
-    type SelectionEventTypes = "selectionConfirm" | "selectionCancel";
+    type FieldInstanceEventTypes = "selectionConfirm" | "selectionCancel";
 
     class FieldInstance {
         constructor();
@@ -277,7 +277,7 @@ declare namespace stardust {
          * @param eventType event type that function needs to listen
          * @param callback a callback function to run when event emits
          */
-        on(eventType: stardust.SelectionEventTypes, callback: ()=>void): void;
+        on(eventType: stardust.FieldInstanceEventTypes, callback: ()=>void): void;
 
         /**
          * Mounts the field as a listbox into the provided HTMLElement.
@@ -369,6 +369,39 @@ declare namespace stardust {
         isEnabled(flag: string): boolean;
     }
 
+    type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
+
+    /**
+     * Rendering configuration for creating and rendering a new object
+     */
+    interface CreateConfig extends stardust.BaseConfig{
+        type: string;
+        version?: string;
+        fields?: stardust.Field[];
+        properties?: EngineAPI.IGenericObjectProperties;
+    }
+
+    /**
+     * Basic rendering configuration for rendering an object
+     */
+    interface BaseConfig {
+        element: HTMLElement;
+        options?: object;
+        plugins?: stardust.Plugin[];
+    }
+
+    /**
+     * Rendering configuration for rendering an existing object
+     */
+    interface GetConfig extends stardust.BaseConfig{
+        id: string;
+    }
+
+    interface LibraryField {
+        qLibraryId: string;
+        type: "dimension" | "measure";
+    }
+
     class AppSelections {
         constructor();
 
@@ -437,39 +470,6 @@ declare namespace stardust {
             name: string;
         };
         fn: ()=>void;
-    }
-
-    type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
-
-    /**
-     * Rendering configuration for creating and rendering a new object
-     */
-    interface CreateConfig extends stardust.BaseConfig{
-        type: string;
-        version?: string;
-        fields?: stardust.Field[];
-        properties?: EngineAPI.IGenericObjectProperties;
-    }
-
-    /**
-     * Basic rendering configuration for rendering an object
-     */
-    interface BaseConfig {
-        element: HTMLElement;
-        options?: object;
-        plugins?: stardust.Plugin[];
-    }
-
-    /**
-     * Rendering configuration for rendering an existing object
-     */
-    interface GetConfig extends stardust.BaseConfig{
-        id: string;
-    }
-
-    interface LibraryField {
-        qLibraryId: string;
-        type: "dimension" | "measure";
     }
 
     interface LoadType {
