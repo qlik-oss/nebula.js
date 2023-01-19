@@ -1,5 +1,5 @@
 /* eslint no-underscore-dangle:0 */
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useReducer } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
 import useLayout from '../../hooks/useLayout';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
@@ -12,6 +12,7 @@ import useItemsLoader from './hooks/useItemsLoader';
 import getListCount from './components/list-count';
 import useDataStore from './hooks/useDataStore';
 import ListBoxDisclaimer from './components/ListBoxDisclaimer';
+import ListBoxFooter from './components/ListBoxFooter';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -32,7 +33,6 @@ export default function ListBox({
   showGray = true,
   scrollState,
   selectDisabled = () => false,
-  overflowDisclaimer,
 }) {
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const [layout] = useLayout(model);
@@ -64,6 +64,13 @@ export default function ListBox({
   const [pages, setPages] = useState([]);
   const { setStoreValue } = useDataStore(model);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
+
+  const overflowDisclaimerReducer = (state, action) => ({ ...state, ...action });
+  const [overflowDisclaimer, setOverflowDisclaimer] = useReducer(overflowDisclaimerReducer, {
+    show: false,
+    dismissed: false,
+  });
+  const dismissOverflowDisclaimer = () => setOverflowDisclaimer({ dismissed: true });
 
   useEffect(() => {
     setPages(itemsLoader?.pages || []);
@@ -188,7 +195,7 @@ export default function ListBox({
     sizes,
     listCount,
     maxCount,
-    overflowDisclaimer,
+    overflowDisclaimer: { state: overflowDisclaimer, set: setOverflowDisclaimer },
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};
@@ -209,6 +216,13 @@ export default function ListBox({
       >
         {isVertical ? List : Grid}
       </InfiniteLoader>
+      {overflowDisclaimer.show && !overflowDisclaimer.dismissed && (
+        <ListBoxFooter
+          text="Listbox.ItemsOverflow"
+          dismiss={dismissOverflowDisclaimer}
+          parentWidth={loaderRef?.current?._listRef?.props?.width}
+        />
+      )}
     </>
   );
 }

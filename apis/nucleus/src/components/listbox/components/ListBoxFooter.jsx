@@ -1,15 +1,19 @@
+import { Paper } from '@mui/material';
 import Button from '@mui/material/Button';
 import { styled } from '@mui/material/styles';
 import React, { useContext } from 'react';
 import InstanceContext from '../../../contexts/InstanceContext';
 import ListBoxDisclaimer from './ListBoxDisclaimer';
 
-const RootContainer = styled('div')(({ theme }) => ({
+const maxWidth = 350;
+const RootContainer = styled(Paper)(({ theme, left }) => ({
+  position: 'absolute',
+  bottom: '12px',
   display: 'flex',
-  zIndex: 1,
   border: `1px solid ${theme.palette.divider}`,
-  backgroundColor: 'white',
-  width: 'calc(100% - 2px)',
+  width: 'calc(100% - 11px)',
+  maxWidth,
+  left,
 }));
 
 const LeftItem = styled('div')(() => ({
@@ -24,19 +28,19 @@ const RightItem = styled('div')(() => ({
   alignItems: 'center',
 }));
 
-export default function ListBoxFooter({ width, dismiss }) {
+export default function ListBoxFooter({ text, dismiss, parentWidth = 0 }) {
   const { translator } = useContext(InstanceContext);
   const hasDismissButton = typeof dismiss === 'function';
+  const left = Math.max(parentWidth / 2 - maxWidth / 2, 0);
 
   return (
-    <RootContainer container>
+    <RootContainer left={left}>
       <LeftItem>
-        <ListBoxDisclaimer width={width} text="Listbox.ItemsOverflow" />
+        <ListBoxDisclaimer text={text} />
       </LeftItem>
       <RightItem>
         {hasDismissButton && (
           <Button
-            type="button"
             variant="contained"
             onClick={() => {
               dismiss();
