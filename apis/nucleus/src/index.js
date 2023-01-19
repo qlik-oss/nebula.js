@@ -444,6 +444,7 @@ function nuked(configuration = {}) {
            * @param {string=} [options.stateName="$"] Sets the state to make selections in (not applicable for existing objects)
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @param {boolean=} [options.shouldShowToolbar=false] Determines that if selection menu might be visible all the time or not
+           * @param {boolean=} [options.popover=false] if true, shows the listbox in popover mode
            *
            * @since 1.1.0
            * @instance

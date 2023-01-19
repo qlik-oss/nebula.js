@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import ListBoxInline from './ListBoxInline';
+import ListBoxPopover from './ListBoxPopover';
 import useObjectSelections from '../../hooks/useObjectSelections';
 import useExistingModel from './hooks/useExistingModel';
 import useOnTheFlyModel from './hooks/useOnTheFlyModel';
@@ -36,7 +37,18 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options
     model,
   };
 
-  return <ListBoxInline options={opts} />;
+  return opts.popover ? (
+    <ListBoxPopover
+      alignTo={{ current: element }}
+      show={true}
+      close={() => console.log('CLOSE!')}
+      app={app}
+      fieldName={fieldIdentifier}
+      stateName={stateName}
+    />
+  ) : (
+    <ListBoxInline options={opts} />
+  );
 }
 
 export default function ListBoxPortal({ element, app, fieldIdentifier, qId, stateName = '$', options = {} }) {

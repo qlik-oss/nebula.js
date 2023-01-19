@@ -297,6 +297,7 @@ declare namespace stardust {
             stateName?: string;
             properties?: object;
             shouldShowToolbar?: boolean;
+            popover?: boolean;
         }): void;
 
         /**
@@ -369,39 +370,6 @@ declare namespace stardust {
         isEnabled(flag: string): boolean;
     }
 
-    type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
-
-    /**
-     * Rendering configuration for creating and rendering a new object
-     */
-    interface CreateConfig extends stardust.BaseConfig{
-        type: string;
-        version?: string;
-        fields?: stardust.Field[];
-        properties?: EngineAPI.IGenericObjectProperties;
-    }
-
-    /**
-     * Basic rendering configuration for rendering an object
-     */
-    interface BaseConfig {
-        element: HTMLElement;
-        options?: object;
-        plugins?: stardust.Plugin[];
-    }
-
-    /**
-     * Rendering configuration for rendering an existing object
-     */
-    interface GetConfig extends stardust.BaseConfig{
-        id: string;
-    }
-
-    interface LibraryField {
-        qLibraryId: string;
-        type: "dimension" | "measure";
-    }
-
     class AppSelections {
         constructor();
 
@@ -460,6 +428,39 @@ declare namespace stardust {
          */
         noModal(accept?: boolean): Promise<undefined>;
 
+    }
+
+    type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
+
+    /**
+     * Rendering configuration for creating and rendering a new object
+     */
+    interface CreateConfig extends stardust.BaseConfig{
+        type: string;
+        version?: string;
+        fields?: stardust.Field[];
+        properties?: EngineAPI.IGenericObjectProperties;
+    }
+
+    /**
+     * Basic rendering configuration for rendering an object
+     */
+    interface BaseConfig {
+        element: HTMLElement;
+        options?: object;
+        plugins?: stardust.Plugin[];
+    }
+
+    /**
+     * Rendering configuration for rendering an existing object
+     */
+    interface GetConfig extends stardust.BaseConfig{
+        id: string;
+    }
+
+    interface LibraryField {
+        qLibraryId: string;
+        type: "dimension" | "measure";
     }
 
     /**
