@@ -1,53 +1,49 @@
-import { Paper } from '@mui/material';
-import Button from '@mui/material/Button';
+import { IconButton, Paper } from '@mui/material';
+import CloseIcon from '@mui/icons-material/Close';
 import { styled } from '@mui/material/styles';
-import React, { useContext } from 'react';
-import InstanceContext from '../../../contexts/InstanceContext';
+import React from 'react';
 import ListBoxDisclaimer from './ListBoxDisclaimer';
 
-const maxWidth = 350;
 const RootContainer = styled(Paper)(({ theme, left }) => ({
   position: 'absolute',
   bottom: '12px',
   display: 'flex',
   border: `1px solid ${theme.palette.divider}`,
   width: 'calc(100% - 11px)',
-  maxWidth,
   left,
 }));
 
 const LeftItem = styled('div')(() => ({
-  paddingRight: '10px',
   paddingLeft: '6px',
   flexGrow: 1,
 }));
 
-const RightItem = styled('div')(() => ({
-  paddingRight: '10px',
+const RightItem = styled('div')(({ dense }) => ({
   display: 'flex',
-  alignItems: 'center',
+  alignItems: `${dense ? 'center' : 'flex-start'}`,
 }));
 
-export default function ListBoxFooter({ text, dismiss, parentWidth = 0 }) {
-  const { translator } = useContext(InstanceContext);
+const SmallCloseIcon = styled(CloseIcon)(() => ({
+  fontSize: '14px',
+}));
+
+export default function ListBoxFooter({ text, dismiss, dense, parentWidth = 0 }) {
   const hasDismissButton = typeof dismiss === 'function';
+  const maxWidth = dense ? 370 : 282;
   const left = Math.max(parentWidth / 2 - maxWidth / 2, 0);
+  const textWidth = Math.min(maxWidth, parentWidth) - 42;
+  const enableTooltip = dense && parentWidth < maxWidth;
 
   return (
-    <RootContainer left={left}>
+    <RootContainer left={left} style={{ maxWidth }}>
       <LeftItem>
-        <ListBoxDisclaimer text={text} />
+        <ListBoxDisclaimer text={text} dense={dense} width={textWidth} tooltip={enableTooltip} />
       </LeftItem>
-      <RightItem>
+      <RightItem dense={dense}>
         {hasDismissButton && (
-          <Button
-            variant="contained"
-            onClick={() => {
-              dismiss();
-            }}
-          >
-            {translator.get('Listbox.Dismiss')}
-          </Button>
+          <IconButton aria-label="close" onClick={() => dismiss()}>
+            <SmallCloseIcon />
+          </IconButton>
         )}
       </RightItem>
     </RootContainer>

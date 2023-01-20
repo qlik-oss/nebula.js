@@ -4,6 +4,7 @@ import RowColumn from '../ListBoxRowColumn';
 import getFrequencyAllowed from './frequency-allowed';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
+import handleSetOverflowDisclaimer from './setOverflowDisclaimer';
 
 const { StyledFixedSizeList, StyledFixedSizeGrid } = getStyledComponents();
 
@@ -29,7 +30,6 @@ export default function getListBoxComponents({
   listLayout,
   sizes,
   listCount,
-  maxCount,
   overflowDisclaimer,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
@@ -80,12 +80,20 @@ export default function getListBoxComponents({
         width={width}
         itemCount={listCount}
         layout={listLayout}
-        itemData={{ ...commonItemData, maxRowCount: maxCount.row }}
+        itemData={{ ...commonItemData }}
         itemSize={itemSize}
         onItemsRendered={(renderProps) => {
           if (scrollState) {
             scrollState.setScrollPos(renderProps.visibleStopIndex);
           }
+          handleSetOverflowDisclaimer({
+            renderProps,
+            layoutOptions,
+            maxCount: sizes.maxCount,
+            columnCount,
+            rowCount,
+            overflowDisclaimer,
+          });
           onItemsRendered({ ...renderProps });
         }}
         ref={ref}
@@ -102,19 +110,6 @@ export default function getListBoxComponents({
     // eslint-disable-next-line no-param-reassign
     local.current.listRef = ref;
 
-    const handleSetOverflowDisclaimer = (renderProps) => {
-      const isColumnLayout = layoutOptions?.layoutOrder === 'column';
-      const index = isColumnLayout ? renderProps?.visibleColumnStopIndex : renderProps?.visibleRowStopIndex;
-      const stopIndex = isColumnLayout ? maxCount.column : maxCount.row;
-      const count = isColumnLayout ? columnCount : rowCount;
-      const overflowPossible = count >= stopIndex;
-      if (!overflowPossible && overflowDisclaimer.state.show) {
-        overflowDisclaimer.set({ show: false });
-      } else if (index >= stopIndex - 1) {
-        overflowDisclaimer.set({ show: true });
-      }
-    };
-
     const handleGridItemsRendered = (renderProps) => {
       const renderOptions = deriveRenderOptions({
         renderProps,
@@ -123,7 +118,14 @@ export default function getListBoxComponents({
         rowCount,
         columnCount,
       });
-      handleSetOverflowDisclaimer(renderProps);
+      handleSetOverflowDisclaimer({
+        renderProps,
+        layoutOptions,
+        maxCount: sizes.maxCount,
+        columnCount,
+        rowCount,
+        overflowDisclaimer,
+      });
       onItemsRendered(renderOptions);
     };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useContext } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 
 import { styled } from '@mui/material/styles';
 
@@ -10,7 +10,6 @@ import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
 import ListBoxRadioButton from './ListBoxRadioButton';
 import { getFieldKeyboardNavigation } from '../interactions/listbox-keyboard-navigation';
-import InstanceContext from '../../../contexts/InstanceContext';
 
 const PREFIX = 'RowColumn';
 
@@ -36,7 +35,6 @@ const classes = {
   barWithCheckbox: `${PREFIX}-barWithCheckbox`,
   barSelectedWithCheckbox: `${PREFIX}-barSelectedWithCheckbox`,
   excludedTextWithCheckbox: `${PREFIX}-excludedTextWithCheckbox`,
-  disclaimer: `${PREFIX}-disclaimer`,
 };
 
 const ellipsis = {
@@ -216,11 +214,6 @@ const Root = styled('div', {
     color: '#828282',
     fontStyle: 'italic',
   },
-
-  [`& .${classes.disclaimer}`]: {
-    fontStyle: 'italic',
-    paddingLeft: '6px',
-  },
 }));
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
@@ -246,7 +239,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     columnCount = 1,
     rowCount = 1,
     layoutOrder,
-    maxRowCount,
   } = data;
 
   let cellIndex;
@@ -269,15 +261,12 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     styles = { ...style };
   }
 
+  const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation(actions), [actions]);
+
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
-  const [classArr, setClassArr] = useState([]);
-  const { translator } = useContext(InstanceContext);
 
-  const handleKeyDownCallback = useCallback(
-    cell?.isLastItemDisclaimer ? () => {} : getFieldKeyboardNavigation(actions),
-    [actions]
-  );
+  const [classArr, setClassArr] = useState([]);
 
   useEffect(() => {
     if (!pages) {
@@ -292,16 +281,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       }
     }
     setCell(c);
-
-    const isPastLastCell = columnCount === 1 ? index === maxRowCount : false;
-    if (isPastLastCell) {
-      setCell({
-        qText: translator.get('Listbox.ItemsOverflow'),
-        isLastItemDisclaimer: true,
-      });
-    } else {
-      setCell(c);
-    }
   }, [pages]);
 
   const isExcluded = (c) => (c ? c.qState === 'X' || c.qState === 'XS' || c.qState === 'XL' : null);
@@ -375,7 +354,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   );
 
   const preventContextMenu = (event) => {
-    if (cell?.isLastItemDisclaimer) return;
     if (checkboxes) {
       // Event will not propagate in the checkbox/radiobutton case
       onClick(event);
@@ -462,8 +440,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
           root: classes.fieldRoot,
         }}
         style={styles}
-        onClick={cell?.isLastItemDisclaimer ? () => {} : onClick}
-        onMouseDown={cell?.isLastItemDisclaimer ? () => {} : onMouseDown}
+        onClick={onClick}
+        onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseEnter={onMouseEnter}
         onKeyDown={handleKeyDownCallback}
@@ -482,23 +460,14 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
             style={{ width: getBarWidth(cell.qFrequency) }}
           />
         )}
-        {/* TODO: Move to separate components in new files */}
-        {cell?.isLastItemDisclaimer ? (
-          <Typography variant="caption" className={classes.disclaimer}>
-            {label}
-          </Typography>
-        ) : (
-          <Grid
-            item
-            style={cellStyle}
-            className={joinClassNames([classes.cell, classes.selectedCell])}
-            title={`${label}`}
-          >
-            {ranges.length === 0
-              ? getField({ lbl: label, color: 'inherit', isDisclaimer: cell?.isLastItemDisclaimer })
-              : getFieldWithRanges({ lbls: labels })}
-          </Grid>
-        )}
+        <Grid
+          item
+          style={cellStyle}
+          className={joinClassNames([classes.cell, classes.selectedCell])}
+          title={`${label}`}
+        >
+          {ranges.length === 0 ? getField({ lbl: label, color: 'inherit' }) : getFieldWithRanges({ lbls: labels })}
+        </Grid>
 
         {freqIsAllowed && (
           <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>

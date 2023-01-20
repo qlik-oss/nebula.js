@@ -151,7 +151,7 @@ export default function ListBox({
 
   const count = layout?.qListObject.qSize?.qcy;
 
-  const { listCount, maxCount } = getListCount({
+  const unlimitedListCount = getListCount({
     pages,
     minimumBatchSize,
     count,
@@ -160,15 +160,9 @@ export default function ListBox({
     model,
   });
 
+  const sizes = getListSizes({ layout, width, height, listCount: unlimitedListCount, count, textWidth });
+  const { listCount } = sizes;
   setStoreValue('listCount', listCount);
-
-  const sizes = getListSizes({ layout, width, height, listCount, count, textWidth });
-
-  // TODO:
-  // Refactor getListSizes() to calculate columnCount separately, then pass columnCount to getListCount().
-  // Then setStoreValue('columnCount') wont be needed. Same goes for columnWidth.
-  setStoreValue('columnCount', sizes.columnCount);
-  setStoreValue('columnWidth', sizes.columnWidth);
 
   const { textAlign } = layout?.qListObject.qDimensionInfo || {};
 
@@ -194,7 +188,6 @@ export default function ListBox({
     local,
     sizes,
     listCount,
-    maxCount,
     overflowDisclaimer: { state: overflowDisclaimer, set: setOverflowDisclaimer },
   });
 
@@ -221,6 +214,7 @@ export default function ListBox({
           text="Listbox.ItemsOverflow"
           dismiss={dismissOverflowDisclaimer}
           parentWidth={loaderRef?.current?._listRef?.props?.width}
+          dense={layoutOptions?.dense}
         />
       )}
     </>
