@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/qlik-oss/nebula.js/compare/v3.1.0...v3.1.1) (2023-01-22)
+
+### Bug Fixes
+
+- move qlik-sdk dependency ([#1060](https://github.com/qlik-oss/nebula.js/issues/1060)) ([9f8d627](https://github.com/qlik-oss/nebula.js/commit/9f8d627ad159c729dc7bb27f92c356d604a190b6))
+
 # [3.1.0](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.5...v3.1.0) (2023-01-17)
 
 **Note:** Version bump only for package nebula.js
