@@ -185,11 +185,6 @@ export default function ListBoxInline({ options = {} }) {
     );
   };
 
-  const popoverClose = (e, reason) => {
-    const accept = reason !== 'escapeKeyDown';
-    selections.noModal(accept);
-  };
-
   return (
     <StyledGrid
       className="listbox-container"
@@ -236,8 +231,8 @@ export default function ListBoxInline({ options = {} }) {
               selections={{
                 show: showToolbar,
                 api: selections,
-                onConfirm: popoverClose,
-                onCancel: () => popoverClose(null, 'escapeKeyDown'),
+                onConfirm: () => {},
+                onCancel: () => {},
               }}
             />
           </Grid>
