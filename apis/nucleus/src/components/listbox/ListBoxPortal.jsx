@@ -39,9 +39,9 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options
 
   return opts.popover ? (
     <ListBoxPopover
+      show
       app={app}
       alignTo={{ current: element }}
-      show={options.popoverState}
       close={options.onPopoverClose}
       fieldName={fieldIdentifier}
       stateName={stateName}
