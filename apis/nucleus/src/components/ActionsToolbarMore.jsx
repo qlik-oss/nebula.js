@@ -23,9 +23,9 @@ const StyledPopover = styled(Popover)(({ theme }) => ({
 function MoreItem({ item, onActionClick = () => {} }) {
   const { hidden, disabled, hasSvgIconShape } = useActionState(item);
 
-  const handleClick = (e) => {
+  const handleClick = () => {
     item.action();
-    onActionClick(e);
+    onActionClick();
   };
   return !hidden ? (
     <MenuItem title={item.label} onClick={handleClick} disabled={disabled} tabIndex={0}>
