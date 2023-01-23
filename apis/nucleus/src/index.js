@@ -427,7 +427,6 @@ function nuked(configuration = {}) {
          */
         const fieldSels = {
           fieldName,
-
           /**
            * Mounts the field as a listbox into the provided HTMLElement.
            * @param {HTMLElement} element
