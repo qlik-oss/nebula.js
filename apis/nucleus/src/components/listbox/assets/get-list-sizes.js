@@ -17,9 +17,9 @@ export default function getListSizes({ layout, width, height, listCount, count, 
   if (layoutOrder) {
     if (layoutOrder === 'row') {
       overflowStyling = { overflowX: 'hidden' };
-      const maxColumns = maxVisibleColumns.maxColumns || 3;
+      const maxColumns = maxVisibleColumns?.maxColumns || 3;
 
-      if (maxVisibleColumns.auto !== false) {
+      if (maxVisibleColumns?.auto !== false) {
         columnCount = Math.min(listCount, Math.ceil((width - scrollBarWidth) / columnAutoWidth)); // TODO: smarter sizing... based on glyph count + font size etc...??
       } else {
         columnCount = Math.min(listCount, maxColumns);
@@ -28,7 +28,7 @@ export default function getListSizes({ layout, width, height, listCount, count, 
       columnWidth = (width - scrollBarWidth) / columnCount;
     } else {
       overflowStyling = { overflowY: 'hidden' };
-      const maxRows = maxVisibleRows.maxRows || 3;
+      const maxRows = maxVisibleRows?.maxRows || 3;
 
       if (maxVisibleRows.auto !== false) {
         rowCount = Math.floor(listHeight / itemSize);
