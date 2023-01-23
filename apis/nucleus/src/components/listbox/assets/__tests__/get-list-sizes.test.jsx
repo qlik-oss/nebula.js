@@ -44,6 +44,10 @@ describe('get-list-sizes', () => {
       itemSize: 29,
       listCount: 100,
       listHeight: 300,
+      maxCount: {
+        column: 706315,
+        row: 577000,
+      },
       overflowStyling: {
         overflowX: 'hidden',
       },
@@ -69,6 +73,10 @@ describe('get-list-sizes', () => {
       itemSize: 29,
       listCount: 100,
       listHeight: 300,
+      maxCount: {
+        column: 706315,
+        row: 577000,
+      },
       overflowStyling: {
         overflowX: 'hidden',
       },

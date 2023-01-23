@@ -11,5 +11,5 @@ const getCalculatedHeight = ({ pages = [], minimumBatchSize, count }) => {
 export default function getListCount({ pages, minimumBatchSize, count, calculatePagesHeight = false }) {
   const listCount =
     pages?.length && calculatePagesHeight ? getCalculatedHeight({ pages, minimumBatchSize, count }) : count;
-  return listCount;
+  return listCount || 0;
 }
