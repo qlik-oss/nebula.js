@@ -89,7 +89,7 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
   const popoverClose = (e, reason) => {
     const accept = reason !== 'escapeKeyDown';
     selections.noModal(accept);
-    close();
+    close(e);
   };
 
   const listboxSelectionToolbarItems = createListboxSelectionToolbar({

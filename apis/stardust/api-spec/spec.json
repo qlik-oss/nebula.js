@@ -873,17 +873,8 @@
     "FieldInstanceEventTypes": {
       "kind": "alias",
       "items": {
-        "kind": "union",
-        "items": [
-          {
-            "kind": "literal",
-            "value": "'selectionConfirm'"
-          },
-          {
-            "kind": "literal",
-            "value": "'selectionCancel'"
-          }
-        ]
+        "kind": "literal",
+        "value": "'closePopover'"
       }
     },
     "FieldInstance": {
@@ -998,14 +989,14 @@
                   "defaultValue": "{}",
                   "type": "object"
                 },
-                "shouldShowToolbar": {
-                  "description": "Determines that if selection menu might be visible all the time or not",
+                "popover": {
+                  "description": "if true, shows the listbox in popover mode",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"
                 },
-                "popover": {
-                  "description": "if true, shows the listbox in popover mode",
+                "popoverState": {
+                  "description": "popover open|clsoe state",
                   "optional": true,
                   "defaultValue": false,
                   "type": "boolean"

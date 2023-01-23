@@ -406,7 +406,7 @@ function nuked(configuration = {}) {
          */
 
         /**
-         * @typedef { 'selectionConfirm' | 'selectionCancel' } FieldInstanceEventTypes
+         * @typedef { 'closePopover' } FieldInstanceEventTypes
          */
 
         /**
@@ -443,8 +443,8 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects)
            * @param {string=} [options.stateName="$"] Sets the state to make selections in (not applicable for existing objects)
            * @param {object=} [options.properties={}] Properties object to extend default properties with
-           * @param {boolean=} [options.shouldShowToolbar=false] Determines that if selection menu might be visible all the time or not
            * @param {boolean=} [options.popover=false] if true, shows the listbox in popover mode
+           * @param {boolean=} [options.popoverState=false] popover open|clsoe state
            *
            * @since 1.1.0
            * @instance
@@ -458,14 +458,13 @@ function nuked(configuration = {}) {
             if (this._instance) {
               throw new Error(`Field or object ${fieldName || qId} already mounted`);
             }
-            const onSelectionConfirm = () => this.emit('selectionConfirm');
-            const onSelectionCancel = () => this.emit('selectionCancel');
+            const onPopoverClose = () => this.emit('closePopover');
             this._instance = ListBoxPortal({
               element,
               app,
               fieldIdentifier,
               qId,
-              options: getOptions({ ...options, onSelectionConfirm, onSelectionCancel }),
+              options: getOptions({ ...options, onPopoverClose }),
               stateName: options.stateName || '$',
             });
             root.add(this._instance);

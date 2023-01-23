@@ -62,9 +62,6 @@ export default function ListBoxInline({ options = {} }) {
     calculatePagesHeight,
     showGray = true,
     scrollState = undefined,
-    onSelectionConfirm = () => {},
-    onSelectionCancel = () => {},
-    shouldShowToolbar = false,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -191,7 +188,6 @@ export default function ListBoxInline({ options = {} }) {
   const popoverClose = (e, reason) => {
     const accept = reason !== 'escapeKeyDown';
     selections.noModal(accept);
-    accept ? onSelectionConfirm() : onSelectionCancel();
   };
 
   return (
@@ -238,7 +234,7 @@ export default function ListBoxInline({ options = {} }) {
                 },
               }}
               selections={{
-                show: shouldShowToolbar || showToolbar,
+                show: showToolbar,
                 api: selections,
                 onConfirm: popoverClose,
                 onCancel: () => popoverClose(null, 'escapeKeyDown'),

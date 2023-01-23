@@ -267,7 +267,7 @@ declare namespace stardust {
 
     type SearchMode = boolean | "toggle";
 
-    type FieldInstanceEventTypes = "selectionConfirm" | "selectionCancel";
+    type FieldInstanceEventTypes = "closePopover";
 
     class FieldInstance {
         constructor();
@@ -296,8 +296,8 @@ declare namespace stardust {
             dense?: boolean;
             stateName?: string;
             properties?: object;
-            shouldShowToolbar?: boolean;
             popover?: boolean;
+            popoverState?: boolean;
         }): void;
 
         /**
