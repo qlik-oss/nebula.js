@@ -92,4 +92,57 @@ describe('get-list-sizes', () => {
     const sizes = getListSizes(args);
     expect(sizes).toMatchObject({ rowCount: 34, columnCount: 3 });
   });
+
+  it('maxRowCount should limit listCount and rowCount, in column layout', () => {
+    args.layoutOrder = 'column';
+    const maxRowCount = 577000;
+    const columnCount = 4;
+    args.listCount = maxRowCount * columnCount + 1;
+    const sizes = getListSizes(args);
+    expect(sizes).toEqual({
+      columnCount: 4,
+      columnWidth: 47.5,
+      count: 200,
+      itemSize: 29,
+      listCount: 2308000,
+      listHeight: 300,
+      maxCount: {
+        column: 706315,
+        row: 577000,
+      },
+      overflowStyling: {
+        overflowX: 'hidden',
+      },
+      rowCount: 577000,
+      scrollBarWidth: 10,
+    });
+  });
+
+  it('maxColumnCount should limit listCount and columnCount, in grid layout', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.height = 100;
+    args.layout.layoutOptions.layoutOrder = 'column';
+    const rowCount = 3;
+    const columnCount = 493382;
+    args.listCount = rowCount * columnCount + 1;
+    const limitedListCount = args.listCount - 1;
+    const sizes = getListSizes(args);
+    expect(sizes).toEqual({
+      columnCount,
+      columnWidth: 68,
+      count: 200,
+      itemSize: 29,
+      listCount: limitedListCount,
+      listHeight: 100,
+      maxCount: {
+        column: columnCount,
+        row: 577000,
+      },
+      overflowStyling: {
+        overflowY: 'hidden',
+      },
+      rowCount,
+      scrollBarWidth: 10,
+    });
+  });
 });

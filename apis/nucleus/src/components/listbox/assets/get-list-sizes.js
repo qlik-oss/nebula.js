@@ -48,7 +48,7 @@ export default function getListSizes({ layout, width, height, listCount, count, 
   const maxColumnCount = Math.floor(33550000 / columnWidth);
   columnCount = Math.min(columnCount, maxColumnCount);
 
-  const maxListCount = maxRowCount * columnCount || 1;
+  const maxListCount = rowCount * columnCount || 1;
   const limitedListCount = Math.min(listCount, maxListCount) || 0;
 
   return {
