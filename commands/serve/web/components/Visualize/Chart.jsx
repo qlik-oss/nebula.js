@@ -30,6 +30,7 @@ export default function Chart({ id, onLoad }) {
       ref={el}
       style={{
         height: '100%',
+        backgroundColor: 'white',
       }}
     />
   );
