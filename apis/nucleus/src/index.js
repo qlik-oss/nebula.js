@@ -443,7 +443,7 @@ function nuked(configuration = {}) {
            * @param {string=} [options.stateName="$"] Sets the state to make selections in (not applicable for existing objects)
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @param {boolean=} [options.popover=false] if true, shows the listbox in popover mode
-           * @param {boolean=} [options.popoverState=false] popover open|clsoe state
+           * @param {boolean=} [options.popoverState=false] popover open|close state
            *
            * @since 1.1.0
            * @instance
