@@ -1,5 +1,5 @@
 /* eslint no-underscore-dangle:0 */
-import React, { useEffect, useState, useCallback, useRef, useReducer } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
 import useLayout from '../../hooks/useLayout';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
@@ -65,12 +65,8 @@ export default function ListBox({
   const { setStoreValue } = useDataStore(model);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
 
-  const overflowDisclaimerReducer = (state, action) => ({ ...state, ...action });
-  const [overflowDisclaimer, setOverflowDisclaimer] = useReducer(overflowDisclaimerReducer, {
-    show: false,
-    dismissed: false,
-  });
-  const dismissOverflowDisclaimer = () => setOverflowDisclaimer({ dismissed: true });
+  const [overflowDisclaimer, setOverflowDisclaimer] = useState({ show: false, dismissed: false });
+  const showOverflowDisclaimer = (show) => setOverflowDisclaimer((state) => ({ ...state, show }));
 
   useEffect(() => {
     setPages(itemsLoader?.pages || []);
@@ -188,7 +184,7 @@ export default function ListBox({
     local,
     sizes,
     listCount,
-    overflowDisclaimer: { state: overflowDisclaimer, set: setOverflowDisclaimer },
+    overflowDisclaimer: { state: overflowDisclaimer, set: showOverflowDisclaimer },
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};
@@ -212,7 +208,7 @@ export default function ListBox({
       {overflowDisclaimer.show && !overflowDisclaimer.dismissed && (
         <ListBoxFooter
           text="Listbox.ItemsOverflow"
-          dismiss={dismissOverflowDisclaimer}
+          dismiss={() => setOverflowDisclaimer((state) => ({ ...state, dismissed: true }))}
           parentWidth={loaderRef?.current?._listRef?.props?.width}
           dense={layoutOptions?.dense}
         />

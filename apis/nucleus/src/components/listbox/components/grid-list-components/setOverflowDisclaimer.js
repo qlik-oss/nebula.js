@@ -18,9 +18,7 @@ export default function handleSetOverflowDisclaimer({
   const stopIndex = isColumnLayout ? maxCount.column : maxCount.row;
   const count = isColumnLayout ? columnCount : rowCount;
   const overflowPossible = count >= stopIndex;
-  if (!overflowPossible && overflowDisclaimer.state.show) {
-    overflowDisclaimer.set({ show: false });
-  } else if (index >= stopIndex - 1) {
-    overflowDisclaimer.set({ show: true });
-  }
+
+  const show = (overflowPossible && index >= stopIndex - 1) || overflowDisclaimer.state.show;
+  overflowDisclaimer.set(show);
 }

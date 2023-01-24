@@ -41,15 +41,16 @@ export default function getListSizes({ layout, width, height, listCount, count, 
     }
   }
 
-  columnCount = dataLayout === 'singleColumn' ? 1 : columnCount;
-  rowCount = dataLayout === 'singleColumn' ? count : rowCount;
+  columnCount = (dataLayout === 'singleColumn' ? 1 : columnCount) || 1;
+  rowCount = (dataLayout === 'singleColumn' ? count : rowCount) || listCount;
   const maxRowCount = layoutOptions.dense ? 838000 : 577000; // Styling breaks on items above this number: https://github.com/bvaughn/react-window/issues/659
   rowCount = Math.min(rowCount, maxRowCount);
-  const maxColumnCount = Math.floor(33550000 / columnWidth);
-  columnCount = Math.min(columnCount, maxColumnCount);
+  const maxScrollWidth = 33550000; // Styling breaks on items above this width: https://github.com/bvaughn/react-window/issues/659
+  const maxColumnCount = Math.floor(maxScrollWidth / columnWidth);
+  columnCount = Math.min(columnCount, maxColumnCount) || 1;
 
-  const maxListCount = rowCount * columnCount || 1;
-  const limitedListCount = Math.min(listCount, maxListCount) || 0;
+  const maxListCount = rowCount * columnCount;
+  const limitedListCount = Math.min(listCount, maxListCount);
 
   return {
     columnCount,
