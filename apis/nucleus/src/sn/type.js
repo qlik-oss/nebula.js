@@ -1,6 +1,5 @@
 import { generator as SNFactory } from '@nebula.js/supernova';
 import { satisfies } from 'semver';
-import extend from 'extend';
 import { load } from './load';
 
 /**
@@ -40,8 +39,8 @@ export default function create(info, halo, opts = {}) {
           version: type.version,
           showTitles: true,
           ...JSON.parse(stringified),
+          ...initial,
         };
-        extend(true, props, initial);
         return props;
       });
     },
