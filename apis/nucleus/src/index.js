@@ -8,7 +8,6 @@ import bootNebulaApp from './components/NebulaApp';
 import AppSelectionsPortal from './components/selections/AppSelections';
 import ListBoxPortal from './components/listbox/ListBoxPortal';
 import ListBoxPopoverWrapper from './components/listbox/ListBoxPopoverWrapper';
-import eventmixin from './selections/event-mixin';
 
 import create from './object/create-session-object';
 import get from './object/get-generic-object';
@@ -465,37 +464,7 @@ function nuked(configuration = {}) {
               this._instance = null;
             }
           },
-
-          /*
-               Create a new file for the ListboxPopover Wrapper
-               Make it a forwardRef
-               useImperativeHandle to add a show function to it
-              */
-
-          __DO_NOT_USE__: {
-            popover(anchorElement, options = { show: true }) {
-              if (!fieldSels._popoverInstance) {
-                const onPopoverClose = () => fieldSels.emit('closePopover');
-
-                fieldSels._popoverRef = React.createRef();
-                fieldSels._popoverInstance = React.createElement(ListBoxPopoverWrapper, {
-                  element: anchorElement,
-                  popover: true,
-                  ref: fieldSels._popoverRef,
-                  app,
-                  fieldIdentifier,
-                  qId,
-                  options: getOptions({ ...options, onPopoverClose }),
-                  stateName: options.stateName || '$',
-                });
-                root.add(fieldSels._popoverInstance);
-              } else {
-                fieldSels._popoverRef.current.setShowState(true);
-              }
-            },
-          },
         };
-        eventmixin(fieldSels);
         return fieldSels;
       },
       /**
@@ -515,6 +484,21 @@ function nuked(configuration = {}) {
       getRegisteredTypes: types.getList,
       __DO_NOT_USE__: {
         types,
+        popover(anchorElement, fieldIdentifier, options = { show: true }) {
+          if (api._popoverInstance) {
+            root.remove(api._popoverInstance);
+            api._popoverInstance = null;
+          }
+          api._popoverInstance = React.createElement(ListBoxPopoverWrapper, {
+            element: anchorElement,
+            popover: true,
+            app,
+            fieldIdentifier,
+            options: getOptions({ ...options }),
+            stateName: options.stateName || '$',
+          });
+          root.add(api._popoverInstance);
+        },
       },
     };
 

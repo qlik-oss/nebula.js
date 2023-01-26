@@ -1,16 +1,10 @@
-import React, { useState, forwardRef, useImperativeHandle } from 'react';
+import React, { useState } from 'react';
 import ListBoxPopover from './ListBoxPopover';
 
-const ListBoxPopoverWrapper = forwardRef(({ app, fieldIdentifier, stateName, element, options = {} }, ref) => {
-  const [showState, setShowState] = useState(options.show);
-
-  useImperativeHandle(ref, () => ({
-    setShowState,
-  }));
-
+export default function ListBoxPopoverWrapper({ app, fieldIdentifier, stateName, element, options = {} }) {
+  const [showState, setShowstate] = useState(!!options.show);
   const handleCloseShowState = () => {
-    setShowState(false);
-    options.onPopoverClose && options.onPopoverClose();
+    setShowstate(false);
   };
 
   return (
@@ -23,6 +17,4 @@ const ListBoxPopoverWrapper = forwardRef(({ app, fieldIdentifier, stateName, ele
       stateName={stateName}
     />
   );
-});
-
-export default ListBoxPopoverWrapper;
+}
