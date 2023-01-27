@@ -428,6 +428,7 @@ declare namespace stardust {
         type: string;
         version?: string;
         fields?: stardust.Field[];
+        extendProperties?: boolean;
         properties?: EngineAPI.IGenericObjectProperties;
     }
 

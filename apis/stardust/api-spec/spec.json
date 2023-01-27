@@ -1378,11 +1378,20 @@
             }
           ]
         },
+        "extendProperties": {
+          "description": "Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
         "properties": {
           "optional": true,
           "type": "EngineAPI.IGenericObjectProperties"
         }
-      }
+      },
+      "examples": [
+        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);"
+      ]
     },
     "BaseConfig": {
       "description": "Basic rendering configuration for rendering an object",

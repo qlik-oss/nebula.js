@@ -13,7 +13,7 @@ import { subscribe, modelStore } from '../stores/model-store';
  * @property {string} type
  * @property {string=} version
  * @property {(Field[])=} fields
- * @property {boolean} extendProperties Whether to deeply extend properties or not. If false then subtrees will be overwritten.
+ * @property {boolean} [extendProperties=false] Whether to deeply extend properties or not. If false then subtrees will be overwritten.
  * @property {EngineAPI.IGenericObjectProperties=} properties
  * @example
  * // A config for Creating objects:
