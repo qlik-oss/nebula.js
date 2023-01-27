@@ -494,6 +494,8 @@ function nuked(configuration = {}) {
             element: anchorElement,
             key: uid(),
             app,
+            anchorOrigin: options.anchorOrigin,
+            transformOrigin: options.transformOrigin,
             fieldIdentifier,
             options: getOptions({ ...options }),
             stateName: options.stateName || '$',
