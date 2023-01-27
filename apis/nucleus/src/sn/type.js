@@ -30,7 +30,7 @@ export default function create(info, halo, opts = {}) {
         stringified = JSON.stringify(sn.qae.properties.initial);
         return sn;
       }),
-    initialProperties(initial) {
+    initialProperties(initial, extendProperties = false) {
       return this.supernova().then(() => {
         const props = {
           qInfo: {
@@ -41,8 +41,14 @@ export default function create(info, halo, opts = {}) {
           showTitles: true,
           ...JSON.parse(stringified),
         };
-        extend(true, props, initial);
-        return props;
+        if (extendProperties) {
+          extend(true, props, initial);
+          return props;
+        }
+        return {
+          ...props,
+          ...initial,
+        };
       });
     },
   };

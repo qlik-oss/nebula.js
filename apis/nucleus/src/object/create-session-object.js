@@ -13,17 +13,32 @@ import { subscribe, modelStore } from '../stores/model-store';
  * @property {string} type
  * @property {string=} version
  * @property {(Field[])=} fields
+ * @property {boolean} extendProperties Whether to deeply extend properties or not. If false then subtrees will be overwritten.
  * @property {EngineAPI.IGenericObjectProperties=} properties
+ * @example
+ * // A config for Creating objects:
+ * const createConfig = {
+ *   type: 'bar',
+ *   element: document.querySelector('.bar'),
+ *   extendProperties: true,
+ *   fields: ['[Country names]', '=Sum(Sales)'],
+ *   properties: {
+ *     legend: {
+ *       show: false,
+ *     },
+ *   }
+ * };
+ * nebbie.render(createConfig);
  */
 export default async function createSessionObject(
-  { type, version, fields, properties, options, plugins, element },
+  { type, version, fields, properties, options, plugins, element, extendProperties },
   halo
 ) {
   let mergedProps = {};
   let error;
   try {
     const t = halo.types.get({ name: type, version });
-    mergedProps = await t.initialProperties(properties);
+    mergedProps = await t.initialProperties(properties, extendProperties);
     const sn = await t.supernova();
     if (fields) {
       populateData(
