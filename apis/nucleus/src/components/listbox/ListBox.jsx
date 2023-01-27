@@ -13,6 +13,7 @@ import getListCount from './components/list-count';
 import useDataStore from './hooks/useDataStore';
 import ListBoxDisclaimer from './components/ListBoxDisclaimer';
 import ListBoxFooter from './components/ListBoxFooter';
+import getScrollIndex from './interactions/listbox-get-scroll-index';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -43,6 +44,7 @@ export default function ListBox({
   const local = useRef({
     queue: [],
     validPages: false,
+    dataOffset: 0,
   });
 
   const listData = useRef({
@@ -99,6 +101,19 @@ export default function ListBox({
     isSingleSelect,
   });
 
+  const { layoutOptions = {} } = layout || {};
+
+  const isRow = layoutOptions?.dataLayout === 'singleColumn' ? true : layoutOptions?.layoutOrder === 'row';
+  const isGrid = layoutOptions?.dataLayout === 'grid';
+
+  const scrollToIndex = (index) => {
+    const gridIndex = {
+      ...(isRow ? { rowIndex: index } : { columnIndex: index }),
+    };
+    const scrollIndex = isGrid ? gridIndex : index;
+    loaderRef.current._listRef.scrollToItem(scrollIndex);
+  };
+
   const fetchData = () => {
     local.current.queue = [];
     local.current.validPages = false;
@@ -108,7 +123,8 @@ export default function ListBox({
       if (layout && layout.qSelectionInfo.qInSelections) {
         return;
       }
-      loaderRef.current._listRef.scrollToItem(0);
+      local.current.dataOffset = 0;
+      scrollToIndex(0);
     }
   };
 
@@ -133,11 +149,9 @@ export default function ListBox({
 
   useEffect(() => {
     fetchData();
-  }, [layout]);
+  }, [layout, local.current.dataOffset]);
 
   const textWidth = useTextWidth({ text: getMeasureText(layout), font: '14px Source sans pro' });
-
-  const { layoutOptions = {} } = layout || {};
 
   let minimumBatchSize = DEFAULT_MIN_BATCH_SIZE;
 
@@ -159,6 +173,19 @@ export default function ListBox({
   const sizes = getListSizes({ layout, width, height, listCount: unlimitedListCount, count, textWidth });
   const { listCount } = sizes;
   setStoreValue('listCount', listCount);
+
+  const setScrollPosition = (position) => {
+    const { scrollIndex, offset, triggerRerender } = getScrollIndex({
+      position,
+      isRow,
+      sizes,
+      layout,
+      offset: local.current.dataOffset,
+    });
+    local.current.dataOffset = offset;
+    triggerRerender && setPages((currentPages) => [...currentPages]);
+    scrollToIndex(scrollIndex);
+  };
 
   const { textAlign } = layout?.qListObject.qDimensionInfo || {};
 
@@ -185,6 +212,7 @@ export default function ListBox({
     sizes,
     listCount,
     overflowDisclaimer: { state: overflowDisclaimer, set: showOverflowDisclaimer },
+    setScrollPosition,
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};

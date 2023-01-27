@@ -239,15 +239,23 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     columnCount = 1,
     rowCount = 1,
     layoutOrder,
+    dataOffset,
+    focusListItems,
+    listCount,
   } = data;
 
   let cellIndex;
   let styles;
+  const count = { max: null, currentIndex: null };
   if (typeof rowIndex === 'number' && typeof columnIndex === 'number') {
     if (layoutOrder === 'row') {
       cellIndex = rowIndex * columnCount + columnIndex;
+      count.max = rowCount;
+      count.currentIndex = rowIndex;
     } else {
       cellIndex = columnIndex * rowCount + rowIndex;
+      count.max = columnCount;
+      count.currentIndex = columnIndex;
     }
     const padding = 0;
     styles = {
@@ -258,10 +266,27 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     };
   } else {
     cellIndex = index;
+    count.max = listCount;
+    count.currentIndex = index;
     styles = { ...style };
   }
+  cellIndex += dataOffset;
 
-  const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation(actions), [actions]);
+  const [rowRef, setRowRef] = useState(null);
+  useEffect(() => {
+    if (rowRef !== null) {
+      if (count.currentIndex === 0 && focusListItems.first) {
+        rowRef.focus();
+        focusListItems.setFirst(false);
+      }
+      if (count.currentIndex === count.max - 1 && focusListItems.last) {
+        rowRef.focus();
+        focusListItems.setLast(false);
+      }
+    }
+  }, [rowRef]);
+
+  const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation({ ...actions, focusListItems }), [actions]);
 
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
@@ -433,6 +458,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   return (
     <Root className={classes.barContainer} flexBasisProp={flexBasisVal} dense={dense}>
       <Grid
+        ref={setRowRef}
         container
         gap={0}
         className={joinClassNames(['value', ...classArr])}

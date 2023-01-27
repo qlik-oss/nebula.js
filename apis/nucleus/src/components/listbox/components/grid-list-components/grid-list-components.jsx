@@ -1,5 +1,5 @@
 /* eslint-disable react/function-component-definition */
-import React from 'react';
+import React, { useState } from 'react';
 import RowColumn from '../ListBoxRowColumn';
 import getFrequencyAllowed from './frequency-allowed';
 import deriveRenderOptions from './derive-render-options';
@@ -31,6 +31,7 @@ export default function getListBoxComponents({
   sizes,
   listCount,
   overflowDisclaimer,
+  setScrollPosition,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
   const { dense = false } = layoutOptions || {};
@@ -44,6 +45,7 @@ export default function getListBoxComponents({
   };
 
   const isLocked = layout?.qListObject.qDimensionInfo.qLocked;
+  const [focusListItem, setFocusListItem] = useState({ first: false, last: false });
 
   // Item data common for List and Grid.
   const commonItemData = {
@@ -61,11 +63,19 @@ export default function getListBoxComponents({
       select,
       confirm: () => selections?.confirm.call(selections),
       cancel: () => selections?.cancel.call(selections),
+      setScrollPosition,
     },
     frequencyMax,
     histogram,
     keyboard,
     showGray,
+    dataOffset: local.current.dataOffset,
+    focusListItems: {
+      first: focusListItem.first,
+      setFirst: (first) => setFocusListItem((prevState) => ({ ...prevState, first })),
+      last: focusListItem.last,
+      setLast: (last) => setFocusListItem((prevState) => ({ ...prevState, last })),
+    },
   };
 
   const List = ({ onItemsRendered, ref }) => {
@@ -80,7 +90,7 @@ export default function getListBoxComponents({
         width={width}
         itemCount={listCount}
         layout={listLayout}
-        itemData={{ ...commonItemData }}
+        itemData={{ ...commonItemData, listCount }}
         itemSize={itemSize}
         onItemsRendered={(renderProps) => {
           if (scrollState) {
@@ -93,6 +103,8 @@ export default function getListBoxComponents({
             columnCount,
             rowCount,
             overflowDisclaimer,
+            qCardinal: layout?.qListObject?.qDimensionInfo?.qCardinal,
+            dataOffset: local.current.dataOffset,
           });
           onItemsRendered({ ...renderProps });
         }}
@@ -125,6 +137,8 @@ export default function getListBoxComponents({
         columnCount,
         rowCount,
         overflowDisclaimer,
+        qCardinal: layout?.qListObject?.qDimensionInfo?.qCardinal,
+        dataOffset: local.current.dataOffset,
       });
       onItemsRendered(renderOptions);
     };
