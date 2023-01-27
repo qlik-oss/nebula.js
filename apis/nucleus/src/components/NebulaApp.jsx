@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './ClassNameSetup';
 
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
-import uid from '../object/uid';
 
 import InstanceContext from '../contexts/InstanceContext';
 import useAppSelections from '../hooks/useAppSelections';
@@ -24,10 +23,6 @@ const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
 
   useImperativeHandle(ref, () => ({
     addComponent(component) {
-      if (!component.key) {
-        // eslint-disable-next-line no-param-reassign
-        component.key = uid();
-      }
       setComponents([...components, component]);
     },
     removeComponent(component) {

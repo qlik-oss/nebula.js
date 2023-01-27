@@ -13,6 +13,7 @@ import create from './object/create-session-object';
 import get from './object/get-generic-object';
 import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
+import uid from './object/uid';
 
 /**
  * @interface Context
@@ -491,7 +492,7 @@ function nuked(configuration = {}) {
           }
           api._popoverInstance = React.createElement(ListBoxPopoverWrapper, {
             element: anchorElement,
-            popover: true,
+            key: uid(),
             app,
             fieldIdentifier,
             options: getOptions({ ...options }),
