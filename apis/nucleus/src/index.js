@@ -491,7 +491,6 @@ function nuked(configuration = {}) {
           }
           api._popoverInstance = React.createElement(ListBoxPopoverWrapper, {
             element: anchorElement,
-            popover: true,
             app,
             fieldIdentifier,
             options: getOptions({ ...options }),

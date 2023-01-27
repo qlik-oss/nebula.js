@@ -23,7 +23,8 @@ const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
 
   useImperativeHandle(ref, () => ({
     addComponent(component) {
-      setComponents([...components, component]);
+      const key = component.key || `${new Date().getTime()}_${Math.random().toString(36).substring(2)}`;
+      setComponents([...components, { ...component, key }]);
     },
     removeComponent(component) {
       const ix = components.indexOf(component);
