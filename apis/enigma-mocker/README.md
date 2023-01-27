@@ -4,15 +4,16 @@ The purpose of the Enigma mocker is to be able to render visualizations without 
 
 ## Installation
 
+EnigmaMocker is exposed from @nebula.js/stardust.
+
 ```sh
-npm install @nebula.js/enigma-mocker
+npm install @nebula.js/stardust
 ```
 
 ## Example usage
 
 ```js
-import { embed } from '@nebula.js/stardust';
-import EnigmaMocker from '@nebula.js/enigma-mocker';
+import { embed, EnigmaMocker } from '@nebula.js/stardust';
 import mekko from '@nebula.js/sn-mekko-chart';
 
 const genericObject = {
