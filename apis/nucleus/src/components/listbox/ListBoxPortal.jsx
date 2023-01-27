@@ -5,6 +5,7 @@ import useObjectSelections from '../../hooks/useObjectSelections';
 import useExistingModel from './hooks/useExistingModel';
 import useOnTheFlyModel from './hooks/useOnTheFlyModel';
 import identify from './assets/identify';
+import uid from '../../object/uid';
 
 function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options }) {
   const { isExistingObject, hasExternalSelectionsApi } = identify({ qId, options });
@@ -49,6 +50,7 @@ export default function ListBoxPortal({ element, app, fieldIdentifier, qId, stat
       stateName={stateName}
       options={options}
     />,
-    element
+    element,
+    uid()
   );
 }
