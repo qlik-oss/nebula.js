@@ -57,8 +57,8 @@ const noop = () => {};
 /**
  * @interface FieldTarget
  * @template T
- * @property {function():number} [min]
- * @property {function():number} [max]
+ * @property {function()|number} [min] Number or function that returns the minimum number of fields
+ * @property {function()|number} [max] Number or function that returns the maximum number of fields
  * @property {fieldTargetAddedCallback<T>} [added]
  * @property {fieldTargetRemovedCallback<T>} [removed]
  */

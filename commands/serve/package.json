@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-serve",
-  "version": "3.1.0-alpha.3",
+  "version": "3.1.1",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -30,7 +30,8 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "dependencies": {
-    "@nebula.js/cli-build": "^3.1.0-alpha.3",
+    "@nebula.js/cli-build": "^3.1.1",
+    "@qlik/sdk": "^0.18.0",
     "body-parser": "1.20.1",
     "chalk": "4.1.2",
     "chokidar": "3.5.3",
@@ -43,25 +44,24 @@
     "regenerator-runtime": "0.13.11",
     "source-map-loader": "4.0.1",
     "webpack": "5.75.0",
-    "webpack-cli": "5.0.0",
+    "webpack-cli": "5.0.1",
     "webpack-dev-server": "4.11.1",
-    "ws": "8.11.0",
+    "ws": "8.12.0",
     "yargs": "17.6.2"
   },
   "devDependencies": {
-    "@babel/core": "7.20.5",
+    "@babel/core": "7.20.12",
     "@babel/preset-env": "7.20.2",
     "@babel/preset-react": "7.18.6",
-    "@mui/material": "^5.10.16",
-    "@mui/system": "^5.10.16",
-    "@nebula.js/enigma-mocker": "^3.1.0-alpha.3",
-    "@nebula.js/nucleus": "^3.1.0-alpha.3",
-    "@nebula.js/snapshooter": "^3.1.0-alpha.3",
-    "@nebula.js/stardust": "^3.1.0-alpha.3",
-    "@nebula.js/ui": "^3.1.0-alpha.3",
-    "@qlik/sdk": "^0.15.0",
+    "@mui/material": "^5.11.4",
+    "@mui/system": "^5.11.4",
+    "@nebula.js/enigma-mocker": "^3.1.1",
+    "@nebula.js/nucleus": "^3.1.1",
+    "@nebula.js/snapshooter": "^3.1.1",
+    "@nebula.js/stardust": "^3.1.1",
+    "@nebula.js/ui": "^3.1.1",
     "autosuggest-highlight": "3.3.4",
-    "babel-loader": "9.1.0",
+    "babel-loader": "9.1.2",
     "d3-require": "1.3.0",
     "enigma.js": "2.10.0",
     "eslint-import-resolver-alias": "1.1.2",
@@ -71,6 +71,6 @@
     "monaco-editor-webpack-plugin": "7.0.1",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "6.4.4"
+    "react-router-dom": "6.6.2"
   }
 }

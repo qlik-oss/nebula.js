@@ -1,9 +1,11 @@
-export default {
-  support: {
-    snapshot: false,
-    export: true,
-    sharing: false,
-    exportData: true,
-    viewData: true,
-  },
-};
+export default function ext(/* galaxy */) {
+  return {
+    support: {
+      snapshot: false,
+      export: true,
+      sharing: false,
+      exportData: true,
+      viewData: true,
+    },
+  };
+}

@@ -57,11 +57,11 @@ const More = React.forwardRef(
           transitionDuration={0}
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'center',
+            horizontal: 'left',
           }}
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'center',
+            horizontal: 'left',
           }}
           PaperProps={{
             style: {

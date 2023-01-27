@@ -12,6 +12,7 @@ import useItemsLoader from './hooks/useItemsLoader';
 import getListCount from './components/list-count';
 import useDataStore from './hooks/useDataStore';
 import ListBoxDisclaimer from './components/ListBoxDisclaimer';
+import ListBoxFooter from './components/ListBoxFooter';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -19,6 +20,7 @@ export default function ListBox({
   model,
   selections,
   direction,
+  checkboxes: checkboxOption,
   height,
   width,
   listLayout = 'vertical',
@@ -35,7 +37,7 @@ export default function ListBox({
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
-  const { checkboxes, histogram } = layout ?? {};
+  const { checkboxes = checkboxOption, histogram } = layout ?? {};
 
   const loaderRef = useRef(null);
   const local = useRef({
@@ -62,6 +64,9 @@ export default function ListBox({
   const [pages, setPages] = useState([]);
   const { setStoreValue } = useDataStore(model);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
+
+  const [overflowDisclaimer, setOverflowDisclaimer] = useState({ show: false, dismissed: false });
+  const showOverflowDisclaimer = (show) => setOverflowDisclaimer((state) => ({ ...state, show }));
 
   useEffect(() => {
     setPages(itemsLoader?.pages || []);
@@ -141,10 +146,19 @@ export default function ListBox({
     : listLayout !== 'horizontal';
 
   const count = layout?.qListObject.qSize?.qcy;
-  const listCount = getListCount({ pages, minimumBatchSize, count, calculatePagesHeight });
-  setStoreValue('listCount', listCount);
 
-  const sizes = getListSizes({ layout, width, height, checkboxes, listCount, count, textWidth });
+  const unlimitedListCount = getListCount({
+    pages,
+    minimumBatchSize,
+    count,
+    calculatePagesHeight,
+    layoutOptions,
+    model,
+  });
+
+  const sizes = getListSizes({ layout, width, height, listCount: unlimitedListCount, count, textWidth });
+  const { listCount } = sizes;
+  setStoreValue('listCount', listCount);
 
   const { textAlign } = layout?.qListObject.qDimensionInfo || {};
 
@@ -170,6 +184,7 @@ export default function ListBox({
     local,
     sizes,
     listCount,
+    overflowDisclaimer: { state: overflowDisclaimer, set: showOverflowDisclaimer },
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};
@@ -179,7 +194,7 @@ export default function ListBox({
 
   return (
     <>
-      {!listCount && <ListBoxDisclaimer width={width} />}
+      {!listCount && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
         itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
@@ -190,6 +205,14 @@ export default function ListBox({
       >
         {isVertical ? List : Grid}
       </InfiniteLoader>
+      {overflowDisclaimer.show && !overflowDisclaimer.dismissed && (
+        <ListBoxFooter
+          text="Listbox.ItemsOverflow"
+          dismiss={() => setOverflowDisclaimer((state) => ({ ...state, dismissed: true }))}
+          parentWidth={loaderRef?.current?._listRef?.props?.width}
+          dense={layoutOptions?.dense}
+        />
+      )}
     </>
   );
 }

@@ -29,7 +29,10 @@ describe('<ActionsToolbar />', () => {
     // if spied function is a getter -> you need to use jest.mock(...)
     // and spread jest.requireActual(<MODULE>) in order to mock it
     // check here: https://github.com/facebook/jest/issues/6914#issue-355205927
-    jest.spyOn(nebulaUIThemeModule, 'useTheme').mockImplementation(() => ({ spacing: () => {} }));
+    jest.spyOn(nebulaUIThemeModule, 'useTheme').mockImplementation(() => ({
+      spacing: () => {},
+      palette: { btn: { active: 'someColor' } },
+    }));
     jest
       .spyOn(useDefaultSelectionActionsModule, 'default')
       .mockImplementation(() => [{ label: 'clear ' }, { label: 'cancel' }, { label: 'confirm' }]);

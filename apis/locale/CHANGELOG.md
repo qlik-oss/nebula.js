@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.1](https://github.com/qlik-oss/nebula.js/compare/v3.1.0...v3.1.1) (2023-01-22)
+
+**Note:** Version bump only for package @nebula.js/locale
+
+# [3.1.0](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.5...v3.1.0) (2023-01-17)
+
+**Note:** Version bump only for package @nebula.js/locale
+
+# [3.1.0-alpha.5](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.4...v3.1.0-alpha.5) (2023-01-13)
+
+**Note:** Version bump only for package @nebula.js/locale
+
+# [3.1.0-alpha.4](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.3...v3.1.0-alpha.4) (2023-01-13)
+
+### Features
+
+- add disclaimer listbox search ([#1030](https://github.com/qlik-oss/nebula.js/issues/1030)) ([4a5b407](https://github.com/qlik-oss/nebula.js/commit/4a5b40723271def71ba42134a76a37f002012100))
+
 # [3.1.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.2...v3.1.0-alpha.3) (2022-12-12)
 
 **Note:** Version bump only for package @nebula.js/locale

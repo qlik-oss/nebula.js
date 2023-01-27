@@ -4,6 +4,7 @@ import RowColumn from '../ListBoxRowColumn';
 import getFrequencyAllowed from './frequency-allowed';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
+import handleSetOverflowDisclaimer from './setOverflowDisclaimer';
 
 const { StyledFixedSizeList, StyledFixedSizeGrid } = getStyledComponents();
 
@@ -29,6 +30,7 @@ export default function getListBoxComponents({
   listLayout,
   sizes,
   listCount,
+  overflowDisclaimer,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
   const { dense = false } = layoutOptions || {};
@@ -84,6 +86,14 @@ export default function getListBoxComponents({
           if (scrollState) {
             scrollState.setScrollPos(renderProps.visibleStopIndex);
           }
+          handleSetOverflowDisclaimer({
+            renderProps,
+            layoutOptions,
+            maxCount: sizes.maxCount,
+            columnCount,
+            rowCount,
+            overflowDisclaimer,
+          });
           onItemsRendered({ ...renderProps });
         }}
         ref={ref}
@@ -107,6 +117,14 @@ export default function getListBoxComponents({
         layoutOrder,
         rowCount,
         columnCount,
+      });
+      handleSetOverflowDisclaimer({
+        renderProps,
+        layoutOptions,
+        maxCount: sizes.maxCount,
+        columnCount,
+        rowCount,
+        overflowDisclaimer,
       });
       onItemsRendered(renderOptions);
     };

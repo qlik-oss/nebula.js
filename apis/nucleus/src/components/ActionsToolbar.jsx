@@ -163,6 +163,7 @@ function ActionsToolbar({
     label: translator.get('Menu.More'), // TODO: Add translation
     getSvgIconShape: moreIcon,
     hidden: false,
+    active: showMoreItems,
     enabled: () => moreEnabled,
     action: () => setShowMoreItems(!showMoreItems),
   };

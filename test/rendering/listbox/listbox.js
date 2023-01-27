@@ -22,12 +22,12 @@
     };
   }
 
-  const init = async () => {
+  const init = async (options = {}) => {
     const element = window.document.querySelector('#object');
     const { app } = getMocks();
     const nebbie = window.stardust.embed(app);
     const listboxOptions = {
-      dense: false,
+      ...options,
     };
     const inst = await nebbie.field('Alpha');
     inst.mount(element, listboxOptions);
@@ -36,5 +36,37 @@
     };
   };
 
-  return init();
+  const getOptions = () => {
+    const paramStrings = document.location.search.split('?').pop().split('&');
+    const paramsArr = paramStrings.map((stringPair) => {
+      const [key, val] = stringPair.split('=');
+      return [key, ['true', 'false'].includes(val) ? JSON.parse(val) : val];
+    });
+    const params = Object.fromEntries(paramsArr);
+    return params;
+  };
+
+  const getScenarioOptions = (s) => {
+    let sc = {};
+    switch (s) {
+      case 'standard':
+        sc = {};
+        break;
+      case 'checkboxes':
+        sc = { checkboxes: true };
+        break;
+      default:
+        throw new Error('Invalid test scenario', s);
+    }
+    return sc;
+  };
+
+  const { scenario, ...options } = getOptions() || {};
+
+  const scenarioOptions = getScenarioOptions(scenario);
+
+  return init({
+    ...scenarioOptions,
+    ...options,
+  });
 })();
