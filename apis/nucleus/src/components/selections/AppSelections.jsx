@@ -41,5 +41,5 @@ function AppSelections({ app }) {
 export { AppSelections };
 
 export default function mount({ element, app }) {
-  return ReactDOM.createPortal(<AppSelections app={app} />, element);
+  return ReactDOM.createPortal(<AppSelections app={app} />, element, app.id);
 }
