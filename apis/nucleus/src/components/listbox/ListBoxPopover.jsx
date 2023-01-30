@@ -20,7 +20,22 @@ import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 import getHasSelections from './assets/has-selections';
 
-export default function ListBoxPopover({ alignTo, show, close, app, fieldName, stateName = '$' }) {
+export default function ListBoxPopover({
+  alignTo,
+  anchorOrigin = {
+    vertical: 'bottom',
+    horizontal: 'center',
+  },
+  transformOrigin = {
+    vertical: 'top',
+    horizontal: 'center',
+  },
+  show,
+  close,
+  app,
+  fieldName,
+  stateName = '$',
+}) {
   const open = show && Boolean(alignTo.current);
   const [listCount, setListCount] = useState(0);
   const theme = useTheme();
@@ -105,14 +120,8 @@ export default function ListBoxPopover({ alignTo, show, close, app, fieldName, s
       open={open}
       onClose={popoverClose}
       anchorEl={alignTo.current}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'center',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'center',
-      }}
+      anchorOrigin={anchorOrigin}
+      transformOrigin={transformOrigin}
       PaperProps={{
         style: { minWidth: '250px' },
       }}

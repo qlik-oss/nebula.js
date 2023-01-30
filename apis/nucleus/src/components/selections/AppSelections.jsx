@@ -8,6 +8,7 @@ import { useTheme } from '@nebula.js/ui/theme';
 import SelectedFields from './SelectedFields';
 import Nav from './Nav';
 import useAppSelections from '../../hooks/useAppSelections';
+import uid from '../../object/uid';
 
 function AppSelections({ app }) {
   const theme = useTheme();
@@ -41,5 +42,5 @@ function AppSelections({ app }) {
 export { AppSelections };
 
 export default function mount({ element, app }) {
-  return ReactDOM.createPortal(<AppSelections app={app} />, element);
+  return ReactDOM.createPortal(<AppSelections app={app} />, element, uid());
 }

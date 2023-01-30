@@ -1,9 +1,10 @@
 /* eslint object-property-newline:0 */
 import React from 'react';
+import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
 import * as MUIModule from '@mui/material';
 import * as NebulaThemeModule from '@nebula.js/ui/theme';
-import { AppSelections } from '../AppSelections';
+import MountAppSelection, { AppSelections } from '../AppSelections';
 import * as SelectedFieldsModule from '../SelectedFields';
 import * as NavModule from '../Nav';
 import * as useAppSelectionsModule from '../../../hooks/useAppSelections';
@@ -21,6 +22,7 @@ jest.mock('@nebula.js/ui/theme', () => ({
 
 describe('<AppSelections />', () => {
   let api;
+  let createPortalMock;
 
   beforeEach(() => {
     jest.spyOn(MUIModule, 'Grid').mockImplementation(({ children }) => <g>{children}</g>);
@@ -30,6 +32,8 @@ describe('<AppSelections />', () => {
     jest.spyOn(NavModule, 'default').mockImplementation(() => <nav />);
 
     jest.spyOn(useAppSelectionsModule, 'default').mockReturnValue(['something']);
+    createPortalMock = jest.fn();
+
     api = {
       canGoForward: () => 'canGoForward',
       canGoBack: () => 'canGoBack',
@@ -75,5 +79,12 @@ describe('<AppSelections />', () => {
         },
       ],
     });
+  });
+
+  test('should run create portal with `uid()`', () => {
+    jest.spyOn(ReactDOM, 'createPortal').mockImplementation(createPortalMock);
+    MountAppSelection({ element: document.createElement('div'), app: {} });
+    expect(createPortalMock).toHaveBeenCalledTimes(1);
+    expect(createPortalMock).toHaveBeenCalledWith(expect.anything(), expect.any(HTMLDivElement), expect.any(String));
   });
 });
