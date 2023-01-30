@@ -1,17 +1,20 @@
 /* eslint-disable no-import-assign */
+import * as ReactDOM from 'react-dom';
 import glue from '../glue';
 import * as CellModule from '../Cell';
 
 jest.mock('react-dom', () => ({
-  createPortal: () => {},
+  createPortal: jest.fn(),
 }));
 
 describe('glue', () => {
   let param;
+  let createPortalMock;
   beforeEach(() => {
     // we override default because CellModule is not a function
     // it is rendered react componet, a ready to show object presentation of component
     CellModule.default = () => 'Cell';
+    createPortalMock = jest.fn();
 
     param = {
       halo: {
@@ -21,7 +24,6 @@ describe('glue', () => {
           remove: jest.fn(),
         },
       },
-      element: {},
       model: {
         on: jest.fn(),
         removeListener: jest.fn(),
@@ -29,6 +31,7 @@ describe('glue', () => {
       initialSnContext: {},
       initialSnOptions: {},
       onMount: () => {},
+      element: document.createElement('div'),
     };
   });
   afterEach(() => {
@@ -43,5 +46,12 @@ describe('glue', () => {
     expect(param.halo.root.remove).toHaveBeenCalledTimes(1);
     expect(param.model.on).toHaveBeenCalledTimes(1);
     expect(param.model.removeListener).toHaveBeenCalledTimes(1);
+  });
+
+  test('should run create portal with `uid()`', () => {
+    jest.spyOn(ReactDOM, 'createPortal').mockImplementation(createPortalMock);
+    glue(param);
+    expect(createPortalMock).toHaveBeenCalledTimes(1);
+    expect(createPortalMock).toHaveBeenCalledWith(expect.anything(), expect.any(HTMLDivElement), expect.any(String));
   });
 });

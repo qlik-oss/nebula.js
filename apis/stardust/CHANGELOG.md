@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.2](https://github.com/qlik-oss/nebula.js/compare/v3.1.1...v3.1.2) (2023-01-30)
+
+### Features
+
+- created object now can extend initial properties ([#1063](https://github.com/qlik-oss/nebula.js/issues/1063)) ([c14a1e6](https://github.com/qlik-oss/nebula.js/commit/c14a1e64a4a03d3aaef72949f01ec358d8ce2a22))
+
 ## [3.1.1](https://github.com/qlik-oss/nebula.js/compare/v3.1.0...v3.1.1) (2023-01-22)
 
 **Note:** Version bump only for package @nebula.js/stardust

@@ -19,7 +19,7 @@ export default function glue({ halo, element, model, initialSnOptions, initialSn
       onMount={onMount}
     />,
     element,
-    model.id
+    currentId
   );
 
   const unmount = () => {
