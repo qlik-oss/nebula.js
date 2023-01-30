@@ -1,6 +1,7 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import renderer from 'react-test-renderer';
-import ListBoxPortal from '../ListBoxPortal';
+import ListBoxPortal, { getOptions } from '../ListBoxPortal';
 import * as ListBoxInlineModule from '../ListBoxInline';
 import * as useObjectSelectionsMockModule from '../../../hooks/useObjectSelections';
 import * as useExistingModelModule from '../hooks/useExistingModel';
@@ -42,6 +43,20 @@ describe('ListBoxPortal', () => {
     jest.useRealTimers();
     jest.resetAllMocks();
     jest.restoreAllMocks();
+  });
+
+  test('should run create portal with `uid()`', () => {
+    const createPortalMock = jest.fn();
+    jest.spyOn(ReactDOM, 'createPortal').mockImplementation(createPortalMock);
+
+    const app = {};
+    const fieldIdentifier = { qLibraryId: '123' };
+    const element = document.createElement('div');
+    const options = { selectionsApi: {}, sessionModel: {} };
+    ListBoxPortal({ app, element, fieldIdentifier, options });
+
+    expect(createPortalMock).toHaveBeenCalledTimes(1);
+    expect(createPortalMock).toHaveBeenCalledWith(expect.anything(), expect.any(HTMLDivElement), expect.any(String));
   });
 
   describe('existing generic object', () => {
@@ -115,6 +130,47 @@ describe('ListBoxPortal', () => {
         },
         {}
       );
+    });
+  });
+
+  describe('getOptions()', () => {
+    let defaultValues;
+
+    beforeAll(() => {
+      defaultValues = {
+        update: undefined,
+        fetchStart: undefined,
+        showGray: true,
+        focusSearch: false,
+        sessionModel: undefined,
+        selectionsApi: undefined,
+        selectDisabled: undefined,
+        postProcessPages: undefined,
+        calculatePagesHeight: false,
+      };
+    });
+
+    test('should return default result', () => {
+      expect(getOptions()).toMatchObject(defaultValues);
+    });
+
+    test('should return extra options result', () => {
+      const extraOptions = {
+        option_one: '#01',
+        option_two: '#02',
+      };
+      expect(getOptions(extraOptions)).toMatchObject({ ...defaultValues, ...extraOptions });
+    });
+
+    test('should include options from `__DO_NOT_USE__` key', () => {
+      const doNotUse = { do_not_use_one: 'do not use this key' };
+      const extraOptions = {
+        option_one: '#01',
+        option_two: '#02',
+        __DO_NOT_USE__: doNotUse,
+      };
+      const { __DO_NOT_USE__, ...resultOfOptions } = extraOptions;
+      expect(getOptions(extraOptions)).toMatchObject({ ...defaultValues, ...resultOfOptions, ...doNotUse });
     });
   });
 });
