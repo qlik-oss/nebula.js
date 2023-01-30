@@ -1,3 +1,4 @@
+import KEYS from '../../../../keys';
 import { getFieldKeyboardNavigation, getListboxInlineKeyboardNavigation } from '../listbox-keyboard-navigation';
 
 describe('keyboard navigation', () => {
@@ -5,6 +6,16 @@ describe('keyboard navigation', () => {
   let handleKeyDownForField;
   let handleKeyDownForListbox;
   let setKeyboardActive;
+  let setScrollPosition;
+  let focusListItems;
+  const globalEvent = {
+    nativeEvent: {},
+    currentTarget: {
+      getAttribute: jest.fn(() => '0'),
+    },
+    preventDefault: jest.fn(),
+    stopPropagation: jest.fn(),
+  };
 
   afterEach(() => {
     jest.restoreAllMocks();
@@ -14,13 +25,21 @@ describe('keyboard navigation', () => {
   beforeEach(() => {
     global.document = {};
     setKeyboardActive = jest.fn();
+    setScrollPosition = jest.fn();
+    focusListItems = { setFirst: jest.fn(), setLast: jest.fn() };
     actions = {
       select: jest.fn(),
       cancel: jest.fn(),
       confirm: jest.fn(),
     };
 
-    handleKeyDownForField = getFieldKeyboardNavigation(actions);
+    handleKeyDownForField = getFieldKeyboardNavigation({
+      select: actions.select,
+      cancel: actions.cancel,
+      confirm: actions.confirm,
+      setScrollPosition,
+      focusListItems,
+    });
     handleKeyDownForListbox = getListboxInlineKeyboardNavigation({ setKeyboardActive });
   });
 
@@ -142,6 +161,46 @@ describe('keyboard navigation', () => {
       expect(focus).toHaveBeenCalledTimes(1);
       expect(actions.select).toHaveBeenCalledTimes(1);
       expect(actions.select).toHaveBeenCalledWith([1], true);
+    });
+
+    test('should call setScrollPosition with "end" when keyCode is KEYS.END', () => {
+      globalEvent.nativeEvent.keyCode = KEYS.END;
+      handleKeyDownForField(globalEvent);
+      expect(setScrollPosition).toHaveBeenCalledWith('end');
+    });
+
+    test('should call setScrollPosition with "overflowEnd" when keyCode is KEYS.END and ctrlKey is true', () => {
+      globalEvent.nativeEvent.keyCode = KEYS.END;
+      globalEvent.nativeEvent.ctrlKey = true;
+      handleKeyDownForField(globalEvent);
+      expect(setScrollPosition).toHaveBeenCalledWith('overflowEnd');
+      globalEvent.nativeEvent.ctrlKey = false;
+    });
+
+    test('should call focusListItems.setLast with true when keyCode is KEYS.END', () => {
+      globalEvent.nativeEvent.keyCode = KEYS.END;
+      handleKeyDownForField(globalEvent);
+      expect(focusListItems.setLast).toHaveBeenCalledWith(true);
+    });
+
+    test('should call setScrollPosition with "start" when keyCode is KEYS.HOME', () => {
+      globalEvent.nativeEvent.keyCode = KEYS.HOME;
+      handleKeyDownForField(globalEvent);
+      expect(setScrollPosition).toHaveBeenCalledWith('start');
+    });
+
+    test('should call setScrollPosition with "overflowStart" when keyCode is KEYS.HOME and ctrlKey is true', () => {
+      globalEvent.nativeEvent.keyCode = KEYS.HOME;
+      globalEvent.nativeEvent.ctrlKey = true;
+      handleKeyDownForField(globalEvent);
+      expect(setScrollPosition).toHaveBeenCalledWith('overflowStart');
+      globalEvent.nativeEvent.ctrlKey = false;
+    });
+
+    test('should call focusListItems.setFirst with true when keyCode is KEYS.HOME', () => {
+      globalEvent.nativeEvent.keyCode = KEYS.HOME;
+      handleKeyDownForField(globalEvent);
+      expect(focusListItems.setFirst).toHaveBeenCalledWith(true);
     });
   });
 
