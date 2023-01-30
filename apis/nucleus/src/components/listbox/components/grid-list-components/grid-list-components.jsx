@@ -4,7 +4,7 @@ import RowColumn from '../ListBoxRowColumn';
 import getFrequencyAllowed from './frequency-allowed';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
-import handleSetOverflowDisclaimer from './setOverflowDisclaimer';
+import handleSetOverflowDisclaimer from './set-overflow-disclaimer';
 
 const { StyledFixedSizeList, StyledFixedSizeGrid } = getStyledComponents();
 
