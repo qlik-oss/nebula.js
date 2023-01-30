@@ -22,21 +22,26 @@ const options = {
   },
   build: {
     type: 'boolean',
+    description: 'Build the nebula visualization into /dist dictionary',
     default: true,
   },
   host: {
     type: 'string',
+    description: 'Specify a host to use',
     default: 'localhost',
   },
   port: {
     type: 'number',
+    description: 'Specify a port number to listen for requests on',
   },
   disableHostCheck: {
     type: 'boolean',
+    description: 'Bypasses host checking',
     default: false,
   },
   keyboardNavigation: {
     type: 'boolean',
+    description: 'Whether or not Nebula handles keyboard navigation',
     default: false,
   },
   resources: {
@@ -53,10 +58,12 @@ const options = {
   },
   'enigma.host': {
     type: 'string',
+    description: 'Set host to communicate with Qlik QIX Engine',
     default: 'localhost',
   },
   'enigma.port': {
     type: 'number',
+    description: 'Set port to communicate with Qlik QIX Engine',
     default: 9076,
   },
   clientId: {
@@ -69,13 +76,13 @@ const options = {
   },
   fixturePath: {
     type: 'string',
-    default: 'test/component',
     description: 'Path to a folder that will be used as basis when locating fixtures',
+    default: 'test/component',
   },
   mfe: {
     type: 'boolean',
+    description: 'Serves bundle to use in micro frontend',
     default: false,
-    describe: 'Serves bundle to use in micro frontend',
   },
 };
 
