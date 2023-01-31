@@ -47,6 +47,14 @@
     "value": "There are no matches for your search.",
     "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
   },
+  "Listbox.ItemsOverflow": {
+    "value": "Currently showing a limited data set, use search to reduce the size",
+    "comment": "Disclaimer that not all data is being shown"
+  },
+  "Listbox.Dismiss": {
+    "value": "Dismiss",
+    "comment": "Dismiss the disclaimer that not all data is being shown"
+  },
   "Menu.More": {
     "value": "More",
     "comment": "Menu option to display list of additional actions to choose from (ffd 20200520)"

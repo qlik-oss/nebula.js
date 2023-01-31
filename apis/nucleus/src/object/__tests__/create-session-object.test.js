@@ -53,8 +53,8 @@ describe('create-session-object', () => {
     const t = { initialProperties: jest.fn() };
     t.initialProperties.mockReturnValue({ then: () => {} });
     types.get.mockReturnValue(t);
-    create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
-    expect(t.initialProperties).toHaveBeenCalledWith('props');
+    create({ type: 't', version: 'v', fields: 'f', properties: 'props', extendProperties: false }, halo);
+    expect(t.initialProperties).toHaveBeenCalledWith('props', false);
   });
 
   test('should populate fields', async () => {

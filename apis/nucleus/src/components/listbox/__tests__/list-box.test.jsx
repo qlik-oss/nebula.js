@@ -94,7 +94,7 @@ describe('<Listbox />', () => {
       count: 200,
       listCount: 100,
     };
-    jest.spyOn(getListSizes, 'default').mockImplementation(() => sizes);
+    jest.spyOn(getListSizes, 'default').mockImplementation((props) => ({ ...sizes, listCount: props.listCount }));
 
     jest.spyOn(reactWindowInfiniteLoaderModule, 'default').mockImplementation((props) => {
       const Component = props.children;

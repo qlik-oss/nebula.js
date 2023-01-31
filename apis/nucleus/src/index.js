@@ -448,12 +448,13 @@ function nuked(configuration = {}) {
             api._popoverInstance = null;
           }
           const onPopoverClose = () => this.emit('closePopover');
+          const opts = getListboxPopoverOptions({ onPopoverClose, ...options });
           api._popoverInstance = React.createElement(ListBoxPopoverWrapper, {
             element: anchorElement,
             key: uid(),
             app,
             fieldIdentifier,
-            options: getListboxPopoverOptions({ onPopoverClose, ...options }),
+            options: opts,
             stateName: options.stateName || '$',
           });
           root.add(api._popoverInstance);

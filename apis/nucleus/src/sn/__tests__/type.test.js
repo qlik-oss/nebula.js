@@ -90,5 +90,24 @@ describe('type', () => {
         showTitles: true,
       });
     });
+
+    test('should allow deep extend', async () => {
+      const def = Promise.resolve('def');
+      const normalized = { qae: { properties: { initial: { a: 'a', b: { c: 'c', d: 'd' } } } } };
+
+      load.mockResolvedValue(def);
+      SNFactory.mockReturnValue(normalized);
+
+      const props = await c.initialProperties({ e: 'e', b: { c: 'override' } }, true);
+      expect(props).toEqual({
+        qInfo: { qType: 'pie' },
+        visualization: 'pie',
+        version: '1.1.0',
+        a: 'a',
+        b: { c: 'override', d: 'd' },
+        e: 'e',
+        showTitles: true,
+      });
+    });
   });
 });

@@ -234,6 +234,9 @@ window.getFuncs = function getFuncs() {
       qSelectionInfo: {
         qInSelections: false,
       },
+      layoutOptions: {
+        layoutOrder: 'row',
+      },
     }),
   };
 };
