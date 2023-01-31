@@ -189,6 +189,14 @@ export default function ListBox({
 
   const { textAlign } = layout?.qListObject.qDimensionInfo || {};
 
+  const [focusListItem, setFocusListItem] = useState({ first: false, last: false });
+  const getFocusState = () => ({
+    first: focusListItem.first,
+    setFirst: (first) => setFocusListItem((prevState) => ({ ...prevState, first })),
+    last: focusListItem.last,
+    setLast: (last) => setFocusListItem((prevState) => ({ ...prevState, last })),
+  });
+
   const { List, Grid } = getListBoxComponents({
     direction,
     layout,
@@ -213,6 +221,7 @@ export default function ListBox({
     listCount,
     overflowDisclaimer: { state: overflowDisclaimer, set: showOverflowDisclaimer },
     setScrollPosition,
+    focusListItems: getFocusState(),
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};

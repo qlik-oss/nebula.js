@@ -1,5 +1,5 @@
 /* eslint-disable react/function-component-definition */
-import React, { useState } from 'react';
+import React from 'react';
 import RowColumn from '../ListBoxRowColumn';
 import getFrequencyAllowed from './frequency-allowed';
 import deriveRenderOptions from './derive-render-options';
@@ -32,6 +32,7 @@ export default function getListBoxComponents({
   listCount,
   overflowDisclaimer,
   setScrollPosition,
+  focusListItems,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
   const { dense = false } = layoutOptions || {};
@@ -45,7 +46,6 @@ export default function getListBoxComponents({
   };
 
   const isLocked = layout?.qListObject.qDimensionInfo.qLocked;
-  const [focusListItem, setFocusListItem] = useState({ first: false, last: false });
 
   // Item data common for List and Grid.
   const commonItemData = {
@@ -70,12 +70,7 @@ export default function getListBoxComponents({
     keyboard,
     showGray,
     dataOffset: local.current.dataOffset,
-    focusListItems: {
-      first: focusListItem.first,
-      setFirst: (first) => setFocusListItem((prevState) => ({ ...prevState, first })),
-      last: focusListItem.last,
-      setLast: (last) => setFocusListItem((prevState) => ({ ...prevState, last })),
-    },
+    focusListItems,
   };
 
   const List = ({ onItemsRendered, ref }) => {
