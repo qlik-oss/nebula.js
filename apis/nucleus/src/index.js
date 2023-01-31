@@ -16,6 +16,7 @@ import get from './object/get-generic-object';
 import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
 import uid from './object/uid';
+import eventmixin from './selections/event-mixin';
 
 /**
  * @interface Context
@@ -446,13 +447,13 @@ function nuked(configuration = {}) {
             root.remove(api._popoverInstance);
             api._popoverInstance = null;
           }
-          const opts = getListboxPopoverOptions(options);
+          const onPopoverClose = () => this.emit('closePopover');
           api._popoverInstance = React.createElement(ListBoxPopoverWrapper, {
             element: anchorElement,
             key: uid(),
             app,
             fieldIdentifier,
-            options: opts,
+            options: getListboxPopoverOptions({ onPopoverClose, ...options }),
             stateName: options.stateName || '$',
           });
           root.add(api._popoverInstance);
@@ -463,6 +464,7 @@ function nuked(configuration = {}) {
     halo.public.nebbie = api;
     halo.types = types;
 
+    eventmixin(api.__DO_NOT_USE__);
     return api;
   }
 
