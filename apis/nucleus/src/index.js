@@ -210,6 +210,21 @@ function nuked(configuration = {}) {
     let selectionsComponentReference = null;
 
     /**
+     * @typedef { 'fieldPopoverClose' } EmbedEventTypes
+     */
+
+    /**
+     * Event listener function on instance
+     *
+     * @method
+     * @name Embed#on
+     * @param {EmbedEventTypes} eventType event type that function needs to listen
+     * @param {Function} callback a callback function to run when event emits
+     * @example
+     * api.on('someEvent', () => {...});
+     */
+
+    /**
      * @class
      * @alias Embed
      */
@@ -447,7 +462,7 @@ function nuked(configuration = {}) {
             root.remove(api._popoverInstance);
             api._popoverInstance = null;
           }
-          const onPopoverClose = () => this.emit('closePopover');
+          const onPopoverClose = () => api.emit('fieldPopoverClose');
           const opts = getListboxPopoverOptions({ onPopoverClose, ...options });
           api._popoverInstance = React.createElement(ListBoxPopoverWrapper, {
             element: anchorElement,
@@ -465,7 +480,7 @@ function nuked(configuration = {}) {
     halo.public.nebbie = api;
     halo.types = types;
 
-    eventmixin(api.__DO_NOT_USE__);
+    eventmixin(api);
     return api;
   }
 

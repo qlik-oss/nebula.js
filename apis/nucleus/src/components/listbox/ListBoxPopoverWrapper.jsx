@@ -26,7 +26,9 @@ export default function ListBoxPopoverWrapper({ app, fieldIdentifier, stateName,
   const [showState, setShowstate] = useState(!!options.show);
   const handleCloseShowState = () => {
     setShowstate(false);
-    if (options.onPopoverClose) options.onPopoverClose();
+    if (options.onPopoverClose) {
+      options.onPopoverClose();
+    }
   };
 
   return (
