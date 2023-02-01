@@ -660,13 +660,6 @@
         }
       }
     },
-    "EmbedEventTypes": {
-      "kind": "alias",
-      "items": {
-        "kind": "literal",
-        "value": "'fieldPopoverClose'"
-      }
-    },
     "Embed": {
       "kind": "class",
       "constructor": {
@@ -681,7 +674,7 @@
             {
               "name": "eventType",
               "description": "event type that function needs to listen",
-              "type": "#/definitions/EmbedEventTypes"
+              "type": "EmbedEventTypes"
             },
             {
               "name": "callback",

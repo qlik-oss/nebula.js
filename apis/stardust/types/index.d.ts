@@ -224,8 +224,6 @@ declare namespace stardust {
         anything: object;
     }
 
-    type EmbedEventTypes = "fieldPopoverClose";
-
     class Embed {
         constructor();
 
@@ -234,7 +232,7 @@ declare namespace stardust {
          * @param eventType event type that function needs to listen
          * @param callback a callback function to run when event emits
          */
-        on(eventType: stardust.EmbedEventTypes, callback: ()=>void): void;
+        on(eventType: EmbedEventTypes, callback: ()=>void): void;
 
         /**
          * Renders a visualization or sheet into an HTMLElement.

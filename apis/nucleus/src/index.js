@@ -210,6 +210,7 @@ function nuked(configuration = {}) {
     let selectionsComponentReference = null;
 
     /**
+     * @ignore
      * @typedef { 'fieldPopoverClose' } EmbedEventTypes
      */
 
