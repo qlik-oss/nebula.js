@@ -53,10 +53,10 @@ describe('nuked()', () => {
         let prevInstacne;
         let reactCreateElementExpectedArgs;
 
-        beforeAll(() => {
+        beforeEach(() => {
           anchorElement = document.createElement('div');
           fieldIdentifier = 'field#01';
-          options = {};
+          options = { onPopoverClose: jest.fn() };
           prevInstacne = document.createElement('span');
           prevInstacne.textContent = 'Previously created Instance!';
           reactCreateElementExpectedArgs = {
@@ -67,6 +67,7 @@ describe('nuked()', () => {
             key: expect.any(String),
             stateName: '$',
           };
+          getListboxPopoverOptionsMock.mockReturnValue(options);
         });
 
         test('should call `root.add()` at the first time of mounting properly', () => {
