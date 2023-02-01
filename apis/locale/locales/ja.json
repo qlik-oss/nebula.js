@@ -14,19 +14,30 @@
     "comment": "Text shown between the selected fields count {0} and total fields count {1}",
     "version": "l99iJM6C+Sm7L6wu1tXfOQ=="
   },
+  "Listbox.Dismiss": {
+    "value": "却下",
+    "comment": "Dismiss the disclaimer that not all data is being shown",
+    "version": "N/rgZJ2kTYsEGGa6KAsKEw=="
+  },
+  "Listbox.ItemsOverflow": {
+    "value": "現在表示されているデータ セットは制限されているため、検索を使ってサイズを縮小してください",
+    "comment": "Disclaimer that not all data is being shown",
+    "version": "qJZEOzTZSa3oxGsDC5LF+g=="
+  },
   "Listbox.Lock": {
     "value": "選択をロック",
     "comment": "Action text to lock selections in a listbox",
     "version": "05jY0MA0azu2f6LgrBSpYg=="
   },
+  "Listbox.NoMatchesForYourTerms": {
+    "value": "検索に一致するものがありません。",
+    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)",
+    "version": "0xs0djD9amx8gzW4Ph0l8Q=="
+  },
   "Listbox.ResultFilterLabel": {
     "value": "検索結果フィルター",
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
-  },
-  "Listbox.NoMatchesForYourTerms": {
-    "value": "検索に一致するものがありません。",
-    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
   },
   "Listbox.ScreenReaderInstructions": {
     "value": "下記の要素をアクティブ化すると、ページのコンテンツが更新されます",
