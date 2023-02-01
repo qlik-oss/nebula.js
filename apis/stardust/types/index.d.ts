@@ -228,13 +228,6 @@ declare namespace stardust {
         constructor();
 
         /**
-         * Event listener function on instance
-         * @param eventType event type that function needs to listen
-         * @param callback a callback function to run when event emits
-         */
-        on(eventType: EmbedEventTypes, callback: ()=>void): void;
-
-        /**
          * Renders a visualization or sheet into an HTMLElement.
          * Support for sense sheets is experimental.
          * @param cfg The render configuration.

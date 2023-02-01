@@ -667,26 +667,6 @@
         "params": []
       },
       "entries": {
-        "on": {
-          "description": "Event listener function on instance",
-          "kind": "function",
-          "params": [
-            {
-              "name": "eventType",
-              "description": "event type that function needs to listen",
-              "type": "EmbedEventTypes"
-            },
-            {
-              "name": "callback",
-              "description": "a callback function to run when event emits",
-              "kind": "function",
-              "params": []
-            }
-          ],
-          "examples": [
-            "api.on('someEvent', () => {...});"
-          ]
-        },
         "render": {
           "description": "Renders a visualization or sheet into an HTMLElement.\nSupport for sense sheets is experimental.",
           "kind": "function",

@@ -217,6 +217,7 @@ function nuked(configuration = {}) {
     /**
      * Event listener function on instance
      *
+     * @ignore
      * @method
      * @name Embed#on
      * @param {EmbedEventTypes} eventType event type that function needs to listen
