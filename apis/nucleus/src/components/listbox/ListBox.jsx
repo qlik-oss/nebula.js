@@ -103,7 +103,11 @@ export default function ListBox({
 
   const { layoutOptions = {} } = layout || {};
 
-  const isRow = layoutOptions?.dataLayout === 'singleColumn' ? true : layoutOptions?.layoutOrder === 'row';
+  let isRow = true;
+  if (layoutOptions.dataLayout) {
+    isRow = layoutOptions.dataLayout === 'singleColumn' ? true : layoutOptions?.layoutOrder === 'row';
+  }
+
   const isGrid = layoutOptions?.dataLayout === 'grid';
 
   const scrollToIndex = (index) => {
@@ -183,7 +187,9 @@ export default function ListBox({
       offset: local.current.dataOffset,
     });
     local.current.dataOffset = offset;
-    triggerRerender && setPages((currentPages) => [...currentPages]);
+    if (triggerRerender) {
+      setPages((currentPages) => [...currentPages]);
+    }
     scrollToIndex(scrollIndex);
   };
 

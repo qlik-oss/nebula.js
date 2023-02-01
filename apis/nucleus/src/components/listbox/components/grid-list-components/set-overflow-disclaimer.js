@@ -1,5 +1,5 @@
 const getIndex = (renderProps, isColumnLayout) => {
-  if (renderProps?.visibleRowStopIndex || renderProps.visibleColumnStopIndex) {
+  if (renderProps?.visibleRowStopIndex !== undefined || renderProps.visibleColumnStopIndex !== undefined) {
     return isColumnLayout ? renderProps.visibleColumnStopIndex : renderProps.visibleRowStopIndex;
   }
   return renderProps.visibleStopIndex;
@@ -12,7 +12,7 @@ const getIsScrollTop = (renderProps, isColumnLayout) => {
   return renderProps.visibleStartIndex === 0;
 };
 
-const getIsEndOfData = (qCardinal, index, count, dataOffset) => qCardinal === index * count + count + dataOffset;
+const getIsEndOfData = (qCardinal, index, count, dataOffset) => qCardinal === index * count + dataOffset + count;
 
 export default function handleSetOverflowDisclaimer({
   renderProps,

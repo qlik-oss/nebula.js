@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import { styled } from '@mui/material/styles';
 
@@ -272,19 +272,19 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   }
   cellIndex += dataOffset;
 
-  const [rowRef, setRowRef] = useState(null);
+  const rowRef = useRef(null);
   useEffect(() => {
-    if (rowRef !== null) {
+    if (rowRef.current !== null) {
       if (count.currentIndex === 0 && focusListItems.first) {
-        rowRef.focus();
+        rowRef.current.focus();
         focusListItems.setFirst(false);
       }
       if (count.currentIndex === count.max - 1 && focusListItems.last) {
-        rowRef.focus();
+        rowRef.current.focus();
         focusListItems.setLast(false);
       }
     }
-  }, [rowRef]);
+  }, [rowRef.current]);
 
   const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation({ ...actions, focusListItems }), [actions]);
 
@@ -458,7 +458,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   return (
     <Root className={classes.barContainer} flexBasisProp={flexBasisVal} dense={dense}>
       <Grid
-        ref={setRowRef}
+        ref={rowRef}
         container
         gap={0}
         className={joinClassNames(['value', ...classArr])}
