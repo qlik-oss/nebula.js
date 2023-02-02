@@ -53,7 +53,7 @@ describe('nuked()', () => {
         let prevInstacne;
         let reactCreateElementExpectedArgs;
 
-        beforeAll(() => {
+        beforeEach(() => {
           anchorElement = document.createElement('div');
           fieldIdentifier = 'field#01';
           options = {};
@@ -67,6 +67,7 @@ describe('nuked()', () => {
             key: expect.any(String),
             stateName: '$',
           };
+          getListboxPopoverOptionsMock.mockReturnValue(options);
         });
 
         test('should call `root.add()` at the first time of mounting properly', () => {
@@ -78,16 +79,29 @@ describe('nuked()', () => {
           expect(getListboxPopoverOptionsMock).toHaveBeenCalledTimes(1);
           expect(getListboxPopoverOptionsMock).toHaveBeenCalledWith(options);
           expect(reactCreateElementMock).toHaveBeenCalledTimes(1);
-          expect(reactCreateElementMock.mock.lastCall[0]).toEqual(expect.any(Function));
-          console.log('>>>> HERE:', reactCreateElementMock.mock.lastCall, reactCreateElementExpectedArgs);
-          expect(reactCreateElementMock.mock.lastCall[1]).toMatchObject({
-            app: undefined,
-            element: anchorElement,
-            fieldIdentifier,
-            options,
-            key: expect.any(String),
-            stateName: '$',
-          });
+          expect(reactCreateElementMock.mock.lastCall).toEqual([
+            expect.any(Function),
+            {
+              app: undefined,
+              element: anchorElement,
+              fieldIdentifier,
+              options,
+              key: expect.any(String),
+              stateName: '$',
+            },
+          ]);
+          // const [firstArg, secondArg] = reactCreateElementMock.mock.lastCall;
+          // expect(firstArg).toEqual(expect.any(Function));
+          // console.log('>>>> HERE:', reactCreateElementMock.mock.lastCall);
+          // expect(secondArg).toMatchObject({
+          //   app: undefined,
+          //   element: anchorElement,
+          //   fieldIdentifier,
+          //   options,
+          //   key: expect.any(String),
+          //   stateName: '$',
+          // });
+
           // expect(rootAddMock).toHaveBeenCalledTimes(1);
           // expect(_nuked._popoverInstance).toEqual(createdElement);
 
