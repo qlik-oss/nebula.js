@@ -59,14 +59,17 @@ describe('nuked()', () => {
           options = {};
           prevInstacne = document.createElement('span');
           prevInstacne.textContent = 'Previously created Instance!';
-          reactCreateElementExpectedArgs = {
-            app: undefined,
-            element: anchorElement,
-            fieldIdentifier,
-            options,
-            key: expect.any(String),
-            stateName: '$',
-          };
+          reactCreateElementExpectedArgs = [
+            expect.any(Function),
+            {
+              app: undefined,
+              element: anchorElement,
+              fieldIdentifier,
+              options,
+              key: expect.any(String),
+              stateName: '$',
+            },
+          ];
           getListboxPopoverOptionsMock.mockReturnValue(options);
         });
 
@@ -79,54 +82,27 @@ describe('nuked()', () => {
           expect(getListboxPopoverOptionsMock).toHaveBeenCalledTimes(1);
           expect(getListboxPopoverOptionsMock).toHaveBeenCalledWith(options);
           expect(reactCreateElementMock).toHaveBeenCalledTimes(1);
-          expect(reactCreateElementMock.mock.lastCall).toEqual([
-            expect.any(Function),
-            {
-              app: undefined,
-              element: anchorElement,
-              fieldIdentifier,
-              options,
-              key: expect.any(String),
-              stateName: '$',
-            },
-          ]);
-          // const [firstArg, secondArg] = reactCreateElementMock.mock.lastCall;
-          // expect(firstArg).toEqual(expect.any(Function));
-          // console.log('>>>> HERE:', reactCreateElementMock.mock.lastCall);
-          // expect(secondArg).toMatchObject({
-          //   app: undefined,
-          //   element: anchorElement,
-          //   fieldIdentifier,
-          //   options,
-          //   key: expect.any(String),
-          //   stateName: '$',
-          // });
-
-          // expect(rootAddMock).toHaveBeenCalledTimes(1);
-          // expect(_nuked._popoverInstance).toEqual(createdElement);
-
-          // expect(1).toBe(1);
+          expect(reactCreateElementMock.mock.lastCall).toEqual(reactCreateElementExpectedArgs);
+          expect(rootAddMock).toHaveBeenCalledTimes(1);
+          expect(_nuked._popoverInstance).toEqual(createdElement);
         });
 
         test('should call `root.remove()` if instance has been created previously', () => {
-          // _nuked = nuked();
+          _nuked = nuked();
 
-          // // first calls root.remove()
-          // _nuked._popoverInstance = prevInstacne;
-          // _nuked.__DO_NOT_USE__.popover(anchorElement, fieldIdentifier, options);
-          // expect(rootRemoveMock).toHaveBeenCalledTimes(1);
-          // expect(rootRemoveMock).toHaveBeenCalledWith(prevInstacne);
+          // first calls root.remove()
+          _nuked._popoverInstance = prevInstacne;
+          _nuked.__DO_NOT_USE__.popover(anchorElement, fieldIdentifier, options);
+          expect(rootRemoveMock).toHaveBeenCalledTimes(1);
+          expect(rootRemoveMock).toHaveBeenCalledWith(prevInstacne);
 
-          // // then calls root.add() again
-          // expect(getListboxPopoverOptionsMock).toHaveBeenCalledTimes(1);
-          // expect(getListboxPopoverOptionsMock).toHaveBeenCalledWith(options);
-          // expect(reactCreateElementMock).toHaveBeenCalledTimes(1);
-          // expect(reactCreateElementMock.mock.lastCall[0]).toEqual(expect.any(Function));
-          // expect(reactCreateElementMock.mock.lastCall[1]).toMatchObject(reactCreateElementExpectedArgs);
-          // expect(rootAddMock).toHaveBeenCalledTimes(1);
-          // expect(_nuked._popoverInstance).toEqual(createdElement);
-
-          expect(1).toBe(1);
+          // then calls root.add() again
+          expect(getListboxPopoverOptionsMock).toHaveBeenCalledTimes(1);
+          expect(getListboxPopoverOptionsMock).toHaveBeenCalledWith(options);
+          expect(reactCreateElementMock).toHaveBeenCalledTimes(1);
+          expect(reactCreateElementMock.mock.lastCall).toEqual(reactCreateElementExpectedArgs);
+          expect(rootAddMock).toHaveBeenCalledTimes(1);
+          expect(_nuked._popoverInstance).toEqual(createdElement);
         });
       });
     });
