@@ -79,8 +79,8 @@ describe('nuked()', () => {
           expect(getListboxPopoverOptionsMock).toHaveBeenCalledWith(options);
           expect(reactCreateElementMock).toHaveBeenCalledTimes(1);
           expect(reactCreateElementMock.mock.lastCall[0]).toEqual(expect.any(Function));
-          console.log('>>>> HERE:', reactCreateElementMock.mock.lastCall[0], reactCreateElementExpectedArgs);
-          // expect(reactCreateElementMock.mock.lastCall[1]).toMatchObject(reactCreateElementExpectedArgs);
+          console.log('>>>> HERE:', reactCreateElementMock.mock.lastCall, reactCreateElementExpectedArgs);
+          expect(reactCreateElementMock.mock.lastCall[1]).toMatchObject(reactCreateElementExpectedArgs);
           // expect(rootAddMock).toHaveBeenCalledTimes(1);
           // expect(_nuked._popoverInstance).toEqual(createdElement);
 
