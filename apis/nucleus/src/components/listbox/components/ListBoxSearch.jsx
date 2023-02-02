@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useTheme } from '@nebula.js/ui/theme';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -16,9 +16,27 @@ const StyledOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
   color: theme.listBox?.content?.color,
 }));
 
-export default function ListBoxSearch({ selections, model, keyboard, dense = false, visible = true }) {
+export default function ListBoxSearch({
+  selections,
+  model,
+  keyboard,
+  dense = false,
+  visible = true,
+  wildCardSearch = true,
+}) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
+
+  const inputRef = useRef();
+  const input = inputRef.current;
+  // work in progress: set cursor position between wildcard
+  if (wildCardSearch) {
+    const selectionPos = value.length - 1;
+    if (input) {
+      input.setSelectionRange(selectionPos, selectionPos);
+    }
+  }
+
   const theme = useTheme();
   const { getStoreValue } = useDataStore(model);
 
@@ -57,6 +75,10 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
   };
 
   const handleFocus = () => {
+    const wildcard = '**';
+    if (wildCardSearch) {
+      setValue(wildcard);
+    }
     if (!selections.isModal()) {
       selections.begin(['/qListObjectDef']);
     }
@@ -131,6 +153,7 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
           },
         },
       ]}
+      inputRef={inputRef}
       size="small"
       fullWidth
       placeholder={translator.get('Listbox.Search')}
