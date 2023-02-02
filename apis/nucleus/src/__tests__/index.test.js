@@ -1,4 +1,4 @@
-/* eslint-disable no-underscore-dangle, no-unused-vars */
+/* eslint-disable no-underscore-dangle, no-unused-vars, no-console */
 import React from 'react';
 import nuked from '../index';
 import * as NebulaAppModule from '../components/NebulaApp';
@@ -77,8 +77,9 @@ describe('nuked()', () => {
           expect(rootRemoveMock).toHaveBeenCalledTimes(0);
           expect(getListboxPopoverOptionsMock).toHaveBeenCalledTimes(1);
           expect(getListboxPopoverOptionsMock).toHaveBeenCalledWith(options);
-          // expect(reactCreateElementMock).toHaveBeenCalledTimes(1);
-          // expect(reactCreateElementMock.mock.lastCall[0]).toEqual(expect.any(Function));
+          expect(reactCreateElementMock).toHaveBeenCalledTimes(1);
+          expect(reactCreateElementMock.mock.lastCall[0]).toEqual(expect.any(Function));
+          console.log('>>>> HERE:', reactCreateElementMock.mock.lastCall[0], reactCreateElementExpectedArgs);
           // expect(reactCreateElementMock.mock.lastCall[1]).toMatchObject(reactCreateElementExpectedArgs);
           // expect(rootAddMock).toHaveBeenCalledTimes(1);
           // expect(_nuked._popoverInstance).toEqual(createdElement);
