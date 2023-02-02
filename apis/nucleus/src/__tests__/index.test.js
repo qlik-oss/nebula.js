@@ -46,7 +46,7 @@ describe('nuked()', () => {
 
   describe('embed', () => {
     describe('__DO_NOT_USE__', () => {
-      describe.skip('popover', () => {
+      describe('popover', () => {
         let anchorElement;
         let fieldIdentifier;
         let options;
