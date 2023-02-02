@@ -14,19 +14,30 @@
     "comment": "Text shown between the selected fields count {0} and total fields count {1}",
     "version": "l99iJM6C+Sm7L6wu1tXfOQ=="
   },
+  "Listbox.Dismiss": {
+    "value": "Schließen",
+    "comment": "Dismiss the disclaimer that not all data is being shown",
+    "version": "N/rgZJ2kTYsEGGa6KAsKEw=="
+  },
+  "Listbox.ItemsOverflow": {
+    "value": "Derzeit wird ein eingeschränkter Datensatz angezeigt, verwenden Sie die Suche, um die Größe zu reduzieren",
+    "comment": "Disclaimer that not all data is being shown",
+    "version": "qJZEOzTZSa3oxGsDC5LF+g=="
+  },
   "Listbox.Lock": {
     "value": "Auswahlen sperren",
     "comment": "Action text to lock selections in a listbox",
     "version": "05jY0MA0azu2f6LgrBSpYg=="
   },
+  "Listbox.NoMatchesForYourTerms": {
+    "value": "Für Ihre Suche wurden keine Übereinstimmungen gefunden.",
+    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)",
+    "version": "0xs0djD9amx8gzW4Ph0l8Q=="
+  },
   "Listbox.ResultFilterLabel": {
     "value": "Suchergebnisfilter",
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
-  },
-  "Listbox.NoMatchesForYourTerms": {
-    "value": "Für Ihre Suche wurden keine Übereinstimmungen gefunden.",
-    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
   },
   "Listbox.ScreenReaderInstructions": {
     "value": "Bei Aktivierung der Elemente unten wird der Seiteninhalt aktualisiert",

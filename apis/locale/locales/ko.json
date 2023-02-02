@@ -14,19 +14,30 @@
     "comment": "Text shown between the selected fields count {0} and total fields count {1}",
     "version": "l99iJM6C+Sm7L6wu1tXfOQ=="
   },
+  "Listbox.Dismiss": {
+    "value": "해제",
+    "comment": "Dismiss the disclaimer that not all data is being shown",
+    "version": "N/rgZJ2kTYsEGGa6KAsKEw=="
+  },
+  "Listbox.ItemsOverflow": {
+    "value": "현재 제한된 데이터 집합이 표시되고 있습니다. 검색을 사용하여 크기를 줄이십시오.",
+    "comment": "Disclaimer that not all data is being shown",
+    "version": "qJZEOzTZSa3oxGsDC5LF+g=="
+  },
   "Listbox.Lock": {
     "value": "선택 내용 잠금",
     "comment": "Action text to lock selections in a listbox",
     "version": "05jY0MA0azu2f6LgrBSpYg=="
   },
+  "Listbox.NoMatchesForYourTerms": {
+    "value": "검색에 대해 일치하는 항목이 없습니다.",
+    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)",
+    "version": "0xs0djD9amx8gzW4Ph0l8Q=="
+  },
   "Listbox.ResultFilterLabel": {
     "value": "검색 결과 필터",
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
-  },
-  "Listbox.NoMatchesForYourTerms": {
-    "value": "검색에 대해 일치하는 항목이 없습니다.",
-    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
   },
   "Listbox.ScreenReaderInstructions": {
     "value": "아래 요소를 활성화하면 페이지의 콘텐츠가 업데이트됩니다.",
