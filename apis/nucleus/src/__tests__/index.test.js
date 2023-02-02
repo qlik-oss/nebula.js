@@ -80,7 +80,14 @@ describe('nuked()', () => {
           expect(reactCreateElementMock).toHaveBeenCalledTimes(1);
           expect(reactCreateElementMock.mock.lastCall[0]).toEqual(expect.any(Function));
           console.log('>>>> HERE:', reactCreateElementMock.mock.lastCall, reactCreateElementExpectedArgs);
-          expect(reactCreateElementMock.mock.lastCall[1]).toMatchObject(reactCreateElementExpectedArgs);
+          expect(reactCreateElementMock.mock.lastCall[1]).toMatchObject({
+            app: undefined,
+            element: anchorElement,
+            fieldIdentifier,
+            options,
+            key: expect.any(String),
+            stateName: '$',
+          });
           // expect(rootAddMock).toHaveBeenCalledTimes(1);
           // expect(_nuked._popoverInstance).toEqual(createdElement);
 
