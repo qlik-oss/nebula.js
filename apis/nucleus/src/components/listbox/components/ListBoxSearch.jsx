@@ -7,6 +7,7 @@ import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
 
 const TREE_PATH = '/qListObjectDef';
+const WILDCARD = '**';
 
 const StyledInputAdornment = styled(InputAdornment)(({ theme }) => ({
   color: theme.listBox?.content?.color,
@@ -29,12 +30,9 @@ export default function ListBoxSearch({
 
   const inputRef = useRef();
   const input = inputRef.current;
-  // work in progress: set cursor position between wildcard
-  if (wildCardSearch) {
-    const selectionPos = value.length - 1;
-    if (input) {
-      input.setSelectionRange(selectionPos, selectionPos);
-    }
+  if (wildCardSearch && value === WILDCARD) {
+    const cursorPos = value.length - 1;
+    input.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
   }
 
   const theme = useTheme();
@@ -75,9 +73,8 @@ export default function ListBoxSearch({
   };
 
   const handleFocus = () => {
-    const wildcard = '**';
     if (wildCardSearch) {
-      setValue(wildcard);
+      setValue(WILDCARD);
     }
     if (!selections.isModal()) {
       selections.begin(['/qListObjectDef']);
