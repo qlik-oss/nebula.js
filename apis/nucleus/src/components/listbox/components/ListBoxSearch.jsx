@@ -30,7 +30,6 @@ export default function ListBoxSearch({
   const [wildcardOn, setWildcardOn] = useState(false);
 
   const inputRef = useRef();
-  const input = inputRef.current;
 
   const theme = useTheme();
   const { getStoreValue } = useDataStore(model);
@@ -64,14 +63,12 @@ export default function ListBoxSearch({
   useEffect(() => {
     if (wildcardOn) {
       const cursorPos = value.length - 1;
-      input.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
-    }
-  }, [wildcardOn]);
-
-  const onChange = async (e) => {
-    if (wildCardSearch) {
+      inputRef.current.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
       setWildcardOn(false);
     }
+  }, [wildcardOn, inputRef.current]);
+
+  const onChange = async (e) => {
     setValue(e.target.value);
     if (!e.target.value.length) {
       return abortSearch();
@@ -86,12 +83,6 @@ export default function ListBoxSearch({
     }
     if (!selections.isModal()) {
       selections.begin(['/qListObjectDef']);
-    }
-  };
-
-  const onBlur = () => {
-    if (wildCardSearch) {
-      setWildcardOn(false);
     }
   };
 
@@ -172,7 +163,6 @@ export default function ListBoxSearch({
       onFocus={handleFocus}
       onChange={onChange}
       onKeyDown={onKeyDown}
-      onBlur={onBlur}
       inputProps={{
         tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
       }}
