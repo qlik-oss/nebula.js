@@ -27,13 +27,10 @@ export default function ListBoxSearch({
 }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
+  const [wildcardOn, setWildcardOn] = useState(false);
 
   const inputRef = useRef();
   const input = inputRef.current;
-  if (wildCardSearch && value === WILDCARD) {
-    const cursorPos = value.length - 1;
-    input.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
-  }
 
   const theme = useTheme();
   const { getStoreValue } = useDataStore(model);
@@ -64,7 +61,17 @@ export default function ListBoxSearch({
     };
   }, []);
 
+  useEffect(() => {
+    if (wildcardOn) {
+      const cursorPos = value.length - 1;
+      input.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
+    }
+  }, [wildcardOn]);
+
   const onChange = async (e) => {
+    if (wildCardSearch) {
+      setWildcardOn(false);
+    }
     setValue(e.target.value);
     if (!e.target.value.length) {
       return abortSearch();
@@ -75,9 +82,16 @@ export default function ListBoxSearch({
   const handleFocus = () => {
     if (wildCardSearch) {
       setValue(WILDCARD);
+      setWildcardOn(true);
     }
     if (!selections.isModal()) {
       selections.begin(['/qListObjectDef']);
+    }
+  };
+
+  const onBlur = () => {
+    if (wildCardSearch) {
+      setWildcardOn(false);
     }
   };
 
@@ -158,6 +172,7 @@ export default function ListBoxSearch({
       onFocus={handleFocus}
       onChange={onChange}
       onKeyDown={onKeyDown}
+      onBlur={onBlur}
       inputProps={{
         tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
       }}
