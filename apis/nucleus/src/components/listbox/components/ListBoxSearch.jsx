@@ -61,7 +61,7 @@ export default function ListBoxSearch({
   }, []);
 
   useEffect(() => {
-    if (wildcardOn) {
+    if (wildcardOn && inputRef.current) {
       const cursorPos = value.length - 1;
       inputRef.current.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
       setWildcardOn(false);
