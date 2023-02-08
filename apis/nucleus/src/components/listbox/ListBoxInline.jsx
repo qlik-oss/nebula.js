@@ -51,7 +51,6 @@ export default function ListBoxInline({ options = {} }) {
     checkboxes,
     search = true,
     focusSearch = false,
-    toolbar = true,
     rangeSelect = true,
     model,
     selections,
@@ -63,6 +62,7 @@ export default function ListBoxInline({ options = {} }) {
     showGray = true,
     scrollState = undefined,
   } = options;
+  let { toolbar = true } = options;
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
@@ -107,13 +107,20 @@ export default function ListBoxInline({ options = {} }) {
     active: keyboardActive,
   };
 
+  if (layout?.toolbar !== undefined) {
+    toolbar = layout.toolbar;
+  }
+
   useEffect(() => {
     const show = () => {
       setShowToolbar(true);
+      if (search === 'inSelection') {
+        setShowSearch(true);
+      }
     };
     const hide = () => {
       setShowToolbar(false);
-      if (search === 'toggle') {
+      if (search === 'toggle' || search === 'inSelection') {
         setShowSearch(false);
       }
     };
@@ -161,7 +168,8 @@ export default function ListBoxInline({ options = {} }) {
 
   const showTitle = true;
 
-  const searchVisible = (search === true || (search === 'toggle' && showSearch)) && !selectDisabled();
+  const searchVisible =
+    (search === true || ((search === 'toggle' || search === 'inSelection') && showSearch)) && !selectDisabled();
   const dense = layout.layoutOptions?.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
