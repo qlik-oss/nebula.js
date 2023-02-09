@@ -1,16 +1,22 @@
 /* eslint no-underscore-dangle:0 */
+import React from 'react';
 import appLocaleFn from './locale/app-locale';
 import appThemeFn from './app-theme';
 import deviceTypeFn from './device-type';
 
 import bootNebulaApp from './components/NebulaApp';
 import AppSelectionsPortal from './components/selections/AppSelections';
-import ListBoxPortal from './components/listbox/ListBoxPortal';
+import ListBoxPortal, { getOptions as getListboxPortalOptions } from './components/listbox/ListBoxPortal';
+import ListBoxPopoverWrapper, {
+  getOptions as getListboxPopoverOptions,
+} from './components/listbox/ListBoxPopoverWrapper';
 
 import create from './object/create-session-object';
 import get from './object/get-generic-object';
 import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
+import uid from './object/uid';
+import eventmixin from './selections/event-mixin';
 
 /**
  * @interface Context
@@ -121,52 +127,6 @@ const mergeConfigs = (base, c) => ({
  * @typedef {function(function)} ReceiverFunction A callback function which receives another function as input.
  */
 
-/**
- * @ignore
- * @typedef {object} DoNotUseOptions Options strictly recommended not to use as they might change anytime. Documenting them to keep track of them, but not exposing them to API docs.
- * @property {boolean=} [focusSearch=false] Initialize the Listbox with the search input focused. Only applicable when
- *    search is true, since toggling will always focus the search input on show.
- * @property {boolean=} [options.showGray=true] Render fields or checkboxes in shades of gray instead of white when their state is excluded or alternative.
- * @property {boolean=} [options.calculatePagesHeight=false] Override each page's qHeight with its actual row count.
- * @property {object} [options.sessionModel] Use a custom sessionModel.
- * @property {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
- * @property {function():boolean} [options.selectDisabled=] Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
- * @property {function():object[]} [options.postProcessPages] A function for client-side post-processing of returned pages.
- * @property {PromiseFunction} [options.fetchStart] A function called when the Listbox starts fetching data. Receives the fetch request promise as an argument.
- * @property {ReceiverFunction} [options.update] A function which receives an update function which upon call will trigger a data fetch.
- * @property {{setScrollPos:function(number):void, initScrollPos:number}} [options.scrollState=] Object including a setScrollPos function that sets current scroll position index. A initial scroll position index.
- * @property {function(number):void} [options.setCount=] A function that gets called with the length of the data in the Listbox.
- */
-
-/**
- * @ignore
- * @param {object} usersOptions Options sent in to fieldInstance.mount.
- * @param {DoNotUseOptions} __DO_NOT_USE__
- * @returns {object} Squashed options with defaults given for non-exposed options.
- */
-export const getOptions = (usersOptions = {}) => {
-  const { __DO_NOT_USE__ = {}, ...exposedOptions } = usersOptions;
-
-  const DO_NOT_USE_DEFAULTS = {
-    update: undefined,
-    fetchStart: undefined,
-    showGray: true,
-    focusSearch: false,
-    sessionModel: undefined,
-    selectionsApi: undefined,
-    selectDisabled: undefined,
-    postProcessPages: undefined,
-    calculatePagesHeight: false,
-  };
-  const squashedOptions = {
-    ...exposedOptions,
-    ...DO_NOT_USE_DEFAULTS,
-    // eslint-disable-next-line no-underscore-dangle
-    ...__DO_NOT_USE__,
-  };
-  return squashedOptions;
-};
-
 function nuked(configuration = {}) {
   const locale = appLocaleFn(configuration.context.language);
 
@@ -248,6 +208,23 @@ function nuked(configuration = {}) {
 
     let selectionsApi = null;
     let selectionsComponentReference = null;
+
+    /**
+     * @ignore
+     * @typedef { 'fieldPopoverClose' } EmbedEventTypes
+     */
+
+    /**
+     * Event listener function on instance
+     *
+     * @ignore
+     * @method
+     * @name Embed#on
+     * @param {EmbedEventTypes} eventType event type that function needs to listen
+     * @param {Function} callback a callback function to run when event emits
+     * @example
+     * api.on('someEvent', () => {...});
+     */
 
     /**
      * @class
@@ -444,7 +421,7 @@ function nuked(configuration = {}) {
               app,
               fieldIdentifier,
               qId,
-              options: getOptions(options),
+              options: getListboxPortalOptions(options),
               stateName: options.stateName || '$',
             });
             root.add(this._instance);
@@ -482,12 +459,30 @@ function nuked(configuration = {}) {
       getRegisteredTypes: types.getList,
       __DO_NOT_USE__: {
         types,
+        popover(anchorElement, fieldIdentifier, options) {
+          if (api._popoverInstance) {
+            root.remove(api._popoverInstance);
+            api._popoverInstance = null;
+          }
+          const onPopoverClose = () => api.emit('fieldPopoverClose');
+          const opts = getListboxPopoverOptions({ onPopoverClose, ...options });
+          api._popoverInstance = React.createElement(ListBoxPopoverWrapper, {
+            element: anchorElement,
+            key: uid(),
+            app,
+            fieldIdentifier,
+            options: opts,
+            stateName: options.stateName || '$',
+          });
+          root.add(api._popoverInstance);
+        },
       },
     };
 
     halo.public.nebbie = api;
     halo.types = types;
 
+    eventmixin(api);
     return api;
   }
 

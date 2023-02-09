@@ -10,6 +10,8 @@ import {
   Toolbar,
   Button,
   IconButton,
+  ToggleButtonGroup,
+  ToggleButton,
   Typography,
   Tab,
   Tabs,
@@ -50,6 +52,16 @@ const languages = [
   'ru-RU',
 ];
 
+const constraints = [];
+
+function getContstraints(arr) {
+  return {
+    select: arr.indexOf('select') !== -1,
+    active: arr.indexOf('active') !== -1,
+    passive: arr.indexOf('passive') !== -1,
+  };
+}
+
 export default function Visualize() {
   const uid = useRef();
   const navigate = useNavigate();
@@ -62,6 +74,7 @@ export default function Visualize() {
   const [currentThemeName, setCurrentThemeName] = useState(storage.get('themeName'));
   const [currentLanguage, setCurrentLanguage] = useState(storage.get('language') || 'en-US');
   const [currentMuiThemeName, setCurrentMuiThemeName] = useState('light');
+  const [currentConstraints, setCurrentConstraints] = useState(constraints);
   const [objectListMode, setObjectListMode] = useState(storage.get('objectListMode') === true);
   const currentSelectionsRef = useRef(null);
   const [currentId, setCurrentId] = useState();
@@ -93,6 +106,7 @@ export default function Visualize() {
       context: {
         theme: currentThemeName,
         language: currentLanguage,
+        constraints: getContstraints(currentConstraints),
         keyboardNavigation: info?.keyboardNavigation,
       },
       load: (type) => Promise.resolve(window[type.name]),
@@ -180,6 +194,11 @@ export default function Visualize() {
     nebbie.context({ language: lang });
   };
 
+  const handleConstraintsChange = (e, newValue) => {
+    setCurrentConstraints(newValue);
+    nebbie.context(getContstraints(newValue));
+  };
+
   const toggleDarkMode = () => {
     const v = currentThemeName === 'dark' ? 'light' : 'dark';
     storage.save('themeName', v);
@@ -238,6 +257,16 @@ export default function Visualize() {
                       </Tabs>
                     </Grid>
                     <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                      <Grid item>
+                        <Typography>Constraints</Typography>
+                      </Grid>
+                      <Grid item gap={1}>
+                        <ToggleButtonGroup size="small" value={currentConstraints} onChange={handleConstraintsChange}>
+                          <ToggleButton value="select">Select</ToggleButton>
+                          <ToggleButton value="active">Active</ToggleButton>
+                          <ToggleButton value="passive">Passive</ToggleButton>
+                        </ToggleButtonGroup>
+                      </Grid>
                       <Grid item>
                         {customThemes.length ? (
                           <>

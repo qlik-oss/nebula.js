@@ -15,9 +15,10 @@ export default function useItemsLoader({
   let [minimumBatchSize] = useState(0);
 
   const loadMoreItems = (startIndex, stopIndex) => {
+    const offset = local.current.dataOffset;
     local.current.queue.push({
-      start: startIndex,
-      stop: stopIndex,
+      start: startIndex + offset,
+      stop: stopIndex + offset,
     });
 
     const isScrolling = loaderRef.current

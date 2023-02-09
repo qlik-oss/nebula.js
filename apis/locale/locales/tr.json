@@ -14,19 +14,30 @@
     "comment": "Text shown between the selected fields count {0} and total fields count {1}",
     "version": "l99iJM6C+Sm7L6wu1tXfOQ=="
   },
+  "Listbox.Dismiss": {
+    "value": "Kapat",
+    "comment": "Dismiss the disclaimer that not all data is being shown",
+    "version": "N/rgZJ2kTYsEGGa6KAsKEw=="
+  },
+  "Listbox.ItemsOverflow": {
+    "value": "Şu anda sınırlı bir veri kümesi gösteriliyor. Boyutu azaltmak için arama işlevini kullanın",
+    "comment": "Disclaimer that not all data is being shown",
+    "version": "qJZEOzTZSa3oxGsDC5LF+g=="
+  },
   "Listbox.Lock": {
     "value": "Seçimleri kilitle",
     "comment": "Action text to lock selections in a listbox",
     "version": "05jY0MA0azu2f6LgrBSpYg=="
   },
+  "Listbox.NoMatchesForYourTerms": {
+    "value": "Aramanızla eşleşen sonuç yok.",
+    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)",
+    "version": "0xs0djD9amx8gzW4Ph0l8Q=="
+  },
   "Listbox.ResultFilterLabel": {
     "value": "Arama Sonuçları Filtresi",
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
-  },
-  "Listbox.NoMatchesForYourTerms": {
-    "value": "Aramanızla eşleşen sonuç yok.",
-    "comment": "Text to indicate that there are No matches for the current search string (rnt 181026)"
   },
   "Listbox.ScreenReaderInstructions": {
     "value": "Aşağıdaki öğeleri etkinleştirmek sayfadaki içeriğin güncellenmesine neden olur",
