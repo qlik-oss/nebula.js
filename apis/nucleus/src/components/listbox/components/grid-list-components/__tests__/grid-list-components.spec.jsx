@@ -114,7 +114,7 @@ describe('grid-list-components', () => {
     expect(listInst).toMatchSnapshot();
   });
 
-  it.skip('should create a Grid component', () => {
+  it('should create a Grid component', () => {
     const { Grid } = response;
     // const opts = List.mock.calls[0][0];
     // expect(opts).toEqual({});
