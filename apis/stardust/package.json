@@ -45,7 +45,7 @@
     "@emotion/react": "^11.10.5",
     "@emotion/styled": "^11.10.5",
     "@mui/icons-material": "^5.11.0",
-    "@mui/material": "^5.11.4",
+    "@mui/material": "^5.11.7",
     "@nebula.js/conversion": "^3.1.2",
     "@nebula.js/enigma-mocker": "^3.1.2",
     "@nebula.js/locale": "^3.1.2",
