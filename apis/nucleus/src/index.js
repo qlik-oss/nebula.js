@@ -16,6 +16,7 @@ import get from './object/get-generic-object';
 import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
 import uid from './object/uid';
+import eventmixin from './selections/event-mixin';
 
 /**
  * @interface Context
@@ -207,6 +208,23 @@ function nuked(configuration = {}) {
 
     let selectionsApi = null;
     let selectionsComponentReference = null;
+
+    /**
+     * @ignore
+     * @typedef { 'fieldPopoverClose' } EmbedEventTypes
+     */
+
+    /**
+     * Event listener function on instance
+     *
+     * @ignore
+     * @method
+     * @name Embed#on
+     * @param {EmbedEventTypes} eventType event type that function needs to listen
+     * @param {Function} callback a callback function to run when event emits
+     * @example
+     * api.on('someEvent', () => {...});
+     */
 
     /**
      * @class
@@ -446,7 +464,8 @@ function nuked(configuration = {}) {
             root.remove(api._popoverInstance);
             api._popoverInstance = null;
           }
-          const opts = getListboxPopoverOptions(options);
+          const onPopoverClose = () => api.emit('fieldPopoverClose');
+          const opts = getListboxPopoverOptions({ onPopoverClose, ...options });
           api._popoverInstance = React.createElement(ListBoxPopoverWrapper, {
             element: anchorElement,
             key: uid(),
@@ -463,6 +482,7 @@ function nuked(configuration = {}) {
     halo.public.nebbie = api;
     halo.types = types;
 
+    eventmixin(api);
     return api;
   }
 

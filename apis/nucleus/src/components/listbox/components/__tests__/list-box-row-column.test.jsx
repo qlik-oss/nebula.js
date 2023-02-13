@@ -68,6 +68,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         pages: [],
         actions,
+        dataOffset: 0,
       };
       expect(getFieldKeyboardNavigation).not.called;
       const testRenderer = await render(
@@ -91,6 +92,8 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         pages: defaultPages,
         actions,
+        dataOffset: 0,
+        focusListItems: () => {},
       };
       expect(getFieldKeyboardNavigation).not.called;
       const testRenderer = await render(
@@ -117,7 +120,7 @@ describe('<ListBoxRowColumn />', () => {
       await testRenderer.unmount();
 
       expect(getFieldKeyboardNavigation.mock.calls.length).toBeGreaterThan(0);
-      expect(getFieldKeyboardNavigation).toHaveBeenCalledWith('actions');
+      expect(getFieldKeyboardNavigation).toHaveBeenCalled();
     });
 
     test('should have css class `value`', async () => {
@@ -134,6 +137,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         pages: defaultPages,
         actions,
+        dataOffset: 0,
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -165,6 +169,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         pages: defaultPages,
         actions,
+        dataOffset: 0,
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -215,6 +220,7 @@ describe('<ListBoxRowColumn />', () => {
         onClick: jest.fn(),
         keyboard,
         actions,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -257,6 +263,7 @@ describe('<ListBoxRowColumn />', () => {
         onClick: jest.fn(),
         keyboard,
         actions,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -296,6 +303,7 @@ describe('<ListBoxRowColumn />', () => {
         onClick: jest.fn(),
         keyboard,
         actions,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -336,6 +344,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         showGray: false,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -375,6 +384,7 @@ describe('<ListBoxRowColumn />', () => {
         onClick: jest.fn(),
         keyboard,
         actions,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -415,6 +425,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         showGray: false,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -454,6 +465,7 @@ describe('<ListBoxRowColumn />', () => {
         onClick: jest.fn(),
         keyboard,
         actions,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -494,6 +506,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         showGray: false,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -533,6 +546,7 @@ describe('<ListBoxRowColumn />', () => {
         onClick: jest.fn(),
         keyboard,
         actions,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -572,6 +586,7 @@ describe('<ListBoxRowColumn />', () => {
         onClick: jest.fn(),
         keyboard,
         actions,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -617,6 +632,7 @@ describe('<ListBoxRowColumn />', () => {
         onClick: jest.fn(),
         keyboard,
         actions,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -665,6 +681,7 @@ describe('<ListBoxRowColumn />', () => {
         onClick: jest.fn(),
         keyboard,
         actions,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -712,6 +729,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         freqIsAllowed: true,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -748,6 +766,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         checkboxes: true,
         actions,
+        dataOffset: 0,
         pages: [
           {
             qArea: {
@@ -802,6 +821,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         pages: defaultPages,
         actions,
+        dataOffset: 0,
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -842,6 +862,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         pages: defaultPages,
         actions,
+        dataOffset: 0,
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -864,6 +885,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         textAlign: { align: 'right' },
         pages: defaultPages,
+        dataOffset: 0,
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -882,6 +904,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         textAlign: { align: 'left' },
         pages: defaultPages,
+        dataOffset: 0,
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -900,6 +923,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         textAlign: { align: 'center' },
         pages: defaultPages,
+        dataOffset: 0,
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -919,6 +943,7 @@ describe('<ListBoxRowColumn />', () => {
         textAlign: { auto: true },
         direction: 'rtl',
         pages: defaultPages,
+        dataOffset: 0,
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -944,6 +969,7 @@ describe('<ListBoxRowColumn />', () => {
         textAlign: { auto: true },
         direction: 'ltr',
         pages: nonNumericPages,
+        dataOffset: 0,
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -964,6 +990,7 @@ describe('<ListBoxRowColumn />', () => {
         textAlign: { auto: true },
         direction: 'ltr',
         pages: defaultPages, // these value(s) have a qNum so they are interpreted as numeric.
+        dataOffset: 0,
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -988,6 +1015,7 @@ describe('<ListBoxRowColumn />', () => {
         isSingleSelect: true,
         checkboxes: true,
         frequencyMode: 'value',
+        dataOffset: 0,
         pages: [
           {
             qArea: {

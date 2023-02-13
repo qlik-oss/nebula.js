@@ -4,7 +4,7 @@ import RowColumn from '../ListBoxRowColumn';
 import getFrequencyAllowed from './frequency-allowed';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
-import handleSetOverflowDisclaimer from './setOverflowDisclaimer';
+import handleSetOverflowDisclaimer from './set-overflow-disclaimer';
 
 const { StyledFixedSizeList, StyledFixedSizeGrid } = getStyledComponents();
 
@@ -31,6 +31,8 @@ export default function getListBoxComponents({
   sizes,
   listCount,
   overflowDisclaimer,
+  setScrollPosition,
+  focusListItems,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
   const { dense = false } = layoutOptions || {};
@@ -61,11 +63,14 @@ export default function getListBoxComponents({
       select,
       confirm: () => selections?.confirm.call(selections),
       cancel: () => selections?.cancel.call(selections),
+      setScrollPosition,
     },
     frequencyMax,
     histogram,
     keyboard,
     showGray,
+    dataOffset: local.current.dataOffset,
+    focusListItems,
   };
 
   const List = ({ onItemsRendered, ref }) => {
@@ -80,7 +85,7 @@ export default function getListBoxComponents({
         width={width}
         itemCount={listCount}
         layout={listLayout}
-        itemData={{ ...commonItemData }}
+        itemData={{ ...commonItemData, listCount }}
         itemSize={itemSize}
         onItemsRendered={(renderProps) => {
           if (scrollState) {
@@ -93,6 +98,8 @@ export default function getListBoxComponents({
             columnCount,
             rowCount,
             overflowDisclaimer,
+            qCardinal: layout?.qListObject?.qDimensionInfo?.qCardinal,
+            dataOffset: local.current.dataOffset,
           });
           onItemsRendered({ ...renderProps });
         }}
@@ -125,6 +132,8 @@ export default function getListBoxComponents({
         columnCount,
         rowCount,
         overflowDisclaimer,
+        qCardinal: layout?.qListObject?.qDimensionInfo?.qCardinal,
+        dataOffset: local.current.dataOffset,
       });
       onItemsRendered(renderOptions);
     };

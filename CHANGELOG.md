@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.3](https://github.com/qlik-oss/nebula.js/compare/v3.1.2...v3.1.3) (2023-02-09)
+
+### Features
+
+- expose close event for listbox popover ([#1070](https://github.com/qlik-oss/nebula.js/issues/1070)) ([e92aeb0](https://github.com/qlik-oss/nebula.js/commit/e92aeb058a38758eb2a7f957c69fd065fca7da3e))
+- **Listbox:** load end of data ([#1068](https://github.com/qlik-oss/nebula.js/issues/1068)) ([ae14bc4](https://github.com/qlik-oss/nebula.js/commit/ae14bc48560164f9f936ff0038e69dc5ab84df81))
+- wildcard search ([#1075](https://github.com/qlik-oss/nebula.js/issues/1075)) ([a2ba9c2](https://github.com/qlik-oss/nebula.js/commit/a2ba9c2a3013be78c73e155fe014f2ad7d93eb7b))
+
 ## [3.1.2](https://github.com/qlik-oss/nebula.js/compare/v3.1.1...v3.1.2) (2023-01-30)
 
 ### Bug Fixes
