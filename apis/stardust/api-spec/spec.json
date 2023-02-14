@@ -870,6 +870,22 @@
         ]
       }
     },
+    "FieldEventTypes": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'selectionActivated'"
+          },
+          {
+            "kind": "literal",
+            "value": "'selectionDeactivated'"
+          }
+        ]
+      }
+    },
     "FieldInstance": {
       "availability": {
         "since": "1.1.0"
@@ -880,6 +896,43 @@
         "params": []
       },
       "entries": {
+        "on": {
+          "description": "Event listener function on instance",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventType",
+              "description": "event type that function needs to listen",
+              "type": "#/definitions/FieldEventTypes"
+            },
+            {
+              "name": "callback",
+              "description": "a callback function to run when event emits",
+              "kind": "function",
+              "params": []
+            }
+          ],
+          "examples": [
+            "const handleSomeEvent () => {...};\nfieldInstance.on('someEvent', handleSomeEvent);\n...\nfieldInstance.removeListener('someEvent', handleSomeEvent);"
+          ]
+        },
+        "removeListener": {
+          "description": "Remove listener on instance",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventType",
+              "description": "event type",
+              "type": "#/definitions/FieldEventTypes"
+            },
+            {
+              "name": "callback",
+              "description": "handler",
+              "kind": "function",
+              "params": []
+            }
+          ]
+        },
         "mount": {
           "description": "Mounts the field as a listbox into the provided HTMLElement.",
           "availability": {
@@ -1330,6 +1383,33 @@
         }
       }
     },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
     "Field": {
       "kind": "alias",
       "items": {
@@ -1447,33 +1527,6 @@
           ]
         }
       }
-    },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
     },
     "LoadType": {
       "kind": "interface",

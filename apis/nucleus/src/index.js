@@ -382,6 +382,33 @@ function nuked(configuration = {}) {
          */
 
         /**
+         * @typedef { 'selectionActivated' | 'selectionDeactivated' } FieldEventTypes
+         */
+
+        /**
+         * Event listener function on instance
+         *
+         * @method
+         * @name FieldInstance#on
+         * @param {FieldEventTypes} eventType event type that function needs to listen
+         * @param {Function} callback a callback function to run when event emits
+         * @example
+         * const handleSomeEvent () => {...};
+         * fieldInstance.on('someEvent', handleSomeEvent);
+         * ...
+         * fieldInstance.removeListener('someEvent', handleSomeEvent);
+         */
+
+        /**
+         * Remove listener on instance
+         *
+         * @method
+         * @name FieldInstance#removeListener
+         * @param {FieldEventTypes} eventType event type
+         * @param {Function} callback handler
+         */
+
+        /**
          * @class
          * @alias FieldInstance
          * @since 1.1.0
@@ -416,12 +443,18 @@ function nuked(configuration = {}) {
             if (this._instance) {
               throw new Error(`Field or object ${fieldName || qId} already mounted`);
             }
+            const onSelectionActivated = () => fieldSels.emit('selectionActivated');
+            const onSelectionDeactivated = () => fieldSels.emit('selectionDeactivated');
             this._instance = ListBoxPortal({
               element,
               app,
               fieldIdentifier,
               qId,
-              options: getListboxPortalOptions(options),
+              options: getListboxPortalOptions({
+                onSelectionActivated,
+                onSelectionDeactivated,
+                ...options,
+              }),
               stateName: options.stateName || '$',
             });
             root.add(this._instance);
@@ -440,6 +473,7 @@ function nuked(configuration = {}) {
             }
           },
         };
+        eventmixin(fieldSels);
         return fieldSels;
       },
       /**
