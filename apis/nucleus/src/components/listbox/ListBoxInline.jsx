@@ -196,7 +196,7 @@ export default function ListBoxInline({ options = {} }) {
       style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
       onKeyDown={handleKeyDown}
     >
-      {toolbar && (
+      {toolbar && layout.title && (
         <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (
@@ -210,7 +210,7 @@ export default function ListBoxInline({ options = {} }) {
           <Grid item className={classes.listBoxHeader}>
             {showTitle && (
               <Title variant="h6" noWrap>
-                {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
+                {layout.title}
               </Title>
             )}
           </Grid>
