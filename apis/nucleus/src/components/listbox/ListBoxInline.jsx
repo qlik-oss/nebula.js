@@ -51,7 +51,6 @@ export default function ListBoxInline({ options = {} }) {
     checkboxes,
     search = true,
     focusSearch = false,
-    toolbar = true,
     rangeSelect = true,
     model,
     selections,
@@ -63,6 +62,7 @@ export default function ListBoxInline({ options = {} }) {
     showGray = true,
     scrollState = undefined,
   } = options;
+  let { toolbar = true } = options;
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
@@ -106,6 +106,10 @@ export default function ListBoxInline({ options = {} }) {
     enabled: keyboardNavigation, // this will be static until we can access the useKeyboard hook
     active: keyboardActive,
   };
+
+  if (layout?.toolbar !== undefined) {
+    toolbar = layout.toolbar;
+  }
 
   useEffect(() => {
     const show = () => {
