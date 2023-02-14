@@ -109,7 +109,7 @@ describe('ListBoxPortal', () => {
       };
       const elem = ListBoxPortal({ app, fieldIdentifier, options });
       await render(elem);
-      expect(useObjectSelectionsMock).toHaveBeenCalledWith(app, options.sessionModel, elementRef);
+      expect(useObjectSelectionsMock).toHaveBeenCalledWith(app, options.sessionModel, elementRef, options);
     });
   });
 
