@@ -927,7 +927,7 @@
                   "type": "boolean"
                 },
                 "search": {
-                  "description": "Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow",
+                  "description": "Show the search bar permanently, using the toggle button or when in selection: false|true|toggle|toggleShow|inSelection",
                   "optional": true,
                   "defaultValue": true,
                   "type": "#/definitions/SearchMode"
