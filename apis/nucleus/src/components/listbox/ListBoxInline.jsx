@@ -110,10 +110,13 @@ export default function ListBoxInline({ options = {} }) {
   useEffect(() => {
     const show = () => {
       setShowToolbar(true);
+      if (search === 'inSelection') {
+        setShowSearch(true);
+      }
     };
     const hide = () => {
       setShowToolbar(false);
-      if (search === 'toggle') {
+      if (search === 'toggle' || search === 'inSelection') {
         setShowSearch(false);
       }
     };
@@ -161,7 +164,8 @@ export default function ListBoxInline({ options = {} }) {
 
   const showTitle = true;
 
-  const searchVisible = (search === true || (search === 'toggle' && showSearch)) && !selectDisabled();
+  const searchVisible =
+    (search === true || ((search === 'toggle' || search === 'inSelection') && showSearch)) && !selectDisabled();
   const dense = layout.layoutOptions?.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
