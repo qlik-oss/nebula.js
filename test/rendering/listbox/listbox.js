@@ -55,6 +55,9 @@
       case 'checkboxes':
         sc = { checkboxes: true };
         break;
+      case 'noToolbar':
+        sc = { toolbar: false };
+        break;
       default:
         throw new Error('Invalid test scenario', s);
     }

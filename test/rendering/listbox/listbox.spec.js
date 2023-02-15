@@ -83,4 +83,15 @@ test.describe('listbox mashup rendering test', () => {
     const image = await selector.screenshot();
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
+
+  test('hide toolbar', async () => {
+    const FILE_NAME = 'listbox_no_toolbar.png';
+
+    await page.goto(`${url}/listbox/listbox.html?scenario=noToolbar`);
+
+    // Note that since we don't have a backend providing search results, we can't test highlighting and selected (green) rows.
+    const selector = await page.$(listboxSelector);
+    const image = await selector.screenshot();
+    return expect(image).toMatchSnapshot(FILE_NAME);
+  });
 });
