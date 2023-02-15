@@ -174,7 +174,7 @@ export default function ListBoxInline({ options = {} }) {
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
   const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
-  const wildCardSearch = layout?.wildCardSearch;
+  const { wildCardSearch, searchEnabled } = layout;
 
   const onShowSearch = () => {
     const newValue = !showSearch;
@@ -265,6 +265,7 @@ export default function ListBoxInline({ options = {} }) {
             visible={searchVisible}
             searchContainerRef={searchContainerRef}
             wildCardSearch={wildCardSearch}
+            searchEnabled={searchEnabled}
           />
         </Grid>
         <Grid item xs>

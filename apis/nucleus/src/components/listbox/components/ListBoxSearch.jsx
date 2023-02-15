@@ -24,6 +24,7 @@ export default function ListBoxSearch({
   dense = false,
   visible = true,
   wildCardSearch = true,
+  searchEnabled,
 }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
@@ -120,7 +121,7 @@ export default function ListBoxSearch({
     return response;
   };
 
-  if (!visible) {
+  if (!visible || searchEnabled === false) {
     return null;
   }
 
