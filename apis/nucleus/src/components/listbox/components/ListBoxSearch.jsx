@@ -121,54 +121,52 @@ export default function ListBoxSearch({
     return response;
   };
 
-  if (!visible) {
+  if (!visible || searchEnabled === false) {
     return null;
   }
 
   return (
-    searchEnabled !== false && (
-      <StyledOutlinedInput
-        startAdornment={
-          <StyledInputAdornment position="start">
-            <Search size={dense ? 'small' : 'normal'} />
-          </StyledInputAdornment>
-        }
-        className="search"
-        sx={[
-          {
-            border: 'none',
+    <StyledOutlinedInput
+      startAdornment={
+        <StyledInputAdornment position="start">
+          <Search size={dense ? 'small' : 'normal'} />
+        </StyledInputAdornment>
+      }
+      className="search"
+      sx={[
+        {
+          border: 'none',
+          borderRadius: 0,
+          backgroundColor: 'transparent',
+          '& fieldset': {
+            border: `1px solid ${theme.palette.divider}`,
+            borderWidth: '1px 0 1px 0',
             borderRadius: 0,
-            backgroundColor: 'transparent',
-            '& fieldset': {
-              border: `1px solid ${theme.palette.divider}`,
-              borderWidth: '1px 0 1px 0',
-              borderRadius: 0,
-            },
-            '&:hover': {
-              border: 'none',
-            },
           },
-          dense && {
-            fontSize: 12,
-            paddingLeft: theme.spacing(1),
-            '& input': {
-              paddingTop: '5px',
-              paddingBottom: '5px',
-            },
+          '&:hover': {
+            border: 'none',
           },
-        ]}
-        inputRef={inputRef}
-        size="small"
-        fullWidth
-        placeholder={translator.get('Listbox.Search')}
-        value={value}
-        onFocus={handleFocus}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        inputProps={{
-          tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
-        }}
-      />
-    )
+        },
+        dense && {
+          fontSize: 12,
+          paddingLeft: theme.spacing(1),
+          '& input': {
+            paddingTop: '5px',
+            paddingBottom: '5px',
+          },
+        },
+      ]}
+      inputRef={inputRef}
+      size="small"
+      fullWidth
+      placeholder={translator.get('Listbox.Search')}
+      value={value}
+      onFocus={handleFocus}
+      onChange={onChange}
+      onKeyDown={onKeyDown}
+      inputProps={{
+        tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
+      }}
+    />
   );
 }
