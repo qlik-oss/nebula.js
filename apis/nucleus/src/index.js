@@ -378,7 +378,7 @@ function nuked(configuration = {}) {
          */
 
         /**
-         * @typedef { boolean | 'toggle' } SearchMode
+         * @typedef { boolean | 'toggle' | 'inSelection' } SearchMode
          */
 
         /**
@@ -397,7 +397,7 @@ function nuked(configuration = {}) {
            * @param {ListLayout=} [options.listLayout=vertical] Layout direction vertical|horizontal (not applicable for existing objects)
            * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
            * @param {boolean=} [options.histogram=false] Show histogram bar (not applicable for existing objects)
-           * @param {SearchMode=} [options.search=true] Show the search bar permanently, using the toggle button or when in selection: false|true|toggle|toggleShow|inSelection
+           * @param {SearchMode=} [options.search=true] Show the search bar permanently, using the toggle button or when in selection: false|true|toggle|inSelection
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields (not applicable for existing objects)
            * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects)

@@ -265,7 +265,7 @@ declare namespace stardust {
 
     type FrequencyMode = "none" | "value" | "percent" | "relative";
 
-    type SearchMode = boolean | "toggle";
+    type SearchMode = boolean | "toggle" | "inSelection";
 
     class FieldInstance {
         constructor();
