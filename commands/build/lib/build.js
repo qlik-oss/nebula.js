@@ -141,6 +141,7 @@ const config = ({
         }),
         json(),
         babel({
+          babelHelpers: 'bundled',
           babelrc: false,
           inputSourceMap: false, // without this you get wrong source maps, but I don't know why
           extensions,
