@@ -583,10 +583,12 @@
           "type": "#/definitions/LoadType"
         },
         "context": {
+          "description": "Settings for the rendering instance",
           "optional": true,
           "type": "#/definitions/Context"
         },
         "types": {
+          "description": "Visualization types to register",
           "optional": true,
           "kind": "array",
           "items": {
@@ -594,6 +596,7 @@
           }
         },
         "themes": {
+          "description": "Themes to register",
           "optional": true,
           "kind": "array",
           "items": {
