@@ -173,10 +173,6 @@ export default function ListBoxInline({ options = {} }) {
     setShowSearch(newValue);
   };
 
-  const iconStyle = {
-    fontSize: '12px',
-  };
-
   return (
     <StyledGrid
       className="listbox-container"
@@ -192,12 +188,12 @@ export default function ListBoxInline({ options = {} }) {
           <Grid item>
             {isLocked ? (
               <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
-                <Lock title={translator.get('Listbox.Unlock')} style={iconStyle} />
+                <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
               </IconButton>
             ) : (
               searchEnabled !== false && (
                 <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
-                  <SearchIcon style={iconStyle} />
+                  <SearchIcon style={{ fontSize: '12px' }} />
                 </IconButton>
               )
             )}
