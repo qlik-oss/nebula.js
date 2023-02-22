@@ -12,7 +12,6 @@ import ActionsToolbar from '../ActionsToolbar';
 import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
-// import getHasSelections from './assets/has-selections';
 import addListboxTheme from './assets/addListboxTheme';
 
 const PREFIX = 'ListBoxInline';
@@ -158,8 +157,6 @@ export default function ListBoxInline({ options = {} }) {
         translator,
       })
     : [];
-
-  // const hasSelections = getHasSelections(layout);
 
   const showTitle = true;
 
