@@ -426,6 +426,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const iconStyles = {
     alignItems: 'center',
     display: 'flex',
+    fontSize: '8px',
   };
 
   const showLock = isSelected && isLocked;
