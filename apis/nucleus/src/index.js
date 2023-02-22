@@ -17,6 +17,7 @@ import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
 import uid from './object/uid';
 import eventmixin from './selections/event-mixin';
+import viz from './viz';
 
 /**
  * @interface Context
@@ -572,3 +573,6 @@ function nuked(configuration = {}) {
  */
 
 export default nuked(DEFAULT_CONFIG);
+
+const __DO_NOT_USE__ = { viz };
+export { __DO_NOT_USE__ };
