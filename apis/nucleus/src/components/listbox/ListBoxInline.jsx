@@ -2,7 +2,6 @@ import React, { useContext, useCallback, useRef, useEffect, useState } from 'rea
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import Lock from '@nebula.js/ui/icons/lock';
-import Unlock from '@nebula.js/ui/icons/unlock';
 import { IconButton, Grid, Typography } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
@@ -13,7 +12,6 @@ import ActionsToolbar from '../ActionsToolbar';
 import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
-import getHasSelections from './assets/has-selections';
 import addListboxTheme from './assets/addListboxTheme';
 
 const PREFIX = 'ListBoxInline';
@@ -79,10 +77,6 @@ export default function ListBoxInline({ options = {} }) {
   };
 
   const theme = useTheme();
-
-  const lock = useCallback(() => {
-    model.lock('/qListObjectDef');
-  }, [model]);
 
   const unlock = useCallback(() => {
     model.unlock('/qListObjectDef');
@@ -164,8 +158,6 @@ export default function ListBoxInline({ options = {} }) {
       })
     : [];
 
-  const hasSelections = getHasSelections(layout);
-
   const showTitle = true;
 
   const searchVisible =
@@ -179,19 +171,6 @@ export default function ListBoxInline({ options = {} }) {
   const onShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
-  };
-
-  const getSearchOrUnlock = () => {
-    const showSearchIcon = search === 'toggle' && !hasSelections;
-    return showSearchIcon ? (
-      <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
-        <SearchIcon />
-      </IconButton>
-    ) : (
-      <IconButton onClick={lock} tabIndex={-1} disabled={!hasSelections} size="large">
-        <Unlock />
-      </IconButton>
-    );
   };
 
   return (
@@ -209,10 +188,14 @@ export default function ListBoxInline({ options = {} }) {
           <Grid item>
             {isLocked ? (
               <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
-                <Lock title={translator.get('Listbox.Unlock')} />
+                <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
               </IconButton>
             ) : (
-              getSearchOrUnlock()
+              searchEnabled !== false && (
+                <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
+                  <SearchIcon style={{ fontSize: '12px' }} />
+                </IconButton>
+              )
             )}
           </Grid>
           <Grid item className={classes.listBoxHeader}>
