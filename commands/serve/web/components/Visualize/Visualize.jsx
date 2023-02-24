@@ -196,7 +196,7 @@ export default function Visualize() {
 
   const handleConstraintsChange = (e, newValue) => {
     setCurrentConstraints(newValue);
-    nebbie.context(getContstraints(newValue));
+    nebbie.context({ constraints: getContstraints(newValue) });
   };
 
   const toggleDarkMode = () => {
