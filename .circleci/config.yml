@@ -157,6 +157,11 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/project
+      - restore_cache: *restore_yarn_cache
+      - run:
+          name: Install dependencies
+          command: |
+            yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - run:
           name: Create version.txt
           command: |
@@ -164,8 +169,8 @@ jobs:
             if [ -n "${CIRCLE_TAG}" ]; then
               version=${CIRCLE_TAG#v}
             else
-              version=$(git describe --tags --abbrev=7 --match "v*")
-              version=${version#v}
+              yarn workspace "@nebula.js/stardust" version --prepatch --no-git-tag-version
+              version=$(node -p "require('./apis/stardust/api-spec/spec.json').info.version")
             fi
             echo "$version" > ./version.txt
             echo "Building $version"
