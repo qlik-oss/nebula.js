@@ -187,12 +187,18 @@ export default function ListBoxInline({ options = {} }) {
         <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (
-              <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
+              <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large" sx={{ height: '100%' }}>
                 <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
               </IconButton>
             ) : (
               searchEnabled !== false && (
-                <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
+                <IconButton
+                  onClick={onShowSearch}
+                  tabIndex={-1}
+                  title={translator.get('Listbox.Search')}
+                  size="large"
+                  sx={{ height: '100%' }}
+                >
                   <SearchIcon style={{ fontSize: '12px' }} />
                 </IconButton>
               )
