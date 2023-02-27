@@ -198,6 +198,14 @@ export namespace EnigmaMocker {
 }
 
 declare namespace stardust {
+    interface Configuration {
+        load?: stardust.LoadType;
+        context?: stardust.Context;
+        types?: stardust.TypeInfo[];
+        themes?: stardust.ThemeInfo[];
+        anything?: object;
+    }
+
     interface Context {
         keyboardNavigation?: boolean;
         constraints?: {
@@ -208,13 +216,6 @@ declare namespace stardust {
         theme?: string;
         language?: string;
         deviceType?: string;
-    }
-
-    interface Configuration {
-        context?: stardust.Context;
-        types?: stardust.TypeInfo[];
-        themes?: stardust.ThemeInfo[];
-        anything?: object;
     }
 
     interface Galaxy {

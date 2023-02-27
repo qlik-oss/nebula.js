@@ -574,6 +574,44 @@
     }
   },
   "definitions": {
+    "Configuration": {
+      "kind": "interface",
+      "entries": {
+        "load": {
+          "description": "Fallback load function for missing types",
+          "optional": true,
+          "type": "#/definitions/LoadType"
+        },
+        "context": {
+          "description": "Settings for the rendering instance",
+          "optional": true,
+          "type": "#/definitions/Context"
+        },
+        "types": {
+          "description": "Visualization types to register",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/TypeInfo"
+          }
+        },
+        "themes": {
+          "description": "Themes to register",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/ThemeInfo"
+          }
+        },
+        "anything": {
+          "optional": true,
+          "type": "object"
+        }
+      },
+      "examples": [
+        "import { embed } from '@nebula.js/stardust'\nn = embed(app, {\n  context: {\n    keyboardNavigation: true,\n    theme: 'purple',\n  },\n  load: ({ name, version }) => {\n    if (name === 'linechart') {\n      return Promise.resolve(line);\n    }\n  },\n  types: [\n    {\n      name: 'bar',\n      load: () => Promise.resolve(bar),\n    },\n  ],\n  themes: [\n    {\n      id: 'purple',\n      load: () => Promise.resolve(purpleThemeJson),\n    },\n  ],\n});"
+      ]
+    },
     "Context": {
       "kind": "interface",
       "entries": {
@@ -613,33 +651,6 @@
           "optional": true,
           "defaultValue": "auto",
           "type": "string"
-        }
-      }
-    },
-    "Configuration": {
-      "kind": "interface",
-      "entries": {
-        "context": {
-          "optional": true,
-          "type": "#/definitions/Context"
-        },
-        "types": {
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/TypeInfo"
-          }
-        },
-        "themes": {
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/ThemeInfo"
-          }
-        },
-        "anything": {
-          "optional": true,
-          "type": "object"
         }
       }
     },
