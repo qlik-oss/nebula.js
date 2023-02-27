@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/qlik-oss/nebula.js/compare/v3.1.3...v3.2.0) (2023-02-27)
+
+### Bug Fixes
+
+- align listbox search button ([#1087](https://github.com/qlik-oss/nebula.js/issues/1087)) ([9dbcc13](https://github.com/qlik-oss/nebula.js/commit/9dbcc1365950e04cb4ed948b9f3179ed8dfa27fc))
+
+### Features
+
+- add property for disabling listbox search ([#1081](https://github.com/qlik-oss/nebula.js/issues/1081)) ([f9d437b](https://github.com/qlik-oss/nebula.js/commit/f9d437b17ba74d58bfa3ed3371fbd73b4ccef851))
+- listbox search icon button changes ([#1083](https://github.com/qlik-oss/nebula.js/issues/1083)) ([082b28a](https://github.com/qlik-oss/nebula.js/commit/082b28a16a18701b14082649e596dff05f27d7c0))
+- **Listbox:** add selection events ([#1078](https://github.com/qlik-oss/nebula.js/issues/1078)) ([12aaff9](https://github.com/qlik-oss/nebula.js/commit/12aaff9ed5c21b596ba1f5daccd36b59e1f6ba1e))
+- **Listbox:** hide toolbar ([#1080](https://github.com/qlik-oss/nebula.js/issues/1080)) ([db493de](https://github.com/qlik-oss/nebula.js/commit/db493de0adca5467b6b0bb9b694c4b37e2cac639))
+- **Listbox:** show search in selection ([#1077](https://github.com/qlik-oss/nebula.js/issues/1077)) ([58344b7](https://github.com/qlik-oss/nebula.js/commit/58344b7e0e239324c8e453f00dd05fcf50760c2d))
+
 ## [3.1.3](https://github.com/qlik-oss/nebula.js/compare/v3.1.2...v3.1.3) (2023-02-09)
 
 ### Features

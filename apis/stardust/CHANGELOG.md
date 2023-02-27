@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.2.0](https://github.com/qlik-oss/nebula.js/compare/v3.1.3...v3.2.0) (2023-02-27)
+
+### Features
+
+- **Listbox:** add selection events ([#1078](https://github.com/qlik-oss/nebula.js/issues/1078)) ([12aaff9](https://github.com/qlik-oss/nebula.js/commit/12aaff9ed5c21b596ba1f5daccd36b59e1f6ba1e))
+- **Listbox:** show search in selection ([#1077](https://github.com/qlik-oss/nebula.js/issues/1077)) ([58344b7](https://github.com/qlik-oss/nebula.js/commit/58344b7e0e239324c8e453f00dd05fcf50760c2d))
+
 ## [3.1.3](https://github.com/qlik-oss/nebula.js/compare/v3.1.2...v3.1.3) (2023-02-09)
 
 **Note:** Version bump only for package @nebula.js/stardust
