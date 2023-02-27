@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 import { styled } from '@mui/material/styles';
 
@@ -63,24 +63,24 @@ const getSelectedStyle = ({ theme }) => ({
 
 const ItemGrid = styled(Grid, {
   shouldForwardProp: (prop) => !['dataLayout', 'itemWidth', 'itemHeight', 'layoutOrder'].includes(prop),
-})(({ theme, dataLayout, layoutOrder, itemWidth, itemHeight }) => ({
+})(({ dataLayout, layoutOrder, itemWidth, itemHeight }) => ({
   [`&.${classes.fieldRoot}`]: {
     height: '100%',
     width: '100%',
     ...(dataLayout === 'grid' ? getGridItemSizes({ layoutOrder, itemWidth, itemHeight }) : {}),
-
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
-    },
-    '&:focus-visible': {
-      outline: 'none',
-    },
   },
 }));
 
 const Root = styled('div', {
-  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridCol'].includes(prop),
-})(({ theme, flexBasisProp, isGridCol }) => ({
+  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridCol', 'dense'].includes(prop),
+})(({ theme, flexBasisProp, isGridCol, dense }) => ({
+  '&:focus': {
+    boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+  },
+  '&:focus-visible': {
+    outline: 'none',
+  },
+
   [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
     color: theme.listBox?.content?.color ?? theme.palette.text.primary,
@@ -140,6 +140,7 @@ const Root = styled('div', {
     margin: 0,
     width: '100%',
     height: '100%',
+    overflow: 'hidden',
 
     // The checkbox's span
     '& > span:nth-of-type(1)': {
@@ -151,6 +152,7 @@ const Root = styled('div', {
       display: 'flex',
       alignItems: 'center',
       paddingLeft: 0,
+      paddingRight: '2px',
     },
   },
 
@@ -195,7 +197,7 @@ const Root = styled('div', {
   [`& .${classes.bar}`]: {
     border: `${barBorderWidthPx}px solid`,
     borderColor: '#D9D9D9',
-    height: '16px',
+    height: dense ? '16px' : '20px',
     position: 'absolute',
     zIndex: '-1',
     alignSelf: 'center',
@@ -247,17 +249,25 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     showGray = true,
     columnCount = 1,
     rowCount = 1,
+    dataOffset,
+    focusListItems,
+    listCount,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
 
   let cellIndex;
   let styles;
+  const count = { max: null, currentIndex: null };
   if (typeof rowIndex === 'number' && typeof columnIndex === 'number') {
     if (layoutOrder === 'row') {
       cellIndex = rowIndex * columnCount + columnIndex;
+      count.max = rowCount;
+      count.currentIndex = rowIndex;
     } else {
       cellIndex = columnIndex * rowCount + rowIndex;
+      count.max = columnCount;
+      count.currentIndex = columnIndex;
     }
     const padding = 0;
     styles = {
@@ -268,10 +278,27 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     };
   } else {
     cellIndex = index;
+    count.max = listCount;
+    count.currentIndex = index;
     styles = { ...style };
   }
+  cellIndex += dataOffset;
 
-  const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation(actions), [actions]);
+  const rowRef = useRef(null);
+  useEffect(() => {
+    if (rowRef.current !== null) {
+      if (count.currentIndex === 0 && focusListItems.first) {
+        rowRef.current.focus();
+        focusListItems.setFirst(false);
+      }
+      if (count.currentIndex === count.max - 1 && focusListItems.last) {
+        rowRef.current.focus();
+        focusListItems.setLast(false);
+      }
+    }
+  }, [rowRef.current]);
+
+  const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation({ ...actions, focusListItems }), [actions]);
 
   const [isSelected, setSelected] = useState(false);
   const [cell, setCell] = useState();
@@ -304,9 +331,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     setSelected(selected);
 
     const clazzArr = [column ? classes.column : classes.row];
-    if (!(histogram && dense)) {
-      clazzArr.push(classes.rowBorderBottom);
-    }
+    if (!(histogram && dense) && !checkboxes) clazzArr.push(classes.rowBorderBottom);
     if (!checkboxes) {
       if (cell.qState === 'XS') {
         clazzArr.push(showGray ? classes.XS : classes.S);
@@ -319,7 +344,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       }
     }
     setClassArr(clazzArr);
-  }, [cell && cell.qState]);
+  }, [cell && cell.qState, histogram, dense, checkboxes]);
 
   if (!cell) {
     return null; // prevent rendering empty rows
@@ -413,6 +438,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const iconStyles = {
     alignItems: 'center',
     display: 'flex',
+    fontSize: '8px',
   };
 
   const showLock = isSelected && isLocked;
@@ -444,8 +470,15 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const isGridCol = dataLayout === 'grid' && layoutOrder === 'column';
 
   return (
-    <Root className={classes.barContainer} flexBasisProp={flexBasisVal} style={styles} isGridCol={isGridCol}>
+    <Root
+      className={classes.barContainer}
+      flexBasisProp={flexBasisVal}
+      style={styles}
+      isGridCol={isGridCol}
+      dense={dense}
+    >
       <ItemGrid
+        ref={rowRef}
         container
         dataLayout={dataLayout}
         layoutOrder={layoutOrder}

@@ -201,4 +201,39 @@ describe('<ListBoxSearch />', () => {
     const inputBoxes = testInstance.findAllByType(OutlinedInput);
     expect(inputBoxes).toHaveLength(0);
   });
+
+  test('should not render if searchEnabled false', () => {
+    const testRenderer = create(
+      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} searchEnabled={false} />
+      </InstanceContext.Provider>
+    );
+    const testInstance = testRenderer.root;
+    const inputBoxes = testInstance.findAllByType(OutlinedInput);
+    expect(inputBoxes).toHaveLength(0);
+  });
+
+  test('should show wildcard on focus', async () => {
+    const testRenderer = testRender(model);
+    const testInstance = testRenderer.root;
+    const type = testInstance.findByType(OutlinedInput);
+    await act(async () => {
+      await type.props.onFocus();
+    });
+    expect(type.props.value).toBe('**');
+  });
+
+  test('should not show wildcard on focus if wildCardSearch is false', async () => {
+    const testRenderer = create(
+      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} wildCardSearch={false} />
+      </InstanceContext.Provider>
+    );
+    const testInstance = testRenderer.root;
+    const type = testInstance.findByType(OutlinedInput);
+    await act(async () => {
+      await type.props.onFocus();
+    });
+    expect(type.props.value).toBe('');
+  });
 });

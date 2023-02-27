@@ -19,6 +19,7 @@ describe('useItemsLoader', () => {
       local: {
         current: {
           queue: [],
+          dataOffset: 0,
         },
       },
       loaderRef: { current: undefined },

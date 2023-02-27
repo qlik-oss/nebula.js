@@ -27,7 +27,7 @@ test.describe('listbox mashup rendering test', () => {
   test('listbox basic', async () => {
     const FILE_NAME = 'listbox_basic.png';
 
-    await page.goto(`${url}/listbox/listbox.html`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
     const image = await selector.screenshot();
@@ -37,7 +37,7 @@ test.describe('listbox mashup rendering test', () => {
   test('selecting two values should result in two green rows', async () => {
     const FILE_NAME = 'listbox_select_EH.png';
 
-    await page.goto(`${url}/listbox/listbox.html`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
     const selectNumbers = [4, 7];
@@ -47,6 +47,50 @@ test.describe('listbox mashup rendering test', () => {
     };
     await execSequence(selectNumbers, action);
 
+    const image = await selector.screenshot();
+    return expect(image).toMatchSnapshot(FILE_NAME);
+  });
+
+  test('should render checkboxes and check A and I', async () => {
+    const FILE_NAME = 'listbox_checkboxes_select_AI.png';
+
+    await page.goto(`${url}/listbox/listbox.html?scenario=checkboxes`);
+    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+
+    const selectNumbers = [0, 8];
+    const action = async (nbr) => {
+      const rowSelector = `${listboxSelector} [data-n="${nbr}"]`;
+      await page.click(rowSelector);
+    };
+    await execSequence(selectNumbers, action);
+
+    const image = await selector.screenshot();
+    return expect(image).toMatchSnapshot(FILE_NAME);
+  });
+
+  test('listbox search', async () => {
+    const FILE_NAME = 'listbox_search_B.png';
+    const searchSelector = '.search input';
+
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
+    const search = await page.waitForSelector(searchSelector, { visible: true });
+
+    await search.click();
+    await search.fill('B');
+
+    // Note that since we don't have a backend providing search results, we can't test highlighting and selected (green) rows.
+    const selector = await page.$(listboxSelector);
+    const image = await selector.screenshot();
+    return expect(image).toMatchSnapshot(FILE_NAME);
+  });
+
+  test('hide toolbar', async () => {
+    const FILE_NAME = 'listbox_no_toolbar.png';
+
+    await page.goto(`${url}/listbox/listbox.html?scenario=noToolbar`);
+
+    // Note that since we don't have a backend providing search results, we can't test highlighting and selected (green) rows.
+    const selector = await page.$(listboxSelector);
     const image = await selector.screenshot();
     return expect(image).toMatchSnapshot(FILE_NAME);
   });

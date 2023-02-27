@@ -1,4 +1,5 @@
-import Nuked, { getOptions } from '../index';
+import Nuked from '../index';
+import { getOptions } from '../components/listbox/ListBoxPortal';
 import * as appLocaleModule from '../locale/app-locale';
 import * as NebulaAppModule from '../components/NebulaApp';
 import * as AppSelectionsModule from '../components/selections/AppSelections';

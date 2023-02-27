@@ -3,6 +3,34 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.1.3](https://github.com/qlik-oss/nebula.js/compare/v3.1.2...v3.1.3) (2023-02-09)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+## [3.1.2](https://github.com/qlik-oss/nebula.js/compare/v3.1.1...v3.1.2) (2023-01-30)
+
+### Features
+
+- created object now can extend initial properties ([#1063](https://github.com/qlik-oss/nebula.js/issues/1063)) ([c14a1e6](https://github.com/qlik-oss/nebula.js/commit/c14a1e64a4a03d3aaef72949f01ec358d8ce2a22))
+
+## [3.1.1](https://github.com/qlik-oss/nebula.js/compare/v3.1.0...v3.1.1) (2023-01-22)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [3.1.0](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.5...v3.1.0) (2023-01-17)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [3.1.0-alpha.5](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.4...v3.1.0-alpha.5) (2023-01-13)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [3.1.0-alpha.4](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.3...v3.1.0-alpha.4) (2023-01-13)
+
+### Features
+
+- add checkboxes, histogram as properties ([#1028](https://github.com/qlik-oss/nebula.js/issues/1028)) ([a333cf9](https://github.com/qlik-oss/nebula.js/commit/a333cf9dd175844070acbe89dd23c6b8093565e1))
+
 # [3.1.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v3.1.0-alpha.2...v3.1.0-alpha.3) (2022-12-12)
 
 ### Bug Fixes

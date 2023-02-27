@@ -9,9 +9,10 @@ const classes = {
   radioButton: `${PREFIX}-radioButton`,
 };
 
-const StyledRadio = styled(Radio)(() => ({
+const StyledRadio = styled(Radio)(({ theme, checked }) => ({
   [`&.${classes.radioButton}`]: {
     right: '5px',
+    color: checked ? theme.palette.selected.main : theme.palette.main,
   },
 }));
 

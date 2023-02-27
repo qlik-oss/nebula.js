@@ -14,11 +14,14 @@ exports[`grid-list-components should create a Grid component 1`] = `
         "cancel": [Function],
         "confirm": [Function],
         "select": [MockFunction],
+        "setScrollPosition": undefined,
       },
       "checkboxes": false,
       "column": undefined,
       "columnCount": 2,
+      "dataOffset": undefined,
       "dense": false,
+      "focusListItems": undefined,
       "freqIsAllowed": true,
       "frequencyMax": undefined,
       "frequencyMode": "N",
@@ -45,7 +48,7 @@ exports[`grid-list-components should create a Grid component 1`] = `
   useIsScrolling={true}
   width={100}
 >
-  [MockFunction]
+  [Function]
 </Styled(Grid)>
 `;
 
@@ -61,10 +64,13 @@ exports[`grid-list-components should create a List component 1`] = `
         "cancel": [Function],
         "confirm": [Function],
         "select": [MockFunction],
+        "setScrollPosition": undefined,
       },
       "checkboxes": false,
       "column": false,
+      "dataOffset": undefined,
       "dense": false,
+      "focusListItems": undefined,
       "freqIsAllowed": true,
       "frequencyMax": undefined,
       "frequencyMode": "N",
@@ -73,6 +79,7 @@ exports[`grid-list-components should create a List component 1`] = `
       "isLocked": false,
       "isSingleSelect": false,
       "keyboard": "keyboard",
+      "listCount": undefined,
       "pages": "pages",
       "showGray": true,
       "textAlign": "right",

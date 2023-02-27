@@ -218,6 +218,7 @@ window.getFuncs = function getFuncs() {
     ],
 
     getListboxLayout: () => ({
+      title: 'Field title',
       qInfo: {
         qId: 'qId',
       },
@@ -233,6 +234,9 @@ window.getFuncs = function getFuncs() {
       },
       qSelectionInfo: {
         qInSelections: false,
+      },
+      layoutOptions: {
+        layoutOrder: 'row',
       },
     }),
   };

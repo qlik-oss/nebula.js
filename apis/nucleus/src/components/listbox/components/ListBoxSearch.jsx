@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { useTheme } from '@nebula.js/ui/theme';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -7,6 +7,7 @@ import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
 
 const TREE_PATH = '/qListObjectDef';
+const WILDCARD = '**';
 
 const StyledInputAdornment = styled(InputAdornment)(({ theme }) => ({
   color: theme.listBox?.content?.color,
@@ -16,9 +17,21 @@ const StyledOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
   color: theme.listBox?.content?.color,
 }));
 
-export default function ListBoxSearch({ selections, model, keyboard, dense = false, visible = true }) {
+export default function ListBoxSearch({
+  selections,
+  model,
+  keyboard,
+  dense = false,
+  visible = true,
+  wildCardSearch = true,
+  searchEnabled,
+}) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
+  const [wildcardOn, setWildcardOn] = useState(false);
+
+  const inputRef = useRef();
+
   const theme = useTheme();
   const { getStoreValue } = useDataStore(model);
 
@@ -48,6 +61,14 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
     };
   }, []);
 
+  useEffect(() => {
+    if (wildcardOn && inputRef.current) {
+      const cursorPos = value.length - 1;
+      inputRef.current.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
+      setWildcardOn(false);
+    }
+  }, [wildcardOn, inputRef.current]);
+
   const onChange = async (e) => {
     setValue(e.target.value);
     if (!e.target.value.length) {
@@ -57,6 +78,10 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
   };
 
   const handleFocus = () => {
+    if (wildCardSearch) {
+      setValue(WILDCARD);
+      setWildcardOn(true);
+    }
     if (!selections.isModal()) {
       selections.begin(['/qListObjectDef']);
     }
@@ -96,7 +121,7 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
     return response;
   };
 
-  if (!visible) {
+  if (!visible || searchEnabled === false) {
     return null;
   }
 
@@ -131,6 +156,7 @@ export default function ListBoxSearch({ selections, model, keyboard, dense = fal
           },
         },
       ]}
+      inputRef={inputRef}
       size="small"
       fullWidth
       placeholder={translator.get('Listbox.Search')}

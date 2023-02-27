@@ -169,7 +169,21 @@ export function useRenderState(): stardust.RenderState;
  */
 export function useKeyboard(): stardust.Keyboard;
 
-declare type EnigmaMocker = {
+/**
+ * Provides conversion functionality to extensions.
+ */
+export namespace Conversion {
+    /**
+     * Provides conversion functionality to extensions with hyperCubes.
+     */
+    const hypercube: stardust.hyperCubeConversion;
+
+}
+
+/**
+ * Mocks Engima app functionality for demo and testing purposes.
+ */
+export namespace EnigmaMocker {
     /**
      * Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visulization and specifies how it behaves. For example, what layout to use the data to present.
      * 
@@ -179,8 +193,9 @@ declare type EnigmaMocker = {
      * @param genericObjects Generic objects controling behaviour of visualizations.
      * @param options Options
      */
-    fromGenericObjects(genericObjects: object[], options: stardust.EnigmaMockerOptions): Promise<EngineAPI.IApp>;
-};
+    function fromGenericObjects(genericObjects: object[], options?: stardust.EnigmaMockerOptions): Promise<EngineAPI.IApp>;
+
+}
 
 declare namespace stardust {
     interface Context {
@@ -250,10 +265,26 @@ declare namespace stardust {
 
     type FrequencyMode = "none" | "value" | "percent" | "relative";
 
-    type SearchMode = boolean | "toggle";
+    type SearchMode = boolean | "toggle" | "inSelection";
+
+    type FieldEventTypes = "selectionActivated" | "selectionDeactivated";
 
     class FieldInstance {
         constructor();
+
+        /**
+         * Event listener function on instance
+         * @param eventType event type that function needs to listen
+         * @param callback a callback function to run when event emits
+         */
+        on(eventType: stardust.FieldEventTypes, callback: ()=>void): void;
+
+        /**
+         * Remove listener on instance
+         * @param eventType event type
+         * @param callback handler
+         */
+        removeListener(eventType: stardust.FieldEventTypes, callback: ()=>void): void;
 
         /**
          * Mounts the field as a listbox into the provided HTMLElement.
@@ -404,6 +435,16 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -413,6 +454,7 @@ declare namespace stardust {
         type: string;
         version?: string;
         fields?: stardust.Field[];
+        extendProperties?: boolean;
         properties?: EngineAPI.IGenericObjectProperties;
     }
 
@@ -435,16 +477,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {
@@ -601,8 +633,8 @@ declare namespace stardust {
     type fieldTargetRemovedCallback<T> = (field: T, properties: EngineAPI.IGenericObjectProperties, index: number)=>void;
 
     interface FieldTarget<T> {
-        min?(): number;
-        max?(): number;
+        min?: (()=>void) | number;
+        max?: (()=>void) | number;
         added?: stardust.fieldTargetAddedCallback<T>;
         removed?: stardust.fieldTargetRemovedCallback<T>;
     }
@@ -723,13 +755,6 @@ declare namespace stardust {
     interface ConversionType {
         importProperties: stardust.importProperties;
         exportProperties: stardust.exportProperties;
-    }
-
-    /**
-     * Provides conversion functionality to extensions.
-     */
-    interface Conversion {
-        hypercube: stardust.hyperCubeConversion;
     }
 
     interface hyperCubeConversion {

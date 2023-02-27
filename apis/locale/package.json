@@ -1,12 +1,12 @@
 {
   "name": "@nebula.js/locale",
-  "version": "3.1.0-alpha.3",
+  "version": "3.1.3",
   "private": true,
   "main": "src/index.js",
   "scripts": {
     "build": "node scripts/generate-all.mjs"
   },
   "devDependencies": {
-    "globby": "13.1.2"
+    "globby": "13.1.3"
   }
 }

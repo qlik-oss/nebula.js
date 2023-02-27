@@ -177,7 +177,7 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
   return api;
 };
 
-const getClickOutFuncs = ({ elements, objectSelections }) => {
+const getClickOutFuncs = ({ elements, objectSelections, options }) => {
   const handler = createHandler({
     elements,
     handleClickOutside: () => objectSelections.confirm.call(objectSelections),
@@ -186,14 +186,16 @@ const getClickOutFuncs = ({ elements, objectSelections }) => {
   return {
     activateClickOut() {
       document.addEventListener('mousedown', handler);
+      options.onSelectionActivated?.();
     },
     deactivateClickOut() {
       document.removeEventListener('mousedown', handler);
+      options.onSelectionDeactivated?.();
     },
   };
 };
 
-export default function useObjectSelections(app, model, elements) {
+export default function useObjectSelections(app, model, elements, options) {
   const elementsArr = Array.isArray(elements) ? elements : [elements];
 
   const [appSelections] = useAppSelections(app);
@@ -220,7 +222,11 @@ export default function useObjectSelections(app, model, elements) {
   useEffect(() => {
     if (!objectSelections) return () => {};
 
-    const { activateClickOut, deactivateClickOut } = getClickOutFuncs({ elements: elementsArr, objectSelections });
+    const { activateClickOut, deactivateClickOut } = getClickOutFuncs({
+      elements: elementsArr,
+      objectSelections,
+      options,
+    });
 
     objectSelections.addListener('activated', activateClickOut);
     objectSelections.addListener('deactivated', deactivateClickOut);

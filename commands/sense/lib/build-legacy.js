@@ -5,8 +5,8 @@ const rollup = require('rollup');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const common = require('@rollup/plugin-commonjs');
 const replace = require('@rollup/plugin-replace');
-const babel = require('rollup-plugin-babel');
-const { terser } = require('rollup-plugin-terser');
+const babel = require('@rollup/plugin-babel');
+const terser = require('@rollup/plugin-terser');
 
 async function build(argv) {
   const cwd = process.cwd();
@@ -76,6 +76,7 @@ async function build(argv) {
         nodeResolve(),
         common(),
         babel({
+          babelHelpers: 'bundled',
           babelrc: false,
           exclude: [/node_modules/],
           presets: [

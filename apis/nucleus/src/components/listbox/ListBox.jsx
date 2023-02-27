@@ -12,6 +12,8 @@ import useItemsLoader from './hooks/useItemsLoader';
 import getListCount from './components/list-count';
 import useDataStore from './hooks/useDataStore';
 import ListBoxDisclaimer from './components/ListBoxDisclaimer';
+import ListBoxFooter from './components/ListBoxFooter';
+import getScrollIndex from './interactions/listbox-get-scroll-index';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -19,6 +21,7 @@ export default function ListBox({
   model,
   selections,
   direction,
+  checkboxes: checkboxOption,
   height,
   width,
   listLayout = 'vertical',
@@ -35,12 +38,13 @@ export default function ListBox({
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
-  const { checkboxes, histogram } = layout ?? {};
+  const { checkboxes = checkboxOption, histogram } = layout ?? {};
 
   const loaderRef = useRef(null);
   const local = useRef({
     queue: [],
     validPages: false,
+    dataOffset: 0,
   });
 
   const listData = useRef({
@@ -62,6 +66,9 @@ export default function ListBox({
   const [pages, setPages] = useState([]);
   const { setStoreValue } = useDataStore(model);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
+
+  const [overflowDisclaimer, setOverflowDisclaimer] = useState({ show: false, dismissed: false });
+  const showOverflowDisclaimer = (show) => setOverflowDisclaimer((state) => ({ ...state, show }));
 
   useEffect(() => {
     setPages(itemsLoader?.pages || []);
@@ -94,6 +101,23 @@ export default function ListBox({
     isSingleSelect,
   });
 
+  const { layoutOptions = {} } = layout || {};
+
+  let isRow = true;
+  if (layoutOptions.dataLayout) {
+    isRow = layoutOptions.dataLayout === 'singleColumn' ? true : layoutOptions?.layoutOrder === 'row';
+  }
+
+  const isGrid = layoutOptions?.dataLayout === 'grid';
+
+  const scrollToIndex = (index) => {
+    const gridIndex = {
+      ...(isRow ? { rowIndex: index } : { columnIndex: index }),
+    };
+    const scrollIndex = isGrid ? gridIndex : index;
+    loaderRef.current._listRef.scrollToItem(scrollIndex);
+  };
+
   const fetchData = () => {
     local.current.queue = [];
     local.current.validPages = false;
@@ -103,7 +127,8 @@ export default function ListBox({
       if (layout && layout.qSelectionInfo.qInSelections) {
         return;
       }
-      loaderRef.current._listRef.scrollToItem(0);
+      local.current.dataOffset = 0;
+      scrollToIndex(0);
     }
   };
 
@@ -128,11 +153,9 @@ export default function ListBox({
 
   useEffect(() => {
     fetchData();
-  }, [layout]);
+  }, [layout, local.current.dataOffset]);
 
   const textWidth = useTextWidth({ text: getMeasureText(layout), font: '14px Source sans pro' });
-
-  const { layoutOptions = {} } = layout || {};
 
   let minimumBatchSize = DEFAULT_MIN_BATCH_SIZE;
 
@@ -141,12 +164,44 @@ export default function ListBox({
     : listLayout !== 'horizontal';
 
   const count = layout?.qListObject.qSize?.qcy;
-  const listCount = getListCount({ pages, minimumBatchSize, count, calculatePagesHeight });
+
+  const unlimitedListCount = getListCount({
+    pages,
+    minimumBatchSize,
+    count,
+    calculatePagesHeight,
+    layoutOptions,
+    model,
+  });
+
+  const sizes = getListSizes({ layout, width, height, listCount: unlimitedListCount, count, textWidth, checkboxes });
+  const { listCount } = sizes;
   setStoreValue('listCount', listCount);
 
-  const sizes = getListSizes({ layout, width, height, checkboxes, listCount, count, textWidth });
+  const setScrollPosition = (position) => {
+    const { scrollIndex, offset, triggerRerender } = getScrollIndex({
+      position,
+      isRow,
+      sizes,
+      layout,
+      offset: local.current.dataOffset,
+    });
+    local.current.dataOffset = offset;
+    if (triggerRerender) {
+      setPages((currentPages) => [...currentPages]);
+    }
+    scrollToIndex(scrollIndex);
+  };
 
   const { textAlign } = layout?.qListObject.qDimensionInfo || {};
+
+  const [focusListItem, setFocusListItem] = useState({ first: false, last: false });
+  const getFocusState = () => ({
+    first: focusListItem.first,
+    setFirst: (first) => setFocusListItem((prevState) => ({ ...prevState, first })),
+    last: focusListItem.last,
+    setLast: (last) => setFocusListItem((prevState) => ({ ...prevState, last })),
+  });
 
   const { List, Grid } = getListBoxComponents({
     direction,
@@ -170,6 +225,9 @@ export default function ListBox({
     local,
     sizes,
     listCount,
+    overflowDisclaimer: { state: overflowDisclaimer, set: showOverflowDisclaimer },
+    setScrollPosition,
+    focusListItems: getFocusState(),
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};
@@ -179,7 +237,7 @@ export default function ListBox({
 
   return (
     <>
-      {!listCount && <ListBoxDisclaimer width={width} />}
+      {!listCount && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
         itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again
@@ -190,6 +248,14 @@ export default function ListBox({
       >
         {isVertical ? List : Grid}
       </InfiniteLoader>
+      {overflowDisclaimer.show && !overflowDisclaimer.dismissed && (
+        <ListBoxFooter
+          text="Listbox.ItemsOverflow"
+          dismiss={() => setOverflowDisclaimer((state) => ({ ...state, dismissed: true }))}
+          parentWidth={loaderRef?.current?._listRef?.props?.width}
+          dense={layoutOptions?.dense}
+        />
+      )}
     </>
   );
 }
