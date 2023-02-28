@@ -55,6 +55,11 @@ const More = React.forwardRef(
           ref={ref}
           open={show}
           anchorEl={alignTo.current}
+          getContentAnchorEl={null}
+          container={alignTo.current}
+          disablePortal
+          hideBackdrop
+          style={{ pointerEvents: 'none' }}
           transitionDuration={0}
           slotProps={{
             root: {
@@ -63,11 +68,11 @@ const More = React.forwardRef(
           }}
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left',
+            horizontal: 'right',
           }}
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'left',
+            horizontal: 'right',
           }}
           PaperProps={{
             style: {

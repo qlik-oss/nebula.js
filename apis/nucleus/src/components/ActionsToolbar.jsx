@@ -147,6 +147,7 @@ function ActionsToolbar({
 
   let moreEnabled = more.enabled;
   let moreActions = more.actions;
+  const moreAlignTo = more.alignTo;
   const newActions = actions.filter((a) => !a.hidden);
   if (newActions.length > maxItems) {
     const newMoreActions = newActions.splice(-(newActions.length - maxItems) - 1);
@@ -212,7 +213,7 @@ function ActionsToolbar({
         <More
           show={showMoreItems}
           actions={moreActions}
-          alignTo={moreRef}
+          alignTo={moreAlignTo}
           popoverProps={more.popoverProps}
           popoverPaperStyle={more.popoverPaperStyle}
           onCloseOrActionClick={handleCloseShowMoreItems}
