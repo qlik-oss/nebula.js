@@ -238,6 +238,7 @@ export default function ListBoxInline({ options = {} }) {
         role="region"
         aria-label={translator.get('Listbox.ResultFilterLabel')}
       >
+        <div ref={moreAlignTo} />
         <Grid item ref={searchContainerRef}>
           <div className={classes.screenReaderOnly}>{translator.get('Listbox.Search.ScreenReaderInstructions')}</div>
           <ListBoxSearch
@@ -252,7 +253,6 @@ export default function ListBoxInline({ options = {} }) {
           />
         </Grid>
         <Grid item xs>
-          <div ref={moreAlignTo} />
           <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
           <AutoSizer>
             {({ height, width }) => (
