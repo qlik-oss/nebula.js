@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [3.2.2](https://github.com/qlik-oss/nebula.js/compare/v3.2.1...v3.2.2) (2023-02-28)
+
+### Bug Fixes
+
+- listbox more menu is broken ([#1089](https://github.com/qlik-oss/nebula.js/issues/1089)) ([662a136](https://github.com/qlik-oss/nebula.js/commit/662a1366499ae4768b80978f73a8914ecdde1bfd))
+
+### Features
+
+- **listbox:** enabling listbox popover for master dims ([#1088](https://github.com/qlik-oss/nebula.js/issues/1088)) ([d3126f0](https://github.com/qlik-oss/nebula.js/commit/d3126f09df1e19425e40ea58a8c8c1ad8df1bb42))
+
 ## [3.2.1](https://github.com/qlik-oss/nebula.js/compare/v3.2.0...v3.2.1) (2023-02-27)
 
 **Note:** Version bump only for package @nebula.js/nucleus
