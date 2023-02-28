@@ -10,6 +10,10 @@ import useActionState from '../hooks/useActionState';
 
 const PREFIX = 'More';
 
+const ActionsToolbarMoreElement = {
+  className: 'njs-action-toolbar-more',
+};
+
 const classes = {
   icon: `${PREFIX}-icon`,
 };
@@ -51,10 +55,12 @@ const More = React.forwardRef(
           ref={ref}
           open={show}
           anchorEl={alignTo.current}
-          getContentAnchorEl={null}
-          hideBackdrop
-          style={{ pointerEvents: 'none' }}
           transitionDuration={0}
+          slotProps={{
+            root: {
+              className: ActionsToolbarMoreElement.className,
+            },
+          }}
           anchorOrigin={{
             vertical: 'bottom',
             horizontal: 'left',

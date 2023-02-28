@@ -73,7 +73,7 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options
 
   const selections = hasExternalSelectionsApi
     ? options.selectionsApi
-    : useObjectSelections(app, model, elementRef, options)[0];
+    : useObjectSelections(app, model, [elementRef, '.njs-action-toolbar-more'], options)[0];
 
   if (!selections || !model) {
     return null;
