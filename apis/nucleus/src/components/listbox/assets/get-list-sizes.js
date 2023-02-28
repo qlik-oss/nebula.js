@@ -1,6 +1,6 @@
 const scrollBarWidth = 10; // TODO: ignore this - instead set the styling only show on hover...
 
-export default function getListSizes({ layout, width, height, listCount, count, textWidth, checkboxes }) {
+export default function getListSizes({ layout, width, height, listCount, count, textWidth }) {
   const { layoutOptions = {} } = layout || {};
 
   const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense, dataLayout } = layoutOptions;
@@ -10,18 +10,14 @@ export default function getListSizes({ layout, width, height, listCount, count, 
   let columnCount;
   let columnWidth;
   let rowCount;
+  const itemPadding = 4;
 
-  let itemSize = checkboxes ? 40 : 33;
-  if (dense) {
-    itemSize = 20;
-  }
-  if (dataLayout === 'grid' && layoutOrder === 'column') {
-    // Simulate a row margin by making the row container larger,
-    // since ordinary css margin/padding does not work in this case.
-    itemSize += 12;
-  }
-  itemSize = dense ? 20 : 29;
-  const listHeight = height || 8 * itemSize;
+  let itemSize = dense ? 20 : 32;
+
+  // Simulate a margin between items using padding, since our library needs an explicit row height.
+  itemSize += itemPadding;
+
+  const listHeight = height ?? 8 * itemSize;
 
   if (layoutOrder) {
     if (layoutOrder === 'row') {
@@ -72,5 +68,6 @@ export default function getListSizes({ layout, width, height, listCount, count, 
     count,
     listCount: limitedListCount,
     maxCount: { row: maxRowCount, column: maxColumnCount },
+    itemPadding,
   };
 }

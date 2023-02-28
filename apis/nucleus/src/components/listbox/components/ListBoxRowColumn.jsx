@@ -10,7 +10,7 @@ import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
 import ListBoxRadioButton from './ListBoxRadioButton';
 import { getFieldKeyboardNavigation } from '../interactions/listbox-keyboard-navigation';
-import getGridItemSizes from './grid-list-components/grid-item-sizes';
+import getItemSizes from './grid-list-components/item-sizes';
 
 const PREFIX = 'RowColumn';
 
@@ -62,13 +62,9 @@ const getSelectedStyle = ({ theme }) => ({
 });
 
 const ItemGrid = styled(Grid, {
-  shouldForwardProp: (prop) => !['dataLayout', 'itemWidth', 'itemHeight', 'layoutOrder'].includes(prop),
-})(({ dataLayout, layoutOrder, itemWidth, itemHeight }) => ({
-  [`&.${classes.fieldRoot}`]: {
-    height: '100%',
-    width: '100%',
-    ...(dataLayout === 'grid' ? getGridItemSizes({ layoutOrder, itemWidth, itemHeight }) : {}),
-  },
+  shouldForwardProp: (prop) => !['dataLayout', 'layoutOrder', 'itemPadding'].includes(prop),
+})(({ dataLayout, layoutOrder, itemPadding }) => ({
+  [`&.${classes.fieldRoot}`]: getItemSizes({ dataLayout, layoutOrder, itemPadding }),
 }));
 
 const Root = styled('div', {
@@ -88,7 +84,7 @@ const Root = styled('div', {
 
   [`& .${classes.rowBorderBottom}`]: {
     borderBottom: isGridCol ? 'none' : `1px solid ${theme.palette.divider}`,
-    borderRight: isGridCol ? `1px solid ${theme.palette.divider}` : 'none',
+    borderLeft: isGridCol ? `1px solid ${theme.palette.divider}` : 'none',
   },
 
   [`& .${classes.column}`]: {
@@ -252,6 +248,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     dataOffset,
     focusListItems,
     listCount,
+    itemPadding,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -331,7 +328,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     setSelected(selected);
 
     const clazzArr = [column ? classes.column : classes.row];
-    if (!(histogram && dense) && !checkboxes) clazzArr.push(classes.rowBorderBottom);
+    if (!(histogram && (dense || checkboxes))) clazzArr.push(classes.rowBorderBottom);
     if (!checkboxes) {
       if (cell.qState === 'XS') {
         clazzArr.push(showGray ? classes.XS : classes.S);
@@ -397,9 +394,19 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     }
     event.preventDefault();
   };
+
+  const isGridCol = dataLayout === 'grid' && layoutOrder === 'column';
+
   const getCheckboxField = ({ lbl, color, qElemNumber }) => {
     const cb = (
-      <ListBoxCheckbox label={lbl} checked={isSelected} dense={dense} excluded={isExcluded(cell)} showGray={showGray} />
+      <ListBoxCheckbox
+        label={lbl}
+        checked={isSelected}
+        dense={dense}
+        excluded={isExcluded(cell)}
+        isGridCol={isGridCol}
+        showGray={showGray}
+      />
     );
     const rb = <ListBoxRadioButton label={lbl} checked={isSelected} dense={dense} />;
     const labelTag = typeof lbl === 'string' ? getValueField({ lbl, color, highlighted: false }) : lbl;
@@ -467,7 +474,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const isFirstElement = index === 0;
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
-  const isGridCol = dataLayout === 'grid' && layoutOrder === 'column';
 
   return (
     <Root
@@ -482,8 +488,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         container
         dataLayout={dataLayout}
         layoutOrder={layoutOrder}
-        itemWidth={styles.width}
-        itemHeight={styles.height}
+        itemPadding={itemPadding}
         gap={0}
         className={joinClassNames(['value', ...classArr])}
         classes={{

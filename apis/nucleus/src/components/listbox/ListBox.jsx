@@ -174,7 +174,7 @@ export default function ListBox({
     model,
   });
 
-  const sizes = getListSizes({ layout, width, height, listCount: unlimitedListCount, count, textWidth, checkboxes });
+  const sizes = getListSizes({ layout, width, height, listCount: unlimitedListCount, count, textWidth });
   const { listCount } = sizes;
   setStoreValue('listCount', listCount);
 
