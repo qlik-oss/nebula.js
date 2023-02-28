@@ -76,6 +76,7 @@ async function build(argv) {
         nodeResolve(),
         common(),
         babel({
+          babelHelpers: 'bundled',
           babelrc: false,
           exclude: [/node_modules/],
           presets: [

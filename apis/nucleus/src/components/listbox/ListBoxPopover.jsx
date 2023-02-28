@@ -36,6 +36,7 @@ export default function ListBoxPopover({
   fieldName,
   stateName = '$',
 }) {
+  const isMasterDim = Boolean(fieldName?.qLibraryId);
   const open = show && Boolean(alignTo.current);
   const [listCount, setListCount] = useState(0);
   const theme = useTheme();
@@ -64,8 +65,9 @@ export default function ListBoxPopover({
               qSortByLoadOrder: 1,
             },
           ],
-          qFieldDefs: [fieldName],
+          qFieldDefs: isMasterDim ? undefined : [fieldName],
         },
+        qLibraryId: isMasterDim ? fieldName.qLibraryId : undefined,
       },
     },
     app,

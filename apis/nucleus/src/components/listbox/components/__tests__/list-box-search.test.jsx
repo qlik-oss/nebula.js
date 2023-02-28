@@ -202,6 +202,17 @@ describe('<ListBoxSearch />', () => {
     expect(inputBoxes).toHaveLength(0);
   });
 
+  test('should not render if searchEnabled false', () => {
+    const testRenderer = create(
+      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} searchEnabled={false} />
+      </InstanceContext.Provider>
+    );
+    const testInstance = testRenderer.root;
+    const inputBoxes = testInstance.findAllByType(OutlinedInput);
+    expect(inputBoxes).toHaveLength(0);
+  });
+
   test('should show wildcard on focus', async () => {
     const testRenderer = testRender(model);
     const testInstance = testRenderer.root;

@@ -198,6 +198,14 @@ export namespace EnigmaMocker {
 }
 
 declare namespace stardust {
+    interface Configuration {
+        load?: stardust.LoadType;
+        context?: stardust.Context;
+        types?: stardust.TypeInfo[];
+        themes?: stardust.ThemeInfo[];
+        anything?: object;
+    }
+
     interface Context {
         keyboardNavigation?: boolean;
         constraints?: {
@@ -208,13 +216,6 @@ declare namespace stardust {
         theme?: string;
         language?: string;
         deviceType?: string;
-    }
-
-    interface Configuration {
-        context?: stardust.Context;
-        types?: stardust.TypeInfo[];
-        themes?: stardust.ThemeInfo[];
-        anything?: object;
     }
 
     interface Galaxy {
@@ -265,10 +266,26 @@ declare namespace stardust {
 
     type FrequencyMode = "none" | "value" | "percent" | "relative";
 
-    type SearchMode = boolean | "toggle";
+    type SearchMode = boolean | "toggle" | "inSelection";
+
+    type FieldEventTypes = "selectionActivated" | "selectionDeactivated";
 
     class FieldInstance {
         constructor();
+
+        /**
+         * Event listener function on instance
+         * @param eventType event type that function needs to listen
+         * @param callback a callback function to run when event emits
+         */
+        on(eventType: stardust.FieldEventTypes, callback: ()=>void): void;
+
+        /**
+         * Remove listener on instance
+         * @param eventType event type
+         * @param callback handler
+         */
+        removeListener(eventType: stardust.FieldEventTypes, callback: ()=>void): void;
 
         /**
          * Mounts the field as a listbox into the provided HTMLElement.

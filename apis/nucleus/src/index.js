@@ -19,26 +19,6 @@ import uid from './object/uid';
 import eventmixin from './selections/event-mixin';
 
 /**
- * @interface Context
- * @property {boolean=} keyboardNavigation
- * @property {object=} constraints
- * @property {boolean=} constraints.active
- * @property {boolean=} constraints.passive
- * @property {boolean=} constraints.select
- */
-const DEFAULT_CONTEXT = /** @lends Context */ {
-  /** @type {string=} */
-  theme: 'light',
-  /** @type {string=} */
-  language: 'en-US',
-  /** @type {string=} */
-  deviceType: 'auto',
-  constraints: {},
-  keyboardNavigation: false,
-  disableCellPadding: false,
-};
-
-/**
  * @interface SnapshotConfiguration
  * @private
  */
@@ -67,32 +47,68 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
 
 /**
  * @interface Configuration
+ * @property {LoadType=} load Fallback load function for missing types
+ * @property {Context=} context Settings for the rendering instance
+ * @property {Array<TypeInfo>=} types Visualization types to register
+ * @property {Array<ThemeInfo>=} themes Themes to register
+ * @property {object=} anything
+ * @example
+ * import { embed } from '@nebula.js/stardust'
+ * n = embed(app, {
+ *   context: {
+ *     keyboardNavigation: true,
+ *     theme: 'purple',
+ *   },
+ *   load: ({ name, version }) => {
+ *     if (name === 'linechart') {
+ *       return Promise.resolve(line);
+ *     }
+ *   },
+ *   types: [
+ *     {
+ *       name: 'bar',
+ *       load: () => Promise.resolve(bar),
+ *     },
+ *   ],
+ *   themes: [
+ *     {
+ *       id: 'purple',
+ *       load: () => Promise.resolve(purpleThemeJson),
+ *     },
+ *   ],
+ * });
  */
-const DEFAULT_CONFIG = /** @lends Configuration */ {
-  /**
-   * @type {Context=}
-   */
-  context: DEFAULT_CONTEXT,
+
+const DEFAULT_CONFIG = {
+  context: {},
   load: () => undefined,
-  /**
-   * @type {(TypeInfo[])=}
-   */
   types: [],
-
-  /**
-   * @type {(ThemeInfo[])=}
-   */
   themes: [],
-
-  /** @type {object=} */
   anything: {},
-
-  /**
-   * @type {SnapshotConfiguration=}
-   * @private
-   */
   snapshot: DEFAULT_SNAPSHOT_CONFIG,
 };
+
+/**
+ * @interface Context
+ * @property {boolean=} keyboardNavigation
+ * @property {object=} constraints
+ * @property {boolean=} constraints.active
+ * @property {boolean=} constraints.passive
+ * @property {boolean=} constraints.select
+ */
+const DEFAULT_CONTEXT = /** @lends Context */ {
+  /** @type {string=} */
+  theme: 'light',
+  /** @type {string=} */
+  language: 'en-US',
+  /** @type {string=} */
+  deviceType: 'auto',
+  constraints: {},
+  keyboardNavigation: false,
+  disableCellPadding: false,
+};
+
+DEFAULT_CONFIG.context = DEFAULT_CONTEXT;
 
 /**
  * @interface Galaxy
@@ -378,7 +394,34 @@ function nuked(configuration = {}) {
          */
 
         /**
-         * @typedef { boolean | 'toggle' } SearchMode
+         * @typedef { boolean | 'toggle' | 'inSelection' } SearchMode
+         */
+
+        /**
+         * @typedef { 'selectionActivated' | 'selectionDeactivated' } FieldEventTypes
+         */
+
+        /**
+         * Event listener function on instance
+         *
+         * @method
+         * @name FieldInstance#on
+         * @param {FieldEventTypes} eventType event type that function needs to listen
+         * @param {Function} callback a callback function to run when event emits
+         * @example
+         * const handleSomeEvent () => {...};
+         * fieldInstance.on('someEvent', handleSomeEvent);
+         * ...
+         * fieldInstance.removeListener('someEvent', handleSomeEvent);
+         */
+
+        /**
+         * Remove listener on instance
+         *
+         * @method
+         * @name FieldInstance#removeListener
+         * @param {FieldEventTypes} eventType event type
+         * @param {Function} callback handler
          */
 
         /**
@@ -397,7 +440,7 @@ function nuked(configuration = {}) {
            * @param {ListLayout=} [options.listLayout=vertical] Layout direction vertical|horizontal (not applicable for existing objects)
            * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
            * @param {boolean=} [options.histogram=false] Show histogram bar (not applicable for existing objects)
-           * @param {SearchMode=} [options.search=true] Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow
+           * @param {SearchMode=} [options.search=true] Show the search bar permanently, using the toggle button or when in selection: false|true|toggle|inSelection
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields (not applicable for existing objects)
            * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects)
@@ -416,12 +459,18 @@ function nuked(configuration = {}) {
             if (this._instance) {
               throw new Error(`Field or object ${fieldName || qId} already mounted`);
             }
+            const onSelectionActivated = () => fieldSels.emit('selectionActivated');
+            const onSelectionDeactivated = () => fieldSels.emit('selectionDeactivated');
             this._instance = ListBoxPortal({
               element,
               app,
               fieldIdentifier,
               qId,
-              options: getListboxPortalOptions(options),
+              options: getListboxPortalOptions({
+                onSelectionActivated,
+                onSelectionDeactivated,
+                ...options,
+              }),
               stateName: options.stateName || '$',
             });
             root.add(this._instance);
@@ -440,6 +489,7 @@ function nuked(configuration = {}) {
             }
           },
         };
+        eventmixin(fieldSels);
         return fieldSels;
       },
       /**

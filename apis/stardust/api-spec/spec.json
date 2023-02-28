@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "3.1.3",
+    "version": "3.2.2",
     "license": "MIT",
     "stability": "stable"
   },
@@ -574,6 +574,44 @@
     }
   },
   "definitions": {
+    "Configuration": {
+      "kind": "interface",
+      "entries": {
+        "load": {
+          "description": "Fallback load function for missing types",
+          "optional": true,
+          "type": "#/definitions/LoadType"
+        },
+        "context": {
+          "description": "Settings for the rendering instance",
+          "optional": true,
+          "type": "#/definitions/Context"
+        },
+        "types": {
+          "description": "Visualization types to register",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/TypeInfo"
+          }
+        },
+        "themes": {
+          "description": "Themes to register",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/ThemeInfo"
+          }
+        },
+        "anything": {
+          "optional": true,
+          "type": "object"
+        }
+      },
+      "examples": [
+        "import { embed } from '@nebula.js/stardust'\nn = embed(app, {\n  context: {\n    keyboardNavigation: true,\n    theme: 'purple',\n  },\n  load: ({ name, version }) => {\n    if (name === 'linechart') {\n      return Promise.resolve(line);\n    }\n  },\n  types: [\n    {\n      name: 'bar',\n      load: () => Promise.resolve(bar),\n    },\n  ],\n  themes: [\n    {\n      id: 'purple',\n      load: () => Promise.resolve(purpleThemeJson),\n    },\n  ],\n});"
+      ]
+    },
     "Context": {
       "kind": "interface",
       "entries": {
@@ -613,33 +651,6 @@
           "optional": true,
           "defaultValue": "auto",
           "type": "string"
-        }
-      }
-    },
-    "Configuration": {
-      "kind": "interface",
-      "entries": {
-        "context": {
-          "optional": true,
-          "type": "#/definitions/Context"
-        },
-        "types": {
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/TypeInfo"
-          }
-        },
-        "themes": {
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/ThemeInfo"
-          }
-        },
-        "anything": {
-          "optional": true,
-          "type": "object"
         }
       }
     },
@@ -866,6 +877,26 @@
           {
             "kind": "literal",
             "value": "'toggle'"
+          },
+          {
+            "kind": "literal",
+            "value": "'inSelection'"
+          }
+        ]
+      }
+    },
+    "FieldEventTypes": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "kind": "literal",
+            "value": "'selectionActivated'"
+          },
+          {
+            "kind": "literal",
+            "value": "'selectionDeactivated'"
           }
         ]
       }
@@ -880,6 +911,43 @@
         "params": []
       },
       "entries": {
+        "on": {
+          "description": "Event listener function on instance",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventType",
+              "description": "event type that function needs to listen",
+              "type": "#/definitions/FieldEventTypes"
+            },
+            {
+              "name": "callback",
+              "description": "a callback function to run when event emits",
+              "kind": "function",
+              "params": []
+            }
+          ],
+          "examples": [
+            "const handleSomeEvent () => {...};\nfieldInstance.on('someEvent', handleSomeEvent);\n...\nfieldInstance.removeListener('someEvent', handleSomeEvent);"
+          ]
+        },
+        "removeListener": {
+          "description": "Remove listener on instance",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventType",
+              "description": "event type",
+              "type": "#/definitions/FieldEventTypes"
+            },
+            {
+              "name": "callback",
+              "description": "handler",
+              "kind": "function",
+              "params": []
+            }
+          ]
+        },
         "mount": {
           "description": "Mounts the field as a listbox into the provided HTMLElement.",
           "availability": {
@@ -927,7 +995,7 @@
                   "type": "boolean"
                 },
                 "search": {
-                  "description": "Show the search bar permanently or using the toggle button: false|true|toggle|toggleShow",
+                  "description": "Show the search bar permanently, using the toggle button or when in selection: false|true|toggle|inSelection",
                   "optional": true,
                   "defaultValue": true,
                   "type": "#/definitions/SearchMode"

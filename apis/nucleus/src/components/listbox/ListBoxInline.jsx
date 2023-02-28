@@ -2,7 +2,6 @@ import React, { useContext, useCallback, useRef, useEffect, useState } from 'rea
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import Lock from '@nebula.js/ui/icons/lock';
-import Unlock from '@nebula.js/ui/icons/unlock';
 import { IconButton, Grid, Typography } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
@@ -13,7 +12,6 @@ import ActionsToolbar from '../ActionsToolbar';
 import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
-import getHasSelections from './assets/has-selections';
 import addListboxTheme from './assets/addListboxTheme';
 
 const PREFIX = 'ListBoxInline';
@@ -51,7 +49,6 @@ export default function ListBoxInline({ options = {} }) {
     checkboxes,
     search = true,
     focusSearch = false,
-    toolbar = true,
     rangeSelect = true,
     model,
     selections,
@@ -63,6 +60,7 @@ export default function ListBoxInline({ options = {} }) {
     showGray = true,
     scrollState = undefined,
   } = options;
+  let { toolbar = true } = options;
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
@@ -79,10 +77,6 @@ export default function ListBoxInline({ options = {} }) {
   };
 
   const theme = useTheme();
-
-  const lock = useCallback(() => {
-    model.lock('/qListObjectDef');
-  }, [model]);
 
   const unlock = useCallback(() => {
     model.unlock('/qListObjectDef');
@@ -107,13 +101,20 @@ export default function ListBoxInline({ options = {} }) {
     active: keyboardActive,
   };
 
+  if (layout?.toolbar !== undefined) {
+    toolbar = layout.toolbar;
+  }
+
   useEffect(() => {
     const show = () => {
       setShowToolbar(true);
+      if (search === 'inSelection') {
+        setShowSearch(true);
+      }
     };
     const hide = () => {
       setShowToolbar(false);
-      if (search === 'toggle') {
+      if (search === 'toggle' || search === 'inSelection') {
         setShowSearch(false);
       }
     };
@@ -157,33 +158,19 @@ export default function ListBoxInline({ options = {} }) {
       })
     : [];
 
-  const hasSelections = getHasSelections(layout);
-
   const showTitle = true;
 
-  const searchVisible = (search === true || (search === 'toggle' && showSearch)) && !selectDisabled();
+  const searchVisible =
+    (search === true || ((search === 'toggle' || search === 'inSelection') && showSearch)) && !selectDisabled();
   const dense = layout.layoutOptions?.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
   const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
-  const wildCardSearch = layout?.wildCardSearch;
+  const { wildCardSearch, searchEnabled } = layout;
 
   const onShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
-  };
-
-  const getSearchOrUnlock = () => {
-    const showSearchIcon = search === 'toggle' && !hasSelections;
-    return showSearchIcon ? (
-      <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
-        <SearchIcon />
-      </IconButton>
-    ) : (
-      <IconButton onClick={lock} tabIndex={-1} disabled={!hasSelections} size="large">
-        <Unlock />
-      </IconButton>
-    );
   };
 
   return (
@@ -196,21 +183,25 @@ export default function ListBoxInline({ options = {} }) {
       style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
       onKeyDown={handleKeyDown}
     >
-      {toolbar && (
+      {toolbar && layout.title && (
         <Grid item container style={{ padding: theme.spacing(1) }}>
-          <Grid item>
+          <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
             {isLocked ? (
               <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
-                <Lock title={translator.get('Listbox.Unlock')} />
+                <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
               </IconButton>
             ) : (
-              getSearchOrUnlock()
+              searchEnabled !== false && (
+                <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
+                  <SearchIcon style={{ fontSize: '12px' }} />
+                </IconButton>
+              )
             )}
           </Grid>
           <Grid item className={classes.listBoxHeader}>
             {showTitle && (
               <Title variant="h6" noWrap>
-                {layout.title || layout.qListObject.qDimensionInfo.qFallbackTitle}
+                {layout.title}
               </Title>
             )}
           </Grid>
@@ -257,6 +248,7 @@ export default function ListBoxInline({ options = {} }) {
             visible={searchVisible}
             searchContainerRef={searchContainerRef}
             wildCardSearch={wildCardSearch}
+            searchEnabled={searchEnabled}
           />
         </Grid>
         <Grid item xs>
