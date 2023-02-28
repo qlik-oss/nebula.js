@@ -116,7 +116,7 @@ function ActionsToolbar({
   const { translator, keyboardNavigation } = useContext(InstanceContext);
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [moreEnabled, setMoreEnabled] = useState(more.enabled);
-  const [moreActions, setMoreActions] = useState(more.actions);
+  const [moreActions, setMoreActions] = useState([]);
   const moreRef = useRef();
   const actionsRef = useRef();
   const theme = useTheme();
@@ -150,6 +150,17 @@ function ActionsToolbar({
     focusHandler.on('focus_toolbar_last', focusLast);
   }, []);
 
+  useEffect(() => {
+    const newActions = actions.filter((a) => !a.hidden);
+    if (newActions.length > maxItems) {
+      const newMoreActions = newActions.splice(-(newActions.length - maxItems) - 1);
+      setMoreEnabled(true);
+      setMoreActions([...newMoreActions, ...more.actions]);
+    } else {
+      setMoreActions(more.actions);
+    }
+  }, [actions, more.actions]);
+
   const newActions = useMemo(() => actions.filter((a) => !a.hidden), [actions]);
 
   if (!selections.show && newActions.length === 0) return null;
@@ -167,12 +178,6 @@ function ActionsToolbar({
     enabled: () => moreEnabled,
     action: () => setShowMoreItems(!showMoreItems),
   };
-
-  if (newActions.length > maxItems) {
-    const newMoreActions = newActions.splice(-(newActions.length - maxItems) - 1);
-    setMoreEnabled(true);
-    setMoreActions([...newMoreActions, ...more.actions]);
-  }
 
   const tabCallback =
     // if keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
