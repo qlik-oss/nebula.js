@@ -39,10 +39,11 @@ describe('get-list-sizes', () => {
   it('should return expected sizes based on inputs', () => {
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
-      columnCount: 4,
+      columnCount: 1,
       columnWidth: 47.5,
       count: 200,
-      itemSize: 29,
+      itemPadding: 4,
+      itemSize: 36,
       listCount: 100,
       listHeight: 300,
       maxCount: {
@@ -52,7 +53,7 @@ describe('get-list-sizes', () => {
       overflowStyling: {
         overflowX: 'hidden',
       },
-      rowCount: 25,
+      rowCount: 200,
       scrollBarWidth: 10,
     });
   });
@@ -61,7 +62,7 @@ describe('get-list-sizes', () => {
     args.checkboxes = true;
     args.layout.layoutOptions.dense = true;
     const sizes = getListSizes(args);
-    expect(sizes).toMatchObject({ itemSize: 20 });
+    expect(sizes).toMatchObject({ itemSize: 24 });
   });
 
   it('grid mode with layoutOrder column', () => {
@@ -69,20 +70,21 @@ describe('get-list-sizes', () => {
     args.layout.layoutOptions.layoutOrder = 'column';
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
-      columnCount: 17,
+      columnCount: 13,
       columnWidth: 68,
       count: 200,
-      itemSize: 45,
+      itemPadding: 4,
+      itemSize: 36,
       listCount: 100,
       listHeight: 300,
       maxCount: {
-        column: 706315,
+        column: 493382,
         row: 577000,
       },
       overflowStyling: {
         overflowY: 'hidden',
       },
-      rowCount: 6,
+      rowCount: 8,
       scrollBarWidth: 10,
     });
   });
@@ -93,14 +95,14 @@ describe('get-list-sizes', () => {
     args.layout.layoutOptions.layoutOrder = 'column';
     args.maxRows = 2;
     const sizes = getListSizes(args);
-    expect(sizes).toMatchObject({ rowCount: 6, columnCount: 17 });
+    expect(sizes).toMatchObject({ rowCount: 8, columnCount: 13 });
   });
 
   it('grid mode with layoutOrder == column should add exta 12px padding to the itemSize', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'column';
     const sizes = getListSizes(args);
-    expect(sizes.itemSize).toEqual(45); // itemSize + padding = 33 + 12 = 45
+    expect(sizes.itemSize).toEqual(36); // itemSize + padding = 32 + 4 = 36
   });
 
   it('maxRowCount should limit listCount and rowCount, in column layout', () => {
@@ -110,11 +112,12 @@ describe('get-list-sizes', () => {
     args.listCount = maxRowCount * columnCount + 1;
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
-      columnCount: 4,
+      columnCount: 1,
       columnWidth: 47.5,
       count: 200,
-      itemSize: 29,
-      listCount: 2308000,
+      itemPadding: 4,
+      itemSize: 36,
+      listCount: 200,
       listHeight: 300,
       maxCount: {
         column: 706315,
@@ -123,7 +126,7 @@ describe('get-list-sizes', () => {
       overflowStyling: {
         overflowX: 'hidden',
       },
-      rowCount: 577000,
+      rowCount: 200,
       scrollBarWidth: 10,
     });
   });
@@ -135,14 +138,14 @@ describe('get-list-sizes', () => {
     const rowCount = 3;
     const columnCount = 493382;
     args.listCount = rowCount * columnCount + 1;
-    const limitedListCount = args.listCount - 1;
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
       columnCount,
       columnWidth: 68,
       count: 200,
-      itemSize: 29,
-      listCount: limitedListCount,
+      itemPadding: 4,
+      itemSize: 36,
+      listCount: 986764,
       listHeight: 100,
       maxCount: {
         column: columnCount,
@@ -151,7 +154,7 @@ describe('get-list-sizes', () => {
       overflowStyling: {
         overflowY: 'hidden',
       },
-      rowCount,
+      rowCount: 2,
       scrollBarWidth: 10,
     });
   });
