@@ -27,8 +27,8 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "7.20.7",
-    "@babel/core": "7.20.12",
+    "@babel/cli": "7.21.0",
+    "@babel/core": "7.21.0",
     "@babel/preset-env": "7.20.2",
     "@nebula.js/stardust": "^3.2.2",
     "@rollup/plugin-babel": "6.0.3",
@@ -39,7 +39,7 @@
     "extend": "3.0.2",
     "fs-extra": "11.1.0",
     "node-event-emitter": "0.0.1",
-    "rollup": "3.12.1",
-    "yargs": "17.6.2"
+    "rollup": "3.17.3",
+    "yargs": "17.7.1"
   }
 }
