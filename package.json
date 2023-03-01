@@ -18,6 +18,7 @@
     "mashup": "node scripts/start-mashup.js",
     "test": "yarn run test:unit",
     "test:unit": "jest --maxWorkers=2",
+    "test:update": "jest --maxWorkers=2 -u",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:mashup": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/mashup/**/*.int.js'",
