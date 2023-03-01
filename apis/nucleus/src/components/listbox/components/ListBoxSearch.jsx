@@ -23,7 +23,7 @@ export default function ListBoxSearch({
   keyboard,
   dense = false,
   visible = true,
-  wildCardSearch = true,
+  wildCardSearch = false,
   searchEnabled,
 }) {
   const { translator } = useContext(InstanceContext);

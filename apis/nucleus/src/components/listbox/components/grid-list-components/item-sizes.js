@@ -3,7 +3,7 @@ export default function getGridItemSizes({ dataLayout, layoutOrder, itemPadding 
   if (dataLayout === 'singleColumn') {
     return {
       height: '100%',
-      width: `calc(100% - ${itemPadding}px)`,
+      width: '100%',
     };
   }
 
