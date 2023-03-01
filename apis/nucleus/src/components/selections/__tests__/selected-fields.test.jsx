@@ -146,6 +146,10 @@ describe('<SelectedFields />', () => {
           {
             qField: 'my-field2',
           },
+          {
+            qField: 'my-field3',
+            qIsHidden: true,
+          },
         ],
       },
     };
@@ -157,6 +161,10 @@ describe('<SelectedFields />', () => {
           },
           {
             qField: 'my-field2',
+          },
+          {
+            qField: 'my-field3',
+            qIsHidden: true,
           },
         ],
       },
