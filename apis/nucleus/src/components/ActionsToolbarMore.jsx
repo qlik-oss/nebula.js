@@ -19,6 +19,8 @@ const classes = {
 };
 
 const StyledPopover = styled(Popover)(({ theme }) => ({
+  // Set here to allow clicking through the modals container
+  pointerEvents: 'none',
   [`& .${classes.icon}`]: {
     color: theme.palette.text.primary,
   },
@@ -55,6 +57,10 @@ const More = React.forwardRef(
           ref={ref}
           open={show}
           anchorEl={alignTo.current}
+          getContentAnchorEl={null}
+          container={alignTo.current}
+          disablePortal
+          hideBackdrop
           transitionDuration={0}
           slotProps={{
             root: {
@@ -63,11 +69,11 @@ const More = React.forwardRef(
           }}
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left',
+            horizontal: 'right',
           }}
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'left',
+            horizontal: 'right',
           }}
           PaperProps={{
             style: {
