@@ -19,6 +19,8 @@ const classes = {
 };
 
 const StyledPopover = styled(Popover)(({ theme }) => ({
+  // Set here to allow clicking through the modals container
+  pointerEvents: 'none',
   [`& .${classes.icon}`]: {
     color: theme.palette.text.primary,
   },
@@ -59,7 +61,6 @@ const More = React.forwardRef(
           container={alignTo.current}
           disablePortal
           hideBackdrop
-          style={{ pointerEvents: 'none' }}
           transitionDuration={0}
           slotProps={{
             root: {

@@ -128,7 +128,12 @@ function ActionsToolbar({
     return buttons[last ? buttons.length - 1 : 0];
   };
 
-  useEffect(() => () => setShowMoreItems(false), [popover.show]);
+  useEffect(
+    () => () => {
+      setShowMoreItems(false);
+    },
+    [popover.show, show, selections.show]
+  );
 
   useEffect(() => {
     if (!focusHandler) return;
@@ -147,7 +152,7 @@ function ActionsToolbar({
 
   let moreEnabled = more.enabled;
   let moreActions = more.actions;
-  const moreAlignTo = more.alignTo;
+  const moreAlignTo = more.alignTo || moreRef;
   const newActions = actions.filter((a) => !a.hidden);
   if (newActions.length > maxItems) {
     const newMoreActions = newActions.splice(-(newActions.length - maxItems) - 1);
