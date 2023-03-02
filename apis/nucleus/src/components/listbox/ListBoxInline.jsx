@@ -82,7 +82,7 @@ export default function ListBoxInline({ options = {} }) {
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const { translator, keyboardNavigation, themeApi } = useContext(InstanceContext);
+  const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
   theme.listBox = addListboxTheme(themeApi);
 
   const moreAlignTo = useRef();
@@ -173,6 +173,8 @@ export default function ListBoxInline({ options = {} }) {
     setShowSearch(newValue);
   };
 
+  const hideSearch = searchEnabled !== false && constraints.passive && constraints.active && !constraints.select;
+
   return (
     <StyledGrid
       className="listbox-container"
@@ -191,7 +193,7 @@ export default function ListBoxInline({ options = {} }) {
                 <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
               </IconButton>
             ) : (
-              searchEnabled !== false && (
+              !hideSearch && (
                 <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
                   <SearchIcon style={{ fontSize: '12px' }} />
                 </IconButton>
