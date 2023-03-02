@@ -53,7 +53,7 @@ const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
   color: theme.palette.selected.mainContrastText,
   '&:focus': {
-    boxShadow: `inset 0 0 0 2px rgba(0, 0, 0, 0.3)`,
+    boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
     outline: 'none',
   },
   '& $cell': {
