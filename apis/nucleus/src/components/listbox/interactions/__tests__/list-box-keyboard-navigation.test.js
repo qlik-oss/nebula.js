@@ -40,7 +40,7 @@ describe('keyboard navigation', () => {
       setScrollPosition,
       focusListItems,
     });
-    handleKeyDownForListbox = getListboxInlineKeyboardNavigation({ setKeyboardActive });
+    ({ handleKeyDown: handleKeyDownForListbox } = getListboxInlineKeyboardNavigation({ setKeyboardActive }));
   });
 
   describe('handle keyboard navigation on field level', () => {

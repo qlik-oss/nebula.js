@@ -33,8 +33,6 @@ jest.mock('../interactions/listbox-keyboard-navigation', () => ({
 
 describe('<ListboxInline />', () => {
   const app = { key: 'app' };
-  const fieldIdentifier = { qLibraryId: 'qLibraryId' };
-  const stateName = '$';
 
   let options;
   let useState;
@@ -113,6 +111,7 @@ describe('<ListboxInline />', () => {
     };
 
     options = {
+      app,
       title: 'title',
       direction: 'vertical',
       listLayout: 'vertical',
@@ -164,7 +163,7 @@ describe('<ListboxInline />', () => {
           renderer = create(
             <ThemeProvider theme={theme}>
               <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
-                <ListBoxInline app={app} fieldIdentifier={fieldIdentifier} stateName={stateName} options={options} />
+                <ListBoxInline options={options} />
               </InstanceContext.Provider>
             </ThemeProvider>
           );
