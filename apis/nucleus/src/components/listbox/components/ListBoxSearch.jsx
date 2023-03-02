@@ -23,6 +23,7 @@ export default function ListBoxSearch({
   keyboard,
   dense = false,
   visible = true,
+  autoFocus = false,
   wildCardSearch = true,
   searchEnabled,
 }) {
@@ -164,6 +165,7 @@ export default function ListBoxSearch({
       onFocus={handleFocus}
       onChange={onChange}
       onKeyDown={onKeyDown}
+      autoFocus={autoFocus}
       inputProps={{
         tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
       }}
