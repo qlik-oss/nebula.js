@@ -198,6 +198,14 @@ export namespace EnigmaMocker {
 }
 
 declare namespace stardust {
+    interface Configuration {
+        load?: stardust.LoadType;
+        context?: stardust.Context;
+        types?: stardust.TypeInfo[];
+        themes?: stardust.ThemeInfo[];
+        anything?: object;
+    }
+
     interface Context {
         keyboardNavigation?: boolean;
         constraints?: {
@@ -208,13 +216,6 @@ declare namespace stardust {
         theme?: string;
         language?: string;
         deviceType?: string;
-    }
-
-    interface Configuration {
-        context?: stardust.Context;
-        types?: stardust.TypeInfo[];
-        themes?: stardust.ThemeInfo[];
-        anything?: object;
     }
 
     interface Galaxy {
@@ -435,16 +436,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -477,6 +468,16 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {

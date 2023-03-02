@@ -50,7 +50,7 @@ exports[`grid-list-components should create a Grid component 1`] = `
   useIsScrolling={true}
   width={100}
 >
-  [Function]
+  [MockFunction]
 </Styled(Grid)>
 `;
 

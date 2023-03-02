@@ -129,6 +129,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       json(),
       commonjs(),
       babel({
+        babelHelpers: 'bundled',
         babelrc: false,
         include: [
           '/**/apis/conversion/**',

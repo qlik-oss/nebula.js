@@ -19,26 +19,6 @@ import uid from './object/uid';
 import eventmixin from './selections/event-mixin';
 
 /**
- * @interface Context
- * @property {boolean=} keyboardNavigation
- * @property {object=} constraints
- * @property {boolean=} constraints.active
- * @property {boolean=} constraints.passive
- * @property {boolean=} constraints.select
- */
-const DEFAULT_CONTEXT = /** @lends Context */ {
-  /** @type {string=} */
-  theme: 'light',
-  /** @type {string=} */
-  language: 'en-US',
-  /** @type {string=} */
-  deviceType: 'auto',
-  constraints: {},
-  keyboardNavigation: false,
-  disableCellPadding: false,
-};
-
-/**
  * @interface SnapshotConfiguration
  * @private
  */
@@ -67,32 +47,68 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
 
 /**
  * @interface Configuration
+ * @property {LoadType=} load Fallback load function for missing types
+ * @property {Context=} context Settings for the rendering instance
+ * @property {Array<TypeInfo>=} types Visualization types to register
+ * @property {Array<ThemeInfo>=} themes Themes to register
+ * @property {object=} anything
+ * @example
+ * import { embed } from '@nebula.js/stardust'
+ * n = embed(app, {
+ *   context: {
+ *     keyboardNavigation: true,
+ *     theme: 'purple',
+ *   },
+ *   load: ({ name, version }) => {
+ *     if (name === 'linechart') {
+ *       return Promise.resolve(line);
+ *     }
+ *   },
+ *   types: [
+ *     {
+ *       name: 'bar',
+ *       load: () => Promise.resolve(bar),
+ *     },
+ *   ],
+ *   themes: [
+ *     {
+ *       id: 'purple',
+ *       load: () => Promise.resolve(purpleThemeJson),
+ *     },
+ *   ],
+ * });
  */
-const DEFAULT_CONFIG = /** @lends Configuration */ {
-  /**
-   * @type {Context=}
-   */
-  context: DEFAULT_CONTEXT,
+
+const DEFAULT_CONFIG = {
+  context: {},
   load: () => undefined,
-  /**
-   * @type {(TypeInfo[])=}
-   */
   types: [],
-
-  /**
-   * @type {(ThemeInfo[])=}
-   */
   themes: [],
-
-  /** @type {object=} */
   anything: {},
-
-  /**
-   * @type {SnapshotConfiguration=}
-   * @private
-   */
   snapshot: DEFAULT_SNAPSHOT_CONFIG,
 };
+
+/**
+ * @interface Context
+ * @property {boolean=} keyboardNavigation
+ * @property {object=} constraints
+ * @property {boolean=} constraints.active
+ * @property {boolean=} constraints.passive
+ * @property {boolean=} constraints.select
+ */
+const DEFAULT_CONTEXT = /** @lends Context */ {
+  /** @type {string=} */
+  theme: 'light',
+  /** @type {string=} */
+  language: 'en-US',
+  /** @type {string=} */
+  deviceType: 'auto',
+  constraints: {},
+  keyboardNavigation: false,
+  disableCellPadding: false,
+};
+
+DEFAULT_CONFIG.context = DEFAULT_CONTEXT;
 
 /**
  * @interface Galaxy

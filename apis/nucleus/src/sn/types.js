@@ -74,9 +74,9 @@ export function create({ halo, parent }) {
       const { name } = typeInfo;
       let { version } = typeInfo;
       if (!tc[name]) {
-        // Fall back to existing version
+        // Chart not registered, so we'll do that now.
         if (__NEBULA_DEV__) {
-          console.warn(`Visualization ${name} is not registered.`); // eslint-disable-line no-console
+          console.warn(`Visualization ${name} is not registered. Adding it now.`); // eslint-disable-line no-console
         }
         this.register({ name, version });
       } else if (!tc[name].versions[version]) {
