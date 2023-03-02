@@ -63,15 +63,10 @@ export default function ListBoxSearch({
 
   useEffect(() => {
     if (wildcardOn && inputRef.current) {
-      const timeout = setTimeout(() => {
-        const cursorPos = value.length - 1;
-        inputRef.current.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
-        setWildcardOn(false);
-      }, 0);
-
-      return () => clearTimeout(timeout);
+      const cursorPos = value.length - 1;
+      inputRef.current.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
+      setWildcardOn(false);
     }
-    return undefined;
   }, [wildcardOn, inputRef.current]);
 
   const onChange = async (e) => {
@@ -166,6 +161,7 @@ export default function ListBoxSearch({
       fullWidth
       placeholder={translator.get('Listbox.Search')}
       value={value}
+      autoFocus
       onFocus={handleFocus}
       onChange={onChange}
       onKeyDown={onKeyDown}
