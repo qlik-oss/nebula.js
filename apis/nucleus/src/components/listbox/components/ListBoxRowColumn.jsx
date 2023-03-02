@@ -408,7 +408,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         checked={isSelected}
         dense={dense}
         excluded={isExcluded(cell)}
-        isGridMode={dataLayout === 'grid'}
         isGridCol={isGridCol}
         showGray={showGray}
       />
@@ -486,6 +485,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       flexBasisProp={flexBasisVal}
       style={styles}
       isGridCol={isGridCol}
+      isGridMode={dataLayout === 'grid'}
       dense={dense}
     >
       <ItemGrid
