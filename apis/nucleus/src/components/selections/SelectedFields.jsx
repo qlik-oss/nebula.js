@@ -37,7 +37,9 @@ function getItems(layout) {
   if (layout.alternateStates) {
     layout.alternateStates.forEach((s) => collect(s.qSelectionObject, fields, s.stateName));
   }
-  return Object.keys(fields).map((key) => fields[key]);
+  return Object.keys(fields)
+    .map((key) => fields[key])
+    .filter((f) => !f.selections.some((s) => s.qIsHidden));
 }
 
 export default function SelectedFields({ api, app }) {
