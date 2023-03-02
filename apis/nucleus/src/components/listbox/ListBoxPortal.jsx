@@ -83,6 +83,7 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options
     ...options,
     selections,
     model,
+    app,
   };
 
   return <ListBoxInline options={opts} />;

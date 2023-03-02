@@ -33,6 +33,7 @@ export default function getListBoxComponents({
   overflowDisclaimer,
   setScrollPosition,
   focusListItems,
+  setCurrentScrollIndex,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
   const { dense = false } = layoutOptions || {};
@@ -88,6 +89,7 @@ export default function getListBoxComponents({
         itemData={{ ...commonItemData, listCount }}
         itemSize={itemSize}
         onItemsRendered={(renderProps) => {
+          setCurrentScrollIndex({ start: renderProps.visibleStartIndex, stop: renderProps.visibleStopIndex });
           if (scrollState) {
             scrollState.setScrollPos(renderProps.visibleStopIndex);
           }
@@ -118,6 +120,11 @@ export default function getListBoxComponents({
     local.current.listRef = ref;
 
     const handleGridItemsRendered = (renderProps) => {
+      const isRow = layoutOrder === 'row';
+      setCurrentScrollIndex({
+        start: isRow ? renderProps.visibleRowStartIndex : renderProps.visibleColumnStartIndex,
+        stop: isRow ? renderProps.visibleRowStopIndex : renderProps.visibleColumnStopIndex,
+      });
       const renderOptions = deriveRenderOptions({
         renderProps,
         scrollState,
