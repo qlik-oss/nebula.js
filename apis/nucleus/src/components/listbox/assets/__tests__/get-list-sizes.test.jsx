@@ -109,7 +109,7 @@ describe('get-list-sizes', () => {
 
   it('maxRowCount should limit listCount and rowCount, in column layout', () => {
     args.layoutOrder = 'column';
-    const maxRowCount = 577000;
+    const maxRowCount = 22;
     const columnCount = 4;
     args.listCount = maxRowCount * columnCount + 1;
     const sizes = getListSizes(args);
@@ -119,7 +119,7 @@ describe('get-list-sizes', () => {
       count: 200,
       itemPadding: 4,
       itemSize: 29,
-      listCount: 200,
+      listCount: args.listCount,
       listHeight: 300,
       maxCount: {
         column: 706315,
@@ -147,7 +147,7 @@ describe('get-list-sizes', () => {
       count: 200,
       itemPadding: 4,
       itemSize: 36,
-      listCount: 1480146,
+      listCount: columnCount * rowCount,
       listHeight: 100,
       maxCount: {
         column: columnCount,
