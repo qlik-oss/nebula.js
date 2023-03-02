@@ -68,8 +68,8 @@ const ItemGrid = styled(Grid, {
 }));
 
 const Root = styled('div', {
-  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridCol', 'dense'].includes(prop),
-})(({ theme, flexBasisProp, isGridCol, dense }) => ({
+  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -161,26 +161,26 @@ const Root = styled('div', {
   // Selection styles (S=Selected, XS=ExcludedSelected, A=Available, X=Excluded).
   [`& .${classes.S}`]: {
     ...getSelectedStyle({ theme }),
-    border: 'none',
+    border: isGridMode ? 'none' : '',
   },
 
   [`& .${classes.XS}`]: {
     ...getSelectedStyle({ theme }),
     background: theme.palette.selected.excluded,
     color: theme.palette.selected.mainContrastText,
-    border: 'none',
+    border: isGridMode ? 'none' : '',
   },
 
   [`& .${classes.A}`]: {
     background: theme.palette.selected.alternative,
     color: theme.palette.selected.alternativeContrastText,
-    border: 'none',
+    border: isGridMode ? 'none' : '',
   },
 
   [`& .${classes.X}`]: {
     background: theme.palette.selected.excluded,
     color: theme.palette.selected.excludedContrastText,
-    border: 'none',
+    border: isGridMode ? 'none' : '',
   },
 
   [`& .${classes.frequencyCount}`]: {
@@ -408,6 +408,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         checked={isSelected}
         dense={dense}
         excluded={isExcluded(cell)}
+        isGridMode={dataLayout === 'grid'}
         isGridCol={isGridCol}
         showGray={showGray}
       />
