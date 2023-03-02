@@ -161,26 +161,26 @@ const Root = styled('div', {
   // Selection styles (S=Selected, XS=ExcludedSelected, A=Available, X=Excluded).
   [`& .${classes.S}`]: {
     ...getSelectedStyle({ theme }),
-    border: isGridMode ? 'none' : '',
+    border: isGridMode ? 'none' : undefined,
   },
 
   [`& .${classes.XS}`]: {
     ...getSelectedStyle({ theme }),
     background: theme.palette.selected.excluded,
     color: theme.palette.selected.mainContrastText,
-    border: isGridMode ? 'none' : '',
+    border: isGridMode ? 'none' : undefined,
   },
 
   [`& .${classes.A}`]: {
     background: theme.palette.selected.alternative,
     color: theme.palette.selected.alternativeContrastText,
-    border: isGridMode ? 'none' : '',
+    border: isGridMode ? 'none' : undefined,
   },
 
   [`& .${classes.X}`]: {
     background: theme.palette.selected.excluded,
     color: theme.palette.selected.excludedContrastText,
-    border: isGridMode ? 'none' : '',
+    border: isGridMode ? 'none' : undefined,
   },
 
   [`& .${classes.frequencyCount}`]: {
