@@ -67,7 +67,7 @@ export default function ListBoxSearch({
         const cursorPos = value.length - 1;
         inputRef.current.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
         setWildcardOn(false);
-      }, 100);
+      }, 0);
 
       return () => clearTimeout(timeout);
     }
