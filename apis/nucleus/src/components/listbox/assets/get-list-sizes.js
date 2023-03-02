@@ -10,12 +10,18 @@ export default function getListSizes({ layout, width, height, listCount, count, 
   let columnCount;
   let columnWidth;
   let rowCount;
+  const isGridMode = dataLayout === 'grid';
   const itemPadding = 4;
 
-  let itemSize = dense ? 20 : 32;
+  const denseItemSize = 20;
+  const normalItemSize = isGridMode ? 32 : 29;
+  let itemSize = dense ? denseItemSize : normalItemSize;
 
-  // Simulate a margin between items using padding, since our library needs an explicit row height.
-  itemSize += itemPadding;
+  if (isGridMode) {
+    // Emulate a margin between items using padding, since the list library
+    // needs an explicit row height and cannot handle margins.
+    itemSize += itemPadding;
+  }
 
   const listHeight = height ?? 8 * itemSize;
 

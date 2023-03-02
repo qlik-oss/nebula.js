@@ -11,6 +11,7 @@ describe('get-list-sizes', () => {
           layoutOrder: 'row',
           maxVisibleRows: {
             maxRows: 3,
+            auto: false,
           },
           maxVisibleColumns: {
             maxColumns: 4,
@@ -43,7 +44,7 @@ describe('get-list-sizes', () => {
       columnWidth: 47.5,
       count: 200,
       itemPadding: 4,
-      itemSize: 36,
+      itemSize: 29,
       listCount: 100,
       listHeight: 300,
       maxCount: {
@@ -62,7 +63,7 @@ describe('get-list-sizes', () => {
     args.checkboxes = true;
     args.layout.layoutOptions.dense = true;
     const sizes = getListSizes(args);
-    expect(sizes).toMatchObject({ itemSize: 24 });
+    expect(sizes).toMatchObject({ itemSize: 20 });
   });
 
   it('grid mode with layoutOrder column', () => {
@@ -70,7 +71,7 @@ describe('get-list-sizes', () => {
     args.layout.layoutOptions.layoutOrder = 'column';
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
-      columnCount: 13,
+      columnCount: 34,
       columnWidth: 68,
       count: 200,
       itemPadding: 4,
@@ -84,13 +85,14 @@ describe('get-list-sizes', () => {
       overflowStyling: {
         overflowY: 'hidden',
       },
-      rowCount: 8,
+      rowCount: 3,
       scrollBarWidth: 10,
     });
   });
 
   it('layoutOrder column with auto visible columns mode should return a different rowCount and columnCount', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.maxVisibleRows.auto = true;
     args.layout.layoutOptions.maxVisibleColumns.auto = true;
     args.layout.layoutOptions.layoutOrder = 'column';
     args.maxRows = 2;
@@ -116,7 +118,7 @@ describe('get-list-sizes', () => {
       columnWidth: 47.5,
       count: 200,
       itemPadding: 4,
-      itemSize: 36,
+      itemSize: 29,
       listCount: 200,
       listHeight: 300,
       maxCount: {
@@ -145,7 +147,7 @@ describe('get-list-sizes', () => {
       count: 200,
       itemPadding: 4,
       itemSize: 36,
-      listCount: 986764,
+      listCount: 1480146,
       listHeight: 100,
       maxCount: {
         column: columnCount,
@@ -154,7 +156,7 @@ describe('get-list-sizes', () => {
       overflowStyling: {
         overflowY: 'hidden',
       },
-      rowCount: 2,
+      rowCount,
       scrollBarWidth: 10,
     });
   });
