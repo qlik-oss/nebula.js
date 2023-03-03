@@ -174,28 +174,30 @@ const validateCubes = (translator, targets, layout) => {
   const layoutErrors = [];
   for (let i = 0; i < targets.length; ++i) {
     const def = targets[i];
-    const minD = def.dimensions.min();
-    const minM = def.measures.min();
-    const c = def.resolveLayout(layout);
-    const d = getInfo(c.qDimensionInfo).filter(filterData); // Filter out optional calc conditions
-    const m = getInfo(c.qMeasureInfo).filter(filterData); // Filter out optional calc conditions
-    aggMinD += minD;
-    aggMinM += minM;
-    if (d.length < minD || m.length < minM) {
-      hasUnfulfilledErrors = true;
-    }
-    if (c.qError) {
-      hasLayoutErrors = true;
-      hasLayoutUnfulfilledCalculcationCondition = c.qError.qErrorCode === 7005;
-      const title =
-        // eslint-disable-next-line no-nested-ternary
-        hasLayoutUnfulfilledCalculcationCondition && c.qCalcCondMsg
-          ? c.qCalcCondMsg
-          : hasLayoutUnfulfilledCalculcationCondition
-          ? translator.get('Visualization.UnfulfilledCalculationCondition')
-          : translator.get('Visualization.LayoutError');
-
-      layoutErrors.push({ title, descriptions: [] });
+    if (!def.skipValidation) {
+      const minD = def.dimensions.min();
+      const minM = def.measures.min();
+      const c = def.resolveLayout(layout);
+      const d = getInfo(c.qDimensionInfo).filter(filterData); // Filter out optional calc conditions
+      const m = getInfo(c.qMeasureInfo).filter(filterData); // Filter out optional calc conditions
+      aggMinD += minD;
+      aggMinM += minM;
+      if (d.length < minD || m.length < minM) {
+        hasUnfulfilledErrors = true;
+      }
+      if (c.qError) {
+        hasLayoutErrors = true;
+        hasLayoutUnfulfilledCalculcationCondition = c.qError.qErrorCode === 7005;
+        const title =
+          // eslint-disable-next-line no-nested-ternary
+          hasLayoutUnfulfilledCalculcationCondition && c.qCalcCondMsg
+            ? c.qCalcCondMsg
+            : hasLayoutUnfulfilledCalculcationCondition
+            ? translator.get('Visualization.UnfulfilledCalculationCondition')
+            : translator.get('Visualization.LayoutError');
+  
+        layoutErrors.push({ title, descriptions: [] });
+      } 
     }
   }
   return {
@@ -221,7 +223,7 @@ const validateTargets = async (translator, layout, { targets }, model) => {
 
   for (let i = 0; i < targets.length; ++i) {
     const def = targets[i];
-    if (!hasLayoutErrors && hasUnfulfilledErrors) {
+    if (!hasLayoutErrors && hasUnfulfilledErrors && !def.skipValidation) {
       // eslint-disable-next-line no-await-in-loop
       const properties = loopCacheProperties || (await model.getProperties());
       loopCacheProperties = properties;

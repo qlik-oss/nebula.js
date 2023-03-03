@@ -118,6 +118,7 @@ function target(def) {
     resolveLayout: (layout) => resolveValue(layout, layoutPath, {}),
     dimensions: defFn(def.dimensions),
     measures: defFn(def.measures),
+    skipValidation: def.skipValidation,
   };
 }
 
