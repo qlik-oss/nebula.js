@@ -161,6 +161,7 @@ export default function ListBoxSearch({
       fullWidth
       placeholder={translator.get('Listbox.Search')}
       value={value}
+      autoFocus
       onFocus={handleFocus}
       onChange={onChange}
       onKeyDown={onKeyDown}

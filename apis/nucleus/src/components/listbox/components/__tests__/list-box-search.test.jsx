@@ -80,7 +80,7 @@ describe('<ListBoxSearch />', () => {
     const types = testInstance.findAllByType(OutlinedInput);
     expect(types).toHaveLength(1);
     expect(types[0].props.fullWidth).toBe(true);
-    expect(types[0].props.autoFocus).toBe(undefined);
+    expect(types[0].props.autoFocus).toBe(true);
     expect(types[0].props.placeholder).toBe('Search');
     expect(types[0].props.value).toBe('');
     expect(types[0].props.onChange instanceof Function).toBe(true);
