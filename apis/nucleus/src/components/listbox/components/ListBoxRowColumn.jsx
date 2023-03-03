@@ -402,7 +402,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     );
   };
 
-  const label = cell?.qText ? cell.qText : '';
+  const label = cell?.qText ?? '';
 
   const getFrequencyText = () => {
     if (cell) {
