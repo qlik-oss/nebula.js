@@ -80,7 +80,7 @@ test.describe('listbox mashup rendering test', () => {
 
     // Note that since we don't have a backend providing search results, we can't test highlighting and selected (green) rows.
     const selector = await page.$(listboxSelector);
-    const image = await selector.screenshot();
+    const image = await selector.screenshot({ caret: 'hide' });
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 
