@@ -73,6 +73,18 @@ export default function useSelectionsInteractions({
     }
   };
 
+  const onChange = useCallback(
+    (event) => {
+      if (selectingValues || selectDisabled()) {
+        return;
+      }
+      const elemNumber = +event.target.getAttribute('data-n');
+      setPreSelected([elemNumber]);
+      handleSingleSelectKey(event);
+    },
+    [selectingValues, selectDisabled]
+  );
+  /*
   const onClick = useCallback(
     (event) => {
       if (selectingValues || selectDisabled()) {
@@ -84,7 +96,7 @@ export default function useSelectionsInteractions({
     },
     [selectingValues, selectDisabled]
   );
-
+*/
   const onMouseDown = useCallback(
     (event) => {
       if (selectingValues || selectDisabled()) {
@@ -182,7 +194,7 @@ export default function useSelectionsInteractions({
   const interactionEvents = {};
 
   if (checkboxes) {
-    Object.assign(interactionEvents, { onClick });
+    Object.assign(interactionEvents, { onChange });
   } else {
     Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter });
   }
