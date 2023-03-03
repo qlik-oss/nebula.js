@@ -126,7 +126,7 @@ export default function ListBox({
     if (loaderRef.current) {
       loaderRef.current.resetloadMoreItemsCache(true);
       const isScrollingToEnd = keyScroll.state.scrollPosition === 'overflowEnd';
-      // Skip scrollToItem if we are in selections.
+      // Skip scrollToItem if we are in selections or if scrolling to the end.
       if ((layout && layout.qSelectionInfo.qInSelections) || isScrollingToEnd) {
         if (isScrollingToEnd) {
           keyScroll.reset();
@@ -212,7 +212,7 @@ export default function ListBox({
       return; // Do keyScroll.reset() in fetchData() to avoid scrolling to top.
     }
     keyScroll.reset();
-  }, [JSON.stringify(keyScroll.state)]);
+  }, [keyScroll.state.up, keyScroll.state.down, keyScroll.state.scrollPosition]);
 
   const { textAlign } = layout?.qListObject.qDimensionInfo || {};
 

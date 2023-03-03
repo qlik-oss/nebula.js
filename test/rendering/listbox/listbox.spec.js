@@ -94,4 +94,17 @@ test.describe('listbox mashup rendering test', () => {
     const image = await selector.screenshot();
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
+
+  test('hovering and pressing arrow down should scroll listbox', async () => {
+    const FILE_NAME = 'listbox_key_scroll.png';
+
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
+    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+
+    await page.hover(listboxSelector);
+    await page.press(listboxSelector, 'ArrowDown');
+
+    const image = await selector.screenshot();
+    return expect(image).toMatchSnapshot(FILE_NAME);
+  });
 });

@@ -122,16 +122,22 @@ describe('ListBoxPortal', () => {
     test('should pass in provided selectionApi as "selections" into ListBoxInline', async () => {
       const fieldIdentifier = { qLibraryId: '123' };
       const app = {};
-      const options = { selectionsApi: {}, sessionModel: {}, app: {} };
+      const usedSelectionsApi = { id: '321' };
+      const notUsedSelectionsApi = { id: 'not used' };
+      const options = {
+        selectionsApi: usedSelectionsApi,
+        sessionModel: {},
+        app: {},
+        model: {},
+        selections: notUsedSelectionsApi,
+      };
       const elem = ListBoxPortal({ app, fieldIdentifier, options });
       await render(elem);
       expect(ListBoxInlineMock).toHaveBeenCalledWith(
         {
           options: {
             ...options,
-            selections: options.selectionsApi,
-            model: options.sessionModel,
-            app: options.app,
+            selections: usedSelectionsApi,
           },
         },
         {}

@@ -8,6 +8,15 @@ describe('keyboard navigation', () => {
   let setKeyboardActive;
   let setScrollPosition;
   let focusListItems;
+  let handleOnMouseEnter;
+  let handleOnMouseLeave;
+  let setHovering;
+  let constraints;
+  let app;
+  let containerRef;
+  let hovering;
+  let updateKeyScroll;
+  let currentScrollIndex;
   const globalEvent = {
     nativeEvent: {},
     currentTarget: {
@@ -27,6 +36,13 @@ describe('keyboard navigation', () => {
     setKeyboardActive = jest.fn();
     setScrollPosition = jest.fn();
     focusListItems = { setFirst: jest.fn(), setLast: jest.fn() };
+    setHovering = jest.fn();
+    constraints = {};
+    containerRef = { current: { focus: jest.fn(), blur: jest.fn() } };
+    app = { isInModalSelection: () => false };
+    hovering = true;
+    updateKeyScroll = jest.fn();
+    currentScrollIndex = { start: 0, stop: 10 };
     actions = {
       select: jest.fn(),
       cancel: jest.fn(),
@@ -40,7 +56,20 @@ describe('keyboard navigation', () => {
       setScrollPosition,
       focusListItems,
     });
-    ({ handleKeyDown: handleKeyDownForListbox } = getListboxInlineKeyboardNavigation({ setKeyboardActive }));
+    ({
+      handleKeyDown: handleKeyDownForListbox,
+      handleOnMouseEnter,
+      handleOnMouseLeave,
+    } = getListboxInlineKeyboardNavigation({
+      setKeyboardActive,
+      constraints,
+      setHovering,
+      app,
+      containerRef,
+      hovering,
+      updateKeyScroll,
+      currentScrollIndex,
+    }));
   });
 
   describe('handle keyboard navigation on field level', () => {
@@ -295,6 +324,94 @@ describe('keyboard navigation', () => {
       expect(event.preventDefault).not.toHaveBeenCalled();
       expect(event.stopPropagation).not.toHaveBeenCalled();
       expect(setKeyboardActive).not.toHaveBeenCalled();
+    });
+    test('should handle mouse enter when allowed to focus', () => {
+      handleOnMouseEnter();
+      expect(setHovering).toHaveBeenCalledWith(true);
+      expect(containerRef.current.focus).toHaveBeenCalled();
+    });
+    test('should handle mouse enter when not allowed to focus', () => {
+      app.isInModalSelection = () => true;
+      handleOnMouseEnter();
+      expect(setHovering).not.toHaveBeenCalled();
+      app.isInModalSelection = () => false;
+    });
+    test('should handle mouse leave', () => {
+      handleOnMouseLeave();
+      expect(setHovering).toHaveBeenCalledWith(false);
+      expect(containerRef.current.blur).toHaveBeenCalled();
+    });
+    test('should update scroll on hover when UP is pressed', () => {
+      const event = {
+        nativeEvent: { keyCode: KEYS.ARROW_UP },
+        preventDefault: jest.fn(),
+      };
+      handleKeyDownForListbox(event);
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(updateKeyScroll).toHaveBeenCalledWith({ up: 1 });
+    });
+    test('should update scroll on hover when DOWN is pressed', () => {
+      const event = {
+        nativeEvent: { keyCode: KEYS.ARROW_DOWN },
+        preventDefault: jest.fn(),
+      };
+      handleKeyDownForListbox(event);
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(updateKeyScroll).toHaveBeenCalledWith({ down: 1 });
+    });
+    test('should update scroll on hover when PAGE_UP is pressed', () => {
+      const event = {
+        nativeEvent: { keyCode: KEYS.PAGE_UP },
+        preventDefault: jest.fn(),
+      };
+      handleKeyDownForListbox(event);
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(updateKeyScroll).toHaveBeenCalledWith({ up: 10 });
+    });
+    test('should update scroll on hover when PAGE_DOWN is pressed', () => {
+      const event = {
+        nativeEvent: { keyCode: KEYS.PAGE_DOWN },
+        preventDefault: jest.fn(),
+      };
+      handleKeyDownForListbox(event);
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(updateKeyScroll).toHaveBeenCalledWith({ down: 10 });
+    });
+    test('should update scroll on hover when HOME is pressed', () => {
+      const event = {
+        nativeEvent: { keyCode: KEYS.HOME },
+        preventDefault: jest.fn(),
+      };
+      handleKeyDownForListbox(event);
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'start' });
+    });
+    test('should update scroll on hover when CTRL+SHIFT+HOME is pressed', () => {
+      const event = {
+        nativeEvent: { keyCode: KEYS.HOME, ctrlKey: true, shiftKey: true },
+        preventDefault: jest.fn(),
+      };
+      handleKeyDownForListbox(event);
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'overflowStart' });
+    });
+    test('should update scroll on hover when END is pressed', () => {
+      const event = {
+        nativeEvent: { keyCode: KEYS.END },
+        preventDefault: jest.fn(),
+      };
+      handleKeyDownForListbox(event);
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'end' });
+    });
+    test('should update scroll on hover when CTRL+SHIFT+END is pressed', () => {
+      const event = {
+        nativeEvent: { keyCode: KEYS.END, ctrlKey: true, shiftKey: true },
+        preventDefault: jest.fn(),
+      };
+      handleKeyDownForListbox(event);
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'overflowEnd' });
     });
   });
 });
