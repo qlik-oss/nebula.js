@@ -21,7 +21,7 @@ const keyboard = { enabled: false, active: true };
 const testRender = (model) =>
   create(
     <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-      <ListBoxSearch selections={selections} model={model} keyboard={keyboard} />
+      <ListBoxSearch selections={selections} model={model} keyboard={keyboard} wildCardSearch />
     </InstanceContext.Provider>
   );
 

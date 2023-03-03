@@ -177,7 +177,7 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
   return api;
 };
 
-const getClickOutFuncs = ({ elements, objectSelections, options }) => {
+const getClickOutFuncs = ({ elements, objectSelections, options = {} }) => {
   const handler = createHandler({
     elements,
     handleClickOutside: () => objectSelections.confirm.call(objectSelections),
@@ -186,11 +186,11 @@ const getClickOutFuncs = ({ elements, objectSelections, options }) => {
   return {
     activateClickOut() {
       document.addEventListener('mousedown', handler);
-      options.onSelectionActivated?.();
+      options?.onSelectionActivated?.();
     },
     deactivateClickOut() {
       document.removeEventListener('mousedown', handler);
-      options.onSelectionDeactivated?.();
+      options?.onSelectionDeactivated?.();
     },
   };
 };

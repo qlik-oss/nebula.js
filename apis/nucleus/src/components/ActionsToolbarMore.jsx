@@ -10,11 +10,17 @@ import useActionState from '../hooks/useActionState';
 
 const PREFIX = 'More';
 
+const ActionsToolbarMoreElement = {
+  className: 'njs-action-toolbar-more',
+};
+
 const classes = {
   icon: `${PREFIX}-icon`,
 };
 
 const StyledPopover = styled(Popover)(({ theme }) => ({
+  // Set here to allow clicking through the modals container
+  pointerEvents: 'none',
   [`& .${classes.icon}`]: {
     color: theme.palette.text.primary,
   },
@@ -52,16 +58,22 @@ const More = React.forwardRef(
           open={show}
           anchorEl={alignTo.current}
           getContentAnchorEl={null}
+          container={alignTo.current}
+          disablePortal
           hideBackdrop
-          style={{ pointerEvents: 'none' }}
           transitionDuration={0}
+          slotProps={{
+            root: {
+              className: ActionsToolbarMoreElement.className,
+            },
+          }}
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left',
+            horizontal: 'right',
           }}
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'left',
+            horizontal: 'right',
           }}
           PaperProps={{
             style: {
