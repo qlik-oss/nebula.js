@@ -10,6 +10,7 @@ import ListBoxCheckbox from './ListBoxCheckbox';
 import getSegmentsFromRanges from './listbox-highlight';
 import ListBoxRadioButton from './ListBoxRadioButton';
 import { getFieldKeyboardNavigation } from '../interactions/listbox-keyboard-navigation';
+import getItemSizes from './grid-list-components/item-sizes';
 
 const PREFIX = 'RowColumn';
 
@@ -52,7 +53,7 @@ const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
   color: theme.palette.selected.mainContrastText,
   '&:focus': {
-    boxShadow: `inset 0 0 0 2px rgba(0, 0, 0, 0.3)`,
+    boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
     outline: 'none',
   },
   '& $cell': {
@@ -60,31 +61,36 @@ const getSelectedStyle = ({ theme }) => ({
   },
 });
 
+const ItemGrid = styled(Grid, {
+  shouldForwardProp: (prop) => !['dataLayout', 'layoutOrder', 'itemPadding'].includes(prop),
+})(({ dataLayout, layoutOrder, itemPadding }) => ({
+  [`&.${classes.fieldRoot}`]: getItemSizes({ dataLayout, layoutOrder, itemPadding }),
+}));
+
 const Root = styled('div', {
-  shouldForwardProp: (props) => props !== 'flexBasisProp',
-})(({ theme, flexBasisProp, dense }) => ({
+  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense }) => ({
+  '&:focus': {
+    boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+  },
+  '&:focus-visible': {
+    outline: 'none',
+  },
+
   [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
     color: theme.listBox?.content?.color ?? theme.palette.text.primary,
   },
 
   [`& .${classes.rowBorderBottom}`]: {
-    borderBottom: `1px solid ${theme.palette.divider}`,
+    borderBottom: isGridCol ? 'none' : `1px solid ${theme.palette.divider}`,
+    borderLeft: isGridCol ? `1px solid ${theme.palette.divider}` : 'none',
   },
 
   [`& .${classes.column}`]: {
     flexWrap: 'nowrap',
     borderRight: `1px solid ${theme.palette.divider}`,
     color: theme.listBox?.content?.color ?? theme.palette.text.primary,
-  },
-
-  [`& .${classes.fieldRoot}`]: {
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
-    },
-    '&:focus-visible': {
-      outline: 'none',
-    },
   },
 
   // The interior wrapper for all field content.
@@ -155,22 +161,26 @@ const Root = styled('div', {
   // Selection styles (S=Selected, XS=ExcludedSelected, A=Available, X=Excluded).
   [`& .${classes.S}`]: {
     ...getSelectedStyle({ theme }),
+    border: isGridMode ? 'none' : undefined,
   },
 
   [`& .${classes.XS}`]: {
     ...getSelectedStyle({ theme }),
     background: theme.palette.selected.excluded,
     color: theme.palette.selected.mainContrastText,
+    border: isGridMode ? 'none' : undefined,
   },
 
   [`& .${classes.A}`]: {
     background: theme.palette.selected.alternative,
     color: theme.palette.selected.alternativeContrastText,
+    border: isGridMode ? 'none' : undefined,
   },
 
   [`& .${classes.X}`]: {
     background: theme.palette.selected.excluded,
     color: theme.palette.selected.excludedContrastText,
+    border: isGridMode ? 'none' : undefined,
   },
 
   [`& .${classes.frequencyCount}`]: {
@@ -180,7 +190,8 @@ const Root = styled('div', {
 
   [`&.${classes.barContainer}`]: {
     height: '100%',
-    display: 'inline-block',
+    display: 'flex',
+    alignItems: 'center',
   },
 
   [`& .${classes.bar}`]: {
@@ -228,7 +239,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     checkboxes = false,
     textAlign,
     direction,
-    dense = false,
+    layoutOptions = {},
     freqIsAllowed,
     isSingleSelect,
     actions,
@@ -238,11 +249,13 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     showGray = true,
     columnCount = 1,
     rowCount = 1,
-    layoutOrder,
     dataOffset,
     focusListItems,
     listCount,
+    itemPadding,
   } = data;
+
+  const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
 
   let cellIndex;
   let styles;
@@ -319,7 +332,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     setSelected(selected);
 
     const clazzArr = [column ? classes.column : classes.row];
-    if (!(histogram && dense) && !checkboxes) clazzArr.push(classes.rowBorderBottom);
+    if (!(histogram && (dense || checkboxes))) clazzArr.push(classes.rowBorderBottom);
     if (!checkboxes) {
       if (cell.qState === 'XS') {
         clazzArr.push(showGray ? classes.XS : classes.S);
@@ -385,9 +398,19 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     }
     event.preventDefault();
   };
+
+  const isGridCol = dataLayout === 'grid' && layoutOrder === 'column';
+
   const getCheckboxField = ({ lbl, color, qElemNumber }) => {
     const cb = (
-      <ListBoxCheckbox label={lbl} checked={isSelected} dense={dense} excluded={isExcluded(cell)} showGray={showGray} />
+      <ListBoxCheckbox
+        label={lbl}
+        checked={isSelected}
+        dense={dense}
+        excluded={isExcluded(cell)}
+        isGridCol={isGridCol}
+        showGray={showGray}
+      />
     );
     const rb = <ListBoxRadioButton label={lbl} checked={isSelected} dense={dense} />;
     const labelTag = typeof lbl === 'string' ? getValueField({ lbl, color, highlighted: false }) : lbl;
@@ -402,7 +425,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     );
   };
 
-  const label = cell ? cell.qText : '';
+  const label = cell?.qText ?? '';
 
   const getFrequencyText = () => {
     if (cell) {
@@ -457,16 +480,25 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
   return (
-    <Root className={classes.barContainer} flexBasisProp={flexBasisVal} dense={dense}>
-      <Grid
+    <Root
+      className={classes.barContainer}
+      flexBasisProp={flexBasisVal}
+      style={styles}
+      isGridCol={isGridCol}
+      isGridMode={dataLayout === 'grid'}
+      dense={dense}
+    >
+      <ItemGrid
         ref={rowRef}
         container
+        dataLayout={dataLayout}
+        layoutOrder={layoutOrder}
+        itemPadding={itemPadding}
         gap={0}
         className={joinClassNames(['value', ...classArr])}
         classes={{
           root: classes.fieldRoot,
         }}
-        style={styles}
         onClick={onClick}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
@@ -520,7 +552,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
             {showTick && <Tick style={iconStyles} size="small" />}
           </Grid>
         )}
-      </Grid>
+      </ItemGrid>
     </Root>
   );
 }

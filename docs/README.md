@@ -3,8 +3,16 @@ id: introduction
 title: Introduction
 ---
 
-## What is nebula.js?
+<p align="center">
+  <img width="500" src="./assets/logos/nebula.png" alt="nebula.js logo" />
+</p>
 
-`nebula.js` is a collection of JavaScript libraries, visualizations and CLIs that helps developers build and integrate visualizations on top of Qlik's Associative Engine.
+## Nebula.js documentation
 
-The collection is organized under the `@nebula.js` scope in the form of npm packages. The primary package is `@nebula.js/stardust` which contains APIs for integrating existing visualizations with mashups, as well as APIs for building custom visualizations.
+You can find the documentation on [Qlik's developer portal](https://qlik.dev/libraries-and-tools/nebulajs).
+
+To quickly get started, check out the tutorial on how to [embed visualization into your own web app](https://qlik.dev/tutorials/build-a-simple-mashup-using-nebulajs).
+
+You can also walk through the tutorial on how to [build your own extension](https://qlik.dev/tutorials/build-a-helloworld-extension-using-nebulajs).
+
+Explore the full [stardust API reference](https://qlik.dev/apis/javascript/nebulajs-stardust).

@@ -242,7 +242,7 @@ describe('<ListBoxRowColumn />', () => {
 
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
-          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+          <ListBoxRowColumn index={index} style={style} data={data} columnIndex={0} rowIndex={0} />
         </ThemeProvider>
       );
 
