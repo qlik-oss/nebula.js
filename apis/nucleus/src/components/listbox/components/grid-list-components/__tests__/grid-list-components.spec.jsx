@@ -94,6 +94,7 @@ describe('grid-list-components', () => {
           overflowX: 'hidden',
         },
         scrollBarWidth: 10,
+        itemPadding: 4,
       },
     });
   });
