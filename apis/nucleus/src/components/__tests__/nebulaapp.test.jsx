@@ -9,8 +9,9 @@ import * as useAppSelectionsModule from '../../hooks/useAppSelections';
 
 import boot, { NebulaApp } from '../NebulaApp';
 
+const mockedRoot = { render: jest.fn() };
 jest.mock('react-dom', () => ({
-  render: jest.fn(),
+  createRoot: () => mockedRoot,
 }));
 
 describe('Boot NebulaApp', () => {
@@ -79,14 +80,14 @@ describe('Boot NebulaApp', () => {
         api.add('foo');
         return rendered;
       });
-      expect(appRef.current.addComponent).toHaveBeenCalledTimes(1);
+      expect(appRef.current.setComps).toHaveBeenCalledTimes(1);
     });
     test('should remove component', async () => {
       const app = { id: 'foo' };
       const translator = {};
       const [api, appRef, rendered] = boot({ app, translator });
       appRef.current = {
-        removeComponent: jest.fn(),
+        setComps: jest.fn(),
       };
 
       await act(() => {
@@ -94,7 +95,7 @@ describe('Boot NebulaApp', () => {
         api.remove('foo');
         return rendered;
       });
-      expect(appRef.current.removeComponent).toHaveBeenCalledTimes(1);
+      expect(appRef.current.setComps).toHaveBeenCalledTimes(1);
     });
     test('should set mui theme', async () => {
       const app = { id: 'foo' };
@@ -179,7 +180,7 @@ describe('<NebulaApp />', () => {
   test('should add component', async () => {
     const Foo = () => 'foo';
     await render();
-    act(() => ref.current.addComponent(<Foo key="1" />));
+    act(() => ref.current.setComps([<Foo key="1" />]));
     const res = renderer.root.findByType(Foo);
     expect(res).not.toBeNull();
   });
@@ -188,9 +189,9 @@ describe('<NebulaApp />', () => {
     const Foo = () => 'foo';
     const MyFoo = <Foo key="1" />;
     await render();
-    act(() => ref.current.addComponent(MyFoo));
+    act(() => ref.current.setComps([MyFoo]));
     renderer.root.findByType(Foo);
-    act(() => ref.current.removeComponent(MyFoo));
+    act(() => ref.current.setComps([]));
     expect(() => renderer.root.findByType(MyFoo)).toThrow();
   });
 
