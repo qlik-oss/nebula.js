@@ -159,7 +159,7 @@ export default function ListBoxInline({ options = {} }) {
     : [];
 
   const showTitle = true;
-  const shouldShowSearch = ((search === 'toggle' || (search === 'inSelection' && !layout.title)) && showSearch);
+  const shouldShowSearch = ((search === 'toggle' || (search === 'inSelection' && (!layout.title || !toolbar))) && showSearch);
   const searchVisible = (search === true || shouldShowSearch) && !selectDisabled();
   const dense = layout.layoutOptions?.dense ?? false;
   const searchHeight = dense ? 27 : 40;
