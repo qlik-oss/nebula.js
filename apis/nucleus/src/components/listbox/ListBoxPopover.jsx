@@ -35,7 +35,7 @@ export default function ListBoxPopover({
   app,
   fieldName,
   stateName = '$',
-  autoFocus = false,
+  autoFocus,
 }) {
   const isMasterDim = Boolean(fieldName?.qLibraryId);
   const open = show && Boolean(alignTo.current);
@@ -174,7 +174,7 @@ export default function ListBoxPopover({
             listCount={listCount}
             selections={selections}
             keyboard={{ enabled: false }}
-            autoFocus={autoFocus}
+            autoFocus={autoFocus ?? true}
           />
           <ListBox model={model} selections={selections} direction="ltr" onSetListCount={(c) => setListCount(c)} />
         </Grid>
