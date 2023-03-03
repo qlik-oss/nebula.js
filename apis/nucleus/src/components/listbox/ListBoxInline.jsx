@@ -173,7 +173,7 @@ export default function ListBoxInline({ options = {} }) {
     setShowSearch(newValue);
   };
 
-  const hideSearch = searchEnabled !== false && constraints.passive && constraints.active && !constraints.select;
+  const allowSearch = searchEnabled !== false && !(constraints.passive && constraints.active && !constraints.select);
 
   return (
     <StyledGrid
@@ -193,7 +193,7 @@ export default function ListBoxInline({ options = {} }) {
                 <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
               </IconButton>
             ) : (
-              !hideSearch && (
+              allowSearch && (
                 <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
                   <SearchIcon style={{ fontSize: '12px' }} />
                 </IconButton>
