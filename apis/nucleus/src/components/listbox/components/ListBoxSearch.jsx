@@ -24,7 +24,7 @@ export default function ListBoxSearch({
   dense = false,
   visible = true,
   autoFocus = false,
-  wildCardSearch = true,
+  wildCardSearch = false,
   searchEnabled,
 }) {
   const { translator } = useContext(InstanceContext);
