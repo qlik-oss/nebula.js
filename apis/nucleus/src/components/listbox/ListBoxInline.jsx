@@ -22,19 +22,23 @@ const classes = {
   screenReaderOnly: `${PREFIX}-screenReaderOnly`,
 };
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
-  backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
-  [`& .${classes.listBoxHeader}`]: {
-    alignSelf: 'center',
-    display: 'inline-flex',
-  },
-  [`& .${classes.screenReaderOnly}`]: {
-    position: 'absolute',
-    height: 0,
-    width: 0,
-    overflow: 'hidden',
-  },
-}));
+const StyledGrid = styled(Grid)(({ theme }) => {
+  const searchIconWidth = 28;
+  return {
+    backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
+    [`& .${classes.listBoxHeader}`]: {
+      alignSelf: 'center',
+      display: 'inline-flex',
+      width: `calc(100% - ${searchIconWidth}px)`,
+    },
+    [`& .${classes.screenReaderOnly}`]: {
+      position: 'absolute',
+      height: 0,
+      width: 0,
+      overflow: 'hidden',
+    },
+  };
+});
 
 const Title = styled(Typography)(({ theme }) => ({
   color: theme.listBox?.title?.main?.color,
@@ -206,25 +210,32 @@ export default function ListBoxInline({ options = {} }) {
     >
       {toolbar && layout.title && (
         <Grid item container style={{ padding: theme.spacing(1) }}>
-          <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
-            {isLocked ? (
-              <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
-                <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
-              </IconButton>
-            ) : (
-              searchEnabled !== false && (
-                <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
-                  <SearchIcon style={{ fontSize: '12px' }} />
+          <Grid item container wrap="nowrap">
+            <Grid item sx={{ display: 'flex', alignItems: 'center', width: '28px' }}>
+              {isLocked ? (
+                <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
+                  <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
                 </IconButton>
-              )
-            )}
-          </Grid>
-          <Grid item className={classes.listBoxHeader}>
-            {showTitle && (
-              <Title variant="h6" noWrap>
-                {layout.title}
-              </Title>
-            )}
+              ) : (
+                searchEnabled !== false && (
+                  <IconButton
+                    onClick={onShowSearch}
+                    tabIndex={-1}
+                    title={translator.get('Listbox.Search')}
+                    size="large"
+                  >
+                    <SearchIcon style={{ fontSize: '12px' }} />
+                  </IconButton>
+                )
+              )}
+            </Grid>
+            <Grid item className={classes.listBoxHeader}>
+              {showTitle && (
+                <Title variant="h6" noWrap>
+                  {layout.title}
+                </Title>
+              )}
+            </Grid>
           </Grid>
           <Grid item xs />
           <Grid item>
