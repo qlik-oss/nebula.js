@@ -206,13 +206,45 @@ window.getFuncs = function getFuncs() {
               qState: 'O',
             },
           ],
+          [
+            {
+              qText: 'M',
+              qNum: 'NaN',
+              qElemNumber: 12,
+              qState: 'O',
+            },
+          ],
+          [
+            {
+              qText: 'N',
+              qNum: 'NaN',
+              qElemNumber: 13,
+              qState: 'O',
+            },
+          ],
+          [
+            {
+              qText: 'O',
+              qNum: 'NaN',
+              qElemNumber: 14,
+              qState: 'O',
+            },
+          ],
+          [
+            {
+              qText: 'P',
+              qNum: 'NaN',
+              qElemNumber: 15,
+              qState: 'O',
+            },
+          ],
         ],
         qTails: [],
         qArea: {
           qLeft: 0,
           qTop: 0,
           qWidth: 1,
-          qHeight: 12,
+          qHeight: 16,
         },
       },
     ],
@@ -228,7 +260,7 @@ window.getFuncs = function getFuncs() {
           qLocked: false,
         },
         qSize: {
-          qcy: 12,
+          qcy: 16,
         },
         qInitialDataFetch: [{ qLeft: 0, qWidth: 0, qTop: 0, qHeight: 0 }],
       },
