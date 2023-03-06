@@ -122,7 +122,7 @@ export default function ListBoxInline({ options = {} }) {
   };
 
   if (layout?.toolbar !== undefined) {
-    toolbar = layout?.toolbar;
+    toolbar = layout.toolbar;
   }
   toolbar = toolbar && layout?.title !== '';
 
