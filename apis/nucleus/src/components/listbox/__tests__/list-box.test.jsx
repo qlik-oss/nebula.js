@@ -127,6 +127,8 @@ describe('<Listbox />', () => {
       update: jest.fn(),
       selectDisabled,
       fetchStart,
+      keyScroll: { set: () => {}, reset: () => {}, state: { up: 0, down: 0 } },
+      currentScrollIndex: { set: () => {} },
     };
   });
 
@@ -160,6 +162,8 @@ describe('<Listbox />', () => {
                 update={mergedArgs.update}
                 selectDisabled={mergedArgs.selectDisabled}
                 fetchStart={mergedArgs.fetchStart}
+                keyScroll={mergedArgs.keyScroll}
+                currentScrollIndex={mergedArgs.currentScrollIndex}
               />
             </InstanceContext.Provider>
           );
