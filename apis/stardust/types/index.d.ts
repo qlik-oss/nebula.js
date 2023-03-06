@@ -266,7 +266,7 @@ declare namespace stardust {
 
     type FrequencyMode = "none" | "value" | "percent" | "relative";
 
-    type SearchMode = boolean | "toggle" | "inSelection";
+    type SearchMode = boolean | "toggle";
 
     type FieldEventTypes = "selectionActivated" | "selectionDeactivated";
 

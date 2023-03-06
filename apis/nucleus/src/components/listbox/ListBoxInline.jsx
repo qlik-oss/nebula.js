@@ -122,19 +122,20 @@ export default function ListBoxInline({ options = {} }) {
   };
 
   if (layout?.toolbar !== undefined) {
-    toolbar = layout.toolbar;
+    toolbar = layout?.toolbar;
   }
+  toolbar = toolbar && layout?.title !== '';
 
   useEffect(() => {
     const show = () => {
       setShowToolbar(true);
-      if (search === 'inSelection') {
+      if (search === 'toggle' && toolbar === false) {
         setShowSearch(true);
       }
     };
     const hide = () => {
       setShowToolbar(false);
-      if (search === 'toggle' || search === 'inSelection') {
+      if (search === 'toggle') {
         setShowSearch(false);
       }
     };
@@ -151,7 +152,7 @@ export default function ListBoxInline({ options = {} }) {
         selections.removeListener('activated', hide);
       }
     };
-  }, [selections]);
+  }, [selections, toolbar]);
 
   useEffect(() => {
     if (!searchContainer || !searchContainer.current) {
@@ -179,9 +180,8 @@ export default function ListBoxInline({ options = {} }) {
     : [];
 
   const showTitle = true;
-  const shouldShowSearch =
-    (search === 'toggle' || (search === 'inSelection' && (!layout.title || !toolbar))) && showSearch;
-  const searchVisible = (search === true || shouldShowSearch) && !selectDisabled();
+  const showSearchToggle = search === 'toggle' && showSearch;
+  const searchVisible = (search === true || showSearchToggle) && !selectDisabled();
   const dense = layout.layoutOptions?.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
@@ -206,7 +206,7 @@ export default function ListBoxInline({ options = {} }) {
       onMouseLeave={handleOnMouseLeave}
       ref={containerRef}
     >
-      {toolbar && layout.title && (
+      {toolbar && (
         <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
           <Grid item container wrap="nowrap">
             <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>

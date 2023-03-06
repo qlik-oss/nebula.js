@@ -877,10 +877,6 @@
           {
             "kind": "literal",
             "value": "'toggle'"
-          },
-          {
-            "kind": "literal",
-            "value": "'inSelection'"
           }
         ]
       }
@@ -995,7 +991,7 @@
                   "type": "boolean"
                 },
                 "search": {
-                  "description": "Show the search bar permanently, using the toggle button or when in selection: false|true|toggle|inSelection",
+                  "description": "Show the search bar permanently, using the toggle button or when in selection: false|true|toggle",
                   "optional": true,
                   "defaultValue": true,
                   "type": "#/definitions/SearchMode"
