@@ -16,29 +16,27 @@ import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
 
 const PREFIX = 'ListBoxInline';
+const searchIconWidth = 28;
 
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
   screenReaderOnly: `${PREFIX}-screenReaderOnly`,
 };
 
-const StyledGrid = styled(Grid)(({ theme }) => {
-  const searchIconWidth = 28;
-  return {
-    backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
-    [`& .${classes.listBoxHeader}`]: {
-      alignSelf: 'center',
-      display: 'inline-flex',
-      width: `calc(100% - ${searchIconWidth}px)`,
-    },
-    [`& .${classes.screenReaderOnly}`]: {
-      position: 'absolute',
-      height: 0,
-      width: 0,
-      overflow: 'hidden',
-    },
-  };
-});
+const StyledGrid = styled(Grid)(({ theme }) => ({
+  backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
+  [`& .${classes.listBoxHeader}`]: {
+    alignSelf: 'center',
+    display: 'inline-flex',
+    width: `calc(100% - ${searchIconWidth}px)`,
+  },
+  [`& .${classes.screenReaderOnly}`]: {
+    position: 'absolute',
+    height: 0,
+    width: 0,
+    overflow: 'hidden',
+  },
+}));
 
 const Title = styled(Typography)(({ theme }) => ({
   color: theme.listBox?.title?.main?.color,
@@ -211,7 +209,7 @@ export default function ListBoxInline({ options = {} }) {
       {toolbar && layout.title && (
         <Grid item container style={{ padding: theme.spacing(1) }}>
           <Grid item container wrap="nowrap">
-            <Grid item sx={{ display: 'flex', alignItems: 'center', width: '28px' }}>
+            <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
               {isLocked ? (
                 <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
                   <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
