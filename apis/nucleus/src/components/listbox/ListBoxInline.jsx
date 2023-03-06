@@ -207,7 +207,7 @@ export default function ListBoxInline({ options = {} }) {
       ref={containerRef}
     >
       {toolbar && layout.title && (
-        <Grid item container style={{ padding: theme.spacing(1) }}>
+        <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
           <Grid item container wrap="nowrap">
             <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
               {isLocked ? (
