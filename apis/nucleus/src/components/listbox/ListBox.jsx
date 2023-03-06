@@ -34,8 +34,8 @@ export default function ListBox({
   showGray = true,
   scrollState,
   selectDisabled = () => false,
-  keyScroll,
-  currentScrollIndex,
+  keyScroll = { state: {}, reset: () => {} },
+  currentScrollIndex = { set: () => {} },
 }) {
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const [layout] = useLayout(model);
