@@ -73,7 +73,7 @@ export default function useSelectionsInteractions({ selectionState, selections, 
   }, []);
 
   const onMouseDown = useCallback((event) => {
-    if (selectionState.selectDisabled()) {
+    if (event.button !== 0 || selectionState.selectDisabled()) {
       return;
     }
     const elemNumber = +event.currentTarget.getAttribute('data-n');
@@ -98,7 +98,7 @@ export default function useSelectionsInteractions({ selectionState, selections, 
   }, []);
 
   const onMouseUp = useCallback((event) => {
-    if (!currentSelect.current.active) {
+    if (event.button !== 0 || !currentSelect.current.active) {
       return;
     }
     currentSelect.current.active = false;
@@ -109,9 +109,9 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     doSelect();
   }, []);
 
-  const onMouseUpDoc = useCallback(() => {
+  const onMouseUpDoc = useCallback((event) => {
     // Ensure we end interactions when mouseup happens outside the Listbox.
-    if (!currentSelect.current.active) {
+    if (event.button !== 0 || !currentSelect.current.active) {
       return;
     }
     currentSelect.current.active = false;
