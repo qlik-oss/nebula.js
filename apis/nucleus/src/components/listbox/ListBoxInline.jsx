@@ -16,6 +16,7 @@ import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
 
 const PREFIX = 'ListBoxInline';
+const searchIconWidth = 28;
 
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
@@ -27,6 +28,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   [`& .${classes.listBoxHeader}`]: {
     alignSelf: 'center',
     display: 'inline-flex',
+    width: `calc(100% - ${searchIconWidth}px)`,
   },
   [`& .${classes.screenReaderOnly}`]: {
     position: 'absolute',
@@ -205,26 +207,33 @@ export default function ListBoxInline({ options = {} }) {
       ref={containerRef}
     >
       {toolbar && layout.title && (
-        <Grid item container style={{ padding: theme.spacing(1) }}>
-          <Grid item sx={{ display: 'flex', alignItems: 'center' }}>
-            {isLocked ? (
-              <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
-                <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
-              </IconButton>
-            ) : (
-              searchEnabled !== false && (
-                <IconButton onClick={onShowSearch} tabIndex={-1} title={translator.get('Listbox.Search')} size="large">
-                  <SearchIcon style={{ fontSize: '12px' }} />
+        <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
+          <Grid item container wrap="nowrap">
+            <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
+              {isLocked ? (
+                <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
+                  <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
                 </IconButton>
-              )
-            )}
-          </Grid>
-          <Grid item className={classes.listBoxHeader}>
-            {showTitle && (
-              <Title variant="h6" noWrap>
-                {layout.title}
-              </Title>
-            )}
+              ) : (
+                searchEnabled !== false && (
+                  <IconButton
+                    onClick={onShowSearch}
+                    tabIndex={-1}
+                    title={translator.get('Listbox.Search')}
+                    size="large"
+                  >
+                    <SearchIcon style={{ fontSize: '12px' }} />
+                  </IconButton>
+                )
+              )}
+            </Grid>
+            <Grid item className={classes.listBoxHeader}>
+              {showTitle && (
+                <Title variant="h6" noWrap>
+                  {layout.title}
+                </Title>
+              )}
+            </Grid>
           </Grid>
           <Grid item xs />
           <Grid item>
