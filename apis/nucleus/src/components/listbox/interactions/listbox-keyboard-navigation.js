@@ -78,7 +78,17 @@ export function getFieldKeyboardNavigation({ select, confirm, cancel, setScrollP
   return handleKeyDown;
 }
 
-export function getListboxInlineKeyboardNavigation({ setKeyboardActive }) {
+export function getListboxInlineKeyboardNavigation({
+  setKeyboardActive,
+  hovering,
+  setHovering,
+  updateKeyScroll,
+  containerRef,
+  currentScrollIndex,
+  app,
+  appSelections,
+  constraints,
+}) {
   const focusInsideListbox = (element) => {
     const fieldElement = element.querySelector('.search input, .value.selector, .value, .ActionsToolbar-* button');
     setKeyboardActive(true);
@@ -92,8 +102,14 @@ export function getListboxInlineKeyboardNavigation({ setKeyboardActive }) {
     element.focus();
   };
 
+  const updateKeyScrollOnHover = (newState) => {
+    if (hovering) {
+      updateKeyScroll(newState);
+    }
+  };
+
   const handleKeyDown = (event) => {
-    const { keyCode } = event.nativeEvent;
+    const { keyCode, ctrlKey = false, shiftKey = false } = event.nativeEvent;
 
     switch (keyCode) {
       // case KEYS.TAB: TODO: Focus confirm button using keyboard.focusSelection when we can access the useKeyboard hook.
@@ -107,6 +123,24 @@ export function getListboxInlineKeyboardNavigation({ setKeyboardActive }) {
       case KEYS.ESCAPE:
         focusContainer(event.currentTarget);
         break;
+      case KEYS.ARROW_UP:
+        updateKeyScrollOnHover({ up: 1 });
+        break;
+      case KEYS.ARROW_DOWN:
+        updateKeyScrollOnHover({ down: 1 });
+        break;
+      case KEYS.PAGE_UP:
+        updateKeyScrollOnHover({ up: currentScrollIndex.stop - currentScrollIndex.start });
+        break;
+      case KEYS.PAGE_DOWN:
+        updateKeyScrollOnHover({ down: currentScrollIndex.stop - currentScrollIndex.start });
+        break;
+      case KEYS.HOME:
+        updateKeyScrollOnHover({ scrollPosition: ctrlKey && shiftKey ? 'overflowStart' : 'start' });
+        break;
+      case KEYS.END:
+        updateKeyScrollOnHover({ scrollPosition: ctrlKey && shiftKey ? 'overflowEnd' : 'end' });
+        break;
       default:
         return;
     }
@@ -116,5 +150,25 @@ export function getListboxInlineKeyboardNavigation({ setKeyboardActive }) {
     event.preventDefault();
   };
 
-  return handleKeyDown;
+  const focusOnHoverDisabled = () => {
+    const selectNotAllowed = constraints?.select || constraints?.active;
+    const appInModal = app.isInModalSelection?.() ?? appSelections.isInModal();
+    return selectNotAllowed || appInModal;
+  };
+
+  const handleOnMouseEnter = () => {
+    if (!focusOnHoverDisabled()) {
+      setHovering(true);
+      containerRef?.current?.focus?.();
+    }
+  };
+
+  const handleOnMouseLeave = () => {
+    if (hovering) {
+      setHovering(false);
+      containerRef?.current?.blur?.();
+    }
+  };
+
+  return { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave };
 }

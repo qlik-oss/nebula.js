@@ -147,7 +147,7 @@ const validateTarget = (translator, layout, properties, def) => {
   const c = def.resolveLayout(layout);
   const reqDimErrors = validateInfo(
     minD,
-    getInfo(c.qDimensionInfo),
+    getInfo(c.qDimensionInfo || c.qItems),
     (i) => def.dimensions.description(properties, i),
     translator.get('Visualization.Invalid.Dimension'),
     translator.get('Visualization.UnfulfilledCalculationCondition')
@@ -177,7 +177,7 @@ const validateCubes = (translator, targets, layout) => {
     const minD = def.dimensions.min();
     const minM = def.measures.min();
     const c = def.resolveLayout(layout);
-    const d = getInfo(c.qDimensionInfo).filter(filterData); // Filter out optional calc conditions
+    const d = getInfo(c.qDimensionInfo || c.qItems).filter(filterData); // Filter out optional calc conditions
     const m = getInfo(c.qMeasureInfo).filter(filterData); // Filter out optional calc conditions
     aggMinD += minD;
     aggMinM += minM;

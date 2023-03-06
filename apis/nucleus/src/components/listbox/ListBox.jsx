@@ -34,6 +34,8 @@ export default function ListBox({
   showGray = true,
   scrollState,
   selectDisabled = () => false,
+  keyScroll,
+  currentScrollIndex,
 }) {
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const [layout] = useLayout(model);
@@ -123,8 +125,12 @@ export default function ListBox({
     local.current.validPages = false;
     if (loaderRef.current) {
       loaderRef.current.resetloadMoreItemsCache(true);
-      // Skip scrollToItem if we are in selections.
-      if (layout && layout.qSelectionInfo.qInSelections) {
+      const isScrollingToEnd = keyScroll.state.scrollPosition === 'overflowEnd';
+      // Skip scrollToItem if we are in selections or if scrolling to the end.
+      if ((layout && layout.qSelectionInfo.qInSelections) || isScrollingToEnd) {
+        if (isScrollingToEnd) {
+          keyScroll.reset();
+        }
         return;
       }
       local.current.dataOffset = 0;
@@ -193,6 +199,21 @@ export default function ListBox({
     scrollToIndex(scrollIndex);
   };
 
+  useEffect(() => {
+    const s = keyScroll.state;
+    if (s.up) {
+      scrollToIndex(currentScrollIndex.state.start - s.up);
+    } else if (s.down) {
+      scrollToIndex(currentScrollIndex.state.stop + s.down);
+    } else if (s.scrollPosition) {
+      setScrollPosition(s.scrollPosition);
+    }
+    if (s.scrollPosition === 'overflowEnd') {
+      return; // Do keyScroll.reset() in fetchData() to avoid scrolling to top.
+    }
+    keyScroll.reset();
+  }, [keyScroll.state.up, keyScroll.state.down, keyScroll.state.scrollPosition]);
+
   const { textAlign } = layout?.qListObject.qDimensionInfo || {};
 
   const [focusListItem, setFocusListItem] = useState({ first: false, last: false });
@@ -228,6 +249,7 @@ export default function ListBox({
     overflowDisclaimer: { state: overflowDisclaimer, set: showOverflowDisclaimer },
     setScrollPosition,
     focusListItems: getFocusState(),
+    setCurrentScrollIndex: currentScrollIndex.set,
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};

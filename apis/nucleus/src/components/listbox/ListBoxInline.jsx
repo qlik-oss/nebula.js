@@ -13,6 +13,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import addListboxTheme from './assets/addListboxTheme';
+import useAppSelections from '../../hooks/useAppSelections';
 
 const PREFIX = 'ListBoxInline';
 
@@ -43,6 +44,7 @@ const Title = styled(Typography)(({ theme }) => ({
 
 export default function ListBoxInline({ options = {} }) {
   const {
+    app,
     direction,
     frequencyMode,
     listLayout,
@@ -82,18 +84,34 @@ export default function ListBoxInline({ options = {} }) {
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const { translator, keyboardNavigation, themeApi } = useContext(InstanceContext);
+  const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
   theme.listBox = addListboxTheme(themeApi);
 
   const moreAlignTo = useRef();
+  const containerRef = useRef();
   const [searchContainer, searchContainerRef] = useRefWithCallback();
 
   const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
+  const [hovering, setHovering] = useState(false);
+  const [keyScroll, setKeyScroll] = useState({ down: 0, up: 0, scrollPosition: '' });
+  const updateKeyScroll = (newState) => setKeyScroll((current) => ({ ...current, ...newState }));
+  const [currentScrollIndex, setCurrentScrollIndex] = useState({ start: 0, stop: 0 });
+  const [appSelections] = useAppSelections(app);
 
-  const handleKeyDown = getListboxInlineKeyboardNavigation({ setKeyboardActive });
+  const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
+    setKeyboardActive,
+    hovering,
+    setHovering,
+    updateKeyScroll,
+    containerRef,
+    currentScrollIndex,
+    app,
+    appSelections,
+    constraints,
+  });
 
   // Expose the keyboard flags in the same way as the keyboard hook does.
   const keyboard = {
@@ -159,9 +177,9 @@ export default function ListBoxInline({ options = {} }) {
     : [];
 
   const showTitle = true;
-
-  const searchVisible =
-    (search === true || ((search === 'toggle' || search === 'inSelection') && showSearch)) && !selectDisabled();
+  const shouldShowSearch =
+    (search === 'toggle' || (search === 'inSelection' && (!layout.title || !toolbar))) && showSearch;
+  const searchVisible = (search === true || shouldShowSearch) && !selectDisabled();
   const dense = layout.layoutOptions?.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
@@ -182,6 +200,9 @@ export default function ListBoxInline({ options = {} }) {
       gap={0}
       style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
       onKeyDown={handleKeyDown}
+      onMouseEnter={handleOnMouseEnter}
+      onMouseLeave={handleOnMouseLeave}
+      ref={containerRef}
     >
       {toolbar && layout.title && (
         <Grid item container style={{ padding: theme.spacing(1) }}>
@@ -274,6 +295,14 @@ export default function ListBoxInline({ options = {} }) {
                 keyboard={keyboard}
                 showGray={showGray}
                 scrollState={scrollState}
+                keyScroll={{
+                  state: keyScroll,
+                  reset: () => setKeyScroll({ up: 0, down: 0, scrollPosition: '' }),
+                }}
+                currentScrollIndex={{
+                  state: currentScrollIndex,
+                  set: setCurrentScrollIndex,
+                }}
               />
             )}
           </AutoSizer>
