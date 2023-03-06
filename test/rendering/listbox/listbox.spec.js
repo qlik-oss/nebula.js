@@ -30,7 +30,7 @@ test.describe('listbox mashup rendering test', () => {
     await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
-    const image = await selector.screenshot();
+    const image = await selector.screenshot({ caret: 'hide' });
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 
@@ -47,7 +47,7 @@ test.describe('listbox mashup rendering test', () => {
     };
     await execSequence(selectNumbers, action);
 
-    const image = await selector.screenshot();
+    const image = await selector.screenshot({ caret: 'hide' });
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 
@@ -64,7 +64,7 @@ test.describe('listbox mashup rendering test', () => {
     };
     await execSequence(selectNumbers, action);
 
-    const image = await selector.screenshot();
+    const image = await selector.screenshot({ caret: 'hide' });
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 
@@ -91,7 +91,7 @@ test.describe('listbox mashup rendering test', () => {
 
     // Note that since we don't have a backend providing search results, we can't test highlighting and selected (green) rows.
     const selector = await page.$(listboxSelector);
-    const image = await selector.screenshot();
+    const image = await selector.screenshot({ caret: 'hide' });
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 
@@ -104,7 +104,7 @@ test.describe('listbox mashup rendering test', () => {
     await page.hover(listboxSelector);
     await page.press(listboxSelector, 'ArrowDown');
 
-    const image = await selector.screenshot();
+    const image = await selector.screenshot({ caret: 'hide' });
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 });
