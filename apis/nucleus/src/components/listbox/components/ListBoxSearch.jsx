@@ -23,7 +23,7 @@ export default function ListBoxSearch({
   keyboard,
   dense = false,
   visible = true,
-  autoFocus = false,
+  autoFocus = true,
   wildCardSearch = false,
   searchEnabled,
 }) {
