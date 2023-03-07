@@ -126,7 +126,7 @@ export default function ListBoxSearch({
     return null;
   }
 
-  const isAutoFocused = visible && search === 'toggle';
+  const shouldAutoFocus = visible && search === 'toggle';
 
   return (
     <StyledOutlinedInput
@@ -164,7 +164,7 @@ export default function ListBoxSearch({
       fullWidth
       placeholder={translator.get('Listbox.Search')}
       value={value}
-      autoFocus={isAutoFocused}
+      autoFocus={shouldAutoFocus}
       onFocus={handleFocus}
       onChange={onChange}
       onKeyDown={onKeyDown}
