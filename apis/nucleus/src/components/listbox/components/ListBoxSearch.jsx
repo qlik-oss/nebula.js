@@ -24,6 +24,7 @@ export default function ListBoxSearch({
   dense = false,
   visible = true,
   wildCardSearch = false,
+  search,
   searchEnabled,
 }) {
   const { translator } = useContext(InstanceContext);
@@ -125,6 +126,8 @@ export default function ListBoxSearch({
     return null;
   }
 
+  const isAutoFocused = visible && search === 'toggle';
+
   return (
     <StyledOutlinedInput
       startAdornment={
@@ -161,7 +164,7 @@ export default function ListBoxSearch({
       fullWidth
       placeholder={translator.get('Listbox.Search')}
       value={value}
-      autoFocus
+      autoFocus={isAutoFocused}
       onFocus={handleFocus}
       onChange={onChange}
       onKeyDown={onKeyDown}

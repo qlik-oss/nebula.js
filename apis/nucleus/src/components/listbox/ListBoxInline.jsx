@@ -277,6 +277,7 @@ export default function ListBoxInline({ options = {} }) {
             dense={dense}
             keyboard={keyboard}
             visible={searchVisible}
+            search={search}
             searchContainerRef={searchContainerRef}
             wildCardSearch={wildCardSearch}
             searchEnabled={searchEnabled}
