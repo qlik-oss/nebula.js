@@ -49,7 +49,7 @@ describe('useExistingModel', () => {
   });
 
   describe('from field name', () => {
-    test('should assign qID', async () => {
+    test('should use provided frequencyMode', async () => {
       const options = {
         frequencyMode: 'value',
       };
@@ -58,7 +58,7 @@ describe('useExistingModel', () => {
       expect(useSessionModel.mock.lastCall[0].qListObjectDef.qFrequencyMode).toBe('V');
     });
 
-    test('should use provided frequencyMode', async () => {
+    test('should assign qID', async () => {
       const options = {
         frequencyMode: 'value',
       };
