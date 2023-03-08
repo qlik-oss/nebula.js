@@ -6,10 +6,8 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
   const [fieldDef, setFieldDef] = useState('');
   const [isFetching, setIsFetching] = useState(true);
   const [model, setModel] = useState();
-  const [title, setTitle] = useState(options.title);
-  const setFallbackTitle = (fallbackTitle) => {
-    setTitle((currentTitle) => currentTitle ?? fallbackTitle);
-  };
+  const [fallbackTitle, setFallbackTitle] = useState();
+  const title = options.title ?? fallbackTitle;
 
   useEffect(() => {
     async function fetchMasterItem() {
