@@ -41,6 +41,7 @@ export default function ListBoxPopoverWrapper({ app, fieldIdentifier, stateName,
       close={handleCloseShowState}
       fieldName={fieldIdentifier}
       stateName={stateName}
+      autoFocus={options.autoFocus}
     />
   );
 }
