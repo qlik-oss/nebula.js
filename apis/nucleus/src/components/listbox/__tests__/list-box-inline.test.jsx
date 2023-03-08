@@ -236,5 +236,15 @@ describe('<ListboxInline />', () => {
         visible: false,
       });
     });
+
+    test('should render with NOT autoFocus when search is true', async () => {
+      options.search = true;
+      await render();
+
+      expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
+        visible: true,
+        autoFocus: false,
+      });
+    });
   });
 });
