@@ -25,7 +25,6 @@ export default function ListBoxSearch({
   visible = true,
   autoFocus = true,
   wildCardSearch = false,
-  search,
   searchEnabled,
 }) {
   const { translator } = useContext(InstanceContext);
@@ -127,8 +126,6 @@ export default function ListBoxSearch({
     return null;
   }
 
-  const shouldAutoFocus = visible && search === 'toggle';
-
   return (
     <StyledOutlinedInput
       startAdornment={
@@ -168,7 +165,7 @@ export default function ListBoxSearch({
       onFocus={handleFocus}
       onChange={onChange}
       onKeyDown={onKeyDown}
-      autoFocus={shouldAutoFocus ?? autoFocus}
+      autoFocus={autoFocus}
       inputProps={{
         tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
       }}
