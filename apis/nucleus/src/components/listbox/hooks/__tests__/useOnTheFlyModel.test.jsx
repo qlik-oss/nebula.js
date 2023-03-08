@@ -76,6 +76,17 @@ describe('useExistingModel', () => {
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
       expect(useSessionModel.mock.lastCall[0].qListObjectDef.qFrequencyMode).toBe('V');
     });
+    test('should use title from fieldIdentifier', async () => {
+      const fieldIdentifier = 'Alpha';
+      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$' });
+      expect(useSessionModel.mock.lastCall[0].title).toBe('Alpha');
+    });
+    test('should use title from options if provided', async () => {
+      const options = { title: 'Options title' };
+      const fieldIdentifier = 'Alpha';
+      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
+      expect(useSessionModel.mock.lastCall[0].title).toBe('Options title');
+    });
   });
 
   describe('on the fly library dimension', () => {
@@ -90,6 +101,23 @@ describe('useExistingModel', () => {
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
       expect(app.getDimension).toHaveBeenCalledTimes(1);
       expect(useSessionModel.mock.lastCall[0].frequencyMax.qValueExpression.includes('Volume')).toBe(true);
+    });
+    test('should use title from qDim', async () => {
+      const fieldIdentifier = { qLibraryId: '123' };
+      const fakeDimLayout = { qDim: { qFieldDefs: ['Volume'], title: 'Volume title' } };
+      app.getDimension = jest.fn().mockReturnValue({ getLayout: async () => fakeDimLayout });
+
+      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$' });
+      expect(useSessionModel.mock.lastCall[0].title).toBe('Volume title');
+    });
+    test('should use title from options if provided', async () => {
+      const options = { title: 'Options title' };
+      const fieldIdentifier = { qLibraryId: '123' };
+      const fakeDimLayout = { qDim: { qFieldDefs: ['Volume'], title: 'Volume title' } };
+      app.getDimension = jest.fn().mockReturnValue({ getLayout: async () => fakeDimLayout });
+
+      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
+      expect(useSessionModel.mock.lastCall[0].title).toBe('Options title');
     });
   });
 });
