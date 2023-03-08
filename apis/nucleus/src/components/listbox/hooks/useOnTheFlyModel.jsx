@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import extend from 'extend';
 import useSessionModel from '../../../hooks/useSessionModel';
 import uid from '../../../object/uid';
@@ -59,10 +59,15 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
 
   const getListdefFrequencyMode = () => (histogram && frequencyMode === 'N' ? 'V' : frequencyMode);
 
+  const id = useRef();
+  if (!id.current) {
+    id.current = uid();
+  }
+
   const listdef = {
     qInfo: {
       qType: 'njsListbox',
-      qId: uid(),
+      qId: id.current,
     },
     qListObjectDef: {
       qStateName: stateName,
