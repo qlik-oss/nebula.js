@@ -58,6 +58,15 @@ describe('useExistingModel', () => {
       expect(useSessionModel.mock.lastCall[0].qListObjectDef.qFrequencyMode).toBe('V');
     });
 
+    test('should assign qID', async () => {
+      const options = {
+        frequencyMode: 'value',
+      };
+      const fieldIdentifier = 'Alpha';
+      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
+      expect(useSessionModel.mock.lastCall[0].qInfo.qId).toBeDefined();
+    });
+
     test('should default to none if provided frequencyMode is invalid', async () => {
       const options = {
         frequencyMode: 'invalid value',
