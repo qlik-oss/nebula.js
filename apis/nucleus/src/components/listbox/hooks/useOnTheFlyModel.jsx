@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import extend from 'extend';
 import useSessionModel from '../../../hooks/useSessionModel';
+import uid from '../../../object/uid';
 
 export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, options = {} }) {
   const [fieldDef, setFieldDef] = useState('');
@@ -61,6 +62,7 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
   const listdef = {
     qInfo: {
       qType: 'njsListbox',
+      qId: uid(),
     },
     qListObjectDef: {
       qStateName: stateName,

@@ -49,13 +49,22 @@ describe('useExistingModel', () => {
   });
 
   describe('from field name', () => {
-    test('should use provided frequencyMode', async () => {
+    test('should assign qID', async () => {
       const options = {
         frequencyMode: 'value',
       };
       const fieldIdentifier = 'Alpha';
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
       expect(useSessionModel.mock.lastCall[0].qListObjectDef.qFrequencyMode).toBe('V');
+    });
+
+    test('should use provided frequencyMode', async () => {
+      const options = {
+        frequencyMode: 'value',
+      };
+      const fieldIdentifier = 'Alpha';
+      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
+      expect(useSessionModel.mock.lastCall[0].qInfo.qId).toBeDefined();
     });
 
     test('should default to none if provided frequencyMode is invalid', async () => {
