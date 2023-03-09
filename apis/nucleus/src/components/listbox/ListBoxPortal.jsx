@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import ReactDOM from 'react-dom';
 import ListBoxInline from './ListBoxInline';
 import useObjectSelections from '../../hooks/useObjectSelections';
@@ -75,16 +75,19 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options
     ? options.selectionsApi
     : useObjectSelections(app, model, [elementRef, '.njs-action-toolbar-more'], options)[0];
 
+  const opts = useMemo(
+    () => ({
+      ...options,
+      selections,
+      model,
+      app,
+    }),
+    [options, selections, model, app]
+  );
+
   if (!selections || !model) {
     return null;
   }
-
-  const opts = {
-    ...options,
-    selections,
-    model,
-    app,
-  };
 
   return <ListBoxInline options={opts} />;
 }
