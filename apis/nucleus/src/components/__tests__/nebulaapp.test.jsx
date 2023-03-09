@@ -193,4 +193,56 @@ describe('<NebulaApp />', () => {
     act(() => ref.current.removeComponent(MyFoo));
     expect(() => renderer.root.findByType(MyFoo)).toThrow();
   });
+
+  test('setContext should trigger a new render of components using it if and only if it has changed', async () => {
+    let renderCount = 0;
+    const Foo = () => {
+      React.useContext(InstanceContext);
+      ++renderCount;
+      return 'foo';
+    };
+    const MyFoo = <Foo key="1" />;
+    await render();
+    act(() => ref.current.addComponent(MyFoo));
+    expect(renderCount).toEqual(1);
+
+    // new context
+    act(() =>
+      ref.current.setContext({
+        keyboardNavigation: true,
+        constraints: {},
+        theme: 'classic',
+        language: 'pseudo',
+        deviceType: 'unit-test',
+      })
+    );
+    // increased render count
+    expect(renderCount).toEqual(2);
+
+    // same context
+    act(() =>
+      ref.current.setContext({
+        keyboardNavigation: true,
+        constraints: {},
+        theme: 'classic',
+        language: 'pseudo',
+        deviceType: 'unit-test',
+      })
+    );
+    // unchanged render count
+    expect(renderCount).toEqual(2);
+
+    // new context
+    act(() =>
+      ref.current.setContext({
+        keyboardNavigation: true,
+        constraints: { active: true },
+        theme: 'classic',
+        language: 'pseudo',
+        deviceType: 'unit-test',
+      })
+    );
+    // increased render count
+    expect(renderCount).toEqual(3);
+  });
 });

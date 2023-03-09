@@ -33,7 +33,8 @@ const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
       }
     },
     setMuiThemeName,
-    setContext,
+    setContext: (ctx) =>
+      setContext((oldContext) => (JSON.stringify(oldContext) !== JSON.stringify(ctx) ? ctx : oldContext)),
     getAppSelections: () => appSelections,
   }));
 
