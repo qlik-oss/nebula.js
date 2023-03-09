@@ -79,7 +79,9 @@ export default function useSelectionsInteractions({
         return;
       }
       const elemNumber = +event.currentTarget.getAttribute('data-n');
-      setPreSelected([elemNumber]);
+      if (!(preSelected.length === 1 && preSelected[0] === elemNumber)) {
+        setPreSelected([elemNumber]);
+      }
       handleSingleSelectKey(event);
     },
     [selectingValues, selectDisabled]
@@ -94,7 +96,9 @@ export default function useSelectionsInteractions({
       setMouseDown(true);
 
       const elemNumber = +event.currentTarget.getAttribute('data-n');
-      setPreSelected([elemNumber]);
+      if (!(preSelected.length === 1 && preSelected[0] === elemNumber)) {
+        setPreSelected([elemNumber]);
+      }
       handleSingleSelectKey(event);
     },
     [selectingValues, selectDisabled]
