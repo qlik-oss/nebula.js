@@ -193,6 +193,8 @@ export default function ListBoxInline({ options = {} }) {
     setShowSearch(newValue);
   };
 
+  const shouldAutoFocus = searchVisible && search === 'toggle';
+
   return (
     <StyledGrid
       className="listbox-container"
@@ -277,6 +279,8 @@ export default function ListBoxInline({ options = {} }) {
             dense={dense}
             keyboard={keyboard}
             visible={searchVisible}
+            search={search}
+            autoFocus={shouldAutoFocus}
             searchContainerRef={searchContainerRef}
             wildCardSearch={wildCardSearch}
             searchEnabled={searchEnabled}
