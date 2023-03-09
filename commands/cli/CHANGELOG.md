@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.2.2...v3.3.0-alpha.0) (2023-03-09)
+
+**Note:** Version bump only for package @nebula.js/cli
+
 ## [3.2.2](https://github.com/qlik-oss/nebula.js/compare/v3.2.1...v3.2.2) (2023-02-28)
 
 **Note:** Version bump only for package @nebula.js/cli
