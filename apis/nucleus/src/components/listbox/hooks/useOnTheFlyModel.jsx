@@ -7,12 +7,15 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
   const [fieldDef, setFieldDef] = useState('');
   const [isFetching, setIsFetching] = useState(true);
   const [model, setModel] = useState();
+  const [fallbackTitle, setFallbackTitle] = useState();
+  const title = options.title ?? fallbackTitle;
 
   useEffect(() => {
     async function fetchMasterItem() {
       try {
         const dim = await app.getDimension(fieldIdentifier.qLibraryId);
         const dimLayout = await dim.getLayout();
+        setFallbackTitle(dimLayout.qDim.title);
         setFieldDef(dimLayout.qDim.qFieldDefs ? dimLayout.qDim.qFieldDefs[0] : '');
         setIsFetching(false);
       } catch (e) {
@@ -28,10 +31,11 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
       fetchMasterItem();
     } else {
       setIsFetching(false);
+      setFallbackTitle(fieldIdentifier);
     }
   }, []);
 
-  const { title, dense, checkboxes, properties = {} } = options;
+  const { dense, checkboxes, properties = {} } = options;
   let { frequencyMode, histogram = false } = options;
 
   if (fieldDef && fieldDef.failedToFetchFieldDef) {
