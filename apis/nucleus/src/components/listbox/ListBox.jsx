@@ -1,7 +1,6 @@
 /* eslint no-underscore-dangle:0 */
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
-import useLayout from '../../hooks/useLayout';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 import getListBoxComponents from './components/grid-list-components/grid-list-components';
 import getListSizes from './assets/get-list-sizes';
@@ -19,6 +18,7 @@ const DEFAULT_MIN_BATCH_SIZE = 100;
 
 export default function ListBox({
   model,
+  layout,
   selections,
   direction,
   checkboxes: checkboxOption,
@@ -38,7 +38,6 @@ export default function ListBox({
   currentScrollIndex = { set: () => {} },
 }) {
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
-  const [layout] = useLayout(model);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const { checkboxes = checkboxOption, histogram } = layout ?? {};
 

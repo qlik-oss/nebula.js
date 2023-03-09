@@ -176,7 +176,13 @@ export default function ListBoxPopover({
             keyboard={{ enabled: false }}
             autoFocus={autoFocus ?? true}
           />
-          <ListBox model={model} selections={selections} direction="ltr" onSetListCount={(c) => setListCount(c)} />
+          <ListBox
+            model={model}
+            layout={layout}
+            selections={selections}
+            direction="ltr"
+            onSetListCount={(c) => setListCount(c)}
+          />
         </Grid>
       </Grid>
     </Popover>

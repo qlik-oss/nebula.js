@@ -1,7 +1,6 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import * as reactWindowInfiniteLoaderModule from 'react-window-infinite-loader';
-import * as useLayoutModule from '../../../hooks/useLayout';
 import * as useSelectionsInteractionsModule from '../hooks/selections/useSelectionsInteractions';
 import * as useTextWidth from '../hooks/useTextWidth';
 import * as getListSizes from '../assets/get-list-sizes';
@@ -74,7 +73,6 @@ describe('<Listbox />', () => {
     // eslint-disable-next-line react/jsx-props-no-spreading
     FixedSizeGrid = jest.fn().mockImplementation((props) => <div className="a-column-row" {...props} />);
 
-    jest.spyOn(useLayoutModule, 'default').mockImplementation(() => [layout]);
     jest.spyOn(React, 'useCallback').mockImplementation(useCallbackMock);
     jest.spyOn(useSelectionsInteractionsModule, 'default').mockImplementation(useSelectionsInteractions);
     jest.spyOn(useTextWidth, 'default').mockImplementation(() => 50);
@@ -150,6 +148,7 @@ describe('<Listbox />', () => {
             <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
               <ListBox
                 model={mergedArgs.model}
+                layout={layout}
                 frequencyMode={mergedArgs.frequencyMode}
                 histogram={mergedArgs.histogram}
                 keyboard={mergedArgs.keyboard}
