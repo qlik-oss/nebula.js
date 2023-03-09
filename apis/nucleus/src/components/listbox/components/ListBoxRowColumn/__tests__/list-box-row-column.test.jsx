@@ -3,10 +3,10 @@ import renderer from 'react-test-renderer';
 import { Grid, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import Lock from '@nebula.js/ui/icons/lock';
-import ListBoxCheckbox from '../ListBoxCheckbox';
-import * as keyboardNavigation from '../../interactions/listbox-keyboard-navigation';
-import ListBoxRadioButton from '../ListBoxRadioButton';
-import ListBoxRowColumn from '../ListBoxRowColumn';
+import ListBoxCheckbox from '../components/ListBoxCheckbox';
+import * as keyboardNavigation from '../../../interactions/listbox-keyboard-navigation';
+import ListBoxRadioButton from '../components/ListBoxRadioButton';
+import ListBoxRowColumn from '..';
 
 async function render(content) {
   let testRenderer;
