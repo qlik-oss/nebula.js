@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/qlik-oss/nebula.js/compare/v3.3.0-alpha.0...v3.3.0) (2023-03-10)
+
+### Bug Fixes
+
+- avoid re-render on unchanged-context ([#1117](https://github.com/qlik-oss/nebula.js/issues/1117)) ([ad37bc4](https://github.com/qlik-oss/nebula.js/commit/ad37bc4ac690dd326010c85dc794aa8d67634c22))
+- no re-render of inline listbox from extra useLayout updates ([#1119](https://github.com/qlik-oss/nebula.js/issues/1119)) ([f47a7ba](https://github.com/qlik-oss/nebula.js/commit/f47a7ba5b634083626a4f4054f4de34a59479677))
+- remove broken unused parts of appSelections ([#1118](https://github.com/qlik-oss/nebula.js/issues/1118)) ([760e80e](https://github.com/qlik-oss/nebula.js/commit/760e80e333d0fe34b8d66485c456d0e44f91e483))
+
 # [3.3.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.2.2...v3.3.0-alpha.0) (2023-03-09)
 
 ### Bug Fixes
