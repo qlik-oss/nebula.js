@@ -15,6 +15,7 @@ import Field from './components/Field';
 import Histogram from './components/Histogram';
 import Frequency from './components/Frequency';
 import ItemGrid from './components/ItemGrid';
+import getCellFromPages from './helpers/get-cell-from-pages';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
@@ -91,23 +92,18 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation({ ...actions, focusListItems }), [actions]);
 
-  const [isSelected, setSelected] = useState(false);
-  const [cell, setCell] = useState();
+  const getCellFromPagesCallback = useCallback(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
 
+  const [cell, setCell] = useState();
   const [classArr, setClassArr] = useState([]);
+
+  const isSelected = cell?.qState === 'S' || cell?.qState === 'XS' || cell?.qState === 'L';
 
   useEffect(() => {
     if (!pages) {
       return;
     }
-    let c;
-    const page = pages.filter((p) => p.qArea.qTop <= cellIndex && cellIndex < p.qArea.qTop + p.qArea.qHeight)[0];
-    if (page) {
-      const area = page.qArea;
-      if (cellIndex >= area.qTop && cellIndex < area.qTop + area.qHeight) {
-        [c] = page.qMatrix[cellIndex - area.qTop];
-      }
-    }
+    const c = getCellFromPagesCallback();
     setCell(c);
   }, [pages]);
 
@@ -115,8 +111,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     if (!cell) {
       return;
     }
-    const selected = cell.qState === 'S' || cell.qState === 'XS' || cell.qState === 'L';
-    setSelected(selected);
 
     const clazzArr = [column ? classes.column : classes.row];
     if (!(histogram && (dense || checkboxes))) clazzArr.push(classes.rowBorderBottom);
@@ -132,7 +126,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       }
     }
     setClassArr(clazzArr);
-  }, [cell && cell.qState, histogram, dense, checkboxes]);
+  }, [cell?.qState, histogram, dense, checkboxes]);
 
   if (!cell) {
     return null; // prevent rendering empty rows
