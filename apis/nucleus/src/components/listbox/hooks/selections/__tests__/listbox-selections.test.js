@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import * as listboxSelections from '../listbox-selections';
 
 describe('use-listbox-interactions', () => {
@@ -29,101 +30,14 @@ describe('use-listbox-interactions', () => {
     expect(listboxSelections.getSelectedValues(pages)).toEqual([0, 1, 5]);
   });
 
-  describe('applySelectionsOnPages should modify pages so that selections are applied', () => {
-    let pages;
-
-    beforeEach(() => {
-      pages = [
-        {
-          qMatrix: [
-            [{ qState: 'S', qElemNumber: 0 }],
-            [{ qState: 'XS', qElemNumber: 1 }],
-            [{ qState: 'L', qElemNumber: 2 }],
-            [{ qState: 'A', qElemNumber: 3 }],
-            [{ qState: 'XL', qElemNumber: 4 }],
-            [{ qState: 'XS', qElemNumber: 5 }],
-            [{ qState: 'A', qElemNumber: 6 }],
-          ],
-        },
-      ];
-    });
-
-    test('should add selection for element number 2', () => {
-      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [2]);
-      expect(selectedPages).toEqual([
-        {
-          qMatrix: [
-            [{ qState: 'S', qElemNumber: 0 }, []],
-            [{ qState: 'XS', qElemNumber: 1 }, []],
-            [{ qState: 'S', qElemNumber: 2 }, []],
-            [{ qState: 'A', qElemNumber: 3 }, []],
-            [{ qState: 'XL', qElemNumber: 4 }, []],
-            [{ qState: 'XS', qElemNumber: 5 }, []],
-            [{ qState: 'A', qElemNumber: 6 }, []],
-          ],
-        },
-      ]);
-    });
-
-    test('should toggle selection (turn it off)', () => {
-      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0]);
-      expect(selectedPages).toEqual([
-        {
-          qMatrix: [
-            [{ qState: 'A', qElemNumber: 0 }, []],
-            [{ qState: 'XS', qElemNumber: 1 }, []],
-            [{ qState: 'L', qElemNumber: 2 }, []],
-            [{ qState: 'A', qElemNumber: 3 }, []],
-            [{ qState: 'XL', qElemNumber: 4 }, []],
-            [{ qState: 'XS', qElemNumber: 5 }, []],
-            [{ qState: 'A', qElemNumber: 6 }, []],
-          ],
-        },
-      ]);
-    });
-
-    test('should select a range without toggling any already selected values', () => {
-      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [0, 1, 2, 3, 4, 5]);
-      expect(selectedPages).toEqual([
-        {
-          qMatrix: [
-            [{ qState: 'S', qElemNumber: 0 }, []],
-            [{ qState: 'S', qElemNumber: 1 }, []],
-            [{ qState: 'S', qElemNumber: 2 }, []],
-            [{ qState: 'S', qElemNumber: 3 }, []],
-            [{ qState: 'S', qElemNumber: 4 }, []],
-            [{ qState: 'S', qElemNumber: 5 }, []],
-            [{ qState: 'A', qElemNumber: 6 }, []],
-          ],
-        },
-      ]);
-    });
-
-    test('should deselect all exept the new selection', () => {
-      const clearAllButElmNumbers = true;
-      const selectedPages = listboxSelections.applySelectionsOnPages(pages, [3], clearAllButElmNumbers);
-      expect(selectedPages).toEqual([
-        {
-          qMatrix: [
-            [{ qState: 'A', qElemNumber: 0 }, []],
-            [{ qState: 'A', qElemNumber: 1 }, []],
-            [{ qState: 'A', qElemNumber: 2 }, []],
-            [{ qState: 'S', qElemNumber: 3 }, []],
-            [{ qState: 'A', qElemNumber: 4 }, []],
-            [{ qState: 'A', qElemNumber: 5 }, []],
-            [{ qState: 'A', qElemNumber: 6 }, []],
-          ],
-        },
-      ]);
-    });
-  });
-
   describe('selectValues should call the select method', () => {
     let selections;
 
     beforeEach(() => {
       const SUCCESS = true;
       selections = {
+        cancel: jest.fn(),
+        clear: jest.fn(),
         select: jest.fn().mockResolvedValue(SUCCESS),
       };
     });
@@ -140,37 +54,9 @@ describe('use-listbox-interactions', () => {
       expect(selections.select).not.toHaveBeenCalled();
     });
 
-    test('should call select', async () => {
-      const resp = await listboxSelections.selectValues({
-        selections,
-        elemNumbers: [1, 2, 3, 4],
-        isSingleSelect: false,
-      });
-      expect(resp).toBe(true);
-      expect(selections.select).toHaveBeenCalledTimes(1);
-      expect(selections.select).toHaveBeenCalledWith({
-        method: 'selectListObjectValues',
-        params: ['/qListObjectDef', [1, 2, 3, 4], true],
-      });
-    });
-
-    test('single select true should translate to toggle false', async () => {
-      const resp = await listboxSelections.selectValues({
-        selections,
-        elemNumbers: [4],
-        isSingleSelect: true,
-      });
-      expect(resp).toBe(true);
-      expect(selections.select).toHaveBeenCalledTimes(1);
-      expect(selections.select).toHaveBeenCalledWith({
-        method: 'selectListObjectValues',
-        params: ['/qListObjectDef', [4], false],
-      });
-    });
-
     test('should catch errors in backend call', async () => {
       selections.select.mockRejectedValue('error');
-      expect(async () => {
+      await expect(async () => {
         await listboxSelections.selectValues({
           selections,
           elemNumbers: [4],
@@ -179,12 +65,9 @@ describe('use-listbox-interactions', () => {
       }).not.toThrow();
     });
 
-    test('should call select', () => {
-      listboxSelections
-        .selectValues({ selections, elemNumbers: [1, 2, 4], isSingleSelect: false })
-        .then((successStory) => {
-          expect(successStory).toBe(true);
-        });
+    test('should call select', async () => {
+      const successStory = await listboxSelections.selectValues({ selections, elemNumbers: [1, 2, 4], toggle: true });
+      expect(successStory).toBe(true);
       expect(selections.select).toHaveBeenCalledTimes(1);
       expect(selections.select).toHaveBeenCalledWith({
         method: 'selectListObjectValues',
@@ -192,10 +75,9 @@ describe('use-listbox-interactions', () => {
       });
     });
 
-    test('should call select with toggle false when single select', () => {
-      listboxSelections.selectValues({ selections, elemNumbers: [2], isSingleSelect: true }).then((successStory) => {
-        expect(successStory).toBe(true);
-      });
+    test('should call select with toggle', async () => {
+      const successStory = await listboxSelections.selectValues({ selections, elemNumbers: [2], toggle: false });
+      expect(successStory).toBe(true);
       expect(selections.select).toHaveBeenCalledTimes(1);
       expect(selections.select).toHaveBeenCalledWith({
         method: 'selectListObjectValues',
@@ -203,23 +85,41 @@ describe('use-listbox-interactions', () => {
       });
     });
 
-    test('should not call select when NaN values exist', () => {
-      listboxSelections
-        .selectValues({ selections, elemNumbers: [1, NaN, 4], isSingleSelect: false })
-        .then((successStory) => {
-          expect(successStory).toBe(false);
-        });
+    test('should not call select when NaN values exist', async () => {
+      const successStory = await listboxSelections.selectValues({ selections, elemNumbers: [1, NaN, 4], toggle: true });
+      expect(successStory).toBe(false);
       expect(selections.select).not.toHaveBeenCalled();
     });
 
-    test('should handle select failure and then resolve false', () => {
+    test('should handle select failure and then resolve false', async () => {
       selections.select.mockRejectedValue(false);
-      listboxSelections
-        .selectValues({ selections, elemNumbers: [1, 2, 4], isSingleSelect: false })
-        .then((successStory) => {
-          expect(successStory).toBe(false);
-        });
+      const successStory = await listboxSelections.selectValues({ selections, elemNumbers: [1, 2, 4], toggle: true });
+      expect(successStory).toBe(false);
       expect(selections.select).toHaveBeenCalledTimes(1);
+    });
+
+    test('should call clear on failed select', async () => {
+      selections.select.mockResolvedValue(false);
+      const successStory = await listboxSelections.selectValues({
+        selections,
+        elemNumbers: [1, 2, 4],
+        toggle: true,
+        isSingleSelect: false,
+      });
+      expect(successStory).toBe(false);
+      expect(selections.clear).toHaveBeenCalledTimes(1);
+    });
+
+    test('should call cancel on failed select when isSingleSelect is true', async () => {
+      selections.select.mockResolvedValue(false);
+      const successStory = await listboxSelections.selectValues({
+        selections,
+        elemNumbers: [1, 2, 4],
+        toggle: true,
+        isSingleSelect: true,
+      });
+      expect(successStory).toBe(false);
+      expect(selections.cancel).toHaveBeenCalledTimes(1);
     });
   });
 

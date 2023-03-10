@@ -55,7 +55,6 @@ describe('<Listbox />', () => {
     };
 
     useSelectionsInteractions = jest.fn().mockReturnValue({
-      instantPages: [],
       interactionEvents: {
         onMouseDown: () => {},
         onMouseUp: () => {},
@@ -183,13 +182,10 @@ describe('<Listbox />', () => {
       expect(rows).toHaveLength(1);
       expect(columns).toHaveLength(0);
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        layout,
         selections,
-        pages: [],
         doc: expect.any(Object),
       });
 
-      expect(useSelectionsInteractions.mock.calls[1][0].selectDisabled instanceof Function).toBe(true);
       expect(FixedSizeList.mock.calls.length).toBeGreaterThan(0);
     });
 
@@ -197,9 +193,7 @@ describe('<Listbox />', () => {
       await render();
 
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        layout,
         selections,
-        pages: [],
         doc: expect.any(Object),
       });
     });
@@ -229,9 +223,7 @@ describe('<Listbox />', () => {
       await render();
 
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        layout,
         selections,
-        pages: [],
         doc: expect.any(Object),
       });
 
