@@ -106,13 +106,6 @@ describe('useAppSelections', () => {
     jest.resetAllMocks();
   });
 
-  test('returns current selections layout', async () => {
-    await render();
-
-    const res = await ref.current.result[0].layout();
-    expect(res).toEqual(currentSelectionsLayout);
-  });
-
   test('should create app selections', async () => {
     await render();
     expect(ref.current.result[0]).toEqual(appSel);
@@ -155,26 +148,6 @@ describe('useAppSelections', () => {
     expect(ref.current.result[0].isModal(obj)).toBe(true);
     expect(ref.current.result[0].isModal({})).toBe(false);
     expect(ref.current.result[0].isModal()).toBe(true);
-  });
-
-  test('can go forward', async () => {
-    await render();
-
-    const res = await ref.current.result[0].canGoForward();
-    expect(res).toBe(true);
-  });
-
-  test('can go back', async () => {
-    await render();
-    const res = await ref.current.result[0].canGoBack();
-    expect(res).toBe(true);
-  });
-
-  test('can clear', async () => {
-    await render();
-
-    const res = await ref.current.result[0].canClear();
-    expect(res).toBe(true);
   });
 
   test('forward', async () => {

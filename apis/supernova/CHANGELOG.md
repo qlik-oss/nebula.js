@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/qlik-oss/nebula.js/compare/v3.3.0-alpha.0...v3.3.0) (2023-03-10)
+
+**Note:** Version bump only for package @nebula.js/supernova
+
+# [3.3.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.2.2...v3.3.0-alpha.0) (2023-03-09)
+
+### Bug Fixes
+
+- fix counting the number of dimensions in a filter pane ([#1107](https://github.com/qlik-oss/nebula.js/issues/1107)) ([8cf3126](https://github.com/qlik-oss/nebula.js/commit/8cf31260b137675daae125cfcc4a358371595a5a))
+
 ## [3.2.2](https://github.com/qlik-oss/nebula.js/compare/v3.2.1...v3.2.2) (2023-02-28)
 
 **Note:** Version bump only for package @nebula.js/supernova

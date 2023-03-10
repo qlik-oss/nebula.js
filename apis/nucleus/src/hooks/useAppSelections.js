@@ -1,6 +1,5 @@
 /* eslint no-underscore-dangle: 0 */
 import { useEffect } from 'react';
-import useAppSelectionsNavigation from './useAppSelectionsNavigation';
 import {
   useAppSelectionsStore,
   objectSelectionsStore,
@@ -8,7 +7,7 @@ import {
   appModalStore,
 } from '../stores/selections-store';
 
-function createAppSelections({ app, currentSelectionsLayout, navState }) {
+function createAppSelections({ app }) {
   const key = `${app.id}`;
 
   const end = async (accept = true) => {
@@ -70,18 +69,6 @@ function createAppSelections({ app, currentSelectionsLayout, navState }) {
       // TODO check model state
       return object ? modalObjectStore.get(key) === object : !!modalObjectStore.get(key);
     },
-    canGoForward() {
-      return navState.canGoForward;
-    },
-    canGoBack() {
-      return navState.canGoBack;
-    },
-    canClear() {
-      return navState.canClear;
-    },
-    layout() {
-      return currentSelectionsLayout;
-    },
     forward() {
       return appModal.end().then(() => app.forward());
     },
@@ -102,17 +89,16 @@ export default function useAppSelections(app) {
     // assume the app is mocked if session is undefined
     return [];
   }
-  const [navState, currentSelectionsModel, currentSelectionsLayout] = useAppSelectionsNavigation(app);
   const [appSelectionsStore] = useAppSelectionsStore();
   const key = app ? app.id : null;
   let appSelections = appSelectionsStore.get(key);
 
   useEffect(() => {
-    if (!app || !currentSelectionsModel || !currentSelectionsLayout || !navState || appSelections) return;
-    appSelections = createAppSelections({ app, currentSelectionsLayout, navState });
+    if (!app || appSelections) return;
+    appSelections = createAppSelections({ app });
     appSelectionsStore.set(key, appSelections);
     appSelectionsStore.dispatch(true);
-  }, [app, currentSelectionsModel, currentSelectionsLayout, navState]);
+  }, [app]);
 
-  return [appSelections, navState];
+  return [appSelections];
 }

@@ -45,7 +45,7 @@ const Title = styled(Typography)(({ theme }) => ({
   fontFamily: theme.listBox?.title?.main?.fontFamily,
 }));
 
-export default function ListBoxInline({ options = {} }) {
+function ListBoxInline({ options, layout }) {
   const {
     app,
     direction,
@@ -93,7 +93,6 @@ export default function ListBoxInline({ options = {} }) {
   const containerRef = useRef();
   const [searchContainer, searchContainerRef] = useRefWithCallback();
 
-  const [layout] = useLayout(model);
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const [keyboardActive, setKeyboardActive] = useState(false);
@@ -232,6 +231,7 @@ export default function ListBoxInline({ options = {} }) {
       horizontal: (containerRef.current?.clientWidth ?? 0) - 8,
     },
   });
+  const shouldAutoFocus = searchVisible && search === 'toggle';
 
   return (
     <>
@@ -299,6 +299,8 @@ export default function ListBoxInline({ options = {} }) {
               dense={dense}
               keyboard={keyboard}
               visible={searchVisible}
+              search={search}
+              autoFocus={shouldAutoFocus}
               searchContainerRef={searchContainerRef}
               wildCardSearch={wildCardSearch}
               searchEnabled={searchEnabled}
@@ -310,6 +312,7 @@ export default function ListBoxInline({ options = {} }) {
               {({ height, width }) => (
                 <ListBox
                   model={model}
+                  layout={layout}
                   selections={selections}
                   direction={direction}
                   listLayout={listLayout}
@@ -343,3 +346,13 @@ export default function ListBoxInline({ options = {} }) {
     </>
   );
 }
+
+const ListBoxInlineMemoed = React.memo(ListBoxInline);
+
+function IsolateUseLayoutWrapper({ options = {} }) {
+  const { model } = options;
+  const [layout] = useLayout(model);
+  return <ListBoxInlineMemoed options={options} layout={layout} />;
+}
+
+export default IsolateUseLayoutWrapper;

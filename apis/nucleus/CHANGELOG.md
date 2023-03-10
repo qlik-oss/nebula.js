@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [3.3.0](https://github.com/qlik-oss/nebula.js/compare/v3.3.0-alpha.0...v3.3.0) (2023-03-10)
+
+### Bug Fixes
+
+- avoid re-render on unchanged-context ([#1117](https://github.com/qlik-oss/nebula.js/issues/1117)) ([ad37bc4](https://github.com/qlik-oss/nebula.js/commit/ad37bc4ac690dd326010c85dc794aa8d67634c22))
+- no re-render of inline listbox from extra useLayout updates ([#1119](https://github.com/qlik-oss/nebula.js/issues/1119)) ([f47a7ba](https://github.com/qlik-oss/nebula.js/commit/f47a7ba5b634083626a4f4054f4de34a59479677))
+- remove broken unused parts of appSelections ([#1118](https://github.com/qlik-oss/nebula.js/issues/1118)) ([760e80e](https://github.com/qlik-oss/nebula.js/commit/760e80e333d0fe34b8d66485c456d0e44f91e483))
+
+# [3.3.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.2.2...v3.3.0-alpha.0) (2023-03-09)
+
+### Bug Fixes
+
+- assign id to all session listboxes ([#1115](https://github.com/qlik-oss/nebula.js/issues/1115)) ([a95a376](https://github.com/qlik-oss/nebula.js/commit/a95a37656c6b8d7d2655e4671015ce79a901d47f))
+- autofocus search (listbox-inline) ([#1113](https://github.com/qlik-oss/nebula.js/issues/1113)) ([0244114](https://github.com/qlik-oss/nebula.js/commit/02441143b8a16475009eabd7f496163042ca98dc))
+- correctly hide hidden fields in app selections ([#1094](https://github.com/qlik-oss/nebula.js/issues/1094)) ([f3213e7](https://github.com/qlik-oss/nebula.js/commit/f3213e7dea673df907072bf8ab84212f29dd287d))
+- do not show Search box on selection when there is no title ([#1106](https://github.com/qlik-oss/nebula.js/issues/1106)) ([9ea0b83](https://github.com/qlik-oss/nebula.js/commit/9ea0b83656bb6ba3d4adf79385b1001094bc648d))
+- fix counting the number of dimensions in a filter pane ([#1107](https://github.com/qlik-oss/nebula.js/issues/1107)) ([8cf3126](https://github.com/qlik-oss/nebula.js/commit/8cf31260b137675daae125cfcc4a358371595a5a))
+- **listbox-search:** crash while searching within listbox with empty records ([#1104](https://github.com/qlik-oss/nebula.js/issues/1104)) ([6d025fd](https://github.com/qlik-oss/nebula.js/commit/6d025fd0d51b649b70b980f7ff0ce0e83538fc86))
+- **Listbox:** add missing default props listbox ([#1111](https://github.com/qlik-oss/nebula.js/issues/1111)) ([21d0a4a](https://github.com/qlik-oss/nebula.js/commit/21d0a4a728a721f250df3473dce02d4fde3505c1))
+- **Listbox:** truncate title, don't wrap title ([#1109](https://github.com/qlik-oss/nebula.js/issues/1109)) ([92014d9](https://github.com/qlik-oss/nebula.js/commit/92014d950092a0069c9000db8fd592b86f95ff15))
+- **Listbox:** use fallback title ([#1114](https://github.com/qlik-oss/nebula.js/issues/1114)) ([f1a958b](https://github.com/qlik-oss/nebula.js/commit/f1a958baab99e97dbeeef991267418e325a0e3f4))
+- search wildcard cursor & icons update ([#1096](https://github.com/qlik-oss/nebula.js/issues/1096)) ([52e2278](https://github.com/qlik-oss/nebula.js/commit/52e22787ba387f39e5837bc5b0fd2ec815270276))
+
+### Features
+
+- **listbox-popover:** Tab stop for search ([#1097](https://github.com/qlik-oss/nebula.js/issues/1097)) ([a65e7a1](https://github.com/qlik-oss/nebula.js/commit/a65e7a1f83aed0491d159c6c2174fcf2b8a5483b))
+- **Listbox:** keyboard nav on hover ([#1101](https://github.com/qlik-oss/nebula.js/issues/1101)) ([1ebdb00](https://github.com/qlik-oss/nebula.js/commit/1ebdb00d7da02453b8518f8f2b54dc5035ce9bc2))
+- **Listbox:** remove inSelection search option ([#1112](https://github.com/qlik-oss/nebula.js/issues/1112)) ([d54a321](https://github.com/qlik-oss/nebula.js/commit/d54a3218166c26a5809409648b7c02cb7008fcac))
+
 ## [3.2.2](https://github.com/qlik-oss/nebula.js/compare/v3.2.1...v3.2.2) (2023-02-28)
 
 ### Bug Fixes

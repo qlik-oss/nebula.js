@@ -2,7 +2,7 @@ import React from 'react';
 import renderer from 'react-test-renderer';
 import { Checkbox } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
-import ListBoxCheckbox from '../ListBoxCheckbox';
+import ListBoxCheckbox from '../components/ListBoxCheckbox';
 
 const checkClassName = (cb) => {
   expect(cb.props.className.split(' ')[0]).toBe('ListBoxCheckbox-checkbox');
@@ -27,7 +27,7 @@ describe('<ListBoxCheckbox />', () => {
   test('should render an unchecked checkbox', async () => {
     const testRenderer = await render(getRenderSetup(<ListBoxCheckbox label="just check it" />));
     const cbs = testRenderer.root.findAllByType(Checkbox);
-    expect(cbs.length).toBe(1);
+    expect(cbs).toHaveLength(1);
     const [cb] = cbs;
     checkClassName(cb);
     expect(cb.props.checked).toBe(undefined);
@@ -42,7 +42,7 @@ describe('<ListBoxCheckbox />', () => {
   test('should render a checked checkbox', async () => {
     const testRenderer = await render(getRenderSetup(<ListBoxCheckbox checked label="just check it" />));
     const cbs = testRenderer.root.findAllByType(Checkbox);
-    expect(cbs.length).toBe(1);
+    expect(cbs).toHaveLength(1);
     const [cb] = cbs;
     checkClassName(cb);
     expect(cb.props.checked).toBe(true);
