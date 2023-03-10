@@ -209,7 +209,7 @@ function ListBoxInline({ options, layout }) {
     >
       {toolbar && (
         <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
-          <Grid item container wrap="nowrap">
+          <Grid item container style={{ height: '32px' }} wrap="nowrap">
             <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
               {isLocked ? (
                 <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
