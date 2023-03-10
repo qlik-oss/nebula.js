@@ -164,7 +164,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   // Search highlights. Split up labelText span into several and add the highlighted class to matching sub-strings.
 
   let labels;
-  if (cell.qHighlightRanges?.length) {
+  if (cell.qHighlightRanges?.qRanges?.length) {
     const ranges = cell.qHighlightRanges.qRanges.sort((a, b) => a.qCharPos - b.qCharPos) || [];
     labels = getSegmentsFromRanges(label, ranges);
   }
