@@ -177,7 +177,7 @@ describe('<NebulaApp />', () => {
     };
     const MyFoo = <Foo key="1" />;
     await render();
-    act(() => ref.current.addComponent(MyFoo));
+    act(() => ref.current.setComps([MyFoo]));
     expect(renderCount).toEqual(1);
 
     // new context
