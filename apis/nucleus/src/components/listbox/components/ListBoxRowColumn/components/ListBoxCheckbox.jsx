@@ -71,7 +71,7 @@ const getIcon = (cls, showGray = true, excluded = false) => (
   <span className={cls.cbIcon}>{excluded && <span className={showGray && excluded ? cls.cbIconExcluded : ''} />}</span>
 );
 
-export default function ListboxCheckbox({ checked, label, dense, excluded, showGray = true }) {
+function ListboxCheckbox({ checked, label, dense, excluded, showGray = true }) {
   return (
     <StyledCheckbox
       edge="start"
@@ -85,3 +85,13 @@ export default function ListboxCheckbox({ checked, label, dense, excluded, showG
     />
   );
 }
+
+export default React.memo(
+  ListboxCheckbox,
+  (o, n) =>
+    o.checked === n.checked &&
+    o.label === n.label &&
+    o.dense === n.dense &&
+    o.excluded === n.excluded &&
+    o.showGray === n.showGray
+);

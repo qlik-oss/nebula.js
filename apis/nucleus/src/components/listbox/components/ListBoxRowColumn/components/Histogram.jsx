@@ -3,7 +3,7 @@ import classes from '../helpers/classes';
 import { frequencyTextNone } from '../helpers/constants';
 import { getBarWidth, getFrequencyText, joinClassNames } from '../helpers/operations';
 
-export default function Histogram({ cell, histogram, checkboxes, isSelected, frequencyMax }) {
+function Histogram({ cell, histogram, checkboxes, isSelected, frequencyMax }) {
   const hasHistogramBar = cell && histogram && getFrequencyText({ cell }) !== frequencyTextNone;
   if (!hasHistogramBar) {
     return undefined;
@@ -21,3 +21,13 @@ export default function Histogram({ cell, histogram, checkboxes, isSelected, fre
     />
   );
 }
+
+export default React.memo(
+  Histogram,
+  (o, n) =>
+    o.cell === n.cell &&
+    o.histogram === n.histogram &&
+    o.checkboxes === n.checkboxes &&
+    o.isSelected === n.isSelected &&
+    o.frequencyMax === n.frequencyMax
+);

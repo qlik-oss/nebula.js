@@ -218,7 +218,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         onContextMenu={preventContextMenu}
         role={column ? 'column' : 'row'}
         tabIndex={isFirstElement && (!keyboard.enabled || keyboard.active) ? 0 : -1}
-        data-n={cell && cell.qElemNumber}
+        data-n={cell?.qElemNumber}
       >
         <Histogram
           cell={cell}

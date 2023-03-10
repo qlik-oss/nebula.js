@@ -4,7 +4,7 @@ import { excludedOrAlternative } from '../helpers/cell-states';
 import classes from '../helpers/classes';
 import { getFrequencyText, joinClassNames } from '../helpers/operations';
 
-export default function Frequency({ cell, checkboxes, dense, showGray }) {
+function Frequency({ cell, checkboxes, dense, showGray }) {
   return (
     <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>
       <Typography
@@ -22,3 +22,8 @@ export default function Frequency({ cell, checkboxes, dense, showGray }) {
     </Grid>
   );
 }
+
+export default React.memo(
+  Frequency,
+  (o, n) => o.cell === n.cell && o.checkboxes === n.checkboxes && o.dense === n.dense && o.showGray === n.showGray
+);
