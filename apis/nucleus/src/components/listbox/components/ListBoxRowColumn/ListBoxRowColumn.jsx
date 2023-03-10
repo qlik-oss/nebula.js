@@ -19,6 +19,7 @@ import getCellFromPages from './helpers/get-cell-from-pages';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
+    onChange,
     onClick,
     onMouseDown,
     onMouseUp,
@@ -206,8 +207,23 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
           className={joinClassNames([classes.cell, classes.selectedCell])}
           title={`${label}`}
         >
-          {labels ? (
+          {ranges.length === 0 ? (
+            <Field
+              onChange={onChange}
+              label={label}
+              color="inherit"
+              qElemNumber={cell.qElemNumber}
+              isSelected={isSelected}
+              dense={dense}
+              cell={cell}
+              isGridCol={isGridCol}
+              showGray={showGray}
+              isSingleSelect={isSingleSelect}
+              checkboxes={checkboxes}
+            />
+          ) : (
             <FieldWithRanges
+              onChange={onChange}
               labels={labels}
               checkboxes={checkboxes}
               dense={dense}
@@ -220,21 +236,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               isSingleSelect={isSingleSelect}
               valueTextAlign={valueTextAlign}
             />
-          ) : (
-            <Field
-              label={label}
-              color="inherit"
-              qElemNumber={cell.qElemNumber}
-              isSelected={isSelected}
-              dense={dense}
-              cell={cell}
-              isGridCol={isGridCol}
-              showGray={showGray}
-              isSingleSelect={isSingleSelect}
-              checkboxes={checkboxes}
-              valueTextAlign={valueTextAlign}
-            />
-          )}
+          ) }
         </Grid>
 
         {freqIsAllowed && <Frequency cell={cell} checkboxes={checkboxes} dense={dense} showGray={showGray} />}

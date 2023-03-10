@@ -3,6 +3,7 @@ import CheckboxField from './CheckboxField';
 import ValueField from './ValueField';
 
 function Field({
+  onChange,
   label,
   color,
   qElemNumber,
@@ -18,6 +19,7 @@ function Field({
 }) {
   return checkboxes ? (
     <CheckboxField
+      onChange={onChange}
       label={label}
       color={color}
       qElemNumber={qElemNumber}
