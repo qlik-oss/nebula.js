@@ -16,7 +16,7 @@ import getScrollIndex from './interactions/listbox-get-scroll-index';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
-function ListBox({
+export default function ListBox({
   model,
   layout,
   selections,
@@ -280,34 +280,3 @@ function ListBox({
     </>
   );
 }
-
-const pickOutRelevantLayout = (layout = {}) => {
-  const lightLayout = { ...layout, qListObject: { ...layout.qListObject, qDataPages: null } };
-  return lightLayout;
-};
-
-export default React.memo(ListBox, (o, n) => {
-  const compareProps = ['direction', 'checkboxes', 'width', 'height', 'listLayout', 'frequencyMode', 'showGray'];
-  const arePropsSame = Object.entries(o).some(([key, oldVal]) =>
-    compareProps.includes(key) ? oldVal === n[key] : true
-  );
-  if (!arePropsSame) {
-    return false;
-  }
-
-  const otherPropsAreSame =
-    o.scrollState?.initScrollPos === n.scrollState?.initScrollPos &&
-    o.keyScroll?.state?.scrollPosition === n.keyScroll?.state?.scrollPosition &&
-    o.currentScrollIndex?.state?.start === n.currentScrollIndex?.state?.start &&
-    o.currentScrollIndex?.state?.stop === n.currentScrollIndex?.state?.stop &&
-    o.selectDisabled() === n.selectDisabled();
-
-  if (!otherPropsAreSame) {
-    return false;
-  }
-
-  const oldLayout = pickOutRelevantLayout(o.layout);
-  const newLayout = pickOutRelevantLayout(n.layout);
-  const layoutIsSame = JSON.stringify(oldLayout) === JSON.stringify(newLayout);
-  return layoutIsSame;
-});
