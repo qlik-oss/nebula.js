@@ -18,7 +18,7 @@ const light = {
       disabled: 'rgba(0, 0, 0, 0.3)',
     },
     action: {
-      active: colors.grey25, // color for actionable things like icon buttons
+      active: '#545454', // color for actionable things like icon buttons
       hover: 'rgba(0, 0, 0, 0.03)', // color for hoverable things like list items
       hoverOpacity: 0.08, // used to fade primary/secondary colors
       selected: 'rgba(0, 0, 0, 0.05)', // focused things like list items

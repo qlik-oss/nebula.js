@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -89,7 +90,6 @@ export default function ListBoxInline({ options = {} }) {
   const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
   theme.listBox = addListboxTheme(themeApi);
 
-  const moreAlignTo = useRef();
   const containerRef = useRef();
   const [searchContainer, searchContainerRef] = useRefWithCallback();
 
@@ -102,6 +102,7 @@ export default function ListBoxInline({ options = {} }) {
   const updateKeyScroll = (newState) => setKeyScroll((current) => ({ ...current, ...newState }));
   const [currentScrollIndex, setCurrentScrollIndex] = useState({ start: 0, stop: 0 });
   const [appSelections] = useAppSelections(app);
+  const titleRef = useRef(null);
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
     setKeyboardActive,
@@ -124,6 +125,7 @@ export default function ListBoxInline({ options = {} }) {
   if (layout?.toolbar !== undefined) {
     toolbar = layout.toolbar;
   }
+  const toolbarDetachedOnly = toolbar && layout?.title === '';
   toolbar = toolbar && layout?.title !== '';
 
   useEffect(() => {
@@ -165,19 +167,28 @@ export default function ListBoxInline({ options = {} }) {
     }
   }, [searchContainer && searchContainer.current, showSearch, search, focusSearch]);
 
+  const showToolbarDetached = () => {
+    const containerWidth = containerRef?.current?.clientWidth ?? 0;
+    const padding = 16;
+    const contentWidth = (titleRef?.current?.clientWidth ?? 0) + searchIconWidth + padding;
+    const actionToolbarWidth = 128;
+    const notSufficientSpace = containerWidth < contentWidth + actionToolbarWidth;
+    const isTruncated = titleRef?.current?.scrollWidth > titleRef?.current?.offsetWidth;
+
+    return !!(notSufficientSpace | isTruncated);
+  };
+
   if (!model || !layout || !translator) {
     return null;
   }
 
   const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
 
-  const listboxSelectionToolbarItems = toolbar
-    ? createListboxSelectionToolbar({
-        layout,
-        model,
-        translator,
-      })
-    : [];
+  const listboxSelectionToolbarItems = createListboxSelectionToolbar({
+    layout,
+    model,
+    translator,
+  });
 
   const showTitle = true;
   const showSearchToggle = search === 'toggle' && showSearch;
@@ -193,130 +204,142 @@ export default function ListBoxInline({ options = {} }) {
     setShowSearch(newValue);
   };
 
+  const getActionToolbarProps = (isPopover) => ({
+    show: showToolbar && !isPopover,
+    popover: {
+      show: showToolbar && isPopover,
+      anchorEl: containerRef.current,
+    },
+    more: {
+      enabled: !isLocked,
+      actions: listboxSelectionToolbarItems,
+      popoverProps: {
+        elevation: 0,
+      },
+      popoverPaperStyle: {
+        boxShadow: '0 12px 8px -8px rgba(0, 0, 0, 0.2)',
+        minWidth: '250px',
+      },
+    },
+    selections: {
+      show: showToolbar,
+      api: selections,
+      onConfirm: () => {},
+      onCancel: () => {},
+    },
+    popoverAnchorOrigin: {
+      vertical: 14,
+      horizontal: (containerRef.current?.clientWidth ?? 0) - 8,
+    },
+  });
+
   return (
-    <StyledGrid
-      className="listbox-container"
-      container
-      tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
-      direction="column"
-      gap={0}
-      style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
-      onKeyDown={handleKeyDown}
-      onMouseEnter={handleOnMouseEnter}
-      onMouseLeave={handleOnMouseLeave}
-      ref={containerRef}
-    >
-      {toolbar && (
-        <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
-          <Grid item container wrap="nowrap">
-            <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
-              {isLocked ? (
-                <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
-                  <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
-                </IconButton>
-              ) : (
-                searchEnabled !== false && (
-                  <IconButton
-                    onClick={onShowSearch}
-                    tabIndex={-1}
-                    title={translator.get('Listbox.Search')}
-                    size="large"
-                  >
-                    <SearchIcon style={{ fontSize: '12px' }} />
+    <>
+      {toolbarDetachedOnly && <ActionsToolbar {...getActionToolbarProps(true)} />}
+      <StyledGrid
+        className="listbox-container"
+        container
+        tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
+        direction="column"
+        gap={0}
+        style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
+        onKeyDown={handleKeyDown}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+        ref={containerRef}
+      >
+        {toolbar && (
+          <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
+            <Grid item container wrap="nowrap">
+              <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
+                {isLocked ? (
+                  <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
+                    <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
                   </IconButton>
-                )
-              )}
+                ) : (
+                  searchEnabled !== false && (
+                    <IconButton
+                      onClick={onShowSearch}
+                      tabIndex={-1}
+                      title={translator.get('Listbox.Search')}
+                      size="large"
+                    >
+                      <SearchIcon style={{ fontSize: '12px' }} />
+                    </IconButton>
+                  )
+                )}
+              </Grid>
+              <Grid item className={classes.listBoxHeader}>
+                {showTitle && (
+                  <Title variant="h6" noWrap ref={titleRef}>
+                    {layout.title}
+                  </Title>
+                )}
+              </Grid>
             </Grid>
-            <Grid item className={classes.listBoxHeader}>
-              {showTitle && (
-                <Title variant="h6" noWrap>
-                  {layout.title}
-                </Title>
-              )}
+            <Grid item xs />
+            <Grid item>
+              <ActionsToolbar {...getActionToolbarProps(showToolbarDetached())} />
             </Grid>
           </Grid>
-          <Grid item xs />
-          <Grid item>
-            <ActionsToolbar
-              more={{
-                enabled: !isLocked,
-                actions: listboxSelectionToolbarItems,
-                alignTo: moreAlignTo,
-                popoverProps: {
-                  elevation: 0,
-                },
-                popoverPaperStyle: {
-                  boxShadow: '0 12px 8px -8px rgba(0, 0, 0, 0.2)',
-                  minWidth: '250px',
-                },
-              }}
-              selections={{
-                show: showToolbar,
-                api: selections,
-                onConfirm: () => {},
-                onCancel: () => {},
-              }}
+        )}
+        <Grid
+          item
+          container
+          direction="column"
+          style={{ height: '100%', minHeight: `${minHeight}px` }}
+          role="region"
+          aria-label={translator.get('Listbox.ResultFilterLabel')}
+        >
+          <Grid item ref={searchContainerRef}>
+            <div className={classes.screenReaderOnly}>{translator.get('Listbox.Search.ScreenReaderInstructions')}</div>
+            <ListBoxSearch
+              selections={selections}
+              model={model}
+              dense={dense}
+              keyboard={keyboard}
+              visible={searchVisible}
+              searchContainerRef={searchContainerRef}
+              wildCardSearch={wildCardSearch}
+              searchEnabled={searchEnabled}
             />
           </Grid>
+          <Grid item xs>
+            <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
+            <AutoSizer>
+              {({ height, width }) => (
+                <ListBox
+                  model={model}
+                  selections={selections}
+                  direction={direction}
+                  listLayout={listLayout}
+                  frequencyMode={frequencyMode}
+                  rangeSelect={rangeSelect}
+                  checkboxes={checkboxes}
+                  height={height}
+                  width={width}
+                  update={update}
+                  fetchStart={fetchStart}
+                  postProcessPages={postProcessPages}
+                  calculatePagesHeight={calculatePagesHeight}
+                  selectDisabled={selectDisabled}
+                  keyboard={keyboard}
+                  showGray={showGray}
+                  scrollState={scrollState}
+                  keyScroll={{
+                    state: keyScroll,
+                    reset: () => setKeyScroll({ up: 0, down: 0, scrollPosition: '' }),
+                  }}
+                  currentScrollIndex={{
+                    state: currentScrollIndex,
+                    set: setCurrentScrollIndex,
+                  }}
+                />
+              )}
+            </AutoSizer>
+          </Grid>
         </Grid>
-      )}
-      <Grid
-        item
-        container
-        direction="column"
-        style={{ height: '100%', minHeight: `${minHeight}px` }}
-        role="region"
-        aria-label={translator.get('Listbox.ResultFilterLabel')}
-      >
-        <div ref={moreAlignTo} />
-        <Grid item ref={searchContainerRef}>
-          <div className={classes.screenReaderOnly}>{translator.get('Listbox.Search.ScreenReaderInstructions')}</div>
-          <ListBoxSearch
-            selections={selections}
-            model={model}
-            dense={dense}
-            keyboard={keyboard}
-            visible={searchVisible}
-            searchContainerRef={searchContainerRef}
-            wildCardSearch={wildCardSearch}
-            searchEnabled={searchEnabled}
-          />
-        </Grid>
-        <Grid item xs>
-          <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
-          <AutoSizer>
-            {({ height, width }) => (
-              <ListBox
-                model={model}
-                selections={selections}
-                direction={direction}
-                listLayout={listLayout}
-                frequencyMode={frequencyMode}
-                rangeSelect={rangeSelect}
-                checkboxes={checkboxes}
-                height={height}
-                width={width}
-                update={update}
-                fetchStart={fetchStart}
-                postProcessPages={postProcessPages}
-                calculatePagesHeight={calculatePagesHeight}
-                selectDisabled={selectDisabled}
-                keyboard={keyboard}
-                showGray={showGray}
-                scrollState={scrollState}
-                keyScroll={{
-                  state: keyScroll,
-                  reset: () => setKeyScroll({ up: 0, down: 0, scrollPosition: '' }),
-                }}
-                currentScrollIndex={{
-                  state: currentScrollIndex,
-                  set: setCurrentScrollIndex,
-                }}
-              />
-            )}
-          </AutoSizer>
-        </Grid>
-      </Grid>
-    </StyledGrid>
+      </StyledGrid>
+    </>
   );
 }
