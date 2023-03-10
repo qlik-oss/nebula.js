@@ -4,16 +4,7 @@ import { joinClassNames } from '../helpers/operations';
 import classes from '../helpers/classes';
 import { excludedOrAlternative } from '../helpers/cell-states';
 
-export default function ValueField({
-  label,
-  color,
-  highlighted = false,
-  dense,
-  showGray = true,
-  checkboxes,
-  cell,
-  valueTextAlign,
-}) {
+function ValueField({ label, color, highlighted = false, dense, showGray = true, checkboxes, cell, valueTextAlign }) {
   return (
     <Typography
       component="span"
@@ -31,3 +22,5 @@ export default function ValueField({
     </Typography>
   );
 }
+
+export default React.memo(ValueField);

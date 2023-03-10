@@ -45,19 +45,4 @@ function Field({
   );
 }
 
-export default React.memo(
-  Field,
-  (o, n) =>
-    o.label === n.label &&
-    o.color === n.color &&
-    o.qElemNumber === n.qElemNumber &&
-    o.isSelected === n.isSelected &&
-    o.dense === n.dense &&
-    o.cell === n.cell &&
-    o.isGridCol === n.isGridCol &&
-    o.showGray === n.showGray &&
-    o.isSingleSelect === n.isSingleSelect &&
-    o.highlighted === n.highlighted &&
-    o.checkboxes === n.checkboxes &&
-    o.valueTextAlign === n.valueTextAlign
-);
+export default React.memo(Field);

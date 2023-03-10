@@ -19,15 +19,4 @@ function LabelTag({ label, color, highlighted, dense, showGray, checkboxes, cell
   return label;
 }
 
-export default React.memo(
-  LabelTag,
-  (o, n) =>
-    o.label === n.label &&
-    o.color === n.color &&
-    o.highlighted === n.highlighted &&
-    o.dense === n.dense &&
-    o.showGray === n.showGray &&
-    o.checkboxes === n.checkboxes &&
-    o.cell === n.cell &&
-    o.valueTextAlign === n.valueTextAlign
-);
+export default React.memo(LabelTag);

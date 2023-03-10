@@ -10,17 +10,4 @@ const ItemGrid = styled(Grid, {
   [`&.${classes.fieldRoot}`]: getItemSizes({ dataLayout, layoutOrder, itemPadding }),
 }));
 
-export default React.memo(
-  ItemGrid,
-  (o, n) =>
-    o.dataLayout === n.dataLayout &&
-    o.layoutOrder === n.layoutOrder &&
-    o.itemPadding === n.itemPadding &&
-    o.gap === n.gap &&
-    o.className === n.className &&
-    o.classes === n.classes &&
-    o.role === n.role &&
-    o.tabIndex === n.tabIndex &&
-    o.classes === n.classes &&
-    o['data-n'] === n['data-n']
-);
+export default React.memo(ItemGrid);

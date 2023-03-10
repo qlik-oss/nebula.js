@@ -22,12 +22,4 @@ function Histogram({ cell, histogram, checkboxes, isSelected, frequencyMax }) {
   );
 }
 
-export default React.memo(
-  Histogram,
-  (o, n) =>
-    o.cell === n.cell &&
-    o.histogram === n.histogram &&
-    o.checkboxes === n.checkboxes &&
-    o.isSelected === n.isSelected &&
-    o.frequencyMax === n.frequencyMax
-);
+export default React.memo(Histogram);

@@ -52,18 +52,4 @@ function FieldWithRanges({
   );
 }
 
-export default React.memo(
-  FieldWithRanges,
-  (o, n) =>
-    o.labels === n.labels &&
-    o.checkboxes === n.checkboxes &&
-    o.dense === n.dense &&
-    o.showGray === n.showGray &&
-    o.color === n.color &&
-    o.qElemNumber === n.qElemNumber &&
-    o.isSelected === n.isSelected &&
-    o.cell === n.cell &&
-    o.isGridCol === n.isGridCol &&
-    o.isSingleSelect === n.isSingleSelect &&
-    o.valueTextAlign === n.valueTextAlign
-);
+export default React.memo(FieldWithRanges);

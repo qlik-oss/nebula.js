@@ -23,7 +23,4 @@ function Frequency({ cell, checkboxes, dense, showGray }) {
   );
 }
 
-export default React.memo(
-  Frequency,
-  (o, n) => o.cell === n.cell && o.checkboxes === n.checkboxes && o.dense === n.dense && o.showGray === n.showGray
-);
+export default React.memo(Frequency);
