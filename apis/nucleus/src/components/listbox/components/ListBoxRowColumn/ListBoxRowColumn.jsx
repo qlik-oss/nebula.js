@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
+import React, { useEffect, useCallback, useRef, useMemo } from 'react';
 
 import { Grid } from '@mui/material';
 
@@ -7,7 +7,7 @@ import Tick from '@nebula.js/ui/icons/tick';
 import getSegmentsFromRanges from '../listbox-highlight';
 import { getFieldKeyboardNavigation } from '../../interactions/listbox-keyboard-navigation';
 import classes from './helpers/classes';
-import { isAlternative, isExcluded } from './helpers/cell-states';
+import { getValueStateClasses } from './helpers/cell-states';
 import { joinClassNames } from './helpers/operations';
 import RowColRoot from './components/ListBoxRoot';
 import FieldWithRanges from './components/FieldWithRanges';
@@ -93,31 +93,12 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation({ ...actions, focusListItems }), [actions]);
 
   const cell = useMemo(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
-  const [classArr, setClassArr] = useState([]);
   const isSelected = cell?.qState === 'S' || cell?.qState === 'XS' || cell?.qState === 'L';
 
-  useEffect(() => {
-    if (!cell) {
-      return;
-    }
-
-    const clazzArr = [column ? classes.column : classes.row];
-    if (!histogram) {
-      clazzArr.push(classes.rowBorderBottom);
-    }
-    if (!checkboxes) {
-      if (cell.qState === 'XS') {
-        clazzArr.push(showGray ? classes.XS : classes.S);
-      } else if (cell.qState === 'S' || cell.qState === 'L') {
-        clazzArr.push(classes.S);
-      } else if (showGray && isAlternative(cell)) {
-        clazzArr.push(classes.A);
-      } else if (showGray && isExcluded(cell)) {
-        clazzArr.push(classes.X);
-      }
-    }
-    setClassArr(clazzArr);
-  }, [cell?.qState, histogram, dense, checkboxes]);
+  const classArr = useMemo(
+    () => getValueStateClasses({ column, histogram, checkboxes, cell, showGray }),
+    [cell?.qState, histogram, dense, checkboxes]
+  );
 
   const preventContextMenu = useCallback(
     (event) => {
@@ -174,7 +155,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     alignItems: 'center',
     minWidth: 0,
     flexGrow: 1,
-    padding: checkboxes ? 0 : undefined,
+    paddingLeft: checkboxes ? 0 : undefined,
     justifyContent: valueTextAlign,
   };
 
@@ -194,6 +175,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         ref={rowRef}
         container
         dataLayout={dataLayout}
+        checkboxes={checkboxes}
         layoutOrder={layoutOrder}
         itemPadding={itemPadding}
         gap={0}
@@ -250,6 +232,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               showGray={showGray}
               isSingleSelect={isSingleSelect}
               checkboxes={checkboxes}
+              valueTextAlign={valueTextAlign}
             />
           )}
         </Grid>

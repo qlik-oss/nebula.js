@@ -145,10 +145,10 @@ const RowColRoot = styled('div', {
     justifyContent: 'flex-end',
     ...ellipsis,
     width: 'auto',
-    maxWidth: 'fit-content',
-    minWidth: 'fit-content',
+    maxWidth: 'max-content',
+    minWidth: 'max-content',
     textAlign: 'right',
-    padding: '2px',
+    paddingLeft: '10px',
   },
 
   [`&.${classes.barContainer}`]: {

@@ -16,7 +16,7 @@ function ValueField({ label, color, highlighted = false, dense, showGray = true,
         showGray && excludedOrAlternative({ cell, checkboxes }) && classes.excludedTextWithCheckbox,
       ])}
       color={color}
-      justifyContent={valueTextAlign}
+      align={valueTextAlign}
     >
       <span style={{ whiteSpace: 'pre' }}>{label}</span>
     </Typography>
