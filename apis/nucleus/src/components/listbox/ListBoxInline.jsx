@@ -185,6 +185,7 @@ function ListBoxInline({ options, layout }) {
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
   const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
+  const headerHeight = 32;
   const { wildCardSearch, searchEnabled } = layout;
 
   const onShowSearch = () => {
@@ -209,7 +210,7 @@ function ListBoxInline({ options, layout }) {
     >
       {toolbar && (
         <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
-          <Grid item container style={{ height: '32px' }} wrap="nowrap">
+          <Grid item container style={{ height: `${headerHeight}px` }} wrap="nowrap">
             <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
               {isLocked ? (
                 <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
