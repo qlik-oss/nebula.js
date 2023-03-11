@@ -76,6 +76,7 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
     qListObjectDef: {
       qStateName: stateName,
       qShowAlternatives: true,
+      frequencyEnabled: false,
       qFrequencyMode: getListdefFrequencyMode(),
       qInitialDataFetch: [
         {

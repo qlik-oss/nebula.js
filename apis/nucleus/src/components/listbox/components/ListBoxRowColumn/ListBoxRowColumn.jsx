@@ -102,7 +102,9 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     }
 
     const clazzArr = [column ? classes.column : classes.row];
-    if (!(histogram && (dense || checkboxes))) clazzArr.push(classes.rowBorderBottom);
+    if (!histogram) {
+      clazzArr.push(classes.rowBorderBottom);
+    }
     if (!checkboxes) {
       if (cell.qState === 'XS') {
         clazzArr.push(showGray ? classes.XS : classes.S);
