@@ -110,9 +110,9 @@ const RowColRoot = styled('div', {
   [`& .${classes.icon}`]: {
     display: 'flex',
     justifyContent: 'center',
-    width: 22,
-    minWidth: 22,
-    maxWidth: 22,
+    width: 24,
+    minWidth: 24,
+    maxWidth: 24,
   },
 
   // Selection styles (S=Selected, XS=ExcludedSelected, A=Available, X=Excluded).
