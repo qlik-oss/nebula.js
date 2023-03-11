@@ -23,4 +23,4 @@ function Frequency({ cell, checkboxes, dense, showGray }) {
   );
 }
 
-export default React.memo(Frequency);
+export default Frequency;

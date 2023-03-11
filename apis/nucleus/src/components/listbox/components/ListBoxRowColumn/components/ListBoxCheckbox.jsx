@@ -86,4 +86,4 @@ function ListboxCheckbox({ checked, label, dense, excluded, showGray = true }) {
   );
 }
 
-export default React.memo(ListboxCheckbox);
+export default ListboxCheckbox;
