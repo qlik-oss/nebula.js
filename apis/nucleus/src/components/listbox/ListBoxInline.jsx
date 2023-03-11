@@ -211,24 +211,26 @@ function ListBoxInline({ options, layout }) {
       {toolbar && (
         <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
           <Grid item container height={headerHeight} wrap="nowrap">
-            <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
-              {isLocked ? (
-                <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
-                  <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
-                </IconButton>
-              ) : (
-                searchEnabled !== false && (
-                  <IconButton
-                    onClick={onShowSearch}
-                    tabIndex={-1}
-                    title={translator.get('Listbox.Search')}
-                    size="large"
-                  >
-                    <SearchIcon style={{ fontSize: '12px' }} />
+            {(isLocked || (searchEnabled !== false && !constraints.active)) && (
+              <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
+                {isLocked ? (
+                  <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
+                    <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
                   </IconButton>
-                )
-              )}
-            </Grid>
+                ) : (
+                  searchEnabled !== false && (
+                    <IconButton
+                      onClick={onShowSearch}
+                      tabIndex={-1}
+                      title={translator.get('Listbox.Search')}
+                      size="large"
+                    >
+                      <SearchIcon style={{ fontSize: '12px' }} />
+                    </IconButton>
+                  )
+                )}
+              </Grid>
+            )}
             <Grid item className={classes.listBoxHeader}>
               {showTitle && (
                 <Title variant="h6" noWrap>
@@ -292,6 +294,7 @@ function ListBoxInline({ options, layout }) {
             {({ height, width }) => (
               <ListBox
                 model={model}
+                constraints={constraints}
                 layout={layout}
                 selections={selections}
                 direction={direction}
