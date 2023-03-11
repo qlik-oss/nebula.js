@@ -54,4 +54,4 @@ function CheckboxField({
   );
 }
 
-export default React.memo(CheckboxField);
+export default CheckboxField;

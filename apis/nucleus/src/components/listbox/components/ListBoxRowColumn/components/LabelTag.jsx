@@ -19,4 +19,4 @@ function LabelTag({ label, color, highlighted, dense, showGray, checkboxes, cell
   return label;
 }
 
-export default React.memo(LabelTag);
+export default LabelTag;

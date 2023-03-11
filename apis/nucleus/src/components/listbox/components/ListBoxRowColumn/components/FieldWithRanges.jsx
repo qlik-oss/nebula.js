@@ -52,4 +52,4 @@ function FieldWithRanges({
   );
 }
 
-export default React.memo(FieldWithRanges);
+export default FieldWithRanges;

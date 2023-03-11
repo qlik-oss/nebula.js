@@ -23,4 +23,4 @@ function ValueField({ label, color, highlighted = false, dense, showGray = true,
   );
 }
 
-export default React.memo(ValueField);
+export default ValueField;
