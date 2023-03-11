@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 
 import { Grid } from '@mui/material';
 
@@ -92,20 +92,9 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation({ ...actions, focusListItems }), [actions]);
 
-  const getCellFromPagesCallback = useCallback(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
-
-  const [cell, setCell] = useState();
+  const cell = useMemo(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
   const [classArr, setClassArr] = useState([]);
-
   const isSelected = cell?.qState === 'S' || cell?.qState === 'XS' || cell?.qState === 'L';
-
-  useEffect(() => {
-    if (!pages) {
-      return;
-    }
-    const c = getCellFromPagesCallback();
-    setCell(c);
-  }, [pages]);
 
   useEffect(() => {
     if (!cell) {
