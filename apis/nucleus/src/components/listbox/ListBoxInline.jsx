@@ -194,6 +194,7 @@ function ListBoxInline({ options, layout }) {
   };
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
+  const showIcon = isLocked || (searchEnabled !== false && !constraints.active);
 
   return (
     <StyledGrid
@@ -211,23 +212,21 @@ function ListBoxInline({ options, layout }) {
       {toolbar && (
         <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
           <Grid item container height={headerHeight} wrap="nowrap">
-            {(isLocked || (searchEnabled !== false && !constraints.active)) && (
+            {showIcon && (
               <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
                 {isLocked ? (
-                  <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
+                  <IconButton tabIndex={-1} onClick={unlock} disabled={selectDisabled()} size="large">
                     <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
                   </IconButton>
                 ) : (
-                  searchEnabled !== false && (
-                    <IconButton
-                      onClick={onShowSearch}
-                      tabIndex={-1}
-                      title={translator.get('Listbox.Search')}
-                      size="large"
-                    >
-                      <SearchIcon style={{ fontSize: '12px' }} />
-                    </IconButton>
-                  )
+                  <IconButton
+                    onClick={onShowSearch}
+                    tabIndex={-1}
+                    title={translator.get('Listbox.Search')}
+                    size="large"
+                  >
+                    <SearchIcon style={{ fontSize: '12px' }} />
+                  </IconButton>
                 )}
               </Grid>
             )}
