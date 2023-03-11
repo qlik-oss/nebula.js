@@ -54,7 +54,7 @@ const RowColRoot = styled('div', {
     minWidth: 0,
     flexGrow: 1,
     // Note that this padding is overridden when using checkboxes.
-    paddingLeft: '8px',
+    paddingLeft: '9px',
     paddingRight: 0,
   },
 
