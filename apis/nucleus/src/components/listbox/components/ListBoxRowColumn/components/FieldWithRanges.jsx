@@ -19,7 +19,7 @@ function LabelsWithRanges({ labels, dense, showGray, checkboxes }) {
   );
 }
 
-export default function FieldWithRanges({
+function FieldWithRanges({
   labels,
   checkboxes,
   dense,
@@ -51,3 +51,5 @@ export default function FieldWithRanges({
     LWR
   );
 }
+
+export default FieldWithRanges;

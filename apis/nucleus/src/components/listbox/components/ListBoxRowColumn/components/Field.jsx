@@ -2,7 +2,7 @@ import React from 'react';
 import CheckboxField from './CheckboxField';
 import ValueField from './ValueField';
 
-export default function Field({
+function Field({
   label,
   color,
   qElemNumber,
@@ -44,3 +44,5 @@ export default function Field({
     />
   );
 }
+
+export default React.memo(Field);

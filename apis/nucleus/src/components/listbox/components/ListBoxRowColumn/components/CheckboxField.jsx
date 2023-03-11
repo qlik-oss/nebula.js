@@ -6,7 +6,7 @@ import { isExcluded } from '../helpers/cell-states';
 import classes from '../helpers/classes';
 import LabelTag from './LabelTag';
 
-export default function CheckboxField({
+function CheckboxField({
   label,
   color,
   qElemNumber,
@@ -53,3 +53,5 @@ export default function CheckboxField({
     />
   );
 }
+
+export default CheckboxField;

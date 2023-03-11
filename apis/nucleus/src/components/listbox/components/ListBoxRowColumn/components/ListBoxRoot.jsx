@@ -1,3 +1,4 @@
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx } from '../helpers/constants';
@@ -144,10 +145,10 @@ const RowColRoot = styled('div', {
     justifyContent: 'flex-end',
     ...ellipsis,
     width: 'auto',
-    maxWidth: 'fit-content',
-    minWidth: 'fit-content',
+    maxWidth: 'max-content',
+    minWidth: 'max-content',
     textAlign: 'right',
-    padding: '2px',
+    paddingLeft: isGridMode ? '2px' : '6px',
   },
 
   [`&.${classes.barContainer}`]: {
@@ -189,4 +190,4 @@ const RowColRoot = styled('div', {
   },
 }));
 
-export default RowColRoot;
+export default React.memo(RowColRoot);
