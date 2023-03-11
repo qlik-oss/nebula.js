@@ -148,7 +148,7 @@ const RowColRoot = styled('div', {
     maxWidth: 'max-content',
     minWidth: 'max-content',
     textAlign: 'right',
-    paddingLeft: '2%',
+    paddingLeft: isGridMode ? '2px' : '6px',
   },
 
   [`&.${classes.barContainer}`]: {
