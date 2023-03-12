@@ -5,16 +5,19 @@ import ValueField from './ValueField';
 function LabelsWithRanges({ labels, dense, showGray, checkboxes }) {
   return (
     <>
-      {labels.map(([label, highlighted]) => (
-        <ValueField
-          label={label}
-          key={label}
-          highlighted={highlighted}
-          dense={dense}
-          showGray={showGray}
-          checkboxes={checkboxes}
-        />
-      ))}
+      {labels.map(([label, highlighted], index) => {
+        const key = `${index}`;
+        return (
+          <ValueField
+            label={label}
+            key={key}
+            highlighted={highlighted}
+            dense={dense}
+            showGray={showGray}
+            checkboxes={checkboxes}
+          />
+        );
+      })}
     </>
   );
 }
