@@ -27,7 +27,6 @@ export default function getListBoxComponents({
   showGray,
   scrollState,
   direction,
-  listLayout,
   sizes,
   listCount,
   overflowDisclaimer,
@@ -87,7 +86,6 @@ export default function getListBoxComponents({
         height={listHeight}
         width={width}
         itemCount={listCount}
-        layout={listLayout}
         itemData={{ ...commonItemData, listCount }}
         itemSize={itemSize}
         onItemsRendered={(renderProps) => {

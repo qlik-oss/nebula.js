@@ -82,7 +82,6 @@ describe('grid-list-components', () => {
         setScrollPos: jest.fn(),
       },
       direction: 'ltr',
-      listLayout: 'listLayout',
       sizes: {
         listHeight: 300,
         listCount: 100,
