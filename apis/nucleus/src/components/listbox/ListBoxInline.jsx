@@ -17,6 +17,7 @@ import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
 
 const PREFIX = 'ListBoxInline';
+const ICON_PADDING = 7;
 const searchIconWidth = 28;
 const drillDownIconWidth = 24;
 const classes = {
@@ -199,7 +200,8 @@ function ListBoxInline({ options, layout }) {
   const showSearchOrLockIcon = isLocked || showSearchIcon;
   const showIcons = showSearchOrLockIcon || isDrillDown;
   const iconsWidth = (showSearchOrLockIcon ? searchIconWidth : 0) + (isDrillDown ? drillDownIconWidth : 0);
-  const drillDownPaddingLeft = showSearchOrLockIcon ? 0 : 7;
+  const drillDownPaddingLeft = showSearchOrLockIcon ? 0 : ICON_PADDING;
+  const headerPaddingLeft = parseFloat(theme.spacing(1)) - (showIcons ? ICON_PADDING : 0);
 
   return (
     <StyledGrid
@@ -215,12 +217,7 @@ function ListBoxInline({ options, layout }) {
       ref={containerRef}
     >
       {toolbar && (
-        <Grid
-          item
-          container
-          style={{ padding: theme.spacing(1), paddingLeft: showIcons ? '0px' : theme.spacing(1) }}
-          wrap="nowrap"
-        >
+        <Grid item container style={{ padding: theme.spacing(1), paddingLeft: `${headerPaddingLeft}px` }} wrap="nowrap">
           <Grid item container height={headerHeight} wrap="nowrap">
             {showIcons && (
               <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
