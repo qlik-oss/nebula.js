@@ -18,6 +18,7 @@ const DEFAULT_MIN_BATCH_SIZE = 100;
 
 export default function ListBox({
   model,
+  constraints,
   layout,
   selections,
   direction,
@@ -249,6 +250,7 @@ export default function ListBox({
     setScrollPosition,
     focusListItems: getFocusState(),
     setCurrentScrollIndex: currentScrollIndex.set,
+    constraints,
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};
