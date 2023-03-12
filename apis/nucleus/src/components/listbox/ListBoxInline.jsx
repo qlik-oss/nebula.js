@@ -49,7 +49,6 @@ function ListBoxInline({ options, layout }) {
     app,
     direction,
     frequencyMode,
-    listLayout,
     checkboxes,
     search = true,
     focusSearch = false,
@@ -297,7 +296,6 @@ function ListBoxInline({ options, layout }) {
                 layout={layout}
                 selections={selections}
                 direction={direction}
-                listLayout={listLayout}
                 frequencyMode={frequencyMode}
                 rangeSelect={rangeSelect}
                 checkboxes={checkboxes}

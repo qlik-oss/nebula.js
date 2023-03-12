@@ -25,7 +25,6 @@ export default function ListBox({
   checkboxes: checkboxOption,
   height,
   width,
-  listLayout = 'vertical',
   frequencyMode,
   update = undefined,
   fetchStart = undefined,
@@ -165,9 +164,7 @@ export default function ListBox({
 
   let minimumBatchSize = DEFAULT_MIN_BATCH_SIZE;
 
-  const isVertical = layoutOptions.dataLayout
-    ? layoutOptions.dataLayout === 'singleColumn'
-    : listLayout !== 'horizontal';
+  const isVertical = layoutOptions.dataLayout !== 'grid';
 
   const count = layout?.qListObject.qSize?.qcy;
 

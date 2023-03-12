@@ -91,7 +91,7 @@ exports[`grid-list-components should create a List component 1`] = `
     }
   }
   itemSize={100}
-  layout="listLayout"
+  layout="vertical"
   onItemsRendered={[Function]}
   overscanCount={2}
   useIsScrolling={true}
