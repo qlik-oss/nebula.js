@@ -1,3 +1,4 @@
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx } from '../helpers/constants';
@@ -18,6 +19,7 @@ const ellipsis = {
   width: '100%',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 };
 
 const RowColRoot = styled('div', {
@@ -54,7 +56,7 @@ const RowColRoot = styled('div', {
     flexGrow: 1,
     // Note that this padding is overridden when using checkboxes.
     paddingLeft: '9px',
-    paddingRight: '9px',
+    paddingRight: 0,
   },
 
   // The leaf node, containing the label text.
@@ -62,9 +64,9 @@ const RowColRoot = styled('div', {
     flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
-    whiteSpace: 'pre', // to keep white-space on highlight
-    paddingRight: '9px',
+    paddingRight: 0,
     ...ellipsis,
+    whiteSpace: 'pre', // to keep white-space on highlight
     fontSize: theme.listBox?.content?.fontSize,
     fontFamily: theme.listBox?.content?.fontFamily,
   },
@@ -108,7 +110,10 @@ const RowColRoot = styled('div', {
   // The icons container holding tick and lock, shown inside fields.
   [`& .${classes.icon}`]: {
     display: 'flex',
-    padding: theme.spacing(1, 1, 1, 0),
+    justifyContent: 'center',
+    width: 24,
+    minWidth: 24,
+    maxWidth: 24,
   },
 
   // Selection styles (S=Selected, XS=ExcludedSelected, A=Available, X=Excluded).
@@ -137,8 +142,13 @@ const RowColRoot = styled('div', {
   },
 
   [`& .${classes.frequencyCount}`]: {
-    width: '66px',
     justifyContent: 'flex-end',
+    ...ellipsis,
+    width: 'auto',
+    maxWidth: 'max-content',
+    minWidth: 'max-content',
+    textAlign: 'right',
+    paddingLeft: isGridMode ? '2px' : '6px',
   },
 
   [`&.${classes.barContainer}`]: {
@@ -180,4 +190,4 @@ const RowColRoot = styled('div', {
   },
 }));
 
-export default RowColRoot;
+export default React.memo(RowColRoot);

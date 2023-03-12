@@ -12,11 +12,15 @@ export default function getGridItemSizes({ dataLayout, layoutOrder, itemPadding 
       return {
         height: `calc(100% - ${itemPadding}px)`,
         width: `calc(100% - ${2 * itemPadding}px)`,
+        position: 'absolute',
+        left: 4,
       };
     case 'column':
       return {
         height: `calc(100% - ${itemPadding}px)`,
         width: `calc(100% - ${2 * itemPadding}px)`,
+        position: 'absolute',
+        left: 4,
       };
     default:
       return {};

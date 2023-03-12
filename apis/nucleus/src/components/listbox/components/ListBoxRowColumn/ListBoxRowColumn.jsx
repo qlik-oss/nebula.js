@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
+import React, { useEffect, useCallback, useRef, useMemo } from 'react';
 
 import { Grid } from '@mui/material';
 
@@ -7,7 +7,7 @@ import Tick from '@nebula.js/ui/icons/tick';
 import getSegmentsFromRanges from '../listbox-highlight';
 import { getFieldKeyboardNavigation } from '../../interactions/listbox-keyboard-navigation';
 import classes from './helpers/classes';
-import { isAlternative, isExcluded } from './helpers/cell-states';
+import { getValueStateClasses } from './helpers/cell-states';
 import { joinClassNames } from './helpers/operations';
 import RowColRoot from './components/ListBoxRoot';
 import FieldWithRanges from './components/FieldWithRanges';
@@ -15,6 +15,7 @@ import Field from './components/Field';
 import Histogram from './components/Histogram';
 import Frequency from './components/Frequency';
 import ItemGrid from './components/ItemGrid';
+import getCellFromPages from './helpers/get-cell-from-pages';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
@@ -91,48 +92,24 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation({ ...actions, focusListItems }), [actions]);
 
-  const [isSelected, setSelected] = useState(false);
-  const [cell, setCell] = useState();
+  const cell = useMemo(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
+  const isSelected = cell?.qState === 'S' || cell?.qState === 'XS' || cell?.qState === 'L';
 
-  const [classArr, setClassArr] = useState([]);
+  const classArr = useMemo(
+    () => getValueStateClasses({ column, histogram, checkboxes, cell, showGray }),
+    [cell?.qState, histogram, dense, checkboxes]
+  );
 
-  useEffect(() => {
-    if (!pages) {
-      return;
-    }
-    let c;
-    const page = pages.filter((p) => p.qArea.qTop <= cellIndex && cellIndex < p.qArea.qTop + p.qArea.qHeight)[0];
-    if (page) {
-      const area = page.qArea;
-      if (cellIndex >= area.qTop && cellIndex < area.qTop + area.qHeight) {
-        [c] = page.qMatrix[cellIndex - area.qTop];
+  const preventContextMenu = useCallback(
+    (event) => {
+      if (checkboxes) {
+        // Event will not propagate in the checkbox/radiobutton case
+        onClick(event);
       }
-    }
-    setCell(c);
-  }, [pages]);
-
-  useEffect(() => {
-    if (!cell) {
-      return;
-    }
-    const selected = cell.qState === 'S' || cell.qState === 'XS' || cell.qState === 'L';
-    setSelected(selected);
-
-    const clazzArr = [column ? classes.column : classes.row];
-    if (!(histogram && (dense || checkboxes))) clazzArr.push(classes.rowBorderBottom);
-    if (!checkboxes) {
-      if (cell.qState === 'XS') {
-        clazzArr.push(showGray ? classes.XS : classes.S);
-      } else if (cell.qState === 'S' || cell.qState === 'L') {
-        clazzArr.push(classes.S);
-      } else if (showGray && isAlternative(cell)) {
-        clazzArr.push(classes.A);
-      } else if (showGray && isExcluded(cell)) {
-        clazzArr.push(classes.X);
-      }
-    }
-    setClassArr(clazzArr);
-  }, [cell && cell.qState, histogram, dense, checkboxes]);
+      event.preventDefault();
+    },
+    [checkboxes]
+  );
 
   if (!cell) {
     return null; // prevent rendering empty rows
@@ -152,23 +129,17 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     valueTextAlign = textAlign?.align || 'left';
   }
 
-  const preventContextMenu = (event) => {
-    if (checkboxes) {
-      // Event will not propagate in the checkbox/radiobutton case
-      onClick(event);
-    }
-    event.preventDefault();
-  };
-
   const isGridCol = dataLayout === 'grid' && layoutOrder === 'column';
 
   const label = cell?.qText ?? '';
 
   // Search highlights. Split up labelText span into several and add the highlighted class to matching sub-strings.
-  const ranges =
-    (cell && cell.qHighlightRanges && cell.qHighlightRanges.qRanges.sort((a, b) => a.qCharPos - b.qCharPos)) || [];
 
-  const labels = getSegmentsFromRanges(label, ranges);
+  let labels;
+  if (cell.qHighlightRanges?.qRanges?.length) {
+    const ranges = cell.qHighlightRanges.qRanges.sort((a, b) => a.qCharPos - b.qCharPos) || [];
+    labels = getSegmentsFromRanges(label, ranges);
+  }
 
   const iconStyles = {
     alignItems: 'center',
@@ -184,7 +155,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     alignItems: 'center',
     minWidth: 0,
     flexGrow: 1,
-    padding: checkboxes ? 0 : undefined,
+    paddingLeft: checkboxes ? 0 : undefined,
     justifyContent: valueTextAlign,
   };
 
@@ -204,6 +175,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         ref={rowRef}
         container
         dataLayout={dataLayout}
+        checkboxes={checkboxes}
         layoutOrder={layoutOrder}
         itemPadding={itemPadding}
         gap={0}
@@ -219,7 +191,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         onContextMenu={preventContextMenu}
         role={column ? 'column' : 'row'}
         tabIndex={isFirstElement && (!keyboard.enabled || keyboard.active) ? 0 : -1}
-        data-n={cell && cell.qElemNumber}
+        data-n={cell?.qElemNumber}
       >
         <Histogram
           cell={cell}
@@ -234,20 +206,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
           className={joinClassNames([classes.cell, classes.selectedCell])}
           title={`${label}`}
         >
-          {ranges.length === 0 ? (
-            <Field
-              label={label}
-              color="inherit"
-              qElemNumber={cell.qElemNumber}
-              isSelected={isSelected}
-              dense={dense}
-              cell={cell}
-              isGridCol={isGridCol}
-              showGray={showGray}
-              isSingleSelect={isSingleSelect}
-              checkboxes={checkboxes}
-            />
-          ) : (
+          {labels ? (
             <FieldWithRanges
               labels={labels}
               checkboxes={checkboxes}
@@ -259,6 +218,20 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               cell={cell}
               isGridCol={isGridCol}
               isSingleSelect={isSingleSelect}
+              valueTextAlign={valueTextAlign}
+            />
+          ) : (
+            <Field
+              label={label}
+              color="inherit"
+              qElemNumber={cell.qElemNumber}
+              isSelected={isSelected}
+              dense={dense}
+              cell={cell}
+              isGridCol={isGridCol}
+              showGray={showGray}
+              isSingleSelect={isSingleSelect}
+              checkboxes={checkboxes}
               valueTextAlign={valueTextAlign}
             />
           )}
