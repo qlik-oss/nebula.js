@@ -242,7 +242,7 @@ function ListBoxInline({ options, layout }) {
                     tabIndex={-1}
                     title={translator.get('Listbox.DrillDown')}
                     size="large"
-                    style={{ paddingLeft: `${drillDownPaddingLeft}px` }}
+                    sx={{ paddingLeft: `${drillDownPaddingLeft}px` }}
                   >
                     <DrillDownIcon style={{ fontSize: '12px' }} />
                   </IconButton>
