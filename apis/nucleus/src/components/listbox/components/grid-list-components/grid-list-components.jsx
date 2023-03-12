@@ -83,7 +83,7 @@ export default function getListBoxComponents({
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...commonComponentOptions}
         dataTestid="fixed-size-list"
-        scrollDisabled={constraints.active}
+        scrollDisabled={constraints?.active}
         height={listHeight}
         width={width}
         itemCount={listCount}
@@ -152,7 +152,7 @@ export default function getListBoxComponents({
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...commonComponentOptions}
         dataTestid="fixed-size-grid"
-        scrollDisabled={constraints.active}
+        scrollDisabled={constraints?.active}
         height={gridHeight}
         width={width}
         columnCount={columnCount}

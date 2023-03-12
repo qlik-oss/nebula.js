@@ -194,7 +194,7 @@ function ListBoxInline({ options, layout }) {
   };
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
-  const showIcon = isLocked || (searchEnabled !== false && !constraints.active);
+  const showIcon = isLocked || (searchEnabled !== false && !constraints?.active);
 
   return (
     <StyledGrid
