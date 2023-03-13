@@ -202,6 +202,13 @@ function ListBoxInline({ options, layout }) {
   const drillDownPaddingLeft = showSearchOrLockIcon ? 0 : ICON_PADDING;
   const headerPaddingLeft = CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0);
 
+  // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
+  const isGrid = layout.layoutOptions?.dataLayout === 'grid';
+  let containerPadding = 0;
+  if (isGrid) {
+    containerPadding = '2px 4px';
+  }
+
   return (
     <StyledGrid
       className="listbox-container"
@@ -209,7 +216,12 @@ function ListBoxInline({ options, layout }) {
       tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"
       gap={0}
-      style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
+      style={{
+        height: '100%',
+        minHeight: `${minHeight}px`,
+        flexFlow: 'column nowrap',
+        padding: containerPadding,
+      }}
       onKeyDown={handleKeyDown}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}

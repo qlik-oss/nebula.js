@@ -41,14 +41,14 @@ describe('get-list-sizes', () => {
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
       columnCount: 1,
-      columnWidth: 47.5,
+      columnWidth: 50,
       count: 200,
       itemPadding: 4,
       itemSize: 29,
       listCount: 100,
       listHeight: 300,
       maxCount: {
-        column: 706315,
+        column: 671000,
         row: 577000,
       },
       overflowStyling: {
@@ -115,14 +115,14 @@ describe('get-list-sizes', () => {
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
       columnCount: 1,
-      columnWidth: 47.5,
+      columnWidth: 50,
       count: 200,
       itemPadding: 4,
       itemSize: 29,
       listCount: args.listCount,
       listHeight: 300,
       maxCount: {
-        column: 706315,
+        column: 671000,
         row: 577000,
       },
       overflowStyling: {

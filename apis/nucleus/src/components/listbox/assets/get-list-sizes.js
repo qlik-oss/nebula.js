@@ -26,17 +26,22 @@ export default function getListSizes({ layout, width, height, listCount, count, 
   const listHeight = height ?? 8 * itemSize;
 
   if (layoutOrder) {
+    // Modify container width to achieve the exact design, with same margins on the sides.
+    let containerWidth = width;
+
     if (layoutOrder === 'row') {
+      const CONTAINER_PADDING_LEFT = 2; // paddingLeft of .listbox-container
+      containerWidth += itemPadding * 2 + CONTAINER_PADDING_LEFT;
       overflowStyling = { overflowX: 'hidden' };
       const maxColumns = maxVisibleColumns?.maxColumns || 3;
 
       if (maxVisibleColumns?.auto !== false) {
-        columnCount = Math.min(listCount, Math.ceil((width - scrollBarWidth) / columnAutoWidth)); // TODO: smarter sizing... based on glyph count + font size etc...??
+        columnCount = Math.min(listCount, Math.ceil((containerWidth - scrollBarWidth) / columnAutoWidth)); // TODO: smarter sizing... based on glyph count + font size etc...??
       } else {
         columnCount = Math.min(listCount, maxColumns);
       }
       rowCount = Math.ceil(listCount / columnCount);
-      columnWidth = (width - scrollBarWidth) / columnCount;
+      columnWidth = (containerWidth - scrollBarWidth) / columnCount;
     } else {
       overflowStyling = { overflowY: 'hidden' };
       const maxRows = maxVisibleRows?.maxRows || 3;
@@ -48,7 +53,7 @@ export default function getListSizes({ layout, width, height, listCount, count, 
       }
 
       columnCount = Math.ceil(listCount / rowCount);
-      columnWidth = Math.max(columnAutoWidth, width / columnCount);
+      columnWidth = Math.max(columnAutoWidth, containerWidth / columnCount);
     }
   }
 
