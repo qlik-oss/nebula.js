@@ -18,13 +18,13 @@ const DEFAULT_MIN_BATCH_SIZE = 100;
 
 export default function ListBox({
   model,
+  constraints,
   layout,
   selections,
   direction,
   checkboxes: checkboxOption,
   height,
   width,
-  listLayout = 'vertical',
   frequencyMode,
   update = undefined,
   fetchStart = undefined,
@@ -164,9 +164,7 @@ export default function ListBox({
 
   let minimumBatchSize = DEFAULT_MIN_BATCH_SIZE;
 
-  const isVertical = layoutOptions.dataLayout
-    ? layoutOptions.dataLayout === 'singleColumn'
-    : listLayout !== 'horizontal';
+  const isVertical = layoutOptions.dataLayout !== 'grid';
 
   const count = layout?.qListObject.qSize?.qcy;
 
@@ -249,6 +247,7 @@ export default function ListBox({
     setScrollPosition,
     focusListItems: getFocusState(),
     setCurrentScrollIndex: currentScrollIndex.set,
+    constraints,
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};

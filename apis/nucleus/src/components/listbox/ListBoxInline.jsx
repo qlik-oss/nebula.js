@@ -52,7 +52,6 @@ function ListBoxInline({ options, layout }) {
     app,
     direction,
     frequencyMode,
-    listLayout,
     checkboxes,
     search = true,
     focusSearch = false,
@@ -206,6 +205,7 @@ function ListBoxInline({ options, layout }) {
     });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
+  const showIcon = isLocked || (searchEnabled !== false && !constraints?.active);
 
   return (
     <>
@@ -225,13 +225,13 @@ function ListBoxInline({ options, layout }) {
         {toolbar && (
           <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
             <Grid item container height={headerHeight} wrap="nowrap">
-              <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
-                {isLocked ? (
-                  <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
-                    <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
-                  </IconButton>
-                ) : (
-                  searchEnabled !== false && (
+              {showIcon && (
+                <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
+                  {isLocked ? (
+                    <IconButton tabIndex={-1} onClick={unlock} disabled={selectDisabled()} size="large">
+                      <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
+                    </IconButton>
+                  ) : (
                     <IconButton
                       onClick={onShowSearch}
                       tabIndex={-1}
@@ -240,9 +240,9 @@ function ListBoxInline({ options, layout }) {
                     >
                       <SearchIcon style={{ fontSize: '12px' }} />
                     </IconButton>
-                  )
-                )}
-              </Grid>
+                  )}
+                </Grid>
+              )}
               <Grid item className={classes.listBoxHeader}>
                 {showTitle && (
                   <Title variant="h6" noWrap ref={titleRef}>
@@ -288,10 +288,10 @@ function ListBoxInline({ options, layout }) {
               {({ height, width }) => (
                 <ListBox
                   model={model}
+                  constraints={constraints}
                   layout={layout}
                   selections={selections}
                   direction={direction}
-                  listLayout={listLayout}
                   frequencyMode={frequencyMode}
                   rangeSelect={rangeSelect}
                   checkboxes={checkboxes}

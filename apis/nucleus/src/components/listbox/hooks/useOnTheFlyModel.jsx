@@ -35,7 +35,7 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
     }
   }, []);
 
-  const { dense, checkboxes, properties = {} } = options;
+  const { dense, checkboxes, listLayout, properties = {} } = options;
   let { frequencyMode, histogram = false } = options;
 
   if (fieldDef && fieldDef.failedToFetchFieldDef) {
@@ -62,6 +62,14 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
   }
 
   const getListdefFrequencyMode = () => (histogram && frequencyMode === 'N' ? 'V' : frequencyMode);
+  const layoutOptions = { dense };
+
+  if (listLayout === 'horizontal') {
+    layoutOptions.dataLayout = 'grid';
+    layoutOptions.layoutOrder = 'column';
+    layoutOptions.maxVisibleColumns = { auto: true };
+    layoutOptions.maxVisibleRows = { auto: false, maxRows: 1 };
+  }
 
   const id = useRef();
   if (!id.current) {
@@ -99,9 +107,7 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
     },
     histogram,
     checkboxes,
-    layoutOptions: {
-      dense,
-    },
+    layoutOptions,
     title,
   };
   extend(true, listdef, properties);

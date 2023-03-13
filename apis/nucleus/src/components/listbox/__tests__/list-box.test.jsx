@@ -157,7 +157,6 @@ describe('<Listbox />', () => {
                 direction={mergedArgs.direction}
                 height={mergedArgs.height}
                 width={mergedArgs.width}
-                listLayout={mergedArgs.listLayout}
                 update={mergedArgs.update}
                 selectDisabled={mergedArgs.selectDisabled}
                 fetchStart={mergedArgs.fetchStart}
@@ -239,8 +238,24 @@ describe('<Listbox />', () => {
       expect(FixedSizeList.mock.calls.length).toBeGreaterThan(0);
     });
 
-    test('should use columns for horizontal layout', async () => {
-      args.listLayout = 'horizontal';
+    test('should render as list by default and when layoutOption.dataLayout is set to "singleColumn"', async () => {
+      await render();
+      expect(FixedSizeGrid.mock.calls).toHaveLength(0);
+      expect(FixedSizeList.mock.calls.length).toBeGreaterThan(0);
+
+      layout.layoutOptions = {
+        dataLayout: 'singleColumn',
+      };
+
+      await render();
+      expect(FixedSizeGrid.mock.calls).toHaveLength(0);
+      expect(FixedSizeList.mock.calls.length).toBeGreaterThan(0);
+    });
+
+    test('should render as grid when layoutOptions.dataLayout is set to "grid"', async () => {
+      layout.layoutOptions = {
+        dataLayout: 'grid',
+      };
       await render();
       expect(FixedSizeGrid.mock.calls.length).toBeGreaterThan(0);
       expect(FixedSizeList.mock.calls).toHaveLength(0);

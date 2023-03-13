@@ -11,9 +11,9 @@ export const classes = {
 };
 
 export default function getStyledComponents() {
-  const scrollbarStyling = {
+  const getScrollbarStyling = (scrollDisabled) => ({
     scrollbarColor: `${scrollBarThumb} ${scrollBarBackground}`,
-
+    overflow: scrollDisabled ? 'hidden !important' : undefined,
     '&::-webkit-scrollbar': {
       width: 10,
       height: 10,
@@ -31,10 +31,12 @@ export default function getStyledComponents() {
     '&::-webkit-scrollbar-thumb:hover': {
       backgroundColor: scrollBarThumbHover,
     },
-  };
+  });
 
-  const StyledFixedSizeList = styled(FixedSizeList)(() => ({
-    [`&.${classes.styledScrollbars}`]: scrollbarStyling,
+  const StyledFixedSizeList = styled(FixedSizeList, {
+    shouldForwardProp: (prop) => prop !== 'scrollDisabled',
+  })(({ scrollDisabled }) => ({
+    [`&.${classes.styledScrollbars}`]: getScrollbarStyling(scrollDisabled),
     // TODO: Verify these props and make generic together with grid component.
     '&::-webkit-scrollbar': {
       width: 10,
@@ -55,8 +57,10 @@ export default function getStyledComponents() {
     },
   }));
 
-  const StyledFixedSizeGrid = styled(FixedSizeGrid)(() => ({
-    [`&.${classes.styledScrollbars}`]: scrollbarStyling,
+  const StyledFixedSizeGrid = styled(FixedSizeGrid, {
+    shouldForwardProp: (prop) => prop !== 'scrollDisabled',
+  })(({ scrollDisabled }) => ({
+    [`&.${classes.styledScrollbars}`]: getScrollbarStyling(scrollDisabled),
 
     '&::-webkit-scrollbar': {
       width: 10,

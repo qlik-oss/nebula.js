@@ -27,13 +27,13 @@ export default function getListBoxComponents({
   showGray,
   scrollState,
   direction,
-  listLayout,
   sizes,
   listCount,
   overflowDisclaimer,
   setScrollPosition,
   focusListItems,
   setCurrentScrollIndex,
+  constraints,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
   const { itemPadding, listHeight, itemSize, rowCount, columnCount } = sizes || {};
@@ -82,10 +82,10 @@ export default function getListBoxComponents({
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...commonComponentOptions}
         dataTestid="fixed-size-list"
+        scrollDisabled={constraints?.active}
         height={listHeight}
         width={width}
         itemCount={listCount}
-        layout={listLayout}
         itemData={{ ...commonItemData, listCount }}
         itemSize={itemSize}
         onItemsRendered={(renderProps) => {
@@ -150,6 +150,7 @@ export default function getListBoxComponents({
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...commonComponentOptions}
         dataTestid="fixed-size-grid"
+        scrollDisabled={constraints?.active}
         height={gridHeight}
         width={width}
         columnCount={columnCount}

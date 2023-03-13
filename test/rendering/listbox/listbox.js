@@ -1,10 +1,11 @@
-(() => {
+(async () => {
   function getMocks(options) {
     const { getMockData, getListboxLayout } = window.getFuncs();
+    const fixture = options?.fixture;
     const obj = {
       id: `listbox-${+new Date()}`,
-      getListObjectData: async () => getMockData(),
-      getLayout: async () => getListboxLayout(options),
+      getListObjectData: async () => (fixture ? fixture.getListObjectData() : getMockData()),
+      getLayout: async () => (fixture ? fixture.getLayout() : getListboxLayout(options)),
       on() {},
       once() {},
     };
@@ -67,11 +68,18 @@
     return sc;
   };
 
-  const { scenario, ...options } = getOptions() || {};
+  const { scenario, fixture, ...options } = getOptions() || {};
 
-  const scenarioOptions = getScenarioOptions(scenario);
+  let fixtureFile;
+
+  if (fixture) {
+    fixtureFile = (await import(fixture)).default;
+  }
+
+  const scenarioOptions = fixtureFile ? fixtureFile.options || {} : getScenarioOptions(scenario);
 
   return init({
+    fixtureFile,
     ...scenarioOptions,
     ...options,
   });
