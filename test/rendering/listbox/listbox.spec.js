@@ -78,8 +78,12 @@ test.describe('listbox mashup rendering test', () => {
   test('listbox search', async () => {
     const FILE_NAME = 'listbox_search_B.png';
     const searchSelector = '.search input';
+    const searchToggleSelector = '[data-testid="listbox-search-toggle-btn"]';
 
     await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
+    const searchToggle = await page.waitForSelector(searchToggleSelector, { visible: true });
+    await searchToggle.click();
+
     const search = await page.waitForSelector(searchSelector, { visible: true });
 
     await search.click();

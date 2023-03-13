@@ -231,6 +231,7 @@ function ListBoxInline({ options, layout }) {
                       tabIndex={-1}
                       title={translator.get('Listbox.Search')}
                       size="large"
+                      data-testid="listbox-search-toggle-btn"
                     >
                       <SearchIcon style={{ fontSize: '12px' }} />
                     </IconButton>
