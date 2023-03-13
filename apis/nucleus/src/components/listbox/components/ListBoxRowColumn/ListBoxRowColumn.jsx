@@ -208,20 +208,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
           title={`${label}`}
         >
           {labels ? (
-            <Field
-              onChange={onChange}
-              label={label}
-              color="inherit"
-              qElemNumber={cell.qElemNumber}
-              isSelected={isSelected}
-              dense={dense}
-              cell={cell}
-              isGridCol={isGridCol}
-              showGray={showGray}
-              isSingleSelect={isSingleSelect}
-              checkboxes={checkboxes}
-            />
-          ) : (
             <FieldWithRanges
               onChange={onChange}
               labels={labels}
@@ -235,6 +221,20 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               isGridCol={isGridCol}
               isSingleSelect={isSingleSelect}
               valueTextAlign={valueTextAlign}
+            />
+          ) : (
+            <Field
+              onChange={onChange}
+              label={label}
+              color="inherit"
+              qElemNumber={cell.qElemNumber}
+              isSelected={isSelected}
+              dense={dense}
+              cell={cell}
+              isGridCol={isGridCol}
+              showGray={showGray}
+              isSingleSelect={isSingleSelect}
+              checkboxes={checkboxes}
             />
           )}
         </Grid>
