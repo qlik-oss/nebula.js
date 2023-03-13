@@ -26,6 +26,7 @@ describe('get-list-sizes', () => {
       listCount: 100,
       count: 200,
       textWidth: 50,
+      freqIsAllowed: false,
     };
   });
 
@@ -47,6 +48,7 @@ describe('get-list-sizes', () => {
       itemSize: 29,
       listCount: 100,
       listHeight: 300,
+      frequencyWidth: 40,
       maxCount: {
         column: 706315,
         row: 577000,
@@ -78,6 +80,7 @@ describe('get-list-sizes', () => {
       itemSize: 36,
       listCount: 100,
       listHeight: 300,
+      frequencyWidth: 40,
       maxCount: {
         column: 493382,
         row: 577000,
@@ -87,6 +90,64 @@ describe('get-list-sizes', () => {
       },
       rowCount: 3,
       scrollBarWidth: 10,
+    });
+  });
+
+  it('grid mode with layoutOrder column and frequency activated should be wider', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'column';
+    args.freqIsAllowed = true;
+    const sizes = getListSizes(args);
+    expect(sizes).toEqual({
+      columnCount: 34,
+      columnWidth: 108,
+      count: 200,
+      itemPadding: 4,
+      itemSize: 36,
+      listCount: 100,
+      listHeight: 300,
+      frequencyWidth: 40,
+      maxCount: {
+        column: 310648,
+        row: 577000,
+      },
+      overflowStyling: {
+        overflowY: 'hidden',
+      },
+      rowCount: 3,
+      scrollBarWidth: 10,
+    });
+  });
+
+  it('A minimum item width should kick in if text is short', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'column';
+    args.textWidth = 10;
+    args.textWidth = 10;
+    const MIN_WIDTH = 56;
+    const sizes = getListSizes(args);
+    expect(sizes).toMatchObject({
+      columnWidth: MIN_WIDTH,
+      maxCount: {
+        column: 599107,
+      },
+    });
+  });
+
+  it('A minimum item width should kick in if text is short and reverve extra space for frequency', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'column';
+    args.textWidth = 10;
+    args.textWidth = 10;
+    const MIN_WIDTH = 56;
+    const FREQUENCY_WIDTH = 40;
+    args.freqIsAllowed = true;
+    const sizes = getListSizes(args);
+    expect(sizes).toMatchObject({
+      columnWidth: MIN_WIDTH + FREQUENCY_WIDTH,
+      maxCount: {
+        column: 349479,
+      },
     });
   });
 
@@ -121,6 +182,7 @@ describe('get-list-sizes', () => {
       itemSize: 29,
       listCount: args.listCount,
       listHeight: 300,
+      frequencyWidth: 40,
       maxCount: {
         column: 706315,
         row: 577000,
@@ -149,6 +211,7 @@ describe('get-list-sizes', () => {
       itemSize: 36,
       listCount: columnCount * rowCount,
       listHeight: 100,
+      frequencyWidth: 40,
       maxCount: {
         column: columnCount,
         row: 577000,

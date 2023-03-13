@@ -23,8 +23,8 @@ const ellipsis = {
 };
 
 const RowColRoot = styled('div', {
-  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense }) => ({
+  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -144,11 +144,9 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    width: 'auto',
-    maxWidth: 'max-content',
-    minWidth: 'max-content',
+    flex: `0 1 ${frequencyWidth}px`,
     textAlign: 'right',
-    paddingLeft: isGridMode ? '2px' : '6px',
+    paddingLeft: '2px',
   },
 
   [`&.${classes.barContainer}`]: {
