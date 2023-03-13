@@ -1,7 +1,7 @@
 (async () => {
   function getMocks(options) {
     const { getMockData, getListboxLayout } = window.getFuncs();
-    const fixture = options?.fixture;
+    const fixture = options?.fixtureFile;
     const obj = {
       id: `listbox-${+new Date()}`,
       getListObjectData: async () => (fixture ? fixture.getListObjectData() : getMockData()),
