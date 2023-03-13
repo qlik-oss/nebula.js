@@ -235,6 +235,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               showGray={showGray}
               isSingleSelect={isSingleSelect}
               checkboxes={checkboxes}
+              valueTextAlign={valueTextAlign}
             />
           )}
         </Grid>
