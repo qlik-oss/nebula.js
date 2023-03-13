@@ -17,7 +17,7 @@ import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keybo
 import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
-import listboxGetActionProps from './interactions/listbox-get-action-props';
+import getListboxActionProps from './interactions/listbox-get-action-props';
 import { CELL_PADDING_LEFT, ICON_PADDING } from './constants';
 
 const PREFIX = 'ListBoxInline';
@@ -198,7 +198,7 @@ function ListBoxInline({ options, layout }) {
   };
 
   const getActionToolbarProps = (isPopover) =>
-    listboxGetActionProps({
+    getListboxActionProps({
       isPopover,
       showToolbar,
       containerRef,

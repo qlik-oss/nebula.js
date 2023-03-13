@@ -1,4 +1,4 @@
-export default ({ containerRef, titleRef, searchIconWidth }) => {
+export default function showToolbarDetached({ containerRef, titleRef, searchIconWidth }) {
   const containerWidth = containerRef?.current?.clientWidth ?? 0;
   const padding = 16;
   const contentWidth = (titleRef?.current?.clientWidth ?? 0) + searchIconWidth + padding;
@@ -7,4 +7,4 @@ export default ({ containerRef, titleRef, searchIconWidth }) => {
   const isTruncated = titleRef?.current?.scrollWidth > titleRef?.current?.offsetWidth;
 
   return !!(notSufficientSpace | isTruncated);
-};
+}
