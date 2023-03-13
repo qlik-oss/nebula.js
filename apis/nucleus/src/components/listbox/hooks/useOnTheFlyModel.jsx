@@ -35,7 +35,7 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
     }
   }, []);
 
-  const { dense, checkboxes, properties = {} } = options;
+  const { dense, checkboxes, properties = {}, listLayout } = options;
   let { frequencyMode, histogram = false } = options;
 
   if (fieldDef && fieldDef.failedToFetchFieldDef) {
@@ -100,6 +100,11 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
     checkboxes,
     layoutOptions: {
       dense,
+      dataLayout: listLayout === 'horizontal' ? 'grid' : 'singleColumn',
+      layoutOrder: listLayout === 'horizontal' ? 'row' : 'column',
+      maxVisibleColumns: {
+        auto: true,
+      },
     },
     title,
   };
