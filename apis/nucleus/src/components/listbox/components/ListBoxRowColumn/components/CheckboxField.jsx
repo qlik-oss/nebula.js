@@ -7,6 +7,7 @@ import classes from '../helpers/classes';
 import LabelTag from './LabelTag';
 
 function CheckboxField({
+  onChange,
   label,
   color,
   qElemNumber,
@@ -22,15 +23,19 @@ function CheckboxField({
 }) {
   const cb = (
     <ListBoxCheckbox
+      onChange={onChange}
       label={label}
       checked={isSelected}
       dense={dense}
       excluded={isExcluded(cell)}
       isGridCol={isGridCol}
       showGray={showGray}
+      dataN={qElemNumber}
     />
   );
-  const rb = <ListBoxRadioButton label={label} checked={isSelected} dense={dense} />;
+  const rb = (
+    <ListBoxRadioButton onChange={onChange} label={label} checked={isSelected} dense={dense} dataN={qElemNumber} />
+  );
 
   return (
     <FormControlLabel

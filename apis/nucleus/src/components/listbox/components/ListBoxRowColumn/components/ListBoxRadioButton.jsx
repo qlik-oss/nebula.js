@@ -16,13 +16,15 @@ const StyledRadio = styled(Radio)(({ theme, checked }) => ({
   },
 }));
 
-export default function ListBoxRadioButton({ checked, label, dense }) {
+export default function ListBoxRadioButton({ onChange, checked, label, dense, dataN }) {
   return (
     <StyledRadio
       checked={checked}
+      onChange={onChange}
       value={label}
       name={label}
       className={classes.radioButton}
+      inputProps={{ 'data-n': dataN }}
       style={{ backgroundColor: 'transparent' }}
       disableRipple
       size={dense ? 'small' : 'medium'}
