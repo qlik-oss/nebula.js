@@ -110,7 +110,7 @@ test.describe('listbox mashup rendering test', () => {
   });
 
   test('long title should detach toolbar', async () => {
-    const FILE_NAME = 'listbox_key_scroll.png';
+    const FILE_NAME = 'listbox_detached_toolbar.png';
 
     await page.goto(`${url}/listbox/listbox.html?scenario=longTitle`);
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
