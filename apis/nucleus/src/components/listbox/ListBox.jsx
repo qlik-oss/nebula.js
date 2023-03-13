@@ -13,6 +13,7 @@ import useDataStore from './hooks/useDataStore';
 import ListBoxDisclaimer from './components/ListBoxDisclaimer';
 import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
+import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -177,7 +178,13 @@ export default function ListBox({
     model,
   });
 
-  const sizes = getListSizes({ layout, width, height, listCount: unlimitedListCount, count, textWidth });
+  let freqIsAllowed = getFrequencyAllowed({ itemWidth: width, layout, frequencyMode });
+  const sizes = getListSizes({ layout, width, height, listCount: unlimitedListCount, count, textWidth, freqIsAllowed });
+  if (sizes.columnWidth) {
+    // In grid mode, where we have a dynamic item width, get a second opinion on showing/hiding frequency.
+    freqIsAllowed = getFrequencyAllowed({ itemWidth: sizes.columnWidth, layout, frequencyMode });
+  }
+
   const { listCount } = sizes;
   setStoreValue('listCount', listCount);
 
@@ -248,6 +255,7 @@ export default function ListBox({
     focusListItems: getFocusState(),
     setCurrentScrollIndex: currentScrollIndex.set,
     constraints,
+    freqIsAllowed,
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};

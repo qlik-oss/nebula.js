@@ -1,10 +1,19 @@
 const scrollBarWidth = 10; // TODO: ignore this - instead set the styling only show on hover...
 
-export default function getListSizes({ layout, width, height, listCount, count, textWidth }) {
-  const { layoutOptions = {} } = layout || {};
+const ITEM_MIN_WIDTH = 56;
+const ITEM_MAX_WIDTH = 150;
+const FREQUENCY_WIDTH = 40;
 
+export default function getListSizes({ layout, width, height, listCount, count, textWidth, freqIsAllowed }) {
+  const { layoutOptions = {} } = layout || {};
   const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense, dataLayout } = layoutOptions;
-  const columnAutoWidth = Math.min(150, textWidth + 18);
+
+  const frequencyAddWidth = freqIsAllowed ? FREQUENCY_WIDTH : 0;
+
+  const columnAutoWidth = Math.max(
+    Math.min(ITEM_MAX_WIDTH, textWidth + 18 + frequencyAddWidth),
+    ITEM_MIN_WIDTH + frequencyAddWidth
+  );
 
   let overflowStyling;
   let columnCount;
@@ -80,5 +89,6 @@ export default function getListSizes({ layout, width, height, listCount, count, 
     listCount: limitedListCount,
     maxCount: { row: maxRowCount, column: maxColumnCount },
     itemPadding,
+    frequencyWidth: FREQUENCY_WIDTH,
   };
 }
