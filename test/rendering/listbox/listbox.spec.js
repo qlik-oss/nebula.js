@@ -128,7 +128,7 @@ test.describe('listbox mashup rendering test', () => {
     await new Promise((resolve) => {
       setTimeout(() => {
         resolve();
-      }, 100);
+      }, 500);
     });
 
     const image = await selector.screenshot({ caret: 'hide' });
