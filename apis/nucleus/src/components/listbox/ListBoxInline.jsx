@@ -15,6 +15,8 @@ import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
+import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
+import listboxGetActionProps from './interactions/listbox-get-action-props';
 
 const PREFIX = 'ListBoxInline';
 const searchIconWidth = 28;
@@ -166,17 +168,6 @@ function ListBoxInline({ options, layout }) {
     }
   }, [searchContainer && searchContainer.current, showSearch, search, focusSearch]);
 
-  const showToolbarDetached = () => {
-    const containerWidth = containerRef?.current?.clientWidth ?? 0;
-    const padding = 16;
-    const contentWidth = (titleRef?.current?.clientWidth ?? 0) + searchIconWidth + padding;
-    const actionToolbarWidth = 128;
-    const notSufficientSpace = containerWidth < contentWidth + actionToolbarWidth;
-    const isTruncated = titleRef?.current?.scrollWidth > titleRef?.current?.offsetWidth;
-
-    return !!(notSufficientSpace | isTruncated);
-  };
-
   if (!model || !layout || !translator) {
     return null;
   }
@@ -204,34 +195,16 @@ function ListBoxInline({ options, layout }) {
     setShowSearch(newValue);
   };
 
-  const getActionToolbarProps = (isPopover) => ({
-    show: showToolbar && !isPopover,
-    popover: {
-      show: showToolbar && isPopover,
-      anchorEl: containerRef.current,
-    },
-    more: {
-      enabled: !isLocked,
-      actions: listboxSelectionToolbarItems,
-      popoverProps: {
-        elevation: 0,
-      },
-      popoverPaperStyle: {
-        boxShadow: '0 12px 8px -8px rgba(0, 0, 0, 0.2)',
-        minWidth: '250px',
-      },
-    },
-    selections: {
-      show: showToolbar,
-      api: selections,
-      onConfirm: () => {},
-      onCancel: () => {},
-    },
-    popoverAnchorOrigin: {
-      vertical: 14,
-      horizontal: (containerRef.current?.clientWidth ?? 0) - 8,
-    },
-  });
+  const getActionToolbarProps = (isPopover) =>
+    listboxGetActionProps({
+      isPopover,
+      showToolbar,
+      containerRef,
+      isLocked,
+      listboxSelectionToolbarItems,
+      selections,
+    });
+
   const shouldAutoFocus = searchVisible && search === 'toggle';
 
   return (
@@ -280,7 +253,9 @@ function ListBoxInline({ options, layout }) {
             </Grid>
             <Grid item xs />
             <Grid item>
-              <ActionsToolbar {...getActionToolbarProps(showToolbarDetached())} />
+              <ActionsToolbar
+                {...getActionToolbarProps(showToolbarDetached({ containerRef, titleRef, searchIconWidth }))}
+              />
             </Grid>
           </Grid>
         )}
