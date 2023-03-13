@@ -15,9 +15,9 @@ import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
+import { CELL_PADDING_LEFT, ICON_PADDING } from './constants';
 
 const PREFIX = 'ListBoxInline';
-const ICON_PADDING = 7;
 const searchIconWidth = 28;
 const drillDownIconWidth = 24;
 const classes = {
@@ -200,7 +200,7 @@ function ListBoxInline({ options, layout }) {
   const showIcons = showSearchOrLockIcon || isDrillDown;
   const iconsWidth = (showSearchOrLockIcon ? searchIconWidth : 0) + (isDrillDown ? drillDownIconWidth : 0);
   const drillDownPaddingLeft = showSearchOrLockIcon ? 0 : ICON_PADDING;
-  const headerPaddingLeft = parseFloat(theme.spacing(1)) - (showIcons ? ICON_PADDING : 0);
+  const headerPaddingLeft = CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0);
 
   return (
     <StyledGrid

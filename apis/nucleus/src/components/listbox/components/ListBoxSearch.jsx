@@ -5,6 +5,7 @@ import { styled } from '@mui/material/styles';
 import Search from '@nebula.js/ui/icons/search';
 import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
+import { CELL_PADDING_LEFT } from '../constants';
 
 const TREE_PATH = '/qListObjectDef';
 const WILDCARD = '**';
@@ -147,6 +148,7 @@ export default function ListBoxSearch({
           '&:hover': {
             border: 'none',
           },
+          paddingLeft: `${CELL_PADDING_LEFT}px`,
         },
         dense && {
           fontSize: 12,
