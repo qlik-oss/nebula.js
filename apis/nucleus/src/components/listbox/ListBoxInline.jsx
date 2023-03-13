@@ -250,7 +250,7 @@ function ListBoxInline({ options, layout }) {
             )}
             <Grid item className={classes.listBoxHeader}>
               {showTitle && (
-                <Title variant="h6" noWrap>
+                <Title variant="h6" noWrap title={layout.title}>
                   {layout.title}
                 </Title>
               )}
