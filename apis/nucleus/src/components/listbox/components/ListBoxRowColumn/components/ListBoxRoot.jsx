@@ -65,7 +65,7 @@ const RowColRoot = styled('div', {
     flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
-    paddingRight: 0,
+    paddingRight: '1px', // needed when text is right-aligned and shown in italics
     ...ellipsis,
     whiteSpace: 'pre', // to keep white-space on highlight
     fontSize: theme.listBox?.content?.fontSize,
