@@ -207,7 +207,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
           className={joinClassNames([classes.cell, classes.selectedCell])}
           title={`${label}`}
         >
-          {ranges.length === 0 ? (
+          {labels ? (
             <Field
               onChange={onChange}
               label={label}
@@ -236,7 +236,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               isSingleSelect={isSingleSelect}
               valueTextAlign={valueTextAlign}
             />
-          ) }
+          )}
         </Grid>
 
         {freqIsAllowed && <Frequency cell={cell} checkboxes={checkboxes} dense={dense} showGray={showGray} />}
