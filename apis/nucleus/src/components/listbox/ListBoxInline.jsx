@@ -52,7 +52,7 @@ function ListBoxInline({ options, layout }) {
     direction,
     frequencyMode,
     checkboxes,
-    search = true,
+    search = 'toggle',
     focusSearch = false,
     rangeSelect = true,
     model,
