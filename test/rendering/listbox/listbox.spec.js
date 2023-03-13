@@ -1,8 +1,12 @@
 import { test, expect } from '@playwright/test';
+import fs from 'fs';
+import path from 'path';
 
 const getPage = require('../setup');
 const startServer = require('../server');
 const { execSequence } = require('../testUtils');
+
+const paths = path.join(__dirname, '__fixtures__');
 
 test.describe('listbox mashup rendering test', () => {
   const object = '[data-type="listbox"]';
@@ -106,5 +110,27 @@ test.describe('listbox mashup rendering test', () => {
 
     const image = await selector.screenshot({ caret: 'hide' });
     return expect(image).toMatchSnapshot(FILE_NAME);
+  });
+
+  test.describe('fixtures', () => {
+    fs.readdirSync(paths).forEach((file) => {
+      const name = file.replace('.fix.js', '');
+      const fixturePath = `./__fixtures__/${file}`;
+
+      test(name, async () => {
+        const renderUrl = `${url}/listbox/listbox.html?fixture=${fixturePath}`;
+
+        await page.goto(renderUrl, { waitUntil: 'networkidle' });
+
+        const element = await page.waitForSelector(listboxSelector, {
+          visible: true,
+          timeout: 10000,
+        });
+
+        const screenshot = await page.screenshot({ clip: await element.boundingBox() });
+
+        expect(screenshot).toMatchSnapshot(`${name}.png`);
+      });
+    });
   });
 });

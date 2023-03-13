@@ -85,16 +85,41 @@ describe('useExistingModel', () => {
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
       expect(useSessionModel.mock.lastCall[0].qListObjectDef.qFrequencyMode).toBe('V');
     });
+
     test('should use title from fieldIdentifier', async () => {
       const fieldIdentifier = 'Alpha';
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$' });
       expect(useSessionModel.mock.lastCall[0].title).toBe('Alpha');
     });
+
     test('should use title from options if provided', async () => {
       const options = { title: 'Options title' };
       const fieldIdentifier = 'Alpha';
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
       expect(useSessionModel.mock.lastCall[0].title).toBe('Options title');
+    });
+
+    test('should use listLayout to construct layoutOptions properly', async () => {
+      const options = {};
+      const fieldIdentifier = 'Alpha';
+      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
+      expect(useSessionModel.mock.lastCall[0].layoutOptions).toEqual({});
+
+      options.listLayout = 'horizontal';
+      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
+      expect(useSessionModel.mock.lastCall[0].layoutOptions).toEqual({
+        dataLayout: 'grid',
+        layoutOrder: 'column',
+        maxVisibleColumns: { auto: true },
+        maxVisibleRows: { auto: false, maxRows: 1 },
+      });
+    });
+
+    test('should add dense option to layoutOptions props', async () => {
+      const options = { dense: true };
+      const fieldIdentifier = 'Alpha';
+      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
+      expect(useSessionModel.mock.lastCall[0].layoutOptions).toEqual({ dense: true });
     });
   });
 
