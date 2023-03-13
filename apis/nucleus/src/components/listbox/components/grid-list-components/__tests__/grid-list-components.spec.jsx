@@ -65,6 +65,7 @@ describe('grid-list-components', () => {
       isVertical: true,
       pages: 'pages',
       selectDisabled,
+      freqIsAllowed: true,
       interactionEvents: {
         heyHey: 'hey hey',
       },
@@ -89,6 +90,7 @@ describe('grid-list-components', () => {
         rowCount: 200,
         columnCount: 2,
         columnWidth: 50,
+        frequencyWidth: 100,
         overflowStyling: {
           overflowX: 'hidden',
         },
