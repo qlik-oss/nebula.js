@@ -39,10 +39,21 @@ const overrides = (theme) => ({
       padding: 7,
       borderRadius: 2,
       border: '1px solid transparent',
-      // should ideally use $focusVisible, but that messes up focus in all other places where Iconbutton is used (Checkbox, Switch etc)
-      '&:focus': {
+      '&:focus-visible': {
         borderColor: theme.palette.custom.focusBorder,
         boxShadow: `0 0 0 2px ${theme.palette.custom.focusOutline}`,
+      },
+      '&:active': {
+        borderColor: 'transparent',
+        boxShadow: 'none',
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      },
+      '&:not(:active):not(:focus-visible)': {
+        borderColor: 'transparent',
+        boxShadow: 'none',
+      },
+      '&:hover': {
+        backgroundColor: 'rgba(64, 64, 64, 0.05)',
       },
     },
   },

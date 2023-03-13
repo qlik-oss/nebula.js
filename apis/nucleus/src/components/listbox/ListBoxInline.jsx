@@ -213,15 +213,16 @@ function ListBoxInline({ options, layout }) {
             <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
               {isLocked ? (
                 <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
-                  <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
+                  <Lock title={translator.get('Listbox.Unlock')} disableRipple style={{ fontSize: '12px' }} />
                 </IconButton>
               ) : (
                 searchEnabled !== false && (
                   <IconButton
                     onClick={onShowSearch}
-                    tabIndex={-1}
+                    tabIndex={0}
                     title={translator.get('Listbox.Search')}
                     size="large"
+                    disableRipple
                   >
                     <SearchIcon style={{ fontSize: '12px' }} />
                   </IconButton>
