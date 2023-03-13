@@ -134,7 +134,7 @@ describe('get-list-sizes', () => {
     });
   });
 
-  it('A minimum item width should kick in if text is short and reverve extra space for frequency', () => {
+  it('A minimum item width should kick in if text is short and reserve extra space for frequency', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'column';
     args.textWidth = 10;
