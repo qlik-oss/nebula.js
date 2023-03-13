@@ -6,6 +6,7 @@ import Lock from '@nebula.js/ui/icons/lock';
 import { IconButton, Grid, Typography } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
+import DrillDownIcon from '@nebula.js/ui/icons/drill-down';
 import useLayout from '../../hooks/useLayout';
 import ListBox from './ListBox';
 import createListboxSelectionToolbar from './interactions/listbox-selection-toolbar';
@@ -19,8 +20,9 @@ import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import listboxGetActionProps from './interactions/listbox-get-action-props';
 
 const PREFIX = 'ListBoxInline';
+const ICON_PADDING = 7;
 const searchIconWidth = 28;
-
+const drillDownIconWidth = 24;
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
   screenReaderOnly: `${PREFIX}-screenReaderOnly`,
@@ -173,6 +175,7 @@ function ListBoxInline({ options, layout }) {
 
   const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
 
+  const isDrillDown = layout.qListObject.qDimensionInfo.qGrouping === 'H';
   const listboxSelectionToolbarItems = createListboxSelectionToolbar({
     layout,
     model,
@@ -205,7 +208,12 @@ function ListBoxInline({ options, layout }) {
     });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
-  const showIcon = isLocked || (searchEnabled !== false && !constraints?.active);
+  const showSearchIcon = searchEnabled !== false && !constraints?.active;
+  const showSearchOrLockIcon = isLocked || showSearchIcon;
+  const showIcons = showSearchOrLockIcon || isDrillDown;
+  const iconsWidth = (showSearchOrLockIcon ? searchIconWidth : 0) + (isDrillDown ? drillDownIconWidth : 0);
+  const drillDownPaddingLeft = showSearchOrLockIcon ? 0 : ICON_PADDING;
+  const headerPaddingLeft = parseFloat(theme.spacing(1)) - (showIcons ? ICON_PADDING : 0);
 
   return (
     <>
@@ -223,29 +231,46 @@ function ListBoxInline({ options, layout }) {
         ref={containerRef}
       >
         {toolbar && (
-          <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
+          <Grid
+            item
+            container
+            style={{ padding: theme.spacing(1), paddingLeft: `${headerPaddingLeft}px` }}
+            wrap="nowrap"
+          >
             <Grid item container height={headerHeight} wrap="nowrap">
-              {showIcon && (
-                <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
+              {showIcons && (
+                <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
                   {isLocked ? (
                     <IconButton tabIndex={-1} onClick={unlock} disabled={selectDisabled()} size="large">
                       <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
                     </IconButton>
                   ) : (
+                    showSearchIcon && (
+                      <IconButton
+                        onClick={onShowSearch}
+                        tabIndex={-1}
+                        title={translator.get('Listbox.Search')}
+                        size="large"
+                      >
+                        <SearchIcon style={{ fontSize: '12px' }} />
+                      </IconButton>
+                    )
+                  )}
+                  {isDrillDown && (
                     <IconButton
-                      onClick={onShowSearch}
                       tabIndex={-1}
-                      title={translator.get('Listbox.Search')}
+                      title={translator.get('Listbox.DrillDown')}
                       size="large"
+                      sx={{ paddingLeft: `${drillDownPaddingLeft}px` }}
                     >
-                      <SearchIcon style={{ fontSize: '12px' }} />
+                      <DrillDownIcon style={{ fontSize: '12px' }} />
                     </IconButton>
                   )}
                 </Grid>
               )}
               <Grid item className={classes.listBoxHeader}>
                 {showTitle && (
-                  <Title variant="h6" noWrap ref={titleRef}>
+                  <Title variant="h6" noWrap>
                     {layout.title}
                   </Title>
                 )}

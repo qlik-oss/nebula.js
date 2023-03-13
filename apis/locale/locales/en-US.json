@@ -55,6 +55,10 @@
     "value": "Dismiss",
     "comment": "Dismiss the disclaimer that not all data is being shown"
   },
+  "Listbox.DrillDown": {
+    "value": "Drill-down dimension",
+    "comment": "Tooltip for the drill-down icons on the dimension titles in charts. (pde 160210)"
+  },
   "Menu.More": {
     "value": "More",
     "comment": "Menu option to display list of additional actions to choose from (ffd 20200520)"
