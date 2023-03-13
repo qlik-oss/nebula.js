@@ -19,6 +19,7 @@ import getCellFromPages from './helpers/get-cell-from-pages';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
+    onChange,
     onClick,
     onMouseDown,
     onMouseUp,
@@ -210,6 +211,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         >
           {labels ? (
             <FieldWithRanges
+              onChange={onChange}
               labels={labels}
               checkboxes={checkboxes}
               dense={dense}
@@ -224,6 +226,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
             />
           ) : (
             <Field
+              onChange={onChange}
               label={label}
               color="inherit"
               qElemNumber={cell.qElemNumber}

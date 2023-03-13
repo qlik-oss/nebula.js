@@ -23,6 +23,7 @@ function LabelsWithRanges({ labels, dense, showGray, checkboxes }) {
 }
 
 function FieldWithRanges({
+  onChange,
   labels,
   checkboxes,
   dense,
@@ -38,6 +39,7 @@ function FieldWithRanges({
   const LWR = <LabelsWithRanges labels={labels} dense={dense} showGray={showGray} checkboxes={checkboxes} />;
   return checkboxes ? (
     <CheckboxField
+      onChange={onChange}
       label={LWR}
       color={color}
       qElemNumber={qElemNumber}

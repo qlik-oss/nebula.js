@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx } from '../helpers/constants';
+import { CELL_PADDING_LEFT } from '../../../constants';
 
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
@@ -55,7 +56,7 @@ const RowColRoot = styled('div', {
     minWidth: 0,
     flexGrow: 1,
     // Note that this padding is overridden when using checkboxes.
-    paddingLeft: '9px',
+    paddingLeft: `${CELL_PADDING_LEFT}px`,
     paddingRight: 0,
   },
 

@@ -1,5 +1,5 @@
-import React, { useState, useMemo, forwardRef, useImperativeHandle } from 'react';
-import ReactDOM from 'react-dom';
+import React, { useState, useMemo, forwardRef, useImperativeHandle, useEffect } from 'react';
+import ReactDOM from 'react-dom/client';
 import './ClassNameSetup';
 
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
@@ -7,7 +7,7 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/
 import InstanceContext from '../contexts/InstanceContext';
 import useAppSelections from '../hooks/useAppSelections';
 
-const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
+const NebulaApp = forwardRef(({ initialContext, app, renderCallback }, ref) => {
   const [appSelections] = useAppSelections(app);
   const [context, setContext] = useState(initialContext);
   const [muiThemeName, setMuiThemeName] = useState();
@@ -21,22 +21,25 @@ const NebulaApp = forwardRef(({ initialContext, app }, ref) => {
 
   const [components, setComponents] = useState([]);
 
-  useImperativeHandle(ref, () => ({
-    addComponent(component) {
-      setComponents([...components, component]);
-    },
-    removeComponent(component) {
-      const ix = components.indexOf(component);
-      if (ix !== -1) {
-        components.splice(ix, 1);
-        setComponents([...components]);
-      }
-    },
-    setMuiThemeName,
-    setContext: (ctx) =>
-      setContext((oldContext) => (JSON.stringify(oldContext) !== JSON.stringify(ctx) ? ctx : oldContext)),
-    getAppSelections: () => appSelections,
-  }));
+  // Will be called directly after the first render pass
+  // See: https://reactjs.org/blog/2022/03/08/react-18-upgrade-guide.html
+  useEffect(() => {
+    renderCallback && renderCallback();
+  }, []);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      setComps(comps) {
+        setComponents([...comps]);
+      },
+      setMuiThemeName,
+      setContext: (ctx) =>
+        setContext((oldContext) => (JSON.stringify(oldContext) !== JSON.stringify(ctx) ? ctx : oldContext)),
+      getAppSelections: () => appSelections,
+    }),
+    []
+  );
 
   return (
     <StyledEngineProvider injectFirst>
@@ -61,9 +64,11 @@ export default function boot({ app, context }) {
   element.setAttribute('data-app-id', app.id);
   document.body.appendChild(element);
 
-  ReactDOM.render(<NebulaApp ref={appRef} app={app} initialContext={context} />, element, resolveRender);
+  const root = ReactDOM.createRoot(element);
+  root.render(<NebulaApp ref={appRef} app={app} initialContext={context} renderCallback={resolveRender} />);
 
   const cells = {};
+  const components = [];
 
   return [
     {
@@ -82,13 +87,18 @@ export default function boot({ app, context }) {
       add(component) {
         (async () => {
           await rendered;
-          appRef.current.addComponent(component);
+          components.push(component);
+          appRef.current.setComps(components);
         })();
       },
       remove(component) {
         (async () => {
           await rendered;
-          appRef.current.removeComponent(component);
+          const ix = components.indexOf(component);
+          if (ix !== -1) {
+            components.splice(ix, 1);
+          }
+          appRef.current.setComps(components);
         })();
       },
       setMuiThemeName(themeName) {
