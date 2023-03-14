@@ -24,22 +24,28 @@ const drillDownIconWidth = 24;
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
   screenReaderOnly: `${PREFIX}-screenReaderOnly`,
+  listboxWrapper: `${PREFIX}-listboxWrapper`,
 };
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
-  backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
-  [`& .${classes.listBoxHeader}`]: {
-    alignSelf: 'center',
-    display: 'inline-flex',
-    width: `calc(100% - ${searchIconWidth}px)`,
-  },
-  [`& .${classes.screenReaderOnly}`]: {
-    position: 'absolute',
-    height: 0,
-    width: 0,
-    overflow: 'hidden',
-  },
-}));
+const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'].includes(p) })(
+  ({ theme, containerPadding }) => ({
+    backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
+    [`& .${classes.listBoxHeader}`]: {
+      alignSelf: 'center',
+      display: 'inline-flex',
+      width: `calc(100% - ${searchIconWidth}px)`,
+    },
+    [`& .${classes.screenReaderOnly}`]: {
+      position: 'absolute',
+      height: 0,
+      width: 0,
+      overflow: 'hidden',
+    },
+    [`& .${classes.listboxWrapper}`]: {
+      padding: containerPadding,
+    },
+  })
+);
 
 const Title = styled(Typography)(({ theme }) => ({
   color: theme.listBox?.title?.main?.color,
@@ -185,7 +191,8 @@ function ListBoxInline({ options, layout }) {
   const showTitle = true;
   const showSearchToggle = search === 'toggle' && showSearch;
   const searchVisible = (search === true || showSearchToggle) && !selectDisabled();
-  const dense = layout.layoutOptions?.dense ?? false;
+  const { layoutOptions = {} } = layout;
+  const dense = layoutOptions.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
   const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
@@ -205,6 +212,13 @@ function ListBoxInline({ options, layout }) {
   const drillDownPaddingLeft = showSearchOrLockIcon ? 0 : ICON_PADDING;
   const headerPaddingLeft = CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0);
 
+  // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
+  const isGridMode = layoutOptions?.dataLayout === 'grid';
+  let containerPadding;
+  if (isGridMode) {
+    containerPadding = layoutOptions.layoutOrder === 'row' ? '2px 4px' : '2px 6px 2px 4px';
+  }
+
   return (
     <StyledGrid
       className="listbox-container"
@@ -212,7 +226,12 @@ function ListBoxInline({ options, layout }) {
       tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"
       gap={0}
-      style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
+      containerPadding={containerPadding}
+      style={{
+        height: '100%',
+        minHeight: `${minHeight}px`,
+        flexFlow: 'column nowrap',
+      }}
       onKeyDown={handleKeyDown}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
@@ -309,7 +328,7 @@ function ListBoxInline({ options, layout }) {
             searchEnabled={searchEnabled}
           />
         </Grid>
-        <Grid item xs>
+        <Grid item xs className={classes.listboxWrapper}>
           <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
           <AutoSizer>
             {({ height, width }) => (
