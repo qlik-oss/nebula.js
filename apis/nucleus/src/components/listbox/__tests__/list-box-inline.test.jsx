@@ -182,8 +182,9 @@ describe('<ListboxInline />', () => {
       const autoSizers = renderer.root.findAllByProps({ 'data-testid': 'virtualized-auto-sizer' });
       expect(autoSizers).toHaveLength(1);
 
-      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
-      expect(listBoxSearches).toHaveLength(1);
+      expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
+        visible: true,
+      });
       expect(getListboxInlineKeyboardNavigation).toHaveBeenCalledTimes(2);
 
       // TODO: MUIv5
@@ -193,6 +194,20 @@ describe('<ListboxInline />', () => {
       expect(selections.on.mock.calls[0][0]).toBe('deactivated');
       expect(selections.on.mock.calls[1][0]).toBe('activated');
       expect(selections.off).not.toHaveBeenCalled();
+    });
+
+    test('should render properly with search toggle option', async () => {
+      options.search = 'toggle';
+      await render();
+
+      const searchToggleBtns = renderer.root
+        .findAllByProps({ 'data-testid': 'search-toggle-btn' })
+        .filter((x) => typeof x.type === 'string'); // removes virtual dom elements
+
+      expect(searchToggleBtns).toHaveLength(1);
+      expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
+        visible: false,
+      });
     });
 
     test('should render without toolbar', async () => {
