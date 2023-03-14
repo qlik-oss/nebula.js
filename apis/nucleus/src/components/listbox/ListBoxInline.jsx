@@ -189,7 +189,8 @@ function ListBoxInline({ options, layout }) {
   const showTitle = true;
   const showSearchToggle = search === 'toggle' && showSearch;
   const searchVisible = (search === true || showSearchToggle) && !selectDisabled();
-  const dense = layout.layoutOptions?.dense ?? false;
+  const { layoutOptions = {} } = layout;
+  const dense = layoutOptions.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
   const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
@@ -210,7 +211,11 @@ function ListBoxInline({ options, layout }) {
   const headerPaddingLeft = CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0);
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
-  const containerPadding = layout.layoutOptions?.dataLayout === 'grid' ? '2px 4px' : 0;
+  const isGridMode = layoutOptions?.dataLayout === 'grid';
+  let containerPadding;
+  if (isGridMode) {
+    containerPadding = layoutOptions.layoutOrder ? '2px 4px' : '2px 8px 2px 4px';
+  }
 
   return (
     <StyledGrid

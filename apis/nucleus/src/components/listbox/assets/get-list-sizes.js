@@ -51,7 +51,6 @@ export default function getListSizes({ layout, width, height, listCount, count, 
       rowCount = Math.ceil(listCount / columnCount);
       columnWidth = (containerWidth - scrollBarWidth) / columnCount;
     } else {
-      containerWidth -= itemPadding;
       overflowStyling = { overflowY: 'hidden' };
       const maxRows = maxVisibleRows?.maxRows || 3;
 
