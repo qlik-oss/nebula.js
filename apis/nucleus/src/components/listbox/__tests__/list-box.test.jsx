@@ -29,6 +29,7 @@ describe('<Listbox />', () => {
   let args;
   let layout;
   let selections;
+  let selectionState;
   let renderer;
   let render;
   let pages;
@@ -103,6 +104,7 @@ describe('<Listbox />', () => {
     global.window = { setTimeout: setTimeoutStub };
     selectDisabled = () => false;
     selections = { key: 'selections' };
+    selectionState = { update: jest.fn() };
 
     args = {
       model: {
@@ -112,6 +114,7 @@ describe('<Listbox />', () => {
       frequencyMode: 'N',
       histogram: false,
       selections,
+      selectionState,
       postProcessPages: undefined,
       calculatePagesHeight: false,
       keyboard: undefined,
@@ -153,6 +156,7 @@ describe('<Listbox />', () => {
                 keyboard={mergedArgs.keyboard}
                 showGray={mergedArgs.showGray}
                 selections={mergedArgs.selections}
+                selectionState={mergedArgs.selectionState}
                 direction={mergedArgs.direction}
                 height={mergedArgs.height}
                 width={mergedArgs.width}

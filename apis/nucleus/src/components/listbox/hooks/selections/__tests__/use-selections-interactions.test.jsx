@@ -24,6 +24,7 @@ describe('use-listbox-interactions', () => {
   let selectionState;
   let setPages;
   let layout;
+  let updateSelectionState;
 
   beforeEach(() => {
     jest.spyOn(global.document, 'addEventListener').mockImplementation(jest.fn());
@@ -40,15 +41,27 @@ describe('use-listbox-interactions', () => {
       removeEventListener: jest.fn(),
       key: 'selections',
     };
-    layout = { qListObject: { qDimensionInfo: { qIsOneAndOnlyOne: false } } };
+    layout = { qListObject: { qDimensionInfo: { qIsOneAndOnlyOne: false, qApprMaxGlyphCount: 3 }, qSize: { qcy: 3 } } };
     setPages = jest.fn();
     selectionState = createSelectionState(setPages);
     selectionState.update({
+      setPages,
       pages: [],
       isSingleSelect: false,
       layout,
       selectDisabled: () => false,
     });
+    updateSelectionState = (override) => {
+      selectionState.update({
+        setPages,
+        pages: [],
+        isSingleSelect: false,
+        layout,
+        selectDisabled: () => false,
+        ...override,
+      });
+    };
+
     selections = {
       key: 'selections',
       on: jest.fn(),
@@ -111,11 +124,8 @@ describe('use-listbox-interactions', () => {
       await render();
       const arg0 = ref.current.result;
 
-      selectionState.update({
+      updateSelectionState({
         pages: createPageWithSingle(23, 'O'),
-        isSingleSelect: false,
-        layout,
-        selectDisabled: () => false,
       });
 
       const [eventName, docMouseUpListener] = global.document.addEventListener.mock.lastCall;
@@ -155,11 +165,8 @@ describe('use-listbox-interactions', () => {
     });
 
     test('should unselect a value', async () => {
-      selectionState.update({
+      updateSelectionState({
         pages: createPageWithSingle(24, 'S'),
-        isSingleSelect: false,
-        layout,
-        selectDisabled: () => false,
       });
 
       await render();
@@ -217,11 +224,8 @@ describe('use-listbox-interactions', () => {
           { qElemNumber: 31, qState: s31 }
         );
 
-      selectionState.update({
+      updateSelectionState({
         pages: createPage('O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'),
-        isSingleSelect: false,
-        layout,
-        selectDisabled: () => false,
       });
 
       await render();
@@ -279,13 +283,10 @@ describe('use-listbox-interactions', () => {
         toggle: true,
       });
     });
-    // TODO: MUIv5 Should be enabled and fixed
+
     test('Should "toggle" checkboxes', async () => {
-      selectionState.update({
+      updateSelectionState({
         pages: createPageWithSingle(24, 'O'),
-        isSingleSelect: false,
-        layout,
-        selectDisabled: () => false,
       });
       await render({ checkboxes: true });
       const startCallCount = setPages.mock.calls.length;
