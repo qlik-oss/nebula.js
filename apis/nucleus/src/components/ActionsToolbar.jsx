@@ -176,10 +176,6 @@ function ActionsToolbar({
     action: () => setShowMoreItems(!showMoreItems),
   };
 
-  const handleMouseDown = (e) => {
-    e.stopPropagation(); // Prevent clickOutSide handler confirming selection
-  };
-
   const tabCallback =
     // if keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
     keyboardNavigation && focusHandler && focusHandler.refocusContent
@@ -233,7 +229,6 @@ function ActionsToolbar({
 
   return popover.show ? (
     <StyledPopover
-      onMouseDown={handleMouseDown}
       disableEnforceFocus
       disableAutoFocus
       disableRestoreFocus

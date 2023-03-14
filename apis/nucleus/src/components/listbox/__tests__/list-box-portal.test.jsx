@@ -112,7 +112,7 @@ describe('ListBoxPortal', () => {
       expect(useObjectSelectionsMock).toHaveBeenCalledWith(
         app,
         options.sessionModel,
-        [elementRef, '.njs-action-toolbar-more'],
+        [elementRef, '.njs-action-toolbar-more', '.njs-action-toolbar-popover'],
         options
       );
     });
