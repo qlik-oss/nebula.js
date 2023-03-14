@@ -126,8 +126,11 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   };
 
   if (isAutoTextAlign) {
-    // eslint-disable-next-line no-nested-ternary
-    valueTextAlign = !isNumeric ? dirToTextAlignMap[direction] : direction === 'rtl' ? 'left' : 'right';
+    if (!isNumeric) {
+      valueTextAlign = dirToTextAlignMap[direction];
+    } else {
+      valueTextAlign = direction === 'rtl' ? 'left' : 'right';
+    }
   } else {
     valueTextAlign = textAlign?.align || 'left';
   }
