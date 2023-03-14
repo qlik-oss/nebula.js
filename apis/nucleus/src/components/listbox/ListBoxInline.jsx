@@ -42,7 +42,6 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
     },
     [`& .${classes.listboxWrapper}`]: {
       padding: containerPadding,
-      border: '1px solid #000',
     },
   })
 );
