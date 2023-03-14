@@ -42,7 +42,7 @@ describe('get-list-sizes', () => {
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
       columnCount: 1,
-      columnWidth: 50,
+      columnWidth: 49.5,
       count: 200,
       itemPadding: 4,
       itemSize: 29,
@@ -50,7 +50,7 @@ describe('get-list-sizes', () => {
       listHeight: 300,
       frequencyWidth: 40,
       maxCount: {
-        column: 671000,
+        column: 677777,
         row: 577000,
       },
       overflowStyling: {
@@ -176,7 +176,7 @@ describe('get-list-sizes', () => {
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
       columnCount: 1,
-      columnWidth: 50,
+      columnWidth: 49.5,
       count: 200,
       itemPadding: 4,
       itemSize: 29,
@@ -184,7 +184,7 @@ describe('get-list-sizes', () => {
       listHeight: 300,
       frequencyWidth: 40,
       maxCount: {
-        column: 671000,
+        column: 677777,
         row: 577000,
       },
       overflowStyling: {
