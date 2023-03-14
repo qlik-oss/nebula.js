@@ -42,6 +42,7 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
     },
     [`& .${classes.listboxWrapper}`]: {
       padding: containerPadding,
+      border: '1px solid #000',
     },
   })
 );
@@ -213,7 +214,7 @@ function ListBoxInline({ options, layout }) {
   const isGridMode = layoutOptions?.dataLayout === 'grid';
   let containerPadding;
   if (isGridMode) {
-    containerPadding = layoutOptions.layoutOrder ? '2px 4px' : '2px 8px 2px 4px';
+    containerPadding = layoutOptions.layoutOrder === 'row' ? '2px 4px' : '2px 6px 2px 4px';
   }
 
   return (
