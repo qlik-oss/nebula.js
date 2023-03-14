@@ -205,7 +205,7 @@ function ListBoxInline({ options, layout }) {
   };
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
-  const showSearchIcon = searchEnabled !== false && !constraints?.active;
+  const showSearchIcon = searchEnabled !== false && search === 'toggle' && !constraints?.active;
   const showSearchOrLockIcon = isLocked || showSearchIcon;
   const showIcons = showSearchOrLockIcon || isDrillDown;
   const iconsWidth = (showSearchOrLockIcon ? searchIconWidth : 0) + (isDrillDown ? drillDownIconWidth : 0);
@@ -253,6 +253,7 @@ function ListBoxInline({ options, layout }) {
                       tabIndex={-1}
                       title={translator.get('Listbox.Search')}
                       size="large"
+                      data-testid="search-toggle-btn"
                     >
                       <SearchIcon style={{ fontSize: '12px' }} />
                     </IconButton>
