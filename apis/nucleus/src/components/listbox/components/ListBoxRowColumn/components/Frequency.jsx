@@ -17,7 +17,7 @@ function Frequency({ cell, checkboxes, dense, showGray }) {
           showGray && excludedOrAlternative({ cell, checkboxes }) && classes.excludedTextWithCheckbox,
         ])}
       >
-        {getFrequencyText({ cell })}
+        {getFrequencyText(cell?.qFrequency)}
       </Typography>
     </Grid>
   );

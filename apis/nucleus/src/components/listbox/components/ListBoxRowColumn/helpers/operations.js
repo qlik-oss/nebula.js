@@ -17,9 +17,4 @@ export const getBarWidth = ({ qFrequency, checkboxes, frequencyMax }) => {
   return `calc(${width}% - ${rightSlice})`;
 };
 
-export const getFrequencyText = ({ cell }) => {
-  if (cell) {
-    return cell.qFrequency ? cell.qFrequency : frequencyTextNone;
-  }
-  return '';
-};
+export const getFrequencyText = (qFrequency) => qFrequency || frequencyTextNone;
