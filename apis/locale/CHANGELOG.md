@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.3.0...v4.0.0-alpha.0) (2023-03-14)
+
+### Bug Fixes
+
+- show drilldown icon for drilldown dimension ([#1129](https://github.com/qlik-oss/nebula.js/issues/1129)) ([f679e96](https://github.com/qlik-oss/nebula.js/commit/f679e96d13d72c657ffaf5bf2826af178d5bb9ed))
+
 # [3.3.0](https://github.com/qlik-oss/nebula.js/compare/v3.3.0-alpha.0...v3.3.0) (2023-03-10)
 
 **Note:** Version bump only for package @nebula.js/locale
