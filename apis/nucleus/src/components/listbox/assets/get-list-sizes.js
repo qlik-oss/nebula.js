@@ -35,12 +35,11 @@ export default function getListSizes({ layout, width, height, listCount, count, 
   const listHeight = height ?? 8 * itemSize;
 
   if (layoutOrder) {
-    // Modify container width to achieve the exact design, with same margins on the sides.
+    // Modify container width to achieve the exact design with 8px margins on each side (left and right).
     let containerWidth = width;
 
     if (layoutOrder === 'row') {
-      const CONTAINER_PADDING_LEFT = 2; // paddingLeft of .listbox-container
-      containerWidth += itemPadding * 2 + CONTAINER_PADDING_LEFT;
+      containerWidth += itemPadding * 2;
       overflowStyling = { overflowX: 'hidden' };
       const maxColumns = maxVisibleColumns?.maxColumns || 3;
 
@@ -52,6 +51,7 @@ export default function getListSizes({ layout, width, height, listCount, count, 
       rowCount = Math.ceil(listCount / columnCount);
       columnWidth = (containerWidth - scrollBarWidth) / columnCount;
     } else {
+      containerWidth -= itemPadding;
       overflowStyling = { overflowY: 'hidden' };
       const maxRows = maxVisibleRows?.maxRows || 3;
 

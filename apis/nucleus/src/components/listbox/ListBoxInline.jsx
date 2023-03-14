@@ -23,22 +23,29 @@ const drillDownIconWidth = 24;
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
   screenReaderOnly: `${PREFIX}-screenReaderOnly`,
+  listboxWrapper: `${PREFIX}-listboxWrapper`,
 };
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
-  backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
-  [`& .${classes.listBoxHeader}`]: {
-    alignSelf: 'center',
-    display: 'inline-flex',
-    width: `calc(100% - ${searchIconWidth}px)`,
-  },
-  [`& .${classes.screenReaderOnly}`]: {
-    position: 'absolute',
-    height: 0,
-    width: 0,
-    overflow: 'hidden',
-  },
-}));
+const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'].includes(p) })(
+  ({ theme, containerPadding }) => ({
+    backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
+    [`& .${classes.listBoxHeader}`]: {
+      alignSelf: 'center',
+      display: 'inline-flex',
+      width: `calc(100% - ${searchIconWidth}px)`,
+    },
+    [`& .${classes.screenReaderOnly}`]: {
+      position: 'absolute',
+      height: 0,
+      width: 0,
+      overflow: 'hidden',
+    },
+    [`& .${classes.listboxWrapper}`]: {
+      padding: containerPadding,
+      border: '1px solid #000',
+    },
+  })
+);
 
 const Title = styled(Typography)(({ theme }) => ({
   color: theme.listBox?.title?.main?.color,
@@ -203,11 +210,7 @@ function ListBoxInline({ options, layout }) {
   const headerPaddingLeft = CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0);
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
-  const isGrid = layout.layoutOptions?.dataLayout === 'grid';
-  let containerPadding = 0;
-  if (isGrid) {
-    containerPadding = '2px 4px';
-  }
+  const containerPadding = layout.layoutOptions?.dataLayout === 'grid' ? '2px 4px' : 0;
 
   return (
     <StyledGrid
@@ -216,11 +219,11 @@ function ListBoxInline({ options, layout }) {
       tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"
       gap={0}
+      containerPadding={containerPadding}
       style={{
         height: '100%',
         minHeight: `${minHeight}px`,
         flexFlow: 'column nowrap',
-        padding: containerPadding,
       }}
       onKeyDown={handleKeyDown}
       onMouseEnter={handleOnMouseEnter}
@@ -317,7 +320,7 @@ function ListBoxInline({ options, layout }) {
             searchEnabled={searchEnabled}
           />
         </Grid>
-        <Grid item xs>
+        <Grid item xs className={classes.listboxWrapper}>
           <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
           <AutoSizer>
             {({ height, width }) => (
