@@ -20,7 +20,7 @@ import { CELL_PADDING_LEFT, ICON_PADDING } from './constants';
 
 const PREFIX = 'ListBoxInline';
 const searchIconWidth = 28;
-const drillDownIconWidth = 24;
+const drillDownIconWidth = 18;
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
   screenReaderOnly: `${PREFIX}-screenReaderOnly`,
@@ -209,8 +209,7 @@ function ListBoxInline({ options, layout }) {
   const showSearchOrLockIcon = isLocked || showSearchIcon;
   const showIcons = showSearchOrLockIcon || isDrillDown;
   const iconsWidth = (showSearchOrLockIcon ? searchIconWidth : 0) + (isDrillDown ? drillDownIconWidth : 0);
-  const drillDownPaddingLeft = showSearchOrLockIcon ? 0 : ICON_PADDING;
-  const headerPaddingLeft = CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0);
+  const headerPaddingLeft = CELL_PADDING_LEFT - (showSearchOrLockIcon ? ICON_PADDING : 0);
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
   const isGridMode = layoutOptions?.dataLayout === 'grid';
@@ -261,14 +260,12 @@ function ListBoxInline({ options, layout }) {
                   )
                 )}
                 {isDrillDown && (
-                  <IconButton
+                  <DrillDownIcon
                     tabIndex={-1}
                     title={translator.get('Listbox.DrillDown')}
                     size="large"
-                    sx={{ paddingLeft: `${drillDownPaddingLeft}px` }}
-                  >
-                    <DrillDownIcon style={{ fontSize: '12px' }} />
-                  </IconButton>
+                    style={{ fontSize: '12px' }}
+                  />
                 )}
               </Grid>
             )}
