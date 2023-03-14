@@ -29,6 +29,7 @@ describe('<Listbox />', () => {
   let args;
   let layout;
   let selections;
+  let selectionState;
   let renderer;
   let render;
   let pages;
@@ -55,7 +56,6 @@ describe('<Listbox />', () => {
     };
 
     useSelectionsInteractions = jest.fn().mockReturnValue({
-      instantPages: [],
       interactionEvents: {
         onMouseDown: () => {},
         onMouseUp: () => {},
@@ -104,6 +104,7 @@ describe('<Listbox />', () => {
     global.window = { setTimeout: setTimeoutStub };
     selectDisabled = () => false;
     selections = { key: 'selections' };
+    selectionState = { update: jest.fn() };
 
     args = {
       model: {
@@ -113,6 +114,7 @@ describe('<Listbox />', () => {
       frequencyMode: 'N',
       histogram: false,
       selections,
+      selectionState,
       postProcessPages: undefined,
       calculatePagesHeight: false,
       keyboard: undefined,
@@ -154,6 +156,7 @@ describe('<Listbox />', () => {
                 keyboard={mergedArgs.keyboard}
                 showGray={mergedArgs.showGray}
                 selections={mergedArgs.selections}
+                selectionState={mergedArgs.selectionState}
                 direction={mergedArgs.direction}
                 height={mergedArgs.height}
                 width={mergedArgs.width}
@@ -183,13 +186,10 @@ describe('<Listbox />', () => {
       expect(rows).toHaveLength(1);
       expect(columns).toHaveLength(0);
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        layout,
         selections,
-        pages: [],
         doc: expect.any(Object),
       });
 
-      expect(useSelectionsInteractions.mock.calls[1][0].selectDisabled instanceof Function).toBe(true);
       expect(FixedSizeList.mock.calls.length).toBeGreaterThan(0);
     });
 
@@ -197,9 +197,7 @@ describe('<Listbox />', () => {
       await render();
 
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        layout,
         selections,
-        pages: [],
         doc: expect.any(Object),
       });
     });
@@ -229,9 +227,7 @@ describe('<Listbox />', () => {
       await render();
 
       expect(useSelectionsInteractions.mock.lastCall[0]).toMatchObject({
-        layout,
         selections,
-        pages: [],
         doc: expect.any(Object),
       });
 

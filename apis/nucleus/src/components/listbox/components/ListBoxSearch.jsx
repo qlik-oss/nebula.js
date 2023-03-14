@@ -20,6 +20,7 @@ const StyledOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
 
 export default function ListBoxSearch({
   selections,
+  selectionState,
   model,
   keyboard,
   dense = false,
@@ -101,6 +102,7 @@ export default function ListBoxSearch({
       response = model.acceptListObjectSearch(TREE_PATH, true);
       // eslint-disable-next-line no-param-reassign
       selections.selectionsMade = true;
+      selectionState.clearItemStates(false);
       setValue('');
     }
     return response;

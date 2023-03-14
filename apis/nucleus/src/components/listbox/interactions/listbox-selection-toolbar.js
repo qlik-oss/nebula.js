@@ -3,7 +3,7 @@ import { selectAlternative } from '@nebula.js/ui/icons/select-alternative';
 import { selectPossible } from '@nebula.js/ui/icons/select-possible';
 import { selectExcluded } from '@nebula.js/ui/icons/select-excluded';
 
-export default ({ layout, model, translator }) => {
+export default ({ layout, model, translator, selectionState }) => {
   if (layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne) {
     return [];
   }
@@ -26,6 +26,7 @@ export default ({ layout, model, translator }) => {
       getSvgIconShape: selectAll,
       enabled: canSelectAll,
       action: () => {
+        selectionState.clearItemStates(false);
         model.selectListObjectAll('/qListObjectDef');
       },
     },
@@ -36,6 +37,7 @@ export default ({ layout, model, translator }) => {
       getSvgIconShape: selectPossible,
       enabled: canSelectPossible,
       action: () => {
+        selectionState.clearItemStates(false);
         model.selectListObjectPossible('/qListObjectDef');
       },
     },
@@ -46,6 +48,7 @@ export default ({ layout, model, translator }) => {
       getSvgIconShape: selectAlternative,
       enabled: canSelectAlternative,
       action: () => {
+        selectionState.clearItemStates(false);
         model.selectListObjectAlternative('/qListObjectDef');
       },
     },
@@ -56,6 +59,7 @@ export default ({ layout, model, translator }) => {
       getSvgIconShape: selectExcluded,
       enabled: canSelectExcluded,
       action: () => {
+        selectionState.clearItemStates(false);
         model.selectListObjectExcluded('/qListObjectDef');
       },
     },
