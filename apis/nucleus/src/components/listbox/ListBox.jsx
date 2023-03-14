@@ -22,6 +22,7 @@ export default function ListBox({
   constraints,
   layout,
   selections,
+  selectionState,
   direction,
   checkboxes: checkboxOption,
   height,
@@ -65,16 +66,23 @@ export default function ListBox({
     postProcessPages,
     listData,
   });
-  const [pages, setPages] = useState([]);
   const { setStoreValue } = useDataStore(model);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
 
   const [overflowDisclaimer, setOverflowDisclaimer] = useState({ show: false, dismissed: false });
   const showOverflowDisclaimer = (show) => setOverflowDisclaimer((state) => ({ ...state, show }));
 
-  useEffect(() => {
-    setPages(itemsLoader?.pages || []);
-  }, [itemsLoader?.pages]);
+  const [pages, setPages] = useState([]);
+
+  if (itemsLoader?.pages) {
+    selectionState.update({
+      setPages,
+      pages: itemsLoader?.pages,
+      isSingleSelect,
+      selectDisabled,
+      layout,
+    });
+  }
 
   const isItemLoaded = useCallback(
     (index) => {
@@ -89,18 +97,11 @@ export default function ListBox({
     [layout, pages]
   );
 
-  const {
-    instantPages = [],
-    interactionEvents,
-    select,
-  } = useSelectionsInteractions({
-    layout,
+  const { interactionEvents, select } = useSelectionsInteractions({
+    selectionState,
     selections,
-    pages,
     checkboxes,
-    selectDisabled,
     doc: document,
-    isSingleSelect,
   });
 
   const { layoutOptions = {} } = layout || {};
@@ -142,13 +143,6 @@ export default function ListBox({
     // Hand over the update function for manual refresh from hosting application.
     update.call(null, fetchData);
   }
-
-  useEffect(() => {
-    if (!instantPages || isLoadingData) {
-      return;
-    }
-    setPages(instantPages);
-  }, [instantPages]);
 
   useEffect(() => {
     if (scrollState && !initScrollPosIsSet && loaderRef.current) {
@@ -198,7 +192,7 @@ export default function ListBox({
     });
     local.current.dataOffset = offset;
     if (triggerRerender) {
-      setPages((currentPages) => [...currentPages]);
+      selectionState.triggerStateChanged();
     }
     scrollToIndex(scrollIndex);
   };

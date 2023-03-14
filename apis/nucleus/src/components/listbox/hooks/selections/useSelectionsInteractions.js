@@ -1,170 +1,137 @@
-import { useEffect, useState, useCallback } from 'react';
-import {
-  getUniques,
-  selectValues,
-  applySelectionsOnPages,
-  fillRange,
-  getSelectedValues,
-  getElemNumbersFromPages,
-} from './listbox-selections';
+import { useEffect, useCallback, useRef } from 'react';
+import { selectValues, fillRange, getElemNumbersFromPages } from './listbox-selections';
 
-export default function useSelectionsInteractions({
-  layout,
-  selections,
-  pages = [],
-  checkboxes = false,
-  selectDisabled,
-  doc = document,
-  isSingleSelect: singleSelect = false,
-}) {
-  const [instantPages, setInstantPages] = useState(pages);
-  const [mouseDown, setMouseDown] = useState(false);
-  const [selectingValues, setSelectingValues] = useState(false);
-  const [isSingleSelect, setIsSingleSelect] = useState(singleSelect);
-  const [selected, setSelected] = useState([]);
-  const [isRangeSelection, setIsRangeSelection] = useState(false);
-  const [preSelected, setPreSelected] = useState([]);
+const getKeyAsToggleSelected = (event) => !(event.metaKey || event.ctrlKey);
 
-  const elemNumbersOrdered = getElemNumbersFromPages(pages);
+export default function useSelectionsInteractions({ selectionState, selections, checkboxes = false, doc = document }) {
+  const currentSelect = useRef({
+    startElemNumber: undefined,
+    elemNumbers: [],
+    isRange: false,
+    toggle: false,
+    active: false,
+  });
 
-  useEffect(() => {
-    setIsSingleSelect(singleSelect);
-  }, [singleSelect]);
-
-  // Select values for real, by calling the backend.
-  const select = async (elemNumbers = [], additive = false) => {
-    if (selectDisabled()) {
-      return;
-    }
-    setSelectingValues(true);
-    const filtered = additive ? elemNumbers.filter((n) => !selected.includes(n)) : elemNumbers;
-    await selectValues({ selections, elemNumbers: filtered, isSingleSelect });
-    setSelectingValues(false);
-    setPreSelected([]);
-  };
-
-  // Show estimated selection states instantly before applying the selections for real.
-  const preSelect = (elemNumbers, additive = false) => {
-    if (selectDisabled()) {
-      return;
-    }
-    setPreSelected((existing) => {
-      const uniques = getUniques([...existing, ...elemNumbers]);
-      const filtered = additive ? uniques.filter((n) => !selected.includes(n)) : uniques;
-      const filled = additive ? fillRange(uniques, elemNumbersOrdered) : filtered;
-      return filled;
+  // eslint-disable-next-line arrow-body-style
+  const doSelect = () => {
+    selectionState.setSelectableValuesUpdating();
+    return selectValues({
+      selections,
+      elemNumbers: currentSelect.current.elemNumbers,
+      isSingleSelect: selectionState.isSingleSelect,
+      toggle: currentSelect.current.toggle,
     });
   };
 
+  const addToRange = (elemNumber) => {
+    const { startElemNumber } = currentSelect.current;
+    if (startElemNumber === elemNumber) {
+      return;
+    }
+    const rangeEnds = [currentSelect.current.startElemNumber, elemNumber];
+    const elemNumbersOrdered = getElemNumbersFromPages(selectionState.enginePages);
+    const toMaybeAdd = fillRange(rangeEnds, elemNumbersOrdered);
+    selectionState.updateItems(toMaybeAdd, true, currentSelect.current.elemNumbers);
+  };
+
   const selectManually = (elementIds = [], additive = false) => {
-    setIsRangeSelection(false); // range is not supported for manual select
-    setMouseDown(true);
-    preSelect(elementIds, additive || isRangeSelection);
-    const p = select(elementIds, additive || isRangeSelection);
-    setMouseDown(false);
-    return p;
+    const elemNumbers = [];
+    selectionState.updateItems(elementIds, additive, elemNumbers);
+    selectionState.setSelectableValuesUpdating();
+
+    return selectValues({
+      selections,
+      elemNumbers: additive ? elemNumbers : elementIds,
+      isSingleSelect: selectionState.isSingleSelect,
+      toggle: !selectionState.isSingleSelect,
+    });
   };
 
   const handleSingleSelectKey = (event, target) => {
     if (event.ctrlKey || event.metaKey) {
-      setIsSingleSelect(true);
       target.focus(); // will not be focused otherwise
       event.preventDefault();
     }
   };
 
-  const onChange = useCallback(
-    (event) => {
-      if (selectingValues || selectDisabled()) {
-        return;
-      }
-      const elemNumber = +event.target.getAttribute('data-n');
-      setPreSelected([elemNumber]);
-      handleSingleSelectKey(event, event.target);
-    },
-    [selectingValues, selectDisabled]
-  );
-  /*
-  const onClick = useCallback(
-    (event) => {
-      if (selectingValues || selectDisabled()) {
-        return;
-      }
-      const elemNumber = +event.currentTarget.getAttribute('data-n');
-      setPreSelected([elemNumber]);
-      handleSingleSelectKey(event, event.currentTarget);
-    },
-    [selectingValues, selectDisabled]
-  );
-*/
-  const onMouseDown = useCallback(
-    (event) => {
-      if (selectingValues || selectDisabled()) {
-        return;
-      }
-      setIsRangeSelection(false);
-      setMouseDown(true);
+  const onChange = useCallback((event) => {
+    if (selectionState.selectDisabled()) {
+      return;
+    }
+    const elemNumber = +event.target.getAttribute('data-n');
+    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event.nativeEvent);
+    currentSelect.current.elemNumbers = [elemNumber];
+    currentSelect.current.toggle = toggle;
 
-      const elemNumber = +event.currentTarget.getAttribute('data-n');
-      setPreSelected([elemNumber]);
-      handleSingleSelectKey(event, event.currentTarget);
-    },
-    [selectingValues, selectDisabled]
-  );
+    if (!toggle) {
+      selectionState.clearItemStates(true);
+    }
+    selectionState.updateItem(elemNumber);
 
-  const onMouseUp = useCallback(
-    (event) => {
+    currentSelect.current.active = false;
+    doSelect();
+  }, []);
+
+  const onMouseDown = useCallback((event) => {
+    if (selectionState.selectDisabled()) {
+      return;
+    }
+    const elemNumber = +event.currentTarget.getAttribute('data-n');
+    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event);
+    currentSelect.current.isRange = false;
+    currentSelect.current.startElemNumber = elemNumber;
+    currentSelect.current.elemNumbers = [elemNumber];
+    currentSelect.current.toggle = toggle;
+    currentSelect.current.active = true;
+
+    if (!toggle) {
+      selectionState.clearItemStates(true);
+    }
+    selectionState.updateItem(elemNumber);
+
+    if (selectionState.isSingleSelect) {
+      currentSelect.current.active = false;
+      doSelect();
+    }
+
+    handleSingleSelectKey(event, event.currentTarget);
+  }, []);
+
+  const onMouseUp = useCallback((event) => {
+    if (!currentSelect.current.active) {
+      return;
+    }
+    currentSelect.current.active = false;
+    if (currentSelect.current.isRange) {
       const elemNumber = +event.currentTarget.getAttribute('data-n');
-      if (
-        isSingleSelect ||
-        !mouseDown ||
-        selectingValues ||
-        (preSelected.length === 1 && preSelected[0] === elemNumber) // prevent toggling again on mouseup
-      ) {
-        return;
-      }
-      preSelect([elemNumber]);
-    },
-    [mouseDown, selectingValues, preSelected, selected, isRangeSelection, selectDisabled]
-  );
+      addToRange(elemNumber);
+    }
+    doSelect();
+  }, []);
 
   const onMouseUpDoc = useCallback(() => {
     // Ensure we end interactions when mouseup happens outside the Listbox.
-    setMouseDown(false);
-    setSelectingValues(false);
-    setIsRangeSelection(false);
-    setIsSingleSelect(singleSelect);
-  }, [singleSelect]);
-
-  const onMouseEnter = useCallback(
-    (event) => {
-      if (isSingleSelect || !mouseDown || selectingValues || selectDisabled()) {
-        return;
-      }
-      setIsRangeSelection(true);
-      const elemNumber = +event.currentTarget.getAttribute('data-n');
-      preSelect([elemNumber], true);
-    },
-    [
-      mouseDown,
-      selectingValues,
-      isRangeSelection,
-      preSelected,
-      selected,
-      selectDisabled,
-      layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne,
-    ]
-  );
-
-  useEffect(() => {
-    // Perform selections of pre-selected values. This can
-    // happen only when interactions have finished (mouseup).
-    const interactionIsFinished = !mouseDown;
-    if (!preSelected || !preSelected.length || selectingValues || !interactionIsFinished || !layout) {
+    if (!currentSelect.current.active) {
       return;
     }
-    select(preSelected, isRangeSelection);
-  }, [preSelected, mouseDown, selectDisabled()]);
+    currentSelect.current.active = false;
+    doSelect();
+  }, []);
+
+  const onMouseEnter = useCallback((event) => {
+    if (!currentSelect.current.active) {
+      return;
+    }
+    if (!currentSelect.current.isRange) {
+      currentSelect.current.isRange = true;
+      if (!selectionState.isSelected(currentSelect.current.startElemNumber)) {
+        selectionState.updateItem(currentSelect.current.startElemNumber, true);
+        currentSelect.current.elemNumbers = [];
+      }
+    }
+    const elemNumber = +event.currentTarget.getAttribute('data-n');
+    addToRange(elemNumber);
+  }, []);
 
   useEffect(() => {
     doc.addEventListener('mouseup', onMouseUpDoc);
@@ -174,22 +141,21 @@ export default function useSelectionsInteractions({
   }, [onMouseUpDoc]);
 
   useEffect(() => {
-    if (selectingValues || mouseDown) {
-      return;
-    }
-    // Keep track of (truely) selected fields so we can prevent toggling them on range select.
-    const alreadySelected = getSelectedValues(pages);
-    setSelected(alreadySelected);
-  }, [pages]);
+    const onDeactivated = () => {
+      selectionState.clearItemStates(false);
+    };
+    const onCleared = () => {
+      selectionState.clearItemStates(true);
+      selectionState.triggerStateChanged();
+    };
 
-  useEffect(() => {
-    if (selectingValues || !pages || (!checkboxes && !mouseDown)) {
-      return;
-    }
-    // Render pre-selections before they have been selected in Engine.
-    const newPages = applySelectionsOnPages(pages, preSelected, isSingleSelect);
-    setInstantPages(newPages);
-  }, [preSelected]);
+    selections.on('deactivated', onDeactivated);
+    selections.on('cleared', onCleared);
+    return () => {
+      selections.removeListener('activated', onDeactivated);
+      selections.removeListener('cleared', onCleared);
+    };
+  }, [selections]);
 
   const interactionEvents = {};
 
@@ -200,7 +166,6 @@ export default function useSelectionsInteractions({
   }
 
   return {
-    instantPages,
     interactionEvents,
     select: selectManually, // preselect and select without having to trigger an event
   };

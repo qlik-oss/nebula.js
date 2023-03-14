@@ -24,39 +24,32 @@ export function getSelectedValues(pages) {
   return flatten(elementNbrs);
 }
 
-export function applySelectionsOnPages(pages, elmNumbers, clearAllButElmNumbers = false) {
-  const getNewSelectionState = (qState) => (elmNumbers.length <= 1 && isStateSelected(qState) ? 'A' : 'S');
-  const matrices = pages.map((page) => {
-    const qMatrix = page.qMatrix.map((p) => {
-      const [p0] = p;
-      const selectionMatchesElement = elmNumbers.includes(p0.qElemNumber);
-      let qState;
-      if (clearAllButElmNumbers) {
-        qState = selectionMatchesElement ? 'S' : 'A';
-      } else {
-        qState = selectionMatchesElement ? getNewSelectionState(p0.qState) : p0.qState;
-      }
-      return [{ ...p0, qState }, p.slice(1)];
-    });
-    return { ...page, qMatrix };
-  });
-  return matrices;
-}
-
-export async function selectValues({ selections, elemNumbers, isSingleSelect = false }) {
-  let resolved = Promise.resolve(false);
+export async function selectValues({ selections, elemNumbers, toggle, isSingleSelect }) {
+  if (elemNumbers.length === 0) {
+    return false;
+  }
   const hasNanValues = elemNumbers.some((elemNumber) => Number.isNaN(elemNumber));
+  let success = false;
   if (!hasNanValues) {
     const elemNumbersToSelect = elemNumbers;
-    resolved = selections
-      .select({
+    try {
+      const response = await selections.select({
         method: 'selectListObjectValues',
-        params: ['/qListObjectDef', elemNumbersToSelect, !isSingleSelect],
-      })
-      .then((success) => success !== false)
-      .catch(() => false);
+        params: ['/qListObjectDef', elemNumbersToSelect, toggle],
+      });
+      success = response !== false;
+    } catch {
+      success = false;
+    }
+    if (!success) {
+      if (isSingleSelect) {
+        selections.cancel(); // revert selection
+      } else {
+        selections.clear();
+      }
+    }
   }
-  return resolved;
+  return success;
 }
 
 export function getElemNumbersFromPages(pages) {

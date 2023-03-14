@@ -118,9 +118,12 @@ describe('<ListBoxSearch />', () => {
   });
 
   test('should reset `OutlinedInput` and `acceptListObjectSearch` on `Enter`', async () => {
+    const selectionState = {
+      clearItemStates: jest.fn(),
+    };
     const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} />
+        <ListBoxSearch selections={selections} selectionState={selectionState} model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
@@ -136,6 +139,8 @@ describe('<ListBoxSearch />', () => {
     });
     expect(model.acceptListObjectSearch).toHaveBeenCalledWith('/qListObjectDef', true);
     expect(type.props.value).toBe('');
+    expect(selectionState.clearItemStates).toBeCalledTimes(1);
+    expect(selectionState.clearItemStates).toBeCalledWith(false);
   });
 
   test('should not accept search result if no hits', async () => {
