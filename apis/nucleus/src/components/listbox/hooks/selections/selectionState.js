@@ -6,17 +6,19 @@ export default function selectionState() {
     ignoreSelectionState: false,
     selectedInEngine: [],
     enginePages: [],
-    layout: undefined,
     setPages: undefined,
+    lastRowCount: undefined,
+    lastApprMaxGlyphCount: undefined,
 
     update({ setPages, pages, isSingleSelect, selectDisabled, layout }) {
       this.setPages = setPages;
-      const isSameRowCount = this.layout?.qListObject?.qSize?.qcy === layout.qListObject.qSize.qcy;
-      const isSameMaxGlyphCnt =
-        this.layout?.qListObject?.qDimensionInfo?.qApprMaxGlyphCount ===
-        layout.qListObject.qDimensionInfo.qApprMaxGlyphCount;
+      const isSameRowCount = this.lastRowCount === layout.qListObject.qSize.qcy;
+      const isSameMaxGlyphCnt = this.lastApprMaxGlyphCount === layout.qListObject.qDimensionInfo.qApprMaxGlyphCount;
 
       if (!isSameRowCount || !isSameMaxGlyphCnt) {
+        this.lastRowCount = layout.qListObject.qSize.qcy;
+        this.lastApprMaxGlyphCount = layout.qListObject.qDimensionInfo.qApprMaxGlyphCount;
+
         // The field have probably changed (drill up/down)
         // need to clear the client side item states since the field values have changed
         this.clearItemStates(false);
@@ -28,7 +30,6 @@ export default function selectionState() {
         state.selectableValuesUpdating = false;
         state.triggerStateChanged();
       }
-      state.layout = layout;
       state.isSingleSelect = isSingleSelect;
       state.selectDisabled = selectDisabled;
       state.isDimCalculated = layout?.qListObject?.qDimensionInfo?.qIsCalculated ?? false;
