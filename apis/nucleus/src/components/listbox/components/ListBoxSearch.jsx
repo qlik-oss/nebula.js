@@ -16,6 +16,7 @@ const StyledInputAdornment = styled(InputAdornment)(({ theme }) => ({
 
 const StyledOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
   color: theme.listBox?.content?.color,
+  display: 'flex',
 }));
 
 export default function ListBoxSearch({
@@ -28,6 +29,7 @@ export default function ListBoxSearch({
   autoFocus = true,
   wildCardSearch = false,
   searchEnabled,
+  direction,
 }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
@@ -37,6 +39,8 @@ export default function ListBoxSearch({
 
   const theme = useTheme();
   const { getStoreValue } = useDataStore(model);
+  const isRtl = direction;
+  const inpuTextAlign = isRtl ? 'right' : 'left';
 
   const cancel = () => selections.isActive() && selections.cancel();
 
@@ -160,6 +164,7 @@ export default function ListBoxSearch({
             paddingBottom: '5px',
           },
         },
+        { flexDirection: isRtl ? 'row-reverse' : 'row' },
       ]}
       inputRef={inputRef}
       size="small"
@@ -172,6 +177,7 @@ export default function ListBoxSearch({
       autoFocus={autoFocus}
       inputProps={{
         tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
+        style: { textAlign: `${inpuTextAlign}` },
       }}
     />
   );

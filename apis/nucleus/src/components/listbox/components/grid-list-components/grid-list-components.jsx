@@ -73,6 +73,7 @@ export default function getListBoxComponents({
     showGray,
     dataOffset: local.current.dataOffset,
     focusListItems,
+    direction,
   };
 
   const List = ({ onItemsRendered, ref }) => {

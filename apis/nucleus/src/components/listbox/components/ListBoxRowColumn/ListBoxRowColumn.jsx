@@ -126,7 +126,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   };
 
   if (isAutoTextAlign) {
-    valueTextAlign = isNumeric ? 'right' : dirToTextAlignMap[direction];
+    // eslint-disable-next-line no-nested-ternary
+    valueTextAlign = !isNumeric ? dirToTextAlignMap[direction] : direction === 'rtl' ? 'left' : 'right';
   } else {
     valueTextAlign = textAlign?.align || 'left';
   }
@@ -157,7 +158,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     alignItems: 'center',
     minWidth: 0,
     flexGrow: 1,
-    paddingLeft: checkboxes ? 0 : undefined,
+    paddingLeft: checkboxes || direction === 'rtl' ? 0 : undefined,
+    paddingRight: direction === 'rtl' ? 8 : 0,
     justifyContent: valueTextAlign,
   };
 

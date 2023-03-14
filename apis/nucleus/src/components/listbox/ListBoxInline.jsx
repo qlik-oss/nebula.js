@@ -32,7 +32,7 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
     backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
     [`& .${classes.listBoxHeader}`]: {
       alignSelf: 'center',
-      display: 'inline-flex',
+      display: 'flex',
       width: `calc(100% - ${searchIconWidth}px)`,
     },
     [`& .${classes.screenReaderOnly}`]: {
@@ -178,6 +178,7 @@ function ListBoxInline({ options, layout }) {
   }
 
   const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
+  const isRtl = options.direction === 'rtl';
   const isDrillDown = layout.qListObject.qDimensionInfo.qGrouping === 'H';
   const listboxSelectionToolbarItems = toolbar
     ? createListboxSelectionToolbar({
@@ -211,6 +212,7 @@ function ListBoxInline({ options, layout }) {
   const iconsWidth = (showSearchOrLockIcon ? searchIconWidth : 0) + (isDrillDown ? drillDownIconWidth : 0);
   const drillDownPaddingLeft = showSearchOrLockIcon ? 0 : ICON_PADDING;
   const headerPaddingLeft = CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0);
+  const headerPaddingRight = isRtl ? CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0) : 0;
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
   const isGridMode = layoutOptions?.dataLayout === 'grid';
@@ -238,8 +240,24 @@ function ListBoxInline({ options, layout }) {
       ref={containerRef}
     >
       {toolbar && (
-        <Grid item container style={{ padding: theme.spacing(1), paddingLeft: `${headerPaddingLeft}px` }} wrap="nowrap">
-          <Grid item container height={headerHeight} wrap="nowrap">
+        <Grid
+          item
+          container
+          style={{
+            padding: theme.spacing(1),
+            paddingLeft: `${headerPaddingLeft}px`,
+            paddingRight: `${headerPaddingRight}px`,
+          }}
+          sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
+          wrap="nowrap"
+        >
+          <Grid
+            item
+            container
+            height={headerHeight}
+            sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
+            wrap="nowrap"
+          >
             {showIcons && (
               <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
                 {isLocked ? (
@@ -272,9 +290,9 @@ function ListBoxInline({ options, layout }) {
                 )}
               </Grid>
             )}
-            <Grid item className={classes.listBoxHeader}>
+            <Grid item sx={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }} className={classes.listBoxHeader}>
               {showTitle && (
-                <Title variant="h6" noWrap title={layout.title}>
+                <Title variant="h6" noWrap>
                   {layout.title}
                 </Title>
               )}
@@ -301,6 +319,7 @@ function ListBoxInline({ options, layout }) {
                 onConfirm: () => {},
                 onCancel: () => {},
               }}
+              direction={isRtl}
             />
           </Grid>
         </Grid>
@@ -328,6 +347,7 @@ function ListBoxInline({ options, layout }) {
             searchContainerRef={searchContainerRef}
             wildCardSearch={wildCardSearch}
             searchEnabled={searchEnabled}
+            direction={isRtl}
           />
         </Grid>
         <Grid item xs className={classes.listboxWrapper}>
