@@ -22,6 +22,9 @@ export default function useExistingModel({ app, qId, options = {} }) {
       } else {
         const m = await app.getObject(qId);
         modelStore.set(m.id, m);
+        m.once('closed', () => {
+          modelStore.clear(m.id);
+        });
         setModel(m);
       }
     }
