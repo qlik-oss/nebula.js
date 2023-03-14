@@ -1,7 +1,6 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import RowColumn from '../ListBoxRowColumn';
-import getFrequencyAllowed from './frequency-allowed';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
 import handleSetOverflowDisclaimer from './set-overflow-disclaimer';
@@ -34,9 +33,10 @@ export default function getListBoxComponents({
   focusListItems,
   setCurrentScrollIndex,
   constraints,
+  freqIsAllowed,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
-  const { itemPadding, listHeight, itemSize, rowCount, columnCount } = sizes || {};
+  const { itemPadding, listHeight, itemSize, rowCount, columnCount, frequencyWidth } = sizes || {};
 
   // Options common for List and Grid.
   const commonComponentOptions = {
@@ -56,10 +56,11 @@ export default function getListBoxComponents({
     checkboxes,
     layoutOptions,
     frequencyMode,
-    freqIsAllowed: getFrequencyAllowed({ width, layout, frequencyMode }),
+    freqIsAllowed,
     isSingleSelect,
     textAlign,
     itemPadding,
+    frequencyWidth,
     actions: {
       select,
       confirm: () => selections?.confirm.call(selections),

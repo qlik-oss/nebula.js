@@ -18,6 +18,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
+import createSelectionState from './hooks/selections/selectionState';
 import getHasSelections from './assets/has-selections';
 
 export default function ListBoxPopover({
@@ -89,6 +90,7 @@ export default function ListBoxPopover({
   const containerRef = useRef();
   const [selections] = useObjectSelections(app, model, containerRef);
   const [layout] = useLayout(model);
+  const [selectionState] = useState(() => createSelectionState());
 
   useEffect(() => {
     if (selections && open) {
@@ -114,6 +116,7 @@ export default function ListBoxPopover({
     layout,
     model,
     translator,
+    selectionState,
   });
 
   const hasSelections = getHasSelections(layout);
@@ -173,6 +176,7 @@ export default function ListBoxPopover({
             model={model}
             listCount={listCount}
             selections={selections}
+            selectionState={selectionState}
             keyboard={{ enabled: false }}
             autoFocus={autoFocus ?? true}
           />
@@ -180,6 +184,7 @@ export default function ListBoxPopover({
             model={model}
             layout={layout}
             selections={selections}
+            selectionState={selectionState}
             direction="ltr"
             onSetListCount={(c) => setListCount(c)}
           />

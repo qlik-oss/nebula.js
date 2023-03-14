@@ -44,6 +44,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     focusListItems,
     listCount,
     itemPadding,
+    frequencyWidth,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -171,6 +172,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
       dense={dense}
+      frequencyWidth={frequencyWidth}
     >
       <ItemGrid
         ref={rowRef}

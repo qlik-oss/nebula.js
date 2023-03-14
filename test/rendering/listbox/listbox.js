@@ -6,6 +6,8 @@
       id: `listbox-${+new Date()}`,
       getListObjectData: async () => (fixture ? fixture.getListObjectData() : getMockData()),
       getLayout: async () => (fixture ? fixture.getLayout() : getListboxLayout(options)),
+      beginSelections: async () => {},
+      selectListObjectValues: async () => true,
       on() {},
       once() {},
     };

@@ -13,6 +13,7 @@ import useDataStore from './hooks/useDataStore';
 import ListBoxDisclaimer from './components/ListBoxDisclaimer';
 import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
+import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -21,6 +22,7 @@ export default function ListBox({
   constraints,
   layout,
   selections,
+  selectionState,
   direction,
   checkboxes: checkboxOption,
   height,
@@ -64,16 +66,23 @@ export default function ListBox({
     postProcessPages,
     listData,
   });
-  const [pages, setPages] = useState([]);
   const { setStoreValue } = useDataStore(model);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
 
   const [overflowDisclaimer, setOverflowDisclaimer] = useState({ show: false, dismissed: false });
   const showOverflowDisclaimer = (show) => setOverflowDisclaimer((state) => ({ ...state, show }));
 
-  useEffect(() => {
-    setPages(itemsLoader?.pages || []);
-  }, [itemsLoader?.pages]);
+  const [pages, setPages] = useState([]);
+
+  if (itemsLoader?.pages) {
+    selectionState.update({
+      setPages,
+      pages: itemsLoader?.pages,
+      isSingleSelect,
+      selectDisabled,
+      layout,
+    });
+  }
 
   const isItemLoaded = useCallback(
     (index) => {
@@ -88,18 +97,11 @@ export default function ListBox({
     [layout, pages]
   );
 
-  const {
-    instantPages = [],
-    interactionEvents,
-    select,
-  } = useSelectionsInteractions({
-    layout,
+  const { interactionEvents, select } = useSelectionsInteractions({
+    selectionState,
     selections,
-    pages,
     checkboxes,
-    selectDisabled,
     doc: document,
-    isSingleSelect,
   });
 
   const { layoutOptions = {} } = layout || {};
@@ -143,13 +145,6 @@ export default function ListBox({
   }
 
   useEffect(() => {
-    if (!instantPages || isLoadingData) {
-      return;
-    }
-    setPages(instantPages);
-  }, [instantPages]);
-
-  useEffect(() => {
     if (scrollState && !initScrollPosIsSet && loaderRef.current) {
       loaderRef.current._listRef.scrollToItem(scrollState.initScrollPos);
       setInitScrollPosIsSet(true);
@@ -177,7 +172,13 @@ export default function ListBox({
     model,
   });
 
-  const sizes = getListSizes({ layout, width, height, listCount: unlimitedListCount, count, textWidth });
+  let freqIsAllowed = getFrequencyAllowed({ itemWidth: width, layout, frequencyMode });
+  const sizes = getListSizes({ layout, width, height, listCount: unlimitedListCount, count, textWidth, freqIsAllowed });
+  if (sizes.columnWidth) {
+    // In grid mode, where we have a dynamic item width, get a second opinion on showing/hiding frequency.
+    freqIsAllowed = getFrequencyAllowed({ itemWidth: sizes.columnWidth, layout, frequencyMode });
+  }
+
   const { listCount } = sizes;
   setStoreValue('listCount', listCount);
 
@@ -191,7 +192,7 @@ export default function ListBox({
     });
     local.current.dataOffset = offset;
     if (triggerRerender) {
-      setPages((currentPages) => [...currentPages]);
+      selectionState.triggerStateChanged();
     }
     scrollToIndex(scrollIndex);
   };
@@ -248,6 +249,7 @@ export default function ListBox({
     focusListItems: getFocusState(),
     setCurrentScrollIndex: currentScrollIndex.set,
     constraints,
+    freqIsAllowed,
   });
 
   const { columnWidth, listHeight, itemSize } = sizes || {};
