@@ -188,16 +188,15 @@ function ListBoxInline({ options, layout }) {
       })
     : [];
 
+  const { wildCardSearch, searchEnabled, layoutOptions = {} } = layout;
   const showTitle = true;
   const showSearchToggle = search === 'toggle' && showSearch;
-  const searchVisible = (search === true || showSearchToggle) && !selectDisabled();
-  const { layoutOptions = {} } = layout;
+  const searchVisible = (search === true || showSearchToggle) && !selectDisabled() && searchEnabled !== false;
   const dense = layoutOptions.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
-  const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
+  const minHeight = toolbar ? 49 + (searchVisible ? searchHeight : 0) + extraheight : 0;
   const headerHeight = 32;
-  const { wildCardSearch, searchEnabled } = layout;
 
   const onShowSearch = () => {
     const newValue = !showSearch;
@@ -309,7 +308,7 @@ function ListBoxInline({ options, layout }) {
         item
         container
         direction="column"
-        style={{ height: '100%', minHeight: `${minHeight}px` }}
+        style={{ height: '100%', minHeight: '50px' }}
         role="region"
         aria-label={translator.get('Listbox.ResultFilterLabel')}
       >
