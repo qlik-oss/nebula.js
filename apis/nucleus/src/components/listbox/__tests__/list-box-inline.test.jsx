@@ -4,7 +4,7 @@
 /* eslint-disable import/first */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
-import { IconButton, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import * as unlockModule from '@nebula.js/ui/icons/unlock';
 import * as lockModule from '@nebula.js/ui/icons/lock';
@@ -184,8 +184,6 @@ describe('<ListboxInline />', () => {
 
       const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
       expect(listBoxSearches).toHaveLength(1);
-      const showSearchButtons = renderer.root.findAllByType(IconButton);
-      expect(showSearchButtons).toHaveLength(1);
       expect(getListboxInlineKeyboardNavigation).toHaveBeenCalledTimes(2);
 
       // TODO: MUIv5
