@@ -15,6 +15,7 @@ import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
+import createSelectionState from './hooks/selections/selectionState';
 import { CELL_PADDING_LEFT, ICON_PADDING } from './constants';
 
 const PREFIX = 'ListBoxInline';
@@ -23,22 +24,28 @@ const drillDownIconWidth = 24;
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
   screenReaderOnly: `${PREFIX}-screenReaderOnly`,
+  listboxWrapper: `${PREFIX}-listboxWrapper`,
 };
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
-  backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
-  [`& .${classes.listBoxHeader}`]: {
-    alignSelf: 'center',
-    display: 'inline-flex',
-    width: `calc(100% - ${searchIconWidth}px)`,
-  },
-  [`& .${classes.screenReaderOnly}`]: {
-    position: 'absolute',
-    height: 0,
-    width: 0,
-    overflow: 'hidden',
-  },
-}));
+const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'].includes(p) })(
+  ({ theme, containerPadding }) => ({
+    backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
+    [`& .${classes.listBoxHeader}`]: {
+      alignSelf: 'center',
+      display: 'inline-flex',
+      width: `calc(100% - ${searchIconWidth}px)`,
+    },
+    [`& .${classes.screenReaderOnly}`]: {
+      position: 'absolute',
+      height: 0,
+      width: 0,
+      overflow: 'hidden',
+    },
+    [`& .${classes.listboxWrapper}`]: {
+      padding: containerPadding,
+    },
+  })
+);
 
 const Title = styled(Typography)(({ theme }) => ({
   color: theme.listBox?.title?.main?.color,
@@ -102,6 +109,7 @@ function ListBoxInline({ options, layout }) {
   const updateKeyScroll = (newState) => setKeyScroll((current) => ({ ...current, ...newState }));
   const [currentScrollIndex, setCurrentScrollIndex] = useState({ start: 0, stop: 0 });
   const [appSelections] = useAppSelections(app);
+  const [selectionState] = useState(() => createSelectionState());
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
     setKeyboardActive,
@@ -176,13 +184,15 @@ function ListBoxInline({ options, layout }) {
         layout,
         model,
         translator,
+        selectionState,
       })
     : [];
 
   const showTitle = true;
   const showSearchToggle = search === 'toggle' && showSearch;
   const searchVisible = (search === true || showSearchToggle) && !selectDisabled();
-  const dense = layout.layoutOptions?.dense ?? false;
+  const { layoutOptions = {} } = layout;
+  const dense = layoutOptions.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
   const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
@@ -195,12 +205,19 @@ function ListBoxInline({ options, layout }) {
   };
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
-  const showSearchIcon = searchEnabled !== false && !constraints?.active;
+  const showSearchIcon = searchEnabled !== false && search === 'toggle' && !constraints?.active;
   const showSearchOrLockIcon = isLocked || showSearchIcon;
   const showIcons = showSearchOrLockIcon || isDrillDown;
   const iconsWidth = (showSearchOrLockIcon ? searchIconWidth : 0) + (isDrillDown ? drillDownIconWidth : 0);
   const drillDownPaddingLeft = showSearchOrLockIcon ? 0 : ICON_PADDING;
   const headerPaddingLeft = CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0);
+
+  // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
+  const isGridMode = layoutOptions?.dataLayout === 'grid';
+  let containerPadding;
+  if (isGridMode) {
+    containerPadding = layoutOptions.layoutOrder === 'row' ? '2px 4px' : '2px 6px 2px 4px';
+  }
 
   return (
     <StyledGrid
@@ -209,7 +226,12 @@ function ListBoxInline({ options, layout }) {
       tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
       direction="column"
       gap={0}
-      style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
+      containerPadding={containerPadding}
+      style={{
+        height: '100%',
+        minHeight: `${minHeight}px`,
+        flexFlow: 'column nowrap',
+      }}
       onKeyDown={handleKeyDown}
       onMouseEnter={handleOnMouseEnter}
       onMouseLeave={handleOnMouseLeave}
@@ -232,6 +254,7 @@ function ListBoxInline({ options, layout }) {
                       title={translator.get('Listbox.Search')}
                       size="large"
                       disableRipple
+                      data-testid="search-toggle-btn"
                     >
                       <SearchIcon style={{ fontSize: '12px' }} />
                     </IconButton>
@@ -251,7 +274,7 @@ function ListBoxInline({ options, layout }) {
             )}
             <Grid item className={classes.listBoxHeader}>
               {showTitle && (
-                <Title variant="h6" noWrap>
+                <Title variant="h6" noWrap title={layout.title}>
                   {layout.title}
                 </Title>
               )}
@@ -295,6 +318,7 @@ function ListBoxInline({ options, layout }) {
           <div className={classes.screenReaderOnly}>{translator.get('Listbox.Search.ScreenReaderInstructions')}</div>
           <ListBoxSearch
             selections={selections}
+            selectionState={selectionState}
             model={model}
             dense={dense}
             keyboard={keyboard}
@@ -306,7 +330,7 @@ function ListBoxInline({ options, layout }) {
             searchEnabled={searchEnabled}
           />
         </Grid>
-        <Grid item xs>
+        <Grid item xs className={classes.listboxWrapper}>
           <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
           <AutoSizer>
             {({ height, width }) => (
@@ -315,6 +339,7 @@ function ListBoxInline({ options, layout }) {
                 constraints={constraints}
                 layout={layout}
                 selections={selections}
+                selectionState={selectionState}
                 direction={direction}
                 frequencyMode={frequencyMode}
                 rangeSelect={rangeSelect}

@@ -42,7 +42,7 @@ describe('get-list-sizes', () => {
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
       columnCount: 1,
-      columnWidth: 47.5,
+      columnWidth: 49.5,
       count: 200,
       itemPadding: 4,
       itemSize: 29,
@@ -50,7 +50,7 @@ describe('get-list-sizes', () => {
       listHeight: 300,
       frequencyWidth: 40,
       maxCount: {
-        column: 706315,
+        column: 677777,
         row: 577000,
       },
       overflowStyling: {
@@ -134,7 +134,7 @@ describe('get-list-sizes', () => {
     });
   });
 
-  it('A minimum item width should kick in if text is short and reverve extra space for frequency', () => {
+  it('A minimum item width should kick in if text is short and reserve extra space for frequency', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'column';
     args.textWidth = 10;
@@ -176,7 +176,7 @@ describe('get-list-sizes', () => {
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
       columnCount: 1,
-      columnWidth: 47.5,
+      columnWidth: 49.5,
       count: 200,
       itemPadding: 4,
       itemSize: 29,
@@ -184,7 +184,7 @@ describe('get-list-sizes', () => {
       listHeight: 300,
       frequencyWidth: 40,
       maxCount: {
-        column: 706315,
+        column: 677777,
         row: 577000,
       },
       overflowStyling: {
