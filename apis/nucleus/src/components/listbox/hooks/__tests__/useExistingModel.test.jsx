@@ -19,14 +19,16 @@ describe('useExistingModel', () => {
   let renderer;
   let render;
   let ref;
+  let once;
 
   beforeEach(() => {
     jest.useFakeTimers();
 
     setMock = jest.fn();
     getMock = jest.fn();
+    once = jest.fn();
     app = {
-      getObject: jest.fn().mockResolvedValue({ id: 'generic-id' }),
+      getObject: jest.fn().mockResolvedValue({ id: 'generic-id', once }),
     };
     useModelStoreMock = jest.fn().mockReturnValue([
       {
@@ -55,8 +57,8 @@ describe('useExistingModel', () => {
   test('providing a qId should give a model fetched from the app', async () => {
     await render(useExistingModel, { app, qId: 'generic-id' });
     expect(getMock).toHaveBeenCalledWith('generic-id');
-    expect(setMock).toHaveBeenCalledWith('generic-id', { id: 'generic-id' });
-    expect(ref.current.result).toEqual({ id: 'generic-id' });
+    expect(setMock).toHaveBeenCalledWith('generic-id', { id: 'generic-id', once });
+    expect(ref.current.result).toEqual({ id: 'generic-id', once });
   });
 
   test('providing sessionModel should simply use that model', async () => {
