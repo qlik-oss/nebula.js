@@ -15,6 +15,7 @@ import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
+import createSelectionState from './hooks/selections/selectionState';
 import { CELL_PADDING_LEFT, ICON_PADDING } from './constants';
 
 const PREFIX = 'ListBoxInline';
@@ -102,6 +103,7 @@ function ListBoxInline({ options, layout }) {
   const updateKeyScroll = (newState) => setKeyScroll((current) => ({ ...current, ...newState }));
   const [currentScrollIndex, setCurrentScrollIndex] = useState({ start: 0, stop: 0 });
   const [appSelections] = useAppSelections(app);
+  const [selectionState] = useState(() => createSelectionState());
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
     setKeyboardActive,
@@ -176,6 +178,7 @@ function ListBoxInline({ options, layout }) {
         layout,
         model,
         translator,
+        selectionState,
       })
     : [];
 
@@ -294,6 +297,7 @@ function ListBoxInline({ options, layout }) {
           <div className={classes.screenReaderOnly}>{translator.get('Listbox.Search.ScreenReaderInstructions')}</div>
           <ListBoxSearch
             selections={selections}
+            selectionState={selectionState}
             model={model}
             dense={dense}
             keyboard={keyboard}
@@ -314,6 +318,7 @@ function ListBoxInline({ options, layout }) {
                 constraints={constraints}
                 layout={layout}
                 selections={selections}
+                selectionState={selectionState}
                 direction={direction}
                 frequencyMode={frequencyMode}
                 rangeSelect={rangeSelect}

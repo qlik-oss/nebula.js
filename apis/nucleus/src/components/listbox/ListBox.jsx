@@ -13,7 +13,6 @@ import useDataStore from './hooks/useDataStore';
 import ListBoxDisclaimer from './components/ListBoxDisclaimer';
 import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
-import createSelectionState from './hooks/selections/selectionState';
 import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
@@ -23,6 +22,7 @@ export default function ListBox({
   constraints,
   layout,
   selections,
+  selectionState,
   direction,
   checkboxes: checkboxOption,
   height,
@@ -73,10 +73,10 @@ export default function ListBox({
   const showOverflowDisclaimer = (show) => setOverflowDisclaimer((state) => ({ ...state, show }));
 
   const [pages, setPages] = useState([]);
-  const [selectionState] = useState(() => createSelectionState(setPages));
 
   if (itemsLoader?.pages) {
     selectionState.update({
+      setPages,
       pages: itemsLoader?.pages,
       isSingleSelect,
       selectDisabled,

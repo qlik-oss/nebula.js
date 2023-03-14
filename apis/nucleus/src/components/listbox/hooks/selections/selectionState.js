@@ -1,20 +1,34 @@
 import { getSelectedValues } from './listbox-selections';
 
-export default function selectionState(setPages) {
+export default function selectionState() {
   const state = {
     itemStates: {},
     ignoreSelectionState: false,
     selectedInEngine: [],
     enginePages: [],
     layout: undefined,
+    setPages: undefined,
 
-    update({ pages, isSingleSelect, selectDisabled, layout }) {
+    update({ setPages, pages, isSingleSelect, selectDisabled, layout }) {
+      this.setPages = setPages;
+      const isSameRowCount = this.layout?.qListObject?.qSize?.qcy === layout.qListObject.qSize.qcy;
+      const isSameMaxGlyphCnt =
+        this.layout?.qListObject?.qDimensionInfo?.qApprMaxGlyphCount ===
+        layout.qListObject.qDimensionInfo.qApprMaxGlyphCount;
+
+      if (!isSameRowCount || !isSameMaxGlyphCnt) {
+        // The field have probably changed (drill up/down)
+        // need to clear the client side item states since the field values have changed
+        this.clearItemStates(false);
+      }
+
       if (state.enginePages !== pages && pages !== undefined) {
         state.enginePages = pages ?? [];
         state.selectedInEngine = getSelectedValues(pages);
         state.selectableValuesUpdating = false;
         state.triggerStateChanged();
       }
+      state.layout = layout;
       state.isSingleSelect = isSingleSelect;
       state.selectDisabled = selectDisabled;
       state.isDimCalculated = layout?.qListObject?.qDimensionInfo?.qIsCalculated ?? false;
@@ -66,8 +80,10 @@ export default function selectionState(setPages) {
     },
 
     triggerStateChanged() {
-      const pages = state.applySelectionsOnPages(state.enginePages);
-      setPages(pages);
+      if (this.setPages) {
+        const pages = state.applySelectionsOnPages(state.enginePages);
+        this.setPages(pages);
+      }
     },
 
     applySelectionsOnPages(pages) {
