@@ -1,6 +1,8 @@
+import React from 'react';
 import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx } from '../helpers/constants';
+import { CELL_PADDING_LEFT } from '../../../constants';
 
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
@@ -18,11 +20,12 @@ const ellipsis = {
   width: '100%',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+  whiteSpace: 'nowrap',
 };
 
 const RowColRoot = styled('div', {
-  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense }) => ({
+  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -53,8 +56,8 @@ const RowColRoot = styled('div', {
     minWidth: 0,
     flexGrow: 1,
     // Note that this padding is overridden when using checkboxes.
-    paddingLeft: '9px',
-    paddingRight: '9px',
+    paddingLeft: `${CELL_PADDING_LEFT}px`,
+    paddingRight: 0,
   },
 
   // The leaf node, containing the label text.
@@ -62,9 +65,9 @@ const RowColRoot = styled('div', {
     flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
-    whiteSpace: 'pre', // to keep white-space on highlight
-    paddingRight: '9px',
+    paddingRight: '1px', // needed when text is right-aligned and shown in italics
     ...ellipsis,
+    whiteSpace: 'pre', // to keep white-space on highlight
     fontSize: theme.listBox?.content?.fontSize,
     fontFamily: theme.listBox?.content?.fontFamily,
   },
@@ -108,7 +111,10 @@ const RowColRoot = styled('div', {
   // The icons container holding tick and lock, shown inside fields.
   [`& .${classes.icon}`]: {
     display: 'flex',
-    padding: theme.spacing(1, 1, 1, 0),
+    justifyContent: 'center',
+    width: 24,
+    minWidth: 24,
+    maxWidth: 24,
   },
 
   // Selection styles (S=Selected, XS=ExcludedSelected, A=Available, X=Excluded).
@@ -137,8 +143,11 @@ const RowColRoot = styled('div', {
   },
 
   [`& .${classes.frequencyCount}`]: {
-    width: '66px',
     justifyContent: 'flex-end',
+    ...ellipsis,
+    flex: `0 1 ${frequencyWidth}px`,
+    textAlign: 'right',
+    paddingLeft: '2px',
   },
 
   [`&.${classes.barContainer}`]: {
@@ -180,4 +189,4 @@ const RowColRoot = styled('div', {
   },
 }));
 
-export default RowColRoot;
+export default React.memo(RowColRoot);

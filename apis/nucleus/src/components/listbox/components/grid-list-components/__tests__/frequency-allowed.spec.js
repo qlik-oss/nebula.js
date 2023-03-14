@@ -7,7 +7,7 @@ describe('frequency allowed', () => {
     it('should return true', () => {
       layout.qListObject.frequencyEnabled = true;
       const allowed = getFrequencyAllowed({
-        width: 81,
+        itemWidth: 81,
         layout,
         frequencyMode: 'not none',
       });
@@ -16,7 +16,7 @@ describe('frequency allowed', () => {
     it('should return true when frequencyMode is not none although frequencyEnabled is false', () => {
       layout.qListObject.frequencyEnabled = false;
       const allowed = getFrequencyAllowed({
-        width: 81,
+        itemWidth: 81,
         layout,
         frequencyMode: 'not none',
       });
@@ -25,7 +25,7 @@ describe('frequency allowed', () => {
     it('should return true when frequencyEnabled is true although frequencyMode is none', () => {
       layout.qListObject.frequencyEnabled = true;
       const allowed = getFrequencyAllowed({
-        width: 81,
+        itemWidth: 81,
         layout,
         frequencyMode: 'none',
       });
@@ -34,7 +34,7 @@ describe('frequency allowed', () => {
     it('should return false when the listbox is not wide enough', () => {
       layout.qListObject.frequencyEnabled = true;
       const allowed = getFrequencyAllowed({
-        width: 80,
+        itemWidth: 80,
         layout,
         frequencyMode: 'not none',
       });
@@ -43,7 +43,7 @@ describe('frequency allowed', () => {
     it('should return false when frequencyMode is not defined and frequencyEnabled is false', () => {
       layout.qListObject.frequencyEnabled = false;
       const allowed = getFrequencyAllowed({
-        width: 81,
+        itemWidth: 81,
         layout,
       });
       expect(allowed).toEqual(false);

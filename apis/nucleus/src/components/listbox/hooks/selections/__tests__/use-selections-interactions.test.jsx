@@ -87,7 +87,7 @@ describe('use-listbox-interactions', () => {
         const arg0 = ref.current.result;
         expect(Object.keys(arg0).sort()).toEqual(['instantPages', 'interactionEvents', 'select']);
         expect(arg0.instantPages).toEqual([]);
-        expect(Object.keys(arg0.interactionEvents).sort()).toEqual(['onClick']);
+        expect(Object.keys(arg0.interactionEvents).sort()).toEqual(['onChange']);
       });
     });
 
@@ -253,8 +253,8 @@ describe('use-listbox-interactions', () => {
       await render({ checkboxes: true });
       const startCallCount = applySelectionsOnPages.mock.calls.length;
       await act(() => {
-        ref.current.result.interactionEvents.onClick({
-          currentTarget: {
+        ref.current.result.interactionEvents.onChange({
+          target: {
             getAttribute: jest.fn().mockReturnValue(24),
           },
         });
@@ -263,8 +263,8 @@ describe('use-listbox-interactions', () => {
       expect(applySelectionsOnPages.mock.calls).toHaveLength(startCallCount + 2);
       expect(applySelectionsOnPages.mock.calls[1]).toEqual([[], [24], false]);
       await act(() => {
-        ref.current.result.interactionEvents.onClick({
-          currentTarget: {
+        ref.current.result.interactionEvents.onChange({
+          target: {
             getAttribute: jest.fn().mockReturnValue(24),
           },
         });
@@ -277,8 +277,8 @@ describe('use-listbox-interactions', () => {
       const preventDefault = jest.fn();
       const focus = jest.fn();
       await act(() => {
-        ref.current.result.interactionEvents.onClick({
-          currentTarget: {
+        ref.current.result.interactionEvents.onChange({
+          target: {
             focus,
             getAttribute: jest.fn().mockReturnValue(24),
           },

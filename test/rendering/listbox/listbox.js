@@ -1,10 +1,10 @@
-(() => {
-  function getMocks() {
+(async () => {
+  function getMocks(fixture) {
     const { getMockData, getListboxLayout } = window.getFuncs();
     const obj = {
       id: `listbox-${+new Date()}`,
-      getListObjectData: async () => getMockData(),
-      getLayout: async () => getListboxLayout(),
+      getListObjectData: async () => (fixture ? fixture.getListObjectData() : getMockData()),
+      getLayout: async () => (fixture ? fixture.getLayout() : getListboxLayout()),
       on() {},
       once() {},
     };
@@ -24,7 +24,7 @@
 
   const init = async (options = {}) => {
     const element = window.document.querySelector('#object');
-    const { app } = getMocks();
+    const { app } = getMocks(options.fixtureFile);
     const nebbie = window.stardust.embed(app);
     const listboxOptions = {
       ...options,
@@ -64,11 +64,18 @@
     return sc;
   };
 
-  const { scenario, ...options } = getOptions() || {};
+  const { scenario, fixture, ...options } = getOptions() || {};
 
-  const scenarioOptions = getScenarioOptions(scenario);
+  let fixtureFile;
+
+  if (fixture) {
+    fixtureFile = (await import(fixture)).default;
+  }
+
+  const scenarioOptions = fixtureFile ? fixtureFile.options || {} : getScenarioOptions(scenario);
 
   return init({
+    fixtureFile,
     ...scenarioOptions,
     ...options,
   });

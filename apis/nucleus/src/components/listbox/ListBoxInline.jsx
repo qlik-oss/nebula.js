@@ -5,6 +5,7 @@ import Lock from '@nebula.js/ui/icons/lock';
 import { IconButton, Grid, Typography } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 import SearchIcon from '@nebula.js/ui/icons/search';
+import DrillDownIcon from '@nebula.js/ui/icons/drill-down';
 import useLayout from '../../hooks/useLayout';
 import ListBox from './ListBox';
 import createListboxSelectionToolbar from './interactions/listbox-selection-toolbar';
@@ -14,10 +15,11 @@ import ListBoxSearch from './components/ListBoxSearch';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
+import { CELL_PADDING_LEFT, ICON_PADDING } from './constants';
 
 const PREFIX = 'ListBoxInline';
 const searchIconWidth = 28;
-
+const drillDownIconWidth = 24;
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
   screenReaderOnly: `${PREFIX}-screenReaderOnly`,
@@ -49,7 +51,6 @@ function ListBoxInline({ options, layout }) {
     app,
     direction,
     frequencyMode,
-    listLayout,
     checkboxes,
     search = true,
     focusSearch = false,
@@ -169,7 +170,7 @@ function ListBoxInline({ options, layout }) {
   }
 
   const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
-
+  const isDrillDown = layout.qListObject.qDimensionInfo.qGrouping === 'H';
   const listboxSelectionToolbarItems = toolbar
     ? createListboxSelectionToolbar({
         layout,
@@ -185,6 +186,7 @@ function ListBoxInline({ options, layout }) {
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
   const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
+  const headerHeight = 32;
   const { wildCardSearch, searchEnabled } = layout;
 
   const onShowSearch = () => {
@@ -193,6 +195,12 @@ function ListBoxInline({ options, layout }) {
   };
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
+  const showSearchIcon = searchEnabled !== false && !constraints?.active;
+  const showSearchOrLockIcon = isLocked || showSearchIcon;
+  const showIcons = showSearchOrLockIcon || isDrillDown;
+  const iconsWidth = (showSearchOrLockIcon ? searchIconWidth : 0) + (isDrillDown ? drillDownIconWidth : 0);
+  const drillDownPaddingLeft = showSearchOrLockIcon ? 0 : ICON_PADDING;
+  const headerPaddingLeft = CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0);
 
   return (
     <StyledGrid
@@ -208,27 +216,39 @@ function ListBoxInline({ options, layout }) {
       ref={containerRef}
     >
       {toolbar && (
-        <Grid item container style={{ padding: theme.spacing(1) }} wrap="nowrap">
-          <Grid item container wrap="nowrap">
-            <Grid item sx={{ display: 'flex', alignItems: 'center', width: searchIconWidth }}>
-              {isLocked ? (
-                <IconButton tabIndex={-1} onClick={unlock} disabled={!isLocked} size="large">
-                  <Lock title={translator.get('Listbox.Unlock')} disableRipple style={{ fontSize: '12px' }} />
-                </IconButton>
-              ) : (
-                searchEnabled !== false && (
-                  <IconButton
-                    onClick={onShowSearch}
-                    tabIndex={0}
-                    title={translator.get('Listbox.Search')}
-                    size="large"
-                    disableRipple
-                  >
-                    <SearchIcon style={{ fontSize: '12px' }} />
+        <Grid item container style={{ padding: theme.spacing(1), paddingLeft: `${headerPaddingLeft}px` }} wrap="nowrap">
+          <Grid item container height={headerHeight} wrap="nowrap">
+            {showIcons && (
+              <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
+                {isLocked ? (
+                  <IconButton tabIndex={-1} onClick={unlock} disabled={selectDisabled()} size="large">
+                    <Lock title={translator.get('Listbox.Unlock')} disableRipple style={{ fontSize: '12px' }} />
                   </IconButton>
-                )
-              )}
-            </Grid>
+                ) : (
+                  showSearchIcon && (
+                    <IconButton
+                      onClick={onShowSearch}
+                      tabIndex={-1}
+                      title={translator.get('Listbox.Search')}
+                      size="large"
+                      disableRipple
+                    >
+                      <SearchIcon style={{ fontSize: '12px' }} />
+                    </IconButton>
+                  )
+                )}
+                {isDrillDown && (
+                  <IconButton
+                    tabIndex={-1}
+                    title={translator.get('Listbox.DrillDown')}
+                    size="large"
+                    sx={{ paddingLeft: `${drillDownPaddingLeft}px` }}
+                  >
+                    <DrillDownIcon style={{ fontSize: '12px' }} />
+                  </IconButton>
+                )}
+              </Grid>
+            )}
             <Grid item className={classes.listBoxHeader}>
               {showTitle && (
                 <Title variant="h6" noWrap>
@@ -292,10 +312,10 @@ function ListBoxInline({ options, layout }) {
             {({ height, width }) => (
               <ListBox
                 model={model}
+                constraints={constraints}
                 layout={layout}
                 selections={selections}
                 direction={direction}
-                listLayout={listLayout}
                 frequencyMode={frequencyMode}
                 rangeSelect={rangeSelect}
                 checkboxes={checkboxes}

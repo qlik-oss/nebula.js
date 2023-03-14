@@ -71,14 +71,15 @@ const getIcon = (cls, showGray = true, excluded = false) => (
   <span className={cls.cbIcon}>{excluded && <span className={showGray && excluded ? cls.cbIconExcluded : ''} />}</span>
 );
 
-export default function ListboxCheckbox({ checked, label, dense, excluded, showGray = true }) {
+export default function ListboxCheckbox({ onChange, checked, label, dense, excluded, showGray = true, dataN }) {
   return (
     <StyledCheckbox
       edge="start"
+      onChange={onChange}
       checked={checked}
       disableRipple
       className={[classes.checkbox, dense && classes.dense].filter(Boolean).join(' ')}
-      inputProps={{ 'aria-labelledby': label }}
+      inputProps={{ 'aria-labelledby': label, 'data-n': dataN }}
       name={label}
       icon={getIcon(classes, showGray, excluded)}
       checkedIcon={<span className={classes.cbIconChecked} />}

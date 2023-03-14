@@ -5,21 +5,25 @@ import ValueField from './ValueField';
 function LabelsWithRanges({ labels, dense, showGray, checkboxes }) {
   return (
     <>
-      {labels.map(([label, highlighted]) => (
-        <ValueField
-          label={label}
-          key={label}
-          highlighted={highlighted}
-          dense={dense}
-          showGray={showGray}
-          checkboxes={checkboxes}
-        />
-      ))}
+      {labels.map(([label, highlighted], index) => {
+        const key = `${index}`;
+        return (
+          <ValueField
+            label={label}
+            key={key}
+            highlighted={highlighted}
+            dense={dense}
+            showGray={showGray}
+            checkboxes={checkboxes}
+          />
+        );
+      })}
     </>
   );
 }
 
-export default function FieldWithRanges({
+function FieldWithRanges({
+  onChange,
   labels,
   checkboxes,
   dense,
@@ -35,6 +39,7 @@ export default function FieldWithRanges({
   const LWR = <LabelsWithRanges labels={labels} dense={dense} showGray={showGray} checkboxes={checkboxes} />;
   return checkboxes ? (
     <CheckboxField
+      onChange={onChange}
       label={LWR}
       color={color}
       qElemNumber={qElemNumber}
@@ -51,3 +56,5 @@ export default function FieldWithRanges({
     LWR
   );
 }
+
+export default FieldWithRanges;

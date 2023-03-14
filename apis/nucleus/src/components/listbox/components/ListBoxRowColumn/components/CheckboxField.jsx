@@ -6,7 +6,8 @@ import { isExcluded } from '../helpers/cell-states';
 import classes from '../helpers/classes';
 import LabelTag from './LabelTag';
 
-export default function CheckboxField({
+function CheckboxField({
+  onChange,
   label,
   color,
   qElemNumber,
@@ -22,15 +23,19 @@ export default function CheckboxField({
 }) {
   const cb = (
     <ListBoxCheckbox
+      onChange={onChange}
       label={label}
       checked={isSelected}
       dense={dense}
       excluded={isExcluded(cell)}
       isGridCol={isGridCol}
       showGray={showGray}
+      dataN={qElemNumber}
     />
   );
-  const rb = <ListBoxRadioButton label={label} checked={isSelected} dense={dense} />;
+  const rb = (
+    <ListBoxRadioButton onChange={onChange} label={label} checked={isSelected} dense={dense} dataN={qElemNumber} />
+  );
 
   return (
     <FormControlLabel
@@ -53,3 +58,5 @@ export default function CheckboxField({
     />
   );
 }
+
+export default CheckboxField;

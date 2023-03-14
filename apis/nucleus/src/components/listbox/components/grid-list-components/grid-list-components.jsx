@@ -1,7 +1,6 @@
 /* eslint-disable react/function-component-definition */
 import React from 'react';
 import RowColumn from '../ListBoxRowColumn';
-import getFrequencyAllowed from './frequency-allowed';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
 import handleSetOverflowDisclaimer from './set-overflow-disclaimer';
@@ -27,16 +26,17 @@ export default function getListBoxComponents({
   showGray,
   scrollState,
   direction,
-  listLayout,
   sizes,
   listCount,
   overflowDisclaimer,
   setScrollPosition,
   focusListItems,
   setCurrentScrollIndex,
+  constraints,
+  freqIsAllowed,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
-  const { itemPadding, listHeight, itemSize, rowCount, columnCount } = sizes || {};
+  const { itemPadding, listHeight, itemSize, rowCount, columnCount, frequencyWidth } = sizes || {};
 
   // Options common for List and Grid.
   const commonComponentOptions = {
@@ -56,10 +56,11 @@ export default function getListBoxComponents({
     checkboxes,
     layoutOptions,
     frequencyMode,
-    freqIsAllowed: getFrequencyAllowed({ width, layout, frequencyMode }),
+    freqIsAllowed,
     isSingleSelect,
     textAlign,
     itemPadding,
+    frequencyWidth,
     actions: {
       select,
       confirm: () => selections?.confirm.call(selections),
@@ -82,10 +83,10 @@ export default function getListBoxComponents({
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...commonComponentOptions}
         dataTestid="fixed-size-list"
+        scrollDisabled={constraints?.active}
         height={listHeight}
         width={width}
         itemCount={listCount}
-        layout={listLayout}
         itemData={{ ...commonItemData, listCount }}
         itemSize={itemSize}
         onItemsRendered={(renderProps) => {
@@ -150,6 +151,7 @@ export default function getListBoxComponents({
         // eslint-disable-next-line react/jsx-props-no-spreading
         {...commonComponentOptions}
         dataTestid="fixed-size-grid"
+        scrollDisabled={constraints?.active}
         height={gridHeight}
         width={width}
         columnCount={columnCount}
