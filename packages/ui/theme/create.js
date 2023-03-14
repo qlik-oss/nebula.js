@@ -39,6 +39,9 @@ const overrides = (theme) => ({
       padding: 7,
       borderRadius: 2,
       border: '1px solid transparent',
+      '&:hover': {
+        backgroundColor: theme.palette.btn.hover,
+      },
       '&:focus-visible': {
         borderColor: theme.palette.custom.focusBorder,
         boxShadow: `0 0 0 2px ${theme.palette.custom.focusOutline}`,
@@ -46,14 +49,11 @@ const overrides = (theme) => ({
       '&:active': {
         borderColor: 'transparent',
         boxShadow: 'none',
-        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+        backgroundColor: theme.palette.btn.active,
       },
       '&:not(:active):not(:focus-visible)': {
         borderColor: 'transparent',
         boxShadow: 'none',
-      },
-      '&:hover': {
-        backgroundColor: 'rgba(64, 64, 64, 0.05)',
       },
     },
   },
