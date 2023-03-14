@@ -228,7 +228,7 @@ function ListBoxInline({ options, layout }) {
                   showSearchIcon && (
                     <IconButton
                       onClick={onShowSearch}
-                      tabIndex={0}
+                      tabIndex={-1}
                       title={translator.get('Listbox.Search')}
                       size="large"
                       disableRipple
