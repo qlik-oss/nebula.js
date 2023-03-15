@@ -147,15 +147,16 @@ function ListBoxInline({ options, layout }) {
     };
     if (selections) {
       if (!selections.isModal()) {
-        selections.on('deactivated', hide);
         selections.on('activated', show);
+        selections.on('deactivated', hide);
       }
       setShowToolbar(selections.isActive());
     }
+
     return () => {
       if (selections && selections.removeListener) {
-        selections.removeListener('deactivated', show);
-        selections.removeListener('activated', hide);
+        selections.removeListener('activated', show);
+        selections.removeListener('deactivated', hide);
       }
     };
   }, [selections, toolbar]);
