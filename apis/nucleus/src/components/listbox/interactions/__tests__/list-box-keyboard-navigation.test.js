@@ -107,6 +107,7 @@ describe('keyboard navigation', () => {
         nativeEvent: { keyCode: 27 },
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
+        currentTarget: { closest: jest.fn().mockReturnValue(null) },
       };
       handleKeyDownForField(eventCancel);
       expect(actions.cancel).toHaveBeenCalledTimes(1);
