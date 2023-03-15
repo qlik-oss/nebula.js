@@ -584,7 +584,7 @@ declare namespace stardust {
         /**
          * Function used by the visualization to tell Nebula to it wants to relinquish focus
          */
-        blur?(): void;
+        blur?(b?: boolean): void;
         /**
          * Function used by the visualization to tell Nebula to it wants focus
          */
