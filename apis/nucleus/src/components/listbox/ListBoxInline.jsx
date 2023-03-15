@@ -178,7 +178,7 @@ function ListBoxInline({ options, layout }) {
   }
 
   const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
-  const isRtl = options.direction === 'rtl';
+  const isRtl = direction === 'rtl';
   const isDrillDown = layout.qListObject.qDimensionInfo.qGrouping === 'H';
   const listboxSelectionToolbarItems = toolbar
     ? createListboxSelectionToolbar({
@@ -292,7 +292,7 @@ function ListBoxInline({ options, layout }) {
             )}
             <Grid item sx={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }} className={classes.listBoxHeader}>
               {showTitle && (
-                <Title variant="h6" noWrap>
+                <Title variant="h6" noWrap title={layout.title}>
                   {layout.title}
                 </Title>
               )}
@@ -319,7 +319,7 @@ function ListBoxInline({ options, layout }) {
                 onConfirm: () => {},
                 onCancel: () => {},
               }}
-              direction={isRtl}
+              direction={direction}
             />
           </Grid>
         </Grid>
@@ -347,7 +347,7 @@ function ListBoxInline({ options, layout }) {
             searchContainerRef={searchContainerRef}
             wildCardSearch={wildCardSearch}
             searchEnabled={searchEnabled}
-            direction={isRtl}
+            direction={direction}
           />
         </Grid>
         <Grid item xs className={classes.listboxWrapper}>

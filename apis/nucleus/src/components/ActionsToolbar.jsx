@@ -47,7 +47,7 @@ const ActionToolbarElement = {
 const ActionsGroup = React.forwardRef(
   ({ ariaExpanded = false, actions = [], first = false, last = false, addAnchor = false, isRtl = false }, ref) =>
     actions.length > 0 ? (
-      <Grid item className={isRtl} container gap={0} flexDirection={isRtl ? 'row-reverse' : 'row'} wrap="nowrap">
+      <Grid item container gap={0} flexDirection={isRtl ? 'row-reverse' : 'row'} wrap="nowrap">
         {actions.map((e, ix) => {
           let cls = [];
           const isFirstItem = first && ix === 0;
@@ -110,7 +110,7 @@ function ActionsToolbar({
   },
   focusHandler = null,
   actionsRefMock = null, // for testing
-  direction = false,
+  direction = 'ltr',
 }) {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
 
@@ -196,7 +196,7 @@ function ActionsToolbar({
   const showActions = newActions.length > 0;
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
-  const isRtl = direction;
+  const isRtl = direction === 'rtl';
 
   const Actions = (
     <Grid

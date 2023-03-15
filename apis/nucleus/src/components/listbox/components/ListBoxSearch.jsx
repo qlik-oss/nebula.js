@@ -39,7 +39,7 @@ export default function ListBoxSearch({
 
   const theme = useTheme();
   const { getStoreValue } = useDataStore(model);
-  const isRtl = direction;
+  const isRtl = direction === 'rtl';
   const inpuTextAlign = isRtl ? 'right' : 'left';
 
   const cancel = () => selections.isActive() && selections.cancel();

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useEffect, useCallback, useRef, useMemo } from 'react';
 
 import { Grid } from '@mui/material';
@@ -161,8 +162,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     alignItems: 'center',
     minWidth: 0,
     flexGrow: 1,
-    paddingLeft: checkboxes || direction === 'rtl' ? 0 : undefined,
-    paddingRight: direction === 'rtl' ? 8 : 0,
+    paddingLeft: direction === 'rtl' ? 8 : checkboxes ? 0 : undefined,
+    paddingRight: checkboxes ? 0 : direction === 'rtl' ? 8 : 0,
     justifyContent: valueTextAlign,
   };
 
