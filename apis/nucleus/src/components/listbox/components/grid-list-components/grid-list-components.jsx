@@ -5,6 +5,8 @@ import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
 import handleSetOverflowDisclaimer from './set-overflow-disclaimer';
 
+const REMOVE_TICK_LIMIT = 80; // an item width equal to or less than this, will hide the select tick
+
 const { StyledFixedSizeList, StyledFixedSizeGrid } = getStyledComponents();
 
 export default function getListBoxComponents({
@@ -36,7 +38,9 @@ export default function getListBoxComponents({
   freqIsAllowed,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
-  const { itemPadding, listHeight, itemSize, rowCount, columnCount, frequencyWidth } = sizes || {};
+  const { columnWidth, itemPadding, listHeight, itemSize, rowCount, columnCount, frequencyWidth } = sizes || {};
+
+  const showTick = typeof columnWidth === 'number' ? columnWidth > REMOVE_TICK_LIMIT : true;
 
   // Options common for List and Grid.
   const commonComponentOptions = {
@@ -71,6 +75,7 @@ export default function getListBoxComponents({
     histogram,
     keyboard,
     showGray,
+    showTick,
     dataOffset: local.current.dataOffset,
     focusListItems,
   };
@@ -114,7 +119,7 @@ export default function getListBoxComponents({
   };
 
   const Grid = ({ onItemsRendered, ref }) => {
-    const { columnWidth, overflowStyling, scrollBarWidth } = sizes;
+    const { overflowStyling, scrollBarWidth } = sizes;
     const { layoutOrder } = layoutOptions || {};
     const gridHeight = Math.min(listHeight, rowCount * itemSize + scrollBarWidth);
     // eslint-disable-next-line no-param-reassign

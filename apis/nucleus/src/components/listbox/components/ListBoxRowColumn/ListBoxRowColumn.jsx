@@ -38,6 +38,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     histogram = false,
     keyboard,
     showGray = true,
+    showTick: sizePermitsTick = true,
     columnCount = 1,
     rowCount = 1,
     dataOffset,
@@ -150,7 +151,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   };
 
   const showLock = isSelected && isLocked;
-  const showTick = !checkboxes && isSelected && !isLocked;
+  const showTick = !checkboxes && isSelected && !isLocked && sizePermitsTick;
 
   const cellStyle = {
     display: 'flex',
@@ -163,6 +164,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const isFirstElement = index === 0;
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
+
+  const showIcon = !checkboxes && showTick && showLock;
 
   return (
     <RowColRoot
@@ -246,9 +249,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
         {freqIsAllowed && <Frequency cell={cell} checkboxes={checkboxes} dense={dense} showGray={showGray} />}
 
-        {!checkboxes && (
+        {showIcon && (
           <Grid item className={classes.icon}>
-            {!showLock && !showTick && <span style={{ minWidth: '12px' }} />}
             {showLock && <Lock style={iconStyles} size="small" />}
             {showTick && <Tick style={iconStyles} size="small" />}
           </Grid>

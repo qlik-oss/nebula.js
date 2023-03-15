@@ -1,8 +1,56 @@
 const scrollBarWidth = 10; // TODO: ignore this - instead set the styling only show on hover...
 
-const ITEM_MIN_WIDTH = 56;
 const ITEM_MAX_WIDTH = 150;
 const FREQUENCY_WIDTH = 40;
+
+const ITEM_MIN_WIDTH = 56;
+
+function calculateRowMode({ maxVisibleColumns, listCount, containerWidth, columnAutoWidth }) {
+  const maxColumns = maxVisibleColumns?.maxColumns || 3;
+  const innerWidth = containerWidth - scrollBarWidth;
+
+  let columnCount;
+  if (maxVisibleColumns?.auto !== false) {
+    columnCount = Math.min(listCount, Math.ceil(innerWidth / Math.max(ITEM_MIN_WIDTH, columnAutoWidth))); // TODO: smarter sizing... based on glyph count + font size etc...??
+  } else {
+    columnCount = Math.min(listCount, maxColumns);
+  }
+  const columnWidth = innerWidth / columnCount;
+  if (columnWidth < ITEM_MIN_WIDTH && !maxVisibleColumns.auto) {
+    // when columnWidth is too low, fall back to auto mode.
+    return calculateRowMode({
+      maxVisibleColumns: { ...maxVisibleColumns, auto: true },
+      listCount,
+      containerWidth,
+      columnAutoWidth,
+    });
+  }
+  const rowCount = Math.ceil(listCount / columnCount);
+  return {
+    rowCount,
+    columnWidth,
+    columnCount,
+  };
+}
+
+function calculateColumnMode({ maxVisibleRows, itemSize, listCount, listHeight, columnAutoWidth, containerWidth }) {
+  let rowCount;
+  const maxRows = maxVisibleRows?.maxRows || 3;
+  if (maxVisibleRows.auto !== false) {
+    rowCount = Math.floor(listHeight / itemSize);
+  } else {
+    rowCount = Math.min(listCount, maxRows);
+  }
+
+  const columnCount = Math.ceil(listCount / rowCount);
+  const columnWidth = Math.max(columnAutoWidth, containerWidth / columnCount, ITEM_MIN_WIDTH);
+
+  return {
+    columnWidth,
+    columnCount,
+    rowCount,
+  };
+}
 
 export default function getListSizes({ layout, width, height, listCount, count, textWidth, freqIsAllowed }) {
   const { layoutOptions = {} } = layout || {};
@@ -39,29 +87,25 @@ export default function getListSizes({ layout, width, height, listCount, count, 
     let containerWidth = width;
 
     if (layoutOrder === 'row') {
-      containerWidth += itemPadding * 2;
       overflowStyling = { overflowX: 'hidden' };
-      const maxColumns = maxVisibleColumns?.maxColumns || 3;
-
-      if (maxVisibleColumns?.auto !== false) {
-        columnCount = Math.min(listCount, Math.ceil((containerWidth - scrollBarWidth) / columnAutoWidth)); // TODO: smarter sizing... based on glyph count + font size etc...??
-      } else {
-        columnCount = Math.min(listCount, maxColumns);
-      }
-      rowCount = Math.ceil(listCount / columnCount);
-      columnWidth = (containerWidth - scrollBarWidth) / columnCount;
+      containerWidth += itemPadding * 2;
+      ({ rowCount, columnWidth, columnCount } = calculateRowMode({
+        maxVisibleColumns,
+        listCount,
+        containerWidth,
+        columnAutoWidth,
+      }));
     } else {
       overflowStyling = { overflowY: 'hidden' };
-      const maxRows = maxVisibleRows?.maxRows || 3;
 
-      if (maxVisibleRows.auto !== false) {
-        rowCount = Math.floor(listHeight / itemSize);
-      } else {
-        rowCount = Math.min(listCount, maxRows);
-      }
-
-      columnCount = Math.ceil(listCount / rowCount);
-      columnWidth = Math.max(columnAutoWidth, containerWidth / columnCount);
+      ({ rowCount, columnWidth, columnCount } = calculateColumnMode({
+        maxVisibleRows,
+        itemSize,
+        listCount,
+        listHeight,
+        columnAutoWidth,
+        containerWidth,
+      }));
     }
   }
 
