@@ -107,7 +107,7 @@ describe('<ListboxInline />', () => {
       on: jest.fn().mockImplementation((event, func) => (eventTriggered) => {
         if (event === eventTriggered) func();
       }),
-      off: jest.fn(),
+      removeListener: jest.fn(),
     };
 
     options = {
@@ -191,9 +191,9 @@ describe('<ListboxInline />', () => {
       // expect(renderer.toJSON().props.onKeyDown).toBe('keyboard-navigation');
 
       expect(selections.on).toHaveBeenCalledTimes(2);
-      expect(selections.on.mock.calls[0][0]).toBe('deactivated');
-      expect(selections.on.mock.calls[1][0]).toBe('activated');
-      expect(selections.off).not.toHaveBeenCalled();
+      expect(selections.on.mock.calls[0][0]).toBe('activated');
+      expect(selections.on.mock.calls[1][0]).toBe('deactivated');
+      expect(selections.removeListener).not.toHaveBeenCalled();
     });
 
     test('should render properly with search toggle option', async () => {
@@ -232,8 +232,8 @@ describe('<ListboxInline />', () => {
       });
       expect(selections.on).toHaveBeenCalledTimes(2);
       expect(selections.isModal).toHaveBeenCalledTimes(1);
-      expect(selections.on.mock.calls[0][0]).toBe('deactivated');
-      expect(selections.on.mock.calls[1][0]).toBe('activated');
+      expect(selections.on.mock.calls[0][0]).toBe('activated');
+      expect(selections.on.mock.calls[1][0]).toBe('deactivated');
     });
 
     test('should render without search and show search button', async () => {
@@ -258,6 +258,18 @@ describe('<ListboxInline />', () => {
         visible: true,
         autoFocus: false,
       });
+    });
+
+    test('should remove correct listeners on unmount', async () => {
+      await render();
+
+      const activatedFn = selections.on.mock.calls[0][1];
+      const deactivatedFn = selections.on.mock.calls[1][1];
+
+      renderer.unmount();
+
+      expect(selections.removeListener).toHaveBeenCalledWith('activated', activatedFn);
+      expect(selections.removeListener).toHaveBeenCalledWith('deactivated', deactivatedFn);
     });
   });
 });

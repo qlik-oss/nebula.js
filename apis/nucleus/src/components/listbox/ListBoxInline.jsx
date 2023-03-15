@@ -19,11 +19,9 @@ import useAppSelections from '../../hooks/useAppSelections';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-get-action-props';
 import createSelectionState from './hooks/selections/selectionState';
-import { CELL_PADDING_LEFT, ICON_PADDING } from './constants';
+import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH } from './constants';
 
 const PREFIX = 'ListBoxInline';
-const searchIconWidth = 28;
-const drillDownIconWidth = 24;
 const classes = {
   listBoxHeader: `${PREFIX}-listBoxHeader`,
   screenReaderOnly: `${PREFIX}-screenReaderOnly`,
@@ -36,7 +34,7 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
     [`& .${classes.listBoxHeader}`]: {
       alignSelf: 'center',
       display: 'inline-flex',
-      width: `calc(100% - ${searchIconWidth}px)`,
+      width: `calc(100% - ${BUTTON_ICON_WIDTH}px)`,
     },
     [`& .${classes.screenReaderOnly}`]: {
       position: 'absolute',
@@ -153,15 +151,16 @@ function ListBoxInline({ options, layout }) {
     };
     if (selections) {
       if (!selections.isModal()) {
-        selections.on('deactivated', hide);
         selections.on('activated', show);
+        selections.on('deactivated', hide);
       }
       setShowToolbar(selections.isActive());
     }
+
     return () => {
       if (selections && selections.removeListener) {
-        selections.removeListener('deactivated', show);
-        selections.removeListener('activated', hide);
+        selections.removeListener('activated', show);
+        selections.removeListener('deactivated', hide);
       }
     };
   }, [selections, toolbar]);
@@ -221,9 +220,8 @@ function ListBoxInline({ options, layout }) {
   const showSearchIcon = searchEnabled !== false && search === 'toggle' && !constraints?.active;
   const showSearchOrLockIcon = isLocked || showSearchIcon;
   const showIcons = showSearchOrLockIcon || isDrillDown;
-  const iconsWidth = (showSearchOrLockIcon ? searchIconWidth : 0) + (isDrillDown ? drillDownIconWidth : 0);
-  const drillDownPaddingLeft = showSearchOrLockIcon ? 0 : ICON_PADDING;
-  const headerPaddingLeft = CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0);
+  const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
+  const headerPaddingLeft = CELL_PADDING_LEFT - (showSearchOrLockIcon ? ICON_PADDING : 0);
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
   const isGridMode = layoutOptions?.dataLayout === 'grid';
@@ -277,14 +275,12 @@ function ListBoxInline({ options, layout }) {
                     )
                   )}
                   {isDrillDown && (
-                    <IconButton
+                    <DrillDownIcon
                       tabIndex={-1}
                       title={translator.get('Listbox.DrillDown')}
                       size="large"
-                      sx={{ paddingLeft: `${drillDownPaddingLeft}px` }}
-                    >
-                      <DrillDownIcon style={{ fontSize: '12px' }} />
-                    </IconButton>
+                      style={{ fontSize: '12px' }}
+                    />
                   )}
                 </Grid>
               )}
@@ -298,9 +294,7 @@ function ListBoxInline({ options, layout }) {
             </Grid>
             <Grid item xs />
             <Grid item>
-              <ActionsToolbar
-                {...getActionToolbarProps(showToolbarDetached({ containerRef, titleRef, searchIconWidth }))}
-              />
+              <ActionsToolbar {...getActionToolbarProps(showToolbarDetached({ containerRef, titleRef, iconsWidth }))} />
             </Grid>
           </Grid>
         )}
