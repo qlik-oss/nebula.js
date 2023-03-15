@@ -49,7 +49,8 @@ export function getFieldKeyboardNavigation({ select, confirm, cancel, setScrollP
         break;
       case KEYS.ESCAPE:
         cancel();
-        return; // let it propagate to top-level
+        elementToFocus = event.currentTarget.closest('.listbox-container'); // focus jump from a cell to a listbox parent
+        break;
       case KEYS.HOME:
         focusListItems.setFirst(true);
         if (ctrlKey) {
@@ -90,7 +91,7 @@ export function getListboxInlineKeyboardNavigation({
   constraints,
 }) {
   const focusInsideListbox = (element) => {
-    const fieldElement = element.querySelector('.search input, .value.selector, .value, .ActionsToolbar-* button');
+    const fieldElement = element.querySelector('.search input, .value.selector, .value, .ActionsToolbar-item button');
     setKeyboardActive(true);
     if (fieldElement) {
       fieldElement.focus();
@@ -129,6 +130,9 @@ export function getListboxInlineKeyboardNavigation({
       case KEYS.ARROW_DOWN:
         updateKeyScrollOnHover({ down: 1 });
         break;
+      case KEYS.ARROW_LEFT:
+      case KEYS.ARROW_RIGHT:
+        return; // let it propagate to top-level
       case KEYS.PAGE_UP:
         updateKeyScrollOnHover({ up: currentScrollIndex.stop - currentScrollIndex.start });
         break;

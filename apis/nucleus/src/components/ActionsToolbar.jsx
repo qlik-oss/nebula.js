@@ -15,6 +15,7 @@ import More from './ActionsToolbarMore';
 const PREFIX = 'ActionsToolbar';
 
 const classes = {
+  item: `${PREFIX}-item`,
   itemSpacing: `${PREFIX}-itemSpacing`,
   firstItemSpacing: `${PREFIX}-firstItemSpacing`,
   lastItemSpacing: `${PREFIX}-lastItemSpacing`,
@@ -53,13 +54,13 @@ const ActionsGroup = React.forwardRef(
           const isFirstItem = first && ix === 0;
           const isLastItem = last && actions.length - 1 === ix;
           if (isFirstItem && !isLastItem) {
-            cls = [classes.firstItemSpacing];
+            cls = [classes.firstItemSpacing, classes.item];
           }
           if (isLastItem && !isFirstItem) {
-            cls = [...cls, classes.lastItemSpacing];
+            cls = [...cls, classes.lastItemSpacing, classes.item];
           }
           if (!isFirstItem && !isLastItem && cls.length === 0) {
-            cls = [classes.itemSpacing];
+            cls = [classes.itemSpacing, classes.item];
           }
           return (
             <Grid item key={e.key} className={cls.join(' ').trim()}>
