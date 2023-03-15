@@ -96,7 +96,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation({ ...actions, focusListItems }), [actions]);
 
   const cell = useMemo(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
-  const isSelected = cell?.qState === 'S' || cell?.qState === 'XS' || cell?.qState === 'L';
+  const isSelected = cell?.qState === 'S' || cell?.qState === 'XS' || cell?.qState === 'L' || cell?.qState === 'XL';
 
   const classArr = useMemo(
     () => getValueStateClasses({ column, histogram, checkboxes, cell, showGray }),
