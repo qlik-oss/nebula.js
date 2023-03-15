@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.0...v4.0.0-alpha.1) (2023-03-15)
+
+### Bug Fixes
+
+- remove ripple and outline iconbutton ([#1139](https://github.com/qlik-oss/nebula.js/issues/1139)) ([154cbc4](https://github.com/qlik-oss/nebula.js/commit/154cbc402d7f456aef1e1d4d190447a436b39af3))
+
+### Features
+
+- **Listbox:** detached toolbar ([#1123](https://github.com/qlik-oss/nebula.js/issues/1123)) ([7a3218a](https://github.com/qlik-oss/nebula.js/commit/7a3218ad1bac6c2eec3fdd41549854aee0b87f05))
+
 # [4.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.3.0...v4.0.0-alpha.0) (2023-03-14)
 
 ### Bug Fixes
