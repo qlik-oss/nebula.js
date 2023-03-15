@@ -138,6 +138,7 @@ describe('use-listbox-interactions', () => {
 
       await act(() => {
         arg0.interactionEvents.onMouseDown({
+          button: 0,
           currentTarget: {
             getAttribute: jest.fn().mockReturnValue(23),
           },
@@ -149,7 +150,7 @@ describe('use-listbox-interactions', () => {
       expect(setPages).toHaveBeenLastCalledWith(createPageWithSingle(23, 'S'));
 
       await act(() => {
-        docMouseUpListener(); // trigger doc mouseup listener to set mouseDown => false
+        docMouseUpListener({ button: 0 }); // trigger doc mouseup listener to set mouseDown => false
       });
 
       expect(listboxSelections.selectValues).toHaveBeenCalledTimes(1);
@@ -175,6 +176,7 @@ describe('use-listbox-interactions', () => {
 
       await act(() => {
         arg0.interactionEvents.onMouseDown({
+          button: 0,
           currentTarget: {
             getAttribute: jest.fn().mockReturnValue(24), // fake mousedown on element nbr 24
           },
@@ -188,7 +190,7 @@ describe('use-listbox-interactions', () => {
       const [, docMouseUpListener] = global.document.addEventListener.mock.lastCall;
 
       await act(() => {
-        docMouseUpListener();
+        docMouseUpListener({ button: 0 });
       });
 
       expect(listboxSelections.selectValues).toHaveBeenCalledTimes(1);
@@ -235,6 +237,7 @@ describe('use-listbox-interactions', () => {
       // Simulate a typical select range scenario.
       await act(() => {
         ref.current.result.interactionEvents.onMouseDown({
+          button: 0,
           currentTarget: {
             getAttribute: jest.fn().mockReturnValue(24),
           },
@@ -262,6 +265,7 @@ describe('use-listbox-interactions', () => {
       expect(setPages).toHaveBeenLastCalledWith(createPage('S', 'S', 'S', 'S', 'S', 'O', 'O', 'O'));
       await act(() => {
         ref.current.result.interactionEvents.onMouseUp({
+          button: 0,
           currentTarget: {
             getAttribute: jest.fn().mockReturnValue(30),
           },
@@ -271,7 +275,7 @@ describe('use-listbox-interactions', () => {
       expect(setPages).toHaveBeenLastCalledWith(createPage('S', 'S', 'S', 'S', 'S', 'S', 'S', 'O'));
       await act(() => {
         const [, docMouseUpListener] = global.document.addEventListener.mock.lastCall;
-        docMouseUpListener();
+        docMouseUpListener({ button: 0 });
       });
 
       expect(setPages).toHaveBeenCalledTimes(callCount + 4);
@@ -340,6 +344,7 @@ describe('use-listbox-interactions', () => {
       const focus = jest.fn();
       await act(() => {
         ref.current.result.interactionEvents.onMouseDown({
+          button: 0,
           currentTarget: {
             focus,
             getAttribute: jest.fn().mockReturnValue(24),

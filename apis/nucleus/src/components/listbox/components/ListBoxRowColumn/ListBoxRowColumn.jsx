@@ -105,10 +105,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const preventContextMenu = useCallback(
     (event) => {
-      if (checkboxes) {
-        // Event will not propagate in the checkbox/radiobutton case
-        onClick(event);
-      }
       event.preventDefault();
     },
     [checkboxes]
