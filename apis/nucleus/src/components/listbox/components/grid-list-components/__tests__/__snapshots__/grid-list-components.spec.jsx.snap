@@ -37,7 +37,7 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "pages": "pages",
       "rowCount": 200,
       "showGray": true,
-      "showTick": false,
+      "showTick": true,
       "textAlign": "right",
     }
   }
@@ -90,7 +90,7 @@ exports[`grid-list-components should create a List component 1`] = `
       "listCount": undefined,
       "pages": "pages",
       "showGray": true,
-      "showTick": false,
+      "showTick": true,
       "textAlign": "right",
     }
   }
