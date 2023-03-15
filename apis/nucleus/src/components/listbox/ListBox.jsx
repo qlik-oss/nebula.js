@@ -252,9 +252,9 @@ export default function ListBox({
     freqIsAllowed,
   });
 
-  const { columnWidth, listHeight, itemSize } = sizes || {};
+  const { columnWidth, listHeight, itemHeight } = sizes || {};
   if (!isVertical) {
-    minimumBatchSize = getHorizontalMinBatchSize({ width, columnWidth, listHeight, itemSize });
+    minimumBatchSize = getHorizontalMinBatchSize({ width, columnWidth, listHeight, itemHeight });
   }
 
   return (

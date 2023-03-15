@@ -33,11 +33,11 @@ function calculateRowMode({ maxVisibleColumns, listCount, containerWidth, column
   };
 }
 
-function calculateColumnMode({ maxVisibleRows, itemSize, listCount, listHeight, columnAutoWidth, containerWidth }) {
+function calculateColumnMode({ maxVisibleRows, itemHeight, listCount, listHeight, columnAutoWidth, containerWidth }) {
   let rowCount;
   const maxRows = maxVisibleRows?.maxRows || 3;
   if (maxVisibleRows.auto !== false) {
-    rowCount = Math.floor(listHeight / itemSize);
+    rowCount = Math.floor(listHeight / itemHeight);
   } else {
     rowCount = Math.min(listCount, maxRows);
   }
@@ -72,15 +72,15 @@ export default function getListSizes({ layout, width, height, listCount, count, 
 
   const denseItemSize = 20;
   const normalItemSize = isGridMode ? 32 : 29;
-  let itemSize = dense ? denseItemSize : normalItemSize;
+  let itemHeight = dense ? denseItemSize : normalItemSize;
 
   if (isGridMode) {
     // Emulate a margin between items using padding, since the list library
     // needs an explicit row height and cannot handle margins.
-    itemSize += itemPadding;
+    itemHeight += itemPadding;
   }
 
-  const listHeight = height ?? 8 * itemSize;
+  const listHeight = height ?? 8 * itemHeight;
 
   if (layoutOrder) {
     // Modify container width to achieve the exact design with 8px margins on each side (left and right).
@@ -100,7 +100,7 @@ export default function getListSizes({ layout, width, height, listCount, count, 
 
       ({ rowCount, columnWidth, columnCount } = calculateColumnMode({
         maxVisibleRows,
-        itemSize,
+        itemHeight,
         listCount,
         listHeight,
         columnAutoWidth,
@@ -125,7 +125,7 @@ export default function getListSizes({ layout, width, height, listCount, count, 
     columnWidth,
     rowCount,
     overflowStyling,
-    itemSize,
+    itemHeight,
     listHeight,
     scrollBarWidth,
     count,

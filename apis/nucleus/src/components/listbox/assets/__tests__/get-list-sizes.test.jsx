@@ -45,7 +45,7 @@ describe('get-list-sizes', () => {
       columnWidth: 49.5,
       count: 200,
       itemPadding: 4,
-      itemSize: 29,
+      itemHeight: 29,
       listCount: 100,
       listHeight: 300,
       frequencyWidth: 40,
@@ -61,11 +61,11 @@ describe('get-list-sizes', () => {
     });
   });
 
-  it('dense should override itemSize', () => {
+  it('dense should override itemHeight', () => {
     args.checkboxes = true;
     args.layout.layoutOptions.dense = true;
     const sizes = getListSizes(args);
-    expect(sizes).toMatchObject({ itemSize: 20 });
+    expect(sizes).toMatchObject({ itemHeight: 20 });
   });
 
   it('grid mode with layoutOrder column', () => {
@@ -77,7 +77,7 @@ describe('get-list-sizes', () => {
       columnWidth: 68,
       count: 200,
       itemPadding: 4,
-      itemSize: 36,
+      itemHeight: 36,
       listCount: 100,
       listHeight: 300,
       frequencyWidth: 40,
@@ -103,7 +103,7 @@ describe('get-list-sizes', () => {
       columnWidth: 108,
       count: 200,
       itemPadding: 4,
-      itemSize: 36,
+      itemHeight: 36,
       listCount: 100,
       listHeight: 300,
       frequencyWidth: 40,
@@ -161,11 +161,11 @@ describe('get-list-sizes', () => {
     expect(sizes).toMatchObject({ rowCount: 8, columnCount: 13 });
   });
 
-  it('grid mode with layoutOrder == column should add exta 12px padding to the itemSize', () => {
+  it('grid mode with layoutOrder == column should add exta 12px padding to the itemHeight', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'column';
     const sizes = getListSizes(args);
-    expect(sizes.itemSize).toEqual(36); // itemSize + padding = 32 + 4 = 36
+    expect(sizes.itemHeight).toEqual(36); // itemHeight + padding = 32 + 4 = 36
   });
 
   it('maxRowCount should limit listCount and rowCount, in column layout', () => {
@@ -179,7 +179,7 @@ describe('get-list-sizes', () => {
       columnWidth: 49.5,
       count: 200,
       itemPadding: 4,
-      itemSize: 29,
+      itemHeight: 29,
       listCount: args.listCount,
       listHeight: 300,
       frequencyWidth: 40,
@@ -208,7 +208,7 @@ describe('get-list-sizes', () => {
       columnWidth: 68,
       count: 200,
       itemPadding: 4,
-      itemSize: 36,
+      itemHeight: 36,
       listCount: columnCount * rowCount,
       listHeight: 100,
       frequencyWidth: 40,

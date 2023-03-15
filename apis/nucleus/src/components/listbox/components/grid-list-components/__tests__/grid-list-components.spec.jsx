@@ -86,7 +86,7 @@ describe('grid-list-components', () => {
       sizes: {
         listHeight: 300,
         listCount: 100,
-        itemSize: 100,
+        itemHeight: 100,
         rowCount: 200,
         columnCount: 2,
         columnWidth: 50,

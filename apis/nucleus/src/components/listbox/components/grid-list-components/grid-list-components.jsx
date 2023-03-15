@@ -38,7 +38,7 @@ export default function getListBoxComponents({
   freqIsAllowed,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
-  const { columnWidth, itemPadding, listHeight, itemSize, rowCount, columnCount, frequencyWidth } = sizes || {};
+  const { columnWidth, itemPadding, listHeight, itemHeight, rowCount, columnCount, frequencyWidth } = sizes || {};
 
   const showTick = typeof columnWidth === 'number' ? columnWidth > REMOVE_TICK_LIMIT : true;
 
@@ -93,7 +93,7 @@ export default function getListBoxComponents({
         width={width}
         itemCount={listCount}
         itemData={{ ...commonItemData, listCount }}
-        itemSize={itemSize}
+        itemHeight={itemHeight}
         onItemsRendered={(renderProps) => {
           setCurrentScrollIndex({ start: renderProps.visibleStartIndex, stop: renderProps.visibleStopIndex });
           if (scrollState) {
@@ -121,7 +121,7 @@ export default function getListBoxComponents({
   const Grid = ({ onItemsRendered, ref }) => {
     const { overflowStyling, scrollBarWidth } = sizes;
     const { layoutOrder } = layoutOptions || {};
-    const gridHeight = Math.min(listHeight, rowCount * itemSize + scrollBarWidth);
+    const gridHeight = Math.min(listHeight, rowCount * itemHeight + scrollBarWidth);
     // eslint-disable-next-line no-param-reassign
     local.current.listRef = ref;
 
@@ -162,7 +162,7 @@ export default function getListBoxComponents({
         columnCount={columnCount}
         columnWidth={columnWidth}
         rowCount={rowCount}
-        rowHeight={itemSize}
+        rowHeight={itemHeight}
         style={{ ...overflowStyling }}
         itemData={{
           ...commonItemData,
