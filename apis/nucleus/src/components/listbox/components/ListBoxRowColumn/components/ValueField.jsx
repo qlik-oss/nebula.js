@@ -18,9 +18,9 @@ function ValueField({ label, color, highlighted = false, dense, showGray = true,
       color={color}
       align={valueTextAlign}
     >
-      <bdi>
-        <span style={{ whiteSpace: 'pre' }}>{label}</span>
-      </bdi>
+      <span dir="auto" style={{ whiteSpace: 'pre' }}>
+        {label}
+      </span>
     </Typography>
   );
 }

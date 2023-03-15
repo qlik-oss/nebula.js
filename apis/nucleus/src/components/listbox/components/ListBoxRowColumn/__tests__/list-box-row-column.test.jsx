@@ -935,7 +935,32 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.children[1].props.style.justifyContent).toEqual('center');
     });
 
-    test('should get right text direction', async () => {
+    test('should get right text direction for non-numeric values', async () => {
+      const index = 0;
+      const style = {};
+      // Just replace qNum with 'NaN' so that we can test alignment for non-numeric values.
+      const nonNumericPages = defaultPages.map((p) => ({
+        ...p,
+        qMatrix: p.qMatrix.map(([mx]) => [{ ...mx, qNum: 'NaN' }]),
+      }));
+      const data = {
+        keyboard,
+        textAlign: { auto: true },
+        direction: 'rtl',
+        pages: nonNumericPages,
+        dataOffset: 0,
+      };
+      const testRenderer = await render(
+        <ThemeProvider theme={theme}>
+          <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
+        </ThemeProvider>
+      );
+      const testInstance = testRenderer.root;
+      const type = testInstance.findByType(Grid);
+      expect(type.props.children[1].props.style.justifyContent).toEqual('right');
+    });
+
+    test('should get left text direction for numeric values', async () => {
       const index = 0;
       const style = {};
       const data = {
@@ -952,7 +977,7 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const type = testInstance.findByType(Grid);
-      expect(type.props.children[1].props.style.justifyContent).toEqual('right');
+      expect(type.props.children[1].props.style.justifyContent).toEqual('left');
     });
 
     test('should get left text direction', async () => {
