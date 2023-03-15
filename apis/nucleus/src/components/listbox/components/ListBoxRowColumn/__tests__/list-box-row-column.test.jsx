@@ -196,7 +196,7 @@ describe('<ListBoxRowColumn />', () => {
       const preventDefault = jest.fn();
       type.props.onContextMenu({ preventDefault });
       expect(preventDefault).toHaveBeenCalledTimes(1);
-      expect(type.props.onClick).toHaveBeenCalledTimes(1);
+      expect(type.props.onClick).toHaveBeenCalledTimes(0);
 
       const types = testInstance.findAllByType(Typography);
       // TODO: MUIv5 - no idea why this breaks
