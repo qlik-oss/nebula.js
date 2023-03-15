@@ -126,7 +126,7 @@ const RowColRoot = styled('div', {
   [`& .${classes.XS}`]: {
     ...getSelectedStyle({ theme }),
     background: theme.palette.selected.excluded,
-    color: theme.palette.selected.mainContrastText,
+    color: theme.palette.selected.excludedContrastText,
     border: isGridMode ? 'none' : undefined,
   },
 
