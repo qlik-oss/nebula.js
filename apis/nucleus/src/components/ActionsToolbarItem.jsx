@@ -38,6 +38,7 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
       style={style}
       className={ActionElement.className}
       size="large"
+      disableRipple
       aria-expanded={ariaExpanded}
       aria-controls="moreMenuList"
     >

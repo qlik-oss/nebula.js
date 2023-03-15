@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.3.0...v4.0.0-alpha.0) (2023-03-14)
+
+### Bug Fixes
+
+- adapt container padding to grid mode ([#1140](https://github.com/qlik-oss/nebula.js/issues/1140)) ([fe78bac](https://github.com/qlik-oss/nebula.js/commit/fe78bac55faff97a716f7286b98c55a827b88ebf))
+- align search icons and cells ([#1135](https://github.com/qlik-oss/nebula.js/issues/1135)) ([0dd499c](https://github.com/qlik-oss/nebula.js/commit/0dd499ce8777ee421deb616b6ed45e0ad1ebb64e))
+- clear old handler when sn-filter-pane is cut/deleted ([#1142](https://github.com/qlik-oss/nebula.js/issues/1142)) ([873615e](https://github.com/qlik-oss/nebula.js/commit/873615e7b84143eaf927a39df035e1ad9501483b))
+- fix filter pane header change the height on selection ([#1124](https://github.com/qlik-oss/nebula.js/issues/1124)) ([65f2a1a](https://github.com/qlik-oss/nebula.js/commit/65f2a1aa0fdce585b67295dd1468c213ec48e528))
+- fixed frequency width and hide when width is too small ([#1136](https://github.com/qlik-oss/nebula.js/issues/1136)) ([a420ff2](https://github.com/qlik-oss/nebula.js/commit/a420ff2253fc38557b5ea46e02a7281c27b6bfa9))
+- harmonise styles ([#1125](https://github.com/qlik-oss/nebula.js/issues/1125)) ([1ecafb8](https://github.com/qlik-oss/nebula.js/commit/1ecafb8d2b22c8b396a78ba946a4bbf50ce10ca0))
+- hide search icon and scrollbar of a filter pane in edit mode ([#1127](https://github.com/qlik-oss/nebula.js/issues/1127)) ([46b678d](https://github.com/qlik-oss/nebula.js/commit/46b678d854c122ac95020364ea0eb2dfd6adafb9))
+- hide search toggle button when not needed ([#1141](https://github.com/qlik-oss/nebula.js/issues/1141)) ([b7e2063](https://github.com/qlik-oss/nebula.js/commit/b7e20633d8dbfb83104aa98718905cb93240472e))
+- optimise components below RowColumn and right align with styling fixes ([#1122](https://github.com/qlik-oss/nebula.js/issues/1122)) ([5c88236](https://github.com/qlik-oss/nebula.js/commit/5c88236cc7dad1ad84d65b38539fee141701d9ac))
+- prevent flickering from engine update during selection ([#1126](https://github.com/qlik-oss/nebula.js/issues/1126)) ([e2a43c0](https://github.com/qlik-oss/nebula.js/commit/e2a43c0e5d99c0e8a78d6bfd49df9a8217f7d924))
+- render listLayout opt properly ([#1130](https://github.com/qlik-oss/nebula.js/issues/1130)) ([a70b61a](https://github.com/qlik-oss/nebula.js/commit/a70b61a693784415e40c4eaf93076326d2e3c334))
+- show drilldown icon for drilldown dimension ([#1129](https://github.com/qlik-oss/nebula.js/issues/1129)) ([f679e96](https://github.com/qlik-oss/nebula.js/commit/f679e96d13d72c657ffaf5bf2826af178d5bb9ed))
+- use a key that triggers an update ([#1128](https://github.com/qlik-oss/nebula.js/issues/1128)) ([e94522f](https://github.com/qlik-oss/nebula.js/commit/e94522f51daed7bb1b5f0c1add590d1ce3622050))
+
+### Features
+
+- add tooltip for listbox title ([#1138](https://github.com/qlik-oss/nebula.js/issues/1138)) ([8f80fe1](https://github.com/qlik-oss/nebula.js/commit/8f80fe147544e373bbea90aa1d5750e6beb13f93))
+
 # [3.3.0](https://github.com/qlik-oss/nebula.js/compare/v3.3.0-alpha.0...v3.3.0) (2023-03-10)
 
 ### Bug Fixes

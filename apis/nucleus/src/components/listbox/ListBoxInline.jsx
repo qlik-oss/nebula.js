@@ -205,7 +205,7 @@ function ListBoxInline({ options, layout }) {
   };
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
-  const showSearchIcon = searchEnabled !== false && !constraints?.active;
+  const showSearchIcon = searchEnabled !== false && search === 'toggle' && !constraints?.active;
   const showSearchOrLockIcon = isLocked || showSearchIcon;
   const showIcons = showSearchOrLockIcon || isDrillDown;
   const iconsWidth = (showSearchOrLockIcon ? searchIconWidth : 0) + (isDrillDown ? drillDownIconWidth : 0);
@@ -244,7 +244,7 @@ function ListBoxInline({ options, layout }) {
               <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
                 {isLocked ? (
                   <IconButton tabIndex={-1} onClick={unlock} disabled={selectDisabled()} size="large">
-                    <Lock title={translator.get('Listbox.Unlock')} style={{ fontSize: '12px' }} />
+                    <Lock title={translator.get('Listbox.Unlock')} disableRipple style={{ fontSize: '12px' }} />
                   </IconButton>
                 ) : (
                   showSearchIcon && (
@@ -253,6 +253,8 @@ function ListBoxInline({ options, layout }) {
                       tabIndex={-1}
                       title={translator.get('Listbox.Search')}
                       size="large"
+                      disableRipple
+                      data-testid="search-toggle-btn"
                     >
                       <SearchIcon style={{ fontSize: '12px' }} />
                     </IconButton>
