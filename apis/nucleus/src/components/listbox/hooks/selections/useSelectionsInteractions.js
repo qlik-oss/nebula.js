@@ -141,7 +141,7 @@ export default function useSelectionsInteractions({ selectionState, selections, 
   }, [onMouseUpDoc]);
 
   useEffect(() => {
-    const onDeactivated = () => {
+    const clearItemStates = () => {
       selectionState.clearItemStates(false);
     };
     const onCleared = () => {
@@ -149,10 +149,12 @@ export default function useSelectionsInteractions({ selectionState, selections, 
       selectionState.triggerStateChanged();
     };
 
-    selections.on('deactivated', onDeactivated);
+    selections.on('clearItemStates', clearItemStates);
+    selections.on('deactivated', clearItemStates);
     selections.on('cleared', onCleared);
     return () => {
-      selections.removeListener('activated', onDeactivated);
+      selections.removeListener('clearItemStates', clearItemStates);
+      selections.removeListener('deactivated', clearItemStates);
       selections.removeListener('cleared', onCleared);
     };
   }, [selections]);
