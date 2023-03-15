@@ -242,7 +242,7 @@ function ActionsToolbar({
         className: ActionToolbarElement.className,
         style: {
           pointerEvents: 'auto',
-          padding: theme.spacing(1, 1),
+          padding: theme.spacing(0.8),
         },
       }}
     >

@@ -249,8 +249,8 @@ window.getFuncs = function getFuncs() {
       },
     ],
 
-    getListboxLayout: () => ({
-      title: 'Field title',
+    getListboxLayout: (options) => ({
+      title: options?.title ?? 'Field title',
       qInfo: {
         qId: 'qId',
       },
