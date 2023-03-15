@@ -1,69 +1,6 @@
-const scrollBarWidth = 10; // TODO: ignore this - instead set the styling only show on hover...
-
-const ITEM_MAX_WIDTH = 150;
-const FREQUENCY_WIDTH = 40;
-
-const ITEM_MIN_WIDTH = 56;
-
-function calculateRowMode({ maxVisibleColumns, listCount, containerWidth, columnAutoWidth }) {
-  const maxColumns = maxVisibleColumns?.maxColumns || 3;
-  const innerWidth = containerWidth - scrollBarWidth;
-
-  let columnCount;
-  if (maxVisibleColumns?.auto !== false) {
-    columnCount = Math.min(listCount, Math.ceil(innerWidth / Math.max(ITEM_MIN_WIDTH, columnAutoWidth))); // TODO: smarter sizing... based on glyph count + font size etc...??
-  } else {
-    columnCount = Math.min(listCount, maxColumns);
-  }
-  const columnWidth = innerWidth / columnCount;
-  if (columnWidth < ITEM_MIN_WIDTH && !maxVisibleColumns.auto) {
-    // when columnWidth is too low, fall back to auto mode.
-    return calculateRowMode({
-      maxVisibleColumns: { ...maxVisibleColumns, auto: true },
-      listCount,
-      containerWidth,
-      columnAutoWidth,
-    });
-  }
-  const rowCount = Math.ceil(listCount / columnCount);
-  return {
-    rowCount,
-    columnWidth,
-    columnCount,
-  };
-}
-
-function calculateColumnMode({ maxVisibleRows, itemHeight, listCount, listHeight, columnAutoWidth, containerWidth }) {
-  let rowCount;
-  const maxRows = maxVisibleRows?.maxRows || 3;
-  const autoRowCount = Math.floor(listHeight / itemHeight);
-  if (maxVisibleRows.auto !== false) {
-    rowCount = autoRowCount;
-  } else {
-    rowCount = Math.min(listCount, maxRows);
-    const itemsCanFit = itemHeight * rowCount <= listHeight;
-    if (!itemsCanFit) {
-      // If items cannot fit inside height, fall back to auto mode.
-      return calculateColumnMode({
-        maxVisibleRows: { ...maxVisibleRows, auto: true },
-        itemHeight,
-        listCount,
-        listHeight,
-        columnAutoWidth,
-        containerWidth,
-      });
-    }
-  }
-
-  const columnCount = Math.ceil(listCount / rowCount);
-  const columnWidth = Math.max(columnAutoWidth, containerWidth / columnCount, ITEM_MIN_WIDTH);
-
-  return {
-    columnWidth,
-    columnCount,
-    rowCount,
-  };
-}
+import calculateColumnMode from './column-mode';
+import { FREQUENCY_WIDTH, ITEM_MAX_WIDTH, ITEM_MIN_WIDTH, SCROLL_BAR_WIDTH } from './constants';
+import calculateRowMode from './row-mode';
 
 export default function getListSizes({ layout, width, height, listCount, count, textWidth, freqIsAllowed }) {
   const { layoutOptions = {} } = layout || {};
@@ -83,9 +20,9 @@ export default function getListSizes({ layout, width, height, listCount, count, 
   const isGridMode = dataLayout === 'grid';
   const itemPadding = 4;
 
-  const denseItemSize = 20;
-  const normalItemSize = isGridMode ? 32 : 29;
-  let itemHeight = dense ? denseItemSize : normalItemSize;
+  const denseItemHeight = 20;
+  const normalItemHeight = isGridMode ? 32 : 29;
+  let itemHeight = dense ? denseItemHeight : normalItemHeight;
 
   if (isGridMode) {
     // Emulate a margin between items using padding, since the list library
@@ -140,7 +77,7 @@ export default function getListSizes({ layout, width, height, listCount, count, 
     overflowStyling,
     itemHeight,
     listHeight,
-    scrollBarWidth,
+    scrollBarWidth: SCROLL_BAR_WIDTH,
     count,
     listCount: limitedListCount,
     maxCount: { row: maxRowCount, column: maxColumnCount },

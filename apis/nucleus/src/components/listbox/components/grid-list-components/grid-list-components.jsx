@@ -40,7 +40,8 @@ export default function getListBoxComponents({
   const { layoutOptions = {}, frequencyMax } = layout || {};
   const { columnWidth, itemPadding, listHeight, itemHeight, rowCount, columnCount, frequencyWidth } = sizes || {};
 
-  const showTick = typeof columnWidth === 'number' ? columnWidth > REMOVE_TICK_LIMIT : true;
+  const itemWidth = layoutOptions.dataLayout === 'grid' ? columnWidth : width;
+  const showTick = itemWidth > REMOVE_TICK_LIMIT;
 
   // Options common for List and Grid.
   const commonComponentOptions = {
