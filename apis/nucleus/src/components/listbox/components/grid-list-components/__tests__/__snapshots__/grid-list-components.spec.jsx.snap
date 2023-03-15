@@ -37,6 +37,7 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "pages": "pages",
       "rowCount": 200,
       "showGray": true,
+      "showTick": false,
       "textAlign": "right",
     }
   }
@@ -89,10 +90,11 @@ exports[`grid-list-components should create a List component 1`] = `
       "listCount": undefined,
       "pages": "pages",
       "showGray": true,
+      "showTick": false,
       "textAlign": "right",
     }
   }
-  itemHeight={100}
+  itemSize={100}
   layout="vertical"
   onItemsRendered={[Function]}
   overscanCount={2}

@@ -12,7 +12,7 @@ describe('styled-components', () => {
       render = async () => {
         await act(async () => {
           renderer = create(
-            <StyledFixedSizeList itemHeight={1} height={100}>
+            <StyledFixedSizeList itemSize={1} height={100}>
               <div>An item</div>
             </StyledFixedSizeList>
           );
@@ -34,7 +34,7 @@ describe('styled-components', () => {
       render = async () => {
         await act(async () => {
           renderer = create(
-            <StyledFixedSizeGrid itemHeight={1} height={100} width={150} columnWidth={50} rowHeight={10}>
+            <StyledFixedSizeGrid itemSize={1} height={100} width={150} columnWidth={50} rowHeight={10}>
               <div>An item</div>
             </StyledFixedSizeGrid>
           );
