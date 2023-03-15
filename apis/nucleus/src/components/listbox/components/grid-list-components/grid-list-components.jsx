@@ -93,7 +93,7 @@ export default function getListBoxComponents({
         width={width}
         itemCount={listCount}
         itemData={{ ...commonItemData, listCount }}
-        itemHeight={itemHeight}
+        itemSize={itemHeight}
         onItemsRendered={(renderProps) => {
           setCurrentScrollIndex({ start: renderProps.visibleStartIndex, stop: renderProps.visibleStopIndex });
           if (scrollState) {

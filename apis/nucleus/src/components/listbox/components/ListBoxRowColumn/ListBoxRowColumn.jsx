@@ -146,9 +146,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     fontSize: '8px',
   };
 
-  const showLock = isSelected && isLocked;
-  const showTick = !checkboxes && isSelected && !isLocked && sizePermitsTick;
-
   const cellStyle = {
     display: 'flex',
     alignItems: 'center',
@@ -161,13 +158,17 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const isFirstElement = index === 0;
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
-  const showIcon = !checkboxes && showTick && showLock;
+  const showLock = isSelected && isLocked;
+  const showTick = !checkboxes && isSelected && !isLocked && sizePermitsTick;
+  const showIcon = !checkboxes && (showTick || showLock);
 
   return (
     <RowColRoot
       className={classes.barContainer}
       flexBasisProp={flexBasisVal}
       style={styles}
+      showIcon={showIcon}
+      checkboxes={checkboxes}
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
       dense={dense}
