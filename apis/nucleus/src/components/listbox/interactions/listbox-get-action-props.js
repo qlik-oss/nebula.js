@@ -29,9 +29,5 @@ export default function getListboxActionProps({
       onConfirm: () => {},
       onCancel: () => {},
     },
-    popoverAnchorOrigin: {
-      vertical: 14,
-      horizontal: (containerRef.current?.clientWidth ?? 0) - 8,
-    },
   };
 }

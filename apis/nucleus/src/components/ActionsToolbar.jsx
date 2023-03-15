@@ -78,6 +78,10 @@ const ActionsGroup = React.forwardRef(
 );
 
 const popoverStyle = { pointerEvents: 'none' };
+const popoverAnchorOrigin = {
+  vertical: 'top',
+  horizontal: 'right',
+};
 const popoverTransformOrigin = {
   vertical: 'bottom',
   horizontal: 'right',
@@ -106,10 +110,6 @@ function ActionsToolbar({
   },
   focusHandler = null,
   actionsRefMock = null, // for testing
-  popoverAnchorOrigin = {
-    vertical: 'top',
-    horizontal: 'right',
-  },
 }) {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
 
