@@ -14,19 +14,7 @@ export default function calculateColumnMode({
   if (maxVisibleRows.auto !== false) {
     rowCount = autoRowCount;
   } else {
-    rowCount = Math.min(listCount, maxRows);
-    const itemsCanFit = itemHeight * rowCount <= listHeight;
-    if (!itemsCanFit) {
-      // If items cannot fit inside height, fall back to auto mode.
-      return calculateColumnMode({
-        maxVisibleRows: { ...maxVisibleRows, auto: true },
-        itemHeight,
-        listCount,
-        listHeight,
-        columnAutoWidth,
-        containerWidth,
-      });
-    }
+    rowCount = Math.min(listCount, maxRows, autoRowCount);
   }
 
   const columnCount = Math.ceil(listCount / rowCount);
