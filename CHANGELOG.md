@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.0...v4.0.0-alpha.1) (2023-03-15)
+
+### Bug Fixes
+
+- change drill down icon from button icon to a normal icon ([#1145](https://github.com/qlik-oss/nebula.js/issues/1145)) ([4b677c6](https://github.com/qlik-oss/nebula.js/commit/4b677c6cf6b571df91c37f25e084fa141e96ef93))
+- **ListBoxInline:** remove correct event listeners ([#1149](https://github.com/qlik-oss/nebula.js/issues/1149)) ([94049ec](https://github.com/qlik-oss/nebula.js/commit/94049ec2d714bb1c6873b97b21c60e2080fe3f79))
+- only select with main mouse button ([#1108](https://github.com/qlik-oss/nebula.js/issues/1108)) ([61d2fcd](https://github.com/qlik-oss/nebula.js/commit/61d2fcd3c7528e68c171016f3f2449f1fd9ede1d))
+- remove correct listener & add extra event ([#1146](https://github.com/qlik-oss/nebula.js/issues/1146)) ([41029e3](https://github.com/qlik-oss/nebula.js/commit/41029e39fd9c220673dc61e9cbd850f41589e674))
+- remove ripple and outline iconbutton ([#1139](https://github.com/qlik-oss/nebula.js/issues/1139)) ([154cbc4](https://github.com/qlik-oss/nebula.js/commit/154cbc402d7f456aef1e1d4d190447a436b39af3))
+- use same text color for excluded and selectedExcluded ([#1147](https://github.com/qlik-oss/nebula.js/issues/1147)) ([48c85d4](https://github.com/qlik-oss/nebula.js/commit/48c85d47bb6fcd34cc699f58f3148dbbe8725ee2))
+
+### Features
+
+- **Listbox:** detached toolbar ([#1123](https://github.com/qlik-oss/nebula.js/issues/1123)) ([7a3218a](https://github.com/qlik-oss/nebula.js/commit/7a3218ad1bac6c2eec3fdd41549854aee0b87f05))
+
 # [4.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v3.3.0...v4.0.0-alpha.0) (2023-03-14)
 
 ### Bug Fixes

@@ -11,6 +11,7 @@ const paths = path.join(__dirname, '__fixtures__');
 test.describe('listbox mashup rendering test', () => {
   const object = '[data-type="listbox"]';
   const listboxSelector = `${object} .listbox-container`;
+  const toolbarPopoverSelector = '.njs-action-toolbar-popover';
   let page;
 
   let destroyServer;
@@ -110,6 +111,25 @@ test.describe('listbox mashup rendering test', () => {
 
     await page.hover(listboxSelector);
     await page.press(listboxSelector, 'ArrowDown');
+
+    const image = await selector.screenshot({ caret: 'hide' });
+    return expect(image).toMatchSnapshot(FILE_NAME);
+  });
+
+  test('long title should detach toolbar', async () => {
+    const FILE_NAME = 'listbox_detached_toolbar.png';
+
+    await page.goto(`${url}/listbox/listbox.html?scenario=longTitle`);
+    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+
+    await page.click(listboxSelector);
+    await page.waitForSelector(toolbarPopoverSelector);
+    // Wait for animation
+    await new Promise((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 500);
+    });
 
     const image = await selector.screenshot({ caret: 'hide' });
     return expect(image).toMatchSnapshot(FILE_NAME);

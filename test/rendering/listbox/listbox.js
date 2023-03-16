@@ -1,10 +1,11 @@
 (async () => {
-  function getMocks(fixture) {
+  function getMocks(options) {
     const { getMockData, getListboxLayout } = window.getFuncs();
+    const fixture = options?.fixtureFile;
     const obj = {
       id: `listbox-${+new Date()}`,
       getListObjectData: async () => (fixture ? fixture.getListObjectData() : getMockData()),
-      getLayout: async () => (fixture ? fixture.getLayout() : getListboxLayout()),
+      getLayout: async () => (fixture ? fixture.getLayout() : getListboxLayout(options)),
       beginSelections: async () => {},
       selectListObjectValues: async () => true,
       on() {},
@@ -26,7 +27,7 @@
 
   const init = async (options = {}) => {
     const element = window.document.querySelector('#object');
-    const { app } = getMocks(options.fixtureFile);
+    const { app } = getMocks(options);
     const nebbie = window.stardust.embed(app);
     const listboxOptions = {
       ...options,
@@ -59,6 +60,9 @@
         break;
       case 'noToolbar':
         sc = { toolbar: false };
+        break;
+      case 'longTitle':
+        sc = { title: 'Alpha long title' };
         break;
       default:
         throw new Error('Invalid test scenario', s);
