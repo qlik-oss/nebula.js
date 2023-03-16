@@ -1,3 +1,4 @@
+import { CHECKBOX_WIDTH, FREQUENCY_WIDTH, ITEM_MIN_WIDTH } from '../constants';
 import getListSizes from '../get-list-sizes';
 
 describe('get-list-sizes', () => {
@@ -124,10 +125,9 @@ describe('get-list-sizes', () => {
     args.layout.layoutOptions.layoutOrder = 'column';
     args.textWidth = 10;
     args.textWidth = 10;
-    const MIN_WIDTH = 56;
     const sizes = getListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: MIN_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH,
       maxCount: {
         column: 599107,
       },
@@ -139,14 +139,28 @@ describe('get-list-sizes', () => {
     args.layout.layoutOptions.layoutOrder = 'column';
     args.textWidth = 10;
     args.textWidth = 10;
-    const MIN_WIDTH = 56;
-    const FREQUENCY_WIDTH = 40;
     args.freqIsAllowed = true;
     const sizes = getListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: MIN_WIDTH + FREQUENCY_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_WIDTH,
       maxCount: {
         column: 349479,
+      },
+    });
+  });
+
+  it('The minimum item width should increase with checkbox mode and frequencyMode', () => {
+    args.layout.layoutOptions.dataLayout = 'grid';
+    args.layout.layoutOptions.layoutOrder = 'column';
+    args.checkboxes = true;
+    args.textWidth = 10;
+    args.textWidth = 10;
+    args.freqIsAllowed = true;
+    const sizes = getListSizes(args);
+    expect(sizes).toMatchObject({
+      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_WIDTH + CHECKBOX_WIDTH,
+      maxCount: {
+        column: 289224,
       },
     });
   });
