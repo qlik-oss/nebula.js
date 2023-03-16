@@ -45,6 +45,12 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
     [`& .${classes.listboxWrapper}`]: {
       padding: containerPadding,
     },
+    '&:focus': {
+      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+    },
+    '&:focus-visible': {
+      outline: 'none',
+    },
   })
 );
 

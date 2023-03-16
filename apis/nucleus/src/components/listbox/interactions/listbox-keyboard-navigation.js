@@ -90,16 +90,28 @@ export function getListboxInlineKeyboardNavigation({
   constraints,
 }) {
   const focusInsideListbox = (element) => {
-    const fieldElement = element.querySelector('.search input, .value.selector, .value, .ActionsToolbar-* button');
+    const fieldElement = element.querySelector('.search input, .value.selector, .value, .ActionsToolbar-item button');
     setKeyboardActive(true);
     if (fieldElement) {
       fieldElement.focus();
     }
   };
 
-  const focusContainer = (element) => {
-    setKeyboardActive(false);
-    element.focus();
+  const changeFocus = (event) => {
+    if (event.target?.classList.contains('listbox-container')) {
+      // Focus currently on a listbox
+      // Esc on a list box should move the focus to its parent, i.e. a filter pane if any
+      setKeyboardActive(false);
+    } else {
+      // Focus currently on a row
+      // Esc on a row should move the focus to its parent, i.e. a listbox
+      // First unfocus the row
+      event.target?.setAttribute('tabIndex', '-1');
+      event.target?.blur();
+      // Then focus the listbox
+      event.currentTarget?.setAttribute('tabIndex', '0');
+      event.currentTarget?.focus();
+    }
   };
 
   const updateKeyScrollOnHover = (newState) => {
@@ -121,7 +133,7 @@ export function getListboxInlineKeyboardNavigation({
         focusInsideListbox(event.currentTarget);
         break;
       case KEYS.ESCAPE:
-        focusContainer(event.currentTarget);
+        changeFocus(event);
         break;
       case KEYS.ARROW_UP:
         updateKeyScrollOnHover({ up: 1 });
@@ -129,6 +141,9 @@ export function getListboxInlineKeyboardNavigation({
       case KEYS.ARROW_DOWN:
         updateKeyScrollOnHover({ down: 1 });
         break;
+      case KEYS.ARROW_LEFT:
+      case KEYS.ARROW_RIGHT:
+        return; // let it propagate to top-level
       case KEYS.PAGE_UP:
         updateKeyScrollOnHover({ up: currentScrollIndex.stop - currentScrollIndex.start });
         break;

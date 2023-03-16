@@ -36,6 +36,15 @@ const RowColRoot = styled('div', {
     outline: 'none',
   },
 
+  '& .value': {
+    '&:focus': {
+      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+    },
+    '&:focus-visible': {
+      outline: 'none',
+    },
+  },
+
   [`& .${classes.row}`]: {
     flexWrap: 'nowrap',
     color: theme.listBox?.content?.color ?? theme.palette.text.primary,
