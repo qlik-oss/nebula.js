@@ -106,11 +106,11 @@ export function getListboxInlineKeyboardNavigation({
       // Focus currently on a row
       // Esc on a row should move the focus to its parent, i.e. a listbox
       // First unfocus the row
-      event.target?.setAttribute?.('tabIndex', '-1');
-      event.target?.blur?.();
+      event.target?.setAttribute('tabIndex', '-1');
+      event.target?.blur();
       // Then focus the listbox
-      event.currentTarget?.setAttribute?.('tabIndex', '0');
-      event.currentTarget?.focus?.();
+      event.currentTarget?.setAttribute('tabIndex', '0');
+      event.currentTarget?.focus();
     }
   };
 

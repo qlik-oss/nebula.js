@@ -297,20 +297,70 @@ describe('keyboard navigation', () => {
       expect(setKeyboardActive).toHaveBeenCalledWith(true);
     });
 
-    test('should focus container with Escape', () => {
-      const element = { focus: jest.fn() };
+    test('should change focus with Escape on a row', () => {
+      const target = {
+        classList: { contains: jest.fn().mockReturnValue(false) },
+        setAttribute: jest.fn(),
+        blur: jest.fn(),
+        focus: jest.fn(),
+      };
+      const currentTarget = { setAttribute: jest.fn(), blur: jest.fn(), focus: jest.fn() };
       const event = {
-        currentTarget: element,
+        target,
+        currentTarget,
         nativeEvent: { keyCode: 27 },
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
-      expect(element.focus).toHaveBeenCalledTimes(1);
+      expect(target.classList.contains).toHaveBeenCalledTimes(1);
+      expect(target.classList.contains).toHaveBeenCalledWith('listbox-container');
+      expect(target.setAttribute).toHaveBeenCalledTimes(1);
+      expect(target.setAttribute).toHaveBeenCalledWith('tabIndex', '-1');
+      expect(target.blur).toHaveBeenCalledTimes(1);
+      expect(target.focus).not.toHaveBeenCalled();
+
+      expect(currentTarget.setAttribute).toHaveBeenCalledTimes(1);
+      expect(currentTarget.setAttribute).toHaveBeenCalledWith('tabIndex', '0');
+      expect(currentTarget.blur).not.toHaveBeenCalled();
+      expect(currentTarget.focus).toHaveBeenCalledTimes(1);
+
+      expect(setKeyboardActive).not.toHaveBeenCalled();
+
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(event.stopPropagation).not.toHaveBeenCalled();
-      expect(setKeyboardActive).toHaveBeenCalledTimes(0);
+    });
+    test('should change focus with Escape on a listbox', () => {
+      const target = {
+        classList: { contains: jest.fn().mockReturnValue(true) },
+        setAttribute: jest.fn(),
+        blur: jest.fn(),
+        focus: jest.fn(),
+      };
+      const currentTarget = { setAttribute: jest.fn(), blur: jest.fn(), focus: jest.fn() };
+      const event = {
+        target,
+        currentTarget,
+        nativeEvent: { keyCode: 27 },
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      };
+      handleKeyDownForListbox(event);
+      expect(target.classList.contains).toHaveBeenCalledTimes(1);
+      expect(target.classList.contains).toHaveBeenCalledWith('listbox-container');
+      expect(target.setAttribute).not.toHaveBeenCalled();
+      expect(target.blur).not.toHaveBeenCalled();
+      expect(target.focus).not.toHaveBeenCalled();
+
+      expect(currentTarget.setAttribute).not.toHaveBeenCalled();
+      expect(currentTarget.blur).not.toHaveBeenCalled();
+      expect(currentTarget.focus).not.toHaveBeenCalled();
+
+      expect(setKeyboardActive).toHaveBeenCalledTimes(1);
       expect(setKeyboardActive).toHaveBeenCalledWith(false);
+
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(event.stopPropagation).not.toHaveBeenCalled();
     });
     test('not matched key should not call event methods', () => {
       const element = { focus: jest.fn() };
