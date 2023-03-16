@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import extend from 'extend';
 import useSessionModel from '../../../hooks/useSessionModel';
 import uid from '../../../object/uid';
+import { getFrequencyMaxExpression } from '../utils/frequencyMaxUtil';
 
 export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, options = {} }) {
   const [fieldDef, setFieldDef] = useState('');
@@ -16,7 +17,11 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
         const dim = await app.getDimension(fieldIdentifier.qLibraryId);
         const dimLayout = await dim.getLayout();
         setFallbackTitle(dimLayout.qDim.title);
-        setFieldDef(dimLayout.qDim.qFieldDefs ? dimLayout.qDim.qFieldDefs[0] : '');
+        if (dimLayout.qDim.qGrouping === 'N') {
+          setFieldDef(dimLayout.qDim.qFieldDefs ? dimLayout.qDim.qFieldDefs[0] : '');
+        } else {
+          setFieldDef({ multiFieldDim: true });
+        }
         setIsFetching(false);
       } catch (e) {
         setIsFetching(false);
@@ -122,11 +127,16 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
     fieldName = fieldIdentifier;
   }
 
-  if (frequencyMode !== 'N' || histogram) {
-    const field = fieldIdentifier.qLibraryId ? fieldDef : fieldName;
-    listdef.frequencyMax = {
-      qValueExpression: `Max(AGGR(Count([${field}]), [${field}]))`,
-    };
+  if (frequencyMode !== 'P' && histogram) {
+    if (fieldDef?.multiFieldDim) {
+      listdef.frequencyMax = 'fetch';
+      // maybe for all lib dimension to handle if it properties change
+    } else {
+      const field = fieldIdentifier.qLibraryId ? fieldDef : fieldName;
+      listdef.frequencyMax = {
+        qValueExpression: getFrequencyMaxExpression(field),
+      };
+    }
   }
 
   const [sessionModel] = useSessionModel(listdef, isFetching ? null : app, fieldName, stateName);

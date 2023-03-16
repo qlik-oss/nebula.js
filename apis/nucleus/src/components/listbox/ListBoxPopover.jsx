@@ -182,6 +182,7 @@ export default function ListBoxPopover({
           />
           <ListBox
             model={model}
+            app={app}
             layout={layout}
             selections={selections}
             selectionState={selectionState}

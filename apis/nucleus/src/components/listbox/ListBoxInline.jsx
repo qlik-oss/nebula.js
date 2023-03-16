@@ -328,6 +328,7 @@ function ListBoxInline({ options, layout }) {
               {({ height, width }) => (
                 <ListBox
                   model={model}
+                  app={app}
                   constraints={constraints}
                   layout={layout}
                   selections={selections}
