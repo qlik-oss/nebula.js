@@ -49,8 +49,7 @@ export function getFieldKeyboardNavigation({ select, confirm, cancel, setScrollP
         break;
       case KEYS.ESCAPE:
         cancel();
-        elementToFocus = event.currentTarget.closest('.listbox-container'); // focus jump from a cell to a listbox parent
-        break;
+        return; // let it propagate to top-level
       case KEYS.HOME:
         focusListItems.setFirst(true);
         if (ctrlKey) {
@@ -98,9 +97,21 @@ export function getListboxInlineKeyboardNavigation({
     }
   };
 
-  const focusContainer = (element) => {
-    setKeyboardActive(false);
-    element.focus();
+  const changeFocus = (event) => {
+    if (event.target?.classList.contains('listbox-container')) {
+      // Focus currently on a listbox
+      // Esc on a list box should move the focus to its parent, i.e. a filter pane if any
+      setKeyboardActive(false);
+    } else {
+      // Focus currently on a row
+      // Esc on a row should move the focus to its parent, i.e. a listbox
+      // First unfocus the row
+      event.target?.setAttribute('tabIndex', '-1');
+      event.target?.blur();
+      // Then focus the listbox
+      event.currentTarget?.setAttribute('tabIndex', '0');
+      event.currentTarget?.focus();
+    }
   };
 
   const updateKeyScrollOnHover = (newState) => {
@@ -122,7 +133,7 @@ export function getListboxInlineKeyboardNavigation({
         focusInsideListbox(event.currentTarget);
         break;
       case KEYS.ESCAPE:
-        focusContainer(event.currentTarget);
+        changeFocus(event);
         break;
       case KEYS.ARROW_UP:
         updateKeyScrollOnHover({ up: 1 });

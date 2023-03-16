@@ -343,7 +343,7 @@ function ListBoxInline({ options, layout }) {
                   rangeSelect={rangeSelect}
                   checkboxes={checkboxes}
                   height={height}
-                  width={width - 3}
+                  width={width}
                   update={update}
                   fetchStart={fetchStart}
                   postProcessPages={postProcessPages}

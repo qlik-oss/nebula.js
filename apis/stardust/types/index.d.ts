@@ -578,13 +578,12 @@ declare namespace stardust {
         restore: any;
     }
 
+    type blurFunction = (resetFocus?: boolean)=>void;
+
     interface Keyboard {
         enabled: boolean;
         active: boolean;
-        /**
-         * Function used by the visualization to tell Nebula to it wants to relinquish focus
-         */
-        blur?(b?: boolean): void;
+        blur?: stardust.blurFunction;
         /**
          * Function used by the visualization to tell Nebula to it wants focus
          */

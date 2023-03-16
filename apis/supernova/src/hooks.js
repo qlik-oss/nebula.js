@@ -1065,11 +1065,16 @@ export function useRenderState() {
 }
 
 /**
+ * @callback blurFunction
+ * @param {boolean=} resetFocus
+ */
+
+/**
  * @experimental
  * @interface Keyboard
  * @property {boolean} enabled Whether or not Nebula handles keyboard navigation or not.
  * @property {boolean} active Set to true when the chart is activated, ie a user tabs to the chart and presses Enter or Space.
- * @property {function=} blur Function used by the visualization to tell Nebula to it wants to relinquish focus
+ * @property {blurFunction=} blur Function used by the visualization to tell Nebula to it wants to relinquish focus
  * @property {function=} focus Function used by the visualization to tell Nebula to it wants focus
  * @property {function=} focusSelection Function used by the visualization to tell Nebula to focus the selection toolbar
  */
