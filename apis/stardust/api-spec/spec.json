@@ -1912,16 +1912,6 @@
         }
       }
     },
-    "blurFunction": {
-      "kind": "function",
-      "params": [
-        {
-          "name": "resetFocus",
-          "optional": true,
-          "type": "boolean"
-        }
-      ]
-    },
     "Keyboard": {
       "stability": "experimental",
       "kind": "interface",
@@ -1937,7 +1927,8 @@
         "blur": {
           "description": "Function used by the visualization to tell Nebula to it wants to relinquish focus",
           "optional": true,
-          "type": "#/definitions/blurFunction"
+          "kind": "function",
+          "params": []
         },
         "focus": {
           "description": "Function used by the visualization to tell Nebula to it wants focus",
