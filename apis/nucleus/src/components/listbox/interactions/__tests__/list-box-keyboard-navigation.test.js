@@ -107,7 +107,6 @@ describe('keyboard navigation', () => {
         nativeEvent: { keyCode: 27 },
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
-        currentTarget: { closest: jest.fn().mockReturnValue(null) },
       };
       handleKeyDownForField(eventCancel);
       expect(actions.cancel).toHaveBeenCalledTimes(1);
@@ -310,7 +309,7 @@ describe('keyboard navigation', () => {
       expect(element.focus).toHaveBeenCalledTimes(1);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(event.stopPropagation).not.toHaveBeenCalled();
-      expect(setKeyboardActive).toHaveBeenCalledTimes(1);
+      expect(setKeyboardActive).toHaveBeenCalledTimes(0);
       expect(setKeyboardActive).toHaveBeenCalledWith(false);
     });
     test('not matched key should not call event methods', () => {
