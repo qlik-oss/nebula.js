@@ -183,14 +183,12 @@ function ListBoxInline({ options, layout }) {
   const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
   const isRtl = direction === 'rtl';
   const isDrillDown = layout.qListObject.qDimensionInfo.qGrouping === 'H';
-  const listboxSelectionToolbarItems = toolbar
-    ? createListboxSelectionToolbar({
-        layout,
-        model,
-        translator,
-        selectionState,
-      })
-    : [];
+  const listboxSelectionToolbarItems = createListboxSelectionToolbar({
+    layout,
+    model,
+    translator,
+    selectionState,
+  });
 
   const showTitle = true;
   const showSearchToggle = search === 'toggle' && showSearch;
@@ -235,7 +233,7 @@ function ListBoxInline({ options, layout }) {
 
   return (
     <>
-      {toolbarDetachedOnly && <ActionsToolbar {...getActionToolbarProps(true)} />}
+      {toolbarDetachedOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
       <StyledGrid
         className="listbox-container"
         container
@@ -243,11 +241,7 @@ function ListBoxInline({ options, layout }) {
         direction="column"
         gap={0}
         containerPadding={containerPadding}
-        style={{
-          height: '100%',
-          minHeight: `${minHeight}px`,
-          flexFlow: 'column nowrap',
-        }}
+        style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
         onKeyDown={handleKeyDown}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
@@ -304,7 +298,7 @@ function ListBoxInline({ options, layout }) {
               )}
               <Grid item sx={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }} className={classes.listBoxHeader}>
                 {showTitle && (
-                  <Title variant="h6" noWrap title={layout.title}>
+                  <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
                     {layout.title}
                   </Title>
                 )}
@@ -312,7 +306,10 @@ function ListBoxInline({ options, layout }) {
             </Grid>
             <Grid item xs />
             <Grid item>
-              <ActionsToolbar {...getActionToolbarProps(showToolbarDetached({ containerRef, titleRef, iconsWidth }))} />
+              <ActionsToolbar
+                direction={direction}
+                {...getActionToolbarProps(showToolbarDetached({ containerRef, titleRef, iconsWidth }))}
+              />
             </Grid>
           </Grid>
         )}
