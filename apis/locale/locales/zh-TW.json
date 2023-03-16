@@ -19,6 +19,11 @@
     "comment": "Dismiss the disclaimer that not all data is being shown",
     "version": "N/rgZJ2kTYsEGGa6KAsKEw=="
   },
+  "Listbox.DrillDown": {
+    "value": "向下探查維度",
+    "comment": "Tooltip for the drill-down icons on the dimension titles in charts. (pde 160210)",
+    "version": "eS2MoGNzPvMj88TYxjGxYw=="
+  },
   "Listbox.ItemsOverflow": {
     "value": "目前顯示有限資料集，請使用搜尋減少大小",
     "comment": "Disclaimer that not all data is being shown",

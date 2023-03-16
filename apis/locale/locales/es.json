@@ -19,6 +19,11 @@
     "comment": "Dismiss the disclaimer that not all data is being shown",
     "version": "N/rgZJ2kTYsEGGa6KAsKEw=="
   },
+  "Listbox.DrillDown": {
+    "value": "Dimensión jerárquica",
+    "comment": "Tooltip for the drill-down icons on the dimension titles in charts. (pde 160210)",
+    "version": "eS2MoGNzPvMj88TYxjGxYw=="
+  },
   "Listbox.ItemsOverflow": {
     "value": "Actualmente se muestra un conjunto de datos limitado, utilice la búsqueda para reducir el tamaño",
     "comment": "Disclaimer that not all data is being shown",
