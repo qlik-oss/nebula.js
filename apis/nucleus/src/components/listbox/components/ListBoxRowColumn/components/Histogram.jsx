@@ -3,13 +3,13 @@ import classes from '../helpers/classes';
 import { frequencyTextNone } from '../helpers/constants';
 import { getBarWidth, getFrequencyText, joinClassNames } from '../helpers/operations';
 
-function Histogram({ cell, histogram, checkboxes, isSelected, frequencyMax }) {
-  const hasHistogramBar = cell && histogram && getFrequencyText({ cell }) !== frequencyTextNone;
+function Histogram({ qFrequency, histogram, checkboxes, isSelected, frequencyMax }) {
+  const hasHistogramBar = qFrequency && histogram && getFrequencyText(qFrequency) !== frequencyTextNone;
   if (!hasHistogramBar) {
     return undefined;
   }
 
-  const width = getBarWidth({ qFrequency: cell.qFrequency, checkboxes, frequencyMax });
+  const width = getBarWidth({ qFrequency, checkboxes, frequencyMax });
   return (
     <div
       className={joinClassNames([

@@ -5,6 +5,8 @@ import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
 import handleSetOverflowDisclaimer from './set-overflow-disclaimer';
 
+const REMOVE_TICK_LIMIT = 80; // an item width equal to or less than this, will hide the select tick
+
 const { StyledFixedSizeList, StyledFixedSizeGrid } = getStyledComponents();
 
 export default function getListBoxComponents({
@@ -36,7 +38,10 @@ export default function getListBoxComponents({
   freqIsAllowed,
 }) {
   const { layoutOptions = {}, frequencyMax } = layout || {};
-  const { itemPadding, listHeight, itemSize, rowCount, columnCount, frequencyWidth } = sizes || {};
+  const { columnWidth, itemPadding, listHeight, itemHeight, rowCount, columnCount, frequencyWidth } = sizes || {};
+
+  const itemWidth = layoutOptions.dataLayout === 'grid' ? columnWidth : width;
+  const showTick = itemWidth > REMOVE_TICK_LIMIT;
 
   // Options common for List and Grid.
   const commonComponentOptions = {
@@ -71,6 +76,7 @@ export default function getListBoxComponents({
     histogram,
     keyboard,
     showGray,
+    showTick,
     dataOffset: local.current.dataOffset,
     focusListItems,
   };
@@ -88,7 +94,7 @@ export default function getListBoxComponents({
         width={width}
         itemCount={listCount}
         itemData={{ ...commonItemData, listCount }}
-        itemSize={itemSize}
+        itemSize={itemHeight}
         onItemsRendered={(renderProps) => {
           setCurrentScrollIndex({ start: renderProps.visibleStartIndex, stop: renderProps.visibleStopIndex });
           if (scrollState) {
@@ -114,9 +120,9 @@ export default function getListBoxComponents({
   };
 
   const Grid = ({ onItemsRendered, ref }) => {
-    const { columnWidth, overflowStyling, scrollBarWidth } = sizes;
+    const { overflowStyling, scrollBarWidth } = sizes;
     const { layoutOrder } = layoutOptions || {};
-    const gridHeight = Math.min(listHeight, rowCount * itemSize + scrollBarWidth);
+    const gridHeight = Math.min(listHeight, rowCount * itemHeight + scrollBarWidth);
     // eslint-disable-next-line no-param-reassign
     local.current.listRef = ref;
 
@@ -157,7 +163,7 @@ export default function getListBoxComponents({
         columnCount={columnCount}
         columnWidth={columnWidth}
         rowCount={rowCount}
-        rowHeight={itemSize}
+        rowHeight={itemHeight}
         style={{ ...overflowStyling }}
         itemData={{
           ...commonItemData,

@@ -86,7 +86,7 @@ describe('<Listbox />', () => {
       columnWidth: 100,
       rowCount: 100,
       overflowStyling: 100,
-      itemSize: 25,
+      itemHeight: 25,
       listHeight: 200,
       scrollBarWidth: 10,
       count: 200,

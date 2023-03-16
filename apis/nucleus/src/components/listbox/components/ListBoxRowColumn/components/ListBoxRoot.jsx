@@ -23,9 +23,12 @@ const ellipsis = {
   whiteSpace: 'nowrap',
 };
 
+const iconWidth = 24; // tick and lock icon width in px
+
 const RowColRoot = styled('div', {
-  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth }) => ({
+  shouldForwardProp: (prop) =>
+    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth', 'showIcon', 'checkboxes'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth, showIcon, checkboxes }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -65,7 +68,7 @@ const RowColRoot = styled('div', {
     flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
-    paddingRight: '1px', // needed when text is right-aligned and shown in italics
+    paddingRight: showIcon || checkboxes ? '1px' : `${iconWidth}px`,
     ...ellipsis,
     whiteSpace: 'pre', // to keep white-space on highlight
     fontSize: theme.listBox?.content?.fontSize,
@@ -112,9 +115,9 @@ const RowColRoot = styled('div', {
   [`& .${classes.icon}`]: {
     display: 'flex',
     justifyContent: 'center',
-    width: 24,
-    minWidth: 24,
-    maxWidth: 24,
+    width: iconWidth,
+    minWidth: iconWidth,
+    maxWidth: iconWidth,
   },
 
   // Selection styles (S=Selected, XS=ExcludedSelected, A=Available, X=Excluded).

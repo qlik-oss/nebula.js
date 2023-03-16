@@ -38,6 +38,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     histogram = false,
     keyboard,
     showGray = true,
+    showTick: sizePermitsTick = true,
     columnCount = 1,
     rowCount = 1,
     dataOffset,
@@ -145,9 +146,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     fontSize: '8px',
   };
 
-  const showLock = isSelected && isLocked;
-  const showTick = !checkboxes && isSelected && !isLocked;
-
   const cellStyle = {
     display: 'flex',
     alignItems: 'center',
@@ -160,11 +158,17 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const isFirstElement = index === 0;
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
+  const showLock = isSelected && isLocked;
+  const showTick = !checkboxes && isSelected && !isLocked && sizePermitsTick;
+  const showIcon = !checkboxes && (showTick || showLock);
+
   return (
     <RowColRoot
       className={classes.barContainer}
       flexBasisProp={flexBasisVal}
       style={styles}
+      showIcon={showIcon}
+      checkboxes={checkboxes}
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
       dense={dense}
@@ -192,13 +196,15 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         tabIndex={isFirstElement && (!keyboard.enabled || keyboard.active) ? 0 : -1}
         data-n={cell?.qElemNumber}
       >
-        <Histogram
-          cell={cell}
-          histogram={histogram}
-          checkboxes={checkboxes}
-          isSelected={isSelected}
-          frequencyMax={frequencyMax}
-        />
+        {cell?.qFrequency && (
+          <Histogram
+            qFrequency={cell?.qFrequency}
+            histogram={histogram}
+            checkboxes={checkboxes}
+            isSelected={isSelected}
+            frequencyMax={frequencyMax}
+          />
+        )}
         <Grid
           item
           style={cellStyle}
@@ -240,9 +246,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
         {freqIsAllowed && <Frequency cell={cell} checkboxes={checkboxes} dense={dense} showGray={showGray} />}
 
-        {!checkboxes && (
+        {showIcon && (
           <Grid item className={classes.icon}>
-            {!showLock && !showTick && <span style={{ minWidth: '12px' }} />}
             {showLock && <Lock style={iconStyles} size="small" />}
             {showTick && <Tick style={iconStyles} size="small" />}
           </Grid>

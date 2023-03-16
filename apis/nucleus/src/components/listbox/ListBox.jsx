@@ -3,7 +3,7 @@ import React, { useEffect, useState, useCallback, useRef } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 import getListBoxComponents from './components/grid-list-components/grid-list-components';
-import getListSizes from './assets/get-list-sizes';
+import getListSizes from './assets/get-list-sizes/get-list-sizes';
 import useTextWidth from './hooks/useTextWidth';
 import getMeasureText from './assets/measure-text';
 import getHorizontalMinBatchSize from './assets/horizontal-minimum-batch-size';
@@ -252,9 +252,9 @@ export default function ListBox({
     freqIsAllowed,
   });
 
-  const { columnWidth, listHeight, itemSize } = sizes || {};
+  const { columnWidth, listHeight, itemHeight } = sizes || {};
   if (!isVertical) {
-    minimumBatchSize = getHorizontalMinBatchSize({ width, columnWidth, listHeight, itemSize });
+    minimumBatchSize = getHorizontalMinBatchSize({ width, columnWidth, listHeight, itemHeight });
   }
 
   return (

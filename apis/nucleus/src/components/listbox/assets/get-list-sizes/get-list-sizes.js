@@ -1,8 +1,6 @@
-const scrollBarWidth = 10; // TODO: ignore this - instead set the styling only show on hover...
-
-const ITEM_MIN_WIDTH = 56;
-const ITEM_MAX_WIDTH = 150;
-const FREQUENCY_WIDTH = 40;
+import calculateColumnMode from './column-mode';
+import { FREQUENCY_WIDTH, ITEM_MAX_WIDTH, ITEM_MIN_WIDTH, SCROLL_BAR_WIDTH } from './constants';
+import calculateRowMode from './row-mode';
 
 export default function getListSizes({ layout, width, height, listCount, count, textWidth, freqIsAllowed }) {
   const { layoutOptions = {} } = layout || {};
@@ -22,46 +20,42 @@ export default function getListSizes({ layout, width, height, listCount, count, 
   const isGridMode = dataLayout === 'grid';
   const itemPadding = 4;
 
-  const denseItemSize = 20;
-  const normalItemSize = isGridMode ? 32 : 29;
-  let itemSize = dense ? denseItemSize : normalItemSize;
+  const denseItemHeight = 20;
+  const normalItemHeight = isGridMode ? 32 : 29;
+  let itemHeight = dense ? denseItemHeight : normalItemHeight;
 
   if (isGridMode) {
     // Emulate a margin between items using padding, since the list library
     // needs an explicit row height and cannot handle margins.
-    itemSize += itemPadding;
+    itemHeight += itemPadding;
   }
 
-  const listHeight = height ?? 8 * itemSize;
+  const listHeight = height ?? 8 * itemHeight;
 
   if (layoutOrder) {
     // Modify container width to achieve the exact design with 8px margins on each side (left and right).
     let containerWidth = width;
 
     if (layoutOrder === 'row') {
-      containerWidth += itemPadding * 2;
       overflowStyling = { overflowX: 'hidden' };
-      const maxColumns = maxVisibleColumns?.maxColumns || 3;
-
-      if (maxVisibleColumns?.auto !== false) {
-        columnCount = Math.min(listCount, Math.ceil((containerWidth - scrollBarWidth) / columnAutoWidth)); // TODO: smarter sizing... based on glyph count + font size etc...??
-      } else {
-        columnCount = Math.min(listCount, maxColumns);
-      }
-      rowCount = Math.ceil(listCount / columnCount);
-      columnWidth = (containerWidth - scrollBarWidth) / columnCount;
+      containerWidth += itemPadding * 2;
+      ({ rowCount, columnWidth, columnCount } = calculateRowMode({
+        maxVisibleColumns,
+        listCount,
+        containerWidth,
+        columnAutoWidth,
+      }));
     } else {
       overflowStyling = { overflowY: 'hidden' };
-      const maxRows = maxVisibleRows?.maxRows || 3;
 
-      if (maxVisibleRows.auto !== false) {
-        rowCount = Math.floor(listHeight / itemSize);
-      } else {
-        rowCount = Math.min(listCount, maxRows);
-      }
-
-      columnCount = Math.ceil(listCount / rowCount);
-      columnWidth = Math.max(columnAutoWidth, containerWidth / columnCount);
+      ({ rowCount, columnWidth, columnCount } = calculateColumnMode({
+        maxVisibleRows,
+        itemHeight,
+        listCount,
+        listHeight,
+        columnAutoWidth,
+        containerWidth,
+      }));
     }
   }
 
@@ -81,9 +75,9 @@ export default function getListSizes({ layout, width, height, listCount, count, 
     columnWidth,
     rowCount,
     overflowStyling,
-    itemSize,
+    itemHeight,
     listHeight,
-    scrollBarWidth,
+    scrollBarWidth: SCROLL_BAR_WIDTH,
     count,
     listCount: limitedListCount,
     maxCount: { row: maxRowCount, column: maxColumnCount },
