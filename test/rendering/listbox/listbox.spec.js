@@ -32,7 +32,7 @@ test.describe('listbox mashup rendering test', () => {
   test('listbox basic', async () => {
     const FILE_NAME = 'listbox_basic.png';
 
-    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`, { waitUntil: 'networkidle' });
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
     const image = await selector.screenshot({ caret: 'hide' });
@@ -42,7 +42,7 @@ test.describe('listbox mashup rendering test', () => {
   test('selecting two values should result in two green rows', async () => {
     const FILE_NAME = 'listbox_select_EH.png';
 
-    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`, { waitUntil: 'networkidle' });
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
     const selectNumbers = [4, 7];
@@ -62,7 +62,7 @@ test.describe('listbox mashup rendering test', () => {
   test.skip('should render checkboxes and check A and I', async () => {
     const FILE_NAME = 'listbox_checkboxes_select_AI.png';
 
-    await page.goto(`${url}/listbox/listbox.html?scenario=checkboxes`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=checkboxes`, { waitUntil: 'networkidle' });
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
     const selectNumbers = [0, 8];
@@ -80,7 +80,7 @@ test.describe('listbox mashup rendering test', () => {
     const FILE_NAME = 'listbox_search_B.png';
     const searchSelector = '.search input';
 
-    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`, { waitUntil: 'networkidle' });
     const search = await page.waitForSelector(searchSelector, { visible: true });
 
     await search.click();
@@ -95,7 +95,7 @@ test.describe('listbox mashup rendering test', () => {
   test('hide toolbar', async () => {
     const FILE_NAME = 'listbox_no_toolbar.png';
 
-    await page.goto(`${url}/listbox/listbox.html?scenario=noToolbar`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=noToolbar`, { waitUntil: 'networkidle' });
 
     // Note that since we don't have a backend providing search results, we can't test highlighting and selected (green) rows.
     const selector = await page.locator(listboxSelector);
@@ -106,7 +106,7 @@ test.describe('listbox mashup rendering test', () => {
   test('hovering and pressing arrow down should scroll listbox', async () => {
     const FILE_NAME = 'listbox_key_scroll.png';
 
-    await page.goto(`${url}/listbox/listbox.html?scenario=standard`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard`, { waitUntil: 'networkidle' });
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
     await page.hover(listboxSelector);
@@ -119,7 +119,7 @@ test.describe('listbox mashup rendering test', () => {
   test('long title should detach toolbar', async () => {
     const FILE_NAME = 'listbox_detached_toolbar.png';
 
-    await page.goto(`${url}/listbox/listbox.html?scenario=longTitle`);
+    await page.goto(`${url}/listbox/listbox.html?scenario=longTitle`, { waitUntil: 'networkidle' });
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
     await page.click(listboxSelector);
