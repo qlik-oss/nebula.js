@@ -19,6 +19,11 @@
     "comment": "Dismiss the disclaimer that not all data is being shown",
     "version": "N/rgZJ2kTYsEGGa6KAsKEw=="
   },
+  "Listbox.DrillDown": {
+    "value": "드릴다운 차원",
+    "comment": "Tooltip for the drill-down icons on the dimension titles in charts. (pde 160210)",
+    "version": "eS2MoGNzPvMj88TYxjGxYw=="
+  },
   "Listbox.ItemsOverflow": {
     "value": "현재 제한된 데이터 집합이 표시되고 있습니다. 검색을 사용하여 크기를 줄이십시오.",
     "comment": "Disclaimer that not all data is being shown",
