@@ -1,19 +1,19 @@
 const addListboxTheme = (themeApi) => {
-  const getListboxStyle = (prop) => themeApi.getStyle('object', '', `listBox.${prop}`);
+  const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
 
   return {
-    backgroundColor: getListboxStyle('backgroundColor'),
+    backgroundColor: getListboxStyle('', 'backgroundColor'),
     title: {
       main: {
-        color: getListboxStyle('title.main.color'),
-        fontSize: getListboxStyle('title.main.fontSize'),
-        fontFamily: getListboxStyle('title.main.fontFamily'),
+        color: getListboxStyle('title.main', 'color'),
+        fontSize: getListboxStyle('title.main', 'fontSize'),
+        fontFamily: getListboxStyle('title.main', 'fontFamily'),
       },
     },
     content: {
-      color: getListboxStyle('content.color'),
-      fontSize: getListboxStyle('content.fontSize'),
-      fontFamily: getListboxStyle('content.fontFamily'),
+      color: getListboxStyle('content', 'color'),
+      fontSize: getListboxStyle('content', 'fontSize'),
+      fontFamily: getListboxStyle('content', 'fontFamily'),
     },
   };
 };
