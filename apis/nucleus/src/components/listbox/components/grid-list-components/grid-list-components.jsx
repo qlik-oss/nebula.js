@@ -80,6 +80,7 @@ export default function getListBoxComponents({
     showTick,
     dataOffset: local.current.dataOffset,
     focusListItems,
+    direction,
   };
 
   const List = ({ onItemsRendered, ref }) => {
