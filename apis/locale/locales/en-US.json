@@ -121,7 +121,7 @@
   },
   "SelectionToolbar.ClickToUnlock": {
     "value": "Click to unlock",
-    "comment": "Unlock a selection in selection toolbar (drl 131023)"
+    "comment": "Unlock a selection from listbox"
   },
   "Visualization.LayoutError": {
     "value": "Error",
