@@ -13,6 +13,7 @@ import createListboxSelectionToolbar from './interactions/listbox-selection-tool
 import ActionsToolbar from '../ActionsToolbar';
 import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
+import EditableTitle from './components/EditableTitle';
 import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
@@ -237,6 +238,13 @@ function ListBoxInline({ options, layout }) {
     containerPadding = layoutOptions.layoutOrder === 'row' ? '2px 4px' : '2px 6px 2px 4px';
   }
 
+  const titleComponent = constraints?.active ? (
+    <EditableTitle layout={layout} model={model} />
+  ) : (
+    <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
+      {layout.title}
+    </Title>
+  );
   return (
     <>
       {toolbarDetachedOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
@@ -303,11 +311,7 @@ function ListBoxInline({ options, layout }) {
                 </Grid>
               )}
               <Grid item sx={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }} className={classes.listBoxHeader}>
-                {showTitle && (
-                  <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
-                    {layout.title}
-                  </Title>
-                )}
+                {showTitle && titleComponent}
               </Grid>
             </Grid>
             <Grid item xs />
