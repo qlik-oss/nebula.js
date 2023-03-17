@@ -27,6 +27,10 @@
 
   const init = async (options = {}) => {
     const element = window.document.querySelector('#object');
+    if (options?.fixtureFile?.customRenderTestElementSize) {
+      element.style.width = options.fixtureFile.customRenderTestElementSize.width;
+      element.style.height = options.fixtureFile.customRenderTestElementSize.height;
+    }
     const { app } = getMocks(options);
     const nebbie = window.stardust.embed(app);
     const listboxOptions = {
