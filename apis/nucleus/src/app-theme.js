@@ -8,15 +8,18 @@ const timed = (t, v) =>
 
 const LOAD_THEME_TIMEOUT = 5000;
 
-export default function appTheme({ themes = [], root } = {}) {
+export default function appTheme({ themes = [], loadTheme, root } = {}) {
   const wrappedTheme = themeFn();
 
   const setTheme = async (themeId) => {
-    const found = themes.filter((t) => t.id === themeId)[0];
+    let found = themes.filter((t) => t.id === themeId)[0];
     let muiTheme = themeId === 'dark' ? 'dark' : 'light';
+    if (!found && loadTheme) {
+      found = { load: loadTheme };
+    }
     if (found && found.load) {
       try {
-        const raw = await Promise.race([found.load(), timed(LOAD_THEME_TIMEOUT, { __timedOut: true })]);
+        const raw = await Promise.race([found.load(themeId), timed(LOAD_THEME_TIMEOUT, { __timedOut: true })]);
         if (raw.__timedOut) {
           if (__NEBULA_DEV__) {
             console.warn(`Timeout when loading theme '${themeId}'`); // eslint-disable-line no-console

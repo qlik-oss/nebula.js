@@ -8,6 +8,7 @@ const addListboxTheme = (themeApi) => {
         color: getListboxStyle('title.main', 'color'),
         fontSize: getListboxStyle('title.main', 'fontSize'),
         fontFamily: getListboxStyle('title.main', 'fontFamily'),
+        fontWeight: getListboxStyle('title.main', 'fontWeight'),
       },
     },
     content: {
