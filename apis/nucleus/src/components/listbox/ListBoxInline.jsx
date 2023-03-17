@@ -33,7 +33,7 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
     backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
     [`& .${classes.listBoxHeader}`]: {
       alignSelf: 'center',
-      display: 'inline-flex',
+      display: 'flex',
       width: `calc(100% - ${BUTTON_ICON_WIDTH}px)`,
     },
     [`& .${classes.screenReaderOnly}`]: {
@@ -187,7 +187,7 @@ function ListBoxInline({ options, layout }) {
   }
 
   const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
-
+  const isRtl = direction === 'rtl';
   const isDrillDown = layout.qListObject.qDimensionInfo.qGrouping === 'H';
   const listboxSelectionToolbarItems = createListboxSelectionToolbar({
     layout,
@@ -228,6 +228,7 @@ function ListBoxInline({ options, layout }) {
   const showIcons = showSearchOrLockIcon || isDrillDown;
   const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
   const headerPaddingLeft = CELL_PADDING_LEFT - (showSearchOrLockIcon ? ICON_PADDING : 0);
+  const headerPaddingRight = isRtl ? CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0) : 0;
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
   const isGridMode = layoutOptions?.dataLayout === 'grid';
@@ -238,7 +239,7 @@ function ListBoxInline({ options, layout }) {
 
   return (
     <>
-      {toolbarDetachedOnly && <ActionsToolbar {...getActionToolbarProps(true)} />}
+      {toolbarDetachedOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
       <StyledGrid
         className="listbox-container"
         container
@@ -256,10 +257,21 @@ function ListBoxInline({ options, layout }) {
           <Grid
             item
             container
-            style={{ padding: theme.spacing(1), paddingLeft: `${headerPaddingLeft}px` }}
+            style={{
+              padding: theme.spacing(1),
+              paddingLeft: `${headerPaddingLeft}px`,
+              paddingRight: `${headerPaddingRight}px`,
+            }}
+            sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
             wrap="nowrap"
           >
-            <Grid item container height={headerHeight} wrap="nowrap">
+            <Grid
+              item
+              container
+              height={headerHeight}
+              sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
+              wrap="nowrap"
+            >
               {showIcons && (
                 <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
                   {isLocked ? (
@@ -290,7 +302,7 @@ function ListBoxInline({ options, layout }) {
                   )}
                 </Grid>
               )}
-              <Grid item className={classes.listBoxHeader}>
+              <Grid item sx={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }} className={classes.listBoxHeader}>
                 {showTitle && (
                   <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
                     {layout.title}
@@ -300,7 +312,10 @@ function ListBoxInline({ options, layout }) {
             </Grid>
             <Grid item xs />
             <Grid item>
-              <ActionsToolbar {...getActionToolbarProps(showToolbarDetached({ containerRef, titleRef, iconsWidth }))} />
+              <ActionsToolbar
+                direction={direction}
+                {...getActionToolbarProps(showToolbarDetached({ containerRef, titleRef, iconsWidth }))}
+              />
             </Grid>
           </Grid>
         )}
@@ -326,6 +341,7 @@ function ListBoxInline({ options, layout }) {
               searchContainerRef={searchContainerRef}
               wildCardSearch={wildCardSearch}
               searchEnabled={searchEnabled}
+              direction={direction}
             />
           </Grid>
           <Grid item xs className={classes.listboxWrapper}>
@@ -334,6 +350,7 @@ function ListBoxInline({ options, layout }) {
               {({ height, width }) => (
                 <ListBox
                   model={model}
+                  app={app}
                   constraints={constraints}
                   layout={layout}
                   selections={selections}

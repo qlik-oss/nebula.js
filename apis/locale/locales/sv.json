@@ -19,6 +19,11 @@
     "comment": "Dismiss the disclaimer that not all data is being shown",
     "version": "N/rgZJ2kTYsEGGa6KAsKEw=="
   },
+  "Listbox.DrillDown": {
+    "value": "Hierarkisk dimension",
+    "comment": "Tooltip for the drill-down icons on the dimension titles in charts. (pde 160210)",
+    "version": "eS2MoGNzPvMj88TYxjGxYw=="
+  },
   "Listbox.ItemsOverflow": {
     "value": "En begränsad datauppsättning visas. Använd sök för att minska storleken",
     "comment": "Disclaimer that not all data is being shown",

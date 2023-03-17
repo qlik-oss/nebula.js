@@ -14,11 +14,13 @@ import ListBoxDisclaimer from './components/ListBoxDisclaimer';
 import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
 import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
+import useFrequencyMax from './hooks/useFrequencyMax';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
 export default function ListBox({
   model,
+  app,
   constraints,
   layout,
   selections,
@@ -231,6 +233,8 @@ export default function ListBox({
     setLast: (last) => setFocusListItem((prevState) => ({ ...prevState, last })),
   });
 
+  const frequencyMax = useFrequencyMax(app, layout);
+
   const { List, Grid } = getListBoxComponents({
     direction,
     layout,
@@ -258,6 +262,7 @@ export default function ListBox({
     focusListItems: getFocusState(),
     setCurrentScrollIndex: currentScrollIndex.set,
     constraints,
+    frequencyMax,
     freqIsAllowed,
   });
 

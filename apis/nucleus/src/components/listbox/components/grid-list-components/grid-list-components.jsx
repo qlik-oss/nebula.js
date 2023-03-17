@@ -35,9 +35,10 @@ export default function getListBoxComponents({
   focusListItems,
   setCurrentScrollIndex,
   constraints,
+  frequencyMax,
   freqIsAllowed,
 }) {
-  const { layoutOptions = {}, frequencyMax } = layout || {};
+  const { layoutOptions = {} } = layout || {};
   const { columnWidth, itemPadding, listHeight, itemHeight, rowCount, columnCount, frequencyWidth } = sizes || {};
 
   const itemWidth = layoutOptions.dataLayout === 'grid' ? columnWidth : width;
@@ -79,6 +80,7 @@ export default function getListBoxComponents({
     showTick,
     dataOffset: local.current.dataOffset,
     focusListItems,
+    direction,
   };
 
   const List = ({ onItemsRendered, ref }) => {

@@ -129,7 +129,7 @@ describe('useExistingModel', () => {
         histogram: true,
       };
       const fieldIdentifier = { qLibraryId: '123' };
-      const fakeDimLayout = { qDim: { qFieldDefs: ['Volume'] } };
+      const fakeDimLayout = { qDim: { qFieldDefs: ['Volume'], qGrouping: 'N' } };
       app.getDimension = jest.fn().mockReturnValue({ getLayout: async () => fakeDimLayout });
 
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
@@ -138,7 +138,7 @@ describe('useExistingModel', () => {
     });
     test('should use title from qDim', async () => {
       const fieldIdentifier = { qLibraryId: '123' };
-      const fakeDimLayout = { qDim: { qFieldDefs: ['Volume'], title: 'Volume title' } };
+      const fakeDimLayout = { qDim: { qFieldDefs: ['Volume'], title: 'Volume title', qGrouping: 'N' } };
       app.getDimension = jest.fn().mockReturnValue({ getLayout: async () => fakeDimLayout });
 
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$' });
@@ -147,7 +147,7 @@ describe('useExistingModel', () => {
     test('should use title from options if provided', async () => {
       const options = { title: 'Options title' };
       const fieldIdentifier = { qLibraryId: '123' };
-      const fakeDimLayout = { qDim: { qFieldDefs: ['Volume'], title: 'Volume title' } };
+      const fakeDimLayout = { qDim: { qFieldDefs: ['Volume'], title: 'Volume title', qGrouping: 'N' } };
       app.getDimension = jest.fn().mockReturnValue({ getLayout: async () => fakeDimLayout });
 
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
