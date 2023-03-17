@@ -197,7 +197,8 @@ function ListBoxInline({ options, layout }) {
   const dense = layoutOptions.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
-  const minHeight = toolbar ? 49 + (searchVisible ? searchHeight : 0) + extraheight : 0;
+  const searchAddHeight = searchVisible ? searchHeight : 0;
+  const minHeight = toolbar ? 49 + searchAddHeight + extraheight : 0;
   const headerHeight = 32;
 
   const onShowSearch = () => {
