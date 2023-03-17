@@ -3,6 +3,7 @@ import create from '../set-theme';
 import base from '../themes/base.json';
 import light from '../themes/light.json';
 import dark from '../themes/dark.json';
+import baseIn from '../themes/base_inherit.json';
 
 jest.mock('extend');
 jest.mock('../themes/base.json', () => ({
@@ -36,8 +37,8 @@ describe('set theme', () => {
       palettes: {},
     });
 
-    create({}, resolveMock);
-    expect(extendMock.mock.calls[0]).toEqual([true, {}, base, light]);
+    create({ _inherit: false }, resolveMock);
+    expect(extendMock.mock.calls[0]).toEqual([true, {}, base, light, {}]);
   });
 
   test('should extend from dark theme when type is dark', () => {
@@ -45,8 +46,17 @@ describe('set theme', () => {
       palettes: {},
     });
 
-    create({ type: 'dark' }, resolveMock);
-    expect(extendMock.mock.calls[0]).toEqual([true, {}, base, dark]);
+    create({ type: 'dark', _inherit: false }, resolveMock);
+    expect(extendMock.mock.calls[0]).toEqual([true, {}, base, dark, {}]);
+  });
+
+  test('should extend and add base inheritance', () => {
+    extendMock.mockReturnValue({
+      palettes: {},
+    });
+
+    create({}, resolveMock);
+    expect(extendMock.mock.calls[0]).toEqual([true, {}, base, light, baseIn]);
   });
 
   test('should not extend scales and palette arrays', () => {
