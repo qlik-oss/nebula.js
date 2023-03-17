@@ -275,8 +275,14 @@ function ListBoxInline({ options, layout }) {
               {showIcons && (
                 <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
                   {isLocked ? (
-                    <IconButton tabIndex={-1} onClick={unlock} disabled={selectDisabled()} size="large">
-                      <Lock title={translator.get('Listbox.Unlock')} disableRipple style={{ fontSize: '12px' }} />
+                    <IconButton
+                      title={translator.get('SelectionToolbar.ClickToUnlock')}
+                      tabIndex={-1}
+                      onClick={unlock}
+                      disabled={selectDisabled()}
+                      size="large"
+                    >
+                      <Lock disableRipple style={{ fontSize: '12px' }} />
                     </IconButton>
                   ) : (
                     showSearchIcon && (

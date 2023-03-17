@@ -149,6 +149,10 @@
     "comment": "Action text to select possible selections",
     "version": "UYEx1K96g9h4HCK3GH/6kg=="
   },
+  "SelectionToolbar.ClickToUnlock": {
+    "value": "잠금을 해제하려면 클릭하십시오.",
+    "comment": "Unlock a selection from listbox"
+  },
   "Visualization.Incomplete": {
     "value": "완료되지 않은 시각화",
     "comment": "Status text shown when a visualization is incomplete",
