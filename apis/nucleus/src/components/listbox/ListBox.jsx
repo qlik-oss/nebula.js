@@ -175,7 +175,16 @@ export default function ListBox({
   });
 
   let freqIsAllowed = getFrequencyAllowed({ itemWidth: width, layout, frequencyMode });
-  const sizes = getListSizes({ layout, width, height, listCount: unlimitedListCount, count, textWidth, freqIsAllowed });
+  const sizes = getListSizes({
+    layout,
+    width,
+    height,
+    listCount: unlimitedListCount,
+    count,
+    textWidth,
+    freqIsAllowed,
+    checkboxes,
+  });
   if (sizes.columnWidth) {
     // In grid mode, where we have a dynamic item width, get a second opinion on showing/hiding frequency.
     freqIsAllowed = getFrequencyAllowed({ itemWidth: sizes.columnWidth, layout, frequencyMode });

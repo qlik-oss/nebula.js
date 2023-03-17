@@ -1,5 +1,3 @@
-import { ITEM_MIN_WIDTH } from './constants';
-
 export default function calculateColumnMode({
   maxVisibleRows,
   itemHeight,
@@ -7,6 +5,7 @@ export default function calculateColumnMode({
   listHeight,
   columnAutoWidth,
   containerWidth,
+  itemMinWidth,
 }) {
   let rowCount;
   const maxRows = maxVisibleRows?.maxRows || 3;
@@ -18,7 +17,7 @@ export default function calculateColumnMode({
   }
 
   const columnCount = Math.ceil(listCount / rowCount);
-  const columnWidth = Math.max(columnAutoWidth, containerWidth / columnCount, ITEM_MIN_WIDTH);
+  const columnWidth = Math.max(columnAutoWidth, containerWidth / columnCount, itemMinWidth);
 
   return {
     columnWidth,

@@ -1,16 +1,28 @@
 import calculateColumnMode from './column-mode';
-import { FREQUENCY_WIDTH, ITEM_MAX_WIDTH, ITEM_MIN_WIDTH, SCROLL_BAR_WIDTH } from './constants';
 import calculateRowMode from './row-mode';
+import { FREQUENCY_WIDTH, ITEM_MAX_WIDTH, ITEM_MIN_WIDTH, SCROLL_BAR_WIDTH, CHECKBOX_WIDTH } from './constants';
 
-export default function getListSizes({ layout, width, height, listCount, count, textWidth, freqIsAllowed }) {
+export default function getListSizes({
+  layout,
+  width,
+  height,
+  listCount,
+  count,
+  textWidth,
+  freqIsAllowed,
+  checkboxes,
+}) {
   const { layoutOptions = {} } = layout || {};
   const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense, dataLayout } = layoutOptions;
 
   const frequencyAddWidth = freqIsAllowed ? FREQUENCY_WIDTH : 0;
+  const checkboxAddWidth = checkboxes ? CHECKBOX_WIDTH : 0;
+
+  const dynamicItemMinWidth = ITEM_MIN_WIDTH + frequencyAddWidth + checkboxAddWidth;
 
   const columnAutoWidth = Math.max(
-    Math.min(ITEM_MAX_WIDTH, textWidth + 18 + frequencyAddWidth),
-    ITEM_MIN_WIDTH + frequencyAddWidth
+    Math.min(ITEM_MAX_WIDTH, textWidth + 18 + frequencyAddWidth + checkboxAddWidth),
+    dynamicItemMinWidth
   );
 
   let overflowStyling;
@@ -44,6 +56,7 @@ export default function getListSizes({ layout, width, height, listCount, count, 
         listCount,
         containerWidth,
         columnAutoWidth,
+        itemMinWidth: dynamicItemMinWidth,
       }));
     } else {
       overflowStyling = { overflowY: 'hidden' };
@@ -55,6 +68,7 @@ export default function getListSizes({ layout, width, height, listCount, count, 
         listHeight,
         columnAutoWidth,
         containerWidth,
+        itemMinWidth: dynamicItemMinWidth,
       }));
     }
   }
