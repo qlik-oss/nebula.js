@@ -119,6 +119,10 @@
     "value": "Select possible",
     "comment": "Action text to select possible selections"
   },
+  "SelectionToolbar.ClickToUnlock": {
+    "value": "Click to unlock",
+    "comment": "Unlock a selection in selection toolbar (drl 131023)"
+  },
   "Visualization.LayoutError": {
     "value": "Error",
     "comment": "Status text shown when a visualization has layout errors"
