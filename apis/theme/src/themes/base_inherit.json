@@ -1,0 +1,18 @@
+{
+  "object": {
+    "listBox": {
+      "backgroundColor": "#ffffff",
+      "title": {
+        "main": {
+          "color": "#404040",
+          "fontSize": "14px",
+          "fontWeight": "bold"
+        }
+      },
+      "content": {
+        "color": "#404040",
+        "fontSize": "12px"
+      }
+    }
+  }
+}

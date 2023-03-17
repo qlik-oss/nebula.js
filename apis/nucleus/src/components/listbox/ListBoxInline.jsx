@@ -58,6 +58,7 @@ const Title = styled(Typography)(({ theme }) => ({
   color: theme.listBox?.title?.main?.color,
   fontSize: theme.listBox?.title?.main?.fontSize,
   fontFamily: theme.listBox?.title?.main?.fontFamily,
+  fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
 }));
 
 function ListBoxInline({ options, layout }) {

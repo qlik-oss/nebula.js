@@ -66,7 +66,7 @@
         sc = { toolbar: false };
         break;
       case 'longTitle':
-        sc = { title: 'Alpha long title' };
+        sc = { title: 'Alpha long title that needs more words' };
         break;
       default:
         throw new Error('Invalid test scenario', s);
