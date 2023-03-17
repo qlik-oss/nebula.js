@@ -1,6 +1,14 @@
 import KEYS from '../../../keys';
 
-export function getFieldKeyboardNavigation({ select, confirm, cancel, setScrollPosition, focusListItems }) {
+export function getFieldKeyboardNavigation({
+  select,
+  selectAll,
+  onCtrlF,
+  confirm,
+  cancel,
+  setScrollPosition,
+  focusListItems,
+}) {
   const getElement = (elm, next = false) => {
     const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
     return parentElm && parentElm.querySelector('[role]');
@@ -13,7 +21,7 @@ export function getFieldKeyboardNavigation({ select, confirm, cancel, setScrollP
 
   const handleKeyDown = (event) => {
     let elementToFocus;
-    const { keyCode, shiftKey = false, ctrlKey = false } = event.nativeEvent;
+    const { keyCode, shiftKey = false, ctrlKey = false, metaKey = false } = event.nativeEvent;
     switch (keyCode) {
       case KEYS.SHIFT:
         // This is to ensure we include the first value when starting a range selection.
@@ -66,6 +74,18 @@ export function getFieldKeyboardNavigation({ select, confirm, cancel, setScrollP
         }
         setScrollPosition?.('end');
         break;
+      case KEYS.A:
+        if (ctrlKey || metaKey) {
+          selectAll();
+          break;
+        }
+        return;
+      case KEYS.F:
+        if (ctrlKey || metaKey) {
+          onCtrlF();
+          break;
+        }
+        return;
       default:
         return; // don't stop propagation since we want to outsource keydown to other handlers.
     }
