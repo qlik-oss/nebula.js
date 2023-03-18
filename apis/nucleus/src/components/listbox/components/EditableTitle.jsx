@@ -11,8 +11,9 @@ const Title = styled(Typography)(({ theme }) => ({
 
 const StyledInput = styled(InputBase)(({ theme }) => ({
   color: theme.listBox?.title?.main?.color,
-  fontSize: theme.listBox?.title?.main?.fontSize,
-  fontFamily: theme.listBox?.title?.main?.fontFamily,
+  fontSize: theme.listBox?.title?.main?.fontSize ?? theme.typography.h6.fontSize,
+  fontFamily: theme.listBox?.title?.main?.fontFamily ?? theme.typography.h6.fontFamily,
+  fontWeight: theme.listBox?.title?.main?.fontWeight ?? theme.typography.h6.fontWeight,
 }));
 
 export default function EditableTitle({ layout, model }) {
