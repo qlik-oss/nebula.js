@@ -40,6 +40,7 @@ export default function ListBox({
   selectDisabled = () => false,
   keyScroll = { state: {}, reset: () => {} },
   currentScrollIndex = { set: () => {} },
+  renderedCallback,
 }) {
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
@@ -58,6 +59,8 @@ export default function ListBox({
 
   // The time from scroll end until new data is being fetched, may be exposed in API later on.
   const scrollTimeout = 0;
+
+  const { frequencyMax, awaitingFrequencyMax } = useFrequencyMax(app, layout);
 
   const { isLoadingData, ...itemsLoader } = useItemsLoader({
     local,
@@ -79,11 +82,16 @@ export default function ListBox({
   if (itemsLoader?.pages) {
     selectionState.update({
       setPages,
-      pages: itemsLoader?.pages,
+      pages: itemsLoader.pages,
       isSingleSelect,
       selectDisabled,
       layout,
     });
+
+    if (itemsLoader.pages.length && !awaitingFrequencyMax) {
+      // All necessary data fetching done - signal rendering done!
+      renderedCallback();
+    }
   }
 
   const isItemLoaded = useCallback(
@@ -223,8 +231,6 @@ export default function ListBox({
     last: focusListItem.last,
     setLast: (last) => setFocusListItem((prevState) => ({ ...prevState, last })),
   });
-
-  const frequencyMax = useFrequencyMax(app, layout);
 
   const { List, Grid } = getListBoxComponents({
     direction,
