@@ -103,12 +103,12 @@ const renderFixture = async (params) => {
   const element = document.querySelector('#chart-container');
   const serverInfo = await getConnectionInfo();
   const fixture = await getFixture(params.fixture);
-  const { type, load, genericObjects, instanceConfig, snConfig, enigmaOptions } = await getOptions({
+  const { type, load, genericObjects, instanceConfig, snConfig, enigmaMockerOptions } = await getOptions({
     fixture,
     params,
     serverInfo,
   });
-  const mockedApp = await EnigmaMocker.fromGenericObjects(genericObjects, enigmaOptions);
+  const mockedApp = await EnigmaMocker.fromGenericObjects(genericObjects, enigmaMockerOptions);
   const qId = getQId(genericObjects);
 
   const nebbie = embed(mockedApp, {
