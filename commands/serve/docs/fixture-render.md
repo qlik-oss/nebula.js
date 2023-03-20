@@ -45,7 +45,7 @@ http://localhost:8000/render?fixture=scenario-1.fix.js
 
 The fixture includes information about how to render the visualization. In some cases it's useful to reuse the fixtures but slightly alter how it's rendered. For example, render the chart with different themes or in various languages.
 
-This can be accieved by specifying URL query parameters. See below for supported parameters.
+This can be achieved by specifying URL query parameters. See below for supported parameters.
 
 ### `theme`
 
