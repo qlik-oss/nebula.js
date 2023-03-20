@@ -149,6 +149,10 @@
     "comment": "Action text to select possible selections",
     "version": "UYEx1K96g9h4HCK3GH/6kg=="
   },
+  "SelectionToolbar.ClickToUnlock": {
+    "value": "Щелкните, чтобы разблокировать",
+    "comment": "Unlock a selection from listbox"
+  },
   "Visualization.Incomplete": {
     "value": "Незавершенная визуализация",
     "comment": "Status text shown when a visualization is incomplete",

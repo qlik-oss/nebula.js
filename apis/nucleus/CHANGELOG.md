@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.1...v4.0.0-alpha.2) (2023-03-20)
+
+### Bug Fixes
+
+- add tooltip lock button ([#1158](https://github.com/qlik-oss/nebula.js/issues/1158)) ([e8a17b5](https://github.com/qlik-oss/nebula.js/commit/e8a17b5af15e4ded47e21f61fcca05b8302a574c))
+- fix getting listbox theme ([#1156](https://github.com/qlik-oss/nebula.js/issues/1156)) ([ef75133](https://github.com/qlik-oss/nebula.js/commit/ef751334f374bdbb4a9bf4cdc37168c548bbd382))
+- fix set focus on keyboard navigation ([#1151](https://github.com/qlik-oss/nebula.js/issues/1151)) ([17cf57b](https://github.com/qlik-oss/nebula.js/commit/17cf57b3f8e10a26c0a72f275f32f7c0d4604096))
+- grid mode calculations ([#1150](https://github.com/qlik-oss/nebula.js/issues/1150)) ([7881c72](https://github.com/qlik-oss/nebula.js/commit/7881c722760fa514bba589e0d50d6fcc79410d37)), closes [#145](https://github.com/qlik-oss/nebula.js/issues/145) [#144](https://github.com/qlik-oss/nebula.js/issues/144) [#127](https://github.com/qlik-oss/nebula.js/issues/127) [#146](https://github.com/qlik-oss/nebula.js/issues/146)
+- **Listbox:** rtl mode ([#1144](https://github.com/qlik-oss/nebula.js/issues/1144)) ([b25bddc](https://github.com/qlik-oss/nebula.js/commit/b25bddccc45cdcf342b92a3fb322840389334d27))
+- **Listbox:** take searchEnabled and toolbar into account for minHeight ([#1143](https://github.com/qlik-oss/nebula.js/issues/1143)) ([c664dfe](https://github.com/qlik-oss/nebula.js/commit/c664dfe689fb05a2827c933b8eaeab1b71e6cf24))
+
+### Features
+
+- fetch frequencyMax ([#1152](https://github.com/qlik-oss/nebula.js/issues/1152)) ([2589a93](https://github.com/qlik-oss/nebula.js/commit/2589a93ff2d079d28cca6a59115a8b621175a572))
+
 # [4.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.0...v4.0.0-alpha.1) (2023-03-15)
 
 ### Bug Fixes

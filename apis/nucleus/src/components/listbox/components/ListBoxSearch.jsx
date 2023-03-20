@@ -144,6 +144,7 @@ export default function ListBoxSearch({
       sx={[
         {
           border: 'none',
+          fontSize: 14,
           borderRadius: 0,
           backgroundColor: 'transparent',
           '& fieldset': {

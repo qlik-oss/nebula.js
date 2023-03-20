@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.1...v4.0.0-alpha.2) (2023-03-20)
+
+### Bug Fixes
+
+- fix getting listbox theme ([#1156](https://github.com/qlik-oss/nebula.js/issues/1156)) ([ef75133](https://github.com/qlik-oss/nebula.js/commit/ef751334f374bdbb4a9bf4cdc37168c548bbd382))
+
 # [4.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.0...v4.0.0-alpha.1) (2023-03-15)
 
 **Note:** Version bump only for package @nebula.js/theme
