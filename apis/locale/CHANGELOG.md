@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.1...v4.0.0-alpha.2) (2023-03-20)
+
+### Bug Fixes
+
+- add tooltip lock button ([#1158](https://github.com/qlik-oss/nebula.js/issues/1158)) ([e8a17b5](https://github.com/qlik-oss/nebula.js/commit/e8a17b5af15e4ded47e21f61fcca05b8302a574c))
+
 # [4.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.0...v4.0.0-alpha.1) (2023-03-15)
 
 **Note:** Version bump only for package @nebula.js/locale

@@ -368,14 +368,6 @@ declare namespace stardust {
 
     }
 
-    interface Flags {
-        /**
-         * Checks whether the specified flag is enabled.
-         * @param flag The value flag to check.
-         */
-        isEnabled(flag: string): boolean;
-    }
-
     class AppSelections {
         constructor();
 
@@ -434,6 +426,14 @@ declare namespace stardust {
          */
         noModal(accept?: boolean): Promise<undefined>;
 
+    }
+
+    interface Flags {
+        /**
+         * Checks whether the specified flag is enabled.
+         * @param flag The value flag to check.
+         */
+        isEnabled(flag: string): boolean;
     }
 
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
