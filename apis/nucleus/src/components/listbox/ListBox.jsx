@@ -41,6 +41,7 @@ export default function ListBox({
   keyScroll = { state: {}, reset: () => {} },
   currentScrollIndex = { set: () => {} },
   renderedCallback,
+  onCtrlF,
 }) {
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
@@ -241,6 +242,11 @@ export default function ListBox({
     setLast: (last) => setFocusListItem((prevState) => ({ ...prevState, last })),
   });
 
+  const selectAll = () => {
+    selectionState.clearItemStates(false);
+    model.selectListObjectAll('/qListObjectDef');
+  };
+
   const { List, Grid } = getListBoxComponents({
     direction,
     layout,
@@ -253,6 +259,8 @@ export default function ListBox({
     showGray,
     interactionEvents,
     select,
+    selectAll,
+    onCtrlF,
     textAlign,
     isVertical,
     pages,

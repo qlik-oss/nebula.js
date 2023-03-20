@@ -30,6 +30,7 @@ export default function ListBoxSearch({
   wildCardSearch = false,
   searchEnabled,
   direction,
+  hide,
 }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
@@ -122,6 +123,16 @@ export default function ListBoxSearch({
         response = cancel();
         e.preventDefault();
         e.stopPropagation();
+        break;
+      case 'f':
+      case 'F':
+        if (e.ctrlKey || e.metaKey) {
+          if (hide) {
+            hide();
+          }
+          e.preventDefault();
+          e.stopPropagation();
+        }
         break;
       default:
         break;

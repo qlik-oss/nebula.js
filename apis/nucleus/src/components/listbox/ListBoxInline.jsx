@@ -45,7 +45,7 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
     [`& .${classes.listboxWrapper}`]: {
       padding: containerPadding,
     },
-    '&:focus': {
+    '&:focus:not(:hover)': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
     },
     '&:focus-visible': {
@@ -214,6 +214,15 @@ function ListBoxInline({ options, layout }) {
     setShowSearch(newValue);
   };
 
+  const onCtrlF = () => {
+    if (search === 'toggle') {
+      onShowSearch();
+    } else {
+      const input = searchContainer.current.querySelector('input');
+      input?.focus();
+    }
+  };
+
   const getActionToolbarProps = (isPopover) =>
     getListboxActionProps({
       isPopover,
@@ -346,10 +355,10 @@ function ListBoxInline({ options, layout }) {
               visible={searchVisible}
               search={search}
               autoFocus={shouldAutoFocus}
-              searchContainerRef={searchContainerRef}
               wildCardSearch={wildCardSearch}
               searchEnabled={searchEnabled}
               direction={direction}
+              hide={showSearchIcon && onShowSearch}
             />
           </Grid>
           <Grid item xs className={classes.listboxWrapper}>
@@ -386,6 +395,7 @@ function ListBoxInline({ options, layout }) {
                     set: setCurrentScrollIndex,
                   }}
                   renderedCallback={renderedCallback}
+                  onCtrlF={onCtrlF}
                 />
               )}
             </AutoSizer>
