@@ -213,6 +213,15 @@ function ListBoxInline({ options, layout }) {
     setShowSearch(newValue);
   };
 
+  const onCtrlF = () => {
+    if (search === 'toggle') {
+      onShowSearch();
+    } else {
+      const input = searchContainer.current.querySelector('input');
+      input?.focus();
+    }
+  };
+
   const getActionToolbarProps = (isPopover) =>
     getListboxActionProps({
       isPopover,
@@ -345,10 +354,10 @@ function ListBoxInline({ options, layout }) {
               visible={searchVisible}
               search={search}
               autoFocus={shouldAutoFocus}
-              searchContainerRef={searchContainerRef}
               wildCardSearch={wildCardSearch}
               searchEnabled={searchEnabled}
               direction={direction}
+              hide={showSearchIcon && onShowSearch}
             />
           </Grid>
           <Grid item xs className={classes.listboxWrapper}>
@@ -384,6 +393,7 @@ function ListBoxInline({ options, layout }) {
                     state: currentScrollIndex,
                     set: setCurrentScrollIndex,
                   }}
+                  onCtrlF={onCtrlF}
                 />
               )}
             </AutoSizer>
