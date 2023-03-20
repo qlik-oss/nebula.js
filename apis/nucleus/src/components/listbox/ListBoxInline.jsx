@@ -79,6 +79,7 @@ function ListBoxInline({ options, layout }) {
     calculatePagesHeight,
     showGray = true,
     scrollState = undefined,
+    isInSenseClientAndAlowEdittingTitle = false,
   } = options;
   let { toolbar = true } = options;
 
@@ -238,13 +239,14 @@ function ListBoxInline({ options, layout }) {
     containerPadding = layoutOptions.layoutOrder === 'row' ? '2px 4px' : '2px 6px 2px 4px';
   }
 
-  const TitleComponent = constraints?.active ? (
-    <EditableTitle layout={layout} model={model} />
-  ) : (
-    <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
-      {layout.title}
-    </Title>
-  );
+  const TitleComponent =
+    isInSenseClientAndAlowEdittingTitle && constraints?.active ? (
+      <EditableTitle layout={layout} model={model} />
+    ) : (
+      <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
+        {layout.title}
+      </Title>
+    );
   return (
     <>
       {toolbarDetachedOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}

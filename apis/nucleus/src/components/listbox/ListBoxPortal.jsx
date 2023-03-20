@@ -43,6 +43,7 @@ export const getOptions = (usersOptions = {}) => {
     selectDisabled: undefined,
     postProcessPages: undefined,
     calculatePagesHeight: false,
+    isInSenseClientAndAlowEdittingTitle: false,
   };
   const squashedOptions = {
     ...exposedOptions,
