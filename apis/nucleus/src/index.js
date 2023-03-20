@@ -462,16 +462,8 @@ function nuked(configuration = {}) {
             }
             const onSelectionActivated = () => fieldSels.emit('selectionActivated');
             const onSelectionDeactivated = () => fieldSels.emit('selectionDeactivated');
-            let renderCount = 0;
 
             return new Promise((resolve) => {
-              const renderedCallback = () => {
-                renderCount++;
-                if (renderCount === 1) {
-                  resolve();
-                }
-              };
-
               this._instance = ListBoxPortal({
                 element,
                 app,
@@ -483,7 +475,7 @@ function nuked(configuration = {}) {
                   ...options,
                 }),
                 stateName: options.stateName || '$',
-                renderedCallback,
+                renderedCallback: resolve,
               });
               root.add(this._instance);
             });
