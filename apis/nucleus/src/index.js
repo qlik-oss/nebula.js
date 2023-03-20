@@ -124,6 +124,7 @@ const mergeArray = (a1 = [], a2 = []) =>
 const mergeConfigs = (base, c) => ({
   context: mergeObj(base.context, c.context),
   load: c.load || base.load,
+  loadTheme: c.loadTheme || base.loadTheme,
   snapshot: {
     ...(c.snapshot || base.snapshot),
   },
@@ -175,6 +176,7 @@ function nuked(configuration = {}) {
 
     const appTheme = appThemeFn({
       themes: configuration.themes,
+      loadTheme: configuration.loadTheme,
       root,
     });
     currentContext.themeApi = appTheme.externalAPI;

@@ -58,6 +58,7 @@ const Title = styled(Typography)(({ theme }) => ({
   color: theme.listBox?.title?.main?.color,
   fontSize: theme.listBox?.title?.main?.fontSize,
   fontFamily: theme.listBox?.title?.main?.fontFamily,
+  fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
 }));
 
 function ListBoxInline({ options, layout }) {
@@ -197,16 +198,16 @@ function ListBoxInline({ options, layout }) {
     selectionState,
   });
 
+  const { wildCardSearch, searchEnabled, layoutOptions = {} } = layout;
   const showTitle = true;
   const showSearchToggle = search === 'toggle' && showSearch;
-  const searchVisible = (search === true || showSearchToggle) && !selectDisabled();
-  const { layoutOptions = {} } = layout;
+  const searchVisible = (search === true || showSearchToggle) && !selectDisabled() && searchEnabled !== false;
   const dense = layoutOptions.dense ?? false;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
-  const minHeight = 49 + (searchVisible ? searchHeight : 0) + extraheight;
+  const searchAddHeight = searchVisible ? searchHeight : 0;
+  const minHeight = toolbar ? 49 + searchAddHeight + extraheight : 0;
   const headerHeight = 32;
-  const { wildCardSearch, searchEnabled } = layout;
 
   const onShowSearch = () => {
     const newValue = !showSearch;
@@ -276,8 +277,14 @@ function ListBoxInline({ options, layout }) {
               {showIcons && (
                 <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
                   {isLocked ? (
-                    <IconButton tabIndex={-1} onClick={unlock} disabled={selectDisabled()} size="large">
-                      <Lock title={translator.get('Listbox.Unlock')} disableRipple style={{ fontSize: '12px' }} />
+                    <IconButton
+                      title={translator.get('SelectionToolbar.ClickToUnlock')}
+                      tabIndex={-1}
+                      onClick={unlock}
+                      disabled={selectDisabled()}
+                      size="large"
+                    >
+                      <Lock disableRipple style={{ fontSize: '12px' }} />
                     </IconButton>
                   ) : (
                     showSearchIcon && (
@@ -324,7 +331,7 @@ function ListBoxInline({ options, layout }) {
           item
           container
           direction="column"
-          style={{ height: '100%', minHeight: `${minHeight}px` }}
+          style={{ height: '100%', minHeight: '50px' }}
           role="region"
           aria-label={translator.get('Listbox.ResultFilterLabel')}
         >

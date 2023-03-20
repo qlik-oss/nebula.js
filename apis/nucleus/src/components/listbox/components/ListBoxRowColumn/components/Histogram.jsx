@@ -1,3 +1,4 @@
+import { Box } from '@mui/material';
 import React from 'react';
 import classes from '../helpers/classes';
 import { frequencyTextNone } from '../helpers/constants';
@@ -11,14 +12,15 @@ function Histogram({ qFrequency, histogram, checkboxes, isSelected, frequencyMax
 
   const width = getBarWidth({ qFrequency, checkboxes, frequencyMax });
   return (
-    <div
+    <Box
       className={joinClassNames([
         classes.bar,
         checkboxes && classes.barWithCheckbox,
         isSelected && (checkboxes ? classes.barSelectedWithCheckbox : classes.barSelected),
       ])}
-      style={{ width }}
-    />
+    >
+      <Box className="bar-filled" width={width} />
+    </Box>
   );
 }
 

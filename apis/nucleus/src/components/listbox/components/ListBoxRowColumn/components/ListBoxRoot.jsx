@@ -169,30 +169,41 @@ const RowColRoot = styled('div', {
   },
 
   [`& .${classes.bar}`]: {
-    border: `${barBorderWidthPx}px solid`,
-    borderColor: '#D9D9D9',
     height: dense ? '16px' : '20px',
     position: 'absolute',
     zIndex: '-1',
     alignSelf: 'center',
-    left: `${barPadPx}px`,
-    transition: 'width 0.2s',
-    backgroundColor: '#FAFAFA',
+    left: barPadPx,
+    width: `calc(100% - ${barPadPx * 2}px)`,
+    display: 'flex',
+    alignItems: 'center',
+    '& .bar-filled': {
+      border: `${barBorderWidthPx}px solid`,
+      borderColor: '#D9D9D9',
+      transition: 'width 0.2s',
+      backgroundColor: '#FAFAFA',
+      height: '100%',
+    },
   },
 
   [`& .${classes.barSelected}`]: {
-    opacity: '30%',
     zIndex: '0',
-    background: theme.palette.background.lighter,
+    '& .bar-filled': {
+      opacity: '30%',
+      background: theme.palette.background.lighter,
+    },
   },
 
   [`& .${classes.barWithCheckbox}`]: {
-    left: `${barWithCheckboxLeftPadPx}px`,
+    left: barWithCheckboxLeftPadPx,
+    width: `calc(100% - ${barWithCheckboxLeftPadPx + barPadPx}px)`,
   },
 
   [`& .${classes.barSelectedWithCheckbox}`]: {
-    background: '#BFE5D0',
-    borderColor: '#BFE5D0',
+    '& .bar-filled': {
+      background: '#BFE5D0',
+      borderColor: '#BFE5D0',
+    },
   },
 
   [`& .${classes.excludedTextWithCheckbox}`]: {
