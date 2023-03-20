@@ -79,6 +79,7 @@ function ListBoxInline({ options, layout }) {
     calculatePagesHeight,
     showGray = true,
     scrollState = undefined,
+    renderedCallback,
   } = options;
   let { toolbar = true } = options;
 
@@ -393,6 +394,7 @@ function ListBoxInline({ options, layout }) {
                     state: currentScrollIndex,
                     set: setCurrentScrollIndex,
                   }}
+                  renderedCallback={renderedCallback}
                   onCtrlF={onCtrlF}
                 />
               )}

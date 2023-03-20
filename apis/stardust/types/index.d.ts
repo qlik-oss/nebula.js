@@ -304,7 +304,7 @@ declare namespace stardust {
             dense?: boolean;
             stateName?: string;
             properties?: object;
-        }): void;
+        }): Promise<void>;
 
         /**
          * Unmounts the field listbox from the DOM.
@@ -428,6 +428,16 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     interface Flags {
         /**
          * Checks whether the specified flag is enabled.
@@ -468,16 +478,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {
