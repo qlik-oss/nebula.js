@@ -238,7 +238,7 @@ function ListBoxInline({ options, layout }) {
     containerPadding = layoutOptions.layoutOrder === 'row' ? '2px 4px' : '2px 6px 2px 4px';
   }
 
-  const titleComponent = constraints?.active ? (
+  const TitleComponent = constraints?.active ? (
     <EditableTitle layout={layout} model={model} />
   ) : (
     <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
@@ -311,7 +311,7 @@ function ListBoxInline({ options, layout }) {
                 </Grid>
               )}
               <Grid item sx={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }} className={classes.listBoxHeader}>
-                {showTitle && titleComponent}
+                {showTitle && TitleComponent}
               </Grid>
             </Grid>
             <Grid item xs />
