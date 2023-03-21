@@ -157,7 +157,7 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    flex: `0 1 ${frequencyWidth + (showIcon || checkboxes ? 0 : iconWidth)}px`,
+    flex: `0 1 ${frequencyWidth + (showIcon || checkboxes || (isGridMode && !isGridCol) ? 0 : iconWidth)}px`,
     textAlign: 'right',
     paddingLeft: '2px',
   },
