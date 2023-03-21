@@ -161,6 +161,11 @@ export function onTakeSnapshot(snapshotCallback: ($: EngineAPI.IGenericObjectLay
 export function useRenderState(): stardust.RenderState;
 
 /**
+ * Gets an event emitter instance for the visualization.
+ */
+export function useEmitter(): Emitter;
+
+/**
  * Gets the desired keyboard settings and status to applied when rendering the visualization.
  * A visualization should in general only have tab stops if either `keyboard.enabled` is false or if active is true.
  * This means that either Nebula isn't configured to handle keyboard input or the chart is currently focused.
@@ -352,7 +357,7 @@ declare namespace stardust {
 
         id: string;
 
-        model: string;
+        model: EngineAPI.IGenericObject;
 
         /**
          * Destroys the visualization and removes it from the the DOM.
@@ -365,6 +370,20 @@ declare namespace stardust {
          * @param forceUpdate Whether to run setProperties or not, defaults to true.
          */
         convertTo(newType: string, forceUpdate?: boolean): Promise<object>;
+
+        /**
+         * Listens to custom events from inside the visualization. See useEmitter
+         * @param e Event name to listen to
+         * @param cb Callback function to invoke
+         */
+        on(e: string, cb: ()=>void): void;
+
+        /**
+         * Removes a listener
+         * @param e Event name to remove from
+         * @param cb Callback function to remove
+         */
+        off(e: string, cb: ()=>void): void;
 
     }
 
