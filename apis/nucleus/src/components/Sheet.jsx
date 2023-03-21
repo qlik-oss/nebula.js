@@ -108,7 +108,7 @@ function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, 
 
   useEffect(() => {
     const bgComp = layout?.components ? layout.components.find((comp) => comp.key === 'general') : null;
-    setBgColor(resolveBgColor(bgComp, halo.public.theme));
+    setBgColor(resolveBgColor(bgComp, halo.public.theme, 'sheet'));
     setBgImage(resolveBgImage(bgComp, halo.app));
   }, [layout, halo.public.theme, halo.app, themeName]);
 
