@@ -39,7 +39,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     histogram = false,
     keyboard,
     showGray = true,
-    showTick: sizePermitsTick = true,
+    showTick: sizePermitsTickOrLock = true,
     columnCount = 1,
     rowCount = 1,
     dataOffset,
@@ -164,8 +164,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const isFirstElement = index === 0;
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
-  const showLock = isSelected && isLocked && sizePermitsTick;
-  const showTick = !checkboxes && isSelected && !isLocked && sizePermitsTick;
+  const showLock = isSelected && isLocked && sizePermitsTickOrLock;
+  const showTick = !checkboxes && isSelected && !isLocked && sizePermitsTickOrLock;
   const showIcon = !checkboxes && (showTick || showLock);
 
   return (
