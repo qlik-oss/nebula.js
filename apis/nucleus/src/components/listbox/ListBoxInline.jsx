@@ -147,15 +147,9 @@ function ListBoxInline({ options, layout }) {
   useEffect(() => {
     const show = () => {
       setShowToolbar(true);
-      if (search === 'toggle' && toolbar === false) {
-        setShowSearch(true);
-      }
     };
     const hide = () => {
       setShowToolbar(false);
-      if (search === 'toggle') {
-        setShowSearch(false);
-      }
     };
     if (selections) {
       if (!selections.isModal()) {
