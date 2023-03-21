@@ -164,8 +164,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const isFirstElement = index === 0;
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
-  const showLock = isSelected && isLocked && sizePermitsTickOrLock;
-  const showTick = !checkboxes && isSelected && !isLocked && sizePermitsTickOrLock;
+  const showLock = isSelected && isLocked;
+  const showTick = !checkboxes && isSelected && !isLocked;
   const showIcon = !checkboxes && (showTick || showLock);
 
   return (
@@ -173,8 +173,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       className={classes.barContainer}
       flexBasisProp={flexBasisVal}
       style={styles}
-      showIcon={showIcon}
-      checkboxes={checkboxes}
+      placeHodler={!showIcon && !checkboxes && sizePermitsTickOrLock}
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
       dense={dense}
@@ -252,7 +251,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
         {freqIsAllowed && <Frequency cell={cell} checkboxes={checkboxes} dense={dense} showGray={showGray} />}
 
-        {showIcon && (
+        {showIcon && sizePermitsTickOrLock && (
           <Grid item className={classes.icon}>
             {showLock && <Lock style={iconStyles} size="small" />}
             {showTick && <Tick style={iconStyles} size="small" />}

@@ -27,8 +27,8 @@ const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
   shouldForwardProp: (prop) =>
-    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth', 'showIcon', 'checkboxes'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth, showIcon, checkboxes }) => ({
+    !['flexBasisProp', 'placeHolder', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth'].includes(prop),
+})(({ theme, flexBasisProp, placeHodler, isGridMode, isGridCol, dense, frequencyWidth }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -68,7 +68,7 @@ const RowColRoot = styled('div', {
     minWidth: 0,
     flexGrow: 1,
     // Note that this padding is overridden when using checkboxes.
-    paddingLeft: isGridMode && !isGridCol ? 0 : `${CELL_PADDING_LEFT}px`,
+    paddingLeft: `${CELL_PADDING_LEFT}px`,
     paddingRight: 0,
   },
 
@@ -77,7 +77,7 @@ const RowColRoot = styled('div', {
     flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
-    paddingRight: showIcon || checkboxes || (isGridMode && !isGridCol) ? '1px' : `${iconWidth}px`,
+    paddingRight: placeHodler ? `${iconWidth}px` : '1px',
     ...ellipsis,
     whiteSpace: 'pre', // to keep white-space on highlight
     fontSize: theme.listBox?.content?.fontSize,
@@ -157,7 +157,7 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    flex: `0 1 ${frequencyWidth + (showIcon || checkboxes || (isGridMode && !isGridCol) ? 0 : iconWidth)}px`,
+    flex: `0 1 ${frequencyWidth + (placeHodler ? iconWidth : 0)}px`,
     textAlign: 'right',
     paddingLeft: '2px',
   },
