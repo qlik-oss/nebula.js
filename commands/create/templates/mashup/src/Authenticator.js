@@ -1,5 +1,5 @@
 import enigma from 'enigma.js';
-import schema from 'enigma.js/schemas/12.936.0.json';
+import schema from 'enigma.js/schemas/12.1657.0.json';
 import { Auth, AuthType } from '@qlik/sdk';
 
 export default class Authenticator {

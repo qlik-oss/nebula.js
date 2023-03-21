@@ -1,6 +1,6 @@
 window.connect = function connect() {
   const loadSchema = () =>
-    fetch('https://unpkg.com/enigma.js/schemas/12.936.0.json').then((response) => response.json());
+    fetch('https://unpkg.com/enigma.js/schemas/12.1657.0.json').then((response) => response.json());
 
   const createConnection = () =>
     loadSchema().then((schema) =>
