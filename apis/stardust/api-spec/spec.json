@@ -1152,7 +1152,7 @@
         },
         "model": {
           "description": "This visualizations Enigma model, a representation of the generic object.",
-          "type": "EngineAPI.IGenericObject"
+          "type": "string"
         },
         "destroy": {
           "description": "Destroys the visualization and removes it from the the DOM.",

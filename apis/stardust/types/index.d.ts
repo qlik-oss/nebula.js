@@ -357,7 +357,7 @@ declare namespace stardust {
 
         id: string;
 
-        model: EngineAPI.IGenericObject;
+        model: string;
 
         /**
          * Destroys the visualization and removes it from the the DOM.
