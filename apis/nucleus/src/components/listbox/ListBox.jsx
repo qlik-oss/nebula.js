@@ -1,6 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
+import { Box, styled } from '@mui/material';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 import getListBoxComponents from './components/grid-list-components/grid-list-components';
 import getListSizes from './assets/get-list-sizes/get-list-sizes';
@@ -15,8 +16,18 @@ import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
 import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 import useFrequencyMax from './hooks/useFrequencyMax';
+import { ScreenReaderForSelections } from './components/ScreenReaders';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
+
+const StyledWrapper = styled(Box)(() => ({
+  [`& .screenReaderOnly`]: {
+    position: 'absolute',
+    height: 0,
+    width: 0,
+    overflow: 'hidden',
+  },
+}));
 
 export default function ListBox({
   model,
@@ -272,7 +283,8 @@ export default function ListBox({
   }
 
   return (
-    <>
+    <StyledWrapper>
+      <ScreenReaderForSelections className="screenReaderOnly" layout={layout} />
       {!listCount && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
@@ -292,6 +304,6 @@ export default function ListBox({
           dense={layoutOptions?.dense}
         />
       )}
-    </>
+    </StyledWrapper>
   );
 }

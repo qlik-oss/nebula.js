@@ -39,6 +39,18 @@
     "value": "The following search field filters results below as you type",
     "comment": "Instructions to inform screen reader users that the search field filters the listbox results as they type"
   },
+  "ScreenReader.ZeroSelected": {
+    "value": "Value deselected. No values are selected.",
+    "comment": "Screen reader label for value being deselected in listbox and no values are selected."
+  },
+  "ScreenReader.OneSelected": {
+    "value": "There is one selected value.",
+    "comment": "Screen reader text for a new value being selected and only one value is currently in selection."
+  },
+  "ScreenReader.ManySelected": {
+    "value": "There are {0} selected values.",
+    "comment": "Screen reader text for a new value being selected and multiple values are currently in selection."
+  },
   "Listbox.ResultFilterLabel": {
     "value": "Search Results Filter",
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field"

@@ -181,6 +181,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       frequencyWidth={frequencyWidth}
     >
       <ItemGrid
+        aria-selected={isLocked ? undefined : isSelected}
+        role="row" // aria-selected is only supported by role == "row"
         ref={rowRef}
         container
         dataLayout={dataLayout}
@@ -198,7 +200,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         onMouseEnter={onMouseEnter}
         onKeyDown={handleKeyDownCallback}
         onContextMenu={preventContextMenu}
-        role={column ? 'column' : 'row'}
         tabIndex={isFirstElement && (!keyboard.enabled || keyboard.active) ? 0 : -1}
         data-n={cell?.qElemNumber}
       >
