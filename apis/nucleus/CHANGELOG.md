@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.2...v4.0.0-alpha.3) (2023-03-20)
+
+### Bug Fixes
+
+- fix spacing for frequency count ([#1164](https://github.com/qlik-oss/nebula.js/issues/1164)) ([1ac8a87](https://github.com/qlik-oss/nebula.js/commit/1ac8a87c38a97998e04951378661294e2c3cddca))
+- **Listbox:** no box-shadow on hover ([#1163](https://github.com/qlik-oss/nebula.js/issues/1163)) ([72af025](https://github.com/qlik-oss/nebula.js/commit/72af0252c9508f9d4c7208ac3d1e7d7be605baf1))
+
+### Features
+
+- search & selectAll shortcuts ([#1159](https://github.com/qlik-oss/nebula.js/issues/1159)) ([6273681](https://github.com/qlik-oss/nebula.js/commit/62736818e3ab72b95d71204fd353bd508c72375f))
+
 # [4.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.1...v4.0.0-alpha.2) (2023-03-20)
 
 ### Bug Fixes

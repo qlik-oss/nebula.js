@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.2...v4.0.0-alpha.3) (2023-03-20)
+
+### Features
+
+- pick up enigmaMockerOptions from fixture ([#1165](https://github.com/qlik-oss/nebula.js/issues/1165)) ([39ec748](https://github.com/qlik-oss/nebula.js/commit/39ec748512fdd9bf17c000371964da9894ed253a))
+
 # [4.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.1...v4.0.0-alpha.2) (2023-03-20)
 
 ### Bug Fixes

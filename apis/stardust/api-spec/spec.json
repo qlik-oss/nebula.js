@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "4.0.0-alpha.2",
+    "version": "4.0.0-alpha.3",
     "license": "MIT",
     "stability": "stable"
   },
@@ -1029,6 +1029,15 @@
               }
             }
           ],
+          "returns": {
+            "description": "A promise that resolves when the data is fetched.",
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "void"
+              }
+            ]
+          },
           "examples": [
             "fieldInstance.mount(element);"
           ]
@@ -1176,6 +1185,26 @@
       "examples": [
         "const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"
       ]
+    },
+    "Flags": {
+      "kind": "interface",
+      "entries": {
+        "isEnabled": {
+          "description": "Checks whether the specified flag is enabled.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "flag",
+              "description": "The value flag to check.",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "True if the specified flag is enabled, false otherwise.",
+            "type": "boolean"
+          }
+        }
+      }
     },
     "AppSelections": {
       "kind": "class",
@@ -1370,26 +1399,6 @@
                 "type": "undefined"
               }
             ]
-          }
-        }
-      }
-    },
-    "Flags": {
-      "kind": "interface",
-      "entries": {
-        "isEnabled": {
-          "description": "Checks whether the specified flag is enabled.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "flag",
-              "description": "The value flag to check.",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "True if the specified flag is enabled, false otherwise.",
-            "type": "boolean"
           }
         }
       }

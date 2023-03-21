@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <script src="/apis/stardust/dist/stardust.dev.js"></script>
+    <script src="/apis/enigma-mocker/dist/enigma-mocker.dev.js"></script>
+    <script src="scenarios.js"></script>
+
+    <style>
+      html,
+      body {
+        margin: 20px;
+        padding: 0;
+        background-color: #fafafa;
+      }
+
+      .wrapper {
+        display: flex;
+      }
+
+      .listbox1 {
+        flex: 0 0 600px;
+        position: relative;
+        width: 600px;
+        height: 400px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <div class="listbox1"></div>
+    </div>
+    <div id="flow-tracker"></div>
+  </body>
+</html>

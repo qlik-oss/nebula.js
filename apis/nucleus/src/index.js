@@ -448,13 +448,14 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects)
            * @param {string=} [options.stateName="$"] Sets the state to make selections in (not applicable for existing objects)
            * @param {object=} [options.properties={}] Properties object to extend default properties with
+           * @returns {Promise<void>} A promise that resolves when the data is fetched.
            *
            * @since 1.1.0
            * @instance
            * @example
            * fieldInstance.mount(element);
            */
-          mount(element, options = {}) {
+          async mount(element, options = {}) {
             if (!element) {
               throw new Error(`Element for ${fieldName || qId} not provided`);
             }
@@ -463,19 +464,23 @@ function nuked(configuration = {}) {
             }
             const onSelectionActivated = () => fieldSels.emit('selectionActivated');
             const onSelectionDeactivated = () => fieldSels.emit('selectionDeactivated');
-            this._instance = ListBoxPortal({
-              element,
-              app,
-              fieldIdentifier,
-              qId,
-              options: getListboxPortalOptions({
-                onSelectionActivated,
-                onSelectionDeactivated,
-                ...options,
-              }),
-              stateName: options.stateName || '$',
+
+            return new Promise((resolve) => {
+              this._instance = ListBoxPortal({
+                element,
+                app,
+                fieldIdentifier,
+                qId,
+                options: getListboxPortalOptions({
+                  onSelectionActivated,
+                  onSelectionDeactivated,
+                  ...options,
+                }),
+                stateName: options.stateName || '$',
+                renderedCallback: resolve,
+              });
+              root.add(this._instance);
             });
-            root.add(this._instance);
           },
           /**
            * Unmounts the field listbox from the DOM.

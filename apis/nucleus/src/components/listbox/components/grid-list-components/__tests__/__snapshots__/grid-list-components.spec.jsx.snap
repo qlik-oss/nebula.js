@@ -13,7 +13,9 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "actions": {
         "cancel": [Function],
         "confirm": [Function],
+        "onCtrlF": undefined,
         "select": [MockFunction],
+        "selectAll": undefined,
         "setScrollPosition": undefined,
       },
       "checkboxes": false,
@@ -68,7 +70,9 @@ exports[`grid-list-components should create a List component 1`] = `
       "actions": {
         "cancel": [Function],
         "confirm": [Function],
+        "onCtrlF": undefined,
         "select": [MockFunction],
+        "selectAll": undefined,
         "setScrollPosition": undefined,
       },
       "checkboxes": false,

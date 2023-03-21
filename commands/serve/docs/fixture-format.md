@@ -90,6 +90,19 @@ export default () => ({
 });
 ```
 
+### `enigmaMockerOptions`
+
+Options for `EnigmaMocker` that will be used when rendering the fixture. See `@nebula.js/enigma-mocker` for more details.
+
+```js
+export default () => ({
+  enigmaMockerOptions: {
+    delay: 3000,
+  },
+  // ...
+});
+```
+
 ## Serve configurations
 
 When starting Nebula serve a number of configurations may be added, e.g. type of visualization. These configurations are used as fallback values in case no value is present in the fixture. This is useful to reduce the amount of boilerplate config in the fixtures.
