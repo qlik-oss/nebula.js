@@ -150,6 +150,9 @@ function ListBoxInline({ options, layout }) {
     };
     const hide = () => {
       setShowToolbar(false);
+      if (search === 'toggle') {
+        setShowSearch(false);
+      }
     };
     if (selections) {
       if (!selections.isModal()) {
