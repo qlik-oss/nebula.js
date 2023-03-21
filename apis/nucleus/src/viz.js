@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import EventEmitter from 'node-event-emitter';
 import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
@@ -17,6 +18,8 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
 
   let initialSnOptions = {};
   let initialSnPlugins = [];
+
+  const emitter = new EventEmitter();
 
   const setSnOptions = async (opts) => {
     if (mountedReference) {
@@ -68,7 +71,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     id: model.id,
     /**
      * This visualizations Enigma model, a representation of the generic object.
-     * @type {string}
+     * @type {EngineAPI.IGenericObject}
      */
     model,
     /**
@@ -109,6 +112,24 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       }
       return propertyTree;
     },
+    /**
+     * Listens to custom events from inside the visualization. See useEmitter
+     * @experimental
+     * @param {string} e Event name to listen to
+     * @param {Function} cb Callback function to invoke
+     */
+    on(e, cb) {
+      emitter.on(e, cb);
+    },
+    /**
+     * Removes a listener
+     * @experimental
+     * @param {string} e Event name to remove from
+     * @param {Function} cb Callback function to remove
+     */
+    off(e, cb) {
+      emitter.off(e, cb);
+    },
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {
       mount(element) {
@@ -124,6 +145,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
           initialSnPlugins,
           initialError,
           onMount,
+          emitter,
         });
         return mounted;
       },

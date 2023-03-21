@@ -120,7 +120,18 @@ const renderFixture = async (params) => {
     ],
     ...instanceConfig,
   });
-  nebbie.render({ type, element, id: qId, ...snConfig });
+  const viz = await nebbie.render({
+    type,
+    element,
+    id: qId,
+    ...snConfig,
+  });
+  const events = snConfig?.events || [];
+  events.forEach((e) => {
+    viz.on(e, (message) => {
+      document.querySelector('#events').innerHTML = message;
+    });
+  });
 };
 
 export default renderFixture;

@@ -1,3 +1,4 @@
+/* eslint-disable jest/valid-expect */
 const path = require('path');
 const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
 const puppeteerUtil = require('../../utils/puppeteer-util');
@@ -101,6 +102,11 @@ describe('hooks', () => {
   it('useEmbed', async () => {
     const text = await page.$eval(`${snSelector} .embed`, (el) => el.textContent);
     expect(text).to.equal('function'); // typeof embed.render
+  });
+
+  it('useEmitter', async () => {
+    const text = await page.$eval(`#events`, (el) => el.textContent);
+    expect(text).to.equal('A message from the Chart');
   });
 
   it('should have true MAGIC_FLAG', async () => {
