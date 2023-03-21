@@ -147,9 +147,6 @@ function ListBoxInline({ options, layout }) {
   useEffect(() => {
     const show = () => {
       setShowToolbar(true);
-      if (search === 'toggle' && toolbar === false) {
-        setShowSearch(true);
-      }
     };
     const hide = () => {
       setShowToolbar(false);
