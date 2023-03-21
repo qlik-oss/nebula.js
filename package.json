@@ -71,7 +71,7 @@
     "babel-plugin-istanbul": "6.1.1",
     "body-parser": "1.20.2",
     "cross-env": "7.0.3",
-    "enigma.js": "2.10.0",
+    "enigma.js": "2.11.0",
     "eslint": "8.35.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "8.6.0",
