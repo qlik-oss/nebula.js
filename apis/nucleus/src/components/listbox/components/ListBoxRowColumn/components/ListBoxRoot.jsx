@@ -68,7 +68,7 @@ const RowColRoot = styled('div', {
     minWidth: 0,
     flexGrow: 1,
     // Note that this padding is overridden when using checkboxes.
-    paddingLeft: `${CELL_PADDING_LEFT}px`,
+    paddingLeft: isGridMode && !isGridCol ? 0 : `${CELL_PADDING_LEFT}px`,
     paddingRight: 0,
   },
 
@@ -77,7 +77,7 @@ const RowColRoot = styled('div', {
     flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
-    paddingRight: showIcon || checkboxes ? '1px' : `${iconWidth}px`,
+    paddingRight: showIcon || checkboxes || (isGridMode && !isGridCol) ? '1px' : `${iconWidth}px`,
     ...ellipsis,
     whiteSpace: 'pre', // to keep white-space on highlight
     fontSize: theme.listBox?.content?.fontSize,

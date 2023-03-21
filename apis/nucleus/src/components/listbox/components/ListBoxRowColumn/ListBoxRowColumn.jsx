@@ -164,7 +164,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const isFirstElement = index === 0;
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
-  const showLock = isSelected && isLocked;
+  const showLock = isSelected && isLocked && sizePermitsTick;
   const showTick = !checkboxes && isSelected && !isLocked && sizePermitsTick;
   const showIcon = !checkboxes && (showTick || showLock);
 
