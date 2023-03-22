@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.4](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.3...v4.0.0-alpha.4) (2023-03-21)
+
+### Bug Fixes
+
+- add icon width only when present ([#1166](https://github.com/qlik-oss/nebula.js/issues/1166)) ([2ad8fda](https://github.com/qlik-oss/nebula.js/commit/2ad8fda01637e46c80112085e0b0b35edf4e6b75))
+- do not show search box on selection ([#1167](https://github.com/qlik-oss/nebula.js/issues/1167)) ([b7d38ce](https://github.com/qlik-oss/nebula.js/commit/b7d38ce2c079d43a49bfb43fb6648776ead7f61a))
+- wrap in square brackets if needed ([#1171](https://github.com/qlik-oss/nebula.js/issues/1171)) ([f49e4e2](https://github.com/qlik-oss/nebula.js/commit/f49e4e2ec3a50cb13bf0190dbe3a3ad0885e3d42))
+
 # [4.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.2...v4.0.0-alpha.3) (2023-03-20)
 
 ### Bug Fixes

@@ -79,10 +79,6 @@ const ActionsGroup = React.forwardRef(
 );
 
 const popoverStyle = { pointerEvents: 'none' };
-const popoverAnchorOrigin = {
-  vertical: 'top',
-  horizontal: 'right',
-};
 const popoverTransformOrigin = {
   vertical: 'bottom',
   horizontal: 'right',
@@ -122,6 +118,11 @@ function ActionsToolbar({
   const actionsRef = useRef();
   const theme = useTheme();
   const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
+
+  const popoverAnchorOrigin = {
+    vertical: 15,
+    horizontal: (popover.anchorEl?.clientWidth ?? 0) - 7,
+  };
 
   const getEnabledButton = (last) => {
     const actionsElement = actionsRef.current || actionsRefMock;
