@@ -1,4 +1,4 @@
-import { SCROLL_BAR_WIDTH } from './constants';
+import { SCROLL_BAR_WIDTH } from '../../constants';
 
 export default function calculateRowMode({
   maxVisibleColumns,
@@ -11,7 +11,10 @@ export default function calculateRowMode({
   const innerWidth = containerWidth - SCROLL_BAR_WIDTH;
 
   let columnCount;
-  const autoColumnCount = Math.min(listCount, Math.ceil(innerWidth / Math.max(itemMinWidth, columnAutoWidth))); // TODO: smarter sizing... based on glyph count + font size etc...??
+  const autoColumnCount = Math.min(
+    listCount,
+    Math.max(1, Math.round(innerWidth / Math.max(itemMinWidth, columnAutoWidth)))
+  ); // TODO: smarter sizing... based on glyph count + font size etc...??
   if (maxVisibleColumns?.auto !== false) {
     columnCount = autoColumnCount;
   } else {
