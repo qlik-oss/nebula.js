@@ -5,10 +5,10 @@ import classes from '../helpers/classes';
 
 const ItemGrid = styled(Grid, {
   shouldForwardProp: (prop) => !['dataLayout', 'layoutOrder', 'itemPadding', 'checkboxes'].includes(prop),
-})(({ dataLayout, layoutOrder, itemPadding, checkboxes }) => ({
+})(({ dataLayout, layoutOrder, itemPadding, cellPaddingRight }) => ({
   [`&.${classes.fieldRoot}`]: {
     ...getItemSizes({ dataLayout, layoutOrder, itemPadding }),
-    paddingRight: checkboxes ? '8px' : undefined,
+    paddingRight: cellPaddingRight ? '8px' : undefined,
   },
 }));
 

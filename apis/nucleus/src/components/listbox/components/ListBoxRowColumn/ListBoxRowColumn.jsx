@@ -166,14 +166,14 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const showLock = isSelected && isLocked;
   const showTick = !checkboxes && isSelected && !isLocked;
-  const showIcon = !checkboxes && (showTick || showLock);
+  const showIcon = !checkboxes && sizePermitsTickOrLock;
+  const cellPaddingRight = checkboxes || !sizePermitsTickOrLock;
 
   return (
     <RowColRoot
       className={classes.barContainer}
       flexBasisProp={flexBasisVal}
       style={styles}
-      placeHodler={!showIcon && !checkboxes && sizePermitsTickOrLock}
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
       dense={dense}
@@ -183,7 +183,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         ref={rowRef}
         container
         dataLayout={dataLayout}
-        checkboxes={checkboxes}
+        cellPaddingRight={cellPaddingRight}
         layoutOrder={layoutOrder}
         itemPadding={itemPadding}
         gap={0}
@@ -251,7 +251,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
         {freqIsAllowed && <Frequency cell={cell} checkboxes={checkboxes} dense={dense} showGray={showGray} />}
 
-        {showIcon && sizePermitsTickOrLock && (
+        {showIcon && (
           <Grid item className={classes.icon}>
             {showLock && <Lock style={iconStyles} size="small" />}
             {showTick && <Tick style={iconStyles} size="small" />}

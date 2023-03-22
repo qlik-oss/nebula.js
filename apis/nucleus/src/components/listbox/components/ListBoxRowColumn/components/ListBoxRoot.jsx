@@ -26,9 +26,8 @@ const ellipsis = {
 const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
-  shouldForwardProp: (prop) =>
-    !['flexBasisProp', 'placeHolder', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth'].includes(prop),
-})(({ theme, flexBasisProp, placeHodler, isGridMode, isGridCol, dense, frequencyWidth }) => ({
+  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -77,7 +76,7 @@ const RowColRoot = styled('div', {
     flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
-    paddingRight: placeHodler ? `${iconWidth}px` : '1px',
+    paddingRight: '1px',
     ...ellipsis,
     whiteSpace: 'pre', // to keep white-space on highlight
     fontSize: theme.listBox?.content?.fontSize,
@@ -157,7 +156,7 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    flex: `0 1 ${frequencyWidth + (placeHodler ? iconWidth : 0)}px`,
+    flex: `0 1 ${frequencyWidth}px`,
     textAlign: 'right',
     paddingLeft: '2px',
   },
