@@ -231,7 +231,7 @@ function ListBoxInline({ options, layout }) {
     });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
-  const showSearchIcon = searchEnabled !== false && search === 'toggle' && !constraints?.active;
+  const showSearchIcon = searchEnabled !== false && search === 'toggle';
   const showSearchOrLockIcon = isLocked || showSearchIcon;
   const showIcons = showSearchOrLockIcon || isDrillDown;
   const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
@@ -290,6 +290,7 @@ function ListBoxInline({ options, layout }) {
                       onClick={unlock}
                       disabled={selectDisabled()}
                       size="large"
+                      sx={{ '&.Mui-disabled': { color: '#000', opacity: 0.9 } }}
                     >
                       <Lock disableRipple style={{ fontSize: '12px' }} />
                     </IconButton>
@@ -297,11 +298,13 @@ function ListBoxInline({ options, layout }) {
                     showSearchIcon && (
                       <IconButton
                         onClick={onShowSearch}
+                        disabled={!!constraints?.active}
                         tabIndex={-1}
                         title={translator.get('Listbox.Search')}
                         size="large"
                         disableRipple
                         data-testid="search-toggle-btn"
+                        sx={{ '&.Mui-disabled': { color: '#000', opacity: 0.9 } }}
                       >
                         <SearchIcon style={{ fontSize: '12px' }} />
                       </IconButton>
