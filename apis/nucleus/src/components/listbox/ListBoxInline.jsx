@@ -28,13 +28,13 @@ const classes = {
   listboxWrapper: `${PREFIX}-listboxWrapper`,
 };
 
-const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'].includes(p) })(
-  ({ theme, containerPadding }) => ({
+const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding', 'hasIcon'].includes(p) })(
+  ({ theme, containerPadding, hasIcon }) => ({
     backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
     [`& .${classes.listBoxHeader}`]: {
       alignSelf: 'center',
       display: 'flex',
-      width: `calc(100% - ${BUTTON_ICON_WIDTH}px)`,
+      width: `calc(100% - ${hasIcon ? BUTTON_ICON_WIDTH : 0}px)`,
     },
     [`& .${classes.screenReaderOnly}`]: {
       position: 'absolute',
@@ -147,9 +147,6 @@ function ListBoxInline({ options, layout }) {
   useEffect(() => {
     const show = () => {
       setShowToolbar(true);
-      if (search === 'toggle' && toolbar === false) {
-        setShowSearch(true);
-      }
     };
     const hide = () => {
       setShowToolbar(false);
@@ -263,6 +260,7 @@ function ListBoxInline({ options, layout }) {
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
         ref={containerRef}
+        hasIcon={showIcons}
       >
         {toolbar && (
           <Grid

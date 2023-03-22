@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import enigma from 'enigma.js';
-import qixSchema from 'enigma.js/schemas/12.936.0.json';
+import qixSchema from 'enigma.js/schemas/12.1657.0.json';
 import SenseUtilities from 'enigma.js/sense-utilities';
 import { getAuthInstance } from '../connect';
 

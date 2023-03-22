@@ -2,7 +2,10 @@ const escapeField = (field) => {
   if (!field) {
     return field;
   }
-  return `${field.replace(/\]/g, ']]')}`;
+  if (/^[A-Za-z][A-Za-z0-9_]*$/.test(field)) {
+    return field;
+  }
+  return `[${field.replace(/\]/g, ']]')}]`;
 };
 
 export const needToFetchFrequencyMax = (layout) => layout?.frequencyMax === 'fetch';

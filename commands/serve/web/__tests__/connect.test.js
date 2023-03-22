@@ -1,6 +1,6 @@
 import * as SDK from '@qlik/sdk';
 import * as ENIGMA from 'enigma.js';
-import qixSchema from 'enigma.js/schemas/12.936.0.json';
+import qixSchema from 'enigma.js/schemas/12.1657.0.json';
 import * as SenseUtilities from 'enigma.js/sense-utilities';
 import { connect, openApp, getConnectionInfo, getParams, parseEngineURL } from '../connect';
 
