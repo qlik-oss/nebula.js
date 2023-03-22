@@ -16,6 +16,7 @@ import * as ListBoxModule from '../ListBox';
 import * as ListBoxSearchModule from '../components/ListBoxSearch';
 import * as listboxSelectionToolbarModule from '../interactions/listbox-selection-toolbar';
 import * as addListboxTheme from '../assets/addListboxTheme';
+import * as useAutoHideToolbar from '../hooks/useAutoHideToolbar';
 
 const virtualizedModule = require('react-virtualized-auto-sizer');
 const listboxKeyboardNavigationModule = require('../interactions/listbox-keyboard-navigation');
@@ -90,6 +91,7 @@ describe('<ListboxInline />', () => {
     jest.spyOn(unlockModule, 'default').mockImplementation(() => 'unlock');
     jest.spyOn(lockModule, 'default').mockImplementation(() => 'lock');
     jest.spyOn(useLayoutModule, 'default').mockImplementation(() => [layout]);
+    jest.spyOn(useAutoHideToolbar, 'default').mockImplementation(() => false);
     jest
       .spyOn(listboxKeyboardNavigationModule, 'getListboxInlineKeyboardNavigation')
       .mockImplementation(getListboxInlineKeyboardNavigation);

@@ -19,7 +19,8 @@ import useAppSelections from '../../hooks/useAppSelections';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-get-action-props';
 import createSelectionState from './hooks/selections/selectionState';
-import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH } from './constants';
+import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH, HEADER_HEIGHT } from './constants';
+import useAutoHideToolbar from './hooks/useAutoHideToolbar';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -80,6 +81,7 @@ function ListBoxInline({ options, layout }) {
     showGray = true,
     scrollState = undefined,
     renderedCallback,
+    element,
   } = options;
   let { toolbar = true } = options;
 
@@ -119,6 +121,7 @@ function ListBoxInline({ options, layout }) {
   const [appSelections] = useAppSelections(app);
   const titleRef = useRef(null);
   const [selectionState] = useState(() => createSelectionState());
+  const autoHideToolbar = useAutoHideToolbar({ element, layout });
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
     setKeyboardActive,
@@ -142,7 +145,7 @@ function ListBoxInline({ options, layout }) {
     toolbar = layout.toolbar;
   }
   const toolbarDetachedOnly = toolbar && layout?.title === '';
-  toolbar = toolbar && layout?.title !== '';
+  toolbar = toolbar && layout?.title !== '' && !autoHideToolbar;
 
   useEffect(() => {
     const show = () => {
@@ -204,7 +207,6 @@ function ListBoxInline({ options, layout }) {
   const extraheight = dense ? 39 : 49;
   const searchAddHeight = searchVisible ? searchHeight : 0;
   const minHeight = toolbar ? 49 + searchAddHeight + extraheight : 0;
-  const headerHeight = 32;
 
   const onShowSearch = () => {
     const newValue = !showSearch;
@@ -276,7 +278,7 @@ function ListBoxInline({ options, layout }) {
             <Grid
               item
               container
-              height={headerHeight}
+              height={HEADER_HEIGHT}
               sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
               wrap="nowrap"
             >
