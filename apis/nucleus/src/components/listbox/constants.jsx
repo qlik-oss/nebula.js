@@ -8,3 +8,7 @@ export const ITEM_MAX_WIDTH = 150;
 export const FREQUENCY_WIDTH = 40;
 export const ITEM_MIN_WIDTH = 56;
 export const CHECKBOX_WIDTH = 20;
+export const frequencyTextNone = '-';
+export const barPadPx = 4;
+export const barBorderWidthPx = 1;
+export const barWithCheckboxLeftPadPx = 29;

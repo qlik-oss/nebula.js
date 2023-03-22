@@ -1,8 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
-import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx } from '../helpers/constants';
-import { CELL_PADDING_LEFT } from '../../../constants';
+import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
 
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
