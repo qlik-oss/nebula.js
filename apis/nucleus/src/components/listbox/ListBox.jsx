@@ -91,7 +91,7 @@ export default function ListBox({
 
     if (itemsLoader.pages.length && !awaitingFrequencyMax) {
       // All necessary data fetching done - signal rendering done!
-      renderedCallback();
+      renderedCallback?.();
     }
   }
 
