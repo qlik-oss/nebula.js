@@ -1,4 +1,4 @@
-import { CHECKBOX_WIDTH, FREQUENCY_WIDTH, ITEM_MIN_WIDTH } from '../constants';
+import { CHECKBOX_WIDTH, FREQUENCY_WIDTH, ITEM_MIN_WIDTH } from '../../../constants';
 import getListSizes from '../get-list-sizes';
 
 describe('get-list-sizes', () => {
@@ -43,7 +43,7 @@ describe('get-list-sizes', () => {
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
       columnCount: 1,
-      columnWidth: 66,
+      columnWidth: 99,
       count: 200,
       itemPadding: 4,
       itemHeight: 29,
@@ -51,7 +51,7 @@ describe('get-list-sizes', () => {
       listHeight: 300,
       frequencyWidth: 40,
       maxCount: {
-        column: 508333,
+        column: 338888,
         row: 577000,
       },
       overflowStyling: {
@@ -101,7 +101,7 @@ describe('get-list-sizes', () => {
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
       columnCount: 34,
-      columnWidth: 108,
+      columnWidth: 128,
       count: 200,
       itemPadding: 4,
       itemHeight: 36,
@@ -109,7 +109,7 @@ describe('get-list-sizes', () => {
       listHeight: 300,
       frequencyWidth: 40,
       maxCount: {
-        column: 310648,
+        column: 262109,
         row: 577000,
       },
       overflowStyling: {
@@ -142,9 +142,9 @@ describe('get-list-sizes', () => {
     args.freqIsAllowed = true;
     const sizes = getListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_WIDTH + CHECKBOX_WIDTH,
       maxCount: {
-        column: 349479,
+        column: 289224,
       },
     });
   });
@@ -190,7 +190,7 @@ describe('get-list-sizes', () => {
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
       columnCount: 1,
-      columnWidth: 66,
+      columnWidth: 99,
       count: 200,
       itemPadding: 4,
       itemHeight: 29,
@@ -198,7 +198,7 @@ describe('get-list-sizes', () => {
       listHeight: 300,
       frequencyWidth: 40,
       maxCount: {
-        column: 508333,
+        column: 338888,
         row: 577000,
       },
       overflowStyling: {
