@@ -13,7 +13,7 @@ export default function calculateRowMode({
   let columnCount;
   const autoColumnCount = Math.min(
     listCount,
-    Math.max(1, Math.floor(innerWidth / Math.max(itemMinWidth, columnAutoWidth)))
+    Math.max(1, Math.round(innerWidth / Math.max(itemMinWidth, columnAutoWidth)))
   ); // TODO: smarter sizing... based on glyph count + font size etc...??
   if (maxVisibleColumns?.auto !== false) {
     columnCount = autoColumnCount;
