@@ -230,6 +230,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               isGridCol={isGridCol}
               isSingleSelect={isSingleSelect}
               valueTextAlign={valueTextAlign}
+              direction={direction}
             />
           ) : (
             <Field

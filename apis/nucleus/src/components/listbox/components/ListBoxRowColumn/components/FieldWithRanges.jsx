@@ -2,10 +2,11 @@ import React from 'react';
 import CheckboxField from './CheckboxField';
 import ValueField from './ValueField';
 
-function LabelsWithRanges({ labels, dense, showGray, checkboxes }) {
+function LabelsWithRanges({ labels, dense, showGray, checkboxes, direction }) {
+  const orderedLabels = direction === 'rtl' ? [...labels].reverse() : labels;
   return (
     <>
-      {labels.map(([label, highlighted], index) => {
+      {orderedLabels.map(([label, highlighted], index) => {
         const key = `${index}`;
         return (
           <ValueField
@@ -35,8 +36,11 @@ function FieldWithRanges({
   isGridCol,
   isSingleSelect,
   valueTextAlign,
+  direction,
 }) {
-  const LWR = <LabelsWithRanges labels={labels} dense={dense} showGray={showGray} checkboxes={checkboxes} />;
+  const LWR = (
+    <LabelsWithRanges labels={labels} dense={dense} showGray={showGray} checkboxes={checkboxes} direction={direction} />
+  );
   return checkboxes ? (
     <CheckboxField
       onChange={onChange}
