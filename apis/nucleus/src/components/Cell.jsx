@@ -316,9 +316,11 @@ const Cell = forwardRef(
     }, []);
 
     useEffect(() => {
-      const bgComp = layout?.components ? layout.components.find((comp) => comp.key === 'general') : null;
-      setBgColor(resolveBgColor(bgComp, halo.public.theme));
-      setBgImage(resolveBgImage(bgComp, halo.app));
+      if (layout) {
+        const bgComp = layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
+        setBgColor(resolveBgColor(bgComp, halo.public.theme, layout.visualization));
+        setBgImage(resolveBgImage(bgComp, halo.app));
+      }
     }, [layout, halo.public.theme, halo.app, themeName]);
 
     focusHandler.current.blurCallback = (resetFocus) => {

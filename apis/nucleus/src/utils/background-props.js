@@ -79,13 +79,19 @@ export const resolveBgImage = (bgComp, app) => {
   return undefined;
 };
 
-export const resolveBgColor = (bgComp, theme) => {
+export const resolveBgColor = (bgComp, theme, objectType) => {
   const bgColor = bgComp?.bgColor;
   if (bgColor && theme) {
     if (bgColor.useExpression) {
       return theme.validateColor(bgColor.colorExpression);
     }
     return bgColor.color && bgColor.color.color !== 'none' ? theme.getColorPickerColor(bgColor.color, true) : undefined;
+  }
+  if (theme && objectType) {
+    return theme.getStyle(`object.${objectType}`, '', 'backgroundColor');
+  }
+  if (theme) {
+    return theme.getStyle('', '', 'backgroundColor');
   }
   return undefined;
 };

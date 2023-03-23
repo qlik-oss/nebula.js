@@ -35,6 +35,10 @@ describe('Background property resolver', () => {
     };
   });
 
+  test('should resolve background color to empty', () => {
+    const color = resolveBgColor({});
+    expect(color).toBeUndefined();
+  });
   test('should resolve background color by expression', () => {
     const color = resolveBgColor(bgCompLayout, t);
     expect(color).toBe('rgb(255, 0, 0)');
@@ -54,5 +58,25 @@ describe('Background property resolver', () => {
     const { url, size } = resolveBgImage(bgCompLayout, app);
     expect(url).toBe('http://example.com/media/Tulips.jpg');
     expect(size).toBe('contain');
+  });
+  test('should resolve background color by theme', () => {
+    const color = resolveBgColor({}, t, 'peoplechart');
+    expect(color).toBe('transparent');
+  });
+
+  test('should resolve background color by custom theme', () => {
+    const color = resolveBgColor(
+      {},
+      {
+        getStyle: (obj, path, attr) => {
+          if (obj === 'object.gantt' && path === '' && attr === 'backgroundColor') {
+            return '#ff00ff';
+          }
+          return undefined;
+        },
+      },
+      'gantt'
+    );
+    expect(color).toBe('#ff00ff');
   });
 });
