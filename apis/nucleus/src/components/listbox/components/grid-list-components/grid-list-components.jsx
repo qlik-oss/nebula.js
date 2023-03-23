@@ -4,8 +4,7 @@ import RowColumn from '../ListBoxRowColumn';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
 import handleSetOverflowDisclaimer from './set-overflow-disclaimer';
-
-const REMOVE_TICK_LIMIT = 80; // an item width equal to or less than this, will hide the select tick
+import { REMOVE_TICK_LIMIT } from '../../constants';
 
 const { StyledFixedSizeList, StyledFixedSizeGrid } = getStyledComponents();
 

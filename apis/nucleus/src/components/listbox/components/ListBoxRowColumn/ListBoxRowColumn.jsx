@@ -40,7 +40,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     histogram = false,
     keyboard,
     showGray = true,
-    showTick: sizePermitsTick = true,
+    showTick: sizePermitsTickOrLock = true,
     columnCount = 1,
     rowCount = 1,
     dataOffset,
@@ -168,8 +168,9 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
   const showLock = isSelected && isLocked;
-  const showTick = !checkboxes && isSelected && !isLocked && sizePermitsTick;
-  const showIcon = !checkboxes && (showTick || showLock);
+  const showTick = !checkboxes && isSelected && !isLocked;
+  const showIcon = !checkboxes && sizePermitsTickOrLock;
+  const cellPaddingRight = checkboxes || !sizePermitsTickOrLock;
 
   const ariaLabel = getValueLabel({
     translator,
@@ -185,8 +186,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       className={classes.barContainer}
       flexBasisProp={flexBasisVal}
       style={styles}
-      showIcon={showIcon}
-      checkboxes={checkboxes}
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
       dense={dense}
@@ -201,7 +200,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         ref={rowRef}
         container
         dataLayout={dataLayout}
-        checkboxes={checkboxes}
+        cellPaddingRight={cellPaddingRight}
         layoutOrder={layoutOrder}
         itemPadding={itemPadding}
         gap={0}

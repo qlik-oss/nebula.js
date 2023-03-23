@@ -1,8 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
-import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx } from '../helpers/constants';
-import { CELL_PADDING_LEFT } from '../../../constants';
+import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
 
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
@@ -26,9 +25,8 @@ const ellipsis = {
 const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
-  shouldForwardProp: (prop) =>
-    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth', 'showIcon', 'checkboxes'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth, showIcon, checkboxes }) => ({
+  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -77,7 +75,7 @@ const RowColRoot = styled('div', {
     flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
-    paddingRight: showIcon || checkboxes ? '1px' : `${iconWidth}px`,
+    paddingRight: '1px',
     ...ellipsis,
     whiteSpace: 'pre', // to keep white-space on highlight
     fontSize: theme.listBox?.content?.fontSize,
@@ -157,7 +155,7 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    flex: `0 1 ${frequencyWidth + (showIcon || checkboxes ? 0 : iconWidth)}px`,
+    flex: `0 1 ${frequencyWidth}px`,
     textAlign: 'right',
     paddingLeft: '2px',
   },

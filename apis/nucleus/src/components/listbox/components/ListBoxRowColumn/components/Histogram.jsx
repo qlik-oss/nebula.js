@@ -1,7 +1,7 @@
 import { Box } from '@mui/material';
 import React from 'react';
 import classes from '../helpers/classes';
-import { frequencyTextNone } from '../helpers/constants';
+import { frequencyTextNone } from '../../../constants';
 import { getBarWidth, getFrequencyText, joinClassNames } from '../helpers/operations';
 
 function Histogram({ qFrequency, histogram, checkboxes, isSelected, frequencyMax }) {

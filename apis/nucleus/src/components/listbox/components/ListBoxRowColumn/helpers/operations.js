@@ -1,4 +1,4 @@
-import { frequencyTextNone } from './constants';
+import { frequencyTextNone } from '../../../constants';
 
 export const joinClassNames = (namesArray) =>
   namesArray
