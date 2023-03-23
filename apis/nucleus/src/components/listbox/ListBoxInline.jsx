@@ -245,7 +245,7 @@ function ListBoxInline({ options, layout }) {
     containerPadding = layoutOptions.layoutOrder === 'row' ? '2px 4px' : '2px 6px 2px 4px';
   }
 
-  const SearchIconComp = constraints?.active ? (
+  const searchIconComp = constraints?.active ? (
     <SearchIcon title={translator.get('Listbox.Search')} size="large" style={{ fontSize: '12px', padding: '7px' }} />
   ) : (
     <IconButton
@@ -260,7 +260,7 @@ function ListBoxInline({ options, layout }) {
     </IconButton>
   );
 
-  const LockIconComp = selectDisabled() ? (
+  const lockIconComp = selectDisabled() ? (
     <Lock size="large" style={{ fontSize: '12px', padding: '7px' }} />
   ) : (
     <IconButton title={translator.get('SelectionToolbar.ClickToUnlock')} tabIndex={-1} onClick={unlock} size="large">
@@ -306,7 +306,7 @@ function ListBoxInline({ options, layout }) {
             >
               {showIcons && (
                 <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
-                  {isLocked ? LockIconComp : showSearchIcon && SearchIconComp}
+                  {isLocked ? lockIconComp : showSearchIcon && searchIconComp}
                   {isDrillDown && (
                     <DrillDownIcon
                       tabIndex={-1}
