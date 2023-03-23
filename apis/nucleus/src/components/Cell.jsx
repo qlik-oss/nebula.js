@@ -268,7 +268,16 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
     });
     return sn;
   } catch (err) {
-    dispatch({ type: 'ERROR', error: { title: err.message } });
+    if (!version) {
+      dispatch({
+        type: 'ERROR',
+        error: {
+          title: `Could not find a version of '${visualization}' that supports current object version. Did you forget to register ${visualization}?`,
+        },
+      });
+    } else {
+      dispatch({ type: 'ERROR', error: { title: err.message } });
+    }
   }
   return undefined;
 };
@@ -391,15 +400,6 @@ const Cell = forwardRef(
 
       // Load supernova
       const withVersion = types.getSupportedVersion(layout.visualization, layout.version);
-      if (!withVersion) {
-        dispatch({
-          type: 'ERROR',
-          error: {
-            title: `Could not find a version of '${layout.visualization}' that supports current object version. Did you forget to register ${layout.visualization}?`,
-          },
-        });
-        return undefined;
-      }
       load(layout.visualization, withVersion);
 
       return () => {};
