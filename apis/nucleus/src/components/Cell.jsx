@@ -400,14 +400,6 @@ const Cell = forwardRef(
 
       // Load supernova
       const withVersion = types.getSupportedVersion(layout.visualization, layout.version);
-      if (!withVersion) {
-        if (__NEBULA_DEV__) {
-          // eslint-disable-next-line no-console
-          console.warn(
-            `Version ${layout.version} of ${layout.visualization} is not registered. Falling back to other version or generic load function`
-          );
-        }
-      }
       load(layout.visualization, withVersion);
 
       return () => {};
