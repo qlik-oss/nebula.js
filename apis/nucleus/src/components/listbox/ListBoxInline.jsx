@@ -245,6 +245,33 @@ function ListBoxInline({ options, layout }) {
     containerPadding = layoutOptions.layoutOrder === 'row' ? '2px 4px' : '2px 6px 2px 4px';
   }
 
+  const SearchIconComp = constraints?.active ? (
+    <SearchIcon title={translator.get('Listbox.Search')} size="large" style={{ fontSize: '12px', padding: '7px' }} />
+  ) : (
+    <IconButton
+      onClick={onShowSearch}
+      tabIndex={-1}
+      title={translator.get('Listbox.Search')}
+      size="large"
+      disableRipple
+      data-testid="search-toggle-btn"
+    >
+      <SearchIcon style={{ fontSize: '12px' }} />
+    </IconButton>
+  );
+
+  const LockIconComp = selectDisabled() ? (
+    <Lock
+      title={translator.get('SelectionToolbar.ClickToUnlock')}
+      size="large"
+      style={{ fontSize: '12px', padding: '7px' }}
+    />
+  ) : (
+    <IconButton title={translator.get('SelectionToolbar.ClickToUnlock')} tabIndex={-1} onClick={unlock} size="large">
+      <Lock disableRipple style={{ fontSize: '12px' }} />
+    </IconButton>
+  );
+
   return (
     <>
       {toolbarDetachedOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
@@ -283,33 +310,7 @@ function ListBoxInline({ options, layout }) {
             >
               {showIcons && (
                 <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
-                  {isLocked ? (
-                    <IconButton
-                      title={translator.get('SelectionToolbar.ClickToUnlock')}
-                      tabIndex={-1}
-                      onClick={unlock}
-                      disabled={selectDisabled()}
-                      size="large"
-                      sx={{ '&.Mui-disabled': { color: '#000', opacity: 0.9 } }}
-                    >
-                      <Lock disableRipple style={{ fontSize: '12px' }} />
-                    </IconButton>
-                  ) : (
-                    showSearchIcon && (
-                      <IconButton
-                        onClick={onShowSearch}
-                        disabled={!!constraints?.active}
-                        tabIndex={-1}
-                        title={translator.get('Listbox.Search')}
-                        size="large"
-                        disableRipple
-                        data-testid="search-toggle-btn"
-                        sx={{ '&.Mui-disabled': { color: '#000', opacity: 0.9 } }}
-                      >
-                        <SearchIcon style={{ fontSize: '12px' }} />
-                      </IconButton>
-                    )
-                  )}
+                  {isLocked ? LockIconComp : showSearchIcon && SearchIconComp}
                   {isDrillDown && (
                     <DrillDownIcon
                       tabIndex={-1}
