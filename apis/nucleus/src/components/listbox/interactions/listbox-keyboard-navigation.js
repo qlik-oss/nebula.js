@@ -1,5 +1,7 @@
 import KEYS from '../../../keys';
 
+const getElementIndex = (event) => +event.currentTarget.getAttribute('data-n');
+
 export function getFieldKeyboardNavigation({
   select,
   selectAll,
@@ -10,8 +12,8 @@ export function getFieldKeyboardNavigation({
   focusListItems,
 }) {
   const getElement = (elm, next = false) => {
-    const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
-    return parentElm && parentElm.querySelector('[role]');
+    const parentElm = elm?.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
+    return parentElm && parentElm.querySelector('.value');
   };
 
   let startedRange = false;
@@ -35,10 +37,10 @@ export function getFieldKeyboardNavigation({
         elementToFocus = getElement(event.currentTarget, true);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
-            select([+event.currentTarget.getAttribute('data-n')], true);
+            select([getElementIndex(event)], true);
             setStartedRange(false);
           }
-          select([+elementToFocus.getAttribute('data-n')], true);
+          select([getElementIndex(event)], true);
         }
         break;
       case KEYS.ARROW_UP:
@@ -49,7 +51,7 @@ export function getFieldKeyboardNavigation({
             select([+event.currentTarget.getAttribute('data-n')], true);
             setStartedRange(false);
           }
-          select([+elementToFocus.getAttribute('data-n')], true);
+          select([getElementIndex(event)], true);
         }
         break;
       case KEYS.ENTER:

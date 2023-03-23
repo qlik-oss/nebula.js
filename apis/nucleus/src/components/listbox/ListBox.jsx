@@ -1,5 +1,5 @@
 /* eslint no-underscore-dangle:0 */
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useContext } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
 import { Box, styled } from '@mui/material';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
@@ -17,6 +17,7 @@ import getScrollIndex from './interactions/listbox-get-scroll-index';
 import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 import useFrequencyMax from './hooks/useFrequencyMax';
 import { ScreenReaderForSelections } from './components/ScreenReaders';
+import InstanceContext from '../../contexts/InstanceContext';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -53,7 +54,9 @@ export default function ListBox({
   currentScrollIndex = { set: () => {} },
   renderedCallback,
   onCtrlF,
+  showSearch,
 }) {
+  const { translator } = useContext(InstanceContext);
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const { checkboxes = checkboxOption, histogram } = layout ?? {};
@@ -289,6 +292,8 @@ export default function ListBox({
     constraints,
     frequencyMax,
     freqIsAllowed,
+    translator,
+    showSearch,
   });
 
   const { columnWidth, listHeight, itemHeight } = sizes || {};
@@ -307,6 +312,7 @@ export default function ListBox({
         threshold={0}
         minimumBatchSize={minimumBatchSize}
         ref={loaderRef}
+        role="grid"
       >
         {isVertical ? List : Grid}
       </InfiniteLoader>

@@ -394,6 +394,7 @@ function ListBoxInline({ options, layout }) {
                   }}
                   renderedCallback={renderedCallback}
                   onCtrlF={onCtrlF}
+                  showSearch={showSearch}
                 />
               )}
             </AutoSizer>
