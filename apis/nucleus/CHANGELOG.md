@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.5](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.4...v4.0.0-alpha.5) (2023-03-23)
+
+### Bug Fixes
+
+- fix grid mode row spacing and lock icon ([#1172](https://github.com/qlik-oss/nebula.js/issues/1172)) ([9928f84](https://github.com/qlik-oss/nebula.js/commit/9928f843600006494d8b8b8e3f9abe872f6f95fe))
+- fix search result in rtl mode ([#1181](https://github.com/qlik-oss/nebula.js/issues/1181)) ([abb33a3](https://github.com/qlik-oss/nebula.js/commit/abb33a3cdb50d2cc04bd8c37f94a9285b912b86c))
+- generic load function should work for existing charts ([#1182](https://github.com/qlik-oss/nebula.js/issues/1182)) ([3543a64](https://github.com/qlik-oss/nebula.js/commit/3543a64dc764b41bdb75269b9ea488547c8f52dd))
+- null check rendered callback ([#1174](https://github.com/qlik-oss/nebula.js/issues/1174)) ([a15d56a](https://github.com/qlik-oss/nebula.js/commit/a15d56ac577c55ab02f49c9a35eddf66e90e69e9))
+- show search icon in edit mode if the search checkbox is on ([#1177](https://github.com/qlik-oss/nebula.js/issues/1177)) ([b4fbaa8](https://github.com/qlik-oss/nebula.js/commit/b4fbaa89af50ac12cb698b56d6daaa79189a0752))
+- update spacing for grid mode ([#1176](https://github.com/qlik-oss/nebula.js/issues/1176)) ([5cf3dea](https://github.com/qlik-oss/nebula.js/commit/5cf3dea9bc557e533a9d63a3a1839401027611f8))
+- update style for higlighted text during search ([#1179](https://github.com/qlik-oss/nebula.js/issues/1179)) ([e7b1cc7](https://github.com/qlik-oss/nebula.js/commit/e7b1cc785d5d8bd5e6ffc7fb826ea106b518fe86))
+
 # [4.0.0-alpha.4](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.3...v4.0.0-alpha.4) (2023-03-21)
 
 ### Bug Fixes
