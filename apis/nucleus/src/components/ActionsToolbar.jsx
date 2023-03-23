@@ -46,9 +46,12 @@ const ActionToolbarElement = {
 };
 
 const ActionsGroup = React.forwardRef(
-  ({ ariaExpanded = false, actions = [], first = false, last = false, addAnchor = false, isRtl = false }, ref) =>
+  (
+    { className, ariaExpanded = false, actions = [], first = false, last = false, addAnchor = false, isRtl = false },
+    ref
+  ) =>
     actions.length > 0 ? (
-      <Grid item container gap={0} flexDirection={isRtl ? 'row-reverse' : 'row'} wrap="nowrap">
+      <Grid item container gap={0} flexDirection={isRtl ? 'row-reverse' : 'row'} wrap="nowrap" className={className}>
         {actions.map((e, ix) => {
           let cls = [];
           const isFirstItem = first && ix === 0;
@@ -212,6 +215,8 @@ function ActionsToolbar({
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
         <ActionsGroup
+          id="actions-toolbar-show-more"
+          data-testid="actions-toolbar-show-more"
           ref={moreRef}
           ariaExpanded={showMoreItems}
           actions={[moreItem]}
@@ -226,7 +231,13 @@ function ActionsToolbar({
         </Grid>
       )}
       {selections.show && (
-        <ActionsGroup actions={defaultSelectionActions} first={!showActions && !showMore} last isRtl={isRtl} />
+        <ActionsGroup
+          className="actions-toolbar-default-actions"
+          actions={defaultSelectionActions}
+          first={!showActions && !showMore}
+          last
+          isRtl={isRtl}
+        />
       )}
       {showMoreItems && (
         <More
@@ -253,6 +264,8 @@ function ActionsToolbar({
       hideBackdrop
       style={popoverStyle}
       PaperProps={{
+        id: 'njs-action-toolbar-popover',
+        'data-testid': 'njs-action-toolbar-popover',
         className: ActionToolbarElement.className,
         style: {
           pointerEvents: 'auto',

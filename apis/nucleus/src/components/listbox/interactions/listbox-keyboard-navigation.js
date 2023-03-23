@@ -25,6 +25,14 @@ export function getFieldKeyboardNavigation({
     let elementToFocus;
     const { keyCode, shiftKey = false, ctrlKey = false, metaKey = false } = event.nativeEvent;
     switch (keyCode) {
+      case KEYS.TAB:
+        if (shiftKey) {
+          const confirmButton = document.querySelector(
+            '#njs-action-toolbar-popover .actions-toolbar-default-actions .ActionsToolbar-item:last-child button'
+          );
+          confirmButton?.focus();
+        }
+        break;
       case KEYS.SHIFT:
         // This is to ensure we include the first value when starting a range selection.
         setStartedRange(true);
