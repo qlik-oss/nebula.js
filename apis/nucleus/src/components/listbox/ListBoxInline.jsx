@@ -261,11 +261,7 @@ function ListBoxInline({ options, layout }) {
   );
 
   const LockIconComp = selectDisabled() ? (
-    <Lock
-      title={translator.get('SelectionToolbar.ClickToUnlock')}
-      size="large"
-      style={{ fontSize: '12px', padding: '7px' }}
-    />
+    <Lock size="large" style={{ fontSize: '12px', padding: '7px' }} />
   ) : (
     <IconButton title={translator.get('SelectionToolbar.ClickToUnlock')} tabIndex={-1} onClick={unlock} size="large">
       <Lock disableRipple style={{ fontSize: '12px' }} />
