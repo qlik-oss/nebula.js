@@ -231,7 +231,7 @@ function ListBoxInline({ options, layout }) {
     });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
-  const showSearchIcon = searchEnabled !== false && search === 'toggle' && !constraints?.active;
+  const showSearchIcon = searchEnabled !== false && search === 'toggle';
   const showSearchOrLockIcon = isLocked || showSearchIcon;
   const showIcons = showSearchOrLockIcon || isDrillDown;
   const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
@@ -244,6 +244,29 @@ function ListBoxInline({ options, layout }) {
   if (isGridMode) {
     containerPadding = layoutOptions.layoutOrder === 'row' ? '2px 4px' : '2px 6px 2px 4px';
   }
+
+  const searchIconComp = constraints?.active ? (
+    <SearchIcon title={translator.get('Listbox.Search')} size="large" style={{ fontSize: '12px', padding: '7px' }} />
+  ) : (
+    <IconButton
+      onClick={onShowSearch}
+      tabIndex={-1}
+      title={translator.get('Listbox.Search')}
+      size="large"
+      disableRipple
+      data-testid="search-toggle-btn"
+    >
+      <SearchIcon style={{ fontSize: '12px' }} />
+    </IconButton>
+  );
+
+  const lockIconComp = selectDisabled() ? (
+    <Lock size="large" style={{ fontSize: '12px', padding: '7px' }} />
+  ) : (
+    <IconButton title={translator.get('SelectionToolbar.ClickToUnlock')} tabIndex={-1} onClick={unlock} size="large">
+      <Lock disableRipple style={{ fontSize: '12px' }} />
+    </IconButton>
+  );
 
   return (
     <>
@@ -283,30 +306,7 @@ function ListBoxInline({ options, layout }) {
             >
               {showIcons && (
                 <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
-                  {isLocked ? (
-                    <IconButton
-                      title={translator.get('SelectionToolbar.ClickToUnlock')}
-                      tabIndex={-1}
-                      onClick={unlock}
-                      disabled={selectDisabled()}
-                      size="large"
-                    >
-                      <Lock disableRipple style={{ fontSize: '12px' }} />
-                    </IconButton>
-                  ) : (
-                    showSearchIcon && (
-                      <IconButton
-                        onClick={onShowSearch}
-                        tabIndex={-1}
-                        title={translator.get('Listbox.Search')}
-                        size="large"
-                        disableRipple
-                        data-testid="search-toggle-btn"
-                      >
-                        <SearchIcon style={{ fontSize: '12px' }} />
-                      </IconButton>
-                    )
-                  )}
+                  {isLocked ? lockIconComp : showSearchIcon && searchIconComp}
                   {isDrillDown && (
                     <DrillDownIcon
                       tabIndex={-1}
