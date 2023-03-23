@@ -118,6 +118,14 @@ const RowColRoot = styled('div', {
     },
   },
 
+  [`& .${classes.checkboxLabel} .${classes.labelText}`]: {
+    width: 'auto',
+  },
+
+  [`& .${classes.checkboxLabel} .${classes.labelText}.${classes.highlighted}`]: {
+    width: 'auto',
+  },
+
   // The icons container holding tick and lock, shown inside fields.
   [`& .${classes.icon}`]: {
     display: 'flex',
