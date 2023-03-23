@@ -179,6 +179,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       isGridMode={dataLayout === 'grid'}
       dense={dense}
       frequencyWidth={frequencyWidth}
+      data-testid="listbox.item"
     >
       <ItemGrid
         ref={rowRef}
