@@ -23,14 +23,21 @@ export function getFieldKeyboardNavigation({
 
   const handleKeyDown = (event) => {
     let elementToFocus;
-    const { keyCode, shiftKey = false, ctrlKey = false, metaKey = false } = event.nativeEvent;
+    const { currentTarget, nativeEvent } = event;
+    const { keyCode, shiftKey = false, ctrlKey = false, metaKey = false } = nativeEvent;
     switch (keyCode) {
       case KEYS.TAB:
+        // Try to focus search field, otherwise confirm button.
         if (shiftKey) {
-          const confirmButton = document.querySelector(
-            '#njs-action-toolbar-popover .actions-toolbar-default-actions .ActionsToolbar-item:last-child button'
-          );
-          confirmButton?.focus();
+          const searchField = currentTarget.closest('.listbox-container')?.querySelector('.search input');
+          if (searchField) {
+            searchField.focus();
+          } else {
+            const confirmButton = document.querySelector(
+              '#njs-action-toolbar-popover .actions-toolbar-default-actions .ActionsToolbar-item:last-child button'
+            );
+            confirmButton?.focus();
+          }
         }
         break;
       case KEYS.SHIFT:
@@ -38,11 +45,11 @@ export function getFieldKeyboardNavigation({
         setStartedRange(true);
         break;
       case KEYS.SPACE:
-        select([+event.currentTarget.getAttribute('data-n')]);
+        select([+currentTarget.getAttribute('data-n')]);
         break;
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_RIGHT:
-        elementToFocus = getElement(event.currentTarget, true);
+        elementToFocus = getElement(currentTarget, true);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
             select([getElementIndex(event)], true);
@@ -53,10 +60,10 @@ export function getFieldKeyboardNavigation({
         break;
       case KEYS.ARROW_UP:
       case KEYS.ARROW_LEFT:
-        elementToFocus = getElement(event.currentTarget, false);
+        elementToFocus = getElement(currentTarget, false);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
-            select([+event.currentTarget.getAttribute('data-n')], true);
+            select([+currentTarget.getAttribute('data-n')], true);
             setStartedRange(false);
           }
           select([getElementIndex(event)], true);
