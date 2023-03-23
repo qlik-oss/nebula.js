@@ -1,6 +1,6 @@
 import KEYS from '../../../keys';
 
-const getElementIndex = (event) => +event.currentTarget.getAttribute('data-n');
+const getElementIndex = (currentTarget) => +currentTarget.getAttribute('data-n');
 
 export function getFieldKeyboardNavigation({
   select,
@@ -12,8 +12,8 @@ export function getFieldKeyboardNavigation({
   focusListItems,
 }) {
   const getElement = (elm, next = false) => {
-    const parentElm = elm?.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
-    return parentElm && parentElm.querySelector('.value');
+    const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
+    return parentElm && parentElm.querySelector('[role]');
   };
 
   let startedRange = false;
@@ -45,17 +45,17 @@ export function getFieldKeyboardNavigation({
         setStartedRange(true);
         break;
       case KEYS.SPACE:
-        select([+currentTarget.getAttribute('data-n')]);
+        select([getElementIndex(currentTarget)]);
         break;
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_RIGHT:
         elementToFocus = getElement(currentTarget, true);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
-            select([getElementIndex(event)], true);
+            select([getElementIndex(currentTarget)], true);
             setStartedRange(false);
           }
-          select([getElementIndex(event)], true);
+          select([getElementIndex(elementToFocus)], true);
         }
         break;
       case KEYS.ARROW_UP:
@@ -63,10 +63,10 @@ export function getFieldKeyboardNavigation({
         elementToFocus = getElement(currentTarget, false);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
-            select([+currentTarget.getAttribute('data-n')], true);
+            select([getElementIndex(currentTarget)], true);
             setStartedRange(false);
           }
-          select([getElementIndex(event)], true);
+          select([getElementIndex(elementToFocus)], true);
         }
         break;
       case KEYS.ENTER:

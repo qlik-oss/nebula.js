@@ -40,8 +40,10 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "pages": "pages",
       "rowCount": 200,
       "showGray": true,
+      "showSearch": undefined,
       "showTick": true,
       "textAlign": "right",
+      "translator": undefined,
     }
   }
   onItemsRendered={[Function]}
@@ -96,8 +98,10 @@ exports[`grid-list-components should create a List component 1`] = `
       "listCount": undefined,
       "pages": "pages",
       "showGray": true,
+      "showSearch": undefined,
       "showTick": true,
       "textAlign": "right",
+      "translator": undefined,
     }
   }
   itemSize={100}

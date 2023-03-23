@@ -5,6 +5,7 @@ import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import Lock from '@nebula.js/ui/icons/lock';
 import ListBoxCheckbox from '../components/ListBoxCheckbox';
 import * as keyboardNavigation from '../../../interactions/listbox-keyboard-navigation';
+import * as screenReaders from '../../ScreenReaders';
 import ListBoxRadioButton from '../components/ListBoxRadioButton';
 import ListBoxRowColumn from '..';
 
@@ -47,6 +48,7 @@ describe('<ListBoxRowColumn />', () => {
       .mockImplementation(() => 'handle-key-down-callback');
     actions = 'actions';
     keyboard = { active: false, enabled: true };
+    jest.spyOn(screenReaders, 'getValueLabel').mockReturnValue('ariaLabel');
   });
 
   afterEach(() => {
@@ -69,6 +71,9 @@ describe('<ListBoxRowColumn />', () => {
         pages: [],
         actions,
         dataOffset: 0,
+        translator: {
+          get: jest.fn().mockImplementation((word) => word),
+        },
       };
       expect(getFieldKeyboardNavigation).not.called;
       const testRenderer = await render(
