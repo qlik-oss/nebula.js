@@ -187,5 +187,65 @@
     "value": "Die Berechnungsbedingung ist nicht erfüllt",
     "comment": "Message displayed when a calculation condition is not fulfilled",
     "version": "Hj3EiDijTWZ+MhDaqSx/uQ=="
+  },
+  "Object.Listbox.Selected": {
+    "value": "Ausgewählt",
+    "comment": "Selected state of an item in listbox. (buy20180905)",
+    "version": "DGo0we75C68XYHVXPfNZ9A=="
+  },
+  "Object.Listbox.Alternative": {
+    "value": "Alternative",
+    "comment": "Alternative state of an item in listbox(buy20180905)",
+    "version": "zSb1qdwXvFAWNG5hll1tCQ=="
+  },
+  "Object.Listbox.Optional": {
+    "value": "Optional",
+    "comment": "Optional state of an item in listbox(buy20180905)",
+    "version": "18gX4gXo+M8QYSh4j6LBUA=="
+  },
+  "Object.Listbox.SelectedExcluded": {
+    "value": "Ausgeschlossen ausgewählt",
+    "comment": "Selected excluded state of an item in listbox(buy20180905)",
+    "version": "RTchiDrH9lIxerEyRF/fzA=="
+  },
+  "Object.Listbox.Locked": {
+    "value": "Gesperrt",
+    "comment": "Locked state of an item in listbox(buy20180905)",
+    "version": "nZDznytt+cqz5yyYObs0QQ=="
+  },
+  "Object.Listbox.Excluded": {
+    "value": "Ausgeschlossen",
+    "comment": "Excluded state of an item in listbox(buy20180905)",
+    "version": "Zem8o+76FJ+ghWc2JR4vJQ=="
+  },
+  "Object.Listbox.ExcludedLock": {
+    "value": "Ausgeschlossene Sperre",
+    "comment": "Excluded lock state of an item in listbox(buy20180905)",
+    "version": "KpvYYXB6b5v40OI6a3uCBQ=="
+  },
+  "Listbox.ScreenReader.SelectionMenu.WithAccSelMenu": {
+    "value": "Drücken Sie gleichzeitig die Umschalt- und die Tabulatortaste, um den Fokus in das Auswahlmenü zu setzen.",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is closed. ",
+    "version": "cf+5FbBZWTBzrvA1t8ZGSw=="
+  },
+  "Listbox.ScreenReader.SearchThenSelectionsMenu.WithAccSelMenu": {
+    "value": "Drücken Sie die Umschalttaste zusammen mit der Tabulatortaste, um den Fokus in die Suchleiste zu setzen, und dann erneut beide Tasten, um den Fokus in das Auswahlmenü zu setzen.",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is open. ",
+    "version": "pSBDS/l6GrBblyURsRM+AQ=="
+  },
+  "ScreenReader.ZeroSelected": {
+    "value": "Werteauswahl aufgehoben. Es sind keine Werte ausgewählt.",
+    "comment": "Screen reader label for value being deselected in listbox and no values are selected. ",
+    "version": "ws+IBu/9dgYvVZMAOt8XjA=="
+  },
+  "ScreenReader.OneSelected": {
+    "value": "Wert ausgewählt. Es ist ein Wert ausgewählt. Drücken Sie gleichzeitig die Umschalt- und die Tabulatortaste, um den Fokus in das Auswahlmenü zu setzen.",
+    "comment": "Screen reader label for value being selected in straight table and one values is selected (buy 20200603)",
+    "version": "3/nu/iWCtVFxcUytjx/0iQ=="
+  },
+  "ScreenReader.ManySelected": {
+    "value": "Werteauswahl aufgehoben. Es sind {0} Werte ausgewählt. Drücken Sie gleichzeitig die Umschalt- und die Tabulatortaste, um den Fokus in das Auswahlmenü zu setzen.",
+    "comment": "Screen reader label for value being deselected in straight table and multiple values are selected (buy 20200603)",
+    "version": "KqgykSKKf9jfhehR2eUQZg=="
   }
 }

@@ -187,5 +187,65 @@
     "value": "不满足计算条件",
     "comment": "Message displayed when a calculation condition is not fulfilled",
     "version": "Hj3EiDijTWZ+MhDaqSx/uQ=="
+  },
+  "Object.Listbox.Selected": {
+    "value": "已选择",
+    "comment": "Selected state of an item in listbox. (buy20180905)",
+    "version": "DGo0we75C68XYHVXPfNZ9A=="
+  },
+  "Object.Listbox.Alternative": {
+    "value": "可选",
+    "comment": "Alternative state of an item in listbox(buy20180905)",
+    "version": "zSb1qdwXvFAWNG5hll1tCQ=="
+  },
+  "Object.Listbox.Optional": {
+    "value": "可选",
+    "comment": "Optional state of an item in listbox(buy20180905)",
+    "version": "18gX4gXo+M8QYSh4j6LBUA=="
+  },
+  "Object.Listbox.SelectedExcluded": {
+    "value": "已排除选择",
+    "comment": "Selected excluded state of an item in listbox(buy20180905)",
+    "version": "RTchiDrH9lIxerEyRF/fzA=="
+  },
+  "Object.Listbox.Locked": {
+    "value": "已锁定",
+    "comment": "Locked state of an item in listbox(buy20180905)",
+    "version": "nZDznytt+cqz5yyYObs0QQ=="
+  },
+  "Object.Listbox.Excluded": {
+    "value": "已排除",
+    "comment": "Excluded state of an item in listbox(buy20180905)",
+    "version": "Zem8o+76FJ+ghWc2JR4vJQ=="
+  },
+  "Object.Listbox.ExcludedLock": {
+    "value": "已排除锁定",
+    "comment": "Excluded lock state of an item in listbox(buy20180905)",
+    "version": "KpvYYXB6b5v40OI6a3uCBQ=="
+  },
+  "Listbox.ScreenReader.SelectionMenu.WithAccSelMenu": {
+    "value": "按下 Shift 加 Tab 以将焦点设置在选择菜单上。",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is closed. ",
+    "version": "cf+5FbBZWTBzrvA1t8ZGSw=="
+  },
+  "Listbox.ScreenReader.SearchThenSelectionsMenu.WithAccSelMenu": {
+    "value": "按 Shift+Tab 在搜索栏上设置焦点，然后再次按 Shift+Tab 在“选择”菜单上设置焦点。",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is open. ",
+    "version": "pSBDS/l6GrBblyURsRM+AQ=="
+  },
+  "ScreenReader.ZeroSelected": {
+    "value": "取消选择的值。未选择值。",
+    "comment": "Screen reader label for value being deselected in listbox and no values are selected. ",
+    "version": "ws+IBu/9dgYvVZMAOt8XjA=="
+  },
+  "ScreenReader.OneSelected": {
+    "value": "所选值。存在一个已选择的值。按下 Shift 加 Tab 以将焦点设置在选择菜单上。",
+    "comment": "Screen reader label for value being selected in straight table and one values is selected (buy 20200603)",
+    "version": "3/nu/iWCtVFxcUytjx/0iQ=="
+  },
+  "ScreenReader.ManySelected": {
+    "value": "取消选择的值。存在 {0} 个已选择的值。按下 Shift 加 Tab 以将焦点设置在选择菜单上。",
+    "comment": "Screen reader label for value being deselected in straight table and multiple values are selected (buy 20200603)",
+    "version": "KqgykSKKf9jfhehR2eUQZg=="
   }
 }

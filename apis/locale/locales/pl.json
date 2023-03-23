@@ -187,5 +187,65 @@
     "value": "Warunek obliczenia nie jest spełniony",
     "comment": "Message displayed when a calculation condition is not fulfilled",
     "version": "Hj3EiDijTWZ+MhDaqSx/uQ=="
+  },
+  "Object.Listbox.Selected": {
+    "value": "Wybrane",
+    "comment": "Selected state of an item in listbox. (buy20180905)",
+    "version": "DGo0we75C68XYHVXPfNZ9A=="
+  },
+  "Object.Listbox.Alternative": {
+    "value": "Alternatywne",
+    "comment": "Alternative state of an item in listbox(buy20180905)",
+    "version": "zSb1qdwXvFAWNG5hll1tCQ=="
+  },
+  "Object.Listbox.Optional": {
+    "value": "Opcjonalne",
+    "comment": "Optional state of an item in listbox(buy20180905)",
+    "version": "18gX4gXo+M8QYSh4j6LBUA=="
+  },
+  "Object.Listbox.SelectedExcluded": {
+    "value": "Wybrane wykluczone",
+    "comment": "Selected excluded state of an item in listbox(buy20180905)",
+    "version": "RTchiDrH9lIxerEyRF/fzA=="
+  },
+  "Object.Listbox.Locked": {
+    "value": "Zablokowane",
+    "comment": "Locked state of an item in listbox(buy20180905)",
+    "version": "nZDznytt+cqz5yyYObs0QQ=="
+  },
+  "Object.Listbox.Excluded": {
+    "value": "Wykluczone",
+    "comment": "Excluded state of an item in listbox(buy20180905)",
+    "version": "Zem8o+76FJ+ghWc2JR4vJQ=="
+  },
+  "Object.Listbox.ExcludedLock": {
+    "value": "Wykluczone zablokowane",
+    "comment": "Excluded lock state of an item in listbox(buy20180905)",
+    "version": "KpvYYXB6b5v40OI6a3uCBQ=="
+  },
+  "Listbox.ScreenReader.SelectionMenu.WithAccSelMenu": {
+    "value": "Naciśnij Shift i Tab, aby ustawić ostrość na menu selekcji.",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is closed. ",
+    "version": "cf+5FbBZWTBzrvA1t8ZGSw=="
+  },
+  "Listbox.ScreenReader.SearchThenSelectionsMenu.WithAccSelMenu": {
+    "value": "Naciśnij Shift i Tab, aby ustawić ostrość na pasek wyszukiwania. Następnie ponownie użyj tej kombinacji klawiszy, aby ustawić ostrość na menu selekcji.",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is open. ",
+    "version": "pSBDS/l6GrBblyURsRM+AQ=="
+  },
+  "ScreenReader.ZeroSelected": {
+    "value": "Odznaczono wartość. Brak wybranych wartości.",
+    "comment": "Screen reader label for value being deselected in listbox and no values are selected. ",
+    "version": "ws+IBu/9dgYvVZMAOt8XjA=="
+  },
+  "ScreenReader.OneSelected": {
+    "value": "Wybrano wartość. Jest jedna wybrana wartość. Naciśnij Shift i Tab, aby ustawić ostrość na menu wyboru.",
+    "comment": "Screen reader label for value being selected in straight table and one values is selected (buy 20200603)",
+    "version": "3/nu/iWCtVFxcUytjx/0iQ=="
+  },
+  "ScreenReader.ManySelected": {
+    "value": "Odznaczono wartość. Wybranych wartości: {0} Naciśnij Shift i Tab, aby ustawić ostrość na menu wyboru.",
+    "comment": "Screen reader label for value being deselected in straight table and multiple values are selected (buy 20200603)",
+    "version": "KqgykSKKf9jfhehR2eUQZg=="
   }
 }
