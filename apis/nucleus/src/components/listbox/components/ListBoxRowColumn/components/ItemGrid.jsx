@@ -4,12 +4,16 @@ import getItemSizes from '../../grid-list-components/item-sizes';
 import classes from '../helpers/classes';
 
 const ItemGrid = styled(Grid, {
-  shouldForwardProp: (prop) => !['dataLayout', 'layoutOrder', 'itemPadding', 'checkboxes'].includes(prop),
-})(({ dataLayout, layoutOrder, itemPadding, cellPaddingRight }) => ({
-  [`&.${classes.fieldRoot}`]: {
-    ...getItemSizes({ dataLayout, layoutOrder, itemPadding }),
-    paddingRight: cellPaddingRight ? '8px' : undefined,
-  },
-}));
+  shouldForwardProp: (prop) =>
+    !['dataLayout', 'layoutOrder', 'itemPadding', 'cellPaddingRight', 'direction'].includes(prop),
+})(({ dataLayout, layoutOrder, itemPadding, cellPaddingRight, direction }) => {
+  const att = `padding${direction === 'rtl' ? 'left' : 'right'}`;
+  return {
+    [`&.${classes.fieldRoot}`]: {
+      ...getItemSizes({ dataLayout, layoutOrder, itemPadding }),
+      [att]: cellPaddingRight ? '8px' : undefined,
+    },
+  };
+});
 
 export default ItemGrid;
