@@ -4650,7 +4650,7 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
   integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
 
-"@qlik/sdk@^0.19.1":
+"@qlik/sdk@0.19.1", "@qlik/sdk@^0.19.1":
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/@qlik/sdk/-/sdk-0.19.1.tgz#bfdf74856200d520f41bfa3a9e58ab043a2df42b"
   integrity sha512-O2YPFYIU39OzHC4+sge7jPoUHykORXpVLJX2rj1VcLMKLxyVT+5GfLjN3ZpOsRqcEftE/81GBt5ihQypy4uolg==

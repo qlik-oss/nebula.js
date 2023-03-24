@@ -14,6 +14,7 @@ import ListBoxPopoverWrapper, {
 import create from './object/create-session-object';
 import get from './object/get-generic-object';
 import flagsFn from './flags/flags';
+import authFn from './auth/auth';
 import { create as typesFn } from './sn/types';
 import uid from './object/uid';
 import eventmixin from './selections/event-mixin';
@@ -194,7 +195,7 @@ function nuked(configuration = {}) {
         /** @type {object} */
         anything: configuration.anything,
         /** @type {object} */
-        embedConfig: configuration.embedConfig,
+        auth: authFn(configuration.embedConfig),
       },
       theme: appTheme.externalAPI,
       translator: locale.translator,

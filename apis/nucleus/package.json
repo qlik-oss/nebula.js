@@ -13,6 +13,7 @@
     "@nebula.js/supernova": "^4.0.0-alpha.5",
     "@nebula.js/theme": "^4.0.0-alpha.5",
     "@nebula.js/ui": "^4.0.0-alpha.5",
+    "@qlik/sdk": "0.19.1",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1",
     "react": "18.2.0",
