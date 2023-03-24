@@ -141,7 +141,7 @@ function ListBoxInline({ options, layout }) {
   if (layout?.toolbar !== undefined) {
     toolbar = layout.toolbar;
   }
-  const toolbarDetachedOnly = !toolbar || layout?.title === '';
+  const toolbarDetachedOnly = !layout?.toolbar === false || layout?.title === '';
   toolbar = toolbar && layout?.title !== '';
 
   useEffect(() => {
