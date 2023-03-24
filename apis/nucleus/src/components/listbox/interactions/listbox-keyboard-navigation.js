@@ -28,7 +28,7 @@ export function getFieldKeyboardNavigation({
         setStartedRange(true);
         break;
       case KEYS.SPACE:
-        select([+event.currentTarget.getAttribute('data-n')]);
+        select([+event.currentTarget.getAttribute('data-n')], false, event);
         break;
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_RIGHT:
