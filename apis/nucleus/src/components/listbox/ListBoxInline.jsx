@@ -80,8 +80,8 @@ function ListBoxInline({ options, layout }) {
     showGray = true,
     scrollState = undefined,
     renderedCallback,
+    toolbar = true,
   } = options;
-  const { toolbar = true } = options;
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
