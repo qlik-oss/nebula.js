@@ -138,7 +138,7 @@ function ListBoxInline({ options, layout }) {
     active: keyboardActive,
   };
 
-  const toolbarDetachedOnly = toolbar && (layout?.title === '' || layout?.showTitle === false);
+  const showDetachedToolbarOnly = toolbar && (layout?.title === '' || layout?.showTitle === false);
   const showToolbarWithTitle = toolbar && layout?.title !== '' && layout?.showTitle !== false;
 
   useEffect(() => {
@@ -267,7 +267,7 @@ function ListBoxInline({ options, layout }) {
 
   return (
     <>
-      {toolbarDetachedOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
+      {showDetachedToolbarOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
       <StyledGrid
         className="listbox-container"
         container
