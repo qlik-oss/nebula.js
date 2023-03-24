@@ -81,7 +81,7 @@ function ListBoxInline({ options, layout }) {
     scrollState = undefined,
     renderedCallback,
   } = options;
-  let { toolbar = true } = options;
+  const { toolbar = true } = options;
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
@@ -138,11 +138,8 @@ function ListBoxInline({ options, layout }) {
     active: keyboardActive,
   };
 
-  if (layout?.toolbar !== undefined) {
-    toolbar = layout.toolbar;
-  }
-  const toolbarDetachedOnly = layout?.toolbar === false || (toolbar && layout?.title === '');
-  toolbar = toolbar && layout?.title !== '';
+  const toolbarDetachedOnly = toolbar && (layout?.title === '' || layout?.showTitle === false);
+  const showToolbarWithTitle = toolbar && layout?.title !== '' && layout?.showTitle !== false;
 
   useEffect(() => {
     const show = () => {
@@ -168,7 +165,7 @@ function ListBoxInline({ options, layout }) {
         selections.removeListener('deactivated', hide);
       }
     };
-  }, [selections, toolbar]);
+  }, [selections]);
 
   useEffect(() => {
     if (!searchContainer || !searchContainer.current) {
@@ -203,7 +200,7 @@ function ListBoxInline({ options, layout }) {
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
   const searchAddHeight = searchVisible ? searchHeight : 0;
-  const minHeight = toolbar ? 49 + searchAddHeight + extraheight : 0;
+  const minHeight = showToolbarWithTitle ? 49 + searchAddHeight + extraheight : 0;
   const headerHeight = 32;
 
   const onShowSearch = () => {
@@ -285,7 +282,7 @@ function ListBoxInline({ options, layout }) {
         ref={containerRef}
         hasIcon={showIcons}
       >
-        {toolbar && (
+        {showToolbarWithTitle && (
           <Grid
             item
             container
