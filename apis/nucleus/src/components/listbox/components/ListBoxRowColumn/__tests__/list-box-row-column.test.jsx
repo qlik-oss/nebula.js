@@ -616,9 +616,12 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(Typography);
-      expect(types[0].props.children.props.children).toBe('nebula.js');
-      expect(types[0].props.className.includes('highlighted')).toBe(true);
-      expect(types[1].props.children.props.children).toBe(' ftw');
+      expect(types).toHaveLength(1);
+      const spans = types[0].props.children.props.children;
+      expect(spans).toHaveLength(2);
+      expect(spans[0].props.children).toBe('nebula.js');
+      expect(spans[0].props.className.includes('highlighted')).toBe(true);
+      expect(spans[1].props.children).toBe(' ftw');
       await testRenderer.unmount();
     });
 
@@ -662,9 +665,12 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(Typography);
-      expect(types[0].props.children.props.children).toBe('nebula.js ');
-      expect(types[1].props.children.props.children).toBe('ftw');
-      expect(types[1].props.className.includes('highlighted')).toBe(true);
+      expect(types).toHaveLength(1);
+      const spans = types[0].props.children.props.children;
+      expect(spans).toHaveLength(2);
+      expect(spans[0].props.children).toBe('nebula.js ');
+      expect(spans[1].props.children).toBe('ftw');
+      expect(spans[1].props.className.includes('highlighted')).toBe(true);
       // TODO: MUIv5 - no idea why this breaks
       // const hits = testInstance.findAllByProps({ className: 'RowColumn-highlighted' });
       // expect(hits).to.have.length(2);
@@ -711,10 +717,13 @@ describe('<ListBoxRowColumn />', () => {
       );
       const testInstance = testRenderer.root;
       const types = testInstance.findAllByType(Typography);
-      expect(types[0].props.children.props.children).toBe('nebula.js ftw ');
-      expect(types[1].props.children.props.children).toBe('yeah');
-      expect(types[1].props.className.includes('RowColumn-highlighted')).toBe(true);
-      expect(types[2].props.children.props.children).toBe(' buddy');
+      expect(types).toHaveLength(1);
+      const spans = types[0].props.children.props.children;
+      expect(spans).toHaveLength(3);
+      expect(spans[0].props.children).toBe('nebula.js ftw ');
+      expect(spans[1].props.children).toBe('yeah');
+      expect(spans[1].props.className.includes('RowColumn-highlighted')).toBe(true);
+      expect(spans[2].props.children).toBe(' buddy');
       await testRenderer.unmount();
     });
 
@@ -799,10 +808,13 @@ describe('<ListBoxRowColumn />', () => {
       // const cells = testInstance.findAllByProps({ className: 'RowColumn-highlighted' });
       // expect(cells).to.have.length(2);
       const types = testInstance.findAllByType(Typography);
-      expect(types[1].props.children.props.children).toBe('nebula.js ftw ');
-      expect(types[2].props.children.props.children).toBe('yeah');
-      expect(types[2].props.className.includes('RowColumn-highlighted')).toBe(true);
-      expect(types[3].props.children.props.children).toBe(' buddy');
+      expect(types).toHaveLength(2);
+      const spans = types[1].props.children.props.children;
+      expect(spans).toHaveLength(3);
+      expect(spans[0].props.children).toBe('nebula.js ftw ');
+      expect(spans[1].props.children).toBe('yeah');
+      expect(spans[1].props.className.includes('RowColumn-highlighted')).toBe(true);
+      expect(spans[2].props.children).toBe(' buddy');
       await testRenderer.unmount();
     });
   });

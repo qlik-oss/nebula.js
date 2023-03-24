@@ -17,7 +17,6 @@ import Histogram from './components/Histogram';
 import Frequency from './components/Frequency';
 import ItemGrid from './components/ItemGrid';
 import getCellFromPages from './helpers/get-cell-from-pages';
-import rtlUtil from '../../../../utils/rtl-util';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
@@ -137,7 +136,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const isGridCol = dataLayout === 'grid' && layoutOrder === 'column';
 
   const label = cell?.qText ?? '';
-  const textDirection = rtlUtil.detectTextDirection(label);
   // Search highlights. Split up labelText span into several and add the highlighted class to matching sub-strings.
 
   let labels;
@@ -232,7 +230,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               isGridCol={isGridCol}
               isSingleSelect={isSingleSelect}
               valueTextAlign={valueTextAlign}
-              textDirection={textDirection}
             />
           ) : (
             <Field
