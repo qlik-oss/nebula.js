@@ -46,12 +46,15 @@ window.getFuncs = function getFuncs() {
             title: {
               main: {
                 color: { color: 'green' },
+                fontFamily: 'Verdana',
               },
               subTitle: {
                 color: { color: 'blue' },
+                fontFamily: 'Arial',
               },
               footer: {
                 color: { color: 'red' },
+                fontFamily: 'Comic Sans MS, Lucida Console, monospace ',
               },
             },
           },
