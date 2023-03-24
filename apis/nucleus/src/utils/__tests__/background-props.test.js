@@ -86,7 +86,7 @@ describe('Background property resolver', () => {
         main: {
           color: { color: 'red' },
           fontFamily: 'familiiii',
-          fontStyle: '',
+          fontStyle: ['underline'],
         },
       },
     };
@@ -94,14 +94,16 @@ describe('Background property resolver', () => {
     expect(style).toEqual({
       color: 'red',
       fontFamily: 'familiiii',
-      fontStyle: '',
+      fontWeight: 'bold',
+      fontStyle: 'normal',
+      textDecoration: 'underline',
     });
   });
 
   test('should resolve text style by theme', () => {
     const prop = {
       title: {
-        main: {
+        footer: {
           color: { color: 'red' },
           fontStyle: '',
         },
@@ -109,13 +111,13 @@ describe('Background property resolver', () => {
     };
     const style = resolveTextStyle(
       prop,
-      'main',
+      'footer',
       {
         getStyle: (obj, path, attr) => {
-          if (obj === 'object.peoplechart' && path === 'title.main' && attr === 'fontFamily') {
+          if (obj === 'object.peoplechart' && path === 'title.footer' && attr === 'fontFamily') {
             return 'a font';
           }
-          return undefined;
+          return 'wrong';
         },
         getColorPickerColor: (color) => color.color,
       },
@@ -125,7 +127,9 @@ describe('Background property resolver', () => {
     expect(style).toEqual({
       color: 'red',
       fontFamily: 'a font',
-      fontStyle: '',
+      fontWeight: 'normal',
+      fontStyle: 'normal',
+      textDecoration: 'initial',
     });
   });
 });

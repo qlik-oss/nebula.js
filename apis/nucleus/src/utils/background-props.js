@@ -95,15 +95,25 @@ export function resolveBgColor(bgComp, theme, objectType) {
   }
   return undefined;
 }
+function unfurlFontStyle(textProps, target) {
+  if (textProps.fontStyle && Array.isArray(textProps.fontStyle)) {
+    return textProps.fontStyle;
+  }
+  return target === 'main' ? ['bold'] : [];
+}
 
 export function resolveTextStyle(textComp, target, theme, objectType) {
   const textProps = textComp?.title?.[target] || {};
+  const fontStyle = unfurlFontStyle(textProps.fontStyle, target);
+
   return {
     fontFamily: textProps.fontFamily || theme.getStyle(`object.${objectType}`, `title.${target}`, 'fontFamily'),
     color:
       textProps.color && textProps.color.color !== 'none'
         ? theme.getColorPickerColor(textProps.color, true)
         : theme.getStyle(`object.${objectType}`, target, 'color'),
-    fontStyle: '',
+    fontWeight: fontStyle.includes('bold') ? 'bold' : 'normal',
+    fontStyle: fontStyle.includes('italic') ? 'italic' : 'normal',
+    textDecoration: fontStyle.includes('underline') ? 'underline' : 'initial',
   };
 }

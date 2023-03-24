@@ -50,11 +50,11 @@ window.getFuncs = function getFuncs() {
               },
               subTitle: {
                 color: { color: 'blue' },
-                fontFamily: 'Arial',
+                fontStyle: ['bold', 'italic', 'underline'],
               },
               footer: {
                 color: { color: 'red' },
-                fontFamily: 'Comic Sans MS, Lucida Console, monospace ',
+                fontFamily: 'Lucida Console, monospace',
               },
             },
           },
