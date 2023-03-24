@@ -37,20 +37,21 @@ window.getFuncs = function getFuncs() {
         },
         visualization: 'barchart',
         title: 'This is the title of the barchart',
-        subTitle: 'here is the subtitle',
+        subtitle: 'here is the subtitle',
+        footnote: 'and here is a footnote',
         showTitles: true,
         components: [
           {
             key: 'general',
             title: {
               main: {
-                color: 'green',
+                color: { color: 'green' },
               },
               subTitle: {
-                color: 'blue',
+                color: { color: 'blue' },
               },
               footer: {
-                color: 'red',
+                color: { color: 'red' },
               },
             },
           },
