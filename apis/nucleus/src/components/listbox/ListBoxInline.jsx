@@ -20,6 +20,7 @@ import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-get-action-props';
 import createSelectionState from './hooks/selections/selectionState';
 import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH } from './constants';
+import ListBoxError from './components/ListBoxError';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -119,6 +120,8 @@ function ListBoxInline({ options, layout }) {
   const [appSelections] = useAppSelections(app);
   const titleRef = useRef(null);
   const [selectionState] = useState(() => createSelectionState());
+  const isInvalid = layout?.qListObject.qDimensionInfo.qError;
+  const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
     setKeyboardActive,
@@ -358,42 +361,46 @@ function ListBoxInline({ options, layout }) {
           </Grid>
           <Grid item xs className={classes.listboxWrapper}>
             <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
-            <AutoSizer>
-              {({ height, width }) => (
-                <ListBox
-                  model={model}
-                  app={app}
-                  constraints={constraints}
-                  layout={layout}
-                  selections={selections}
-                  selectionState={selectionState}
-                  direction={direction}
-                  frequencyMode={frequencyMode}
-                  rangeSelect={rangeSelect}
-                  checkboxes={checkboxes}
-                  height={height}
-                  width={width}
-                  update={update}
-                  fetchStart={fetchStart}
-                  postProcessPages={postProcessPages}
-                  calculatePagesHeight={calculatePagesHeight}
-                  selectDisabled={selectDisabled}
-                  keyboard={keyboard}
-                  showGray={showGray}
-                  scrollState={scrollState}
-                  keyScroll={{
-                    state: keyScroll,
-                    reset: () => setKeyScroll({ up: 0, down: 0, scrollPosition: '' }),
-                  }}
-                  currentScrollIndex={{
-                    state: currentScrollIndex,
-                    set: setCurrentScrollIndex,
-                  }}
-                  renderedCallback={renderedCallback}
-                  onCtrlF={onCtrlF}
-                />
-              )}
-            </AutoSizer>
+            {isInvalid ? (
+              <ListBoxError text={errorText} />
+            ) : (
+              <AutoSizer>
+                {({ height, width }) => (
+                  <ListBox
+                    model={model}
+                    app={app}
+                    constraints={constraints}
+                    layout={layout}
+                    selections={selections}
+                    selectionState={selectionState}
+                    direction={direction}
+                    frequencyMode={frequencyMode}
+                    rangeSelect={rangeSelect}
+                    checkboxes={checkboxes}
+                    height={height}
+                    width={width}
+                    update={update}
+                    fetchStart={fetchStart}
+                    postProcessPages={postProcessPages}
+                    calculatePagesHeight={calculatePagesHeight}
+                    selectDisabled={selectDisabled}
+                    keyboard={keyboard}
+                    showGray={showGray}
+                    scrollState={scrollState}
+                    keyScroll={{
+                      state: keyScroll,
+                      reset: () => setKeyScroll({ up: 0, down: 0, scrollPosition: '' }),
+                    }}
+                    currentScrollIndex={{
+                      state: currentScrollIndex,
+                      set: setCurrentScrollIndex,
+                    }}
+                    renderedCallback={renderedCallback}
+                    onCtrlF={onCtrlF}
+                  />
+                )}
+              </AutoSizer>
+            )}
           </Grid>
         </Grid>
       </StyledGrid>
