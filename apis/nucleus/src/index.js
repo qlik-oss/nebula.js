@@ -132,6 +132,7 @@ const mergeConfigs = (base, c) => ({
   themes: mergeArray(base.themes, c.themes),
   flags: mergeObj(base.flags, c.flags),
   anything: mergeObj(base.anything, c.anything),
+  embedConfig: mergeObj(base.embedConfig, c.embedConfig),
 });
 
 /**
@@ -192,6 +193,8 @@ function nuked(configuration = {}) {
         deviceType: deviceTypeFn(configuration.context.deviceType),
         /** @type {object} */
         anything: configuration.anything,
+        /** @type {object} */
+        embedConfig: configuration.embedConfig,
       },
       theme: appTheme.externalAPI,
       translator: locale.translator,

@@ -170,6 +170,7 @@ module.exports = async ({
           themes: themes.map((theme) => theme.id),
           types: serveConfig.types,
           keyboardNavigation: serveConfig.keyboardNavigation,
+          embedConfig: serveConfig.embedConfig,
         });
       });
 

@@ -49,6 +49,7 @@ const galaxy = {
     isEnabled: () => false,
   },
   anything: {},
+  embedConfig: {},
 };
 
 const ALLOWED_OPTIONS = ['viewState', 'direction', 'renderer'];

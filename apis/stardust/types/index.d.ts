@@ -223,6 +223,7 @@ declare namespace stardust {
         flags: stardust.Flags;
         deviceType: string;
         anything: object;
+        embedConfig: object;
     }
 
     class Embed {

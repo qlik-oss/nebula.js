@@ -111,6 +111,7 @@ export default function Visualize() {
       },
       load: (type) => Promise.resolve(window[type.name]),
       flags: info?.flags,
+      embedConfig: info?.embedConfig,
       themes: info?.themes
         ? info?.themes.map((t) => ({
             id: t,
@@ -368,6 +369,7 @@ export default function Visualize() {
                             isTemp={!objectListMode}
                             storage={storage}
                             flags={info?.flags}
+                            embedConfig={info?.embedConfig}
                           />
                         </Grid>
                       )}
