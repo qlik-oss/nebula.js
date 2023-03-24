@@ -150,8 +150,9 @@
     "version": "UYEx1K96g9h4HCK3GH/6kg=="
   },
   "SelectionToolbar.ClickToUnlock": {
-    "value": "Klicken zum Freigeben",
-    "comment": "Unlock a selection from listbox"
+    "value": "Zum Entsperren klicken",
+    "comment": "Unlock a selection from listbox",
+    "version": "2NqhtJqWEuaIVO1v5eOcxw=="
   },
   "Visualization.Incomplete": {
     "value": "Unvollständige Visualisierung",

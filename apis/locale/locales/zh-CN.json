@@ -151,7 +151,8 @@
   },
   "SelectionToolbar.ClickToUnlock": {
     "value": "单击以解锁",
-    "comment": "Unlock a selection from listbox"
+    "comment": "Unlock a selection from listbox",
+    "version": "2NqhtJqWEuaIVO1v5eOcxw=="
   },
   "Visualization.Incomplete": {
     "value": "不完整的可视化",

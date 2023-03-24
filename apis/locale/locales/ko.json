@@ -151,7 +151,8 @@
   },
   "SelectionToolbar.ClickToUnlock": {
     "value": "잠금을 해제하려면 클릭하십시오.",
-    "comment": "Unlock a selection from listbox"
+    "comment": "Unlock a selection from listbox",
+    "version": "2NqhtJqWEuaIVO1v5eOcxw=="
   },
   "Visualization.Incomplete": {
     "value": "완료되지 않은 시각화",

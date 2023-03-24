@@ -41,6 +41,7 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
       disableRipple
       aria-expanded={ariaExpanded}
       aria-controls="moreMenuList"
+      data-testid={`actions-toolbar-${item.key}`}
     >
       {hasSvgIconShape && SvgIcon(item.getSvgIconShape())}
       {addAnchor && (
