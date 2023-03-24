@@ -36,6 +36,24 @@ window.getFuncs = function getFuncs() {
           qId: 'bar',
         },
         visualization: 'barchart',
+        title: 'This is the title of the barchart',
+        subTitle: 'here is the subtitle',
+        components: [
+          {
+            key: 'general',
+            title: {
+              main: {
+                color: 'green',
+              },
+              subTitle: {
+                color: 'blue',
+              },
+              footer: {
+                color: 'red',
+              },
+            },
+          },
+        ],
       };
     },
     getPieLayout: () => {

@@ -16,7 +16,7 @@ import useLayout, { useAppLayout } from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
 import eventmixin from '../selections/event-mixin';
-import { resolveBgColor, resolveBgImage } from '../utils/background-props';
+import { resolveBgColor, resolveBgImage, resolveTextStyle } from '../utils/background-props';
 
 /**
  * @interface
@@ -303,6 +303,7 @@ const Cell = forwardRef(
     const hoveringDebouncer = useRef({ enter: null, leave: null });
     const [bgColor, setBgColor] = useState(undefined);
     const [bgImage, setBgImage] = useState(undefined); // {url: "", size: "", pos: ""}
+    const [titleStyles, setTitleStyles] = useState(undefined);
 
     const focusHandler = useRef({
       focusToolbarButton(last) {
@@ -318,6 +319,11 @@ const Cell = forwardRef(
     useEffect(() => {
       if (layout) {
         const bgComp = layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
+        setTitleStyles({
+          main: resolveTextStyle(bgComp, 'main', halo.public.theme, layout.visualization),
+          footer: resolveTextStyle(bgComp, 'footer', halo.public.theme, layout.visualization),
+          subTitle: resolveTextStyle(bgComp, 'subTitle', halo.public.theme, layout.visualization),
+        });
         setBgColor(resolveBgColor(bgComp, halo.public.theme, layout.visualization));
         setBgImage(resolveBgImage(bgComp, halo.app));
       }
@@ -529,6 +535,7 @@ const Cell = forwardRef(
               anchorEl={cellNode}
               hovering={hovering}
               focusHandler={focusHandler.current}
+              titleStyles={titleStyles}
             >
               &nbsp;
             </Header>
@@ -545,7 +552,7 @@ const Cell = forwardRef(
           >
             {Content}
           </Grid>
-          <Footer layout={layout} />
+          <Footer layout={layout} titleStyles={titleStyles} />
         </Grid>
         {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
       </Paper>

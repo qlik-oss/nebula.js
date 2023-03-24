@@ -57,7 +57,7 @@ function resolveImageUrl(app, relativeUrl) {
   return relativeUrl ? getSenseServerUrl(app) + relativeUrl : undefined;
 }
 
-export const resolveBgImage = (bgComp, app) => {
+export function resolveBgImage(bgComp, app) {
   const bgImageDef = bgComp?.bgImage;
 
   if (bgImageDef) {
@@ -77,9 +77,9 @@ export const resolveBgImage = (bgComp, app) => {
     return url ? { url, pos, size } : undefined;
   }
   return undefined;
-};
+}
 
-export const resolveBgColor = (bgComp, theme, objectType) => {
+export function resolveBgColor(bgComp, theme, objectType) {
   const bgColor = bgComp?.bgColor;
   if (bgColor && theme) {
     if (bgColor.useExpression) {
@@ -94,4 +94,16 @@ export const resolveBgColor = (bgComp, theme, objectType) => {
     return theme.getStyle('', '', 'backgroundColor');
   }
   return undefined;
-};
+}
+
+export function resolveTextStyle(textComp, target, theme, objectType) {
+  const textProps = textComp?.title?.[target] || {};
+  return {
+    fontFamily: textProps.fontFamily || theme.getStyle(`object.${objectType}`, `title.${target}`, 'fontFamily'),
+    color:
+      textProps.color && textProps.color.color !== 'none'
+        ? theme.getColorPickerColor(textProps.color, true)
+        : theme.getStyle(`object.${objectType}`, target, 'color'),
+    fontStyle: '',
+  };
+}

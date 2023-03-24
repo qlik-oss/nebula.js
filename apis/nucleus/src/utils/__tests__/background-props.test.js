@@ -1,5 +1,5 @@
 import theme from '@nebula.js/theme';
-import { resolveBgColor, resolveBgImage } from '../background-props';
+import { resolveBgColor, resolveBgImage, resolveTextStyle } from '../background-props';
 
 describe('Background property resolver', () => {
   let bgCompLayout;
@@ -78,5 +78,54 @@ describe('Background property resolver', () => {
       'gantt'
     );
     expect(color).toBe('#ff00ff');
+  });
+
+  test('should resolve text style by props', () => {
+    const prop = {
+      title: {
+        main: {
+          color: { color: 'red' },
+          fontFamily: 'familiiii',
+          fontStyle: '',
+        },
+      },
+    };
+    const style = resolveTextStyle(prop, 'main', t, 'peoplechart');
+    expect(style).toEqual({
+      color: 'red',
+      fontFamily: 'familiiii',
+      fontStyle: '',
+    });
+  });
+
+  test('should resolve text style by theme', () => {
+    const prop = {
+      title: {
+        main: {
+          color: { color: 'red' },
+          fontStyle: '',
+        },
+      },
+    };
+    const style = resolveTextStyle(
+      prop,
+      'main',
+      {
+        getStyle: (obj, path, attr) => {
+          if (obj === 'object.peoplechart' && path === 'title.main' && attr === 'fontFamily') {
+            return 'a font';
+          }
+          return undefined;
+        },
+        getColorPickerColor: (color) => color.color,
+      },
+      'peoplechart'
+    );
+
+    expect(style).toEqual({
+      color: 'red',
+      fontFamily: 'a font',
+      fontStyle: '',
+    });
   });
 });
