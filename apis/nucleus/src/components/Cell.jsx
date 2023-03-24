@@ -317,7 +317,7 @@ const Cell = forwardRef(
     }, []);
 
     useEffect(() => {
-      if (layout) {
+      if (layout && halo.public.theme) {
         const bgComp = layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
         setTitleStyles({
           main: resolveTextStyle(bgComp, 'main', halo.public.theme, layout.visualization),
