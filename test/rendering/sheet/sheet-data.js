@@ -38,6 +38,7 @@ window.getFuncs = function getFuncs() {
         visualization: 'barchart',
         title: 'This is the title of the barchart',
         subTitle: 'here is the subtitle',
+        showTitles: true,
         components: [
           {
             key: 'general',
