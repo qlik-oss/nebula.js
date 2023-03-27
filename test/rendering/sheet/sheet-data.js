@@ -58,7 +58,7 @@ window.getFuncs = function getFuncs() {
               },
             },
             bgColor: {
-              color: '#00ff00',
+              color: { color: '#00ff00' },
             },
           },
         ],
