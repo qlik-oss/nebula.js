@@ -51,6 +51,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     frequencyWidth,
     translator,
     showSearch,
+    isModal,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -98,7 +99,10 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     }
   }, [rowRef.current]);
 
-  const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation({ ...actions, focusListItems }), [actions]);
+  const handleKeyDownCallback = useCallback(
+    getFieldKeyboardNavigation({ ...actions, focusListItems, keyboard, isModal }),
+    [actions, keyboard]
+  );
 
   const cell = useMemo(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
   const isSelected = cell?.qState === 'S' || cell?.qState === 'XS' || cell?.qState === 'L' || cell?.qState === 'XL';

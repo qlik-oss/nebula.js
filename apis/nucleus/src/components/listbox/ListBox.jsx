@@ -55,6 +55,7 @@ export default function ListBox({
   renderedCallback,
   onCtrlF,
   showSearch,
+  isModal,
 }) {
   const { translator } = useContext(InstanceContext);
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
@@ -294,6 +295,7 @@ export default function ListBox({
     freqIsAllowed,
     translator,
     showSearch,
+    isModal,
   });
 
   const { columnWidth, listHeight, itemHeight } = sizes || {};

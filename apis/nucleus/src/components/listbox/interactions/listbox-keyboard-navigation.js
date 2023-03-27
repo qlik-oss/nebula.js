@@ -10,6 +10,8 @@ export function getFieldKeyboardNavigation({
   cancel,
   setScrollPosition,
   focusListItems,
+  keyboard,
+  isModal,
 }) {
   const getElement = (elm, next = false) => {
     const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
@@ -26,20 +28,31 @@ export function getFieldKeyboardNavigation({
     const { currentTarget, nativeEvent } = event;
     const { keyCode, shiftKey = false, ctrlKey = false, metaKey = false } = nativeEvent;
     switch (keyCode) {
-      case KEYS.TAB:
+      case KEYS.TAB: {
         // Try to focus search field, otherwise confirm button.
+        const searchField = currentTarget.closest('.listbox-container')?.querySelector('.search input');
+        const inSelection = isModal();
+        if (inSelection) {
+          keyboard.focusSelection();
+          break;
+        }
+        // Not in modal mode.
         if (shiftKey) {
-          const searchField = currentTarget.closest('.listbox-container')?.querySelector('.search input');
+          currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
           if (searchField) {
             searchField.focus();
           } else {
-            const confirmButton = document.querySelector(
-              '#njs-action-toolbar-popover .actions-toolbar-default-actions .ActionsToolbar-item:last-child button'
-            );
-            confirmButton?.focus();
+            currentTarget.setAttribute('tabIndex', '-1');
+            const resetFocus = true; // focus the viz container
+            keyboard.blur(resetFocus);
           }
+        } else {
+          currentTarget.setAttribute('tabIndex', '-1');
+          currentTarget.blur();
+          keyboard.blur();
         }
         break;
+      }
       case KEYS.SHIFT:
         // This is to ensure we include the first value when starting a range selection.
         setStartedRange(true);
@@ -116,38 +129,37 @@ export function getFieldKeyboardNavigation({
 }
 
 export function getListboxInlineKeyboardNavigation({
-  setKeyboardActive,
+  keyboard,
   hovering,
   setHovering,
   updateKeyScroll,
   containerRef,
   currentScrollIndex,
-  app,
-  appSelections,
+  isModal,
   constraints,
 }) {
-  const focusInsideListbox = (element) => {
-    const fieldElement = element.querySelector('.search input, .value.selector, .value, .ActionsToolbar-item button');
-    setKeyboardActive(true);
-    if (fieldElement) {
-      fieldElement.focus();
-    }
-  };
-
-  const changeFocus = (event) => {
-    if (event.target?.classList.contains('listbox-container')) {
-      // Focus currently on a listbox
-      // Esc on a list box should move the focus to its parent, i.e. a filter pane if any
-      setKeyboardActive(false);
+  const blur = (event) => {
+    const { target } = event;
+    const isFocusedOnListbox = target.classList.contains('listbox-container');
+    if (isFocusedOnListbox) {
+      // Move the focus from listbox container to the viz container.
+      keyboard.blur(true);
     } else {
-      // Focus currently on a row
-      // Esc on a row should move the focus to its parent, i.e. a listbox
-      // First unfocus the row
-      event.target?.setAttribute('tabIndex', '-1');
-      event.target?.blur();
-      // Then focus the listbox
-      event.currentTarget?.setAttribute('tabIndex', '0');
-      event.currentTarget?.focus();
+      // Move focus from row to listbox container:
+
+      // 1. Remove last-focused class from row siblings.
+      const container = target.closest('.listbox-container');
+      container?.querySelectorAll('.last-focused').forEach((elm) => {
+        elm.classList.remove('last-focused');
+      });
+
+      // 2. Add last-focused class so we can re-focus it later.
+      target.classList.add('last-focused');
+
+      // 3. Blur row and focus the listbox container.
+      target.setAttribute('tabIndex', '-1');
+      keyboard.blur();
+      target.closest('.listbox-container')?.focus();
     }
   };
 
@@ -167,10 +179,10 @@ export function getListboxInlineKeyboardNavigation({
         if (!event.target.classList.contains('listbox-container')) {
           return; // don't mess with keydown handlers within the listbox
         }
-        focusInsideListbox(event.currentTarget);
+        keyboard.focus();
         break;
       case KEYS.ESCAPE:
-        changeFocus(event);
+        blur(event);
         break;
       case KEYS.ARROW_UP:
         updateKeyScrollOnHover({ up: 1 });
@@ -204,7 +216,7 @@ export function getListboxInlineKeyboardNavigation({
 
   const focusOnHoverDisabled = () => {
     const selectNotAllowed = constraints?.select || constraints?.active;
-    const appInModal = app.isInModalSelection?.() ?? appSelections.isInModal();
+    const appInModal = isModal();
     return selectNotAllowed || appInModal;
   };
 

@@ -114,30 +114,44 @@ export default function ListBoxSearch({
   };
 
   const onKeyDown = async (e) => {
-    let response;
+    const { currentTarget } = e;
     switch (e.key) {
       case 'Enter':
-        response = await performSearch();
-        break;
+        return performSearch();
       case 'Escape':
-        response = cancel();
-        e.preventDefault();
-        e.stopPropagation();
+        return cancel();
+      case 'Tab': {
+        if (e.shiftKey) {
+          keyboard.focusSelection();
+          e.preventDefault();
+          e.stopPropagation();
+          break;
+        }
+        // Focus the row we last visited or the first one.
+        const container = currentTarget.closest('.listbox-container');
+        const row = container?.querySelector('.last-focused') || container?.querySelector('[role="row"]:first-child');
+        row?.focus();
+
+        // Clean up.
+        container?.querySelectorAll('.last-focused').forEach((elm) => {
+          elm.classList.remove('last-focused');
+        });
         break;
+      }
       case 'f':
       case 'F':
         if (e.ctrlKey || e.metaKey) {
           if (hide) {
             hide();
           }
-          e.preventDefault();
-          e.stopPropagation();
         }
         break;
       default:
         break;
     }
-    return response;
+    e.preventDefault();
+    e.stopPropagation();
+    return undefined;
   };
 
   if (!visible || searchEnabled === false) {

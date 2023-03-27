@@ -20,6 +20,7 @@ import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-get-action-props';
 import createSelectionState from './hooks/selections/selectionState';
 import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH } from './constants';
+import useTempKeyboard from './components/useTempKeyboard';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -60,6 +61,8 @@ const Title = styled(Typography)(({ theme }) => ({
   fontFamily: theme.listBox?.title?.main?.fontFamily,
   fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
 }));
+
+const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
 function ListBoxInline({ options, layout }) {
   const {
@@ -111,7 +114,6 @@ function ListBoxInline({ options, layout }) {
 
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [keyboardActive, setKeyboardActive] = useState(false);
   const [hovering, setHovering] = useState(false);
   const [keyScroll, setKeyScroll] = useState({ down: 0, up: 0, scrollPosition: '' });
   const updateKeyScroll = (newState) => setKeyScroll((current) => ({ ...current, ...newState }));
@@ -119,9 +121,11 @@ function ListBoxInline({ options, layout }) {
   const [appSelections] = useAppSelections(app);
   const titleRef = useRef(null);
   const [selectionState] = useState(() => createSelectionState());
+  const keyboard = useTempKeyboard({ containerRef, enabled: keyboardNavigation });
+  const isModalMode = useCallback(() => isModal({ app, appSelections }), [app, appSelections]);
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
-    setKeyboardActive,
+    keyboard,
     hovering,
     setHovering,
     updateKeyScroll,
@@ -130,13 +134,8 @@ function ListBoxInline({ options, layout }) {
     app,
     appSelections,
     constraints,
+    isModal: isModalMode,
   });
-
-  // Expose the keyboard flags in the same way as the keyboard hook does.
-  const keyboard = {
-    enabled: keyboardNavigation, // this will be static until we can access the useKeyboard hook
-    active: keyboardActive,
-  };
 
   if (layout?.toolbar !== undefined) {
     toolbar = layout.toolbar;
@@ -395,6 +394,7 @@ function ListBoxInline({ options, layout }) {
                   renderedCallback={renderedCallback}
                   onCtrlF={onCtrlF}
                   showSearch={showSearch}
+                  isModal={isModalMode}
                 />
               )}
             </AutoSizer>

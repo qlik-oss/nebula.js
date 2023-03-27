@@ -5,7 +5,6 @@ describe('keyboard navigation', () => {
   let actions;
   let handleKeyDownForField;
   let handleKeyDownForListbox;
-  let setKeyboardActive;
   let setScrollPosition;
   let focusListItems;
   let handleOnMouseEnter;
@@ -17,6 +16,9 @@ describe('keyboard navigation', () => {
   let hovering;
   let updateKeyScroll;
   let currentScrollIndex;
+  let keyboard;
+  let isModal;
+
   const globalEvent = {
     nativeEvent: {},
     currentTarget: {
@@ -33,8 +35,15 @@ describe('keyboard navigation', () => {
 
   beforeEach(() => {
     global.document = {};
-    setKeyboardActive = jest.fn();
+    keyboard = {
+      blur: jest.fn(),
+      focus: jest.fn(),
+      enabled: jest.fn(),
+      active: jest.fn(),
+      focusSelection: jest.fn(),
+    };
     setScrollPosition = jest.fn();
+    isModal = jest.fn();
     focusListItems = { setFirst: jest.fn(), setLast: jest.fn() };
     setHovering = jest.fn();
     constraints = {};
@@ -55,13 +64,15 @@ describe('keyboard navigation', () => {
       confirm: actions.confirm,
       setScrollPosition,
       focusListItems,
+      keyboard,
+      isModal,
     });
+
     ({
       handleKeyDown: handleKeyDownForListbox,
       handleOnMouseEnter,
       handleOnMouseLeave,
     } = getListboxInlineKeyboardNavigation({
-      setKeyboardActive,
       constraints,
       setHovering,
       app,
@@ -69,6 +80,8 @@ describe('keyboard navigation', () => {
       hovering,
       updateKeyScroll,
       currentScrollIndex,
+      keyboard,
+      isModal,
     }));
   });
 
@@ -238,6 +251,7 @@ describe('keyboard navigation', () => {
       const element = { focus: jest.fn() };
       const event = {
         currentTarget: {
+          getAttribute: jest.fn().mockReturnValue(1),
           querySelector: jest.fn().mockReturnValue(element),
         },
         target: {
@@ -248,11 +262,9 @@ describe('keyboard navigation', () => {
         stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
-      expect(element.focus).toHaveBeenCalledTimes(1);
+      expect(keyboard.focus).toHaveBeenCalledTimes(1);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(event.stopPropagation).not.toHaveBeenCalled();
-      expect(setKeyboardActive).toHaveBeenCalledTimes(1);
-      expect(setKeyboardActive).toHaveBeenCalledWith(true);
     });
 
     test('should not focus value with Space when target is not listbox-container', () => {
@@ -269,11 +281,9 @@ describe('keyboard navigation', () => {
         stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
-      expect(element.focus).toHaveBeenCalledTimes(1);
+      expect(keyboard.focus).toHaveBeenCalledTimes(1);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(event.stopPropagation).not.toHaveBeenCalled();
-      expect(setKeyboardActive).toHaveBeenCalledTimes(1);
-      expect(setKeyboardActive).toHaveBeenCalledWith(true);
     });
 
     test('should focus value with Enter', () => {
@@ -290,21 +300,29 @@ describe('keyboard navigation', () => {
         stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
-      expect(element.focus).toHaveBeenCalledTimes(1);
+      expect(keyboard.focus).toHaveBeenCalledTimes(1);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(event.stopPropagation).not.toHaveBeenCalled();
-      expect(setKeyboardActive).toHaveBeenCalledTimes(1);
-      expect(setKeyboardActive).toHaveBeenCalledWith(true);
     });
 
     test('should change focus with Escape on a row', () => {
       const target = {
-        classList: { contains: jest.fn().mockReturnValue(false) },
+        classList: {
+          contains: jest.fn().mockReturnValue(false),
+          add: jest.fn(),
+          remove: jest.fn(),
+        },
         setAttribute: jest.fn(),
         blur: jest.fn(),
         focus: jest.fn(),
+        closest: jest.fn(),
       };
-      const currentTarget = { setAttribute: jest.fn(), blur: jest.fn(), focus: jest.fn() };
+      const currentTarget = {
+        setAttribute: jest.fn(),
+        blur: jest.fn(),
+        focus: jest.fn(),
+        closest: jest.fn(),
+      };
       const event = {
         target,
         currentTarget,
@@ -317,15 +335,9 @@ describe('keyboard navigation', () => {
       expect(target.classList.contains).toHaveBeenCalledWith('listbox-container');
       expect(target.setAttribute).toHaveBeenCalledTimes(1);
       expect(target.setAttribute).toHaveBeenCalledWith('tabIndex', '-1');
-      expect(target.blur).toHaveBeenCalledTimes(1);
+      expect(keyboard.blur).toHaveBeenCalledTimes(1);
       expect(target.focus).not.toHaveBeenCalled();
-
-      expect(currentTarget.setAttribute).toHaveBeenCalledTimes(1);
-      expect(currentTarget.setAttribute).toHaveBeenCalledWith('tabIndex', '0');
       expect(currentTarget.blur).not.toHaveBeenCalled();
-      expect(currentTarget.focus).toHaveBeenCalledTimes(1);
-
-      expect(setKeyboardActive).not.toHaveBeenCalled();
 
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(event.stopPropagation).not.toHaveBeenCalled();
@@ -356,9 +368,6 @@ describe('keyboard navigation', () => {
       expect(currentTarget.blur).not.toHaveBeenCalled();
       expect(currentTarget.focus).not.toHaveBeenCalled();
 
-      expect(setKeyboardActive).toHaveBeenCalledTimes(1);
-      expect(setKeyboardActive).toHaveBeenCalledWith(false);
-
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(event.stopPropagation).not.toHaveBeenCalled();
     });
@@ -373,7 +382,6 @@ describe('keyboard navigation', () => {
       handleKeyDownForListbox(event);
       expect(event.preventDefault).not.toHaveBeenCalled();
       expect(event.stopPropagation).not.toHaveBeenCalled();
-      expect(setKeyboardActive).not.toHaveBeenCalled();
     });
     test('should handle mouse enter when allowed to focus', () => {
       handleOnMouseEnter();
@@ -383,7 +391,6 @@ describe('keyboard navigation', () => {
     test('should handle mouse enter when not allowed to focus', () => {
       app.isInModalSelection = () => true;
       handleOnMouseEnter();
-      expect(setHovering).not.toHaveBeenCalled();
       app.isInModalSelection = () => false;
     });
     test('should handle mouse leave', () => {
