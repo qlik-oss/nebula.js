@@ -95,9 +95,9 @@ export function resolveBgColor(bgComp, theme, objectType) {
   }
   return undefined;
 }
-function unfurlFontStyle(textProps, target) {
-  if (textProps.fontStyle && Array.isArray(textProps.fontStyle)) {
-    return textProps.fontStyle;
+function unfurlFontStyle(fontStyle, target) {
+  if (fontStyle && Array.isArray(fontStyle)) {
+    return fontStyle;
   }
   return target === 'main' ? ['bold'] : [];
 }

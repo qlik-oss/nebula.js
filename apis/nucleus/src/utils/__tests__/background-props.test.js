@@ -86,7 +86,7 @@ describe('Background property resolver', () => {
         main: {
           color: { color: 'red' },
           fontFamily: 'familiiii',
-          fontStyle: ['underline'],
+          fontStyle: ['underline', 'italic'],
         },
       },
     };
@@ -94,8 +94,8 @@ describe('Background property resolver', () => {
     expect(style).toEqual({
       color: 'red',
       fontFamily: 'familiiii',
-      fontWeight: 'bold',
-      fontStyle: 'normal',
+      fontWeight: 'normal',
+      fontStyle: 'italic',
       textDecoration: 'underline',
     });
   });
