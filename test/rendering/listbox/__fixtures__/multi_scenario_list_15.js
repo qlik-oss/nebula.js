@@ -1,7 +1,7 @@
 const fixture = {
   getLayout: () => ({
     qInfo: {
-      qId: '5101a519-c6d8-4070-9f0c-9ca97bba6655',
+      qId: 'db567de1-b25c-478b-a569-dd6d8635e378',
       qType: 'listbox',
     },
     qMeta: {
@@ -59,7 +59,7 @@ const fixture = {
         cId: 'EENwNaq',
         textAlign: {
           auto: false,
-          align: 'center',
+          align: 'right',
         },
       },
       qExpressions: [],
@@ -83,8 +83,16 @@ const fixture = {
     showDetailsExpression: false,
     visualization: 'listbox',
     checkboxes: true,
-    frequencyMax: null,
+    frequencyMax: 'fetch',
+    histogram: true,
   }),
+
+  evaluateEx: () => ({
+    qText: '274',
+    qIsNumeric: true,
+    qNumber: 274,
+  }),
+
   getListObjectData: () => [
     {
       qMatrix: [

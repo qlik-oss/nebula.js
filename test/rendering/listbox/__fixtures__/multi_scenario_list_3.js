@@ -1,33 +1,87 @@
 const fixture = {
   getLayout: () => ({
-    title: 'Field title ',
     qInfo: {
-      qId: 'qId',
+      qId: '04eca530-e0ed-4ad3-968b-02bdc5a16597',
+      qType: 'listbox',
     },
-    visualization: 'listbox',
+    qMeta: {
+      privileges: ['read', 'update', 'delete'],
+    },
+    qSelectionInfo: {},
     qListObject: {
+      qSize: {
+        qcx: 1,
+        qcy: 17,
+      },
       qDimensionInfo: {
-        qLocked: false,
+        qFallbackTitle: 'Basket Product Group Desc',
+        qApprMaxGlyphCount: 19,
+        qCardinal: 17,
+        qSortIndicator: 'A',
+        qGroupFallbackTitles: ['Basket Product Group Desc'],
+        qGroupPos: 0,
+        qStateCounts: {
+          qLocked: 0,
+          qSelected: 0,
+          qOption: 17,
+          qDeselected: 0,
+          qAlternative: 0,
+          qExcluded: 0,
+          qSelectedExcluded: 0,
+          qLockedExcluded: 0,
+        },
+        qTags: ['$ascii', '$text'],
+        qDimensionType: 'D',
+        qGrouping: 'N',
+        qNumFormat: {
+          qType: 'U',
+          qnDec: 0,
+          qUseThou: 0,
+        },
+        qIsAutoFormat: true,
+        qGroupFieldDefs: ['Basket Product Group Desc'],
+        qMin: 0,
+        qMax: 0,
+        qAttrExprInfo: [],
+        qAttrDimInfo: [],
+        qCardinalities: {
+          qCardinal: 17,
+          qHypercubeCardinal: 0,
+          qAllValuesCardinal: -1,
+        },
+        qLibraryId: 'XGvpzM',
+        title: 'Basket Product Group Desc',
+        coloring: {
+          changeHash: '0.45993295453224325',
+          hasValueColors: false,
+        },
+        autoSort: true,
+        cId: 'sxXUPR',
         textAlign: {
           auto: false,
           align: 'right',
         },
       },
-      qSize: {
-        qcx: 1,
-        qcy: 17,
-      },
-      qInitialDataFetch: [{ qLeft: 0, qWidth: 0, qTop: 0, qHeight: 0 }],
-      qFrequencyMode: 'P',
-      frequencyEnabled: true,
+      qExpressions: [],
+      qDataPages: [],
+      showTitles: true,
+      title: '',
+      subtitle: '',
+      footnote: '',
+      disableNavMenu: false,
+      showDetails: true,
+      showDetailsExpression: false,
+      qOtherTotalSpec: {},
     },
-    qSelectionInfo: {
-      qInSelections: false,
-    },
-    checkboxes: false,
-    histogram: false,
+    showTitles: true,
+    title: 'Basket Product Group Desc',
+    subtitle: '',
+    footnote: '',
+    disableNavMenu: false,
+    showDetails: true,
+    showDetailsExpression: false,
+    visualization: 'listbox',
     layoutOptions: {
-      dataLayout: 'singleColumn',
       dense: true,
     },
   }),
@@ -40,7 +94,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 11,
             qState: 'O',
-            qFrequency: '52',
           },
         ],
         [
@@ -49,7 +102,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 13,
             qState: 'O',
-            qFrequency: '52',
           },
         ],
         [
@@ -58,7 +110,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 8,
             qState: 'O',
-            qFrequency: '146',
           },
         ],
         [
@@ -67,7 +118,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 7,
             qState: 'O',
-            qFrequency: '134',
           },
         ],
         [
@@ -76,7 +126,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 10,
             qState: 'O',
-            qFrequency: '34',
           },
         ],
         [
@@ -85,7 +134,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 2,
             qState: 'O',
-            qFrequency: '186',
           },
         ],
         [
@@ -94,7 +142,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 14,
             qState: 'O',
-            qFrequency: '20',
           },
         ],
         [
@@ -103,7 +150,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 5,
             qState: 'O',
-            qFrequency: '174',
           },
         ],
         [
@@ -112,7 +158,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 3,
             qState: 'O',
-            qFrequency: '120',
           },
         ],
         [
@@ -121,7 +166,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 9,
             qState: 'O',
-            qFrequency: '34',
           },
         ],
         [
@@ -130,7 +174,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 0,
             qState: 'O',
-            qFrequency: '190',
           },
         ],
         [
@@ -139,7 +182,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 15,
             qState: 'O',
-            qFrequency: '10',
           },
         ],
         [
@@ -148,7 +190,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 1,
             qState: 'O',
-            qFrequency: '274',
           },
         ],
         [
@@ -157,7 +198,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 16,
             qState: 'O',
-            qFrequency: '12',
           },
         ],
         [
@@ -166,7 +206,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 6,
             qState: 'O',
-            qFrequency: '220',
           },
         ],
         [
@@ -175,7 +214,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 12,
             qState: 'O',
-            qFrequency: '50',
           },
         ],
         [
@@ -184,7 +222,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 4,
             qState: 'O',
-            qFrequency: '46',
           },
         ],
       ],
@@ -204,7 +241,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 11,
             qState: 'O',
-            qFrequency: '52',
           },
         ],
         [
@@ -213,7 +249,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 13,
             qState: 'O',
-            qFrequency: '52',
           },
         ],
         [
@@ -222,7 +257,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 8,
             qState: 'O',
-            qFrequency: '146',
           },
         ],
         [
@@ -231,7 +265,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 7,
             qState: 'O',
-            qFrequency: '134',
           },
         ],
         [
@@ -240,7 +273,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 10,
             qState: 'O',
-            qFrequency: '34',
           },
         ],
         [
@@ -249,7 +281,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 2,
             qState: 'O',
-            qFrequency: '186',
           },
         ],
         [
@@ -258,7 +289,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 14,
             qState: 'O',
-            qFrequency: '20',
           },
         ],
         [
@@ -267,7 +297,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 5,
             qState: 'O',
-            qFrequency: '174',
           },
         ],
         [
@@ -276,7 +305,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 3,
             qState: 'O',
-            qFrequency: '120',
           },
         ],
         [
@@ -285,7 +313,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 9,
             qState: 'O',
-            qFrequency: '34',
           },
         ],
         [
@@ -294,7 +321,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 0,
             qState: 'O',
-            qFrequency: '190',
           },
         ],
         [
@@ -303,7 +329,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 15,
             qState: 'O',
-            qFrequency: '10',
           },
         ],
         [
@@ -312,7 +337,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 1,
             qState: 'O',
-            qFrequency: '274',
           },
         ],
         [
@@ -321,7 +345,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 16,
             qState: 'O',
-            qFrequency: '12',
           },
         ],
         [
@@ -330,7 +353,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 6,
             qState: 'O',
-            qFrequency: '220',
           },
         ],
         [
@@ -339,7 +361,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 12,
             qState: 'O',
-            qFrequency: '50',
           },
         ],
         [
@@ -348,7 +369,6 @@ const fixture = {
             qNum: 'NaN',
             qElemNumber: 4,
             qState: 'O',
-            qFrequency: '46',
           },
         ],
       ],

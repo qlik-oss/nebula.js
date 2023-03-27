@@ -1,7 +1,7 @@
 const fixture = {
   getLayout: () => ({
     qInfo: {
-      qId: '5101a519-c6d8-4070-9f0c-9ca97bba6655',
+      qId: '6374f3bc-ec74-4c21-825c-8bae8acd75a8',
       qType: 'listbox',
     },
     qMeta: {
@@ -49,12 +49,6 @@ const fixture = {
           qHypercubeCardinal: 0,
           qAllValuesCardinal: -1,
         },
-        qLibraryId: 'XGvpzM',
-        title: 'Basket Product Group Desc',
-        coloring: {
-          changeHash: '0.45993295453224325',
-          hasValueColors: false,
-        },
         autoSort: true,
         cId: 'EENwNaq',
         textAlign: {
@@ -83,8 +77,16 @@ const fixture = {
     showDetailsExpression: false,
     visualization: 'listbox',
     checkboxes: true,
-    frequencyMax: null,
+    frequencyMax: 'fetch',
+    histogram: true,
   }),
+
+  evaluateEx: () => ({
+    qText: '274',
+    qIsNumeric: true,
+    qNumber: 274,
+  }),
+
   getListObjectData: () => [
     {
       qMatrix: [
