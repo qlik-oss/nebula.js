@@ -2,7 +2,7 @@ const pie = {
   component: {
     mounted(el) {
       // eslint-disable-next-line
-      el.innerHTML = '<div id="pie" style="background: aliceblue; height:100%; width:100%;">Hello pie</div>';
+      el.innerHTML = '<div id="pie" style="height:100%; width:100%;">Hello pie</div>';
     },
   },
 };
@@ -18,10 +18,9 @@ const bar = function (env) {
     component: {
       mounted(el) {
         // eslint-disable-next-line
-        el.innerHTML = `<div id="bar" style="font-size: 64px; background: tan; height:100%; width:100%;">${env.translator.get(
-          'hello',
-          ['bar']
-        )}</div>`;
+        el.innerHTML = `<div id="bar" style="font-size: 64px; height:100%; width:100%;">${env.translator.get('hello', [
+          'bar',
+        ])}</div>`;
       },
     },
   };
@@ -31,7 +30,21 @@ const bar = function (env) {
 const configured = stardust.embed.createConfiguration({
   context: {
     language: 'sv-SE',
+    theme: 'bla',
   },
+  themes: [
+    {
+      id: 'bla',
+      load: () =>
+        Promise.resolve({
+          _inherit: false,
+          color: '#fff',
+          backgroundColor: '#ff00ff',
+          fontSize: '20px',
+          fontFamily: 'Arial',
+        }),
+    },
+  ],
   types: [
     {
       name: 'piechart',

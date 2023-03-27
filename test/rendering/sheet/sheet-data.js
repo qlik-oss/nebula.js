@@ -57,6 +57,9 @@ window.getFuncs = function getFuncs() {
                 fontFamily: 'Lucida Console, monospace',
               },
             },
+            bgColor: {
+              color: '#00ff00',
+            },
           },
         ],
       };
