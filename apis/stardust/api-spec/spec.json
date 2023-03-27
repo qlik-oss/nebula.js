@@ -724,7 +724,7 @@
           ]
         },
         "create": {
-          "description": "Creates a visualization object",
+          "description": "Creates a visualization model",
           "stability": "experimental",
           "kind": "function",
           "params": [
@@ -732,29 +732,38 @@
               "name": "cfg",
               "description": "The create configuration.",
               "type": "#/definitions/CreateConfig"
-            },
-            {
-              "name": "generateOnly",
-              "description": "Whether to create an object in the current app or simply return the generated properties",
-              "optional": true,
-              "defaultValue": false,
-              "type": "boolean"
             }
           ],
           "returns": {
-            "description": "An engima model OR the objects properties if cfg.dry was passed",
+            "description": "An engima model",
             "type": "Promise",
             "generics": [
               {
-                "kind": "union",
-                "items": [
-                  {
-                    "type": "EngineAPI.IGenericObject"
-                  },
-                  {
-                    "type": "object"
-                  }
-                ]
+                "type": "EngineAPI.IGenericObject"
+              }
+            ]
+          },
+          "examples": [
+            "// create a barchart in the app and return the model\nconst model = await n.create({\n    type: 'barchart',\n    fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }],\n    properties: { showTitle: true }\n  }\n);"
+          ]
+        },
+        "generateProperties": {
+          "description": "Generates properties for a visualization object",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [
+            {
+              "name": "cfg",
+              "description": "The create configuration.",
+              "type": "#/definitions/CreateConfig"
+            }
+          ],
+          "returns": {
+            "description": "The objects properties",
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "object"
               }
             ]
           },

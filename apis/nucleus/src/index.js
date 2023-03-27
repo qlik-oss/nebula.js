@@ -278,11 +278,25 @@ function nuked(configuration = {}) {
         return createSessionObject(cfg, halo);
       },
       /**
-       * Creates a visualization object
+       * Creates a visualization model
        * @param {CreateConfig} cfg The create configuration.
        * @experimental
-       * @param {boolean=} [generateOnly=false] Whether to create an object in the current app or simply return the generated properties
-       * @returns {Promise<EngineAPI.IGenericObject|object>} An engima model OR the objects properties if cfg.dry was passed
+       * @returns {Promise<EngineAPI.IGenericObject>} An engima model
+       * @example
+       * // create a barchart in the app and return the model
+       * const model = await n.create({
+       *     type: 'barchart',
+       *     fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }],
+       *     properties: { showTitle: true }
+       *   }
+       * );
+       */
+      create: async (cfg) => createObject(cfg, halo, false),
+      /**
+       * Generates properties for a visualization object
+       * @param {CreateConfig} cfg The create configuration.
+       * @experimental
+       * @returns {Promise<object>} The objects properties
        * @example
        * // generate properties for a barchart
        * const properties = await n.create({
@@ -293,7 +307,7 @@ function nuked(configuration = {}) {
        *   true
        * );
        */
-      create: async (cfg, generateOnly = false) => createObject(cfg, halo, generateOnly),
+      generateProperties: async (cfg) => createObject(cfg, halo, true),
       /**
        * Updates the current context of this embed instance.
        * Use this when you want to change some part of the current context, like theme.

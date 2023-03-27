@@ -13,6 +13,7 @@ import { modelStore } from '../stores/model-store';
  * @property {(Field[])=} fields
  * @property {EngineAPI.IGenericObjectProperties=} properties
  */
+
 export default async function createObject(
   { type, version, fields, properties, extendProperties /* , options, plugins, element */ },
   halo,

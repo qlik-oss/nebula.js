@@ -242,11 +242,16 @@ declare namespace stardust {
         render(cfg: stardust.RenderConfig): Promise<stardust.Viz | stardust.Sheet>;
 
         /**
-         * Creates a visualization object
+         * Creates a visualization model
          * @param cfg The create configuration.
-         * @param generateOnly Whether to create an object in the current app or simply return the generated properties
          */
-        create(cfg: stardust.CreateConfig, generateOnly?: boolean): Promise<EngineAPI.IGenericObject | object>;
+        create(cfg: stardust.CreateConfig): Promise<EngineAPI.IGenericObject>;
+
+        /**
+         * Generates properties for a visualization object
+         * @param cfg The create configuration.
+         */
+        generateProperties(cfg: stardust.CreateConfig): Promise<object>;
 
         /**
          * Updates the current context of this embed instance.
