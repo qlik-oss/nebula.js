@@ -115,20 +115,20 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     /**
      * Listens to custom events from inside the visualization. See useEmitter
      * @experimental
-     * @param {string} e Event name to listen to
-     * @param {Function} cb Callback function to invoke
+     * @param {string} eventName Event name to listen to
+     * @param {Function} listener Callback function to invoke
      */
-    on(e, cb) {
-      emitter.on(e, cb);
+    on(eventName, listener) {
+      emitter.on(eventName, listener);
     },
     /**
      * Removes a listener
      * @experimental
-     * @param {string} e Event name to remove from
-     * @param {Function} cb Callback function to remove
+     * @param {string} eventName Event name to remove from
+     * @param {Function} listener Callback function to remove
      */
-    off(e, cb) {
-      emitter.off(e, cb);
+    off(eventName, listener) {
+      emitter.off(eventName, listener);
     },
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {

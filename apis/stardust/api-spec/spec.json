@@ -1200,12 +1200,12 @@
           "kind": "function",
           "params": [
             {
-              "name": "e",
+              "name": "eventName",
               "description": "Event name to listen to",
               "type": "string"
             },
             {
-              "name": "cb",
+              "name": "listener",
               "description": "Callback function to invoke",
               "kind": "function",
               "params": []
@@ -1218,12 +1218,12 @@
           "kind": "function",
           "params": [
             {
-              "name": "e",
+              "name": "eventName",
               "description": "Event name to remove from",
               "type": "string"
             },
             {
-              "name": "cb",
+              "name": "listener",
               "description": "Callback function to remove",
               "kind": "function",
               "params": []

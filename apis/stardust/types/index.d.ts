@@ -373,17 +373,17 @@ declare namespace stardust {
 
         /**
          * Listens to custom events from inside the visualization. See useEmitter
-         * @param e Event name to listen to
-         * @param cb Callback function to invoke
+         * @param eventName Event name to listen to
+         * @param listener Callback function to invoke
          */
-        on(e: string, cb: ()=>void): void;
+        on(eventName: string, listener: ()=>void): void;
 
         /**
          * Removes a listener
-         * @param e Event name to remove from
-         * @param cb Callback function to remove
+         * @param eventName Event name to remove from
+         * @param listener Callback function to remove
          */
-        off(e: string, cb: ()=>void): void;
+        off(eventName: string, listener: ()=>void): void;
 
     }
 
