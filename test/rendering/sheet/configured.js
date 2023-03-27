@@ -39,7 +39,10 @@ const configured = stardust.embed.createConfiguration({
         Promise.resolve({
           _inherit: false,
           color: '#fff',
-          backgroundColor: '#ff00ff',
+          object: {
+            backgroundColor: '#ff00ff',
+          },
+          backgroundColor: '#eeeeee',
           fontSize: '20px',
           fontFamily: 'Arial',
         }),
