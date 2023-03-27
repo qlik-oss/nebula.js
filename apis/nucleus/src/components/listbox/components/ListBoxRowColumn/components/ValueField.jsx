@@ -4,23 +4,21 @@ import { joinClassNames } from '../helpers/operations';
 import classes from '../helpers/classes';
 import { excludedOrAlternative } from '../helpers/cell-states';
 
-function ValueField({ label, color, highlighted = false, dense, showGray = true, checkboxes, cell, valueTextAlign }) {
+function ValueField({ label, color, dense, showGray = true, checkboxes, cell, valueTextAlign }) {
   return (
     <Typography
       component="span"
       variant="body2"
       className={joinClassNames([
         classes.labelText,
-        highlighted && classes.highlighted,
         dense && classes.labelDense,
         showGray && excludedOrAlternative({ cell, checkboxes }) && classes.excludedTextWithCheckbox,
       ])}
       color={color}
       align={valueTextAlign}
+      dir="auto"
     >
-      <span dir="auto" style={{ whiteSpace: 'pre' }}>
-        {label}
-      </span>
+      <span style={{ whiteSpace: 'pre' }}>{label}</span>
     </Typography>
   );
 }

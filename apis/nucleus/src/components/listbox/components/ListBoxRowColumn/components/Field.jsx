@@ -13,7 +13,6 @@ function Field({
   isGridCol,
   showGray,
   isSingleSelect,
-  highlighted,
   checkboxes,
   valueTextAlign,
 }) {
@@ -29,7 +28,6 @@ function Field({
       isGridCol={isGridCol}
       showGray={showGray}
       isSingleSelect={isSingleSelect}
-      highlighted={highlighted}
       checkboxes={checkboxes}
       valueTextAlign={valueTextAlign}
     />
@@ -37,7 +35,6 @@ function Field({
     <ValueField
       label={label}
       color={color}
-      highlighted={false}
       dense={dense}
       showGray
       checkboxes={checkboxes}
