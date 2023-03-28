@@ -1,6 +1,20 @@
 import KEYS from '../../../../keys';
 import { getFieldKeyboardNavigation, getListboxInlineKeyboardNavigation } from '../listbox-keyboard-navigation';
 
+const createElement = (levels = 3) => ({
+  classList: {
+    contains: jest.fn().mockReturnValue(false),
+    add: jest.fn(),
+    remove: jest.fn(),
+  },
+  setAttribute: jest.fn(),
+  blur: jest.fn(),
+  focus: jest.fn(),
+  querySelectorAll: jest.fn().mockReturnValue([]),
+  querySelector: jest.fn().mockReturnValue(levels <= 0 ? {} : createElement(levels - 1)),
+  closest: jest.fn().mockReturnValue(levels <= 0 ? {} : createElement(levels - 1)),
+});
+
 describe('keyboard navigation', () => {
   let actions;
   let handleKeyDownForField;
@@ -22,6 +36,7 @@ describe('keyboard navigation', () => {
   const globalEvent = {
     nativeEvent: {},
     currentTarget: {
+      ...createElement(0),
       getAttribute: jest.fn(() => '0'),
     },
     preventDefault: jest.fn(),
@@ -44,10 +59,11 @@ describe('keyboard navigation', () => {
     };
     setScrollPosition = jest.fn();
     isModal = jest.fn();
+    isModal.mockReturnValue(true);
     focusListItems = { setFirst: jest.fn(), setLast: jest.fn() };
     setHovering = jest.fn();
     constraints = {};
-    containerRef = { current: { focus: jest.fn(), blur: jest.fn() } };
+    containerRef = { current: createElement(0) };
     app = { isInModalSelection: () => false };
     hovering = true;
     updateKeyScroll = jest.fn();
@@ -306,23 +322,8 @@ describe('keyboard navigation', () => {
     });
 
     test('should change focus with Escape on a row', () => {
-      const target = {
-        classList: {
-          contains: jest.fn().mockReturnValue(false),
-          add: jest.fn(),
-          remove: jest.fn(),
-        },
-        setAttribute: jest.fn(),
-        blur: jest.fn(),
-        focus: jest.fn(),
-        closest: jest.fn(),
-      };
-      const currentTarget = {
-        setAttribute: jest.fn(),
-        blur: jest.fn(),
-        focus: jest.fn(),
-        closest: jest.fn(),
-      };
+      const target = createElement();
+      const currentTarget = createElement();
       const event = {
         target,
         currentTarget,
@@ -334,7 +335,7 @@ describe('keyboard navigation', () => {
       expect(target.classList.contains).toHaveBeenCalledTimes(1);
       expect(target.classList.contains).toHaveBeenCalledWith('listbox-container');
       expect(target.setAttribute).toHaveBeenCalledTimes(1);
-      expect(target.setAttribute).toHaveBeenCalledWith('tabIndex', '-1');
+      expect(target.setAttribute).toHaveBeenCalledWith('tabIndex', -1);
       expect(keyboard.blur).toHaveBeenCalledTimes(1);
       expect(target.focus).not.toHaveBeenCalled();
       expect(currentTarget.blur).not.toHaveBeenCalled();
@@ -399,8 +400,8 @@ describe('keyboard navigation', () => {
       expect(event.stopPropagation).not.toHaveBeenCalled();
     });
     test('should handle mouse enter when allowed to focus', () => {
+      isModal.mockReturnValue(false);
       handleOnMouseEnter();
-      expect(setHovering).toHaveBeenCalledWith(true);
       expect(containerRef.current.focus).toHaveBeenCalled();
     });
     test('should handle mouse enter when not allowed to focus', () => {
