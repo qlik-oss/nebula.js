@@ -41,7 +41,7 @@ describe('useAutoHideToolbar', () => {
     renderer.unmount();
   });
 
-  it('set true when the container height is smaller than the item and scrollbar height', async () => {
+  it('set true when the container height is larger than the item and scrollbar height', async () => {
     const layout = { layoutOptions: { dataLayout: 'grid' } };
     elementHeight = 49;
     await render(useAutoDense, { autoDense, loaderRef: getListRef(true), element, layout });
@@ -49,7 +49,7 @@ describe('useAutoHideToolbar', () => {
     expect(autoDense.set).toHaveBeenCalledWith(true);
   });
 
-  it('set true when the container height is smaller than the item hight without scrollbar', async () => {
+  it('set true when the container height is larger than the item hight without scrollbar', async () => {
     const layout = { layoutOptions: { dataLayout: 'grid' } };
     elementHeight = 39;
     await render(useAutoDense, { autoDense, loaderRef: getListRef(false), element, layout });
@@ -60,6 +60,14 @@ describe('useAutoHideToolbar', () => {
   it('set false when the container height is smaller than the item hight without scrollbar', async () => {
     const layout = { layoutOptions: { dataLayout: 'grid' } };
     elementHeight = 41;
+    await render(useAutoDense, { autoDense, loaderRef: getListRef(false), element, layout });
+    expect(autoDense.set).toHaveBeenCalledTimes(1);
+    expect(autoDense.set).toHaveBeenCalledWith(false);
+  });
+
+  it('set false when the container height is smaller than the item and scrollbar height', async () => {
+    const layout = { layoutOptions: { dataLayout: 'grid' } };
+    elementHeight = 51;
     await render(useAutoDense, { autoDense, loaderRef: getListRef(false), element, layout });
     expect(autoDense.set).toHaveBeenCalledTimes(1);
     expect(autoDense.set).toHaveBeenCalledWith(false);
