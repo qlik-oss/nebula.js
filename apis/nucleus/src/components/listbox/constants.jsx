@@ -16,5 +16,5 @@ export const gridColumnContainerPaddingTop = 2;
 export const gridColumnContainerPaddingBottom = 2;
 export const gridColumnContainerPadding = `${gridColumnContainerPaddingTop}px 6px ${gridColumnContainerPaddingBottom}px 4px`;
 export const gridRowContainerPaddingTopBottom = 2;
-export const gridRowContainerPadding = `${gridRowContainerPaddingTopBottom} 4px`;
+export const gridRowContainerPadding = `${gridRowContainerPaddingTopBottom}px 4px`;
 export const GRID_MODE_NORMAL_ITEM_HEIGHT = 32;
