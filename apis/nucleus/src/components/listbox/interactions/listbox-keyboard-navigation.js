@@ -1,5 +1,5 @@
 import KEYS from '../../../keys';
-import { getVizCell } from '../components/useTempKeyboard';
+import { getVizCell, removeLastFocused } from '../components/useTempKeyboard';
 
 const getElementIndex = (currentTarget) => +currentTarget.getAttribute('data-n');
 
@@ -160,9 +160,7 @@ export function getListboxInlineKeyboardNavigation({
       // More than one listbox: Move focus from row to listbox container.
 
       // 1. Remove last-focused class from row siblings.
-      container?.querySelectorAll('.last-focused').forEach((elm) => {
-        elm.classList.remove('last-focused');
-      });
+      removeLastFocused(containerRef.current);
 
       // 2. Add last-focused class so we can re-focus it later.
       target.classList.add('last-focused');

@@ -6,6 +6,12 @@ export function removeInnnerTabStops(container) {
   });
 }
 
+export function removeLastFocused(container) {
+  container?.querySelectorAll('.last-focused').forEach((elm) => {
+    elm.classList.remove('last-focused');
+  });
+}
+
 export function getVizCell(container) {
   return container?.closest('.njs-cell') || container?.closest('.qv-gridcell');
 }
@@ -22,12 +28,10 @@ export default function useTempKeyboard({ containerRef, enabled }) {
     innerTabStops, // does keyboard permit inner tab stops
     outerTabStops: !innerTabStops, // does keyboard permit outer tab stops
     blur: (resetFocus) => {
-      if (!enabled) {
-        return;
-      }
       setKeyboardActive(false);
       const vizCell = getVizCell(containerRef.current) || containerRef.current?.parentElement;
       removeInnnerTabStops(containerRef.current);
+      removeLastFocused(containerRef.current);
       if (resetFocus && vizCell) {
         // Move focus to the viz's cell.
         vizCell.setAttribute('tabIndex', 0);
