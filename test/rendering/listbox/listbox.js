@@ -15,6 +15,7 @@
     const app = {
       id: `${+new Date()}`,
       session: {},
+      evaluateEx: async () => (fixture ? fixture.evaluateEx() : null),
       createSessionObject: async () => obj,
       getObject: async () => obj,
       getAppLayout: async () => ({ qTitle: '', qLocaleInfo: {} }),
