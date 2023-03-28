@@ -3,7 +3,16 @@ import ReactDOM from 'react-dom';
 import Cell from './Cell';
 import uid from '../object/uid';
 
-export default function glue({ halo, element, model, initialSnOptions, initialSnPlugins, onMount, initialError }) {
+export default function glue({
+  halo,
+  element,
+  model,
+  initialSnOptions,
+  initialSnPlugins,
+  onMount,
+  emitter,
+  initialError,
+}) {
   const { root } = halo;
   const cellRef = React.createRef();
   const currentId = uid();
@@ -17,6 +26,7 @@ export default function glue({ halo, element, model, initialSnOptions, initialSn
       initialSnPlugins={initialSnPlugins}
       initialError={initialError}
       onMount={onMount}
+      emitter={emitter}
     />,
     element,
     currentId

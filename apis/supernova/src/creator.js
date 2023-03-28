@@ -68,6 +68,7 @@ function createWithHooks(generator, opts, galaxy) {
       selections: opts.selections,
       nebbie: opts.nebbie,
       element: undefined, // set on mount
+      emitter: opts.emitter,
       // ---- singletons ----
       deviceType: galaxy.deviceType,
       theme: undefined,
