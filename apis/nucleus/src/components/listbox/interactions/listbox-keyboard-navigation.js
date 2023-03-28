@@ -59,7 +59,7 @@ export function getFieldKeyboardNavigation({
         setStartedRange(true);
         break;
       case KEYS.SPACE:
-        select([getElementIndex(currentTarget)]);
+        select([getElementIndex(currentTarget)], false, event);
         break;
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_RIGHT:

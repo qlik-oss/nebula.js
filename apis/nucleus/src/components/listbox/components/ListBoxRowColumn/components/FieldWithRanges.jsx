@@ -1,25 +1,15 @@
 import React from 'react';
 import CheckboxField from './CheckboxField';
 import ValueField from './ValueField';
+import classes from '../helpers/classes';
 
-function LabelsWithRanges({ labels, dense, showGray, checkboxes, textDirection }) {
-  return (
-    <div dir={textDirection}>
-      {labels.map(([label, highlighted], index) => {
-        const key = `${index}`;
-        return (
-          <ValueField
-            label={label}
-            key={key}
-            highlighted={highlighted}
-            dense={dense}
-            showGray={showGray}
-            checkboxes={checkboxes}
-          />
-        );
-      })}
-    </div>
-  );
+function LabelsWithRanges({ labels, dense, showGray, checkboxes }) {
+  const text = labels.map(([label, highlighted], index) => (
+    <span id={index} className={highlighted ? classes.highlighted : ''}>
+      {label}
+    </span>
+  ));
+  return <ValueField label={text} dense={dense} showGray={showGray} checkboxes={checkboxes} />;
 }
 
 function FieldWithRanges({
@@ -35,17 +25,8 @@ function FieldWithRanges({
   isGridCol,
   isSingleSelect,
   valueTextAlign,
-  textDirection,
 }) {
-  const LWR = (
-    <LabelsWithRanges
-      labels={labels}
-      dense={dense}
-      showGray={showGray}
-      checkboxes={checkboxes}
-      textDirection={textDirection}
-    />
-  );
+  const LWR = <LabelsWithRanges labels={labels} dense={dense} showGray={showGray} checkboxes={checkboxes} />;
   return checkboxes ? (
     <CheckboxField
       onChange={onChange}

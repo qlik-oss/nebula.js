@@ -100,7 +100,7 @@ describe('keyboard navigation', () => {
       };
       handleKeyDownForField(event);
       expect(actions.select).toHaveBeenCalledTimes(1);
-      expect(actions.select).toHaveBeenCalledWith([1]);
+      expect(actions.select).toHaveBeenCalledWith([1], false, event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(event.stopPropagation).toHaveBeenCalledTimes(1);
     });

@@ -17,7 +17,6 @@ function CheckboxField({
   isGridCol,
   showGray,
   isSingleSelect,
-  highlighted,
   checkboxes,
   valueTextAlign,
 }) {
@@ -46,7 +45,6 @@ function CheckboxField({
         <LabelTag
           label={label}
           color={color}
-          highlighted={highlighted}
           dense={dense}
           showGray={showGray}
           checkboxes={checkboxes}

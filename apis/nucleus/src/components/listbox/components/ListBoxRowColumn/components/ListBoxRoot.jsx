@@ -86,15 +86,10 @@ const RowColRoot = styled('div', {
     fontSize: 12,
   },
 
-  // Highlight is added to labelText spans, which are created as siblings to original labelText,
+  // Highlight is added to labelText spans, which are created as children to original labelText,
   // when a search string is matched.
   [`& .${classes.highlighted}`]: {
-    overflow: 'visible',
-    width: '100%',
-    '& > span': {
-      width: '100%',
-      backgroundColor: '#FFC72A',
-    },
+    backgroundColor: '#FFC72A',
   },
 
   // Checkbox and label container.
@@ -116,14 +111,6 @@ const RowColRoot = styled('div', {
       paddingLeft: 0,
       paddingRight: '2px',
     },
-  },
-
-  [`& .${classes.checkboxLabel} .${classes.labelText}`]: {
-    width: 'auto',
-  },
-
-  [`& .${classes.checkboxLabel} .${classes.labelText}.${classes.highlighted}`]: {
-    width: 'auto',
   },
 
   // The icons container holding tick and lock, shown inside fields.

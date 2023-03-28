@@ -21,6 +21,7 @@ import getListboxActionProps from './interactions/listbox-get-action-props';
 import createSelectionState from './hooks/selections/selectionState';
 import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH } from './constants';
 import useTempKeyboard from './components/useTempKeyboard';
+import ListBoxError from './components/ListBoxError';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -83,8 +84,8 @@ function ListBoxInline({ options, layout }) {
     showGray = true,
     scrollState = undefined,
     renderedCallback,
+    toolbar = true,
   } = options;
-  let { toolbar = true } = options;
 
   // Hook that will trigger update when used in useEffects.
   // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
@@ -123,6 +124,8 @@ function ListBoxInline({ options, layout }) {
   const [selectionState] = useState(() => createSelectionState());
   const keyboard = useTempKeyboard({ containerRef, enabled: keyboardNavigation });
   const isModalMode = useCallback(() => isModal({ app, appSelections }), [app, appSelections]);
+  const isInvalid = layout?.qListObject.qDimensionInfo.qError;
+  const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
     keyboard,
@@ -137,11 +140,8 @@ function ListBoxInline({ options, layout }) {
     isModal: isModalMode,
   });
 
-  if (layout?.toolbar !== undefined) {
-    toolbar = layout.toolbar;
-  }
-  const toolbarDetachedOnly = toolbar && layout?.title === '';
-  toolbar = toolbar && layout?.title !== '';
+  const showDetachedToolbarOnly = toolbar && (layout?.title === '' || layout?.showTitle === false);
+  const showToolbarWithTitle = toolbar && layout?.title !== '' && layout?.showTitle !== false;
 
   useEffect(() => {
     const show = () => {
@@ -167,7 +167,7 @@ function ListBoxInline({ options, layout }) {
         selections.removeListener('deactivated', hide);
       }
     };
-  }, [selections, toolbar]);
+  }, [selections]);
 
   useEffect(() => {
     if (!searchContainer || !searchContainer.current) {
@@ -202,7 +202,7 @@ function ListBoxInline({ options, layout }) {
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
   const searchAddHeight = searchVisible ? searchHeight : 0;
-  const minHeight = toolbar ? 49 + searchAddHeight + extraheight : 0;
+  const minHeight = showToolbarWithTitle ? 49 + searchAddHeight + extraheight : 0;
   const headerHeight = 32;
 
   const onShowSearch = () => {
@@ -269,7 +269,7 @@ function ListBoxInline({ options, layout }) {
 
   return (
     <>
-      {toolbarDetachedOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
+      {showDetachedToolbarOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
       <StyledGrid
         className="listbox-container"
         container
@@ -284,7 +284,7 @@ function ListBoxInline({ options, layout }) {
         ref={containerRef}
         hasIcon={showIcons}
       >
-        {toolbar && (
+        {showToolbarWithTitle && (
           <Grid
             item
             container
@@ -360,44 +360,47 @@ function ListBoxInline({ options, layout }) {
           </Grid>
           <Grid item xs className={classes.listboxWrapper}>
             <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
-            <AutoSizer>
-              {({ height, width }) => (
-                <ListBox
-                  model={model}
-                  app={app}
-                  constraints={constraints}
-                  layout={layout}
-                  selections={selections}
-                  selectionState={selectionState}
-                  direction={direction}
-                  frequencyMode={frequencyMode}
-                  rangeSelect={rangeSelect}
-                  checkboxes={checkboxes}
-                  height={height}
-                  width={width}
-                  update={update}
-                  fetchStart={fetchStart}
-                  postProcessPages={postProcessPages}
-                  calculatePagesHeight={calculatePagesHeight}
-                  selectDisabled={selectDisabled}
-                  keyboard={keyboard}
-                  showGray={showGray}
-                  scrollState={scrollState}
-                  keyScroll={{
-                    state: keyScroll,
-                    reset: () => setKeyScroll({ up: 0, down: 0, scrollPosition: '' }),
-                  }}
-                  currentScrollIndex={{
-                    state: currentScrollIndex,
-                    set: setCurrentScrollIndex,
-                  }}
-                  renderedCallback={renderedCallback}
-                  onCtrlF={onCtrlF}
-                  showSearch={showSearch}
-                  isModal={isModalMode}
-                />
-              )}
-            </AutoSizer>
+            {isInvalid ? (
+              <ListBoxError text={errorText} />
+            ) : (
+              <AutoSizer>
+                {({ height, width }) => (
+                  <ListBox
+                    model={model}
+                    app={app}
+                    constraints={constraints}
+                    layout={layout}
+                    selections={selections}
+                    selectionState={selectionState}
+                    direction={direction}
+                    frequencyMode={frequencyMode}
+                    rangeSelect={rangeSelect}
+                    checkboxes={checkboxes}
+                    height={height}
+                    width={width}
+                    update={update}
+                    fetchStart={fetchStart}
+                    postProcessPages={postProcessPages}
+                    calculatePagesHeight={calculatePagesHeight}
+                    selectDisabled={selectDisabled}
+                    keyboard={keyboard}
+                    showGray={showGray}
+                    scrollState={scrollState}
+                    keyScroll={{
+                      state: keyScroll,
+                      reset: () => setKeyScroll({ up: 0, down: 0, scrollPosition: '' }),
+                    }}
+                    currentScrollIndex={{
+                      state: currentScrollIndex,
+                      set: setCurrentScrollIndex,
+                    }}
+                    renderedCallback={renderedCallback}
+                    onCtrlF={onCtrlF}
+                    isModal={isModalMode}
+                  />
+                )}
+              </AutoSizer>
+            )}
           </Grid>
         </Grid>
       </StyledGrid>
