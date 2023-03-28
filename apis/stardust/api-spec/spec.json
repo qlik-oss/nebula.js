@@ -1344,6 +1344,46 @@
         "params": []
       },
       "entries": {
+        "on": {
+          "description": "Event listener function on instance",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventType",
+              "description": "event type that function needs to listen",
+              "type": "string"
+            },
+            {
+              "name": "callback",
+              "description": "a callback function to run when event emits",
+              "kind": "function",
+              "params": []
+            }
+          ],
+          "examples": [
+            "api.on('someEvent', () => {...});"
+          ]
+        },
+        "removeListener": {
+          "description": "Remove listener function on instance",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventType",
+              "description": "event type that function needs to listen",
+              "type": "string"
+            },
+            {
+              "name": "callback",
+              "description": "a callback function to run when event emits",
+              "kind": "function",
+              "params": []
+            }
+          ],
+          "examples": [
+            "api.removeListener('someEvent', () => {...});"
+          ]
+        },
         "begin": {
           "kind": "function",
           "params": [
@@ -2080,6 +2120,39 @@
         }
       }
     },
+    "BlurFunction": {
+      "description": "Blur function",
+      "kind": "function",
+      "params": [
+        {
+          "name": "blurState",
+          "description": "parameter to indicate blur state",
+          "type": "boolean"
+        }
+      ]
+    },
+    "FocusFunction": {
+      "description": "Focus function",
+      "kind": "function",
+      "params": [
+        {
+          "name": "focusState",
+          "description": "parameter to indicate focus state",
+          "type": "boolean"
+        }
+      ]
+    },
+    "FocusSelectionFunction": {
+      "description": "Focus Selection function",
+      "kind": "function",
+      "params": [
+        {
+          "name": "focusState",
+          "description": "parameter to indicate focus state",
+          "type": "boolean"
+        }
+      ]
+    },
     "Keyboard": {
       "stability": "experimental",
       "kind": "interface",
@@ -2094,21 +2167,15 @@
         },
         "blur": {
           "description": "Function used by the visualization to tell Nebula to it wants to relinquish focus",
-          "optional": true,
-          "kind": "function",
-          "params": []
+          "type": "#/definitions/BlurFunction"
         },
         "focus": {
           "description": "Function used by the visualization to tell Nebula to it wants focus",
-          "optional": true,
-          "kind": "function",
-          "params": []
+          "type": "#/definitions/FocusFunction"
         },
         "focusSelection": {
           "description": "Function used by the visualization to tell Nebula to focus the selection toolbar",
-          "optional": true,
-          "kind": "function",
-          "params": []
+          "type": "#/definitions/FocusSelectionFunction"
         }
       }
     },
@@ -2335,6 +2402,15 @@
         "params": []
       },
       "entries": {
+        "language": {
+          "description": "Returns current locale.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "current locale.",
+            "type": "string"
+          }
+        },
         "add": {
           "description": "Registers a string in multiple locales",
           "kind": "function",
@@ -2397,6 +2473,18 @@
         "params": []
       },
       "entries": {
+        "name": {
+          "description": "Returns theme name",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "Current theme.",
+            "type": "string"
+          },
+          "examples": [
+            "theme.name();"
+          ]
+        },
         "getDataColorScales": {
           "kind": "function",
           "params": [],
