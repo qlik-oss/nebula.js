@@ -33,13 +33,14 @@ export function getFieldKeyboardNavigation({
         const searchField = currentTarget.closest('.listbox-container')?.querySelector('.search input');
         const inSelection = isModal();
 
-        currentTarget.setAttribute('tabIndex', -1);
         currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
 
         if (shiftKey) {
-          if (inSelection && searchField) {
+          if (searchField) {
             searchField.setAttribute('tabIndex', 0);
             searchField.focus();
+          } else if (inSelection) {
+            keyboard.focusSelection();
           } else {
             const resetFocus = true; // focus the viz container
             keyboard.blur(resetFocus);

@@ -1,5 +1,11 @@
 import { useState } from 'react';
 
+export function removeInnnerTabStops(container) {
+  container.querySelectorAll('[tabIndex="0"]').forEach((elm) => {
+    elm.setAttribute('tabIndex', -1);
+  });
+}
+
 // Emulate the keyboard hook, until we support it in the Listbox.
 export default function useTempKeyboard({ containerRef, enabled }) {
   const [keyboardActive, setKeyboardActive] = useState(false);
@@ -13,7 +19,11 @@ export default function useTempKeyboard({ containerRef, enabled }) {
     outerTabStops: !innerTabStops, // does keyboard permit outer tab stops
     blur: (resetFocus) => {
       setKeyboardActive(false);
-      const vizCell = containerRef.current?.closest('.njs-cell') || containerRef.current.closest('.qv-gridcell');
+      const vizCell =
+        containerRef.current?.closest('.njs-cell') ||
+        containerRef.current.closest('.qv-gridcell') ||
+        containerRef.current.parentElement;
+      removeInnnerTabStops(containerRef.current);
       if (resetFocus && vizCell) {
         // Move focus to the viz's cell.
         vizCell.setAttribute('tabIndex', 0);
@@ -28,10 +38,12 @@ export default function useTempKeyboard({ containerRef, enabled }) {
         searchField || containerRef.current.querySelector('.value.selector, .value, .ActionsToolbar-item button');
 
       const elementToFocus = searchField || lastSelectedRow || fieldElement;
-      elementToFocus.focus();
+      elementToFocus?.setAttribute('tabIndex', 0);
+      elementToFocus?.focus();
     },
     focusSelection: () => {
       const confirmButton = document.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
+      confirmButton?.setAttribute('tabIndex', 0);
       confirmButton?.focus();
     },
   };

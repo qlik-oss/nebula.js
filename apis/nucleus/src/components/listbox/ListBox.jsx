@@ -1,7 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 import React, { useEffect, useState, useCallback, useRef, useContext } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
-import { Box, styled } from '@mui/material';
+import { styled } from '@mui/material';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 import getListBoxComponents from './components/grid-list-components/grid-list-components';
 import getListSizes from './assets/get-list-sizes/get-list-sizes';
@@ -21,7 +21,7 @@ import InstanceContext from '../../contexts/InstanceContext';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
-const StyledWrapper = styled(Box)(() => ({
+const StyledWrapper = styled('div')(() => ({
   [`& .screenReaderOnly`]: {
     position: 'absolute',
     height: 0,
