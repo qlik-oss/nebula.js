@@ -6,8 +6,10 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/
 
 import InstanceContext from '../contexts/InstanceContext';
 import useAppSelections from '../hooks/useAppSelections';
+import unifyContraintsAndInteractions from '../utils/interactions';
 
 const NebulaApp = forwardRef(({ initialContext, app, renderCallback }, ref) => {
+  unifyContraintsAndInteractions(initialContext);
   const [appSelections] = useAppSelections(app);
   const [context, setContext] = useState(initialContext);
   const [muiThemeName, setMuiThemeName] = useState();
@@ -110,6 +112,8 @@ export default function boot({ app, context }) {
       context(ctx) {
         (async () => {
           await rendered;
+          // Should be done here, unify contraints and interactions
+          unifyContraintsAndInteractions(ctx);
           appRef.current.setContext(ctx);
         })();
       },

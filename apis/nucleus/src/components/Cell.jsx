@@ -298,9 +298,13 @@ const Cell = forwardRef(
   ({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount, currentId, emitter }, ref) => {
     const { app, types } = halo;
     const { nebbie } = halo.public;
-    const { disableCellPadding = false } = halo.context || {};
-
-    const { theme: themeName, translator, language, keyboardNavigation } = useContext(InstanceContext);
+    const {
+      theme: themeName,
+      translator,
+      language,
+      keyboardNavigation,
+      disableCellPadding = false,
+    } = useContext(InstanceContext);
     const theme = useTheme();
     const [cellRef, cellRect, cellNode] = useRect();
     const [state, dispatch] = useReducer(contentReducer, initialState(initialError));

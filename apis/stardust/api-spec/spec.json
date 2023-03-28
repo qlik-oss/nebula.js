@@ -439,6 +439,9 @@
     },
     "useConstraints": {
       "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should respected by you when implementing the visualization.",
+      "availability": {
+        "deprecated": true
+      },
       "kind": "function",
       "params": [],
       "returns": {
@@ -447,6 +450,18 @@
       "examples": [
         "// configure embed to disallow active interactions when rendering\nembed(app, {\n context: {\n   constraints: {\n     active: true, // do not allow interactions\n   }\n }\n}).render({ element, id: 'sdfsdf' });",
         "import { useConstraints } from '@nebula.js/stardust';\n// ...\nconst constraints = useConstraints();\nuseEffect(() => {\n  if (constraints.active) {\n    // do not add any event listener if active constraint is set\n    return undefined;\n  }\n  const listener = () => {};\n  element.addEventListener('click', listener);\n  return () => {\n    element.removeEventListener('click', listener);\n  };\n}, [constraints])"
+      ]
+    },
+    "useInteractionState": {
+      "description": "Gets the desired interaction states that should be applied when rendering the visualization.\n\nThe interactions are set on the embed configuration before the visualization is rendered\nand should respected by you when implementing the visualization.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/Interactions"
+      },
+      "examples": [
+        "// configure embed to disallow active interactions when rendering\nembed(app, {\n context: {\n   interactions: {\n     active: false, // do not allow interactions\n   }\n }\n}).render({ element, id: 'sdfsdf' });",
+        "import { useInteractionState } from '@nebula.js/stardust';\n// ...\nconst interactions = useInteractionState();\nuseEffect(() => {\n  if (!interactions.active) {\n    // do not add any event listener if active constraint is set\n    return undefined;\n  }\n  const listener = () => {};\n  element.addEventListener('click', listener);\n  return () => {\n    element.removeEventListener('click', listener);\n  };\n}, [interactions])"
       ]
     },
     "useOptions": {
@@ -632,7 +647,7 @@
           "optional": true,
           "type": "boolean"
         },
-        "constraints": {
+        "interactions": {
           "optional": true,
           "kind": "object",
           "entries": {
@@ -645,6 +660,37 @@
               "type": "boolean"
             },
             "select": {
+              "optional": true,
+              "type": "boolean"
+            },
+            "edit": {
+              "optional": true,
+              "type": "boolean"
+            }
+          }
+        },
+        "constraints": {
+          "description": "Deprecated",
+          "optional": true,
+          "kind": "object",
+          "entries": {
+            "active": {
+              "description": "Deprecated",
+              "optional": true,
+              "type": "boolean"
+            },
+            "passive": {
+              "description": "Deprecated",
+              "optional": true,
+              "type": "boolean"
+            },
+            "select": {
+              "description": "Deprecated",
+              "optional": true,
+              "type": "boolean"
+            },
+            "edit": {
+              "description": "Deprecated",
               "optional": true,
               "type": "boolean"
             }
@@ -791,7 +837,7 @@
           },
           "examples": [
             "// change theme\nn.context({ theme: 'dark'});",
-            "// limit constraints\nn.context({ constraints: { active: true } });"
+            "// change interactions\nn.context({ interactions: { select: false } });"
           ]
         },
         "selections": {
@@ -1275,26 +1321,6 @@
         "const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"
       ]
     },
-    "Flags": {
-      "kind": "interface",
-      "entries": {
-        "isEnabled": {
-          "description": "Checks whether the specified flag is enabled.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "flag",
-              "description": "The value flag to check.",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "True if the specified flag is enabled, false otherwise.",
-            "type": "boolean"
-          }
-        }
-      }
-    },
     "AppSelections": {
       "kind": "class",
       "constructor": {
@@ -1492,6 +1518,53 @@
         }
       }
     },
+    "Flags": {
+      "kind": "interface",
+      "entries": {
+        "isEnabled": {
+          "description": "Checks whether the specified flag is enabled.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "flag",
+              "description": "The value flag to check.",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "True if the specified flag is enabled, false otherwise.",
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
     "Field": {
       "kind": "alias",
       "items": {
@@ -1626,33 +1699,6 @@
           ]
         }
       }
-    },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
     },
     "LoadType": {
       "kind": "interface",
@@ -1997,6 +2043,9 @@
       }
     },
     "Constraints": {
+      "availability": {
+        "deprecated": true
+      },
       "kind": "interface",
       "entries": {
         "passive": {
@@ -2010,7 +2059,37 @@
           "type": "boolean"
         },
         "select": {
-          "description": "Whether or not active select are on. Should block any selection action. Implied when active is true.",
+          "description": "Whether or not select constraints are on. Should block any selection action. Implied when active is true.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "edit": {
+          "description": "Whether or not edit actions are available. Should block any edit action.",
+          "optional": true,
+          "type": "boolean"
+        }
+      }
+    },
+    "Interactions": {
+      "kind": "interface",
+      "entries": {
+        "passive": {
+          "description": "Whether or not passive interactions are on. Allows passive interaction by users, ie: tooltips",
+          "optional": true,
+          "type": "boolean"
+        },
+        "active": {
+          "description": "Whether or not active interactions are on. Allows active interaction by users, ie: scroll, click",
+          "optional": true,
+          "type": "boolean"
+        },
+        "select": {
+          "description": "Whether or not select interactions are on. Alows selection actions. Implied when active is false.",
+          "optional": true,
+          "type": "boolean"
+        },
+        "edit": {
+          "description": "Whether or not edit actions are on. Allows edit actions.",
           "optional": true,
           "type": "boolean"
         }

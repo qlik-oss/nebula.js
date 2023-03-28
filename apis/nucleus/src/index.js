@@ -92,10 +92,16 @@ const DEFAULT_CONFIG = {
 /**
  * @interface Context
  * @property {boolean=} keyboardNavigation
- * @property {object=} constraints
- * @property {boolean=} constraints.active
- * @property {boolean=} constraints.passive
- * @property {boolean=} constraints.select
+ * @property {object=} interactions
+ * @property {boolean=} interactions.active
+ * @property {boolean=} interactions.passive
+ * @property {boolean=} interactions.select
+ * @property {boolean=} interactions.edit
+ * @property {object=} constraints Deprecated
+ * @property {boolean=} constraints.active Deprecated
+ * @property {boolean=} constraints.passive Deprecated
+ * @property {boolean=} constraints.select Deprecated
+ * @property {boolean=} constraints.edit Deprecated
  */
 const DEFAULT_CONTEXT = /** @lends Context */ {
   /** @type {string=} */
@@ -105,6 +111,7 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
   /** @type {string=} */
   deviceType: 'auto',
   constraints: {},
+  interactions: {},
   keyboardNavigation: false,
   disableCellPadding: false,
 };
@@ -317,13 +324,13 @@ function nuked(configuration = {}) {
        * // change theme
        * n.context({ theme: 'dark'});
        * @example
-       * // limit constraints
-       * n.context({ constraints: { active: true } });
+       * // change interactions
+       * n.context({ interactions: { select: false } });
        */
       context: async (ctx) => {
         // filter valid values to avoid triggering unnecessary rerender
         let changes;
-        ['theme', 'language', 'constraints', 'keyboardNavigation'].forEach((key) => {
+        ['theme', 'language', 'constraints', 'interactions', 'keyboardNavigation'].forEach((key) => {
           if (Object.prototype.hasOwnProperty.call(ctx, key) && ctx[key] !== currentContext[key]) {
             if (!changes) {
               changes = {};
@@ -339,8 +346,6 @@ function nuked(configuration = {}) {
           ...changes,
           translator: locale.translator,
         };
-
-        halo.context = currentContext;
 
         if (changes.theme) {
           currentThemePromise = appTheme.setTheme(changes.theme);

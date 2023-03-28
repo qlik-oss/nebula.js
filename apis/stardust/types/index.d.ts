@@ -133,8 +133,17 @@ export function useAction<A>(factory: ()=>stardust.ActionDefinition<A>, deps?: a
  * 
  * The constraints are set on the embed configuration before the visualization is rendered
  * and should respected by you when implementing the visualization.
+ * @deprecated
  */
 export function useConstraints(): stardust.Constraints;
+
+/**
+ * Gets the desired interaction states that should be applied when rendering the visualization.
+ * 
+ * The interactions are set on the embed configuration before the visualization is rendered
+ * and should respected by you when implementing the visualization.
+ */
+export function useInteractionState(): stardust.Interactions;
 
 /**
  * Gets the options object provided when rendering the visualization.
@@ -213,10 +222,17 @@ declare namespace stardust {
 
     interface Context {
         keyboardNavigation?: boolean;
+        interactions?: {
+            active?: boolean;
+            passive?: boolean;
+            select?: boolean;
+            edit?: boolean;
+        };
         constraints?: {
             active?: boolean;
             passive?: boolean;
             select?: boolean;
+            edit?: boolean;
         };
         theme?: string;
         language?: string;
@@ -400,14 +416,6 @@ declare namespace stardust {
 
     }
 
-    interface Flags {
-        /**
-         * Checks whether the specified flag is enabled.
-         * @param flag The value flag to check.
-         */
-        isEnabled(flag: string): boolean;
-    }
-
     class AppSelections {
         constructor();
 
@@ -468,6 +476,24 @@ declare namespace stardust {
 
     }
 
+    interface Flags {
+        /**
+         * Checks whether the specified flag is enabled.
+         * @param flag The value flag to check.
+         */
+        isEnabled(flag: string): boolean;
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -498,16 +524,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {
@@ -597,10 +613,21 @@ declare namespace stardust {
         };
     }
 
+    /**
+     * @deprecated
+     */
     interface Constraints {
         passive?: boolean;
         active?: boolean;
         select?: boolean;
+        edit?: boolean;
+    }
+
+    interface Interactions {
+        passive?: boolean;
+        active?: boolean;
+        select?: boolean;
+        edit?: boolean;
     }
 
     interface RenderState {
