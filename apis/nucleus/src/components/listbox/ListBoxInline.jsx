@@ -19,8 +19,15 @@ import useAppSelections from '../../hooks/useAppSelections';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-get-action-props';
 import createSelectionState from './hooks/selections/selectionState';
-import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH } from './constants';
 import ListBoxError from './components/ListBoxError';
+import {
+  CELL_PADDING_LEFT,
+  ICON_WIDTH,
+  ICON_PADDING,
+  BUTTON_ICON_WIDTH,
+  gridColumnContainerPadding,
+  gridRowContainerPadding,
+} from './constants';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -82,6 +89,7 @@ function ListBoxInline({ options, layout }) {
     scrollState = undefined,
     renderedCallback,
     toolbar = true,
+    element,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -122,6 +130,7 @@ function ListBoxInline({ options, layout }) {
   const [selectionState] = useState(() => createSelectionState());
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
+  const [autoDense, setAutoDense] = useState(false);
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
     setKeyboardActive,
@@ -199,7 +208,7 @@ function ListBoxInline({ options, layout }) {
   const showTitle = true;
   const showSearchToggle = search === 'toggle' && showSearch;
   const searchVisible = (search === true || showSearchToggle) && !selectDisabled() && searchEnabled !== false;
-  const dense = layoutOptions.dense ?? false;
+  const dense = layoutOptions.dense || autoDense;
   const searchHeight = dense ? 27 : 40;
   const extraheight = dense ? 39 : 49;
   const searchAddHeight = searchVisible ? searchHeight : 0;
@@ -242,7 +251,7 @@ function ListBoxInline({ options, layout }) {
   const isGridMode = layoutOptions?.dataLayout === 'grid';
   let containerPadding;
   if (isGridMode) {
-    containerPadding = layoutOptions.layoutOrder === 'row' ? '2px 4px' : '2px 6px 2px 4px';
+    containerPadding = layoutOptions.layoutOrder === 'row' ? gridRowContainerPadding : gridColumnContainerPadding;
   }
 
   const searchIconComp = constraints?.active ? (
@@ -397,6 +406,11 @@ function ListBoxInline({ options, layout }) {
                     }}
                     renderedCallback={renderedCallback}
                     onCtrlF={onCtrlF}
+                    autoDense={{
+                      state: autoDense,
+                      set: setAutoDense,
+                    }}
+                    element={element}
                   />
                 )}
               </AutoSizer>

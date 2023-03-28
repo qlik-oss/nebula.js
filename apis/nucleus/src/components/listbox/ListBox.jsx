@@ -15,6 +15,7 @@ import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
 import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 import useFrequencyMax from './hooks/useFrequencyMax';
+import useSetAutoDense from './hooks/useSetAutoDense';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -42,6 +43,8 @@ export default function ListBox({
   currentScrollIndex = { set: () => {} },
   renderedCallback,
   onCtrlF,
+  autoDense = { state: false, set: () => {} },
+  element = undefined,
 }) {
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
@@ -57,6 +60,8 @@ export default function ListBox({
   const listData = useRef({
     pages: [],
   });
+
+  useSetAutoDense({ autoDense, loaderRef, element, layout });
 
   // The time from scroll end until new data is being fetched, may be exposed in API later on.
   const scrollTimeout = 0;
@@ -193,6 +198,7 @@ export default function ListBox({
     textWidth,
     freqIsAllowed,
     checkboxes,
+    autoDense,
   });
   if (sizes.columnWidth) {
     // In grid mode, where we have a dynamic item width, get a second opinion on showing/hiding frequency.
@@ -278,6 +284,7 @@ export default function ListBox({
     constraints,
     frequencyMax,
     freqIsAllowed,
+    autoDense,
   });
 
   const { columnWidth, listHeight, itemHeight } = sizes || {};
@@ -303,7 +310,7 @@ export default function ListBox({
           text="Listbox.ItemsOverflow"
           dismiss={() => setOverflowDisclaimer((state) => ({ ...state, dismissed: true }))}
           parentWidth={loaderRef?.current?._listRef?.props?.width}
-          dense={layoutOptions?.dense}
+          dense={layoutOptions?.dense || autoDense}
         />
       )}
     </>

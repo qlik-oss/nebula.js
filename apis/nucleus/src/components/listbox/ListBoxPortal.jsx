@@ -87,8 +87,9 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options
       model,
       app,
       renderedCallback,
+      element,
     }),
-    [options, selections, model, app]
+    [options, selections, model, app, element]
   );
 
   if (!selections || !model) {

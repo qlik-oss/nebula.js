@@ -47,9 +47,11 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     listCount,
     itemPadding,
     frequencyWidth,
+    autoDense = { state: false },
   } = data;
 
-  const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
+  const { dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
+  const dense = layoutOptions?.dense || autoDense.state || false;
 
   let cellIndex;
   let styles;

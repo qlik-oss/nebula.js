@@ -38,6 +38,7 @@ export default function getListBoxComponents({
   constraints,
   frequencyMax,
   freqIsAllowed,
+  autoDense,
 }) {
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, itemPadding, listHeight, itemHeight, rowCount, columnCount, frequencyWidth } = sizes || {};
@@ -175,6 +176,7 @@ export default function getListBoxComponents({
           column: undefined,
           columnCount,
           rowCount,
+          autoDense,
         }}
         onItemsRendered={handleGridItemsRendered}
         ref={ref}

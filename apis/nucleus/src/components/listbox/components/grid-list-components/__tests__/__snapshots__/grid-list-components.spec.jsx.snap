@@ -18,6 +18,7 @@ exports[`grid-list-components should create a Grid component 1`] = `
         "selectAll": undefined,
         "setScrollPosition": undefined,
       },
+      "autoDense": undefined,
       "checkboxes": false,
       "column": undefined,
       "columnCount": 2,

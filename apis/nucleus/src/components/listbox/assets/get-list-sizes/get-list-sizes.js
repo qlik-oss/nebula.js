@@ -7,6 +7,7 @@ import {
   SCROLL_BAR_WIDTH,
   CHECKBOX_WIDTH,
   REMOVE_TICK_LIMIT,
+  GRID_MODE_NORMAL_ITEM_HEIGHT,
 } from '../../constants';
 
 export default function getListSizes({
@@ -18,9 +19,11 @@ export default function getListSizes({
   textWidth,
   freqIsAllowed,
   checkboxes,
+  autoDense,
 }) {
   const { layoutOptions = {} } = layout || {};
-  const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense, dataLayout } = layoutOptions;
+  const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dataLayout } = layoutOptions;
+  const dense = layoutOptions?.dense || autoDense?.state;
 
   const frequencyAddWidth = freqIsAllowed ? FREQUENCY_WIDTH : 0;
   const checkboxAddWidth = checkboxes ? CHECKBOX_WIDTH : 0;
@@ -45,7 +48,7 @@ export default function getListSizes({
   const itemPadding = 4;
 
   const denseItemHeight = 20;
-  const normalItemHeight = isGridMode ? 32 : 29;
+  const normalItemHeight = isGridMode ? GRID_MODE_NORMAL_ITEM_HEIGHT : 29;
   let itemHeight = dense ? denseItemHeight : normalItemHeight;
 
   if (isGridMode) {
@@ -109,5 +112,6 @@ export default function getListSizes({
     maxCount: { row: maxRowCount, column: maxColumnCount },
     itemPadding,
     frequencyWidth: FREQUENCY_WIDTH,
+    // autoDense,
   };
 }
