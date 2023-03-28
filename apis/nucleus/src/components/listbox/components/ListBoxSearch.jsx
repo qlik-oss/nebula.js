@@ -150,12 +150,10 @@ export default function ListBoxSearch({
             hide();
           }
         }
-        break;
+        return undefined;
       default:
         return undefined;
     }
-    e.preventDefault();
-    e.stopPropagation();
     return undefined;
   };
 
