@@ -489,16 +489,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -529,6 +519,16 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {
@@ -653,12 +653,12 @@ declare namespace stardust {
     interface Keyboard {
         enabled: boolean;
         active: boolean;
-        blur: stardust.BlurFunction;
+        blur?: stardust.BlurFunction;
         /**
          * Function used by the visualization to tell Nebula to it wants focus
          */
         focus?(): void;
-        focusSelection: stardust.FocusSelectionFunction;
+        focusSelection?: stardust.FocusSelectionFunction;
     }
 
     /**
