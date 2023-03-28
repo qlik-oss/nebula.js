@@ -11,7 +11,6 @@ function Frequency({ cell, checkboxes, dense, showGray }) {
       item
       style={{ display: 'flex', alignItems: 'center' }}
       className={classes.frequencyCount}
-      role="gridcell"
       aria-label={frequencyText}
     >
       <Typography

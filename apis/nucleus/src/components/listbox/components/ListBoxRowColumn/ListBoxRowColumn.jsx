@@ -235,7 +235,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
           style={cellStyle}
           className={joinClassNames([classes.cell, classes.selectedCell])}
           title={`${label}`}
-          role="gridcell"
         >
           {labels ? (
             <FieldWithRanges

@@ -123,19 +123,17 @@ export default function ListBoxSearch({
       case 'Tab': {
         if (e.shiftKey) {
           keyboard.focusSelection();
-          e.preventDefault();
-          e.stopPropagation();
-          break;
-        }
-        // Focus the row we last visited or the first one.
-        const container = currentTarget.closest('.listbox-container');
-        const row = container?.querySelector('.last-focused') || container?.querySelector('[role="row"]:first-child');
-        row?.focus();
+        } else {
+          // Focus the row we last visited or the first one.
+          const container = currentTarget.closest('.listbox-container');
+          const row = container?.querySelector('.last-focused') || container?.querySelector('[role="row"]:first-child');
+          row?.focus();
 
-        // Clean up.
-        container?.querySelectorAll('.last-focused').forEach((elm) => {
-          elm.classList.remove('last-focused');
-        });
+          // Clean up.
+          container?.querySelectorAll('.last-focused').forEach((elm) => {
+            elm.classList.remove('last-focused');
+          });
+        }
         break;
       }
       case 'f':
@@ -147,7 +145,7 @@ export default function ListBoxSearch({
         }
         break;
       default:
-        break;
+        return undefined;
     }
     e.preventDefault();
     e.stopPropagation();
