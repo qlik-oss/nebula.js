@@ -1,4 +1,5 @@
 import hcHandler from './hc-handler';
+import loHandler from './lo-handler';
 
 /**
  * @interface LibraryField
@@ -40,7 +41,9 @@ export default function populateData({ sn, properties, fields }) {
     p = s ? p[s] : p;
   }
 
-  const hc = hcHandler({
+  const createHandler = propertyPath.match('/qListObjectDef') ? loHandler : hcHandler;
+
+  const handler = createHandler({
     dc: p,
     def: target,
     properties,
@@ -50,9 +53,9 @@ export default function populateData({ sn, properties, fields }) {
     const type = fieldType(f);
 
     if (type === 'measure') {
-      hc.addMeasure(f);
+      handler.addMeasure(f);
     } else {
-      hc.addDimension(f);
+      handler.addDimension(f);
     }
   });
 }
