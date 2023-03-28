@@ -1,9 +1,13 @@
 import { useState } from 'react';
 
 export function removeInnnerTabStops(container) {
-  container.querySelectorAll('[tabIndex="0"]').forEach((elm) => {
+  container?.querySelectorAll('[tabIndex="0"]').forEach((elm) => {
     elm.setAttribute('tabIndex', -1);
   });
+}
+
+export function getVizCell(container) {
+  return container?.closest('.njs-cell') || container?.closest('.qv-gridcell');
 }
 
 // Emulate the keyboard hook, until we support it in the Listbox.
@@ -19,10 +23,7 @@ export default function useTempKeyboard({ containerRef, enabled }) {
     outerTabStops: !innerTabStops, // does keyboard permit outer tab stops
     blur: (resetFocus) => {
       setKeyboardActive(false);
-      const vizCell =
-        containerRef.current?.closest('.njs-cell') ||
-        containerRef.current.closest('.qv-gridcell') ||
-        containerRef.current.parentElement;
+      const vizCell = getVizCell(containerRef.current) || containerRef.current?.parentElement;
       removeInnnerTabStops(containerRef.current);
       if (resetFocus && vizCell) {
         // Move focus to the viz's cell.

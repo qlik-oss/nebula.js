@@ -1,4 +1,5 @@
 import KEYS from '../../../keys';
+import { getVizCell } from '../components/useTempKeyboard';
 
 const getElementIndex = (currentTarget) => +currentTarget.getAttribute('data-n');
 
@@ -145,14 +146,16 @@ export function getListboxInlineKeyboardNavigation({
   const blur = (event) => {
     const { target } = event;
     const isFocusedOnListbox = target.classList.contains('listbox-container');
-    if (isFocusedOnListbox) {
+    const container = target.closest('.listbox-container');
+    const vizCell = getVizCell(container);
+    const isSingleListbox = vizCell?.querySelectorAll('.listbox-container').length === 1;
+    if (isFocusedOnListbox || isSingleListbox) {
       // Move the focus from listbox container to the viz container.
       keyboard.blur(true);
     } else {
-      // Move focus from row to listbox container:
+      // More than one listbox: Move focus from row to listbox container.
 
       // 1. Remove last-focused class from row siblings.
-      const container = target.closest('.listbox-container');
       container?.querySelectorAll('.last-focused').forEach((elm) => {
         elm.classList.remove('last-focused');
       });

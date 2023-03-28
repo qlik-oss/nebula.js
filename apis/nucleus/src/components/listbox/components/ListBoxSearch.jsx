@@ -6,7 +6,6 @@ import Search from '@nebula.js/ui/icons/search';
 import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
 import { CELL_PADDING_LEFT } from '../constants';
-import { removeInnnerTabStops } from './useTempKeyboard';
 
 const TREE_PATH = '/qListObjectDef';
 const WILDCARD = '**';
@@ -114,14 +113,20 @@ export default function ListBoxSearch({
     return response;
   };
 
+  function focusRow(container) {
+    const row = container?.querySelector('.last-focused') || container?.querySelector('[role="row"]:first-child');
+    row.setAttribute('tabIndex', 0);
+    row?.focus();
+  }
+
   const onKeyDown = async (e) => {
     const { currentTarget } = e;
+    const container = currentTarget.closest('.listbox-container');
     switch (e.key) {
       case 'Enter':
         return performSearch();
       case 'Escape': {
-        const container = currentTarget.closest('.listbox-container');
-        removeInnnerTabStops(container);
+        focusRow(container);
         return cancel();
       }
       case 'Tab': {
@@ -129,10 +134,7 @@ export default function ListBoxSearch({
           keyboard.focusSelection();
         } else {
           // Focus the row we last visited or the first one.
-          const container = currentTarget.closest('.listbox-container');
-          const row = container?.querySelector('.last-focused') || container?.querySelector('[role="row"]:first-child');
-          row.setAttribute('tabIndex', 0);
-          row?.focus();
+          focusRow(container);
 
           // Clean up.
           container?.querySelectorAll('.last-focused').forEach((elm) => {

@@ -348,8 +348,23 @@ describe('keyboard navigation', () => {
         setAttribute: jest.fn(),
         blur: jest.fn(),
         focus: jest.fn(),
+        closest: jest.fn().mockReturnValue({
+          querySelector: jest.fn(),
+          querySelectorAll: jest.fn().mockReturnValue([]),
+          closest: jest.fn().mockReturnValue({
+            querySelectorAll: jest.fn().mockReturnValue([]),
+          }),
+        }),
       };
-      const currentTarget = { setAttribute: jest.fn(), blur: jest.fn(), focus: jest.fn() };
+      const currentTarget = {
+        setAttribute: jest.fn(),
+        blur: jest.fn(),
+        focus: jest.fn(),
+        closest: jest.fn().mockReturnValue({
+          querySelector: jest.fn(),
+          querySelectorAll: jest.fn().mockReturnValue([]),
+        }),
+      };
       const event = {
         target,
         currentTarget,

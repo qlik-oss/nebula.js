@@ -53,9 +53,19 @@ describe('<ListBoxSearch />', () => {
       acceptListObjectSearch: jest.fn(),
       abortListObjectSearch: jest.fn().mockResolvedValue(),
     };
+    const element = {
+      querySelector: jest.fn().mockReturnValue({
+        setAttribute: jest.fn(),
+        focus: jest.fn(),
+      }),
+      querySelectorAll: jest.fn().mockReturnValue([]),
+    };
     keyEventDefaults = {
       preventDefault: jest.fn(),
       stopPropagation: jest.fn(),
+      currentTarget: {
+        closest: jest.fn().mockReturnValue(element),
+      },
     };
     selections = {
       on: jest.fn(),
