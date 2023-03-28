@@ -202,7 +202,7 @@ export default function ListBoxSearch({
       onKeyDown={onKeyDown}
       autoFocus={autoFocus}
       inputProps={{
-        tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
+        tabIndex: keyboard.innerTabStops ? 0 : -1,
         style: { textAlign: `${inpuTextAlign}` },
       }}
     />

@@ -40,14 +40,15 @@ export function getFieldKeyboardNavigation({
         if (shiftKey) {
           currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
           if (searchField) {
+            searchField.setAttribute('tabIndex', 0);
             searchField.focus();
           } else {
-            currentTarget.setAttribute('tabIndex', '-1');
+            currentTarget.setAttribute('tabIndex', -1);
             const resetFocus = true; // focus the viz container
             keyboard.blur(resetFocus);
           }
         } else {
-          currentTarget.setAttribute('tabIndex', '-1');
+          currentTarget.setAttribute('tabIndex', -1);
           currentTarget.blur();
           keyboard.blur();
         }

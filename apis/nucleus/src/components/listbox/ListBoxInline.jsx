@@ -273,7 +273,7 @@ function ListBoxInline({ options, layout }) {
       <StyledGrid
         className="listbox-container"
         container
-        tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
+        tabIndex={keyboard.outerTabStops ? 0 : -1}
         direction="column"
         gap={0}
         containerPadding={containerPadding}

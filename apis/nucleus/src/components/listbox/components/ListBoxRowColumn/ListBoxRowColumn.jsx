@@ -101,7 +101,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
   const handleKeyDownCallback = useCallback(
     getFieldKeyboardNavigation({ ...actions, focusListItems, keyboard, isModal }),
-    [actions, keyboard]
+    [actions, keyboard?.innerTabStops]
   );
 
   const cell = useMemo(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
@@ -220,7 +220,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         onMouseEnter={onMouseEnter}
         onKeyDown={handleKeyDownCallback}
         onContextMenu={preventContextMenu}
-        tabIndex={isFirstElement && (!keyboard.enabled || keyboard.active) ? 0 : -1}
+        tabIndex={isFirstElement && keyboard.innerTabStops ? 0 : -1}
         data-n={cell?.qElemNumber}
       >
         {cell?.qFrequency && (

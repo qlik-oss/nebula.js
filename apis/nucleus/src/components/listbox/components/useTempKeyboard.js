@@ -4,9 +4,13 @@ import { useState } from 'react';
 export default function useTempKeyboard({ containerRef, enabled }) {
   const [keyboardActive, setKeyboardActive] = useState(false);
 
+  const innerTabStops = !enabled || keyboardActive;
+
   const keyboard = {
-    enabled, // this will be static until we can access the useKeyboard hook
+    enabled,
     active: keyboardActive,
+    innerTabStops, // does keyboard permit inner tab stops
+    outerTabStops: !innerTabStops, // does keyboard permit outer tab stops
     blur: (resetFocus) => {
       setKeyboardActive(false);
       const vizCell = containerRef.current?.closest('.njs-cell') || containerRef.current.closest('.qv-gridcell');

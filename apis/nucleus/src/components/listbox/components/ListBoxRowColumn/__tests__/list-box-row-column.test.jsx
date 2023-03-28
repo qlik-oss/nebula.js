@@ -47,7 +47,7 @@ describe('<ListBoxRowColumn />', () => {
       .spyOn(keyboardNavigation, 'getFieldKeyboardNavigation')
       .mockImplementation(() => 'handle-key-down-callback');
     actions = 'actions';
-    keyboard = { active: false, enabled: true };
+    keyboard = { innerTabStops: true };
     jest.spyOn(screenReaders, 'getValueLabel').mockReturnValue('ariaLabel');
   });
 
@@ -112,7 +112,7 @@ describe('<ListBoxRowColumn />', () => {
       const preventDefault = jest.fn();
       type.props.onContextMenu({ preventDefault });
       expect(preventDefault).toHaveBeenCalledTimes(1);
-      expect(type.props.tabIndex).toBe(-1);
+      expect(type.props.tabIndex).toBe(0);
       expect(type.props.onClick).toHaveBeenCalledTimes(0);
 
       const types = testInstance.findAllByType(Typography);
@@ -132,7 +132,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
 
-      keyboard.enabled = false;
+      keyboard.innerTabStops = true;
 
       const data = {
         onMouseDown: jest.fn(),
@@ -163,7 +163,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
 
-      keyboard.active = true;
+      keyboard.innerTabStops = true;
 
       const data = {
         checkboxes: true,
