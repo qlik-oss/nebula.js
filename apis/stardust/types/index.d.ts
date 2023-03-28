@@ -646,11 +646,6 @@ declare namespace stardust {
     type BlurFunction = (blurState: boolean)=>void;
 
     /**
-     * Focus function
-     */
-    type FocusFunction = (focusState: boolean)=>void;
-
-    /**
      * Focus Selection function
      */
     type FocusSelectionFunction = (focusState: boolean)=>void;
@@ -659,7 +654,10 @@ declare namespace stardust {
         enabled: boolean;
         active: boolean;
         blur: stardust.BlurFunction;
-        focus: stardust.FocusFunction;
+        /**
+         * Function used by the visualization to tell Nebula to it wants focus
+         */
+        focus?(): void;
         focusSelection: stardust.FocusSelectionFunction;
     }
 

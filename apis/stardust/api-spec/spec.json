@@ -2131,17 +2131,6 @@
         }
       ]
     },
-    "FocusFunction": {
-      "description": "Focus function",
-      "kind": "function",
-      "params": [
-        {
-          "name": "focusState",
-          "description": "parameter to indicate focus state",
-          "type": "boolean"
-        }
-      ]
-    },
     "FocusSelectionFunction": {
       "description": "Focus Selection function",
       "kind": "function",
@@ -2171,7 +2160,9 @@
         },
         "focus": {
           "description": "Function used by the visualization to tell Nebula to it wants focus",
-          "type": "#/definitions/FocusFunction"
+          "optional": true,
+          "kind": "function",
+          "params": []
         },
         "focusSelection": {
           "description": "Function used by the visualization to tell Nebula to focus the selection toolbar",
