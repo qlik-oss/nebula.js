@@ -1,19 +1,29 @@
 import * as hcHandlerModule from '../hc-handler';
+import * as loHandlerModule from '../lo-handler';
 import populate, { fieldType as ft } from '../populator';
 
 describe('populator', () => {
   let h;
+  let l;
   let warn;
   let handler;
+  let lohandler;
 
   beforeEach(() => {
     h = {
       addMeasure: jest.fn(),
       addDimension: jest.fn(),
     };
+    l = {
+      addMeasure: jest.fn(),
+      addDimension: jest.fn(),
+    };
     const fn = () => h;
+    const fnl = () => l;
     handler = jest.fn().mockImplementation(fn);
+    lohandler = jest.fn().mockImplementation(fnl);
     jest.spyOn(hcHandlerModule, 'default').mockImplementation(handler);
+    jest.spyOn(loHandlerModule, 'default').mockImplementation(lohandler);
 
     global.__NEBULA_DEV__ = true; // eslint-disable-line no-underscore-dangle
     warn = jest.fn();
@@ -89,6 +99,22 @@ describe('populator', () => {
     const resolved = { qDimensions: [] };
     populate({ sn, properties: { a: { b: { c: resolved } } }, fields: ['=A'] });
     expect(h.addMeasure).toHaveBeenCalledWith('=A');
+  });
+
+  test('should work for qListObjectDef', () => {
+    const target = {
+      propertyPath: '/qListObjectDef',
+    };
+    const sn = {
+      qae: {
+        data: {
+          targets: [target],
+        },
+      },
+    };
+    const resolved = { qDimensions: [] };
+    populate({ sn, properties: { a: { b: { c: resolved } } }, fields: ['A'] });
+    expect(l.addDimension).toHaveBeenCalledWith('A');
   });
 
   test("should identify field as measure when prefixed with '='", () => {
