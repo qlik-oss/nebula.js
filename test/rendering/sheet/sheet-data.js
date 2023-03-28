@@ -36,6 +36,32 @@ window.getFuncs = function getFuncs() {
           qId: 'bar',
         },
         visualization: 'barchart',
+        title: 'This is the title of the barchart',
+        subtitle: 'here is the subtitle',
+        footnote: 'and here is a footnote',
+        showTitles: true,
+        components: [
+          {
+            key: 'general',
+            title: {
+              main: {
+                color: { color: 'green' },
+                fontFamily: 'Verdana',
+              },
+              subTitle: {
+                color: { color: 'blue' },
+                fontStyle: ['bold', 'italic', 'underline'],
+              },
+              footer: {
+                color: { color: 'red' },
+                fontFamily: 'Lucida Console, monospace',
+              },
+            },
+            bgColor: {
+              color: { color: '#00ff00' },
+            },
+          },
+        ],
       };
     },
     getPieLayout: () => {
