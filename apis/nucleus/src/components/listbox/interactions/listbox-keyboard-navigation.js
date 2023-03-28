@@ -166,7 +166,6 @@ export function getListboxInlineKeyboardNavigation({
       target.classList.add('last-focused');
 
       // 3. Blur row and focus the listbox container.
-      target.setAttribute('tabIndex', -1);
       keyboard.blur();
       const c = target.closest('.listbox-container');
       c.setAttribute('tabIndex', 0);

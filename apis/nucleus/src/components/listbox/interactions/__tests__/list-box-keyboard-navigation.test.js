@@ -334,8 +334,7 @@ describe('keyboard navigation', () => {
       handleKeyDownForListbox(event);
       expect(target.classList.contains).toHaveBeenCalledTimes(1);
       expect(target.classList.contains).toHaveBeenCalledWith('listbox-container');
-      expect(target.setAttribute).toHaveBeenCalledTimes(1);
-      expect(target.setAttribute).toHaveBeenCalledWith('tabIndex', -1);
+      expect(target.setAttribute).toHaveBeenCalledTimes(0);
       expect(keyboard.blur).toHaveBeenCalledTimes(1);
       expect(target.focus).not.toHaveBeenCalled();
       expect(currentTarget.blur).not.toHaveBeenCalled();
