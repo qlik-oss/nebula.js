@@ -112,6 +112,5 @@ export default function getListSizes({
     maxCount: { row: maxRowCount, column: maxColumnCount },
     itemPadding,
     frequencyWidth: FREQUENCY_WIDTH,
-    // autoDense,
   };
 }
