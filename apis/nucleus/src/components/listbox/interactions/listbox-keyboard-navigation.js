@@ -32,23 +32,25 @@ export function getFieldKeyboardNavigation({
         // Try to focus search field, otherwise confirm button.
         const searchField = currentTarget.closest('.listbox-container')?.querySelector('.search input');
         const inSelection = isModal();
-        if (inSelection) {
-          keyboard.focusSelection();
-          break;
-        }
-        // Not in modal mode.
+
+        currentTarget.setAttribute('tabIndex', -1);
+        currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
+
         if (shiftKey) {
-          currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
-          if (searchField) {
+          if (inSelection && searchField) {
             searchField.setAttribute('tabIndex', 0);
             searchField.focus();
           } else {
-            currentTarget.setAttribute('tabIndex', -1);
             const resetFocus = true; // focus the viz container
             keyboard.blur(resetFocus);
           }
+          break;
+        }
+
+        // Without shift key
+        if (inSelection) {
+          keyboard.focusSelection();
         } else {
-          currentTarget.setAttribute('tabIndex', -1);
           currentTarget.blur();
           keyboard.blur();
         }
