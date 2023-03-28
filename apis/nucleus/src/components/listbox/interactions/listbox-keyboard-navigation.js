@@ -91,8 +91,12 @@ export function getFieldKeyboardNavigation({
         confirm();
         break;
       case KEYS.ESCAPE:
-        cancel();
-        return; // let it propagate to top-level
+        if (isModal()) {
+          cancel();
+        } else {
+          return; // propagate to other Esc handler
+        }
+        break;
       case KEYS.HOME:
         focusListItems.setFirst(true);
         if (ctrlKey) {
@@ -164,9 +168,11 @@ export function getListboxInlineKeyboardNavigation({
       target.classList.add('last-focused');
 
       // 3. Blur row and focus the listbox container.
-      target.setAttribute('tabIndex', '-1');
+      target.setAttribute('tabIndex', -1);
       keyboard.blur();
-      target.closest('.listbox-container')?.focus();
+      const c = target.closest('.listbox-container');
+      c.setAttribute('tabIndex', 0);
+      c?.focus();
     }
   };
 

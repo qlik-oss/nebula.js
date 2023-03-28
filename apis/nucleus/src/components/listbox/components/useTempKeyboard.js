@@ -22,6 +22,9 @@ export default function useTempKeyboard({ containerRef, enabled }) {
     innerTabStops, // does keyboard permit inner tab stops
     outerTabStops: !innerTabStops, // does keyboard permit outer tab stops
     blur: (resetFocus) => {
+      if (!enabled) {
+        return;
+      }
       setKeyboardActive(false);
       const vizCell = getVizCell(containerRef.current) || containerRef.current?.parentElement;
       removeInnnerTabStops(containerRef.current);
