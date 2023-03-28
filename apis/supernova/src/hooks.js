@@ -1145,16 +1145,14 @@ export function useEmitter() {
 
 /**
  * Blur function
- * @name BlurFunction
- * @function
- * @param {boolean} blurState parameter to indicate blur state
+ * @callback BlurFunction
+ * @param {boolean} resetFocus parameter to determines whether the chart should be focused after blurring from inside
  */
 
 /**
  * Focus Selection function
- * @name FocusSelectionFunction
- * @function
- * @param {boolean} focusState parameter to indicate focus state
+ * @callback FocusSelectionFunction
+ * @param {boolean} focusLast parameter to determines if the selection toolbar should be focuses the first or last element in the toolbar. if true, the last item is focused.
  */
 
 /**
