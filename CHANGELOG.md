@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.6](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.5...v4.0.0-alpha.6) (2023-03-28)
+
+### Bug Fixes
+
+- do ctrl-select on ctrl-space ([#1186](https://github.com/qlik-oss/nebula.js/issues/1186)) ([32101e2](https://github.com/qlik-oss/nebula.js/commit/32101e251cc63faf30678be11804bfd26885c48a))
+- **lisbox:** invalid dimension error message ([#1188](https://github.com/qlik-oss/nebula.js/issues/1188)) ([b13e542](https://github.com/qlik-oss/nebula.js/commit/b13e5421ac27e5be229acc0ff633124d5c700d57))
+- **ListBox:** show detached toolbar when layout.toolbar is false ([#1185](https://github.com/qlik-oss/nebula.js/issues/1185)) ([05a272d](https://github.com/qlik-oss/nebula.js/commit/05a272de458a6afb74e1fbcdfab4756aaadcbf6d))
+- simplyfy html structure for text highlight ([#1187](https://github.com/qlik-oss/nebula.js/issues/1187)) ([64a3b20](https://github.com/qlik-oss/nebula.js/commit/64a3b201dd9938a94765a4948230b3a8e7337624))
+
+### Features
+
+- add useEmitter and corresponding viz api ([#1168](https://github.com/qlik-oss/nebula.js/issues/1168)) ([034be90](https://github.com/qlik-oss/nebula.js/commit/034be90b51031f32c21557c8de429ffb1e2df5d6))
+- chart bg colors and title styles from properties and theme ([#1183](https://github.com/qlik-oss/nebula.js/issues/1183)) ([65af640](https://github.com/qlik-oss/nebula.js/commit/65af64044c4f18c1de2f5b3bd30915acd24d52d7))
+- support listobjectDef in render session objects ([#1194](https://github.com/qlik-oss/nebula.js/issues/1194)) ([23b7240](https://github.com/qlik-oss/nebula.js/commit/23b724065b0cb95893cdc3561adef50ca50bda3f))
+
 # [4.0.0-alpha.5](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.4...v4.0.0-alpha.5) (2023-03-23)
 
 ### Bug Fixes
