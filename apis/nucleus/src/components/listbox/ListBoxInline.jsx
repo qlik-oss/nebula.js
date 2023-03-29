@@ -122,6 +122,7 @@ function ListBoxInline({ options, layout }) {
   const [selectionState] = useState(() => createSelectionState());
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
+  const selectRef = useRef({ select: null }); // TODO: Move useSelectionInteraction from Listbox to here?
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
     setKeyboardActive,
@@ -230,7 +231,7 @@ function ListBoxInline({ options, layout }) {
       selections,
     });
 
-  const handleOnTouchStart = getTouchSelection({ selections, selectionState });
+  const handleOnTouchStart = getTouchSelection({ selections, selectionState, selectRef });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
   const showSearchIcon = searchEnabled !== false && search === 'toggle';
@@ -400,6 +401,7 @@ function ListBoxInline({ options, layout }) {
                     }}
                     renderedCallback={renderedCallback}
                     onCtrlF={onCtrlF}
+                    selectRef={selectRef}
                   />
                 )}
               </AutoSizer>
