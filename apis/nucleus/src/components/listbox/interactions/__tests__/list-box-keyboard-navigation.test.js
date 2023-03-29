@@ -358,7 +358,7 @@ describe('keyboard navigation', () => {
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
     });
     test('not matched key should not call event methods', () => {
-      const element = { focus: jest.fn() };
+      const element = createElement(0);
       const event = {
         currentTarget: element,
         nativeEvent: { keyCode: 99 },
@@ -385,8 +385,10 @@ describe('keyboard navigation', () => {
     });
     test('should update scroll on hover when UP is pressed', () => {
       const event = {
+        currentTarget: createElement(0),
         nativeEvent: { keyCode: KEYS.ARROW_UP },
         preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
@@ -394,8 +396,10 @@ describe('keyboard navigation', () => {
     });
     test('should update scroll on hover when DOWN is pressed', () => {
       const event = {
+        currentTarget: createElement(0),
         nativeEvent: { keyCode: KEYS.ARROW_DOWN },
         preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
@@ -403,8 +407,10 @@ describe('keyboard navigation', () => {
     });
     test('should update scroll on hover when PAGE_UP is pressed', () => {
       const event = {
+        currentTarget: createElement(0),
         nativeEvent: { keyCode: KEYS.PAGE_UP },
         preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
@@ -412,8 +418,10 @@ describe('keyboard navigation', () => {
     });
     test('should update scroll on hover when PAGE_DOWN is pressed', () => {
       const event = {
+        currentTarget: createElement(0),
         nativeEvent: { keyCode: KEYS.PAGE_DOWN },
         preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
@@ -421,8 +429,10 @@ describe('keyboard navigation', () => {
     });
     test('should update scroll on hover when HOME is pressed', () => {
       const event = {
+        currentTarget: createElement(0),
         nativeEvent: { keyCode: KEYS.HOME },
         preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
@@ -430,8 +440,10 @@ describe('keyboard navigation', () => {
     });
     test('should update scroll on hover when CTRL+SHIFT+HOME is pressed', () => {
       const event = {
+        currentTarget: createElement(0),
         nativeEvent: { keyCode: KEYS.HOME, ctrlKey: true, shiftKey: true },
         preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
@@ -439,8 +451,10 @@ describe('keyboard navigation', () => {
     });
     test('should update scroll on hover when END is pressed', () => {
       const event = {
+        currentTarget: createElement(0),
         nativeEvent: { keyCode: KEYS.END },
         preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
@@ -448,8 +462,10 @@ describe('keyboard navigation', () => {
     });
     test('should update scroll on hover when CTRL+SHIFT+END is pressed', () => {
       const event = {
+        currentTarget: createElement(0),
         nativeEvent: { keyCode: KEYS.END, ctrlKey: true, shiftKey: true },
         preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
