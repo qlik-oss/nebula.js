@@ -81,11 +81,11 @@
   },
   "ScreenReader.OneSelected": {
     "value": "There is one selected value.",
-    "comment": "Screen reader text for a new value being selected and only one value is currently in selection."
+    "comment": "Screen reader text stating that one value is currently in selection."
   },
   "ScreenReader.ManySelected": {
     "value": "There are {0} selected values.",
-    "comment": "Screen reader text for a new value being selected and multiple values are currently in selection."
+    "comment": "Screen reader text stating that multiple values are currently in selection."
   },
   "Listbox.ResultFilterLabel": {
     "value": "Search Results Filter",

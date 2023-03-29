@@ -235,18 +235,18 @@
     "version": "pSBDS/l6GrBblyURsRM+AQ=="
   },
   "ScreenReader.ZeroSelected": {
-    "value": "Selectie van waarde opgeheven. Geen waarden geselecteerd.",
-    "comment": "Screen reader label for value being deselected in listbox and no values are selected. ",
+    "value": "Geen waarden geselecteerd.",
+    "comment": "Screen reader label stating that no values are selected.",
     "version": "ws+IBu/9dgYvVZMAOt8XjA=="
   },
   "ScreenReader.OneSelected": {
-    "value": "Waarde geselecteerd. Er is één waarde geselecteerd. Druk op Shift + Tab om de focus in te stellen op het selectiemenu.",
-    "comment": "Screen reader label for value being selected in straight table and one values is selected (buy 20200603)",
+    "value": "Er is één waarde geselecteerd.",
+    "comment": "Screen reader text stating that one value is currently in selection.",
     "version": "3/nu/iWCtVFxcUytjx/0iQ=="
   },
   "ScreenReader.ManySelected": {
-    "value": "Selectie van waarde opgeheven. Er zijn {0} waarden geselecteerd. Druk op Shift + Tab om de focus in te stellen op het selectiemenu.",
-    "comment": "Screen reader label for value being deselected in straight table and multiple values are selected (buy 20200603)",
+    "value": "Er zijn {0} waarden geselecteerd.",
+    "comment": "Screen reader text stating that multiple values are currently in selection.",
     "version": "KqgykSKKf9jfhehR2eUQZg=="
   }
 }

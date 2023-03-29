@@ -235,18 +235,18 @@
     "version": "pSBDS/l6GrBblyURsRM+AQ=="
   },
   "ScreenReader.ZeroSelected": {
-    "value": "Odznaczono wartość. Brak wybranych wartości.",
-    "comment": "Screen reader label for value being deselected in listbox and no values are selected. ",
+    "value": "Brak wybranych wartości.",
+    "comment": "Screen reader label stating that no values are selected.",
     "version": "ws+IBu/9dgYvVZMAOt8XjA=="
   },
   "ScreenReader.OneSelected": {
-    "value": "Wybrano wartość. Jest jedna wybrana wartość. Naciśnij Shift i Tab, aby ustawić ostrość na menu wyboru.",
-    "comment": "Screen reader label for value being selected in straight table and one values is selected (buy 20200603)",
+    "value": "Jest jedna wybrana wartość.",
+    "comment": "Screen reader text stating that one value is currently in selection.",
     "version": "3/nu/iWCtVFxcUytjx/0iQ=="
   },
   "ScreenReader.ManySelected": {
-    "value": "Odznaczono wartość. Wybranych wartości: {0} Naciśnij Shift i Tab, aby ustawić ostrość na menu wyboru.",
-    "comment": "Screen reader label for value being deselected in straight table and multiple values are selected (buy 20200603)",
+    "value": "Wybranych wartości: {0}",
+    "comment": "Screen reader text stating that multiple values are currently in selection.",
     "version": "KqgykSKKf9jfhehR2eUQZg=="
   }
 }

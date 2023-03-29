@@ -235,18 +235,18 @@
     "version": "pSBDS/l6GrBblyURsRM+AQ=="
   },
   "ScreenReader.ZeroSelected": {
-    "value": "Değer seçimi iptal edildi. Seçilen değer yok.",
-    "comment": "Screen reader label for value being deselected in listbox and no values are selected. ",
+    "value": "Seçilen değer yok.",
+    "comment": "Screen reader label stating that no values are selected.",
     "version": "ws+IBu/9dgYvVZMAOt8XjA=="
   },
   "ScreenReader.OneSelected": {
-    "value": "Değer seçildi. Seçilen bir değer var. Odağı seçim menüsüne ayarlamak için Shift ve Sekme tuşlarına birlikte basın.",
-    "comment": "Screen reader label for value being selected in straight table and one values is selected (buy 20200603)",
+    "value": "Seçilen bir değer var.",
+    "comment": "Screen reader text stating that one value is currently in selection.",
     "version": "3/nu/iWCtVFxcUytjx/0iQ=="
   },
   "ScreenReader.ManySelected": {
-    "value": "Değer seçimi iptal edildi. Seçilen {0} değer var. Odağı seçim menüsüne ayarlamak için Shift ve Sekme tuşlarına birlikte basın.",
-    "comment": "Screen reader label for value being deselected in straight table and multiple values are selected (buy 20200603)",
+    "value": "Seçilen {0} değer var.",
+    "comment": "Screen reader text stating that multiple values are currently in selection.",
     "version": "KqgykSKKf9jfhehR2eUQZg=="
   }
 }

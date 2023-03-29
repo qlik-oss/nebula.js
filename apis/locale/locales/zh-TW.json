@@ -235,18 +235,18 @@
     "version": "pSBDS/l6GrBblyURsRM+AQ=="
   },
   "ScreenReader.ZeroSelected": {
-    "value": "取消選取的值。沒有選取任何值。",
-    "comment": "Screen reader label for value being deselected in listbox and no values are selected. ",
+    "value": "沒有選取任何值。",
+    "comment": "Screen reader label stating that no values are selected.",
     "version": "ws+IBu/9dgYvVZMAOt8XjA=="
   },
   "ScreenReader.OneSelected": {
-    "value": "選取的值。有一個選取的值。按下 Shift 加 Tab 以在選項功能表上設定焦點。",
-    "comment": "Screen reader label for value being selected in straight table and one values is selected (buy 20200603)",
+    "value": "有一個選取的值。",
+    "comment": "Screen reader text stating that one value is currently in selection.",
     "version": "3/nu/iWCtVFxcUytjx/0iQ=="
   },
   "ScreenReader.ManySelected": {
-    "value": "取消選取的值。有 {0} 個選取的值。按下 Shift 加 Tab 以在選項功能表上設定焦點。",
-    "comment": "Screen reader label for value being deselected in straight table and multiple values are selected (buy 20200603)",
+    "value": "有 {0} 個選取的值。",
+    "comment": "Screen reader text stating that multiple values are currently in selection.",
     "version": "KqgykSKKf9jfhehR2eUQZg=="
   }
 }

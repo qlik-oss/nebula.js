@@ -235,18 +235,18 @@
     "version": "pSBDS/l6GrBblyURsRM+AQ=="
   },
   "ScreenReader.ZeroSelected": {
-    "value": "값이 선택 취소되었습니다. 선택된 값이 없습니다.",
-    "comment": "Screen reader label for value being deselected in listbox and no values are selected. ",
+    "value": "선택된 값이 없습니다.",
+    "comment": "Screen reader label stating that no values are selected.",
     "version": "ws+IBu/9dgYvVZMAOt8XjA=="
   },
   "ScreenReader.OneSelected": {
-    "value": "값이 선택되었습니다. 하나의 값이 선택되었습니다. 선택 메뉴에 초점을 설정하려면 Shift + Tab을 누르십시오.",
-    "comment": "Screen reader label for value being selected in straight table and one values is selected (buy 20200603)",
+    "value": "하나의 값이 선택되었습니다.",
+    "comment": "Screen reader text stating that one value is currently in selection.",
     "version": "3/nu/iWCtVFxcUytjx/0iQ=="
   },
   "ScreenReader.ManySelected": {
-    "value": "값이 선택 취소되었습니다. {0}개의 값이 선택되었습니다. 선택 메뉴에 초점을 설정하려면 Shift + Tab을 누르십시오.",
-    "comment": "Screen reader label for value being deselected in straight table and multiple values are selected (buy 20200603)",
+    "value": "{0}개의 값이 선택되었습니다.",
+    "comment": "Screen reader text stating that multiple values are currently in selection.",
     "version": "KqgykSKKf9jfhehR2eUQZg=="
   }
 }
