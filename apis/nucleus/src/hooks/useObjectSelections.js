@@ -232,6 +232,12 @@ export default function useObjectSelections(app, model, elements, options) {
     objectSelections.addListener('deactivated', deactivateClickOut);
 
     return () => {
+      // confirm selection before removing event handler
+      // to end the selection when the object is removed
+      // and remove the (ClickOut) mousedown handler from the document
+      if (objectSelections.isActive()) {
+        objectSelections.confirm();
+      }
       objectSelections.removeListener('activated', activateClickOut);
       objectSelections.removeListener('deactivated', deactivateClickOut);
     };
