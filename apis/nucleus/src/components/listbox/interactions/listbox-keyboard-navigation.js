@@ -1,4 +1,5 @@
 import KEYS from '../../../keys';
+import { fillRange, getElemNumbersFromPages, selectValues } from '../hooks/selections/listbox-selections';
 
 export function getFieldKeyboardNavigation({
   select,
@@ -206,4 +207,21 @@ export function getListboxInlineKeyboardNavigation({
   };
 
   return { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave };
+}
+
+export function getTouchSelection({ selections, selectionState }) {
+  const handleTouchStart = (event) => {
+    if (event?.touches?.length === 2) {
+      const startId = +event.touches[0].target.parentElement.getAttribute('data-n');
+      const stopId = +event.touches[1].target.parentElement.getAttribute('data-n');
+      const elements = getElemNumbersFromPages(selectionState.enginePages);
+      const elemNumbers = fillRange([startId, stopId], elements);
+
+      // TODO: Keep already selected values
+      selectionState.updateItems(elemNumbers, true, elemNumbers);
+      // selectionState.setSelectableValuesUpdating();
+      selectValues({ selections, elemNumbers, toggle: false, isSingleSelect: false });
+    }
+  };
+  return handleTouchStart;
 }
