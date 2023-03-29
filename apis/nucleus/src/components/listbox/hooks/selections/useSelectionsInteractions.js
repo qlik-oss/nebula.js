@@ -1,6 +1,8 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { selectValues, fillRange, getElemNumbersFromPages } from './listbox-selections';
+import rowColClasses from '../../components/ListBoxRowColumn/helpers/classes';
 
+const dataItemSelector = `.${rowColClasses.fieldRoot}`;
 const getKeyAsToggleSelected = (event) => !(event?.metaKey || event?.ctrlKey);
 
 export default function useSelectionsInteractions({ selectionState, selections, checkboxes = false, doc = document }) {
@@ -138,6 +140,37 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     addToRange(elemNumber);
   }, []);
 
+  const onTouchStart = useCallback((event) => {
+    if (!currentSelect.current.active || currentSelect.current.isRange) {
+      return;
+    }
+    if (event.touches.length <= 1) {
+      return;
+    }
+    if (event.touches.length > 2) {
+      currentSelect.current.active = false;
+      doSelect();
+      return;
+    }
+    const startElemNumber = event.touches[0].target?.closest(dataItemSelector)?.getAttribute('data-n');
+    const endElemNumber = event.touches[1].target?.closest(dataItemSelector)?.getAttribute('data-n');
+    if (startElemNumber === undefined || endElemNumber === undefined) {
+      currentSelect.current.active = false;
+      doSelect();
+      return;
+    }
+
+    if (!selectionState.isSelected(currentSelect.current.startElemNumber)) {
+      selectionState.updateItem(currentSelect.current.startElemNumber, true);
+      currentSelect.current.elemNumbers = [];
+    }
+
+    currentSelect.current.startElemNumber = startElemNumber;
+    addToRange(endElemNumber);
+    currentSelect.current.active = false;
+    doSelect();
+  });
+
   useEffect(() => {
     doc.addEventListener('mouseup', onMouseUpDoc);
     return () => {
@@ -169,7 +202,7 @@ export default function useSelectionsInteractions({ selectionState, selections, 
   if (checkboxes) {
     Object.assign(interactionEvents, { onChange });
   } else {
-    Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter });
+    Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter, onTouchStart });
   }
 
   return {

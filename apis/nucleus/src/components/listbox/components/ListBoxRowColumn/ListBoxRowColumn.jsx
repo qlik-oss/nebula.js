@@ -25,6 +25,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     onMouseDown,
     onMouseUp,
     onMouseEnter,
+    onTouchStart,
     pages,
     isLocked,
     column = false,
@@ -195,6 +196,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseEnter={onMouseEnter}
+        onTouchStart={onTouchStart}
         onKeyDown={handleKeyDownCallback}
         onContextMenu={preventContextMenu}
         role={column ? 'column' : 'row'}
