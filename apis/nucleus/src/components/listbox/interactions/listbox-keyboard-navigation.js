@@ -3,6 +3,19 @@ import { getVizCell, removeLastFocused } from '../components/useTempKeyboard';
 
 const getElementIndex = (currentTarget) => +currentTarget.getAttribute('data-n');
 
+const focusSearch = (container) => {
+  const searchField = container?.querySelector('.search input');
+  searchField?.focus();
+  return searchField;
+};
+
+const focusRow = (container) => {
+  const row = container?.querySelector('.value.last-focused, .value.selector, .value');
+  row?.setAttribute('tabIndex', 0);
+  row?.focus();
+  return row;
+};
+
 export function getFieldKeyboardNavigation({
   select,
   selectAll,
@@ -31,20 +44,18 @@ export function getFieldKeyboardNavigation({
     switch (keyCode) {
       case KEYS.TAB: {
         // Try to focus search field, otherwise confirm button.
-        const searchField = currentTarget.closest('.listbox-container')?.querySelector('.search input');
+        const container = currentTarget.closest('.listbox-container');
         const inSelection = isModal();
 
         currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
 
         if (shiftKey) {
-          if (searchField) {
-            searchField.setAttribute('tabIndex', 0);
-            searchField.focus();
-          } else if (inSelection) {
-            keyboard.focusSelection();
-          } else {
-            const resetFocus = true; // focus the viz container
-            keyboard.blur(resetFocus);
+          if (!focusSearch(container)) {
+            if (inSelection) {
+              keyboard.focusSelection();
+            } else {
+              keyboard.blur(true);
+            }
           }
           break;
         }
@@ -148,9 +159,9 @@ export function getListboxInlineKeyboardNavigation({
   constraints,
 }) {
   const blur = (event) => {
-    const { target } = event;
-    const isFocusedOnListbox = target.classList.contains('listbox-container');
-    const container = target.closest('.listbox-container');
+    const { currentTarget } = event;
+    const isFocusedOnListbox = currentTarget.classList.contains('listbox-container');
+    const container = currentTarget.closest('.listbox-container');
     const vizCell = getVizCell(container);
     const isSingleListbox = vizCell?.querySelectorAll('.listbox-container').length === 1;
     if (isFocusedOnListbox || isSingleListbox) {
@@ -163,11 +174,11 @@ export function getListboxInlineKeyboardNavigation({
       removeLastFocused(containerRef.current);
 
       // 2. Add last-focused class so we can re-focus it later.
-      target.classList.add('last-focused');
+      currentTarget.classList.add('last-focused');
 
       // 3. Blur row and focus the listbox container.
       keyboard.blur();
-      const c = target.closest('.listbox-container');
+      const c = currentTarget.closest('.listbox-container');
       c.setAttribute('tabIndex', 0);
       c?.focus();
     }
@@ -182,12 +193,20 @@ export function getListboxInlineKeyboardNavigation({
   const handleKeyDown = (event) => {
     const { keyCode, ctrlKey = false, shiftKey = false } = event.nativeEvent;
 
+    const container = event.currentTarget.closest('.listbox-container');
+
     switch (keyCode) {
-      // case KEYS.TAB: TODO: Focus confirm button using keyboard.focusSelection when we can access the useKeyboard hook.
+      case KEYS.TAB:
+        if (shiftKey) {
+          focusRow(container) || focusSearch(container);
+        } else {
+          focusSearch(container) || focusRow(container);
+        }
+        break;
       case KEYS.ENTER:
       case KEYS.SPACE:
-        if (!event.target.classList.contains('listbox-container')) {
-          return; // don't mess with keydown handlers within the listbox
+        if (!event.currentTarget.classList.contains('listbox-container')) {
+          return undefined;
         }
         keyboard.focus();
         break;
@@ -202,7 +221,7 @@ export function getListboxInlineKeyboardNavigation({
         break;
       case KEYS.ARROW_LEFT:
       case KEYS.ARROW_RIGHT:
-        return; // let it propagate to top-level
+        return undefined; // let it propagate to top-level
       case KEYS.PAGE_UP:
         updateKeyScrollOnHover({ up: currentScrollIndex.stop - currentScrollIndex.start });
         break;
@@ -216,12 +235,14 @@ export function getListboxInlineKeyboardNavigation({
         updateKeyScrollOnHover({ scrollPosition: ctrlKey && shiftKey ? 'overflowEnd' : 'end' });
         break;
       default:
-        return;
+        return undefined;
     }
 
     // Note: We should not stop propagation here as it will block the containing app
     // from handling keydown events.
+    event.stopPropagation();
     event.preventDefault();
+    return undefined;
   };
 
   const focusOnHoverDisabled = () => {

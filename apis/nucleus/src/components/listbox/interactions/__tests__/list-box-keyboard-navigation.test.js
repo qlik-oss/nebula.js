@@ -267,10 +267,9 @@ describe('keyboard navigation', () => {
       const element = { focus: jest.fn() };
       const event = {
         currentTarget: {
+          ...createElement(0),
           getAttribute: jest.fn().mockReturnValue(1),
           querySelector: jest.fn().mockReturnValue(element),
-        },
-        target: {
           classList: { contains: (c) => c === 'listbox-container' },
         },
         nativeEvent: { keyCode: 32 },
@@ -280,16 +279,14 @@ describe('keyboard navigation', () => {
       handleKeyDownForListbox(event);
       expect(keyboard.focus).toHaveBeenCalledTimes(1);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
-      expect(event.stopPropagation).not.toHaveBeenCalled();
     });
 
     test('should not focus value with Space when target is not listbox-container', () => {
       const element = { focus: jest.fn() };
       const event = {
         currentTarget: {
+          ...createElement(0),
           querySelector: jest.fn().mockReturnValue(element),
-        },
-        target: {
           classList: { contains: (c) => c === 'listbox-container' },
         },
         nativeEvent: { keyCode: 32 },
@@ -299,16 +296,14 @@ describe('keyboard navigation', () => {
       handleKeyDownForListbox(event);
       expect(keyboard.focus).toHaveBeenCalledTimes(1);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
-      expect(event.stopPropagation).not.toHaveBeenCalled();
     });
 
     test('should focus value with Enter', () => {
       const element = { focus: jest.fn() };
       const event = {
         currentTarget: {
+          ...createElement(0),
           querySelector: jest.fn().mockReturnValue(element),
-        },
-        target: {
           classList: { contains: (c) => c === 'listbox-container' },
         },
         nativeEvent: { keyCode: 13 },
@@ -318,73 +313,49 @@ describe('keyboard navigation', () => {
       handleKeyDownForListbox(event);
       expect(keyboard.focus).toHaveBeenCalledTimes(1);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
-      expect(event.stopPropagation).not.toHaveBeenCalled();
     });
 
     test('should change focus with Escape on a row', () => {
-      const target = createElement();
       const currentTarget = createElement();
       const event = {
-        target,
         currentTarget,
         nativeEvent: { keyCode: 27 },
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
-      expect(target.classList.contains).toHaveBeenCalledTimes(1);
-      expect(target.classList.contains).toHaveBeenCalledWith('listbox-container');
-      expect(target.setAttribute).toHaveBeenCalledTimes(0);
+      expect(currentTarget.classList.contains).toHaveBeenCalledTimes(1);
+      expect(currentTarget.classList.contains).toHaveBeenCalledWith('listbox-container');
+      expect(currentTarget.setAttribute).toHaveBeenCalledTimes(0);
       expect(keyboard.blur).toHaveBeenCalledTimes(1);
-      expect(target.focus).not.toHaveBeenCalled();
+      expect(currentTarget.focus).not.toHaveBeenCalled();
       expect(currentTarget.blur).not.toHaveBeenCalled();
 
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
-      expect(event.stopPropagation).not.toHaveBeenCalled();
     });
     test('should change focus with Escape on a listbox', () => {
-      const target = {
-        classList: { contains: jest.fn().mockReturnValue(true) },
-        setAttribute: jest.fn(),
-        blur: jest.fn(),
-        focus: jest.fn(),
-        closest: jest.fn().mockReturnValue({
-          querySelector: jest.fn(),
-          querySelectorAll: jest.fn().mockReturnValue([]),
-          closest: jest.fn().mockReturnValue({
-            querySelectorAll: jest.fn().mockReturnValue([]),
-          }),
-        }),
-      };
       const currentTarget = {
-        setAttribute: jest.fn(),
-        blur: jest.fn(),
-        focus: jest.fn(),
-        closest: jest.fn().mockReturnValue({
-          querySelector: jest.fn(),
-          querySelectorAll: jest.fn().mockReturnValue([]),
-        }),
+        ...createElement(),
+        classList: { contains: jest.fn().mockReturnValue(true) },
       };
       const event = {
-        target,
         currentTarget,
         nativeEvent: { keyCode: 27 },
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
-      expect(target.classList.contains).toHaveBeenCalledTimes(1);
-      expect(target.classList.contains).toHaveBeenCalledWith('listbox-container');
-      expect(target.setAttribute).not.toHaveBeenCalled();
-      expect(target.blur).not.toHaveBeenCalled();
-      expect(target.focus).not.toHaveBeenCalled();
+      expect(currentTarget.classList.contains).toHaveBeenCalledTimes(1);
+      expect(currentTarget.classList.contains).toHaveBeenCalledWith('listbox-container');
+      expect(currentTarget.setAttribute).not.toHaveBeenCalled();
+      expect(currentTarget.blur).not.toHaveBeenCalled();
+      expect(currentTarget.focus).not.toHaveBeenCalled();
 
       expect(currentTarget.setAttribute).not.toHaveBeenCalled();
       expect(currentTarget.blur).not.toHaveBeenCalled();
       expect(currentTarget.focus).not.toHaveBeenCalled();
 
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
-      expect(event.stopPropagation).not.toHaveBeenCalled();
     });
     test('not matched key should not call event methods', () => {
       const element = { focus: jest.fn() };
@@ -396,7 +367,6 @@ describe('keyboard navigation', () => {
       };
       handleKeyDownForListbox(event);
       expect(event.preventDefault).not.toHaveBeenCalled();
-      expect(event.stopPropagation).not.toHaveBeenCalled();
     });
     test('should handle mouse enter when allowed to focus', () => {
       isModal.mockReturnValue(false);

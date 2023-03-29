@@ -40,10 +40,10 @@ export default function useTempKeyboard({ containerRef, enabled }) {
     },
     focus: () => {
       setKeyboardActive(true);
-      const searchField = containerRef.current.querySelector('.search input');
-      const lastSelectedRow = containerRef.current.querySelector('.value.last-focused');
-      const fieldElement =
-        searchField || containerRef.current.querySelector('.value.selector, .value, .ActionsToolbar-item button');
+      const c = containerRef.current;
+      const searchField = c?.querySelector('.search input');
+      const lastSelectedRow = c?.querySelector('.value.last-focused');
+      const fieldElement = c?.querySelector('.value.selector, .value, .ActionsToolbar-item button');
 
       const elementToFocus = searchField || lastSelectedRow || fieldElement;
       elementToFocus?.setAttribute('tabIndex', 0);
