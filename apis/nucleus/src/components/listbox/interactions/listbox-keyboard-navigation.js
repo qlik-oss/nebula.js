@@ -205,9 +205,6 @@ export function getListboxInlineKeyboardNavigation({
         break;
       case KEYS.ENTER:
       case KEYS.SPACE:
-        if (!event.currentTarget.classList.contains('listbox-container')) {
-          return undefined;
-        }
         keyboard.focus();
         break;
       case KEYS.ESCAPE:
