@@ -124,10 +124,12 @@ export default function ListBoxSearch({
     const container = currentTarget.closest('.listbox-container');
     switch (e.key) {
       case 'Enter':
-        return performSearch();
+        performSearch();
+        break;
       case 'Escape': {
         focusRow(container);
-        return cancel();
+        cancel();
+        break;
       }
       case 'Tab': {
         if (e.shiftKey) {
@@ -154,6 +156,8 @@ export default function ListBoxSearch({
       default:
         return undefined;
     }
+    e.preventDefault();
+    e.stopPropagation();
     return undefined;
   };
 
