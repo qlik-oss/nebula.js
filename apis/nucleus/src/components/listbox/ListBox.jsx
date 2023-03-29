@@ -310,7 +310,7 @@ export default function ListBox({
           text="Listbox.ItemsOverflow"
           dismiss={() => setOverflowDisclaimer((state) => ({ ...state, dismissed: true }))}
           parentWidth={loaderRef?.current?._listRef?.props?.width}
-          dense={layoutOptions?.dense || autoDense}
+          dense={layoutOptions?.dense || autoDense?.state}
         />
       )}
     </>
