@@ -12,6 +12,7 @@ import {
   useAction,
   useConstraints,
   useOptions,
+  useEmitter,
 } from '@nebula.js/stardust';
 
 export default function sn({ flags }) {
@@ -26,6 +27,7 @@ export default function sn({ flags }) {
       const appLayout = useAppLayout();
       const options = useOptions();
       const embed = useEmbed();
+      const emitter = useEmitter();
 
       const [acted, setActed] = useState(false);
 
@@ -45,6 +47,7 @@ export default function sn({ flags }) {
           if (count >= 1) {
             act();
           } else {
+            emitter.emit('somethingEmitted', 'A message from the Chart');
             setCount((prev) => prev + 1);
           }
         };

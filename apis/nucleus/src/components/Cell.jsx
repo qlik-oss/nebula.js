@@ -16,7 +16,7 @@ import useLayout, { useAppLayout } from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
 import eventmixin from '../selections/event-mixin';
-import { resolveBgColor, resolveBgImage } from '../utils/background-props';
+import { resolveBgColor, resolveBgImage, resolveTextStyle } from '../utils/background-props';
 
 /**
  * @interface
@@ -256,7 +256,18 @@ const getType = async ({ types, name, version }) => {
   return SN;
 };
 
-const loadType = async ({ dispatch, types, visualization, version, model, app, selections, nebbie, focusHandler }) => {
+const loadType = async ({
+  dispatch,
+  types,
+  visualization,
+  version,
+  model,
+  app,
+  selections,
+  nebbie,
+  focusHandler,
+  emitter,
+}) => {
   try {
     const snType = await getType({ types, name: visualization, version });
     const sn = snType.create({
@@ -265,6 +276,7 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
       selections,
       nebbie,
       focusHandler,
+      emitter,
     });
     return sn;
   } catch (err) {
@@ -283,7 +295,7 @@ const loadType = async ({ dispatch, types, visualization, version, model, app, s
 };
 
 const Cell = forwardRef(
-  ({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount, currentId }, ref) => {
+  ({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount, currentId, emitter }, ref) => {
     const { app, types } = halo;
     const { nebbie } = halo.public;
     const { disableCellPadding = false } = halo.context || {};
@@ -303,6 +315,7 @@ const Cell = forwardRef(
     const hoveringDebouncer = useRef({ enter: null, leave: null });
     const [bgColor, setBgColor] = useState(undefined);
     const [bgImage, setBgImage] = useState(undefined); // {url: "", size: "", pos: ""}
+    const [titleStyles, setTitleStyles] = useState(undefined);
 
     const focusHandler = useRef({
       focusToolbarButton(last) {
@@ -316,9 +329,16 @@ const Cell = forwardRef(
     }, []);
 
     useEffect(() => {
-      const bgComp = layout?.components ? layout.components.find((comp) => comp.key === 'general') : null;
-      setBgColor(resolveBgColor(bgComp, halo.public.theme));
-      setBgImage(resolveBgImage(bgComp, halo.app));
+      if (layout && halo.public.theme) {
+        const bgComp = layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
+        setTitleStyles({
+          main: resolveTextStyle(bgComp, 'main', halo.public.theme, layout.visualization),
+          footer: resolveTextStyle(bgComp, 'footer', halo.public.theme, layout.visualization),
+          subTitle: resolveTextStyle(bgComp, 'subTitle', halo.public.theme, layout.visualization),
+        });
+        setBgColor(resolveBgColor(bgComp, halo.public.theme, layout.visualization));
+        setBgImage(resolveBgImage(bgComp, halo.app));
+      }
     }, [layout, halo.public.theme, halo.app, themeName]);
 
     focusHandler.current.blurCallback = (resetFocus) => {
@@ -384,6 +404,7 @@ const Cell = forwardRef(
           selections,
           nebbie,
           focusHandler: focusHandler.current,
+          emitter,
         });
         if (sn) {
           dispatch({ type: 'LOADED', sn, visualization });
@@ -527,6 +548,7 @@ const Cell = forwardRef(
               anchorEl={cellNode}
               hovering={hovering}
               focusHandler={focusHandler.current}
+              titleStyles={titleStyles}
             >
               &nbsp;
             </Header>
@@ -543,7 +565,7 @@ const Cell = forwardRef(
           >
             {Content}
           </Grid>
-          <Footer layout={layout} />
+          <Footer layout={layout} titleStyles={titleStyles} />
         </Grid>
         {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
       </Paper>

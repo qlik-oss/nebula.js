@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "4.0.0-alpha.5",
+    "version": "4.0.0-alpha.6",
     "license": "MIT",
     "stability": "stable"
   },
@@ -498,6 +498,19 @@
       },
       "examples": [
         "import { useRenderState } from '@nebula.js/stardust';\n\nconst renderState = useRenderState();\nuseState(() => {\n  if(needProperteisUpdate(...)) {\n     useRenderState.pending();\n     updateProperties(...);\n  } else {\n     useRenderState.restore();\n     ...\n  }\n}, [...]);"
+      ]
+    },
+    "useEmitter": {
+      "description": "Gets an event emitter instance for the visualization.",
+      "stability": "experimental",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "description": "The emitter instance.",
+        "type": "Emitter"
+      },
+      "examples": [
+        "// In a Nebula visualization\nimport { useEmitter } from '@nebula.js/stardust';\nuseEffect(()=> {\n  // on some trigger\n  emitter.emit(\"trigger\", params)\n}, [...])\n\n// In a mashup\nconst viz = await n.render({\n  element: el,\n  id: 'abcdef'\n});\nviz.on(\"trigger\", ()=> {\n  // do something\n})"
       ]
     },
     "useKeyboard": {
@@ -1179,6 +1192,42 @@
           },
           "examples": [
             "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.convertTo('barChart');"
+          ]
+        },
+        "on": {
+          "description": "Listens to custom events from inside the visualization. See useEmitter",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventName",
+              "description": "Event name to listen to",
+              "type": "string"
+            },
+            {
+              "name": "listener",
+              "description": "Callback function to invoke",
+              "kind": "function",
+              "params": []
+            }
+          ]
+        },
+        "off": {
+          "description": "Removes a listener",
+          "stability": "experimental",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventName",
+              "description": "Event name to remove from",
+              "type": "string"
+            },
+            {
+              "name": "listener",
+              "description": "Callback function to remove",
+              "kind": "function",
+              "params": []
+            }
           ]
         }
       },

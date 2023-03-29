@@ -1,4 +1,5 @@
 /* eslint-disable no-underscore-dangle */
+import EventEmitter from 'node-event-emitter';
 import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
@@ -17,6 +18,8 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
 
   let initialSnOptions = {};
   let initialSnPlugins = [];
+
+  const emitter = new EventEmitter();
 
   const setSnOptions = async (opts) => {
     if (mountedReference) {
@@ -109,6 +112,24 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       }
       return propertyTree;
     },
+    /**
+     * Listens to custom events from inside the visualization. See useEmitter
+     * @experimental
+     * @param {string} eventName Event name to listen to
+     * @param {Function} listener Callback function to invoke
+     */
+    on(eventName, listener) {
+      emitter.on(eventName, listener);
+    },
+    /**
+     * Removes a listener
+     * @experimental
+     * @param {string} eventName Event name to remove from
+     * @param {Function} listener Callback function to remove
+     */
+    off(eventName, listener) {
+      emitter.off(eventName, listener);
+    },
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {
       mount(element) {
@@ -124,6 +145,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
           initialSnPlugins,
           initialError,
           onMount,
+          emitter,
         });
         return mounted;
       },

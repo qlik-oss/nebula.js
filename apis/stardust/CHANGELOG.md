@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.6](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.5...v4.0.0-alpha.6) (2023-03-28)
+
+### Features
+
+- add useEmitter and corresponding viz api ([#1168](https://github.com/qlik-oss/nebula.js/issues/1168)) ([034be90](https://github.com/qlik-oss/nebula.js/commit/034be90b51031f32c21557c8de429ffb1e2df5d6))
+
 # [4.0.0-alpha.5](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.4...v4.0.0-alpha.5) (2023-03-23)
 
 **Note:** Version bump only for package @nebula.js/stardust
