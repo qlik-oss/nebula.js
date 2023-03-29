@@ -317,15 +317,17 @@ describe('keyboard navigation', () => {
 
     test('should change focus with Escape on a row', () => {
       const currentTarget = createElement();
+      const target = createElement(0);
       const event = {
         currentTarget,
+        target,
         nativeEvent: { keyCode: 27 },
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
-      expect(currentTarget.classList.contains).toHaveBeenCalledTimes(1);
-      expect(currentTarget.classList.contains).toHaveBeenCalledWith('listbox-container');
+      expect(target.classList.contains).toHaveBeenCalledTimes(1);
+      expect(target.classList.contains).toHaveBeenCalledWith('listbox-container');
       expect(currentTarget.setAttribute).toHaveBeenCalledTimes(0);
       expect(keyboard.blur).toHaveBeenCalledTimes(1);
       expect(currentTarget.focus).not.toHaveBeenCalled();
@@ -336,17 +338,19 @@ describe('keyboard navigation', () => {
     test('should change focus with Escape on a listbox', () => {
       const currentTarget = {
         ...createElement(),
-        classList: { contains: jest.fn().mockReturnValue(true) },
+        classList: { contains: jest.fn().mockReturnValue(true), add: jest.fn() },
       };
+      const target = createElement();
       const event = {
         currentTarget,
+        target,
         nativeEvent: { keyCode: 27 },
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
       handleKeyDownForListbox(event);
-      expect(currentTarget.classList.contains).toHaveBeenCalledTimes(1);
-      expect(currentTarget.classList.contains).toHaveBeenCalledWith('listbox-container');
+      expect(target.classList.contains).toHaveBeenCalledTimes(1);
+      expect(target.classList.contains).toHaveBeenCalledWith('listbox-container');
       expect(currentTarget.setAttribute).not.toHaveBeenCalled();
       expect(currentTarget.blur).not.toHaveBeenCalled();
       expect(currentTarget.focus).not.toHaveBeenCalled();

@@ -159,8 +159,8 @@ export function getListboxInlineKeyboardNavigation({
   constraints,
 }) {
   const blur = (event) => {
-    const { currentTarget } = event;
-    const isFocusedOnListbox = currentTarget.classList.contains('listbox-container');
+    const { currentTarget, target } = event;
+    const isFocusedOnListbox = target.classList.contains('listbox-container');
     const container = currentTarget.closest('.listbox-container');
     const vizCell = getVizCell(container);
     const isSingleListbox = vizCell?.querySelectorAll('.listbox-container').length === 1;
