@@ -3,9 +3,8 @@ import React, { useContext } from 'react';
 import { styled } from '@mui/material/styles';
 import InstanceContext from '../../../contexts/InstanceContext';
 
-export default function ListBoxDisclaimer({ width, text, dense, tooltip }) {
-  const { translator } = useContext(InstanceContext);
-  const StyledText = styled(Typography)(() => ({
+const StyledText = styled(Typography, { shouldForwardProp: (p) => !['width', 'dense'].includes(p) })(
+  ({ width, dense }) => ({
     minWidth: `${width}px`,
     textAlign: 'center',
     fontSize: `${dense ? '12px' : '14px'}`,
@@ -15,11 +14,15 @@ export default function ListBoxDisclaimer({ width, text, dense, tooltip }) {
       whiteSpace: 'nowrap',
       width,
     }),
-  }));
+  })
+);
+
+export default function ListBoxDisclaimer({ width, text, dense, tooltip }) {
+  const { translator } = useContext(InstanceContext);
 
   return (
     <Tooltip title={tooltip ? translator.get(text) : ''}>
-      <StyledText component="div" variant="body1" py="12px">
+      <StyledText width={width} dense={dense} component="div" variant="body1" py="12px">
         {translator.get(text)}
       </StyledText>
     </Tooltip>
