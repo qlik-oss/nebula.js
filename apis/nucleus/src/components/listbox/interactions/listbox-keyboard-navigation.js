@@ -1,4 +1,20 @@
 import KEYS from '../../../keys';
+import { getVizCell, removeLastFocused } from '../components/useTempKeyboard';
+
+const getElementIndex = (currentTarget) => +currentTarget.getAttribute('data-n');
+
+const focusSearch = (container) => {
+  const searchField = container?.querySelector('.search input');
+  searchField?.focus();
+  return searchField;
+};
+
+const focusRow = (container) => {
+  const row = container?.querySelector('.value.last-focused, .value.selector, .value');
+  row?.setAttribute('tabIndex', 0);
+  row?.focus();
+  return row;
+};
 
 export function getFieldKeyboardNavigation({
   select,
@@ -8,6 +24,8 @@ export function getFieldKeyboardNavigation({
   cancel,
   setScrollPosition,
   focusListItems,
+  keyboard,
+  isModal,
 }) {
   const getElement = (elm, next = false) => {
     const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
@@ -21,43 +39,76 @@ export function getFieldKeyboardNavigation({
 
   const handleKeyDown = (event) => {
     let elementToFocus;
-    const { keyCode, shiftKey = false, ctrlKey = false, metaKey = false } = event.nativeEvent;
+    const { currentTarget, nativeEvent } = event;
+    const { keyCode, shiftKey = false, ctrlKey = false, metaKey = false } = nativeEvent;
     switch (keyCode) {
+      case KEYS.TAB: {
+        // Try to focus search field, otherwise confirm button.
+        const container = currentTarget.closest('.listbox-container');
+        const inSelection = isModal();
+
+        // TODO: use a store to keep track of this row.
+        currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
+
+        if (shiftKey) {
+          if (!focusSearch(container)) {
+            if (inSelection) {
+              keyboard.focusSelection();
+            } else {
+              keyboard.blur(true);
+            }
+          }
+          break;
+        }
+
+        // Without shift key
+        if (inSelection) {
+          keyboard.focusSelection();
+        } else {
+          currentTarget.blur();
+          keyboard.blur();
+        }
+        break;
+      }
       case KEYS.SHIFT:
         // This is to ensure we include the first value when starting a range selection.
         setStartedRange(true);
         break;
       case KEYS.SPACE:
-        select([+event.currentTarget.getAttribute('data-n')], false, event);
+        select([getElementIndex(currentTarget)], false, event);
         break;
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_RIGHT:
-        elementToFocus = getElement(event.currentTarget, true);
+        elementToFocus = getElement(currentTarget, true);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
-            select([+event.currentTarget.getAttribute('data-n')], true);
+            select([getElementIndex(currentTarget)], true);
             setStartedRange(false);
           }
-          select([+elementToFocus.getAttribute('data-n')], true);
+          select([getElementIndex(elementToFocus)], true);
         }
         break;
       case KEYS.ARROW_UP:
       case KEYS.ARROW_LEFT:
-        elementToFocus = getElement(event.currentTarget, false);
+        elementToFocus = getElement(currentTarget, false);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
-            select([+event.currentTarget.getAttribute('data-n')], true);
+            select([getElementIndex(currentTarget)], true);
             setStartedRange(false);
           }
-          select([+elementToFocus.getAttribute('data-n')], true);
+          select([getElementIndex(elementToFocus)], true);
         }
         break;
       case KEYS.ENTER:
         confirm();
         break;
       case KEYS.ESCAPE:
-        cancel();
-        return; // let it propagate to top-level
+        if (isModal()) {
+          cancel();
+        } else {
+          return; // propagate to other Esc handler
+        }
+        break;
       case KEYS.HOME:
         focusListItems.setFirst(true);
         if (ctrlKey) {
@@ -99,38 +150,38 @@ export function getFieldKeyboardNavigation({
 }
 
 export function getListboxInlineKeyboardNavigation({
-  setKeyboardActive,
+  keyboard,
   hovering,
   setHovering,
   updateKeyScroll,
   containerRef,
   currentScrollIndex,
-  app,
-  appSelections,
+  isModal,
   constraints,
 }) {
-  const focusInsideListbox = (element) => {
-    const fieldElement = element.querySelector('.search input, .value.selector, .value, .ActionsToolbar-item button');
-    setKeyboardActive(true);
-    if (fieldElement) {
-      fieldElement.focus();
-    }
-  };
-
-  const changeFocus = (event) => {
-    if (event.target?.classList.contains('listbox-container')) {
-      // Focus currently on a listbox
-      // Esc on a list box should move the focus to its parent, i.e. a filter pane if any
-      setKeyboardActive(false);
+  const blur = (event) => {
+    const { currentTarget, target } = event;
+    const isFocusedOnListbox = target.classList.contains('listbox-container');
+    const container = currentTarget.closest('.listbox-container');
+    const vizCell = getVizCell(container);
+    const isSingleListbox = vizCell?.querySelectorAll('.listbox-container').length === 1;
+    if (isFocusedOnListbox || isSingleListbox) {
+      // Move the focus from listbox container to the viz container.
+      keyboard.blur(true);
     } else {
-      // Focus currently on a row
-      // Esc on a row should move the focus to its parent, i.e. a listbox
-      // First unfocus the row
-      event.target?.setAttribute('tabIndex', '-1');
-      event.target?.blur();
-      // Then focus the listbox
-      event.currentTarget?.setAttribute('tabIndex', '0');
-      event.currentTarget?.focus();
+      // More than one listbox: Move focus from row to listbox container.
+
+      // 1. Remove last-focused class from row siblings.
+      removeLastFocused(containerRef.current);
+
+      // 2. Add last-focused class so we can re-focus it later.
+      currentTarget.classList.add('last-focused');
+
+      // 3. Blur row and focus the listbox container.
+      keyboard.blur();
+      const c = currentTarget.closest('.listbox-container');
+      c.setAttribute('tabIndex', 0);
+      c?.focus();
     }
   };
 
@@ -143,51 +194,80 @@ export function getListboxInlineKeyboardNavigation({
   const handleKeyDown = (event) => {
     const { keyCode, ctrlKey = false, shiftKey = false } = event.nativeEvent;
 
+    const prevent = () => {
+      event.stopPropagation();
+      event.preventDefault();
+    };
+
     switch (keyCode) {
-      // case KEYS.TAB: TODO: Focus confirm button using keyboard.focusSelection when we can access the useKeyboard hook.
-      case KEYS.ENTER:
-      case KEYS.SPACE:
-        if (!event.target.classList.contains('listbox-container')) {
-          return; // don't mess with keydown handlers within the listbox
-        }
-        focusInsideListbox(event.currentTarget);
-        break;
-      case KEYS.ESCAPE:
-        changeFocus(event);
-        break;
-      case KEYS.ARROW_UP:
-        updateKeyScrollOnHover({ up: 1 });
-        break;
-      case KEYS.ARROW_DOWN:
-        updateKeyScrollOnHover({ down: 1 });
-        break;
-      case KEYS.ARROW_LEFT:
-      case KEYS.ARROW_RIGHT:
-        return; // let it propagate to top-level
       case KEYS.PAGE_UP:
         updateKeyScrollOnHover({ up: currentScrollIndex.stop - currentScrollIndex.start });
+        prevent();
         break;
       case KEYS.PAGE_DOWN:
         updateKeyScrollOnHover({ down: currentScrollIndex.stop - currentScrollIndex.start });
+        prevent();
         break;
       case KEYS.HOME:
         updateKeyScrollOnHover({ scrollPosition: ctrlKey && shiftKey ? 'overflowStart' : 'start' });
+        prevent();
         break;
       case KEYS.END:
         updateKeyScrollOnHover({ scrollPosition: ctrlKey && shiftKey ? 'overflowEnd' : 'end' });
+        prevent();
+        break;
+      case KEYS.ARROW_UP:
+        updateKeyScrollOnHover({ up: 1 });
+        prevent();
+        break;
+      case KEYS.ARROW_DOWN:
+        updateKeyScrollOnHover({ down: 1 });
+        prevent();
         break;
       default:
-        return;
+        break;
     }
 
-    // Note: We should not stop propagation here as it will block the containing app
-    // from handling keydown events.
-    event.preventDefault();
+    if (!keyboard.enabled) {
+      // Other keys should not be handled unless keyboard is enabled.
+      return undefined;
+    }
+
+    const container = event.currentTarget.closest('.listbox-container');
+
+    switch (keyCode) {
+      case KEYS.TAB:
+        if (shiftKey) {
+          focusRow(container) || focusSearch(container);
+        } else {
+          focusSearch(container) || focusRow(container);
+        }
+        prevent();
+        break;
+      case KEYS.ENTER:
+      case KEYS.SPACE:
+        if (!event.target.classList.contains('listbox-container')) {
+          return undefined; // don't mess with keydown handlers within the listbox (e.g. row seletion)
+        }
+        keyboard.focus();
+        prevent();
+        break;
+      case KEYS.ESCAPE:
+        blur(event);
+        prevent();
+        break;
+      case KEYS.ARROW_LEFT:
+      case KEYS.ARROW_RIGHT:
+        return undefined; // let it propagate to top-level
+      default:
+        break;
+    }
+    return undefined;
   };
 
   const focusOnHoverDisabled = () => {
     const selectNotAllowed = constraints?.select || constraints?.active;
-    const appInModal = app.isInModalSelection?.() ?? appSelections.isInModal();
+    const appInModal = isModal();
     return selectNotAllowed || appInModal;
   };
 

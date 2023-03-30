@@ -11,6 +11,7 @@ import Item from './ActionsToolbarItem';
 import useDefaultSelectionActions from '../hooks/useDefaultSelectionActions';
 import InstanceContext from '../contexts/InstanceContext';
 import More from './ActionsToolbarMore';
+import getActionsKeyDownHandler from './actions-toolbar-keydown';
 
 const PREFIX = 'ActionsToolbar';
 
@@ -46,9 +47,12 @@ const ActionToolbarElement = {
 };
 
 const ActionsGroup = React.forwardRef(
-  ({ ariaExpanded = false, actions = [], first = false, last = false, addAnchor = false, isRtl = false }, ref) =>
+  (
+    { className, ariaExpanded = false, actions = [], first = false, last = false, addAnchor = false, isRtl = false },
+    ref
+  ) =>
     actions.length > 0 ? (
-      <Grid item container gap={0} flexDirection={isRtl ? 'row-reverse' : 'row'} wrap="nowrap">
+      <Grid item container gap={0} flexDirection={isRtl ? 'row-reverse' : 'row'} wrap="nowrap" className={className}>
         {actions.map((e, ix) => {
           let cls = [];
           const isFirstItem = first && ix === 0;
@@ -114,15 +118,15 @@ function ActionsToolbar({
   const { translator, keyboardNavigation } = useContext(InstanceContext);
   const [showMoreItems, setShowMoreItems] = useState(false);
 
-  const moreRef = useRef();
-  const actionsRef = useRef();
-  const theme = useTheme();
-  const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
-
   const popoverAnchorOrigin = {
     vertical: 7,
     horizontal: (popover.anchorEl?.clientWidth ?? 0) - 7,
   };
+
+  const actionsRef = useRef();
+  const moreRef = useRef();
+  const theme = useTheme();
+  const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
 
   const getEnabledButton = (last) => {
     const actionsElement = actionsRef.current || actionsRefMock;
@@ -130,6 +134,11 @@ function ActionsToolbar({
     const buttons = actionsElement.querySelectorAll('button:not(.Mui-disabled)');
     return buttons[last ? buttons.length - 1 : 0];
   };
+
+  const handleActionsKeyDown = useMemo(
+    () => getActionsKeyDownHandler({ keyboardNavigation, focusHandler, getEnabledButton }),
+    [keyboardNavigation, focusHandler, getEnabledButton]
+  );
 
   useEffect(
     () => () => {
@@ -179,22 +188,6 @@ function ActionsToolbar({
     action: () => setShowMoreItems(!showMoreItems),
   };
 
-  const tabCallback =
-    // if keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
-    keyboardNavigation && focusHandler && focusHandler.refocusContent
-      ? (evt) => {
-          if (evt.key !== 'Tab') return;
-          const isTabbingOut =
-            (evt.shiftKey && getEnabledButton(false) === evt.target) ||
-            (!evt.shiftKey && getEnabledButton(true) === evt.target);
-          if (isTabbingOut) {
-            evt.preventDefault();
-            evt.stopPropagation();
-            focusHandler.refocusContent();
-          }
-        }
-      : null;
-
   const showActions = newActions.length > 0;
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
@@ -203,15 +196,19 @@ function ActionsToolbar({
   const Actions = (
     <Grid
       ref={actionsRef}
-      onKeyDown={tabCallback}
+      onKeyDown={handleActionsKeyDown}
       container
       gap={0}
       wrap="nowrap"
+      id="actions-toolbar"
+      data-testid="actions-toolbar"
       sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
     >
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
       {showMore && (
         <ActionsGroup
+          id="actions-toolbar-show-more"
+          data-testid="actions-toolbar-show-more"
           ref={moreRef}
           ariaExpanded={showMoreItems}
           actions={[moreItem]}
@@ -226,7 +223,13 @@ function ActionsToolbar({
         </Grid>
       )}
       {selections.show && (
-        <ActionsGroup actions={defaultSelectionActions} first={!showActions && !showMore} last isRtl={isRtl} />
+        <ActionsGroup
+          className="actions-toolbar-default-actions"
+          actions={defaultSelectionActions}
+          first={!showActions && !showMore}
+          last
+          isRtl={isRtl}
+        />
       )}
       {showMoreItems && (
         <More
@@ -253,6 +256,8 @@ function ActionsToolbar({
       hideBackdrop
       style={popoverStyle}
       PaperProps={{
+        id: 'njs-action-toolbar-popover',
+        'data-testid': 'njs-action-toolbar-popover',
         className: ActionToolbarElement.className,
         style: {
           pointerEvents: 'auto',

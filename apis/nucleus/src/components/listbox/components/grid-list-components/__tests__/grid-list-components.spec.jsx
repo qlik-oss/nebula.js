@@ -24,6 +24,7 @@ describe('grid-list-components', () => {
   let deriveRenderOptionsMock;
   let styledComponentsMock;
   let onItemsRendered;
+  let isModal;
 
   beforeAll(() => {
     getFrequencyAllowedMock = jest.spyOn(getFrequencyAllowed, 'default');
@@ -36,6 +37,7 @@ describe('grid-list-components', () => {
     confirm = jest.fn();
     cancel = jest.fn();
     onItemsRendered = jest.fn();
+    isModal = jest.fn();
   });
 
   beforeEach(() => {
@@ -97,6 +99,7 @@ describe('grid-list-components', () => {
         scrollBarWidth: 10,
         itemPadding: 4,
       },
+      isModal,
     });
   });
 

@@ -40,11 +40,13 @@ describe('<Listbox />', () => {
   let useCallbackMock;
   let setTimeoutStub;
   let useSelectionsInteractions;
+  let isModal;
 
   beforeEach(() => {
     jest.useFakeTimers();
 
     setTimeoutStub = jest.fn();
+    isModal = jest.fn();
 
     layout = {
       qSelectionInfo: { qInSelections: false },
@@ -165,6 +167,7 @@ describe('<Listbox />', () => {
                 fetchStart={mergedArgs.fetchStart}
                 keyScroll={mergedArgs.keyScroll}
                 currentScrollIndex={mergedArgs.currentScrollIndex}
+                isModal={isModal}
               />
             </InstanceContext.Provider>
           );

@@ -113,31 +113,54 @@ export default function ListBoxSearch({
     return response;
   };
 
+  function focusRow(container) {
+    const row = container?.querySelector('.last-focused') || container?.querySelector('[role="row"]:first-child');
+    row.setAttribute('tabIndex', 0);
+    row?.focus();
+  }
+
   const onKeyDown = async (e) => {
-    let response;
+    const { currentTarget } = e;
+    const container = currentTarget.closest('.listbox-container');
     switch (e.key) {
       case 'Enter':
-        response = await performSearch();
+        performSearch();
         break;
-      case 'Escape':
-        response = cancel();
-        e.preventDefault();
-        e.stopPropagation();
+      case 'Escape': {
+        focusRow(container);
+        cancel();
         break;
+      }
+      case 'Tab': {
+        if (e.shiftKey) {
+          keyboard.focusSelection();
+        } else {
+          // Focus the row we last visited or the first one.
+          focusRow(container);
+
+          // Clean up.
+          container?.querySelectorAll('.last-focused').forEach((elm) => {
+            elm.classList.remove('last-focused');
+          });
+        }
+        break;
+      }
       case 'f':
       case 'F':
         if (e.ctrlKey || e.metaKey) {
           if (hide) {
             hide();
           }
-          e.preventDefault();
-          e.stopPropagation();
+        } else {
+          return undefined;
         }
         break;
       default:
-        break;
+        return undefined;
     }
-    return response;
+    e.preventDefault();
+    e.stopPropagation();
+    return undefined;
   };
 
   if (!visible || searchEnabled === false) {
@@ -188,7 +211,7 @@ export default function ListBoxSearch({
       onKeyDown={onKeyDown}
       autoFocus={autoFocus}
       inputProps={{
-        tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
+        tabIndex: keyboard.innerTabStops ? 0 : -1,
         style: { textAlign: `${inpuTextAlign}` },
         'data-testid': 'search-input-field',
       }}
