@@ -151,8 +151,10 @@ export default function ListBoxSearch({
           if (hide) {
             hide();
           }
+        } else {
+          return undefined;
         }
-        return undefined;
+        break;
       default:
         return undefined;
     }
