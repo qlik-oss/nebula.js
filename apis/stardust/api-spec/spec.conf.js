@@ -40,6 +40,9 @@ module.exports = {
         'EngineAPI.INxMeasure': {
           url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FNxMeasure',
         },
+        Emitter: {
+          url: 'https://nodejs.org/api/events.html#class-eventemitter',
+        },
       },
     },
   },
