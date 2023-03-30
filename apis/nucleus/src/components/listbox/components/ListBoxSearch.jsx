@@ -190,6 +190,7 @@ export default function ListBoxSearch({
       inputProps={{
         tabIndex: keyboard && (!keyboard.enabled || keyboard.active) ? 0 : -1,
         style: { textAlign: `${inpuTextAlign}` },
+        'data-testid': 'search-input-field',
       }}
     />
   );
