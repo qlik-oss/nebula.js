@@ -47,6 +47,7 @@ export function getFieldKeyboardNavigation({
         const container = currentTarget.closest('.listbox-container');
         const inSelection = isModal();
 
+        // TODO: use a store to keep track of this row.
         currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
 
         if (shiftKey) {
@@ -191,6 +192,9 @@ export function getListboxInlineKeyboardNavigation({
   };
 
   const handleKeyDown = (event) => {
+    if (!keyboard.enabled) {
+      return undefined;
+    }
     const { keyCode, ctrlKey = false, shiftKey = false } = event.nativeEvent;
 
     const container = event.currentTarget.closest('.listbox-container');

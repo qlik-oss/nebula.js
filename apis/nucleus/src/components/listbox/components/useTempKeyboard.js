@@ -28,6 +28,9 @@ export default function useTempKeyboard({ containerRef, enabled }) {
     innerTabStops, // does keyboard permit inner tab stops
     outerTabStops: !innerTabStops, // does keyboard permit outer tab stops
     blur: (resetFocus) => {
+      if (!enabled) {
+        return;
+      }
       setKeyboardActive(false);
       const vizCell = getVizCell(containerRef.current) || containerRef.current?.parentElement;
       removeInnnerTabStops(containerRef.current);
@@ -39,6 +42,9 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       }
     },
     focus: () => {
+      if (!enabled) {
+        return;
+      }
       setKeyboardActive(true);
       const c = containerRef.current;
       const searchField = c?.querySelector('.search input');
