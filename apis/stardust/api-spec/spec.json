@@ -506,7 +506,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "description": "The emitter instance.",
+        "description": "The emitter instance. Implements https://nodejs.org/api/events.html#class-eventemitter.",
         "type": "Emitter"
       },
       "examples": [
