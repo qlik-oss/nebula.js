@@ -42,7 +42,6 @@ export default function ListBox({
   currentScrollIndex = { set: () => {} },
   renderedCallback,
   onCtrlF,
-  selectRef,
 }) {
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
@@ -115,8 +114,6 @@ export default function ListBox({
     checkboxes,
     doc: document,
   });
-  // eslint-disable-next-line no-param-reassign
-  selectRef.current.select = select;
 
   const { layoutOptions = {} } = layout || {};
 
