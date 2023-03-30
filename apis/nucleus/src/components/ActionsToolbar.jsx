@@ -120,7 +120,7 @@ function ActionsToolbar({
   const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
 
   const popoverAnchorOrigin = {
-    vertical: 15,
+    vertical: 7,
     horizontal: (popover.anchorEl?.clientWidth ?? 0) - 7,
   };
 
