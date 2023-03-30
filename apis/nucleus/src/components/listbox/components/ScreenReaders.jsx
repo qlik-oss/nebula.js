@@ -35,6 +35,7 @@ export function getValueLabel({ translator, label, qState, isSelected, currentIn
 /**
  * Announces the selection state.
  *
+ * @ignore
  * @param {Layout} object
  * @returns {Element} An (invisible) component.
  */
