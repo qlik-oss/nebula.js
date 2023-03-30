@@ -82,6 +82,7 @@ function ListBoxInline({ options, layout }) {
     scrollState = undefined,
     renderedCallback,
     toolbar = true,
+    isCollapsed = false,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -154,6 +155,14 @@ function ListBoxInline({ options, layout }) {
         setShowSearch(false);
       }
     };
+    if (isCollapsed) {
+      if (!selections.isActive()) {
+        selections.begin('/qListObjectDef');
+        selections.on('activated', show);
+        selections.on('deactivated', hide);
+      }
+      setShowToolbar(isCollapsed);
+    }
     if (selections) {
       if (!selections.isModal()) {
         selections.on('activated', show);
@@ -168,7 +177,7 @@ function ListBoxInline({ options, layout }) {
         selections.removeListener('deactivated', hide);
       }
     };
-  }, [selections]);
+  }, [selections, isCollapsed]);
 
   useEffect(() => {
     if (!searchContainer || !searchContainer.current) {
