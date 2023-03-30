@@ -19,6 +19,20 @@ jest.mock('@nebula.js/ui/theme', () => ({ ...jest.requireActual('@nebula.js/ui/t
 const Popover = (props) => props.children || 'popover';
 const InstanceContext = React.createContext();
 
+const createButton = (levels = 0) => ({
+  classList: {
+    contains: jest.fn().mockReturnValue(true),
+    add: jest.fn(),
+    remove: jest.fn(),
+  },
+  setAttribute: jest.fn(),
+  blur: jest.fn(),
+  focus: jest.fn(),
+  querySelectorAll: jest.fn().mockReturnValue([]),
+  querySelector: jest.fn().mockReturnValue(levels <= 0 ? {} : createButton(levels - 1)),
+  closest: jest.fn().mockReturnValue(levels <= 0 ? {} : createButton(levels - 1)),
+});
+
 describe('<ActionsToolbar />', () => {
   let renderer;
   let render;
@@ -91,7 +105,7 @@ describe('<ActionsToolbar />', () => {
     selections.show = true;
     await render({ selections });
     const selItems = renderer.root.findAllByType(IconButton);
-    expect(selItems.length).toBe(3);
+    expect(selItems).toHaveLength(3);
   });
 
   test('should render custom actions', async () => {
@@ -106,7 +120,7 @@ describe('<ActionsToolbar />', () => {
     ];
     await render({ actions });
     const IconButtons = renderer.root.findAllByType(IconButton);
-    expect(IconButtons.length).toBe(1);
+    expect(IconButtons).toHaveLength(1);
   });
 
   test('should not render hidden custom actions', async () => {
@@ -132,7 +146,7 @@ describe('<ActionsToolbar />', () => {
     expect(more.props).toMatchObject({
       title: 'Menu.More',
     });
-    expect(items.length).toBe(3);
+    expect(items).toHaveLength(3);
   });
 
   test('should render divider', async () => {
@@ -226,7 +240,7 @@ describe('<ActionsToolbar />', () => {
     await update({ actions, popover: { show: false } });
     await update({ actions, popover: { show: true } });
     const popovers = renderer.root.findAllByType(Popover);
-    expect(popovers.length).toBe(1);
+    expect(popovers).toHaveLength(1);
   });
 
   describe('keyboard navigation', () => {
@@ -255,51 +269,57 @@ describe('<ActionsToolbar />', () => {
     test('should call focusHandler.refocusContent when tabbing from last button', async () => {
       await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
       const container = renderer.root.findAllByType(Grid).find((i) => i.props && i.props.container);
-      const tabEvent = {
-        key: 'Tab',
+      const event = {
+        nativeEvent: {
+          keyCode: 9, // tab
+        },
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
         target: buttonsMock[1], // last button
       };
-      container.props.onKeyDown(tabEvent);
+      container.props.onKeyDown(event);
 
       expect(focusHandler.refocusContent).toHaveBeenCalledTimes(1);
-      expect(tabEvent.preventDefault).toHaveBeenCalledTimes(1);
-      expect(tabEvent.stopPropagation).toHaveBeenCalledTimes(1);
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(event.stopPropagation).toHaveBeenCalledTimes(1);
     });
 
     test('should call focusHandler.refocusContent when shift tabbing from first button', async () => {
       await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
       const container = renderer.root.findAllByType(Grid).find((i) => i.props && i.props.container);
-      const tabEvent = {
-        key: 'Tab',
+      const event = {
+        nativeEvent: {
+          keyCode: 9, // tab
+        },
         shiftKey: true,
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
         target: buttonsMock[0], // first button
       };
-      container.props.onKeyDown(tabEvent);
+      container.props.onKeyDown(event);
 
       expect(focusHandler.refocusContent).toHaveBeenCalledTimes(1);
-      expect(tabEvent.preventDefault).toHaveBeenCalledTimes(1);
-      expect(tabEvent.stopPropagation).toHaveBeenCalledTimes(1);
+      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(event.stopPropagation).toHaveBeenCalledTimes(1);
     });
 
     test('should not call focusHandler.refocusContent when shift tabbing from last button', async () => {
       await render({ actions, focusHandler, actionsRefMock, popover: { show: true } });
       const container = renderer.root.findAllByType(Grid).find((i) => i.props && i.props.container);
-      const tabEvent = {
-        key: 'Tab',
+      const event = {
+        nativeEvent: {
+          keyCode: 9, // tab
+        },
         shiftKey: true,
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
         target: buttonsMock[1], // first button
       };
-      container.props.onKeyDown(tabEvent);
+      container.props.onKeyDown(event);
 
       expect(focusHandler.refocusContent).not.toHaveBeenCalled();
-      expect(tabEvent.preventDefault).not.toHaveBeenCalled();
-      expect(tabEvent.stopPropagation).not.toHaveBeenCalled();
+      expect(event.preventDefault).not.toHaveBeenCalled();
+      expect(event.stopPropagation).not.toHaveBeenCalled();
     });
 
     test('should add event listeners to focusHandler, with callbacks that focus buttons', async () => {
@@ -310,6 +330,42 @@ describe('<ActionsToolbar />', () => {
 
       expect(buttonsMock[0].focus).toHaveBeenCalledTimes(1);
       expect(buttonsMock[1].focus).toHaveBeenCalledTimes(1);
+    });
+
+    test('should focus the next focusable button to the right', async () => {
+      const firstButton = {
+        ...createButton(),
+        closest: jest.fn().mockReturnValue({
+          querySelectorAll: jest.fn().mockImplementation((selector) => {
+            if (selector === '.njs-cell-action') {
+              return realButtonsMock;
+            }
+            return [];
+          }),
+        }),
+      };
+      const realButtonsMock = [firstButton, createButton()];
+      const actionsRef = { querySelectorAll: () => realButtonsMock };
+      const mockQuerySelectorAll = jest.spyOn(document, 'querySelectorAll');
+      mockQuerySelectorAll.mockImplementation(() => realButtonsMock);
+      await render({ actions, focusHandler, actionsRefMock: actionsRef, popover: { show: true } });
+      const container = renderer.root.findAllByType(Grid).find((i) => i.props && i.props.container);
+      const event = {
+        nativeEvent: {
+          keyCode: 39, // arrow right
+        },
+        shiftKey: false,
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+        target: firstButton,
+      };
+
+      container.props.onKeyDown(event);
+
+      expect(realButtonsMock[0].focus).not.toHaveBeenCalled();
+      expect(realButtonsMock[1].focus).toHaveBeenCalled();
+      expect(event.preventDefault).not.toHaveBeenCalled();
+      expect(event.stopPropagation).not.toHaveBeenCalled();
     });
   });
 });
