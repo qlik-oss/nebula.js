@@ -53,8 +53,8 @@ describe('keyboard navigation', () => {
     keyboard = {
       blur: jest.fn(),
       focus: jest.fn(),
-      enabled: jest.fn(),
-      active: jest.fn(),
+      enabled: true,
+      active: false,
       focusSelection: jest.fn(),
     };
     setScrollPosition = jest.fn();
@@ -266,6 +266,11 @@ describe('keyboard navigation', () => {
     test('should focus value with Space', () => {
       const element = { focus: jest.fn() };
       const event = {
+        target: {
+          classList: {
+            contains: jest.fn().mockReturnValue(true),
+          },
+        },
         currentTarget: {
           ...createElement(0),
           getAttribute: jest.fn().mockReturnValue(1),
@@ -284,6 +289,11 @@ describe('keyboard navigation', () => {
     test('should not focus value with Space when target is not listbox-container', () => {
       const element = { focus: jest.fn() };
       const event = {
+        target: {
+          classList: {
+            contains: jest.fn().mockReturnValue(true),
+          },
+        },
         currentTarget: {
           ...createElement(0),
           querySelector: jest.fn().mockReturnValue(element),
@@ -301,6 +311,11 @@ describe('keyboard navigation', () => {
     test('should focus value with Enter', () => {
       const element = { focus: jest.fn() };
       const event = {
+        target: {
+          classList: {
+            contains: jest.fn().mockReturnValue(true),
+          },
+        },
         currentTarget: {
           ...createElement(0),
           querySelector: jest.fn().mockReturnValue(element),

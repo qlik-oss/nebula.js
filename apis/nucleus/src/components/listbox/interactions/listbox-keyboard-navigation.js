@@ -192,10 +192,46 @@ export function getListboxInlineKeyboardNavigation({
   };
 
   const handleKeyDown = (event) => {
+    const { keyCode, ctrlKey = false, shiftKey = false } = event.nativeEvent;
+
+    const prevent = () => {
+      event.stopPropagation();
+      event.preventDefault();
+    };
+
+    switch (keyCode) {
+      case KEYS.PAGE_UP:
+        updateKeyScrollOnHover({ up: currentScrollIndex.stop - currentScrollIndex.start });
+        prevent();
+        break;
+      case KEYS.PAGE_DOWN:
+        updateKeyScrollOnHover({ down: currentScrollIndex.stop - currentScrollIndex.start });
+        prevent();
+        break;
+      case KEYS.HOME:
+        updateKeyScrollOnHover({ scrollPosition: ctrlKey && shiftKey ? 'overflowStart' : 'start' });
+        prevent();
+        break;
+      case KEYS.END:
+        updateKeyScrollOnHover({ scrollPosition: ctrlKey && shiftKey ? 'overflowEnd' : 'end' });
+        prevent();
+        break;
+      case KEYS.ARROW_UP:
+        updateKeyScrollOnHover({ up: 1 });
+        prevent();
+        break;
+      case KEYS.ARROW_DOWN:
+        updateKeyScrollOnHover({ down: 1 });
+        prevent();
+        break;
+      default:
+        break;
+    }
+
     if (!keyboard.enabled) {
+      // Other keys should not be handled unless keyboard is enabled.
       return undefined;
     }
-    const { keyCode, ctrlKey = false, shiftKey = false } = event.nativeEvent;
 
     const container = event.currentTarget.closest('.listbox-container');
 
@@ -206,6 +242,7 @@ export function getListboxInlineKeyboardNavigation({
         } else {
           focusSearch(container) || focusRow(container);
         }
+        prevent();
         break;
       case KEYS.ENTER:
       case KEYS.SPACE:
@@ -213,37 +250,18 @@ export function getListboxInlineKeyboardNavigation({
           return undefined; // don't mess with keydown handlers within the listbox (e.g. row seletion)
         }
         keyboard.focus();
+        prevent();
         break;
       case KEYS.ESCAPE:
         blur(event);
-        break;
-      case KEYS.ARROW_UP:
-        updateKeyScrollOnHover({ up: 1 });
-        break;
-      case KEYS.ARROW_DOWN:
-        updateKeyScrollOnHover({ down: 1 });
+        prevent();
         break;
       case KEYS.ARROW_LEFT:
       case KEYS.ARROW_RIGHT:
         return undefined; // let it propagate to top-level
-      case KEYS.PAGE_UP:
-        updateKeyScrollOnHover({ up: currentScrollIndex.stop - currentScrollIndex.start });
-        break;
-      case KEYS.PAGE_DOWN:
-        updateKeyScrollOnHover({ down: currentScrollIndex.stop - currentScrollIndex.start });
-        break;
-      case KEYS.HOME:
-        updateKeyScrollOnHover({ scrollPosition: ctrlKey && shiftKey ? 'overflowStart' : 'start' });
-        break;
-      case KEYS.END:
-        updateKeyScrollOnHover({ scrollPosition: ctrlKey && shiftKey ? 'overflowEnd' : 'end' });
-        break;
       default:
-        return undefined;
+        break;
     }
-
-    event.stopPropagation();
-    event.preventDefault();
     return undefined;
   };
 
