@@ -1,17 +1,20 @@
 import KEYS from '../keys';
 
 const getActionButtonIndex = (btn) => {
-  const nodeList = btn.closest('#njs-action-toolbar-popover').querySelectorAll('.njs-cell-action');
+  const toolbar = btn.closest('#actions-toolbar');
+  const nodeList = toolbar?.querySelectorAll('.njs-cell-action');
   return Array.from(nodeList).indexOf(btn);
 };
 
 const focusButton = (index) => {
-  const nodeList = document.querySelectorAll('#njs-action-toolbar-popover .njs-cell-action');
+  const toolbar = document.querySelector('#actions-toolbar');
+  const nodeList = toolbar?.querySelectorAll('.njs-cell-action');
   if (!nodeList.length) {
     return;
   }
   const ix = Math.min(Math.max(0, index), nodeList.length - 1);
-  nodeList[ix].focus();
+  const btn = nodeList[ix];
+  btn.focus();
 };
 
 export default function getActionsKeyDownHandler({ keyboardNavigation, focusHandler, getEnabledButton }) {
@@ -29,6 +32,8 @@ export default function getActionsKeyDownHandler({ keyboardNavigation, focusHand
           const pressedLeft = [KEYS.ARROW_LEFT, KEYS.ARROW_DOWN].includes(keyCode);
           focusButton(pressedLeft ? index - 1 : index + 1);
         }
+        evt.stopPropagation();
+        evt.preventDefault();
         break;
       }
       case KEYS.SPACE:
@@ -42,11 +47,11 @@ export default function getActionsKeyDownHandler({ keyboardNavigation, focusHand
           if (isTabbingOut) {
             evt.preventDefault();
             evt.stopPropagation();
+            // if keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
             focusHandler.refocusContent();
           }
         }
         break;
-      // if keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
       default:
         break;
     }

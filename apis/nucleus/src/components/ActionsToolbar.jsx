@@ -200,6 +200,8 @@ function ActionsToolbar({
       container
       gap={0}
       wrap="nowrap"
+      id="actions-toolbar"
+      data-testid="actions-toolbar"
       sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
     >
       {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}

@@ -347,7 +347,9 @@ describe('<ActionsToolbar />', () => {
       const realButtonsMock = [firstButton, createButton()];
       const actionsRef = { querySelectorAll: () => realButtonsMock };
       const mockQuerySelectorAll = jest.spyOn(document, 'querySelectorAll');
+      const mockQuerySelector = jest.spyOn(document, 'querySelector');
       mockQuerySelectorAll.mockImplementation(() => realButtonsMock);
+      mockQuerySelector.mockImplementation(() => actionsRef);
       await render({ actions, focusHandler, actionsRefMock: actionsRef, popover: { show: true } });
       const container = renderer.root.findAllByType(Grid).find((i) => i.props && i.props.container);
       const event = {
@@ -364,8 +366,8 @@ describe('<ActionsToolbar />', () => {
 
       expect(realButtonsMock[0].focus).not.toHaveBeenCalled();
       expect(realButtonsMock[1].focus).toHaveBeenCalled();
-      expect(event.preventDefault).not.toHaveBeenCalled();
-      expect(event.stopPropagation).not.toHaveBeenCalled();
+      expect(event.preventDefault).toHaveBeenCalled();
+      expect(event.stopPropagation).toHaveBeenCalled();
     });
   });
 });
