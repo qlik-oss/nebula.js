@@ -1,6 +1,8 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { selectValues, fillRange, getElemNumbersFromPages } from './listbox-selections';
+import rowColClasses from '../../components/ListBoxRowColumn/helpers/classes';
 
+const dataItemSelector = `.${rowColClasses.fieldRoot}`;
 const getKeyAsToggleSelected = (event) => !(event?.metaKey || event?.ctrlKey);
 
 export default function useSelectionsInteractions({ selectionState, selections, checkboxes = false, doc = document }) {
@@ -10,6 +12,7 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     isRange: false,
     toggle: false,
     active: false,
+    touchElemNumbers: [],
   });
 
   // eslint-disable-next-line arrow-body-style
@@ -138,6 +141,45 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     addToRange(elemNumber);
   }, []);
 
+  const onTouchStart = useCallback((event) => {
+    // Handle range selection with two finger touch
+    if (currentSelect.current.active || currentSelect.current.isRange) {
+      return;
+    }
+    if (event.touches.length <= 1) {
+      return;
+    }
+    if (event.touches.length > 2) {
+      currentSelect.current.active = false;
+      doSelect();
+      return;
+    }
+    const startElemNumber = Number(event.touches[0].target?.closest(dataItemSelector)?.getAttribute('data-n'));
+    const endElemNumber = Number(event.touches[1].target?.closest(dataItemSelector)?.getAttribute('data-n'));
+
+    if (Number.isNaN(startElemNumber) || Number.isNaN(startElemNumber)) {
+      currentSelect.current.active = false;
+      doSelect();
+      return;
+    }
+
+    currentSelect.current.active = true;
+    currentSelect.current.touchElemNumbers = [startElemNumber, endElemNumber];
+  }, []);
+
+  const onTouchEnd = useCallback(() => {
+    if (!currentSelect.current.active || currentSelect.current.touchElemNumbers.length !== 2) {
+      return;
+    }
+
+    // eslint-disable-next-line prefer-destructuring
+    currentSelect.current.startElemNumber = currentSelect.current.touchElemNumbers[0];
+    addToRange(currentSelect.current.touchElemNumbers[1]);
+    currentSelect.current.active = false;
+    currentSelect.current.toggle = false; // TODO: Deselects previously selected items
+    doSelect();
+  }, []);
+
   useEffect(() => {
     doc.addEventListener('mouseup', onMouseUpDoc);
     return () => {
@@ -169,7 +211,7 @@ export default function useSelectionsInteractions({ selectionState, selections, 
   if (checkboxes) {
     Object.assign(interactionEvents, { onChange });
   } else {
-    Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter });
+    Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter, onTouchStart, onTouchEnd });
   }
 
   return {

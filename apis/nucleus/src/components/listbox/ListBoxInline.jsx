@@ -13,7 +13,7 @@ import createListboxSelectionToolbar from './interactions/listbox-selection-tool
 import ActionsToolbar from '../ActionsToolbar';
 import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
-import { getListboxInlineKeyboardNavigation, getTouchSelection } from './interactions/listbox-keyboard-navigation';
+import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
 import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
@@ -231,8 +231,6 @@ function ListBoxInline({ options, layout }) {
       selections,
     });
 
-  const handleOnTouchStart = getTouchSelection({ selections, selectionState, selectRef });
-
   const shouldAutoFocus = searchVisible && search === 'toggle';
   const showSearchIcon = searchEnabled !== false && search === 'toggle';
   const showSearchOrLockIcon = isLocked || showSearchIcon;
@@ -285,7 +283,6 @@ function ListBoxInline({ options, layout }) {
         onKeyDown={handleKeyDown}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
-        onTouchStart={handleOnTouchStart}
         ref={containerRef}
         hasIcon={showIcons}
       >
