@@ -42,6 +42,7 @@ export default function ListBoxPopover({
   const open = show && Boolean(alignTo.current);
   const [listCount, setListCount] = useState(0);
   const theme = useTheme();
+  const searchContainerRef = useRef();
   const [model] = useSessionModel(
     {
       qInfo: {
@@ -119,6 +120,11 @@ export default function ListBoxPopover({
     selectionState,
   });
 
+  const onCtrlF = () => {
+    const input = searchContainerRef.current.querySelector('input');
+    input?.focus();
+  };
+
   const hasSelections = getHasSelections(layout);
 
   return (
@@ -171,15 +177,17 @@ export default function ListBoxPopover({
         </Grid>
         <Grid item xs>
           <div ref={moreAlignTo} />
-          <ListBoxSearch
-            visible
-            model={model}
-            listCount={listCount}
-            selections={selections}
-            selectionState={selectionState}
-            keyboard={{ enabled: false }}
-            autoFocus={autoFocus ?? true}
-          />
+          <Grid item ref={searchContainerRef}>
+            <ListBoxSearch
+              visible
+              model={model}
+              listCount={listCount}
+              selections={selections}
+              selectionState={selectionState}
+              keyboard={{ enabled: false }}
+              autoFocus={autoFocus ?? true}
+            />
+          </Grid>
           <ListBox
             model={model}
             app={app}
@@ -188,6 +196,7 @@ export default function ListBoxPopover({
             selectionState={selectionState}
             direction="ltr"
             onSetListCount={(c) => setListCount(c)}
+            onCtrlF={onCtrlF}
           />
         </Grid>
       </Grid>

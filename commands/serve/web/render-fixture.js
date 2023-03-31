@@ -103,8 +103,12 @@ const renderFixture = async (params) => {
   const element = document.querySelector('#chart-container');
   const serverInfo = await getConnectionInfo();
   const fixture = await getFixture(params.fixture);
-  const { type, load, genericObjects, instanceConfig, snConfig } = await getOptions({ fixture, params, serverInfo });
-  const mockedApp = await EnigmaMocker.fromGenericObjects(genericObjects);
+  const { type, load, genericObjects, instanceConfig, snConfig, enigmaMockerOptions } = await getOptions({
+    fixture,
+    params,
+    serverInfo,
+  });
+  const mockedApp = await EnigmaMocker.fromGenericObjects(genericObjects, enigmaMockerOptions);
   const qId = getQId(genericObjects);
 
   const nebbie = embed(mockedApp, {
@@ -116,7 +120,18 @@ const renderFixture = async (params) => {
     ],
     ...instanceConfig,
   });
-  nebbie.render({ type, element, id: qId, ...snConfig });
+  const viz = await nebbie.render({
+    type,
+    element,
+    id: qId,
+    ...snConfig,
+  });
+  const events = snConfig?.events || [];
+  events.forEach((e) => {
+    viz.on(e, (message) => {
+      document.querySelector('#events').innerHTML = message;
+    });
+  });
 };
 
 export default renderFixture;

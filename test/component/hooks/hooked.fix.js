@@ -10,6 +10,7 @@ export default function fixture() {
       options: {
         myOption: 'opts',
       },
+      events: ['somethingEmitted'],
     },
     genericObjects: [
       {

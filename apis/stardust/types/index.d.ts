@@ -161,6 +161,11 @@ export function onTakeSnapshot(snapshotCallback: ($: EngineAPI.IGenericObjectLay
 export function useRenderState(): stardust.RenderState;
 
 /**
+ * Gets an event emitter instance for the visualization.
+ */
+export function useEmitter(): Emitter;
+
+/**
  * Gets the desired keyboard settings and status to applied when rendering the visualization.
  * A visualization should in general only have tab stops if either `keyboard.enabled` is false or if active is true.
  * This means that either Nebula isn't configured to handle keyboard input or the chart is currently focused.
@@ -304,7 +309,7 @@ declare namespace stardust {
             dense?: boolean;
             stateName?: string;
             properties?: object;
-        }): void;
+        }): Promise<void>;
 
         /**
          * Unmounts the field listbox from the DOM.
@@ -366,6 +371,28 @@ declare namespace stardust {
          */
         convertTo(newType: string, forceUpdate?: boolean): Promise<object>;
 
+        /**
+         * Listens to custom events from inside the visualization. See useEmitter
+         * @param eventName Event name to listen to
+         * @param listener Callback function to invoke
+         */
+        on(eventName: string, listener: ()=>void): void;
+
+        /**
+         * Removes a listener
+         * @param eventName Event name to remove from
+         * @param listener Callback function to remove
+         */
+        off(eventName: string, listener: ()=>void): void;
+
+    }
+
+    interface Flags {
+        /**
+         * Checks whether the specified flag is enabled.
+         * @param flag The value flag to check.
+         */
+        isEnabled(flag: string): boolean;
     }
 
     class AppSelections {
@@ -426,14 +453,6 @@ declare namespace stardust {
          */
         noModal(accept?: boolean): Promise<undefined>;
 
-    }
-
-    interface Flags {
-        /**
-         * Checks whether the specified flag is enabled.
-         * @param flag The value flag to check.
-         */
-        isEnabled(flag: string): boolean;
     }
 
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;

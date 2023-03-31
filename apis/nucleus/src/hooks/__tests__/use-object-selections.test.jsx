@@ -7,6 +7,10 @@ import * as useAppSelectionsModule from '../useAppSelections';
 import * as useLayoutModule from '../useLayout';
 import * as selectionsStoreModule from '../../stores/selections-store';
 
+jest.mock('../../stores/selections-store');
+jest.mock('../useAppSelections');
+jest.mock('../useLayout');
+
 const TestHook = forwardRef(({ hook, hookProps = [] }, ref) => {
   const result = hook(...hookProps);
   useImperativeHandle(ref, () => ({
@@ -15,7 +19,7 @@ const TestHook = forwardRef(({ hook, hookProps = [] }, ref) => {
   return null;
 });
 
-describe.skip('useObjectSelections', () => {
+describe('useObjectSelections', () => {
   let renderer;
   let render;
   let ref;
@@ -48,11 +52,7 @@ describe.skip('useObjectSelections', () => {
     appSel = {
       isModal: jest.fn(),
     };
-    layout = {
-      qListObject: {
-        qDimensionInfo: { qLocked: false },
-      },
-    };
+    layout = {};
     modalObjectStore = {
       set: jest.fn(),
       get: jest.fn(),
@@ -103,6 +103,10 @@ describe.skip('useObjectSelections', () => {
   });
 
   afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => {
     renderer.unmount();
     jest.restoreAllMocks();
     jest.resetAllMocks();

@@ -4,8 +4,7 @@ import RowColumn from '../ListBoxRowColumn';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
 import handleSetOverflowDisclaimer from './set-overflow-disclaimer';
-
-const REMOVE_TICK_LIMIT = 80; // an item width equal to or less than this, will hide the select tick
+import { REMOVE_TICK_LIMIT } from '../../constants';
 
 const { StyledFixedSizeList, StyledFixedSizeGrid } = getStyledComponents();
 
@@ -22,6 +21,8 @@ export default function getListBoxComponents({
   histogram,
   isSingleSelect,
   select,
+  selectAll,
+  onCtrlF,
   textAlign,
   selections,
   keyboard,
@@ -37,6 +38,9 @@ export default function getListBoxComponents({
   constraints,
   frequencyMax,
   freqIsAllowed,
+  translator,
+  showSearch,
+  isModal,
 }) {
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, itemPadding, listHeight, itemHeight, rowCount, columnCount, frequencyWidth } = sizes || {};
@@ -72,6 +76,8 @@ export default function getListBoxComponents({
       confirm: () => selections?.confirm.call(selections),
       cancel: () => selections?.cancel.call(selections),
       setScrollPosition,
+      selectAll,
+      onCtrlF,
     },
     frequencyMax,
     histogram,
@@ -81,6 +87,9 @@ export default function getListBoxComponents({
     dataOffset: local.current.dataOffset,
     focusListItems,
     direction,
+    translator,
+    showSearch,
+    isModal,
   };
 
   const List = ({ onItemsRendered, ref }) => {

@@ -1,7 +1,7 @@
 import { useEffect, useCallback, useRef } from 'react';
 import { selectValues, fillRange, getElemNumbersFromPages } from './listbox-selections';
 
-const getKeyAsToggleSelected = (event) => !(event.metaKey || event.ctrlKey);
+const getKeyAsToggleSelected = (event) => !(event?.metaKey || event?.ctrlKey);
 
 export default function useSelectionsInteractions({ selectionState, selections, checkboxes = false, doc = document }) {
   const currentSelect = useRef({
@@ -34,7 +34,12 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     selectionState.updateItems(toMaybeAdd, true, currentSelect.current.elemNumbers);
   };
 
-  const selectManually = (elementIds = [], additive = false) => {
+  const selectManually = (elementIds = [], additive = false, event = undefined) => {
+    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event?.nativeEvent);
+    if (!toggle) {
+      selectionState.clearItemStates(true);
+    }
+
     const elemNumbers = [];
     selectionState.updateItems(elementIds, additive, elemNumbers);
     selectionState.setSelectableValuesUpdating();
@@ -43,7 +48,7 @@ export default function useSelectionsInteractions({ selectionState, selections, 
       selections,
       elemNumbers: additive ? elemNumbers : elementIds,
       isSingleSelect: selectionState.isSingleSelect,
-      toggle: !selectionState.isSingleSelect,
+      toggle,
     });
   };
 

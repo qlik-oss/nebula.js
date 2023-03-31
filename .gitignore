@@ -25,3 +25,8 @@ Search/
 
 local-dev/
 storybook-static/
+
+# testing
+test/rendering/reports
+test-results
+test/rendering/test/rendering/reports

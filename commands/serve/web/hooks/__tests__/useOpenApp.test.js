@@ -1,7 +1,7 @@
 import { renderHook, act } from '@testing-library/react';
 import * as ENIGMA from 'enigma.js';
 import * as SenseUtilities from 'enigma.js/sense-utilities';
-import qixSchema from 'enigma.js/schemas/12.936.0.json';
+import qixSchema from 'enigma.js/schemas/12.1657.0.json';
 import { useOpenApp } from '../useOpenApp';
 import * as getAuthInstanceModule from '../../connect';
 

@@ -28,6 +28,8 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
     ? (e) => ['Enter', ' ', 'Spacebar'].includes(e.key) && item.keyboardAction()
     : null;
 
+  const btnId = `actions-toolbar-${item.key}`;
+
   return (
     <IconButton
       ref={!addAnchor ? ref : null}
@@ -36,11 +38,12 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
       onKeyDown={handleKeyDown}
       disabled={disabled}
       style={style}
-      className={ActionElement.className}
+      className={[ActionElement.className, btnId].join(' ')}
       size="large"
       disableRipple
       aria-expanded={ariaExpanded}
       aria-controls="moreMenuList"
+      data-testid={btnId}
     >
       {hasSvgIconShape && SvgIcon(item.getSvgIconShape())}
       {addAnchor && (

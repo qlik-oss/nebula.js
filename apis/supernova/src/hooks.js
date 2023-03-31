@@ -1010,7 +1010,7 @@ export function onTakeSnapshot(cb) {
  * @ignore
  * @example
  * import { onContextMenu } from '@nebula.js/stardust';
- 
+
  * onContextMenu((menu, event) => {
  *  menu.addItem(item, index);
  * });
@@ -1062,6 +1062,32 @@ export function useRenderState() {
       hooks.waitForData = false;
     },
   };
+}
+
+/**
+ * Gets an event emitter instance for the visualization.
+ * @entry
+ * @experimental
+ * @returns {Emitter} The emitter instance. Implements https://nodejs.org/api/events.html#class-eventemitter.
+ * @example
+ * // In a Nebula visualization
+ * import { useEmitter } from '@nebula.js/stardust';
+ * useEffect(()=> {
+ *   // on some trigger
+ *   emitter.emit("trigger", params)
+ * }, [...])
+ *
+ * // In a mashup
+ * const viz = await n.render({
+ *   element: el,
+ *   id: 'abcdef'
+ * });
+ * viz.on("trigger", ()=> {
+ *   // do something
+ * })
+ */
+export function useEmitter() {
+  return useInternalContext('emitter');
 }
 
 /**

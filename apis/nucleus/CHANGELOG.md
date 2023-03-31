@@ -3,6 +3,59 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.7](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.6...v4.0.0-alpha.7) (2023-03-30)
+
+### Bug Fixes
+
+- confirm selection when object is removed ([#1197](https://github.com/qlik-oss/nebula.js/issues/1197)) ([9ca11fe](https://github.com/qlik-oss/nebula.js/commit/9ca11fe5eb16675eeffbbbbafddc560297263022))
+- shouldForwardProp to fix React warning ([#1201](https://github.com/qlik-oss/nebula.js/issues/1201)) ([2a457da](https://github.com/qlik-oss/nebula.js/commit/2a457da7bfdc29e60869a5a4c4f40ab598ce54af))
+
+# [4.0.0-alpha.6](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.5...v4.0.0-alpha.6) (2023-03-28)
+
+### Bug Fixes
+
+- do ctrl-select on ctrl-space ([#1186](https://github.com/qlik-oss/nebula.js/issues/1186)) ([32101e2](https://github.com/qlik-oss/nebula.js/commit/32101e251cc63faf30678be11804bfd26885c48a))
+- **lisbox:** invalid dimension error message ([#1188](https://github.com/qlik-oss/nebula.js/issues/1188)) ([b13e542](https://github.com/qlik-oss/nebula.js/commit/b13e5421ac27e5be229acc0ff633124d5c700d57))
+- **ListBox:** show detached toolbar when layout.toolbar is false ([#1185](https://github.com/qlik-oss/nebula.js/issues/1185)) ([05a272d](https://github.com/qlik-oss/nebula.js/commit/05a272de458a6afb74e1fbcdfab4756aaadcbf6d))
+- simplyfy html structure for text highlight ([#1187](https://github.com/qlik-oss/nebula.js/issues/1187)) ([64a3b20](https://github.com/qlik-oss/nebula.js/commit/64a3b201dd9938a94765a4948230b3a8e7337624))
+
+### Features
+
+- add useEmitter and corresponding viz api ([#1168](https://github.com/qlik-oss/nebula.js/issues/1168)) ([034be90](https://github.com/qlik-oss/nebula.js/commit/034be90b51031f32c21557c8de429ffb1e2df5d6))
+- chart bg colors and title styles from properties and theme ([#1183](https://github.com/qlik-oss/nebula.js/issues/1183)) ([65af640](https://github.com/qlik-oss/nebula.js/commit/65af64044c4f18c1de2f5b3bd30915acd24d52d7))
+- support listobjectDef in render session objects ([#1194](https://github.com/qlik-oss/nebula.js/issues/1194)) ([23b7240](https://github.com/qlik-oss/nebula.js/commit/23b724065b0cb95893cdc3561adef50ca50bda3f))
+
+# [4.0.0-alpha.5](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.4...v4.0.0-alpha.5) (2023-03-23)
+
+### Bug Fixes
+
+- fix grid mode row spacing and lock icon ([#1172](https://github.com/qlik-oss/nebula.js/issues/1172)) ([9928f84](https://github.com/qlik-oss/nebula.js/commit/9928f843600006494d8b8b8e3f9abe872f6f95fe))
+- fix search result in rtl mode ([#1181](https://github.com/qlik-oss/nebula.js/issues/1181)) ([abb33a3](https://github.com/qlik-oss/nebula.js/commit/abb33a3cdb50d2cc04bd8c37f94a9285b912b86c))
+- generic load function should work for existing charts ([#1182](https://github.com/qlik-oss/nebula.js/issues/1182)) ([3543a64](https://github.com/qlik-oss/nebula.js/commit/3543a64dc764b41bdb75269b9ea488547c8f52dd))
+- null check rendered callback ([#1174](https://github.com/qlik-oss/nebula.js/issues/1174)) ([a15d56a](https://github.com/qlik-oss/nebula.js/commit/a15d56ac577c55ab02f49c9a35eddf66e90e69e9))
+- show search icon in edit mode if the search checkbox is on ([#1177](https://github.com/qlik-oss/nebula.js/issues/1177)) ([b4fbaa8](https://github.com/qlik-oss/nebula.js/commit/b4fbaa89af50ac12cb698b56d6daaa79189a0752))
+- update spacing for grid mode ([#1176](https://github.com/qlik-oss/nebula.js/issues/1176)) ([5cf3dea](https://github.com/qlik-oss/nebula.js/commit/5cf3dea9bc557e533a9d63a3a1839401027611f8))
+- update style for higlighted text during search ([#1179](https://github.com/qlik-oss/nebula.js/issues/1179)) ([e7b1cc7](https://github.com/qlik-oss/nebula.js/commit/e7b1cc785d5d8bd5e6ffc7fb826ea106b518fe86))
+
+# [4.0.0-alpha.4](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.3...v4.0.0-alpha.4) (2023-03-21)
+
+### Bug Fixes
+
+- add icon width only when present ([#1166](https://github.com/qlik-oss/nebula.js/issues/1166)) ([2ad8fda](https://github.com/qlik-oss/nebula.js/commit/2ad8fda01637e46c80112085e0b0b35edf4e6b75))
+- do not show search box on selection ([#1167](https://github.com/qlik-oss/nebula.js/issues/1167)) ([b7d38ce](https://github.com/qlik-oss/nebula.js/commit/b7d38ce2c079d43a49bfb43fb6648776ead7f61a))
+- wrap in square brackets if needed ([#1171](https://github.com/qlik-oss/nebula.js/issues/1171)) ([f49e4e2](https://github.com/qlik-oss/nebula.js/commit/f49e4e2ec3a50cb13bf0190dbe3a3ad0885e3d42))
+
+# [4.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.2...v4.0.0-alpha.3) (2023-03-20)
+
+### Bug Fixes
+
+- fix spacing for frequency count ([#1164](https://github.com/qlik-oss/nebula.js/issues/1164)) ([1ac8a87](https://github.com/qlik-oss/nebula.js/commit/1ac8a87c38a97998e04951378661294e2c3cddca))
+- **Listbox:** no box-shadow on hover ([#1163](https://github.com/qlik-oss/nebula.js/issues/1163)) ([72af025](https://github.com/qlik-oss/nebula.js/commit/72af0252c9508f9d4c7208ac3d1e7d7be605baf1))
+
+### Features
+
+- search & selectAll shortcuts ([#1159](https://github.com/qlik-oss/nebula.js/issues/1159)) ([6273681](https://github.com/qlik-oss/nebula.js/commit/62736818e3ab72b95d71204fd353bd508c72375f))
+
 # [4.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.1...v4.0.0-alpha.2) (2023-03-20)
 
 ### Bug Fixes

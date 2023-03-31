@@ -13,7 +13,9 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "actions": {
         "cancel": [Function],
         "confirm": [Function],
+        "onCtrlF": undefined,
         "select": [MockFunction],
+        "selectAll": undefined,
         "setScrollPosition": undefined,
       },
       "checkboxes": false,
@@ -29,6 +31,7 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "heyHey": "hey hey",
       "histogram": false,
       "isLocked": false,
+      "isModal": [MockFunction],
       "isSingleSelect": false,
       "itemPadding": 4,
       "keyboard": "keyboard",
@@ -38,8 +41,10 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "pages": "pages",
       "rowCount": 200,
       "showGray": true,
+      "showSearch": undefined,
       "showTick": true,
       "textAlign": "right",
+      "translator": undefined,
     }
   }
   onItemsRendered={[Function]}
@@ -68,7 +73,9 @@ exports[`grid-list-components should create a List component 1`] = `
       "actions": {
         "cancel": [Function],
         "confirm": [Function],
+        "onCtrlF": undefined,
         "select": [MockFunction],
+        "selectAll": undefined,
         "setScrollPosition": undefined,
       },
       "checkboxes": false,
@@ -83,6 +90,7 @@ exports[`grid-list-components should create a List component 1`] = `
       "heyHey": "hey hey",
       "histogram": false,
       "isLocked": false,
+      "isModal": [MockFunction],
       "isSingleSelect": false,
       "itemPadding": 4,
       "keyboard": "keyboard",
@@ -92,8 +100,10 @@ exports[`grid-list-components should create a List component 1`] = `
       "listCount": undefined,
       "pages": "pages",
       "showGray": true,
+      "showSearch": undefined,
       "showTick": true,
       "textAlign": "right",
+      "translator": undefined,
     }
   }
   itemSize={100}

@@ -53,7 +53,7 @@ export const getOptions = (usersOptions = {}) => {
   return squashedOptions;
 };
 
-function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options }) {
+function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options, renderedCallback }) {
   const { isExistingObject, hasExternalSelectionsApi } = identify({ qId, options });
   const [changeCount, setChangeCount] = useState(0);
 
@@ -86,6 +86,7 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options
       selections,
       model,
       app,
+      renderedCallback,
     }),
     [options, selections, model, app]
   );
@@ -97,7 +98,15 @@ function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options
   return <ListBoxInline options={opts} />;
 }
 
-export default function ListBoxPortal({ element, app, fieldIdentifier, qId, stateName = '$', options = {} }) {
+export default function ListBoxPortal({
+  element,
+  app,
+  fieldIdentifier,
+  qId,
+  stateName = '$',
+  options = {},
+  renderedCallback,
+}) {
   return ReactDOM.createPortal(
     <ListBoxWrapper
       app={app}
@@ -106,6 +115,7 @@ export default function ListBoxPortal({ element, app, fieldIdentifier, qId, stat
       qId={qId}
       stateName={stateName}
       options={options}
+      renderedCallback={renderedCallback}
     />,
     element,
     uid()

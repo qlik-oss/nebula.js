@@ -1,6 +1,13 @@
 import calculateColumnMode from './column-mode';
 import calculateRowMode from './row-mode';
-import { FREQUENCY_WIDTH, ITEM_MAX_WIDTH, ITEM_MIN_WIDTH, SCROLL_BAR_WIDTH, CHECKBOX_WIDTH } from './constants';
+import {
+  FREQUENCY_WIDTH,
+  ITEM_MAX_WIDTH,
+  ITEM_MIN_WIDTH,
+  SCROLL_BAR_WIDTH,
+  CHECKBOX_WIDTH,
+  REMOVE_TICK_LIMIT,
+} from '../../constants';
 
 export default function getListSizes({
   layout,
@@ -17,13 +24,18 @@ export default function getListSizes({
 
   const frequencyAddWidth = freqIsAllowed ? FREQUENCY_WIDTH : 0;
   const checkboxAddWidth = checkboxes ? CHECKBOX_WIDTH : 0;
+  const tickIconWidth = CHECKBOX_WIDTH;
 
-  const dynamicItemMinWidth = ITEM_MIN_WIDTH + frequencyAddWidth + checkboxAddWidth;
+  let dynamicItemMinWidth = ITEM_MIN_WIDTH + frequencyAddWidth + checkboxAddWidth;
+  if (!checkboxes && dynamicItemMinWidth >= REMOVE_TICK_LIMIT) {
+    dynamicItemMinWidth += tickIconWidth;
+  }
 
-  const columnAutoWidth = Math.max(
-    Math.min(ITEM_MAX_WIDTH, textWidth + 18 + frequencyAddWidth + checkboxAddWidth),
-    dynamicItemMinWidth
-  );
+  let columnAutoWidth = textWidth + 18 + frequencyAddWidth + checkboxAddWidth;
+  if (!checkboxes && columnAutoWidth >= REMOVE_TICK_LIMIT) {
+    columnAutoWidth += tickIconWidth;
+  }
+  columnAutoWidth = Math.min(ITEM_MAX_WIDTH, Math.max(columnAutoWidth, dynamicItemMinWidth));
 
   let overflowStyling;
   let columnCount;

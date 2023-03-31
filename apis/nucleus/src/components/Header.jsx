@@ -49,7 +49,7 @@ const CellSubTitle = {
   className: 'njs-cell-sub-title',
 };
 
-function Header({ layout, sn, anchorEl, hovering, focusHandler }) {
+function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {} }) {
   const showTitle = layout.showTitles && !!layout.title;
   const showSubtitle = layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
@@ -97,12 +97,12 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler }) {
       <Grid item zeroMinWidth xs>
         <Grid container wrap="nowrap" direction="column">
           {showTitle && (
-            <Typography variant="h6" noWrap className={CellTitle.className}>
+            <Typography variant="h6" noWrap className={CellTitle.className} style={titleStyles.main}>
               {layout.title}
             </Typography>
           )}
           {showSubtitle && (
-            <Typography variant="body2" noWrap className={CellSubTitle.className}>
+            <Typography variant="body2" noWrap className={CellSubTitle.className} style={titleStyles.subTitle}>
               {layout.subtitle}
             </Typography>
           )}
