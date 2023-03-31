@@ -230,39 +230,41 @@ export function getListboxInlineKeyboardNavigation({
 
     if (!keyboard.enabled) {
       // Other keys should not be handled unless keyboard is enabled.
-      return undefined;
+      return;
     }
 
     const container = event.currentTarget.closest('.listbox-container');
+    const inSelection = isModal();
 
     switch (keyCode) {
       case KEYS.TAB:
-        if (shiftKey) {
-          focusRow(container) || focusSearch(container);
+        if (inSelection) {
+          if (shiftKey) {
+            focusRow(container) || focusSearch(container);
+          } else {
+            focusSearch(container) || focusRow(container);
+          }
+        } else if (shiftKey) {
+          keyboard.blur(true);
         } else {
-          focusSearch(container) || focusRow(container);
+          break;
         }
         prevent();
         break;
       case KEYS.ENTER:
       case KEYS.SPACE:
         if (!event.target.classList.contains('listbox-container')) {
-          return undefined; // don't mess with keydown handlers within the listbox (e.g. row seletion)
+          break; // don't mess with keydown handlers within the listbox (e.g. row seletion)
         }
         keyboard.focus();
         prevent();
         break;
       case KEYS.ESCAPE:
         blur(event);
-        prevent();
         break;
-      case KEYS.ARROW_LEFT:
-      case KEYS.ARROW_RIGHT:
-        return undefined; // let it propagate to top-level
       default:
         break;
     }
-    return undefined;
   };
 
   const focusOnHoverDisabled = () => {

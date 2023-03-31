@@ -348,7 +348,7 @@ describe('keyboard navigation', () => {
       expect(currentTarget.focus).not.toHaveBeenCalled();
       expect(currentTarget.blur).not.toHaveBeenCalled();
 
-      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(event.preventDefault).not.toHaveBeenCalled;
     });
     test('should change focus with Escape on a listbox', () => {
       const currentTarget = {
@@ -374,7 +374,7 @@ describe('keyboard navigation', () => {
       expect(currentTarget.blur).not.toHaveBeenCalled();
       expect(currentTarget.focus).not.toHaveBeenCalled();
 
-      expect(event.preventDefault).toHaveBeenCalledTimes(1);
+      expect(event.preventDefault).not.toHaveBeenCalled;
     });
     test('not matched key should not call event methods', () => {
       const element = createElement(0);
