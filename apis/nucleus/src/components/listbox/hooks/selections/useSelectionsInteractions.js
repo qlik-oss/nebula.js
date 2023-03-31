@@ -13,7 +13,7 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     toggle: false,
     active: false,
     touchElemNumbers: [],
-    touchRangeLow: false,
+    touchRangeSmall: false,
   });
 
   // eslint-disable-next-line arrow-body-style
@@ -170,7 +170,7 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     currentSelect.current.active = true;
     const range = getRange(startTouchElemNumber, endTouchElemNumber);
     if (range.length < 7) {
-      currentSelect.current.touchRangeLow = true;
+      currentSelect.current.touchRangeSmall = true;
     }
 
     currentSelect.current.elemNumbers = [];
@@ -181,8 +181,8 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     if (currentSelect.current.touchElemNumbers.length !== 2) {
       return;
     }
-    if (currentSelect.current.touchRangeLow) {
-      currentSelect.current.touchRangeLow = false;
+    if (currentSelect.current.touchRangeSmall) {
+      currentSelect.current.touchRangeSmall = false;
       currentSelect.current.touchElemNumbers = [];
       currentSelect.current.active = false;
       return;
