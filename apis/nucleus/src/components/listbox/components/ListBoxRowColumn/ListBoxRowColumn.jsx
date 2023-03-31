@@ -17,6 +17,7 @@ import Histogram from './components/Histogram';
 import Frequency from './components/Frequency';
 import ItemGrid from './components/ItemGrid';
 import getCellFromPages from './helpers/get-cell-from-pages';
+import { getValueLabel } from '../ScreenReaders';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
@@ -49,6 +50,9 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     listCount,
     itemPadding,
     frequencyWidth,
+    translator,
+    showSearch,
+    isModal,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -96,7 +100,10 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     }
   }, [rowRef.current]);
 
-  const handleKeyDownCallback = useCallback(getFieldKeyboardNavigation({ ...actions, focusListItems }), [actions]);
+  const handleKeyDownCallback = useCallback(
+    getFieldKeyboardNavigation({ ...actions, focusListItems, keyboard, isModal }),
+    [actions, keyboard?.innerTabStops]
+  );
 
   const cell = useMemo(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
   const isSelected = cell?.qState === 'S' || cell?.qState === 'XS' || cell?.qState === 'L' || cell?.qState === 'XL';
@@ -170,6 +177,15 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const showIcon = !checkboxes && sizePermitsTickOrLock;
   const cellPaddingRight = checkboxes || !sizePermitsTickOrLock;
 
+  const ariaLabel = getValueLabel({
+    translator,
+    label,
+    qState: cell.qState,
+    currentIndex: count.currentIndex,
+    maxIndex: count.max,
+    showSearch,
+  });
+
   return (
     <RowColRoot
       className={classes.barContainer}
@@ -182,6 +198,11 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       data-testid="listbox.item"
     >
       <ItemGrid
+        role="row"
+        aria-label={ariaLabel}
+        aria-selected={isSelected}
+        aria-setsize={count.max}
+        aria-rowindex={count.currentIndex}
         ref={rowRef}
         container
         dataLayout={dataLayout}
@@ -201,8 +222,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
         onContextMenu={preventContextMenu}
-        role={column ? 'column' : 'row'}
-        tabIndex={isFirstElement && (!keyboard.enabled || keyboard.active) ? 0 : -1}
+        tabIndex={isFirstElement && keyboard.innerTabStops ? 0 : -1}
         data-n={cell?.qElemNumber}
       >
         {cell?.qFrequency && (

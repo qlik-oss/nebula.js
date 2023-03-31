@@ -27,11 +27,11 @@ const CellFooter = {
   className: 'njs-cell-footer',
 };
 
-function Footer({ layout }) {
+function Footer({ layout, titleStyles = {} }) {
   return layout && layout.showTitles && layout.footnote ? (
     <StyledGrid container>
       <Grid item className={classes.itemStyle}>
-        <Typography noWrap variant="body2" className={CellFooter.className}>
+        <Typography noWrap variant="body2" className={CellFooter.className} style={titleStyles.footer}>
           {layout.footnote}
         </Typography>
       </Grid>

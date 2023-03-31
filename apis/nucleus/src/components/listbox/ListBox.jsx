@@ -1,6 +1,7 @@
 /* eslint no-underscore-dangle:0 */
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useContext } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
+import { styled } from '@mui/material';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 import getListBoxComponents from './components/grid-list-components/grid-list-components';
 import getListSizes from './assets/get-list-sizes/get-list-sizes';
@@ -15,8 +16,19 @@ import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
 import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 import useFrequencyMax from './hooks/useFrequencyMax';
+import { ScreenReaderForSelections } from './components/ScreenReaders';
+import InstanceContext from '../../contexts/InstanceContext';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
+
+const StyledWrapper = styled('div')(() => ({
+  [`& .screenReaderOnly`]: {
+    position: 'absolute',
+    height: 0,
+    width: 0,
+    overflow: 'hidden',
+  },
+}));
 
 export default function ListBox({
   model,
@@ -42,7 +54,10 @@ export default function ListBox({
   currentScrollIndex = { set: () => {} },
   renderedCallback,
   onCtrlF,
+  showSearch,
+  isModal,
 }) {
+  const { translator } = useContext(InstanceContext);
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const { checkboxes = checkboxOption, histogram } = layout ?? {};
@@ -278,6 +293,9 @@ export default function ListBox({
     constraints,
     frequencyMax,
     freqIsAllowed,
+    translator,
+    showSearch,
+    isModal,
   });
 
   const { columnWidth, listHeight, itemHeight } = sizes || {};
@@ -286,7 +304,8 @@ export default function ListBox({
   }
 
   return (
-    <>
+    <StyledWrapper>
+      <ScreenReaderForSelections className="screenReaderOnly" layout={layout} />
       {!listCount && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
@@ -295,6 +314,7 @@ export default function ListBox({
         threshold={0}
         minimumBatchSize={minimumBatchSize}
         ref={loaderRef}
+        role="grid"
       >
         {isVertical ? List : Grid}
       </InfiniteLoader>
@@ -306,6 +326,6 @@ export default function ListBox({
           dense={layoutOptions?.dense}
         />
       )}
-    </>
+    </StyledWrapper>
   );
 }

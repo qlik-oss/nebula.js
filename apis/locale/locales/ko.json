@@ -188,5 +188,65 @@
     "value": "계산 조건이 충족되지 않았습니다.",
     "comment": "Message displayed when a calculation condition is not fulfilled",
     "version": "Hj3EiDijTWZ+MhDaqSx/uQ=="
+  },
+  "Object.Listbox.Selected": {
+    "value": "선택됨",
+    "comment": "Selected state of an item in listbox. (buy20180905)",
+    "version": "DGo0we75C68XYHVXPfNZ9A=="
+  },
+  "Object.Listbox.Alternative": {
+    "value": "대체 항목",
+    "comment": "Alternative state of an item in listbox(buy20180905)",
+    "version": "zSb1qdwXvFAWNG5hll1tCQ=="
+  },
+  "Object.Listbox.Optional": {
+    "value": "선택 사항",
+    "comment": "Optional state of an item in listbox(buy20180905)",
+    "version": "18gX4gXo+M8QYSh4j6LBUA=="
+  },
+  "Object.Listbox.SelectedExcluded": {
+    "value": "제외 항목 선택됨",
+    "comment": "Selected excluded state of an item in listbox(buy20180905)",
+    "version": "RTchiDrH9lIxerEyRF/fzA=="
+  },
+  "Object.Listbox.Locked": {
+    "value": "잠김",
+    "comment": "Locked state of an item in listbox(buy20180905)",
+    "version": "nZDznytt+cqz5yyYObs0QQ=="
+  },
+  "Object.Listbox.Excluded": {
+    "value": "제외됨",
+    "comment": "Excluded state of an item in listbox(buy20180905)",
+    "version": "Zem8o+76FJ+ghWc2JR4vJQ=="
+  },
+  "Object.Listbox.ExcludedLock": {
+    "value": "제외된 잠금",
+    "comment": "Excluded lock state of an item in listbox(buy20180905)",
+    "version": "KpvYYXB6b5v40OI6a3uCBQ=="
+  },
+  "Listbox.ScreenReader.SelectionMenu.WithAccSelMenu": {
+    "value": "선택 메뉴에 초점을 설정하려면 Shift+Tab을 누르십시오.",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is closed. ",
+    "version": "cf+5FbBZWTBzrvA1t8ZGSw=="
+  },
+  "Listbox.ScreenReader.SearchThenSelectionsMenu.WithAccSelMenu": {
+    "value": "Shift+Tab을 눌러 검색 막대에 초점을 맞춘 다음 Shift+Tab을 다시 눌러 선택 메뉴에 초점을 맞추십시오.",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is open. ",
+    "version": "pSBDS/l6GrBblyURsRM+AQ=="
+  },
+  "ScreenReader.ZeroSelected": {
+    "value": "선택된 값이 없습니다.",
+    "comment": "Screen reader label stating that no values are selected.",
+    "version": "ws+IBu/9dgYvVZMAOt8XjA=="
+  },
+  "ScreenReader.OneSelected": {
+    "value": "하나의 값이 선택되었습니다.",
+    "comment": "Screen reader text stating that one value is currently in selection.",
+    "version": "3/nu/iWCtVFxcUytjx/0iQ=="
+  },
+  "ScreenReader.ManySelected": {
+    "value": "{0}개의 값이 선택되었습니다.",
+    "comment": "Screen reader text stating that multiple values are currently in selection.",
+    "version": "KqgykSKKf9jfhehR2eUQZg=="
   }
 }

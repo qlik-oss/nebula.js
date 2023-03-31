@@ -20,6 +20,7 @@ import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-get-action-props';
 import createSelectionState from './hooks/selections/selectionState';
 import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH } from './constants';
+import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
 
 const PREFIX = 'ListBoxInline';
@@ -61,6 +62,8 @@ const Title = styled(Typography)(({ theme }) => ({
   fontFamily: theme.listBox?.title?.main?.fontFamily,
   fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
 }));
+
+const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
 function ListBoxInline({ options, layout }) {
   const {
@@ -112,7 +115,6 @@ function ListBoxInline({ options, layout }) {
 
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [keyboardActive, setKeyboardActive] = useState(false);
   const [hovering, setHovering] = useState(false);
   const [keyScroll, setKeyScroll] = useState({ down: 0, up: 0, scrollPosition: '' });
   const updateKeyScroll = (newState) => setKeyScroll((current) => ({ ...current, ...newState }));
@@ -120,11 +122,13 @@ function ListBoxInline({ options, layout }) {
   const [appSelections] = useAppSelections(app);
   const titleRef = useRef(null);
   const [selectionState] = useState(() => createSelectionState());
+  const keyboard = useTempKeyboard({ containerRef, enabled: keyboardNavigation });
+  const isModalMode = useCallback(() => isModal({ app, appSelections }), [app, appSelections]);
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
-    setKeyboardActive,
+    keyboard,
     hovering,
     setHovering,
     updateKeyScroll,
@@ -133,13 +137,8 @@ function ListBoxInline({ options, layout }) {
     app,
     appSelections,
     constraints,
+    isModal: isModalMode,
   });
-
-  // Expose the keyboard flags in the same way as the keyboard hook does.
-  const keyboard = {
-    enabled: keyboardNavigation, // this will be static until we can access the useKeyboard hook
-    active: keyboardActive,
-  };
 
   const showDetachedToolbarOnly = toolbar && (layout?.title === '' || layout?.showTitle === false);
   const showToolbarWithTitle = toolbar && layout?.title !== '' && layout?.showTitle !== false;
@@ -274,7 +273,7 @@ function ListBoxInline({ options, layout }) {
       <StyledGrid
         className="listbox-container"
         container
-        tabIndex={keyboard.enabled && !keyboard.active ? 0 : -1}
+        tabIndex={keyboard.outerTabStops ? 0 : -1}
         direction="column"
         gap={0}
         containerPadding={containerPadding}
@@ -397,6 +396,7 @@ function ListBoxInline({ options, layout }) {
                     }}
                     renderedCallback={renderedCallback}
                     onCtrlF={onCtrlF}
+                    isModal={isModalMode}
                   />
                 )}
               </AutoSizer>

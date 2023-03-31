@@ -57,7 +57,7 @@ function resolveImageUrl(app, relativeUrl) {
   return relativeUrl ? getSenseServerUrl(app) + relativeUrl : undefined;
 }
 
-export const resolveBgImage = (bgComp, app) => {
+export function resolveBgImage(bgComp, app) {
   const bgImageDef = bgComp?.bgImage;
 
   if (bgImageDef) {
@@ -77,9 +77,9 @@ export const resolveBgImage = (bgComp, app) => {
     return url ? { url, pos, size } : undefined;
   }
   return undefined;
-};
+}
 
-export const resolveBgColor = (bgComp, theme) => {
+export function resolveBgColor(bgComp, theme, objectType) {
   const bgColor = bgComp?.bgColor;
   if (bgColor && theme) {
     if (bgColor.useExpression) {
@@ -87,5 +87,33 @@ export const resolveBgColor = (bgComp, theme) => {
     }
     return bgColor.color && bgColor.color.color !== 'none' ? theme.getColorPickerColor(bgColor.color, true) : undefined;
   }
+  if (theme && objectType) {
+    return theme.getStyle(`object.${objectType}`, '', 'backgroundColor');
+  }
+  if (theme) {
+    return theme.getStyle('', '', 'backgroundColor');
+  }
   return undefined;
-};
+}
+function unfurlFontStyle(fontStyle, target) {
+  if (fontStyle && Array.isArray(fontStyle)) {
+    return fontStyle;
+  }
+  return target === 'main' ? ['bold'] : [];
+}
+
+export function resolveTextStyle(textComp, target, theme, objectType) {
+  const textProps = textComp?.title?.[target] || {};
+  const fontStyle = unfurlFontStyle(textProps.fontStyle, target);
+
+  return {
+    fontFamily: textProps.fontFamily || theme.getStyle(`object.${objectType}`, `title.${target}`, 'fontFamily'),
+    color:
+      textProps.color && textProps.color.color !== 'none'
+        ? theme.getColorPickerColor(textProps.color, true)
+        : theme.getStyle(`object.${objectType}`, target, 'color'),
+    fontWeight: fontStyle.includes('bold') ? 'bold' : 'normal',
+    fontStyle: fontStyle.includes('italic') ? 'italic' : 'normal',
+    textDecoration: fontStyle.includes('underline') ? 'underline' : 'initial',
+  };
+}
