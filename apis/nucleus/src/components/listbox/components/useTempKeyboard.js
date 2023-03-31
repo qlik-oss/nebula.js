@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 export function removeInnnerTabStops(container) {
   container?.querySelectorAll('[tabIndex="0"]').forEach((elm) => {
     elm.setAttribute('tabIndex', -1);
@@ -18,20 +16,22 @@ export function getVizCell(container) {
 
 // Emulate the keyboard hook, until we support it in the Listbox.
 export default function useTempKeyboard({ containerRef, enabled }) {
-  const [keyboardActive, setKeyboardActive] = useState(false);
-
-  const innerTabStops = !enabled || keyboardActive;
-
   const keyboard = {
     enabled,
-    active: keyboardActive,
-    innerTabStops, // does keyboard permit inner tab stops
-    outerTabStops: !innerTabStops, // does keyboard permit outer tab stops
-    blur: (resetFocus) => {
+    active: false,
+  };
+
+  Object.assign(keyboard, {
+    /**
+     * innerTabStops: whether keyboard permits inner tab stops
+     *  (inner = everything inside .listbox-container)
+     */
+    innerTabStops: !enabled || keyboard.active,
+    blur(resetFocus) {
       if (!enabled) {
         return;
       }
-      setKeyboardActive(false);
+      keyboard.active = false;
       const vizCell = getVizCell(containerRef.current) || containerRef.current?.parentElement;
       removeInnnerTabStops(containerRef.current);
       removeLastFocused(containerRef.current);
@@ -41,11 +41,11 @@ export default function useTempKeyboard({ containerRef, enabled }) {
         vizCell.focus();
       }
     },
-    focus: () => {
+    focus() {
       if (!enabled) {
         return;
       }
-      setKeyboardActive(true);
+      keyboard.active = true;
       const c = containerRef.current;
       const searchField = c?.querySelector('.search input');
       const lastSelectedRow = c?.querySelector('.value.last-focused');
@@ -55,12 +55,12 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       elementToFocus?.setAttribute('tabIndex', 0);
       elementToFocus?.focus();
     },
-    focusSelection: () => {
+    focusSelection() {
       const confirmButton = document.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
       confirmButton?.setAttribute('tabIndex', 0);
       confirmButton?.focus();
     },
-  };
+  });
 
   return keyboard;
 }

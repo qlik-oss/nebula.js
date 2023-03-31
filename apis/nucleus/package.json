@@ -4,6 +4,7 @@
   "private": true,
   "main": "src/index.js",
   "devDependencies": {
+    "@testing-library/react": "^14.0.0",
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.11",
