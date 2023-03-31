@@ -25,6 +25,7 @@ describe('use-listbox-interactions', () => {
   let setPages;
   let layout;
   let updateSelectionState;
+  let loaderRef;
 
   beforeEach(() => {
     jest.spyOn(global.document, 'addEventListener').mockImplementation(jest.fn());
@@ -69,13 +70,16 @@ describe('use-listbox-interactions', () => {
     };
 
     ref = React.createRef();
+    loaderRef = {
+      current: null,
+    };
     render = async (overrides = {}) => {
       await act(async () => {
         create(
           <TestHook
             ref={ref}
             hook={useSelectionsInteractions}
-            hookProps={[{ selectionState, selections, doc: global.document, ...overrides }]}
+            hookProps={[{ selectionState, selections, doc: global.document, loaderRef, ...overrides }]}
           />
         );
       });

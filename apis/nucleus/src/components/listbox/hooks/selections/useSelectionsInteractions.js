@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import { useEffect, useCallback, useRef } from 'react';
 import { selectValues, fillRange, getElemNumbersFromPages } from './listbox-selections';
 import rowColClasses from '../../components/ListBoxRowColumn/helpers/classes';
@@ -5,7 +6,13 @@ import rowColClasses from '../../components/ListBoxRowColumn/helpers/classes';
 const dataItemSelector = `.${rowColClasses.fieldRoot}`;
 const getKeyAsToggleSelected = (event) => !(event?.metaKey || event?.ctrlKey);
 
-export default function useSelectionsInteractions({ selectionState, selections, checkboxes = false, doc = document }) {
+export default function useSelectionsInteractions({
+  selectionState,
+  selections,
+  checkboxes = false,
+  doc = document,
+  loaderRef,
+}) {
   const currentSelect = useRef({
     startElemNumber: undefined,
     elemNumbers: [],
@@ -15,6 +22,25 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     touchElemNumbers: [],
     touchRangeSmall: false,
   });
+
+  useEffect(() => {
+    if (!loaderRef.current?._listRef?._outerRef) {
+      return undefined;
+    }
+    const preventGestureStart = (e) => e.preventDefault();
+    const preventGestureChange = (e) => e.preventDefault();
+    const preventGestureEnd = (e) => e.preventDefault();
+
+    const listRef = loaderRef.current._listRef._outerRef;
+    listRef.addEventListener('gesturestart', preventGestureStart);
+    listRef.addEventListener('gesturechange', preventGestureChange);
+    listRef.addEventListener('gestureend', preventGestureEnd);
+    return () => {
+      listRef.removeEventListener('gesturestart', preventGestureStart);
+      listRef.removeEventListener('gesturechange', preventGestureChange);
+      listRef.removeEventListener('gestureend', preventGestureEnd);
+    };
+  }, [loaderRef.current?._listRef?._outerRef]);
 
   // eslint-disable-next-line arrow-body-style
   const doSelect = () => {
