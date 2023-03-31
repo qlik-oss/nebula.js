@@ -42,12 +42,16 @@ export default async function createObject(
     // error = e;
     // minimal dummy object properties to allow it to be created
     // and rendered with the error
-    mergedProps = {
-      qInfo: {
-        qType: type,
-      },
-      visualization: type,
-    };
+    if (!generateOnly) {
+      mergedProps = {
+        qInfo: {
+          qType: type,
+        },
+        visualization: type,
+      };
+    } else {
+      mergedProps = null;
+    }
     // console.error(e); // eslint-disable-line
   }
   if (!generateOnly) {
