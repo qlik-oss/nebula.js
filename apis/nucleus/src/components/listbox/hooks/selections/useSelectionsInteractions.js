@@ -13,6 +13,7 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     toggle: false,
     active: false,
     touchElemNumbers: [],
+    touchRangeLow: false,
   });
 
   // eslint-disable-next-line arrow-body-style
@@ -26,14 +27,17 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     });
   };
 
+  const getRange = (start, end) => {
+    const elemNumbersOrdered = getElemNumbersFromPages(selectionState.enginePages);
+    return fillRange([start, end], elemNumbersOrdered);
+  };
+
   const addToRange = (elemNumber) => {
     const { startElemNumber } = currentSelect.current;
     if (startElemNumber === elemNumber) {
       return;
     }
-    const rangeEnds = [currentSelect.current.startElemNumber, elemNumber];
-    const elemNumbersOrdered = getElemNumbersFromPages(selectionState.enginePages);
-    const toMaybeAdd = fillRange(rangeEnds, elemNumbersOrdered);
+    const toMaybeAdd = getRange(currentSelect.current.startElemNumber, elemNumber);
     selectionState.updateItems(toMaybeAdd, true, currentSelect.current.elemNumbers);
   };
 
@@ -143,40 +147,53 @@ export default function useSelectionsInteractions({ selectionState, selections, 
 
   const onTouchStart = useCallback((event) => {
     // Handle range selection with two finger touch
-    if (currentSelect.current.active || currentSelect.current.isRange) {
-      return;
-    }
-    if (event.touches.length <= 1) {
+    if (
+      currentSelect.current.active ||
+      currentSelect.current.isRange ||
+      selectionState.isSingleSelect ||
+      event.touches.length <= 1
+    ) {
       return;
     }
     if (event.touches.length > 2) {
-      currentSelect.current.active = false;
       doSelect();
       return;
     }
-    const startElemNumber = Number(event.touches[0].target?.closest(dataItemSelector)?.getAttribute('data-n'));
-    const endElemNumber = Number(event.touches[1].target?.closest(dataItemSelector)?.getAttribute('data-n'));
+    const startTouchElemNumber = Number(event.touches[0].target?.closest(dataItemSelector)?.getAttribute('data-n'));
+    const endTouchElemNumber = Number(event.touches[1].target?.closest(dataItemSelector)?.getAttribute('data-n'));
 
-    if (Number.isNaN(startElemNumber) || Number.isNaN(startElemNumber)) {
-      currentSelect.current.active = false;
+    if (Number.isNaN(startTouchElemNumber) || Number.isNaN(startTouchElemNumber)) {
       doSelect();
       return;
     }
 
     currentSelect.current.active = true;
-    currentSelect.current.touchElemNumbers = [startElemNumber, endElemNumber];
+    const range = getRange(startTouchElemNumber, endTouchElemNumber);
+    if (range.length < 7) {
+      currentSelect.current.touchRangeLow = true;
+    }
+
+    currentSelect.current.elemNumbers = [];
+    currentSelect.current.touchElemNumbers = [startTouchElemNumber, endTouchElemNumber];
   }, []);
 
   const onTouchEnd = useCallback(() => {
-    if (!currentSelect.current.active || currentSelect.current.touchElemNumbers.length !== 2) {
+    if (currentSelect.current.touchElemNumbers.length !== 2) {
+      return;
+    }
+    if (currentSelect.current.touchRangeLow) {
+      currentSelect.current.touchRangeLow = false;
+      currentSelect.current.touchElemNumbers = [];
+      currentSelect.current.active = false;
       return;
     }
 
-    // eslint-disable-next-line prefer-destructuring
-    currentSelect.current.startElemNumber = currentSelect.current.touchElemNumbers[0];
-    addToRange(currentSelect.current.touchElemNumbers[1]);
+    const [startTouchElemNumber, endTouchElemNumber] = currentSelect.current.touchElemNumbers;
+    currentSelect.current.startElemNumber = startTouchElemNumber;
+    addToRange(endTouchElemNumber);
+    currentSelect.current.touchElemNumbers = [];
     currentSelect.current.active = false;
-    currentSelect.current.toggle = false; // TODO: Deselects previously selected items
+    currentSelect.current.toggle = true;
     doSelect();
   }, []);
 
