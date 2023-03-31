@@ -234,11 +234,18 @@ export function getListboxInlineKeyboardNavigation({
     }
 
     const container = event.currentTarget.closest('.listbox-container');
+    const inSelection = isModal();
 
     switch (keyCode) {
       case KEYS.TAB:
-        if (shiftKey) {
-          focusRow(container) || focusSearch(container);
+        if (inSelection) {
+          if (shiftKey) {
+            focusRow(container) || focusSearch(container);
+          } else {
+            focusSearch(container) || focusRow(container);
+          }
+        } else if (shiftKey) {
+          keyboard.blur(true);
         } else {
           focusSearch(container) || focusRow(container);
         }
