@@ -9,7 +9,6 @@ import useAppSelections from '../hooks/useAppSelections';
 import unifyContraintsAndInteractions from '../utils/interactions';
 
 const NebulaApp = forwardRef(({ initialContext, app, renderCallback }, ref) => {
-  unifyContraintsAndInteractions(initialContext);
   const [appSelections] = useAppSelections(app);
   const [context, setContext] = useState(initialContext);
   const [muiThemeName, setMuiThemeName] = useState();
@@ -65,6 +64,8 @@ export default function boot({ app, context }) {
   element.setAttribute('data-nebulajs-version', process.env.NEBULA_VERSION || '');
   element.setAttribute('data-app-id', app.id);
   document.body.appendChild(element);
+
+  unifyContraintsAndInteractions(context);
 
   const root = ReactDOM.createRoot(element);
   root.render(<NebulaApp ref={appRef} app={app} initialContext={context} renderCallback={resolveRender} />);

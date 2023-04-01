@@ -91,21 +91,21 @@ describe('Boot NebulaApp', () => {
     });
     test('should set context', async () => {
       const app = { id: 'foo' };
-      const translator = {};
-      const [api, appRef] = boot({ app, translator });
+      const context = {};
+      const [api, appRef] = boot({ app, context });
       appRef.current = {
         setContext: jest.fn(),
       };
 
       mockedRoot.render.mock.calls[0][0].props.renderCallback();
-      await api.context('ctx');
+      await api.context({});
 
       expect(appRef.current.setContext).toHaveBeenCalledTimes(1);
     });
     test('should get app selections', async () => {
       const app = { id: 'foo' };
-      const translator = {};
-      const [api, appRef] = boot({ app, translator });
+      const context = {};
+      const [api, appRef] = boot({ app, context });
       appRef.current = {
         getAppSelections: jest.fn().mockReturnValue('app-selections'),
       };

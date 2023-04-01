@@ -257,14 +257,17 @@ export default function Visualize() {
                       </Tabs>
                     </Grid>
                     <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                      <Grid item>
-                        <Typography>Constraints</Typography>
-                      </Grid>
                       <Grid item gap={1}>
-                        <ToggleButtonGroup size="small" value={currentConstraints} onChange={handleConstraintsChange}>
+                        <ToggleButtonGroup
+                          size="small"
+                          value={currentConstraints}
+                          onChange={handleConstraintsChange}
+                          color="primary"
+                        >
                           <ToggleButton value="select">Select</ToggleButton>
                           <ToggleButton value="active">Active</ToggleButton>
                           <ToggleButton value="passive">Passive</ToggleButton>
+                          <ToggleButton value="passive">Edit</ToggleButton>
                         </ToggleButtonGroup>
                       </Grid>
                       <Grid item>
