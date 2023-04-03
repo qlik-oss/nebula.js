@@ -26,7 +26,6 @@ export default function useTempKeyboard({ containerRef, enabled }) {
     enabled,
     active: keyboardActive,
     innerTabStops, // does keyboard permit inner tab stops
-    outerTabStops: !innerTabStops, // does keyboard permit outer tab stops
     blur: (resetFocus) => {
       if (!enabled) {
         return;
