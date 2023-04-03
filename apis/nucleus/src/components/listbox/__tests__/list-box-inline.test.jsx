@@ -123,7 +123,7 @@ describe('<ListboxInline />', () => {
       selections,
       update: undefined,
       fetchStart: 'fetchStart',
-      isCollapsed: false,
+      isPopover: false,
     };
 
     useRef.mockReturnValue({ current: 'current' });
@@ -263,7 +263,7 @@ describe('<ListboxInline />', () => {
 
     test('should show toolbar when opened in a popover', async () => {
       options.search = false;
-      options.isCollapsed = true;
+      options.isPopover = true;
       await render();
       const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
       expect(actionToolbars).toHaveLength(1);
