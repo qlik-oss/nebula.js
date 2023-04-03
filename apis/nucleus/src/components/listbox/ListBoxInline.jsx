@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
+import React, { useContext, useCallback, useRef, useEffect, useState, useMemo } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import Lock from '@nebula.js/ui/icons/lock';
@@ -47,7 +47,7 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
     [`& .${classes.listboxWrapper}`]: {
       padding: containerPadding,
     },
-    '&:focus:not(:hover)': {
+    '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
     },
     '&:focus-visible': {
@@ -115,7 +115,7 @@ function ListBoxInline({ options, layout }) {
 
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [hovering, setHovering] = useState(false);
+  const hovering = useRef(false);
   const [keyScroll, setKeyScroll] = useState({ down: 0, up: 0, scrollPosition: '' });
   const updateKeyScroll = (newState) => setKeyScroll((current) => ({ ...current, ...newState }));
   const [currentScrollIndex, setCurrentScrollIndex] = useState({ start: 0, stop: 0 });
@@ -127,21 +127,41 @@ function ListBoxInline({ options, layout }) {
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
 
-  const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
-    keyboard,
-    hovering,
-    setHovering,
-    updateKeyScroll,
-    containerRef,
-    currentScrollIndex,
-    app,
-    appSelections,
-    constraints,
-    isModal: isModalMode,
-  });
+  const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown } = useMemo(
+    () =>
+      getListboxInlineKeyboardNavigation({
+        keyboard,
+        hovering,
+        updateKeyScroll,
+        containerRef,
+        currentScrollIndex,
+        app,
+        appSelections,
+        constraints,
+        isModal: isModalMode,
+      }),
+    [
+      keyboard,
+      hovering,
+      updateKeyScroll,
+      containerRef,
+      currentScrollIndex,
+      app,
+      appSelections,
+      constraints,
+      isModalMode,
+    ]
+  );
 
   const showDetachedToolbarOnly = toolbar && (layout?.title === '' || layout?.showTitle === false);
   const showToolbarWithTitle = toolbar && layout?.title !== '' && layout?.showTitle !== false;
+
+  useEffect(() => {
+    document.addEventListener('keydown', globalKeyDown);
+    return () => {
+      document.removeEventListener('keydown', globalKeyDown);
+    };
+  }, [globalKeyDown]);
 
   useEffect(() => {
     const show = () => {
@@ -273,7 +293,7 @@ function ListBoxInline({ options, layout }) {
       <StyledGrid
         className="listbox-container"
         container
-        tabIndex={-1}
+        tabIndex={keyboard.enabled ? -1 : undefined}
         direction="column"
         gap={0}
         containerPadding={containerPadding}

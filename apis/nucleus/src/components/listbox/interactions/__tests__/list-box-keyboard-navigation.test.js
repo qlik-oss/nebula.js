@@ -19,11 +19,11 @@ describe('keyboard navigation', () => {
   let actions;
   let handleKeyDownForField;
   let handleKeyDownForListbox;
+  let handleGlobalKeyDown;
   let setScrollPosition;
   let focusListItems;
   let handleOnMouseEnter;
   let handleOnMouseLeave;
-  let setHovering;
   let constraints;
   let app;
   let containerRef;
@@ -61,11 +61,10 @@ describe('keyboard navigation', () => {
     isModal = jest.fn();
     isModal.mockReturnValue(true);
     focusListItems = { setFirst: jest.fn(), setLast: jest.fn() };
-    setHovering = jest.fn();
     constraints = {};
     containerRef = { current: createElement(0) };
     app = { isInModalSelection: () => false };
-    hovering = true;
+    hovering = { current: true };
     updateKeyScroll = jest.fn();
     currentScrollIndex = { start: 0, stop: 10 };
     actions = {
@@ -86,11 +85,11 @@ describe('keyboard navigation', () => {
 
     ({
       handleKeyDown: handleKeyDownForListbox,
+      globalKeyDown: handleGlobalKeyDown,
       handleOnMouseEnter,
       handleOnMouseLeave,
     } = getListboxInlineKeyboardNavigation({
       constraints,
-      setHovering,
       app,
       containerRef,
       hovering,
@@ -387,106 +386,115 @@ describe('keyboard navigation', () => {
       handleKeyDownForListbox(event);
       expect(event.preventDefault).not.toHaveBeenCalled();
     });
+  });
+
+  describe('handle on hover keyboard navigation on listbox-inline level', () => {
     test('should handle mouse enter when allowed to focus', () => {
       isModal.mockReturnValue(false);
+      hovering.current = false;
       handleOnMouseEnter();
-      expect(containerRef.current.focus).toHaveBeenCalled();
+      expect(hovering.current).toBe(true);
     });
     test('should handle mouse enter when not allowed to focus', () => {
       app.isInModalSelection = () => true;
+      hovering.current = false;
       handleOnMouseEnter();
+      expect(hovering.current).toBe(false);
       app.isInModalSelection = () => false;
     });
     test('should handle mouse leave', () => {
       handleOnMouseLeave();
-      expect(setHovering).toHaveBeenCalledWith(false);
-      expect(containerRef.current.blur).toHaveBeenCalled();
+      expect(hovering.current).toBe(false);
     });
     test('should update scroll on hover when UP is pressed', () => {
       const event = {
         currentTarget: createElement(0),
-        nativeEvent: { keyCode: KEYS.ARROW_UP },
+        keyCode: KEYS.ARROW_UP,
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
-      handleKeyDownForListbox(event);
+      handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ up: 1 });
     });
     test('should update scroll on hover when DOWN is pressed', () => {
       const event = {
         currentTarget: createElement(0),
-        nativeEvent: { keyCode: KEYS.ARROW_DOWN },
+        keyCode: KEYS.ARROW_DOWN,
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
-      handleKeyDownForListbox(event);
+      handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ down: 1 });
     });
     test('should update scroll on hover when PAGE_UP is pressed', () => {
       const event = {
         currentTarget: createElement(0),
-        nativeEvent: { keyCode: KEYS.PAGE_UP },
+        keyCode: KEYS.PAGE_UP,
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
-      handleKeyDownForListbox(event);
+      handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ up: 10 });
     });
     test('should update scroll on hover when PAGE_DOWN is pressed', () => {
       const event = {
         currentTarget: createElement(0),
-        nativeEvent: { keyCode: KEYS.PAGE_DOWN },
+        keyCode: KEYS.PAGE_DOWN,
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
-      handleKeyDownForListbox(event);
+      handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ down: 10 });
     });
     test('should update scroll on hover when HOME is pressed', () => {
       const event = {
         currentTarget: createElement(0),
-        nativeEvent: { keyCode: KEYS.HOME },
+        keyCode: KEYS.HOME,
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
-      handleKeyDownForListbox(event);
+      handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'start' });
     });
     test('should update scroll on hover when CTRL+SHIFT+HOME is pressed', () => {
       const event = {
         currentTarget: createElement(0),
-        nativeEvent: { keyCode: KEYS.HOME, ctrlKey: true, shiftKey: true },
+        keyCode: KEYS.HOME,
+        ctrlKey: true,
+        shiftKey: true,
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
-      handleKeyDownForListbox(event);
+      handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'overflowStart' });
     });
     test('should update scroll on hover when END is pressed', () => {
       const event = {
         currentTarget: createElement(0),
-        nativeEvent: { keyCode: KEYS.END },
+        keyCode: KEYS.END,
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
-      handleKeyDownForListbox(event);
+      handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'end' });
     });
     test('should update scroll on hover when CTRL+SHIFT+END is pressed', () => {
       const event = {
         currentTarget: createElement(0),
-        nativeEvent: { keyCode: KEYS.END, ctrlKey: true, shiftKey: true },
+        keyCode: KEYS.END,
+        ctrlKey: true,
+        shiftKey: true,
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
-      handleKeyDownForListbox(event);
+      handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'overflowEnd' });
     });

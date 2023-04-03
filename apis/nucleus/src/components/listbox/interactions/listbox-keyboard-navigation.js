@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import KEYS from '../../../keys';
 import { getVizCell, removeLastFocused } from '../components/useTempKeyboard';
 
@@ -152,7 +153,6 @@ export function getFieldKeyboardNavigation({
 export function getListboxInlineKeyboardNavigation({
   keyboard,
   hovering,
-  setHovering,
   updateKeyScroll,
   containerRef,
   currentScrollIndex,
@@ -185,48 +185,13 @@ export function getListboxInlineKeyboardNavigation({
     }
   };
 
-  const updateKeyScrollOnHover = (newState) => {
-    if (hovering) {
-      updateKeyScroll(newState);
-    }
-  };
-
   const handleKeyDown = (event) => {
-    const { keyCode, ctrlKey = false, shiftKey = false } = event.nativeEvent;
+    const { keyCode, shiftKey = false } = event.nativeEvent;
 
     const prevent = () => {
       event.stopPropagation();
       event.preventDefault();
     };
-
-    switch (keyCode) {
-      case KEYS.PAGE_UP:
-        updateKeyScrollOnHover({ up: currentScrollIndex.stop - currentScrollIndex.start });
-        prevent();
-        break;
-      case KEYS.PAGE_DOWN:
-        updateKeyScrollOnHover({ down: currentScrollIndex.stop - currentScrollIndex.start });
-        prevent();
-        break;
-      case KEYS.HOME:
-        updateKeyScrollOnHover({ scrollPosition: ctrlKey && shiftKey ? 'overflowStart' : 'start' });
-        prevent();
-        break;
-      case KEYS.END:
-        updateKeyScrollOnHover({ scrollPosition: ctrlKey && shiftKey ? 'overflowEnd' : 'end' });
-        prevent();
-        break;
-      case KEYS.ARROW_UP:
-        updateKeyScrollOnHover({ up: 1 });
-        prevent();
-        break;
-      case KEYS.ARROW_DOWN:
-        updateKeyScrollOnHover({ down: 1 });
-        prevent();
-        break;
-      default:
-        break;
-    }
 
     if (!keyboard.enabled) {
       // Other keys should not be handled unless keyboard is enabled.
@@ -267,6 +232,37 @@ export function getListboxInlineKeyboardNavigation({
     }
   };
 
+  const globalKeyDown = (event) => {
+    if (!hovering.current) {
+      return;
+    }
+    const { keyCode, ctrlKey = false, shiftKey = false } = event;
+
+    switch (keyCode) {
+      case KEYS.ARROW_UP:
+        updateKeyScroll({ up: 1 });
+        break;
+      case KEYS.ARROW_DOWN:
+        updateKeyScroll({ down: 1 });
+        break;
+      case KEYS.PAGE_UP:
+        updateKeyScroll({ up: currentScrollIndex.stop - currentScrollIndex.start });
+        break;
+      case KEYS.PAGE_DOWN:
+        updateKeyScroll({ down: currentScrollIndex.stop - currentScrollIndex.start });
+        break;
+      case KEYS.HOME:
+        updateKeyScroll({ scrollPosition: ctrlKey && shiftKey ? 'overflowStart' : 'start' });
+        break;
+      case KEYS.END:
+        updateKeyScroll({ scrollPosition: ctrlKey && shiftKey ? 'overflowEnd' : 'end' });
+        break;
+      default:
+        return;
+    }
+    event.preventDefault();
+  };
+
   const focusOnHoverDisabled = () => {
     const selectNotAllowed = constraints?.select || constraints?.active;
     const appInModal = isModal();
@@ -275,17 +271,15 @@ export function getListboxInlineKeyboardNavigation({
 
   const handleOnMouseEnter = () => {
     if (!focusOnHoverDisabled()) {
-      setHovering(true);
-      containerRef?.current?.focus?.();
+      hovering.current = true;
     }
   };
 
   const handleOnMouseLeave = () => {
-    if (hovering) {
-      setHovering(false);
-      containerRef?.current?.blur?.();
+    if (hovering.current) {
+      hovering.current = false;
     }
   };
 
-  return { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave };
+  return { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown };
 }
