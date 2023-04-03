@@ -22,7 +22,7 @@ const VizElement = {
 function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo }) {
   const { component } = sn;
 
-  const { theme: themeName, language, constraints, keyboardNavigation } = useContext(InstanceContext);
+  const { theme: themeName, language, constraints, interactions, keyboardNavigation } = useContext(InstanceContext);
   const [renderDebouncer] = useState(() => new RenderDebouncer());
   const [isMounted, setIsMounted] = useState(false);
   const [renderCnt, setRenderCnt] = useState(0);
@@ -69,6 +69,9 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       if (!constraints.select) {
         permissions.push('select');
       }
+      if (!constraints.edit) {
+        permissions.push('edit');
+      }
       if (halo.app && halo.app.session) {
         permissions.push('fetch');
       }
@@ -80,6 +83,7 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
           embed: halo.public.nebbie,
           context: {
             constraints,
+            interactions,
             // halo.public.theme is a singleton so themeName is used as dep to make sure this effect is triggered
             theme: halo.public.theme,
             appLayout,
@@ -116,6 +120,7 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     themeName,
     language,
     constraints,
+    interactions,
     isMounted,
     keyboardNavigation,
   ]);

@@ -933,7 +933,7 @@ export function useConstraints() {
  *
  */
 export function useInteractionState() {
-  return useInternalContext('interactionState');
+  return useInternalContext('interactions');
 }
 
 /**

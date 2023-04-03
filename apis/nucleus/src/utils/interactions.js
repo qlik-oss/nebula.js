@@ -19,18 +19,18 @@ function pickConstraintsOrInteractions(context) {
 }
 
 export default function unifyContraintsAndInteractions(context) {
-  if (context) {
-    context.interactions = context.interactions || {};
-    context.constraints = context.constraints || {};
-    const definedSettings = pickConstraintsOrInteractions(context);
-    Object.keys(DEFAULT_INTERACTIONS).forEach((state) => {
-      if (definedSettings[state] !== undefined) {
-        context.interactions[state] = definedSettings[state];
-        context.constraints[state] = !definedSettings[state];
-      } else {
-        context.interactions[state] = DEFAULT_INTERACTIONS[state];
-        context.constraints[state] = !DEFAULT_INTERACTIONS[state];
-      }
-    });
-  }
+  const interactions = {};
+  const constraints = {};
+  const definedSettings = pickConstraintsOrInteractions(context);
+  Object.keys(DEFAULT_INTERACTIONS).forEach((state) => {
+    if (definedSettings[state] !== undefined) {
+      interactions[state] = definedSettings[state];
+      constraints[state] = !definedSettings[state];
+    } else {
+      interactions[state] = DEFAULT_INTERACTIONS[state];
+      constraints[state] = !DEFAULT_INTERACTIONS[state];
+    }
+  });
+  context.constraints = constraints;
+  context.interactions = interactions;
 }

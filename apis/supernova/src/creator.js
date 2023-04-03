@@ -49,12 +49,14 @@ function createWithHooks(generator, opts, galaxy) {
   // use a deep comparison for 'small' objects
   let hasRun = false;
   const current = {};
-  const deepCheck = ['appLayout', 'constraints'];
+  const deepCheck = ['appLayout', 'constraints', 'interactions'];
   const forcedConstraints = {};
+  const forcedInteractions = {};
 
   // select should be a constraint when a real model is not available
   if (!opts.model || !opts.model.session) {
     forcedConstraints.select = true;
+    forcedInteractions.select = false;
   }
 
   const c = {
@@ -79,6 +81,7 @@ function createWithHooks(generator, opts, galaxy) {
       keyboardNavigation: opts.keyboardNavigation,
       focusHandler: opts.focusHandler,
       constraints: forcedConstraints,
+      interactions: forcedInteractions,
       options: {},
       plugins: [],
     },
@@ -153,6 +156,9 @@ function createWithHooks(generator, opts, galaxy) {
             let s = JSON.stringify(ref[key]);
             if (key === 'constraints') {
               s = JSON.stringify({ ...ref[key], ...forcedConstraints });
+            }
+            if (key === 'interactions') {
+              s = JSON.stringify({ ...ref[key], ...forcedInteractions });
             }
             if (s !== current[key]) {
               changed = true;
