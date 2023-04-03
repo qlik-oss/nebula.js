@@ -20,13 +20,15 @@ export function getVizCell(container) {
 export default function useTempKeyboard({ containerRef, enabled }) {
   const [keyboardActive, setKeyboardActive] = useState(false);
 
-  const innerTabStops = !enabled || keyboardActive;
-
   const keyboard = {
     enabled,
     active: keyboardActive,
-    innerTabStops, // does keyboard permit inner tab stops
-    blur: (resetFocus) => {
+    /**
+     * innerTabStops: whether keyboard permits inner tab stops
+     *  (inner = everything inside .listbox-container)
+     */
+    innerTabStops: !enabled || keyboardActive,
+    blur(resetFocus) {
       if (!enabled) {
         return;
       }
@@ -40,7 +42,7 @@ export default function useTempKeyboard({ containerRef, enabled }) {
         vizCell.focus();
       }
     },
-    focus: () => {
+    focus() {
       if (!enabled) {
         return;
       }
@@ -54,7 +56,7 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       elementToFocus?.setAttribute('tabIndex', 0);
       elementToFocus?.focus();
     },
-    focusSelection: () => {
+    focusSelection() {
       const confirmButton = document.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
       confirmButton?.setAttribute('tabIndex', 0);
       confirmButton?.focus();
