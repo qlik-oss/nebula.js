@@ -22,7 +22,7 @@ export default function useTempKeyboard({ containerRef, enabled }) {
 
   const keyboard = {
     enabled,
-    active: false,
+    active: keyboardActive,
     /**
      * innerTabStops: whether keyboard permits inner tab stops
      *  (inner = everything inside .listbox-container)
