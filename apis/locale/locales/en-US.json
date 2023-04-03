@@ -19,6 +19,34 @@
     "value": "{0} of {1}",
     "comment": "Text shown between the selected fields count {0} and total fields count {1}"
   },
+  "Object.Listbox.Selected": {
+    "value": "Selected",
+    "comment": "Selected state of an item in listbox. (buy20180905)"
+  },
+  "Object.Listbox.Alternative": {
+    "value": "Alternative",
+    "comment": "Alternative state of an item in listbox(buy20180905)"
+  },
+  "Object.Listbox.Optional": {
+    "value": "Optional",
+    "comment": "Optional state of an item in listbox(buy20180905)"
+  },
+  "Object.Listbox.SelectedExcluded": {
+    "value": "Selected excluded",
+    "comment": "Selected excluded state of an item in listbox(buy20180905)"
+  },
+  "Object.Listbox.Locked": {
+    "value": "Locked",
+    "comment": "Locked state of an item in listbox(buy20180905)"
+  },
+  "Object.Listbox.Excluded": {
+    "value": "Excluded",
+    "comment": "Excluded state of an item in listbox(buy20180905)"
+  },
+  "Object.Listbox.ExcludedLock": {
+    "value": "Excluded lock",
+    "comment": "Excluded lock state of an item in listbox(buy20180905)"
+  },
   "Listbox.Search": {
     "value": "Search in listbox",
     "comment": "Action text to search in listbox"
@@ -31,6 +59,14 @@
     "value": "Unlock selections",
     "comment": "Action text to unlock selections in a listbox"
   },
+  "Listbox.ScreenReader.SelectionMenu.WithAccSelMenu": {
+    "value": "Press Shift plus Tab to set focus on the selections menu.",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is closed. "
+  },
+  "Listbox.ScreenReader.SearchThenSelectionsMenu.WithAccSelMenu": {
+    "value": "Press Shift plus Tab to set focus on the search bar, then Shift plus Tab again to set focus on the selections menu.",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is open. "
+  },
   "Listbox.ScreenReaderInstructions": {
     "value": "Activating the elements below will cause content on the page to be updated",
     "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content"
@@ -38,6 +74,18 @@
   "Listbox.Search.ScreenReaderInstructions": {
     "value": "The following search field filters results below as you type",
     "comment": "Instructions to inform screen reader users that the search field filters the listbox results as they type"
+  },
+  "ScreenReader.ZeroSelected": {
+    "value": "No values are selected.",
+    "comment": "Screen reader label stating that no values are selected."
+  },
+  "ScreenReader.OneSelected": {
+    "value": "There is one selected value.",
+    "comment": "Screen reader text stating that one value is currently in selection."
+  },
+  "ScreenReader.ManySelected": {
+    "value": "There are {0} selected values.",
+    "comment": "Screen reader text stating that multiple values are currently in selection."
   },
   "Listbox.ResultFilterLabel": {
     "value": "Search Results Filter",

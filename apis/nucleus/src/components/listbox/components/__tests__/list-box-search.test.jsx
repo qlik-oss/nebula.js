@@ -16,7 +16,7 @@ const create = (comp) => renderer.create(<ThemeProvider theme={theme}>{comp}</Th
 
 let selections = {};
 
-const keyboard = { enabled: false, active: true };
+const keyboard = {};
 
 const testRender = (model) =>
   create(
@@ -45,17 +45,27 @@ describe('<ListBoxSearch />', () => {
 
     jest.spyOn(useDataStore, 'default').mockImplementation(() => store);
 
-    keyboard.enabled = false;
-    keyboard.active = true;
+    keyboard.innerTabStops = true;
+    keyboard.outerTabStops = !keyboard.innerTabStops;
 
     model = {
       searchListObjectFor: jest.fn().mockResolvedValue(true),
       acceptListObjectSearch: jest.fn(),
       abortListObjectSearch: jest.fn().mockResolvedValue(),
     };
+    const element = {
+      querySelector: jest.fn().mockReturnValue({
+        setAttribute: jest.fn(),
+        focus: jest.fn(),
+      }),
+      querySelectorAll: jest.fn().mockReturnValue([]),
+    };
     keyEventDefaults = {
       preventDefault: jest.fn(),
       stopPropagation: jest.fn(),
+      currentTarget: {
+        closest: jest.fn().mockReturnValue(element),
+      },
     };
     selections = {
       on: jest.fn(),
@@ -88,8 +98,8 @@ describe('<ListBoxSearch />', () => {
   });
 
   test('should have css class `search`', () => {
-    keyboard.enabled = true;
-    keyboard.active = false;
+    keyboard.innerTabStops = false;
+    keyboard.outerTabStops = !keyboard.innerTabStops;
 
     const testRenderer = testRender(model);
     const testInstance = testRenderer.root;

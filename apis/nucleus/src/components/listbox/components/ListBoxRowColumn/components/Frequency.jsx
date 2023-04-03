@@ -5,8 +5,14 @@ import classes from '../helpers/classes';
 import { getFrequencyText, joinClassNames } from '../helpers/operations';
 
 function Frequency({ cell, checkboxes, dense, showGray }) {
+  const frequencyText = getFrequencyText(cell?.qFrequency);
   return (
-    <Grid item style={{ display: 'flex', alignItems: 'center' }} className={classes.frequencyCount}>
+    <Grid
+      item
+      style={{ display: 'flex', alignItems: 'center' }}
+      className={classes.frequencyCount}
+      aria-label={frequencyText}
+    >
       <Typography
         noWrap
         color="inherit"
@@ -17,7 +23,7 @@ function Frequency({ cell, checkboxes, dense, showGray }) {
           showGray && excludedOrAlternative({ cell, checkboxes }) && classes.excludedTextWithCheckbox,
         ])}
       >
-        {getFrequencyText(cell?.qFrequency)}
+        {frequencyText}
       </Typography>
     </Grid>
   );

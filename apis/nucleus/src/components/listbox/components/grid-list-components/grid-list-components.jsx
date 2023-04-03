@@ -38,6 +38,9 @@ export default function getListBoxComponents({
   constraints,
   frequencyMax,
   freqIsAllowed,
+  translator,
+  showSearch,
+  isModal,
 }) {
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, itemPadding, listHeight, itemHeight, rowCount, columnCount, frequencyWidth } = sizes || {};
@@ -84,6 +87,9 @@ export default function getListBoxComponents({
     dataOffset: local.current.dataOffset,
     focusListItems,
     direction,
+    translator,
+    showSearch,
+    isModal,
   };
 
   const List = ({ onItemsRendered, ref }) => {

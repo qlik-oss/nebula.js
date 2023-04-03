@@ -4,7 +4,7 @@ import getItemSizes from '../../grid-list-components/item-sizes';
 import classes from '../helpers/classes';
 
 const ItemGrid = styled(Grid, {
-  shouldForwardProp: (prop) => !['dataLayout', 'layoutOrder', 'itemPadding', 'checkboxes'].includes(prop),
+  shouldForwardProp: (prop) => !['dataLayout', 'layoutOrder', 'itemPadding', 'cellPaddingRight'].includes(prop),
 })(({ dataLayout, layoutOrder, itemPadding, cellPaddingRight }) => ({
   [`&.${classes.fieldRoot}`]: {
     ...getItemSizes({ dataLayout, layoutOrder, itemPadding }),
