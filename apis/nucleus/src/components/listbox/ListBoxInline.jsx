@@ -56,13 +56,11 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
   })
 );
 
-const Title = styled(Typography)(({ theme, isPopover }) => ({
+const Title = styled(Typography)(({ theme }) => ({
   color: theme.listBox?.title?.main?.color,
   fontSize: theme.listBox?.title?.main?.fontSize,
   fontFamily: theme.listBox?.title?.main?.fontFamily,
   fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
-  textOverflow: isPopover ? 'ellipsis' : undefined,
-  overflow: isPopover ? 'hidden' : undefined,
 }));
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
@@ -143,7 +141,7 @@ function ListBoxInline({ options, layout }) {
   });
 
   const showDetachedToolbarOnly = toolbar && (layout?.title === '' || layout?.showTitle === false) && !isPopover;
-  const showToolbarWithTitle = toolbar && layout?.title !== '' && layout?.showTitle !== false;
+  const showToolbarWithTitle = (toolbar && layout?.title !== '' && layout?.showTitle !== false) || isPopover;
 
   useEffect(() => {
     const show = () => {
@@ -295,7 +293,7 @@ function ListBoxInline({ options, layout }) {
         ref={containerRef}
         hasIcon={showIcons}
       >
-        {(showToolbarWithTitle || isPopover) && (
+        {showToolbarWithTitle && (
           <Grid
             item
             container
@@ -336,7 +334,7 @@ function ListBoxInline({ options, layout }) {
                     ref={titleRef}
                     title={layout.title}
                   >
-                    {showToolbarWithTitle ? layout.title : ''}
+                    {layout.title}
                   </Title>
                 )}
               </Grid>
