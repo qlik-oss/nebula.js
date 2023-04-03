@@ -56,7 +56,9 @@ function createWithHooks(generator, opts, galaxy) {
   // select should be a constraint when a real model is not available
   if (!opts.model || !opts.model.session) {
     forcedConstraints.select = true;
+    forcedConstraints.edit = true;
     forcedInteractions.select = false;
+    forcedInteractions.edit = false;
   }
 
   const c = {

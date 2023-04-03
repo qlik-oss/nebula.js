@@ -65,7 +65,9 @@ export default function boot({ app, context }) {
   element.setAttribute('data-app-id', app.id);
   document.body.appendChild(element);
 
-  unifyContraintsAndInteractions(context);
+  if (context) {
+    unifyContraintsAndInteractions(context);
+  }
 
   const root = ReactDOM.createRoot(element);
   root.render(<NebulaApp ref={appRef} app={app} initialContext={context} renderCallback={resolveRender} />);
@@ -114,7 +116,9 @@ export default function boot({ app, context }) {
         (async () => {
           await rendered;
           // Should be done here, unify contraints and interactions
-          unifyContraintsAndInteractions(ctx);
+          if (ctx) {
+            unifyContraintsAndInteractions(ctx);
+          }
           appRef.current.setContext(ctx);
         })();
       },
