@@ -125,7 +125,7 @@ describe('<Supernova />', () => {
         appLayout: { qLocaleInfo: 'loc' },
         theme: 'theme',
         keyboardNavigation: undefined,
-        permissions: ['passive', 'interact', 'select', 'fetch', 'edit'],
+        permissions: ['passive', 'interact', 'select', 'edit', 'fetch'],
         localeInfo: 'loc',
         logicalSize: 'logical',
       },
