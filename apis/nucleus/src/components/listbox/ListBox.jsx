@@ -59,6 +59,7 @@ export default function ListBox({
 }) {
   const { translator } = useContext(InstanceContext);
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
+  const [lastFocusedRow, setLastFocusedRow] = useState(undefined);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const { checkboxes = checkboxOption, histogram } = layout ?? {};
 
@@ -129,6 +130,15 @@ export default function ListBox({
     checkboxes,
     doc: document,
   });
+
+  const onFocus = (event) =>
+    // Store the last focused row to we can reset focus another time.
+    useCallback(() => {
+      const elemNumber = +event.currentTarget.getAttribute('data-n');
+      setLastFocusedRow(elemNumber);
+    }, []);
+
+  Object.assign(interactionEvents, { onFocus });
 
   const { layoutOptions = {} } = layout || {};
 
@@ -296,6 +306,7 @@ export default function ListBox({
     translator,
     showSearch,
     isModal,
+    lastFocusedRow,
   });
 
   const { columnWidth, listHeight, itemHeight } = sizes || {};

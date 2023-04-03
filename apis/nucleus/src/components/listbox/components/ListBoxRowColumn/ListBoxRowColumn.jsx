@@ -18,14 +18,15 @@ import Frequency from './components/Frequency';
 import ItemGrid from './components/ItemGrid';
 import getCellFromPages from './helpers/get-cell-from-pages';
 import { getValueLabel } from '../ScreenReaders';
+import getTabIndex from './helpers/get-tab-index';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
     onChange,
-    onClick,
     onMouseDown,
     onMouseUp,
     onMouseEnter,
+    onFocus,
     pages,
     isLocked,
     column = false,
@@ -51,6 +52,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     translator,
     showSearch,
     isModal,
+    lastFocusedRow,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -167,7 +169,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     justifyContent: valueTextAlign,
   };
 
-  const isFirstElement = index === 0;
+  const tabIndex = getTabIndex({ index, lastFocusedRow, cell });
+
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
   const showLock = isSelected && isLocked;
@@ -212,13 +215,13 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         classes={{
           root: classes.fieldRoot,
         }}
-        onClick={onClick}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
         onMouseEnter={onMouseEnter}
         onKeyDown={handleKeyDownCallback}
+        onFocus={onFocus}
         onContextMenu={preventContextMenu}
-        tabIndex={isFirstElement && keyboard.innerTabStops ? 0 : -1}
+        tabIndex={tabIndex}
         data-n={cell?.qElemNumber}
       >
         {cell?.qFrequency && (
