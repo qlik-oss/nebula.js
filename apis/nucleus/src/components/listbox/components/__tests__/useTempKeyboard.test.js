@@ -87,7 +87,7 @@ describe('useTempKeyboard', () => {
     expect(typeof keyboard.focusSelection).toEqual('function');
   });
 
-  it('should set keyboardActive to true when calling focus()', async () => {
+  it('should set keyboardActive to true when calling focus()', () => {
     const enabled = true;
 
     const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled }));
@@ -99,7 +99,7 @@ describe('useTempKeyboard', () => {
       keyboard.focus();
     });
 
-    await waitFor(() => {
+    waitFor(() => {
       expect(keyboard.active).toEqual(true);
     });
   });

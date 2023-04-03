@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 export function removeInnnerTabStops(container) {
   container?.querySelectorAll('[tabIndex="0"]').forEach((elm) => {
     elm.setAttribute('tabIndex', -1);
@@ -16,22 +18,21 @@ export function getVizCell(container) {
 
 // Emulate the keyboard hook, until we support it in the Listbox.
 export default function useTempKeyboard({ containerRef, enabled }) {
+  const [keyboardActive, setKeyboardActive] = useState(false);
+
   const keyboard = {
     enabled,
     active: false,
-  };
-
-  Object.assign(keyboard, {
     /**
      * innerTabStops: whether keyboard permits inner tab stops
      *  (inner = everything inside .listbox-container)
      */
-    innerTabStops: !enabled || keyboard.active,
+    innerTabStops: !enabled || keyboardActive,
     blur(resetFocus) {
       if (!enabled) {
         return;
       }
-      keyboard.active = false;
+      setKeyboardActive(false);
       const vizCell = getVizCell(containerRef.current) || containerRef.current?.parentElement;
       removeInnnerTabStops(containerRef.current);
       removeLastFocused(containerRef.current);
@@ -45,7 +46,7 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       if (!enabled) {
         return;
       }
-      keyboard.active = true;
+      setKeyboardActive(true);
       const c = containerRef.current;
       const searchField = c?.querySelector('.search input');
       const lastSelectedRow = c?.querySelector('.value.last-focused');
@@ -60,7 +61,7 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       confirmButton?.setAttribute('tabIndex', 0);
       confirmButton?.focus();
     },
-  });
+  };
 
   return keyboard;
 }
