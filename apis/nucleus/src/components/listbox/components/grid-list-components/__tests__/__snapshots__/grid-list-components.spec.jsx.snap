@@ -35,6 +35,7 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "isSingleSelect": false,
       "itemPadding": 4,
       "keyboard": "keyboard",
+      "lastFocusedRow": undefined,
       "layoutOptions": {
         "layoutOrder": "column",
       },
@@ -94,6 +95,7 @@ exports[`grid-list-components should create a List component 1`] = `
       "isSingleSelect": false,
       "itemPadding": 4,
       "keyboard": "keyboard",
+      "lastFocusedRow": undefined,
       "layoutOptions": {
         "layoutOrder": "column",
       },

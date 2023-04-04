@@ -47,6 +47,8 @@ describe('<ListBoxSearch />', () => {
 
     keyboard.innerTabStops = true;
     keyboard.outerTabStops = !keyboard.innerTabStops;
+    keyboard.focusRow = jest.fn();
+    keyboard.focusSelection = jest.fn();
 
     model = {
       searchListObjectFor: jest.fn().mockResolvedValue(true),
