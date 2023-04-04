@@ -59,7 +59,6 @@ export default function ListBox({
 }) {
   const { translator } = useContext(InstanceContext);
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
-  const [lastFocusedRow, setLastFocusedRow] = useState(undefined);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const { checkboxes = checkboxOption, histogram } = layout ?? {};
 
@@ -88,7 +87,7 @@ export default function ListBox({
     postProcessPages,
     listData,
   });
-  const { setStoreValue } = useDataStore(model);
+  const { setStoreValue, getStoreValue } = useDataStore(model);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
 
   const [overflowDisclaimer, setOverflowDisclaimer] = useState({ show: false, dismissed: false });
@@ -132,12 +131,19 @@ export default function ListBox({
     loaderRef,
   });
 
-  const onFocus = (event) =>
-    // Store the last focused row to we can reset focus another time.
-    useCallback(() => {
+  const lastFocusedRow = getStoreValue('lastFocusedRow');
+
+  const onFocus = useCallback(
+    (event) => {
+      if (typeof lastFocusedRow === 'number') {
+        return;
+      }
+      // Store the last focused row so we can reset focus.
       const elemNumber = +event.currentTarget.getAttribute('data-n');
-      setLastFocusedRow(elemNumber);
-    }, []);
+      setStoreValue('lastFocusedRow', elemNumber);
+    },
+    [lastFocusedRow, setStoreValue]
+  );
 
   Object.assign(interactionEvents, { onFocus });
 

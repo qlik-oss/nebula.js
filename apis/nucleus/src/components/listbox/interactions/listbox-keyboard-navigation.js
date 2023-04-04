@@ -1,21 +1,8 @@
 /* eslint-disable no-param-reassign */
 import KEYS from '../../../keys';
-import { getVizCell, removeLastFocused } from '../components/useTempKeyboard';
+import { focusRow, focusSearch, getVizCell } from './listbox-keyboard-navigation-utils';
 
 const getElementIndex = (currentTarget) => +currentTarget.getAttribute('data-n');
-
-const focusSearch = (container) => {
-  const searchField = container?.querySelector('.search input');
-  searchField?.focus();
-  return searchField;
-};
-
-const focusRow = (container) => {
-  const row = container?.querySelector('.value.last-focused, .value.selector, .value');
-  row?.setAttribute('tabIndex', 0);
-  row?.focus();
-  return row;
-};
 
 export function getFieldKeyboardNavigation({
   select,
@@ -47,9 +34,6 @@ export function getFieldKeyboardNavigation({
         // Try to focus search field, otherwise confirm button.
         const container = currentTarget.closest('.listbox-container');
         const inSelection = isModal();
-
-        // TODO: use a store to keep track of this row.
-        currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
 
         if (shiftKey) {
           if (!focusSearch(container)) {
@@ -154,7 +138,6 @@ export function getListboxInlineKeyboardNavigation({
   keyboard,
   hovering,
   updateKeyScroll,
-  containerRef,
   currentScrollIndex,
   isModal,
   constraints,
@@ -166,22 +149,11 @@ export function getListboxInlineKeyboardNavigation({
     const vizCell = getVizCell(container);
     const isSingleListbox = vizCell?.querySelectorAll('.listbox-container').length === 1;
     if (isFocusedOnListbox || isSingleListbox) {
-      // Move the focus from listbox container to the viz container.
+      // Move the focus from listbox container to the VIZ container.
       keyboard.blur(true);
     } else {
-      // More than one listbox: Move focus from row to listbox container.
-
-      // 1. Remove last-focused class from row siblings.
-      removeLastFocused(containerRef.current);
-
-      // 2. Add last-focused class so we can re-focus it later.
-      currentTarget.classList.add('last-focused');
-
-      // 3. Blur row and focus the listbox container.
-      keyboard.blur();
-      const c = currentTarget.closest('.listbox-container');
-      c.setAttribute('tabIndex', 0);
-      c?.focus();
+      // We have more than one listbox: Move focus from row to LISTBOX container.
+      keyboard.blur('.listbox-container');
     }
   };
 

@@ -1,67 +1,10 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
-import useTempKeyboard, { getVizCell, removeInnnerTabStops, removeLastFocused } from '../useTempKeyboard';
-
-describe('removeInnnerTabStops', () => {
-  it('should reset tabIndex in elements with tabIndex="0"', () => {
-    const container = document.createElement('div');
-    const button1 = document.createElement('button');
-    button1.tabIndex = 0;
-    const button2 = document.createElement('button');
-    button2.tabIndex = 1;
-    container.appendChild(button1);
-    container.appendChild(button2);
-    removeInnnerTabStops(container);
-    expect(button1.tabIndex).toBe(-1);
-    expect(button2.tabIndex).toBe(1);
-  });
-
-  it('should not throw when container is null or undefined', () => {
-    expect(() => removeInnnerTabStops(null)).not.toThrow();
-    expect(() => removeInnnerTabStops(undefined)).not.toThrow();
-  });
-});
-
-describe('removeLastFocused', () => {
-  it('removes "last-focused" class from elements with that class', () => {
-    const container = document.createElement('div');
-    const button1 = document.createElement('button');
-    button1.classList.add('last-focused');
-    const button2 = document.createElement('button');
-    button2.classList.add('last-focused');
-    container.appendChild(button1);
-    container.appendChild(button2);
-    removeLastFocused(container);
-    expect(button1.classList.contains('last-focused')).toBe(false);
-    expect(button2.classList.contains('last-focused')).toBe(false);
-  });
-});
-
-describe('getVizCell', () => {
-  ['njs-cell', 'qv-gridcell'].forEach((cellClassName) => {
-    it(`returns the closest ancestor element with class ${cellClassName}`, () => {
-      const container = document.createElement('div');
-      const cell = document.createElement('div');
-      cell.classList.add(cellClassName);
-      const child = document.createElement('button');
-      container.appendChild(cell);
-      cell.appendChild(child);
-      const result = getVizCell(child);
-      expect(result).toBe(cell);
-    });
-  });
-
-  it('returns null if no ancestor element has the required class', () => {
-    const container = document.createElement('div');
-    const child = document.createElement('button');
-    container.appendChild(child);
-    const result = getVizCell(child);
-    expect(result).toBe(null);
-  });
-});
+import useTempKeyboard from '../useTempKeyboard';
 
 describe('useTempKeyboard', () => {
   let containerRef;
   let container;
+  const enabled = true;
 
   beforeEach(() => {
     container = document.createElement('div');
@@ -73,7 +16,6 @@ describe('useTempKeyboard', () => {
   });
 
   it('should return correct keyboard state', () => {
-    const enabled = true;
     const innerTabStops = false;
 
     const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled }));
@@ -88,8 +30,6 @@ describe('useTempKeyboard', () => {
   });
 
   it('should set keyboardActive to true when calling focus()', () => {
-    const enabled = true;
-
     const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled }));
     const keyboard = result?.current || {};
 
@@ -101,6 +41,74 @@ describe('useTempKeyboard', () => {
 
     waitFor(() => {
       expect(keyboard.active).toEqual(true);
+    });
+  });
+
+  it('should set keyboardActive to false when calling blur()', async () => {
+    const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled }));
+    const keyboard = result.current;
+
+    act(() => {
+      keyboard.focus();
+    });
+
+    act(() => {
+      keyboard.blur();
+    });
+
+    waitFor(() => {
+      expect(keyboard.active).toEqual(false);
+      expect(keyboard.innerTabStops).toEqual(true);
+    });
+  });
+
+  it('should set tabIndex to 0 and focus viz cell when resetFocus is true (and vizCell is available)', () => {
+    const vizCell = document.createElement('div');
+    containerRef.current.appendChild(vizCell);
+    containerRef.current.classList.add('njs-cell');
+    document.body.appendChild(containerRef.current);
+
+    const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled: true }));
+    const keyboard = result.current;
+
+    act(() => {
+      keyboard.blur(true);
+    });
+
+    waitFor(() => {
+      expect(vizCell).toHaveAttribute('tabIndex', '0');
+      expect(document.activeElement).toBe(vizCell);
+    });
+
+    document.body.removeChild(containerRef.current);
+  });
+
+  it('should focus specified element when resetFocus is a string', () => {
+    const elementToFocus = document.createElement('div');
+    elementToFocus.id = 'element-to-focus';
+    document.body.appendChild(elementToFocus);
+    const selector = '#element-to-focus';
+
+    const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled }));
+    const keyboard = result.current;
+
+    keyboard.blur(selector);
+
+    expect(elementToFocus).toHaveAttribute('tabIndex', '0');
+    expect(elementToFocus).toHaveFocus();
+  });
+
+  it('should focus the search field when calling focus()', async () => {
+    const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled }));
+    const keyboard = result.current;
+
+    act(() => {
+      keyboard.focus();
+    });
+
+    waitFor(() => {
+      expect(keyboard.active).toEqual(true);
+      expect(keyboard.innerTabStops).toEqual(false);
     });
   });
 });

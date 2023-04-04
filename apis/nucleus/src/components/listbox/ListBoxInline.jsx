@@ -133,7 +133,6 @@ function ListBoxInline({ options, layout }) {
         keyboard,
         hovering,
         updateKeyScroll,
-        containerRef,
         currentScrollIndex,
         app,
         appSelections,

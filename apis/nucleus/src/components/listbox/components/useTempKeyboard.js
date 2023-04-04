@@ -1,20 +1,10 @@
 import { useState } from 'react';
-
-export function removeInnnerTabStops(container) {
-  container?.querySelectorAll('[tabIndex="0"]').forEach((elm) => {
-    elm.setAttribute('tabIndex', -1);
-  });
-}
-
-export function removeLastFocused(container) {
-  container?.querySelectorAll('.last-focused').forEach((elm) => {
-    elm.classList.remove('last-focused');
-  });
-}
-
-export function getVizCell(container) {
-  return container?.closest('.njs-cell') || container?.closest('.qv-gridcell');
-}
+import {
+  focusRow,
+  focusSearch,
+  getVizCell,
+  removeInnnerTabStops,
+} from '../interactions/listbox-keyboard-navigation-utils';
 
 // Emulate the keyboard hook, until we support it in the Listbox.
 export default function useTempKeyboard({ containerRef, enabled }) {
@@ -34,12 +24,17 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       }
       setKeyboardActive(false);
       const vizCell = getVizCell(containerRef.current) || containerRef.current?.parentElement;
+      let elementToFocus;
       removeInnnerTabStops(containerRef.current);
-      removeLastFocused(containerRef.current);
-      if (resetFocus && vizCell) {
+      if (resetFocus === true && vizCell) {
         // Move focus to the viz's cell.
-        vizCell.setAttribute('tabIndex', 0);
-        vizCell.focus();
+        elementToFocus = vizCell;
+      } else if (typeof resetFocus === 'string') {
+        elementToFocus = document.querySelector(resetFocus);
+      }
+      if (elementToFocus) {
+        elementToFocus.setAttribute('tabIndex', 0);
+        elementToFocus.focus();
       }
     },
     focus() {
@@ -48,13 +43,7 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       }
       setKeyboardActive(true);
       const c = containerRef.current;
-      const searchField = c?.querySelector('.search input');
-      const lastSelectedRow = c?.querySelector('.value.last-focused');
-      const fieldElement = c?.querySelector('.value.selector, .value, .ActionsToolbar-item button');
-
-      const elementToFocus = searchField || lastSelectedRow || fieldElement;
-      elementToFocus?.setAttribute('tabIndex', 0);
-      elementToFocus?.focus();
+      focusSearch(c) || focusRow(c);
     },
     focusSelection() {
       const confirmButton = document.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
