@@ -15,7 +15,7 @@ const { version } = require('../package.json');
 
 const versionHash = crypto.createHash('md5').update(version).digest('hex').slice(0, 4);
 
-const cfg = ({ srcDir, distDir, dev = true, serveConfig = {} }) => {
+const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
   const config = {
     mode: dev ? 'development' : 'production',
     entry: {
