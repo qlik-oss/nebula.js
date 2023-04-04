@@ -23,10 +23,10 @@ export default function useTempKeyboard({ containerRef, enabled }) {
   const keyboard = {
     enabled,
     active: keyboardActive,
-    /**
-     * innerTabStops: whether keyboard permits inner tab stops
-     *  (inner = everything inside .listbox-container)
-     */
+
+    // innerTabStops: whether keyboard permits inner tab stops
+    // (inner = everything inside .listbox-container)
+
     innerTabStops: !enabled || keyboardActive,
     blur(resetFocus) {
       if (!enabled) {

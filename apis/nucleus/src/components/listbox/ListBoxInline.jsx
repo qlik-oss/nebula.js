@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useContext, useCallback, useRef, useEffect, useState } from 'react';
+import React, { useContext, useCallback, useRef, useEffect, useState, useMemo } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
 import Lock from '@nebula.js/ui/icons/lock';
@@ -47,7 +47,7 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
     [`& .${classes.listboxWrapper}`]: {
       padding: containerPadding,
     },
-    '&:focus:not(:hover)': {
+    '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
     },
     '&:focus-visible': {
@@ -62,7 +62,6 @@ const Title = styled(Typography)(({ theme }) => ({
   fontFamily: theme.listBox?.title?.main?.fontFamily,
   fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
 }));
-
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
 function ListBoxInline({ options, layout }) {
@@ -85,6 +84,7 @@ function ListBoxInline({ options, layout }) {
     scrollState = undefined,
     renderedCallback,
     toolbar = true,
+    isPopover = false,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -115,7 +115,7 @@ function ListBoxInline({ options, layout }) {
 
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
-  const [hovering, setHovering] = useState(false);
+  const hovering = useRef(false);
   const [keyScroll, setKeyScroll] = useState({ down: 0, up: 0, scrollPosition: '' });
   const updateKeyScroll = (newState) => setKeyScroll((current) => ({ ...current, ...newState }));
   const [currentScrollIndex, setCurrentScrollIndex] = useState({ start: 0, stop: 0 });
@@ -127,21 +127,41 @@ function ListBoxInline({ options, layout }) {
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
 
-  const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave } = getListboxInlineKeyboardNavigation({
-    keyboard,
-    hovering,
-    setHovering,
-    updateKeyScroll,
-    containerRef,
-    currentScrollIndex,
-    app,
-    appSelections,
-    constraints,
-    isModal: isModalMode,
-  });
+  const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown } = useMemo(
+    () =>
+      getListboxInlineKeyboardNavigation({
+        keyboard,
+        hovering,
+        updateKeyScroll,
+        containerRef,
+        currentScrollIndex,
+        app,
+        appSelections,
+        constraints,
+        isModal: isModalMode,
+      }),
+    [
+      keyboard,
+      hovering,
+      updateKeyScroll,
+      containerRef,
+      currentScrollIndex,
+      app,
+      appSelections,
+      constraints,
+      isModalMode,
+    ]
+  );
 
-  const showDetachedToolbarOnly = toolbar && (layout?.title === '' || layout?.showTitle === false);
-  const showToolbarWithTitle = toolbar && layout?.title !== '' && layout?.showTitle !== false;
+  const showDetachedToolbarOnly = toolbar && (layout?.title === '' || layout?.showTitle === false) && !isPopover;
+  const showToolbarWithTitle = (toolbar && layout?.title !== '' && layout?.showTitle !== false) || isPopover;
+
+  useEffect(() => {
+    document.addEventListener('keydown', globalKeyDown);
+    return () => {
+      document.removeEventListener('keydown', globalKeyDown);
+    };
+  }, [globalKeyDown]);
 
   useEffect(() => {
     const show = () => {
@@ -153,6 +173,14 @@ function ListBoxInline({ options, layout }) {
         setShowSearch(false);
       }
     };
+    if (isPopover) {
+      if (!selections.isActive()) {
+        selections.begin('/qListObjectDef');
+        selections.on('activated', show);
+        selections.on('deactivated', hide);
+      }
+      setShowToolbar(isPopover);
+    }
     if (selections) {
       if (!selections.isModal()) {
         selections.on('activated', show);
@@ -167,7 +195,7 @@ function ListBoxInline({ options, layout }) {
         selections.removeListener('deactivated', hide);
       }
     };
-  }, [selections]);
+  }, [selections, isPopover]);
 
   useEffect(() => {
     if (!searchContainer || !searchContainer.current) {
@@ -219,9 +247,9 @@ function ListBoxInline({ options, layout }) {
     }
   };
 
-  const getActionToolbarProps = (isPopover) =>
+  const getActionToolbarProps = (isDetached) =>
     getListboxActionProps({
-      isPopover,
+      isDetached: isPopover ? false : isDetached,
       showToolbar,
       containerRef,
       isLocked,
@@ -236,6 +264,7 @@ function ListBoxInline({ options, layout }) {
   const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
   const headerPaddingLeft = CELL_PADDING_LEFT - (showSearchOrLockIcon ? ICON_PADDING : 0);
   const headerPaddingRight = isRtl ? CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0) : 0;
+  const { isDetached, reasonDetached } = showToolbarDetached({ containerRef, titleRef, iconsWidth });
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
   const isGridMode = layoutOptions?.dataLayout === 'grid';
@@ -273,7 +302,7 @@ function ListBoxInline({ options, layout }) {
       <StyledGrid
         className="listbox-container"
         container
-        tabIndex={-1}
+        tabIndex={keyboard.enabled ? -1 : undefined}
         direction="column"
         gap={0}
         containerPadding={containerPadding}
@@ -318,7 +347,13 @@ function ListBoxInline({ options, layout }) {
               )}
               <Grid item sx={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }} className={classes.listBoxHeader}>
                 {showTitle && (
-                  <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
+                  <Title
+                    variant="h6"
+                    sx={{ width: isPopover && reasonDetached === 'noSpace' ? '60px' : undefined }}
+                    noWrap
+                    ref={titleRef}
+                    title={layout.title}
+                  >
                     {layout.title}
                   </Title>
                 )}
@@ -326,10 +361,7 @@ function ListBoxInline({ options, layout }) {
             </Grid>
             <Grid item xs />
             <Grid item>
-              <ActionsToolbar
-                direction={direction}
-                {...getActionToolbarProps(showToolbarDetached({ containerRef, titleRef, iconsWidth }))}
-              />
+              <ActionsToolbar direction={direction} {...getActionToolbarProps(isDetached)} />
             </Grid>
           </Grid>
         )}

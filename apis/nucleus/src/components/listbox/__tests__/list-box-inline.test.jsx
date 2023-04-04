@@ -123,6 +123,7 @@ describe('<ListboxInline />', () => {
       selections,
       update: undefined,
       fetchStart: 'fetchStart',
+      isPopover: false,
     };
 
     useRef.mockReturnValue({ current: 'current' });
@@ -258,6 +259,24 @@ describe('<ListboxInline />', () => {
         visible: true,
         autoFocus: false,
       });
+    });
+
+    test('should show toolbar when opened in a popover', async () => {
+      options.search = false;
+      options.isPopover = true;
+      await render();
+      const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
+      expect(actionToolbars).toHaveLength(1);
+
+      const typographs = renderer.root.findAllByType(Typography);
+      expect(typographs).toHaveLength(1);
+
+      expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
+        visible: false,
+      });
+      expect(selections.on).toHaveBeenCalledTimes(2);
+      expect(selections.on.mock.calls[0][0]).toBe('activated');
+      expect(selections.on.mock.calls[1][0]).toBe('deactivated');
     });
 
     test('should remove correct listeners on unmount', async () => {
