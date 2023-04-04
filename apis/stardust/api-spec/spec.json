@@ -643,59 +643,6 @@
     "Context": {
       "kind": "interface",
       "entries": {
-        "keyboardNavigation": {
-          "optional": true,
-          "type": "boolean"
-        },
-        "interactions": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "active": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "passive": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "select": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "edit": {
-              "optional": true,
-              "type": "boolean"
-            }
-          }
-        },
-        "constraints": {
-          "description": "Deprecated",
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "active": {
-              "description": "Deprecated",
-              "optional": true,
-              "type": "boolean"
-            },
-            "passive": {
-              "description": "Deprecated",
-              "optional": true,
-              "type": "boolean"
-            },
-            "select": {
-              "description": "Deprecated",
-              "optional": true,
-              "type": "boolean"
-            },
-            "edit": {
-              "description": "Deprecated",
-              "optional": true,
-              "type": "boolean"
-            }
-          }
-        },
         "theme": {
           "optional": true,
           "defaultValue": "light",
@@ -710,6 +657,25 @@
           "optional": true,
           "defaultValue": "auto",
           "type": "string"
+        },
+        "constraints": {
+          "description": "Deprecated",
+          "optional": true,
+          "type": "#/definitions/Constraints"
+        },
+        "interactions": {
+          "optional": true,
+          "type": "#/definitions/Interactions"
+        },
+        "keyboardNavigation": {
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "disableCellPadding": {
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
         }
       }
     },
@@ -2051,21 +2017,25 @@
         "passive": {
           "description": "Whether or not passive constraints are on. Should block any passive interaction by users, ie: tooltips",
           "optional": true,
+          "defaultValue": false,
           "type": "boolean"
         },
         "active": {
           "description": "Whether or not active constraints are on. Should block any active interaction by users, ie: scroll, click",
           "optional": true,
+          "defaultValue": false,
           "type": "boolean"
         },
         "select": {
           "description": "Whether or not select constraints are on. Should block any selection action. Implied when active is true.",
           "optional": true,
+          "defaultValue": false,
           "type": "boolean"
         },
         "edit": {
           "description": "Whether or not edit actions are available. Should block any edit action.",
           "optional": true,
+          "defaultValue": true,
           "type": "boolean"
         }
       }
@@ -2076,21 +2046,25 @@
         "passive": {
           "description": "Whether or not passive interactions are on. Allows passive interaction by users, ie: tooltips",
           "optional": true,
+          "defaultValue": true,
           "type": "boolean"
         },
         "active": {
           "description": "Whether or not active interactions are on. Allows active interaction by users, ie: scroll, click",
           "optional": true,
+          "defaultValue": true,
           "type": "boolean"
         },
         "select": {
           "description": "Whether or not select interactions are on. Alows selection actions. Implied when active is false.",
           "optional": true,
+          "defaultValue": true,
           "type": "boolean"
         },
         "edit": {
           "description": "Whether or not edit actions are on. Allows edit actions.",
           "optional": true,
+          "defaultValue": false,
           "type": "boolean"
         }
       }

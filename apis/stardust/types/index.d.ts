@@ -221,22 +221,13 @@ declare namespace stardust {
     }
 
     interface Context {
-        keyboardNavigation?: boolean;
-        interactions?: {
-            active?: boolean;
-            passive?: boolean;
-            select?: boolean;
-            edit?: boolean;
-        };
-        constraints?: {
-            active?: boolean;
-            passive?: boolean;
-            select?: boolean;
-            edit?: boolean;
-        };
         theme?: string;
         language?: string;
         deviceType?: string;
+        constraints?: stardust.Constraints;
+        interactions?: stardust.Interactions;
+        keyboardNavigation?: boolean;
+        disableCellPadding?: boolean;
     }
 
     interface Galaxy {

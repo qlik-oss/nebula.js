@@ -91,17 +91,6 @@ const DEFAULT_CONFIG = {
 
 /**
  * @interface Context
- * @property {boolean=} keyboardNavigation
- * @property {object=} interactions
- * @property {boolean=} interactions.active
- * @property {boolean=} interactions.passive
- * @property {boolean=} interactions.select
- * @property {boolean=} interactions.edit
- * @property {object=} constraints Deprecated
- * @property {boolean=} constraints.active Deprecated
- * @property {boolean=} constraints.passive Deprecated
- * @property {boolean=} constraints.select Deprecated
- * @property {boolean=} constraints.edit Deprecated
  */
 const DEFAULT_CONTEXT = /** @lends Context */ {
   /** @type {string=} */
@@ -110,9 +99,13 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
   language: 'en-US',
   /** @type {string=} */
   deviceType: 'auto',
+  /** @type {Constraints=} Deprecated */
   constraints: {},
+  /** @type {Interactions=} */
   interactions: {},
+  /** @type {boolean=} */
   keyboardNavigation: false,
+  /** @type {boolean=} */
   disableCellPadding: false,
 };
 

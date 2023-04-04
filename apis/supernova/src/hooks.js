@@ -846,10 +846,10 @@ export function useAction(fn, deps) {
 /**
  * @interface Constraints
  * @deprecated Use Interactions instead
- * @property {boolean=} passive Whether or not passive constraints are on. Should block any passive interaction by users, ie: tooltips
- * @property {boolean=} active Whether or not active constraints are on. Should block any active interaction by users, ie: scroll, click
- * @property {boolean=} select Whether or not select constraints are on. Should block any selection action. Implied when active is true.
- * @property {boolean=} edit Whether or not edit actions are available. Should block any edit action.
+ * @property {boolean=} passive=false Whether or not passive constraints are on. Should block any passive interaction by users, ie: tooltips
+ * @property {boolean=} active=false Whether or not active constraints are on. Should block any active interaction by users, ie: scroll, click
+ * @property {boolean=} select=false Whether or not select constraints are on. Should block any selection action. Implied when active is true.
+ * @property {boolean=} edit=true Whether or not edit actions are available. Should block any edit action.
  */
 
 /**
@@ -893,10 +893,10 @@ export function useConstraints() {
 
 /**
  * @interface Interactions
- * @property {boolean=} passive Whether or not passive interactions are on. Allows passive interaction by users, ie: tooltips
- * @property {boolean=} active Whether or not active interactions are on. Allows active interaction by users, ie: scroll, click
- * @property {boolean=} select Whether or not select interactions are on. Alows selection actions. Implied when active is false.
- * @property {boolean=} edit Whether or not edit actions are on. Allows edit actions.
+ * @property {boolean=} passive=true Whether or not passive interactions are on. Allows passive interaction by users, ie: tooltips
+ * @property {boolean=} active=true Whether or not active interactions are on. Allows active interaction by users, ie: scroll, click
+ * @property {boolean=} select=true Whether or not select interactions are on. Alows selection actions. Implied when active is false.
+ * @property {boolean=} edit=false Whether or not edit actions are on. Allows edit actions.
  */
 /**
  * Gets the desired interaction states that should be applied when rendering the visualization.
