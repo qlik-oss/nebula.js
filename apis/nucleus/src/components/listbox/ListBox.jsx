@@ -129,6 +129,7 @@ export default function ListBox({
     selections,
     checkboxes,
     doc: document,
+    loaderRef,
   });
 
   const onFocus = (event) =>

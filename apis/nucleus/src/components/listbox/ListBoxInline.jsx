@@ -62,7 +62,6 @@ const Title = styled(Typography)(({ theme }) => ({
   fontFamily: theme.listBox?.title?.main?.fontFamily,
   fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
 }));
-
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
 function ListBoxInline({ options, layout }) {
@@ -85,6 +84,7 @@ function ListBoxInline({ options, layout }) {
     scrollState = undefined,
     renderedCallback,
     toolbar = true,
+    isPopover = false,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -153,8 +153,8 @@ function ListBoxInline({ options, layout }) {
     ]
   );
 
-  const showDetachedToolbarOnly = toolbar && (layout?.title === '' || layout?.showTitle === false);
-  const showToolbarWithTitle = toolbar && layout?.title !== '' && layout?.showTitle !== false;
+  const showDetachedToolbarOnly = toolbar && (layout?.title === '' || layout?.showTitle === false) && !isPopover;
+  const showToolbarWithTitle = (toolbar && layout?.title !== '' && layout?.showTitle !== false) || isPopover;
 
   useEffect(() => {
     document.addEventListener('keydown', globalKeyDown);
@@ -173,6 +173,14 @@ function ListBoxInline({ options, layout }) {
         setShowSearch(false);
       }
     };
+    if (isPopover) {
+      if (!selections.isActive()) {
+        selections.begin('/qListObjectDef');
+        selections.on('activated', show);
+        selections.on('deactivated', hide);
+      }
+      setShowToolbar(isPopover);
+    }
     if (selections) {
       if (!selections.isModal()) {
         selections.on('activated', show);
@@ -187,7 +195,7 @@ function ListBoxInline({ options, layout }) {
         selections.removeListener('deactivated', hide);
       }
     };
-  }, [selections]);
+  }, [selections, isPopover]);
 
   useEffect(() => {
     if (!searchContainer || !searchContainer.current) {
@@ -239,9 +247,9 @@ function ListBoxInline({ options, layout }) {
     }
   };
 
-  const getActionToolbarProps = (isPopover) =>
+  const getActionToolbarProps = (isDetached) =>
     getListboxActionProps({
-      isPopover,
+      isDetached: isPopover ? false : isDetached,
       showToolbar,
       containerRef,
       isLocked,
@@ -256,6 +264,7 @@ function ListBoxInline({ options, layout }) {
   const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
   const headerPaddingLeft = CELL_PADDING_LEFT - (showSearchOrLockIcon ? ICON_PADDING : 0);
   const headerPaddingRight = isRtl ? CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0) : 0;
+  const { isDetached, reasonDetached } = showToolbarDetached({ containerRef, titleRef, iconsWidth });
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
   const isGridMode = layoutOptions?.dataLayout === 'grid';
@@ -338,7 +347,13 @@ function ListBoxInline({ options, layout }) {
               )}
               <Grid item sx={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }} className={classes.listBoxHeader}>
                 {showTitle && (
-                  <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
+                  <Title
+                    variant="h6"
+                    sx={{ width: isPopover && reasonDetached === 'noSpace' ? '60px' : undefined }}
+                    noWrap
+                    ref={titleRef}
+                    title={layout.title}
+                  >
                     {layout.title}
                   </Title>
                 )}
@@ -346,10 +361,7 @@ function ListBoxInline({ options, layout }) {
             </Grid>
             <Grid item xs />
             <Grid item>
-              <ActionsToolbar
-                direction={direction}
-                {...getActionToolbarProps(showToolbarDetached({ containerRef, titleRef, iconsWidth }))}
-              />
+              <ActionsToolbar direction={direction} {...getActionToolbarProps(isDetached)} />
             </Grid>
           </Grid>
         )}

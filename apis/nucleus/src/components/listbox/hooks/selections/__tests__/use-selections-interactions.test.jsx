@@ -25,6 +25,7 @@ describe('use-listbox-interactions', () => {
   let setPages;
   let layout;
   let updateSelectionState;
+  let loaderRef;
 
   beforeEach(() => {
     jest.spyOn(global.document, 'addEventListener').mockImplementation(jest.fn());
@@ -69,13 +70,16 @@ describe('use-listbox-interactions', () => {
     };
 
     ref = React.createRef();
+    loaderRef = {
+      current: null,
+    };
     render = async (overrides = {}) => {
       await act(async () => {
         create(
           <TestHook
             ref={ref}
             hook={useSelectionsInteractions}
-            hookProps={[{ selectionState, selections, doc: global.document, ...overrides }]}
+            hookProps={[{ selectionState, selections, doc: global.document, loaderRef, ...overrides }]}
           />
         );
       });
@@ -94,7 +98,13 @@ describe('use-listbox-interactions', () => {
         await render();
         const arg0 = ref.current.result;
         expect(Object.keys(arg0).sort()).toEqual(['interactionEvents', 'select']);
-        expect(Object.keys(arg0.interactionEvents).sort()).toEqual(['onMouseDown', 'onMouseEnter', 'onMouseUp']);
+        expect(Object.keys(arg0.interactionEvents).sort()).toEqual([
+          'onMouseDown',
+          'onMouseEnter',
+          'onMouseUp',
+          'onTouchEnd',
+          'onTouchStart',
+        ]);
       });
       test('With checkboxes', async () => {
         await render({ checkboxes: true });
@@ -210,7 +220,13 @@ describe('use-listbox-interactions', () => {
       await render();
       const arg0 = ref.current.result;
       expect(Object.keys(arg0)).toEqual(['interactionEvents', 'select']);
-      expect(Object.keys(arg0.interactionEvents).sort()).toEqual(['onMouseDown', 'onMouseEnter', 'onMouseUp']);
+      expect(Object.keys(arg0.interactionEvents).sort()).toEqual([
+        'onMouseDown',
+        'onMouseEnter',
+        'onMouseUp',
+        'onTouchEnd',
+        'onTouchStart',
+      ]);
     });
 
     test('should select a range (in theory)', async () => {
@@ -280,6 +296,70 @@ describe('use-listbox-interactions', () => {
 
       expect(setPages).toHaveBeenCalledTimes(callCount + 4);
       expect(listboxSelections.selectValues).toHaveBeenCalledTimes(1);
+      expect(listboxSelections.selectValues).toHaveBeenCalledWith({
+        selections,
+        elemNumbers: [24, 25, 26, 27, 28, 29, 30],
+        isSingleSelect: false,
+        toggle: true,
+      });
+    });
+
+    test('Should handle range select on two finger tap', async () => {
+      const createPage = (s24, s25, s26, s27, s28, s29, s30, s31) =>
+        createPageWithRange(
+          { qElemNumber: 24, qState: s24 },
+          { qElemNumber: 25, qState: s25 },
+          { qElemNumber: 26, qState: s26 },
+          { qElemNumber: 27, qState: s27 },
+          { qElemNumber: 28, qState: s28 },
+          { qElemNumber: 29, qState: s29 },
+          { qElemNumber: 30, qState: s30 },
+          { qElemNumber: 31, qState: s31 }
+        );
+
+      updateSelectionState({
+        pages: createPage('O', 'O', 'O', 'O', 'O', 'O', 'O', 'O'),
+      });
+
+      await render();
+
+      await act(() => {
+        const touchOne = {
+          target: {
+            closest: () => ({ getAttribute: jest.fn().mockReturnValue('24') }),
+          },
+        };
+        const touchTwo = {
+          target: {
+            closest: () => ({ getAttribute: jest.fn().mockReturnValue('29') }),
+          },
+        };
+
+        ref.current.result.interactionEvents.onTouchStart({
+          touches: [touchOne, touchTwo],
+        });
+        ref.current.result.interactionEvents.onTouchEnd();
+      });
+      // Touch range too small
+      expect(listboxSelections.selectValues).not.toHaveBeenCalled();
+
+      await act(() => {
+        const touchOne = {
+          target: {
+            closest: () => ({ getAttribute: jest.fn().mockReturnValue('24') }),
+          },
+        };
+        const touchTwo = {
+          target: {
+            closest: () => ({ getAttribute: jest.fn().mockReturnValue('30') }),
+          },
+        };
+
+        ref.current.result.interactionEvents.onTouchStart({
+          touches: [touchOne, touchTwo],
+        });
+        ref.current.result.interactionEvents.onTouchEnd();
+      });
       expect(listboxSelections.selectValues).toHaveBeenCalledWith({
         selections,
         elemNumbers: [24, 25, 26, 27, 28, 29, 30],

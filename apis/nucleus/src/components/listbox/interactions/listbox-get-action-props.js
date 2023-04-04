@@ -1,5 +1,5 @@
 export default function getListboxActionProps({
-  isPopover,
+  isDetached,
   showToolbar,
   containerRef,
   isLocked,
@@ -7,9 +7,9 @@ export default function getListboxActionProps({
   selections,
 }) {
   return {
-    show: showToolbar && !isPopover,
+    show: showToolbar && !isDetached,
     popover: {
-      show: showToolbar && isPopover,
+      show: showToolbar && isDetached,
       anchorEl: containerRef.current,
     },
     more: {

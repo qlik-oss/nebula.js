@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.8](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.7...v4.0.0-alpha.8) (2023-04-03)
+
+### Bug Fixes
+
+- leave focus unchanged on hover ([#1206](https://github.com/qlik-oss/nebula.js/issues/1206)) ([e6119fd](https://github.com/qlik-oss/nebula.js/commit/e6119fd2c9e69677f71ae1b8d855383926179b28))
+- **listbox:** shift tab on container should take you to cell ([#1207](https://github.com/qlik-oss/nebula.js/issues/1207)) ([bd844cb](https://github.com/qlik-oss/nebula.js/commit/bd844cba0840cd9c7909f034540b4fa5478506b5))
+- **listbox:** show selection toolbar when listbox opens in popover ([#1204](https://github.com/qlik-oss/nebula.js/issues/1204)) ([2c62034](https://github.com/qlik-oss/nebula.js/commit/2c62034b955aa6caa5f26eda706d4231c6bc96f9))
+
+### Features
+
+- **Listbox:** tap range select ([#1208](https://github.com/qlik-oss/nebula.js/issues/1208)) ([957d96d](https://github.com/qlik-oss/nebula.js/commit/957d96d83bbcc18a6f1bd7b72fda33415643f291))
+
 # [4.0.0-alpha.7](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.6...v4.0.0-alpha.7) (2023-03-30)
 
 ### Bug Fixes

@@ -1,16 +1,46 @@
+/* eslint-disable no-underscore-dangle */
 import { useEffect, useCallback, useRef } from 'react';
 import { selectValues, fillRange, getElemNumbersFromPages } from './listbox-selections';
+import rowColClasses from '../../components/ListBoxRowColumn/helpers/classes';
 
+const dataItemSelector = `.${rowColClasses.fieldRoot}`;
 const getKeyAsToggleSelected = (event) => !(event?.metaKey || event?.ctrlKey);
 
-export default function useSelectionsInteractions({ selectionState, selections, checkboxes = false, doc = document }) {
+export default function useSelectionsInteractions({
+  selectionState,
+  selections,
+  checkboxes = false,
+  doc = document,
+  loaderRef,
+}) {
   const currentSelect = useRef({
     startElemNumber: undefined,
     elemNumbers: [],
     isRange: false,
     toggle: false,
     active: false,
+    touchElemNumbers: [],
+    touchRangeSmall: false,
   });
+
+  useEffect(() => {
+    if (!loaderRef.current?._listRef?._outerRef) {
+      return undefined;
+    }
+    const preventGestureStart = (e) => e.preventDefault();
+    const preventGestureChange = (e) => e.preventDefault();
+    const preventGestureEnd = (e) => e.preventDefault();
+
+    const listRef = loaderRef.current._listRef._outerRef;
+    listRef.addEventListener('gesturestart', preventGestureStart);
+    listRef.addEventListener('gesturechange', preventGestureChange);
+    listRef.addEventListener('gestureend', preventGestureEnd);
+    return () => {
+      listRef.removeEventListener('gesturestart', preventGestureStart);
+      listRef.removeEventListener('gesturechange', preventGestureChange);
+      listRef.removeEventListener('gestureend', preventGestureEnd);
+    };
+  }, [loaderRef.current?._listRef?._outerRef]);
 
   // eslint-disable-next-line arrow-body-style
   const doSelect = () => {
@@ -23,14 +53,17 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     });
   };
 
+  const getRange = (start, end) => {
+    const elemNumbersOrdered = getElemNumbersFromPages(selectionState.enginePages);
+    return fillRange([start, end], elemNumbersOrdered);
+  };
+
   const addToRange = (elemNumber) => {
     const { startElemNumber } = currentSelect.current;
     if (startElemNumber === elemNumber) {
       return;
     }
-    const rangeEnds = [currentSelect.current.startElemNumber, elemNumber];
-    const elemNumbersOrdered = getElemNumbersFromPages(selectionState.enginePages);
-    const toMaybeAdd = fillRange(rangeEnds, elemNumbersOrdered);
+    const toMaybeAdd = getRange(currentSelect.current.startElemNumber, elemNumber);
     selectionState.updateItems(toMaybeAdd, true, currentSelect.current.elemNumbers);
   };
 
@@ -138,6 +171,58 @@ export default function useSelectionsInteractions({ selectionState, selections, 
     addToRange(elemNumber);
   }, []);
 
+  const onTouchStart = useCallback((event) => {
+    // Handle range selection with two finger touch
+    if (
+      currentSelect.current.active ||
+      currentSelect.current.isRange ||
+      selectionState.isSingleSelect ||
+      event.touches.length <= 1
+    ) {
+      return;
+    }
+    if (event.touches.length > 2) {
+      doSelect();
+      return;
+    }
+    const startTouchElemNumber = Number(event.touches[0].target?.closest(dataItemSelector)?.getAttribute('data-n'));
+    const endTouchElemNumber = Number(event.touches[1].target?.closest(dataItemSelector)?.getAttribute('data-n'));
+
+    if (Number.isNaN(startTouchElemNumber) || Number.isNaN(startTouchElemNumber)) {
+      doSelect();
+      return;
+    }
+
+    currentSelect.current.active = true;
+    const range = getRange(startTouchElemNumber, endTouchElemNumber);
+    if (range.length < 7) {
+      currentSelect.current.touchRangeSmall = true;
+    }
+
+    currentSelect.current.elemNumbers = [];
+    currentSelect.current.touchElemNumbers = [startTouchElemNumber, endTouchElemNumber];
+  }, []);
+
+  const onTouchEnd = useCallback(() => {
+    if (currentSelect.current.touchElemNumbers.length !== 2) {
+      return;
+    }
+    if (currentSelect.current.touchRangeSmall) {
+      currentSelect.current.touchRangeSmall = false;
+      currentSelect.current.touchElemNumbers = [];
+      currentSelect.current.active = false;
+      return;
+    }
+
+    const [startTouchElemNumber, endTouchElemNumber] = currentSelect.current.touchElemNumbers;
+    currentSelect.current.startElemNumber = startTouchElemNumber;
+    addToRange(endTouchElemNumber);
+    currentSelect.current.touchElemNumbers = [];
+    currentSelect.current.active = false;
+    currentSelect.current.toggle = true;
+    doSelect();
+  }, []);
+
   useEffect(() => {
     doc.addEventListener('mouseup', onMouseUpDoc);
     return () => {
@@ -169,7 +254,7 @@ export default function useSelectionsInteractions({ selectionState, selections, 
   if (checkboxes) {
     Object.assign(interactionEvents, { onChange });
   } else {
-    Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter });
+    Object.assign(interactionEvents, { onMouseUp, onMouseDown, onMouseEnter, onTouchStart, onTouchEnd });
   }
 
   return {

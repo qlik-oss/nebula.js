@@ -27,6 +27,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     onMouseUp,
     onMouseEnter,
     onFocus,
+    onTouchStart,
+    onTouchEnd,
     pages,
     isLocked,
     column = false,
@@ -220,6 +222,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         onMouseEnter={onMouseEnter}
         onKeyDown={handleKeyDownCallback}
         onFocus={onFocus}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
         onContextMenu={preventContextMenu}
         tabIndex={tabIndex}
         data-n={cell?.qElemNumber}
