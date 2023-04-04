@@ -1,6 +1,6 @@
 /* eslint-disable no-param-reassign */
 import KEYS from '../../../keys';
-import { focusRow, focusSearch, getVizCell } from './listbox-keyboard-navigation-utils';
+import { getVizCell } from './listbox-keyboard-navigation-utils';
 
 const getElementIndex = (currentTarget) => +currentTarget.getAttribute('data-n');
 
@@ -32,11 +32,10 @@ export function getFieldKeyboardNavigation({
     switch (keyCode) {
       case KEYS.TAB: {
         // Try to focus search field, otherwise confirm button.
-        const container = currentTarget.closest('.listbox-container');
         const inSelection = isModal();
 
         if (shiftKey) {
-          if (!focusSearch(container)) {
+          if (!keyboard.focusSearch()) {
             if (inSelection) {
               keyboard.focusSelection();
             } else {
@@ -170,16 +169,15 @@ export function getListboxInlineKeyboardNavigation({
       return;
     }
 
-    const container = event.currentTarget.closest('.listbox-container');
     const inSelection = isModal();
 
     switch (keyCode) {
       case KEYS.TAB:
         if (inSelection) {
           if (shiftKey) {
-            focusRow(container) || focusSearch(container);
+            keyboard.focusRow() || keyboard.focusSearch();
           } else {
-            focusSearch(container) || focusRow(container);
+            keyboard.focusSearch() || keyboard.focusRow();
           }
         } else if (shiftKey) {
           keyboard.blur(true);

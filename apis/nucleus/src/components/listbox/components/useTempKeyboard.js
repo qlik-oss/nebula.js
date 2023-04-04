@@ -1,13 +1,8 @@
 import { useState } from 'react';
-import {
-  focusRow,
-  focusSearch,
-  getVizCell,
-  removeInnnerTabStops,
-} from '../interactions/listbox-keyboard-navigation-utils';
+import { getVizCell, removeInnnerTabStops } from '../interactions/listbox-keyboard-navigation-utils';
 
 // Emulate the keyboard hook, until we support it in the Listbox.
-export default function useTempKeyboard({ containerRef, enabled }) {
+export default function useTempKeyboard({ containerRef, enabled, getStoreValue }) {
   const [keyboardActive, setKeyboardActive] = useState(false);
 
   const keyboard = {
@@ -37,13 +32,26 @@ export default function useTempKeyboard({ containerRef, enabled }) {
         elementToFocus.focus();
       }
     },
+    focusSearch() {
+      const searchField = containerRef.current?.querySelector('.search input');
+      searchField?.focus();
+      return searchField;
+    },
+    focusRow() {
+      const lastFocusedRow = getStoreValue('lastFocusedRow');
+      const row =
+        containerRef.current?.querySelector(`.value[data-n="${lastFocusedRow}"]`) ||
+        containerRef.current?.querySelector(`.value:first-child`);
+      row?.setAttribute('tabIndex', 0);
+      row?.focus();
+      return row;
+    },
     focus() {
       if (!enabled) {
         return;
       }
       setKeyboardActive(true);
-      const c = containerRef.current;
-      focusSearch(c) || focusRow(c);
+      this.focusSearch() || this.focusRow();
     },
     focusSelection() {
       const confirmButton = document.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');

@@ -22,6 +22,7 @@ import createSelectionState from './hooks/selections/selectionState';
 import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH } from './constants';
 import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
+import useDataStore from './hooks/useDataStore';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -122,10 +123,11 @@ function ListBoxInline({ options, layout }) {
   const [appSelections] = useAppSelections(app);
   const titleRef = useRef(null);
   const [selectionState] = useState(() => createSelectionState());
-  const keyboard = useTempKeyboard({ containerRef, enabled: keyboardNavigation });
   const isModalMode = useCallback(() => isModal({ app, appSelections }), [app, appSelections]);
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
+  const { getStoreValue } = useDataStore(model);
+  const keyboard = useTempKeyboard({ containerRef, enabled: keyboardNavigation, getStoreValue });
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown } = useMemo(
     () =>
@@ -149,6 +151,7 @@ function ListBoxInline({ options, layout }) {
       appSelections,
       constraints,
       isModalMode,
+      getStoreValue,
     ]
   );
 

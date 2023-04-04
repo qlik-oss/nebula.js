@@ -4,11 +4,17 @@ import useTempKeyboard from '../useTempKeyboard';
 describe('useTempKeyboard', () => {
   let containerRef;
   let container;
+  let keyboard;
+  let getStoreValue;
   const enabled = true;
 
   beforeEach(() => {
     container = document.createElement('div');
     containerRef = { current: container };
+    getStoreValue = jest.fn();
+    getStoreValue.mockReturnValue(1);
+    const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled, getStoreValue }));
+    keyboard = result?.current || {};
   });
 
   afterEach(() => {
@@ -18,21 +24,17 @@ describe('useTempKeyboard', () => {
   it('should return correct keyboard state', () => {
     const innerTabStops = false;
 
-    const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled }));
-    const keyboard = result?.current || {};
-
     expect(keyboard.enabled).toEqual(enabled);
     expect(keyboard.active).toEqual(false);
     expect(keyboard.innerTabStops).toEqual(innerTabStops);
     expect(typeof keyboard.blur).toEqual('function');
     expect(typeof keyboard.focus).toEqual('function');
     expect(typeof keyboard.focusSelection).toEqual('function');
+    expect(typeof keyboard.focusRow).toEqual('function');
+    expect(typeof keyboard.focusSearch).toEqual('function');
   });
 
   it('should set keyboardActive to true when calling focus()', () => {
-    const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled }));
-    const keyboard = result?.current || {};
-
     expect(keyboard.active).toEqual(false);
 
     act(() => {
@@ -45,9 +47,6 @@ describe('useTempKeyboard', () => {
   });
 
   it('should set keyboardActive to false when calling blur()', async () => {
-    const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled }));
-    const keyboard = result.current;
-
     act(() => {
       keyboard.focus();
     });
@@ -68,9 +67,6 @@ describe('useTempKeyboard', () => {
     containerRef.current.classList.add('njs-cell');
     document.body.appendChild(containerRef.current);
 
-    const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled: true }));
-    const keyboard = result.current;
-
     act(() => {
       keyboard.blur(true);
     });
@@ -89,9 +85,6 @@ describe('useTempKeyboard', () => {
     document.body.appendChild(elementToFocus);
     const selector = '#element-to-focus';
 
-    const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled }));
-    const keyboard = result.current;
-
     keyboard.blur(selector);
 
     expect(elementToFocus).toHaveAttribute('tabIndex', '0');
@@ -99,9 +92,6 @@ describe('useTempKeyboard', () => {
   });
 
   it('should focus the search field when calling focus()', async () => {
-    const { result } = renderHook(() => useTempKeyboard({ containerRef, enabled }));
-    const keyboard = result.current;
-
     act(() => {
       keyboard.focus();
     });
@@ -109,6 +99,63 @@ describe('useTempKeyboard', () => {
     waitFor(() => {
       expect(keyboard.active).toEqual(true);
       expect(keyboard.innerTabStops).toEqual(false);
+    });
+  });
+
+  describe('focusRow', () => {
+    test('should focus on the first row with a tabIndex of 0', () => {
+      container.innerHTML = `
+        <div class="value" tabIndex="-1" data-n="0"></div>
+        <div class="value" tabIndex="-1" data-n="1"></div>
+        <div class="value" tabIndex="-1" data-n="2"></div>
+      `;
+      document.body.appendChild(container);
+
+      const focusedRow = keyboard.focusRow();
+      expect(focusedRow?.tabIndex).toEqual(0);
+      expect(document.activeElement).toEqual(focusedRow);
+
+      document.body.removeChild(container);
+    });
+
+    test('should return null when there is no row with a tabIndex of 0', () => {
+      container.innerHTML = `
+        <div class="value" tabIndex="-1"></div>
+        <div class="value" tabIndex="-1"></div>
+        <div class="value" tabIndex="-1"></div>
+      `;
+      document.body.appendChild(container);
+
+      const focusedRow = keyboard.focusRow();
+      expect(focusedRow).toBeNull();
+
+      document.body.removeChild(container);
+    });
+
+    describe('focusSearch', () => {
+      test('should focus on search field', () => {
+        container.innerHTML = `
+          <div class="search">
+            <input type="text">
+          </div>
+        `;
+        document.body.appendChild(container);
+
+        const searchField = keyboard.focusSearch();
+        expect(searchField).not.toBeNull();
+        expect(document.activeElement).toEqual(searchField);
+
+        document.body.removeChild(container);
+      });
+
+      test('should not throw error if search field is not present', () => {
+        document.body.appendChild(container);
+
+        const searchField = keyboard.focusSearch();
+        expect(searchField).toBeNull();
+
+        document.body.removeChild(container);
+      });
     });
   });
 });

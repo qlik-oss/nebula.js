@@ -135,9 +135,6 @@ export default function ListBox({
 
   const onFocus = useCallback(
     (event) => {
-      if (typeof lastFocusedRow === 'number') {
-        return;
-      }
       // Store the last focused row so we can reset focus.
       const elemNumber = +event.currentTarget.getAttribute('data-n');
       setStoreValue('lastFocusedRow', elemNumber);

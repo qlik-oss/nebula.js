@@ -6,7 +6,6 @@ import Search from '@nebula.js/ui/icons/search';
 import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
 import { CELL_PADDING_LEFT } from '../constants';
-import { focusRow } from '../interactions/listbox-keyboard-navigation-utils';
 
 const TREE_PATH = '/qListObjectDef';
 const WILDCARD = '**';
@@ -115,14 +114,12 @@ export default function ListBoxSearch({
   };
 
   const onKeyDown = async (e) => {
-    const { currentTarget } = e;
-    const container = currentTarget.closest('.listbox-container');
     switch (e.key) {
       case 'Enter':
         performSearch();
         break;
       case 'Escape': {
-        focusRow(container);
+        keyboard.focusRow();
         cancel();
         break;
       }
@@ -131,7 +128,7 @@ export default function ListBoxSearch({
           keyboard.focusSelection();
         } else {
           // Focus the row we last visited or the first one.
-          focusRow(container);
+          keyboard.focusRow();
         }
         break;
       }

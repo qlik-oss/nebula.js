@@ -1,4 +1,4 @@
-import { getVizCell, removeInnnerTabStops, focusSearch, focusRow } from '../listbox-keyboard-navigation-utils';
+import { getVizCell, removeInnnerTabStops } from '../listbox-keyboard-navigation-utils';
 
 describe('removeInnnerTabStops', () => {
   it('should reset tabIndex in elements with tabIndex="0"', () => {
@@ -40,76 +40,5 @@ describe('getVizCell', () => {
     container.appendChild(child);
     const result = getVizCell(child);
     expect(result).toBe(null);
-  });
-});
-
-describe('focusRow', () => {
-  test('should focus on the first row with a tabIndex of 0', () => {
-    const container = document.createElement('div');
-    container.innerHTML = `
-      <div class="value" tabIndex="-1"></div>
-      <div class="value" tabIndex="0"></div>
-      <div class="value" tabIndex="-1"></div>
-    `;
-    document.body.appendChild(container);
-
-    const focusedRow = focusRow(container);
-    expect(focusedRow?.tabIndex).toEqual(0);
-    expect(document.activeElement).toEqual(focusedRow);
-
-    document.body.removeChild(container);
-  });
-
-  test('should return null when there is no row with a tabIndex of 0', () => {
-    const container = document.createElement('div');
-    container.innerHTML = `
-      <div class="value" tabIndex="-1"></div>
-      <div class="value" tabIndex="-1"></div>
-      <div class="value" tabIndex="-1"></div>
-    `;
-    document.body.appendChild(container);
-
-    const focusedRow = focusRow(container);
-    expect(focusedRow).toBeNull();
-
-    document.body.removeChild(container);
-  });
-
-  test('should return undefined when the container is null', () => {
-    const focusedRow = focusRow(null);
-    expect(focusedRow).toBeUndefined();
-  });
-
-  describe('focusSearch', () => {
-    test('should focus on search field', () => {
-      const container = document.createElement('div');
-      container.innerHTML = `
-        <div class="search">
-          <input type="text">
-        </div>
-      `;
-      document.body.appendChild(container);
-
-      const searchField = focusSearch(container);
-      expect(searchField).not.toBeNull();
-      expect(document.activeElement).toEqual(searchField);
-
-      document.body.removeChild(container);
-    });
-
-    test('should not throw error if container is null', () => {
-      const searchField = focusSearch(null);
-      expect(searchField).toBeUndefined();
-    });
-
-    test('should not throw error if search field is not present', () => {
-      const container = document.createElement('div');
-      document.body.appendChild(container);
-
-      const searchField = focusSearch(container);
-      expect(searchField).toBeNull();
-
-      document.body.removeChild(container);
-    });
   });
 });

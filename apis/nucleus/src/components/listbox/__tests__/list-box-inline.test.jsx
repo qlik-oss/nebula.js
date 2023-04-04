@@ -16,6 +16,7 @@ import * as ListBoxModule from '../ListBox';
 import * as ListBoxSearchModule from '../components/ListBoxSearch';
 import * as listboxSelectionToolbarModule from '../interactions/listbox-selection-toolbar';
 import * as addListboxTheme from '../assets/addListboxTheme';
+import * as useDataStore from '../hooks/useDataStore';
 
 const virtualizedModule = require('react-virtualized-auto-sizer');
 const listboxKeyboardNavigationModule = require('../interactions/listbox-keyboard-navigation');
@@ -94,6 +95,11 @@ describe('<ListboxInline />', () => {
       .spyOn(listboxKeyboardNavigationModule, 'getListboxInlineKeyboardNavigation')
       .mockImplementation(getListboxInlineKeyboardNavigation);
     jest.spyOn(addListboxTheme, 'default').mockImplementation(() => {});
+    const dataStore = {
+      setStoreValue: jest.fn(),
+      getStoreValue: jest.fn().mockReturnValue(0),
+    };
+    jest.spyOn(useDataStore, 'default').mockImplementation(() => dataStore);
 
     ActionsToolbarModule.default = ActionsToolbar;
     ListBoxModule.default = <div className="theListBox" />;
