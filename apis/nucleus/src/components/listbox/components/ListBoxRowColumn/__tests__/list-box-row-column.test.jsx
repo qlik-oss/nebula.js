@@ -66,7 +66,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         pages: [],
         actions,
@@ -93,7 +93,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         pages: defaultPages,
         actions,
@@ -113,7 +113,7 @@ describe('<ListBoxRowColumn />', () => {
       type.props.onContextMenu({ preventDefault });
       expect(preventDefault).toHaveBeenCalledTimes(1);
       expect(type.props.tabIndex).toBe(0);
-      expect(type.props.onClick).toHaveBeenCalledTimes(0);
+      expect(type.props.onMouseDown).toHaveBeenCalledTimes(0);
 
       const types = testInstance.findAllByType(Typography);
       expect(types).toHaveLength(1);
@@ -138,7 +138,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         pages: defaultPages,
         actions,
@@ -170,7 +170,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         pages: defaultPages,
         actions,
@@ -195,13 +195,13 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
       expect(type.props.onKeyDown()).to.equal('handle-key-down-callback');
-      expect(type.props.onClick.callCount).to.equal(0);
+      expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.tabIndex).to.equal(0);
 */
       const preventDefault = jest.fn();
       type.props.onContextMenu({ preventDefault });
       expect(preventDefault).toHaveBeenCalledTimes(1);
-      expect(type.props.onClick).toHaveBeenCalledTimes(0);
+      expect(type.props.onMouseDown).toHaveBeenCalledTimes(0);
 
       const types = testInstance.findAllByType(Typography);
       // TODO: MUIv5 - no idea why this breaks
@@ -222,7 +222,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         dataOffset: 0,
@@ -265,7 +265,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         dataOffset: 0,
@@ -305,7 +305,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         dataOffset: 0,
@@ -345,10 +345,12 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         showGray: false,
+        lastFocusedRow: 1,
+        isModal: jest.fn().mockReturnValue(false),
         dataOffset: 0,
         pages: [
           {
@@ -386,7 +388,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         dataOffset: 0,
@@ -426,10 +428,12 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         showGray: false,
+        lastFocusedRow: 1,
+        isModal: jest.fn().mockReturnValue(false),
         dataOffset: 0,
         pages: [
           {
@@ -467,7 +471,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         dataOffset: 0,
@@ -507,10 +511,12 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         showGray: false,
+        lastFocusedRow: 1,
+        isModal: jest.fn().mockReturnValue(false),
         dataOffset: 0,
         pages: [
           {
@@ -548,7 +554,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         dataOffset: 0,
@@ -588,7 +594,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         dataOffset: 0,
@@ -637,7 +643,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         dataOffset: 0,
@@ -689,7 +695,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         dataOffset: 0,
@@ -739,7 +745,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         freqIsAllowed: true,
@@ -834,7 +840,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         pages: defaultPages,
         actions,
@@ -856,7 +862,7 @@ describe('<ListBoxRowColumn />', () => {
       expect(type.props.onMouseDown.callCount).to.equal(0);
       expect(type.props.onMouseUp.callCount).to.equal(0);
       expect(type.props.onMouseEnter.callCount).to.equal(0);
-      expect(type.props.onClick.callCount).to.equal(0);
+      expect(type.props.onMouseDown.callCount).to.equal(0);
 */
       const types = testInstance.findAllByType(Typography);
       expect(types).toHaveLength(1);
@@ -875,7 +881,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         pages: defaultPages,
         actions,
@@ -1051,7 +1057,7 @@ describe('<ListBoxRowColumn />', () => {
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
-        onClick: jest.fn(),
+        onFocus: jest.fn(),
         keyboard,
         actions,
         isSingleSelect: true,
