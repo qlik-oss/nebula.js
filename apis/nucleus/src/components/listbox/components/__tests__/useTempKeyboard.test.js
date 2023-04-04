@@ -103,9 +103,10 @@ describe('useTempKeyboard', () => {
   });
 
   describe('focusRow', () => {
-    test('should focus on the first row with a tabIndex of 0', () => {
+    test('should focus on first row as fallback', () => {
+      getStoreValue.mockReturnValue(undefined);
       container.innerHTML = `
-        <div class="value" tabIndex="-1" data-n="0"></div>
+        <div class="value should-be-focused" tabIndex="-1" data-n="0"></div>
         <div class="value" tabIndex="-1" data-n="1"></div>
         <div class="value" tabIndex="-1" data-n="2"></div>
       `;
@@ -113,21 +114,23 @@ describe('useTempKeyboard', () => {
 
       const focusedRow = keyboard.focusRow();
       expect(focusedRow?.tabIndex).toEqual(0);
-      expect(document.activeElement).toEqual(focusedRow);
+      expect(document.activeElement.classList.contains('should-be-focused')).toBeTruthy();
 
       document.body.removeChild(container);
     });
 
-    test('should return null when there is no row with a tabIndex of 0', () => {
+    test('should focus on the row with data-n equaling 1', () => {
+      getStoreValue.mockReturnValue(3);
       container.innerHTML = `
-        <div class="value" tabIndex="-1"></div>
-        <div class="value" tabIndex="-1"></div>
-        <div class="value" tabIndex="-1"></div>
+        <div class="value should-be-focused" tabIndex="-1" data-n="0"></div>
+        <div class="value" tabIndex="-1" data-n="1"></div>
+        <div class="value" tabIndex="-1" data-n="2"></div>
       `;
       document.body.appendChild(container);
 
       const focusedRow = keyboard.focusRow();
-      expect(focusedRow).toBeNull();
+      expect(focusedRow?.tabIndex).toEqual(0);
+      expect(document.activeElement.classList.contains('should-be-focused')).toBeTruthy();
 
       document.body.removeChild(container);
     });
