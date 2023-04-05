@@ -1,3 +1,4 @@
+import { useCallback } from 'react';
 import { useVizDataStore } from '../../../stores/viz-store';
 
 export default function useDataStore(model) {
@@ -5,8 +6,13 @@ export default function useDataStore(model) {
 
   const [vizDataStore] = useVizDataStore();
 
-  const setStoreValue = (key, val) => vizDataStore.set(`${keyPrefix}/${key}`, val);
-  const getStoreValue = (key) => vizDataStore.get(`${keyPrefix}/${key}`);
+  const setStoreValue = useCallback(
+    (key, val) => {
+      vizDataStore.set(`${keyPrefix}/${key}`, val);
+    },
+    [vizDataStore]
+  );
+  const getStoreValue = useCallback((key) => vizDataStore.get(`${keyPrefix}/${key}`), [vizDataStore]);
 
   return { setStoreValue, getStoreValue };
 }

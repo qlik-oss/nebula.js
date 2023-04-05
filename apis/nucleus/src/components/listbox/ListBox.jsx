@@ -139,7 +139,7 @@ export default function ListBox({
       const elemNumber = +event.currentTarget.getAttribute('data-n');
       setStoreValue('lastFocusedRow', elemNumber);
     },
-    [lastFocusedRow, setStoreValue]
+    [setStoreValue]
   );
 
   Object.assign(interactionEvents, { onFocus });

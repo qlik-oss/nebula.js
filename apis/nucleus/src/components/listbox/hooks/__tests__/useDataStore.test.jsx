@@ -1,3 +1,4 @@
+import React from 'react';
 import * as vizStore from '../../../../stores/viz-store';
 import useDataStore from '../useDataStore';
 
@@ -7,6 +8,7 @@ describe('useDataStore', () => {
 
   beforeEach(() => {
     model = { id: 1234 };
+    jest.spyOn(React, 'useCallback').mockImplementation((func) => func);
     vizDataStoreMock = {
       get: jest.fn().mockImplementation((key) => key),
       set: jest.fn(),
