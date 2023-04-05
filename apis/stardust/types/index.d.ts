@@ -235,10 +235,23 @@ declare namespace stardust {
 
         /**
          * Renders a visualization or sheet into an HTMLElement.
+         * Visualizations can either be existing objects or created on the fly.
          * Support for sense sheets is experimental.
          * @param cfg The render configuration.
          */
-        render(cfg: stardust.CreateConfig | stardust.GetConfig): Promise<stardust.Viz | stardust.Sheet>;
+        render(cfg: stardust.RenderConfig): Promise<stardust.Viz | stardust.Sheet>;
+
+        /**
+         * Creates a visualization model
+         * @param cfg The create configuration.
+         */
+        create(cfg: stardust.CreateConfig): Promise<EngineAPI.IGenericObject>;
+
+        /**
+         * Generates properties for a visualization object
+         * @param cfg The create configuration.
+         */
+        generateProperties(cfg: stardust.CreateConfig): Promise<object>;
 
         /**
          * Updates the current context of this embed instance.
@@ -357,7 +370,7 @@ declare namespace stardust {
 
         id: string;
 
-        model: string;
+        model: EngineAPI.IGenericObject;
 
         /**
          * Destroys the visualization and removes it from the the DOM.
@@ -460,28 +473,26 @@ declare namespace stardust {
     /**
      * Rendering configuration for creating and rendering a new object
      */
-    interface CreateConfig extends stardust.BaseConfig{
+    interface CreateConfig {
         type: string;
         version?: string;
         fields?: stardust.Field[];
-        extendProperties?: boolean;
         properties?: EngineAPI.IGenericObjectProperties;
     }
 
     /**
-     * Basic rendering configuration for rendering an object
+     * Configuration for rendering a visualisation, either creating or fetching an existing object.
      */
-    interface BaseConfig {
+    interface RenderConfig {
         element: HTMLElement;
         options?: object;
         plugins?: stardust.Plugin[];
-    }
-
-    /**
-     * Rendering configuration for rendering an existing object
-     */
-    interface GetConfig extends stardust.BaseConfig{
-        id: string;
+        id?: string;
+        type?: string;
+        version?: string;
+        fields?: stardust.Field[];
+        extendProperties?: boolean;
+        properties?: EngineAPI.IGenericObjectProperties;
     }
 
     interface LibraryField {
