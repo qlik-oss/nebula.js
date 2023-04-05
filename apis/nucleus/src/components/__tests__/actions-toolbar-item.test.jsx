@@ -95,4 +95,22 @@ describe('<ActionsToolbarItem />', () => {
       },
     });
   });
+
+  test('should run keyboardAction on press Spacebar', async () => {
+    const action = jest.fn();
+    const keyboardAction = jest.fn();
+    await render({ label: 'foo', action, keyboardAction });
+    const item = renderer.root.findByType(IconButton);
+    item.props.onKeyDown({ key: 'Spacebar' });
+    expect(action).not.toBeCalled();
+    expect(keyboardAction).toHaveBeenCalledTimes(1);
+  });
+
+  test('should run action on press Spacebar if no keyboardAction is defined', async () => {
+    const action = jest.fn();
+    await render({ label: 'foo', action });
+    const item = renderer.root.findByType(IconButton);
+    item.props.onKeyDown({ key: 'Spacebar' });
+    expect(action).toHaveBeenCalledTimes(1);
+  });
 });

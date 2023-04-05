@@ -24,9 +24,8 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
 
   const spacing = Number.parseInt(theme.spacing(0.5), 10);
 
-  const handleKeyDown = item.keyboardAction
-    ? (e) => ['Enter', ' ', 'Spacebar'].includes(e.key) && item.keyboardAction()
-    : null;
+  const keyboardAction = item.keyboardAction || item.action;
+  const handleKeyDown = keyboardAction ? (e) => ['Enter', ' ', 'Spacebar'].includes(e.key) && keyboardAction() : null;
 
   const btnId = `actions-toolbar-${item.key}`;
 

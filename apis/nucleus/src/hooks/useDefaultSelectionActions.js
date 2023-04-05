@@ -30,8 +30,8 @@ export default function useDefaultSelectionActions({
         onCancel();
         api.cancel();
       },
-      keyboardAction: (e) => {
-        onKeyDeactivate(e);
+      keyboardAction: () => {
+        onKeyDeactivate();
         onCancel();
         api.cancel();
       },
@@ -46,8 +46,8 @@ export default function useDefaultSelectionActions({
         onConfirm();
         api.confirm();
       },
-      keyboardAction: (e) => {
-        onKeyDeactivate(e);
+      keyboardAction: () => {
+        onKeyDeactivate();
         onConfirm();
         api.confirm();
       },
