@@ -192,12 +192,12 @@ export default function Visualize() {
     setLanguageChooserAnchorEl(null);
     storage.save('language', lang);
     setCurrentLanguage(lang);
-    nebbie.context({ language: lang });
+    nebbie && nebbie.context({ language: lang });
   };
 
   const handleInteractionsChange = (e, newValue) => {
     setCurrentInteractions(newValue);
-    nebbie.context({ interactions: getInteractions(newValue) });
+    nebbie && nebbie.context({ interactions: getInteractions(newValue) });
   };
 
   const toggleDarkMode = () => {
