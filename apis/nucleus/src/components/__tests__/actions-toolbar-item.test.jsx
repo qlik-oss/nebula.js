@@ -101,7 +101,7 @@ describe('<ActionsToolbarItem />', () => {
     const keyboardAction = jest.fn();
     await render({ label: 'foo', action, keyboardAction });
     const item = renderer.root.findByType(IconButton);
-    item.props.onKeyDown({ key: 'Spacebar' });
+    item.props.onKeyUp({ key: 'Spacebar' });
     expect(action).not.toBeCalled();
     expect(keyboardAction).toHaveBeenCalledTimes(1);
   });
@@ -110,7 +110,7 @@ describe('<ActionsToolbarItem />', () => {
     const action = jest.fn();
     await render({ label: 'foo', action });
     const item = renderer.root.findByType(IconButton);
-    item.props.onKeyDown({ key: 'Spacebar' });
+    item.props.onKeyUp({ key: 'Spacebar' });
     expect(action).toHaveBeenCalledTimes(1);
   });
 });
