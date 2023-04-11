@@ -24,9 +24,9 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
 
   const spacing = Number.parseInt(theme.spacing(0.5), 10);
 
-  const handleKeyDown = item.keyboardAction
-    ? (e) => ['Enter', ' ', 'Spacebar'].includes(e.key) && item.keyboardAction()
-    : null;
+  const keyboardAction = item.keyboardAction || item.action;
+  const handleKeyDown = keyboardAction ? (e) => ['Enter'].includes(e.key) && keyboardAction() : null;
+  const handleKeyUp = keyboardAction ? (e) => [' ', 'Spacebar'].includes(e.key) && keyboardAction() : null;
 
   const btnId = `actions-toolbar-${item.key}`;
 
@@ -36,6 +36,7 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
       title={item.label}
       onClick={item.action}
       onKeyDown={handleKeyDown}
+      onKeyUp={handleKeyUp}
       disabled={disabled}
       style={style}
       className={[ActionElement.className, btnId].join(' ')}

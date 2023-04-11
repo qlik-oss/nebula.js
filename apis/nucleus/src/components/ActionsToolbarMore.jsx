@@ -26,7 +26,7 @@ const StyledPopover = styled(Popover)(({ theme }) => ({
   },
 }));
 
-function MoreItem({ item, onActionClick = () => {} }) {
+function MoreItem({ item, autoFocus, onActionClick = () => {} }) {
   const { hidden, disabled, hasSvgIconShape } = useActionState(item);
 
   const handleClick = () => {
@@ -34,7 +34,7 @@ function MoreItem({ item, onActionClick = () => {} }) {
     onActionClick();
   };
   return !hidden ? (
-    <MenuItem title={item.label} onClick={handleClick} disabled={disabled} tabindex="0">
+    <MenuItem autoFocus={autoFocus} title={item.label} onClick={handleClick} disabled={disabled} tabindex="0">
       {hasSvgIconShape && <ListItemIcon className={classes.icon}>{SvgIcon(item.getSvgIconShape())}</ListItemIcon>}
       <Typography noWrap>{item.label}</Typography>
     </MenuItem>
@@ -47,6 +47,7 @@ const More = React.forwardRef(
     ref
   ) => {
     const showActions = actions.length > 0;
+    const autoFocusIndex = actions.findIndex((action) => !action.disabled);
 
     return (
       showActions && (
@@ -86,7 +87,7 @@ const More = React.forwardRef(
           <MenuList id="moreMenuList">
             {actions.map((item, ix) => (
               // eslint-disable-next-line react/no-array-index-key
-              <MoreItem key={ix} item={item} onActionClick={onCloseOrActionClick} />
+              <MoreItem key={ix} item={item} autoFocus={ix === autoFocusIndex} onActionClick={onCloseOrActionClick} />
             ))}
           </MenuList>
         </StyledPopover>

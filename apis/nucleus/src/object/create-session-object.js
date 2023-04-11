@@ -7,14 +7,17 @@ import { subscribe, modelStore } from '../stores/model-store';
  */
 
 /**
- * @interface CreateConfig
- * @description Rendering configuration for creating and rendering a new object
- * @extends BaseConfig
- * @property {string} type
- * @property {string=} version
- * @property {(Field[])=} fields
- * @property {boolean} [extendProperties=false] Whether to deeply extend properties or not. If false then subtrees will be overwritten.
- * @property {EngineAPI.IGenericObjectProperties=} properties
+ * @interface RenderConfig
+ * @description Configuration for rendering a visualisation, either creating or fetching an existing object.
+ * @property {HTMLElement} element Target html element to render in to
+ * @property {object=} options Options passed into the visualisation
+ * @property {Plugin[]} [plugins] plugins passed into the visualisation
+ * @property {string=} id For existing objects: Engine identifier of object to render
+ * @property {string=} type For creating objects: Type of visualisation to render
+ * @property {string=} version For creating objects: Version of visualization to render
+ * @property {(Field[])=} fields For creating objects: Data fields to use
+ * @property {boolean=} [extendProperties=false] For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.
+ * @property {EngineAPI.IGenericObjectProperties=} properties For creating objects: Explicit properties to set
  * @example
  * // A config for Creating objects:
  * const createConfig = {
@@ -27,6 +30,12 @@ import { subscribe, modelStore } from '../stores/model-store';
  *       show: false,
  *     },
  *   }
+ * };
+ * nebbie.render(createConfig);
+ * // A config for rendering an existing object:
+ * const createConfig = {
+ *   id: 'jG5LP',
+ *   element: document.querySelector('.line'),
  * };
  * nebbie.render(createConfig);
  */
