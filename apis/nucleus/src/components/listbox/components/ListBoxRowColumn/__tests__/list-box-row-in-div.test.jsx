@@ -6,7 +6,9 @@ import ListBoxRowColumn from '..';
 import useTempKeyboard from '../../useTempKeyboard';
 import * as screenReader from '../../ScreenReaders';
 
-describe('keyboard navigation headless rendering with multiple rows', () => {
+const getRow = (i) => screen.getAllByTestId('listbox.item')[i].firstChild;
+
+describe('check keyboard navigation rendering with multiple rows in the in-built headless browser', () => {
   let style;
   let data;
   let theme;
@@ -97,8 +99,6 @@ describe('keyboard navigation headless rendering with multiple rows', () => {
       </ThemeProvider>
     );
 
-    const getRow = (i) => screen.getAllByTestId('listbox.item')[i].firstChild;
-
     const firstRowColumn = getRow(0);
     const middleRowColumn = getRow(1);
     const lastRowColumn = getRow(2);
@@ -141,14 +141,61 @@ describe('keyboard navigation headless rendering with multiple rows', () => {
       </ThemeProvider>
     );
 
-    const getRow = (i) => screen.getAllByTestId('listbox.item')[i].firstChild;
-
     const middleRowColumn = getRow(1);
     const confirmButton = screen.getByTestId('confirm');
 
     fireEvent.keyDown(middleRowColumn, { keyCode: 9 });
     await waitFor(() => {
       expect(document.activeElement).toEqual(confirmButton);
+      expect(middleRowColumn).toHaveClass('last-focused');
     });
+  });
+
+  it('should select all with CMD-A', async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <Box ref={containerRef}>
+          <ListBoxRowColumn index={1} style={style} data={data} autoFocus />
+        </Box>
+      </ThemeProvider>
+    );
+
+    const firstRowColumn = getRow(0);
+
+    expect(actions.selectAll).toHaveBeenCalledTimes(0);
+    fireEvent.keyDown(firstRowColumn, { keyCode: 65, metaKey: true });
+    expect(actions.selectAll).toHaveBeenCalledTimes(1);
+  });
+
+  it('should activate search with CMD-F', async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <Box ref={containerRef}>
+          <ListBoxRowColumn index={1} style={style} data={data} autoFocus />
+        </Box>
+      </ThemeProvider>
+    );
+
+    const firstRowColumn = getRow(0);
+
+    expect(actions.onCtrlF).toHaveBeenCalledTimes(0);
+    fireEvent.keyDown(firstRowColumn, { keyCode: 70, metaKey: true });
+    expect(actions.onCtrlF).toHaveBeenCalledTimes(1);
+  });
+
+  it('should activate search with CMD-F', async () => {
+    render(
+      <ThemeProvider theme={theme}>
+        <Box ref={containerRef}>
+          <ListBoxRowColumn index={1} style={style} data={data} autoFocus />
+        </Box>
+      </ThemeProvider>
+    );
+
+    const firstRowColumn = getRow(0);
+
+    expect(actions.onCtrlF).toHaveBeenCalledTimes(0);
+    fireEvent.keyDown(firstRowColumn, { keyCode: 70, metaKey: true });
+    expect(actions.onCtrlF).toHaveBeenCalledTimes(1);
   });
 });
