@@ -13,7 +13,7 @@ import createListboxSelectionToolbar from './interactions/listbox-selection-tool
 import ActionsToolbar from '../ActionsToolbar';
 import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
-import { getListboxInlineKeyboardNavigation } from './interactions/listbox-keyboard-navigation';
+import getListboxContainerKeyboardNavigation from './interactions/keyboard-navigation/keyboard-nav-container';
 import addListboxTheme from './assets/addListboxTheme';
 import useAppSelections from '../../hooks/useAppSelections';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
@@ -129,7 +129,7 @@ function ListBoxInline({ options, layout }) {
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown } = useMemo(
     () =>
-      getListboxInlineKeyboardNavigation({
+      getListboxContainerKeyboardNavigation({
         keyboard,
         hovering,
         updateKeyScroll,

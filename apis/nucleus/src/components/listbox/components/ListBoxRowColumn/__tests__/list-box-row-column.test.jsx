@@ -3,8 +3,8 @@ import renderer from 'react-test-renderer';
 import { Grid, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import Lock from '@nebula.js/ui/icons/lock';
+import * as rowsKeyboardNavigation from '../../../interactions/keyboard-navigation/keybord-nav-rows';
 import ListBoxCheckbox from '../components/ListBoxCheckbox';
-import * as keyboardNavigation from '../../../interactions/listbox-keyboard-navigation';
 import * as screenReaders from '../../ScreenReaders';
 import ListBoxRadioButton from '../components/ListBoxRadioButton';
 import ListBoxRowColumn from '..';
@@ -20,7 +20,7 @@ async function render(content) {
 describe('<ListBoxRowColumn />', () => {
   const theme = createTheme('dark');
   let actions;
-  let getFieldKeyboardNavigation;
+  let getRowsKeyboardNavigation;
   let keyboard;
   let defaultPages;
 
@@ -43,8 +43,8 @@ describe('<ListBoxRowColumn />', () => {
       },
     ];
     global.document = {};
-    getFieldKeyboardNavigation = jest
-      .spyOn(keyboardNavigation, 'getFieldKeyboardNavigation')
+    getRowsKeyboardNavigation = jest
+      .spyOn(rowsKeyboardNavigation, 'default')
       .mockImplementation(() => 'handle-key-down-callback');
     actions = 'actions';
     keyboard = { innerTabStops: true };
@@ -75,7 +75,7 @@ describe('<ListBoxRowColumn />', () => {
           get: jest.fn().mockImplementation((word) => word),
         },
       };
-      expect(getFieldKeyboardNavigation).not.called;
+      expect(getRowsKeyboardNavigation).not.called;
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
           <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
@@ -100,7 +100,7 @@ describe('<ListBoxRowColumn />', () => {
         dataOffset: 0,
         focusListItems: () => {},
       };
-      expect(getFieldKeyboardNavigation).not.called;
+      expect(getRowsKeyboardNavigation).not.called;
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
           <ListBoxRowColumn index={index} style={style} data={data} column={rowCol === 'column'} />
@@ -124,8 +124,8 @@ describe('<ListBoxRowColumn />', () => {
       expect(cbs).toHaveLength(0);
       await testRenderer.unmount();
 
-      expect(getFieldKeyboardNavigation.mock.calls.length).toBeGreaterThan(0);
-      expect(getFieldKeyboardNavigation).toHaveBeenCalled();
+      expect(getRowsKeyboardNavigation.mock.calls.length).toBeGreaterThan(0);
+      expect(getRowsKeyboardNavigation).toHaveBeenCalled();
     });
 
     test('should have css class `value`', async () => {

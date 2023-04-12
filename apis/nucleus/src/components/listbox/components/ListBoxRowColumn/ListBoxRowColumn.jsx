@@ -6,7 +6,6 @@ import { Grid } from '@mui/material';
 import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 import getSegmentsFromRanges from '../listbox-highlight';
-import { getFieldKeyboardNavigation } from '../../interactions/listbox-keyboard-navigation';
 import classes from './helpers/classes';
 import { getValueStateClasses } from './helpers/cell-states';
 import { joinClassNames } from './helpers/operations';
@@ -18,6 +17,7 @@ import Frequency from './components/Frequency';
 import ItemGrid from './components/ItemGrid';
 import getCellFromPages from './helpers/get-cell-from-pages';
 import { getValueLabel } from '../ScreenReaders';
+import getRowsKeyboardNavigation from '../../interactions/keyboard-navigation/keybord-nav-rows';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
@@ -101,7 +101,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   }, [rowRef.current]);
 
   const handleKeyDownCallback = useCallback(
-    getFieldKeyboardNavigation({ ...actions, focusListItems, keyboard, isModal }),
+    getRowsKeyboardNavigation({ ...actions, focusListItems, keyboard, isModal }),
     [actions, keyboard?.innerTabStops]
   );
 
