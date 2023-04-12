@@ -30,13 +30,12 @@ const classes = {
   listboxWrapper: `${PREFIX}-listboxWrapper`,
 };
 
-const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding', 'hasIcon'].includes(p) })(
-  ({ theme, containerPadding, hasIcon }) => ({
+const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'].includes(p) })(
+  ({ theme, containerPadding }) => ({
     backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
     [`& .${classes.listBoxHeader}`]: {
       alignSelf: 'center',
       display: 'flex',
-      width: `calc(100% - ${hasIcon ? BUTTON_ICON_WIDTH : 0}px)`,
     },
     [`& .${classes.screenReaderOnly}`]: {
       position: 'absolute',
@@ -264,7 +263,7 @@ function ListBoxInline({ options, layout }) {
   const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
   const headerPaddingLeft = CELL_PADDING_LEFT - (showSearchOrLockIcon ? ICON_PADDING : 0);
   const headerPaddingRight = isRtl ? CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0) : 0;
-  const { isDetached, reasonDetached } = showToolbarDetached({ containerRef, titleRef, iconsWidth });
+  const isDetached = showToolbarDetached({ containerRef, titleRef, iconsWidth });
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
   const isGridMode = layoutOptions?.dataLayout === 'grid';
@@ -311,55 +310,44 @@ function ListBoxInline({ options, layout }) {
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
         ref={containerRef}
-        hasIcon={showIcons}
       >
         {showToolbarWithTitle && (
           <Grid
             item
             container
-            style={{
-              padding: theme.spacing(1),
-              paddingLeft: `${headerPaddingLeft}px`,
-              paddingRight: `${headerPaddingRight}px`,
-            }}
-            sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
+            minHeight={headerHeight}
+            flexDirection={isRtl ? 'row-reverse' : 'row'}
+            marginY={1}
+            paddingLeft={`${headerPaddingLeft}px`}
+            paddingRight={`${headerPaddingRight}px`}
             wrap="nowrap"
           >
-            <Grid
-              item
-              container
-              height={headerHeight}
-              sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
-              wrap="nowrap"
-            >
-              {showIcons && (
-                <Grid item sx={{ display: 'flex', alignItems: 'center', width: iconsWidth }}>
-                  {isLocked ? lockIconComp : showSearchIcon && searchIconComp}
-                  {isDrillDown && (
-                    <DrillDownIcon
-                      tabIndex={-1}
-                      title={translator.get('Listbox.DrillDown')}
-                      size="large"
-                      style={{ fontSize: '12px' }}
-                    />
-                  )}
-                </Grid>
-              )}
-              <Grid item sx={{ justifyContent: isRtl ? 'flex-end' : 'flex-start' }} className={classes.listBoxHeader}>
-                {showTitle && (
-                  <Title
-                    variant="h6"
-                    sx={{ width: isPopover && reasonDetached === 'noSpace' ? '60px' : undefined }}
-                    noWrap
-                    ref={titleRef}
-                    title={layout.title}
-                  >
-                    {layout.title}
-                  </Title>
+            {showIcons && (
+              <Grid item container alignItems="center" width={iconsWidth}>
+                {isLocked ? lockIconComp : showSearchIcon && searchIconComp}
+                {isDrillDown && (
+                  <DrillDownIcon
+                    tabIndex={-1}
+                    title={translator.get('Listbox.DrillDown')}
+                    size="large"
+                    style={{ fontSize: '12px' }}
+                  />
                 )}
               </Grid>
+            )}
+            <Grid
+              item
+              xs
+              minWidth={0} // needed to text-overflow see: https://css-tricks.com/flexbox-truncated-text/
+              justifyContent={isRtl ? 'flex-end' : 'flex-start'}
+              className={classes.listBoxHeader}
+            >
+              {showTitle && (
+                <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
+                  {layout.title}
+                </Title>
+              )}
             </Grid>
-            <Grid item xs />
             <Grid item>
               <ActionsToolbar direction={direction} {...getActionToolbarProps(isDetached)} />
             </Grid>
