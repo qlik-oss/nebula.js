@@ -12,7 +12,7 @@ const focusSearch = (container) => {
 
 const focusRow = (container) => {
   const row = container?.querySelector('.value.last-focused, .value.selector, .value');
-  row?.setAttribute('tabIndex', -1);
+  row?.setAttribute('tabIndex', 0);
   row?.focus();
   return row;
 };

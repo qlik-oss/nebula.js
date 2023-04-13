@@ -38,7 +38,7 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       removeLastFocused(containerRef.current);
       if (resetFocus && vizCell) {
         // Move focus to the viz's cell.
-        vizCell.setAttribute('tabIndex', -1);
+        vizCell.setAttribute('tabIndex', 0);
         vizCell.focus();
       }
     },
@@ -53,12 +53,12 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       const firstRowElement = c?.querySelector('.value.selector, .value');
       const confirmButton = c?.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
       const elementToFocus = searchField || lastSelectedRow || firstRowElement || confirmButton;
-      elementToFocus?.setAttribute('tabIndex', -1);
+      elementToFocus?.setAttribute('tabIndex', 0);
       elementToFocus?.focus();
     },
     focusSelection() {
       const confirmButton = document.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
-      confirmButton?.setAttribute('tabIndex', -1);
+      confirmButton?.setAttribute('tabIndex', 0);
       confirmButton?.focus();
     },
   };
