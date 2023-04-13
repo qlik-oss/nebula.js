@@ -25,8 +25,9 @@ const ellipsis = {
 const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
-  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth }) => ({
+  shouldForwardProp: (prop) =>
+    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth', 'direction'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth, direction }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -151,7 +152,7 @@ const RowColRoot = styled('div', {
     justifyContent: 'flex-end',
     ...ellipsis,
     flex: `0 1 ${frequencyWidth}px`,
-    textAlign: 'right',
+    textAlign: direction === 'rtl' ? 'left' : 'right',
     paddingLeft: '2px',
   },
 
@@ -188,7 +189,7 @@ const RowColRoot = styled('div', {
   },
 
   [`& .${classes.barWithCheckbox}`]: {
-    left: barWithCheckboxLeftPadPx,
+    left: direction === 'rtl' ? barPadPx : barWithCheckboxLeftPadPx,
     width: `calc(100% - ${barWithCheckboxLeftPadPx + barPadPx}px)`,
   },
 
