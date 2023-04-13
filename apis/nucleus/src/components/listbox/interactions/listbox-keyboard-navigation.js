@@ -217,13 +217,6 @@ export function getListboxInlineKeyboardNavigation({
         prevent();
         break;
       case KEYS.ENTER:
-        if (inSelection) {
-          focusSearch(container) || focusRow(container);
-        } else {
-          break;
-        }
-        prevent();
-        break;
       case KEYS.SPACE:
         if (!event.target.classList.contains('listbox-container')) {
           break; // don't mess with keydown handlers within the listbox (e.g. row seletion)

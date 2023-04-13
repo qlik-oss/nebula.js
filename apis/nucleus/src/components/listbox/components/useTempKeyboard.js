@@ -50,9 +50,9 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       const c = containerRef.current;
       const searchField = c?.querySelector('.search input');
       const lastSelectedRow = c?.querySelector('.value.last-focused');
-      const fieldElement = c?.querySelector('.value.selector, .value, .ActionsToolbar-item button');
-
-      const elementToFocus = searchField || lastSelectedRow || fieldElement;
+      const firstRowElement = c?.querySelector('.value.selector, .value');
+      const confirmButton = c?.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
+      const elementToFocus = searchField || lastSelectedRow || firstRowElement || confirmButton;
       elementToFocus?.setAttribute('tabIndex', -1);
       elementToFocus?.focus();
     },
