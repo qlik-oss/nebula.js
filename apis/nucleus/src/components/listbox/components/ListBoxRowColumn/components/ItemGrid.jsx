@@ -7,7 +7,7 @@ const ItemGrid = styled(Grid, {
   shouldForwardProp: (prop) =>
     !['dataLayout', 'layoutOrder', 'itemPadding', 'cellPaddingRight', 'direction'].includes(prop),
 })(({ dataLayout, layoutOrder, itemPadding, cellPaddingRight, direction }) => {
-  const att = `padding${direction === 'rtl' ? 'left' : 'right'}`;
+  const att = `padding${direction === 'rtl' ? 'Left' : 'Right'}`;
   return {
     [`&.${classes.fieldRoot}`]: {
       ...getItemSizes({ dataLayout, layoutOrder, itemPadding }),
