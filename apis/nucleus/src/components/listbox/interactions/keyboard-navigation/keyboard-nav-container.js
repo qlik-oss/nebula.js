@@ -33,7 +33,7 @@ export default function getListboxContainerKeyboardNavigation({
       // 3. Blur row and focus the listbox container.
       keyboard.blur();
       const c = currentTarget.closest('.listbox-container');
-      c.setAttribute('tabIndex', 0);
+      c.setAttribute('tabIndex', -1);
       c?.focus();
     }
   };
