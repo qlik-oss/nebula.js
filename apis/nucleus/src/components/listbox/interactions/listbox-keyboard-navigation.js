@@ -12,7 +12,7 @@ const focusSearch = (container) => {
 
 const focusRow = (container) => {
   const row = container?.querySelector('.value.last-focused, .value.selector, .value');
-  row?.setAttribute('tabIndex', 0);
+  row?.setAttribute('tabIndex', -1);
   row?.focus();
   return row;
 };
@@ -180,7 +180,7 @@ export function getListboxInlineKeyboardNavigation({
       // 3. Blur row and focus the listbox container.
       keyboard.blur();
       const c = currentTarget.closest('.listbox-container');
-      c.setAttribute('tabIndex', 0);
+      c.setAttribute('tabIndex', -1);
       c?.focus();
     }
   };
@@ -217,6 +217,13 @@ export function getListboxInlineKeyboardNavigation({
         prevent();
         break;
       case KEYS.ENTER:
+        if (inSelection) {
+          focusSearch(container) || focusRow(container);
+        } else {
+          break;
+        }
+        prevent();
+        break;
       case KEYS.SPACE:
         if (!event.target.classList.contains('listbox-container')) {
           break; // don't mess with keydown handlers within the listbox (e.g. row seletion)
