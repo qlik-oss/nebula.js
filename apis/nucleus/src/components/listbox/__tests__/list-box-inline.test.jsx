@@ -18,17 +18,16 @@ import * as listboxSelectionToolbarModule from '../interactions/listbox-selectio
 import * as addListboxTheme from '../assets/addListboxTheme';
 
 const virtualizedModule = require('react-virtualized-auto-sizer');
-const listboxKeyboardNavigationModule = require('../interactions/listbox-keyboard-navigation');
+const listboxKeyboardNavigationModule = require('../interactions/keyboard-navigation/keyboard-nav-container');
 
 jest.mock('react-virtualized-auto-sizer', () => ({
   __esModule: true,
   default: jest.fn(),
 }));
 
-jest.mock('../interactions/listbox-keyboard-navigation', () => ({
+jest.mock('../interactions/keyboard-navigation/keyboard-nav-container', () => ({
   __esModule: true,
   default: jest.fn(),
-  getListboxInlineKeyboardNavigation: jest.fn(),
 }));
 
 describe('<ListboxInline />', () => {
@@ -90,9 +89,7 @@ describe('<ListboxInline />', () => {
     jest.spyOn(unlockModule, 'default').mockImplementation(() => 'unlock');
     jest.spyOn(lockModule, 'default').mockImplementation(() => 'lock');
     jest.spyOn(useLayoutModule, 'default').mockImplementation(() => [layout]);
-    jest
-      .spyOn(listboxKeyboardNavigationModule, 'getListboxInlineKeyboardNavigation')
-      .mockImplementation(getListboxInlineKeyboardNavigation);
+    jest.spyOn(listboxKeyboardNavigationModule, 'default').mockImplementation(getListboxInlineKeyboardNavigation);
     jest.spyOn(addListboxTheme, 'default').mockImplementation(() => {});
 
     ActionsToolbarModule.default = ActionsToolbar;
