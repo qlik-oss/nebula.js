@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.9](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.8...v4.0.0-alpha.9) (2023-04-14)
+
+### Features
+
+- create api ([#1079](https://github.com/qlik-oss/nebula.js/issues/1079)) ([b3315d0](https://github.com/qlik-oss/nebula.js/commit/b3315d0e6b6d1808cd59c8a2012bb8bb223b2503))
+
 # [4.0.0-alpha.8](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.7...v4.0.0-alpha.8) (2023-04-03)
 
 **Note:** Version bump only for package @nebula.js/supernova
