@@ -197,6 +197,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       dense={dense}
       frequencyWidth={frequencyWidth}
       isLast={isLastCell}
+      direction={direction}
       data-testid="listbox.item"
     >
       <ItemGrid
@@ -226,6 +227,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         onContextMenu={preventContextMenu}
         tabIndex={isFirstElement && keyboard.innerTabStops ? 0 : -1}
         data-n={cell?.qElemNumber}
+        direction={direction}
       >
         {cell?.qFrequency && (
           <Histogram

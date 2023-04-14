@@ -136,8 +136,8 @@ function ActionsToolbar({
   };
 
   const handleActionsKeyDown = useMemo(
-    () => getActionsKeyDownHandler({ keyboardNavigation, focusHandler, getEnabledButton }),
-    [keyboardNavigation, focusHandler, getEnabledButton]
+    () => getActionsKeyDownHandler({ keyboardNavigation, focusHandler, getEnabledButton, selections }),
+    [keyboardNavigation, focusHandler, getEnabledButton, selections]
   );
 
   useEffect(
