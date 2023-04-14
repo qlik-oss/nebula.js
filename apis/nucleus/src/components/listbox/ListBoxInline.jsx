@@ -254,6 +254,7 @@ function ListBoxInline({ options, layout }) {
       isLocked,
       listboxSelectionToolbarItems,
       selections,
+      keyboard,
     });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';

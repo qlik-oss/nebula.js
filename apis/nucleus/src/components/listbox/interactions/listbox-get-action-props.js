@@ -5,6 +5,7 @@ export default function getListboxActionProps({
   isLocked,
   listboxSelectionToolbarItems,
   selections,
+  keyboard,
 }) {
   return {
     show: showToolbar && !isDetached,
@@ -26,8 +27,12 @@ export default function getListboxActionProps({
     selections: {
       show: showToolbar,
       api: selections,
-      onConfirm: () => {},
-      onCancel: () => {},
+      onConfirm: () => {
+        keyboard?.focus();
+      },
+      onCancel: () => {
+        keyboard?.focus();
+      },
     },
   };
 }
