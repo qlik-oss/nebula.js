@@ -26,8 +26,8 @@ const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
   shouldForwardProp: (prop) =>
-    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth', 'direction', 'isLast'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth, direction, isLast }) => ({
+    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth', 'direction', 'isLastCol'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth, direction, isLastCol }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -52,7 +52,7 @@ const RowColRoot = styled('div', {
   [`& .${classes.rowBorderBottom}`]: {
     borderBottom: isGridCol ? 'none' : `1px solid ${theme.palette.divider}`,
     borderLeft: isGridCol ? `1px solid ${theme.palette.divider}` : 'none',
-    borderRight: isGridCol && isLast ? `1px solid ${theme.palette.divider}` : 'none',
+    borderRight: isGridCol && isLastCol ? `1px solid ${theme.palette.divider}` : 'none',
   },
 
   [`& .${classes.column}`]: {
