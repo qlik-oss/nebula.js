@@ -63,7 +63,7 @@ describe('keyboard navigation', () => {
 
       // Space should select values
       const event = {
-        nativeEvent: { keyCode: 32 },
+        nativeEvent: { keyCode: KEYS.SPACE },
         currentTarget: { getAttribute: jest.fn().mockReturnValue(1) },
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
@@ -77,7 +77,7 @@ describe('keyboard navigation', () => {
 
     test('confirm selections with Enter', () => {
       const eventConfirm = {
-        nativeEvent: { keyCode: 13 },
+        nativeEvent: { keyCode: KEYS.ENTER },
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
@@ -87,7 +87,7 @@ describe('keyboard navigation', () => {
 
     test('cancel selections with Escape', () => {
       const eventCancel = {
-        nativeEvent: { keyCode: 27 },
+        nativeEvent: { keyCode: KEYS.ESCAPE },
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
@@ -98,7 +98,7 @@ describe('keyboard navigation', () => {
     test('arrow up should move focus upwards', () => {
       const focus = jest.fn();
       const eventArrowUp = {
-        nativeEvent: { keyCode: 38 },
+        nativeEvent: { keyCode: KEYS.ARROW_UP },
         currentTarget: {
           parentElement: {
             previousElementSibling: {
@@ -116,7 +116,7 @@ describe('keyboard navigation', () => {
     test('arrow down should move focus downwards', () => {
       const focus = jest.fn();
       const eventArrowDown = {
-        nativeEvent: { keyCode: 40 },
+        nativeEvent: { keyCode: KEYS.ARROW_DOWN },
         currentTarget: {
           parentElement: {
             nextElementSibling: {
@@ -135,7 +135,7 @@ describe('keyboard navigation', () => {
       const focus = jest.fn();
       expect(actions.select).not.toHaveBeenCalled();
       const eventArrowDown = {
-        nativeEvent: { keyCode: 40, shiftKey: true },
+        nativeEvent: { keyCode: KEYS.ARROW_DOWN, shiftKey: true },
         currentTarget: {
           parentElement: {
             nextElementSibling: {
@@ -157,7 +157,7 @@ describe('keyboard navigation', () => {
       const focus = jest.fn();
       expect(actions.select).not.toHaveBeenCalled();
       const eventArrowUp = {
-        nativeEvent: { keyCode: 38, shiftKey: true },
+        nativeEvent: { keyCode: KEYS.ARROW_UP, shiftKey: true },
         currentTarget: {
           getAttribute: jest.fn().mockReturnValue(2),
           parentElement: {
