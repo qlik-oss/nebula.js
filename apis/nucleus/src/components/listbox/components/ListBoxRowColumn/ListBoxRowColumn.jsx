@@ -169,6 +169,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     justifyContent: valueTextAlign,
   };
 
+  const isLastCell = cellIndex + 1 === pages['0']?.qMatrix?.length;
   const isFirstElement = index === 0;
   const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
@@ -195,6 +196,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       isGridMode={dataLayout === 'grid'}
       dense={dense}
       frequencyWidth={frequencyWidth}
+      isLast={isLastCell}
       data-testid="listbox.item"
     >
       <ItemGrid
