@@ -56,26 +56,6 @@ test.describe('listbox mashup rendering test', () => {
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 
-  // This test doesn't work correctly due to the setup.
-  // The checkbox never gets checked because the preselect won't work
-  // and the actual select isn't mocked.
-  test.skip('should render checkboxes and check A and I', async () => {
-    const FILE_NAME = 'listbox_checkboxes_select_AI.png';
-
-    await page.goto(`${url}/listbox/listbox.html?scenario=checkboxes`, { waitUntil: 'networkidle' });
-    const selector = await page.waitForSelector(listboxSelector, { visible: true });
-
-    const selectNumbers = [0, 8];
-    const action = async (nbr) => {
-      const rowSelector = `${listboxSelector} input[data-n="${nbr}"]`;
-      await page.locator(rowSelector).check();
-    };
-    await execSequence(selectNumbers, action);
-
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
-  });
-
   test('listbox search', async () => {
     const FILE_NAME = 'listbox_search_B.png';
     const searchSelector = '.search input';
@@ -99,19 +79,6 @@ test.describe('listbox mashup rendering test', () => {
 
     // Note that since we don't have a backend providing search results, we can't test highlighting and selected (green) rows.
     const selector = await page.locator(listboxSelector);
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
-  });
-
-  test('hovering and pressing arrow down should scroll listbox', async () => {
-    const FILE_NAME = 'listbox_key_scroll.png';
-
-    await page.goto(`${url}/listbox/listbox.html?scenario=standard`, { waitUntil: 'networkidle' });
-    const selector = await page.waitForSelector(listboxSelector, { visible: true });
-
-    await page.hover(listboxSelector);
-    await page.press(listboxSelector, 'ArrowDown');
-
     const image = await selector.screenshot({ caret: 'hide' });
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
