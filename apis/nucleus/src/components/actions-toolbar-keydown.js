@@ -17,7 +17,7 @@ const focusButton = (index) => {
   btn.focus();
 };
 
-export default function getActionsKeyDownHandler({ keyboardNavigation, focusHandler, getEnabledButton }) {
+export default function getActionsKeyDownHandler({ keyboardNavigation, focusHandler, getEnabledButton, selections }) {
   const handleActionsKeyDown = (evt) => {
     const { target, nativeEvent } = evt;
     const { keyCode } = nativeEvent;
@@ -50,6 +50,14 @@ export default function getActionsKeyDownHandler({ keyboardNavigation, focusHand
             // if keyboardNavigation is true, create a callback to handle tabbing from the first/last button in the toolbar that resets focus on the content
             focusHandler.refocusContent();
           }
+        }
+        break;
+      case KEYS.ESCAPE:
+        if (selections) {
+          selections.onCancel();
+          selections.api.cancel();
+          evt.preventDefault();
+          evt.stopPropagation();
         }
         break;
       default:
