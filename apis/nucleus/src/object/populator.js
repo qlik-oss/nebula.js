@@ -1,5 +1,16 @@
 import hcHandler from './hc-handler';
 import loHandler from './lo-handler';
+import filterpaneHandler from './filterpane-handler';
+
+function getCreateHandler(propertyPath) {
+  if (propertyPath.match('/qListObjectDef')) {
+    return loHandler;
+  }
+  if (propertyPath.match('/qChildListDef')) {
+    return filterpaneHandler;
+  }
+  return hcHandler;
+}
 
 /**
  * @interface LibraryField
@@ -21,7 +32,7 @@ export function fieldType(f) {
   return 'dimension';
 }
 
-export default function populateData({ sn, properties, fields }) {
+export default async function populateData({ sn, properties, fields, children }, halo) {
   if (!fields.length) {
     return;
   }
@@ -41,21 +52,26 @@ export default function populateData({ sn, properties, fields }) {
     p = s ? p[s] : p;
   }
 
-  const createHandler = propertyPath.match('/qListObjectDef') ? loHandler : hcHandler;
+  const createHandler = getCreateHandler(propertyPath);
 
   const handler = createHandler({
     dc: p,
     def: target,
     properties,
+    children,
+    halo,
   });
 
-  fields.forEach((f) => {
+  for (let i = 0; i < fields.length; ++i) {
+    const f = fields[i];
     const type = fieldType(f);
 
     if (type === 'measure') {
-      handler.addMeasure(f);
+      // eslint-disable-next-line no-await-in-loop
+      await handler.addMeasure(f);
     } else {
-      handler.addDimension(f);
+      // eslint-disable-next-line no-await-in-loop
+      await handler.addDimension(f);
     }
-  });
+  }
 }

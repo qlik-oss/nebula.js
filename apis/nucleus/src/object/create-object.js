@@ -20,17 +20,19 @@ export default async function createObject(
   generateOnly
 ) {
   let mergedProps = {};
+  const children = [];
   // let error;
   try {
     const t = halo.types.get({ name: type, version });
     mergedProps = await t.initialProperties(properties, extendProperties);
     const sn = await t.supernova();
     if (fields) {
-      populateData(
+      await populateData(
         {
           sn,
           properties: mergedProps,
           fields,
+          children,
         },
         halo
       );
@@ -56,6 +58,12 @@ export default async function createObject(
   }
   if (!generateOnly) {
     const model = await halo.app.createObject(mergedProps);
+    if (children.length > 0) {
+      await model.setFullPropertyTree({
+        qProperty: mergedProps,
+        qChildren: children,
+      });
+    }
     modelStore.set(model.id, model);
     return model;
   }

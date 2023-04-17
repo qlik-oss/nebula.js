@@ -44,17 +44,19 @@ export default async function createSessionObject(
   halo
 ) {
   let mergedProps = {};
+  const children = [];
   let error;
   try {
     const t = halo.types.get({ name: type, version });
     mergedProps = await t.initialProperties(properties, extendProperties);
     const sn = await t.supernova();
     if (fields) {
-      populateData(
+      await populateData(
         {
           sn,
           properties: mergedProps,
           fields,
+          children,
         },
         halo
       );
@@ -75,6 +77,12 @@ export default async function createSessionObject(
     // console.error(e); // eslint-disable-line
   }
   const model = await halo.app.createSessionObject(mergedProps);
+  if (children.length > 0) {
+    await model.setFullPropertyTree({
+      qProperty: mergedProps,
+      qChildren: children,
+    });
+  }
   modelStore.set(model.id, model);
   const unsubscribe = subscribe(model);
   const onDestroy = async () => {

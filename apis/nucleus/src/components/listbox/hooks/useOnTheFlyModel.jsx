@@ -3,6 +3,7 @@ import extend from 'extend';
 import useSessionModel from '../../../hooks/useSessionModel';
 import uid from '../../../object/uid';
 import { getFrequencyMaxExpression } from '../utils/frequencyMaxUtil';
+import defaultListboxProperties from '../default-properties';
 
 export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, options = {} }) {
   const [fieldDef, setFieldDef] = useState('');
@@ -81,40 +82,19 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
     id.current = uid();
   }
 
-  const listdef = {
+  const listdef = extend(true, {}, defaultListboxProperties, {
     qInfo: {
-      qType: 'njsListbox',
       qId: id.current,
     },
     qListObjectDef: {
       qStateName: stateName,
-      qShowAlternatives: true,
-      frequencyEnabled: false,
       qFrequencyMode: getListdefFrequencyMode(),
-      qInitialDataFetch: [
-        {
-          qTop: 0,
-          qLeft: 0,
-          qWidth: 0,
-          qHeight: 0,
-        },
-      ],
-      qDef: {
-        qSortCriterias: [
-          {
-            qSortByState: 1,
-            qSortByAscii: 1,
-            qSortByNumeric: 1,
-            qSortByLoadOrder: 1,
-          },
-        ],
-      },
     },
     histogram,
     checkboxes,
     layoutOptions,
     title,
-  };
+  });
   extend(true, listdef, properties);
 
   // Something something lib dimension
