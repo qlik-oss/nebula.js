@@ -74,6 +74,7 @@ describe('<ListBoxRowColumn />', () => {
         translator: {
           get: jest.fn().mockImplementation((word) => word),
         },
+        focusListItems: () => ({ first: false, last: false }),
       };
       expect(getFieldKeyboardNavigation).not.called;
       const testRenderer = await render(
@@ -98,7 +99,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: defaultPages,
         actions,
         dataOffset: 0,
-        focusListItems: () => {},
+        focusListItems: () => ({ first: false, last: false }),
       };
       expect(getFieldKeyboardNavigation).not.called;
       const testRenderer = await render(
@@ -143,6 +144,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: defaultPages,
         actions,
         dataOffset: 0,
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -175,6 +177,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: defaultPages,
         actions,
         dataOffset: 0,
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -243,6 +246,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
 
       const testRenderer = await render(
@@ -286,6 +290,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -326,6 +331,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -367,6 +373,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -407,6 +414,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -448,6 +456,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -488,6 +497,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -529,6 +539,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -569,6 +580,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -613,6 +625,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -662,6 +675,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -714,6 +728,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -762,6 +777,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -802,6 +818,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -839,6 +856,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: defaultPages,
         actions,
         dataOffset: 0,
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -880,6 +898,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: defaultPages,
         actions,
         dataOffset: 0,
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -903,6 +922,7 @@ describe('<ListBoxRowColumn />', () => {
         textAlign: { align: 'right' },
         pages: defaultPages,
         dataOffset: 0,
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -922,6 +942,7 @@ describe('<ListBoxRowColumn />', () => {
         textAlign: { align: 'left' },
         pages: defaultPages,
         dataOffset: 0,
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -941,6 +962,7 @@ describe('<ListBoxRowColumn />', () => {
         textAlign: { align: 'center' },
         pages: defaultPages,
         dataOffset: 0,
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -966,6 +988,7 @@ describe('<ListBoxRowColumn />', () => {
         direction: 'rtl',
         pages: nonNumericPages,
         dataOffset: 0,
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -986,6 +1009,7 @@ describe('<ListBoxRowColumn />', () => {
         direction: 'rtl',
         pages: defaultPages,
         dataOffset: 0,
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -1012,6 +1036,7 @@ describe('<ListBoxRowColumn />', () => {
         direction: 'ltr',
         pages: nonNumericPages,
         dataOffset: 0,
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -1033,6 +1058,7 @@ describe('<ListBoxRowColumn />', () => {
         direction: 'ltr',
         pages: defaultPages, // these value(s) have a qNum so they are interpreted as numeric.
         dataOffset: 0,
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
@@ -1078,6 +1104,7 @@ describe('<ListBoxRowColumn />', () => {
             ],
           },
         ],
+        focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
         <ThemeProvider theme={theme}>
