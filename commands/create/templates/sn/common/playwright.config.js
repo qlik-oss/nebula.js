@@ -16,7 +16,14 @@ export default {
     ],
   ],
 
+  webServer: {
+    command: 'yarn start --port 8077',
+    reuseExistingServer: !process.env.CI,
+    port: '8077',
+  },
+
   use: {
+    baseURL: 'http://localhost:8077',
     headless: true,
     viewport: { width: 1280, height: 720 },
     ignoreHTTPSErrors: true,
