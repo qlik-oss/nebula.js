@@ -26,6 +26,8 @@ Options:
                                  [string] [choices: "production", "development"]
   --core           Set a core build target            [string] [default: "core"]
   --typescript     Enable typescript bundling         [boolean] [default: false]
+  --preferBuiltins Configuration option that specifies whether to use Node.js built-in modules [boolean] [default: false]
+  --browser        Configuration option that specifies whether the bundle is intended to run in a browser environment.  [boolean] [default: false]
 ```
 
 ## Example
