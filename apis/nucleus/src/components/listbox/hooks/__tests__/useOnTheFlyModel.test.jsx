@@ -109,9 +109,11 @@ describe('useExistingModel', () => {
         layoutOrder: 'row',
         maxVisibleColumns: {
           auto: true,
+          maxColumns: 3,
         },
         maxVisibleRows: {
           auto: true,
+          maxRows: 3,
         },
       });
 
@@ -121,7 +123,7 @@ describe('useExistingModel', () => {
         dense: false,
         dataLayout: 'grid',
         layoutOrder: 'column',
-        maxVisibleColumns: { auto: true },
+        maxVisibleColumns: { auto: true, maxColumns: 3 },
         maxVisibleRows: { auto: false, maxRows: 1 },
       });
     });
@@ -136,9 +138,11 @@ describe('useExistingModel', () => {
         layoutOrder: 'row',
         maxVisibleColumns: {
           auto: true,
+          maxColumns: 3,
         },
         maxVisibleRows: {
           auto: true,
+          maxRows: 3,
         },
       });
     });
