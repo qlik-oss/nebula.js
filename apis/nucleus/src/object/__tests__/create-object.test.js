@@ -57,7 +57,7 @@ describe('create-object', () => {
 
   test('should populate fields', async () => {
     await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
-    expect(populator).toHaveBeenCalledWith({ sn, properties: merged, fields: 'f' }, halo);
+    expect(populator).toHaveBeenCalledWith({ sn, properties: merged, fields: 'f', children: [] }, halo);
   });
 
   test('should call properties onChange handler when optional props are provided', async () => {

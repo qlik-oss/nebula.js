@@ -103,11 +103,22 @@ describe('useExistingModel', () => {
       const options = {};
       const fieldIdentifier = 'Alpha';
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
-      expect(useSessionModel.mock.lastCall[0].layoutOptions).toEqual({});
+      expect(useSessionModel.mock.lastCall[0].layoutOptions).toEqual({
+        dense: false,
+        dataLayout: 'singleColumn',
+        layoutOrder: 'row',
+        maxVisibleColumns: {
+          auto: true,
+        },
+        maxVisibleRows: {
+          auto: true,
+        },
+      });
 
       options.listLayout = 'horizontal';
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
       expect(useSessionModel.mock.lastCall[0].layoutOptions).toEqual({
+        dense: false,
         dataLayout: 'grid',
         layoutOrder: 'column',
         maxVisibleColumns: { auto: true },
@@ -119,7 +130,17 @@ describe('useExistingModel', () => {
       const options = { dense: true };
       const fieldIdentifier = 'Alpha';
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
-      expect(useSessionModel.mock.lastCall[0].layoutOptions).toEqual({ dense: true });
+      expect(useSessionModel.mock.lastCall[0].layoutOptions).toEqual({
+        dense: true,
+        dataLayout: 'singleColumn',
+        layoutOrder: 'row',
+        maxVisibleColumns: {
+          auto: true,
+        },
+        maxVisibleRows: {
+          auto: true,
+        },
+      });
     });
   });
 
