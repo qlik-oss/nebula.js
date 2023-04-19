@@ -44,6 +44,16 @@
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
   },
+  "Listbox.ScreenReader.SearchThenSelectionsMenu.WithAccSelMenu": {
+    "value": "按 Shift+Tab 在搜索栏上设置焦点，然后再次按 Shift+Tab 在“选择”菜单上设置焦点。",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is open. ",
+    "version": "pVm8xwENNwVX8ceUb1aapA=="
+  },
+  "Listbox.ScreenReader.SelectionMenu.WithAccSelMenu": {
+    "value": "按下 Shift 加 Tab 以将焦点设置在选择菜单上。",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is closed. ",
+    "version": "vplsTOTaCeci0sTAKmjhaQ=="
+  },
   "Listbox.ScreenReaderInstructions": {
     "value": "激活下面的元素将导致页面上的内容更新",
     "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content",
@@ -84,6 +94,41 @@
     "comment": "Verb, typically button label",
     "version": "2COCF0f9Drb54EThSLR/WQ=="
   },
+  "Object.Listbox.Alternative": {
+    "value": "可选",
+    "comment": "Alternative state of an item in listbox(buy20180905)",
+    "version": "zSb1qdwXvFAWNG5hll1tCQ=="
+  },
+  "Object.Listbox.Excluded": {
+    "value": "已排除",
+    "comment": "Excluded state of an item in listbox(buy20180905)",
+    "version": "Zem8o+76FJ+ghWc2JR4vJQ=="
+  },
+  "Object.Listbox.ExcludedLock": {
+    "value": "已排除锁定",
+    "comment": "Excluded lock state of an item in listbox(buy20180905)",
+    "version": "KpvYYXB6b5v40OI6a3uCBQ=="
+  },
+  "Object.Listbox.Locked": {
+    "value": "已锁定",
+    "comment": "Locked state of an item in listbox(buy20180905)",
+    "version": "nZDznytt+cqz5yyYObs0QQ=="
+  },
+  "Object.Listbox.Optional": {
+    "value": "可选",
+    "comment": "Optional state of an item in listbox(buy20180905)",
+    "version": "18gX4gXo+M8QYSh4j6LBUA=="
+  },
+  "Object.Listbox.Selected": {
+    "value": "已选择",
+    "comment": "Selected state of an item in listbox. (buy20180905)",
+    "version": "DGo0we75C68XYHVXPfNZ9A=="
+  },
+  "Object.Listbox.SelectedExcluded": {
+    "value": "已排除选择",
+    "comment": "Selected excluded state of an item in listbox(buy20180905)",
+    "version": "RTchiDrH9lIxerEyRF/fzA=="
+  },
   "Object.Update.Active": {
     "value": "加载数据",
     "comment": "Status text shown when a object's data is being updated",
@@ -98,6 +143,21 @@
     "value": "重试",
     "comment": "Verb, typically button label",
     "version": "57j2gQLhNkHSlTwlN2lEqA=="
+  },
+  "ScreenReader.ManySelected": {
+    "value": "存在 {0} 个已选择的值。",
+    "comment": "Screen reader text stating that multiple values are currently in selection.",
+    "version": "niVZFjvZXwdtILpHf0qvTg=="
+  },
+  "ScreenReader.OneSelected": {
+    "value": "存在一个已选择的值。",
+    "comment": "Screen reader text stating that one value is currently in selection.",
+    "version": "OGD8l7kr5UUZgnRu9BZDYQ=="
+  },
+  "ScreenReader.ZeroSelected": {
+    "value": "未选择值。",
+    "comment": "Screen reader label stating that no values are selected.",
+    "version": "xuurAVKZSCR84oLGvlWt7w=="
   },
   "Selection.Cancel": {
     "value": "取消选择",
@@ -188,65 +248,5 @@
     "value": "不满足计算条件",
     "comment": "Message displayed when a calculation condition is not fulfilled",
     "version": "Hj3EiDijTWZ+MhDaqSx/uQ=="
-  },
-  "Object.Listbox.Selected": {
-    "value": "已选择",
-    "comment": "Selected state of an item in listbox. (buy20180905)",
-    "version": "DGo0we75C68XYHVXPfNZ9A=="
-  },
-  "Object.Listbox.Alternative": {
-    "value": "可选",
-    "comment": "Alternative state of an item in listbox(buy20180905)",
-    "version": "zSb1qdwXvFAWNG5hll1tCQ=="
-  },
-  "Object.Listbox.Optional": {
-    "value": "可选",
-    "comment": "Optional state of an item in listbox(buy20180905)",
-    "version": "18gX4gXo+M8QYSh4j6LBUA=="
-  },
-  "Object.Listbox.SelectedExcluded": {
-    "value": "已排除选择",
-    "comment": "Selected excluded state of an item in listbox(buy20180905)",
-    "version": "RTchiDrH9lIxerEyRF/fzA=="
-  },
-  "Object.Listbox.Locked": {
-    "value": "已锁定",
-    "comment": "Locked state of an item in listbox(buy20180905)",
-    "version": "nZDznytt+cqz5yyYObs0QQ=="
-  },
-  "Object.Listbox.Excluded": {
-    "value": "已排除",
-    "comment": "Excluded state of an item in listbox(buy20180905)",
-    "version": "Zem8o+76FJ+ghWc2JR4vJQ=="
-  },
-  "Object.Listbox.ExcludedLock": {
-    "value": "已排除锁定",
-    "comment": "Excluded lock state of an item in listbox(buy20180905)",
-    "version": "KpvYYXB6b5v40OI6a3uCBQ=="
-  },
-  "Listbox.ScreenReader.SelectionMenu.WithAccSelMenu": {
-    "value": "按下 Shift 加 Tab 以将焦点设置在选择菜单上。",
-    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is closed. ",
-    "version": "cf+5FbBZWTBzrvA1t8ZGSw=="
-  },
-  "Listbox.ScreenReader.SearchThenSelectionsMenu.WithAccSelMenu": {
-    "value": "按 Shift+Tab 在搜索栏上设置焦点，然后再次按 Shift+Tab 在“选择”菜单上设置焦点。",
-    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is open. ",
-    "version": "pSBDS/l6GrBblyURsRM+AQ=="
-  },
-  "ScreenReader.ZeroSelected": {
-    "value": "未选择值。",
-    "comment": "Screen reader label stating that no values are selected.",
-    "version": "ws+IBu/9dgYvVZMAOt8XjA=="
-  },
-  "ScreenReader.OneSelected": {
-    "value": "存在一个已选择的值。",
-    "comment": "Screen reader text stating that one value is currently in selection.",
-    "version": "3/nu/iWCtVFxcUytjx/0iQ=="
-  },
-  "ScreenReader.ManySelected": {
-    "value": "存在 {0} 个已选择的值。",
-    "comment": "Screen reader text stating that multiple values are currently in selection.",
-    "version": "KqgykSKKf9jfhehR2eUQZg=="
   }
 }
