@@ -47,12 +47,12 @@ export default function getRowsKeyboardNavigation({
       nextRowIndex = rowIndex - 1;
     }
 
-    // Convert from row, column indices to the index in the dom element list
-    // It is a bit tricky when layout order is column
+    // Convert from row, column indices to the element index in the dom element list
     if (layoutOrder === 'row') {
       return nextRowIndex * columnCount + nextColumnIndex;
     }
 
+    // The dom element list is always row order. If the layout is column order then the conversion is not straight forward
     const remain = numCells % rowCount;
     if (remain === 0 || nextRowIndex < remain) return nextRowIndex * columnCount + nextColumnIndex;
     return (nextRowIndex - remain) * (columnCount - 1) + nextColumnIndex + remain * columnCount;
