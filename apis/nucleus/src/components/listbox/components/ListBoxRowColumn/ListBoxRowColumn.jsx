@@ -1,12 +1,11 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useCallback, useRef, useMemo } from 'react';
+import React, { useEffect, useCallback, useMemo, useState } from 'react';
 
 import { Grid } from '@mui/material';
 
 import Lock from '@nebula.js/ui/icons/lock';
 import Tick from '@nebula.js/ui/icons/tick';
 import getSegmentsFromRanges from '../listbox-highlight';
-import { getFieldKeyboardNavigation } from '../../interactions/listbox-keyboard-navigation';
 import classes from './helpers/classes';
 import { getValueStateClasses } from './helpers/cell-states';
 import { joinClassNames } from './helpers/operations';
@@ -18,6 +17,7 @@ import Frequency from './components/Frequency';
 import ItemGrid from './components/ItemGrid';
 import getCellFromPages from './helpers/get-cell-from-pages';
 import { getValueLabel } from '../ScreenReaders';
+import getRowsKeyboardNavigation from '../../interactions/keyboard-navigation/keybord-nav-rows';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
@@ -86,22 +86,23 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   }
   cellIndex += dataOffset;
 
-  const rowRef = useRef(null);
+  const [rowRef, setRowRef] = useState(null);
+
   useEffect(() => {
-    if (rowRef.current !== null) {
+    if (rowRef !== null) {
       if (count.currentIndex === 0 && focusListItems.first) {
-        rowRef.current.focus();
+        rowRef.focus();
         focusListItems.setFirst(false);
       }
       if (count.currentIndex === count.max - 1 && focusListItems.last) {
-        rowRef.current.focus();
+        rowRef.focus();
         focusListItems.setLast(false);
       }
     }
-  }, [rowRef.current]);
+  }, [rowRef, focusListItems.first, focusListItems.last]);
 
   const handleKeyDownCallback = useCallback(
-    getFieldKeyboardNavigation({ ...actions, focusListItems, keyboard, isModal }),
+    getRowsKeyboardNavigation({ ...actions, focusListItems, keyboard, isModal }),
     [actions, keyboard?.innerTabStops]
   );
 
@@ -204,7 +205,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         aria-selected={isSelected}
         aria-setsize={count.max}
         aria-rowindex={count.currentIndex}
-        ref={rowRef}
+        ref={setRowRef}
         container
         dataLayout={dataLayout}
         cellPaddingRight={cellPaddingRight}

@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.9](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.8...v4.0.0-alpha.9) (2023-04-14)
+
+### Bug Fixes
+
+- change react-virtualized-auto-sizer to 1.0.7 to fix width problem ([#1214](https://github.com/qlik-oss/nebula.js/issues/1214)) ([ff8d6e4](https://github.com/qlik-oss/nebula.js/commit/ff8d6e4a9f8f73a4f193b1d5ce9b526d794c84af))
+- escape in toolbar ([#1218](https://github.com/qlik-oss/nebula.js/issues/1218)) ([35210e7](https://github.com/qlik-oss/nebula.js/commit/35210e76e8f858d5a0e06a325cbff681dca95f55))
+- fix rtl for histogram and checkbox and frequency count ([#1221](https://github.com/qlik-oss/nebula.js/issues/1221)) ([51b8cb1](https://github.com/qlik-oss/nebula.js/commit/51b8cb18650e5bba68b3d5e333e2a5650ca232bf))
+- make spacebar work on all buttons in action toolbar ([#1215](https://github.com/qlik-oss/nebula.js/issues/1215)) ([2c6ca59](https://github.com/qlik-oss/nebula.js/commit/2c6ca590293ef6dfeddc8767c50f65b09f4af848))
+- refactor to work with Grid flex styling ([#1216](https://github.com/qlik-oss/nebula.js/issues/1216)) ([33eaa57](https://github.com/qlik-oss/nebula.js/commit/33eaa57cf4392a0807ecb426955e3ead3bd57a87))
+- support Enter to go from a folded listbox to a row ([#1219](https://github.com/qlik-oss/nebula.js/issues/1219)) ([8eabc25](https://github.com/qlik-oss/nebula.js/commit/8eabc258297da778fa1ed7b2708fc8e2a714f9fd))
+
+### Features
+
+- create api ([#1079](https://github.com/qlik-oss/nebula.js/issues/1079)) ([b3315d0](https://github.com/qlik-oss/nebula.js/commit/b3315d0e6b6d1808cd59c8a2012bb8bb223b2503))
+
 # [4.0.0-alpha.8](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.7...v4.0.0-alpha.8) (2023-04-03)
 
 ### Bug Fixes
