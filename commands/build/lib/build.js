@@ -64,22 +64,25 @@ async function build(argv = {}) {
     return watch(buildConfig);
   }
 
-  console.time('umd');
+  console.time('Generate UMD bundle');
   await umd(buildConfig);
-  console.timeEnd('umd');
-  console.time('esm');
+  console.timeEnd('Generate UMD bundle');
+  console.time('Create ESM bundle');
   await esm(buildConfig);
-  console.timeEnd('esm');
-  console.time('systemjs');
-  argv.systemjs && (await systemjs(buildConfig));
-  console.timeEnd('systemjs');
+  console.timeEnd('Create ESM bundle');
 
-  console.time('esm core');
+  if (argv.systemjs) {
+    console.time('Support native format of the SystemJS loader');
+    await systemjs(buildConfig);
+    console.timeEnd('Support native format of the SystemJS loader');
+  }
+
   if (argv.core) {
+    console.time('Create ESM bundle into core');
     const core = path.resolve(process.cwd(), argv.core);
     await esm(buildConfig, core);
+    console.timeEnd('Create ESM bundle into core');
   }
-  console.timeEnd('esm core');
 
   return undefined;
 }
