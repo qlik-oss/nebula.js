@@ -64,14 +64,14 @@ export default function getRowsKeyboardNavigation({
       keyCode === KEYS.ARROW_RIGHT ||
       !(typeof rowIndex === 'number' && typeof columnIndex === 'number')
     ) {
-      const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
-      return parentElm && parentElm.querySelector('[role]');
+      const parentElm = elm?.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
+      return parentElm?.querySelector('[role]');
     }
-    const gridElm = elm && elm.parentElement.parentElement;
-    if (gridElm && gridElm.childElementCount) {
+    const gridElm = elm?.parentElement.parentElement;
+    if (gridElm?.childElementCount) {
       const nextIndex = findNextIndex(keyCode, gridElm.childElementCount);
-      const nextElm = elm && elm.parentElement.parentElement.children[nextIndex];
-      return nextElm && nextElm.querySelector('[role]');
+      const nextElm = elm?.parentElement.parentElement.children[nextIndex];
+      return nextElm?.querySelector('[role]');
     }
     return undefined;
   };
