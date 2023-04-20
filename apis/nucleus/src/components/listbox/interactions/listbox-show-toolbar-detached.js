@@ -1,5 +1,5 @@
-export default function showToolbarDetached({ containerRef, titleRef, iconsWidth }) {
-  const containerWidth = containerRef?.current?.clientWidth ?? 0;
+export default function showToolbarDetached({ containerRect, titleRef, iconsWidth }) {
+  const containerWidth = containerRect.width;
   const padding = 16;
   const contentWidth = (titleRef?.current?.clientWidth ?? 0) + iconsWidth + padding;
   const actionToolbarWidth = 128;
