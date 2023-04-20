@@ -11,10 +11,69 @@ export default function getRowsKeyboardNavigation({
   focusListItems,
   keyboard,
   isModal,
+  rowCount,
+  columnCount,
+  rowIndex,
+  columnIndex,
+  layoutOrder,
 }) {
-  const getElement = (elm, next = false) => {
-    const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
-    return parentElm && parentElm.querySelector('[role]');
+  const getNumCellsInColumn = (numCells, colIdx) => {
+    let remain;
+    if (layoutOrder === 'row') {
+      remain = numCells % columnCount;
+      return colIdx < remain ? rowCount : rowCount - 1;
+    }
+    remain = numCells % rowCount;
+    return colIdx < columnCount - 1 ? rowCount : remain;
+  };
+
+  // Find index in the dom element list
+  const findNextIndex = (keyCode, numCells) => {
+    let nextRowIndex = rowIndex;
+    let nextColumnIndex = columnIndex;
+    if (keyCode === KEYS.ARROW_DOWN) {
+      if (rowIndex >= getNumCellsInColumn(numCells, columnIndex) - 1) {
+        if (columnIndex === columnCount - 1) return -1;
+        nextRowIndex = 0;
+        nextColumnIndex = columnIndex + 1;
+      } else {
+        nextRowIndex = rowIndex + 1;
+      }
+    } else if (rowIndex === 0) {
+      if (columnIndex === 0) return -1;
+      nextRowIndex = getNumCellsInColumn(numCells, columnIndex - 1) - 1;
+      nextColumnIndex = columnIndex - 1;
+    } else {
+      nextRowIndex = rowIndex - 1;
+    }
+
+    // Convert from row, column indices to the index in the dom element list
+    // It is a bit tricky when layout order is column
+    if (layoutOrder === 'row') {
+      return nextRowIndex * columnCount + nextColumnIndex;
+    }
+
+    const remain = numCells % rowCount;
+    if (remain === 0 || nextRowIndex < remain) return nextRowIndex * columnCount + nextColumnIndex;
+    return (nextRowIndex - remain) * (columnCount - 1) + nextColumnIndex + remain * columnCount;
+  };
+
+  const getElement = (keyCode, elm, next = false) => {
+    if (
+      keyCode === KEYS.ARROW_LEFT ||
+      keyCode === KEYS.ARROW_RIGHT ||
+      !(typeof rowIndex === 'number' && typeof columnIndex === 'number')
+    ) {
+      const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
+      return parentElm && parentElm.querySelector('[role]');
+    }
+    const gridElm = elm && elm.parentElement.parentElement;
+    if (gridElm && gridElm.childElementCount) {
+      const nextIndex = findNextIndex(keyCode, gridElm.childElementCount);
+      const nextElm = elm && elm.parentElement.parentElement.children[nextIndex];
+      return nextElm && nextElm.querySelector('[role]');
+    }
+    return undefined;
   };
 
   let startedRange = false;
@@ -64,7 +123,7 @@ export default function getRowsKeyboardNavigation({
         break;
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_RIGHT:
-        elementToFocus = getElement(currentTarget, true);
+        elementToFocus = getElement(keyCode, currentTarget, true);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
             select([getElementIndex(currentTarget)], true);
@@ -75,7 +134,7 @@ export default function getRowsKeyboardNavigation({
         break;
       case KEYS.ARROW_UP:
       case KEYS.ARROW_LEFT:
-        elementToFocus = getElement(currentTarget, false);
+        elementToFocus = getElement(keyCode, currentTarget, false);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
             select([getElementIndex(currentTarget)], true);
