@@ -113,7 +113,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       columnIndex,
       layoutOrder,
     }),
-    [actions, keyboard?.innerTabStops]
+    [actions, keyboard?.innerTabStops, rowCount, columnCount, rowIndex, columnIndex, layoutOrder]
   );
 
   const cell = useMemo(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
