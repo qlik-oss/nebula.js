@@ -1,5 +1,6 @@
 import KEYS from '../../../../keys';
 import { focusSearch, getElementIndex } from './keyboard-nav-methods';
+import findNextItemIndex from './find-next-item-index';
 
 export default function getRowsKeyboardNavigation({
   select,
@@ -17,47 +18,6 @@ export default function getRowsKeyboardNavigation({
   columnIndex,
   layoutOrder,
 }) {
-  const getNumCellsInColumn = (numCells, colIdx) => {
-    let remain;
-    if (layoutOrder === 'row') {
-      remain = numCells % columnCount;
-      return colIdx < remain ? rowCount : rowCount - 1;
-    }
-    remain = numCells % rowCount;
-    return colIdx < columnCount - 1 ? rowCount : remain;
-  };
-
-  // Find index in the dom element list
-  const findNextIndex = (keyCode, numCells) => {
-    let nextRowIndex = rowIndex;
-    let nextColumnIndex = columnIndex;
-    if (keyCode === KEYS.ARROW_DOWN) {
-      if (rowIndex >= getNumCellsInColumn(numCells, columnIndex) - 1) {
-        if (columnIndex === columnCount - 1) return -1;
-        nextRowIndex = 0;
-        nextColumnIndex = columnIndex + 1;
-      } else {
-        nextRowIndex = rowIndex + 1;
-      }
-    } else if (rowIndex === 0) {
-      if (columnIndex === 0) return -1;
-      nextRowIndex = getNumCellsInColumn(numCells, columnIndex - 1) - 1;
-      nextColumnIndex = columnIndex - 1;
-    } else {
-      nextRowIndex = rowIndex - 1;
-    }
-
-    // Convert from row, column indices to the element index in the dom element list
-    if (layoutOrder === 'row') {
-      return nextRowIndex * columnCount + nextColumnIndex;
-    }
-
-    // The dom element list is always row order. If the layout is column order then the conversion is not straight forward
-    const remain = numCells % rowCount;
-    if (remain === 0 || nextRowIndex < remain) return nextRowIndex * columnCount + nextColumnIndex;
-    return (nextRowIndex - remain) * (columnCount - 1) + nextColumnIndex + remain * columnCount;
-  };
-
   const getElement = (keyCode, elm, next = false) => {
     if (
       keyCode === KEYS.ARROW_LEFT ||
@@ -68,8 +28,17 @@ export default function getRowsKeyboardNavigation({
       return parentElm?.querySelector('[role]');
     }
     const gridElm = elm?.parentElement.parentElement;
-    if (gridElm?.childElementCount) {
-      const nextIndex = findNextIndex(keyCode, gridElm.childElementCount);
+    const numCells = gridElm?.childElementCount;
+    if (numCells) {
+      const nextIndex = findNextItemIndex({
+        rowIndex,
+        columnIndex,
+        rowCount,
+        columnCount,
+        layoutOrder,
+        keyCode,
+        numCells,
+      });
       const nextElm = elm?.parentElement.parentElement.children[nextIndex];
       return nextElm?.querySelector('[role]');
     }
