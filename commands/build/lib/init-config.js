@@ -27,6 +27,11 @@ const options = {
     type: 'string',
     default: undefined,
   },
+  systemjs: {
+    description: 'Enable to transpile a systemjs format for release',
+    type: 'boolean',
+    default: true,
+  },
   core: {
     description: 'Set a core build target to compile an ES Module for release',
     type: 'string',
