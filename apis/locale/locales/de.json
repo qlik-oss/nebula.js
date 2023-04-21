@@ -44,6 +44,16 @@
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field",
     "version": "ZMijtIFW/Kap65bGmRIp0w=="
   },
+  "Listbox.ScreenReader.SearchThenSelectionsMenu.WithAccSelMenu": {
+    "value": "Drücken Sie die Umschalttaste zusammen mit der Tabulatortaste, um den Fokus in die Suchleiste zu setzen, und dann erneut beide Tasten, um den Fokus in das Auswahlmenü zu setzen.",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is open. ",
+    "version": "pVm8xwENNwVX8ceUb1aapA=="
+  },
+  "Listbox.ScreenReader.SelectionMenu.WithAccSelMenu": {
+    "value": "Drücken Sie gleichzeitig die Umschalt- und die Tabulatortaste, um den Fokus in das Auswahlmenü zu setzen.",
+    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is closed. ",
+    "version": "vplsTOTaCeci0sTAKmjhaQ=="
+  },
   "Listbox.ScreenReaderInstructions": {
     "value": "Bei Aktivierung der Elemente unten wird der Seiteninhalt aktualisiert",
     "comment": "Instructions to inform screen reader users that interacting with the elements below this text will update the page content",
@@ -84,6 +94,41 @@
     "comment": "Verb, typically button label",
     "version": "2COCF0f9Drb54EThSLR/WQ=="
   },
+  "Object.Listbox.Alternative": {
+    "value": "Alternative",
+    "comment": "Alternative state of an item in listbox(buy20180905)",
+    "version": "zSb1qdwXvFAWNG5hll1tCQ=="
+  },
+  "Object.Listbox.Excluded": {
+    "value": "Ausgeschlossen",
+    "comment": "Excluded state of an item in listbox(buy20180905)",
+    "version": "Zem8o+76FJ+ghWc2JR4vJQ=="
+  },
+  "Object.Listbox.ExcludedLock": {
+    "value": "Ausgeschlossene Sperre",
+    "comment": "Excluded lock state of an item in listbox(buy20180905)",
+    "version": "KpvYYXB6b5v40OI6a3uCBQ=="
+  },
+  "Object.Listbox.Locked": {
+    "value": "Gesperrt",
+    "comment": "Locked state of an item in listbox(buy20180905)",
+    "version": "nZDznytt+cqz5yyYObs0QQ=="
+  },
+  "Object.Listbox.Optional": {
+    "value": "Optional",
+    "comment": "Optional state of an item in listbox(buy20180905)",
+    "version": "18gX4gXo+M8QYSh4j6LBUA=="
+  },
+  "Object.Listbox.Selected": {
+    "value": "Ausgewählt",
+    "comment": "Selected state of an item in listbox. (buy20180905)",
+    "version": "DGo0we75C68XYHVXPfNZ9A=="
+  },
+  "Object.Listbox.SelectedExcluded": {
+    "value": "Ausgeschlossen ausgewählt",
+    "comment": "Selected excluded state of an item in listbox(buy20180905)",
+    "version": "RTchiDrH9lIxerEyRF/fzA=="
+  },
   "Object.Update.Active": {
     "value": "Laden von Daten",
     "comment": "Status text shown when a object's data is being updated",
@@ -98,6 +143,21 @@
     "value": "Wiederholen",
     "comment": "Verb, typically button label",
     "version": "57j2gQLhNkHSlTwlN2lEqA=="
+  },
+  "ScreenReader.ManySelected": {
+    "value": "Es sind {0} Werte ausgewählt.",
+    "comment": "Screen reader text stating that multiple values are currently in selection.",
+    "version": "niVZFjvZXwdtILpHf0qvTg=="
+  },
+  "ScreenReader.OneSelected": {
+    "value": "Es ist ein Wert ausgewählt.",
+    "comment": "Screen reader text stating that one value is currently in selection.",
+    "version": "OGD8l7kr5UUZgnRu9BZDYQ=="
+  },
+  "ScreenReader.ZeroSelected": {
+    "value": "Es sind keine Werte ausgewählt.",
+    "comment": "Screen reader label stating that no values are selected.",
+    "version": "xuurAVKZSCR84oLGvlWt7w=="
   },
   "Selection.Cancel": {
     "value": "Auswahl abbrechen",
@@ -188,65 +248,5 @@
     "value": "Die Berechnungsbedingung ist nicht erfüllt",
     "comment": "Message displayed when a calculation condition is not fulfilled",
     "version": "Hj3EiDijTWZ+MhDaqSx/uQ=="
-  },
-  "Object.Listbox.Selected": {
-    "value": "Ausgewählt",
-    "comment": "Selected state of an item in listbox. (buy20180905)",
-    "version": "DGo0we75C68XYHVXPfNZ9A=="
-  },
-  "Object.Listbox.Alternative": {
-    "value": "Alternative",
-    "comment": "Alternative state of an item in listbox(buy20180905)",
-    "version": "zSb1qdwXvFAWNG5hll1tCQ=="
-  },
-  "Object.Listbox.Optional": {
-    "value": "Optional",
-    "comment": "Optional state of an item in listbox(buy20180905)",
-    "version": "18gX4gXo+M8QYSh4j6LBUA=="
-  },
-  "Object.Listbox.SelectedExcluded": {
-    "value": "Ausgeschlossen ausgewählt",
-    "comment": "Selected excluded state of an item in listbox(buy20180905)",
-    "version": "RTchiDrH9lIxerEyRF/fzA=="
-  },
-  "Object.Listbox.Locked": {
-    "value": "Gesperrt",
-    "comment": "Locked state of an item in listbox(buy20180905)",
-    "version": "nZDznytt+cqz5yyYObs0QQ=="
-  },
-  "Object.Listbox.Excluded": {
-    "value": "Ausgeschlossen",
-    "comment": "Excluded state of an item in listbox(buy20180905)",
-    "version": "Zem8o+76FJ+ghWc2JR4vJQ=="
-  },
-  "Object.Listbox.ExcludedLock": {
-    "value": "Ausgeschlossene Sperre",
-    "comment": "Excluded lock state of an item in listbox(buy20180905)",
-    "version": "KpvYYXB6b5v40OI6a3uCBQ=="
-  },
-  "Listbox.ScreenReader.SelectionMenu.WithAccSelMenu": {
-    "value": "Drücken Sie gleichzeitig die Umschalt- und die Tabulatortaste, um den Fokus in das Auswahlmenü zu setzen.",
-    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is closed. ",
-    "version": "cf+5FbBZWTBzrvA1t8ZGSw=="
-  },
-  "Listbox.ScreenReader.SearchThenSelectionsMenu.WithAccSelMenu": {
-    "value": "Drücken Sie die Umschalttaste zusammen mit der Tabulatortaste, um den Fokus in die Suchleiste zu setzen, und dann erneut beide Tasten, um den Fokus in das Auswahlmenü zu setzen.",
-    "comment": "Screen reader label for telling the user how to reach the selections menu, if search is open. ",
-    "version": "pSBDS/l6GrBblyURsRM+AQ=="
-  },
-  "ScreenReader.ZeroSelected": {
-    "value": "Es sind keine Werte ausgewählt.",
-    "comment": "Screen reader label stating that no values are selected.",
-    "version": "ws+IBu/9dgYvVZMAOt8XjA=="
-  },
-  "ScreenReader.OneSelected": {
-    "value": "Es ist ein Wert ausgewählt.",
-    "comment": "Screen reader text stating that one value is currently in selection.",
-    "version": "3/nu/iWCtVFxcUytjx/0iQ=="
-  },
-  "ScreenReader.ManySelected": {
-    "value": "Es sind {0} Werte ausgewählt.",
-    "comment": "Screen reader text stating that multiple values are currently in selection.",
-    "version": "KqgykSKKf9jfhehR2eUQZg=="
   }
 }

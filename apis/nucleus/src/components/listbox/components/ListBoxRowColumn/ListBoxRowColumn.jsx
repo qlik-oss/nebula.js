@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useEffect, useCallback, useRef, useMemo } from 'react';
+import React, { useEffect, useCallback, useMemo, useState } from 'react';
 
 import { Grid } from '@mui/material';
 
@@ -86,19 +86,20 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   }
   cellIndex += dataOffset;
 
-  const rowRef = useRef(null);
+  const [rowRef, setRowRef] = useState(null);
+
   useEffect(() => {
-    if (rowRef.current !== null) {
+    if (rowRef !== null) {
       if (count.currentIndex === 0 && focusListItems.first) {
-        rowRef.current.focus();
+        rowRef.focus();
         focusListItems.setFirst(false);
       }
       if (count.currentIndex === count.max - 1 && focusListItems.last) {
-        rowRef.current.focus();
+        rowRef.focus();
         focusListItems.setLast(false);
       }
     }
-  }, [rowRef.current]);
+  }, [rowRef, focusListItems.first, focusListItems.last]);
 
   const handleKeyDownCallback = useCallback(
     getRowsKeyboardNavigation({ ...actions, focusListItems, keyboard, isModal }),
@@ -204,7 +205,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         aria-selected={isSelected}
         aria-setsize={count.max}
         aria-rowindex={count.currentIndex}
-        ref={rowRef}
+        ref={setRowRef}
         container
         dataLayout={dataLayout}
         cellPaddingRight={cellPaddingRight}
