@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 import { Grid, Typography } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import Lock from '@nebula.js/ui/icons/lock';
-import * as rowsKeyboardNavigation from '../../../interactions/keyboard-navigation/keybord-nav-rows';
+import * as rowsKeyboardNavigation from '../../../interactions/keyboard-navigation/keyboard-nav-rows';
 import ListBoxCheckbox from '../components/ListBoxCheckbox';
 import * as screenReaders from '../../ScreenReaders';
 import ListBoxRadioButton from '../components/ListBoxRadioButton';
