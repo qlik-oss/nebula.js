@@ -18,7 +18,7 @@ function ValueField({ label, color, dense, showGray = true, checkboxes, cell, va
       align={valueTextAlign}
       dir="auto"
     >
-      <span style={{ whiteSpace: 'nowrap' }}>{label}</span>
+      <span>{label}</span>
     </Typography>
   );
 }
