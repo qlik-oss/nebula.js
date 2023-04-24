@@ -1,5 +1,6 @@
 import KEYS from '../../../../keys';
 import { focusSearch, getElementIndex } from './keyboard-nav-methods';
+import findNextItemIndex from './find-next-item-index';
 
 export default function getRowsKeyboardNavigation({
   select,
@@ -11,10 +12,37 @@ export default function getRowsKeyboardNavigation({
   focusListItems,
   keyboard,
   isModal,
+  rowCount,
+  columnCount,
+  rowIndex,
+  columnIndex,
+  layoutOrder,
 }) {
-  const getElement = (elm, next = false) => {
-    const parentElm = elm && elm.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
-    return parentElm && parentElm.querySelector('[role]');
+  const getElement = (keyCode, elm, next = false) => {
+    if (
+      keyCode === KEYS.ARROW_LEFT ||
+      keyCode === KEYS.ARROW_RIGHT ||
+      !(typeof rowIndex === 'number' && typeof columnIndex === 'number')
+    ) {
+      const parentElm = elm?.parentElement[next ? 'nextElementSibling' : 'previousElementSibling'];
+      return parentElm?.querySelector('[role]');
+    }
+    const gridElm = elm?.parentElement.parentElement;
+    const numCells = gridElm?.childElementCount;
+    if (numCells) {
+      const nextIndex = findNextItemIndex({
+        rowIndex,
+        columnIndex,
+        rowCount,
+        columnCount,
+        layoutOrder,
+        keyCode,
+        numCells,
+      });
+      const nextElm = elm?.parentElement.parentElement.children[nextIndex];
+      return nextElm?.querySelector('[role]');
+    }
+    return undefined;
   };
 
   let startedRange = false;
@@ -64,7 +92,7 @@ export default function getRowsKeyboardNavigation({
         break;
       case KEYS.ARROW_DOWN:
       case KEYS.ARROW_RIGHT:
-        elementToFocus = getElement(currentTarget, true);
+        elementToFocus = getElement(keyCode, currentTarget, true);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
             select([getElementIndex(currentTarget)], true);
@@ -75,7 +103,7 @@ export default function getRowsKeyboardNavigation({
         break;
       case KEYS.ARROW_UP:
       case KEYS.ARROW_LEFT:
-        elementToFocus = getElement(currentTarget, false);
+        elementToFocus = getElement(keyCode, currentTarget, false);
         if (shiftKey && elementToFocus) {
           if (startedRange) {
             select([getElementIndex(currentTarget)], true);

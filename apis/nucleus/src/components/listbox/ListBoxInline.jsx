@@ -22,6 +22,7 @@ import createSelectionState from './hooks/selections/selectionState';
 import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH } from './constants';
 import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
+import useRect from '../../hooks/useRect';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -30,8 +31,8 @@ const classes = {
   listboxWrapper: `${PREFIX}-listboxWrapper`,
 };
 
-const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'].includes(p) })(
-  ({ theme, containerPadding }) => ({
+const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding', 'isGridMode'].includes(p) })(
+  ({ theme, containerPadding, isGridMode }) => ({
     backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
     [`& .${classes.listBoxHeader}`]: {
       alignSelf: 'center',
@@ -48,6 +49,9 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
     },
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+    },
+    '&:focus ::-webkit-scrollbar-track': {
+      boxShadow: !isGridMode ? 'inset -2px -2px 0px #3F8AB3' : undefined,
     },
     '&:focus-visible': {
       outline: 'none',
@@ -110,6 +114,7 @@ function ListBoxInline({ options, layout }) {
   theme.listBox = addListboxTheme(themeApi);
 
   const containerRef = useRef();
+  const [containerRectRef, containerRect] = useRect();
   const [searchContainer, searchContainerRef] = useRefWithCallback();
 
   const [showToolbar, setShowToolbar] = useState(false);
@@ -125,6 +130,7 @@ function ListBoxInline({ options, layout }) {
   const isModalMode = useCallback(() => isModal({ app, appSelections }), [app, appSelections]);
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
+  const [isToolbarDetached, setIsToolbarDetached] = useState(false);
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown } = useMemo(
     () =>
@@ -207,13 +213,28 @@ function ListBoxInline({ options, layout }) {
     }
   }, [searchContainer && searchContainer.current, showSearch, search, focusSearch]);
 
+  const { wildCardSearch, searchEnabled, layoutOptions = {} } = layout ?? {};
+  const showSearchIcon = searchEnabled !== false && search === 'toggle';
+  const isLocked = layout?.qListObject?.qDimensionInfo?.qLocked === true;
+  const showSearchOrLockIcon = isLocked || showSearchIcon;
+  const isDrillDown = layout?.qListObject?.qDimensionInfo?.qGrouping === 'H';
+  const showIcons = showSearchOrLockIcon || isDrillDown;
+  const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
+
+  useEffect(() => {
+    if (!titleRef.current || !containerRect) {
+      return;
+    }
+
+    const isDetached = showToolbarDetached({ containerRect, titleRef, iconsWidth });
+    setIsToolbarDetached(isDetached);
+  }, [titleRef.current, containerRect]);
+
   if (!model || !layout || !translator) {
     return null;
   }
 
-  const isLocked = layout.qListObject.qDimensionInfo.qLocked === true;
   const isRtl = direction === 'rtl';
-  const isDrillDown = layout.qListObject.qDimensionInfo.qGrouping === 'H';
   const listboxSelectionToolbarItems = createListboxSelectionToolbar({
     layout,
     model,
@@ -221,7 +242,6 @@ function ListBoxInline({ options, layout }) {
     selectionState,
   });
 
-  const { wildCardSearch, searchEnabled, layoutOptions = {} } = layout;
   const showTitle = true;
   const showSearchToggle = search === 'toggle' && showSearch;
   const searchVisible = (search === true || showSearchToggle) && !selectDisabled() && searchEnabled !== false;
@@ -258,13 +278,8 @@ function ListBoxInline({ options, layout }) {
     });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
-  const showSearchIcon = searchEnabled !== false && search === 'toggle';
-  const showSearchOrLockIcon = isLocked || showSearchIcon;
-  const showIcons = showSearchOrLockIcon || isDrillDown;
-  const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
   const headerPaddingLeft = CELL_PADDING_LEFT - (showSearchOrLockIcon ? ICON_PADDING : 0);
   const headerPaddingRight = isRtl ? CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0) : 0;
-  const isDetached = showToolbarDetached({ containerRef, titleRef, iconsWidth });
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
   const isGridMode = layoutOptions?.dataLayout === 'grid';
@@ -310,7 +325,11 @@ function ListBoxInline({ options, layout }) {
         onKeyDown={handleKeyDown}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
-        ref={containerRef}
+        ref={(el) => {
+          containerRef.current = el;
+          containerRectRef(el);
+        }}
+        isGridMode={isGridMode}
       >
         {showToolbarWithTitle && (
           <Grid
@@ -350,7 +369,7 @@ function ListBoxInline({ options, layout }) {
               )}
             </Grid>
             <Grid item>
-              <ActionsToolbar direction={direction} {...getActionToolbarProps(isDetached)} />
+              <ActionsToolbar direction={direction} {...getActionToolbarProps(isToolbarDetached)} />
             </Grid>
           </Grid>
         )}

@@ -137,11 +137,11 @@ describe('<ListboxInline />', () => {
 
     useCallback
       .mockImplementationOnce((effectFunc, watchArr) => {
-        expect(watchArr[1].key).toBe('model');
+        expect(watchArr).toHaveLength(0);
         return effectFunc;
       })
       .mockImplementationOnce((effectFunc, watchArr) => {
-        expect(watchArr[1].key).toBe('model');
+        expect(watchArr).toHaveLength(0);
         return effectFunc;
       });
   });
