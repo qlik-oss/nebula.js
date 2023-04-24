@@ -1,5 +1,5 @@
 import KEYS from '../../../../../keys';
-import getRowsKeyboardNavigation from '../keybord-nav-rows';
+import getRowsKeyboardNavigation from '../keyboard-nav-rows';
 import { createElement } from './keyboard-nav-test-utils';
 
 describe('keyboard navigation', () => {

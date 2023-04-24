@@ -17,7 +17,7 @@ import Frequency from './components/Frequency';
 import ItemGrid from './components/ItemGrid';
 import getCellFromPages from './helpers/get-cell-from-pages';
 import { getValueLabel } from '../ScreenReaders';
-import getRowsKeyboardNavigation from '../../interactions/keyboard-navigation/keybord-nav-rows';
+import getRowsKeyboardNavigation from '../../interactions/keyboard-navigation/keyboard-nav-rows';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
@@ -102,8 +102,18 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   }, [rowRef, focusListItems.first, focusListItems.last]);
 
   const handleKeyDownCallback = useCallback(
-    getRowsKeyboardNavigation({ ...actions, focusListItems, keyboard, isModal }),
-    [actions, keyboard?.innerTabStops]
+    getRowsKeyboardNavigation({
+      ...actions,
+      focusListItems,
+      keyboard,
+      isModal,
+      rowCount,
+      columnCount,
+      rowIndex,
+      columnIndex,
+      layoutOrder,
+    }),
+    [actions, keyboard?.innerTabStops, rowCount, columnCount, rowIndex, columnIndex, layoutOrder]
   );
 
   const cell = useMemo(() => getCellFromPages({ pages, cellIndex }), [pages, cellIndex]);
