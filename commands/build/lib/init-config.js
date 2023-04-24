@@ -46,7 +46,7 @@ const options = {
     description:
       'In Rollup, preferBuiltins is a configuration option that specifies whether to use Node.js built-in modules (such as fs or path) when bundling for Node.js environment.',
     type: 'boolean',
-    default: false,
+    default: true,
   },
   browser: {
     description:
