@@ -30,8 +30,8 @@ const classes = {
   listboxWrapper: `${PREFIX}-listboxWrapper`,
 };
 
-const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'].includes(p) })(
-  ({ theme, containerPadding }) => ({
+const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding', 'isGridMode'].includes(p) })(
+  ({ theme, containerPadding, isGridMode }) => ({
     backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
     [`& .${classes.listBoxHeader}`]: {
       alignSelf: 'center',
@@ -48,6 +48,9 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
     },
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+    },
+    '&:focus ::-webkit-scrollbar-track': {
+      boxShadow: !isGridMode ? 'inset -2px -2px 0px #3F8AB3' : undefined,
     },
     '&:focus-visible': {
       outline: 'none',
@@ -311,6 +314,7 @@ function ListBoxInline({ options, layout }) {
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
         ref={containerRef}
+        isGridMode={isGridMode}
       >
         {showToolbarWithTitle && (
           <Grid
