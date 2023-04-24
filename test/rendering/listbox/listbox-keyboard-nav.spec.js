@@ -95,6 +95,7 @@ test.describe('keyboard navigation', () => {
     await page.keyboard.press('ArrowUp');
     await page.keyboard.press('ArrowLeft');
     await page.keyboard.press('Space');
+    await page.keyboard.press('Enter');
     const listbox = await selector.screenshot({ caret: 'hide' });
     expect(listbox).toMatchSnapshot(`${filePrefix}-grid-row-select-baked-goods.png`);
   });
