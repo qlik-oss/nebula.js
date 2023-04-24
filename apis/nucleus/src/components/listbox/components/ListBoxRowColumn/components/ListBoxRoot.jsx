@@ -78,7 +78,6 @@ const RowColRoot = styled('div', {
     userSelect: 'none',
     paddingRight: '1px',
     ...ellipsis,
-    whiteSpace: 'pre', // to keep white-space on highlight
     fontSize: theme.listBox?.content?.fontSize,
     fontFamily: theme.listBox?.content?.fontFamily,
   },
