@@ -5,7 +5,7 @@ export default function showToolbarDetached({ containerRect, titleRef, iconsWidt
   const actionToolbarWidth = 128;
   const notSufficientSpace = containerWidth < contentWidth + actionToolbarWidth;
   const isTruncated = titleRef?.current?.scrollWidth > titleRef?.current?.offsetWidth;
-  const isDetached = !!(notSufficientSpace | isTruncated);
+  const isDetached = !!(notSufficientSpace || isTruncated);
 
   return isDetached;
 }
