@@ -856,7 +856,7 @@ export function useAction(fn, deps) {
  * Gets the desired constraints that should be applied when rendering the visualization.
  *
  * The constraints are set on the embed configuration before the visualization is rendered
- * and should respected by you when implementing the visualization.
+ * and should be respected when implementing the visualization.
  * @entry
  * @deprecated Change to useInteractions instead
  * @returns {Constraints}
@@ -888,6 +888,12 @@ export function useAction(fn, deps) {
  *
  */
 export function useConstraints() {
+  if (__NEBULA_DEV__) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      'useContraints has been deprecated, please change to useInteractions instead. Note that interactions uses inverted values compared to contraints.'
+    );
+  }
   return useInternalContext('constraints');
 }
 
@@ -902,7 +908,7 @@ export function useConstraints() {
  * Gets the desired interaction states that should be applied when rendering the visualization.
  *
  * The interactions are set on the embed configuration before the visualization is rendered
- * and should respected by you when implementing the visualization.
+ * and should be respected when implementing the visualization.
  * @entry
  * @returns {Interactions}
  * @example

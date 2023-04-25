@@ -438,7 +438,7 @@
       ]
     },
     "useConstraints": {
-      "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should respected by you when implementing the visualization.",
+      "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should be respected when implementing the visualization.",
       "availability": {
         "deprecated": true
       },
@@ -453,7 +453,7 @@
       ]
     },
     "useInteractionState": {
-      "description": "Gets the desired interaction states that should be applied when rendering the visualization.\n\nThe interactions are set on the embed configuration before the visualization is rendered\nand should respected by you when implementing the visualization.",
+      "description": "Gets the desired interaction states that should be applied when rendering the visualization.\n\nThe interactions are set on the embed configuration before the visualization is rendered\nand should be respected when implementing the visualization.",
       "kind": "function",
       "params": [],
       "returns": {

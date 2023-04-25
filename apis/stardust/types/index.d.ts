@@ -132,7 +132,7 @@ export function useAction<A>(factory: ()=>stardust.ActionDefinition<A>, deps?: a
  * Gets the desired constraints that should be applied when rendering the visualization.
  * 
  * The constraints are set on the embed configuration before the visualization is rendered
- * and should respected by you when implementing the visualization.
+ * and should be respected when implementing the visualization.
  * @deprecated
  */
 export function useConstraints(): stardust.Constraints;
@@ -141,7 +141,7 @@ export function useConstraints(): stardust.Constraints;
  * Gets the desired interaction states that should be applied when rendering the visualization.
  * 
  * The interactions are set on the embed configuration before the visualization is rendered
- * and should respected by you when implementing the visualization.
+ * and should be respected when implementing the visualization.
  */
 export function useInteractionState(): stardust.Interactions;
 
