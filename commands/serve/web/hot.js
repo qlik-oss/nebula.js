@@ -46,13 +46,6 @@ export default function initiateWatch(info) {
       window[info.supernova.name] = mo;
       lightItUp(info.supernova.name);
     });
-    if (info.types) {
-      info.types.forEach((t) => {
-        getModule(t.name, t.url).then((mo) => {
-          window[t.name] = mo;
-        });
-      });
-    }
   };
 
   if (info.sock.port) {
@@ -62,4 +55,13 @@ export default function initiateWatch(info) {
     };
   }
   update();
+  if (info.types) {
+    const proms = info.types.map((t) => {
+      return getModule(t.name, t.url).then((mo) => {
+        window[t.name] = mo;
+      });
+    });
+    return Promise.all(proms);
+  }
+  return Promise.resolve();
 }

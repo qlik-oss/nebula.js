@@ -32,7 +32,7 @@ const nuke = async ({ app, supernova: { name }, themes, theme, language }) => {
 
 async function renderWithEngine() {
   const info = await getConnectionInfo();
-  initiateWatch(info);
+  await initiateWatch(info);
   if (!info.enigma.appId) {
     location.href = location.origin; //eslint-disable-line
   }
@@ -82,7 +82,7 @@ async function renderWithEngine() {
 async function renderSnapshot() {
   const info = await getConnectionInfo();
   const { themes, supernova } = info;
-  initiateWatch(info);
+  await initiateWatch(info);
   const element = document.querySelector('#chart-container');
   element.classList.toggle('full', true);
 
