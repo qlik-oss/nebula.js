@@ -77,4 +77,26 @@ test.describe('keyboard navigation', () => {
     const stillFocusingRow = await selector.screenshot({ caret: 'hide' });
     expect(stillFocusingRow).toMatchSnapshot(`${filePrefix}-row-after-confirm.png`);
   });
+
+  test('grid mode with column view and navigating in all directions with arrow keys and select "Baked goods".', async () => {
+    await page.goto(`${url}/listbox/listbox.html?fixture=./__fixtures__/multi_scenario_grid_column_7.js`, {
+      waitUntil: 'networkidle',
+    });
+    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+
+    // Tab into search field.
+    await page.keyboard.press('Tab');
+
+    // Tab into first cell.
+    await page.keyboard.press('Tab');
+    await page.keyboard.press('ArrowDown');
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowRight');
+    await page.keyboard.press('ArrowUp');
+    await page.keyboard.press('ArrowLeft');
+    await page.keyboard.press('Space');
+    await page.keyboard.press('Enter');
+    const listbox = await selector.screenshot({ caret: 'hide' });
+    expect(listbox).toMatchSnapshot(`${filePrefix}-grid-row-select-baked-goods.png`);
+  });
 });
