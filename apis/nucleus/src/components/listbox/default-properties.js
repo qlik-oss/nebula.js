@@ -73,56 +73,56 @@ const listdef = {
    */
   checkboxes: false,
   /**
-   * enables search.
+   * Enables search.
    * @type {boolean=}
    * @default
    */
   searchEnabled: true,
   /**
-   * show title.
+   * Show title.
    * @type {boolean=}
    * @default
    */
   showTitle: true,
   /**
-   * start search with wildcard search.
+   * Pre-fill search input field with wildcard characters.
    * @type {boolean=}
    * @default
    */
   wildCardSearch: false,
   /**
-   * layout settings.
+   * Layout settings.
    * @type {object=}
    */
   layoutOptions: {
     /**
-     * dense mode.
+     * Dense mode.
      * @type {boolean=}
      * @default
      */
     dense: false,
     /**
-     * layout mode.
+     * Layout mode.
      * @type {('singleColumn' | 'grid')=}
      * @default
      */
     dataLayout: 'singleColumn',
     /**
-     * layout order.
+     * Layout order.
      * Only used when dataLayout is 'grid'
      * @type {('row' | 'column')=}
      * @default
      */
     layoutOrder: 'row',
     /**
-     * max visible columns.
+     * Max visible columns.
      * Only used when dataLayout is 'grid'
      * and layoutOrder is 'row'
      * @type {object=}
      */
     maxVisibleColumns: {
       /**
-       * auto max visible columns. (as many as it can fit)
+       * Automatically fit as many columns as possible.
        * Only used when dataLayout is 'grid'
        * and layoutOrder is 'row'
        * @type {boolean=}
@@ -130,7 +130,7 @@ const listdef = {
        */
       auto: true,
       /**
-       * fixed number of max visible columns.
+       * Fixed number of max visible columns.
        * Only used when dataLayout is 'grid'
        * layoutOrder is 'row'
        * and auto is false
@@ -140,14 +140,14 @@ const listdef = {
       maxColumns: 3,
     },
     /**
-     * max visible rows.
+     * Max visible rows.
      * Only used when dataLayout is 'grid'
      * and layoutOrder is 'column'
      * @type {object=}
      */
     maxVisibleRows: {
       /**
-       * auto max visible rows. (as many as it can fit)
+       * Automatically fits as many rows as possible.
        * Only used when dataLayout is 'grid'
        * and layoutOrder is 'column'
        * @type {boolean=}
@@ -155,7 +155,7 @@ const listdef = {
        */
       auto: true,
       /**
-       * fixed number of max visible rows.
+       * Fixed number of max visible rows.
        * Only used when dataLayout is 'grid'
        * layoutOrder is 'column'
        * and auto is false
@@ -166,7 +166,7 @@ const listdef = {
     },
   },
   /**
-   * listbox title
+   * Listbox title
    * @type {string=}
    * @default
    */

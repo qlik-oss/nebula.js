@@ -1762,35 +1762,35 @@
           "type": "boolean"
         },
         "searchEnabled": {
-          "description": "enables search.",
+          "description": "Enables search.",
           "optional": true,
           "defaultValue": true,
           "type": "boolean"
         },
         "showTitle": {
-          "description": "show title.",
+          "description": "Show title.",
           "optional": true,
           "defaultValue": true,
           "type": "boolean"
         },
         "wildCardSearch": {
-          "description": "start search with wildcard search.",
+          "description": "Pre-fill search input field with wildcard characters.",
           "optional": true,
           "defaultValue": false,
           "type": "boolean"
         },
         "layoutOptions": {
-          "description": "layout settings.",
+          "description": "Layout settings.",
           "optional": true,
           "entries": {
             "dense": {
-              "description": "dense mode.",
+              "description": "Dense mode.",
               "optional": true,
               "defaultValue": false,
               "type": "boolean"
             },
             "dataLayout": {
-              "description": "layout mode.",
+              "description": "Layout mode.",
               "optional": true,
               "defaultValue": "singleColumn",
               "kind": "union",
@@ -1806,7 +1806,7 @@
               ]
             },
             "layoutOrder": {
-              "description": "layout order.\nOnly used when dataLayout is 'grid'",
+              "description": "Layout order.\nOnly used when dataLayout is 'grid'",
               "optional": true,
               "defaultValue": "row",
               "kind": "union",
@@ -1822,17 +1822,17 @@
               ]
             },
             "maxVisibleColumns": {
-              "description": "max visible columns.\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'row'",
+              "description": "Max visible columns.\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'row'",
               "optional": true,
               "entries": {
                 "auto": {
-                  "description": "auto max visible columns. (as many as it can fit)\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'row'",
+                  "description": "Automatically fit as many columns as possible.\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'row'",
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
                 },
                 "maxColumns": {
-                  "description": "fixed number of max visible columns.\nOnly used when dataLayout is 'grid'\nlayoutOrder is 'row'\nand auto is false",
+                  "description": "Fixed number of max visible columns.\nOnly used when dataLayout is 'grid'\nlayoutOrder is 'row'\nand auto is false",
                   "optional": true,
                   "defaultValue": 3,
                   "type": "number"
@@ -1841,17 +1841,17 @@
               "kind": "object"
             },
             "maxVisibleRows": {
-              "description": "max visible rows.\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'column'",
+              "description": "Max visible rows.\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'column'",
               "optional": true,
               "entries": {
                 "auto": {
-                  "description": "auto max visible rows. (as many as it can fit)\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'column'",
+                  "description": "Automatically fits as many rows as possible.\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'column'",
                   "optional": true,
                   "defaultValue": true,
                   "type": "boolean"
                 },
                 "maxRows": {
-                  "description": "fixed number of max visible rows.\nOnly used when dataLayout is 'grid'\nlayoutOrder is 'column'\nand auto is false",
+                  "description": "Fixed number of max visible rows.\nOnly used when dataLayout is 'grid'\nlayoutOrder is 'column'\nand auto is false",
                   "optional": true,
                   "defaultValue": 3,
                   "type": "number"
@@ -1863,7 +1863,7 @@
           "kind": "object"
         },
         "title": {
-          "description": "listbox title",
+          "description": "Listbox title",
           "optional": true,
           "defaultValue": "",
           "type": "string"
