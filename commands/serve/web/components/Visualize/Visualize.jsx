@@ -138,7 +138,7 @@ export default function Visualize() {
     }
 
     setNebbie(n);
-  }, [app, info, waiting]);
+  }, [app, info, waiting, initialized]);
 
   useLayoutEffect(() => {
     if (!nebbie) return;
