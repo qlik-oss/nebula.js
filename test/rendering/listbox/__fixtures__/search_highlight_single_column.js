@@ -99,7 +99,7 @@ const fixture = {
         [
           {
             qText:
-              '- Beer and Wine\n         - Beer and Wine\n         - Beer and Wine\n         - Beer_and_Wine\n         - Beer and Wine\n         - Beer and Wine\n         - Beer and Wine\n         - Beer and Wine\n         - Beer and Wine',
+              '- Wine and Beer\n         - Wine and Beer\n         - Wine and Beer\n         - Beer_and_Wine\n         - Wine and Beer\n         - Wine and Beer\n         - Wine and Beer\n         - Wine and Beer\n         - Wine and Beer',
             qNum: 'NaN',
             qElemNumber: 2,
             qState: 'O',
@@ -145,13 +145,82 @@ const fixture = {
             },
           },
         ],
+        [
+          {
+            qText:
+              '- Data and Beer\n         - Data and Beer\n         - Data and Beer\n         - Beer_and_Data\n         - Data and Beer\n         - Data and Beer\n         - Data and Beer\n         - Data and Beer\n         - Data and Beer',
+            qNum: 'NaN',
+            qElemNumber: 2,
+            qState: 'O',
+            qHighlightRanges: {
+              qRanges: [
+                {
+                  qCharPos: 7,
+                  qCharCount: 3,
+                },
+                {
+                  qCharPos: 32,
+                  qCharCount: 3,
+                },
+                {
+                  qCharPos: 57,
+                  qCharCount: 3,
+                },
+                {
+                  qCharPos: 82,
+                  qCharCount: 3,
+                },
+                {
+                  qCharPos: 107,
+                  qCharCount: 3,
+                },
+                {
+                  qCharPos: 132,
+                  qCharCount: 3,
+                },
+                {
+                  qCharPos: 157,
+                  qCharCount: 3,
+                },
+                {
+                  qCharPos: 182,
+                  qCharCount: 3,
+                },
+                {
+                  qCharPos: 207,
+                  qCharCount: 3,
+                },
+              ],
+            },
+          },
+        ],
+        [
+          {
+            qText: '- Fine and Pine\n         - Fine and Pine\n',
+            qNum: 'NaN',
+            qElemNumber: 2,
+            qState: 'O',
+            qHighlightRanges: {
+              qRanges: [
+                {
+                  qCharPos: 7,
+                  qCharCount: 3,
+                },
+                {
+                  qCharPos: 32,
+                  qCharCount: 3,
+                },
+              ],
+            },
+          },
+        ],
       ],
       qTails: [],
       qArea: {
         qLeft: 0,
         qTop: 0,
         qWidth: 1,
-        qHeight: 1,
+        qHeight: 3,
       },
     },
   ],
