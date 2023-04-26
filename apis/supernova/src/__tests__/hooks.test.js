@@ -36,6 +36,7 @@ import {
   onTakeSnapshot,
   onContextMenu,
   useEmbed,
+  useInteractionState,
 } from '../hooks';
 
 describe('hooks', () => {
@@ -809,6 +810,7 @@ describe('hooks', () => {
         layout: 'layout',
         appLayout: 'appLayout',
         constraints: 'constraints',
+        interactions: 'interactions',
         options: 'options',
       };
       c.env = {};
@@ -933,6 +935,14 @@ describe('hooks', () => {
       };
       run(c);
       expect(value).toBe('constraints');
+    });
+    test('useInteractionState', () => {
+      let value;
+      c.fn = () => {
+        value = useInteractionState();
+      };
+      run(c);
+      expect(value).toBe('interactions');
     });
     test('useOptions', () => {
       let value;

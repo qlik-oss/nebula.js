@@ -33,6 +33,7 @@ export {
   useDeviceType,
   usePlugins,
   useConstraints,
+  useInteractionState,
   useOptions,
   useEmbed,
   useRenderState,

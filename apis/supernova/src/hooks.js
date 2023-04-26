@@ -845,17 +845,20 @@ export function useAction(fn, deps) {
 
 /**
  * @interface Constraints
- * @property {boolean=} passive Whether or not passive constraints are on. Should block any passive interaction by users, ie: tooltips
- * @property {boolean=} active Whether or not active constraints are on. Should block any active interaction by users, ie: scroll, click
- * @property {boolean=} select Whether or not active select are on. Should block any selection action. Implied when active is true.
+ * @deprecated Use Interactions instead
+ * @property {boolean=} passive=false Whether or not passive constraints are on. Should block any passive interaction by users, ie: tooltips
+ * @property {boolean=} active=false Whether or not active constraints are on. Should block any active interaction by users, ie: scroll, click
+ * @property {boolean=} select=false Whether or not select constraints are on. Should block any selection action. Implied when active is true.
+ * @property {boolean=} edit=true Whether or not edit actions are available. Should block any edit action.
  */
 
 /**
  * Gets the desired constraints that should be applied when rendering the visualization.
  *
  * The constraints are set on the embed configuration before the visualization is rendered
- * and should respected by you when implementing the visualization.
+ * and should be respected when implementing the visualization.
  * @entry
+ * @deprecated Change to useInteractions instead
  * @returns {Constraints}
  * @example
  * // configure embed to disallow active interactions when rendering
@@ -885,7 +888,58 @@ export function useAction(fn, deps) {
  *
  */
 export function useConstraints() {
+  if (__NEBULA_DEV__) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      'useContraints has been deprecated, please change to useInteractions instead. Note that interactions uses inverted values compared to contraints.'
+    );
+  }
   return useInternalContext('constraints');
+}
+
+/**
+ * @interface Interactions
+ * @property {boolean=} passive=true Whether or not passive interactions are on. Allows passive interaction by users, ie: tooltips
+ * @property {boolean=} active=true Whether or not active interactions are on. Allows active interaction by users, ie: scroll, click
+ * @property {boolean=} select=true Whether or not select interactions are on. Alows selection actions. Implied when active is false.
+ * @property {boolean=} edit=false Whether or not edit actions are on. Allows edit actions.
+ */
+/**
+ * Gets the desired interaction states that should be applied when rendering the visualization.
+ *
+ * The interactions are set on the embed configuration before the visualization is rendered
+ * and should be respected when implementing the visualization.
+ * @entry
+ * @returns {Interactions}
+ * @example
+ * // configure embed to disallow active interactions when rendering
+ * embed(app, {
+ *  context: {
+ *    interactions: {
+ *      active: false, // do not allow interactions
+ *    }
+ *  }
+ * }).render({ element, id: 'sdfsdf' });
+ *
+ * @example
+ * import { useInteractionState } from '@nebula.js/stardust';
+ * // ...
+ * const interactions = useInteractionState();
+ * useEffect(() => {
+ *   if (!interactions.active) {
+ *     // do not add any event listener if active constraint is set
+ *     return undefined;
+ *   }
+ *   const listener = () => {};
+ *   element.addEventListener('click', listener);
+ *   return () => {
+ *     element.removeEventListener('click', listener);
+ *   };
+ * }, [interactions])
+ *
+ */
+export function useInteractionState() {
+  return useInternalContext('interactions');
 }
 
 /**

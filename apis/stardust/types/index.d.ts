@@ -132,9 +132,18 @@ export function useAction<A>(factory: ()=>stardust.ActionDefinition<A>, deps?: a
  * Gets the desired constraints that should be applied when rendering the visualization.
  * 
  * The constraints are set on the embed configuration before the visualization is rendered
- * and should respected by you when implementing the visualization.
+ * and should be respected when implementing the visualization.
+ * @deprecated
  */
 export function useConstraints(): stardust.Constraints;
+
+/**
+ * Gets the desired interaction states that should be applied when rendering the visualization.
+ * 
+ * The interactions are set on the embed configuration before the visualization is rendered
+ * and should be respected when implementing the visualization.
+ */
+export function useInteractionState(): stardust.Interactions;
 
 /**
  * Gets the options object provided when rendering the visualization.
@@ -212,15 +221,13 @@ declare namespace stardust {
     }
 
     interface Context {
-        keyboardNavigation?: boolean;
-        constraints?: {
-            active?: boolean;
-            passive?: boolean;
-            select?: boolean;
-        };
         theme?: string;
         language?: string;
         deviceType?: string;
+        constraints?: stardust.Constraints;
+        interactions?: stardust.Interactions;
+        keyboardNavigation?: boolean;
+        disableCellPadding?: boolean;
     }
 
     interface Galaxy {
@@ -597,10 +604,21 @@ declare namespace stardust {
         };
     }
 
+    /**
+     * @deprecated
+     */
     interface Constraints {
         passive?: boolean;
         active?: boolean;
         select?: boolean;
+        edit?: boolean;
+    }
+
+    interface Interactions {
+        passive?: boolean;
+        active?: boolean;
+        select?: boolean;
+        edit?: boolean;
     }
 
     interface RenderState {

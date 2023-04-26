@@ -121,10 +121,11 @@ describe('<Supernova />', () => {
       embed: 'embedAPI',
       context: {
         constraints: {},
+        interactions: {},
         appLayout: { qLocaleInfo: 'loc' },
         theme: 'theme',
         keyboardNavigation: undefined,
-        permissions: ['passive', 'interact', 'select', 'fetch'],
+        permissions: ['passive', 'interact', 'select', 'edit', 'fetch'],
         localeInfo: 'loc',
         logicalSize: 'logical',
       },

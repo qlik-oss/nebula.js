@@ -236,6 +236,7 @@ const X = {
       passive: perms.indexOf('passive') === -1 || undefined,
       active: perms.indexOf('interact') === -1 || undefined,
       select: perms.indexOf('select') === -1 || undefined,
+      edit: perms.indexOf('edit') === -1 || undefined,
     };
     const opts = limitOptions(this.options, this.snComponent.context.options);
     this._pureLayout = this.backendApi.model.pureLayout || this.backendApi.model.layout;

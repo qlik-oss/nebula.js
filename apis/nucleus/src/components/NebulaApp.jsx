@@ -6,6 +6,7 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/
 
 import InstanceContext from '../contexts/InstanceContext';
 import useAppSelections from '../hooks/useAppSelections';
+import unifyContraintsAndInteractions from '../utils/interactions';
 
 const NebulaApp = forwardRef(({ initialContext, app, renderCallback }, ref) => {
   const [appSelections] = useAppSelections(app);
@@ -64,6 +65,10 @@ export default function boot({ app, context }) {
   element.setAttribute('data-app-id', app.id);
   document.body.appendChild(element);
 
+  if (context) {
+    unifyContraintsAndInteractions(context);
+  }
+
   const root = ReactDOM.createRoot(element);
   root.render(<NebulaApp ref={appRef} app={app} initialContext={context} renderCallback={resolveRender} />);
 
@@ -110,6 +115,10 @@ export default function boot({ app, context }) {
       context(ctx) {
         (async () => {
           await rendered;
+          // Should be done here, unify contraints and interactions
+          if (ctx) {
+            unifyContraintsAndInteractions(ctx);
+          }
           appRef.current.setContext(ctx);
         })();
       },

@@ -91,11 +91,6 @@ const DEFAULT_CONFIG = {
 
 /**
  * @interface Context
- * @property {boolean=} keyboardNavigation
- * @property {object=} constraints
- * @property {boolean=} constraints.active
- * @property {boolean=} constraints.passive
- * @property {boolean=} constraints.select
  */
 const DEFAULT_CONTEXT = /** @lends Context */ {
   /** @type {string=} */
@@ -104,8 +99,13 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
   language: 'en-US',
   /** @type {string=} */
   deviceType: 'auto',
+  /** @type {Constraints=} Deprecated */
   constraints: {},
+  /** @type {Interactions=} */
+  interactions: {},
+  /** @type {boolean=} */
   keyboardNavigation: false,
+  /** @type {boolean=} */
   disableCellPadding: false,
 };
 
@@ -317,13 +317,13 @@ function nuked(configuration = {}) {
        * // change theme
        * n.context({ theme: 'dark'});
        * @example
-       * // limit constraints
-       * n.context({ constraints: { active: true } });
+       * // change interactions
+       * n.context({ interactions: { select: false } });
        */
       context: async (ctx) => {
         // filter valid values to avoid triggering unnecessary rerender
         let changes;
-        ['theme', 'language', 'constraints', 'keyboardNavigation'].forEach((key) => {
+        ['theme', 'language', 'constraints', 'interactions', 'keyboardNavigation'].forEach((key) => {
           if (Object.prototype.hasOwnProperty.call(ctx, key) && ctx[key] !== currentContext[key]) {
             if (!changes) {
               changes = {};
@@ -339,8 +339,6 @@ function nuked(configuration = {}) {
           ...changes,
           translator: locale.translator,
         };
-
-        halo.context = currentContext;
 
         if (changes.theme) {
           currentThemePromise = appTheme.setTheme(changes.theme);

@@ -438,7 +438,10 @@
       ]
     },
     "useConstraints": {
-      "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should respected by you when implementing the visualization.",
+      "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should be respected when implementing the visualization.",
+      "availability": {
+        "deprecated": true
+      },
       "kind": "function",
       "params": [],
       "returns": {
@@ -447,6 +450,18 @@
       "examples": [
         "// configure embed to disallow active interactions when rendering\nembed(app, {\n context: {\n   constraints: {\n     active: true, // do not allow interactions\n   }\n }\n}).render({ element, id: 'sdfsdf' });",
         "import { useConstraints } from '@nebula.js/stardust';\n// ...\nconst constraints = useConstraints();\nuseEffect(() => {\n  if (constraints.active) {\n    // do not add any event listener if active constraint is set\n    return undefined;\n  }\n  const listener = () => {};\n  element.addEventListener('click', listener);\n  return () => {\n    element.removeEventListener('click', listener);\n  };\n}, [constraints])"
+      ]
+    },
+    "useInteractionState": {
+      "description": "Gets the desired interaction states that should be applied when rendering the visualization.\n\nThe interactions are set on the embed configuration before the visualization is rendered\nand should be respected when implementing the visualization.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/Interactions"
+      },
+      "examples": [
+        "// configure embed to disallow active interactions when rendering\nembed(app, {\n context: {\n   interactions: {\n     active: false, // do not allow interactions\n   }\n }\n}).render({ element, id: 'sdfsdf' });",
+        "import { useInteractionState } from '@nebula.js/stardust';\n// ...\nconst interactions = useInteractionState();\nuseEffect(() => {\n  if (!interactions.active) {\n    // do not add any event listener if active constraint is set\n    return undefined;\n  }\n  const listener = () => {};\n  element.addEventListener('click', listener);\n  return () => {\n    element.removeEventListener('click', listener);\n  };\n}, [interactions])"
       ]
     },
     "useOptions": {
@@ -628,28 +643,6 @@
     "Context": {
       "kind": "interface",
       "entries": {
-        "keyboardNavigation": {
-          "optional": true,
-          "type": "boolean"
-        },
-        "constraints": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "active": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "passive": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "select": {
-              "optional": true,
-              "type": "boolean"
-            }
-          }
-        },
         "theme": {
           "optional": true,
           "defaultValue": "light",
@@ -664,6 +657,25 @@
           "optional": true,
           "defaultValue": "auto",
           "type": "string"
+        },
+        "constraints": {
+          "description": "Deprecated",
+          "optional": true,
+          "type": "#/definitions/Constraints"
+        },
+        "interactions": {
+          "optional": true,
+          "type": "#/definitions/Interactions"
+        },
+        "keyboardNavigation": {
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "disableCellPadding": {
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
         }
       }
     },
@@ -791,7 +803,7 @@
           },
           "examples": [
             "// change theme\nn.context({ theme: 'dark'});",
-            "// limit constraints\nn.context({ constraints: { active: true } });"
+            "// change interactions\nn.context({ interactions: { select: false } });"
           ]
         },
         "selections": {
@@ -1997,21 +2009,62 @@
       }
     },
     "Constraints": {
+      "availability": {
+        "deprecated": true
+      },
       "kind": "interface",
       "entries": {
         "passive": {
           "description": "Whether or not passive constraints are on. Should block any passive interaction by users, ie: tooltips",
           "optional": true,
+          "defaultValue": false,
           "type": "boolean"
         },
         "active": {
           "description": "Whether or not active constraints are on. Should block any active interaction by users, ie: scroll, click",
           "optional": true,
+          "defaultValue": false,
           "type": "boolean"
         },
         "select": {
-          "description": "Whether or not active select are on. Should block any selection action. Implied when active is true.",
+          "description": "Whether or not select constraints are on. Should block any selection action. Implied when active is true.",
           "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "edit": {
+          "description": "Whether or not edit actions are available. Should block any edit action.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        }
+      }
+    },
+    "Interactions": {
+      "kind": "interface",
+      "entries": {
+        "passive": {
+          "description": "Whether or not passive interactions are on. Allows passive interaction by users, ie: tooltips",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "active": {
+          "description": "Whether or not active interactions are on. Allows active interaction by users, ie: scroll, click",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "select": {
+          "description": "Whether or not select interactions are on. Alows selection actions. Implied when active is false.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "edit": {
+          "description": "Whether or not edit actions are on. Allows edit actions.",
+          "optional": true,
+          "defaultValue": false,
           "type": "boolean"
         }
       }
