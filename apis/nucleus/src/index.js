@@ -480,7 +480,7 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields (not applicable for existing objects)
            * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects)
            * @param {string=} [options.stateName="$"] Sets the state to make selections in (not applicable for existing objects)
-           * @param {ListboxProperties=} [options.properties={}] Properties object to extend default properties with
+           * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @returns {Promise<void>} A promise that resolves when the data is fetched.
            *
            * @since 1.1.0
