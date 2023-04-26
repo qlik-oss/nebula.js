@@ -9,6 +9,7 @@ module.exports = {
       '../theme/src/**/*.js',
       '../conversion/src/**/*.js',
       '../enigma-mocker/src/**/*.js',
+      '!../nucleus/src/components/listbox/default-properties.js',
     ],
     api: {
       stability: 'stable',
@@ -39,9 +40,6 @@ module.exports = {
         },
         'EngineAPI.INxMeasure': {
           url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FNxMeasure',
-        },
-        'EngineAPI.IListObjectDef': {
-          url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FListObjectDef',
         },
         Emitter: {
           url: 'https://nodejs.org/api/events.html#class-eventemitter',

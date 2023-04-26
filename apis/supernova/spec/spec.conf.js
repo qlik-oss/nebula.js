@@ -3,6 +3,7 @@ module.exports = {
     glob: [
       './src/**/*.js',
       '!./src/**/*.spec.js',
+      '!../nucleus/src/components/listbox/default-properties.js',
       '../nucleus/src/hooks/useObjectSelections.js',
       '../locale/src/translator.js',
       '../theme/src/**/*.js',

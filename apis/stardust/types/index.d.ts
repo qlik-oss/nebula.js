@@ -321,7 +321,7 @@ declare namespace stardust {
             checkboxes?: boolean;
             dense?: boolean;
             stateName?: string;
-            properties?: stardust.ListboxProperties;
+            properties?: object;
         }): Promise<void>;
 
         /**
@@ -523,43 +523,6 @@ declare namespace stardust {
         load: stardust.LoadType;
         meta?: object;
     }
-
-    type ValueExpression = {
-        qValueExpression: {
-            qExpr: string;
-        };
-    };
-
-    /**
-     * Extends `ListObjectDef`, see Engine API: `ListObjectDef`.
-     */
-    interface ListObjectDef extends EngineAPI.IListObjectDef{
-        frequencyEnabled?: boolean;
-    }
-
-    type ListboxProperties = {
-        qListObjectDef: stardust.ListObjectDef;
-        histogram?: boolean;
-        frequencyMax?: "fetch" | stardust.ValueExpression;
-        checkboxes?: boolean;
-        searchEnabled?: boolean;
-        showTitle?: boolean;
-        wildCardSearch?: boolean;
-        layoutOptions?: {
-            dense?: boolean;
-            dataLayout?: "singleColumn" | "grid";
-            layoutOrder?: "row" | "column";
-            maxVisibleColumns?: {
-                auto?: boolean;
-                maxColumns?: number;
-            };
-            maxVisibleRows?: {
-                auto?: boolean;
-                maxRows?: number;
-            };
-        };
-        title?: string;
-    };
 
     interface ActionToolbarElement extends HTMLElement{
         className: "njs-action-toolbar-popover";
