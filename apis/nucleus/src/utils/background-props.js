@@ -34,7 +34,7 @@ function getSenseServerUrl(app) {
     protocol = isSecure ? 'https://' : 'http://';
     return protocol + wsUrl.host;
   }
-  return undefined;
+  return '';
 }
 
 function getBackgroundPosition(bgComp) {
