@@ -154,6 +154,11 @@ describe('creator', () => {
         appLayout: {},
         constraints: {
           select: true,
+          edit: true,
+        },
+        interactions: {
+          select: false,
+          edit: false,
         },
         deviceType: 'desktop',
         options: {},

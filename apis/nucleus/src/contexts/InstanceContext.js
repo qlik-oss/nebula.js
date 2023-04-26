@@ -5,5 +5,6 @@ export default React.createContext({
   theme: null,
   translator: null,
   constraints: {},
+  interactions: {},
   themeApi: null,
 });
