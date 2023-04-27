@@ -65,7 +65,7 @@ options.
 - minimal: a basic setup of picasso.js is ready
 - barchart: a bar chart component created by picasso.js is ready
 
-You can find the [tutorial](https://qlik.dev/tutorials/build-a-helloworld-extension-using-nebulajs) to build a basic nebula visualization using nebula.js.
+You can find the [tutorial](https://qlik.dev/extend/extend-quickstarts/first-extension) to build a basic nebula visualization using nebula.js.
 
 #### Create a mashup
 
@@ -73,7 +73,7 @@ You can find the [tutorial](https://qlik.dev/tutorials/build-a-helloworld-extens
 nebula create mashup hello-mashie
 ```
 
-You can find the [tutorial](https://qlik.dev/tutorials/build-a-simple-mashup-using-nebulajs) to build a basic mashup using nebula.js.
+You can find the [tutorial](https://qlik.dev/embed/integrate-web-apps/build-a-simple-mashup) to build a basic mashup using nebula.js.
 
 #### Package manager
 

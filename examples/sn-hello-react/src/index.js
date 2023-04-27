@@ -11,7 +11,7 @@ import { render, teardown } from './components/root';
  * Useful for cases when stardust hooks are unavailable (ie: outside the component function)
  * @param {object} galaxy.anything Extra environment dependent options
  * @param {object=} galaxy.anything.sense Optional object only present within Sense,
- * see: https://qlik.dev/libraries-and-tools/nebulajs/in-qlik-sense
+ * see: https://qlik.dev/extend/build-extension/in-qlik-sense
  */
 export default function supernova(galaxy) {
   return {
