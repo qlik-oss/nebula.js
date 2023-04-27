@@ -3,7 +3,7 @@ import { selectAlternative } from '@nebula.js/ui/icons/select-alternative';
 import { selectPossible } from '@nebula.js/ui/icons/select-possible';
 import { selectExcluded } from '@nebula.js/ui/icons/select-excluded';
 
-export default ({ layout, model, translator, selectionState }) => {
+export default ({ layout, model, translator, selectionState, isDirectQuery = false }) => {
   if (layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne) {
     return [];
   }
@@ -41,27 +41,31 @@ export default ({ layout, model, translator, selectionState }) => {
         model.selectListObjectPossible('/qListObjectDef');
       },
     },
-    {
-      key: 'selectAlternative',
-      type: 'menu-icon-button',
-      label: translator.get('Selection.SelectAlternative'),
-      getSvgIconShape: selectAlternative,
-      enabled: canSelectAlternative,
-      action: () => {
-        selectionState.clearItemStates(false);
-        model.selectListObjectAlternative('/qListObjectDef');
-      },
-    },
-    {
-      key: 'selectExcluded',
-      type: 'menu-icon-button',
-      label: translator.get('Selection.SelectExcluded'),
-      getSvgIconShape: selectExcluded,
-      enabled: canSelectExcluded,
-      action: () => {
-        selectionState.clearItemStates(false);
-        model.selectListObjectExcluded('/qListObjectDef');
-      },
-    },
-  ];
+    isDirectQuery
+      ? false
+      : {
+          key: 'selectAlternative',
+          type: 'menu-icon-button',
+          label: translator.get('Selection.SelectAlternative'),
+          getSvgIconShape: selectAlternative,
+          enabled: canSelectAlternative,
+          action: () => {
+            selectionState.clearItemStates(false);
+            model.selectListObjectAlternative('/qListObjectDef');
+          },
+        },
+    isDirectQuery
+      ? false
+      : {
+          key: 'selectExcluded',
+          type: 'menu-icon-button',
+          label: translator.get('Selection.SelectExcluded'),
+          getSvgIconShape: selectExcluded,
+          enabled: canSelectExcluded,
+          action: () => {
+            selectionState.clearItemStates(false);
+            model.selectListObjectExcluded('/qListObjectDef');
+          },
+        },
+  ].filter(Boolean);
 };

@@ -23,6 +23,7 @@ import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH } from '
 import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
 import useRect from '../../hooks/useRect';
+import isDirectQueryEnabled from './utils/is-direct-query';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -112,6 +113,8 @@ function ListBoxInline({ options, layout }) {
 
   const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
   theme.listBox = addListboxTheme(themeApi);
+
+  const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 
   const containerRef = useRef();
   const [containerRectRef, containerRect] = useRect();
@@ -240,6 +243,7 @@ function ListBoxInline({ options, layout }) {
     model,
     translator,
     selectionState,
+    isDirectQuery,
   });
 
   const showTitle = true;
