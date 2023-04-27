@@ -7,5 +7,4 @@ export default React.createContext({
   constraints: {},
   interactions: {},
   themeApi: null,
-  flags: null,
 });

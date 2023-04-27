@@ -16,6 +16,7 @@ import * as ListBoxModule from '../ListBox';
 import * as ListBoxSearchModule from '../components/ListBoxSearch';
 import * as listboxSelectionToolbarModule from '../interactions/listbox-selection-toolbar';
 import * as addListboxTheme from '../assets/addListboxTheme';
+import * as isDirectQueryEnabled from '../utils/is-direct-query';
 
 const virtualizedModule = require('react-virtualized-auto-sizer');
 const listboxKeyboardNavigationModule = require('../interactions/keyboard-navigation/keyboard-nav-container');
@@ -91,6 +92,7 @@ describe('<ListboxInline />', () => {
     jest.spyOn(useLayoutModule, 'default').mockImplementation(() => [layout]);
     jest.spyOn(listboxKeyboardNavigationModule, 'default').mockImplementation(getListboxInlineKeyboardNavigation);
     jest.spyOn(addListboxTheme, 'default').mockImplementation(() => {});
+    jest.spyOn(isDirectQueryEnabled, 'default').mockImplementation(() => false);
 
     ActionsToolbarModule.default = ActionsToolbar;
     ListBoxModule.default = <div className="theListBox" />;
@@ -121,6 +123,7 @@ describe('<ListboxInline />', () => {
       update: undefined,
       fetchStart: 'fetchStart',
       isPopover: false,
+      flags: { isEnabled: jest.fn(() => false) },
     };
 
     useRef.mockReturnValue({ current: 'current' });
@@ -192,6 +195,7 @@ describe('<ListboxInline />', () => {
       expect(selections.on.mock.calls[0][0]).toBe('activated');
       expect(selections.on.mock.calls[1][0]).toBe('deactivated');
       expect(selections.removeListener).not.toHaveBeenCalled();
+      expect(isDirectQueryEnabled.default).toHaveBeenCalled();
     });
 
     test('should render properly with search toggle option', async () => {
