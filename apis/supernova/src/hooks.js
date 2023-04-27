@@ -1144,25 +1144,13 @@ export function useEmitter() {
 }
 
 /**
- * Blur function
- * @callback BlurFunction
- * @param {boolean} resetFocus parameter to determines whether the chart should be focused after blurring from inside
- */
-
-/**
- * Focus Selection function
- * @callback FocusSelectionFunction
- * @param {boolean} focusLast parameter to determines if the selection toolbar should be focuses the first or last element in the toolbar. if true, the last item is focused.
- */
-
-/**
  * @experimental
  * @interface Keyboard
  * @property {boolean} enabled Whether or not Nebula handles keyboard navigation or not.
  * @property {boolean} active Set to true when the chart is activated, ie a user tabs to the chart and presses Enter or Space.
- * @property {BlurFunction=} blur Function used by the visualization to tell Nebula to it wants to relinquish focus
- * @property {function=} focus Function used by the visualization to tell Nebula to it wants focus
- * @property {FocusSelectionFunction=} focusSelection Function used by the visualization to tell Nebula to focus the selection toolbar
+ * @property {function(boolean)=} blur Function used by the visualization to tell Nebula it wants to relinquish focus
+ * @property {function=} focus Function used by the visualization to tell Nebula it wants to focus
+ * @property {function(boolean)=} focusSelection Function used by the visualization to tell Nebula that focus the selection toolbar
  */
 
 /**

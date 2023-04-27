@@ -489,6 +489,16 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -519,16 +529,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {
@@ -640,25 +640,23 @@ declare namespace stardust {
         restore: any;
     }
 
-    /**
-     * Blur function
-     */
-    type BlurFunction = (resetFocus: boolean)=>void;
-
-    /**
-     * Focus Selection function
-     */
-    type FocusSelectionFunction = (focusLast: boolean)=>void;
-
     interface Keyboard {
         enabled: boolean;
         active: boolean;
-        blur?: stardust.BlurFunction;
         /**
-         * Function used by the visualization to tell Nebula to it wants focus
+         * Function used by the visualization to tell Nebula it wants to relinquish focus
+         * @param $
+         */
+        blur?($: boolean): void;
+        /**
+         * Function used by the visualization to tell Nebula it wants to focus
          */
         focus?(): void;
-        focusSelection?: stardust.FocusSelectionFunction;
+        /**
+         * Function used by the visualization to tell Nebula that focus the selection toolbar
+         * @param $
+         */
+        focusSelection?($: boolean): void;
     }
 
     /**
@@ -711,8 +709,9 @@ declare namespace stardust {
 
         /**
          * Returns current locale.
+         * @param lang language Locale to updated the currentLocale value
          */
-        language(): string;
+        language(lang?: string): string;
 
         /**
          * Registers a string in multiple locales
