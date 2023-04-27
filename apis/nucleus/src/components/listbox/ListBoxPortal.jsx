@@ -16,7 +16,6 @@ import uid from '../../object/uid';
  * @property {boolean=} [options.calculatePagesHeight=false] Override each page's qHeight with its actual row count.
  * @property {object} [options.sessionModel] Use a custom sessionModel.
  * @property {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
- * @property {object} [options.flags] The flags object for enabling/disabling features in the Listbox.
  * @property {function():boolean} [options.selectDisabled=] Define a function which tells when selections are disabled (true) or enabled (false). By default, always returns false.
  * @property {function():object[]} [options.postProcessPages] A function for client-side post-processing of returned pages.
  * @property {PromiseFunction} [options.fetchStart] A function called when the Listbox starts fetching data. Receives the fetch request promise as an argument.
@@ -44,7 +43,6 @@ export const getOptions = (usersOptions = {}) => {
     selectDisabled: undefined,
     postProcessPages: undefined,
     calculatePagesHeight: false,
-    flags: { isEnabled: () => false },
   };
   const squashedOptions = {
     ...exposedOptions,

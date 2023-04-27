@@ -123,7 +123,6 @@ describe('<ListboxInline />', () => {
       update: undefined,
       fetchStart: 'fetchStart',
       isPopover: false,
-      flags: { isEnabled: jest.fn(() => false) },
     };
 
     useRef.mockReturnValue({ current: 'current' });

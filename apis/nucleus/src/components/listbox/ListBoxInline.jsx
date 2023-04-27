@@ -89,7 +89,6 @@ function ListBoxInline({ options, layout }) {
     renderedCallback,
     toolbar = true,
     isPopover = false,
-    flags,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -115,7 +114,7 @@ function ListBoxInline({ options, layout }) {
   const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
   theme.listBox = addListboxTheme(themeApi);
 
-  const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout, flags });
+  const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 
   const containerRef = useRef();
   const [containerRectRef, containerRect] = useRect();
