@@ -278,6 +278,7 @@ describe('<Listbox />', () => {
 
     test('should render a disclaimer when list count is 0 but should still render a list component', async () => {
       layout.qListObject.qSize.qcy = 0;
+      layout.qListObject.qDimensionInfo.qCardinal = 1;
       await render();
       const disclaimers = renderer.root.findAllByType(ListBoxDisclaimer);
       expect(disclaimers).toHaveLength(1);
