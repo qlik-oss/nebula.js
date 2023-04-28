@@ -18,6 +18,11 @@ export default function Chart({ id, onLoad }) {
     n.then((viz) => {
       onLoad(viz, el.current);
     });
+    n.then((viz) => {
+      viz.on('chartSelected', (chart) => {
+        console.log(chart);
+      });
+    });
     return () => {
       n.then((v) => {
         v.destroy();

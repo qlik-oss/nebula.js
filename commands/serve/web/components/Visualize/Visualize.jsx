@@ -97,14 +97,6 @@ export default function Visualize() {
   );
 
   useEffect(() => {
-    if (activeViz) {
-      activeViz.on('chartSelected', (chart) => {
-        console.log(chart);
-      });
-    }
-  }, [activeViz]);
-
-  useEffect(() => {
     if (info) initiateWatch(info);
   }, [info]);
 
