@@ -86,7 +86,7 @@
     "husky": "8.0.3",
     "jest": "^29.5.0",
     "jest-environment-jsdom": "^29.5.0",
-    "jest-junit": "^15.0.0",
+    "jest-junit": "^16.0.0",
     "jest-location-mock": "^1.0.9",
     "jimp": "0.22.7",
     "lerna": "6.6.1",
