@@ -39,6 +39,9 @@ describe('filterpane-handler', () => {
               qType: expect.any(String),
             },
             title: 'A',
+            searchEnabled: true,
+            showTitle: true,
+            wildCardSearch: false,
             checkboxes: false,
             histogram: false,
             layoutOptions: {
@@ -47,9 +50,11 @@ describe('filterpane-handler', () => {
               layoutOrder: 'row',
               maxVisibleColumns: {
                 auto: true,
+                maxColumns: 3,
               },
               maxVisibleRows: {
                 auto: true,
+                maxRows: 3,
               },
             },
             qListObjectDef: {
@@ -95,6 +100,9 @@ describe('filterpane-handler', () => {
               qType: expect.any(String),
             },
             title: 'lib dim title',
+            searchEnabled: true,
+            showTitle: true,
+            wildCardSearch: false,
             checkboxes: false,
             histogram: false,
             layoutOptions: {
@@ -103,9 +111,11 @@ describe('filterpane-handler', () => {
               layoutOrder: 'row',
               maxVisibleColumns: {
                 auto: true,
+                maxColumns: 3,
               },
               maxVisibleRows: {
                 auto: true,
+                maxRows: 3,
               },
             },
             qListObjectDef: {
@@ -156,6 +166,9 @@ describe('filterpane-handler', () => {
               qType: expect.any(String),
             },
             title: 'C',
+            searchEnabled: true,
+            showTitle: true,
+            wildCardSearch: false,
             checkboxes: true,
             histogram: false,
             layoutOptions: {
@@ -164,9 +177,11 @@ describe('filterpane-handler', () => {
               layoutOrder: 'row',
               maxVisibleColumns: {
                 auto: true,
+                maxColumns: 3,
               },
               maxVisibleRows: {
                 auto: true,
+                maxRows: 3,
               },
             },
             qListObjectDef: {
@@ -218,6 +233,9 @@ describe('filterpane-handler', () => {
               qType: expect.any(String),
             },
             title: 'My custom title',
+            searchEnabled: true,
+            showTitle: true,
+            wildCardSearch: false,
             checkboxes: true,
             histogram: false,
             layoutOptions: {
@@ -226,9 +244,11 @@ describe('filterpane-handler', () => {
               layoutOrder: 'row',
               maxVisibleColumns: {
                 auto: true,
+                maxColumns: 3,
               },
               maxVisibleRows: {
                 auto: true,
+                maxRows: 3,
               },
             },
             qListObjectDef: {
