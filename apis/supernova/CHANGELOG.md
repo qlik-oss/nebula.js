@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.10](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0-alpha.10) (2023-05-03)
+
+### Features
+
+- add useInteractions and deprecate useContraints ([#1196](https://github.com/qlik-oss/nebula.js/issues/1196)) ([7243ee4](https://github.com/qlik-oss/nebula.js/commit/7243ee4b7a9b2c793807cb9bc463f6f13eaefa60))
+- listbox properties spec ([#1228](https://github.com/qlik-oss/nebula.js/issues/1228)) ([60a977f](https://github.com/qlik-oss/nebula.js/commit/60a977f906cb2ff3fa1eb42d8878699574fe79f1))
+
 # [4.0.0-alpha.9](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.8...v4.0.0-alpha.9) (2023-04-14)
 
 ### Features

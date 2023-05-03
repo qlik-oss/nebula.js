@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0-alpha.10](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0-alpha.10) (2023-05-03)
+
+### Bug Fixes
+
+- correctly await types in serve ([#1242](https://github.com/qlik-oss/nebula.js/issues/1242)) ([096219d](https://github.com/qlik-oss/nebula.js/commit/096219dfec8e555191ec9770d95a06dd4add13dc))
+
+### Features
+
+- add useInteractions and deprecate useContraints ([#1196](https://github.com/qlik-oss/nebula.js/issues/1196)) ([7243ee4](https://github.com/qlik-oss/nebula.js/commit/7243ee4b7a9b2c793807cb9bc463f6f13eaefa60))
+
 # [4.0.0-alpha.9](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.8...v4.0.0-alpha.9) (2023-04-14)
 
 **Note:** Version bump only for package @nebula.js/cli-serve
