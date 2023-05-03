@@ -81,6 +81,7 @@ export default function Visualize() {
   const [currentId, setCurrentId] = useState();
   const [themeChooserAnchorEl, setThemeChooserAnchorEl] = React.useState(null);
   const [languageChooserAnchorEl, setLanguageChooserAnchorEl] = React.useState(null);
+  const [initialized, setInit] = useState(false);
   const [nebbie, setNebbie] = useState(null);
   const customThemes = Array.isArray(info?.themes) && info.themes.length ? ['light', 'dark', ...info.themes] : [];
 
@@ -98,11 +99,16 @@ export default function Visualize() {
   );
 
   useEffect(() => {
-    if (info) initiateWatch(info);
+    (async () => {
+      if (info) {
+        await initiateWatch(info);
+        setInit(true);
+      }
+    })();
   }, [info]);
 
   useEffect(() => {
-    if (waiting) return;
+    if (waiting || !initialized) return;
     const n = embed(app, {
       context: {
         theme: currentThemeName,
@@ -133,7 +139,7 @@ export default function Visualize() {
     }
 
     setNebbie(n);
-  }, [app, info, waiting]);
+  }, [app, info, waiting, initialized]);
 
   useLayoutEffect(() => {
     if (!nebbie) return;
