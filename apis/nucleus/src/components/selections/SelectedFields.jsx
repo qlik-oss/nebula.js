@@ -52,8 +52,8 @@ export default function SelectedFields({ api, app }) {
   const [maxItems, setMaxItems] = useState(0);
 
   const isInListboxPopover = () => {
-    const object = modalObjectStore.get(app.id);
-    return object && object.genericType === 'njsListbox';
+    const { model } = modalObjectStore.get(app.id) || {};
+    return model?.genericType === 'njsListbox';
   };
 
   useEffect(() => {
