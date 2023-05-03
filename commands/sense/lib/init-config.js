@@ -27,12 +27,6 @@ const options = {
     default: false,
     desc: 'Generate sourcemaps',
   },
-  legacy: {
-    type: 'boolean',
-    required: false,
-    default: false,
-    desc: 'Generate legacy extension',
-  },
 };
 
 module.exports = (yargs) => yargs.options(options);
