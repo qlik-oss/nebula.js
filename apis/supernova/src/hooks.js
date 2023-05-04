@@ -1135,7 +1135,7 @@ export function useRenderState() {
  *   element: el,
  *   id: 'abcdef'
  * });
- * viz.on("trigger", ()=> {
+ * viz.addListener("trigger", ()=> {
  *   // do something
  * })
  */
