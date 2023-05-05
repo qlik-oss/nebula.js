@@ -39,6 +39,7 @@ const getUrlParamOptions = (params) => ({
     context: {
       theme: params.theme,
       language: params.language,
+      keyboardNavigation: params.keyboardNavigation,
     },
   },
 });
