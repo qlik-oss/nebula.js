@@ -118,8 +118,8 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      * @param {string} eventName Event name to listen to
      * @param {Function} listener Callback function to invoke
      */
-    on(eventName, listener) {
-      emitter.on(eventName, listener);
+    addListener(eventName, listener) {
+      emitter.addListener(eventName, listener);
     },
     /**
      * Removes a listener
@@ -127,8 +127,8 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      * @param {string} eventName Event name to remove from
      * @param {Function} listener Callback function to remove
      */
-    off(eventName, listener) {
-      emitter.off(eventName, listener);
+    removeListener(eventName, listener) {
+      emitter.removeListener(eventName, listener);
     },
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {

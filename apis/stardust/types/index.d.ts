@@ -396,14 +396,14 @@ declare namespace stardust {
          * @param eventName Event name to listen to
          * @param listener Callback function to invoke
          */
-        on(eventName: string, listener: ()=>void): void;
+        addListener(eventName: string, listener: ()=>void): void;
 
         /**
          * Removes a listener
          * @param eventName Event name to remove from
          * @param listener Callback function to remove
          */
-        off(eventName: string, listener: ()=>void): void;
+        removeListener(eventName: string, listener: ()=>void): void;
 
     }
 
@@ -475,6 +475,16 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -505,16 +515,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {
