@@ -435,6 +435,20 @@ declare namespace stardust {
         constructor();
 
         /**
+         * Event listener function on instance
+         * @param eventType event type that function needs to listen
+         * @param callback a callback function to run when event emits
+         */
+        addListener(eventType: string, callback: ()=>void): void;
+
+        /**
+         * Remove listener function on instance
+         * @param eventType event type that function needs to listen
+         * @param callback a callback function to run when event emits
+         */
+        removeListener(eventType: string, callback: ()=>void): void;
+
+        /**
          * @param paths
          */
         begin(paths: string[]): Promise<undefined>;
@@ -630,17 +644,19 @@ declare namespace stardust {
         enabled: boolean;
         active: boolean;
         /**
-         * Function used by the visualization to tell Nebula to it wants to relinquish focus
+         * Function used by the visualization to tell Nebula it wants to relinquish focus
+         * @param $
          */
-        blur?(): void;
+        blur?($: boolean): void;
         /**
-         * Function used by the visualization to tell Nebula to it wants focus
+         * Function used by the visualization to tell Nebula it wants to focus
          */
         focus?(): void;
         /**
-         * Function used by the visualization to tell Nebula to focus the selection toolbar
+         * Function used by the visualization to tell Nebula that focus the selection toolbar
+         * @param $
          */
-        focusSelection?(): void;
+        focusSelection?($: boolean): void;
     }
 
     /**
@@ -692,6 +708,12 @@ declare namespace stardust {
         constructor();
 
         /**
+         * Returns current locale.
+         * @param lang language Locale to updated the currentLocale value
+         */
+        language(lang?: string): string;
+
+        /**
          * Registers a string in multiple locales
          * @param item
          */
@@ -711,6 +733,11 @@ declare namespace stardust {
 
     class Theme {
         constructor();
+
+        /**
+         * Returns theme name
+         */
+        name(): string;
 
         getDataColorScales(): stardust.Theme.ScalePalette[];
 

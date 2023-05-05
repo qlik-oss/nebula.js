@@ -50,6 +50,28 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
   let hasSelected = false;
 
   /**
+   * Event listener function on instance
+   *
+   * @method
+   * @name ObjectSelections#addListener
+   * @param {string} eventType event type that function needs to listen
+   * @param {Function} callback a callback function to run when event emits
+   * @example
+   * api.addListener('someEvent', () => {...});
+   */
+
+  /**
+   * Remove listener function on instance
+   *
+   * @method
+   * @name ObjectSelections#removeListener
+   * @param {string} eventType event type that function needs to listen
+   * @param {Function} callback a callback function to run when event emits
+   * @example
+   * api.removeListener('someEvent', () => {...});
+   */
+
+  /**
    * @class
    * @alias ObjectSelections
    */

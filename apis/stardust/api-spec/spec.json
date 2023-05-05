@@ -1344,6 +1344,46 @@
         "params": []
       },
       "entries": {
+        "addListener": {
+          "description": "Event listener function on instance",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventType",
+              "description": "event type that function needs to listen",
+              "type": "string"
+            },
+            {
+              "name": "callback",
+              "description": "a callback function to run when event emits",
+              "kind": "function",
+              "params": []
+            }
+          ],
+          "examples": [
+            "api.addListener('someEvent', () => {...});"
+          ]
+        },
+        "removeListener": {
+          "description": "Remove listener function on instance",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventType",
+              "description": "event type that function needs to listen",
+              "type": "string"
+            },
+            {
+              "name": "callback",
+              "description": "a callback function to run when event emits",
+              "kind": "function",
+              "params": []
+            }
+          ],
+          "examples": [
+            "api.removeListener('someEvent', () => {...});"
+          ]
+        },
         "begin": {
           "kind": "function",
           "params": [
@@ -2093,22 +2133,30 @@
           "type": "boolean"
         },
         "blur": {
-          "description": "Function used by the visualization to tell Nebula to it wants to relinquish focus",
+          "description": "Function used by the visualization to tell Nebula it wants to relinquish focus",
           "optional": true,
           "kind": "function",
-          "params": []
+          "params": [
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "focus": {
-          "description": "Function used by the visualization to tell Nebula to it wants focus",
+          "description": "Function used by the visualization to tell Nebula it wants to focus",
           "optional": true,
           "kind": "function",
           "params": []
         },
         "focusSelection": {
-          "description": "Function used by the visualization to tell Nebula to focus the selection toolbar",
+          "description": "Function used by the visualization to tell Nebula that focus the selection toolbar",
           "optional": true,
           "kind": "function",
-          "params": []
+          "params": [
+            {
+              "type": "boolean"
+            }
+          ]
         }
       }
     },
@@ -2335,6 +2383,22 @@
         "params": []
       },
       "entries": {
+        "language": {
+          "description": "Returns current locale.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "lang",
+              "description": "language Locale to updated the currentLocale value",
+              "optional": true,
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "current locale.",
+            "type": "string"
+          }
+        },
         "add": {
           "description": "Registers a string in multiple locales",
           "kind": "function",
@@ -2397,6 +2461,18 @@
         "params": []
       },
       "entries": {
+        "name": {
+          "description": "Returns theme name",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "Current theme.",
+            "type": "string"
+          },
+          "examples": [
+            "theme.name();"
+          ]
+        },
         "getDataColorScales": {
           "kind": "function",
           "params": [],

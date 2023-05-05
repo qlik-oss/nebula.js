@@ -1148,9 +1148,9 @@ export function useEmitter() {
  * @interface Keyboard
  * @property {boolean} enabled Whether or not Nebula handles keyboard navigation or not.
  * @property {boolean} active Set to true when the chart is activated, ie a user tabs to the chart and presses Enter or Space.
- * @property {function=} blur Function used by the visualization to tell Nebula to it wants to relinquish focus
- * @property {function=} focus Function used by the visualization to tell Nebula to it wants focus
- * @property {function=} focusSelection Function used by the visualization to tell Nebula to focus the selection toolbar
+ * @property {function(boolean)=} blur Function used by the visualization to tell Nebula it wants to relinquish focus
+ * @property {function=} focus Function used by the visualization to tell Nebula it wants to focus
+ * @property {function(boolean)=} focusSelection Function used by the visualization to tell Nebula that focus the selection toolbar
  */
 
 /**
@@ -1187,7 +1187,7 @@ export function useKeyboard() {
   const focusHandler = useInternalContext('focusHandler');
 
   if (!currentComponent.__hooks.accessibility.exitFunction) {
-    const exitFunction = function (resetFocus) {
+    const exitFunction = function (resetFocus = false) {
       const acc = this.__hooks.accessibility;
       if (acc.enabled && acc.active) {
         blur(this);
@@ -1207,7 +1207,7 @@ export function useKeyboard() {
 
     currentComponent.__hooks.accessibility.focusFunction = focusFunction;
 
-    const focusSelectionFunction = function (focusLast) {
+    const focusSelectionFunction = function (focusLast = false) {
       const acc = this.__hooks.accessibility;
       if (acc.enabled) {
         focusHandler && focusHandler.focusToolbarButton && focusHandler.focusToolbarButton(focusLast);

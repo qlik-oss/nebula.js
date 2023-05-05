@@ -16,6 +16,16 @@ export default function theme() {
   let contraster;
 
   /**
+   * Returns theme name
+   *
+   * @method
+   * @name Theme#name
+   * @returns {string} Current theme.
+   * @example
+   * theme.name();
+   */
+
+  /**
    * @class
    * @alias Theme
    */
