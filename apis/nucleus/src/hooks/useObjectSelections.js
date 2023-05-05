@@ -53,11 +53,11 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
    * Event listener function on instance
    *
    * @method
-   * @name ObjectSelections#on
+   * @name ObjectSelections#addListener
    * @param {string} eventType event type that function needs to listen
    * @param {Function} callback a callback function to run when event emits
    * @example
-   * api.on('someEvent', () => {...});
+   * api.addListener('someEvent', () => {...});
    */
 
   /**

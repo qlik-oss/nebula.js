@@ -407,14 +407,6 @@ declare namespace stardust {
 
     }
 
-    interface Flags {
-        /**
-         * Checks whether the specified flag is enabled.
-         * @param flag The value flag to check.
-         */
-        isEnabled(flag: string): boolean;
-    }
-
     class AppSelections {
         constructor();
 
@@ -439,7 +431,7 @@ declare namespace stardust {
          * @param eventType event type that function needs to listen
          * @param callback a callback function to run when event emits
          */
-        on(eventType: string, callback: ()=>void): void;
+        addListener(eventType: string, callback: ()=>void): void;
 
         /**
          * Remove listener function on instance
@@ -489,14 +481,12 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
+    interface Flags {
+        /**
+         * Checks whether the specified flag is enabled.
+         * @param flag The value flag to check.
+         */
+        isEnabled(flag: string): boolean;
     }
 
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
@@ -529,6 +519,16 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {
