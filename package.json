@@ -96,7 +96,7 @@
     "picasso.js": "2.2.3",
     "prettier": "2.8.8",
     "pretty-quick": "3.1.3",
-    "puppeteer": "19.11.1",
+    "puppeteer": "20.1.1",
     "qix-faker": "0.3.0",
     "rollup": "3.21.3",
     "rollup-plugin-dependency-flow": "0.3.0",
