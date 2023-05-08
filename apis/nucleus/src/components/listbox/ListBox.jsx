@@ -54,6 +54,7 @@ export default function ListBox({
   currentScrollIndex = { set: () => {} },
   renderedCallback,
   onCtrlF,
+  onTyping,
   showSearch,
   isModal,
 }) {
@@ -279,6 +280,7 @@ export default function ListBox({
     select,
     selectAll,
     onCtrlF,
+    onTyping,
     textAlign,
     isVertical,
     pages,

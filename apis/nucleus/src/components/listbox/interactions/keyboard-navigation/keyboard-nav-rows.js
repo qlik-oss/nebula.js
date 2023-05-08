@@ -6,6 +6,7 @@ export default function getRowsKeyboardNavigation({
   select,
   selectAll,
   onCtrlF,
+  onTyping,
   confirm,
   cancel,
   setScrollPosition,
@@ -151,6 +152,14 @@ export default function getRowsKeyboardNavigation({
         }
         return;
       default:
+        // TODO: do something to handle search starting with keys A/F
+        {
+          let key = String.fromCharCode(keyCode);
+          if (!shiftKey && keyCode >= 65 && keyCode <= 90) {
+            key = key.toLowerCase();
+          }
+          onTyping(key);
+        }
         return; // don't stop propagation since we want to outsource keydown to other handlers.
     }
     if (elementToFocus) {

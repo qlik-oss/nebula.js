@@ -270,6 +270,19 @@ function ListBoxInline({ options, layout }) {
     }
   };
 
+  const onTyping = (key) => {
+    if (search === 'toggle') {
+      onShowSearch();
+      setTimeout(() => {
+        const input = searchContainer.current.querySelector('input');
+        input.value = key;
+      }, 100);
+    } else {
+      const input = searchContainer.current.querySelector('input');
+      input?.focus();
+    }
+  };
+
   const getActionToolbarProps = (isDetached) =>
     getListboxActionProps({
       isDetached: isPopover ? false : isDetached,
@@ -440,6 +453,7 @@ function ListBoxInline({ options, layout }) {
                     }}
                     renderedCallback={renderedCallback}
                     onCtrlF={onCtrlF}
+                    onTyping={onTyping}
                     isModal={isModalMode}
                   />
                 )}
