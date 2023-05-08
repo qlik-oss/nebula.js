@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.0.0](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0) (2023-05-08)
+
+### Features
+
+- to be able to disable systemjs in build ([#1230](https://github.com/qlik-oss/nebula.js/issues/1230)) ([557ba46](https://github.com/qlik-oss/nebula.js/commit/557ba4623e6662bfae2dac86ec6e4164bcec4e87))
+
 # [4.0.0-alpha.10](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0-alpha.10) (2023-05-03)
 
 ### Features
