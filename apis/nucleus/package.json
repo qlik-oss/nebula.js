@@ -4,8 +4,8 @@
   "private": true,
   "main": "src/index.js",
   "devDependencies": {
-    "@emotion/react": "^11.10.8",
-    "@emotion/styled": "^11.10.8",
+    "@emotion/react": "^11.11.0",
+    "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
     "@mui/material": "^5.12.3",
     "@nebula.js/conversion": "^4.0.0-alpha.10",
