@@ -52,7 +52,10 @@ commands:
         description: 'Run tests'
     steps:
       - run:
-          name: 'Create Nebula visualization project: <<# parameters.mashup >>Mashup<</ parameters.mashup >><<^ parameters.mashup >>Picasso template "<< parameters.picasso_template >>" <</ parameters.mashup >> in << parameters.project_name >>'
+          name: 'Create Nebula visualization project: <<# parameters.mashup >>Mashup<</
+            parameters.mashup >><<^ parameters.mashup >>Picasso template "<<
+            parameters.picasso_template >>" <</ parameters.mashup >> in <<
+            parameters.project_name >>'
           command: |
             set -e
             <<# parameters.mashup >>
@@ -112,13 +115,16 @@ jobs:
           path: coverage/junit
       - run:
           name: Test component
-          command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+          command: yarn run test:component --chrome.browserWSEndpoint
+            "ws://localhost:3000" --no-launch
       - run:
           name: Test mashup
-          command: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+          command: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000"
+            --no-launch
       - run:
           name: Test integration
-          command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+          command: yarn run test:integration --chrome.browserWSEndpoint
+            "ws://localhost:3000" --no-launch
       - nebula_create:
           project_name: 'generated/hello'
           picasso_template: 'none'
@@ -186,15 +192,9 @@ jobs:
           command: >
             VER=v$(cat version.txt)
 
-            docker run --volumes-from specs
-            -e SPEC_PATHS="abdc47c2-921a-45d3-ba5c-80d448574c5b@/specs/spec.json"
-            -e COMMIT_SHA="$CIRCLE_SHA1"
-            -e RELEASE_TAG="$VER"
-            -e PRE_RELEASE="true"
-            -e CREDENTIALS_S3_SECRETKEY="$APICULTURIST_S3"
-            -e CREDENTIALS_GITHUB="$APICULTURIST_GITHUB"
-            -e CREDENTIALS_COLONY="$APICULTURIST_TOKEN"
-            ghcr.io/qlik-download/api-compliance
+            docker run --volumes-from specs -e SPEC_PATHS="abdc47c2-921a-45d3-ba5c-80d448574c5b@/specs/spec.json" -e COMMIT_SHA="$CIRCLE_SHA1" -e RELEASE_TAG="$VER" -e PRE_RELEASE="true" -e CREDENTIALS_S3_SECRETKEY="$APICULTURIST_S3" -e CREDENTIALS_GITHUB="$APICULTURIST_GITHUB" -e CREDENTIALS_COLONY="$APICULTURIST_TOKEN" ghcr.io/qlik-download/api-compliance
+    # The resource_class feature allows configuring CPU and RAM resources for each job. Different resource classes are available for different executors. https://circleci.com/docs/2.0/configuration-reference/#resourceclass
+    resource_class: large
 
 workflows:
   version: 2
