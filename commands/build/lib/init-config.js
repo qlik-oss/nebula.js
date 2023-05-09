@@ -42,6 +42,18 @@ const options = {
     type: 'boolean',
     default: false,
   },
+  preferBuiltins: {
+    description:
+      'In Rollup, preferBuiltins is a configuration option that specifies whether to use Node.js built-in modules (such as fs or path) when bundling for Node.js environment.',
+    type: 'boolean',
+    default: true,
+  },
+  browser: {
+    description:
+      'In Rollup, the browser option is a configuration option that specifies whether the bundle is intended to run in a browser environment.',
+    type: 'boolean',
+    default: false,
+  },
 };
 
 // nebula build --watch                - watch umd bundle

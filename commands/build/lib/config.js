@@ -77,7 +77,7 @@ const config = ({
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
   pkg = reactNative ? require(path.resolve(reactNativePath, 'package.json')) : pkg; // eslint-disable-line
-  const { sourcemap, replacementStrings = {}, typescript } = argv;
+  const { sourcemap, replacementStrings = {}, typescript, preferBuiltins, browser } = argv;
   const banner = getBanner({ pkg });
   const outputName = getOutputName({ pkg, config: argv });
 
@@ -126,6 +126,8 @@ const config = ({
         }),
         nodeResolve({
           extensions,
+          browser,
+          preferBuiltins,
         }),
         commonjs({
           ignoreTryCatch: false, // Avoids problems with require() inside try catch (https://github.com/rollup/plugins/issues/1004)
@@ -149,7 +151,7 @@ const config = ({
           ],
           plugins: [[jsxPlugin]],
         }),
-        sourcemaps(),
+        ...[sourcemap ? sourcemaps() : undefined],
         postcss({}),
         ...[typescript ? typescriptPlugin() : false],
         ...[
