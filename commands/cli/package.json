@@ -25,9 +25,9 @@
     "lint": "eslint src"
   },
   "peerDependencies": {
-    "@nebula.js/cli-build": "^3.0.0",
-    "@nebula.js/cli-sense": "^3.0.0",
-    "@nebula.js/cli-serve": "^3.0.0"
+    "@nebula.js/cli-build": "^4.0.0",
+    "@nebula.js/cli-sense": "^4.0.0",
+    "@nebula.js/cli-serve": "^4.0.0"
   },
   "dependencies": {
     "@nebula.js/cli-create": "^4.0.0",
