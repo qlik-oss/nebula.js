@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.1...v4.0.2) (2023-05-10)
+
+### Bug Fixes
+
+- correct build cli options ([b64a813](https://github.com/qlik-oss/nebula.js/commit/b64a8133f42fe9842ebcf503752084799fc1d943))
+
 ## [4.0.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0...v4.0.1) (2023-05-10)
 
 ### Features
