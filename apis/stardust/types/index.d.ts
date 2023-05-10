@@ -415,62 +415,6 @@ declare namespace stardust {
         isEnabled(flag: string): boolean;
     }
 
-    type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
-
-    /**
-     * Rendering configuration for creating and rendering a new object
-     */
-    interface CreateConfig {
-        type: string;
-        version?: string;
-        fields?: stardust.Field[];
-        properties?: EngineAPI.IGenericObjectProperties;
-    }
-
-    /**
-     * Configuration for rendering a visualisation, either creating or fetching an existing object.
-     */
-    interface RenderConfig {
-        element: HTMLElement;
-        options?: object;
-        plugins?: stardust.Plugin[];
-        id?: string;
-        type?: string;
-        version?: string;
-        fields?: stardust.Field[];
-        extendProperties?: boolean;
-        properties?: EngineAPI.IGenericObjectProperties;
-    }
-
-    interface LibraryField {
-        qLibraryId: string;
-        type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
-    interface LoadType {
-        (type: {
-            name: string;
-            version: string;
-        }): Promise<stardust.Visualization>;
-    }
-
-    interface TypeInfo {
-        name: string;
-        version?: string;
-        load: stardust.LoadType;
-        meta?: object;
-    }
-
     class AppSelections {
         constructor();
 
@@ -543,6 +487,62 @@ declare namespace stardust {
          */
         noModal(accept?: boolean): Promise<undefined>;
 
+    }
+
+    type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
+
+    /**
+     * Rendering configuration for creating and rendering a new object
+     */
+    interface CreateConfig {
+        type: string;
+        version?: string;
+        fields?: stardust.Field[];
+        properties?: EngineAPI.IGenericObjectProperties;
+    }
+
+    /**
+     * Configuration for rendering a visualisation, either creating or fetching an existing object.
+     */
+    interface RenderConfig {
+        element: HTMLElement;
+        options?: object;
+        plugins?: stardust.Plugin[];
+        id?: string;
+        type?: string;
+        version?: string;
+        fields?: stardust.Field[];
+        extendProperties?: boolean;
+        properties?: EngineAPI.IGenericObjectProperties;
+    }
+
+    interface LibraryField {
+        qLibraryId: string;
+        type: "dimension" | "measure";
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
+    interface LoadType {
+        (type: {
+            name: string;
+            version: string;
+        }): Promise<stardust.Visualization>;
+    }
+
+    interface TypeInfo {
+        name: string;
+        version?: string;
+        load: stardust.LoadType;
+        meta?: object;
     }
 
     interface ActionToolbarElement extends HTMLElement{

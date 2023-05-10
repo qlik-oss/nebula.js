@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "4.0.0",
+    "version": "4.0.1",
     "license": "MIT",
     "stability": "stable"
   },
@@ -1307,213 +1307,6 @@
         }
       }
     },
-    "Field": {
-      "kind": "alias",
-      "items": {
-        "kind": "union",
-        "items": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "EngineAPI.INxDimension"
-          },
-          {
-            "type": "EngineAPI.INxMeasure"
-          },
-          {
-            "type": "#/definitions/LibraryField"
-          }
-        ]
-      }
-    },
-    "CreateConfig": {
-      "description": "Rendering configuration for creating and rendering a new object",
-      "kind": "interface",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "optional": true,
-          "type": "string"
-        },
-        "fields": {
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "properties": {
-          "optional": true,
-          "type": "EngineAPI.IGenericObjectProperties"
-        }
-      }
-    },
-    "RenderConfig": {
-      "description": "Configuration for rendering a visualisation, either creating or fetching an existing object.",
-      "kind": "interface",
-      "entries": {
-        "element": {
-          "description": "Target html element to render in to",
-          "type": "HTMLElement"
-        },
-        "options": {
-          "description": "Options passed into the visualisation",
-          "optional": true,
-          "type": "object"
-        },
-        "plugins": {
-          "description": "plugins passed into the visualisation",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/Plugin"
-          }
-        },
-        "id": {
-          "description": "For existing objects: Engine identifier of object to render",
-          "optional": true,
-          "type": "string"
-        },
-        "type": {
-          "description": "For creating objects: Type of visualisation to render",
-          "optional": true,
-          "type": "string"
-        },
-        "version": {
-          "description": "For creating objects: Version of visualization to render",
-          "optional": true,
-          "type": "string"
-        },
-        "fields": {
-          "description": "For creating objects: Data fields to use",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "extendProperties": {
-          "description": "For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
-          "optional": true,
-          "defaultValue": false,
-          "type": "boolean"
-        },
-        "properties": {
-          "description": "For creating objects: Explicit properties to set",
-          "optional": true,
-          "type": "EngineAPI.IGenericObjectProperties"
-        }
-      },
-      "examples": [
-        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst createConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(createConfig);"
-      ]
-    },
-    "LibraryField": {
-      "kind": "interface",
-      "entries": {
-        "qLibraryId": {
-          "type": "string"
-        },
-        "type": {
-          "kind": "union",
-          "items": [
-            {
-              "kind": "literal",
-              "value": "'dimension'"
-            },
-            {
-              "kind": "literal",
-              "value": "'measure'"
-            }
-          ]
-        }
-      }
-    },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
-    },
-    "LoadType": {
-      "kind": "interface",
-      "params": [
-        {
-          "name": "type",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "type": "string"
-            },
-            "version": {
-              "type": "string"
-            }
-          }
-        }
-      ],
-      "returns": {
-        "type": "Promise",
-        "generics": [
-          {
-            "type": "#/definitions/Visualization"
-          }
-        ]
-      },
-      "entries": {}
-    },
-    "TypeInfo": {
-      "kind": "interface",
-      "entries": {
-        "name": {
-          "type": "string"
-        },
-        "version": {
-          "optional": true,
-          "type": "string"
-        },
-        "load": {
-          "type": "#/definitions/LoadType"
-        },
-        "meta": {
-          "optional": true,
-          "type": "object"
-        }
-      }
-    },
     "AppSelections": {
       "kind": "class",
       "constructor": {
@@ -1748,6 +1541,213 @@
               }
             ]
           }
+        }
+      }
+    },
+    "Field": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "EngineAPI.INxDimension"
+          },
+          {
+            "type": "EngineAPI.INxMeasure"
+          },
+          {
+            "type": "#/definitions/LibraryField"
+          }
+        ]
+      }
+    },
+    "CreateConfig": {
+      "description": "Rendering configuration for creating and rendering a new object",
+      "kind": "interface",
+      "entries": {
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "properties": {
+          "optional": true,
+          "type": "EngineAPI.IGenericObjectProperties"
+        }
+      }
+    },
+    "RenderConfig": {
+      "description": "Configuration for rendering a visualisation, either creating or fetching an existing object.",
+      "kind": "interface",
+      "entries": {
+        "element": {
+          "description": "Target html element to render in to",
+          "type": "HTMLElement"
+        },
+        "options": {
+          "description": "Options passed into the visualisation",
+          "optional": true,
+          "type": "object"
+        },
+        "plugins": {
+          "description": "plugins passed into the visualisation",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Plugin"
+          }
+        },
+        "id": {
+          "description": "For existing objects: Engine identifier of object to render",
+          "optional": true,
+          "type": "string"
+        },
+        "type": {
+          "description": "For creating objects: Type of visualisation to render",
+          "optional": true,
+          "type": "string"
+        },
+        "version": {
+          "description": "For creating objects: Version of visualization to render",
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "description": "For creating objects: Data fields to use",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "extendProperties": {
+          "description": "For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "properties": {
+          "description": "For creating objects: Explicit properties to set",
+          "optional": true,
+          "type": "EngineAPI.IGenericObjectProperties"
+        }
+      },
+      "examples": [
+        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst createConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(createConfig);"
+      ]
+    },
+    "LibraryField": {
+      "kind": "interface",
+      "entries": {
+        "qLibraryId": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'dimension'"
+            },
+            {
+              "kind": "literal",
+              "value": "'measure'"
+            }
+          ]
+        }
+      }
+    },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
+    "LoadType": {
+      "kind": "interface",
+      "params": [
+        {
+          "name": "type",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "type": "string"
+            },
+            "version": {
+              "type": "string"
+            }
+          }
+        }
+      ],
+      "returns": {
+        "type": "Promise",
+        "generics": [
+          {
+            "type": "#/definitions/Visualization"
+          }
+        ]
+      },
+      "entries": {}
+    },
+    "TypeInfo": {
+      "kind": "interface",
+      "entries": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "optional": true,
+          "type": "string"
+        },
+        "load": {
+          "type": "#/definitions/LoadType"
+        },
+        "meta": {
+          "optional": true,
+          "type": "object"
         }
       }
     },

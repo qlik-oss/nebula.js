@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0...v4.0.1) (2023-05-10)
+
+### Features
+
+- add browser, and preferBuiltins cli args ([#1225](https://github.com/qlik-oss/nebula.js/issues/1225)) ([41dea12](https://github.com/qlik-oss/nebula.js/commit/41dea12f08e2a9c4b624bb26b6f95f825772b3a9))
+
 # [4.0.0](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0) (2023-05-08)
 
 ### Bug Fixes
