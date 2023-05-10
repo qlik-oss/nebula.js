@@ -71,15 +71,15 @@ async function build(argv = {}) {
   await esm(buildConfig);
   console.timeEnd('Create ESM bundle');
 
-  if (argv.systemjs) {
+  if (buildConfig.systemjs) {
     console.time('Support native format of the SystemJS loader');
     await systemjs(buildConfig);
     console.timeEnd('Support native format of the SystemJS loader');
   }
 
-  if (argv.core) {
+  if (buildConfig.core) {
     console.time('Create ESM bundle into core');
-    const core = path.resolve(process.cwd(), argv.core);
+    const core = path.resolve(process.cwd(), buildConfig.core);
     await esm(buildConfig, core);
     console.timeEnd('Create ESM bundle into core');
   }
