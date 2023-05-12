@@ -315,6 +315,10 @@ function ListBoxInline({ options, layout }) {
     </IconButton>
   );
 
+  if (isInvalid) {
+    renderedCallback?.();
+  }
+
   return (
     <>
       {showDetachedToolbarOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
