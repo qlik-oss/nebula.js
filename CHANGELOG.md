@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/qlik-oss/nebula.js/compare/v4.0.2...v4.0.3) (2023-05-15)
+
+### Bug Fixes
+
+- do not crash on unknown chart + footer ([#1268](https://github.com/qlik-oss/nebula.js/issues/1268)) ([05abdf4](https://github.com/qlik-oss/nebula.js/commit/05abdf4f5560e4ff42770a69bf2c4039324890ff))
+- mark invalid listboxes as rendered ([#1264](https://github.com/qlik-oss/nebula.js/issues/1264)) ([1bb0f26](https://github.com/qlik-oss/nebula.js/commit/1bb0f268a0496c7315ae29b9a5241e13e7e1e7a9))
+
 ## [4.0.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.1...v4.0.2) (2023-05-10)
 
 ### Bug Fixes
