@@ -101,9 +101,9 @@ describe('types', () => {
       expect(v).toEqual('1.5.1');
     });
 
-    test('should return null when no fit is found', () => {
+    test('should return undefined when no fit is found', () => {
       const v = c.getSupportedVersion('pie', '1.2.0');
-      expect(v).toBe(null);
+      expect(v).toBe(undefined);
     });
 
     test('should return the requested type and version', () => {
