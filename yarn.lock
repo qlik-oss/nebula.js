@@ -946,7 +946,7 @@
     chalk "^2.0.0"
     js-tokens "^4.0.0"
 
-"@babel/parser@^7.0.0", "@babel/parser@^7.14.7", "@babel/parser@^7.16.7", "@babel/parser@^7.18.5", "@babel/parser@^7.4.3", "@babel/parser@^7.9.4":
+"@babel/parser@^7.0.0", "@babel/parser@^7.14.7", "@babel/parser@^7.16.7", "@babel/parser@^7.18.5", "@babel/parser@^7.4.3":
   version "7.18.5"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.18.5.tgz#337062363436a893a2d22faa60be5bb37091c83c"
   integrity sha512-YZWVaglMiplo7v8f1oMQ5ZPQr0vn7HPeZXxXWsxXJRjGVrzUFn9OxFQl1sb5wzfootjA/yChhW84BV+383FSOw==
@@ -960,6 +960,11 @@
   version "7.18.11"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.18.11.tgz#68bb07ab3d380affa9a3f96728df07969645d2d9"
   integrity sha512-9JKn5vN+hDt0Hdqn1PiJ2guflwP+B6Ga8qbDuoF0PzzVhrzsKIJo8yGqVk6CmMHiMei9w1C1Bp9IMJSIK+HPIQ==
+
+"@babel/parser@^7.20.15", "@babel/parser@^7.21.5", "@babel/parser@^7.21.8":
+  version "7.21.8"
+  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.21.8.tgz#642af7d0333eab9c0ad70b14ac5e76dbde7bfdf8"
+  integrity sha512-6zavDGdzG3gUqAdWvlLFfk+36RilI+Pwyuuh7HItyeScCWP3k6i8vKclAQ0bM/0y/Kz/xiwvxhMv9MgTJP5gmA==
 
 "@babel/parser@^7.20.7":
   version "7.20.7"
@@ -975,11 +980,6 @@
   version "7.21.4"
   resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.21.4.tgz#94003fdfc520bbe2875d4ae557b43ddb6d880f17"
   integrity sha512-alVJj7k7zIxqBZ7BTRhz0IqJFxW1VJbm6N8JbcYhQ186df9ZBPbZBmWSqAMXwHGsCJdYks7z/voa3ibiS5bCIw==
-
-"@babel/parser@^7.21.5", "@babel/parser@^7.21.8":
-  version "7.21.8"
-  resolved "https://registry.yarnpkg.com/@babel/parser/-/parser-7.21.8.tgz#642af7d0333eab9c0ad70b14ac5e76dbde7bfdf8"
-  integrity sha512-6zavDGdzG3gUqAdWvlLFfk+36RilI+Pwyuuh7HItyeScCWP3k6i8vKclAQ0bM/0y/Kz/xiwvxhMv9MgTJP5gmA==
 
 "@babel/plugin-bugfix-safari-id-destructuring-collision-in-function-expression@^7.18.6":
   version "7.18.6"
@@ -3243,6 +3243,13 @@
     "@jridgewell/resolve-uri" "^3.0.3"
     "@jridgewell/sourcemap-codec" "^1.4.10"
 
+"@jsdoc/salty@^0.2.1":
+  version "0.2.5"
+  resolved "https://registry.yarnpkg.com/@jsdoc/salty/-/salty-0.2.5.tgz#1b2fa5bb8c66485b536d86eee877c263d322f692"
+  integrity sha512-TfRP53RqunNe2HBobVBJ0VLhK1HbfvBYeTC1ahnN64PWvyYyGebmMiPkuwvD9fpw2ZbkoPb8Q7mwy0aR8Z9rvw==
+  dependencies:
+    lodash "^4.17.21"
+
 "@leichtgewicht/ip-codec@^2.0.1":
   version "2.0.4"
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
@@ -3962,25 +3969,25 @@
     estree-walker "^1.0.1"
     picomatch "^2.2.2"
 
-"@scriptappy/cli@0.6.0":
-  version "0.6.0"
-  resolved "https://registry.yarnpkg.com/@scriptappy/cli/-/cli-0.6.0.tgz#d08a38b4d45973c2229aa69506597c8a4282bc01"
-  integrity sha512-wsN6k4O3Qy68PjSRzhSNqpp/w7ZwbPcusfTOyM3iXZUJoQTh80WJi2jZwb1TMC+1/WS76wWmXuJa0LwrH3Bbrw==
+"@scriptappy/cli@0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@scriptappy/cli/-/cli-0.8.0.tgz#004f5c8735da800add2780eebc01ce84ada0500f"
+  integrity sha512-/fqetuvrGUohznfpT/93o2r6jtI+VereWIWfBJ4EXX66+tAZR0JN53dPmg9NtGnaFJrlm50dLBidLlSIKHznLg==
   dependencies:
-    "@scriptappy/from-jsdoc" "0.15.0"
+    "@scriptappy/from-jsdoc" "0.17.0"
     import-cwd "3.0.0"
     yargs "17.6.2"
 
-"@scriptappy/from-jsdoc@0.15.0":
-  version "0.15.0"
-  resolved "https://registry.yarnpkg.com/@scriptappy/from-jsdoc/-/from-jsdoc-0.15.0.tgz#826f124329368345fd049c16f5fba572476ab25d"
-  integrity sha512-beGa3LIl4LMuMz1nxFa2YOl/AaBizkd8v23nT16ZmIBq5Lu+7X4X+mzWxwMFdmLGHWsnmpfCdAaLpF4OayCtvA==
+"@scriptappy/from-jsdoc@0.17.0":
+  version "0.17.0"
+  resolved "https://registry.yarnpkg.com/@scriptappy/from-jsdoc/-/from-jsdoc-0.17.0.tgz#9642427b993261917c9f9cd533fd58e70b61c30c"
+  integrity sha512-mDMOepR1bcmUg41KJIafB++ermZUP6avpaPrq+wx3EymqbsBqfHdqtUQxzNDBBILm9zPgoVQRTBjZGxYRCF2/g==
   dependencies:
     "@scriptappy/schema" "1.1.0"
     chokidar "3.5.3"
     extend "3.0.2"
     globby "11.0.4"
-    jsdoc "3.6.11"
+    jsdoc "4.0.2"
     scriptappy-tools "0.5.0"
     yargs "17.6.2"
 
@@ -10617,12 +10624,13 @@ js2xmlparser@^4.0.2:
   dependencies:
     xmlcreate "^2.0.4"
 
-jsdoc@3.6.11:
-  version "3.6.11"
-  resolved "https://registry.yarnpkg.com/jsdoc/-/jsdoc-3.6.11.tgz#8bbb5747e6f579f141a5238cbad4e95e004458ce"
-  integrity sha512-8UCU0TYeIYD9KeLzEcAu2q8N/mx9O3phAGl32nmHlE0LpaJL71mMkP4d+QE5zWfNt50qheHtOZ0qoxVrsX5TUg==
+jsdoc@4.0.2:
+  version "4.0.2"
+  resolved "https://registry.yarnpkg.com/jsdoc/-/jsdoc-4.0.2.tgz#a1273beba964cf433ddf7a70c23fd02c3c60296e"
+  integrity sha512-e8cIg2z62InH7azBBi3EsSEqrKx+nUtAS5bBcYTSpZFA+vhNPyhv8PTFZ0WsjOPDj04/dOLlm08EDcQJDqaGQg==
   dependencies:
-    "@babel/parser" "^7.9.4"
+    "@babel/parser" "^7.20.15"
+    "@jsdoc/salty" "^0.2.1"
     "@types/markdown-it" "^12.2.3"
     bluebird "^3.7.2"
     catharsis "^0.9.0"
@@ -10635,7 +10643,6 @@ jsdoc@3.6.11:
     mkdirp "^1.0.4"
     requizzle "^0.2.3"
     strip-json-comments "^3.1.0"
-    taffydb "2.6.2"
     underscore "~1.13.2"
 
 jsdom@^20.0.0:
@@ -15347,11 +15354,6 @@ symbol-tree@^3.2.4:
   version "3.2.4"
   resolved "https://registry.yarnpkg.com/symbol-tree/-/symbol-tree-3.2.4.tgz#430637d248ba77e078883951fb9aa0eed7c63fa2"
   integrity sha512-9QNk5KwDF+Bvz+PyObkmSYjI5ksVUYtjW7AU22r2NKcfLJcXp96hkDWU3+XndOsUb+AQ9QhfzfCT2O+CNWT5Tw==
-
-taffydb@2.6.2:
-  version "2.6.2"
-  resolved "https://registry.yarnpkg.com/taffydb/-/taffydb-2.6.2.tgz#7cbcb64b5a141b6a2efc2c5d2c67b4e150b2a268"
-  integrity sha512-y3JaeRSplks6NYQuCOj3ZFMO3j60rTwbuKCvZxsAraGYH2epusatvZ0baZYA01WsGqJBq/Dl6vOrMUJqyMj8kA==
 
 tapable@^0.1.8:
   version "0.1.10"
