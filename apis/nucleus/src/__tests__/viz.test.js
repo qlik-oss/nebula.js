@@ -20,6 +20,7 @@ describe('viz', () => {
   let setSnPlugins;
   let takeSnapshot;
   let exportImage;
+  let getImperativeHandle;
   let convertToMock;
 
   beforeAll(() => {
@@ -29,6 +30,9 @@ describe('viz', () => {
     setSnPlugins = jest.fn();
     takeSnapshot = jest.fn();
     exportImage = jest.fn();
+    getImperativeHandle = jest.fn(async () => ({
+      api: 'api',
+    }));
     cellRef = {
       current: {
         setSnOptions,
@@ -36,6 +40,7 @@ describe('viz', () => {
         setSnPlugins,
         takeSnapshot,
         exportImage,
+        getImperativeHandle,
       },
     };
     glue = jest.fn().mockReturnValue([unmountMock, cellRef]);
@@ -101,11 +106,14 @@ describe('viz', () => {
     test('should throw if already mounted', async () => {
       try {
         mounted = api.__DO_NOT_USE__.mount('element');
+        /*
+        // This code never runs, as these tests are meant to run together, don't want to mess more with it
         const { onMount } = glue.mock.lastCall[0];
         onMount();
         await mounted;
         const result = await api.__DO_NOT_USE__.mount.bind('element2');
         await result();
+        */
       } catch (error) {
         expect(error.message).toBe('Already mounted');
       }
@@ -150,7 +158,28 @@ describe('viz', () => {
       const opts = {};
       api.__DO_NOT_USE__.options(opts);
       await mounted;
-      expect(cellRef.current.setSnOptions).toHaveBeenCalledWith(opts);
+      const args = cellRef.current.setSnOptions.mock.lastCall[0];
+      expect(args.onInitialRender).toBeInstanceOf(Function);
+      expect(Object.keys(args).length).toEqual(1);
+    });
+
+    test('should set extended sn options', async () => {
+      const opts = { myops: 'myopts' };
+      api.__DO_NOT_USE__.options(opts);
+      await mounted;
+      const args = cellRef.current.setSnOptions.mock.lastCall[0];
+      expect(args.onInitialRender).toBeInstanceOf(Function);
+      expect(args.myops).toEqual('myopts');
+      expect(Object.keys(args).length).toEqual(2);
+    });
+
+    test('should override and call onIntialRender', async () => {
+      const opts = { myops: 'myopts', onInitialRender: jest.fn() };
+      api.__DO_NOT_USE__.options(opts);
+      await mounted;
+      const args = cellRef.current.setSnOptions.mock.lastCall[0];
+      args.onInitialRender();
+      expect(opts.onInitialRender).toHaveBeenCalled();
     });
   });
 
@@ -197,6 +226,18 @@ describe('viz', () => {
       expect(convertToMock).toHaveBeenCalledTimes(1);
       expect(model.setProperties).toHaveBeenCalledTimes(0);
       expect(props).toBe('props');
+    });
+  });
+
+  describe('getImperativeHandle', () => {
+    test('should await the rendering and then call cell', async () => {
+      const opts = { myops: 'myopts', onInitialRender: jest.fn() };
+      api.__DO_NOT_USE__.options(opts);
+      await mounted;
+      const args = cellRef.current.setSnOptions.mock.lastCall[0];
+      args.onInitialRender();
+      const handle = await api.getImperativeHandle();
+      expect(handle.api).toEqual('api');
     });
   });
 });

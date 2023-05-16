@@ -22,7 +22,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
   });
 
   const createOnInitialRender = (override) => () => {
-    override();
+    override && override();
     onRender();
   };
 
