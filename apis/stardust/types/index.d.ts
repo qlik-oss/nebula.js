@@ -157,6 +157,16 @@ export function useInteractionState(): stardust.Interactions;
 export function useOptions(): object;
 
 /**
+ * This is an empty object by default, but enables you to provide a custom API of your visualization to
+ * make it possible to control after it has been rendered.
+ * 
+ * You can only use this hook once, calling it more than once is considered an error.
+ * @param factory
+ * @param deps
+ */
+export function useImperativeHandle<T>(factory: ()=>T, deps?: any[]): void;
+
+/**
  * Registers a callback that is called when a snapshot is taken.
  * @param snapshotCallback
  */
@@ -405,6 +415,11 @@ declare namespace stardust {
          */
         removeListener(eventName: string, listener: ()=>void): void;
 
+        /**
+         * Gets the specific api that a Viz exposes.
+         */
+        getImperativeHandle(): Promise<object>;
+
     }
 
     interface Flags {
@@ -489,6 +504,16 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -519,16 +544,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {

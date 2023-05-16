@@ -983,15 +983,11 @@ export function useOptions() {
 }
 
 /**
- * TODO before making public - expose getImperativeHandle on Viz
- * Exposes an API to the external environment.
- *
  * This is an empty object by default, but enables you to provide a custom API of your visualization to
  * make it possible to control after it has been rendered.
  *
  * You can only use this hook once, calling it more than once is considered an error.
  * @entry
- * @private
  * @template T
  * @param {function():T} factory
  * @param {Array<any>=} deps
