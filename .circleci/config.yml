@@ -106,7 +106,7 @@ jobs:
             curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
             chmod +x ./cc-test-reporter
             ./cc-test-reporter before-build
-            yarn test:unit --runInBand --coverage --reporters=default --reporters=jest-junit
+            yarn test:unit --coverage --reporters=default --reporters=jest-junit
             ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
