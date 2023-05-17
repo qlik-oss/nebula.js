@@ -12,6 +12,7 @@ function Frequency({ cell, checkboxes, dense, showGray }) {
       style={{ display: 'flex', alignItems: 'center' }}
       className={classes.frequencyCount}
       aria-label={frequencyText}
+      title={frequencyText}
     >
       <Typography
         noWrap
