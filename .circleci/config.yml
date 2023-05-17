@@ -103,11 +103,9 @@ jobs:
       - run:
           name: Run unit tests and publish to codeclimate
           command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
-            ./cc-test-reporter before-build
+            ./test/bin/cc-test-reporter before-build
             yarn test:unit --coverage --reporters=default --reporters=jest-junit
-            ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+            ./test/bin/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
           environment:
             JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
       - store_test_results:
