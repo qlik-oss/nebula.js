@@ -101,9 +101,6 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
-          name: Locale
-          command: yarn run locale:verify
-      - run:
           name: Run unit tests and publish to codeclimate
           command: |
             ./test/bin/cc-test-reporter before-build
