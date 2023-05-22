@@ -78,25 +78,11 @@ commands:
             <<# parameters.build >> yarn run build <</ parameters.build >>
             <<# parameters.test >>  yarn run test:e2e <</ parameters.test >>
 
-jobs:
-  install:
-    <<: *defaults
-    steps:
-      - checkout
-      - restore_cache: *restore_yarn_cache
-      - run:
-          name: Install dependencies
-          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
-      - save_cache: *save_yarn_cache
-      - store_artifacts:
-          path: package.json
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
-
   validate:
-    <<: *defaults
+    docker:
+      - image: cimg/node:20.1.0
+      - image: browserless/chrome:1-puppeteer-7.1.0
+    working_directory: ~/project
     steps:
       - attach_workspace:
           at: ~/project
@@ -120,11 +106,18 @@ jobs:
   build:
     docker:
       - image: cimg/node:20.1.0
-      - image: browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project
 
     steps:
+      - checkout
+      - restore_cache: *restore_yarn_cache
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+      - save_cache: *save_yarn_cache
+      - store_artifacts:
+          path: package.json
       - attach_workspace:
           at: ~/project
       - run:
@@ -235,21 +228,16 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - install
       - build:
-          requires:
-            - install
           filters:
             tags:
               only:
                 - /v.*/
       - validate:
           requires:
-            - install
             - build
       - test-stuff:
           requires:
-            - install
             - build
       - api-governance:
           context: api-compliance
