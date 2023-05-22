@@ -11,6 +11,8 @@
 # Example:
 # CIRCLE_TOKEN=xxx BUILD=10639 REPO=qlik-oss/nebula.js ./tools/update-baseline.sh
 
+# WARNING: DOESN*T FULLY WORK, requires some manual labor
+
 set -eo pipefail
 
 # https://circleci.com/docs/2.0/artifacts/#downloading-all-artifacts-for-a-build-on-circleci
