@@ -101,13 +101,13 @@ jobs:
           name: Locale
           command: yarn run locale:verify
       - run:
-          name: Unit Tests
+          name: Run unit tests and publish to codeclimate
           command: |
-            yarn test:unit --coverage
-            if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
-              echo "Uploading coverage results to coveralls.io..."
-              cat ./coverage/lcov.info | npx coveralls
-            fi
+            ./test/bin/cc-test-reporter before-build
+            yarn test:unit --coverage --reporters=default --reporters=jest-junit
+            ./test/bin/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
       - store_test_results:
           path: coverage/junit
       - run:
