@@ -86,9 +86,7 @@ jobs:
       - restore_cache: *restore_yarn_cache
       - run:
           name: Install dependencies
-          command: |
-            yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
-            npx playwright install --with-deps chromium
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - save_cache: *save_yarn_cache
       - store_artifacts:
           path: package.json
@@ -135,6 +133,7 @@ jobs:
       - run:
           name: Test integration
           command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - run: npx playwright install --with-deps chromium
       - nebula_create:
           project_name: 'generated/hello'
           picasso_template: 'none'
