@@ -214,7 +214,10 @@ workflows:
   version: 2
   build-deploy:
     jobs:
+      - install
       - build:
+          requires:
+            - install
           filters:
             tags:
               only:
