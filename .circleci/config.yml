@@ -1,5 +1,10 @@
 version: 2.1
 
+defaults: &defaults
+  working_directory: ~/project
+  docker:
+    - image: cimg/node:lts
+
 aliases:
   - &restore_yarn_cache
     name: Restore yarn cache
@@ -74,13 +79,8 @@ commands:
             <<# parameters.test >>  yarn run test:e2e <</ parameters.test >>
 
 jobs:
-  build:
-    docker:
-      - image: cimg/node:20.2.0
-      - image: browserless/chrome:1-puppeteer-7.1.0
-
-    working_directory: ~/project
-
+  install:
+    <<: *defaults
     steps:
       - checkout
       - restore_cache: *restore_yarn_cache
@@ -89,8 +89,22 @@ jobs:
           command: |
             yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
             npx playwright install --with-deps chromium
-
       - save_cache: *save_yarn_cache
+      - store_artifacts:
+          path: package.json
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  build:
+    docker:
+      - image: cimg/node:20.1.0
+      - image: browserless/chrome:1-puppeteer-7.1.0
+
+    working_directory: ~/project
+
+    steps:
       - run:
           name: Build
           command: yarn run build
