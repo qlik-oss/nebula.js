@@ -95,7 +95,7 @@ jobs:
           paths:
             - .
 
-  validate:
+  junit:
     <<: *defaults
     steps:
       - attach_workspace:
@@ -114,6 +114,18 @@ jobs:
       - store_test_results:
           path: coverage/junit
 
+  validate:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Locale
+          command: yarn run locale:verify
+      - run:
+          name: Lint
+          command: yarn run lint
+
   build:
     docker:
       - image: cimg/node:20.1.0
@@ -127,10 +139,6 @@ jobs:
       - run:
           name: Build
           command: yarn run build
-      # Needs to run after build for import paths to exist
-      - run:
-          name: Lint
-          command: yarn run lint
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
@@ -223,7 +231,7 @@ workflows:
   build-deploy:
     jobs:
       - install
-      - validate:
+      - junit:
           requires:
             - install
       - build:
@@ -233,6 +241,10 @@ workflows:
             tags:
               only:
                 - /v.*/
+      - validate:
+          requires:
+            - install
+            - build
       - api-governance:
           context: api-compliance
           filters:
