@@ -222,7 +222,9 @@ workflows:
   build-deploy:
     jobs:
       - install
-      - validate
+      - validate:
+          requires:
+            - install
       - build:
           requires:
             - install
