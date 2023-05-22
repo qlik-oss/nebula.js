@@ -105,6 +105,8 @@ jobs:
     working_directory: ~/project
 
     steps:
+      - attach_workspace:
+          at: ~/project
       - run:
           name: Build
           command: yarn run build
