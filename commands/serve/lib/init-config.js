@@ -84,6 +84,11 @@ const options = {
     description: 'Serves bundle to use in micro frontend',
     default: false,
   },
+  open: {
+    type: 'boolean',
+    description: 'Opens browser on serving nebula',
+    default: true,
+  },
 };
 
 module.exports = (yargs) =>
