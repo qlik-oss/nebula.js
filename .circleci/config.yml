@@ -130,6 +130,10 @@ jobs:
       - run:
           name: Build
           command: yarn run build
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
 
   test-stuff:
     docker:
