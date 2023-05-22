@@ -12,7 +12,6 @@ const config = {
     timeout: 30000,
   },
   workers: process.env.CI ? 1 : undefined,
-  updateSnapshots: 'all',
   use: {
     browserName: 'chromium',
     actionTimeout: 30000,
