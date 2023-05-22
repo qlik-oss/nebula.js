@@ -77,7 +77,7 @@ commands:
             ls -la node_modules/@nebula.js
             <<# parameters.build >> yarn run build <</ parameters.build >>
             <<# parameters.test >>  yarn run test:e2e <</ parameters.test >>
-
+jobs:
   validate:
     docker:
       - image: cimg/node:20.1.0
@@ -116,13 +116,11 @@ commands:
           name: Install dependencies
           command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - save_cache: *save_yarn_cache
-      - store_artifacts:
-          path: package.json
-      - attach_workspace:
-          at: ~/project
       - run:
           name: Build
           command: yarn run build
+      - store_artifacts:
+          path: package.json
       - persist_to_workspace:
           root: ~/project
           paths:
