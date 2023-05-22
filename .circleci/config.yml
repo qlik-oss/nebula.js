@@ -95,22 +95,6 @@ jobs:
           paths:
             - .
 
-  junit:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: ~/project
-      - run:
-          name: Run unit tests and publish to codeclimate
-          command: |
-            ./test/bin/cc-test-reporter before-build
-            yarn test:unit --coverage --reporters=default --reporters=jest-junit
-            ./test/bin/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
-          environment:
-            JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
-      - store_test_results:
-          path: coverage/junit
-
   validate:
     <<: *defaults
     steps:
@@ -122,6 +106,16 @@ jobs:
       - run:
           name: Lint
           command: yarn run lint
+      - run:
+          name: Run unit tests and publish to codeclimate
+          command: |
+            ./test/bin/cc-test-reporter before-build
+            yarn test:unit --coverage --reporters=default --reporters=jest-junit
+            ./test/bin/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
+      - store_test_results:
+          path: coverage/junit
 
   build:
     docker:
@@ -136,6 +130,16 @@ jobs:
       - run:
           name: Build
           command: yarn run build
+
+  test-stuff:
+    docker:
+      - image: cimg/node:20.1.0
+      - image: browserless/chrome:1-puppeteer-7.1.0
+
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+        at: ~/project
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
@@ -228,9 +232,6 @@ workflows:
   build-deploy:
     jobs:
       - install
-      - junit:
-          requires:
-            - install
       - build:
           requires:
             - install
@@ -239,6 +240,10 @@ workflows:
               only:
                 - /v.*/
       - validate:
+          requires:
+            - install
+            - build
+      - test-stuff:
           requires:
             - install
             - build
