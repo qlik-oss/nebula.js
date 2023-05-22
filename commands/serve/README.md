@@ -47,6 +47,7 @@ Options:
       --mfe                 Serves bundle to use in micro frontend
                                                       [boolean] [default: false]
   -h, --help                Show help                                  [boolean]
+      --open                Open up in browser         [boolean] [default: true]
 ```
 
 #### Example
