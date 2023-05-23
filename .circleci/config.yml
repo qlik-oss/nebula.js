@@ -126,7 +126,7 @@ jobs:
           paths:
             - .
 
-  test-stuff:
+  test-integration:
     docker:
       - image: cimg/node:20.1.0
       - image: browserless/chrome:1-puppeteer-7.1.0
@@ -245,7 +245,7 @@ workflows:
       - validate:
           requires:
             - build
-      - test-stuff:
+      - test-integration:
           requires:
             - build
       - test-create:
