@@ -72,34 +72,20 @@ commands:
             ls -la node_modules/@nebula.js
             <<# parameters.build >> yarn run build <</ parameters.build >>
             <<# parameters.test >>  yarn run test:e2e <</ parameters.test >>
-
 jobs:
-  build:
+  validate:
     docker:
       - image: cimg/node:20.2.0
-      - image: browserless/chrome:1-puppeteer-7.1.0
-
     working_directory: ~/project
-
     steps:
-      - checkout
-      - restore_cache: *restore_yarn_cache
-      - run:
-          name: Install dependencies
-          command: |
-            yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
-            npx playwright install --with-deps chromium
-
-      - save_cache: *save_yarn_cache
-      - run:
-          name: Build
-          command: yarn run build
-      - run:
-          name: Lint
-          command: yarn run lint
+      - attach_workspace:
+          at: ~/project
       - run:
           name: Locale
           command: yarn run locale:verify
+      - run:
+          name: Lint
+          command: yarn run lint
       - run:
           name: Run unit tests and publish to codeclimate
           command: |
@@ -110,6 +96,42 @@ jobs:
             JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
       - store_test_results:
           path: coverage/junit
+
+  build:
+    docker:
+      - image: cimg/node:20.1.0
+
+    working_directory: ~/project
+    resource_class: large
+
+    steps:
+      - checkout
+      - restore_cache: *restore_yarn_cache
+      - run:
+          name: Install dependencies
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
+      - save_cache: *save_yarn_cache
+      - run:
+          name: Build
+          command: yarn run build
+      - store_artifacts:
+          path: package.json
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  test-integration:
+    docker:
+      - image: cimg/node:20.1.0
+      - image: browserless/chrome:1-puppeteer-7.1.0
+
+    working_directory: ~/project
+    resource_class: large
+
+    steps:
+      - attach_workspace:
+          at: ~/project
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
@@ -119,6 +141,29 @@ jobs:
       - run:
           name: Test integration
           command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - run: npx playwright install --with-deps chromium
+      - run:
+          name: Test rendering
+          command: yarn run test:rendering
+      - store_test_results:
+          path: ./test/rendering/reports/xml/report.xml
+      - store_artifacts:
+          path: ./test/rendering
+      - store_artifacts:
+          path: ./test/rendering/reports/html
+
+  test-create:
+    docker:
+      - image: cimg/node:20.1.0
+      - image: browserless/chrome:1-puppeteer-7.1.0
+
+    working_directory: ~/project
+    resource_class: large
+
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: npx playwright install --with-deps chromium
       - nebula_create:
           project_name: 'generated/hello'
           picasso_template: 'none'
@@ -139,15 +184,6 @@ jobs:
           path: generated/barchart/screenshots
       - store_artifacts:
           path: test/mashup/__artifacts__
-      - run:
-          name: Test rendering
-          command: yarn run test:rendering
-      - store_test_results:
-          path: ./test/rendering/reports/xml/report.xml
-      - store_artifacts:
-          path: ./test/rendering
-      - store_artifacts:
-          path: ./test/rendering/reports/html
 
   api-governance:
     machine:
@@ -206,6 +242,15 @@ workflows:
             tags:
               only:
                 - /v.*/
+      - validate:
+          requires:
+            - build
+      - test-integration:
+          requires:
+            - build
+      - test-create:
+          requires:
+            - build
       - api-governance:
           context: api-compliance
           filters:
