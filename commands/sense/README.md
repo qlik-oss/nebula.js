@@ -22,7 +22,6 @@ Options:
   --output     Destination directory            [string] [default: "<name>-ext"]
   --minify     Minify and uglify code                  [boolean] [default: true]
   --sourcemap  Generate sourcemaps                    [boolean] [default: false]
-  --legacy     Generate legacy extension              [boolean] [default: false]
   -h, --help   Show help                                               [boolean]
 ```
 
@@ -123,21 +122,3 @@ example:
   "supernova": true
 }
 ```
-
-The `"supernova": true` attribute should not be added when building with the
---legacy option below.
-
-### Legacy
-
-Qlik Sense before 2020 does not support nebula supernova natively, so a special
-build path is needed for visualizations to load properly in the client.
-For this purpose, use the --legacy option.
-
-```bash
-nebula sense --legacy
-```
-
-You can find that the generated `QEXT` file does not include `supernova: true`.
-
-Note:
-For old Qlik Sense, not all features of extension are presented.

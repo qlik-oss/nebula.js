@@ -52,13 +52,14 @@ const languages = [
   'ru-RU',
 ];
 
-const constraints = [];
+const interactions = ['select', 'active', 'passive'];
 
-function getContstraints(arr) {
+function getInteractions(arr) {
   return {
     select: arr.indexOf('select') !== -1,
     active: arr.indexOf('active') !== -1,
     passive: arr.indexOf('passive') !== -1,
+    edit: arr.indexOf('edit') !== -1,
   };
 }
 
@@ -74,12 +75,13 @@ export default function Visualize() {
   const [currentThemeName, setCurrentThemeName] = useState(storage.get('themeName'));
   const [currentLanguage, setCurrentLanguage] = useState(storage.get('language') || 'en-US');
   const [currentMuiThemeName, setCurrentMuiThemeName] = useState('light');
-  const [currentConstraints, setCurrentConstraints] = useState(constraints);
+  const [currentInteractions, setCurrentInteractions] = useState(interactions);
   const [objectListMode, setObjectListMode] = useState(storage.get('objectListMode') === true);
   const currentSelectionsRef = useRef(null);
   const [currentId, setCurrentId] = useState();
   const [themeChooserAnchorEl, setThemeChooserAnchorEl] = React.useState(null);
   const [languageChooserAnchorEl, setLanguageChooserAnchorEl] = React.useState(null);
+  const [initialized, setInit] = useState(false);
   const [nebbie, setNebbie] = useState(null);
   const customThemes = Array.isArray(info?.themes) && info.themes.length ? ['light', 'dark', ...info.themes] : [];
 
@@ -97,16 +99,21 @@ export default function Visualize() {
   );
 
   useEffect(() => {
-    if (info) initiateWatch(info);
+    (async () => {
+      if (info) {
+        await initiateWatch(info);
+        setInit(true);
+      }
+    })();
   }, [info]);
 
   useEffect(() => {
-    if (waiting) return;
+    if (waiting || !initialized) return;
     const n = embed(app, {
       context: {
         theme: currentThemeName,
         language: currentLanguage,
-        constraints: getContstraints(currentConstraints),
+        interactions: getInteractions(currentInteractions),
         keyboardNavigation: info?.keyboardNavigation,
       },
       load: (type) => Promise.resolve(window[type.name]),
@@ -132,7 +139,7 @@ export default function Visualize() {
     }
 
     setNebbie(n);
-  }, [app, info, waiting]);
+  }, [app, info, waiting, initialized]);
 
   useLayoutEffect(() => {
     if (!nebbie) return;
@@ -191,12 +198,12 @@ export default function Visualize() {
     setLanguageChooserAnchorEl(null);
     storage.save('language', lang);
     setCurrentLanguage(lang);
-    nebbie.context({ language: lang });
+    nebbie && nebbie.context({ language: lang });
   };
 
-  const handleConstraintsChange = (e, newValue) => {
-    setCurrentConstraints(newValue);
-    nebbie.context({ constraints: getContstraints(newValue) });
+  const handleInteractionsChange = (e, newValue) => {
+    setCurrentInteractions(newValue);
+    nebbie && nebbie.context({ interactions: getInteractions(newValue) });
   };
 
   const toggleDarkMode = () => {
@@ -257,14 +264,20 @@ export default function Visualize() {
                       </Tabs>
                     </Grid>
                     <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                      <Grid item>
-                        <Typography>Constraints</Typography>
-                      </Grid>
                       <Grid item gap={1}>
-                        <ToggleButtonGroup size="small" value={currentConstraints} onChange={handleConstraintsChange}>
+                        <Typography>State:</Typography>
+                      </Grid>
+                      <Grid item gap={2}>
+                        <ToggleButtonGroup
+                          size="small"
+                          value={currentInteractions}
+                          onChange={handleInteractionsChange}
+                          color="primary"
+                        >
                           <ToggleButton value="select">Select</ToggleButton>
                           <ToggleButton value="active">Active</ToggleButton>
                           <ToggleButton value="passive">Passive</ToggleButton>
+                          <ToggleButton value="edit">Edit</ToggleButton>
                         </ToggleButtonGroup>
                       </Grid>
                       <Grid item>

@@ -103,11 +103,13 @@ export default function ListBox({
       selectDisabled,
       layout,
     });
+  }
 
-    if (itemsLoader.pages.length && !awaitingFrequencyMax) {
-      // All necessary data fetching done - signal rendering done!
-      renderedCallback?.();
-    }
+  const cardinal = layout?.qListObject.qDimensionInfo.qCardinal;
+
+  if ((itemsLoader?.pages.length && !awaitingFrequencyMax) || cardinal === 0) {
+    // All necessary data fetching done - signal rendering done!
+    renderedCallback?.();
   }
 
   const isItemLoaded = useCallback(
@@ -307,7 +309,7 @@ export default function ListBox({
   return (
     <StyledWrapper>
       <ScreenReaderForSelections className="screenReaderOnly" layout={layout} />
-      {!listCount && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
+      {!listCount && cardinal > 0 && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
         itemCount={listCount || 1} // must be more than 0 or loadMoreItems will never be called again

@@ -39,6 +39,7 @@ const getUrlParamOptions = (params) => ({
     context: {
       theme: params.theme,
       language: params.language,
+      keyboardNavigation: params.keyboardNavigation,
     },
   },
 });
@@ -128,7 +129,7 @@ const renderFixture = async (params) => {
   });
   const events = snConfig?.events || [];
   events.forEach((e) => {
-    viz.on(e, (message) => {
+    viz.addListener(e, (message) => {
       document.querySelector('#events').innerHTML = message;
     });
   });

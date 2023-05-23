@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "4.0.0-alpha.9",
+    "version": "4.0.3",
     "license": "MIT",
     "stability": "stable"
   },
@@ -438,7 +438,10 @@
       ]
     },
     "useConstraints": {
-      "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should respected by you when implementing the visualization.",
+      "description": "Gets the desired constraints that should be applied when rendering the visualization.\n\nThe constraints are set on the embed configuration before the visualization is rendered\nand should be respected when implementing the visualization.",
+      "availability": {
+        "deprecated": true
+      },
       "kind": "function",
       "params": [],
       "returns": {
@@ -447,6 +450,18 @@
       "examples": [
         "// configure embed to disallow active interactions when rendering\nembed(app, {\n context: {\n   constraints: {\n     active: true, // do not allow interactions\n   }\n }\n}).render({ element, id: 'sdfsdf' });",
         "import { useConstraints } from '@nebula.js/stardust';\n// ...\nconst constraints = useConstraints();\nuseEffect(() => {\n  if (constraints.active) {\n    // do not add any event listener if active constraint is set\n    return undefined;\n  }\n  const listener = () => {};\n  element.addEventListener('click', listener);\n  return () => {\n    element.removeEventListener('click', listener);\n  };\n}, [constraints])"
+      ]
+    },
+    "useInteractionState": {
+      "description": "Gets the desired interaction states that should be applied when rendering the visualization.\n\nThe interactions are set on the embed configuration before the visualization is rendered\nand should be respected when implementing the visualization.",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "type": "#/definitions/Interactions"
+      },
+      "examples": [
+        "// configure embed to disallow active interactions when rendering\nembed(app, {\n context: {\n   interactions: {\n     active: false, // do not allow interactions\n   }\n }\n}).render({ element, id: 'sdfsdf' });",
+        "import { useInteractionState } from '@nebula.js/stardust';\n// ...\nconst interactions = useInteractionState();\nuseEffect(() => {\n  if (!interactions.active) {\n    // do not add any event listener if active constraint is set\n    return undefined;\n  }\n  const listener = () => {};\n  element.addEventListener('click', listener);\n  return () => {\n    element.removeEventListener('click', listener);\n  };\n}, [interactions])"
       ]
     },
     "useOptions": {
@@ -510,7 +525,7 @@
         "type": "Emitter"
       },
       "examples": [
-        "// In a Nebula visualization\nimport { useEmitter } from '@nebula.js/stardust';\nuseEffect(()=> {\n  // on some trigger\n  emitter.emit(\"trigger\", params)\n}, [...])\n\n// In a mashup\nconst viz = await n.render({\n  element: el,\n  id: 'abcdef'\n});\nviz.on(\"trigger\", ()=> {\n  // do something\n})"
+        "// In a Nebula visualization\nimport { useEmitter } from '@nebula.js/stardust';\nuseEffect(()=> {\n  // on some trigger\n  emitter.emit(\"trigger\", params)\n}, [...])\n\n// In a mashup\nconst viz = await n.render({\n  element: el,\n  id: 'abcdef'\n});\nviz.addListener(\"trigger\", ()=> {\n  // do something\n})"
       ]
     },
     "useKeyboard": {
@@ -628,28 +643,6 @@
     "Context": {
       "kind": "interface",
       "entries": {
-        "keyboardNavigation": {
-          "optional": true,
-          "type": "boolean"
-        },
-        "constraints": {
-          "optional": true,
-          "kind": "object",
-          "entries": {
-            "active": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "passive": {
-              "optional": true,
-              "type": "boolean"
-            },
-            "select": {
-              "optional": true,
-              "type": "boolean"
-            }
-          }
-        },
         "theme": {
           "optional": true,
           "defaultValue": "light",
@@ -664,6 +657,25 @@
           "optional": true,
           "defaultValue": "auto",
           "type": "string"
+        },
+        "constraints": {
+          "description": "Deprecated",
+          "optional": true,
+          "type": "#/definitions/Constraints"
+        },
+        "interactions": {
+          "optional": true,
+          "type": "#/definitions/Interactions"
+        },
+        "keyboardNavigation": {
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "disableCellPadding": {
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
         }
       }
     },
@@ -791,7 +803,7 @@
           },
           "examples": [
             "// change theme\nn.context({ theme: 'dark'});",
-            "// limit constraints\nn.context({ constraints: { active: true } });"
+            "// change interactions\nn.context({ interactions: { select: false } });"
           ]
         },
         "selections": {
@@ -1234,7 +1246,7 @@
             "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.convertTo('barChart');"
           ]
         },
-        "on": {
+        "addListener": {
           "description": "Listens to custom events from inside the visualization. See useEmitter",
           "stability": "experimental",
           "kind": "function",
@@ -1252,7 +1264,7 @@
             }
           ]
         },
-        "off": {
+        "removeListener": {
           "description": "Removes a listener",
           "stability": "experimental",
           "kind": "function",
@@ -1332,6 +1344,46 @@
         "params": []
       },
       "entries": {
+        "addListener": {
+          "description": "Event listener function on instance",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventType",
+              "description": "event type that function needs to listen",
+              "type": "string"
+            },
+            {
+              "name": "callback",
+              "description": "a callback function to run when event emits",
+              "kind": "function",
+              "params": []
+            }
+          ],
+          "examples": [
+            "api.addListener('someEvent', () => {...});"
+          ]
+        },
+        "removeListener": {
+          "description": "Remove listener function on instance",
+          "kind": "function",
+          "params": [
+            {
+              "name": "eventType",
+              "description": "event type that function needs to listen",
+              "type": "string"
+            },
+            {
+              "name": "callback",
+              "description": "a callback function to run when event emits",
+              "kind": "function",
+              "params": []
+            }
+          ],
+          "examples": [
+            "api.removeListener('someEvent', () => {...});"
+          ]
+        },
         "begin": {
           "kind": "function",
           "params": [
@@ -1997,21 +2049,62 @@
       }
     },
     "Constraints": {
+      "availability": {
+        "deprecated": true
+      },
       "kind": "interface",
       "entries": {
         "passive": {
           "description": "Whether or not passive constraints are on. Should block any passive interaction by users, ie: tooltips",
           "optional": true,
+          "defaultValue": false,
           "type": "boolean"
         },
         "active": {
           "description": "Whether or not active constraints are on. Should block any active interaction by users, ie: scroll, click",
           "optional": true,
+          "defaultValue": false,
           "type": "boolean"
         },
         "select": {
-          "description": "Whether or not active select are on. Should block any selection action. Implied when active is true.",
+          "description": "Whether or not select constraints are on. Should block any selection action. Implied when active is true.",
           "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "edit": {
+          "description": "Whether or not edit actions are available. Should block any edit action.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        }
+      }
+    },
+    "Interactions": {
+      "kind": "interface",
+      "entries": {
+        "passive": {
+          "description": "Whether or not passive interactions are on. Allows passive interaction by users, ie: tooltips",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "active": {
+          "description": "Whether or not active interactions are on. Allows active interaction by users, ie: scroll, click",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "select": {
+          "description": "Whether or not select interactions are on. Alows selection actions. Implied when active is false.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "edit": {
+          "description": "Whether or not edit actions are on. Allows edit actions.",
+          "optional": true,
+          "defaultValue": false,
           "type": "boolean"
         }
       }
@@ -2040,22 +2133,30 @@
           "type": "boolean"
         },
         "blur": {
-          "description": "Function used by the visualization to tell Nebula to it wants to relinquish focus",
+          "description": "Function used by the visualization to tell Nebula it wants to relinquish focus",
           "optional": true,
           "kind": "function",
-          "params": []
+          "params": [
+            {
+              "type": "boolean"
+            }
+          ]
         },
         "focus": {
-          "description": "Function used by the visualization to tell Nebula to it wants focus",
+          "description": "Function used by the visualization to tell Nebula it wants to focus",
           "optional": true,
           "kind": "function",
           "params": []
         },
         "focusSelection": {
-          "description": "Function used by the visualization to tell Nebula to focus the selection toolbar",
+          "description": "Function used by the visualization to tell Nebula that focus the selection toolbar",
           "optional": true,
           "kind": "function",
-          "params": []
+          "params": [
+            {
+              "type": "boolean"
+            }
+          ]
         }
       }
     },
@@ -2282,6 +2383,22 @@
         "params": []
       },
       "entries": {
+        "language": {
+          "description": "Returns current locale.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "lang",
+              "description": "language Locale to updated the currentLocale value",
+              "optional": true,
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "current locale.",
+            "type": "string"
+          }
+        },
         "add": {
           "description": "Registers a string in multiple locales",
           "kind": "function",
@@ -2344,6 +2461,18 @@
         "params": []
       },
       "entries": {
+        "name": {
+          "description": "Returns theme name",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "Current theme.",
+            "type": "string"
+          },
+          "examples": [
+            "theme.name();"
+          ]
+        },
         "getDataColorScales": {
           "kind": "function",
           "params": [],

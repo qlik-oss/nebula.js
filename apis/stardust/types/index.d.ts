@@ -132,9 +132,18 @@ export function useAction<A>(factory: ()=>stardust.ActionDefinition<A>, deps?: a
  * Gets the desired constraints that should be applied when rendering the visualization.
  * 
  * The constraints are set on the embed configuration before the visualization is rendered
- * and should respected by you when implementing the visualization.
+ * and should be respected when implementing the visualization.
+ * @deprecated
  */
 export function useConstraints(): stardust.Constraints;
+
+/**
+ * Gets the desired interaction states that should be applied when rendering the visualization.
+ * 
+ * The interactions are set on the embed configuration before the visualization is rendered
+ * and should be respected when implementing the visualization.
+ */
+export function useInteractionState(): stardust.Interactions;
 
 /**
  * Gets the options object provided when rendering the visualization.
@@ -212,15 +221,13 @@ declare namespace stardust {
     }
 
     interface Context {
-        keyboardNavigation?: boolean;
-        constraints?: {
-            active?: boolean;
-            passive?: boolean;
-            select?: boolean;
-        };
         theme?: string;
         language?: string;
         deviceType?: string;
+        constraints?: stardust.Constraints;
+        interactions?: stardust.Interactions;
+        keyboardNavigation?: boolean;
+        disableCellPadding?: boolean;
     }
 
     interface Galaxy {
@@ -389,14 +396,14 @@ declare namespace stardust {
          * @param eventName Event name to listen to
          * @param listener Callback function to invoke
          */
-        on(eventName: string, listener: ()=>void): void;
+        addListener(eventName: string, listener: ()=>void): void;
 
         /**
          * Removes a listener
          * @param eventName Event name to remove from
          * @param listener Callback function to remove
          */
-        off(eventName: string, listener: ()=>void): void;
+        removeListener(eventName: string, listener: ()=>void): void;
 
     }
 
@@ -426,6 +433,20 @@ declare namespace stardust {
 
     class ObjectSelections {
         constructor();
+
+        /**
+         * Event listener function on instance
+         * @param eventType event type that function needs to listen
+         * @param callback a callback function to run when event emits
+         */
+        addListener(eventType: string, callback: ()=>void): void;
+
+        /**
+         * Remove listener function on instance
+         * @param eventType event type that function needs to listen
+         * @param callback a callback function to run when event emits
+         */
+        removeListener(eventType: string, callback: ()=>void): void;
 
         /**
          * @param paths
@@ -597,10 +618,21 @@ declare namespace stardust {
         };
     }
 
+    /**
+     * @deprecated
+     */
     interface Constraints {
         passive?: boolean;
         active?: boolean;
         select?: boolean;
+        edit?: boolean;
+    }
+
+    interface Interactions {
+        passive?: boolean;
+        active?: boolean;
+        select?: boolean;
+        edit?: boolean;
     }
 
     interface RenderState {
@@ -612,17 +644,19 @@ declare namespace stardust {
         enabled: boolean;
         active: boolean;
         /**
-         * Function used by the visualization to tell Nebula to it wants to relinquish focus
+         * Function used by the visualization to tell Nebula it wants to relinquish focus
+         * @param $
          */
-        blur?(): void;
+        blur?($: boolean): void;
         /**
-         * Function used by the visualization to tell Nebula to it wants focus
+         * Function used by the visualization to tell Nebula it wants to focus
          */
         focus?(): void;
         /**
-         * Function used by the visualization to tell Nebula to focus the selection toolbar
+         * Function used by the visualization to tell Nebula that focus the selection toolbar
+         * @param $
          */
-        focusSelection?(): void;
+        focusSelection?($: boolean): void;
     }
 
     /**
@@ -674,6 +708,12 @@ declare namespace stardust {
         constructor();
 
         /**
+         * Returns current locale.
+         * @param lang language Locale to updated the currentLocale value
+         */
+        language(lang?: string): string;
+
+        /**
          * Registers a string in multiple locales
          * @param item
          */
@@ -693,6 +733,11 @@ declare namespace stardust {
 
     class Theme {
         constructor();
+
+        /**
+         * Returns theme name
+         */
+        name(): string;
 
         getDataColorScales(): stardust.Theme.ScalePalette[];
 

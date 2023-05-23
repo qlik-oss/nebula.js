@@ -9,6 +9,7 @@ module.exports = {
       '../theme/src/**/*.js',
       '../conversion/src/**/*.js',
       '../enigma-mocker/src/**/*.js',
+      '!../nucleus/src/components/listbox/default-properties.js',
     ],
     api: {
       stability: 'stable',

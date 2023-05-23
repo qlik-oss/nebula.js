@@ -66,7 +66,7 @@ export function create({ halo, parent }) {
     },
     getSupportedVersion: (name, propertyVersion) => {
       if (!tc[name]) {
-        return null;
+        return undefined;
       }
       return tc[name].getMatchingVersionFromProperties(propertyVersion);
     },

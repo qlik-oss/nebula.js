@@ -1,0 +1,185 @@
+{
+  "scriptappy": "1.1.0",
+  "info": {
+    "name": "@nebula.js/stardust:listbox",
+    "description": "nebula listbox properties definition",
+    "version": "4.0.3",
+    "license": "MIT",
+    "stability": "experimental"
+  },
+  "entries": {},
+  "definitions": {
+    "ListboxProperties": {
+      "entries": {
+        "checkboxes": {
+          "description": "Show values as checkboxes instead of as fields.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "frequencyMax": {
+          "description": "frequencyMax calculation\nneeded for histogram when not using qListObjectDef.qFrequencyMode: 'P'\nuse an expression in the form `Max(AGGR(Count([field]), [field]))` (when needed)\nor 'fetch' that triggers an extra engine call but needed for library dimension that could change field when using the object",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'fetch'"
+            },
+            {
+              "type": "#/definitions/ValueExpression"
+            }
+          ]
+        },
+        "histogram": {
+          "description": "Show histogram bar.\nalso requires (qListObjectDef.qFrequencyMode 'V' and frequencyMax) or qListObjectDef.qFrequencyMode 'P'",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "layoutOptions": {
+          "description": "Layout settings.",
+          "optional": true,
+          "entries": {
+            "dataLayout": {
+              "description": "Layout mode.",
+              "optional": true,
+              "defaultValue": "singleColumn",
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "literal",
+                  "value": "'singleColumn'"
+                },
+                {
+                  "kind": "literal",
+                  "value": "'grid'"
+                }
+              ]
+            },
+            "dense": {
+              "description": "Dense mode.",
+              "optional": true,
+              "defaultValue": false,
+              "type": "boolean"
+            },
+            "layoutOrder": {
+              "description": "Layout order.\nOnly used when dataLayout is 'grid'",
+              "optional": true,
+              "defaultValue": "row",
+              "kind": "union",
+              "items": [
+                {
+                  "kind": "literal",
+                  "value": "'row'"
+                },
+                {
+                  "kind": "literal",
+                  "value": "'column'"
+                }
+              ]
+            },
+            "maxVisibleColumns": {
+              "description": "Max visible columns.\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'row'",
+              "optional": true,
+              "entries": {
+                "auto": {
+                  "description": "Automatically fit as many columns as possible.\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'row'",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
+                "maxColumns": {
+                  "description": "Fixed number of max visible columns.\nOnly used when dataLayout is 'grid'\nlayoutOrder is 'row'\nand auto is false",
+                  "optional": true,
+                  "defaultValue": 3,
+                  "type": "number"
+                }
+              },
+              "kind": "object"
+            },
+            "maxVisibleRows": {
+              "description": "Max visible rows.\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'column'",
+              "optional": true,
+              "entries": {
+                "auto": {
+                  "description": "Automatically fits as many rows as possible.\nOnly used when dataLayout is 'grid'\nand layoutOrder is 'column'",
+                  "optional": true,
+                  "defaultValue": true,
+                  "type": "boolean"
+                },
+                "maxRows": {
+                  "description": "Fixed number of max visible rows.\nOnly used when dataLayout is 'grid'\nlayoutOrder is 'column'\nand auto is false",
+                  "optional": true,
+                  "defaultValue": 3,
+                  "type": "number"
+                }
+              },
+              "kind": "object"
+            }
+          },
+          "kind": "object"
+        },
+        "qListObjectDef": {
+          "type": "#/definitions/ListObjectDef"
+        },
+        "searchEnabled": {
+          "description": "Enables search.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "showTitle": {
+          "description": "Show title.",
+          "optional": true,
+          "defaultValue": true,
+          "type": "boolean"
+        },
+        "title": {
+          "description": "Listbox title",
+          "optional": true,
+          "defaultValue": "",
+          "type": "string"
+        },
+        "wildCardSearch": {
+          "description": "Pre-fill search input field with wildcard characters.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        }
+      },
+      "kind": "object"
+    },
+    "ListObjectDef": {
+      "description": "Extends `ListObjectDef`, see Engine API: `ListObjectDef`.",
+      "extends": [
+        {
+          "type": "EngineAPI.IListObjectDef"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "frequencyEnabled": {
+          "description": "Show frequency count. also requires qListObjectDef.qFrequencyMode to be set",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        }
+      }
+    },
+    "ValueExpression": {
+      "description": "see: https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FValueExpression",
+      "kind": "object",
+      "entries": {
+        "qValueExpression": {
+          "kind": "object",
+          "entries": {
+            "qExpr": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

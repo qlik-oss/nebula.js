@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/test-utils",
-  "version": "4.0.0-alpha.9",
+  "version": "4.0.3",
   "private": true,
   "description": "",
   "license": "MIT",
@@ -25,6 +25,6 @@
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
   "peerDependencies": {
-    "@nebula.js/stardust": ">=3.0.0"
+    "@nebula.js/stardust": ">=4.0.0"
   }
 }

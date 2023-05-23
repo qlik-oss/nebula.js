@@ -278,11 +278,20 @@ describe('<Listbox />', () => {
 
     test('should render a disclaimer when list count is 0 but should still render a list component', async () => {
       layout.qListObject.qSize.qcy = 0;
+      layout.qListObject.qDimensionInfo.qCardinal = 1;
       await render();
       const disclaimers = renderer.root.findAllByType(ListBoxDisclaimer);
       expect(disclaimers).toHaveLength(1);
       const listRows = renderer.root.findAllByProps({ className: 'a-value-row' });
       expect(listRows).toHaveLength(1);
+    });
+
+    test('should not render a disclaimer when list count is 0 and qCardinal is 0', async () => {
+      layout.qListObject.qSize.qcy = 0;
+      layout.qListObject.qDimensionInfo.qCardinal = 0;
+      await render();
+      const disclaimers = renderer.root.findAllByType(ListBoxDisclaimer);
+      expect(disclaimers).toHaveLength(0);
     });
   });
 });

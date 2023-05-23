@@ -12,6 +12,11 @@ export default function translator({ initial = 'en-US', fallback = 'en-US' } = {
    * @class Translator
    */
   const api = /** @lends Translator# */ {
+    /**
+     * Returns current locale.
+     * @param {string=} lang - language Locale to updated the currentLocale value
+     * @returns {string} current locale.
+     */
     language: (lang) => {
       if (lang) {
         currentLocale = lang;

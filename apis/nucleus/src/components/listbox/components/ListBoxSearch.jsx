@@ -150,6 +150,8 @@ export default function ListBoxSearch({
         if (e.ctrlKey || e.metaKey) {
           if (hide) {
             hide();
+            // Focus the row we last visited or the first one.
+            focusRow(container);
           }
         } else {
           return undefined;

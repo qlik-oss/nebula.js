@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/qlik-oss/nebula.js/compare/v4.0.2...v4.0.3) (2023-05-15)
+
+**Note:** Version bump only for package @nebula.js/cli-build
+
+## [4.0.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.1...v4.0.2) (2023-05-10)
+
+### Bug Fixes
+
+- correct build cli options ([b64a813](https://github.com/qlik-oss/nebula.js/commit/b64a8133f42fe9842ebcf503752084799fc1d943))
+
+## [4.0.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0...v4.0.1) (2023-05-10)
+
+### Features
+
+- add browser, and preferBuiltins cli args ([#1225](https://github.com/qlik-oss/nebula.js/issues/1225)) ([41dea12](https://github.com/qlik-oss/nebula.js/commit/41dea12f08e2a9c4b624bb26b6f95f825772b3a9))
+
+## [4.0.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0...v4.0.1) (2023-05-10)
+
+### Features
+
+- add browser, and preferBuiltins cli args ([#1225](https://github.com/qlik-oss/nebula.js/issues/1225)) ([41dea12](https://github.com/qlik-oss/nebula.js/commit/41dea12f08e2a9c4b624bb26b6f95f825772b3a9))
+
+# [4.0.0](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0) (2023-05-08)
+
+### Features
+
+- to be able to disable systemjs in build ([#1230](https://github.com/qlik-oss/nebula.js/issues/1230)) ([557ba46](https://github.com/qlik-oss/nebula.js/commit/557ba4623e6662bfae2dac86ec6e4164bcec4e87))
+
+# [4.0.0-alpha.10](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0-alpha.10) (2023-05-03)
+
+### Features
+
+- to be able to disable systemjs in build ([#1230](https://github.com/qlik-oss/nebula.js/issues/1230)) ([557ba46](https://github.com/qlik-oss/nebula.js/commit/557ba4623e6662bfae2dac86ec6e4164bcec4e87))
+
 # [4.0.0-alpha.9](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.8...v4.0.0-alpha.9) (2023-04-14)
 
 **Note:** Version bump only for package @nebula.js/cli-build

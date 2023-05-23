@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/qlik-oss/nebula.js/compare/v4.0.2...v4.0.3) (2023-05-15)
+
+**Note:** Version bump only for package @nebula.js/theme
+
+## [4.0.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.1...v4.0.2) (2023-05-10)
+
+**Note:** Version bump only for package @nebula.js/theme
+
+## [4.0.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0...v4.0.1) (2023-05-10)
+
+**Note:** Version bump only for package @nebula.js/theme
+
+## [4.0.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0...v4.0.1) (2023-05-10)
+
+**Note:** Version bump only for package @nebula.js/theme
+
+# [4.0.0](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0) (2023-05-08)
+
+### Bug Fixes
+
+- **type:** add missing type info required by `sn-table` ([#1193](https://github.com/qlik-oss/nebula.js/issues/1193)) ([53573b6](https://github.com/qlik-oss/nebula.js/commit/53573b6c909071fb97bf96af01cb4ae15fcae046))
+
+# [4.0.0-alpha.10](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0-alpha.10) (2023-05-03)
+
+**Note:** Version bump only for package @nebula.js/theme
+
 # [4.0.0-alpha.9](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.8...v4.0.0-alpha.9) (2023-04-14)
 
 **Note:** Version bump only for package @nebula.js/theme

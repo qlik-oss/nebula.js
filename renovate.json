@@ -1,5 +1,5 @@
 {
-  "extends": ["qlik-oss", "schedule:monthly"],
+  "extends": ["local>qlik-oss/renovate-config"],
   "circleci": {
     "ignoreDeps": []
   },
@@ -10,5 +10,6 @@
       "depTypeList": ["engines"],
       "enabled": false
     }
-  ]
+  ],
+  "dependencyDashboard": true
 }

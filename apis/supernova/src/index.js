@@ -23,6 +23,7 @@ export {
   useDeviceType,
   usePlugins,
   useConstraints,
+  useInteractionState,
   useKeyboard,
   useOptions,
   useEmbed,

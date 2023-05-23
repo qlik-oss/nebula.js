@@ -3,6 +3,71 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/qlik-oss/nebula.js/compare/v4.0.2...v4.0.3) (2023-05-15)
+
+### Bug Fixes
+
+- do not crash on unknown chart + footer ([#1268](https://github.com/qlik-oss/nebula.js/issues/1268)) ([05abdf4](https://github.com/qlik-oss/nebula.js/commit/05abdf4f5560e4ff42770a69bf2c4039324890ff))
+- mark invalid listboxes as rendered ([#1264](https://github.com/qlik-oss/nebula.js/issues/1264)) ([1bb0f26](https://github.com/qlik-oss/nebula.js/commit/1bb0f268a0496c7315ae29b9a5241e13e7e1e7a9))
+
+## [4.0.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.1...v4.0.2) (2023-05-10)
+
+### Bug Fixes
+
+- correct build cli options ([b64a813](https://github.com/qlik-oss/nebula.js/commit/b64a8133f42fe9842ebcf503752084799fc1d943))
+
+## [4.0.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0...v4.0.1) (2023-05-10)
+
+### Features
+
+- add browser, and preferBuiltins cli args ([#1225](https://github.com/qlik-oss/nebula.js/issues/1225)) ([41dea12](https://github.com/qlik-oss/nebula.js/commit/41dea12f08e2a9c4b624bb26b6f95f825772b3a9))
+
+# [4.0.0](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0) (2023-05-08)
+
+### Bug Fixes
+
+- add box-shadow to scrollbar when focus ([#1234](https://github.com/qlik-oss/nebula.js/issues/1234)) ([0cea2be](https://github.com/qlik-oss/nebula.js/commit/0cea2be537691ac43ab77fe21bc4b68effcdccae))
+- correct usage of event-emitter ([#1258](https://github.com/qlik-oss/nebula.js/issues/1258)) ([bac12a7](https://github.com/qlik-oss/nebula.js/commit/bac12a784af27d5ee978fb4335cdb8d589c5e31b))
+- correctly await types in serve ([#1242](https://github.com/qlik-oss/nebula.js/issues/1242)) ([096219d](https://github.com/qlik-oss/nebula.js/commit/096219dfec8e555191ec9770d95a06dd4add13dc))
+- fix Home/End navigation and focus ([#1224](https://github.com/qlik-oss/nebula.js/issues/1224)) ([c6960d4](https://github.com/qlik-oss/nebula.js/commit/c6960d42dfdc2ffeb7041ba040e60282838c306c))
+- **listbox:** detach toolbar on resize ([#1232](https://github.com/qlik-oss/nebula.js/issues/1232)) ([4df9595](https://github.com/qlik-oss/nebula.js/commit/4df9595fb2c3654acd55437a0bbcf8d8a2fe4ae3))
+- move focus on (one case of) close search ([#1229](https://github.com/qlik-oss/nebula.js/issues/1229)) ([e6d37a9](https://github.com/qlik-oss/nebula.js/commit/e6d37a9496f509c3a733941a6f2c2ff47553692f))
+- prevent several text lines by using nowrap instead of pre ([#1233](https://github.com/qlik-oss/nebula.js/issues/1233)) ([5643362](https://github.com/qlik-oss/nebula.js/commit/564336231a582de20a76cf439da15402b1a53413))
+- resolve server url to empty string ([#1241](https://github.com/qlik-oss/nebula.js/issues/1241)) ([f7e2bfa](https://github.com/qlik-oss/nebula.js/commit/f7e2bfa2e791654f2e7c127835120ddca1ded731))
+- support keyboard navigation (arrow key up/down) in grid mode ([#1231](https://github.com/qlik-oss/nebula.js/issues/1231)) ([a3fafd2](https://github.com/qlik-oss/nebula.js/commit/a3fafd2eedd75baa1731783fde86fa7c48f9632b))
+- take empty field into account ([#1250](https://github.com/qlik-oss/nebula.js/issues/1250)) ([b11e9c9](https://github.com/qlik-oss/nebula.js/commit/b11e9c915f1401e6baa9abefd7f02b066ce5d1a0))
+- **type:** add missing type info required by `sn-table` ([#1193](https://github.com/qlik-oss/nebula.js/issues/1193)) ([53573b6](https://github.com/qlik-oss/nebula.js/commit/53573b6c909071fb97bf96af01cb4ae15fcae046))
+
+### Features
+
+- add filterpane handler for creating filterpane objects ([#1226](https://github.com/qlik-oss/nebula.js/issues/1226)) ([6341023](https://github.com/qlik-oss/nebula.js/commit/6341023916032b26ae2ba5e28334daf320366e47))
+- add useInteractions and deprecate useContraints ([#1196](https://github.com/qlik-oss/nebula.js/issues/1196)) ([7243ee4](https://github.com/qlik-oss/nebula.js/commit/7243ee4b7a9b2c793807cb9bc463f6f13eaefa60))
+- listbox properties spec ([#1228](https://github.com/qlik-oss/nebula.js/issues/1228)) ([60a977f](https://github.com/qlik-oss/nebula.js/commit/60a977f906cb2ff3fa1eb42d8878699574fe79f1))
+- remove sense legacy build path ([#1244](https://github.com/qlik-oss/nebula.js/issues/1244)) ([6a5e34d](https://github.com/qlik-oss/nebula.js/commit/6a5e34de7d1dfbca62d67c8b8ac06561b5b6e395))
+- support keyboardNavigation in fxiture rendering ([#1256](https://github.com/qlik-oss/nebula.js/issues/1256)) ([31b2775](https://github.com/qlik-oss/nebula.js/commit/31b2775796978e9f0e1081abc1897ff9bd081601))
+- to be able to disable systemjs in build ([#1230](https://github.com/qlik-oss/nebula.js/issues/1230)) ([557ba46](https://github.com/qlik-oss/nebula.js/commit/557ba4623e6662bfae2dac86ec6e4164bcec4e87))
+
+# [4.0.0-alpha.10](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0-alpha.10) (2023-05-03)
+
+### Bug Fixes
+
+- add box-shadow to scrollbar when focus ([#1234](https://github.com/qlik-oss/nebula.js/issues/1234)) ([0cea2be](https://github.com/qlik-oss/nebula.js/commit/0cea2be537691ac43ab77fe21bc4b68effcdccae))
+- correctly await types in serve ([#1242](https://github.com/qlik-oss/nebula.js/issues/1242)) ([096219d](https://github.com/qlik-oss/nebula.js/commit/096219dfec8e555191ec9770d95a06dd4add13dc))
+- fix Home/End navigation and focus ([#1224](https://github.com/qlik-oss/nebula.js/issues/1224)) ([c6960d4](https://github.com/qlik-oss/nebula.js/commit/c6960d42dfdc2ffeb7041ba040e60282838c306c))
+- **listbox:** detach toolbar on resize ([#1232](https://github.com/qlik-oss/nebula.js/issues/1232)) ([4df9595](https://github.com/qlik-oss/nebula.js/commit/4df9595fb2c3654acd55437a0bbcf8d8a2fe4ae3))
+- prevent several text lines by using nowrap instead of pre ([#1233](https://github.com/qlik-oss/nebula.js/issues/1233)) ([5643362](https://github.com/qlik-oss/nebula.js/commit/564336231a582de20a76cf439da15402b1a53413))
+- resolve server url to empty string ([#1241](https://github.com/qlik-oss/nebula.js/issues/1241)) ([f7e2bfa](https://github.com/qlik-oss/nebula.js/commit/f7e2bfa2e791654f2e7c127835120ddca1ded731))
+- support keyboard navigation (arrow key up/down) in grid mode ([#1231](https://github.com/qlik-oss/nebula.js/issues/1231)) ([a3fafd2](https://github.com/qlik-oss/nebula.js/commit/a3fafd2eedd75baa1731783fde86fa7c48f9632b))
+- take empty field into account ([#1250](https://github.com/qlik-oss/nebula.js/issues/1250)) ([b11e9c9](https://github.com/qlik-oss/nebula.js/commit/b11e9c915f1401e6baa9abefd7f02b066ce5d1a0))
+
+### Features
+
+- add filterpane handler for creating filterpane objects ([#1226](https://github.com/qlik-oss/nebula.js/issues/1226)) ([6341023](https://github.com/qlik-oss/nebula.js/commit/6341023916032b26ae2ba5e28334daf320366e47))
+- add useInteractions and deprecate useContraints ([#1196](https://github.com/qlik-oss/nebula.js/issues/1196)) ([7243ee4](https://github.com/qlik-oss/nebula.js/commit/7243ee4b7a9b2c793807cb9bc463f6f13eaefa60))
+- listbox properties spec ([#1228](https://github.com/qlik-oss/nebula.js/issues/1228)) ([60a977f](https://github.com/qlik-oss/nebula.js/commit/60a977f906cb2ff3fa1eb42d8878699574fe79f1))
+- remove sense legacy build path ([#1244](https://github.com/qlik-oss/nebula.js/issues/1244)) ([6a5e34d](https://github.com/qlik-oss/nebula.js/commit/6a5e34de7d1dfbca62d67c8b8ac06561b5b6e395))
+- to be able to disable systemjs in build ([#1230](https://github.com/qlik-oss/nebula.js/issues/1230)) ([557ba46](https://github.com/qlik-oss/nebula.js/commit/557ba4623e6662bfae2dac86ec6e4164bcec4e87))
+
 # [4.0.0-alpha.9](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.8...v4.0.0-alpha.9) (2023-04-14)
 
 ### Bug Fixes

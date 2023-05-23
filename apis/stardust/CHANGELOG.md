@@ -3,6 +3,37 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.0.3](https://github.com/qlik-oss/nebula.js/compare/v4.0.2...v4.0.3) (2023-05-15)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+## [4.0.2](https://github.com/qlik-oss/nebula.js/compare/v4.0.1...v4.0.2) (2023-05-10)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+## [4.0.1](https://github.com/qlik-oss/nebula.js/compare/v4.0.0...v4.0.1) (2023-05-10)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [4.0.0](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0) (2023-05-08)
+
+### Bug Fixes
+
+- correct usage of event-emitter ([#1258](https://github.com/qlik-oss/nebula.js/issues/1258)) ([bac12a7](https://github.com/qlik-oss/nebula.js/commit/bac12a784af27d5ee978fb4335cdb8d589c5e31b))
+- **type:** add missing type info required by `sn-table` ([#1193](https://github.com/qlik-oss/nebula.js/issues/1193)) ([53573b6](https://github.com/qlik-oss/nebula.js/commit/53573b6c909071fb97bf96af01cb4ae15fcae046))
+
+### Features
+
+- add useInteractions and deprecate useContraints ([#1196](https://github.com/qlik-oss/nebula.js/issues/1196)) ([7243ee4](https://github.com/qlik-oss/nebula.js/commit/7243ee4b7a9b2c793807cb9bc463f6f13eaefa60))
+- listbox properties spec ([#1228](https://github.com/qlik-oss/nebula.js/issues/1228)) ([60a977f](https://github.com/qlik-oss/nebula.js/commit/60a977f906cb2ff3fa1eb42d8878699574fe79f1))
+
+# [4.0.0-alpha.10](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.9...v4.0.0-alpha.10) (2023-05-03)
+
+### Features
+
+- add useInteractions and deprecate useContraints ([#1196](https://github.com/qlik-oss/nebula.js/issues/1196)) ([7243ee4](https://github.com/qlik-oss/nebula.js/commit/7243ee4b7a9b2c793807cb9bc463f6f13eaefa60))
+- listbox properties spec ([#1228](https://github.com/qlik-oss/nebula.js/issues/1228)) ([60a977f](https://github.com/qlik-oss/nebula.js/commit/60a977f906cb2ff3fa1eb42d8878699574fe79f1))
+
 # [4.0.0-alpha.9](https://github.com/qlik-oss/nebula.js/compare/v4.0.0-alpha.8...v4.0.0-alpha.9) (2023-04-14)
 
 ### Bug Fixes

@@ -26,6 +26,8 @@ Options:
                                  [string] [choices: "production", "development"]
   --core           Set a core build target            [string] [default: "core"]
   --typescript     Enable typescript bundling         [boolean] [default: false]
+  --preferBuiltins Configuration option that specifies whether to use Node.js built-in modules [boolean] [default: true]
+  --browser        Instructs the build to use the browser module resolutions in package.json and adds 'browser' to exportConditions if it is not present so browser conditionals in exports are applied.  [boolean] [default: false]
 ```
 
 ## Example
