@@ -103,7 +103,7 @@ jobs:
       - store_test_results:
           path: coverage/junit
 
-  install:
+  build:
     docker:
       - image: cimg/node:20.1.0
 
@@ -117,24 +117,11 @@ jobs:
           name: Install dependencies
           command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - save_cache: *save_yarn_cache
-      - store_artifacts:
-          path: package.json
-      - persist_to_workspace:
-          root: ~/project
-          paths:
-            - .
-
-  build:
-    docker:
-      - image: cimg/node:20.1.0
-
-    working_directory: ~/project
-    resource_class: large
-
-    steps:
       - run:
           name: Build
           command: yarn run build
+      - store_artifacts:
+          path: package.json
       - persist_to_workspace:
           root: ~/project
           paths:
@@ -212,6 +199,11 @@ jobs:
       - checkout
       - attach_workspace:
           at: ~/project
+      - restore_cache: *restore_yarn_cache
+      - run:
+          name: Install dependencies
+          command: |
+            yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - run:
           name: Create version.txt
           command: |
@@ -250,10 +242,7 @@ workflows:
   version: 2
   build-deploy:
     jobs:
-      - install
       - build:
-          requires:
-            - install
           filters:
             tags:
               only:
