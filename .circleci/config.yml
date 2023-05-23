@@ -1,10 +1,5 @@
 version: 2.1
 
-defaults: &defaults
-  working_directory: ~/project
-  docker:
-    - image: cimg/node:lts
-
 aliases:
   - &restore_yarn_cache
     name: Restore yarn cache
@@ -80,8 +75,7 @@ commands:
 jobs:
   validate:
     docker:
-      - image: cimg/node:20.1.0
-      - image: browserless/chrome:1-puppeteer-7.1.0
+      - image: cimg/node-browsers:20.2.0
     working_directory: ~/project
     steps:
       - attach_workspace:
