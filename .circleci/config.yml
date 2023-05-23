@@ -75,7 +75,7 @@ commands:
 jobs:
   validate:
     docker:
-      - image: cimg/node-browsers:20.2.0
+      - image: cimg/node:20.2.0-browsers
     working_directory: ~/project
     steps:
       - attach_workspace:
