@@ -149,7 +149,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     },
     /**
      * Gets the specific api that a Viz exposes.
-     * @returns {Promise<object>} object that contains the interal Viz api.
+     * @returns {Promise<object>} object that contains the internal Viz api.
      */
     async getImperativeHandle() {
       await rendered;
