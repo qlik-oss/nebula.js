@@ -145,6 +145,26 @@ jobs:
           name: Test integration
           command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - run: npx playwright install --with-deps chromium
+      - run:
+          name: Test rendering
+          command: yarn run test:rendering
+      - store_test_results:
+          path: ./test/rendering/reports/xml/report.xml
+      - store_artifacts:
+          path: ./test/rendering
+      - store_artifacts:
+          path: ./test/rendering/reports/html
+
+  test-create:
+    docker:
+      - image: cimg/node:20.1.0
+      - image: browserless/chrome:1-puppeteer-7.1.0
+
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: npx playwright install --with-deps chromium
       - nebula_create:
           project_name: 'generated/hello'
           picasso_template: 'none'
@@ -165,15 +185,6 @@ jobs:
           path: generated/barchart/screenshots
       - store_artifacts:
           path: test/mashup/__artifacts__
-      - run:
-          name: Test rendering
-          command: yarn run test:rendering
-      - store_test_results:
-          path: ./test/rendering/reports/xml/report.xml
-      - store_artifacts:
-          path: ./test/rendering
-      - store_artifacts:
-          path: ./test/rendering/reports/html
 
   api-governance:
     machine:
@@ -235,6 +246,9 @@ workflows:
           requires:
             - build
       - test-stuff:
+          requires:
+            - build
+      - test-create:
           requires:
             - build
       - api-governance:
