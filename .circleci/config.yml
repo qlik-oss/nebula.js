@@ -108,6 +108,7 @@ jobs:
       - image: cimg/node:20.1.0
 
     working_directory: ~/project
+    resource_class: large
 
     steps:
       - checkout
@@ -132,6 +133,8 @@ jobs:
       - image: browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project
+    resource_class: large
+
     steps:
       - attach_workspace:
           at: ~/project
@@ -161,6 +164,8 @@ jobs:
       - image: browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project
+    resource_class: large
+
     steps:
       - attach_workspace:
           at: ~/project
