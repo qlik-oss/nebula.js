@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust:listbox",
     "description": "nebula listbox properties definition",
-    "version": "4.0.3",
+    "version": "4.1.0",
     "license": "MIT",
     "stability": "experimental"
   },
