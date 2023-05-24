@@ -157,6 +157,16 @@ export function useInteractionState(): stardust.Interactions;
 export function useOptions(): object;
 
 /**
+ * This is an empty object by default, but enables you to provide a custom API of your visualization to
+ * make it possible to control after it has been rendered.
+ * 
+ * You can only use this hook once, calling it more than once is considered an error.
+ * @param factory
+ * @param deps
+ */
+export function useImperativeHandle<T>(factory: ()=>T, deps?: any[]): void;
+
+/**
  * Registers a callback that is called when a snapshot is taken.
  * @param snapshotCallback
  */
@@ -404,6 +414,11 @@ declare namespace stardust {
          * @param listener Callback function to remove
          */
         removeListener(eventName: string, listener: ()=>void): void;
+
+        /**
+         * Gets the specific api that a Viz exposes.
+         */
+        getImperativeHandle(): Promise<object>;
 
     }
 

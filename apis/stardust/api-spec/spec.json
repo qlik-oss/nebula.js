@@ -476,6 +476,37 @@
         "// it is up to you use and implement the provided options\nimport { useOptions } from '@nebula.js/stardust';\nimport { useEffect } from '@nebula.js/stardust';\n// ...\nconst options = useOptions();\nuseEffect(() => {\n  if (!options.showNavigation) {\n    // hide navigation\n  } else {\n    // show navigation\n  }\n}, [options.showNavigation]);"
       ]
     },
+    "useImperativeHandle": {
+      "description": "This is an empty object by default, but enables you to provide a custom API of your visualization to\nmake it possible to control after it has been rendered.\n\nYou can only use this hook once, calling it more than once is considered an error.",
+      "templates": [
+        {
+          "name": "T"
+        }
+      ],
+      "kind": "function",
+      "params": [
+        {
+          "name": "factory",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "type": "T"
+          }
+        },
+        {
+          "name": "deps",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "any"
+          }
+        }
+      ],
+      "examples": [
+        "import { useImperativeHandle } form '@nebula.js/stardust';\n// ...\nuseImperativeHandle(() => ({\n  resetZoom() {\n    setZoomed(false);\n  }\n}));",
+        "// when embedding the visualization, you can get a handle to this API\n// and use it to control the visualization\nconst ctl = await embed(app).render({\n  element,\n  type: 'my-chart',\n});\nctl.getImperativeHandle().resetZoom();"
+      ]
+    },
     "onTakeSnapshot": {
       "description": "Registers a callback that is called when a snapshot is taken.",
       "kind": "function",
@@ -1281,6 +1312,20 @@
               "params": []
             }
           ]
+        },
+        "getImperativeHandle": {
+          "description": "Gets the specific api that a Viz exposes.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "object that contains the internal Viz api.",
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "object"
+              }
+            ]
+          }
         }
       },
       "examples": [
