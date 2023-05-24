@@ -376,7 +376,7 @@ function ListBoxInline({ options, layout }) {
                 </Title>
               )}
             </Grid>
-            <Grid item>
+            <Grid item sx={{ paddingRight: '4px' }}>
               <ActionsToolbar direction={direction} {...getActionToolbarProps(isToolbarDetached)} />
             </Grid>
           </Grid>

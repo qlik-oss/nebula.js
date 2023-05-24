@@ -18,21 +18,11 @@ const PREFIX = 'ActionsToolbar';
 const classes = {
   item: `${PREFIX}-item`,
   itemSpacing: `${PREFIX}-itemSpacing`,
-  firstItemSpacing: `${PREFIX}-firstItemSpacing`,
-  lastItemSpacing: `${PREFIX}-lastItemSpacing`,
 };
 
 const StyledPopover = styled(Popover)(({ theme }) => ({
   [`& .${classes.itemSpacing}`]: {
-    padding: theme.spacing(0, 0.5),
-  },
-
-  [`& .${classes.firstItemSpacing}`]: {
-    padding: theme.spacing(0, 0.5, 0, 0),
-  },
-
-  [`& .${classes.lastItemSpacing}`]: {
-    padding: theme.spacing(0, 0, 0, 0.5),
+    padding: theme.spacing(0, 0.25),
   },
 }));
 
@@ -47,37 +37,14 @@ const ActionToolbarElement = {
 };
 
 const ActionsGroup = React.forwardRef(
-  (
-    { className, ariaExpanded = false, actions = [], first = false, last = false, addAnchor = false, isRtl = false },
-    ref
-  ) =>
+  ({ className, ariaExpanded = false, actions = [], addAnchor = false, isRtl = false }, ref) =>
     actions.length > 0 ? (
       <Grid item container gap={0} flexDirection={isRtl ? 'row-reverse' : 'row'} wrap="nowrap" className={className}>
-        {actions.map((e, ix) => {
-          let cls = [];
-          const isFirstItem = first && ix === 0;
-          const isLastItem = last && actions.length - 1 === ix;
-          if (isFirstItem && !isLastItem) {
-            cls = [classes.firstItemSpacing, classes.item];
-          }
-          if (isLastItem && !isFirstItem) {
-            cls = [...cls, classes.lastItemSpacing, classes.item];
-          }
-          if (!isFirstItem && !isLastItem && cls.length === 0) {
-            cls = [classes.itemSpacing, classes.item];
-          }
-          return (
-            <Grid item key={e.key} className={cls.join(' ').trim()}>
-              <Item
-                ariaExpanded={ariaExpanded}
-                key={e.key}
-                item={e}
-                ref={ix === 0 ? ref : null}
-                addAnchor={addAnchor}
-              />
-            </Grid>
-          );
-        })}
+        {actions.map((e, ix) => (
+          <Grid item key={e.key} className={`${classes.itemSpacing} ${classes.item}`}>
+            <Item ariaExpanded={ariaExpanded} key={e.key} item={e} ref={ix === 0 ? ref : null} addAnchor={addAnchor} />
+          </Grid>
+        ))}
       </Grid>
     ) : null
 );
@@ -119,7 +86,7 @@ function ActionsToolbar({
   const [showMoreItems, setShowMoreItems] = useState(false);
 
   const popoverAnchorOrigin = {
-    vertical: 7,
+    vertical: 12,
     horizontal: (popover.anchorEl?.clientWidth ?? 0) - 7,
   };
 
@@ -204,7 +171,7 @@ function ActionsToolbar({
       data-testid="actions-toolbar"
       sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
     >
-      {showActions && <ActionsGroup actions={newActions} first last={!showMore && !selections.show} />}
+      {showActions && <ActionsGroup actions={newActions} />}
       {showMore && (
         <ActionsGroup
           id="actions-toolbar-show-more"
@@ -212,8 +179,6 @@ function ActionsToolbar({
           ref={moreRef}
           ariaExpanded={showMoreItems}
           actions={[moreItem]}
-          first={!showActions}
-          last={!selections.show}
           addAnchor
         />
       )}
@@ -223,13 +188,7 @@ function ActionsToolbar({
         </Grid>
       )}
       {selections.show && (
-        <ActionsGroup
-          className="actions-toolbar-default-actions"
-          actions={defaultSelectionActions}
-          first={!showActions && !showMore}
-          last
-          isRtl={isRtl}
-        />
+        <ActionsGroup className="actions-toolbar-default-actions" actions={defaultSelectionActions} isRtl={isRtl} />
       )}
       {showMoreItems && (
         <More
@@ -261,7 +220,7 @@ function ActionsToolbar({
         className: ActionToolbarElement.className,
         style: {
           pointerEvents: 'auto',
-          padding: theme.spacing(0.8),
+          padding: theme.spacing(0.5, 0.25),
         },
       }}
     >
