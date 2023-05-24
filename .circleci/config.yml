@@ -190,14 +190,8 @@ jobs:
       image: ubuntu-2004:current
     working_directory: ~/project
     steps:
-      - checkout
       - attach_workspace:
           at: ~/project
-      - restore_cache: *restore_yarn_cache
-      - run:
-          name: Install dependencies
-          command: |
-            yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - run:
           name: Create version.txt
           command: |
@@ -253,6 +247,8 @@ workflows:
             - build
       - api-governance:
           context: api-compliance
+          requires:
+            - build
           filters:
             branches:
               # Forked pull requests have CIRCLE_BRANCH set to pull/XXX
