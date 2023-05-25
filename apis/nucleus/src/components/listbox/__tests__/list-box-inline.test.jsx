@@ -95,7 +95,7 @@ describe('<ListboxInline />', () => {
     jest.spyOn(isDirectQueryEnabled, 'default').mockImplementation(() => false);
 
     ActionsToolbarModule.default = ActionsToolbar;
-    ListBoxModule.default = <div className="theListBox" />;
+    jest.spyOn(ListBoxModule, 'default').mockReturnValue(<div className="theListBox" />);
     ListBoxSearchModule.default = ListBoxSearch;
     listboxSelectionToolbarModule.default = createListboxSelectionToolbar;
 

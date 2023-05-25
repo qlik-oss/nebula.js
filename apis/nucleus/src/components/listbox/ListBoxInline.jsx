@@ -416,6 +416,7 @@ function ListBoxInline({ options, layout }) {
                   <ListBox
                     model={model}
                     app={app}
+                    theme={theme}
                     constraints={constraints}
                     layout={layout}
                     selections={selections}

@@ -66,6 +66,7 @@ const RowColRoot = styled('div', {
     alignItems: 'center',
     minWidth: 0,
     flexGrow: 1,
+    width: '100%',
     // Note that this padding is overridden when using checkboxes.
     paddingLeft: `${CELL_PADDING_LEFT}px`,
     paddingRight: 0,
@@ -150,7 +151,7 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    flex: `0 1 ${frequencyWidth}px`,
+    flexBasis: `${frequencyWidth}px`,
     textAlign: direction === 'rtl' ? 'left' : 'right',
     paddingLeft: '2px',
   },

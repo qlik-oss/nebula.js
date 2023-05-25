@@ -1,7 +1,8 @@
 import calculateColumnMode from './column-mode';
 import calculateRowMode from './row-mode';
+import getFrequencyWidth from './get-frequency-width';
 import {
-  FREQUENCY_WIDTH,
+  FREQUENCY_MIN_WIDTH,
   ITEM_MAX_WIDTH,
   ITEM_MIN_WIDTH,
   SCROLL_BAR_WIDTH,
@@ -16,13 +17,14 @@ export default function getListSizes({
   listCount,
   count,
   textWidth,
+  frequencyTextWidth,
   freqIsAllowed,
   checkboxes,
 }) {
   const { layoutOptions = {} } = layout || {};
   const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense, dataLayout } = layoutOptions;
 
-  const frequencyAddWidth = freqIsAllowed ? FREQUENCY_WIDTH : 0;
+  const frequencyAddWidth = freqIsAllowed ? FREQUENCY_MIN_WIDTH : 0;
   const checkboxAddWidth = checkboxes ? CHECKBOX_WIDTH : 0;
   const tickIconWidth = CHECKBOX_WIDTH;
 
@@ -108,6 +110,6 @@ export default function getListSizes({
     listCount: limitedListCount,
     maxCount: { row: maxRowCount, column: maxColumnCount },
     itemPadding,
-    frequencyWidth: FREQUENCY_WIDTH,
+    frequencyWidth: getFrequencyWidth({ frequencyTextWidth, columnWidth: isGridMode ? columnWidth : width }),
   };
 }

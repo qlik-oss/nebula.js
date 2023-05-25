@@ -1,10 +1,12 @@
-import { CHECKBOX_WIDTH, FREQUENCY_WIDTH, ITEM_MIN_WIDTH } from '../../../constants';
+import { CHECKBOX_WIDTH, FREQUENCY_MIN_WIDTH, ITEM_MIN_WIDTH } from '../../../constants';
+import * as getFrequencyWidthModule from '../get-frequency-width';
 import getListSizes from '../get-list-sizes';
 
 describe('get-list-sizes', () => {
   let args;
 
   beforeEach(() => {
+    jest.spyOn(getFrequencyWidthModule, 'default').mockReturnValue(40);
     args = {
       layout: {
         layoutOptions: {
@@ -142,7 +144,7 @@ describe('get-list-sizes', () => {
     args.freqIsAllowed = true;
     const sizes = getListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_WIDTH + CHECKBOX_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_MIN_WIDTH + CHECKBOX_WIDTH,
       maxCount: {
         column: 289224,
       },
@@ -158,7 +160,7 @@ describe('get-list-sizes', () => {
     args.freqIsAllowed = true;
     const sizes = getListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_WIDTH + CHECKBOX_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_MIN_WIDTH + CHECKBOX_WIDTH,
       maxCount: {
         column: 289224,
       },

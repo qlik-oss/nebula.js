@@ -22,6 +22,12 @@ describe('measure-text', () => {
     expect(text).toHaveLength(10);
   });
 
+  it('should handle a number instead of extracting it from layout', () => {
+    const text = getMeasureText(9);
+    expect(text).toEqual('MMMMMMMMM');
+    expect(text).toHaveLength(9);
+  });
+
   it('should return an empty string', () => {
     const layout = undefined;
     const text = getMeasureText(layout);

@@ -1,5 +1,5 @@
 /* eslint no-underscore-dangle:0 */
-import React, { useEffect, useState, useCallback, useRef, useContext } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useContext, useMemo } from 'react';
 import InfiniteLoader from 'react-window-infinite-loader';
 import { styled } from '@mui/material';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
@@ -18,6 +18,7 @@ import getFrequencyAllowed from './components/grid-list-components/frequency-all
 import useFrequencyMax from './hooks/useFrequencyMax';
 import { ScreenReaderForSelections } from './components/ScreenReaders';
 import InstanceContext from '../../contexts/InstanceContext';
+import { getFrequencyMaxGlyphCount } from './utils/frequencyMaxUtil';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -33,6 +34,7 @@ const StyledWrapper = styled('div')(() => ({
 export default function ListBox({
   model,
   app,
+  theme,
   constraints,
   layout,
   selections,
@@ -184,7 +186,9 @@ export default function ListBox({
     fetchData();
   }, [layout, local.current.dataOffset]);
 
-  const textWidth = useTextWidth({ text: getMeasureText(layout), font: '14px Source sans pro' });
+  const { fontSize = '14px', fontFamily = 'Source sans pro' } = theme.listBox?.content || {};
+  const font = `${fontSize} ${fontFamily}`; // font format as supported by canvas
+  const textWidth = useTextWidth({ text: getMeasureText(layout), font });
 
   let minimumBatchSize = DEFAULT_MIN_BATCH_SIZE;
 
@@ -202,6 +206,9 @@ export default function ListBox({
   });
 
   let freqIsAllowed = getFrequencyAllowed({ itemWidth: width, layout, frequencyMode });
+  const freqMaxGlyphCount = useMemo(() => freqIsAllowed && getFrequencyMaxGlyphCount(pages), [pages, freqIsAllowed]);
+  const frequencyTextWidth = useTextWidth({ text: getMeasureText(freqMaxGlyphCount), font });
+
   const sizes = getListSizes({
     layout,
     width,
@@ -209,6 +216,7 @@ export default function ListBox({
     listCount: unlimitedListCount,
     count,
     textWidth,
+    frequencyTextWidth,
     freqIsAllowed,
     checkboxes,
   });

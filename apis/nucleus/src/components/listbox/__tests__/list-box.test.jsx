@@ -41,6 +41,7 @@ describe('<Listbox />', () => {
   let setTimeoutStub;
   let useSelectionsInteractions;
   let isModal;
+  let theme;
 
   beforeEach(() => {
     jest.useFakeTimers();
@@ -108,6 +109,15 @@ describe('<Listbox />', () => {
     selections = { key: 'selections' };
     selectionState = { update: jest.fn() };
 
+    theme = {
+      listBox: {
+        content: {
+          fontSize: '18px',
+          fontFamily: 'Buffalo bill pro',
+        },
+      },
+    };
+
     args = {
       model: {
         getListObjectData: jest.fn().mockResolvedValue(pages),
@@ -152,6 +162,7 @@ describe('<Listbox />', () => {
             <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
               <ListBox
                 model={mergedArgs.model}
+                theme={theme}
                 layout={layout}
                 frequencyMode={mergedArgs.frequencyMode}
                 histogram={mergedArgs.histogram}

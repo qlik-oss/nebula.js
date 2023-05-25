@@ -22,3 +22,8 @@ export const getFrequencyMax = async (layout, app) => {
   const evaluadedExpression = await app.evaluateEx(expression);
   return evaluadedExpression.qNumber;
 };
+export const getFrequencyMaxGlyphCount = (pages) => {
+  const freqLengthsArr = pages.map((p) => p.qMatrix.map(([item]) => item.qFrequency?.length ?? 0)).flat();
+  const maxCount = freqLengthsArr.length === 0 ? 0 : Math.max(...freqLengthsArr);
+  return maxCount;
+};
