@@ -19,7 +19,7 @@ import useAppSelections from '../../hooks/useAppSelections';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-get-action-props';
 import createSelectionState from './hooks/selections/selectionState';
-import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH } from './constants';
+import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH, HEADER_PADDING_RIGHT } from './constants';
 import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
 import useRect from '../../hooks/useRect';
@@ -223,13 +223,22 @@ function ListBoxInline({ options, layout }) {
   const isDrillDown = layout?.qListObject?.qDimensionInfo?.qGrouping === 'H';
   const showIcons = showSearchOrLockIcon || isDrillDown;
   const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
+  const isRtl = direction === 'rtl';
+  const headerPaddingLeft = CELL_PADDING_LEFT - (showSearchOrLockIcon ? ICON_PADDING : 0);
+  const headerPaddingRight = isRtl ? CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0) : HEADER_PADDING_RIGHT;
 
   useEffect(() => {
     if (!titleRef.current || !containerRect) {
       return;
     }
 
-    const isDetached = showToolbarDetached({ containerRect, titleRef, iconsWidth });
+    const isDetached = showToolbarDetached({
+      containerRect,
+      titleRef,
+      iconsWidth,
+      headerPaddingLeft,
+      headerPaddingRight,
+    });
     setIsToolbarDetached(isDetached);
   }, [titleRef.current, containerRect]);
 
@@ -237,7 +246,6 @@ function ListBoxInline({ options, layout }) {
     return null;
   }
 
-  const isRtl = direction === 'rtl';
   const listboxSelectionToolbarItems = createListboxSelectionToolbar({
     layout,
     model,
@@ -282,8 +290,6 @@ function ListBoxInline({ options, layout }) {
     });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
-  const headerPaddingLeft = CELL_PADDING_LEFT - (showSearchOrLockIcon ? ICON_PADDING : 0);
-  const headerPaddingRight = isRtl ? CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0) : 0;
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
   const isGridMode = layoutOptions?.dataLayout === 'grid';
@@ -376,7 +382,7 @@ function ListBoxInline({ options, layout }) {
                 </Title>
               )}
             </Grid>
-            <Grid item sx={{ paddingRight: '4px' }}>
+            <Grid item>
               <ActionsToolbar direction={direction} {...getActionToolbarProps(isToolbarDetached)} />
             </Grid>
           </Grid>
