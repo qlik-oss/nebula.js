@@ -151,7 +151,7 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    flexBasis: `${frequencyWidth}px`,
+    flex: `0 0 ${frequencyWidth}px`,
     textAlign: direction === 'rtl' ? 'left' : 'right',
     paddingLeft: '2px',
   },
