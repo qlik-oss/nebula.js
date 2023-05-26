@@ -49,7 +49,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     focusListItems,
     listCount,
     itemPadding,
-    frequencyWidth,
     translator,
     showSearch,
     isModal,
@@ -205,7 +204,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
       dense={dense}
-      frequencyWidth={frequencyWidth}
       direction={direction}
       data-testid="listbox.item"
     >

@@ -1,4 +1,4 @@
-import { CHECKBOX_WIDTH, FREQUENCY_WIDTH, ITEM_MIN_WIDTH } from '../../../constants';
+import { CHECKBOX_WIDTH, FREQUENCY_ADD_WIDTH, ITEM_MIN_WIDTH } from '../../../constants';
 import getListSizes from '../get-list-sizes';
 
 describe('get-list-sizes', () => {
@@ -49,7 +49,6 @@ describe('get-list-sizes', () => {
       itemHeight: 29,
       listCount: 100,
       listHeight: 300,
-      frequencyWidth: 40,
       maxCount: {
         column: 508333,
         row: 577000,
@@ -81,7 +80,6 @@ describe('get-list-sizes', () => {
       itemHeight: 36,
       listCount: 100,
       listHeight: 300,
-      frequencyWidth: 40,
       maxCount: {
         column: 493382,
         row: 577000,
@@ -107,7 +105,6 @@ describe('get-list-sizes', () => {
       itemHeight: 36,
       listCount: 100,
       listHeight: 300,
-      frequencyWidth: 40,
       maxCount: {
         column: 262109,
         row: 577000,
@@ -142,7 +139,7 @@ describe('get-list-sizes', () => {
     args.freqIsAllowed = true;
     const sizes = getListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_WIDTH + CHECKBOX_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_ADD_WIDTH + CHECKBOX_WIDTH,
       maxCount: {
         column: 289224,
       },
@@ -158,7 +155,7 @@ describe('get-list-sizes', () => {
     args.freqIsAllowed = true;
     const sizes = getListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_WIDTH + CHECKBOX_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_ADD_WIDTH + CHECKBOX_WIDTH,
       maxCount: {
         column: 289224,
       },
@@ -196,7 +193,6 @@ describe('get-list-sizes', () => {
       itemHeight: 29,
       listCount: args.listCount,
       listHeight: 300,
-      frequencyWidth: 40,
       maxCount: {
         column: 508333,
         row: 577000,
@@ -226,7 +222,6 @@ describe('get-list-sizes', () => {
       itemHeight,
       listCount: columnCount * rowCount,
       listHeight: 3 * itemHeight,
-      frequencyWidth: 40,
       maxCount: {
         column: columnCount,
         row: 577000,
@@ -256,7 +251,6 @@ describe('get-list-sizes', () => {
       itemHeight,
       listCount: columnCount * 2,
       listHeight: 3 * itemHeight - 1,
-      frequencyWidth: 40,
       maxCount: {
         column: columnCount,
         row: 577000,

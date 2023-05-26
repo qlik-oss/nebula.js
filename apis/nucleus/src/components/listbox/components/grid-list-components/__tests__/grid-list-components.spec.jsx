@@ -92,7 +92,6 @@ describe('grid-list-components', () => {
         rowCount: 200,
         columnCount: 2,
         columnWidth: 50,
-        frequencyWidth: 100,
         overflowStyling: {
           overflowX: 'hidden',
         },
