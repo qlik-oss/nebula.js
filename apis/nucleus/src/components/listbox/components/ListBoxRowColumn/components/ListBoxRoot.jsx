@@ -1,7 +1,13 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
-import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
+import {
+  barBorderWidthPx,
+  barPadPx,
+  barWithCheckboxLeftPadPx,
+  CELL_PADDING_LEFT,
+  FREQUENCY_MIN_WIDTH,
+} from '../../../constants';
 
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
@@ -150,6 +156,7 @@ const RowColRoot = styled('div', {
     justifyContent: 'flex-end',
     ...ellipsis,
     flex: `0 1 30%`,
+    minWidth: FREQUENCY_MIN_WIDTH,
     textAlign: direction === 'rtl' ? 'left' : 'right',
     paddingLeft: '2px',
   },

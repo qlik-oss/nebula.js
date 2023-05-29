@@ -1,4 +1,4 @@
-import { CHECKBOX_WIDTH, FREQUENCY_ADD_WIDTH, ITEM_MIN_WIDTH } from '../../../constants';
+import { CHECKBOX_WIDTH, FREQUENCY_MIN_WIDTH, ITEM_MIN_WIDTH } from '../../../constants';
 import getListSizes from '../get-list-sizes';
 
 describe('get-list-sizes', () => {
@@ -99,14 +99,14 @@ describe('get-list-sizes', () => {
     const sizes = getListSizes(args);
     expect(sizes).toEqual({
       columnCount: 34,
-      columnWidth: 128,
+      columnWidth: 138,
       count: 200,
       itemPadding: 4,
       itemHeight: 36,
       listCount: 100,
       listHeight: 300,
       maxCount: {
-        column: 262109,
+        column: 243115,
         row: 577000,
       },
       overflowStyling: {
@@ -139,9 +139,9 @@ describe('get-list-sizes', () => {
     args.freqIsAllowed = true;
     const sizes = getListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_ADD_WIDTH + CHECKBOX_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_MIN_WIDTH + CHECKBOX_WIDTH,
       maxCount: {
-        column: 289224,
+        column: 266269,
       },
     });
   });
@@ -155,9 +155,9 @@ describe('get-list-sizes', () => {
     args.freqIsAllowed = true;
     const sizes = getListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_ADD_WIDTH + CHECKBOX_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_MIN_WIDTH + CHECKBOX_WIDTH,
       maxCount: {
-        column: 289224,
+        column: 266269,
       },
     });
   });
