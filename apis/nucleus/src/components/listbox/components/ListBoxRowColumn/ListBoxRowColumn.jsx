@@ -48,13 +48,14 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     dataOffset,
     focusListItems,
     listCount,
-    itemPadding,
+    sizes,
     translator,
     showSearch,
     isModal,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
+  const { itemPadding } = sizes;
 
   let cellIndex;
   let styles;
@@ -205,6 +206,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       isGridMode={dataLayout === 'grid'}
       dense={dense}
       direction={direction}
+      sizes={sizes}
       data-testid="listbox.item"
     >
       <ItemGrid

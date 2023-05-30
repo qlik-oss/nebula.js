@@ -1,13 +1,7 @@
 import React from 'react';
 import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
-import {
-  barBorderWidthPx,
-  barPadPx,
-  barWithCheckboxLeftPadPx,
-  CELL_PADDING_LEFT,
-  FREQUENCY_MIN_WIDTH,
-} from '../../../constants';
+import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
 
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
@@ -31,8 +25,9 @@ const ellipsis = {
 const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
-  shouldForwardProp: (prop) => !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'direction'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, direction }) => ({
+  shouldForwardProp: (prop) =>
+    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'direction', 'sizes'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, direction, sizes }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -155,8 +150,9 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    flex: `0 1 30%`,
-    minWidth: FREQUENCY_MIN_WIDTH,
+    flex: `0 0 30%`,
+    minWidth: sizes.freqMinWidth,
+    maxWidth: sizes.freqMaxWidth,
     textAlign: direction === 'rtl' ? 'left' : 'right',
     paddingLeft: '2px',
   },

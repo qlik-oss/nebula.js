@@ -32,7 +32,6 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "isLocked": false,
       "isModal": [MockFunction],
       "isSingleSelect": false,
-      "itemPadding": 4,
       "keyboard": "keyboard",
       "layoutOptions": {
         "layoutOrder": "column",
@@ -42,6 +41,19 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "showGray": true,
       "showSearch": undefined,
       "showTick": true,
+      "sizes": {
+        "columnCount": 2,
+        "columnWidth": 50,
+        "itemHeight": 100,
+        "itemPadding": 4,
+        "listCount": 100,
+        "listHeight": 300,
+        "overflowStyling": {
+          "overflowX": "hidden",
+        },
+        "rowCount": 200,
+        "scrollBarWidth": 10,
+      },
       "textAlign": "right",
       "translator": undefined,
     }
@@ -90,7 +102,6 @@ exports[`grid-list-components should create a List component 1`] = `
       "isLocked": false,
       "isModal": [MockFunction],
       "isSingleSelect": false,
-      "itemPadding": 4,
       "keyboard": "keyboard",
       "layoutOptions": {
         "layoutOrder": "column",
@@ -100,6 +111,19 @@ exports[`grid-list-components should create a List component 1`] = `
       "showGray": true,
       "showSearch": undefined,
       "showTick": true,
+      "sizes": {
+        "columnCount": 2,
+        "columnWidth": 50,
+        "itemHeight": 100,
+        "itemPadding": 4,
+        "listCount": 100,
+        "listHeight": 300,
+        "overflowStyling": {
+          "overflowX": "hidden",
+        },
+        "rowCount": 200,
+        "scrollBarWidth": 10,
+      },
       "textAlign": "right",
       "translator": undefined,
     }

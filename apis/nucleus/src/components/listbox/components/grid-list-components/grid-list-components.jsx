@@ -43,7 +43,7 @@ export default function getListBoxComponents({
   isModal,
 }) {
   const { layoutOptions = {} } = layout || {};
-  const { columnWidth, itemPadding, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
+  const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
 
   const itemWidth = layoutOptions.dataLayout === 'grid' ? columnWidth : width;
   const showTick = itemWidth > REMOVE_TICK_LIMIT;
@@ -69,7 +69,7 @@ export default function getListBoxComponents({
     freqIsAllowed,
     isSingleSelect,
     textAlign,
-    itemPadding,
+    sizes,
     actions: {
       select,
       confirm: () => selections?.confirm.call(selections),

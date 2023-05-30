@@ -71,6 +71,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: [],
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         translator: {
           get: jest.fn().mockImplementation((word) => word),
         },
@@ -99,6 +100,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: defaultPages,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       expect(getRowsKeyboardNavigation).not.called;
@@ -144,6 +146,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: defaultPages,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
@@ -177,6 +180,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: defaultPages,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
@@ -215,6 +219,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -259,6 +264,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -300,6 +306,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -342,6 +349,7 @@ describe('<ListBoxRowColumn />', () => {
         actions,
         showGray: false,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -383,6 +391,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -425,6 +434,7 @@ describe('<ListBoxRowColumn />', () => {
         actions,
         showGray: false,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -466,6 +476,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -508,6 +519,7 @@ describe('<ListBoxRowColumn />', () => {
         actions,
         showGray: false,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -549,6 +561,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -590,6 +603,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -640,6 +654,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -693,6 +708,7 @@ describe('<ListBoxRowColumn />', () => {
         keyboard,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -745,6 +761,7 @@ describe('<ListBoxRowColumn />', () => {
         actions,
         freqIsAllowed: true,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -783,6 +800,7 @@ describe('<ListBoxRowColumn />', () => {
         checkboxes: true,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {
@@ -842,6 +860,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: defaultPages,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
@@ -872,6 +891,7 @@ describe('<ListBoxRowColumn />', () => {
         pages: defaultPages,
         actions,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
@@ -896,6 +916,7 @@ describe('<ListBoxRowColumn />', () => {
         textAlign: { align: 'right' },
         pages: defaultPages,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
@@ -916,6 +937,7 @@ describe('<ListBoxRowColumn />', () => {
         textAlign: { align: 'left' },
         pages: defaultPages,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
@@ -936,6 +958,7 @@ describe('<ListBoxRowColumn />', () => {
         textAlign: { align: 'center' },
         pages: defaultPages,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
@@ -962,6 +985,7 @@ describe('<ListBoxRowColumn />', () => {
         direction: 'rtl',
         pages: nonNumericPages,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
@@ -983,6 +1007,7 @@ describe('<ListBoxRowColumn />', () => {
         direction: 'rtl',
         pages: defaultPages,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
@@ -1010,6 +1035,7 @@ describe('<ListBoxRowColumn />', () => {
         direction: 'ltr',
         pages: nonNumericPages,
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
@@ -1032,6 +1058,7 @@ describe('<ListBoxRowColumn />', () => {
         direction: 'ltr',
         pages: defaultPages, // these value(s) have a qNum so they are interpreted as numeric.
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         focusListItems: () => ({ first: false, last: false }),
       };
       const testRenderer = await render(
@@ -1058,6 +1085,7 @@ describe('<ListBoxRowColumn />', () => {
         checkboxes: true,
         frequencyMode: 'value',
         dataOffset: 0,
+        sizes: { itemPadding: 2 },
         pages: [
           {
             qArea: {

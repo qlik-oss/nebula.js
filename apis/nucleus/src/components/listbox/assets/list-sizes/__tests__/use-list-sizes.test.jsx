@@ -1,10 +1,16 @@
-import { CHECKBOX_WIDTH, FREQUENCY_MIN_WIDTH, ITEM_MIN_WIDTH } from '../../../constants';
-import getListSizes from '../get-list-sizes';
+import { CHECKBOX_WIDTH, ITEM_MIN_WIDTH } from '../../../constants';
+import useListSizes from '../use-list-sizes';
+import * as useTextWidthModule from '../../../hooks/useTextWidth';
+import * as getMeasureTextModule from '../../measure-text';
 
-describe('get-list-sizes', () => {
+describe('use-list-sizes', () => {
   let args;
 
   beforeEach(() => {
+    jest.spyOn(useTextWidthModule, 'default').mockImplementation(({ text }) => text.length * 8);
+    jest
+      .spyOn(getMeasureTextModule, 'default')
+      .mockImplementation((nbr) => Array(typeof nbr === 'number' ? nbr : 5).fill('M'));
     args = {
       layout: {
         layoutOptions: {
@@ -26,8 +32,12 @@ describe('get-list-sizes', () => {
       checkboxes: false,
       listCount: 100,
       count: 200,
-      textWidth: 50,
       freqIsAllowed: false,
+      theme: {
+        listBox: {
+          content: {},
+        },
+      },
     };
   });
 
@@ -40,10 +50,13 @@ describe('get-list-sizes', () => {
   });
 
   it('should return expected sizes based on inputs', () => {
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes).toEqual({
       columnCount: 1,
       columnWidth: 66,
+      freqMinWidth: 48,
+      freqMaxWidth: 80,
+      textWidth: 40,
       count: 200,
       itemPadding: 4,
       itemHeight: 29,
@@ -64,24 +77,27 @@ describe('get-list-sizes', () => {
   it('dense should override itemHeight', () => {
     args.checkboxes = true;
     args.layout.layoutOptions.dense = true;
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes).toMatchObject({ itemHeight: 20 });
   });
 
   it('grid mode with layoutOrder column', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'column';
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes).toEqual({
       columnCount: 34,
-      columnWidth: 68,
+      columnWidth: 58,
+      freqMinWidth: 48,
+      freqMaxWidth: 80,
+      textWidth: 40,
       count: 200,
       itemPadding: 4,
       itemHeight: 36,
       listCount: 100,
       listHeight: 300,
       maxCount: {
-        column: 493382,
+        column: 578448,
         row: 577000,
       },
       overflowStyling: {
@@ -96,17 +112,20 @@ describe('get-list-sizes', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'column';
     args.freqIsAllowed = true;
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes).toEqual({
+      textWidth: 40,
+      freqMinWidth: 48,
+      freqMaxWidth: 80,
       columnCount: 34,
-      columnWidth: 138,
+      columnWidth: 126,
       count: 200,
       itemPadding: 4,
       itemHeight: 36,
       listCount: 100,
       listHeight: 300,
       maxCount: {
-        column: 243115,
+        column: 266269,
         row: 577000,
       },
       overflowStyling: {
@@ -120,13 +139,11 @@ describe('get-list-sizes', () => {
   it('A minimum item width should kick in if text is short', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'column';
-    args.textWidth = 10;
-    args.textWidth = 10;
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH,
+      columnWidth: 58,
       maxCount: {
-        column: 599107,
+        column: 578448,
       },
     });
   });
@@ -134,12 +151,10 @@ describe('get-list-sizes', () => {
   it('A minimum item width should kick in if text is short and reserve extra space for frequency', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'column';
-    args.textWidth = 10;
-    args.textWidth = 10;
     args.freqIsAllowed = true;
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_MIN_WIDTH + CHECKBOX_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + 50 + CHECKBOX_WIDTH,
       maxCount: {
         column: 266269,
       },
@@ -150,12 +165,10 @@ describe('get-list-sizes', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'column';
     args.checkboxes = true;
-    args.textWidth = 10;
-    args.textWidth = 10;
     args.freqIsAllowed = true;
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH + FREQUENCY_MIN_WIDTH + CHECKBOX_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + 50 + CHECKBOX_WIDTH,
       maxCount: {
         column: 266269,
       },
@@ -168,14 +181,14 @@ describe('get-list-sizes', () => {
     args.layout.layoutOptions.maxVisibleColumns.auto = true;
     args.layout.layoutOptions.layoutOrder = 'column';
     args.maxRows = 2;
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes).toMatchObject({ rowCount: 8, columnCount: 13 });
   });
 
   it('grid mode with layoutOrder == column should add exta 12px padding to the itemHeight', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.layout.layoutOptions.layoutOrder = 'column';
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes.itemHeight).toEqual(36); // itemHeight + padding = 32 + 4 = 36
   });
 
@@ -184,8 +197,11 @@ describe('get-list-sizes', () => {
     const maxRowCount = 22;
     const columnCount = 4;
     args.listCount = maxRowCount * columnCount + 1;
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes).toEqual({
+      textWidth: 40,
+      freqMinWidth: 48,
+      freqMaxWidth: 80,
       columnCount: 1,
       columnWidth: 66,
       count: 200,
@@ -211,12 +227,15 @@ describe('get-list-sizes', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.height = itemHeight * 3; // ensure height can fit 3 rows, or we will fall back to auto calculation
     args.layout.layoutOptions.layoutOrder = 'column';
-    const columnCount = 493382;
+    const columnCount = 578448;
     args.listCount = rowCount * columnCount + 1;
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes).toEqual({
+      textWidth: 40,
+      freqMinWidth: 48,
+      freqMaxWidth: 80,
       columnCount,
-      columnWidth: 68,
+      columnWidth: 58,
       count: 200,
       itemPadding: 4,
       itemHeight,
@@ -240,12 +259,12 @@ describe('get-list-sizes', () => {
     args.layout.layoutOptions.dataLayout = 'grid';
     args.height = itemHeight * 3 - 1; // minus one so that we cannot fit all 3 rows!
     args.layout.layoutOptions.layoutOrder = 'column';
-    const columnCount = 493382;
+    const columnCount = 578448;
     args.listCount = rowCount * columnCount + 1;
-    const sizes = getListSizes(args);
+    const sizes = useListSizes(args);
     expect(sizes).toMatchObject({
       columnCount,
-      columnWidth: 68,
+      columnWidth: 58,
       count: 200,
       itemPadding: 4,
       itemHeight,
