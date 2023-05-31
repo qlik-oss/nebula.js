@@ -26,8 +26,8 @@ const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
   shouldForwardProp: (prop) =>
-    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'direction', 'sizes', 'frequencyMode'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, direction, sizes, frequencyMode }) => ({
+    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'direction', 'sizes'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, direction, sizes }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -66,6 +66,7 @@ const RowColRoot = styled('div', {
     alignItems: 'center',
     minWidth: 0,
     flexGrow: 1,
+    flexBasis: flexBasisProp,
     // Note that this padding is overridden when using checkboxes.
     paddingLeft: `${CELL_PADDING_LEFT}px`,
     paddingRight: 0,
@@ -73,7 +74,6 @@ const RowColRoot = styled('div', {
 
   // The leaf node, containing the label text.
   [`& .${classes.labelText}`]: {
-    flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
     paddingRight: '1px',
@@ -151,8 +151,8 @@ const RowColRoot = styled('div', {
     justifyContent: 'flex-end',
     ...ellipsis,
     // Frequency mode 'percent' will never have a text wider than this string: "100.0%"
-    flex: `0 0 ${frequencyMode === 'P' ? `${sizes.freqMinWidth}px` : '30%'}`,
-    minWidth: sizes.freqMinWidth,
+    flex: '0 0 max-content', // ${frequencyMode === 'P' ? `${sizes.freqMinWidth}px` : '30%'}`,
+    minWidth: isGridMode ? 'auto' : `${sizes.freqMinWidth}px`,
     maxWidth: sizes.freqMaxWidth,
     textAlign: direction === 'rtl' ? 'left' : 'right',
     paddingLeft: '2px',

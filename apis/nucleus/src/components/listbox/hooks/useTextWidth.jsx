@@ -22,7 +22,7 @@ const useTextWidth = (options) => {
   const textOptions = useMemo(() => ('text' in options ? options : {}), [options]);
 
   return useMemo(
-    () => getTextWidth(textOptions.text, textOptions.font || '14px Source Sans Pro'),
+    () => getTextWidth(textOptions.text, textOptions.font || '12px Source Sans Pro'),
     [textOptions.text, textOptions.font]
   );
 };
