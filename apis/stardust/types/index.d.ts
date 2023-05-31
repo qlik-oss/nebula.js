@@ -504,16 +504,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -558,6 +548,16 @@ declare namespace stardust {
         version?: string;
         load: stardust.LoadType;
         meta?: object;
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface ActionToolbarElement extends HTMLElement{
