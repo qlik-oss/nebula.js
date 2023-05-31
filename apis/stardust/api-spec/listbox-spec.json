@@ -3,9 +3,10 @@
   "info": {
     "name": "@nebula.js/stardust:listbox",
     "description": "nebula listbox properties definition",
-    "version": "4.1.0",
+    "version": "4.2.0",
     "license": "MIT",
-    "stability": "experimental"
+    "stability": "stable",
+    "x-qlik-visibility": "public"
   },
   "entries": {},
   "definitions": {

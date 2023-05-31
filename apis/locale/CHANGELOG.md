@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/qlik-oss/nebula.js/compare/v4.1.0...v4.2.0) (2023-05-31)
+
+**Note:** Version bump only for package @nebula.js/locale
+
 # [4.1.0](https://github.com/qlik-oss/nebula.js/compare/v4.0.3...v4.1.0) (2023-05-24)
 
 **Note:** Version bump only for package @nebula.js/locale
