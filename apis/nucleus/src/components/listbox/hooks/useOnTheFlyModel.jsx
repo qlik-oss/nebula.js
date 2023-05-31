@@ -12,6 +12,12 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
   const [fallbackTitle, setFallbackTitle] = useState();
   const title = options.title ?? fallbackTitle;
 
+  let { histogram = false, frequencyMode = 'N' } = options;
+  if (fieldDef && fieldDef.failedToFetchFieldDef) {
+    histogram = false;
+    frequencyMode = 'N';
+  }
+
   useEffect(() => {
     async function fetchMasterItem() {
       try {
@@ -31,7 +37,7 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
       }
     }
 
-    const isFrequencyMaxNeeded = options.histogram || options.frequencyMode !== 'N';
+    const isFrequencyMaxNeeded = histogram || frequencyMode !== 'N';
     const shouldFetchMasterItem = fieldIdentifier.qLibraryId && isFrequencyMaxNeeded;
     if (shouldFetchMasterItem) {
       fetchMasterItem();
@@ -42,30 +48,6 @@ export default function useOnTheFlyModel({ app, fieldIdentifier, stateName, opti
   }, []);
 
   const { dense, checkboxes, listLayout, properties = {} } = options;
-  let { frequencyMode, histogram = false } = options;
-
-  if (fieldDef && fieldDef.failedToFetchFieldDef) {
-    histogram = false;
-    frequencyMode = 'N';
-  }
-
-  switch (true) {
-    case ['none', 'N', 'NX_FREQUENCY_NONE'].includes(frequencyMode):
-      frequencyMode = 'N';
-      break;
-    case ['value', 'V', 'NX_FREQUENCY_VALUE', 'default'].includes(frequencyMode):
-      frequencyMode = 'V';
-      break;
-    case ['percent', 'P', 'NX_FREQUENCY_PERCENT'].includes(frequencyMode):
-      frequencyMode = 'P';
-      break;
-    case ['relative', 'R', 'NX_FREQUENCY_RELATIVE'].includes(frequencyMode):
-      frequencyMode = 'R';
-      break;
-    default:
-      frequencyMode = 'N';
-      break;
-  }
 
   const getListdefFrequencyMode = () => (histogram && frequencyMode === 'N' ? 'V' : frequencyMode);
   const layoutOptions = { dense };

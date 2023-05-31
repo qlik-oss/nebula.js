@@ -16,6 +16,7 @@ import getFrequencyAllowed from './components/grid-list-components/frequency-all
 import useFrequencyMax from './hooks/useFrequencyMax';
 import { ScreenReaderForSelections } from './components/ScreenReaders';
 import InstanceContext from '../../contexts/InstanceContext';
+import deduceFrequencyMode from './utils/deduce-frequency-mode';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -199,6 +200,7 @@ export default function ListBox({
   });
 
   let freqIsAllowed = getFrequencyAllowed({ itemWidth: width, layout, frequencyMode });
+  const deducedFrequencyMode = deduceFrequencyMode(pages);
   const sizes = useListSizes({
     layout,
     width,
@@ -269,6 +271,7 @@ export default function ListBox({
     width,
     checkboxes,
     frequencyMode,
+    deducedFrequencyMode,
     histogram,
     keyboard,
     showGray,

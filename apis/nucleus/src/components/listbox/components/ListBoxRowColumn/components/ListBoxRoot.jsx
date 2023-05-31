@@ -26,8 +26,8 @@ const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
   shouldForwardProp: (prop) =>
-    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'direction', 'sizes'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, direction, sizes }) => ({
+    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'direction', 'sizes', 'frequencyMode'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, direction, sizes, frequencyMode }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -150,7 +150,8 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    flex: `0 0 30%`,
+    // Frequency mode 'percent' will never have a text wider than this string: "100.0%"
+    flex: `0 0 ${frequencyMode === 'P' ? `${sizes.freqMinWidth}px` : '30%'}`,
     minWidth: sizes.freqMinWidth,
     maxWidth: sizes.freqMaxWidth,
     textAlign: direction === 'rtl' ? 'left' : 'right',

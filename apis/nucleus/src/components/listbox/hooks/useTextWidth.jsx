@@ -15,7 +15,7 @@ const getTextWidth = (currentText, font) => {
     return Math.max(...currentText.map((t) => context.measureText(t).width));
   }
   const metrics = context.measureText(currentText);
-  return metrics.width;
+  return Math.ceil(metrics.width || 0);
 };
 
 const useTextWidth = (options) => {

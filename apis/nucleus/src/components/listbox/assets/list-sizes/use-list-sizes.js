@@ -11,7 +11,7 @@ export default function useListSizes({ layout, width, height, listCount, count, 
   const { fontSize = '14px', fontFamily = 'Source sans pro' } = theme.listBox?.content || {};
   const font = `${fontSize} ${fontFamily}`; // font format as supported by HTML canvas
   const textWidth = useTextWidth({ text: getMeasureText(layout), font });
-  const freqMinWidth = useTextWidth({ text: '100.0%', font });
+  const freqMinWidth = useTextWidth({ text: getMeasureText(6), font });
   const freqMaxWidth = useTextWidth({ text: getMeasureText(10), font });
   const frequencyAddWidth = freqIsAllowed ? freqMinWidth : 0;
   const checkboxAddWidth = checkboxes ? CHECKBOX_WIDTH : 0;

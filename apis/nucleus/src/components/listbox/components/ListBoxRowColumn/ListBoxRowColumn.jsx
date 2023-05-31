@@ -46,6 +46,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     columnCount = 1,
     rowCount = 1,
     dataOffset,
+    frequencyMode,
+    deducedFrequencyMode,
     focusListItems,
     listCount,
     sizes,
@@ -207,6 +209,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       dense={dense}
       direction={direction}
       sizes={sizes}
+      frequencyMode={frequencyMode || deducedFrequencyMode}
       data-testid="listbox.item"
     >
       <ItemGrid

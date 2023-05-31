@@ -6,6 +6,7 @@ import useExistingModel from './hooks/useExistingModel';
 import useOnTheFlyModel from './hooks/useOnTheFlyModel';
 import identify from './assets/identify';
 import uid from '../../object/uid';
+import getFrequencyModeLetter from './utils/get-frequency-mode-letter';
 
 /**
  * @ignore
@@ -55,6 +56,10 @@ export const getOptions = (usersOptions = {}) => {
 
 function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options, renderedCallback }) {
   const { isExistingObject, hasExternalSelectionsApi } = identify({ qId, options });
+  Object.assign(options, {
+    frequencyMode: isExistingObject ? undefined : getFrequencyModeLetter(options.frequencyMode), // stick to letter option hereafter
+  });
+
   const [changeCount, setChangeCount] = useState(0);
 
   useEffect(() => {
