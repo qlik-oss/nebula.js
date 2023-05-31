@@ -56,9 +56,12 @@ export const getOptions = (usersOptions = {}) => {
 
 function ListBoxWrapper({ app, fieldIdentifier, qId, stateName, element, options, renderedCallback }) {
   const { isExistingObject, hasExternalSelectionsApi } = identify({ qId, options });
-  Object.assign(options, {
-    frequencyMode: isExistingObject ? undefined : getFrequencyModeLetter(options.frequencyMode), // stick to letter option hereafter
-  });
+
+  if (!isExistingObject) {
+    Object.assign(options, {
+      frequencyMode: getFrequencyModeLetter(options.frequencyMode), // stick to letter option hereafter
+    });
+  }
 
   const [changeCount, setChangeCount] = useState(0);
 
