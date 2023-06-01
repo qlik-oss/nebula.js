@@ -2,9 +2,13 @@ module.exports = {
   fromJsdoc: {
     glob: ['../nucleus/src/components/listbox/default-properties.js'],
     api: {
-      stability: 'experimental',
+      stability: 'stable',
       name: '@nebula.js/stardust:listbox',
       description: 'nebula listbox properties definition',
+      properties: {
+        'x-qlik-visibility': 'public',
+      },
+      visibility: 'public',
     },
     output: {
       sort: {

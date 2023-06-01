@@ -72,44 +72,66 @@ commands:
             ls -la node_modules/@nebula.js
             <<# parameters.build >> yarn run build <</ parameters.build >>
             <<# parameters.test >>  yarn run test:e2e <</ parameters.test >>
-
 jobs:
+  validate:
+    docker:
+      - image: cimg/node:20.2.0
+    working_directory: ~/project
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run:
+          name: Locale
+          command: yarn run locale:verify
+      - run:
+          name: Lint
+          command: yarn run lint
+      - run:
+          name: Run unit tests and publish to codeclimate
+          command: |
+            ./test/bin/cc-test-reporter before-build
+            yarn test:unit --coverage --reporters=default --reporters=jest-junit
+            ./test/bin/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+          environment:
+            JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
+      - store_test_results:
+          path: coverage/junit
+
   build:
     docker:
-      - image: cimg/node:20.1.0
-      - image: browserless/chrome:1-puppeteer-7.1.0
+      - image: cimg/node:20.2.0
 
     working_directory: ~/project
+    resource_class: large
 
     steps:
       - checkout
       - restore_cache: *restore_yarn_cache
       - run:
           name: Install dependencies
-          command: |
-            yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
-            npx playwright install --with-deps chromium
-
+          command: yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - save_cache: *save_yarn_cache
       - run:
           name: Build
           command: yarn run build
-      - run:
-          name: Lint
-          command: yarn run lint
-      - run:
-          name: Locale
-          command: yarn run locale:verify
-      - run:
-          name: Unit Tests
-          command: |
-            yarn test:unit --coverage
-            if [ ! -z "$COVERALLS_REPO_TOKEN" ]; then
-              echo "Uploading coverage results to coveralls.io..."
-              cat ./coverage/lcov.info | npx coveralls
-            fi
-      - store_test_results:
-          path: coverage/junit
+      - store_artifacts:
+          path: package.json
+      - persist_to_workspace:
+          root: ~/project
+          paths:
+            - .
+
+  test-integration:
+    docker:
+      - image: cimg/node:20.2.0
+      - image: browserless/chrome:1-puppeteer-7.1.0
+
+    working_directory: ~/project
+    resource_class: large
+
+    steps:
+      - attach_workspace:
+          at: ~/project
       - run:
           name: Test component
           command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
@@ -119,6 +141,29 @@ jobs:
       - run:
           name: Test integration
           command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - run: npx playwright install --with-deps chromium
+      - run:
+          name: Test rendering
+          command: yarn run test:rendering
+      - store_test_results:
+          path: ./test/rendering/reports/xml/report.xml
+      - store_artifacts:
+          path: ./test/rendering
+      - store_artifacts:
+          path: ./test/rendering/reports/html
+
+  test-create:
+    docker:
+      - image: cimg/node:20.2.0
+      - image: browserless/chrome:1-puppeteer-7.1.0
+
+    working_directory: ~/project
+    resource_class: large
+
+    steps:
+      - attach_workspace:
+          at: ~/project
+      - run: npx playwright install --with-deps chromium
       - nebula_create:
           project_name: 'generated/hello'
           picasso_template: 'none'
@@ -139,29 +184,14 @@ jobs:
           path: generated/barchart/screenshots
       - store_artifacts:
           path: test/mashup/__artifacts__
-      - run:
-          name: Test rendering
-          command: yarn run test:rendering
-      - store_test_results:
-          path: ./test/rendering/reports/xml/report.xml
-      - store_artifacts:
-          path: ./test/rendering
-      - store_artifacts:
-          path: ./test/rendering/reports/html
 
   api-governance:
     machine:
       image: ubuntu-2004:current
     working_directory: ~/project
     steps:
-      - checkout
       - attach_workspace:
           at: ~/project
-      - restore_cache: *restore_yarn_cache
-      - run:
-          name: Install dependencies
-          command: |
-            yarn install --frozen-lockfile --cache-folder ~/.cache/yarn
       - run:
           name: Create version.txt
           command: |
@@ -180,6 +210,7 @@ jobs:
             docker pull ghcr.io/qlik-download/api-compliance
             docker create -v /specs --name specs alpine:3.4 /bin/true
             docker cp ./apis/stardust/api-spec/spec.json specs:/specs
+            docker cp ./apis/stardust/api-spec/listbox-spec.json specs:/specs
 
       - run:
           name: Run API Compliance
@@ -187,7 +218,7 @@ jobs:
             VER=v$(cat version.txt)
 
             docker run --volumes-from specs
-            -e SPEC_PATHS="abdc47c2-921a-45d3-ba5c-80d448574c5b@/specs/spec.json"
+            -e SPEC_PATHS="abdc47c2-921a-45d3-ba5c-80d448574c5b@/specs/spec.json,ba0bcf91-d7a6-4048-a36a-ad9a2dc8c03e@/specs/listbox-spec.json"
             -e COMMIT_SHA="$CIRCLE_SHA1"
             -e RELEASE_TAG="$VER"
             -e PRE_RELEASE="true"
@@ -205,8 +236,19 @@ workflows:
             tags:
               only:
                 - /v.*/
+      - validate:
+          requires:
+            - build
+      - test-integration:
+          requires:
+            - build
+      - test-create:
+          requires:
+            - build
       - api-governance:
           context: api-compliance
+          requires:
+            - build
           filters:
             branches:
               # Forked pull requests have CIRCLE_BRANCH set to pull/XXX

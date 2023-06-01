@@ -457,6 +457,12 @@ const Cell = forwardRef(
         },
         setSnOptions,
         setSnPlugins,
+        getImperativeHandle() {
+          if (state.sn?.component && typeof state.sn.component.getImperativeHandle === 'function') {
+            return state.sn.component.getImperativeHandle();
+          }
+          return {};
+        },
         async takeSnapshot() {
           const { width, height } = cellRect;
 

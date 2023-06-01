@@ -12,9 +12,19 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
   let cellRef = null;
   let mountedReference = null;
   let onMount = null;
+  let onRender = null;
   const mounted = new Promise((resolve) => {
     onMount = resolve;
   });
+
+  const rendered = new Promise((resolve) => {
+    onRender = resolve;
+  });
+
+  const createOnInitialRender = (override) => () => {
+    override && override();
+    onRender();
+  };
 
   let initialSnOptions = {};
   let initialSnPlugins = [];
@@ -22,12 +32,16 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
   const emitter = new EventEmitter();
 
   const setSnOptions = async (opts) => {
+    const override = opts.onInitialRender;
     if (mountedReference) {
       (async () => {
         await mounted;
         cellRef.current.setSnOptions({
           ...initialSnOptions,
           ...opts,
+          ...{
+            onInitialRender: createOnInitialRender(override),
+          },
         });
       })();
     } else {
@@ -35,6 +49,9 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       initialSnOptions = {
         ...initialSnOptions,
         ...opts,
+        ...{
+          onInitialRender: createOnInitialRender(override),
+        },
       };
     }
   };
@@ -129,6 +146,14 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      */
     removeListener(eventName, listener) {
       emitter.removeListener(eventName, listener);
+    },
+    /**
+     * Gets the specific api that a Viz exposes.
+     * @returns {Promise<object>} object that contains the internal Viz api.
+     */
+    async getImperativeHandle() {
+      await rendered;
+      return cellRef.current.getImperativeHandle();
     },
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {

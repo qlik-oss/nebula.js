@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/qlik-oss/nebula.js/compare/v4.1.0...v4.2.0) (2023-05-31)
+
+### Bug Fixes
+
+- **deps:** update dependency postcss to ^8.4.24 ([#1286](https://github.com/qlik-oss/nebula.js/issues/1286)) ([3b4b6ec](https://github.com/qlik-oss/nebula.js/commit/3b4b6ece98251d952eff93084bca464e2f1e531d))
+
+# [4.1.0](https://github.com/qlik-oss/nebula.js/compare/v4.0.3...v4.1.0) (2023-05-24)
+
+**Note:** Version bump only for package @nebula.js/cli-build
+
 ## [4.0.3](https://github.com/qlik-oss/nebula.js/compare/v4.0.2...v4.0.3) (2023-05-15)
 
 **Note:** Version bump only for package @nebula.js/cli-build

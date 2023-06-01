@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.2.0](https://github.com/qlik-oss/nebula.js/compare/v4.1.0...v4.2.0) (2023-05-31)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+# [4.1.0](https://github.com/qlik-oss/nebula.js/compare/v4.0.3...v4.1.0) (2023-05-24)
+
+### Bug Fixes
+
+- listbox frequency count popup ([#1273](https://github.com/qlik-oss/nebula.js/issues/1273)) ([fd26f73](https://github.com/qlik-oss/nebula.js/commit/fd26f736d20981927c043167c0ad6af6e213c94c))
+
+### Features
+
+- add Imperaitive Handle to public API ([#1272](https://github.com/qlik-oss/nebula.js/issues/1272)) ([e275d3a](https://github.com/qlik-oss/nebula.js/commit/e275d3aafa75411c1e31c3af8070c058fe368de0))
+
 ## [4.0.3](https://github.com/qlik-oss/nebula.js/compare/v4.0.2...v4.0.3) (2023-05-15)
 
 ### Bug Fixes
