@@ -3,6 +3,13 @@ import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
 
+const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode }) => {
+  if (frequencyMode === 'P') {
+    return `${sizes.freqMinWidth}px`;
+  }
+  return isGridMode ? 'max-content' : 'auto';
+};
+
 const getMaxFreqWidth = ({ sizes, isGridMode }) => {
   // Keep sufficient space for the value field when column/list width is small.
   const MIN_WIDTH_FOR_VALUE = 80;
@@ -34,8 +41,8 @@ const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
   shouldForwardProp: (prop) =>
-    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'direction', 'sizes', 'frequencyMode'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, direction, sizes, frequencyMode }) => ({
+    !['checkboxes', 'isGridMode', 'isGridCol', 'dense', 'direction', 'sizes', 'frequencyMode'].includes(prop),
+})(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -72,9 +79,9 @@ const RowColRoot = styled('div', {
   [`& .${classes.cell}`]: {
     display: 'flex',
     alignItems: 'center',
-    minWidth: 0,
     flexGrow: 1,
-    flexBasis: flexBasisProp,
+    minWidth: checkboxes ? '52px' : '26px', // these numbers are just enough to show one letter and ellipsis: A…
+    flexBasis: checkboxes ? 'auto' : 'max-content',
     // Note that this padding is overridden when using checkboxes.
     paddingLeft: `${CELL_PADDING_LEFT}px`,
     paddingRight: 0,
@@ -159,7 +166,7 @@ const RowColRoot = styled('div', {
     justifyContent: 'flex-end',
     ...ellipsis,
     // Frequency mode 'percent' will never need a text wider than this string: "100.0%"
-    flex: `0 0 ${frequencyMode === 'P' ? `${sizes.freqMinWidth}px` : 'auto'}`,
+    flex: `0 0 ${getFreqFlexBasis({ sizes, frequencyMode, isGridMode })}`,
     minWidth: 'auto',
     maxWidth: frequencyMode === 'P' ? `${sizes.freqMinWidth}px` : getMaxFreqWidth({ sizes, isGridMode }),
     textAlign: direction === 'rtl' ? 'left' : 'right',

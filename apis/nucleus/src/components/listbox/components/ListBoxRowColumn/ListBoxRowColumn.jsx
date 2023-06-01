@@ -175,7 +175,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const cellStyle = {
     display: 'flex',
     alignItems: 'center',
-    minWidth: 0,
     flexGrow: 1,
     paddingLeft: direction === 'rtl' ? 8 : checkboxes ? 0 : undefined,
     paddingRight: checkboxes ? 0 : direction === 'rtl' ? 8 : 0,
@@ -183,7 +182,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   };
 
   const isFirstElement = index === 0;
-  const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
   const showLock = isSelected && isLocked;
   const showTick = !checkboxes && isSelected && !isLocked;
@@ -202,7 +200,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   return (
     <RowColRoot
       className={classes.barContainer}
-      flexBasisProp={flexBasisVal}
+      checkboxes={checkboxes}
       style={styles}
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
