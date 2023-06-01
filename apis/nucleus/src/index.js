@@ -299,12 +299,11 @@ function nuked(configuration = {}) {
        * @returns {Promise<object>} The objects properties
        * @example
        * // generate properties for a barchart
-       * const properties = await n.create({
+       * const properties = await n.generateProperties({
        *     type: 'barchart',
        *     fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }],
        *     properties: { showTitle: true }
        *   },
-       *   true
        * );
        */
       generateProperties: async (cfg) => createObject(cfg, halo, true),
