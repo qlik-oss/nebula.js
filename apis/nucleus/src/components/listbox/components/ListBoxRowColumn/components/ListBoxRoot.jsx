@@ -3,6 +3,14 @@ import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
 
+const getMaxFreqWidth = ({ sizes, isGridMode }) => {
+  // Keep sufficient space for the value field when column/list width is small.
+  const MIN_WIDTH_FOR_VALUE = 80;
+  const remainingTextSpace = (isGridMode ? sizes.columnWidth : sizes.listWidth) - sizes.freqMaxWidth;
+  const maxWidth = remainingTextSpace < MIN_WIDTH_FOR_VALUE ? '50%' : sizes.freqMaxWidth;
+  return maxWidth;
+};
+
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
   color: theme.palette.selected.mainContrastText,
@@ -26,8 +34,8 @@ const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
   shouldForwardProp: (prop) =>
-    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'direction', 'sizes'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, direction, sizes }) => ({
+    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'direction', 'sizes', 'frequencyMode'].includes(prop),
+})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, direction, sizes, frequencyMode }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -150,10 +158,10 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    // Frequency mode 'percent' will never have a text wider than this string: "100.0%"
-    flex: '0 0 max-content', // ${frequencyMode === 'P' ? `${sizes.freqMinWidth}px` : '30%'}`,
-    minWidth: isGridMode ? 'auto' : `${sizes.freqMinWidth}px`,
-    maxWidth: sizes.freqMaxWidth,
+    // Frequency mode 'percent' will never need a text wider than this string: "100.0%"
+    flex: `0 0 ${frequencyMode === 'P' ? `${sizes.freqMinWidth}px` : 'auto'}`,
+    minWidth: 'auto',
+    maxWidth: frequencyMode === 'P' ? `${sizes.freqMinWidth}px` : getMaxFreqWidth({ sizes, isGridMode }),
     textAlign: direction === 'rtl' ? 'left' : 'right',
     paddingLeft: '2px',
   },

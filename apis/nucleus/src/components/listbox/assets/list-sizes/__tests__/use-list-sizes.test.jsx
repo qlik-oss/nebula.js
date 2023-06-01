@@ -62,6 +62,7 @@ describe('use-list-sizes', () => {
       itemHeight: 29,
       listCount: 100,
       listHeight: 300,
+      listWidth: 200,
       maxCount: {
         column: 508333,
         row: 577000,
@@ -96,6 +97,7 @@ describe('use-list-sizes', () => {
       itemHeight: 36,
       listCount: 100,
       listHeight: 300,
+      listWidth: 200,
       maxCount: {
         column: 578448,
         row: 577000,
@@ -124,6 +126,7 @@ describe('use-list-sizes', () => {
       itemHeight: 36,
       listCount: 100,
       listHeight: 300,
+      listWidth: 200,
       maxCount: {
         column: 266269,
         row: 577000,
@@ -209,6 +212,7 @@ describe('use-list-sizes', () => {
       itemHeight: 29,
       listCount: args.listCount,
       listHeight: 300,
+      listWidth: 200,
       maxCount: {
         column: 508333,
         row: 577000,
@@ -241,6 +245,7 @@ describe('use-list-sizes', () => {
       itemHeight,
       listCount: columnCount * rowCount,
       listHeight: 3 * itemHeight,
+      listWidth: 200,
       maxCount: {
         column: columnCount,
         row: 577000,
@@ -270,6 +275,7 @@ describe('use-list-sizes', () => {
       itemHeight,
       listCount: columnCount * 2,
       listHeight: 3 * itemHeight - 1,
+      listWidth: 200,
       maxCount: {
         column: columnCount,
         row: 577000,

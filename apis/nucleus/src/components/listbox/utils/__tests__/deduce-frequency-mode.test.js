@@ -4,14 +4,7 @@ function generatePages(mode) {
   let qMatrix;
   switch (mode) {
     case 'P':
-      qMatrix = [
-        [{ qFrequency: '34.0%' }],
-        [{ qFrequency: '100.0%' }],
-        [{}],
-        [{ qFrequency: '14.0%' }],
-        [{ qFrequency: '0.0%' }],
-        [{ qFrequency: '-' }],
-      ];
+      qMatrix = [[{}], [{}], [{}], [{ qFrequency: '100.0%' }], [{ qFrequency: '' }], [{ qFrequency: '-' }]];
       break;
     case 'V':
       qMatrix = [
