@@ -7,7 +7,7 @@ const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode }) => {
   if (frequencyMode === 'P') {
     return `${sizes.freqMinWidth}px`;
   }
-  return isGridMode ? 'max-content' : 'auto';
+  return isGridMode ? 'max-content' : '25%';
 };
 
 const getMaxFreqWidth = ({ sizes, isGridMode }) => {
