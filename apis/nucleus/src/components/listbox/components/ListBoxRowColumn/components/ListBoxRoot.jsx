@@ -3,11 +3,11 @@ import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
 
-const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode }) => {
+const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) => {
   if (frequencyMode === 'P') {
     return `${sizes.freqMinWidth}px`;
   }
-  return isGridMode ? 'max-content' : '25%';
+  return isGridMode && !freqHitsValue ? 'max-content' : '25%';
 };
 
 const getMaxFreqWidth = ({ sizes, isGridMode }) => {
@@ -41,8 +41,17 @@ const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
   shouldForwardProp: (prop) =>
-    !['checkboxes', 'isGridMode', 'isGridCol', 'dense', 'direction', 'sizes', 'frequencyMode'].includes(prop),
-})(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode }) => ({
+    ![
+      'checkboxes',
+      'isGridMode',
+      'isGridCol',
+      'dense',
+      'direction',
+      'sizes',
+      'frequencyMode',
+      'freqHitsValue',
+    ].includes(prop),
+})(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode, freqHitsValue }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -165,12 +174,12 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    // Frequency mode 'percent' will never need a text wider than this string: "100.0%"
-    flex: `0 0 ${getFreqFlexBasis({ sizes, frequencyMode, isGridMode })}`,
+    flex: `0 0 ${getFreqFlexBasis({ sizes, frequencyMode, isGridMode, freqHitsValue })}`,
     minWidth: 'auto',
+    // Frequency mode 'percent' will never need a text wider than this string: "100.0%"
     maxWidth: frequencyMode === 'P' ? `${sizes.freqMinWidth}px` : getMaxFreqWidth({ sizes, isGridMode }),
     textAlign: direction === 'rtl' ? 'left' : 'right',
-    paddingLeft: '2px',
+    paddingLeft: direction === 'rtl' ? '10px' : 0,
   },
 
   [`&.${classes.barContainer}`]: {
