@@ -177,7 +177,10 @@ const RowColRoot = styled('div', {
     flex: `0 0 ${getFreqFlexBasis({ sizes, frequencyMode, isGridMode, freqHitsValue })}`,
     minWidth: 'auto',
     // Frequency mode 'percent' will never need a text wider than this string: "100.0%"
-    maxWidth: frequencyMode === 'P' ? `${sizes.freqMinWidth}px` : getMaxFreqWidth({ sizes, isGridMode }),
+    maxWidth:
+      frequencyMode === 'P'
+        ? `${sizes.freqMinWidth + direction !== 'rtl' ? 10 : 0}px`
+        : getMaxFreqWidth({ sizes, isGridMode }),
     textAlign: direction === 'rtl' ? 'left' : 'right',
     paddingLeft: direction !== 'rtl' ? '10px' : 0,
   },
