@@ -179,7 +179,7 @@ const RowColRoot = styled('div', {
     // Frequency mode 'percent' will never need a text wider than this string: "100.0%"
     maxWidth: frequencyMode === 'P' ? `${sizes.freqMinWidth}px` : getMaxFreqWidth({ sizes, isGridMode }),
     textAlign: direction === 'rtl' ? 'left' : 'right',
-    paddingLeft: direction === 'rtl' ? '10px' : 0,
+    paddingLeft: direction !== 'rtl' ? '10px' : 0,
   },
 
   [`&.${classes.barContainer}`]: {
