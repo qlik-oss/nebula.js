@@ -216,6 +216,7 @@ export default function ListBoxSearch({
         tabIndex: keyboard.innerTabStops ? 0 : -1,
         style: { textAlign: `${inpuTextAlign}` },
         'data-testid': 'search-input-field',
+        'aria-label': translator.get('Listbox.Search.ScreenReaderInstructions'),
       }}
     />
   );
