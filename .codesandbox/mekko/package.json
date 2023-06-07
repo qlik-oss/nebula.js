@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "@nebula.js/stardust": "next",
-    "@nebula.js/sn-mekko-chart": "1.2.0",
+    "@nebula.js/sn-mekko-chart": "1.3.0",
     "enigma.js": "2.11.0"
   },
   "devDependencies": {
