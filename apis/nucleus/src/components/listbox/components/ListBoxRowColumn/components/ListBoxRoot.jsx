@@ -14,7 +14,8 @@ const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) =
   if (frequencyMode === 'P') {
     return `${sizes.freqMinWidth}px`;
   }
-  return isGridMode && !freqHitsValue ? 'max-content' : '25%';
+  const flexBasis = isGridMode && !freqHitsValue ? 'max-content' : '25%';
+  return flexBasis;
 };
 
 const getMaxFreqWidth = ({ sizes, isGridMode }) => {
@@ -188,7 +189,9 @@ const RowColRoot = styled('div', {
         ? `${sizes.freqMinWidth + (direction !== 'rtl' ? 10 : 0)}px`
         : getMaxFreqWidth({ sizes, isGridMode }),
     textAlign: direction === 'rtl' ? 'left' : 'right',
-    paddingLeft: direction !== 'rtl' ? '8px' : 0, // in RTL, we already get the 8px from the value element's padding
+    // In RTL, we already get the 8px from the value element's padding and for
+    // percent mode we have already adapted the width (fixed width) to the max number.
+    paddingLeft: direction !== 'rtl' && frequencyMode !== 'P' ? '8px' : 0,
   },
 
   [`&.${classes.barContainer}`]: {
