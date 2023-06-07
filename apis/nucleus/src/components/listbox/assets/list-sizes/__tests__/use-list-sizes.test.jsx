@@ -54,8 +54,8 @@ describe('use-list-sizes', () => {
     expect(sizes).toEqual({
       columnCount: 1,
       columnWidth: 66,
-      freqMinWidth: 48,
-      freqMaxWidth: 80,
+      freqMinWidth: 40,
+      freqMaxWidth: 64,
       textWidth: 40,
       count: 200,
       itemPadding: 4,
@@ -89,8 +89,8 @@ describe('use-list-sizes', () => {
     expect(sizes).toEqual({
       columnCount: 34,
       columnWidth: 58,
-      freqMinWidth: 48,
-      freqMaxWidth: 80,
+      freqMinWidth: 40,
+      freqMaxWidth: 64,
       textWidth: 40,
       count: 200,
       itemPadding: 4,
@@ -117,10 +117,10 @@ describe('use-list-sizes', () => {
     const sizes = useListSizes(args);
     expect(sizes).toEqual({
       textWidth: 40,
-      freqMinWidth: 48,
-      freqMaxWidth: 80,
+      freqMinWidth: 40,
+      freqMaxWidth: 64,
       columnCount: 34,
-      columnWidth: 126,
+      columnWidth: 118,
       count: 200,
       itemPadding: 4,
       itemHeight: 36,
@@ -128,7 +128,7 @@ describe('use-list-sizes', () => {
       listHeight: 300,
       listWidth: 200,
       maxCount: {
-        column: 266269,
+        column: 284322,
         row: 577000,
       },
       overflowStyling: {
@@ -157,9 +157,9 @@ describe('use-list-sizes', () => {
     args.freqIsAllowed = true;
     const sizes = useListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH + 50 + CHECKBOX_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + 42 + CHECKBOX_WIDTH,
       maxCount: {
-        column: 266269,
+        column: 284322,
       },
     });
   });
@@ -171,9 +171,9 @@ describe('use-list-sizes', () => {
     args.freqIsAllowed = true;
     const sizes = useListSizes(args);
     expect(sizes).toMatchObject({
-      columnWidth: ITEM_MIN_WIDTH + 50 + CHECKBOX_WIDTH,
+      columnWidth: ITEM_MIN_WIDTH + 42 + CHECKBOX_WIDTH,
       maxCount: {
-        column: 266269,
+        column: 284322,
       },
     });
   });
@@ -203,8 +203,8 @@ describe('use-list-sizes', () => {
     const sizes = useListSizes(args);
     expect(sizes).toEqual({
       textWidth: 40,
-      freqMinWidth: 48,
-      freqMaxWidth: 80,
+      freqMinWidth: 40,
+      freqMaxWidth: 64,
       columnCount: 1,
       columnWidth: 66,
       count: 200,
@@ -236,8 +236,8 @@ describe('use-list-sizes', () => {
     const sizes = useListSizes(args);
     expect(sizes).toEqual({
       textWidth: 40,
-      freqMinWidth: 48,
-      freqMaxWidth: 80,
+      freqMinWidth: 40,
+      freqMaxWidth: 64,
       columnCount,
       columnWidth: 58,
       count: 200,
