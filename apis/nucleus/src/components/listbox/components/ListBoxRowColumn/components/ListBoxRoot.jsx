@@ -3,6 +3,13 @@ import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
 
+const MIN_WIDTH_FOR_VALUE_MODE = 80;
+
+const getRemainingTextSpace = ({ isGridMode, sizes }) => {
+  const remainingTextSpace = (isGridMode ? sizes.columnWidth : sizes.listWidth) - sizes.freqMaxWidth;
+  return remainingTextSpace;
+};
+
 const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) => {
   if (frequencyMode === 'P') {
     return `${sizes.freqMinWidth}px`;
@@ -12,8 +19,7 @@ const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) =
 
 const getMaxFreqWidth = ({ sizes, isGridMode }) => {
   // Keep sufficient space for the value field when column/list width is small.
-  const MIN_WIDTH_FOR_VALUE_MODE = 80;
-  const remainingTextSpace = (isGridMode ? sizes.columnWidth : sizes.listWidth) - sizes.freqMaxWidth;
+  const remainingTextSpace = getRemainingTextSpace({ isGridMode, sizes });
   const maxWidth = remainingTextSpace < MIN_WIDTH_FOR_VALUE_MODE ? '50%' : sizes.freqMaxWidth;
   return maxWidth;
 };
