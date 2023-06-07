@@ -116,7 +116,6 @@ describe('<Listbox />', () => {
         getListObjectData: jest.fn().mockResolvedValue(pages),
         id: 1234,
       },
-      frequencyMode: 'N',
       histogram: false,
       selections,
       selectionState,

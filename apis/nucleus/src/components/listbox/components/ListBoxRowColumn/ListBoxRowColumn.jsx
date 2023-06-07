@@ -47,7 +47,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     columnCount = 1,
     rowCount = 1,
     dataOffset,
-    frequencyMode,
     deducedFrequencyMode,
     focusListItems,
     listCount,
@@ -199,7 +198,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       dense={dense}
       direction={direction}
       sizes={sizes}
-      frequencyMode={frequencyMode || deducedFrequencyMode}
+      frequencyMode={deducedFrequencyMode}
       freqHitsValue={freqHitsValue}
       data-testid="listbox.item"
     >

@@ -270,7 +270,6 @@ export default function ListBox({
     height,
     width,
     checkboxes,
-    frequencyMode,
     deducedFrequencyMode,
     histogram,
     keyboard,

@@ -71,7 +71,6 @@ describe('grid-list-components', () => {
       interactionEvents: {
         heyHey: 'hey hey',
       },
-      frequencyMode: 'N',
       histogram: false,
       isSingleSelect: false,
       select,
