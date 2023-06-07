@@ -12,9 +12,9 @@ const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) =
 
 const getMaxFreqWidth = ({ sizes, isGridMode }) => {
   // Keep sufficient space for the value field when column/list width is small.
-  const MIN_WIDTH_FOR_VALUE = 80;
+  const MIN_WIDTH_FOR_VALUE_MODE = 80;
   const remainingTextSpace = (isGridMode ? sizes.columnWidth : sizes.listWidth) - sizes.freqMaxWidth;
-  const maxWidth = remainingTextSpace < MIN_WIDTH_FOR_VALUE ? '50%' : sizes.freqMaxWidth;
+  const maxWidth = remainingTextSpace < MIN_WIDTH_FOR_VALUE_MODE ? '50%' : sizes.freqMaxWidth;
   return maxWidth;
 };
 
@@ -179,10 +179,10 @@ const RowColRoot = styled('div', {
     // Frequency mode 'percent' will never need a text wider than this string: "100.0%"
     maxWidth:
       frequencyMode === 'P'
-        ? `${sizes.freqMinWidth + direction !== 'rtl' ? 10 : 0}px`
+        ? `${sizes.freqMinWidth + (direction !== 'rtl' ? 10 : 0)}px`
         : getMaxFreqWidth({ sizes, isGridMode }),
     textAlign: direction === 'rtl' ? 'left' : 'right',
-    paddingLeft: direction !== 'rtl' ? '10px' : 0,
+    paddingLeft: direction !== 'rtl' ? '8px' : 0, // in RTL, we already get the 8px from the value element's padding
   },
 
   [`&.${classes.barContainer}`]: {
