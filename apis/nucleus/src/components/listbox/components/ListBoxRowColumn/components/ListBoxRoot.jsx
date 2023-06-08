@@ -3,13 +3,6 @@ import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
 
-const MIN_WIDTH_FOR_VALUE_MODE = 80;
-
-const getRemainingTextSpace = ({ isGridMode, sizes }) => {
-  const remainingTextSpace = (isGridMode ? sizes.columnWidth : sizes.listWidth) - sizes.freqMaxWidth;
-  return remainingTextSpace;
-};
-
 const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) => {
   if (frequencyMode === 'P') {
     return `${sizes.freqMinWidth}px`;
@@ -18,11 +11,15 @@ const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) =
   return flexBasis;
 };
 
-const getMaxFreqWidth = ({ sizes, isGridMode }) => {
-  // Keep sufficient space for the value field when column/list width is small.
-  const remainingTextSpace = getRemainingTextSpace({ isGridMode, sizes });
-  const maxWidth = remainingTextSpace < MIN_WIDTH_FOR_VALUE_MODE ? '50%' : sizes.freqMaxWidth;
-  return maxWidth;
+const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) => {
+  if (isGridMode && !freqHitsValue) {
+    // This makes the neighbouring value stretch farther than when using a fixed freuency width.
+    return 'max-content';
+  }
+  if (frequencyMode === 'P') {
+    return sizes.freqMinWidth; // because it will never grow beyond "100.0%"
+  }
+  return sizes.freqMaxWidth;
 };
 
 const getSelectedStyle = ({ theme }) => ({
@@ -182,12 +179,8 @@ const RowColRoot = styled('div', {
     justifyContent: 'flex-end',
     ...ellipsis,
     flex: `0 0 ${getFreqFlexBasis({ sizes, frequencyMode, isGridMode, freqHitsValue })}`,
-    minWidth: 'auto',
-    // Frequency mode 'percent' will never need a text wider than this string: "100.0%"
-    maxWidth:
-      frequencyMode === 'P'
-        ? `${sizes.freqMinWidth + (direction !== 'rtl' ? 10 : 0)}px`
-        : getMaxFreqWidth({ sizes, isGridMode }),
+    minWidth: frequencyMode !== 'P' && freqHitsValue ? sizes.freqMinWidth : 'auto',
+    maxWidth: getMaxFreqWidth({ sizes, frequencyMode, isGridMode, freqHitsValue }),
     textAlign: direction === 'rtl' ? 'left' : 'right',
     // In RTL, we already get the 8px from the value element's padding and for
     // percent mode we have already adapted the width (fixed width) to the max number.
