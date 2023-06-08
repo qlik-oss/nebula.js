@@ -11,8 +11,8 @@ const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) =
   return flexBasis;
 };
 
-const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) => {
-  if (isGridMode && !freqHitsValue) {
+const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode }) => {
+  if (isGridMode) {
     // This makes the neighbouring value stretch farther than when using a fixed freuency width.
     return 'max-content';
   }
@@ -179,12 +179,12 @@ const RowColRoot = styled('div', {
     justifyContent: 'flex-end',
     ...ellipsis,
     flex: `0 0 ${getFreqFlexBasis({ sizes, frequencyMode, isGridMode, freqHitsValue })}`,
-    minWidth: !isGridMode && frequencyMode !== 'P' && freqHitsValue ? sizes.freqMinWidth : 'auto',
-    maxWidth: getMaxFreqWidth({ sizes, frequencyMode, isGridMode, freqHitsValue }),
+    minWidth: !isGridMode && frequencyMode !== 'P' && freqHitsValue ? sizes.freqMinWidth : 'max-content',
+    maxWidth: getMaxFreqWidth({ sizes, frequencyMode, isGridMode }),
     textAlign: direction === 'rtl' ? 'left' : 'right',
     // In RTL, we already get the 8px from the value element's padding and for
     // percent mode we have already adapted the width (fixed width) to the max number.
-    paddingLeft: direction !== 'rtl' && frequencyMode !== 'P' ? '8px' : 0,
+    paddingLeft: direction !== 'rtl' ? '8px' : 0,
   },
 
   [`&.${classes.barContainer}`]: {
