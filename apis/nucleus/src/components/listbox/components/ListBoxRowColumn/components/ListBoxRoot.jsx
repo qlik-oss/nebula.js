@@ -179,7 +179,7 @@ const RowColRoot = styled('div', {
     justifyContent: 'flex-end',
     ...ellipsis,
     flex: `0 0 ${getFreqFlexBasis({ sizes, frequencyMode, isGridMode, freqHitsValue })}`,
-    minWidth: frequencyMode !== 'P' && freqHitsValue ? sizes.freqMinWidth : 'auto',
+    minWidth: !isGridMode && frequencyMode !== 'P' && freqHitsValue ? sizes.freqMinWidth : 'auto',
     maxWidth: getMaxFreqWidth({ sizes, frequencyMode, isGridMode, freqHitsValue }),
     textAlign: direction === 'rtl' ? 'left' : 'right',
     // In RTL, we already get the 8px from the value element's padding and for
