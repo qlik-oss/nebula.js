@@ -3,7 +3,7 @@ import { create, act } from 'react-test-renderer';
 import * as reactWindowInfiniteLoaderModule from 'react-window-infinite-loader';
 import * as useSelectionsInteractionsModule from '../hooks/selections/useSelectionsInteractions';
 import * as useTextWidth from '../hooks/useTextWidth';
-import * as getListSizes from '../assets/get-list-sizes';
+import * as useListSizes from '../assets/list-sizes/use-list-sizes';
 import * as getListBoxComponents from '../components/grid-list-components/grid-list-components';
 import ListBox from '../ListBox';
 import ListBoxDisclaimer from '../components/ListBoxDisclaimer';
@@ -41,9 +41,12 @@ describe('<Listbox />', () => {
   let setTimeoutStub;
   let useSelectionsInteractions;
   let isModal;
+  let theme;
 
   beforeEach(() => {
     jest.useFakeTimers();
+
+    theme = {};
 
     setTimeoutStub = jest.fn();
     isModal = jest.fn();
@@ -94,7 +97,7 @@ describe('<Listbox />', () => {
       count: 200,
       listCount: 100,
     };
-    jest.spyOn(getListSizes, 'default').mockImplementation((props) => ({ ...sizes, listCount: props.listCount }));
+    jest.spyOn(useListSizes, 'default').mockImplementation((props) => ({ ...sizes, listCount: props.listCount }));
 
     jest.spyOn(reactWindowInfiniteLoaderModule, 'default').mockImplementation((props) => {
       const Component = props.children;
@@ -113,7 +116,6 @@ describe('<Listbox />', () => {
         getListObjectData: jest.fn().mockResolvedValue(pages),
         id: 1234,
       },
-      frequencyMode: 'N',
       histogram: false,
       selections,
       selectionState,
@@ -131,6 +133,7 @@ describe('<Listbox />', () => {
       fetchStart,
       keyScroll: { set: () => {}, reset: () => {}, state: { up: 0, down: 0 } },
       currentScrollIndex: { set: () => {} },
+      theme,
     };
   });
 
@@ -168,6 +171,7 @@ describe('<Listbox />', () => {
                 keyScroll={mergedArgs.keyScroll}
                 currentScrollIndex={mergedArgs.currentScrollIndex}
                 isModal={isModal}
+                theme={theme}
               />
             </InstanceContext.Provider>
           );

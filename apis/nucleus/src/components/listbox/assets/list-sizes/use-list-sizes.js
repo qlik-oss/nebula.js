@@ -1,28 +1,19 @@
 import calculateColumnMode from './column-mode';
 import calculateRowMode from './row-mode';
-import {
-  FREQUENCY_WIDTH,
-  ITEM_MAX_WIDTH,
-  ITEM_MIN_WIDTH,
-  SCROLL_BAR_WIDTH,
-  CHECKBOX_WIDTH,
-  REMOVE_TICK_LIMIT,
-} from '../../constants';
+import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH, SCROLL_BAR_WIDTH, CHECKBOX_WIDTH, REMOVE_TICK_LIMIT } from '../../constants';
+import useTextWidth from '../../hooks/useTextWidth';
+import getMeasureText from '../measure-text';
 
-export default function getListSizes({
-  layout,
-  width,
-  height,
-  listCount,
-  count,
-  textWidth,
-  freqIsAllowed,
-  checkboxes,
-}) {
+export default function useListSizes({ layout, width, height, listCount, count, freqIsAllowed, checkboxes, theme }) {
   const { layoutOptions = {} } = layout || {};
   const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense, dataLayout } = layoutOptions;
 
-  const frequencyAddWidth = freqIsAllowed ? FREQUENCY_WIDTH : 0;
+  const { fontSize = '12px', fontFamily = 'Source sans pro' } = theme.listBox?.content || {};
+  const font = `${fontSize} ${fontFamily}`; // font format as supported by HTML canvas
+  const textWidth = useTextWidth({ text: getMeasureText(layout), font });
+  const freqMinWidth = useTextWidth({ text: getMeasureText(5), font });
+  const freqMaxWidth = useTextWidth({ text: getMeasureText(8), font });
+  const frequencyAddWidth = freqIsAllowed ? freqMinWidth : 0;
   const checkboxAddWidth = checkboxes ? CHECKBOX_WIDTH : 0;
   const tickIconWidth = CHECKBOX_WIDTH;
 
@@ -103,11 +94,14 @@ export default function getListSizes({
     overflowStyling,
     itemHeight,
     listHeight,
+    listWidth: width,
     scrollBarWidth: SCROLL_BAR_WIDTH,
     count,
     listCount: limitedListCount,
     maxCount: { row: maxRowCount, column: maxColumnCount },
     itemPadding,
-    frequencyWidth: FREQUENCY_WIDTH,
+    textWidth,
+    freqMinWidth,
+    freqMaxWidth,
   };
 }

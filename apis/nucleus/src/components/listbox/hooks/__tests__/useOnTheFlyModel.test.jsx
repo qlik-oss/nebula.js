@@ -51,7 +51,7 @@ describe('useExistingModel', () => {
   describe('from field name', () => {
     test('should use provided frequencyMode', async () => {
       const options = {
-        frequencyMode: 'value',
+        frequencyMode: 'V',
       };
       const fieldIdentifier = 'Alpha';
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
@@ -60,25 +60,16 @@ describe('useExistingModel', () => {
 
     test('should assign qID', async () => {
       const options = {
-        frequencyMode: 'value',
+        frequencyMode: 'V',
       };
       const fieldIdentifier = 'Alpha';
       await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
       expect(useSessionModel.mock.lastCall[0].qInfo.qId).toBeDefined();
     });
 
-    test('should default to none if provided frequencyMode is invalid', async () => {
-      const options = {
-        frequencyMode: 'invalid value',
-      };
-      const fieldIdentifier = 'Alpha';
-      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options });
-      expect(useSessionModel.mock.lastCall[0].qListObjectDef.qFrequencyMode).toBe('N');
-    });
-
     test('should get frequency value if histogram is enabled', async () => {
       const options = {
-        frequencyMode: 'none',
+        frequencyMode: 'N',
         histogram: true,
       };
       const fieldIdentifier = 'Alpha';
@@ -166,7 +157,7 @@ describe('useExistingModel', () => {
       const fakeDimLayout = { qDim: { qFieldDefs: ['Volume'], title: 'Volume title', qGrouping: 'N' } };
       app.getDimension = jest.fn().mockReturnValue({ getLayout: async () => fakeDimLayout });
 
-      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$' });
+      await render(useOnTheFlyModel, { app, fieldIdentifier, stateName: '$', options: { frequencyMode: 'V' } });
       expect(useSessionModel.mock.lastCall[0].title).toBe('Volume title');
     });
     test('should use title from options if provided', async () => {

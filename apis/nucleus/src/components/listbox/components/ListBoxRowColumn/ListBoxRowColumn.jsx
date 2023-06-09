@@ -18,6 +18,7 @@ import ItemGrid from './components/ItemGrid';
 import getCellFromPages from './helpers/get-cell-from-pages';
 import { getValueLabel } from '../ScreenReaders';
 import getRowsKeyboardNavigation from '../../interactions/keyboard-navigation/keyboard-nav-rows';
+import getValueTextAlign from './helpers/get-value-text-align';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
@@ -46,16 +47,17 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     columnCount = 1,
     rowCount = 1,
     dataOffset,
+    deducedFrequencyMode,
     focusListItems,
     listCount,
-    itemPadding,
-    frequencyWidth,
+    sizes,
     translator,
     showSearch,
     isModal,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
+  const { itemPadding } = sizes;
 
   let cellIndex;
   let styles;
@@ -131,26 +133,13 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     [checkboxes]
   );
 
+  const valueTextAlign = useMemo(
+    () => cell && getValueTextAlign({ direction, cell, textAlign }),
+    [direction, cell, textAlign]
+  );
+
   if (!cell) {
     return null; // prevent rendering empty rows
-  }
-
-  const isNumeric = !['NaN', undefined].includes(cell?.qNum);
-  let valueTextAlign;
-  const isAutoTextAlign = !textAlign || textAlign.auto;
-  const dirToTextAlignMap = {
-    rtl: 'right',
-    ltr: 'left',
-  };
-
-  if (isAutoTextAlign) {
-    if (!isNumeric) {
-      valueTextAlign = dirToTextAlignMap[direction];
-    } else {
-      valueTextAlign = direction === 'rtl' ? 'left' : 'right';
-    }
-  } else {
-    valueTextAlign = textAlign?.align || 'left';
   }
 
   const isGridCol = dataLayout === 'grid' && layoutOrder === 'column';
@@ -170,18 +159,18 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     fontSize: '8px',
   };
 
+  const isRtl = direction === 'rtl';
+
   const cellStyle = {
     display: 'flex',
     alignItems: 'center',
-    minWidth: 0,
     flexGrow: 1,
-    paddingLeft: direction === 'rtl' ? 8 : checkboxes ? 0 : undefined,
-    paddingRight: checkboxes ? 0 : direction === 'rtl' ? 8 : 0,
+    paddingLeft: isRtl ? 8 : checkboxes ? 0 : undefined,
+    paddingRight: checkboxes ? 0 : isRtl ? 8 : 0,
     justifyContent: valueTextAlign,
   };
 
   const isFirstElement = index === 0;
-  const flexBasisVal = checkboxes ? 'auto' : 'max-content';
 
   const showLock = isSelected && isLocked;
   const showTick = !checkboxes && isSelected && !isLocked;
@@ -197,16 +186,20 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     showSearch,
   });
 
+  const freqHitsValue = (!isRtl && valueTextAlign === 'right') || (isRtl && valueTextAlign === 'left');
+
   return (
     <RowColRoot
       className={classes.barContainer}
-      flexBasisProp={flexBasisVal}
+      checkboxes={checkboxes}
       style={styles}
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
       dense={dense}
-      frequencyWidth={frequencyWidth}
       direction={direction}
+      sizes={sizes}
+      frequencyMode={deducedFrequencyMode}
+      freqHitsValue={freqHitsValue}
       data-testid="listbox.item"
     >
       <ItemGrid

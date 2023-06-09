@@ -1,12 +1,10 @@
-export default function getMeasureText(layout) {
-  if (!layout) {
+export default function getMeasureText(layoutOrNumber) {
+  if (!layoutOrNumber) {
     return '';
   }
 
-  const maxGlyphCount = layout.qListObject.qDimensionInfo.qApprMaxGlyphCount;
-  let measureString = '';
-  for (let i = 0; i < maxGlyphCount; i++) {
-    measureString += 'M';
-  }
+  const maxGlyphCount =
+    typeof layoutOrNumber === 'number' ? layoutOrNumber : layoutOrNumber.qListObject.qDimensionInfo.qApprMaxGlyphCount;
+  const measureString = Array(maxGlyphCount).fill('M').join('');
   return measureString;
 }
