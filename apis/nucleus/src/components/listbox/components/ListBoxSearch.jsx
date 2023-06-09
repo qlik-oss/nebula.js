@@ -6,6 +6,7 @@ import Search from '@nebula.js/ui/icons/search';
 import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
 import { CELL_PADDING_LEFT } from '../constants';
+import { ScreenReaderForSearchFiltering } from './ScreenReaders';
 
 const TREE_PATH = '/qListObjectDef';
 const WILDCARD = '**';
@@ -40,6 +41,7 @@ export default function ListBoxSearch({
 
   const theme = useTheme();
   const { getStoreValue } = useDataStore(model);
+  const count = getStoreValue(`listCount`);
   const isRtl = direction === 'rtl';
   const inpuTextAlign = isRtl ? 'right' : 'left';
 
@@ -170,53 +172,58 @@ export default function ListBoxSearch({
   }
 
   return (
-    <StyledOutlinedInput
-      startAdornment={
-        <StyledInputAdornment position="start">
-          <Search size={dense ? 'small' : 'normal'} />
-        </StyledInputAdornment>
-      }
-      className="search"
-      sx={[
-        {
-          border: 'none',
-          fontSize: 14,
-          borderRadius: 0,
-          backgroundColor: 'transparent',
-          '& fieldset': {
-            border: `1px solid ${theme.palette.divider}`,
-            borderWidth: '1px 0 1px 0',
-            borderRadius: 0,
-          },
-          '&:hover': {
+    <div>
+      <StyledOutlinedInput
+        startAdornment={
+          <StyledInputAdornment position="start">
+            <Search size={dense ? 'small' : 'normal'} />
+          </StyledInputAdornment>
+        }
+        className="search"
+        sx={[
+          {
             border: 'none',
+            fontSize: 14,
+            borderRadius: 0,
+            backgroundColor: 'transparent',
+            '& fieldset': {
+              border: `1px solid ${theme.palette.divider}`,
+              borderWidth: '1px 0 1px 0',
+              borderRadius: 0,
+            },
+            '&:hover': {
+              border: 'none',
+            },
+            paddingLeft: `${CELL_PADDING_LEFT}px`,
           },
-          paddingLeft: `${CELL_PADDING_LEFT}px`,
-        },
-        dense && {
-          fontSize: 12,
-          paddingLeft: theme.spacing(1),
-          '& input': {
-            paddingTop: '5px',
-            paddingBottom: '5px',
+          dense && {
+            fontSize: 12,
+            paddingLeft: theme.spacing(1),
+            '& input': {
+              paddingTop: '5px',
+              paddingBottom: '5px',
+            },
           },
-        },
-        { flexDirection: isRtl ? 'row-reverse' : 'row' },
-      ]}
-      inputRef={inputRef}
-      size="small"
-      fullWidth
-      placeholder={translator.get('Listbox.Search')}
-      value={value}
-      onFocus={handleFocus}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      autoFocus={autoFocus}
-      inputProps={{
-        tabIndex: keyboard.innerTabStops ? 0 : -1,
-        style: { textAlign: `${inpuTextAlign}` },
-        'data-testid': 'search-input-field',
-      }}
-    />
+          { flexDirection: isRtl ? 'row-reverse' : 'row' },
+        ]}
+        inputRef={inputRef}
+        size="small"
+        fullWidth
+        placeholder={translator.get('Listbox.Search')}
+        value={value}
+        onFocus={handleFocus}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        autoFocus={autoFocus}
+        inputProps={{
+          tabIndex: keyboard.innerTabStops ? 0 : -1,
+          style: { textAlign: `${inpuTextAlign}` },
+          'data-testid': 'search-input-field',
+          'aria-label': 'Search field',
+          'aria-describedby': 'live-input',
+        }}
+      />
+      <ScreenReaderForSearchFiltering id="live-input" value={value} count={count} />
+    </div>
   );
 }

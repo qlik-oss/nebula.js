@@ -66,3 +66,28 @@ export function ScreenReaderForSelections({ layout }) {
     </div>
   );
 }
+
+export function ScreenReaderForSearchFiltering({ value, count }) {
+  const { translator } = useContext(InstanceContext);
+
+  let t;
+  switch (count) {
+    case 0:
+      t = 'Listbox.NoMatchesForYourTerms';
+      break;
+    case 1:
+      t = 'ScreenReader.OneSearchResult';
+      break;
+    default:
+      t = 'ScreenReader.ManySearchResults';
+      break;
+  }
+
+  const text = value ? translator.get(t, [count]) : null;
+
+  return (
+    <div className="screenReaderOnly" aria-live="assertive">
+      {text}
+    </div>
+  );
+}

@@ -75,6 +75,14 @@
     "value": "The following search field filters results below as you type",
     "comment": "Instructions to inform screen reader users that the search field filters the listbox results as they type"
   },
+  "ScreenReader.OneSearchResult": {
+    "value": "There is one available result",
+    "comment": "Screen reader text stating that one value is currently available from the search filter results."
+  },
+  "ScreenReader.ManySearchResults": {
+    "value": "There are {0} available results",
+    "comment": "Screen reader text stating that one value is currently available from the search filter results."
+  },
   "ScreenReader.ZeroSelected": {
     "value": "No values are selected.",
     "comment": "Screen reader label stating that no values are selected."
