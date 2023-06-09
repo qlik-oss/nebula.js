@@ -11,6 +11,15 @@ import { ScreenReaderForSearchFiltering } from './ScreenReaders';
 const TREE_PATH = '/qListObjectDef';
 const WILDCARD = '**';
 
+const StyledWrapper = styled('div')(() => ({
+  [`& .screenReaderOnly`]: {
+    position: 'absolute',
+    height: 0,
+    width: 0,
+    overflow: 'hidden',
+  },
+}));
+
 const StyledInputAdornment = styled(InputAdornment)(({ theme }) => ({
   color: theme.listBox?.content?.color,
 }));
@@ -172,7 +181,7 @@ export default function ListBoxSearch({
   }
 
   return (
-    <div>
+    <StyledWrapper>
       <StyledOutlinedInput
         startAdornment={
           <StyledInputAdornment position="start">
@@ -223,7 +232,7 @@ export default function ListBoxSearch({
           'aria-describedby': 'live-input',
         }}
       />
-      <ScreenReaderForSearchFiltering id="live-input" value={value} count={count} />
-    </div>
+      <ScreenReaderForSearchFiltering id="live-input" className="screenReaderOnly" value={value} count={count} />
+    </StyledWrapper>
   );
 }
