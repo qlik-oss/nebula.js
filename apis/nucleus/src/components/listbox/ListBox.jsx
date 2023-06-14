@@ -18,6 +18,7 @@ import getFrequencyAllowed from './components/grid-list-components/frequency-all
 import useFrequencyMax from './hooks/useFrequencyMax';
 import { ScreenReaderForSelections } from './components/ScreenReaders';
 import InstanceContext from '../../contexts/InstanceContext';
+import ListBoxInputContext from './ListBoxInputContext';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -87,7 +88,8 @@ export default function ListBox({
     postProcessPages,
     listData,
   });
-  const { setStoreValue } = useDataStore(model);
+  const { getStoreValue, setStoreValue } = useDataStore(model);
+  const liveInputRegionRef = useContext(ListBoxInputContext);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
 
   const [overflowDisclaimer, setOverflowDisclaimer] = useState({ show: false, dismissed: false });
@@ -104,6 +106,26 @@ export default function ListBox({
       layout,
     });
   }
+
+  const updateScreenReaderSearchText = ({ userInput, listCount }) => {
+    if (userInput) {
+      let t;
+      switch (listCount) {
+        case 0:
+          t = 'Listbox.NoMatchesForYourTerms';
+          break;
+        case 1:
+          t = 'ScreenReader.OneSearchResult';
+          break;
+        default:
+          t = 'ScreenReader.ManySearchResults';
+          break;
+      }
+
+      const screenReaderText = translator.get(t, [listCount]);
+      liveInputRegionRef.current.textContent = screenReaderText;
+    }
+  };
 
   const cardinal = layout?.qListObject.qDimensionInfo.qCardinal;
 
@@ -183,6 +205,12 @@ export default function ListBox({
   useEffect(() => {
     fetchData();
   }, [layout, local.current.dataOffset]);
+
+  useEffect(() => {
+    const userInput = getStoreValue(`userInput`);
+    const listCount = getStoreValue(`listCount`);
+    updateScreenReaderSearchText({ userInput, listCount });
+  }, [getStoreValue('userInput')]);
 
   const textWidth = useTextWidth({ text: getMeasureText(layout), font: '14px Source sans pro' });
 
