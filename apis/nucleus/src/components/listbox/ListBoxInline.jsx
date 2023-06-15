@@ -24,7 +24,6 @@ import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
 import useRect from '../../hooks/useRect';
 import isDirectQueryEnabled from './utils/is-direct-query';
-import ListBoxInputContext from './ListBoxInputContext';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -135,7 +134,6 @@ function ListBoxInline({ options, layout }) {
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
   const [isToolbarDetached, setIsToolbarDetached] = useState(false);
-  const liveInputRegionRef = useRef(null);
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown } = useMemo(
     () =>
@@ -330,141 +328,136 @@ function ListBoxInline({ options, layout }) {
   return (
     <>
       {showDetachedToolbarOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
-      <ListBoxInputContext.Provider value={liveInputRegionRef}>
-        <StyledGrid
-          className="listbox-container"
-          container
-          tabIndex={keyboard.enabled ? -1 : undefined}
-          direction="column"
-          gap={0}
-          containerPadding={containerPadding}
-          style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
-          onKeyDown={handleKeyDown}
-          onMouseEnter={handleOnMouseEnter}
-          onMouseLeave={handleOnMouseLeave}
-          ref={(el) => {
-            containerRef.current = el;
-            containerRectRef(el);
-          }}
-          isGridMode={isGridMode}
-        >
-          {showToolbarWithTitle && (
-            <Grid
-              item
-              container
-              minHeight={headerHeight}
-              flexDirection={isRtl ? 'row-reverse' : 'row'}
-              marginY={1}
-              paddingLeft={`${headerPaddingLeft}px`}
-              paddingRight={`${headerPaddingRight}px`}
-              wrap="nowrap"
-            >
-              {showIcons && (
-                <Grid item container alignItems="center" width={iconsWidth}>
-                  {isLocked ? lockIconComp : showSearchIcon && searchIconComp}
-                  {isDrillDown && (
-                    <DrillDownIcon
-                      tabIndex={-1}
-                      title={translator.get('Listbox.DrillDown')}
-                      size="large"
-                      style={{ fontSize: '12px' }}
-                    />
-                  )}
-                </Grid>
-              )}
-              <Grid
-                item
-                xs
-                minWidth={0} // needed to text-overflow see: https://css-tricks.com/flexbox-truncated-text/
-                justifyContent={isRtl ? 'flex-end' : 'flex-start'}
-                className={classes.listBoxHeader}
-              >
-                {showTitle && (
-                  <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
-                    {layout.title}
-                  </Title>
-                )}
-              </Grid>
-              <Grid item>
-                <ActionsToolbar direction={direction} {...getActionToolbarProps(isToolbarDetached)} />
-              </Grid>
-            </Grid>
-          )}
+      <StyledGrid
+        className="listbox-container"
+        container
+        tabIndex={keyboard.enabled ? -1 : undefined}
+        direction="column"
+        gap={0}
+        containerPadding={containerPadding}
+        style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
+        onKeyDown={handleKeyDown}
+        onMouseEnter={handleOnMouseEnter}
+        onMouseLeave={handleOnMouseLeave}
+        ref={(el) => {
+          containerRef.current = el;
+          containerRectRef(el);
+        }}
+        isGridMode={isGridMode}
+      >
+        {showToolbarWithTitle && (
           <Grid
             item
             container
-            direction="column"
-            style={{ height: '100%', minHeight: '50px' }}
-            role="region"
-            aria-label={translator.get('Listbox.ResultFilterLabel')}
+            minHeight={headerHeight}
+            flexDirection={isRtl ? 'row-reverse' : 'row'}
+            marginY={1}
+            paddingLeft={`${headerPaddingLeft}px`}
+            paddingRight={`${headerPaddingRight}px`}
+            wrap="nowrap"
           >
-            <Grid item ref={searchContainerRef}>
-              <div className={classes.screenReaderOnly}>
-                {translator.get('Listbox.Search.ScreenReaderInstructions')}
-              </div>
-              <ListBoxSearch
-                selections={selections}
-                selectionState={selectionState}
-                model={model}
-                dense={dense}
-                keyboard={keyboard}
-                visible={searchVisible}
-                search={search}
-                autoFocus={shouldAutoFocus}
-                wildCardSearch={wildCardSearch}
-                searchEnabled={searchEnabled}
-                direction={direction}
-                hide={showSearchIcon && onShowSearch}
-              />
-              <div className={classes.screenReaderOnly} aria-live="assertive" ref={liveInputRegionRef} />
-            </Grid>
-            <Grid item xs className={classes.listboxWrapper}>
-              <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
-              {isInvalid ? (
-                <ListBoxError text={errorText} />
-              ) : (
-                <AutoSizer>
-                  {({ height, width }) => (
-                    <ListBox
-                      model={model}
-                      app={app}
-                      constraints={constraints}
-                      layout={layout}
-                      selections={selections}
-                      selectionState={selectionState}
-                      direction={direction}
-                      frequencyMode={frequencyMode}
-                      rangeSelect={rangeSelect}
-                      checkboxes={checkboxes}
-                      height={height}
-                      width={width}
-                      update={update}
-                      fetchStart={fetchStart}
-                      postProcessPages={postProcessPages}
-                      calculatePagesHeight={calculatePagesHeight}
-                      selectDisabled={selectDisabled}
-                      keyboard={keyboard}
-                      showGray={showGray}
-                      scrollState={scrollState}
-                      keyScroll={{
-                        state: keyScroll,
-                        reset: () => setKeyScroll({ up: 0, down: 0, scrollPosition: '' }),
-                      }}
-                      currentScrollIndex={{
-                        state: currentScrollIndex,
-                        set: setCurrentScrollIndex,
-                      }}
-                      renderedCallback={renderedCallback}
-                      onCtrlF={onCtrlF}
-                      isModal={isModalMode}
-                    />
-                  )}
-                </AutoSizer>
+            {showIcons && (
+              <Grid item container alignItems="center" width={iconsWidth}>
+                {isLocked ? lockIconComp : showSearchIcon && searchIconComp}
+                {isDrillDown && (
+                  <DrillDownIcon
+                    tabIndex={-1}
+                    title={translator.get('Listbox.DrillDown')}
+                    size="large"
+                    style={{ fontSize: '12px' }}
+                  />
+                )}
+              </Grid>
+            )}
+            <Grid
+              item
+              xs
+              minWidth={0} // needed to text-overflow see: https://css-tricks.com/flexbox-truncated-text/
+              justifyContent={isRtl ? 'flex-end' : 'flex-start'}
+              className={classes.listBoxHeader}
+            >
+              {showTitle && (
+                <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
+                  {layout.title}
+                </Title>
               )}
             </Grid>
+            <Grid item>
+              <ActionsToolbar direction={direction} {...getActionToolbarProps(isToolbarDetached)} />
+            </Grid>
           </Grid>
-        </StyledGrid>
-      </ListBoxInputContext.Provider>
+        )}
+        <Grid
+          item
+          container
+          direction="column"
+          style={{ height: '100%', minHeight: '50px' }}
+          role="region"
+          aria-label={translator.get('Listbox.ResultFilterLabel')}
+        >
+          <Grid item ref={searchContainerRef}>
+            <div className={classes.screenReaderOnly}>{translator.get('Listbox.Search.ScreenReaderInstructions')}</div>
+            <ListBoxSearch
+              selections={selections}
+              selectionState={selectionState}
+              model={model}
+              dense={dense}
+              keyboard={keyboard}
+              visible={searchVisible}
+              search={search}
+              autoFocus={shouldAutoFocus}
+              wildCardSearch={wildCardSearch}
+              searchEnabled={searchEnabled}
+              direction={direction}
+              hide={showSearchIcon && onShowSearch}
+            />
+          </Grid>
+          <Grid item xs className={classes.listboxWrapper}>
+            <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
+            {isInvalid ? (
+              <ListBoxError text={errorText} />
+            ) : (
+              <AutoSizer>
+                {({ height, width }) => (
+                  <ListBox
+                    model={model}
+                    app={app}
+                    constraints={constraints}
+                    layout={layout}
+                    selections={selections}
+                    selectionState={selectionState}
+                    direction={direction}
+                    frequencyMode={frequencyMode}
+                    rangeSelect={rangeSelect}
+                    checkboxes={checkboxes}
+                    height={height}
+                    width={width}
+                    update={update}
+                    fetchStart={fetchStart}
+                    postProcessPages={postProcessPages}
+                    calculatePagesHeight={calculatePagesHeight}
+                    selectDisabled={selectDisabled}
+                    keyboard={keyboard}
+                    showGray={showGray}
+                    scrollState={scrollState}
+                    keyScroll={{
+                      state: keyScroll,
+                      reset: () => setKeyScroll({ up: 0, down: 0, scrollPosition: '' }),
+                    }}
+                    currentScrollIndex={{
+                      state: currentScrollIndex,
+                      set: setCurrentScrollIndex,
+                    }}
+                    renderedCallback={renderedCallback}
+                    onCtrlF={onCtrlF}
+                    isModal={isModalMode}
+                  />
+                )}
+              </AutoSizer>
+            )}
+          </Grid>
+        </Grid>
+      </StyledGrid>
     </>
   );
 }

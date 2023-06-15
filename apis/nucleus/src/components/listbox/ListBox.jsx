@@ -18,7 +18,6 @@ import getFrequencyAllowed from './components/grid-list-components/frequency-all
 import useFrequencyMax from './hooks/useFrequencyMax';
 import { ScreenReaderForSelections } from './components/ScreenReaders';
 import InstanceContext from '../../contexts/InstanceContext';
-import ListBoxInputContext from './ListBoxInputContext';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -62,6 +61,7 @@ export default function ListBox({
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const { checkboxes = checkboxOption, histogram } = layout ?? {};
+  const [screenReaderText, setScreenReaderText] = useState('');
 
   const loaderRef = useRef(null);
   const local = useRef({
@@ -89,7 +89,6 @@ export default function ListBox({
     listData,
   });
   const { getStoreValue, setStoreValue } = useDataStore(model);
-  const liveInputRegionRef = useContext(ListBoxInputContext);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
 
   const [overflowDisclaimer, setOverflowDisclaimer] = useState({ show: false, dismissed: false });
@@ -107,8 +106,8 @@ export default function ListBox({
     });
   }
 
-  const updateScreenReaderSearchText = ({ userInput, listCount }) => {
-    if (userInput) {
+  const updateScreenReaderSearchText = ({ inputText, listCount }) => {
+    if (inputText) {
       let t;
       switch (listCount) {
         case 0:
@@ -122,8 +121,8 @@ export default function ListBox({
           break;
       }
 
-      const screenReaderText = translator.get(t, [listCount]);
-      liveInputRegionRef.current.textContent = screenReaderText;
+      const srText = translator.get(t, [listCount]);
+      setScreenReaderText(srText);
     }
   };
 
@@ -206,12 +205,6 @@ export default function ListBox({
     fetchData();
   }, [layout, local.current.dataOffset]);
 
-  useEffect(() => {
-    const userInput = getStoreValue(`userInput`);
-    const listCount = getStoreValue(`listCount`);
-    updateScreenReaderSearchText({ userInput, listCount });
-  }, [getStoreValue('userInput')]);
-
   const textWidth = useTextWidth({ text: getMeasureText(layout), font: '14px Source sans pro' });
 
   let minimumBatchSize = DEFAULT_MIN_BATCH_SIZE;
@@ -247,6 +240,12 @@ export default function ListBox({
 
   const { listCount } = sizes;
   setStoreValue('listCount', listCount);
+
+  const inputText = getStoreValue(`inputText`);
+
+  useEffect(() => {
+    updateScreenReaderSearchText({ inputText, listCount });
+  }, [inputText]);
 
   const setScrollPosition = (position) => {
     const { scrollIndex, offset, triggerRerender } = getScrollIndex({
@@ -337,6 +336,9 @@ export default function ListBox({
   return (
     <StyledWrapper>
       <ScreenReaderForSelections className="screenReaderOnly" layout={layout} />
+      <div className="screenReaderOnly" aria-live="assertive">
+        {screenReaderText}
+      </div>
       {!listCount && cardinal > 0 && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}

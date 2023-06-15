@@ -78,7 +78,7 @@ export default function ListBoxSearch({
   }, [wildcardOn, inputRef.current]);
 
   useEffect(() => {
-    setStoreValue('userInput', value);
+    setStoreValue('inputText', value);
   }, [value]);
 
   const onChange = async (e) => {
