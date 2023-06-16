@@ -6,6 +6,7 @@ import * as ListBoxInlineModule from '../ListBoxInline';
 import * as useObjectSelectionsMockModule from '../../../hooks/useObjectSelections';
 import * as useExistingModelModule from '../hooks/useExistingModel';
 import * as useOnTheFlyModelMockModule from '../hooks/useOnTheFlyModel';
+import * as getFrequencyModeLetterModule from '../utils/get-frequency-mode-letter';
 
 jest.mock('react-dom', () => ({
   createPortal: (element) => element,
@@ -17,6 +18,7 @@ describe('ListBoxPortal', () => {
   let useObjectSelectionsMock;
   let useExistingModel;
   let useOnTheFlyModelMock;
+  let getFrequencyModeLetterMock;
 
   async function render(content) {
     await renderer.act(async () => {
@@ -32,11 +34,13 @@ describe('ListBoxPortal', () => {
     useObjectSelectionsMock = jest.fn().mockReturnValue([{ id: 'objectSelection' }]);
     useExistingModel = jest.fn().mockReturnValue({});
     useOnTheFlyModelMock = jest.fn().mockReturnValue({});
+    getFrequencyModeLetterMock = jest.fn((v) => (v === 'percent' ? 'P' : 'N'));
 
     jest.spyOn(ListBoxInlineModule, 'default').mockImplementation(ListBoxInlineMock);
     jest.spyOn(useObjectSelectionsMockModule, 'default').mockImplementation(useObjectSelectionsMock);
     jest.spyOn(useExistingModelModule, 'default').mockImplementation(useExistingModel);
     jest.spyOn(useOnTheFlyModelMockModule, 'default').mockImplementation(useOnTheFlyModelMock);
+    jest.spyOn(getFrequencyModeLetterModule, 'default').mockImplementation(getFrequencyModeLetterMock);
   });
 
   afterEach(() => {
@@ -65,7 +69,13 @@ describe('ListBoxPortal', () => {
       const app = {};
       const elem = ListBoxPortal({ app, qId });
       await render(elem);
-      expect(useExistingModel).toHaveBeenCalledWith({ app, qId, options: {} });
+      expect(useExistingModel).toHaveBeenCalledWith({
+        app,
+        qId,
+        options: {
+          frequencyMode: undefined,
+        },
+      });
     });
 
     test('should use provided "sessionModel"', async () => {
@@ -87,7 +97,14 @@ describe('ListBoxPortal', () => {
       const app = {};
       const elem = ListBoxPortal({ app, fieldIdentifier });
       await render(elem);
-      expect(useOnTheFlyModelMock).toHaveBeenCalledWith({ app, fieldIdentifier, stateName: '$', options: {} });
+      expect(useOnTheFlyModelMock).toHaveBeenCalledWith({
+        app,
+        fieldIdentifier,
+        stateName: '$',
+        options: {
+          frequencyMode: 'N',
+        },
+      });
     });
 
     test('should create session model when providing qLibraryId', async () => {
@@ -95,7 +112,14 @@ describe('ListBoxPortal', () => {
       const app = {};
       const elem = ListBoxPortal({ app, fieldIdentifier });
       await render(elem);
-      expect(useOnTheFlyModelMock).toHaveBeenCalledWith({ app, fieldIdentifier, stateName: '$', options: {} });
+      expect(useOnTheFlyModelMock).toHaveBeenCalledWith({
+        app,
+        fieldIdentifier,
+        stateName: '$',
+        options: {
+          frequencyMode: 'N',
+        },
+      });
     });
   });
 
@@ -183,6 +207,29 @@ describe('ListBoxPortal', () => {
       };
       const { __DO_NOT_USE__, ...resultOfOptions } = extraOptions;
       expect(getOptions(extraOptions)).toMatchObject({ ...defaultValues, ...resultOfOptions, ...doNotUse });
+    });
+
+    test('for onTheFly models it should consolidate frequency mode option just before transferring options to ListBoxInline, but not before that', async () => {
+      expect(getOptions({ frequencyMode: 'percent' })).toMatchObject({ ...defaultValues, frequencyMode: 'percent' });
+      expect(getOptions({ frequencyMode: 'values' })).toMatchObject({ ...defaultValues, frequencyMode: 'values' });
+
+      const fieldIdentifier = { qLibraryId: '123' };
+      const app = {};
+      const options = {
+        app: {},
+        model: {},
+        frequencyMode: 'percent',
+      };
+      const elem = ListBoxPortal({ app, fieldIdentifier, options });
+      await render(elem);
+      expect(ListBoxInlineMock.mock.calls[0][0]).toMatchObject(
+        {
+          options: {
+            frequencyMode: 'P',
+          },
+        },
+        {}
+      );
     });
   });
 });

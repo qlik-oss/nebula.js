@@ -3,6 +3,25 @@ import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
 
+const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) => {
+  if (frequencyMode === 'P') {
+    return `${sizes.freqMinWidth}px`;
+  }
+  const flexBasis = isGridMode && !freqHitsValue ? 'max-content' : '25%';
+  return flexBasis;
+};
+
+const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode }) => {
+  if (isGridMode) {
+    // This makes the neighbouring value stretch farther than when using a fixed freuency width.
+    return 'max-content';
+  }
+  if (frequencyMode === 'P') {
+    return sizes.freqMinWidth; // because it will never grow beyond "100.0%"
+  }
+  return sizes.freqMaxWidth;
+};
+
 const getSelectedStyle = ({ theme }) => ({
   background: theme.palette.selected.main,
   color: theme.palette.selected.mainContrastText,
@@ -26,8 +45,17 @@ const iconWidth = 24; // tick and lock icon width in px
 
 const RowColRoot = styled('div', {
   shouldForwardProp: (prop) =>
-    !['flexBasisProp', 'isGridMode', 'isGridCol', 'dense', 'frequencyWidth', 'direction'].includes(prop),
-})(({ theme, flexBasisProp, isGridMode, isGridCol, dense, frequencyWidth, direction }) => ({
+    ![
+      'checkboxes',
+      'isGridMode',
+      'isGridCol',
+      'dense',
+      'direction',
+      'sizes',
+      'frequencyMode',
+      'freqHitsValue',
+    ].includes(prop),
+})(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode, freqHitsValue }) => ({
   '&:focus': {
     boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
   },
@@ -64,8 +92,9 @@ const RowColRoot = styled('div', {
   [`& .${classes.cell}`]: {
     display: 'flex',
     alignItems: 'center',
-    minWidth: 0,
     flexGrow: 1,
+    minWidth: checkboxes ? '52px' : '26px', // these numbers are just enough to show one letter and ellipsis: A…
+    flexBasis: checkboxes ? 'auto' : 'max-content',
     // Note that this padding is overridden when using checkboxes.
     paddingLeft: `${CELL_PADDING_LEFT}px`,
     paddingRight: 0,
@@ -73,7 +102,6 @@ const RowColRoot = styled('div', {
 
   // The leaf node, containing the label text.
   [`& .${classes.labelText}`]: {
-    flexBasis: flexBasisProp,
     lineHeight: '16px',
     userSelect: 'none',
     paddingRight: '1px',
@@ -150,9 +178,13 @@ const RowColRoot = styled('div', {
   [`& .${classes.frequencyCount}`]: {
     justifyContent: 'flex-end',
     ...ellipsis,
-    flex: `0 1 ${frequencyWidth}px`,
+    flex: `0 0 ${getFreqFlexBasis({ sizes, frequencyMode, isGridMode, freqHitsValue })}`,
+    minWidth: !isGridMode && frequencyMode !== 'P' && freqHitsValue ? sizes.freqMinWidth : 'max-content',
+    maxWidth: getMaxFreqWidth({ sizes, frequencyMode, isGridMode }),
     textAlign: direction === 'rtl' ? 'left' : 'right',
-    paddingLeft: '2px',
+    // In RTL, we already get the 8px from the value element's padding and for
+    // percent mode we have already adapted the width (fixed width) to the max number.
+    paddingLeft: direction !== 'rtl' ? '8px' : 0,
   },
 
   [`&.${classes.barContainer}`]: {

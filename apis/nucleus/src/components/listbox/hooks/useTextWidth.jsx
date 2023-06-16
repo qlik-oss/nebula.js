@@ -15,14 +15,14 @@ const getTextWidth = (currentText, font) => {
     return Math.max(...currentText.map((t) => context.measureText(t).width));
   }
   const metrics = context.measureText(currentText);
-  return metrics.width;
+  return Math.ceil(metrics.width || 0);
 };
 
 const useTextWidth = (options) => {
   const textOptions = useMemo(() => ('text' in options ? options : {}), [options]);
 
   return useMemo(
-    () => getTextWidth(textOptions.text, textOptions.font || '14px Source Sans Pro'),
+    () => getTextWidth(textOptions.text, textOptions.font || '12px Source Sans Pro'),
     [textOptions.text, textOptions.font]
   );
 };

@@ -4,9 +4,7 @@ import InfiniteLoader from 'react-window-infinite-loader';
 import { styled } from '@mui/material';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 import getListBoxComponents from './components/grid-list-components/grid-list-components';
-import getListSizes from './assets/get-list-sizes/get-list-sizes';
-import useTextWidth from './hooks/useTextWidth';
-import getMeasureText from './assets/measure-text';
+import useListSizes from './assets/list-sizes';
 import getHorizontalMinBatchSize from './assets/horizontal-minimum-batch-size';
 import useItemsLoader from './hooks/useItemsLoader';
 import getListCount from './components/list-count';
@@ -18,6 +16,7 @@ import getFrequencyAllowed from './components/grid-list-components/frequency-all
 import useFrequencyMax from './hooks/useFrequencyMax';
 import { ScreenReaderForSelections } from './components/ScreenReaders';
 import InstanceContext from '../../contexts/InstanceContext';
+import deduceFrequencyMode from './utils/deduce-frequency-mode';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -34,6 +33,7 @@ export default function ListBox({
   model,
   app,
   constraints,
+  theme,
   layout,
   selections,
   selectionState,
@@ -205,8 +205,6 @@ export default function ListBox({
     fetchData();
   }, [layout, local.current.dataOffset]);
 
-  const textWidth = useTextWidth({ text: getMeasureText(layout), font: '14px Source sans pro' });
-
   let minimumBatchSize = DEFAULT_MIN_BATCH_SIZE;
 
   const isVertical = layoutOptions.dataLayout !== 'grid';
@@ -223,15 +221,16 @@ export default function ListBox({
   });
 
   let freqIsAllowed = getFrequencyAllowed({ itemWidth: width, layout, frequencyMode });
-  const sizes = getListSizes({
+  const deducedFrequencyMode = deduceFrequencyMode(pages);
+  const sizes = useListSizes({
     layout,
     width,
     height,
     listCount: unlimitedListCount,
     count,
-    textWidth,
     freqIsAllowed,
     checkboxes,
+    theme,
   });
   if (sizes.columnWidth) {
     // In grid mode, where we have a dynamic item width, get a second opinion on showing/hiding frequency.
@@ -298,7 +297,7 @@ export default function ListBox({
     height,
     width,
     checkboxes,
-    frequencyMode,
+    deducedFrequencyMode,
     histogram,
     keyboard,
     showGray,

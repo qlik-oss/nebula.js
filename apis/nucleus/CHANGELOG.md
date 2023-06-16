@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.1](https://github.com/qlik-oss/nebula.js/compare/v4.2.0...v4.2.1) (2023-06-09)
+
+### Bug Fixes
+
+- correct call in generate props example ([#1287](https://github.com/qlik-oss/nebula.js/issues/1287)) ([bb61cb2](https://github.com/qlik-oss/nebula.js/commit/bb61cb2ade833643c073157df3c8fd1bca9a7acf))
+
 # [4.2.0](https://github.com/qlik-oss/nebula.js/compare/v4.1.0...v4.2.0) (2023-05-31)
 
 **Note:** Version bump only for package @nebula.js/nucleus
