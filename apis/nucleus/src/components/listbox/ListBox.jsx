@@ -14,7 +14,7 @@ import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
 import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 import useFrequencyMax from './hooks/useFrequencyMax';
-import { ScreenReaderForSelections } from './components/ScreenReaders';
+import { ScreenReaderForSelections, getScreenReaderSearchText } from './components/ScreenReaders';
 import InstanceContext from '../../contexts/InstanceContext';
 import deduceFrequencyMode from './utils/deduce-frequency-mode';
 
@@ -105,26 +105,6 @@ export default function ListBox({
       layout,
     });
   }
-
-  const updateScreenReaderSearchText = ({ inputText, listCount }) => {
-    if (inputText) {
-      let t;
-      switch (listCount) {
-        case 0:
-          t = 'Listbox.NoMatchesForYourTerms';
-          break;
-        case 1:
-          t = 'ScreenReader.OneSearchResult';
-          break;
-        default:
-          t = 'ScreenReader.ManySearchResults';
-          break;
-      }
-
-      const srText = translator.get(t, [listCount]);
-      setScreenReaderText(srText);
-    }
-  };
 
   const cardinal = layout?.qListObject.qDimensionInfo.qCardinal;
 
@@ -240,11 +220,13 @@ export default function ListBox({
   const { listCount } = sizes;
   setStoreValue('listCount', listCount);
 
-  const inputText = getStoreValue(`inputText`);
+  const inputText = getStoreValue('inputText');
 
   useEffect(() => {
-    updateScreenReaderSearchText({ inputText, listCount });
-  }, [inputText]);
+    const srText = getScreenReaderSearchText({ inputText, listCount });
+    const srFinalText = translator.get(srText, [listCount]);
+    setScreenReaderText(srFinalText);
+  }, [inputText, listCount]);
 
   const setScrollPosition = (position) => {
     const { scrollIndex, offset, triggerRerender } = getScrollIndex({
