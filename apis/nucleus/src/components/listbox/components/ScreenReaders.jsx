@@ -67,20 +67,18 @@ export function ScreenReaderForSelections({ layout }) {
   );
 }
 
-export function getScreenReaderSearchText({ inputText, listCount }) {
+export function getScreenReaderSearchText(listCount) {
   let t;
-  if (inputText) {
-    switch (listCount) {
-      case 0:
-        t = 'Listbox.NoMatchesForYourTerms';
-        break;
-      case 1:
-        t = 'ScreenReader.OneSearchResult';
-        break;
-      default:
-        t = 'ScreenReader.ManySearchResults';
-        break;
-    }
+  switch (listCount) {
+    case 0:
+      t = 'Listbox.NoMatchesForYourTerms';
+      break;
+    case 1:
+      t = 'ScreenReader.OneSearchResult';
+      break;
+    default:
+      t = 'ScreenReader.ManySearchResults';
+      break;
   }
 
   return t;

@@ -223,9 +223,11 @@ export default function ListBox({
   const inputText = getStoreValue('inputText');
 
   useEffect(() => {
-    const srText = getScreenReaderSearchText({ inputText, listCount });
-    const srFinalText = translator.get(srText, [listCount]);
-    setScreenReaderText(srFinalText);
+    if (inputText) {
+      const srText = getScreenReaderSearchText(listCount);
+      const srFinalText = translator.get(srText, [listCount]);
+      setScreenReaderText(srFinalText);
+    }
   }, [inputText, listCount]);
 
   const setScrollPosition = (position) => {
