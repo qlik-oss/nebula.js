@@ -66,3 +66,20 @@ export function ScreenReaderForSelections({ layout }) {
     </div>
   );
 }
+
+export function getScreenReaderSearchText(listCount) {
+  let t;
+  switch (listCount) {
+    case 0:
+      t = 'Listbox.NoMatchesForYourTerms';
+      break;
+    case 1:
+      t = 'ScreenReader.OneSearchResult';
+      break;
+    default:
+      t = 'ScreenReader.ManySearchResults';
+      break;
+  }
+
+  return t;
+}

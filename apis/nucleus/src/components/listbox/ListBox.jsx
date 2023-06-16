@@ -14,7 +14,7 @@ import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
 import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 import useFrequencyMax from './hooks/useFrequencyMax';
-import { ScreenReaderForSelections } from './components/ScreenReaders';
+import { ScreenReaderForSelections, getScreenReaderSearchText } from './components/ScreenReaders';
 import InstanceContext from '../../contexts/InstanceContext';
 import deduceFrequencyMode from './utils/deduce-frequency-mode';
 
@@ -61,6 +61,7 @@ export default function ListBox({
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const { checkboxes = checkboxOption, histogram } = layout ?? {};
+  const [screenReaderText, setScreenReaderText] = useState('');
 
   const loaderRef = useRef(null);
   const local = useRef({
@@ -87,7 +88,7 @@ export default function ListBox({
     postProcessPages,
     listData,
   });
-  const { setStoreValue } = useDataStore(model);
+  const { getStoreValue, setStoreValue } = useDataStore(model);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
 
   const [overflowDisclaimer, setOverflowDisclaimer] = useState({ show: false, dismissed: false });
@@ -219,6 +220,16 @@ export default function ListBox({
   const { listCount } = sizes;
   setStoreValue('listCount', listCount);
 
+  const inputText = getStoreValue('inputText');
+
+  useEffect(() => {
+    if (inputText) {
+      const srText = getScreenReaderSearchText(listCount);
+      const srFinalText = translator.get(srText, [listCount]);
+      setScreenReaderText(srFinalText);
+    }
+  }, [inputText, listCount]);
+
   const setScrollPosition = (position) => {
     const { scrollIndex, offset, triggerRerender } = getScrollIndex({
       position,
@@ -308,6 +319,9 @@ export default function ListBox({
   return (
     <StyledWrapper>
       <ScreenReaderForSelections className="screenReaderOnly" layout={layout} />
+      <div className="screenReaderOnly" aria-live="assertive">
+        {screenReaderText}
+      </div>
       {!listCount && cardinal > 0 && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
