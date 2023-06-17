@@ -75,7 +75,7 @@ commands:
 jobs:
   validate:
     docker:
-      - image: cimg/node:20.2.0
+      - image: cimg/node:20.3.0
     working_directory: ~/project
     steps:
       - attach_workspace:
@@ -99,7 +99,7 @@ jobs:
 
   build:
     docker:
-      - image: cimg/node:20.2.0
+      - image: cimg/node:20.3.0
 
     working_directory: ~/project
     resource_class: large
@@ -123,7 +123,7 @@ jobs:
 
   test-integration:
     docker:
-      - image: cimg/node:20.2.0
+      - image: cimg/node:20.3.0
       - image: browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project
@@ -154,7 +154,7 @@ jobs:
 
   test-create:
     docker:
-      - image: cimg/node:20.2.0
+      - image: cimg/node:20.3.0
       - image: browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project

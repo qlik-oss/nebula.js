@@ -4,10 +4,10 @@
   "private": true,
   "main": "src/index.js",
   "devDependencies": {
-    "@emotion/react": "^11.11.0",
+    "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.13.3",
+    "@mui/material": "^5.13.5",
     "@nebula.js/conversion": "^4.2.1",
     "@nebula.js/locale": "^4.2.1",
     "@nebula.js/supernova": "^4.2.1",
