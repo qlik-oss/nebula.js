@@ -4,6 +4,7 @@ import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext
 import { Grid, Paper } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 
+import { onContextMenu } from '@nebula.js/stardust';
 import CError from './Error';
 import LongRunningQuery from './LongRunningQuery';
 import Loading from './Loading';
@@ -17,6 +18,10 @@ import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
 import eventmixin from '../selections/event-mixin';
 import { resolveBgColor, resolveBgImage, resolveTextStyle } from '../utils/background-props';
+import ContextMenu from './context-menu/ContextMenu';
+import Menu from './context-menu/utils/menu';
+import MenuBuilder from './context-menu/utils/menu-builder';
+import contextMenuBuilderForObject from './context-menu/utils/object-context-menu-builder';
 
 /**
  * @interface
@@ -320,6 +325,36 @@ const Cell = forwardRef(
     const [bgColor, setBgColor] = useState(undefined);
     const [bgImage, setBgImage] = useState(undefined); // {url: "", size: "", pos: ""}
     const [titleStyles, setTitleStyles] = useState(undefined);
+    const initState = { mouseX: -1, mouseY: -1 };
+    const [contextMenu, setContextMenu] = React.useState(initState);
+    const [menuItems, setMenuItems] = React.useState(Menu());
+
+    const handleContextMenu = (event) => {
+      event.preventDefault();
+      if (state.sn.component) {
+        // I need the object for layout container here to create context menu for the container
+        const menu = contextMenuBuilderForObject(object);
+        const menuBuidler = new MenuBuilder();
+        menuBuidler.registerBuilder('object', contextMenuBuilderForObject);
+        state.sn.component.onContextMenu(menu, event, menuBuidler);
+        setMenuItems(menu);
+        setContextMenu(
+          contextMenu.mouseX === -1
+            ? {
+                mouseX: event.clientX + 2,
+                mouseY: event.clientY - 6,
+              }
+            : // repeated contextmenu when it is already open closes it with Chrome 84 on Ubuntu
+              // Other native context menus might behave different.
+              // With this behavior we prevent contextmenu from the backdrop to re-locale existing context menus.
+              initState
+        );
+      }
+    };
+
+    const closeContextMenu = () => {
+      setContextMenu(initState);
+    };
 
     const focusHandler = useRef({
       focusToolbarButton(last) {
@@ -538,6 +573,7 @@ const Cell = forwardRef(
         id={cellElementId}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
+        onContextMenu={handleContextMenu}
       >
         <Grid
           container
@@ -578,6 +614,7 @@ const Cell = forwardRef(
           {cellNode && layout && state.sn && <Footer layout={layout} titleStyles={titleStyles} />}
         </Grid>
         {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
+        <ContextMenu point={contextMenu} handleClose={closeContextMenu} menuItems={menuItems} translator={translator} />
       </Paper>
     );
   }

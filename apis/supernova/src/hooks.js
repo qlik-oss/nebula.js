@@ -164,9 +164,9 @@ export function runSnaps(component, layout) {
   return Promise.resolve();
 }
 
-export function runMenu(component, menu, event) {
+export function runMenu(component, menu, event, menuBuilder) {
   try {
-    return Promise.all(component.__hooks.menus.map((h) => Promise.resolve(h.fn(menu, event)))).then(
+    return Promise.all(component.__hooks.menus.map((h) => Promise.resolve(h.fn(menu, event, menuBuilder)))).then(
       (menus) => menus[menus.length - 1]
     );
   } catch (e) {
