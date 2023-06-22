@@ -144,15 +144,30 @@
     "comment": "Verb, typically button label",
     "version": "57j2gQLhNkHSlTwlN2lEqA=="
   },
+  "ScreenReader.ManySearchResults": {
+    "value": "Há {0} resultados disponíveis",
+    "comment": "Screen reader text stating that one value is currently available from the search filter results.",
+    "version": "PPBUy89QC+G8hqO+l67Nog=="
+  },
   "ScreenReader.ManySelected": {
     "value": "Há {0} valores selecionados.",
     "comment": "Screen reader text stating that multiple values are currently in selection.",
     "version": "niVZFjvZXwdtILpHf0qvTg=="
   },
+  "ScreenReader.OneSearchResult": {
+    "value": "Há um resultado disponível",
+    "comment": "Screen reader text stating that one value is currently available from the search filter results.",
+    "version": "K9EiXYBUpldNf4sXyabHUg=="
+  },
   "ScreenReader.OneSelected": {
     "value": "Há um valor selecionado.",
     "comment": "Screen reader text stating that one value is currently in selection.",
     "version": "OGD8l7kr5UUZgnRu9BZDYQ=="
+  },
+  "ScreenReader.SearchFieldLabel": {
+    "value": "Campo de busca",
+    "comment": "Provides the text label for the search input field.",
+    "version": "s4KAJTcGXWro2cCRI7l8XA=="
   },
   "ScreenReader.ZeroSelected": {
     "value": "Nenhum valor selecionado.",
