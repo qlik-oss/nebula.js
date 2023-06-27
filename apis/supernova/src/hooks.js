@@ -1060,7 +1060,7 @@ export function onTakeSnapshot(cb) {
  * @ignore
  * @example
  * import { onContextMenu } from '@nebula.js/stardust';
- * onContextMenu((menu, event) => {
+ * onContextMenu((menu, event, menuBuilder) => {
  *  menu.addItem(item, index);
  * });
  */

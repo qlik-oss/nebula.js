@@ -1,6 +1,5 @@
-function CopyPaste(CopySupport, GridService, CopyTranslate) {
+function CopyPaste(CopySupport, CopyTranslate) {
   this.CopySupport = CopySupport;
-  this.GridService = GridService;
   this.CopyTranslate = CopyTranslate;
 }
 
@@ -9,7 +8,7 @@ const checkQlikViewClipboardData = async (copySupport) => {
 
   const props = copySupport.isCopyingBundledImageBetweenApps(prop);
   //   .then((copyBundledImageBetweenApps) => {
-  // TODO: What is this?
+  // TODO: do we need this?
   // if (copyBundledImageBetweenApps) {
   //   WarningHandler.showDialog([{ message: 'Object.CopyBetweenApps.BundleImageWarning.Text' }]);
   // }
@@ -19,36 +18,111 @@ const checkQlikViewClipboardData = async (copySupport) => {
   return props;
 };
 
-const getPasteProp = (copySupport) => {
-  let prop;
+const masterObjectExists = async (app, id) => {
+  try {
+    await app.getObject(id);
+    return true;
+  } catch (error) {
+    return false;
+  }
+};
 
+// const checkDimensions = async(prop, dimensions, copySupport) {
+//   let done = 0;
+
+//   copySupport.getDimensionList().then((dimList) => {
+//     $.each(dimensions, (i) => {
+//       dimensionMatch(dimensions[i], copySupport, dimList).then((data) => {
+//         if (!data.found) {
+//           if (prop.qListObjectDef && data.dimensionId === prop.qListObjectDef.qLibraryId) {
+//             if (data.match < 0) {
+//               deferred.resolve();
+//               return;
+//             }
+//             prop.qListObjectDef.qLibraryId = dimList[data.match].qInfo.qId;
+//           }
+//           if (prop.qHyperCubeDef) {
+//             if (data.match < 0) {
+//               deferred.resolve();
+//               return;
+//             }
+//             if (prop.qHyperCubeDef.qDimensions.length > i) {
+//               prop.qHyperCubeDef.qDimensions[i].qLibraryId = dimList[data.match].qInfo.qId;
+//             }
+//           }
+//         }
+//         done++;
+//         if (done === dimensions.length) {
+//           deferred.resolve();
+//         }
+//       });
+//     });
+//   });
+// }
+
+// const dataCheck = function (prop, copySupport, id) {
+//   let dimDone = false;
+//   let measDone = false;
+//   let dimensions;
+//   let measures;
+
+//   try {
+//     dimensions = JSON.parse(localStorage['QlikView-clipboardDimensions']);
+//     checkDimensions(prop, dimensions, copySupport).then(
+//       () => {
+//         dimDone = true;
+//         if (measDone) {
+//           deferred.resolve();
+//         }
+//       },
+//       () => {
+//         deferred.reject(id);
+//       }
+//     );
+//   } catch (err) {
+//     dimDone = true;
+//     if (measDone) {
+//       deferred.resolve();
+//     }
+//   }
+//   try {
+//     measures = JSON.parse(localStorage['QlikView-clipboardMeasures']);
+//     checkMeasures(prop, measures, copySupport).then(() => {
+//       measDone = true;
+//       if (dimDone) {
+//         deferred.resolve();
+//       }
+//     });
+//   } catch (err) {
+//     measDone = true;
+//     if (dimDone) {
+//       deferred.resolve();
+//     }
+//   }
+//   return deferred.promise;
+// };
+
+const getPasteProp = () => {
   const masterProp = localStorage['QlikView-clipboardMasterObject'];
 
   if (masterProp) {
-    prop = JSON.parse(masterProp);
-    copySupport.masterObjectExists(prop.qExtendsId).then(
-      () => {
-        Promise.resolve(prop);
-      },
-      () => {
-        checkQlikViewClipboardData(copySupport).then((p) => {
-          delete p.appId;
-          Promise.resolve(prop);
-        });
-      }
-    );
-  } else {
-    checkQlikViewClipboardData(copySupport).then((p) => {
-      delete p.appId;
-      Promise.resolve(prop);
-    });
+    const prop = JSON.parse(masterProp);
+    const exist = masterObjectExists(prop.qExtendsId);
+    if (exist) {
+      return prop;
+    }
   }
-  return Promise;
+
+  const prop = JSON.parse(localStorage['QlikView-clipboard']);
+  delete prop.appId;
+  return prop;
 };
 
-async function getPasteObject(copySupport, copyTranslate) {
-  const prop = await getPasteProp(copySupport);
-  if (!copySupport.hasVisualizationType(prop.qInfo.qType)) {
+async function getPasteObject(types) {
+  const prop = await getPasteProp();
+  const typeList = types.getR();
+  const hasVisualizationType = typeList.findIndex((t) => t.name === prop.qInfo.qType) > -1;
+  if (!hasVisualizationType) {
     throw new Error('Visualization type is not found');
   }
   let childProps;
@@ -59,8 +133,8 @@ async function getPasteObject(copySupport, copyTranslate) {
   } else {
     childProps = [];
   }
-  await copyTranslate.dataCheck(prop, copySupport);
-  await copyTranslate.childrenDataCheck(childProps, copySupport);
+  // await copyTranslate.dataCheck(prop, copySupport);
+  // await copyTranslate.childrenDataCheck(childProps, copySupport);
   return {
     init: prop,
     children: childProps,
@@ -68,62 +142,54 @@ async function getPasteObject(copySupport, copyTranslate) {
   };
 }
 
-function getMeasures(measures, CopySupport) {
-  const measArray = [];
-  const count = measures.length;
-  let done = 0;
-  const deferred = new Deferred();
+const getMeasureProp = async (app, id) => {
+  const model = await app.getMeasure(id);
+  const prop = await model.getProperties();
+  return prop;
+};
 
-  if (count === 0) {
-    deferred.resolve(measArray);
+const getDimensionProp = async (app, id) => {
+  const model = await app.getDimension(id);
+  const props = await model.getProperties();
+  return props;
+};
+
+const getMeasures = async (app, measures) => {
+  if (measures.length === 0) {
+    return [];
   }
-  measArray.length = count;
-  measures.forEach((i) => {
-    CopySupport.getMeasureProp(measures[i]).then((prop) => {
-      const entry = {};
-      entry.id = prop.qInfo.qId;
-      entry.title = prop.title;
-      entry.def = prop.qMeasure.qDef;
-      measArray[i] = entry;
-      done++;
-      if (done === count) {
-        deferred.resolve(measArray);
-      }
-    });
-  });
-  return deferred.promise;
-}
+  const propArray = await Promise.all(measures.map((measure) => getMeasureProp(app, measure)));
+  return propArray.map((prop) => ({
+    id: prop.qInfo.qId,
+    title: prop.title,
+    def: prop.qMeasure.qDef,
+  }));
+};
 
-function getDimensions(dimensions, CopySupport) {
-  const dimArray = [];
-  const count = dimensions.length;
-  let done = 0;
-  const deferred = new Deferred();
-
-  if (count === 0) {
-    deferred.resolve(dimArray);
+const getDimensions = async (app, dimensions) => {
+  if (dimensions.length === 0) {
+    return [];
   }
-  dimArray.length = count;
-  dimensions.forEach((i) => {
-    CopySupport.getDimensionProp(dimensions[i]).then((prop) => {
-      const entry = {};
-      entry.id = prop.qInfo.qId;
-      entry.type = prop.qInfo.qType;
-      entry.grouping = prop.qGrouping;
-      entry.title = prop.title;
-      entry.fields = prop.qDim.qFieldDefs;
-      dimArray[i] = entry;
-      done++;
-      if (done === count) {
-        deferred.resolve(dimArray);
-      }
-    });
-  });
 
-  return deferred.promise;
-}
+  const propArray = await Promise.all(dimensions.map((dimension) => getDimensionProp(app, dimension)));
+  return propArray.map((prop) => ({
+    id: prop.qInfo.qId,
+    type: prop.qInfo.qType,
+    grouping: prop.qGrouping,
+    title: prop.title,
+    fields: prop.qDim.qFieldDefs,
+  }));
+};
 
-function putOnLocalStorage(props, deferred, copySupport) {
+const getChildrenFor = async (app, id) => {
+  const model = await app.getObject(id);
+  const childInfos = await model.getChildInfos();
+  const childModels = await Promise.all(childInfos.map((childInfo) => app.getObject(childInfo.qId)));
+  const childProps = await Promise.all(childModels.map((childModel) => childModel.getFullPropertyTree()));
+  return childProps;
+};
+
+const putOnLocalStorage = async (app, props) => {
   let i;
   const dimIdList = [];
   const measIdList = [];
@@ -133,8 +199,6 @@ function putOnLocalStorage(props, deferred, copySupport) {
         dimIdList.push(props.qHyperCubeDef.qDimensions[i].qLibraryId);
       }
     }
-  }
-  if (props.qHyperCubeDef) {
     for (i = 0; i < props.qHyperCubeDef.qMeasures.length; i++) {
       if (props.qHyperCubeDef.qMeasures[i].qLibraryId) {
         measIdList.push(props.qHyperCubeDef.qMeasures[i].qLibraryId);
@@ -142,70 +206,59 @@ function putOnLocalStorage(props, deferred, copySupport) {
     }
   }
 
-  copySupport.getChildrenFor(props.qInfo.qId).then((childProperties) => {
-    const tmpProps = { ...props };
-
-    if (childProperties.length) {
-      localStorage['QlikView-clipboardChildren'] = JSON.stringify(childProperties);
-    } else {
-      delete localStorage['QlikView-clipboardChildren'];
+  const childProperties = await getChildrenFor(app, props.qInfo.qId);
+  const tmpProps = { ...props };
+  if (childProperties.length) {
+    localStorage['QlikView-clipboardChildren'] = JSON.stringify(childProperties);
+  } else {
+    delete localStorage['QlikView-clipboardChildren'];
+  }
+  for (i = 0; i < childProperties.length; i++) {
+    if (childProperties[i]?.qProperty?.qListObjectDef?.qLibraryId) {
+      dimIdList.push(childProperties[i].qProperty.qListObjectDef.qLibraryId);
     }
-    for (i = 0; i < childProperties.length; i++) {
-      if (childProperties[i]?.qProperty?.qListObjectDef?.qLibraryId) {
-        dimIdList.push(childProperties[i].qProperty.qListObjectDef.qLibraryId);
-      }
-    }
-    getDimensions(dimIdList, copySupport).then((dimArray) => {
-      if (dimArray.length) {
-        localStorage['QlikView-clipboardDimensions'] = JSON.stringify(dimArray);
-      } else {
-        delete localStorage['QlikView-clipboardDimensions'];
-      }
-    });
-    getMeasures(measIdList, copySupport).then((measArray) => {
-      if (measArray.length) {
-        localStorage['QlikView-clipboardMeasures'] = JSON.stringify(measArray);
-      } else {
-        delete localStorage['QlikView-clipboardMeasures'];
-      }
-    });
-
-    // add app id to the properties in localStorage to be able to distinguish if copy and paste
-    // is within the app or between apps
-    copySupport.addAppId(tmpProps).then(() => {
-      localStorage['QlikView-clipboard'] = JSON.stringify(tmpProps);
-      deferred.resolve();
-    });
-  });
-}
-
-function storeCopyObject(object, copySupport) {
-  const deferred = new Deferred();
-
-  copySupport.getVisualizationProp(object).then((props) => {
-    if (props.qExtendsId) {
-      // masterobject
-      localStorage['QlikView-clipboardMasterObject'] = JSON.stringify(props);
-      copySupport.getMasterObjectProp(props.qExtendsId).then((mProps) => {
-        const copy = { ...mProps };
-        copy.qInfo.qType = props.qInfo.qType;
-        putOnLocalStorage(copy, deferred, copySupport);
-      });
-    } else {
-      delete localStorage['QlikView-clipboardMasterObject'];
-      putOnLocalStorage(props, deferred, copySupport);
-    }
-  });
-  return deferred.promise;
-}
-CopyPaste.prototype.getPasteObject = function () {
-  return getPasteObject(this.CopySupport, this.CopyTranslate);
-};
-
-CopyPaste.prototype.copyObject = function (object) {
-  if (object.isInvalid) {
-    return undefined;
+  }
+  const [dimArray, measArray] = await Promise.all([getDimensions(app, dimIdList), getMeasures(app, measIdList)]);
+  if (dimArray.length) {
+    localStorage['QlikView-clipboardDimensions'] = JSON.stringify(dimArray);
+  } else {
+    delete localStorage['QlikView-clipboardDimensions'];
   }
 
-  return storeCopyObject(object, this.CopySupport);
+  if (measArray.length) {
+    localStorage['QlikView-clipboardMeasures'] = JSON.stringify(measArray);
+  } else {
+    delete localStorage['QlikView-clipboardMeasures'];
+  }
+
+  // add app id to the properties in localStorage to be able to distinguish if copy and paste
+  // is within the app or between apps
+  tmpProps.appId = app.id;
+  localStorage['QlikView-clipboard'] = JSON.stringify(tmpProps);
+};
+
+const storeCopyObject = async (app, model) => {
+  const props = await model.getProperties();
+  if (props.qExtendsId) {
+    // masterobject
+    localStorage['QlikView-clipboardMasterObject'] = JSON.stringify(props);
+    const masterObjectProps = await app.getObject(props.qExtendsId);
+    const copy = { ...masterObjectProps };
+    copy.qInfo.qType = props.qInfo.qType;
+    await putOnLocalStorage(app, copy);
+  } else {
+    delete localStorage['QlikView-clipboardMasterObject'];
+    await putOnLocalStorage(app, props);
+  }
+};
+
+const getPasteObjectData = (types) => getPasteObject(types);
+
+const copyObject = ({ app, model }) =>
+  // TODO: return when model/object is invalid
+  storeCopyObject(app, model);
+
+export default {
+  copyObject,
+  getPasteObjectData,
 };

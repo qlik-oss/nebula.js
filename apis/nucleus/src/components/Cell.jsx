@@ -22,6 +22,7 @@ import ContextMenu from './context-menu/ContextMenu';
 import Menu from './context-menu/utils/menu';
 import MenuBuilder from './context-menu/utils/menu-builder';
 import contextMenuBuilderForObject from './context-menu/utils/object-context-menu-builder';
+import supportFunctions from './context-menu/utils/supportFunctions';
 
 /**
  * @interface
@@ -31,6 +32,9 @@ const CellElement = {
   /** @type {'njs-cell'} */
   className: 'njs-cell',
 };
+
+const menuBuidler = new MenuBuilder();
+menuBuidler.registerSupportFunction('copy', supportFunctions.copyObject);
 
 const initialState = (err) => ({
   loading: false,
@@ -326,20 +330,30 @@ const Cell = forwardRef(
     const [bgImage, setBgImage] = useState(undefined); // {url: "", size: "", pos: ""}
     const [titleStyles, setTitleStyles] = useState(undefined);
     const initState = { mouseX: -1, mouseY: -1 };
-    const [contextMenu, setContextMenu] = React.useState(initState);
-    const [menuItems, setMenuItems] = React.useState(Menu());
+    const [point, setPoint] = React.useState(initState);
+    const [menu, setMenu] = React.useState(Menu());
+    const enableContextMenu =
+      typeof snOptions.enableContextMenu === 'undefined'
+        ? Boolean(state.sn?.generator?.definition?.ext?.support?.contextMenu)
+        : snOptions.enableContextMenu && Boolean(state.sn?.generator?.definition?.ext?.support?.contextMenu);
 
     const handleContextMenu = (event) => {
       event.preventDefault();
+      event.stopPropagation();
       if (state.sn.component) {
         // I need the object for layout container here to create context menu for the container
-        const menu = contextMenuBuilderForObject(object);
-        const menuBuidler = new MenuBuilder();
-        menuBuidler.registerBuilder('object', contextMenuBuilderForObject);
-        state.sn.component.onContextMenu(menu, event, menuBuidler);
-        setMenuItems(menu);
-        setContextMenu(
-          contextMenu.mouseX === -1
+        const { model: localModel, app: localApp } = state.sn.component.context;
+        const contextMenu = contextMenuBuilderForObject({ model: localModel, app: localApp, types });
+        menuBuidler.registerBuilder('object', ({ model: callerModel }) =>
+          contextMenuBuilderForObject({ model: callerModel, app: localApp, types })
+        );
+        menuBuidler.registerSupportFunction('paste', () => {
+          supportFunctions.getPasteObjectData(types);
+        });
+        state.sn.component.onContextMenu(contextMenu, event, menuBuidler);
+        setMenu(contextMenu);
+        setPoint(
+          point.mouseX === -1
             ? {
                 mouseX: event.clientX + 2,
                 mouseY: event.clientY - 6,
@@ -353,7 +367,8 @@ const Cell = forwardRef(
     };
 
     const closeContextMenu = () => {
-      setContextMenu(initState);
+      setPoint(initState);
+      setMenu(Menu());
     };
 
     const focusHandler = useRef({
@@ -573,7 +588,6 @@ const Cell = forwardRef(
         id={cellElementId}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
-        onContextMenu={handleContextMenu}
       >
         <Grid
           container
@@ -586,6 +600,8 @@ const Cell = forwardRef(
             ...(!disableCellPadding ? { padding: theme.spacing(1) } : {}),
             ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
           }}
+          id={`test-${cellElementId}`}
+          onContextMenu={enableContextMenu ? handleContextMenu : undefined}
         >
           {cellNode && layout && state.sn && (
             <Header
@@ -598,6 +614,9 @@ const Cell = forwardRef(
             >
               &nbsp;
             </Header>
+          )}
+          {enableContextMenu && (
+            <ContextMenu point={point} handleClose={closeContextMenu} menu={menu} translator={translator} />
           )}
           <Grid
             tabIndex={keyboardNavigation ? 0 : -1}
@@ -614,7 +633,6 @@ const Cell = forwardRef(
           {cellNode && layout && state.sn && <Footer layout={layout} titleStyles={titleStyles} />}
         </Grid>
         {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
-        <ContextMenu point={contextMenu} handleClose={closeContextMenu} menuItems={menuItems} translator={translator} />
       </Paper>
     );
   }
