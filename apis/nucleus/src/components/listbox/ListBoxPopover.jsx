@@ -197,6 +197,7 @@ export default function ListBoxPopover({
             direction="ltr"
             onSetListCount={(c) => setListCount(c)}
             onCtrlF={onCtrlF}
+            theme={theme}
           />
         </Grid>
       </Grid>
