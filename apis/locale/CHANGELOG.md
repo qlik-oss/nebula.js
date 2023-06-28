@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.2](https://github.com/qlik-oss/nebula.js/compare/v4.2.1...v4.2.2) (2023-06-28)
+
+### Bug Fixes
+
+- screen reader search ([#1293](https://github.com/qlik-oss/nebula.js/issues/1293)) ([4eb69e9](https://github.com/qlik-oss/nebula.js/commit/4eb69e939e165da33ba3ff221e62068f241a4997))
+
 ## [4.2.1](https://github.com/qlik-oss/nebula.js/compare/v4.2.0...v4.2.1) (2023-06-09)
 
 **Note:** Version bump only for package @nebula.js/locale

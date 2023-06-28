@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.2](https://github.com/qlik-oss/nebula.js/compare/v4.2.1...v4.2.2) (2023-06-28)
+
+**Note:** Version bump only for package @nebula.js/snapshooter
+
 ## [4.2.1](https://github.com/qlik-oss/nebula.js/compare/v4.2.0...v4.2.1) (2023-06-09)
 
 **Note:** Version bump only for package @nebula.js/snapshooter
