@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.2.3](https://github.com/qlik-oss/nebula.js/compare/v4.2.2...v4.2.3) (2023-06-28)
+
+### Bug Fixes
+
+- pass theme to listbox ([#1305](https://github.com/qlik-oss/nebula.js/issues/1305)) ([aca25c6](https://github.com/qlik-oss/nebula.js/commit/aca25c61ee3076c2484952635e00b6fccbd8238f))
+
 ## [4.2.2](https://github.com/qlik-oss/nebula.js/compare/v4.2.1...v4.2.2) (2023-06-28)
 
 ### Bug Fixes
