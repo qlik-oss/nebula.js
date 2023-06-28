@@ -118,6 +118,10 @@ const renderFixture = async (params) => {
         name: type,
         load,
       },
+      ...serverInfo.types.map((configType) => ({
+        name: configType.name,
+        load: async () => getModule(configType.name, configType.url),
+      })),
     ],
     ...instanceConfig,
   });
