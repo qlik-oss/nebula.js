@@ -6,8 +6,8 @@
   "devDependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.13.5",
+    "@mui/icons-material": "^5.14.3",
+    "@mui/material": "^5.14.3",
     "@nebula.js/conversion": "^4.2.4",
     "@nebula.js/locale": "^4.2.4",
     "@nebula.js/supernova": "^4.2.4",
@@ -22,6 +22,6 @@
     "react-virtualized-auto-sizer": "1.0.20",
     "react-window": "1.8.9",
     "react-window-infinite-loader": "1.0.9",
-    "semver": "7.5.2"
+    "semver": "7.5.4"
   }
 }
