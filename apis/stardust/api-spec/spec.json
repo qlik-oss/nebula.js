@@ -552,8 +552,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "description": "The emitter instance. Implements https://nodejs.org/api/events.html#class-eventemitter.",
-        "type": "Emitter"
+        "type": "#/definitions/Emitter"
       },
       "examples": [
         "// In a Nebula visualization\nimport { useEmitter } from '@nebula.js/stardust';\nuseEffect(()=> {\n  // on some trigger\n  emitter.emit(\"trigger\", params)\n}, [...])\n\n// In a mashup\nconst viz = await n.render({\n  element: el,\n  id: 'abcdef'\n});\nviz.addListener(\"trigger\", ()=> {\n  // do something\n})"
@@ -2164,6 +2163,15 @@
           "type": "any"
         }
       }
+    },
+    "Emitter": {
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "description": "The emitter instance. Implements https://nodejs.org/api/events.html#class-eventemitter.",
+        "params": []
+      },
+      "entries": {}
     },
     "Keyboard": {
       "stability": "experimental",

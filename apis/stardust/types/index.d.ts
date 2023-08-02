@@ -182,7 +182,7 @@ export function useRenderState(): stardust.RenderState;
 /**
  * Gets an event emitter instance for the visualization.
  */
-export function useEmitter(): Emitter;
+export function useEmitter(): stardust.Emitter;
 
 /**
  * Gets the desired keyboard settings and status to applied when rendering the visualization.
@@ -653,6 +653,11 @@ declare namespace stardust {
     interface RenderState {
         pending: any;
         restore: any;
+    }
+
+    class Emitter {
+        constructor();
+
     }
 
     interface Keyboard {
