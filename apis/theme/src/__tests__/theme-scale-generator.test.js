@@ -7,12 +7,12 @@ describe('Theme scale generator', () => {
   test('Should generate a pyramid', () => {
     const scales = [{ type: 'class', scale: input }];
     scaleGenerator(scales);
-    expect(scales.length).toBe(1);
+    expect(scales).toHaveLength(1);
     const { scale, type } = scales[0];
 
     expect(type).toBe('class-pyramid');
-    expect(scale.length).toBe(8);
-    expect(scale[scale.length - 1].length).toBe(7);
+    expect(scale).toHaveLength(8);
+    expect(scale[scale.length - 1]).toHaveLength(7);
   });
 
   test('Should generate a correct base of colors', () => {

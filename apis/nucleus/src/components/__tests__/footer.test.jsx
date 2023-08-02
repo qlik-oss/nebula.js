@@ -23,7 +23,7 @@ describe('<Footer />', () => {
   it('should render', async () => {
     await render({ showTitles: true, footnote: 'foo' });
     const types = renderer.root.findAllByType(Typography);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
     expect(types[0].props.children).toBe('foo');
   });
 });

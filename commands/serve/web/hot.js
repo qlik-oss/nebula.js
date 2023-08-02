@@ -56,11 +56,11 @@ export default function initiateWatch(info) {
   }
   update();
   if (info.types) {
-    const proms = info.types.map((t) => {
-      return getModule(t.name, t.url).then((mo) => {
+    const proms = info.types.map((t) =>
+      getModule(t.name, t.url).then((mo) => {
         window[t.name] = mo;
-      });
-    });
+      })
+    );
     return Promise.all(proms);
   }
   return Promise.resolve();

@@ -1,7 +1,7 @@
-const chalk = require('chalk');
 const path = require('path');
-const rollup = require('rollup');
 const readline = require('readline');
+const chalk = require('chalk');
+const rollup = require('rollup');
 
 const config = require('./config');
 const systemjsBehaviours = require('./systemjs');

@@ -97,7 +97,7 @@ describe('<MultiState />', () => {
     await render();
     expect(renderer.root.props).toEqual({ field, api });
     const res = renderer.root.findAllByType(Badge);
-    expect(res.length).toBe(1);
+    expect(res).toHaveLength(1);
   });
 
   test('should show fields', async () => {
@@ -108,7 +108,7 @@ describe('<MultiState />', () => {
     });
     const popover = renderer.root.findByType(Popover);
     const items = popover.findAllByType(ListItem);
-    expect(items.length).toBe(3);
+    expect(items).toHaveLength(3);
   });
 
   test('should close show fields', async () => {

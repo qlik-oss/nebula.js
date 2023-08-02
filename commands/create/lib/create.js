@@ -1,11 +1,10 @@
-const chalk = require('chalk');
 const path = require('path');
 const fs = require('fs');
+const { execSync } = require('child_process');
+const chalk = require('chalk');
 const fse = require('fs-extra');
 const ejs = require('ejs');
 const inquirer = require('inquirer');
-
-const { execSync } = require('child_process');
 
 const pkg = require('../package.json');
 

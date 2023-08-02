@@ -1,4 +1,5 @@
 const path = require('path');
+const crypto = require('crypto');
 const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
@@ -10,7 +11,6 @@ const MonacoWebpackPlugin = require('monaco-editor-webpack-plugin');
 
 const favicon = path.resolve(__dirname, '../../../docs/assets/njs.png');
 
-const crypto = require('crypto');
 const { version } = require('../package.json');
 
 const versionHash = crypto.createHash('md5').update(version).digest('hex').slice(0, 4);
