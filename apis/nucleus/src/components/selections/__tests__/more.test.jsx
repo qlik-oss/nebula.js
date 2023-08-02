@@ -118,8 +118,8 @@ describe('<More />', () => {
     const popover = renderer.root.findByType(Popover);
     const ms = popover.findAllByType(MultiState);
     const of = popover.findAllByType(OneField);
-    expect(ms.length).toBe(1);
-    expect(of.length).toBe(1);
+    expect(ms).toHaveLength(1);
+    expect(of).toHaveLength(1);
   });
 
   test('should close more items', async () => {

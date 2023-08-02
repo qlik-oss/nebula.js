@@ -160,7 +160,7 @@ describe('viz', () => {
       await mounted;
       const args = cellRef.current.setSnOptions.mock.lastCall[0];
       expect(args.onInitialRender).toBeInstanceOf(Function);
-      expect(Object.keys(args).length).toEqual(1);
+      expect(Object.keys(args)).toHaveLength(1);
     });
 
     test('should set extended sn options', async () => {
@@ -170,7 +170,7 @@ describe('viz', () => {
       const args = cellRef.current.setSnOptions.mock.lastCall[0];
       expect(args.onInitialRender).toBeInstanceOf(Function);
       expect(args.myops).toEqual('myopts');
-      expect(Object.keys(args).length).toEqual(2);
+      expect(Object.keys(args)).toHaveLength(2);
     });
 
     test('should override and call onIntialRender', async () => {

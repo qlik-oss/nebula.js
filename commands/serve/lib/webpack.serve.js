@@ -1,9 +1,9 @@
 /* eslint global-require: 0 */
 const path = require('path');
-const chalk = require('chalk');
-const express = require('express');
 const fs = require('fs');
 const homedir = require('os').homedir();
+const chalk = require('chalk');
+const express = require('express');
 const { Auth, AuthType } = require('@qlik/sdk');
 
 const webpack = require('webpack');

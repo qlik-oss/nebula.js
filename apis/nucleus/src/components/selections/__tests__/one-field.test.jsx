@@ -47,7 +47,7 @@ describe('<OneField />', () => {
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(Typography);
-    expect(types.length).toBe(2);
+    expect(types).toHaveLength(2);
     expect(types[0].props).toEqual({
       noWrap: true,
       style: { fontSize: '12px', lineHeight: '16px', fontWeight: 600 },
@@ -84,7 +84,7 @@ describe('<OneField />', () => {
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(Typography);
-    expect(types.length).toBe(2);
+    expect(types).toHaveLength(2);
     expect(types[0].props).toEqual({
       noWrap: true,
       style: { fontSize: '12px', lineHeight: '16px', fontWeight: 600 },
@@ -113,7 +113,7 @@ describe('<OneField />', () => {
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(IconButton);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
     expect(types[0].props.title).toBe('Clear');
   });
   test('should have a lock button', () => {
@@ -134,6 +134,6 @@ describe('<OneField />', () => {
     );
     const testInstance = testRenderer.root;
     const types = testInstance.findAllByType(IconButton);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
   });
 });
