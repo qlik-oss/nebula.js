@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import EventEmitter from 'node-event-emitter';
 import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
+import { JSONPatch } from '@nebula.js/supernova';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
 import validatePlugins from './plugins/plugins';
@@ -121,10 +122,26 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     async convertTo(newType, forceUpdate = true) {
       const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
       if (forceUpdate) {
-        if (model.__snInterceptor) {
-          await model.__snInterceptor.setProperties.call(model, propertyTree.qProperty);
+        const layout = await model.getLayout();
+        if (layout.qMeta.privileges.indexOf('update') !== -1) {
+          if (model.__snInterceptor) {
+            await model.__snInterceptor.setProperties.call(model, propertyTree.qProperty);
+          } else {
+            await model.setProperties(propertyTree.qProperty);
+          }
         } else {
-          await model.setProperties(propertyTree.qProperty);
+          const prevProps = await model.getProperties();
+          // calculate new patches from after change
+          const newPatches = JSONPatch.generate(prevProps, propertyTree.qProperty).map((p) => ({
+            qOp: p.op,
+            qValue: typeof p.value === 'string' ? p.value : JSON.stringify(p.value),
+            qPath: p.path,
+          }));
+          if (model.__snInterceptor) {
+            await model.__snInterceptor.applyPatches.call(model, newPatches, true);
+          } else {
+            await model.applyPatches(newPatches, true);
+          }
         }
       }
       return propertyTree;
