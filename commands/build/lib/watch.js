@@ -1,4 +1,5 @@
 const chalk = require('chalk');
+const path = require('path');
 const rollup = require('rollup');
 const readline = require('readline');
 
