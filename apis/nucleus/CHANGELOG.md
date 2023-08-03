@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/qlik-oss/nebula.js/compare/v4.2.4...v4.3.0) (2023-08-03)
+
+### Bug Fixes
+
+- fix selection close when there are many objects with the same model ([#1321](https://github.com/qlik-oss/nebula.js/issues/1321)) ([2810c29](https://github.com/qlik-oss/nebula.js/commit/2810c29d01de81f69aad13c4b5487924021298da))
+
 ## [4.2.4](https://github.com/qlik-oss/nebula.js/compare/v4.2.3...v4.2.4) (2023-07-04)
 
 **Note:** Version bump only for package @nebula.js/nucleus

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/qlik-oss/nebula.js/compare/v4.2.4...v4.3.0) (2023-08-03)
+
+### Bug Fixes
+
+- missing path require in build-watcher ([#1320](https://github.com/qlik-oss/nebula.js/issues/1320)) ([29a35ec](https://github.com/qlik-oss/nebula.js/commit/29a35ec805eaa9cb498808515acf50886920c542))
+
 ## [4.2.4](https://github.com/qlik-oss/nebula.js/compare/v4.2.3...v4.2.4) (2023-07-04)
 
 **Note:** Version bump only for package @nebula.js/cli-build
