@@ -25,7 +25,8 @@ describe('useAppSelections', () => {
   let currentSelectionsLayout;
   let appSel;
   let appModal;
-  let object;
+  let model;
+  let objectSelections;
   let beginSelections;
   let endSelections;
 
@@ -80,11 +81,6 @@ describe('useAppSelections', () => {
         },
       },
     ]);
-    selectionStoreModule.objectSelectionsStore = {
-      get: () => ({
-        emit: jest.fn(),
-      }),
-    };
     selectionStoreModule.appModalStore = {
       set: (k, v) => {
         appModal = v;
@@ -94,9 +90,12 @@ describe('useAppSelections', () => {
 
     beginSelections = jest.fn();
     endSelections = jest.fn();
-    object = {
+    model = {
       beginSelections,
       endSelections,
+    };
+    objectSelections = {
+      emit: jest.fn(),
     };
   });
 
@@ -116,7 +115,7 @@ describe('useAppSelections', () => {
     const res = Promise.resolve();
     // eslint-disable-next-line prefer-promise-reject-errors
     beginSelections.mockResolvedValueOnce(Promise.reject({ code: 6003 })).mockResolvedValueOnce(res);
-    await appModal.begin(object);
+    await appModal.begin({ model, objectSelections });
     await res;
 
     expect(beginSelections).toHaveBeenCalledTimes(2);
@@ -127,7 +126,7 @@ describe('useAppSelections', () => {
 
     // eslint-disable-next-line prefer-promise-reject-errors
     beginSelections.mockResolvedValueOnce(Promise.reject({ code: 9999 }));
-    await appModal.begin(object);
+    await appModal.begin({ model, objectSelections });
 
     expect(beginSelections).toHaveBeenCalledTimes(1);
   });
@@ -145,7 +144,7 @@ describe('useAppSelections', () => {
     await render();
     const obj = {};
     modalObjectStore.get.mockReturnValue(obj);
-    expect(ref.current.result[0].isModal(obj)).toBe(true);
+    expect(ref.current.result[0].isModal(obj)).toBe(false);
     expect(ref.current.result[0].isModal({})).toBe(false);
     expect(ref.current.result[0].isModal()).toBe(true);
   });

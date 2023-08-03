@@ -133,7 +133,7 @@ describe('<SelectedFields />', () => {
   });
 
   test('should keep item in modal state', async () => {
-    modalObjectStore.get.mockReturnValue({ genericType: 'njsListbox' });
+    modalObjectStore.get.mockReturnValue({ model: { genericType: 'njsListbox' } });
     const data = {
       qSelectionObject: {
         qSelections: [
