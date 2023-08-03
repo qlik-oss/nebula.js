@@ -228,7 +228,6 @@ export default function useObjectSelections(app, model, elements, options) {
 
   useEffect(() => {
     if (!appSelections || !model || objectSelections) return;
-
     setObjectSelections(
       createObjectSelections({
         appSelections,
