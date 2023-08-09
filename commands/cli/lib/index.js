@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+/* eslint-disable no-console */
 const yargs = require('yargs');
 const importCwd = require('import-cwd');
 const checkNodeVersion = require('./checkNodeVersion');
