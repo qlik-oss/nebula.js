@@ -1,9 +1,7 @@
 import { generator as SNFactory } from '@nebula.js/supernova';
 import extend from 'extend';
+import satisfies from 'semver/functions/satisfies';
 import { load } from './load';
-
-// fixes circular dep warnings, see https://github.com/rollup/plugins/issues/879
-const satisfies = require('semver/functions/satisfies');
 
 /**
  * @interface TypeInfo
