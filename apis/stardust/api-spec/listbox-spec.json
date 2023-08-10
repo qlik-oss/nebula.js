@@ -12,6 +12,12 @@
   "definitions": {
     "ListboxProperties": {
       "entries": {
+        "autoConfirm": {
+          "description": "Automatically confirm selections without showing the selections toolbar.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
         "checkboxes": {
           "description": "Show values as checkboxes instead of as fields.",
           "optional": true,
