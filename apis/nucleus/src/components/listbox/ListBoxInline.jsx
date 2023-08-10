@@ -216,7 +216,7 @@ function ListBoxInline({ options, layout }) {
     }
   }, [searchContainer && searchContainer.current, showSearch, search, focusSearch]);
 
-  const { wildCardSearch, searchEnabled, layoutOptions = {} } = layout ?? {};
+  const { wildCardSearch, searchEnabled, autoConfirm = false, layoutOptions = {} } = layout ?? {};
   const showSearchIcon = searchEnabled !== false && search === 'toggle';
   const isLocked = layout?.qListObject?.qDimensionInfo?.qLocked === true;
   const showSearchOrLockIcon = isLocked || showSearchIcon;
@@ -287,6 +287,7 @@ function ListBoxInline({ options, layout }) {
       listboxSelectionToolbarItems,
       selections,
       keyboard,
+      autoConfirm,
     });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';

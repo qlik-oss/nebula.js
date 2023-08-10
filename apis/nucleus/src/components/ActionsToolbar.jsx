@@ -79,6 +79,7 @@ function ActionsToolbar({
   focusHandler = null,
   actionsRefMock = null, // for testing
   direction = 'ltr',
+  autoConfirm,
 }) {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
 
@@ -128,6 +129,15 @@ function ActionsToolbar({
     focusHandler.on('focus_toolbar_first', focusFirst);
     focusHandler.on('focus_toolbar_last', focusLast);
   }, []);
+
+  if (autoConfirm) {
+    const canConfirm = selections.show;
+    if (canConfirm) {
+      const confirm = defaultSelectionActions.find((o) => o.key === 'confirm') || { action: () => {} };
+      confirm.action();
+    }
+    return null;
+  }
 
   let moreEnabled = more.enabled;
   let moreActions = more.actions;
