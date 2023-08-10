@@ -134,6 +134,13 @@ describe('<ActionsToolbar />', () => {
     expect(() => renderer.root.findByType(IconButton)).toThrow();
   });
 
+  test('should not show ActionsToolbar when autoConfirm is true', async () => {
+    selections.show = true;
+    await render({ selections, autoConfirm: true });
+    const selItems = renderer.root.findAllByType(IconButton);
+    expect(selItems).toHaveLength(0);
+  });
+
   test('should render more', async () => {
     const actions = [1, 2, 3, 4, 5].map((key) => ({
       key,
