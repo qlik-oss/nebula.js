@@ -1,4 +1,6 @@
+/* eslint-disable no-console */
 const path = require('path');
+const crypto = require('crypto');
 const babel = require('@rollup/plugin-babel');
 const commonjs = require('@rollup/plugin-commonjs');
 const json = require('@rollup/plugin-json');
@@ -6,7 +8,6 @@ const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const replace = require('@rollup/plugin-replace');
 const terser = require('@rollup/plugin-terser');
 
-const crypto = require('crypto');
 const localeStringValidator = require('./tools/locale-string-validator');
 
 const cwd = process.cwd();
@@ -103,6 +104,13 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
   });
 
   const cfg = {
+    onwarn(warning, warn) {
+      // Supress "use client" warnings coming from MUI bundling
+      if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes(`"use client"`)) {
+        return;
+      }
+      warn(warning);
+    },
     input: path.resolve(cwd, 'src', 'index'),
     output: {
       // file: path.resolve(targetDir, getFileName(isEsm ? 'esm' : '', dev)),

@@ -1,6 +1,6 @@
 import { generator as SNFactory } from '@nebula.js/supernova';
-import { satisfies } from 'semver';
 import extend from 'extend';
+import satisfies from 'semver/functions/satisfies';
 import { load } from './load';
 
 /**

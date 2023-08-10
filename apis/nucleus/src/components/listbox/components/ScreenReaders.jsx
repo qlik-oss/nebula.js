@@ -12,21 +12,29 @@ const LOC_STATES = {
   XL: 'Object.Listbox.ExcludedLock',
 };
 
-export function getValueLabel({ translator, label, qState, isSelected, currentIndex, maxIndex, showSearch }) {
+export function getValueLabel({
+  translator: translatorDynamic,
+  label,
+  qState,
+  isSelected,
+  currentIndex,
+  maxIndex,
+  showSearch,
+}) {
   const stateTranslation = LOC_STATES[qState];
-  const state = translator.get(stateTranslation);
+  const state = translatorDynamic.get(stateTranslation);
   const srStringArr = [];
 
   if (isSelected) {
     const navTranslation = showSearch
       ? 'Listbox.ScreenReader.SearchThenSelectionsMenu.WithAccSelMenu'
       : 'Listbox.ScreenReader.SelectionMenu.WithAccSelMenu';
-    const nav = translator.get(navTranslation);
+    const nav = translatorDynamic.get(navTranslation);
     srStringArr.push(nav);
   }
 
   const valueString = `${label} ${state}`;
-  const indexString = translator.get('CurrentSelections.Of', [currentIndex + 1, maxIndex + 1]); // E.g. 3 of 20
+  const indexString = translatorDynamic.get('CurrentSelections.Of', [currentIndex + 1, maxIndex + 1]); // E.g. 3 of 20
   srStringArr.unshift(valueString, indexString);
   const srString = srStringArr.join('. ').trim();
   return srString;
@@ -40,7 +48,7 @@ export function getValueLabel({ translator, label, qState, isSelected, currentIn
  * @returns {Element} An (invisible) component.
  */
 export function ScreenReaderForSelections({ layout }) {
-  const { translator } = useContext(InstanceContext);
+  const { translator: translatorDynamic } = useContext(InstanceContext);
   const { qStateCounts: s = {} } = layout?.qListObject?.qDimensionInfo || {};
 
   const count = s.qSelected + s.qSelectedExcluded + s.qLocked + s.qLockedExcluded;
@@ -58,7 +66,7 @@ export function ScreenReaderForSelections({ layout }) {
       break;
   }
 
-  const text = translator.get(t, [count]);
+  const text = translatorDynamic.get(t, [count]);
 
   return (
     <div className="screenReaderOnly" aria-live="assertive">

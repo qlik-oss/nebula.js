@@ -57,7 +57,7 @@ export default function ListBox({
   showSearch,
   isModal,
 }) {
-  const { translator } = useContext(InstanceContext);
+  const { translator: translatorDynamic } = useContext(InstanceContext);
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const { checkboxes = checkboxOption, histogram } = layout ?? {};
@@ -225,7 +225,7 @@ export default function ListBox({
   useEffect(() => {
     if (inputText) {
       const srText = getScreenReaderSearchText(listCount);
-      const srFinalText = translator.get(srText, [listCount]);
+      const srFinalText = translatorDynamic.get(srText, [listCount]);
       setScreenReaderText(srFinalText);
     }
   }, [inputText, listCount]);
@@ -306,7 +306,7 @@ export default function ListBox({
     constraints,
     frequencyMax,
     freqIsAllowed,
-    translator,
+    translator: translatorDynamic,
     showSearch,
     isModal,
   });

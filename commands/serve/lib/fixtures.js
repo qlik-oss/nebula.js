@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 /**
  * Manages loading and delivering fixtures.
  *

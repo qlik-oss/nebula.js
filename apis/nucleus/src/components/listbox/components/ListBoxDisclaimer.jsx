@@ -18,12 +18,12 @@ const StyledText = styled(Typography, { shouldForwardProp: (p) => !['width', 'de
 );
 
 export default function ListBoxDisclaimer({ width, text, dense, tooltip }) {
-  const { translator } = useContext(InstanceContext);
+  const { translator: translatorDynamic } = useContext(InstanceContext);
 
   return (
-    <Tooltip title={tooltip ? translator.get(text) : ''}>
+    <Tooltip title={tooltip ? translatorDynamic.get(text) : ''}>
       <StyledText width={width} dense={dense} component="div" variant="body1" py="12px">
-        {translator.get(text)}
+        {translatorDynamic.get(text)}
       </StyledText>
     </Tooltip>
   );
