@@ -100,6 +100,9 @@ export default function useRpc(model, method) {
 
     try {
       // await sleep(5000);
+      await new Promise((resolve) => {
+        setTimeout(resolve, 0); // To avoid race condition related to react hooks
+      });
       const result = await cache.rpc;
       dispatch({ type: 'VALID', result, key, method, model, rpcResultStore });
     } catch (err) {
