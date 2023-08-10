@@ -1,25 +1,20 @@
-/* eslint import/newline-after-import: 0 */
 import * as loadModule from '../load';
 import create from '../type';
-const semverModule = require('semver');
+
 const supernovaModule = require('@nebula.js/supernova');
 
 jest.mock('@nebula.js/supernova', () => ({ ...jest.requireActual('@nebula.js/supernova') }));
-jest.mock('semver', () => ({ ...jest.requireActual('semver') }));
 
 describe('type', () => {
   let c;
   let SNFactory;
   let load;
-  let satisfies;
   let halo;
   beforeEach(() => {
     SNFactory = jest.fn();
     load = jest.fn();
-    satisfies = jest.fn();
 
     jest.spyOn(supernovaModule, 'generator').mockImplementation(SNFactory);
-    jest.spyOn(semverModule, 'satisfies').mockImplementation(satisfies);
     jest.spyOn(loadModule, 'load').mockImplementation(load);
 
     halo = { public: { env: 'env' } };
@@ -38,10 +33,6 @@ describe('type', () => {
   });
 
   describe('supportsPropertiesVersion', () => {
-    beforeEach(() => {
-      satisfies.mockReturnValue('a bool');
-    });
-
     test('should return true when no meta is provided', () => {
       const cc = create({});
       expect(cc.supportsPropertiesVersion('1.2.0')).toBe(true);
@@ -54,7 +45,17 @@ describe('type', () => {
 
     test('should return semver satisfaction when version and semver range is provided ', () => {
       const cc = create({}, 'c', { meta: { deps: { properties: '^1.0.0' } } });
-      expect(cc.supportsPropertiesVersion('1.2.0')).toBe('a bool');
+      expect(cc.supportsPropertiesVersion('1.2.0')).toBe(true);
+    });
+
+    test('should return semver satisfaction when version and semver is not a range', () => {
+      const cc = create({}, 'c', { meta: { deps: { properties: '1.0.0' } } });
+      expect(cc.supportsPropertiesVersion('1.2.0')).toBe(false);
+    });
+
+    test('should return semver satisfaction when version and semver is an open range', () => {
+      const cc = create({}, 'c', { meta: { deps: { properties: '>=1.0.0' } } });
+      expect(cc.supportsPropertiesVersion('2.2.0')).toBe(true);
     });
   });
 

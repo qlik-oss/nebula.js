@@ -182,7 +182,7 @@ export function useRenderState(): stardust.RenderState;
 /**
  * Gets an event emitter instance for the visualization.
  */
-export function useEmitter(): Emitter;
+export function useEmitter(): stardust.Emitter;
 
 /**
  * Gets the desired keyboard settings and status to applied when rendering the visualization.
@@ -504,16 +504,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -544,6 +534,16 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {
@@ -653,6 +653,11 @@ declare namespace stardust {
     interface RenderState {
         pending: any;
         restore: any;
+    }
+
+    class Emitter {
+        constructor();
+
     }
 
     interface Keyboard {

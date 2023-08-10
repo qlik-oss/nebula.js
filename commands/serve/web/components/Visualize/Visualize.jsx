@@ -150,6 +150,13 @@ export default function Visualize() {
     }
   }, [nebbie, currentThemeName]);
 
+  const create = () => {
+    if (window[info?.supernova.name]) {
+      uid.current = String(Date.now());
+      setCurrentId(uid.current);
+    }
+  };
+
   useEffect(() => {
     if (!nebbie) return;
 
@@ -180,13 +187,6 @@ export default function Visualize() {
       window.removeEventListener('beforeunload', unload);
     };
   }, [app]);
-
-  const create = () => {
-    if (window[info?.supernova.name]) {
-      uid.current = String(Date.now());
-      setCurrentId(uid.current);
-    }
-  };
 
   const handleThemeChange = (t) => {
     setThemeChooserAnchorEl(null);

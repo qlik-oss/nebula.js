@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust:listbox",
     "description": "nebula listbox properties definition",
-    "version": "4.2.4",
+    "version": "4.3.0",
     "license": "MIT",
     "stability": "stable",
     "x-qlik-visibility": "public"
@@ -12,6 +12,12 @@
   "definitions": {
     "ListboxProperties": {
       "entries": {
+        "autoConfirm": {
+          "description": "Automatically confirm selections without showing the selections toolbar.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
         "checkboxes": {
           "description": "Show values as checkboxes instead of as fields.",
           "optional": true,

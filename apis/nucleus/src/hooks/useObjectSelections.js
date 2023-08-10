@@ -1,6 +1,6 @@
 /* eslint no-underscore-dangle: 0 */
-import { useEffect } from 'react';
-import { useObjectSelectionsStore, useAppModalStore } from '../stores/selections-store';
+import { useEffect, useState } from 'react';
+import { useAppModalStore } from '../stores/selections-store';
 import useAppSelections from './useAppSelections';
 import eventmixin from '../selections/event-mixin';
 import useLayout from './useLayout';
@@ -94,7 +94,7 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
       }
       isActive = true;
       this.emit('activated');
-      return appModal.begin(model, paths, true);
+      return appModal.begin({ model, paths, accept: true, objectSelections: api });
     },
     /**
      * @returns {Promise<undefined>}
@@ -181,12 +181,12 @@ const createObjectSelections = ({ appSelections, appModal, model }) => {
     /**
      * @returns {boolean}
      */
-    isModal: () => appSelections.isModal(model),
+    isModal: () => appSelections.isModal(api),
     /**
      * @param {string[]} paths
      * @returns {Promise<undefined>}
      */
-    goModal: (paths) => appModal.begin(model, paths, false),
+    goModal: (paths) => appModal.begin({ model, paths, accept: false, objectSelections: api }),
     /**
      * @param {boolean} [accept=false]
      * @returns {Promise<undefined>}
@@ -222,23 +222,19 @@ export default function useObjectSelections(app, model, elements, options) {
 
   const [appSelections] = useAppSelections(app);
   const [layout] = useLayout(model);
-  const key = model ? model.id : null;
   const [appModalStore] = useAppModalStore();
-  const [objectSelectionsStore] = useObjectSelectionsStore();
   const appModal = appModalStore.get(app.id);
-  let objectSelections = objectSelectionsStore.get(key);
+  const [objectSelections, setObjectSelections] = useState();
 
   useEffect(() => {
     if (!appSelections || !model || objectSelections) return;
-
-    objectSelections = createObjectSelections({
-      appSelections,
-      appModal,
-      model,
-    });
-
-    objectSelectionsStore.set(key, objectSelections);
-    objectSelectionsStore.dispatch(true);
+    setObjectSelections(
+      createObjectSelections({
+        appSelections,
+        appModal,
+        model,
+      })
+    );
   }, [appSelections, model]);
 
   useEffect(() => {

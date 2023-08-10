@@ -1,28 +1,22 @@
 /* eslint no-underscore-dangle: 0 */
 import { useEffect } from 'react';
-import {
-  useAppSelectionsStore,
-  objectSelectionsStore,
-  modalObjectStore,
-  appModalStore,
-} from '../stores/selections-store';
+import { useAppSelectionsStore, modalObjectStore, appModalStore } from '../stores/selections-store';
 
 function createAppSelections({ app }) {
   const key = `${app.id}`;
 
   const end = async (accept = true) => {
-    const model = modalObjectStore.get(key);
+    const { model, objectSelections } = modalObjectStore.get(key) || {};
     if (model) {
       await model.endSelections(accept);
       modalObjectStore.clear(key);
-      const objectSelections = objectSelectionsStore.get(model.id);
       objectSelections.emit('deactivated');
     }
   };
 
-  const begin = async (model, path, accept = true) => {
+  const begin = async ({ model, paths, accept = true, objectSelections }) => {
     // Quick return if it's already in modal
-    if (model === modalObjectStore.get(key)) {
+    if (objectSelections === modalObjectStore.get(key)?.objectSelections) {
       return;
     }
 
@@ -30,13 +24,13 @@ function createAppSelections({ app }) {
     end(accept);
 
     // Pending modal
-    modalObjectStore.set(key, model);
+    modalObjectStore.set(key, { model, objectSelections });
 
-    const p = Array.isArray(path) ? path : [path];
+    const p = Array.isArray(paths) ? paths : [paths];
     const beginSelections = async (skipRetry) => {
       try {
         await model.beginSelections(p);
-        modalObjectStore.set(key, model); // We have a modal
+        modalObjectStore.set(key, { model, objectSelections }); // We have a modal
       } catch (err) {
         if (err.code === 6003 && !skipRetry) {
           await app.abortModal(accept);
@@ -65,9 +59,11 @@ function createAppSelections({ app }) {
     isInModal() {
       return !!modalObjectStore.get(key);
     },
-    isModal(object) {
+    isModal(objectSelections) {
       // TODO check model state
-      return object ? modalObjectStore.get(key) === object : !!modalObjectStore.get(key);
+      return objectSelections
+        ? modalObjectStore.get(key)?.objectSelections === objectSelections
+        : !!modalObjectStore.get(key);
     },
     forward() {
       return appModal.end().then(() => app.forward());

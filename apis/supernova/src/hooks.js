@@ -1114,10 +1114,15 @@ export function useRenderState() {
 }
 
 /**
+ * @class Emitter
+ * @description The emitter instance. Implements https://nodejs.org/api/events.html#class-eventemitter.
+ */
+
+/**
  * Gets an event emitter instance for the visualization.
  * @entry
  * @experimental
- * @returns {Emitter} The emitter instance. Implements https://nodejs.org/api/events.html#class-eventemitter.
+ * @returns {Emitter}
  * @example
  * // In a Nebula visualization
  * import { useEmitter } from '@nebula.js/stardust';

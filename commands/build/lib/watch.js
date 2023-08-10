@@ -1,6 +1,8 @@
+/* eslint-disable no-console */
+const path = require('path');
+const readline = require('readline');
 const chalk = require('chalk');
 const rollup = require('rollup');
-const readline = require('readline');
 
 const config = require('./config');
 const systemjsBehaviours = require('./systemjs');

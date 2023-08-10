@@ -31,6 +31,6 @@ Follow the instructions in our [contributing guide](./.github/CONTRIBUTING.md).
 
 `nebula.js/stardust` is [MIT licensed](./LICENSE).
 
-[stardust]: https://github.com/qlik-oss/apis/stardust
+[stardust]: https://github.com/qlik-oss/nebula.js/tree/master/apis/stardust
 [stardust-status]: https://img.shields.io/npm/v/@nebula.js/stardust.svg
 [stardust-npm]: https://www.npmjs.com/package/@nebula.js/stardust
