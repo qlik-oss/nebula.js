@@ -8,6 +8,5 @@
   },
   "ignoreChanges": ["**/*.md", "**/__tests__/**", "**/__stories__/**"],
   "version": "4.3.0",
-  "npmClient": "yarn",
-  "useWorkspaces": true
+  "npmClient": "yarn"
 }

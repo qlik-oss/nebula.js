@@ -64,7 +64,7 @@ async function build(argv = {}) {
   if (buildConfig.watch) {
     return watch(buildConfig);
   }
-
+  console.time('Total build time');
   console.time('Generate UMD bundle');
   await umd(buildConfig);
   console.timeEnd('Generate UMD bundle');
@@ -84,6 +84,7 @@ async function build(argv = {}) {
     await esm(buildConfig, core);
     console.timeEnd('Create ESM bundle into core');
   }
+  console.timeEnd('Total build time');
 
   return undefined;
 }

@@ -66,8 +66,15 @@ commands:
             echo "Yarn"
             yarn
             echo "Linking packages"
-            npx lerna link --force-local
+            (cd apis/stardust && yarn link)
+            (cd commands/cli && yarn link)
+            (cd commands/build && yarn link)
+            (cd commands/serve && yarn link)
             cd << parameters.project_name >>
+            yarn link "@nebula.js/stardust"
+            yarn link "@nebula.js/cli"
+            yarn link "@nebula.js/cli-build"
+            yarn link "@nebula.js/cli-serve"
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
             <<# parameters.build >> yarn run build <</ parameters.build >>
