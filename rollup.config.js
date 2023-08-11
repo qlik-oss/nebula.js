@@ -105,7 +105,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
 
   const cfg = {
     onwarn(warning, warn) {
-      // Supress "use client" warnings coming from MUI bundling -
+      // Supress "use client" warnings coming from MUI bundling
       if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes(`"use client"`)) {
         return;
       }

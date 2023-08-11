@@ -31,7 +31,8 @@
   },
   "lint-staged": {
     "*.{js,jsx}": [
-      "eslint"
+      "eslint",
+      "prettier"
     ]
   },
   "devDependencies": {
@@ -83,7 +84,6 @@
     "picasso-plugin-q": "2.2.4",
     "picasso.js": "2.2.4",
     "prettier": "3.0.1",
-    "pretty-quick": "3.1.3",
     "puppeteer": "19.11.1",
     "qix-faker": "0.3.0",
     "rollup": "3.27.2",
