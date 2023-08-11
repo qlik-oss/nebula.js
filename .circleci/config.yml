@@ -65,8 +65,6 @@ commands:
             <</ parameters.mashup >>
             echo "Yarn"
             yarn
-            echo "Linking packages"
-            npx lerna link --force-local
             cd << parameters.project_name >>
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
