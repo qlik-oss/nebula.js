@@ -35,7 +35,6 @@
     ]
   },
   "devDependencies": {
-    "@playwright/test": "1.36.2",
     "@after-work.js/aw": "6.0.14",
     "@babel/cli": "7.22.9",
     "@babel/core": "7.22.9",
@@ -46,6 +45,7 @@
     "@babel/preset-react": "7.22.5",
     "@commitlint/cli": "17.6.7",
     "@commitlint/config-conventional": "17.6.7",
+    "@playwright/test": "1.36.2",
     "@rollup/plugin-babel": "6.0.3",
     "@rollup/plugin-commonjs": "25.0.3",
     "@rollup/plugin-json": "6.0.0",
@@ -78,7 +78,7 @@
     "jest-location-mock": "^1.0.10",
     "jimp": "0.22.10",
     "lerna": "6.6.2",
-    "lint-staged": "13.2.3",
+    "lint-staged": "^13.2.3",
     "mocha-junit-reporter": "2.2.1",
     "picasso-plugin-q": "2.2.4",
     "picasso.js": "2.2.4",
