@@ -47,7 +47,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.3",
-    "@mui/material": "^5.14.3",
+    "@mui/material": "^5.14.4",
     "@nebula.js/conversion": "^4.3.0",
     "@nebula.js/enigma-mocker": "^4.3.0",
     "@nebula.js/locale": "^4.3.0",
@@ -66,7 +66,7 @@
     "react-virtualized-auto-sizer": "1.0.20",
     "react-window": "1.8.9",
     "react-window-infinite-loader": "1.0.9",
-    "regenerator-runtime": "0.13.11",
+    "regenerator-runtime": "0.14.0",
     "semver": "7.5.4"
   }
 }
