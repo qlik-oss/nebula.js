@@ -1,7 +1,6 @@
 import { useReducer, useEffect } from 'react';
 import { useModelChangedStore, useRpcResultStore, useRpcRequestStore } from '../stores/model-store';
 
-// eslint-disable-next-line no-unused-vars
 const sleep = (delay) =>
   new Promise((resolve) => {
     setTimeout(resolve, delay);
@@ -99,7 +98,9 @@ export default function useRpc(model, method) {
     }
 
     try {
-      // await sleep(5000);
+      // To avoid possible race condition causing an infinite loop.
+      // Problem has been observed for mocked models appeared after switching to react 18 (reactDOM render -> createRoot).
+      await sleep(0);
       const result = await cache.rpc;
       dispatch({ type: 'VALID', result, key, method, model, rpcResultStore });
     } catch (err) {

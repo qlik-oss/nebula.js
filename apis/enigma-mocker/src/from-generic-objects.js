@@ -13,6 +13,7 @@ export default function fromGenericObjects(genericObjects, options = {}) {
     id: `app - ${+Date.now()}`,
     session,
     createSessionObject,
+    destroySessionObject: async () => {},
     getObject,
     getAppLayout,
   };
