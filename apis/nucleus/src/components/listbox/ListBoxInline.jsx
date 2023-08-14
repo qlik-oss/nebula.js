@@ -345,6 +345,7 @@ function ListBoxInline({ options, layout }) {
           containerRectRef(el);
         }}
         isGridMode={isGridMode}
+        aria-label={keyboard.active ? translator.get('Listbox.ScreenReaderInstructions') : ''}
       >
         {showToolbarWithTitle && (
           <Grid
@@ -414,7 +415,6 @@ function ListBoxInline({ options, layout }) {
             />
           </Grid>
           <Grid item xs className={classes.listboxWrapper}>
-            <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
             {isInvalid ? (
               <ListBoxError text={errorText} />
             ) : (
