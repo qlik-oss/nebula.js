@@ -133,7 +133,7 @@ describe('<SelectedFields />', () => {
   });
 
   test('should keep item in modal state', async () => {
-    modalObjectStore.get.mockReturnValue({ genericType: 'njsListbox' });
+    modalObjectStore.get.mockReturnValue({ model: { genericType: 'njsListbox' } });
     const data = {
       qSelectionObject: {
         qSelections: [
@@ -176,7 +176,7 @@ describe('<SelectedFields />', () => {
       .mockReturnValueOnce([newData]);
     await render();
     const types = renderer.root.findAllByType(OneField);
-    expect(types.length).toBe(3);
+    expect(types).toHaveLength(3);
     expect(types[0].props.field.name).toBe('my-field0');
     expect(types[1].props.field.name).toBe('my-field1');
     expect(types[2].props.field.name).toBe('my-field2');

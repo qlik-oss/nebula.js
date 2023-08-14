@@ -17,7 +17,7 @@ export default function getListBoxComponents({
   pages,
   selectDisabled,
   interactionEvents,
-  frequencyMode,
+  deducedFrequencyMode,
   histogram,
   isSingleSelect,
   select,
@@ -43,7 +43,7 @@ export default function getListBoxComponents({
   isModal,
 }) {
   const { layoutOptions = {} } = layout || {};
-  const { columnWidth, itemPadding, listHeight, itemHeight, rowCount, columnCount, frequencyWidth } = sizes || {};
+  const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
 
   const itemWidth = layoutOptions.dataLayout === 'grid' ? columnWidth : width;
   const showTick = itemWidth > REMOVE_TICK_LIMIT;
@@ -65,12 +65,11 @@ export default function getListBoxComponents({
     ...(isLocked || selectDisabled() ? {} : interactionEvents),
     checkboxes,
     layoutOptions,
-    frequencyMode,
+    deducedFrequencyMode,
     freqIsAllowed,
     isSingleSelect,
     textAlign,
-    itemPadding,
-    frequencyWidth,
+    sizes,
     actions: {
       select,
       confirm: () => selections?.confirm.call(selections),

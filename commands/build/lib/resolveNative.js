@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const path = require('path');
 const fs = require('fs');
 // this plugin will check if there is a corresponding .native file for the input file and output the contents of the native file

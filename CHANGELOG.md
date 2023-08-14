@@ -3,6 +3,41 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.3.0](https://github.com/qlik-oss/nebula.js/compare/v4.2.4...v4.3.0) (2023-08-03)
+
+### Bug Fixes
+
+- fix selection close when there are many objects with the same model ([#1321](https://github.com/qlik-oss/nebula.js/issues/1321)) ([2810c29](https://github.com/qlik-oss/nebula.js/commit/2810c29d01de81f69aad13c4b5487924021298da))
+- missing path require in build-watcher ([#1320](https://github.com/qlik-oss/nebula.js/issues/1320)) ([29a35ec](https://github.com/qlik-oss/nebula.js/commit/29a35ec805eaa9cb498808515acf50886920c542))
+
+## [4.2.4](https://github.com/qlik-oss/nebula.js/compare/v4.2.3...v4.2.4) (2023-07-04)
+
+### Features
+
+- add menuBuilder ([#1298](https://github.com/qlik-oss/nebula.js/issues/1298)) ([413db1b](https://github.com/qlik-oss/nebula.js/commit/413db1b66868c1a488dfa5d2b2462971ea7293ff))
+
+## [4.2.3](https://github.com/qlik-oss/nebula.js/compare/v4.2.2...v4.2.3) (2023-06-28)
+
+### Bug Fixes
+
+- pass theme to listbox ([#1305](https://github.com/qlik-oss/nebula.js/issues/1305)) ([aca25c6](https://github.com/qlik-oss/nebula.js/commit/aca25c61ee3076c2484952635e00b6fccbd8238f))
+
+## [4.2.2](https://github.com/qlik-oss/nebula.js/compare/v4.2.1...v4.2.2) (2023-06-28)
+
+### Bug Fixes
+
+- screen reader search ([#1293](https://github.com/qlik-oss/nebula.js/issues/1293)) ([4eb69e9](https://github.com/qlik-oss/nebula.js/commit/4eb69e939e165da33ba3ff221e62068f241a4997))
+
+### Features
+
+- load config types for fixtures ([#1306](https://github.com/qlik-oss/nebula.js/issues/1306)) ([0d30e09](https://github.com/qlik-oss/nebula.js/commit/0d30e0910d37138ff3ec37717d37c9c11e99a69d))
+
+## [4.2.1](https://github.com/qlik-oss/nebula.js/compare/v4.2.0...v4.2.1) (2023-06-09)
+
+### Bug Fixes
+
+- correct call in generate props example ([#1287](https://github.com/qlik-oss/nebula.js/issues/1287)) ([bb61cb2](https://github.com/qlik-oss/nebula.js/commit/bb61cb2ade833643c073157df3c8fd1bca9a7acf))
+
 # [4.2.0](https://github.com/qlik-oss/nebula.js/compare/v4.1.0...v4.2.0) (2023-05-31)
 
 ### Bug Fixes

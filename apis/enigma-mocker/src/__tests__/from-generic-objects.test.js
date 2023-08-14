@@ -127,7 +127,7 @@ describe('enigma-mocker', () => {
         const hypercubeData = await object.getHyperCubeData();
 
         expect(hypercubeData instanceof Array).toBe(true);
-        expect(hypercubeData.length).toBe(1);
+        expect(hypercubeData).toHaveLength(1);
         expect(hypercubeData[0].foo).toBe('bar');
       });
 
@@ -144,7 +144,7 @@ describe('enigma-mocker', () => {
         });
 
         expect(hypercubeData instanceof Array).toBe(true);
-        expect(hypercubeData.length).toBe(1);
+        expect(hypercubeData).toHaveLength(1);
         expect(hypercubeData[0]).toEqual({ foo: 'baz' });
         expect(getHyperCubeData).toHaveBeenCalledWith('/qHyperCubeDef', {
           width: 10,

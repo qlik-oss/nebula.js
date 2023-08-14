@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/stardust",
-  "version": "4.2.0",
+  "version": "4.3.0",
   "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -44,17 +44,17 @@
     "@types/qlik-engineapi": "12.67.13"
   },
   "devDependencies": {
-    "@emotion/react": "^11.11.0",
+    "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.13.3",
-    "@nebula.js/conversion": "^4.2.0",
-    "@nebula.js/enigma-mocker": "^4.2.0",
-    "@nebula.js/locale": "^4.2.0",
-    "@nebula.js/nucleus": "^4.2.0",
-    "@nebula.js/supernova": "^4.2.0",
-    "@nebula.js/theme": "^4.2.0",
-    "@nebula.js/ui": "^4.2.0",
+    "@mui/icons-material": "^5.14.3",
+    "@mui/material": "^5.14.4",
+    "@nebula.js/conversion": "^4.3.0",
+    "@nebula.js/enigma-mocker": "^4.3.0",
+    "@nebula.js/locale": "^4.3.0",
+    "@nebula.js/nucleus": "^4.3.0",
+    "@nebula.js/supernova": "^4.3.0",
+    "@nebula.js/theme": "^4.3.0",
+    "@nebula.js/ui": "^4.3.0",
     "@scriptappy/cli": "0.8.0",
     "@scriptappy/from-jsdoc": "0.17.0",
     "@scriptappy/to-dts": "1.0.0-beta.4",
@@ -66,7 +66,7 @@
     "react-virtualized-auto-sizer": "1.0.20",
     "react-window": "1.8.9",
     "react-window-infinite-loader": "1.0.9",
-    "regenerator-runtime": "0.13.11",
-    "semver": "6.3.0"
+    "regenerator-runtime": "0.14.0",
+    "semver": "7.5.4"
   }
 }

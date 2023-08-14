@@ -93,7 +93,7 @@ describe('hc-handler', () => {
       h.addDimension('A');
       h.addDimension('B');
       h.addDimension('C');
-      expect(hc.qDimensions.length).toBe(2);
+      expect(hc.qDimensions).toHaveLength(2);
     });
 
     test('should call added hook on definition', () => {
@@ -216,7 +216,7 @@ describe('hc-handler', () => {
       h.addMeasure('B');
       h.addMeasure('C');
       h.addMeasure('D');
-      expect(hc.qMeasures.length).toBe(3);
+      expect(hc.qMeasures).toHaveLength(3);
     });
 
     test('should call added hook on definition', () => {

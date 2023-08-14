@@ -111,13 +111,17 @@ const renderFixture = async (params) => {
   });
   const mockedApp = await EnigmaMocker.fromGenericObjects(genericObjects, enigmaMockerOptions);
   const qId = getQId(genericObjects);
-
+  const servedTypes = (serverInfo && serverInfo.types) || [];
   const nebbie = embed(mockedApp, {
     types: [
       {
         name: type,
         load,
       },
+      ...servedTypes.map((configType) => ({
+        name: configType.name,
+        load: async () => getModule(configType.name, configType.url),
+      })),
     ],
     ...instanceConfig,
   });

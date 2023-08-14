@@ -28,4 +28,10 @@ describe('measure-text', () => {
     expect(text).toEqual('');
     expect(text).toHaveLength(0);
   });
+
+  it('should handle a number instead of extracting it from layout', () => {
+    const text = getMeasureText(9);
+    expect(text).toEqual('MMMMMMMMM');
+    expect(text).toHaveLength(9);
+  });
 });

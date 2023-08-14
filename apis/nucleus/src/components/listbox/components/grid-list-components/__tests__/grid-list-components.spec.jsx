@@ -71,7 +71,6 @@ describe('grid-list-components', () => {
       interactionEvents: {
         heyHey: 'hey hey',
       },
-      frequencyMode: 'N',
       histogram: false,
       isSingleSelect: false,
       select,
@@ -92,7 +91,6 @@ describe('grid-list-components', () => {
         rowCount: 200,
         columnCount: 2,
         columnWidth: 50,
-        frequencyWidth: 100,
         overflowStyling: {
           overflowX: 'hidden',
         },

@@ -42,6 +42,7 @@ describe('check keyboard navigation rendering with multiple rows in the in-built
       checkboxes: false,
       frequencyMode: 'value',
       dataOffset: 0,
+      sizes: { itemPadding: 2 },
       focusListItems: {
         first: undefined,
         last: undefined,

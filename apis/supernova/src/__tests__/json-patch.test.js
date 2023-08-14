@@ -58,14 +58,14 @@ describe('JSON-Patch', () => {
       test("creates an 'add' patch", () => {
         patcheeClone.newProp = 'hello';
         const patches = JSONPatch.generate(patchee, patcheeClone);
-        expect(patches.length).toBe(1);
+        expect(patches).toHaveLength(1);
         expect(patches[0]).toEqual({ op: 'add', path: '/newProp', value: 'hello' });
       });
 
       test("creates a 'replace' patch", () => {
         patcheeClone.simpleString = 'hello';
         const patches = JSONPatch.generate(patchee, patcheeClone);
-        expect(patches.length).toBe(1);
+        expect(patches).toHaveLength(1);
         expect(patches[0]).toEqual({ op: 'replace', path: '/simpleString', value: 'hello' });
       });
 
@@ -75,14 +75,14 @@ describe('JSON-Patch', () => {
         const shouldEqual = [392, 'string', false, 'hello'];
         patcheeClone.simpleArray.push('hello');
         const patches = JSONPatch.generate(patchee, patcheeClone);
-        expect(patches.length).toBe(1);
+        expect(patches).toHaveLength(1);
         expect(patches[0]).toEqual({ op: 'replace', path: '/simpleArray', value: shouldEqual });
       });
 
       test("creates a 'remove' patch", () => {
         delete patcheeClone.simpleString;
         const patches = JSONPatch.generate(patchee, patcheeClone);
-        expect(patches.length).toBe(1);
+        expect(patches).toHaveLength(1);
         expect(patches[0]).toEqual({ op: 'remove', path: '/simpleString' });
       });
     });
@@ -92,7 +92,7 @@ describe('JSON-Patch', () => {
         const shouldEqual = { qInfo: { qId: 4 } };
         patcheeClone.complexArray.push(shouldEqual);
         const patches = JSONPatch.generate(patchee, patcheeClone);
-        expect(patches.length).toBe(1);
+        expect(patches).toHaveLength(1);
         expect(patches[0]).toEqual({ op: 'add', path: '/complexArray/3', value: shouldEqual });
       });
 
@@ -107,7 +107,7 @@ describe('JSON-Patch', () => {
         // expect( patches[0] ).toEqual( {
         //  op: "replace", path: "/complexArray/1", value: shouldEqual
         // } );
-        expect(patches.length).toBe(2);
+        expect(patches).toHaveLength(2);
         expect(patches[0]).toEqual({ op: 'remove', path: '/complexArray/1' });
         expect(patches[1]).toEqual({ op: 'add', path: '/complexArray/1', value: shouldEqual });
       });
@@ -115,7 +115,7 @@ describe('JSON-Patch', () => {
       test("creates a 'remove' patch", () => {
         patcheeClone.complexArray.splice(1, 1);
         const patches = JSONPatch.generate(patchee, patcheeClone);
-        expect(patches.length).toBe(1);
+        expect(patches).toHaveLength(1);
         expect(patches[0]).toEqual({ op: 'remove', path: '/complexArray/1' });
       });
     });
@@ -125,7 +125,7 @@ describe('JSON-Patch', () => {
         patcheeClone.complexObject.nestedObject.foo = false;
         delete patcheeClone.complexObject.nestedObject.bar;
         const patches = JSONPatch.generate(patchee, patcheeClone);
-        expect(patches.length).toBe(2);
+        expect(patches).toHaveLength(2);
         expect(patches[0]).toEqual({ op: 'replace', path: '/complexObject/nestedObject/foo', value: false });
         expect(patches[1]).toEqual({ op: 'remove', path: '/complexObject/nestedObject/bar' });
       });
@@ -140,7 +140,7 @@ describe('JSON-Patch', () => {
         patcheeClone.qvObjectArray.splice(0, 0, newObj);
         patcheeClone.qvObjectArray[1].hello = 'no';
         const patches = JSONPatch.generate(patchee, patcheeClone);
-        expect(patches.length).toBe(2);
+        expect(patches).toHaveLength(2);
         expect(patches[0]).toEqual({ op: 'replace', path: '/qvObjectArray/0/hello', value: 'no' });
         expect(patches[1]).toEqual({ op: 'add', path: '/qvObjectArray/0', value: newObj });
       });
@@ -166,14 +166,14 @@ describe('JSON-Patch', () => {
         // (add new item to the end of the array)
         const patches = [{ op: 'add', path: '/simpleArray/-', value: 'last' }];
         JSONPatch.apply(patchee, patches);
-        expect(patchee.simpleArray.length).toBe(4);
+        expect(patchee.simpleArray).toHaveLength(4);
         expect(patchee.simpleArray[3]).toBe('last');
       });
 
       test('adds an item in the middle of an array', () => {
         const patches = [{ op: 'add', path: '/simpleArray/1', value: 'middle' }];
         JSONPatch.apply(patchee, patches);
-        expect(patchee.simpleArray.length).toBe(4);
+        expect(patchee.simpleArray).toHaveLength(4);
         expect(patchee.simpleArray[1]).toBe('middle');
       });
     });
@@ -206,7 +206,7 @@ describe('JSON-Patch', () => {
       test('replaces a item inside an array', () => {
         const patches = [{ op: 'replace', path: '/simpleArray/1', value: 5938 }];
         JSONPatch.apply(patchee, patches);
-        expect(patchee.simpleArray.length).toBe(3);
+        expect(patchee.simpleArray).toHaveLength(3);
         expect(patchee.simpleArray[1]).toBe(5938);
       });
     });

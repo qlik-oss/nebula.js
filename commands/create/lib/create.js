@@ -1,11 +1,11 @@
-const chalk = require('chalk');
+/* eslint-disable no-console */
 const path = require('path');
 const fs = require('fs');
+const { execSync } = require('child_process');
+const chalk = require('chalk');
 const fse = require('fs-extra');
 const ejs = require('ejs');
 const inquirer = require('inquirer');
-
-const { execSync } = require('child_process');
 
 const pkg = require('../package.json');
 
@@ -97,7 +97,7 @@ const create = async (argv) => {
 
   const write = async () => {
     console.log('\n');
-    console.log('> Generating files...');
+    console.log('> Begin generating files...');
     const { picasso } = options;
     fse.ensureDirSync(destination);
 

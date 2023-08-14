@@ -91,6 +91,12 @@ const listdef = {
    */
   wildCardSearch: false,
   /**
+   * Automatically confirm selections without showing the selections toolbar.
+   * @type {boolean=}
+   * @default
+   */
+  autoConfirm: false,
+  /**
    * Layout settings.
    * @type {object=}
    */

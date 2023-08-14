@@ -37,23 +37,23 @@ describe('<Header />', () => {
   test('should render default', async () => {
     await render();
     const types = renderer.root.findAllByType(Typography);
-    expect(types.length).toBe(0);
+    expect(types).toHaveLength(0);
   });
   test('should render title', async () => {
     await render({ showTitles: true, title: 'foo' });
     const types = renderer.root.findAllByType(Typography);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
     expect(types[0].props.children).toBe('foo');
   });
   test('should render subtitle', async () => {
     await render({ showTitles: true, subtitle: 'bar' });
     const types = renderer.root.findAllByType(Typography);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
     expect(types[0].props.children).toBe('bar');
   });
   test('should render selection toolbar', async () => {
     await render({ qSelectionInfo: { qInSelections: true } }, { component: {}, selectionToolbar: {} });
     const types = renderer.root.findAllByType(ActionsToolbar);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
   });
 });

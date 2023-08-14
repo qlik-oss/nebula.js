@@ -216,7 +216,7 @@ function ListBoxInline({ options, layout }) {
     }
   }, [searchContainer && searchContainer.current, showSearch, search, focusSearch]);
 
-  const { wildCardSearch, searchEnabled, layoutOptions = {} } = layout ?? {};
+  const { wildCardSearch, searchEnabled, autoConfirm = false, layoutOptions = {} } = layout ?? {};
   const showSearchIcon = searchEnabled !== false && search === 'toggle';
   const isLocked = layout?.qListObject?.qDimensionInfo?.qLocked === true;
   const showSearchOrLockIcon = isLocked || showSearchIcon;
@@ -287,6 +287,7 @@ function ListBoxInline({ options, layout }) {
       listboxSelectionToolbarItems,
       selections,
       keyboard,
+      autoConfirm,
     });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
@@ -344,6 +345,7 @@ function ListBoxInline({ options, layout }) {
           containerRectRef(el);
         }}
         isGridMode={isGridMode}
+        aria-label={keyboard.active ? translator.get('Listbox.ScreenReaderInstructions') : ''}
       >
         {showToolbarWithTitle && (
           <Grid
@@ -412,7 +414,6 @@ function ListBoxInline({ options, layout }) {
             />
           </Grid>
           <Grid item xs className={classes.listboxWrapper}>
-            <div className={classes.screenReaderOnly}>{translator.get('Listbox.ScreenReaderInstructions')}</div>
             {isInvalid ? (
               <ListBoxError text={errorText} />
             ) : (
@@ -421,6 +422,7 @@ function ListBoxInline({ options, layout }) {
                   <ListBox
                     model={model}
                     app={app}
+                    theme={theme}
                     constraints={constraints}
                     layout={layout}
                     selections={selections}

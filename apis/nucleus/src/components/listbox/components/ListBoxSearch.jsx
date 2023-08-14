@@ -39,7 +39,7 @@ export default function ListBoxSearch({
   const inputRef = useRef();
 
   const theme = useTheme();
-  const { getStoreValue } = useDataStore(model);
+  const { getStoreValue, setStoreValue } = useDataStore(model);
   const isRtl = direction === 'rtl';
   const inpuTextAlign = isRtl ? 'right' : 'left';
 
@@ -76,6 +76,10 @@ export default function ListBoxSearch({
       setWildcardOn(false);
     }
   }, [wildcardOn, inputRef.current]);
+
+  useEffect(() => {
+    setStoreValue('inputText', value);
+  }, [value]);
 
   const onChange = async (e) => {
     setValue(e.target.value);

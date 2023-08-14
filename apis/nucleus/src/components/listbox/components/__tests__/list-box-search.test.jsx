@@ -33,7 +33,7 @@ describe('<ListBoxSearch />', () => {
   beforeEach(() => {
     InstanceContextModule.default = InstanceContext;
 
-    store = { getStoreValue: jest.fn() };
+    store = { getStoreValue: jest.fn(), setStoreValue: jest.fn() };
     store.getStoreValue.mockImplementation((key) => {
       switch (key) {
         case 'listCount':

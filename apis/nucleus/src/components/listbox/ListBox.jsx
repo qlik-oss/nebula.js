@@ -4,9 +4,7 @@ import InfiniteLoader from 'react-window-infinite-loader';
 import { styled } from '@mui/material';
 import useSelectionsInteractions from './hooks/selections/useSelectionsInteractions';
 import getListBoxComponents from './components/grid-list-components/grid-list-components';
-import getListSizes from './assets/get-list-sizes/get-list-sizes';
-import useTextWidth from './hooks/useTextWidth';
-import getMeasureText from './assets/measure-text';
+import useListSizes from './assets/list-sizes';
 import getHorizontalMinBatchSize from './assets/horizontal-minimum-batch-size';
 import useItemsLoader from './hooks/useItemsLoader';
 import getListCount from './components/list-count';
@@ -16,8 +14,9 @@ import ListBoxFooter from './components/ListBoxFooter';
 import getScrollIndex from './interactions/listbox-get-scroll-index';
 import getFrequencyAllowed from './components/grid-list-components/frequency-allowed';
 import useFrequencyMax from './hooks/useFrequencyMax';
-import { ScreenReaderForSelections } from './components/ScreenReaders';
+import { ScreenReaderForSelections, getScreenReaderSearchText } from './components/ScreenReaders';
 import InstanceContext from '../../contexts/InstanceContext';
+import deduceFrequencyMode from './utils/deduce-frequency-mode';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -34,6 +33,7 @@ export default function ListBox({
   model,
   app,
   constraints,
+  theme,
   layout,
   selections,
   selectionState,
@@ -57,10 +57,11 @@ export default function ListBox({
   showSearch,
   isModal,
 }) {
-  const { translator } = useContext(InstanceContext);
+  const { translator: translatorDynamic } = useContext(InstanceContext);
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
   const isSingleSelect = !!(layout && layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne);
   const { checkboxes = checkboxOption, histogram } = layout ?? {};
+  const [screenReaderText, setScreenReaderText] = useState('');
 
   const loaderRef = useRef(null);
   const local = useRef({
@@ -87,7 +88,7 @@ export default function ListBox({
     postProcessPages,
     listData,
   });
-  const { setStoreValue } = useDataStore(model);
+  const { getStoreValue, setStoreValue } = useDataStore(model);
   const loadMoreItems = useCallback(itemsLoader.loadMoreItems, [layout]);
 
   const [overflowDisclaimer, setOverflowDisclaimer] = useState({ show: false, dismissed: false });
@@ -184,8 +185,6 @@ export default function ListBox({
     fetchData();
   }, [layout, local.current.dataOffset]);
 
-  const textWidth = useTextWidth({ text: getMeasureText(layout), font: '14px Source sans pro' });
-
   let minimumBatchSize = DEFAULT_MIN_BATCH_SIZE;
 
   const isVertical = layoutOptions.dataLayout !== 'grid';
@@ -202,15 +201,16 @@ export default function ListBox({
   });
 
   let freqIsAllowed = getFrequencyAllowed({ itemWidth: width, layout, frequencyMode });
-  const sizes = getListSizes({
+  const deducedFrequencyMode = deduceFrequencyMode(pages);
+  const sizes = useListSizes({
     layout,
     width,
     height,
     listCount: unlimitedListCount,
     count,
-    textWidth,
     freqIsAllowed,
     checkboxes,
+    theme,
   });
   if (sizes.columnWidth) {
     // In grid mode, where we have a dynamic item width, get a second opinion on showing/hiding frequency.
@@ -219,6 +219,16 @@ export default function ListBox({
 
   const { listCount } = sizes;
   setStoreValue('listCount', listCount);
+
+  const inputText = getStoreValue('inputText');
+
+  useEffect(() => {
+    if (inputText) {
+      const srText = getScreenReaderSearchText(listCount);
+      const srFinalText = translatorDynamic.get(srText, [listCount]);
+      setScreenReaderText(srFinalText);
+    }
+  }, [inputText, listCount]);
 
   const setScrollPosition = (position) => {
     const { scrollIndex, offset, triggerRerender } = getScrollIndex({
@@ -271,7 +281,7 @@ export default function ListBox({
     height,
     width,
     checkboxes,
-    frequencyMode,
+    deducedFrequencyMode,
     histogram,
     keyboard,
     showGray,
@@ -296,7 +306,7 @@ export default function ListBox({
     constraints,
     frequencyMax,
     freqIsAllowed,
-    translator,
+    translator: translatorDynamic,
     showSearch,
     isModal,
   });
@@ -309,6 +319,9 @@ export default function ListBox({
   return (
     <StyledWrapper>
       <ScreenReaderForSelections className="screenReaderOnly" layout={layout} />
+      <div className="screenReaderOnly" aria-live="assertive">
+        {screenReaderText}
+      </div>
       {!listCount && cardinal > 0 && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
