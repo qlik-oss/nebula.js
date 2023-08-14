@@ -164,11 +164,6 @@
     "comment": "Screen reader text stating that one value is currently in selection.",
     "version": "OGD8l7kr5UUZgnRu9BZDYQ=="
   },
-  "ScreenReader.SearchFieldLabel": {
-    "value": "検索フィールド",
-    "comment": "Provides the text label for the search input field.",
-    "version": "s4KAJTcGXWro2cCRI7l8XA=="
-  },
   "ScreenReader.ZeroSelected": {
     "value": "値が選択されていません。",
     "comment": "Screen reader label stating that no values are selected.",

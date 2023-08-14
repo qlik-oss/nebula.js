@@ -95,10 +95,6 @@
     "value": "There are {0} selected values.",
     "comment": "Screen reader text stating that multiple values are currently in selection."
   },
-  "ScreenReader.SearchFieldLabel": {
-    "value": "Search Field",
-    "comment": "Provides the text label for the search input field."
-  },
   "Listbox.ResultFilterLabel": {
     "value": "Search Results Filter",
     "comment": "Describes the relationship between the search field & the results that are filtered by the input into the search field"

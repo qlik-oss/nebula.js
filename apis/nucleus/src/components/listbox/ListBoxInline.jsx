@@ -398,7 +398,6 @@ function ListBoxInline({ options, layout }) {
           aria-label={translator.get('Listbox.ResultFilterLabel')}
         >
           <Grid item ref={searchContainerRef}>
-            <div className={classes.screenReaderOnly}>{translator.get('Listbox.Search.ScreenReaderInstructions')}</div>
             <ListBoxSearch
               selections={selections}
               selectionState={selectionState}
