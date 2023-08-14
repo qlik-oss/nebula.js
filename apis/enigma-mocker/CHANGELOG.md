@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/qlik-oss/nebula.js/compare/v4.3.0...v4.4.0) (2023-08-14)
+
+### Bug Fixes
+
+- race condition for mocked charts ([#1329](https://github.com/qlik-oss/nebula.js/issues/1329)) ([6780ba5](https://github.com/qlik-oss/nebula.js/commit/6780ba5c35f2f58d06c2c753068724903ef8bef4))
+
 # [4.3.0](https://github.com/qlik-oss/nebula.js/compare/v4.2.4...v4.3.0) (2023-08-03)
 
 **Note:** Version bump only for package @nebula.js/enigma-mocker

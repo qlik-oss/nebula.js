@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/qlik-oss/nebula.js/compare/v4.3.0...v4.4.0) (2023-08-14)
+
+### Features
+
+- implement auto confirm ([#1328](https://github.com/qlik-oss/nebula.js/issues/1328)) ([eb1e17c](https://github.com/qlik-oss/nebula.js/commit/eb1e17c3bb44c937126ae7310d1c56e05031a392))
+
 # [4.3.0](https://github.com/qlik-oss/nebula.js/compare/v4.2.4...v4.3.0) (2023-08-03)
 
 **Note:** Version bump only for package @nebula.js/stardust

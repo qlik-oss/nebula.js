@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.4.0](https://github.com/qlik-oss/nebula.js/compare/v4.3.0...v4.4.0) (2023-08-14)
+
+### Bug Fixes
+
+- aria-label on Listbox search input ([#1292](https://github.com/qlik-oss/nebula.js/issues/1292)) ([da177d2](https://github.com/qlik-oss/nebula.js/commit/da177d215f7073ca666c83ae8c374b826c35315a))
+- change stardust path link ([#1313](https://github.com/qlik-oss/nebula.js/issues/1313)) ([d0010e7](https://github.com/qlik-oss/nebula.js/commit/d0010e75159078b222ac374acd45f5495ad12783))
+- move listbox screenreader instruction to aria-label ([#1291](https://github.com/qlik-oss/nebula.js/issues/1291)) ([2e37f57](https://github.com/qlik-oss/nebula.js/commit/2e37f5718b37b24a9f177876d11ef985c7445025))
+- race condition for mocked charts ([#1329](https://github.com/qlik-oss/nebula.js/issues/1329)) ([6780ba5](https://github.com/qlik-oss/nebula.js/commit/6780ba5c35f2f58d06c2c753068724903ef8bef4))
+
+### Features
+
+- implement auto confirm ([#1328](https://github.com/qlik-oss/nebula.js/issues/1328)) ([eb1e17c](https://github.com/qlik-oss/nebula.js/commit/eb1e17c3bb44c937126ae7310d1c56e05031a392))
+
 # [4.3.0](https://github.com/qlik-oss/nebula.js/compare/v4.2.4...v4.3.0) (2023-08-03)
 
 ### Bug Fixes
