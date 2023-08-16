@@ -1,10 +1,12 @@
 /* eslint-disable no-underscore-dangle */
 import EventEmitter from 'node-event-emitter';
 import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
-import { JSONPatch } from '@nebula.js/supernova';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
 import validatePlugins from './plugins/plugins';
+import canSetProperties from './utils/can-set-properties';
+import setProperties from './utils/set-properties';
+import saveSoftProperties from './utils/save-soft-properties';
 
 const noopi = () => {};
 
@@ -120,30 +122,20 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      * viz.convertTo('barChart');
      */
     async convertTo(newType, forceUpdate = true) {
-      const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
       if (forceUpdate) {
         const layout = await model.getLayout();
-        if (layout.qMeta.privileges.indexOf('update') !== -1) {
-          if (model.__snInterceptor) {
-            await model.__snInterceptor.setProperties.call(model, propertyTree.qProperty);
-          } else {
-            await model.setProperties(propertyTree.qProperty);
-          }
-        } else {
-          const prevProps = await model.getProperties();
-          // calculate new patches from after change
-          const newPatches = JSONPatch.generate(prevProps, propertyTree.qProperty).map((p) => ({
-            qOp: p.op,
-            qValue: typeof p.value === 'string' ? p.value : JSON.stringify(p.value),
-            qPath: p.path,
-          }));
-          if (model.__snInterceptor) {
-            await model.__snInterceptor.applyPatches.call(model, newPatches, true);
-          } else {
-            await model.applyPatches(newPatches, true);
-          }
+        if (canSetProperties(layout)) {
+          const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
+          await setProperties(model, propertyTree.qProperty);
+          return propertyTree;
         }
+        const oldProperties = await model.getEffectiveProperties();
+        const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType, properties: oldProperties });
+        const newProperties = propertyTree.qProperty;
+        await saveSoftProperties(model, oldProperties, newProperties);
+        return propertyTree;
       }
+      const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
       return propertyTree;
     },
     /**
