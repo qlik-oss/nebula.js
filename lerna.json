@@ -1,7 +1,7 @@
 {
   "command": {
     "version": {
-      "allowBranch": "master",
+      "allowBranch": "release/4.0.x",
       "conventionalCommits": true,
       "message": "chore(release): %s 🚀"
     }
