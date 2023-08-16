@@ -47,8 +47,8 @@ const getImportPropertiesFnc = (qae) => {
   return getDefaultImportPropertiesFnc(path);
 };
 
-export const convertTo = async ({ halo, model, cellRef, newType }) => {
-  const propertyTree = await model.getFullPropertyTree();
+export const convertTo = async ({ halo, model, cellRef, newType, properties }) => {
+  const propertyTree = properties ? { qProperty: properties } : await model.getFullPropertyTree();
   const sourceQae = cellRef.current.getQae();
   const exportProperties = getExportPropertiesFnc(sourceQae);
   const targetSnType = await getType({ halo, name: newType });
