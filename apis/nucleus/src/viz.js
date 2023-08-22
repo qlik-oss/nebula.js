@@ -114,6 +114,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      * @since 1.1.0
      * @param {string} newType - Which registered type to convert to.
      * @param {boolean=} forceUpdate - Whether to apply the change through setProperties/applyPatches or not, defaults to true.
+     * @throws {Error} Throws an error if the source or target chart does not support conversion
      * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualization.
      * @example
      * const viz = await embed(app).render({
@@ -144,6 +145,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      * Converts the visualization to a different registered type using a patch. Only persists in session
      * @since 4.5.0
      * @param {string} newType - Which registered type to convert to.
+     * @throws {Error} Throws an error if the source or target chart does not support conversion
      * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualization.
      * @example
      * const viz = await embed(app).render({
