@@ -24,6 +24,7 @@ import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
 import useRect from '../../hooks/useRect';
 import isDirectQueryEnabled from './utils/is-direct-query';
+import createStyleService from './hooks/use-style';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -60,12 +61,6 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
   })
 );
 
-const Title = styled(Typography)(({ theme }) => ({
-  color: theme.listBox?.title?.main?.color,
-  fontSize: theme.listBox?.title?.main?.fontSize,
-  fontFamily: theme.listBox?.title?.main?.fontFamily,
-  fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
-}));
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
 function ListBoxInline({ options, layout }) {
@@ -324,6 +319,16 @@ function ListBoxInline({ options, layout }) {
   if (isInvalid) {
     renderedCallback?.();
   }
+
+  const Title = styled(Typography)(() => {
+    const styleService = createStyleService({ theme, layout });
+    return {
+      color: styleService?.header?.getStyle().fontColor || theme.listBox?.title?.main?.color,
+      fontSize: styleService?.header?.getStyle().fontSize || theme.listBox?.title?.main?.fontSize,
+      fontFamily: theme.listBox?.title?.main?.fontFamily,
+      fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
+    };
+  });
 
   return (
     <>
