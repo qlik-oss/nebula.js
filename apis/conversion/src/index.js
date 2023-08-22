@@ -51,9 +51,15 @@ export const convertTo = async ({ halo, model, cellRef, newType, properties }) =
   const propertyTree = properties ? { qProperty: properties } : await model.getFullPropertyTree();
   const sourceQae = cellRef.current.getQae();
   const exportProperties = getExportPropertiesFnc(sourceQae);
+  if (!exportProperties) {
+    throw new Error('Source chart does not support conversion');
+  }
   const targetSnType = await getType({ halo, name: newType });
   const targetQae = targetSnType.qae;
   const importProperties = getImportPropertiesFnc(targetQae);
+  if (!importProperties) {
+    throw new Error('Target chart does not support conversion');
+  }
   const exportFormat = exportProperties({
     propertyTree,
     hypercubePath: helpers.getHypercubePath(sourceQae),
