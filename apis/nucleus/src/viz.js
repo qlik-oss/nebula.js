@@ -109,17 +109,19 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       unmountCell = noopi;
     },
     /**
-     * Converts the visualization to a different registered type
+     * Converts the visualization to a different registered type. Will update properties if permissions allow, else will patch.
+     * Not all chart types are compatible, similar structures are required.
      * @since 1.1.0
      * @param {string} newType - Which registered type to convert to.
-     * @param {boolean=} forceUpdate - Whether to run setProperties or not, defaults to true.
+     * @param {boolean=} forceUpdate - Whether to apply the change through setProperties/applyPatches or not, defaults to true.
      * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualization.
      * @example
      * const viz = await embed(app).render({
      *   element,
      *   id: 'abc'
      * });
-     * viz.convertTo('barChart');
+     * await viz.convertTo('barChart');
+     * const newProperties = await viz.convertTo('lineChart', false);
      */
     async convertTo(newType, forceUpdate = true) {
       if (forceUpdate) {
@@ -136,6 +138,25 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
         return propertyTree;
       }
       const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
+      return propertyTree;
+    },
+    /**
+     * Converts the visualization to a different registered type using a patch. Only persists in session
+     * @since 4.5.0
+     * @param {string} newType - Which registered type to convert to.
+     * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualization.
+     * @example
+     * const viz = await embed(app).render({
+     *   element,
+     *   id: 'abc'
+     * });
+     * viz.convertTo('barChart');
+     */
+    async convertToByPatch(newType) {
+      const oldProperties = await model.getEffectiveProperties();
+      const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType, properties: oldProperties });
+      const newProperties = propertyTree.qProperty;
+      await saveSoftProperties(model, oldProperties, newProperties);
       return propertyTree;
     },
     /**
