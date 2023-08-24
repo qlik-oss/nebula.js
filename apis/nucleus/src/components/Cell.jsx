@@ -267,6 +267,7 @@ const loadType = async ({
   nebbie,
   focusHandler,
   emitter,
+  onMount,
 }) => {
   try {
     const snType = await getType({ types, name: visualization, version });
@@ -278,7 +279,11 @@ const loadType = async ({
       focusHandler,
       emitter,
     });
-    return sn;
+
+    if (sn) {
+      dispatch({ type: 'LOADED', sn, visualization });
+      onMount();
+    }
   } catch (err) {
     if (!version) {
       dispatch({
@@ -290,8 +295,8 @@ const loadType = async ({
     } else {
       dispatch({ type: 'ERROR', error: { title: err.message } });
     }
+    onMount();
   }
-  return undefined;
 };
 
 const Cell = forwardRef(
@@ -403,7 +408,7 @@ const Cell = forwardRef(
       };
       const load = async (visualization, version) => {
         dispatch({ type: 'LOADING' });
-        const sn = await loadType({
+        await loadType({
           dispatch,
           types,
           visualization,
@@ -414,12 +419,8 @@ const Cell = forwardRef(
           nebbie,
           focusHandler: focusHandler.current,
           emitter,
+          onMount,
         });
-        if (sn) {
-          dispatch({ type: 'LOADED', sn, visualization });
-        }
-        onMount(); // Always resolve mount promise regardless of success
-        return undefined;
       };
 
       // Validate if it's still the same type
