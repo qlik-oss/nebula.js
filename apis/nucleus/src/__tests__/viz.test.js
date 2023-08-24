@@ -100,6 +100,14 @@ describe('viz', () => {
   });
 
   describe('mounting', () => {
+    test('show throw for invalid elements', () => {
+      try {
+        api.__DO_NOT_USE__.mount('just a string');
+      } catch (error) {
+        expect(error.message).toBe('Provided element is not a proper HTMLElement');
+      }
+    });
+
     test('should mount', async () => {
       mounted = api.__DO_NOT_USE__.mount(mockElement);
       const { onMount } = glue.mock.lastCall[0];
