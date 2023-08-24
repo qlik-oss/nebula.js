@@ -55,6 +55,7 @@ describe('viz', () => {
 
     model = {
       getEffectiveProperties: jest.fn().mockReturnValue('old'),
+      getLayout: jest.fn().mockReturnValue({ qMeta: { privileges: ['update'] } }),
       applyPatches: jest.fn(),
       on: jest.fn(),
       once: jest.fn(),
