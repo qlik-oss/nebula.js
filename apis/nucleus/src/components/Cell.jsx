@@ -417,8 +417,8 @@ const Cell = forwardRef(
         });
         if (sn) {
           dispatch({ type: 'LOADED', sn, visualization });
-          onMount();
         }
+        onMount(); // Always resolve mount promise regardless of success
         return undefined;
       };
 
