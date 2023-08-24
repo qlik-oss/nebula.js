@@ -384,7 +384,12 @@ const Cell = forwardRef(
     };
 
     useEffect(() => {
-      if (initialError || !appLayout || !layout) {
+      if (initialError) {
+        // To resolve the Viz promise for missing types
+        onMount();
+        return undefined;
+      }
+      if (!appLayout || !layout) {
         return undefined;
       }
       const validate = async (sn) => {
