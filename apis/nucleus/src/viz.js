@@ -109,8 +109,56 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       unmountCell = noopi;
     },
     /**
+     * Contains functionality related to conversions between types in the current session
+     * @memberof Viz#
+     * @ignore
+     * @since 4.5.0
+     */
+    convert: {
+      /**
+       * Converts the visualization to a different registered type using a patch. Only persists in session
+       * @since 4.5.0
+       * @memberof Viz.convert
+       * @param {string} newType - Which registered type to convert to.
+       * @throws {Error} Throws an error if the source or target chart does not support conversion
+       * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualization.
+       * @example
+       * const viz = await embed(app).render({
+       *   element,
+       *   id: 'abc'
+       * });
+       * viz.convert.toType('barChart');
+       */
+      async toType(newType) {
+        const oldProperties = await model.getEffectiveProperties();
+        const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType, properties: oldProperties });
+        const newProperties = propertyTree.qProperty;
+        await saveSoftProperties(model, oldProperties, newProperties);
+        return propertyTree;
+      },
+      /**
+       * Reverts any conversion done on the visualization
+       * @since 4.5.0
+       * @memberof Viz.convert
+       * @returns {Promise<object>} Promise object that resolves when the conversion is undone, returns result.
+       * @example
+       * const viz = await embed(app).render({
+       *   element,
+       *   id: 'abc'
+       * });
+       * viz.convert.toType('barChart');
+       * viz.convert.revert();
+       */
+      async revert() {
+        await model.clearSoftPatches();
+      },
+    },
+    /**
      * Converts the visualization to a different registered type. Will update properties if permissions allow, else will patch.
+     *
      * Not all chart types are compatible, similar structures are required.
+     *
+     * NOTE: Consider using viz.convert.toType instead for session based conversion
      * @since 1.1.0
      * @param {string} newType - Which registered type to convert to.
      * @param {boolean=} forceUpdate - Whether to apply the change through setProperties/applyPatches or not, defaults to true.
@@ -139,26 +187,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
         return propertyTree;
       }
       const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
-      return propertyTree;
-    },
-    /**
-     * Converts the visualization to a different registered type using a patch. Only persists in session
-     * @since 4.5.0
-     * @param {string} newType - Which registered type to convert to.
-     * @throws {Error} Throws an error if the source or target chart does not support conversion
-     * @returns {Promise<object>} Promise object that resolves to the full property tree of the converted visualization.
-     * @example
-     * const viz = await embed(app).render({
-     *   element,
-     *   id: 'abc'
-     * });
-     * viz.convertTo('barChart');
-     */
-    async convertToByPatch(newType) {
-      const oldProperties = await model.getEffectiveProperties();
-      const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType, properties: oldProperties });
-      const newProperties = propertyTree.qProperty;
-      await saveSoftProperties(model, oldProperties, newProperties);
       return propertyTree;
     },
     /**

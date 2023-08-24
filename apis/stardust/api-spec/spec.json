@@ -1247,7 +1247,7 @@
           ]
         },
         "convertTo": {
-          "description": "Converts the visualization to a different registered type. Will update properties if permissions allow, else will patch.\nNot all chart types are compatible, similar structures are required.",
+          "description": "Converts the visualization to a different registered type. Will update properties if permissions allow, else will patch.\n\nNot all chart types are compatible, similar structures are required.\n\nNOTE: Consider using viz.convert.toType instead for session based conversion",
           "availability": {
             "since": "1.1.0"
           },
@@ -1282,38 +1282,6 @@
           ],
           "examples": [
             "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nawait viz.convertTo('barChart');\nconst newProperties = await viz.convertTo('lineChart', false);"
-          ]
-        },
-        "convertToByPatch": {
-          "description": "Converts the visualization to a different registered type using a patch. Only persists in session",
-          "availability": {
-            "since": "4.5.0"
-          },
-          "kind": "function",
-          "params": [
-            {
-              "name": "newType",
-              "description": "Which registered type to convert to.",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "Promise object that resolves to the full property tree of the converted visualization.",
-            "type": "Promise",
-            "generics": [
-              {
-                "type": "object"
-              }
-            ]
-          },
-          "throws": [
-            {
-              "description": "Throws an error if the source or target chart does not support conversion",
-              "type": "Error"
-            }
-          ],
-          "examples": [
-            "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.convertTo('barChart');"
           ]
         },
         "addListener": {
@@ -1369,6 +1337,58 @@
       },
       "examples": [
         "const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"
+      ]
+    },
+    "Viz.convert.toType": {
+      "description": "Converts the visualization to a different registered type using a patch. Only persists in session",
+      "availability": {
+        "since": "4.5.0"
+      },
+      "kind": "function",
+      "params": [
+        {
+          "name": "newType",
+          "description": "Which registered type to convert to.",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "description": "Promise object that resolves to the full property tree of the converted visualization.",
+        "type": "Promise",
+        "generics": [
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "throws": [
+        {
+          "description": "Throws an error if the source or target chart does not support conversion",
+          "type": "Error"
+        }
+      ],
+      "examples": [
+        "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.convert.toType('barChart');"
+      ]
+    },
+    "Viz.convert.revert": {
+      "description": "Reverts any conversion done on the visualization",
+      "availability": {
+        "since": "4.5.0"
+      },
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "description": "Promise object that resolves when the conversion is undone, returns result.",
+        "type": "Promise",
+        "generics": [
+          {
+            "type": "object"
+          }
+        ]
+      },
+      "examples": [
+        "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.convert.toType('barChart');\nviz.convert.revert();"
       ]
     },
     "Flags": {
