@@ -23,6 +23,8 @@ describe('viz', () => {
   let getImperativeHandle;
   let convertToMock;
 
+  let mockElement;
+
   beforeAll(() => {
     unmountMock = jest.fn();
     setSnOptions = jest.fn();
@@ -66,6 +68,8 @@ describe('viz', () => {
       model,
       halo: { public: {} },
     });
+
+    mockElement = document.createElement('div');
   });
   afterAll(() => {
     jest.resetAllMocks();
@@ -97,7 +101,7 @@ describe('viz', () => {
 
   describe('mounting', () => {
     test('should mount', async () => {
-      mounted = api.__DO_NOT_USE__.mount('element');
+      mounted = api.__DO_NOT_USE__.mount(mockElement);
       const { onMount } = glue.mock.lastCall[0];
       onMount();
       await mounted;
@@ -105,7 +109,7 @@ describe('viz', () => {
     });
     test('should throw if already mounted', async () => {
       try {
-        mounted = api.__DO_NOT_USE__.mount('element');
+        mounted = api.__DO_NOT_USE__.mount(mockElement);
         /*
         // This code never runs, as these tests are meant to run together, don't want to mess more with it
         const { onMount } = glue.mock.lastCall[0];
