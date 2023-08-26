@@ -50,11 +50,11 @@
     "yargs": "17.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.22.10",
+    "@babel/core": "7.22.11",
     "@babel/preset-env": "7.22.10",
     "@babel/preset-react": "7.22.5",
-    "@mui/material": "^5.14.5",
-    "@mui/system": "^5.14.5",
+    "@mui/material": "^5.14.6",
+    "@mui/system": "^5.14.6",
     "@nebula.js/enigma-mocker": "^4.4.0",
     "@nebula.js/nucleus": "^4.4.0",
     "@nebula.js/snapshooter": "^4.4.0",
