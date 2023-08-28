@@ -101,11 +101,10 @@ describe('viz', () => {
 
   describe('mounting', () => {
     test('show throw for invalid elements', () => {
-      try {
+      const t = () => {
         api.__DO_NOT_USE__.mount('just a string');
-      } catch (error) {
-        expect(error.message).toBe('Provided element is not a proper HTMLElement');
-      }
+      };
+      expect(t).toThrow('Provided element is not a proper HTMLElement');
     });
 
     test('should mount', async () => {
@@ -116,19 +115,10 @@ describe('viz', () => {
       expect(glue).toHaveBeenCalledTimes(1);
     });
     test('should throw if already mounted', async () => {
-      try {
+      const t = () => {
         mounted = api.__DO_NOT_USE__.mount(mockElement);
-        /*
-        // This code never runs, as these tests are meant to run together, don't want to mess more with it
-        const { onMount } = glue.mock.lastCall[0];
-        onMount();
-        await mounted;
-        const result = await api.__DO_NOT_USE__.mount.bind('element2');
-        await result();
-        */
-      } catch (error) {
-        expect(error.message).toBe('Already mounted');
-      }
+      };
+      expect(t).toThrow('Already mounted');
     });
   });
 
