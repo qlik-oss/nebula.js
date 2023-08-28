@@ -1,7 +1,6 @@
 import generator from './generator';
-import JSONPatch from './json-patch';
 
-export { generator, JSONPatch };
+export { generator };
 
 // core hooks
 export { hook, useState, useEffect, useMemo, useImperativeHandle } from './hooks';

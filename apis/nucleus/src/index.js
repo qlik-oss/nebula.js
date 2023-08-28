@@ -99,10 +99,7 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
   language: 'en-US',
   /** @type {string=} */
   deviceType: 'auto',
-  /**
-   * @type {Constraints=}
-   * @deprecated
-   * */
+  /** @type {Constraints=} Deprecated */
   constraints: {},
   /** @type {Interactions=} */
   interactions: {},
