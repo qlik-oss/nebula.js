@@ -401,9 +401,10 @@ declare namespace stardust {
          * 
          * NOTE: Consider using viz.convert.toType instead for session based conversion
          * @param newType Which registered type to convert to.
-         * @param forceUpdate Whether to apply the change through setProperties/applyPatches or not, defaults to true.
+         * @param forceUpdate Whether to apply the change or not, else simply returns the resulting properties, defaults to true.
+         * @param forcePatch Whether to always patch the change instead of making a permanent change
          */
-        convertTo(newType: string, forceUpdate?: boolean): Promise<object>;
+        convertTo(newType: string, forceUpdate?: boolean, forcePatch?: boolean): Promise<object>;
 
         /**
          * Listens to custom events from inside the visualization. See useEmitter
@@ -425,16 +426,6 @@ declare namespace stardust {
         getImperativeHandle(): Promise<object>;
 
     }
-
-    /**
-     * Converts the visualization to a different registered type using a patch. Only persists in session
-     */
-    type Viz.convert.toType = (newType: string)=>Promise<object>;
-
-    /**
-     * Reverts any conversion done on the visualization
-     */
-    type Viz.convert.revert = ()=>Promise<object>;
 
     interface Flags {
         /**
@@ -518,16 +509,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -558,6 +539,16 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {
