@@ -109,11 +109,12 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       unmountCell = noopi;
     },
     /**
-     * Converts the visualization to a different registered type. Will update properties if permissions allow, else will patch.
+     * Converts the visualization to a different registered type.
+     *
+     * Will update properties if permissions allow, else will patch (can be forced with forcePatch parameter)
      *
      * Not all chart types are compatible, similar structures are required.
      *
-     * NOTE: Consider using viz.convert.toType instead for session based conversion
      * @since 1.1.0
      * @param {string} newType - Which registered type to convert to.
      * @param {boolean=} forceUpdate - Whether to apply the change or not, else simply returns the resulting properties, defaults to true.
