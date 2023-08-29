@@ -161,6 +161,9 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
         if (mountedReference) {
           throw new Error('Already mounted');
         }
+        if (!(element instanceof HTMLElement)) {
+          throw new Error('Provided element is not a proper HTMLElement');
+        }
         mountedReference = element;
         [unmountCell, cellRef] = glueCell({
           halo,
