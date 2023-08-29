@@ -689,7 +689,9 @@
           "type": "string"
         },
         "constraints": {
-          "description": "Deprecated",
+          "availability": {
+            "deprecated": true
+          },
           "optional": true,
           "type": "#/definitions/Constraints"
         },
@@ -1245,7 +1247,7 @@
           ]
         },
         "convertTo": {
-          "description": "Converts the visualization to a different registered type",
+          "description": "Converts the visualization to a different registered type. Will update properties if permissions allow, else will patch.\n\nNot all chart types are compatible, similar structures are required.\n\nNOTE: Consider using viz.convert.toType instead for session based conversion",
           "availability": {
             "since": "1.1.0"
           },
@@ -1258,7 +1260,13 @@
             },
             {
               "name": "forceUpdate",
-              "description": "Whether to run setProperties or not, defaults to true.",
+              "description": "Whether to apply the change or not, else simply returns the resulting properties, defaults to true.",
+              "optional": true,
+              "type": "boolean"
+            },
+            {
+              "name": "forcePatch",
+              "description": "Whether to always patch the change instead of making a permanent change",
               "optional": true,
               "type": "boolean"
             }
@@ -1272,8 +1280,14 @@
               }
             ]
           },
+          "throws": [
+            {
+              "description": "Throws an error if the source or target chart does not support conversion",
+              "type": "Error"
+            }
+          ],
           "examples": [
-            "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.convertTo('barChart');"
+            "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nawait viz.convertTo('barChart');\n// Change the barchart to a linechart, only in the current session\nconst newProperties = await viz.convertTo('lineChart', false, true);\n// Remove the conversion by clearing the patches\nawait viz.model.clearSoftPatches();"
           ]
         },
         "addListener": {

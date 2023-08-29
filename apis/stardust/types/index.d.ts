@@ -395,11 +395,16 @@ declare namespace stardust {
         destroy(): void;
 
         /**
-         * Converts the visualization to a different registered type
+         * Converts the visualization to a different registered type. Will update properties if permissions allow, else will patch.
+         * 
+         * Not all chart types are compatible, similar structures are required.
+         * 
+         * NOTE: Consider using viz.convert.toType instead for session based conversion
          * @param newType Which registered type to convert to.
-         * @param forceUpdate Whether to run setProperties or not, defaults to true.
+         * @param forceUpdate Whether to apply the change or not, else simply returns the resulting properties, defaults to true.
+         * @param forcePatch Whether to always patch the change instead of making a permanent change
          */
-        convertTo(newType: string, forceUpdate?: boolean): Promise<object>;
+        convertTo(newType: string, forceUpdate?: boolean, forcePatch?: boolean): Promise<object>;
 
         /**
          * Listens to custom events from inside the visualization. See useEmitter
