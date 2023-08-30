@@ -23,8 +23,7 @@ function getValue(object, path, fallback) {
 export default function createStyleService({ theme, layout }) {
   const getLayoutValue = (reference, fallback) => getValue(layout, reference, fallback);
 
-  const isEnabled = true;
-  const overrides = (key) => (isEnabled ? getLayoutValue('components', []).find((c) => c.key === key) : undefined);
+  const overrides = (key) => getLayoutValue('components', []).find((c) => c.key === key) || undefined;
 
   return {
     header: {
@@ -35,8 +34,8 @@ export default function createStyleService({ theme, layout }) {
     },
     content: {
       getStyle: () => ({
-        fontSize: overrides('listBox')?.content.fontSize ?? theme.content?.fontSize,
-        fontColor: overrides('listBox')?.content.fontColor?.color ?? theme.content?.color,
+        fontSize: overrides('listBox')?.content?.fontSize ?? theme.content?.fontSize,
+        fontColor: overrides('listBox')?.content?.fontColor?.color ?? theme.content?.color,
       }),
     },
   };

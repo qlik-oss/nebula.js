@@ -10,8 +10,7 @@ export default function useListSizes({ layout, width, height, listCount, count, 
   const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense, dataLayout } = layoutOptions;
 
   const styleService = createStyleService({ theme, layout });
-  const { fontSize = '12px', fontFamily = 'Source sans pro' } =
-    styleService?.content.getStyle() || theme.listBox?.content || {};
+  const { fontSize = '12px', fontFamily = 'Source sans pro' } = styleService?.content?.getStyle() || {};
   const font = `${fontSize} ${fontFamily}`; // font format as supported by HTML canvas
   const textWidth = useTextWidth({ text: getMeasureText(layout), font });
   const freqMinWidth = useTextWidth({ text: getMeasureText(5), font });

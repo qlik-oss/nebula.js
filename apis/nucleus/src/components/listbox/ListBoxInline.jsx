@@ -61,6 +61,15 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
   })
 );
 
+const Title = styled(Typography)(({ theme, layout }) => {
+  const styleService = createStyleService({ theme, layout });
+  return {
+    color: styleService?.header?.getStyle().fontColor,
+    fontSize: styleService?.header?.getStyle().fontSize,
+    fontFamily: theme.listBox?.title?.main?.fontFamily,
+    fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
+  };
+});
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
 function ListBoxInline({ options, layout }) {
@@ -320,16 +329,6 @@ function ListBoxInline({ options, layout }) {
     renderedCallback?.();
   }
 
-  const Title = styled(Typography)(() => {
-    const styleService = createStyleService({ theme, layout });
-    return {
-      color: styleService?.header?.getStyle().fontColor || theme.listBox?.title?.main?.color,
-      fontSize: styleService?.header?.getStyle().fontSize || theme.listBox?.title?.main?.fontSize,
-      fontFamily: theme.listBox?.title?.main?.fontFamily,
-      fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
-    };
-  });
-
   return (
     <>
       {showDetachedToolbarOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
@@ -382,7 +381,7 @@ function ListBoxInline({ options, layout }) {
               className={classes.listBoxHeader}
             >
               {showTitle && (
-                <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
+                <Title variant="h6" noWrap ref={titleRef} title={layout.title} layout={layout}>
                   {layout.title}
                 </Title>
               )}
