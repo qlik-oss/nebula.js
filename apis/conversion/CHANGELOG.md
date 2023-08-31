@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.4.0...v4.5.0-alpha.0) (2023-08-31)
+
+### Features
+
+- object conversion for readonly charts ([#1335](https://github.com/qlik-oss/nebula.js/issues/1335)) ([9efd858](https://github.com/qlik-oss/nebula.js/commit/9efd858048e3aaf44a2349c220d6f2eae99254a6))
+- object conversion for readonly charts ([#1335](https://github.com/qlik-oss/nebula.js/issues/1335)) ([#1346](https://github.com/qlik-oss/nebula.js/issues/1346)) ([18288d2](https://github.com/qlik-oss/nebula.js/commit/18288d263db15804bdd07b1f2be0efd7db4bbb01))
+
+### Reverts
+
+- Revert "feat: object conversion for readonly charts (#1335)" (#1345) ([5337524](https://github.com/qlik-oss/nebula.js/commit/53375242b11dae5793f7df4ccc6c7a3a64094ada)), closes [#1335](https://github.com/qlik-oss/nebula.js/issues/1335) [#1345](https://github.com/qlik-oss/nebula.js/issues/1345)
+
 # [4.4.0](https://github.com/qlik-oss/nebula.js/compare/v4.3.0...v4.4.0) (2023-08-14)
 
 **Note:** Version bump only for package @nebula.js/conversion

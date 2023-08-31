@@ -395,11 +395,11 @@ declare namespace stardust {
         destroy(): void;
 
         /**
-         * Converts the visualization to a different registered type. Will update properties if permissions allow, else will patch.
+         * Converts the visualization to a different registered type.
+         * 
+         * Will update properties if permissions allow, else will patch (can be forced with forcePatch parameter)
          * 
          * Not all chart types are compatible, similar structures are required.
-         * 
-         * NOTE: Consider using viz.convert.toType instead for session based conversion
          * @param newType Which registered type to convert to.
          * @param forceUpdate Whether to apply the change or not, else simply returns the resulting properties, defaults to true.
          * @param forcePatch Whether to always patch the change instead of making a permanent change
@@ -509,6 +509,16 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -539,16 +549,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {

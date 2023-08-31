@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.4.0...v4.5.0-alpha.0) (2023-08-31)
+
+### Bug Fixes
+
+- unresolving promises for missing types ([#1340](https://github.com/qlik-oss/nebula.js/issues/1340)) ([de38cbe](https://github.com/qlik-oss/nebula.js/commit/de38cbedf69fd13340834a902da17efc23c055f9))
+
 # [4.4.0](https://github.com/qlik-oss/nebula.js/compare/v4.3.0...v4.4.0) (2023-08-14)
 
 ### Bug Fixes

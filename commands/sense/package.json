@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-sense",
-  "version": "4.4.0",
+  "version": "4.5.0-alpha.0",
   "description": "Build a supernova as a Qlik Sense extension",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -30,7 +30,7 @@
     "@babel/cli": "7.22.10",
     "@babel/core": "7.22.11",
     "@babel/preset-env": "7.22.10",
-    "@nebula.js/stardust": "^4.4.0",
+    "@nebula.js/stardust": "^4.5.0-alpha.0",
     "@rollup/plugin-babel": "6.0.3",
     "@rollup/plugin-commonjs": "25.0.4",
     "@rollup/plugin-node-resolve": "15.2.1",
