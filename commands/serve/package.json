@@ -51,10 +51,10 @@
   },
   "devDependencies": {
     "@babel/core": "7.22.11",
-    "@babel/preset-env": "7.22.10",
+    "@babel/preset-env": "7.22.14",
     "@babel/preset-react": "7.22.5",
-    "@mui/material": "^5.14.6",
-    "@mui/system": "^5.14.6",
+    "@mui/material": "^5.14.7",
+    "@mui/system": "^5.14.7",
     "@nebula.js/enigma-mocker": "^4.5.0-alpha.0",
     "@nebula.js/nucleus": "^4.5.0-alpha.0",
     "@nebula.js/snapshooter": "^4.5.0-alpha.0",
