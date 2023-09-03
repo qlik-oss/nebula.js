@@ -8,14 +8,14 @@ export default function createStyleService({ theme, layout }) {
   return {
     header: {
       getStyle: () => ({
-        fontSize: overrides('listBox')?.header?.fontSize ?? theme.title?.main?.fontSize,
-        fontColor: overrides('listBox')?.header?.fontColor?.color ?? theme.title?.main?.color,
+        fontSize: overrides('listBox')?.header?.fontSize ?? theme?.listBox?.title?.main?.fontSize,
+        fontColor: overrides('listBox')?.header?.fontColor?.color ?? theme?.listBox?.title?.main?.color,
       }),
     },
     content: {
       getStyle: () => ({
-        fontSize: overrides('listBox')?.content?.fontSize ?? theme.content?.fontSize,
-        fontColor: overrides('listBox')?.content?.fontColor?.color ?? theme.content?.color,
+        fontSize: overrides('listBox')?.content?.fontSize ?? theme?.listBox?.content?.fontSize,
+        fontColor: overrides('listBox')?.content?.fontColor?.color ?? theme?.listBox?.content?.color,
       }),
     },
   };
