@@ -2,6 +2,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
+import createStyleService from '../../../hooks/use-style';
 
 const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) => {
   if (frequencyMode === 'P') {
@@ -22,17 +23,21 @@ const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode }) => {
   return sizes.freqMaxWidth;
 };
 
-const getSelectedStyle = ({ theme }) => ({
-  background: theme.palette.selected.main,
-  color: theme.palette.selected.mainContrastText,
-  '&:focus': {
-    boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
-    outline: 'none',
-  },
-  '& $cell': {
-    paddingRight: 0,
-  },
-});
+const getSelectedStyle = ({ theme, layout, selectedState }) => {
+  const styleService = createStyleService({ theme, layout });
+  const selectedStyle = styleService?.palette?.getStyle()?.[selectedState];
+  return {
+    background: selectedStyle,
+    color: theme.palette.selected.mainContrastText,
+    '&:focus': {
+      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
+      outline: 'none',
+    },
+    '& $cell': {
+      paddingRight: 0,
+    },
+  };
+};
 
 const ellipsis = {
   width: '100%',
@@ -54,6 +59,7 @@ const RowColRoot = styled('div', {
       'sizes',
       'frequencyMode',
       'freqHitsValue',
+      'layout',
     ].includes(prop),
 })(
   ({
@@ -67,6 +73,7 @@ const RowColRoot = styled('div', {
     frequencyMode,
     freqHitsValue,
     contentFontStyle,
+    layout,
   }) => ({
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
@@ -163,27 +170,26 @@ const RowColRoot = styled('div', {
       maxWidth: iconWidth,
     },
 
-    // Selection styles (S=Selected, XS=ExcludedSelected, A=Available, X=Excluded).
+    // Selection styles (S=Selected, XS=ExcludedSelected, A=Alternative, X=Excluded).
     [`& .${classes.S}`]: {
-      ...getSelectedStyle({ theme }),
+      ...getSelectedStyle({ theme, layout, selectedState: 'selected' }),
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.XS}`]: {
-      ...getSelectedStyle({ theme }),
-      background: theme.palette.selected.excluded,
+      ...getSelectedStyle({ theme, layout, selectedState: 'excluded' }),
       color: theme.palette.selected.excludedContrastText,
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.A}`]: {
-      background: theme.palette.selected.alternative,
+      ...getSelectedStyle({ theme, layout, selectedState: 'alternative' }),
       color: theme.palette.selected.alternativeContrastText,
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.X}`]: {
-      background: theme.palette.selected.excluded,
+      ...getSelectedStyle({ theme, layout, selectedState: 'excluded' }),
       color: theme.palette.selected.excludedContrastText,
       border: isGridMode ? 'none' : undefined,
     },

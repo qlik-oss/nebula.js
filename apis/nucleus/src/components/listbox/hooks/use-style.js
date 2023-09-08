@@ -18,5 +18,12 @@ export default function createStyleService({ theme, layout }) {
         fontColor: overrides('listBox')?.content?.fontColor?.color ?? theme?.listBox?.content?.color,
       }),
     },
+    palette: {
+      getStyle: () => ({
+        selected: overrides('listBox')?.palette?.selected?.color ?? theme?.palette?.selected?.main,
+        alternative: overrides('listBox')?.palette?.alternative?.color ?? theme?.palette?.selected?.alternative,
+        excluded: overrides('listBox')?.palette?.excluded?.color ?? theme?.palette?.selected?.excluded,
+      }),
+    },
   };
 }

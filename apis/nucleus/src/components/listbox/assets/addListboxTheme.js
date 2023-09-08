@@ -16,6 +16,11 @@ const addListboxTheme = (themeApi) => {
       fontSize: getListboxStyle('content', 'fontSize'),
       fontFamily: getListboxStyle('content', 'fontFamily'),
     },
+    palette: {
+      selected: getListboxStyle('selected.main', 'color'),
+      alternative: getListboxStyle('selected.alternative', 'color'),
+      excluded: getListboxStyle('selected.excluded', 'color'),
+    },
   };
 };
 

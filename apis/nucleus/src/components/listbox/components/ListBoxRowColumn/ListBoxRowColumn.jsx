@@ -55,6 +55,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     showSearch,
     isModal,
     contentFontStyle,
+    layout,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -202,6 +203,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       frequencyMode={deducedFrequencyMode}
       freqHitsValue={freqHitsValue}
       contentFontStyle={contentFontStyle}
+      layout={layout}
       data-testid="listbox.item"
     >
       <ItemGrid
