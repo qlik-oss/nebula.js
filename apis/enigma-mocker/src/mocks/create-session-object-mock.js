@@ -32,6 +32,7 @@ function CreateSessionObjectMock() {
       getLayout: () => Promise.resolve(layout),
       getProperties: () => Promise.resolve(properties),
       getEffectiveProperties: () => Promise.resolve(properties),
+      removeListener: () => {},
       id: properties.qInfo.qId,
       ...properties,
     });

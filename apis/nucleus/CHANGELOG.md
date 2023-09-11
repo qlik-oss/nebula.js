@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.4.0...v4.5.0-alpha.0) (2023-08-31)
+
+### Bug Fixes
+
+- unresolving promises for missing types ([#1340](https://github.com/qlik-oss/nebula.js/issues/1340)) ([de38cbe](https://github.com/qlik-oss/nebula.js/commit/de38cbedf69fd13340834a902da17efc23c055f9))
+
+### Features
+
+- object conversion for readonly charts ([#1335](https://github.com/qlik-oss/nebula.js/issues/1335)) ([9efd858](https://github.com/qlik-oss/nebula.js/commit/9efd858048e3aaf44a2349c220d6f2eae99254a6))
+- object conversion for readonly charts ([#1335](https://github.com/qlik-oss/nebula.js/issues/1335)) ([#1346](https://github.com/qlik-oss/nebula.js/issues/1346)) ([18288d2](https://github.com/qlik-oss/nebula.js/commit/18288d263db15804bdd07b1f2be0efd7db4bbb01))
+
+### Reverts
+
+- Revert "feat: object conversion for readonly charts (#1335)" (#1345) ([5337524](https://github.com/qlik-oss/nebula.js/commit/53375242b11dae5793f7df4ccc6c7a3a64094ada)), closes [#1335](https://github.com/qlik-oss/nebula.js/issues/1335) [#1345](https://github.com/qlik-oss/nebula.js/issues/1345)
+
+# [4.4.0](https://github.com/qlik-oss/nebula.js/compare/v4.3.0...v4.4.0) (2023-08-14)
+
+### Bug Fixes
+
+- aria-label on Listbox search input ([#1292](https://github.com/qlik-oss/nebula.js/issues/1292)) ([da177d2](https://github.com/qlik-oss/nebula.js/commit/da177d215f7073ca666c83ae8c374b826c35315a))
+- move listbox screenreader instruction to aria-label ([#1291](https://github.com/qlik-oss/nebula.js/issues/1291)) ([2e37f57](https://github.com/qlik-oss/nebula.js/commit/2e37f5718b37b24a9f177876d11ef985c7445025))
+- race condition for mocked charts ([#1329](https://github.com/qlik-oss/nebula.js/issues/1329)) ([6780ba5](https://github.com/qlik-oss/nebula.js/commit/6780ba5c35f2f58d06c2c753068724903ef8bef4))
+
+### Features
+
+- implement auto confirm ([#1328](https://github.com/qlik-oss/nebula.js/issues/1328)) ([eb1e17c](https://github.com/qlik-oss/nebula.js/commit/eb1e17c3bb44c937126ae7310d1c56e05031a392))
+
 # [4.3.0](https://github.com/qlik-oss/nebula.js/compare/v4.2.4...v4.3.0) (2023-08-03)
 
 ### Bug Fixes

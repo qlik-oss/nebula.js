@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-sense",
-  "version": "4.3.0",
+  "version": "4.5.0-alpha.0",
   "description": "Build a supernova as a Qlik Sense extension",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -27,19 +27,19 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "7.22.9",
-    "@babel/core": "7.22.9",
-    "@babel/preset-env": "7.22.9",
-    "@nebula.js/stardust": "^4.3.0",
+    "@babel/cli": "7.22.15",
+    "@babel/core": "7.22.17",
+    "@babel/preset-env": "7.22.15",
+    "@nebula.js/stardust": "^4.5.0-alpha.0",
     "@rollup/plugin-babel": "6.0.3",
-    "@rollup/plugin-commonjs": "25.0.3",
-    "@rollup/plugin-node-resolve": "15.1.0",
+    "@rollup/plugin-commonjs": "25.0.4",
+    "@rollup/plugin-node-resolve": "15.2.1",
     "@rollup/plugin-replace": "5.0.2",
     "@rollup/plugin-terser": "0.4.3",
     "extend": "3.0.2",
     "fs-extra": "11.1.1",
     "node-event-emitter": "0.0.1",
-    "rollup": "3.27.2",
+    "rollup": "3.29.1",
     "yargs": "17.7.2"
   }
 }

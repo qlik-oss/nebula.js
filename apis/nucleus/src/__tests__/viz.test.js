@@ -23,6 +23,8 @@ describe('viz', () => {
   let getImperativeHandle;
   let convertToMock;
 
+  let mockElement;
+
   beforeAll(() => {
     unmountMock = jest.fn();
     setSnOptions = jest.fn();
@@ -55,6 +57,7 @@ describe('viz', () => {
 
     model = {
       getEffectiveProperties: jest.fn().mockReturnValue('old'),
+      getLayout: jest.fn().mockReturnValue({ qMeta: { privileges: ['update'] } }),
       applyPatches: jest.fn(),
       on: jest.fn(),
       once: jest.fn(),
@@ -66,6 +69,8 @@ describe('viz', () => {
       model,
       halo: { public: {} },
     });
+
+    mockElement = document.createElement('div');
   });
   afterAll(() => {
     jest.resetAllMocks();
@@ -96,27 +101,25 @@ describe('viz', () => {
   });
 
   describe('mounting', () => {
+    test('show throw for invalid elements', () => {
+      const t = () => {
+        api.__DO_NOT_USE__.mount('just a string');
+      };
+      expect(t).toThrow('Provided element is not a proper HTMLElement');
+    });
+
     test('should mount', async () => {
-      mounted = api.__DO_NOT_USE__.mount('element');
+      mounted = api.__DO_NOT_USE__.mount(mockElement);
       const { onMount } = glue.mock.lastCall[0];
       onMount();
       await mounted;
       expect(glue).toHaveBeenCalledTimes(1);
     });
     test('should throw if already mounted', async () => {
-      try {
-        mounted = api.__DO_NOT_USE__.mount('element');
-        /*
-        // This code never runs, as these tests are meant to run together, don't want to mess more with it
-        const { onMount } = glue.mock.lastCall[0];
-        onMount();
-        await mounted;
-        const result = await api.__DO_NOT_USE__.mount.bind('element2');
-        await result();
-        */
-      } catch (error) {
-        expect(error.message).toBe('Already mounted');
-      }
+      const t = () => {
+        mounted = api.__DO_NOT_USE__.mount(mockElement);
+      };
+      expect(t).toThrow('Already mounted');
     });
   });
 

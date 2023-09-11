@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "4.3.0",
+    "version": "4.5.0-alpha.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -689,7 +689,9 @@
           "type": "string"
         },
         "constraints": {
-          "description": "Deprecated",
+          "availability": {
+            "deprecated": true
+          },
           "optional": true,
           "type": "#/definitions/Constraints"
         },
@@ -1245,7 +1247,7 @@
           ]
         },
         "convertTo": {
-          "description": "Converts the visualization to a different registered type",
+          "description": "Converts the visualization to a different registered type.\n\nWill update properties if permissions allow, else will patch (can be forced with forcePatch parameter)\n\nNot all chart types are compatible, similar structures are required.",
           "availability": {
             "since": "1.1.0"
           },
@@ -1258,7 +1260,13 @@
             },
             {
               "name": "forceUpdate",
-              "description": "Whether to run setProperties or not, defaults to true.",
+              "description": "Whether to apply the change or not, else simply returns the resulting properties, defaults to true.",
+              "optional": true,
+              "type": "boolean"
+            },
+            {
+              "name": "forcePatch",
+              "description": "Whether to always patch the change instead of making a permanent change",
               "optional": true,
               "type": "boolean"
             }
@@ -1272,8 +1280,14 @@
               }
             ]
           },
+          "throws": [
+            {
+              "description": "Throws an error if the source or target chart does not support conversion",
+              "type": "Error"
+            }
+          ],
           "examples": [
-            "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nviz.convertTo('barChart');"
+            "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nawait viz.convertTo('barChart');\n// Change the barchart to a linechart, only in the current session\nconst newProperties = await viz.convertTo('lineChart', false, true);\n// Remove the conversion by clearing the patches\nawait viz.model.clearSoftPatches();"
           ]
         },
         "addListener": {
@@ -1588,6 +1602,33 @@
         }
       }
     },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
     "Field": {
       "kind": "alias",
       "items": {
@@ -1722,33 +1763,6 @@
           ]
         }
       }
-    },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
     },
     "LoadType": {
       "kind": "interface",

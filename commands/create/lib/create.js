@@ -97,7 +97,7 @@ const create = async (argv) => {
 
   const write = async () => {
     console.log('\n');
-    console.log('> Generating files...');
+    console.log('> Begin generating files...');
     const { picasso } = options;
     fse.ensureDirSync(destination);
 
