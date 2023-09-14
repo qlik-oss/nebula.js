@@ -79,7 +79,7 @@ function ActionsToolbar({
   focusHandler = null,
   actionsRefMock = null, // for testing
   direction = 'ltr',
-  autoConfirm,
+  autoConfirm = false,
 }) {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
 
@@ -130,15 +130,6 @@ function ActionsToolbar({
     focusHandler.on('focus_toolbar_last', focusLast);
   }, []);
 
-  if (autoConfirm) {
-    const canConfirm = selections.show;
-    if (canConfirm) {
-      const confirm = defaultSelectionActions.find((o) => o.key === 'confirm') || { action: () => {} };
-      confirm.action();
-    }
-    return null;
-  }
-
   let moreEnabled = more.enabled;
   let moreActions = more.actions;
   const moreAlignTo = more.alignTo || moreRef;
@@ -180,6 +171,7 @@ function ActionsToolbar({
       id="actions-toolbar"
       data-testid="actions-toolbar"
       sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
+      display={autoConfirm ? 'none' : undefined}
     >
       {showActions && <ActionsGroup actions={newActions} />}
       {showMore && (
@@ -215,6 +207,7 @@ function ActionsToolbar({
 
   return popover.show ? (
     <StyledPopover
+      display={autoConfirm ? 'none' : undefined}
       disableEnforceFocus
       disableAutoFocus
       disableRestoreFocus

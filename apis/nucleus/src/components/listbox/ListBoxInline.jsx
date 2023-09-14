@@ -278,8 +278,8 @@ function ListBoxInline({ options, layout }) {
     }
   };
 
-  const getActionToolbarProps = (isDetached) =>
-    getListboxActionProps({
+  const getActionToolbarProps = (isDetached) => ({
+    ...getListboxActionProps({
       isDetached: isPopover ? false : isDetached,
       showToolbar,
       containerRef,
@@ -287,8 +287,9 @@ function ListBoxInline({ options, layout }) {
       listboxSelectionToolbarItems,
       selections,
       keyboard,
-      autoConfirm,
-    });
+    }),
+    autoConfirm,
+  });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
 
