@@ -19,7 +19,14 @@ import useAppSelections from '../../hooks/useAppSelections';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-get-action-props';
 import createSelectionState from './hooks/selections/selectionState';
-import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH, HEADER_PADDING_RIGHT } from './constants';
+import {
+  CELL_PADDING_LEFT,
+  ICON_WIDTH,
+  ICON_PADDING,
+  BUTTON_ICON_WIDTH,
+  HEADER_PADDING_RIGHT,
+  DENSE_ROW_HEIGHT,
+} from './constants';
 import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
 import useRect from '../../hooks/useRect';
@@ -394,7 +401,7 @@ function ListBoxInline({ options, layout }) {
           item
           container
           direction="column"
-          style={{ height: '100%', minHeight: '50px' }}
+          style={{ height: '100%', minHeight: DENSE_ROW_HEIGHT }}
           role="region"
           aria-label={translator.get('Listbox.ResultFilterLabel')}
         >
