@@ -130,6 +130,10 @@ function ActionsToolbar({
     focusHandler.on('focus_toolbar_last', focusLast);
   }, []);
 
+  if (autoConfirm) {
+    return undefined;
+  }
+
   let moreEnabled = more.enabled;
   let moreActions = more.actions;
   const moreAlignTo = more.alignTo || moreRef;
@@ -171,7 +175,6 @@ function ActionsToolbar({
       id="actions-toolbar"
       data-testid="actions-toolbar"
       sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
-      display={autoConfirm ? 'none' : undefined}
     >
       {showActions && <ActionsGroup actions={newActions} />}
       {showMore && (
@@ -207,7 +210,6 @@ function ActionsToolbar({
 
   return popover.show ? (
     <StyledPopover
-      display={autoConfirm ? 'none' : undefined}
       disableEnforceFocus
       disableAutoFocus
       disableRestoreFocus
@@ -217,13 +219,15 @@ function ActionsToolbar({
       transformOrigin={popoverTransformOrigin}
       hideBackdrop
       style={popoverStyle}
-      PaperProps={{
-        id: 'njs-action-toolbar-popover',
-        'data-testid': 'njs-action-toolbar-popover',
-        className: ActionToolbarElement.className,
-        style: {
-          pointerEvents: 'auto',
-          padding: theme.spacing(0.5, 0.25),
+      slotProps={{
+        Paper: {
+          id: 'njs-action-toolbar-popover',
+          'data-testid': 'njs-action-toolbar-popover',
+          className: ActionToolbarElement.className,
+          style: {
+            pointerEvents: 'auto',
+            padding: theme.spacing(0.5, 0.25),
+          },
         },
       }}
     >
