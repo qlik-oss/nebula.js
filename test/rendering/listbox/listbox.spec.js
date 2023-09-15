@@ -12,7 +12,7 @@ const paths = path.join(__dirname, '__fixtures__');
 test.describe('listbox mashup rendering test', () => {
   const object = '[data-type="listbox"]';
   const listboxSelector = `${object} .listbox-container`;
-  const toolbarPopoverSelector = '[data-testid="actions-toolbar"]';
+  const toolbarPopoverSelector = '[data-testid="njs-action-toolbar-popover"]';
   let page;
 
   let destroyServer;
