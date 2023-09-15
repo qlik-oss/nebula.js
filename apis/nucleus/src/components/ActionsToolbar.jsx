@@ -220,7 +220,7 @@ function ActionsToolbar({
       hideBackdrop
       style={popoverStyle}
       slotProps={{
-        Paper: {
+        paper: {
           id: 'njs-action-toolbar-popover',
           'data-testid': 'njs-action-toolbar-popover',
           className: ActionToolbarElement.className,
