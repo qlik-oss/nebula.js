@@ -53,6 +53,6 @@ Theme to use when rendering visualization.
 
 Specify an array of available themes in the instance config. Provide the `id` of theme to use as the parameter value.
 
-### `langauge`
+### `language`
 
 Language to use when rendering visualization.

@@ -1,4 +1,5 @@
 import { test, expect } from '@playwright/test';
+import { act } from '@testing-library/react';
 import fs from 'fs';
 import path from 'path';
 
@@ -11,7 +12,7 @@ const paths = path.join(__dirname, '__fixtures__');
 test.describe('listbox mashup rendering test', () => {
   const object = '[data-type="listbox"]';
   const listboxSelector = `${object} .listbox-container`;
-  const toolbarPopoverSelector = '.njs-action-toolbar-popover';
+  const toolbarPopoverSelector = '[data-testid="actions-toolbar"]';
   let page;
 
   let destroyServer;
@@ -89,7 +90,10 @@ test.describe('listbox mashup rendering test', () => {
     await page.goto(`${url}/listbox/listbox.html?scenario=longTitle`, { waitUntil: 'networkidle' });
     const selector = await page.waitForSelector(listboxSelector, { visible: true });
 
-    await page.click(listboxSelector);
+    act(async () => {
+      await page.click(listboxSelector);
+    });
+
     await page.waitForSelector(toolbarPopoverSelector);
     // Wait for animation
     await new Promise((resolve) => {
