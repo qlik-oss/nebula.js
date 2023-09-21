@@ -1,3 +1,6 @@
+[![Maintainability](https://api.codeclimate.com/v1/badges/3ee2aa375c558cf8fcec/maintainability)](https://codeclimate.com/github/qlik-oss/nebula.js/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/3ee2aa375c558cf8fcec/test_coverage)](https://codeclimate.com/github/qlik-oss/nebula.js/test_coverage)
+
 <p align="center">
   <img width="500" src="./docs/assets/logos/nebula.png" alt="nebula.js logo" />
 </p>
