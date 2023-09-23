@@ -46,7 +46,7 @@
     "@babel/preset-react": "7.22.15",
     "@commitlint/cli": "17.7.1",
     "@commitlint/config-conventional": "17.7.0",
-    "@playwright/test": "1.38.0",
+    "@playwright/test": "1.38.1",
     "@rollup/plugin-babel": "6.0.3",
     "@rollup/plugin-commonjs": "25.0.4",
     "@rollup/plugin-json": "6.0.0",
@@ -62,7 +62,7 @@
     "cross-env": "7.0.3",
     "css-loader": "6.8.1",
     "enigma.js": "2.12.0",
-    "eslint": "8.49.0",
+    "eslint": "8.50.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "9.0.0",
     "eslint-plugin-import": "2.28.1",
@@ -94,11 +94,11 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
-    "**/caniuse-lite": "1.0.30001534",
+    "**/caniuse-lite": "1.0.30001538",
     "**/react": "18.2.0",
     "**/react-dom": "18.2.0",
     "**/react-is": "18.2.0",
-    "@playwright/test": "1.38.0"
+    "@playwright/test": "1.38.1"
   },
   "workspaces": [
     "generated/*",
