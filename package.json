@@ -86,7 +86,7 @@
     "prettier": "3.0.3",
     "puppeteer": "19.11.1",
     "qix-faker": "0.3.0",
-    "rollup": "3.29.2",
+    "rollup": "3.29.3",
     "rollup-plugin-dependency-flow": "0.3.0",
     "rollup-plugin-sass": "1.12.20",
     "style-loader": "3.3.3",
