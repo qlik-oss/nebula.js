@@ -46,15 +46,15 @@
     "webpack": "5.88.2",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.15.1",
-    "ws": "8.14.1",
+    "ws": "8.14.2",
     "yargs": "17.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.22.17",
-    "@babel/preset-env": "7.22.15",
+    "@babel/core": "7.22.20",
+    "@babel/preset-env": "7.22.20",
     "@babel/preset-react": "7.22.15",
-    "@mui/material": "^5.14.8",
-    "@mui/system": "^5.14.8",
+    "@mui/material": "^5.14.10",
+    "@mui/system": "^5.14.10",
     "@nebula.js/enigma-mocker": "^4.5.0-alpha.0",
     "@nebula.js/nucleus": "^4.5.0-alpha.0",
     "@nebula.js/snapshooter": "^4.5.0-alpha.0",
@@ -67,10 +67,10 @@
     "eslint-import-resolver-alias": "1.1.2",
     "eslint-import-resolver-webpack": "0.13.7",
     "file-loader": "^6.2.0",
-    "monaco-editor": "0.41.0",
+    "monaco-editor": "0.43.0",
     "monaco-editor-webpack-plugin": "7.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "6.15.0"
+    "react-router-dom": "6.16.0"
   }
 }
