@@ -26,6 +26,7 @@ import {
   BUTTON_ICON_WIDTH,
   HEADER_PADDING_RIGHT,
   DENSE_ROW_HEIGHT,
+  SCROLL_BAR_WIDTH,
 } from './constants';
 import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
@@ -401,7 +402,7 @@ function ListBoxInline({ options, layout }) {
           item
           container
           direction="column"
-          style={{ height: '100%', minHeight: DENSE_ROW_HEIGHT }}
+          style={{ height: '100%', minHeight: DENSE_ROW_HEIGHT + SCROLL_BAR_WIDTH }}
           role="region"
           aria-label={translator.get('Listbox.ResultFilterLabel')}
         >
