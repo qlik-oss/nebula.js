@@ -266,10 +266,6 @@ function ListBoxInline({ options, layout }) {
   const showSearchToggle = search === 'toggle' && showSearch;
   const searchVisible = (search === true || showSearchToggle) && !selectDisabled() && searchEnabled !== false;
   const dense = layoutOptions.dense ?? false;
-  const searchHeight = dense ? 27 : 40;
-  const extraheight = dense ? 39 : 49;
-  const searchAddHeight = searchVisible ? searchHeight : 0;
-  const minHeight = showToolbarWithTitle ? 49 + searchAddHeight + extraheight : 0;
   const headerHeight = 32;
 
   const onShowSearch = () => {
@@ -345,7 +341,7 @@ function ListBoxInline({ options, layout }) {
         direction="column"
         gap={0}
         containerPadding={containerPadding}
-        style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
+        style={{ height: '100%', flexFlow: 'column nowrap' }}
         onKeyDown={handleKeyDown}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
