@@ -79,7 +79,7 @@ function ActionsToolbar({
   focusHandler = null,
   actionsRefMock = null, // for testing
   direction = 'ltr',
-  autoConfirm,
+  autoConfirm = false,
 }) {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
 
@@ -131,12 +131,7 @@ function ActionsToolbar({
   }, []);
 
   if (autoConfirm) {
-    const canConfirm = selections.show;
-    if (canConfirm) {
-      const confirm = defaultSelectionActions.find((o) => o.key === 'confirm') || { action: () => {} };
-      confirm.action();
-    }
-    return null;
+    return undefined;
   }
 
   let moreEnabled = more.enabled;
@@ -224,13 +219,15 @@ function ActionsToolbar({
       transformOrigin={popoverTransformOrigin}
       hideBackdrop
       style={popoverStyle}
-      PaperProps={{
-        id: 'njs-action-toolbar-popover',
-        'data-testid': 'njs-action-toolbar-popover',
-        className: ActionToolbarElement.className,
-        style: {
-          pointerEvents: 'auto',
-          padding: theme.spacing(0.5, 0.25),
+      slotProps={{
+        paper: {
+          id: 'njs-action-toolbar-popover',
+          'data-testid': 'njs-action-toolbar-popover',
+          className: ActionToolbarElement.className,
+          style: {
+            pointerEvents: 'auto',
+            padding: theme.spacing(0.5, 0.25),
+          },
         },
       }}
     >

@@ -91,7 +91,7 @@ const listdef = {
    */
   wildCardSearch: false,
   /**
-   * Automatically confirm selections without showing the selections toolbar.
+   * Automatically confirm selections when clicking outside a listbox, without showing the selections toolbar.
    * @type {boolean=}
    * @default
    */

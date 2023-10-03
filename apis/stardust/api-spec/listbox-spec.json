@@ -13,7 +13,7 @@
     "ListboxProperties": {
       "entries": {
         "autoConfirm": {
-          "description": "Automatically confirm selections without showing the selections toolbar.",
+          "description": "Automatically confirm selections when clicking outside a listbox, without showing the selections toolbar.",
           "optional": true,
           "defaultValue": false,
           "type": "boolean"

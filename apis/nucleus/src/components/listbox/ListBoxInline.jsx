@@ -19,7 +19,15 @@ import useAppSelections from '../../hooks/useAppSelections';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-get-action-props';
 import createSelectionState from './hooks/selections/selectionState';
-import { CELL_PADDING_LEFT, ICON_WIDTH, ICON_PADDING, BUTTON_ICON_WIDTH, HEADER_PADDING_RIGHT } from './constants';
+import {
+  CELL_PADDING_LEFT,
+  ICON_WIDTH,
+  ICON_PADDING,
+  BUTTON_ICON_WIDTH,
+  HEADER_PADDING_RIGHT,
+  DENSE_ROW_HEIGHT,
+  SCROLL_BAR_WIDTH,
+} from './constants';
 import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
 import useRect from '../../hooks/useRect';
@@ -258,10 +266,6 @@ function ListBoxInline({ options, layout }) {
   const showSearchToggle = search === 'toggle' && showSearch;
   const searchVisible = (search === true || showSearchToggle) && !selectDisabled() && searchEnabled !== false;
   const dense = layoutOptions.dense ?? false;
-  const searchHeight = dense ? 27 : 40;
-  const extraheight = dense ? 39 : 49;
-  const searchAddHeight = searchVisible ? searchHeight : 0;
-  const minHeight = showToolbarWithTitle ? 49 + searchAddHeight + extraheight : 0;
   const headerHeight = 32;
 
   const onShowSearch = () => {
@@ -278,8 +282,8 @@ function ListBoxInline({ options, layout }) {
     }
   };
 
-  const getActionToolbarProps = (isDetached) =>
-    getListboxActionProps({
+  const getActionToolbarProps = (isDetached) => ({
+    ...getListboxActionProps({
       isDetached: isPopover ? false : isDetached,
       showToolbar,
       containerRef,
@@ -287,8 +291,9 @@ function ListBoxInline({ options, layout }) {
       listboxSelectionToolbarItems,
       selections,
       keyboard,
-      autoConfirm,
-    });
+    }),
+    autoConfirm,
+  });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
 
@@ -336,7 +341,7 @@ function ListBoxInline({ options, layout }) {
         direction="column"
         gap={0}
         containerPadding={containerPadding}
-        style={{ height: '100%', minHeight: `${minHeight}px`, flexFlow: 'column nowrap' }}
+        style={{ height: '100%', flexFlow: 'column nowrap' }}
         onKeyDown={handleKeyDown}
         onMouseEnter={handleOnMouseEnter}
         onMouseLeave={handleOnMouseLeave}
@@ -393,7 +398,7 @@ function ListBoxInline({ options, layout }) {
           item
           container
           direction="column"
-          style={{ height: '100%', minHeight: '50px' }}
+          style={{ height: '100%', minHeight: DENSE_ROW_HEIGHT + SCROLL_BAR_WIDTH }}
           role="region"
           aria-label={translator.get('Listbox.ResultFilterLabel')}
         >

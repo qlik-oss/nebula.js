@@ -6,10 +6,8 @@ export default function getListboxActionProps({
   listboxSelectionToolbarItems,
   selections,
   keyboard,
-  autoConfirm,
 }) {
   return {
-    autoConfirm,
     show: showToolbar && !isDetached,
     popover: {
       show: showToolbar && isDetached,
