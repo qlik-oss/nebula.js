@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/qlik-oss/nebula.js/compare/v4.5.0-alpha.0...v4.5.0) (2023-10-03)
+
+### Features
+
+- supress "use client" warnings in charts build with nebula build ([#1349](https://github.com/qlik-oss/nebula.js/issues/1349)) ([de00724](https://github.com/qlik-oss/nebula.js/commit/de007249e130abe01befeb81531738008e18ceb7))
+
 # [4.5.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.4.0...v4.5.0-alpha.0) (2023-08-31)
 
 **Note:** Version bump only for package @nebula.js/cli-create
