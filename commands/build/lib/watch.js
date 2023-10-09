@@ -67,10 +67,16 @@ const watch = async (argv) => {
 
   const watcher = rollup.watch({
     ...c.input,
-    onwarn({ loc, message }) {
+    onwarn({ loc, message, code }) {
       if (!hasWarnings) {
         clearScreen();
       }
+
+      // Supress "use client" warnings coming from MUI bundling
+      if (code === 'MODULE_LEVEL_DIRECTIVE' && message.includes(`"use client"`)) {
+        return;
+      }
+
       console.log(
         `${chalk.black.bgYellow(' WARN  ')} ${chalk.yellow(
           loc ? `${loc.file} (${loc.line}:${loc.column}) ${message}` : message
