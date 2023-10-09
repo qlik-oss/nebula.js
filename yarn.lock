@@ -3874,10 +3874,10 @@
   dependencies:
     "@rollup/pluginutils" "^5.0.1"
 
-"@rollup/plugin-node-resolve@15.2.2":
-  version "15.2.2"
-  resolved "https://registry.yarnpkg.com/@rollup/plugin-node-resolve/-/plugin-node-resolve-15.2.2.tgz#9ffa367a0a359f0dfc7703acfa8bd311ef9f6832"
-  integrity sha512-f64bU4OKqV0yihtxFemmuf0oj37pToCFMISCA+sJbbIAl5wcpbRO9XgWNWb1tDiWQJUcPxo6V0l59hcuZOQ3kw==
+"@rollup/plugin-node-resolve@15.2.3":
+  version "15.2.3"
+  resolved "https://registry.yarnpkg.com/@rollup/plugin-node-resolve/-/plugin-node-resolve-15.2.3.tgz#e5e0b059bd85ca57489492f295ce88c2d4b0daf9"
+  integrity sha512-j/lym8nf5E21LwBT4Df1VD6hRO2L2iwUeUmP7litikRsVp1H6NWx20NEp0Y7su+7XGc476GnXXc4kFeZNGmaSQ==
   dependencies:
     "@rollup/pluginutils" "^5.0.1"
     "@types/resolve" "1.20.2"
@@ -14341,10 +14341,10 @@ rollup-plugin-postcss@4.0.2:
     safe-identifier "^0.4.2"
     style-inject "^0.3.0"
 
-rollup-plugin-sass@1.12.20:
-  version "1.12.20"
-  resolved "https://registry.yarnpkg.com/rollup-plugin-sass/-/rollup-plugin-sass-1.12.20.tgz#69223b59fcd8712bb1c3f6c52c09183f982bd7bf"
-  integrity sha512-GL9B6PRkAXFmp1lKKenMBEZCvHP1jaOb7RNgpneQsQXpTk4my9AYYJt6w6f442MMcrGXXVGt7GUvhQMgFXJPqg==
+rollup-plugin-sass@1.12.21:
+  version "1.12.21"
+  resolved "https://registry.yarnpkg.com/rollup-plugin-sass/-/rollup-plugin-sass-1.12.21.tgz#0605bfafa37d5c07c6d9fb541d3c85b2a576b2cb"
+  integrity sha512-cvHQHwlQ5MJnzgXqm+xcN394UFZY9BvhW9f4T1ZhbRtq+o7crxAnxeM7M+wthcWGxDt+ItqTDlCrf+Qoa4UDsA==
   dependencies:
     "@rollup/pluginutils" "^3 || ^4 || ^5"
     resolve "^1.5.0"
