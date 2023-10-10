@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/stardust",
-  "version": "4.2.1",
+  "version": "4.5.0",
   "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -41,22 +41,22 @@
     "version": "yarn run spec && yarn run ts && git add ./api-spec/spec.json ./api-spec/listbox-spec.json ./types/index.d.ts"
   },
   "dependencies": {
-    "@types/qlik-engineapi": "12.67.13"
+    "@types/qlik-engineapi": "12.67.14"
   },
   "devDependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.13.5",
-    "@nebula.js/conversion": "^4.2.1",
-    "@nebula.js/enigma-mocker": "^4.2.1",
-    "@nebula.js/locale": "^4.2.1",
-    "@nebula.js/nucleus": "^4.2.1",
-    "@nebula.js/supernova": "^4.2.1",
-    "@nebula.js/theme": "^4.2.1",
-    "@nebula.js/ui": "^4.2.1",
-    "@scriptappy/cli": "0.8.0",
-    "@scriptappy/from-jsdoc": "0.17.0",
+    "@mui/icons-material": "^5.14.12",
+    "@mui/material": "^5.14.12",
+    "@nebula.js/conversion": "^4.5.0",
+    "@nebula.js/enigma-mocker": "^4.5.0",
+    "@nebula.js/locale": "^4.5.0",
+    "@nebula.js/nucleus": "^4.5.0",
+    "@nebula.js/supernova": "^4.5.0",
+    "@nebula.js/theme": "^4.5.0",
+    "@nebula.js/ui": "^4.5.0",
+    "@scriptappy/cli": "0.10.0",
+    "@scriptappy/from-jsdoc": "0.19.0",
     "@scriptappy/to-dts": "1.0.0-beta.4",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1",
@@ -66,7 +66,7 @@
     "react-virtualized-auto-sizer": "1.0.20",
     "react-window": "1.8.9",
     "react-window-infinite-loader": "1.0.9",
-    "regenerator-runtime": "0.13.11",
-    "semver": "6.3.0"
+    "regenerator-runtime": "0.14.0",
+    "semver": "7.5.4"
   }
 }

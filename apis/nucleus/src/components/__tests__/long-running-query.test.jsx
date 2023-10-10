@@ -43,15 +43,15 @@ describe('<LongRunningQuery />', () => {
   test('should render', async () => {
     await render();
     const types = renderer.root.findAllByType(Grid);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
   });
   test('should handle cancel', async () => {
     const canCancel = true;
     await render(canCancel);
     const types = renderer.root.findAllByType(Cancel);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
     const p = renderer.root.findAllByType(Progress);
-    expect(p.length).toBe(1);
+    expect(p).toHaveLength(1);
     const cancelBtn = renderer.root.findByType(Button);
 
     cancelBtn.props.onClick();
@@ -61,9 +61,9 @@ describe('<LongRunningQuery />', () => {
     const canRetry = true;
     await render(undefined, canRetry);
     const types = renderer.root.findAllByType(Retry);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
     const p = renderer.root.findAllByType(Progress);
-    expect(p.length).toBe(0);
+    expect(p).toHaveLength(0);
     const retryBtn = renderer.root.findByType(Button);
     retryBtn.props.onClick();
     expect(api.retry).toHaveBeenCalledTimes(1);

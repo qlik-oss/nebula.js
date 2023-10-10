@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/qlik-oss/nebula.js/compare/v4.5.0-alpha.0...v4.5.0) (2023-10-03)
+
+**Note:** Version bump only for package @nebula.js/locale
+
+# [4.5.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.4.0...v4.5.0-alpha.0) (2023-08-31)
+
+**Note:** Version bump only for package @nebula.js/locale
+
+# [4.4.0](https://github.com/qlik-oss/nebula.js/compare/v4.3.0...v4.4.0) (2023-08-14)
+
+### Bug Fixes
+
+- aria-label on Listbox search input ([#1292](https://github.com/qlik-oss/nebula.js/issues/1292)) ([da177d2](https://github.com/qlik-oss/nebula.js/commit/da177d215f7073ca666c83ae8c374b826c35315a))
+
+# [4.3.0](https://github.com/qlik-oss/nebula.js/compare/v4.2.4...v4.3.0) (2023-08-03)
+
+**Note:** Version bump only for package @nebula.js/locale
+
+## [4.2.4](https://github.com/qlik-oss/nebula.js/compare/v4.2.3...v4.2.4) (2023-07-04)
+
+**Note:** Version bump only for package @nebula.js/locale
+
+## [4.2.3](https://github.com/qlik-oss/nebula.js/compare/v4.2.2...v4.2.3) (2023-06-28)
+
+**Note:** Version bump only for package @nebula.js/locale
+
+## [4.2.2](https://github.com/qlik-oss/nebula.js/compare/v4.2.1...v4.2.2) (2023-06-28)
+
+### Bug Fixes
+
+- screen reader search ([#1293](https://github.com/qlik-oss/nebula.js/issues/1293)) ([4eb69e9](https://github.com/qlik-oss/nebula.js/commit/4eb69e939e165da33ba3ff221e62068f241a4997))
+
 ## [4.2.1](https://github.com/qlik-oss/nebula.js/compare/v4.2.0...v4.2.1) (2023-06-09)
 
 **Note:** Version bump only for package @nebula.js/locale

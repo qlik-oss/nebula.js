@@ -66,8 +66,15 @@ commands:
             echo "Yarn"
             yarn
             echo "Linking packages"
-            npx lerna link --force-local
+            (cd apis/stardust && yarn link)
+            (cd commands/cli && yarn link)
+            (cd commands/build && yarn link)
+            (cd commands/serve && yarn link)
             cd << parameters.project_name >>
+            yarn link "@nebula.js/stardust"
+            yarn link "@nebula.js/cli"
+            yarn link "@nebula.js/cli-build"
+            yarn link "@nebula.js/cli-serve"
             echo "Log node_modules/@nebula.js"
             ls -la node_modules/@nebula.js
             <<# parameters.build >> yarn run build <</ parameters.build >>
@@ -75,7 +82,7 @@ commands:
 jobs:
   validate:
     docker:
-      - image: cimg/node:20.2.0
+      - image: cimg/node:20.8.0
     working_directory: ~/project
     steps:
       - attach_workspace:
@@ -99,7 +106,7 @@ jobs:
 
   build:
     docker:
-      - image: cimg/node:20.2.0
+      - image: cimg/node:20.8.0
 
     working_directory: ~/project
     resource_class: large
@@ -123,7 +130,7 @@ jobs:
 
   test-integration:
     docker:
-      - image: cimg/node:20.2.0
+      - image: cimg/node:20.8.0
       - image: browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project
@@ -154,7 +161,7 @@ jobs:
 
   test-create:
     docker:
-      - image: cimg/node:20.2.0
+      - image: cimg/node:20.8.0
       - image: browserless/chrome:1-puppeteer-7.1.0
 
     working_directory: ~/project

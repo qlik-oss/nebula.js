@@ -25,6 +25,6 @@ describe('<Loading />', () => {
   test('should render progress', async () => {
     await render();
     const types = renderer.root.findAllByType(Progress);
-    expect(types.length).toBe(1);
+    expect(types).toHaveLength(1);
   });
 });

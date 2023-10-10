@@ -3,10 +3,11 @@ import { globbySync } from 'globby';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
 import path from 'path';
+
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const LOCALES_DIR = path.resolve(__dirname, '../locales');
-const LOCALES_FILES = globbySync([`${LOCALES_DIR}/*.json`]);
+const LOCALES_FILES = globbySync(['*.json'], { cwd: LOCALES_DIR });
 const LOCALE_PKG_DIR = path.resolve(__dirname, '..');
 const ALL = path.resolve(`${LOCALE_PKG_DIR}`, 'all.json');
 
@@ -31,7 +32,8 @@ const LOCALES = {
 
 const merged = {};
 
-for (const file of LOCALES_FILES) {
+for (const fileName of LOCALES_FILES) {
+  const file = path.join(LOCALES_DIR, fileName);
   const short = path.parse(file).name;
   const locale = LOCALES[short];
   const content = JSON.parse(fs.readFileSync(file, 'utf8'));

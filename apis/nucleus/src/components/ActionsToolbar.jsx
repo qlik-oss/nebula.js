@@ -79,6 +79,7 @@ function ActionsToolbar({
   focusHandler = null,
   actionsRefMock = null, // for testing
   direction = 'ltr',
+  autoConfirm = false,
 }) {
   const defaultSelectionActions = useDefaultSelectionActions(selections);
 
@@ -128,6 +129,10 @@ function ActionsToolbar({
     focusHandler.on('focus_toolbar_first', focusFirst);
     focusHandler.on('focus_toolbar_last', focusLast);
   }, []);
+
+  if (autoConfirm) {
+    return undefined;
+  }
 
   let moreEnabled = more.enabled;
   let moreActions = more.actions;
@@ -214,13 +219,15 @@ function ActionsToolbar({
       transformOrigin={popoverTransformOrigin}
       hideBackdrop
       style={popoverStyle}
-      PaperProps={{
-        id: 'njs-action-toolbar-popover',
-        'data-testid': 'njs-action-toolbar-popover',
-        className: ActionToolbarElement.className,
-        style: {
-          pointerEvents: 'auto',
-          padding: theme.spacing(0.5, 0.25),
+      slotProps={{
+        paper: {
+          id: 'njs-action-toolbar-popover',
+          'data-testid': 'njs-action-toolbar-popover',
+          className: ActionToolbarElement.className,
+          style: {
+            pointerEvents: 'auto',
+            padding: theme.spacing(0.5, 0.25),
+          },
         },
       }}
     >

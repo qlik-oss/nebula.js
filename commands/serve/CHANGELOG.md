@@ -3,6 +3,38 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.5.0](https://github.com/qlik-oss/nebula.js/compare/v4.5.0-alpha.0...v4.5.0) (2023-10-03)
+
+### Features
+
+- auto confirm selections only on click outside listbox ([#1355](https://github.com/qlik-oss/nebula.js/issues/1355)) ([9d564d1](https://github.com/qlik-oss/nebula.js/commit/9d564d1516ca61cd27278bb41d6a45bb391266e6))
+
+# [4.5.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.4.0...v4.5.0-alpha.0) (2023-08-31)
+
+**Note:** Version bump only for package @nebula.js/cli-serve
+
+# [4.4.0](https://github.com/qlik-oss/nebula.js/compare/v4.3.0...v4.4.0) (2023-08-14)
+
+**Note:** Version bump only for package @nebula.js/cli-serve
+
+# [4.3.0](https://github.com/qlik-oss/nebula.js/compare/v4.2.4...v4.3.0) (2023-08-03)
+
+**Note:** Version bump only for package @nebula.js/cli-serve
+
+## [4.2.4](https://github.com/qlik-oss/nebula.js/compare/v4.2.3...v4.2.4) (2023-07-04)
+
+**Note:** Version bump only for package @nebula.js/cli-serve
+
+## [4.2.3](https://github.com/qlik-oss/nebula.js/compare/v4.2.2...v4.2.3) (2023-06-28)
+
+**Note:** Version bump only for package @nebula.js/cli-serve
+
+## [4.2.2](https://github.com/qlik-oss/nebula.js/compare/v4.2.1...v4.2.2) (2023-06-28)
+
+### Features
+
+- load config types for fixtures ([#1306](https://github.com/qlik-oss/nebula.js/issues/1306)) ([0d30e09](https://github.com/qlik-oss/nebula.js/commit/0d30e0910d37138ff3ec37717d37c9c11e99a69d))
+
 ## [4.2.1](https://github.com/qlik-oss/nebula.js/compare/v4.2.0...v4.2.1) (2023-06-09)
 
 **Note:** Version bump only for package @nebula.js/cli-serve

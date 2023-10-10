@@ -11,6 +11,6 @@ const StyledDiv = styled('div')(() => ({
 }));
 
 export default function ListBoxError({ text }) {
-  const { translator } = useContext(InstanceContext);
-  return <StyledDiv>{translator.get(text)}</StyledDiv>;
+  const { translator: translatorDynamic } = useContext(InstanceContext);
+  return <StyledDiv>{translatorDynamic.get(text)}</StyledDiv>;
 }

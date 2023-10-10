@@ -15,6 +15,6 @@
     "@nebula.js/sn-bar-chart": "^1.x",
     "@qlik/sdk": "^0.12.0",
     "enigma.js": "^2.6.3",
-    "parcel": "^2.7.0"
+    "parcel": "2.8.0"
   }
 }

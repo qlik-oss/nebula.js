@@ -144,10 +144,20 @@
     "comment": "Verb, typically button label",
     "version": "57j2gQLhNkHSlTwlN2lEqA=="
   },
+  "ScreenReader.ManySearchResults": {
+    "value": "有 {0} 個可用的結果",
+    "comment": "Screen reader text stating that one value is currently available from the search filter results.",
+    "version": "PPBUy89QC+G8hqO+l67Nog=="
+  },
   "ScreenReader.ManySelected": {
     "value": "有 {0} 個選取的值。",
     "comment": "Screen reader text stating that multiple values are currently in selection.",
     "version": "niVZFjvZXwdtILpHf0qvTg=="
+  },
+  "ScreenReader.OneSearchResult": {
+    "value": "有一個可用的結果",
+    "comment": "Screen reader text stating that one value is currently available from the search filter results.",
+    "version": "K9EiXYBUpldNf4sXyabHUg=="
   },
   "ScreenReader.OneSelected": {
     "value": "有一個選取的值。",

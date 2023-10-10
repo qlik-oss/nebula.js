@@ -38,7 +38,7 @@ describe('<ActionsToolbarMore />', () => {
 
   test('should render default', async () => {
     await render();
-    expect(Object.entries(renderer.root.props).length).toBe(0);
+    expect(Object.entries(renderer.root.props)).toHaveLength(0);
   });
 
   test('should render actions', async () => {
@@ -49,7 +49,7 @@ describe('<ActionsToolbarMore />', () => {
     }));
     await render({ actions, alignTo });
     const items = renderer.root.findAllByType(MenuItem);
-    expect(items.length).toBe(5);
+    expect(items).toHaveLength(5);
   });
 
   test('should render svg icon', async () => {
@@ -74,7 +74,7 @@ describe('<ActionsToolbarMore />', () => {
     }));
     await render({ actions, alignTo });
     const items = renderer.root.findAllByType(MenuItem);
-    expect(items.length).toBe(3);
+    expect(items).toHaveLength(3);
   });
 
   test('should handle action click and trigger callback', async () => {

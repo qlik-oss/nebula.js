@@ -73,10 +73,10 @@ describe('<Error />', () => {
     await render('foo', 'bar', data);
     const list = renderer.root.findByType(Descriptions);
     const rows = list.findAllByType(DescriptionRow);
-    expect(rows.length).toBe(6);
+    expect(rows).toHaveLength(6);
     const w = list.findAllByType(WarningTriangle);
     const t = list.findAllByType(Tick);
-    expect(w.length).toBe(3);
-    expect(t.length).toBe(3);
+    expect(w).toHaveLength(3);
+    expect(t).toHaveLength(3);
   });
 });

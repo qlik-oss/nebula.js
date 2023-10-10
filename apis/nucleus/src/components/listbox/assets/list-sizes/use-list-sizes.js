@@ -1,6 +1,15 @@
 import calculateColumnMode from './column-mode';
 import calculateRowMode from './row-mode';
-import { ITEM_MAX_WIDTH, ITEM_MIN_WIDTH, SCROLL_BAR_WIDTH, CHECKBOX_WIDTH, REMOVE_TICK_LIMIT } from '../../constants';
+import {
+  ITEM_MAX_WIDTH,
+  ITEM_MIN_WIDTH,
+  SCROLL_BAR_WIDTH,
+  CHECKBOX_WIDTH,
+  REMOVE_TICK_LIMIT,
+  GRID_ROW_HEIGHT,
+  LIST_ROW_HEIGHT,
+  DENSE_ROW_HEIGHT,
+} from '../../constants';
 import useTextWidth from '../../hooks/useTextWidth';
 import getMeasureText from '../measure-text';
 import createStyleService from '../../hooks/use-style';
@@ -37,9 +46,8 @@ export default function useListSizes({ layout, width, height, listCount, count, 
   const isGridMode = dataLayout === 'grid';
   const itemPadding = 4;
 
-  const denseItemHeight = 20;
-  const normalItemHeight = isGridMode ? 32 : 29;
-  let itemHeight = dense ? denseItemHeight : normalItemHeight;
+  const normalItemHeight = isGridMode ? GRID_ROW_HEIGHT : LIST_ROW_HEIGHT;
+  let itemHeight = dense ? DENSE_ROW_HEIGHT : normalItemHeight;
 
   if (isGridMode) {
     // Emulate a margin between items using padding, since the list library

@@ -44,6 +44,7 @@ describe('filterpane-handler', () => {
             wildCardSearch: false,
             checkboxes: false,
             histogram: false,
+            autoConfirm: false,
             layoutOptions: {
               dataLayout: 'singleColumn',
               dense: false,
@@ -105,6 +106,7 @@ describe('filterpane-handler', () => {
             wildCardSearch: false,
             checkboxes: false,
             histogram: false,
+            autoConfirm: false,
             layoutOptions: {
               dataLayout: 'singleColumn',
               dense: false,
@@ -171,6 +173,7 @@ describe('filterpane-handler', () => {
             wildCardSearch: false,
             checkboxes: true,
             histogram: false,
+            autoConfirm: false,
             layoutOptions: {
               dataLayout: 'singleColumn',
               dense: false,
@@ -238,6 +241,7 @@ describe('filterpane-handler', () => {
             wildCardSearch: false,
             checkboxes: true,
             histogram: false,
+            autoConfirm: false,
             layoutOptions: {
               dataLayout: 'singleColumn',
               dense: false,

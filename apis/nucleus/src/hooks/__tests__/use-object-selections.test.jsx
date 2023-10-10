@@ -27,7 +27,7 @@ describe('useObjectSelections', () => {
   let app;
   let appSel;
   let appModal;
-  let object;
+  let model;
   let objectSel;
   let layout;
 
@@ -57,7 +57,7 @@ describe('useObjectSelections', () => {
       set: jest.fn(),
       get: jest.fn(),
     };
-    object = {
+    model = {
       id: null,
       beginSelections: jest.fn(),
       endSelections: jest.fn(),
@@ -76,28 +76,15 @@ describe('useObjectSelections', () => {
         },
       },
     ]);
-    jest.spyOn(selectionsStoreModule, 'useObjectSelectionsStore').mockImplementation(() => [
-      {
-        get: () => objectSel,
-        set: (k, v) => {
-          objectSel = v;
-        },
-        dispatch: async (b) => {
-          if (!b) return;
-          await act(async () => {
-            renderer.update(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, object, elements]} />);
-          });
-        },
-      },
-    ]);
     selectionsStoreModule.modalObjectStore = modalObjectStore;
     jest.spyOn(selectionsStoreModule, 'useAppModalStore').mockImplementation(() => [{ get: () => appModal }]);
 
     ref = React.createRef();
     render = async () => {
       await act(async () => {
-        renderer = create(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, object, elements]} />);
+        renderer = create(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, model, elements]} />);
       });
+      [objectSel] = ref.current.result;
       objectSel.setLayout(layout);
     };
   });
@@ -112,26 +99,21 @@ describe('useObjectSelections', () => {
     jest.resetAllMocks();
   });
 
-  test('should create object selections', async () => {
-    await render();
-    expect(ref.current.result[0]).toEqual(objectSel);
-  });
-
   test('should begin', async () => {
     await render();
     await ref.current.result[0].begin(['/foo']);
     expect(appModal.begin).toHaveBeenCalledTimes(1);
-    expect(appModal.begin).toHaveBeenCalledWith(object, ['/foo'], true);
+    expect(appModal.begin).toHaveBeenCalledWith({ model, paths: ['/foo'], accept: true, objectSelections: objectSel });
   });
 
   test('should clear', async () => {
     await render();
     ref.current.result[0].clear();
-    expect(object.resetMadeSelections).toHaveBeenCalledWith();
+    expect(model.resetMadeSelections).toHaveBeenCalledWith();
 
     ref.current.result[0].setLayout({ qListObject: {} });
     await ref.current.result[0].clear();
-    expect(object.clearSelections).toHaveBeenCalledWith('/qListObjectDef');
+    expect(model.clearSelections).toHaveBeenCalledWith('/qListObjectDef');
   });
 
   test('should confirm', async () => {
@@ -150,7 +132,7 @@ describe('useObjectSelections', () => {
     await render();
 
     appSel.isModal.mockReturnValue(true);
-    object.select.mockReturnValue(true);
+    model.select.mockReturnValue(true);
     const res = await ref.current.result[0].select({ method: 'select', params: [] });
     expect(res).toBe(true);
   });
@@ -159,7 +141,7 @@ describe('useObjectSelections', () => {
     await render();
 
     appSel.isModal.mockReturnValue(true);
-    object.select.mockReturnValue(false);
+    model.select.mockReturnValue(false);
     const res = await ref.current.result[0].select({ method: 'select', params: [] });
     expect(res).toBe(false);
   });
@@ -170,7 +152,7 @@ describe('useObjectSelections', () => {
     objectSel.on('cleared', cleared);
 
     appSel.isModal.mockReturnValue(true);
-    object.select.mockReturnValue(false);
+    model.select.mockReturnValue(false);
     await objectSel.select({ method: 'select', params: [] });
     expect(cleared).not.toHaveBeenCalled();
   });
@@ -179,15 +161,15 @@ describe('useObjectSelections', () => {
     await render();
 
     appSel.isModal.mockReturnValue(true);
-    object.select.mockReturnValue(false);
+    model.select.mockReturnValue(false);
     await objectSel.select({ method: 'select', params: [] });
-    expect(object.resetMadeSelections).toHaveBeenCalledWith();
+    expect(model.resetMadeSelections).toHaveBeenCalledWith();
   });
 
   test('should not be possible to clear after select has be called with resetMadeSelections', async () => {
     await render();
     appSel.isModal.mockReturnValue(true);
-    object.select.mockReturnValue(true);
+    model.select.mockReturnValue(true);
     await objectSel.select({ method: 'resetMadeSelections', params: [] });
 
     expect(objectSel.canClear()).toBe(false);
@@ -208,7 +190,7 @@ describe('useObjectSelections', () => {
     layout = {};
     objectSel.setLayout(layout);
     appSel.isModal.mockReturnValue(true);
-    object.select.mockReturnValue(true);
+    model.select.mockReturnValue(true);
     await objectSel.select({ method: 'select', params: [] });
     expect(ref.current.result[0].canClear()).toBe(true);
   });
@@ -228,7 +210,7 @@ describe('useObjectSelections', () => {
     layout = {};
     objectSel.setLayout(layout);
     appSel.isModal.mockReturnValue(true);
-    object.select.mockReturnValue(true);
+    model.select.mockReturnValue(true);
     await objectSel.select({ method: 'select', params: [] });
     expect(ref.current.result[0].canConfirm()).toBe(true);
   });
@@ -261,7 +243,7 @@ describe('useObjectSelections', () => {
     await render();
 
     ref.current.result[0].goModal(['/bar']);
-    expect(appModal.begin).toHaveBeenCalledWith(object, ['/bar'], false);
+    expect(appModal.begin).toHaveBeenCalledWith({ model, paths: ['/bar'], accept: false, objectSelections: objectSel });
   });
 
   test('end modal state', async () => {

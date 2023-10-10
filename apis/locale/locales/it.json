@@ -144,10 +144,20 @@
     "comment": "Verb, typically button label",
     "version": "57j2gQLhNkHSlTwlN2lEqA=="
   },
+  "ScreenReader.ManySearchResults": {
+    "value": "{0} risultati disponibili",
+    "comment": "Screen reader text stating that one value is currently available from the search filter results.",
+    "version": "PPBUy89QC+G8hqO+l67Nog=="
+  },
   "ScreenReader.ManySelected": {
     "value": "Sono presenti {0} valori selezionati.",
     "comment": "Screen reader text stating that multiple values are currently in selection.",
     "version": "niVZFjvZXwdtILpHf0qvTg=="
+  },
+  "ScreenReader.OneSearchResult": {
+    "value": "Un risultato disponibile",
+    "comment": "Screen reader text stating that one value is currently available from the search filter results.",
+    "version": "K9EiXYBUpldNf4sXyabHUg=="
   },
   "ScreenReader.OneSelected": {
     "value": "È presente un valore selezionato.",
