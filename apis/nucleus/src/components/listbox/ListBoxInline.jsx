@@ -69,15 +69,13 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
   })
 );
 
-const Title = styled(Typography)(({ theme, layout }) => {
-  const styleService = createStyleService({ theme, layout });
-  return {
-    color: styleService?.header?.getStyle().fontColor,
-    fontSize: styleService?.header?.getStyle().fontSize,
-    fontFamily: theme.listBox?.title?.main?.fontFamily,
-    fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
-  };
-});
+const Title = styled(Typography)(({ theme, styleService }) => ({
+  color: styleService?.header?.getStyle().fontColor,
+  fontSize: styleService?.header?.getStyle().fontSize,
+  fontFamily: theme.listBox?.title?.main?.fontFamily,
+  fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
+}));
+
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
 function ListBoxInline({ options, layout }) {
@@ -101,6 +99,7 @@ function ListBoxInline({ options, layout }) {
     renderedCallback,
     toolbar = true,
     isPopover = false,
+    components,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -118,6 +117,7 @@ function ListBoxInline({ options, layout }) {
   };
 
   const theme = useTheme();
+  const styleService = createStyleService({ theme, components });
 
   const unlock = useCallback(() => {
     model.unlock('/qListObjectDef');
@@ -388,7 +388,7 @@ function ListBoxInline({ options, layout }) {
               className={classes.listBoxHeader}
             >
               {showTitle && (
-                <Title variant="h6" noWrap ref={titleRef} title={layout.title} layout={layout}>
+                <Title variant="h6" noWrap ref={titleRef} title={layout.title} styleService={styleService}>
                   {layout.title}
                 </Title>
               )}
@@ -431,7 +431,6 @@ function ListBoxInline({ options, layout }) {
                   <ListBox
                     model={model}
                     app={app}
-                    theme={theme}
                     constraints={constraints}
                     layout={layout}
                     selections={selections}
@@ -461,6 +460,7 @@ function ListBoxInline({ options, layout }) {
                     renderedCallback={renderedCallback}
                     onCtrlF={onCtrlF}
                     isModal={isModalMode}
+                    styleService={styleService}
                   />
                 )}
               </AutoSizer>

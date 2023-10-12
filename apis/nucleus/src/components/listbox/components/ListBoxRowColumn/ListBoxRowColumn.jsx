@@ -55,7 +55,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     showSearch,
     isModal,
     contentFontStyle,
-    layout,
+    stateStyles,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -195,6 +195,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       className={classes.barContainer}
       checkboxes={checkboxes}
       style={styles}
+      stateStyles={stateStyles}
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
       dense={dense}
@@ -203,7 +204,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       frequencyMode={deducedFrequencyMode}
       freqHitsValue={freqHitsValue}
       contentFontStyle={contentFontStyle}
-      layout={layout}
       data-testid="listbox.item"
     >
       <ItemGrid

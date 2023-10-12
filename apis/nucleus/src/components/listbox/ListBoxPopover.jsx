@@ -20,6 +20,7 @@ import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 import createSelectionState from './hooks/selections/selectionState';
 import getHasSelections from './assets/has-selections';
+import createStyleService from './hooks/use-style';
 
 export default function ListBoxPopover({
   alignTo,
@@ -37,6 +38,7 @@ export default function ListBoxPopover({
   fieldName,
   stateName = '$',
   autoFocus,
+  components,
 }) {
   const isMasterDim = Boolean(fieldName?.qLibraryId);
   const open = show && Boolean(alignTo.current);
@@ -92,6 +94,8 @@ export default function ListBoxPopover({
   const [selections] = useObjectSelections(app, model, containerRef);
   const [layout] = useLayout(model);
   const [selectionState] = useState(() => createSelectionState());
+
+  const styleService = createStyleService({ theme, components });
 
   useEffect(() => {
     if (selections && open) {
@@ -197,7 +201,7 @@ export default function ListBoxPopover({
             direction="ltr"
             onSetListCount={(c) => setListCount(c)}
             onCtrlF={onCtrlF}
-            theme={theme}
+            styleService={styleService}
           />
         </Grid>
       </Grid>

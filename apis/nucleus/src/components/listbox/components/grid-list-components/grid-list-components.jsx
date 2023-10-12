@@ -1,12 +1,10 @@
 /* eslint-disable react/function-component-definition */
-import React from 'react';
-import { useTheme } from '@nebula.js/ui/theme';
+import React, { useMemo } from 'react';
 import RowColumn from '../ListBoxRowColumn';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
 import handleSetOverflowDisclaimer from './set-overflow-disclaimer';
 import { REMOVE_TICK_LIMIT } from '../../constants';
-import createStyleService from '../../hooks/use-style';
 
 const { StyledFixedSizeList, StyledFixedSizeGrid } = getStyledComponents();
 
@@ -43,12 +41,12 @@ export default function getListBoxComponents({
   translator,
   showSearch,
   isModal,
+  styleService,
 }) {
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
-  const theme = useTheme();
-  const styleService = createStyleService({ theme, layout });
   const contentFontStyle = styleService?.content?.getStyle();
+  const stateStyles = useMemo(() => styleService?.palette?.getStyle(), [styleService]);
 
   const itemWidth = layoutOptions.dataLayout === 'grid' ? columnWidth : width;
   const showTick = itemWidth > REMOVE_TICK_LIMIT;
@@ -94,6 +92,7 @@ export default function getListBoxComponents({
     translator,
     showSearch,
     isModal,
+    stateStyles,
   };
 
   const List = ({ onItemsRendered, ref }) => {

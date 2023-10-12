@@ -2,7 +2,6 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
-import createStyleService from '../../../hooks/use-style';
 
 const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) => {
   if (frequencyMode === 'P') {
@@ -23,9 +22,8 @@ const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode }) => {
   return sizes.freqMaxWidth;
 };
 
-const getSelectedStyle = ({ theme, layout, selectedState }) => {
-  const styleService = createStyleService({ theme, layout });
-  const selectedStyle = styleService?.palette?.getStyle()?.[selectedState];
+const getSelectedStyle = ({ theme, stateStyles, selectedState }) => {
+  const selectedStyle = stateStyles[selectedState];
   return {
     background: selectedStyle,
     color: theme.palette.selected.mainContrastText,
@@ -60,6 +58,7 @@ const RowColRoot = styled('div', {
       'frequencyMode',
       'freqHitsValue',
       'layout',
+      'stateStyles',
     ].includes(prop),
 })(
   ({
@@ -73,7 +72,7 @@ const RowColRoot = styled('div', {
     frequencyMode,
     freqHitsValue,
     contentFontStyle,
-    layout,
+    stateStyles,
   }) => ({
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
@@ -172,24 +171,24 @@ const RowColRoot = styled('div', {
 
     // Selection styles (S=Selected, XS=ExcludedSelected, A=Alternative, X=Excluded).
     [`& .${classes.S}`]: {
-      ...getSelectedStyle({ theme, layout, selectedState: 'selected' }),
+      ...getSelectedStyle({ theme, stateStyles, selectedState: 'selected' }),
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.XS}`]: {
-      ...getSelectedStyle({ theme, layout, selectedState: 'excluded' }),
+      ...getSelectedStyle({ theme, stateStyles, selectedState: 'excluded' }),
       color: theme.palette.selected.excludedContrastText,
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.A}`]: {
-      ...getSelectedStyle({ theme, layout, selectedState: 'alternative' }),
+      ...getSelectedStyle({ theme, stateStyles, selectedState: 'alternative' }),
       color: theme.palette.selected.alternativeContrastText,
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.X}`]: {
-      ...getSelectedStyle({ theme, layout, selectedState: 'excluded' }),
+      ...getSelectedStyle({ theme, stateStyles, selectedState: 'excluded' }),
       color: theme.palette.selected.excludedContrastText,
       border: isGridMode ? 'none' : undefined,
     },

@@ -1,28 +1,35 @@
-import utils from '@nebula.js/conversion/src/utils';
+function getOverridesAsObject(components = []) {
+  const overrides = {};
 
-export default function createStyleService({ theme, layout }) {
-  const getLayoutValue = (reference, fallback) => utils.getValue(layout, reference, fallback);
+  components.forEach((c) => {
+    overrides[c.key] = c;
+  });
 
-  const overrides = (key) => getLayoutValue('components', []).find((c) => c.key === key) || undefined;
+  return overrides;
+}
+
+export default function createStyleService({ theme, components = [] }) {
+  const overrides = getOverridesAsObject(components);
+  const { listBox: listBoxTheme = {} } = theme || {};
 
   return {
     header: {
       getStyle: () => ({
-        fontSize: overrides('listBox')?.header?.fontSize ?? theme?.listBox?.title?.main?.fontSize,
-        fontColor: overrides('listBox')?.header?.fontColor?.color ?? theme?.listBox?.title?.main?.color,
+        fontSize: overrides.header?.fontSize ?? listBoxTheme.title?.main?.fontSize,
+        fontColor: overrides.header?.fontColor?.color ?? listBoxTheme.title?.main?.color,
       }),
     },
     content: {
       getStyle: () => ({
-        fontSize: overrides('listBox')?.content?.fontSize ?? theme?.listBox?.content?.fontSize,
-        fontColor: overrides('listBox')?.content?.fontColor?.color ?? theme?.listBox?.content?.color,
+        fontSize: overrides.content?.fontSize ?? listBoxTheme.content?.fontSize,
+        fontColor: overrides.content?.fontColor?.color ?? listBoxTheme.content?.color,
       }),
     },
     palette: {
       getStyle: () => ({
-        selected: overrides('listBox')?.palette?.selected?.color ?? theme?.palette?.selected?.main,
-        alternative: overrides('listBox')?.palette?.alternative?.color ?? theme?.palette?.selected?.alternative,
-        excluded: overrides('listBox')?.palette?.excluded?.color ?? theme?.palette?.selected?.excluded,
+        selected: overrides.palette?.selected?.color ?? theme?.palette?.selected?.main, // TODO: check the theme paths if they are correct
+        alternative: overrides.palette?.alternative?.color ?? theme?.palette?.selected?.alternative,
+        excluded: overrides.palette?.excluded?.color ?? theme?.palette?.selected?.excluded,
       }),
     },
   };

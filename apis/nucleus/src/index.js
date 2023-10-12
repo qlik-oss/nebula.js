@@ -47,6 +47,11 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
 };
 
 /**
+ * @interface Component
+ * @property {string} key The key of the component.
+ */
+
+/**
  * @interface Configuration
  * @property {LoadType=} load Fallback load function for missing types
  * @property {Context=} context Settings for the rendering instance
@@ -480,6 +485,7 @@ function nuked(configuration = {}) {
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields (not applicable for existing objects)
            * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects)
            * @param {string=} [options.stateName="$"] Sets the state to make selections in (not applicable for existing objects)
+           * @param {Component[]} [options.components] Override individual components' styling, otherwise set by the theme or the default style.
            * @param {object=} [options.properties={}] Properties object to extend default properties with
            * @returns {Promise<void>} A promise that resolves when the data is fetched.
            *
