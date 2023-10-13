@@ -93,6 +93,7 @@ export default function getListBoxComponents({
     showSearch,
     isModal,
     stateStyles,
+    contentFontStyle,
   };
 
   const List = ({ onItemsRendered, ref }) => {
@@ -107,7 +108,7 @@ export default function getListBoxComponents({
         height={listHeight}
         width={width}
         itemCount={listCount}
-        itemData={{ ...commonItemData, listCount, contentFontStyle, layout }}
+        itemData={{ ...commonItemData, listCount }}
         itemSize={itemHeight}
         onItemsRendered={(renderProps) => {
           setCurrentScrollIndex({ start: renderProps.visibleStartIndex, stop: renderProps.visibleStopIndex });
