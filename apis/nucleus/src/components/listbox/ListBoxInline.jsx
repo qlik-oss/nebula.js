@@ -32,7 +32,7 @@ import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
 import useRect from '../../hooks/useRect';
 import isDirectQueryEnabled from './utils/is-direct-query';
-import createStyleService from './hooks/use-style';
+import createStyleService from './assets/style-service';
 
 const PREFIX = 'ListBoxInline';
 const classes = {

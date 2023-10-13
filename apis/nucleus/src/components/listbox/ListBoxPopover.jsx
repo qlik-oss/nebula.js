@@ -20,7 +20,7 @@ import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 import createSelectionState from './hooks/selections/selectionState';
 import getHasSelections from './assets/has-selections';
-import createStyleService from './hooks/use-style';
+import createStyleService from './assets/style-service';
 
 export default function ListBoxPopover({
   alignTo,
