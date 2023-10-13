@@ -1,5 +1,5 @@
 /* eslint-disable react/function-component-definition */
-import React, { useMemo } from 'react';
+import React from 'react';
 import RowColumn from '../ListBoxRowColumn';
 import deriveRenderOptions from './derive-render-options';
 import getStyledComponents, { classes } from './styled-components';
@@ -46,7 +46,7 @@ export default function getListBoxComponents({
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
   const contentFontStyle = styleService?.content?.getStyle();
-  const stateStyles = useMemo(() => styleService?.palette?.getStyle(), [styleService]);
+  const stateStyles = styleService?.palette?.getStyle();
 
   const itemWidth = layoutOptions.dataLayout === 'grid' ? columnWidth : width;
   const showTick = itemWidth > REMOVE_TICK_LIMIT;

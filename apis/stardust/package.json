@@ -31,7 +31,7 @@
   ],
   "scripts": {
     "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
-    "build:dev": "rollup --config ../../rollup.config.js",
+    "build:dev": "(rollup --config ../../rollup.config.js && say 'done') || say 'error compiling'",
     "build:watch": "rollup --config ../../rollup.config.js -w",
     "prepublishOnly": "rm -rf dist && yarn run build",
     "spec:stardust": "sy from-jsdoc -c ./api-spec/spec.conf.js",
