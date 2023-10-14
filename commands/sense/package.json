@@ -28,8 +28,8 @@
   },
   "dependencies": {
     "@babel/cli": "7.23.0",
-    "@babel/core": "7.23.0",
-    "@babel/preset-env": "7.22.20",
+    "@babel/core": "7.23.2",
+    "@babel/preset-env": "7.23.2",
     "@nebula.js/stardust": "^4.5.0",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-commonjs": "25.0.5",
