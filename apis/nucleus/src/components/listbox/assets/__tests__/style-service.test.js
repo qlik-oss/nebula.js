@@ -1,8 +1,18 @@
+import * as muiStyles from '@mui/material/styles';
 import createStyleService from '../style-service';
+
+jest.mock('@mui/material/styles', () => ({
+  __esModule: true,
+  ...jest.requireActual('@mui/material/styles'),
+}));
 
 describe('style-service', () => {
   let theme = {};
   let components = [];
+
+  beforeAll(() => {
+    jest.spyOn(muiStyles, 'getContrastRatio').mockReturnValue(0.5);
+  });
 
   afterEach(() => {
     jest.resetAllMocks();
@@ -27,6 +37,9 @@ describe('style-service', () => {
         },
       },
       palette: {
+        text: {
+          primary: 'primary',
+        },
         selected: {
           main: 'selected-from-theme',
         },
@@ -72,6 +85,7 @@ describe('style-service', () => {
           fontColor: {
             color: 'color-from-component',
           },
+          useContrastColor: false,
         },
       ];
       let inst;
@@ -79,7 +93,7 @@ describe('style-service', () => {
       inst = createStyleService({ theme, components: [] });
       content = inst.content.getStyle();
       expect(content.fontSize).toEqual(24);
-      expect(content.fontColor).toEqual('red');
+      expect(content.fontColor).toEqual('#000');
 
       inst = createStyleService({ theme, components });
       content = inst.content.getStyle();
@@ -99,6 +113,12 @@ describe('style-service', () => {
           },
           excluded: {
             color: 'excluded-from-component',
+          },
+          selectedExcluded: {
+            color: 'selectedExcluded-from-component',
+          },
+          possible: {
+            color: 'possible-from-component',
           },
         },
       ];
@@ -120,6 +140,14 @@ describe('style-service', () => {
       inst = createStyleService({ theme, components });
       palette = inst.palette.getStyle();
       expect(palette.excluded).toEqual('excluded-from-component');
+
+      inst = createStyleService({ theme, components });
+      palette = inst.palette.getStyle();
+      expect(palette.selectedExcluded).toEqual('selectedExcluded-from-component');
+
+      inst = createStyleService({ theme, components });
+      palette = inst.palette.getStyle();
+      expect(palette.possible).toEqual('possible-from-component');
     });
   });
 });

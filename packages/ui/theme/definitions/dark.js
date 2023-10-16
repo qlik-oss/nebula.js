@@ -16,6 +16,8 @@ const dark = {
       primary: colors.grey100,
       secondary: 'rgba(255, 255, 255, 0.6)',
       disabled: 'rgba(255, 255, 255, 0.3)',
+      light: colors.grey100,
+      dark: colors.grey0,
     },
     action: {
       // active: 'rgba(0, 0, 0, 0.55)',
@@ -46,9 +48,14 @@ const dark = {
       main: colors.green,
       alternative: colors.grey20,
       excluded: colors.grey10,
+      selectedExcluded: colors.grey5,
+      possible: colors.grey80,
+
       mainContrastText: colors.grey100,
       alternativeContrastText: colors.grey100,
       excludedContrastText: colors.grey100,
+      selectedExcludedContrastText: colors.grey100,
+      possibleContrastText: colors.grey0,
     },
     btn: {
       normal: 'rgba(255, 255, 255, 0.15)',

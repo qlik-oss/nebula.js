@@ -23,16 +23,25 @@ const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode }) => {
 };
 
 const getSelectedStyle = ({ theme, stateStyles, selectedState }) => {
-  const selectedStyle = stateStyles[selectedState];
+  const backgroundColor = stateStyles[selectedState];
+  const contrastTextColor = stateStyles[`${selectedState}Contrast`];
   return {
-    background: selectedStyle,
-    color: theme.palette.selected.mainContrastText,
+    background: backgroundColor,
+    color: contrastTextColor,
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
       outline: 'none',
     },
     '& $cell': {
       paddingRight: 0,
+    },
+    // Override default label text style for selection states
+    // when contrasting text is needed.
+    [`& .${classes.labelText}`]: {
+      color: contrastTextColor,
+    },
+    [`& .${classes.icon}`]: {
+      color: contrastTextColor,
     },
   };
 };
@@ -60,20 +69,22 @@ const RowColRoot = styled('div', {
       'layout',
       'stateStyles',
     ].includes(prop),
-})(
-  ({
-    theme,
-    checkboxes,
-    isGridMode,
-    isGridCol,
-    dense,
-    direction,
-    sizes,
-    frequencyMode,
-    freqHitsValue,
-    contentFontStyle,
-    stateStyles,
-  }) => ({
+})(({
+  theme,
+  checkboxes,
+  isGridMode,
+  isGridCol,
+  dense,
+  direction,
+  sizes,
+  frequencyMode,
+  freqHitsValue,
+  contentFontStyle,
+  stateStyles,
+}) => {
+  const rowFontColor = contentFontStyle?.fontColor || theme.listBox?.content?.color;
+  const rowBackgroundColor = stateStyles.possible || theme.listBox?.content?.backgroundColor;
+  return {
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
     },
@@ -92,7 +103,8 @@ const RowColRoot = styled('div', {
 
     [`& .${classes.row}`]: {
       flexWrap: 'nowrap',
-      color: theme.listBox?.content?.color ?? theme.palette.text.primary,
+      color: rowFontColor,
+      backgroundColor: rowBackgroundColor,
     },
 
     [`& .${classes.rowBorderBottom}`]: {
@@ -103,7 +115,7 @@ const RowColRoot = styled('div', {
     [`& .${classes.column}`]: {
       flexWrap: 'nowrap',
       borderRight: `1px solid ${theme.palette.divider}`,
-      color: theme.listBox?.content?.color ?? theme.palette.text.primary,
+      color: rowFontColor,
     },
 
     // The interior wrapper for all field content.
@@ -126,7 +138,7 @@ const RowColRoot = styled('div', {
       ...ellipsis,
       fontSize: contentFontStyle?.fontSize || theme.listBox?.content?.fontSize,
       fontFamily: theme.listBox?.content?.fontFamily,
-      color: contentFontStyle?.fontColor || theme.listBox?.content?.color,
+      color: rowFontColor,
     },
 
     [`& .${classes.labelDense}`]: {
@@ -167,6 +179,7 @@ const RowColRoot = styled('div', {
       width: iconWidth,
       minWidth: iconWidth,
       maxWidth: iconWidth,
+      color: rowFontColor,
     },
 
     // Selection styles (S=Selected, XS=ExcludedSelected, A=Alternative, X=Excluded).
@@ -176,20 +189,17 @@ const RowColRoot = styled('div', {
     },
 
     [`& .${classes.XS}`]: {
-      ...getSelectedStyle({ theme, stateStyles, selectedState: 'excluded' }),
-      color: theme.palette.selected.excludedContrastText,
+      ...getSelectedStyle({ theme, stateStyles, selectedState: 'selectedExcluded' }),
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.A}`]: {
       ...getSelectedStyle({ theme, stateStyles, selectedState: 'alternative' }),
-      color: theme.palette.selected.alternativeContrastText,
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.X}`]: {
       ...getSelectedStyle({ theme, stateStyles, selectedState: 'excluded' }),
-      color: theme.palette.selected.excludedContrastText,
       border: isGridMode ? 'none' : undefined,
     },
 
@@ -253,7 +263,7 @@ const RowColRoot = styled('div', {
       color: '#828282',
       fontStyle: 'italic',
     },
-  })
-);
+  };
+});
 
 export default React.memo(RowColRoot);
