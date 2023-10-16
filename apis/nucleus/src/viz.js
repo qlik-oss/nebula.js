@@ -16,6 +16,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
   let mountedReference = null;
   let onMount = null;
   let onRender = null;
+  let toggledDataView = false;
   const mounted = new Promise((resolve) => {
     onMount = resolve;
   });
@@ -148,6 +149,51 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       }
       const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
       return propertyTree;
+    },
+    /**
+     * Toggles the view of the chart into an accessible table
+     *
+     * @since 4.6.0
+     * @param {string} newType - The type used for the view data table
+     *
+     * const viz = await embed(app).render({
+     *   element,
+     *   id: 'abc'
+     * });
+     * await viz.toggleDataView();
+     */
+    async toggleDataView(newType = 'sn-table') {
+      if (!toggledDataView) {
+        const oldProperties = await model.getEffectiveProperties();
+        const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType, properties: oldProperties });
+        const newProperties = { ...propertyTree.qProperty, totals: { show: false }, usePagination: true };
+        const viewDataModel = await halo.app.createSessionObject(newProperties);
+        toggledDataView = true;
+        await this.destroy();
+        [unmountCell, cellRef] = glueCell({
+          halo,
+          element: mountedReference,
+          model: viewDataModel,
+          initialSnOptions: {},
+          initialSnPlugins: [],
+          initialError,
+          onMount,
+          emitter,
+        });
+      } else {
+        toggledDataView = false;
+        await this.destroy();
+        [unmountCell, cellRef] = glueCell({
+          halo,
+          element: mountedReference,
+          model,
+          initialSnOptions,
+          initialSnPlugins,
+          initialError,
+          onMount,
+          emitter,
+        });
+      }
     },
     /**
      * Listens to custom events from inside the visualization. See useEmitter
