@@ -205,6 +205,7 @@ const RowColRoot = styled('div', {
     },
 
     [`& .${classes.frequencyCount}`]: {
+      zIndex: 3,
       justifyContent: 'flex-end',
       ...ellipsis,
       flex: `0 0 ${getFreqFlexBasis({ sizes, frequencyMode, isGridMode, freqHitsValue })}`,
