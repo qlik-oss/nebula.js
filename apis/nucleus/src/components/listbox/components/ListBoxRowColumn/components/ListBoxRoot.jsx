@@ -120,6 +120,7 @@ const RowColRoot = styled('div', {
 
     // The interior wrapper for all field content.
     [`& .${classes.cell}`]: {
+      zIndex: 2,
       display: 'flex',
       alignItems: 'center',
       flexGrow: 1,
@@ -224,7 +225,7 @@ const RowColRoot = styled('div', {
     [`& .${classes.bar}`]: {
       height: dense ? '16px' : '20px',
       position: 'absolute',
-      zIndex: '-1',
+      zIndex: 1,
       alignSelf: 'center',
       left: barPadPx,
       width: `calc(100% - ${barPadPx * 2}px)`,
@@ -240,7 +241,6 @@ const RowColRoot = styled('div', {
     },
 
     [`& .${classes.barSelected}`]: {
-      zIndex: '0',
       '& .bar-filled': {
         opacity: '30%',
         background: theme.palette.background.lighter,
