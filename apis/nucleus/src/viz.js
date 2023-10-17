@@ -166,37 +166,27 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       if (!halo.types.isRegistered(newType)) {
         throw new Error(`Type: ${newType} is not registered. Make sure to register ${newType}`);
       }
+      let newModel = model;
       if (!toggledDataView) {
         const oldProperties = await model.getEffectiveProperties();
         const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType, properties: oldProperties });
         const newProperties = { ...propertyTree.qProperty, totals: { show: false }, usePagination: true };
-        const viewDataModel = await halo.app.createSessionObject(newProperties);
+        newModel = await halo.app.createSessionObject(newProperties);
         toggledDataView = true;
-        await unmountCell();
-        [unmountCell, cellRef] = glueCell({
-          halo,
-          element: mountedReference,
-          model: viewDataModel,
-          initialSnOptions: {},
-          initialSnPlugins: [],
-          initialError,
-          onMount,
-          emitter,
-        });
       } else {
         toggledDataView = false;
-        await unmountCell();
-        [unmountCell, cellRef] = glueCell({
-          halo,
-          element: mountedReference,
-          model,
-          initialSnOptions,
-          initialSnPlugins,
-          initialError,
-          onMount,
-          emitter,
-        });
       }
+      await unmountCell();
+      [unmountCell, cellRef] = glueCell({
+        halo,
+        element: mountedReference,
+        model: newModel,
+        initialSnOptions: {},
+        initialSnPlugins: [],
+        initialError,
+        onMount,
+        emitter,
+      });
     },
     /**
      * Listens to custom events from inside the visualization. See useEmitter
