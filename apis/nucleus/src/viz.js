@@ -151,7 +151,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       return propertyTree;
     },
     /**
-     * Toggles the view of the chart into an accessible table
+     * Toggles the view of the chart into an accessible table. The type (default sn-table) needs to be registered in order to use this functionality
      *
      * @since 4.6.0
      * @param {string} newType - The type used for the view data table
@@ -163,13 +163,16 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      * await viz.toggleDataView();
      */
     async toggleDataView(newType = 'sn-table') {
+      if (!halo.types.isRegistered(newType)) {
+        throw new Error(`Type: ${newType} is not registered. Make sure to register ${newType}`);
+      }
       if (!toggledDataView) {
         const oldProperties = await model.getEffectiveProperties();
         const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType, properties: oldProperties });
         const newProperties = { ...propertyTree.qProperty, totals: { show: false }, usePagination: true };
         const viewDataModel = await halo.app.createSessionObject(newProperties);
         toggledDataView = true;
-        await this.destroy();
+        await unmountCell();
         [unmountCell, cellRef] = glueCell({
           halo,
           element: mountedReference,
@@ -182,7 +185,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
         });
       } else {
         toggledDataView = false;
-        await this.destroy();
+        await unmountCell();
         [unmountCell, cellRef] = glueCell({
           halo,
           element: mountedReference,
@@ -323,7 +326,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     // setOptions() {}, // applied soft patch
     // resize() {},
     // show() {},
-    // toggleDataView() {},
   };
 
   return api;
