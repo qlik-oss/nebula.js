@@ -91,7 +91,9 @@ describe('<ListboxInline />', () => {
     jest.spyOn(lockModule, 'default').mockImplementation(() => 'lock');
     jest.spyOn(useLayoutModule, 'default').mockImplementation(() => [layout]);
     jest.spyOn(listboxKeyboardNavigationModule, 'default').mockImplementation(getListboxInlineKeyboardNavigation);
-    jest.spyOn(styling, 'default').mockImplementation(() => ({ header: {}, content: {}, selections: {} }));
+    jest
+      .spyOn(styling, 'default')
+      .mockImplementation(() => ({ backgroundColor: '#FFFFFF', header: {}, content: {}, selections: {} }));
     jest.spyOn(isDirectQueryEnabled, 'default').mockImplementation(() => false);
 
     ActionsToolbarModule.default = ActionsToolbar;

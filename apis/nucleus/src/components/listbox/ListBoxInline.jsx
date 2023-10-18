@@ -40,32 +40,33 @@ const classes = {
   listboxWrapper: `${PREFIX}-listboxWrapper`,
 };
 
-const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding', 'isGridMode'].includes(p) })(
-  ({ theme, containerPadding, isGridMode }) => ({
-    [`& .${classes.listBoxHeader}`]: {
-      alignSelf: 'center',
-      display: 'flex',
-    },
-    [`& .${classes.screenReaderOnly}`]: {
-      position: 'absolute',
-      height: 0,
-      width: 0,
-      overflow: 'hidden',
-    },
-    [`& .${classes.listboxWrapper}`]: {
-      padding: containerPadding,
-    },
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
-    },
-    '&:focus ::-webkit-scrollbar-track': {
-      boxShadow: !isGridMode ? 'inset -2px -2px 0px #3F8AB3' : undefined,
-    },
-    '&:focus-visible': {
-      outline: 'none',
-    },
-  })
-);
+const StyledGrid = styled(Grid, {
+  shouldForwardProp: (p) => !['containerPadding', 'isGridMode', 'styles'].includes(p),
+})(({ theme, containerPadding, isGridMode, styles }) => ({
+  backgroundColor: styles.backgroundColor,
+  [`& .${classes.listBoxHeader}`]: {
+    alignSelf: 'center',
+    display: 'flex',
+  },
+  [`& .${classes.screenReaderOnly}`]: {
+    position: 'absolute',
+    height: 0,
+    width: 0,
+    overflow: 'hidden',
+  },
+  [`& .${classes.listboxWrapper}`]: {
+    padding: containerPadding,
+  },
+  '&:focus': {
+    boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+  },
+  '&:focus ::-webkit-scrollbar-track': {
+    boxShadow: !isGridMode ? 'inset -2px -2px 0px #3F8AB3' : undefined,
+  },
+  '&:focus-visible': {
+    outline: 'none',
+  },
+}));
 
 const Title = styled(Typography)(({ styles }) => ({
   color: styles.header.color,
@@ -342,6 +343,7 @@ function ListBoxInline({ options, layout }) {
         direction="column"
         gap={0}
         containerPadding={containerPadding}
+        styles={styles}
         style={{ height: '100%', flexFlow: 'column nowrap' }}
         onKeyDown={handleKeyDown}
         onMouseEnter={handleOnMouseEnter}

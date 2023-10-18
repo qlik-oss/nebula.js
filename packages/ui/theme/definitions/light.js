@@ -46,7 +46,7 @@ const light = {
       main: colors.green,
       alternative: '#E4E4E4',
       excluded: '#BEBEBE',
-      selectedExcluded: '#A9A9A9',
+      selectedExcluded: '#BEBEBE',
       possible: colors.grey100,
       mainContrastText: colors.grey100,
       alternativeContrastText: colors.grey25,

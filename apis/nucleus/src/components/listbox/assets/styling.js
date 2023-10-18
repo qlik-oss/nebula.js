@@ -33,7 +33,7 @@ function getSelectionColors(theme, getListboxStyle, overrides) {
   // Background colors
   const selected = overrides.selections?.selected?.color || theme.palette?.selected.main || '#009845';
   const alternative = overrides.selections?.alternative?.color || theme.palette?.selected.alternative || '#E4E4E4';
-  const excluded = overrides.selections?.excluded?.color || theme.palette?.selected.excluded || '#BEBEBE';
+  const excluded = overrides.selections?.excluded?.color || theme.palette?.selected.excluded || '#A9A9A9';
   const selectedExcluded =
     overrides.selections?.selectedExcluded?.color || theme.palette?.selected.selectedExcluded || '#A9A9A9';
   const possible =
@@ -80,6 +80,7 @@ export default function getStyles({ themeApi, theme, components = [] }) {
   const selections = getSelectionColors(theme, getListboxStyle, overrides);
 
   return {
+    backgroundColor: getListboxStyle('', 'backgroundColor') || theme.palette.background.default,
     header: {
       color: overrides.header?.fontColor?.color || getListboxStyle('title.main', 'color'),
       fontSize: overrides.header?.fontSize || getListboxStyle('title.main', 'fontSize'),

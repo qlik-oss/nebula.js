@@ -143,7 +143,7 @@ describe('styling', () => {
 
       inst = getStyling({ themeApi, theme, components });
       selections = inst.selections;
-      expect(selections.excluded).toEqual('#BEBEBE');
+      expect(selections.excluded).toEqual('#A9A9A9');
 
       inst = getStyling({ themeApi, theme, components });
       selections = inst.selections;
