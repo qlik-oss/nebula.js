@@ -73,6 +73,7 @@ const RowColRoot = styled('div', {
 })(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode, freqHitsValue, styles }) => {
   const rowFontColor = styles.content.color;
   const rowBackgroundColor = styles.content.backgroundColor;
+  const excludedSelectStyle = getSelectedStyle({ theme, styles, selectedState: 'excluded' });
   return {
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
@@ -189,7 +190,7 @@ const RowColRoot = styled('div', {
     },
 
     [`& .${classes.X}`]: {
-      ...getSelectedStyle({ theme, styles, selectedState: 'excluded' }),
+      ...excludedSelectStyle,
       border: isGridMode ? 'none' : undefined,
     },
 
@@ -250,7 +251,7 @@ const RowColRoot = styled('div', {
     },
 
     [`& .${classes.excludedTextWithCheckbox}`]: {
-      color: rowFontColor || '#828282',
+      color: excludedSelectStyle.background || '#828282',
       fontStyle: 'italic',
     },
   };
