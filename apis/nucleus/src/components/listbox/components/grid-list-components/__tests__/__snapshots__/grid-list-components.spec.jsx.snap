@@ -21,7 +21,6 @@ exports[`grid-list-components should create a Grid component 1`] = `
       "checkboxes": false,
       "column": undefined,
       "columnCount": 2,
-      "contentFontStyle": undefined,
       "dataOffset": undefined,
       "deducedFrequencyMode": undefined,
       "direction": "ltr",
@@ -55,7 +54,7 @@ exports[`grid-list-components should create a Grid component 1`] = `
         "rowCount": 200,
         "scrollBarWidth": 10,
       },
-      "stateStyles": undefined,
+      "styles": undefined,
       "textAlign": "right",
       "translator": undefined,
     }
@@ -93,7 +92,6 @@ exports[`grid-list-components should create a List component 1`] = `
       },
       "checkboxes": false,
       "column": false,
-      "contentFontStyle": undefined,
       "dataOffset": undefined,
       "deducedFrequencyMode": undefined,
       "direction": "ltr",
@@ -127,7 +125,7 @@ exports[`grid-list-components should create a List component 1`] = `
         "rowCount": 200,
         "scrollBarWidth": 10,
       },
-      "stateStyles": undefined,
+      "styles": undefined,
       "textAlign": "right",
       "translator": undefined,
     }

@@ -55,14 +55,14 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     showSearch,
     isModal,
     contentFontStyle,
-    stateStyles,
+    styles,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
   const { itemPadding } = sizes;
 
   let cellIndex;
-  let styles;
+  let styleOverrides;
   const count = { max: null, currentIndex: null };
 
   if (typeof rowIndex === 'number' && typeof columnIndex === 'number') {
@@ -76,7 +76,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       count.currentIndex = columnIndex;
     }
     const padding = 0;
-    styles = {
+    styleOverrides = {
       ...style,
       left: padding + (columnIndex === 0 ? style.left : Number(style.left) + columnIndex * padding),
       // right: columnIndex === columnCount ? style.right : Number(style.right) + columnIndex * padding,
@@ -86,7 +86,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     cellIndex = index;
     count.max = listCount;
     count.currentIndex = index;
-    styles = { ...style };
+    styleOverrides = { ...style };
   }
   cellIndex += dataOffset;
 
@@ -194,8 +194,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     <RowColRoot
       className={classes.barContainer}
       checkboxes={checkboxes}
-      style={styles}
-      stateStyles={stateStyles}
+      style={styleOverrides}
+      styles={styles}
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
       dense={dense}

@@ -14,7 +14,7 @@ import ActionsToolbar from '../ActionsToolbar';
 import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import getListboxContainerKeyboardNavigation from './interactions/keyboard-navigation/keyboard-nav-container';
-import addListboxTheme from './assets/addListboxTheme';
+import getStyles from './assets/styling';
 import useAppSelections from '../../hooks/useAppSelections';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-get-action-props';
@@ -32,7 +32,6 @@ import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
 import useRect from '../../hooks/useRect';
 import isDirectQueryEnabled from './utils/is-direct-query';
-import createStyleService from './assets/style-service';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -43,7 +42,6 @@ const classes = {
 
 const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding', 'isGridMode'].includes(p) })(
   ({ theme, containerPadding, isGridMode }) => ({
-    backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
     [`& .${classes.listBoxHeader}`]: {
       alignSelf: 'center',
       display: 'flex',
@@ -69,11 +67,11 @@ const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding'
   })
 );
 
-const Title = styled(Typography)(({ theme, styleService }) => ({
-  color: styleService?.header?.getStyle().fontColor,
-  fontSize: styleService?.header?.getStyle().fontSize,
-  fontFamily: theme.listBox?.title?.main?.fontFamily,
-  fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
+const Title = styled(Typography)(({ styles }) => ({
+  color: styles.header.color,
+  fontSize: styles.header.fontSize,
+  fontFamily: styles.header.fontFamily,
+  fontWeight: styles.header.fontWeight,
 }));
 
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
@@ -117,14 +115,13 @@ function ListBoxInline({ options, layout }) {
   };
 
   const theme = useTheme();
-  const styleService = createStyleService({ theme, components });
 
   const unlock = useCallback(() => {
     model.unlock('/qListObjectDef');
   }, [model]);
 
   const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
-  theme.listBox = addListboxTheme(themeApi);
+  const styles = getStyles({ themeApi, theme, components });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 
@@ -388,7 +385,7 @@ function ListBoxInline({ options, layout }) {
               className={classes.listBoxHeader}
             >
               {showTitle && (
-                <Title variant="h6" noWrap ref={titleRef} title={layout.title} styleService={styleService}>
+                <Title variant="h6" noWrap ref={titleRef} title={layout.title} styles={styles}>
                   {layout.title}
                 </Title>
               )}
@@ -420,6 +417,7 @@ function ListBoxInline({ options, layout }) {
               searchEnabled={searchEnabled}
               direction={direction}
               hide={showSearchIcon && onShowSearch}
+              styles={styles}
             />
           </Grid>
           <Grid item xs className={classes.listboxWrapper}>
@@ -460,7 +458,7 @@ function ListBoxInline({ options, layout }) {
                     renderedCallback={renderedCallback}
                     onCtrlF={onCtrlF}
                     isModal={isModalMode}
-                    styleService={styleService}
+                    styles={styles}
                   />
                 )}
               </AutoSizer>

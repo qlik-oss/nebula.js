@@ -20,7 +20,7 @@ import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 import createSelectionState from './hooks/selections/selectionState';
 import getHasSelections from './assets/has-selections';
-import createStyleService from './assets/style-service';
+import getStyles from './assets/styling';
 
 export default function ListBoxPopover({
   alignTo,
@@ -88,14 +88,14 @@ export default function ListBoxPopover({
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const { translator } = useContext(InstanceContext);
+  const { translator, themeApi } = useContext(InstanceContext);
   const moreAlignTo = useRef();
   const containerRef = useRef();
   const [selections] = useObjectSelections(app, model, containerRef);
   const [layout] = useLayout(model);
   const [selectionState] = useState(() => createSelectionState());
 
-  const styleService = createStyleService({ theme, components });
+  const styles = getStyles({ themeApi, theme, components });
 
   useEffect(() => {
     if (selections && open) {
@@ -183,6 +183,7 @@ export default function ListBoxPopover({
           <div ref={moreAlignTo} />
           <Grid item ref={searchContainerRef}>
             <ListBoxSearch
+              styles={styles}
               visible
               model={model}
               listCount={listCount}
@@ -201,7 +202,7 @@ export default function ListBoxPopover({
             direction="ltr"
             onSetListCount={(c) => setListCount(c)}
             onCtrlF={onCtrlF}
-            styleService={styleService}
+            styles={styles}
           />
         </Grid>
       </Grid>

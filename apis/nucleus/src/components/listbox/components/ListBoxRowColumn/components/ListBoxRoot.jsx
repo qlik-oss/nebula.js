@@ -22,9 +22,10 @@ const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode }) => {
   return sizes.freqMaxWidth;
 };
 
-const getSelectedStyle = ({ theme, stateStyles, selectedState }) => {
-  const backgroundColor = stateStyles[selectedState];
-  const contrastTextColor = stateStyles[`${selectedState}Contrast`];
+const getSelectedStyle = ({ theme, styles, selectedState }) => {
+  const selectionStyles = styles.selections;
+  const backgroundColor = selectionStyles[selectedState];
+  const contrastTextColor = selectionStyles[`${selectedState}Contrast`];
   return {
     background: backgroundColor,
     color: contrastTextColor,
@@ -67,23 +68,11 @@ const RowColRoot = styled('div', {
       'frequencyMode',
       'freqHitsValue',
       'layout',
-      'stateStyles',
+      'styles',
     ].includes(prop),
-})(({
-  theme,
-  checkboxes,
-  isGridMode,
-  isGridCol,
-  dense,
-  direction,
-  sizes,
-  frequencyMode,
-  freqHitsValue,
-  contentFontStyle,
-  stateStyles,
-}) => {
-  const rowFontColor = contentFontStyle?.fontColor || theme.listBox?.content?.color;
-  const rowBackgroundColor = stateStyles.possible || theme.listBox?.content?.backgroundColor;
+})(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode, freqHitsValue, styles }) => {
+  const rowFontColor = styles.content.fontColor;
+  const rowBackgroundColor = styles.content.backgroundColor;
   return {
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
@@ -137,8 +126,8 @@ const RowColRoot = styled('div', {
       userSelect: 'none',
       paddingRight: '1px',
       ...ellipsis,
-      fontSize: contentFontStyle?.fontSize || theme.listBox?.content?.fontSize,
-      fontFamily: theme.listBox?.content?.fontFamily,
+      fontSize: styles.content.fontSize,
+      fontFamily: styles.content.fontFamily,
       color: rowFontColor,
     },
 
@@ -185,22 +174,22 @@ const RowColRoot = styled('div', {
 
     // Selection styles (S=Selected, XS=ExcludedSelected, A=Alternative, X=Excluded).
     [`& .${classes.S}`]: {
-      ...getSelectedStyle({ theme, stateStyles, selectedState: 'selected' }),
+      ...getSelectedStyle({ theme, styles, selectedState: 'selected' }),
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.XS}`]: {
-      ...getSelectedStyle({ theme, stateStyles, selectedState: 'selectedExcluded' }),
+      ...getSelectedStyle({ theme, styles, selectedState: 'selectedExcluded' }),
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.A}`]: {
-      ...getSelectedStyle({ theme, stateStyles, selectedState: 'alternative' }),
+      ...getSelectedStyle({ theme, styles, selectedState: 'alternative' }),
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.X}`]: {
-      ...getSelectedStyle({ theme, stateStyles, selectedState: 'excluded' }),
+      ...getSelectedStyle({ theme, styles, selectedState: 'excluded' }),
       border: isGridMode ? 'none' : undefined,
     },
 

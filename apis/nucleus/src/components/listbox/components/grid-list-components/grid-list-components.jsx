@@ -41,12 +41,10 @@ export default function getListBoxComponents({
   translator,
   showSearch,
   isModal,
-  styleService,
+  styles,
 }) {
   const { layoutOptions = {} } = layout || {};
   const { columnWidth, listHeight, itemHeight, rowCount, columnCount } = sizes || {};
-  const contentFontStyle = styleService?.content?.getStyle();
-  const stateStyles = styleService?.palette?.getStyle();
 
   const itemWidth = layoutOptions.dataLayout === 'grid' ? columnWidth : width;
   const showTick = itemWidth > REMOVE_TICK_LIMIT;
@@ -92,8 +90,7 @@ export default function getListBoxComponents({
     translator,
     showSearch,
     isModal,
-    stateStyles,
-    contentFontStyle,
+    styles,
   };
 
   const List = ({ onItemsRendered, ref }) => {

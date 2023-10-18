@@ -10,12 +10,12 @@ import { CELL_PADDING_LEFT } from '../constants';
 const TREE_PATH = '/qListObjectDef';
 const WILDCARD = '**';
 
-const StyledInputAdornment = styled(InputAdornment)(({ theme }) => ({
-  color: theme.listBox?.content?.color,
+const StyledInputAdornment = styled(InputAdornment, { shouldForwardProp: (p) => p !== 'styles' })(({ styles }) => ({
+  color: styles.content.color,
 }));
 
-const StyledOutlinedInput = styled(OutlinedInput)(({ theme }) => ({
-  color: theme.listBox?.content?.color,
+const StyledOutlinedInput = styled(OutlinedInput, { shouldForwardProp: (p) => p !== 'styles' })(({ styles }) => ({
+  color: styles.content.color,
   display: 'flex',
 }));
 
@@ -31,6 +31,7 @@ export default function ListBoxSearch({
   searchEnabled,
   direction,
   hide,
+  styles,
 }) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
@@ -175,8 +176,9 @@ export default function ListBoxSearch({
 
   return (
     <StyledOutlinedInput
+      styles={styles}
       startAdornment={
-        <StyledInputAdornment position="start">
+        <StyledInputAdornment position="start" styles={styles}>
           <Search size={dense ? 'small' : 'normal'} />
         </StyledInputAdornment>
       }

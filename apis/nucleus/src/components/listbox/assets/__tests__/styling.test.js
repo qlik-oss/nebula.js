@@ -1,14 +1,15 @@
 import * as muiStyles from '@mui/material/styles';
-import createStyleService from '../style-service';
+import getStyling from '../styling';
 
 jest.mock('@mui/material/styles', () => ({
   __esModule: true,
   ...jest.requireActual('@mui/material/styles'),
 }));
 
-describe('style-service', () => {
+describe('styling', () => {
   let theme = {};
   let components = [];
+  let themeApi;
 
   beforeAll(() => {
     jest.spyOn(muiStyles, 'getContrastRatio').mockReturnValue(0.5);
@@ -23,6 +24,9 @@ describe('style-service', () => {
   });
 
   beforeEach(() => {
+    themeApi = {
+      getStyle: (ns, path, prop) => `${ns},${path},${prop}`,
+    };
     theme = {
       listBox: {
         title: {
@@ -66,15 +70,15 @@ describe('style-service', () => {
       ];
       let inst;
       let header;
-      inst = createStyleService({ theme, components: [] });
-      header = inst.header.getStyle();
-      expect(header.fontSize).toEqual(24);
-      expect(header.fontColor).toEqual('red');
+      inst = getStyling({ themeApi, theme, components: [] });
+      header = inst.header;
+      expect(header.fontSize).toEqual('object.listBox,title.main,fontSize');
+      expect(header.color).toEqual('object.listBox,title.main,color');
 
-      inst = createStyleService({ theme, components });
-      header = inst.header.getStyle();
+      inst = getStyling({ themeApi, theme, components });
+      header = inst.header;
       expect(header.fontSize).toEqual('size-from-component');
-      expect(header.fontColor).toEqual('color-from-component');
+      expect(header.color).toEqual('color-from-component');
     });
 
     it('content', () => {
@@ -90,21 +94,21 @@ describe('style-service', () => {
       ];
       let inst;
       let content;
-      inst = createStyleService({ theme, components: [] });
-      content = inst.content.getStyle();
-      expect(content.fontSize).toEqual(24);
-      expect(content.fontColor).toEqual('#000');
+      inst = getStyling({ themeApi, theme, components: [] });
+      content = inst.content;
+      expect(content.fontSize).toEqual('object.listBox,content,fontSize');
+      expect(content.color).toEqual('#000');
 
-      inst = createStyleService({ theme, components });
-      content = inst.content.getStyle();
+      inst = getStyling({ themeApi, theme, components });
+      content = inst.content;
       expect(content.fontSize).toEqual('size-from-component');
-      expect(content.fontColor).toEqual('color-from-component');
+      expect(content.color).toEqual('color-from-component');
     });
 
-    it('palette', () => {
+    it('selected', () => {
       components = [
         {
-          key: 'palette',
+          key: 'selected',
           selected: {
             color: 'selected-from-component',
           },
@@ -123,31 +127,31 @@ describe('style-service', () => {
         },
       ];
       let inst;
-      let palette;
+      let selections;
 
-      inst = createStyleService({ theme, components: [] });
-      palette = inst.palette.getStyle();
-      expect(palette.selected).toEqual('selected-from-theme');
+      inst = getStyling({ themeApi, theme, components: [] });
+      selections = inst.selections;
+      expect(selections.selected).toEqual('selected-from-theme');
 
-      inst = createStyleService({ theme, components });
-      palette = inst.palette.getStyle();
-      expect(palette.selected).toEqual('selected-from-component');
+      inst = getStyling({ themeApi, theme, components });
+      selections = inst.selections;
+      expect(selections.selected).toEqual('selected-from-theme');
 
-      inst = createStyleService({ theme, components });
-      palette = inst.palette.getStyle();
-      expect(palette.alternative).toEqual('alternative-from-component');
+      inst = getStyling({ themeApi, theme, components });
+      selections = inst.selections;
+      expect(selections.alternative).toEqual('#E4E4E4');
 
-      inst = createStyleService({ theme, components });
-      palette = inst.palette.getStyle();
-      expect(palette.excluded).toEqual('excluded-from-component');
+      inst = getStyling({ themeApi, theme, components });
+      selections = inst.selections;
+      expect(selections.excluded).toEqual('#BEBEBE');
 
-      inst = createStyleService({ theme, components });
-      palette = inst.palette.getStyle();
-      expect(palette.selectedExcluded).toEqual('selectedExcluded-from-component');
+      inst = getStyling({ themeApi, theme, components });
+      selections = inst.selections;
+      expect(selections.selectedExcluded).toEqual('#A9A9A9');
 
-      inst = createStyleService({ theme, components });
-      palette = inst.palette.getStyle();
-      expect(palette.possible).toEqual('possible-from-component');
+      inst = getStyling({ themeApi, theme, components });
+      selections = inst.selections;
+      expect(selections.possible).toEqual('object.listBox,,backgroundColor');
     });
   });
 });

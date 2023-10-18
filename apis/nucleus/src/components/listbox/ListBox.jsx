@@ -55,7 +55,7 @@ export default function ListBox({
   onCtrlF,
   showSearch,
   isModal,
-  styleService,
+  styles,
 }) {
   const { translator: translatorDynamic } = useContext(InstanceContext);
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);
@@ -210,7 +210,7 @@ export default function ListBox({
     count,
     freqIsAllowed,
     checkboxes,
-    styleService,
+    styles,
   });
   if (sizes.columnWidth) {
     // In grid mode, where we have a dynamic item width, get a second opinion on showing/hiding frequency.
@@ -309,7 +309,7 @@ export default function ListBox({
     translator: translatorDynamic,
     showSearch,
     isModal,
-    styleService,
+    styles,
   });
 
   const { columnWidth, listHeight, itemHeight } = sizes || {};

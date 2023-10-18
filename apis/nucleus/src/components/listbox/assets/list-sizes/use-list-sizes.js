@@ -13,20 +13,11 @@ import {
 import useTextWidth from '../../hooks/useTextWidth';
 import getMeasureText from '../measure-text';
 
-export default function useListSizes({
-  layout,
-  width,
-  height,
-  listCount,
-  count,
-  freqIsAllowed,
-  checkboxes,
-  styleService,
-}) {
+export default function useListSizes({ layout, width, height, listCount, count, freqIsAllowed, checkboxes, styles }) {
   const { layoutOptions = {} } = layout || {};
   const { layoutOrder, maxVisibleRows = {}, maxVisibleColumns, dense, dataLayout } = layoutOptions;
 
-  const { fontSize = '12px', fontFamily = 'Source sans pro' } = styleService?.content?.getStyle() || {};
+  const { fontSize = '12px', fontFamily = 'Source sans pro' } = styles?.content || {};
   const font = `${fontSize} ${fontFamily}`; // font format as supported by HTML canvas
   const textWidth = useTextWidth({ text: getMeasureText(layout), font });
   const freqMinWidth = useTextWidth({ text: getMeasureText(5), font });
