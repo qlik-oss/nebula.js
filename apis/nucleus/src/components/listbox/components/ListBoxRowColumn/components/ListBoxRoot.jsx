@@ -71,7 +71,7 @@ const RowColRoot = styled('div', {
       'styles',
     ].includes(prop),
 })(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode, freqHitsValue, styles }) => {
-  const rowFontColor = styles.content.fontColor;
+  const rowFontColor = styles.content.color;
   const rowBackgroundColor = styles.content.backgroundColor;
   return {
     '&:focus': {
@@ -250,7 +250,7 @@ const RowColRoot = styled('div', {
     },
 
     [`& .${classes.excludedTextWithCheckbox}`]: {
-      color: '#828282',
+      color: rowFontColor || '#828282',
       fontStyle: 'italic',
     },
   };
