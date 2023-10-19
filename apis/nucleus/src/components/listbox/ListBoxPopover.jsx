@@ -39,6 +39,7 @@ export default function ListBoxPopover({
   stateName = '$',
   autoFocus,
   components,
+  checkboxes: checkboxesOption,
 }) {
   const isMasterDim = Boolean(fieldName?.qLibraryId);
   const open = show && Boolean(alignTo.current);
@@ -94,7 +95,7 @@ export default function ListBoxPopover({
   const [selections] = useObjectSelections(app, model, containerRef);
   const [layout] = useLayout(model);
   const [selectionState] = useState(() => createSelectionState());
-  const checkboxes = layout?.checkboxes;
+  const { checkboxes = checkboxesOption } = layout || {};
 
   const styles = getStyles({ themeApi, theme, components, checkboxes });
 

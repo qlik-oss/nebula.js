@@ -88,7 +88,7 @@ export default function getStyles({ themeApi, theme, components = [], checkboxes
       fontWeight: getListboxStyle('title.main', 'fontWeight') || 'bold',
     },
     content: {
-      backgroundColor: checkboxes ? selections.possible : undefined,
+      backgroundColor: checkboxes ? undefined : selections.possible,
       color: selections.possibleContrast || getListboxStyle('content', 'color'),
       fontSize: overrides.content?.fontSize || getListboxStyle('content', 'fontSize'),
       fontFamily: getListboxStyle('content', 'fontFamily'),
