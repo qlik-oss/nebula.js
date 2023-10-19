@@ -24,6 +24,7 @@ function FieldWithRanges({
   isGridCol,
   isSingleSelect,
   valueTextAlign,
+  styles,
 }) {
   const LWR = <LabelsWithRanges labels={labels} dense={dense} showGray={showGray} checkboxes={checkboxes} />;
   return checkboxes ? (
@@ -39,6 +40,7 @@ function FieldWithRanges({
       isSingleSelect={isSingleSelect}
       checkboxes={checkboxes}
       valueTextAlign={valueTextAlign}
+      styles={styles}
     />
   ) : (
     LWR

@@ -14,6 +14,7 @@ function Field({
   isSingleSelect,
   checkboxes,
   valueTextAlign,
+  styles,
 }) {
   return checkboxes ? (
     <CheckboxField
@@ -28,6 +29,7 @@ function Field({
       isSingleSelect={isSingleSelect}
       checkboxes={checkboxes}
       valueTextAlign={valueTextAlign}
+      styles={styles}
     />
   ) : (
     <ValueField

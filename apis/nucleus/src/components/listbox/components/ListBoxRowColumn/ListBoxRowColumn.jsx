@@ -263,6 +263,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               isGridCol={isGridCol}
               isSingleSelect={isSingleSelect}
               valueTextAlign={valueTextAlign}
+              styles={styles}
             />
           ) : (
             <Field
@@ -277,6 +278,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               isSingleSelect={isSingleSelect}
               checkboxes={checkboxes}
               valueTextAlign={valueTextAlign}
+              styles={styles}
             />
           )}
         </Grid>

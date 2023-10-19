@@ -18,6 +18,7 @@ function CheckboxField({
   isSingleSelect,
   checkboxes,
   valueTextAlign,
+  styles,
 }) {
   const cb = (
     <ListBoxCheckbox
@@ -29,6 +30,7 @@ function CheckboxField({
       isGridCol={isGridCol}
       showGray={showGray}
       dataN={qElemNumber}
+      styles={styles}
     />
   );
   const rb = (

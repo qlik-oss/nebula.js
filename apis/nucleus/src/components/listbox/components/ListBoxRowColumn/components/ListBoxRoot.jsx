@@ -254,7 +254,7 @@ const RowColRoot = styled('div', {
     },
 
     [`& .${classes.excludedTextWithCheckbox}`]: {
-      color: excludedSelectStyle.background || '#828282',
+      color: '#828282',
       fontStyle: 'italic',
     },
   };
