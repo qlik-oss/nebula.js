@@ -18,7 +18,6 @@ function FieldWithRanges({
   checkboxes,
   dense,
   showGray,
-  color,
   qElemNumber,
   isSelected,
   cell,
@@ -31,7 +30,6 @@ function FieldWithRanges({
     <CheckboxField
       onChange={onChange}
       label={LWR}
-      color={color}
       qElemNumber={qElemNumber}
       isSelected={isSelected}
       dense={dense}

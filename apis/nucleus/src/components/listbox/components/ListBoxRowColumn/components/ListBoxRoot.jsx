@@ -73,7 +73,10 @@ const RowColRoot = styled('div', {
 })(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode, freqHitsValue, styles }) => {
   const rowFontColor = styles.content.color;
   const rowBackgroundColor = styles.content.backgroundColor;
+
+  const selectStyle = getSelectedStyle({ theme, styles, selectedState: 'selected' });
   const excludedSelectStyle = getSelectedStyle({ theme, styles, selectedState: 'excluded' });
+
   return {
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
@@ -175,7 +178,7 @@ const RowColRoot = styled('div', {
 
     // Selection styles (S=Selected, XS=ExcludedSelected, A=Alternative, X=Excluded).
     [`& .${classes.S}`]: {
-      ...getSelectedStyle({ theme, styles, selectedState: 'selected' }),
+      ...selectStyle,
       border: isGridMode ? 'none' : undefined,
     },
 
@@ -230,7 +233,6 @@ const RowColRoot = styled('div', {
         height: '100%',
       },
     },
-
     [`& .${classes.barSelected}`]: {
       '& .bar-filled': {
         opacity: '30%',
@@ -245,8 +247,9 @@ const RowColRoot = styled('div', {
 
     [`& .${classes.barSelectedWithCheckbox}`]: {
       '& .bar-filled': {
-        background: '#BFE5D0',
-        borderColor: '#BFE5D0',
+        opacity: '30%',
+        background: selectStyle.background || '#BFE5D0',
+        borderColor: selectStyle.background || '#BFE5D0',
       },
     },
 

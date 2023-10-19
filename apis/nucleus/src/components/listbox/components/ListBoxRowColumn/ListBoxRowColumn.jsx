@@ -257,7 +257,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               checkboxes={checkboxes}
               dense={dense}
               showGray={showGray}
-              color="inherit" // TODO: Check this
               qElemNumber={cell.qElemNumber}
               isSelected={isSelected}
               cell={cell}
@@ -269,7 +268,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
             <Field
               onChange={onChange}
               label={label}
-              color="inherit"
               qElemNumber={cell.qElemNumber}
               isSelected={isSelected}
               dense={dense}

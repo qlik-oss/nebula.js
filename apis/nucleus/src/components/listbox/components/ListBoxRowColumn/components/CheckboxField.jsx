@@ -9,7 +9,6 @@ import LabelTag from './LabelTag';
 function CheckboxField({
   onChange,
   label,
-  color,
   qElemNumber,
   isSelected,
   dense,
@@ -38,13 +37,11 @@ function CheckboxField({
 
   return (
     <FormControlLabel
-      color={color}
       control={isSingleSelect ? rb : cb}
       className={classes.checkboxLabel}
       label={
         <LabelTag
           label={label}
-          color={color}
           dense={dense}
           showGray={showGray}
           checkboxes={checkboxes}

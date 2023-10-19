@@ -122,7 +122,7 @@ function ListBoxInline({ options, layout }) {
   }, [model]);
 
   const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
-  const styles = getStyles({ themeApi, theme, components });
+  const styles = getStyles({ themeApi, theme, components, checkboxes });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 

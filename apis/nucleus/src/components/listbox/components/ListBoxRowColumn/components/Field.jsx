@@ -5,7 +5,6 @@ import ValueField from './ValueField';
 function Field({
   onChange,
   label,
-  color,
   qElemNumber,
   isSelected,
   dense,
@@ -20,7 +19,6 @@ function Field({
     <CheckboxField
       onChange={onChange}
       label={label}
-      color={color}
       qElemNumber={qElemNumber}
       isSelected={isSelected}
       dense={dense}
@@ -34,7 +32,6 @@ function Field({
   ) : (
     <ValueField
       label={label}
-      color={color}
       dense={dense}
       showGray
       checkboxes={checkboxes}

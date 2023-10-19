@@ -42,6 +42,7 @@ export default function ListBoxPopoverWrapper({ app, fieldIdentifier, stateName,
       fieldName={fieldIdentifier}
       stateName={stateName}
       autoFocus={options.autoFocus}
+      components={options.components}
     />
   );
 }

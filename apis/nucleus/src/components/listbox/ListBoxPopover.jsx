@@ -94,8 +94,9 @@ export default function ListBoxPopover({
   const [selections] = useObjectSelections(app, model, containerRef);
   const [layout] = useLayout(model);
   const [selectionState] = useState(() => createSelectionState());
+  const checkboxes = layout?.checkboxes;
 
-  const styles = getStyles({ themeApi, theme, components });
+  const styles = getStyles({ themeApi, theme, components, checkboxes });
 
   useEffect(() => {
     if (selections && open) {

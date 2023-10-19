@@ -73,7 +73,7 @@ function getSelectionColors(theme, getListboxStyle, overrides) {
   };
 }
 
-export default function getStyles({ themeApi, theme, components = [] }) {
+export default function getStyles({ themeApi, theme, components = [], checkboxes = false }) {
   const overrides = getOverridesAsObject(components) || {};
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
 
@@ -88,7 +88,7 @@ export default function getStyles({ themeApi, theme, components = [] }) {
       fontWeight: getListboxStyle('title.main', 'fontWeight') || 'bold',
     },
     content: {
-      backgroundColor: selections.possible,
+      backgroundColor: checkboxes ? selections.possible : undefined,
       color: selections.possibleContrast || getListboxStyle('content', 'color'),
       fontSize: overrides.content?.fontSize || getListboxStyle('content', 'fontSize'),
       fontFamily: getListboxStyle('content', 'fontFamily'),
