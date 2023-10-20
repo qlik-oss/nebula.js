@@ -15,13 +15,8 @@ function getContrastingColor(backgroundColor, desiredTextColor = undefined, dark
 }
 
 function getOverridesAsObject(components = []) {
-  const overrides = {};
-
-  components.forEach((c) => {
-    overrides[c.key] = c;
-  });
-
-  return overrides;
+  // Currently supporting only a "theme" component, under which all styling overrides are gathered.
+  return components.find(({ key }) => key === 'theme') || {};
 }
 
 function getSelectionColors(theme, getListboxStyle, overrides) {
@@ -74,7 +69,7 @@ function getSelectionColors(theme, getListboxStyle, overrides) {
 }
 
 export default function getStyles({ themeApi, theme, components = [], checkboxes = false }) {
-  const overrides = getOverridesAsObject(components) || {};
+  const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
 
   const selections = getSelectionColors(theme, getListboxStyle, overrides);

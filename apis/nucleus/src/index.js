@@ -48,7 +48,31 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
 
 /**
  * @interface Component
- * @property {string} key The key of the component.
+ * @property {string} key The key of the component. Currently only supporting a "theme" component.
+ * @example
+ * const n = embed(app);
+ * const inst = await n.field('field_name');
+ * inst.mount(document.querySelector('.listbox'), {
+ *   components: [{
+ *    key: 'theme',
+ *    header: {
+ *      fontColor: { color: '#f00' },
+ *      fontSize: 23,
+ *    },
+ *    content: {
+ *      fontSize: 16,
+ *      useContrastColor: false,
+ *    },
+ *    selections: {
+ *      selected: { color: '#0f0' },
+ *      alternative: { color: '#ededed' },
+ *      excluded: { color: '#ccc' },
+ *      selectedExcluded: { color: '#bbb' },
+ *      possible: { color: '#fefefe' },
+ *      possible: { color: '#fefefe' },
+ *    }
+ *   }]
+ * });
  */
 
 /**
