@@ -16,6 +16,8 @@ const light = {
       primary: colors.grey25,
       secondary: 'rgba(0, 0, 0, 0.55)',
       disabled: 'rgba(0, 0, 0, 0.3)',
+      light: colors.grey100,
+      dark: colors.grey0,
     },
     action: {
       active: '#545454', // color for actionable things like icon buttons
@@ -44,9 +46,13 @@ const light = {
       main: colors.green,
       alternative: '#E4E4E4',
       excluded: '#BEBEBE',
+      selectedExcluded: '#BEBEBE',
+      possible: colors.grey100,
       mainContrastText: colors.grey100,
       alternativeContrastText: colors.grey25,
       excludedContrastText: colors.grey25,
+      selectedExcludedContrastText: colors.grey100,
+      possibleContrastText: colors.grey0,
     },
     btn: {
       normal: 'rgba(255, 255, 255, 0.6)',

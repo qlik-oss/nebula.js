@@ -54,13 +54,15 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     translator,
     showSearch,
     isModal,
+    contentFontStyle,
+    styles,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
   const { itemPadding } = sizes;
 
   let cellIndex;
-  let styles;
+  let styleOverrides;
   const count = { max: null, currentIndex: null };
 
   if (typeof rowIndex === 'number' && typeof columnIndex === 'number') {
@@ -74,7 +76,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       count.currentIndex = columnIndex;
     }
     const padding = 0;
-    styles = {
+    styleOverrides = {
       ...style,
       left: padding + (columnIndex === 0 ? style.left : Number(style.left) + columnIndex * padding),
       // right: columnIndex === columnCount ? style.right : Number(style.right) + columnIndex * padding,
@@ -84,7 +86,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     cellIndex = index;
     count.max = listCount;
     count.currentIndex = index;
-    styles = { ...style };
+    styleOverrides = { ...style };
   }
   cellIndex += dataOffset;
 
@@ -192,7 +194,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     <RowColRoot
       className={classes.barContainer}
       checkboxes={checkboxes}
-      style={styles}
+      style={styleOverrides}
+      styles={styles}
       isGridCol={isGridCol}
       isGridMode={dataLayout === 'grid'}
       dense={dense}
@@ -200,6 +203,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
       sizes={sizes}
       frequencyMode={deducedFrequencyMode}
       freqHitsValue={freqHitsValue}
+      contentFontStyle={contentFontStyle}
       data-testid="listbox.item"
     >
       <ItemGrid
@@ -253,19 +257,18 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               checkboxes={checkboxes}
               dense={dense}
               showGray={showGray}
-              color="inherit" // TODO: Check this
               qElemNumber={cell.qElemNumber}
               isSelected={isSelected}
               cell={cell}
               isGridCol={isGridCol}
               isSingleSelect={isSingleSelect}
               valueTextAlign={valueTextAlign}
+              styles={styles}
             />
           ) : (
             <Field
               onChange={onChange}
               label={label}
-              color="inherit"
               qElemNumber={cell.qElemNumber}
               isSelected={isSelected}
               dense={dense}
@@ -275,6 +278,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
               isSingleSelect={isSingleSelect}
               checkboxes={checkboxes}
               valueTextAlign={valueTextAlign}
+              styles={styles}
             />
           )}
         </Grid>

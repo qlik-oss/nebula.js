@@ -9,7 +9,6 @@ import LabelTag from './LabelTag';
 function CheckboxField({
   onChange,
   label,
-  color,
   qElemNumber,
   isSelected,
   dense,
@@ -19,6 +18,7 @@ function CheckboxField({
   isSingleSelect,
   checkboxes,
   valueTextAlign,
+  styles,
 }) {
   const cb = (
     <ListBoxCheckbox
@@ -30,6 +30,7 @@ function CheckboxField({
       isGridCol={isGridCol}
       showGray={showGray}
       dataN={qElemNumber}
+      styles={styles}
     />
   );
   const rb = (
@@ -38,13 +39,11 @@ function CheckboxField({
 
   return (
     <FormControlLabel
-      color={color}
       control={isSingleSelect ? rb : cb}
       className={classes.checkboxLabel}
       label={
         <LabelTag
           label={label}
-          color={color}
           dense={dense}
           showGray={showGray}
           checkboxes={checkboxes}

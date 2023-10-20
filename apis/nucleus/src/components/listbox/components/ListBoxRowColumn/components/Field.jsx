@@ -5,7 +5,6 @@ import ValueField from './ValueField';
 function Field({
   onChange,
   label,
-  color,
   qElemNumber,
   isSelected,
   dense,
@@ -15,12 +14,12 @@ function Field({
   isSingleSelect,
   checkboxes,
   valueTextAlign,
+  styles,
 }) {
   return checkboxes ? (
     <CheckboxField
       onChange={onChange}
       label={label}
-      color={color}
       qElemNumber={qElemNumber}
       isSelected={isSelected}
       dense={dense}
@@ -30,11 +29,11 @@ function Field({
       isSingleSelect={isSingleSelect}
       checkboxes={checkboxes}
       valueTextAlign={valueTextAlign}
+      styles={styles}
     />
   ) : (
     <ValueField
       label={label}
-      color={color}
       dense={dense}
       showGray
       checkboxes={checkboxes}

@@ -20,6 +20,7 @@ import ListBoxSearch from './components/ListBoxSearch';
 import useObjectSelections from '../../hooks/useObjectSelections';
 import createSelectionState from './hooks/selections/selectionState';
 import getHasSelections from './assets/has-selections';
+import getStyles from './assets/styling';
 
 export default function ListBoxPopover({
   alignTo,
@@ -37,6 +38,8 @@ export default function ListBoxPopover({
   fieldName,
   stateName = '$',
   autoFocus,
+  components,
+  checkboxes: checkboxesOption,
 }) {
   const isMasterDim = Boolean(fieldName?.qLibraryId);
   const open = show && Boolean(alignTo.current);
@@ -86,12 +89,15 @@ export default function ListBoxPopover({
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const { translator } = useContext(InstanceContext);
+  const { translator, themeApi } = useContext(InstanceContext);
   const moreAlignTo = useRef();
   const containerRef = useRef();
   const [selections] = useObjectSelections(app, model, containerRef);
   const [layout] = useLayout(model);
   const [selectionState] = useState(() => createSelectionState());
+  const { checkboxes = checkboxesOption } = layout || {};
+
+  const styles = getStyles({ themeApi, theme, components, checkboxes });
 
   useEffect(() => {
     if (selections && open) {
@@ -179,6 +185,7 @@ export default function ListBoxPopover({
           <div ref={moreAlignTo} />
           <Grid item ref={searchContainerRef}>
             <ListBoxSearch
+              styles={styles}
               visible
               model={model}
               listCount={listCount}
@@ -197,7 +204,7 @@ export default function ListBoxPopover({
             direction="ltr"
             onSetListCount={(c) => setListCount(c)}
             onCtrlF={onCtrlF}
-            theme={theme}
+            styles={styles}
           />
         </Grid>
       </Grid>

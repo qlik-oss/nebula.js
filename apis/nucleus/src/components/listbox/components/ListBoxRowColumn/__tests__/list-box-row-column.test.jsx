@@ -23,8 +23,14 @@ describe('<ListBoxRowColumn />', () => {
   let getRowsKeyboardNavigation;
   let keyboard;
   let defaultPages;
+  let styles;
 
   beforeEach(() => {
+    styles = {
+      header: {},
+      content: {},
+      selections: {},
+    };
     defaultPages = [
       {
         qArea: {
@@ -101,6 +107,7 @@ describe('<ListBoxRowColumn />', () => {
         actions,
         dataOffset: 0,
         sizes: { itemPadding: 2 },
+        styles,
         focusListItems: () => ({ first: false, last: false }),
       };
       expect(getRowsKeyboardNavigation).not.called;
@@ -138,6 +145,7 @@ describe('<ListBoxRowColumn />', () => {
       keyboard.innerTabStops = true;
 
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -171,6 +179,7 @@ describe('<ListBoxRowColumn />', () => {
       keyboard.innerTabStops = true;
 
       const data = {
+        styles,
         checkboxes: true,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
@@ -211,6 +220,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         isLocked: true,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
@@ -257,6 +267,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -299,6 +310,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -341,6 +353,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -384,6 +397,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -426,6 +440,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -469,6 +484,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -511,6 +527,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -554,6 +571,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -596,6 +614,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -647,6 +666,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -701,6 +721,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -753,6 +774,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -796,6 +818,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         keyboard,
         checkboxes: true,
         actions,
@@ -852,6 +875,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -883,6 +907,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),
@@ -912,6 +937,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         keyboard,
         textAlign: { align: 'right' },
         pages: defaultPages,
@@ -933,6 +959,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         keyboard,
         textAlign: { align: 'left' },
         pages: defaultPages,
@@ -954,6 +981,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         keyboard,
         textAlign: { align: 'center' },
         pages: defaultPages,
@@ -980,6 +1008,7 @@ describe('<ListBoxRowColumn />', () => {
         qMatrix: p.qMatrix.map(([mx]) => [{ ...mx, qNum: 'NaN' }]),
       }));
       const data = {
+        styles,
         keyboard,
         textAlign: { auto: true },
         direction: 'rtl',
@@ -1002,6 +1031,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         keyboard,
         textAlign: { auto: true },
         direction: 'rtl',
@@ -1030,6 +1060,7 @@ describe('<ListBoxRowColumn />', () => {
         qMatrix: p.qMatrix.map(([mx]) => [{ ...mx, qNum: 'NaN' }]),
       }));
       const data = {
+        styles,
         keyboard,
         textAlign: { auto: true },
         direction: 'ltr',
@@ -1053,6 +1084,7 @@ describe('<ListBoxRowColumn />', () => {
       const style = {};
 
       const data = {
+        styles,
         keyboard,
         textAlign: { auto: true },
         direction: 'ltr',
@@ -1075,6 +1107,7 @@ describe('<ListBoxRowColumn />', () => {
       const index = 0;
       const style = {};
       const data = {
+        styles,
         onMouseDown: jest.fn(),
         onMouseUp: jest.fn(),
         onMouseEnter: jest.fn(),

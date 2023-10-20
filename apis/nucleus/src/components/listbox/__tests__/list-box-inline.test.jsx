@@ -15,7 +15,7 @@ import * as ActionsToolbarModule from '../../ActionsToolbar';
 import * as ListBoxModule from '../ListBox';
 import * as ListBoxSearchModule from '../components/ListBoxSearch';
 import * as listboxSelectionToolbarModule from '../interactions/listbox-selection-toolbar';
-import * as addListboxTheme from '../assets/addListboxTheme';
+import * as styling from '../assets/styling';
 import * as isDirectQueryEnabled from '../utils/is-direct-query';
 
 const virtualizedModule = require('react-virtualized-auto-sizer');
@@ -91,7 +91,9 @@ describe('<ListboxInline />', () => {
     jest.spyOn(lockModule, 'default').mockImplementation(() => 'lock');
     jest.spyOn(useLayoutModule, 'default').mockImplementation(() => [layout]);
     jest.spyOn(listboxKeyboardNavigationModule, 'default').mockImplementation(getListboxInlineKeyboardNavigation);
-    jest.spyOn(addListboxTheme, 'default').mockImplementation(() => {});
+    jest
+      .spyOn(styling, 'default')
+      .mockImplementation(() => ({ backgroundColor: '#FFFFFF', header: {}, content: {}, selections: {} }));
     jest.spyOn(isDirectQueryEnabled, 'default').mockImplementation(() => false);
 
     ActionsToolbarModule.default = ActionsToolbar;
@@ -123,6 +125,7 @@ describe('<ListboxInline />', () => {
       update: undefined,
       fetchStart: 'fetchStart',
       isPopover: false,
+      components: [],
     };
 
     useRef.mockReturnValue({ current: 'current' });

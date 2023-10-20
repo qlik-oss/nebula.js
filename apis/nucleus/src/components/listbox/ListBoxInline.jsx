@@ -14,7 +14,7 @@ import ActionsToolbar from '../ActionsToolbar';
 import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import getListboxContainerKeyboardNavigation from './interactions/keyboard-navigation/keyboard-nav-container';
-import addListboxTheme from './assets/addListboxTheme';
+import getStyles from './assets/styling';
 import useAppSelections from '../../hooks/useAppSelections';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-get-action-props';
@@ -40,40 +40,41 @@ const classes = {
   listboxWrapper: `${PREFIX}-listboxWrapper`,
 };
 
-const StyledGrid = styled(Grid, { shouldForwardProp: (p) => !['containerPadding', 'isGridMode'].includes(p) })(
-  ({ theme, containerPadding, isGridMode }) => ({
-    backgroundColor: theme.listBox?.backgroundColor ?? theme.palette.background.default,
-    [`& .${classes.listBoxHeader}`]: {
-      alignSelf: 'center',
-      display: 'flex',
-    },
-    [`& .${classes.screenReaderOnly}`]: {
-      position: 'absolute',
-      height: 0,
-      width: 0,
-      overflow: 'hidden',
-    },
-    [`& .${classes.listboxWrapper}`]: {
-      padding: containerPadding,
-    },
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
-    },
-    '&:focus ::-webkit-scrollbar-track': {
-      boxShadow: !isGridMode ? 'inset -2px -2px 0px #3F8AB3' : undefined,
-    },
-    '&:focus-visible': {
-      outline: 'none',
-    },
-  })
-);
-
-const Title = styled(Typography)(({ theme }) => ({
-  color: theme.listBox?.title?.main?.color,
-  fontSize: theme.listBox?.title?.main?.fontSize,
-  fontFamily: theme.listBox?.title?.main?.fontFamily,
-  fontWeight: theme.listBox?.title?.main?.fontWeight || 'bold',
+const StyledGrid = styled(Grid, {
+  shouldForwardProp: (p) => !['containerPadding', 'isGridMode', 'styles'].includes(p),
+})(({ theme, containerPadding, isGridMode, styles }) => ({
+  background: styles.backgroundColor,
+  [`& .${classes.listBoxHeader}`]: {
+    alignSelf: 'center',
+    display: 'flex',
+  },
+  [`& .${classes.screenReaderOnly}`]: {
+    position: 'absolute',
+    height: 0,
+    width: 0,
+    overflow: 'hidden',
+  },
+  [`& .${classes.listboxWrapper}`]: {
+    padding: containerPadding,
+  },
+  '&:focus': {
+    boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+  },
+  '&:focus ::-webkit-scrollbar-track': {
+    boxShadow: !isGridMode ? 'inset -2px -2px 0px #3F8AB3' : undefined,
+  },
+  '&:focus-visible': {
+    outline: 'none',
+  },
 }));
+
+const Title = styled(Typography)(({ styles }) => ({
+  color: styles.header.color,
+  fontSize: styles.header.fontSize,
+  fontFamily: styles.header.fontFamily,
+  fontWeight: styles.header.fontWeight,
+}));
+
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
 function ListBoxInline({ options, layout }) {
@@ -81,7 +82,7 @@ function ListBoxInline({ options, layout }) {
     app,
     direction,
     frequencyMode,
-    checkboxes,
+    checkboxes: checkboxesOption,
     search = true,
     focusSearch = false,
     rangeSelect = true,
@@ -97,6 +98,7 @@ function ListBoxInline({ options, layout }) {
     renderedCallback,
     toolbar = true,
     isPopover = false,
+    components,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -120,7 +122,9 @@ function ListBoxInline({ options, layout }) {
   }, [model]);
 
   const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
-  theme.listBox = addListboxTheme(themeApi);
+
+  const { checkboxes = checkboxesOption } = layout || {};
+  const styles = getStyles({ themeApi, theme, components, checkboxes });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 
@@ -341,6 +345,7 @@ function ListBoxInline({ options, layout }) {
         direction="column"
         gap={0}
         containerPadding={containerPadding}
+        styles={styles}
         style={{ height: '100%', flexFlow: 'column nowrap' }}
         onKeyDown={handleKeyDown}
         onMouseEnter={handleOnMouseEnter}
@@ -384,7 +389,7 @@ function ListBoxInline({ options, layout }) {
               className={classes.listBoxHeader}
             >
               {showTitle && (
-                <Title variant="h6" noWrap ref={titleRef} title={layout.title}>
+                <Title variant="h6" noWrap ref={titleRef} title={layout.title} styles={styles}>
                   {layout.title}
                 </Title>
               )}
@@ -416,6 +421,7 @@ function ListBoxInline({ options, layout }) {
               searchEnabled={searchEnabled}
               direction={direction}
               hide={showSearchIcon && onShowSearch}
+              styles={styles}
             />
           </Grid>
           <Grid item xs className={classes.listboxWrapper}>
@@ -427,7 +433,6 @@ function ListBoxInline({ options, layout }) {
                   <ListBox
                     model={model}
                     app={app}
-                    theme={theme}
                     constraints={constraints}
                     layout={layout}
                     selections={selections}
@@ -457,6 +462,7 @@ function ListBoxInline({ options, layout }) {
                     renderedCallback={renderedCallback}
                     onCtrlF={onCtrlF}
                     isModal={isModalMode}
+                    styles={styles}
                   />
                 )}
               </AutoSizer>

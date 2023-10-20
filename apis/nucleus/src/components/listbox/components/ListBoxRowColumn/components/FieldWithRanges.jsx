@@ -18,20 +18,19 @@ function FieldWithRanges({
   checkboxes,
   dense,
   showGray,
-  color,
   qElemNumber,
   isSelected,
   cell,
   isGridCol,
   isSingleSelect,
   valueTextAlign,
+  styles,
 }) {
   const LWR = <LabelsWithRanges labels={labels} dense={dense} showGray={showGray} checkboxes={checkboxes} />;
   return checkboxes ? (
     <CheckboxField
       onChange={onChange}
       label={LWR}
-      color={color}
       qElemNumber={qElemNumber}
       isSelected={isSelected}
       dense={dense}
@@ -41,6 +40,7 @@ function FieldWithRanges({
       isSingleSelect={isSingleSelect}
       checkboxes={checkboxes}
       valueTextAlign={valueTextAlign}
+      styles={styles}
     />
   ) : (
     LWR

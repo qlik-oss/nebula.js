@@ -15,13 +15,14 @@ const theme = createTheme('dark');
 const create = (comp) => renderer.create(<ThemeProvider theme={theme}>{comp}</ThemeProvider>);
 
 let selections = {};
+const styles = { content: {}, header: {}, selections: {} };
 
 const keyboard = {};
 
 const testRender = (model) =>
   create(
     <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-      <ListBoxSearch selections={selections} model={model} keyboard={keyboard} wildCardSearch />
+      <ListBoxSearch styles={styles} selections={selections} model={model} keyboard={keyboard} wildCardSearch />
     </InstanceContext.Provider>
   );
 
@@ -118,7 +119,7 @@ describe('<ListBoxSearch />', () => {
     testRenderer.update(
       <ThemeProvider theme={theme}>
         <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-          <ListBoxSearch selections={selections} model={model} keyboard={keyboard} />
+          <ListBoxSearch styles={styles} selections={selections} model={model} keyboard={keyboard} />
         </InstanceContext.Provider>
       </ThemeProvider>
     );
@@ -133,7 +134,13 @@ describe('<ListBoxSearch />', () => {
     };
     const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch selections={selections} selectionState={selectionState} model={model} keyboard={keyboard} />
+        <ListBoxSearch
+          styles={styles}
+          selections={selections}
+          selectionState={selectionState}
+          model={model}
+          keyboard={keyboard}
+        />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
@@ -157,7 +164,7 @@ describe('<ListBoxSearch />', () => {
     store.getStoreValue.mockReturnValue(0);
     const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} />
+        <ListBoxSearch styles={styles} selections={selections} model={model} keyboard={keyboard} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
@@ -208,7 +215,7 @@ describe('<ListBoxSearch />', () => {
   test('should not render if visible is false', () => {
     const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} visible={false} />
+        <ListBoxSearch styles={styles} selections={selections} model={model} keyboard={keyboard} visible={false} />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
@@ -219,7 +226,13 @@ describe('<ListBoxSearch />', () => {
   test('should not render if searchEnabled false', () => {
     const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} searchEnabled={false} />
+        <ListBoxSearch
+          styles={styles}
+          selections={selections}
+          model={model}
+          keyboard={keyboard}
+          searchEnabled={false}
+        />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;
@@ -240,7 +253,13 @@ describe('<ListBoxSearch />', () => {
   test('should not show wildcard on focus if wildCardSearch is false', async () => {
     const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
-        <ListBoxSearch selections={selections} model={model} keyboard={keyboard} wildCardSearch={false} />
+        <ListBoxSearch
+          styles={styles}
+          selections={selections}
+          model={model}
+          keyboard={keyboard}
+          wildCardSearch={false}
+        />
       </InstanceContext.Provider>
     );
     const testInstance = testRenderer.root;

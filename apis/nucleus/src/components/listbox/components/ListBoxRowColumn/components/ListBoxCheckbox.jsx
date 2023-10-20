@@ -15,7 +15,7 @@ const classes = {
   dense: `${PREFIX}-dense`,
 };
 
-const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
+const StyledCheckbox = styled(Checkbox, { shouldForwardProp: (p) => p !== 'styles' })(({ theme, styles }) => ({
   [`& .${classes.cbIcon}`]: {
     borderRadius,
     width: 16,
@@ -30,7 +30,7 @@ const StyledCheckbox = styled(Checkbox)(({ theme }) => ({
 
   [`& .${classes.cbIconChecked}`]: {
     borderRadius,
-    backgroundColor: theme.palette.selected.main,
+    backgroundColor: styles.selections.selected,
     backgroundImage: 'linear-gradient(180deg,hsla(0,0%,100%,.1),hsla(0,0%,100%,0))',
     '&:before': {
       display: 'block',
@@ -71,7 +71,7 @@ const getIcon = (cls, showGray = true, excluded = false) => (
   <span className={cls.cbIcon}>{excluded && <span className={showGray && excluded ? cls.cbIconExcluded : ''} />}</span>
 );
 
-export default function ListboxCheckbox({ onChange, checked, label, dense, excluded, showGray = true, dataN }) {
+export default function ListboxCheckbox({ onChange, checked, label, dense, excluded, styles, showGray = true, dataN }) {
   return (
     <StyledCheckbox
       edge="start"
@@ -83,6 +83,7 @@ export default function ListboxCheckbox({ onChange, checked, label, dense, exclu
       name={label}
       icon={getIcon(classes, showGray, excluded)}
       checkedIcon={<span className={classes.cbIconChecked} />}
+      styles={styles}
     />
   );
 }

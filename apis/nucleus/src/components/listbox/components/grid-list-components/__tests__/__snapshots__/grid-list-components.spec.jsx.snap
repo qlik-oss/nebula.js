@@ -54,6 +54,7 @@ exports[`grid-list-components should create a Grid component 1`] = `
         "rowCount": 200,
         "scrollBarWidth": 10,
       },
+      "styles": undefined,
       "textAlign": "right",
       "translator": undefined,
     }
@@ -124,6 +125,7 @@ exports[`grid-list-components should create a List component 1`] = `
         "rowCount": 200,
         "scrollBarWidth": 10,
       },
+      "styles": undefined,
       "textAlign": "right",
       "translator": undefined,
     }

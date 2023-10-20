@@ -4,7 +4,7 @@ import { joinClassNames } from '../helpers/operations';
 import classes from '../helpers/classes';
 import { excludedOrAlternative } from '../helpers/cell-states';
 
-function ValueField({ label, color, dense, showGray = true, checkboxes, cell, valueTextAlign }) {
+function ValueField({ label, dense, showGray = true, checkboxes, cell, valueTextAlign }) {
   return (
     <Typography
       component="span"
@@ -14,7 +14,6 @@ function ValueField({ label, color, dense, showGray = true, checkboxes, cell, va
         dense && classes.labelDense,
         showGray && excludedOrAlternative({ cell, checkboxes }) && classes.excludedTextWithCheckbox,
       ])}
-      color={color}
       align={valueTextAlign}
       dir="auto"
     >
