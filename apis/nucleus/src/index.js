@@ -550,7 +550,7 @@ function nuked(configuration = {}) {
       /**
        * Check if certain visualization type is registered
        * @function
-       * @param {string=} type Type to check
+       * @param {string} type Type to check
        * @returns {boolean}
        * @example
        * const isRegistered = n.isRegistered("sn-table")

@@ -297,7 +297,7 @@ declare namespace stardust {
          * Check if certain visualization type is registered
          * @param type Type to check
          */
-        isRegistered(type?: string): boolean;
+        isRegistered(type: string): boolean;
 
     }
 
@@ -422,7 +422,7 @@ declare namespace stardust {
          * });
          * await viz.toggleDataView();
          */
-        toggleDataView(newType: string): void;
+        toggleDataView(newType?: string): void;
 
         /**
          * Listens to custom events from inside the visualization. See useEmitter

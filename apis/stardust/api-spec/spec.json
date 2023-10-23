@@ -912,7 +912,6 @@
             {
               "name": "type",
               "description": "Type to check",
-              "optional": true,
               "type": "string"
             }
           ],
@@ -1310,6 +1309,7 @@
         },
         "toggleDataView": {
           "description": "Toggles the view of the chart into an accessible table. The type (default sn-table) needs to be registered in order to use this functionality",
+          "stability": "experimental",
           "availability": {
             "since": "4.6.0"
           },
@@ -1318,6 +1318,8 @@
             {
               "name": "newType",
               "description": "The type used for the view data table\n\nconst viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nawait viz.toggleDataView();",
+              "optional": true,
+              "defaultValue": "sn-table",
               "type": "string"
             }
           ]

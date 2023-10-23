@@ -152,9 +152,9 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     },
     /**
      * Toggles the view of the chart into an accessible table. The type (default sn-table) needs to be registered in order to use this functionality
-     *
+     * @experimental
      * @since 4.6.0
-     * @param {string} newType - The type used for the view data table
+     * @param {string=} [newType=sn-table] - The type used for the view data table
      *
      * const viz = await embed(app).render({
      *   element,
