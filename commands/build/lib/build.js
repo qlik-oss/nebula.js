@@ -12,9 +12,12 @@ const systemjsBehaviours = require('./systemjs');
 const umd = async (argv) => {
   const c = config({
     mode: argv.mode || 'production',
-    format: 'umd',
+    format: argv.dynamicImports !== true ? 'umd' : 'amd',
     argv,
   });
+  if (!c) {
+    return undefined;
+  }
   const bundle = await rollup.rollup(c.input);
   await bundle.write(c.output);
 };

@@ -48,6 +48,12 @@ const options = {
     type: 'boolean',
     default: true,
   },
+  dynamicImports: {
+    description:
+      'When true will configure rollup to allow dynamic imports which disables the UMD build and creates chunks of dynamically imported files.',
+    type: 'boolean',
+    default: false,
+  },
   browser: {
     description:
       'In Rollup, the browser option is a configuration option that specifies whether the bundle is intended to run in a browser environment.',

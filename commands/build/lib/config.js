@@ -74,6 +74,7 @@ const config = ({
   const CWD = argv.cwd || cwd;
   const { reactNative, reactNativePath } = setupReactNative(argv);
   let dir = CWD;
+  const dynamicImports = argv.dynamicImports || false;
   let pkg = require(path.resolve(CWD, 'package.json')); // eslint-disable-line
   const corePkg = core ? require(path.resolve(core, 'package.json')) : null; // eslint-disable-line
   pkg = reactNative ? require(path.resolve(reactNativePath, 'package.json')) : pkg; // eslint-disable-line
@@ -111,6 +112,12 @@ const config = ({
     // eslint-disable-next-line no-console
     console.warn('@nebula.js/stardust should be specified as a peer dependency');
     external.push('@nebula.js/stardust');
+  }
+  const splitOutputFileName = outputFile.split('/');
+  let chunkFileNames = outputFile;
+  if (splitOutputFileName.length > 1) {
+    splitOutputFileName.pop();
+    chunkFileNames = splitOutputFileName.join('/') + `/chunk/chart-${format}-[hash].js`;
   }
 
   return {
@@ -175,7 +182,10 @@ const config = ({
     output: {
       banner,
       format,
-      file: path.resolve(dir, outputFile),
+      dir: dynamicImports ? dir : undefined,
+      file: !dynamicImports ? path.resolve(dir, outputFile) : undefined,
+      chunkFileNames: chunkFileNames,
+      entryFileNames: dynamicImports ? outputFile : undefined,
       name: outputName,
       sourcemap,
       globals: {
