@@ -293,6 +293,12 @@ declare namespace stardust {
          */
         getRegisteredTypes(): Object[];
 
+        /**
+         * Check if certain visualization type is registered
+         * @param type Type to check
+         */
+        isRegistered(type: string): boolean;
+
     }
 
     type Direction = "ltr" | "rtl";
@@ -407,6 +413,18 @@ declare namespace stardust {
         convertTo(newType: string, forceUpdate?: boolean, forcePatch?: boolean): Promise<object>;
 
         /**
+         * Toggles the view of the chart into an accessible table. The type (default sn-table) needs to be registered in order to use this functionality
+         * @param newType The type used for the view data table
+         * 
+         * const viz = await embed(app).render({
+         *   element,
+         *   id: 'abc'
+         * });
+         * await viz.toggleDataView();
+         */
+        toggleDataView(newType?: string): void;
+
+        /**
          * Listens to custom events from inside the visualization. See useEmitter
          * @param eventName Event name to listen to
          * @param listener Callback function to invoke
@@ -509,16 +527,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
 
     /**
@@ -549,6 +557,16 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {
