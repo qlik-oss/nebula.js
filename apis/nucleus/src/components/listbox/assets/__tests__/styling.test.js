@@ -1,5 +1,5 @@
 import * as muiStyles from '@mui/material/styles';
-import getStyling from '../styling';
+import getStyling, { getOverridesAsObject } from '../styling';
 
 jest.mock('@mui/material/styles', () => ({
   __esModule: true,
@@ -61,10 +61,12 @@ describe('styling', () => {
     it('header', () => {
       components = [
         {
-          key: 'header',
-          fontSize: 'size-from-component',
-          fontColor: {
-            color: 'color-from-component',
+          key: 'theme',
+          header: {
+            fontSize: 'size-from-component',
+            fontColor: {
+              color: 'color-from-component',
+            },
           },
         },
       ];
@@ -84,12 +86,14 @@ describe('styling', () => {
     it('content', () => {
       components = [
         {
-          key: 'content',
-          fontSize: 'size-from-component',
-          fontColor: {
-            color: 'color-from-component',
+          key: 'theme',
+          content: {
+            fontSize: 'size-from-component',
+            fontColor: {
+              color: 'color-from-component',
+            },
+            useContrastColor: false,
           },
-          useContrastColor: false,
         },
       ];
       let inst;
@@ -108,21 +112,23 @@ describe('styling', () => {
     it('selected', () => {
       components = [
         {
-          key: 'selected',
-          selected: {
-            color: 'selected-from-component',
-          },
-          alternative: {
-            color: 'alternative-from-component',
-          },
-          excluded: {
-            color: 'excluded-from-component',
-          },
-          selectedExcluded: {
-            color: 'selectedExcluded-from-component',
-          },
-          possible: {
-            color: 'possible-from-component',
+          key: 'selections',
+          colors: {
+            selected: {
+              color: 'selected-from-component',
+            },
+            alternative: {
+              color: 'alternative-from-component',
+            },
+            excluded: {
+              color: 'excluded-from-component',
+            },
+            selectedExcluded: {
+              color: 'selectedExcluded-from-component',
+            },
+            possible: {
+              color: 'possible-from-component',
+            },
           },
         },
       ];
@@ -135,23 +141,29 @@ describe('styling', () => {
 
       inst = getStyling({ themeApi, theme, components });
       selections = inst.selections;
-      expect(selections.selected).toEqual('selected-from-theme');
+      expect(selections.selected).toEqual('selected-from-component');
 
       inst = getStyling({ themeApi, theme, components });
       selections = inst.selections;
-      expect(selections.alternative).toEqual('#E4E4E4');
+      expect(selections.alternative).toEqual('alternative-from-component');
 
       inst = getStyling({ themeApi, theme, components });
       selections = inst.selections;
-      expect(selections.excluded).toEqual('#A9A9A9');
+      expect(selections.excluded).toEqual('excluded-from-component');
 
       inst = getStyling({ themeApi, theme, components });
       selections = inst.selections;
-      expect(selections.selectedExcluded).toEqual('#A9A9A9');
+      expect(selections.selectedExcluded).toEqual('selectedExcluded-from-component');
 
       inst = getStyling({ themeApi, theme, components });
       selections = inst.selections;
-      expect(selections.possible).toEqual('object.listBox,,backgroundColor');
+      expect(selections.possible).toEqual('possible-from-component');
+    });
+
+    it('using not supported or empty components should throw error', () => {
+      const inputComponents = ['general', 'selections', 'theme', 'not-supported', undefined].map((key) => ({ key }));
+      expect(inputComponents).toHaveLength(5);
+      expect(Object.keys(getOverridesAsObject(inputComponents)).sort()).toEqual(['selections', 'theme']);
     });
   });
 });
