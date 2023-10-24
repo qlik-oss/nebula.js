@@ -222,6 +222,10 @@ export namespace EnigmaMocker {
 }
 
 declare namespace stardust {
+    interface Component {
+        key: string;
+    }
+
     interface Configuration {
         load?: stardust.LoadType;
         context?: stardust.Context;
@@ -293,6 +297,12 @@ declare namespace stardust {
          */
         getRegisteredTypes(): Object[];
 
+        /**
+         * Check if certain visualization type is registered
+         * @param type Type to check
+         */
+        isRegistered(type: string): boolean;
+
     }
 
     type Direction = "ltr" | "rtl";
@@ -338,6 +348,7 @@ declare namespace stardust {
             checkboxes?: boolean;
             dense?: boolean;
             stateName?: string;
+            components?: stardust.Component[];
             properties?: object;
         }): Promise<void>;
 
@@ -405,6 +416,18 @@ declare namespace stardust {
          * @param forcePatch Whether to always patch the change instead of making a permanent change
          */
         convertTo(newType: string, forceUpdate?: boolean, forcePatch?: boolean): Promise<object>;
+
+        /**
+         * Toggles the view of the chart into an accessible table. The type (default sn-table) needs to be registered in order to use this functionality
+         * @param newType The type used for the view data table
+         * 
+         * const viz = await embed(app).render({
+         *   element,
+         *   id: 'abc'
+         * });
+         * await viz.toggleDataView();
+         */
+        toggleDataView(newType?: string): void;
 
         /**
          * Listens to custom events from inside the visualization. See useEmitter
