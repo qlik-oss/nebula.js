@@ -553,15 +553,6 @@ function nuked(configuration = {}) {
        * //]
        */
       getRegisteredTypes: types.getList,
-      /**
-       * Check if certain visualization type is registered
-       * @function
-       * @param {string} type Type to check
-       * @returns {boolean}
-       * @example
-       * const isRegistered = n.isRegistered("sn-table")
-       */
-      isRegistered: types.isRegistered,
       __DO_NOT_USE__: {
         types,
         popover(anchorElement, fieldIdentifier, options) {

@@ -22,7 +22,6 @@ describe('viz', () => {
   let exportImage;
   let getImperativeHandle;
   let convertToMock;
-  let createSessionObjectMock;
 
   let mockElement;
 
@@ -33,7 +32,6 @@ describe('viz', () => {
     setSnPlugins = jest.fn();
     takeSnapshot = jest.fn();
     exportImage = jest.fn();
-    createSessionObjectMock = jest.fn();
     getImperativeHandle = jest.fn(async () => ({
       api: 'api',
     }));
@@ -69,11 +67,7 @@ describe('viz', () => {
     };
     api = create({
       model,
-      halo: {
-        public: {},
-        types: { isRegistered: jest.fn().mockReturnValue(true) },
-        app: { createSessionObject: createSessionObjectMock },
-      },
+      halo: { public: {} },
     });
 
     mockElement = document.createElement('div');
@@ -235,19 +229,6 @@ describe('viz', () => {
       expect(convertToMock).toHaveBeenCalledTimes(1);
       expect(model.setProperties).toHaveBeenCalledTimes(0);
       expect(props).toBe('props');
-    });
-  });
-
-  describe('toggleDataView', () => {
-    test('should toggle to data view and back', async () => {
-      await api.toggleDataView('sn-table');
-      expect(convertToMock).toHaveBeenCalledTimes(1);
-      expect(createSessionObjectMock).toHaveBeenCalledWith({ totals: { show: false }, usePagination: true });
-      expect(glue).toHaveBeenCalledTimes(1);
-
-      await api.toggleDataView('sn-table');
-      expect(convertToMock).toHaveBeenCalledTimes(1);
-      expect(glue).toHaveBeenCalledTimes(2);
     });
   });
 
