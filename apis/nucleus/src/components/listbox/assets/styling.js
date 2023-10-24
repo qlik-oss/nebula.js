@@ -16,17 +16,14 @@ function getContrastingColor(backgroundColor, desiredTextColor = undefined, dark
 
 const SUPPORTED_COMPONENTS = ['theme', 'selections'];
 
-function getOverridesAsObject(components = []) {
+export function getOverridesAsObject(components = []) {
   // Currently supporting components "theme" and "selections".
   const overrides = {};
   components.forEach((c) => {
     const k = c?.key;
-    if (!SUPPORTED_COMPONENTS.includes(k)) {
-      throw new Error(
-        `Component key "${k}" is not supported. Supported components are: ${SUPPORTED_COMPONENTS.join(', ')}.`
-      );
+    if (SUPPORTED_COMPONENTS.includes(k)) {
+      overrides[k] = c;
     }
-    overrides[k] = c;
   });
 
   return overrides;

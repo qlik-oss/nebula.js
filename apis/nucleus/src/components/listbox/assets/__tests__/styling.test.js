@@ -1,5 +1,5 @@
 import * as muiStyles from '@mui/material/styles';
-import getStyling from '../styling';
+import getStyling, { getOverridesAsObject } from '../styling';
 
 jest.mock('@mui/material/styles', () => ({
   __esModule: true,
@@ -161,12 +161,9 @@ describe('styling', () => {
     });
 
     it('using not supported or empty components should throw error', () => {
-      expect(() => getStyling({ themeApi, theme, components: [{}] })).toThrow(
-        /Supported components are: theme, selections/
-      );
-      expect(() => getStyling({ themeApi, theme, components: [{ key: 'not-supported' }] })).toThrow(
-        /Component key "not-supported" is not supported. Supported components are: theme, selections/
-      );
+      const inputComponents = ['general', 'selections', 'theme', 'not-supported', undefined].map((key) => ({ key }));
+      expect(inputComponents).toHaveLength(5);
+      expect(Object.keys(getOverridesAsObject(inputComponents)).sort()).toEqual(['selections', 'theme']);
     });
   });
 });
