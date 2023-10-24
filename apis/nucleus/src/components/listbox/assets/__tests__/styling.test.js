@@ -112,8 +112,8 @@ describe('styling', () => {
     it('selected', () => {
       components = [
         {
-          key: 'theme',
-          selections: {
+          key: 'selections',
+          colors: {
             selected: {
               color: 'selected-from-component',
             },
@@ -158,6 +158,15 @@ describe('styling', () => {
       inst = getStyling({ themeApi, theme, components });
       selections = inst.selections;
       expect(selections.possible).toEqual('possible-from-component');
+    });
+
+    it('using not supported or empty components should throw error', () => {
+      expect(() => getStyling({ themeApi, theme, components: [{}] })).toThrow(
+        /Supported components are: theme, selections/
+      );
+      expect(() => getStyling({ themeApi, theme, components: [{ key: 'not-supported' }] })).toThrow(
+        /Component key "not-supported" is not supported. Supported components are: theme, selections/
+      );
     });
   });
 });

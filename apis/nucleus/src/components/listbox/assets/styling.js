@@ -14,25 +14,40 @@ function getContrastingColor(backgroundColor, desiredTextColor = undefined, dark
   return contrastingColor;
 }
 
+const SUPPORTED_COMPONENTS = ['theme', 'selections'];
+
 function getOverridesAsObject(components = []) {
-  // Currently supporting only a "theme" component, under which all styling overrides are gathered.
-  return components.find(({ key }) => key === 'theme') || {};
+  // Currently supporting components "theme" and "selections".
+  const overrides = {};
+  components.forEach((c) => {
+    const k = c?.key;
+    if (!SUPPORTED_COMPONENTS.includes(k)) {
+      throw new Error(
+        `Component key "${k}" is not supported. Supported components are: ${SUPPORTED_COMPONENTS.join(', ')}.`
+      );
+    }
+    overrides[k] = c;
+  });
+
+  return overrides;
 }
 
 function getSelectionColors(theme, getListboxStyle, overrides) {
   const desiredTextColor =
-    overrides.content?.fontColor?.color || getListboxStyle('content', 'color') || theme.palette?.text.primary;
+    overrides.theme?.content?.fontColor?.color || getListboxStyle('content', 'color') || theme.palette?.text.primary;
 
-  const useContrastTextColor = overrides.content?.useContrastColor ?? true;
+  const useContrastTextColor = overrides.theme?.content?.useContrastColor ?? true;
 
   // Background colors
-  const selected = overrides.selections?.selected?.color || theme.palette?.selected.main || '#009845';
-  const alternative = overrides.selections?.alternative?.color || theme.palette?.selected.alternative || '#E4E4E4';
-  const excluded = overrides.selections?.excluded?.color || theme.palette?.selected.excluded || '#A9A9A9';
+  const selectionColors = overrides.selections?.colors || {};
+
+  const selected = selectionColors.selected?.color || theme.palette?.selected.main || '#009845';
+  const alternative = selectionColors.alternative?.color || theme.palette?.selected.alternative || '#E4E4E4';
+  const excluded = selectionColors.excluded?.color || theme.palette?.selected.excluded || '#A9A9A9';
   const selectedExcluded =
-    overrides.selections?.selectedExcluded?.color || theme.palette?.selected.selectedExcluded || '#A9A9A9';
+    selectionColors.selectedExcluded?.color || theme.palette?.selected.selectedExcluded || '#A9A9A9';
   const possible =
-    overrides.selections?.possible?.color ||
+    selectionColors.possible?.color ||
     getListboxStyle('', 'backgroundColor') ||
     theme.palette?.selected.possible ||
     '#FFFFFF';
@@ -73,19 +88,20 @@ export default function getStyles({ themeApi, theme, components = [], checkboxes
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
 
   const selections = getSelectionColors(theme, getListboxStyle, overrides);
+  const themeOverrides = overrides.theme || {};
 
   return {
     backgroundColor: getListboxStyle('', 'backgroundColor') || theme.palette.background.default,
     header: {
-      color: overrides.header?.fontColor?.color || getListboxStyle('title.main', 'color'),
-      fontSize: overrides.header?.fontSize || getListboxStyle('title.main', 'fontSize'),
+      color: themeOverrides.header?.fontColor?.color || getListboxStyle('title.main', 'color'),
+      fontSize: themeOverrides.header?.fontSize || getListboxStyle('title.main', 'fontSize'),
       fontFamily: getListboxStyle('title.main', 'fontFamily'),
       fontWeight: getListboxStyle('title.main', 'fontWeight') || 'bold',
     },
     content: {
       backgroundColor: checkboxes ? undefined : selections.possible,
       color: selections.possibleContrast || getListboxStyle('content', 'color'),
-      fontSize: overrides.content?.fontSize || getListboxStyle('content', 'fontSize'),
+      fontSize: themeOverrides.content?.fontSize || getListboxStyle('content', 'fontSize'),
       fontFamily: getListboxStyle('content', 'fontFamily'),
     },
     selections,

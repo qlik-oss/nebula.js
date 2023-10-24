@@ -48,7 +48,7 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
 
 /**
  * @interface Component
- * @property {string} key The key of the component. Currently only supporting a "theme" component.
+ * @property {string} key The key of the component. Currently supporting components "theme" and "selections".
  * @example
  * const n = embed(app);
  * const inst = await n.field('field_name');
@@ -62,8 +62,10 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
  *    content: {
  *      fontSize: 16,
  *      useContrastColor: false,
- *    },
- *    selections: {
+ *    }
+ *   },{
+ *    key: 'selections',
+ *    colors: {
  *      selected: { color: '#0f0' },
  *      alternative: { color: '#ededed' },
  *      excluded: { color: '#ccc' },
@@ -71,7 +73,7 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
  *      possible: { color: '#fefefe' },
  *      possible: { color: '#fefefe' },
  *    }
- *   }]
+ *  }]
  * });
  */
 

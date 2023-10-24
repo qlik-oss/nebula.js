@@ -636,12 +636,12 @@
       "kind": "interface",
       "entries": {
         "key": {
-          "description": "The key of the component. Currently only supporting a \"theme\" component.",
+          "description": "The key of the component. Currently supporting components \"theme\" and \"selections\".",
           "type": "string"
         }
       },
       "examples": [
-        "const n = embed(app);\nconst inst = await n.field('field_name');\ninst.mount(document.querySelector('.listbox'), {\n  components: [{\n   key: 'theme',\n   header: {\n     fontColor: { color: '#f00' },\n     fontSize: 23,\n   },\n   content: {\n     fontSize: 16,\n     useContrastColor: false,\n   },\n   selections: {\n     selected: { color: '#0f0' },\n     alternative: { color: '#ededed' },\n     excluded: { color: '#ccc' },\n     selectedExcluded: { color: '#bbb' },\n     possible: { color: '#fefefe' },\n     possible: { color: '#fefefe' },\n   }\n  }]\n});"
+        "const n = embed(app);\nconst inst = await n.field('field_name');\ninst.mount(document.querySelector('.listbox'), {\n  components: [{\n   key: 'theme',\n   header: {\n     fontColor: { color: '#f00' },\n     fontSize: 23,\n   },\n   content: {\n     fontSize: 16,\n     useContrastColor: false,\n   }\n  },{\n   key: 'selections',\n   colors: {\n     selected: { color: '#0f0' },\n     alternative: { color: '#ededed' },\n     excluded: { color: '#ccc' },\n     selectedExcluded: { color: '#bbb' },\n     possible: { color: '#fefefe' },\n     possible: { color: '#fefefe' },\n   }\n }]\n});"
       ]
     },
     "Configuration": {
@@ -1656,6 +1656,33 @@
         }
       }
     },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
     "Field": {
       "kind": "alias",
       "items": {
@@ -1790,33 +1817,6 @@
           ]
         }
       }
-    },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
     },
     "LoadType": {
       "kind": "interface",
