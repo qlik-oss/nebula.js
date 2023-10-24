@@ -913,23 +913,6 @@
           "examples": [
             "const types = n.getRegisteredTypes();\n// Contains\n//[\n// {\n//   name: \"barchart\"\n//   versions:[undefined, \"1.2.0\"]\n// }\n//]"
           ]
-        },
-        "isRegistered": {
-          "description": "Check if certain visualization type is registered",
-          "kind": "function",
-          "params": [
-            {
-              "name": "type",
-              "description": "Type to check",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "type": "boolean"
-          },
-          "examples": [
-            "const isRegistered = n.isRegistered(\"sn-table\")"
-          ]
         }
       }
     },
@@ -1322,23 +1305,6 @@
           ],
           "examples": [
             "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nawait viz.convertTo('barChart');\n// Change the barchart to a linechart, only in the current session\nconst newProperties = await viz.convertTo('lineChart', false, true);\n// Remove the conversion by clearing the patches\nawait viz.model.clearSoftPatches();"
-          ]
-        },
-        "toggleDataView": {
-          "description": "Toggles the view of the chart into an accessible table. The type (default sn-table) needs to be registered in order to use this functionality",
-          "stability": "experimental",
-          "availability": {
-            "since": "4.6.0"
-          },
-          "kind": "function",
-          "params": [
-            {
-              "name": "newType",
-              "description": "The type used for the view data table\n\nconst viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nawait viz.toggleDataView();",
-              "optional": true,
-              "defaultValue": "sn-table",
-              "type": "string"
-            }
           ]
         },
         "addListener": {

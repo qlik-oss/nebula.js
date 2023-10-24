@@ -117,16 +117,5 @@ describe('types', () => {
       c.clearFromCache('pie');
       expect(clearFromCache).toHaveBeenCalledWith('pie');
     });
-
-    test('should return false when type is not registered', () => {
-      c = create({ config: 'config' });
-      expect(c.isRegistered('sn-table')).toEqual(false);
-    });
-
-    test('should return true when type is registered', () => {
-      c = create({ config: 'config' });
-      c.register({ name: 'sn-table', version: '1.0.0' });
-      expect(c.isRegistered('sn-table')).toEqual(true);
-    });
   });
 });

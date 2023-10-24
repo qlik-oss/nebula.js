@@ -100,6 +100,5 @@ export function create({ halo, parent }) {
       }
       clearFromCache(name);
     },
-    isRegistered: (key) => !!tc[key],
   };
 }

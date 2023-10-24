@@ -16,7 +16,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
   let mountedReference = null;
   let onMount = null;
   let onRender = null;
-  let toggledDataView = false;
   const mounted = new Promise((resolve) => {
     onMount = resolve;
   });
@@ -151,44 +150,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       return propertyTree;
     },
     /**
-     * Toggles the view of the chart into an accessible table. The type (default sn-table) needs to be registered in order to use this functionality
-     * @experimental
-     * @since 4.6.0
-     * @param {string=} [newType=sn-table] - The type used for the view data table
-     *
-     * const viz = await embed(app).render({
-     *   element,
-     *   id: 'abc'
-     * });
-     * await viz.toggleDataView();
-     */
-    async toggleDataView(newType = 'sn-table') {
-      if (!halo.types.isRegistered(newType)) {
-        throw new Error(`Type: ${newType} is not registered. Make sure to register ${newType}`);
-      }
-      let newModel = model;
-      if (!toggledDataView) {
-        const oldProperties = await model.getEffectiveProperties();
-        const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType, properties: oldProperties });
-        const newProperties = { ...propertyTree.qProperty, totals: { show: false }, usePagination: true };
-        newModel = await halo.app.createSessionObject(newProperties);
-        toggledDataView = true;
-      } else {
-        toggledDataView = false;
-      }
-      await unmountCell();
-      [unmountCell, cellRef] = glueCell({
-        halo,
-        element: mountedReference,
-        model: newModel,
-        initialSnOptions: {},
-        initialSnPlugins: [],
-        initialError,
-        onMount,
-        emitter,
-      });
-    },
-    /**
      * Listens to custom events from inside the visualization. See useEmitter
      * @experimental
      * @param {string} eventName Event name to listen to
@@ -316,6 +277,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     // setOptions() {}, // applied soft patch
     // resize() {},
     // show() {},
+    // toggleDataView() {},
   };
 
   return api;
