@@ -16,6 +16,8 @@ export default function calculateColumnMode({
     rowCount = Math.min(listCount, maxRows, autoRowCount);
   }
 
+  rowCount = Math.max(rowCount, 1);
+
   const columnCount = Math.ceil(listCount / rowCount);
   const columnWidth = Math.max(columnAutoWidth, containerWidth / columnCount, itemMinWidth);
 
