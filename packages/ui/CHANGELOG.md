@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.6.0](https://github.com/qlik-oss/nebula.js/compare/v4.5.0...v4.6.0) (2023-10-25)
+
+### Features
+
+- **listbox:** listbox styling ([#1377](https://github.com/qlik-oss/nebula.js/issues/1377)) ([a83377a](https://github.com/qlik-oss/nebula.js/commit/a83377ada48fb5bd90c179399d4495da414ade28))
+
 # [4.5.0](https://github.com/qlik-oss/nebula.js/compare/v4.5.0-alpha.0...v4.5.0) (2023-10-03)
 
 **Note:** Version bump only for package @nebula.js/ui
