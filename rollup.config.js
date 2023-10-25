@@ -109,6 +109,15 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes(`"use client"`)) {
         return;
       }
+      if (warning.code === 'INVALID_ANNOTATION' && warning.frame.includes(`// eslint-disable-next-line react`)) {
+        return;
+      }
+      if (warning.code === 'INVALID_ANNOTATION' && warning.message.includes(`@mui/material`)) {
+        return;
+      }
+      if (warning.code === 'CIRCULAR_DEPENDENCY' && warning.message.includes(`node_modules/semver`)) {
+        return;
+      }
       warn(warning);
     },
     input: path.resolve(cwd, 'src', 'index'),
