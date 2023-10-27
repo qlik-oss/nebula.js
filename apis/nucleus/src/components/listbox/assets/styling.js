@@ -10,6 +10,7 @@ const TRANSPARENT = 'rgba(255, 255, 255, 0)';
  *
  * @param {string} c The CSS color.
  * @returns {string} Converted color or same color as before.
+ * @private
  * @example
  *  convertNamedColor('red') => '#FF0000'
  */
