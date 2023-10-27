@@ -1,5 +1,5 @@
 import * as muiStyles from '@mui/material/styles';
-import getStyling, { getOverridesAsObject } from '../styling';
+import getStyling, { convertNamedColor, getOverridesAsObject, hasEnoughContrast } from '../styling';
 
 jest.mock('@mui/material/styles', () => ({
   __esModule: true,
@@ -10,10 +10,6 @@ describe('styling', () => {
   let theme = {};
   let components = [];
   let themeApi;
-
-  beforeAll(() => {
-    jest.spyOn(muiStyles, 'getContrastRatio').mockReturnValue(0.5);
-  });
 
   afterEach(() => {
     jest.resetAllMocks();
@@ -58,6 +54,10 @@ describe('styling', () => {
   });
 
   describe('should return expected header style based on theme and then overridden by components', () => {
+    beforeAll(() => {
+      jest.spyOn(muiStyles, 'getContrastRatio').mockReturnValue(0.5);
+    });
+
     it('header', () => {
       components = [
         {
@@ -164,6 +164,25 @@ describe('styling', () => {
       const inputComponents = ['general', 'selections', 'theme', 'not-supported', undefined].map((key) => ({ key }));
       expect(inputComponents).toHaveLength(5);
       expect(Object.keys(getOverridesAsObject(inputComponents)).sort()).toEqual(['selections', 'theme']);
+    });
+  });
+
+  describe('hasEnoughContrast', () => {
+    it('should not throw on transparent', () => {
+      expect(() => hasEnoughContrast('rgb(0,0,0)', 'transparent')).not.toThrow();
+      expect(() => hasEnoughContrast('transparent', 'transparent')).not.toThrow();
+      expect(() => hasEnoughContrast('red', 'blue')).not.toThrow();
+      expect(() => hasEnoughContrast('misspelled', 'hey hey')).not.toThrow();
+      expect(hasEnoughContrast('transparent', 'transparent')).toEqual(false);
+    });
+  });
+
+  describe('convertNamedColor', () => {
+    it('should return a color not present in the English dictionary', () => {
+      expect(convertNamedColor('red')).toEqual('#f44336');
+      expect(convertNamedColor('blue')).toEqual('#2196f3');
+      expect(convertNamedColor('transparent')).toEqual('rgba(255, 255, 255, 0)');
+      expect(convertNamedColor('misspelled')).toEqual('misspelled');
     });
   });
 });
