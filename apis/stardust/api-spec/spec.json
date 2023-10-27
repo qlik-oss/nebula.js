@@ -1829,6 +1829,24 @@
         }
       }
     },
+    "convertNamedColor": {
+      "description": "If needed, converts a named color to a more reliable CSS color format.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "c",
+          "description": "The CSS color.",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "description": "Converted color or same color as before.",
+        "type": "string"
+      },
+      "examples": [
+        "convertNamedColor('red') => '#FF0000'"
+      ]
+    },
     "ActionToolbarElement": {
       "availability": {
         "since": "2.1.0"
