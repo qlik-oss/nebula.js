@@ -165,7 +165,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
           halo,
           model,
           cellRef,
-          newType: halo.config.dataViewType,
+          newType: halo.config.context.dataViewType,
           properties: oldProperties,
         });
         const newProperties = { ...propertyTree.qProperty, totals: { show: false }, usePagination: true };

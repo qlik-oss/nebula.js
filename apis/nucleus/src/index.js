@@ -159,7 +159,6 @@ const mergeArray = (a1 = [], a2 = []) =>
   // Simple merge and deduplication
   [...a1, ...a2].filter((v, i, a) => a.indexOf(v) === i);
 const mergeConfigs = (base, c) => ({
-  dataViewType: c.dataViewType || base.dataViewType,
   context: mergeObj(base.context, c.context),
   load: c.load || base.load,
   loadTheme: c.loadTheme || base.loadTheme,
