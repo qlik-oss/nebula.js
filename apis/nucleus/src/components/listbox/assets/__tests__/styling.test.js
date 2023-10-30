@@ -57,6 +57,9 @@ describe('styling', () => {
     beforeAll(() => {
       jest.spyOn(muiStyles, 'getContrastRatio').mockReturnValue(0.5);
     });
+    afterAll(() => {
+      jest.restoreAllMocks();
+    });
 
     it('header', () => {
       components = [
@@ -168,11 +171,12 @@ describe('styling', () => {
   });
 
   describe('hasEnoughContrast', () => {
-    it('should not throw on transparent', () => {
+    it('should not throw on unsupported color and fall back to true', () => {
       expect(() => hasEnoughContrast('rgb(0,0,0)', 'transparent')).not.toThrow();
       expect(() => hasEnoughContrast('transparent', 'transparent')).not.toThrow();
       expect(() => hasEnoughContrast('red', 'blue')).not.toThrow();
       expect(() => hasEnoughContrast('misspelled', 'hey hey')).not.toThrow();
+      expect(hasEnoughContrast('misspelled', 'hey hey')).toEqual(true);
       expect(hasEnoughContrast('transparent', 'transparent')).toEqual(false);
     });
   });

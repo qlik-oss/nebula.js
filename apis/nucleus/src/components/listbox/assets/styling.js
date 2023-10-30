@@ -39,6 +39,7 @@ export const hasEnoughContrast = (desiredTextColor, backgroundColor) => {
   } catch (err) {
     // The function throws on unsupported or misspelled colors.
     // In these cases, simply return true.
+    isContrastingEnough = true;
   }
   return isContrastingEnough;
 };
