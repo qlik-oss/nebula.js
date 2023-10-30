@@ -23,7 +23,10 @@ const getDefaultExportPropertiesFn = (path) => {
   return undefined; // TODO: add listbox and other
 };
 
-const getExportPropertiesFnc = (qae) => {
+const getExportPropertiesFnc = (qae, convertToTable) => {
+  if (convertToTable && typeof qae.exportTableProperties === 'function') {
+    return qae.exportTableProperties;
+  }
   if (qae.exportProperties) {
     return qae.exportProperties;
   }
@@ -47,10 +50,10 @@ const getImportPropertiesFnc = (qae) => {
   return getDefaultImportPropertiesFnc(path);
 };
 
-export const convertTo = async ({ halo, model, cellRef, newType, properties }) => {
+export const convertTo = async ({ halo, model, cellRef, newType, properties, convertToTable = false }) => {
   const propertyTree = properties ? { qProperty: properties } : await model.getFullPropertyTree();
   const sourceQae = cellRef.current.getQae();
-  const exportProperties = getExportPropertiesFnc(sourceQae);
+  const exportProperties = getExportPropertiesFnc(sourceQae, convertToTable);
   if (!exportProperties) {
     throw new Error('Source chart does not support conversion');
   }
