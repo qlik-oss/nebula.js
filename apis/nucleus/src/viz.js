@@ -16,6 +16,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
   let mountedReference = null;
   let onMount = null;
   let onRender = null;
+  let viewDataObjectId;
   const mounted = new Promise((resolve) => {
     onMount = resolve;
   });
@@ -148,6 +149,46 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       }
       const propertyTree = await conversionConvertTo({ halo, model, cellRef, newType });
       return propertyTree;
+    },
+    /**
+     * Toggles the chart data view
+     *
+     * @experimental
+     * @since 4.7.0
+     * @param {boolean=} showViewData - If included, turns the toggle into a one way-only operation. If true it will only toggle to the view data table.
+     */
+    async toggleDataView(showViewData) {
+      let newModel;
+      if (!viewDataObjectId && showViewData !== false) {
+        const oldProperties = await model.getEffectiveProperties();
+        const propertyTree = await conversionConvertTo({
+          halo,
+          model,
+          cellRef,
+          newType: halo.config.dataViewType,
+          properties: oldProperties,
+        });
+        const newProperties = { ...propertyTree.qProperty, totals: { show: false }, usePagination: true };
+        newModel = await halo.app.createSessionObject(newProperties);
+        viewDataObjectId = newModel.id;
+      } else if (viewDataObjectId && showViewData !== true) {
+        newModel = model;
+        await halo.app.destroySessionObject(viewDataObjectId);
+        viewDataObjectId = undefined;
+      }
+      if (newModel) {
+        await unmountCell();
+        [unmountCell, cellRef] = glueCell({
+          halo,
+          element: mountedReference,
+          model: newModel,
+          initialSnOptions,
+          initialSnPlugins,
+          initialError,
+          onMount,
+          emitter,
+        });
+      }
     },
     /**
      * Listens to custom events from inside the visualization. See useEmitter

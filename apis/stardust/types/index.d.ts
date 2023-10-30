@@ -242,6 +242,7 @@ declare namespace stardust {
         interactions?: stardust.Interactions;
         keyboardNavigation?: boolean;
         disableCellPadding?: boolean;
+        dataViewType?: string;
     }
 
     interface Galaxy {
@@ -410,6 +411,12 @@ declare namespace stardust {
          * @param forcePatch Whether to always patch the change instead of making a permanent change
          */
         convertTo(newType: string, forceUpdate?: boolean, forcePatch?: boolean): Promise<object>;
+
+        /**
+         * Toggles the chart data view
+         * @param showViewData If included, turns the toggle into a one way-only operation. If true it will only toggle to the view data table.
+         */
+        toggleDataView(showViewData?: boolean): void;
 
         /**
          * Listens to custom events from inside the visualization. See useEmitter

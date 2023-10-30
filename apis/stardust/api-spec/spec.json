@@ -720,6 +720,11 @@
           "optional": true,
           "defaultValue": false,
           "type": "boolean"
+        },
+        "dataViewType": {
+          "optional": true,
+          "defaultValue": "sn-table",
+          "type": "string"
         }
       }
     },
@@ -1308,6 +1313,22 @@
           ],
           "examples": [
             "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nawait viz.convertTo('barChart');\n// Change the barchart to a linechart, only in the current session\nconst newProperties = await viz.convertTo('lineChart', false, true);\n// Remove the conversion by clearing the patches\nawait viz.model.clearSoftPatches();"
+          ]
+        },
+        "toggleDataView": {
+          "description": "Toggles the chart data view",
+          "stability": "experimental",
+          "availability": {
+            "since": "4.7.0"
+          },
+          "kind": "function",
+          "params": [
+            {
+              "name": "showViewData",
+              "description": "If included, turns the toggle into a one way-only operation. If true it will only toggle to the view data table.",
+              "optional": true,
+              "type": "boolean"
+            }
           ]
         },
         "addListener": {
