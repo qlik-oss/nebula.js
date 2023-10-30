@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.6.1](https://github.com/qlik-oss/nebula.js/compare/v4.6.0...v4.6.1) (2023-10-30)
+
+### Bug Fixes
+
+- handle unsupported colors and add tests ([#1389](https://github.com/qlik-oss/nebula.js/issues/1389)) ([070aa53](https://github.com/qlik-oss/nebula.js/commit/070aa53dd3622ee794f15e713c986d13007f3b8e))
+
 # [4.6.0](https://github.com/qlik-oss/nebula.js/compare/v4.5.0...v4.6.0) (2023-10-25)
 
 ### Bug Fixes

@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/cli-build",
-  "version": "4.6.0",
+  "version": "4.6.1",
   "description": "",
   "license": "MIT",
   "author": "QlikTech International AB",
@@ -29,12 +29,12 @@
     "@rollup/plugin-commonjs": "25.0.7",
     "@rollup/plugin-json": "6.0.1",
     "@rollup/plugin-node-resolve": "15.2.3",
-    "@rollup/plugin-replace": "5.0.4",
+    "@rollup/plugin-replace": "5.0.5",
     "@rollup/plugin-terser": "0.4.4",
     "chalk": "4.1.2",
     "extend": "3.0.2",
     "postcss": "^8.4.31",
-    "rollup": "4.1.4",
+    "rollup": "4.1.5",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-sourcemaps": "0.6.3",
     "yargs": "17.7.2"

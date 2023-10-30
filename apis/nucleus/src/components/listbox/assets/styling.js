@@ -1,15 +1,55 @@
 import { getContrastRatio } from '@mui/material/styles';
+import * as namedColors from '@mui/material/colors';
 
 const LIGHT = '#FFF';
 const DARK = '#000';
+const TRANSPARENT = 'rgba(255, 255, 255, 0)';
+
+/**
+ * If needed, converts a named color to a more reliable CSS color format.
+ *
+ * @param {string} c The CSS color.
+ * @returns {string} Converted color or same color as before.
+ * @private
+ * @example
+ *  convertNamedColor('red') => '#FF0000'
+ */
+export function convertNamedColor(c) {
+  let out = c;
+  try {
+    if (c in namedColors) {
+      ({ 500: out } = namedColors[c]); // 500 exposes the standard color
+    } else if (c === 'transparent') {
+      out = TRANSPARENT;
+    }
+  } catch (err) {
+    out = c;
+  }
+  return out;
+}
+
+export const hasEnoughContrast = (desiredTextColor, backgroundColor) => {
+  const desired = convertNamedColor(desiredTextColor);
+  const background = convertNamedColor(backgroundColor);
+
+  const CONTRAST_THRESHOLD = 3.0;
+  let isContrastingEnough;
+  try {
+    isContrastingEnough = getContrastRatio(desired, background) > CONTRAST_THRESHOLD;
+  } catch (err) {
+    // The function throws on unsupported or misspelled colors.
+    // In these cases, simply return true.
+    isContrastingEnough = true;
+  }
+  return isContrastingEnough;
+};
 
 function getContrastingColor(backgroundColor, desiredTextColor = undefined, dark = DARK, light = LIGHT) {
-  const CONTRAST_THRESHOLD = 3.0;
   let contrastingColor;
-  if (desiredTextColor && getContrastRatio(desiredTextColor, backgroundColor) > CONTRAST_THRESHOLD) {
+  if (desiredTextColor && hasEnoughContrast(desiredTextColor, backgroundColor)) {
     contrastingColor = desiredTextColor;
   } else {
-    contrastingColor = getContrastRatio(light, backgroundColor) > CONTRAST_THRESHOLD ? light : dark;
+    contrastingColor = hasEnoughContrast(light, backgroundColor) ? light : dark;
   }
   return contrastingColor;
 }
