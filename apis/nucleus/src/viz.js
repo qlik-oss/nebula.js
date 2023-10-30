@@ -155,11 +155,11 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      *
      * @experimental
      * @since 4.7.0
-     * @param {boolean=} showViewData - If included, turns the toggle into a one way-only operation. If true it will only toggle to the view data table.
+     * @param {boolean=} showDataView - If included, turns the toggle into a one way-only operation. If true it will only toggle to the view data table.
      */
-    async toggleDataView(showViewData) {
+    async toggleDataView(showDataView) {
       let newModel;
-      if (!viewDataObjectId && showViewData !== false) {
+      if (!viewDataObjectId && showDataView !== false) {
         const oldProperties = await model.getEffectiveProperties();
         const propertyTree = await conversionConvertTo({
           halo,
@@ -171,7 +171,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
         const newProperties = { ...propertyTree.qProperty, totals: { show: false }, usePagination: true };
         newModel = await halo.app.createSessionObject(newProperties);
         viewDataObjectId = newModel.id;
-      } else if (viewDataObjectId && showViewData !== true) {
+      } else if (viewDataObjectId && showDataView !== true) {
         newModel = model;
         await halo.app.destroySessionObject(viewDataObjectId);
         viewDataObjectId = undefined;
