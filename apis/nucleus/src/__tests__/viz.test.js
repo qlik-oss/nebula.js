@@ -22,6 +22,8 @@ describe('viz', () => {
   let exportImage;
   let getImperativeHandle;
   let convertToMock;
+  let createSessionObjectMock;
+  let destroySessionObjectMock;
 
   let mockElement;
 
@@ -49,6 +51,8 @@ describe('viz', () => {
     getPatches = jest.fn().mockReturnValue(['patch']);
     convertToMock = jest.fn().mockReturnValue('props');
     validatePlugins = jest.fn();
+    createSessionObjectMock = jest.fn().mockReturnValue({ id: 'newModelId' });
+    destroySessionObjectMock = jest.fn();
 
     jest.spyOn(glueModule, 'default').mockImplementation(glue);
     jest.spyOn(getPatchesModule, 'default').mockImplementation(getPatches);
@@ -67,7 +71,11 @@ describe('viz', () => {
     };
     api = create({
       model,
-      halo: { public: {} },
+      halo: {
+        public: {},
+        config: { context: { dataViewType: 'sn-table' } },
+        app: { createSessionObject: createSessionObjectMock, destroySessionObject: destroySessionObjectMock },
+      },
     });
 
     mockElement = document.createElement('div');
@@ -229,6 +237,26 @@ describe('viz', () => {
       expect(convertToMock).toHaveBeenCalledTimes(1);
       expect(model.setProperties).toHaveBeenCalledTimes(0);
       expect(props).toBe('props');
+    });
+  });
+
+  describe('toggleDataView', () => {
+    test('should toggle data view and back', async () => {
+      await api.toggleDataView();
+      expect(createSessionObjectMock).toHaveBeenCalledWith({ totals: { show: false }, usePagination: true });
+      await api.toggleDataView();
+      expect(destroySessionObjectMock).toHaveBeenCalledWith('newModelId');
+      expect(glue).toHaveBeenCalledTimes(2);
+    });
+
+    test('should not toggle data view when showDataView is being used', async () => {
+      await api.toggleDataView(false);
+      expect(createSessionObjectMock).toHaveBeenCalledTimes(0);
+      await api.toggleDataView();
+      expect(createSessionObjectMock).toHaveBeenCalledWith({ totals: { show: false }, usePagination: true });
+      await api.toggleDataView(true);
+      expect(destroySessionObjectMock).toHaveBeenCalledTimes(0);
+      expect(glue).toHaveBeenCalledTimes(1);
     });
   });
 

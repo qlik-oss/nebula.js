@@ -174,5 +174,30 @@ describe('objectConversion', () => {
       });
       expect(newPropertyTree).toEqual({ qProperty: { prop4: 'value 4' } });
     });
+
+    test('should call export table properties when convertToTable is true', async () => {
+      newType = 'sn-table';
+      const sourceQaeExportTableProperties = jest.fn().mockReturnValue({ qProperty: { prop3: 'sourceValue' } });
+      sourceQae = { exportTableProperties: sourceQaeExportTableProperties };
+      getQaeMock.mockReturnValue(sourceQae);
+
+      const targetQaeImportPropertiesMock = jest.fn().mockReturnValue({ qProperty: { prop4: 'targetValue' } });
+      targetQae = {
+        importProperties: targetQaeImportPropertiesMock,
+        properties: {
+          initial: {},
+        },
+      };
+      supernovaMock.mockReturnValue({ qae: targetQae });
+
+      const newPropertyTree = await convertTo({ halo, model, cellRef, newType, convertToTable: true });
+      expect(getQaeMock).toHaveBeenCalledTimes(1);
+      expect(getFullPropertyTreeMock).toHaveBeenCalledTimes(1);
+      expect(haloGetTypesMock).toHaveBeenCalledTimes(1);
+      expect(supernovaMock).toHaveBeenCalledTimes(1);
+      expect(exportPropertiesMock).toHaveBeenCalledTimes(0);
+      expect(sourceQaeExportTableProperties).toHaveBeenCalledTimes(1);
+      expect(newPropertyTree).toEqual({ qProperty: { prop4: 'targetValue' } });
+    });
   });
 });
