@@ -151,7 +151,9 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       return propertyTree;
     },
     /**
-     * Toggles the chart data view
+     * Toggles the chart to a data view of the chart.
+     *
+     * The chart will be toggled to the type defined in the nebula context (dataViewType).
      *
      * @experimental
      * @since 4.7.0

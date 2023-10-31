@@ -1316,7 +1316,7 @@
           ]
         },
         "toggleDataView": {
-          "description": "Toggles the chart data view",
+          "description": "Toggles the chart to a data view of the chart.\n\nThe chart will be toggled to the type defined in the nebula context (dataViewType).",
           "stability": "experimental",
           "availability": {
             "since": "4.7.0"

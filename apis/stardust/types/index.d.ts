@@ -413,7 +413,9 @@ declare namespace stardust {
         convertTo(newType: string, forceUpdate?: boolean, forcePatch?: boolean): Promise<object>;
 
         /**
-         * Toggles the chart data view
+         * Toggles the chart to a data view of the chart.
+         * 
+         * The chart will be toggled to the type defined in the nebula context (dataViewType).
          * @param showDataView If included, turns the toggle into a one way-only operation. If true it will only toggle to the view data table.
          */
         toggleDataView(showDataView?: boolean): void;
