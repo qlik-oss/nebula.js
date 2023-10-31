@@ -243,6 +243,9 @@ describe('viz', () => {
   describe('toggleDataView', () => {
     test('should toggle data view and back', async () => {
       await api.toggleDataView();
+      expect(convertToMock).toHaveBeenCalledWith(
+        expect.objectContaining({ convertToTable: true, newType: 'sn-table' })
+      );
       expect(createSessionObjectMock).toHaveBeenCalledWith({ totals: { show: false }, usePagination: true });
       await api.toggleDataView();
       expect(destroySessionObjectMock).toHaveBeenCalledWith('newModelId');
