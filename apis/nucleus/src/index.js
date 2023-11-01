@@ -141,7 +141,11 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
   keyboardNavigation: false,
   /** @type {boolean=} */
   disableCellPadding: false,
-  /** @type {string=} */
+  /**
+   * Type used for toggling to the data view (toggleDataView)
+   * This type need to be registered as well
+   * @type {string=}
+   * */
   dataViewType: 'sn-table',
 };
 
