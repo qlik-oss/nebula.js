@@ -1,5 +1,5 @@
 import useRpc from './useRpc';
-import { useModelStore } from '../stores/model-store';
+import { useModelStore } from './useModelStore';
 
 export default function usePropertiesById(id) {
   const [modelStore] = useModelStore();

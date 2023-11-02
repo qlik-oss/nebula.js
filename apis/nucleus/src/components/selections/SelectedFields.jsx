@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 
 import { Grid } from '@mui/material';
 
@@ -6,7 +6,7 @@ import { useTheme } from '@nebula.js/ui/theme';
 import useCurrentSelectionsModel from '../../hooks/useCurrentSelectionsModel';
 import useLayout from '../../hooks/useLayout';
 import useRect from '../../hooks/useRect';
-import { useModalObjectStore } from '../../stores/selections-store';
+import InstanceContext from '../../contexts/InstanceContext';
 
 import OneField from './OneField';
 import MultiState from './MultiState';
@@ -47,7 +47,8 @@ export default function SelectedFields({ api, app }) {
   const [currentSelectionsModel] = useCurrentSelectionsModel(app);
   const [layout] = useLayout(currentSelectionsModel);
   const [state, setState] = useState({ items: [], more: [] });
-  const [modalObjectStore] = useModalObjectStore();
+
+  const { modalObjectStore } = useContext(InstanceContext).selectionStore;
   const [containerRef, containerRect] = useRect();
   const [maxItems, setMaxItems] = useState(0);
 
