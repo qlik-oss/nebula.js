@@ -7,9 +7,11 @@ import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/
 import InstanceContext from '../contexts/InstanceContext';
 import useAppSelections from '../hooks/useAppSelections';
 import unifyContraintsAndInteractions from '../utils/interactions';
+import initModelStore from '../stores/new-model-store';
+import initSelectionStore from '../stores/new-selections-store';
 
-const NebulaApp = forwardRef(({ initialContext, app, renderCallback }, ref) => {
-  const [appSelections] = useAppSelections(app);
+const NebulaApp = forwardRef(({ initialContext, app, renderCallback, modelStore, selectionStore }, ref) => {
+  const [appSelections] = useAppSelections(app, selectionStore);
   const [context, setContext] = useState(initialContext);
   const [muiThemeName, setMuiThemeName] = useState();
 
@@ -42,6 +44,9 @@ const NebulaApp = forwardRef(({ initialContext, app, renderCallback }, ref) => {
     []
   );
 
+  context.modelStore = modelStore;
+  context.selectionStore = selectionStore;
+
   return (
     <StyledEngineProvider injectFirst>
       <ThemeProvider theme={theme}>
@@ -69,8 +74,20 @@ export default function boot({ app, context }) {
     unifyContraintsAndInteractions(context);
   }
 
+  const modelStore = initModelStore(app.id);
+  const selectionStore = initSelectionStore(app.id);
+
   const root = ReactDOM.createRoot(element);
-  root.render(<NebulaApp ref={appRef} app={app} initialContext={context} renderCallback={resolveRender} />);
+  root.render(
+    <NebulaApp
+      ref={appRef}
+      app={app}
+      initialContext={context}
+      renderCallback={resolveRender}
+      modelStore={modelStore}
+      selectionStore={selectionStore}
+    />
+  );
 
   const cells = {};
   const components = [];
@@ -127,6 +144,8 @@ export default function boot({ app, context }) {
         return appRef.current.getAppSelections();
       },
     },
+    modelStore,
+    selectionStore,
     appRef,
     rendered,
   ];

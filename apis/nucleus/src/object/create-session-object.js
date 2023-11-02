@@ -1,6 +1,5 @@
 import populateData from './populator';
 import init from './initiate';
-import { subscribe, modelStore } from '../stores/model-store';
 
 /**
  * @typedef {string | EngineAPI.INxDimension | EngineAPI.INxMeasure | LibraryField} Field
@@ -41,10 +40,12 @@ import { subscribe, modelStore } from '../stores/model-store';
  */
 export default async function createSessionObject(
   { type, version, fields, properties, options, plugins, element, extendProperties },
-  halo
+  halo,
+  store
 ) {
   let mergedProps = {};
   const children = [];
+  const { modelStore, subscribe } = store;
   let error;
   try {
     const t = halo.types.get({ name: type, version });

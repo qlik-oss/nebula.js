@@ -1,5 +1,5 @@
 import { useReducer, useEffect } from 'react';
-import { useModelChangedStore, useRpcResultStore, useRpcRequestStore } from '../stores/model-store';
+import { useModelChangedStore, useRpcResultStore, useRpcRequestStore } from './useModelStore';
 
 const sleep = (delay) =>
   new Promise((resolve) => {

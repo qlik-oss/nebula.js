@@ -204,7 +204,7 @@ function nuked(configuration = {}) {
       translator: locale.translator,
     };
 
-    const [root] = bootNebulaApp({
+    const [root, modelStore] = bootNebulaApp({
       app,
       context: currentContext,
     });
@@ -307,9 +307,9 @@ function nuked(configuration = {}) {
       render: async (cfg) => {
         await currentThemePromise;
         if (cfg.id) {
-          return get(cfg, halo);
+          return get(cfg, halo, modelStore);
         }
-        return createSessionObject(cfg, halo);
+        return createSessionObject(cfg, halo, modelStore);
       },
       /**
        * Creates a visualization model
@@ -325,7 +325,7 @@ function nuked(configuration = {}) {
        *   }
        * );
        */
-      create: async (cfg) => createObject(cfg, halo, false),
+      create: async (cfg) => createObject(cfg, halo, false, modelStore),
       /**
        * Generates properties for a visualization object
        * @param {CreateConfig} cfg The create configuration.
