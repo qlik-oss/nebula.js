@@ -86,7 +86,56 @@ describe('styling', () => {
       expect(header.color).toEqual('color-from-component');
     });
 
-    it('content', () => {
+    it('content - should not attempt to use contrast when there are no components', () => {
+      const styles = getStyling({ themeApi, theme, components: [] });
+      const { content } = styles;
+      expect(content.fontSize).toEqual('object.listBox,content,fontSize');
+      expect(content.color).toEqual('object.listBox,content,color'); // no contrast
+    });
+
+    it('content - should only use contrast when there are components with text color overrides', () => {
+      jest.restoreAllMocks();
+      components = [
+        {
+          key: 'theme',
+          content: {
+            fontSize: 'size-from-component',
+            fontColor: {
+              color: undefined, // <- should not trigger a contrast color
+            },
+            useContrastColor: true,
+          },
+        },
+      ];
+      const styles = getStyling({ themeApi, theme, components });
+      const { content } = styles;
+      expect(content.fontSize).toEqual('size-from-component');
+      expect(content.color).toEqual('object.listBox,content,color'); // still no contrast
+    });
+
+    it('content - should override text color with a contrasting color since we have specified a text color and useContrastColor is true', () => {
+      components = [
+        {
+          key: 'theme',
+          content: {
+            fontSize: 'size-from-component',
+            fontColor: {
+              color: undefined, // <- should not trigger a contrast color
+            },
+            useContrastColor: true,
+          },
+        },
+      ];
+      const POSSIBLE_COLOR = 'white';
+      const CONTRASTING_TO_POSSIBLE = '#000';
+
+      themeApi.getStyle = (a, b, c) => (c === 'backgroundColor' ? POSSIBLE_COLOR : `${a},${b},${c}`);
+      components[0].content.fontColor.color = '#FFFFFF';
+      const styles2 = getStyling({ themeApi, theme, components });
+      expect(styles2.content.color).toEqual(CONTRASTING_TO_POSSIBLE);
+    });
+
+    it('content - should override with component properties', () => {
       components = [
         {
           key: 'theme',
@@ -99,15 +148,8 @@ describe('styling', () => {
           },
         },
       ];
-      let inst;
-      let content;
-      inst = getStyling({ themeApi, theme, components: [] });
-      content = inst.content;
-      expect(content.fontSize).toEqual('object.listBox,content,fontSize');
-      expect(content.color).toEqual('#000');
-
-      inst = getStyling({ themeApi, theme, components });
-      content = inst.content;
+      const styles = getStyling({ themeApi, theme, components });
+      const { content } = styles;
       expect(content.fontSize).toEqual('size-from-component');
       expect(content.color).toEqual('color-from-component');
     });
@@ -182,9 +224,9 @@ describe('styling', () => {
   });
 
   describe('convertNamedColor', () => {
-    it('should return a color not present in the English dictionary', () => {
-      expect(convertNamedColor('red')).toEqual('#f44336');
-      expect(convertNamedColor('blue')).toEqual('#2196f3');
+    it('should return a hex color or fallback to the input', () => {
+      expect(convertNamedColor('red')).toEqual('#FF0000');
+      expect(convertNamedColor('blue')).toEqual('#0000FF');
       expect(convertNamedColor('transparent')).toEqual('rgba(255, 255, 255, 0)');
       expect(convertNamedColor('misspelled')).toEqual('misspelled');
     });

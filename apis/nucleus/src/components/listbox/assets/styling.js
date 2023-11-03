@@ -1,12 +1,11 @@
 import { getContrastRatio } from '@mui/material/styles';
-import * as namedColors from '@mui/material/colors';
+import namedColors from './named-colors';
 
 const LIGHT = '#FFF';
 const DARK = '#000';
-const TRANSPARENT = 'rgba(255, 255, 255, 0)';
 
 /**
- * If needed, converts a named color to a more reliable CSS color format.
+ * Converts a named color to its corresponding hex format.
  *
  * @param {string} c The CSS color.
  * @returns {string} Converted color or same color as before.
@@ -15,16 +14,7 @@ const TRANSPARENT = 'rgba(255, 255, 255, 0)';
  *  convertNamedColor('red') => '#FF0000'
  */
 export function convertNamedColor(c) {
-  let out = c;
-  try {
-    if (c in namedColors) {
-      ({ 500: out } = namedColors[c]); // 500 exposes the standard color
-    } else if (c === 'transparent') {
-      out = TRANSPARENT;
-    }
-  } catch (err) {
-    out = c;
-  }
+  const out = c in namedColors ? namedColors[c] : c;
   return out;
 }
 
@@ -70,10 +60,12 @@ export function getOverridesAsObject(components = []) {
 }
 
 function getSelectionColors(theme, getListboxStyle, overrides) {
+  const componentContentTextColor = overrides.theme?.content?.fontColor?.color;
   const desiredTextColor =
-    overrides.theme?.content?.fontColor?.color || getListboxStyle('content', 'color') || theme.palette?.text.primary;
+    componentContentTextColor || getListboxStyle('content', 'color') || theme.palette?.text.primary;
 
   const useContrastTextColor = overrides.theme?.content?.useContrastColor ?? true;
+  const hasContentTextColorOverride = !!componentContentTextColor;
 
   // Background colors
   const selectionColors = overrides.selections?.colors || {};
@@ -96,7 +88,7 @@ function getSelectionColors(theme, getListboxStyle, overrides) {
   let selectedExcludedContrast = desiredTextColor || theme.palette?.selected.selectedExcludedContrastText;
   let possibleContrast = desiredTextColor || theme.palette?.selected.possibleContrastText;
 
-  if (useContrastTextColor) {
+  if (hasContentTextColorOverride && useContrastTextColor) {
     // Override preferred text color if it does not contrast enough with the background color.
     selectedContrast = getContrastingColor(selected, desiredTextColor);
     alternativeContrast = getContrastingColor(alternative, desiredTextColor);
