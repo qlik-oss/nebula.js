@@ -183,7 +183,7 @@ describe('styling', () => {
 
     it('should fallback to false when contrast is undefined for unsupported or invalid color(s)', () => {
       expect(hasEnoughContrast('#ddd', 'white')).toEqual(false);
-      expect(hasEnoughContrast('#ccc', 'white')).toEqual(true);
+      expect(hasEnoughContrast('#ccc', 'white')).toEqual(false);
       expect(hasEnoughContrast('rgb(0,0,0)', 'transparent')).toEqual(false);
       expect(hasEnoughContrast('transparent', 'transparent')).toEqual(false);
       expect(hasEnoughContrast('red', 'blue')).toEqual(true);
