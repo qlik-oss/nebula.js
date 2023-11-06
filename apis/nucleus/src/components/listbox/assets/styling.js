@@ -1,55 +1,47 @@
-import { getContrastRatio } from '@mui/material/styles';
-import * as namedColors from '@mui/material/colors';
+import Color from '../../../utils/color';
 
 const LIGHT = '#FFF';
 const DARK = '#000';
-const TRANSPARENT = 'rgba(255, 255, 255, 0)';
 
-/**
- * If needed, converts a named color to a more reliable CSS color format.
- *
- * @param {string} c The CSS color.
- * @returns {string} Converted color or same color as before.
- * @private
- * @example
- *  convertNamedColor('red') => '#FF0000'
- */
-export function convertNamedColor(c) {
-  let out = c;
-  try {
-    if (c in namedColors) {
-      ({ 500: out } = namedColors[c]); // 500 exposes the standard color
-    } else if (c === 'transparent') {
-      out = TRANSPARENT;
-    }
-  } catch (err) {
-    out = c;
+export const CONTRAST_THRESHOLD = 1.5;
+const LIGHT_PREFERRED_THRESHOLD = 3;
+
+export const getContrast = (desired, background) => {
+  let contrast = false;
+
+  const des = new Color(desired);
+  const bg = new Color(background);
+
+  if (bg.isInvalid() || des.isInvalid() || bg.getAlpha() < 1 || des.getAlpha() < 1) {
+    return undefined;
   }
-  return out;
-}
 
-export const hasEnoughContrast = (desiredTextColor, backgroundColor) => {
-  const desired = convertNamedColor(desiredTextColor);
-  const background = convertNamedColor(backgroundColor);
-
-  const CONTRAST_THRESHOLD = 3.0;
-  let isContrastingEnough;
   try {
-    isContrastingEnough = getContrastRatio(desired, background) > CONTRAST_THRESHOLD;
+    contrast = Color.getContrast(des, bg);
   } catch (err) {
-    // The function throws on unsupported or misspelled colors.
-    // In these cases, simply return true.
-    isContrastingEnough = true;
+    contrast = undefined;
   }
-  return isContrastingEnough;
+  return contrast;
 };
 
-function getContrastingColor(backgroundColor, desiredTextColor = undefined, dark = DARK, light = LIGHT) {
+export function getContrastingColor(backgroundColor, desiredTextColor = undefined, dark = DARK, light = LIGHT) {
+  const lightColor = new Color(light);
+  const bg = new Color(backgroundColor);
+  const des = new Color(desiredTextColor);
+  if (bg.isInvalid() || des.isInvalid() || bg.getAlpha() < 1 || des.getAlpha() < 1) {
+    return desiredTextColor;
+  }
+
+  // Always prioritise light color if it gives better contrast than desired color's.
+  const lightColorContrast = getContrast(lightColor, bg);
+  const desiredColorContrast = getContrast(des, bg);
+  const useLightColor = lightColorContrast > desiredColorContrast || lightColorContrast > LIGHT_PREFERRED_THRESHOLD;
+
   let contrastingColor;
-  if (desiredTextColor && hasEnoughContrast(desiredTextColor, backgroundColor)) {
+  if (desiredTextColor && desiredColorContrast > CONTRAST_THRESHOLD && !useLightColor) {
     contrastingColor = desiredTextColor;
   } else {
-    contrastingColor = hasEnoughContrast(light, backgroundColor) ? light : dark;
+    contrastingColor = useLightColor ? light : dark;
   }
   return contrastingColor;
 }
@@ -70,8 +62,9 @@ export function getOverridesAsObject(components = []) {
 }
 
 function getSelectionColors(theme, getListboxStyle, overrides) {
+  const componentContentTextColor = overrides.theme?.content?.fontColor?.color;
   const desiredTextColor =
-    overrides.theme?.content?.fontColor?.color || getListboxStyle('content', 'color') || theme.palette?.text.primary;
+    componentContentTextColor || getListboxStyle('content', 'color') || theme.palette?.text.primary;
 
   const useContrastTextColor = overrides.theme?.content?.useContrastColor ?? true;
 
@@ -90,7 +83,7 @@ function getSelectionColors(theme, getListboxStyle, overrides) {
     '#FFFFFF';
 
   // Font colors
-  let selectedContrast = desiredTextColor || theme.palette?.selected.main;
+  let selectedContrast = desiredTextColor || theme.palette?.selected.selectedContrastText;
   let alternativeContrast = desiredTextColor || theme.palette?.selected.alternativeContrastText;
   let excludedContrast = desiredTextColor || theme.palette?.selected.excludedContrastText;
   let selectedExcludedContrast = desiredTextColor || theme.palette?.selected.selectedExcludedContrastText;

@@ -50,7 +50,7 @@ const dark = {
       excluded: colors.grey10,
       selectedExcluded: colors.grey10,
       possible: colors.grey80,
-
+      selectedContrastText: colors.grey100,
       mainContrastText: colors.grey100,
       alternativeContrastText: colors.grey100,
       excludedContrastText: colors.grey100,
