@@ -1,4 +1,4 @@
-import Color from '@nebula.js/theme/src/color';
+import Color from '../../../utils/color';
 
 const LIGHT = '#FFF';
 const DARK = '#000';
