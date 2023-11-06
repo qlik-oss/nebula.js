@@ -1,45 +1,46 @@
-import { getContrastRatio } from '@mui/material/styles';
-import namedColors from './named-colors';
+import Color from './color';
 
 const LIGHT = '#FFF';
 const DARK = '#000';
 
-/**
- * Converts a named color to its corresponding hex format.
- *
- * @param {string} c The CSS color.
- * @returns {string} Converted color or same color as before.
- * @private
- * @example
- *  convertNamedColor('red') => '#FF0000'
- */
-export function convertNamedColor(c) {
-  const out = c in namedColors ? namedColors[c] : c;
-  return out;
-}
+export const CONTRAST_THRESHOLD = 1.2;
 
-export const hasEnoughContrast = (desiredTextColor, backgroundColor) => {
-  const desired = convertNamedColor(desiredTextColor);
-  const background = convertNamedColor(backgroundColor);
+export const getContrast = (desired, background) => {
+  let contrast = false;
 
-  const CONTRAST_THRESHOLD = 3.0;
-  let isContrastingEnough;
-  try {
-    isContrastingEnough = getContrastRatio(desired, background) > CONTRAST_THRESHOLD;
-  } catch (err) {
-    // The function throws on unsupported or misspelled colors.
-    // In these cases, simply return true.
-    isContrastingEnough = true;
+  const des = new Color(desired);
+  const bg = new Color(background);
+
+  if (bg.isInvalid() || des.isInvalid() || bg.getAlpha() < 1 || des.getAlpha() < 1) {
+    return undefined;
   }
-  return isContrastingEnough;
+
+  try {
+    contrast = Color.getContrast(des, bg);
+  } catch (err) {
+    contrast = undefined;
+  }
+  return contrast;
 };
 
 function getContrastingColor(backgroundColor, desiredTextColor = undefined, dark = DARK, light = LIGHT) {
+  const lightColor = new Color(light);
+  const bg = new Color(backgroundColor);
+  const des = new Color(desiredTextColor);
+  if (bg.isInvalid() || des.isInvalid() || bg.getAlpha() < 1 || des.getAlpha() < 1) {
+    return desiredTextColor;
+  }
+
+  // Always prioritise light color if it gives better contrast than desired color's.
+  const lightColorContrast = getContrast(lightColor, bg);
+  const desiredColorContrast = getContrast(des, bg);
+  const lightColorWorks = lightColorContrast > CONTRAST_THRESHOLD;
+
   let contrastingColor;
-  if (desiredTextColor && hasEnoughContrast(desiredTextColor, backgroundColor)) {
+  if (desiredTextColor && desiredColorContrast > CONTRAST_THRESHOLD && desiredColorContrast > lightColorContrast) {
     contrastingColor = desiredTextColor;
   } else {
-    contrastingColor = hasEnoughContrast(light, backgroundColor) ? light : dark;
+    contrastingColor = lightColorWorks ? light : dark;
   }
   return contrastingColor;
 }
@@ -65,7 +66,6 @@ function getSelectionColors(theme, getListboxStyle, overrides) {
     componentContentTextColor || getListboxStyle('content', 'color') || theme.palette?.text.primary;
 
   const useContrastTextColor = overrides.theme?.content?.useContrastColor ?? true;
-  const hasContentTextColorOverride = !!componentContentTextColor;
 
   // Background colors
   const selectionColors = overrides.selections?.colors || {};
@@ -82,13 +82,13 @@ function getSelectionColors(theme, getListboxStyle, overrides) {
     '#FFFFFF';
 
   // Font colors
-  let selectedContrast = desiredTextColor || theme.palette?.selected.main;
+  let selectedContrast = desiredTextColor || theme.palette?.selected.selectedContrastText;
   let alternativeContrast = desiredTextColor || theme.palette?.selected.alternativeContrastText;
   let excludedContrast = desiredTextColor || theme.palette?.selected.excludedContrastText;
   let selectedExcludedContrast = desiredTextColor || theme.palette?.selected.selectedExcludedContrastText;
   let possibleContrast = desiredTextColor || theme.palette?.selected.possibleContrastText;
 
-  if (hasContentTextColorOverride && useContrastTextColor) {
+  if (useContrastTextColor) {
     // Override preferred text color if it does not contrast enough with the background color.
     selectedContrast = getContrastingColor(selected, desiredTextColor);
     alternativeContrast = getContrastingColor(alternative, desiredTextColor);
