@@ -3,7 +3,8 @@ import Color from '../../../utils/color';
 const LIGHT = '#FFF';
 const DARK = '#000';
 
-export const CONTRAST_THRESHOLD = 1.2;
+export const CONTRAST_THRESHOLD = 1.5;
+const LIGHT_PREFERRED_THRESHOLD = 3;
 
 export const getContrast = (desired, background) => {
   let contrast = false;
@@ -23,7 +24,7 @@ export const getContrast = (desired, background) => {
   return contrast;
 };
 
-function getContrastingColor(backgroundColor, desiredTextColor = undefined, dark = DARK, light = LIGHT) {
+export function getContrastingColor(backgroundColor, desiredTextColor = undefined, dark = DARK, light = LIGHT) {
   const lightColor = new Color(light);
   const bg = new Color(backgroundColor);
   const des = new Color(desiredTextColor);
@@ -34,13 +35,13 @@ function getContrastingColor(backgroundColor, desiredTextColor = undefined, dark
   // Always prioritise light color if it gives better contrast than desired color's.
   const lightColorContrast = getContrast(lightColor, bg);
   const desiredColorContrast = getContrast(des, bg);
-  const lightColorWorks = lightColorContrast > CONTRAST_THRESHOLD;
+  const useLightColor = lightColorContrast > desiredColorContrast || lightColorContrast > LIGHT_PREFERRED_THRESHOLD;
 
   let contrastingColor;
-  if (desiredTextColor && desiredColorContrast > CONTRAST_THRESHOLD && desiredColorContrast > lightColorContrast) {
+  if (desiredTextColor && desiredColorContrast > CONTRAST_THRESHOLD && !useLightColor) {
     contrastingColor = desiredTextColor;
   } else {
-    contrastingColor = lightColorWorks ? light : dark;
+    contrastingColor = useLightColor ? light : dark;
   }
   return contrastingColor;
 }

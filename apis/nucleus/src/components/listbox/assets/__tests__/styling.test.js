@@ -1,4 +1,4 @@
-import getStyling, { CONTRAST_THRESHOLD, getContrast, getOverridesAsObject } from '../styling';
+import getStyling, { CONTRAST_THRESHOLD, getContrast, getContrastingColor, getOverridesAsObject } from '../styling';
 
 describe('styling', () => {
   let theme = {};
@@ -219,6 +219,16 @@ describe('styling', () => {
       expect(hasEnoughContrast('hsla(0,0,0,1.0)', '#FFF')).toEqual(true);
       expect(hasEnoughContrast('rgba(0,0,0,1.0)', '#FFF')).toEqual(true);
       expect(hasEnoughContrast('red', '#FFF')).toEqual(true);
+    });
+  });
+
+  describe('get contrasting color', () => {
+    it('should prefer light color even though contrast is higher for desired color', () => {
+      const bg = '#474747';
+      const c1 = getContrast('#000', bg);
+      const c2 = getContrast('#fff', bg);
+      expect(c1 > c2).toBeTruthy(); // although it does not make sense when comparing with the eye
+      expect(getContrastingColor(bg, '#000')).toEqual('#FFF');
     });
   });
 });
