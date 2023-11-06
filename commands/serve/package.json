@@ -53,8 +53,8 @@
     "@babel/core": "7.23.2",
     "@babel/preset-env": "7.23.2",
     "@babel/preset-react": "7.22.15",
-    "@mui/material": "^5.14.15",
-    "@mui/system": "^5.14.15",
+    "@mui/material": "^5.14.16",
+    "@mui/system": "^5.14.16",
     "@nebula.js/enigma-mocker": "^4.6.1",
     "@nebula.js/nucleus": "^4.6.1",
     "@nebula.js/snapshooter": "^4.6.1",
@@ -71,6 +71,6 @@
     "monaco-editor-webpack-plugin": "7.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "6.17.0"
+    "react-router-dom": "6.18.0"
   }
 }
