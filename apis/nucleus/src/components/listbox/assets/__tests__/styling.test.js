@@ -1,10 +1,4 @@
-import * as muiStyles from '@mui/material/styles';
 import getStyling, { CONTRAST_THRESHOLD, getContrast, getOverridesAsObject } from '../styling';
-
-jest.mock('@mui/material/styles', () => ({
-  __esModule: true,
-  ...jest.requireActual('@mui/material/styles'),
-}));
 
 describe('styling', () => {
   let theme = {};
@@ -54,13 +48,6 @@ describe('styling', () => {
   });
 
   describe('should return expected header style based on theme and then overridden by components', () => {
-    beforeAll(() => {
-      jest.spyOn(muiStyles, 'getContrastRatio').mockReturnValue(0.5);
-    });
-    afterAll(() => {
-      jest.restoreAllMocks();
-    });
-
     it('header', () => {
       components = [
         {
