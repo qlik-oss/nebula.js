@@ -4,12 +4,15 @@
 /* eslint-disable no-cond-assign */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-underscore-dangle */
+
+import CSSColors from './css-colors';
+
 /**
  * Module which defines a color object
+ * @private
  * @exports objects.views/charts/representation/color
  * @expose module:objects.views/charts/representation/color~Color
  */
-import CSSColors from './css-colors';
 
 // color formats
 const rgb = /^rgb\((\d{1,3}),(\d{1,3}),(\d{1,3})\)$/i;
@@ -25,6 +28,7 @@ const { round } = Math;
  * @class
  * @classdesc Class which provides color transformation functionality
  * @description This is a constructor.
+ * @private This is a constructor.
  * @param {object} - Parameters to create a color from different notations
  * @example
  * // a few ways of instantiating a red color
@@ -318,6 +322,7 @@ export default class Color {
 
   /**
    * Sets alpha value of color
+   * @private
    * @param {number} a - Alpha value of the color
    */
   setAlpha(a) {
@@ -327,6 +332,7 @@ export default class Color {
 
   /**
    * Gets the alpha value of this color
+   * @private
    * @returns {number}
    */
   getAlpha() {
@@ -335,6 +341,7 @@ export default class Color {
 
   /**
    * Returns an rgb string representation of this color.
+   * @private
    * @return {string} An rgb string representation of this color
    */
   toRGB() {
@@ -346,6 +353,7 @@ export default class Color {
 
   /**
    * Returns an rgba string representation of this color.
+   * @private
    * @return {string} An rgba string representation of this color.
    */
   toRGBA() {
@@ -364,6 +372,7 @@ export default class Color {
 
   /**
    * Returns a hex string representation of this color.
+   * @private
    * @return {string}
    */
   toHex() {
@@ -375,6 +384,7 @@ export default class Color {
 
   /**
    * Returns a hsl string representation of this color using "bi-hexcone" model for lightness
+   * @private
    * @param {boolean} luma - Whether to use luma calculation
    * @return {string} In format hsl(0,0,0)
    */
@@ -387,6 +397,7 @@ export default class Color {
 
   /**
    * Returns a hsla string representation of this color using "bi-hexcone" model for lightness
+   * @private
    * @param {boolean} luma - Whether to use luma calculation
    * @return {string} In format hsla(0,0,0,0)
    */
@@ -399,6 +410,7 @@ export default class Color {
 
   /**
    * Return the color components in hsv space using "hexcone" model for value (lightness)
+   * @private
    * @param {Color|string} c
    * @returns {object} The color components in hsv space {h:0-360, s:0-100, v:0-100}
    */
@@ -409,6 +421,7 @@ export default class Color {
 
   /**
    * Return the color components in hsv space using "hexcone" model for value (lightness)
+   * @private
    * @param {Color|string} c
    * @returns {object} The color components in hsv space {h:0-360, s:0-100, v:0-100}
    */
@@ -421,6 +434,7 @@ export default class Color {
 
   /**
    * Returns a uint representation of this color
+   * @private
    * @return {number}
    */
   toNumber() {
@@ -432,6 +446,7 @@ export default class Color {
 
   /**
    * Checks if this color is perceived as dark.
+   * @private
    * @return {string} True if the luminance is below 160, false otherwise.
    */
   isDark() {
@@ -441,6 +456,7 @@ export default class Color {
 
   /**
    * Calculates the perceived luminance of the color.
+   * @private
    * @return {number} A value in the range 0-255 where a low value is considered dark and vice versa.
    */
   getLuminance() {
@@ -457,6 +473,7 @@ export default class Color {
 
   /**
    * Shifts the color towards a lighter or darker shade
+   * @private
    * @param {number} value - A value in the range -100-100 to shift the color with along the HSL lightness.
    * @return {string} The shifted color as hsla string.
    */
@@ -484,6 +501,7 @@ export default class Color {
 
   /**
    * Compares two colors.
+   * @private
    * @param {Color} c The color to compare with.
    * @return {boolean} True if the rgba channels are the same, false otherwise
    */
@@ -498,6 +516,7 @@ export default class Color {
 
   /**
    * Linearly interpolates each channel of two colors.
+   * @private
    * @param {Color} c2 The other color.
    * @param {number} t The interpolation value in the range (0-1).
    * @return {string} The blend as an rgb string.
@@ -526,6 +545,7 @@ export default class Color {
 
   /**
    * Returns an rgb string representation of this color
+   * @private
    * @param {Color|string} c
    * @returns {string} An rgb string with channel values within range 0-255.
    */
@@ -547,6 +567,7 @@ export default class Color {
 
   /**
    *
+   * @private
    * @param c
    * @param a
    * @returns {string} The color rgb format.
@@ -569,6 +590,7 @@ export default class Color {
 
   /**
    *
+   * @private
    * @param {Color|string} c
    * @returns {string} The color in hexadecimal space.
    */
@@ -615,6 +637,7 @@ export default class Color {
 
   /**
    * Return the color in hsl space using "bi-hexcone" model for lightness
+   * @private
    * @param {Color|string} c
    * @param {boolean} luma - Whether to use luma calculation
    * @returns {string} The color in hsl space.
@@ -671,6 +694,7 @@ export default class Color {
 
   /**
    * Return the color in hsla space using "bi-hexcone" model for lightness
+   * @private
    * @param {Color|string} c
    * @param {boolean} luma - Whether to use luma calculation
    * @returns {string} The color in hsla space.
@@ -728,6 +752,7 @@ export default class Color {
 
   /**
    * Return the color components in hsv space using "hexcone" model for value (lightness)
+   * @private
    * @param {Color|string} c
    * @returns {object} The color components in hsv space {h:0-360, s:0-100, v:0-100}
    */
@@ -777,6 +802,7 @@ export default class Color {
 
   /**
    * Returns an number representation of the color
+   * @private
    * @param {Color|string} c
    * @returns {Number} Unsigned integer in the range 0-16 777 216
    */
