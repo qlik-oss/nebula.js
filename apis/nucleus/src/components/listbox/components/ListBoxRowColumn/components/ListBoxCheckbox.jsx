@@ -15,7 +15,7 @@ const classes = {
   dense: `${PREFIX}-dense`,
 };
 
-const StyledCheckbox = styled(Checkbox, { shouldForwardProp: (p) => p !== 'styles' })(({ theme, styles }) => ({
+const StyledCheckbox = styled(Checkbox, { shouldForwardProp: (p) => p !== 'styles' })(({ styles }) => ({
   [`& .${classes.cbIcon}`]: {
     borderRadius,
     width: 16,
@@ -45,14 +45,14 @@ const StyledCheckbox = styled(Checkbox, { shouldForwardProp: (p) => p !== 'style
     borderRadius: borderRadius - 1,
     width: 12,
     height: 12,
-    backgroundColor: theme.palette.selected.excluded,
+    backgroundColor: styles.selections.excluded,
   },
 
   [`& .${classes.cbIconAlternative}`]: {
     borderRadius: borderRadius - 1,
     width: 12,
     height: 12,
-    backgroundColor: theme.palette.selected.alternative,
+    backgroundColor: styles.selections.alternative,
   },
 
   [`&.${classes.checkbox}`]: {

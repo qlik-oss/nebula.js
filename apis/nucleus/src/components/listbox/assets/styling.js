@@ -61,12 +61,12 @@ export function getOverridesAsObject(components = []) {
   return overrides;
 }
 
-function getSelectionColors(theme, getListboxStyle, overrides) {
+function getSelectionColors({ theme, getListboxStyle, overrides, checkboxes }) {
   const componentContentTextColor = overrides.theme?.content?.fontColor?.color;
   const desiredTextColor =
     componentContentTextColor || getListboxStyle('content', 'color') || theme.palette?.text.primary;
 
-  const useContrastTextColor = overrides.theme?.content?.useContrastColor ?? true;
+  const useContrastTextColor = !checkboxes && (overrides.theme?.content?.useContrastColor ?? true);
 
   // Background colors
   const selectionColors = overrides.selections?.colors || {};
@@ -117,7 +117,7 @@ export default function getStyles({ themeApi, theme, components = [], checkboxes
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
 
-  const selections = getSelectionColors(theme, getListboxStyle, overrides);
+  const selections = getSelectionColors({ theme, getListboxStyle, overrides, checkboxes });
   const themeOverrides = overrides.theme || {};
 
   return {
@@ -133,6 +133,9 @@ export default function getStyles({ themeApi, theme, components = [], checkboxes
       color: selections.possibleContrast || getListboxStyle('content', 'color'),
       fontSize: themeOverrides.content?.fontSize || getListboxStyle('content', 'fontSize'),
       fontFamily: getListboxStyle('content', 'fontFamily'),
+    },
+    search: {
+      color: getListboxStyle('content', 'color'),
     },
     selections,
   };
