@@ -182,17 +182,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
         viewDataObjectId = undefined;
       }
       if (newModel) {
-        await unmountCell();
-        [unmountCell, cellRef] = glueCell({
-          halo,
-          element: mountedReference,
-          model: newModel,
-          initialSnOptions,
-          initialSnPlugins,
-          initialError,
-          onMount,
-          emitter,
-        });
+        cellRef.current.setModel(newModel);
       }
     },
     /**
