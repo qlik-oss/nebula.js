@@ -18,6 +18,7 @@ describe('viz', () => {
   let setSnOptions;
   let setSnContext;
   let setSnPlugins;
+  let setModel;
   let takeSnapshot;
   let exportImage;
   let getImperativeHandle;
@@ -32,6 +33,7 @@ describe('viz', () => {
     setSnOptions = jest.fn();
     setSnContext = jest.fn();
     setSnPlugins = jest.fn();
+    setModel = jest.fn();
     takeSnapshot = jest.fn();
     exportImage = jest.fn();
     getImperativeHandle = jest.fn(async () => ({
@@ -42,6 +44,7 @@ describe('viz', () => {
         setSnOptions,
         setSnContext,
         setSnPlugins,
+        setModel,
         takeSnapshot,
         exportImage,
         getImperativeHandle,
@@ -249,7 +252,7 @@ describe('viz', () => {
       expect(createSessionObjectMock).toHaveBeenCalledWith({ totals: { show: false }, usePagination: true });
       await api.toggleDataView();
       expect(destroySessionObjectMock).toHaveBeenCalledWith('newModelId');
-      expect(glue).toHaveBeenCalledTimes(2);
+      expect(setModel).toHaveBeenCalledTimes(2);
     });
 
     test('should not toggle data view when showDataView is being used', async () => {
@@ -259,7 +262,7 @@ describe('viz', () => {
       expect(createSessionObjectMock).toHaveBeenCalledWith({ totals: { show: false }, usePagination: true });
       await api.toggleDataView(true);
       expect(destroySessionObjectMock).toHaveBeenCalledTimes(0);
-      expect(glue).toHaveBeenCalledTimes(1);
+      expect(setModel).toHaveBeenCalledTimes(1);
     });
   });
 

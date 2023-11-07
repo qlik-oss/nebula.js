@@ -313,7 +313,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     // setOptions() {}, // applied soft patch
     // resize() {},
     // show() {},
-    // toggleDataView() {},
   };
 
   return api;
