@@ -1,3 +1,7 @@
+import { getFullBoxShadow } from './shadow-utils';
+import resolveProperty from './resolve-property';
+import resolveColor from './resolve-color';
+
 const imageSizingToCssProperty = {
   originalSize: 'auto auto',
   alwaysFit: 'contain',
@@ -79,22 +83,33 @@ export function resolveBgImage(bgComp, app) {
   return undefined;
 }
 
-export function resolveBgColor(bgComp, theme, objectType) {
-  const bgColor = bgComp?.bgColor;
+export function resolveBgColor(comp, theme, objectType) {
+  const bgColor = comp?.bgColor;
   if (bgColor && theme) {
     if (bgColor.useExpression) {
       return theme.validateColor(bgColor.colorExpression);
     }
-    return bgColor.color && bgColor.color.color !== 'none' ? theme.getColorPickerColor(bgColor.color, true) : undefined;
   }
-  if (theme && objectType) {
-    return theme.getStyle(`object.${objectType}`, '', 'backgroundColor');
-  }
-  if (theme) {
-    return theme.getStyle('', '', 'backgroundColor');
-  }
-  return undefined;
+  return resolveColor(bgColor?.color, '', 'backgroundColor', theme, objectType);
 }
+
+export function resolveBorder(comp, theme, objectType) {
+  const borderColor = resolveColor(comp?.borderColor, '', 'borderColor', theme, objectType);
+  const borderWidth = comp?.borderWidth || resolveProperty('', 'borderWidth', theme, objectType);
+  return borderWidth && borderColor ? `${borderWidth} solid ${borderColor}` : undefined;
+}
+
+export function resolveBorderRadius(comp, theme, objectType) {
+  return comp?.borderRadius || resolveProperty('', 'borderRadius', theme, objectType);
+}
+
+export function resolveBoxShadow(comp, theme, objectType) {
+  const themeBoxShadow = resolveProperty('shadow', 'boxShadow', theme, objectType);
+  const boxShadow = comp?.shadow?.boxShadow || themeBoxShadow;
+  const boxShadowColor = resolveColor(comp?.shadow?.boxShadowColor, 'shadow', 'boxShadowColor', theme, objectType);
+  return getFullBoxShadow(boxShadow, themeBoxShadow, boxShadowColor);
+}
+
 function unfurlFontStyle(fontStyle, target) {
   if (fontStyle && Array.isArray(fontStyle)) {
     return fontStyle;

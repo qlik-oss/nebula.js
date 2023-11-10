@@ -3,7 +3,7 @@ import useLayout from '../hooks/useLayout';
 import getObject from '../object/get-object';
 import Cell from './Cell';
 import uid from '../object/uid';
-import { resolveBgColor, resolveBgImage } from '../utils/background-props';
+import { resolveBgColor, resolveBgImage } from '../utils/style/styling-props';
 import InstanceContext from '../contexts/InstanceContext';
 
 /**
