@@ -11,12 +11,14 @@ const TREE_PATH = '/qListObjectDef';
 const WILDCARD = '**';
 
 const StyledInputAdornment = styled(InputAdornment, { shouldForwardProp: (p) => p !== 'styles' })(({ styles }) => ({
-  color: styles.content.color,
+  color: styles.search.color,
 }));
 
 const StyledOutlinedInput = styled(OutlinedInput, { shouldForwardProp: (p) => p !== 'styles' })(({ styles }) => ({
-  color: styles.content.color,
   display: 'flex',
+  '& .MuiInputBase-root': {
+    color: styles.search.color,
+  },
 }));
 
 export default function ListBoxSearch({
