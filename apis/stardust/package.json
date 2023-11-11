@@ -41,13 +41,13 @@
     "version": "yarn run spec && yarn run ts && git add ./api-spec/spec.json ./api-spec/listbox-spec.json ./types/index.d.ts"
   },
   "dependencies": {
-    "@types/qlik-engineapi": "12.67.15"
+    "@types/qlik-engineapi": "12.67.16"
   },
   "devDependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.16",
-    "@mui/material": "^5.14.16",
+    "@mui/material": "^5.14.17",
     "@nebula.js/conversion": "^4.6.2",
     "@nebula.js/enigma-mocker": "^4.6.2",
     "@nebula.js/locale": "^4.6.2",
