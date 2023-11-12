@@ -34,7 +34,7 @@
     "chalk": "4.1.2",
     "extend": "3.0.2",
     "postcss": "^8.4.31",
-    "rollup": "4.3.1",
+    "rollup": "4.4.0",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-sourcemaps": "0.6.3",
     "yargs": "17.7.2"
