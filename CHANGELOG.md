@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.7.0](https://github.com/qlik-oss/nebula.js/compare/v4.6.2...v4.7.0) (2023-11-14)
+
+### Features
+
+- add chart border and shadow ([#1400](https://github.com/qlik-oss/nebula.js/issues/1400)) ([c694ed8](https://github.com/qlik-oss/nebula.js/commit/c694ed83e9ff3201a44bc71b48e8083afbec470c))
+
 ## [4.6.2](https://github.com/qlik-oss/nebula.js/compare/v4.6.1...v4.6.2) (2023-11-07)
 
 ### Bug Fixes
