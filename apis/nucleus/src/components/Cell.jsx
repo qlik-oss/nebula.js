@@ -16,7 +16,7 @@ import useLayout, { useAppLayout } from '../hooks/useLayout';
 import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
 import eventmixin from '../selections/event-mixin';
-import { resolveBgColor, resolveBgImage, resolveTextStyle } from '../utils/background-props';
+import useStyling from '../hooks/useStyling';
 
 /**
  * @interface
@@ -322,9 +322,12 @@ const Cell = forwardRef(
     const [selections] = useObjectSelections(app, model, [`#${cellElementId}`, '.njs-action-toolbar-popover']); // elements which will not trigger the click out listener
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
-    const [bgColor, setBgColor] = useState(undefined);
-    const [bgImage, setBgImage] = useState(undefined); // {url: "", size: "", pos: ""}
-    const [titleStyles, setTitleStyles] = useState(undefined);
+    const { titleStyles, bgColor, bgImage, border, borderRadius, boxShadow } = useStyling(
+      layout,
+      halo.public.theme,
+      halo.app,
+      themeName
+    );
 
     const focusHandler = useRef({
       focusToolbarButton(last) {
@@ -336,19 +339,6 @@ const Cell = forwardRef(
     useEffect(() => {
       eventmixin(focusHandler.current);
     }, []);
-
-    useEffect(() => {
-      if (layout && halo.public.theme) {
-        const bgComp = layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
-        setTitleStyles({
-          main: resolveTextStyle(bgComp, 'main', halo.public.theme, layout.visualization),
-          footer: resolveTextStyle(bgComp, 'footer', halo.public.theme, layout.visualization),
-          subTitle: resolveTextStyle(bgComp, 'subTitle', halo.public.theme, layout.visualization),
-        });
-        setBgColor(resolveBgColor(bgComp, halo.public.theme, layout.visualization));
-        setBgImage(resolveBgImage(bgComp, halo.app));
-      }
-    }, [layout, halo.public.theme, halo.app, themeName]);
 
     focusHandler.current.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
@@ -536,6 +526,10 @@ const Cell = forwardRef(
           backgroundRepeat: 'no-repeat',
           backgroundSize: bgImage && bgImage.size,
           backgroundPosition: bgImage && bgImage.pos,
+          border,
+          borderRadius,
+          boxShadow,
+          boxSizing: 'border-box',
         }}
         elevation={0}
         square

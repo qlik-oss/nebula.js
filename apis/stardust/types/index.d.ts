@@ -570,6 +570,8 @@ declare namespace stardust {
         meta?: object;
     }
 
+    type getFullBoxShadow = any;
+
     interface ActionToolbarElement extends HTMLElement{
         className: "njs-action-toolbar-popover";
     }
