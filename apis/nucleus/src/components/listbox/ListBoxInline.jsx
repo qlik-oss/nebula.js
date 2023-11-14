@@ -43,7 +43,7 @@ const classes = {
 const StyledGrid = styled(Grid, {
   shouldForwardProp: (p) => !['containerPadding', 'isGridMode', 'styles'].includes(p),
 })(({ theme, containerPadding, isGridMode, styles }) => ({
-  background: styles.backgroundColor,
+  ...styles.background, // sets background color and image of listbox
   [`& .${classes.listBoxHeader}`]: {
     alignSelf: 'center',
     display: 'flex',
@@ -124,7 +124,7 @@ function ListBoxInline({ options, layout }) {
   const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
 
   const { checkboxes = checkboxesOption } = layout || {};
-  const styles = getStyles({ themeApi, theme, components, checkboxes });
+  const styles = getStyles({ app, themeApi, theme, components, checkboxes });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 

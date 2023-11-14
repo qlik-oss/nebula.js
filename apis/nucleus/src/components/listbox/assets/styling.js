@@ -1,3 +1,4 @@
+import { resolveBgImage } from '../../../utils/background-props';
 import Color from '../../../utils/color';
 
 const LIGHT = '#FFF';
@@ -113,26 +114,39 @@ function getSelectionColors({ theme, getListboxStyle, overrides, checkboxes }) {
   };
 }
 
-export default function getStyles({ themeApi, theme, components = [], checkboxes = false }) {
+export default function getStyles({ app, themeApi, theme, components = [], checkboxes = false }) {
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
 
   const selections = getSelectionColors({ theme, getListboxStyle, overrides, checkboxes });
   const themeOverrides = overrides.theme || {};
 
+  const bgImage = themeOverrides.background?.image
+    ? resolveBgImage({ bgImage: themeOverrides.background.image }, app)
+    : undefined;
+
   return {
-    backgroundColor: getListboxStyle('', 'backgroundColor') || theme.palette.background.default,
+    background: {
+      backgroundColor:
+        themeOverrides.background?.color?.color ||
+        getListboxStyle('', 'backgroundColor') ||
+        theme.palette.background.default,
+      backgroundImage: bgImage?.url && !bgImage?.url.startsWith('url(') ? `url('${bgImage.url}')` : undefined,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: bgImage?.size,
+      backgroundPosition: bgImage?.pos,
+    },
     header: {
       color: themeOverrides.header?.fontColor?.color || getListboxStyle('title.main', 'color'),
       fontSize: themeOverrides.header?.fontSize || getListboxStyle('title.main', 'fontSize'),
-      fontFamily: getListboxStyle('title.main', 'fontFamily'),
+      fontFamily: themeOverrides.header?.fontFamily || getListboxStyle('title.main', 'fontFamily'),
       fontWeight: getListboxStyle('title.main', 'fontWeight') || 'bold',
     },
     content: {
       backgroundColor: checkboxes ? undefined : selections.possible,
       color: selections.possibleContrast || getListboxStyle('content', 'color'),
       fontSize: themeOverrides.content?.fontSize || getListboxStyle('content', 'fontSize'),
-      fontFamily: getListboxStyle('content', 'fontFamily'),
+      fontFamily: themeOverrides.content?.fontFamily || getListboxStyle('content', 'fontFamily'),
     },
     search: {
       color: getListboxStyle('content', 'color'),
