@@ -1,5 +1,5 @@
-import { resolveBgImage } from '../../../utils/background-props';
 import Color from '../../../utils/color';
+import { resolveBgImage } from '../../../utils/style/styling-props';
 
 const LIGHT = '#FFF';
 const DARK = '#000';
