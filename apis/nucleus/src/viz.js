@@ -159,7 +159,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      *
      * @experimental
      * @since 4.7.0
-     * @param {boolean=} showDataView - If included, turns the toggle into a one way-only operation. If true it will only toggle to the view data table.
+     * @param {boolean=} showDataView - If included, forces the chart into a specific state. True will show data view, and false will show the original chart. If not included it will always toggle between the two views.
      */
     async toggleDataView(showDataView) {
       let newModel;

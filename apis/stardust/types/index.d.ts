@@ -418,7 +418,7 @@ declare namespace stardust {
          * The chart will be toggled to the type defined in the nebula context (dataViewType).
          * 
          * The default dataViewType for nebula is sn-table. The specified chart type needs to be registered as well in to make it possible to render the data view.
-         * @param showDataView If included, turns the toggle into a one way-only operation. If true it will only toggle to the view data table.
+         * @param showDataView If included, forces the chart into a specific state. True will show data view, and false will show the original chart. If not included it will always toggle between the two views.
          */
         toggleDataView(showDataView?: boolean): void;
 

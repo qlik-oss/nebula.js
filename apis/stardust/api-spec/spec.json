@@ -1326,7 +1326,7 @@
           "params": [
             {
               "name": "showDataView",
-              "description": "If included, turns the toggle into a one way-only operation. If true it will only toggle to the view data table.",
+              "description": "If included, forces the chart into a specific state. True will show data view, and false will show the original chart. If not included it will always toggle between the two views.",
               "optional": true,
               "type": "boolean"
             }
