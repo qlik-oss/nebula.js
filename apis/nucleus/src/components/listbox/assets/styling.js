@@ -151,7 +151,7 @@ export default function getStyles({ app, themeApi, theme, components = [], check
       fontFamily: themeOverrides.content?.fontFamily || getListboxStyle('content', 'fontFamily'),
     },
     search: {
-      color: getListboxStyle('', 'color'),
+      color: getListboxStyle('content', 'color'),
       borderColor: getListboxStyle('', 'color') || theme.palette.divider,
       backgroundColor: 'rgba(255, 255, 255, 0.7)',
     },

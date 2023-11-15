@@ -50,7 +50,7 @@ describe('styling', () => {
   describe('should return expected header style based on theme and then overridden by components', () => {
     it('search - should get its color from theme style', () => {
       const styles = getStyling({ themeApi, theme, components: [] });
-      expect(styles.search.color).toEqual('object.listBox,,color');
+      expect(styles.search.color).toEqual('object.listBox,content,color');
     });
     it('header', () => {
       components = [
