@@ -21,7 +21,7 @@ const classes = {
 const StyledPopover = styled(Popover)(({ theme }) => ({
   // Set here to allow clicking through the modals container
   pointerEvents: 'none',
-  [`& .${classes.icon}`]: {
+  [`& .${classes.icon} *`]: {
     color: theme.palette.text.primary,
   },
 }));
@@ -67,6 +67,13 @@ const More = React.forwardRef(
             root: {
               className: ActionsToolbarMoreElement.className,
             },
+            paper: {
+              style: {
+                pointerEvents: 'auto',
+                maxWidth: '250px',
+                ...popoverPaperStyle,
+              },
+            },
           }}
           anchorOrigin={{
             vertical: 'bottom',
@@ -75,13 +82,6 @@ const More = React.forwardRef(
           transformOrigin={{
             vertical: 'top',
             horizontal: 'right',
-          }}
-          PaperProps={{
-            style: {
-              pointerEvents: 'auto',
-              maxWidth: '250px',
-              ...popoverPaperStyle,
-            },
           }}
         >
           <MenuList id="moreMenuList">

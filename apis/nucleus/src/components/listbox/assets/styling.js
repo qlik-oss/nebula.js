@@ -121,6 +121,8 @@ export default function getStyles({ app, themeApi, theme, components = [], check
   const selections = getSelectionColors({ theme, getListboxStyle, overrides, checkboxes });
   const themeOverrides = overrides.theme || {};
 
+  const headerColor = themeOverrides.header?.fontColor?.color || getListboxStyle('title.main', 'color');
+
   const bgImage = themeOverrides.background?.image
     ? resolveBgImage({ bgImage: themeOverrides.background.image }, app)
     : undefined;
@@ -137,7 +139,7 @@ export default function getStyles({ app, themeApi, theme, components = [], check
       backgroundPosition: bgImage?.pos,
     },
     header: {
-      color: themeOverrides.header?.fontColor?.color || getListboxStyle('title.main', 'color'),
+      color: headerColor,
       fontSize: themeOverrides.header?.fontSize || getListboxStyle('title.main', 'fontSize'),
       fontFamily: themeOverrides.header?.fontFamily || getListboxStyle('title.main', 'fontFamily'),
       fontWeight: getListboxStyle('title.main', 'fontWeight') || 'bold',
@@ -149,7 +151,9 @@ export default function getStyles({ app, themeApi, theme, components = [], check
       fontFamily: themeOverrides.content?.fontFamily || getListboxStyle('content', 'fontFamily'),
     },
     search: {
-      color: getListboxStyle('content', 'color'),
+      color: getListboxStyle('', 'color'),
+      borderColor: getListboxStyle('', 'color') || theme.palette.divider,
+      backgroundColor: 'rgba(255, 255, 255, 0.7)',
     },
     selections,
   };

@@ -68,6 +68,19 @@ const StyledGrid = styled(Grid, {
   },
 }));
 
+const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'isRtl'].includes(p) })(
+  ({ styles, isRtl }) => ({
+    flexDirection: isRtl ? 'row-reverse' : 'row',
+    wrap: 'nowrap',
+    minHeight: 32,
+    color: styles.header.color,
+    '& *': {
+      // Assign the styles color as defaul color for all elements in the header
+      color: styles.header.color,
+    },
+  })
+);
+
 const Title = styled(Typography)(({ styles }) => ({
   color: styles.header.color,
   fontSize: styles.header.fontSize,
@@ -270,7 +283,6 @@ function ListBoxInline({ options, layout }) {
   const showSearchToggle = search === 'toggle' && showSearch;
   const searchVisible = (search === true || showSearchToggle) && !selectDisabled() && searchEnabled !== false;
   const dense = layoutOptions.dense ?? false;
-  const headerHeight = 32;
 
   const onShowSearch = () => {
     const newValue = !showSearch;
@@ -358,15 +370,14 @@ function ListBoxInline({ options, layout }) {
         aria-label={keyboard.active ? translator.get('Listbox.ScreenReaderInstructions') : ''}
       >
         {showToolbarWithTitle && (
-          <Grid
+          <StyledGridHeader
             item
             container
-            minHeight={headerHeight}
-            flexDirection={isRtl ? 'row-reverse' : 'row'}
+            styles={styles}
+            isRtl={isRtl}
             marginY={1}
             paddingLeft={`${headerPaddingLeft}px`}
             paddingRight={`${headerPaddingRight}px`}
-            wrap="nowrap"
           >
             {showIcons && (
               <Grid item container alignItems="center" width={iconsWidth}>
@@ -397,7 +408,7 @@ function ListBoxInline({ options, layout }) {
             <Grid item>
               <ActionsToolbar direction={direction} {...getActionToolbarProps(isToolbarDetached)} />
             </Grid>
-          </Grid>
+          </StyledGridHeader>
         )}
         <Grid
           item

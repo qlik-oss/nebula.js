@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { useTheme } from '@nebula.js/ui/theme';
 import { InputAdornment, OutlinedInput } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Search from '@nebula.js/ui/icons/search';
@@ -10,16 +9,47 @@ import { CELL_PADDING_LEFT } from '../constants';
 const TREE_PATH = '/qListObjectDef';
 const WILDCARD = '**';
 
-const StyledInputAdornment = styled(InputAdornment, { shouldForwardProp: (p) => p !== 'styles' })(({ styles }) => ({
-  color: styles.search.color,
-}));
+const StyledOutlinedInput = styled(OutlinedInput, {
+  shouldForwardProp: (p) => !['styles', 'dense', 'isRtl'].includes(p),
+})(({ theme, styles, dense, isRtl }) => {
+  let denseProps = {};
+  if (dense) {
+    denseProps = {
+      fontSize: 12,
+      paddingLeft: theme.spacing(1),
+      '& input': {
+        paddingTop: '5px',
+        paddingBottom: '5px',
+      },
+    };
+  }
+  return {
+    display: 'flex',
+    border: 'none',
+    fontSize: 14,
+    borderRadius: 0,
+    backgroundColor: styles.search.backgroundColor,
+    paddingLeft: `${CELL_PADDING_LEFT}px`,
+    flexDirection: isRtl ? 'row-reverse' : 'row',
 
-const StyledOutlinedInput = styled(OutlinedInput, { shouldForwardProp: (p) => p !== 'styles' })(({ styles }) => ({
-  display: 'flex',
-  '& .MuiInputBase-root': {
-    color: styles.search.color,
-  },
-}));
+    '& fieldset': {
+      borderColor: `${styles.search.borderColor} !important`,
+      borderWidth: '1px 0 1px 0',
+      borderRadius: 0,
+    },
+    '& .MuiInputBase-root': {
+      ...styles.search,
+    },
+    '& *': {
+      color: styles.search.color,
+    },
+    '& input': {
+      color: styles.search.color,
+      textAlign: isRtl ? 'right' : 'left',
+    },
+    ...denseProps,
+  };
+});
 
 export default function ListBoxSearch({
   selections,
@@ -41,10 +71,8 @@ export default function ListBoxSearch({
 
   const inputRef = useRef();
 
-  const theme = useTheme();
   const { getStoreValue, setStoreValue } = useDataStore(model);
   const isRtl = direction === 'rtl';
-  const inpuTextAlign = isRtl ? 'right' : 'left';
 
   const cancel = () => selections.isActive() && selections.cancel();
 
@@ -179,38 +207,14 @@ export default function ListBoxSearch({
   return (
     <StyledOutlinedInput
       styles={styles}
+      dense={dense}
+      isRtl={isRtl}
       startAdornment={
-        <StyledInputAdornment position="start" styles={styles}>
+        <InputAdornment position="start">
           <Search size={dense ? 'small' : 'normal'} />
-        </StyledInputAdornment>
+        </InputAdornment>
       }
       className="search"
-      sx={[
-        {
-          border: 'none',
-          fontSize: 14,
-          borderRadius: 0,
-          backgroundColor: 'transparent',
-          '& fieldset': {
-            border: `1px solid ${theme.palette.divider}`,
-            borderWidth: '1px 0 1px 0',
-            borderRadius: 0,
-          },
-          '&:hover': {
-            border: 'none',
-          },
-          paddingLeft: `${CELL_PADDING_LEFT}px`,
-        },
-        dense && {
-          fontSize: 12,
-          paddingLeft: theme.spacing(1),
-          '& input': {
-            paddingTop: '5px',
-            paddingBottom: '5px',
-          },
-        },
-        { flexDirection: isRtl ? 'row-reverse' : 'row' },
-      ]}
       inputRef={inputRef}
       size="small"
       fullWidth
@@ -222,7 +226,6 @@ export default function ListBoxSearch({
       autoFocus={autoFocus}
       inputProps={{
         tabIndex: keyboard.innerTabStops ? 0 : -1,
-        style: { textAlign: `${inpuTextAlign}` },
         'data-testid': 'search-input-field',
         'aria-label': translator.get('Listbox.Search.ScreenReaderInstructions'),
       }}
