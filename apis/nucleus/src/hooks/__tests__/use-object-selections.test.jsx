@@ -5,7 +5,7 @@ import { create, act } from 'react-test-renderer';
 import useObjectSelections from '../useObjectSelections';
 import * as useAppSelectionsModule from '../useAppSelections';
 import * as useLayoutModule from '../useLayout';
-import * as selectionsStoreModule from '../../stores/selections-store';
+import initSelectionStores from '../../stores/new-selections-store';
 
 jest.mock('../../stores/selections-store');
 jest.mock('../useAppSelections');
@@ -30,6 +30,7 @@ describe('useObjectSelections', () => {
   let model;
   let objectSel;
   let layout;
+  const selectionsStoreModule = initSelectionStores('appId');
 
   beforeAll(() => {
     const elements = [{ current: undefined }];

@@ -1,7 +1,7 @@
 import React, { forwardRef, useImperativeHandle } from 'react';
 import { create, act } from 'react-test-renderer';
 import useExistingModel from '../useExistingModel';
-import * as modelStoreModule from '../../../../stores/model-store';
+import initializeStores from '../../../../stores/new-model-store';
 
 const TestHook = forwardRef(({ hook, hookProps }, ref) => {
   const result = hook(...hookProps);
@@ -20,6 +20,8 @@ describe('useExistingModel', () => {
   let render;
   let ref;
   let once;
+
+  const modelStoreModule = initializeStores('appId');
 
   beforeEach(() => {
     jest.useFakeTimers();
