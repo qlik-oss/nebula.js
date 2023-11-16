@@ -33,7 +33,7 @@ const StyledOutlinedInput = styled(OutlinedInput, {
     flexDirection: isRtl ? 'row-reverse' : 'row',
 
     '& fieldset': {
-      borderColor: `${styles.search.borderColor} !important`,
+      borderColor: `${styles.search.borderColor}`,
       borderWidth: '1px 0 1px 0',
       borderRadius: 0,
     },
@@ -46,6 +46,9 @@ const StyledOutlinedInput = styled(OutlinedInput, {
     '& input': {
       color: styles.search.color,
       textAlign: isRtl ? 'right' : 'left',
+    },
+    '&.Mui-focused fieldset.OutlinedInput-notchedOutline': {
+      borderColor: `${styles.search.highlightBorderColor} !important`,
     },
     ...denseProps,
   };

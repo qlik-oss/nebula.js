@@ -152,6 +152,7 @@ export default function getStyles({ app, themeApi, theme, components = [], check
     search: {
       color: getListboxStyle('content', 'color'),
       borderColor: theme.palette.divider,
+      highlightBorderColor: theme.palette.primary.main,
       backgroundColor: 'rgba(255, 255, 255, 0.7)',
     },
     selections,
