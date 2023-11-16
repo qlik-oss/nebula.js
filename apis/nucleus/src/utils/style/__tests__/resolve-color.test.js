@@ -34,7 +34,7 @@ describe('resolveProperty', () => {
     jest.spyOn(resolveProperty, 'default');
     const res = resolveColor(colorObj, path, attribute, styleService, objectType);
     expect(styleService.getColorPickerColor).toHaveBeenCalledTimes(1);
-    expect(styleService.getColorPickerColor).toHaveBeenCalledWith(colorObj, true);
+    expect(styleService.getColorPickerColor).toHaveBeenCalledWith(colorObj, false);
     expect(resolveProperty.default).toHaveBeenCalledTimes(0);
     expect(res).toEqual('resolvedColor');
   });
