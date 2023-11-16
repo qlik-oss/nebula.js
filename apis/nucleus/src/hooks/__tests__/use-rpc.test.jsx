@@ -1,10 +1,13 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
 
 import useRpc from '../useRpc';
-import { rpcRequestStore } from '../../stores/model-store';
+import initializeStores from '../../stores/new-model-store';
 
 describe('useRpc', () => {
   let model;
+
+  const modelStoreModule = initializeStores('appId');
+  const { rpcRequestStore } = modelStoreModule;
 
   beforeEach(() => {
     model = {

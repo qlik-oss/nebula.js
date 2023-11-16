@@ -3,7 +3,7 @@ import React, { forwardRef, useImperativeHandle } from 'react';
 import { create, act } from 'react-test-renderer';
 
 import useAppSelections from '../useAppSelections';
-import * as selectionStoreModule from '../../stores/selections-store';
+import initSelectionStores from '../../stores/new-selections-store';
 import * as useAppSelectionsNavigationModule from '../useAppSelectionsNavigation';
 
 const TestHook = forwardRef(({ hook, hookProps = [] }, ref) => {
@@ -29,6 +29,7 @@ describe('useAppSelections', () => {
   let objectSelections;
   let beginSelections;
   let endSelections;
+  const selectionStoreModule = initSelectionStores('appId');
 
   beforeAll(() => {
     app = {

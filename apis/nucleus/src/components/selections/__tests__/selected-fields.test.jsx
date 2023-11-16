@@ -10,7 +10,7 @@ import * as MoreModule from '../More';
 import * as useCurrentSelectionsModelModule from '../../../hooks/useCurrentSelectionsModel';
 import * as useLayoutModule from '../../../hooks/useLayout';
 import * as useRectModule from '../../../hooks/useRect';
-import * as selectionsStoreModule from '../../../stores/selections-store';
+import initSelectionStores from '../../../stores/new-selections-store';
 
 jest.mock('@nebula.js/ui/theme', () => ({
   ...jest.requireActual('@nebula.js/ui/theme'),
@@ -27,6 +27,8 @@ describe('<SelectedFields />', () => {
   let OneField;
   let MultiState;
   let More;
+
+  const selectionsStoreModule = initSelectionStores('appId');
 
   beforeEach(() => {
     currentSelectionsModel = {
