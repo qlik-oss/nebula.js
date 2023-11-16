@@ -152,7 +152,7 @@ export default function getStyles({ app, themeApi, theme, components = [], check
     },
     search: {
       color: getListboxStyle('content', 'color'),
-      borderColor: getListboxStyle('', 'color') || theme.palette.divider,
+      borderColor: theme.palette.divider,
       backgroundColor: 'rgba(255, 255, 255, 0.7)',
     },
     selections,
