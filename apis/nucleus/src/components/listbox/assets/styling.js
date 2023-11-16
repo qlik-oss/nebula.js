@@ -1,5 +1,5 @@
 import Color from '../../../utils/color';
-import { resolveBgImage } from '../../../utils/style/styling-props';
+import { resolveBgColor, resolveBgImage } from '../../../utils/style/styling-props';
 
 const LIGHT = '#FFF';
 const DARK = '#000';
@@ -123,16 +123,15 @@ export default function getStyles({ app, themeApi, theme, components = [], check
 
   const headerColor = themeOverrides.header?.fontColor?.color || getListboxStyle('title.main', 'color');
 
+  const bgColor = resolveBgColor({ bgColor: themeOverrides.background }, themeApi, 'listBox');
+
   const bgImage = themeOverrides.background?.image
     ? resolveBgImage({ bgImage: themeOverrides.background.image }, app)
     : undefined;
 
   return {
     background: {
-      backgroundColor:
-        themeOverrides.background?.color?.color ||
-        getListboxStyle('', 'backgroundColor') ||
-        theme.palette.background.default,
+      backgroundColor: bgColor || getListboxStyle('', 'backgroundColor') || theme.palette.background.default,
       backgroundImage: bgImage?.url && !bgImage?.url.startsWith('url(') ? `url('${bgImage.url}')` : undefined,
       backgroundRepeat: 'no-repeat',
       backgroundSize: bgImage?.size,
