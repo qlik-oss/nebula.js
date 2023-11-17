@@ -43,9 +43,10 @@ const NebulaApp = forwardRef(({ initialContext, app, renderCallback, modelStore,
     }),
     []
   );
-
-  context.modelStore = modelStore;
-  context.selectionStore = selectionStore;
+  if (context) {
+    context.modelStore = modelStore;
+    context.selectionStore = selectionStore;
+  }
 
   return (
     <StyledEngineProvider injectFirst>

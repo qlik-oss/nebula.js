@@ -8,6 +8,8 @@ import * as getListBoxComponents from '../components/grid-list-components/grid-l
 import ListBox from '../ListBox';
 import ListBoxDisclaimer from '../components/ListBoxDisclaimer';
 import InstanceContext from '../../../contexts/InstanceContext';
+import initializeStores from '../../../stores/new-model-store';
+import initializeSelectionStores from '../../../stores/new-selections-store';
 
 jest.mock('react-window-infinite-loader', () => ({
   __esModule: true,
@@ -106,7 +108,6 @@ describe('<Listbox />', () => {
     });
 
     pages = [{ qArea: { qTop: 1, qHeight: 100 } }];
-    global.window = { setTimeout: setTimeoutStub };
     selectDisabled = () => false;
     selections = { key: 'selections' };
     selectionState = { update: jest.fn() };
@@ -148,11 +149,17 @@ describe('<Listbox />', () => {
 
   describe('Check rendering with different options', () => {
     beforeAll(() => {
+      const context = {
+        modelStore: initializeStores('app'),
+        selectionStore: initializeSelectionStores('app'),
+        translator: { get: (s) => s, language: () => 'sv' },
+      };
+
       render = async (overrides = {}) => {
         const mergedArgs = { ...args, ...overrides };
         await act(async () => {
           renderer = create(
-            <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
+            <InstanceContext.Provider value={context}>
               <ListBox
                 model={mergedArgs.model}
                 layout={layout}
