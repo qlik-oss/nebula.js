@@ -5,9 +5,9 @@ import { create, act } from 'react-test-renderer';
 import useObjectSelections from '../useObjectSelections';
 import * as useAppSelectionsModule from '../useAppSelections';
 import * as useLayoutModule from '../useLayout';
-import initSelectionStores from '../../stores/new-selections-store';
+import initializeStores from '../../stores/new-selections-store';
+import InstanceContext from '../../contexts/InstanceContext';
 
-jest.mock('../../stores/selections-store');
 jest.mock('../useAppSelections');
 jest.mock('../useLayout');
 
@@ -30,7 +30,8 @@ describe('useObjectSelections', () => {
   let model;
   let objectSel;
   let layout;
-  const selectionsStoreModule = initSelectionStores('appId');
+  let context;
+  const selectionsStoreModule = initializeStores('appId');
 
   beforeAll(() => {
     const elements = [{ current: undefined }];
@@ -69,21 +70,29 @@ describe('useObjectSelections', () => {
 
     jest.spyOn(useAppSelectionsModule, 'default').mockImplementation(() => [appSel]);
     jest.spyOn(useLayoutModule, 'default').mockImplementation(() => [layout]);
-    jest.spyOn(selectionsStoreModule, 'useAppSelectionsStore').mockImplementation(() => [
+    selectionsStoreModule.useAppSelectionsStore = () => [
       {
         get: () => appSel,
         set: (k, v) => {
           appSel = v;
         },
       },
-    ]);
+    ];
     selectionsStoreModule.modalObjectStore = modalObjectStore;
-    jest.spyOn(selectionsStoreModule, 'useAppModalStore').mockImplementation(() => [{ get: () => appModal }]);
+    selectionsStoreModule.appModalStore = { get: () => appModal };
+
+    context = {
+      selectionStore: selectionsStoreModule,
+    };
 
     ref = React.createRef();
     render = async () => {
       await act(async () => {
-        renderer = create(<TestHook ref={ref} hook={useObjectSelections} hookProps={[app, model, elements]} />);
+        renderer = create(
+          <InstanceContext.Provider value={context}>
+            <TestHook ref={ref} hook={useObjectSelections} hookProps={[app, model, elements]} />
+          </InstanceContext.Provider>
+        );
       });
       [objectSel] = ref.current.result;
       objectSel.setLayout(layout);

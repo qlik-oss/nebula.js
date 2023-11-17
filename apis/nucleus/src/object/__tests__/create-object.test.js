@@ -1,5 +1,6 @@
 import * as populatorModule from '../populator';
 import create from '../create-object';
+import initializeStores from '../../stores/new-model-store';
 
 describe('create-object', () => {
   let halo = {};
@@ -9,6 +10,7 @@ describe('create-object', () => {
   let populator;
   let init;
   let objectModel;
+  const modelStore = initializeStores('app');
 
   beforeEach(() => {
     populator = jest.fn();
@@ -43,7 +45,7 @@ describe('create-object', () => {
   });
 
   test('should call types.get with name and version', () => {
-    create({ type: 't', version: 'v', fields: 'f' }, halo);
+    create({ type: 't', version: 'v', fields: 'f' }, halo, false, modelStore);
     expect(types.get).toHaveBeenCalledWith({ name: 't', version: 'v' });
   });
 
@@ -51,27 +53,32 @@ describe('create-object', () => {
     const t = { initialProperties: jest.fn() };
     t.initialProperties.mockReturnValue({ then: () => {} });
     types.get.mockReturnValue(t);
-    create({ type: 't', version: 'v', fields: 'f', properties: 'props', extendProperties: false }, halo);
+    create(
+      { type: 't', version: 'v', fields: 'f', properties: 'props', extendProperties: false },
+      halo,
+      false,
+      modelStore
+    );
     expect(t.initialProperties).toHaveBeenCalledWith('props', false);
   });
 
   test('should populate fields', async () => {
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo, false, modelStore);
     expect(populator).toHaveBeenCalledWith({ sn, properties: merged, fields: 'f', children: [] }, halo);
   });
 
   test('should call properties onChange handler when optional props are provided', async () => {
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo, false, modelStore);
     expect(sn.qae.properties.onChange).toHaveBeenCalledWith(merged);
   });
 
   test('should not call onChange handler when optional props are not provided', async () => {
-    await create({ type: 't', version: 'v', fields: 'f' }, halo);
+    await create({ type: 't', version: 'v', fields: 'f' }, halo, false, modelStore);
     expect(sn.qae.properties.onChange).toHaveBeenCalledTimes(0);
   });
 
   test('should create a object with merged props', async () => {
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo, false, modelStore);
     expect(halo.app.createObject).toHaveBeenCalledWith(merged);
   });
 
@@ -79,7 +86,7 @@ describe('create-object', () => {
     types.get.mockImplementation(() => {
       throw new Error('oops');
     });
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo, false, modelStore);
     expect(halo.app.createObject).toHaveBeenCalledWith({
       qInfo: { qType: 't' },
       visualization: 't',
@@ -87,7 +94,7 @@ describe('create-object', () => {
   });
 
   test('should return props only', async () => {
-    const props = await create({ type: 't', version: 'v', fields: 'f' }, halo, true);
+    const props = await create({ type: 't', version: 'v', fields: 'f' }, halo, true, modelStore);
     expect(halo.app.createObject).not.toHaveBeenCalledWith();
     expect(props).toEqual({ m: 'true' });
   });
