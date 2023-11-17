@@ -72,7 +72,6 @@ const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'i
   ({ styles, isRtl }) => ({
     flexDirection: isRtl ? 'row-reverse' : 'row',
     wrap: 'nowrap',
-    minWidth: '100%', // ensures italic style is not cut off
     minHeight: 32,
     ...styles.header,
     '& *': {
@@ -84,6 +83,7 @@ const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'i
 
 const Title = styled(Typography)(({ styles }) => ({
   ...styles.header,
+  width: '100%',
 }));
 
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
