@@ -11,6 +11,8 @@ import * as useCurrentSelectionsModelModule from '../../../hooks/useCurrentSelec
 import * as useLayoutModule from '../../../hooks/useLayout';
 import * as useRectModule from '../../../hooks/useRect';
 import initSelectionStores from '../../../stores/new-selections-store';
+import initializeStores from '../../../stores/new-model-store';
+import InstanceContext from '../../../contexts/InstanceContext';
 
 jest.mock('@nebula.js/ui/theme', () => ({
   ...jest.requireActual('@nebula.js/ui/theme'),
@@ -27,8 +29,9 @@ describe('<SelectedFields />', () => {
   let OneField;
   let MultiState;
   let More;
-
+  let context;
   const selectionsStoreModule = initSelectionStores('appId');
+  const modelStore = initializeStores('appId');
 
   beforeEach(() => {
     currentSelectionsModel = {
@@ -53,13 +56,8 @@ describe('<SelectedFields />', () => {
     jest.spyOn(useLayoutModule, 'default').mockImplementation(useLayout);
     jest.spyOn(useRectModule, 'default').mockImplementation(() => [() => {}, rect]);
     jest.spyOn(useCurrentSelectionsModelModule, 'default').mockImplementation(() => [currentSelectionsModel]);
-    jest.spyOn(selectionsStoreModule, 'useModalObjectStore').mockImplementation(() => [modalObjectStore]);
 
-    const useContext = () => ({
-      selectionsStore: selectionsStoreModule,
-    });
-
-    jest.spyOn(React, 'useContext').mockImplementation(useContext);
+    selectionsStoreModule.modalObjectStore = modalObjectStore;
 
     OneFieldModule.default = OneField;
     MultiStateModule.default = MultiState;
@@ -72,6 +70,11 @@ describe('<SelectedFields />', () => {
       isInModal: jest.fn().mockReturnValue(false),
     };
 
+    context = {
+      modelStore,
+      selectionStore: selectionsStoreModule,
+    };
+
     render = async ({ api = {}, app = {}, rendererOptions } = {}) => {
       api = {
         ...defaultApi,
@@ -82,7 +85,12 @@ describe('<SelectedFields />', () => {
         ...app,
       };
       await act(async () => {
-        renderer = create(<SelectedFields api={api} app={app} />, rendererOptions || null);
+        renderer = create(
+          <InstanceContext.Provider value={context}>
+            <SelectedFields api={api} app={app} />
+          </InstanceContext.Provider>,
+          rendererOptions || null
+        );
       });
     };
   });

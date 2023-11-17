@@ -55,7 +55,7 @@ describe('Boot NebulaApp', () => {
     test('should add component', async () => {
       const app = { id: 'foo' };
       const translator = {};
-      const [api, appRef] = boot({ app, translator });
+      const [api, , , appRef] = boot({ app, translator });
       appRef.current = {
         setComps: jest.fn(),
       };
@@ -67,7 +67,7 @@ describe('Boot NebulaApp', () => {
     test('should remove component', async () => {
       const app = { id: 'foo' };
       const translator = {};
-      const [api, appRef] = boot({ app, translator });
+      const [api, , , appRef] = boot({ app, translator });
       appRef.current = {
         setComps: jest.fn(),
       };
@@ -79,7 +79,7 @@ describe('Boot NebulaApp', () => {
     test('should set mui theme', async () => {
       const app = { id: 'foo' };
       const translator = {};
-      const [api, appRef] = boot({ app, translator });
+      const [api, , , appRef] = boot({ app, translator });
       appRef.current = {
         setMuiThemeName: jest.fn(),
       };
@@ -92,7 +92,7 @@ describe('Boot NebulaApp', () => {
     test('should set context', async () => {
       const app = { id: 'foo' };
       const context = {};
-      const [api, appRef] = boot({ app, context });
+      const [api, , , appRef] = boot({ app, context });
       appRef.current = {
         setContext: jest.fn(),
       };
@@ -105,7 +105,7 @@ describe('Boot NebulaApp', () => {
     test('should get app selections', async () => {
       const app = { id: 'foo' };
       const context = {};
-      const [api, appRef] = boot({ app, context });
+      const [api, , , appRef] = boot({ app, context });
       appRef.current = {
         getAppSelections: jest.fn().mockReturnValue('app-selections'),
       };
