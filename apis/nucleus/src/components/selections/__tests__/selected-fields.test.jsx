@@ -55,6 +55,12 @@ describe('<SelectedFields />', () => {
     jest.spyOn(useCurrentSelectionsModelModule, 'default').mockImplementation(() => [currentSelectionsModel]);
     jest.spyOn(selectionsStoreModule, 'useModalObjectStore').mockImplementation(() => [modalObjectStore]);
 
+    const useContext = () => ({
+      selectionsStore: selectionsStoreModule,
+    });
+
+    jest.spyOn(React, 'useContext').mockImplementation(useContext);
+
     OneFieldModule.default = OneField;
     MultiStateModule.default = MultiState;
     MoreModule.default = More;
