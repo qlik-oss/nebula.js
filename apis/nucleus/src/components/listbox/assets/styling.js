@@ -152,6 +152,9 @@ export default function getStyles({ app, themeApi, theme, components = [], check
   const searchBgColor = 'rgba(255, 255, 255, 0.7)';
   const searchColor = getSearchColor(getListboxStyle);
 
+  const headerFontStyle = themeOverrides.header?.fontStyle || {};
+  const contentFontStyle = themeOverrides.content?.fontStyle || {};
+
   return {
     background: {
       backgroundColor: bgComponentColor || getListboxStyle('', 'backgroundColor') || theme.palette.background.default,
@@ -164,13 +167,34 @@ export default function getStyles({ app, themeApi, theme, components = [], check
       color: headerColor,
       fontSize: themeOverrides.header?.fontSize || getListboxStyle('title.main', 'fontSize'),
       fontFamily: themeOverrides.header?.fontFamily || getListboxStyle('title.main', 'fontFamily'),
-      fontWeight: getListboxStyle('title.main', 'fontWeight') || 'bold',
+      fontWeight:
+        (headerFontStyle.bold && 'bold') ||
+        (headerFontStyle.normal && 'normal') ||
+        getListboxStyle('title.main', 'fontWeight') ||
+        'bold',
+      textDecoration: headerFontStyle.underline ? 'underline' : 'initial',
+      fontStyle:
+        (headerFontStyle.italic && 'italic') ||
+        (headerFontStyle.normal && 'normal') ||
+        getListboxStyle('title.main', 'fontStyle') ||
+        'initial',
     },
     content: {
       backgroundColor: checkboxes ? undefined : selections.possible,
       color: selections.possibleContrast || getListboxStyle('content', 'color'),
       fontSize: themeOverrides.content?.fontSize || getListboxStyle('content', 'fontSize'),
       fontFamily: themeOverrides.content?.fontFamily || getListboxStyle('content', 'fontFamily'),
+      fontWeight:
+        (contentFontStyle.bold && 'bold') ||
+        (contentFontStyle.normal && 'normal') ||
+        getListboxStyle('content', 'fontWeight') ||
+        'normal',
+      textDecoration: contentFontStyle.underline ? 'underline' : 'initial',
+      fontStyle:
+        (contentFontStyle.italic && 'italic') ||
+        (contentFontStyle.normal && 'normal') ||
+        getListboxStyle('content', 'fontStyle') ||
+        'initial',
     },
     search: {
       color: searchColor,
