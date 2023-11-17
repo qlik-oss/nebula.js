@@ -23,6 +23,8 @@ describe('styling', () => {
   beforeEach(() => {
     themeApi = {
       getStyle: (ns, path, prop) => `${ns},${path},${prop}`,
+      validateColor: (color) => color,
+      getColorPickerColor: (color) => color?.color,
     };
     theme = {
       listBox: {
@@ -50,6 +52,9 @@ describe('styling', () => {
         excluded: {
           main: 'excluded-from-theme',
         },
+        primary: {
+          main: '#main-color',
+        },
       },
     };
   });
@@ -70,8 +75,6 @@ describe('styling', () => {
             },
           },
         ];
-        themeApi.validateColor = (color) => color;
-        themeApi.getColorPickerColor = (color) => color?.color;
       });
       it('background color expression should be used', () => {
         const styles = getStyling({ app, themeApi, theme, components });
@@ -100,6 +103,16 @@ describe('styling', () => {
     it('search - should get its color from theme style', () => {
       const styles = getStyling({ app, themeApi, theme, components: [] });
       expect(styles.search.color).toEqual('object.listBox,content,color');
+    });
+    it('search - should get desired color if contrasting enough', () => {
+      themeApi.getStyle = () => '#999';
+      const styles = getStyling({ app, themeApi, theme, components: [] });
+      expect(styles.search.color).toEqual('#999');
+    });
+    it('search - should get a better contrasting color if not good contrast against white', () => {
+      themeApi.getStyle = () => '#aaa';
+      const styles = getStyling({ app, themeApi, theme, components: [] });
+      expect(styles.search.color).toEqual('#000');
     });
     it('header', () => {
       components = [

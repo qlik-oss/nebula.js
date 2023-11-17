@@ -114,6 +114,26 @@ function getSelectionColors({ theme, getListboxStyle, overrides, checkboxes }) {
   };
 }
 
+function getBackgroundColor({ themeApi, themeOverrides }) {
+  let color;
+  const bgColor = themeOverrides?.background;
+  if (!bgColor) {
+    return color;
+  }
+  if (bgColor?.useExpression) {
+    color = resolveBgColor({ bgColor }, themeApi, 'listBox');
+  } else {
+    color = themeApi.getColorPickerColor(bgColor, true)?.color;
+  }
+  return color;
+}
+
+function getSearchColor(getListboxStyle) {
+  const desiredTextColor = getListboxStyle('content', 'color');
+  const color = getContrastingColor('#fff', desiredTextColor);
+  return color;
+}
+
 export default function getStyles({ app, themeApi, theme, components = [], checkboxes = false }) {
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
@@ -123,15 +143,18 @@ export default function getStyles({ app, themeApi, theme, components = [], check
 
   const headerColor = themeOverrides.header?.fontColor?.color || getListboxStyle('title.main', 'color');
 
-  const bgColor = resolveBgColor({ bgColor: themeOverrides.background }, themeApi, 'listBox');
+  const bgComponentColor = getBackgroundColor({ themeApi, themeOverrides });
 
   const bgImage = themeOverrides.background?.image
     ? resolveBgImage({ bgImage: themeOverrides.background.image }, app)
     : undefined;
 
+  const searchBgColor = 'rgba(255, 255, 255, 0.7)';
+  const searchColor = getSearchColor(getListboxStyle);
+
   return {
     background: {
-      backgroundColor: bgColor || getListboxStyle('', 'backgroundColor') || theme.palette.background.default,
+      backgroundColor: bgComponentColor || getListboxStyle('', 'backgroundColor') || theme.palette.background.default,
       backgroundImage: bgImage?.url && !bgImage?.url.startsWith('url(') ? `url('${bgImage.url}')` : undefined,
       backgroundRepeat: 'no-repeat',
       backgroundSize: bgImage?.size,
@@ -150,10 +173,10 @@ export default function getStyles({ app, themeApi, theme, components = [], check
       fontFamily: themeOverrides.content?.fontFamily || getListboxStyle('content', 'fontFamily'),
     },
     search: {
-      color: getListboxStyle('content', 'color'),
+      color: searchColor,
       borderColor: theme.palette.divider,
       highlightBorderColor: theme.palette.primary.main,
-      backgroundColor: 'rgba(255, 255, 255, 0.7)',
+      backgroundColor: searchBgColor,
     },
     selections,
   };
