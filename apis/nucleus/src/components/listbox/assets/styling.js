@@ -155,6 +155,10 @@ export default function getStyles({ app, themeApi, theme, components = [], check
   const headerFontStyle = themeOverrides.header?.fontStyle || {};
   const contentFontStyle = themeOverrides.content?.fontStyle || {};
 
+  // Ensure we only return falseValue when the component is used, and thus has a false value.
+  const getWithFallback = (value, trueValue, falseValue) =>
+    (value === true && trueValue) || (value === false && falseValue) || undefined;
+
   return {
     background: {
       backgroundColor: bgComponentColor || getListboxStyle('', 'backgroundColor') || theme.palette.background.default,
@@ -168,14 +172,12 @@ export default function getStyles({ app, themeApi, theme, components = [], check
       fontSize: themeOverrides.header?.fontSize || getListboxStyle('title.main', 'fontSize'),
       fontFamily: themeOverrides.header?.fontFamily || getListboxStyle('title.main', 'fontFamily'),
       fontWeight:
-        (headerFontStyle.bold && 'bold') ||
-        (headerFontStyle.normal && 'normal') ||
+        getWithFallback(headerFontStyle.bold, 'bold', 'normal') ||
         getListboxStyle('title.main', 'fontWeight') ||
         'bold',
       textDecoration: headerFontStyle.underline ? 'underline' : 'initial',
       fontStyle:
-        (headerFontStyle.italic && 'italic') ||
-        (headerFontStyle.normal && 'normal') ||
+        getWithFallback(headerFontStyle.italic, 'italic', 'normal') ||
         getListboxStyle('title.main', 'fontStyle') ||
         'initial',
     },
@@ -185,14 +187,12 @@ export default function getStyles({ app, themeApi, theme, components = [], check
       fontSize: themeOverrides.content?.fontSize || getListboxStyle('content', 'fontSize'),
       fontFamily: themeOverrides.content?.fontFamily || getListboxStyle('content', 'fontFamily'),
       fontWeight:
-        (contentFontStyle.bold && 'bold') ||
-        (contentFontStyle.normal && 'normal') ||
+        getWithFallback(contentFontStyle.bold, 'bold', 'normal') ||
         getListboxStyle('content', 'fontWeight') ||
         'normal',
       textDecoration: contentFontStyle.underline ? 'underline' : 'initial',
       fontStyle:
-        (contentFontStyle.italic && 'italic') ||
-        (contentFontStyle.normal && 'normal') ||
+        getWithFallback(contentFontStyle.italic, 'italic', 'normal') ||
         getListboxStyle('content', 'fontStyle') ||
         'initial',
     },

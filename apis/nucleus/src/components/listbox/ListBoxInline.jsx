@@ -73,6 +73,7 @@ const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'i
     flexDirection: isRtl ? 'row-reverse' : 'row',
     wrap: 'nowrap',
     minHeight: 32,
+    alignContent: 'center',
     ...styles.header,
     '& *': {
       // Assign the styles color as defaul color for all elements in the header
