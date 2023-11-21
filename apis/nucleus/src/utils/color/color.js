@@ -28,7 +28,7 @@ const { round } = Math;
  * @class
  * @classdesc Class which provides color transformation functionality
  * @description This is a constructor.
- * @private This is a constructor.
+ * @private
  * @param {object} - Parameters to create a color from different notations
  * @example
  * // a few ways of instantiating a red color

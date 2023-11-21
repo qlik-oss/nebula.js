@@ -19,7 +19,7 @@ export const getShadows = (shadowString) => {
 
 /**
  * Combine box shadow with box shadow color.
- * @ignore
+ * @private
  * @param {string} boxShadow - Box shadow which may include color
  * @param {string} themeBoxShadow - Box shadow from theme which may include color
  * @param {string | undefined} boxShadowColor - Box shadow color
