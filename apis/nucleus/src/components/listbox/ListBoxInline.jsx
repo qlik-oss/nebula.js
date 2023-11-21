@@ -83,7 +83,7 @@ const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'i
 
 const Title = styled(Typography)(({ styles }) => ({
   ...styles.header,
-  width: '100%',
+  paddingRight: '1px', // make place for italic font style
 }));
 
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
@@ -403,7 +403,7 @@ function ListBoxInline({ options, layout }) {
                 </Title>
               )}
             </Grid>
-            <Grid item>
+            <Grid item display="flex">
               <ActionsToolbar direction={direction} {...getActionToolbarProps(isToolbarDetached)} />
             </Grid>
           </StyledGridHeader>
