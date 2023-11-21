@@ -11,8 +11,11 @@ const paths = path.join(__dirname, '__fixtures__');
 
 function shouldIgnoreFile(file) {
   // Ignore subpaths
-  const IGNORE_PATTERNS = [/resources\//];
-  return IGNORE_PATTERNS.some((P) => file.search(P) > -1);
+  const IGNORE_PATTERNS = [];
+  const INCLUDE_PATTERNS = [/\.js/];
+  const ignore =
+    IGNORE_PATTERNS.some((P) => file.search(P) > -1) || INCLUDE_PATTERNS.some((P) => file.search(P) === -1);
+  return ignore;
 }
 
 test.describe('listbox mashup rendering test', () => {
