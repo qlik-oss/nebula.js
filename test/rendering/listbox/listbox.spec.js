@@ -9,6 +9,12 @@ const { execSequence } = require('../testUtils');
 
 const paths = path.join(__dirname, '__fixtures__');
 
+function shouldIgnoreFile(file) {
+  // Ignore subpaths
+  const IGNORE_PATTERNS = [/resources\//];
+  return IGNORE_PATTERNS.some((P) => file.search(P) > -1);
+}
+
 test.describe('listbox mashup rendering test', () => {
   const object = '[data-type="listbox"]';
   const listboxSelector = `${object} .listbox-container`;
@@ -108,6 +114,9 @@ test.describe('listbox mashup rendering test', () => {
 
   test.describe('fixtures', () => {
     fs.readdirSync(paths).forEach((file) => {
+      if (shouldIgnoreFile(file)) {
+        return;
+      }
       const name = file.replace('.fix.js', '');
       const fixturePath = `./__fixtures__/${file}`;
 
