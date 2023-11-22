@@ -192,8 +192,8 @@ const validateCubes = (translator, targets, layout) => {
         hasLayoutUnfulfilledCalculcationCondition && c.qCalcCondMsg
           ? c.qCalcCondMsg
           : hasLayoutUnfulfilledCalculcationCondition
-          ? translator.get('Visualization.UnfulfilledCalculationCondition')
-          : translator.get('Visualization.LayoutError');
+            ? translator.get('Visualization.UnfulfilledCalculationCondition')
+            : translator.get('Visualization.LayoutError');
 
       layoutErrors.push({ title, descriptions: [] });
     }
