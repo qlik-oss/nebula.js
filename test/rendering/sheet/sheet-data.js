@@ -33,7 +33,7 @@ window.getFuncs = function getFuncs() {
     getSheetLayout2: () => {
       return {
         qInfo: {
-          qId: 'sheet',
+          qId: 'boundLessSheet',
         },
         columns: 10,
         rows: 10,
