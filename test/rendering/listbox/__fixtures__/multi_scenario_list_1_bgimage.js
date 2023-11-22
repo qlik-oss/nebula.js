@@ -11,13 +11,13 @@ const fixture = {
           },
           image: {
             mode: 'media',
-            url: {
+            mediaUrl: {
               qStaticContentUrl: {
                 qUrl: './__fixtures__/resources/snowy_street.jpg',
               },
             },
             position: 'center-center',
-            size: 'stretchFit',
+            sizing: 'stretchFit',
           },
         },
         header: {
