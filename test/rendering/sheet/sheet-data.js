@@ -41,7 +41,7 @@ window.getFuncs = function getFuncs() {
         cells: [
           {
             name: 'bar',
-            col: 1,
+            col: 0,
             colspan: 4,
             row: 0,
             rowspan: 5,
