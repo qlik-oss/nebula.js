@@ -1829,21 +1829,6 @@
         }
       }
     },
-    "getFullBoxShadow": {
-      "description": "Combine box shadow with box shadow color.",
-      "type": "any",
-      "examples": [
-        "getFullBoxShadow('none', '', 'red') returns 'none'",
-        "getFullBoxShadow('initial', '', 'red') returns 'initial'",
-        "getFullBoxShadow('inherit', '', 'red') returns 'inherit'",
-        "getFullBoxShadow('', '', 'red') returns ''",
-        "getFullBoxShadow('1px 2px blue, 3px 6px green', '', 'red') returns '1px 2px blue, 3px 6px green'",
-        "getFullBoxShadow('1px 2px blue', '', 'red') returns '1px 2px red'",
-        "getFullBoxShadow('1px 2px', '', 'red') returns '1px 2px red'",
-        "getFullBoxShadow('1px 2px', '2px 5px green', undefined) returns '1px 2px green'",
-        "getFullBoxShadow('1px 2px', '2px 5px', undefined) returns '1px 2px'"
-      ]
-    },
     "ActionToolbarElement": {
       "availability": {
         "since": "2.1.0"
