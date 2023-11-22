@@ -1,4 +1,5 @@
 import Color from '../../../utils/color';
+import { resolveBgColor, resolveBgImage } from '../../../utils/style/styling-props';
 
 const LIGHT = '#FFF';
 const DARK = '#000';
@@ -113,29 +114,93 @@ function getSelectionColors({ theme, getListboxStyle, overrides, checkboxes }) {
   };
 }
 
-export default function getStyles({ themeApi, theme, components = [], checkboxes = false }) {
+function getBackgroundColor({ themeApi, themeOverrides }) {
+  let color;
+  const bgColor = themeOverrides?.background;
+  if (!bgColor) {
+    return color;
+  }
+  if (bgColor?.useExpression) {
+    color = resolveBgColor({ bgColor }, themeApi, 'listBox');
+  } else {
+    color = themeApi.getColorPickerColor(bgColor, true)?.color;
+  }
+  return color;
+}
+
+function getSearchColor(getListboxStyle) {
+  const desiredTextColor = getListboxStyle('content', 'color');
+  const color = getContrastingColor('#fff', desiredTextColor);
+  return color;
+}
+
+export default function getStyles({ app, themeApi, theme, components = [], checkboxes = false }) {
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
 
   const selections = getSelectionColors({ theme, getListboxStyle, overrides, checkboxes });
   const themeOverrides = overrides.theme || {};
 
+  const headerColor = themeOverrides.header?.fontColor?.color || getListboxStyle('title.main', 'color');
+
+  const bgComponentColor = getBackgroundColor({ themeApi, themeOverrides });
+
+  const bgImage = themeOverrides.background?.image
+    ? resolveBgImage({ bgImage: themeOverrides.background.image }, app)
+    : undefined;
+
+  const searchBgColor = 'rgba(255, 255, 255, 0.7)';
+  const searchColor = getSearchColor(getListboxStyle);
+
+  const headerFontStyle = themeOverrides.header?.fontStyle || {};
+  const contentFontStyle = themeOverrides.content?.fontStyle || {};
+
+  // Ensure we only return falseValue when the component is used, and thus has a false value.
+  const getWithFallback = (value, trueValue, falseValue) =>
+    (value === true && trueValue) || (value === false && falseValue) || undefined;
+
   return {
-    backgroundColor: getListboxStyle('', 'backgroundColor') || theme.palette.background.default,
+    background: {
+      backgroundColor: bgComponentColor || getListboxStyle('', 'backgroundColor') || theme.palette.background.default,
+      backgroundImage: bgImage?.url && !bgImage?.url.startsWith('url(') ? `url('${bgImage.url}')` : undefined,
+      backgroundRepeat: 'no-repeat',
+      backgroundSize: bgImage?.size,
+      backgroundPosition: bgImage?.pos,
+    },
     header: {
-      color: themeOverrides.header?.fontColor?.color || getListboxStyle('title.main', 'color'),
+      color: headerColor,
       fontSize: themeOverrides.header?.fontSize || getListboxStyle('title.main', 'fontSize'),
-      fontFamily: getListboxStyle('title.main', 'fontFamily'),
-      fontWeight: getListboxStyle('title.main', 'fontWeight') || 'bold',
+      fontFamily: themeOverrides.header?.fontFamily || getListboxStyle('title.main', 'fontFamily'),
+      fontWeight:
+        getWithFallback(headerFontStyle.bold, 'bold', 'normal') ||
+        getListboxStyle('title.main', 'fontWeight') ||
+        'bold',
+      textDecoration: headerFontStyle.underline ? 'underline' : 'initial',
+      fontStyle:
+        getWithFallback(headerFontStyle.italic, 'italic', 'normal') ||
+        getListboxStyle('title.main', 'fontStyle') ||
+        'initial',
     },
     content: {
       backgroundColor: checkboxes ? undefined : selections.possible,
       color: selections.possibleContrast || getListboxStyle('content', 'color'),
       fontSize: themeOverrides.content?.fontSize || getListboxStyle('content', 'fontSize'),
-      fontFamily: getListboxStyle('content', 'fontFamily'),
+      fontFamily: themeOverrides.content?.fontFamily || getListboxStyle('content', 'fontFamily'),
+      fontWeight:
+        getWithFallback(contentFontStyle.bold, 'bold', 'normal') ||
+        getListboxStyle('content', 'fontWeight') ||
+        'normal',
+      textDecoration: contentFontStyle.underline ? 'underline' : 'initial',
+      fontStyle:
+        getWithFallback(contentFontStyle.italic, 'italic', 'normal') ||
+        getListboxStyle('content', 'fontStyle') ||
+        'initial',
     },
     search: {
-      color: getListboxStyle('content', 'color'),
+      color: searchColor,
+      borderColor: theme.palette.divider,
+      highlightBorderColor: theme.palette.primary.main,
+      backgroundColor: searchBgColor,
     },
     selections,
   };

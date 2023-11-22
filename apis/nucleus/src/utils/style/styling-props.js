@@ -51,8 +51,9 @@ function getBackgroundPosition(bgComp) {
 
 function getBackgroundSize(bgComp) {
   let bkgImageSize = imageSizingToCssProperty.originalSize;
-  if (bgComp?.bgImage?.sizing) {
-    bkgImageSize = imageSizingToCssProperty[bgComp.bgImage.sizing];
+  const size = bgComp?.bgImage?.sizing || bgComp?.bgImage?.size;
+  if (size) {
+    bkgImageSize = imageSizingToCssProperty[size];
   }
   return bkgImageSize;
 }
@@ -67,9 +68,9 @@ export function resolveBgImage(bgComp, app) {
   if (bgImageDef) {
     let url = '';
     if (bgImageDef.mode === 'media' || bgComp.useImage === 'media') {
-      url = bgImageDef?.mediaUrl?.qStaticContentUrl?.qUrl
-        ? decodeURIComponent(bgImageDef.mediaUrl.qStaticContentUrl.qUrl)
-        : undefined;
+      const urlObj = bgImageDef?.mediaUrl || bgImageDef?.url;
+      const { qUrl } = urlObj?.qStaticContentUrl || {};
+      url = qUrl ? decodeURIComponent(qUrl) : undefined;
       url = resolveImageUrl(app, url);
     }
     if (bgImageDef.mode === 'expression') {

@@ -4,6 +4,13 @@ describe('styling', () => {
   let theme = {};
   let components = [];
   let themeApi;
+  const app = {
+    session: {
+      config: {
+        url: 'wss://hey-hey/images',
+      },
+    },
+  };
 
   afterEach(() => {
     jest.resetAllMocks();
@@ -16,6 +23,8 @@ describe('styling', () => {
   beforeEach(() => {
     themeApi = {
       getStyle: (ns, path, prop) => `${ns},${path},${prop}`,
+      validateColor: (color) => color,
+      getColorPickerColor: (color) => color?.color,
     };
     theme = {
       listBox: {
@@ -43,14 +52,67 @@ describe('styling', () => {
         excluded: {
           main: 'excluded-from-theme',
         },
+        primary: {
+          main: '#main-color',
+        },
       },
     };
   });
 
   describe('should return expected header style based on theme and then overridden by components', () => {
+    describe('background', () => {
+      beforeEach(() => {
+        components = [
+          {
+            key: 'theme',
+            background: {
+              colorExpression: '="some expression"',
+              useExpression: true,
+              color: {
+                color: '#hex-color',
+                index: -1,
+              },
+            },
+          },
+        ];
+      });
+      it('background color expression should be used', () => {
+        const styles = getStyling({ app, themeApi, theme, components });
+        expect(styles.background.backgroundColor).toEqual('="some expression"');
+      });
+      it('background color expression should NOT be used, but instead color picker color', () => {
+        components[0].background.useExpression = false;
+        const styles = getStyling({ app, themeApi, theme, components });
+        expect(styles.background.backgroundColor).toEqual('#hex-color');
+      });
+      it('background image should be exposed', () => {
+        components[0].background.image = {
+          mode: 'media',
+          url: { qStaticContentUrl: { qUrl: 'some-image.png' } },
+          qStaticContentUrl: {},
+          size: 'stretchFit',
+        };
+        const styles = getStyling({ app, themeApi, theme, components });
+        expect(styles.background.backgroundImage).toEqual("url('https://hey-heysome-image.png')");
+        expect(styles.background.backgroundRepeat).toEqual('no-repeat');
+        expect(styles.background.backgroundSize).toEqual('100% 100%');
+        expect(styles.background.backgroundPosition).toEqual('center center');
+      });
+    });
+
     it('search - should get its color from theme style', () => {
-      const styles = getStyling({ themeApi, theme, components: [] });
+      const styles = getStyling({ app, themeApi, theme, components: [] });
       expect(styles.search.color).toEqual('object.listBox,content,color');
+    });
+    it('search - should get desired color if contrasting enough', () => {
+      themeApi.getStyle = () => '#999';
+      const styles = getStyling({ app, themeApi, theme, components: [] });
+      expect(styles.search.color).toEqual('#999');
+    });
+    it('search - should get a better contrasting color if not good contrast against white', () => {
+      themeApi.getStyle = () => '#aaa';
+      const styles = getStyling({ app, themeApi, theme, components: [] });
+      expect(styles.search.color).toEqual('#000');
     });
     it('header', () => {
       components = [
@@ -66,12 +128,12 @@ describe('styling', () => {
       ];
       let inst;
       let header;
-      inst = getStyling({ themeApi, theme, components: [] });
+      inst = getStyling({ app, themeApi, theme, components: [] });
       header = inst.header;
       expect(header.fontSize).toEqual('object.listBox,title.main,fontSize');
       expect(header.color).toEqual('object.listBox,title.main,color');
 
-      inst = getStyling({ themeApi, theme, components });
+      inst = getStyling({ app, themeApi, theme, components });
       header = inst.header;
       expect(header.fontSize).toEqual('size-from-component');
       expect(header.color).toEqual('color-from-component');
@@ -95,7 +157,7 @@ describe('styling', () => {
 
       themeApi.getStyle = (a, b, c) => (c === 'backgroundColor' ? POSSIBLE_COLOR : `${a},${b},${c}`);
       components[0].content.fontColor.color = '#FFFFFF';
-      const styles2 = getStyling({ themeApi, theme, components });
+      const styles2 = getStyling({ app, themeApi, theme, components });
       expect(styles2.content.color).toEqual(CONTRASTING_TO_POSSIBLE);
     });
 
@@ -112,7 +174,7 @@ describe('styling', () => {
           },
         },
       ];
-      const styles = getStyling({ themeApi, theme, components });
+      const styles = getStyling({ app, themeApi, theme, components });
       const { content } = styles;
       expect(content.fontSize).toEqual('size-from-component');
       expect(content.color).toEqual('color-from-component');
@@ -144,27 +206,27 @@ describe('styling', () => {
       let inst;
       let selections;
 
-      inst = getStyling({ themeApi, theme, components: [] });
+      inst = getStyling({ app, themeApi, theme, components: [] });
       selections = inst.selections;
       expect(selections.selected).toEqual('selected-from-theme');
 
-      inst = getStyling({ themeApi, theme, components });
+      inst = getStyling({ app, themeApi, theme, components });
       selections = inst.selections;
       expect(selections.selected).toEqual('selected-from-component');
 
-      inst = getStyling({ themeApi, theme, components });
+      inst = getStyling({ app, themeApi, theme, components });
       selections = inst.selections;
       expect(selections.alternative).toEqual('alternative-from-component');
 
-      inst = getStyling({ themeApi, theme, components });
+      inst = getStyling({ app, themeApi, theme, components });
       selections = inst.selections;
       expect(selections.excluded).toEqual('excluded-from-component');
 
-      inst = getStyling({ themeApi, theme, components });
+      inst = getStyling({ app, themeApi, theme, components });
       selections = inst.selections;
       expect(selections.selectedExcluded).toEqual('selectedExcluded-from-component');
 
-      inst = getStyling({ themeApi, theme, components });
+      inst = getStyling({ app, themeApi, theme, components });
       selections = inst.selections;
       expect(selections.possible).toEqual('possible-from-component');
     });

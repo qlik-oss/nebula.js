@@ -71,8 +71,7 @@ const RowColRoot = styled('div', {
       'styles',
     ].includes(prop),
 })(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode, freqHitsValue, styles }) => {
-  const rowFontColor = styles.content.color;
-  const rowBackgroundColor = styles.content.backgroundColor;
+  const { backgroundColor: _, ...contentFontStyles } = styles.content;
 
   const selectStyle = getSelectedStyle({ theme, styles, selectedState: 'selected' });
   const excludedSelectStyle = getSelectedStyle({ theme, styles, selectedState: 'excluded' });
@@ -96,8 +95,7 @@ const RowColRoot = styled('div', {
 
     [`& .${classes.row}`]: {
       flexWrap: 'nowrap',
-      color: rowFontColor,
-      backgroundColor: rowBackgroundColor,
+      ...styles.content,
     },
 
     [`& .${classes.rowBorderBottom}`]: {
@@ -108,7 +106,7 @@ const RowColRoot = styled('div', {
     [`& .${classes.column}`]: {
       flexWrap: 'nowrap',
       borderRight: `1px solid ${theme.palette.divider}`,
-      color: rowFontColor,
+      ...styles.content,
     },
 
     // The interior wrapper for all field content.
@@ -130,9 +128,7 @@ const RowColRoot = styled('div', {
       userSelect: 'none',
       paddingRight: '1px',
       ...ellipsis,
-      fontSize: styles.content.fontSize,
-      fontFamily: styles.content.fontFamily,
-      color: rowFontColor,
+      ...contentFontStyles,
     },
 
     [`& .${classes.labelDense}`]: {
@@ -173,7 +169,7 @@ const RowColRoot = styled('div', {
       width: iconWidth,
       minWidth: iconWidth,
       maxWidth: iconWidth,
-      color: rowFontColor,
+      color: contentFontStyles.color,
     },
 
     // Selection styles (S=Selected, XS=ExcludedSelected, A=Alternative, X=Excluded).
