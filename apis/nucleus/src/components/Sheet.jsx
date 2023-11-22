@@ -35,6 +35,18 @@ function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initial
   );
 }
 
+function getBounds(pos, columns, rows) {
+  if (pos.bounds) {
+    return pos.bounds;
+  }
+  return {
+    y: (pos.row / rows) * 100,
+    x: (pos.col / columns) * 100,
+    width: (pos.colspan / columns) * 100,
+    height: (pos.rowspan / rows) * 100,
+  };
+}
+
 function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, onMount }) {
   const { root } = halo;
   const [layout] = useLayout(model);
@@ -64,6 +76,7 @@ function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, 
         });
 
         const lCells = layout.cells;
+        const { columns, rows } = layout;
         // TODO - should try reuse existing objects on subsequent renders
         // Non-id updates should only change the "css"
         const cs = await Promise.all(
@@ -75,7 +88,7 @@ function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, 
 
             const cell = cells.find((ce) => ce.id === c.name);
             if (cell) {
-              cell.bounds = c.bounds;
+              cell.bounds = getBounds(c, columns, rows);
               delete cell.mountedPromise;
               return cell;
             }
@@ -83,7 +96,7 @@ function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, 
             return {
               model: vs.model,
               id: c.name,
-              bounds: c.bounds,
+              bounds: getBounds(c, columns, rows),
               cellRef: React.createRef(),
               currentId: uid(),
               mounted,
