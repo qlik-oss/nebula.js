@@ -51,7 +51,7 @@ function getBackgroundPosition(bgComp) {
 
 function getBackgroundSize(bgComp) {
   let bkgImageSize = imageSizingToCssProperty.originalSize;
-  const size = bgComp?.bgImage?.sizing || bgComp?.bgImage?.size;
+  const size = bgComp?.bgImage?.sizing;
   if (size) {
     bkgImageSize = imageSizingToCssProperty[size];
   }
@@ -68,7 +68,7 @@ export function resolveBgImage(bgComp, app) {
   if (bgImageDef) {
     let url = '';
     if (bgImageDef.mode === 'media' || bgComp.useImage === 'media') {
-      const urlObj = bgImageDef?.mediaUrl || bgImageDef?.url;
+      const urlObj = bgImageDef?.mediaUrl;
       const { qUrl } = urlObj?.qStaticContentUrl || {};
       url = qUrl ? decodeURIComponent(qUrl) : undefined;
       url = resolveImageUrl(app, url);

@@ -88,9 +88,9 @@ describe('styling', () => {
       it('background image should be exposed', () => {
         components[0].background.image = {
           mode: 'media',
-          url: { qStaticContentUrl: { qUrl: 'some-image.png' } },
+          mediaUrl: { qStaticContentUrl: { qUrl: 'some-image.png' } },
           qStaticContentUrl: {},
-          size: 'stretchFit',
+          sizing: 'stretchFit',
         };
         const styles = getStyling({ app, themeApi, theme, components });
         expect(styles.background.backgroundImage).toEqual("url('https://hey-heysome-image.png')");
