@@ -30,6 +30,32 @@ window.getFuncs = function getFuncs() {
         ],
       };
     },
+    getSheetLayout2: () => {
+      return {
+        qInfo: {
+          qId: 'boundLessSheet',
+        },
+        columns: 10,
+        rows: 10,
+        visualization: 'sheet',
+        cells: [
+          {
+            name: 'bar',
+            col: 0,
+            colspan: 4,
+            row: 0,
+            rowspan: 5,
+          },
+          {
+            name: 'pie',
+            col: 5,
+            colspan: 4,
+            row: 5,
+            rowspan: 5,
+          },
+        ],
+      };
+    },
     getBarLayout: () => {
       return {
         qInfo: {
