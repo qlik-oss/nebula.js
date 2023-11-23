@@ -58,6 +58,8 @@ export default function getListBoxComponents({
 
   const isLocked = layout?.qListObject.qDimensionInfo.qLocked;
 
+  const fillHeight = listHeight <= itemHeight;
+
   // Item data common for List and Grid.
   const commonItemData = {
     isLocked,
@@ -91,6 +93,7 @@ export default function getListBoxComponents({
     showSearch,
     isModal,
     styles,
+    fillHeight,
   };
 
   const List = ({ onItemsRendered, ref }) => {

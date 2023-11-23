@@ -56,6 +56,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     isModal,
     contentFontStyle,
     styles,
+    fillHeight,
   } = data;
 
   const { dense = false, dataLayout = 'singleColumn', layoutOrder } = layoutOptions;
@@ -78,6 +79,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     const padding = 0;
     styleOverrides = {
       ...style,
+      height: fillHeight ? '100%' : style.height,
       left: padding + (columnIndex === 0 ? style.left : Number(style.left) + columnIndex * padding),
       // right: columnIndex === columnCount ? style.right : Number(style.right) + columnIndex * padding,
       top: rowIndex === 0 ? style.top : Number(style.top) + rowIndex * padding,
@@ -234,6 +236,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         tabIndex={isFirstElement && keyboard.innerTabStops ? 0 : -1}
         data-n={cell?.qElemNumber}
         direction={direction}
+        fillHeight={fillHeight}
       >
         {cell?.qFrequency && (
           <Histogram

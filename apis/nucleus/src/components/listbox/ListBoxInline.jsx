@@ -32,6 +32,7 @@ import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
 import useRect from '../../hooks/useRect';
 import isDirectQueryEnabled from './utils/is-direct-query';
+import getContainerPadding from './assets/list-sizes/container-padding';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -314,10 +315,13 @@ function ListBoxInline({ options, layout }) {
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
   const isGridMode = layoutOptions?.dataLayout === 'grid';
-  let containerPadding;
-  if (isGridMode) {
-    containerPadding = layoutOptions.layoutOrder === 'row' ? '2px 4px' : '2px 6px 2px 4px';
-  }
+
+  const containerPadding = getContainerPadding({
+    isGridMode,
+    dense,
+    height: containerRef.current?.clientHeight,
+    layoutOrder: layoutOptions.layoutOrder,
+  });
 
   const searchIconComp = constraints?.active ? (
     <SearchIcon title={translator.get('Listbox.Search')} size="large" style={{ fontSize: '12px', padding: '7px' }} />
@@ -345,6 +349,8 @@ function ListBoxInline({ options, layout }) {
   if (isInvalid) {
     renderedCallback?.();
   }
+
+  const listBoxMinHeight = showToolbarWithTitle ? DENSE_ROW_HEIGHT + SCROLL_BAR_WIDTH : 0;
 
   return (
     <>
@@ -413,7 +419,8 @@ function ListBoxInline({ options, layout }) {
           item
           container
           direction="column"
-          style={{ height: '100%', minHeight: DENSE_ROW_HEIGHT + SCROLL_BAR_WIDTH }}
+          height="100%"
+          minHeight={listBoxMinHeight}
           role="region"
           aria-label={translator.get('Listbox.ResultFilterLabel')}
         >

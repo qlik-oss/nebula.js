@@ -15,3 +15,4 @@ export const barWithCheckboxLeftPadPx = 29;
 export const GRID_ROW_HEIGHT = 32;
 export const LIST_ROW_HEIGHT = 29;
 export const DENSE_ROW_HEIGHT = 20; // same for both list and grid in dense mode
+export const ITEM_PADDING = 4;

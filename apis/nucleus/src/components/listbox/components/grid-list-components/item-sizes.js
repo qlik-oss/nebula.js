@@ -1,4 +1,4 @@
-export default function getGridItemSizes({ dataLayout, layoutOrder, itemPadding }) {
+export default function getGridItemSizes({ dataLayout, layoutOrder, itemPadding, fillHeight }) {
   // Simulate margin/padding by making the item smaller than its container.
   if (dataLayout === 'singleColumn') {
     return {
@@ -10,14 +10,14 @@ export default function getGridItemSizes({ dataLayout, layoutOrder, itemPadding 
   switch (layoutOrder) {
     case 'row':
       return {
-        height: `calc(100% - ${itemPadding}px)`,
+        height: fillHeight ? '100%' : `calc(100% - ${itemPadding}px)`,
         width: `calc(100% - ${2 * itemPadding}px)`,
         position: 'absolute',
         left: 4,
       };
     case 'column':
       return {
-        height: `calc(100% - ${itemPadding}px)`,
+        height: fillHeight ? '100%' : `calc(100% - ${itemPadding}px)`,
         width: `calc(100% - ${2 * itemPadding}px)`,
         position: 'absolute',
         left: 4,
