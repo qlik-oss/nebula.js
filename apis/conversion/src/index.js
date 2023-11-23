@@ -42,7 +42,10 @@ const getDefaultImportPropertiesFnc = (path) => {
   return undefined; // TODO: add listbox and other
 };
 
-const getImportPropertiesFnc = (qae) => {
+const getImportPropertiesFnc = (qae, convertToTable) => {
+  if (convertToTable && typeof qae.importViewDataProperties === 'function') {
+    return qae.importViewDataProperties;
+  }
   if (qae.importProperties) {
     return qae.importProperties;
   }
@@ -59,7 +62,7 @@ export const convertTo = async ({ halo, model, cellRef, newType, properties, con
   }
   const targetSnType = await getType({ halo, name: newType });
   const targetQae = targetSnType.qae;
-  const importProperties = getImportPropertiesFnc(targetQae);
+  const importProperties = getImportPropertiesFnc(targetQae, convertToTable);
   if (!importProperties) {
     throw new Error('Target chart does not support conversion');
   }

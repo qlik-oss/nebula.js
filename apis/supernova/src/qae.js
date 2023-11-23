@@ -138,6 +138,7 @@ export default function qae(def = {}) {
     },
     exportProperties: def.exportProperties,
     importProperties: def.importProperties,
+    importViewDataProperties: def.importViewDataProperties,
     exportTableProperties: def.exportTableProperties,
   };
 
