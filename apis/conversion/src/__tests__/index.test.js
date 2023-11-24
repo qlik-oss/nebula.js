@@ -77,13 +77,14 @@ describe('objectConversion', () => {
       expect(haloGetTypesMock).toHaveBeenCalledTimes(1);
       expect(supernovaMock).toHaveBeenCalledTimes(1);
       expect(exportPropertiesMock).toHaveBeenCalledTimes(1);
-      expect(exportPropertiesMock).toHaveBeenCalledWith({ propertyTree, hypercubePath: '' });
+      expect(exportPropertiesMock).toHaveBeenCalledWith({ propertyTree, hypercubePath: '', viewDataMode: false });
       expect(importPropertiesMock).toHaveBeenCalledTimes(1);
       expect(importPropertiesMock).toHaveBeenCalledWith({
         exportFormat: { properties: { prop1: 'value 1' } },
         initialProperties: { qInfo: { qType: 'new type' }, visualization: 'new type' },
         dataDefinition: { propertyPath: '/qHyperCubeDef' },
         hypercubePath: '',
+        viewDataMode: false,
       });
       expect(newPropertyTree).toEqual({ qProperty: { prop2: 'value 2' } });
     });
@@ -105,7 +106,7 @@ describe('objectConversion', () => {
       expect(haloGetTypesMock).toHaveBeenCalledTimes(1);
       expect(supernovaMock).toHaveBeenCalledTimes(1);
       expect(exportPropertiesMock).toHaveBeenCalledTimes(1);
-      expect(exportPropertiesMock).toHaveBeenCalledWith({ propertyTree, hypercubePath: '' });
+      expect(exportPropertiesMock).toHaveBeenCalledWith({ propertyTree, hypercubePath: '', viewDataMode: false });
       expect(importPropertiesMock).toHaveBeenCalledTimes(0);
       expect(targetQaeImportPropertiesMock).toHaveBeenCalledTimes(1);
       expect(targetQaeImportPropertiesMock).toHaveBeenCalledWith({
@@ -113,6 +114,7 @@ describe('objectConversion', () => {
         initialProperties: { qInfo: { qType: 'new type' }, visualization: 'new type' },
         dataDefinition: {},
         hypercubePath: '',
+        viewDataMode: false,
       });
       expect(newPropertyTree).toEqual({ qProperty: { prop4: 'value 4' } });
     });
@@ -130,13 +132,18 @@ describe('objectConversion', () => {
       expect(supernovaMock).toHaveBeenCalledTimes(1);
       expect(exportPropertiesMock).toHaveBeenCalledTimes(0);
       expect(sourceQaeExportPropertiesMock).toHaveBeenCalledTimes(1);
-      expect(sourceQaeExportPropertiesMock).toHaveBeenCalledWith({ propertyTree, hypercubePath: '' });
+      expect(sourceQaeExportPropertiesMock).toHaveBeenCalledWith({
+        propertyTree,
+        hypercubePath: '',
+        viewDataMode: false,
+      });
       expect(importPropertiesMock).toHaveBeenCalledTimes(1);
       expect(importPropertiesMock).toHaveBeenCalledWith({
         exportFormat: { qProperty: { prop3: 'value 3' } },
         initialProperties: { qInfo: { qType: 'new type' }, visualization: 'new type' },
         dataDefinition: { propertyPath: '/qHyperCubeDef' },
         hypercubePath: '',
+        viewDataMode: false,
       });
       expect(newPropertyTree).toEqual({ qProperty: { prop2: 'value 2' } });
     });
@@ -163,7 +170,11 @@ describe('objectConversion', () => {
       expect(supernovaMock).toHaveBeenCalledTimes(1);
       expect(exportPropertiesMock).toHaveBeenCalledTimes(0);
       expect(sourceQaeExportPropertiesMock).toHaveBeenCalledTimes(1);
-      expect(sourceQaeExportPropertiesMock).toHaveBeenCalledWith({ propertyTree, hypercubePath: '' });
+      expect(sourceQaeExportPropertiesMock).toHaveBeenCalledWith({
+        propertyTree,
+        hypercubePath: '',
+        viewDataMode: false,
+      });
       expect(importPropertiesMock).toHaveBeenCalledTimes(0);
       expect(targetQaeImportPropertiesMock).toHaveBeenCalledTimes(1);
       expect(targetQaeImportPropertiesMock).toHaveBeenCalledWith({
@@ -171,14 +182,15 @@ describe('objectConversion', () => {
         initialProperties: { qInfo: { qType: 'new type' }, visualization: 'new type' },
         dataDefinition: {},
         hypercubePath: '',
+        viewDataMode: false,
       });
       expect(newPropertyTree).toEqual({ qProperty: { prop4: 'value 4' } });
     });
 
-    test('should call export table properties when convertToTable is true', async () => {
+    test('should call export properties with viewdatamode', async () => {
       newType = 'sn-table';
-      const sourceQaeExportTableProperties = jest.fn().mockReturnValue({ qProperty: { prop3: 'sourceValue' } });
-      sourceQae = { exportTableProperties: sourceQaeExportTableProperties };
+      const sourceQaeExportPropertiesMock = jest.fn().mockReturnValue({ qProperty: { prop3: 'sourceValue' } });
+      sourceQae = { exportProperties: sourceQaeExportPropertiesMock };
       getQaeMock.mockReturnValue(sourceQae);
 
       const targetQaeImportPropertiesMock = jest.fn().mockReturnValue({ qProperty: { prop4: 'targetValue' } });
@@ -190,13 +202,22 @@ describe('objectConversion', () => {
       };
       supernovaMock.mockReturnValue({ qae: targetQae });
 
-      const newPropertyTree = await convertTo({ halo, model, cellRef, newType, convertToTable: true });
+      const newPropertyTree = await convertTo({ halo, model, cellRef, newType, viewDataMode: true });
       expect(getQaeMock).toHaveBeenCalledTimes(1);
       expect(getFullPropertyTreeMock).toHaveBeenCalledTimes(1);
       expect(haloGetTypesMock).toHaveBeenCalledTimes(1);
       expect(supernovaMock).toHaveBeenCalledTimes(1);
       expect(exportPropertiesMock).toHaveBeenCalledTimes(0);
-      expect(sourceQaeExportTableProperties).toHaveBeenCalledTimes(1);
+      expect(sourceQaeExportPropertiesMock).toHaveBeenCalledTimes(1);
+      expect(sourceQaeExportPropertiesMock).toHaveBeenCalledWith({
+        hypercubePath: '',
+        propertyTree: {
+          qProperty: {
+            visualization: 'some type',
+          },
+        },
+        viewDataMode: true,
+      });
       expect(newPropertyTree).toEqual({ qProperty: { prop4: 'targetValue' } });
     });
   });

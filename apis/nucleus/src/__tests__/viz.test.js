@@ -246,10 +246,8 @@ describe('viz', () => {
   describe('toggleDataView', () => {
     test('should toggle data view and back', async () => {
       await api.toggleDataView();
-      expect(convertToMock).toHaveBeenCalledWith(
-        expect.objectContaining({ convertToTable: true, newType: 'sn-table' })
-      );
-      expect(createSessionObjectMock).toHaveBeenCalledWith({ totals: { show: false }, usePagination: true });
+      expect(convertToMock).toHaveBeenCalledWith(expect.objectContaining({ viewDataMode: true, newType: 'sn-table' }));
+      expect(createSessionObjectMock).toHaveBeenCalledTimes(1);
       await api.toggleDataView();
       expect(destroySessionObjectMock).toHaveBeenCalledWith('newModelId');
       expect(setModel).toHaveBeenCalledTimes(2);
@@ -259,7 +257,7 @@ describe('viz', () => {
       await api.toggleDataView(false);
       expect(createSessionObjectMock).toHaveBeenCalledTimes(0);
       await api.toggleDataView();
-      expect(createSessionObjectMock).toHaveBeenCalledWith({ totals: { show: false }, usePagination: true });
+      expect(createSessionObjectMock).toHaveBeenCalledTimes(1);
       await api.toggleDataView(true);
       expect(destroySessionObjectMock).toHaveBeenCalledTimes(0);
       expect(setModel).toHaveBeenCalledTimes(1);
