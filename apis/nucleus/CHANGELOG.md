@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.8.0](https://github.com/qlik-oss/nebula.js/compare/v4.7.0...v4.8.0) (2023-11-23)
+
+### Bug Fixes
+
+- **listbox:** conform to previous background image properties naming ([#1412](https://github.com/qlik-oss/nebula.js/issues/1412)) ([b02efa9](https://github.com/qlik-oss/nebula.js/commit/b02efa9dbe31db43334396cb27667a8df4ce28e2))
+
+### Features
+
+- **listbox:** expose and inject background image ([#1407](https://github.com/qlik-oss/nebula.js/issues/1407)) ([a60388e](https://github.com/qlik-oss/nebula.js/commit/a60388e09c73cd44f5686f24ade2919bae0aed23))
+
 # [4.7.0](https://github.com/qlik-oss/nebula.js/compare/v4.6.2...v4.7.0) (2023-11-14)
 
 ### Features
