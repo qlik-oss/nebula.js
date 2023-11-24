@@ -6,7 +6,7 @@ import {
   SCROLL_BAR_WIDTH,
   CHECKBOX_WIDTH,
   REMOVE_TICK_LIMIT,
-  ITEM_PADDING,
+  GRID_ITEM_PADDING,
 } from '../../constants';
 import useTextWidth from '../../hooks/useTextWidth';
 import getMeasureText from '../measure-text';
@@ -52,7 +52,7 @@ export default function useListSizes({ layout, width, height, listCount, count, 
 
     if (layoutOrder === 'row') {
       overflowStyling = { overflowX: 'hidden' };
-      containerWidth += ITEM_PADDING * 2;
+      containerWidth += GRID_ITEM_PADDING * 2;
       ({ rowCount, columnWidth, columnCount } = calculateRowMode({
         maxVisibleColumns,
         listCount,
@@ -98,7 +98,7 @@ export default function useListSizes({ layout, width, height, listCount, count, 
     count,
     listCount: limitedListCount,
     maxCount: { row: maxRowCount, column: maxColumnCount },
-    itemPadding: ITEM_PADDING,
+    itemPadding: GRID_ITEM_PADDING,
     textWidth,
     freqMinWidth,
     freqMaxWidth,
