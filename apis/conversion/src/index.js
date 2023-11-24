@@ -23,10 +23,7 @@ const getDefaultExportPropertiesFn = (path) => {
   return undefined; // TODO: add listbox and other
 };
 
-const getExportPropertiesFnc = (qae, convertToTable) => {
-  if (convertToTable && typeof qae.exportTableProperties === 'function') {
-    return qae.exportTableProperties;
-  }
+const getExportPropertiesFnc = (qae) => {
   if (qae.exportProperties) {
     return qae.exportProperties;
   }
@@ -50,10 +47,10 @@ const getImportPropertiesFnc = (qae) => {
   return getDefaultImportPropertiesFnc(path);
 };
 
-export const convertTo = async ({ halo, model, cellRef, newType, properties, convertToTable = false }) => {
+export const convertTo = async ({ halo, model, cellRef, newType, properties, viewDataMode = false }) => {
   const propertyTree = properties ? { qProperty: properties } : await model.getFullPropertyTree();
   const sourceQae = cellRef.current.getQae();
-  const exportProperties = getExportPropertiesFnc(sourceQae, convertToTable);
+  const exportProperties = getExportPropertiesFnc(sourceQae);
   if (!exportProperties) {
     throw new Error('Source chart does not support conversion');
   }
@@ -66,6 +63,7 @@ export const convertTo = async ({ halo, model, cellRef, newType, properties, con
   const exportFormat = exportProperties({
     propertyTree,
     hypercubePath: helpers.getHypercubePath(sourceQae),
+    viewDataMode,
   });
   const initial = utils.getValue(targetQae, 'properties.initial', {});
   const initialProperties = {
@@ -80,6 +78,7 @@ export const convertTo = async ({ halo, model, cellRef, newType, properties, con
     initialProperties,
     dataDefinition: utils.getValue(targetQae, 'data.targets.0.', {}),
     hypercubePath: helpers.getHypercubePath(targetQae),
+    viewDataMode,
   });
   return newPropertyTree;
 };

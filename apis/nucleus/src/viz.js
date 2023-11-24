@@ -171,10 +171,9 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
           cellRef,
           newType: halo.config.context.dataViewType,
           properties: oldProperties,
-          convertToTable: true,
+          viewDataMode: true,
         });
-        const newProperties = { ...propertyTree.qProperty, totals: { show: false }, usePagination: true };
-        newModel = await halo.app.createSessionObject(newProperties);
+        newModel = await halo.app.createSessionObject(propertyTree.qProperty);
         viewDataObjectId = newModel.id;
       } else if (viewDataObjectId && showDataView !== true) {
         newModel = model;
