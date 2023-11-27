@@ -256,11 +256,14 @@ describe('viz', () => {
     test('should not toggle data view when showDataView is being used', async () => {
       await api.toggleDataView(false);
       expect(createSessionObjectMock).toHaveBeenCalledTimes(0);
-      await api.toggleDataView();
+      await api.toggleDataView(true);
       expect(createSessionObjectMock).toHaveBeenCalledTimes(1);
+      expect(setModel).toHaveBeenCalledTimes(1);
       await api.toggleDataView(true);
       expect(destroySessionObjectMock).toHaveBeenCalledTimes(0);
-      expect(setModel).toHaveBeenCalledTimes(1);
+      await api.toggleDataView(false);
+      expect(destroySessionObjectMock).toHaveBeenCalledTimes(1);
+      expect(setModel).toHaveBeenCalledTimes(2);
     });
   });
 
