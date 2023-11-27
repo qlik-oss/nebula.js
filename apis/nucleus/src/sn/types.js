@@ -70,6 +70,18 @@ export function create({ halo, parent }) {
       }
       return tc[name].getMatchingVersionFromProperties(propertyVersion);
     },
+    getDataViewType: (dataViewType) => {
+      if (tc[dataViewType]) {
+        return dataViewType;
+      }
+      if (tc.table) {
+        return 'table';
+      }
+      if (tc['sn-table']) {
+        return 'sn-table';
+      }
+      return dataViewType;
+    },
     get(typeInfo) {
       const { name } = typeInfo;
       let { version } = typeInfo;

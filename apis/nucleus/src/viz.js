@@ -169,7 +169,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
           halo,
           model,
           cellRef,
-          newType: halo.config.context.dataViewType,
+          newType: halo.types.getDataViewType(halo.config.context.dataViewType),
           properties: oldProperties,
           viewDataMode: true,
         });

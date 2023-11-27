@@ -724,7 +724,7 @@
         "dataViewType": {
           "description": "Type used for toggling to the data view (toggleDataView)\nThis type need to be registered as well",
           "optional": true,
-          "defaultValue": "sn-table",
+          "defaultValue": "",
           "type": "string"
         }
       }

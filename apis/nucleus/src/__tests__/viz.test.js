@@ -78,6 +78,7 @@ describe('viz', () => {
         public: {},
         config: { context: { dataViewType: 'sn-table' } },
         app: { createSessionObject: createSessionObjectMock, destroySessionObject: destroySessionObjectMock },
+        types: { getDataViewType: (input) => input },
       },
     });
 

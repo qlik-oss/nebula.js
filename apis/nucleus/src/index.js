@@ -146,7 +146,7 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
    * This type need to be registered as well
    * @type {string=}
    * */
-  dataViewType: 'sn-table',
+  dataViewType: '',
 };
 
 DEFAULT_CONFIG.context = DEFAULT_CONTEXT;
