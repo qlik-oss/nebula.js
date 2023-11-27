@@ -6,12 +6,11 @@ import {
   SCROLL_BAR_WIDTH,
   CHECKBOX_WIDTH,
   REMOVE_TICK_LIMIT,
-  GRID_ROW_HEIGHT,
-  LIST_ROW_HEIGHT,
-  DENSE_ROW_HEIGHT,
+  GRID_ITEM_PADDING,
 } from '../../constants';
 import useTextWidth from '../../hooks/useTextWidth';
 import getMeasureText from '../measure-text';
+import getItemHeight from './item-height';
 
 export default function useListSizes({ layout, width, height, listCount, count, freqIsAllowed, checkboxes, styles }) {
   const { layoutOptions = {} } = layout || {};
@@ -42,16 +41,8 @@ export default function useListSizes({ layout, width, height, listCount, count, 
   let columnWidth;
   let rowCount;
   const isGridMode = dataLayout === 'grid';
-  const itemPadding = 4;
 
-  const normalItemHeight = isGridMode ? GRID_ROW_HEIGHT : LIST_ROW_HEIGHT;
-  let itemHeight = dense ? DENSE_ROW_HEIGHT : normalItemHeight;
-
-  if (isGridMode) {
-    // Emulate a margin between items using padding, since the list library
-    // needs an explicit row height and cannot handle margins.
-    itemHeight += itemPadding;
-  }
+  const itemHeight = getItemHeight({ isGridMode, dense });
 
   const listHeight = height ?? 8 * itemHeight;
 
@@ -61,7 +52,7 @@ export default function useListSizes({ layout, width, height, listCount, count, 
 
     if (layoutOrder === 'row') {
       overflowStyling = { overflowX: 'hidden' };
-      containerWidth += itemPadding * 2;
+      containerWidth += GRID_ITEM_PADDING * 2;
       ({ rowCount, columnWidth, columnCount } = calculateRowMode({
         maxVisibleColumns,
         listCount,
@@ -107,7 +98,7 @@ export default function useListSizes({ layout, width, height, listCount, count, 
     count,
     listCount: limitedListCount,
     maxCount: { row: maxRowCount, column: maxColumnCount },
-    itemPadding,
+    itemPadding: GRID_ITEM_PADDING,
     textWidth,
     freqMinWidth,
     freqMaxWidth,
