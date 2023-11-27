@@ -165,11 +165,15 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       let newModel;
       if (!viewDataObjectId && showDataView !== false) {
         const oldProperties = await model.getEffectiveProperties();
+        const newType = halo.types.getDataViewType(halo.config.context.dataViewType);
+        if (!newType) {
+          throw new Error('No data view type registered');
+        }
         const propertyTree = await conversionConvertTo({
           halo,
           model,
           cellRef,
-          newType: halo.types.getDataViewType(halo.config.context.dataViewType),
+          newType,
           properties: oldProperties,
           viewDataMode: true,
         });

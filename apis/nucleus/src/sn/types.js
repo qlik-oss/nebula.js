@@ -80,7 +80,7 @@ export function create({ halo, parent }) {
       if (tc['sn-table']) {
         return 'sn-table';
       }
-      return dataViewType;
+      return false;
     },
     get(typeInfo) {
       const { name } = typeInfo;
