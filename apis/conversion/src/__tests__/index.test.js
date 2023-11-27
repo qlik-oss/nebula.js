@@ -187,7 +187,7 @@ describe('objectConversion', () => {
       expect(newPropertyTree).toEqual({ qProperty: { prop4: 'value 4' } });
     });
 
-    test('should call export properties with viewdatamode', async () => {
+    test('should call export properties with viewDataMode', async () => {
       newType = 'sn-table';
       const sourceQaeExportPropertiesMock = jest.fn().mockReturnValue({ qProperty: { prop3: 'sourceValue' } });
       sourceQae = { exportProperties: sourceQaeExportPropertiesMock };
