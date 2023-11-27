@@ -158,7 +158,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
      * The default dataViewType for nebula is sn-table. The specified chart type needs to be registered as well, in order to make it possible to render the data view.
      *
      * @experimental
-     * @since 4.7.0
+     * @since 4.9.0
      * @param {boolean=} showDataView - If included, forces the chart into a specific state. True will show data view, and false will show the original chart. If not included it will always toggle between the two views.
      */
     async toggleDataView(showDataView) {
