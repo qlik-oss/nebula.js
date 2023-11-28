@@ -167,13 +167,14 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
         let newType = halo.config.context.dataViewType;
         const oldProperties = await model.getEffectiveProperties();
         // Check if dataViewType is registered. Otherwise potentially fallback to table
-        const dataViewType = halo.types.getSupportedVersion(newType);
-        if (!dataViewType && halo.types.getSupportedVersion('table')) {
-          newType = 'table';
+        if (!halo.types.getSupportedVersion(newType)) {
+          if (halo.types.getSupportedVersion('table')) {
+            newType = 'table';
+          } else {
+            throw new Error('No data view type registered');
+          }
         }
-        if (!newType) {
-          throw new Error('No data view type registered');
-        }
+
         const propertyTree = await conversionConvertTo({
           halo,
           model,
