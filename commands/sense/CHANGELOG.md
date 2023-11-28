@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [4.8.1](https://github.com/qlik-oss/nebula.js/compare/v4.8.0...v4.8.1) (2023-11-28)
+
+**Note:** Version bump only for package @nebula.js/cli-sense
+
 # [4.8.0](https://github.com/qlik-oss/nebula.js/compare/v4.7.0...v4.8.0) (2023-11-23)
 
 **Note:** Version bump only for package @nebula.js/cli-sense
