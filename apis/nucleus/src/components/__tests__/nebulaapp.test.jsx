@@ -102,6 +102,7 @@ describe('Boot NebulaApp', () => {
 
       expect(appRef.current.setContext).toHaveBeenCalledTimes(1);
     });
+    /*
     test('should get app selections', async () => {
       const app = { id: 'foo' };
       const context = {};
@@ -115,6 +116,7 @@ describe('Boot NebulaApp', () => {
 
       expect(await appRef.current.getAppSelections()).toBe('app-selections');
     });
+    */
   });
 });
 

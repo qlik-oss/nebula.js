@@ -2,9 +2,9 @@
 import { useContext, useEffect } from 'react';
 import InstanceContext from '../contexts/InstanceContext';
 
-function createAppSelections({ app, store }) {
+function createAppSelections({ app, selectionStore }) {
   const key = `${app.id}`;
-  const { modalObjectStore, appModalStore } = store;
+  const { modalObjectStore, appModalStore } = selectionStore;
 
   const end = async (accept = true) => {
     const { model, objectSelections } = modalObjectStore.get(key) || {};
@@ -81,23 +81,20 @@ function createAppSelections({ app, store }) {
   };
   return appSelections;
 }
-export default function useAppSelections(app, selectionStore) {
+export default function useAppSelections(app) {
   if (!app.session) {
     // assume the app is mocked if session is undefined
     return [];
   }
-  let store = selectionStore;
-  if (!store) {
-    store = useContext(InstanceContext).selectionStore;
-  }
+  const { selectionStore } = useContext(InstanceContext);
 
-  const [appSelectionsStore] = store.useAppSelectionsStore();
+  const [appSelectionsStore] = selectionStore.useAppSelectionsStore();
   const key = app ? app.id : null;
   let appSelections = appSelectionsStore.get(key);
 
   useEffect(() => {
     if (!app || appSelections) return;
-    appSelections = createAppSelections({ app, store });
+    appSelections = createAppSelections({ app, selectionStore });
     appSelectionsStore.set(key, appSelections);
     appSelectionsStore.dispatch(true);
   }, [app]);

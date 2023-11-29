@@ -399,7 +399,6 @@ function nuked(configuration = {}) {
        */
       selections: async () => {
         if (!selectionsApi) {
-          // const appSelections = await root.getAppSelections(); // Don't expose this for now
           selectionsApi = /** @lends AppSelections# */ {
             /**
              * Mounts the app selection UI into the provided HTMLElement.
