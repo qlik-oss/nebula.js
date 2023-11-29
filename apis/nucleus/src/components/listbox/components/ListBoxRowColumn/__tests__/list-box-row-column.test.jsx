@@ -48,7 +48,6 @@ describe('<ListBoxRowColumn />', () => {
         ],
       },
     ];
-    // global.document = {}; // what?
     getRowsKeyboardNavigation = jest
       .spyOn(rowsKeyboardNavigation, 'default')
       .mockImplementation(() => 'handle-key-down-callback');
