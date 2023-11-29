@@ -22,7 +22,6 @@ describe('keyboard navigation', () => {
   });
 
   beforeEach(() => {
-    global.document = {};
     keyboard = {
       blur: jest.fn(),
       focus: jest.fn(),
