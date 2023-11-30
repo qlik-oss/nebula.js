@@ -138,6 +138,7 @@ export default function qae(def = {}) {
     },
     exportProperties: def.exportProperties,
     importProperties: def.importProperties,
+    exploration: def.exploration,
   };
 
   return q;
