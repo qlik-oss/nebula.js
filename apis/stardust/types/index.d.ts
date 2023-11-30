@@ -242,6 +242,7 @@ declare namespace stardust {
         interactions?: stardust.Interactions;
         keyboardNavigation?: boolean;
         disableCellPadding?: boolean;
+        dataViewType?: string;
     }
 
     interface Galaxy {
@@ -410,6 +411,16 @@ declare namespace stardust {
          * @param forcePatch Whether to always patch the change instead of making a permanent change
          */
         convertTo(newType: string, forceUpdate?: boolean, forcePatch?: boolean): Promise<object>;
+
+        /**
+         * Toggles the chart to a data view of the chart.
+         * 
+         * The chart will be toggled to the type defined in the nebula context (dataViewType).
+         * 
+         * The default dataViewType for nebula is sn-table. The specified chart type needs to be registered as well, in order to make it possible to render the data view.
+         * @param showDataView If included, forces the chart into a specific state. True will show data view, and false will show the original chart. If not included it will always toggle between the two views.
+         */
+        toggleDataView(showDataView?: boolean): void;
 
         /**
          * Listens to custom events from inside the visualization. See useEmitter

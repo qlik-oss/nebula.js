@@ -47,7 +47,7 @@ const getImportPropertiesFnc = (qae) => {
   return getDefaultImportPropertiesFnc(path);
 };
 
-export const convertTo = async ({ halo, model, cellRef, newType, properties }) => {
+export const convertTo = async ({ halo, model, cellRef, newType, properties, viewDataMode = false }) => {
   const propertyTree = properties ? { qProperty: properties } : await model.getFullPropertyTree();
   const sourceQae = cellRef.current.getQae();
   const exportProperties = getExportPropertiesFnc(sourceQae);
@@ -63,6 +63,7 @@ export const convertTo = async ({ halo, model, cellRef, newType, properties }) =
   const exportFormat = exportProperties({
     propertyTree,
     hypercubePath: helpers.getHypercubePath(sourceQae),
+    viewDataMode,
   });
   const initial = utils.getValue(targetQae, 'properties.initial', {});
   const initialProperties = {
@@ -77,6 +78,7 @@ export const convertTo = async ({ halo, model, cellRef, newType, properties }) =
     initialProperties,
     dataDefinition: utils.getValue(targetQae, 'data.targets.0.', {}),
     hypercubePath: helpers.getHypercubePath(targetQae),
+    viewDataMode,
   });
   return newPropertyTree;
 };

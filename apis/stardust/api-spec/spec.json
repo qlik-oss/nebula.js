@@ -720,6 +720,12 @@
           "optional": true,
           "defaultValue": false,
           "type": "boolean"
+        },
+        "dataViewType": {
+          "description": "Type used for toggling to the data view (toggleDataView)\nThis type need to be registered as well",
+          "optional": true,
+          "defaultValue": "sn-table",
+          "type": "string"
         }
       }
     },
@@ -1308,6 +1314,22 @@
           ],
           "examples": [
             "const viz = await embed(app).render({\n  element,\n  id: 'abc'\n});\nawait viz.convertTo('barChart');\n// Change the barchart to a linechart, only in the current session\nconst newProperties = await viz.convertTo('lineChart', false, true);\n// Remove the conversion by clearing the patches\nawait viz.model.clearSoftPatches();"
+          ]
+        },
+        "toggleDataView": {
+          "description": "Toggles the chart to a data view of the chart.\n\nThe chart will be toggled to the type defined in the nebula context (dataViewType).\n\nThe default dataViewType for nebula is sn-table. The specified chart type needs to be registered as well, in order to make it possible to render the data view.",
+          "stability": "experimental",
+          "availability": {
+            "since": "4.9.0"
+          },
+          "kind": "function",
+          "params": [
+            {
+              "name": "showDataView",
+              "description": "If included, forces the chart into a specific state. True will show data view, and false will show the original chart. If not included it will always toggle between the two views.",
+              "optional": true,
+              "type": "boolean"
+            }
           ]
         },
         "addListener": {

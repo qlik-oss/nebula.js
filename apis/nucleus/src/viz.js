@@ -16,6 +16,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
   let mountedReference = null;
   let onMount = null;
   let onRender = null;
+  let viewDataObjectId;
   const mounted = new Promise((resolve) => {
     onMount = resolve;
   });
@@ -150,6 +151,50 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
       return propertyTree;
     },
     /**
+     * Toggles the chart to a data view of the chart.
+     *
+     * The chart will be toggled to the type defined in the nebula context (dataViewType).
+     *
+     * The default dataViewType for nebula is sn-table. The specified chart type needs to be registered as well, in order to make it possible to render the data view.
+     *
+     * @experimental
+     * @since 4.9.0
+     * @param {boolean=} showDataView - If included, forces the chart into a specific state. True will show data view, and false will show the original chart. If not included it will always toggle between the two views.
+     */
+    async toggleDataView(showDataView) {
+      let newModel;
+      if (!viewDataObjectId && showDataView !== false) {
+        let newType = halo.config.context.dataViewType;
+        const oldProperties = await model.getEffectiveProperties();
+        // Check if dataViewType is registered. Otherwise potentially fallback to table
+        if (!halo.types.getSupportedVersion(newType)) {
+          if (halo.types.getSupportedVersion('table')) {
+            newType = 'table';
+          } else {
+            throw new Error('No data view type registered');
+          }
+        }
+
+        const propertyTree = await conversionConvertTo({
+          halo,
+          model,
+          cellRef,
+          newType,
+          properties: oldProperties,
+          viewDataMode: true,
+        });
+        newModel = await halo.app.createSessionObject(propertyTree.qProperty);
+        viewDataObjectId = newModel.id;
+      } else if (viewDataObjectId && showDataView !== true) {
+        newModel = model;
+        await halo.app.destroySessionObject(viewDataObjectId);
+        viewDataObjectId = undefined;
+      }
+      if (newModel) {
+        cellRef.current.setModel(newModel);
+      }
+    },
+    /**
      * Listens to custom events from inside the visualization. See useEmitter
      * @experimental
      * @param {string} eventName Event name to listen to
@@ -277,7 +322,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     // setOptions() {}, // applied soft patch
     // resize() {},
     // show() {},
-    // toggleDataView() {},
   };
 
   return api;

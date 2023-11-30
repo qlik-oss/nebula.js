@@ -300,7 +300,7 @@ const loadType = async ({
 };
 
 const Cell = forwardRef(
-  ({ halo, model, initialSnOptions, initialSnPlugins, initialError, onMount, currentId, emitter }, ref) => {
+  ({ halo, model: inputModel, initialSnOptions, initialSnPlugins, initialError, onMount, currentId, emitter }, ref) => {
     const { app, types } = halo;
     const { nebbie } = halo.public;
     const {
@@ -313,6 +313,7 @@ const Cell = forwardRef(
     const theme = useTheme();
     const [cellRef, cellRect, cellNode] = useRect();
     const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
+    const [model, setModel] = useState(inputModel);
     const [layout, { validating, canCancel, canRetry }, longrunning] = useLayout(model);
     const [appLayout] = useAppLayout(app);
     const [contentRef, contentRect, contentNode] = useRect();
@@ -453,6 +454,7 @@ const Cell = forwardRef(
         },
         setSnOptions,
         setSnPlugins,
+        setModel,
         getImperativeHandle() {
           if (state.sn?.component && typeof state.sn.component.getImperativeHandle === 'function') {
             return state.sn.component.getImperativeHandle();
