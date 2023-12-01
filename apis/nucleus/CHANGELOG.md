@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.9.0](https://github.com/qlik-oss/nebula.js/compare/v4.8.1...v4.9.0) (2023-12-01)
+
+### Features
+
+- toggleDataView ([#1395](https://github.com/qlik-oss/nebula.js/issues/1395)) ([d373005](https://github.com/qlik-oss/nebula.js/commit/d3730051776de4bd4019d303d4b4d599122a29ec)), closes [#1418](https://github.com/qlik-oss/nebula.js/issues/1418)
+
 ## [4.8.1](https://github.com/qlik-oss/nebula.js/compare/v4.8.0...v4.8.1) (2023-11-28)
 
 **Note:** Version bump only for package @nebula.js/nucleus
