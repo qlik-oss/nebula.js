@@ -50,11 +50,11 @@
     "yargs": "17.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.23.3",
-    "@babel/preset-env": "7.23.3",
+    "@babel/core": "7.23.5",
+    "@babel/preset-env": "7.23.5",
     "@babel/preset-react": "7.23.3",
-    "@mui/material": "^5.14.18",
-    "@mui/system": "^5.14.18",
+    "@mui/material": "^5.14.19",
+    "@mui/system": "^5.14.19",
     "@nebula.js/enigma-mocker": "^4.9.0",
     "@nebula.js/nucleus": "^4.9.0",
     "@nebula.js/snapshooter": "^4.9.0",
@@ -71,6 +71,6 @@
     "monaco-editor-webpack-plugin": "7.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "6.20.0"
+    "react-router-dom": "6.20.1"
   }
 }
