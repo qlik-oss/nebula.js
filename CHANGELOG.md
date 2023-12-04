@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
+
+### Bug Fixes
+
+- use session based model and request storage ([492b7fe](https://github.com/qlik-oss/nebula.js/commit/492b7fed8229a0a6e8efb4e38eccab5a29a34e99))
+
 # [4.9.0](https://github.com/qlik-oss/nebula.js/compare/v4.8.1...v4.9.0) (2023-12-01)
 
 ### Features
