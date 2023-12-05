@@ -87,7 +87,7 @@ export function resolveBgImage(bgComp, app) {
 export function resolveBgColor(comp, theme, objectType) {
   const bgColor = comp?.bgColor;
   if (bgColor && theme) {
-    if (bgColor.useExpression) {
+    if (bgColor.useExpression || bgColor.useColorExpression) {
       return theme.validateColor(bgColor.colorExpression);
     }
   }
