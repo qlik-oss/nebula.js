@@ -123,7 +123,7 @@ function getBackgroundColor({ themeApi, themeOverrides }) {
   if (bgColor?.useExpression) {
     color = resolveBgColor({ bgColor }, themeApi, 'listBox');
   } else {
-    color = themeApi.getColorPickerColor(bgColor, true)?.color;
+    color = themeApi.getColorPickerColor(bgColor?.color, false);
   }
   return color;
 }
