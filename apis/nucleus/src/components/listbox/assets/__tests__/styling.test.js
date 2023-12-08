@@ -146,6 +146,7 @@ describe('styling', () => {
           content: {
             fontSize: 'size-from-component',
             fontColor: {
+              index: -1,
               color: undefined, // <- should not trigger a contrast color
             },
             useContrastColor: true,
@@ -168,6 +169,7 @@ describe('styling', () => {
           content: {
             fontSize: 'size-from-component',
             fontColor: {
+              index: -1,
               color: 'color-from-component',
             },
             useContrastColor: false,
