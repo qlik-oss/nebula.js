@@ -86,7 +86,7 @@
     "prettier": "3.1.0",
     "puppeteer": "19.11.1",
     "qix-faker": "0.3.0",
-    "rollup": "4.6.1",
+    "rollup": "4.7.0",
     "rollup-plugin-dependency-flow": "0.3.0",
     "rollup-plugin-sass": "1.12.21",
     "style-loader": "3.3.3",
@@ -94,7 +94,7 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
-    "**/caniuse-lite": "1.0.30001565",
+    "**/caniuse-lite": "1.0.30001566",
     "**/react": "18.2.0",
     "**/react-dom": "18.2.0",
     "**/react-is": "18.2.0",
