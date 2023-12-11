@@ -78,7 +78,7 @@
     "jest-junit": "^16.0.0",
     "jest-location-mock": "^2.0.0",
     "jimp": "0.22.10",
-    "lerna": "7.4.2",
+    "lerna": "8.0.0",
     "lint-staged": "^15.2.0",
     "mocha-junit-reporter": "2.2.1",
     "picasso-plugin-q": "2.2.5",
