@@ -15,7 +15,7 @@ const theme = createTheme('dark');
 const create = (comp) => renderer.create(<ThemeProvider theme={theme}>{comp}</ThemeProvider>);
 
 let selections = {};
-const styles = { content: {}, header: {}, selections: {}, search: {} };
+const styles = { content: {}, header: {}, selections: {}, search: {}, background: {} };
 
 const keyboard = {};
 

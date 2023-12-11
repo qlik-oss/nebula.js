@@ -29,6 +29,7 @@ const StyledOutlinedInput = styled(OutlinedInput, {
     fontSize: 14,
     borderRadius: 0,
     backgroundColor: styles.search.backgroundColor,
+    backdropFilter: styles.background.backgroundImage ? styles.search.backdropFilter : undefined,
     paddingLeft: `${CELL_PADDING_LEFT}px`,
     flexDirection: isRtl ? 'row-reverse' : 'row',
 
