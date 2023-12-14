@@ -38,6 +38,9 @@ const StyledOutlinedInput = styled(OutlinedInput, {
       borderWidth: '1px 0 1px 0',
       borderRadius: 0,
     },
+    '&.Mui-focused fieldset': {
+      borderColor: `${styles.search.highlightBorderColor} !important`,
+    },
     '& .MuiInputBase-root': {
       ...styles.search,
     },
@@ -47,9 +50,6 @@ const StyledOutlinedInput = styled(OutlinedInput, {
     '& input': {
       color: styles.search.color,
       textAlign: isRtl ? 'right' : 'left',
-    },
-    '&.Mui-focused fieldset.OutlinedInput-notchedOutline': {
-      borderColor: `${styles.search.highlightBorderColor} !important`,
     },
     ...denseProps,
   };

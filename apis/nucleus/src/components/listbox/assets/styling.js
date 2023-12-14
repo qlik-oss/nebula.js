@@ -203,7 +203,7 @@ export default function getStyles({ app, themeApi, theme, components = [], check
     search: {
       color: searchColor,
       borderColor: theme.palette.divider,
-      highlightBorderColor: theme.palette.primary.main,
+      highlightBorderColor: theme.palette.custom.focusBorder,
       backgroundColor: searchBgColor,
       backdropFilter: 'blur(8px)',
     },
