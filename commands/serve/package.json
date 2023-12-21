@@ -41,20 +41,20 @@
     "html-webpack-plugin": "5.5.4",
     "portfinder": "1.0.32",
     "puppeteer": "14.4.1",
-    "regenerator-runtime": "0.14.0",
+    "regenerator-runtime": "0.14.1",
     "source-map-loader": "4.0.1",
     "webpack": "5.89.0",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.15.1",
-    "ws": "8.15.0",
+    "ws": "8.15.1",
     "yargs": "17.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.23.5",
-    "@babel/preset-env": "7.23.5",
+    "@babel/core": "7.23.6",
+    "@babel/preset-env": "7.23.6",
     "@babel/preset-react": "7.23.3",
-    "@mui/material": "^5.14.20",
-    "@mui/system": "^5.14.20",
+    "@mui/material": "^5.15.0",
+    "@mui/system": "^5.15.0",
     "@nebula.js/enigma-mocker": "^4.9.0",
     "@nebula.js/nucleus": "^4.9.0",
     "@nebula.js/snapshooter": "^4.9.0",
@@ -71,6 +71,6 @@
     "monaco-editor-webpack-plugin": "7.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "6.20.1"
+    "react-router-dom": "6.21.0"
   }
 }
