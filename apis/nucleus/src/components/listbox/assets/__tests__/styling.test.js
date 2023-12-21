@@ -40,6 +40,10 @@ describe('styling', () => {
         },
       },
       palette: {
+        divider: '#ccc',
+        custom: {
+          focusBorder: 'blue',
+        },
         text: {
           primary: 'primary',
         },
