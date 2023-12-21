@@ -46,8 +46,8 @@
   "devDependencies": {
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.0",
-    "@mui/material": "^5.15.0",
+    "@mui/icons-material": "^5.15.1",
+    "@mui/material": "^5.15.1",
     "@nebula.js/conversion": "^4.9.0",
     "@nebula.js/enigma-mocker": "^4.9.0",
     "@nebula.js/locale": "^4.9.0",
