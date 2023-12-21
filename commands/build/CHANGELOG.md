@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
+
+**Note:** Version bump only for package @nebula.js/cli-build
+
 # [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
 
 **Note:** Version bump only for package @nebula.js/cli-build
