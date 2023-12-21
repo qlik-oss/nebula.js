@@ -12,7 +12,7 @@ export default function getContainerPadding({ isGridMode, dense, height, layoutO
     }
     containerPadding = layoutOrder === 'row' ? `${paddingY} 4px` : `${paddingY} 6px ${paddingY} 4px`;
   } else {
-    containerPadding = undefined; // to prevent overriding any default padding
+    containerPadding = undefined;
   }
   return containerPadding;
 }

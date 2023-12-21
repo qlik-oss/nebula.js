@@ -29,6 +29,7 @@ const StyledOutlinedInput = styled(OutlinedInput, {
     fontSize: 14,
     borderRadius: 0,
     backgroundColor: styles.search.backgroundColor,
+    backdropFilter: styles.background.backgroundImage ? styles.search.backdropFilter : undefined,
     paddingLeft: `${CELL_PADDING_LEFT}px`,
     flexDirection: isRtl ? 'row-reverse' : 'row',
 
@@ -36,6 +37,9 @@ const StyledOutlinedInput = styled(OutlinedInput, {
       borderColor: `${styles.search.borderColor}`,
       borderWidth: '1px 0 1px 0',
       borderRadius: 0,
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: `${styles.search.highlightBorderColor} !important`,
     },
     '& .MuiInputBase-root': {
       ...styles.search,
@@ -46,9 +50,6 @@ const StyledOutlinedInput = styled(OutlinedInput, {
     '& input': {
       color: styles.search.color,
       textAlign: isRtl ? 'right' : 'left',
-    },
-    '&.Mui-focused fieldset.OutlinedInput-notchedOutline': {
-      borderColor: `${styles.search.highlightBorderColor} !important`,
     },
     ...denseProps,
   };

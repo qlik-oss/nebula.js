@@ -62,23 +62,26 @@ export function getOverridesAsObject(components = []) {
   return overrides;
 }
 
-function getSelectionColors({ theme, getListboxStyle, overrides, checkboxes }) {
-  const componentContentTextColor = overrides.theme?.content?.fontColor?.color;
+function getSelectionColors({ getColorPickerColor, theme, getListboxStyle, overrides, checkboxes }) {
+  const componentContentTextColor = overrides.theme?.content?.fontColor;
   const desiredTextColor =
-    componentContentTextColor || getListboxStyle('content', 'color') || theme.palette?.text.primary;
+    getColorPickerColor(componentContentTextColor) ||
+    getListboxStyle('content', 'color') ||
+    theme.palette?.text.primary;
 
   const useContrastTextColor = !checkboxes && (overrides.theme?.content?.useContrastColor ?? true);
 
   // Background colors
   const selectionColors = overrides.selections?.colors || {};
 
-  const selected = selectionColors.selected?.color || theme.palette?.selected.main || '#009845';
-  const alternative = selectionColors.alternative?.color || theme.palette?.selected.alternative || '#E4E4E4';
-  const excluded = selectionColors.excluded?.color || theme.palette?.selected.excluded || '#A9A9A9';
+  const selected = getColorPickerColor(selectionColors.selected) || theme.palette?.selected.main || '#009845';
+  const alternative =
+    getColorPickerColor(selectionColors.alternative) || theme.palette?.selected.alternative || '#E4E4E4';
+  const excluded = getColorPickerColor(selectionColors.excluded) || theme.palette?.selected.excluded || '#A9A9A9';
   const selectedExcluded =
-    selectionColors.selectedExcluded?.color || theme.palette?.selected.selectedExcluded || '#A9A9A9';
+    getColorPickerColor(selectionColors.selectedExcluded) || theme.palette?.selected.selectedExcluded || '#A9A9A9';
   const possible =
-    selectionColors.possible?.color ||
+    getColorPickerColor(selectionColors.possible) ||
     getListboxStyle('', 'backgroundColor') ||
     theme.palette?.selected.possible ||
     '#FFFFFF';
@@ -123,7 +126,7 @@ function getBackgroundColor({ themeApi, themeOverrides }) {
   if (bgColor?.useExpression) {
     color = resolveBgColor({ bgColor }, themeApi, 'listBox');
   } else {
-    color = themeApi.getColorPickerColor(bgColor, true)?.color;
+    color = themeApi.getColorPickerColor(bgColor?.color, false);
   }
   return color;
 }
@@ -137,11 +140,12 @@ function getSearchColor(getListboxStyle) {
 export default function getStyles({ app, themeApi, theme, components = [], checkboxes = false }) {
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
+  const getColorPickerColor = (c) => (c?.index > 0 || c?.color ? themeApi.getColorPickerColor(c, false) : undefined);
 
-  const selections = getSelectionColors({ theme, getListboxStyle, overrides, checkboxes });
+  const selections = getSelectionColors({ getColorPickerColor, theme, getListboxStyle, overrides, checkboxes });
   const themeOverrides = overrides.theme || {};
 
-  const headerColor = themeOverrides.header?.fontColor?.color || getListboxStyle('title.main', 'color');
+  const headerColor = getColorPickerColor(themeOverrides.header?.fontColor) || getListboxStyle('title.main', 'color');
 
   const bgComponentColor = getBackgroundColor({ themeApi, themeOverrides });
 
@@ -199,8 +203,9 @@ export default function getStyles({ app, themeApi, theme, components = [], check
     search: {
       color: searchColor,
       borderColor: theme.palette.divider,
-      highlightBorderColor: theme.palette.primary.main,
+      highlightBorderColor: theme.palette.custom.focusBorder,
       backgroundColor: searchBgColor,
+      backdropFilter: 'blur(8px)',
     },
     selections,
   };

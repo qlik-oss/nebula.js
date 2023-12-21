@@ -38,23 +38,23 @@
     "cross-env": "7.0.3",
     "express": "4.18.2",
     "extend": "3.0.2",
-    "html-webpack-plugin": "5.5.3",
+    "html-webpack-plugin": "5.5.4",
     "portfinder": "1.0.32",
     "puppeteer": "14.4.1",
-    "regenerator-runtime": "0.14.0",
+    "regenerator-runtime": "0.14.1",
     "source-map-loader": "4.0.1",
     "webpack": "5.89.0",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.15.1",
-    "ws": "8.14.2",
+    "ws": "8.15.1",
     "yargs": "17.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.23.5",
-    "@babel/preset-env": "7.23.5",
+    "@babel/core": "7.23.6",
+    "@babel/preset-env": "7.23.6",
     "@babel/preset-react": "7.23.3",
-    "@mui/material": "^5.14.19",
-    "@mui/system": "^5.14.19",
+    "@mui/material": "^5.15.0",
+    "@mui/system": "^5.15.0",
     "@nebula.js/enigma-mocker": "^5.0.0-alpha.0",
     "@nebula.js/nucleus": "^5.0.0-alpha.0",
     "@nebula.js/snapshooter": "^5.0.0-alpha.0",
@@ -67,10 +67,10 @@
     "eslint-import-resolver-alias": "1.1.2",
     "eslint-import-resolver-webpack": "0.13.8",
     "file-loader": "^6.2.0",
-    "monaco-editor": "0.44.0",
+    "monaco-editor": "0.45.0",
     "monaco-editor-webpack-plugin": "7.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-router-dom": "6.20.1"
+    "react-router-dom": "6.21.0"
   }
 }

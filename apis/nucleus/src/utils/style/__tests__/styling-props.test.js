@@ -80,6 +80,16 @@ describe('Styling property resolver', () => {
       expect(color).toBe('resolvedColor');
     });
 
+    test('should resolve background color by expression using useColorExpression property', () => {
+      jest.spyOn(resolveColor, 'default').mockReturnValue('resolvedColor');
+      bgCompLayout.bgColor.useColorExpression = true;
+      bgCompLayout.bgColor.useExpression = false;
+
+      const color = resolveBgColor(bgCompLayout, t);
+      expect(resolveColor.default).toHaveBeenCalledTimes(0);
+      expect(color).toBe('rgb(255, 0, 0)');
+    });
+
     test('should resolve background color by theme', () => {
       jest.spyOn(resolveColor, 'default').mockReturnValue('resolvedColor');
       const color = resolveBgColor({}, t, 'peoplechart');
