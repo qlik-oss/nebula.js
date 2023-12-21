@@ -1,9 +1,10 @@
 /* eslint no-underscore-dangle: 0 */
-import { useEffect } from 'react';
-import { useAppSelectionsStore, modalObjectStore, appModalStore } from '../stores/selections-store';
+import { useContext, useEffect } from 'react';
+import InstanceContext from '../contexts/InstanceContext';
 
-function createAppSelections({ app }) {
+function createAppSelections({ app, selectionStore }) {
   const key = `${app.id}`;
+  const { modalObjectStore, appModalStore } = selectionStore;
 
   const end = async (accept = true) => {
     const { model, objectSelections } = modalObjectStore.get(key) || {};
@@ -85,13 +86,15 @@ export default function useAppSelections(app) {
     // assume the app is mocked if session is undefined
     return [];
   }
-  const [appSelectionsStore] = useAppSelectionsStore();
+  const { selectionStore } = useContext(InstanceContext);
+
+  const [appSelectionsStore] = selectionStore.useAppSelectionsStore();
   const key = app ? app.id : null;
   let appSelections = appSelectionsStore.get(key);
 
   useEffect(() => {
     if (!app || appSelections) return;
-    appSelections = createAppSelections({ app });
+    appSelections = createAppSelections({ app, selectionStore });
     appSelectionsStore.set(key, appSelections);
     appSelectionsStore.dispatch(true);
   }, [app]);

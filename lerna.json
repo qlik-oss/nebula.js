@@ -1,12 +1,12 @@
 {
   "command": {
     "version": {
-      "allowBranch": "master",
+      "allowBranch": "main",
       "conventionalCommits": true,
       "message": "chore(release): %s 🚀"
     }
   },
   "ignoreChanges": ["**/*.md", "**/__tests__/**", "**/__stories__/**"],
-  "version": "4.9.0",
+  "version": "5.0.0-alpha.0",
   "npmClient": "yarn"
 }

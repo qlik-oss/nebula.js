@@ -5,11 +5,11 @@ import './ClassNameSetup';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 
 import InstanceContext from '../contexts/InstanceContext';
-import useAppSelections from '../hooks/useAppSelections';
 import unifyContraintsAndInteractions from '../utils/interactions';
+import initModelStore from '../stores/new-model-store';
+import initSelectionStore from '../stores/new-selections-store';
 
-const NebulaApp = forwardRef(({ initialContext, app, renderCallback }, ref) => {
-  const [appSelections] = useAppSelections(app);
+const NebulaApp = forwardRef(({ initialContext, renderCallback, modelStore, selectionStore }, ref) => {
   const [context, setContext] = useState(initialContext);
   const [muiThemeName, setMuiThemeName] = useState();
 
@@ -37,10 +37,13 @@ const NebulaApp = forwardRef(({ initialContext, app, renderCallback }, ref) => {
       setMuiThemeName,
       setContext: (ctx) =>
         setContext((oldContext) => (JSON.stringify(oldContext) !== JSON.stringify(ctx) ? ctx : oldContext)),
-      getAppSelections: () => appSelections,
     }),
     []
   );
+  if (context) {
+    context.modelStore = modelStore;
+    context.selectionStore = selectionStore;
+  }
 
   return (
     <StyledEngineProvider injectFirst>
@@ -69,8 +72,19 @@ export default function boot({ app, context }) {
     unifyContraintsAndInteractions(context);
   }
 
+  const modelStore = initModelStore(app.id);
+  const selectionStore = initSelectionStore(app.id);
+
   const root = ReactDOM.createRoot(element);
-  root.render(<NebulaApp ref={appRef} app={app} initialContext={context} renderCallback={resolveRender} />);
+  root.render(
+    <NebulaApp
+      ref={appRef}
+      initialContext={context}
+      renderCallback={resolveRender}
+      modelStore={modelStore}
+      selectionStore={selectionStore}
+    />
+  );
 
   const cells = {};
   const components = [];
@@ -122,11 +136,9 @@ export default function boot({ app, context }) {
           appRef.current.setContext(ctx);
         })();
       },
-      getAppSelections: async () => {
-        await rendered;
-        return appRef.current.getAppSelections();
-      },
     },
+    modelStore,
+    selectionStore,
     appRef,
     rendered,
   ];

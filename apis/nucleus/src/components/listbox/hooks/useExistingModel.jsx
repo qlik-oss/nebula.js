@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useModelStore } from '../../../stores/model-store';
+import { useModelStore } from '../../../hooks/useModelStore';
 
 export default function useExistingModel({ app, qId, options = {} }) {
   const [model, setModel] = useState();

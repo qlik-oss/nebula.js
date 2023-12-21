@@ -1,10 +1,14 @@
 import { renderHook, act, waitFor } from '@testing-library/react';
+import React from 'react';
 
 import useRpc from '../useRpc';
-import { rpcRequestStore } from '../../stores/model-store';
+import initializeStores from '../../stores/new-model-store';
 
 describe('useRpc', () => {
   let model;
+
+  const modelStoreModule = initializeStores('appId');
+  const { rpcRequestStore } = modelStoreModule;
 
   beforeEach(() => {
     model = {
@@ -19,6 +23,11 @@ describe('useRpc', () => {
         getObjectApi: jest.fn().mockReturnValue({ cancelRequest: jest.fn() }),
       },
     };
+    const useContext = () => ({
+      modelStore: modelStoreModule,
+    });
+
+    jest.spyOn(React, 'useContext').mockImplementation(useContext);
   });
 
   afterEach(() => {
