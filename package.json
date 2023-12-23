@@ -69,7 +69,7 @@
     "eslint-plugin-jest": "^27.6.0",
     "eslint-plugin-jsx-a11y": "6.8.0",
     "eslint-plugin-mocha": "10.2.0",
-    "eslint-plugin-prettier": "5.1.0",
+    "eslint-plugin-prettier": "5.1.1",
     "eslint-plugin-react": "7.33.2",
     "express": "4.18.2",
     "husky": "8.0.3",
@@ -94,7 +94,7 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
-    "**/caniuse-lite": "1.0.30001570",
+    "**/caniuse-lite": "1.0.30001571",
     "**/react": "18.2.0",
     "**/react-dom": "18.2.0",
     "**/react-is": "18.2.0",
