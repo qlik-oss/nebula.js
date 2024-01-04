@@ -13,7 +13,7 @@ function uuidv4() {
   );
 }
 
-function CreateSessionObjectMock() {
+function CreateSessionObjectMock(session) {
   return (props) => {
     const properties = extend({}, props);
     properties.qInfo = properties.qInfo || {};
@@ -34,7 +34,8 @@ function CreateSessionObjectMock() {
       getEffectiveProperties: () => Promise.resolve(properties),
       removeListener: () => {},
       id: properties.qInfo.qId,
-      ...properties,
+      properties,
+      session,
     });
   };
 }
