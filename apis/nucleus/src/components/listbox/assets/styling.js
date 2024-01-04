@@ -139,6 +139,7 @@ function getSearchColor(getListboxStyle) {
 
 export default function getStyles({ app, themeApi, theme, components = [], checkboxes = false }) {
   const overrides = getOverridesAsObject(components);
+  const themeType = themeApi.getStyle('', '', 'type') || 'light';
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
   const getColorPickerColor = (c) => (c?.index > 0 || c?.color ? themeApi.getColorPickerColor(c, false) : undefined);
 
@@ -153,7 +154,7 @@ export default function getStyles({ app, themeApi, theme, components = [], check
     ? resolveBgImage({ bgImage: themeOverrides.background.image }, app)
     : undefined;
 
-  const searchBgColor = 'rgba(255, 255, 255, 0.2)';
+  const searchBgColor = themeType === 'light' ? 'rgba(255, 255, 255, 0.7)' : 'rgba(255, 255, 255, 0.2)';
   const searchColor = getSearchColor(getListboxStyle);
 
   const headerFontStyle = themeOverrides.header?.fontStyle || {};
