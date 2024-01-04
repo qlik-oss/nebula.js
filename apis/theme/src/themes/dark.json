@@ -17,5 +17,21 @@
     "@H6": "10px"
   },
   "type": "dark",
-  "color": "@B98"
+  "color": "@B98",
+  "object": {
+    "listBox": {
+      "backgroundColor": "@B20",
+      "title": {
+        "main": {
+          "color": "@B98",
+          "fontSize": "14px",
+          "fontWeight": "bold"
+        }
+      },
+      "content": {
+        "color": "#@B98",
+        "fontSize": "12px"
+      }
+    }
+  }
 }

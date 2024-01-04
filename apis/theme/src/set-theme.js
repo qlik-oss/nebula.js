@@ -12,7 +12,7 @@ export default function setTheme(t, resolve) {
   if (t._inherit === false || t._inherit === 'false') {
     baseInherit = {};
   }
-  const root = extend(true, {}, baseRawJSON, colorRawJSON, baseInherit);
+  const root = extend(true, {}, baseInherit, baseRawJSON, colorRawJSON);
   // avoid merging known array objects as it could cause issues if they are of different types (pyramid vs class) or length
   const rawThemeJSON = extend(true, {}, root, { scales: null, palettes: { data: null, ui: null } }, t);
   if (!rawThemeJSON.palettes.data || !rawThemeJSON.palettes.data.length) {

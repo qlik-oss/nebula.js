@@ -153,7 +153,7 @@ export default function getStyles({ app, themeApi, theme, components = [], check
     ? resolveBgImage({ bgImage: themeOverrides.background.image }, app)
     : undefined;
 
-  const searchBgColor = 'rgba(255, 255, 255, 0.7)';
+  const searchBgColor = 'rgba(255, 255, 255, 0.2)';
   const searchColor = getSearchColor(getListboxStyle);
 
   const headerFontStyle = themeOverrides.header?.fontStyle || {};
