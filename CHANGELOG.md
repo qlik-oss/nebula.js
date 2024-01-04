@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2024-01-04)
+
+### Bug Fixes
+
+- bgColor with useColorExpression property ([#1426](https://github.com/qlik-oss/nebula.js/issues/1426)) ([40659b0](https://github.com/qlik-oss/nebula.js/commit/40659b0924dcbd490e6e273caad3acd84171eb3e))
+- **deps:** update dependency ws to v8.15.0 ([#1430](https://github.com/qlik-oss/nebula.js/issues/1430)) ([c24da91](https://github.com/qlik-oss/nebula.js/commit/c24da91117c781cbeb7b553f3f07d57a7fea7fd9))
+- **listbox:** let color resolver pick up the index instead of hex ([#1428](https://github.com/qlik-oss/nebula.js/issues/1428)) ([2d3b318](https://github.com/qlik-oss/nebula.js/commit/2d3b31858cf4ef386f75329f9d89667a4ed531f3))
+- **listbox:** make search focus border color blue ([#1432](https://github.com/qlik-oss/nebula.js/issues/1432)) ([1a0a83f](https://github.com/qlik-oss/nebula.js/commit/1a0a83ff6e0876bfde830b63ca0ca6acde91abc3))
+- use 12px as default font size in theme ([#1427](https://github.com/qlik-oss/nebula.js/issues/1427)) ([475921d](https://github.com/qlik-oss/nebula.js/commit/475921dd1180cf3968dcf1b292135dd37e9cdaba))
+
+### Features
+
+- add session to mocked app ([#1437](https://github.com/qlik-oss/nebula.js/issues/1437)) ([0a6a450](https://github.com/qlik-oss/nebula.js/commit/0a6a450c4840e8bec120d2050032932248ab8fd4))
+
 # [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
 
 **Note:** Version bump only for package nebula.js
