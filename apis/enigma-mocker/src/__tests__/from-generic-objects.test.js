@@ -292,8 +292,10 @@ describe('enigma-mocker', () => {
         getLayout: expect.any(Function),
         getProperties: expect.any(Function),
         getEffectiveProperties: expect.any(Function),
-        qInfo: {
-          qId: expect.any(String),
+        properties: {
+          qInfo: {
+            qId: expect.any(String),
+          },
         },
       });
     });
@@ -316,7 +318,7 @@ describe('enigma-mocker', () => {
 
         const app = await createEnigmaMocker(genericObjects);
         const sessionObject = await app.createSessionObject({ getCustomThing });
-        const customThing = sessionObject.getCustomThing();
+        const customThing = sessionObject.properties.getCustomThing();
 
         expect(customThing).toEqual({ foo: 'bar' });
         expect(getCustomThing).toHaveBeenCalledTimes(1);
