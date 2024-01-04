@@ -26,14 +26,18 @@
     };
   }
 
-  const init = async (options = {}) => {
+  const init = async (options = {}, theme = 'light') => {
     const element = window.document.querySelector('#object');
     if (options?.fixtureFile?.customRenderTestElementSize) {
       element.style.width = options.fixtureFile.customRenderTestElementSize.width;
       element.style.height = options.fixtureFile.customRenderTestElementSize.height;
     }
     const { app } = getMocks(options);
-    const nebbie = window.stardust.embed(app);
+    const nebbie = window.stardust.embed(app, {
+      context: {
+        theme,
+      },
+    });
     const listboxOptions = {
       ...options,
     };
@@ -75,7 +79,7 @@
     return sc;
   };
 
-  const { scenario, fixture, ...options } = getOptions() || {};
+  const { scenario, fixture, theme, ...options } = getOptions() || {};
 
   let fixtureFile;
 
@@ -85,9 +89,12 @@
 
   const scenarioOptions = fixtureFile ? fixtureFile.options || {} : getScenarioOptions(scenario);
 
-  return init({
-    fixtureFile,
-    ...scenarioOptions,
-    ...options,
-  });
+  return init(
+    {
+      fixtureFile,
+      ...scenarioOptions,
+      ...options,
+    },
+    theme
+  );
 })();
