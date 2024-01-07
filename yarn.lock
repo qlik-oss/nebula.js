@@ -5831,10 +5831,10 @@ caniuse-api@^3.0.0:
     lodash.memoize "^4.1.2"
     lodash.uniq "^4.5.0"
 
-caniuse-lite@1.0.30001574, caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001349, caniuse-lite@^1.0.30001400, caniuse-lite@^1.0.30001517, caniuse-lite@^1.0.30001565:
-  version "1.0.30001574"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001574.tgz#fb4f1359c77f6af942510493672e1ec7ec80230c"
-  integrity sha512-BtYEK4r/iHt/txm81KBudCUcTy7t+s9emrIaHqjYurQ10x71zJ5VQ9x1dYPcz/b+pKSp4y/v1xSI67A+LzpNyg==
+caniuse-lite@1.0.30001576, caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001349, caniuse-lite@^1.0.30001400, caniuse-lite@^1.0.30001517, caniuse-lite@^1.0.30001565:
+  version "1.0.30001576"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001576.tgz#893be772cf8ee6056d6c1e2d07df365b9ec0a5c4"
+  integrity sha512-ff5BdakGe2P3SQsMsiqmt1Lc8221NR1VzHj5jXN5vBny9A6fpze94HiVV/n7XRosOlsShJcvMv5mdnpjOGCEgg==
 
 catharsis@^0.9.0:
   version "0.9.0"
