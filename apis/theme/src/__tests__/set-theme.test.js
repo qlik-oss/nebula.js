@@ -38,7 +38,7 @@ describe('set theme', () => {
     });
 
     create({ _inherit: false }, resolveMock);
-    expect(extendMock.mock.calls[0]).toEqual([true, {}, base, light, {}]);
+    expect(extendMock.mock.calls[0]).toEqual([true, {}, base, {}, light]);
   });
 
   test('should extend from dark theme when type is dark', () => {
@@ -47,7 +47,7 @@ describe('set theme', () => {
     });
 
     create({ type: 'dark', _inherit: false }, resolveMock);
-    expect(extendMock.mock.calls[0]).toEqual([true, {}, base, dark, {}]);
+    expect(extendMock.mock.calls[0]).toEqual([true, {}, base, {}, dark]);
   });
 
   test('should extend and add base inheritance', () => {
@@ -56,7 +56,7 @@ describe('set theme', () => {
     });
 
     create({}, resolveMock);
-    expect(extendMock.mock.calls[0]).toEqual([true, {}, base, light, baseIn]);
+    expect(extendMock.mock.calls[0]).toEqual([true, {}, base, baseIn, light]);
   });
 
   test('should not extend scales and palette arrays', () => {

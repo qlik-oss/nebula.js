@@ -137,6 +137,12 @@ function getSearchColor(getListboxStyle) {
   return color;
 }
 
+function getSearchBGColor(bgCol, getListboxStyle) {
+  const searchBgColorObj = new Color(getListboxStyle('', 'backgroundColor'));
+  searchBgColorObj.setAlpha(0.7);
+  return searchBgColorObj.isInvalid() ? bgCol : searchBgColorObj.toRGBA();
+}
+
 export default function getStyles({ app, themeApi, theme, components = [], checkboxes = false }) {
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
@@ -153,7 +159,9 @@ export default function getStyles({ app, themeApi, theme, components = [], check
     ? resolveBgImage({ bgImage: themeOverrides.background.image }, app)
     : undefined;
 
-  const searchBgColor = 'rgba(255, 255, 255, 0.7)';
+  const bgColor = bgComponentColor || getListboxStyle('', 'backgroundColor') || theme.palette.background.default;
+
+  const searchBgColor = getSearchBGColor(bgColor, getListboxStyle);
   const searchColor = getSearchColor(getListboxStyle);
 
   const headerFontStyle = themeOverrides.header?.fontStyle || {};
@@ -165,7 +173,7 @@ export default function getStyles({ app, themeApi, theme, components = [], check
 
   return {
     background: {
-      backgroundColor: bgComponentColor || getListboxStyle('', 'backgroundColor') || theme.palette.background.default,
+      backgroundColor: bgColor,
       backgroundImage: bgImage?.url && !bgImage?.url.startsWith('url(') ? `url('${bgImage.url}')` : undefined,
       backgroundRepeat: 'no-repeat',
       backgroundSize: bgImage?.size,

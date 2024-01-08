@@ -82,6 +82,22 @@ test.describe('listbox mashup rendering test', () => {
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 
+  test('listbox search dark', async () => {
+    const FILE_NAME = 'listbox_search_dark_B.png';
+    const searchSelector = '.search input';
+
+    await page.goto(`${url}/listbox/listbox.html?scenario=standard&theme=dark`, { waitUntil: 'networkidle' });
+    const search = await page.waitForSelector(searchSelector, { visible: true });
+
+    await search.click();
+    await search.fill('B');
+
+    // Note that since we don't have a backend providing search results, we can't test highlighting and selected (green) rows.
+    const selector = await page.locator(listboxSelector);
+    const image = await selector.screenshot({ caret: 'hide' });
+    return expect(image).toMatchSnapshot(FILE_NAME);
+  });
+
   test('hide toolbar', async () => {
     const FILE_NAME = 'listbox_no_toolbar.png';
 
