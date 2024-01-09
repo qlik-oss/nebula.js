@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 
 import { Grid } from '@mui/material';
 
-import usePropertiesById from '@nebula.js/nucleus/src/hooks/usePropertiesById';
+import useProperties from './usePropertiesById';
 
 import Cell from './Cell';
 import NebulaContext from '../../contexts/NebulaContext';
@@ -11,7 +11,7 @@ import VizContext from '../../contexts/VizContext';
 export default function Stage({ info, storage, uid }) {
   const nebbie = useContext(NebulaContext);
   const { activeViz, setActiveViz } = useContext(VizContext);
-  const [properties] = usePropertiesById(uid);
+  const [properties] = useProperties(activeViz?.model);
 
   useEffect(() => {
     if (!uid) {

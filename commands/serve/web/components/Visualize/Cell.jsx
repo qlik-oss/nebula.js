@@ -6,6 +6,7 @@ import { styled } from '@mui/material/styles';
 import { Grid, Toolbar, IconButton, CircularProgress } from '@mui/material';
 
 import SvgIcon from '@nebula.js/ui/icons/SvgIcon';
+import { useModelStore } from '@nebula.js/nucleus/src/hooks/useModelStore';
 
 import PropsDialog from './PropertiesDialog';
 
@@ -35,6 +36,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
 export default function ({ id, expandable, minHeight }) {
   const language = 'en-US'; // TODO - useLocale
   const app = useContext(AppContext);
+  const [modelStore] = useModelStore();
   const [model, setModel] = useState(null);
   const [exporting, setExporting] = useState(false);
   const [localViz, setLocalViz] = useState(null);
@@ -47,6 +49,7 @@ export default function ({ id, expandable, minHeight }) {
   useEffect(() => {
     const v = app.getObject(id).then((m) => {
       setModel(m);
+      modelStore.set(`${id}`, m);
       return m;
     });
 
