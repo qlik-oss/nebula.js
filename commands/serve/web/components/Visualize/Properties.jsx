@@ -2,7 +2,7 @@ import React, { useCallback, useState, useContext } from 'react';
 
 import { Divider, Grid, Checkbox, FormControlLabel } from '@mui/material';
 
-import useProperties from './usePropertiesById';
+import useProperties from './useProperties';
 
 import AppContext from '../../contexts/AppContext';
 import Data from './property-panel/Data';

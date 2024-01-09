@@ -2,7 +2,7 @@ import React, { useEffect, useContext } from 'react';
 
 import { Grid } from '@mui/material';
 
-import useProperties from './usePropertiesById';
+import useProperties from './useProperties';
 
 import Cell from './Cell';
 import NebulaContext from '../../contexts/NebulaContext';
