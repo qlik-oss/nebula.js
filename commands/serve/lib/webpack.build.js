@@ -23,7 +23,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       eHub: [path.resolve(srcDir, 'eHub')],
       fixtures: [path.resolve(__dirname, './fixtures.js')],
     },
-    devtool: dev ? 'source-map' : false,
+    devtool: 'source-map',
     output: {
       path: distDir,
       filename: '[name].js',

@@ -4,6 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { embed } from '@nebula.js/stardust';
 import { createTheme, ThemeProvider, StyledEngineProvider } from '@nebula.js/ui/theme';
 import { WbSunny, Brightness3, ColorLens, Language, Home } from '@nebula.js/ui/icons';
+import InstanceContext from '@nebula.js/nucleus/src/contexts/InstanceContext';
+import initModelStore from '@nebula.js/nucleus/src/stores/new-model-store';
+import initSelectionStore from '@nebula.js/nucleus/src/stores/new-selections-store';
 
 import {
   Grid,
@@ -84,6 +87,7 @@ export default function Visualize() {
   const [initialized, setInit] = useState(false);
   const [nebbie, setNebbie] = useState(null);
   const customThemes = Array.isArray(info?.themes) && info.themes.length ? ['light', 'dark', ...info.themes] : [];
+  const [context, setContext] = useState();
 
   const theme = useMemo(() => createTheme(currentMuiThemeName), [currentMuiThemeName]);
 
@@ -183,6 +187,17 @@ export default function Visualize() {
       if (app) app.destroySessionObject(uid.current);
     };
     window.addEventListener('beforeunload', unload);
+
+    if (app) {
+      const modelStore = initModelStore(app.id);
+      const selectionStore = initSelectionStore(app.id);
+      setContext({
+        modelStore,
+        selectionStore,
+        myKey: 'this is the key here',
+      });
+    }
+
     return () => {
       window.removeEventListener('beforeunload', unload);
     };
@@ -221,183 +236,189 @@ export default function Visualize() {
     }
     setObjectListMode(listMode);
   };
-
+  // For another time: refactor away the usage of internal Nebula hooks so we don't need the InstanceContext here.
   return (
-    <AppContext.Provider value={app}>
-      <StyledEngineProvider injectFirst>
-        <ThemeProvider theme={theme}>
-          <NebulaContext.Provider value={nebbie}>
-            <Grid
-              container
-              wrap="nowrap"
-              direction="column"
-              style={{ background: theme.palette.background.darkest, height: '100%' }}
-              gap={0}
-            >
-              <Grid item>
-                <Toolbar
-                  variant="dense"
-                  style={{ background: theme.palette.background.paper, boxShadow: theme.shadows[1] }}
-                >
-                  <Grid container gap={1}>
-                    <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                      <Grid item>
-                        <a href="https://github.com/qlik-oss/nebula.js" target="_blank" rel="noopener noreferrer">
-                          <img
-                            src="/assets/logo.svg"
-                            alt="nebula.js logo"
-                            href="https://github.com/qlik-oss/nebula.js"
-                            style={{ height: '24px', position: 'relative', top: '2px' }}
-                          />
-                        </a>
-                      </Grid>
-                    </Grid>
-                    <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                      <IconButton title="Home" onClick={() => navigate('/')} size="large">
-                        <Home style={{ verticalAlign: 'middle' }} />
-                      </IconButton>
-                    </Grid>
-                    <Grid item xs zeroMinWidth>
-                      <Tabs value={objectListMode ? 1 : 0} onChange={handleCreateEditChange} aria-label="Navigation">
-                        <Tab label={<Typography>Create</Typography>} value={0} />
-                        <Tab label={<Typography>Edit</Typography>} value={1} />
-                      </Tabs>
-                    </Grid>
-                    <Grid item container alignItems="center" style={{ width: 'auto' }}>
-                      <Grid item gap={1}>
-                        <Typography>State:</Typography>
-                      </Grid>
-                      <Grid item gap={2}>
-                        <ToggleButtonGroup
-                          size="small"
-                          value={currentInteractions}
-                          onChange={handleInteractionsChange}
-                          color="primary"
-                        >
-                          <ToggleButton value="select">Select</ToggleButton>
-                          <ToggleButton value="active">Active</ToggleButton>
-                          <ToggleButton value="passive">Passive</ToggleButton>
-                          <ToggleButton value="edit">Edit</ToggleButton>
-                        </ToggleButtonGroup>
-                      </Grid>
-                      <Grid item>
-                        {customThemes.length ? (
-                          <>
-                            <IconButton
-                              title="Select theme"
-                              onClick={(e) => setThemeChooserAnchorEl(e.currentTarget)}
-                              size="large"
-                            >
-                              <ColorLens fontSize="small" />
-                            </IconButton>
-                            <Menu
-                              anchorEl={themeChooserAnchorEl}
-                              open={!!themeChooserAnchorEl}
-                              keepMounted
-                              onClose={() => setThemeChooserAnchorEl(null)}
-                            >
-                              {customThemes.map((t) => (
-                                <MenuItem
-                                  key={t}
-                                  selected={t === currentThemeName}
-                                  onClick={() => handleThemeChange(t)}
-                                >
-                                  {t}
-                                </MenuItem>
-                              ))}
-                            </Menu>
-                          </>
-                        ) : (
-                          <IconButton title="Toggle light/dark mode" onClick={toggleDarkMode} size="large">
-                            {currentThemeName === 'dark' ? (
-                              <WbSunny fontSize="small" />
-                            ) : (
-                              <Brightness3 fontSize="small" />
-                            )}
-                          </IconButton>
-                        )}
-                      </Grid>
-                      <Grid item>
-                        <Button
-                          startIcon={<Language />}
-                          title="Select language"
-                          onClick={(e) => setLanguageChooserAnchorEl(e.currentTarget)}
-                        >
-                          {currentLanguage}
-                        </Button>
-                        <Menu
-                          anchorEl={languageChooserAnchorEl}
-                          open={!!languageChooserAnchorEl}
-                          keepMounted
-                          onClose={() => setLanguageChooserAnchorEl(null)}
-                        >
-                          {languages.map((t) => (
-                            <MenuItem key={t} selected={t === currentLanguage} onClick={() => handleLanguageChange(t)}>
-                              {t}
-                            </MenuItem>
-                          ))}
-                        </Menu>
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                </Toolbar>
-              </Grid>
-              <Grid item style={{ padding: theme.spacing(SPACING / 2, SPACING / 2, 0, SPACING / 2) }}>
-                <div ref={currentSelectionsRef} style={{ flex: '0 0 auto', boxShadow: theme.shadows[1] }} />
-              </Grid>
+    <InstanceContext.Provider value={context}>
+      <AppContext.Provider value={app}>
+        <StyledEngineProvider injectFirst>
+          <ThemeProvider theme={theme}>
+            <NebulaContext.Provider value={nebbie}>
               <Grid
-                item
-                xs
-                style={{
-                  overflowX: 'hidden',
-                  overflowY: 'auto',
-                  padding: theme.spacing(0, SPACING / 2, SPACING / 2, SPACING / 2),
-                }}
+                container
+                wrap="nowrap"
+                direction="column"
+                style={{ background: theme.palette.background.darkest, height: '100%' }}
+                gap={0}
               >
-                <VizContext.Provider value={vizContext}>
-                  {sn ? (
-                    <Grid container wrap="nowrap" style={{ height: '100%' }} gap={SPACING / 2}>
+                <Grid item>
+                  <Toolbar
+                    variant="dense"
+                    style={{ background: theme.palette.background.paper, boxShadow: theme.shadows[1] }}
+                  >
+                    <Grid container gap={1}>
+                      <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                        <Grid item>
+                          <a href="https://github.com/qlik-oss/nebula.js" target="_blank" rel="noopener noreferrer">
+                            <img
+                              src="/assets/logo.svg"
+                              alt="nebula.js logo"
+                              href="https://github.com/qlik-oss/nebula.js"
+                              style={{ height: '24px', position: 'relative', top: '2px' }}
+                            />
+                          </a>
+                        </Grid>
+                      </Grid>
+                      <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                        <IconButton title="Home" onClick={() => navigate('/')} size="large">
+                          <Home style={{ verticalAlign: 'middle' }} />
+                        </IconButton>
+                      </Grid>
                       <Grid item xs zeroMinWidth>
-                        {objectListMode ? (
-                          <Collection cache={currentId} types={[info?.supernova.name]} />
-                        ) : (
-                          <Stage info={info} storage={storage} uid={currentId} />
+                        <Tabs value={objectListMode ? 1 : 0} onChange={handleCreateEditChange} aria-label="Navigation">
+                          <Tab label={<Typography>Create</Typography>} value={0} />
+                          <Tab label={<Typography>Edit</Typography>} value={1} />
+                        </Tabs>
+                      </Grid>
+                      <Grid item container alignItems="center" style={{ width: 'auto' }}>
+                        <Grid item gap={1}>
+                          <Typography>State:</Typography>
+                        </Grid>
+                        <Grid item gap={2}>
+                          <ToggleButtonGroup
+                            size="small"
+                            value={currentInteractions}
+                            onChange={handleInteractionsChange}
+                            color="primary"
+                          >
+                            <ToggleButton value="select">Select</ToggleButton>
+                            <ToggleButton value="active">Active</ToggleButton>
+                            <ToggleButton value="passive">Passive</ToggleButton>
+                            <ToggleButton value="edit">Edit</ToggleButton>
+                          </ToggleButtonGroup>
+                        </Grid>
+                        <Grid item>
+                          {customThemes.length ? (
+                            <>
+                              <IconButton
+                                title="Select theme"
+                                onClick={(e) => setThemeChooserAnchorEl(e.currentTarget)}
+                                size="large"
+                              >
+                                <ColorLens fontSize="small" />
+                              </IconButton>
+                              <Menu
+                                anchorEl={themeChooserAnchorEl}
+                                open={!!themeChooserAnchorEl}
+                                keepMounted
+                                onClose={() => setThemeChooserAnchorEl(null)}
+                              >
+                                {customThemes.map((t) => (
+                                  <MenuItem
+                                    key={t}
+                                    selected={t === currentThemeName}
+                                    onClick={() => handleThemeChange(t)}
+                                  >
+                                    {t}
+                                  </MenuItem>
+                                ))}
+                              </Menu>
+                            </>
+                          ) : (
+                            <IconButton title="Toggle light/dark mode" onClick={toggleDarkMode} size="large">
+                              {currentThemeName === 'dark' ? (
+                                <WbSunny fontSize="small" />
+                              ) : (
+                                <Brightness3 fontSize="small" />
+                              )}
+                            </IconButton>
+                          )}
+                        </Grid>
+                        <Grid item>
+                          <Button
+                            startIcon={<Language />}
+                            title="Select language"
+                            onClick={(e) => setLanguageChooserAnchorEl(e.currentTarget)}
+                          >
+                            {currentLanguage}
+                          </Button>
+                          <Menu
+                            anchorEl={languageChooserAnchorEl}
+                            open={!!languageChooserAnchorEl}
+                            keepMounted
+                            onClose={() => setLanguageChooserAnchorEl(null)}
+                          >
+                            {languages.map((t) => (
+                              <MenuItem
+                                key={t}
+                                selected={t === currentLanguage}
+                                onClick={() => handleLanguageChange(t)}
+                              >
+                                {t}
+                              </MenuItem>
+                            ))}
+                          </Menu>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Toolbar>
+                </Grid>
+                <Grid item style={{ padding: theme.spacing(SPACING / 2, SPACING / 2, 0, SPACING / 2) }}>
+                  <div ref={currentSelectionsRef} style={{ flex: '0 0 auto', boxShadow: theme.shadows[1] }} />
+                </Grid>
+                <Grid
+                  item
+                  xs
+                  style={{
+                    overflowX: 'hidden',
+                    overflowY: 'auto',
+                    padding: theme.spacing(0, SPACING / 2, SPACING / 2, SPACING / 2),
+                  }}
+                >
+                  <VizContext.Provider value={vizContext}>
+                    {sn ? (
+                      <Grid container wrap="nowrap" style={{ height: '100%' }} gap={SPACING / 2}>
+                        <Grid item xs zeroMinWidth>
+                          {objectListMode ? (
+                            <Collection cache={currentId} types={[info?.supernova.name]} />
+                          ) : (
+                            <Stage info={info} storage={storage} uid={currentId} />
+                          )}
+                        </Grid>
+                        {activeViz && (
+                          <Grid
+                            item
+                            style={{
+                              background: theme.palette.background.paper,
+                              overflow: 'hidden auto',
+                              marginTop: 48,
+                              boxShadow: theme.shadows[1],
+                              padding: 0,
+                            }}
+                          >
+                            <Properties
+                              sn={sn}
+                              viz={activeViz}
+                              isTemp={!objectListMode}
+                              storage={storage}
+                              flags={info?.flags}
+                            />
+                          </Grid>
                         )}
                       </Grid>
-                      {activeViz && (
-                        <Grid
-                          item
-                          style={{
-                            background: theme.palette.background.paper,
-                            overflow: 'hidden auto',
-                            marginTop: 48,
-                            boxShadow: theme.shadows[1],
-                            padding: 0,
-                          }}
-                        >
-                          <Properties
-                            sn={sn}
-                            viz={activeViz}
-                            isTemp={!objectListMode}
-                            storage={storage}
-                            flags={info?.flags}
-                          />
+                    ) : (
+                      <Grid container wrap="nowrap" style={{ paddingTop: '48px' }} justifyContent="center">
+                        <Grid item>
+                          <CircularProgress />
                         </Grid>
-                      )}
-                    </Grid>
-                  ) : (
-                    <Grid container wrap="nowrap" style={{ paddingTop: '48px' }} justifyContent="center">
-                      <Grid item>
-                        <CircularProgress />
                       </Grid>
-                    </Grid>
-                  )}
-                </VizContext.Provider>
+                    )}
+                  </VizContext.Provider>
+                </Grid>
               </Grid>
-            </Grid>
-          </NebulaContext.Provider>
-        </ThemeProvider>
-      </StyledEngineProvider>
-    </AppContext.Provider>
+            </NebulaContext.Provider>
+          </ThemeProvider>
+        </StyledEngineProvider>
+      </AppContext.Provider>
+    </InstanceContext.Provider>
   );
 }
