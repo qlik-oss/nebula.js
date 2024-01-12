@@ -18,17 +18,23 @@ Build nebula.js visualization
 Options:
   --version                 Show version number                                 [boolean]
   --config, -c              Path to a JavaScript config file
-                                          [string] [default: "nebula.config.js"]
+                                                   [string] [default: "nebula.config.js"]
   --watch, -w               Watch source files
-                                   [choices: "umd", "systemjs"] [default: "umd"]
+                                            [choices: "umd", "systemjs"] [default: "umd"]
   --sourcemap, -m           Generate source map                 [boolean] [default: true]
   --mode                    Explicitly set mode
-                                 [string] [choices: "production", "development"]
+                                          [string] [choices: "production", "development"]
   --core                    Set a core build target            [string] [default: "core"]
   --typescript              Enable typescript bundling         [boolean] [default: false]
-  --preferBuiltins          Configuration option that specifies whether to use Node.js built-in modules [boolean] [default: true]
-  --browser                 Instructs the build to use the browser module resolutions in package.json and adds 'browser' to exportConditions if it is not present so browser conditionals in exports are applied.  [boolean] [default: false]
-  --inlineDynamicImports    Inlines dynamic imports, allowing for code-splitting regardless of format.  [boolean] [default: false]
+  --preferBuiltins          Specify whether to use Node.js built-in modules.
+                                                                [boolean] [default: true]
+  --browser                 Use the browser module resolutions in package.json and adds
+                            'browser' to exportConditions if it is not present so browser
+                            conditionals in exports are applied.  
+                                                               [boolean] [default: false]
+  --inlineDynamicImports    Inlines dynamic imports, allowing for code-splitting
+                            regardless of format.
+                                                               [boolean] [default: false]
 ```
 
 ## Example
