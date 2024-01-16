@@ -154,7 +154,7 @@ export default function ListBoxSearch({
 
   function focusRow(container) {
     const row = container?.querySelector('.last-focused') || container?.querySelector('[role="row"]:first-child');
-    row.setAttribute('tabIndex', 0);
+    row?.setAttribute('tabIndex', 0);
     row?.focus();
   }
 
