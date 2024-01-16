@@ -54,6 +54,12 @@ const options = {
     type: 'boolean',
     default: false,
   },
+  inlineDynamicImports: {
+    description:
+      'In Rollup, inlineDynamicImports option is a configuration option that allows code-splitting while still creating a single bundle.',
+    type: 'boolean',
+    default: false,
+  },
 };
 
 // nebula build --watch                - watch umd bundle
