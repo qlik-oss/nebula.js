@@ -186,9 +186,6 @@ function ListBoxInline({ options, layout }) {
     ]
   );
 
-  const showDetachedToolbarOnly = toolbar && (layout?.title === '' || layout?.showTitle === false) && !isPopover;
-  const showToolbarWithTitle = (toolbar && layout?.title !== '' && layout?.showTitle !== false) || isPopover;
-
   useEffect(() => {
     document.addEventListener('keydown', globalKeyDown);
     return () => {
@@ -247,6 +244,11 @@ function ListBoxInline({ options, layout }) {
   const showSearchOrLockIcon = isLocked || showSearchIcon;
   const isDrillDown = layout?.qListObject?.qDimensionInfo?.qGrouping === 'H';
   const showIcons = showSearchOrLockIcon || isDrillDown;
+
+  const toolbarIsUseful = showIcons || (layout?.title?.length && layout?.showTitle !== false);
+  const showDetachedToolbarOnly = toolbar && !toolbarIsUseful && !isPopover;
+  const showToolbarWithTitle = (toolbar && toolbarIsUseful) || isPopover;
+
   const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
   const isRtl = direction === 'rtl';
   const headerPaddingLeft = CELL_PADDING_LEFT - (showSearchOrLockIcon ? ICON_PADDING : 0);
