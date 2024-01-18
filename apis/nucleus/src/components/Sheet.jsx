@@ -50,7 +50,7 @@ function getBounds(pos, columns, rows) {
 function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, onMount }) {
   const { root } = halo;
   const [layout] = useLayout(model);
-  const { theme: themeName } = useContext(InstanceContext);
+  const { theme: themeName, modelStore } = useContext(InstanceContext);
   const [cells, setCells] = useState([]);
   const [bgColor, setBgColor] = useState(undefined);
   const [bgImage, setBgImage] = useState(undefined);
@@ -92,7 +92,7 @@ function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, 
               delete cell.mountedPromise;
               return cell;
             }
-            const vs = await getObject({ id: c.name }, halo);
+            const vs = await getObject({ id: c.name }, halo, modelStore);
             return {
               model: vs.model,
               id: c.name,

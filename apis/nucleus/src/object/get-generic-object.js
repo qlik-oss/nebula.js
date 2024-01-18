@@ -1,8 +1,8 @@
 import init from './initiate';
 import initSheet from './initiate-sheet';
-import { modelStore, rpcRequestModelStore } from '../stores/model-store';
 
-export default async function getObject({ id, options, plugins, element }, halo) {
+export default async function getObject({ id, options, plugins, element }, halo, store) {
+  const { modelStore, rpcRequestModelStore } = store;
   const key = `${id}`;
   let rpc = rpcRequestModelStore.get(key);
   if (!rpc) {

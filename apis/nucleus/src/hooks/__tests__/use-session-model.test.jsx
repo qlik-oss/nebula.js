@@ -1,22 +1,11 @@
 /* eslint no-import-assign: 0 */
-import React, { forwardRef, useImperativeHandle } from 'react';
-import { create, act } from 'react-test-renderer';
-
+import React from 'react';
 import useSessionModel from '../useSessionModel';
-
-const TestHook = forwardRef(({ hook, hookProps = [] }, ref) => {
-  const result = hook(...hookProps);
-  const result2 = hook(...hookProps);
-  useImperativeHandle(ref, () => ({
-    result,
-    result2,
-  }));
-  return null;
-});
+import render from './test-hook';
 
 describe('useSessionModel', () => {
   let renderer;
-  let render;
+  let doRender;
   let ref;
   let app;
 
@@ -34,10 +23,8 @@ describe('useSessionModel', () => {
     };
 
     ref = React.createRef();
-    render = async () => {
-      await act(async () => {
-        renderer = create(<TestHook ref={ref} hook={useSessionModel} hookProps={[{ id: 'inputID' }, app]} />);
-      });
+    doRender = async () => {
+      renderer = await render(ref, useSessionModel, [{ id: 'inputID' }, app]);
     };
   });
 
@@ -48,7 +35,7 @@ describe('useSessionModel', () => {
   });
 
   test('create session object', async () => {
-    await render();
+    await doRender();
     const model = await ref.current.result[0];
     expect(app.createSessionObject).toHaveBeenCalledTimes(1);
     expect(model.id).toEqual('modelID');

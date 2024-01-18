@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2024-01-04)
+
+### Bug Fixes
+
+- bgColor with useColorExpression property ([#1426](https://github.com/qlik-oss/nebula.js/issues/1426)) ([40659b0](https://github.com/qlik-oss/nebula.js/commit/40659b0924dcbd490e6e273caad3acd84171eb3e))
+- **listbox:** let color resolver pick up the index instead of hex ([#1428](https://github.com/qlik-oss/nebula.js/issues/1428)) ([2d3b318](https://github.com/qlik-oss/nebula.js/commit/2d3b31858cf4ef386f75329f9d89667a4ed531f3))
+- **listbox:** make search focus border color blue ([#1432](https://github.com/qlik-oss/nebula.js/issues/1432)) ([1a0a83f](https://github.com/qlik-oss/nebula.js/commit/1a0a83ff6e0876bfde830b63ca0ca6acde91abc3))
+
+# [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
+
+**Note:** Version bump only for package @nebula.js/nucleus
+
+# [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
+
+### Bug Fixes
+
+- use session based model and request storage ([492b7fe](https://github.com/qlik-oss/nebula.js/commit/492b7fed8229a0a6e8efb4e38eccab5a29a34e99))
+
 # [4.9.0](https://github.com/qlik-oss/nebula.js/compare/v4.8.1...v4.9.0) (2023-12-01)
 
 ### Features

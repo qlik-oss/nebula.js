@@ -1,6 +1,7 @@
 import * as populatorModule from '../populator';
 import * as initiateModule from '../initiate';
 import create from '../create-session-object';
+import initializeStores from '../../stores/new-model-store';
 
 describe('create-session-object', () => {
   let halo = {};
@@ -10,6 +11,7 @@ describe('create-session-object', () => {
   let populator;
   let init;
   let objectModel;
+  const modelStore = initializeStores('app');
 
   beforeEach(() => {
     populator = jest.fn();
@@ -45,7 +47,7 @@ describe('create-session-object', () => {
   });
 
   test('should call types.get with name and version', () => {
-    create({ type: 't', version: 'v', fields: 'f' }, halo);
+    create({ type: 't', version: 'v', fields: 'f' }, halo, modelStore);
     expect(types.get).toHaveBeenCalledWith({ name: 't', version: 'v' });
   });
 
@@ -53,27 +55,27 @@ describe('create-session-object', () => {
     const t = { initialProperties: jest.fn() };
     t.initialProperties.mockReturnValue({ then: () => {} });
     types.get.mockReturnValue(t);
-    create({ type: 't', version: 'v', fields: 'f', properties: 'props', extendProperties: false }, halo);
+    create({ type: 't', version: 'v', fields: 'f', properties: 'props', extendProperties: false }, halo, modelStore);
     expect(t.initialProperties).toHaveBeenCalledWith('props', false);
   });
 
   test('should populate fields', async () => {
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo, modelStore);
     expect(populator).toHaveBeenCalledWith({ sn, properties: merged, fields: 'f', children: [] }, halo);
   });
 
   test('should call properties onChange handler when optional props are provided', async () => {
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo, modelStore);
     expect(sn.qae.properties.onChange).toHaveBeenCalledWith(merged);
   });
 
   test('should not call onChange handler when optional props are not provided', async () => {
-    await create({ type: 't', version: 'v', fields: 'f' }, halo);
+    await create({ type: 't', version: 'v', fields: 'f' }, halo, modelStore);
     expect(sn.qae.properties.onChange).toHaveBeenCalledTimes(0);
   });
 
   test('should create a session object with merged props', async () => {
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo, modelStore);
     expect(halo.app.createSessionObject).toHaveBeenCalledWith(merged);
   });
 
@@ -81,7 +83,7 @@ describe('create-session-object', () => {
     types.get.mockImplementation(() => {
       throw new Error('oops');
     });
-    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo);
+    await create({ type: 't', version: 'v', fields: 'f', properties: 'props' }, halo, modelStore);
     expect(halo.app.createSessionObject).toHaveBeenCalledWith({
       qInfo: { qType: 't' },
       visualization: 't',
@@ -91,7 +93,8 @@ describe('create-session-object', () => {
   test('should call init', async () => {
     const ret = await create(
       { type: 't', version: 'v', fields: 'f', properties: 'props', options: 'a', plugins: [] },
-      halo
+      halo,
+      modelStore
     );
     expect(ret).toBe('api');
     expect(init).toHaveBeenCalledWith(
@@ -107,7 +110,7 @@ describe('create-session-object', () => {
     const err = new Error('oops');
     types.get.mockReturnValue(err);
     const optional = { properties: 'props', element: 'el', options: 'opts' };
-    const ret = await create({ type: 't', ...optional }, halo);
+    const ret = await create({ type: 't', ...optional }, halo, modelStore);
     expect(ret).toBe('api');
     expect(init).toHaveBeenCalledWith(
       objectModel,

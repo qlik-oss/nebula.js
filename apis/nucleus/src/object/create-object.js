@@ -1,5 +1,4 @@
 import populateData from './populator';
-import { modelStore } from '../stores/model-store';
 
 /**
  * @typedef {string | EngineAPI.INxDimension | EngineAPI.INxMeasure | LibraryField} Field
@@ -17,10 +16,12 @@ import { modelStore } from '../stores/model-store';
 export default async function createObject(
   { type, version, fields, properties, extendProperties /* , options, plugins, element */ },
   halo,
-  generateOnly
+  generateOnly,
+  store
 ) {
   let mergedProps = {};
   const children = [];
+  const { modelStore } = store;
   // let error;
   try {
     const t = halo.types.get({ name: type, version });

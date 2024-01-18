@@ -1,9 +1,9 @@
 /* eslint no-underscore-dangle: 0 */
-import { useEffect, useState } from 'react';
-import { useAppModalStore } from '../stores/selections-store';
+import { useContext, useEffect, useState } from 'react';
 import useAppSelections from './useAppSelections';
 import eventmixin from '../selections/event-mixin';
 import useLayout from './useLayout';
+import InstanceContext from '../contexts/InstanceContext';
 
 const event = () => {
   let prevented = false;
@@ -222,7 +222,7 @@ export default function useObjectSelections(app, model, elements, options) {
 
   const [appSelections] = useAppSelections(app);
   const [layout] = useLayout(model);
-  const [appModalStore] = useAppModalStore();
+  const { appModalStore } = useContext(InstanceContext).selectionStore;
   const appModal = appModalStore.get(app.id);
   const [objectSelections, setObjectSelections] = useState();
 

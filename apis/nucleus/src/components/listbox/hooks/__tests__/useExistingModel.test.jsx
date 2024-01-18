@@ -1,15 +1,6 @@
-import React, { forwardRef, useImperativeHandle } from 'react';
-import { create, act } from 'react-test-renderer';
+import React from 'react';
 import useExistingModel from '../useExistingModel';
-import * as modelStoreModule from '../../../../stores/model-store';
-
-const TestHook = forwardRef(({ hook, hookProps }, ref) => {
-  const result = hook(...hookProps);
-  useImperativeHandle(ref, () => ({
-    result,
-  }));
-  return null;
-});
+import render from '../../../../hooks/__tests__/test-hook';
 
 describe('useExistingModel', () => {
   let useModelStoreMock;
@@ -17,7 +8,7 @@ describe('useExistingModel', () => {
   let setMock;
   let getMock;
   let renderer;
-  let render;
+  let doRender;
   let ref;
   let once;
 
@@ -37,13 +28,13 @@ describe('useExistingModel', () => {
       },
     ]);
 
-    jest.spyOn(modelStoreModule, 'useModelStore').mockImplementation(useModelStoreMock);
+    const setupContextMock = (context) => {
+      jest.spyOn(context.modelStore, 'useModelStore').mockImplementation(useModelStoreMock);
+    };
 
     ref = React.createRef();
-    render = async (hook, ...hookProps) => {
-      await act(async () => {
-        renderer = create(<TestHook ref={ref} hook={hook} hookProps={hookProps} />);
-      });
+    doRender = async (hook, ...hookProps) => {
+      renderer = await render(ref, hook, hookProps, setupContextMock);
     };
   });
 
@@ -55,14 +46,14 @@ describe('useExistingModel', () => {
   });
 
   test('providing a qId should give a model fetched from the app', async () => {
-    await render(useExistingModel, { app, qId: 'generic-id' });
+    await doRender(useExistingModel, { app, qId: 'generic-id' });
     expect(getMock).toHaveBeenCalledWith('generic-id');
     expect(setMock).toHaveBeenCalledWith('generic-id', { id: 'generic-id', once });
     expect(ref.current.result).toEqual({ id: 'generic-id', once });
   });
 
   test('providing sessionModel should simply use that model', async () => {
-    await render(useExistingModel, { options: { sessionModel: { id: 'session-model' } } });
+    await doRender(useExistingModel, { options: { sessionModel: { id: 'session-model' } } });
     expect(ref.current.result).toEqual({ id: 'session-model' });
   });
 });
