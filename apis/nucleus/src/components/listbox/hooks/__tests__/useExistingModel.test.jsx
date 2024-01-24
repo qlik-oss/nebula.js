@@ -21,7 +21,7 @@ describe('useExistingModel', () => {
   let ref;
   let once;
 
-  beforeEach(async () => {
+  beforeEach(() => {
     jest.useFakeTimers();
 
     setMock = jest.fn();
