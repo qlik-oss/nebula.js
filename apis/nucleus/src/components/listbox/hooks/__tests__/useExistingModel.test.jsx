@@ -51,9 +51,6 @@ describe('useExistingModel', () => {
     jest.useRealTimers();
     jest.resetAllMocks();
     renderer.unmount();
-  });
-
-  afterAll(() => {
     jest.restoreAllMocks();
   });
 
