@@ -15,24 +15,28 @@ export default function useExistingModel({ app, qId, options = {} }) {
   }
 
   useEffect(() => {
-    async function fetchObject() {
-      const modelFromStore = modelStore.get(qId);
-      if (modelFromStore) {
-        setModel(modelFromStore);
-      } else {
-        const m = await app.getObject(qId);
-        modelStore.set(m.id, m);
-        m.once('closed', () => {
-          modelStore.clear(m.id);
-        });
-        setModel(m);
+    function storeModel(m) {
+      if (modelStore.get(m.id)) {
+        return;
       }
+      // Nebula gets the model from this store in some of its
+      // core functions, so it must always be stored here.
+      modelStore.set(m.id, m);
+      m.once('closed', () => {
+        modelStore.clear(m.id);
+      });
     }
-    if (sessionModel) {
-      setModel(sessionModel);
-    } else {
-      fetchObject();
+
+    async function fetchObject(modelId) {
+      const m = modelStore.get(modelId) || (await app.getObject(modelId));
+      return m;
     }
+
+    const p = Promise.resolve(sessionModel || fetchObject(qId));
+    p.then((m) => {
+      storeModel(m);
+      setModel(m);
+    });
   }, []);
 
   return model;
