@@ -61,7 +61,7 @@ const config = ({
   mode = 'production',
   format = 'umd',
   cwd = process.cwd(),
-  argv = { sourcemap: true },
+  argv = { sourcemap: true, inlineDynamicImports: false },
   core,
   behaviours: {
     getExternal = getExternalDefault,
@@ -175,6 +175,7 @@ const config = ({
     output: {
       banner,
       format,
+      inlineDynamicImports: argv.inlineDynamicImports,
       file: path.resolve(dir, outputFile),
       name: outputName,
       sourcemap,

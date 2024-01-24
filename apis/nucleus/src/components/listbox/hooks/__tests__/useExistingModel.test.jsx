@@ -49,9 +49,9 @@ describe('useExistingModel', () => {
 
   afterEach(() => {
     jest.useRealTimers();
-    jest.restoreAllMocks();
     jest.resetAllMocks();
     renderer.unmount();
+    jest.restoreAllMocks();
   });
 
   test('providing a qId should give a model fetched from the app', async () => {
@@ -59,10 +59,15 @@ describe('useExistingModel', () => {
     expect(getMock).toHaveBeenCalledWith('generic-id');
     expect(setMock).toHaveBeenCalledWith('generic-id', { id: 'generic-id', once });
     expect(ref.current.result).toEqual({ id: 'generic-id', once });
+    expect(once).toHaveBeenCalled();
+    expect(once.mock.calls[0][0]).toEqual('closed');
   });
 
   test('providing sessionModel should simply use that model', async () => {
-    await render(useExistingModel, { options: { sessionModel: { id: 'session-model' } } });
-    expect(ref.current.result).toEqual({ id: 'session-model' });
+    const sessionModel = { id: 'session-model', once };
+    await render(useExistingModel, { options: { sessionModel } });
+    expect(ref.current.result?.id).toEqual('session-model');
+    expect(once).toHaveBeenCalled();
+    expect(once.mock.calls[0][0]).toEqual('closed');
   });
 });
