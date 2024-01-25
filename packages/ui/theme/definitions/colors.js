@@ -15,6 +15,7 @@ const colors = {
 
   grey55: '#8C8C8C',
 
+  grey45: '#737373',
   grey30: '#4D4D4D',
   grey25: '#404040',
   grey20: '#333333',

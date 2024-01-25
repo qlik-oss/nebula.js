@@ -12,3 +12,4 @@ const unlock = (props) => ({
   ],
 });
 export default (props) => SvgIcon(unlock(props));
+export { unlock };

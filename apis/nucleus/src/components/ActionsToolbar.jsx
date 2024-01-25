@@ -65,6 +65,7 @@ function ActionsToolbar({
     onConfirm: () => {},
     onCancel: () => {},
   },
+  extraItems,
   more = {
     enabled: false,
     actions: [],
@@ -176,6 +177,9 @@ function ActionsToolbar({
       data-testid="actions-toolbar"
       sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
     >
+      {extraItems?.length && (
+        <ActionsGroup className="actions-toolbar-extra-actions" actions={extraItems} isRtl={isRtl} />
+      )}
       {showActions && <ActionsGroup actions={newActions} />}
       {showMore && (
         <ActionsGroup
