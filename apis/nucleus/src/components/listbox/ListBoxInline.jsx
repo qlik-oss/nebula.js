@@ -58,8 +58,6 @@ const StyledGrid = styled(Grid, {
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
 function ListBoxInline({ options, layout }) {
-  const { model } = options;
-
   const {
     app,
     direction,
@@ -68,6 +66,7 @@ function ListBoxInline({ options, layout }) {
     search = true,
     focusSearch = false,
     rangeSelect = true,
+    model,
     selections,
     update = undefined,
     fetchStart = undefined,
