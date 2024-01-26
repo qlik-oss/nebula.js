@@ -156,6 +156,9 @@ function ListBoxInline({ options, layout }) {
   }, [globalKeyDown]);
 
   useEffect(() => {
+    if (search === true) {
+      setShowSearch(true);
+    }
     const show = () => {
       setShowToolbar(true);
     };
@@ -201,7 +204,8 @@ function ListBoxInline({ options, layout }) {
   }, [searchContainer && searchContainer.current, showSearch, search, focusSearch]);
 
   const { wildCardSearch, searchEnabled, autoConfirm = false, layoutOptions = {} } = layout ?? {};
-  const showSearchIcon = searchEnabled !== false && search === 'toggle';
+  const isLocked = layout?.qListObject?.qDimensionInfo?.qLocked;
+  const showSearchIcon = searchEnabled !== false && search === 'toggle' && !isLocked;
   const isDrillDown = layout?.qListObject?.qDimensionInfo?.qGrouping === 'H';
 
   const canShowTitle = layout?.title?.length && layout?.showTitle !== false;
@@ -215,7 +219,7 @@ function ListBoxInline({ options, layout }) {
   }
 
   const showSearchToggle = search === 'toggle' && showSearch;
-  const searchVisible = (search === true || showSearchToggle) && !selectDisabled() && searchEnabled !== false;
+  const searchVisible = search === true || (showSearchToggle && !selectDisabled() && searchEnabled !== false);
   const dense = layoutOptions.dense ?? false;
 
   const handleShowSearch = () => {

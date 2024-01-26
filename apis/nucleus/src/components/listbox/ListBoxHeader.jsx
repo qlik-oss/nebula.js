@@ -32,7 +32,7 @@ const UnlockButton = styled(ButtonBase)(({ theme }) => ({
     color: theme.palette.custom.disabledContrastText,
   },
   '& i': {
-    padding: '8px',
+    padding: `${ICON_PADDING}px`,
   },
 }));
 
@@ -100,12 +100,13 @@ export default function ListBoxHeader({
   const titleRef = useRef(null);
 
   const showUnlock = showLock && isLocked;
-  const showIcons = showSearchIcon || isDrillDown || showLock || (isLocked && !showLock);
+  const showLockIcon = !showLock && isLocked; // shows instead of the cover button when field/dim is locked.
+  const showLeftIcon = showSearchIcon || showLockIcon || isDrillDown; // the left-most icon outside of the actions/selections toolbar.
 
-  const paddingLeft = CELL_PADDING_LEFT - (showSearchIcon ? ICON_PADDING : 0);
-  const paddingRight = isRtl ? CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0) : HEADER_PADDING_RIGHT;
+  const paddingLeft = CELL_PADDING_LEFT - (showLeftIcon ? ICON_PADDING : 0);
+  const paddingRight = isRtl ? CELL_PADDING_LEFT - (showLeftIcon ? ICON_PADDING : 0) : HEADER_PADDING_RIGHT;
 
-  const iconsWidth = (showSearchIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
+  const iconsWidth = (showLeftIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
 
   const toggleLock = useCallback(() => {
     const func = isLocked ? model.unlock : model.lock;
@@ -138,7 +139,11 @@ export default function ListBoxHeader({
         ];
 
   const searchIconComp = constraints?.active ? (
-    <SearchIcon title={translator.get('Listbox.Search')} size="large" style={{ fontSize: '12px', padding: '8px' }} />
+    <SearchIcon
+      title={translator.get('Listbox.Search')}
+      size="large"
+      style={{ fontSize: '12px', padding: `${ICON_PADDING}px` }}
+    />
   ) : (
     <IconButton
       onClick={onShowSearch}
@@ -192,6 +197,11 @@ export default function ListBoxHeader({
     return <ActionsToolbar direction={direction} {...toolbarProps} />;
   }
 
+  // Always show a lock symbol when locked and showLock is false
+  const lockedIconComp = showLockIcon ? (
+    <Lock size="large" style={{ fontSize: '12px', padding: `${ICON_PADDING}px` }} />
+  ) : undefined;
+
   return (
     <StyledGridHeader
       item
@@ -204,9 +214,9 @@ export default function ListBoxHeader({
       className="header-container"
     >
       {showUnlock && <UnlockCoverButton translator={translator} toggleLock={toggleLock} />}
-      {showIcons && (
+      {showLeftIcon && (
         <Grid item container alignItems="center" width={iconsWidth} className="header-action-container">
-          {showSearchIcon ? searchIconComp : undefined}
+          {lockedIconComp || (showSearchIcon && searchIconComp)}
           {isDrillDown && (
             <DrillDownIcon
               tabIndex={-1}
@@ -224,10 +234,6 @@ export default function ListBoxHeader({
         justifyContent={isRtl ? 'flex-end' : 'flex-start'}
         className={classes.listBoxHeader}
       >
-        {/* Always show a lock symbol when locked when showLock is false */}
-        {!showSearchIcon && !showLock && isLocked ? (
-          <Lock size="large" style={{ fontSize: '12px', padding: '7px' }} />
-        ) : undefined}
         <Title variant="h6" noWrap ref={titleRef} title={layout.title} styles={styles}>
           {layout.title}
         </Title>
