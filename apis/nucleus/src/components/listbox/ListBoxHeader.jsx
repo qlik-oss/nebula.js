@@ -48,6 +48,8 @@ const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'i
 
 const Title = styled(Typography)(({ styles }) => ({
   ...styles.header,
+  display: 'flex',
+  alignItems: 'center',
   paddingRight: '1px', // make place for italic font style
 }));
 
@@ -90,6 +92,10 @@ export default function ListBoxHeader({
 }) {
   const [isToolbarDetached, setIsToolbarDetached] = useState(false);
   const [isLocked, setLocked] = useState(layout?.qListObject?.qDimensionInfo?.qLocked);
+
+  useEffect(() => {
+    setLocked(layout?.qListObject?.qDimensionInfo?.qLocked);
+  }, [layout?.qListObject?.qDimensionInfo?.qLocked]);
 
   const titleRef = useRef(null);
 
@@ -218,6 +224,10 @@ export default function ListBoxHeader({
         justifyContent={isRtl ? 'flex-end' : 'flex-start'}
         className={classes.listBoxHeader}
       >
+        {/* Always show a lock symbol when locked when showLock is false */}
+        {!showSearchIcon && !showLock && isLocked ? (
+          <Lock size="large" style={{ fontSize: '12px', padding: '7px' }} />
+        ) : undefined}
         <Title variant="h6" noWrap ref={titleRef} title={layout.title} styles={styles}>
           {layout.title}
         </Title>
