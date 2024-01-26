@@ -14,7 +14,6 @@ import getFrequencyModeLetter from './utils/get-frequency-mode-letter';
  * @property {boolean=} [focusSearch=false] Initialize the Listbox with the search input focused. Only applicable when
  *    search is true, since toggling will always focus the search input on show.
  * @property {boolean=} [options.showGray=true] Render fields or checkboxes in shades of gray instead of white when their state is excluded or alternative.
- * @property {boolean=} [options.showLock=false] Show the button for toggling locked state.
  * @property {boolean=} [options.calculatePagesHeight=false] Override each page's qHeight with its actual row count.
  * @property {object} [options.sessionModel] Use a custom sessionModel.
  * @property {object} [options.selectionsApi] Use a custom selectionsApi to customize how values are selected.
@@ -39,7 +38,6 @@ export const getOptions = (usersOptions = {}) => {
     update: undefined,
     fetchStart: undefined,
     showGray: true,
-    showLock: false,
     focusSearch: false,
     sessionModel: undefined,
     selectionsApi: undefined,

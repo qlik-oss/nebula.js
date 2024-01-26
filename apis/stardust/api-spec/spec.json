@@ -1111,6 +1111,12 @@
                   "defaultValue": true,
                   "type": "#/definitions/SearchMode"
                 },
+                "showLock": {
+                  "description": "Show the button for toggling locked state.",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
+                },
                 "toolbar": {
                   "description": "Show the toolbar",
                   "optional": true,
