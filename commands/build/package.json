@@ -21,10 +21,10 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "7.23.4",
-    "@babel/core": "7.23.7",
+    "@babel/cli": "7.23.9",
+    "@babel/core": "7.23.9",
     "@babel/plugin-transform-react-jsx": "7.23.4",
-    "@babel/preset-env": "7.23.8",
+    "@babel/preset-env": "7.23.9",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-commonjs": "25.0.7",
     "@rollup/plugin-json": "6.1.0",
