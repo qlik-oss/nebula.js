@@ -10,7 +10,7 @@ import ActionsToolbar from '../ActionsToolbar';
 import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from './interactions/listbox-action-props';
 import createListboxSelectionToolbar from './interactions/listbox-selection-toolbar';
-import { BUTTON_ICON_WIDTH, CELL_PADDING_LEFT, HEADER_PADDING_RIGHT, ICON_PADDING, ICON_WIDTH } from './constants';
+import { BUTTON_ICON_WIDTH, CELL_PADDING_LEFT, HEADER_PADDING_RIGHT, ICON_PADDING } from './constants';
 import hasSelections from './assets/has-selections';
 
 const UnlockButton = styled(ButtonBase)(({ theme }) => ({
@@ -46,6 +46,10 @@ const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'i
   })
 );
 
+const iconStyle = {
+  fontSize: '12px',
+};
+
 const Title = styled(Typography)(({ styles }) => ({
   ...styles.header,
   display: 'block', // needed for text-overflow to work
@@ -58,7 +62,7 @@ function UnlockCoverButton({ translator, toggleLock }) {
   const unLockText = translator.get('SelectionToolbar.ClickToUnlock');
   const component = (
     <UnlockButton title={unLockText} tabIndex={-1} onClick={toggleLock} data-testid="listbox-unlock-button">
-      <Lock disableRipple />
+      <Lock disableRipple style={iconStyle} />
       <Typography fontSize={fontSize}>{unLockText}</Typography>
     </UnlockButton>
   );
@@ -106,7 +110,11 @@ export default function ListBoxHeader({
   const paddingLeft = CELL_PADDING_LEFT - (showLeftIcon ? ICON_PADDING : 0);
   const paddingRight = isRtl ? CELL_PADDING_LEFT - (showLeftIcon ? ICON_PADDING : 0) : HEADER_PADDING_RIGHT;
 
-  const iconsWidth = (showLeftIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
+  // Calculate explicit width for icons container. Search and lock cannot exist combined.
+  const iconsWidth =
+    (showSearchIcon ? BUTTON_ICON_WIDTH : 0) +
+    (showLockIcon ? BUTTON_ICON_WIDTH : 0) +
+    (isDrillDown ? BUTTON_ICON_WIDTH : 0);
 
   const toggleLock = useCallback(() => {
     const func = isLocked ? model.unlock : model.lock;
@@ -142,7 +150,7 @@ export default function ListBoxHeader({
     <SearchIcon
       title={translator.get('Listbox.Search')}
       size="large"
-      style={{ fontSize: '12px', padding: `${ICON_PADDING}px` }}
+      style={{ ...iconStyle, padding: `${ICON_PADDING}px` }}
     />
   ) : (
     <IconButton
@@ -153,7 +161,7 @@ export default function ListBoxHeader({
       disableRipple
       data-testid="search-toggle-btn"
     >
-      <SearchIcon style={{ fontSize: '12px' }} />
+      <SearchIcon style={iconStyle} />
     </IconButton>
   );
 
@@ -199,7 +207,7 @@ export default function ListBoxHeader({
 
   // Always show a lock symbol when locked and showLock is false
   const lockedIconComp = showLockIcon ? (
-    <Lock size="large" style={{ fontSize: '12px', padding: `${ICON_PADDING}px` }} />
+    <Lock size="large" style={{ ...iconStyle, padding: `${ICON_PADDING}px` }} />
   ) : undefined;
 
   return (
@@ -221,8 +229,7 @@ export default function ListBoxHeader({
             <DrillDownIcon
               tabIndex={-1}
               title={translator.get('Listbox.DrillDown')}
-              size="large"
-              style={{ fontSize: '12px' }}
+              style={{ ...iconStyle, padding: `${ICON_PADDING}px` }}
             />
           )}
         </Grid>
