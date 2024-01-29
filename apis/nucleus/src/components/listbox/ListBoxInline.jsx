@@ -169,6 +169,7 @@ function ListBoxInline({ options, layout }) {
       }
     };
     if (isPopover) {
+      // When isPopover toolbar == false will be ignored.
       if (!selections.isActive()) {
         selections.begin('/qListObjectDef');
         selections.on('activated', show);
@@ -176,7 +177,7 @@ function ListBoxInline({ options, layout }) {
       }
       setShowToolbar(isPopover);
     }
-    if (selections) {
+    if (toolbar && selections) {
       if (!selections.isModal()) {
         selections.on('activated', show);
         selections.on('deactivated', hide);
@@ -190,7 +191,7 @@ function ListBoxInline({ options, layout }) {
         selections.removeListener('deactivated', hide);
       }
     };
-  }, [selections, isPopover]);
+  }, [toolbar, selections, isPopover]);
 
   useEffect(() => {
     if (!searchContainer || !searchContainer.current) {
@@ -304,7 +305,7 @@ function ListBoxInline({ options, layout }) {
         isGridMode={isGridMode}
         aria-label={keyboard.active ? translator.get('Listbox.ScreenReaderInstructions') : ''}
       >
-        {!showDetachedToolbarOnly && listBoxHeader}
+        {showAttachedToolbar && listBoxHeader}
         <Grid
           item
           container
