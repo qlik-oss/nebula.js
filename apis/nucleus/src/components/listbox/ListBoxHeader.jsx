@@ -48,7 +48,7 @@ const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'i
 
 const Title = styled(Typography)(({ styles }) => ({
   ...styles.header,
-  display: 'flex',
+  display: 'block', // needed for text-overflow to work
   alignItems: 'center',
   paddingRight: '1px', // make place for italic font style
 }));
