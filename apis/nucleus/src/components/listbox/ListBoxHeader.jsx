@@ -60,11 +60,17 @@ const Title = styled(Typography)(({ styles }) => ({
   paddingRight: '1px', // make place for italic font style
 }));
 
-function UnlockCoverButton({ translator, toggleLock }) {
+function UnlockCoverButton({ translator, toggleLock, keyboard }) {
   const fontSize = '14px';
   const unLockText = translator.get('SelectionToolbar.ClickToUnlock');
   const component = (
-    <UnlockButton title={unLockText} tabIndex={-1} onClick={toggleLock} data-testid="listbox-unlock-button">
+    <UnlockButton
+      title={unLockText}
+      tabIndex={keyboard.enabled ? 0 : -1}
+      onClick={toggleLock}
+      data-testid="listbox-unlock-button"
+      id="listbox-unlock-button"
+    >
       <Lock disableRipple style={iconStyle} />
       <Typography fontSize={fontSize}>{unLockText}</Typography>
     </UnlockButton>
@@ -224,7 +230,7 @@ export default function ListBoxHeader({
       paddingRight={`${paddingRight}px`}
       className="header-container"
     >
-      {showUnlock && <UnlockCoverButton translator={translator} toggleLock={toggleLock} />}
+      {showUnlock && <UnlockCoverButton translator={translator} toggleLock={toggleLock} keyboard={keyboard} />}
       {showLeftIcon && (
         <Grid item container alignItems="center" width={iconsWidth} className="header-action-container">
           {lockedIconComp || (showSearchIcon && searchIconComp)}

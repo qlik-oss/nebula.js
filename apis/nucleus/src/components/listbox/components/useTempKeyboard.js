@@ -52,14 +52,17 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       const lastSelectedRow = c?.querySelector('.value.last-focused');
       const firstRowElement = c?.querySelector('.value.selector, .value');
       const confirmButton = c?.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
-      const elementToFocus = searchField || lastSelectedRow || firstRowElement || confirmButton;
+      const unlockCoverButton = c?.querySelector('#listbox-unlock-button');
+      const elementToFocus = searchField || lastSelectedRow || firstRowElement || unlockCoverButton || confirmButton;
       elementToFocus?.setAttribute('tabIndex', 0);
       elementToFocus?.focus();
     },
     focusSelection() {
+      const unlockCoverButton = document.querySelector('#listbox-unlock-button');
       const confirmButton = document.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
-      confirmButton?.setAttribute('tabIndex', 0);
-      confirmButton?.focus();
+      const btnToFocus = unlockCoverButton || confirmButton;
+      btnToFocus?.setAttribute('tabIndex', 0);
+      btnToFocus?.focus();
     },
   };
 
