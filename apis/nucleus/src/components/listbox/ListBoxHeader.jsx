@@ -28,7 +28,7 @@ const UnlockButton = styled(ButtonBase)(({ theme }) => ({
   paddingLeft: 16,
   paddingRight: 16,
   borderRadius: 0,
-  '& p': {
+  '& *, & p': {
     color: theme.palette.custom.disabledContrastText,
   },
   '& i': {
