@@ -96,6 +96,7 @@ function ActionsToolbar({
   const moreRef = useRef();
   const theme = useTheme();
   const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
+  const isRtl = direction === 'rtl';
 
   const getEnabledButton = (last) => {
     const actionsElement = actionsRef.current || actionsRefMock;
@@ -105,8 +106,8 @@ function ActionsToolbar({
   };
 
   const handleActionsKeyDown = useMemo(
-    () => getActionsKeyDownHandler({ keyboardNavigation, focusHandler, getEnabledButton, selections }),
-    [keyboardNavigation, focusHandler, getEnabledButton, selections]
+    () => getActionsKeyDownHandler({ keyboardNavigation, focusHandler, getEnabledButton, selections, isRtl }),
+    [keyboardNavigation, focusHandler, getEnabledButton, selections, isRtl]
   );
 
   useEffect(
@@ -164,7 +165,6 @@ function ActionsToolbar({
   const showActions = newActions.length > 0;
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
-  const isRtl = direction === 'rtl';
 
   const Actions = (
     <Grid
