@@ -43,6 +43,9 @@ const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'i
     minHeight: 32,
     alignContent: 'center',
     ...styles.header,
+    '& *': {
+      color: styles.header.color,
+    },
   })
 );
 
