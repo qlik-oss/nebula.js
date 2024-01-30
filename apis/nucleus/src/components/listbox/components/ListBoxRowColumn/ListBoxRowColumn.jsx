@@ -172,6 +172,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     paddingLeft: isRtl ? 8 : checkboxes ? 0 : undefined,
     paddingRight: checkboxes ? 0 : isRtl ? 8 : 0,
     justifyContent: valueTextAlign,
+    textAlign: valueTextAlign,
   };
 
   const isFirstElement = index === 0;
