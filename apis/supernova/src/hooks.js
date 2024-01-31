@@ -308,11 +308,17 @@ export function useState(initial) {
 }
 
 /**
+ * Callback function that should return a function that in turns gets
+ * called before the hook runs again or when the component is destroyed.
+ * For example to remove any listeners added in the callback itself.
  * @typedef {function():(void | function():void)} EffectCallback
  */
 
 /**
  * Triggers a callback function when a dependent value changes.
+ *
+ * Omitting the dependency array will have the hook run on each update
+ * and an empty dependency array runs only once.
  * @entry
  * @param {EffectCallback} effect - The callback.
  * @param {Array<any>=} deps - The dependencies that should trigger the callback.
@@ -323,6 +329,15 @@ export function useState(initial) {
  *   console.log('mounted');
  *   return () => {
  *     console.log('unmounted');
+ *   };
+ * }, []);
+ *
+ * useEffect(() => {
+ *   const clickHandler = () => { console.log('click') };
+ *   const button = element.querySelector('.button');
+ *   button.addEventListener('click', clickHandler);
+ *   return () => {
+ *     button.removeEventListener('click', clickHandler);
  *   };
  * }, []);
  */
@@ -384,17 +399,20 @@ export function useMemo(fn, deps) {
 
 /**
  * Runs a callback function when a dependent changes.
+ *
+ * Useful for async operations that otherwise cause no side effects.
+ * Do not add for example listeners withing the callback as there is no teardown function.
  * @entry
  * @template P
  * @param {function():Promise<P>} factory - The factory function that calls the promise.
  * @param {Array<any>=} deps - The dependencies.
- * @returns {Array<P,Error>} The resolved value.
+ * @returns {Array<P,Error>} The resolved value or rejected error
  * @example
  * import { usePromise } from '@nebula.js/stardust';
  * import { useModel } from '@nebula.js/stardust';
  * // ...
  * const model = useModel();
- * const [resolved, rejected] = usePromise(() => model.getLayout(), []);
+ * const [resolved, rejected] = usePromise(() => model.getLayout(), [model]);
  */
 export function usePromise(p, deps) {
   const [obj, setObj] = useState(() => ({
