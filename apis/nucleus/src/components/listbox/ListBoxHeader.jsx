@@ -103,8 +103,8 @@ export default function ListBoxHeader({
   keyboard,
   autoConfirm,
 }) {
-  const [isToolbarDetached, setIsToolbarDetached] = useState(false);
   const [isLocked, setLocked] = useState(layout?.qListObject?.qDimensionInfo?.qLocked);
+  const [toolbarProps, setToolbarProps] = useState({});
 
   useEffect(() => {
     setLocked(layout?.qListObject?.qDimensionInfo?.qLocked);
@@ -179,39 +179,44 @@ export default function ListBoxHeader({
       return;
     }
 
-    const dt = showToolbarDetached({
+    const mustShowDetached = showToolbarDetached({
       containerRect,
       titleRef,
       iconsWidth,
       paddingLeft,
       paddingRight,
     });
-    setIsToolbarDetached(dt);
+    const isToolbarDetached = showDetachedToolbarOnly || mustShowDetached;
+    const tp = getListboxActionProps({
+      isDetached: isPopover ? false : isToolbarDetached,
+      showToolbar,
+      containerRef,
+      isLocked,
+      extraItems,
+      listboxSelectionToolbarItems,
+      selections,
+      keyboard,
+      autoConfirm,
+    });
+
+    setToolbarProps(tp);
   }, [
     iconsWidth,
     paddingLeft,
     paddingRight,
     titleRef.current,
+    showDetachedToolbarOnly,
+    isLocked,
+    layout,
     Object.entries(containerRect || {})
       .sort()
       .join(','),
   ]);
 
-  const isDetached = showDetachedToolbarOnly || isToolbarDetached;
-  const toolbarProps = getListboxActionProps({
-    isDetached: isPopover ? false : isDetached,
-    showToolbar,
-    containerRef,
-    isLocked,
-    extraItems,
-    listboxSelectionToolbarItems,
-    selections,
-    keyboard,
-    autoConfirm,
-  });
+  const actionsToolbar = <ActionsToolbar direction={direction} {...toolbarProps} />;
 
   if (showDetachedToolbarOnly) {
-    return <ActionsToolbar direction={direction} {...toolbarProps} />;
+    return actionsToolbar;
   }
 
   // Always show a lock symbol when locked and showLock is false
@@ -255,7 +260,7 @@ export default function ListBoxHeader({
         </Title>
       </Grid>
       <Grid item display="flex">
-        <ActionsToolbar direction={direction} {...toolbarProps} />
+        {actionsToolbar}
       </Grid>
     </StyledGridHeader>
   );
