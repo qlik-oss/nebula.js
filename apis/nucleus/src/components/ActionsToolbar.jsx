@@ -81,8 +81,9 @@ function ActionsToolbar({
   actionsRefMock = null, // for testing
   direction = 'ltr',
   autoConfirm = false,
+  layout,
 }) {
-  const defaultSelectionActions = useDefaultSelectionActions(selections);
+  const defaultSelectionActions = useDefaultSelectionActions({ ...selections, layout });
 
   const { translator, keyboardNavigation } = useContext(InstanceContext);
   const [showMoreItems, setShowMoreItems] = useState(false);
@@ -122,11 +123,11 @@ function ActionsToolbar({
 
     const focusFirst = () => {
       const enabledButton = getEnabledButton(false);
-      enabledButton && enabledButton.focus();
+      enabledButton?.focus();
     };
     const focusLast = () => {
       const enabledButton = getEnabledButton(true);
-      enabledButton && enabledButton.focus();
+      enabledButton?.focus();
     };
     focusHandler.on('focus_toolbar_first', focusFirst);
     focusHandler.on('focus_toolbar_last', focusLast);

@@ -164,6 +164,7 @@ export default function ListBoxPopover({
           <Grid item xs />
           <Grid item>
             <ActionsToolbar
+              layout={layout}
               more={{
                 enabled: !isLocked,
                 actions: listboxSelectionToolbarItems,

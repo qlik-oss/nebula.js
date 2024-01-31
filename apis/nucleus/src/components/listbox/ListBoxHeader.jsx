@@ -103,8 +103,8 @@ export default function ListBoxHeader({
   keyboard,
   autoConfirm,
 }) {
+  const [isToolbarDetached, setIsToolbarDetached] = useState(showDetachedToolbarOnly);
   const [isLocked, setLocked] = useState(layout?.qListObject?.qDimensionInfo?.qLocked);
-  const [toolbarProps, setToolbarProps] = useState({});
 
   useEffect(() => {
     setLocked(layout?.qListObject?.qDimensionInfo?.qLocked);
@@ -186,34 +186,32 @@ export default function ListBoxHeader({
       paddingLeft,
       paddingRight,
     });
-    const isToolbarDetached = showDetachedToolbarOnly || mustShowDetached;
-    const tp = getListboxActionProps({
-      isDetached: isPopover ? false : isToolbarDetached,
-      showToolbar,
-      containerRef,
-      isLocked,
-      extraItems,
-      listboxSelectionToolbarItems,
-      selections,
-      keyboard,
-      autoConfirm,
-    });
-
-    setToolbarProps(tp);
+    const isDetached = showDetachedToolbarOnly || mustShowDetached;
+    setIsToolbarDetached(isDetached);
   }, [
     iconsWidth,
     paddingLeft,
     paddingRight,
     titleRef.current,
     showDetachedToolbarOnly,
-    isLocked,
-    layout,
     Object.entries(containerRect || {})
       .sort()
       .join(','),
   ]);
 
-  const actionsToolbar = <ActionsToolbar direction={direction} {...toolbarProps} />;
+  const toolbarProps = getListboxActionProps({
+    isDetached: isPopover ? false : isToolbarDetached,
+    showToolbar,
+    containerRef,
+    isLocked,
+    extraItems,
+    listboxSelectionToolbarItems,
+    selections,
+    keyboard,
+    autoConfirm,
+  });
+
+  const actionsToolbar = <ActionsToolbar direction={direction} layout={layout} {...toolbarProps} />;
 
   if (showDetachedToolbarOnly) {
     return actionsToolbar;
