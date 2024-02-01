@@ -179,6 +179,10 @@
     "value": "Click to unlock",
     "comment": "Unlock a selection from listbox"
   },
+  "SelectionToolbar.ClickToLock": {
+    "value": "Click to lock",
+    "comment": "Lock a selection in selections toolbar"
+  },
   "Visualization.LayoutError": {
     "value": "Error",
     "comment": "Status text shown when a visualization has layout errors"
