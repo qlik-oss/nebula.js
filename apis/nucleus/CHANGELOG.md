@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.10.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v4.10.0) (2024-02-01)
+
+### Bug Fixes
+
+- always store session model (also when not fetching it) ([#1465](https://github.com/qlik-oss/nebula.js/issues/1465)) ([20ef5b0](https://github.com/qlik-oss/nebula.js/commit/20ef5b01ad1f152fa8e192c44df955a9900c591e))
+- bgColor with useColorExpression property ([#1426](https://github.com/qlik-oss/nebula.js/issues/1426)) ([40659b0](https://github.com/qlik-oss/nebula.js/commit/40659b0924dcbd490e6e273caad3acd84171eb3e))
+- dark theme for listbox ([#1449](https://github.com/qlik-oss/nebula.js/issues/1449)) ([e770087](https://github.com/qlik-oss/nebula.js/commit/e7700876f27ac84da7f3d96c28448d3bf857bc68))
+- **listbox:** let color resolver pick up the index instead of hex ([#1428](https://github.com/qlik-oss/nebula.js/issues/1428)) ([2d3b318](https://github.com/qlik-oss/nebula.js/commit/2d3b31858cf4ef386f75329f9d89667a4ed531f3))
+- **listbox:** make search focus border color blue ([#1432](https://github.com/qlik-oss/nebula.js/issues/1432)) ([1a0a83f](https://github.com/qlik-oss/nebula.js/commit/1a0a83ff6e0876bfde830b63ca0ca6acde91abc3))
+
+### Features
+
+- **ListBox:** break out header and add unlock button ([#1466](https://github.com/qlik-oss/nebula.js/issues/1466)) ([5e35fb6](https://github.com/qlik-oss/nebula.js/commit/5e35fb61fd948c52594cb56eb2fcd2801c081262))
+
 # [4.9.0](https://github.com/qlik-oss/nebula.js/compare/v4.8.1...v4.9.0) (2023-12-01)
 
 ### Features

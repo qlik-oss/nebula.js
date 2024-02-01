@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.10.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v4.10.0) (2024-02-01)
+
+### Features
+
+- **ListBox:** break out header and add unlock button ([#1466](https://github.com/qlik-oss/nebula.js/issues/1466)) ([5e35fb6](https://github.com/qlik-oss/nebula.js/commit/5e35fb61fd948c52594cb56eb2fcd2801c081262))
+
 # [4.9.0](https://github.com/qlik-oss/nebula.js/compare/v4.8.1...v4.9.0) (2023-12-01)
 
 **Note:** Version bump only for package @nebula.js/locale
