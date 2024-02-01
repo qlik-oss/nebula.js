@@ -172,13 +172,14 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
     paddingLeft: isRtl ? 8 : checkboxes ? 0 : undefined,
     paddingRight: checkboxes ? 0 : isRtl ? 8 : 0,
     justifyContent: valueTextAlign,
+    textAlign: valueTextAlign,
   };
 
   const isFirstElement = index === 0;
 
-  const showLock = isSelected && isLocked;
-  const showTick = !checkboxes && isSelected && !isLocked;
-  const showIcon = !checkboxes && sizePermitsTickOrLock;
+  const showLockIcon = isSelected && isLocked;
+  const showTickIcon = !checkboxes && isSelected && !isLocked;
+  const showAnyIcon = !checkboxes && sizePermitsTickOrLock;
   const cellPaddingRight = checkboxes || !sizePermitsTickOrLock;
 
   const ariaLabel = getValueLabel({
@@ -288,10 +289,10 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
 
         {freqIsAllowed && <Frequency cell={cell} checkboxes={checkboxes} dense={dense} showGray={showGray} />}
 
-        {showIcon && (
+        {showAnyIcon && (
           <Grid item className={classes.icon}>
-            {showLock && <Lock style={iconStyles} size="small" />}
-            {showTick && <Tick style={iconStyles} size="small" />}
+            {showLockIcon && <Lock style={iconStyles} size="small" />}
+            {showTickIcon && <Tick style={iconStyles} size="small" />}
           </Grid>
         )}
       </ItemGrid>

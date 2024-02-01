@@ -20,6 +20,18 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   },
 }));
 
+/**
+ * Run this on small devices to reset the zoom. Required when focusing
+ * an input field and the browser auto zooms the page. Browsers do not
+ * expose any API for handling this currently.
+ */
+function resetZoom() {
+  const viewportMetaTag = document.querySelector('meta[name="viewport"]');
+  if (viewportMetaTag instanceof HTMLMetaElement) {
+    viewportMetaTag.content = 'width=device-width, minimum-scale=1.0, maximum-scale=1.0, initial-scale=1.0';
+  }
+}
+
 export default function Search({ onChange = () => {}, onEnter = () => {}, onEscape = () => {} }) {
   const [value, setValue] = useState('');
   const handleChange = (e) => {
@@ -54,6 +66,7 @@ export default function Search({ onChange = () => {}, onEnter = () => {}, onEsca
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
+          onFocus={resetZoom}
           onKeyDown={onKeyDown}
         />
       </Grid>

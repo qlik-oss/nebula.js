@@ -140,8 +140,12 @@ export default function ListBoxPopover({
       anchorEl={alignTo.current}
       anchorOrigin={anchorOrigin}
       transformOrigin={transformOrigin}
-      PaperProps={{
-        style: { minWidth: '250px' },
+      slotProps={{
+        paper: {
+          style: {
+            minWidth: '250px',
+          },
+        },
       }}
     >
       <Grid container direction="column" gap={0} ref={containerRef}>
@@ -160,6 +164,7 @@ export default function ListBoxPopover({
           <Grid item xs />
           <Grid item>
             <ActionsToolbar
+              layout={layout}
               more={{
                 enabled: !isLocked,
                 actions: listboxSelectionToolbarItems,

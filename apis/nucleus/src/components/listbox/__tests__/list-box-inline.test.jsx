@@ -34,7 +34,6 @@ jest.mock('../interactions/keyboard-navigation/keyboard-nav-container', () => ({
 describe('<ListboxInline />', () => {
   const app = { key: 'app' };
 
-  let options;
   let useState;
   let useEffect;
   let useCallback;
@@ -49,6 +48,7 @@ describe('<ListboxInline />', () => {
   let render;
   let getListboxInlineKeyboardNavigation;
   let InstanceContext;
+  let defaultOptions;
 
   beforeEach(() => {
     useState = jest.fn();
@@ -111,7 +111,7 @@ describe('<ListboxInline />', () => {
       removeListener: jest.fn(),
     };
 
-    options = {
+    defaultOptions = {
       app,
       title: 'title',
       direction: 'vertical',
@@ -161,12 +161,13 @@ describe('<ListboxInline />', () => {
     beforeEach(() => {
       const theme = createTheme('dark');
 
-      render = async () => {
+      render = async (options = {}) => {
+        const mergedOptions = { ...defaultOptions, ...options };
         await act(async () => {
           renderer = create(
             <ThemeProvider theme={theme}>
               <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
-                <ListBoxInline options={options} />
+                <ListBoxInline options={mergedOptions} />
               </InstanceContext.Provider>
             </ThemeProvider>
           );
@@ -201,8 +202,8 @@ describe('<ListboxInline />', () => {
     });
 
     test('should render properly with search toggle option', async () => {
-      options.search = 'toggle';
-      await render();
+      const options = { search: 'toggle' };
+      await render(options);
 
       const searchToggleBtns = renderer.root
         .findAllByProps({ 'data-testid': 'search-toggle-btn' })
@@ -215,8 +216,8 @@ describe('<ListboxInline />', () => {
     });
 
     test('should render without toolbar', async () => {
-      options.toolbar = false;
-      await render();
+      const options = { toolbar: false };
+      await render(options);
       const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
       expect(actionToolbars).toHaveLength(0);
 
@@ -228,8 +229,8 @@ describe('<ListboxInline />', () => {
     });
 
     test('should render without toolbar', async () => {
-      options.search = 'toggle';
-      await render();
+      const options = { search: 'toggle' };
+      await render(options);
 
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
         visible: false,
@@ -241,8 +242,8 @@ describe('<ListboxInline />', () => {
     });
 
     test('should render without search and show search button', async () => {
-      options.search = false;
-      await render();
+      const options = { search: false };
+      await render(options);
       const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
       expect(actionToolbars).toHaveLength(1);
 
@@ -255,8 +256,8 @@ describe('<ListboxInline />', () => {
     });
 
     test('should render with NOT autoFocus when search is true', async () => {
-      options.search = true;
-      await render();
+      const options = { search: true };
+      await render(options);
 
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
         visible: true,
@@ -265,9 +266,8 @@ describe('<ListboxInline />', () => {
     });
 
     test('should show toolbar when opened in a popover', async () => {
-      options.search = false;
-      options.isPopover = true;
-      await render();
+      const options = { search: false, isPopover: true };
+      await render(options);
       const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
       expect(actionToolbars).toHaveLength(1);
 

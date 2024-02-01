@@ -89,6 +89,7 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
       actions={actions}
       popover={{ show: showPopoverToolbar, anchorEl }}
       focusHandler={focusHandler}
+      layout={layout}
     />
   );
 

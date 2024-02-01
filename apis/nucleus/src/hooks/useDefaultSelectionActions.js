@@ -7,6 +7,7 @@ import InstanceContext from '../contexts/InstanceContext';
 
 export default function useDefaultSelectionActions({
   api,
+  layout,
   onConfirm = () => {},
   onCancel = () => {},
   onKeyDeactivate = () => {},
@@ -17,7 +18,7 @@ export default function useDefaultSelectionActions({
       key: 'clear',
       type: 'icon-button',
       label: translator.get('Selection.Clear'),
-      enabled: () => api.canClear(),
+      enabled: () => api.canClear(layout),
       action: () => api.clear(),
       getSvgIconShape: clearSelections,
     },
@@ -25,7 +26,7 @@ export default function useDefaultSelectionActions({
       key: 'cancel',
       type: 'icon-button',
       label: translator.get('Selection.Cancel'),
-      enabled: () => api.canCancel(),
+      enabled: () => api.canCancel(layout),
       action: () => {
         onCancel();
         api.cancel();
@@ -41,7 +42,7 @@ export default function useDefaultSelectionActions({
       key: 'confirm',
       type: 'icon-button',
       label: translator.get('Selection.Confirm'),
-      enabled: () => api.canConfirm(),
+      enabled: () => api.canConfirm(layout),
       action: () => {
         onConfirm();
         api.confirm();

@@ -339,6 +339,7 @@ declare namespace stardust {
             frequencyMode?: stardust.FrequencyMode;
             histogram?: boolean;
             search?: stardust.SearchMode;
+            showLock?: boolean;
             toolbar?: boolean;
             checkboxes?: boolean;
             dense?: boolean;
