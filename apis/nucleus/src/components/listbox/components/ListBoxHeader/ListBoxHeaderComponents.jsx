@@ -8,7 +8,7 @@ export const iconStyle = {
   fontSize: '12px',
 };
 
-export const UnlockButton = styled(ButtonBase)(({ theme }) => ({
+export const UnlockButton = styled(ButtonBase)(({ theme, isLoading }) => ({
   position: 'absolute',
   top: 0,
   left: 0,
@@ -19,7 +19,7 @@ export const UnlockButton = styled(ButtonBase)(({ theme }) => ({
   color: theme.palette.custom.disabledContrastText,
   width: '100%',
   display: 'flex',
-  justifyContent: 'flex-start',
+  justifyContent: isLoading ? 'center' : 'flex-start',
   paddingLeft: 16,
   paddingRight: 16,
   borderRadius: 0,
@@ -51,7 +51,7 @@ export const HeaderTitle = styled(Typography)(({ styles }) => ({
   paddingRight: '1px', // make place for italic font style
 }));
 
-export function UnlockCoverButton({ translator, toggleLock, keyboard, disabled }) {
+export function UnlockCoverButton({ translator, toggleLock, keyboard, isLoading }) {
   const fontSize = '14px';
   const unLockText = translator.get('SelectionToolbar.ClickToUnlock');
   const component = (
@@ -61,13 +61,14 @@ export function UnlockCoverButton({ translator, toggleLock, keyboard, disabled }
       onClick={toggleLock}
       data-testid="listbox-unlock-button"
       id="listbox-unlock-button"
+      isLoading={isLoading}
     >
-      {disabled ? (
+      {isLoading ? (
         <CircularProgress size={16} variant="indeterminate" color="primary" />
       ) : (
         <Lock disableRipple style={iconStyle} />
       )}
-      {!disabled && <Typography fontSize={fontSize}>{unLockText}</Typography>}
+      {!isLoading && <Typography fontSize={fontSize}>{unLockText}</Typography>}
     </UnlockButton>
   );
   return component;

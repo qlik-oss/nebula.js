@@ -195,7 +195,7 @@ export default function ListBoxHeader({
     >
       {showUnlock && (
         <UnlockCoverButton
-          disabled={settingLockedState}
+          isLoading={settingLockedState}
           translator={translator}
           toggleLock={toggleLock}
           keyboard={keyboard}
