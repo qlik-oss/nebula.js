@@ -39,7 +39,7 @@ function getToggleLock({ isLocked, setLocked, settingLockedState, model, setSett
       .finally(() => {
         setTimeout(() => {
           setSettingLockedState(false);
-        }, 100);
+        }, 0);
       });
   };
 }
