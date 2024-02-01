@@ -169,7 +169,7 @@ function ListBoxInline({ options, layout }) {
       }
     };
     if (isPopover) {
-      // When isPopover toolbar == false will be ignored.
+      // When isPopover, toolbar == false will be ignored.
       if (!selections.isActive()) {
         selections.begin('/qListObjectDef');
         selections.on('activated', show);
