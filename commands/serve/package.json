@@ -42,7 +42,7 @@
     "portfinder": "1.0.32",
     "puppeteer": "14.4.1",
     "regenerator-runtime": "0.14.1",
-    "source-map-loader": "4.0.2",
+    "source-map-loader": "5.0.0",
     "webpack": "5.90.0",
     "webpack-cli": "5.1.4",
     "webpack-dev-server": "4.15.1",
