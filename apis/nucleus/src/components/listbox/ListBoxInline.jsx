@@ -18,7 +18,7 @@ import ListBoxError from './components/ListBoxError';
 import useRect from '../../hooks/useRect';
 import isDirectQueryEnabled from './utils/is-direct-query';
 import getContainerPadding from './assets/list-sizes/container-padding';
-import ListBoxHeader from './ListBoxHeader';
+import ListBoxHeader from './components/ListBoxHeader';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -257,7 +257,6 @@ function ListBoxInline({ options, layout }) {
 
   const listBoxHeader = (
     <ListBoxHeader
-      direction={direction}
       selectDisabled={selectDisabled}
       showSearchIcon={showSearchIcon}
       isDrillDown={isDrillDown}

@@ -1,81 +1,47 @@
 /* eslint-disable react/jsx-props-no-spreading */
-import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { styled } from '@mui/material/styles';
-import { ButtonBase, Grid, IconButton, Typography } from '@mui/material';
+import React, { useEffect, useRef, useState } from 'react';
+import { Grid, IconButton } from '@mui/material';
 import Lock from '@nebula.js/ui/icons/lock';
 import { unlock } from '@nebula.js/ui/icons/unlock';
 import SearchIcon from '@nebula.js/ui/icons/search';
 import DrillDownIcon from '@nebula.js/ui/icons/drill-down';
-import ActionsToolbar from '../ActionsToolbar';
-import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
-import getListboxActionProps from './interactions/listbox-action-props';
-import createListboxSelectionToolbar from './interactions/listbox-selection-toolbar';
-import { BUTTON_ICON_WIDTH, CELL_PADDING_LEFT, HEADER_PADDING_RIGHT, ICON_PADDING } from './constants';
-import hasSelections from './assets/has-selections';
+import ActionsToolbar from '../../../ActionsToolbar';
+import showToolbarDetached from '../../interactions/listbox-show-toolbar-detached';
+import getListboxActionProps from '../../interactions/listbox-action-props';
+import createListboxSelectionToolbar from '../../interactions/listbox-selection-toolbar';
+import { BUTTON_ICON_WIDTH, CELL_PADDING_LEFT, HEADER_PADDING_RIGHT, ICON_PADDING } from '../../constants';
+import hasSelections from '../../assets/has-selections';
+import { HeaderTitle, StyledGridHeader, UnlockCoverButton, iconStyle } from './ListBoxHeaderComponents';
 
-const UnlockButton = styled(ButtonBase)(({ theme }) => ({
-  position: 'absolute',
-  top: 0,
-  left: 0,
-  height: 48,
-  zIndex: 2, // so it goes on top of action buttons
-  background: theme.palette.custom.disabledBackground,
-  opacity: 1,
-  color: theme.palette.custom.disabledContrastText,
-  width: '100%',
-  display: 'flex',
-  justifyContent: 'flex-start',
-  paddingLeft: 16,
-  paddingRight: 16,
-  borderRadius: 0,
-  '& *, & p': {
-    color: theme.palette.custom.disabledContrastText,
-  },
-  '& i': {
-    padding: `${ICON_PADDING}px`,
-  },
-}));
+// ms that needs to pass before the lock button can be toggled again
+const lockTimeFrameMs = 500;
+let lastTime = 0;
 
-const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'isRtl'].includes(p) })(
-  ({ styles, isRtl }) => ({
-    flexDirection: isRtl ? 'row-reverse' : 'row',
-    wrap: 'nowrap',
-    minHeight: 32,
-    alignContent: 'center',
-    ...styles.header,
-    '& *': {
-      color: styles.header.color,
-    },
-  })
-);
-
-const iconStyle = {
-  fontSize: '12px',
-};
-
-const Title = styled(Typography)(({ styles }) => ({
-  ...styles.header,
-  display: 'block', // needed for text-overflow to work
-  alignItems: 'center',
-  paddingRight: '1px', // make place for italic font style
-}));
-
-function UnlockCoverButton({ translator, toggleLock, keyboard }) {
-  const fontSize = '14px';
-  const unLockText = translator.get('SelectionToolbar.ClickToUnlock');
-  const component = (
-    <UnlockButton
-      title={unLockText}
-      tabIndex={keyboard.enabled ? 0 : -1}
-      onClick={toggleLock}
-      data-testid="listbox-unlock-button"
-      id="listbox-unlock-button"
-    >
-      <Lock disableRipple style={iconStyle} />
-      <Typography fontSize={fontSize}>{unLockText}</Typography>
-    </UnlockButton>
-  );
-  return component;
+function getToggleLock({ isLocked, setLocked, settingLockedState, model, setSettingLockedState }) {
+  return () => {
+    const now = new Date();
+    const curTime = now - lastTime;
+    if (curTime < lockTimeFrameMs) {
+      return Promise.resolve();
+    }
+    if (settingLockedState) {
+      return () => {};
+    }
+    setSettingLockedState(true);
+    lastTime = now;
+    const func = isLocked ? model.unlock : model.lock;
+    setLocked(!isLocked);
+    return func
+      .call(model, '/qListObjectDef')
+      .catch(() => {
+        setLocked(isLocked); // revert to the layout value
+      })
+      .finally(() => {
+        setTimeout(() => {
+          setSettingLockedState(false);
+        }, 100);
+      });
+  };
 }
 
 export default function ListBoxHeader({
@@ -83,7 +49,6 @@ export default function ListBoxHeader({
   translator,
   styles,
   isRtl,
-  direction,
   showLock,
   selectDisabled,
   showSearchIcon,
@@ -105,6 +70,7 @@ export default function ListBoxHeader({
 }) {
   const [isToolbarDetached, setIsToolbarDetached] = useState(showDetachedToolbarOnly);
   const [isLocked, setLocked] = useState(layout?.qListObject?.qDimensionInfo?.qLocked);
+  const [settingLockedState, setSettingLockedState] = useState(false);
 
   useEffect(() => {
     setLocked(layout?.qListObject?.qDimensionInfo?.qLocked);
@@ -125,13 +91,7 @@ export default function ListBoxHeader({
     (showLockIcon ? BUTTON_ICON_WIDTH : 0) +
     (isDrillDown ? BUTTON_ICON_WIDTH : 0);
 
-  const toggleLock = useCallback(() => {
-    const func = isLocked ? model.unlock : model.lock;
-    setLocked(!isLocked);
-    func.call(model, '/qListObjectDef').catch(() => {
-      setLocked(isLocked); // revert to the layout value
-    });
-  }, [isLocked, setLocked, model, layout]);
+  const toggleLock = getToggleLock({ isLocked, setLocked, settingLockedState, setSettingLockedState, model });
 
   const listboxSelectionToolbarItems = createListboxSelectionToolbar({
     layout,
@@ -150,7 +110,7 @@ export default function ListBoxHeader({
             type: undefined,
             label: translator.get('SelectionToolbar.ClickToLock'),
             getSvgIconShape: unlock,
-            enabled: () => !selectDisabled() && hasSelections(layout),
+            enabled: () => !settingLockedState && !selectDisabled() && hasSelections(layout),
             action: toggleLock,
           },
         ];
@@ -211,7 +171,7 @@ export default function ListBoxHeader({
     autoConfirm,
   });
 
-  const actionsToolbar = <ActionsToolbar direction={direction} layout={layout} {...toolbarProps} />;
+  const actionsToolbar = <ActionsToolbar isRtl={isRtl} layout={layout} {...toolbarProps} />;
 
   if (showDetachedToolbarOnly) {
     return actionsToolbar;
@@ -233,7 +193,14 @@ export default function ListBoxHeader({
       paddingRight={`${paddingRight}px`}
       className="header-container"
     >
-      {showUnlock && <UnlockCoverButton translator={translator} toggleLock={toggleLock} keyboard={keyboard} />}
+      {showUnlock && (
+        <UnlockCoverButton
+          disabled={settingLockedState}
+          translator={translator}
+          toggleLock={toggleLock}
+          keyboard={keyboard}
+        />
+      )}
       {showLeftIcon && (
         <Grid item container alignItems="center" width={iconsWidth} className="header-action-container">
           {lockedIconComp || (showSearchIcon && searchIconComp)}
@@ -253,9 +220,9 @@ export default function ListBoxHeader({
         justifyContent={isRtl ? 'flex-end' : 'flex-start'}
         className={classes.listBoxHeader}
       >
-        <Title variant="h6" noWrap ref={titleRef} title={layout.title} styles={styles}>
+        <HeaderTitle variant="h6" noWrap ref={titleRef} title={layout.title} styles={styles}>
           {layout.title}
-        </Title>
+        </HeaderTitle>
       </Grid>
       <Grid item display="flex">
         {actionsToolbar}

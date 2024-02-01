@@ -79,7 +79,7 @@ function ActionsToolbar({
   },
   focusHandler = null,
   actionsRefMock = null, // for testing
-  direction = 'ltr',
+  isRtl,
   autoConfirm = false,
   layout,
 }) {
@@ -97,7 +97,6 @@ function ActionsToolbar({
   const moreRef = useRef();
   const theme = useTheme();
   const dividerStyle = useMemo(() => ({ margin: theme.spacing(0.5, 0) }));
-  const isRtl = direction === 'rtl';
 
   const getEnabledButton = (last) => {
     const actionsElement = actionsRef.current || actionsRefMock;
