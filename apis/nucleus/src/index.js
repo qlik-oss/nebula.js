@@ -79,7 +79,7 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
 
 /**
  * @interface Configuration
- * @property {LoadType=} load Fallback load function for missing types
+ * @property {Function(LoadType):Promise<Visualization>=} load Fallback load function for missing types
  * @property {Context=} context Settings for the rendering instance
  * @property {Array<TypeInfo>=} types Visualization types to register
  * @property {Array<ThemeInfo>=} themes Themes to register

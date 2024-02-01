@@ -26,6 +26,9 @@ export function useState<S>(initialState: S | (()=>S)): [S, stardust.SetStateFn<
 
 /**
  * Triggers a callback function when a dependent value changes.
+ * 
+ * Omitting the dependency array will have the hook run on each update
+ * and an empty dependency array runs only once.
  * @param effect The callback.
  * @param deps The dependencies that should trigger the callback.
  */
@@ -40,6 +43,9 @@ export function useMemo<T>(factory: ()=>T, deps: any[]): T;
 
 /**
  * Runs a callback function when a dependent changes.
+ * 
+ * Useful for async operations that otherwise cause no side effects.
+ * Do not add for example listeners withing the callback as there is no teardown function.
  * @param factory The factory function that calls the promise.
  * @param deps The dependencies.
  */
@@ -227,7 +233,11 @@ declare namespace stardust {
     }
 
     interface Configuration {
-        load?: stardust.LoadType;
+        /**
+         * Fallback load function for missing types
+         * @param $
+         */
+        load($: stardust.LoadType): Promise<stardust.Visualization>;
         context?: stardust.Context;
         types?: stardust.TypeInfo[];
         themes?: stardust.ThemeInfo[];
@@ -635,6 +645,11 @@ declare namespace stardust {
         (newState: S | (($: S)=>S)): void;
     }
 
+    /**
+     * Callback function that should return a function that in turns gets
+     * called before the hook runs again or when the component is destroyed.
+     * For example to remove any listeners added in the callback itself.
+     */
     type EffectCallback = ()=>void | (()=>void);
 
     interface Rect {
