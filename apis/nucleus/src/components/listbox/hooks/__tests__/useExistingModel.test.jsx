@@ -56,7 +56,7 @@ describe('useExistingModel', () => {
 
   test('providing sessionModel should simply use that model', async () => {
     const sessionModel = { id: 'session-model', once };
-    await render(useExistingModel, { options: { sessionModel } });
+    await doRender(useExistingModel, { options: { sessionModel } });
     expect(ref.current.result?.id).toEqual('session-model');
     expect(once).toHaveBeenCalled();
     expect(once.mock.calls[0][0]).toEqual('closed');
