@@ -61,7 +61,8 @@ const config = ({
   mode = 'production',
   format = 'umd',
   cwd = process.cwd(),
-  argv = { sourcemap: true, inlineDynamicImports: false },
+  argv = { sourcemap: true, codeSplit: false },
+  inlineDynamicImports = false,
   core,
   behaviours: {
     getExternal = getExternalDefault,
@@ -112,6 +113,32 @@ const config = ({
     console.warn('@nebula.js/stardust should be specified as a peer dependency');
     external.push('@nebula.js/stardust');
   }
+
+  const output = () => {
+    if (argv.codeSplit) {
+      return {
+        banner,
+        format,
+        inlineDynamicImports,
+        dir: path.resolve(dir, outputFile.split('/')[0]),
+        name: outputName,
+        sourcemap,
+        globals: {
+          '@nebula.js/stardust': 'stardust',
+        },
+      };
+    }
+    return {
+      banner,
+      format,
+      file: path.resolve(dir, outputFile),
+      name: outputName,
+      sourcemap,
+      globals: {
+        '@nebula.js/stardust': 'stardust',
+      },
+    };
+  };
 
   return {
     input: {
@@ -172,17 +199,7 @@ const config = ({
         ],
       ].filter(Boolean),
     },
-    output: {
-      banner,
-      format,
-      inlineDynamicImports: argv.inlineDynamicImports,
-      file: path.resolve(dir, outputFile),
-      name: outputName,
-      sourcemap,
-      globals: {
-        '@nebula.js/stardust': 'stardust',
-      },
-    },
+    output: output(),
   };
 };
 

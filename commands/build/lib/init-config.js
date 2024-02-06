@@ -54,9 +54,8 @@ const options = {
     type: 'boolean',
     default: false,
   },
-  inlineDynamicImports: {
-    description:
-      'In Rollup, inlineDynamicImports option is a configuration option that allows code-splitting while still creating a single bundle.',
+  codeSplit: {
+    description: 'A description.',
     type: 'boolean',
     default: false,
   },

@@ -14,6 +14,7 @@ const umd = async (argv) => {
     mode: argv.mode || 'production',
     format: 'umd',
     argv,
+    inlineDynamicImports: true,
   });
   const bundle = await rollup.rollup(c.input);
   await bundle.write(c.output);
