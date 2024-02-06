@@ -79,7 +79,7 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
 
 /**
  * @interface Configuration
- * @property {LoadType=} load Fallback load function for missing types
+ * @property {Function(LoadType):Promise<Visualization>=} load Fallback load function for missing types
  * @property {Context=} context Settings for the rendering instance
  * @property {Array<TypeInfo>=} types Visualization types to register
  * @property {Array<ThemeInfo>=} themes Themes to register
@@ -512,6 +512,7 @@ function nuked(configuration = {}) {
            * @param {FrequencyMode=} [options.frequencyMode=none] Show frequency none|value|percent|relative
            * @param {boolean=} [options.histogram=false] Show histogram bar (not applicable for existing objects)
            * @param {SearchMode=} [options.search=true] Show the search bar permanently, using the toggle button or when in selection: false|true|toggle
+           * @param {boolean=} [options.showLock=false] Show the button for toggling locked state.
            * @param {boolean=} [options.toolbar=true] Show the toolbar
            * @param {boolean=} [options.checkboxes=false] Show values as checkboxes instead of as fields (not applicable for existing objects)
            * @param {boolean=} [options.dense=false] Reduces padding and text size (not applicable for existing objects)

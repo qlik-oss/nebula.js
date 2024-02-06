@@ -41,6 +41,8 @@ const light = {
       focusBorder: colors.blue,
       focusOutline: 'rgba(70, 157, 205, 0.3)',
       inputBackground: 'rgba(255, 255, 255, 1)',
+      disabledBackground: colors.grey45,
+      disabledContrastText: colors.grey100,
     },
     selected: {
       main: colors.green,

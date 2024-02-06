@@ -3,19 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2024-01-04)
+# [4.10.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v4.10.0) (2024-02-01)
 
 ### Bug Fixes
 
+- **deps:** update dependency source-map-loader to v5 ([#1463](https://github.com/qlik-oss/nebula.js/issues/1463)) ([fc5995d](https://github.com/qlik-oss/nebula.js/commit/fc5995dde69a8fb331290316e9e93927f6692d3f))
 - **deps:** update dependency ws to v8.15.0 ([#1430](https://github.com/qlik-oss/nebula.js/issues/1430)) ([c24da91](https://github.com/qlik-oss/nebula.js/commit/c24da91117c781cbeb7b553f3f07d57a7fea7fd9))
 
-# [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
+### Features
 
-**Note:** Version bump only for package @nebula.js/cli-serve
-
-# [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
-
-**Note:** Version bump only for package @nebula.js/cli-serve
+- **ListBox:** break out header and add unlock button ([#1466](https://github.com/qlik-oss/nebula.js/issues/1466)) ([5e35fb6](https://github.com/qlik-oss/nebula.js/commit/5e35fb61fd948c52594cb56eb2fcd2801c081262))
 
 # [4.9.0](https://github.com/qlik-oss/nebula.js/compare/v4.8.1...v4.9.0) (2023-12-01)
 

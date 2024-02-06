@@ -3,11 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2024-01-04)
+# [4.10.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v4.10.0) (2024-02-01)
 
 ### Bug Fixes
 
+- always store session model (also when not fetching it) ([#1465](https://github.com/qlik-oss/nebula.js/issues/1465)) ([20ef5b0](https://github.com/qlik-oss/nebula.js/commit/20ef5b01ad1f152fa8e192c44df955a9900c591e))
 - bgColor with useColorExpression property ([#1426](https://github.com/qlik-oss/nebula.js/issues/1426)) ([40659b0](https://github.com/qlik-oss/nebula.js/commit/40659b0924dcbd490e6e273caad3acd84171eb3e))
+- dark theme for listbox ([#1449](https://github.com/qlik-oss/nebula.js/issues/1449)) ([e770087](https://github.com/qlik-oss/nebula.js/commit/e7700876f27ac84da7f3d96c28448d3bf857bc68))
+- **deps:** update dependency source-map-loader to v5 ([#1463](https://github.com/qlik-oss/nebula.js/issues/1463)) ([fc5995d](https://github.com/qlik-oss/nebula.js/commit/fc5995dde69a8fb331290316e9e93927f6692d3f))
 - **deps:** update dependency ws to v8.15.0 ([#1430](https://github.com/qlik-oss/nebula.js/issues/1430)) ([c24da91](https://github.com/qlik-oss/nebula.js/commit/c24da91117c781cbeb7b553f3f07d57a7fea7fd9))
 - **listbox:** let color resolver pick up the index instead of hex ([#1428](https://github.com/qlik-oss/nebula.js/issues/1428)) ([2d3b318](https://github.com/qlik-oss/nebula.js/commit/2d3b31858cf4ef386f75329f9d89667a4ed531f3))
 - **listbox:** make search focus border color blue ([#1432](https://github.com/qlik-oss/nebula.js/issues/1432)) ([1a0a83f](https://github.com/qlik-oss/nebula.js/commit/1a0a83ff6e0876bfde830b63ca0ca6acde91abc3))
@@ -15,17 +18,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Features
 
+- add option to inlineDynamicImports ([#1458](https://github.com/qlik-oss/nebula.js/issues/1458)) ([5759c1c](https://github.com/qlik-oss/nebula.js/commit/5759c1c4fd3352dad14e47b61438ca26055ce870))
 - add session to mocked app ([#1437](https://github.com/qlik-oss/nebula.js/issues/1437)) ([0a6a450](https://github.com/qlik-oss/nebula.js/commit/0a6a450c4840e8bec120d2050032932248ab8fd4))
-
-# [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
-
-**Note:** Version bump only for package nebula.js
-
-# [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
-
-### Bug Fixes
-
-- use session based model and request storage ([492b7fe](https://github.com/qlik-oss/nebula.js/commit/492b7fed8229a0a6e8efb4e38eccab5a29a34e99))
+- **ListBox:** break out header and add unlock button ([#1466](https://github.com/qlik-oss/nebula.js/issues/1466)) ([5e35fb6](https://github.com/qlik-oss/nebula.js/commit/5e35fb61fd948c52594cb56eb2fcd2801c081262))
 
 # [4.9.0](https://github.com/qlik-oss/nebula.js/compare/v4.8.1...v4.9.0) (2023-12-01)
 

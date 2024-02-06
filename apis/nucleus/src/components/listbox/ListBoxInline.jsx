@@ -2,37 +2,23 @@
 import React, { useContext, useCallback, useRef, useEffect, useState, useMemo } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
-import Lock from '@nebula.js/ui/icons/lock';
-import { IconButton, Grid, Typography } from '@mui/material';
+import { Grid } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
-import SearchIcon from '@nebula.js/ui/icons/search';
-import DrillDownIcon from '@nebula.js/ui/icons/drill-down';
 import useLayout from '../../hooks/useLayout';
 import ListBox from './ListBox';
-import createListboxSelectionToolbar from './interactions/listbox-selection-toolbar';
-import ActionsToolbar from '../ActionsToolbar';
 import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import getListboxContainerKeyboardNavigation from './interactions/keyboard-navigation/keyboard-nav-container';
 import getStyles from './assets/styling';
 import useAppSelections from '../../hooks/useAppSelections';
-import showToolbarDetached from './interactions/listbox-show-toolbar-detached';
-import getListboxActionProps from './interactions/listbox-get-action-props';
 import createSelectionState from './hooks/selections/selectionState';
-import {
-  CELL_PADDING_LEFT,
-  ICON_WIDTH,
-  ICON_PADDING,
-  BUTTON_ICON_WIDTH,
-  HEADER_PADDING_RIGHT,
-  DENSE_ROW_HEIGHT,
-  SCROLL_BAR_WIDTH,
-} from './constants';
+import { DENSE_ROW_HEIGHT, SCROLL_BAR_WIDTH } from './constants';
 import useTempKeyboard from './components/useTempKeyboard';
 import ListBoxError from './components/ListBoxError';
 import useRect from '../../hooks/useRect';
 import isDirectQueryEnabled from './utils/is-direct-query';
 import getContainerPadding from './assets/list-sizes/container-padding';
+import ListBoxHeader from './components/ListBoxHeader';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -69,25 +55,6 @@ const StyledGrid = styled(Grid, {
   },
 }));
 
-const StyledGridHeader = styled(Grid, { shouldForwardProp: (p) => !['styles', 'isRtl'].includes(p) })(
-  ({ styles, isRtl }) => ({
-    flexDirection: isRtl ? 'row-reverse' : 'row',
-    wrap: 'nowrap',
-    minHeight: 32,
-    alignContent: 'center',
-    ...styles.header,
-    '& *': {
-      // Assign the styles color as defaul color for all elements in the header
-      color: styles.header.color,
-    },
-  })
-);
-
-const Title = styled(Typography)(({ styles }) => ({
-  ...styles.header,
-  paddingRight: '1px', // make place for italic font style
-}));
-
 const isModal = ({ app, appSelections }) => app.isInModalSelection?.() ?? appSelections.isInModal();
 
 function ListBoxInline({ options, layout }) {
@@ -111,6 +78,7 @@ function ListBoxInline({ options, layout }) {
     renderedCallback,
     toolbar = true,
     isPopover = false,
+    showLock = false,
     components,
   } = options;
 
@@ -130,10 +98,6 @@ function ListBoxInline({ options, layout }) {
 
   const theme = useTheme();
 
-  const unlock = useCallback(() => {
-    model.unlock('/qListObjectDef');
-  }, [model]);
-
   const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
 
   const { checkboxes = checkboxesOption } = layout || {};
@@ -152,13 +116,11 @@ function ListBoxInline({ options, layout }) {
   const updateKeyScroll = (newState) => setKeyScroll((current) => ({ ...current, ...newState }));
   const [currentScrollIndex, setCurrentScrollIndex] = useState({ start: 0, stop: 0 });
   const [appSelections] = useAppSelections(app);
-  const titleRef = useRef(null);
   const [selectionState] = useState(() => createSelectionState());
   const keyboard = useTempKeyboard({ containerRef, enabled: keyboardNavigation });
   const isModalMode = useCallback(() => isModal({ app, appSelections }), [app, appSelections]);
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
-  const [isToolbarDetached, setIsToolbarDetached] = useState(false);
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown } = useMemo(
     () =>
@@ -186,9 +148,6 @@ function ListBoxInline({ options, layout }) {
     ]
   );
 
-  const showDetachedToolbarOnly = toolbar && (layout?.title === '' || layout?.showTitle === false) && !isPopover;
-  const showToolbarWithTitle = (toolbar && layout?.title !== '' && layout?.showTitle !== false) || isPopover;
-
   useEffect(() => {
     document.addEventListener('keydown', globalKeyDown);
     return () => {
@@ -197,6 +156,9 @@ function ListBoxInline({ options, layout }) {
   }, [globalKeyDown]);
 
   useEffect(() => {
+    if (search === true) {
+      setShowSearch(true);
+    }
     const show = () => {
       setShowToolbar(true);
     };
@@ -207,6 +169,7 @@ function ListBoxInline({ options, layout }) {
       }
     };
     if (isPopover) {
+      // When isPopover, toolbar == false will be ignored.
       if (!selections.isActive()) {
         selections.begin('/qListObjectDef');
         selections.on('activated', show);
@@ -214,7 +177,7 @@ function ListBoxInline({ options, layout }) {
       }
       setShowToolbar(isPopover);
     }
-    if (selections) {
+    if (toolbar && selections) {
       if (!selections.isModal()) {
         selections.on('activated', show);
         selections.on('deactivated', hide);
@@ -228,7 +191,7 @@ function ListBoxInline({ options, layout }) {
         selections.removeListener('deactivated', hide);
       }
     };
-  }, [selections, isPopover]);
+  }, [toolbar, selections, isPopover]);
 
   useEffect(() => {
     if (!searchContainer || !searchContainer.current) {
@@ -242,74 +205,37 @@ function ListBoxInline({ options, layout }) {
   }, [searchContainer && searchContainer.current, showSearch, search, focusSearch]);
 
   const { wildCardSearch, searchEnabled, autoConfirm = false, layoutOptions = {} } = layout ?? {};
-  const showSearchIcon = searchEnabled !== false && search === 'toggle';
-  const isLocked = layout?.qListObject?.qDimensionInfo?.qLocked === true;
-  const showSearchOrLockIcon = isLocked || showSearchIcon;
+  const isLocked = layout?.qListObject?.qDimensionInfo?.qLocked;
+  const showSearchIcon = searchEnabled !== false && search === 'toggle' && !isLocked;
   const isDrillDown = layout?.qListObject?.qDimensionInfo?.qGrouping === 'H';
-  const showIcons = showSearchOrLockIcon || isDrillDown;
-  const iconsWidth = (showSearchOrLockIcon ? BUTTON_ICON_WIDTH : 0) + (isDrillDown ? ICON_WIDTH + ICON_PADDING : 0); // Drill-down icon needs padding right so there is space between the icon and the title
+
+  const canShowTitle = layout?.title?.length && layout?.showTitle !== false;
+  const showDetachedToolbarOnly = toolbar && !canShowTitle && !isPopover;
+  const showAttachedToolbar = (toolbar && canShowTitle) || isPopover;
+
   const isRtl = direction === 'rtl';
-  const headerPaddingLeft = CELL_PADDING_LEFT - (showSearchOrLockIcon ? ICON_PADDING : 0);
-  const headerPaddingRight = isRtl ? CELL_PADDING_LEFT - (showIcons ? ICON_PADDING : 0) : HEADER_PADDING_RIGHT;
-
-  useEffect(() => {
-    if (!titleRef.current || !containerRect) {
-      return;
-    }
-
-    const isDetached = showToolbarDetached({
-      containerRect,
-      titleRef,
-      iconsWidth,
-      headerPaddingLeft,
-      headerPaddingRight,
-    });
-    setIsToolbarDetached(isDetached);
-  }, [titleRef.current, containerRect]);
 
   if (!model || !layout || !translator) {
     return null;
   }
 
-  const listboxSelectionToolbarItems = createListboxSelectionToolbar({
-    layout,
-    model,
-    translator,
-    selectionState,
-    isDirectQuery,
-  });
-
-  const showTitle = true;
   const showSearchToggle = search === 'toggle' && showSearch;
-  const searchVisible = (search === true || showSearchToggle) && !selectDisabled() && searchEnabled !== false;
+  const searchVisible = search === true || (showSearchToggle && !selectDisabled() && searchEnabled !== false);
   const dense = layoutOptions.dense ?? false;
 
-  const onShowSearch = () => {
+  const handleShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
   };
 
   const onCtrlF = () => {
     if (search === 'toggle') {
-      onShowSearch();
+      handleShowSearch();
     } else {
       const input = searchContainer.current.querySelector('input');
       input?.focus();
     }
   };
-
-  const getActionToolbarProps = (isDetached) => ({
-    ...getListboxActionProps({
-      isDetached: isPopover ? false : isDetached,
-      showToolbar,
-      containerRef,
-      isLocked,
-      listboxSelectionToolbarItems,
-      selections,
-      keyboard,
-    }),
-    autoConfirm,
-  });
 
   const shouldAutoFocus = searchVisible && search === 'toggle';
 
@@ -323,38 +249,42 @@ function ListBoxInline({ options, layout }) {
     layoutOrder: layoutOptions.layoutOrder,
   });
 
-  const searchIconComp = constraints?.active ? (
-    <SearchIcon title={translator.get('Listbox.Search')} size="large" style={{ fontSize: '12px', padding: '7px' }} />
-  ) : (
-    <IconButton
-      onClick={onShowSearch}
-      tabIndex={-1}
-      title={translator.get('Listbox.Search')}
-      size="large"
-      disableRipple
-      data-testid="search-toggle-btn"
-    >
-      <SearchIcon style={{ fontSize: '12px' }} />
-    </IconButton>
-  );
-
-  const lockIconComp = selectDisabled() ? (
-    <Lock size="large" style={{ fontSize: '12px', padding: '7px' }} />
-  ) : (
-    <IconButton title={translator.get('SelectionToolbar.ClickToUnlock')} tabIndex={-1} onClick={unlock} size="large">
-      <Lock disableRipple style={{ fontSize: '12px' }} />
-    </IconButton>
-  );
-
   if (isInvalid) {
     renderedCallback?.();
   }
 
-  const listBoxMinHeight = showToolbarWithTitle ? DENSE_ROW_HEIGHT + SCROLL_BAR_WIDTH : 0;
+  const listBoxMinHeight = showAttachedToolbar ? DENSE_ROW_HEIGHT + SCROLL_BAR_WIDTH : 0;
+
+  const listBoxHeader = (
+    <ListBoxHeader
+      selectDisabled={selectDisabled}
+      showSearchIcon={showSearchIcon}
+      isDrillDown={isDrillDown}
+      onShowSearch={handleShowSearch}
+      isPopover={isPopover}
+      showToolbar={showToolbar}
+      isDirectQuery={isDirectQuery}
+      autoConfirm={autoConfirm}
+      showDetachedToolbarOnly={showDetachedToolbarOnly}
+      layout={layout}
+      translator={translator}
+      styles={styles}
+      isRtl={isRtl}
+      showLock={showLock}
+      constraints={constraints}
+      classes={classes}
+      containerRect={containerRect}
+      containerRef={containerRef}
+      model={model}
+      selectionState={selectionState}
+      selections={selections}
+      keyboard={keyboard}
+    />
+  );
 
   return (
     <>
-      {showDetachedToolbarOnly && <ActionsToolbar direction={direction} {...getActionToolbarProps(true)} />}
+      {showDetachedToolbarOnly && listBoxHeader}
       <StyledGrid
         className="listbox-container"
         container
@@ -374,47 +304,7 @@ function ListBoxInline({ options, layout }) {
         isGridMode={isGridMode}
         aria-label={keyboard.active ? translator.get('Listbox.ScreenReaderInstructions') : ''}
       >
-        {showToolbarWithTitle && (
-          <StyledGridHeader
-            item
-            container
-            styles={styles}
-            isRtl={isRtl}
-            marginY={1}
-            paddingLeft={`${headerPaddingLeft}px`}
-            paddingRight={`${headerPaddingRight}px`}
-          >
-            {showIcons && (
-              <Grid item container alignItems="center" width={iconsWidth}>
-                {isLocked ? lockIconComp : showSearchIcon && searchIconComp}
-                {isDrillDown && (
-                  <DrillDownIcon
-                    tabIndex={-1}
-                    title={translator.get('Listbox.DrillDown')}
-                    size="large"
-                    style={{ fontSize: '12px' }}
-                  />
-                )}
-              </Grid>
-            )}
-            <Grid
-              item
-              xs
-              minWidth={0} // needed to text-overflow see: https://css-tricks.com/flexbox-truncated-text/
-              justifyContent={isRtl ? 'flex-end' : 'flex-start'}
-              className={classes.listBoxHeader}
-            >
-              {showTitle && (
-                <Title variant="h6" noWrap ref={titleRef} title={layout.title} styles={styles}>
-                  {layout.title}
-                </Title>
-              )}
-            </Grid>
-            <Grid item display="flex">
-              <ActionsToolbar direction={direction} {...getActionToolbarProps(isToolbarDetached)} />
-            </Grid>
-          </StyledGridHeader>
-        )}
+        {showAttachedToolbar && listBoxHeader}
         <Grid
           item
           container
@@ -437,7 +327,7 @@ function ListBoxInline({ options, layout }) {
               wildCardSearch={wildCardSearch}
               searchEnabled={searchEnabled}
               direction={direction}
-              hide={showSearchIcon && onShowSearch}
+              hide={showSearchIcon && handleShowSearch}
               styles={styles}
             />
           </Grid>

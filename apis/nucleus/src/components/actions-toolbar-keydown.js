@@ -17,7 +17,13 @@ const focusButton = (index) => {
   btn.focus();
 };
 
-export default function getActionsKeyDownHandler({ keyboardNavigation, focusHandler, getEnabledButton, selections }) {
+export default function getActionsKeyDownHandler({
+  keyboardNavigation,
+  focusHandler,
+  getEnabledButton,
+  selections,
+  isRtl,
+}) {
   const handleActionsKeyDown = (evt) => {
     const { target, nativeEvent } = evt;
     const { keyCode } = nativeEvent;
@@ -29,7 +35,8 @@ export default function getActionsKeyDownHandler({ keyboardNavigation, focusHand
         const isActionButton = target.classList.contains('njs-cell-action');
         if (isActionButton) {
           const index = getActionButtonIndex(target);
-          const pressedLeft = [KEYS.ARROW_LEFT, KEYS.ARROW_DOWN].includes(keyCode);
+          let pressedLeft = [KEYS.ARROW_LEFT, KEYS.ARROW_DOWN].includes(keyCode);
+          pressedLeft = isRtl ? !pressedLeft : pressedLeft; // invert direction when using RTL
           focusButton(pressedLeft ? index - 1 : index + 1);
         }
         evt.stopPropagation();

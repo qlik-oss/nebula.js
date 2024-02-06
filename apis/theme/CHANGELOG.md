@@ -3,17 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2024-01-04)
+# [4.10.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v4.10.0) (2024-02-01)
 
-**Note:** Version bump only for package @nebula.js/theme
+### Bug Fixes
 
-# [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
-
-**Note:** Version bump only for package @nebula.js/theme
-
-# [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
-
-**Note:** Version bump only for package @nebula.js/theme
+- dark theme for listbox ([#1449](https://github.com/qlik-oss/nebula.js/issues/1449)) ([e770087](https://github.com/qlik-oss/nebula.js/commit/e7700876f27ac84da7f3d96c28448d3bf857bc68))
+- use 12px as default font size in theme ([#1427](https://github.com/qlik-oss/nebula.js/issues/1427)) ([475921d](https://github.com/qlik-oss/nebula.js/commit/475921dd1180cf3968dcf1b292135dd37e9cdaba))
 
 # [4.9.0](https://github.com/qlik-oss/nebula.js/compare/v4.8.1...v4.9.0) (2023-12-01)
 

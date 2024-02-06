@@ -2,6 +2,7 @@ import SvgIcon from './SvgIcon';
 
 const unlock = (props) => ({
   ...props,
+  viewBox: '0 0 12 16',
   shapes: [
     {
       type: 'path',
@@ -12,3 +13,4 @@ const unlock = (props) => ({
   ],
 });
 export default (props) => SvgIcon(unlock(props));
+export { unlock };

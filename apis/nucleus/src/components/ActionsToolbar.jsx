@@ -65,6 +65,7 @@ function ActionsToolbar({
     onConfirm: () => {},
     onCancel: () => {},
   },
+  extraItems,
   more = {
     enabled: false,
     actions: [],
@@ -78,10 +79,11 @@ function ActionsToolbar({
   },
   focusHandler = null,
   actionsRefMock = null, // for testing
-  direction = 'ltr',
+  isRtl,
   autoConfirm = false,
+  layout,
 }) {
-  const defaultSelectionActions = useDefaultSelectionActions(selections);
+  const defaultSelectionActions = useDefaultSelectionActions({ ...selections, layout });
 
   const { translator, keyboardNavigation } = useContext(InstanceContext);
   const [showMoreItems, setShowMoreItems] = useState(false);
@@ -104,8 +106,8 @@ function ActionsToolbar({
   };
 
   const handleActionsKeyDown = useMemo(
-    () => getActionsKeyDownHandler({ keyboardNavigation, focusHandler, getEnabledButton, selections }),
-    [keyboardNavigation, focusHandler, getEnabledButton, selections]
+    () => getActionsKeyDownHandler({ keyboardNavigation, focusHandler, getEnabledButton, selections, isRtl }),
+    [keyboardNavigation, focusHandler, getEnabledButton, selections, isRtl]
   );
 
   useEffect(
@@ -120,11 +122,11 @@ function ActionsToolbar({
 
     const focusFirst = () => {
       const enabledButton = getEnabledButton(false);
-      enabledButton && enabledButton.focus();
+      enabledButton?.focus();
     };
     const focusLast = () => {
       const enabledButton = getEnabledButton(true);
-      enabledButton && enabledButton.focus();
+      enabledButton?.focus();
     };
     focusHandler.on('focus_toolbar_first', focusFirst);
     focusHandler.on('focus_toolbar_last', focusLast);
@@ -163,7 +165,6 @@ function ActionsToolbar({
   const showActions = newActions.length > 0;
   const showMore = moreActions.length > 0;
   const showDivider = (showActions && selections.show) || (showMore && selections.show);
-  const isRtl = direction === 'rtl';
 
   const Actions = (
     <Grid
@@ -176,6 +177,9 @@ function ActionsToolbar({
       data-testid="actions-toolbar"
       sx={{ flexDirection: isRtl ? 'row-reverse' : 'row' }}
     >
+      {extraItems?.length && (
+        <ActionsGroup className="actions-toolbar-extra-actions" actions={extraItems} isRtl={isRtl} />
+      )}
       {showActions && <ActionsGroup actions={newActions} />}
       {showMore && (
         <ActionsGroup

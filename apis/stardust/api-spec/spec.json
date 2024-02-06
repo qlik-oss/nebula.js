@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "5.0.0-alpha.2",
+    "version": "4.10.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -97,7 +97,7 @@
       ]
     },
     "useEffect": {
-      "description": "Triggers a callback function when a dependent value changes.",
+      "description": "Triggers a callback function when a dependent value changes.\n\nOmitting the dependency array will have the hook run on each update\nand an empty dependency array runs only once.",
       "kind": "function",
       "params": [
         {
@@ -116,7 +116,7 @@
         }
       ],
       "examples": [
-        "import { useEffect } from '@nebula.js/stardust';\n// ...\nuseEffect(() => {\n  console.log('mounted');\n  return () => {\n    console.log('unmounted');\n  };\n}, []);"
+        "import { useEffect } from '@nebula.js/stardust';\n// ...\nuseEffect(() => {\n  console.log('mounted');\n  return () => {\n    console.log('unmounted');\n  };\n}, []);\n\nuseEffect(() => {\n  const clickHandler = () => { console.log('click') };\n  const button = element.querySelector('.button');\n  button.addEventListener('click', clickHandler);\n  return () => {\n    button.removeEventListener('click', clickHandler);\n  };\n}, []);"
       ]
     },
     "useMemo": {
@@ -155,7 +155,7 @@
       ]
     },
     "usePromise": {
-      "description": "Runs a callback function when a dependent changes.",
+      "description": "Runs a callback function when a dependent changes.\n\nUseful for async operations that otherwise cause no side effects.\nDo not add for example listeners withing the callback as there is no teardown function.",
       "templates": [
         {
           "name": "P"
@@ -188,7 +188,7 @@
         }
       ],
       "returns": {
-        "description": "The resolved value.",
+        "description": "The resolved value or rejected error",
         "kind": "array",
         "items": [
           {
@@ -200,7 +200,7 @@
         ]
       },
       "examples": [
-        "import { usePromise } from '@nebula.js/stardust';\nimport { useModel } from '@nebula.js/stardust';\n// ...\nconst model = useModel();\nconst [resolved, rejected] = usePromise(() => model.getLayout(), []);"
+        "import { usePromise } from '@nebula.js/stardust';\nimport { useModel } from '@nebula.js/stardust';\n// ...\nconst model = useModel();\nconst [resolved, rejected] = usePromise(() => model.getLayout(), [model]);"
       ]
     },
     "useElement": {
@@ -649,8 +649,20 @@
       "entries": {
         "load": {
           "description": "Fallback load function for missing types",
-          "optional": true,
-          "type": "#/definitions/LoadType"
+          "kind": "function",
+          "params": [
+            {
+              "type": "#/definitions/LoadType"
+            }
+          ],
+          "returns": {
+            "type": "Promise",
+            "generics": [
+              {
+                "type": "#/definitions/Visualization"
+              }
+            ]
+          }
         },
         "context": {
           "description": "Settings for the rendering instance",
@@ -1110,6 +1122,12 @@
                   "optional": true,
                   "defaultValue": true,
                   "type": "#/definitions/SearchMode"
+                },
+                "showLock": {
+                  "description": "Show the button for toggling locked state.",
+                  "optional": true,
+                  "defaultValue": false,
+                  "type": "boolean"
                 },
                 "toolbar": {
                   "description": "Show the toolbar",
@@ -2063,6 +2081,7 @@
       "entries": {}
     },
     "EffectCallback": {
+      "description": "Callback function that should return a function that in turns gets\ncalled before the hook runs again or when the component is destroyed.\nFor example to remove any listeners added in the callback itself.",
       "kind": "alias",
       "items": {
         "kind": "function",
