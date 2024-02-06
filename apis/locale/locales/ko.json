@@ -219,6 +219,11 @@
     "comment": "Action text to select possible selections",
     "version": "UYEx1K96g9h4HCK3GH/6kg=="
   },
+  "SelectionToolbar.ClickToLock": {
+    "value": "클릭하여 잠금",
+    "comment": "Lock a selection in selections toolbar",
+    "version": "N+5bajoHdzBET4ullOUhJw=="
+  },
   "SelectionToolbar.ClickToUnlock": {
     "value": "잠금을 해제하려면 클릭하십시오.",
     "comment": "Unlock a selection from listbox",
@@ -258,10 +263,5 @@
     "value": "계산 조건이 충족되지 않았습니다.",
     "comment": "Message displayed when a calculation condition is not fulfilled",
     "version": "Hj3EiDijTWZ+MhDaqSx/uQ=="
-  },
-  "SelectionToolbar.ClickToLock": {
-    "value": "잠그려면 클릭하십시오.",
-    "comment": "Lock a selection in selection toolbar",
-    "version": "yOnFI2n2tK+87jTmGHU5vw=="
   }
 }
