@@ -55,7 +55,8 @@ const options = {
     default: false,
   },
   codeSplit: {
-    description: 'A description.',
+    description:
+      'Sets output.dir instead of output.file for code-splitting builds. Sets inlineDynamicImports for umd builds to avoid throwing errors.',
     type: 'boolean',
     default: false,
   },

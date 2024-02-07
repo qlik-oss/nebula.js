@@ -62,7 +62,6 @@ const config = ({
   format = 'umd',
   cwd = process.cwd(),
   argv = { sourcemap: true, codeSplit: false },
-  inlineDynamicImports = false,
   core,
   behaviours: {
     getExternal = getExternalDefault,
@@ -115,29 +114,24 @@ const config = ({
   }
 
   const output = () => {
-    if (argv.codeSplit) {
-      return {
-        banner,
-        format,
-        inlineDynamicImports,
-        dir: path.resolve(dir, outputFile.split('/')[0]),
-        name: outputName,
-        sourcemap,
-        globals: {
-          '@nebula.js/stardust': 'stardust',
-        },
-      };
-    }
-    return {
+    const outputConfig = {
       banner,
       format,
-      file: path.resolve(dir, outputFile),
       name: outputName,
       sourcemap,
       globals: {
         '@nebula.js/stardust': 'stardust',
       },
     };
+    if (!argv.codeSplit || format === 'umd') {
+      outputConfig.file = path.resolve(dir, outputFile);
+    } else {
+      outputConfig.dir = path.resolve(dir, outputFile.split('/')[0]);
+    }
+    if (argv.codeSplit && format === 'umd') {
+      outputConfig.inlineDynamicImports = true;
+    }
+    return outputConfig;
   };
 
   return {
