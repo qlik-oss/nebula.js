@@ -346,7 +346,7 @@ function nuked(configuration = {}) {
        *   },
        * );
        */
-      generateProperties: async (cfg) => createObject(cfg, halo, true),
+      generateProperties: async (cfg) => createObject(cfg, halo, true, modelStore),
       /**
        * Updates the current context of this embed instance.
        * Use this when you want to change some part of the current context, like theme.
