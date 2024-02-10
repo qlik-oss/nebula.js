@@ -46,8 +46,8 @@
   "devDependencies": {
     "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.7",
-    "@mui/material": "^5.15.7",
+    "@mui/icons-material": "^5.15.9",
+    "@mui/material": "^5.15.9",
     "@nebula.js/conversion": "^4.10.0",
     "@nebula.js/enigma-mocker": "^4.10.0",
     "@nebula.js/locale": "^4.10.0",
@@ -67,6 +67,6 @@
     "react-window": "1.8.10",
     "react-window-infinite-loader": "1.0.9",
     "regenerator-runtime": "0.14.1",
-    "semver": "7.5.4"
+    "semver": "7.6.0"
   }
 }
