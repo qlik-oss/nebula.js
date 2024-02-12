@@ -32,7 +32,6 @@ Options:
                             'browser' to exportConditions if it is not present so browser
                             conditionals in exports are applied.
                                                                [boolean] [default: false]
-  --codeSplit               Allows for code-splitting.         [boolean] [default: false]
 ```
 
 ## Example
