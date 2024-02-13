@@ -334,7 +334,7 @@ module.exports = async ({
          `);
 
         if (serveConfig.mfe) {
-          const bundleUrl = `${url}/pkg/${snName}`;
+          const bundleUrl = `${url}/pkg/${encodeURIComponent(snName)}`;
           console.log('Development server running in MFE mode');
           console.log(`Bundle served at ${chalk.green(bundleUrl)}`);
           console.log('');
