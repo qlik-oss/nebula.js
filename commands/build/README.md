@@ -30,10 +30,7 @@ Options:
                                                                 [boolean] [default: true]
   --browser                 Use the browser module resolutions in package.json and adds
                             'browser' to exportConditions if it is not present so browser
-                            conditionals in exports are applied.  
-                                                               [boolean] [default: false]
-  --inlineDynamicImports    Inlines dynamic imports, allowing for code-splitting
-                            regardless of format.
+                            conditionals in exports are applied.
                                                                [boolean] [default: false]
 ```
 
