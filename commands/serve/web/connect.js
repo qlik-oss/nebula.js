@@ -53,18 +53,21 @@ const parseEngineURL = (url) => {
     engineUrl = trimmedUrl.substring(0, appMatch.index);
     appUrl = trimmedUrl;
   }
-  let prefix;
-  const engineMatch = prefixRegx.exec(engineUrl);
-  if (engineMatch && engineMatch[4]) {
-    [, , , prefix] = engineMatch;
-  }
 
+  const engineMatch = prefixRegx.exec(engineUrl);
+
+  if (!engineMatch) {
+    return {
+      engineUrl: url,
+      invalid: true,
+    };
+  }
   return {
     enigma: {
       secure: match[1] === 'wss',
       host: match[2],
       port: match[3] || undefined,
-      prefix,
+      prefix: engineMatch[4] || undefined,
       appId,
     },
     engineUrl,
