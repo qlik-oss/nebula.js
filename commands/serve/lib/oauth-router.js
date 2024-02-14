@@ -116,8 +116,6 @@ const OAuthRouter = () => {
   return router;
 };
 
-const getAvailableAuthInstance = () => {
-  return authInstance;
-};
+const getAvailableAuthInstance = () => authInstance;
 
 module.exports = { OAuthRouter, getAvailableAuthInstance };
