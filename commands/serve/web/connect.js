@@ -25,8 +25,12 @@ const getParams = () => {
 // QSEoW:     wss://<host>/<virtual-proxy-prefix>/app/<app-GUID>
 
 // matches the wss://<host>/<virtual-proxy-prefix>/
-const urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?\/?([/\w]+)?/;
+const urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/;
 const appRegex = /\/app\/([^?&#:]+)/;
+// The prefix must be unique for all virtual proxies used by the same proxy service,
+// as this differentiates the virtual proxies and will be a part of the URL (https://[node]/[prefix]/).
+// Valid characters for prefix are "a-z", "0-9", "-", ".", "_", "~".
+const prefixRegx = /(wss?):\/\/([^/:?&]+)(?::(\d+))?\/?([a-z0-9-._~]+)?/;
 
 const parseEngineURL = (url) => {
   const match = urlRegex.exec(url);
@@ -50,10 +54,9 @@ const parseEngineURL = (url) => {
     appUrl = trimmedUrl;
   }
   let prefix;
-  if (match[4]) {
-    // paths
-    const paths = match[4].split('/');
-    [prefix] = paths;
+  const engineMatch = prefixRegx.exec(engineUrl);
+  if (engineMatch && engineMatch[4]) {
+    [, , , prefix] = engineMatch;
   }
 
   return {
