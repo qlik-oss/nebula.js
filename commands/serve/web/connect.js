@@ -20,11 +20,15 @@ const getParams = () => {
   return opts;
 };
 
-// Qlik Core:  ws://<host>:<port>/app/<data-folder>/<app-name>
+// These URLS are fully constructed later using the sdk
 // QCS:       wss://<tenant-url>.<region>.qlikcloud.com/app/<app-GUID>
-// QSEoK:     wss://<host>/app/<app-GUID>
 // QSEoW:     wss://<host>/<virtual-proxy-prefix>/app/<app-GUID>
-const parseEngineURL = (url, urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?\/?(.*)/, appRegex = /\/app\/([^?&#:]+)/) => {
+
+// matches the wss://<host>/<virtual-proxy-prefix>/
+const urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?\/?([/\w]+)?/;
+const appRegex = /\/app\/([^?&#:]+)/;
+
+const parseEngineURL = (url) => {
   const match = urlRegex.exec(url);
   if (!match) {
     return {
@@ -45,13 +49,19 @@ const parseEngineURL = (url, urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?\/?(.*)
     engineUrl = trimmedUrl.substring(0, appMatch.index);
     appUrl = trimmedUrl;
   }
+  let prefix;
+  if (match[4]) {
+    // paths
+    const paths = match[4].split('/');
+    [prefix] = paths;
+  }
 
   return {
     enigma: {
       secure: match[1] === 'wss',
       host: match[2],
       port: match[3] || undefined,
-      prefix: match[4] || undefined,
+      prefix,
       appId,
     },
     engineUrl,

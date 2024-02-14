@@ -51,6 +51,7 @@ const ConnectionGuid = ({ showGuid }) => (
       <br />
       Example: <code>wss://qlik.eu.qlikcloud.com?qlik-client-id=xxx</code>
       <br />
+      Redirect URL form: http://localhost:8000/login/callback
       <br />
       The <code>qlik-web-integration-id</code> <b>OR</b> <code>qlik-client-id</code> must be present in order for QCS to
       confirm that the request originates from a whitelisted domain.
@@ -71,25 +72,6 @@ const ConnectionGuid = ({ showGuid }) => (
       <i>Has secure attribute</i> and set <i>SameSite attribute</i> to <i>None</i>.
       <br />
       Make sure you are logged in to Qlik Sense in another browser tab.
-    </Typography>
-    <Typography variant="subtitle1" gutterBottom>
-      Qlik Core
-    </Typography>
-    <Typography variant="body2" paragraph>
-      WebSocket URL format: <code>ws://&lt;host&gt;:&lt;port&gt;</code>
-      <br />
-      Example: <code>ws://localhost:9076</code>
-      <br />
-      <br />
-      For more info, visit{' '}
-      <Link
-        color="secondary"
-        underline="always"
-        href="https://core.qlik.com/services/qix-engine/apis/qix/introduction/#websockets"
-      >
-        QIX WebSocket Introduction
-      </Link>
-      .
     </Typography>
     <Typography variant="subtitle1" gutterBottom>
       Qlik Sense Desktop

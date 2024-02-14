@@ -431,6 +431,7 @@ describe('connect.js', () => {
           host: expect.any(String),
           port: undefined, // because of providing a link
           appId: undefined, // since there is not appid in link
+          prefix: undefined,
         }),
         engineUrl: expect.any(String),
         appUrl: undefined, // because no app has been provided
@@ -446,6 +447,7 @@ describe('connect.js', () => {
           host: expect.any(String),
           port: expect.any(String),
           appId: undefined, // since there is not appid in link
+          prefix: undefined,
         }),
         engineUrl: expect.any(String),
         appUrl: undefined, // because no app has been provided
@@ -460,7 +462,38 @@ describe('connect.js', () => {
           secure: expect.any(Boolean),
           host: expect.any(String),
           port: undefined, // because of providing a link
-          appId: 'SOME_APP_ID/', // since there is not appid in link
+          appId: 'SOME_APP_ID/', // since there is an appid in link
+          prefix: undefined,
+        }),
+        engineUrl: expect.any(String),
+        appUrl: url,
+      });
+    });
+
+    test('should match prefix correctly', () => {
+      url = `/app/SOME_APP_ID/?engine_url=wss://${authConfig.host}/prefix`;
+      const result = parseEngineURL(url);
+      expect(result).toMatchObject({
+        enigma: expect.objectContaining({
+          secure: expect.any(Boolean),
+          host: expect.any(String),
+          port: undefined, // because of providing a link
+          appId: 'SOME_APP_ID/', // since there is an appid in link
+          prefix: 'prefix',
+        }),
+        engineUrl: expect.any(String),
+        appUrl: url,
+      });
+
+      url = `wss://${authConfig.host}/prefix/app/SOME_APP_ID/`;
+      const result2 = parseEngineURL(url);
+      expect(result2).toMatchObject({
+        enigma: expect.objectContaining({
+          secure: expect.any(Boolean),
+          host: expect.any(String),
+          port: undefined, // because of providing a link
+          appId: 'SOME_APP_ID/', // since there is an appid in link
+          prefix: 'prefix',
         }),
         engineUrl: expect.any(String),
         appUrl: url,
