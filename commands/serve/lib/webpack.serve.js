@@ -16,10 +16,10 @@ const httpsKeyPath = path.join(homedir, '.certs/key.pem');
 const httpsCertPath = path.join(homedir, '.certs/cert.pem');
 
 let authInstance = null;
-// let prevHost = null;
-// let prevClientId = null;
+let prevHost = null;
+let prevClientId = null;
 const getAuthInstance = (returnToOrigin, host, clientId) => {
-  if (authInstance /* && prevHost === host && prevClientId == clientId */) {
+  if (authInstance && prevHost === host && prevClientId == clientId) {
     console.log('++++++++++++++++++++++++++++++++++++++++++');
     console.log('[webpack_srv]: reusing same auth instance!', host, clientId);
     console.log('++++++++++++++++++++++++++++++++++++++++++');
@@ -29,8 +29,8 @@ const getAuthInstance = (returnToOrigin, host, clientId) => {
   console.log('==========================================');
   console.log('[webpack_srv]: creating new auth instance!', host, clientId);
   console.log('==========================================');
-  // prevHost = host;
-  // prevClientId = clientId;
+  prevHost = host;
+  prevClientId = clientId;
   authInstance = new Auth({
     authType: AuthType.OAuth2,
     host,
@@ -250,15 +250,17 @@ module.exports = async ({
 
       app.get('/deauthorize', async (req, res) => {
         try {
+          authInstance = null;
+          prevHost = null;
+          prevClientId = null;
+
+          cachedClientId = null;
+          cachedHost = null;
           const result = await authInstance?.deauthorize();
           console.log('-----------------------------------');
           console.log('[webpack_srv] DEAUTHORIZING', result, authInstance);
           console.log('-----------------------------------');
-          authInstance = null;
-          // prevHost = null;
-          // prevClientId = null;
-          // cachedClientId = null;
-          // cachedHost = null;
+
           res.status(200).json({
             deauthorize: true,
           });

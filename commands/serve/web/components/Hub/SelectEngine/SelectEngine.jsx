@@ -22,7 +22,7 @@ const SelectEngine = () => {
       // const { isAuthorized } = await (await fetch('/isAuthorized')).json();
       // console.log('[auth_check_selectEngine]: is AUTH', isAuthorized);
       // if (isAuthorized) {
-      console.log('[auth_check_selectEngine]: DEAUTH EFFECT!');
+      // console.log('[auth_check_selectEngine]: DEAUTH EFFECT!');
       try {
         await (await fetch('/deauthorize')).json();
         console.log('[auth_check_selectEngine]: DEAUTH OK');
