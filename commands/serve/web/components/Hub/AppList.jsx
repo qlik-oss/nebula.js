@@ -28,7 +28,7 @@ const AppList = () => {
       {/* <Button
         variant="contained"
         onClick={async () => {
-          const res = await (await fetch('/deauthorize')).json();
+          const res = await (await fetch('/auth/deauthorize')).json();
           console.log('[nebula_web] -> de auth', { res });
           navigate('/');
         }}

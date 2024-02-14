@@ -26,7 +26,7 @@ export const useOpenApp = ({ info }) => {
         const authInstance = await getAuthInstance({ webIntegrationId, host });
         url = await authInstance.generateWebsocketUrl(info?.enigma.appId);
       } else if (clientId) {
-        const { webSocketUrl } = await (await fetch(`/getSocketUrl/${info?.enigma.appId}`)).json();
+        const { webSocketUrl } = await (await fetch(`/auth/getSocketUrl/${info?.enigma.appId}`)).json();
         url = webSocketUrl;
       } else {
         url = SenseUtilities.buildUrl(enigmaInfo);

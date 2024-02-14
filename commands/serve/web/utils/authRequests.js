@@ -1,7 +1,7 @@
 // import { getConnectionInfo } from '../connect';
 
 export const checkIfAuthorized = async () => {
-  const { isAuthorized } = await (await fetch('/isAuthorized')).json();
+  const { isAuthorized } = await (await fetch('/auth/isAuthorized')).json();
   return { isAuthorized };
 };
 
