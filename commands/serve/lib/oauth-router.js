@@ -7,17 +7,12 @@ let authInstance = null;
 
 const getAuthInstance = (returnToOrigin, host, clientId) => {
   if (authInstance && prevHost === host && prevClientId == clientId) {
-    console.log('++++++++++++++++++++++++++++++++++++++++++');
-    console.log('[webpack_srv]: reusing same auth instance!', host, clientId);
-    console.log('++++++++++++++++++++++++++++++++++++++++++');
     return authInstance;
   }
 
-  console.log('==========================================');
-  console.log('[webpack_srv]: creating new auth instance!', host, clientId);
-  console.log('==========================================');
   prevHost = host;
   prevClientId = clientId;
+
   authInstance = new Auth({
     authType: AuthType.OAuth2,
     host,
@@ -35,7 +30,6 @@ const OAuthRouter = function () {
 
   router.get('/oauth', async (req, res) => {
     const { host: qHost, clientId: qClientId } = req.query;
-    console.log('[webpack_srv] /oauth', { qHost, qClientId });
     if (!cachedHost && !cachedClientId) {
       cachedHost = qHost;
       cachedClientId = qClientId;
@@ -44,20 +38,16 @@ const OAuthRouter = function () {
     const returnTo = `${req.protocol}://${req.get('host')}`;
     const instacne = getAuthInstance(returnTo, qHost, qClientId);
     const isAuthorized = await instacne.isAuthorized();
-    console.log('[webpack_srv] INSTANCE', { isAuthorized });
     if (!isAuthorized) {
-      console.log('[webpack_srv] NOT AUTHORIZED');
       const { url: redirectUrl } = await instacne.generateAuthorizationUrl();
-      console.log('[webpack_srv]', { redirectUrl });
       res.status(200).json({ redirectUrl });
-      // res.redirect(redirectUrl);
     } else {
-      console.log('[webpack_srv] : AUTHORIZED');
-      const redirectUrl = `${req.protocol}://${req.get(
-        'host'
-      )}/app-list?engine_url=wss://${cachedHost}&qlik-client-id=${cachedClientId}&shouldFetchAppList=true`;
+      const reqHost = req.get('host');
+      const redirectUrl = `${req.protocol}://${reqHost}/app-list?engine_url=wss://${cachedHost}&qlik-client-id=${cachedClientId}&shouldFetchAppList=true`;
+
       cachedHost = null;
       cachedClientId = null;
+
       res.redirect(redirectUrl);
     }
   });
@@ -76,12 +66,9 @@ const OAuthRouter = function () {
         _req[1]['headers'] = { origin: 'http://localhost:8000' };
         return _req;
       });
-      console.log('[webpack_srv] [login/callback/] success', { cachedHost, cachedClientId });
       await authInstance.authorize(authLink);
-      // res.redirect(301, '/auth/oauth/');
       res.redirect(301, `/auth/oauth?host=${cachedHost}&clientId=${cachedClientId}`);
     } catch (err) {
-      console.log('[webpack_srv] [login/callback/] error');
       console.log({ err });
       res.status(401).send(JSON.stringify(err, null, 2));
     }
@@ -89,16 +76,13 @@ const OAuthRouter = function () {
 
   router.get('/deauthorize', async (req, res) => {
     try {
-      authInstance = null;
       prevHost = null;
       prevClientId = null;
+      authInstance = null;
 
-      cachedClientId = null;
       cachedHost = null;
-      const result = await authInstance?.deauthorize();
-      console.log('-----------------------------------');
-      console.log('[webpack_srv] DEAUTHORIZING', result, authInstance);
-      console.log('-----------------------------------');
+      cachedClientId = null;
+      await authInstance?.deauthorize();
 
       res.status(200).json({
         deauthorize: true,
