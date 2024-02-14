@@ -6,7 +6,7 @@ let prevClientId = null;
 let authInstance = null;
 
 const getAuthInstance = (returnToOrigin, host, clientId) => {
-  if (authInstance && prevHost === host && prevClientId == clientId) {
+  if (authInstance && prevHost === host && prevClientId === clientId) {
     return authInstance;
   }
 
@@ -22,7 +22,7 @@ const getAuthInstance = (returnToOrigin, host, clientId) => {
   return authInstance;
 };
 
-const OAuthRouter = function () {
+const OAuthRouter = () => {
   const router = express.Router();
 
   let cachedHost = null;
@@ -70,7 +70,9 @@ const OAuthRouter = function () {
       res.redirect(301, `/auth/oauth?host=${cachedHost}&clientId=${cachedClientId}`);
     } catch (err) {
       console.log({ err });
-      res.status(401).send(JSON.stringify(err, null, 2));
+      res.status(401).send({
+        message: 'Auth failed in callback redirecting, based on the provided auth link!',
+      });
     }
   });
 

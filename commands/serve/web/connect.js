@@ -24,7 +24,7 @@ const getParams = () => {
 // QCS:       wss://<tenant-url>.<region>.qlikcloud.com/app/<app-GUID>
 // QSEoK:     wss://<host>/app/<app-GUID>
 // QSEoW:     wss://<host>/<virtual-proxy-prefix>/app/<app-GUID>
-const parseEngineURL = (url, urlRegex = /(wss?):\/\/([^\/:?&]+)(?::(\d+))?/, appRegex = /\/app\/([^?&#:]+)/) => {
+const parseEngineURL = (url, urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/, appRegex = /\/app\/([^?&#:]+)/) => {
   const match = urlRegex.exec(url);
   if (!match) {
     return {
