@@ -913,7 +913,7 @@ export function useConstraints() {
       console.warn(
         'useContraints has been deprecated, please change to useInteractions instead. Note that interactions uses inverted values compared to contraints.'
       );
-      currentComponent.__hooks.contraintsWarning = true;
+      currentComponent.__hooks.contraintsWarning = false;
     }
   }
   return useInternalContext('constraints');
