@@ -24,7 +24,7 @@ const getParams = () => {
 // QCS:       wss://<tenant-url>.<region>.qlikcloud.com/app/<app-GUID>
 // QSEoK:     wss://<host>/app/<app-GUID>
 // QSEoW:     wss://<host>/<virtual-proxy-prefix>/app/<app-GUID>
-const parseEngineURL = (url, urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/, appRegex = /\/app\/([^?&#:]+)/) => {
+const parseEngineURL = (url, urlRegex = /(wss?):\/\/([^\/:?&]+)(?::(\d+))?/, appRegex = /\/app\/([^?&#:]+)/) => {
   const match = urlRegex.exec(url);
   if (!match) {
     return {
@@ -142,7 +142,8 @@ const connect = async () => {
     if (clientId) {
       return {
         getDocList: async () => {
-          const resp = await (await fetch(`/oauth?host=${host}&clientId=${clientId}`)).json();
+          const URL = `/oauth?host=${host}&clientId=${clientId}`;
+          const resp = await (await fetch(URL)).json();
           if (resp.redirectUrl) window.location.href = resp.redirectUrl;
         },
         getConfiguration: async () => ({}),

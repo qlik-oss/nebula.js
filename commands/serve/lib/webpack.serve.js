@@ -16,9 +16,21 @@ const httpsKeyPath = path.join(homedir, '.certs/key.pem');
 const httpsCertPath = path.join(homedir, '.certs/cert.pem');
 
 let authInstance = null;
+// let prevHost = null;
+// let prevClientId = null;
 const getAuthInstance = (returnToOrigin, host, clientId) => {
-  if (authInstance) return authInstance;
+  if (authInstance /* && prevHost === host && prevClientId == clientId */) {
+    console.log('++++++++++++++++++++++++++++++++++++++++++');
+    console.log('[webpack_srv]: reusing same auth instance!', host, clientId);
+    console.log('++++++++++++++++++++++++++++++++++++++++++');
+    return authInstance;
+  }
 
+  console.log('==========================================');
+  console.log('[webpack_srv]: creating new auth instance!', host, clientId);
+  console.log('==========================================');
+  // prevHost = host;
+  // prevClientId = clientId;
   authInstance = new Auth({
     authType: AuthType.OAuth2,
     host,
@@ -178,6 +190,7 @@ module.exports = async ({
 
       app.get('/oauth', async (req, res) => {
         const { host: qHost, clientId: qClientId } = req.query;
+        console.log('[webpack_srv] /oauth', { qHost, qClientId });
         if (!cachedHost && !cachedClientId) {
           cachedHost = qHost;
           cachedClientId = qClientId;
@@ -186,10 +199,15 @@ module.exports = async ({
         const returnTo = `${req.protocol}://${req.get('host')}`;
         const instacne = getAuthInstance(returnTo, qHost, qClientId);
         const isAuthorized = await instacne.isAuthorized();
+        console.log('[webpack_srv] INSTANCE', { isAuthorized });
         if (!isAuthorized) {
+          console.log('[webpack_srv] NOT AUTHORIZED');
           const { url: redirectUrl } = await instacne.generateAuthorizationUrl();
+          console.log('[webpack_srv]', { redirectUrl });
           res.status(200).json({ redirectUrl });
+          // res.redirect(redirectUrl);
         } else {
+          console.log('[webpack_srv] : AUTHORIZED');
           const redirectUrl = `${req.protocol}://${req.get(
             'host'
           )}/app-list?engine_url=wss://${cachedHost}&qlik-client-id=${cachedClientId}&shouldFetchAppList=true`;
@@ -213,9 +231,12 @@ module.exports = async ({
             _req[1]['headers'] = { origin: 'http://localhost:8000' };
             return _req;
           });
+          console.log('[webpack_srv] [login/callback/] success', { cachedHost, cachedClientId });
           await authInstance.authorize(authLink);
-          res.redirect(301, '/oauth/');
+          // res.redirect(301, '/oauth/');
+          res.redirect(301, `/oauth?host=${cachedHost}&clientId=${cachedClientId}`);
         } catch (err) {
+          console.log('[webpack_srv] [login/callback/] error');
           console.log({ err });
           res.status(401).send(JSON.stringify(err, null, 2));
         }
@@ -229,7 +250,15 @@ module.exports = async ({
 
       app.get('/deauthorize', async (req, res) => {
         try {
-          await authInstance.deauthorize();
+          const result = await authInstance?.deauthorize();
+          console.log('-----------------------------------');
+          console.log('[webpack_srv] DEAUTHORIZING', result, authInstance);
+          console.log('-----------------------------------');
+          authInstance = null;
+          // prevHost = null;
+          // prevClientId = null;
+          // cachedClientId = null;
+          // cachedHost = null;
           res.status(200).json({
             deauthorize: true,
           });
@@ -254,6 +283,7 @@ module.exports = async ({
       app.get('/apps', async (req, res) => {
         const appsListUrl = `/items?resourceType=app&limit=30&sort=-updatedAt`;
         const { data = [] } = await (await authInstance.rest(appsListUrl)).json();
+        // console.log('[webpack_srv]: appListRes', { appsListUrl, data: data.map((x) => x.name) });
         res.status(200).json(
           data.map((d) => ({
             qDocId: d.resourceId,

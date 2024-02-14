@@ -16,6 +16,23 @@ const SelectEngine = () => {
 
   useEffect(() => {
     setShowGuid(!cachedConnectionsData.cachedConnections.length);
+
+    // DEAUTHORIZE PREVIOUS AUTHENTICATION
+    const handleAuthCheck = async () => {
+      // const { isAuthorized } = await (await fetch('/isAuthorized')).json();
+      // console.log('[auth_check_selectEngine]: is AUTH', isAuthorized);
+      // if (isAuthorized) {
+      console.log('[auth_check_selectEngine]: DEAUTH EFFECT!');
+      try {
+        await (await fetch('/deauthorize')).json();
+        console.log('[auth_check_selectEngine]: DEAUTH OK');
+      } catch (error) {
+        console.log('[auth_check_selectEngine]: DEAUTH ERROR', error);
+      }
+      // }
+    };
+
+    handleAuthCheck();
   }, [cachedConnectionsData.cachedConnections.length]);
 
   return (

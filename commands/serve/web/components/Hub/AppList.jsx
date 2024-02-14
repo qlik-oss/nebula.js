@@ -10,6 +10,7 @@ import { ContentWrapper } from './styles';
 import { getAppLink } from '../../utils';
 
 import { useRootContext } from '../../contexts/RootContext';
+// import { Button } from '@mui/material';
 
 const AppList = () => {
   const navigate = useNavigate();
@@ -24,6 +25,16 @@ const AppList = () => {
       </Typography>
       {loading && <CircularProgress data-testid="loading" size={32} />}
       {!loading && appList && !appList.length && <Typography component="span">No apps found!</Typography>}
+      {/* <Button
+        variant="contained"
+        onClick={async () => {
+          const res = await (await fetch('/deauthorize')).json();
+          console.log('[nebula_web] -> de auth', { res });
+          navigate('/');
+        }}
+      >
+        deauthorize
+      </Button> */}
       {appList && appList.length > 0 && (
         <List>
           {appList.map((appData) => (
