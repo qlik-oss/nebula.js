@@ -9,10 +9,12 @@ import ConnectionHistory from './ConnectionHistory';
 import ConnectionOptions from './ConnectionOptions';
 import { ContentWrapper } from '../styles';
 import { useRootContext } from '../../../contexts/RootContext';
+import { useDeauthorizePrevOAuthInstance } from '../../../hooks';
 
 const SelectEngine = () => {
   const { cachedConnectionsData } = useRootContext();
   const [showGuid, setShowGuid] = useState(false);
+  useDeauthorizePrevOAuthInstance();
 
   useEffect(() => {
     setShowGuid(!cachedConnectionsData.cachedConnections.length);
