@@ -56,7 +56,7 @@ const OAuthRouter = function () {
     const authLink = new URL(req.url, `http://${req.headers.host}`).href;
     try {
       // TODO:
-      // this is a temp fix in front end side
+      // this is a temp fix in nebula side
       // (temp workaround of not presisting origin while backend tries to authorize user)
       // they need to handle this in qlik-sdk-typescript repo
       // and will notify us about when they got fixed it,

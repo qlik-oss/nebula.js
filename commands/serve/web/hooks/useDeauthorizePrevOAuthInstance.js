@@ -6,8 +6,8 @@ export const useDeauthorizePrevOAuthInstance = () => {
   const { cachedConnectionsData } = useRootContext();
 
   useEffect(() => {
-    // Deuathorize any oauth state if any was available
-    // This is b/c of cleaning up any previous state of Auth instance on dev server
+    // deuathorize any oauth state if any was available
+    // this is b/c we need to cleaning up any previous state of Auth instance
     const handleDeauthorization = async () => {
       try {
         await (await fetch('/auth/deauthorize')).json();

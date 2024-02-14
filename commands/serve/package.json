@@ -26,7 +26,6 @@
   "scripts": {
     "build": "cross-env NODE_ENV=production DEFAULTS=true webpack --config ./lib/webpack.build.js",
     "build:dev": "cross-env NODE_ENV=development DEFAULTS=true webpack --config ./lib/webpack.build.js",
-    "build:watch": "cross-env NODE_ENV=development DEFAULTS=true webpack --config ./lib/webpack.build.js --watch",
     "lint": "eslint web",
     "prepublishOnly": "rm -rf dist && yarn run build"
   },
