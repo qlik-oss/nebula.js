@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.11.0](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v4.11.0) (2024-02-16)
+
+### Bug Fixes
+
+- allow prefix in serve ([#1482](https://github.com/qlik-oss/nebula.js/issues/1482)) ([0f74eac](https://github.com/qlik-oss/nebula.js/commit/0f74eace4ff5b2472e49a6e3703c6097bd1fae2c))
+- display correct override URL ([#1477](https://github.com/qlik-oss/nebula.js/issues/1477)) ([cdeafab](https://github.com/qlik-oss/nebula.js/commit/cdeafabae5d4b653c785a2637e6b0a3302a85a0a))
+
 # [4.10.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v4.10.0) (2024-02-01)
 
 ### Bug Fixes
