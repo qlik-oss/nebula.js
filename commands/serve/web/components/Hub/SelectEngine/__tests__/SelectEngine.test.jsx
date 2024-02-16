@@ -25,7 +25,6 @@ describe('<SelectEngine />', () => {
       'OAuth Client ID URL format:',
       'Qlik Cloud Services',
       'Qlik Sense Enterprise on Windows',
-      'Qlik Core',
       'Qlik Sense Desktop',
     ].map((title) => {
       expect(screen.queryByText(title)).toBeVisible();
@@ -45,7 +44,6 @@ describe('<SelectEngine />', () => {
       'OAuth Client ID URL format:',
       'Qlik Cloud Services',
       'Qlik Sense Enterprise on Windows',
-      'Qlik Core',
       'Qlik Sense Desktop',
     ].map((title) => {
       expect(screen.queryByText(title)).not.toBeVisible();

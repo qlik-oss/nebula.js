@@ -12,7 +12,6 @@ describe('<ConnectionGuid />', () => {
       'OAuth Client ID URL format:',
       'Qlik Cloud Services',
       'Qlik Sense Enterprise on Windows',
-      'Qlik Core',
       'Qlik Sense Desktop',
     ].map((title) => {
       expect(screen.queryByText(title)).toBeInTheDocument();
@@ -25,7 +24,6 @@ describe('<ConnectionGuid />', () => {
       'wss://qlik.eu.qlikcloud.com?qlik-web-integration-id=xxx',
       'wss://qlik.eu.qlikcloud.com?qlik-client-id=xxx',
       'wss://mycompany.com/bi',
-      'ws://localhost:9076',
     ].map((example) => {
       expect(screen.queryByText(example)).toBeInTheDocument();
     });
