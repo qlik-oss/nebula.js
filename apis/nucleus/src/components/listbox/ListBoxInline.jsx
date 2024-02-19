@@ -70,7 +70,6 @@ function ListBoxInline({ options, layout }) {
     selections,
     update = undefined,
     fetchStart = undefined,
-    selectDisabled = () => false,
     postProcessPages = undefined,
     calculatePagesHeight,
     showGray = true,
@@ -80,6 +79,7 @@ function ListBoxInline({ options, layout }) {
     isPopover = false,
     showLock = false,
     components,
+    selectDisabled = () => false,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -116,7 +116,7 @@ function ListBoxInline({ options, layout }) {
   const updateKeyScroll = (newState) => setKeyScroll((current) => ({ ...current, ...newState }));
   const [currentScrollIndex, setCurrentScrollIndex] = useState({ start: 0, stop: 0 });
   const [appSelections] = useAppSelections(app);
-  const [selectionState] = useState(() => createSelectionState());
+  const [selectionState] = useState(() => createSelectionState({ selectDisabled }));
   const keyboard = useTempKeyboard({ containerRef, enabled: keyboardNavigation });
   const isModalMode = useCallback(() => isModal({ app, appSelections }), [app, appSelections]);
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
@@ -220,7 +220,7 @@ function ListBoxInline({ options, layout }) {
   }
 
   const showSearchToggle = search === 'toggle' && showSearch;
-  const searchVisible = search === true || (showSearchToggle && !selectDisabled() && searchEnabled !== false);
+  const searchVisible = search === true || (showSearchToggle && searchEnabled !== false);
   const dense = layoutOptions.dense ?? false;
 
   const handleShowSearch = () => {
@@ -257,7 +257,6 @@ function ListBoxInline({ options, layout }) {
 
   const listBoxHeader = (
     <ListBoxHeader
-      selectDisabled={selectDisabled}
       showSearchIcon={showSearchIcon}
       isDrillDown={isDrillDown}
       onShowSearch={handleShowSearch}
@@ -354,7 +353,6 @@ function ListBoxInline({ options, layout }) {
                     fetchStart={fetchStart}
                     postProcessPages={postProcessPages}
                     calculatePagesHeight={calculatePagesHeight}
-                    selectDisabled={selectDisabled}
                     keyboard={keyboard}
                     showGray={showGray}
                     scrollState={scrollState}
