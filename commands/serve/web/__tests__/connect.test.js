@@ -431,6 +431,7 @@ describe('connect.js', () => {
           host: expect.any(String),
           port: undefined, // because of providing a link
           appId: undefined, // since there is not appid in link
+          prefix: undefined,
         }),
         engineUrl: expect.any(String),
         appUrl: undefined, // because no app has been provided
@@ -446,6 +447,7 @@ describe('connect.js', () => {
           host: expect.any(String),
           port: expect.any(String),
           appId: undefined, // since there is not appid in link
+          prefix: undefined,
         }),
         engineUrl: expect.any(String),
         appUrl: undefined, // because no app has been provided
@@ -453,14 +455,77 @@ describe('connect.js', () => {
     });
 
     test('should find app url param from provided link', () => {
-      url = `/app/SOME_APP_ID/?engine_url=wss://${authConfig.host}`;
+      url = `engine_url=wss://${authConfig.host}/app/SOME_APP_ID/`;
       const result = parseEngineURL(url);
       expect(result).toMatchObject({
         enigma: expect.objectContaining({
           secure: expect.any(Boolean),
           host: expect.any(String),
           port: undefined, // because of providing a link
-          appId: 'SOME_APP_ID/', // since there is not appid in link
+          appId: 'SOME_APP_ID/', // since there is an appid in link
+          prefix: undefined,
+        }),
+        engineUrl: expect.any(String),
+        appUrl: url,
+      });
+    });
+
+    test('should match prefix correctly', () => {
+      url = `engine_url=wss://${authConfig.host}/prefix`;
+      const result = parseEngineURL(url);
+      expect(result).toMatchObject({
+        enigma: expect.objectContaining({
+          secure: expect.any(Boolean),
+          host: expect.any(String),
+          port: undefined,
+          appId: undefined,
+          prefix: 'prefix',
+        }),
+        engineUrl: expect.any(String),
+        appUrl: undefined,
+      });
+    });
+    test('should match prefix correctly with app', () => {
+      url = `wss://${authConfig.host}/prefix/app/SOME_APP_ID/`;
+      const result2 = parseEngineURL(url);
+      expect(result2).toMatchObject({
+        enigma: expect.objectContaining({
+          secure: expect.any(Boolean),
+          host: expect.any(String),
+          port: undefined, // because of providing a link
+          appId: 'SOME_APP_ID/', // since there is an appid in link
+          prefix: 'prefix',
+        }),
+        engineUrl: expect.any(String),
+        appUrl: url,
+      });
+    });
+    test('should match app correctly without prefix', () => {
+      url = `wss://${authConfig.host}/app/SOME_APP_ID/`;
+      const result2 = parseEngineURL(url);
+      expect(result2).toMatchObject({
+        enigma: expect.objectContaining({
+          secure: expect.any(Boolean),
+          host: expect.any(String),
+          port: undefined, // because of providing a link
+          appId: 'SOME_APP_ID/', // since there is an appid in link
+          prefix: undefined,
+        }),
+        engineUrl: expect.any(String),
+        appUrl: url,
+      });
+    });
+
+    test('should match app and prefix with all allowed characters', () => {
+      url = `wss://${authConfig.host}/prefix123456789-._~/app/SOME_APP_ID/`;
+      const result2 = parseEngineURL(url);
+      expect(result2).toMatchObject({
+        enigma: expect.objectContaining({
+          secure: expect.any(Boolean),
+          host: expect.any(String),
+          port: undefined, // because of providing a link
+          appId: 'SOME_APP_ID/', // since there is an appid in link
+          prefix: 'prefix123456789-._~',
         }),
         engineUrl: expect.any(String),
         appUrl: url,

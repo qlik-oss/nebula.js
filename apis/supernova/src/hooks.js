@@ -50,6 +50,7 @@ export function initiate(component, { explicitResize = false } = {}) {
     accessibility: {
       setter: null,
     },
+    contraintsWarning: true,
   };
 }
 
@@ -907,10 +908,13 @@ export function useAction(fn, deps) {
  */
 export function useConstraints() {
   if (__NEBULA_DEV__) {
-    // eslint-disable-next-line no-console
-    console.warn(
-      'useContraints has been deprecated, please change to useInteractions instead. Note that interactions uses inverted values compared to contraints.'
-    );
+    if (currentComponent.__hooks.contraintsWarning) {
+      // eslint-disable-next-line no-console
+      console.warn(
+        'useContraints has been deprecated, please change to useInteractions instead. Note that interactions uses inverted values compared to contraints.'
+      );
+      currentComponent.__hooks.contraintsWarning = false;
+    }
   }
   return useInternalContext('constraints');
 }
