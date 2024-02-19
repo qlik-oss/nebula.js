@@ -72,7 +72,6 @@ export default function ListBoxSearch({
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const [wildcardOn, setWildcardOn] = useState(false);
-  const selectIsDisabled = !!selectionState.selectDisabled?.();
 
   const inputRef = useRef();
 
@@ -83,7 +82,7 @@ export default function ListBoxSearch({
 
   const abortSearch = async () => {
     // When select is disabled we always want to allow abort (but not permitting selections).
-    const preventAbort = selectIsDisabled ? false : !selections.isModal();
+    const preventAbort = selectionState.selectDisabled() ? false : !selections.isModal();
     if (preventAbort) {
       return;
     }
@@ -132,7 +131,7 @@ export default function ListBoxSearch({
       setValue(WILDCARD);
       setWildcardOn(true);
     }
-    if (!selectIsDisabled && !selections.isModal()) {
+    if (!selectionState.selectDisabled() && !selections.isModal()) {
       selections.begin(['/qListObjectDef']);
     }
   };
@@ -145,7 +144,7 @@ export default function ListBoxSearch({
   const performSearch = async () => {
     let response;
     const success = await model.searchListObjectFor(TREE_PATH, value);
-    if (!selectIsDisabled && success && value.length && hasHits()) {
+    if (!selectionState.selectDisabled() && success && value.length && hasHits()) {
       response = model.acceptListObjectSearch(TREE_PATH, true);
       // eslint-disable-next-line no-param-reassign
       selections.selectionsMade = true;
