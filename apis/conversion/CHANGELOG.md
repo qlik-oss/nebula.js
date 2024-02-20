@@ -10,6 +10,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 # [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
 
 # [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
+# [4.11.0](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v4.11.0) (2024-02-16)
 
 **Note:** Version bump only for package @nebula.js/conversion
 

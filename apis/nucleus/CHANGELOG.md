@@ -18,6 +18,9 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 ### Bug Fixes
 
 - use session based model and request storage ([492b7fe](https://github.com/qlik-oss/nebula.js/commit/492b7fed8229a0a6e8efb4e38eccab5a29a34e99))
+# [4.11.0](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v4.11.0) (2024-02-16)
+
+**Note:** Version bump only for package @nebula.js/nucleus
 
 # [4.10.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v4.10.0) (2024-02-01)
 

@@ -20,11 +20,19 @@ const getParams = () => {
   return opts;
 };
 
-// Qlik Core:  ws://<host>:<port>/app/<data-folder>/<app-name>
+// These URLS are fully constructed later using the sdk
 // QCS:       wss://<tenant-url>.<region>.qlikcloud.com/app/<app-GUID>
-// QSEoK:     wss://<host>/app/<app-GUID>
 // QSEoW:     wss://<host>/<virtual-proxy-prefix>/app/<app-GUID>
-const parseEngineURL = (url, urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/, appRegex = /\/app\/([^?&#:]+)/) => {
+
+// matches the wss://<host>/<virtual-proxy-prefix>/
+const urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/;
+const appRegex = /\/app\/([^?&#:]+)/;
+// The prefix must be unique for all virtual proxies used by the same proxy service,
+// as this differentiates the virtual proxies and will be a part of the URL (https://[node]/[prefix]/).
+// Valid characters for prefix are "a-z", "0-9", "-", ".", "_", "~".
+const prefixRegx = /(wss?):\/\/([^/:?&]+)(?::(\d+))?\/?([a-z0-9-._~]+)?/;
+
+const parseEngineURL = (url) => {
   const match = urlRegex.exec(url);
   if (!match) {
     return {
@@ -46,11 +54,20 @@ const parseEngineURL = (url, urlRegex = /(wss?):\/\/([^/:?&]+)(?::(\d+))?/, appR
     appUrl = trimmedUrl;
   }
 
+  const engineMatch = prefixRegx.exec(engineUrl);
+
+  if (!engineMatch) {
+    return {
+      engineUrl: url,
+      invalid: true,
+    };
+  }
   return {
     enigma: {
       secure: match[1] === 'wss',
       host: match[2],
       port: match[3] || undefined,
+      prefix: engineMatch[4] || undefined,
       appId,
     },
     engineUrl,

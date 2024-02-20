@@ -210,7 +210,7 @@ module.exports = async ({
           // but until then, we need to take care of it here!
           authInstance.rest.interceptors.request.use((_req) => {
             // eslint-disable-next-line no-param-reassign, dot-notation
-            _req[1]['headers'] = { origin: 'http://localhost:8000' };
+            _req[1]['headers'] = { origin: url };
             return _req;
           });
           await authInstance.authorize(authLink);
@@ -334,7 +334,7 @@ module.exports = async ({
          `);
 
         if (serveConfig.mfe) {
-          const bundleUrl = `${url}/pkg/${snName}`;
+          const bundleUrl = `${url}/pkg/${encodeURIComponent(snName)}`;
           console.log('Development server running in MFE mode');
           console.log(`Bundle served at ${chalk.green(bundleUrl)}`);
           console.log('');

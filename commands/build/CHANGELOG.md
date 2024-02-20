@@ -6,6 +6,11 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 # [5.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v5.0.0-alpha.3) (2024-02-06)
 
 **Note:** Version bump only for package @nebula.js/cli-build
+# [4.11.0](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v4.11.0) (2024-02-16)
+
+### Features
+
+- add option codeSplit to allow for code-splitting ([#1476](https://github.com/qlik-oss/nebula.js/issues/1476)) ([24e0572](https://github.com/qlik-oss/nebula.js/commit/24e0572676d8dd245bf808f2fe47b980f4978898))
 
 # [4.10.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v4.10.0) (2024-02-01)
 
