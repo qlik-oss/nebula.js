@@ -144,7 +144,10 @@ export default function ListBoxSearch({
   const performSearch = async () => {
     let response;
     const success = await model.searchListObjectFor(TREE_PATH, value);
-    if (!selectionState.selectDisabled() && success && value.length && hasHits()) {
+    if (selectionState.selectDisabled()) {
+      return success;
+    }
+    if (success && value.length && hasHits()) {
       response = model.acceptListObjectSearch(TREE_PATH, true);
       // eslint-disable-next-line no-param-reassign
       selections.selectionsMade = true;
