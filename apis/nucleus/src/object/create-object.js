@@ -1,7 +1,7 @@
 import populateData from './populator';
 
 /**
- * @typedef {string | EngineAPI.INxDimension | EngineAPI.INxMeasure | LibraryField} Field
+ * @typedef {string | qix.NxDimension | qix.NxMeasure | LibraryField} Field
  */
 
 /**
@@ -10,7 +10,7 @@ import populateData from './populator';
  * @property {string} type
  * @property {string=} version
  * @property {(Field[])=} fields
- * @property {EngineAPI.IGenericObjectProperties=} properties
+ * @property {qix.GenericObjectProperties=} properties
  */
 
 export default async function createObject(

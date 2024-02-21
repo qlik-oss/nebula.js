@@ -198,7 +198,7 @@ function nuked(configuration = {}) {
    * Initiates a new `Embed` instance using the specified enigma `app`.
    * @entry
    * @function embed
-   * @param {EngineAPI.IApp} app
+   * @param {qix.Doc} app
    * @param {Configuration=} instanceConfig
    * @returns {Embed}
    * @example
@@ -327,7 +327,7 @@ function nuked(configuration = {}) {
        * Creates a visualization model
        * @param {CreateConfig} cfg The create configuration.
        * @experimental
-       * @returns {Promise<EngineAPI.IGenericObject>} An engima model
+       * @returns {Promise<qix.GenericObject>} An engima model
        * @example
        * // create a barchart in the app and return the model
        * const model = await n.create({

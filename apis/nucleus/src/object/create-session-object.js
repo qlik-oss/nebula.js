@@ -2,7 +2,7 @@ import populateData from './populator';
 import init from './initiate';
 
 /**
- * @typedef {string | EngineAPI.INxDimension | EngineAPI.INxMeasure | LibraryField} Field
+ * @typedef {string | qix.NxDimension | qix.NxMeasure | LibraryField} Field
  */
 
 /**
@@ -16,7 +16,7 @@ import init from './initiate';
  * @property {string=} version For creating objects: Version of visualization to render
  * @property {(Field[])=} fields For creating objects: Data fields to use
  * @property {boolean=} [extendProperties=false] For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.
- * @property {EngineAPI.IGenericObjectProperties=} properties For creating objects: Explicit properties to set
+ * @property {qix.GenericObjectProperties=} properties For creating objects: Explicit properties to set
  * @example
  * // A config for Creating objects:
  * const createConfig = {

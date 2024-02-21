@@ -73,7 +73,7 @@ const GLOBALS = {
 
 const watch = process.argv.indexOf('-w') > 2;
 
-const TYPES_SCOPE_RX = /^@types\//;
+const TYPES_SCOPE_RX = /^@qlik\/api/;
 
 const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
   const umdName = targetName
@@ -82,6 +82,8 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
     .join('');
 
   if (Object.keys(targetPkg.dependencies || {}).filter((dep) => !TYPES_SCOPE_RX.test(dep)).length) {
+    console.log(targetPkg.name);
+    console.log(JSON.stringify(Object.keys(targetPkg.dependencies || {}).filter((dep) => !TYPES_SCOPE_RX.test(dep))));
     throw new Error('Dependencies for a web javascript library makes no sense');
   }
 

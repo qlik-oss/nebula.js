@@ -23,22 +23,22 @@ module.exports = {
     parse: {
       types: {
         undefined: {},
-        'EngineAPI.INxAppLayout': {},
-        'EngineAPI.IGenericObject': {},
-        'EngineAPI.IGlobal': {},
-        'EngineAPI.IApp': {
+        'qix.NxAppLayout': {},
+        'qix.GenericObject': {},
+        'qix.Global': {},
+        'qix.Doc': {
           url: 'https://qlik.dev/apis/json-rpc/qix/doc#%23%2Fentries%2FDoc',
         },
-        'EngineAPI.IGenericObjectLayout': {
+        'qix.GenericObjectLayout': {
           url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FGenericObjectLayout',
         },
-        'EngineAPI.IGenericObjectProperties': {
+        'qix.GenericObjectProperties': {
           url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FGenericObjectProperties',
         },
-        'EngineAPI.INxDimension': {
+        'qix.NxDimension': {
           url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FNxDimension',
         },
-        'EngineAPI.INxMeasure': {
+        'qix.NxMeasure': {
           url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FNxMeasure',
         },
       },
@@ -50,7 +50,7 @@ module.exports = {
       file: './types/index.d.ts',
     },
     dependencies: {
-      references: ['qlik-engineapi'],
+      imports: [{ type: '* as qix', package: "'@qlik/api/qix'" }],
     },
   },
 };

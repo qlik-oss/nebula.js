@@ -25,7 +25,7 @@ const noop = () => {};
 
 /**
  * @interface QAEDefinition
- * @property {EngineAPI.IGenericObjectProperties=} properties
+ * @property {qix.GenericObjectProperties=} properties
  * @property {object=} data
  * @property {DataTarget[]} data.targets
  * @property {importProperties=} importProperties
@@ -35,22 +35,22 @@ const noop = () => {};
 /**
  * @interface DataTarget
  * @property {string} path
- * @property {FieldTarget<EngineAPI.INxDimension>=} dimensions
- * @property {FieldTarget<EngineAPI.INxMeasure>=} measures
+ * @property {FieldTarget<qix.NxDimension>=} dimensions
+ * @property {FieldTarget<qix.NxMeasure>=} measures
  */
 
 /**
  * @callback fieldTargetAddedCallback
  * @template T
  * @param {T} field
- * @param {EngineAPI.IGenericObjectProperties} properties
+ * @param {qix.GenericObjectProperties} properties
  */
 
 /**
  * @callback fieldTargetRemovedCallback
  * @template T
  * @param {T} field
- * @param {EngineAPI.IGenericObjectProperties} properties
+ * @param {qix.GenericObjectProperties} properties
  * @param {number} index
  */
 

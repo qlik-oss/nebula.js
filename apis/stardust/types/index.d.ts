@@ -1,11 +1,11 @@
 // File generated automatically by "@scriptappy/to-dts"; DO NOT EDIT.
-/// <reference types="qlik-engineapi" />
+import * as qix from '@qlik/api/qix';
 /**
  * Initiates a new `Embed` instance using the specified enigma `app`.
  * @param app
  * @param instanceConfig
  */
-export function embed(app: EngineAPI.IApp, instanceConfig?: stardust.Configuration): stardust.Embed;
+export function embed(app: qix.Doc, instanceConfig?: stardust.Configuration): stardust.Embed;
 
 export namespace embed {
     /**
@@ -64,7 +64,7 @@ export function useRect(): stardust.Rect;
 /**
  * Gets the layout of the generic object associated with this visualization.
  */
-export function useLayout(): EngineAPI.IGenericObjectLayout;
+export function useLayout(): qix.GenericObjectLayout;
 
 /**
  * Gets the layout of the generic object associated with this visualization.
@@ -75,27 +75,27 @@ export function useLayout(): EngineAPI.IGenericObjectLayout;
  * The returned value from `useStaleLayout()` and `useLayout()` are identical when the object
  * is not in a modal state.
  */
-export function useStaleLayout(): EngineAPI.IGenericObjectLayout;
+export function useStaleLayout(): qix.GenericObjectLayout;
 
 /**
  * Gets the layout of the app associated with this visualization.
  */
-export function useAppLayout(): EngineAPI.INxAppLayout;
+export function useAppLayout(): qix.NxAppLayout;
 
 /**
  * Gets the generic object API of the generic object connected to this visualization.
  */
-export function useModel(): EngineAPI.IGenericObject | undefined;
+export function useModel(): qix.GenericObject | undefined;
 
 /**
  * Gets the doc API.
  */
-export function useApp(): EngineAPI.IApp | undefined;
+export function useApp(): qix.Doc | undefined;
 
 /**
  * Gets the global API.
  */
-export function useGlobal(): EngineAPI.IGlobal | undefined;
+export function useGlobal(): qix.Global | undefined;
 
 /**
  * Gets the object selections.
@@ -176,7 +176,7 @@ export function useImperativeHandle<T>(factory: ()=>T, deps?: any[]): void;
  * Registers a callback that is called when a snapshot is taken.
  * @param snapshotCallback
  */
-export function onTakeSnapshot(snapshotCallback: ($: EngineAPI.IGenericObjectLayout)=>Promise<EngineAPI.IGenericObjectLayout>): void;
+export function onTakeSnapshot(snapshotCallback: ($: qix.GenericObjectLayout)=>Promise<qix.GenericObjectLayout>): void;
 
 /**
  * Gets render state instance.
@@ -215,15 +215,15 @@ export namespace Conversion {
  */
 export namespace EnigmaMocker {
     /**
-     * Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visulization and specifies how it behaves. For example, what layout to use the data to present.
+     * Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visualisation and specifies how it behaves. For example, what layout to use the data to present.
      * 
      * The generic object is represented with a Javascript object with a number of properties. The name of the property correlates to the name in the Enigma model for `app.getObject(id)`. For example, the property `getLayout` in the generic object is used to define `app.getObject(id).getLayout()`. Any property can be added to the fixture (just make sure it exists and behaves as in the Enigma model!).
      * 
      * The value for each property is either fixed (string / boolean / number / object) or a function. Arguments are forwarded to the function to allow for greater flexibility. For example, this can be used to return different hypercube data when scrolling in the chart.
-     * @param genericObjects Generic objects controling behaviour of visualizations.
+     * @param genericObjects Generic objects controlling behaviour of visualizations.
      * @param options Options
      */
-    function fromGenericObjects(genericObjects: object[], options?: stardust.EnigmaMockerOptions): Promise<EngineAPI.IApp>;
+    function fromGenericObjects(genericObjects: object[], options?: stardust.EnigmaMockerOptions): Promise<qix.Doc>;
 
 }
 
@@ -277,7 +277,7 @@ declare namespace stardust {
          * Creates a visualization model
          * @param cfg The create configuration.
          */
-        create(cfg: stardust.CreateConfig): Promise<EngineAPI.IGenericObject>;
+        create(cfg: stardust.CreateConfig): Promise<qix.GenericObject>;
 
         /**
          * Generates properties for a visualization object
@@ -404,7 +404,7 @@ declare namespace stardust {
 
         id: string;
 
-        model: EngineAPI.IGenericObject;
+        model: qix.GenericObject;
 
         /**
          * Destroys the visualization and removes it from the the DOM.
@@ -536,17 +536,7 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
-    type Field = string | EngineAPI.INxDimension | EngineAPI.INxMeasure | stardust.LibraryField;
+    type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
 
     /**
      * Rendering configuration for creating and rendering a new object
@@ -555,7 +545,7 @@ declare namespace stardust {
         type: string;
         version?: string;
         fields?: stardust.Field[];
-        properties?: EngineAPI.IGenericObjectProperties;
+        properties?: qix.GenericObjectProperties;
     }
 
     /**
@@ -570,12 +560,22 @@ declare namespace stardust {
         version?: string;
         fields?: stardust.Field[];
         extendProperties?: boolean;
-        properties?: EngineAPI.IGenericObjectProperties;
+        properties?: qix.GenericObjectProperties;
     }
 
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {
@@ -736,7 +736,7 @@ declare namespace stardust {
     })=>stardust.ExportFormat;
 
     interface QAEDefinition {
-        properties?: EngineAPI.IGenericObjectProperties;
+        properties?: qix.GenericObjectProperties;
         data?: {
             targets: stardust.DataTarget[];
         };
@@ -746,13 +746,13 @@ declare namespace stardust {
 
     interface DataTarget {
         path: string;
-        dimensions?: stardust.FieldTarget<EngineAPI.INxDimension>;
-        measures?: stardust.FieldTarget<EngineAPI.INxMeasure>;
+        dimensions?: stardust.FieldTarget<qix.NxDimension>;
+        measures?: stardust.FieldTarget<qix.NxMeasure>;
     }
 
-    type fieldTargetAddedCallback<T> = (field: T, properties: EngineAPI.IGenericObjectProperties)=>void;
+    type fieldTargetAddedCallback<T> = (field: T, properties: qix.GenericObjectProperties)=>void;
 
-    type fieldTargetRemovedCallback<T> = (field: T, properties: EngineAPI.IGenericObjectProperties, index: number)=>void;
+    type fieldTargetRemovedCallback<T> = (field: T, properties: qix.GenericObjectProperties, index: number)=>void;
 
     interface FieldTarget<T> {
         min?: (()=>void) | number;
@@ -878,10 +878,10 @@ declare namespace stardust {
     }
 
     interface ExportDataDef {
-        dimensions: EngineAPI.INxDimension[];
-        measures: EngineAPI.INxMeasure[];
-        excludedDimensions: EngineAPI.INxDimension[];
-        excludedMeasures: EngineAPI.INxMeasure[];
+        dimensions: qix.NxDimension[];
+        measures: qix.NxMeasure[];
+        excludedDimensions: qix.NxDimension[];
+        excludedMeasures: qix.NxMeasure[];
         interColumnSortOrder: number[];
     }
 
