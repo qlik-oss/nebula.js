@@ -1,6 +1,6 @@
 import { getSelectedValues } from './listbox-selections';
 
-export default function selectionState() {
+export default function selectionState(initialState = {}) {
   const state = {
     itemStates: {},
     ignoreSelectionState: false,
@@ -9,6 +9,8 @@ export default function selectionState() {
     setPages: undefined,
     lastRowCount: undefined,
     lastApprMaxGlyphCount: undefined,
+    selectDisabled: undefined,
+    ...initialState,
 
     update({ setPages, pages, isSingleSelect, selectDisabled, layout }) {
       this.setPages = setPages;
@@ -31,7 +33,7 @@ export default function selectionState() {
         state.triggerStateChanged();
       }
       state.isSingleSelect = isSingleSelect;
-      state.selectDisabled = selectDisabled;
+      state.selectDisabled = selectDisabled || state.selectDisabled;
       state.isDimCalculated = layout?.qListObject?.qDimensionInfo?.qIsCalculated ?? false;
     },
 

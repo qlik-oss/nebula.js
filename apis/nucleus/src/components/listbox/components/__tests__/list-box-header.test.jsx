@@ -43,7 +43,6 @@ function getDefaultProps() {
     styles,
     isRtl: false,
     showLock: true,
-    selectDisabled: () => false,
     showSearchIcon: 'toggle',
     isDrillDown: false,
     constraints: { active: false },
@@ -57,6 +56,7 @@ function getDefaultProps() {
     model,
     selectionState: {
       clearItemStates: jest.fn(),
+      selectDisabled: jest.fn().mockReturnValue(false),
     },
     isDirectQuery: false,
     selections,

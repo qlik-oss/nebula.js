@@ -109,7 +109,7 @@ describe('<Listbox />', () => {
     global.window = { setTimeout: setTimeoutStub };
     selectDisabled = () => false;
     selections = { key: 'selections' };
-    selectionState = { update: jest.fn() };
+    selectionState = { update: jest.fn(), selectDisabled: jest.fn().mockReturnValue(false) };
 
     args = {
       model: {
@@ -166,7 +166,6 @@ describe('<Listbox />', () => {
                 height={mergedArgs.height}
                 width={mergedArgs.width}
                 update={mergedArgs.update}
-                selectDisabled={mergedArgs.selectDisabled}
                 fetchStart={mergedArgs.fetchStart}
                 keyScroll={mergedArgs.keyScroll}
                 currentScrollIndex={mergedArgs.currentScrollIndex}
