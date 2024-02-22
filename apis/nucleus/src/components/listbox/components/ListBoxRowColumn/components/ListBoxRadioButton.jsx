@@ -5,7 +5,6 @@ import { Radio } from '@mui/material';
 const PREFIX = 'ListBoxRadioButton';
 
 const classes = {
-  denseRadioButton: `${PREFIX}-denseRadioButton`,
   radioButton: `${PREFIX}-radioButton`,
 };
 
