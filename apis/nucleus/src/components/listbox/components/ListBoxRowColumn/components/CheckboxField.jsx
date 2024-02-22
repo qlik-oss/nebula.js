@@ -34,7 +34,14 @@ function CheckboxField({
     />
   );
   const rb = (
-    <ListBoxRadioButton onChange={onChange} label={label} checked={isSelected} dense={dense} dataN={qElemNumber} />
+    <ListBoxRadioButton
+      onChange={onChange}
+      label={label}
+      checked={isSelected}
+      dense={dense}
+      dataN={qElemNumber}
+      styles={styles}
+    />
   );
 
   return (
