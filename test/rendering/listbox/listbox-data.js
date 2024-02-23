@@ -254,10 +254,10 @@ window.getFuncs = function getFuncs() {
       qInfo: {
         qId: 'qId',
       },
+      autoConfirm: options?.autoConfirm,
       visualization: 'listbox',
       qListObject: {
         qDimensionInfo: {
-          autoConfirm: options?.autoConfirm,
           qLocked: false,
         },
         qSize: {
