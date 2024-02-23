@@ -257,6 +257,7 @@ window.getFuncs = function getFuncs() {
       visualization: 'listbox',
       qListObject: {
         qDimensionInfo: {
+          autoConfirm: options?.autoConfirm,
           qLocked: false,
         },
         qSize: {
