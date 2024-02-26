@@ -92,6 +92,8 @@ const RowColRoot = styled('div', {
     borderColor: styles.selections.selected || '#BFE5D0',
   };
 
+  const filledBarBorderColor = '#D9D9D9'; // overridden by selected color (classes.S)
+
   return {
     '&:focus': {
       boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
@@ -209,6 +211,16 @@ const RowColRoot = styled('div', {
       border: isGridMode ? 'none' : undefined,
     },
 
+    [`& .${classes.X}, & .${classes.XS}`]: {
+      // Override the selected color for bar-filled, when the value is selected and excluded.
+      border: isGridMode ? 'none' : undefined,
+      [`& .${classes.barSelected} .bar-filled`]: {
+        backgroundColor: '#FAFAFA',
+        border: `${barBorderWidthPx}px solid`,
+        borderColor: filledBarBorderColor,
+      },
+    },
+
     [`& .${classes.frequencyCount}`]: {
       zIndex: 3,
       justifyContent: 'flex-end',
@@ -239,7 +251,7 @@ const RowColRoot = styled('div', {
       alignItems: 'center',
       '& .bar-filled': {
         border: `${barBorderWidthPx}px solid`,
-        borderColor: '#D9D9D9',
+        borderColor: filledBarBorderColor,
         transition: 'width 0.2s',
         backgroundColor: '#FAFAFA',
         height: '100%',
@@ -250,7 +262,6 @@ const RowColRoot = styled('div', {
         ...barSelectedFilledStyle,
       },
     },
-
     [`& .${classes.barWithCheckbox}`]: {
       left: direction === 'rtl' ? barPadPx : barWithCheckboxLeftPadPx,
       width: `calc(100% - ${barWithCheckboxLeftPadPx + barPadPx}px)`,
