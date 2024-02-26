@@ -21,7 +21,6 @@
       getAppLayout: async () => ({ qTitle: '', qLocaleInfo: {} }),
     };
     return {
-      obj,
       app,
     };
   }
@@ -63,6 +62,9 @@
     switch (s) {
       case 'standard':
         sc = {};
+        break;
+      case 'autoConfirm':
+        sc = { autoConfirm: true };
         break;
       case 'checkboxes':
         sc = { checkboxes: true };

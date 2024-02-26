@@ -66,6 +66,23 @@ test.describe('listbox mashup rendering test', () => {
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 
+  test('selecting values should not show the selections toolbar when autoConfirm is true', async () => {
+    const FILE_NAME = 'listbox_select_EH_auto_confirm.png';
+
+    await page.goto(`${url}/listbox/listbox.html?scenario=autoConfirm`, { waitUntil: 'networkidle' });
+    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+
+    const selectNumbers = [4, 7];
+    const action = async (nbr) => {
+      const rowSelector = `${listboxSelector} [data-n="${nbr}"]`;
+      await page.click(rowSelector);
+    };
+    await execSequence(selectNumbers, action);
+
+    const image = await selector.screenshot({ caret: 'hide' });
+    return expect(image).toMatchSnapshot(FILE_NAME);
+  });
+
   test('listbox search', async () => {
     const FILE_NAME = 'listbox_search_B.png';
     const searchSelector = '.search input';
