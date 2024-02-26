@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.12.0](https://github.com/qlik-oss/nebula.js/compare/v4.11.0...v4.12.0) (2024-02-26)
+
+### Bug Fixes
+
+- **listbox:** add removed autoConfirm option ([#1496](https://github.com/qlik-oss/nebula.js/issues/1496)) ([c2ffdc8](https://github.com/qlik-oss/nebula.js/commit/c2ffdc84797500f76eb4d3e041cc9860dea8b3c4))
+- **listbox:** color radio buttons with custom styling ([#1494](https://github.com/qlik-oss/nebula.js/issues/1494)) ([9e27e3c](https://github.com/qlik-oss/nebula.js/commit/9e27e3c4364d8d8da9c09d4b3e9cdf750a7fd506))
+- **listbox:** disable selections when they should ([#1489](https://github.com/qlik-oss/nebula.js/issues/1489)) ([d78978a](https://github.com/qlik-oss/nebula.js/commit/d78978adfabdd36ab8511085dcb37eb2c8c9ec71))
+
 # [4.11.0](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v4.11.0) (2024-02-16)
 
 **Note:** Version bump only for package @nebula.js/nucleus
