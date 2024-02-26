@@ -3,11 +3,12 @@ import { styled } from '@mui/system';
 import Stepper from '@mui/material/Stepper';
 import StepLabel from '@mui/material/StepLabel';
 
-export const ContentWrapper = styled(Box)(({ theme }) => ({
+export const ContentWrapper = styled(Box)(({ theme, marginTop = 0 }) => ({
   position: 'relative',
   padding: theme.spacing(2, 2),
   backgroundColor: 'white',
   borderRadius: theme.spacing(1),
+  marginTop: theme.spacing(marginTop),
 }));
 
 export const StepperWrapper = styled(Stepper)(({ theme }) => ({

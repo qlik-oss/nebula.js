@@ -6,6 +6,7 @@ import HubLayout from './Layouts/HubLayout';
 import SelectEngine from './Hub/SelectEngine/SelectEngine';
 import AppList from './Hub/AppList';
 import Visualize from './Visualize/Visualize';
+import OAuthRedirectLinkError from './Hub/Errors/OAuthRedirectLinkError';
 
 export const Root = () => (
   <BrowserRouter>
@@ -16,6 +17,7 @@ export const Root = () => (
           <Route path="/app-list" element={<AppList />} />
         </Route>
         <Route path="/dev" element={<Visualize />} />
+        <Route path="/login/callback" element={<OAuthRedirectLinkError />} />
       </Routes>
     </RootContextProvider>
   </BrowserRouter>
