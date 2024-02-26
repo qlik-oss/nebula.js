@@ -51,7 +51,7 @@ const ConnectionGuid = ({ showGuid }) => (
       <br />
       Example: <code>wss://qlik.eu.qlikcloud.com?qlik-client-id=xxx</code>
       <br />
-      Redirect URL form: http://localhost:8000/login/callback
+      Redirect URL form: <code>http://localhost:8000/auth/login/callback</code>
       <br />
       The <code>qlik-web-integration-id</code> <b>OR</b> <code>qlik-client-id</code> must be present in order for QCS to
       confirm that the request originates from a whitelisted domain.
