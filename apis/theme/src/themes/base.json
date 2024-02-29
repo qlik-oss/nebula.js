@@ -8,6 +8,23 @@
     "errorColor": "#ff4444",
     "nullColor": "#d2d2d2"
   },
+  "object": {
+    "title": {
+      "main": {
+        "color": "@B50",
+        "fontSize": "15px"
+      },
+      "subTitle": {
+        "color": "@B50",
+        "fontSize": "12px"
+      },
+      "footer": {
+        "color": "@B50",
+        "fontSize": "12px",
+        "backgroundColor": "transparent"
+      }
+    }
+  },
   "scales": [
     {
       "name": "Sequential Gradient",
