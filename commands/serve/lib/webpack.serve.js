@@ -53,7 +53,7 @@ module.exports = async ({
     snapshooter.storeSnapshot(s);
   });
 
-  const authRouter = OAuthRouter();
+  const authRouter = OAuthRouter({ originUrl: url });
   const snapRouter = snapshotRouter({
     base: `${url}${snapshotRoute}`,
     snapshotUrl: `${url}/eRender.html`,
