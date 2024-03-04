@@ -76,9 +76,15 @@ export default function theme(resolvedTheme) {
       };
     },
     uiColor(c, shift) {
+      const indexIsValid = typeof c?.index === 'number' && !Number.isNaN(c?.index);
+      const colorIsValid = typeof c?.color === 'string';
+      const somethingIsValid = indexIsValid || colorIsValid;
+      if (!somethingIsValid) {
+        return undefined;
+      }
       // eslint-disable-next-line no-param-reassign
       shift = !!shift;
-      if (c.index < 0 || typeof c.index === 'undefined') {
+      if (c?.index < 0 || typeof c?.index === 'undefined') {
         return c.color;
       }
       if (typeof uiPalette === 'undefined') {

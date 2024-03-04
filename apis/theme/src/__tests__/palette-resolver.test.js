@@ -132,5 +132,17 @@ describe('palette-resolver', () => {
       uiPalettesMock.mockReturnValue([{ colors: ['a', 'b', 'c'] }]);
       expect(p.uiColor({ color: 'red', index: 1 })).toBe('b');
     });
+
+    describe('should sanity check inputs', () => {
+      beforeEach(() => {
+        uiPalettesMock.mockReturnValue([{ colors: ['a', 'b', 'c'] }]);
+      });
+      test('should not throw', () => {
+        expect(() => p.uiColor(undefined)).not.toThrow();
+      });
+      test('check input color without digging into the object', () => {
+        expect(p.uiColor({ color: undefined, index: undefined })).toBe(undefined);
+      });
+    });
   });
 });
