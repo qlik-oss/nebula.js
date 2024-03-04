@@ -92,7 +92,6 @@ export default function ListBoxHeader({
   isRtl,
   showLock,
   showSearchIcon,
-  dimensionInfo,
   constraints,
   onShowSearch,
   classes,
@@ -118,7 +117,7 @@ export default function ListBoxHeader({
   }, [layout?.qListObject?.qDimensionInfo?.qLocked]);
 
   const titleRef = useRef(null);
-  const iconData = createDimensionIconData(dimensionInfo, app);
+  const iconData = createDimensionIconData(layout?.qListObject?.qDimensionInfo, app);
   const showUnlock = showLock && isLocked;
   const showLockIcon = !showLock && isLocked; // shows instead of the cover button when field/dim is locked.
   const showLeftIcon = showSearchIcon || showLockIcon || iconData; // the left-most icon outside of the actions/selections toolbar.
