@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0-alpha4](https://github.com/qlik-oss/nebula.js/compare/v4.12.0...v5.0.0-alpha4) (2024-03-04)
+
+### Bug Fixes
+
+- align font sizes ([#1499](https://github.com/qlik-oss/nebula.js/issues/1499)) ([98184d0](https://github.com/qlik-oss/nebula.js/commit/98184d0915cddad3099ca6ac427234ef11426c19))
+
 # [4.12.0](https://github.com/qlik-oss/nebula.js/compare/v4.11.0...v4.12.0) (2024-02-26)
 
 **Note:** Version bump only for package @nebula.js/theme
