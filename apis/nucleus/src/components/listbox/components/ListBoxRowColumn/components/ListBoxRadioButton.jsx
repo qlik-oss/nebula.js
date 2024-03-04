@@ -5,18 +5,21 @@ import { Radio } from '@mui/material';
 const PREFIX = 'ListBoxRadioButton';
 
 const classes = {
-  denseRadioButton: `${PREFIX}-denseRadioButton`,
   radioButton: `${PREFIX}-radioButton`,
 };
 
-const StyledRadio = styled(Radio)(({ theme, checked }) => ({
-  [`&.${classes.radioButton}`]: {
-    right: '5px',
-    color: checked ? theme.palette.selected.main : theme.palette.main,
-  },
-}));
+const StyledRadio = styled(Radio, { shouldForwardProp: (p) => !['dense', 'styles'].includes(p) })(
+  ({ checked, styles, dense }) => ({
+    [`&.${classes.radioButton}`]: {
+      right: '5px',
+      color: checked ? styles.selections.selected : styles.content.color,
+      padding: dense ? '0px 0px 0px 12px' : undefined,
+      backgroundColor: 'transparent',
+    },
+  })
+);
 
-export default function ListBoxRadioButton({ onChange, checked, label, dense, dataN }) {
+export default function ListBoxRadioButton({ onChange, checked, label, dense, dataN, styles }) {
   return (
     <StyledRadio
       checked={checked}
@@ -25,10 +28,10 @@ export default function ListBoxRadioButton({ onChange, checked, label, dense, da
       name={label}
       className={classes.radioButton}
       inputProps={{ 'data-n': dataN }}
-      style={{ backgroundColor: 'transparent' }}
       disableRipple
       size={dense ? 'small' : 'medium'}
-      sx={dense && { padding: '0px 0px 0px 12px' }}
+      dense={dense}
+      styles={styles}
     />
   );
 }

@@ -48,7 +48,6 @@ export default function ListBox({
   keyboard = {},
   showGray = true,
   scrollState,
-  selectDisabled = () => false,
   keyScroll = { state: {}, reset: () => {} },
   currentScrollIndex = { set: () => {} },
   renderedCallback,
@@ -101,7 +100,6 @@ export default function ListBox({
       setPages,
       pages: itemsLoader.pages,
       isSingleSelect,
-      selectDisabled,
       layout,
     });
   }
@@ -292,7 +290,7 @@ export default function ListBox({
     textAlign,
     isVertical,
     pages,
-    selectDisabled,
+    selectionState,
     isSingleSelect,
     selections,
     scrollState,

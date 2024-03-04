@@ -3,21 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v5.0.0-alpha.3) (2024-02-06)
+# [4.12.0](https://github.com/qlik-oss/nebula.js/compare/v4.11.0...v4.12.0) (2024-02-26)
 
 ### Bug Fixes
 
-- nebula serve with new model cache ([#1455](https://github.com/qlik-oss/nebula.js/issues/1455)) ([c47c809](https://github.com/qlik-oss/nebula.js/commit/c47c8090c833183ae80e30dbf0cbeafb5e6ec29e))
+- **listbox:** add removed autoConfirm option ([#1496](https://github.com/qlik-oss/nebula.js/issues/1496)) ([c2ffdc8](https://github.com/qlik-oss/nebula.js/commit/c2ffdc84797500f76eb4d3e041cc9860dea8b3c4))
+- **listbox:** color radio buttons with custom styling ([#1494](https://github.com/qlik-oss/nebula.js/issues/1494)) ([9e27e3c](https://github.com/qlik-oss/nebula.js/commit/9e27e3c4364d8d8da9c09d4b3e9cdf750a7fd506))
+- **listbox:** disable selections when they should ([#1489](https://github.com/qlik-oss/nebula.js/issues/1489)) ([d78978a](https://github.com/qlik-oss/nebula.js/commit/d78978adfabdd36ab8511085dcb37eb2c8c9ec71))
 
-# [5.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2024-01-04)
-
-# [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
-
-# [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
-
-### Bug Fixes
-
-- use session based model and request storage ([492b7fe](https://github.com/qlik-oss/nebula.js/commit/492b7fed8229a0a6e8efb4e38eccab5a29a34e99))
 # [4.11.0](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v4.11.0) (2024-02-16)
 
 **Note:** Version bump only for package @nebula.js/nucleus

@@ -202,4 +202,12 @@ describe('nucleus', () => {
     const nuked = Nuked.createConfiguration({ types: ['foo', 'bar', 'foo', 'foo', 'baz'] });
     expect(nuked.config.types).toEqual(['foo', 'bar', 'baz']);
   });
+
+  test('should allow for default flags and overrides', () => {
+    const nuked = Nuked.createConfiguration({ flags: { foo: true } });
+    expect(nuked.config.flags).toEqual({ foo: true, KPI_REACTCOLORPICKER: true });
+
+    const nuked2 = Nuked.createConfiguration({ flags: { foo: true, KPI_REACTCOLORPICKER: false } });
+    expect(nuked2.config.flags).toEqual({ foo: true, KPI_REACTCOLORPICKER: false });
+  });
 });

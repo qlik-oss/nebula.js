@@ -117,6 +117,9 @@ const DEFAULT_CONFIG = {
   types: [],
   themes: [],
   anything: {},
+  flags: {
+    KPI_REACTCOLORPICKER: true,
+  },
   snapshot: DEFAULT_SNAPSHOT_CONFIG,
 };
 

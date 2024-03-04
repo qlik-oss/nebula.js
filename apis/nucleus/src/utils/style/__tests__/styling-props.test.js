@@ -117,6 +117,7 @@ describe('Styling property resolver', () => {
             color: { color: 'red' },
             fontFamily: 'familiiii',
             fontStyle: ['underline', 'italic'],
+            fontSize: 'giant',
           },
         },
       };
@@ -124,6 +125,7 @@ describe('Styling property resolver', () => {
       expect(style).toEqual({
         color: 'red',
         fontFamily: 'familiiii',
+        fontSize: 'giant',
         fontWeight: 'normal',
         fontStyle: 'italic',
         textDecoration: 'underline',
@@ -136,6 +138,7 @@ describe('Styling property resolver', () => {
           footer: {
             color: { color: 'red' },
             fontStyle: '',
+            fontSize: '58em',
           },
         },
       };
@@ -157,6 +160,7 @@ describe('Styling property resolver', () => {
       expect(style).toEqual({
         color: 'red',
         fontFamily: 'a font',
+        fontSize: '58em',
         fontWeight: 'normal',
         fontStyle: 'normal',
         textDecoration: 'initial',

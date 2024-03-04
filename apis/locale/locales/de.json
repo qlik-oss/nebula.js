@@ -219,6 +219,11 @@
     "comment": "Action text to select possible selections",
     "version": "UYEx1K96g9h4HCK3GH/6kg=="
   },
+  "SelectionToolbar.ClickToLock": {
+    "value": "Klicken zum Sperren",
+    "comment": "Lock a selection in selections toolbar",
+    "version": "N+5bajoHdzBET4ullOUhJw=="
+  },
   "SelectionToolbar.ClickToUnlock": {
     "value": "Zum Entsperren klicken",
     "comment": "Unlock a selection from listbox",
@@ -258,10 +263,5 @@
     "value": "Die Berechnungsbedingung ist nicht erfüllt",
     "comment": "Message displayed when a calculation condition is not fulfilled",
     "version": "Hj3EiDijTWZ+MhDaqSx/uQ=="
-  },
-  "SelectionToolbar.ClickToLock": {
-    "value": "Klicken zum Sperren",
-    "comment": "Lock a selection in selection toolbar",
-    "version": "yOnFI2n2tK+87jTmGHU5vw=="
   }
 }

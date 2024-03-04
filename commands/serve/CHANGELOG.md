@@ -3,17 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v5.0.0-alpha.3) (2024-02-06)
+# [4.12.0](https://github.com/qlik-oss/nebula.js/compare/v4.11.0...v4.12.0) (2024-02-26)
 
-### Bug Fixes
+**Note:** Version bump only for package @nebula.js/cli-serve
 
-- nebula serve with new model cache ([#1455](https://github.com/qlik-oss/nebula.js/issues/1455)) ([c47c809](https://github.com/qlik-oss/nebula.js/commit/c47c8090c833183ae80e30dbf0cbeafb5e6ec29e))
-
-# [5.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2024-01-04)
-
-# [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
-
-# [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
 # [4.11.0](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v4.11.0) (2024-02-16)
 
 ### Bug Fixes

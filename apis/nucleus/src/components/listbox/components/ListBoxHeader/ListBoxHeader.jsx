@@ -50,7 +50,6 @@ export default function ListBoxHeader({
   styles,
   isRtl,
   showLock,
-  selectDisabled,
   showSearchIcon,
   isDrillDown,
   constraints,
@@ -110,7 +109,7 @@ export default function ListBoxHeader({
             type: undefined,
             label: translator.get('SelectionToolbar.ClickToLock'),
             getSvgIconShape: unlock,
-            enabled: () => !settingLockedState && !selectDisabled() && hasSelections(layout),
+            enabled: () => !settingLockedState && !selectionState.selectDisabled() && hasSelections(layout),
             action: toggleLock,
           },
         ];

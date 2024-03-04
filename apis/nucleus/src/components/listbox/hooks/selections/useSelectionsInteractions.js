@@ -43,7 +43,10 @@ export default function useSelectionsInteractions({
   }, [loaderRef.current?._listRef?._outerRef]);
 
   // eslint-disable-next-line arrow-body-style
-  const doSelect = () => {
+  const doSelect = async () => {
+    if (selectionState.selectDisabled?.()) {
+      return false;
+    }
     selectionState.setSelectableValuesUpdating();
     return selectValues({
       selections,
@@ -67,7 +70,10 @@ export default function useSelectionsInteractions({
     selectionState.updateItems(toMaybeAdd, true, currentSelect.current.elemNumbers);
   };
 
-  const selectManually = (elementIds = [], additive = false, event = undefined) => {
+  const selectManually = async (elementIds = [], additive = false, event = undefined) => {
+    if (selectionState.selectDisabled?.()) {
+      return false;
+    }
     const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event?.nativeEvent);
     if (!toggle) {
       selectionState.clearItemStates(true);

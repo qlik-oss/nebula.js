@@ -25,6 +25,7 @@ describe('grid-list-components', () => {
   let styledComponentsMock;
   let onItemsRendered;
   let isModal;
+  let selectionState;
 
   beforeAll(() => {
     getFrequencyAllowedMock = jest.spyOn(getFrequencyAllowed, 'default');
@@ -44,6 +45,10 @@ describe('grid-list-components', () => {
     getFrequencyAllowedMock.mockReturnValue(true);
     RowColumnMock.mockReturnValue(<div />);
     deriveRenderOptionsMock.mockReturnValue('renderOptions');
+
+    selectionState = {
+      selectDisabled: jest.fn().mockReturnValue(false),
+    };
 
     StyledFixedSizeList = jest.fn();
     StyledFixedSizeGrid = jest.fn();
@@ -74,6 +79,7 @@ describe('grid-list-components', () => {
       histogram: false,
       isSingleSelect: false,
       select,
+      selectionState,
       selections: {
         confirm,
         cancel,

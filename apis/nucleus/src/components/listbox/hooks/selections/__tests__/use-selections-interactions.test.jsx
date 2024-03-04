@@ -79,7 +79,7 @@ describe('use-listbox-interactions', () => {
           <TestHook
             ref={ref}
             hook={useSelectionsInteractions}
-            hookProps={[{ selectionState, selections, doc: global.document, loaderRef, ...overrides }]}
+            hookProps={[{ selections, selectionState, doc: global.document, loaderRef, ...overrides }]}
           />
         );
       });
