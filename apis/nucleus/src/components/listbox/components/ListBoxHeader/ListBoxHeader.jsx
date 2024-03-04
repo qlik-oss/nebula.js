@@ -1,10 +1,11 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useRef, useState } from 'react';
-import { Grid, IconButton } from '@mui/material';
+import { Button, Grid, IconButton, styled } from '@mui/material';
 import Lock from '@nebula.js/ui/icons/lock';
 import { unlock } from '@nebula.js/ui/icons/unlock';
 import SearchIcon from '@nebula.js/ui/icons/search';
 import DrillDownIcon from '@nebula.js/ui/icons/drill-down';
+import CyclicIcon from '@nebula.js/ui/icons/reload';
 import ActionsToolbar from '../../../ActionsToolbar';
 import showToolbarDetached from '../../interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from '../../interactions/listbox-action-props';
@@ -12,6 +13,46 @@ import createListboxSelectionToolbar from '../../interactions/listbox-selection-
 import { BUTTON_ICON_WIDTH, CELL_PADDING_LEFT, HEADER_PADDING_RIGHT, ICON_PADDING } from '../../constants';
 import hasSelections from '../../assets/has-selections';
 import { HeaderTitle, StyledGridHeader, UnlockCoverButton, iconStyle } from './ListBoxHeaderComponents';
+
+const dimensionTypes = {
+  single: 'N',
+  drillDown: 'H',
+  cyclic: 'C',
+};
+
+const createDimensionIconData = (dimInfo, app) => {
+  switch (dimInfo.qGrouping) {
+    case dimensionTypes.drillDown:
+      return {
+        icon: DrillDownIcon,
+        tooltip: 'Tooltip.dimensions.drilldown',
+        onClick: undefined,
+      };
+    case dimensionTypes.cyclic:
+      return {
+        icon: CyclicIcon,
+        tooltip: 'Tooltip.dimensions.cyclic',
+        onClick: () => {
+          app
+            .getDimension(dimInfo.qLibraryId)
+            .then((dimensionModel) => {
+              dimensionModel.stepCycle(1);
+            })
+            .catch(() => null);
+        },
+      };
+    default:
+      return undefined;
+  }
+};
+
+const StyledButton = styled(Button)(() => ({
+  borderRadius: 4,
+  width: 24,
+  height: 24,
+  minWidth: 22,
+  padding: 0,
+}));
 
 // ms that needs to pass before the lock button can be toggled again
 const lockTimeFrameMs = 500;
@@ -51,7 +92,7 @@ export default function ListBoxHeader({
   isRtl,
   showLock,
   showSearchIcon,
-  isDrillDown,
+  dimensionInfo,
   constraints,
   onShowSearch,
   classes,
@@ -66,6 +107,7 @@ export default function ListBoxHeader({
   selections,
   keyboard,
   autoConfirm,
+  app,
 }) {
   const [isToolbarDetached, setIsToolbarDetached] = useState(showDetachedToolbarOnly);
   const [isLocked, setLocked] = useState(layout?.qListObject?.qDimensionInfo?.qLocked);
@@ -76,10 +118,10 @@ export default function ListBoxHeader({
   }, [layout?.qListObject?.qDimensionInfo?.qLocked]);
 
   const titleRef = useRef(null);
-
+  const iconData = createDimensionIconData(dimensionInfo, app);
   const showUnlock = showLock && isLocked;
   const showLockIcon = !showLock && isLocked; // shows instead of the cover button when field/dim is locked.
-  const showLeftIcon = showSearchIcon || showLockIcon || isDrillDown; // the left-most icon outside of the actions/selections toolbar.
+  const showLeftIcon = showSearchIcon || showLockIcon || iconData; // the left-most icon outside of the actions/selections toolbar.
 
   const paddingLeft = CELL_PADDING_LEFT - (showLeftIcon ? ICON_PADDING : 0);
   const paddingRight = isRtl ? CELL_PADDING_LEFT - (showLeftIcon ? ICON_PADDING : 0) : HEADER_PADDING_RIGHT;
@@ -88,7 +130,7 @@ export default function ListBoxHeader({
   const iconsWidth =
     (showSearchIcon ? BUTTON_ICON_WIDTH : 0) +
     (showLockIcon ? BUTTON_ICON_WIDTH : 0) +
-    (isDrillDown ? BUTTON_ICON_WIDTH : 0);
+    (iconData ? BUTTON_ICON_WIDTH : 0);
 
   const toggleLock = getToggleLock({ isLocked, setLocked, settingLockedState, setSettingLockedState, model });
 
@@ -132,6 +174,29 @@ export default function ListBoxHeader({
       <SearchIcon style={iconStyle} />
     </IconButton>
   );
+
+  const dimensionIconComp = () => {
+    const DimensionIcon = iconData?.icon;
+    const title = translator.get(iconData?.tooltip);
+    const isButton = DimensionIcon && iconData.onClick;
+    if (DimensionIcon) {
+      return isButton ? (
+        <StyledButton
+          variant="outlined"
+          onClick={iconData.onClick}
+          tabIndex={-1}
+          title={title}
+          size="large"
+          disableRipple
+        >
+          <DimensionIcon style={iconStyle} />
+        </StyledButton>
+      ) : (
+        <DimensionIcon title={title} size="large" style={{ ...iconStyle, padding: `${ICON_PADDING}px` }} />
+      );
+    }
+    return undefined;
+  };
 
   useEffect(() => {
     if (!titleRef.current || !containerRect) {
@@ -203,13 +268,7 @@ export default function ListBoxHeader({
       {showLeftIcon && (
         <Grid item container alignItems="center" width={iconsWidth} className="header-action-container">
           {lockedIconComp || (showSearchIcon && searchIconComp)}
-          {isDrillDown && (
-            <DrillDownIcon
-              tabIndex={-1}
-              title={translator.get('Listbox.DrillDown')}
-              style={{ ...iconStyle, padding: `${ICON_PADDING}px` }}
-            />
-          )}
+          {dimensionIconComp()}
         </Grid>
       )}
       <Grid
