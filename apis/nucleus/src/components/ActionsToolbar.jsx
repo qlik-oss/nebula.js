@@ -223,6 +223,9 @@ function ActionsToolbar({
       transformOrigin={popoverTransformOrigin}
       hideBackdrop
       style={popoverStyle}
+      onMouseDown={(e) => {
+        e.stopPropagation(); // prevent click through, closing when it should not
+      }}
       slotProps={{
         paper: {
           id: 'njs-action-toolbar-popover',
