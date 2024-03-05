@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [4.13.0](https://github.com/qlik-oss/nebula.js/compare/v4.12.0...v4.13.0) (2024-03-05)
+
+### Bug Fixes
+
+- **cli-serve:** OAuth instance cache issue ([#1492](https://github.com/qlik-oss/nebula.js/issues/1492)) ([7506aa2](https://github.com/qlik-oss/nebula.js/commit/7506aa28f48e4fda58cfe50c360755b53c47db84))
+
+### Reverts
+
+- OAuth instance cache issue ([#1492](https://github.com/qlik-oss/nebula.js/issues/1492)) ([#1505](https://github.com/qlik-oss/nebula.js/issues/1505)) ([3ca35cb](https://github.com/qlik-oss/nebula.js/commit/3ca35cbda7a213916d0f3aed55312400d599f21d))
+
 # [4.12.0](https://github.com/qlik-oss/nebula.js/compare/v4.11.0...v4.12.0) (2024-02-26)
 
 **Note:** Version bump only for package @nebula.js/cli-serve
