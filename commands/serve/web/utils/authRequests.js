@@ -1,5 +1,5 @@
 export const checkIfAuthorized = async () => {
-  const { isAuthorized } = await (await fetch('/auth/isAuthorized')).json();
+  const { isAuthorized } = await (await fetch('/isAuthorized')).json();
   return { isAuthorized };
 };
 
