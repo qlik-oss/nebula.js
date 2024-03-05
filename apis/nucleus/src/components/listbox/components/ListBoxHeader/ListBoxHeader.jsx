@@ -4,8 +4,6 @@ import { Button, Grid, IconButton, styled } from '@mui/material';
 import Lock from '@nebula.js/ui/icons/lock';
 import { unlock } from '@nebula.js/ui/icons/unlock';
 import SearchIcon from '@nebula.js/ui/icons/search';
-import DrillDownIcon from '@nebula.js/ui/icons/drill-down';
-import CyclicIcon from '@nebula.js/ui/icons/reload';
 import ActionsToolbar from '../../../ActionsToolbar';
 import showToolbarDetached from '../../interactions/listbox-show-toolbar-detached';
 import getListboxActionProps from '../../interactions/listbox-action-props';
@@ -13,38 +11,7 @@ import createListboxSelectionToolbar from '../../interactions/listbox-selection-
 import { BUTTON_ICON_WIDTH, CELL_PADDING_LEFT, HEADER_PADDING_RIGHT, ICON_PADDING } from '../../constants';
 import hasSelections from '../../assets/has-selections';
 import { HeaderTitle, StyledGridHeader, UnlockCoverButton, iconStyle } from './ListBoxHeaderComponents';
-
-const dimensionTypes = {
-  single: 'N',
-  drillDown: 'H',
-  cyclic: 'C',
-};
-
-const createDimensionIconData = (dimInfo, app) => {
-  switch (dimInfo.qGrouping) {
-    case dimensionTypes.drillDown:
-      return {
-        icon: DrillDownIcon,
-        tooltip: 'Tooltip.dimensions.drilldown',
-        onClick: undefined,
-      };
-    case dimensionTypes.cyclic:
-      return {
-        icon: CyclicIcon,
-        tooltip: 'Tooltip.dimensions.cyclic',
-        onClick: () => {
-          app
-            .getDimension(dimInfo.qLibraryId)
-            .then((dimensionModel) => {
-              dimensionModel.stepCycle(1);
-            })
-            .catch(() => null);
-        },
-      };
-    default:
-      return undefined;
-  }
-};
+import utils from './utils';
 
 const StyledButton = styled(Button)(() => ({
   borderRadius: 4,
@@ -117,7 +84,7 @@ export default function ListBoxHeader({
   }, [layout?.qListObject?.qDimensionInfo?.qLocked]);
 
   const titleRef = useRef(null);
-  const iconData = createDimensionIconData(layout?.qListObject?.qDimensionInfo, app);
+  const iconData = utils.createDimensionIconData(layout?.qListObject?.qDimensionInfo, app);
   const showUnlock = showLock && isLocked;
   const showLockIcon = !showLock && isLocked; // shows instead of the cover button when field/dim is locked.
   const showLeftIcon = showSearchIcon || showLockIcon || iconData; // the left-most icon outside of the actions/selections toolbar.
