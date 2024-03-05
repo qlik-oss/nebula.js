@@ -12,13 +12,13 @@ const createDimensionIconData = (dimInfo, app) => {
     case dimensionTypes.drillDown:
       return {
         icon: DrillDownIcon,
-        tooltip: 'Tooltip.dimensions.drilldown',
+        tooltip: 'Listbox.DrillDown',
         onClick: undefined,
       };
     case dimensionTypes.cyclic:
       return {
         icon: CyclicIcon,
-        tooltip: 'Tooltip.dimensions.cyclic',
+        tooltip: 'Listbox.Cyclic',
         onClick: () => {
           app
             .getDimension(dimInfo.qLibraryId)

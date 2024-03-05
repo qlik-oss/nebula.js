@@ -1,8 +1,8 @@
 import DrillDownIcon from '@nebula.js/ui/icons/drill-down';
 import CyclicIcon from '@nebula.js/ui/icons/reload';
-import utils from '../ListBoxHeader/utils';
+import utils from '../ListBoxHeader/icon-utils';
 
-describe('utils', () => {
+describe('icon-utils', () => {
   beforeEach(() => {});
 
   afterEach(() => {

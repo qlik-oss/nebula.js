@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Grid, IconButton, styled } from '@mui/material';
+import { Grid, IconButton } from '@mui/material';
 import Lock from '@nebula.js/ui/icons/lock';
 import { unlock } from '@nebula.js/ui/icons/unlock';
 import SearchIcon from '@nebula.js/ui/icons/search';
@@ -11,15 +11,8 @@ import createListboxSelectionToolbar from '../../interactions/listbox-selection-
 import { BUTTON_ICON_WIDTH, CELL_PADDING_LEFT, HEADER_PADDING_RIGHT, ICON_PADDING } from '../../constants';
 import hasSelections from '../../assets/has-selections';
 import { HeaderTitle, StyledGridHeader, UnlockCoverButton, iconStyle } from './ListBoxHeaderComponents';
-import utils from './utils';
-
-const StyledButton = styled(Button)(() => ({
-  borderRadius: 4,
-  width: 24,
-  height: 24,
-  minWidth: 22,
-  padding: 0,
-}));
+import iconUtils from './icon-utils';
+import DimensionIcon from './DimensionIcon';
 
 // ms that needs to pass before the lock button can be toggled again
 const lockTimeFrameMs = 500;
@@ -84,7 +77,7 @@ export default function ListBoxHeader({
   }, [layout?.qListObject?.qDimensionInfo?.qLocked]);
 
   const titleRef = useRef(null);
-  const iconData = utils.createDimensionIconData(layout?.qListObject?.qDimensionInfo, app);
+  const iconData = iconUtils.createDimensionIconData(layout?.qListObject?.qDimensionInfo, app);
   const showUnlock = showLock && isLocked;
   const showLockIcon = !showLock && isLocked; // shows instead of the cover button when field/dim is locked.
   const showLeftIcon = showSearchIcon || showLockIcon || iconData; // the left-most icon outside of the actions/selections toolbar.
@@ -140,29 +133,6 @@ export default function ListBoxHeader({
       <SearchIcon style={iconStyle} />
     </IconButton>
   );
-
-  const dimensionIconComp = () => {
-    const DimensionIcon = iconData?.icon;
-    const title = translator.get(iconData?.tooltip);
-    const isButton = DimensionIcon && iconData.onClick;
-    if (DimensionIcon) {
-      return isButton ? (
-        <StyledButton
-          variant="outlined"
-          onClick={iconData.onClick}
-          tabIndex={-1}
-          title={title}
-          size="large"
-          disableRipple
-        >
-          <DimensionIcon style={iconStyle} />
-        </StyledButton>
-      ) : (
-        <DimensionIcon title={title} size="large" style={{ ...iconStyle, padding: `${ICON_PADDING}px` }} />
-      );
-    }
-    return undefined;
-  };
 
   useEffect(() => {
     if (!titleRef.current || !containerRect) {
@@ -234,7 +204,7 @@ export default function ListBoxHeader({
       {showLeftIcon && (
         <Grid item container alignItems="center" width={iconsWidth} className="header-action-container">
           {lockedIconComp || (showSearchIcon && searchIconComp)}
-          {dimensionIconComp()}
+          <DimensionIcon iconData={iconData} iconStyle={iconStyle} translator={translator} />
         </Grid>
       )}
       <Grid
