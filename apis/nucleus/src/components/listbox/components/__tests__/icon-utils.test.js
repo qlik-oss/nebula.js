@@ -24,7 +24,7 @@ describe('icon-utils', () => {
     const result = utils.createDimensionIconData(dimInfo, undefined);
     expect(result).toMatchObject({
       icon: DrillDownIcon,
-      tooltip: 'Tooltip.dimensions.drilldown',
+      tooltip: 'Listbox.Drilldown',
       onClick: undefined,
     });
   });
@@ -35,7 +35,7 @@ describe('icon-utils', () => {
     const result = utils.createDimensionIconData(dimInfo, app);
     expect(result).toMatchObject({
       icon: CyclicIcon,
-      tooltip: 'Tooltip.dimensions.cyclic',
+      tooltip: 'Listbox.Cyclic',
       onClick: expect.any(Function),
     });
   });
