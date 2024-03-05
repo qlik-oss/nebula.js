@@ -136,9 +136,9 @@ const connect = async () => {
     } = await getConnectionInfo();
 
     // if no clientId + user is already authorized -> deAuthorize user
-    const { isAuthorized } = await (await fetch('/isAuthorized')).json();
+    const { isAuthorized } = await (await fetch('/auth/isAuthorized')).json();
     if (!clientId && isAuthorized) {
-      await (await fetch('/deauthorize')).json();
+      await (await fetch('/auth/deauthorize')).json();
     }
 
     if (webIntegrationId) {
@@ -159,7 +159,8 @@ const connect = async () => {
     if (clientId) {
       return {
         getDocList: async () => {
-          const resp = await (await fetch(`/oauth?host=${host}&clientId=${clientId}`)).json();
+          const URL = `/auth/oauth?host=${host}&clientId=${clientId}`;
+          const resp = await (await fetch(URL)).json();
           if (resp.redirectUrl) window.location.href = resp.redirectUrl;
         },
         getConfiguration: async () => ({}),
@@ -191,7 +192,7 @@ const openApp = async (id) => {
       const authInstance = await getAuthInstance({ webIntegrationId, host });
       url = await authInstance.generateWebsocketUrl(id);
     } else if (clientId) {
-      const { webSocketUrl } = await (await fetch(`/getSocketUrl/${id}`)).json();
+      const { webSocketUrl } = await (await fetch(`/auth/getSocketUrl/${id}`)).json();
       url = webSocketUrl;
     } else {
       url = SenseUtilities.buildUrl(enigmaInfo);
