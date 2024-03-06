@@ -207,7 +207,6 @@ function ListBoxInline({ options, layout }) {
   const { wildCardSearch, searchEnabled, autoConfirm = false, layoutOptions = {} } = layout ?? {};
   const isLocked = layout?.qListObject?.qDimensionInfo?.qLocked;
   const showSearchIcon = searchEnabled !== false && search === 'toggle' && !isLocked;
-  const isDrillDown = layout?.qListObject?.qDimensionInfo?.qGrouping === 'H';
 
   const canShowTitle = layout?.title?.length && layout?.showTitle !== false;
   const showDetachedToolbarOnly = toolbar && !canShowTitle && !isPopover;
@@ -257,8 +256,8 @@ function ListBoxInline({ options, layout }) {
 
   const listBoxHeader = (
     <ListBoxHeader
+      app={app}
       showSearchIcon={showSearchIcon}
-      isDrillDown={isDrillDown}
       onShowSearch={handleShowSearch}
       isPopover={isPopover}
       showToolbar={showToolbar}

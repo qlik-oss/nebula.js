@@ -38,7 +38,7 @@ const model = {
 function getDefaultProps() {
   const containerRef = React.createRef();
   const defaultProps = {
-    layout: { title: 'The title', qListObject: { qDimensionInfo: { qLocked: false } } },
+    layout: { title: 'The title', qListObject: { qDimensionInfo: { qLocked: false, qGrouping: 'N' } } },
     translator,
     styles,
     isRtl: false,
@@ -216,7 +216,7 @@ describe('<ListBoxHeader />', () => {
   });
 
   test('There should be an unlock cover button on top of the actions toolbar', async () => {
-    const layout = { title: 'The title', qListObject: { qDimensionInfo: { qLocked: true } } };
+    const layout = { title: 'The title', qListObject: { qDimensionInfo: { qLocked: true, qGrouping: 'N' } } };
     hasSelections.mockReturnValue(false);
     const testRenderer = await render({
       layout,
