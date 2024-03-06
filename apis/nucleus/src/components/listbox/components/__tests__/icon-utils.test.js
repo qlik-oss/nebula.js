@@ -3,16 +3,6 @@ import CyclicIcon from '@nebula.js/ui/icons/reload';
 import utils from '../ListBoxHeader/icon-utils';
 
 describe('icon-utils', () => {
-  beforeEach(() => {});
-
-  afterEach(() => {
-    jest.resetAllMocks();
-  });
-
-  afterAll(() => {
-    jest.restoreAllMocks();
-  });
-
   it('should return no icon data for single dimension', () => {
     const dimInfo = { qGrouping: 'N' };
     const result = utils.createDimensionIconData(dimInfo, undefined);
