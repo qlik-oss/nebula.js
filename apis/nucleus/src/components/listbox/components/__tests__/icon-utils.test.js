@@ -24,7 +24,7 @@ describe('icon-utils', () => {
     const result = utils.createDimensionIconData(dimInfo, undefined);
     expect(result).toMatchObject({
       icon: DrillDownIcon,
-      tooltip: 'Listbox.Drilldown',
+      tooltip: 'Listbox.DrillDown',
       onClick: undefined,
     });
   });
