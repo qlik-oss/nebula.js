@@ -22,10 +22,21 @@ const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode }) => {
   return sizes.freqMaxWidth;
 };
 
-const getSelectedStyle = ({ theme, styles, selectedState }) => {
+const getRowSelectionStyle = ({ theme, checkboxes, styles, selectionState }) => {
+  if (checkboxes) {
+    if (selectionState === 'selected') {
+      return {
+        [`& .${classes.labelText}`]: {
+          // Override labels (value and frequency count) color when selected.
+          color: styles.selections.selected,
+        },
+      };
+    }
+    return {};
+  }
   const selectionStyles = styles.selections;
-  const backgroundColor = selectionStyles[selectedState];
-  const contrastTextColor = selectionStyles[`${selectedState}Contrast`];
+  const backgroundColor = selectionStyles[selectionState];
+  const contrastTextColor = selectionStyles[`${selectionState}Contrast`];
   return {
     background: backgroundColor,
     color: contrastTextColor,
@@ -73,8 +84,18 @@ const RowColRoot = styled('div', {
 })(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode, freqHitsValue, styles }) => {
   const { backgroundColor: _, ...contentFontStyles } = styles.content;
 
-  const selectStyle = getSelectedStyle({ theme, styles, selectedState: 'selected' });
-  const excludedSelectStyle = getSelectedStyle({ theme, styles, selectedState: 'excluded' });
+  const rowSelectionStyle = getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'selected' });
+  const rowExcludedStyle = getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'excluded' });
+  const barDefaultFilledStyle = {
+    height: '100%',
+    transition: 'width 0.2s',
+    border: `${barBorderWidthPx}px solid`,
+    borderColor: '#D9D9D9', // overridden by selected color (classes.S),
+    backgroundColor: '#FAFAFA',
+  };
+  const barSelectedFilledStyle = {
+    opacity: '30%',
+  };
 
   return {
     '&:focus': {
@@ -174,23 +195,31 @@ const RowColRoot = styled('div', {
 
     // Selection styles (S=Selected, XS=ExcludedSelected, A=Alternative, X=Excluded).
     [`& .${classes.S}`]: {
-      ...selectStyle,
+      ...rowSelectionStyle,
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.XS}`]: {
-      ...getSelectedStyle({ theme, styles, selectedState: 'selectedExcluded' }),
+      ...getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'selectedExcluded' }),
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.A}`]: {
-      ...getSelectedStyle({ theme, styles, selectedState: 'alternative' }),
+      ...getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'alternative' }),
       border: isGridMode ? 'none' : undefined,
     },
 
     [`& .${classes.X}`]: {
-      ...excludedSelectStyle,
+      ...rowExcludedStyle,
       border: isGridMode ? 'none' : undefined,
+    },
+
+    [`& .${classes.X}, & .${classes.XS}`]: {
+      // Override the selected color for bar-filled, when the value is selected and excluded.
+      border: isGridMode ? 'none' : undefined,
+      [`& .${classes.barSelected} .bar-filled`]: {
+        ...barDefaultFilledStyle,
+      },
     },
 
     [`& .${classes.frequencyCount}`]: {
@@ -222,20 +251,14 @@ const RowColRoot = styled('div', {
       display: 'flex',
       alignItems: 'center',
       '& .bar-filled': {
-        border: `${barBorderWidthPx}px solid`,
-        borderColor: '#D9D9D9',
-        transition: 'width 0.2s',
-        backgroundColor: '#FAFAFA',
-        height: '100%',
+        ...barDefaultFilledStyle,
       },
     },
     [`& .${classes.barSelected}`]: {
       '& .bar-filled': {
-        opacity: '30%',
-        background: theme.palette.background.lighter,
+        ...barSelectedFilledStyle,
       },
     },
-
     [`& .${classes.barWithCheckbox}`]: {
       left: direction === 'rtl' ? barPadPx : barWithCheckboxLeftPadPx,
       width: `calc(100% - ${barWithCheckboxLeftPadPx + barPadPx}px)`,
@@ -243,14 +266,14 @@ const RowColRoot = styled('div', {
 
     [`& .${classes.barSelectedWithCheckbox}`]: {
       '& .bar-filled': {
-        opacity: '30%',
-        background: selectStyle.background || '#BFE5D0',
-        borderColor: selectStyle.background || '#BFE5D0',
+        ...barSelectedFilledStyle,
+        backgroundColor: styles.selections.selected || '#BFE5D0',
+        borderColor: styles.selections.selected,
       },
     },
 
     [`& .${classes.excludedTextWithCheckbox}`]: {
-      color: '#828282',
+      color: styles.content.color,
       fontStyle: 'italic',
     },
   };
