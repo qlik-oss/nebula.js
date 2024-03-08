@@ -120,6 +120,7 @@ const DEFAULT_CONFIG = {
   flags: {
     KPI_REACTCOLORPICKER: true,
     IM_1869_HIDE_DIM_MEA_LINE: true,
+    IM_1579_HIDE_DIM_MEA: true,
   },
   snapshot: DEFAULT_SNAPSHOT_CONFIG,
 };
