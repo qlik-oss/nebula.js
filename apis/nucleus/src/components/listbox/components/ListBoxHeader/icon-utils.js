@@ -23,6 +23,10 @@ const createDimensionIconData = (dimInfo, app) => {
           app
             .getDimension(dimInfo.qLibraryId)
             .then((dimensionModel) => {
+              if (true) {
+                // eslint-disable-next-line no-console
+                console.log("engine version or engine api spec version doesn't have support for function stepCycle");
+              }
               dimensionModel.stepCycle(1);
             })
             .catch(() => null);
