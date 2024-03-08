@@ -218,7 +218,7 @@ describe('nucleus', () => {
     expect(nuked2.config.flags).toEqual({
       foo: true,
       KPI_REACTCOLORPICKER: false,
-      IM_1869_HIDE_DIM_MEA_LIN: true,
+      IM_1869_HIDE_DIM_MEA_LINE: true,
       IM_1579_HIDE_DIM_MEA: true,
     });
   });
