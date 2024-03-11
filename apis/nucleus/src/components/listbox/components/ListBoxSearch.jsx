@@ -10,7 +10,7 @@ const MAX_SEARCH_LENGTH = 5000; // limitation in Engine
 const TREE_PATH = '/qListObjectDef';
 const WILDCARD = '**';
 
-const sanitizeValue = (val) => val?.substring(0, MAX_SEARCH_LENGTH); // limit length
+const limitSearchLength = (val) => val?.substring(0, MAX_SEARCH_LENGTH);
 
 const StyledOutlinedInput = styled(OutlinedInput, {
   shouldForwardProp: (p) => !['styles', 'dense', 'isRtl'].includes(p),
@@ -122,7 +122,7 @@ export default function ListBoxSearch({
   }, [value]);
 
   const onChange = async (e) => {
-    const searchValue = sanitizeValue(e.target.value);
+    const searchValue = limitSearchLength(e.target.value);
     setValue(searchValue);
     if (!searchValue.length) {
       return abortSearch();
@@ -147,7 +147,7 @@ export default function ListBoxSearch({
 
   const performSearch = async () => {
     let response;
-    const searchValue = sanitizeValue(value);
+    const searchValue = limitSearchLength(value);
     const success = await model.searchListObjectFor(TREE_PATH, searchValue);
     if (selectionState.selectDisabled()) {
       return success;
