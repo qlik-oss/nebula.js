@@ -205,9 +205,21 @@ describe('nucleus', () => {
 
   test('should allow for default flags and overrides', () => {
     const nuked = Nuked.createConfiguration({ flags: { foo: true } });
-    expect(nuked.config.flags).toEqual({ foo: true, KPI_REACTCOLORPICKER: true });
+    expect(nuked.config.flags).toEqual({
+      foo: true,
+      KPI_REACTCOLORPICKER: true,
+      IM_1869_HIDE_DIM_MEA_LINE: true,
+      IM_1579_HIDE_DIM_MEA: true,
+    });
 
-    const nuked2 = Nuked.createConfiguration({ flags: { foo: true, KPI_REACTCOLORPICKER: false } });
-    expect(nuked2.config.flags).toEqual({ foo: true, KPI_REACTCOLORPICKER: false });
+    const nuked2 = Nuked.createConfiguration({
+      flags: { foo: true, KPI_REACTCOLORPICKER: false },
+    });
+    expect(nuked2.config.flags).toEqual({
+      foo: true,
+      KPI_REACTCOLORPICKER: false,
+      IM_1869_HIDE_DIM_MEA_LINE: true,
+      IM_1579_HIDE_DIM_MEA: true,
+    });
   });
 });
