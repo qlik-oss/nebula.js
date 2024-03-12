@@ -204,12 +204,16 @@ describe('nucleus', () => {
   });
 
   test('should allow for default flags and overrides', () => {
-    const nuked = Nuked.createConfiguration({ flags: { foo: true } });
-    expect(nuked.config.flags).toEqual({
-      foo: true,
+    const defaultFlags = {
       KPI_REACTCOLORPICKER: true,
       IM_1869_HIDE_DIM_MEA_LINE: true,
       IM_1579_HIDE_DIM_MEA: true,
+      CLIENT_IM_3365: true,
+    };
+    const nuked = Nuked.createConfiguration({ flags: { foo: true } });
+    expect(nuked.config.flags).toEqual({
+      foo: true,
+      ...defaultFlags,
     });
 
     const nuked2 = Nuked.createConfiguration({
@@ -217,9 +221,8 @@ describe('nucleus', () => {
     });
     expect(nuked2.config.flags).toEqual({
       foo: true,
+      ...defaultFlags,
       KPI_REACTCOLORPICKER: false,
-      IM_1869_HIDE_DIM_MEA_LINE: true,
-      IM_1579_HIDE_DIM_MEA: true,
     });
   });
 });
