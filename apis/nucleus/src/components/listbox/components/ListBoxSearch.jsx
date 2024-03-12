@@ -6,7 +6,7 @@ import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
 import { CELL_PADDING_LEFT } from '../constants';
 
-const MAX_SEARCH_LENGTH = 5000; // limitation in Engine
+const MAX_SEARCH_LENGTH = 64000;
 const TREE_PATH = '/qListObjectDef';
 const WILDCARD = '**';
 

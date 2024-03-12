@@ -306,7 +306,7 @@ describe('<ListBoxSearch />', () => {
     expect(type.props.value).toBe('');
   });
 
-  test('should limit text length to 5000 characters', async () => {
+  test('should limit text length to 64000 characters', async () => {
     const testRenderer = create(
       <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
         <ListBoxSearch
@@ -321,11 +321,11 @@ describe('<ListBoxSearch />', () => {
     );
     const testInstance = testRenderer.root;
     const type = testInstance.findByType(OutlinedInput);
-    const tooLongString = Array(5100).fill('M').join('');
+    const tooLongString = Array(64100).fill('M').join('');
     await act(async () => {
       await type.props.onChange({ target: { value: tooLongString } });
     });
-    expect(type.props.value).toHaveLength(5000);
+    expect(type.props.value).toHaveLength(64000);
   });
 
   describe('selectDisabled should prevent some search interactions', () => {
@@ -391,9 +391,9 @@ describe('<ListBoxSearch />', () => {
       expect(model.searchListObjectFor).toHaveBeenCalled();
     });
 
-    test('Should shorten search value to 5000 in both onChange and onKeyDown-Enter calls', async () => {
+    test('Should shorten search value to 64000 in both onChange and onKeyDown-Enter calls', async () => {
       const type = getType(false);
-      const tooLongString = Array(5100).fill('M').join('');
+      const tooLongString = Array(64100).fill('M').join('');
       await act(async () => {
         await type.props.onChange({ target: { value: tooLongString } });
         await onKeyDown(type, 'Enter');
@@ -401,8 +401,8 @@ describe('<ListBoxSearch />', () => {
       expect(model.searchListObjectFor).toHaveBeenCalledTimes(2);
       const firstSearchValue = model.searchListObjectFor.mock.calls[0][1];
       const secondSearchValue = model.searchListObjectFor.mock.calls[1][1];
-      expect(firstSearchValue).toHaveLength(5000);
-      expect(secondSearchValue).toHaveLength(5000);
+      expect(firstSearchValue).toHaveLength(64000);
+      expect(secondSearchValue).toHaveLength(64000);
     });
 
     test('selectDisabled() => true should NOT call model.acceptListObjectSearch()', async () => {
