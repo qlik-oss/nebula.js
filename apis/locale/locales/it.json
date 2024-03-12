@@ -14,6 +14,11 @@
     "comment": "Text shown between the selected fields count {0} and total fields count {1}",
     "version": "l99iJM6C+Sm7L6wu1tXfOQ=="
   },
+  "Listbox.Cyclic": {
+    "value": "Dimensione ciclica",
+    "comment": "Tooltip for the cyclic icons on the dimension titles in charts. (pde 160210)",
+    "version": "MU/3yoN6u0gaQCOCwaIKJA=="
+  },
   "Listbox.Dismiss": {
     "value": "Ignora",
     "comment": "Dismiss the disclaimer that not all data is being shown",
