@@ -30,6 +30,7 @@ const createDimensionIconData = (dimInfo, app) => {
                     console.log(
                       "engine version or engine api spec version doesn't have support for function stepCycle"
                     );
+                    return;
                   }
                   dimensionModel.stepCycle(1);
                 })
