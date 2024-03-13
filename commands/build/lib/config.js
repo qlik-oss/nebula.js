@@ -123,11 +123,11 @@ const config = ({
         '@nebula.js/stardust': 'stardust',
       },
     };
-    if (!argv.codeSplit || format === 'umd') {
-      outputConfig.file = path.resolve(dir, outputFile);
-    } else {
-      outputConfig.dir = path.resolve(dir, outputFile.split('/')[0]);
-    }
+    //if (!argv.codeSplit || format === 'umd') {
+    //   outputConfig.file = path.resolve(dir, outputFile);
+    // } else {
+    outputConfig.dir = path.resolve(dir, outputFile.split('/')[0]);
+    // }
     if (argv.codeSplit && format === 'umd') {
       outputConfig.inlineDynamicImports = true;
     }
