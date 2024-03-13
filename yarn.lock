@@ -7472,10 +7472,10 @@ enigma.js@2.11.0:
   resolved "https://registry.yarnpkg.com/enigma.js/-/enigma.js-2.11.0.tgz#e9313c96fb29b43ce519c74538594cf783d8b8c8"
   integrity sha512-JkyfvaGR/DhMGuui1+jaj5lPoSeY1gv6GDycPPLr9BMxah3E8+PsmcxHasWBoBbwxhxIue8QIT7sDzain1G1lA==
 
-enigma.js@2.13.0:
-  version "2.13.0"
-  resolved "https://registry.yarnpkg.com/enigma.js/-/enigma.js-2.13.0.tgz#4a8f2140077532762d3711e6f369b58e3456a95b"
-  integrity sha512-vk2orQjTQxA+p6OEXJA6BHaODn2yUC/duE9G3of7EmGtHsiArNiMGlwZWt3IwGn/spWMKMbY2JAHwgspsUOSfQ==
+enigma.js@2.14.0:
+  version "2.14.0"
+  resolved "https://registry.yarnpkg.com/enigma.js/-/enigma.js-2.14.0.tgz#1c428ed4a19485a045637779774237c23b9b35ea"
+  integrity sha512-M84VjtO2w9+AUDK5NEn5j7FOPBdiSkwRbbgVFWxkLXxutH/z8ATGFh0Ko/4pTNwWF/9On/lEEr4BOI+ZewSw9g==
 
 enquirer@~2.3.6:
   version "2.3.6"
