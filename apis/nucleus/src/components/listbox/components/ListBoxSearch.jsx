@@ -6,8 +6,11 @@ import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
 import { CELL_PADDING_LEFT } from '../constants';
 
+const MAX_SEARCH_LENGTH = 64000;
 const TREE_PATH = '/qListObjectDef';
 const WILDCARD = '**';
+
+const limitSearchLength = (val) => val?.substring(0, MAX_SEARCH_LENGTH);
 
 const StyledOutlinedInput = styled(OutlinedInput, {
   shouldForwardProp: (p) => !['styles', 'dense', 'isRtl'].includes(p),
@@ -119,11 +122,12 @@ export default function ListBoxSearch({
   }, [value]);
 
   const onChange = async (e) => {
-    setValue(e.target.value);
-    if (!e.target.value.length) {
+    const searchValue = limitSearchLength(e.target.value);
+    setValue(searchValue);
+    if (!searchValue.length) {
       return abortSearch();
     }
-    return model.searchListObjectFor(TREE_PATH, e.target.value);
+    return model.searchListObjectFor(TREE_PATH, searchValue);
   };
 
   const handleFocus = () => {
@@ -143,11 +147,12 @@ export default function ListBoxSearch({
 
   const performSearch = async () => {
     let response;
-    const success = await model.searchListObjectFor(TREE_PATH, value);
+    const searchValue = limitSearchLength(value);
+    const success = await model.searchListObjectFor(TREE_PATH, searchValue);
     if (selectionState.selectDisabled()) {
       return success;
     }
-    if (success && value.length && hasHits()) {
+    if (success && searchValue.length && hasHits()) {
       response = model.acceptListObjectSearch(TREE_PATH, true);
       // eslint-disable-next-line no-param-reassign
       selections.selectionsMade = true;
