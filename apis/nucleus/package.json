@@ -6,8 +6,8 @@
   "devDependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.15.12",
-    "@mui/material": "^5.15.12",
+    "@mui/icons-material": "^5.15.13",
+    "@mui/material": "^5.15.13",
     "@nebula.js/conversion": "^4.13.0",
     "@nebula.js/locale": "^4.13.0",
     "@nebula.js/supernova": "^4.13.0",
