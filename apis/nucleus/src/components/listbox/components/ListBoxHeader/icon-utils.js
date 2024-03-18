@@ -1,5 +1,6 @@
+import CyclicIcon from '@nebula.js/ui/icons/cyclic';
 import DrillDownIcon from '@nebula.js/ui/icons/drill-down';
-import CyclicIcon from '@nebula.js/ui/icons/reload';
+import ReloadIcon from '@nebula.js/ui/icons/reload';
 
 const dimensionTypes = {
   single: 'N',
@@ -17,16 +18,23 @@ const createDimensionIconData = (dimInfo, app) => {
       };
     case dimensionTypes.cyclic:
       return {
-        icon: CyclicIcon,
+        icon: app ? ReloadIcon : CyclicIcon,
         tooltip: 'Listbox.Cyclic',
-        onClick: () => {
-          app
-            .getDimension(dimInfo.qLibraryId)
-            .then((dimensionModel) => {
-              dimensionModel.stepCycle(1);
-            })
-            .catch(() => null);
-        },
+        onClick: app
+          ? () => {
+              app
+                .getDimension(dimInfo.qLibraryId)
+                .then((dimensionModel) => {
+                  if (!dimensionModel.stepCycle) {
+                    // eslint-disable-next-line no-console
+                    console.log("engine api spec version doesn't have support for function stepCycle");
+                    return;
+                  }
+                  dimensionModel.stepCycle(1);
+                })
+                .catch(() => null);
+            }
+          : undefined,
       };
     default:
       return undefined;
