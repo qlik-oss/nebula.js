@@ -326,7 +326,6 @@ function nuked(configuration = {}) {
       /**
        * Creates a visualization model
        * @param {CreateConfig} cfg The create configuration.
-       * @experimental
        * @returns {Promise<qix.GenericObject>} An engima model
        * @example
        * // create a barchart in the app and return the model
@@ -341,7 +340,6 @@ function nuked(configuration = {}) {
       /**
        * Generates properties for a visualization object
        * @param {CreateConfig} cfg The create configuration.
-       * @experimental
        * @returns {Promise<object>} The objects properties
        * @example
        * // generate properties for a barchart
