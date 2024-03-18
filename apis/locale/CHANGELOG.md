@@ -3,7 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0-alpha4](https://github.com/qlik-oss/nebula.js/compare/v4.12.0...v5.0.0-alpha4) (2024-03-04)
+# [4.14.0](https://github.com/qlik-oss/nebula.js/compare/v4.13.0...v4.14.0) (2024-03-18)
+
+### Features
+
+- **ListBoxHeader:** add icon for cyclic dimension and new drilldown icon ([#1504](https://github.com/qlik-oss/nebula.js/issues/1504)) ([f35a5c4](https://github.com/qlik-oss/nebula.js/commit/f35a5c44c72a8cfd170547653af6e56c88cf50f1))
+
+# [4.13.0](https://github.com/qlik-oss/nebula.js/compare/v4.12.0...v4.13.0) (2024-03-05)
 
 **Note:** Version bump only for package @nebula.js/locale
 

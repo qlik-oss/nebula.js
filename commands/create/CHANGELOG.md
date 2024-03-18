@@ -3,7 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0-alpha4](https://github.com/qlik-oss/nebula.js/compare/v4.12.0...v5.0.0-alpha4) (2024-03-04)
+# [4.14.0](https://github.com/qlik-oss/nebula.js/compare/v4.13.0...v4.14.0) (2024-03-18)
+
+### Bug Fixes
+
+- make sure stepCycle exists before calling ([#1509](https://github.com/qlik-oss/nebula.js/issues/1509)) ([e29328c](https://github.com/qlik-oss/nebula.js/commit/e29328cae3d03a458dc37e945f84951d9ddb636a))
+
+# [4.13.0](https://github.com/qlik-oss/nebula.js/compare/v4.12.0...v4.13.0) (2024-03-05)
 
 **Note:** Version bump only for package @nebula.js/cli-create
 

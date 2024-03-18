@@ -3,28 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0-alpha4](https://github.com/qlik-oss/nebula.js/compare/v4.12.0...v5.0.0-alpha4) (2024-03-04)
+# [4.14.0](https://github.com/qlik-oss/nebula.js/compare/v4.13.0...v4.14.0) (2024-03-18)
+
+### Bug Fixes
+
+- **Listbox:** Limit search length to 64000 characters ([#1511](https://github.com/qlik-oss/nebula.js/issues/1511)) ([e6f3bba](https://github.com/qlik-oss/nebula.js/commit/e6f3bbaf7de53e04b9c442e1d0e5b4b81ad95c56))
+- make sure stepCycle exists before calling ([#1509](https://github.com/qlik-oss/nebula.js/issues/1509)) ([e29328c](https://github.com/qlik-oss/nebula.js/commit/e29328cae3d03a458dc37e945f84951d9ddb636a))
+
+### Features
+
+- **ListBoxHeader:** add icon for cyclic dimension and new drilldown icon ([#1504](https://github.com/qlik-oss/nebula.js/issues/1504)) ([f35a5c4](https://github.com/qlik-oss/nebula.js/commit/f35a5c44c72a8cfd170547653af6e56c88cf50f1))
+
+# [4.13.0](https://github.com/qlik-oss/nebula.js/compare/v4.12.0...v4.13.0) (2024-03-05)
 
 ### Bug Fixes
 
 - align font sizes ([#1499](https://github.com/qlik-oss/nebula.js/issues/1499)) ([98184d0](https://github.com/qlik-oss/nebula.js/commit/98184d0915cddad3099ca6ac427234ef11426c19))
-- store into property generation ([d23bd80](https://github.com/qlik-oss/nebula.js/commit/d23bd80c521f0e0cb052ecb63fa94049c1e06c08))
+- catch mousedown to prevent click through ([#1506](https://github.com/qlik-oss/nebula.js/issues/1506)) ([0dfe0f4](https://github.com/qlik-oss/nebula.js/commit/0dfe0f43017ae5cb9b28af85c8df4c3809ef6a29))
+- **cli-serve:** OAuth instance cache issue ([#1492](https://github.com/qlik-oss/nebula.js/issues/1492)) ([7506aa2](https://github.com/qlik-oss/nebula.js/commit/7506aa28f48e4fda58cfe50c360755b53c47db84))
+- sanity check color input in uiColor resolver ([#1501](https://github.com/qlik-oss/nebula.js/issues/1501)) ([681d7f7](https://github.com/qlik-oss/nebula.js/commit/681d7f7552ca81128e4374b2fdef06b4c654940d))
 
-# [5.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v5.0.0-alpha.3) (2024-02-06)
+### Reverts
 
-### Bug Fixes
-
-- nebula serve with new model cache ([#1455](https://github.com/qlik-oss/nebula.js/issues/1455)) ([c47c809](https://github.com/qlik-oss/nebula.js/commit/c47c8090c833183ae80e30dbf0cbeafb5e6ec29e))
-
-# [5.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2024-01-04)
-
-# [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
-
-# [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
-
-### Bug Fixes
-
-- use session based model and request storage ([492b7fe](https://github.com/qlik-oss/nebula.js/commit/492b7fed8229a0a6e8efb4e38eccab5a29a34e99))
+- OAuth instance cache issue ([#1492](https://github.com/qlik-oss/nebula.js/issues/1492)) ([#1505](https://github.com/qlik-oss/nebula.js/issues/1505)) ([3ca35cb](https://github.com/qlik-oss/nebula.js/commit/3ca35cbda7a213916d0f3aed55312400d599f21d))
 
 # [4.12.0](https://github.com/qlik-oss/nebula.js/compare/v4.11.0...v4.12.0) (2024-02-26)
 

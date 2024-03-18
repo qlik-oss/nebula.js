@@ -126,8 +126,8 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const isSelected = cell?.qState === 'S' || cell?.qState === 'XS' || cell?.qState === 'L' || cell?.qState === 'XL';
 
   const classArr = useMemo(
-    () => getValueStateClasses({ column, histogram, checkboxes, cell, showGray }),
-    [cell?.qState, histogram, dense, checkboxes]
+    () => getValueStateClasses({ column, histogram, cell, showGray }),
+    [cell?.qState, histogram, dense]
   );
 
   const preventContextMenu = useCallback(

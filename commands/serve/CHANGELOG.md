@@ -3,19 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
-# [5.0.0-alpha4](https://github.com/qlik-oss/nebula.js/compare/v4.12.0...v5.0.0-alpha4) (2024-03-04)
-
-# [5.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v5.0.0-alpha.3) (2024-02-06)
+# [4.14.0](https://github.com/qlik-oss/nebula.js/compare/v4.13.0...v4.14.0) (2024-03-18)
 
 ### Bug Fixes
 
-- nebula serve with new model cache ([#1455](https://github.com/qlik-oss/nebula.js/issues/1455)) ([c47c809](https://github.com/qlik-oss/nebula.js/commit/c47c8090c833183ae80e30dbf0cbeafb5e6ec29e))
+- make sure stepCycle exists before calling ([#1509](https://github.com/qlik-oss/nebula.js/issues/1509)) ([e29328c](https://github.com/qlik-oss/nebula.js/commit/e29328cae3d03a458dc37e945f84951d9ddb636a))
 
-# [5.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2024-01-04)
+# [4.13.0](https://github.com/qlik-oss/nebula.js/compare/v4.12.0...v4.13.0) (2024-03-05)
 
-# [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
+### Bug Fixes
 
-# [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
+- **cli-serve:** OAuth instance cache issue ([#1492](https://github.com/qlik-oss/nebula.js/issues/1492)) ([7506aa2](https://github.com/qlik-oss/nebula.js/commit/7506aa28f48e4fda58cfe50c360755b53c47db84))
+
+### Reverts
+
+- OAuth instance cache issue ([#1492](https://github.com/qlik-oss/nebula.js/issues/1492)) ([#1505](https://github.com/qlik-oss/nebula.js/issues/1505)) ([3ca35cb](https://github.com/qlik-oss/nebula.js/commit/3ca35cbda7a213916d0f3aed55312400d599f21d))
 
 # [4.12.0](https://github.com/qlik-oss/nebula.js/compare/v4.11.0...v4.12.0) (2024-02-26)
 
