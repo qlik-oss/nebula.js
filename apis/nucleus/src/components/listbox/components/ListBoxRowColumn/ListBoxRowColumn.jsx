@@ -16,9 +16,9 @@ import Histogram from './components/Histogram';
 import Frequency from './components/Frequency';
 import ItemGrid from './components/ItemGrid';
 import getCellFromPages from './helpers/get-cell-from-pages';
-import { getValueLabel } from '../ScreenReaders';
 import getRowsKeyboardNavigation from '../../interactions/keyboard-navigation/keyboard-nav-rows';
 import getValueTextAlign from './helpers/get-value-text-align';
+import getValueLabel from '../screen-reader/value-label';
 
 function RowColumn({ index, rowIndex, columnIndex, style, data }) {
   const {
