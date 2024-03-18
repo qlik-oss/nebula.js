@@ -18,6 +18,7 @@ import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
 import uid from './object/uid';
 import eventmixin from './selections/event-mixin';
+import updateObject from './object/update-object';
 
 /**
  * @interface SnapshotConfiguration
@@ -335,6 +336,20 @@ function nuked(configuration = {}) {
        * );
        */
       create: async (cfg) => createObject(cfg, halo, false, modelStore),
+      /**
+       * Updates a visualization model
+       * @param {UpdateConfig} cfg The update configuration.
+       * @experimental
+       * @returns {Promise<object>} The objects properties
+       * @example
+       * // create a barchart in the app and return the model
+       * const model = await n.update({
+       *     target: model,
+       *     properties: { showTitle: true }
+       *   }
+       * );
+       */
+      update: async (cfg) => updateObject(cfg, halo),
       /**
        * Generates properties for a visualization object
        * @param {CreateConfig} cfg The create configuration.

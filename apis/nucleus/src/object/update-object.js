@@ -1,28 +1,21 @@
 import populateData from './populator';
+import { modelStore } from '../stores/model-store';
 
 /**
- * @typedef {string | EngineAPI.INxDimension | EngineAPI.INxMeasure | LibraryField} Field
- */
-
-/**
- * @interface CreateConfig
- * @description Rendering configuration for creating and rendering a new object
- * @property {string} type
- * @property {string=} version
- * @property {(Field[])=} fields
+ * @interface UpdateConfig
+ * @description Update configuration
+ * @property {string|EngineAPI.GenericObject} target object id or enigma model
+ * @property {EngineAPI.GenericObjectProperties|EngineAPI.GenericObjectEntry} properties
  * @property {boolean=} [extendProperties=false] For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.
- * @property {EngineAPI.IGenericObjectProperties=} properties
+ * @property {string=} [save=true]
  */
 
-export default async function createObject(
-  { type, version, fields, properties, extendProperties /* , options, plugins, element */ },
-  halo,
-  generateOnly,
-  store
+export default async function updateObject(
+  { target, properties, extendProperties, save /* , options, plugins, element */ },
+  halo
 ) {
   let mergedProps = {};
   const children = [];
-  const { modelStore } = store;
   // let error;
   try {
     const t = halo.types.get({ name: type, version });
