@@ -10,6 +10,7 @@ import ListBoxDisclaimer from '../components/ListBoxDisclaimer';
 import InstanceContext from '../../../contexts/InstanceContext';
 import initializeStores from '../../../stores/new-model-store';
 import initializeSelectionStores from '../../../stores/new-selections-store';
+import * as getScreenReaderAssertiveText from '../components/screen-reader/assertive-screen-reader';
 
 jest.mock('react-window-infinite-loader', () => ({
   __esModule: true,
@@ -80,6 +81,7 @@ describe('<Listbox />', () => {
     // eslint-disable-next-line react/jsx-props-no-spreading
     FixedSizeGrid = jest.fn().mockImplementation((props) => <div className="a-column-row" {...props} />);
 
+    jest.spyOn(getScreenReaderAssertiveText, 'default').mockReturnValue('screen-reader-text');
     jest.spyOn(React, 'useCallback').mockImplementation(useCallbackMock);
     jest.spyOn(useSelectionsInteractionsModule, 'default').mockImplementation(useSelectionsInteractions);
     jest.spyOn(useTextWidth, 'default').mockImplementation(() => 50);
@@ -294,6 +296,13 @@ describe('<Listbox />', () => {
       expect(disclaimers).toHaveLength(1);
       const listRows = renderer.root.findAllByProps({ className: 'a-value-row' });
       expect(listRows).toHaveLength(1);
+    });
+
+    test('should have a screen reader with text announcing a hard-coded value', async () => {
+      await render();
+      const screenReaderTags = renderer.root.findAllByProps({ className: 'screenReaderOnly' });
+      expect(screenReaderTags).toHaveLength(1);
+      expect(screenReaderTags[0].children[0]).toEqual('screen-reader-text');
     });
 
     test('should not render a disclaimer when list count is 0 and qCardinal is 0', async () => {

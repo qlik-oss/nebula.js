@@ -4,7 +4,7 @@ import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import { Box } from '@mui/material';
 import ListBoxRowColumn from '..';
 import useTempKeyboard from '../../useTempKeyboard';
-import * as screenReader from '../../ScreenReaders';
+import * as screenReader from '../../screen-reader/value-label';
 import KEYS from '../../../../../keys';
 
 const getRow = (i) => screen.getAllByTestId('listbox.item')[i].firstChild;
@@ -17,7 +17,7 @@ describe('check keyboard navigation rendering with multiple rows in the in-built
   let containerRef;
 
   beforeEach(() => {
-    jest.spyOn(screenReader, 'getValueLabel').mockReturnValue('ariaLabel');
+    jest.spyOn(screenReader, 'default').mockReturnValue('ariaLabel');
     const mockUseState = jest.spyOn(React, 'useState');
     mockUseState.mockReturnValue([true, jest.fn()]);
     const keyboard = useTempKeyboard({ containerRef, enabled: false });
