@@ -3,6 +3,44 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/qlik-oss/nebula.js/compare/v4.14.0...v5.0.0) (2024-03-19)
+
+### Bug Fixes
+
+- **cli-serve:** OAuth instance cache issue ([#1500](https://github.com/qlik-oss/nebula.js/issues/1500)) ([a0dc0f0](https://github.com/qlik-oss/nebula.js/commit/a0dc0f0ce10938aa9dd124ea3c21f6fdff303d86))
+
+### Features
+
+- change qix typescript definition to @qlik/api ([#1493](https://github.com/qlik-oss/nebula.js/issues/1493)) ([f7b6310](https://github.com/qlik-oss/nebula.js/commit/f7b631051bf4a094679313f91a4a57c888f5d041))
+
+### BREAKING CHANGES
+
+- @qlik/api typescript definition is not compatible with @types/qlik-engineapi
+
+Signed-off-by: Johan Enell <johan.enell@qlik.com>
+
+# [5.0.0-alpha4](https://github.com/qlik-oss/nebula.js/compare/v4.12.0...v5.0.0-alpha4) (2024-03-04)
+
+### Bug Fixes
+
+- store into property generation ([d23bd80](https://github.com/qlik-oss/nebula.js/commit/d23bd80c521f0e0cb052ecb63fa94049c1e06c08))
+
+# [5.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v4.10.0...v5.0.0-alpha.3) (2024-02-06)
+
+### Bug Fixes
+
+- nebula serve with new model cache ([#1455](https://github.com/qlik-oss/nebula.js/issues/1455)) ([c47c809](https://github.com/qlik-oss/nebula.js/commit/c47c8090c833183ae80e30dbf0cbeafb5e6ec29e))
+
+# [5.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.1...v5.0.0-alpha.2) (2024-01-04)
+
+# [5.0.0-alpha.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0-alpha.0...v5.0.0-alpha.1) (2023-12-21)
+
+# [5.0.0-alpha.0](https://github.com/qlik-oss/nebula.js/compare/v4.9.0...v5.0.0-alpha.0) (2023-12-04)
+
+### Bug Fixes
+
+- use session based model and request storage ([492b7fe](https://github.com/qlik-oss/nebula.js/commit/492b7fed8229a0a6e8efb4e38eccab5a29a34e99))
+
 # [4.14.0](https://github.com/qlik-oss/nebula.js/compare/v4.13.0...v4.14.0) (2024-03-18)
 
 ### Bug Fixes

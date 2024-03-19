@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.0.0](https://github.com/qlik-oss/nebula.js/compare/v4.14.0...v5.0.0) (2024-03-19)
+
+### Features
+
+- change qix typescript definition to @qlik/api ([#1493](https://github.com/qlik-oss/nebula.js/issues/1493)) ([f7b6310](https://github.com/qlik-oss/nebula.js/commit/f7b631051bf4a094679313f91a4a57c888f5d041))
+
+### BREAKING CHANGES
+
+- @qlik/api typescript definition is not compatible with @types/qlik-engineapi
+
+Signed-off-by: Johan Enell <johan.enell@qlik.com>
+
 # [4.14.0](https://github.com/qlik-oss/nebula.js/compare/v4.13.0...v4.14.0) (2024-03-18)
 
 **Note:** Version bump only for package @nebula.js/stardust
