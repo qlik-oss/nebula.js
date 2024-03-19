@@ -3779,6 +3779,32 @@
     unbzip2-stream "1.4.3"
     yargs "17.7.1"
 
+"@qlik/api@^0.3.0":
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/@qlik/api/-/api-0.3.0.tgz#18e6d3863523af172429403500e64219acf323d9"
+  integrity sha512-plsVMrTVBmZY88TK/4UmZbj/icmEO/ySFHHVzXZ9tdtDu4NvN6rWTT8eNH2P7YQwmwn+nZdxgYnFfrsKkGF5ag==
+  dependencies:
+    "@qlik/embed-runtime" "^0.7.0"
+    "@qlik/runtime-module-loader" "^0.2.6"
+    ajv "^8.12.0"
+    bufferutil "^4.0.8"
+    enigma.js "^2.14.0"
+    lodash "^4.17.21"
+    nanoid "^5.0.6"
+    ws "^8.16.0"
+
+"@qlik/embed-runtime@0.7.0", "@qlik/embed-runtime@^0.7.0":
+  version "0.7.0"
+  resolved "https://registry.yarnpkg.com/@qlik/embed-runtime/-/embed-runtime-0.7.0.tgz#016582a119e84aeab6dd24c4457a93fad61361bf"
+  integrity sha512-D0nlB7rQRGSjbLdO53yy5K/VgYhSQDNSs4iywJlbaIjkpTBXzPZBL75WX9Ezkh+ZYfXz0TZo8SuagreTbzz+4g==
+
+"@qlik/runtime-module-loader@^0.2.6":
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/@qlik/runtime-module-loader/-/runtime-module-loader-0.2.6.tgz#1f3a57f43f5f2978ef93bef86c64b1372ec60edc"
+  integrity sha512-XU1Jw1D2H36JOs5qOROJ+U2ThrkgEL8chFVwfeqXTrT+tKcM95MMm5W2qGHR0hsyEvD1fh2sQMI1mk9Sf+ol9w==
+  dependencies:
+    "@qlik/embed-runtime" "0.7.0"
+
 "@qlik/sdk@^0.25.0":
   version "0.25.0"
   resolved "https://registry.yarnpkg.com/@qlik/sdk/-/sdk-0.25.0.tgz#839dbb9547e8197b215021a2193c5ae1ba6b647b"
@@ -4444,11 +4470,6 @@
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.11.tgz#2596fb352ee96a1379c657734d4b913a613ad563"
   integrity sha512-ga8y9v9uyeiLdpKddhxYQkxNDrfvuPrlFb0N1qnZZByvcElJaXthF1UhvCh9TLWJBEHeNtdnbysW7Y6Uq8CVng==
 
-"@types/qlik-engineapi@12.67.16":
-  version "12.67.16"
-  resolved "https://registry.yarnpkg.com/@types/qlik-engineapi/-/qlik-engineapi-12.67.16.tgz#3c4d3c6282275cfd7ce2efb393098bb6d0a82caf"
-  integrity sha512-NiwMX6zrV162lRcupTdrgoT2YtKZy97zJ70rRGLdJTWcaMOWUgAhM1ufzhmp3ir1KlNArI4Ds8ojfxA80SpwKQ==
-
 "@types/qs@*":
   version "6.9.7"
   resolved "https://registry.yarnpkg.com/@types/qs/-/qs-6.9.7.tgz#63bb7d067db107cc1e457c303bc25d511febf6cb"
@@ -4915,7 +4936,7 @@ ajv-keywords@^5.0.0:
   dependencies:
     fast-deep-equal "^3.1.3"
 
-ajv@8.12.0:
+ajv@8.12.0, ajv@^8.12.0:
   version "8.12.0"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-8.12.0.tgz#d1a0527323e22f53562c567c00991577dfbe19d1"
   integrity sha512-sRu1kpcO9yLtYxBKvqfTeh9KzZEwO3STyX1HT+4CaDzC6HpTGYhIhPIzj9XuKU7KYDwnaeh5hcOwjy1QuJzBPA==
@@ -5750,6 +5771,13 @@ buffer@^5.2.0, buffer@^5.2.1, buffer@^5.5.0:
   dependencies:
     base64-js "^1.3.1"
     ieee754 "^1.1.13"
+
+bufferutil@^4.0.8:
+  version "4.0.8"
+  resolved "https://registry.yarnpkg.com/bufferutil/-/bufferutil-4.0.8.tgz#1de6a71092d65d7766c4d8a522b261a6e787e8ea"
+  integrity sha512-4T53u4PdgsXqKaIctwF8ifXlRTTmEPJ8iEPWFdGZvcf7sbwYo6FKFEX9eNNAnzFZ7EzJAQ3CJeOtCRA4rDp7Pw==
+  dependencies:
+    node-gyp-build "^4.3.0"
 
 builtin-modules@^3.3.0:
   version "3.3.0"
@@ -7473,7 +7501,7 @@ enigma.js@2.11.0:
   resolved "https://registry.yarnpkg.com/enigma.js/-/enigma.js-2.11.0.tgz#e9313c96fb29b43ce519c74538594cf783d8b8c8"
   integrity sha512-JkyfvaGR/DhMGuui1+jaj5lPoSeY1gv6GDycPPLr9BMxah3E8+PsmcxHasWBoBbwxhxIue8QIT7sDzain1G1lA==
 
-enigma.js@2.14.0:
+enigma.js@2.14.0, enigma.js@^2.14.0:
   version "2.14.0"
   resolved "https://registry.yarnpkg.com/enigma.js/-/enigma.js-2.14.0.tgz#1c428ed4a19485a045637779774237c23b9b35ea"
   integrity sha512-M84VjtO2w9+AUDK5NEn5j7FOPBdiSkwRbbgVFWxkLXxutH/z8ATGFh0Ko/4pTNwWF/9On/lEEr4BOI+ZewSw9g==
@@ -12481,6 +12509,11 @@ nanoid@^3.3.7:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.7.tgz#d0c301a691bc8d54efa0a2226ccf3fe2fd656bd8"
   integrity sha512-eSRppjcPIatRIMC1U6UngP8XFcz8MQWGQdt1MTBQ7NaAmvXDfvNxbvWV3x2y6CdEUciCSsDHDQZbhYaB8QEo2g==
 
+nanoid@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.0.6.tgz#7f99a033aa843e4dcf9778bdaec5eb02f4dc44d5"
+  integrity sha512-rRq0eMHoGZxlvaFOUdK1Ev83Bd1IgzzR+WJ3IbDJ7QOSdAxYjlurSPqFs9s4lJg29RT6nPwizFtJhQS6V5xgiA==
+
 natural-compare@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/natural-compare/-/natural-compare-1.4.0.tgz#4abebfeed7541f2c27acfb29bdbbd15c8d5ba4f7"
@@ -12544,6 +12577,11 @@ node-forge@^1:
   version "1.3.1"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-1.3.1.tgz#be8da2af243b2417d5f646a770663a92b7e9ded3"
   integrity sha512-dPEtOeMvF9VMcYV/1Wb8CPoVAXtp6MKMlcbAt4ddqmGqUJ6fQZFXkNZNkNlfevtNkGtaSoXf/vNNNSvgrdXwtA==
+
+node-gyp-build@^4.3.0:
+  version "4.8.0"
+  resolved "https://registry.yarnpkg.com/node-gyp-build/-/node-gyp-build-4.8.0.tgz#3fee9c1731df4581a3f9ead74664369ff00d26dd"
+  integrity sha512-u6fs2AEUljNho3EYTJNBfImO5QTo/J/1Etd+NVdCj7qWKUSN/bSLkZwhDv7I+w/MSC6qJ4cknepkAYykDdK8og==
 
 node-gyp@^10.0.0:
   version "10.0.1"
@@ -17216,7 +17254,7 @@ ws@8.13.0, ws@^8.13.0:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.13.0.tgz#9a9fb92f93cf41512a0735c8f4dd09b8a1211cd0"
   integrity sha512-x9vcZYTrFPC7aSIbj7sRCYo7L/Xb8Iy+pW0ng0wt2vCJv7M9HOMy0UoN3rr+IFC7hb7vXoqS+P9ktyLLLhO+LA==
 
-ws@8.16.0:
+ws@8.16.0, ws@^8.16.0:
   version "8.16.0"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.16.0.tgz#d1cd774f36fbc07165066a60e40323eab6446fd4"
   integrity sha512-HS0c//TP7Ina87TfiPUz1rQzMhHrl/SG2guqRcTOIUYD2q8uhUdNHZYJUaQ8aTGPzCh+c6oawMKW35nFl1dxyQ==

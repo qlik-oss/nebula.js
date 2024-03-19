@@ -161,7 +161,7 @@
       "description": "Extends `ListObjectDef`, see Engine API: `ListObjectDef`.",
       "extends": [
         {
-          "type": "EngineAPI.IListObjectDef"
+          "type": "qix.ListObjectDef"
         }
       ],
       "kind": "interface",

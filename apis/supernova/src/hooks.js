@@ -582,7 +582,7 @@ export function useRect() {
 /**
  * Gets the layout of the generic object associated with this visualization.
  * @entry
- * @returns {EngineAPI.IGenericObjectLayout}
+ * @returns {qix.GenericObjectLayout}
  * @example
  * import { useLayout } from '@nebula.js/stardust';
  * // ...
@@ -602,7 +602,7 @@ export function useLayout() {
  * The returned value from `useStaleLayout()` and `useLayout()` are identical when the object
  * is not in a modal state.
  * @entry
- * @returns {EngineAPI.IGenericObjectLayout}
+ * @returns {qix.GenericObjectLayout}
  * @example
  * import { useStaleLayout } from '@nebula.js/stardust';
  * // ...
@@ -621,7 +621,7 @@ export function useStaleLayout() {
 /**
  * Gets the layout of the app associated with this visualization.
  * @entry
- * @returns {EngineAPI.INxAppLayout} The app layout
+ * @returns {qix.NxAppLayout} The app layout
  * @example
  * import { useAppLayout } from '@nebula.js/stardust';
  * // ...
@@ -635,7 +635,7 @@ export function useAppLayout() {
 /**
  * Gets the generic object API of the generic object connected to this visualization.
  * @entry
- * @returns {EngineAPI.IGenericObject|undefined}
+ * @returns {qix.GenericObject|undefined}
  * @example
  * import { useModel } from '@nebula.js/stardust';
  * // ...
@@ -654,7 +654,7 @@ export function useModel() {
 /**
  * Gets the doc API.
  * @entry
- * @returns {EngineAPI.IApp|undefined} The doc API.
+ * @returns {qix.Doc|undefined} The doc API.
  * @example
  * import { useApp } from '@nebula.js/stardust';
  * // ...
@@ -673,7 +673,7 @@ export function useApp() {
 /**
  * Gets the global API.
  * @entry
- * @returns {EngineAPI.IGlobal|undefined} The global API.
+ * @returns {qix.Global|undefined} The global API.
  * @example
  * import { useGlobal } from '@nebula.js/stardust';
  *
@@ -723,7 +723,7 @@ export function useSelections() {
  * import { useTheme } from '@nebula.js/stardust';
  *
  * const theme = useTheme();
- * console.log(theme.getContrastinColorTo('#ff0000'));
+ * console.log(theme.getContrastingColorTo('#ff0000'));
  */
 export function useTheme() {
   return useInternalContext('theme');
@@ -923,7 +923,7 @@ export function useConstraints() {
  * @interface Interactions
  * @property {boolean=} passive=true Whether or not passive interactions are on. Allows passive interaction by users, ie: tooltips
  * @property {boolean=} active=true Whether or not active interactions are on. Allows active interaction by users, ie: scroll, click
- * @property {boolean=} select=true Whether or not select interactions are on. Alows selection actions. Implied when active is false.
+ * @property {boolean=} select=true Whether or not select interactions are on. Allows selection actions. Implied when active is false.
  * @property {boolean=} edit=false Whether or not edit actions are on. Allows edit actions.
  */
 /**
@@ -1052,7 +1052,7 @@ export function useImperativeHandle(fn, deps) {
 /**
  * Registers a callback that is called when a snapshot is taken.
  * @entry
- * @param {function(EngineAPI.IGenericObjectLayout): Promise<EngineAPI.IGenericObjectLayout>} snapshotCallback
+ * @param {function(qix.GenericObjectLayout): Promise<qix.GenericObjectLayout>} snapshotCallback
  * @example
  * import { onTakeSnapshot } from '@nebula.js/stardust';
  * import { useState } from '@nebula.js/stardust';
@@ -1113,7 +1113,7 @@ export function onContextMenu(cb) {
  *
  * const renderState = useRenderState();
  * useState(() => {
- *   if(needProperteisUpdate(...)) {
+ *   if(needPropertiesUpdate(...)) {
  *      useRenderState.pending();
  *      updateProperties(...);
  *   } else {

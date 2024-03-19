@@ -19,7 +19,7 @@ module.exports = {
     parse: {
       types: {
         undefined: {},
-        'EngineAPI.IListObjectDef': {
+        'qix.ListObjectDef': {
           url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FListObjectDef',
         },
       },

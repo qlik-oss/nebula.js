@@ -16,7 +16,7 @@ import fGO from './from-generic-objects';
  */
 const mocker = /** @lends EnigmaMocker# */ {
   /**
-   * Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visulization and specifies how it behaves. For example, what layout to use the data to present.
+   * Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visualisation and specifies how it behaves. For example, what layout to use the data to present.
    *
    * The generic object is represented with a Javascript object with a number of properties. The name of the property correlates to the name in the Enigma model for `app.getObject(id)`. For example, the property `getLayout` in the generic object is used to define `app.getObject(id).getLayout()`. Any property can be added to the fixture (just make sure it exists and behaves as in the Enigma model!).
    *
@@ -24,9 +24,9 @@ const mocker = /** @lends EnigmaMocker# */ {
    * @type function
    * @experimental
    * @since 3.0.0
-   * @param {Array<object>} genericObjects Generic objects controling behaviour of visualizations.
+   * @param {Array<object>} genericObjects Generic objects controlling behaviour of visualizations.
    * @param {EnigmaMockerOptions=} options Options
-   * @returns {Promise<EngineAPI.IApp>}
+   * @returns {Promise<qix.Doc>}
    * @example
    * const genericObject = {
    *   getLayout() {

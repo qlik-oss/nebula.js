@@ -12,19 +12,19 @@ module.exports = {
   },
   parse: {
     types: {
-      'EngineAPI.IApp': {
+      Doc: {
         url: 'https://qlik.dev/apis/json-rpc/qix/doc#%23%2Fentries%2FDoc',
       },
-      'EngineAPI.IGenericObjectLayout': {
+      GenericObjectLayout: {
         url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FGenericObjectLayout',
       },
-      'EngineAPI.IGenericObjectProperties': {
+      GenericObjectProperties: {
         url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FGenericObjectProperties',
       },
-      'EngineAPI.INxDimension': {
+      NxDimension: {
         url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FNxDimension',
       },
-      'EngineAPI.INxMeasure': {
+      NxMeasure: {
         url: 'https://qlik.dev/apis/json-rpc/qix/schemas#%23%2Fdefinitions%2Fschemas%2Fentries%2FNxMeasure',
       },
     },

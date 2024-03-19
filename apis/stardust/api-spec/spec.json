@@ -14,7 +14,7 @@
       "params": [
         {
           "name": "app",
-          "type": "EngineAPI.IApp"
+          "type": "qix.Doc"
         },
         {
           "name": "instanceConfig",
@@ -231,7 +231,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "type": "EngineAPI.IGenericObjectLayout"
+        "type": "qix.GenericObjectLayout"
       },
       "examples": [
         "import { useLayout } from '@nebula.js/stardust';\n// ...\nconst layout = useLayout();\nconsole.log(layout);"
@@ -242,7 +242,7 @@
       "kind": "function",
       "params": [],
       "returns": {
-        "type": "EngineAPI.IGenericObjectLayout"
+        "type": "qix.GenericObjectLayout"
       },
       "examples": [
         "import { useStaleLayout } from '@nebula.js/stardust';\n// ...\nconst staleLayout = useStaleLayout();\nconsole.log(staleLayout);"
@@ -254,7 +254,7 @@
       "params": [],
       "returns": {
         "description": "The app layout",
-        "type": "EngineAPI.INxAppLayout"
+        "type": "qix.NxAppLayout"
       },
       "examples": [
         "import { useAppLayout } from '@nebula.js/stardust';\n// ...\nconst appLayout = useAppLayout();\nconsole.log(appLayout.qLocaleInfo);"
@@ -268,7 +268,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "EngineAPI.IGenericObject"
+            "type": "qix.GenericObject"
           },
           {
             "type": "undefined"
@@ -288,7 +288,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "EngineAPI.IApp"
+            "type": "qix.Doc"
           },
           {
             "type": "undefined"
@@ -308,7 +308,7 @@
         "kind": "union",
         "items": [
           {
-            "type": "EngineAPI.IGlobal"
+            "type": "qix.Global"
           },
           {
             "type": "undefined"
@@ -340,7 +340,7 @@
         "type": "#/definitions/Theme"
       },
       "examples": [
-        "import { useTheme } from '@nebula.js/stardust';\n\nconst theme = useTheme();\nconsole.log(theme.getContrastinColorTo('#ff0000'));"
+        "import { useTheme } from '@nebula.js/stardust';\n\nconst theme = useTheme();\nconsole.log(theme.getContrastingColorTo('#ff0000'));"
       ]
     },
     "useEmbed": {
@@ -516,14 +516,14 @@
           "kind": "function",
           "params": [
             {
-              "type": "EngineAPI.IGenericObjectLayout"
+              "type": "qix.GenericObjectLayout"
             }
           ],
           "returns": {
             "type": "Promise",
             "generics": [
               {
-                "type": "EngineAPI.IGenericObjectLayout"
+                "type": "qix.GenericObjectLayout"
               }
             ]
           }
@@ -543,7 +543,7 @@
         "type": "#/definitions/RenderState"
       },
       "examples": [
-        "import { useRenderState } from '@nebula.js/stardust';\n\nconst renderState = useRenderState();\nuseState(() => {\n  if(needProperteisUpdate(...)) {\n     useRenderState.pending();\n     updateProperties(...);\n  } else {\n     useRenderState.restore();\n     ...\n  }\n}, [...]);"
+        "import { useRenderState } from '@nebula.js/stardust';\n\nconst renderState = useRenderState();\nuseState(() => {\n  if(needPropertiesUpdate(...)) {\n     useRenderState.pending();\n     updateProperties(...);\n  } else {\n     useRenderState.restore();\n     ...\n  }\n}, [...]);"
       ]
     },
     "useEmitter": {
@@ -594,7 +594,7 @@
       "kind": "namespace",
       "entries": {
         "fromGenericObjects": {
-          "description": "Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visulization and specifies how it behaves. For example, what layout to use the data to present.\n\nThe generic object is represented with a Javascript object with a number of properties. The name of the property correlates to the name in the Enigma model for `app.getObject(id)`. For example, the property `getLayout` in the generic object is used to define `app.getObject(id).getLayout()`. Any property can be added to the fixture (just make sure it exists and behaves as in the Enigma model!).\n\nThe value for each property is either fixed (string / boolean / number / object) or a function. Arguments are forwarded to the function to allow for greater flexibility. For example, this can be used to return different hypercube data when scrolling in the chart.",
+          "description": "Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visualisation and specifies how it behaves. For example, what layout to use the data to present.\n\nThe generic object is represented with a Javascript object with a number of properties. The name of the property correlates to the name in the Enigma model for `app.getObject(id)`. For example, the property `getLayout` in the generic object is used to define `app.getObject(id).getLayout()`. Any property can be added to the fixture (just make sure it exists and behaves as in the Enigma model!).\n\nThe value for each property is either fixed (string / boolean / number / object) or a function. Arguments are forwarded to the function to allow for greater flexibility. For example, this can be used to return different hypercube data when scrolling in the chart.",
           "stability": "experimental",
           "availability": {
             "since": "3.0.0"
@@ -603,7 +603,7 @@
           "params": [
             {
               "name": "genericObjects",
-              "description": "Generic objects controling behaviour of visualizations.",
+              "description": "Generic objects controlling behaviour of visualizations.",
               "kind": "array",
               "items": {
                 "type": "object"
@@ -620,7 +620,7 @@
             "type": "Promise",
             "generics": [
               {
-                "type": "EngineAPI.IApp"
+                "type": "qix.Doc"
               }
             ]
           },
@@ -813,7 +813,7 @@
             "type": "Promise",
             "generics": [
               {
-                "type": "EngineAPI.IGenericObject"
+                "type": "qix.GenericObject"
               }
             ]
           },
@@ -1280,7 +1280,7 @@
         },
         "model": {
           "description": "This visualizations Enigma model, a representation of the generic object.",
-          "type": "EngineAPI.IGenericObject"
+          "type": "qix.GenericObject"
         },
         "destroy": {
           "description": "Destroys the visualization and removes it from the the DOM.",
@@ -1662,33 +1662,6 @@
         }
       }
     },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
-    },
     "Field": {
       "kind": "alias",
       "items": {
@@ -1698,10 +1671,10 @@
             "type": "string"
           },
           {
-            "type": "EngineAPI.INxDimension"
+            "type": "qix.NxDimension"
           },
           {
-            "type": "EngineAPI.INxMeasure"
+            "type": "qix.NxMeasure"
           },
           {
             "type": "#/definitions/LibraryField"
@@ -1734,7 +1707,7 @@
         },
         "properties": {
           "optional": true,
-          "type": "EngineAPI.IGenericObjectProperties"
+          "type": "qix.GenericObjectProperties"
         }
       }
     },
@@ -1796,7 +1769,7 @@
         "properties": {
           "description": "For creating objects: Explicit properties to set",
           "optional": true,
-          "type": "EngineAPI.IGenericObjectProperties"
+          "type": "qix.GenericObjectProperties"
         }
       },
       "examples": [
@@ -1823,6 +1796,33 @@
           ]
         }
       }
+    },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
     },
     "LoadType": {
       "kind": "interface",
@@ -2215,7 +2215,7 @@
           "type": "boolean"
         },
         "select": {
-          "description": "Whether or not select interactions are on. Alows selection actions. Implied when active is false.",
+          "description": "Whether or not select interactions are on. Allows selection actions. Implied when active is false.",
           "optional": true,
           "defaultValue": true,
           "type": "boolean"
@@ -2360,7 +2360,7 @@
       "entries": {
         "properties": {
           "optional": true,
-          "type": "EngineAPI.IGenericObjectProperties"
+          "type": "qix.GenericObjectProperties"
         },
         "data": {
           "optional": true,
@@ -2395,7 +2395,7 @@
           "type": "#/definitions/FieldTarget",
           "generics": [
             {
-              "type": "EngineAPI.INxDimension"
+              "type": "qix.NxDimension"
             }
           ]
         },
@@ -2404,7 +2404,7 @@
           "type": "#/definitions/FieldTarget",
           "generics": [
             {
-              "type": "EngineAPI.INxMeasure"
+              "type": "qix.NxMeasure"
             }
           ]
         }
@@ -2424,7 +2424,7 @@
         },
         {
           "name": "properties",
-          "type": "EngineAPI.IGenericObjectProperties"
+          "type": "qix.GenericObjectProperties"
         }
       ]
     },
@@ -2442,7 +2442,7 @@
         },
         {
           "name": "properties",
-          "type": "EngineAPI.IGenericObjectProperties"
+          "type": "qix.GenericObjectProperties"
         },
         {
           "name": "index",
@@ -2873,25 +2873,25 @@
         "dimensions": {
           "kind": "array",
           "items": {
-            "type": "EngineAPI.INxDimension"
+            "type": "qix.NxDimension"
           }
         },
         "measures": {
           "kind": "array",
           "items": {
-            "type": "EngineAPI.INxMeasure"
+            "type": "qix.NxMeasure"
           }
         },
         "excludedDimensions": {
           "kind": "array",
           "items": {
-            "type": "EngineAPI.INxDimension"
+            "type": "qix.NxDimension"
           }
         },
         "excludedMeasures": {
           "kind": "array",
           "items": {
-            "type": "EngineAPI.INxMeasure"
+            "type": "qix.NxMeasure"
           }
         },
         "interColumnSortOrder": {

@@ -8,7 +8,7 @@
 /**
  * Extends `ListObjectDef`, see Engine API: `ListObjectDef`.
  * @interface ListObjectDef
- * @extends EngineAPI.IListObjectDef
+ * @extends qix.ListObjectDef
  * @property {boolean} [frequencyEnabled=false] Show frequency count. also requires qListObjectDef.qFrequencyMode to be set
  */
 
