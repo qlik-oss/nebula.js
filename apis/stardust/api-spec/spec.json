@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "4.14.0",
+    "version": "5.0.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -799,7 +799,6 @@
         },
         "create": {
           "description": "Creates a visualization model",
-          "stability": "experimental",
           "kind": "function",
           "params": [
             {
@@ -823,7 +822,6 @@
         },
         "generateProperties": {
           "description": "Generates properties for a visualization object",
-          "stability": "experimental",
           "kind": "function",
           "params": [
             {
@@ -1352,7 +1350,6 @@
         },
         "addListener": {
           "description": "Listens to custom events from inside the visualization. See useEmitter",
-          "stability": "experimental",
           "kind": "function",
           "params": [
             {
@@ -1370,7 +1367,6 @@
         },
         "removeListener": {
           "description": "Removes a listener",
-          "stability": "experimental",
           "kind": "function",
           "params": [
             {

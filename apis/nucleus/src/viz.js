@@ -196,7 +196,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     },
     /**
      * Listens to custom events from inside the visualization. See useEmitter
-     * @experimental
      * @param {string} eventName Event name to listen to
      * @param {Function} listener Callback function to invoke
      */
@@ -205,7 +204,6 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     },
     /**
      * Removes a listener
-     * @experimental
      * @param {string} eventName Event name to remove from
      * @param {Function} listener Callback function to remove
      */
@@ -219,6 +217,16 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
     async getImperativeHandle() {
       await rendered;
       return cellRef.current.getImperativeHandle();
+    },
+    /**
+     * Takes a snapshot of the Viz layout and state
+     * @experimental
+     * @private
+     * @returns {Promise<object>} viz layout object with snapshot settings
+     */
+    async takeSnapshot() {
+      await rendered;
+      return cellRef.current.takeSnapshot();
     },
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {
