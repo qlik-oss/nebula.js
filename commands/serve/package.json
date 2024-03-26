@@ -36,7 +36,7 @@
     "chalk": "4.1.2",
     "chokidar": "3.6.0",
     "cross-env": "7.0.3",
-    "express": "4.19.1",
+    "express": "4.19.2",
     "extend": "3.0.2",
     "html-webpack-plugin": "5.6.0",
     "portfinder": "1.0.32",
