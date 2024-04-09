@@ -177,7 +177,7 @@ function ListBoxInline({ options, layout }) {
         selections.on('activated', show);
         selections.on('deactivated', hide);
       }
-      setShowToolbar(false);
+      setShowToolbar(true);
     }
     if (toolbar && selections) {
       if (!selections.isModal()) {
