@@ -10,7 +10,7 @@ const StyledButton = styled(Button)(() => ({
   padding: 0,
 }));
 
-function DimensionIcon({ iconData, translator, iconStyle }) {
+function DimensionIcon({ iconData, translator, iconStyle, disabled }) {
   if (!iconData) return undefined;
 
   const { icon, tooltip, onClick } = iconData;
@@ -19,7 +19,15 @@ function DimensionIcon({ iconData, translator, iconStyle }) {
   const isButton = onClick;
 
   return isButton ? (
-    <StyledButton variant="outlined" onClick={onClick} tabIndex={-1} title={title} size="large" disableRipple>
+    <StyledButton
+      variant="outlined"
+      onClick={onClick}
+      tabIndex={-1}
+      title={title}
+      size="large"
+      disableRipple
+      disabled={disabled}
+    >
       <Icon style={iconStyle} />
     </StyledButton>
   ) : (

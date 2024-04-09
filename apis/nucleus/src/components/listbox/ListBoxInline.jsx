@@ -121,6 +121,7 @@ function ListBoxInline({ options, layout }) {
   const isModalMode = useCallback(() => isModal({ app, appSelections }), [app, appSelections]);
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
+  const [isInSelection, setIsInSelection] = useState(false);
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown } = useMemo(
     () =>
@@ -161,9 +162,11 @@ function ListBoxInline({ options, layout }) {
     }
     const show = () => {
       setShowToolbar(true);
+      setIsInSelection(true);
     };
     const hide = () => {
       setShowToolbar(false);
+      setIsInSelection(false);
       if (search === 'toggle') {
         setShowSearch(false);
       }
@@ -171,11 +174,10 @@ function ListBoxInline({ options, layout }) {
     if (isPopover) {
       // When isPopover, toolbar == false will be ignored.
       if (!selections.isActive()) {
-        selections.begin('/qListObjectDef');
         selections.on('activated', show);
         selections.on('deactivated', hide);
       }
-      setShowToolbar(isPopover);
+      setShowToolbar(false);
     }
     if (toolbar && selections) {
       if (!selections.isModal()) {
@@ -277,6 +279,7 @@ function ListBoxInline({ options, layout }) {
       selectionState={selectionState}
       selections={selections}
       keyboard={keyboard}
+      isInSelection={isInSelection}
     />
   );
 
