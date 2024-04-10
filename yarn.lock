@@ -3769,13 +3769,13 @@
     unbzip2-stream "1.4.3"
     yargs "17.7.1"
 
-"@qlik/api@^0.3.0":
-  version "0.3.0"
-  resolved "https://registry.yarnpkg.com/@qlik/api/-/api-0.3.0.tgz#18e6d3863523af172429403500e64219acf323d9"
-  integrity sha512-plsVMrTVBmZY88TK/4UmZbj/icmEO/ySFHHVzXZ9tdtDu4NvN6rWTT8eNH2P7YQwmwn+nZdxgYnFfrsKkGF5ag==
+"@qlik/api@^1.2.0":
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/@qlik/api/-/api-1.2.0.tgz#901c2a7d5377dd14bb934d57b7355d5db5faa7be"
+  integrity sha512-uTQEznMQWAkPYJ/mlfqoVlNpUWNPsbmKsp6F6FQhKnHpu8O12/mEkHPVJqjpC6gDFnP+HYWsZRLzddtB162iVw==
   dependencies:
     "@qlik/embed-runtime" "^0.7.0"
-    "@qlik/runtime-module-loader" "^0.2.6"
+    "@qlik/runtime-module-loader" "^0.2.7"
     ajv "^8.12.0"
     bufferutil "^4.0.8"
     enigma.js "^2.14.0"
@@ -3788,10 +3788,10 @@
   resolved "https://registry.yarnpkg.com/@qlik/embed-runtime/-/embed-runtime-0.7.0.tgz#016582a119e84aeab6dd24c4457a93fad61361bf"
   integrity sha512-D0nlB7rQRGSjbLdO53yy5K/VgYhSQDNSs4iywJlbaIjkpTBXzPZBL75WX9Ezkh+ZYfXz0TZo8SuagreTbzz+4g==
 
-"@qlik/runtime-module-loader@^0.2.6":
-  version "0.2.6"
-  resolved "https://registry.yarnpkg.com/@qlik/runtime-module-loader/-/runtime-module-loader-0.2.6.tgz#1f3a57f43f5f2978ef93bef86c64b1372ec60edc"
-  integrity sha512-XU1Jw1D2H36JOs5qOROJ+U2ThrkgEL8chFVwfeqXTrT+tKcM95MMm5W2qGHR0hsyEvD1fh2sQMI1mk9Sf+ol9w==
+"@qlik/runtime-module-loader@^0.2.7":
+  version "0.2.7"
+  resolved "https://registry.yarnpkg.com/@qlik/runtime-module-loader/-/runtime-module-loader-0.2.7.tgz#c0e1c4d4da36f48c44ff0460625eef525f2aafad"
+  integrity sha512-OokdsspMIcwLz16u+9b1iuI/NqU7J9UcV+UW9u+lHzi+V9Hg3u1YtptN0Sgt4dy+vygMqUMDqPBTCPhwu6AT5g==
   dependencies:
     "@qlik/embed-runtime" "0.7.0"
 
