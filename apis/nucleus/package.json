@@ -13,7 +13,7 @@
     "@nebula.js/supernova": "^5.0.0",
     "@nebula.js/theme": "^5.0.0",
     "@nebula.js/ui": "^5.0.0",
-    "@testing-library/react": "^14.3.0",
+    "@testing-library/react": "^14.3.1",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1",
     "react": "18.2.0",
