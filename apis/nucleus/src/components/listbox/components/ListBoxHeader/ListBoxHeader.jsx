@@ -78,13 +78,13 @@ export default function ListBoxHeader({
   }, [layout?.qListObject?.qDimensionInfo?.qLocked]);
 
   const titleRef = useRef(null);
-  const iconData = iconUtils.createDimensionIconData(
-    layout?.qListObject?.qDimensionInfo,
+  const iconData = iconUtils.createDimensionIconData({
+    dimInfo: layout?.qListObject?.qDimensionInfo,
     app,
     selections,
     isPopover,
-    !constraints?.active
-  );
+    active: !constraints?.active,
+  });
   const showUnlock = showLock && isLocked;
   const showLockIcon = !showLock && isLocked; // shows instead of the cover button when field/dim is locked.
   const showLeftIcon = showSearchIcon || showLockIcon || iconData; // the left-most icon outside of the actions/selections toolbar.

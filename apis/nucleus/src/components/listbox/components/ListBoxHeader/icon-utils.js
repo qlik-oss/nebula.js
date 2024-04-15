@@ -8,7 +8,7 @@ const dimensionTypes = {
   cyclic: 'C',
 };
 
-const createDimensionIconData = (dimInfo, app, selections, isPopover, active) => {
+const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active }) => {
   switch (dimInfo.qGrouping) {
     case dimensionTypes.drillDown:
       return {
