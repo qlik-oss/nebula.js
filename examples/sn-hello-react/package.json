@@ -18,7 +18,7 @@
     "start": "nebula serve"
   },
   "peerDependencies": {
-    "@nebula.js/stardust": ">=4.0.0"
+    "@nebula.js/stardust": ">=5.0.0"
   },
   "devDependencies": {
     "@nebula.js/cli": "latest",
