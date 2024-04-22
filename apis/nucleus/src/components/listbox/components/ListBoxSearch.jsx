@@ -135,9 +135,6 @@ export default function ListBoxSearch({
       setValue(WILDCARD);
       setWildcardOn(true);
     }
-    if (!selectionState.selectDisabled() && !selections.isModal()) {
-      selections.begin(['/qListObjectDef']);
-    }
   };
 
   const hasHits = () => {

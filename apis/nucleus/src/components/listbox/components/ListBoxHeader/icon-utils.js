@@ -8,7 +8,7 @@ const dimensionTypes = {
   cyclic: 'C',
 };
 
-const createDimensionIconData = (dimInfo, app) => {
+const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active }) => {
   switch (dimInfo.qGrouping) {
     case dimensionTypes.drillDown:
       return {
@@ -16,12 +16,16 @@ const createDimensionIconData = (dimInfo, app) => {
         tooltip: 'Listbox.DrillDown',
         onClick: undefined,
       };
-    case dimensionTypes.cyclic:
+    case dimensionTypes.cyclic: {
+      const clickable = app && active;
       return {
-        icon: app ? ReloadIcon : CyclicIcon,
+        icon: clickable ? ReloadIcon : CyclicIcon,
         tooltip: 'Listbox.Cyclic',
-        onClick: app
+        onClick: clickable
           ? () => {
+              if (!isPopover) {
+                selections.confirm();
+              }
               app
                 .getDimension(dimInfo.qLibraryId)
                 .then((dimensionModel) => {
@@ -36,6 +40,7 @@ const createDimensionIconData = (dimInfo, app) => {
             }
           : undefined,
       };
+    }
     default:
       return undefined;
   }

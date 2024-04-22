@@ -328,6 +328,16 @@ describe('<ListBoxSearch />', () => {
     expect(type.props.value).toHaveLength(64000);
   });
 
+  test('should not activate selection onFocus of search input', async () => {
+    const testInstance = testRender(model).root;
+    const searchInput = testInstance.findByType(OutlinedInput);
+
+    await act(async () => {
+      await searchInput.props.onFocus();
+    });
+    expect(selections.begin).not.toHaveBeenCalled();
+  });
+
   describe('selectDisabled should prevent some search interactions', () => {
     let getType;
     let onKeyDown;
@@ -363,14 +373,6 @@ describe('<ListBoxSearch />', () => {
           currentTarget: { closest: (s) => s },
         });
       };
-    });
-
-    test('selectDisabled() => false should allow selections', async () => {
-      const type = getType(false);
-      await act(async () => {
-        await type.props.onFocus();
-      });
-      expect(selections.begin).toHaveBeenCalled();
     });
 
     test('selectDisabled() => true should NOT allow selections', async () => {
