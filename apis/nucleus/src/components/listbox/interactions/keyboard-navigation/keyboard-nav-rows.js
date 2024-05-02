@@ -114,14 +114,10 @@ export default function getRowsKeyboardNavigation({
         break;
       case KEYS.ENTER:
         confirm();
-        break;
+        return;
       case KEYS.ESCAPE:
-        if (isModal()) {
-          cancel();
-        } else {
-          return; // propagate to other Esc handler
-        }
-        break;
+        cancel();
+        return;
       case KEYS.HOME:
         focusListItems.setFirst(true);
         if (ctrlKey) {
