@@ -117,7 +117,7 @@ export default function getRowsKeyboardNavigation({
         return;
       case KEYS.ESCAPE:
         if (isModal()) {
-        cancel();
+          cancel();
         } else {
           return; // propagate to other Esc handler
         }
