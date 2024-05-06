@@ -116,8 +116,12 @@ export default function getRowsKeyboardNavigation({
         confirm();
         return;
       case KEYS.ESCAPE:
+        if (isModal()) {
         cancel();
-        return;
+        } else {
+          return; // propagate to other Esc handler
+        }
+        break;
       case KEYS.HOME:
         focusListItems.setFirst(true);
         if (ctrlKey) {

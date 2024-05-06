@@ -175,7 +175,7 @@ export default function ListBoxSearch({
       case 'Escape': {
         focusRow(container);
         cancel();
-        return undefined;
+        break;
       }
       case 'Tab': {
         if (e.shiftKey) {
