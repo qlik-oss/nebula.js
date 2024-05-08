@@ -148,6 +148,7 @@ export default function ListBoxPopover({
           },
         },
       }}
+      onKeyDown={(e) => (e.key === 'Enter' ? popoverClose(e) : undefined)}
     >
       <Grid container direction="column" gap={0} ref={containerRef}>
         <Grid item container style={{ padding: theme.spacing(1) }}>

@@ -114,6 +114,9 @@ export default function getRowsKeyboardNavigation({
         break;
       case KEYS.ENTER:
         confirm();
+        if (typeof isModal === 'undefined') {
+          return;
+        }
         break;
       case KEYS.ESCAPE:
         if (isModal()) {
