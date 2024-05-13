@@ -7,7 +7,7 @@ export default function fromGenericObjects(genericObjects, options = {}) {
   const session = new SessionMock();
   const createSessionObject = new CreateSessionObjectMock(session);
   const getObject = new GetObjectMock(genericObjects, options);
-  const getAppLayout = new GetAppLayoutMock();
+  const getAppLayout = new GetAppLayoutMock(options.appLocaleInfo);
 
   const app = {
     id: `app - ${+Date.now()}`,

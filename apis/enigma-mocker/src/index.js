@@ -3,6 +3,7 @@ import fGO from './from-generic-objects';
 /**
  * @interface EnigmaMockerOptions
  * @property {number} delay Simulate delay (in ms) for calls in enigma-mocker.
+ * @property {object} appLocaleInfo Adds custom locale info into app layout
  * @description Options for Enigma Mocker
  * @experimental
  * @since 3.0.0
