@@ -85,8 +85,14 @@ export default function getListboxContainerKeyboardNavigation({
     }
   };
 
+  const focusOnHoverDisabled = () => {
+    const selectNotAllowed = constraints?.select || constraints?.active;
+    const appInModal = isModal();
+    return selectNotAllowed || appInModal;
+  };
+
   const globalKeyDown = (event) => {
-    if (!hovering.current) {
+    if (!hovering.current || focusOnHoverDisabled()) {
       return;
     }
     const { keyCode, ctrlKey = false, shiftKey = false } = event;
@@ -116,16 +122,8 @@ export default function getListboxContainerKeyboardNavigation({
     event.preventDefault();
   };
 
-  const focusOnHoverDisabled = () => {
-    const selectNotAllowed = constraints?.select || constraints?.active;
-    const appInModal = isModal();
-    return selectNotAllowed || appInModal;
-  };
-
   const handleOnMouseEnter = () => {
-    if (!focusOnHoverDisabled()) {
-      hovering.current = true;
-    }
+    hovering.current = true;
   };
 
   const handleOnMouseLeave = () => {

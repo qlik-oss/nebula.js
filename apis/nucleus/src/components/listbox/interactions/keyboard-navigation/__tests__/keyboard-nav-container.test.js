@@ -193,7 +193,7 @@ describe('keyboard navigation', () => {
       app.isInModalSelection = () => true;
       hovering.current = false;
       handleOnMouseEnter();
-      expect(hovering.current).toBe(false);
+      expect(hovering.current).toBe(true);
       app.isInModalSelection = () => false;
     });
     test('should handle mouse leave', () => {
@@ -207,6 +207,7 @@ describe('keyboard navigation', () => {
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
+      isModal.mockReturnValue(false);
       handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ up: 1 });
@@ -218,6 +219,7 @@ describe('keyboard navigation', () => {
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
+      isModal.mockReturnValue(false);
       handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ down: 1 });
@@ -229,6 +231,7 @@ describe('keyboard navigation', () => {
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
+      isModal.mockReturnValue(false);
       handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ up: 10 });
@@ -240,6 +243,7 @@ describe('keyboard navigation', () => {
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
+      isModal.mockReturnValue(false);
       handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ down: 10 });
@@ -251,6 +255,7 @@ describe('keyboard navigation', () => {
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
+      isModal.mockReturnValue(false);
       handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'start' });
@@ -264,6 +269,7 @@ describe('keyboard navigation', () => {
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
+      isModal.mockReturnValue(false);
       handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'overflowStart' });
@@ -275,6 +281,7 @@ describe('keyboard navigation', () => {
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
+      isModal.mockReturnValue(false);
       handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'end' });
@@ -288,9 +295,24 @@ describe('keyboard navigation', () => {
         preventDefault: jest.fn(),
         stopPropagation: jest.fn(),
       };
+      isModal.mockReturnValue(false);
       handleGlobalKeyDown(event);
       expect(event.preventDefault).toHaveBeenCalledTimes(1);
       expect(updateKeyScroll).toHaveBeenCalledWith({ scrollPosition: 'overflowEnd' });
+    });
+    test('should not update scroll on hover when CTRL+SHIFT+END is pressed and isModal = true', () => {
+      const event = {
+        currentTarget: createElement(0),
+        keyCode: KEYS.END,
+        ctrlKey: true,
+        shiftKey: true,
+        preventDefault: jest.fn(),
+        stopPropagation: jest.fn(),
+      };
+      isModal.mockReturnValue(true);
+      handleGlobalKeyDown(event);
+      expect(event.preventDefault).toHaveBeenCalledTimes(0);
+      expect(updateKeyScroll).toHaveBeenCalledTimes(0);
     });
   });
 });
