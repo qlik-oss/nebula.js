@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.0.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.1...v5.0.2) (2024-05-14)
+
+### Bug Fixes
+
+- avoid triggering scroll on search box open ([#1547](https://github.com/qlik-oss/nebula.js/issues/1547)) ([6aa8cab](https://github.com/qlik-oss/nebula.js/commit/6aa8cab7e233f20798217a8e88c29045361bc5b1))
+- **QB-25634:** press Enter key does not close listbox ([#1542](https://github.com/qlik-oss/nebula.js/issues/1542)) ([b22d72e](https://github.com/qlik-oss/nebula.js/commit/b22d72ed4d0fe07cd194a16f4572023e780711cc))
+
 ## [5.0.1](https://github.com/qlik-oss/nebula.js/compare/v5.0.0...v5.0.1) (2024-04-23)
 
 ### Bug Fixes
