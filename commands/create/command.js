@@ -31,7 +31,7 @@ module.exports = {
     });
     yargs.option('pkgm', {
       type: 'string',
-      choices: ['npm', 'yarn'],
+      choices: ['npm', 'yarn', 'pnpm'],
       description: 'Package manager',
     });
     yargs.option('picasso', {

@@ -26,7 +26,7 @@ Positionals:
 Options:
   --version   Show version number                                      [boolean]
   --install   Run package installation step            [boolean] [default: true]
-  --pkgm      Package manager                  [string] [choices: "npm", "yarn"]
+  --pkgm      Package manager          [string] [choices: "npm", "yarn", "pnpm"]
   --picasso   Picasso template [string] [choices: "none", "minimal", "barchart"]
   --author    Package author                                            [string]
   -h, --help  Show help                                                [boolean]
@@ -43,7 +43,7 @@ Positionals:
 Options:
       --version  Show version number                                   [boolean]
       --install  Run package installation step         [boolean] [default: true]
-      --pkgm     Package manager               [string] [choices: "npm", "yarn"]
+      --pkgm     Package manager       [string] [choices: "npm", "yarn", "pnpm"]
       --picasso  Picasso template
                                [string] [choices: "none", "minimal", "barchart"]
       --author   Package author                                         [string]
