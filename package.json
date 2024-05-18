@@ -94,7 +94,7 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
-    "**/caniuse-lite": "1.0.30001617",
+    "**/caniuse-lite": "1.0.30001620",
     "**/react": "18.3.1",
     "**/react-dom": "18.3.1",
     "**/react-is": "18.3.1",
