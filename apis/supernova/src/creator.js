@@ -320,7 +320,14 @@ export default function create(generator, opts, galaxy) {
     };
 
     opts.model.setProperties = function setProperties(...args) {
-      generator.qae.properties.onChange.call({ model: opts.model }, ...args);
+      // try/catch here to guard against charts not checking properties correctly
+      try {
+        generator.qae.properties.onChange.call({ model: opts.model }, ...args);
+      } catch {
+        if (__NEBULA_DEV__) {
+          console.warn('Error in chart setProperties interceptor onChange call '); // eslint-disable-line no-console
+        }
+      }
       return opts.model.__snInterceptor.setProperties.call(this, ...args);
     };
 
@@ -331,9 +338,13 @@ export default function create(generator, opts, galaxy) {
         const original = JSONPatch.clone(currentProperties);
         const patches = qPatches.map((p) => ({ op: p.qOp, value: JSON.parse(p.qValue), path: p.qPath }));
         JSONPatch.apply(currentProperties, patches);
-
-        generator.qae.properties.onChange.call({ model: opts.model }, currentProperties);
-
+        try {
+          generator.qae.properties.onChange.call({ model: opts.model }, currentProperties);
+        } catch {
+          if (__NEBULA_DEV__) {
+            console.warn('Error in chart applyPatches interceptor onChange call '); // eslint-disable-line no-console
+          }
+        }
         // calculate new patches from after change
         const newPatches = JSONPatch.generate(original, currentProperties).map((p) => ({
           qOp: p.op,
@@ -346,8 +357,10 @@ export default function create(generator, opts, galaxy) {
     };
 
     opts.model.__snInterceptor.teardown = () => {
-      opts.model.setProperties = opts.model.__snInterceptor.setProperties;
-      delete opts.model.__snInterceptor;
+      if (opts.model.__snInterceptor) {
+        opts.model.setProperties = opts.model.__snInterceptor.setProperties;
+        delete opts.model.__snInterceptor;
+      }
     };
 
     teardowns.push(opts.model.__snInterceptor.teardown);
