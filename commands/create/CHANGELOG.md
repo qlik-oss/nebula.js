@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/qlik-oss/nebula.js/compare/v5.0.2...v5.1.0) (2024-05-22)
+
+### Features
+
+- support pnpm as package manager ([#1548](https://github.com/qlik-oss/nebula.js/issues/1548)) ([3651e5a](https://github.com/qlik-oss/nebula.js/commit/3651e5a081f83cd65b0b3361e8c787d7d24ff79e))
+
 ## [5.0.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.1...v5.0.2) (2024-05-14)
 
 **Note:** Version bump only for package @nebula.js/cli-create

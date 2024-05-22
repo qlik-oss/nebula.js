@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.1.0](https://github.com/qlik-oss/nebula.js/compare/v5.0.2...v5.1.0) (2024-05-22)
+
+### Bug Fixes
+
+- make sure charts don't crash the setProperties calls ([#1550](https://github.com/qlik-oss/nebula.js/issues/1550)) ([c54575a](https://github.com/qlik-oss/nebula.js/commit/c54575a78be15999f158a34a9c9f6e5e001e755f))
+
 ## [5.0.2](https://github.com/qlik-oss/nebula.js/compare/v5.0.1...v5.0.2) (2024-05-14)
 
 **Note:** Version bump only for package @nebula.js/supernova
