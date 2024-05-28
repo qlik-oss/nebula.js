@@ -50,9 +50,9 @@
     "yargs": "17.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.24.5",
-    "@babel/preset-env": "7.24.5",
-    "@babel/preset-react": "7.24.1",
+    "@babel/core": "7.24.6",
+    "@babel/preset-env": "7.24.6",
+    "@babel/preset-react": "7.24.6",
     "@mui/material": "^5.15.18",
     "@mui/system": "^5.15.15",
     "@nebula.js/enigma-mocker": "^5.1.0",
@@ -67,7 +67,7 @@
     "eslint-import-resolver-alias": "1.1.2",
     "eslint-import-resolver-webpack": "0.13.8",
     "file-loader": "^6.2.0",
-    "monaco-editor": "0.48.0",
+    "monaco-editor": "0.49.0",
     "monaco-editor-webpack-plugin": "7.1.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
