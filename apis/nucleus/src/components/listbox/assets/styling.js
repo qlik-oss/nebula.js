@@ -71,17 +71,35 @@ function getSelectionColors({ getColorPickerColor, theme, getListboxStyle, overr
 
   const useContrastTextColor = !checkboxes && (overrides.theme?.content?.useContrastColor ?? true);
 
+  const getSelectionThemeColor = (selector) =>
+    getColorPickerColor(getListboxStyle('', `selections.colors.${selector}`));
+
   // Background colors
   const selectionColors = overrides.selections?.colors || {};
 
-  const selected = getColorPickerColor(selectionColors.selected) || theme.palette?.selected.main || '#009845';
+  const selected =
+    getColorPickerColor(selectionColors.selected) ||
+    getSelectionThemeColor('selected') ||
+    theme.palette?.selected.main ||
+    '#009845';
   const alternative =
-    getColorPickerColor(selectionColors.alternative) || theme.palette?.selected.alternative || '#E4E4E4';
-  const excluded = getColorPickerColor(selectionColors.excluded) || theme.palette?.selected.excluded || '#A9A9A9';
+    getColorPickerColor(selectionColors.alternative) ||
+    getSelectionThemeColor('alternative') ||
+    theme.palette?.selected.alternative ||
+    '#E4E4E4';
+  const excluded =
+    getColorPickerColor(selectionColors.excluded) ||
+    getSelectionThemeColor('excluded') ||
+    theme.palette?.selected.excluded ||
+    '#A9A9A9';
   const selectedExcluded =
-    getColorPickerColor(selectionColors.selectedExcluded) || theme.palette?.selected.selectedExcluded || '#A9A9A9';
+    getColorPickerColor(selectionColors.selectedExcluded) ||
+    getSelectionThemeColor('selectedExcluded') ||
+    theme.palette?.selected.selectedExcluded ||
+    '#A9A9A9';
   const possible =
     getColorPickerColor(selectionColors.possible) ||
+    getSelectionThemeColor('possible') ||
     getListboxStyle('', 'backgroundColor') ||
     theme.palette?.selected.possible ||
     '#FFFFFF';
