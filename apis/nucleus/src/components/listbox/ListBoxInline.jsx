@@ -184,7 +184,7 @@ function ListBoxInline({ options, layout }) {
         selections.on('activated', show);
         selections.on('deactivated', hide);
       }
-      setShowToolbar(selections.isActive());
+      setShowToolbar(isPopover || selections.isActive());
     }
 
     return () => {

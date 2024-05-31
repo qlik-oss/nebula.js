@@ -1,8 +1,10 @@
 export default function getListboxActionProps({
   isDetached,
   showToolbar,
+  isInSelection,
   containerRef,
   isLocked,
+  isPopover,
   listboxSelectionToolbarItems,
   extraItems,
   selections,
@@ -19,7 +21,10 @@ export default function getListboxActionProps({
     },
     extraItems,
     more: {
-      enabled: !isLocked,
+      enabled:
+        !isLocked &&
+        (isPopover || isInSelection) &&
+        listboxSelectionToolbarItems.filter((item) => item.enabled()).length > 0,
       actions: listboxSelectionToolbarItems,
       popoverProps: {
         elevation: 0,
@@ -30,7 +35,7 @@ export default function getListboxActionProps({
       },
     },
     selections: {
-      show: showToolbar,
+      show: showToolbar && isInSelection,
       api: selections,
       onConfirm: () => {
         keyboard?.focus();

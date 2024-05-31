@@ -169,7 +169,9 @@ export default function ListBoxHeader({
   const toolbarProps = getListboxActionProps({
     isDetached: isPopover ? false : isToolbarDetached,
     showToolbar,
+    isInSelection,
     containerRef,
+    isPopover,
     isLocked,
     extraItems,
     listboxSelectionToolbarItems,
