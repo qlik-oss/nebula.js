@@ -99,13 +99,13 @@ export default function ListBoxHeader({
     (iconData ? BUTTON_ICON_WIDTH : 0);
 
   const toggleLock = getToggleLock({ isLocked, setLocked, settingLockedState, setSettingLockedState, model });
-
   const listboxSelectionToolbarItems = createListboxSelectionToolbar({
     layout,
     model,
     translator,
     selectionState,
     isDirectQuery,
+    selections,
   });
 
   const extraItems =
