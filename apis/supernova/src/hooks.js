@@ -25,12 +25,7 @@ function depsChanged(prevDeps, deps) {
   return false;
 }
 
-function logHook(message, component) {
-  console.log(`ID: ${(component || currentComponent)?.context?.model?.id} index: ${currentIndex}, ${message}`);
-}
-
 export function initiate(component, { explicitResize = false } = {}) {
-  logHook('initiate');
   component.__hooks = {
     obsolete: false,
     error: false,
@@ -305,7 +300,6 @@ export function useState(initial) {
       const v = typeof s === 'function' ? s(h.value[0]) : s;
       if (v !== h.value[0]) {
         h.value[0] = v;
-        logHook(`setState: ${v}`, h.component);
         scheduleMicro(h.component);
       }
     };
@@ -356,13 +350,10 @@ export function useEffect(cb, deps) {
   }
   const h = getHook(++currentIndex);
   if (depsChanged(h.value ? h.value[1] : undefined, deps)) {
-    logHook('useEffect: deps changed');
     h.value = [cb, deps];
     if (currentComponent.__hooks.pendingEffects.indexOf(h) === -1) {
       currentComponent.__hooks.pendingEffects.push(h);
     }
-  } else {
-    logHook('useEffect: no change');
   }
 }
 
@@ -482,7 +473,6 @@ export function usePromise(p, deps) {
       h.teardown && h.teardown();
     };
   }, deps);
-  logHook(`usePromise: ${obj.state}`);
   return [obj.resolved, obj.rejected];
 }
 
