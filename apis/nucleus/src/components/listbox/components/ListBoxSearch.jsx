@@ -127,6 +127,10 @@ export default function ListBoxSearch({
     if (!searchValue.length) {
       return abortSearch();
     }
+    const shouldBeginSelection = !selections.isActive() && !selectionState.selectDisabled() && !selections.isModal();
+    if (shouldBeginSelection) {
+      selections.begin(['/qListObjectDef']);
+    }
     return model.searchListObjectFor(TREE_PATH, searchValue);
   };
 
