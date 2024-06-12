@@ -222,11 +222,9 @@ describe('<ListBoxSearch />', () => {
     await act(async () => {
       await type.props.onKeyDown({ ...keyEventDefaults, key: 'Escape' });
     });
-    expect(selections.isActive).toHaveBeenCalled();
     expect(selections.cancel).toHaveBeenCalled();
-    expect(model.abortListObjectSearch).toHaveBeenCalled();
     expect(keyEventDefaults.stopPropagation).toHaveBeenCalled();
-    expect(type.props.value).toBe(''); // text is not reset in the test since "deactivated" is not triggered on cancel
+    expect(type.props.value).toBe('foo'); // text is not reset in the test since "deactivated" is not triggered on cancel
   });
 
   test('should call `cancel` on `Escape` and `return` and propagate the event', async () => {

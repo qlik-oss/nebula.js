@@ -81,7 +81,7 @@ export default function ListBoxSearch({
   const { getStoreValue, setStoreValue } = useDataStore(model);
   const isRtl = direction === 'rtl';
 
-  const cancel = () => selections.isActive() && selections.cancel();
+  const cancel = () => selections.cancel();
 
   const abortSearch = async () => {
     try {
@@ -170,12 +170,8 @@ export default function ListBoxSearch({
       case 'Escape': {
         focusRow(container);
         cancel();
-        abortSearch();
         if (popoverOpen) {
           return undefined;
-        }
-        if (hide) {
-          hide();
         }
         break;
       }
