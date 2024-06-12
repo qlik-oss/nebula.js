@@ -81,14 +81,9 @@ export default function ListBoxSearch({
   const { getStoreValue, setStoreValue } = useDataStore(model);
   const isRtl = direction === 'rtl';
 
-  const cancel = () => selections.isActive() && selections.cancel();
+  const cancel = () => selections.cancel();
 
   const abortSearch = async () => {
-    // When select is disabled we always want to allow abort (but not permitting selections).
-    const preventAbort = selectionState.selectDisabled() ? false : !selections.isModal();
-    if (preventAbort) {
-      return;
-    }
     try {
       await model.abortListObjectSearch(TREE_PATH);
     } finally {
@@ -97,9 +92,10 @@ export default function ListBoxSearch({
   };
 
   useEffect(() => {
-    if (!visible) {
-      abortSearch(); // abort when toggling off search
+    if (visible) {
+      return () => abortSearch(); // abort when toggling off search
     }
+    return () => {};
   }, [visible]);
 
   useEffect(() => {
@@ -126,10 +122,6 @@ export default function ListBoxSearch({
     setValue(searchValue);
     if (!searchValue.length) {
       return abortSearch();
-    }
-    const shouldBeginSelection = !selections.isActive() && !selectionState.selectDisabled() && !selections.isModal();
-    if (shouldBeginSelection) {
-      selections.begin(['/qListObjectDef']);
     }
     return model.searchListObjectFor(TREE_PATH, searchValue);
   };
