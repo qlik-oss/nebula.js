@@ -187,6 +187,7 @@ const config = ({
             ? terser({
                 output: {
                   preamble: banner,
+                  keep_fnames: mode === 'development',
                 },
               })
             : false,
