@@ -536,16 +536,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
 
     /**
@@ -576,6 +566,16 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     interface LoadType {
