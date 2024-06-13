@@ -175,6 +175,7 @@ export default function ListBoxSearch({
       }
       case 'Tab': {
         if (e.shiftKey) {
+          // Focus cyclic button
           keyboard.focusSelection();
         } else {
           // Focus the row we last visited or the first one.

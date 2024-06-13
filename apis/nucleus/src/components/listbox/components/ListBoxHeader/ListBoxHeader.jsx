@@ -216,6 +216,7 @@ export default function ListBoxHeader({
             iconStyle={iconStyle}
             disabled={isInSelection && isPopover}
             translator={translator}
+            keyboard={keyboard}
           />
         </Grid>
       )}

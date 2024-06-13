@@ -58,9 +58,11 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       elementToFocus?.focus();
     },
     focusSelection() {
-      const unlockCoverButton = document.querySelector('#listbox-unlock-button');
-      const confirmButton = document.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
-      const btnToFocus = unlockCoverButton || confirmButton;
+      const c = containerRef.current;
+      const unlockCoverButton = c.querySelector('#listbox-unlock-button');
+      const confirmButton = c.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
+      const moreButton = c.querySelector('.actions-toolbar-more');
+      const btnToFocus = unlockCoverButton || confirmButton || moreButton;
       btnToFocus?.setAttribute('tabIndex', 0);
       btnToFocus?.focus();
     },

@@ -12,3 +12,10 @@ export const focusRow = (container) => {
   row?.focus();
   return row;
 };
+
+export const focusCyclicButton = (container) => {
+  const button = container?.querySelector('.listbox-cyclic-button:not(:disabled)');
+  button?.setAttribute('tabIndex', 0);
+  button?.focus();
+  return button;
+};

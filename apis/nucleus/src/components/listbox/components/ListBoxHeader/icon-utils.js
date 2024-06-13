@@ -41,8 +41,17 @@ const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active }
         onClick: clickable && stepToNextField,
         onKeyDown: clickable
           ? (event) => {
-              if ([KEYS.SPACE, KEYS.ENTER].includes(event.keyCode)) {
-                stepToNextField();
+              switch (event.keyCode) {
+                case KEYS.SPACE:
+                case KEYS.ENTER:
+                  stepToNextField();
+                  break;
+                case KEYS.TAB:
+                  // if (shift && keyboard.enabled) {
+                  //   keyboard.focusSelection();
+                  // }
+                  break;
+                default:
               }
             }
           : undefined,
