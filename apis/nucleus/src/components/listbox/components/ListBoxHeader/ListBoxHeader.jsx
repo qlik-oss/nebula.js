@@ -67,7 +67,6 @@ export default function ListBoxHeader({
   keyboard,
   autoConfirm,
   app,
-  isInSelection,
 }) {
   const [isToolbarDetached, setIsToolbarDetached] = useState(showDetachedToolbarOnly);
   const [isLocked, setLocked] = useState(layout?.qListObject?.qDimensionInfo?.qLocked);
@@ -169,7 +168,6 @@ export default function ListBoxHeader({
   const toolbarProps = getListboxActionProps({
     isDetached: isPopover ? false : isToolbarDetached,
     showToolbar,
-    isInSelection,
     containerRef,
     isPopover,
     isLocked,
@@ -216,7 +214,7 @@ export default function ListBoxHeader({
           <DimensionIcon
             iconData={iconData}
             iconStyle={iconStyle}
-            disabled={isInSelection && isPopover}
+            disabled={selections.isActive() && isPopover}
             translator={translator}
           />
         </Grid>
