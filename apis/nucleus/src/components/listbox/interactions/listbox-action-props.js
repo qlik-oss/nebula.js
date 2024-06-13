@@ -3,7 +3,6 @@ export default function getListboxActionProps({
   showToolbar,
   containerRef,
   isLocked,
-  isPopover,
   listboxSelectionToolbarItems,
   extraItems,
   selections,
@@ -20,10 +19,7 @@ export default function getListboxActionProps({
     },
     extraItems,
     more: {
-      enabled:
-        !isLocked &&
-        (isPopover || selections.isActive()) &&
-        listboxSelectionToolbarItems.filter((item) => item.enabled()).length > 0,
+      enabled: !isLocked && (showToolbar || selections.isActive()), // show more button even when popover is not in selection mode
       actions: listboxSelectionToolbarItems,
       popoverProps: {
         elevation: 0,
