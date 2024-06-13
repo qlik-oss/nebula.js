@@ -59,6 +59,7 @@ const StyledOutlinedInput = styled(OutlinedInput, {
 });
 
 export default function ListBoxSearch({
+  popoverOpen,
   selections,
   selectionState,
   model,
@@ -75,7 +76,6 @@ export default function ListBoxSearch({
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const [wildcardOn, setWildcardOn] = useState(false);
-
   const inputRef = useRef();
 
   const { getStoreValue, setStoreValue } = useDataStore(model);
@@ -171,6 +171,9 @@ export default function ListBoxSearch({
       case 'Escape': {
         focusRow(container);
         cancel();
+        if (popoverOpen) {
+          return undefined;
+        }
         break;
       }
       case 'Tab': {
