@@ -473,7 +473,6 @@ export function usePromise(p, deps) {
       h.teardown && h.teardown();
     };
   }, deps);
-
   return [obj.resolved, obj.rejected];
 }
 

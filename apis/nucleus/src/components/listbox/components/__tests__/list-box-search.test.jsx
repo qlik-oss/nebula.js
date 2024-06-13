@@ -222,6 +222,7 @@ describe('<ListBoxSearch />', () => {
     await act(async () => {
       await type.props.onKeyDown({ ...keyEventDefaults, key: 'Escape' });
     });
+
     expect(selections.cancel).toHaveBeenCalled();
     expect(keyEventDefaults.stopPropagation).toHaveBeenCalled();
     expect(type.props.value).toBe('foo'); // text is not reset in the test since "deactivated" is not triggered on cancel

@@ -92,9 +92,10 @@ export default function ListBoxSearch({
   };
 
   useEffect(() => {
-    if (!visible) {
-      abortSearch(); // abort when toggling off search
+    if (visible) {
+      return () => abortSearch(); // abort when toggling off search
     }
+    return () => {};
   }, [visible]);
 
   useEffect(() => {
