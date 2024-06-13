@@ -13,7 +13,7 @@ const StyledButton = styled(Button)(() => ({
 function DimensionIcon({ iconData, translator, iconStyle, disabled }) {
   if (!iconData) return undefined;
 
-  const { icon, tooltip, onClick } = iconData;
+  const { icon, tooltip, onClick = undefined, onKeyDown = undefined } = iconData;
   const Icon = icon;
   const title = translator.get(tooltip);
   const isButton = onClick;
@@ -27,6 +27,7 @@ function DimensionIcon({ iconData, translator, iconStyle, disabled }) {
       size="large"
       disableRipple
       disabled={disabled}
+      onKeyDown={onKeyDown}
     >
       <Icon style={iconStyle} />
     </StyledButton>
