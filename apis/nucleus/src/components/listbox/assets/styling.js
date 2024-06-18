@@ -83,8 +83,6 @@ function getSelectionColors({ getColorPickerColor, theme, getListboxStyle, overr
 
   const componentSelectionColors = overrides.selections?.colors || {};
 
-  console.log(componentSelectionColors);
-
   const getSelectionStateColors = (state) => {
     const paletteState = state === 'selected' ? 'main' : state;
     const contrastState = `${state}Contrast`;
