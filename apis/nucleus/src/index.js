@@ -553,6 +553,7 @@ function nuked(configuration = {}) {
                 }),
                 stateName: options.stateName || '$',
                 renderedCallback: resolve,
+                flags: halo.public.galaxy.flags,
               });
               root.add(this._instance);
             });
@@ -605,6 +606,7 @@ function nuked(configuration = {}) {
             fieldIdentifier,
             options: opts,
             stateName: options.stateName || '$',
+            flags: halo.public.galaxy.flags,
           });
           root.add(api._popoverInstance);
         },

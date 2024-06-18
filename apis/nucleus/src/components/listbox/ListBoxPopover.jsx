@@ -41,6 +41,7 @@ export default function ListBoxPopover({
   components,
   checkboxes: checkboxesOption,
   selectDisabled = () => false,
+  flags,
 }) {
   const isMasterDim = Boolean(fieldName?.qLibraryId);
   const open = show && Boolean(alignTo.current);
@@ -98,7 +99,8 @@ export default function ListBoxPopover({
   const [selectionState] = useState(() => createSelectionState({ selectDisabled }));
   const { checkboxes = checkboxesOption } = layout || {};
 
-  const styles = getStyles({ themeApi, theme, components, checkboxes });
+  const themeSelectionColorsEnabled = flags.isEnabled('CLIENT_SELECTION_THEME_COLORS');
+  const styles = getStyles({ themeApi, theme, components, checkboxes, themeSelectionColorsEnabled });
 
   useEffect(() => {
     if (selections && open) {
