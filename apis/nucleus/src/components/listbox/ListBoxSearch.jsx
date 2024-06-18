@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useTheme } from '@nebula.js/ui/theme';
-import { InputAdornment, OutlinedInput } from '@mui/material';
+import { InputAdornment, OutlinedInput, IconButton } from '@mui/material';
 import Search from '@nebula.js/ui/icons/search';
+import Close from '@nebula.js/ui/icons/close';
 
 import InstanceContext from '../../contexts/InstanceContext';
 
@@ -12,6 +13,7 @@ export default function ListBoxSearch({ model, keyboard, dense = false, visible 
   const [value, setValue] = useState('');
   const [isSearching, setIsSearching] = useState(false);
   const theme = useTheme();
+  const clearSearchText = translator.get('Listbox.Clear.Search');
 
   const abortSearch = async () => {
     await model.abortListObjectSearch(TREE_PATH);
@@ -23,6 +25,11 @@ export default function ListBoxSearch({ model, keyboard, dense = false, visible 
       abortSearch();
     }
   }, [visible]);
+
+  const onClearSearch = () => {
+    abortSearch();
+    setValue('');
+  };
 
   const onChange = (e) => {
     setValue(e.target.value);
@@ -41,8 +48,7 @@ export default function ListBoxSearch({ model, keyboard, dense = false, visible 
         setValue('');
         break;
       case 'Escape':
-        abortSearch();
-        setValue('');
+        onClearSearch();
         break;
       default:
         break;
@@ -58,6 +64,15 @@ export default function ListBoxSearch({ model, keyboard, dense = false, visible 
       startAdornment={
         <InputAdornment position="start">
           <Search size={dense ? 'small' : 'normal'} />
+        </InputAdornment>
+      }
+      endAdornment={
+        <InputAdornment position="end" sx={{ marginRight: '-8px' }}>
+          {value !== '' && (
+            <IconButton title={clearSearchText} aria-label={clearSearchText} onClick={onClearSearch}>
+              <Close size={dense ? 'small' : 'normal'} />
+            </IconButton>
+          )}
         </InputAdornment>
       }
       className="search"

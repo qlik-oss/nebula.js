@@ -23,6 +23,10 @@
     "value": "Search in listbox",
     "comment": "Action text to search in listbox"
   },
+  "Listbox.Clear.Search": {
+    "value": "Clear search",
+    "comment": "Action text to clear search in listbox"
+  },
   "Listbox.Lock": {
     "value": "Lock selections",
     "comment": "Action text to lock selections in a listbox"

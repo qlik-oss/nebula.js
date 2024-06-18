@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-no-constructed-context-values */
 import React from 'react';
 import renderer from 'react-test-renderer';
-import { OutlinedInput } from '@mui/material';
+import { OutlinedInput, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 
 const InstanceContext = React.createContext();
@@ -113,5 +113,34 @@ describe('<ListBoxSearch />', () => {
     const testInstance = testRenderer.root;
     const inputBoxes = testInstance.findAllByType(OutlinedInput);
     expect(inputBoxes.length).to.equal(0);
+  });
+
+  it('should render clear search button when has search text', () => {
+    const testRenderer = testRender(model);
+    const testInstance = testRenderer.root;
+    const type = testInstance.findByType(OutlinedInput);
+    type.props.onChange({ target: { value: 'foo' } });
+    const icon = testInstance.findAllByType(IconButton);
+    expect(icon).to.have.length(1);
+  });
+
+  it('should not render clear search button when has no search text', () => {
+    const testRenderer = testRender(model);
+    const testInstance = testRenderer.root;
+    const type = testInstance.findByType(OutlinedInput);
+    type.props.onChange({ target: { value: '' } });
+    const icon = testInstance.findAllByType(IconButton);
+    expect(icon).to.have.length(0);
+  });
+
+  it('should clear search text when clicking on clear search button', () => {
+    const testRenderer = testRender(model);
+    const testInstance = testRenderer.root;
+    const type = testInstance.findByType(OutlinedInput);
+    type.props.onChange({ target: { value: 'foo' } });
+    const icon = testInstance.findByType(IconButton);
+    icon.props.onClick();
+    expect(model.abortListObjectSearch).to.have.been.calledWith('/qListObjectDef');
+    expect(type.props.value).to.equal('');
   });
 });
