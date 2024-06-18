@@ -212,9 +212,9 @@ describe('styling', () => {
       let inst;
       let selections;
 
-      // inst = getStyling({ app, themeApi, theme, components: [] });
-      // selections = inst.selections;
-      // expect(selections.selected).toEqual('selected-from-theme');
+      inst = getStyling({ app, themeApi, theme, components: [] });
+      selections = inst.selections;
+      expect(selections.selected).toEqual('selected-from-theme');
 
       inst = getStyling({ app, themeApi, theme, components });
       selections = inst.selections;
