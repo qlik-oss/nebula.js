@@ -7,6 +7,14 @@ const DARK = '#000';
 export const CONTRAST_THRESHOLD = 1.5;
 const LIGHT_PREFERRED_THRESHOLD = 3;
 
+const DEFAULT_SELECTION_COLORS = {
+  selected: '#009845',
+  alternative: '#E4E4E4',
+  excluded: '#A9A9A9',
+  selectedExcluded: '#A9A9A9',
+  possible: '#FFFFFF',
+};
+
 export const getContrast = (desired, background) => {
   let contrast = false;
 
@@ -64,6 +72,8 @@ export function getOverridesAsObject(components = []) {
 
 function getSelectionColors({ getColorPickerColor, theme, getListboxStyle, overrides, checkboxes }) {
   const componentContentTextColor = overrides.theme?.content?.fontColor;
+
+  // color priority: layout.component > theme > sprout
   const desiredTextColor =
     getColorPickerColor(componentContentTextColor) ||
     getListboxStyle('content', 'color') ||
@@ -71,49 +81,30 @@ function getSelectionColors({ getColorPickerColor, theme, getListboxStyle, overr
 
   const useContrastTextColor = !checkboxes && (overrides.theme?.content?.useContrastColor ?? true);
 
-  // Background colors
-  const selectionColors = overrides.selections?.colors || {};
+  const componentSelectionColors = overrides.selections?.colors || {};
 
-  const selected = getColorPickerColor(selectionColors.selected) || theme.palette?.selected.main || '#009845';
-  const alternative =
-    getColorPickerColor(selectionColors.alternative) || theme.palette?.selected.alternative || '#E4E4E4';
-  const excluded = getColorPickerColor(selectionColors.excluded) || theme.palette?.selected.excluded || '#A9A9A9';
-  const selectedExcluded =
-    getColorPickerColor(selectionColors.selectedExcluded) || theme.palette?.selected.selectedExcluded || '#A9A9A9';
-  const possible =
-    getColorPickerColor(selectionColors.possible) ||
-    getListboxStyle('', 'backgroundColor') ||
-    theme.palette?.selected.possible ||
-    '#FFFFFF';
+  const getSelectionStateColors = (state) => {
+    const paletteState = state === 'selection' ? 'main' : state;
+    const contrastState = `${state}Contrast`;
+    // color priority: layout.component > sprout > hardcoded default
+    const color =
+      getColorPickerColor(componentSelectionColors[state]) ||
+      theme.palette?.selected[paletteState] ||
+      DEFAULT_SELECTION_COLORS[state];
 
-  // Font colors
-  let selectedContrast = desiredTextColor || theme.palette?.selected.selectedContrastText;
-  let alternativeContrast = desiredTextColor || theme.palette?.selected.alternativeContrastText;
-  let excludedContrast = desiredTextColor || theme.palette?.selected.excludedContrastText;
-  let selectedExcludedContrast = desiredTextColor || theme.palette?.selected.selectedExcludedContrastText;
-  let possibleContrast = desiredTextColor || theme.palette?.selected.possibleContrastText;
+    const contrastColor = useContrastTextColor
+      ? getContrastingColor(color, desiredTextColor)
+      : desiredTextColor || theme.palette?.selected[`${contrastState}Text}`];
 
-  if (useContrastTextColor) {
-    // Override preferred text color if it does not contrast enough with the background color.
-    selectedContrast = getContrastingColor(selected, desiredTextColor);
-    alternativeContrast = getContrastingColor(alternative, desiredTextColor);
-    excludedContrast = getContrastingColor(excluded, desiredTextColor);
-    selectedExcludedContrast = getContrastingColor(selectedExcluded, desiredTextColor);
-    possibleContrast = getContrastingColor(possible, desiredTextColor);
-  }
+    return { [state]: color, [contrastState]: contrastColor };
+  };
 
   return {
-    selected,
-    alternative,
-    excluded,
-    selectedExcluded,
-    possible,
-
-    selectedContrast,
-    alternativeContrast,
-    excludedContrast,
-    selectedExcludedContrast,
-    possibleContrast,
+    ...getSelectionStateColors('selected'),
+    ...getSelectionStateColors('alternative'),
+    ...getSelectionStateColors('excluded'),
+    ...getSelectionStateColors('selectedExcluded'),
+    ...getSelectionStateColors('possible'),
   };
 }
 
