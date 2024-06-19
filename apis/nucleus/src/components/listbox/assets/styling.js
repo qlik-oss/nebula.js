@@ -89,6 +89,7 @@ function getSelectionColors({ getColorPickerColor, theme, getListboxStyle, overr
     // color priority: layout.component > sprout > hardcoded default
     const color =
       getColorPickerColor(componentSelectionColors[state]) ||
+      (state === 'possible' && getListboxStyle('', 'backgroundColor')) ||
       theme.palette?.selected[paletteState] ||
       DEFAULT_SELECTION_COLORS[state];
 
