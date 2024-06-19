@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { InputAdornment, OutlinedInput } from '@mui/material';
+import { InputAdornment, OutlinedInput, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Search from '@nebula.js/ui/icons/search';
+import Close from '@nebula.js/ui/icons/close';
 import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
 import { CELL_PADDING_LEFT } from '../constants';
@@ -58,6 +59,20 @@ const StyledOutlinedInput = styled(OutlinedInput, {
   };
 });
 
+const StyledIconButton = styled(IconButton)(() => ({
+  border: 0,
+  padding: '8px',
+  cursor: 'pointer',
+  lineHeight: '12px',
+  '&:hover': {
+    backgroundColor: 'transparent',
+  },
+  ':focus-visible': {
+    borderRadius: '4px',
+    boxShadow: 'inset 0 0 0 2px rgb(2, 117, 217)',
+  },
+}));
+
 export default function ListBoxSearch({
   popoverOpen,
   selections,
@@ -77,6 +92,8 @@ export default function ListBoxSearch({
   const [value, setValue] = useState('');
   const [wildcardOn, setWildcardOn] = useState(false);
   const inputRef = useRef();
+  const clearSearchRef = useRef();
+  const clearSearchText = translator.get('Listbox.Clear.Search');
 
   const { getStoreValue, setStoreValue } = useDataStore(model);
   const isRtl = direction === 'rtl';
@@ -179,6 +196,8 @@ export default function ListBoxSearch({
       case 'Tab': {
         if (e.shiftKey) {
           keyboard.focusSelection();
+        } else if (clearSearchRef.current) {
+          clearSearchRef.current.focus();
         } else {
           // Focus the row we last visited or the first one.
           focusRow(container);
@@ -188,6 +207,7 @@ export default function ListBoxSearch({
             elm.classList.remove('last-focused');
           });
         }
+
         break;
       }
       case 'f':
@@ -210,6 +230,41 @@ export default function ListBoxSearch({
     return undefined;
   };
 
+  const focusOnInput = () => {
+    inputRef.current?.setAttribute('tabindex', 0);
+    inputRef.current?.focus();
+    inputRef.current?.setAttribute('tabindex', -1);
+  };
+
+  const onKeyDownClearSearch = async (e) => {
+    const container = e.currentTarget.closest('.listbox-container');
+    switch (e.key) {
+      case 'Enter':
+        abortSearch();
+        focusOnInput();
+        break;
+      case 'Tab': {
+        if (e.shiftKey) {
+          focusOnInput();
+        } else {
+          // Focus the row we last visited or the first one.
+          focusRow(container);
+
+          // Clean up.
+          container?.querySelectorAll('.last-focused').forEach((elm) => {
+            elm.classList.remove('last-focused');
+          });
+        }
+        break;
+      }
+      default:
+        return undefined;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    return undefined;
+  };
+
   if (!visible || searchEnabled === false) {
     return null;
   }
@@ -222,6 +277,22 @@ export default function ListBoxSearch({
       startAdornment={
         <InputAdornment position="start">
           <Search size={dense ? 'small' : 'normal'} />
+        </InputAdornment>
+      }
+      endAdornment={
+        <InputAdornment position="end" sx={{ marginLeft: 0, marginRight: '-12px' }}>
+          {value !== '' && (
+            <StyledIconButton
+              tabIndex={0}
+              ref={clearSearchRef}
+              title={clearSearchText}
+              aria-label={clearSearchText}
+              onClick={abortSearch}
+              onKeyDown={onKeyDownClearSearch}
+            >
+              <Close size={dense ? 'small' : 'normal'} />
+            </StyledIconButton>
+          )}
         </InputAdornment>
       }
       className="search"
