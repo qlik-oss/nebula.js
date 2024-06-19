@@ -207,7 +207,6 @@ export default function ListBoxSearch({
             elm.classList.remove('last-focused');
           });
         }
-
         break;
       }
       case 'f':
