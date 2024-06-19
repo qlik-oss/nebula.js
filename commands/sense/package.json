@@ -27,14 +27,14 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "7.24.6",
-    "@babel/core": "7.24.6",
-    "@babel/preset-env": "7.24.6",
+    "@babel/cli": "7.24.7",
+    "@babel/core": "7.24.7",
+    "@babel/preset-env": "7.24.7",
     "@nebula.js/stardust": "^5.1.2",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-commonjs": "25.0.8",
     "@rollup/plugin-node-resolve": "15.2.3",
-    "@rollup/plugin-replace": "5.0.5",
+    "@rollup/plugin-replace": "5.0.7",
     "@rollup/plugin-terser": "0.4.4",
     "extend": "3.0.2",
     "fs-extra": "11.2.0",
