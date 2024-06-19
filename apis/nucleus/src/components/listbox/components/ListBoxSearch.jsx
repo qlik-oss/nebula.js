@@ -59,6 +59,7 @@ const StyledOutlinedInput = styled(OutlinedInput, {
 });
 
 export default function ListBoxSearch({
+  popoverOpen,
   selections,
   selectionState,
   model,
@@ -75,20 +76,14 @@ export default function ListBoxSearch({
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const [wildcardOn, setWildcardOn] = useState(false);
-
   const inputRef = useRef();
 
   const { getStoreValue, setStoreValue } = useDataStore(model);
   const isRtl = direction === 'rtl';
 
-  const cancel = () => selections.isActive() && selections.cancel();
+  const cancel = () => selections.cancel();
 
   const abortSearch = async () => {
-    // When select is disabled we always want to allow abort (but not permitting selections).
-    const preventAbort = selectionState.selectDisabled() ? false : !selections.isModal();
-    if (preventAbort) {
-      return;
-    }
     try {
       await model.abortListObjectSearch(TREE_PATH);
     } finally {
@@ -97,9 +92,10 @@ export default function ListBoxSearch({
   };
 
   useEffect(() => {
-    if (!visible) {
-      abortSearch(); // abort when toggling off search
+    if (visible) {
+      return () => abortSearch(); // abort when toggling off search
     }
+    return () => {};
   }, [visible]);
 
   useEffect(() => {
@@ -175,6 +171,9 @@ export default function ListBoxSearch({
       case 'Escape': {
         focusRow(container);
         cancel();
+        if (popoverOpen) {
+          return undefined;
+        }
         break;
       }
       case 'Tab': {
