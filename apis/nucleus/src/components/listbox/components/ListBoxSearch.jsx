@@ -5,6 +5,7 @@ import Search from '@nebula.js/ui/icons/search';
 import Close from '@nebula.js/ui/icons/close';
 import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
+import { CELL_PADDING_LEFT } from '../constants';
 
 const MAX_SEARCH_LENGTH = 64000;
 const TREE_PATH = '/qListObjectDef';
@@ -278,7 +279,7 @@ export default function ListBoxSearch({
       dense={dense}
       isRtl={isRtl}
       startAdornment={
-        <InputAdornment position="start" sx={{ marginLeft: '8px' }}>
+        <InputAdornment position="start" sx={{ marginLeft: `${CELL_PADDING_LEFT}px` }}>
           <Search size={dense ? 'small' : 'normal'} />
         </InputAdornment>
       }
