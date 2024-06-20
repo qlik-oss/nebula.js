@@ -1,4 +1,3 @@
-export const CELL_PADDING_LEFT = 9;
 export const HEADER_PADDING_RIGHT = 4;
 export const ICON_WIDTH = 12;
 export const ICON_PADDING = 7;

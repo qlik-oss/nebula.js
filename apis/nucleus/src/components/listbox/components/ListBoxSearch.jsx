@@ -5,7 +5,6 @@ import Search from '@nebula.js/ui/icons/search';
 import Close from '@nebula.js/ui/icons/close';
 import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
-import { CELL_PADDING_LEFT } from '../constants';
 
 const MAX_SEARCH_LENGTH = 64000;
 const TREE_PATH = '/qListObjectDef';
@@ -34,7 +33,8 @@ const StyledOutlinedInput = styled(OutlinedInput, {
     borderRadius: 0,
     backgroundColor: styles.search.backgroundColor,
     backdropFilter: styles.background.backgroundImage ? styles.search.backdropFilter : undefined,
-    paddingLeft: `${CELL_PADDING_LEFT}px`,
+    paddingLeft: 0,
+    paddingRight: 0,
     flexDirection: isRtl ? 'row-reverse' : 'row',
 
     '& fieldset': {
@@ -235,12 +235,16 @@ export default function ListBoxSearch({
     inputRef.current?.setAttribute('tabindex', -1);
   };
 
+  const onClearSearch = () => {
+    abortSearch();
+    focusOnInput();
+  };
+
   const onKeyDownClearSearch = async (e) => {
     const container = e.currentTarget.closest('.listbox-container');
     switch (e.key) {
       case 'Enter':
-        abortSearch();
-        focusOnInput();
+        onClearSearch();
         break;
       case 'Tab': {
         if (e.shiftKey) {
@@ -274,19 +278,19 @@ export default function ListBoxSearch({
       dense={dense}
       isRtl={isRtl}
       startAdornment={
-        <InputAdornment position="start">
+        <InputAdornment position="start" sx={{ marginLeft: '8px' }}>
           <Search size={dense ? 'small' : 'normal'} />
         </InputAdornment>
       }
       endAdornment={
-        <InputAdornment position="end" sx={{ marginLeft: 0, marginRight: '-12px' }}>
+        <InputAdornment position="end" sx={{ marginLeft: 0 }}>
           {value !== '' && (
             <StyledIconButton
               tabIndex={0}
               ref={clearSearchRef}
               title={clearSearchText}
               aria-label={clearSearchText}
-              onClick={abortSearch}
+              onClick={onClearSearch}
               onKeyDown={onKeyDownClearSearch}
             >
               <Close size={dense ? 'small' : 'normal'} />
