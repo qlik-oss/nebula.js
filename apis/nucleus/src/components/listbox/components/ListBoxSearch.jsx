@@ -280,7 +280,7 @@ export default function ListBoxSearch({
       dense={dense}
       isRtl={isRtl}
       startAdornment={
-        <InputAdornment position="start" sx={{ marginLeft: `${CELL_PADDING_LEFT}px` }}>
+        <InputAdornment position="start" sx={{ marginLeft: dense ? '8px' : `${CELL_PADDING_LEFT}px` }}>
           <Search size={dense ? 'small' : 'normal'} />
         </InputAdornment>
       }
