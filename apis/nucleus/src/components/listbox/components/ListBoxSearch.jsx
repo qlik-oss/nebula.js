@@ -15,12 +15,11 @@ const limitSearchLength = (val) => val?.substring(0, MAX_SEARCH_LENGTH);
 
 const StyledOutlinedInput = styled(OutlinedInput, {
   shouldForwardProp: (p) => !['styles', 'dense', 'isRtl'].includes(p),
-})(({ theme, styles, dense, isRtl }) => {
+})(({ styles, dense, isRtl }) => {
   let denseProps = {};
   if (dense) {
     denseProps = {
       fontSize: 12,
-      paddingLeft: theme.spacing(1),
       '& input': {
         paddingTop: '5px',
         paddingBottom: '5px',
