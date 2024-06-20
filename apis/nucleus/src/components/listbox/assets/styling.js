@@ -80,7 +80,7 @@ function getSelectionColors({
 }) {
   const componentContentTextColor = overrides.theme?.content?.fontColor;
 
-  // color priority: layout.component > theme > sprout
+  // color priority: layout.component > theme content color > MUI theme
   const desiredTextColor =
     getColorPickerColor(componentContentTextColor) ||
     getListboxStyle('content', 'color') ||
@@ -96,7 +96,7 @@ function getSelectionColors({
   const getSelectionStateColors = (state) => {
     const paletteState = state === 'selected' ? 'main' : state;
     const contrastState = `${state}Contrast`;
-    // color priority: layout.component > sprout > hardcoded default
+    // color priority: layout.component > theme dataColors > theme background (only for 'possible') > MUI theme > hardcoded default
     const color =
       getColorPickerColor(componentSelectionColors[state]) ||
       getSelectionThemeColor(state) ||

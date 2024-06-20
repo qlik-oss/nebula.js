@@ -99,7 +99,7 @@ export default function ListBoxPopover({
   const [selectionState] = useState(() => createSelectionState({ selectDisabled }));
   const { checkboxes = checkboxesOption } = layout || {};
 
-  const themeSelectionColorsEnabled = flags.isEnabled('CLIENT_SELECTION_THEME_COLORS');
+  const themeSelectionColorsEnabled = flags.isEnabled('PS_22149_THEME_SELECTION_COLORS');
   const styles = getStyles({ themeApi, theme, components, checkboxes, themeSelectionColorsEnabled });
 
   useEffect(() => {
