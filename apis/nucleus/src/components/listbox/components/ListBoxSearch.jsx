@@ -23,6 +23,8 @@ const StyledOutlinedInput = styled(OutlinedInput, {
       '& input': {
         paddingTop: '5px',
         paddingBottom: '5px',
+        color: styles.search.color,
+        textAlign: isRtl ? 'right' : 'left',
       },
     };
   }
