@@ -7,7 +7,7 @@ const DARK = '#000';
 export const CONTRAST_THRESHOLD = 1.5;
 const LIGHT_PREFERRED_THRESHOLD = 3;
 
-const DEFAULT_SELECTION_COLORS = {
+export const DEFAULT_SELECTION_COLORS = {
   selected: '#009845',
   alternative: '#E4E4E4',
   excluded: '#A9A9A9',

@@ -1,4 +1,10 @@
-import getStyling, { CONTRAST_THRESHOLD, getContrast, getContrastingColor, getOverridesAsObject } from '../styling';
+import getStyling, {
+  CONTRAST_THRESHOLD,
+  DEFAULT_SELECTION_COLORS,
+  getContrast,
+  getContrastingColor,
+  getOverridesAsObject,
+} from '../styling';
 
 describe('styling', () => {
   let theme = {};
@@ -49,15 +55,16 @@ describe('styling', () => {
         },
         selected: {
           main: 'selected-from-theme',
-        },
-        alternative: {
-          main: 'alternative-from-theme',
-        },
-        excluded: {
-          main: 'excluded-from-theme',
+          alternative: 'alternative-from-theme',
+          excluded: 'excluded-from-theme',
+          selectedExcluded: 'selected-excluded-from-theme',
+          possible: 'possible-from-theme',
         },
         primary: {
           main: '#main-color',
+        },
+        background: {
+          default: 'default-background',
         },
       },
     };
@@ -186,57 +193,6 @@ describe('styling', () => {
       expect(content.color).toEqual('color-from-component');
     });
 
-    it('selected', () => {
-      components = [
-        {
-          key: 'selections',
-          colors: {
-            selected: {
-              color: 'selected-from-component',
-            },
-            alternative: {
-              color: 'alternative-from-component',
-            },
-            excluded: {
-              color: 'excluded-from-component',
-            },
-            selectedExcluded: {
-              color: 'selectedExcluded-from-component',
-            },
-            possible: {
-              color: 'possible-from-component',
-            },
-          },
-        },
-      ];
-      let inst;
-      let selections;
-
-      inst = getStyling({ app, themeApi, theme, components: [] });
-      selections = inst.selections;
-      expect(selections.selected).toEqual('selected-from-theme');
-
-      inst = getStyling({ app, themeApi, theme, components });
-      selections = inst.selections;
-      expect(selections.selected).toEqual('selected-from-component');
-
-      inst = getStyling({ app, themeApi, theme, components });
-      selections = inst.selections;
-      expect(selections.alternative).toEqual('alternative-from-component');
-
-      inst = getStyling({ app, themeApi, theme, components });
-      selections = inst.selections;
-      expect(selections.excluded).toEqual('excluded-from-component');
-
-      inst = getStyling({ app, themeApi, theme, components });
-      selections = inst.selections;
-      expect(selections.selectedExcluded).toEqual('selectedExcluded-from-component');
-
-      inst = getStyling({ app, themeApi, theme, components });
-      selections = inst.selections;
-      expect(selections.possible).toEqual('possible-from-component');
-    });
-
     it('using not supported or empty components should throw error', () => {
       const inputComponents = ['general', 'selections', 'theme', 'not-supported', undefined].map((key) => ({ key }));
       expect(inputComponents).toHaveLength(5);
@@ -301,6 +257,93 @@ describe('styling', () => {
       const c2 = getContrast('#fff', bg);
       expect(c1 > c2).toBeTruthy(); // although it does not make sense when comparing with the eye
       expect(getContrastingColor(bg, '#000')).toEqual('#FFF');
+    });
+  });
+
+  describe('getSelectionColors', () => {
+    let themeSelectionColorsEnabled;
+
+    beforeEach(() => {
+      components = [];
+      themeSelectionColorsEnabled = true;
+    });
+
+    const getStylingCaller = () =>
+      getStyling({ app, themeApi, theme, components, themeSelectionColorsEnabled }).selections;
+
+    it('should return selection colors from components', () => {
+      components = [
+        {
+          key: 'selections',
+          colors: {
+            selected: {
+              color: 'selected-from-component',
+            },
+            alternative: {
+              color: 'alternative-from-component',
+            },
+            excluded: {
+              color: 'excluded-from-component',
+            },
+            selectedExcluded: {
+              color: 'selectedExcluded-from-component',
+            },
+            possible: {
+              color: 'possible-from-component',
+            },
+          },
+        },
+      ];
+
+      expect(getStylingCaller()).toMatchObject({
+        selected: 'selected-from-component',
+        alternative: 'alternative-from-component',
+        excluded: 'excluded-from-component',
+        selectedExcluded: 'selectedExcluded-from-component',
+        possible: 'possible-from-component',
+      });
+    });
+
+    it('should return selection colors from themeAPI', () => {
+      expect(getStylingCaller()).toMatchObject({
+        selected: 'object.listBox,,dataColors.selected',
+        alternative: 'object.listBox,,dataColors.alternative',
+        excluded: 'object.listBox,,dataColors.excluded',
+        selectedExcluded: 'object.listBox,,dataColors.selectedExcluded',
+        possible: 'object.listBox,,dataColors.possible',
+      });
+    });
+    it('should return selection colors from mui theme, except possible which returns background color', () => {
+      themeSelectionColorsEnabled = false;
+
+      expect(getStylingCaller()).toMatchObject({
+        selected: 'selected-from-theme',
+        alternative: 'alternative-from-theme',
+        excluded: 'excluded-from-theme',
+        selectedExcluded: 'selected-excluded-from-theme',
+        possible: 'object.listBox,,backgroundColor',
+      });
+    });
+
+    it('should return selection colors from mui theme, for all states', () => {
+      themeSelectionColorsEnabled = false;
+      themeApi.getStyle = (ns, path, prop) => (prop === 'backgroundColor' ? undefined : `${ns},${path},${prop}`);
+
+      expect(getStylingCaller()).toMatchObject({
+        selected: 'selected-from-theme',
+        alternative: 'alternative-from-theme',
+        excluded: 'excluded-from-theme',
+        selectedExcluded: 'selected-excluded-from-theme',
+        possible: 'possible-from-theme',
+      });
+    });
+
+    it('should return selection colors from hardcoded default', () => {
+      themeSelectionColorsEnabled = false;
+      themeApi.getStyle = (ns, path, prop) => (prop === 'backgroundColor' ? undefined : `${ns},${path},${prop}`);
+      theme.palette.selected = {};
+
+      expect(getStylingCaller()).toMatchObject(DEFAULT_SELECTION_COLORS);
     });
   });
 });
