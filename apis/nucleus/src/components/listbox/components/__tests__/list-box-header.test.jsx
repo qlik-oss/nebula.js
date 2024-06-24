@@ -231,4 +231,16 @@ describe('<ListBoxHeader />', () => {
     // Ensure unlock is visible
     expect(unlockCoverButtons).toHaveLength(1);
   });
+
+  test('Should show more button when is popover but not in selection mode', async () => {
+    hasSelections.mockReturnValue(true);
+    const testRenderer = await render({ showSearchIcon: true, showLock: true, isPopover: true });
+    const testInstance = testRenderer.root;
+
+    const [actionsToolbar] = testInstance.findAllByType(ActionsToolbar);
+
+    // Check existence.
+    const moreButton = actionsToolbar.props.more;
+    expect(moreButton.enabled).toEqual(true);
+  });
 });
