@@ -232,9 +232,7 @@ export default function ListBoxSearch({
   };
 
   const focusOnInput = () => {
-    inputRef.current?.setAttribute('tabindex', 0);
     inputRef.current?.focus();
-    inputRef.current?.setAttribute('tabindex', -1);
   };
 
   const onClearSearch = () => {
