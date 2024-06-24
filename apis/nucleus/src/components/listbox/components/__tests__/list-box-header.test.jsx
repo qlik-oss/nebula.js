@@ -232,7 +232,7 @@ describe('<ListBoxHeader />', () => {
     expect(unlockCoverButtons).toHaveLength(1);
   });
 
-  test('Should show more button when is popover but not in selection mode', async () => {
+  test('Should show more button even when it is not in selection mode for popover', async () => {
     hasSelections.mockReturnValue(true);
     const testRenderer = await render({ showSearchIcon: true, showLock: true, isPopover: true });
     const testInstance = testRenderer.root;
