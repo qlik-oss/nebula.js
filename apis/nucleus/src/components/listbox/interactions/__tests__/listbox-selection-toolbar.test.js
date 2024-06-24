@@ -6,6 +6,7 @@ describe('getScrollIndex', () => {
   let translator;
   let selectionState;
   let isDirectQuery;
+  let selections;
 
   afterEach(() => {
     jest.resetAllMocks();
@@ -41,6 +42,11 @@ describe('getScrollIndex', () => {
     selectionState = {
       clearItemStates: jest.fn(),
     };
+
+    selections = {
+      isActive: jest.fn(() => false),
+      begin: jest.fn(),
+    };
   });
 
   const create = (overrides = {}) =>
@@ -50,6 +56,7 @@ describe('getScrollIndex', () => {
       translator,
       selectionState,
       isDirectQuery,
+      selections,
       ...overrides,
     });
 
@@ -122,21 +129,25 @@ describe('getScrollIndex', () => {
     it('select all', () => {
       all.action();
       expect(model.selectListObjectAll).toHaveBeenCalledTimes(1);
+      expect(selections.begin).toHaveBeenCalledTimes(1);
       expect(model.selectListObjectAll).toBeCalledWith('/qListObjectDef');
     });
     it('select possible', () => {
       possible.action();
       expect(model.selectListObjectPossible).toHaveBeenCalledTimes(1);
+      expect(selections.begin).toHaveBeenCalledTimes(1);
       expect(model.selectListObjectPossible).toBeCalledWith('/qListObjectDef');
     });
     it('select alternative', () => {
       alternative.action();
       expect(model.selectListObjectAlternative).toHaveBeenCalledTimes(1);
+      expect(selections.begin).toHaveBeenCalledTimes(1);
       expect(model.selectListObjectAlternative).toBeCalledWith('/qListObjectDef');
     });
     it('select excluded', () => {
       excluded.action();
       expect(model.selectListObjectExcluded).toHaveBeenCalledTimes(1);
+      expect(selections.begin).toHaveBeenCalledTimes(1);
       expect(model.selectListObjectExcluded).toBeCalledWith('/qListObjectDef');
     });
   });
