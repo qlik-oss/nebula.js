@@ -19,6 +19,7 @@ const selections = {
   canClear: () => true,
   canConfirm: () => true,
   canCancel: () => true,
+  isActive: () => false,
 };
 const styles = { content: {}, header: { color: 'red' }, selections: {}, search: {}, background: {} };
 let rendererInst;
@@ -229,5 +230,17 @@ describe('<ListBoxHeader />', () => {
 
     // Ensure unlock is visible
     expect(unlockCoverButtons).toHaveLength(1);
+  });
+
+  test('Should show more button even when it is not in selection mode for popover', async () => {
+    hasSelections.mockReturnValue(true);
+    const testRenderer = await render({ showSearchIcon: true, showLock: true, isPopover: true });
+    const testInstance = testRenderer.root;
+
+    const [actionsToolbar] = testInstance.findAllByType(ActionsToolbar);
+
+    // Check existence.
+    const moreButton = actionsToolbar.props.more;
+    expect(moreButton.enabled).toEqual(true);
   });
 });

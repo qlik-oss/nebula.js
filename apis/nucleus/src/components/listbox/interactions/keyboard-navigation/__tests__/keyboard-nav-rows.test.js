@@ -20,6 +20,18 @@ describe('keyboard navigation', () => {
     stopPropagation: jest.fn(),
   };
 
+  const eventCancel = {
+    nativeEvent: { keyCode: KEYS.ESCAPE },
+    preventDefault: jest.fn(),
+    stopPropagation: jest.fn(),
+  };
+
+  const eventConfirm = {
+    nativeEvent: { keyCode: KEYS.ENTER },
+    preventDefault: jest.fn(),
+    stopPropagation: jest.fn(),
+  };
+
   afterEach(() => {
     jest.restoreAllMocks();
     jest.resetAllMocks();
@@ -74,24 +86,48 @@ describe('keyboard navigation', () => {
       expect(event.stopPropagation).toHaveBeenCalledTimes(1);
     });
 
-    test('confirm selections with Enter', () => {
-      const eventConfirm = {
-        nativeEvent: { keyCode: KEYS.ENTER },
-        preventDefault: jest.fn(),
-        stopPropagation: jest.fn(),
-      };
+    test('confirm selections with Enter and stopPropagation', () => {
       handleKeyDownForRow(eventConfirm);
-      expect(actions.confirm).toHaveBeenCalledTimes(1);
+      expect(actions.confirm).toHaveBeenCalled();
+      expect(eventConfirm.stopPropagation).toHaveBeenCalled();
     });
 
-    test('cancel selections with Escape', () => {
-      const eventCancel = {
-        nativeEvent: { keyCode: KEYS.ESCAPE },
-        preventDefault: jest.fn(),
-        stopPropagation: jest.fn(),
-      };
+    test('confirm selections with Enter and propagate the event', () => {
+      isModal = undefined;
+      handleKeyDownForRow = getRowsKeyboardNavigation({
+        select: actions.select,
+        cancel: actions.cancel,
+        confirm: actions.confirm,
+        setScrollPosition,
+        focusListItems,
+        keyboard,
+        isModal,
+      });
+      handleKeyDownForRow(eventConfirm);
+      expect(actions.confirm).toHaveBeenCalled();
+      expect(eventConfirm.stopPropagation).not.toHaveBeenCalled();
+    });
+
+    test('cancel selections with Escape and stopPropagation', () => {
       handleKeyDownForRow(eventCancel);
-      expect(actions.cancel).toHaveBeenCalledTimes(1);
+      expect(actions.cancel).toHaveBeenCalled();
+      expect(eventCancel.stopPropagation).toHaveBeenCalled();
+    });
+
+    test('cancel selections with Escape and propagate the event', () => {
+      isModal = undefined;
+      handleKeyDownForRow = getRowsKeyboardNavigation({
+        select: actions.select,
+        cancel: actions.cancel,
+        confirm: actions.confirm,
+        setScrollPosition,
+        focusListItems,
+        keyboard,
+        isModal,
+      });
+      handleKeyDownForRow(eventCancel);
+      expect(actions.cancel).toHaveBeenCalled();
+      expect(eventCancel.stopPropagation).not.toHaveBeenCalled();
     });
 
     test('arrow up should move focus upwards', () => {

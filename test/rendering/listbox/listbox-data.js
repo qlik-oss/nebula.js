@@ -259,6 +259,11 @@ window.getFuncs = function getFuncs() {
       qListObject: {
         qDimensionInfo: {
           qLocked: false,
+          qStateCounts: {
+            qOption: 0,
+            qAlternative: 0,
+            qExcluded: 0,
+          },
         },
         qSize: {
           qcy: 16,

@@ -3,11 +3,16 @@ import { selectAlternative } from '@nebula.js/ui/icons/select-alternative';
 import { selectPossible } from '@nebula.js/ui/icons/select-possible';
 import { selectExcluded } from '@nebula.js/ui/icons/select-excluded';
 
-export default ({ layout, model, translator, selectionState, isDirectQuery = false }) => {
+export default ({ layout, model, translator, selectionState, isDirectQuery = false, selections }) => {
   if (layout.qListObject.qDimensionInfo.qIsOneAndOnlyOne) {
     return [];
   }
-
+  const path = '/qListObjectDef';
+  const activateSelection = () => {
+    if (!selections.isActive()) {
+      selections.begin(path);
+    }
+  };
   const canSelectAll = () =>
     ['qOption', 'qAlternative', 'qExcluded', 'qDeselected'].some(
       (sc) => layout.qListObject.qDimensionInfo.qStateCounts[sc] > 0
@@ -26,8 +31,9 @@ export default ({ layout, model, translator, selectionState, isDirectQuery = fal
       getSvgIconShape: selectAll,
       enabled: canSelectAll,
       action: () => {
+        activateSelection();
         selectionState.clearItemStates(false);
-        model.selectListObjectAll('/qListObjectDef');
+        model.selectListObjectAll(path);
       },
     },
     {
@@ -37,8 +43,9 @@ export default ({ layout, model, translator, selectionState, isDirectQuery = fal
       getSvgIconShape: selectPossible,
       enabled: canSelectPossible,
       action: () => {
+        activateSelection();
         selectionState.clearItemStates(false);
-        model.selectListObjectPossible('/qListObjectDef');
+        model.selectListObjectPossible(path);
       },
     },
     isDirectQuery
@@ -50,8 +57,9 @@ export default ({ layout, model, translator, selectionState, isDirectQuery = fal
           getSvgIconShape: selectAlternative,
           enabled: canSelectAlternative,
           action: () => {
+            activateSelection();
             selectionState.clearItemStates(false);
-            model.selectListObjectAlternative('/qListObjectDef');
+            model.selectListObjectAlternative(path);
           },
         },
     isDirectQuery
@@ -63,8 +71,9 @@ export default ({ layout, model, translator, selectionState, isDirectQuery = fal
           getSvgIconShape: selectExcluded,
           enabled: canSelectExcluded,
           action: () => {
+            activateSelection();
             selectionState.clearItemStates(false);
-            model.selectListObjectExcluded('/qListObjectDef');
+            model.selectListObjectExcluded(path);
           },
         },
   ].filter(Boolean);

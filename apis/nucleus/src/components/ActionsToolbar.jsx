@@ -146,7 +146,7 @@ function ActionsToolbar({
     moreActions = [...newMoreActions, ...more.actions];
   }
 
-  if (!selections.show && newActions.length === 0) return null;
+  if (!selections.show && newActions.length === 0 && !moreEnabled) return null;
 
   const handleCloseShowMoreItems = () => {
     setShowMoreItems(false);
