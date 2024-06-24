@@ -19,6 +19,7 @@ const selections = {
   canClear: () => true,
   canConfirm: () => true,
   canCancel: () => true,
+  isActive: () => false,
 };
 const styles = { content: {}, header: { color: 'red' }, selections: {}, search: {}, background: {} };
 let rendererInst;
