@@ -67,7 +67,6 @@ export default function ListBoxHeader({
   keyboard,
   autoConfirm,
   app,
-  isInSelection,
 }) {
   const [isToolbarDetached, setIsToolbarDetached] = useState(showDetachedToolbarOnly);
   const [isLocked, setLocked] = useState(layout?.qListObject?.qDimensionInfo?.qLocked);
@@ -99,13 +98,13 @@ export default function ListBoxHeader({
     (iconData ? BUTTON_ICON_WIDTH : 0);
 
   const toggleLock = getToggleLock({ isLocked, setLocked, settingLockedState, setSettingLockedState, model });
-
   const listboxSelectionToolbarItems = createListboxSelectionToolbar({
     layout,
     model,
     translator,
     selectionState,
     isDirectQuery,
+    selections,
   });
 
   const extraItems =
@@ -170,6 +169,7 @@ export default function ListBoxHeader({
     isDetached: isPopover ? false : isToolbarDetached,
     showToolbar,
     containerRef,
+    isPopover,
     isLocked,
     extraItems,
     listboxSelectionToolbarItems,
@@ -214,7 +214,7 @@ export default function ListBoxHeader({
           <DimensionIcon
             iconData={iconData}
             iconStyle={iconStyle}
-            disabled={isInSelection && isPopover}
+            disabled={selections.isActive() && isPopover}
             translator={translator}
           />
         </Grid>
