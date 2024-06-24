@@ -192,6 +192,7 @@ export default function ListBoxPopover({
           <div ref={moreAlignTo} />
           <Grid item ref={searchContainerRef}>
             <ListBoxSearch
+              popoverOpen={open}
               styles={styles}
               visible
               model={model}
