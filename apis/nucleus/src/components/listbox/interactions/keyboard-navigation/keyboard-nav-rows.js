@@ -1,5 +1,5 @@
 import KEYS from '../../../../keys';
-import { focusSearch, getElementIndex } from './keyboard-nav-methods';
+import { focusCyclicButton, focusSearch, getElementIndex } from './keyboard-nav-methods';
 import findNextItemIndex from './find-next-item-index';
 
 export default function getRowsKeyboardNavigation({
@@ -64,7 +64,7 @@ export default function getRowsKeyboardNavigation({
         currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
 
         if (shiftKey) {
-          if (!focusSearch(container)) {
+          if (!focusSearch(container) && !focusCyclicButton(container)) {
             if (inSelection) {
               keyboard.focusSelection();
             } else {
@@ -75,12 +75,7 @@ export default function getRowsKeyboardNavigation({
         }
 
         // Without shift key
-        if (inSelection) {
-          keyboard.focusSelection();
-        } else {
-          currentTarget.blur();
-          keyboard.blur();
-        }
+        keyboard.focusSelection();
         break;
       }
       case KEYS.SHIFT:

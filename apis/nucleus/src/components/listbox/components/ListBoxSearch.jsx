@@ -5,6 +5,7 @@ import Search from '@nebula.js/ui/icons/search';
 import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
 import { CELL_PADDING_LEFT } from '../constants';
+import { focusCyclicButton } from '../interactions/keyboard-navigation/keyboard-nav-methods';
 
 const MAX_SEARCH_LENGTH = 64000;
 const TREE_PATH = '/qListObjectDef';
@@ -178,8 +179,9 @@ export default function ListBoxSearch({
       }
       case 'Tab': {
         if (e.shiftKey) {
-          // Focus cyclic button
-          keyboard.focusSelection();
+          if (!focusCyclicButton(container)) {
+            keyboard.focusSelection();
+          }
         } else {
           // Focus the row we last visited or the first one.
           focusRow(container);

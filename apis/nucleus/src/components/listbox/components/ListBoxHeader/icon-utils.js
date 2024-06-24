@@ -2,6 +2,7 @@ import CyclicIcon from '@nebula.js/ui/icons/cyclic';
 import DrillDownIcon from '@nebula.js/ui/icons/drill-down';
 import ReloadIcon from '@nebula.js/ui/icons/reload';
 import KEYS from '../../../../keys';
+import { focusRow, focusSearch } from '../../interactions/keyboard-navigation/keyboard-nav-methods';
 
 const dimensionTypes = {
   single: 'N',
@@ -9,7 +10,7 @@ const dimensionTypes = {
   cyclic: 'C',
 };
 
-const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active }) => {
+const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active, keyboard, container }) => {
   switch (dimInfo.qGrouping) {
     case dimensionTypes.drillDown:
       return {
@@ -47,9 +48,13 @@ const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active }
                   stepToNextField();
                   break;
                 case KEYS.TAB:
-                  // if (shift && keyboard.enabled) {
-                  //   keyboard.focusSelection();
-                  // }
+                  event.preventDefault();
+                  event.stopPropagation();
+                  if (event.shiftKey && keyboard.enabled) {
+                    keyboard.focusSelection();
+                  } else {
+                    focusSearch(container) || focusRow(container);
+                  }
                   break;
                 default:
               }

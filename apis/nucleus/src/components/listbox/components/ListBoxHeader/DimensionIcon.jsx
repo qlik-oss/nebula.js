@@ -28,6 +28,7 @@ function DimensionIcon({ iconData, translator, iconStyle, disabled }) {
       disableRipple
       disabled={disabled}
       onKeyDown={onKeyDown}
+      className="listbox-cyclic-button"
     >
       <Icon style={iconStyle} />
     </StyledButton>

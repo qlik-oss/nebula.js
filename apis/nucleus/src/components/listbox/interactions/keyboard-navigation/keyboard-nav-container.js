@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import KEYS from '../../../../keys';
 import { getVizCell, removeLastFocused } from '../../components/useTempKeyboard';
-import { focusRow, focusSearch } from './keyboard-nav-methods';
+import { focusCyclicButton, focusRow, focusSearch } from './keyboard-nav-methods';
 
 export default function getListboxContainerKeyboardNavigation({
   keyboard,
@@ -52,20 +52,12 @@ export default function getListboxContainerKeyboardNavigation({
     }
 
     const container = event.currentTarget.closest('.listbox-container');
-    const inSelection = isModal();
-
     switch (keyCode) {
       case KEYS.TAB:
-        if (inSelection) {
-          if (shiftKey) {
-            focusRow(container) || focusSearch(container);
-          } else {
-            focusSearch(container) || focusRow(container);
-          }
-        } else if (shiftKey) {
-          keyboard.blur(true);
+        if (shiftKey) {
+          focusRow(container) || focusSearch(container);
         } else {
-          break;
+          focusCyclicButton(container) || focusSearch(container) || focusRow(container);
         }
         prevent();
         break;
