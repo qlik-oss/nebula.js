@@ -57,6 +57,7 @@ const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active, 
                   }
                   break;
                 default:
+                  break;
               }
             }
           : undefined,
