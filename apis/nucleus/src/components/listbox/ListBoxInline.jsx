@@ -80,6 +80,7 @@ function ListBoxInline({ options, layout }) {
     showLock = false,
     components,
     selectDisabled = () => false,
+    flags,
   } = options;
 
   // Hook that will trigger update when used in useEffects.
@@ -101,7 +102,8 @@ function ListBoxInline({ options, layout }) {
   const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
 
   const { checkboxes = checkboxesOption } = layout || {};
-  const styles = getStyles({ app, themeApi, theme, components, checkboxes });
+  const themeSelectionColorsEnabled = flags.isEnabled('PS_22149_THEME_SELECTION_COLORS');
+  const styles = getStyles({ app, themeApi, theme, components, checkboxes, themeSelectionColorsEnabled });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 

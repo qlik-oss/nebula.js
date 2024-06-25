@@ -7,7 +7,7 @@ const DARK = '#000';
 export const CONTRAST_THRESHOLD = 1.5;
 const LIGHT_PREFERRED_THRESHOLD = 3;
 
-const DEFAULT_SELECTION_COLORS = {
+export const DEFAULT_SELECTION_COLORS = {
   selected: '#009845',
   alternative: '#E4E4E4',
   excluded: '#A9A9A9',
@@ -70,10 +70,17 @@ export function getOverridesAsObject(components = []) {
   return overrides;
 }
 
-function getSelectionColors({ getColorPickerColor, theme, getListboxStyle, overrides, checkboxes }) {
+function getSelectionColors({
+  getColorPickerColor,
+  theme,
+  getListboxStyle,
+  overrides,
+  checkboxes,
+  themeSelectionColorsEnabled,
+}) {
   const componentContentTextColor = overrides.theme?.content?.fontColor;
 
-  // color priority: layout.component > theme > sprout
+  // color priority: layout.component > theme content color > MUI theme
   const desiredTextColor =
     getColorPickerColor(componentContentTextColor) ||
     getListboxStyle('content', 'color') ||
@@ -81,14 +88,18 @@ function getSelectionColors({ getColorPickerColor, theme, getListboxStyle, overr
 
   const useContrastTextColor = !checkboxes && (overrides.theme?.content?.useContrastColor ?? true);
 
+  const getSelectionThemeColor = (state) =>
+    themeSelectionColorsEnabled ? getListboxStyle('', `dataColors.${state}`) : undefined;
+
   const componentSelectionColors = overrides.selections?.colors || {};
 
   const getSelectionStateColors = (state) => {
     const paletteState = state === 'selected' ? 'main' : state;
     const contrastState = `${state}Contrast`;
-    // color priority: layout.component > sprout > hardcoded default
+    // color priority: layout.component > theme dataColors > theme background (only for 'possible') > MUI theme > hardcoded default
     const color =
       getColorPickerColor(componentSelectionColors[state]) ||
+      getSelectionThemeColor(state) ||
       (state === 'possible' && getListboxStyle('', 'backgroundColor')) ||
       theme.palette?.selected[paletteState] ||
       DEFAULT_SELECTION_COLORS[state];
@@ -135,12 +146,26 @@ function getSearchBGColor(bgCol, getListboxStyle) {
   return searchBgColorObj.isInvalid() ? bgCol : searchBgColorObj.toRGBA();
 }
 
-export default function getStyles({ app, themeApi, theme, components = [], checkboxes = false }) {
+export default function getStyles({
+  app,
+  themeApi,
+  theme,
+  components = [],
+  checkboxes = false,
+  themeSelectionColorsEnabled = false,
+}) {
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
   const getColorPickerColor = (c) => (c?.index > 0 || c?.color ? themeApi.getColorPickerColor(c, false) : undefined);
 
-  const selections = getSelectionColors({ getColorPickerColor, theme, getListboxStyle, overrides, checkboxes });
+  const selections = getSelectionColors({
+    getColorPickerColor,
+    theme,
+    getListboxStyle,
+    overrides,
+    checkboxes,
+    themeSelectionColorsEnabled,
+  });
   const themeOverrides = overrides.theme || {};
 
   const headerColor = getColorPickerColor(themeOverrides.header?.fontColor) || getListboxStyle('title.main', 'color');
