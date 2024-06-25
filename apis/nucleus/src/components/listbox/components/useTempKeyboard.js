@@ -64,6 +64,7 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       const btnToFocus = unlockCoverButton || confirmButton || moreButton;
       btnToFocus?.setAttribute('tabIndex', 0);
       btnToFocus?.focus();
+      return btnToFocus;
     },
   };
 

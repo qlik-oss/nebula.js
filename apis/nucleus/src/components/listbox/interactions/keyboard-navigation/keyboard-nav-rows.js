@@ -75,7 +75,10 @@ export default function getRowsKeyboardNavigation({
         }
 
         // Without shift key
-        keyboard.focusSelection();
+        if (!keyboard.focusSelection()) {
+          currentTarget.blur();
+          keyboard.blur();
+        }
         break;
       }
       case KEYS.SHIFT:
