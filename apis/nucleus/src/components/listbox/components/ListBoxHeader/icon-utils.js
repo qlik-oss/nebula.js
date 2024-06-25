@@ -39,7 +39,7 @@ const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active, 
       return {
         icon: clickable ? ReloadIcon : CyclicIcon,
         tooltip: 'Listbox.Cyclic',
-        onClick: (clickable && stepToNextField) || undefined,
+        onClick: clickable ? stepToNextField : undefined,
         onKeyDown: clickable
           ? (event) => {
               switch (event.keyCode) {
