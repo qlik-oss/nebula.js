@@ -1,7 +1,8 @@
 import React, { useContext, useState, useEffect, useRef } from 'react';
-import { InputAdornment, OutlinedInput } from '@mui/material';
+import { InputAdornment, OutlinedInput, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Search from '@nebula.js/ui/icons/search';
+import Close from '@nebula.js/ui/icons/close';
 import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
 import { CELL_PADDING_LEFT } from '../constants';
@@ -14,15 +15,16 @@ const limitSearchLength = (val) => val?.substring(0, MAX_SEARCH_LENGTH);
 
 const StyledOutlinedInput = styled(OutlinedInput, {
   shouldForwardProp: (p) => !['styles', 'dense', 'isRtl'].includes(p),
-})(({ theme, styles, dense, isRtl }) => {
+})(({ styles, dense, isRtl }) => {
   let denseProps = {};
   if (dense) {
     denseProps = {
       fontSize: 12,
-      paddingLeft: theme.spacing(1),
       '& input': {
         paddingTop: '5px',
         paddingBottom: '5px',
+        color: styles.search.color,
+        textAlign: isRtl ? 'right' : 'left',
       },
     };
   }
@@ -33,7 +35,8 @@ const StyledOutlinedInput = styled(OutlinedInput, {
     borderRadius: 0,
     backgroundColor: styles.search.backgroundColor,
     backdropFilter: styles.background.backgroundImage ? styles.search.backdropFilter : undefined,
-    paddingLeft: `${CELL_PADDING_LEFT}px`,
+    paddingLeft: 0,
+    paddingRight: 0,
     flexDirection: isRtl ? 'row-reverse' : 'row',
 
     '& fieldset': {
@@ -58,6 +61,20 @@ const StyledOutlinedInput = styled(OutlinedInput, {
   };
 });
 
+const StyledIconButton = styled(IconButton)(() => ({
+  border: 0,
+  padding: '8px',
+  cursor: 'pointer',
+  lineHeight: '12px',
+  '&:hover': {
+    backgroundColor: 'transparent',
+  },
+  ':focus-visible': {
+    borderRadius: '4px',
+    boxShadow: 'inset 0 0 0 2px rgb(2, 117, 217)',
+  },
+}));
+
 export default function ListBoxSearch({
   popoverOpen,
   selections,
@@ -77,6 +94,8 @@ export default function ListBoxSearch({
   const [value, setValue] = useState('');
   const [wildcardOn, setWildcardOn] = useState(false);
   const inputRef = useRef();
+  const clearSearchRef = useRef();
+  const clearSearchText = translator.get('Listbox.Clear.Search');
 
   const { getStoreValue, setStoreValue } = useDataStore(model);
   const isRtl = direction === 'rtl';
@@ -179,6 +198,8 @@ export default function ListBoxSearch({
       case 'Tab': {
         if (e.shiftKey) {
           keyboard.focusSelection();
+        } else if (clearSearchRef.current) {
+          clearSearchRef.current.focus();
         } else {
           // Focus the row we last visited or the first one.
           focusRow(container);
@@ -210,6 +231,43 @@ export default function ListBoxSearch({
     return undefined;
   };
 
+  const focusOnInput = () => {
+    inputRef.current?.focus();
+  };
+
+  const onClearSearch = () => {
+    abortSearch();
+    focusOnInput();
+  };
+
+  const onKeyDownClearSearch = async (e) => {
+    const container = e.currentTarget.closest('.listbox-container');
+    switch (e.key) {
+      case 'Enter':
+        onClearSearch();
+        break;
+      case 'Tab': {
+        if (e.shiftKey) {
+          focusOnInput();
+        } else {
+          // Focus the row we last visited or the first one.
+          focusRow(container);
+
+          // Clean up.
+          container?.querySelectorAll('.last-focused').forEach((elm) => {
+            elm.classList.remove('last-focused');
+          });
+        }
+        break;
+      }
+      default:
+        return undefined;
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    return undefined;
+  };
+
   if (!visible || searchEnabled === false) {
     return null;
   }
@@ -220,8 +278,24 @@ export default function ListBoxSearch({
       dense={dense}
       isRtl={isRtl}
       startAdornment={
-        <InputAdornment position="start">
+        <InputAdornment position="start" sx={{ marginLeft: dense ? '8px' : `${CELL_PADDING_LEFT}px` }}>
           <Search size={dense ? 'small' : 'normal'} />
+        </InputAdornment>
+      }
+      endAdornment={
+        <InputAdornment position="end" sx={{ marginLeft: 0 }}>
+          {value !== '' && (
+            <StyledIconButton
+              tabIndex={0}
+              ref={clearSearchRef}
+              title={clearSearchText}
+              aria-label={clearSearchText}
+              onClick={onClearSearch}
+              onKeyDown={onKeyDownClearSearch}
+            >
+              <Close size={dense ? 'small' : 'normal'} />
+            </StyledIconButton>
+          )}
         </InputAdornment>
       }
       className="search"

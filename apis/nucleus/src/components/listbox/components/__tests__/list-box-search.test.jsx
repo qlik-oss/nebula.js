@@ -2,7 +2,7 @@
 /* eslint-disable no-import-assign */
 import React from 'react';
 import renderer, { act } from 'react-test-renderer';
-import { OutlinedInput } from '@mui/material';
+import { OutlinedInput, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import * as InstanceContextModule from '../../../../contexts/InstanceContext';
 import * as useDataStore from '../../hooks/useDataStore';
@@ -443,5 +443,58 @@ describe('<ListBoxSearch />', () => {
       });
       expect(model.acceptListObjectSearch).not.toHaveBeenCalled();
     });
+  });
+
+  test('should render clear search button when has search text', async () => {
+    const testRenderer = testRender(model);
+    const testInstance = testRenderer.root;
+    const type = testInstance.findByType(OutlinedInput);
+    await act(async () => {
+      await type.props.onChange({ target: { value: 'foo' } });
+    });
+    const icon = testInstance.findAllByType(IconButton);
+    expect(icon).toHaveLength(1);
+  });
+
+  test('should not render clear search button when has no search text', async () => {
+    const testRenderer = testRender(model);
+    const testInstance = testRenderer.root;
+    const type = testInstance.findByType(OutlinedInput);
+    await act(async () => {
+      await type.props.onChange({ target: { value: '' } });
+    });
+    const icon = testInstance.findAllByType(IconButton);
+    expect(icon).toHaveLength(0);
+  });
+
+  test('should clear search text when clicking on clear search button', async () => {
+    const testRenderer = testRender(model);
+    const testInstance = testRenderer.root;
+    const type = testInstance.findByType(OutlinedInput);
+    await act(async () => {
+      await type.props.onChange({ target: { value: 'foo' } });
+    });
+    const icon = testInstance.findByType(IconButton);
+    await act(async () => {
+      await icon.props.onClick();
+    });
+    expect(model.abortListObjectSearch).toHaveBeenCalledWith('/qListObjectDef');
+    expect(type.props.value).toBe('');
+  });
+
+  test('should clear search text when pressing enter on focused clear search button', async () => {
+    const testRenderer = testRender(model);
+    const testInstance = testRenderer.root;
+    const type = testInstance.findByType(OutlinedInput);
+    await act(async () => {
+      await type.props.onChange({ target: { value: 'foo' } });
+      await type.props.onKeyDown({ ...keyEventDefaults, key: 'Tab' });
+    });
+    const icon = testInstance.findByType(IconButton);
+    await act(async () => {
+      await icon.props.onKeyDown({ ...keyEventDefaults, key: 'Enter' });
+    });
+    expect(model.abortListObjectSearch).toHaveBeenCalledWith('/qListObjectDef');
+    expect(type.props.value).toBe('');
   });
 });
