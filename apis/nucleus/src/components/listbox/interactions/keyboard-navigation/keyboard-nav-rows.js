@@ -77,7 +77,7 @@ export default function getRowsKeyboardNavigation({
         // Without shift key
         if (!keyboard.focusSelection()) {
           currentTarget.blur();
-          keyboard.blur();
+          keyboard.blur(true);
         }
         break;
       }
