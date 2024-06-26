@@ -10,7 +10,7 @@ const dimensionTypes = {
   cyclic: 'C',
 };
 
-const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active, keyboard, container }) => {
+const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active, keyboard }) => {
   switch (dimInfo.qGrouping) {
     case dimensionTypes.drillDown:
       return {
@@ -42,6 +42,7 @@ const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active, 
         onClick: clickable ? stepToNextField : undefined,
         onKeyDown: clickable
           ? (event) => {
+              const container = event.currentTarget.closest('.listbox-container');
               switch (event.keyCode) {
                 case KEYS.SPACE:
                 case KEYS.ENTER:

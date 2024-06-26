@@ -6,7 +6,7 @@ import Close from '@nebula.js/ui/icons/close';
 import InstanceContext from '../../../contexts/InstanceContext';
 import useDataStore from '../hooks/useDataStore';
 import { CELL_PADDING_LEFT } from '../constants';
-import { focusCyclicButton } from '../interactions/keyboard-navigation/keyboard-nav-methods';
+import { focusCyclicButton, focusRow } from '../interactions/keyboard-navigation/keyboard-nav-methods';
 
 const MAX_SEARCH_LENGTH = 64000;
 const TREE_PATH = '/qListObjectDef';
@@ -175,12 +175,6 @@ export default function ListBoxSearch({
     return response;
   };
 
-  function focusRow(container) {
-    const row = container?.querySelector('.last-focused') || container?.querySelector('[role="row"]:first-child');
-    row?.setAttribute('tabIndex', 0);
-    row?.focus();
-  }
-
   const onKeyDown = async (e) => {
     const { currentTarget } = e;
     const container = currentTarget.closest('.listbox-container');
@@ -255,11 +249,6 @@ export default function ListBoxSearch({
         } else {
           // Focus the row we last visited or the first one.
           focusRow(container);
-
-          // Clean up.
-          container?.querySelectorAll('.last-focused').forEach((elm) => {
-            elm.classList.remove('last-focused');
-          });
         }
         break;
       }

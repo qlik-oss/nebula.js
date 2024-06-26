@@ -1,3 +1,5 @@
+import { removeLastFocused } from '../../components/useTempKeyboard';
+
 export const getElementIndex = (currentTarget) => +currentTarget.getAttribute('data-n');
 
 export const focusSearch = (container) => {
@@ -7,10 +9,14 @@ export const focusSearch = (container) => {
 };
 
 export const focusRow = (container) => {
-  const row = container?.querySelector('.value.last-focused, .value.selector, .value');
-  row?.setAttribute('tabIndex', 0);
-  row?.focus();
-  return row;
+  const lastFocusedRow = container?.querySelector('.value.last-focused');
+  const selectorRow = container?.querySelector('.value.selector');
+  const row = container?.querySelector('.value');
+  const rowToFocus = lastFocusedRow || selectorRow || row;
+  rowToFocus?.setAttribute('tabIndex', 0);
+  rowToFocus?.focus();
+  removeLastFocused(container);
+  return rowToFocus;
 };
 
 export const focusCyclicButton = (container) => {
