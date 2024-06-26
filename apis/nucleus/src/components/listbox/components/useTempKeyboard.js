@@ -53,7 +53,9 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       const firstRowElement = c?.querySelector('.value.selector, .value');
       const confirmButton = c?.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
       const unlockCoverButton = c?.querySelector('#listbox-unlock-button');
-      const elementToFocus = searchField || lastSelectedRow || firstRowElement || unlockCoverButton || confirmButton;
+      const cyclicButton = c?.querySelector('.listbox-cyclic-button');
+      const elementToFocus =
+        cyclicButton || searchField || lastSelectedRow || firstRowElement || unlockCoverButton || confirmButton;
       elementToFocus?.setAttribute('tabIndex', 0);
       elementToFocus?.focus();
     },
