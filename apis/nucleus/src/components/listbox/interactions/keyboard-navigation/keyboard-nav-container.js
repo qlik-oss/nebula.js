@@ -11,6 +11,7 @@ export default function getListboxContainerKeyboardNavigation({
   currentScrollIndex,
   isModal,
   constraints,
+  selections,
 }) {
   const blur = (event) => {
     const { currentTarget, target } = event;
@@ -71,6 +72,9 @@ export default function getListboxContainerKeyboardNavigation({
         break;
       case KEYS.ESCAPE:
         blur(event);
+        if (selections.isActive()) {
+          selections.cancel();
+        }
         break;
       default:
         break;
