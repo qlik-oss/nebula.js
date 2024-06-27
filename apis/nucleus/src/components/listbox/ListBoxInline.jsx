@@ -226,6 +226,9 @@ function ListBoxInline({ options, layout }) {
   const handleShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
+    if (!isPopover && !selections.isActive()) {
+      selections.begin('/qListObjectDef');
+    }
   };
 
   const onCtrlF = () => {
