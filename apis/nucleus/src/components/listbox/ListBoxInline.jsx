@@ -102,7 +102,7 @@ function ListBoxInline({ options, layout }) {
   const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
 
   const { checkboxes = checkboxesOption } = layout || {};
-  const themeSelectionColorsEnabled = flags.isEnabled('PS_22149_THEME_SELECTION_COLORS');
+  const themeSelectionColorsEnabled = flags?.isEnabled('PS_22149_THEME_SELECTION_COLORS');
   const styles = getStyles({ app, themeApi, theme, components, checkboxes, themeSelectionColorsEnabled });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
