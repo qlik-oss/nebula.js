@@ -56,9 +56,15 @@ export default function getListboxContainerKeyboardNavigation({
     switch (keyCode) {
       case KEYS.TAB:
         if (shiftKey) {
-          focusRow(container) || focusSearch(container);
+          const focused = focusRow(container) || focusSearch(container);
+          if (!focused) {
+            keyboard.blur(true);
+          }
         } else {
-          focusCyclicButton(container) || focusSearch(container) || focusRow(container);
+          const focused = focusCyclicButton(container) || focusSearch(container) || focusRow(container);
+          if (!focused) {
+            break;
+          }
         }
         prevent();
         break;
