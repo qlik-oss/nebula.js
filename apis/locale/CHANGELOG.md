@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/qlik-oss/nebula.js/compare/v5.1.2...v5.2.0) (2024-06-25)
+
+### Bug Fixes
+
+- add clear search button to listbox search ([#1566](https://github.com/qlik-oss/nebula.js/issues/1566)) ([1a92d5f](https://github.com/qlik-oss/nebula.js/commit/1a92d5f44b5a519904a832fd599145c8a3d06454))
+
 ## [5.1.2](https://github.com/qlik-oss/nebula.js/compare/v5.1.1...v5.1.2) (2024-06-12)
 
 **Note:** Version bump only for package @nebula.js/locale

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/qlik-oss/nebula.js/compare/v5.1.2...v5.2.0) (2024-06-25)
+
+### Bug Fixes
+
+- add clear search button to listbox search ([#1566](https://github.com/qlik-oss/nebula.js/issues/1566)) ([1a92d5f](https://github.com/qlik-oss/nebula.js/commit/1a92d5f44b5a519904a832fd599145c8a3d06454))
+- **deps:** update dependency ws to v8.17.1 [security] ([#1565](https://github.com/qlik-oss/nebula.js/issues/1565)) ([f067125](https://github.com/qlik-oss/nebula.js/commit/f067125398c02b2d716d944e48ef0951020d659d))
+- Esc key down doesn't close searchbox ([#1544](https://github.com/qlik-oss/nebula.js/issues/1544)) ([d6cb5aa](https://github.com/qlik-oss/nebula.js/commit/d6cb5aa12201eeda9c95a8282125c3ebacacace7))
+- show more button even when list box is not in selection ([#1554](https://github.com/qlik-oss/nebula.js/issues/1554)) ([f7d73d6](https://github.com/qlik-oss/nebula.js/commit/f7d73d64b93823354fc823aa6b1d2f4ef4d72f68))
+
+### Features
+
+- use selection colors from theme for listbox ([#1552](https://github.com/qlik-oss/nebula.js/issues/1552)) ([49c4389](https://github.com/qlik-oss/nebula.js/commit/49c4389e53eb4376a5dac6b277087ed52e4e536d))
+
 ## [5.1.2](https://github.com/qlik-oss/nebula.js/compare/v5.1.1...v5.1.2) (2024-06-12)
 
 **Note:** Version bump only for package nebula.js

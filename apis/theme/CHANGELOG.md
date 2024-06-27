@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.2.0](https://github.com/qlik-oss/nebula.js/compare/v5.1.2...v5.2.0) (2024-06-25)
+
+**Note:** Version bump only for package @nebula.js/theme
+
 ## [5.1.2](https://github.com/qlik-oss/nebula.js/compare/v5.1.1...v5.1.2) (2024-06-12)
 
 **Note:** Version bump only for package @nebula.js/theme
