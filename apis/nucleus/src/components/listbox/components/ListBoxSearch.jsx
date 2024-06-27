@@ -200,11 +200,6 @@ export default function ListBoxSearch({
         } else {
           // Focus the row we last visited or the first one.
           focusRow(container);
-
-          // Clean up.
-          container?.querySelectorAll('.last-focused').forEach((elm) => {
-            elm.classList.remove('last-focused');
-          });
         }
         break;
       }
