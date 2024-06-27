@@ -49,12 +49,18 @@ const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active, 
                   stepToNextField();
                   break;
                 case KEYS.TAB:
-                  event.preventDefault();
-                  event.stopPropagation();
-                  if (event.shiftKey && keyboard.enabled) {
-                    keyboard.focusSelection();
-                  } else {
-                    focusSearch(container) || focusRow(container);
+                  {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    let focused;
+                    if (event.shiftKey && keyboard.enabled) {
+                      focused = keyboard.focusSelection();
+                    } else {
+                      focused = focusSearch(container) || focusRow(container);
+                    }
+                    if (!focused) {
+                      keyboard.blur(true);
+                    }
                   }
                   break;
                 default:
