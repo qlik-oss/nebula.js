@@ -1,44 +1,16 @@
 /* eslint-disable no-param-reassign */
 import KEYS from '../../../../keys';
-import { getVizCell, removeLastFocused } from '../../components/useTempKeyboard';
-import { focusCyclicButton, focusRow, focusSearch } from './keyboard-nav-methods';
+import { blur, focusCyclicButton, focusRow, focusSearch } from './keyboard-nav-methods';
 
 export default function getListboxContainerKeyboardNavigation({
   keyboard,
   hovering,
   updateKeyScroll,
-  containerRef,
   currentScrollIndex,
   isModal,
   constraints,
   selections,
 }) {
-  const blur = (event) => {
-    const { currentTarget, target } = event;
-    const isFocusedOnListbox = target.classList.contains('listbox-container');
-    const container = currentTarget.closest('.listbox-container');
-    const vizCell = getVizCell(container);
-    const isSingleListbox = vizCell?.querySelectorAll('.listbox-container').length === 1;
-    if (isFocusedOnListbox || isSingleListbox) {
-      // Move the focus from listbox container to the viz container.
-      keyboard.blur(true);
-    } else {
-      // More than one listbox: Move focus from row to listbox container.
-
-      // 1. Remove last-focused class from row siblings.
-      removeLastFocused(containerRef.current);
-
-      // 2. Add last-focused class so we can re-focus it later.
-      currentTarget.classList.add('last-focused');
-
-      // 3. Blur row and focus the listbox container.
-      keyboard.blur();
-      const c = currentTarget.closest('.listbox-container');
-      c.setAttribute('tabIndex', -1);
-      c?.focus();
-    }
-  };
-
   const handleKeyDown = (event) => {
     const { keyCode, shiftKey = false } = event.nativeEvent;
 
@@ -55,10 +27,12 @@ export default function getListboxContainerKeyboardNavigation({
     const container = event.currentTarget.closest('.listbox-container');
     switch (keyCode) {
       case KEYS.TAB:
+        //  Only react to tab after enter/space have been pressed or the target element is inside listbox (mouse case)
+        if (document.activeElement === container || !container.contains(document.activeElement)) return;
         if (shiftKey) {
           const focused = focusRow(container) || focusSearch(container);
           if (!focused) {
-            blur();
+            blur(event, keyboard);
           }
         } else {
           const focused = focusCyclicButton(container) || focusSearch(container) || focusRow(container);
@@ -77,7 +51,7 @@ export default function getListboxContainerKeyboardNavigation({
         prevent();
         break;
       case KEYS.ESCAPE:
-        blur(event);
+        blur(event, keyboard);
         if (selections.isActive()) {
           selections.cancel();
         }
