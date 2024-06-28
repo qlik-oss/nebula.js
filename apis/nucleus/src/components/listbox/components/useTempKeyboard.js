@@ -13,7 +13,7 @@ export function removeLastFocused(container) {
 }
 
 export function getVizCell(container) {
-  return container?.closest('.njs-cell') || container?.closest('.qv-gridcell');
+  return container?.closest('.njs-cell') || container?.closest('.qv-gridcell') || container?.closest('.qv-gs-listbox');
 }
 
 // Emulate the keyboard hook, until we support it in the Listbox.
@@ -39,6 +39,7 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       if (resetFocus && vizCell) {
         // Move focus to the viz's cell.
         vizCell.setAttribute('tabIndex', 0);
+        containerRef.current.setAttribute('tabIndex', -1);
         vizCell.focus();
       }
     },

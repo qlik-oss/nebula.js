@@ -78,6 +78,7 @@ export default function getRowsKeyboardNavigation({
         if (!keyboard.focusSelection()) {
           currentTarget.blur();
           keyboard.blur(true);
+          event.stopPropagation();
         }
         break;
       }

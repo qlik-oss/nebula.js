@@ -58,7 +58,7 @@ export default function getListboxContainerKeyboardNavigation({
         if (shiftKey) {
           const focused = focusRow(container) || focusSearch(container);
           if (!focused) {
-            keyboard.blur(true);
+            blur();
           }
         } else {
           const focused = focusCyclicButton(container) || focusSearch(container) || focusRow(container);
