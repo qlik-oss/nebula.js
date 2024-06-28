@@ -1,4 +1,4 @@
-import { removeLastFocused } from '../../components/useTempKeyboard';
+import { getVizCell, removeLastFocused } from '../../components/useTempKeyboard';
 
 export const getElementIndex = (currentTarget) => +currentTarget.getAttribute('data-n');
 
@@ -24,4 +24,30 @@ export const focusCyclicButton = (container) => {
   button?.setAttribute('tabIndex', 0);
   button?.focus();
   return button;
+};
+
+export const blur = (event, keyboard) => {
+  const { currentTarget, target } = event;
+  const isFocusedOnListbox = target.classList.contains('listbox-container');
+  const container = currentTarget.closest('.listbox-container');
+  const vizCell = getVizCell(container);
+  const isSingleListbox = vizCell?.querySelectorAll('.listbox-container').length === 1;
+  if (isFocusedOnListbox || isSingleListbox) {
+    // Move the focus from listbox container to the viz container.
+    keyboard.blur(true);
+  } else {
+    // More than one listbox: Move focus from row to listbox container.
+
+    // 1. Remove last-focused class from row siblings.
+    removeLastFocused(container);
+
+    // 2. Add last-focused class so we can re-focus it later.
+    currentTarget.classList.add('last-focused');
+
+    // 3. Blur row and focus the listbox container.
+    keyboard.blur();
+    const c = currentTarget.closest('.listbox-container');
+    c.setAttribute('tabIndex', -1);
+    c?.focus();
+  }
 };

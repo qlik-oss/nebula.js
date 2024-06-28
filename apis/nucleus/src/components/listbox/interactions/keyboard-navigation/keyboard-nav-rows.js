@@ -1,5 +1,5 @@
 import KEYS from '../../../../keys';
-import { focusCyclicButton, focusSearch, getElementIndex } from './keyboard-nav-methods';
+import { blur, focusCyclicButton, focusSearch, getElementIndex } from './keyboard-nav-methods';
 import findNextItemIndex from './find-next-item-index';
 
 export default function getRowsKeyboardNavigation({
@@ -68,17 +68,16 @@ export default function getRowsKeyboardNavigation({
             if (inSelection) {
               keyboard.focusSelection();
             } else {
-              keyboard.blur(true);
+              blur(event, keyboard);
             }
           }
           break;
         }
 
         // Without shift key
-        if (!keyboard.focusSelection()) {
+        if (!keyboard.focusSelection() && !focusCyclicButton(container) && !focusSearch(container)) {
           currentTarget.blur();
-          keyboard.blur(true);
-          event.stopPropagation();
+          blur(event, keyboard);
         }
         break;
       }
