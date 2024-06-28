@@ -25,10 +25,12 @@ export default function getListboxContainerKeyboardNavigation({
     }
 
     const container = event.currentTarget.closest('.listbox-container');
+    const inSelection = isModal();
     switch (keyCode) {
       case KEYS.TAB:
-        //  Only react to tab after enter/space have been pressed or the target element is inside listbox (mouse case)
-        if (document.activeElement === container || !container.contains(document.activeElement)) return;
+        //  Only react to tab after enter/space have been pressed or the target element is inside listbox (mouse case) or target is selection toolbar
+        if (document.activeElement === container || (!inSelection && !container.contains(document.activeElement)))
+          return;
         if (shiftKey) {
           const focused = focusRow(container) || focusSearch(container);
           if (!focused) {
