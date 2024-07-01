@@ -83,7 +83,6 @@ export default function ListBoxHeader({
     selections,
     isPopover,
     active: !constraints?.active,
-    container: containerRef.current,
     keyboard,
   });
   const showUnlock = showLock && isLocked;
