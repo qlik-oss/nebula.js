@@ -27,6 +27,7 @@ export const focusCyclicButton = (container) => {
 };
 
 export const blur = (event, keyboard) => {
+  if (!keyboard.enabled) return;
   const { currentTarget, target } = event;
   const isFocusedOnListbox = target.classList.contains('listbox-container');
   const container = currentTarget.closest('.listbox-container');
