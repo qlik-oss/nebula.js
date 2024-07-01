@@ -73,6 +73,11 @@ describe('icon-utils', () => {
       currentTarget: {
         closest: () => {},
       },
+      target: {
+        classList: {
+          contains: () => true,
+        },
+      },
       keyCode: KEYS.SPACE,
       preventDefault: jest.fn(),
       stopPropagation: jest.fn(),
