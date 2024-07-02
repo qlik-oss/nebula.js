@@ -13,7 +13,7 @@ export function removeLastFocused(container) {
 }
 
 export function getVizCell(container) {
-  return container?.closest('.njs-cell') || container?.closest('.qv-gridcell');
+  return container?.closest('.njs-cell') || container?.closest('.qv-gridcell') || container?.closest('.qv-gs-listbox');
 }
 
 // Emulate the keyboard hook, until we support it in the Listbox.
@@ -39,6 +39,7 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       if (resetFocus && vizCell) {
         // Move focus to the viz's cell.
         vizCell.setAttribute('tabIndex', 0);
+        containerRef.current.setAttribute('tabIndex', -1);
         vizCell.focus();
       }
     },
@@ -53,16 +54,20 @@ export default function useTempKeyboard({ containerRef, enabled }) {
       const firstRowElement = c?.querySelector('.value.selector, .value');
       const confirmButton = c?.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
       const unlockCoverButton = c?.querySelector('#listbox-unlock-button');
-      const elementToFocus = searchField || lastSelectedRow || firstRowElement || unlockCoverButton || confirmButton;
+      const cyclicButton = c?.querySelector('.listbox-cyclic-button');
+      const elementToFocus =
+        cyclicButton || searchField || lastSelectedRow || firstRowElement || unlockCoverButton || confirmButton;
       elementToFocus?.setAttribute('tabIndex', 0);
       elementToFocus?.focus();
     },
     focusSelection() {
       const unlockCoverButton = document.querySelector('#listbox-unlock-button');
       const confirmButton = document.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
-      const btnToFocus = unlockCoverButton || confirmButton;
+      const moreButton = document.querySelector('.actions-toolbar-more');
+      const btnToFocus = unlockCoverButton || confirmButton || moreButton;
       btnToFocus?.setAttribute('tabIndex', 0);
       btnToFocus?.focus();
+      return btnToFocus;
     },
   };
 

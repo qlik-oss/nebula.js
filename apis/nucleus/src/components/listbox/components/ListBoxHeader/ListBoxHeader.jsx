@@ -83,6 +83,7 @@ export default function ListBoxHeader({
     selections,
     isPopover,
     active: !constraints?.active,
+    keyboard,
   });
   const showUnlock = showLock && isLocked;
   const showLockIcon = !showLock && isLocked; // shows instead of the cover button when field/dim is locked.
@@ -216,6 +217,7 @@ export default function ListBoxHeader({
             iconStyle={iconStyle}
             disabled={selections.isActive() && isPopover}
             translator={translator}
+            keyboard={keyboard}
           />
         </Grid>
       )}

@@ -15,6 +15,7 @@ describe('keyboard navigation', () => {
   let currentScrollIndex;
   let keyboard;
   let isModal;
+  let selections;
 
   afterEach(() => {
     jest.restoreAllMocks();
@@ -37,6 +38,10 @@ describe('keyboard navigation', () => {
     hovering = { current: true };
     updateKeyScroll = jest.fn();
     currentScrollIndex = { start: 0, stop: 10 };
+    selections = {
+      isActive: jest.fn(() => true),
+      cancel: jest.fn(),
+    };
 
     ({
       handleKeyDown: handleKeyDownForListbox,
@@ -52,6 +57,7 @@ describe('keyboard navigation', () => {
       currentScrollIndex,
       keyboard,
       isModal,
+      selections,
     }));
   });
 
