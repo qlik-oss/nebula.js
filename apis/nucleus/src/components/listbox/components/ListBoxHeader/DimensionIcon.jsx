@@ -10,7 +10,7 @@ const StyledButton = styled(Button)(() => ({
   padding: 0,
 }));
 
-function DimensionIcon({ iconData, translator, iconStyle, disabled }) {
+function DimensionIcon({ iconData, translator, iconStyle, disabled, keyboard }) {
   if (!iconData) return undefined;
 
   const { icon, tooltip, onClick = undefined, onKeyDown = undefined } = iconData;
@@ -22,7 +22,7 @@ function DimensionIcon({ iconData, translator, iconStyle, disabled }) {
     <StyledButton
       variant="outlined"
       onClick={onClick}
-      tabIndex={-1}
+      tabIndex={keyboard.innerTabStops ? 0 : -1}
       title={title}
       size="large"
       disableRipple

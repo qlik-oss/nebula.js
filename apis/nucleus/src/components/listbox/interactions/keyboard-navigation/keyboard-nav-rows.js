@@ -60,6 +60,15 @@ export default function getRowsKeyboardNavigation({
         const container = currentTarget.closest('.listbox-container');
         const inSelection = isModal();
 
+        const useDefaultBrowserSupport = !keyboard.enabled;
+        if (useDefaultBrowserSupport) {
+          if (!inSelection) return;
+          keyboard.focusSelection();
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+
         // TODO: use a store to keep track of this row.
         currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
 

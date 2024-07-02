@@ -50,8 +50,12 @@ const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active, 
                   break;
                 case KEYS.TAB:
                   {
+                    const useDefaultBrowserSupport = !keyboard.enabled;
+                    if (useDefaultBrowserSupport) {
+                      return;
+                    }
                     let focused;
-                    if (event.shiftKey && keyboard.enabled) {
+                    if (event.shiftKey) {
                       focused = keyboard.focusSelection();
                     } else {
                       focused = focusSearch(container) || focusRow(container);
