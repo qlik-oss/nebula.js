@@ -59,6 +59,8 @@ export default function getRowsKeyboardNavigation({
         // Try to focus search field, otherwise confirm button.
         const container = currentTarget.closest('.listbox-container');
         const inSelection = isModal();
+        // TODO: use a store to keep track of this row.
+        currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
 
         const useDefaultBrowserSupport = !keyboard?.enabled;
         if (useDefaultBrowserSupport) {
@@ -68,9 +70,6 @@ export default function getRowsKeyboardNavigation({
           event.stopPropagation();
           return;
         }
-
-        // TODO: use a store to keep track of this row.
-        currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
 
         if (shiftKey) {
           if (!focusSearch(container) && !focusCyclicButton(container)) {
