@@ -180,7 +180,7 @@ export default function ListBoxSearch({
     row?.focus();
   }
 
-  const onKeyDown = async (e) => {
+  const onKeyDown = (e) => {
     const { currentTarget } = e;
     const container = currentTarget.closest('.listbox-container');
     switch (e.key) {
@@ -240,7 +240,7 @@ export default function ListBoxSearch({
     focusOnInput();
   };
 
-  const onKeyDownClearSearch = async (e) => {
+  const onKeyDownClearSearch = (e) => {
     const container = e.currentTarget.closest('.listbox-container');
     switch (e.key) {
       case 'Enter':
