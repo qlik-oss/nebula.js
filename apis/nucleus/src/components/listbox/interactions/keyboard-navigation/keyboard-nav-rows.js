@@ -60,7 +60,7 @@ export default function getRowsKeyboardNavigation({
         const container = currentTarget.closest('.listbox-container');
         const inSelection = isModal();
 
-        const useDefaultBrowserSupport = !keyboard.enabled;
+        const useDefaultBrowserSupport = !keyboard?.enabled;
         if (useDefaultBrowserSupport) {
           if (!inSelection) return;
           keyboard.focusSelection();
