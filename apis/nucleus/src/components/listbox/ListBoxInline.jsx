@@ -226,8 +226,7 @@ function ListBoxInline({ options, layout }) {
   const handleShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
-    const shouldBeginSelection =
-      newValue && !isPopover && !selectionState.selectDisabled() && !selectionState.isModal();
+    const shouldBeginSelection = newValue && !isPopover && !selectionState.selectDisabled() && !selections.isModal();
     if (shouldBeginSelection) {
       selections.begin('/qListObjectDef');
     }
