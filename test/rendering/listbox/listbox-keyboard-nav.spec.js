@@ -131,7 +131,7 @@ test.describe('keyboard navigation', () => {
     const confirmButton = page.getByTestId('actions-toolbar-confirm');
     await expect.soft(confirmButton).toBeFocused();
 
-    // Tab to cyclic button from confirm button
+    // Tab to search
     await page.keyboard.press('Tab');
     await expect.soft(searchInput).toBeFocused();
   });
@@ -167,8 +167,8 @@ test.describe('keyboard navigation', () => {
     const confirmButton = page.getByTestId('actions-toolbar-confirm');
     await expect.soft(confirmButton).toBeFocused();
 
-    // Tab to search
+    // Tab to cyclic button from confirm button
     await page.keyboard.press('Tab');
-    await expect.soft(searchInput).toBeFocused();
+    await expect.soft(cyclicButton).toBeFocused();
   });
 });
