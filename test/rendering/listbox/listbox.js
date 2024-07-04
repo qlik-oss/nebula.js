@@ -32,9 +32,11 @@
       element.style.height = options.fixtureFile.customRenderTestElementSize.height;
     }
     const { app } = getMocks(options);
+    const { keyboardNavigation } = options;
     const nebbie = window.stardust.embed(app, {
       context: {
         theme,
+        ...(keyboardNavigation && { keyboardNavigation }),
       },
     });
     const listboxOptions = {

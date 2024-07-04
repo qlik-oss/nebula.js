@@ -29,6 +29,7 @@ function DimensionIcon({ iconData, translator, iconStyle, disabled, keyboard }) 
       disabled={disabled}
       onKeyDown={onKeyDown}
       className="listbox-cyclic-button"
+      data-testid="listbox-cyclic-button"
     >
       <Icon style={iconStyle} />
     </StyledButton>
