@@ -136,6 +136,7 @@ function ListBoxInline({ options, layout }) {
         appSelections,
         constraints,
         isModal: isModalMode,
+        selections,
       }),
     [
       keyboard,

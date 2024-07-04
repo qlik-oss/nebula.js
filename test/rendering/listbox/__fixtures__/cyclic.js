@@ -1,6 +1,6 @@
 const fixture = {
   getLayout: () => ({
-    title: 'Field title with truncated text that is very long',
+    title: 'Cyclic Dimenion',
     qInfo: {
       qId: 'qId',
     },

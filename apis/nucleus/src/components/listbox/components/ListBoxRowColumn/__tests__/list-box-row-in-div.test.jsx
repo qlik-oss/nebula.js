@@ -133,6 +133,7 @@ describe('check keyboard navigation rendering with multiple rows in the in-built
 
   it('focus should move from row to confirm button when tabbing', async () => {
     data.isModal.mockReturnValue(true);
+    data.keyboard = useTempKeyboard({ containerRef, enabled: true });
     render(
       <ThemeProvider theme={theme}>
         <div className="actions-toolbar-default-actions">

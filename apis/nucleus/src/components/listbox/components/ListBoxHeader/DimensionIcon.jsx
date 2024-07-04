@@ -10,10 +10,10 @@ const StyledButton = styled(Button)(() => ({
   padding: 0,
 }));
 
-function DimensionIcon({ iconData, translator, iconStyle, disabled }) {
+function DimensionIcon({ iconData, translator, iconStyle, disabled, keyboard }) {
   if (!iconData) return undefined;
 
-  const { icon, tooltip, onClick } = iconData;
+  const { icon, tooltip, onClick = undefined, onKeyDown = undefined } = iconData;
   const Icon = icon;
   const title = translator.get(tooltip);
   const isButton = onClick;
@@ -22,11 +22,14 @@ function DimensionIcon({ iconData, translator, iconStyle, disabled }) {
     <StyledButton
       variant="outlined"
       onClick={onClick}
-      tabIndex={-1}
+      tabIndex={keyboard.innerTabStops ? 0 : -1}
       title={title}
       size="large"
       disableRipple
       disabled={disabled}
+      onKeyDown={onKeyDown}
+      className="listbox-cyclic-button"
+      data-testid="listbox-cyclic-button"
     >
       <Icon style={iconStyle} />
     </StyledButton>
