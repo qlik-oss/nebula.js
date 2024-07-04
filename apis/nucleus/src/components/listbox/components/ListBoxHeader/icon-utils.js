@@ -1,6 +1,8 @@
 import CyclicIcon from '@nebula.js/ui/icons/cyclic';
 import DrillDownIcon from '@nebula.js/ui/icons/drill-down';
 import ReloadIcon from '@nebula.js/ui/icons/reload';
+import KEYS from '../../../../keys';
+import { blur, focusRow, focusSearch } from '../../interactions/keyboard-navigation/keyboard-nav-methods';
 
 const dimensionTypes = {
   single: 'N',
@@ -8,7 +10,7 @@ const dimensionTypes = {
   cyclic: 'C',
 };
 
-const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active }) => {
+const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active, keyboard }) => {
   switch (dimInfo.qGrouping) {
     case dimensionTypes.drillDown:
       return {
@@ -18,25 +20,56 @@ const createDimensionIconData = ({ dimInfo, app, selections, isPopover, active }
       };
     case dimensionTypes.cyclic: {
       const clickable = app && active;
+      const stepToNextField = () => {
+        if (!isPopover) {
+          selections.confirm();
+        }
+        app
+          .getDimension(dimInfo.qLibraryId)
+          .then((dimensionModel) => {
+            if (!dimensionModel.stepCycle) {
+              // eslint-disable-next-line no-console
+              console.log("engine api spec version doesn't have support for function stepCycle");
+              return;
+            }
+            dimensionModel.stepCycle(1);
+          })
+          .catch(() => null);
+      };
       return {
         icon: clickable ? ReloadIcon : CyclicIcon,
         tooltip: 'Listbox.Cyclic',
-        onClick: clickable
-          ? () => {
-              if (!isPopover) {
-                selections.confirm();
-              }
-              app
-                .getDimension(dimInfo.qLibraryId)
-                .then((dimensionModel) => {
-                  if (!dimensionModel.stepCycle) {
-                    // eslint-disable-next-line no-console
-                    console.log("engine api spec version doesn't have support for function stepCycle");
-                    return;
+        onClick: clickable ? stepToNextField : undefined,
+        onKeyDown: clickable
+          ? (event) => {
+              const container = event.currentTarget.closest('.listbox-container');
+              switch (event.keyCode) {
+                case KEYS.SPACE:
+                case KEYS.ENTER:
+                  stepToNextField();
+                  break;
+                case KEYS.TAB:
+                  {
+                    const useDefaultBrowserSupport = !keyboard.enabled;
+                    if (useDefaultBrowserSupport) {
+                      return;
+                    }
+                    let focused;
+                    if (event.shiftKey) {
+                      focused = keyboard.focusSelection();
+                    } else {
+                      focused = focusSearch(container) || focusRow(container);
+                    }
+                    if (!focused) {
+                      blur(event, keyboard);
+                    }
                   }
-                  dimensionModel.stepCycle(1);
-                })
-                .catch(() => null);
+                  break;
+                default:
+                  return;
+              }
+              event.preventDefault();
+              event.stopPropagation();
             }
           : undefined,
       };

@@ -136,6 +136,7 @@ function ListBoxInline({ options, layout }) {
         appSelections,
         constraints,
         isModal: isModalMode,
+        selections,
       }),
     [
       keyboard,
@@ -226,7 +227,8 @@ function ListBoxInline({ options, layout }) {
   const handleShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
-    if (newValue && !isPopover && !selections.isActive()) {
+    const shouldBeginSelection = newValue && !isPopover && !selectionState.selectDisabled() && !selections.isModal();
+    if (shouldBeginSelection) {
       selections.begin('/qListObjectDef');
     }
   };

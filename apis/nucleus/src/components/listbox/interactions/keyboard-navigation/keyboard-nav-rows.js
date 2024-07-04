@@ -1,5 +1,5 @@
 import KEYS from '../../../../keys';
-import { focusSearch, getElementIndex } from './keyboard-nav-methods';
+import { blur, focusCyclicButton, focusSearch, getElementIndex } from './keyboard-nav-methods';
 import findNextItemIndex from './find-next-item-index';
 
 export default function getRowsKeyboardNavigation({
@@ -59,27 +59,33 @@ export default function getRowsKeyboardNavigation({
         // Try to focus search field, otherwise confirm button.
         const container = currentTarget.closest('.listbox-container');
         const inSelection = isModal();
-
         // TODO: use a store to keep track of this row.
         currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
 
+        const useDefaultBrowserSupport = !keyboard?.enabled;
+        if (useDefaultBrowserSupport) {
+          if (!inSelection) return;
+          keyboard.focusSelection();
+          event.preventDefault();
+          event.stopPropagation();
+          return;
+        }
+
         if (shiftKey) {
-          if (!focusSearch(container)) {
+          if (!focusSearch(container) && !focusCyclicButton(container)) {
             if (inSelection) {
               keyboard.focusSelection();
             } else {
-              keyboard.blur(true);
+              blur(event, keyboard);
             }
           }
           break;
         }
 
         // Without shift key
-        if (inSelection) {
-          keyboard.focusSelection();
-        } else {
+        if (!keyboard.focusSelection() && !focusCyclicButton(container) && !focusSearch(container)) {
           currentTarget.blur();
-          keyboard.blur();
+          blur(event, keyboard);
         }
         break;
       }
