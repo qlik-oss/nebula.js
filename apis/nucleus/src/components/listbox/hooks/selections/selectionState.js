@@ -10,6 +10,7 @@ export default function selectionState(initialState = {}) {
     lastRowCount: undefined,
     lastApprMaxGlyphCount: undefined,
     selectDisabled: undefined,
+    invertToggle: false,
     ...initialState,
 
     update({ setPages, pages, isSingleSelect, selectDisabled, layout }) {
@@ -35,6 +36,7 @@ export default function selectionState(initialState = {}) {
       state.isSingleSelect = isSingleSelect;
       state.selectDisabled = selectDisabled || state.selectDisabled;
       state.isDimCalculated = layout?.qListObject?.qDimensionInfo?.qIsCalculated ?? false;
+      state.invertToggle = layout?.invertToggle ?? false;
     },
 
     allowedToSelect() {

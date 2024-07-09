@@ -283,7 +283,7 @@ export default function ListBox({
     isVertical,
     pages,
     selectionState,
-    isSingleSelect,
+    isSingleSelect: layout?.invertToggle || isSingleSelect,
     selections,
     scrollState,
     local,

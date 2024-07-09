@@ -4,7 +4,13 @@ import { selectValues, fillRange, getElemNumbersFromPages } from './listbox-sele
 import rowColClasses from '../../components/ListBoxRowColumn/helpers/classes';
 
 const dataItemSelector = `.${rowColClasses.fieldRoot}`;
-const getKeyAsToggleSelected = (event) => !(event?.metaKey || event?.ctrlKey);
+const getKeyAsToggleSelected = (event, selectionState) => {
+  let result = !(event?.metaKey || event?.ctrlKey);
+  if (selectionState.invertToggle) {
+    result = !result;
+  }
+  return result;
+};
 
 export default function useSelectionsInteractions({
   selectionState,
@@ -74,7 +80,7 @@ export default function useSelectionsInteractions({
     if (selectionState.selectDisabled?.()) {
       return false;
     }
-    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event?.nativeEvent);
+    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event?.nativeEvent, selectionState);
     if (!toggle) {
       selectionState.clearItemStates(true);
     }
@@ -103,7 +109,7 @@ export default function useSelectionsInteractions({
       return;
     }
     const elemNumber = +event.target.getAttribute('data-n');
-    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event.nativeEvent);
+    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event.nativeEvent, selectionState);
     currentSelect.current.elemNumbers = [elemNumber];
     currentSelect.current.toggle = toggle;
 
@@ -121,7 +127,7 @@ export default function useSelectionsInteractions({
       return;
     }
     const elemNumber = +event.currentTarget.getAttribute('data-n');
-    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event);
+    const toggle = !selectionState.isSingleSelect && getKeyAsToggleSelected(event, selectionState);
     currentSelect.current.isRange = false;
     currentSelect.current.startElemNumber = elemNumber;
     currentSelect.current.elemNumbers = [elemNumber];
