@@ -138,6 +138,7 @@ export default function ListBoxPopover({
 
   return (
     <Popover
+      className="listbox-container"
       open={open}
       onClose={popoverClose}
       anchorEl={alignTo.current}
