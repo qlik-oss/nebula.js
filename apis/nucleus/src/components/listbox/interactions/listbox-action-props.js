@@ -30,7 +30,7 @@ export default function getListboxActionProps({
       },
     },
     selections: {
-      show: showToolbar && selections.isActive(),
+      show: showToolbar,
       api: selections,
       onConfirm: () => {
         keyboard?.focus();
