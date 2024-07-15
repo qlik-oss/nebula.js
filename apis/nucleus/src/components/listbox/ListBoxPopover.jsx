@@ -21,6 +21,7 @@ import useObjectSelections from '../../hooks/useObjectSelections';
 import createSelectionState from './hooks/selections/selectionState';
 import getHasSelections from './assets/has-selections';
 import getStyles from './assets/styling';
+import useTempKeyboard from './components/useTempKeyboard';
 
 export default function ListBoxPopover({
   alignTo,
@@ -94,9 +95,11 @@ export default function ListBoxPopover({
   const { translator, themeApi } = useContext(InstanceContext);
   const moreAlignTo = useRef();
   const containerRef = useRef();
+  const listBoxRef = useRef();
   const [selections] = useObjectSelections(app, model, containerRef);
   const [layout] = useLayout(model);
   const [selectionState] = useState(() => createSelectionState({ selectDisabled }));
+  const keyboard = useTempKeyboard({ listBoxRef, enabled: true });
   const { checkboxes = checkboxesOption } = layout || {};
 
   const themeSelectionColorsEnabled = flags?.isEnabled('PS_22149_THEME_SELECTION_COLORS');
@@ -207,6 +210,7 @@ export default function ListBoxPopover({
             />
           </Grid>
           <ListBox
+            ref={listBoxRef}
             model={model}
             app={app}
             layout={layout}
@@ -216,6 +220,7 @@ export default function ListBoxPopover({
             onSetListCount={(c) => setListCount(c)}
             onCtrlF={onCtrlF}
             styles={styles}
+            keyboard={{ isEnabled: true }}
           />
         </Grid>
       </Grid>
