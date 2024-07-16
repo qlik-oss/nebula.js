@@ -85,6 +85,7 @@ export default function ListBoxSearch({
   dense = false,
   visible = true,
   autoFocus = true,
+  beginSelectionOnFocus = true,
   wildCardSearch = false,
   searchEnabled,
   direction,
@@ -145,11 +146,20 @@ export default function ListBoxSearch({
     }
     return model.searchListObjectFor(TREE_PATH, searchValue);
   };
+  const beginSelection = () => {
+    const shouldBeginSelection = !selectionState.selectDisabled() && !selections.isModal();
+    if (shouldBeginSelection) {
+      selections.begin('/qListObjectDef');
+    }
+  };
 
   const handleFocus = () => {
     if (wildCardSearch) {
       setValue(WILDCARD);
       setWildcardOn(true);
+    }
+    if (beginSelectionOnFocus) {
+      beginSelection();
     }
   };
 
