@@ -220,7 +220,7 @@ export default function ListBoxPopover({
             onSetListCount={(c) => setListCount(c)}
             onCtrlF={onCtrlF}
             styles={styles}
-            keyboard={{ isEnabled: true }}
+            keyboard={keyboard}
           />
         </Grid>
       </Grid>
