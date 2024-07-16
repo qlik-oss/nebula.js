@@ -199,6 +199,14 @@ function ListBoxInline({ options, layout }) {
     if (!searchContainer || !searchContainer.current) {
       return;
     }
+    // Start selection on showing search input if listbox is not a popover listbox
+    if (showSearch) {
+      const shouldBeginSelection =
+        showSearch && !isPopover && !selectionState.selectDisabled() && !selections.isModal();
+      if (shouldBeginSelection) {
+        selections.begin('/qListObjectDef');
+      }
+    }
     // Focus search field on toggle-show or when focusSearch is true.
     if ((search && focusSearch) || (search === 'toggle' && showSearch)) {
       const input = searchContainer.current.querySelector('input');
@@ -227,10 +235,6 @@ function ListBoxInline({ options, layout }) {
   const handleShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
-    const shouldBeginSelection = newValue && !isPopover && !selectionState.selectDisabled() && !selections.isModal();
-    if (shouldBeginSelection) {
-      selections.begin('/qListObjectDef');
-    }
   };
 
   const onCtrlF = () => {
