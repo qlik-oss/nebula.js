@@ -99,7 +99,8 @@ export default function ListBoxPopover({
   const [selections] = useObjectSelections(app, model, containerRef);
   const [layout] = useLayout(model);
   const [selectionState] = useState(() => createSelectionState({ selectDisabled }));
-  const keyboard = useTempKeyboard({ listBoxRef, enabled: true });
+  const keyboardListbox = useTempKeyboard({ listBoxRef, enabled: true });
+  const keyboardSearch = useTempKeyboard({ searchContainerRef, enabled: false });
   const { checkboxes = checkboxesOption } = layout || {};
 
   const themeSelectionColorsEnabled = flags?.isEnabled('PS_22149_THEME_SELECTION_COLORS');
@@ -205,8 +206,9 @@ export default function ListBoxPopover({
               listCount={listCount}
               selections={selections}
               selectionState={selectionState}
-              keyboard={{ enabled: false }}
+              keyboard={keyboardSearch}
               autoFocus={autoFocus ?? true}
+              tabIndex={0}
             />
           </Grid>
           <ListBox
@@ -220,7 +222,7 @@ export default function ListBoxPopover({
             onSetListCount={(c) => setListCount(c)}
             onCtrlF={onCtrlF}
             styles={styles}
-            keyboard={keyboard}
+            keyboard={keyboardListbox}
           />
         </Grid>
       </Grid>
