@@ -62,7 +62,9 @@ export default function useTempKeyboard({ containerRef, enabled }) {
     },
     focusSelection() {
       const unlockCoverButton = document.querySelector('#listbox-unlock-button');
-      const confirmButton = document.querySelector('.actions-toolbar-default-actions .actions-toolbar-confirm');
+      const confirmButton = document.querySelector(
+        '.actions-toolbar-default-actions .actions-toolbar-confirm:not(:disabled)'
+      );
       const btnToFocus = unlockCoverButton || confirmButton;
       btnToFocus?.setAttribute('tabIndex', 0);
       btnToFocus?.focus();
