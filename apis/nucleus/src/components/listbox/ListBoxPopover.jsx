@@ -92,15 +92,13 @@ export default function ListBoxPopover({
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const { translator, themeApi } = useContext(InstanceContext);
+  const { translator, themeApi, keyboardNavigation } = useContext(InstanceContext);
   const moreAlignTo = useRef();
   const containerRef = useRef();
-  const listBoxRef = useRef();
   const [selections] = useObjectSelections(app, model, containerRef);
   const [layout] = useLayout(model);
   const [selectionState] = useState(() => createSelectionState({ selectDisabled }));
-  const keyboardListbox = useTempKeyboard({ listBoxRef, enabled: true });
-  const keyboardSearch = useTempKeyboard({ searchContainerRef, enabled: false });
+  const keyboard = useTempKeyboard({ containerRef, enabled: keyboardNavigation });
   const { checkboxes = checkboxesOption } = layout || {};
 
   const themeSelectionColorsEnabled = flags?.isEnabled('PS_22149_THEME_SELECTION_COLORS');
@@ -131,6 +129,7 @@ export default function ListBoxPopover({
     model,
     translator,
     selectionState,
+    selections,
   });
 
   const onCtrlF = () => {
@@ -206,13 +205,15 @@ export default function ListBoxPopover({
               listCount={listCount}
               selections={selections}
               selectionState={selectionState}
-              keyboard={keyboardSearch}
+              keyboard={{
+                enabled: false,
+                innerTabStops: true,
+                focusSelection: keyboard.focusSelection,
+              }}
               autoFocus={autoFocus ?? true}
-              tabIndex={0}
             />
           </Grid>
           <ListBox
-            ref={listBoxRef}
             model={model}
             app={app}
             layout={layout}
@@ -222,7 +223,7 @@ export default function ListBoxPopover({
             onSetListCount={(c) => setListCount(c)}
             onCtrlF={onCtrlF}
             styles={styles}
-            keyboard={keyboardListbox}
+            keyboard={keyboard}
           />
         </Grid>
       </Grid>
