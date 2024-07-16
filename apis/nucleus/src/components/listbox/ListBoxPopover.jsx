@@ -127,6 +127,7 @@ export default function ListBoxPopover({
     model,
     translator,
     selectionState,
+    selections,
   });
 
   const onCtrlF = () => {
