@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react';
 import { InputAdornment, OutlinedInput, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Search from '@nebula.js/ui/icons/search';
@@ -76,230 +76,240 @@ const StyledIconButton = styled(IconButton)(() => ({
   },
 }));
 
-export default function ListBoxSearch({
-  popoverOpen,
-  selections,
-  selectionState,
-  model,
-  keyboard,
-  dense = false,
-  visible = true,
-  autoFocus = true,
-  wildCardSearch = false,
-  searchEnabled,
-  direction,
-  hide,
-  styles,
-}) {
-  const { translator } = useContext(InstanceContext);
-  const [value, setValue] = useState('');
-  const [wildcardOn, setWildcardOn] = useState(false);
-  const inputRef = useRef();
-  const clearSearchRef = useRef();
-  const clearSearchText = translator.get('Listbox.Clear.Search');
+export default forwardRef(
+  (
+    {
+      popoverOpen,
+      selections,
+      selectionState,
+      model,
+      keyboard,
+      dense = false,
+      visible = true,
+      autoFocus = true,
+      wildCardSearch = false,
+      searchEnabled,
+      direction,
+      hide,
+      styles,
+    },
+    ref
+  ) => {
+    const { translator } = useContext(InstanceContext);
+    const [value, setValue] = useState('');
+    const [wildcardOn, setWildcardOn] = useState(false);
+    const inputRef = useRef();
+    const clearSearchRef = useRef();
+    const clearSearchText = translator.get('Listbox.Clear.Search');
 
-  const { getStoreValue, setStoreValue } = useDataStore(model);
-  const isRtl = direction === 'rtl';
+    const { getStoreValue, setStoreValue } = useDataStore(model);
+    const isRtl = direction === 'rtl';
 
-  const cancel = () => selections.cancel();
+    const cancel = () => selections.cancel();
 
-  const abortSearch = async () => {
-    try {
-      await model.abortListObjectSearch(TREE_PATH);
-    } finally {
-      setValue('');
-    }
-  };
-
-  useEffect(() => {
-    if (visible) {
-      return () => abortSearch(); // abort when toggling off search
-    }
-    return () => {};
-  }, [visible]);
-
-  useEffect(() => {
-    selections.on('deactivated', abortSearch);
-    return () => {
-      selections.removeListener && selections.removeListener('deactivated', abortSearch);
+    const abortSearch = async () => {
+      try {
+        await model.abortListObjectSearch(TREE_PATH);
+      } finally {
+        setValue('');
+      }
     };
-  }, []);
 
-  useEffect(() => {
-    if (wildcardOn && inputRef.current) {
-      const cursorPos = value.length - 1;
-      inputRef.current.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
-      setWildcardOn(false);
-    }
-  }, [wildcardOn, inputRef.current]);
-
-  useEffect(() => {
-    setStoreValue('inputText', value);
-  }, [value]);
-
-  const onChange = async (e) => {
-    const searchValue = limitSearchLength(e.target.value);
-    setValue(searchValue);
-    if (!searchValue.length) {
-      return abortSearch();
-    }
-    return model.searchListObjectFor(TREE_PATH, searchValue);
-  };
-
-  const handleFocus = () => {
-    if (wildCardSearch) {
-      setValue(WILDCARD);
-      setWildcardOn(true);
-    }
-  };
-
-  const hasHits = () => {
-    const listCount = getStoreValue(`listCount`);
-    return listCount > 0;
-  };
-
-  const performSearch = async () => {
-    let response;
-    const searchValue = limitSearchLength(value);
-    const success = await model.searchListObjectFor(TREE_PATH, searchValue);
-    if (selectionState.selectDisabled()) {
-      return success;
-    }
-    if (success && searchValue.length && hasHits()) {
-      response = model.acceptListObjectSearch(TREE_PATH, true);
-      // eslint-disable-next-line no-param-reassign
-      selections.selectionsMade = true;
-      selectionState.clearItemStates(false);
-      setValue('');
-    }
-    return response;
-  };
-
-  const onKeyDown = async (e) => {
-    const { currentTarget } = e;
-    const container = currentTarget.closest('.listbox-container');
-    switch (e.key) {
-      case 'Enter':
-        performSearch();
-        break;
-      case 'Escape': {
-        focusRow(container);
-        cancel();
-        if (popoverOpen) {
-          return undefined;
-        }
-        break;
+    useEffect(() => {
+      if (visible) {
+        return () => abortSearch(); // abort when toggling off search
       }
-      case 'Tab': {
-        if (e.shiftKey) {
-          if (!focusCyclicButton(container)) {
-            keyboard.focusSelection();
-          }
-        } else if (clearSearchRef.current) {
-          clearSearchRef.current.focus();
-        } else {
-          // Focus the row we last visited or the first one.
+      return () => {};
+    }, [visible]);
+
+    useEffect(() => {
+      selections.on('deactivated', abortSearch);
+      return () => {
+        selections.removeListener && selections.removeListener('deactivated', abortSearch);
+      };
+    }, []);
+
+    useEffect(() => {
+      if (wildcardOn && inputRef.current) {
+        const cursorPos = value.length - 1;
+        inputRef.current.setSelectionRange(cursorPos, cursorPos); // place the cursor in the wildcard
+        setWildcardOn(false);
+      }
+    }, [wildcardOn, inputRef.current]);
+
+    useEffect(() => {
+      setStoreValue('inputText', value);
+    }, [value]);
+
+    const onChange = async (e) => {
+      const searchValue = limitSearchLength(e.target.value);
+      setValue(searchValue);
+      if (!searchValue.length) {
+        return abortSearch();
+      }
+      return model.searchListObjectFor(TREE_PATH, searchValue);
+    };
+
+    const handleFocus = () => {
+      if (wildCardSearch) {
+        setValue(WILDCARD);
+        setWildcardOn(true);
+      }
+    };
+
+    const hasHits = () => {
+      const listCount = getStoreValue(`listCount`);
+      return listCount > 0;
+    };
+
+    const performSearch = async () => {
+      let response;
+      const searchValue = limitSearchLength(value);
+      const success = await model.searchListObjectFor(TREE_PATH, searchValue);
+      if (selectionState.selectDisabled()) {
+        return success;
+      }
+      if (success && searchValue.length && hasHits()) {
+        response = model.acceptListObjectSearch(TREE_PATH, true);
+        // eslint-disable-next-line no-param-reassign
+        selections.selectionsMade = true;
+        selectionState.clearItemStates(false);
+        setValue('');
+      }
+      return response;
+    };
+
+    const onKeyDown = async (e) => {
+      const { currentTarget } = e;
+      const container = currentTarget.closest('.listbox-container');
+      switch (e.key) {
+        case 'Enter':
+          performSearch();
+          break;
+        case 'Escape': {
           focusRow(container);
+          cancel();
+          if (popoverOpen) {
+            return undefined;
+          }
+          break;
         }
-        break;
-      }
-      case 'f':
-      case 'F':
-        if (e.ctrlKey || e.metaKey) {
-          if (hide) {
-            hide();
+        case 'Tab': {
+          if (e.shiftKey) {
+            if (!focusCyclicButton(container)) {
+              keyboard.focusSelection();
+            }
+          } else if (clearSearchRef.current) {
+            clearSearchRef.current.focus();
+          } else {
             // Focus the row we last visited or the first one.
             focusRow(container);
           }
-        } else {
+          break;
+        }
+        case 'f':
+        case 'F':
+          if (e.ctrlKey || e.metaKey) {
+            if (hide) {
+              hide();
+              // Focus the row we last visited or the first one.
+              focusRow(container);
+            }
+          } else {
+            return undefined;
+          }
+          break;
+        default:
           return undefined;
-        }
-        break;
-      default:
-        return undefined;
-    }
-    e.preventDefault();
-    e.stopPropagation();
-    return undefined;
-  };
-
-  const focusOnInput = () => {
-    inputRef.current?.focus();
-  };
-
-  const onClearSearch = () => {
-    abortSearch();
-    focusOnInput();
-  };
-
-  const onKeyDownClearSearch = (e) => {
-    const container = e.currentTarget.closest('.listbox-container');
-    switch (e.key) {
-      case 'Enter':
-        onClearSearch();
-        break;
-      case 'Tab': {
-        if (e.shiftKey) {
-          focusOnInput();
-        } else {
-          // Focus the row we last visited or the first one.
-          focusRow(container);
-        }
-        break;
       }
-      default:
-        return undefined;
-    }
-    e.preventDefault();
-    e.stopPropagation();
-    return undefined;
-  };
+      e.preventDefault();
+      e.stopPropagation();
+      return undefined;
+    };
 
-  if (!visible || searchEnabled === false) {
-    return null;
+    const focusOnInput = () => {
+      inputRef.current?.focus();
+    };
+
+    const onClearSearch = () => {
+      abortSearch();
+      focusOnInput();
+    };
+
+    const onKeyDownClearSearch = (e) => {
+      const container = e.currentTarget.closest('.listbox-container');
+      switch (e.key) {
+        case 'Enter':
+          onClearSearch();
+          break;
+        case 'Tab': {
+          if (e.shiftKey) {
+            focusOnInput();
+          } else {
+            // Focus the row we last visited or the first one.
+            focusRow(container);
+          }
+          break;
+        }
+        default:
+          return undefined;
+      }
+      e.preventDefault();
+      e.stopPropagation();
+      return undefined;
+    };
+    useImperativeHandle(ref, () => ({
+      focus() {
+        focusOnInput();
+      },
+    }));
+
+    if (!visible || searchEnabled === false) {
+      return null;
+    }
+
+    return (
+      <StyledOutlinedInput
+        styles={styles}
+        dense={dense}
+        isRtl={isRtl}
+        startAdornment={
+          <InputAdornment position="start" sx={{ marginLeft: dense ? '8px' : `${CELL_PADDING_LEFT}px` }}>
+            <Search size={dense ? 'small' : 'normal'} />
+          </InputAdornment>
+        }
+        endAdornment={
+          <InputAdornment position="end" sx={{ marginLeft: 0 }}>
+            {value !== '' && (
+              <StyledIconButton
+                tabIndex={0}
+                ref={clearSearchRef}
+                title={clearSearchText}
+                aria-label={clearSearchText}
+                onClick={onClearSearch}
+                onKeyDown={onKeyDownClearSearch}
+              >
+                <Close size={dense ? 'small' : 'normal'} />
+              </StyledIconButton>
+            )}
+          </InputAdornment>
+        }
+        className="search"
+        inputRef={inputRef}
+        size="small"
+        fullWidth
+        placeholder={translator.get('Listbox.Search')}
+        value={value}
+        onFocus={handleFocus}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        autoFocus={autoFocus}
+        inputProps={{
+          tabIndex: keyboard.innerTabStops ? 0 : -1,
+          'data-testid': 'search-input-field',
+          'aria-label': translator.get('Listbox.Search.ScreenReaderInstructions'),
+        }}
+      />
+    );
   }
-
-  return (
-    <StyledOutlinedInput
-      styles={styles}
-      dense={dense}
-      isRtl={isRtl}
-      startAdornment={
-        <InputAdornment position="start" sx={{ marginLeft: dense ? '8px' : `${CELL_PADDING_LEFT}px` }}>
-          <Search size={dense ? 'small' : 'normal'} />
-        </InputAdornment>
-      }
-      endAdornment={
-        <InputAdornment position="end" sx={{ marginLeft: 0 }}>
-          {value !== '' && (
-            <StyledIconButton
-              tabIndex={0}
-              ref={clearSearchRef}
-              title={clearSearchText}
-              aria-label={clearSearchText}
-              onClick={onClearSearch}
-              onKeyDown={onKeyDownClearSearch}
-            >
-              <Close size={dense ? 'small' : 'normal'} />
-            </StyledIconButton>
-          )}
-        </InputAdornment>
-      }
-      className="search"
-      inputRef={inputRef}
-      size="small"
-      fullWidth
-      placeholder={translator.get('Listbox.Search')}
-      value={value}
-      onFocus={handleFocus}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      autoFocus={autoFocus}
-      inputProps={{
-        tabIndex: keyboard.innerTabStops ? 0 : -1,
-        'data-testid': 'search-input-field',
-        'aria-label': translator.get('Listbox.Search.ScreenReaderInstructions'),
-      }}
-    />
-  );
-}
+);

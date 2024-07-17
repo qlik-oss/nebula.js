@@ -83,20 +83,6 @@ function ListBoxInline({ options, layout }) {
     flags,
   } = options;
 
-  // Hook that will trigger update when used in useEffects.
-  // Modified from: https://medium.com/@teh_builder/ref-objects-inside-useeffect-hooks-eb7c15198780
-  const useRefWithCallback = () => {
-    const [ref, setInternalRef] = useState({});
-    const setRef = useCallback(
-      (node) => {
-        setInternalRef({ current: node });
-      },
-      [setInternalRef]
-    );
-
-    return [ref, setRef];
-  };
-
   const theme = useTheme();
 
   const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
@@ -108,9 +94,8 @@ function ListBoxInline({ options, layout }) {
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 
   const containerRef = useRef();
+  const searchInputRef = useRef();
   const [containerRectRef, containerRect] = useRect();
-  const [searchContainer, searchContainerRef] = useRefWithCallback();
-
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const hovering = useRef(false);
@@ -195,17 +180,6 @@ function ListBoxInline({ options, layout }) {
     };
   }, [toolbar, selections, isPopover]);
 
-  useEffect(() => {
-    if (!searchContainer || !searchContainer.current) {
-      return;
-    }
-    // Focus search field on toggle-show or when focusSearch is true.
-    if ((search && focusSearch) || (search === 'toggle' && showSearch)) {
-      const input = searchContainer.current.querySelector('input');
-      input && input.focus();
-    }
-  }, [searchContainer && searchContainer.current, showSearch, search, focusSearch]);
-
   const { wildCardSearch, searchEnabled, autoConfirm = false, layoutOptions = {} } = layout ?? {};
   const isLocked = layout?.qListObject?.qDimensionInfo?.qLocked;
   const showSearchIcon = searchEnabled !== false && search === 'toggle' && !isLocked;
@@ -237,12 +211,11 @@ function ListBoxInline({ options, layout }) {
     if (search === 'toggle') {
       handleShowSearch();
     } else {
-      const input = searchContainer.current.querySelector('input');
-      input?.focus();
+      searchInputRef.current.focus();
     }
   };
 
-  const shouldAutoFocus = searchVisible && search === 'toggle';
+  const shouldAutoFocus = searchVisible && (search === 'toggle' || focusSearch);
 
   // Add a container padding for grid mode to harmonize with the grid item margins (should sum to 8px).
   const isGridMode = layoutOptions?.dataLayout === 'grid';
@@ -318,8 +291,9 @@ function ListBoxInline({ options, layout }) {
           role="region"
           aria-label={translator.get('Listbox.ResultFilterLabel')}
         >
-          <Grid item ref={searchContainerRef}>
+          <Grid item>
             <ListBoxSearch
+              ref={searchInputRef}
               selections={selections}
               selectionState={selectionState}
               model={model}
