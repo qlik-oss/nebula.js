@@ -201,10 +201,6 @@ function ListBoxInline({ options, layout }) {
   const handleShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
-    const shouldBeginSelection = newValue && !isPopover && !selectionState.selectDisabled() && !selections.isModal();
-    if (shouldBeginSelection) {
-      selections.begin('/qListObjectDef');
-    }
   };
 
   const onCtrlF = () => {
@@ -302,6 +298,7 @@ function ListBoxInline({ options, layout }) {
               visible={searchVisible}
               search={search}
               autoFocus={shouldAutoFocus}
+              beginSelectionOnFocus={!isPopover}
               wildCardSearch={wildCardSearch}
               searchEnabled={searchEnabled}
               direction={direction}

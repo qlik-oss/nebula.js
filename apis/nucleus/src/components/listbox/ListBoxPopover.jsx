@@ -21,6 +21,7 @@ import useObjectSelections from '../../hooks/useObjectSelections';
 import createSelectionState from './hooks/selections/selectionState';
 import getHasSelections from './assets/has-selections';
 import getStyles from './assets/styling';
+import useTempKeyboard from './components/useTempKeyboard';
 
 export default function ListBoxPopover({
   alignTo,
@@ -91,12 +92,13 @@ export default function ListBoxPopover({
     model.unlock('/qListObjectDef');
   }, [model]);
 
-  const { translator, themeApi } = useContext(InstanceContext);
+  const { translator, themeApi, keyboardNavigation } = useContext(InstanceContext);
   const moreAlignTo = useRef();
   const containerRef = useRef();
   const [selections] = useObjectSelections(app, model, containerRef);
   const [layout] = useLayout(model);
   const [selectionState] = useState(() => createSelectionState({ selectDisabled }));
+  const keyboard = useTempKeyboard({ containerRef, enabled: keyboardNavigation });
   const { checkboxes = checkboxesOption } = layout || {};
 
   const themeSelectionColorsEnabled = flags?.isEnabled('PS_22149_THEME_SELECTION_COLORS');
@@ -127,6 +129,7 @@ export default function ListBoxPopover({
     model,
     translator,
     selectionState,
+    selections,
   });
 
   const onCtrlF = () => {
@@ -137,6 +140,7 @@ export default function ListBoxPopover({
 
   return (
     <Popover
+      className="listbox-container"
       open={open}
       onClose={popoverClose}
       anchorEl={alignTo.current}
@@ -201,7 +205,11 @@ export default function ListBoxPopover({
               listCount={listCount}
               selections={selections}
               selectionState={selectionState}
-              keyboard={{ enabled: false }}
+              keyboard={{
+                enabled: false,
+                innerTabStops: true,
+                focusSelection: keyboard.focusSelection,
+              }}
               autoFocus={autoFocus ?? true}
             />
           </Grid>
@@ -215,6 +223,7 @@ export default function ListBoxPopover({
             onSetListCount={(c) => setListCount(c)}
             onCtrlF={onCtrlF}
             styles={styles}
+            keyboard={keyboard}
           />
         </Grid>
       </Grid>

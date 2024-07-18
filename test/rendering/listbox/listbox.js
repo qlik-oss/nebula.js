@@ -8,6 +8,7 @@
       getLayout: async () => (fixture ? fixture.getLayout() : getListboxLayout(options)),
       beginSelections: async () => {},
       selectListObjectValues: async () => true,
+      searchListObjectFor: () => {},
       on() {},
       once() {},
     };
