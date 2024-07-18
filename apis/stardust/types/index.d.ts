@@ -454,14 +454,6 @@ declare namespace stardust {
 
     }
 
-    interface Flags {
-        /**
-         * Checks whether the specified flag is enabled.
-         * @param flag The value flag to check.
-         */
-        isEnabled(flag: string): boolean;
-    }
-
     class AppSelections {
         constructor();
 
@@ -536,6 +528,14 @@ declare namespace stardust {
 
     }
 
+    interface Flags {
+        /**
+         * Checks whether the specified flag is enabled.
+         * @param flag The value flag to check.
+         */
+        isEnabled(flag: string): boolean;
+    }
+
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
 
     /**
@@ -592,39 +592,39 @@ declare namespace stardust {
         meta?: object;
     }
 
-    interface ActionToolbarElement extends HTMLElement{
+    interface ActionToolbarElementextends HTMLElement {
         className: "njs-action-toolbar-popover";
     }
 
-    interface ActionElement extends HTMLElement{
+    interface ActionElementextends HTMLElement {
         className: "njs-cell-action";
     }
 
-    interface CellElement extends HTMLElement{
+    interface CellElementextends HTMLElement {
         className: "njs-cell";
     }
 
-    interface CellFooter extends HTMLElement{
+    interface CellFooterextends HTMLElement {
         className: "njs-cell-footer";
     }
 
-    interface CellTitle extends HTMLElement{
+    interface CellTitleextends HTMLElement {
         className: "njs-cell-title";
     }
 
-    interface CellSubTitle extends HTMLElement{
+    interface CellSubTitleextends HTMLElement {
         className: "njs-cell-sub-title";
     }
 
-    interface SheetElement extends HTMLElement{
+    interface SheetElementextends HTMLElement {
         className: "njs-sheet";
     }
 
-    interface VizElementAttributes extends NamedNodeMap{
+    interface VizElementAttributesextends NamedNodeMap {
         "data-render-count": string;
     }
 
-    interface VizElement extends HTMLElement{
+    interface VizElementextends HTMLElement {
         attributes: stardust.VizElementAttributes;
         className: "njs-viz";
     }
@@ -641,7 +641,7 @@ declare namespace stardust {
         component(): void;
     }
 
-    interface SetStateFn<S> {
+    interface SetStateFn<S><S> {
         (newState: S | (($: S)=>S)): void;
     }
 
@@ -659,7 +659,7 @@ declare namespace stardust {
         height: number;
     }
 
-    interface ActionDefinition<A> {
+    interface ActionDefinition<A><A> {
         action: A;
         hidden?: boolean;
         disabled?: boolean;
@@ -754,7 +754,7 @@ declare namespace stardust {
 
     type fieldTargetRemovedCallback<T> = (field: T, properties: qix.GenericObjectProperties, index: number)=>void;
 
-    interface FieldTarget<T> {
+    interface FieldTarget<T><T> {
         min?: (()=>void) | number;
         max?: (()=>void) | number;
         added?: stardust.fieldTargetAddedCallback<T>;
