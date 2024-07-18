@@ -23,8 +23,9 @@ let selectionState;
 const hide = jest.fn().mockReturnValue(true);
 let open = false;
 
-const testRender = (model) =>
-  create(
+const testRender = (model, props = {}) => {
+  const { beginSelectionOnFocus } = props;
+  return create(
     <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
       <ListBoxSearch
         popoverOpen={open}
@@ -33,11 +34,13 @@ const testRender = (model) =>
         model={model}
         keyboard={keyboard}
         selectionState={selectionState}
+        beginSelectionOnFocus={beginSelectionOnFocus}
         wildCardSearch
         hide={hide}
       />
     </InstanceContext.Provider>
   );
+};
 
 let model;
 let keyEventDefaults;
@@ -356,8 +359,9 @@ describe('<ListBoxSearch />', () => {
     expect(type.props.value).toHaveLength(64000);
   });
 
-  test('should not activate selection onFocus of search input', async () => {
-    const testInstance = testRender(model).root;
+  test('should NOT activate selection onFocus of search input if beginSelectionOnFocus is false', async () => {
+    const props = { beginSelectionOnFocus: false };
+    const testInstance = testRender(model, props).root;
     const searchInput = testInstance.findByType(OutlinedInput);
 
     await act(async () => {
@@ -365,7 +369,16 @@ describe('<ListBoxSearch />', () => {
     });
     expect(selections.begin).not.toHaveBeenCalled();
   });
+  test('should activate selection onFocus of search input if beginSelectionOnFocus is true', async () => {
+    const props = { beginSelectionOnFocus: true };
+    const testInstance = testRender(model, props).root;
+    const searchInput = testInstance.findByType(OutlinedInput);
 
+    await act(async () => {
+      await searchInput.props.onFocus();
+    });
+    expect(selections.begin).toHaveBeenCalled();
+  });
   describe('selectDisabled should prevent some search interactions', () => {
     let getType;
     let onKeyDown;

@@ -19,7 +19,7 @@ export default function getListboxActionProps({
     },
     extraItems,
     more: {
-      enabled: !isLocked && (showToolbar || selections.isActive()), // show more button even when popover is not in selection mode
+      enabled: !isLocked,
       actions: listboxSelectionToolbarItems,
       popoverProps: {
         elevation: 0,
@@ -30,7 +30,7 @@ export default function getListboxActionProps({
       },
     },
     selections: {
-      show: showToolbar && selections.isActive(),
+      show: showToolbar,
       api: selections,
       onConfirm: () => {
         keyboard?.focus();
