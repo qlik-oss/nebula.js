@@ -58,7 +58,7 @@ export default function getRowsKeyboardNavigation({
       case KEYS.TAB: {
         // Try to focus search field, otherwise confirm button.
         const container = currentTarget.closest('.listbox-container');
-        const inSelection = isModal();
+        const inSelection = typeof isModal !== 'undefined' ? isModal() : undefined;
         // TODO: use a store to keep track of this row.
         currentTarget.classList.add('last-focused'); // so that we can go back here when we tab back
 
