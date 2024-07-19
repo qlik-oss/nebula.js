@@ -2,12 +2,11 @@
 /* eslint-disable no-import-assign */
 /* eslint-disable array-callback-return */
 /* eslint-disable import/first */
-import React from 'react';
-import { create, act } from 'react-test-renderer';
-import { Typography } from '@mui/material';
+import React, { act } from 'react';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import * as unlockModule from '@nebula.js/ui/icons/unlock';
 import * as lockModule from '@nebula.js/ui/icons/lock';
+import { render as reactRender } from '@testing-library/react';
 import ListBoxInline from '../ListBoxInline';
 import * as InstanceContextModule from '../../../contexts/InstanceContext';
 import * as useLayoutModule from '../../../hooks/useLayout';
@@ -165,7 +164,7 @@ describe('<ListboxInline />', () => {
       render = async (options = {}) => {
         const mergedOptions = { ...defaultOptions, ...options };
         await act(async () => {
-          renderer = create(
+          renderer = reactRender(
             <ThemeProvider theme={theme}>
               <InstanceContext.Provider value={{ translator: { get: (s) => s, language: () => 'sv' } }}>
                 <ListBoxInline options={mergedOptions} />
@@ -178,13 +177,13 @@ describe('<ListboxInline />', () => {
 
     test('should render with everything included', async () => {
       await render();
-      const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
+      const actionToolbars = await renderer.findAllByText('ActionsToolbar');
       expect(actionToolbars).toHaveLength(1);
 
-      const typographs = renderer.root.findAllByType(Typography);
+      const typographs = await renderer.findAllByText('title');
       expect(typographs).toHaveLength(1);
 
-      const autoSizers = renderer.root.findAllByProps({ 'data-testid': 'virtualized-auto-sizer' });
+      const autoSizers = await renderer.findAllByTestId('virtualized-auto-sizer');
       expect(autoSizers).toHaveLength(1);
 
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
@@ -206,10 +205,7 @@ describe('<ListboxInline />', () => {
       const options = { search: 'toggle' };
       await render(options);
 
-      const searchToggleBtns = renderer.root
-        .findAllByProps({ 'data-testid': 'search-toggle-btn' })
-        .filter((x) => typeof x.type === 'string'); // removes virtual dom elements
-
+      const searchToggleBtns = await renderer.findAllByTestId('search-toggle-btn');
       expect(searchToggleBtns).toHaveLength(1);
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
         visible: false,
@@ -219,13 +215,13 @@ describe('<ListboxInline />', () => {
     test('should render without toolbar', async () => {
       const options = { toolbar: false };
       await render(options);
-      const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
+      const actionToolbars = await renderer.queryAllByText('ActionsToolbar');
       expect(actionToolbars).toHaveLength(0);
 
-      const typographs = renderer.root.findAllByType(Typography);
+      const typographs = await renderer.queryAllByText('title');
       expect(typographs).toHaveLength(0);
 
-      const listBoxSearches = renderer.root.findAllByType(ListBoxSearch);
+      const listBoxSearches = await renderer.findAllByText('ListBoxSearch');
       expect(listBoxSearches).toHaveLength(1);
     });
 
@@ -245,10 +241,10 @@ describe('<ListboxInline />', () => {
     test('should render without search and show search button', async () => {
       const options = { search: false };
       await render(options);
-      const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
+      const actionToolbars = await renderer.findAllByText('ActionsToolbar');
       expect(actionToolbars).toHaveLength(1);
 
-      const typographs = renderer.root.findAllByType(Typography);
+      const typographs = await renderer.findAllByText('title');
       expect(typographs).toHaveLength(1);
 
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
@@ -269,10 +265,10 @@ describe('<ListboxInline />', () => {
     test('should show toolbar when opened in a popover', async () => {
       const options = { search: false, isPopover: true };
       await render(options);
-      const actionToolbars = renderer.root.findAllByType(ActionsToolbar);
+      const actionToolbars = await renderer.findAllByText('ActionsToolbar');
       expect(actionToolbars).toHaveLength(1);
 
-      const typographs = renderer.root.findAllByType(Typography);
+      const typographs = await renderer.findAllByText('title');
       expect(typographs).toHaveLength(1);
 
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
