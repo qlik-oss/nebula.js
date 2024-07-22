@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.3.0](https://github.com/qlik-oss/nebula.js/compare/v5.2.0...v5.3.0) (2024-07-22)
+
+### Bug Fixes
+
+- activate selection mode on show search input for expanded listbox ([#1570](https://github.com/qlik-oss/nebula.js/issues/1570)) ([0dea433](https://github.com/qlik-oss/nebula.js/commit/0dea433ef1a3ee135d74f78f253904aaa7bf8fbf))
+- always show action toolbar in popover but not necessary being in selection mode ([#1576](https://github.com/qlik-oss/nebula.js/issues/1576)) ([4136e64](https://github.com/qlik-oss/nebula.js/commit/4136e6458d6b8998ecd79afb4e33ea6d6c768eb9))
+- optional chaining for checking flag in listbox ([#1572](https://github.com/qlik-oss/nebula.js/issues/1572)) ([ec7ad50](https://github.com/qlik-oss/nebula.js/commit/ec7ad50b35fdca183e07f9ca341d5d7b4235d582))
+- **QB-27479:** Tab key navigation on popover listbox ([#1577](https://github.com/qlik-oss/nebula.js/issues/1577)) ([8e4d42c](https://github.com/qlik-oss/nebula.js/commit/8e4d42c347507c5c6d9a4d865eceed3f697debe9))
+- should not activate selection when selectDisabled is true ([#1573](https://github.com/qlik-oss/nebula.js/issues/1573)) ([ae7370d](https://github.com/qlik-oss/nebula.js/commit/ae7370daecc829da57a4cc81c650770a8c25868d))
+
+### Features
+
+- add keyboard support for cyclic button and allow keyboard navigation to more button ([#1569](https://github.com/qlik-oss/nebula.js/issues/1569)) ([22c64bc](https://github.com/qlik-oss/nebula.js/commit/22c64bc0a5089a81bbf8b8d6dd06429132455095))
+
 # [5.2.0](https://github.com/qlik-oss/nebula.js/compare/v5.1.2...v5.2.0) (2024-06-25)
 
 ### Bug Fixes
