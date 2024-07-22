@@ -41,10 +41,10 @@
     "version": "yarn run spec && yarn run ts && git add ./api-spec/spec.json ./api-spec/listbox-spec.json ./types/index.d.ts"
   },
   "devDependencies": {
-    "@emotion/react": "^11.11.4",
-    "@emotion/styled": "^11.11.5",
-    "@mui/icons-material": "^5.15.20",
-    "@mui/material": "^5.15.20",
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
+    "@mui/icons-material": "^5.16.4",
+    "@mui/material": "^5.16.4",
     "@nebula.js/conversion": "^5.2.0",
     "@nebula.js/enigma-mocker": "^5.2.0",
     "@nebula.js/locale": "^5.2.0",
@@ -52,7 +52,7 @@
     "@nebula.js/supernova": "^5.2.0",
     "@nebula.js/theme": "^5.2.0",
     "@nebula.js/ui": "^5.2.0",
-    "@qlik/api": "^1.11.0",
+    "@qlik/api": "^1.14.0",
     "@scriptappy/cli": "0.10.0",
     "@scriptappy/from-jsdoc": "0.19.0",
     "@scriptappy/to-dts": "1.0.0",
@@ -65,6 +65,6 @@
     "react-window": "1.8.10",
     "react-window-infinite-loader": "1.0.9",
     "regenerator-runtime": "0.14.1",
-    "semver": "7.6.2"
+    "semver": "7.6.3"
   }
 }
