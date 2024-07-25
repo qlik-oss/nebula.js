@@ -4,6 +4,7 @@ import React from 'react';
 import renderer, { act } from 'react-test-renderer';
 import { OutlinedInput, IconButton } from '@mui/material';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
+import { render } from '@testing-library/react';
 import * as InstanceContextModule from '../../../../contexts/InstanceContext';
 import * as useDataStore from '../../hooks/useDataStore';
 
@@ -509,5 +510,25 @@ describe('<ListBoxSearch />', () => {
     });
     expect(model.abortListObjectSearch).toHaveBeenCalledWith('/qListObjectDef');
     expect(type.props.value).toBe('');
+  });
+
+  test('should abort search when toggling of search', async () => {
+    const testRenderer = render(
+      <InstanceContext.Provider value={{ translator: { get: () => 'Search' } }}>
+        <ListBoxSearch
+          popoverOpen={open}
+          styles={styles}
+          selections={selections}
+          model={model}
+          keyboard={keyboard}
+          selectionState={selectionState}
+          beginSelectionOnFocus
+          wildCardSearch
+          hide={hide}
+        />
+      </InstanceContext.Provider>
+    );
+    testRenderer.unmount();
+    expect(model.abortListObjectSearch).toHaveBeenCalledWith('/qListObjectDef');
   });
 });
