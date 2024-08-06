@@ -53,7 +53,7 @@
     "@babel/core": "7.25.2",
     "@babel/preset-env": "7.25.3",
     "@babel/preset-react": "7.24.7",
-    "@mui/material": "^5.16.6",
+    "@mui/material": "^5.16.4",
     "@mui/system": "^5.16.6",
     "@nebula.js/enigma-mocker": "^5.3.0",
     "@nebula.js/nucleus": "^5.3.0",
