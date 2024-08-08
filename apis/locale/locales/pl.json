@@ -14,6 +14,11 @@
     "comment": "Text shown between the selected fields count {0} and total fields count {1}",
     "version": "l99iJM6C+Sm7L6wu1tXfOQ=="
   },
+  "Listbox.Clear.Search": {
+    "value": "Wyczyść wyszukiwanie",
+    "comment": "Action text to clear search text in listbox. (tew 240624)",
+    "version": "TSSD0+UX/GKvNt5V8+t5Zw=="
+  },
   "Listbox.Cyclic": {
     "value": "Wymiar cykliczny",
     "comment": "Tooltip for the cyclic icons on the dimension titles in charts. (pde 160210)",
