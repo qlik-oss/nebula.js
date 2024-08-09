@@ -123,6 +123,11 @@ export function useTranslator(): stardust.Translator;
 export function useDeviceType(): string;
 
 /**
+ * Gets the navigation api.
+ */
+export function useNavigation(): object;
+
+/**
  * Gets the array of plugins provided when rendering the visualization.
  */
 export function usePlugins(): stardust.Plugin[];

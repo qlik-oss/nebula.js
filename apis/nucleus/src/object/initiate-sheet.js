@@ -1,14 +1,14 @@
 /* eslint no-underscore-dangle:0 */
 import sheetAPI from '../sheet';
+import createNavigationApi from './navigation/navigation';
 
-export default async function initSheet(model, optional, halo, initialError, onDestroy = async () => {}) {
+export default async function initSheet(model, optional, halo, store, initialError, onDestroy = async () => {}) {
   const api = sheetAPI({
     model,
     halo,
     initialError,
     onDestroy,
   });
-
   if (optional.options) {
     api.__DO_NOT_USE__.options(optional.options);
   }
@@ -16,7 +16,8 @@ export default async function initSheet(model, optional, halo, initialError, onD
     api.__DO_NOT_USE__.plugins(optional.plugins);
   }
   if (optional.element) {
-    await api.__DO_NOT_USE__.mount(optional.element);
+    const navigation = createNavigationApi(halo, store);
+    await api.__DO_NOT_USE__.mount(optional.element, navigation);
   }
 
   return api;

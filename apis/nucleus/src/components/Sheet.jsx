@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useMemo } from 'react';
+import React, { useEffect, useState, useContext, useMemo, forwardRef, useImperativeHandle } from 'react';
 import useLayout from '../hooks/useLayout';
 import getObject from '../object/get-object';
 import Cell from './Cell';
@@ -17,7 +17,7 @@ const SheetElement = {
   className: 'njs-sheet',
 };
 
-function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initialError, onMount) {
+function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initialError, onMount, navigation) {
   const { x, y, width, height } = cell.bounds;
   return (
     <div style={{ left: `${x}%`, top: `${y}%`, width: `${width}%`, height: `${height}%`, position: 'absolute' }}>
@@ -30,6 +30,7 @@ function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initial
         initialSnPlugins={initialSnPlugins}
         initialError={initialError}
         onMount={onMount}
+        navigation={navigation}
       />
     </div>
   );
@@ -47,115 +48,129 @@ function getBounds(pos, columns, rows) {
   };
 }
 
-function Sheet({ model, halo, initialSnOptions, initialSnPlugins, initialError, onMount }) {
-  const { root } = halo;
-  const [layout] = useLayout(model);
-  const { theme: themeName, modelStore } = useContext(InstanceContext);
-  const [cells, setCells] = useState([]);
-  const [bgColor, setBgColor] = useState(undefined);
-  const [bgImage, setBgImage] = useState(undefined);
-  const [deepHash, setDeepHash] = useState('');
-
-  /// For each object
-  useEffect(() => {
-    if (layout) {
-      const hash = JSON.stringify(layout.cells);
-      if (hash === deepHash) {
-        return;
-      }
-      setDeepHash(hash);
-      const fetchObjects = async () => {
-        /*
+const Sheet = forwardRef(
+  ({ model: inputModel, halo, initialSnOptions, initialSnPlugins, initialError, onMount, navigation }, ref) => {
+    const { root } = halo;
+    const [model, setModel] = useState(inputModel);
+    const [layout] = useLayout(model);
+    const { theme: themeName, modelStore } = useContext(InstanceContext);
+    const [cells, setCells] = useState([]);
+    const [bgColor, setBgColor] = useState(undefined);
+    const [bgImage, setBgImage] = useState(undefined);
+    const [deepHash, setDeepHash] = useState('');
+    navigation?.setCurrentSheetId?.(model.id);
+    /// For each object
+    useEffect(() => {
+      if (layout) {
+        const hash = JSON.stringify(layout.cells);
+        if (hash === deepHash) {
+          return;
+        }
+        setDeepHash(hash);
+        const fetchObjects = async () => {
+          /*
           Need to always fetch and evaluate everything as the sheet need to support multiple instances of the same object?
           No, there is no way to add the same chart twice, so the optimization should be worth it.
         */
 
-        // Clear the cell list
-        cells.forEach((c) => {
-          root.removeCell(c.currentId);
-        });
+          // Clear the cell list
+          cells.forEach((c) => {
+            root.removeCell(c.currentId);
+          });
 
-        const lCells = layout.cells;
-        const { columns, rows } = layout;
-        // TODO - should try reuse existing objects on subsequent renders
-        // Non-id updates should only change the "css"
-        const cs = await Promise.all(
-          lCells.map(async (c) => {
-            let mounted;
-            const mountedPromise = new Promise((resolve) => {
-              mounted = resolve;
-            });
+          const lCells = layout.cells;
+          const { columns, rows } = layout;
+          // TODO - should try reuse existing objects on subsequent renders
+          // Non-id updates should only change the "css"
+          const cs = await Promise.all(
+            lCells.map(async (c) => {
+              let mounted;
+              const mountedPromise = new Promise((resolve) => {
+                mounted = resolve;
+              });
 
-            const cell = cells.find((ce) => ce.id === c.name);
-            if (cell) {
-              cell.bounds = getBounds(c, columns, rows);
-              delete cell.mountedPromise;
-              return cell;
-            }
-            const vs = await getObject({ id: c.name }, halo, modelStore);
-            return {
-              model: vs.model,
-              id: c.name,
-              bounds: getBounds(c, columns, rows),
-              cellRef: React.createRef(),
-              currentId: uid(),
-              mounted,
-              mountedPromise,
-            };
-          })
-        );
-        cs.forEach((c) => root.addCell(c.currentId, c.cellRef));
-        setCells(cs);
-      };
-      fetchObjects();
-    }
-  }, [layout]);
+              const cell = cells.find((ce) => ce.id === c.name);
+              if (cell) {
+                cell.bounds = getBounds(c, columns, rows);
+                delete cell.mountedPromise;
+                return cell;
+              }
+              const vs = await getObject({ id: c.name }, halo, modelStore);
+              return {
+                model: vs.model,
+                id: c.name,
+                bounds: getBounds(c, columns, rows),
+                cellRef: React.createRef(),
+                currentId: uid(),
+                mounted,
+                mountedPromise,
+              };
+            })
+          );
+          cs.forEach((c) => root.addCell(c.currentId, c.cellRef));
+          setCells(cs);
+        };
+        fetchObjects();
+      }
+    }, [layout]);
 
-  const cellRenderers = useMemo(
-    () =>
-      cells
-        ? cells.map((c) => getCellRenderer(c, halo, initialSnOptions, initialSnPlugins, initialError, c.mounted))
-        : [],
-    [cells]
-  );
+    const cellRenderers = useMemo(
+      () =>
+        cells
+          ? cells.map((c) =>
+              getCellRenderer(c, halo, initialSnOptions, initialSnPlugins, initialError, c.mounted, navigation)
+            )
+          : [],
+      [cells]
+    );
 
-  useEffect(() => {
-    const bgComp = layout?.components ? layout.components.find((comp) => comp.key === 'general') : null;
-    setBgColor(resolveBgColor(bgComp, halo.public.theme));
-    setBgImage(resolveBgImage(bgComp, halo.app));
-  }, [layout, halo.public.theme, halo.app, themeName]);
+    useEffect(() => {
+      const bgComp = layout?.components ? layout.components.find((comp) => comp.key === 'general') : null;
+      setBgColor(resolveBgColor(bgComp, halo.public.theme));
+      setBgImage(resolveBgImage(bgComp, halo.app));
+    }, [layout, halo.public.theme, halo.app, themeName]);
 
-  /* TODO
+    // Expose sheet ref api
+    useImperativeHandle(
+      ref,
+      () => ({
+        setModel,
+      }),
+      []
+    );
+
+    /* TODO
     - sheet title + bg + logo etc + as option
     - sheet exposed classnames for theming
   */
 
-  const height = !layout || Number.isNaN(layout.height) ? '100%' : `${Number(layout.height)}%`;
-  const promises = cells.map((c) => c.mountedPromise);
-  const ps = promises.filter((p) => !!p);
-  if (ps.length) {
-    Promise.all(promises).then(() => {
-      // TODO - correct? Currently called each time a new cell is mounted?
-      onMount();
-    });
+    const height = !layout || Number.isNaN(layout.height) ? '100%' : `${Number(layout.height)}%`;
+    const promises = cells.map((c) => c.mountedPromise);
+    const ps = promises.filter((p) => !!p);
+    if (ps.length) {
+      Promise.all(promises).then(() => {
+        // TODO - correct? Currently called each time a new cell is mounted?
+        onMount();
+      });
+    }
+    return (
+      <div
+        className={SheetElement.className}
+        style={{
+          width: `100%`,
+          height,
+          position: 'relative',
+          backgroundColor: bgColor,
+          backgroundImage: bgImage && bgImage.url ? `url(${bgImage.url})` : undefined,
+          backgroundRepeat: 'no-repeat',
+          backgroundSize: bgImage && bgImage.size,
+          backgroundPosition: bgImage && bgImage.pos,
+        }}
+      >
+        {cellRenderers}
+      </div>
+    );
   }
-  return (
-    <div
-      className={SheetElement.className}
-      style={{
-        width: `100%`,
-        height,
-        position: 'relative',
-        backgroundColor: bgColor,
-        backgroundImage: bgImage && bgImage.url ? `url(${bgImage.url})` : undefined,
-        backgroundRepeat: 'no-repeat',
-        backgroundSize: bgImage && bgImage.size,
-        backgroundPosition: bgImage && bgImage.pos,
-      }}
-    >
-      {cellRenderers}
-    </div>
-  );
-}
+);
 
 export default Sheet;

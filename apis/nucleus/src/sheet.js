@@ -88,7 +88,7 @@ export default function sheet({ model, halo, initialError, onDestroy = async () 
     },
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {
-      mount(element) {
+      mount(element, navigation) {
         if (mountedReference) {
           throw new Error('Already mounted');
         }
@@ -104,6 +104,7 @@ export default function sheet({ model, halo, initialError, onDestroy = async () 
           initialSnPlugins,
           initialError,
           onMount,
+          navigation,
         });
         return mounted;
       },

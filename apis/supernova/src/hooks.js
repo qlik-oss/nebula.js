@@ -772,6 +772,10 @@ export function useDeviceType() {
   return useInternalContext('deviceType');
 }
 
+export function useNavigation() {
+  return useInternalContext('navigation');
+}
+
 /**
  * Gets the array of plugins provided when rendering the visualization.
  * @entry

@@ -268,6 +268,7 @@ const loadType = async ({
   focusHandler,
   emitter,
   onMount,
+  navigation,
 }) => {
   try {
     const snType = await getType({ types, name: visualization, version });
@@ -278,6 +279,7 @@ const loadType = async ({
       nebbie,
       focusHandler,
       emitter,
+      navigation,
     });
 
     if (sn) {
@@ -300,7 +302,20 @@ const loadType = async ({
 };
 
 const Cell = forwardRef(
-  ({ halo, model: inputModel, initialSnOptions, initialSnPlugins, initialError, onMount, currentId, emitter }, ref) => {
+  (
+    {
+      halo,
+      model: inputModel,
+      initialSnOptions,
+      initialSnPlugins,
+      initialError,
+      onMount,
+      currentId,
+      emitter,
+      navigation,
+    },
+    ref
+  ) => {
     const { app, types } = halo;
     const { nebbie } = halo.public;
     const {
@@ -411,6 +426,7 @@ const Cell = forwardRef(
           focusHandler: focusHandler.current,
           emitter,
           onMount,
+          navigation,
         });
       };
 

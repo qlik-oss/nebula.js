@@ -13,7 +13,7 @@ export default async function getObject({ id, options, plugins, element }, halo,
   modelStore.set(key, model);
 
   if (model.genericType === 'sheet') {
-    return initSheet(model, { options, plugins, element }, halo);
+    return initSheet(model, { options, plugins, element }, halo, store);
   }
 
   return init(model, { options, plugins, element }, halo);
