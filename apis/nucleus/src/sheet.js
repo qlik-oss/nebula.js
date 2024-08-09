@@ -5,7 +5,7 @@ import getPatches from './utils/patcher';
 
 const noopi = () => {};
 
-export default function sheet({ model, halo, initialError, onDestroy = async () => {} } = {}) {
+export default function sheet({ model, halo, navigation, initialError, onDestroy = async () => {} } = {}) {
   let unmountSheet = noopi;
   let sheetRef = null;
   let mountedReference = null;
@@ -88,7 +88,7 @@ export default function sheet({ model, halo, initialError, onDestroy = async () 
     },
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {
-      mount(element, navigation) {
+      mount(element) {
         if (mountedReference) {
           throw new Error('Already mounted');
         }

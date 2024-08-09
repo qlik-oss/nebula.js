@@ -3,9 +3,11 @@ import sheetAPI from '../sheet';
 import createNavigationApi from './navigation/navigation';
 
 export default async function initSheet(model, optional, halo, store, initialError, onDestroy = async () => {}) {
+  const navigation = createNavigationApi(halo, store);
   const api = sheetAPI({
     model,
     halo,
+    navigation,
     initialError,
     onDestroy,
   });
@@ -16,8 +18,7 @@ export default async function initSheet(model, optional, halo, store, initialErr
     api.__DO_NOT_USE__.plugins(optional.plugins);
   }
   if (optional.element) {
-    const navigation = createNavigationApi(halo, store);
-    await api.__DO_NOT_USE__.mount(optional.element, navigation);
+    await api.__DO_NOT_USE__.mount(optional.element);
   }
 
   return api;
