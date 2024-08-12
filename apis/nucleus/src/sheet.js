@@ -73,8 +73,8 @@ export default function sheet({ model, halo, navigation, initialError, onDestroy
      */
     model,
     /**
-     * The id of this sheets's generic object.
-     * @type {string}
+     * The navigation api to control sheet navigation.
+     * @type {Navigation}
      */
     navigation,
     /**

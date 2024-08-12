@@ -1,16 +1,14 @@
-/**
- * Navigation API
- * Allows extensions to access navigation functionality
- * */
-
-const createNavigationApi = (halo, store) => {
+export default function createNavigationApi(halo, store) {
   const { galaxy } = halo.public;
   if (galaxy.anything?.sense?.navigation) {
     return galaxy.anything?.sense?.navigation;
   }
   const State = {};
 
-  const navigationAPI = {
+  /**
+   * @class Navigation
+   */
+  const navigationAPI = /** @lends Navigation# */ {
     /**
      * Navigate to the supplied sheet
      * @param {string} sheetId Id of the sheet to navigate to
@@ -53,6 +51,4 @@ const createNavigationApi = (halo, store) => {
     },
   };
   return navigationAPI;
-};
-
-export default createNavigationApi;
+}

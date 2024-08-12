@@ -772,6 +772,27 @@ export function useDeviceType() {
   return useInternalContext('deviceType');
 }
 
+/**
+ * Gets the navigation api to control sheet navigation
+ * @entry
+ * @returns {Navigation} navigation api.
+ * @example
+ * // Render a sheet
+ * const nebbie = embed(app);
+ * const sheetRender = await nebbie.render({
+ *   element: sheetElement
+ *   id: 'sheetId',
+ * });
+ *
+ * @example
+ * // Use a navigation object to control sheet navigation
+ * const plugins = usePlugins();
+ * const navigationRender = await nebbie.render({
+ *   element: navigationElement
+ *   id: 'navigationId',
+ *   navigation: sheetRender.navigation
+ * });
+ */
 export function useNavigation() {
   return useInternalContext('navigation');
 }
