@@ -73,6 +73,11 @@ export default function sheet({ model, halo, navigation, initialError, onDestroy
      */
     model,
     /**
+     * The id of this sheets's generic object.
+     * @type {string}
+     */
+    navigation,
+    /**
      * Destroys the sheet and removes it from the the DOM.
      * @example
      * const sheet = await embed(app).render({

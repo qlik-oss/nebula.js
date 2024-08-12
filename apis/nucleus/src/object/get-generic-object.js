@@ -2,7 +2,7 @@ import init from './initiate';
 import initSheet from './initiate-sheet';
 import createNavigationApi from './navigation/navigation';
 
-export default async function getObject({ id, options, plugins, element }, halo, store) {
+export default async function getObject({ id, options, plugins, element, navigation: inputNavigation }, halo, store) {
   const { modelStore, rpcRequestModelStore } = store;
   const key = `${id}`;
   let rpc = rpcRequestModelStore.get(key);
@@ -12,7 +12,7 @@ export default async function getObject({ id, options, plugins, element }, halo,
   }
   const model = await rpc;
   modelStore.set(key, model);
-  const navigation = createNavigationApi(halo, store);
+  const navigation = inputNavigation || createNavigationApi(halo, store);
   if (model.genericType === 'sheet') {
     return initSheet(model, { options, plugins, element }, halo, navigation);
   }
