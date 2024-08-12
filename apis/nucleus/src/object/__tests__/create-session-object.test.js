@@ -1,5 +1,6 @@
 import * as populatorModule from '../populator';
 import * as initiateModule from '../initiate';
+import * as createNavigationApiModule from '../navigation/navigation';
 import create from '../create-session-object';
 import initializeStores from '../../stores/new-model-store';
 
@@ -11,14 +12,21 @@ describe('create-session-object', () => {
   let populator;
   let init;
   let objectModel;
+  let createNavigationApi;
+  let navigation;
   const modelStore = initializeStores('app');
 
   beforeEach(() => {
     populator = jest.fn();
     init = jest.fn();
+    navigation = {
+      goToSheet: jest.fn(),
+    };
+    createNavigationApi = jest.fn().mockReturnValue(navigation);
 
     jest.spyOn(populatorModule, 'default').mockImplementation(populator);
     jest.spyOn(initiateModule, 'default').mockImplementation(init);
+    jest.spyOn(createNavigationApiModule, 'default').mockImplementation(createNavigationApi);
     objectModel = { id: 'id', on: () => {}, once: () => {} };
     types = {
       get: jest.fn(),
@@ -101,6 +109,7 @@ describe('create-session-object', () => {
       objectModel,
       { options: 'a', plugins: [], element: undefined },
       halo,
+      navigation,
       undefined,
       expect.any(Function)
     );
@@ -116,6 +125,7 @@ describe('create-session-object', () => {
       objectModel,
       { options: 'opts', plugins: undefined, element: 'el' },
       halo,
+      navigation,
       expect.objectContaining(err),
       expect.any(Function)
     );

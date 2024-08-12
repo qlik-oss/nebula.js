@@ -6,6 +6,7 @@ describe('initiate api', () => {
   const optional = 'optional';
   const halo = 'halo';
   const model = 'model';
+  const navigation = 'navigation';
   let viz;
   let api;
 
@@ -30,8 +31,8 @@ describe('initiate api', () => {
   test('should call viz api', async () => {
     const initialError = 'err';
     const onDestroy = () => {};
-    const ret = await create(model, optional, halo, initialError, onDestroy);
-    expect(viz).toHaveBeenCalledWith({ model, halo, initialError, onDestroy });
+    const ret = await create(model, optional, halo, navigation, initialError, onDestroy);
+    expect(viz).toHaveBeenCalledWith({ model, halo, navigation, initialError, onDestroy });
     expect(ret).toEqual(api);
   });
 
