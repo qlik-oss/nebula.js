@@ -1,9 +1,7 @@
 /* eslint no-underscore-dangle:0 */
 import sheetAPI from '../sheet';
-import createNavigationApi from './navigation/navigation';
 
-export default async function initSheet(model, optional, halo, store, initialError, onDestroy = async () => {}) {
-  const navigation = createNavigationApi(halo, store);
+export default async function initSheet(model, optional, halo, navigation, initialError, onDestroy = async () => {}) {
   const api = sheetAPI({
     model,
     halo,

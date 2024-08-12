@@ -12,6 +12,7 @@ export default function glue({
   onMount,
   emitter,
   initialError,
+  navigation,
 }) {
   const { root } = halo;
   const cellRef = React.createRef();
@@ -27,6 +28,7 @@ export default function glue({
       initialError={initialError}
       onMount={onMount}
       emitter={emitter}
+      navigation={navigation}
     />,
     element,
     currentId

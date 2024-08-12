@@ -20,7 +20,10 @@ const SheetElement = {
 function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initialError, onMount, navigation) {
   const { x, y, width, height } = cell.bounds;
   return (
-    <div style={{ left: `${x}%`, top: `${y}%`, width: `${width}%`, height: `${height}%`, position: 'absolute' }}>
+    <div
+      style={{ left: `${x}%`, top: `${y}%`, width: `${width}%`, height: `${height}%`, position: 'absolute' }}
+      key={cell.model.id}
+    >
       <Cell
         ref={cell.cellRef}
         halo={halo}
