@@ -52,7 +52,10 @@ function getBounds(pos, columns, rows) {
 }
 
 const Sheet = forwardRef(
-  ({ model: inputModel, halo, initialSnOptions, initialSnPlugins, initialError, onMount, navigation }, ref) => {
+  (
+    { model: inputModel, halo, initialSnOptions, initialSnPlugins, initialError, onMount, unmount, navigation },
+    ref
+  ) => {
     const { root } = halo;
     const [model, setModel] = useState(inputModel);
     const [layout] = useLayout(model);
@@ -116,6 +119,15 @@ const Sheet = forwardRef(
         fetchObjects();
       }
     }, [layout]);
+
+    useEffect(() => {
+      const onModelClose = () => {
+        model.removeListener('closed', onModelClose);
+        unmount();
+      };
+      model.on('closed', onModelClose);
+      return () => model.removeListener('closed', onModelClose);
+    }, [model]);
 
     const cellRenderers = useMemo(
       () =>
