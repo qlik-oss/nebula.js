@@ -14,6 +14,9 @@ export default function createNavigationApi(halo, store) {
      * @param {string} sheetId Id of the sheet to navigate to
      */
     goToSheet: async (sheetId) => {
+      if (!State.sheetRef) {
+        return;
+      }
       const { modelStore, rpcRequestModelStore } = store;
       const key = `${sheetId}`;
       let rpc = rpcRequestModelStore.get(key);
