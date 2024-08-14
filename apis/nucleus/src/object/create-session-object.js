@@ -39,7 +39,7 @@ import init from './initiate';
  * nebbie.render(createConfig);
  */
 export default async function createSessionObject(
-  { type, version, fields, properties, options, plugins, element, extendProperties, navigation: inputNavigation },
+  { type, version, fields, properties, options, plugins, element, extendProperties, navigation },
   halo,
   store
 ) {
@@ -47,7 +47,6 @@ export default async function createSessionObject(
   const children = [];
   const { modelStore, subscribe } = store;
   let error;
-  const navigation = inputNavigation;
   try {
     const t = halo.types.get({ name: type, version });
     mergedProps = await t.initialProperties(properties, extendProperties);
