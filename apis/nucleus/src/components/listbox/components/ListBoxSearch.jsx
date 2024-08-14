@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect, useRef } from 'react';
+import React, { useContext, useState, useEffect, useRef, useImperativeHandle, forwardRef } from 'react';
 import { InputAdornment, OutlinedInput, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Search from '@nebula.js/ui/icons/search';
@@ -76,22 +76,25 @@ const StyledIconButton = styled(IconButton)(() => ({
   },
 }));
 
-export default function ListBoxSearch({
-  popoverOpen,
-  selections,
-  selectionState,
-  model,
-  keyboard,
-  dense = false,
-  visible = true,
-  autoFocus = true,
-  beginSelectionOnFocus = true,
-  wildCardSearch = false,
-  searchEnabled,
-  direction,
-  hide,
-  styles,
-}) {
+function ListBoxSearch(
+  {
+    popoverOpen,
+    selections,
+    selectionState,
+    model,
+    keyboard,
+    dense = false,
+    visible = true,
+    autoFocus = true,
+    beginSelectionOnFocus = true,
+    wildCardSearch = false,
+    searchEnabled,
+    direction,
+    hide,
+    styles,
+  },
+  ref
+) {
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const [wildcardOn, setWildcardOn] = useState(false);
@@ -242,7 +245,7 @@ export default function ListBoxSearch({
     focusOnInput();
   };
 
-  const onKeyDownClearSearch = async (e) => {
+  const onKeyDownClearSearch = (e) => {
     const container = e.currentTarget.closest('.listbox-container');
     switch (e.key) {
       case 'Enter':
@@ -264,6 +267,11 @@ export default function ListBoxSearch({
     e.stopPropagation();
     return undefined;
   };
+  useImperativeHandle(ref, () => ({
+    focus() {
+      focusOnInput();
+    },
+  }));
 
   if (!visible || searchEnabled === false) {
     return null;
@@ -313,3 +321,5 @@ export default function ListBoxSearch({
     />
   );
 }
+
+export default forwardRef(ListBoxSearch);
