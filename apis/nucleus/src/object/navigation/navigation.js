@@ -24,11 +24,20 @@ export default function createNavigationApi(halo, store) {
         rpc = halo.app.getObject(sheetId);
         rpcRequestModelStore.set(key, rpc);
       }
-      const model = await rpc;
+      let model;
+      try {
+        model = await rpc;
+        if (model.genericType !== 'sheet') {
+          return;
+        }
+      } catch (e) {
+        return;
+      }
       modelStore.set(key, model);
       State.sheetRef?.current?.setModel?.(model);
     },
     /**
+     * @private
      * Set the current sheet id
      * @param {string} sheetId Id of the current sheet
      */
@@ -36,6 +45,7 @@ export default function createNavigationApi(halo, store) {
       State.sheetId = sheetId;
     },
     /**
+     * @private
      * Set the sheet ref
      * @param {object} sheetRef sheet ref object
      */

@@ -1,6 +1,5 @@
 import populateData from './populator';
 import init from './initiate';
-import createNavigationApi from './navigation/navigation';
 
 /**
  * @typedef {string | qix.NxDimension | qix.NxMeasure | LibraryField} Field
@@ -48,7 +47,7 @@ export default async function createSessionObject(
   const children = [];
   const { modelStore, subscribe } = store;
   let error;
-  const navigation = inputNavigation || createNavigationApi(halo, store);
+  const navigation = inputNavigation;
   try {
     const t = halo.types.get({ name: type, version });
     mergedProps = await t.initialProperties(properties, extendProperties);
