@@ -1,7 +1,12 @@
 import eventmixin from '../../selections/event-mixin';
 
-export default function createNavigationApi(halo, store) {
-  const State = {};
+export default function createNavigationApi(halo, store, model) {
+  const { galaxy } = halo.public;
+  if (galaxy.anything?.sense?.navigation) {
+    return galaxy.anything?.sense?.navigation;
+  }
+
+  const State = { model };
 
   /**
    * @class Navigation
@@ -22,29 +27,19 @@ export default function createNavigationApi(halo, store) {
         rpc = halo.app.getObject(sheetId);
         rpcRequestModelStore.set(key, rpc);
       }
-      let model;
+      let newModel;
       try {
-        model = await rpc;
-        if (model.genericType !== 'sheet') {
+        newModel = await rpc;
+        if (newModel.genericType !== 'sheet') {
           return;
         }
       } catch (e) {
         return;
       }
-      modelStore.set(key, model);
-      State.sheetRef?.current?.setModel?.(model);
-    },
-    /**
-     * @private
-     * Set the current sheet id
-     * @param {string} sheetId Id of the current sheet
-     */
-    setCurrentSheetId: (sheetId) => {
-      if (State.sheetId === sheetId) {
-        return;
-      }
-      State.sheetId = sheetId;
-      navigationAPI.emit('currentSheetIdChange');
+      modelStore.set(key, newModel);
+      State.sheetRef?.current?.setModel?.(newModel);
+      State.model = newModel;
+      navigationAPI.emit('sheetChanged');
     },
     /**
      * @private
@@ -59,8 +54,8 @@ export default function createNavigationApi(halo, store) {
      * @returns {string|false}
      */
     getCurrentSheetId: () => {
-      if (State.sheetId) {
-        return State.sheetId;
+      if (State.model) {
+        return State.model.id;
       }
       return false;
     },

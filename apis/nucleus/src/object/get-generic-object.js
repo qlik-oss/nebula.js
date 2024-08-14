@@ -12,7 +12,8 @@ export default async function getObject({ id, options, plugins, element, navigat
   }
   const model = await rpc;
   modelStore.set(key, model);
-  const navigation = inputNavigation || (model.genericType === 'sheet' ? createNavigationApi(halo, store) : undefined);
+  const navigation =
+    inputNavigation || (model.genericType === 'sheet' ? createNavigationApi(halo, store, model) : undefined);
   if (model.genericType === 'sheet') {
     return initSheet(model, { options, plugins, element }, halo, navigation);
   }
