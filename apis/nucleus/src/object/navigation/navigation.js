@@ -1,8 +1,6 @@
+import eventmixin from '../../selections/event-mixin';
+
 export default function createNavigationApi(halo, store) {
-  const { galaxy } = halo.public;
-  if (galaxy.anything?.sense?.navigation) {
-    return galaxy.anything?.sense?.navigation;
-  }
   const State = {};
 
   /**
@@ -42,7 +40,11 @@ export default function createNavigationApi(halo, store) {
      * @param {string} sheetId Id of the current sheet
      */
     setCurrentSheetId: (sheetId) => {
+      if (State.sheetId === sheetId) {
+        return;
+      }
       State.sheetId = sheetId;
+      navigationAPI.emit('currentSheetIdChange');
     },
     /**
      * @private
@@ -63,5 +65,6 @@ export default function createNavigationApi(halo, store) {
       return false;
     },
   };
+  eventmixin(navigationAPI);
   return navigationAPI;
 }
