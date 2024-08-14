@@ -84,7 +84,6 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
  * @property {Array<TypeInfo>=} types Visualization types to register
  * @property {Array<ThemeInfo>=} themes Themes to register
  * @property {object=} anything
- * @property {object=} flags
  * @example
  * import { embed } from '@nebula.js/stardust'
  * n = embed(app, {
