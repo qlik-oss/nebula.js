@@ -75,7 +75,7 @@ export default function sheet({ model, halo, navigation, initialError, onDestroy
     /**
      * The navigation api to control sheet navigation.
      * @experimental
-     * @since 5.4.0
+     * @since 5.3.1
      * @type {Navigation}
      */
     navigation,
