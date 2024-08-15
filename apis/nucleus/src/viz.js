@@ -10,7 +10,7 @@ import saveSoftProperties from './utils/save-soft-properties';
 
 const noopi = () => {};
 
-export default function viz({ model, halo, initialError, onDestroy = async () => {} } = {}) {
+export default function viz({ model, halo, navigation, initialError, onDestroy = async () => {} } = {}) {
   let unmountCell = noopi;
   let cellRef = null;
   let mountedReference = null;
@@ -247,6 +247,7 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
           initialError,
           onMount,
           emitter,
+          navigation,
         });
         return mounted;
       },

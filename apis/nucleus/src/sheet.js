@@ -5,7 +5,7 @@ import getPatches from './utils/patcher';
 
 const noopi = () => {};
 
-export default function sheet({ model, halo, initialError, onDestroy = async () => {} } = {}) {
+export default function sheet({ model, halo, navigation, initialError, onDestroy = async () => {} } = {}) {
   let unmountSheet = noopi;
   let sheetRef = null;
   let mountedReference = null;
@@ -73,6 +73,13 @@ export default function sheet({ model, halo, initialError, onDestroy = async () 
      */
     model,
     /**
+     * The navigation api to control sheet navigation.
+     * @experimental
+     * @since 5.4.0
+     * @type {Navigation}
+     */
+    navigation,
+    /**
      * Destroys the sheet and removes it from the the DOM.
      * @example
      * const sheet = await embed(app).render({
@@ -104,6 +111,7 @@ export default function sheet({ model, halo, initialError, onDestroy = async () 
           initialSnPlugins,
           initialError,
           onMount,
+          navigation,
         });
         return mounted;
       },

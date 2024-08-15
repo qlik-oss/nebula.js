@@ -773,6 +773,20 @@ export function useDeviceType() {
 }
 
 /**
+ * Gets the navigation api to control sheet navigation
+ * @entry
+ * @returns {Navigation} navigation api.
+ * @example
+ * import { useNavigation } from "@nebula.js/stardust";
+ * // ...
+ * const navigation = useNavigation();
+ * const [activeSheetId, setActiveSheetId] = useState(navigation?.getCurrentSheetId() || "");
+ */
+export function useNavigation() {
+  return useInternalContext('navigation');
+}
+
+/**
  * Gets the array of plugins provided when rendering the visualization.
  * @entry
  * @returns {Plugin[]} array of plugins.

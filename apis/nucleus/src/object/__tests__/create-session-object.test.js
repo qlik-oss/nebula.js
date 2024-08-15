@@ -1,5 +1,6 @@
 import * as populatorModule from '../populator';
 import * as initiateModule from '../initiate';
+import * as createNavigationApiModule from '../navigation/navigation';
 import create from '../create-session-object';
 import initializeStores from '../../stores/new-model-store';
 
@@ -11,14 +12,21 @@ describe('create-session-object', () => {
   let populator;
   let init;
   let objectModel;
+  let createNavigationApi;
+  let navigation;
   const modelStore = initializeStores('app');
 
   beforeEach(() => {
     populator = jest.fn();
     init = jest.fn();
+    navigation = {
+      goToSheet: jest.fn(),
+    };
+    createNavigationApi = jest.fn().mockReturnValue(navigation);
 
     jest.spyOn(populatorModule, 'default').mockImplementation(populator);
     jest.spyOn(initiateModule, 'default').mockImplementation(init);
+    jest.spyOn(createNavigationApiModule, 'default').mockImplementation(createNavigationApi);
     objectModel = { id: 'id', on: () => {}, once: () => {} };
     types = {
       get: jest.fn(),
@@ -102,6 +110,24 @@ describe('create-session-object', () => {
       { options: 'a', plugins: [], element: undefined },
       halo,
       undefined,
+      undefined,
+      expect.any(Function)
+    );
+  });
+
+  test('should call init with navigation', async () => {
+    const ret = await create(
+      { type: 't', version: 'v', fields: 'f', properties: 'props', options: 'a', plugins: [], navigation },
+      halo,
+      modelStore
+    );
+    expect(ret).toBe('api');
+    expect(init).toHaveBeenCalledWith(
+      objectModel,
+      { options: 'a', plugins: [], element: undefined },
+      halo,
+      navigation,
+      undefined,
       expect.any(Function)
     );
   });
@@ -116,6 +142,23 @@ describe('create-session-object', () => {
       objectModel,
       { options: 'opts', plugins: undefined, element: 'el' },
       halo,
+      undefined,
+      expect.objectContaining(err),
+      expect.any(Function)
+    );
+  });
+
+  test('should catch and pass error when navigation is passed', async () => {
+    const err = new Error('oops');
+    types.get.mockReturnValue(err);
+    const optional = { properties: 'props', element: 'el', options: 'opts' };
+    const ret = await create({ type: 't', ...optional, navigation }, halo, modelStore);
+    expect(ret).toBe('api');
+    expect(init).toHaveBeenCalledWith(
+      objectModel,
+      { options: 'opts', plugins: undefined, element: 'el' },
+      halo,
+      navigation,
       expect.objectContaining(err),
       expect.any(Function)
     );

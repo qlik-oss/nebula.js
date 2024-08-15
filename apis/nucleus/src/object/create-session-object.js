@@ -39,7 +39,7 @@ import init from './initiate';
  * nebbie.render(createConfig);
  */
 export default async function createSessionObject(
-  { type, version, fields, properties, options, plugins, element, extendProperties },
+  { type, version, fields, properties, options, plugins, element, extendProperties, navigation },
   halo,
   store
 ) {
@@ -90,5 +90,5 @@ export default async function createSessionObject(
     await halo.app.destroySessionObject(model.id);
     unsubscribe();
   };
-  return init(model, { options, plugins, element }, halo, error, onDestroy);
+  return init(model, { options, plugins, element }, halo, navigation, error, onDestroy);
 }

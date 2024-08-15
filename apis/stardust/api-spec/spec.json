@@ -383,6 +383,19 @@
         "import { useDeviceType } from '@nebula.js/stardust';\n// ...\nconst deviceType = useDeviceType();\nif (deviceType === 'touch') { ... };"
       ]
     },
+    "useNavigation": {
+      "description": "Gets the navigation api to control sheet navigation",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "description": "navigation api.",
+        "type": "#/definitions/Navigation"
+      },
+      "examples": [
+        "// Render a sheet\nconst nebbie = embed(app);\nconst sheetRender = await nebbie.render({\n  element: sheetElement\n  id: 'sheetId',\n});",
+        "// Use a navigation object to control sheet navigation\nconst plugins = usePlugins();\nconst navigationRender = await nebbie.render({\n  element: navigationElement\n  id: 'navigationId',\n  navigation: sheetRender.navigation\n});"
+      ]
+    },
     "usePlugins": {
       "description": "Gets the array of plugins provided when rendering the visualization.",
       "kind": "function",
@@ -1251,6 +1264,10 @@
           "description": "This sheets Enigma model, a representation of the generic object.",
           "type": "string"
         },
+        "navigation": {
+          "description": "The navigation api to control sheet navigation.",
+          "type": "#/definitions/Navigation"
+        },
         "destroy": {
           "description": "Destroys the sheet and removes it from the the DOM.",
           "kind": "function",
@@ -1862,6 +1879,65 @@
         "meta": {
           "optional": true,
           "type": "object"
+        }
+      }
+    },
+    "Navigation": {
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {
+        "goToSheet": {
+          "description": "Navigate to the supplied sheet",
+          "kind": "function",
+          "params": [
+            {
+              "name": "sheetId",
+              "description": "Id of the sheet to navigate to",
+              "type": "string"
+            }
+          ]
+        },
+        "setCurrentSheetId": {
+          "description": "Set the current sheet id",
+          "kind": "function",
+          "params": [
+            {
+              "name": "sheetId",
+              "description": "Id of the current sheet",
+              "type": "string"
+            }
+          ]
+        },
+        "setSheetRef": {
+          "description": "Set the sheet ref",
+          "kind": "function",
+          "params": [
+            {
+              "name": "sheetRef",
+              "description": "sheet ref object",
+              "type": "object"
+            }
+          ]
+        },
+        "getCurrentSheetId": {
+          "description": "Return the current sheet id",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "kind": "union",
+            "items": [
+              {
+                "type": "string"
+              },
+              {
+                "kind": "literal",
+                "value": "false"
+              }
+            ]
+          }
         }
       }
     },

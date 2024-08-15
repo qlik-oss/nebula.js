@@ -123,6 +123,11 @@ export function useTranslator(): stardust.Translator;
 export function useDeviceType(): string;
 
 /**
+ * Gets the navigation api to control sheet navigation
+ */
+export function useNavigation(): stardust.Navigation;
+
+/**
  * Gets the array of plugins provided when rendering the visualization.
  */
 export function usePlugins(): stardust.Plugin[];
@@ -389,6 +394,8 @@ declare namespace stardust {
 
         model: string;
 
+        navigation: stardust.Navigation;
+
         /**
          * Destroys the sheet and removes it from the the DOM.
          */
@@ -590,6 +597,34 @@ declare namespace stardust {
         version?: string;
         load: stardust.LoadType;
         meta?: object;
+    }
+
+    class Navigation {
+        constructor();
+
+        /**
+         * Navigate to the supplied sheet
+         * @param sheetId Id of the sheet to navigate to
+         */
+        goToSheet(sheetId: string): void;
+
+        /**
+         * Set the current sheet id
+         * @param sheetId Id of the current sheet
+         */
+        setCurrentSheetId(sheetId: string): void;
+
+        /**
+         * Set the sheet ref
+         * @param sheetRef sheet ref object
+         */
+        setSheetRef(sheetRef: object): void;
+
+        /**
+         * Return the current sheet id
+         */
+        getCurrentSheetId(): string | "false";
+
     }
 
     interface ActionToolbarElement extends HTMLElement{
