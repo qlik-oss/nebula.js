@@ -13,7 +13,9 @@ export default function createNavigationApi(halo, store, model) {
    */
   const navigationAPI = /** @lends Navigation# */ {
     /**
-     * Navigate to the supplied sheet
+     * Navigate to the supplied sheet and emit 'sheetChanged' event if the target sheet Id is valid
+     * @experimental
+     * @since 5.4.0
      * @param {string} sheetId Id of the sheet to navigate to
      */
     goToSheet: async (sheetId) => {
@@ -51,7 +53,9 @@ export default function createNavigationApi(halo, store, model) {
     },
     /**
      * Return the current sheet id
-     * @returns {string|false}
+     * @experimental
+     * @since 5.4.0
+     * @returns {string|false} The current sheet Id. false means there is no current sheet.
      */
     getCurrentSheetId: () => {
       if (State.model) {

@@ -773,8 +773,10 @@ export function useDeviceType() {
 }
 
 /**
- * Gets the navigation api to control sheet navigation
+ * Gets the navigation api to control sheet navigation. When useNavigation is used in Sense, it returns returns Sense.navigation.
  * @entry
+ * @experimental
+ * @since 5.4.0
  * @returns {Navigation} navigation api.
  * @example
  * import { useNavigation } from "@nebula.js/stardust";
