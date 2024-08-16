@@ -43,6 +43,14 @@ export default function ListBoxPopover({
   checkboxes: checkboxesOption,
   selectDisabled = () => false,
   flags,
+  sortCriteria = [
+    {
+      qSortByState: 1,
+      qSortByAscii: 1,
+      qSortByNumeric: 1,
+      qSortByLoadOrder: 1,
+    },
+  ],
 }) {
   const isMasterDim = Boolean(fieldName?.qLibraryId);
   const open = show && Boolean(alignTo.current);
@@ -66,14 +74,7 @@ export default function ListBoxPopover({
           },
         ],
         qDef: {
-          qSortCriterias: [
-            {
-              qSortByState: 1,
-              qSortByAscii: 1,
-              qSortByNumeric: 1,
-              qSortByLoadOrder: 1,
-            },
-          ],
+          qSortCriterias: sortCriteria,
           qFieldDefs: isMasterDim ? undefined : [fieldName],
         },
         qLibraryId: isMasterDim ? fieldName.qLibraryId : undefined,
