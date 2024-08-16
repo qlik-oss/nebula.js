@@ -773,7 +773,7 @@ export function useDeviceType() {
 }
 
 /**
- * Gets the navigation api to control sheet navigation. When useNavigation is used in Sense, it returns returns Sense.navigation.
+ * Gets the navigation api to control sheet navigation. When useNavigation is used in Sense, it returns Sense.navigation.
  * @entry
  * @experimental
  * @since 5.4.0
