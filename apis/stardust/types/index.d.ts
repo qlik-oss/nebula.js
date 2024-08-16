@@ -543,6 +543,16 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
 
     /**
@@ -575,16 +585,6 @@ declare namespace stardust {
         type: "dimension" | "measure";
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     interface LoadType {
         (type: {
             name: string;
@@ -607,18 +607,6 @@ declare namespace stardust {
          * @param sheetId Id of the sheet to navigate to
          */
         goToSheet(sheetId: string): void;
-
-        /**
-         * Set the current sheet id
-         * @param sheetId Id of the current sheet
-         */
-        setCurrentSheetId(sheetId: string): void;
-
-        /**
-         * Set the sheet ref
-         * @param sheetRef sheet ref object
-         */
-        setSheetRef(sheetRef: object): void;
 
         /**
          * Return the current sheet id
