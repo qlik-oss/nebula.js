@@ -599,7 +599,7 @@ declare namespace stardust {
         meta?: object;
     }
 
-    class Navigation {
+    class Navigation implements stardust.Emitter {
         constructor();
 
         /**

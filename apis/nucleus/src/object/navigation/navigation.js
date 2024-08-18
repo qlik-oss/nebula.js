@@ -11,6 +11,7 @@ export default function createNavigationApi(halo, store, model) {
   /**
    * @class Navigation
    * @description The navigation api instance.
+   * @implements Emitter
    * @experimental
    * @since 5.4.0
    * @example
@@ -18,7 +19,7 @@ export default function createNavigationApi(halo, store, model) {
    * //...
    * useEffect(() => {
    *   const onSheetChanged = () => {
-   *     setActiveSheetId(navigation?.getCurrentSheetId() || "");
+   *     // do something
    *   };
    *   if (navigation?.addListener) {
    *     navigation.addListener("sheetChanged", onSheetChanged);
@@ -32,7 +33,6 @@ export default function createNavigationApi(halo, store, model) {
    *
    * const onSheetClick = (sheetId: string) => {
    *   navigation?.goToSheet(sheetId);
-   *   setActiveSheetId(sheetId);
    * };
    */
   const navigationAPI = /** @lends Navigation# */ {

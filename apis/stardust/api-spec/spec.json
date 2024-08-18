@@ -1894,6 +1894,11 @@
       "availability": {
         "since": "5.4.0"
       },
+      "implements": [
+        {
+          "type": "#/definitions/Emitter"
+        }
+      ],
       "kind": "class",
       "constructor": {
         "kind": "function",
@@ -1940,7 +1945,7 @@
         }
       },
       "examples": [
-        "const navigation = useNavigation();\n//...\nuseEffect(() => {\n  const onSheetChanged = () => {\n    setActiveSheetId(navigation?.getCurrentSheetId() || \"\");\n  };\n  if (navigation?.addListener) {\n    navigation.addListener(\"sheetChanged\", onSheetChanged);\n  }\n  return () => {\n    if (navigation?.removeListener) {\n      navigation.removeListener(\"sheetChanged\", onSheetChanged);\n    }\n  };\n}, [navigation]);\n\nconst onSheetClick = (sheetId: string) => {\n  navigation?.goToSheet(sheetId);\n  setActiveSheetId(sheetId);\n};"
+        "const navigation = useNavigation();\n//...\nuseEffect(() => {\n  const onSheetChanged = () => {\n    // do something\n  };\n  if (navigation?.addListener) {\n    navigation.addListener(\"sheetChanged\", onSheetChanged);\n  }\n  return () => {\n    if (navigation?.removeListener) {\n      navigation.removeListener(\"sheetChanged\", onSheetChanged);\n    }\n  };\n}, [navigation]);\n\nconst onSheetClick = (sheetId: string) => {\n  navigation?.goToSheet(sheetId);\n};"
       ]
     },
     "ActionToolbarElement": {
