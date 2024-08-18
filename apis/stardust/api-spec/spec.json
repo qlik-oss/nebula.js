@@ -345,7 +345,6 @@
     },
     "useEmbed": {
       "description": "Gets the embed instance used.",
-      "stability": "experimental",
       "availability": {
         "since": "1.7.0"
       },
@@ -551,7 +550,6 @@
     },
     "useRenderState": {
       "description": "Gets render state instance.\n\nUsed to update properties and get a new layout without triggering onInitialRender.",
-      "stability": "experimental",
       "kind": "function",
       "params": [],
       "returns": {
@@ -564,7 +562,6 @@
     },
     "useEmitter": {
       "description": "Gets an event emitter instance for the visualization.",
-      "stability": "experimental",
       "kind": "function",
       "params": [],
       "returns": {
@@ -2328,7 +2325,6 @@
       "entries": {}
     },
     "Keyboard": {
-      "stability": "experimental",
       "kind": "interface",
       "entries": {
         "enabled": {
