@@ -731,7 +731,6 @@ export function useTheme() {
 /**
  * Gets the embed instance used.
  * @entry
- * @experimental
  * @since 1.7.0
  * @returns {Embed} The embed instance used.
  * @example
@@ -773,8 +772,10 @@ export function useDeviceType() {
 }
 
 /**
- * Gets the navigation api to control sheet navigation
+ * Gets the navigation api to control sheet navigation. When useNavigation is used in Sense, it returns Sense.navigation.
  * @entry
+ * @experimental
+ * @since 5.4.0
  * @returns {Navigation} navigation api.
  * @example
  * import { useNavigation } from "@nebula.js/stardust";
@@ -1119,7 +1120,6 @@ export function onContextMenu(cb) {
  *
  * Used to update properties and get a new layout without triggering onInitialRender.
  * @entry
- * @experimental
  * @returns {RenderState} The render state.
  * @example
  * import { useRenderState } from '@nebula.js/stardust';
@@ -1156,7 +1156,6 @@ export function useRenderState() {
 /**
  * Gets an event emitter instance for the visualization.
  * @entry
- * @experimental
  * @returns {Emitter}
  * @example
  * // In a Nebula visualization
@@ -1180,7 +1179,6 @@ export function useEmitter() {
 }
 
 /**
- * @experimental
  * @interface Keyboard
  * @property {boolean} enabled Whether or not Nebula handles keyboard navigation or not.
  * @property {boolean} active Set to true when the chart is activated, ie a user tabs to the chart and presses Enter or Space.

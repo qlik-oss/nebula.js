@@ -345,7 +345,6 @@
     },
     "useEmbed": {
       "description": "Gets the embed instance used.",
-      "stability": "experimental",
       "availability": {
         "since": "1.7.0"
       },
@@ -384,7 +383,11 @@
       ]
     },
     "useNavigation": {
-      "description": "Gets the navigation api to control sheet navigation",
+      "description": "Gets the navigation api to control sheet navigation. When useNavigation is used in Sense, it returns Sense.navigation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "5.4.0"
+      },
       "kind": "function",
       "params": [],
       "returns": {
@@ -547,7 +550,6 @@
     },
     "useRenderState": {
       "description": "Gets render state instance.\n\nUsed to update properties and get a new layout without triggering onInitialRender.",
-      "stability": "experimental",
       "kind": "function",
       "params": [],
       "returns": {
@@ -560,7 +562,6 @@
     },
     "useEmitter": {
       "description": "Gets an event emitter instance for the visualization.",
-      "stability": "experimental",
       "kind": "function",
       "params": [],
       "returns": {
@@ -1678,33 +1679,6 @@
         }
       }
     },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
-    },
     "Field": {
       "kind": "alias",
       "items": {
@@ -1840,6 +1814,33 @@
         }
       }
     },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
     "LoadType": {
       "kind": "interface",
       "params": [
@@ -1886,14 +1887,28 @@
       }
     },
     "Navigation": {
+      "stability": "experimental",
+      "availability": {
+        "since": "5.4.0"
+      },
+      "implements": [
+        {
+          "type": "#/definitions/Emitter"
+        }
+      ],
       "kind": "class",
       "constructor": {
         "kind": "function",
+        "description": "The navigation api instance.",
         "params": []
       },
       "entries": {
         "goToSheet": {
-          "description": "Navigate to the supplied sheet",
+          "description": "Navigate to the supplied sheet and emit 'sheetChanged' event if the target sheet Id is valid.\nThis allows a navigation object to synchronize its current sheet item with the active sheet.",
+          "stability": "experimental",
+          "availability": {
+            "since": "5.4.0"
+          },
           "kind": "function",
           "params": [
             {
@@ -1905,9 +1920,14 @@
         },
         "getCurrentSheetId": {
           "description": "Return the current sheet id",
+          "stability": "experimental",
+          "availability": {
+            "since": "5.4.0"
+          },
           "kind": "function",
           "params": [],
           "returns": {
+            "description": "The current sheet Id. false means there is no current sheet.",
             "kind": "union",
             "items": [
               {
@@ -1920,7 +1940,10 @@
             ]
           }
         }
-      }
+      },
+      "examples": [
+        "const navigation = useNavigation();\n//...\nuseEffect(() => {\n  const onSheetChanged = () => {\n    // do something\n  };\n  if (navigation?.addListener) {\n    navigation.addListener(\"sheetChanged\", onSheetChanged);\n  }\n  return () => {\n    if (navigation?.removeListener) {\n      navigation.removeListener(\"sheetChanged\", onSheetChanged);\n    }\n  };\n}, [navigation]);\n\nconst onSheetClick = (sheetId: string) => {\n  navigation?.goToSheet(sheetId);\n};"
+      ]
     },
     "ActionToolbarElement": {
       "availability": {
@@ -2302,7 +2325,6 @@
       "entries": {}
     },
     "Keyboard": {
-      "stability": "experimental",
       "kind": "interface",
       "entries": {
         "enabled": {

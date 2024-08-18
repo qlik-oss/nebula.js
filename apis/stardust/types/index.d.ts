@@ -123,7 +123,7 @@ export function useTranslator(): stardust.Translator;
 export function useDeviceType(): string;
 
 /**
- * Gets the navigation api to control sheet navigation
+ * Gets the navigation api to control sheet navigation. When useNavigation is used in Sense, it returns Sense.navigation.
  */
 export function useNavigation(): stardust.Navigation;
 
@@ -543,16 +543,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
 
     /**
@@ -585,6 +575,16 @@ declare namespace stardust {
         type: "dimension" | "measure";
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     interface LoadType {
         (type: {
             name: string;
@@ -599,11 +599,12 @@ declare namespace stardust {
         meta?: object;
     }
 
-    class Navigation {
+    class Navigation implements stardust.Emitter {
         constructor();
 
         /**
-         * Navigate to the supplied sheet
+         * Navigate to the supplied sheet and emit 'sheetChanged' event if the target sheet Id is valid.
+         * This allows a navigation object to synchronize its current sheet item with the active sheet.
          * @param sheetId Id of the sheet to navigate to
          */
         goToSheet(sheetId: string): void;

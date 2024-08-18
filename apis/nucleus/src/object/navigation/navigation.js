@@ -10,10 +10,37 @@ export default function createNavigationApi(halo, store, model) {
 
   /**
    * @class Navigation
+   * @description The navigation api instance.
+   * @implements Emitter
+   * @experimental
+   * @since 5.4.0
+   * @example
+   * const navigation = useNavigation();
+   * //...
+   * useEffect(() => {
+   *   const onSheetChanged = () => {
+   *     // do something
+   *   };
+   *   if (navigation?.addListener) {
+   *     navigation.addListener("sheetChanged", onSheetChanged);
+   *   }
+   *   return () => {
+   *     if (navigation?.removeListener) {
+   *       navigation.removeListener("sheetChanged", onSheetChanged);
+   *     }
+   *   };
+   * }, [navigation]);
+   *
+   * const onSheetClick = (sheetId: string) => {
+   *   navigation?.goToSheet(sheetId);
+   * };
    */
   const navigationAPI = /** @lends Navigation# */ {
     /**
-     * Navigate to the supplied sheet
+     * Navigate to the supplied sheet and emit 'sheetChanged' event if the target sheet Id is valid.
+     * This allows a navigation object to synchronize its current sheet item with the active sheet.
+     * @experimental
+     * @since 5.4.0
      * @param {string} sheetId Id of the sheet to navigate to
      */
     goToSheet: async (sheetId) => {
@@ -51,7 +78,9 @@ export default function createNavigationApi(halo, store, model) {
     },
     /**
      * Return the current sheet id
-     * @returns {string|false}
+     * @experimental
+     * @since 5.4.0
+     * @returns {string|false} The current sheet Id. false means there is no current sheet.
      */
     getCurrentSheetId: () => {
       if (State.model) {
