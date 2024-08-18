@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.4.0](https://github.com/qlik-oss/nebula.js/compare/v5.3.0...v5.4.0) (2024-08-18)
+
+### Bug Fixes
+
+- move more menu out of container ([#1568](https://github.com/qlik-oss/nebula.js/issues/1568)) ([403ce7a](https://github.com/qlik-oss/nebula.js/commit/403ce7acd16b784cc0bd2c508ee814e472a9226e))
+
+### Features
+
+- add sheet navigation ([#1586](https://github.com/qlik-oss/nebula.js/issues/1586)) ([a3ba5f1](https://github.com/qlik-oss/nebula.js/commit/a3ba5f181a1bf7b27221c607969b7c12f0a0c69b))
+- listbox popover sorting option ([#1589](https://github.com/qlik-oss/nebula.js/issues/1589)) ([06f9bbf](https://github.com/qlik-oss/nebula.js/commit/06f9bbf9aef6caf6bb511433e32e5d88af4ca036))
+
 # [5.3.0](https://github.com/qlik-oss/nebula.js/compare/v5.2.0...v5.3.0) (2024-07-22)
 
 ### Bug Fixes
