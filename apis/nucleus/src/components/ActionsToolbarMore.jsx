@@ -58,6 +58,9 @@ const More = React.forwardRef(
           ref={ref}
           open={show}
           anchorEl={alignTo.current}
+          getContentAnchorEl={null}
+          container={alignTo.current}
+          disablePortal
           hideBackdrop
           transitionDuration={0}
           slotProps={{
