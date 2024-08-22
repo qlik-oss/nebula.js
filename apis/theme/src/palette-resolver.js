@@ -1,3 +1,5 @@
+import Color from './utils/color';
+
 /**
  * @interface Theme~ScalePalette
  * @property {string} key
@@ -82,21 +84,33 @@ export default function theme(resolvedTheme) {
       if (!somethingIsValid) {
         return undefined;
       }
-      // eslint-disable-next-line no-param-reassign
-      shift = !!shift;
-      if (c?.index < 0 || typeof c?.index === 'undefined') {
-        return c.color;
+      const getColor = () => {
+        // eslint-disable-next-line no-param-reassign
+        shift = !!shift;
+        if (c?.index < 0 || typeof c?.index === 'undefined') {
+          return c.color;
+        }
+        if (typeof uiPalette === 'undefined') {
+          uiPalette = this.uiPalettes()[0] || false;
+        }
+        if (!uiPalette) {
+          return c.color;
+        }
+        if (typeof uiPalette.colors[c.index - shift] === 'undefined') {
+          return c.color;
+        }
+        return uiPalette.colors[c.index - shift];
+      };
+      const color = getColor();
+      if (c.alpha === undefined || c.alpha >= 1 || c.alpha < 0) {
+        return color;
       }
-      if (typeof uiPalette === 'undefined') {
-        uiPalette = this.uiPalettes()[0] || false;
+      const rgbaColor = new Color(color);
+      rgbaColor.setAlpha(c.alpha);
+      if (rgbaColor.isInvalid()) {
+        return color;
       }
-      if (!uiPalette) {
-        return c.color;
-      }
-      if (typeof uiPalette.colors[c.index - shift] === 'undefined') {
-        return c.color;
-      }
-      return uiPalette.colors[c.index - shift];
+      return rgbaColor.toRGBA();
     },
   };
 }
