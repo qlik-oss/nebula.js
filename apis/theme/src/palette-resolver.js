@@ -1,4 +1,4 @@
-import Color from '@nebula.js/ui/utils/color/color';
+import Color from './utils/color/color';
 
 /**
  * @interface Theme~ScalePalette
