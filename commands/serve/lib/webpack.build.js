@@ -33,7 +33,6 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
       alias: {
         '@nebula.js/stardust': path.resolve(__dirname, '../../../apis/stardust/src'),
         '@nebula.js/snapshooter/client': path.resolve(__dirname, '../../../apis/snapshooter/src/renderer'),
-        '@nebula.js/theme/src/utils/color/color': path.resolve(__dirname, '../../../apis/theme/src/utils/color/color'),
         '@nebula.js/theme': path.resolve(__dirname, '../../../apis/theme/src'),
         '@nebula.js/conversion': path.resolve(__dirname, '../../../apis/conversion/src'),
         '@nebula.js/locale/all.json$': path.resolve(__dirname, '../../../apis/locale/all.json'),
