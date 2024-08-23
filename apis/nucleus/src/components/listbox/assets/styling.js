@@ -1,4 +1,4 @@
-import Color from '../../../utils/color';
+import Color from '@nebula.js/ui/utils/color/color';
 import { resolveBgColor, resolveBgImage } from '../../../utils/style/styling-props';
 
 const LIGHT = '#FFF';
