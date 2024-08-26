@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.1](https://github.com/qlik-oss/nebula.js/compare/v5.4.0...v5.4.1) (2024-08-26)
+
+### Bug Fixes
+
+- disable portal for actions toolbar more menu ([#1593](https://github.com/qlik-oss/nebula.js/issues/1593)) ([75f45b7](https://github.com/qlik-oss/nebula.js/commit/75f45b755a8266467e09f1fad212f51a13c32da3))
+
 # [5.4.0](https://github.com/qlik-oss/nebula.js/compare/v5.3.0...v5.4.0) (2024-08-18)
 
 ### Bug Fixes
