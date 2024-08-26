@@ -101,7 +101,7 @@ function getSelectionColors({
       getColorPickerColor(componentSelectionColors[state]) ||
       getSelectionThemeColor(state) ||
       (state === 'possible' && getListboxStyle('', 'backgroundColor')) ||
-      theme.palette?.selected[paletteState] ||
+      theme.palette?.selected?.[paletteState] ||
       DEFAULT_SELECTION_COLORS[state];
 
     const contrastColor = useContrastTextColor
