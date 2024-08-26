@@ -8,7 +8,7 @@ export const CONTRAST_THRESHOLD = 1.5;
 const LIGHT_PREFERRED_THRESHOLD = 3;
 
 export const DEFAULT_SELECTION_COLORS = {
-  selected: '#009845',
+  selected: '#00873D',
   alternative: '#E4E4E4',
   excluded: '#A9A9A9',
   selectedExcluded: '#A9A9A9',
