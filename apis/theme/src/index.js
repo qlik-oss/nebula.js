@@ -6,6 +6,7 @@ import paletteResolverFn from './palette-resolver';
 import styleResolverFn from './style-resolver';
 import contrasterFn from './contraster/contraster';
 import luminance from './contraster/luminance';
+import Color from './utils/color/color';
 
 export default function theme() {
   let resolvedThemeJSON;
@@ -186,3 +187,5 @@ export default function theme() {
     internalAPI,
   };
 }
+
+export { Color };
