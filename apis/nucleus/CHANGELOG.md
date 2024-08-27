@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.4.2](https://github.com/qlik-oss/nebula.js/compare/v5.4.1...v5.4.2) (2024-08-27)
+
+### Bug Fixes
+
+- support alpha value in color returned ([#1594](https://github.com/qlik-oss/nebula.js/issues/1594)) ([3b542e0](https://github.com/qlik-oss/nebula.js/commit/3b542e078ae50c1718941115997c38a45a1fe768))
+
 ## [5.4.1](https://github.com/qlik-oss/nebula.js/compare/v5.4.0...v5.4.1) (2024-08-26)
 
 ### Bug Fixes
