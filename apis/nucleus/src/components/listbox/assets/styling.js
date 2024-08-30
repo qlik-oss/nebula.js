@@ -8,7 +8,7 @@ export const CONTRAST_THRESHOLD = 1.5;
 const LIGHT_PREFERRED_THRESHOLD = 3;
 
 export const DEFAULT_SELECTION_COLORS = {
-  selected: '#009845',
+  selected: '#00873D',
   alternative: '#E4E4E4',
   excluded: '#A9A9A9',
   selectedExcluded: '#A9A9A9',
@@ -101,7 +101,7 @@ function getSelectionColors({
       getColorPickerColor(componentSelectionColors[state]) ||
       getSelectionThemeColor(state) ||
       (state === 'possible' && getListboxStyle('', 'backgroundColor')) ||
-      theme.palette?.selected[paletteState] ||
+      theme.palette?.selected?.[paletteState] ||
       DEFAULT_SELECTION_COLORS[state];
 
     const contrastColor = useContrastTextColor
