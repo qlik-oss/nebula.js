@@ -577,6 +577,7 @@ declare namespace stardust {
 
     /**
      * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     * @deprecated
      */
     interface Plugin {
         info: {

@@ -10,7 +10,7 @@ import init from './initiate';
  * @description Configuration for rendering a visualisation, either creating or fetching an existing object.
  * @property {HTMLElement} element Target html element to render in to
  * @property {object=} options Options passed into the visualisation
- * @property {Plugin[]} [plugins] plugins passed into the visualisation
+ * @property {Plugin[]} [plugins] Deprecated: plugins passed into the visualisation
  * @property {string=} id For existing objects: Engine identifier of object to render
  * @property {string=} type For creating objects: Type of visualisation to render
  * @property {string=} version For creating objects: Version of visualization to render

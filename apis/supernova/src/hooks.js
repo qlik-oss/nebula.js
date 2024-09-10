@@ -790,6 +790,7 @@ export function useNavigation() {
 /**
  * Gets the array of plugins provided when rendering the visualization.
  * @entry
+ * @deprecated since 5.5.0
  * @returns {Plugin[]} array of plugins.
  * @example
  * // provide plugins that can be used when rendering

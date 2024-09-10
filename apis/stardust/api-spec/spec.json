@@ -1818,7 +1818,8 @@
       "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
       "stability": "experimental",
       "availability": {
-        "since": "1.2.0"
+        "since": "1.2.0",
+        "deprecated": true
       },
       "kind": "interface",
       "entries": {
