@@ -5,12 +5,14 @@ import barchart from '@nebula.js/sn-bar-chart';
 
 async function run() {
   const appId = '<App id>';
+  // https://github.com/qlik-oss/qlik-api-ts/blob/main/docs/authentication.md
   const hostConfig = {
     authType: '<AuthenticationType: ex "oauth2" or "cookie"',
     host: '<URL>',
     // connection config based on authType
     webIntegrationId: '<Qlik web integration id>', // cookie
     clientId: '<Qlik OAuth client id>', // oauth2
+    accessTokenStorage: 'session', // for oauth2
   };
 
   qlikApi.auth.setDefaultHostConfig(hostConfig);
