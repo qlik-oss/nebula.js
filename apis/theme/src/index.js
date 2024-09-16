@@ -125,7 +125,11 @@ export default function theme() {
      */
     validateColor(...args) {
       const c = createColor(...args);
-      return c.isInvalid() ? undefined : c.toString();
+      if (c.isInvalid()) {
+        return undefined;
+      }
+
+      return c.getAlpha === 1 ? c.getRGB() : c.getRGBA();
     },
   };
 
