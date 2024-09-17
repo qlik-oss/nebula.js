@@ -3,14 +3,14 @@ import create from '../contraster';
 
 describe('contraster', () => {
   let luminanceMock;
-  // let contrastMock;
+  let contrastMock;
 
   beforeEach(() => {
     luminanceMock = jest.fn();
-    //   contrastMock = jest.fn();
+    contrastMock = jest.fn();
 
-    jest.spyOn(chartModules, 'getRelativeLuminance').mockImplementation(luminanceMock);
-    //   jest.spyOn(contrastModule, 'default').mockImplementation(contrastMock);
+    jest.spyOn(chartModules, 'getLuminance').mockImplementation(luminanceMock);
+    jest.spyOn(chartModules, 'getContrastRatio').mockImplementation(contrastMock);
   });
 
   afterEach(() => {

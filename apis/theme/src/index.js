@@ -1,4 +1,4 @@
-import { createColor, getRelativeLuminance } from 'qlik-chart-modules';
+import { createColor, getLuminance } from 'qlik-chart-modules';
 import EventEmitter from 'node-event-emitter';
 
 import setTheme from './set-theme';
@@ -129,7 +129,7 @@ export default function theme() {
         return undefined;
       }
 
-      return c.getAlpha === 1 ? c.getRGB() : c.getRGBA();
+      return c.getAlpha() === 1 ? c.getRGB() : c.getRGBA();
     },
   };
 
@@ -146,7 +146,7 @@ export default function theme() {
 
       // try to determine if the theme color is light or dark
       const textColor = externalAPI.getStyle('', '', 'color');
-      const textColorLuminance = getRelativeLuminance(textColor);
+      const textColorLuminance = getLuminance(textColor);
       // if it appears dark, create an inverse that is light and vice versa
       const inverseTextColor = textColorLuminance < 0.2 ? '#ffffff' : '#333333';
       // instantiate a contraster that uses those two colors when determining the best contrast for an arbitrary color

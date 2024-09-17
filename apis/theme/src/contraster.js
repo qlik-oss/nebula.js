@@ -1,5 +1,5 @@
 /* eslint no-cond-assign: 0 */
-import { getContrastRatio, getRelativeLuminance } from 'qlik-chart-modules';
+import { getContrastRatio, getLuminance } from 'qlik-chart-modules';
 
 const MAX_SIZE = 1000;
 
@@ -7,7 +7,7 @@ export default function colorFn(colors = ['#333333', '#ffffff']) {
   let cache = {};
   let n = 0;
 
-  const luminances = colors.map(getRelativeLuminance);
+  const luminances = colors.map(getLuminance);
 
   return {
     getBestContrastColor(colorString) {
@@ -16,10 +16,11 @@ export default function colorFn(colors = ['#333333', '#ffffff']) {
           cache = {};
           n = 0;
         }
-        const L = getRelativeLuminance(colorString);
+        const L = getLuminance(colorString);
 
         const contrasts = luminances.map((lum) => getContrastRatio(L, lum));
         const c = colors[contrasts.indexOf(Math.max(...contrasts))];
+        console.log({ L, contrasts });
 
         cache[colorString] = c;
         n++;

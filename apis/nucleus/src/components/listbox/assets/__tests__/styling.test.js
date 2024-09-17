@@ -110,9 +110,9 @@ describe('styling', () => {
       expect(styles.search.color).toEqual('object.listBox,content,color');
     });
     it('search - should get desired color if contrasting enough', () => {
-      themeApi.getStyle = () => '#999';
+      themeApi.getStyle = () => '#888888';
       const styles = getStyling({ app, themeApi, theme, components: [] });
-      expect(styles.search.color).toEqual('#999');
+      expect(styles.search.color).toEqual('#888888');
     });
     it('search - should get a better contrasting color if not good contrast against white', () => {
       themeApi.getStyle = () => '#aaa';
