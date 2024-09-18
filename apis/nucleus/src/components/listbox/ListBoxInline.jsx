@@ -81,6 +81,7 @@ function ListBoxInline({ options, layout }) {
     components,
     selectDisabled = () => false,
     flags,
+    disablePortal = true,
   } = options;
 
   const theme = useTheme();
@@ -252,6 +253,7 @@ function ListBoxInline({ options, layout }) {
       selectionState={selectionState}
       selections={selections}
       keyboard={keyboard}
+      disablePortal={disablePortal}
     />
   );
 
