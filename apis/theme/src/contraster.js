@@ -20,7 +20,6 @@ export default function colorFn(colors = ['#333333', '#ffffff']) {
 
         const contrasts = luminances.map((lum) => getContrastRatio(L, lum));
         const c = colors[contrasts.indexOf(Math.max(...contrasts))];
-        console.log({ L, contrasts });
 
         cache[colorString] = c;
         n++;
