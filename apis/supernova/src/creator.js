@@ -69,6 +69,7 @@ function createWithHooks(generator, opts, galaxy) {
       model: opts.model,
       app: opts.app,
       global: qGlobal,
+      qlikApi: opts.qlikApi,
       selections: opts.selections,
       nebbie: opts.nebbie,
       element: undefined, // set on mount

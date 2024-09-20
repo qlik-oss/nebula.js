@@ -744,6 +744,21 @@ export function useEmbed() {
 }
 
 /**
+ * Gets the possible qlik api instance provided
+ * @entry
+ * @since 5.5.0
+ * @returns {QlikApi} The qlik api instance provided to Nebula
+ * @example
+ * import { useQlikApi } from '@nebula.js/stardust';
+ *
+ * const api = useQlikApi();
+ * api.render(...)
+ */
+export function useQlikApi() {
+  return useInternalContext('qlikApi');
+}
+
+/**
  * Gets the translator.
  * @entry
  * @returns {Translator} The translator.

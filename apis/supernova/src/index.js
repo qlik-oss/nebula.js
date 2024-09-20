@@ -29,6 +29,7 @@ export {
   useKeyboard,
   useOptions,
   useEmbed,
+  useQlikApi,
   useRenderState,
   useEmitter,
   onTakeSnapshot,

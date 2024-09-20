@@ -78,8 +78,13 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
  */
 
 /**
+ * @interface QlikApi
+ */
+
+/**
  * @interface Configuration
  * @property {Function(LoadType):Promise<Visualization>=} load Fallback load function for missing types
+ * @property {QlikApi=} qlikApi Instance of qlik api to pass into visualizations
  * @property {Context=} context Settings for the rendering instance
  * @property {Array<TypeInfo>=} types Visualization types to register
  * @property {Array<ThemeInfo>=} themes Themes to register
@@ -112,6 +117,7 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
  */
 
 const DEFAULT_CONFIG = {
+  qlikApi: undefined,
   context: {},
   load: () => undefined,
   types: [],
@@ -243,6 +249,7 @@ function nuked(configuration = {}) {
       theme: appTheme.externalAPI,
       translator: locale.translator,
       nebbie: null, // actual value is set further down
+      qlikApi: configuration.qlikApi,
     };
 
     const halo = {

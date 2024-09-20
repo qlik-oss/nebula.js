@@ -265,6 +265,7 @@ const loadType = async ({
   app,
   selections,
   nebbie,
+  qlikApi,
   focusHandler,
   emitter,
   onMount,
@@ -277,6 +278,7 @@ const loadType = async ({
       app,
       selections,
       nebbie,
+      qlikApi,
       focusHandler,
       emitter,
       navigation,
@@ -317,7 +319,7 @@ const Cell = forwardRef(
     ref
   ) => {
     const { app, types } = halo;
-    const { nebbie } = halo.public;
+    const { nebbie, qlikApi } = halo.public;
     const {
       theme: themeName,
       translator,
@@ -423,6 +425,7 @@ const Cell = forwardRef(
           app,
           selections,
           nebbie,
+          qlikApi,
           focusHandler: focusHandler.current,
           emitter,
           onMount,

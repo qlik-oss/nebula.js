@@ -37,6 +37,7 @@ export {
   useInteractionState,
   useOptions,
   useEmbed,
+  useQlikApi,
   useRenderState,
   useEmitter,
   onTakeSnapshot,
