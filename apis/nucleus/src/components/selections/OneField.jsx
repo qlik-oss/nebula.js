@@ -36,6 +36,10 @@ export default function OneField({
   };
 
   const selection = field.selections[stateIx];
+  const fieldLabel =
+    selection.qDimensionReferences?.find((element) => element.qLabel)?.qLabel ||
+    selection.qReadableName ||
+    selection.qField;
   if (typeof selection.qTotal === 'undefined') {
     selection.qTotal = 0;
   }
@@ -83,7 +87,7 @@ export default function OneField({
     Header = (
       <Grid item xs style={{ minWidth: 0, flexGrow: 1, opacity: selection.qLocked ? '0.3' : '' }}>
         <Typography noWrap style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600 }}>
-          {selection.qField}
+          {fieldLabel}
         </Typography>
         <Typography noWrap style={{ fontSize: '12px', opacity: 0.55, lineHeight: '16px' }}>
           {label}
