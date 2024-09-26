@@ -10,7 +10,7 @@ export function embed(app: qix.Doc, instanceConfig?: stardust.Configuration): st
 export namespace embed {
     /**
      * Creates a new `embed` scope bound to the specified `configuration`.
-     * 
+     *
      * The configuration is merged with all previous scopes.
      * @param configuration The configuration object
      */
@@ -26,7 +26,7 @@ export function useState<S>(initialState: S | (()=>S)): [S, stardust.SetStateFn<
 
 /**
  * Triggers a callback function when a dependent value changes.
- * 
+ *
  * Omitting the dependency array will have the hook run on each update
  * and an empty dependency array runs only once.
  * @param effect The callback.
@@ -43,7 +43,7 @@ export function useMemo<T>(factory: ()=>T, deps: any[]): T;
 
 /**
  * Runs a callback function when a dependent changes.
- * 
+ *
  * Useful for async operations that otherwise cause no side effects.
  * Do not add for example listeners withing the callback as there is no teardown function.
  * @param factory The factory function that calls the promise.
@@ -68,7 +68,7 @@ export function useLayout(): qix.GenericObjectLayout;
 
 /**
  * Gets the layout of the generic object associated with this visualization.
- * 
+ *
  * Unlike the regular layout, a _stale_ layout is not changed when a generic object enters
  * the modal state. This is mostly notable in that `qSelectionInfo.qInSelections` in the layout is
  * always `false`.
@@ -141,7 +141,7 @@ export function useAction<A>(factory: ()=>stardust.ActionDefinition<A>, deps?: a
 
 /**
  * Gets the desired constraints that should be applied when rendering the visualization.
- * 
+ *
  * The constraints are set on the embed configuration before the visualization is rendered
  * and should be respected when implementing the visualization.
  * @deprecated
@@ -150,7 +150,7 @@ export function useConstraints(): stardust.Constraints;
 
 /**
  * Gets the desired interaction states that should be applied when rendering the visualization.
- * 
+ *
  * The interactions are set on the embed configuration before the visualization is rendered
  * and should be respected when implementing the visualization.
  */
@@ -158,11 +158,11 @@ export function useInteractionState(): stardust.Interactions;
 
 /**
  * Gets the options object provided when rendering the visualization.
- * 
+ *
  * This is an empty object by default but enables customization of the visualization through this object.
  * Options are different from setting properties on the generic object in that options
  * are only temporary settings applied to the visualization when rendered.
- * 
+ *
  * You have the responsibility to provide documentation of the options you support, if any.
  */
 export function useOptions(): object;
@@ -170,7 +170,7 @@ export function useOptions(): object;
 /**
  * This is an empty object by default, but enables you to provide a custom API of your visualization to
  * make it possible to control after it has been rendered.
- * 
+ *
  * You can only use this hook once, calling it more than once is considered an error.
  * @param factory
  * @param deps
@@ -185,7 +185,7 @@ export function onTakeSnapshot(snapshotCallback: ($: qix.GenericObjectLayout)=>P
 
 /**
  * Gets render state instance.
- * 
+ *
  * Used to update properties and get a new layout without triggering onInitialRender.
  */
 export function useRenderState(): stardust.RenderState;
@@ -221,9 +221,9 @@ export namespace Conversion {
 export namespace EnigmaMocker {
     /**
      * Mocks Engima app functionality. It accepts one / many generic objects as input argument and returns the mocked Enigma app. Each generic object represents one visualisation and specifies how it behaves. For example, what layout to use the data to present.
-     * 
+     *
      * The generic object is represented with a Javascript object with a number of properties. The name of the property correlates to the name in the Enigma model for `app.getObject(id)`. For example, the property `getLayout` in the generic object is used to define `app.getObject(id).getLayout()`. Any property can be added to the fixture (just make sure it exists and behaves as in the Enigma model!).
-     * 
+     *
      * The value for each property is either fixed (string / boolean / number / object) or a function. Arguments are forwarded to the function to allow for greater flexibility. For example, this can be used to return different hypercube data when scrolling in the chart.
      * @param genericObjects Generic objects controlling behaviour of visualizations.
      * @param options Options
@@ -242,7 +242,7 @@ declare namespace stardust {
          * Fallback load function for missing types
          * @param $
          */
-        load($: stardust.LoadType): Promise<stardust.Visualization>;
+        load?: ($: stardust.LoadType) => Promise<stardust.Visualization>;
         context?: stardust.Context;
         types?: stardust.TypeInfo[];
         themes?: stardust.ThemeInfo[];
@@ -420,9 +420,9 @@ declare namespace stardust {
 
         /**
          * Converts the visualization to a different registered type.
-         * 
+         *
          * Will update properties if permissions allow, else will patch (can be forced with forcePatch parameter)
-         * 
+         *
          * Not all chart types are compatible, similar structures are required.
          * @param newType Which registered type to convert to.
          * @param forceUpdate Whether to apply the change or not, else simply returns the resulting properties, defaults to true.
@@ -432,9 +432,9 @@ declare namespace stardust {
 
         /**
          * Toggles the chart to a data view of the chart.
-         * 
+         *
          * The chart will be toggled to the type defined in the nebula context (dataViewType).
-         * 
+         *
          * The default dataViewType for nebula is sn-table. The specified chart type needs to be registered as well, in order to make it possible to render the data view.
          * @param showDataView If included, forces the chart into a specific state. True will show data view, and false will show the original chart. If not included it will always toggle between the two views.
          */
@@ -841,7 +841,7 @@ declare namespace stardust {
         /**
          * Get the best contrasting color against the specified `color`.
          * This is typically used to find a suitable text color for a label placed on an arbitrarily colored background.
-         * 
+         *
          * The returned colors are derived from the theme.
          * @param color A color to measure the contrast against
          */
