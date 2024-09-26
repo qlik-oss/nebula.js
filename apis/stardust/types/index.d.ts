@@ -240,10 +240,10 @@ declare namespace stardust {
     /**
      * Fallback load function for missing types
      */
-    type LoadFn = ($: stardust.LoadType)=>Promise<stardust.Visualization>;
+    type LoadFallback = ($: stardust.LoadType)=>Promise<stardust.Visualization>;
 
     interface Configuration {
-        load?: stardust.LoadFn;
+        load?: stardust.LoadFallback;
         context?: stardust.Context;
         types?: stardust.TypeInfo[];
         themes?: stardust.ThemeInfo[];
