@@ -237,12 +237,13 @@ declare namespace stardust {
         key: string;
     }
 
+    /**
+     * Fallback load function for missing types
+     */
+    type LoadFallback = ($: stardust.LoadType)=>Promise<stardust.Visualization>;
+
     interface Configuration {
-        /**
-         * Fallback load function for missing types
-         * @param $
-         */
-        load($: stardust.LoadType): Promise<stardust.Visualization>;
+        load?: stardust.LoadFallback;
         context?: stardust.Context;
         types?: stardust.TypeInfo[];
         themes?: stardust.ThemeInfo[];
