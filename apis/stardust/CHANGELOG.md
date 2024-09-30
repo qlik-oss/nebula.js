@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/qlik-oss/nebula.js/compare/v5.4.2...v5.5.0) (2024-09-30)
+
+### Bug Fixes
+
+- correct type for load fallback function in embed config ([#1619](https://github.com/qlik-oss/nebula.js/issues/1619)) ([081c9c7](https://github.com/qlik-oss/nebula.js/commit/081c9c7496601495054e68705c4bfec70081732b))
+
 ## [5.4.2](https://github.com/qlik-oss/nebula.js/compare/v5.4.1...v5.4.2) (2024-08-27)
 
 **Note:** Version bump only for package @nebula.js/stardust

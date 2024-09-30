@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.5.0](https://github.com/qlik-oss/nebula.js/compare/v5.4.2...v5.5.0) (2024-09-30)
+
+### Bug Fixes
+
+- correct type for load fallback function in embed config ([#1619](https://github.com/qlik-oss/nebula.js/issues/1619)) ([081c9c7](https://github.com/qlik-oss/nebula.js/commit/081c9c7496601495054e68705c4bfec70081732b))
+- **deps:** update dependency webpack to v5.94.0 [security] ([#1600](https://github.com/qlik-oss/nebula.js/issues/1600)) ([db8e12a](https://github.com/qlik-oss/nebula.js/commit/db8e12a016d82e176d1cffab5c6b7da2c8699d53))
+- use correct green color for selected ([#1597](https://github.com/qlik-oss/nebula.js/issues/1597)) ([e26f580](https://github.com/qlik-oss/nebula.js/commit/e26f580a1d1cbcbbc967331bc8c7221de9bf563c))
+
+### Features
+
+- dimension labels in selection bar ([#1617](https://github.com/qlik-oss/nebula.js/issues/1617)) ([73ea8f4](https://github.com/qlik-oss/nebula.js/commit/73ea8f4a9b7f6fe654eeb266285d12c3435d09a4))
+- disable portal option ([#1613](https://github.com/qlik-oss/nebula.js/issues/1613)) ([3cdef85](https://github.com/qlik-oss/nebula.js/commit/3cdef85a7b690250dad8a25e0650a9ea9bf2e572))
+
 ## [5.4.2](https://github.com/qlik-oss/nebula.js/compare/v5.4.1...v5.4.2) (2024-08-27)
 
 ### Bug Fixes
