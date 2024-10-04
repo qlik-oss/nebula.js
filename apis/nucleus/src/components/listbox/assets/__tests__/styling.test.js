@@ -117,7 +117,7 @@ describe('styling', () => {
     it('search - should get a better contrasting color if not good contrast against white', () => {
       themeApi.getStyle = () => '#aaa';
       const styles = getStyling({ app, themeApi, theme, components: [] });
-      expect(styles.search.color).toEqual('#000');
+      expect(styles.search.color).toEqual('#000000');
     });
     it('header', () => {
       components = [
@@ -159,7 +159,7 @@ describe('styling', () => {
         },
       ];
       const POSSIBLE_COLOR = 'rgb(255, 255, 255)';
-      const CONTRASTING_TO_POSSIBLE = '#000';
+      const CONTRASTING_TO_POSSIBLE = '#000000';
 
       themeApi.getStyle = (a, b, c) => (c === 'backgroundColor' ? POSSIBLE_COLOR : `${a},${b},${c}`);
       components[0].content.fontColor.color = '#FFFFFF';
