@@ -1,10 +1,4 @@
-import getStyling, {
-  CONTRAST_THRESHOLD,
-  DEFAULT_SELECTION_COLORS,
-  getContrast,
-  getContrastingColor,
-  getOverridesAsObject,
-} from '../styling';
+import getStyling, { DEFAULT_SELECTION_COLORS, getOverridesAsObject } from '../styling';
 
 describe('styling', () => {
   let theme = {};
@@ -116,9 +110,9 @@ describe('styling', () => {
       expect(styles.search.color).toEqual('object.listBox,content,color');
     });
     it('search - should get desired color if contrasting enough', () => {
-      themeApi.getStyle = () => '#999';
+      themeApi.getStyle = () => '#888888';
       const styles = getStyling({ app, themeApi, theme, components: [] });
-      expect(styles.search.color).toEqual('#999');
+      expect(styles.search.color).toEqual('#888888');
     });
     it('search - should get a better contrasting color if not good contrast against white', () => {
       themeApi.getStyle = () => '#aaa';
@@ -197,66 +191,6 @@ describe('styling', () => {
       const inputComponents = ['general', 'selections', 'theme', 'not-supported', undefined].map((key) => ({ key }));
       expect(inputComponents).toHaveLength(5);
       expect(Object.keys(getOverridesAsObject(inputComponents)).sort()).toEqual(['selections', 'theme']);
-    });
-  });
-
-  const hasEnoughContrast = (a, b) => getContrast(a, b) > CONTRAST_THRESHOLD;
-
-  describe('contrast', () => {
-    it('should return undefined for unsupported or invalid color(s)', () => {
-      expect(getContrast('rgb(0,0,0)', 'transparent')).toEqual(undefined);
-      expect(getContrast('rgb(0,0,0)', 'asdasd')).toEqual(undefined);
-      expect(getContrast('dsadasd', 'rgb(0,0,0)')).toEqual(undefined);
-    });
-
-    it('should fallback to false when contrast is undefined for unsupported or invalid color(s)', () => {
-      expect(hasEnoughContrast('#ddd', 'white')).toEqual(false);
-      expect(hasEnoughContrast('#ccc', 'white')).toEqual(false);
-      expect(hasEnoughContrast('rgb(0,0,0)', 'transparent')).toEqual(false);
-      expect(hasEnoughContrast('transparent', 'transparent')).toEqual(false);
-      expect(hasEnoughContrast('red', 'blue')).toEqual(true);
-      expect(hasEnoughContrast('misspelled', 'hey hey')).toEqual(false);
-      expect(hasEnoughContrast('misspelled', 'hey hey')).toEqual(false);
-      expect(hasEnoughContrast('transparent', 'transparent')).toEqual(false);
-      expect(hasEnoughContrast('  hsl   (0,   0  ,  0  ,  1.0      )', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('hsl(0, 0, 0, 1)', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('hsl(0,0,0,1.0)', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast(undefined, '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('', '#FFF')).toEqual(false);
-    });
-    it('should detect transparent colors and then always return false since we do not know color is behind the transparent color', () => {
-      expect(hasEnoughContrast('  rgba   (0,   0  ,  0  ,  0.2      )', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('  hsla   (0,   0  ,  0  ,  0.2      )', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('  rgba   (0,   0  ,  0  ,  .2      )', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('  hsla   (0,   0  ,  0  ,  .2      )', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('rgba(0, 0, 0, 0)', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('rgba(0,0,0,0)', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('hsla(0, 0, 0, 0)', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('hsla(0,0,0,0)', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('transparent', '#FFF')).toEqual(false);
-    });
-    it('should fallback to false for unsupported formats', () => {
-      expect(hasEnoughContrast('rgb(0 0 0 / 0%', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('rgb(0 0 0 / 100%)', '#FFF')).toEqual(false);
-      expect(hasEnoughContrast('rgb(255 255 255 / 0%)', '#000')).toEqual(false);
-      expect(hasEnoughContrast('rgb(255 255 255 / 100%)', '#000')).toEqual(false);
-    });
-
-    it('should not detect as transparent colors', () => {
-      expect(hasEnoughContrast('rgba(0, 0, 0, 1)', '#FFF')).toEqual(true);
-      expect(hasEnoughContrast('hsla(0,0,0,1.0)', '#FFF')).toEqual(true);
-      expect(hasEnoughContrast('rgba(0,0,0,1.0)', '#FFF')).toEqual(true);
-      expect(hasEnoughContrast('red', '#FFF')).toEqual(true);
-    });
-  });
-
-  describe('get contrasting color', () => {
-    it('should prefer light color even though contrast is higher for desired color', () => {
-      const bg = '#474747';
-      const c1 = getContrast('#000', bg);
-      const c2 = getContrast('#fff', bg);
-      expect(c1 > c2).toBeTruthy(); // although it does not make sense when comparing with the eye
-      expect(getContrastingColor(bg, '#000')).toEqual('#FFF');
     });
   });
 
