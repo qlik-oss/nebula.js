@@ -158,6 +158,7 @@ module.exports = async ({
             port: entryWatcher && entryWatcher.port,
           },
           flags: serveConfig.flags,
+          anything: serveConfig.anything,
           themes: themes.map((theme) => theme.id),
           types: serveConfig.types,
           keyboardNavigation: serveConfig.keyboardNavigation,
