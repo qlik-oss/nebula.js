@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.6.0](https://github.com/qlik-oss/nebula.js/compare/v5.5.0...v5.6.0) (2024-10-08)
+
+### Bug Fixes
+
+- use color utils from qlik-chart-modules for color contrast ([#1625](https://github.com/qlik-oss/nebula.js/issues/1625)) ([e69a8d9](https://github.com/qlik-oss/nebula.js/commit/e69a8d94ade1e4642210205dc0dbf22616769051))
+
+### Features
+
+- dimension labels in selection bar ([#1620](https://github.com/qlik-oss/nebula.js/issues/1620)) ([15e5ccd](https://github.com/qlik-oss/nebula.js/commit/15e5ccdfb26de416577460dca253116768603ec1))
+
 # [5.5.0](https://github.com/qlik-oss/nebula.js/compare/v5.4.2...v5.5.0) (2024-09-30)
 
 ### Bug Fixes
