@@ -1,6 +1,6 @@
 const systemjsBehaviours = {
   getExternal: ({ config: cfg }) => {
-    const defaultExternal = ['@nebula.js/stardust', 'picasso.js', 'picasso-plugin-q', 'react', 'react-dom'];
+    const defaultExternal = ['@nebula.js/stardust', 'picasso.js', 'picasso-plugin-q', 'react', 'react-dom', 'qmfe-api'];
     const { external } = cfg.systemjs || {};
     return Array.isArray(external) ? external : defaultExternal;
   },
