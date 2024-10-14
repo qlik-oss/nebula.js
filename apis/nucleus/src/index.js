@@ -88,6 +88,7 @@ const DEFAULT_SNAPSHOT_CONFIG = /** @lends SnapshotConfiguration */ {
  * @property {Context=} context Settings for the rendering instance
  * @property {Array<TypeInfo>=} types Visualization types to register
  * @property {Array<ThemeInfo>=} themes Themes to register
+ * @property {object=} hostConfig a qlik api compatible host config, see https://github.com/qlik-oss/qlik-api-ts/blob/main/docs/authentication.md#the-host-config
  * @property {object=} anything
  * @example
  * import { embed } from '@nebula.js/stardust'
@@ -242,6 +243,8 @@ function nuked(configuration = {}) {
         flags: flagsFn(configuration.flags),
         /** @type {string} */
         deviceType: deviceTypeFn(configuration.context.deviceType),
+        /** @type {object} */
+        hostConfig: configuration.hostConfig,
         /** @type {object} */
         anything: configuration.anything,
       },
