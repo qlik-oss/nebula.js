@@ -184,7 +184,7 @@ const mergeConfigs = (base, c) => ({
   types: mergeArray(base.types, c.types),
   themes: mergeArray(base.themes, c.themes),
   flags: mergeObj(base.flags, c.flags),
-  hostConfig: mergeObj(base.hostConfig, c.hostConfig),
+  hostConfig: c.hostConfig || base.hostConfig,
   anything: mergeObj(base.anything, c.anything),
 });
 
