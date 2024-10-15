@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.7.0](https://github.com/qlik-oss/nebula.js/compare/v5.6.0...v5.7.0) (2024-10-15)
+
+### Features
+
+- add host config to config and galaxy ([#1628](https://github.com/qlik-oss/nebula.js/issues/1628)) ([71e053b](https://github.com/qlik-oss/nebula.js/commit/71e053bff79f54f21873d2fff924f570ac36d96c))
+
 # [5.6.0](https://github.com/qlik-oss/nebula.js/compare/v5.5.0...v5.6.0) (2024-10-08)
 
 **Note:** Version bump only for package @nebula.js/cli-build
