@@ -7,7 +7,7 @@ const systemjsBehaviours = {
       'react',
       'react-dom',
       /^(?!@qlik-trial\/qmfe-data-client-parcels)(@qlik-trial\/qmfe-)/,
-      '@qlik/api',
+      /^@qlik\/api\//,
     ];
     const { external } = cfg.systemjs || {};
     return Array.isArray(external) ? external : defaultExternal;
