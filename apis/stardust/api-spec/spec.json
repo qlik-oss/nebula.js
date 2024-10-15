@@ -707,7 +707,7 @@
           }
         },
         "hostConfig": {
-          "description": "a qlik api compatible host config, see https://github.com/qlik-oss/qlik-api-ts/blob/main/docs/authentication.md#the-host-config",
+          "description": "Qlik api compatible host config, see https://github.com/qlik-oss/qlik-api-ts/blob/main/docs/authentication.md#the-host-config",
           "optional": true,
           "type": "object"
         },
