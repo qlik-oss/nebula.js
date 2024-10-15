@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.7.1](https://github.com/qlik-oss/nebula.js/compare/v5.7.0...v5.7.1) (2024-10-15)
+
+### Features
+
+- support tooltip for cell title, subtitle, and footer ([#1629](https://github.com/qlik-oss/nebula.js/issues/1629)) ([6f73fa4](https://github.com/qlik-oss/nebula.js/commit/6f73fa484ea95f8d18db3348c7a3ccbb0a0f93e1))
+
 # [5.7.0](https://github.com/qlik-oss/nebula.js/compare/v5.6.0...v5.7.0) (2024-10-15)
 
 ### Features
