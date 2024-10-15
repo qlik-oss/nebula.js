@@ -706,6 +706,11 @@
             "type": "#/definitions/ThemeInfo"
           }
         },
+        "hostConfig": {
+          "description": "a qlik api compatible host config, see https://github.com/qlik-oss/qlik-api-ts/blob/main/docs/authentication.md#the-host-config",
+          "optional": true,
+          "type": "object"
+        },
         "anything": {
           "optional": true,
           "type": "object"
@@ -773,6 +778,9 @@
         },
         "deviceType": {
           "type": "string"
+        },
+        "hostConfig": {
+          "type": "object"
         },
         "anything": {
           "type": "object"

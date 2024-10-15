@@ -247,6 +247,7 @@ declare namespace stardust {
         context?: stardust.Context;
         types?: stardust.TypeInfo[];
         themes?: stardust.ThemeInfo[];
+        hostConfig?: object;
         anything?: object;
     }
 
@@ -265,6 +266,7 @@ declare namespace stardust {
         translator: stardust.Translator;
         flags: stardust.Flags;
         deviceType: string;
+        hostConfig: object;
         anything: object;
     }
 
