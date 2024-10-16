@@ -492,6 +492,11 @@ const Cell = forwardRef(
           const snapshot = await this.takeSnapshot(); // eslint-disable-line
           return halo.config.snapshot.capture(snapshot);
         },
+        async getContextMenu(menu, event, menuBuilder) {
+          if (state.sn?.component && typeof state.sn.component.onContextMenu === 'function') {
+            await state.sn.component.onContextMenu(menu, event, menuBuilder);
+          }
+        },
       }),
       [state.sn, contentRect, cellRect, layout, theme.name, appLayout]
     );

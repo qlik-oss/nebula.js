@@ -194,6 +194,9 @@ export default function viz({ model, halo, initialError, onDestroy = async () =>
         cellRef.current.setModel(newModel);
       }
     },
+    async getContextMenu(menu, event, menuBuilder) {
+      return cellRef.current.getContextMenu(menu, event, menuBuilder);
+    },
     /**
      * Listens to custom events from inside the visualization. See useEmitter
      * @param {string} eventName Event name to listen to
