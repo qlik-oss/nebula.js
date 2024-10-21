@@ -61,7 +61,7 @@ const config = ({
   mode = 'production',
   format = 'umd',
   cwd = process.cwd(),
-  argv = { sourcemap: true, codeSplit: false, browser: true },
+  argv = { sourcemap: true, codeSplit: false },
   core,
   behaviours: {
     getExternal = getExternalDefault,
