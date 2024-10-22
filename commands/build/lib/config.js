@@ -54,15 +54,7 @@ const getExternalDefault = ({ pkg }) => {
 };
 
 const getExternalCore = ({ pkg }) => {
-  const defaultExternal = [
-    '@nebula.js/stardust',
-    'picasso.js',
-    'picasso-plugin-q',
-    'react',
-    'react-dom',
-    /^(?!@qlik-trial\/qmfe-data-client-parcels)(@qlik-trial\/qmfe-)/,
-    /^@qlik\/api\//,
-  ];
+  const defaultExternal = ['@nebula.js/stardust', /^@qlik\/api\//];
   const peers = Object.keys(pkg.peerDependencies || {});
   return [...defaultExternal, ...peers];
 };
