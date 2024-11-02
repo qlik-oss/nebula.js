@@ -295,7 +295,7 @@ const loadType = async ({
         },
       });
     } else {
-      dispatch({ type: 'ERROR', error: { title: err.message } });
+      dispatch({ type: 'ERROR', error: { title: err.message, errorObject: err } });
     }
     onMount();
   }
@@ -313,6 +313,7 @@ const Cell = forwardRef(
       currentId,
       emitter,
       navigation,
+      onError,
     },
     ref
   ) => {
@@ -517,6 +518,7 @@ const Cell = forwardRef(
     if (state.loading && !state.longRunningQuery) {
       Content = <LoadingSn />;
     } else if (state.error) {
+      onError(state.error.errorObject);
       Content = <CError {...state.error} />;
     } else if (state.loaded) {
       Content = (

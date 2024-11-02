@@ -1757,6 +1757,18 @@
           "optional": true,
           "type": "object"
         },
+        "onRender": {
+          "description": "Callback function called after rendering successfully",
+          "optional": true,
+          "kind": "function",
+          "params": []
+        },
+        "onError": {
+          "description": "Callback function called if an error occurs",
+          "optional": true,
+          "kind": "function",
+          "params": []
+        },
         "plugins": {
           "description": "plugins passed into the visualisation",
           "optional": true,

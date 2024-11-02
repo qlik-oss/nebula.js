@@ -564,6 +564,14 @@ declare namespace stardust {
     interface RenderConfig {
         element: HTMLElement;
         options?: object;
+        /**
+         * Callback function called after rendering successfully
+         */
+        onRender?(): void;
+        /**
+         * Callback function called if an error occurs
+         */
+        onError?(): void;
         plugins?: stardust.Plugin[];
         id?: string;
         type?: string;

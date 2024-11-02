@@ -1,3 +1,5 @@
+import VisualizationError from '../utils/visualization-error';
+
 const LOADED = {};
 
 /**
@@ -32,7 +34,7 @@ export async function load(name, version, { config }, loader) {
         if (__NEBULA_DEV__) {
           console.warn(e); // eslint-disable-line no-console
         }
-        throw new Error(`Failed to load visualization: '${sKey}'`);
+        throw new VisualizationError(`Failed to load visualization: '${sKey}'`, e);
       });
   }
 
