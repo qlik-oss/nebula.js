@@ -16,8 +16,8 @@ export default function viz({
   navigation,
   initialError,
   onDestroy = async () => {},
-  onRender,
-  onError,
+  onRender = () => {},
+  onError = () => {},
 } = {}) {
   let unmountCell = noopi;
   let cellRef = null;

@@ -2,7 +2,7 @@
 import vizualizationAPI from '../viz';
 
 export default async function init(model, optional, halo, navigation, initialError, onDestroy = async () => {}) {
-  const { onRender = () => {}, onError = () => {} } = optional;
+  const { onRender, onError } = optional;
   const api = vizualizationAPI({
     model,
     halo,

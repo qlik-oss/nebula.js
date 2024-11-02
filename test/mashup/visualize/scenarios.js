@@ -587,7 +587,13 @@ async function render() {
   const scenario = getScenario();
   const app = await EnigmaMocker.fromGenericObjects([scenario.genericObject], scenario.options);
   const element = document.querySelector('.viz');
-  const viz = await configuration(app).render({ element, id: 'bb8' });
+  const viz = await configuration(app).render({
+    element,
+    id: 'bb8',
+    onError: () => {
+      // const errorElement = document.querySelector('.errors');
+    },
+  });
 
   if (typeof scenario.post === 'function') {
     scenario.post(viz);
