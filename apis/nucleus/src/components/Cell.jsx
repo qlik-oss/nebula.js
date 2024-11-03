@@ -17,6 +17,7 @@ import InstanceContext from '../contexts/InstanceContext';
 import useObjectSelections from '../hooks/useObjectSelections';
 import eventmixin from '../selections/event-mixin';
 import useStyling from '../hooks/useStyling';
+import RenderError from '../utils/render-error';
 
 /**
  * @interface
@@ -518,7 +519,10 @@ const Cell = forwardRef(
     if (state.loading && !state.longRunningQuery) {
       Content = <LoadingSn />;
     } else if (state.error) {
-      onError && onError(state.error.errorObject);
+      if (onError) {
+        const e = state.error.errorObject ? state.error.errorObject : new RenderError(state.error.title);
+        onError(e);
+      }
       Content = <CError {...state.error} />;
     } else if (state.loaded) {
       Content = (

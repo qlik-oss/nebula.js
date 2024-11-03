@@ -11,7 +11,7 @@ import init from './initiate';
  * @property {HTMLElement} element Target html element to render in to
  * @property {object=} options Options passed into the visualisation
  * @property {function=} onRender Callback function called after rendering successfully
- * @property {function=} onError Callback function called if an error occurs
+ * @property {function(RenderError)=} onError Callback function called if an error occurs
  * @property {Plugin[]} [plugins] plugins passed into the visualisation
  * @property {string=} id For existing objects: Engine identifier of object to render
  * @property {string=} type For creating objects: Type of visualisation to render

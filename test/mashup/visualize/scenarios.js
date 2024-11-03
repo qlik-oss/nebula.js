@@ -590,8 +590,10 @@ async function render() {
   const viz = await configuration(app).render({
     element,
     id: 'bb8',
-    onError: () => {
-      // const errorElement = document.querySelector('.errors');
+    onError: (e) => {
+      console.log(e);
+      const errorElement = document.querySelector('.errors');
+      errorElement.textContent = e.message;
     },
   });
 

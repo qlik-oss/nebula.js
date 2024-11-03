@@ -1767,7 +1767,11 @@
           "description": "Callback function called if an error occurs",
           "optional": true,
           "kind": "function",
-          "params": []
+          "params": [
+            {
+              "type": "#/definitions/RenderError"
+            }
+          ]
         },
         "plugins": {
           "description": "plugins passed into the visualisation",
@@ -1911,6 +1915,32 @@
         "meta": {
           "optional": true,
           "type": "object"
+        }
+      }
+    },
+    "RenderError": {
+      "extends": [
+        {
+          "type": "Error"
+        }
+      ],
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": [
+          {
+            "name": "message",
+            "type": "string"
+          },
+          {
+            "name": "originalError",
+            "type": "Error"
+          }
+        ]
+      },
+      "entries": {
+        "originalError": {
+          "type": "Error"
         }
       }
     },

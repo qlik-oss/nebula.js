@@ -570,8 +570,9 @@ declare namespace stardust {
         onRender?(): void;
         /**
          * Callback function called if an error occurs
+         * @param $
          */
-        onError?(): void;
+        onError?($: stardust.RenderError): void;
         plugins?: stardust.Plugin[];
         id?: string;
         type?: string;
@@ -608,6 +609,13 @@ declare namespace stardust {
         version?: string;
         load: stardust.LoadType;
         meta?: object;
+    }
+
+    class RenderError extends Error {
+        constructor(message: string, originalError: Error);
+
+        originalError: Error;
+
     }
 
     class Navigation implements stardust.Emitter {
