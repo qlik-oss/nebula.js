@@ -518,7 +518,7 @@ const Cell = forwardRef(
     if (state.loading && !state.longRunningQuery) {
       Content = <LoadingSn />;
     } else if (state.error) {
-      onError(state.error.errorObject);
+      onError && onError(state.error.errorObject);
       Content = <CError {...state.error} />;
     } else if (state.loaded) {
       Content = (
