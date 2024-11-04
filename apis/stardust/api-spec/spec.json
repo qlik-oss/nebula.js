@@ -154,6 +154,20 @@
         "import { useMemo } from '@nebula.js/stardust';\n// ...\nconst v = useMemo(() => {\n  return doSomeHeavyCalculation();\n}), []);"
       ]
     },
+    "useRef": {
+      "description": "Creates a reference to a value not needed for rendering\n\nWhile Nebula does not have a virtual DOM, it is still useful\nto have a reference to an object that is retained across\nrenders and in it self does not trigger a render.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "initialValue",
+          "description": "The initial value.",
+          "type": "any"
+        }
+      ],
+      "examples": [
+        "import { useRef } from '@nebula.js/stardust';\n// ...\n// initiate with simple value\nconst timesRendered = useRef(0);\n\nuseEffect(() => {\n render(layout);\n // increments the render counter, a useState would trigger another render\n timesRendered.current += 1;\n},[layout]);"
+      ]
+    },
     "usePromise": {
       "description": "Runs a callback function when a dependent changes.\n\nUseful for async operations that otherwise cause no side effects.\nDo not add for example listeners withing the callback as there is no teardown function.",
       "templates": [
