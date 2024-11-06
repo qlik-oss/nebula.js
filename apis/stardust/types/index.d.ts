@@ -49,7 +49,8 @@ export function useMemo<T>(factory: ()=>T, deps: any[]): T;
  * renders and in it self does not trigger a render.
  * @param initialValue The initial value.
  */
-export function useRef(initialValue: any): void;
+export function useRef<R>(initialValue: R): {
+};
 
 /**
  * Runs a callback function when a dependent changes.

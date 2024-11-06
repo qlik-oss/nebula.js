@@ -405,7 +405,9 @@ export function useMemo(fn, deps) {
  * to have a reference to an object that is retained across
  * renders and in it self does not trigger a render.
  * @entry
- * @param {any} initialValue - The initial value.
+ * @template R
+ * @param {R} initialValue - The initial value.
+ * @returns { {current: R}} An object with the current value
  * @example
  * import { useRef } from '@nebula.js/stardust';
  * // ...
