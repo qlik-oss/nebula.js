@@ -171,12 +171,12 @@
       ],
       "returns": {
         "description": "An object with the current value",
-        "kind": "object",
-        "entries": {
-          "current": {
+        "type": "#/definitions/Ref",
+        "generics": [
+          {
             "type": "R"
           }
-        }
+        ]
       },
       "examples": [
         "import { useRef } from '@nebula.js/stardust';\n// ...\n// initiate with simple value\nconst timesRendered = useRef(0);\n\nuseEffect(() => {\n render(layout);\n // increments the render counter, a useState would trigger another render\n timesRendered.current += 1;\n},[layout]);"
@@ -2220,6 +2220,21 @@
               }
             }
           ]
+        }
+      }
+    },
+    "Ref": {
+      "description": "Reference object returned from useRef",
+      "templates": [
+        {
+          "name": "R"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "current": {
+          "description": "Current value",
+          "type": "R"
         }
       }
     },

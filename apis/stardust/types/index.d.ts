@@ -49,8 +49,7 @@ export function useMemo<T>(factory: ()=>T, deps: any[]): T;
  * renders and in it self does not trigger a render.
  * @param initialValue The initial value.
  */
-export function useRef<R>(initialValue: R): {
-};
+export function useRef<R>(initialValue: R): stardust.Ref<R>;
 
 /**
  * Runs a callback function when a dependent changes.
@@ -689,6 +688,13 @@ declare namespace stardust {
      * For example to remove any listeners added in the callback itself.
      */
     type EffectCallback = ()=>void | (()=>void);
+
+    /**
+     * Reference object returned from useRef
+     */
+    interface Ref<R> {
+        current: R;
+    }
 
     interface Rect {
         top: number;

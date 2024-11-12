@@ -399,6 +399,13 @@ export function useMemo(fn, deps) {
 }
 
 /**
+ * Reference object returned from useRef
+ * @interface Ref
+ * @template R
+ * @property {R} current Current value
+ */
+
+/**
  * Creates a reference to a value not needed for rendering
  *
  * While Nebula does not have a virtual DOM, it is still useful
@@ -407,7 +414,7 @@ export function useMemo(fn, deps) {
  * @entry
  * @template R
  * @param {R} initialValue - The initial value.
- * @returns { {current: R}} An object with the current value
+ * @returns {Ref<R>} An object with the current value
  * @example
  * import { useRef } from '@nebula.js/stardust';
  * // ...
