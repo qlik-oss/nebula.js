@@ -34,7 +34,7 @@ export default function viz({
   });
 
   const createOnInitialRender = (override) => () => {
-    override && override(); // from options.onInitialRender
+    override?.(); // from options.onInitialRender
     onRenderResolve(); // internal promise in viz to wait for render
     onRender(); // from RenderConfig
   };
