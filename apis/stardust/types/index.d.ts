@@ -42,6 +42,16 @@ export function useEffect(effect: stardust.EffectCallback, deps?: any[]): void;
 export function useMemo<T>(factory: ()=>T, deps: any[]): T;
 
 /**
+ * Creates a reference to a value not needed for rendering
+ * 
+ * While Nebula does not have a virtual DOM, it is still useful
+ * to have a reference to an object that is retained across
+ * renders and in it self does not trigger a render.
+ * @param initialValue The initial value.
+ */
+export function useRef<R>(initialValue: R): stardust.Ref<R>;
+
+/**
  * Runs a callback function when a dependent changes.
  * 
  * Useful for async operations that otherwise cause no side effects.
@@ -694,6 +704,13 @@ declare namespace stardust {
      * For example to remove any listeners added in the callback itself.
      */
     type EffectCallback = ()=>void | (()=>void);
+
+    /**
+     * Reference object returned from useRef
+     */
+    interface Ref<R> {
+        current: R;
+    }
 
     interface Rect {
         top: number;
