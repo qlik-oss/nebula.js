@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.8.0](https://github.com/qlik-oss/nebula.js/compare/v5.7.1...v5.8.0) (2024-11-18)
+
+### Features
+
+- add onError and onRender callbacks ([#1636](https://github.com/qlik-oss/nebula.js/issues/1636)) ([639204d](https://github.com/qlik-oss/nebula.js/commit/639204d6c1c6694c6f5b620463159d5d9f0569ce))
+- add useRef ([#1637](https://github.com/qlik-oss/nebula.js/issues/1637)) ([bf233c2](https://github.com/qlik-oss/nebula.js/commit/bf233c24a5aa6765372b8d7bf7144f45bdc419aa))
+
 ## [5.7.1](https://github.com/qlik-oss/nebula.js/compare/v5.7.0...v5.7.1) (2024-10-15)
 
 **Note:** Version bump only for package @nebula.js/stardust

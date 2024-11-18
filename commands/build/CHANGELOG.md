@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.8.0](https://github.com/qlik-oss/nebula.js/compare/v5.7.1...v5.8.0) (2024-11-18)
+
+### Bug Fixes
+
+- make browser the default target ([#1633](https://github.com/qlik-oss/nebula.js/issues/1633)) ([fdbb22e](https://github.com/qlik-oss/nebula.js/commit/fdbb22e9b1c2626cd7c84e8dfe4fdfba15fb64b8))
+
 ## [5.7.1](https://github.com/qlik-oss/nebula.js/compare/v5.7.0...v5.7.1) (2024-10-15)
 
 **Note:** Version bump only for package @nebula.js/cli-build

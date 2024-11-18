@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "5.7.1",
+    "version": "5.8.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -1466,26 +1466,6 @@
         "const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"
       ]
     },
-    "Flags": {
-      "kind": "interface",
-      "entries": {
-        "isEnabled": {
-          "description": "Checks whether the specified flag is enabled.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "flag",
-              "description": "The value flag to check.",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "True if the specified flag is enabled, false otherwise.",
-            "type": "boolean"
-          }
-        }
-      }
-    },
     "AppSelections": {
       "kind": "class",
       "constructor": {
@@ -1719,6 +1699,26 @@
                 "type": "undefined"
               }
             ]
+          }
+        }
+      }
+    },
+    "Flags": {
+      "kind": "interface",
+      "entries": {
+        "isEnabled": {
+          "description": "Checks whether the specified flag is enabled.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "flag",
+              "description": "The value flag to check.",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "True if the specified flag is enabled, false otherwise.",
+            "type": "boolean"
           }
         }
       }
