@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.8.1](https://github.com/qlik-oss/nebula.js/compare/v5.8.0...v5.8.1) (2024-11-23)
+
+### Bug Fixes
+
+- expose useRef ([#1642](https://github.com/qlik-oss/nebula.js/issues/1642)) ([a1421f2](https://github.com/qlik-oss/nebula.js/commit/a1421f216cb8f5377fa6ff518f7a3082fcd2f89e))
+
 # [5.8.0](https://github.com/qlik-oss/nebula.js/compare/v5.7.1...v5.8.0) (2024-11-18)
 
 ### Features
