@@ -550,7 +550,7 @@ function nuked(configuration = {}) {
             const onSelectionDeactivated = () => fieldSels.emit('selectionDeactivated');
 
             return new Promise((resolve) => {
-              this._instance = ListBoxPortal({
+              [this._instance, this._ref] = ListBoxPortal({
                 element,
                 app,
                 fieldIdentifier,
@@ -578,6 +578,19 @@ function nuked(configuration = {}) {
             if (this._instance) {
               root.remove(this._instance);
               this._instance = null;
+              this._ref = null;
+            }
+          },
+          options(opts) {
+            const onSelectionActivated = () => fieldSels.emit('selectionActivated');
+            const onSelectionDeactivated = () => fieldSels.emit('selectionDeactivated');
+            if (this._ref?.current) {
+              const options = getListboxPortalOptions({
+                onSelectionActivated,
+                onSelectionDeactivated,
+                ...opts,
+              });
+              this._ref.current.setOptions(options);
             }
           },
         };
