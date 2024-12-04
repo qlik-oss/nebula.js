@@ -581,17 +581,20 @@ function nuked(configuration = {}) {
               this._ref = null;
             }
           },
-          options(opts) {
-            const onSelectionActivated = () => fieldSels.emit('selectionActivated');
-            const onSelectionDeactivated = () => fieldSels.emit('selectionDeactivated');
-            if (this._ref?.current) {
-              const options = getListboxPortalOptions({
-                onSelectionActivated,
-                onSelectionDeactivated,
-                ...opts,
-              });
-              this._ref.current.setOptions(options);
-            }
+          // ===== unexposed experimental API - use at own risk ======
+          __DO_NOT_USE__: {
+            options(opts) {
+              const onSelectionActivated = () => fieldSels.emit('selectionActivated');
+              const onSelectionDeactivated = () => fieldSels.emit('selectionDeactivated');
+              if (fieldSels._ref?.current) {
+                const options = getListboxPortalOptions({
+                  onSelectionActivated,
+                  onSelectionDeactivated,
+                  ...opts,
+                });
+                fieldSels._ref.current.setOptions(options);
+              }
+            },
           },
         };
         eventmixin(fieldSels);
