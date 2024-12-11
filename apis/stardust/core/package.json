@@ -1,8 +1,8 @@
 {
   "module": "esm/index.js",
   "peerDependencies": {
-    "@mui/material": "^5.16.8",
-    "@mui/icons-material": "^5.16.8",
+    "@mui/material": "^6.2.0",
+    "@mui/icons-material": "^6.2.0",
     "@emotion/react": "^11.13.5",
     "@emotion/styled": "^11.13.5",
     "react": "^17.0.2 || ^18.1.0",
