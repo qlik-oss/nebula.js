@@ -332,6 +332,23 @@ function nuked(configuration = {}) {
         }
         return createSessionObject(cfg, halo, modelStore);
       },
+      renderTest: async (cfg, timeout = 10000) => {
+        // resolves when test is done
+        const currentLang = currentContext.language;
+        return new Promise(async (resolve) => {
+          cfg.onRender = () => {
+            resolve('Render successfull');
+          };
+          setTimeout(() => {
+            resolve('Timout reached');
+          }, timeout);
+
+          // start the rendering
+          const viz = await api.render(cfg);
+          // trigger a re-render by changing the language
+          api.context({ language: 'sv-SE' });
+        });
+      },
       /**
        * Creates a visualization model
        * @param {CreateConfig} cfg The create configuration.

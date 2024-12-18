@@ -97,6 +97,7 @@ function createWithHooks(generator, opts, galaxy) {
       });
     },
     render(r) {
+      console.log('Rendering', r);
       let changed = !hasRun || false;
 
       if (r) {
