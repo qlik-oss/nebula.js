@@ -54,7 +54,7 @@
     "@rollup/plugin-replace": "6.0.2",
     "@rollup/plugin-terser": "0.4.4",
     "@testing-library/jest-dom": "^6.6.3",
-    "@testing-library/react": "^14.3.1",
+    "@testing-library/react": "^16.1.0",
     "@testing-library/user-event": "^14.5.2",
     "babel-loader": "9.2.1",
     "babel-plugin-istanbul": "7.0.0",
