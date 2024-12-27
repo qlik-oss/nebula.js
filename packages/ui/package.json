@@ -12,15 +12,15 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^5.16.13",
     "@mui/material": "^5.16.13",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "devDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^5.16.13",
     "@mui/material": "^5.16.13",
-    "react": "18.3.1",
-    "react-dom": "18.3.1"
+    "react": "19.0.0",
+    "react-dom": "19.0.0"
   }
 }
