@@ -9,7 +9,7 @@
     "install:codesandbox": "yarn --ignore-engines",
     "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream --concurrency 99 --no-sort",
     "format": "prettier --write '**/**/*' --ignore-unknown",
-    "locale:verify": "node tools/verify-translations.js",
+    "locale:verify": "node tools/verify-translations.cjs",
     "locale:generate": "node apis/locale/scripts/generate-all.mjs",
     "lint": "eslint packages apis commands --ext .js,.jsx",
     "lint:check": "eslint --print-config ./aw.config.js | eslint-config-prettier-check",
