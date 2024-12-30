@@ -30,9 +30,9 @@
     "types/index.d.ts"
   ],
   "scripts": {
-    "build": "cross-env NODE_ENV=production rollup --config ../../rollup.config.js",
-    "build:dev": "rollup --config ../../rollup.config.js",
-    "build:watch": "rollup --config ../../rollup.config.js -w",
+    "build": "cross-env NODE_ENV=production rollup --bundleConfigAsCjs --config ../../rollup.config.js",
+    "build:dev": "rollup --bundleConfigAsCjs --config ../../rollup.config.js",
+    "build:watch": "rollup --bundleConfigAsCjs --config ../../rollup.config.js -w",
     "prepublishOnly": "rm -rf dist && yarn run build",
     "spec:stardust": "sy from-jsdoc -c ./api-spec/spec.conf.js",
     "spec:listbox": "sy from-jsdoc -c ./api-spec/listbox-spec.conf.js",
