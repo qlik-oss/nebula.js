@@ -1,7 +1,7 @@
-const path = require('path');
-const jimp = require('jimp');
+import path from 'path';
+import jimp from 'jimp';
 
-async function looksLike(fileName, capturedPath) {
+export async function looksLike(fileName, capturedPath) {
   const artifactsPath = path.resolve(__dirname, './__artifacts__/');
   const storedPath = path.resolve(artifactsPath, 'baseline', fileName);
 
@@ -23,7 +23,7 @@ async function looksLike(fileName, capturedPath) {
  * @param {function[]} items An array of items (e.g. selectors) that will be sent into the action function, iteratively.
  * @returns {Promise} Resolves true when done.
  */
-async function execSequence(items, action) {
+export async function execSequence(items, action) {
   const takeAction = async (index = 0) => {
     if (index >= items.length) {
       return true; // done
@@ -34,8 +34,3 @@ async function execSequence(items, action) {
   };
   return takeAction();
 }
-
-module.exports = {
-  execSequence,
-  looksLike,
-};

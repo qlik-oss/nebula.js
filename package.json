@@ -1,6 +1,7 @@
 {
   "private": true,
   "description": "",
+  "type": "module",
   "scripts": {
     "build": "yarn run locale:generate && cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
     "build:dev": "yarn run locale:generate && cross-env NODE_ENV=development FORCE_COLOR=1 lerna run build --stream",
