@@ -1,11 +1,12 @@
 const path = require('path');
-const jimp = require('jimp');
+
 
 const differ = () => {
   const artifacts = path.resolve(__dirname, '../__artifacts__/');
 
   return {
     async looksLike(name, captured) {
+      const jimp = await import('jimp');
       const file = `${path.basename(__dirname)}-${name}`;
       const stored = await jimp.read(path.resolve(artifacts, 'baseline', file));
       const distance = jimp.distance(stored, captured);
