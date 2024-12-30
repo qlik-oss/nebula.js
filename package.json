@@ -1,6 +1,7 @@
 {
   "private": true,
   "description": "",
+  "type": "module",
   "scripts": {
     "build": "yarn run locale:generate && cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
     "build:dev": "yarn run locale:generate && cross-env NODE_ENV=development FORCE_COLOR=1 lerna run build --stream",
@@ -8,10 +9,10 @@
     "install:codesandbox": "yarn --ignore-engines",
     "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream --concurrency 99 --no-sort",
     "format": "prettier --write '**/**/*' --ignore-unknown",
-    "locale:verify": "node tools/verify-translations.js",
+    "locale:verify": "node tools/verify-translations.cjs",
     "locale:generate": "node apis/locale/scripts/generate-all.mjs",
     "lint": "eslint packages apis commands --ext .js,.jsx",
-    "lint:check": "eslint --print-config ./aw.config.js | eslint-config-prettier-check",
+    "lint:check": "eslint --print-config ./aw.config.cjs | eslint-config-prettier-check",
     "spec": "lerna run spec --stream --concurrency 99 && lerna run ts --stream --concurrency 99 ",
     "mashup": "node scripts/start-mashup.js",
     "test": "yarn run test:unit",
@@ -19,10 +20,10 @@
     "test:update": "jest --maxWorkers=2 -u",
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
-    "test:mashup": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/mashup/**/*.int.js'",
+    "test:mashup": "aw puppet -c aw.config.cjs --testExt '*.int.js' --glob 'test/mashup/**/*.int.js'",
     "test:rendering": "playwright test --config=./test/rendering/playwright.config.rendering.js --quiet",
-    "test:integration": "aw puppet -c aw.config.js --testExt '*.int.js' --glob 'test/integration/**/*.int.js'",
-    "test:component": "aw puppet -c aw.config.js --testExt '*.comp.js' --glob 'test/component/**/*.comp.js'",
+    "test:integration": "aw puppet -c aw.config.cjs --testExt '*.int.js' --glob 'test/integration/**/*.int.js'",
+    "test:component": "aw puppet -c aw.config.cjs --testExt '*.comp.js' --glob 'test/component/**/*.comp.js'",
     "prepare": "husky install"
   },
   "repository": {
