@@ -6,15 +6,15 @@ const differ = () => {
 
   return {
     async looksLike(name, captured) {
-      const jimp = await import('jimp');
+      const {read, distance, diff} = await import('jimp');
       const file = `${path.basename(__dirname)}-${name}`;
-      const stored = await jimp.read(path.resolve(artifacts, 'baseline', file));
-      const distance = jimp.distance(stored, captured);
-      const diff = jimp.diff(stored, captured);
-      if (distance > 0.001 || diff.percent > 0.001) {
+      const stored = await read(path.resolve(artifacts, 'baseline', file));
+      const dist = distance(stored, captured);
+      const difference = diff(stored, captured);
+      if (dist > 0.001 || difference.percent > 0.001) {
         await captured.writeAsync(path.resolve(artifacts, 'regression', file));
-        await diff.image.writeAsync(path.resolve(artifacts, 'diff', file));
-        throw new Error(`Images differ too much - distance: ${distance}, percent: ${diff.percent}`);
+        await difference.image.writeAsync(path.resolve(artifacts, 'diff', file));
+        throw new Error(`Images differ too much - distance: ${dist}, percent: ${difference.percent}`);
       }
     },
   };
