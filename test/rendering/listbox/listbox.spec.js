@@ -5,7 +5,7 @@ import getPage from '../setup';
 import startServer, { getPaths } from '../server';
 import { execSequence } from '../testUtils';
 
-const paths = getPaths('__fixtures__');
+const paths = getPaths('listbox/__fixtures__');
 
 const shouldIgnoreFile = (file) => {
   const IGNORE_PATTERNS = [];
