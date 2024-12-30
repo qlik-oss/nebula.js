@@ -1,5 +1,5 @@
-import path from 'path';
-import jimp from 'jimp';
+const path = require('path');
+const jimp = require('jimp');
 
 const differ = () => {
   const artifacts = path.resolve(__dirname, '../__artifacts__/');
