@@ -161,7 +161,7 @@ describe('styling', () => {
       const POSSIBLE_COLOR = 'rgb(255, 255, 255)';
       const CONTRASTING_TO_POSSIBLE = '#000000';
 
-      themeApi.getStyle = (a, b, c) => (c === 'backgroundColor' ? POSSIBLE_COLOR : `${a},${b},${c}`);
+      themeApi.getStyle = (ns, path, prop) => (prop.includes('possible') ? POSSIBLE_COLOR : `${ns},${path},${prop}`);
       components[0].content.fontColor.color = '#FFFFFF';
       const styles2 = getStyling({ app, themeApi, theme, components });
       expect(styles2.content.color).toEqual(CONTRASTING_TO_POSSIBLE);
@@ -200,6 +200,7 @@ describe('styling', () => {
     beforeEach(() => {
       components = [];
       themeSelectionColorsEnabled = true;
+      themeApi.getStyle = () => undefined;
     });
 
     const getStylingCaller = () =>
@@ -239,6 +240,8 @@ describe('styling', () => {
     });
 
     it('should return selection colors from themeAPI', () => {
+      themeApi.getStyle = (ns, path, prop) => `${ns},${path},${prop}`;
+
       expect(getStylingCaller()).toMatchObject({
         selected: 'object.listBox,,dataColors.selected',
         alternative: 'object.listBox,,dataColors.alternative',
@@ -248,7 +251,7 @@ describe('styling', () => {
       });
     });
     it('should return selection colors from mui theme, except possible which returns background color', () => {
-      themeSelectionColorsEnabled = false;
+      themeApi.getStyle = (ns, path, prop) => (prop === 'backgroundColor' ? `${ns},${path},${prop}` : undefined);
 
       expect(getStylingCaller()).toMatchObject({
         selected: 'selected-from-theme',
@@ -260,9 +263,6 @@ describe('styling', () => {
     });
 
     it('should return selection colors from mui theme, for all states', () => {
-      themeSelectionColorsEnabled = false;
-      themeApi.getStyle = (ns, path, prop) => (prop === 'backgroundColor' ? undefined : `${ns},${path},${prop}`);
-
       expect(getStylingCaller()).toMatchObject({
         selected: 'selected-from-theme',
         alternative: 'alternative-from-theme',
@@ -273,8 +273,6 @@ describe('styling', () => {
     });
 
     it('should return selection colors from hardcoded default', () => {
-      themeSelectionColorsEnabled = false;
-      themeApi.getStyle = (ns, path, prop) => (prop === 'backgroundColor' ? undefined : `${ns},${path},${prop}`);
       theme.palette.selected = {};
 
       expect(getStylingCaller()).toMatchObject(DEFAULT_SELECTION_COLORS);
