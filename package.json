@@ -87,9 +87,9 @@
     "prettier": "3.4.2",
     "puppeteer": "19.11.1",
     "qix-faker": "0.3.0",
-    "rollup": "4.29.1",
+    "rollup": "4.30.0",
     "rollup-plugin-dependency-flow": "0.3.0",
-    "rollup-plugin-sass": "1.14.0",
+    "rollup-plugin-sass": "1.15.0",
     "style-loader": "4.0.0",
     "whatwg-fetch": "^3.6.20",
     "yargs": "17.7.2"
