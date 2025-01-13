@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.9.0](https://github.com/qlik-oss/nebula.js/compare/v5.8.1...v5.9.0) (2025-01-13)
+
+### Bug Fixes
+
+- avoid crash if color is invalid ([#1647](https://github.com/qlik-oss/nebula.js/issues/1647)) ([0cfe778](https://github.com/qlik-oss/nebula.js/commit/0cfe77835cc806ccb786114b65ee7b05cf8fb14a))
+
 ## [5.8.1](https://github.com/qlik-oss/nebula.js/compare/v5.8.0...v5.8.1) (2024-11-23)
 
 **Note:** Version bump only for package @nebula.js/theme

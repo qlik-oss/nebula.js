@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.9.0](https://github.com/qlik-oss/nebula.js/compare/v5.8.1...v5.9.0) (2025-01-13)
+
+### Bug Fixes
+
+- avoid crash if color is invalid ([#1647](https://github.com/qlik-oss/nebula.js/issues/1647)) ([0cfe778](https://github.com/qlik-oss/nebula.js/commit/0cfe77835cc806ccb786114b65ee7b05cf8fb14a))
+- **deps:** update dependency @rollup/plugin-node-resolve to v16 ([#1653](https://github.com/qlik-oss/nebula.js/issues/1653)) ([d675452](https://github.com/qlik-oss/nebula.js/commit/d675452355725f533eee581ce8d1018dc429ea3d))
+- **deps:** update dependency chokidar to v4 ([#1608](https://github.com/qlik-oss/nebula.js/issues/1608)) ([4cbeba7](https://github.com/qlik-oss/nebula.js/commit/4cbeba7555c0a43a588e0141ba210ef4b61f667a))
+- **deps:** update dependency puppeteer to v23 ([#1588](https://github.com/qlik-oss/nebula.js/issues/1588)) ([417bb81](https://github.com/qlik-oss/nebula.js/commit/417bb81d25a063cf9bd70dc6a900700baf943845))
+- **deps:** update dependency webpack-cli to v6 ([#1656](https://github.com/qlik-oss/nebula.js/issues/1656)) ([6d47e5b](https://github.com/qlik-oss/nebula.js/commit/6d47e5bea30ff43e8fd03fcf9a634880d0ac3f07))
+- **deps:** update minor and patch ([#1649](https://github.com/qlik-oss/nebula.js/issues/1649)) ([cd22432](https://github.com/qlik-oss/nebula.js/commit/cd22432c37ddfffec19109eb6366adfcac32a36c))
+- **deps:** update minor and patch ([#1655](https://github.com/qlik-oss/nebula.js/issues/1655)) ([123f2ef](https://github.com/qlik-oss/nebula.js/commit/123f2ef95b5491e789015a62f6bce048d20984fb))
+- **deps:** update minor and patch ([#1660](https://github.com/qlik-oss/nebula.js/issues/1660)) ([cb43faa](https://github.com/qlik-oss/nebula.js/commit/cb43faa739a4a2e06b178dcd22c90092a36276d0))
+- move options into **DO_NOT_USE** ([#1648](https://github.com/qlik-oss/nebula.js/issues/1648)) ([6a25b54](https://github.com/qlik-oss/nebula.js/commit/6a25b5439eb3b1de8441c7c4ec3d6d7b2461e6be))
+
+### Features
+
+- update listbox options ([#1646](https://github.com/qlik-oss/nebula.js/issues/1646)) ([ce9424f](https://github.com/qlik-oss/nebula.js/commit/ce9424f3b4cff204b21518b19accda3c2aa48605))
+
 ## [5.8.1](https://github.com/qlik-oss/nebula.js/compare/v5.8.0...v5.8.1) (2024-11-23)
 
 ### Bug Fixes
