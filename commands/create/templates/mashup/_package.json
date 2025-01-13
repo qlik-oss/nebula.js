@@ -8,7 +8,7 @@
   "keywords": ["qlik", "nebula"],
   "scripts": {
     "start": "parcel src/index.html --open --no-hmr",
-    "build": "parcel build src/index.html --dist-dir ./dist"
+    "build": "parcel build src/index.html --dist-dir ./dist --trace"
   },
   "dependencies": {
     "@nebula.js/stardust": "<%= nebulaVersion %>",
