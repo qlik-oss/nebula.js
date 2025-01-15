@@ -2,7 +2,7 @@
 
 const fs = require('fs');
 
-const defaultFilename = 'nebula.config.js';
+const defaultFilename = 'nebula.config.cjs';
 const RX = new RegExp(`${defaultFilename.replace(/\./g, '\\.')}$`);
 
 const options = {
