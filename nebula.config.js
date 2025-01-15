@@ -4,4 +4,4 @@ const config = {
   serve: {},
 };
 
-module.exports = config;
+export default config;
