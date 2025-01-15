@@ -1,6 +1,6 @@
 const path = require('path');
 const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
-const puppeteerUtil = require('../../utils/puppeteer-util');
+const puppeteerUtil = require('../../utils/puppeteer-util.cjs');
 
 describe('bar chart', () => {
   const snSelector = '.njs-viz';

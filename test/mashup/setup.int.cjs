@@ -1,4 +1,4 @@
-const puppeteerUtil = require('../utils/puppeteer-util');
+const puppeteerUtil = require('../utils/puppeteer-util.cjs');
 const server = require('./server');
 
 if (!process.env.BASE_URL) {
