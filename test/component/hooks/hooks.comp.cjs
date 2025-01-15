@@ -10,6 +10,7 @@ describe('hooks', () => {
   before(async () => {
     s = await serve({
       entry: path.resolve(__dirname, 'sn-hooks'),
+      config: 'nebula.config.cjs',
       open: false,
       build: true,
       fixturePath: 'test/component/hooks',

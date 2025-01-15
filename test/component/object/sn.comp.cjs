@@ -9,6 +9,7 @@ describe('sn', () => {
   before(async () => {
     s = await serve({
       open: false,
+      config: 'nebula.config.cjs',
       build: false,
       fixturePath: 'test/component/object',
     });

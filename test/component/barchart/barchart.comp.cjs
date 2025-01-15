@@ -9,6 +9,7 @@ describe('bar chart', () => {
   before(async () => {
     s = await serve({
       entry: path.resolve(__dirname, 'sn-barchart'),
+      config: 'nebula.config.cjs',
       open: false,
       build: true,
       fixturePath: 'test/component/barchart',
