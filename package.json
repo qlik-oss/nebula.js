@@ -23,7 +23,7 @@
     "test:mashup": "aw puppet -c aw.config.cjs --testExt '*.int.*js' --glob 'test/mashup/**/*.int.*js'",
     "test:rendering": "playwright test --config=./test/rendering/playwright.config.rendering.js --quiet",
     "test:integration": "aw puppet -c aw.config.cjs --testExt '*.int.*js' --glob 'test/integration/**/*.int.*js'",
-    "test:component": "aw puppet -c aw.config.cjs --testExt '*.comp.js' --glob 'test/component/**/*.comp.js'",
+    "test:component": "aw puppet -c aw.config.cjs --testExt '*.comp.*js' --glob 'test/component/**/*.comp.*js'",
     "prepare": "husky install"
   },
   "repository": {
