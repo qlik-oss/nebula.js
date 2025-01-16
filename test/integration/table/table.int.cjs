@@ -1,6 +1,6 @@
 const path = require('path');
 const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
-const puppeteerUtil = require('../../utils/puppeteer-util');
+const puppeteerUtil = require('../../utils/puppeteer-util.cjs');
 
 describe('Table visualization', () => {
   const content = '.simple-table';
@@ -9,6 +9,7 @@ describe('Table visualization', () => {
   before(async () => {
     s = await serve({
       entry: path.resolve(__dirname, 'sn-table'),
+      config: 'nebula.config.cjs',
       open: false,
       fixturePath: 'test/integration/table',
     });

@@ -1,7 +1,7 @@
 /* eslint-disable jest/valid-expect */
 const path = require('path');
 const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
-const puppeteerUtil = require('../../utils/puppeteer-util');
+const puppeteerUtil = require('../../utils/puppeteer-util.cjs');
 
 describe('hooks', () => {
   const snSelector = '.njs-viz';
@@ -10,6 +10,7 @@ describe('hooks', () => {
   before(async () => {
     s = await serve({
       entry: path.resolve(__dirname, 'sn-hooks'),
+      config: 'nebula.config.cjs',
       open: false,
       build: true,
       fixturePath: 'test/component/hooks',

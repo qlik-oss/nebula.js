@@ -1,5 +1,5 @@
 const serve = require('@nebula.js/cli-serve'); // eslint-disable-line
-const puppeteerUtil = require('../../utils/puppeteer-util');
+const puppeteerUtil = require('../../utils/puppeteer-util.cjs');
 
 describe('sn', () => {
   const snSelector = '.njs-viz';
@@ -9,6 +9,7 @@ describe('sn', () => {
   before(async () => {
     s = await serve({
       open: false,
+      config: 'nebula.config.cjs',
       build: false,
       fixturePath: 'test/component/object',
     });
