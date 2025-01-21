@@ -16,6 +16,7 @@ export default function fromGenericObjects(genericObjects, options = {}) {
     destroySessionObject: async () => {},
     getObject,
     getAppLayout,
+    getListObject: async () => {},
   };
 
   return Promise.resolve(app);

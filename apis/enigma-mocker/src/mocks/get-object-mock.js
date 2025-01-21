@@ -60,6 +60,7 @@ function createMock(genericObject, options) {
     session: getPropValue(session, { defaultValue: true }),
     on: () => {},
     once: () => {},
+    removeListener: () => {},
     ...Object.entries(props).reduce(
       (fns, [name, value]) => ({
         ...fns,
