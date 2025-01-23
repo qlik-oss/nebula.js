@@ -3,7 +3,6 @@ const path = require('path');
 const babel = require('@rollup/plugin-babel');
 const postcss = require('rollup-plugin-postcss');
 const replace = require('@rollup/plugin-replace');
-const sourcemaps = require('rollup-plugin-sourcemaps');
 const json = require('@rollup/plugin-json');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
@@ -170,7 +169,7 @@ const config = ({
         babel({
           babelHelpers: 'bundled',
           babelrc: false,
-          inputSourceMap: false, // without this you get wrong source maps, but I don't know why
+          inputSourceMap: sourcemap,
           extensions,
           presets: [
             [
@@ -185,7 +184,6 @@ const config = ({
           ],
           plugins: [[jsxPlugin]],
         }),
-        ...[sourcemap ? sourcemaps() : undefined],
         postcss({}),
         ...[typescript ? typescriptPlugin() : false],
         ...[
