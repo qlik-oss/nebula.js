@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.1](https://github.com/qlik-oss/nebula.js/compare/v5.9.0...v5.9.1) (2025-01-23)
+
+### Bug Fixes
+
+- **deps:** update dependency puppeteer to v24 ([#1662](https://github.com/qlik-oss/nebula.js/issues/1662)) ([3b21ff3](https://github.com/qlik-oss/nebula.js/commit/3b21ff3f6dd16bee00c2ded16c27366e09317000))
+- **deps:** update minor and patch ([#1661](https://github.com/qlik-oss/nebula.js/issues/1661)) ([4ad60bb](https://github.com/qlik-oss/nebula.js/commit/4ad60bbcc8aed41aca84667f6a9434660bd44257))
+- **deps:** update minor and patch ([#1667](https://github.com/qlik-oss/nebula.js/issues/1667)) ([9c6de77](https://github.com/qlik-oss/nebula.js/commit/9c6de77dcbf3799063eb013b62014f48f3353e32))
+- make sure more tests run ([#1666](https://github.com/qlik-oss/nebula.js/issues/1666)) ([0f488c6](https://github.com/qlik-oss/nebula.js/commit/0f488c6452a9fc288741be7d9a6974949ad6d0f6))
+- watch using rollup v4 ([#1670](https://github.com/qlik-oss/nebula.js/issues/1670)) ([9a17c9b](https://github.com/qlik-oss/nebula.js/commit/9a17c9b749e799a4f7e7e4b0040b5900aadbcec9))
+
+### Features
+
+- update mocks ([#1669](https://github.com/qlik-oss/nebula.js/issues/1669)) ([95a13e9](https://github.com/qlik-oss/nebula.js/commit/95a13e92ba760ae1ce53d77916abd7f16b6e1c92))
+
 # [5.9.0](https://github.com/qlik-oss/nebula.js/compare/v5.8.1...v5.9.0) (2025-01-13)
 
 ### Bug Fixes

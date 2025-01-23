@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.1](https://github.com/qlik-oss/nebula.js/compare/v5.9.0...v5.9.1) (2025-01-23)
+
+### Features
+
+- update mocks ([#1669](https://github.com/qlik-oss/nebula.js/issues/1669)) ([95a13e9](https://github.com/qlik-oss/nebula.js/commit/95a13e92ba760ae1ce53d77916abd7f16b6e1c92))
+
 # [5.9.0](https://github.com/qlik-oss/nebula.js/compare/v5.8.1...v5.9.0) (2025-01-13)
 
 **Note:** Version bump only for package @nebula.js/enigma-mocker
