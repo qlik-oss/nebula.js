@@ -44,6 +44,7 @@ export default function ListBoxPopoverWrapper({ app, fieldIdentifier, stateName,
       autoFocus={options.autoFocus}
       components={options.components}
       sortCriteria={options.sortCriteria}
+      direction={options.direction}
     />
   );
 }
