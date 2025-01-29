@@ -50,6 +50,7 @@ export default function ListBoxPopover({
       qSortByLoadOrder: 1,
     },
   ],
+  direction = 'ltr',
 }) {
   const isMasterDim = Boolean(fieldName?.qLibraryId);
   const open = show && Boolean(alignTo.current);
@@ -153,9 +154,10 @@ export default function ListBoxPopover({
         },
       }}
       onKeyDown={(e) => (e.key === 'Enter' ? popoverClose(e) : undefined)}
+      direction={direction}
     >
       <Grid container direction="column" gap={0} ref={containerRef}>
-        <Grid item container style={{ padding: theme.spacing(1) }}>
+        <Grid item container style={{ direction, padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (
               <IconButton onClick={unlock} disabled={!isLocked} size="large">
@@ -210,6 +212,7 @@ export default function ListBoxPopover({
                 focusSelection: keyboard.focusSelection,
               }}
               autoFocus={autoFocus ?? true}
+              direction={direction}
             />
           </Grid>
           <ListBox
@@ -218,7 +221,7 @@ export default function ListBoxPopover({
             layout={layout}
             selections={selections}
             selectionState={selectionState}
-            direction="ltr"
+            direction={direction}
             onSetListCount={(c) => setListCount(c)}
             onCtrlF={onCtrlF}
             styles={styles}
