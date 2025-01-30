@@ -36,6 +36,7 @@
     "postcss": "^8.5.1",
     "rollup": "4.32.0",
     "rollup-plugin-postcss": "4.0.2",
+    "rollup-plugin-visualizer": "5.14.0",
     "yargs": "17.7.2"
   },
   "devDependencies": {

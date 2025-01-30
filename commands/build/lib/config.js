@@ -9,6 +9,7 @@ const commonjs = require('@rollup/plugin-commonjs');
 const terser = require('@rollup/plugin-terser');
 const jsxPlugin = require('@babel/plugin-transform-react-jsx');
 const babelPreset = require('@babel/preset-env');
+const { visualizer } = require('rollup-plugin-visualizer');
 
 const resolveNative = require('./resolveNative');
 
@@ -192,6 +193,13 @@ const config = ({
                 output: {
                   preamble: banner,
                 },
+              })
+            : false,
+        ],
+        ...[
+          mode === 'development'
+            ? visualizer({
+                filename: 'bundle-analysis.html',
               })
             : false,
         ],
