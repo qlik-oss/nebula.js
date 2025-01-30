@@ -102,8 +102,8 @@ export default function v() {
                       cell.qState === 'S' || cell.qState === 'L'
                         ? STATES.S.background
                         : cell.qState === 'A'
-                        ? STATES.A.background
-                        : 'none'
+                          ? STATES.A.background
+                          : 'none'
                     }">${cell.qText}</td>`
                 )
                 .join('')}</tr>`
