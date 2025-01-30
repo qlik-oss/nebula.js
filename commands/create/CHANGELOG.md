@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.2](https://github.com/qlik-oss/nebula.js/compare/v5.9.1...v5.9.2) (2025-01-30)
+
+### Features
+
+- add basic bundle analysis for dev builds ([#1673](https://github.com/qlik-oss/nebula.js/issues/1673)) ([8467978](https://github.com/qlik-oss/nebula.js/commit/8467978604ece72bf865435e1b54ffe672e32c0d))
+
 ## [5.9.1](https://github.com/qlik-oss/nebula.js/compare/v5.9.0...v5.9.1) (2025-01-23)
 
 ### Bug Fixes

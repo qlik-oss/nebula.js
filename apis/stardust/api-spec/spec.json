@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "5.9.1",
+    "version": "5.9.2",
     "license": "MIT",
     "stability": "stable"
   },
@@ -1901,6 +1901,32 @@
         "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
       ]
     },
+    "RenderError": {
+      "extends": [
+        {
+          "type": "Error"
+        }
+      ],
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": [
+          {
+            "name": "message",
+            "type": "string"
+          },
+          {
+            "name": "originalError",
+            "type": "Error"
+          }
+        ]
+      },
+      "entries": {
+        "originalError": {
+          "type": "Error"
+        }
+      }
+    },
     "LoadType": {
       "kind": "interface",
       "params": [
@@ -1943,32 +1969,6 @@
         "meta": {
           "optional": true,
           "type": "object"
-        }
-      }
-    },
-    "RenderError": {
-      "extends": [
-        {
-          "type": "Error"
-        }
-      ],
-      "kind": "class",
-      "constructor": {
-        "kind": "function",
-        "params": [
-          {
-            "name": "message",
-            "type": "string"
-          },
-          {
-            "name": "originalError",
-            "type": "Error"
-          }
-        ]
-      },
-      "entries": {
-        "originalError": {
-          "type": "Error"
         }
       }
     },

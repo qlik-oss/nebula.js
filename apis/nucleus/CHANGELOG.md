@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.9.2](https://github.com/qlik-oss/nebula.js/compare/v5.9.1...v5.9.2) (2025-01-30)
+
+### Bug Fixes
+
+- **deps:** update minor and patch ([#1671](https://github.com/qlik-oss/nebula.js/issues/1671)) ([410e29f](https://github.com/qlik-oss/nebula.js/commit/410e29f4a9df23505f0b8c50fb8b1cab3a5e748d))
+
+### Features
+
+- add direction as a property to listboxPopover ([#1672](https://github.com/qlik-oss/nebula.js/issues/1672)) ([08a4227](https://github.com/qlik-oss/nebula.js/commit/08a42275965391705ac05eb221e7b6c5fb14040a))
+
 ## [5.9.1](https://github.com/qlik-oss/nebula.js/compare/v5.9.0...v5.9.1) (2025-01-23)
 
 ### Bug Fixes
