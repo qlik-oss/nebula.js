@@ -89,6 +89,11 @@ const options = {
     description: 'Opens browser on serving nebula',
     default: true,
   },
+  https: {
+    type: 'boolean',
+    description: 'Uses https protocol, requires certificates',
+    default: false,
+  },
 };
 
 module.exports = (yargs) =>
