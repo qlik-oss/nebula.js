@@ -607,13 +607,6 @@ declare namespace stardust {
         fn: ()=>void;
     }
 
-    class RenderError extends Error {
-        constructor(message: string, originalError: Error);
-
-        originalError: Error;
-
-    }
-
     interface LoadType {
         (type: {
             name: string;
@@ -626,6 +619,13 @@ declare namespace stardust {
         version?: string;
         load: stardust.LoadType;
         meta?: object;
+    }
+
+    class RenderError extends Error {
+        constructor(message: string, originalError: Error);
+
+        originalError: Error;
+
     }
 
     class Navigation implements stardust.Emitter {
