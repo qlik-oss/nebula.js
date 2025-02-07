@@ -27,6 +27,30 @@ describe('getAppLink()', () => {
     expect(navigate).toHaveBeenCalledWith(`/dev/engine_url=${info.engineUrl}/app/${targetApp}`);
   });
 
+  test('should call navigate to correct engine url from localhost without prefix', () => {
+    info = {
+      engineUrl: 'ws://localhost:1234',
+      enigma: { secure: false, host: 'localhost', port: 1234, prefix: undefined },
+    };
+    location.search = `engine_url=${info.engineUrl}`;
+    getAppLink({ navigate, location, info, targetApp });
+
+    expect(navigate).toHaveBeenCalledTimes(1);
+    expect(navigate).toHaveBeenCalledWith(`/dev/engine_url=${info.engineUrl}/app/${targetApp}`);
+  });
+
+  test('should call navigate to correct engine url with prefix', () => {
+    info = {
+      engineUrl: 'ws://localhost:1234/prefix',
+      enigma: { secure: false, host: 'localhost', port: 1234, prefix: 'prefix' },
+    };
+    location.search = `engine_url=${info.engineUrl}`;
+    getAppLink({ navigate, location, info, targetApp });
+
+    expect(navigate).toHaveBeenCalledTimes(1);
+    expect(navigate).toHaveBeenCalledWith(`/dev/engine_url=${info.engineUrl}/app/${targetApp}`);
+  });
+
   test('should call navigate to correct engine url from remote SDE', () => {
     info = {
       engineUrl: 'wss://some-remote.sde.in.eu.qlikdev.com',

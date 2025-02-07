@@ -33,7 +33,7 @@ module.exports = async ({
 }) => {
   let config;
   let contentBase;
-  const HTTPS = serveConfig.mfe;
+  const HTTPS = serveConfig.mfe || serveConfig.https;
   const url = `${HTTPS ? 'https' : 'http'}://${host}:${port}`;
 
   if (HTTPS) {
