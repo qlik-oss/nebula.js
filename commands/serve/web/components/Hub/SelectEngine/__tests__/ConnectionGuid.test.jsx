@@ -11,7 +11,7 @@ describe('<ConnectionGuid />', () => {
       'Web integration id format:',
       'OAuth Client ID URL format:',
       'Qlik Cloud Services',
-      'Qlik Sense Enterprise on Windows',
+      'Qlik Sense on Windows',
       'Qlik Sense Desktop',
     ].map((title) => {
       expect(screen.queryByText(title)).toBeInTheDocument();

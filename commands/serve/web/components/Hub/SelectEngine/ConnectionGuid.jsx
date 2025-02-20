@@ -59,7 +59,7 @@ const ConnectionGuid = ({ showGuid }) => (
       <br />
     </Typography>
     <Typography variant="subtitle1" gutterBottom>
-      Qlik Sense Enterprise on Windows
+      Qlik Sense on Windows
     </Typography>
     <Typography variant="body2" paragraph>
       WebSocket URL format: <code>wss://&lt;sense-host.com&gt;/&lt;virtual-proxy-prefix&gt;</code>
@@ -68,9 +68,8 @@ const ConnectionGuid = ({ showGuid }) => (
       <br />
       <br />
       Note that for the Qlik Sense Proxy to allow sessions from this webpage,
-      <code>{window.location.host}</code> needs to be whitelisted in QMC in your Qlik Sense Enterprise on Windows
-      deployment. In addition, you need to enable <i>Has secure attribute</i> and set <i>SameSite attribute</i> to{' '}
-      <i>None</i>.
+      <code>{window.location.host}</code> needs to be whitelisted in QMC in your Qlik Sense on Windows deployment. In
+      addition, you need to enable <i>Has secure attribute</i> and set <i>SameSite attribute</i> to <i>None</i>.
       <br />
       Make sure you are logged in to Qlik Sense in another browser tab.
     </Typography>

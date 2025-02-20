@@ -3,6 +3,7 @@ import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.2015.0.json';
 import SenseUtilities from 'enigma.js/sense-utilities';
 import { getAuthInstance } from '../connect';
+import getCsrfToken from '../utils/getCsrfToken';
 
 export const useOpenApp = ({ info }) => {
   const [app, setApp] = useState(null);
@@ -29,7 +30,8 @@ export const useOpenApp = ({ info }) => {
         const { webSocketUrl } = await (await fetch(`/auth/getSocketUrl/${info?.enigma.appId}`)).json();
         url = webSocketUrl;
       } else {
-        url = SenseUtilities.buildUrl(enigmaInfo);
+        const csrfToken = await getCsrfToken(`https://${enigmaInfo.host}/${enigmaInfo.prefix}`);
+        url = SenseUtilities.buildUrl({ ...enigmaInfo, ...{ urlParams: { 'qlik-csrf-token': csrfToken } } });
       }
 
       const enigmaGlobal = await enigma.create({ schema: qixSchema, url }).open();
