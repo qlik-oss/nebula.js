@@ -4,9 +4,11 @@ import * as SenseUtilities from 'enigma.js/sense-utilities';
 import qixSchema from 'enigma.js/schemas/12.2015.0.json';
 import { useOpenApp } from '../useOpenApp';
 import * as getAuthInstanceModule from '../../connect';
+import * as getCsrfToken from '../../utils/getCsrfToken';
 
 jest.mock('enigma.js');
 jest.mock('enigma.js/sense-utilities');
+jest.mock('../../utils/getCsrfToken', () => jest.fn());
 
 describe('useOpenApp()', () => {
   let renderResult;
@@ -56,6 +58,8 @@ describe('useOpenApp()', () => {
     });
     jest.spyOn(getAuthInstanceModule, 'getAuthInstance').mockImplementation(getAuthInstanceMock);
     windowFetchSpy = jest.spyOn(window, 'fetch');
+
+    getCsrfToken.mockResolvedValue('A-CSRF-TOKEN');
   });
 
   afterEach(() => {

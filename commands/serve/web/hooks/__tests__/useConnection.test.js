@@ -7,6 +7,9 @@ import {
 } from '../useConnection';
 import * as connectModule from '../../connect';
 import { RouterWrapper } from '../../utils';
+import getCsrfToken from '../../utils/getCsrfToken';
+
+jest.mock('../../utils/getCsrfToken', () => jest.fn());
 
 describe('useConnection Module', () => {
   let connectMock;
@@ -29,6 +32,7 @@ describe('useConnection Module', () => {
     connectMock = jest.fn().mockResolvedValue(glob);
 
     jest.spyOn(connectModule, 'connect').mockImplementation(connectMock);
+    getCsrfToken.mockResolvedValue('A-CSRF-TOKEN');
   });
 
   afterEach(() => {
@@ -213,7 +217,9 @@ describe('useConnection Module', () => {
         expect(setError).toHaveBeenCalledTimes(1);
         expect(setError).toHaveBeenCalledWith({
           hints: [
-            'If you are connecting to Qlik Cloud Services, make sure to provide a web integration id or client id.',
+            '- If you are connecting to Qlik Cloud, make sure to provide a web integration id or client id.',
+            '- For Qlik Sense on Windows, make sure the proxy setup is correct and that you are authenticated.',
+            '- Press the ? in the top right for more information on how to set up the connection correctly.',
           ],
           message: 'Connection failed to wss://some.remote.sde.qlikdev.com',
         });
