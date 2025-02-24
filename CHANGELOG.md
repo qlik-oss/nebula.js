@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.10.0](https://github.com/qlik-oss/nebula.js/compare/v5.9.3...v5.10.0) (2025-02-24)
+
+### Bug Fixes
+
+- **deps:** update minor and patch ([#1676](https://github.com/qlik-oss/nebula.js/issues/1676)) ([a860ca6](https://github.com/qlik-oss/nebula.js/commit/a860ca6d55b462de4ad44658abb2d70a945445af))
+- **deps:** update minor and patch ([#1677](https://github.com/qlik-oss/nebula.js/issues/1677)) ([5d99c6f](https://github.com/qlik-oss/nebula.js/commit/5d99c6fc270e5b898e2ef04b5108af7b9295090c))
+- fetch and apply csrf to WS call ([#1679](https://github.com/qlik-oss/nebula.js/issues/1679)) ([3f87dfc](https://github.com/qlik-oss/nebula.js/commit/3f87dfc2b721d35ee0244f9fefdd7ae169cf6e38))
+
 ## [5.9.3](https://github.com/qlik-oss/nebula.js/compare/v5.9.2...v5.9.3) (2025-02-07)
 
 ### Bug Fixes
