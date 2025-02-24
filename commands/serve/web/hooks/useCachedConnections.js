@@ -17,11 +17,16 @@ export const useCachedConnections = ({ storage }) => {
     let url = '';
     const protocol = info.enigma.secure ? 'wss' : 'ws';
     const host = info.enigma.host === 'localhost' ? `${info.enigma.host}:${info.enigma.port}` : info.enigma.host;
-    const engineUrl = `${protocol}://${host}`;
+    const prefix = info.enigma.prefix ? `/${info.enigma.prefix}` : '';
+    const engineUrl = `${protocol}://${host}${prefix}`;
 
-    if (info.clientId) url = `${engineUrl}/?qlik-client-id=${info.clientId}`;
-    if (info.webIntegrationId) url = `${engineUrl}/?qlik-web-integration-id=${info.webIntegrationId}`;
-    if (info.enigma.host === 'localhost') url = engineUrl;
+    if (info.clientId) {
+      url = `${engineUrl}/?qlik-client-id=${info.clientId}`;
+    } else if (info.webIntegrationId) {
+      url = `${engineUrl}/?qlik-web-integration-id=${info.webIntegrationId}`;
+    } else {
+      url = engineUrl;
+    }
     if (cachedConnections.indexOf(url) === -1 && url.length !== 0) {
       const newConns = [...cachedConnections, url];
       storage.save('connections', newConns);
