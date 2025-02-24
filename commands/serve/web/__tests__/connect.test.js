@@ -3,6 +3,9 @@ import * as ENIGMA from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.2015.0.json';
 import * as SenseUtilities from 'enigma.js/sense-utilities';
 import { connect, openApp, getConnectionInfo, getParams, parseEngineURL } from '../connect';
+import * as getCsrfToken from '../utils/getCsrfToken';
+
+jest.mock('../utils/getCsrfToken', () => jest.fn());
 
 jest.mock('@qlik/sdk');
 jest.mock('enigma.js');
@@ -45,6 +48,7 @@ describe('connect.js', () => {
       generateWebsocketUrl: generateWebsocketUrlMock,
     }));
     windowFetchSpy = jest.spyOn(window, 'fetch');
+    getCsrfToken.mockResolvedValue('A-CSRF-TOKEN');
   });
 
   afterEach(() => {
@@ -119,6 +123,9 @@ describe('connect.js', () => {
           enigma: {
             secure: false,
             host: 'localhost:1234/app/engineData',
+            urlParams: {
+              'qlik-csrf-token': 'A-CSRF-TOKEN',
+            },
           },
         };
         jsonResponseMock.mockImplementation(() => Promise.resolve(connectionResponse));

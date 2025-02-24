@@ -1,4 +1,7 @@
 import { getAppLink } from '../appLinkManager';
+import * as getCsrfToken from '../getCsrfToken';
+
+jest.mock('../getCsrfToken', () => jest.fn());
 
 describe('getAppLink()', () => {
   let navigate;
@@ -11,6 +14,7 @@ describe('getAppLink()', () => {
     navigate = jest.fn();
     location = { search: '' };
     targetApp = 'targetAppId';
+    getCsrfToken.mockResolvedValue('A-CSRF-TOKEN');
   });
 
   afterEach(() => {
@@ -18,58 +22,66 @@ describe('getAppLink()', () => {
     jest.resetAllMocks();
   });
 
-  test('should call navigate to correct engine url from localhost', () => {
+  test('should call navigate to correct engine url from localhost', async () => {
     info = { engineUrl: 'ws://localhost:1234', enigma: { secure: false, host: 'localhost', port: 1234 } };
     location.search = `engine_url=${info.engineUrl}`;
-    getAppLink({ navigate, location, info, targetApp });
+    await getAppLink({ navigate, location, info, targetApp });
 
     expect(navigate).toHaveBeenCalledTimes(1);
-    expect(navigate).toHaveBeenCalledWith(`/dev/engine_url=${info.engineUrl}/app/${targetApp}`);
+    expect(navigate).toHaveBeenCalledWith(
+      `/dev/engine_url=${info.engineUrl}/app/${targetApp}&qlik-csrf-token=A-CSRF-TOKEN`
+    );
   });
 
-  test('should call navigate to correct engine url from localhost without prefix', () => {
+  test('should call navigate to correct engine url from localhost without prefix', async () => {
     info = {
       engineUrl: 'ws://localhost:1234',
       enigma: { secure: false, host: 'localhost', port: 1234, prefix: undefined },
     };
+
+    getCsrfToken.mockResolvedValue(null);
     location.search = `engine_url=${info.engineUrl}`;
-    getAppLink({ navigate, location, info, targetApp });
+    await getAppLink({ navigate, location, info, targetApp });
 
     expect(navigate).toHaveBeenCalledTimes(1);
     expect(navigate).toHaveBeenCalledWith(`/dev/engine_url=${info.engineUrl}/app/${targetApp}`);
   });
 
-  test('should call navigate to correct engine url with prefix', () => {
+  test('should call navigate to correct engine url with prefix', async () => {
     info = {
       engineUrl: 'ws://localhost:1234/prefix',
       enigma: { secure: false, host: 'localhost', port: 1234, prefix: 'prefix' },
     };
     location.search = `engine_url=${info.engineUrl}`;
-    getAppLink({ navigate, location, info, targetApp });
+    await getAppLink({ navigate, location, info, targetApp });
 
     expect(navigate).toHaveBeenCalledTimes(1);
-    expect(navigate).toHaveBeenCalledWith(`/dev/engine_url=${info.engineUrl}/app/${targetApp}`);
+    expect(navigate).toHaveBeenCalledWith(
+      `/dev/engine_url=${info.engineUrl}/app/${targetApp}&qlik-csrf-token=A-CSRF-TOKEN`
+    );
   });
 
-  test('should call navigate to correct engine url from remote SDE', () => {
+  test('should call navigate to correct engine url from remote SDE', async () => {
     info = {
       engineUrl: 'wss://some-remote.sde.in.eu.qlikdev.com',
       enigma: { secure: true, host: 'some-remote.sde.in.eu.qlikdev.com' },
     };
+    getCsrfToken.mockResolvedValue(null);
     location.search = `engine_url=${info.engineUrl}`;
-    getAppLink({ navigate, location, info, targetApp });
+    await getAppLink({ navigate, location, info, targetApp });
 
     expect(navigate).toHaveBeenCalledTimes(1);
     expect(navigate).toHaveBeenCalledWith(`/dev/engine_url=${info.engineUrl}/app/${targetApp}`);
   });
 
-  test('should remove `shouldFetchAppList` if it was in search', () => {
+  test('should remove `shouldFetchAppList` if it was in search', async () => {
     info = {
       engineUrl: 'wss://some-remote.sde.in.eu.qlikdev.com',
       enigma: { secure: true, host: 'some-remote.sde.in.eu.qlikdev.com' },
     };
+    getCsrfToken.mockResolvedValue(null);
     location.search = `engine_url=${info.engineUrl}&shouldFetchAppList=true`;
-    getAppLink({ navigate, location, info, targetApp });
+    await getAppLink({ navigate, location, info, targetApp });
 
     expect(navigate).toHaveBeenCalledTimes(1);
     expect(navigate).toHaveBeenCalledWith(`/dev/engine_url=${info.engineUrl}/app/${targetApp}`);

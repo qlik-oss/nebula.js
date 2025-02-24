@@ -49,9 +49,11 @@ export const handleConnectionFailure = ({ error, info, setError }) => {
   if (error.target instanceof WebSocket) {
     oops.message = `Connection failed to ${info.engineUrl}`;
     if (/\.qlik[A-Za-z0-9-]+\.com/.test(info.engineUrl) && !info.webIntegrationId) {
+      oops.hints.push('- If you are connecting to Qlik Cloud, make sure to provide a web integration id or client id.');
       oops.hints.push(
-        'If you are connecting to Qlik Cloud Services, make sure to provide a web integration id or client id.'
+        '- For Qlik Sense on Windows, make sure the proxy setup is correct and that you are authenticated.'
       );
+      oops.hints.push('- Press the ? in the top right for more information on how to set up the connection correctly.');
     }
     setError(oops);
     return;

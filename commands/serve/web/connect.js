@@ -2,6 +2,7 @@ import enigma from 'enigma.js';
 import qixSchema from 'enigma.js/schemas/12.2015.0.json';
 import SenseUtilities from 'enigma.js/sense-utilities';
 import { Auth, AuthType } from '@qlik/sdk';
+import getCsrfToken from './utils/getCsrfToken';
 
 const getParams = () => {
   const opts = {};
@@ -167,9 +168,11 @@ const connect = async () => {
       };
     }
 
+    const csrfToken = await getCsrfToken(`https://${enigmaInfo.host}/${enigmaInfo.prefix}`);
     const url = SenseUtilities.buildUrl({
       secure: false,
       ...enigmaInfo,
+      ...{ urlParams: { 'qlik-csrf-token': csrfToken } },
     });
 
     return enigma.create({ schema: qixSchema, url }).open();
