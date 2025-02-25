@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useMemo, forwardRef, useImperativeHandle } from 'react';
+import React, { useEffect, useState, useContext, useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
 import useLayout from '../hooks/useLayout';
 import getObject from '../object/get-object';
 import Cell from './Cell';
@@ -17,7 +17,7 @@ const SheetElement = {
   className: 'njs-sheet',
 };
 
-function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initialError, onMount, navigation) {
+function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initialError, onMount, navigation, onError) {
   const { x, y, width, height } = cell.bounds;
   return (
     <div
@@ -34,6 +34,7 @@ function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initial
         initialError={initialError}
         onMount={onMount}
         navigation={navigation}
+        onError={onError}
       />
     </div>
   );
@@ -53,7 +54,17 @@ function getBounds(pos, columns, rows) {
 
 const Sheet = forwardRef(
   (
-    { model: inputModel, halo, initialSnOptions, initialSnPlugins, initialError, onMount, unmount, navigation },
+    {
+      model: inputModel,
+      halo,
+      initialSnOptions,
+      initialSnPlugins,
+      initialError,
+      onMount,
+      unmount,
+      navigation,
+      onError,
+    },
     ref
   ) => {
     const { root } = halo;
@@ -64,6 +75,8 @@ const Sheet = forwardRef(
     const [bgColor, setBgColor] = useState(undefined);
     const [bgImage, setBgImage] = useState(undefined);
     const [deepHash, setDeepHash] = useState('');
+    const renderState = useRef({ cellCount: 0, cellsRendered: 0, initialRender: false });
+
     navigation?.setCurrentSheetId?.(model.id);
     /// For each object
     useEffect(() => {
@@ -85,6 +98,17 @@ const Sheet = forwardRef(
           });
 
           const lCells = layout.cells;
+          renderState.cellCount = lCells.length;
+          renderState.cellsRendered = 0;
+
+          const renderCallback = () => {
+            renderState.cellsRendered++;
+            if (renderState.cellsRendered === renderState.cellCount && !renderState.initialRender) {
+              renderState.initialRender = true;
+              initialSnOptions.onInitialRender();
+            }
+          };
+
           const { columns, rows } = layout;
           // TODO - should try reuse existing objects on subsequent renders
           // Non-id updates should only change the "css"
@@ -110,6 +134,12 @@ const Sheet = forwardRef(
                 currentId: uid(),
                 mounted,
                 mountedPromise,
+                options: {
+                  ...initialSnOptions,
+                  ...{
+                    onInitialRender: renderCallback,
+                  },
+                },
               };
             })
           );
@@ -133,7 +163,7 @@ const Sheet = forwardRef(
       () =>
         cells
           ? cells.map((c) =>
-              getCellRenderer(c, halo, initialSnOptions, initialSnPlugins, initialError, c.mounted, navigation)
+              getCellRenderer(c, halo, c.options, initialSnPlugins, initialError, c.mounted, navigation, onError)
             )
           : [],
       [cells]
