@@ -11,6 +11,7 @@ export default function glue({
   onMount,
   initialError,
   navigation,
+  onError,
 }) {
   const { root } = halo;
   const sheetRef = React.createRef();
@@ -29,6 +30,7 @@ export default function glue({
       onMount={onMount}
       unmount={unmount}
       navigation={navigation}
+      onError={onError}
     />,
     element,
     model.id

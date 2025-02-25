@@ -5,25 +5,49 @@ import getPatches from './utils/patcher';
 
 const noopi = () => {};
 
-export default function sheet({ model, halo, navigation, initialError, onDestroy = async () => {} } = {}) {
+export default function sheet({
+  model,
+  halo,
+  navigation,
+  initialError,
+  onDestroy = async () => {},
+  onRender = () => {},
+  onError = () => {},
+} = {}) {
   let unmountSheet = noopi;
   let sheetRef = null;
   let mountedReference = null;
   let onMount = null;
+  let onRenderResolve = null;
+
   const mounted = new Promise((resolve) => {
     onMount = resolve;
   });
+
+  const rendered = new Promise((resolve) => {
+    onRenderResolve = resolve;
+  });
+
+  const createOnInitialRender = (override) => () => {
+    override?.(); // from options.onInitialRender
+    onRenderResolve(); // internal promise in viz to wait for render
+    onRender(); // from RenderConfig
+  };
 
   let initialSnOptions = {};
   let initialSnPlugins = [];
 
   const setSnOptions = async (opts) => {
+    const override = opts.onInitialRender;
     if (mountedReference) {
       (async () => {
         await mounted;
         sheetRef.current.setSnOptions({
           ...initialSnOptions,
           ...opts,
+          ...{
+            onInitialRender: createOnInitialRender(override),
+          },
         });
       })();
     } else {
@@ -31,6 +55,9 @@ export default function sheet({ model, halo, navigation, initialError, onDestroy
       initialSnOptions = {
         ...initialSnOptions,
         ...opts,
+        ...{
+          onInitialRender: createOnInitialRender(override),
+        },
       };
     }
   };
@@ -80,6 +107,15 @@ export default function sheet({ model, halo, navigation, initialError, onDestroy
      */
     navigation,
     /**
+     * Gets the specific api that a Viz exposes.
+     * @private currently empty and private
+     * @returns {Promise<object>} object that contains the internal Viz api.
+     */
+    async getImperativeHandle() {
+      await rendered;
+      return sheetRef.current.getImperativeHandle();
+    },
+    /**
      * Destroys the sheet and removes it from the the DOM.
      * @example
      * const sheet = await embed(app).render({
@@ -112,6 +148,7 @@ export default function sheet({ model, halo, navigation, initialError, onDestroy
           initialError,
           onMount,
           navigation,
+          onError,
         });
         return mounted;
       },

@@ -19,7 +19,7 @@ export default async function getObject(
   const navigation =
     inputNavigation || (model.genericType === 'sheet' ? createNavigationApi(halo, store, model) : undefined);
   if (model.genericType === 'sheet') {
-    return initSheet(model, { options, plugins, element }, halo, navigation);
+    return initSheet(model, { options, plugins, element, onRender, onError }, halo, navigation);
   }
 
   return init(model, { options, plugins, element, onRender, onError }, halo, navigation);
