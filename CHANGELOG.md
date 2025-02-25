@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.11.0](https://github.com/qlik-oss/nebula.js/compare/v5.10.1...v5.11.0) (2025-02-25)
+
+### Features
+
+- add more correct onRender callback for sheets ([#1681](https://github.com/qlik-oss/nebula.js/issues/1681)) ([a5c8e41](https://github.com/qlik-oss/nebula.js/commit/a5c8e4145856f13bbfa71cccd52353abe540c6f6))
+
 ## [5.10.1](https://github.com/qlik-oss/nebula.js/compare/v5.10.0...v5.10.1) (2025-02-25)
 
 ### Bug Fixes
