@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.10.1](https://github.com/qlik-oss/nebula.js/compare/v5.10.0...v5.10.1) (2025-02-25)
+
+### Bug Fixes
+
+- connection history for CM ([#1680](https://github.com/qlik-oss/nebula.js/issues/1680)) ([b716714](https://github.com/qlik-oss/nebula.js/commit/b7167140330d352c5f5a0fef7f4519a1b567fb18))
+
 # [5.10.0](https://github.com/qlik-oss/nebula.js/compare/v5.9.3...v5.10.0) (2025-02-24)
 
 ### Bug Fixes
