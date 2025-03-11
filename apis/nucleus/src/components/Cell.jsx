@@ -18,6 +18,7 @@ import useObjectSelections from '../hooks/useObjectSelections';
 import eventmixin from '../selections/event-mixin';
 import useStyling from '../hooks/useStyling';
 import RenderError from '../utils/render-error';
+import getPadding from '../utils/cell-padding';
 
 /**
  * @interface
@@ -538,6 +539,15 @@ const Cell = forwardRef(
       );
     }
 
+    const { cellPadding, bodyPadding } = getPadding({
+      disableCellPadding,
+      halo,
+      layout,
+      isError: state.error,
+      theme,
+      titleStyles,
+    });
+
     return (
       <Paper
         style={{
@@ -571,7 +581,7 @@ const Cell = forwardRef(
             position: 'relative',
             width: '100%',
             height: '100%',
-            ...(!disableCellPadding ? { padding: theme.spacing(1) } : {}),
+            ...(cellPadding ? { padding: cellPadding } : {}),
             ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
           }}
         >
@@ -594,6 +604,7 @@ const Cell = forwardRef(
             xs
             style={{
               height: '100%',
+              ...(bodyPadding ? { padding: bodyPadding } : {}),
             }}
             ref={contentRef}
           >
