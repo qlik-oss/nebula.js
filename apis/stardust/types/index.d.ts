@@ -795,8 +795,15 @@ declare namespace stardust {
         hypercubePath: string;
     })=>stardust.ExportFormat;
 
+    type onPropertyChange = (properties: qix.GenericObjectProperties)=>void;
+
+    interface QAEProperties {
+        initial?: qix.GenericObjectProperties;
+        onChange?: stardust.onPropertyChange;
+    }
+
     interface QAEDefinition {
-        properties?: qix.GenericObjectProperties;
+        properties?: stardust.QAEProperties | qix.GenericObjectProperties;
         data?: {
             targets: stardust.DataTarget[];
         };
