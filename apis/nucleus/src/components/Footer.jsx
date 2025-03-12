@@ -14,6 +14,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   [`& .${classes.itemStyle}`]: {
     minWidth: 0,
     paddingTop: theme.spacing(1),
+    width: '100%',
   },
 }));
 
