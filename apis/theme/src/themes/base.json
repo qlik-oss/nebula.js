@@ -12,11 +12,13 @@
     "title": {
       "main": {
         "color": "@B50",
-        "fontSize": "15px"
+        "fontSize": "15px",
+        "backgroundColor": "transparent"
       },
       "subTitle": {
         "color": "@B50",
-        "fontSize": "12px"
+        "fontSize": "12px",
+        "backgroundColor": "transparent"
       },
       "footer": {
         "color": "@B50",

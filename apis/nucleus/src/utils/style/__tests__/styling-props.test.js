@@ -124,6 +124,7 @@ describe('Styling property resolver', () => {
       const style = resolveTextStyle(prop, 'main', t, 'peoplechart');
       expect(style).toEqual({
         color: 'red',
+        backgroundColor: 'transparent',
         fontFamily: 'familiiii',
         fontSize: 'giant',
         fontWeight: 'normal',
@@ -137,6 +138,7 @@ describe('Styling property resolver', () => {
         title: {
           footer: {
             color: { color: 'red' },
+            backgroundColor: 'pink',
             fontStyle: '',
             fontSize: '58em',
           },
@@ -159,6 +161,7 @@ describe('Styling property resolver', () => {
 
       expect(style).toEqual({
         color: 'red',
+        backgroundColor: 'pink',
         fontFamily: 'a font',
         fontSize: '58em',
         fontWeight: 'normal',
