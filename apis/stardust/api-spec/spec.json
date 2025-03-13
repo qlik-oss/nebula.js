@@ -2531,12 +2531,42 @@
         "type": "#/definitions/ExportFormat"
       }
     },
+    "onPropertyChange": {
+      "kind": "function",
+      "params": [
+        {
+          "name": "properties",
+          "type": "qix.GenericObjectProperties"
+        }
+      ]
+    },
+    "QAEProperties": {
+      "kind": "interface",
+      "entries": {
+        "initial": {
+          "optional": true,
+          "type": "qix.GenericObjectProperties"
+        },
+        "onChange": {
+          "optional": true,
+          "type": "#/definitions/onPropertyChange"
+        }
+      }
+    },
     "QAEDefinition": {
       "kind": "interface",
       "entries": {
         "properties": {
           "optional": true,
-          "type": "qix.GenericObjectProperties"
+          "kind": "union",
+          "items": [
+            {
+              "type": "#/definitions/QAEProperties"
+            },
+            {
+              "type": "qix.GenericObjectProperties"
+            }
+          ]
         },
         "data": {
           "optional": true,

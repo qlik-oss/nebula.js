@@ -24,8 +24,19 @@ const noop = () => {};
  */
 
 /**
+ * @callback onPropertyChange
+ * @param {qix.GenericObjectProperties} properties
+ */
+
+/**
+ * @interface QAEProperties
+ * @property {qix.GenericObjectProperties=} initial
+ * @property {onPropertyChange=} onChange
+ */
+
+/**
  * @interface QAEDefinition
- * @property {qix.GenericObjectProperties=} properties
+ * @property {(QAEProperties|qix.GenericObjectProperties)=} properties
  * @property {object=} data
  * @property {DataTarget[]} data.targets
  * @property {importProperties=} importProperties
