@@ -35,18 +35,7 @@ const shouldUseCardPadding = ({ isCardTheme, layout, isError }) => {
   return true;
 };
 
-const getPadding = ({ disableCellPadding, halo, layout, isError, theme, titleStyles }) => {
-  const flags = halo.public.galaxy?.flags;
-  const senseTheme = halo.public.theme;
-
-  if (disableCellPadding) {
-    return { cellPadding: undefined, bodyPadding: undefined };
-  }
-
-  if (!flags?.isEnabled('VNA-13_CELLPADDING_FROM_THEME')) {
-    return { cellPadding: theme.spacing(1), bodyPadding: undefined };
-  }
-
+const getPadding = ({ layout, isError, senseTheme, titleStyles }) => {
   const isCardTheme = senseTheme?.getStyle('', '', '_cards');
   const cardPadding = shouldUseCardPadding({ isCardTheme, layout, isError });
   if (isCardTheme) {
@@ -74,9 +63,9 @@ const getPadding = ({ disableCellPadding, halo, layout, isError, theme, titleSty
       bodyPadding = `${showTitle || showSubtitle ? '0' : '10px'} 10px ${showFootnote ? '0' : '5px'}`;
     }
 
-    return { cellPadding: undefined, bodyPadding };
+    return bodyPadding;
   }
-  return { cellPadding: undefined, bodyPadding: undefined };
+  return undefined;
 };
 
 export default getPadding;
