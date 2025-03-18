@@ -539,14 +539,25 @@ const Cell = forwardRef(
       );
     }
 
-    const { cellPadding, bodyPadding } = getPadding({
-      disableCellPadding,
-      halo,
-      layout,
-      isError: state.error,
-      theme,
-      titleStyles,
-    });
+    const flags = halo.public.galaxy?.flags;
+    let useOldCellPadding;
+    let bodyPadding;
+    if (disableCellPadding) {
+      useOldCellPadding = false;
+      bodyPadding = undefined;
+    } else if (!flags?.isEnabled('VNA-13_CELLPADDING_FROM_THEME')) {
+      useOldCellPadding = true;
+      bodyPadding = undefined;
+    } else {
+      const senseTheme = halo.public.theme;
+      useOldCellPadding = false;
+      bodyPadding = getPadding({
+        layout,
+        isError: state.error,
+        senseTheme,
+        titleStyles,
+      });
+    }
 
     return (
       <Paper
@@ -581,7 +592,7 @@ const Cell = forwardRef(
             position: 'relative',
             width: '100%',
             height: '100%',
-            ...(cellPadding ? { padding: cellPadding } : {}),
+            ...(useOldCellPadding ? { padding: theme.spacing(1) } : {}),
             ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
           }}
         >

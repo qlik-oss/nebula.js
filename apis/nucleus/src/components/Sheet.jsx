@@ -19,11 +19,16 @@ const SheetElement = {
 
 function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initialError, onMount, navigation, onError) {
   const { x, y, width, height } = cell.bounds;
+
+  const style = { left: `${x}%`, top: `${y}%`, width: `${width}%`, height: `${height}%`, position: 'absolute' };
+  const flags = halo.public.galaxy?.flags;
+  if (flags?.isEnabled('VNA-13_CELLPADDING_FROM_THEME')) {
+    style.boxSizing = 'border-box';
+    style.padding = '4px';
+  }
+
   return (
-    <div
-      style={{ left: `${x}%`, top: `${y}%`, width: `${width}%`, height: `${height}%`, position: 'absolute' }}
-      key={cell.model.id}
-    >
+    <div style={style} key={cell.model.id}>
       <Cell
         ref={cell.cellRef}
         halo={halo}
