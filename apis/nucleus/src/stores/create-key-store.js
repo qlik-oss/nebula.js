@@ -3,15 +3,17 @@ import { useState, useEffect } from 'react';
 export default (initialState = {}, applyMiddleware = () => {}) => {
   const sharedState = initialState;
   const hookListeners = [];
+  const subscribedListeners = {};
 
   const store = {
     get: (key) => sharedState[key],
+    getAllKeys: () => Object.keys(sharedState),
     set: (key, value) => {
       if (typeof key === 'undefined' || typeof key === 'object') {
         throw new Error(`Invalid key: ${JSON.stringify(key)}`);
       }
       sharedState[key] = value;
-      applyMiddleware({ type: 'SET', value });
+      subscribedListeners[key] = applyMiddleware({ type: 'SET', value });
       return value;
     },
     clear: (key) => {
@@ -22,6 +24,11 @@ export default (initialState = {}, applyMiddleware = () => {}) => {
     },
     dispatch: (forceNewState) => {
       hookListeners.forEach((listener) => listener(forceNewState ? {} : sharedState));
+    },
+    destroy: () => {
+      Object.keys(subscribedListeners).forEach((key) => {
+        subscribedListeners[key]();
+      });
     },
   };
 

@@ -40,7 +40,7 @@ export default function glue({
     root.remove(portal);
     model.removeListener('closed', unmount);
   };
-
+  cellRef.unmount = unmount;
   model.on('closed', unmount);
 
   root.add(portal);
