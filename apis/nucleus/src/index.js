@@ -332,6 +332,10 @@ function nuked(configuration = {}) {
         }
         return createSessionObject(cfg, halo, modelStore);
       },
+      // TODO - document
+      destroy: async () => {
+        root.destroy();
+      },
       /**
        * Creates a visualization model
        * @param {CreateConfig} cfg The create configuration.

@@ -136,6 +136,12 @@ export default function boot({ app, context }) {
           appRef.current.setContext(ctx);
         })();
       },
+      destroy() {
+        Object.keys(cells).forEach((c) => {
+          cells[c].unmount();
+        });
+        modelStore.destroy();
+      },
     },
     modelStore,
     selectionStore,
