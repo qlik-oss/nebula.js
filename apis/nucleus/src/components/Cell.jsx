@@ -29,6 +29,15 @@ const CellElement = {
   className: 'njs-cell',
 };
 
+/**
+ * @interface
+ * @extends HTMLElement
+ */
+const CellBody = {
+  /** @type {'njs-cell-body'} */
+  className: 'njs-cell-body',
+};
+
 const initialState = (err) => ({
   loading: false,
   loaded: false,
@@ -613,6 +622,7 @@ const Cell = forwardRef(
             onKeyDown={keyboardNavigation ? handleKeyDown : null}
             item
             xs
+            className={CellBody.className}
             style={{
               height: '100%',
               ...(bodyPadding ? { padding: bodyPadding } : {}),

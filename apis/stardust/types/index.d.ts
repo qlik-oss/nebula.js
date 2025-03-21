@@ -657,6 +657,10 @@ declare namespace stardust {
         className: "njs-cell";
     }
 
+    interface CellBody extends HTMLElement{
+        className: "njs-cell-body";
+    }
+
     interface CellFooter extends HTMLElement{
         className: "njs-cell-footer";
     }

@@ -2079,6 +2079,20 @@
         }
       }
     },
+    "CellBody": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-body'",
+          "kind": "literal"
+        }
+      }
+    },
     "CellFooter": {
       "availability": {
         "since": "2.0.0"
