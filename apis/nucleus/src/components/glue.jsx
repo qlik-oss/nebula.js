@@ -40,12 +40,11 @@ export default function glue({
     root.remove(portal);
     model.removeListener('closed', unmount);
   };
-
   model.on('closed', unmount);
 
   root.add(portal);
   // Cannot use model.id as it is not unique in a given mashup
-  root.addCell(currentId, cellRef);
+  root.addCell(currentId, cellRef, unmount);
 
   return [unmount, cellRef];
 }

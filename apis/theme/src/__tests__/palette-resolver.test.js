@@ -60,7 +60,7 @@ describe('palette-resolver', () => {
             {
               name: 'name',
               translation: 't',
-              colors: 'colors',
+              colors: ['colors'],
             },
           ],
         },
@@ -71,7 +71,7 @@ describe('palette-resolver', () => {
         name: 'name',
         translation: 't',
         type: 'row',
-        colors: 'colors',
+        colors: ['none', 'colors'],
       },
     ]);
   });
