@@ -556,6 +556,16 @@ declare namespace stardust {
 
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
 
     /**
@@ -595,16 +605,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {
@@ -878,12 +878,11 @@ declare namespace stardust {
         /**
          * Resolve a color object using the color picker palette from the provided JSON theme.
          * @param c
-         * @param supportNone Shifts the palette index by one to account for the "none" color
          */
         getColorPickerColor(c: {
             index?: number;
             color?: string;
-        }, supportNone?: boolean): string;
+        }): string;
 
         /**
          * Get the best contrasting color against the specified `color`.
