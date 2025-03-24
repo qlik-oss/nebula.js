@@ -73,7 +73,7 @@ function getBackgroundColor({ themeApi, themeOverrides }) {
   if (bgColor?.useExpression) {
     color = resolveBgColor({ bgColor }, themeApi, 'listBox');
   } else {
-    color = themeApi.getColorPickerColor(bgColor?.color, false);
+    color = themeApi.getColorPickerColor(bgColor?.color);
   }
   return color;
 }
@@ -93,7 +93,7 @@ function getSearchBGColor(bgCol, getListboxStyle) {
 export default function getStyles({ app, themeApi, theme, components = [], checkboxes = false }) {
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
-  const getColorPickerColor = (c) => (c?.index > 0 || c?.color ? themeApi.getColorPickerColor(c, false) : undefined);
+  const getColorPickerColor = (c) => (c?.index > 0 || c?.color ? themeApi.getColorPickerColor(c) : undefined);
 
   const selections = getSelectionColors({
     getColorPickerColor,

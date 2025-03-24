@@ -87,7 +87,7 @@ describe('hooks', () => {
 
   it('useTheme', async () => {
     const text = await page.$eval(`${snSelector} .theme`, (el) => el.textContent);
-    expect(text).to.equal('#a54343');
+    expect(text).to.equal('#7b7a78');
   });
 
   it('useConstraints', async () => {

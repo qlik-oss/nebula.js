@@ -56,12 +56,13 @@ export default function theme(resolvedTheme) {
     uiPalettes() {
       const pals = [];
       resolvedTheme.palettes.ui.forEach((s) => {
+        const colors = s.colors[0] !== 'none' ? ['none', ...s.colors] : s.colors;
         pals.push({
           key: 'ui',
           name: s.name,
           translation: s.translation,
           type: 'row',
-          colors: s.colors,
+          colors,
         });
       });
       return pals;
@@ -77,7 +78,7 @@ export default function theme(resolvedTheme) {
         others: resolvedTheme.dataColors.othersColor,
       };
     },
-    uiColor(c, shift) {
+    uiColor(c) {
       const indexIsValid = typeof c?.index === 'number' && !Number.isNaN(c?.index);
       const colorIsValid = typeof c?.color === 'string';
       const somethingIsValid = indexIsValid || colorIsValid;
@@ -85,8 +86,6 @@ export default function theme(resolvedTheme) {
         return undefined;
       }
       const getColor = () => {
-        // eslint-disable-next-line no-param-reassign
-        shift = !!shift;
         if (c?.index < 0 || typeof c?.index === 'undefined') {
           return c.color;
         }
@@ -96,10 +95,10 @@ export default function theme(resolvedTheme) {
         if (!uiPalette) {
           return c.color;
         }
-        if (typeof uiPalette.colors[c.index - shift] === 'undefined') {
+        if (typeof uiPalette.colors[c.index] === 'undefined') {
           return c.color;
         }
-        return uiPalette.colors[c.index - shift];
+        return uiPalette.colors[c.index];
       };
       const color = getColor();
       if (c.alpha === undefined || c.alpha >= 1 || c.alpha < 0) {
