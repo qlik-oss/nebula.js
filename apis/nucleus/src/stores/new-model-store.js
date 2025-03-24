@@ -18,6 +18,7 @@ export default function initializeStores(appId) {
       modelChangedStore.dispatch(true); // Force new state to trigger hooks
     };
     const unsubscribe = () => {
+      model.removeListener('closed', unsubscribe);
       model.removeListener('changed', onChanged);
       rpcResultStore.clear(model.id);
       rpcRequestStore.clear(model.id);
@@ -30,9 +31,7 @@ export default function initializeStores(appId) {
       case 'SET':
         if (!initialized) {
           model.on('changed', onChanged);
-          model.once('closed', () => {
-            unsubscribe();
-          });
+          model.once('closed', unsubscribe);
         }
         break;
       default:
@@ -51,8 +50,13 @@ export default function initializeStores(appId) {
     };
   };
 
+  const destroy = () => {
+    modelStore.destroy();
+  };
+
   return {
     subscribe,
+    destroy,
     useModelStore,
     modelStore,
     useModelChangedStore,

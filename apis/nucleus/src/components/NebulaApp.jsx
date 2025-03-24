@@ -87,6 +87,7 @@ export default function boot({ app, context }) {
   );
 
   const cells = {};
+  const cellsUnmount = {};
   const components = [];
 
   return [
@@ -97,11 +98,14 @@ export default function boot({ app, context }) {
         });
       },
       cells,
-      addCell(id, cell) {
+      addCell(id, cell, unmount) {
         cells[id] = cell;
+        cellsUnmount[id] = unmount;
       },
       removeCell(id) {
         delete cells[id];
+        cellsUnmount[id]();
+        delete cellsUnmount[id];
       },
       add(component) {
         (async () => {
@@ -135,6 +139,12 @@ export default function boot({ app, context }) {
           }
           appRef.current.setContext(ctx);
         })();
+      },
+      destroy() {
+        Object.keys(cellsUnmount).forEach((c) => {
+          cellsUnmount[c]();
+        });
+        modelStore.destroy();
       },
     },
     modelStore,
