@@ -7,7 +7,6 @@ export default (initialState = {}, applyMiddleware = () => {}) => {
 
   const store = {
     get: (key) => sharedState[key],
-    getAllKeys: () => Object.keys(sharedState),
     set: (key, value) => {
       if (typeof key === 'undefined' || typeof key === 'object') {
         throw new Error(`Invalid key: ${JSON.stringify(key)}`);
@@ -27,7 +26,7 @@ export default (initialState = {}, applyMiddleware = () => {}) => {
     },
     destroy: () => {
       Object.keys(subscribedListeners).forEach((key) => {
-        subscribedListeners[key]();
+        subscribedListeners[key] && subscribedListeners[key]();
       });
     },
   };

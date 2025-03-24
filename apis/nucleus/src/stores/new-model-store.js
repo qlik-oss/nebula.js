@@ -51,16 +51,7 @@ export default function initializeStores(appId) {
   };
 
   const destroy = () => {
-    const all = modelInitializedStore.getAllKeys();
     modelStore.destroy();
-    all.forEach((id) => {
-      rpcResultStore.clear(id);
-      rpcRequestStore.clear(id);
-      rpcRequestSessionModelStore.clear(id);
-      rpcRequestModelStore.clear(id);
-      modelChangedStore.clear(id);
-      modelInitializedStore.clear(id);
-    });
   };
 
   return {
