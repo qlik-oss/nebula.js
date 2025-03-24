@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.12.0](https://github.com/qlik-oss/nebula.js/compare/v5.11.0...v5.12.0) (2025-03-24)
+
+### Bug Fixes
+
+- align theme none color to client ([#1696](https://github.com/qlik-oss/nebula.js/issues/1696)) ([15c83cd](https://github.com/qlik-oss/nebula.js/commit/15c83cdb55fbe813bd3bc2e4b9e7950ba90a69d4))
+- chart text background color ([#1688](https://github.com/qlik-oss/nebula.js/issues/1688)) ([1d255f2](https://github.com/qlik-oss/nebula.js/commit/1d255f2da88e70310f0caba1eb2251e07510a1a6))
+- **deps:** update minor and patch ([#1683](https://github.com/qlik-oss/nebula.js/issues/1683)) ([6dcc037](https://github.com/qlik-oss/nebula.js/commit/6dcc037ce79c837e2ea5ce0f9713b7fbf6778997))
+- **deps:** update minor and patch ([#1686](https://github.com/qlik-oss/nebula.js/issues/1686)) ([ad56031](https://github.com/qlik-oss/nebula.js/commit/ad56031f7c6cc2b46e340d7ee6c57837d6ffbebf))
+- **deps:** update minor and patch ([#1695](https://github.com/qlik-oss/nebula.js/issues/1695)) ([9d93799](https://github.com/qlik-oss/nebula.js/commit/9d93799821eb0631dbc2ea9852e1b7c325ad2e5a))
+- footer width ([#1689](https://github.com/qlik-oss/nebula.js/issues/1689)) ([286be6b](https://github.com/qlik-oss/nebula.js/commit/286be6bebff2aede3e29ffcdb5589f72a58e67b2))
+- pick up and apply font size in compact listbox ([#1685](https://github.com/qlik-oss/nebula.js/issues/1685)) ([3663a46](https://github.com/qlik-oss/nebula.js/commit/3663a4611527121ceb92ebf2191b546ddd456f37))
+- type error for properties in QAEDefinition ([#1687](https://github.com/qlik-oss/nebula.js/issues/1687)) ([7f40e54](https://github.com/qlik-oss/nebula.js/commit/7f40e540fe7bc32e9d0da6831e627b23e40de859))
+
+### Features
+
+- add destroy function to root api ([#1691](https://github.com/qlik-oss/nebula.js/issues/1691)) ([ee7171e](https://github.com/qlik-oss/nebula.js/commit/ee7171e5ed4ed0ff59a60ef58ee6068ab8623742))
+- cell spacing based on theme ([#1690](https://github.com/qlik-oss/nebula.js/issues/1690)) ([254ac31](https://github.com/qlik-oss/nebula.js/commit/254ac319d707cfc8e6ef3dc340d7b8f89d5295ee))
+- replace qlik/sdk with qlik/api ([#1665](https://github.com/qlik-oss/nebula.js/issues/1665)) ([0e6b983](https://github.com/qlik-oss/nebula.js/commit/0e6b9830c0942146f772905f50b3aff38265befc))
+
 # [5.11.0](https://github.com/qlik-oss/nebula.js/compare/v5.10.1...v5.11.0) (2025-02-25)
 
 ### Features

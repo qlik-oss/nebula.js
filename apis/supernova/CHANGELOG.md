@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.12.0](https://github.com/qlik-oss/nebula.js/compare/v5.11.0...v5.12.0) (2025-03-24)
+
+### Bug Fixes
+
+- type error for properties in QAEDefinition ([#1687](https://github.com/qlik-oss/nebula.js/issues/1687)) ([7f40e54](https://github.com/qlik-oss/nebula.js/commit/7f40e540fe7bc32e9d0da6831e627b23e40de859))
+
 # [5.11.0](https://github.com/qlik-oss/nebula.js/compare/v5.10.1...v5.11.0) (2025-02-25)
 
 **Note:** Version bump only for package @nebula.js/supernova

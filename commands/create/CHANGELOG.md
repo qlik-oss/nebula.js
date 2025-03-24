@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.12.0](https://github.com/qlik-oss/nebula.js/compare/v5.11.0...v5.12.0) (2025-03-24)
+
+### Features
+
+- replace qlik/sdk with qlik/api ([#1665](https://github.com/qlik-oss/nebula.js/issues/1665)) ([0e6b983](https://github.com/qlik-oss/nebula.js/commit/0e6b9830c0942146f772905f50b3aff38265befc))
+
 # [5.11.0](https://github.com/qlik-oss/nebula.js/compare/v5.10.1...v5.11.0) (2025-02-25)
 
 **Note:** Version bump only for package @nebula.js/cli-create

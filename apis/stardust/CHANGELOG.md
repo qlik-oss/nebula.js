@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.12.0](https://github.com/qlik-oss/nebula.js/compare/v5.11.0...v5.12.0) (2025-03-24)
+
+### Bug Fixes
+
+- align theme none color to client ([#1696](https://github.com/qlik-oss/nebula.js/issues/1696)) ([15c83cd](https://github.com/qlik-oss/nebula.js/commit/15c83cdb55fbe813bd3bc2e4b9e7950ba90a69d4))
+- **deps:** update minor and patch ([#1683](https://github.com/qlik-oss/nebula.js/issues/1683)) ([6dcc037](https://github.com/qlik-oss/nebula.js/commit/6dcc037ce79c837e2ea5ce0f9713b7fbf6778997))
+- **deps:** update minor and patch ([#1686](https://github.com/qlik-oss/nebula.js/issues/1686)) ([ad56031](https://github.com/qlik-oss/nebula.js/commit/ad56031f7c6cc2b46e340d7ee6c57837d6ffbebf))
+- type error for properties in QAEDefinition ([#1687](https://github.com/qlik-oss/nebula.js/issues/1687)) ([7f40e54](https://github.com/qlik-oss/nebula.js/commit/7f40e540fe7bc32e9d0da6831e627b23e40de859))
+
+### Features
+
+- add destroy function to root api ([#1691](https://github.com/qlik-oss/nebula.js/issues/1691)) ([ee7171e](https://github.com/qlik-oss/nebula.js/commit/ee7171e5ed4ed0ff59a60ef58ee6068ab8623742))
+- cell spacing based on theme ([#1690](https://github.com/qlik-oss/nebula.js/issues/1690)) ([254ac31](https://github.com/qlik-oss/nebula.js/commit/254ac319d707cfc8e6ef3dc340d7b8f89d5295ee))
+
 # [5.11.0](https://github.com/qlik-oss/nebula.js/compare/v5.10.1...v5.11.0) (2025-02-25)
 
 ### Features

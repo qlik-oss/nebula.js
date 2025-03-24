@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.12.0](https://github.com/qlik-oss/nebula.js/compare/v5.11.0...v5.12.0) (2025-03-24)
+
+### Bug Fixes
+
+- align theme none color to client ([#1696](https://github.com/qlik-oss/nebula.js/issues/1696)) ([15c83cd](https://github.com/qlik-oss/nebula.js/commit/15c83cdb55fbe813bd3bc2e4b9e7950ba90a69d4))
+- chart text background color ([#1688](https://github.com/qlik-oss/nebula.js/issues/1688)) ([1d255f2](https://github.com/qlik-oss/nebula.js/commit/1d255f2da88e70310f0caba1eb2251e07510a1a6))
+
 # [5.11.0](https://github.com/qlik-oss/nebula.js/compare/v5.10.1...v5.11.0) (2025-02-25)
 
 **Note:** Version bump only for package @nebula.js/theme
