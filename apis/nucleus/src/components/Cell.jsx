@@ -18,6 +18,7 @@ import useObjectSelections from '../hooks/useObjectSelections';
 import eventmixin from '../selections/event-mixin';
 import useStyling from '../hooks/useStyling';
 import RenderError from '../utils/render-error';
+import getPadding from '../utils/cell-padding';
 
 /**
  * @interface
@@ -26,6 +27,15 @@ import RenderError from '../utils/render-error';
 const CellElement = {
   /** @type {'njs-cell'} */
   className: 'njs-cell',
+};
+
+/**
+ * @interface
+ * @extends HTMLElement
+ */
+const CellBody = {
+  /** @type {'njs-cell-body'} */
+  className: 'njs-cell-body',
 };
 
 const initialState = (err) => ({
@@ -538,6 +548,26 @@ const Cell = forwardRef(
       );
     }
 
+    const flags = halo.public.galaxy?.flags;
+    let useOldCellPadding;
+    let bodyPadding;
+    if (disableCellPadding) {
+      useOldCellPadding = false;
+      bodyPadding = undefined;
+    } else if (!flags?.isEnabled('VNA-13_CELLPADDING_FROM_THEME')) {
+      useOldCellPadding = true;
+      bodyPadding = undefined;
+    } else {
+      const senseTheme = halo.public.theme;
+      useOldCellPadding = false;
+      bodyPadding = getPadding({
+        layout,
+        isError: state.error,
+        senseTheme,
+        titleStyles,
+      });
+    }
+
     return (
       <Paper
         style={{
@@ -571,7 +601,7 @@ const Cell = forwardRef(
             position: 'relative',
             width: '100%',
             height: '100%',
-            ...(!disableCellPadding ? { padding: theme.spacing(1) } : {}),
+            ...(useOldCellPadding ? { padding: theme.spacing(1) } : {}),
             ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
           }}
         >
@@ -592,8 +622,10 @@ const Cell = forwardRef(
             onKeyDown={keyboardNavigation ? handleKeyDown : null}
             item
             xs
+            className={CellBody.className}
             style={{
               height: '100%',
+              ...(bodyPadding ? { padding: bodyPadding } : {}),
             }}
             ref={contentRef}
           >
