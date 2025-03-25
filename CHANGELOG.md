@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.12.1](https://github.com/qlik-oss/nebula.js/compare/v5.12.0...v5.12.1) (2025-03-25)
+
+### Reverts
+
+- Revert "fix: pick up and apply font size in compact listbox (#1685)" (#1698) ([47fd983](https://github.com/qlik-oss/nebula.js/commit/47fd98319500ca92f6b9de0327627b21de76cce9)), closes [#1685](https://github.com/qlik-oss/nebula.js/issues/1685) [#1698](https://github.com/qlik-oss/nebula.js/issues/1698)
+
 # [5.12.0](https://github.com/qlik-oss/nebula.js/compare/v5.11.0...v5.12.0) (2025-03-24)
 
 ### Bug Fixes
