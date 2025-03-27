@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.12.2](https://github.com/qlik-oss/nebula.js/compare/v5.12.1...v5.12.2) (2025-03-27)
+
+### Features
+
+- expose ext on generator ([#1700](https://github.com/qlik-oss/nebula.js/issues/1700)) ([a5afe01](https://github.com/qlik-oss/nebula.js/commit/a5afe01aa9c399d3c54f99da718500c40865b67a))
+
 ## [5.12.1](https://github.com/qlik-oss/nebula.js/compare/v5.12.0...v5.12.1) (2025-03-25)
 
 **Note:** Version bump only for package @nebula.js/supernova
