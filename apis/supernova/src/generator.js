@@ -64,6 +64,10 @@ export default function generatorFn(UserSN, galaxy) {
      */
     component: sn.component || {},
     /**
+     * @type {EXT}
+     */
+    ext: sn.ext,
+    /**
      * @param {object} p
      * @param {EnigmaAppModel} p.app
      * @param {EnigmaObjectModel} p.model
