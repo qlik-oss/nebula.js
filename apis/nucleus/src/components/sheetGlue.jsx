@@ -37,6 +37,6 @@ export default function glue({
   );
   navigation.setSheetRef(sheetRef);
 
-  root.add(portal);
+  root.add(portal, unmount);
   return [unmount, sheetRef];
 }
