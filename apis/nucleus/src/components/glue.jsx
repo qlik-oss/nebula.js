@@ -42,9 +42,9 @@ export default function glue({
   };
   model.on('closed', unmount);
 
-  root.add(portal);
+  root.add(portal, unmount);
   // Cannot use model.id as it is not unique in a given mashup
-  root.addCell(currentId, cellRef, unmount);
+  root.addCell(currentId, cellRef);
 
   return [unmount, cellRef];
 }

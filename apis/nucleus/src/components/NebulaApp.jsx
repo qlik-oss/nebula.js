@@ -87,7 +87,7 @@ export default function boot({ app, context }) {
   );
 
   const cells = {};
-  const cellsUnmount = {};
+  const componentsUnmount = [];
   const components = [];
 
   return [
@@ -98,19 +98,17 @@ export default function boot({ app, context }) {
         });
       },
       cells,
-      addCell(id, cell, unmount) {
+      addCell(id, cell) {
         cells[id] = cell;
-        cellsUnmount[id] = unmount;
       },
       removeCell(id) {
         delete cells[id];
-        cellsUnmount[id]();
-        delete cellsUnmount[id];
       },
-      add(component) {
+      add(component, unmount) {
         (async () => {
           await rendered;
           components.push(component);
+          componentsUnmount.push(unmount);
           appRef.current.setComps(components);
         })();
       },
@@ -120,6 +118,7 @@ export default function boot({ app, context }) {
           const ix = components.indexOf(component);
           if (ix !== -1) {
             components.splice(ix, 1);
+            componentsUnmount.splice(ix, 1);
           }
           appRef.current.setComps(components);
         })();
@@ -141,8 +140,8 @@ export default function boot({ app, context }) {
         })();
       },
       destroy() {
-        Object.keys(cellsUnmount).forEach((c) => {
-          cellsUnmount[c]();
+        componentsUnmount.forEach((c) => {
+          c && c();
         });
         modelStore.destroy();
       },
