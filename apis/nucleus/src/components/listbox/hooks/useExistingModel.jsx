@@ -15,21 +15,34 @@ export default function useExistingModel({ app, qId, options = {} }) {
   }
 
   useEffect(() => {
-    const handler = { cleanup: () => {} };
+    let isCleaned = false;
+    let cleanupFn = () => {};
     async function fetchObject(modelId) {
       const m = modelStore.get(modelId) || (await app.getObject(modelId));
       return m;
     }
 
+    async function awaiter() {
+      await new Promise((resolve) => {
+        setTimeout(() => {
+          resolve();
+        }, 10000);
+      });
+    }
+
     async function fetchModel() {
+      await awaiter();
       const m = await Promise.resolve(sessionModel || fetchObject(qId));
+      if (isCleaned) {
+        return;
+      }
       if (!modelStore.get(m.id)) {
         modelStore.set(m.id, m);
         const onClosed = () => {
           modelStore.clear(m.id);
         };
         m.once('closed', onClosed);
-        handler.cleanup = () => {
+        cleanupFn = () => {
           m.removeListener('closed', onClosed);
         };
       }
@@ -37,7 +50,8 @@ export default function useExistingModel({ app, qId, options = {} }) {
     }
     fetchModel();
     return () => {
-      handler.cleanup();
+      isCleaned = true;
+      cleanupFn();
     };
   }, []);
 
