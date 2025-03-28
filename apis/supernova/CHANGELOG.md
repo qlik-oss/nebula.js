@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.12.3](https://github.com/qlik-oss/nebula.js/compare/v5.12.2...v5.12.3) (2025-03-28)
+
+### Bug Fixes
+
+- remove ext from generator ([#1702](https://github.com/qlik-oss/nebula.js/issues/1702)) ([bcc118a](https://github.com/qlik-oss/nebula.js/commit/bcc118ad45d74ad4fdae53809158515f781848e3))
+
 ## [5.12.2](https://github.com/qlik-oss/nebula.js/compare/v5.12.1...v5.12.2) (2025-03-27)
 
 ### Features
