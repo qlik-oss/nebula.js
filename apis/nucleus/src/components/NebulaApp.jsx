@@ -117,10 +117,11 @@ export default function boot({ app, context }) {
           await rendered;
           const ix = components.indexOf(component);
           if (ix !== -1) {
+            componentsUnmount[ix]?.();
             components.splice(ix, 1);
             componentsUnmount.splice(ix, 1);
           }
-          appRef.current.setComps(components);
+          appRef?.current?.setComps(components);
         })();
       },
       setMuiThemeName(themeName) {
@@ -144,6 +145,7 @@ export default function boot({ app, context }) {
           c && c();
         });
         modelStore.destroy();
+        root.unmount();
       },
     },
     modelStore,
