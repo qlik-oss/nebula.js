@@ -128,7 +128,7 @@ export function resolveTextStyle(textComp, target, theme, objectType) {
     color:
       textProps.color && textProps.color.color !== 'none'
         ? theme.getColorPickerColor(textProps.color)
-        : theme.getStyle(`object.${objectType}`, target, 'color'),
+        : theme.getStyle(`object.${objectType}`, `title.${target}`, 'color'),
     backgroundColor:
       textProps.backgroundColor || theme.getStyle(`object.${objectType}`, `title.${target}`, 'backgroundColor'),
     fontWeight: fontStyle.includes('bold') ? 'bold' : 'normal',
