@@ -230,6 +230,65 @@ class HyperCubeHandler extends DataPropertyHandler {
     return Promise.resolve(dimension);
   }
 
+  removeDimension(idx, alternative) {
+    let dimension;
+
+    if (!alternative) {
+      dimension = this.hcProperties.qDimensions.splice(idx, 1)[0];
+      arrayUtil.indexRemoved(this.hcProperties.qInterColumnSortOrder, idx);
+
+      if (typeof this.dimensionDefinition.remove === 'function') {
+        return Deferred.when(this.dimensionDefinition.remove.call(null, dimension, this.properties, this, idx));
+      }
+    } else {
+      dimension = this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions.splice(idx, 1);
+      if (typeof this.dimensionDefinition.remove === 'function') {
+        dimension.isAlternative = true;
+        return Promise.resolve(this.dimensionDefinition.remove.call(null, dimension, this.properties, this, idx)).then(
+          () => delete dimension.isAlternative
+        );
+      }
+    }
+    return Promise.resolve(dimension);
+  }
+
+  // TODO: Test it, not tested yet
+  async removeDimensions(indexes, alternative) {
+    if (indexes.length === 0) return [];
+    let deleted = [];
+    // Start deleting from the end of the list first otherwise the idx is messed up
+    const sortedIndexes = [...indexes].sort((a, b) => b - a);
+    if (alternative) {
+      const { qDimensions } = this.hcProperties.qLayoutExclude.qHyperCubeDef;
+      // Keep the original deleted order
+      deleted = qDimensions.filter((_, idx) => indexes.includes(idx));
+      await Promise.all(
+        sortedIndexes.map(async (idx) => {
+          const dimension = qDimensions.splice(idx, 1)[0];
+          if (typeof this.dimensionDefinition.remove === 'function' && dimension) {
+            dimension.isAlternative = true;
+            await this.dimensionDefinition.remove.call(null, dimension, this.properties, this, idx);
+            delete dimension.isAlternative;
+          }
+        })
+      );
+    } else {
+      // Keep the original deleted order
+      deleted = this.hcProperties.qDimensions.filter((_, idx) => indexes.includes(idx));
+      await Promise.all(
+        sortedIndexes.map(async (idx) => {
+          const dimension = this.hcProperties.qDimensions.splice(idx, 1)[0];
+          arrayUtil.indexRemoved(this.hcProperties.qInterColumnSortOrder, idx);
+
+          if (typeof this.dimensionDefinition.remove === 'function') {
+            await this.dimensionDefinition.remove.call(null, dimension, this.properties, this, idx);
+          }
+        })
+      );
+    }
+    return deleted;
+  }
+
   // ------------ MEASURES ------------
 
   getMeasures() {
@@ -248,41 +307,6 @@ class HyperCubeHandler extends DataPropertyHandler {
   getMeasureLayout(cId) {
     return this.getMeasureLayouts().filter((item) => cId === item.cId)[0];
   }
-
-  // ------------ Sorting ------------
-
-  getSorting() {
-    return this.hcProperties.qInterColumnSortOrder;
-  }
-
-  setSorting(ar) {
-    if (ar && ar.length === this.hcProperties.qInterColumnSortOrder.length) {
-      this.hcProperties.qInterColumnSortOrder = ar;
-    }
-  }
-
-  autoSortDimension(dimension) {
-    const self = this;
-
-    if (dimension.qLibraryId) {
-      return this.app.getDimensionList().then((dimensionList) => {
-        const libDim = findLibraryItem(dimension.qLibraryId, dimensionList);
-        if (libDim) {
-          setAutoSort(libDim.qData.info, dimension, self);
-        }
-        return dimension;
-      });
-    }
-    return this.app.getFieldList().then((fieldList) => {
-      const field = findField(dimension.qDef.qFieldDefs[0], fieldList);
-      if (field) {
-        setAutoSort([field], dimension, self);
-      }
-      return dimension;
-    });
-  }
-
-  // ------------ MEASURES ------------
 
   addMeasure(measure, alternative, idx) {
     const measures = this.getMeasures();
@@ -308,7 +332,7 @@ class HyperCubeHandler extends DataPropertyHandler {
         );
 
         if (typeof self.measureDefinition.add === 'function') {
-          return Deferred.when(self.measureDefinition.add.call(null, measure, self.properties, self)).then(
+          return Promise.resolve(self.measureDefinition.add.call(null, measure, self.properties, self)).then(
             () => measure
           );
         }
@@ -365,6 +389,39 @@ class HyperCubeHandler extends DataPropertyHandler {
       return true;
     });
     return addedMeasures;
+  }
+
+  // ------------ Sorting ------------
+
+  getSorting() {
+    return this.hcProperties.qInterColumnSortOrder;
+  }
+
+  setSorting(ar) {
+    if (ar && ar.length === this.hcProperties.qInterColumnSortOrder.length) {
+      this.hcProperties.qInterColumnSortOrder = ar;
+    }
+  }
+
+  autoSortDimension(dimension) {
+    const self = this;
+
+    if (dimension.qLibraryId) {
+      return this.app.getDimensionList().then((dimensionList) => {
+        const libDim = findLibraryItem(dimension.qLibraryId, dimensionList);
+        if (libDim) {
+          setAutoSort(libDim.qData.info, dimension, self);
+        }
+        return dimension;
+      });
+    }
+    return this.app.getFieldList().then((fieldList) => {
+      const field = findField(dimension.qDef.qFieldDefs[0], fieldList);
+      if (field) {
+        setAutoSort([field], dimension, self);
+      }
+      return dimension;
+    });
   }
 
   // --------------- OTHER FUNCTIONS ----------------
@@ -530,61 +587,6 @@ class HyperCubeHandler extends DataPropertyHandler {
   //     qSortByNumeric: -1,
   //   };
   //   return Deferred.resolve(measure);
-  // }
-
-  // removeDimension(idx, alternative) {
-  //   let dimension;
-
-  //   if (!alternative) {
-  //     dimension = this.hcProperties.qDimensions.splice(idx, 1)[0];
-  //     arrayUtils.indexRemoved(this.hcProperties.qInterColumnSortOrder, idx);
-
-  //     if (typeof this.dimensionDefinition.remove === 'function') {
-  //       return Deferred.when(this.dimensionDefinition.remove.call(null, dimension, this.properties, this, idx));
-  //     }
-  //   } else {
-  //     dimension = this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions.splice(idx, 1);
-  //     if (typeof this.dimensionDefinition.remove === 'function') {
-  //       dimension.isAlternative = true;
-  //       return Deferred.when(this.dimensionDefinition.remove.call(null, dimension, this.properties, this, idx)).then(
-  //         () => delete dimension.isAlternative,
-  //       );
-  //     }
-  //   }
-
-  //   return Deferred.resolve(dimension);
-  // }
-
-  // async removeDimensions(indexes, alternative) {
-  //   if (indexes.length === 0) return [];
-  //   let deleted = [];
-  //   // Start deleting from the end of the list first otherwise the idx is messed up
-  //   const sortedIndexes = [...indexes].sort((a, b) => b - a);
-  //   if (alternative) {
-  //     const { qDimensions } = this.hcProperties.qLayoutExclude.qHyperCubeDef;
-  //     // Keep the original deleted order
-  //     deleted = qDimensions.filter((_, idx) => indexes.includes(idx));
-  //     for await (const idx of sortedIndexes) {
-  //       const dimension = qDimensions.splice(idx, 1)[0];
-  //       if (typeof this.dimensionDefinition.remove === 'function' && dimension) {
-  //         dimension.isAlternative = true;
-  //         await this.dimensionDefinition.remove.call(null, dimension, this.properties, this, idx);
-  //         delete dimension.isAlternative;
-  //       }
-  //     }
-  //   } else {
-  //     // Keep the original deleted order
-  //     deleted = this.hcProperties.qDimensions.filter((_, idx) => indexes.includes(idx));
-  //     for await (const idx of sortedIndexes) {
-  //       const dimension = this.hcProperties.qDimensions.splice(idx, 1)[0];
-  //       arrayUtils.indexRemoved(this.hcProperties.qInterColumnSortOrder, idx);
-
-  //       if (typeof this.dimensionDefinition.remove === 'function') {
-  //         await this.dimensionDefinition.remove.call(null, dimension, this.properties, this, idx);
-  //       }
-  //     }
-  //   }
-  //   return deleted;
   // }
 
   // removeMeasure(idx, alternative) {

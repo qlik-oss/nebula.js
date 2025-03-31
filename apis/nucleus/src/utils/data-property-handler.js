@@ -265,7 +265,7 @@ class DataPropertyHandler {
   }
 
   createFieldDimension(field, label, defaults) {
-    const dimension = Object.assign(true, {}, this.dimensionProperties || {}, defaults || {});
+    const dimension = merge({}, this.dimensionProperties || {}, defaults || {});
 
     if (!dimension.qDef) {
       dimension.qDef = {};
@@ -325,7 +325,7 @@ class DataPropertyHandler {
   }
 
   createExpressionMeasure(expression, label, defaults) {
-    const measure = Object.assign(true, {}, this.measureProperties || {}, defaults || {});
+    const measure = merge({}, this.measureProperties || {}, defaults || {});
 
     if (!measure.qDef) {
       measure.qDef = {};
@@ -344,7 +344,7 @@ class DataPropertyHandler {
   }
 
   createLibraryMeasure(id, defaults) {
-    const measure = Object.assign(true, {}, this.measureProperties || {}, defaults || {});
+    const measure = merge({}, this.measureProperties || {}, defaults || {});
 
     if (!measure.qDef) {
       measure.qDef = {};
