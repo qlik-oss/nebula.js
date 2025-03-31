@@ -275,6 +275,7 @@ window.getFuncs = function getFuncs() {
       },
       layoutOptions: {
         layoutOrder: 'row',
+        dense: options?.dense ?? false,
       },
     }),
   };

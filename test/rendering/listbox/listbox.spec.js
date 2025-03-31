@@ -63,6 +63,23 @@ test.describe('listbox mashup rendering test', () => {
     return expect(image).toMatchSnapshot(FILE_NAME);
   });
 
+  test('selecting two values in dense listbox should result in two green rows', async () => {
+    const FILE_NAME = 'listbox_dense_select.png';
+
+    await page.goto(`${url}/listbox/listbox.html?scenario=dense`, { waitUntil: 'networkidle' });
+    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+
+    const selectNumbers = [4, 7];
+    const action = async (nbr) => {
+      const rowSelector = `${listboxSelector} [data-n="${nbr}"]`;
+      await page.click(rowSelector);
+    };
+    await execSequence(selectNumbers, action);
+
+    const image = await selector.screenshot({ caret: 'hide' });
+    return expect(image).toMatchSnapshot(FILE_NAME);
+  });
+
   test('selecting values should not show the selections toolbar when autoConfirm is true', async () => {
     const FILE_NAME = 'listbox_select_EH_auto_confirm.png';
 
