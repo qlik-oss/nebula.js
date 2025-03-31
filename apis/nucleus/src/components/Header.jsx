@@ -57,6 +57,8 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
     });
   }, [sn]);
 
+  const showTitles = showTitle || showSubtitle;
+  const cls = [classes.containerStyle, ...(showTitles ? [classes.containerTitleStyle] : [])];
   const showPopoverToolbar = hovering || showInSelectionActions;
 
   const Toolbar = (
@@ -74,7 +76,7 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
   );
 
   return (
-    <StyledGrid item container wrap="nowrap" className={classes.containerStyle}>
+    <StyledGrid item container wrap="nowrap" className={cls.join(' ')}>
       <Grid item zeroMinWidth xs>
         <Grid container wrap="nowrap" direction="column">
           {showTitle && (
