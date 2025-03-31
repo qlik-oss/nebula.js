@@ -4,7 +4,6 @@ import { styled } from '@mui/material/styles';
 
 import { Grid, Tooltip, Typography } from '@mui/material';
 import ActionsToolbar from './ActionsToolbar';
-import useRect from '../hooks/useRect';
 
 const PREFIX = 'Header';
 
@@ -22,12 +21,6 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
     paddingBottom: theme.spacing(1),
   },
 }));
-
-const ITEM_WIDTH = 32;
-const ITEM_SPACING = 4;
-const DIVIDER = 1;
-const NUMBER_OF_ITEMS = 6;
-const MIN_WIDTH = (ITEM_WIDTH + ITEM_SPACING) * NUMBER_OF_ITEMS + DIVIDER + ITEM_SPACING;
 
 /**
  * @interface
@@ -55,9 +48,6 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
   const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
   const [actions, setActions] = useState([]);
 
-  const [containerRef, containerRect] = useRect();
-  const [shouldShowPopoverToolbar, setShouldShowPopoverToolbar] = useState(false);
-
   useEffect(() => {
     if (!sn || !sn.component || !sn.component.isHooked) {
       return;
@@ -67,20 +57,13 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
     });
   }, [sn]);
 
-  useEffect(() => {
-    if (!containerRect) return;
-    const { width } = containerRect;
-    setShouldShowPopoverToolbar(width < MIN_WIDTH);
-  }, [containerRect]);
-
   const showTitles = showTitle || showSubtitle;
   const cls = [classes.containerStyle, ...(showTitles ? [classes.containerTitleStyle] : [])];
-  const showPopoverToolbar = (hovering || showInSelectionActions) && (shouldShowPopoverToolbar || !showTitles);
-  const showToolbar = showTitles && !showPopoverToolbar && !shouldShowPopoverToolbar;
+  const showPopoverToolbar = hovering || showInSelectionActions;
 
   const Toolbar = (
     <ActionsToolbar
-      show={showToolbar}
+      show={false}
       selections={{
         show: showInSelectionActions,
         api: sn.component.selections,
@@ -94,7 +77,7 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
   );
 
   return (
-    <StyledGrid ref={containerRef} item container wrap="nowrap" className={cls.join(' ')}>
+    <StyledGrid item container wrap="nowrap" className={cls.join(' ')}>
       <Grid item zeroMinWidth xs>
         <Grid container wrap="nowrap" direction="column">
           {showTitle && (
