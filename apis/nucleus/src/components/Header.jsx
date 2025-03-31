@@ -63,6 +63,7 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
 
   const Toolbar = (
     <ActionsToolbar
+      show={false}
       selections={{
         show: showInSelectionActions,
         api: sn.component.selections,
