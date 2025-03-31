@@ -22,16 +22,7 @@ export default function useExistingModel({ app, qId, options = {} }) {
       return m;
     }
 
-    async function awaiter() {
-      await new Promise((resolve) => {
-        setTimeout(() => {
-          resolve();
-        }, 10000);
-      });
-    }
-
     async function fetchModel() {
-      await awaiter();
       const m = await Promise.resolve(sessionModel || fetchObject(qId));
       if (isCleaned) {
         return;
