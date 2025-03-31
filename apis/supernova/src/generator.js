@@ -1,6 +1,7 @@
 import create from './creator';
 // import translator from './translator';
 import qae from './qae';
+import HyperCubeHandler from '../../nucleus/src/utils/hypercube-handler';
 
 /**
  * The entry point for defining a visualization.
@@ -46,6 +47,8 @@ export default function generatorFn(UserSN, galaxy) {
 
   if (typeof UserSN === 'function') {
     sn = UserSN(galaxy);
+    sn.ext = sn.ext || {};
+    sn.ext.handlers = (opts) => new HyperCubeHandler(opts);
   } else {
     sn = UserSN;
   }

@@ -66,8 +66,24 @@ function indexRemoved(array, index) {
   return removeIndex;
 }
 
+/**
+ * Copies all the items in the given Array to a new returned Array.
+ *
+ * @param array The source Array.
+ * @returns A new Array which contains the same items as the argument Array.
+ */
+
+const copy = (array) => {
+  if (!(array instanceof Array)) {
+    throw new Error('Argument is not an Array.');
+  }
+
+  return array.slice(0);
+};
+
 export default {
   isOrderedSubset,
   indexAdded,
   indexRemoved,
+  copy,
 };
