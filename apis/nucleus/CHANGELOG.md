@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.12.4](https://github.com/qlik-oss/nebula.js/compare/v5.12.3...v5.12.4) (2025-03-31)
+
+### Bug Fixes
+
+- **deps:** update minor and patch ([#1706](https://github.com/qlik-oss/nebula.js/issues/1706)) ([b5649d0](https://github.com/qlik-oss/nebula.js/commit/b5649d014f1c791ed72758f05f31caa1f42ca792))
+- detach selection toolbar from title ([#1708](https://github.com/qlik-oss/nebula.js/issues/1708)) ([df928c2](https://github.com/qlik-oss/nebula.js/commit/df928c25b503cdb25bbf5adbb1a86776482b036b))
+- map visualization to theme object type ([#1704](https://github.com/qlik-oss/nebula.js/issues/1704)) ([170d61f](https://github.com/qlik-oss/nebula.js/commit/170d61fc1a8ed56ddf329d68c5c231e4b0b4b407))
+- missing title. in theme path for color ([#1703](https://github.com/qlik-oss/nebula.js/issues/1703)) ([6b731b0](https://github.com/qlik-oss/nebula.js/commit/6b731b0f8b37866ff725c11f9057df065853bced))
+- sheet destroy ([#1705](https://github.com/qlik-oss/nebula.js/issues/1705)) ([fbe90c2](https://github.com/qlik-oss/nebula.js/commit/fbe90c224d0cafc795f3d873bd665eeff664b9a6))
+
 ## [5.12.3](https://github.com/qlik-oss/nebula.js/compare/v5.12.2...v5.12.3) (2025-03-28)
 
 **Note:** Version bump only for package @nebula.js/nucleus
