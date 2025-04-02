@@ -34,12 +34,12 @@ function FiltersFooter({ layout, translator, filtersFootnoteString, footerStyle 
         <ItalicText footerStyle={footerStyle}>{translator.get('Object.FiltersApplied')}</ItalicText>
         <ItalicText footerStyle={footerStyle}> &nbsp;</ItalicText>
         {filtersFootnoteLabels.map((filter) => (
-          <>
+          <Grid key={`${filter.field}-${filter.label}`}>
             <BoldText footerStyle={footerStyle}>{`${filter.field}:`}</BoldText>
             <ItalicText footerStyle={footerStyle}> &nbsp;</ItalicText>
             <ItalicText footerStyle={footerStyle}> {filter.label}</ItalicText>
             <ItalicText footerStyle={footerStyle}> &nbsp;</ItalicText>
-          </>
+          </Grid>
         ))}
       </Grid>
     </Tooltip>
