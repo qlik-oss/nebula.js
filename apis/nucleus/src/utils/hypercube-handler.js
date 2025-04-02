@@ -234,11 +234,11 @@ class HyperCubeHandler extends DataPropertyHandler {
     let dimension;
 
     if (!alternative) {
-      dimension = this.hcProperties.qDimensions.splice(idx, 1)[0];
+      [dimension] = this.hcProperties.qDimensions.splice(idx, 1);
       arrayUtil.indexRemoved(this.hcProperties.qInterColumnSortOrder, idx);
 
       if (typeof this.dimensionDefinition.remove === 'function') {
-        return Deferred.when(this.dimensionDefinition.remove.call(null, dimension, this.properties, this, idx));
+        return Promise.when(this.dimensionDefinition.remove.call(null, dimension, this.properties, this, idx));
       }
     } else {
       dimension = this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions.splice(idx, 1);
