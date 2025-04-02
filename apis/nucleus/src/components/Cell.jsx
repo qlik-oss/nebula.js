@@ -631,7 +631,9 @@ const Cell = forwardRef(
           >
             {Content}
           </Grid>
-          {cellNode && layout && state.sn && <Footer layout={layout} titleStyles={titleStyles} />}
+          {cellNode && layout && state.sn && (
+            <Footer layout={layout} titleStyles={titleStyles} translator={translator} />
+          )}
         </Grid>
         {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
       </Paper>
