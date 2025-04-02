@@ -30,17 +30,21 @@ function FiltersFooter({ layout, translator, filtersFootnoteString, footerStyle 
         sx={{ backgroundColor: footerStyle.backgroundColor }}
         data-testid="filters-footnote"
       >
-        <FilterIcon style={{ fontSize: '12px', color: footerStyle.color, marginTop: '2px' }} />
-        <ItalicText footerStyle={footerStyle}>{translator.get('Object.FiltersApplied')}</ItalicText>
-        <ItalicText footerStyle={footerStyle}> &nbsp;</ItalicText>
-        {filtersFootnoteLabels.map((filter) => (
-          <Grid key={`${filter.field}-${filter.label}`}>
-            <BoldText footerStyle={footerStyle}>{`${filter.field}:`}</BoldText>
-            <ItalicText footerStyle={footerStyle}> &nbsp;</ItalicText>
-            <ItalicText footerStyle={footerStyle}> {filter.label}</ItalicText>
-            <ItalicText footerStyle={footerStyle}> &nbsp;</ItalicText>
-          </Grid>
-        ))}
+        <Grid item display="flex">
+          <FilterIcon style={{ fontSize: '12px', color: footerStyle.color, marginTop: '2px' }} />
+          <ItalicText footerStyle={footerStyle}>{translator.get('Object.FiltersApplied')}</ItalicText>
+          <ItalicText footerStyle={footerStyle}> &nbsp;</ItalicText>
+        </Grid>
+        <Grid item display="flex">
+          {filtersFootnoteLabels.map((filter) => (
+            <Grid container wrap="nowrap" key={`${filter.field}-${filter.label}`}>
+              <BoldText footerStyle={footerStyle}>{`${filter.field}:`}</BoldText>
+              <ItalicText footerStyle={footerStyle}> &nbsp;</ItalicText>
+              <ItalicText footerStyle={footerStyle}> {filter.label}</ItalicText>
+              <ItalicText footerStyle={footerStyle}> &nbsp;</ItalicText>
+            </Grid>
+          ))}
+        </Grid>
       </Grid>
     </Tooltip>
   );
