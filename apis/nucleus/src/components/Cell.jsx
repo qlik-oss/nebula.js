@@ -336,6 +336,7 @@ const Cell = forwardRef(
       language,
       keyboardNavigation,
       disableCellPadding = false,
+      focusHandler: customFocusHandler,
     } = useContext(InstanceContext);
     const theme = useTheme();
     const [cellRef, cellRect, cellNode] = useRect();
@@ -370,6 +371,10 @@ const Cell = forwardRef(
 
     focusHandler.current.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
+      if (resetFocus && typeof blurCallback === 'function') {
+        customFocusHandler.blurCallback(resetFocus);
+        return;
+      }
       if (resetFocus && contentNode) {
         contentNode.focus();
       }
