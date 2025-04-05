@@ -54,9 +54,9 @@
     "@rollup/plugin-node-resolve": "16.0.1",
     "@rollup/plugin-replace": "6.0.2",
     "@rollup/plugin-terser": "0.4.4",
+    "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
-    "@testing-library/dom": "^10.4.0",
     "@testing-library/user-event": "^14.6.1",
     "babel-loader": "10.0.0",
     "babel-plugin-istanbul": "7.0.0",
@@ -108,5 +108,8 @@
     "apis/*",
     "test/component/*"
   ],
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "yarn@1.22.22",
+  "dependencies": {
+    "@nebula.js/nucleus": "^5.12.4"
+  }
 }
