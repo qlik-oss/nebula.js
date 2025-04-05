@@ -15,6 +15,7 @@
     "@nebula.js/ui": "^5.12.6",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.3.0",
+    "babel-plugin-istanbul": "^7.0.0",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1",
     "qlik-chart-modules": "0.85.0",

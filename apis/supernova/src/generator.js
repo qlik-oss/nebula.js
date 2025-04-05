@@ -1,3 +1,4 @@
+import HyperCubeHandler from '@nebula.js/nucleus/src/utils/handlers/hypercube-handlers';
 import create from './creator';
 // import translator from './translator';
 import qae from './qae';
@@ -46,6 +47,8 @@ export default function generatorFn(UserSN, galaxy) {
 
   if (typeof UserSN === 'function') {
     sn = UserSN(galaxy);
+    sn.ext = sn.ext || {};
+    sn.ext.handlers = (opts) => new HyperCubeHandler(opts);
   } else {
     sn = UserSN;
   }
