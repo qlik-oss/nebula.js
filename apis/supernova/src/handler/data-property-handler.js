@@ -2,7 +2,7 @@
 import { merge } from 'lodash';
 // eslint-disable-next-line import/no-relative-packages
 import isEnabled from '../../../nucleus/src/flags/flags';
-import { findFieldById, initializeField, useMasterNumberFormat } from './utils/field-helper/field-utils';
+import { findFieldById, useMasterNumberFormat } from './utils/field-helper/field-utils';
 import { INITIAL_SORT_CRITERIAS } from './utils/constants';
 import { notSupportedError } from './utils/hypercube-helper/hypercube-utils';
 
@@ -75,10 +75,19 @@ class DataPropertyHandler {
     throw notSupportedError;
   }
 
-  createLibraryDimension(id, defaults) {
-    let dimension = merge({}, this.dimensionProperties || {}, defaults || {});
+  static replaceDimension() {
+    throw notSupportedError;
+  }
 
-    dimension = initializeField(dimension);
+  static getSorting() {
+    throw notSupportedError;
+  }
+
+  createLibraryDimension(id, defaults) {
+    const dimension = merge({}, this.dimensionProperties || {}, defaults || {});
+
+    dimension.qDef = dimension.qDef ?? {};
+    dimension.qOtherTotalSpec = dimension.qOtherTotalSpec ?? {};
 
     dimension.qLibraryId = id;
     dimension.qDef.autoSort = true;
@@ -91,9 +100,10 @@ class DataPropertyHandler {
   }
 
   createFieldDimension(field, label, defaults) {
-    let dimension = merge({}, this.dimensionProperties || {}, defaults || {});
+    const dimension = merge({}, this.dimensionProperties || {}, defaults || {});
 
-    dimension = initializeField(dimension);
+    dimension.qDef = dimension.qDef ?? {};
+    dimension.qOtherTotalSpec = dimension.qOtherTotalSpec ?? {};
 
     if (!field) {
       dimension.qDef.qFieldDefs = [];
@@ -151,6 +161,14 @@ class DataPropertyHandler {
     return this.addDimension(dimension, true);
   }
 
+  minDimensions() {
+    if (typeof this.dimensionDefinition.min === 'function') {
+      return this.dimensionDefinition.min.call(null, this.properties, this);
+    }
+
+    return this.dimensionDefinition.min || 0;
+  }
+
   maxDimensions(decrement = 0) {
     const measureLength = this.getMeasures().length - decrement;
 
@@ -160,6 +178,10 @@ class DataPropertyHandler {
     }
 
     return Number.isNaN(+this.dimensionDefinition.max) ? 10000 : this.dimensionDefinition.max;
+  }
+
+  canAddDimension() {
+    return this.getDimensions().length < this.maxDimensions();
   }
 
   // ---------------------------------------
@@ -201,6 +223,10 @@ class DataPropertyHandler {
     throw notSupportedError;
   }
 
+  static replaceMeasure() {
+    throw notSupportedError;
+  }
+
   createExpressionMeasure(expression, label, defaults) {
     const measure = merge({}, this.measureProperties || {}, defaults || {});
 
@@ -231,7 +257,7 @@ class DataPropertyHandler {
     measure.qDef = measure.qDef ?? {};
     measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
 
-    if (isEnabled('MASTER_MEASURE_FORMAT')) {
+    if (isEnabled('MASTER_measureURE_FORMAT')) {
       useMasterNumberFormat(measure.qDef);
     }
 
@@ -274,6 +300,13 @@ class DataPropertyHandler {
     return this.addMeasure(measure, true);
   }
 
+  minMeasures() {
+    if (typeof this.measureDefinition.min === 'function') {
+      return this.measureDefinition.min.call(null, this.properties, this);
+    }
+    return this.measureDefinition.min || 0;
+  }
+
   maxMeasures(decrement = 0) {
     if (typeof this.measureDefinition.max === 'function') {
       const dimLength = this.getDimensions().length - decrement;
@@ -281,6 +314,25 @@ class DataPropertyHandler {
       return this.measureDefinition.max.apply(null, measureParams);
     }
     return Number.isNaN(+this.measureDefinition.max) ? 10000 : this.measureDefinition.max;
+  }
+
+  canAddMeasure() {
+    return this.getMeasures().length < this.maxMeasures();
+    //			return this.getMeasures().length < 10000;
+  }
+
+  // ---------------------------------------
+  // ---------------OTHERS------------------
+  // ---------------------------------------
+
+  updateGlobalChangeListeners(layout) {
+    if (this.globalChangeListeners) {
+      (this.globalChangeListeners || []).forEach((func) => {
+        if (func && typeof func === 'function') {
+          func(this.properties, this, { layout });
+        }
+      });
+    }
   }
 }
 
