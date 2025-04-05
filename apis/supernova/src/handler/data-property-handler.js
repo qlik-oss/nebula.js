@@ -123,12 +123,12 @@ class DataPropertyHandler {
     return result;
   }
 
-  async addAltLibraryDimensions(args) {
+  addAltLibraryDimensions(args) {
     const dimensions = args.map(({ id }) => this.createLibraryDimension(id));
     return this.addDimensions(dimensions, true);
   }
 
-  async addAltFieldDimensions(args) {
+  addAltFieldDimensions(args) {
     const dimensions = args.map(({ field }) => this.createFieldDimension(field));
     return this.addDimensions(dimensions, true);
   }
@@ -215,7 +215,7 @@ class DataPropertyHandler {
     measure.qDef = measure.qDef ?? {};
     measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
 
-    if (isEnabled('MASTER_MEASURE_FORMAT')) {
+    if (isEnabled('MASTER_measureURE_FORMAT')) {
       useMasterNumberFormat(measure.qDef);
     }
 

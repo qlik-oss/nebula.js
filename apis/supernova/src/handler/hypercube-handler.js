@@ -1,12 +1,14 @@
 // eslint-disable-next-line import/no-relative-packages
 import utils from '../../../conversion/src/utils';
 import DataPropertyHandler from './data-property-handler';
-import * as hcHelper from './utils/hypercube-helper/hypercube-utils';
+import * as hypercubeUtils from './utils/hypercube-helper/hypercube-utils';
 import getAutoSortLibraryDimension from './utils/field-helper/get-sorted-library-field';
 import getAutoSortFieldDimension from './utils/field-helper/get-sorted-field';
 import { initializeField, initializeId } from './utils/field-helper/field-utils';
 import addMainDimension from './utils/hypercube-helper/add-main-dimension';
 import addMainMeasure from './utils/hypercube-helper/add-main-measure';
+import removeMainDimension from './utils/hypercube-helper/remove-main-dimension';
+import removeAlternativeMeasure from './utils/hypercube-helper/remove-alternative-measure';
 
 class HyperCubeHandler extends DataPropertyHandler {
   constructor(opts) {
@@ -27,13 +29,13 @@ class HyperCubeHandler extends DataPropertyHandler {
       return {};
     }
 
-    hcHelper.setDefaultProperties(this);
-    hcHelper.setPropForLineChartWithForecast(this);
+    hypercubeUtils.setDefaultProperties(this);
+    hypercubeUtils.setPropForLineChartWithForecast(this);
 
     // Set auto-sort property (compatibility 0.85 -> 0.9),
     // can probably be removed in 1.0
-    this.hcProperties.qDimensions = hcHelper.setFieldProperties(this.hcProperties.qDimensions);
-    this.hcProperties.qMeasures = hcHelper.setFieldProperties(this.hcProperties.qMeasures);
+    this.hcProperties.qDimensions = hypercubeUtils.setFieldProperties(this.hcProperties.qDimensions);
+    this.hcProperties.qMeasures = hypercubeUtils.setFieldProperties(this.hcProperties.qMeasures);
     return {};
   }
 
@@ -54,15 +56,15 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   getDimensionLayouts() {
-    const hc = hcHelper.getHyperCube(this.layout, this.path);
+    const hc = hypercubeUtils.getHyperCube(this.layout, this.path);
     return hc ? hc.qDimensionInfo : [];
   }
 
   addDimension(dimension, alternative, idx) {
     const dim = initializeField(dimension);
 
-    if (hcHelper.isDimensionAlternative(this, dim, alternative)) {
-      return hcHelper.addAlternativeDimension(this, dim, idx);
+    if (hypercubeUtils.isDimensionAlternative(this, dim, alternative)) {
+      return hypercubeUtils.addAlternativeDimension(this, dim, idx);
     }
 
     return addMainDimension(this, dim, idx);
@@ -93,6 +95,37 @@ class HyperCubeHandler extends DataPropertyHandler {
     return addedDimensions;
   }
 
+  removeDimension(idx, alternative) {
+    if (alternative) {
+      hypercubeUtils.removeAlternativeDimension(this, idx);
+    }
+
+    removeMainDimension(this, idx).then(() => true);
+  }
+
+  async removeDimensions(indexes, alternative) {
+    if (indexes.length === 0) return [];
+    let deleted = [];
+    // Start deleting from the end of the list first otherwise the idx is messed up
+    const sortedIndexes = [...indexes].sort((a, b) => b - a);
+
+    if (alternative) {
+      // Keep the original deleted order
+      deleted = this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions.filter((_, idx) => indexes.includes(idx));
+      sortedIndexes.forEach(async (idx) => {
+        await hypercubeUtils.removeAlternativeDimension(this, idx);
+      });
+    }
+
+    // Keep the original deleted order
+    deleted = this.hcProperties.qDimensions.filter((_, idx) => indexes.includes(idx));
+    sortedIndexes.forEach(async (idx) => {
+      await removeMainDimension(this, idx);
+    });
+
+    return deleted;
+  }
+
   autoSortDimension(dimension) {
     if (dimension.qLibraryId) {
       return getAutoSortLibraryDimension(this, dimension);
@@ -113,7 +146,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   getMeasureLayouts() {
-    const hc = hcHelper.getHyperCube(this.layout, this.path);
+    const hc = hypercubeUtils.getHyperCube(this.layout, this.path);
     return hc ? hc.qMeasureInfo : [];
   }
 
@@ -124,9 +157,9 @@ class HyperCubeHandler extends DataPropertyHandler {
   addMeasure(measure, alternative, idx) {
     const meas = initializeField(measure);
 
-    if (hcHelper.isMeasureAlternative(this, meas, alternative)) {
+    if (hypercubeUtils.isMeasureAlternative(this, meas, alternative)) {
       const hcMeasures = this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures;
-      return hcHelper.addAlternativeMeasure(meas, hcMeasures, idx);
+      return hypercubeUtils.addAlternativeMeasure(meas, hcMeasures, idx);
     }
 
     return addMainMeasure(this, meas, idx);
@@ -147,22 +180,81 @@ class HyperCubeHandler extends DataPropertyHandler {
     const addedMeasures = [];
     let addedActive = 0;
     measures.forEach(async (measure) => {
-      if (hcHelper.isTotalMeasureExceeded(this, existingMeasures)) {
+      if (hypercubeUtils.isTotalMeasureExceeded(this, existingMeasures)) {
         return false;
       }
 
       const meas = initializeId(measure);
 
-      if (hcHelper.isMeasureAlternative(this, existingMeasures, alternative)) {
-        hcHelper.addAlternativeMeasure(this, meas);
+      if (hypercubeUtils.isMeasureAlternative(this, existingMeasures, alternative)) {
+        hypercubeUtils.addAlternativeMeasure(this, meas);
         addedMeasures.push(meas);
       } else if (existingMeasures.length < this.maxMeasures()) {
-        await hcHelper.addActiveMeasure(this, meas, existingMeasures, addedMeasures, addedActive);
+        await hypercubeUtils.addActiveMeasure(this, meas, existingMeasures, addedMeasures, addedActive);
         addedActive++;
       }
       return true;
     });
     return addedMeasures;
+  }
+
+  removeMeasure(idx, alternative) {
+    if (alternative) {
+      hypercubeUtils.removeAltMeasureByIndex(this, idx);
+    }
+    hypercubeUtils.removeMeasureFromColumnSortOrder(this, idx);
+    hypercubeUtils.removeMeasureFromColumnOrder(this, idx).then(() => true);
+  }
+
+  async removeMeasures(indexes, alternative) {
+    if (indexes.length === 0) return [];
+    let deleted = [];
+
+    if (alternative) {
+      return removeAlternativeMeasure(this, indexes);
+    }
+
+    // Keep the original deleted order
+    deleted = indexes.map((idx) => this.hcProperties.qMeasures[idx]).filter(Boolean);
+
+    // Start deleting from the end of the list, otherwise the idx is messed up
+    indexes
+      .slice()
+      .sort((a, b) => b - a)
+      .forEach(async (idx) => {
+        hypercubeUtils.removeMeasureFromColumnSortOrder(this, idx);
+        await hypercubeUtils.removeMeasureFromColumnOrder(this, idx);
+      });
+
+    return deleted;
+  }
+
+  // ----------------------------------
+  // ------------ OTHERS---- ----------
+  // ----------------------------------
+
+  getFilters() {
+    return this.properties?.filters ?? [];
+  }
+
+  getFilter(id) {
+    const filters = this.getFilters();
+    return filters.find((filter) => filter.id === id);
+  }
+
+  removeFilters(indexes) {
+    if (indexes.length === 0) return [];
+    let deleted = [];
+    // Start deleting from the end of the list first otherwise the idx is messed up
+    const sortedIndexes = [...indexes].sort((a, b) => b - a);
+    const filters = this.getFilters();
+    // Keep the original deleted order
+    deleted = filters.filter((_, idx) => indexes.includes(idx));
+    sortedIndexes.forEach(async (idx) => {
+      this.removeFilterField(idx);
+    });
+
+    return deleted;
   }
 }
 

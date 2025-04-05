@@ -74,18 +74,28 @@ export function addAlternativeDimension(self, dimension, index = undefined) {
   return Promise.resolve(dimension);
 }
 
-export function insertMainDimension(self, dimension, dimensions, idx) {
-  dimensions.splice(idx, 0, dimension);
+export function addDimensionToColumnSortOrder(self, dimension) {
+  arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, self.getDimensions().length + dimension.length - 1);
+}
 
-  return self.autoSortDimension(dimension).then(() => {
-    arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, self.getDimensions().length + dimension.length - 1);
+export function addDimensionToColumnOrder(self, dimension) {
+  if (typeof self.dimensionDefinition.add === 'function') {
+    return Promise.resolve(self.dimensionDefinition.add.call(null, dimension, self.properties, self));
+  }
+  return true;
+}
 
-    if (typeof self.dimensionDefinition.add === 'function') {
-      return Promise.resolve(self.dimensionDefinition.add.call(null, dimension, self.properties, self));
-    }
+export function removeDimensionFromColumnSortOrder(self, index) {
+  arrayUtil.indexRemoved(self.hcProperties.qInterColumnSortOrder, index);
+}
 
-    return dimension;
-  });
+export function removeDimensionFromColumnOrder(self, index) {
+  const [dim] = self.hcProperties.qDimensions.splice(index, 1);
+  if (typeof self.dimensionDefinition.remove === 'function') {
+    return Promise.resolve(self.dimensionDefinition.remove.call(null, dim, self.properties, self, index));
+  }
+
+  return false;
 }
 
 export function addSortedDimension(self, dimension, dimensions, idx) {
@@ -124,6 +134,17 @@ export async function addActiveDimension(self, dimension, existingDimensions, ad
   }
 }
 
+export function removeAlternativeDimension(self, index) {
+  const [dimension] = self.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions.splice(index, 1);
+  if (typeof self.dimensionDefinition.remove === 'function') {
+    dimension.isAlternative = true;
+    return Promise.resolve(self.dimensionDefinition.remove.call(null, dimension, self.properties, self, index)).then(
+      () => delete dimension.isAlternative
+    );
+  }
+  return false;
+}
+
 // ----------------------------------
 // ------------ MEASURES ------------
 // ----------------------------------
@@ -135,18 +156,15 @@ export function addAlternativeMeasure(self, measure, index = undefined) {
   return Promise.resolve(measure);
 }
 
-export function insertMainMeasure(self, measure, measures, idx) {
-  measures.splice(idx, 0, measure);
+export function addMeasureToColumnSortOrder(self, measure) {
+  arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, self.getDimensions().length + measure.length - 1);
+}
 
-  return self.autoSortMeasure(measure).then(() => {
-    arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, self.getDimensions().length + measure.length - 1);
-
-    if (typeof self.measureDefinition.add === 'function') {
-      return Promise.resolve(self.measureDefinition.add.call(null, measure, self.properties, self));
-    }
-
-    return measure;
-  });
+export function addMeasureToColumnOrder(self, measure) {
+  if (typeof self.measureDefinition.add === 'function') {
+    return Promise.resolve(self.measureDefinition.add.call(null, measure, self.properties, self));
+  }
+  return undefined;
 }
 
 export function isTotalMeasureExceeded(self, measures) {
@@ -179,4 +197,36 @@ export function addActiveMeasure(self, measure, existingMeasures, addedMeasures,
   }
 
   return Promise.resolve(addedMeasures);
+}
+
+export function removeMeasureFromColumnSortOrder(self, index) {
+  arrayUtil.indexRemoved(self.hcProperties.qInterColumnSortOrder, self.getDimensions().length + index);
+}
+
+export function removeMeasureFromColumnOrder(self, index) {
+  const [meas] = self.hcProperties.qMeasures.splice(index, 1);
+  if (typeof self.measureDefinition.remove === 'function') {
+    return Promise.resolve(self.measureDefinition.remove.call(null, meas, self.properties, self, index));
+  }
+  return false;
+}
+
+export function removeAltMeasureByIndex(self, index) {
+  return self.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures.splice(index, 1);
+}
+
+export function splitMeasures(self, indexes) {
+  const deleted = [];
+  const remained = [];
+  const { qMeasures } = self.hcProperties.qLayoutExclude.qHyperCubeDef;
+
+  qMeasures.forEach((measure, index) => {
+    if (indexes.includes(index)) {
+      deleted.push(measure);
+    } else {
+      remained.push(measure);
+    }
+  });
+
+  return [deleted, remained];
 }
