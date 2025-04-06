@@ -2031,55 +2031,6 @@
         "const navigation = useNavigation();\n//...\nuseEffect(() => {\n  const onSheetChanged = () => {\n    // do something\n  };\n  if (navigation?.addListener) {\n    navigation.addListener(\"sheetChanged\", onSheetChanged);\n  }\n  return () => {\n    if (navigation?.removeListener) {\n      navigation.removeListener(\"sheetChanged\", onSheetChanged);\n    }\n  };\n}, [navigation]);\n\nconst onSheetClick = (sheetId: string) => {\n  navigation?.goToSheet(sheetId);\n};"
       ]
     },
-    "DataPropertyHandler#getDimension": {
-      "kind": "function",
-      "params": [
-        {
-          "name": "id",
-          "type": "string"
-        }
-      ],
-      "returns": {
-        "description": "dimension or alternative dimension array or null",
-        "type": "any"
-      }
-    },
-    "DataPropertyHandler#getMeasure": {
-      "description": "Get the measure by its ID from the given measures array.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "id",
-          "type": "string"
-        }
-      ],
-      "returns": {
-        "description": "measure or alternative measure array or null",
-        "type": "any"
-      }
-    },
-    "getFieldById": {
-      "description": "Get the field by its ID from the given fields array.",
-      "type": "any"
-    },
-    "setFieldProperties": {
-      "description": "Updates the field properties for measures in hcProperties.",
-      "type": "any"
-    },
-    "getHyperCube": {
-      "description": "Get the hypercube from the layout object.",
-      "type": "any"
-    },
-    "HyperCubeHandler#setProperties": {
-      "description": "set default properties for hypercube",
-      "kind": "function",
-      "params": [
-        {
-          "name": "properties",
-          "type": "Object"
-        }
-      ]
-    },
     "ActionToolbarElement": {
       "availability": {
         "since": "2.1.0"
@@ -3100,21 +3051,6 @@
             }
           }
         }
-      }
-    },
-    "copy": {
-      "description": "Copies all the items in the given Array to a new returned Array.",
-      "kind": "function",
-      "params": [
-        {
-          "name": "array",
-          "description": "The source Array.",
-          "type": "any"
-        }
-      ],
-      "returns": {
-        "description": "A new Array which contains the same items as the argument Array.",
-        "type": "any"
       }
     },
     "ExportFormat": {
