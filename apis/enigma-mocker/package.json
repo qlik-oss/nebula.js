@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/enigma-mocker",
-  "version": "5.12.4",
+  "version": "5.12.5",
   "private": true,
   "main": "src/index.js",
   "devDependencies": {

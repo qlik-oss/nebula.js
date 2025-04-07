@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.12.5](https://github.com/qlik-oss/nebula.js/compare/v5.12.4...v5.12.5) (2025-04-07)
+
+### Bug Fixes
+
+- pick up and apply font-size in dense listboxes ([#1709](https://github.com/qlik-oss/nebula.js/issues/1709)) ([56214c5](https://github.com/qlik-oss/nebula.js/commit/56214c5b542a5cb745aa4c263e7835ec64756fe7))
+
 ## [5.12.4](https://github.com/qlik-oss/nebula.js/compare/v5.12.3...v5.12.4) (2025-03-31)
 
 ### Bug Fixes
