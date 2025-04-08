@@ -34,7 +34,7 @@
     "chalk": "4.1.2",
     "extend": "3.0.2",
     "postcss": "^8.5.3",
-    "rollup": "4.38.0",
+    "rollup": "4.39.0",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-visualizer": "5.14.0",
     "yargs": "17.7.2"
@@ -42,6 +42,6 @@
   "devDependencies": {
     "@rollup/plugin-typescript": "12.1.2",
     "tslib": "*",
-    "typescript": ">=5.8.2"
+    "typescript": ">=5.8.3"
   }
 }
