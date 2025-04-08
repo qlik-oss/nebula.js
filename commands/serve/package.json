@@ -32,7 +32,7 @@
   "dependencies": {
     "@nebula.js/cli-build": "^5.12.5",
     "@qlik/sdk": "0.28.0",
-    "body-parser": "1.20.3",
+    "body-parser": "2.2.0",
     "chalk": "4.1.2",
     "chokidar": "4.0.3",
     "cross-env": "7.0.3",
