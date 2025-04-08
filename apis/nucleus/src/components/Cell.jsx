@@ -313,6 +313,10 @@ const loadType = async ({
   }
 };
 
+function createEmitter() {
+  return new EventEmitter();
+}
+
 const Cell = forwardRef(
   (
     {
@@ -338,7 +342,7 @@ const Cell = forwardRef(
       keyboardNavigation,
       disableCellPadding = false,
     } = useContext(InstanceContext);
-    const [internalEmitter] = useState(emitter || () => new EventEmitter());
+    const [internalEmitter] = useState(emitter || createEmitter);
     const theme = useTheme();
     const [cellRef, cellRect, cellNode] = useRect();
     const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
