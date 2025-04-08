@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.12.6](https://github.com/qlik-oss/nebula.js/compare/v5.12.5...v5.12.6) (2025-04-08)
+
+### Bug Fixes
+
+- **deps:** update minor and patch ([#1713](https://github.com/qlik-oss/nebula.js/issues/1713)) ([a9a1c83](https://github.com/qlik-oss/nebula.js/commit/a9a1c83fc6adc90b61acbdc7e51dc172ed76c5e9))
+- instead add emitter in Cell ([#1718](https://github.com/qlik-oss/nebula.js/issues/1718)) ([f22b3af](https://github.com/qlik-oss/nebula.js/commit/f22b3af41cf592697a9d99539d4d926211eb7ebb))
+
+### Reverts
+
+- react-virtualized-auto-sizer and ignore version updates ([#1717](https://github.com/qlik-oss/nebula.js/issues/1717)) ([d2be3f7](https://github.com/qlik-oss/nebula.js/commit/d2be3f7baaa0e82fd842179bd65eb0772ac0c6cd))
+
 ## [5.12.5](https://github.com/qlik-oss/nebula.js/compare/v5.12.4...v5.12.5) (2025-04-07)
 
 ### Bug Fixes
