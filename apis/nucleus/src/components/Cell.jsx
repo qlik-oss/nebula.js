@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer, useRef } from 'react';
+import EventEmitter from 'node-event-emitter';
 
 import { Grid, Paper } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
@@ -312,6 +313,10 @@ const loadType = async ({
   }
 };
 
+function createEmitter() {
+  return new EventEmitter();
+}
+
 const Cell = forwardRef(
   (
     {
@@ -337,6 +342,7 @@ const Cell = forwardRef(
       keyboardNavigation,
       disableCellPadding = false,
     } = useContext(InstanceContext);
+    const [internalEmitter] = useState(emitter || createEmitter);
     const theme = useTheme();
     const [cellRef, cellRect, cellNode] = useRect();
     const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
@@ -436,7 +442,7 @@ const Cell = forwardRef(
           selections,
           nebbie,
           focusHandler: focusHandler.current,
-          emitter,
+          emitter: internalEmitter,
           onMount,
           navigation,
         });

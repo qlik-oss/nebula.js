@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext, useMemo, forwardRef, useImperativeHandle, useRef } from 'react';
-import EventEmitter from 'node-event-emitter';
 import useLayout from '../hooks/useLayout';
 import getObject from '../object/get-object';
 import Cell from './Cell';
@@ -28,8 +27,6 @@ function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initial
     style.padding = '4px';
   }
 
-  const emitter = new EventEmitter();
-
   return (
     <div style={style} key={cell.model.id}>
       <Cell
@@ -41,7 +38,6 @@ function getCellRenderer(cell, halo, initialSnOptions, initialSnPlugins, initial
         initialSnPlugins={initialSnPlugins}
         initialError={initialError}
         onMount={onMount}
-        emitter={emitter}
         navigation={navigation}
         onError={onError}
       />
