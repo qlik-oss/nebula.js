@@ -206,6 +206,9 @@ export default function viz({
     get viewDataToggled() {
       return viewDataObjectId !== undefined;
     },
+    supportViewData() {
+      return cellRef.current.supportViewData();
+    },
     toggleFocus(focus) {
       cellRef.current.toggleFocus(focus);
     },
