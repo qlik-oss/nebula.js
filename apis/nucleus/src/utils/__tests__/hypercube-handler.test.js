@@ -1,4 +1,4 @@
-import HyperCubeHandler from '../handlers/hypercube-handlers';
+import HyperCubeHandler from '../handlers/hypercube-handler';
 
 describe('HyperCube Handlers', () => {
   let handler;

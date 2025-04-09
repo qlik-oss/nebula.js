@@ -1,6 +1,6 @@
 import utils from '@nebula.js/conversion/src/utils';
-import DataPropertyHandler from './data-property-handlers';
-import { getHyperCube, setFieldProperties } from './handlers-helpers';
+import DataPropertyHandler from './data-property-handler';
+import { getHyperCube, setFieldProperties } from './handler-helper';
 
 class HyperCubeHandler extends DataPropertyHandler {
   constructor(opts) {
@@ -8,10 +8,6 @@ class HyperCubeHandler extends DataPropertyHandler {
     this.path = opts.path;
   }
 
-  /**
-   * set default properties for hypercube
-   * @param {Object} properties
-   */
   setProperties(properties) {
     if (!properties) {
       return;

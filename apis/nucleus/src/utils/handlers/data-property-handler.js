@@ -1,4 +1,4 @@
-import { getFieldById } from './handlers-helpers';
+import { getFieldById } from './handler-helper';
 
 class DataPropertyHandler {
   constructor(opts) {
@@ -36,10 +36,6 @@ class DataPropertyHandler {
     return [];
   }
 
-  /**
-   * @param {string} id
-   * @returns dimension or alternative dimension array or null
-   */
   getDimension(id) {
     const dimensions = this.getDimensions();
     const alternativeDimensions = this.getAlternativeDimensions();
@@ -56,11 +52,6 @@ class DataPropertyHandler {
 
   // ----------------MEASURE----------------
 
-  /**
-   * Get the measure by its ID from the given measures array.
-   * @param {string} id
-   * @returns measure or alternative measure array or null
-   */
   getMeasure(id) {
     const measures = this.getMeasures();
     const alternativeMeasures = this.getAlternativeMeasures();
