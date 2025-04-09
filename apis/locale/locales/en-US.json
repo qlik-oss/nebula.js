@@ -47,6 +47,22 @@
     "value": "Excluded lock",
     "comment": "Excluded lock state of an item in listbox(buy20180905)"
   },
+  "Object.FilterLabel.All": {
+    "value": "ALL",
+    "comment": "Label for when a chart filter has been set to exclude global selections in a field, meaning all field values will be included. (tew 220411)"
+  },
+  "Object.FilterLabel.Exclude": {
+    "value": "NOT",
+    "comment": "Label for when a chart filter has been set to exclude the filter values. (tew 220411)"
+  },
+  "Object.FilterLabel.Unknown": {
+    "value": "Unknown",
+    "comment": "Label for when a chart filter could not be labeled. (tew 220411)"
+  },
+  "Object.FiltersApplied": {
+    "value": "Filters applied:",
+    "comment": "Title for applied filters on a chart.  (tew 220411)"
+  },
   "Listbox.Search": {
     "value": "Search in listbox",
     "comment": "Action text to search in listbox"
