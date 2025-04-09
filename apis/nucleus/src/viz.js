@@ -203,6 +203,15 @@ export default function viz({
         cellRef.current.setModel(newModel);
       }
     },
+    get viewDataToggled() {
+      return viewDataObjectId !== undefined;
+    },
+    supportViewData() {
+      return cellRef.current.supportViewData();
+    },
+    toggleFocus(focus) {
+      cellRef.current.toggleFocus(focus);
+    },
     /**
      * Listens to custom events from inside the visualization. See useEmitter
      * @param {string} eventName Event name to listen to

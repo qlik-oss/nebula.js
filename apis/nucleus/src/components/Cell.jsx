@@ -341,6 +341,7 @@ const Cell = forwardRef(
       language,
       keyboardNavigation,
       disableCellPadding = false,
+      focusHandler: customFocusHandler,
     } = useContext(InstanceContext);
     const [internalEmitter] = useState(emitter || createEmitter);
     const theme = useTheme();
@@ -376,6 +377,10 @@ const Cell = forwardRef(
 
     focusHandler.current.blurCallback = (resetFocus) => {
       halo.root.toggleFocusOfCells();
+      if (resetFocus && typeof customFocusHandler?.blurCallback === 'function') {
+        customFocusHandler.blurCallback(resetFocus);
+        return;
+      }
       if (resetFocus && contentNode) {
         contentNode.focus();
       }
@@ -460,7 +465,6 @@ const Cell = forwardRef(
 
       return () => {};
     }, [types, state.sn, model, selections, layout, appLayout, language]);
-
     // Long running query
     useEffect(() => {
       if (!validating) {
@@ -485,6 +489,9 @@ const Cell = forwardRef(
               state.sn.component.blur();
             }
           }
+        },
+        supportViewData() {
+          return state.sn.component.supportViewData();
         },
         setSnOptions,
         setSnPlugins,
