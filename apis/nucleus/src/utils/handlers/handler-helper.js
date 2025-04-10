@@ -1,7 +1,7 @@
 import getValue from '@nebula.js/conversion/src/utils';
-import arrayUtil from '@nebula.js/conversion/src/array-util';
 import uid from '../../object/uid';
 import { findField, findLibraryItem, setAutoSort, TOTAL_MAX } from './handler-utils';
+import arrayUtil from '@nebula.js/conversion/src/array-util';
 
 export const getFieldById = (fields, id) => fields.find((field) => field.qDef?.cId === id) || null;
 

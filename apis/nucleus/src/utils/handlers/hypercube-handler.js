@@ -1,5 +1,4 @@
 import utils from '@nebula.js/conversion/src/utils';
-import arrayUtil from '@nebula.js/conversion/src/array-util';
 import DataPropertyHandler from './data-property-handler';
 import {
   getHyperCube,
