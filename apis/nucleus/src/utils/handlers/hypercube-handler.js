@@ -1,6 +1,23 @@
 import utils from '@nebula.js/conversion/src/utils';
 import DataPropertyHandler from './data-property-handler';
-import { getHyperCube, setFieldProperties } from './handler-helper';
+import {
+  getHyperCube,
+  setFieldProperties,
+  addActiveDimension,
+  addAlternativeDimension,
+  addAlternativeMeasure,
+  addMainDimension,
+  addMainMeasure,
+  autoSortLibraryDimension,
+  initializeField,
+  initializeId,
+  isDimensionAlternative,
+  isMeasureAlternative,
+  isTotalDimensionsExceeded,
+  isTotalMeasureExceeded,
+  addActiveMeasure,
+  autoSortFieldDimension,
+} from './handler-helper';
 
 class HyperCubeHandler extends DataPropertyHandler {
   constructor(opts) {
@@ -10,7 +27,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   setProperties(properties) {
     if (!properties) {
-      return;
+      return undefined;
     }
 
     super.setProperties(properties);
@@ -18,7 +35,7 @@ class HyperCubeHandler extends DataPropertyHandler {
     this.hcProperties = this.path ? utils.getValue(properties, `${this.path}.qHyperCubeDef`) : properties.qHyperCubeDef;
 
     if (!this.hcProperties) {
-      return;
+      return undefined;
     }
 
     // Set defaults
@@ -50,6 +67,7 @@ class HyperCubeHandler extends DataPropertyHandler {
     // can probably be removed in 1.0
     this.hcProperties.qDimensions = setFieldProperties(this.hcProperties.qDimensions);
     this.hcProperties.qMeasures = setFieldProperties(this.hcProperties.qMeasures);
+    return undefined;
   }
 
   // ----------------------------------
@@ -73,6 +91,49 @@ class HyperCubeHandler extends DataPropertyHandler {
     return hc ? hc.qDimensionInfo : [];
   }
 
+  addDimension(dimension, alternative, idx) {
+    const dim = initializeField(dimension);
+
+    if (alternative) {
+      const hcDimensions = this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions;
+      return addAlternativeDimension(dim, hcDimensions, idx);
+    }
+
+    return addMainDimension(this, dim, idx);
+  }
+
+  async addDimensions(dimensions, alternative = false) {
+    const existingDimensions = this.getDimensions();
+    const addedDimensions = [];
+    let addedActive = 0;
+    await Promise.all(
+      dimensions.map(async (dimension) => {
+        if (isTotalDimensionsExceeded(this, existingDimensions)) {
+          return addedDimensions;
+        }
+
+        const dim = initializeField(dimension);
+
+        if (isDimensionAlternative(this, existingDimensions, alternative)) {
+          const altDim = await addAlternativeDimension(this, dim);
+          addedDimensions.push(altDim);
+        } else if (existingDimensions.length < this.maxDimensions()) {
+          await addActiveDimension(this, dim, existingDimensions, addedDimensions, addedActive);
+          addedActive++;
+        }
+        return addedDimensions;
+      })
+    );
+    return addedDimensions;
+  }
+
+  autoSortDimension(dimension) {
+    if (dimension.qLibraryId) {
+      return autoSortLibraryDimension(this, dimension);
+    }
+    return autoSortFieldDimension(this, dimension);
+  }
+
   // ----------------------------------
   // ------------ MEASURES ------------
   // ----------------------------------
@@ -92,6 +153,42 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   getMeasureLayout(cId) {
     return this.getMeasureLayouts().filter((item) => cId === item.cId)[0];
+  }
+
+  addMeasure(measure, alternative, idx) {
+    const meas = initializeField(measure);
+
+    if (alternative) {
+      const hcMeasures = this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures;
+      return addAlternativeMeasure(meas, hcMeasures, idx);
+    }
+
+    return addMainMeasure(this, meas, idx);
+  }
+
+  addMeasures(measures, alternative = false) {
+    const existingMeasures = this.getMeasures();
+    const addedMeasures = [];
+    let addedActive = 0;
+    measures.every((measure) => {
+      // Adding more measures than TOTAL_MAX_MEASURES is not allowed and we expect this.maxMeasures() to always be <= TOTAL_MAX_MEASURES
+      if (isTotalMeasureExceeded(this, existingMeasures)) {
+        return false;
+      }
+
+      const meas = initializeId(measure);
+
+      // add new measure to excluded layout if this.maxMeasures <= nbr of measures < TOTAL_MAX_MEASURES
+      if (isMeasureAlternative(this, existingMeasures, alternative)) {
+        addAlternativeMeasure(this, meas);
+        addedMeasures.push(meas);
+      } else if (existingMeasures.length < this.maxMeasures()) {
+        addActiveMeasure(this, meas, existingMeasures, addedMeasures, addedActive);
+        addedActive++;
+      }
+      return true;
+    });
+    return addedMeasures;
   }
 }
 

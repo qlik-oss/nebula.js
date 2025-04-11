@@ -108,5 +108,8 @@
     "apis/*",
     "test/component/*"
   ],
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "yarn@1.22.22",
+  "dependencies": {
+    "@nebula.js/nucleus": "^5.12.4"
+  }
 }
