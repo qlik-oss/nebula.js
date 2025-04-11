@@ -6,6 +6,8 @@ export const TOTAL_MAX = {
   MEASURES: 1000, // Maximum number of active measures + disabled measures
 };
 
+const AUTOCALENDAR_NAME = '.autoCalendar';
+
 export const notSupportedError = new Error('Not supported in this object, need to implement in subclass.');
 
 /**
@@ -14,68 +16,26 @@ export const notSupportedError = new Error('Not supported in this object, need t
  * @returns the field
  */
 const getField = (expression) => {
-  expression = expression.trim();
-  if (expression.charAt(0) === '=') {
-    expression = expression.substring(1);
-    expression = expression.trim();
+  let exp = expression;
+  exp = exp.trim();
+  if (exp.charAt(0) === '=') {
+    exp = exp.substring(1);
+    exp = exp.trim();
   }
-  const lastIndex = expression.length - 1;
-  if (expression.charAt(0) === '[' && expression.charAt(lastIndex) === ']') {
-    expression = expression.substring(1, lastIndex);
-    expression = expression.trim();
+  const lastIndex = exp.length - 1;
+  if (exp.charAt(0) === '[' && exp.charAt(lastIndex) === ']') {
+    exp = exp.substring(1, lastIndex);
+    exp = exp.trim();
   }
-  return expression;
+  return exp;
 };
 
-/**
- * Find the field by its ID from the given fields array.
- * @param {Array} fields
- * @param {string} id
- * returns {Object|null} - The Dimension or Measure if found, otherwise null.
- */
-export const findFieldById = (fields, id) => fields.find((field) => field.qDef?.cId === id) || null;
+export const findFieldById = (fields, id) => (fields && fields.find((field) => field.qDef?.cId === id)) || null;
 
-/**
- * Find a library item by its ID from the given master item list.
- * @param {string} id
- * @param {Array} masterItemList
- * @returns {Object|null} - The master item if found, otherwise null.
- */
-export const findLibraryItem = (id, masterItemList) => {
-  let i;
-  let item;
-  if (masterItemList) {
-    for (i = 0; i < masterItemList.length; i++) {
-      item = masterItemList[i];
-      if (item.qInfo.qId === id) {
-        return item;
-      }
-    }
-  }
-  return null;
-};
+export const findLibraryItem = (id, masterItemList) =>
+  (masterItemList && masterItemList.find((item) => item.qInfo.qId === id)) || null;
 
-/**
- * Find a field in the given master item list by its name.
- * @param {string} name - The name of the field to find.
- * @param {Array} fieldList - The list of fields to search in.
- * @returns {Object|null} - The field object, otherwise null.
- */
-export const findField = (name, fieldList) => {
-  const expandedList = merge(arrayUtil.copy(fieldList));
-  let i;
-  let item;
-  name = getField(name);
-  if (expandedList) {
-    for (i = 0; i < expandedList.length; i++) {
-      item = expandedList[i];
-      if (item.qName === name) {
-        return item;
-      }
-    }
-  }
-  return null;
-};
+const findFieldByName = (name, fieldList) => (fieldList && fieldList.find((field) => field.qName === name)) || null;
 
 /**
  * Set the auto sort criteria for the given fields and dimension.
@@ -109,10 +69,74 @@ export const setAutoSort = (fields, dimension, self) => {
 };
 
 export const useMasterNumberFormat = (formatting) => {
-  formatting.quarantine = {
-    qNumFormat: formatting.qNumFormat || {},
-    isCustomFormatted: formatting.isCustomFormatted || false,
+  const format = formatting;
+  format.quarantine = {
+    qNumFormat: format.qNumFormat || {},
+    isCustomFormatted: format.isCustomFormatted || false,
   };
-  formatting.qNumFormat = null;
-  formatting.isCustomFormatted = undefined;
+  format.qNumFormat = null;
+  format.isCustomFormatted = undefined;
+};
+
+const isDateField = (field) =>
+  field.qDerivedFieldData && (field.qTags.indexOf('$date') > -1 || field.qTags.indexOf('$timestamp') > -1);
+
+const isGeoField = (field) => field.qTags.indexOf('$geoname') > -1;
+
+const trimAutoCalendarName = (fieldName) => (fieldName ? fieldName.split(AUTOCALENDAR_NAME).join('') : '');
+
+const getDerivedFieldInfo = (derivedField, field, derived) => ({
+  qName: derivedField.qName,
+  displayName: trimAutoCalendarName(derivedField.qName),
+  qSrcTables: field.qSrcTables,
+  qTags: derivedField.qTags,
+  isDerived: true,
+  isDerivedFromDate: field.isDateField,
+  sourceField: field.qName,
+  derivedDefinitionName: derived.qDerivedDefinitionName,
+});
+
+const processField = (field) => {
+  const item = field;
+  item.isDateField = isDateField(item);
+  item.isGeoField = isGeoField(item);
+  return item;
+};
+
+const processDerivedFields = (field) => {
+  const derivedFields = [];
+
+  if (field.qDerivedFieldData) {
+    field.qDerivedFieldData.qDerivedFieldLists.forEach((derived) => {
+      derived.qFieldDefs.forEach((derivedField) => {
+        derivedFields.push(getDerivedFieldInfo(derivedField, field, derived));
+      });
+    });
+  }
+
+  return derivedFields;
+};
+
+export const expandFieldsWithDerivedData = (list) => {
+  const result = [];
+  list.forEach((field) => {
+    result.push(processField(field));
+
+    const derivedFields = processDerivedFields(field);
+    result.push(...derivedFields);
+  });
+
+  return result;
+};
+
+/**
+ * Find a field in the given master item list by its name.
+ * @param {string} name - The name of the field to find.
+ * @param {Array} fieldList - The list of fields to search in.
+ * @returns {Object|null} - The field object, otherwise null.
+ */
+export const findField = (name, fieldList) => {
+  const expandedList = expandFieldsWithDerivedData(fieldList.slice(0));
+  const fieldName = getField(name);
+  return (expandedList && findFieldByName(fieldName, expandedList)) || null;
 };

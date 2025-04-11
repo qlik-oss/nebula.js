@@ -16,6 +16,7 @@ import {
   isTotalDimensionsExceeded,
   isTotalMeasureExceeded,
   addActiveMeasure,
+  autoSortFieldDimension,
 } from './handler-helper';
 
 class HyperCubeHandler extends DataPropertyHandler {
@@ -130,7 +131,7 @@ class HyperCubeHandler extends DataPropertyHandler {
     if (dimension.qLibraryId) {
       return autoSortLibraryDimension(this, dimension);
     }
-    return autoSortLibraryDimension(this, dimension);
+    return autoSortFieldDimension(this, dimension);
   }
 
   // ----------------------------------

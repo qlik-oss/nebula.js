@@ -1,7 +1,7 @@
 import getValue from '@nebula.js/conversion/src/utils';
+import arrayUtil from '@nebula.js/conversion/src/array-util';
 import uid from '../../object/uid';
 import { findField, findLibraryItem, setAutoSort, TOTAL_MAX } from './handler-utils';
-import arrayUtil from '@nebula.js/conversion/src/array-util';
 
 export const getFieldById = (fields, id) => fields.find((field) => field.qDef?.cId === id) || null;
 
@@ -221,10 +221,10 @@ export function autoSortLibraryDimension(self, dimension) {
 }
 
 export function autoSortFieldDimension(self, dimension) {
-  return this.app.getFieldList().then((fieldList) => {
+  return self.app.getFieldList().then((fieldList) => {
     const field = findField(dimension.qDef.qFieldDefs[0], fieldList);
     if (field) {
-      setAutoSort([field], dimension, this);
+      setAutoSort([field], dimension, self);
     }
     return dimension;
   });
