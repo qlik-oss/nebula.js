@@ -1,4 +1,5 @@
-import getValue from '@nebula.js/conversion/src/utils';
+// eslint-disable-next-line import/no-relative-packages
+import getValue from '../../../conversion/src/utils';
 
 export const getFieldById = (fields, id) => fields.find((field) => field.qDef?.cId === id) || null;
 

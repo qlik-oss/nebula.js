@@ -1,4 +1,5 @@
-import utils from '@nebula.js/conversion/src/utils';
+// eslint-disable-next-line import/no-relative-packages
+import utils from '../../../conversion/src/utils';
 import DataPropertyHandler from './data-property-handler';
 import { getHyperCube, setFieldProperties } from './handler-helper';
 
