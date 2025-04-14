@@ -1,8 +1,9 @@
 import generator from '../../src/generator';
-
+import HyperCubeHandler from '../../src/handler/hypercube-handler';
 import * as Creator from '../../src/creator';
 import * as Qae from '../../src/qae';
 
+jest.mock('../../src/handler/hypercube-handler');
 describe('generator', () => {
   let creatorMock;
   let qaeMock;
@@ -29,14 +30,31 @@ describe('generator', () => {
   });
 
   test('should not override reserved properties', () => {
-    expect(
-      generator({
-        foo: 'bar',
-        component: 'c',
-      }).definition
-    ).toEqual({
-      foo: 'bar',
+    const mockDataHandler = jest.fn();
+    HyperCubeHandler.mockImplementation((opts) => {
+      mockDataHandler(opts);
     });
+
+    const input = {
+      foo: 'bar',
+      component: 'c',
+    };
+
+    const result = generator(input).definition;
+
+    // Verify that the reserved property `dataHandler` is not overridden
+    expect(result.dataHandler).toBeInstanceOf(Function);
+    expect(result.dataHandler).not.toBe(input.dataHandler);
+    expect(result).toEqual(
+      expect.objectContaining({
+        foo: 'bar',
+      })
+    );
+
+    // `dataHandler` is the mocked HyperCubeHandler
+    const opts = { someOption: true };
+    result.dataHandler(opts);
+    expect(mockDataHandler).toHaveBeenCalledWith(opts);
   });
 
   test('should accept a function', () => {
