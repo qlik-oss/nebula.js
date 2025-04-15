@@ -470,6 +470,9 @@ const Cell = forwardRef(
         getQae() {
           return state.sn.generator.qae;
         },
+        getExtDefinition() {
+          return state.sn.generator.definition.ext;
+        },
         toggleFocus(active) {
           if (typeof state.sn.component.focus === 'function') {
             if (active) {
@@ -478,9 +481,6 @@ const Cell = forwardRef(
               state.sn.component.blur();
             }
           }
-        },
-        supportViewData() {
-          return state.sn.component.supportViewData();
         },
         setOnBlurHandler(cb) {
           focusHandler.current.blurCallback = cb;

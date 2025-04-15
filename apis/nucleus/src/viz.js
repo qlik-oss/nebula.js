@@ -10,6 +10,18 @@ import saveSoftProperties from './utils/save-soft-properties';
 
 const noopi = () => {};
 
+function support(prop, supportObject, layout) {
+  // we want to you ext from object instead. Why using $scope.ext what is the different?
+  const value = supportObject[prop];
+  if (typeof value === 'function') {
+    return value.call(null, layout);
+  }
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  return false;
+}
+
 export default function viz({
   model,
   halo,
@@ -25,6 +37,8 @@ export default function viz({
   let onMount = null;
   let onRenderResolve = null;
   let viewDataObjectId;
+  let successfulRender = false;
+
   const mounted = new Promise((resolve) => {
     onMount = resolve;
   });
@@ -37,6 +51,7 @@ export default function viz({
     override?.(); // from options.onInitialRender
     onRenderResolve(); // internal promise in viz to wait for render
     onRender(); // from RenderConfig
+    successfulRender = true;
   };
 
   let initialSnOptions = {};
@@ -81,6 +96,31 @@ export default function viz({
       initialSnPlugins = plugins;
     }
   };
+
+  /*
+  ---Viz api---
+  id: string;
+  model: qix.GenericObject;
+  destroy: async () => void;
+  convertTo: (newType: string, forceUpdate?: boolean, forcePatch?: boolean) => Promise<object>;
+  toggleDataView: (showDataView?: boolean) => Promise<void>;
+  viewDataToggled: boolean;
+  addListener: (eventName: string, listener: Function) => void;
+  removeListener: (eventName: string, listener: Function) => void;
+  getImperativeHandle: () => Promise<object>;
+  takeSnapshot: () => Promise<object>;
+
+  ---additions---
+  support: (type) => boolean;
+  getExtensionDefinition: () => object;
+      propertyPanelDef: extension.definition.ext.definition,
+      initialProperties: extension.qae.properties.initial,
+      data: extension.qae.data,
+
+  toggleFocus: v?.toggleFocus,
+  setOnBlurHandler: v?.setOnBlurHandler,
+  onContextMenu: v?.onContextMenu,
+  */
 
   /**
    * @class
@@ -203,14 +243,12 @@ export default function viz({
         cellRef.current.setModel(newModel);
       }
     },
+    /**
+     * Whether or not the chart has the data view toggled on.
+     * @type {boolean}
+     */
     get viewDataToggled() {
       return viewDataObjectId !== undefined;
-    },
-    supportViewData() {
-      return cellRef.current.supportViewData();
-    },
-    toggleFocus(focus) {
-      cellRef.current.toggleFocus(focus);
     },
     /**
      * Listens to custom events from inside the visualization. See useEmitter
@@ -245,6 +283,24 @@ export default function viz({
     async takeSnapshot() {
       await rendered;
       return cellRef.current.takeSnapshot();
+    },
+    // ===== undocumented experimental API - use at own risk ======
+    support(type) {
+      // successfulRender = valid state, this needs to be checked closer
+      if (!mountedReference || successfulRender) {
+        const supportObject = cellRef.current.getExtDefinition()?.support;
+        if (supportObject) {
+          // Passing in layout here should only be relevant if the chart has rendered
+          return support(type, supportObject, model?.layout);
+        }
+      }
+      return false;
+    },
+    toggleFocus(focus) {
+      cellRef.current.toggleFocus(focus);
+    },
+    setOnBlurHandler(cb) {
+      cellRef.current.setOnBlurHandler(cb);
     },
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {

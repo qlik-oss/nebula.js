@@ -229,9 +229,6 @@ function createWithHooks(generator, opts, galaxy) {
     getImperativeHandle() {
       return generator.component.getImperativeHandle(this);
     },
-    supportViewData() {
-      return generator.definition.ext.support.viewData || false;
-    },
     destroy() {},
     observeActions(callback) {
       generator.component.observeActions(this, callback);
