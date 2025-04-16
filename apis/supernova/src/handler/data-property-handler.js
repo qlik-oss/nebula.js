@@ -1,4 +1,4 @@
-import { getFieldById } from './handler-helper';
+import { getFieldById } from './utils/handler-helper';
 
 class DataPropertyHandler {
   constructor(opts) {

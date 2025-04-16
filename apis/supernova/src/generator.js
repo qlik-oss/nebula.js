@@ -74,9 +74,11 @@ export default function generatorFn(UserSN, galaxy) {
       const ss = create(generator, params, galaxy);
       return ss;
     },
-    definition: {
-      dataHandler: (opts) => new HyperCubeHandler(opts),
-    },
+    definition: galaxy.flags.isEnabled('NEBULA_DATA_HANDLERS')
+      ? {
+          dataHandler: (opts) => new HyperCubeHandler(opts),
+        }
+      : {},
   };
 
   Object.keys(sn).forEach((key) => {
