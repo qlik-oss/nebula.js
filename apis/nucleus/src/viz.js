@@ -280,8 +280,8 @@ export default function viz({
      *
      */
     support(type) {
-      if (type === 'viewData' && viewDataObjectId !== undefined) {
-        return true;
+      if (viewDataObjectId !== undefined) {
+        throw new Error('Cannot call support when in data view');
       }
       if (mountedReference && successfulRender) {
         return cellRef.current.support(type);
