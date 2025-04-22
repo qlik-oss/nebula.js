@@ -479,6 +479,9 @@ const Cell = forwardRef(
         getExtDefinition() {
           return state.sn.generator.definition.ext;
         },
+        getRenderState() {
+          return state;
+        },
         toggleFocus(active) {
           if (typeof state.sn.component.focus === 'function') {
             if (active) {
