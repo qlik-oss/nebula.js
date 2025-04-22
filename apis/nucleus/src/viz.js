@@ -285,9 +285,19 @@ export default function viz({
       return cellRef.current.takeSnapshot();
     },
     // ===== undocumented experimental API - use at own risk ======
+    /**
+     *  valid types: viewData, cssScaling, snapshot, exportData, exploration
+     *  questionable types: supportRefresh, quickMobile, fullscreen
+     *  deprecated?: sharing
+     *
+     */
     support(type) {
-      // successfulRender = valid state, this needs to be checked closer
-      if (!mountedReference || successfulRender) {
+      if (type === 'viewData' && viewDataObjectId !== undefined) {
+        return true;
+      }
+      const renderState = cellRef.current.getRenderState();
+      // Could be cleaner, but need to check that its rendered properly
+      if (mountedReference && renderState.loaded && !renderState.error && successfulRender) {
         const supportObject = cellRef.current.getExtDefinition()?.support;
         if (supportObject) {
           // Passing in layout here should only be relevant if the chart has rendered
