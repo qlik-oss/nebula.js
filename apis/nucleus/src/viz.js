@@ -11,7 +11,6 @@ import saveSoftProperties from './utils/save-soft-properties';
 const noopi = () => {};
 
 function support(prop, supportObject, layout) {
-  // we want to you ext from object instead. Why using $scope.ext what is the different?
   const value = supportObject[prop];
   if (typeof value === 'function') {
     return value.call(null, layout);
