@@ -38,6 +38,17 @@ const CellBody = {
   className: 'njs-cell-body',
 };
 
+function support(prop, supportObject, layout) {
+  const value = supportObject[prop];
+  if (typeof value === 'function') {
+    return value.call(null, layout);
+  }
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  return false;
+}
+
 const initialState = (err) => ({
   loading: false,
   loaded: false,
@@ -473,8 +484,14 @@ const Cell = forwardRef(
         getExtDefinition() {
           return state.sn.generator.definition.ext;
         },
-        getRenderState() {
-          return state;
+        support(type) {
+          if (layout && state.loaded && !state.error) {
+            const supportObject = state.sn.generator.definition.ext?.support;
+            if (supportObject) {
+              return support(type, supportObject, layout);
+            }
+          }
+          return false;
         },
         toggleFocus(active) {
           if (typeof state.sn.component.focus === 'function') {

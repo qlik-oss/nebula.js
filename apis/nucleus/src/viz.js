@@ -10,17 +10,6 @@ import saveSoftProperties from './utils/save-soft-properties';
 
 const noopi = () => {};
 
-function support(prop, supportObject, layout) {
-  const value = supportObject[prop];
-  if (typeof value === 'function') {
-    return value.call(null, layout);
-  }
-  if (typeof value === 'boolean') {
-    return value;
-  }
-  return false;
-}
-
 export default function viz({
   model,
   halo,
@@ -294,14 +283,8 @@ export default function viz({
       if (type === 'viewData' && viewDataObjectId !== undefined) {
         return true;
       }
-      const renderState = cellRef.current.getRenderState();
-      // Could be cleaner, but need to check that its rendered properly
-      if (mountedReference && renderState.loaded && !renderState.error && successfulRender) {
-        const supportObject = cellRef.current.getExtDefinition()?.support;
-        if (supportObject) {
-          // Passing in layout here should only be relevant if the chart has rendered
-          return support(type, supportObject, model?.layout);
-        }
+      if (mountedReference && successfulRender) {
+        return cellRef.current.support(type);
       }
       return false;
     },
