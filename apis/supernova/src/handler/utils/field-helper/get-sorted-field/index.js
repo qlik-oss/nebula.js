@@ -3,7 +3,7 @@ import { setAutoSort } from '../utils';
 
 function getAutoSortFieldDimension(self, dimension) {
   return self.app.getFieldList().then((fieldList) => {
-    const field = findFieldInExpandedList(dimension.qDef.qFieldDefs[0], fieldList);
+    const field = dimension?.qDef?.qFieldDefs && findFieldInExpandedList(dimension.qDef.qFieldDefs[0], fieldList);
     if (field) {
       setAutoSort([field], dimension, self);
     }

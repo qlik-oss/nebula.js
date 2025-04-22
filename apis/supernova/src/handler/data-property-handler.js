@@ -1,9 +1,10 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { merge } from 'lodash';
 // eslint-disable-next-line import/no-relative-packages
 import isEnabled from '../../../nucleus/src/flags/flags';
-import { findFieldById, useMasterNumberFormat } from './utils/field-utils/utils';
-import { initializeField } from './utils/hypercube-helper';
-import { INITIAL_SORT_CRITERIAS, notSupportedError } from './utils/constants';
+import { findFieldById, initializeField, useMasterNumberFormat } from './utils/field-helper/utils';
+import { INITIAL_SORT_CRITERIAS } from './utils/constants';
+import { notSupportedError } from './utils/hypercube-helper';
 
 class DataPropertyHandler {
   constructor(opts) {

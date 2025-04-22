@@ -1,6 +1,5 @@
 import findFieldInExpandedList from './index';
 import * as expandFieldsWithDerivedData from '../expand-field-derived-data';
-// import * as utils from '../utils';
 
 describe('findFieldInExpandedList', () => {
   let fieldList;

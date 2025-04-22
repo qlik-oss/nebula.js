@@ -5,8 +5,6 @@ export const TOTAL_MAX = {
 
 export const AUTOCALENDAR_NAME = '.autoCalendar';
 
-export const notSupportedError = new Error('Not supported in this object, need to implement in subclass.');
-
 export const INITIAL_SORT_CRITERIAS = [
   {
     qSortByLoadOrder: 1,

@@ -2,11 +2,9 @@
 import getValue from '../../../../conversion/src/utils';
 // eslint-disable-next-line import/no-relative-packages
 import arrayUtil from '../../../../conversion/src/array-util';
-// eslint-disable-next-line import/no-relative-packages
-import uid from '../../../../nucleus/src/object/uid';
 import { TOTAL_MAX } from './constants';
 
-export const getFieldById = (fields, id) => fields.find((field) => field.qDef?.cId === id) || null;
+export const notSupportedError = new Error('Not supported in this object, need to implement in subclass.');
 
 export const setFieldProperties = (hcFieldProperties) => {
   if (!hcFieldProperties) {
@@ -36,18 +34,34 @@ export const getHyperCube = (layout, path) => {
   return path && getValue(layout, path) ? getValue(layout, path).qHyperCube : layout.qHyperCube;
 };
 
-export const initializeId = (field) => ({
-  ...field,
-  qDef: {
-    ...field.qDef,
-    cId: field.qDef?.cId ?? uid(),
-  },
-});
+export function setDefaultProperties(self) {
+  const current = self;
+  current.hcProperties.qDimensions = current.hcProperties.qDimensions ?? [];
+  current.hcProperties.qMeasures = current.hcProperties.qMeasures ?? [];
+  current.hcProperties.qInterColumnSortOrder = current.hcProperties.qInterColumnSortOrder ?? [];
+  current.hcProperties.qLayoutExclude = current.hcProperties.qLayoutExclude ?? {
+    qHyperCubeDef: { qDimensions: [], qMeasures: [] },
+  };
+  current.hcProperties.qLayoutExclude.qHyperCubeDef = current.hcProperties.qLayoutExclude.qHyperCubeDef ?? {
+    qDimensions: [],
+    qMeasures: [],
+  };
+  current.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions =
+    current.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions ?? [];
+  current.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures =
+    current.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures ?? [];
+}
 
-export const initializeField = (field) => ({
-  ...initializeId(field),
-  qOtherTotalSpec: field.qOtherTotalSpec ?? {},
-});
+export function setPropForLineChartWithForecast(self) {
+  const current = self;
+  if (
+    current.hcProperties.isHCEnabled &&
+    current.hcProperties.qDynamicScript.length === 0 &&
+    current.hcProperties.qMode === 'S'
+  ) {
+    current.hcProperties.qDynamicScript = [];
+  }
+}
 
 export function insertFieldAtIndex(self, field, alternative, currentFields, index = undefined) {
   if (alternative || (self.maxDimensions() <= currentFields.length && currentFields.length < TOTAL_MAX.DIMENSIONS)) {
@@ -118,7 +132,7 @@ export function isTotalDimensionsExceeded(self, dimensions) {
   return altDimensions.length + dimensions.length >= TOTAL_MAX.DIMENSIONS;
 }
 
-export function isDimensionCountedAlt(self, alternative) {
+export function isDimensionAlternative(self, alternative) {
   const dimensions = self.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions;
   return alternative || (self.maxDimensions() <= dimensions.length && dimensions.length < TOTAL_MAX.DIMENSIONS);
 }
@@ -180,7 +194,7 @@ export function isTotalMeasureExceeded(self, measures) {
   return altMeasures.length + measures.length >= TOTAL_MAX.MEASURES;
 }
 
-export function isMeasureCountedAlt(self, measures, alternative) {
+export function isMeasureAlternative(self, measures, alternative) {
   return alternative || (self.maxMeasures() <= measures.length && measures.length < TOTAL_MAX.MEASURES);
 }
 

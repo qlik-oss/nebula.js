@@ -1,4 +1,4 @@
-import * as handlerHelpers from '../utils/hypercube-helper';
+import * as hcHelper from '../utils/hypercube-helper';
 import HyperCubeHandler from '../hypercube-handler';
 
 describe('HyperCube Handlers', () => {
@@ -108,7 +108,7 @@ describe('HyperCube Handlers', () => {
   describe('addDimensions', () => {
     beforeEach(() => {
       handler.setProperties(properties);
-      jest.spyOn(handlerHelpers, 'isTotalDimensionsExceeded').mockReturnValue(false);
+      jest.spyOn(hcHelper, 'isTotalDimensionsExceeded').mockReturnValue(false);
     });
 
     test('should return an empty array when newDimensions is empty', async () => {
@@ -148,7 +148,7 @@ describe('HyperCube Handlers', () => {
     });
 
     test('should not add dimensions when isTotalDimensionsExceeded returns true', async () => {
-      jest.spyOn(handlerHelpers, 'isTotalDimensionsExceeded').mockReturnValue(true);
+      jest.spyOn(hcHelper, 'isTotalDimensionsExceeded').mockReturnValue(true);
       const newDimensions = [{ qDef: { cId: 'dim2' } }];
 
       const dimensions = await handler.addDimensions(newDimensions);
@@ -216,7 +216,7 @@ describe('HyperCube Handlers', () => {
     beforeEach(() => {
       properties.qHyperCubeDef.qMeasures = [{ qDef: { cId: 'meas1' } }];
       handler.setProperties(properties);
-      jest.spyOn(handlerHelpers, 'isTotalMeasureExceeded').mockReturnValue(false);
+      jest.spyOn(hcHelper, 'isTotalMeasureExceeded').mockReturnValue(false);
     });
 
     test('should return an empty array when new measure is empty', () => {
@@ -265,7 +265,7 @@ describe('HyperCube Handlers', () => {
     });
 
     test('should not add measures when isTotalMeasureExceeded returns true', () => {
-      jest.spyOn(handlerHelpers, 'isTotalMeasureExceeded').mockReturnValue(true);
+      jest.spyOn(hcHelper, 'isTotalMeasureExceeded').mockReturnValue(true);
       const newMeasure = [{ qDef: { cId: 'meas2' } }];
 
       const measure = handler.addMeasures(newMeasure);

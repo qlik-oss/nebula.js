@@ -2,8 +2,9 @@
 import utils from '../../../conversion/src/utils';
 import DataPropertyHandler from './data-property-handler';
 import * as hcHelper from './utils/hypercube-helper';
-import getAutoSortLibraryDimension from './utils/field-utils/get-sorted-library-field';
-import getAutoSortFieldDimension from './utils/field-utils/get-sorted-field';
+import getAutoSortLibraryDimension from './utils/field-helper/get-sorted-library-field';
+import getAutoSortFieldDimension from './utils/field-helper/get-sorted-field';
+import { initializeField, initializeId } from './utils/field-helper/utils';
 
 class HyperCubeHandler extends DataPropertyHandler {
   constructor(opts) {
@@ -24,30 +25,8 @@ class HyperCubeHandler extends DataPropertyHandler {
       return undefined;
     }
 
-    // Set defaults
-    this.hcProperties.qDimensions = this.hcProperties.qDimensions ?? [];
-    this.hcProperties.qMeasures = this.hcProperties.qMeasures ?? [];
-    this.hcProperties.qInterColumnSortOrder = this.hcProperties.qInterColumnSortOrder ?? [];
-    this.hcProperties.qLayoutExclude = this.hcProperties.qLayoutExclude ?? {
-      qHyperCubeDef: { qDimensions: [], qMeasures: [] },
-    };
-    this.hcProperties.qLayoutExclude.qHyperCubeDef = this.hcProperties.qLayoutExclude.qHyperCubeDef ?? {
-      qDimensions: [],
-      qMeasures: [],
-    };
-    this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions =
-      this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions ?? [];
-    this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures =
-      this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures ?? [];
-
-    if (
-      this.hcProperties.isHCEnabled &&
-      this.hcProperties.qDynamicScript.length === 0 &&
-      this.hcProperties.qMode === 'S'
-    ) {
-      // this is only for line chart with forecast
-      this.hcProperties.qDynamicScript = [];
-    }
+    hcHelper.setDefaultProperties(this);
+    hcHelper.setPropForLineChartWithForecast(this);
 
     // Set auto-sort property (compatibility 0.85 -> 0.9),
     // can probably be removed in 1.0
@@ -78,9 +57,9 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   addDimension(dimension, alternative, idx) {
-    const dim = hcHelper.initializeField(dimension);
+    const dim = initializeField(dimension);
 
-    if (hcHelper.isDimensionCountedAlt(this, dim, alternative)) {
+    if (hcHelper.isDimensionAlternative(this, dim, alternative)) {
       return hcHelper.addAlternativeDimension(this, dim, idx);
     }
 
@@ -97,9 +76,9 @@ class HyperCubeHandler extends DataPropertyHandler {
           return addedDimensions;
         }
 
-        const dim = hcHelper.initializeField(dimension);
+        const dim = initializeField(dimension);
 
-        if (hcHelper.isDimensionCountedAlt(this, alternative)) {
+        if (hcHelper.isDimensionAlternative(this, alternative)) {
           const altDim = await hcHelper.addAlternativeDimension(this, dim);
           addedDimensions.push(altDim);
         } else if (existingDimensions.length < this.maxDimensions()) {
@@ -141,9 +120,9 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   addMeasure(measure, alternative, idx) {
-    const meas = hcHelper.initializeField(measure);
+    const meas = initializeField(measure);
 
-    if (hcHelper.isMeasureCountedAlt(this, meas, alternative)) {
+    if (hcHelper.isMeasureAlternative(this, meas, alternative)) {
       const hcMeasures = this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures;
       return hcHelper.addAlternativeMeasure(meas, hcMeasures, idx);
     }
@@ -170,9 +149,9 @@ class HyperCubeHandler extends DataPropertyHandler {
         return false;
       }
 
-      const meas = hcHelper.initializeId(measure);
+      const meas = initializeId(measure);
 
-      if (hcHelper.isMeasureCountedAlt(this, existingMeasures, alternative)) {
+      if (hcHelper.isMeasureAlternative(this, existingMeasures, alternative)) {
         hcHelper.addAlternativeMeasure(this, meas);
         addedMeasures.push(meas);
       } else if (existingMeasures.length < this.maxMeasures()) {
@@ -182,28 +161,6 @@ class HyperCubeHandler extends DataPropertyHandler {
       return true;
     });
     return addedMeasures;
-
-    // const addedMeasures = [];
-    // const existingMeasures = this.getMeasures();
-    // let addedActive = 0;
-    // // await Promise.all(
-    // measures.every(async (measure) => {
-    //   if (hcHelper.isTotalMeasureExceeded(this, existingMeasures)) {
-    //     return false;
-    //   }
-    //   const meas = hcHelper.initializeId(measure);
-    //   // add new measure to excluded layout if this.maxMeasures <= nbr of measures < TOTAL_MAX_MEASURES
-    //   if (hcHelper.isMeasureCountedAlt(this, existingMeasures, alternative)) {
-    //     await hcHelper.addAlternativeMeasure(this, meas);
-    //     addedMeasures.push(meas);
-    //   } else if (existingMeasures.length < this.maxMeasures()) {
-    //     await hcHelper.addActiveMeasure(this, meas, existingMeasures, addedMeasures, addedActive);
-    //     addedActive++;
-    //   }
-    //   return true;
-    // });
-    // // );
-    // return addedMeasures;
   }
 }
 

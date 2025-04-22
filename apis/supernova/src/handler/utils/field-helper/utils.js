@@ -1,3 +1,5 @@
+// eslint-disable-next-line import/no-relative-packages
+import uid from '../../../../../nucleus/src/object/uid';
 import { AUTOCALENDAR_NAME } from '../constants';
 
 /**
@@ -28,12 +30,19 @@ export const findLibraryItem = (id, masterItemList) =>
 export const findFieldByName = (name, fieldList) =>
   (fieldList && fieldList.find((field) => field.qName === name)) || null;
 
-/**
- * Set the auto sort criteria for the given fields and dimension.
- * @param {Array} fields
- * @param {Object} dimension
- * @param {Object} self
- */
+export const initializeId = (field) => ({
+  ...field,
+  qDef: {
+    ...field.qDef,
+    cId: field.qDef?.cId ?? uid(),
+  },
+});
+
+export const initializeField = (field) => ({
+  ...initializeId(field),
+  qOtherTotalSpec: field.qOtherTotalSpec ?? {},
+});
+
 export const setAutoSort = (fields, dimension, self) => {
   const dim = dimension;
   fields.forEach((field, index) => {
@@ -76,14 +85,3 @@ export const isDateField = (field) =>
 export const isGeoField = (field) => field.qTags.indexOf('$geoname') > -1;
 
 export const trimAutoCalendarName = (fieldName) => (fieldName ? fieldName.split(AUTOCALENDAR_NAME).join('') : '');
-
-export const getDerivedFieldInfo = (derivedField, field, derived) => ({
-  qName: derivedField.qName,
-  displayName: trimAutoCalendarName(derivedField.qName),
-  qSrcTables: field.qSrcTables,
-  qTags: derivedField.qTags,
-  isDerived: true,
-  isDerivedFromDate: field.isDateField,
-  sourceField: field.qName,
-  derivedDefinitionName: derived.qDerivedDefinitionName,
-});
