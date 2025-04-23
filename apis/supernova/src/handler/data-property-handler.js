@@ -68,38 +68,38 @@ class DataPropertyHandler {
   }
 
   createLibraryDimension(id, defaults) {
-    const dimension = merge({}, this.dimensionProperties || {}, defaults || {});
+    let dimension = merge({}, this.dimensionProperties || {}, defaults || {});
 
-    const dim = initializeField(dimension);
+    dimension = initializeField(dimension);
 
-    dim.qLibraryId = id;
-    dim.qDef.autoSort = true;
-    dim.qDef.qSortCriterias = INITIAL_SORT_CRITERIAS;
+    dimension.qLibraryId = id;
+    dimension.qDef.autoSort = true;
+    dimension.qDef.qSortCriterias = INITIAL_SORT_CRITERIAS;
 
-    delete dim.qDef.qFieldDefs;
-    delete dim.qDef.qFieldLabels;
+    delete dimension.qDef.qFieldDefs;
+    delete dimension.qDef.qFieldLabels;
 
-    return dim;
+    return dimension;
   }
 
   createFieldDimension(field, label, defaults) {
-    const dimension = merge({}, this.dimensionProperties || {}, defaults || {});
+    let dimension = merge({}, this.dimensionProperties || {}, defaults || {});
 
-    const dim = initializeField(dimension);
+    dimension = initializeField(dimension);
 
     if (!field) {
-      dim.qDef.qFieldDefs = [];
-      dim.qDef.qFieldLabels = [];
-      dim.qDef.qSortCriterias = [];
+      dimension.qDef.qFieldDefs = [];
+      dimension.qDef.qFieldLabels = [];
+      dimension.qDef.qSortCriterias = [];
     }
 
-    dim.qDef.qFieldDefs = [field];
-    dim.qDef.qFieldLabels = label ? [label] : [''];
-    dim.qDef.qSortCriterias = INITIAL_SORT_CRITERIAS;
+    dimension.qDef.qFieldDefs = [field];
+    dimension.qDef.qFieldLabels = label ? [label] : [''];
+    dimension.qDef.qSortCriterias = INITIAL_SORT_CRITERIAS;
 
-    dim.qDef.autoSort = true;
+    dimension.qDef.autoSort = true;
 
-    return dim;
+    return dimension;
   }
 
   addFieldDimension(field, label, defaults) {
@@ -189,16 +189,14 @@ class DataPropertyHandler {
   createExpressionMeasure(expression, label, defaults) {
     const measure = merge({}, this.measureProperties || {}, defaults || {});
 
-    const meas = { ...measure };
+    measure.qDef = measure.qDef ?? {};
+    measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
 
-    meas.qDef = meas.qDef ?? {};
-    meas.qDef.qNumFormat = meas.qDef.qNumFormat ?? {};
+    measure.qDef.qDef = expression;
+    measure.qDef.qLabel = label;
+    measure.qDef.autoSort = true;
 
-    meas.qDef.qDef = expression;
-    meas.qDef.qLabel = label;
-    meas.qDef.autoSort = true;
-
-    return meas;
+    return measure;
   }
 
   addExpressionMeasure(expression, label, defaults) {
@@ -215,22 +213,20 @@ class DataPropertyHandler {
 
   createLibraryMeasure(id, defaults) {
     const measure = merge({}, this.measureProperties || {}, defaults || {});
+    measure.qDef = measure.qDef ?? {};
+    measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
 
-    const meas = { ...measure };
-    meas.qDef = meas.qDef ?? {};
-    meas.qDef.qNumFormat = meas.qDef.qNumFormat ?? {};
-
-    if (isEnabled('MASTER_MEASURE_FORMAT')) {
-      useMasterNumberFormat(meas.qDef);
+    if (isEnabled('MASTER_measureURE_FORMAT')) {
+      useMasterNumberFormat(measure.qDef);
     }
 
-    meas.qLibraryId = id;
-    meas.qDef.autoSort = true;
+    measure.qLibraryId = id;
+    measure.qDef.autoSort = true;
 
-    delete meas.qDef.qDef;
-    delete meas.qDef.qLabel;
+    delete measure.qDef.qDef;
+    delete measure.qDef.qLabel;
 
-    return meas;
+    return measure;
   }
 
   addLibraryMeasure(id, defaults) {
