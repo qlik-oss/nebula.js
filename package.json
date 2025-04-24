@@ -47,7 +47,7 @@
     "@babel/preset-react": "7.26.3",
     "@commitlint/cli": "19.8.0",
     "@commitlint/config-conventional": "19.8.0",
-    "@playwright/test": "1.51.1",
+    "@playwright/test": "1.52.0",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-commonjs": "28.0.3",
     "@rollup/plugin-json": "6.1.0",
@@ -85,7 +85,7 @@
     "picasso-plugin-q": "2.8.1",
     "picasso.js": "2.8.1",
     "prettier": "3.5.3",
-    "puppeteer": "24.6.1",
+    "puppeteer": "24.7.1",
     "qix-faker": "0.3.0",
     "rollup": "4.40.0",
     "rollup-plugin-dependency-flow": "0.3.0",
@@ -95,11 +95,11 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
-    "**/caniuse-lite": "1.0.30001713",
+    "**/caniuse-lite": "1.0.30001715",
     "**/react": "18.3.1",
     "**/react-dom": "18.3.1",
     "**/react-is": "18.3.1",
-    "@playwright/test": "1.51.1"
+    "@playwright/test": "1.52.0"
   },
   "workspaces": [
     "generated/*",
