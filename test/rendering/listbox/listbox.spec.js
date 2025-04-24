@@ -42,7 +42,7 @@ test.describe('listbox mashup rendering test', () => {
     await page.goto(`${url}/listbox/listbox.html?scenario=standard`, { waitUntil: 'networkidle' });
     const locator = page.locator(listboxSelector);
     await locator.waitFor();
-    return expect(locator).toHaveScreenshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('selecting two values should result in two green rows', async () => {
@@ -59,7 +59,7 @@ test.describe('listbox mashup rendering test', () => {
     };
     await execSequence(selectNumbers, action);
 
-    return expect(locator).toHaveScreenshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('selecting two values in dense listbox should result in two green rows', async () => {
@@ -76,7 +76,7 @@ test.describe('listbox mashup rendering test', () => {
     };
     await execSequence(selectNumbers, action);
 
-    return expect(locator).toHaveScreenshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('selecting values should not show the selections toolbar when autoConfirm is true', async () => {
@@ -94,7 +94,7 @@ test.describe('listbox mashup rendering test', () => {
     };
     await execSequence(selectNumbers, action);
 
-    return expect(locator).toHaveScreenshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('listbox search', async () => {
@@ -109,7 +109,7 @@ test.describe('listbox mashup rendering test', () => {
 
     const locator = page.locator(listboxSelector);
     await locator.waitFor();
-    return expect(locator).toHaveScreenshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('listbox search dark', async () => {
@@ -124,7 +124,7 @@ test.describe('listbox mashup rendering test', () => {
 
     const locator = page.locator(listboxSelector);
     await locator.waitFor();
-    return expect(locator).toHaveScreenshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('hide toolbar', async () => {
@@ -132,9 +132,9 @@ test.describe('listbox mashup rendering test', () => {
 
     await page.goto(`${url}/listbox/listbox.html?scenario=noToolbar`, { waitUntil: 'networkidle' });
 
-    const selector = await page.locator(listboxSelector);
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('long title should detach toolbar', async () => {
@@ -171,14 +171,10 @@ test.describe('listbox mashup rendering test', () => {
 
         await page.goto(renderUrl, { waitUntil: 'networkidle' });
 
-        const element = await page.waitForSelector(listboxSelector, {
-          visible: true,
-          timeout: 10000,
-        });
+        const locator = page.locator(listboxSelector);
+        await locator.waitFor();
 
-        const screenshot = await page.screenshot({ clip: await element.boundingBox() });
-
-        expect(screenshot).toMatchSnapshot(`${name}.png`);
+        return expect(locator).toHaveScreenshot(`${name}.png`, { caret: 'hide' });
       });
     });
   });
