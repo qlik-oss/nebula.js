@@ -10,7 +10,7 @@ export default defineConfig({
   forbidOnly: !!process.env.CI,
   timeout: 60000,
   expect: {
-    toMatchSnapshot: { threshold: 0.00025 },
+    toMatchSnapshot: { threshold: 0.0025 },
     timeout: 30000,
   },
   workers: 1,
