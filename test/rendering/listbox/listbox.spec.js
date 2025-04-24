@@ -40,10 +40,10 @@ test.describe('listbox mashup rendering test', () => {
     const FILE_NAME = 'listbox_basic.png';
 
     await page.goto(`${url}/listbox/listbox.html?scenario=standard`, { waitUntil: 'networkidle' });
-    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
 
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    return expect(page).toHaveScreenshot(FILE_NAME);
   });
 
   test('selecting two values should result in two green rows', async () => {
