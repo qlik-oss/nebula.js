@@ -43,7 +43,7 @@ test.describe('listbox mashup rendering test', () => {
     const locator = page.locator(listboxSelector);
     await locator.waitFor();
 
-    return expect(page).toHaveScreenshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME);
   });
 
   test('selecting two values should result in two green rows', async () => {
