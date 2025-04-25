@@ -1,4 +1,4 @@
-import { isDateField } from './utils';
+import { isDateField } from '../field-utils';
 
 describe('isDateField', () => {
   test('should return true if field has $date tag', () => {

@@ -1,4 +1,4 @@
-import * as hcHelper from '../utils/hypercube-helper';
+import * as hcHelper from '../utils/hypercube-helper/hypercube-utils';
 import HyperCubeHandler from '../hypercube-handler';
 
 describe('HyperCube Handlers', () => {

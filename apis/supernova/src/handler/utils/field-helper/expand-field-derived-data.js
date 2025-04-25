@@ -1,5 +1,5 @@
-import getDataGeoField from '../get-data-geo-field';
-import getDerivedFields from '../get-derived-fields';
+import getDataGeoField from './get-data-geo-field';
+import getDerivedFields from './get-derived-fields';
 
 const expandFieldsWithDerivedData = (list) => {
   const fieldList = [];

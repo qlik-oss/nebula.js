@@ -2,9 +2,9 @@
 import { merge } from 'lodash';
 // eslint-disable-next-line import/no-relative-packages
 import isEnabled from '../../../nucleus/src/flags/flags';
-import { findFieldById, initializeField, useMasterNumberFormat } from './utils/field-helper/utils';
+import { findFieldById, initializeField, useMasterNumberFormat } from './utils/field-helper/field-utils';
 import { INITIAL_SORT_CRITERIAS } from './utils/constants';
-import { notSupportedError } from './utils/hypercube-helper';
+import { notSupportedError } from './utils/hypercube-helper/hypercube-utils';
 
 class DataPropertyHandler {
   constructor(opts) {
@@ -123,12 +123,12 @@ class DataPropertyHandler {
     return result;
   }
 
-  async addAltLibraryDimensions(args) {
+  addAltLibraryDimensions(args) {
     const dimensions = args.map(({ id }) => this.createLibraryDimension(id));
     return this.addDimensions(dimensions, true);
   }
 
-  async addAltFieldDimensions(args) {
+  addAltFieldDimensions(args) {
     const dimensions = args.map(({ field }) => this.createFieldDimension(field));
     return this.addDimensions(dimensions, true);
   }

@@ -1,5 +1,5 @@
-import findFieldInExpandedList from '../find-field-in-expandedList';
-import { setAutoSort } from '../utils';
+import findFieldInExpandedList from './find-field-in-expandedList';
+import { setAutoSort } from './field-utils';
 
 function getAutoSortFieldDimension(self, dimension) {
   return self.app.getFieldList().then((fieldList) => {

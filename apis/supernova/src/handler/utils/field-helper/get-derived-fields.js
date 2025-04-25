@@ -1,4 +1,4 @@
-import { trimAutoCalendarName } from '../utils';
+import { trimAutoCalendarName } from './field-utils';
 
 const getDerivedFields = (field) => {
   const derivedFields = [];

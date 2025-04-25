@@ -1,6 +1,6 @@
-import getAutoSortFieldDimension from './index';
+import getAutoSortFieldDimension from '../get-sorted-field';
 import findFieldInExpandedList from '../find-field-in-expandedList';
-import { setAutoSort } from '../utils';
+import { setAutoSort } from '../field-utils';
 
 jest.mock('../find-field-in-expandedList', () => jest.fn());
 jest.mock('../utils', () => ({

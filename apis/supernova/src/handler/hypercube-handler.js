@@ -1,10 +1,12 @@
 // eslint-disable-next-line import/no-relative-packages
 import utils from '../../../conversion/src/utils';
 import DataPropertyHandler from './data-property-handler';
-import * as hcHelper from './utils/hypercube-helper';
+import * as hcHelper from './utils/hypercube-helper/hypercube-utils';
 import getAutoSortLibraryDimension from './utils/field-helper/get-sorted-library-field';
 import getAutoSortFieldDimension from './utils/field-helper/get-sorted-field';
-import { initializeField, initializeId } from './utils/field-helper/utils';
+import { initializeField, initializeId } from './utils/field-helper/field-utils';
+import addMainDimension from './utils/hypercube-helper/add-main-dimension';
+import addMainMeasure from './utils/hypercube-helper/add-main-measure';
 
 class HyperCubeHandler extends DataPropertyHandler {
   constructor(opts) {
@@ -14,7 +16,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   setProperties(properties) {
     if (!properties) {
-      return undefined;
+      return {};
     }
 
     super.setProperties(properties);
@@ -22,7 +24,7 @@ class HyperCubeHandler extends DataPropertyHandler {
     this.hcProperties = this.path ? utils.getValue(properties, `${this.path}.qHyperCubeDef`) : properties.qHyperCubeDef;
 
     if (!this.hcProperties) {
-      return undefined;
+      return {};
     }
 
     hcHelper.setDefaultProperties(this);
@@ -32,7 +34,7 @@ class HyperCubeHandler extends DataPropertyHandler {
     // can probably be removed in 1.0
     this.hcProperties.qDimensions = hcHelper.setFieldProperties(this.hcProperties.qDimensions);
     this.hcProperties.qMeasures = hcHelper.setFieldProperties(this.hcProperties.qMeasures);
-    return undefined;
+    return {};
   }
 
   // ----------------------------------
@@ -63,7 +65,7 @@ class HyperCubeHandler extends DataPropertyHandler {
       return hcHelper.addAlternativeDimension(this, dim, idx);
     }
 
-    return hcHelper.addMainDimension(this, dim, idx);
+    return addMainDimension(this, dim, idx);
   }
 
   async addDimensions(dimensions, alternative = false) {
@@ -127,7 +129,7 @@ class HyperCubeHandler extends DataPropertyHandler {
       return hcHelper.addAlternativeMeasure(meas, hcMeasures, idx);
     }
 
-    return hcHelper.addMainMeasure(this, meas, idx);
+    return addMainMeasure(this, meas, idx);
   }
 
   // eslint-disable-next-line class-methods-use-this

@@ -1,5 +1,5 @@
-import getDataGeoField from './index';
-import { isDateField, isGeoField } from '../utils';
+import getDataGeoField from '../get-data-geo-field';
+import { isDateField, isGeoField } from '../field-utils';
 
 jest.mock('../utils', () => ({
   isDateField: jest.fn(),

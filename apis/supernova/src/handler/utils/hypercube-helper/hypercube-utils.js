@@ -1,8 +1,8 @@
 // eslint-disable-next-line import/no-relative-packages
-import getValue from '../../../../conversion/src/utils';
+import getValue from '../../../../../conversion/src/utils';
 // eslint-disable-next-line import/no-relative-packages
-import arrayUtil from '../../../../conversion/src/array-util';
-import { TOTAL_MAX } from './constants';
+import arrayUtil from '../../../../../conversion/src/array-util';
+import { TOTAL_MAX } from '../constants';
 
 export const notSupportedError = new Error('Not supported in this object, need to implement in subclass.');
 
@@ -63,16 +63,6 @@ export function setPropForLineChartWithForecast(self) {
   }
 }
 
-export function insertFieldAtIndex(self, field, alternative, currentFields, index = undefined) {
-  if (alternative || (self.maxDimensions() <= currentFields.length && currentFields.length < TOTAL_MAX.DIMENSIONS)) {
-    const fields = self.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions;
-    const idx = index ?? fields.length;
-    fields.splice(idx, 0, field);
-    return Promise.resolve(field);
-  }
-  return undefined;
-}
-
 // ----------------------------------
 // ----------- DIMENSIONS -----------
 // ----------------------------------
@@ -84,7 +74,7 @@ export function addAlternativeDimension(self, dimension, index = undefined) {
   return Promise.resolve(dimension);
 }
 
-function insertMainDimension(self, dimension, dimensions, idx) {
+export function insertMainDimension(self, dimension, dimensions, idx) {
   dimensions.splice(idx, 0, dimension);
 
   return self.autoSortDimension(dimension).then(() => {
@@ -96,24 +86,6 @@ function insertMainDimension(self, dimension, dimensions, idx) {
 
     return dimension;
   });
-}
-
-export function addMainDimension(self, dimension, index) {
-  const dimensions = self.getDimensions();
-  const idx = index ?? dimensions.length;
-
-  if (dimensions.length < self.maxDimensions()) {
-    return insertMainDimension(self, dimension, dimensions, idx);
-  }
-
-  return Promise.resolve();
-}
-
-export function insertDimensionAtIndex(self, dimension, alternative, currentDimensions, index = undefined) {
-  const dimensions = self.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions;
-  const idx = index ?? dimensions.length;
-  dimensions.splice(idx, 0, dimension);
-  return Promise.resolve(dimension);
 }
 
 export function addSortedDimension(self, dimension, dimensions, idx) {
@@ -163,29 +135,18 @@ export function addAlternativeMeasure(self, measure, index = undefined) {
   return Promise.resolve(measure);
 }
 
-function insertMainMeasure(self, measure, measures, idx) {
+export function insertMainMeasure(self, measure, measures, idx) {
   measures.splice(idx, 0, measure);
 
   return self.autoSortMeasure(measure).then(() => {
     arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, self.getDimensions().length + measure.length - 1);
 
     if (typeof self.measureDefinition.add === 'function') {
-      return Promise.when(self.measureDefinition.add.call(null, measure, self.properties, self));
+      return Promise.resolve(self.measureDefinition.add.call(null, measure, self.properties, self));
     }
 
     return measure;
   });
-}
-
-export function addMainMeasure(self, measure, index) {
-  const measures = self.getMeasures();
-  const idx = index ?? measures.length;
-
-  if (measures.length < self.maxMeasures()) {
-    return insertMainMeasure(measure, measures, idx);
-  }
-
-  return Promise.resolve();
 }
 
 export function isTotalMeasureExceeded(self, measures) {
@@ -205,14 +166,17 @@ export function addActiveMeasure(self, measure, existingMeasures, addedMeasures,
     qSortByLoadOrder: 1,
     qSortByNumeric: -1,
   };
+
   arrayUtil.indexAdded(
     self.hcProperties.qInterColumnSortOrder,
     dimensions.length + existingMeasures.length + addedActive
   );
   existingMeasures.push(meas);
   addedMeasures.push(meas);
+
   if (typeof self.measureDefinition.add === 'function') {
     self.measureDefinition.add.call(null, meas, self.properties, self);
   }
+
   return Promise.resolve(addedMeasures);
 }

@@ -1,4 +1,4 @@
-import { findLibraryItem, setAutoSort } from '../utils';
+import { findLibraryItem, setAutoSort } from './field-utils';
 
 function getAutoSortLibraryDimension(self, dimension) {
   return self.app.getDimensionList().then((dimensionList) => {

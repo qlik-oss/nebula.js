@@ -1,4 +1,4 @@
-import findFieldInExpandedList from './index';
+import findFieldInExpandedList from '../find-field-in-expandedList';
 import * as expandFieldsWithDerivedData from '../expand-field-derived-data';
 
 describe('findFieldInExpandedList', () => {

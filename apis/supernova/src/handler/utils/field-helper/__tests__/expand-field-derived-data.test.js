@@ -1,4 +1,4 @@
-import expandFieldsWithDerivedData from './index';
+import expandFieldsWithDerivedData from '../expand-field-derived-data';
 import * as getDataGeoField from '../get-data-geo-field';
 import * as getDerivedFields from '../get-derived-fields';
 

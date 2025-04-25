@@ -1,5 +1,5 @@
-import expandFieldsWithDerivedData from '../expand-field-derived-data';
-import { findFieldByName, getField } from '../utils';
+import expandFieldsWithDerivedData from './expand-field-derived-data';
+import { findFieldByName, getField } from './field-utils';
 
 const findFieldInExpandedList = (name, fieldList) => {
   const expandedList = expandFieldsWithDerivedData(fieldList.slice(0));
