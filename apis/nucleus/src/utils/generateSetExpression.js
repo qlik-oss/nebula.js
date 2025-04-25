@@ -1,11 +1,13 @@
-const FilterType = {
+import escapeField from './escape-field';
+
+export const FilterType = {
   VALUES: 'values',
   CONDITION: 'condition',
   SEARCH: 'search',
   CLEAR_SELECTION: 'clear_selection',
 };
 
-const SearchMode = {
+export const SearchMode = {
   CONTAINS: 'contains',
   MATCHES_EXACTLY: 'matches_exactly',
   STARTS_WITH: 'starts_with',
@@ -13,34 +15,14 @@ const SearchMode = {
   BEGINNING_OF_WORD: 'beginning_of_word',
 };
 
-const ConditionMode = {
+export const ConditionMode = {
   COMPARE: 'compare',
   GENERAL: 'general',
 };
 
-const ModifierType = {
+export const ModifierType = {
   FIXED_VALUE: 'fixed_value',
   CALCULATED_VALUE: 'calculated_value',
-};
-
-/**
- * Escape a script field name. Will add surrounding brackets if the field name contains special characters.
- * Examples:
- * Field1 -> Field1
- * My field -> [My field]
- * My] field -> [My]] field]
- *
- * @param field
- * @returns {*}
- */
-const escapeField = (field) => {
-  if (!field || field === ']') {
-    return field;
-  }
-  if (/^[A-Za-z][A-Za-z0-9_]*$/.test(field)) {
-    return field;
-  }
-  return `[${field.replace(/\]/g, ']]')}]`;
 };
 
 const generateSearchValue = (filter) => {
