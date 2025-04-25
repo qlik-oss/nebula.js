@@ -29,52 +29,47 @@ test.describe('keyboard navigation', () => {
     const FILE_NAME = 'listbox_key_scroll.png';
 
     await page.goto(`${url}/listbox/listbox.html?scenario=standard`, { waitUntil: 'networkidle' });
-    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
 
     await page.hover(listboxSelector);
     await page.press(listboxSelector, 'ArrowDown');
 
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('simple list move down up and select C', async () => {
     await page.goto(`${url}/listbox/listbox.html?scenario=standard`, { waitUntil: 'networkidle' });
-    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
 
     // Move focus from A to C.
     const firstRow = await page.waitForSelector('[data-testid="listbox.item"]:first-child .value');
     await firstRow.focus();
     await page.keyboard.press('ArrowDown'); // At B
     await page.keyboard.press('ArrowDown'); // At C
-    const focusCImage = await selector.screenshot({ caret: 'hide' });
-    expect(focusCImage).toMatchSnapshot(`${filePrefix}-C.png`);
+    await expect(locator).toHaveScreenshot(`${filePrefix}-C.png`, { caret: 'hide' });
 
     // Select and move focus up one step.
     await page.keyboard.press('Space'); // Select C
     await page.keyboard.press('ArrowUp'); // At B
-    const focusBAndSelectedCImage = await selector.screenshot({ caret: 'hide' });
-    expect(focusBAndSelectedCImage).toMatchSnapshot(`${filePrefix}-B-select-C.png`);
+    await expect(locator).toHaveScreenshot(`${filePrefix}-B-select-C.png`, { caret: 'hide' });
 
     // Tab to confirm button.
     await page.keyboard.press('Tab'); // At confirm button
-    const focusConfirm = await selector.screenshot({ caret: 'hide' });
-    expect(focusConfirm).toMatchSnapshot(`${filePrefix}-confirm.png`);
+    await expect(locator).toHaveScreenshot(`${filePrefix}-confirm.png`, { caret: 'hide' });
 
     // Tab into search field.
     await page.keyboard.press('Tab'); // At confirm button
-    const focusSearch = await selector.screenshot({ caret: 'hide' });
-    expect(focusSearch).toMatchSnapshot(`${filePrefix}-search.png`);
+    await expect(locator).toHaveScreenshot(`${filePrefix}-search.png`, { caret: 'hide' });
 
     // Tab back into last focused row.
     await page.keyboard.press('Tab'); // At a row again
-    const focusRow = await selector.screenshot({ caret: 'hide' });
-    expect(focusRow).toMatchSnapshot(`${filePrefix}-row-again.png`);
+    await expect(locator).toHaveScreenshot(`${filePrefix}-row-again.png`, { caret: 'hide' });
 
     // Press Enter to confirm selections.
     await page.keyboard.press('Enter');
-    const stillFocusingRow = await selector.screenshot({ caret: 'hide' });
-    expect(stillFocusingRow).toMatchSnapshot(`${filePrefix}-row-after-confirm.png`);
+    await expect(locator).toHaveScreenshot(`${filePrefix}-row-after-confirm.png`, { caret: 'hide' });
   });
 
   test('grid mode with column view and navigating in all directions with arrow keys and select "Baked goods".', async () => {
