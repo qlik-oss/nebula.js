@@ -76,7 +76,8 @@ test.describe('keyboard navigation', () => {
     await page.goto(`${url}/listbox/listbox.html?fixture=./__fixtures__/multi_scenario_grid_column_7.js`, {
       waitUntil: 'networkidle',
     });
-    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
 
     // Tab into search field.
     await page.keyboard.press('Tab');
@@ -90,8 +91,7 @@ test.describe('keyboard navigation', () => {
     await page.keyboard.press('ArrowLeft');
     await page.keyboard.press('Space');
     await page.keyboard.press('Enter');
-    const listbox = await selector.screenshot({ caret: 'hide' });
-    expect(listbox).toMatchSnapshot(`${filePrefix}-grid-row-select-baked-goods.png`);
+    await expect(locator).toHaveScreenshot(`${filePrefix}-grid-row-select-baked-goods.png`, { caret: 'hide' });
   });
 
   test('(keyboardNavigation = false) grid mode with cyclic dimension and tabbing between components inside listbox', async () => {
