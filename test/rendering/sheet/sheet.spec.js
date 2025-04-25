@@ -24,17 +24,17 @@ test.describe('sheet mashup rendering test', () => {
     const FILE_NAME = 'sheet_basic.png';
 
     await page.goto(`${url}/sheet/sheet.html?target=sheet`);
-    const selector = await page.waitForSelector(object, { visible: true });
-    const image = await selector.screenshot();
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    const locator = page.locator(object);
+    await locator.waitFor();
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('sheet bound Less test', async () => {
     const FILE_NAME = 'sheet_bound_less.png';
 
     await page.goto(`${url}/sheet/sheet.html?target=boundLessSheet`);
-    const selector = await page.waitForSelector(object, { visible: true });
-    const image = await selector.screenshot();
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    const locator = page.locator(object);
+    await locator.waitFor();
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 });
