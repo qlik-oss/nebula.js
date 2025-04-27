@@ -1,7 +1,7 @@
 import getAutoSortLibraryDimension from '../get-sorted-library-field';
 import { findLibraryItem, setAutoSort } from '../field-utils';
 
-jest.mock('../utils', () => ({
+jest.mock('../field-utils', () => ({
   findLibraryItem: jest.fn(),
   setAutoSort: jest.fn(),
 }));

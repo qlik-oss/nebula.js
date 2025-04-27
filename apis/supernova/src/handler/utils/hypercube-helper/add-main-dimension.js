@@ -1,11 +1,11 @@
-import { insertMainDimension } from './hypercube-utils';
+import addDimensionOrders from './add-dimension-orders';
 
 export default function addMainDimension(self, dimension, index) {
   const dimensions = self.getDimensions();
   const idx = index ?? dimensions.length;
 
-  if (dimensions.length < self.maxDimensions()) {
-    return insertMainDimension(self, dimension, dimensions, idx);
+  if (idx && dimensions.length < self.maxDimensions()) {
+    return addDimensionOrders(self, dimension, idx);
   }
 
   return Promise.resolve();
