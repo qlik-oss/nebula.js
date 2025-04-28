@@ -481,7 +481,7 @@ const Cell = forwardRef(
         getQae() {
           return state.sn.generator.qae;
         },
-        getExtDefinition() {
+        getExtensionDefinition() {
           return state.sn.generator.definition.ext;
         },
         // allow input of supportObject ot override when flipped to table
