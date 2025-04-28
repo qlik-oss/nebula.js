@@ -26,6 +26,7 @@ export default function viz({
   let onRenderResolve = null;
   let viewDataObjectId;
   let originalExtensionDef;
+  let originalLayout;
   let successfulRender = false;
 
   const mounted = new Promise((resolve) => {
@@ -199,11 +200,13 @@ export default function viz({
         newModel = await halo.app.createSessionObject(propertyTree.qProperty);
         viewDataObjectId = newModel.id;
         originalExtensionDef = cellRef.current.getExtensionDefinition();
+        originalLayout = await model.getLayout();
       } else if (viewDataObjectId && showDataView !== true) {
         newModel = model;
         await halo.app.destroySessionObject(viewDataObjectId);
         viewDataObjectId = undefined;
         originalExtensionDef = undefined;
+        originalLayout = undefined;
       }
       if (newModel) {
         cellRef.current.setModel(newModel);
@@ -259,7 +262,7 @@ export default function viz({
      */
     support(type) {
       if (mountedReference && successfulRender) {
-        return cellRef.current.support(type, originalExtensionDef?.support);
+        return cellRef.current.support(type, originalExtensionDef?.support, originalLayout);
       }
       return false;
     },
