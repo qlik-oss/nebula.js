@@ -25,6 +25,7 @@ export default function viz({
   let onMount = null;
   let onRenderResolve = null;
   let viewDataObjectId;
+  let originalExtensionDef;
   let successfulRender = false;
 
   const mounted = new Promise((resolve) => {
@@ -84,31 +85,6 @@ export default function viz({
       initialSnPlugins = plugins;
     }
   };
-
-  /*
-  ---Viz api---
-  id: string;
-  model: qix.GenericObject;
-  destroy: async () => void;
-  convertTo: (newType: string, forceUpdate?: boolean, forcePatch?: boolean) => Promise<object>;
-  toggleDataView: (showDataView?: boolean) => Promise<void>;
-  viewDataToggled: boolean;
-  addListener: (eventName: string, listener: Function) => void;
-  removeListener: (eventName: string, listener: Function) => void;
-  getImperativeHandle: () => Promise<object>;
-  takeSnapshot: () => Promise<object>;
-
-  ---additions---
-  support: (type) => boolean;
-  getExtensionDefinition: () => object;
-      propertyPanelDef: extension.definition.ext.definition,
-      initialProperties: extension.qae.properties.initial,
-      data: extension.qae.data,
-
-  toggleFocus: v?.toggleFocus,
-  setOnBlurHandler: v?.setOnBlurHandler,
-  onContextMenu: v?.onContextMenu,
-  */
 
   /**
    * @class
@@ -222,10 +198,12 @@ export default function viz({
         });
         newModel = await halo.app.createSessionObject(propertyTree.qProperty);
         viewDataObjectId = newModel.id;
+        originalExtensionDef = cellRef.current.getExtensionDefinition();
       } else if (viewDataObjectId && showDataView !== true) {
         newModel = model;
         await halo.app.destroySessionObject(viewDataObjectId);
         viewDataObjectId = undefined;
+        originalExtensionDef = undefined;
       }
       if (newModel) {
         cellRef.current.setModel(newModel);
@@ -280,11 +258,8 @@ export default function viz({
      *
      */
     support(type) {
-      if (viewDataObjectId !== undefined) {
-        throw new Error('Cannot call support when in data view');
-      }
       if (mountedReference && successfulRender) {
-        return cellRef.current.support(type);
+        return cellRef.current.support(type, originalExtensionDef?.support);
       }
       return false;
     },

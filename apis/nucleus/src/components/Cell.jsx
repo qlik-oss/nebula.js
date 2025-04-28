@@ -484,11 +484,12 @@ const Cell = forwardRef(
         getExtDefinition() {
           return state.sn.generator.definition.ext;
         },
-        support(type) {
+        // allow input of supportObject ot override when flipped to table
+        support(type, supportObject) {
           if (layout && state.loaded && !state.error) {
-            const supportObject = state.sn.generator.definition.ext?.support;
-            if (supportObject) {
-              return support(type, supportObject, layout);
+            const suppObj = supportObject || state.sn.generator.definition.ext?.support;
+            if (suppObj) {
+              return support(type, suppObj, layout);
             }
           }
           return false;
