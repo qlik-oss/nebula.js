@@ -40,17 +40,17 @@ test.describe('listbox mashup rendering test', () => {
     const FILE_NAME = 'listbox_basic.png';
 
     await page.goto(`${url}/listbox/listbox.html?scenario=standard`, { waitUntil: 'networkidle' });
-    const selector = await page.waitForSelector(listboxSelector, { visible: true });
-
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('selecting two values should result in two green rows', async () => {
     const FILE_NAME = 'listbox_select_EH.png';
 
     await page.goto(`${url}/listbox/listbox.html?scenario=standard`, { waitUntil: 'networkidle' });
-    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
 
     const selectNumbers = [4, 7];
     const action = async (nbr) => {
@@ -59,15 +59,15 @@ test.describe('listbox mashup rendering test', () => {
     };
     await execSequence(selectNumbers, action);
 
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('selecting two values in dense listbox should result in two green rows', async () => {
     const FILE_NAME = 'listbox_dense_select.png';
 
     await page.goto(`${url}/listbox/listbox.html?scenario=dense`, { waitUntil: 'networkidle' });
-    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
 
     const selectNumbers = [4, 7];
     const action = async (nbr) => {
@@ -76,15 +76,16 @@ test.describe('listbox mashup rendering test', () => {
     };
     await execSequence(selectNumbers, action);
 
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('selecting values should not show the selections toolbar when autoConfirm is true', async () => {
     const FILE_NAME = 'listbox_select_EH_auto_confirm.png';
 
     await page.goto(`${url}/listbox/listbox.html?scenario=autoConfirm`, { waitUntil: 'networkidle' });
-    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
 
     const selectNumbers = [4, 7];
     const action = async (nbr) => {
@@ -93,8 +94,7 @@ test.describe('listbox mashup rendering test', () => {
     };
     await execSequence(selectNumbers, action);
 
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('listbox search', async () => {
@@ -107,9 +107,9 @@ test.describe('listbox mashup rendering test', () => {
     await search.click();
     await search.fill('B');
 
-    const selector = await page.locator(listboxSelector);
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('listbox search dark', async () => {
@@ -122,9 +122,9 @@ test.describe('listbox mashup rendering test', () => {
     await search.click();
     await search.fill('B');
 
-    const selector = await page.locator(listboxSelector);
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('hide toolbar', async () => {
@@ -132,16 +132,17 @@ test.describe('listbox mashup rendering test', () => {
 
     await page.goto(`${url}/listbox/listbox.html?scenario=noToolbar`, { waitUntil: 'networkidle' });
 
-    const selector = await page.locator(listboxSelector);
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
+    return expect(locator).toHaveScreenshot(FILE_NAME, { caret: 'hide' });
   });
 
   test('long title should detach toolbar', async () => {
     const FILE_NAME = 'listbox_detached_toolbar.png';
 
     await page.goto(`${url}/listbox/listbox.html?scenario=longTitle`, { waitUntil: 'networkidle' });
-    const selector = await page.waitForSelector(listboxSelector, { visible: true });
+    const locator = page.locator(listboxSelector);
+    await locator.waitFor();
 
     act(async () => {
       await page.click(listboxSelector);
@@ -154,8 +155,7 @@ test.describe('listbox mashup rendering test', () => {
       }, 500);
     });
 
-    const image = await selector.screenshot({ caret: 'hide' });
-    return expect(image).toMatchSnapshot(FILE_NAME);
+    return expect(locator).toHaveScreenshot(FILE_NAME);
   });
 
   test.describe('fixtures', () => {
@@ -171,14 +171,10 @@ test.describe('listbox mashup rendering test', () => {
 
         await page.goto(renderUrl, { waitUntil: 'networkidle' });
 
-        const element = await page.waitForSelector(listboxSelector, {
-          visible: true,
-          timeout: 10000,
-        });
+        const locator = page.locator(listboxSelector);
+        await locator.waitFor();
 
-        const screenshot = await page.screenshot({ clip: await element.boundingBox() });
-
-        expect(screenshot).toMatchSnapshot(`${name}.png`);
+        return expect(locator).toHaveScreenshot(`${name}.png`, { caret: 'hide' });
       });
     });
   });

@@ -18,6 +18,7 @@ describe('viz', () => {
   let setSnOptions;
   let setSnContext;
   let setSnPlugins;
+  let getExtensionDefinition;
   let setModel;
   let takeSnapshot;
   let exportImage;
@@ -33,6 +34,7 @@ describe('viz', () => {
     setSnOptions = jest.fn();
     setSnContext = jest.fn();
     setSnPlugins = jest.fn();
+    getExtensionDefinition = jest.fn();
     setModel = jest.fn();
     takeSnapshot = jest.fn();
     exportImage = jest.fn();
@@ -44,6 +46,7 @@ describe('viz', () => {
         setSnOptions,
         setSnContext,
         setSnPlugins,
+        getExtensionDefinition,
         setModel,
         takeSnapshot,
         exportImage,
