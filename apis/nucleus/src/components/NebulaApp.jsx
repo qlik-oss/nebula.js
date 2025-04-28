@@ -94,7 +94,7 @@ export default function boot({ app, context }) {
     {
       toggleFocusOfCells(cellIdToFocus) {
         Object.keys(cells).forEach((i) => {
-          cells[i].current.toggleFocus(i === cellIdToFocus);
+          cells[i].current?.toggleFocus(i === cellIdToFocus);
         });
       },
       cells,

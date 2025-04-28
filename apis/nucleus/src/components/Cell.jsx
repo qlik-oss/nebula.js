@@ -39,6 +39,17 @@ const CellBody = {
   className: 'njs-cell-body',
 };
 
+function support(prop, supportObject, layout) {
+  const value = supportObject[prop];
+  if (typeof value === 'function') {
+    return value.call(null, layout);
+  }
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  return false;
+}
+
 const initialState = (err) => ({
   loading: false,
   loaded: false,
@@ -460,7 +471,6 @@ const Cell = forwardRef(
 
       return () => {};
     }, [types, state.sn, model, selections, layout, appLayout, language]);
-
     // Long running query
     useEffect(() => {
       if (!validating) {
@@ -477,6 +487,19 @@ const Cell = forwardRef(
         getQae() {
           return state.sn.generator.qae;
         },
+        getExtensionDefinition() {
+          return state.sn.generator.definition.ext;
+        },
+        // allow input of supportObject ot override when flipped to table
+        support(type, supportObject, outerLayout) {
+          if (layout && state.loaded && !state.error) {
+            const suppObj = supportObject || state.sn.generator.definition.ext?.support;
+            if (suppObj) {
+              return support(type, suppObj, outerLayout || layout);
+            }
+          }
+          return false;
+        },
         toggleFocus(active) {
           if (typeof state.sn.component.focus === 'function') {
             if (active) {
@@ -485,6 +508,9 @@ const Cell = forwardRef(
               state.sn.component.blur();
             }
           }
+        },
+        setOnBlurHandler(cb) {
+          focusHandler.current.blurCallback = cb;
         },
         setSnOptions,
         setSnPlugins,
