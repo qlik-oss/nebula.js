@@ -41,7 +41,8 @@ const getPadding = ({ layout, isError, senseTheme, titleStyles }) => {
   if (isCardTheme) {
     const showTitle = layout?.showTitles && !!layout?.title;
     const showSubtitle = layout?.showTitles && !!layout?.subtitle;
-    const showFootnote = layout?.showTitles && !!layout?.footnote;
+    const hasFilters = layout?.filters?.length > 0 && layout?.qHyperCube?.qMeasureInfo?.length > 0;
+    const showFootnote = layout?.showTitles && (!!layout?.footnote || hasFilters);
 
     if (showTitle && cardPadding) {
       // eslint-disable-next-line no-param-reassign

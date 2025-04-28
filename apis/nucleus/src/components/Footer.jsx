@@ -12,10 +12,9 @@ const classes = {
   itemStyle: `${PREFIX}-itemStyle`,
 };
 
-const StyledGrid = styled(Grid)(({ theme }) => ({
+const StyledGrid = styled(Grid)(() => ({
   [`& .${classes.itemStyle}`]: {
     minWidth: 0,
-    paddingTop: theme.spacing(1),
     width: '100%',
   },
 }));
@@ -30,15 +29,21 @@ const CellFooter = {
   className: 'njs-cell-footer',
 };
 
-function Footer({ layout, titleStyles = {}, translator }) {
+function Footer({ layout, titleStyles = {}, translator, flags }) {
   const footerStyle = titleStyles.footer;
   const hasFilters = layout?.filters?.length > 0 && layout?.qHyperCube?.qMeasureInfo?.length > 0;
   const filtersFootnoteString = generateFiltersString(layout?.filters ?? [], translator);
   const showFilters = !layout?.footnote && hasFilters && filtersFootnoteString;
+  const newSheetEnabled = flags?.isEnabled('VIZ-7_NEW_SHEET');
 
   return layout && layout.showTitles && (layout.footnote || showFilters) ? (
     <StyledGrid container>
-      <Grid item className={classes.itemStyle} data-testid={CellFooter.className}>
+      <Grid
+        item
+        className={classes.itemStyle}
+        data-testid={CellFooter.className}
+        style={{ paddingTop: (theme) => (newSheetEnabled ? 0 : theme.spacing(1)) }}
+      >
         {layout.footnote && (
           <Tooltip title={layout.footnote}>
             <Typography noWrap variant="body2" className={CellFooter.className} style={footerStyle}>
