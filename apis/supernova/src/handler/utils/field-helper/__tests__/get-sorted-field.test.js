@@ -3,7 +3,7 @@ import findFieldInExpandedList from '../find-field-in-expandedList';
 import { setAutoSort } from '../field-utils';
 
 jest.mock('../find-field-in-expandedList', () => jest.fn());
-jest.mock('../utils', () => ({
+jest.mock('../field-utils', () => ({
   setAutoSort: jest.fn(),
 }));
 

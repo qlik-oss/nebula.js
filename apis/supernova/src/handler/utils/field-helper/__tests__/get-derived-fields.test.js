@@ -1,7 +1,7 @@
 import getDerivedFields from '../get-derived-fields';
 import { trimAutoCalendarName } from '../field-utils';
 
-jest.mock('../utils', () => ({
+jest.mock('../field-utils', () => ({
   trimAutoCalendarName: jest.fn((name) => `trimmed_${name}`),
 }));
 
