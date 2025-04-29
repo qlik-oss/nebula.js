@@ -386,7 +386,7 @@ const Cell = forwardRef(
       eventmixin(focusHandler.current);
       focusHandler.current.blurCallback = (resetFocus) => {
         if (focusHandler.current.onBlurHandler) {
-          focusHandler.current.onBlurHandler();
+          focusHandler.current.onBlurHandler(resetFocus);
           return;
         }
         halo.root.toggleFocusOfCells();
