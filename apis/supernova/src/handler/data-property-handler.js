@@ -123,12 +123,12 @@ class DataPropertyHandler {
     return result;
   }
 
-  addAltLibraryDimensions(args) {
+  async addAltLibraryDimensions(args) {
     const dimensions = args.map(({ id }) => this.createLibraryDimension(id));
     return this.addDimensions(dimensions, true);
   }
 
-  addAltFieldDimensions(args) {
+  async addAltFieldDimensions(args) {
     const dimensions = args.map(({ field }) => this.createFieldDimension(field));
     return this.addDimensions(dimensions, true);
   }
@@ -143,9 +143,8 @@ class DataPropertyHandler {
     return this.addDimension(dimension, true);
   }
 
-  maxDimensions(decrement) {
-    const decr = decrement || 0;
-    const measureLength = this.getMeasures().length - decr;
+  maxDimensions(decrement = 0) {
+    const measureLength = this.getMeasures().length - decrement;
 
     if (typeof this.dimensionDefinition.max === 'function') {
       const dimParams = isEnabled('PS_21371_ANALYSIS_TYPES') ? [measureLength, this.properties] : [measureLength];
@@ -216,7 +215,7 @@ class DataPropertyHandler {
     measure.qDef = measure.qDef ?? {};
     measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
 
-    if (isEnabled('MASTER_measureURE_FORMAT')) {
+    if (isEnabled('MASTER_MEASURE_FORMAT')) {
       useMasterNumberFormat(measure.qDef);
     }
 

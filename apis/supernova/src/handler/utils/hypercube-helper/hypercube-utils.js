@@ -81,7 +81,7 @@ export function insertMainDimension(self, dimension, dimensions, idx) {
     arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, self.getDimensions().length + dimension.length - 1);
 
     if (typeof self.dimensionDefinition.add === 'function') {
-      return Promise.when(self.dimensionDefinition.add.call(null, dimension, self.properties, self));
+      return Promise.resolve(self.dimensionDefinition.add.call(null, dimension, self.properties, self));
     }
 
     return dimension;
