@@ -29,12 +29,13 @@ const CellFooter = {
   className: 'njs-cell-footer',
 };
 
-function Footer({ layout, titleStyles = {}, translator, flags }) {
+function Footer({ layout, titleStyles = {}, translator, flags, isCardTheme }) {
   const footerStyle = titleStyles.footer;
   const hasFilters = layout?.filters?.length > 0 && layout?.qHyperCube?.qMeasureInfo?.length > 0;
   const filtersFootnoteString = generateFiltersString(layout?.filters ?? [], translator);
   const showFilters = !layout?.footnote && hasFilters && filtersFootnoteString;
-  const newSheetEnabled = flags?.isEnabled('VIZ-7_NEW_SHEET');
+  const themePaddingEnabled = flags?.isEnabled('VNA-13_CELLPADDING_FROM_THEME');
+  const paddingTop = isCardTheme ? '1px' : '6px';
 
   return layout && layout.showTitles && (layout.footnote || showFilters) ? (
     <StyledGrid container>
@@ -42,7 +43,7 @@ function Footer({ layout, titleStyles = {}, translator, flags }) {
         item
         className={classes.itemStyle}
         data-testid={CellFooter.className}
-        style={{ paddingTop: (theme) => (newSheetEnabled ? 0 : theme.spacing(1)) }}
+        sx={{ paddingTop: (theme) => (themePaddingEnabled ? paddingTop : theme.spacing(1)) }}
       >
         {layout.footnote && (
           <Tooltip title={layout.footnote}>

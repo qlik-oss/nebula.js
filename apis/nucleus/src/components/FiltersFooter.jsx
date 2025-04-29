@@ -11,14 +11,6 @@ function ItalicText({ styles, children }) {
   );
 }
 
-function BoldText({ styles, children }) {
-  return (
-    <Typography noWrap variant="body2" style={{ ...styles, fontWeight: 'bold', fontStyle: 'normal' }}>
-      {children}
-    </Typography>
-  );
-}
-
 function FiltersFooter({ layout, translator, filtersFootnoteString, footerStyle }) {
   const filtersFootnoteLabels = generateFiltersLabels(layout?.filters ?? [], translator);
   const styles = {
@@ -48,7 +40,7 @@ function FiltersFooter({ layout, translator, filtersFootnoteString, footerStyle 
         <Grid item display="flex">
           {filtersFootnoteLabels.map((filter) => (
             <Grid container wrap="nowrap" key={`${filter.field}-${filter.label}`}>
-              <BoldText styles={styles}>{`${filter.field}:`}</BoldText>
+              <ItalicText styles={{ ...styles, fontWeight: 'bold' }}>{`${filter.field}:`}</ItalicText>
               <ItalicText styles={styles}> &nbsp;</ItalicText>
               <ItalicText styles={styles}> {filter.label}</ItalicText>
               <ItalicText styles={styles}> &nbsp;</ItalicText>

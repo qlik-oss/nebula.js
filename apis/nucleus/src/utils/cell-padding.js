@@ -1,3 +1,5 @@
+import { generateFiltersString } from './generateSetExpression';
+
 const NP_PADDINH_IN_CARDS_WITHOUT_TITLE = ['action-button', 'sn-nav-menu'];
 const NO_PADDING_IN_CARDS = [
   'pivot-table',
@@ -35,14 +37,15 @@ const shouldUseCardPadding = ({ isCardTheme, layout, isError }) => {
   return true;
 };
 
-const getPadding = ({ layout, isError, senseTheme, titleStyles }) => {
-  const isCardTheme = senseTheme?.getStyle('', '', '_cards');
+const getPadding = ({ layout, isError, isCardTheme, titleStyles, translator }) => {
   const cardPadding = shouldUseCardPadding({ isCardTheme, layout, isError });
   if (isCardTheme) {
     const showTitle = layout?.showTitles && !!layout?.title;
     const showSubtitle = layout?.showTitles && !!layout?.subtitle;
     const hasFilters = layout?.filters?.length > 0 && layout?.qHyperCube?.qMeasureInfo?.length > 0;
-    const showFootnote = layout?.showTitles && (!!layout?.footnote || hasFilters);
+    const filtersFootnoteString = generateFiltersString(layout?.filters ?? [], translator);
+    const showFilters = !layout?.footnote && hasFilters && filtersFootnoteString;
+    const showFootnote = layout?.showTitles && (!!layout?.footnote || showFilters);
 
     if (showTitle && cardPadding) {
       // eslint-disable-next-line no-param-reassign
