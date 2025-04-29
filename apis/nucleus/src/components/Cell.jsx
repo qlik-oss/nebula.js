@@ -351,6 +351,7 @@ const Cell = forwardRef(
       translator,
       language,
       keyboardNavigation,
+      externalFocusManagement,
       disableCellPadding = false,
     } = useContext(InstanceContext);
     const [internalEmitter] = useState(emitter || createEmitter);
@@ -383,17 +384,20 @@ const Cell = forwardRef(
 
     useEffect(() => {
       eventmixin(focusHandler.current);
+      focusHandler.current.blurCallback = (resetFocus) => {
+        if (focusHandler.current.onBlurHandler) {
+          focusHandler.current.onBlurHandler();
+          return;
+        }
+        halo.root.toggleFocusOfCells();
+        if (resetFocus && contentNode) {
+          contentNode.focus();
+        }
+      };
+      focusHandler.current.refocusContent = () => {
+        state.sn.component && typeof state.sn.component.focus === 'function' && state.sn.component.focus();
+      };
     }, []);
-
-    focusHandler.current.blurCallback = (resetFocus) => {
-      halo.root.toggleFocusOfCells();
-      if (resetFocus && contentNode) {
-        contentNode.focus();
-      }
-    };
-    focusHandler.current.refocusContent = () => {
-      state.sn.component && typeof state.sn.component.focus === 'function' && state.sn.component.focus();
-    };
 
     const handleOnMouseEnter = () => {
       if (hoveringDebouncer.current.leave) {
@@ -510,7 +514,7 @@ const Cell = forwardRef(
           }
         },
         setOnBlurHandler(cb) {
-          focusHandler.current.blurCallback = cb;
+          focusHandler.current.onBlurHandler = cb;
         },
         setSnOptions,
         setSnPlugins,
@@ -650,8 +654,8 @@ const Cell = forwardRef(
             </Header>
           )}
           <Grid
-            tabIndex={keyboardNavigation ? 0 : -1}
-            onKeyDown={keyboardNavigation ? handleKeyDown : null}
+            tabIndex={keyboardNavigation && !externalFocusManagement ? 0 : -1}
+            onKeyDown={keyboardNavigation && !externalFocusManagement ? handleKeyDown : null}
             item
             xs
             className={CellBody.className}
