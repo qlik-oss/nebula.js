@@ -168,7 +168,9 @@ const connect = async () => {
       };
     }
 
-    const csrfToken = await getCsrfToken(`https://${enigmaInfo.host}/${enigmaInfo.prefix}`);
+    const csrfToken = await getCsrfToken(
+      `https://${enigmaInfo.host}${enigmaInfo.prefix ? `/${enigmaInfo.prefix}` : ''}`
+    );
     const url = SenseUtilities.buildUrl({
       secure: false,
       ...enigmaInfo,
