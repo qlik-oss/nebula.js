@@ -88,7 +88,7 @@ export default function viz({
   };
 
   let newExperimental = {};
-  if (halo.context.enablePrivateExperimental) {
+  if (halo.context?.enablePrivateExperimental) {
     // ===== undocumented experimental API - use at own risk ======
     newExperimental = {
       /**
