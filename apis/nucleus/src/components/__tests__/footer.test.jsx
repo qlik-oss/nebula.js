@@ -2,7 +2,7 @@ import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { Typography } from '@mui/material';
 import Footer from '../Footer';
-import * as generateSetExpression from '../../utils/generateSetExpression';
+import * as generateFiltersInfo from '../../utils/generateFiltersInfo';
 import * as FiltersFooter from '../FiltersFooter';
 
 describe('<Footer />', () => {
@@ -10,7 +10,7 @@ describe('<Footer />', () => {
   let render;
   let FiltersFootnote;
   beforeEach(() => {
-    jest.spyOn(generateSetExpression, 'generateFiltersString').mockReturnValue('filters string');
+    jest.spyOn(generateFiltersInfo, 'generateFiltersString').mockReturnValue('filters string');
     FiltersFootnote = jest.spyOn(FiltersFooter, 'default').mockReturnValue('FiltersFooter');
     render = async (layout) => {
       await act(async () => {

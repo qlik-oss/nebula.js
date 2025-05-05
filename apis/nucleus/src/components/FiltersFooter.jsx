@@ -34,16 +34,15 @@ function FiltersFooter({ layout, translator, filtersFootnoteString, footerStyle 
       >
         <Grid item display="flex">
           <FilterIcon style={{ fontSize: '12px', color: footerStyle.color, margin: 'auto' }} />
-          <ItalicText styles={{ ...styles, marginLeft: '2px' }}>{translator.get('Object.FiltersApplied')}</ItalicText>
-          <ItalicText styles={styles}> &nbsp;</ItalicText>
+          <ItalicText styles={{ ...styles, marginLeft: '2px' }}>
+            {translator.get('Object.FiltersApplied')} &nbsp;
+          </ItalicText>
         </Grid>
         <Grid item display="flex">
           {filtersFootnoteLabels.map((filter) => (
             <Grid container wrap="nowrap" key={`${filter.field}-${filter.label}`}>
               <ItalicText styles={{ ...styles, fontWeight: 'bold' }}>{`${filter.field}:`}</ItalicText>
-              <ItalicText styles={styles}> &nbsp;</ItalicText>
-              <ItalicText styles={styles}> {filter.label}</ItalicText>
-              <ItalicText styles={styles}> &nbsp;</ItalicText>
+              <ItalicText styles={styles}> &nbsp; {filter.label} &nbsp;</ItalicText>
             </Grid>
           ))}
         </Grid>

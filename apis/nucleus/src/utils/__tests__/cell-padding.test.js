@@ -1,12 +1,12 @@
 import getPadding from '../cell-padding';
-import * as generateSetExpression from '../generateSetExpression';
+import * as generateFiltersInfo from '../generateFiltersInfo';
 
 describe('cell padding', () => {
   let testFn;
   let titleStyles;
 
   beforeEach(() => {
-    jest.spyOn(generateSetExpression, 'generateFiltersString').mockReturnValue('filters string');
+    jest.spyOn(generateFiltersInfo, 'generateFiltersString').mockReturnValue('filters string');
     titleStyles = {
       main: {},
       subTitle: {},

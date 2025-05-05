@@ -1,4 +1,4 @@
-import { generateFiltersString } from './generateSetExpression';
+import { generateFiltersString } from './generateFiltersInfo';
 
 const NP_PADDINH_IN_CARDS_WITHOUT_TITLE = ['action-button', 'sn-nav-menu'];
 const NO_PADDING_IN_CARDS = [

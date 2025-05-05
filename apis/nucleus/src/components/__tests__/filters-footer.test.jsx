@@ -1,7 +1,7 @@
 import React from 'react';
 import { create, act } from 'react-test-renderer';
 import { Typography } from '@mui/material';
-import * as generateSetExpression from '../../utils/generateSetExpression';
+import * as generateFiltersInfo from '../../utils/generateFiltersInfo';
 import FiltersFooter from '../FiltersFooter';
 
 describe('<FiltersFooter />', () => {
@@ -9,7 +9,7 @@ describe('<FiltersFooter />', () => {
   let render;
 
   beforeEach(() => {
-    jest.spyOn(generateSetExpression, 'generateFiltersLabels').mockReturnValue([
+    jest.spyOn(generateFiltersInfo, 'generateFiltersLabels').mockReturnValue([
       {
         field: 'Alpha',
         label: 'B, C',
@@ -52,11 +52,22 @@ describe('<FiltersFooter />', () => {
     const footerStyle = { backgroundColor: 'red', color: 'blue' };
     await render({ layout, footerStyle, translator });
     const types = renderer.root.findAllByType(Typography);
-    expect(types).toHaveLength(10);
-    expect(types[0].props.children).toBe('Object.FiltersApplied');
-    expect(types[2].props.children).toBe('Alpha:');
-    expect(types[4].props.children).toEqual([' ', 'B, C']);
-    expect(types[6].props.children).toBe('Dim1:');
-    expect(types[8].props.children).toEqual([' ', 'B']);
+    expect(types).toHaveLength(5);
+    expect(types[0].props.children.map((child) => (typeof child === 'string' ? child.trim() : child))).toEqual([
+      'Object.FiltersApplied',
+      '',
+    ]);
+    expect(types[1].props.children).toBe('Alpha:');
+    expect(types[2].props.children.map((child) => (typeof child === 'string' ? child.trim() : child))).toEqual([
+      '',
+      'B, C',
+      '',
+    ]);
+    expect(types[3].props.children).toBe('Dim1:');
+    expect(types[4].props.children.map((child) => (typeof child === 'string' ? child.trim() : child))).toEqual([
+      '',
+      'B',
+      '',
+    ]);
   });
 });

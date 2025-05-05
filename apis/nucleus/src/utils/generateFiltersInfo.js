@@ -16,13 +16,11 @@ export const SearchMode = {
 };
 
 export const ConditionMode = {
-  COMPARE: 'compare',
   GENERAL: 'general',
 };
 
 export const ModifierType = {
   FIXED_VALUE: 'fixed_value',
-  CALCULATED_VALUE: 'calculated_value',
 };
 
 const generateSearchValue = (filter) => {
