@@ -145,7 +145,7 @@ const RowColRoot = styled('div', {
 
     // The leaf node, containing the label text.
     [`& .${classes.labelText}`]: {
-      lineHeight: '16px',
+      lineHeight: '24px',
       userSelect: 'none',
       paddingRight: '1px',
       ...ellipsis,
@@ -153,7 +153,7 @@ const RowColRoot = styled('div', {
     },
 
     [`& .${classes.labelDense}`]: {
-      fontSize: 12,
+      lineHeight: '18px',
     },
 
     // Highlight is added to labelText spans, which are created as children to original labelText,

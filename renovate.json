@@ -3,6 +3,7 @@
   "circleci": {
     "ignoreDeps": []
   },
+  "ignoreDeps": ["react-virtualized-auto-sizer"],
   "semanticCommits": true,
   "rangeStrategy": "bump",
   "packageRules": [

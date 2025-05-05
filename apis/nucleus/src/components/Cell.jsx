@@ -1,5 +1,6 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import React, { forwardRef, useImperativeHandle, useEffect, useState, useContext, useReducer, useRef } from 'react';
+import EventEmitter from 'node-event-emitter';
 
 import { Grid, Paper } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
@@ -37,6 +38,17 @@ const CellBody = {
   /** @type {'njs-cell-body'} */
   className: 'njs-cell-body',
 };
+
+function support(prop, supportObject, layout) {
+  const value = supportObject[prop];
+  if (typeof value === 'function') {
+    return value.call(null, layout);
+  }
+  if (typeof value === 'boolean') {
+    return value;
+  }
+  return false;
+}
 
 const initialState = (err) => ({
   loading: false,
@@ -312,6 +324,10 @@ const loadType = async ({
   }
 };
 
+function createEmitter() {
+  return new EventEmitter();
+}
+
 const Cell = forwardRef(
   (
     {
@@ -337,6 +353,7 @@ const Cell = forwardRef(
       keyboardNavigation,
       disableCellPadding = false,
     } = useContext(InstanceContext);
+    const [internalEmitter] = useState(emitter || createEmitter);
     const theme = useTheme();
     const [cellRef, cellRect, cellNode] = useRect();
     const [state, dispatch] = useReducer(contentReducer, initialState(initialError));
@@ -436,7 +453,7 @@ const Cell = forwardRef(
           selections,
           nebbie,
           focusHandler: focusHandler.current,
-          emitter,
+          emitter: internalEmitter,
           onMount,
           navigation,
         });
@@ -454,7 +471,6 @@ const Cell = forwardRef(
 
       return () => {};
     }, [types, state.sn, model, selections, layout, appLayout, language]);
-
     // Long running query
     useEffect(() => {
       if (!validating) {
@@ -471,6 +487,19 @@ const Cell = forwardRef(
         getQae() {
           return state.sn.generator.qae;
         },
+        getExtensionDefinition() {
+          return state.sn.generator.definition.ext;
+        },
+        // allow input of supportObject ot override when flipped to table
+        support(type, supportObject, outerLayout) {
+          if (layout && state.loaded && !state.error) {
+            const suppObj = supportObject || state.sn.generator.definition.ext?.support;
+            if (suppObj) {
+              return support(type, suppObj, outerLayout || layout);
+            }
+          }
+          return false;
+        },
         toggleFocus(active) {
           if (typeof state.sn.component.focus === 'function') {
             if (active) {
@@ -479,6 +508,9 @@ const Cell = forwardRef(
               state.sn.component.blur();
             }
           }
+        },
+        setOnBlurHandler(cb) {
+          focusHandler.current.blurCallback = cb;
         },
         setSnOptions,
         setSnPlugins,

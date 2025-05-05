@@ -25,6 +25,10 @@ export default function viz({
   let onMount = null;
   let onRenderResolve = null;
   let viewDataObjectId;
+  let originalExtensionDef;
+  let originalLayout;
+  let successfulRender = false;
+
   const mounted = new Promise((resolve) => {
     onMount = resolve;
   });
@@ -37,6 +41,7 @@ export default function viz({
     override?.(); // from options.onInitialRender
     onRenderResolve(); // internal promise in viz to wait for render
     onRender(); // from RenderConfig
+    successfulRender = true;
   };
 
   let initialSnOptions = {};
@@ -194,14 +199,25 @@ export default function viz({
         });
         newModel = await halo.app.createSessionObject(propertyTree.qProperty);
         viewDataObjectId = newModel.id;
+        originalExtensionDef = cellRef.current.getExtensionDefinition();
+        originalLayout = await model.getLayout();
       } else if (viewDataObjectId && showDataView !== true) {
         newModel = model;
         await halo.app.destroySessionObject(viewDataObjectId);
         viewDataObjectId = undefined;
+        originalExtensionDef = undefined;
+        originalLayout = undefined;
       }
       if (newModel) {
         cellRef.current.setModel(newModel);
       }
+    },
+    /**
+     * Whether or not the chart has the data view toggled on.
+     * @type {boolean}
+     */
+    get viewDataToggled() {
+      return viewDataObjectId !== undefined;
     },
     /**
      * Listens to custom events from inside the visualization. See useEmitter
@@ -236,6 +252,25 @@ export default function viz({
     async takeSnapshot() {
       await rendered;
       return cellRef.current.takeSnapshot();
+    },
+    // ===== undocumented experimental API - use at own risk ======
+    /**
+     *  valid types: viewData, cssScaling, snapshot, exportData, exploration
+     *  questionable types: supportRefresh, quickMobile, fullscreen
+     *  deprecated?: sharing
+     *
+     */
+    support(type) {
+      if (mountedReference && successfulRender) {
+        return cellRef.current.support(type, originalExtensionDef?.support, originalLayout);
+      }
+      return false;
+    },
+    toggleFocus(focus) {
+      cellRef.current.toggleFocus(focus);
+    },
+    setOnBlurHandler(cb) {
+      cellRef.current.setOnBlurHandler(cb);
     },
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {
