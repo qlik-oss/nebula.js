@@ -7,6 +7,6 @@
     }
   },
   "ignoreChanges": ["**/*.md", "**/__tests__/**", "**/__stories__/**"],
-  "version": "5.12.6",
+  "version": "5.13.0",
   "npmClient": "yarn"
 }

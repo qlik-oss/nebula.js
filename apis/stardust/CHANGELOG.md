@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.13.0](https://github.com/qlik-oss/nebula.js/compare/v5.12.6...v5.13.0) (2025-05-05)
+
+### Bug Fixes
+
+- **deps:** update minor and patch ([#1722](https://github.com/qlik-oss/nebula.js/issues/1722)) ([b1146c6](https://github.com/qlik-oss/nebula.js/commit/b1146c66394f26cd017ea5de61865c6e58a44dbe))
+- **deps:** update minor and patch ([#1732](https://github.com/qlik-oss/nebula.js/issues/1732)) ([a7617b5](https://github.com/qlik-oss/nebula.js/commit/a7617b5417c6671243809b1d6423ae92aacfa125))
+
+### Features
+
+- add viewDataToggled and toggleFocus ([#1711](https://github.com/qlik-oss/nebula.js/issues/1711)) ([63850fe](https://github.com/qlik-oss/nebula.js/commit/63850fe28f9a7a40546e324e25e6dcb71d76df5f))
+
 ## [5.12.6](https://github.com/qlik-oss/nebula.js/compare/v5.12.5...v5.12.6) (2025-04-08)
 
 ### Bug Fixes

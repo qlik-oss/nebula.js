@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.13.0](https://github.com/qlik-oss/nebula.js/compare/v5.12.6...v5.13.0) (2025-05-05)
+
+### Bug Fixes
+
+- add whitespace normal property ([#1723](https://github.com/qlik-oss/nebula.js/issues/1723)) ([5f08509](https://github.com/qlik-oss/nebula.js/commit/5f08509d3b0a9264844b2813588ee32c5d804128))
+- allow for external focus management ([#1730](https://github.com/qlik-oss/nebula.js/issues/1730)) ([bdf73b6](https://github.com/qlik-oss/nebula.js/commit/bdf73b6549a11de3d1843944c4839aed3c53958d))
+- **deps:** update minor and patch ([#1719](https://github.com/qlik-oss/nebula.js/issues/1719)) ([799c2b7](https://github.com/qlik-oss/nebula.js/commit/799c2b75a7184e7c1f95c7581724ca533f36f775))
+- **deps:** update minor and patch ([#1722](https://github.com/qlik-oss/nebula.js/issues/1722)) ([b1146c6](https://github.com/qlik-oss/nebula.js/commit/b1146c66394f26cd017ea5de61865c6e58a44dbe))
+- **deps:** update minor and patch ([#1727](https://github.com/qlik-oss/nebula.js/issues/1727)) ([abe2a43](https://github.com/qlik-oss/nebula.js/commit/abe2a43ef213fa23f339d32528248253ea63f0df))
+- work with client mixins ([#1733](https://github.com/qlik-oss/nebula.js/issues/1733)) ([d952e5a](https://github.com/qlik-oss/nebula.js/commit/d952e5a5bbdb214a6433c66d93ecdba2daa10d13))
+
+### Features
+
+- add viewDataToggled and toggleFocus ([#1711](https://github.com/qlik-oss/nebula.js/issues/1711)) ([63850fe](https://github.com/qlik-oss/nebula.js/commit/63850fe28f9a7a40546e324e25e6dcb71d76df5f))
+
 ## [5.12.6](https://github.com/qlik-oss/nebula.js/compare/v5.12.5...v5.12.6) (2025-04-08)
 
 ### Bug Fixes

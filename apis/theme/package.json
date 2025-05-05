@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/theme",
-  "version": "5.12.6",
+  "version": "5.13.0",
   "private": true,
   "main": "src/index.js",
   "devDependencies": {

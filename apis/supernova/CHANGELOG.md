@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.13.0](https://github.com/qlik-oss/nebula.js/compare/v5.12.6...v5.13.0) (2025-05-05)
+
+### Bug Fixes
+
+- allow for external focus management ([#1730](https://github.com/qlik-oss/nebula.js/issues/1730)) ([bdf73b6](https://github.com/qlik-oss/nebula.js/commit/bdf73b6549a11de3d1843944c4839aed3c53958d))
+
+### Features
+
+- add viewDataToggled and toggleFocus ([#1711](https://github.com/qlik-oss/nebula.js/issues/1711)) ([63850fe](https://github.com/qlik-oss/nebula.js/commit/63850fe28f9a7a40546e324e25e6dcb71d76df5f))
+
 ## [5.12.6](https://github.com/qlik-oss/nebula.js/compare/v5.12.5...v5.12.6) (2025-04-08)
 
 **Note:** Version bump only for package @nebula.js/supernova
