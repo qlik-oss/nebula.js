@@ -3,7 +3,7 @@ import React from 'react';
 import { styled } from '@mui/material/styles';
 
 import { Typography, Grid, Tooltip } from '@mui/material';
-import { generateFiltersString } from '../utils/generateSetExpression';
+import { generateFiltersString } from '../utils/generateFiltersInfo';
 import FiltersFooter from './FiltersFooter';
 
 const PREFIX = 'Footer';

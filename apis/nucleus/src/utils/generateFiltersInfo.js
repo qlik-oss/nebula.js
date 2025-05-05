@@ -125,48 +125,6 @@ const generateConditionValue = (filter) => {
   return `"${leftConditionResult}${rightConditionResult}"`;
 };
 
-export const generateSetExpression = (filters) => {
-  if (!Array.isArray(filters)) {
-    // QB-15075: when the property `filters` was already used by older apps
-    return '';
-  }
-  // create the SetExpression
-  let SA = '{<';
-  const sets = [];
-  filters.forEach((filter) => {
-    let prefix = `[${filter.field}]${filter.exclude ? '-' : ''}={`;
-    let postfix = '}';
-    let value = '';
-    switch (filter.type) {
-      case FilterType.SEARCH:
-        value = generateSearchValue(filter);
-        break;
-      case FilterType.CONDITION:
-        value = generateConditionValue(filter);
-        break;
-      case FilterType.CLEAR_SELECTION:
-        value = `[${filter.field}]=`;
-        prefix = '';
-        postfix = '';
-        break;
-      case FilterType.VALUES:
-      default:
-        // v.replace(/'/g, "''") is replacing the ' character with two ' characters to avoid quote missmatch
-        value = filter.options?.values ? filter.options.values.map((v) => `'${v.replace(/'/g, "''")}'`).join(',') : '';
-        break;
-    }
-    if (value !== '') {
-      sets.push(`${prefix}${value}${postfix}`);
-    }
-  });
-  if (sets.length === 0) {
-    return undefined;
-  }
-  const joinedSets = sets.join(',');
-  SA += `${joinedSets}>}`;
-  return SA;
-};
-
 export const generateFiltersLabels = (filters, translator) => {
   if (!Array.isArray(filters)) {
     // QB-15075: when the property `filters` was already used by older apps

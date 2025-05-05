@@ -1,7 +1,7 @@
 import React from 'react';
 import { Typography, Grid, Tooltip } from '@mui/material';
 import FilterIcon from '@nebula.js/ui/icons/filter';
-import { generateFiltersLabels } from '../utils/generateSetExpression';
+import { generateFiltersLabels } from '../utils/generateFiltersInfo';
 
 function ItalicText({ styles, children }) {
   return (
