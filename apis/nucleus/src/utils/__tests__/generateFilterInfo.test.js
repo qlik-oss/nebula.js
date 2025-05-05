@@ -60,26 +60,31 @@ describe('generateFiltersString', () => {
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('fieldName: *searchInput*');
     });
+
     test('should generate correct filter label when exclude is false and searchMode is CONTAINS', async () => {
       filter.exclude = false;
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('fieldName: *searchInput*');
     });
+
     test('should generate correct filter label when searchMode is MATCHES_EXACTLY', async () => {
       filter.options.mode = SearchMode.MATCHES_EXACTLY;
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('fieldName: searchInput');
     });
+
     test('should generate correct filter label when searchMode is STARTS_WITH', async () => {
       filter.options.mode = SearchMode.STARTS_WITH;
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('fieldName: searchInput*');
     });
+
     test('should generate correct filter label when searchMode is ENDS_WITH', async () => {
       filter.options.mode = SearchMode.ENDS_WITH;
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('fieldName: *searchInput');
     });
+
     test('should generate correct filter label when searchMode is BEGINNING_OF_WORD', async () => {
       filter.options.mode = SearchMode.BEGINNING_OF_WORD;
       const label = generateFiltersString([filter], translator);
@@ -108,17 +113,20 @@ describe('generateFiltersString', () => {
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('');
     });
+
     test('should generate correct filter label when the filter has COMPARE type and is FIXED_VALUE', async () => {
       filter.options.firstValue = { fixedValue: '10' };
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('fieldName: <10');
     });
+
     test('should generate correct filter label when the filter has COMPARE type and is CALCULATED_VALUE', async () => {
       filter.options.modifier = { type: 'calculated_value', operator: '<' };
       filter.options.firstValue = { aggregator: 'sum', field: 'fieldName2' };
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('fieldName: =fieldName<sum(total fieldName2)');
     });
+
     test('should generate correct filter label when the filter has COMPARE type and is CALCULATED_VALUE and is between', async () => {
       filter.options.modifier = { type: 'calculated_value', operator: '>= <=' };
       filter.options.firstValue = { aggregator: 'sum', field: 'fieldName2' };
@@ -129,18 +137,21 @@ describe('generateFiltersString', () => {
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('fieldName: =fieldName>=sum(total fieldName2) and fieldName<=count(total fieldName3)');
     });
+
     test('should generate correct filter label when the filter has COMPARE type and missing secondValue on between', async () => {
       filter.options.modifier = { type: 'calculated_value', operator: '>= <=' };
       filter.options.firstValue = { aggregator: 'sum', field: 'fieldName2' };
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('');
     });
+
     test('should generate correct filter label when the filter has GENERAL type and filter is invalid', async () => {
       filter.options.mode = ConditionMode.GENERAL;
       filter.options.firstValue = { fixedValue: '10' };
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('');
     });
+
     test('should generate correct filter label when the filter has GENERAL type and is FIXED_VALUE', async () => {
       filter.options.mode = ConditionMode.GENERAL;
       filter.options.firstValue = { fixedValue: '10' };
@@ -151,6 +162,7 @@ describe('generateFiltersString', () => {
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('fieldName: =avg(conditionFieldName1)<10');
     });
+
     test('should generate correct filter label when the filter has GENERAL type and is FIXED_VALUE and is between', async () => {
       filter.options.modifier = { type: ModifierType.FIXED_VALUE, operator: '>= <=' };
       filter.options.mode = ConditionMode.GENERAL;
@@ -163,6 +175,7 @@ describe('generateFiltersString', () => {
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('fieldName: =avg(conditionFieldName1)>=10 and avg(conditionFieldName1)<=100');
     });
+
     test('should generate correct filter label when the filter has GENERAL type and is CALCULATED_VALUE', async () => {
       filter.options.modifier = { type: 'calculated_value', operator: '<' };
       filter.options.mode = ConditionMode.GENERAL;
@@ -174,6 +187,7 @@ describe('generateFiltersString', () => {
       const label = generateFiltersString([filter], translator);
       expect(label).toEqual('fieldName: =avg(conditionFieldName1)<sum(fieldName2)');
     });
+
     test('should generate correct filter label when the filter has GENERAL type and is CALCULATED_VALUE and is between', async () => {
       filter.options.modifier = { type: 'calculated_value', operator: '>= <=' };
       filter.options.mode = ConditionMode.GENERAL;
@@ -191,6 +205,7 @@ describe('generateFiltersString', () => {
         'fieldName: =avg(conditionFieldName1)>=sum(fieldName2) and avg(conditionFieldName1)<=count(fieldName3)'
       );
     });
+
     test('should handle fields that contains multiple words', async () => {
       filter.options.modifier = { type: 'calculated_value', operator: '>= <=' };
       filter.options.mode = ConditionMode.GENERAL;
