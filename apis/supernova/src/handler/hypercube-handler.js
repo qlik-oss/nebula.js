@@ -72,24 +72,27 @@ class HyperCubeHandler extends DataPropertyHandler {
     const existingDimensions = this.getDimensions();
     const addedDimensions = [];
     let addedActive = 0;
-    await Promise.all(
-      dimensions.map(async (dimension) => {
-        if (hcHelper.isTotalDimensionsExceeded(this, existingDimensions)) {
-          return addedDimensions;
-        }
 
-        const dim = initializeField(dimension);
+    await dimensions.reduce(async (prevPromise, dimension) => {
+      await prevPromise;
 
-        if (hcHelper.isDimensionAlternative(this, alternative)) {
-          const altDim = await hcHelper.addAlternativeDimension(this, dim);
-          addedDimensions.push(altDim);
-        } else if (existingDimensions.length < this.maxDimensions()) {
-          await hcHelper.addActiveDimension(this, dim, existingDimensions, addedDimensions, addedActive);
-          addedActive++;
-        }
+      if (hcHelper.isTotalDimensionsExceeded(this, existingDimensions)) {
         return addedDimensions;
-      })
-    );
+      }
+
+      const dim = initializeField(dimension);
+
+      if (hcHelper.isDimensionAlternative(this, alternative)) {
+        const altDim = await hcHelper.addAlternativeDimension(this, dim);
+        addedDimensions.push(altDim);
+      } else if (existingDimensions.length < this.maxDimensions()) {
+        await hcHelper.addActiveDimension(this, dim, existingDimensions, addedDimensions, addedActive);
+        addedActive++;
+      }
+
+      return addedDimensions;
+    }, Promise.resolve());
+
     return addedDimensions;
   }
 
