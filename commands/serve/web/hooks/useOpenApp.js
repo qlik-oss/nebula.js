@@ -30,7 +30,9 @@ export const useOpenApp = ({ info }) => {
         const { webSocketUrl } = await (await fetch(`/auth/getSocketUrl/${info?.enigma.appId}`)).json();
         url = webSocketUrl;
       } else {
-        const csrfToken = await getCsrfToken(`https://${enigmaInfo.host}/${enigmaInfo.prefix}`);
+        const csrfToken = await getCsrfToken(
+          `https://${enigmaInfo.host}${enigmaInfo.prefix ? `/${enigmaInfo.prefix}` : ''}`
+        );
         url = SenseUtilities.buildUrl({ ...enigmaInfo, ...{ urlParams: { 'qlik-csrf-token': csrfToken } } });
       }
 
