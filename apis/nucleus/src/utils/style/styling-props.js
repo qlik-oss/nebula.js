@@ -94,9 +94,12 @@ export function resolveBgColor(comp, theme, objectType) {
   return resolveColor(bgColor?.color, '', 'backgroundColor', theme, objectType);
 }
 
-export function resolveBorder(comp, theme, objectType) {
+export function resolveBorder(comp, theme, objectType, disableThemeBorder) {
   const borderColor = resolveColor(comp?.borderColor, '', 'borderColor', theme, objectType);
-  const borderWidth = comp?.borderWidth || resolveProperty('', 'borderWidth', theme, objectType);
+  let borderWidth = comp?.borderWidth;
+  if (!borderWidth && !disableThemeBorder) {
+    borderWidth = resolveProperty('', 'borderWidth', theme, objectType);
+  }
   return borderWidth && borderColor ? `${borderWidth} solid ${borderColor}` : undefined;
 }
 

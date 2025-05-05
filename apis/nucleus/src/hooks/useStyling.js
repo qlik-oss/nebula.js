@@ -35,7 +35,7 @@ const getThemeObjectType = (visualization) => {
   return visualization;
 };
 
-const useStyling = (layout, theme, app, themeName) => {
+const useStyling = (layout, theme, app, themeName, disableThemeBorder) => {
   const styling = useMemo(() => {
     if (layout && theme) {
       const generalComp = layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
@@ -47,13 +47,13 @@ const useStyling = (layout, theme, app, themeName) => {
       };
       const bgColor = resolveBgColor(generalComp, theme, objectType);
       const bgImage = resolveBgImage(generalComp, app);
-      const border = resolveBorder(generalComp, theme, objectType);
+      const border = resolveBorder(generalComp, theme, objectType, disableThemeBorder);
       const borderRadius = resolveBorderRadius(generalComp, theme, objectType);
       const boxShadow = resolveBoxShadow(generalComp, theme, objectType);
       return { titleStyles, bgColor, bgImage, border, borderRadius, boxShadow };
     }
     return {};
-  }, [layout, theme, app, themeName]);
+  }, [layout, theme, app, themeName, disableThemeBorder]);
   return styling;
 };
 

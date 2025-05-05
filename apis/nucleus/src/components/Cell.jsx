@@ -372,7 +372,8 @@ const Cell = forwardRef(
       layout,
       halo.public.theme,
       halo.app,
-      themeName
+      themeName,
+      snOptions?.disableThemeBorder
     );
 
     const focusHandler = useRef({
