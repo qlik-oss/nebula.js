@@ -73,9 +73,8 @@ class HyperCubeHandler extends DataPropertyHandler {
     const addedDimensions = [];
     let addedActive = 0;
 
-    await dimensions.reduce(async (prevPromise, dimension) => {
-      await prevPromise;
-
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const dimension of dimensions) {
       if (hcHelper.isTotalDimensionsExceeded(this, existingDimensions)) {
         return addedDimensions;
       }
@@ -89,9 +88,7 @@ class HyperCubeHandler extends DataPropertyHandler {
         await hcHelper.addActiveDimension(this, dim, existingDimensions, addedDimensions, addedActive);
         addedActive++;
       }
-
-      return addedDimensions;
-    }, Promise.resolve());
+    }
 
     return addedDimensions;
   }
