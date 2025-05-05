@@ -87,6 +87,31 @@ export default function viz({
     }
   };
 
+  let newExperimental = {};
+  if (halo.context?.enablePrivateExperimental) {
+    // ===== undocumented experimental API - use at own risk ======
+    newExperimental = {
+      /**
+       *  valid types: viewData, cssScaling, snapshot, exportData, exploration
+       *  questionable types: supportRefresh, quickMobile, fullscreen
+       *  deprecated?: sharing
+       *
+       */
+      support(type) {
+        if (mountedReference && successfulRender) {
+          return cellRef.current.support(type, originalExtensionDef?.support, originalLayout);
+        }
+        return false;
+      },
+      toggleFocus(focus) {
+        cellRef.current.toggleFocus(focus);
+      },
+      setOnBlurHandler(cb) {
+        cellRef.current.setOnBlurHandler(cb);
+      },
+    };
+  }
+
   /**
    * @class
    * @alias Viz
@@ -253,25 +278,7 @@ export default function viz({
       await rendered;
       return cellRef.current.takeSnapshot();
     },
-    // ===== undocumented experimental API - use at own risk ======
-    /**
-     *  valid types: viewData, cssScaling, snapshot, exportData, exploration
-     *  questionable types: supportRefresh, quickMobile, fullscreen
-     *  deprecated?: sharing
-     *
-     */
-    support(type) {
-      if (mountedReference && successfulRender) {
-        return cellRef.current.support(type, originalExtensionDef?.support, originalLayout);
-      }
-      return false;
-    },
-    toggleFocus(focus) {
-      cellRef.current.toggleFocus(focus);
-    },
-    setOnBlurHandler(cb) {
-      cellRef.current.setOnBlurHandler(cb);
-    },
+    ...newExperimental,
     // ===== unexposed experimental API - use at own risk ======
     __DO_NOT_USE__: {
       mount(element) {

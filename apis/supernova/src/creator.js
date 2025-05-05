@@ -82,6 +82,7 @@ function createWithHooks(generator, opts, galaxy) {
       layout: {},
       appLayout: {},
       keyboardNavigation: opts.keyboardNavigation,
+      externalFocusManagement: opts.externalFocusManagement || false,
       focusHandler: opts.focusHandler,
       constraints: forcedConstraints,
       interactions: forcedInteractions,
