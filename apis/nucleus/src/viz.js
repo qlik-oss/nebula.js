@@ -92,6 +92,7 @@ export default function viz({
     // ===== undocumented experimental API - use at own risk ======
     newExperimental = {
       /**
+       *  @ignore
        *  valid types: viewData, cssScaling, snapshot, exportData, exploration
        *  questionable types: supportRefresh, quickMobile, fullscreen
        *  deprecated?: sharing
