@@ -584,6 +584,7 @@ const Cell = forwardRef(
       );
     }
 
+    const isCardTheme = !!halo.public.theme?.getStyle('', '', '_cards');
     const flags = halo.public.galaxy?.flags;
     let useOldCellPadding;
     let bodyPadding;
@@ -594,13 +595,13 @@ const Cell = forwardRef(
       useOldCellPadding = true;
       bodyPadding = undefined;
     } else {
-      const senseTheme = halo.public.theme;
       useOldCellPadding = false;
       bodyPadding = getPadding({
         layout,
         isError: state.error,
-        senseTheme,
+        isCardTheme,
         titleStyles,
+        translator,
       });
     }
 
@@ -667,7 +668,15 @@ const Cell = forwardRef(
           >
             {Content}
           </Grid>
-          {cellNode && layout && state.sn && <Footer layout={layout} titleStyles={titleStyles} />}
+          {cellNode && layout && state.sn && (
+            <Footer
+              layout={layout}
+              titleStyles={titleStyles}
+              translator={translator}
+              flags={flags}
+              isCardTheme={isCardTheme}
+            />
+          )}
         </Grid>
         {state.longRunningQuery && <LongRunningQuery canCancel={canCancel} canRetry={canRetry} api={longrunning} />}
       </Paper>
