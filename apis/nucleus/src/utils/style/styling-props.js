@@ -97,7 +97,8 @@ export function resolveBgColor(comp, theme, objectType) {
 export function resolveBorder(comp, theme, objectType, disableThemeBorder) {
   const borderColor = resolveColor(comp?.borderColor, '', 'borderColor', theme, objectType);
   let borderWidth = comp?.borderWidth;
-  if (!borderWidth && !disableThemeBorder) {
+  const shouldGetborderFromTheme = !borderWidth && !disableThemeBorder;
+  if (shouldGetborderFromTheme) {
     borderWidth = resolveProperty('', 'borderWidth', theme, objectType);
   }
   return borderWidth && borderColor ? `${borderWidth} solid ${borderColor}` : undefined;
