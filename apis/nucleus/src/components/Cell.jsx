@@ -368,13 +368,13 @@ const Cell = forwardRef(
     const [selections] = useObjectSelections(app, model, [`#${cellElementId}`, '.njs-action-toolbar-popover']); // elements which will not trigger the click out listener
     const [hovering, setHover] = useState(false);
     const hoveringDebouncer = useRef({ enter: null, leave: null });
-    const { titleStyles, bgColor, bgImage, border, borderRadius, boxShadow } = useStyling(
+    const { titleStyles, bgColor, bgImage, border, borderRadius, boxShadow } = useStyling({
       layout,
-      halo.public.theme,
-      halo.app,
+      theme: halo.public.theme,
+      app: halo.app,
       themeName,
-      snOptions?.disableThemeBorder
-    );
+      disableThemeBorder: snOptions?.disableThemeBorder,
+    });
 
     const focusHandler = useRef({
       focusToolbarButton(last) {

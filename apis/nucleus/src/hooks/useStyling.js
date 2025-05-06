@@ -35,7 +35,7 @@ const getThemeObjectType = (visualization) => {
   return visualization;
 };
 
-const useStyling = (layout, theme, app, themeName, disableThemeBorder) => {
+const useStyling = ({ layout, theme, app, themeName, disableThemeBorder }) => {
   const styling = useMemo(() => {
     if (layout && theme) {
       const generalComp = layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
