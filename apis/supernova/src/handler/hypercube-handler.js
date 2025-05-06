@@ -1,7 +1,12 @@
 // eslint-disable-next-line import/no-relative-packages
 import utils from '../../../conversion/src/utils';
 import DataPropertyHandler from './data-property-handler';
-import { getHyperCube, setFieldProperties } from './utils/handler-helper';
+import * as hcHelper from './utils/hypercube-helper/hypercube-utils';
+import getAutoSortLibraryDimension from './utils/field-helper/get-sorted-library-field';
+import getAutoSortFieldDimension from './utils/field-helper/get-sorted-field';
+import { initializeField, initializeId } from './utils/field-helper/field-utils';
+import addMainDimension from './utils/hypercube-helper/add-main-dimension';
+import addMainMeasure from './utils/hypercube-helper/add-main-measure';
 
 class HyperCubeHandler extends DataPropertyHandler {
   constructor(opts) {
@@ -11,7 +16,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   setProperties(properties) {
     if (!properties) {
-      return;
+      return {};
     }
 
     super.setProperties(properties);
@@ -19,38 +24,17 @@ class HyperCubeHandler extends DataPropertyHandler {
     this.hcProperties = this.path ? utils.getValue(properties, `${this.path}.qHyperCubeDef`) : properties.qHyperCubeDef;
 
     if (!this.hcProperties) {
-      return;
+      return {};
     }
 
-    // Set defaults
-    this.hcProperties.qDimensions = this.hcProperties.qDimensions ?? [];
-    this.hcProperties.qMeasures = this.hcProperties.qMeasures ?? [];
-    this.hcProperties.qInterColumnSortOrder = this.hcProperties.qInterColumnSortOrder ?? [];
-    this.hcProperties.qLayoutExclude = this.hcProperties.qLayoutExclude ?? {
-      qHyperCubeDef: { qDimensions: [], qMeasures: [] },
-    };
-    this.hcProperties.qLayoutExclude.qHyperCubeDef = this.hcProperties.qLayoutExclude.qHyperCubeDef ?? {
-      qDimensions: [],
-      qMeasures: [],
-    };
-    this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions =
-      this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions ?? [];
-    this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures =
-      this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures ?? [];
-
-    if (
-      this.hcProperties.isHCEnabled &&
-      this.hcProperties.qDynamicScript.length === 0 &&
-      this.hcProperties.qMode === 'S'
-    ) {
-      // this is only for line chart with forecast
-      this.hcProperties.qDynamicScript = [];
-    }
+    hcHelper.setDefaultProperties(this);
+    hcHelper.setPropForLineChartWithForecast(this);
 
     // Set auto-sort property (compatibility 0.85 -> 0.9),
     // can probably be removed in 1.0
-    this.hcProperties.qDimensions = setFieldProperties(this.hcProperties.qDimensions);
-    this.hcProperties.qMeasures = setFieldProperties(this.hcProperties.qMeasures);
+    this.hcProperties.qDimensions = hcHelper.setFieldProperties(this.hcProperties.qDimensions);
+    this.hcProperties.qMeasures = hcHelper.setFieldProperties(this.hcProperties.qMeasures);
+    return {};
   }
 
   // ----------------------------------
@@ -70,8 +54,50 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   getDimensionLayouts() {
-    const hc = getHyperCube(this.layout, this.path);
+    const hc = hcHelper.getHyperCube(this.layout, this.path);
     return hc ? hc.qDimensionInfo : [];
+  }
+
+  addDimension(dimension, alternative, idx) {
+    const dim = initializeField(dimension);
+
+    if (hcHelper.isDimensionAlternative(this, dim, alternative)) {
+      return hcHelper.addAlternativeDimension(this, dim, idx);
+    }
+
+    return addMainDimension(this, dim, idx);
+  }
+
+  async addDimensions(dimensions, alternative = false) {
+    const existingDimensions = this.getDimensions();
+    const addedDimensions = [];
+    let addedActive = 0;
+
+    // eslint-disable-next-line no-restricted-syntax
+    for await (const dimension of dimensions) {
+      if (hcHelper.isTotalDimensionsExceeded(this, existingDimensions)) {
+        return addedDimensions;
+      }
+
+      const dim = initializeField(dimension);
+
+      if (hcHelper.isDimensionAlternative(this, alternative)) {
+        const altDim = await hcHelper.addAlternativeDimension(this, dim);
+        addedDimensions.push(altDim);
+      } else if (existingDimensions.length < this.maxDimensions()) {
+        await hcHelper.addActiveDimension(this, dim, existingDimensions, addedDimensions, addedActive);
+        addedActive++;
+      }
+    }
+
+    return addedDimensions;
+  }
+
+  autoSortDimension(dimension) {
+    if (dimension.qLibraryId) {
+      return getAutoSortLibraryDimension(this, dimension);
+    }
+    return getAutoSortFieldDimension(this, dimension);
   }
 
   // ----------------------------------
@@ -87,12 +113,56 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   getMeasureLayouts() {
-    const hc = getHyperCube(this.layout, this.path);
+    const hc = hcHelper.getHyperCube(this.layout, this.path);
     return hc ? hc.qMeasureInfo : [];
   }
 
   getMeasureLayout(cId) {
     return this.getMeasureLayouts().filter((item) => cId === item.cId)[0];
+  }
+
+  addMeasure(measure, alternative, idx) {
+    const meas = initializeField(measure);
+
+    if (hcHelper.isMeasureAlternative(this, meas, alternative)) {
+      const hcMeasures = this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures;
+      return hcHelper.addAlternativeMeasure(meas, hcMeasures, idx);
+    }
+
+    return addMainMeasure(this, meas, idx);
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  autoSortMeasure(measure) {
+    const meas = { ...measure };
+    meas.qSortBy = {
+      qSortByLoadOrder: 1,
+      qSortByNumeric: -1,
+    };
+    return Promise.resolve(meas);
+  }
+
+  addMeasures(measures, alternative = false) {
+    const existingMeasures = this.getMeasures();
+    const addedMeasures = [];
+    let addedActive = 0;
+    measures.forEach(async (measure) => {
+      if (hcHelper.isTotalMeasureExceeded(this, existingMeasures)) {
+        return false;
+      }
+
+      const meas = initializeId(measure);
+
+      if (hcHelper.isMeasureAlternative(this, existingMeasures, alternative)) {
+        hcHelper.addAlternativeMeasure(this, meas);
+        addedMeasures.push(meas);
+      } else if (existingMeasures.length < this.maxMeasures()) {
+        await hcHelper.addActiveMeasure(this, meas, existingMeasures, addedMeasures, addedActive);
+        addedActive++;
+      }
+      return true;
+    });
+    return addedMeasures;
   }
 }
 
