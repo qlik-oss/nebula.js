@@ -60,9 +60,7 @@ export const setAutoSort = (fields, dimension, self) => {
     }
 
     if (!dim.qDef.qSortCriterias) {
-      const updatedDimension = { ...dim };
-      updatedDimension.qDef.qSortCriterias = [sortCriterias];
-      Object.assign(dim, updatedDimension);
+      dim.qDef.qSortCriterias = [sortCriterias];
     } else {
       dim.qDef.qSortCriterias[index] = sortCriterias;
     }
