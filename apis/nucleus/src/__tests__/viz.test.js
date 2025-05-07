@@ -29,12 +29,14 @@ describe('viz', () => {
 
   let mockElement;
 
+  let definitionName = 'props';
+
   beforeAll(() => {
     unmountMock = jest.fn();
     setSnOptions = jest.fn();
     setSnContext = jest.fn();
     setSnPlugins = jest.fn();
-    getExtensionDefinition = jest.fn().mockReturnValue({ definition: 'props' });
+    getExtensionDefinition = jest.fn().mockImplementation(() => ({ definition: { name: definitionName } }));
     setModel = jest.fn();
     takeSnapshot = jest.fn();
     exportImage = jest.fn();
@@ -291,7 +293,22 @@ describe('viz', () => {
       const args = cellRef.current.setSnOptions.mock.lastCall[0];
       args.onInitialRender();
       const panelDef = api.getPropertyPanelDefinition();
-      expect(panelDef).toEqual('props');
+      expect(panelDef.name).toEqual('props');
+    });
+
+    test('should return original after data view toggle the definition.ext.definition', async () => {
+      const opts = { myops: 'myopts', onInitialRender: jest.fn() };
+      api.__DO_NOT_USE__.options(opts);
+      await mounted;
+      const args = cellRef.current.setSnOptions.mock.lastCall[0];
+      args.onInitialRender();
+      let panelDef = api.getPropertyPanelDefinition();
+      expect(panelDef.name).toEqual('props');
+      definitionName = 'old';
+      await api.toggleDataView(); // locks in the "old" definition
+      definitionName = 'new';
+      panelDef = api.getPropertyPanelDefinition();
+      expect(panelDef.name).toEqual('old');
     });
   });
 });
