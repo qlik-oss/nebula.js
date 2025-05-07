@@ -250,6 +250,17 @@ describe('Styling property resolver', () => {
       expect(resolveProperty.default).toHaveBeenCalledWith('', 'borderWidth', styleService, objectType);
       expect(res).toEqual(undefined);
     });
+
+    test('should not get border from theme when disableThemeBorder is set', () => {
+      jest.spyOn(resolveProperty, 'default').mockReturnValue('5px');
+      jest.spyOn(resolveColor, 'default').mockReturnValue('red');
+      const disableThemeBorder = true;
+      const res = resolveBorder(comp, styleService, objectType, disableThemeBorder);
+      expect(resolveColor.default).toHaveBeenCalledTimes(1);
+      expect(resolveColor.default).toHaveBeenCalledWith(undefined, '', 'borderColor', styleService, objectType);
+      expect(resolveProperty.default).toHaveBeenCalledTimes(0);
+      expect(res).toEqual(undefined);
+    });
   });
 
   describe('resolveBorderRadius', () => {
