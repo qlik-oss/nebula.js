@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.14.0](https://github.com/qlik-oss/nebula.js/compare/v5.13.0...v5.14.0) (2025-05-07)
+
+### Features
+
+- add theme to galaxy and getPropertyPanelDefinition to viz ([#1736](https://github.com/qlik-oss/nebula.js/issues/1736)) ([51fbdd1](https://github.com/qlik-oss/nebula.js/commit/51fbdd1f7d4818c556d7bc8c11373bb4e30b1437))
+
 # [5.13.0](https://github.com/qlik-oss/nebula.js/compare/v5.12.6...v5.13.0) (2025-05-05)
 
 ### Bug Fixes

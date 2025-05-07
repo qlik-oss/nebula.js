@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.14.0](https://github.com/qlik-oss/nebula.js/compare/v5.13.0...v5.14.0) (2025-05-07)
+
+### Bug Fixes
+
+- add filters info in footnote ([#1710](https://github.com/qlik-oss/nebula.js/issues/1710)) ([6b84132](https://github.com/qlik-oss/nebula.js/commit/6b841322736adeb64a88682c87651b9d676b7a33))
+- incorrect height setting ([#1737](https://github.com/qlik-oss/nebula.js/issues/1737)) ([8201429](https://github.com/qlik-oss/nebula.js/commit/8201429616b03c4a196a222eb2818f2faf730a8d))
+
+### Features
+
+- add support for disableThemeBorder option ([#1735](https://github.com/qlik-oss/nebula.js/issues/1735)) ([d5742da](https://github.com/qlik-oss/nebula.js/commit/d5742dae8a3ee118b573ad49d84b7bc414e9c06e))
+- add theme to galaxy and getPropertyPanelDefinition to viz ([#1736](https://github.com/qlik-oss/nebula.js/issues/1736)) ([51fbdd1](https://github.com/qlik-oss/nebula.js/commit/51fbdd1f7d4818c556d7bc8c11373bb4e30b1437))
+
 # [5.13.0](https://github.com/qlik-oss/nebula.js/compare/v5.12.6...v5.13.0) (2025-05-05)
 
 ### Bug Fixes
