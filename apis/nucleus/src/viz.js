@@ -104,6 +104,14 @@ export default function viz({
         }
         return false;
       },
+      getPropertyPanelDefinition() {
+        if (mountedReference && successfulRender) {
+          return originalExtensionDef
+            ? originalExtensionDef.definition
+            : cellRef.current.getExtensionDefinition().definition;
+        }
+        return false;
+      },
       toggleFocus(focus) {
         cellRef.current.toggleFocus(focus);
       },
@@ -204,7 +212,7 @@ export default function viz({
     async toggleDataView(showDataView) {
       let newModel;
       if (!viewDataObjectId && showDataView !== false) {
-        let newType = halo.config.context.dataViewType;
+        let newType = halo.context.dataViewType;
         const oldProperties = await model.getEffectiveProperties();
         // Check if dataViewType is registered. Otherwise potentially fallback to table
         if (!halo.types.getSupportedVersion(newType)) {

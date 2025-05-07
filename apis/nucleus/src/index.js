@@ -237,6 +237,8 @@ function nuked(configuration = {}) {
       galaxy: /** @lends Galaxy */ {
         /** @type {Translator} */
         translator: locale.translator,
+        /** @type {Theme} */
+        theme: appTheme.externalAPI,
         // TODO - validate flags input
         /** @type {Flags} */
         flags: flagsFn(configuration.flags),

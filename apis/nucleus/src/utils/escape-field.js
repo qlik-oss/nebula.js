@@ -1,13 +1,3 @@
-/**
- * Escape a script field name. Will add surrounding brackets if the field name contains special characters.
- * Examples:
- * Field1 -> Field1
- * My field -> [My field]
- * My] field -> [My]] field]
- *
- * @param field
- * @returns {*}
- */
 const escapeField = (field) => {
   if (!field || field === ']') {
     return field;

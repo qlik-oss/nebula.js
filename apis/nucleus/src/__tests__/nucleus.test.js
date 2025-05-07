@@ -26,7 +26,7 @@ describe('nucleus', () => {
     createObjectMock = jest.fn().mockReturnValue('created object');
     getObjectMock = jest.fn().mockReturnValue('got object');
     setThemeMock = jest.fn();
-    appThemeFnMock = jest.fn().mockReturnValue({ externalAPI: 'internal', setTheme: setThemeMock });
+    appThemeFnMock = jest.fn().mockReturnValue({ externalAPI: 'external', setTheme: setThemeMock });
     deviceTypeFnMock = jest.fn().mockReturnValue('desktop');
     rootAppMock = jest.fn().mockReturnValue([{}]);
     translatorAddMock = jest.fn();
@@ -127,6 +127,7 @@ describe('nucleus', () => {
         some: 'thing',
       },
       flags: 'flags',
+      theme: 'external',
       deviceType: 'desktop',
       hostConfig: 'HOST',
       translator,
