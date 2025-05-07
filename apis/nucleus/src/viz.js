@@ -104,6 +104,12 @@ export default function viz({
         }
         return false;
       },
+      getPropertyPanelDefinition() {
+        if (mountedReference && successfulRender) {
+          return originalExtensionDef ? originalExtensionDef.ext : cellRef.current.getExtensionDefinition().definition;
+        }
+        return false;
+      },
       toggleFocus(focus) {
         cellRef.current.toggleFocus(focus);
       },
