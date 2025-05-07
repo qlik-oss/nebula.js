@@ -1,23 +1,20 @@
 import { generateFiltersString } from './generateFiltersInfo';
 
-const NO_PADDING_IN_CARDS_WITHOUT_TITLE = ['action-button', 'sn-nav-menu'];
+const NO_BORDER_IN_CARDS = ['action-button', 'sn-nav-menu', 'filterpane', 'sn-shape'];
 const NO_PADDING_IN_CARDS = [
+  ...NO_BORDER_IN_CARDS,
   'pivot-table',
   'table',
   'sn-table',
   'sn-pivot-table',
   'kpi',
-  'filterpane',
   'sn-calendar',
   'sn-filter-pane',
   'sn-layout-container',
-  'sn-shape',
   'sn-tabbed-container',
 ];
-const NO_TITLE_PADDING_IN_CARDS = ['filterpane', 'sn-shape'];
-const NO_FOOTER_BORDER_IN_CARDS = ['action-button', 'sn-shape', 'filterpane'];
 
-const getPaddTitle = (visualization) => NO_TITLE_PADDING_IN_CARDS.indexOf(visualization) === -1;
+const getPaddTitle = (visualization) => NO_BORDER_IN_CARDS.indexOf(visualization) === -1;
 
 const getTitlePadding = (visualization) => {
   const paddTitle = getPaddTitle(visualization);
@@ -56,7 +53,7 @@ const getPadding = ({ layout, isError, isCardTheme, titleStyles, translator }) =
       titleStyles.subTitle.padding = getSubtitlePadding(visualization, showTitle);
     }
     if (showFootnote) {
-      if (NO_FOOTER_BORDER_IN_CARDS.indexOf(visualization) === -1) {
+      if (NO_BORDER_IN_CARDS.indexOf(visualization) === -1) {
         // eslint-disable-next-line no-param-reassign
         titleStyles.footer.borderTop = '1px solid #d9d9d9';
       }
@@ -65,15 +62,7 @@ const getPadding = ({ layout, isError, isCardTheme, titleStyles, translator }) =
     }
 
     let bodyPadding;
-    if (!isError && NO_PADDING_IN_CARDS.indexOf(visualization) !== -1) {
-      bodyPadding = undefined;
-    } else if (!isError && NO_PADDING_IN_CARDS_WITHOUT_TITLE.indexOf(visualization) !== -1) {
-      if (!layout.showTitles) {
-        bodyPadding = undefined;
-      } else {
-        bodyPadding = `0 10px ${showFootnote ? '0' : '5px'}`;
-      }
-    } else {
+    if (isError || NO_PADDING_IN_CARDS.indexOf(visualization) === -1) {
       bodyPadding = `${showTitle || showSubtitle ? '0' : '10px'} 10px ${showFootnote ? '0' : '5px'}`;
     }
 

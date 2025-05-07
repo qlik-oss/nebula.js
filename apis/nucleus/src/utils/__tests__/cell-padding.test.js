@@ -116,15 +116,6 @@ describe('cell padding', () => {
     expect(bodyPadding).toBeUndefined();
   });
 
-  test('card theme with action-button visualization do include padding if showTitels is true, but not top padding', () => {
-    const bodyPadding = testFn({
-      isCardTheme: true,
-      visualization: 'action-button',
-      showTitles: true,
-    });
-    expect(bodyPadding).toBe('0 10px 5px');
-  });
-
   test('card theme with sn-filter-pane visualization type the do include footer styling', () => {
     const bodyPadding = testFn({
       isCardTheme: true,
