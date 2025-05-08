@@ -375,6 +375,7 @@ const Cell = forwardRef(
       themeName,
       disableThemeBorder: snOptions?.disableThemeBorder,
     });
+    const isRtl = !!(snOptions?.direction === 'rtl');
 
     const focusHandler = useRef({
       focusToolbarButton(last) {
@@ -651,6 +652,7 @@ const Cell = forwardRef(
               hovering={hovering}
               focusHandler={focusHandler.current}
               titleStyles={titleStyles}
+              isRtl={isRtl}
             >
               &nbsp;
             </Header>
@@ -676,6 +678,7 @@ const Cell = forwardRef(
               translator={translator}
               flags={flags}
               isCardTheme={isCardTheme}
+              isRtl={isRtl}
             />
           )}
         </Grid>
