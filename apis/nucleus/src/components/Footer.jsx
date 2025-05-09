@@ -29,7 +29,7 @@ const CellFooter = {
   className: 'njs-cell-footer',
 };
 
-function Footer({ layout, titleStyles = {}, translator, flags, isCardTheme }) {
+function Footer({ layout, titleStyles = {}, translator, flags, isCardTheme, isRtl }) {
   const footerStyle = titleStyles.footer;
   const hasFilters = layout?.filters?.length > 0 && layout?.qHyperCube?.qMeasureInfo?.length > 0;
   const filtersFootnoteString = generateFiltersString(layout?.filters ?? [], translator);
@@ -47,7 +47,13 @@ function Footer({ layout, titleStyles = {}, translator, flags, isCardTheme }) {
       >
         {layout.footnote && (
           <Tooltip title={layout.footnote}>
-            <Typography noWrap variant="body2" className={CellFooter.className} style={footerStyle}>
+            <Typography
+              noWrap
+              variant="body2"
+              className={CellFooter.className}
+              style={footerStyle}
+              align={isRtl ? 'right' : 'left'}
+            >
               {layout.footnote}
             </Typography>
           </Tooltip>
@@ -58,6 +64,7 @@ function Footer({ layout, titleStyles = {}, translator, flags, isCardTheme }) {
             translator={translator}
             filtersFootnoteString={filtersFootnoteString}
             footerStyle={footerStyle}
+            isRtl={isRtl}
           />
         )}
       </Grid>

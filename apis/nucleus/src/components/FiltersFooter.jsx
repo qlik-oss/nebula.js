@@ -11,7 +11,7 @@ function ItalicText({ styles, children }) {
   );
 }
 
-function FiltersFooter({ layout, translator, filtersFootnoteString, footerStyle }) {
+function FiltersFooter({ layout, translator, filtersFootnoteString, footerStyle, isRtl }) {
   const filtersFootnoteLabels = generateFiltersLabels(layout?.filters ?? [], translator);
   const styles = {
     color: footerStyle?.color,
@@ -31,6 +31,7 @@ function FiltersFooter({ layout, translator, filtersFootnoteString, footerStyle 
           borderTop: footerStyle?.borderTop,
         }}
         data-testid="filters-footnote"
+        justifyContent={isRtl ? 'flex-end' : 'flex-start'}
       >
         <Grid item display="flex">
           <FilterIcon style={{ fontSize: '12px', color: footerStyle.color, margin: 'auto' }} />

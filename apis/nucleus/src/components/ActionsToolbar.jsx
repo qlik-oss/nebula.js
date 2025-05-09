@@ -50,10 +50,6 @@ const ActionsGroup = React.forwardRef(
 );
 
 const popoverStyle = { pointerEvents: 'none' };
-const popoverTransformOrigin = {
-  vertical: 'bottom',
-  horizontal: 'right',
-};
 
 function ActionsToolbar({
   show = true,
@@ -91,7 +87,12 @@ function ActionsToolbar({
 
   const popoverAnchorOrigin = {
     vertical: 12,
-    horizontal: (popover.anchorEl?.clientWidth ?? 0) - 7,
+    horizontal: isRtl ? 0 : (popover.anchorEl?.clientWidth ?? 0) - 7,
+  };
+
+  const popoverTransformOrigin = {
+    vertical: 'bottom',
+    horizontal: isRtl ? -7 : 'right',
   };
 
   const actionsRef = useRef();

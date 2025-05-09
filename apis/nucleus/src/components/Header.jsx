@@ -42,7 +42,7 @@ const CellSubTitle = {
   className: 'njs-cell-sub-title',
 };
 
-function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {} }) {
+function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}, isRtl }) {
   const showTitle = layout.showTitles && !!layout.title;
   const showSubtitle = layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
@@ -73,12 +73,13 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
       popover={{ show: showPopoverToolbar, anchorEl }}
       focusHandler={focusHandler}
       layout={layout}
+      isRtl={isRtl}
     />
   );
 
   return (
     <StyledGrid item container wrap="nowrap" className={cls.join(' ')}>
-      <Grid item zeroMinWidth xs>
+      <Grid item zeroMinWidth xs dir={isRtl ? 'rtl' : 'ltr'}>
         <Grid container wrap="nowrap" direction="column">
           {showTitle && (
             <Tooltip title={layout.title}>
