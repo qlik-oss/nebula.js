@@ -98,17 +98,6 @@ export function removeDimensionFromColumnOrder(self, index) {
   return false;
 }
 
-export function addSortedDimension(self, dimension, dimensions, idx) {
-  const dimIdx = idx ?? dimensions.length;
-  dimensions.splice(dimIdx, 0, dimension);
-
-  return self.autoSortDimension(dimension).then(() => {
-    arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, dimIdx ?? dimensions.length - 1);
-
-    return self.dimensionDefinition.add?.call(self, dimension, self.properties, self) || Promise.resolve(dimension);
-  });
-}
-
 export function isTotalDimensionsExceeded(self, dimensions) {
   const altDimensions = self.getAlternativeDimensions();
   return altDimensions.length + dimensions.length >= TOTAL_MAX.DIMENSIONS;
@@ -119,8 +108,14 @@ export function isDimensionAlternative(self, alternative) {
   return alternative || (self.maxDimensions() <= dimensions.length && dimensions.length < TOTAL_MAX.DIMENSIONS);
 }
 
-export async function addActiveDimension(self, dimension, existingDimensions, addedDimensions, addedActive) {
-  const initialLength = existingDimensions.length;
+export async function addActiveDimension(
+  self,
+  dimension,
+  initialLength,
+  existingDimensions,
+  addedDimensions,
+  addedActive
+) {
   await self.autoSortDimension(dimension);
 
   // Update sorting order
@@ -134,15 +129,13 @@ export async function addActiveDimension(self, dimension, existingDimensions, ad
   }
 }
 
-export function removeAlternativeDimension(self, index) {
+export async function removeAlternativeDimension(self, index) {
   const [dimension] = self.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions.splice(index, 1);
-  if (typeof self.dimensionDefinition.remove === 'function') {
+  if (typeof self.dimensionDefinition.remove === 'function' && dimension) {
     dimension.isAlternative = true;
-    return Promise.resolve(self.dimensionDefinition.remove.call(null, dimension, self.properties, self, index)).then(
-      () => delete dimension.isAlternative
-    );
+    self.dimensionDefinition.remove.call(null, dimension, self.properties, self, index);
+    delete dimension.isAlternative;
   }
-  return false;
 }
 
 // ----------------------------------
@@ -204,9 +197,9 @@ export function removeMeasureFromColumnSortOrder(self, index) {
 }
 
 export function removeMeasureFromColumnOrder(self, index) {
-  const [meas] = self.hcProperties.qMeasures.splice(index, 1);
+  const [measure] = self.hcProperties.qMeasures.splice(index, 1);
   if (typeof self.measureDefinition.remove === 'function') {
-    return Promise.resolve(self.measureDefinition.remove.call(null, meas, self.properties, self, index));
+    return Promise.resolve(self.measureDefinition.remove.call(null, measure, self.properties, self, index));
   }
   return false;
 }
