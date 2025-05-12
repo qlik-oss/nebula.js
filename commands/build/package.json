@@ -21,10 +21,10 @@
     "lint": "eslint src"
   },
   "dependencies": {
-    "@babel/cli": "7.27.1",
+    "@babel/cli": "7.27.2",
     "@babel/core": "7.27.1",
     "@babel/plugin-transform-react-jsx": "7.27.1",
-    "@babel/preset-env": "7.27.1",
+    "@babel/preset-env": "7.27.2",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-commonjs": "28.0.3",
     "@rollup/plugin-json": "6.1.0",
@@ -34,7 +34,7 @@
     "chalk": "4.1.2",
     "extend": "3.0.2",
     "postcss": "^8.5.3",
-    "rollup": "4.40.1",
+    "rollup": "4.40.2",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-visualizer": "5.14.0",
     "yargs": "17.7.2"
