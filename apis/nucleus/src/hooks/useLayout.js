@@ -2,7 +2,7 @@ import useRpc from './useRpc';
 
 export default function useLayout(model) {
   const [layout, { validating, canCancel, canRetry }, longrunning] = useRpc(model, 'getLayout');
-  if (model?.pureLayout) {
+  if (model?.pureLayout && layout) {
     return [model.pureLayout, { validating, canCancel, canRetry }, longrunning];
   }
   return [layout, { validating, canCancel, canRetry }, longrunning];
