@@ -145,7 +145,7 @@ export default function viz({
     model,
     /**
      * Destroys the visualization and removes it from the the DOM.
-     * @returns {Promise<undefined>}
+     * @returns {Promise<void>}
      * @example
      * const viz = await embed(app).render({
      *   element,

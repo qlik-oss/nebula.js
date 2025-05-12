@@ -1356,7 +1356,7 @@
             "type": "Promise",
             "generics": [
               {
-                "type": "undefined"
+                "type": "void"
               }
             ]
           },

@@ -430,7 +430,7 @@ declare namespace stardust {
         /**
          * Destroys the visualization and removes it from the the DOM.
          */
-        destroy(): Promise<undefined>;
+        destroy(): Promise<void>;
 
         /**
          * Converts the visualization to a different registered type.
