@@ -10,6 +10,7 @@ import addMainMeasure from './utils/hypercube-helper/add-main-measure';
 import removeMainDimension from './utils/hypercube-helper/remove-main-dimension';
 import removeAlternativeMeasure from './utils/hypercube-helper/remove-alternative-measure';
 import removeMainMeasure from './utils/hypercube-helper/remove-main-measure';
+import removeAlternativeDimension from './utils/hypercube-helper/remove-alternative-dimension';
 
 class HyperCubeHandler extends DataPropertyHandler {
   constructor(opts) {
@@ -99,36 +100,38 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   removeDimension(idx, alternative) {
     if (alternative) {
-      hcUtils.removeAlternativeDimension(this, idx);
+      removeAlternativeDimension(this, idx);
     }
 
-    removeMainDimension(this, idx).then(() => true);
+    removeMainDimension(this, idx);
   }
 
   async removeDimensions(indexes, alternative) {
+    const altDimensions = this.getAlternativeDimensions();
+    const dimensions = this.getDimensions();
+
     if (indexes.length === 0) return [];
-    let deleted = [];
+    let deletedDimensions = [];
     // Start deleting from the end of the list first otherwise the idx is messed up
     const sortedIndexes = [...indexes].sort((a, b) => b - a);
 
-    if (alternative) {
+    if (alternative && altDimensions.length > 0) {
       // Keep the original deleted order
-      deleted = this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions.filter((_, idx) => indexes.includes(idx));
+      deletedDimensions = hcUtils.getDeletedFields(altDimensions, indexes);
       // eslint-disable-next-line no-restricted-syntax
       for await (const index of sortedIndexes) {
-        await hcUtils.removeAlternativeDimension(this, index);
+        await removeAlternativeDimension(this, index);
       }
-      return deleted;
+    } else if (dimensions.length > 0) {
+      // Keep the original deleted order
+      deletedDimensions = hcUtils.getDeletedFields(dimensions, indexes);
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const index of sortedIndexes) {
+        await removeMainDimension(this, index);
+      }
     }
 
-    // Keep the original deleted order
-    deleted = this.hcProperties.qDimensions.filter((_, idx) => indexes.includes(idx));
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const index of sortedIndexes) {
-      await removeMainDimension(this, index);
-    }
-
-    return deleted;
+    return deletedDimensions;
   }
 
   autoSortDimension(dimension) {
@@ -207,34 +210,32 @@ class HyperCubeHandler extends DataPropertyHandler {
     if (alternative) {
       hcUtils.removeAltMeasureByIndex(this, idx);
     }
-    removeMainMeasure(this, idx)
-      .then(() => {
-        // Handle any post-removal logic here if needed
-      })
-      .catch((error) => {
-        // Handle errors if necessary
-        console.error('Error removing main measure:', error);
-      });
+    removeMainMeasure(this, idx);
   }
 
   async removeMeasures(indexes, alternative) {
+    const measures = this.getMeasures();
+    const altMeasures = this.getAlternativeMeasures();
+
     if (indexes.length === 0) return [];
-    let deleted = [];
+    let deletedMeasures = [];
 
-    if (alternative) {
-      return removeAlternativeMeasure(this, indexes);
+    if (alternative && altMeasures.length > 0) {
+      // Keep the original deleted order
+      deletedMeasures = hcUtils.getDeletedFields(altMeasures, indexes);
+      removeAlternativeMeasure(this, indexes);
+    } else if (measures.length > 0) {
+      // Keep the original deleted order
+      deletedMeasures = hcUtils.getDeletedFields(measures, indexes);
+      const sortedIndexes = [...indexes].sort((a, b) => b - a);
+
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const index of sortedIndexes) {
+        await removeMainMeasure(this, index);
+      }
     }
-    // Keep the original deleted order
-    deleted = this.hcProperties.qMeasures.filter((_, idx) => indexes.includes(idx));
 
-    const sortedIndexes = [...indexes].sort((a, b) => b - a);
-
-    // eslint-disable-next-line no-restricted-syntax
-    for await (const index of sortedIndexes) {
-      await remo;
-    }
-
-    return deleted;
+    return deletedMeasures;
   }
 
   // ----------------------------------
@@ -248,6 +249,15 @@ class HyperCubeHandler extends DataPropertyHandler {
   getFilter(id) {
     const filters = this.getFilters();
     return filters.find((filter) => filter.id === id);
+  }
+
+  removeFilterField(idx) {
+    const filters = this.getFilters();
+    filters.splice(idx, 1);
+    if (this.properties) {
+      this.properties.qHyperCubeDef.qContextSetExpression = this.gener;
+    }
+    return filters;
   }
 
   removeFilters(indexes) {

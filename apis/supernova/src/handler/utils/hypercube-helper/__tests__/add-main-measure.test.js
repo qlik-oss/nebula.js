@@ -1,20 +1,30 @@
 import addMainMeasure from '../add-main-measure';
-import { addMeasureToColumnOrder, addMeasureToColumnSortOrder } from '../hypercube-utils';
-
-jest.mock('../hyper', () => ({
-  addMeasureToColumnOrder: jest.fn(),
-  addMeasureToColumnSortOrder: jest.fn(),
-}));
+import * as hcUtils from '../hypercube-utils';
 
 describe('addMainMeasure', () => {
   let self;
+  let index;
+  const newMeasure = { qDef: { cId: 'meas3' } };
 
   beforeEach(() => {
+    index = 1;
     self = {
-      getMeasures: jest.fn(),
-      maxMeasures: jest.fn(),
+      hcProperties: {
+        qMeasures: [{ qDef: { cId: 'meas1' } }, { qDef: { cId: 'meas2' } }],
+        qInterColumnSortOrder: [1, 0, 2],
+        qLayoutExclude: {
+          qHyperCubeDef: {
+            qDimensions: [],
+            qMeasures: [],
+          },
+        },
+      },
       autoSortMeasure: jest.fn().mockResolvedValue(),
+      getMeasures: jest.fn().mockReturnValue([{ qDef: { cId: 'meas1' } }, { qDef: { cId: 'meas2' } }]),
+      getDimensions: jest.fn().mockReturnValue([{ qDef: { cId: 'dim1' } }]),
+      maxMeasures: jest.fn().mockReturnValue(4),
     };
+    jest.spyOn(hcUtils, 'addMeasureToColumnOrder').mockResolvedValue();
   });
 
   afterEach(() => {
@@ -22,46 +32,41 @@ describe('addMainMeasure', () => {
   });
 
   test('should add the measure to the specified index', async () => {
-    self.getMeasures.mockReturnValue([{ id: 'measure1' }]);
-    self.maxMeasures.mockReturnValue(3);
-    const measure = { id: 'measure2' };
-    const index = 1;
+    const result = await addMainMeasure(self, newMeasure, index);
 
-    const result = await addMainMeasure(self, measure, index);
-
-    expect(self.autoSortMeasure).toHaveBeenCalledWith(measure);
-    expect(addMeasureToColumnSortOrder).toHaveBeenCalledWith(self, measure);
-    expect(addMeasureToColumnOrder).toHaveBeenCalledWith(self, measure);
-    expect(result).toBe(measure);
+    expect(result).toBe(newMeasure);
+    expect(self.autoSortMeasure).toHaveBeenCalledWith(newMeasure);
+    expect(self.hcProperties.qInterColumnSortOrder).toEqual([1, 0, 2, 3]);
   });
 
   test('should return a resolved promise if measures are at the maximum limit', async () => {
-    self.getMeasures.mockReturnValue([{ id: 'measure1' }, { id: 'measure2' }]);
     self.maxMeasures.mockReturnValue(2);
-    const measure = { id: 'measure3' };
 
-    const result = await addMainMeasure(self, measure);
+    const result = await addMainMeasure(self, newMeasure, index);
 
-    expect(result).toBeUndefined();
+    expect(result).toEqual(newMeasure);
+    expect(self.autoSortMeasure).not.toHaveBeenCalledWith(newMeasure);
+    expect(self.hcProperties.qInterColumnSortOrder).toEqual([1, 0, 2]);
   });
 
   test('should handle empty measures array', async () => {
     self.getMeasures.mockReturnValue([]);
-    self.maxMeasures.mockReturnValue(3);
-    const measure = { id: 'measure1' };
+    // Have only a dimension in the layout
+    self.hcProperties.qInterColumnSortOrder = [0];
 
-    const result = await addMainMeasure(self, measure);
+    const result = await addMainMeasure(self, newMeasure, index);
 
-    expect(result).toBeUndefined();
+    expect(result).toEqual(newMeasure);
+    expect(self.autoSortMeasure).toHaveBeenCalledWith(newMeasure);
+    expect(self.hcProperties.qInterColumnSortOrder).toEqual([0, 1]);
   });
 
-  test('should handle edge case where maxMeasures is zero', async () => {
-    self.getMeasures.mockReturnValue([]);
-    self.maxMeasures.mockReturnValue(0);
-    const measure = { id: 'measure1' };
+  test('should handle measure when index is undefined', async () => {
+    index = undefined;
+    const result = await addMainMeasure(self, newMeasure, index);
 
-    const result = await addMainMeasure(self, measure);
-
-    expect(result).toBeUndefined();
+    expect(result).toEqual(newMeasure);
+    expect(self.autoSortMeasure).toHaveBeenCalledWith(newMeasure);
+    expect(self.hcProperties.qInterColumnSortOrder).toEqual([1, 0, 2, 3]);
   });
 });

@@ -1,6 +1,6 @@
 import { addMeasureToColumnOrder, addMeasureToColumnSortOrder } from './hypercube-utils';
 
-export default function addMainMeasure(self, measure, index) {
+function addMainMeasure(self, measure, index) {
   const measures = self.getMeasures();
   const idx = index ?? measures.length;
 
@@ -8,12 +8,12 @@ export default function addMainMeasure(self, measure, index) {
     measures.splice(idx, 0, measure);
 
     return self.autoSortMeasure(measure).then(() => {
-      addMeasureToColumnSortOrder(self, measure);
-      addMeasureToColumnOrder(self, measure);
-
-      return measure;
+      addMeasureToColumnSortOrder(self, measures);
+      return addMeasureToColumnOrder(self, measure).then(() => measure);
     });
   }
 
   return measure;
 }
+
+export default addMainMeasure;

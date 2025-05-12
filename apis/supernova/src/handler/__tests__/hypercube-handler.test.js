@@ -1,6 +1,6 @@
 import * as hcUtils from '../utils/hypercube-helper/hypercube-utils';
-import removeMainDimension from '../utils/hypercube-helper/remove-main-dimension';
 import HyperCubeHandler from '../hypercube-handler';
+import addMainDimension from '../utils/hypercube-helper/add-main-dimension';
 
 describe('HyperCube Handlers', () => {
   let handler;
@@ -10,7 +10,7 @@ describe('HyperCube Handlers', () => {
     properties = {
       qHyperCubeDef: {
         qDimensions: [{ qDef: { cId: 'dim1' } }, { qDef: { cId: 'dim2' } }],
-        qMeasures: [{ id: 'meas1' }, { id: 'meas2' }],
+        qMeasures: [{ qDef: { cId: 'meas1' } }, { qDef: { cId: 'meas2' } }],
         qInterColumnSortOrder: [1, 0],
         qLayoutExclude: {
           qHyperCubeDef: {
@@ -38,16 +38,15 @@ describe('HyperCube Handlers', () => {
       expect(handler.hcProperties).toBeUndefined();
     });
 
-    test('should set properties when qHyperCubeDef provides defined/undefined values', () => {
-      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = undefined;
+    test('should set properties when qHyperCubeDef provides defined values', () => {
       handler.setProperties(properties);
 
       expect(handler.hcProperties.qDimensions).toEqual([{ qDef: { cId: 'dim1' } }, { qDef: { cId: 'dim2' } }]);
-      expect(handler.hcProperties.qMeasures).toEqual([{ id: 'meas1' }, { id: 'meas2' }]);
+      expect(handler.hcProperties.qMeasures).toEqual([{ qDef: { cId: 'meas1' } }, { qDef: { cId: 'meas2' } }]);
       expect(handler.hcProperties.qInterColumnSortOrder).toEqual([1, 0]);
       expect(handler.hcProperties.qLayoutExclude).toEqual({
         qHyperCubeDef: {
-          qDimensions: [],
+          qDimensions: [{ qDef: { cId: 'altDim1' } }, { qDef: { cId: 'altDim2' } }],
           qMeasures: [{ qDef: { cId: 'altMeas1' } }, { qDef: { cId: 'altMeas2' } }],
         },
       });
@@ -103,6 +102,61 @@ describe('HyperCube Handlers', () => {
 
       expect(handler.getDimensions()).toEqual([{ qDef: { cId: 'dim1' } }, { qDef: { cId: 'dim2' } }]);
       expect(handler.getAlternativeDimensions()).toEqual([{ qDef: { cId: 'altDim1' } }, { qDef: { cId: 'altDim2' } }]);
+    });
+  });
+
+  describe('addDimension', () => {
+    test('should add a main dimension when alternative is false', () => {
+      jest.spyOn(hcUtils, 'addMainDimension').mockReturnValue(false);
+      const dimension = { qDef: { cId: 'dim1' } };
+
+      handler.addDimension(dimension, false);
+
+      expect(hcUtils.isDimensionAlternative).toHaveBeenCalledWith(handler, dimension, false);
+      expect(addMainDimension).toHaveBeenCalledWith(handler, dimension, undefined);
+    });
+
+    test('should add an alternative dimension when alternative is true', () => {
+      const dimension = { qDef: { cId: 'dim2' } };
+      hcUtils.isDimensionAlternative.mockReturnValue(true);
+      hcUtils.addAlternativeDimension.mockReturnValue(dimension);
+
+      const result = handler.addDimension(dimension, true);
+
+      expect(hcUtils.isDimensionAlternative).toHaveBeenCalledWith(handler, dimension, true);
+      expect(hcUtils.addAlternativeDimension).toHaveBeenCalledWith(handler, dimension, undefined);
+      expect(result).toEqual(dimension);
+    });
+
+    test('should add a main dimension at a specific index', () => {
+      const dimension = { qDef: { cId: 'dim3' } };
+      hcUtils.isDimensionAlternative.mockReturnValue(false);
+
+      handler.addDimension(dimension, false, 1);
+
+      expect(hcUtils.isDimensionAlternative).toHaveBeenCalledWith(handler, dimension, false);
+      expect(addMainDimension).toHaveBeenCalledWith(handler, dimension, 1);
+    });
+
+    test('should add an alternative dimension at a specific index', () => {
+      const dimension = { qDef: { cId: 'dim4' } };
+      hcUtils.isDimensionAlternative.mockReturnValue(true);
+
+      handler.addDimension(dimension, true, 2);
+
+      expect(hcUtils.isDimensionAlternative).toHaveBeenCalledWith(handler, dimension, true);
+      expect(hcUtils.addAlternativeDimension).toHaveBeenCalledWith(handler, dimension, 2);
+    });
+
+    test('should initialize the dimension before adding', () => {
+      const dimension = { qDef: { cId: 'dim5' } };
+      const initializedDimension = { qDef: { cId: 'dim5', initialized: true } };
+      jest.spyOn(hcUtils, 'initializeField').mockReturnValue(initializedDimension);
+
+      handler.addDimension(dimension, false);
+
+      expect(hcUtils.initializeField).toHaveBeenCalledWith(dimension);
+      expect(addMainDimension).toHaveBeenCalledWith(handler, initializedDimension, undefined);
     });
   });
 
@@ -293,21 +347,25 @@ describe('HyperCube Handlers', () => {
       expect(handler.hcProperties.qMeasures).toEqual([{ qDef: { cId: 'meas1' } }]);
       expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures).toEqual([
         { qDef: { cId: 'altMeas1' } },
-        {
-          qDef: { cId: 'meas2' },
-        },
+        { qDef: { cId: 'altMeas2' } },
+        { qDef: { cId: 'meas2' } },
       ]);
     });
   });
 
   describe('removeMeasures', () => {
     beforeEach(() => {
-      properties.qHyperCubeDef.qMeasures = [{ id: 'meas1' }, { id: 'meas2' }, { id: 'meas3' }];
+      properties.qHyperCubeDef.qMeasures = [
+        { qDef: { cId: 'meas1' } },
+        { qDef: { cId: 'meas2' } },
+        { qDef: { cId: 'meas3' } },
+      ];
       properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures = [
         { qDef: { cId: 'altMeas1' } },
         { qDef: { cId: 'altMeas2' } },
         { qDef: { cId: 'altMeas3' } },
       ];
+      properties.qHyperCubeDef.qInterColumnSortOrder = [0, 1, 2];
       handler.setProperties(properties);
     });
 
@@ -334,17 +392,22 @@ describe('HyperCube Handlers', () => {
 
       expect(result).toEqual([{ qDef: { cId: 'altMeas1' } }, { qDef: { cId: 'altMeas3' } }]);
       expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures).toEqual([{ qDef: { cId: 'altMeas2' } }]);
-      expect(handler.hcProperties.qMeasures).toEqual([{ id: 'meas1' }, { id: 'meas2' }, { id: 'meas3' }]);
+      expect(handler.hcProperties.qMeasures).toEqual([
+        { qDef: { cId: 'meas1' } },
+        { qDef: { cId: 'meas2' } },
+        { qDef: { cId: 'meas3' } },
+      ]);
     });
 
-    test('should return deleted measures in the order', async () => {
-      handler.hcProperties.qInterColumnSortOrder = [0, 1, 2];
+    test('should return deleted measures in the order when alternative is false', async () => {
+      properties.qHyperCubeDef.qInterColumnSortOrder = [0, 1, 2];
+      handler.setProperties(properties);
       const indexes = [1, 2];
 
       const result = await handler.removeMeasures(indexes, false);
 
-      expect(result).toEqual([{ id: 'meas2' }, { id: 'meas3' }]);
-      expect(handler.hcProperties.qMeasures).toEqual([{ id: 'meas1' }]);
+      expect(result).toEqual([{ qDef: { cId: 'meas2' } }, { qDef: { cId: 'meas3' } }]);
+      expect(handler.hcProperties.qMeasures).toEqual([{ qDef: { cId: 'meas1' } }]);
       expect(handler.hcProperties.qInterColumnSortOrder).toEqual([2]);
       expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures).toEqual([
         { qDef: { cId: 'altMeas1' } },
@@ -353,7 +416,7 @@ describe('HyperCube Handlers', () => {
       ]);
     });
 
-    test.only('should handle empty qMeasures', async () => {
+    test('should handle empty qMeasures', async () => {
       properties.qHyperCubeDef.qMeasures = [];
       handler.setProperties(properties);
       const indexes = [1];
@@ -365,77 +428,107 @@ describe('HyperCube Handlers', () => {
   });
 
   describe('removeDimensions', () => {
+    beforeEach(() => {
+      properties.qHyperCubeDef.qDimensions = [
+        { qDef: { cId: 'dim1' } },
+        { qDef: { cId: 'dim2' } },
+        { qDef: { cId: 'dim3' } },
+      ];
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [
+        { qDef: { cId: 'altDim1' } },
+        { qDef: { cId: 'altDim2' } },
+        { qDef: { cId: 'altDim3' } },
+      ];
+      properties.qHyperCubeDef.qInterColumnSortOrder = [0, 1, 2];
+      handler.setProperties(properties);
+    });
+
+    afterEach(() => {
+      handler.hcProperties = undefined;
+      jest.resetModules();
+      jest.clearAllMocks();
+    });
+
     test('should return an empty array if indexes is empty', async () => {
-      jest.spyOn(hcUtils, 'removeAlternativeDimension');
+      jest.doMock('../utils/hypercube-helper/remove-alternative-dimension', () => ({
+        removeAlternativeDimension: jest.fn().mockResolvedValue(),
+      }));
+      jest.doMock('../utils/hypercube-helper/remove-main-dimension', () => ({
+        removeMainDimension: jest.fn().mockResolvedValue(),
+      }));
+
+      const { removeMainDimension } = await import('../utils/hypercube-helper/remove-main-dimension');
+      const { removeAlternativeDimension } = await import('../utils/hypercube-helper/remove-alternative-dimension');
 
       const result = await handler.removeDimensions([], false);
 
-      expect(hcUtils.removeAlternativeDimension).not.toHaveBeenCalled();
-      expect(removeMainDimension).not.toHaveBeenCalled();
       expect(result).toEqual([]);
+      expect(removeAlternativeDimension).not.toHaveBeenCalled();
+      expect(removeMainDimension).not.toHaveBeenCalled();
     });
 
-    test('should call removeAlternativeDimension for each index if alternative is true', async () => {
+    test('should remove alternative dimensions when alternative is true', async () => {
       const indexes = [0, 1];
-      jest.spyOn(hcUtils, 'removeAlternativeDimension');
 
-      handler.setProperties(properties);
-      await handler.removeDimensions(indexes, true);
-
-      expect(hcUtils.removeAlternativeDimension).toHaveBeenCalledTimes(2);
-      expect(hcUtils.removeAlternativeDimension).toHaveBeenCalledWith(handler, 0);
-      expect(hcUtils.removeAlternativeDimension).toHaveBeenCalledWith(handler, 1);
-    });
-
-    test('should return deleted alternative dimensions if alternative is true', async () => {
-      const indexes = [1, 0];
-      jest.spyOn(hcUtils, 'removeAlternativeDimension');
-
-      handler.setProperties(properties);
       const result = await handler.removeDimensions(indexes, true);
 
       expect(result).toEqual([{ qDef: { cId: 'altDim1' } }, { qDef: { cId: 'altDim2' } }]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions).toEqual([{ qDef: { cId: 'altDim3' } }]);
+      expect(handler.hcProperties.qDimensions).toEqual([
+        { qDef: { cId: 'dim1' } },
+        { qDef: { cId: 'dim2' } },
+        { qDef: { cId: 'dim3' } },
+      ]);
     });
 
-    test('should call removeMainDimension for each index if alternative is false', async () => {
-      const indexes = [0, 2];
-      jest.spyOn(hcUtils, 'removeAlternativeDimension');
-
-      handler.setProperties(properties);
-      await handler.removeDimensions(indexes, false);
-
-      expect(removeMainDimension).toHaveBeenCalledTimes(2);
-      expect(removeMainDimension).toHaveBeenCalledWith(handler, 0);
-      expect(removeMainDimension).toHaveBeenCalledWith(handler, 2);
-    });
-
-    test('should return deleted dimensions in the original order if alternative is false', async () => {
-      const indexes = [1, 0];
-
-      handler.setProperties(properties);
-      const result = await handler.removeDimensions(indexes, false);
-
-      expect(result).toEqual([{ id: 'dim1' }, { id: 'dim2' }]);
-    });
-
-    test('should handle empty qDimensions', async () => {
-      handler.hcProperties.qDimensions = [];
-      const indexes = [0, 1];
+    test('should remove main dimensions when alternative is false', async () => {
+      const indexes = [2, 0];
 
       const result = await handler.removeDimensions(indexes, false);
 
-      expect(result).toEqual([]);
-      expect(removeMainDimension).not.toHaveBeenCalled();
+      expect(result).toEqual([{ qDef: { cId: 'dim1' } }, { qDef: { cId: 'dim3' } }]);
+      expect(handler.hcProperties.qDimensions).toEqual([{ qDef: { cId: 'dim2' } }]);
+      expect(handler.hcProperties.qInterColumnSortOrder).toEqual([0]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions).toEqual([
+        { qDef: { cId: 'altDim1' } },
+        { qDef: { cId: 'altDim2' } },
+        { qDef: { cId: 'altDim3' } },
+      ]);
     });
 
-    test('should handle empty qLayoutExclude.qHyperCubeDef.qDimensions', async () => {
-      handler.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions = [];
+    test('should handle empty alternative qDimensions', async () => {
+      jest.doMock('../utils/hypercube-helper/remove-alternative-dimension', () => ({
+        removeAlternativeDimension: jest.fn().mockResolvedValue(),
+      }));
+
+      const { removeAlternativeDimension } = await import('../utils/hypercube-helper/remove-alternative-dimension');
+
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [];
+      properties.qHyperCubeDef.qDimensions = [];
+      handler.setProperties(properties);
       const indexes = [0, 1];
 
       const result = await handler.removeDimensions(indexes, true);
 
       expect(result).toEqual([]);
-      expect(hcUtils.removeAlternativeDimension).not.toHaveBeenCalled();
+      expect(removeAlternativeDimension).not.toHaveBeenCalled();
+    });
+
+    test('should handle empty main qDimensions', async () => {
+      jest.doMock('../utils/hypercube-helper/remove-main-dimension', () => ({
+        removeMainDimension: jest.fn().mockResolvedValue(),
+      }));
+      const { removeMainDimension } = await import('../utils/hypercube-helper/remove-main-dimension');
+
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [];
+      properties.qHyperCubeDef.qDimensions = [];
+      handler.setProperties(properties);
+      const indexes = [0, 1];
+
+      const result = await handler.removeDimensions(indexes, false);
+
+      expect(result).toEqual([]);
+      expect(removeMainDimension).not.toHaveBeenCalled();
     });
   });
 });

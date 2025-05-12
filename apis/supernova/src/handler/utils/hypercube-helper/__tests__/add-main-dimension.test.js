@@ -1,15 +1,19 @@
-import addDimensionOrders from '../add-dimension-orders';
 import addMainDimension from '../add-main-dimension';
+import updateDimensionOrders from '../update-dimension-orders';
 
-jest.mock('../add-dimension-orders', () => jest.fn());
+jest.mock('../update-dimension-orders', () => jest.fn().mockReturnValue({ qDef: { cId: 'dim3' } }));
 
 describe('addMainDimension', () => {
   let self;
+  let index;
+  let newDimension;
 
   beforeEach(() => {
+    index = 1;
+    newDimension = { qDef: { cId: 'dim3' } };
     self = {
-      getDimensions: jest.fn(),
-      maxDimensions: jest.fn(),
+      getDimensions: jest.fn().mockReturnValue([{ qDef: { cId: 'dim1' } }, { qDef: { cId: 'dim2' } }]),
+      maxDimensions: jest.fn().mockReturnValue(3),
     };
   });
 
@@ -18,45 +22,36 @@ describe('addMainDimension', () => {
   });
 
   test('should call updateDimensionOrders if dimensions are below the maximum limit', () => {
-    self.getDimensions.mockReturnValue([{ id: 'dim1' }]);
-    self.maxDimensions.mockReturnValue(3);
-    const dimension = { id: 'dim2' };
-    const index = 1;
+    const result = addMainDimension(self, newDimension, index);
 
-    addMainDimension(self, dimension, index);
-
-    expect(addDimensionOrders).toHaveBeenCalledWith(self, dimension, [{ id: 'dim1' }], index);
+    expect(result).toEqual(newDimension);
+    expect(updateDimensionOrders).toHaveBeenCalledWith(self, newDimension, index);
   });
 
   test('should return a resolved promise if dimensions are at the maximum limit', async () => {
-    self.getDimensions.mockReturnValue([{ id: 'dim1' }, { id: 'dim2' }]);
     self.maxDimensions.mockReturnValue(2);
-    const dimension = { id: 'dim3' };
 
-    const result = await addMainDimension(self, dimension);
+    const result = await addMainDimension(self, newDimension, index);
 
-    expect(addDimensionOrders).not.toHaveBeenCalled();
-    expect(result).toBeUndefined();
+    expect(result).toEqual(newDimension);
+    expect(updateDimensionOrders).not.toHaveBeenCalled();
   });
 
   test('should handle empty dimensions array', () => {
     self.getDimensions.mockReturnValue([]);
-    self.maxDimensions.mockReturnValue(3);
-    const dimension = { id: 'dim1' };
 
-    addMainDimension(self, dimension);
+    const result = addMainDimension(self, newDimension, index);
 
-    expect(addDimensionOrders).toHaveBeenCalledWith(self, dimension, [], 0);
+    expect(result).toEqual(newDimension);
+    expect(updateDimensionOrders).toHaveBeenCalledWith(self, newDimension, index);
   });
 
-  test('should handle edge case where maxDimensions is zero', async () => {
-    self.getDimensions.mockReturnValue([]);
-    self.maxDimensions.mockReturnValue(0);
-    const dimension = { id: 'dim1' };
+  test('should handle dimension when index is undefined', async () => {
+    index = undefined;
 
-    const result = await addMainDimension(self, dimension);
+    const result = await addMainDimension(self, newDimension, index);
 
-    expect(addDimensionOrders).not.toHaveBeenCalled();
-    expect(result).toBeUndefined();
+    expect(result).toEqual(newDimension);
+    expect(updateDimensionOrders).toHaveBeenCalledWith(self, newDimension, 2);
   });
 });
