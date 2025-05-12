@@ -104,6 +104,26 @@
     "comment": "Verb, typically button label",
     "version": "2COCF0f9Drb54EThSLR/WQ=="
   },
+  "Object.FilterLabel.All": {
+    "value": "ALLA",
+    "comment": "Label for when a chart filter has been set to exclude global selections in a field, meaning all field values will be included. (tew 220411)",
+    "version": "wQTJb4aRJpK6/wSEjd58BA=="
+  },
+  "Object.FilterLabel.Exclude": {
+    "value": "INTE",
+    "comment": "Label for when a chart filter has been set to exclude the filter values. (tew 220411)",
+    "version": "CjjzxyVVO0KXNHP89nFLAg=="
+  },
+  "Object.FilterLabel.Unknown": {
+    "value": "Okänt",
+    "comment": "Label for when a chart filter could not be labeled. (tew 220411)",
+    "version": "ioRl0mGC3yACYu/4GTN6Iw=="
+  },
+  "Object.FiltersApplied": {
+    "value": "Använda filter:",
+    "comment": "Title for applied filters on a chart.  (tew 220411)",
+    "version": "mLoAoFbYrbwDA9qTvJa02Q=="
+  },
   "Object.Listbox.Alternative": {
     "value": "Alternativ",
     "comment": "Alternative state of an item in listbox(buy20180905)",
