@@ -341,4 +341,28 @@ describe('enigma-mocker', () => {
       });
     });
   });
+
+  describe('getListObject', () => {
+    test('should return a model that maps to corresponding genericObject', async () => {
+      const app = await createEnigmaMocker([
+        {
+          getLayout: {
+            qInfo: { qId: 'TestList' },
+            qAppObjectList: {
+              qItems: [],
+            },
+          },
+        },
+      ]);
+
+      const listObjectModel = await app.getListObject({ qInfo: { qId: 'TestList' } });
+      expect(listObjectModel.id).toEqual('TestList');
+    });
+
+    test('should return undefined if no mock exist', async () => {
+      const app = await createEnigmaMocker(genericObjects);
+      const listObjectModel = await app.getListObject({ qInfo: { qId: 'TestList' } });
+      expect(listObjectModel).toBe(undefined);
+    });
+  });
 });

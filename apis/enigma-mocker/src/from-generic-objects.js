@@ -16,7 +16,7 @@ export default function fromGenericObjects(genericObjects, options = {}) {
     destroySessionObject: async () => {},
     getObject,
     getAppLayout,
-    getListObject: async () => {},
+    getListObject: async (props) => getObject(props.qInfo?.qId),
   };
 
   return Promise.resolve(app);
