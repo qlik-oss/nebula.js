@@ -77,7 +77,7 @@ function createWithHooks(generator, opts, galaxy) {
       deviceType: galaxy.deviceType,
       theme: undefined,
       translator: galaxy.translator,
-      navigation: opts.navigation,
+      navigation: opts.navigation ?? galaxy?.sense?.navigation,
       // --- dynamic values ---
       layout: {},
       appLayout: {},
