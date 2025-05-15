@@ -184,7 +184,6 @@ const mergeConfigs = (base, c) => ({
   flags: mergeObj(base.flags, c.flags),
   hostConfig: c.hostConfig || base.hostConfig,
   anything: mergeObj(base.anything, c.anything),
-  sense: mergeObj(base?.sense, c?.sense),
 });
 
 /**
@@ -249,7 +248,6 @@ function nuked(configuration = {}) {
         hostConfig: configuration.hostConfig,
         /** @type {object} */
         anything: configuration.anything,
-        sense: configuration?.sense,
       },
       theme: appTheme.externalAPI,
       translator: locale.translator,

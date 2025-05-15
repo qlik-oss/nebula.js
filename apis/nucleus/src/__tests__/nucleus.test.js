@@ -131,7 +131,6 @@ describe('nucleus', () => {
       deviceType: 'desktop',
       hostConfig: 'HOST',
       translator,
-      sense: {},
     });
   });
 
