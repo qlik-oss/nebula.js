@@ -67,6 +67,22 @@ class DataPropertyHandler {
     throw notSupportedError;
   }
 
+  static removeDimension() {
+    throw notSupportedError;
+  }
+
+  static removeDimensions() {
+    throw notSupportedError;
+  }
+
+  static replaceDimension() {
+    throw notSupportedError;
+  }
+
+  static getSorting() {
+    throw notSupportedError;
+  }
+
   createLibraryDimension(id, defaults) {
     let dimension = merge({}, this.dimensionProperties || {}, defaults || {});
 
@@ -143,6 +159,14 @@ class DataPropertyHandler {
     return this.addDimension(dimension, true);
   }
 
+  minDimensions() {
+    if (typeof this.dimensionDefinition.min === 'function') {
+      return this.dimensionDefinition.min.call(null, this.properties, this);
+    }
+
+    return this.dimensionDefinition.min || 0;
+  }
+
   maxDimensions(decrement = 0) {
     const measureLength = this.getMeasures().length - decrement;
 
@@ -152,6 +176,10 @@ class DataPropertyHandler {
     }
 
     return Number.isNaN(+this.dimensionDefinition.max) ? 10000 : this.dimensionDefinition.max;
+  }
+
+  canAddDimension() {
+    return this.getDimensions().length < this.maxDimensions();
   }
 
   // ---------------------------------------
@@ -185,6 +213,18 @@ class DataPropertyHandler {
     throw notSupportedError;
   }
 
+  static removeMeasure() {
+    throw notSupportedError;
+  }
+
+  static removeMeasures() {
+    throw notSupportedError;
+  }
+
+  static replaceMeasure() {
+    throw notSupportedError;
+  }
+
   createExpressionMeasure(expression, label, defaults) {
     const measure = merge({}, this.measureProperties || {}, defaults || {});
 
@@ -215,7 +255,7 @@ class DataPropertyHandler {
     measure.qDef = measure.qDef ?? {};
     measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
 
-    if (isEnabled('MASTER_MEASURE_FORMAT')) {
+    if (isEnabled('MASTER_measureURE_FORMAT')) {
       useMasterNumberFormat(measure.qDef);
     }
 
@@ -258,14 +298,39 @@ class DataPropertyHandler {
     return this.addMeasure(measure, true);
   }
 
-  maxMeasures(decrement) {
-    const decr = decrement || 0;
+  minMeasures() {
+    if (typeof this.measureDefinition.min === 'function') {
+      return this.measureDefinition.min.call(null, this.properties, this);
+    }
+    return this.measureDefinition.min || 0;
+  }
+
+  maxMeasures(decrement = 0) {
     if (typeof this.measureDefinition.max === 'function') {
-      const dimLength = this.getDimensions().length - decr;
+      const dimLength = this.getDimensions().length - decrement;
       const measureParams = isEnabled('PS_21371_ANALYSIS_TYPES') ? [dimLength, this.properties] : [dimLength];
       return this.measureDefinition.max.apply(null, measureParams);
     }
     return Number.isNaN(+this.measureDefinition.max) ? 10000 : this.measureDefinition.max;
+  }
+
+  canAddMeasure() {
+    return this.getMeasures().length < this.maxMeasures();
+    //			return this.getMeasures().length < 10000;
+  }
+
+  // ---------------------------------------
+  // ---------------OTHERS------------------
+  // ---------------------------------------
+
+  updateGlobalChangeListeners(layout) {
+    if (this.globalChangeListeners) {
+      (this.globalChangeListeners || []).forEach((func) => {
+        if (func && typeof func === 'function') {
+          func(this.properties, this, { layout });
+        }
+      });
+    }
   }
 }
 

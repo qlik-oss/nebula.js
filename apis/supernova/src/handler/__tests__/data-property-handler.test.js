@@ -177,4 +177,130 @@ describe('DataPropertyHandler', () => {
       expect(result.qDef.qLabel).toBeUndefined();
     });
   });
+
+  describe('maxMeasures', () => {
+    let galaxy;
+
+    beforeEach(() => {
+      galaxy = {
+        flags: {
+          isEnabled: jest.fn().mockReturnValue(false),
+        },
+      };
+      handler = new HyperCubeHandler({
+        measureDefinition: { max: 0 },
+        dimensionDefinition: { max: 0 },
+      });
+      handler.getDimensions = jest.fn().mockReturnValue([{ qDef: { cId: 'dim1' } }, { qDef: { cId: 'dim2' } }]);
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    test('should return the result of measureDefinition.max when it is a function', () => {
+      handler.measureDefinition.max = jest.fn().mockReturnValue(5);
+
+      const result = handler.maxMeasures();
+      expect(result).toBe(5);
+    });
+
+    test('should pass properties to measureDefinition.max when feature flag is enabled', () => {
+      handler.measureDefinition.max = jest.fn().mockReturnValue(5);
+      galaxy.flags.isEnabled.mockReturnValue(true);
+      handler.properties = { someProperty: 'value' };
+
+      const result = handler.maxMeasures();
+      expect(result).toBe(5);
+    });
+
+    test('should return measureDefinition.max when it is a valid number', () => {
+      handler.measureDefinition.max = 8;
+
+      const result = handler.maxMeasures();
+      expect(result).toBe(8);
+    });
+
+    test('should return 10000 when measureDefinition.max is NaN', () => {
+      handler.measureDefinition.max = NaN;
+
+      const result = handler.maxMeasures();
+      expect(result).toBe(10000);
+    });
+
+    test('should decrement the dimension length when decrement is provided', () => {
+      handler.measureDefinition.max = jest.fn().mockReturnValue(4);
+
+      const result = handler.maxMeasures(1);
+      expect(result).toBe(4);
+    });
+
+    test('should return 10000 when measureDefinition.max is not defined', () => {
+      handler.measureDefinition.max = undefined;
+
+      const result = handler.maxMeasures();
+      expect(result).toBe(10000);
+    });
+  });
+
+  describe('maxDimensions', () => {
+    let galaxy;
+
+    beforeEach(() => {
+      galaxy = {
+        flags: {
+          isEnabled: jest.fn().mockReturnValue(false),
+        },
+      };
+      handler = new HyperCubeHandler({
+        measureDefinition: { max: 0 },
+        dimensionDefinition: { max: 0 },
+      });
+      handler.getMeasures = jest.fn().mockReturnValue([{ qDef: { cId: 'meas1' } }, { qDef: { cId: 'meas2' } }]);
+    });
+
+    test('should return the result of dimensionDefinition.max when it is a function', () => {
+      handler.dimensionDefinition.max = jest.fn().mockReturnValue(5);
+
+      const result = handler.maxDimensions();
+      expect(result).toBe(5);
+    });
+
+    test('should pass properties to dimensionDefinition.max when feature flag is enabled', () => {
+      handler.dimensionDefinition.max = jest.fn().mockReturnValue(10);
+      galaxy.flags.isEnabled.mockReturnValue(true);
+      handler.properties = { someProperty: 'value' };
+
+      const result = handler.maxDimensions();
+      expect(result).toBe(10);
+    });
+
+    test('should return dimensionDefinition.max when it is a valid number', () => {
+      handler.dimensionDefinition.max = 8;
+
+      const result = handler.maxDimensions();
+      expect(result).toBe(8);
+    });
+
+    test('should return 10000 when dimensionDefinition.max is NaN', () => {
+      handler.dimensionDefinition.max = NaN;
+
+      const result = handler.maxDimensions();
+      expect(result).toBe(10000);
+    });
+
+    test('should decrement the measure length when decrement is provided', () => {
+      handler.dimensionDefinition.max = jest.fn().mockReturnValue(4);
+
+      const result = handler.maxDimensions(1);
+      expect(result).toBe(4);
+    });
+
+    test('should return 10000 when dimensionDefinition.max is not defined', () => {
+      handler.dimensionDefinition.max = undefined;
+
+      const result = handler.maxDimensions();
+      expect(result).toBe(10000);
+    });
+  });
 });
