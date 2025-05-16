@@ -3,6 +3,8 @@ import getValue from '../../../../../conversion/src/utils';
 // eslint-disable-next-line import/no-relative-packages
 import arrayUtil from '../../../../../conversion/src/array-util';
 import { TOTAL_MAX } from '../constants';
+// eslint-disable-next-line import/no-relative-packages
+import uid from '../../../../../nucleus/src/object/uid';
 
 export const notSupportedError = new Error('Not supported in this object, need to implement in subclass.');
 
@@ -88,12 +90,39 @@ export function addDimensionToColumnSortOrder(self, dimensions, index) {
 }
 
 export function addDimensionToColumnOrder(self, dimension) {
-  if (typeof self.dimensionDefinition.add === 'function') {
+  if (dimension && typeof self.dimensionDefinition.add === 'function') {
     return Promise.resolve(self.dimensionDefinition.add.call(null, dimension, self.properties, self)).then(
       () => dimension
     );
   }
   return undefined;
+}
+
+export function replaceDimensionOrder(self, index, dimension) {
+  const dimensions = self.getDimensions();
+  const replacedDimension = dimensions[index];
+
+  const newDimension = {
+    ...dimension,
+    qDef: {
+      ...dimension.qDef,
+      cId: uid(),
+    },
+  };
+
+  dimensions[index] = newDimension;
+  if (newDimension && typeof self.dimensionDefinition.replace === 'function') {
+    self.dimensionDefinition.replace.call(null, newDimension, replacedDimension, index, self.properties, self);
+  }
+
+  return newDimension;
+}
+
+export function insertDimensionAtIndex(self, dimension, alternative, currentDimensions, index = undefined) {
+  const dimensions = self.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions;
+  const idx = index ?? dimensions.length;
+  dimensions.splice(idx, 0, dimension);
+  return Promise.resolve(dimension);
 }
 
 export function removeDimensionFromColumnSortOrder(self, index) {
@@ -102,7 +131,7 @@ export function removeDimensionFromColumnSortOrder(self, index) {
 
 export function removeDimensionFromColumnOrder(self, index) {
   const [dimension] = self.hcProperties.qDimensions.splice(index, 1);
-  if (typeof self.dimensionDefinition.remove === 'function') {
+  if (dimension && typeof self.dimensionDefinition.remove === 'function') {
     return Promise.resolve(self.dimensionDefinition.remove.call(null, dimension, self.properties, self, index));
   }
 
@@ -156,7 +185,7 @@ export function addMeasureToColumnSortOrder(self, measures) {
 }
 
 export function addMeasureToColumnOrder(self, measure) {
-  if (typeof self.measureDefinition.add === 'function') {
+  if (measure && typeof self.measureDefinition.add === 'function') {
     return Promise.resolve(self.measureDefinition.add.call(null, measure, self.properties, self));
   }
   return undefined;
@@ -200,7 +229,7 @@ export function removeMeasureFromColumnSortOrder(self, index) {
 
 export function removeMeasureFromColumnOrder(self, index) {
   const [measure] = self.hcProperties.qMeasures.splice(index, 1);
-  if (typeof self.measureDefinition.remove === 'function') {
+  if (measure && typeof self.measureDefinition.remove === 'function') {
     return Promise.resolve(self.measureDefinition.remove.call(null, measure, self.properties, self, index));
   }
   return undefined;
@@ -208,4 +237,25 @@ export function removeMeasureFromColumnOrder(self, index) {
 
 export function removeAltMeasureByIndex(self, index) {
   return self.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures.splice(index, 1);
+}
+
+export function replaceMeasureToColumnOrder(self, index, measure) {
+  const measures = self.getMeasures();
+  const replacedMeasure = measures[index];
+
+  const newMeasure = {
+    ...measure,
+    qDef: {
+      ...measure.qDef,
+      cId: uid(),
+    },
+  };
+
+  measures[index] = newMeasure;
+
+  if (newMeasure && typeof self.measureDefinition.replace === 'function') {
+    self.dimensionDefinition.replace.call(null, newMeasure, replacedMeasure, index, self.properties, self);
+  }
+
+  return newMeasure;
 }

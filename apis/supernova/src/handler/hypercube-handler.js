@@ -11,6 +11,7 @@ import removeMainDimension from './utils/hypercube-helper/remove-main-dimension'
 import removeAlternativeMeasure from './utils/hypercube-helper/remove-alternative-measure';
 import removeMainMeasure from './utils/hypercube-helper/remove-main-measure';
 import removeAlternativeDimension from './utils/hypercube-helper/remove-alternative-dimension';
+import replaceDimensionOrder from './utils/hypercube-helper/replace-dimension-order';
 
 class HyperCubeHandler extends DataPropertyHandler {
   constructor(opts) {
@@ -34,12 +35,26 @@ class HyperCubeHandler extends DataPropertyHandler {
     hcUtils.setDefaultProperties(this);
     hcUtils.setPropForLineChartWithForecast(this);
 
-    // Set auto-sort property (compatibility 0.85 -> 0.9),
-    // can probably be removed in 1.0
+    // Set auto-sort property (compatibility 0.85 -> 0.9), can probably be removed in 1.0
     this.hcProperties.qDimensions = hcUtils.setFieldProperties(this.hcProperties.qDimensions);
     this.hcProperties.qMeasures = hcUtils.setFieldProperties(this.hcProperties.qMeasures);
     return {};
   }
+
+  // canColorBy(hyperCube, colorByExplicit) {
+  //   // TODO: don't fake hypercube. After || is for combochart context
+  //   const fakeHyperCube = hyperCube || { qHyperCubeDef: this.hcProperties || this.properties.qHyperCubeDef };
+
+  //   const visualization = this.layout ? this.layout.visualization : null;
+  //   const req =
+  //     fakeHyperCube.qHyperCubeDef.qDimensions.length >= this.minDimensions() &&
+  //     fakeHyperCube.qHyperCubeDef.qMeasures.length >= this.minMeasures();
+
+  //   if (this.colorSupport.colorBy.isSupported(visualization) || colorByExplicit) {
+  //     return req && this.layout && this.layout.color ? HyperCubeHandler.canColorBy(fakeHyperCube, visualization) : {};
+  //   }
+  //   return false;
+  // }
 
   // ----------------------------------
   // ----------- DIMENSIONS -----------
@@ -65,7 +80,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   addDimension(dimension, alternative, idx) {
     const dim = initializeField(dimension);
 
-    if (hcUtils.isDimensionAlternative(this, dim, alternative)) {
+    if (hcUtils.isDimensionAlternative(this, alternative)) {
       return hcUtils.addAlternativeDimension(this, dim, idx);
     }
 
@@ -134,6 +149,85 @@ class HyperCubeHandler extends DataPropertyHandler {
     return deletedDimensions;
   }
 
+  replaceDimension(index, dimension) {
+    return this.autoSortDimension(dimension).then(() => replaceDimensionOrder(this, index, dimension));
+  }
+
+  // reinsertDimension(dimension, alternative, idx) {
+  //   const dimensions = this.getDimensions();
+  //   const self = this;
+
+  //   if (!dimension.qDef.cId) {
+  //     dimension.qDef.cId = util.generateId();
+  //   }
+  //   if (alternative) {
+  //     idx = idx !== undefined ? idx : this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions.length;
+  //     this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions.splice(idx, 0, dimension);
+
+  //     if (typeof self.dimensionDefinition.move === 'function') {
+  //       return Deferred.when(self.dimensionDefinition.move.call(self, dimension, self.properties, self)).then(
+  //         () => dimension
+  //       );
+  //     }
+  //   } else if (dimensions.length < this.maxDimensions()) {
+  //     idx = idx !== undefined ? idx : dimensions.length;
+  //     dimensions.splice(idx, 0, dimension);
+
+  //     arrayUtils.indexAdded(
+  //       self.hcProperties.qInterColumnSortOrder,
+  //       typeof idx !== 'undefined' ? idx : dimensions.length - 1
+  //     );
+
+  //     if (typeof self.dimensionDefinition.move === 'function') {
+  //       return Deferred.when(self.dimensionDefinition.move.call(self, dimension, self.properties, self)).then(
+  //         () => dimension
+  //       );
+  //     }
+  //   } else if (dimensions.length < TOTAL_MAX_DIMENSIONS) {
+  //     idx = this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions.length;
+  //     this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions.splice(idx, 0, dimension);
+  //   }
+  //   return Deferred.resolve(dimension);
+  // }
+
+  // moveDimension(fromIndex, toIndex) {
+  //   const dimensions = this.getDimensions();
+  //   const disabledDimensions = this.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions;
+  //   let disabledFromIdx;
+  //   let disabledToIdx;
+  //   let dimension;
+
+  //   if (fromIndex < dimensions.length && toIndex < dimensions.length) {
+  //     // Moving within enabled measures
+  //     arrayUtils.move(dimensions, fromIndex, toIndex);
+  //   } else if (fromIndex < dimensions.length && toIndex >= dimensions.length) {
+  //     // Moving from enabled to disabled
+  //     disabledToIdx = toIndex - dimensions.length;
+
+  //     dimension = disabledDimensions.splice(0, 1)[0];
+  //     dimensions.push(dimension);
+
+  //     dimension = dimensions.splice(fromIndex, 1)[0];
+  //     disabledDimensions.splice(disabledToIdx, 0, dimension);
+  //   } else if (fromIndex >= dimensions.length && toIndex < dimensions.length) {
+  //     // Moving from disabled to enabled
+  //     disabledFromIdx = fromIndex - dimensions.length;
+
+  //     dimension = dimensions.splice(dimensions.length - 1, 1)[0];
+  //     disabledDimensions.splice(0, 0, dimension);
+
+  //     dimension = disabledDimensions.splice(disabledFromIdx + 1, 1)[0];
+  //     dimensions.splice(toIndex, 0, dimension);
+  //   } else {
+  //     // Moving within disabled
+  //     disabledFromIdx = fromIndex - dimensions.length;
+  //     disabledToIdx = toIndex - dimensions.length;
+  //     arrayUtils.move(disabledDimensions, disabledFromIdx, disabledToIdx);
+  //   }
+
+  //   return Deferred.resolve(dimension);
+  // }
+
   autoSortDimension(dimension) {
     if (dimension.qLibraryId) {
       return getAutoSortLibraryDimension(this, dimension);
@@ -175,7 +269,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   // eslint-disable-next-line class-methods-use-this
   autoSortMeasure(measure) {
-    const meas = { ...measure };
+    const meas = measure;
     meas.qSortBy = {
       qSortByLoadOrder: 1,
       qSortByNumeric: -1,
@@ -238,9 +332,112 @@ class HyperCubeHandler extends DataPropertyHandler {
     return deletedMeasures;
   }
 
+  replaceMeasure(index, measure) {
+    return this.autoSortMeasure(measure).then(() => hcUtils.replaceMeasureToColumnOrder(this, index, measure));
+  }
+
+  // reinsertMeasure(measure, alternative, idx) {
+  //   const measures = this.getMeasures();
+  //   const self = this;
+
+  //   if (!measure.qDef.cId) {
+  //     measure.qDef.cId = util.generateId();
+  //   }
+
+  //   if (alternative) {
+  //     idx = idx !== undefined ? idx : this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures.length;
+  //     this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures.splice(idx, 0, measure);
+  //   } else {
+  //     idx = idx !== undefined ? idx : measures.length;
+  //     if (measures.length < this.maxMeasures()) {
+  //       measures.splice(idx, 0, measure);
+  //       arrayUtils.indexAdded(
+  //         self.hcProperties.qInterColumnSortOrder,
+  //         self.getDimensions().length + measures.length - 1
+  //       );
+  //       if (typeof self.measureDefinition.move === 'function') {
+  //         return Deferred.when(self.measureDefinition.move.call(null, measure, self.properties, self, true)).then(
+  //           () => measure
+  //         );
+  //       }
+  //     } else if (measures.length < TOTAL_MAX_MEASURES) {
+  //       idx = this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures.length;
+  //       this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures.splice(idx, 0, measure);
+  //     }
+  //   }
+  //   return Deferred.resolve(measure);
+  // }
+
+  // moveMeasure(fromIndex, toIndex) {
+  //   const measures = this.getMeasures();
+  //   const disabledMeasures = this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures;
+  //   let disabledFromIdx;
+  //   let disabledToIdx;
+  //   let measure;
+
+  //   if (fromIndex < measures.length && toIndex < measures.length) {
+  //     // Moving within enabled measures
+  //     arrayUtils.move(measures, fromIndex, toIndex);
+  //   } else if (fromIndex < measures.length && toIndex >= measures.length) {
+  //     // Moving from enabled to disabled
+  //     disabledToIdx = toIndex - measures.length;
+
+  //     measure = disabledMeasures.splice(0, 1)[0];
+  //     measures.push(measure);
+
+  //     measure = measures.splice(fromIndex, 1)[0];
+  //     disabledMeasures.splice(disabledToIdx, 0, measure);
+  //   } else if (fromIndex >= measures.length && toIndex < measures.length) {
+  //     // Moving from disabled to enabled
+  //     disabledFromIdx = fromIndex - measures.length;
+
+  //     measure = measures.splice(measures.length - 1, 1)[0];
+  //     disabledMeasures.splice(0, 0, measure);
+
+  //     measure = disabledMeasures.splice(disabledFromIdx + 1, 1)[0];
+  //     measures.splice(toIndex, 0, measure);
+  //   } else {
+  //     // Moving within disabled
+  //     disabledFromIdx = fromIndex - measures.length;
+  //     disabledToIdx = toIndex - measures.length;
+  //     arrayUtils.move(disabledMeasures, disabledFromIdx, disabledToIdx);
+  //   }
+
+  //   return Deferred.resolve(measure);
+  // }
+
   // ----------------------------------
   // ------------ OTHERS---- ----------
   // ----------------------------------
+
+  setSorting(ar) {
+    if (ar && ar.length === this.hcProperties.qInterColumnSortOrder.length) {
+      this.hcProperties.qInterColumnSortOrder = ar;
+    }
+  }
+
+  getSorting() {
+    return this.hcProperties.qInterColumnSortOrder;
+  }
+
+  changeSorting(fromIdx, toIdx) {
+    utils.move(this.hcProperties.qInterColumnSortOrder, fromIdx, toIdx);
+  }
+
+  IsHCInStraightMode() {
+    return this.hcProperties.qMode === 'S';
+  }
+
+  setHCEnabled(value) {
+    // this flag indicate whether we enabled HC modifier and have at least one script
+    if (this.hcProperties) {
+      this.hcProperties.isHCEnabled = value;
+    }
+  }
+
+  getDynamicScripts() {
+    return this.hcProperties?.qDynamicScript || [];
+  }
 
   getFilters() {
     return this.properties?.filters ?? [];
