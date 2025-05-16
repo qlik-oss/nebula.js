@@ -138,7 +138,7 @@ describe('HyperCube Handlers', () => {
 
       handler.addDimension(dimension, true, index).then((result) => {
         expect(hcUtils.isDimensionAlternative).toHaveBeenCalledWith(handler, true);
-        expect(hcUtils.addAlternativeDimension).toHaveBeenCalledWith(handler, index);
+        expect(hcUtils.addAlternativeDimension).toHaveBeenCalledWith(handler, dimension, index);
         expect(result).toEqual(dimension);
       });
     });

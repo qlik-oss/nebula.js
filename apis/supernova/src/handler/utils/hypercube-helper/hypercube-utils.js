@@ -102,7 +102,7 @@ export function removeDimensionFromColumnSortOrder(self, index) {
 
 export function removeDimensionFromColumnOrder(self, index) {
   const [dimension] = self.hcProperties.qDimensions.splice(index, 1);
-  if (typeof self.dimensionDefinition.remove === 'function') {
+  if (dimension && typeof self.dimensionDefinition.remove === 'function') {
     return Promise.resolve(self.dimensionDefinition.remove.call(null, dimension, self.properties, self, index));
   }
 
