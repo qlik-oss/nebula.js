@@ -63,6 +63,15 @@ export function setPropForLineChartWithForecast(self) {
   }
 }
 
+export function getDeletedFields(fields, indexes) {
+  // Keep the original deleted order
+  return fields.filter((_, idx) => indexes.includes(idx));
+}
+
+export function getRemainedFields(fields, indexes) {
+  return fields.filter((_, idx) => !indexes.includes(idx));
+}
+
 // ----------------------------------
 // ----------- DIMENSIONS -----------
 // ----------------------------------
@@ -74,29 +83,30 @@ export function addAlternativeDimension(self, dimension, index = undefined) {
   return Promise.resolve(dimension);
 }
 
-export function insertMainDimension(self, dimension, dimensions, idx) {
-  dimensions.splice(idx, 0, dimension);
-
-  return self.autoSortDimension(dimension).then(() => {
-    arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, self.getDimensions().length + dimension.length - 1);
-
-    if (typeof self.dimensionDefinition.add === 'function') {
-      return Promise.resolve(self.dimensionDefinition.add.call(null, dimension, self.properties, self));
-    }
-
-    return dimension;
-  });
+export function addDimensionToColumnSortOrder(self, dimensions, index) {
+  arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, index ?? dimensions.length - 1);
 }
 
-export function addSortedDimension(self, dimension, dimensions, idx) {
-  const dimIdx = idx ?? dimensions.length;
-  dimensions.splice(dimIdx, 0, dimension);
+export function addDimensionToColumnOrder(self, dimension) {
+  if (typeof self.dimensionDefinition.add === 'function') {
+    return Promise.resolve(self.dimensionDefinition.add.call(null, dimension, self.properties, self)).then(
+      () => dimension
+    );
+  }
+  return undefined;
+}
 
-  return self.autoSortDimension(dimension).then(() => {
-    arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, dimIdx ?? dimensions.length - 1);
+export function removeDimensionFromColumnSortOrder(self, index) {
+  arrayUtil.indexRemoved(self.hcProperties.qInterColumnSortOrder, index);
+}
 
-    return self.dimensionDefinition.add?.call(self, dimension, self.properties, self) || Promise.resolve(dimension);
-  });
+export function removeDimensionFromColumnOrder(self, index) {
+  const [dimension] = self.hcProperties.qDimensions.splice(index, 1);
+  if (dimension && typeof self.dimensionDefinition.remove === 'function') {
+    return Promise.resolve(self.dimensionDefinition.remove.call(null, dimension, self.properties, self, index));
+  }
+
+  return undefined;
 }
 
 export function isTotalDimensionsExceeded(self, dimensions) {
@@ -109,8 +119,14 @@ export function isDimensionAlternative(self, alternative) {
   return alternative || (self.maxDimensions() <= dimensions.length && dimensions.length < TOTAL_MAX.DIMENSIONS);
 }
 
-export async function addActiveDimension(self, dimension, existingDimensions, addedDimensions, addedActive) {
-  const initialLength = existingDimensions.length;
+export async function addActiveDimension(
+  self,
+  dimension,
+  initialLength,
+  existingDimensions,
+  addedDimensions,
+  addedActive
+) {
   await self.autoSortDimension(dimension);
 
   // Update sorting order
@@ -135,18 +151,15 @@ export function addAlternativeMeasure(self, measure, index = undefined) {
   return Promise.resolve(measure);
 }
 
-export function insertMainMeasure(self, measure, measures, idx) {
-  measures.splice(idx, 0, measure);
+export function addMeasureToColumnSortOrder(self, measures) {
+  arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, self.getDimensions().length + measures.length - 1);
+}
 
-  return self.autoSortMeasure(measure).then(() => {
-    arrayUtil.indexAdded(self.hcProperties.qInterColumnSortOrder, self.getDimensions().length + measure.length - 1);
-
-    if (typeof self.measureDefinition.add === 'function') {
-      return Promise.resolve(self.measureDefinition.add.call(null, measure, self.properties, self));
-    }
-
-    return measure;
-  });
+export function addMeasureToColumnOrder(self, measure) {
+  if (typeof self.measureDefinition.add === 'function') {
+    return Promise.resolve(self.measureDefinition.add.call(null, measure, self.properties, self));
+  }
+  return undefined;
 }
 
 export function isTotalMeasureExceeded(self, measures) {
@@ -179,4 +192,20 @@ export function addActiveMeasure(self, measure, existingMeasures, addedMeasures,
   }
 
   return Promise.resolve(addedMeasures);
+}
+
+export function removeMeasureFromColumnSortOrder(self, index) {
+  arrayUtil.indexRemoved(self.hcProperties.qInterColumnSortOrder, self.getDimensions().length + index);
+}
+
+export function removeMeasureFromColumnOrder(self, index) {
+  const [measure] = self.hcProperties.qMeasures.splice(index, 1);
+  if (measure && typeof self.measureDefinition.remove === 'function') {
+    return Promise.resolve(self.measureDefinition.remove.call(null, measure, self.properties, self, index));
+  }
+  return undefined;
+}
+
+export function removeAltMeasureByIndex(self, index) {
+  return self.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures.splice(index, 1);
 }
