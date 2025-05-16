@@ -247,6 +247,9 @@ export default function viz({
         cellRef.current.setModel(newModel);
       }
     },
+    async getContextMenu(menu, event, menuBuilder, features, context) {
+      return cellRef.current.getContextMenu(menu, event, menuBuilder, features, context);
+    },
     /**
      * Whether or not the chart has the data view toggled on.
      * @type {boolean}
