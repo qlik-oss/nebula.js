@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.15.0](https://github.com/qlik-oss/nebula.js/compare/v5.14.0...v5.15.0) (2025-05-19)
+
+### Bug Fixes
+
+- add return type for viz.destroy ([#1744](https://github.com/qlik-oss/nebula.js/issues/1744)) ([e838b21](https://github.com/qlik-oss/nebula.js/commit/e838b21a15b7263aad49577afbe6a69a1cb487b8))
+- **deps:** update minor and patch ([#1740](https://github.com/qlik-oss/nebula.js/issues/1740)) ([7a73a31](https://github.com/qlik-oss/nebula.js/commit/7a73a318c9b13930501c90a0f733c06c50308a67))
+- **deps:** update minor and patch ([#1749](https://github.com/qlik-oss/nebula.js/issues/1749)) ([391612d](https://github.com/qlik-oss/nebula.js/commit/391612dec4df6f419c028121bdb0b0a7488e1086))
+- make layout timing match old setup ([#1743](https://github.com/qlik-oss/nebula.js/issues/1743)) ([fd619dc](https://github.com/qlik-oss/nebula.js/commit/fd619dcd3a7348c06cb2264b99346da01aa12992))
+- more cell spacing fixes ([#1734](https://github.com/qlik-oss/nebula.js/issues/1734)) ([bfb15f5](https://github.com/qlik-oss/nebula.js/commit/bfb15f5eb123881b79d0d93a4e4a7eb3ee2888b0))
+- stop rendering if destroyed ([#1748](https://github.com/qlik-oss/nebula.js/issues/1748)) ([e3aab5a](https://github.com/qlik-oss/nebula.js/commit/e3aab5a1efd037747458103d66f9c08207d0c56c))
+
+### Features
+
+- add rtl support ([#1738](https://github.com/qlik-oss/nebula.js/issues/1738)) ([c4473a3](https://github.com/qlik-oss/nebula.js/commit/c4473a3498d6cf6f988e02741ac44a2383372579))
+- allow mocking of getListObject ([#1745](https://github.com/qlik-oss/nebula.js/issues/1745)) ([72fef88](https://github.com/qlik-oss/nebula.js/commit/72fef8889fe6e8935cd5789c96d218443fec0d76))
+
 # [5.14.0](https://github.com/qlik-oss/nebula.js/compare/v5.13.0...v5.14.0) (2025-05-07)
 
 ### Bug Fixes

@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.15.0](https://github.com/qlik-oss/nebula.js/compare/v5.14.0...v5.15.0) (2025-05-19)
+
+### Bug Fixes
+
+- add return type for viz.destroy ([#1744](https://github.com/qlik-oss/nebula.js/issues/1744)) ([e838b21](https://github.com/qlik-oss/nebula.js/commit/e838b21a15b7263aad49577afbe6a69a1cb487b8))
+- **deps:** update minor and patch ([#1749](https://github.com/qlik-oss/nebula.js/issues/1749)) ([391612d](https://github.com/qlik-oss/nebula.js/commit/391612dec4df6f419c028121bdb0b0a7488e1086))
+
 # [5.14.0](https://github.com/qlik-oss/nebula.js/compare/v5.13.0...v5.14.0) (2025-05-07)
 
 ### Features
