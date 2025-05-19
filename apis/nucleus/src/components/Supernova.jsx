@@ -22,7 +22,14 @@ const VizElement = {
 function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo }) {
   const { component } = sn;
 
-  const { theme: themeName, language, constraints, interactions, keyboardNavigation } = useContext(InstanceContext);
+  const {
+    theme: themeName,
+    language,
+    constraints,
+    interactions,
+    keyboardNavigation,
+    navigation,
+  } = useContext(InstanceContext);
   const [renderDebouncer] = useState(() => new RenderDebouncer());
   const [isMounted, setIsMounted] = useState(false);
   const [renderCnt, setRenderCnt] = useState(0);
@@ -88,6 +95,7 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
             theme: halo.public.theme,
             appLayout,
             keyboardNavigation,
+            navigation,
 
             // TODO - remove when old component api is removed
             ...(component.isHooked
@@ -123,6 +131,7 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
     interactions,
     isMounted,
     keyboardNavigation,
+    navigation,
   ]);
 
   return (
