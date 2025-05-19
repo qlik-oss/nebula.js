@@ -353,6 +353,7 @@ const Cell = forwardRef(
       keyboardNavigation,
       externalFocusManagement,
       disableCellPadding = false,
+      navigation: navigationApi,
     } = useContext(InstanceContext);
     const [internalEmitter] = useState(emitter || createEmitter);
     const theme = useTheme();
@@ -461,7 +462,7 @@ const Cell = forwardRef(
           focusHandler: focusHandler.current,
           emitter: internalEmitter,
           onMount,
-          navigation,
+          navigation: navigation ?? navigationApi,
         });
       };
 
