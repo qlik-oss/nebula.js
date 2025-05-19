@@ -110,10 +110,6 @@ function createWithHooks(generator, opts, galaxy) {
           this.context.theme = r.context.theme;
         }
 
-        if (r.context?.navigation) {
-          this.context.navigation = r.context.navigation;
-        }
-
         // false equals undefined, so we to cast to bool here
         if (r.context && !!r.context.keyboardNavigation !== !!this.context.keyboardNavigation) {
           this.context.keyboardNavigation = !!r.context.keyboardNavigation;
