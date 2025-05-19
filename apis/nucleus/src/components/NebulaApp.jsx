@@ -58,7 +58,6 @@ export { NebulaApp };
 
 export default function boot({ app, context }) {
   let resolveRender;
-  let destroyed = false;
   const rendered = new Promise((resolve) => {
     resolveRender = resolve;
   });
@@ -106,7 +105,7 @@ export default function boot({ app, context }) {
         delete cells[id];
       },
       add(component, unmount) {
-        return (async () => {
+        (async () => {
           await rendered;
           components.push(component);
           componentsUnmount.push(unmount);
@@ -114,18 +113,16 @@ export default function boot({ app, context }) {
         })();
       },
       remove(component) {
-        if (!destroyed) {
-          (async () => {
-            await rendered;
-            const ix = components.indexOf(component);
-            if (ix !== -1) {
-              componentsUnmount[ix]?.();
-              components.splice(ix, 1);
-              componentsUnmount.splice(ix, 1);
-            }
-            appRef?.current?.setComps(components);
-          })();
-        }
+        (async () => {
+          await rendered;
+          const ix = components.indexOf(component);
+          if (ix !== -1) {
+            componentsUnmount[ix]?.();
+            components.splice(ix, 1);
+            componentsUnmount.splice(ix, 1);
+          }
+          appRef?.current?.setComps(components);
+        })();
       },
       setMuiThemeName(themeName) {
         (async () => {
@@ -144,12 +141,12 @@ export default function boot({ app, context }) {
         })();
       },
       destroy() {
-        destroyed = true;
         componentsUnmount.forEach((c) => {
           c && c();
         });
         modelStore.destroy();
         root.unmount();
+        document.body.removeChild(element);
       },
     },
     modelStore,
