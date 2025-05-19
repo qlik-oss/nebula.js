@@ -270,6 +270,7 @@ declare namespace stardust {
         keyboardNavigation?: boolean;
         disableCellPadding?: boolean;
         dataViewType?: string;
+        navigation?: stardust.Navigation;
     }
 
     interface Galaxy {
