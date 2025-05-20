@@ -261,19 +261,6 @@ declare namespace stardust {
         anything?: object;
     }
 
-    interface Navigation {
-        getUrlForSheet?: (sheetId: string) => string;
-        goToSheet?: (sheetId: string, chartId?: string) => void;
-        nextSheet?: () => boolean;
-        prevSheet?: () => boolean;
-        goToStory?: (storyId: string) => void;
-        getCurrentSheetId?: () => string | boolean;
-        getCurrentStoryId?: () => string | boolean;
-        refreshDynamicViews?: () => void;
-        getOdagLinks?: (app: qix.Doc) => unknown[];
-        openOdagPopup?: (app: qix.Doc, odagLinkId: string, element: HTMLButtonElement) => void;
-    }
-
     interface Context {
         theme?: string;
         language?: string;
@@ -573,16 +560,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
 
     /**
@@ -624,6 +601,16 @@ declare namespace stardust {
         type: "dimension" | "measure";
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     interface LoadType {
         (type: {
             name: string;
@@ -642,6 +629,23 @@ declare namespace stardust {
         constructor(message: string, originalError: Error);
 
         originalError: Error;
+
+    }
+
+    class Navigation implements stardust.Emitter {
+        constructor();
+
+        /**
+         * Navigate to the supplied sheet and emit 'sheetChanged' event if the target sheet Id is valid.
+         * This allows a navigation object to synchronize its current sheet item with the active sheet.
+         * @param sheetId Id of the sheet to navigate to
+         */
+        goToSheet(sheetId: string): void;
+
+        /**
+         * Return the current sheet id
+         */
+        getCurrentSheetId(): string | "false";
 
     }
 
