@@ -150,6 +150,7 @@ export default function boot({ app, context }) {
         });
         modelStore.destroy();
         root.unmount();
+        document.body.removeChild(element);
       },
     },
     modelStore,
