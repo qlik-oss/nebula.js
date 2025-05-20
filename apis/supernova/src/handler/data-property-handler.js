@@ -63,6 +63,14 @@ class DataPropertyHandler {
     throw notSupportedError;
   }
 
+  static removeDimension() {
+    throw notSupportedError;
+  }
+
+  static removeDimensions() {
+    throw notSupportedError;
+  }
+
   static autoSortDimension() {
     throw notSupportedError;
   }
@@ -181,6 +189,14 @@ class DataPropertyHandler {
     throw notSupportedError;
   }
 
+  static removeMeasure() {
+    throw notSupportedError;
+  }
+
+  static removeMeasures() {
+    throw notSupportedError;
+  }
+
   static autoSortMeasure() {
     throw notSupportedError;
   }
@@ -258,10 +274,9 @@ class DataPropertyHandler {
     return this.addMeasure(measure, true);
   }
 
-  maxMeasures(decrement) {
-    const decr = decrement || 0;
+  maxMeasures(decrement = 0) {
     if (typeof this.measureDefinition.max === 'function') {
-      const dimLength = this.getDimensions().length - decr;
+      const dimLength = this.getDimensions().length - decrement;
       const measureParams = isEnabled('PS_21371_ANALYSIS_TYPES') ? [dimLength, this.properties] : [dimLength];
       return this.measureDefinition.max.apply(null, measureParams);
     }

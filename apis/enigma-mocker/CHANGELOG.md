@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.15.0](https://github.com/qlik-oss/nebula.js/compare/v5.14.0...v5.15.0) (2025-05-19)
+
+### Features
+
+- allow mocking of getListObject ([#1745](https://github.com/qlik-oss/nebula.js/issues/1745)) ([72fef88](https://github.com/qlik-oss/nebula.js/commit/72fef8889fe6e8935cd5789c96d218443fec0d76))
+
 # [5.14.0](https://github.com/qlik-oss/nebula.js/compare/v5.13.0...v5.14.0) (2025-05-07)
 
 **Note:** Version bump only for package @nebula.js/enigma-mocker

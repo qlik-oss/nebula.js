@@ -1,12 +1,16 @@
 // eslint-disable-next-line import/no-relative-packages
 import utils from '../../../conversion/src/utils';
 import DataPropertyHandler from './data-property-handler';
-import * as hcHelper from './utils/hypercube-helper/hypercube-utils';
+import * as hcUtils from './utils/hypercube-helper/hypercube-utils';
 import getAutoSortLibraryDimension from './utils/field-helper/get-sorted-library-field';
 import getAutoSortFieldDimension from './utils/field-helper/get-sorted-field';
 import { initializeField, initializeId } from './utils/field-helper/field-utils';
 import addMainDimension from './utils/hypercube-helper/add-main-dimension';
 import addMainMeasure from './utils/hypercube-helper/add-main-measure';
+import removeMainDimension from './utils/hypercube-helper/remove-main-dimension';
+import removeAlternativeMeasure from './utils/hypercube-helper/remove-alternative-measure';
+import removeMainMeasure from './utils/hypercube-helper/remove-main-measure';
+import removeAlternativeDimension from './utils/hypercube-helper/remove-alternative-dimension';
 
 class HyperCubeHandler extends DataPropertyHandler {
   constructor(opts) {
@@ -27,13 +31,13 @@ class HyperCubeHandler extends DataPropertyHandler {
       return {};
     }
 
-    hcHelper.setDefaultProperties(this);
-    hcHelper.setPropForLineChartWithForecast(this);
+    hcUtils.setDefaultProperties(this);
+    hcUtils.setPropForLineChartWithForecast(this);
 
     // Set auto-sort property (compatibility 0.85 -> 0.9),
     // can probably be removed in 1.0
-    this.hcProperties.qDimensions = hcHelper.setFieldProperties(this.hcProperties.qDimensions);
-    this.hcProperties.qMeasures = hcHelper.setFieldProperties(this.hcProperties.qMeasures);
+    this.hcProperties.qDimensions = hcUtils.setFieldProperties(this.hcProperties.qDimensions);
+    this.hcProperties.qMeasures = hcUtils.setFieldProperties(this.hcProperties.qMeasures);
     return {};
   }
 
@@ -54,15 +58,15 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   getDimensionLayouts() {
-    const hc = hcHelper.getHyperCube(this.layout, this.path);
+    const hc = hcUtils.getHyperCube(this.layout, this.path);
     return hc ? hc.qDimensionInfo : [];
   }
 
   addDimension(dimension, alternative, idx) {
     const dim = initializeField(dimension);
 
-    if (hcHelper.isDimensionAlternative(this, dim, alternative)) {
-      return hcHelper.addAlternativeDimension(this, dim, idx);
+    if (hcUtils.isDimensionAlternative(this, alternative)) {
+      return hcUtils.addAlternativeDimension(this, dim, idx);
     }
 
     return addMainDimension(this, dim, idx);
@@ -70,27 +74,64 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   async addDimensions(dimensions, alternative = false) {
     const existingDimensions = this.getDimensions();
+    const initialLength = existingDimensions.length;
     const addedDimensions = [];
     let addedActive = 0;
 
     // eslint-disable-next-line no-restricted-syntax
     for await (const dimension of dimensions) {
-      if (hcHelper.isTotalDimensionsExceeded(this, existingDimensions)) {
+      if (hcUtils.isTotalDimensionsExceeded(this, existingDimensions)) {
         return addedDimensions;
       }
 
       const dim = initializeField(dimension);
 
-      if (hcHelper.isDimensionAlternative(this, alternative)) {
-        const altDim = await hcHelper.addAlternativeDimension(this, dim);
+      if (hcUtils.isDimensionAlternative(this, alternative)) {
+        const altDim = await hcUtils.addAlternativeDimension(this, dim);
         addedDimensions.push(altDim);
       } else if (existingDimensions.length < this.maxDimensions()) {
-        await hcHelper.addActiveDimension(this, dim, existingDimensions, addedDimensions, addedActive);
+        await hcUtils.addActiveDimension(this, dim, initialLength, existingDimensions, addedDimensions, addedActive);
         addedActive++;
       }
     }
 
     return addedDimensions;
+  }
+
+  removeDimension(idx, alternative) {
+    if (alternative) {
+      removeAlternativeDimension(this, idx);
+    }
+
+    removeMainDimension(this, idx);
+  }
+
+  async removeDimensions(indexes, alternative) {
+    const altDimensions = this.getAlternativeDimensions();
+    const dimensions = this.getDimensions();
+
+    if (indexes.length === 0) return [];
+    let deletedDimensions = [];
+    // Start deleting from the end of the list first otherwise the idx is messed up
+    const sortedIndexes = [...indexes].sort((a, b) => b - a);
+
+    if (alternative && altDimensions.length > 0) {
+      // Keep the original deleted order
+      deletedDimensions = hcUtils.getDeletedFields(altDimensions, indexes);
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const index of sortedIndexes) {
+        await removeAlternativeDimension(this, index);
+      }
+    } else if (dimensions.length > 0) {
+      // Keep the original deleted order
+      deletedDimensions = hcUtils.getDeletedFields(dimensions, indexes);
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const index of sortedIndexes) {
+        await removeMainDimension(this, index);
+      }
+    }
+
+    return deletedDimensions;
   }
 
   autoSortDimension(dimension) {
@@ -113,7 +154,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   getMeasureLayouts() {
-    const hc = hcHelper.getHyperCube(this.layout, this.path);
+    const hc = hcUtils.getHyperCube(this.layout, this.path);
     return hc ? hc.qMeasureInfo : [];
   }
 
@@ -124,9 +165,9 @@ class HyperCubeHandler extends DataPropertyHandler {
   addMeasure(measure, alternative, idx) {
     const meas = initializeField(measure);
 
-    if (hcHelper.isMeasureAlternative(this, meas, alternative)) {
+    if (hcUtils.isMeasureAlternative(this, meas, alternative)) {
       const hcMeasures = this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures;
-      return hcHelper.addAlternativeMeasure(meas, hcMeasures, idx);
+      return hcUtils.addAlternativeMeasure(meas, hcMeasures, idx);
     }
 
     return addMainMeasure(this, meas, idx);
@@ -147,22 +188,54 @@ class HyperCubeHandler extends DataPropertyHandler {
     const addedMeasures = [];
     let addedActive = 0;
     measures.forEach(async (measure) => {
-      if (hcHelper.isTotalMeasureExceeded(this, existingMeasures)) {
+      if (hcUtils.isTotalMeasureExceeded(this, existingMeasures)) {
         return false;
       }
 
       const meas = initializeId(measure);
 
-      if (hcHelper.isMeasureAlternative(this, existingMeasures, alternative)) {
-        hcHelper.addAlternativeMeasure(this, meas);
+      if (hcUtils.isMeasureAlternative(this, existingMeasures, alternative)) {
+        hcUtils.addAlternativeMeasure(this, meas);
         addedMeasures.push(meas);
       } else if (existingMeasures.length < this.maxMeasures()) {
-        await hcHelper.addActiveMeasure(this, meas, existingMeasures, addedMeasures, addedActive);
+        await hcUtils.addActiveMeasure(this, meas, existingMeasures, addedMeasures, addedActive);
         addedActive++;
       }
       return true;
     });
     return addedMeasures;
+  }
+
+  removeMeasure(idx, alternative) {
+    if (alternative) {
+      hcUtils.removeAltMeasureByIndex(this, idx);
+    }
+    removeMainMeasure(this, idx);
+  }
+
+  async removeMeasures(indexes, alternative) {
+    const measures = this.getMeasures();
+    const altMeasures = this.getAlternativeMeasures();
+
+    if (indexes.length === 0) return [];
+    let deletedMeasures = [];
+
+    if (alternative && altMeasures.length > 0) {
+      // Keep the original deleted order
+      deletedMeasures = hcUtils.getDeletedFields(altMeasures, indexes);
+      removeAlternativeMeasure(this, indexes);
+    } else if (measures.length > 0) {
+      // Keep the original deleted order
+      deletedMeasures = hcUtils.getDeletedFields(measures, indexes);
+      const sortedIndexes = [...indexes].sort((a, b) => b - a);
+
+      // eslint-disable-next-line no-restricted-syntax
+      for await (const index of sortedIndexes) {
+        await removeMainMeasure(this, index);
+      }
+    }
+
+    return deletedMeasures;
   }
 }
 

@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/nucleus",
-  "version": "5.14.0",
+  "version": "5.15.0",
   "private": true,
   "main": "src/index.js",
   "devDependencies": {
@@ -8,11 +8,11 @@
     "@emotion/styled": "^11.14.0",
     "@mui/icons-material": "^5.17.1",
     "@mui/material": "^5.17.1",
-    "@nebula.js/conversion": "^5.14.0",
-    "@nebula.js/locale": "^5.14.0",
-    "@nebula.js/supernova": "^5.14.0",
-    "@nebula.js/theme": "^5.14.0",
-    "@nebula.js/ui": "^5.14.0",
+    "@nebula.js/conversion": "^5.15.0",
+    "@nebula.js/locale": "^5.15.0",
+    "@nebula.js/supernova": "^5.15.0",
+    "@nebula.js/theme": "^5.15.0",
+    "@nebula.js/ui": "^5.15.0",
     "@testing-library/dom": "^10.4.0",
     "@testing-library/react": "^16.3.0",
     "extend": "3.0.2",
@@ -24,6 +24,6 @@
     "react-virtualized-auto-sizer": "1.0.25",
     "react-window": "1.8.11",
     "react-window-infinite-loader": "1.0.10",
-    "semver": "7.7.1"
+    "semver": "7.7.2"
   }
 }
