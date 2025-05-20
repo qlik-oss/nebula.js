@@ -157,7 +157,7 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
    * @type {string=}
    * */
   dataViewType: 'sn-table',
-  /** @type {Navigation=} */
+  /** @type {object=} */
   navigation: {},
 };
 

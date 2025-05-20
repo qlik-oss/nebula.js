@@ -795,7 +795,7 @@
         },
         "navigation": {
           "optional": true,
-          "type": "#/definitions/Navigation"
+          "type": "object"
         }
       }
     },
