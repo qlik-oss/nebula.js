@@ -795,7 +795,7 @@
         },
         "navigation": {
           "optional": true,
-          "type": "object"
+          "type": "#/definitions/ObjectNavigation"
         }
       }
     },
@@ -1742,6 +1742,33 @@
         }
       }
     },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
+    },
     "Field": {
       "kind": "alias",
       "items": {
@@ -1893,33 +1920,6 @@
         }
       }
     },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
-    },
     "LoadType": {
       "kind": "interface",
       "params": [
@@ -2049,6 +2049,195 @@
       "examples": [
         "const navigation = useNavigation();\n//...\nuseEffect(() => {\n  const onSheetChanged = () => {\n    // do something\n  };\n  if (navigation?.addListener) {\n    navigation.addListener(\"sheetChanged\", onSheetChanged);\n  }\n  return () => {\n    if (navigation?.removeListener) {\n      navigation.removeListener(\"sheetChanged\", onSheetChanged);\n    }\n  };\n}, [navigation]);\n\nconst onSheetClick = (sheetId: string) => {\n  navigation?.goToSheet(sheetId);\n};"
       ]
+    },
+    "getUrlForSheet": {
+      "description": "Gets the URL to the supplied sheet.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "sheetId",
+          "description": "The id of the sheet to get the URL for.",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "description": "The URL to the supplied sheet",
+        "type": "string"
+      }
+    },
+    "goToSheet": {
+      "description": "Navigate to the supplied sheet",
+      "kind": "function",
+      "params": [
+        {
+          "name": "sheetId",
+          "description": "Id of the sheet to navigate to",
+          "type": "string"
+        },
+        {
+          "name": "chartId",
+          "description": "Id of the chart to highlight",
+          "optional": true,
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "description": "Returns true if the supplied sheet exists",
+        "type": "boolean"
+      }
+    },
+    "nextSheet": {
+      "description": "Navigate to the next sheet",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "description": "Returns true if the next sheet exists",
+        "type": "boolean"
+      }
+    },
+    "prevSheet": {
+      "description": "Navigate to the previous sheet",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "description": "Returns true if the previous sheet exists",
+        "type": "boolean"
+      }
+    },
+    "goToStory": {
+      "description": "Navigate to the supplied story",
+      "kind": "function",
+      "params": [
+        {
+          "name": "storyId",
+          "type": "string"
+        }
+      ],
+      "returns": {
+        "description": "Returns true if the suppplied sheet exists",
+        "type": "boolean"
+      }
+    },
+    "getCurrentSheetId": {
+      "description": "Returns the current sheet id",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "kind": "literal",
+            "value": "false"
+          }
+        ]
+      }
+    },
+    "getCurrentStoryId": {
+      "description": "Returns the current story id",
+      "kind": "function",
+      "params": [],
+      "returns": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "kind": "literal",
+            "value": "false"
+          }
+        ]
+      }
+    },
+    "refreshDynamicViews": {
+      "description": "Refreshes the dynamic views by publishing an event. This will refresh all the dynamic views in the sheet.",
+      "kind": "function",
+      "params": []
+    },
+    "getOdagLinks": {
+      "description": "Returns a list of odag links for the user to select in a button navigation",
+      "kind": "function",
+      "params": [
+        {
+          "name": "app",
+          "type": "qix.Doc"
+        }
+      ],
+      "returns": {
+        "description": "A list of odag links",
+        "kind": "array",
+        "items": {
+          "type": "object"
+        }
+      }
+    },
+    "openOdagPopup": {
+      "description": "Shows the odag popup upon a button click",
+      "kind": "function",
+      "params": [
+        {
+          "name": "app",
+          "type": "qix.Doc"
+        },
+        {
+          "name": "odagLinkId",
+          "description": "The odag reference Id",
+          "type": "string"
+        },
+        {
+          "name": "element",
+          "description": "The button element to which the popup will be attached to.",
+          "type": "HTMLButtonElement"
+        }
+      ]
+    },
+    "ObjectNavigation": {
+      "kind": "interface",
+      "entries": {
+        "getUrlForSheet": {
+          "optional": true,
+          "type": "#/definitions/getUrlForSheet"
+        },
+        "goToSheet": {
+          "optional": true,
+          "type": "#/definitions/goToSheet"
+        },
+        "nextSheet": {
+          "optional": true,
+          "type": "#/definitions/nextSheet"
+        },
+        "prevSheet": {
+          "optional": true,
+          "type": "#/definitions/prevSheet"
+        },
+        "goToStory": {
+          "optional": true,
+          "type": "#/definitions/goToStory"
+        },
+        "getCurrentSheetId": {
+          "optional": true,
+          "type": "#/definitions/getCurrentSheetId"
+        },
+        "getCurrentStoryId": {
+          "optional": true,
+          "type": "#/definitions/getCurrentStoryId"
+        },
+        "refreshDynamicViews": {
+          "optional": true,
+          "type": "#/definitions/refreshDynamicViews"
+        },
+        "getOdagLinks": {
+          "optional": true,
+          "type": "#/definitions/getOdagLinks"
+        },
+        "openOdagPopup": {
+          "optional": true,
+          "type": "#/definitions/openOdagPopup"
+        }
+      }
     },
     "ActionToolbarElement": {
       "availability": {
