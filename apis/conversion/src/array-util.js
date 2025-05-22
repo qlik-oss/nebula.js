@@ -66,8 +66,26 @@ function indexRemoved(array, index) {
   return removeIndex;
 }
 
+/**
+ * Move an element from position old_index to position new_index in
+ * the array.
+ * @param array
+ * @param oldIndex
+ * @param newIndex
+ */
+function move(array, oldIndex, newIndex) {
+  if (newIndex >= array.length) {
+    let k = newIndex - array.length;
+    while (k-- + 1) {
+      array.push(undefined);
+    }
+  }
+  array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
+}
+
 export default {
   isOrderedSubset,
   indexAdded,
   indexRemoved,
+  move,
 };
