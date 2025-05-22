@@ -270,7 +270,7 @@ declare namespace stardust {
         keyboardNavigation?: boolean;
         disableCellPadding?: boolean;
         dataViewType?: string;
-        navigation?: stardust.ObjectNavigation;
+        navigation?: stardust.Navigation;
     }
 
     interface Galaxy {
@@ -560,16 +560,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
 
     /**
@@ -611,6 +601,16 @@ declare namespace stardust {
         type: "dimension" | "measure";
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     interface LoadType {
         (type: {
             name: string;
@@ -647,69 +647,6 @@ declare namespace stardust {
          */
         getCurrentSheetId(): string | "false";
 
-    }
-
-    /**
-     * Gets the URL to the supplied sheet.
-     */
-    type getUrlForSheet = (sheetId: string)=>string;
-
-    /**
-     * Navigate to the supplied sheet
-     */
-    type goToSheet = (sheetId: string, chartId?: string)=>boolean;
-
-    /**
-     * Navigate to the next sheet
-     */
-    type nextSheet = ()=>boolean;
-
-    /**
-     * Navigate to the previous sheet
-     */
-    type prevSheet = ()=>boolean;
-
-    /**
-     * Navigate to the supplied story
-     */
-    type goToStory = (storyId: string)=>boolean;
-
-    /**
-     * Returns the current sheet id
-     */
-    type getCurrentSheetId = ()=>string | "false";
-
-    /**
-     * Returns the current story id
-     */
-    type getCurrentStoryId = ()=>string | "false";
-
-    /**
-     * Refreshes the dynamic views by publishing an event. This will refresh all the dynamic views in the sheet.
-     */
-    type refreshDynamicViews = ()=>void;
-
-    /**
-     * Returns a list of odag links for the user to select in a button navigation
-     */
-    type getOdagLinks = (app: qix.Doc)=>object[];
-
-    /**
-     * Shows the odag popup upon a button click
-     */
-    type openOdagPopup = (app: qix.Doc, odagLinkId: string, element: HTMLButtonElement)=>void;
-
-    interface ObjectNavigation {
-        getUrlForSheet?: stardust.getUrlForSheet;
-        goToSheet?: stardust.goToSheet;
-        nextSheet?: stardust.nextSheet;
-        prevSheet?: stardust.prevSheet;
-        goToStory?: stardust.goToStory;
-        getCurrentSheetId?: stardust.getCurrentSheetId;
-        getCurrentStoryId?: stardust.getCurrentStoryId;
-        refreshDynamicViews?: stardust.refreshDynamicViews;
-        getOdagLinks?: stardust.getOdagLinks;
-        openOdagPopup?: stardust.openOdagPopup;
     }
 
     interface ActionToolbarElement extends HTMLElement{
