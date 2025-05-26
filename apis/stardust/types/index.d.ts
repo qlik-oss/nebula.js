@@ -477,6 +477,14 @@ declare namespace stardust {
 
     }
 
+    interface Flags {
+        /**
+         * Checks whether the specified flag is enabled.
+         * @param flag The value flag to check.
+         */
+        isEnabled(flag: string): boolean;
+    }
+
     class AppSelections {
         constructor();
 
@@ -551,12 +559,14 @@ declare namespace stardust {
 
     }
 
-    interface Flags {
-        /**
-         * Checks whether the specified flag is enabled.
-         * @param flag The value flag to check.
-         */
-        isEnabled(flag: string): boolean;
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
     }
 
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
@@ -598,16 +608,6 @@ declare namespace stardust {
     interface LibraryField {
         qLibraryId: string;
         type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
     }
 
     interface LoadType {
@@ -833,6 +833,187 @@ declare namespace stardust {
         max?: (()=>void) | number;
         added?: stardust.fieldTargetAddedCallback<T>;
         removed?: stardust.fieldTargetRemovedCallback<T>;
+    }
+
+    class DataPropertyHandler {
+        constructor();
+
+        /**
+         * Initializes a dimension and applying default properties and sort criteria.
+         * @param id Dimension id
+         * @param defaults Default properties for the dimension.
+         */
+        createLibraryDimension(id: string, defaults?: object): object;
+
+        /**
+         * Initializes a dimension with field definitions, labels, and default properties.
+         * @param field The field definition for the dimension.
+         * @param label The field label for the dimension.
+         * @param defaults Default properties for the dimension.
+         */
+        createFieldDimension(field: string, label: string, defaults: object): object;
+
+        /**
+         * Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
+         * @param decrement The number to decrement from the maximum dimensions.
+         */
+        maxDimensions(decrement?: number): number;
+
+        /**
+         * Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
+         * @param decrement The number to decrement from the maximum measures.
+         */
+        maxMeasures(decrement?: number): number;
+
+    }
+
+    class HyperCubeHandler extends stardust.DataPropertyHandler {
+        constructor(opts: object);
+
+        /**
+         * @param properties
+         */
+        setProperties(properties: properties): any;
+
+        /**
+         * Returns the dimensions of the hypercube.
+         */
+        getDimensions(): Array;
+
+        /**
+         * Returns the alternative dimensions of the hypercube.
+         */
+        getAlternativeDimensions(): Array;
+
+        /**
+         * Returns the dimension layout of the hypercube for a given cId.
+         * @param cId
+         */
+        getDimensionLayout(cId: object): object;
+
+        /**
+         * Returns the dimension layouts of the hypercube.
+         */
+        getDimensionLayouts(): Array;
+
+        /**
+         * Adds a dimension to the hypercube and updates the orders of the dimensions.If the dimension is an alternative, it will be added to the alternative dimensions.
+         * @param dimension
+         * @param alternative
+         * @param idx
+         */
+        addDimension(dimension: object, alternative: object, idx: number): object;
+
+        /**
+         * Adds multiple dimensions to the hypercube.If the dimensions are alternatives, they will be added to the alternative dimensions.If the total number of dimensions exceeds the limit, it will stop adding dimensions.
+         * @param dimensions
+         * @param alternative
+         */
+        addDimensions(dimensions: object, alternative: object): Array;
+
+        /**
+         * Removes a dimension from the hypercube by index.If the dimension is an alternative, it will be removed from the alternative dimensions.
+         * @param idx
+         * @param alternative
+         */
+        removeDimension(idx: number, alternative: object): void;
+
+        /**
+         * Removes multiple dimensions from the hypercube by indexes.If the dimensions are alternatives, they will be removed from the alternative dimensions.If the indexes are empty, it will return an empty array.
+         * @param indexes
+         * @param alternative
+         */
+        removeDimensions(indexes: Array, alternative: object): Array;
+
+        /**
+         * Automatically sorts the dimension based on its properties.If the dimension has a qLibraryId, it will use the library dimension auto-sort.Otherwise, it will use the field dimension auto-sort.
+         * @param dimension
+         */
+        autoSortDimension(dimension: object): object;
+
+        /**
+         * Returns the measures of the hypercube.
+         */
+        getMeasures(): Array;
+
+        /**
+         * Returns the alternative measures of the hypercube.
+         */
+        getAlternativeMeasures(): Array;
+
+        /**
+         * Returns the measure layouts of the hypercube.
+         */
+        getMeasureLayouts(): Array;
+
+        /**
+         * Returns the measure layout of the hypercube for a given cId.
+         * @param cId
+         */
+        getMeasureLayout(cId: string): object;
+
+        /**
+         * Adds a measure to the hypercube.If the measure is an alternative, it will be added to the alternative measures.If the total number of measures exceeds the limit, it will stop adding measures.
+         * @param measure
+         * @param alternative
+         * @param idx
+         */
+        addMeasure(measure: object, alternative: boolean, idx: number): object;
+
+        /**
+         * Automatically sorts the measure based on its properties.It sets the qSortByLoadOrder and qSortByNumeric properties.
+         * @param measure
+         */
+        autoSortMeasure(measure: object): object;
+
+        /**
+         * Adds multiple measures to the hypercube.If the measures are alternatives, they will be added to the alternative measures.If the total number of measures exceeds the limit, it will stop adding measures.
+         * @param measures
+         * @param alternative
+         */
+        addMeasures(measures: Array, alternative: boolean): Array;
+
+        /**
+         * Removes a measure from the hypercube by index.If the measure is an alternative, it will be removed from the alternative measures.
+         * @param idx
+         * @param alternative
+         */
+        removeMeasure(idx: number, alternative: boolean): void;
+
+        /**
+         * Removes multiple measures from the hypercube by indexes.If the measures are alternatives, they will be removed from the alternative measures.If the indexes are empty, it will return an empty array.
+         * @param indexes
+         * @param alternative
+         */
+        removeMeasures(indexes: Array, alternative: boolean): Array;
+
+        /**
+         * Initializes a dimension and applying default properties and sort criteria.
+         * @param id Dimension id
+         * @param defaults Default properties for the dimension.
+         */
+        createLibraryDimension(id: string, defaults?: object): object;
+
+        /**
+         * Initializes a dimension with field definitions, labels, and default properties.
+         * @param field The field definition for the dimension.
+         * @param label The field label for the dimension.
+         * @param defaults Default properties for the dimension.
+         */
+        createFieldDimension(field: string, label: string, defaults: object): object;
+
+        /**
+         * Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
+         * @param decrement The number to decrement from the maximum dimensions.
+         */
+        maxDimensions(decrement?: number): number;
+
+        /**
+         * Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
+         * @param decrement The number to decrement from the maximum measures.
+         */
+        maxMeasures(decrement?: number): number;
+
     }
 
     type getField = any;

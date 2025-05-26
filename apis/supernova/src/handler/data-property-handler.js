@@ -3,9 +3,14 @@ import { merge } from 'lodash';
 // eslint-disable-next-line import/no-relative-packages
 import isEnabled from '../../../nucleus/src/flags/flags';
 import { findFieldById, initializeField, useMasterNumberFormat } from './utils/field-helper/field-utils';
-import { INITIAL_SORT_CRITERIAS } from './utils/constants';
+import { INITIAL_SORT_CRITERIA } from './utils/constants';
 import { notSupportedError } from './utils/hypercube-helper/hypercube-utils';
 
+/**
+ * @class DataPropertyHandler
+ * @description A class to handle data properties for dimensions and measures in a data model.
+ * @export
+ */
 class DataPropertyHandler {
   constructor(opts) {
     const options = opts || {};
@@ -75,6 +80,13 @@ class DataPropertyHandler {
     throw notSupportedError;
   }
 
+  /**
+   * Creates a type of library dimension with a field definition.
+   * @param {string} id - Dimension id
+   * @param {object} [defaults] - Default properties for the dimension.
+   * @returns {object} The created dimension object.
+   * @description Initializes a dimension and applying default properties and sort criteria.
+   */
   createLibraryDimension(id, defaults) {
     let dimension = merge({}, this.dimensionProperties || {}, defaults || {});
 
@@ -82,7 +94,7 @@ class DataPropertyHandler {
 
     dimension.qLibraryId = id;
     dimension.qDef.autoSort = true;
-    dimension.qDef.qSortCriterias = INITIAL_SORT_CRITERIAS;
+    dimension.qDef.qSortCriterias = INITIAL_SORT_CRITERIA;
 
     delete dimension.qDef.qFieldDefs;
     delete dimension.qDef.qFieldLabels;
@@ -90,6 +102,14 @@ class DataPropertyHandler {
     return dimension;
   }
 
+  /**
+   * Creates a type of field dimension with a field definition.
+   * @param {string} field - The field definition for the dimension.
+   * @param {string} label - The field label for the dimension.
+   * @param {object} defaults - Default properties for the dimension.
+   * @returns {object} The created dimension object.
+   * @description Initializes a dimension with field definitions, labels, and default properties.
+   */
   createFieldDimension(field, label, defaults) {
     let dimension = merge({}, this.dimensionProperties || {}, defaults || {});
 
@@ -103,7 +123,7 @@ class DataPropertyHandler {
 
     dimension.qDef.qFieldDefs = [field];
     dimension.qDef.qFieldLabels = label ? [label] : [''];
-    dimension.qDef.qSortCriterias = INITIAL_SORT_CRITERIAS;
+    dimension.qDef.qSortCriterias = INITIAL_SORT_CRITERIA;
 
     dimension.qDef.autoSort = true;
 
@@ -151,6 +171,12 @@ class DataPropertyHandler {
     return this.addDimension(dimension, true);
   }
 
+  /**
+   * Gets the maximum number of dimensions allowed.
+   * @param {number} [decrement=0] - The number to decrement from the maximum dimensions.
+   * @returns {number} The maximum number of dimensions allowed.
+   * @description Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
+   */
   maxDimensions(decrement = 0) {
     const measureLength = this.getMeasures().length - decrement;
 
@@ -165,13 +191,6 @@ class DataPropertyHandler {
   // ---------------------------------------
   // ----------------MEASURE----------------
   // ---------------------------------------
-
-  getMeasure(id) {
-    const measures = this.getMeasures();
-    const alternativeMeasures = this.getAlternativeMeasures();
-
-    return findFieldById(measures, id) ?? findFieldById(alternativeMeasures, id);
-  }
 
   static getMeasures() {
     return [];
@@ -199,6 +218,13 @@ class DataPropertyHandler {
 
   static autoSortMeasure() {
     throw notSupportedError;
+  }
+
+  getMeasure(id) {
+    const measures = this.getMeasures();
+    const alternativeMeasures = this.getAlternativeMeasures();
+
+    return findFieldById(measures, id) ?? findFieldById(alternativeMeasures, id);
   }
 
   createExpressionMeasure(expression, label, defaults) {
@@ -274,6 +300,12 @@ class DataPropertyHandler {
     return this.addMeasure(measure, true);
   }
 
+  /**
+   * Gets the maximum number of measures allowed.
+   * @param {number} [decrement=0] - The number to decrement from the maximum measures.
+   * @returns {number} The maximum number of measures allowed.
+   * @description Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
+   */
   maxMeasures(decrement = 0) {
     if (typeof this.measureDefinition.max === 'function') {
       const dimLength = this.getDimensions().length - decrement;

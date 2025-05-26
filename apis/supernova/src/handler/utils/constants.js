@@ -5,7 +5,7 @@ export const TOTAL_MAX = {
 
 export const AUTOCALENDAR_NAME = '.autoCalendar';
 
-export const INITIAL_SORT_CRITERIAS = [
+export const INITIAL_SORT_CRITERIA = [
   {
     qSortByLoadOrder: 1,
     qSortByNumeric: 1,
