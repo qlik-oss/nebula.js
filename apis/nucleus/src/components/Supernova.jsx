@@ -134,8 +134,14 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
         height: '100%',
       }}
       className={VizElement.className}
+      // Support screen reader ${layout.qInfo.qId}_type is provided by the extension
+      aria-labelledby={`${layout.qInfo.qId}_type ${layout.qInfo.qId}_content`}
     >
-      <div ref={snRef} style={{ position: 'absolute', width: '100%', height: '100%' }} />
+      <div
+        ref={snRef}
+        id={`${layout.qInfo.qId}_content`}
+        style={{ position: 'absolute', width: '100%', height: '100%' }}
+      />
     </div>
   );
 }
