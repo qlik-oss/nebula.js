@@ -135,7 +135,11 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       }}
       className={VizElement.className}
     >
-      <div ref={snRef} style={{ position: 'absolute', width: '100%', height: '100%' }} />
+      <div
+        ref={snRef}
+        id={`${layout.qInfo.qId}_content`}
+        style={{ position: 'absolute', width: '100%', height: '100%' }}
+      />
     </div>
   );
 }
