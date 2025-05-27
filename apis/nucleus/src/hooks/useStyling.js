@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useEffect, useState } from 'react';
 import {
   resolveBgColor,
   resolveBgImage,
@@ -35,25 +35,35 @@ const getThemeObjectType = (visualization) => {
   return visualization;
 };
 
-const useStyling = ({ layout, theme, app, themeName, disableThemeBorder }) => {
-  const styling = useMemo(() => {
-    if (layout && theme) {
-      const generalComp = layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
-      const objectType = getThemeObjectType(layout.visualization);
-      const titleStyles = {
-        main: resolveTextStyle(generalComp, 'main', theme, objectType),
-        footer: resolveTextStyle(generalComp, 'footer', theme, objectType),
-        subTitle: resolveTextStyle(generalComp, 'subTitle', theme, objectType),
-      };
-      const bgColor = resolveBgColor(generalComp, theme, objectType);
-      const bgImage = resolveBgImage(generalComp, app);
-      const border = resolveBorder(generalComp, theme, objectType, disableThemeBorder);
-      const borderRadius = resolveBorderRadius(generalComp, theme, objectType);
-      const boxShadow = resolveBoxShadow(generalComp, theme, objectType);
-      return { titleStyles, bgColor, bgImage, border, borderRadius, boxShadow };
-    }
-    return {};
-  }, [layout, theme, app, themeName, disableThemeBorder]);
+async function fetchStyling(layout, theme, app, disableThemeBorder, hostConfig) {
+  if (layout && theme) {
+    const generalComp = layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
+    const objectType = getThemeObjectType(layout.visualization);
+    const titleStyles = {
+      main: resolveTextStyle(generalComp, 'main', theme, objectType),
+      footer: resolveTextStyle(generalComp, 'footer', theme, objectType),
+      subTitle: resolveTextStyle(generalComp, 'subTitle', theme, objectType),
+    };
+    const bgColor = resolveBgColor(generalComp, theme, objectType);
+    const bgImage = await resolveBgImage(generalComp, app, hostConfig);
+    const border = resolveBorder(generalComp, theme, objectType, disableThemeBorder);
+    const borderRadius = resolveBorderRadius(generalComp, theme, objectType);
+    const boxShadow = resolveBoxShadow(generalComp, theme, objectType);
+    return { titleStyles, bgColor, bgImage, border, borderRadius, boxShadow };
+  }
+  return {};
+}
+
+const useStyling = ({ layout, theme, app, themeName, disableThemeBorder, hostConfig }) => {
+  const [styling, setStyling] = useState({});
+  useEffect(() => {
+    const styl = async () => {
+      const result = await fetchStyling(layout, theme, app, disableThemeBorder, hostConfig);
+      setStyling(result);
+    };
+    styl();
+  }, [layout, theme, app, themeName, disableThemeBorder, hostConfig]);
+
   return styling;
 };
 
