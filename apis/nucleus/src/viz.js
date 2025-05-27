@@ -118,6 +118,9 @@ export default function viz({
       setOnBlurHandler(cb) {
         cellRef.current.setOnBlurHandler(cb);
       },
+      onContextMenu(...args) {
+        return cellRef.current.onContextMenu(...args);
+      },
     };
   }
 
