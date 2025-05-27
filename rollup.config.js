@@ -132,6 +132,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       sourcemap: true,
       banner,
       globals,
+      inlineDynamicImports: true,
     },
     external,
     plugins: [
@@ -144,6 +145,7 @@ const config = ({ format = 'umd', debug = false, file, targetPkg }) => {
       }),
       nodeResolve({
         extensions: [debug ? '.dev.js' : false, '.js', '.jsx'].filter(Boolean),
+        browser: true,
       }),
       json(),
       commonjs(),
