@@ -3622,7 +3622,7 @@
     tar-fs "^3.0.8"
     yargs "^17.7.2"
 
-"@qlik/api@^1.32.0":
+"@qlik/api@1.32.0":
   version "1.32.0"
   resolved "https://registry.yarnpkg.com/@qlik/api/-/api-1.32.0.tgz#53250748afa71428d1c0280f20d694c7735e87dd"
   integrity sha512-nh6JhuNRhKX33JzVnB3jCa5NX6bDBrXHGodSqMg7ZW0e2c6ZnpbV5x0SAyfx/hkq7vd4KySa9MreAa/y+V6Mig==
