@@ -221,6 +221,7 @@ function nuked(configuration = {}) {
     let currentContext = {
       ...configuration.context,
       translator: locale.translator,
+      hostConfig: configuration.hostConfig,
     };
 
     const [root, modelStore] = bootNebulaApp({
