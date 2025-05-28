@@ -20,7 +20,7 @@ import eventmixin from '../selections/event-mixin';
 import useStyling from '../hooks/useStyling';
 import RenderError from '../utils/render-error';
 import getPadding from '../utils/cell-padding';
-
+import translationKeys from '../utils/extension-translation-keys';
 /**
  * @interface
  * @extends HTMLElement
@@ -607,7 +607,12 @@ const Cell = forwardRef(
         translator,
       });
     }
-
+    const translationKey = translationKeys.get(layout?.visualization);
+    const translation = translator.get(translationKey);
+    if (!translationKey && layout) {
+      // eslint-disable-next-line no-console
+      console.warn(`No translation key found for visualization: ${layout.visualization}`);
+    }
     return (
       <Paper
         style={{
@@ -644,7 +649,11 @@ const Cell = forwardRef(
             ...(useOldCellPadding ? { padding: theme.spacing(1) } : {}),
             ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
           }}
+          aria-labelledby={`${layout?.qInfo.qId}_title ${layout?.qInfo.qId}_type ${layout?.qInfo.qId}_content`}
         >
+          {translationKey && (
+            <div id={`${layout?.qInfo.qId}_type`} style={{ width: 0, height: 0 }} aria-label={translation} />
+          )}
           {cellNode && layout && state.sn && (
             <Header
               layout={layout}

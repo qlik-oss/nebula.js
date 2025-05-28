@@ -83,7 +83,13 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
         <Grid container wrap="nowrap" direction="column">
           {showTitle && (
             <Tooltip title={layout.title}>
-              <Typography variant="h6" noWrap className={CellTitle.className} style={titleStyles.main}>
+              <Typography
+                id={`${layout.qInfo.qId}_title`}
+                variant="h6"
+                noWrap
+                className={CellTitle.className}
+                style={titleStyles.main}
+              >
                 {layout.title}
               </Typography>
             </Tooltip>
