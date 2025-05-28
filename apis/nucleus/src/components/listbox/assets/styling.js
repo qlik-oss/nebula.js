@@ -173,22 +173,15 @@ async function getStyles({ app, themeApi, theme, hostConfig, components = [], ch
   };
 }
 
-export default async function useListboxStyling({
-  app,
-  themeApi,
-  theme,
-  hostConfig,
-  components = [],
-  checkboxes = false,
-}) {
-  const [styling, setStyling] = useState({});
+export default function useListboxStyling({ app, themeApi, theme, hostConfig, components, checkboxes }) {
+  const [styling, setStyling] = useState(undefined);
   useEffect(() => {
     const styl = async () => {
       const result = await getStyles({ app, themeApi, theme, hostConfig, components, checkboxes });
       setStyling(result);
     };
     styl();
-  }, [app, themeApi, theme, components, checkboxes]);
+  }, [app, themeApi, theme, hostConfig, components, checkboxes]);
 
   return styling;
 }

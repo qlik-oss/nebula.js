@@ -112,7 +112,7 @@ export default function ListBoxPopover({
     }
   }, [selections, open]);
 
-  if (!model || !layout || !translator) {
+  if (!model || !layout || !translator || !styles) {
     return null;
   }
 

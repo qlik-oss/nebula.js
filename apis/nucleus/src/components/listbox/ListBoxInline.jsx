@@ -189,7 +189,7 @@ function ListBoxInline({ options, layout }) {
 
   const isRtl = direction === 'rtl';
 
-  if (!model || !layout || !translator) {
+  if (!model || !layout || !translator || !styles) {
     return null;
   }
 
