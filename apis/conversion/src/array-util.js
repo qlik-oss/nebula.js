@@ -74,13 +74,19 @@ function indexRemoved(array, index) {
  * @param newIndex
  */
 function move(array, oldIndex, newIndex) {
+  if (newIndex < 0) throw Error('newIndex cannot be a negative value!');
+
   if (newIndex >= array.length) {
-    let k = newIndex - array.length;
-    while (k-- + 1) {
+    let k = newIndex - array.length + 1;
+    while (k) {
       array.push(undefined);
+      k--;
     }
   }
-  array.splice(newIndex, 0, array.splice(oldIndex, 1)[0]);
+
+  const movingValue = array.at(oldIndex);
+  array.splice(oldIndex, 1);
+  array.splice(newIndex, 0, movingValue);
 }
 
 export default {

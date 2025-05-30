@@ -202,9 +202,10 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   addMeasure(measure, alternative, idx) {
+    const measures = this.getAlternativeMeasure();
     const meas = initializeId(measure);
 
-    if (hcUtils.isMeasureAlternative(this, alternative)) {
+    if (hcUtils.isMeasureAlternative(this, measures, alternative)) {
       return hcUtils.addAlternativeMeasure(this, meas, idx);
     }
 
@@ -221,7 +222,7 @@ class HyperCubeHandler extends DataPropertyHandler {
     return Promise.resolve(meas);
   }
 
-  addMeasures(measures, alternative) {
+  addMeasures(measures, alternative = false) {
     const existingMeasures = this.getMeasures();
     const addedMeasures = [];
     let addedActive = 0;
@@ -233,7 +234,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
       const meas = initializeId(measure);
 
-      if (hcUtils.isMeasureAlternative(this, alternative)) {
+      if (hcUtils.isMeasureAlternative(this, existingMeasures, alternative)) {
         hcUtils.addAlternativeMeasure(this, meas);
         addedMeasures.push(meas);
       } else if (existingMeasures.length < this.maxMeasures()) {
@@ -282,9 +283,10 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   reinsertMeasure(measure, alternative, idx) {
+    const measures = this.getAlternativeMeasures();
     const meas = initializeId(measure);
 
-    if (hcUtils.isMeasureAlternative(this, alternative)) {
+    if (hcUtils.isMeasureAlternative(this, measures, alternative)) {
       return hcUtils.addAlternativeMeasure(this, meas, idx);
     }
 

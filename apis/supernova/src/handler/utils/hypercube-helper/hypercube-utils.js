@@ -241,8 +241,7 @@ export function isTotalMeasureExceeded(self, measures) {
   return altMeasures.length + measures.length >= TOTAL_MAX.MEASURES;
 }
 
-export function isMeasureAlternative(self, alternative) {
-  const measures = self.getAlternativeMeasures();
+export function isMeasureAlternative(self, measures, alternative) {
   return alternative || (self.maxMeasures() <= measures.length && measures.length < TOTAL_MAX.MEASURES);
 }
 
