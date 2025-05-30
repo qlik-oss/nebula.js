@@ -123,6 +123,7 @@ describe('HyperCube Handlers', () => {
     afterEach(() => {
       handler.hcProperties = undefined;
       jest.clearAllMocks();
+      jest.restoreAllMocks();
     });
 
     test('should add a main dimension when alternative is false', () => {
@@ -296,6 +297,7 @@ describe('HyperCube Handlers', () => {
       const newMeasures = [{ qDef: { cId: 'meas2' } }];
       handler.maxMeasures = jest.fn().mockReturnValue(2);
       handler.autoSortDimension = jest.fn();
+      jest.spyOn(hcUtils, 'isMeasureAlternative').mockReturnValue(false);
 
       const measures = handler.addMeasures(newMeasures, false);
       expect(measures).toEqual([
@@ -519,6 +521,222 @@ describe('HyperCube Handlers', () => {
 
       expect(result).toEqual([]);
       expect(removeMainDimension).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('moveDimension', () => {
+    beforeEach(() => {
+      properties.qHyperCubeDef.qDimensions = [
+        { qDef: { cId: 'dim1' } },
+        { qDef: { cId: 'dim2' } },
+        { qDef: { cId: 'dim3' } },
+      ];
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [
+        { qDef: { cId: 'altDim1' } },
+        { qDef: { cId: 'altDim2' } },
+        { qDef: { cId: 'altDim3' } },
+      ];
+      handler.setProperties(properties);
+    });
+
+    afterEach(() => {
+      handler.hcProperties = undefined;
+    });
+
+    test('moves dimension within main', async () => {
+      await handler.moveDimension(0, 1);
+      expect(handler.hcProperties.qDimensions).toEqual([
+        { qDef: { cId: 'dim2' } },
+        { qDef: { cId: 'dim1' } },
+        { qDef: { cId: 'dim3' } },
+      ]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions).toEqual([
+        { qDef: { cId: 'altDim1' } },
+        { qDef: { cId: 'altDim2' } },
+        { qDef: { cId: 'altDim3' } },
+      ]);
+    });
+
+    test('moves dimension from main to alternative', async () => {
+      await handler.moveDimension(0, 3);
+
+      expect(handler.hcProperties.qDimensions).toEqual([
+        { qDef: { cId: 'dim2' } },
+        { qDef: { cId: 'dim3' } },
+        { qDef: { cId: 'altDim1' } },
+      ]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions).toEqual([
+        { qDef: { cId: 'dim1' } },
+        { qDef: { cId: 'altDim2' } },
+        { qDef: { cId: 'altDim3' } },
+      ]);
+    });
+
+    test('moves dimension from alternative to main', async () => {
+      const result = await handler.moveDimension(3, 2);
+
+      expect(handler.hcProperties.qDimensions).toEqual([
+        { qDef: { cId: 'dim1' } },
+        { qDef: { cId: 'dim2' } },
+        { qDef: { cId: 'altDim1' } },
+      ]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions).toEqual([
+        { qDef: { cId: 'dim3' } },
+        { qDef: { cId: 'altDim2' } },
+        { qDef: { cId: 'altDim3' } },
+      ]);
+      expect(result).toEqual({ qDef: { cId: 'altDim1' } });
+    });
+
+    test('moves dimension within alternative', async () => {
+      await handler.moveDimension(4, 3);
+
+      expect(handler.hcProperties.qDimensions).toEqual([
+        { qDef: { cId: 'dim1' } },
+        { qDef: { cId: 'dim2' } },
+        { qDef: { cId: 'dim3' } },
+      ]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions).toEqual([
+        { qDef: { cId: 'altDim2' } },
+        { qDef: { cId: 'altDim1' } },
+        { qDef: { cId: 'altDim3' } },
+      ]);
+    });
+
+    test('handles empty dimensions arrays', async () => {
+      properties.qHyperCubeDef.qDimensions = [];
+      handler.setProperties(properties);
+
+      const result = await handler.moveDimension(0, 1);
+      expect(handler.hcProperties.qDimensions).toEqual([]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions).toEqual([
+        { qDef: { cId: 'altDim2' } },
+        { qDef: { cId: 'altDim1' } },
+        { qDef: { cId: 'altDim3' } },
+      ]);
+      expect(result).toBeUndefined();
+    });
+
+    test('handles out-of-bounds indices', async () => {
+      await handler.moveDimension(10, 20);
+      expect(handler.hcProperties.qDimensions).toEqual([
+        { qDef: { cId: 'dim1' } },
+        { qDef: { cId: 'dim2' } },
+        { qDef: { cId: 'dim3' } },
+      ]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions).toEqual([
+        { qDef: { cId: 'altDim1' } },
+        { qDef: { cId: 'altDim2' } },
+        { qDef: { cId: 'altDim3' } },
+      ]);
+    });
+  });
+
+  describe('moveMeasure', () => {
+    beforeEach(() => {
+      properties.qHyperCubeDef.qMeasures = [
+        { qDef: { cId: 'meas1' } },
+        { qDef: { cId: 'meas2' } },
+        { qDef: { cId: 'meas3' } },
+      ];
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures = [
+        { qDef: { cId: 'altMeas1' } },
+        { qDef: { cId: 'altMeas2' } },
+        { qDef: { cId: 'altMeas3' } },
+      ];
+      handler.setProperties(properties);
+    });
+
+    afterEach(() => {
+      handler.hcProperties = undefined;
+    });
+
+    test('moves measure within main', async () => {
+      await handler.moveMeasure(0, 1);
+      expect(handler.hcProperties.qMeasures).toEqual([
+        { qDef: { cId: 'meas2' } },
+        { qDef: { cId: 'meas1' } },
+        { qDef: { cId: 'meas3' } },
+      ]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures).toEqual([
+        { qDef: { cId: 'altMeas1' } },
+        { qDef: { cId: 'altMeas2' } },
+        { qDef: { cId: 'altMeas3' } },
+      ]);
+    });
+
+    test('moves measure from main to alternative', async () => {
+      await handler.moveMeasure(0, 3);
+
+      expect(handler.hcProperties.qMeasures).toEqual([
+        { qDef: { cId: 'meas2' } },
+        { qDef: { cId: 'meas3' } },
+        { qDef: { cId: 'altMeas1' } },
+      ]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures).toEqual([
+        { qDef: { cId: 'meas1' } },
+        { qDef: { cId: 'altMeas2' } },
+        { qDef: { cId: 'altMeas3' } },
+      ]);
+    });
+
+    test('moves measure from alternative to main', async () => {
+      const result = await handler.moveMeasure(3, 2);
+
+      expect(handler.hcProperties.qMeasures).toEqual([
+        { qDef: { cId: 'meas1' } },
+        { qDef: { cId: 'meas2' } },
+        { qDef: { cId: 'altMeas1' } },
+      ]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures).toEqual([
+        { qDef: { cId: 'meas3' } },
+        { qDef: { cId: 'altMeas2' } },
+        { qDef: { cId: 'altMeas3' } },
+      ]);
+      expect(result).toEqual({ qDef: { cId: 'altMeas1' } });
+    });
+
+    test('moves measure within alternative', async () => {
+      await handler.moveMeasure(4, 3);
+
+      expect(handler.hcProperties.qMeasures).toEqual([
+        { qDef: { cId: 'meas1' } },
+        { qDef: { cId: 'meas2' } },
+        { qDef: { cId: 'meas3' } },
+      ]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures).toEqual([
+        { qDef: { cId: 'altMeas2' } },
+        { qDef: { cId: 'altMeas1' } },
+        { qDef: { cId: 'altMeas3' } },
+      ]);
+    });
+
+    test('handles empty measures arrays', async () => {
+      properties.qHyperCubeDef.qMeasures = [];
+      handler.setProperties(properties);
+
+      const result = await handler.moveMeasure(0, 1);
+      expect(handler.hcProperties.qMeasures).toEqual([]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures).toEqual([
+        { qDef: { cId: 'altMeas2' } },
+        { qDef: { cId: 'altMeas1' } },
+        { qDef: { cId: 'altMeas3' } },
+      ]);
+      expect(result).toBeUndefined();
+    });
+
+    test('handles out-of-bounds indices', async () => {
+      await handler.moveMeasure(10, 20);
+      expect(handler.hcProperties.qMeasures).toEqual([
+        { qDef: { cId: 'meas1' } },
+        { qDef: { cId: 'meas2' } },
+        { qDef: { cId: 'meas3' } },
+      ]);
+      expect(handler.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures).toEqual([
+        { qDef: { cId: 'altMeas1' } },
+        { qDef: { cId: 'altMeas2' } },
+        { qDef: { cId: 'altMeas3' } },
+      ]);
     });
   });
 });
