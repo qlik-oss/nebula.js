@@ -50,7 +50,7 @@
     "yargs": "17.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.27.1",
+    "@babel/core": "7.27.4",
     "@babel/preset-env": "7.27.2",
     "@babel/preset-react": "7.27.1",
     "@mui/material": "^5.17.1",
