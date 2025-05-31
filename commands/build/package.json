@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "@babel/cli": "7.27.2",
-    "@babel/core": "7.27.1",
+    "@babel/core": "7.27.4",
     "@babel/plugin-transform-react-jsx": "7.27.1",
     "@babel/preset-env": "7.27.2",
     "@rollup/plugin-babel": "6.0.4",
@@ -33,10 +33,10 @@
     "@rollup/plugin-terser": "0.4.4",
     "chalk": "4.1.2",
     "extend": "3.0.2",
-    "postcss": "^8.5.3",
+    "postcss": "^8.5.4",
     "rollup": "4.41.1",
     "rollup-plugin-postcss": "4.0.2",
-    "rollup-plugin-visualizer": "6.0.0",
+    "rollup-plugin-visualizer": "6.0.1",
     "yargs": "17.7.2"
   },
   "devDependencies": {

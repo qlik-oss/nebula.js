@@ -28,7 +28,7 @@
   },
   "dependencies": {
     "@babel/cli": "7.27.2",
-    "@babel/core": "7.27.1",
+    "@babel/core": "7.27.4",
     "@babel/preset-env": "7.27.2",
     "@nebula.js/stardust": "^5.15.0",
     "@rollup/plugin-babel": "6.0.4",
