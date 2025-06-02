@@ -16,7 +16,7 @@ describe('<Supernova />', () => {
       sn = { component: {} },
       snOptions = {},
       snPlugins = [],
-      layout = {},
+      layout = { qInfo: { qId: 'id' } },
       appLayout = {},
       halo = {},
       rendererOptions,
@@ -47,7 +47,7 @@ describe('<Supernova />', () => {
       },
       snOptions: {},
       snPlugins: [],
-      layout: {},
+      layout: { qInfo: { qId: 'id' } },
       appLayout: {},
       halo: {},
     });
@@ -65,6 +65,7 @@ describe('<Supernova />', () => {
         logicalSize,
         component,
       },
+      layout: { qInfo: { qId: 'id' } },
       rendererOptions: {
         createNodeMock: () => ({
           style: {},
@@ -100,7 +101,7 @@ describe('<Supernova />', () => {
       },
       snOptions,
       snPlugins: [],
-      layout: 'layout',
+      layout: { qInfo: { qId: 'id' } },
       appLayout: { qLocaleInfo: 'loc' },
       halo: { public: { theme: 'theme', nebbie: 'embedAPI' }, app: { session: {} } },
       rendererOptions: {
@@ -115,7 +116,7 @@ describe('<Supernova />', () => {
     expect(await initialRender).toBe(true);
     expect(component.render).toHaveBeenCalledTimes(1);
     expect(component.render.mock.calls[0][0]).toEqual({
-      layout: 'layout',
+      layout: { qInfo: { qId: 'id' } },
       options: snOptions,
       plugins: [],
       embed: 'embedAPI',

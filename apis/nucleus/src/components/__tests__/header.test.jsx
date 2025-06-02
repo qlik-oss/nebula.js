@@ -40,7 +40,7 @@ describe('<Header />', () => {
     expect(types).toHaveLength(0);
   });
   test('should render title', async () => {
-    await render({ showTitles: true, title: 'foo' });
+    await render({ showTitles: true, title: 'foo', qInfo: { qId: 'id' } });
     const types = renderer.root.findAllByType(Typography);
     expect(types).toHaveLength(1);
     expect(types[0].props.children).toBe('foo');
