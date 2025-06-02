@@ -42,7 +42,7 @@ const CellSubTitle = {
   className: 'njs-cell-sub-title',
 };
 
-function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}, isRtl }) {
+function Header({ id, layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}, isRtl }) {
   const showTitle = layout.showTitles && !!layout.title;
   const showSubtitle = layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
@@ -84,7 +84,7 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
           {showTitle && (
             <Tooltip title={layout.title}>
               <Typography
-                id={`${layout.qInfo.qId}_title`}
+                id={`${id}_title`}
                 variant="h6"
                 noWrap
                 className={CellTitle.className}

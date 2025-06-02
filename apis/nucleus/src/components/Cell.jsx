@@ -655,11 +655,9 @@ const Cell = forwardRef(
             ...(useOldCellPadding ? { padding: theme.spacing(1) } : {}),
             ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
           }}
-          aria-labelledby={`${layout?.qInfo.qId}_title ${layout?.qInfo.qId}_type ${layout?.qInfo.qId}_content`}
+          aria-labelledby={`${currentId}_title ${currentId}_type ${currentId}_content`}
         >
-          {translationKey && (
-            <div id={`${layout?.qInfo.qId}_type`} style={hiddenScreenReaderText} aria-label={translation} />
-          )}
+          {translationKey && <div id={`${currentId}_type`} style={hiddenScreenReaderText} aria-label={translation} />}
           {cellNode && layout && state.sn && (
             <Header
               layout={layout}
@@ -669,6 +667,7 @@ const Cell = forwardRef(
               focusHandler={focusHandler.current}
               titleStyles={titleStyles}
               isRtl={isRtl}
+              id={currentId}
             >
               &nbsp;
             </Header>
