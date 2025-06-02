@@ -51,6 +51,7 @@ describe('<Supernova />', () => {
       layout: { qInfo: { qId: 'id' } },
       appLayout: {},
       halo: {},
+      cellId: 'id',
     });
   });
   test('should mount', async () => {

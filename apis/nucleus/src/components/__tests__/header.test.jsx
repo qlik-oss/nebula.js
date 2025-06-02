@@ -23,9 +23,14 @@ describe('<Header />', () => {
     jest.spyOn(useRectModule, 'default').mockImplementation(() => [() => {}, rect]);
     ActionsToolbarModule.default = ActionsToolbar;
 
-    render = async (layout = {}, sn = { component: {}, selectionToolbar: {} }, focusHandler = {}) => {
+    render = async (
+      layout = {},
+      sn = { component: {}, selectionToolbar: {} },
+      focusHandler = {},
+      translator = { get: (s) => s }
+    ) => {
       await act(async () => {
-        renderer = create(<Header layout={layout} sn={sn} focusHandler={focusHandler} />);
+        renderer = create(<Header layout={layout} sn={sn} focusHandler={focusHandler} translator={translator} />);
       });
     };
   });
