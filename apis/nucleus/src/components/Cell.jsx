@@ -21,6 +21,12 @@ import useStyling from '../hooks/useStyling';
 import RenderError from '../utils/render-error';
 import getPadding from '../utils/cell-padding';
 import translationKeys from '../utils/extension-translation-keys';
+
+const hiddenScreenReaderText = {
+  width: 0,
+  height: 0,
+};
+
 /**
  * @interface
  * @extends HTMLElement
@@ -652,7 +658,7 @@ const Cell = forwardRef(
           aria-labelledby={`${layout?.qInfo.qId}_title ${layout?.qInfo.qId}_type ${layout?.qInfo.qId}_content`}
         >
           {translationKey && (
-            <div id={`${layout?.qInfo.qId}_type`} style={{ width: 0, height: 0 }} aria-label={translation} />
+            <div id={`${layout?.qInfo.qId}_type`} style={hiddenScreenReaderText} aria-label={translation} />
           )}
           {cellNode && layout && state.sn && (
             <Header
