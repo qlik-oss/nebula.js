@@ -1,3 +1,4 @@
+import auth from '@qlik/api/auth';
 import { getFullBoxShadow } from './shadow-utils';
 import resolveProperty from './resolve-property';
 import resolveColor from './resolve-color';
@@ -62,16 +63,26 @@ function resolveImageUrl(app, relativeUrl) {
   return relativeUrl ? getSenseServerUrl(app) + relativeUrl : undefined;
 }
 
-export function resolveBgImage(bgComp, app) {
+export async function resolveBgImage(bgComp, app, hostConfig) {
   const bgImageDef = bgComp?.bgImage;
 
   if (bgImageDef) {
     let url = '';
     if (bgImageDef.mode === 'media' || bgComp.useImage === 'media') {
+      let authParamsAsString;
+      if (hostConfig && auth && auth.getWebResourceAuthParams) {
+        const { queryParams } = await auth.getWebResourceAuthParams({ hostConfig });
+        authParamsAsString = Object.entries(queryParams)
+          .map(([key, value]) => `&${key}=${encodeURIComponent(value)}`)
+          .join('&');
+      }
       const urlObj = bgImageDef?.mediaUrl;
       const { qUrl } = urlObj?.qStaticContentUrl || {};
       url = qUrl ? decodeURIComponent(qUrl) : undefined;
       url = resolveImageUrl(app, url);
+      if (authParamsAsString) {
+        url = `${url}?${authParamsAsString}`;
+      }
     }
     if (bgImageDef.mode === 'expression') {
       url = bgImageDef.expressionUrl ? decodeURIComponent(bgImageDef.expressionUrl) : undefined;

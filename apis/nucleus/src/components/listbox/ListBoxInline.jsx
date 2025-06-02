@@ -9,7 +9,7 @@ import ListBox from './ListBox';
 import InstanceContext from '../../contexts/InstanceContext';
 import ListBoxSearch from './components/ListBoxSearch';
 import getListboxContainerKeyboardNavigation from './interactions/keyboard-navigation/keyboard-nav-container';
-import getStyles from './assets/styling';
+import useListboxStyling from './assets/styling';
 import useAppSelections from '../../hooks/useAppSelections';
 import createSelectionState from './hooks/selections/selectionState';
 import { DENSE_ROW_HEIGHT, SCROLL_BAR_WIDTH } from './constants';
@@ -85,10 +85,10 @@ function ListBoxInline({ options, layout }) {
 
   const theme = useTheme();
 
-  const { translator, keyboardNavigation, themeApi, constraints } = useContext(InstanceContext);
+  const { translator, keyboardNavigation, themeApi, hostConfig, constraints } = useContext(InstanceContext);
 
   const { checkboxes = checkboxesOption } = layout || {};
-  const styles = getStyles({ app, themeApi, theme, components, checkboxes });
+  const styles = useListboxStyling({ app, themeApi, theme, hostConfig, components, checkboxes });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 
@@ -189,7 +189,7 @@ function ListBoxInline({ options, layout }) {
 
   const isRtl = direction === 'rtl';
 
-  if (!model || !layout || !translator) {
+  if (!model || !layout || !translator || !styles) {
     return null;
   }
 

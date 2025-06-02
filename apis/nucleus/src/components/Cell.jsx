@@ -375,6 +375,7 @@ const Cell = forwardRef(
       app: halo.app,
       themeName,
       disableThemeBorder: snOptions?.disableThemeBorder,
+      hostConfig: halo.config.hostConfig,
     });
     const isRtl = !!(snOptions?.direction === 'rtl');
 
