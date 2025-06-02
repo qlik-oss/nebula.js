@@ -589,6 +589,7 @@ const Cell = forwardRef(
           snPlugins={snPlugins}
           layout={layout}
           appLayout={appLayout}
+          cellId={currentId}
         />
       );
     }

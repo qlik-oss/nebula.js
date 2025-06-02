@@ -30,6 +30,7 @@ describe('<Supernova />', () => {
             layout={layout}
             appLayout={appLayout}
             halo={halo}
+            cellId="id"
           />,
           rendererOptions || null
         );
