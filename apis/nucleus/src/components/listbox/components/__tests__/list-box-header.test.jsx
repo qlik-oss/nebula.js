@@ -40,7 +40,6 @@ function getDefaultProps() {
   const containerRef = React.createRef();
   const defaultProps = {
     layout: {
-      qInfo: { qId: 'id' },
       title: 'The title',
       qListObject: { qDimensionInfo: { qLocked: false, qGrouping: 'N' } },
     },
