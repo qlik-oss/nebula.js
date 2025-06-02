@@ -614,12 +614,10 @@ const Cell = forwardRef(
         translator,
       });
     }
-    const translationKey = translationKeys.get(layout?.visualization);
-    const translation = translator.get(translationKey);
-    if (!translationKey && layout) {
-      // eslint-disable-next-line no-console
-      console.warn(`No translation key found for visualization: ${layout.visualization}`);
-    }
+    const translationKey = layout ? translationKeys.get(layout.visualization) : undefined;
+    const translation = translationKey && translator.get(translationKey);
+    const isTranslated = translation && translation !== translationKey;
+
     return (
       <Paper
         style={{
@@ -658,7 +656,13 @@ const Cell = forwardRef(
           }}
           aria-labelledby={`${currentId}_title ${currentId}_type ${currentId}_content`}
         >
-          {translationKey && <div id={`${currentId}_type`} style={hiddenScreenReaderText} aria-label={translation} />}
+          {layout && (
+            <div
+              id={`${currentId}_type`}
+              style={hiddenScreenReaderText}
+              aria-label={isTranslated ? translation : layout.visualization}
+            />
+          )}
           {cellNode && layout && state.sn && (
             <Header
               layout={layout}
