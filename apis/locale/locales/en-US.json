@@ -370,5 +370,9 @@
   "Object.RadarChart": {
     "value": "Radar chart",
     "comment": "A chart that displays multivariate data stacked at an axis with the same central point."
+  },
+  "Accessibility.Object.NoTitle": {
+    "value": "No title",
+    "comment": "Screen reader text for objects without a title"
   }
 }

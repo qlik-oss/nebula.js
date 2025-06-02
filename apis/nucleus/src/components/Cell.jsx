@@ -21,11 +21,7 @@ import useStyling from '../hooks/useStyling';
 import RenderError from '../utils/render-error';
 import getPadding from '../utils/cell-padding';
 import translationKeys from '../utils/extension-translation-keys';
-
-const hiddenScreenReaderText = {
-  width: 0,
-  height: 0,
-};
+import hiddenScreenReaderText from '../utils/style/screen-reader';
 
 /**
  * @interface
@@ -673,6 +669,7 @@ const Cell = forwardRef(
               titleStyles={titleStyles}
               isRtl={isRtl}
               id={currentId}
+              translator={translator}
             >
               &nbsp;
             </Header>
