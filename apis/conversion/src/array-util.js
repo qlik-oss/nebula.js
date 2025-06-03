@@ -66,8 +66,32 @@ function indexRemoved(array, index) {
   return removeIndex;
 }
 
+/**
+ * Move an element from position old_index to position new_index in
+ * the array.
+ * @param array
+ * @param oldIndex
+ * @param newIndex
+ */
+function move(array, oldIndex, newIndex) {
+  if (newIndex < 0) throw Error('newIndex cannot be a negative value!');
+
+  if (newIndex >= array.length) {
+    let k = newIndex - array.length + 1;
+    while (k) {
+      array.push(undefined);
+      k--;
+    }
+  }
+
+  const movingValue = array.at(oldIndex);
+  array.splice(oldIndex, 1);
+  array.splice(newIndex, 0, movingValue);
+}
+
 export default {
   isOrderedSubset,
   indexAdded,
   indexRemoved,
+  move,
 };

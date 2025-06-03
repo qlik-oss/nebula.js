@@ -85,23 +85,14 @@ describe('DataPropertyHandler', () => {
       expect(result.customDefault).toBe('value');
     });
 
-    describe('createLibraryDimension', () => {
-      test('should create a library dimension with default properties', () => {
-        const result = handler.createLibraryDimension('libraryId', { customDefault: 'value' });
+    test('should create a library dimension with default properties', () => {
+      const result = handler.createLibraryDimension('libraryId', { customDefault: 'value' });
 
-        expect(result.qLibraryId).toBe('libraryId');
-        expect(result.qDef.qSortCriterias).toEqual(sortingProperties);
-        expect(result.qDef.autoSort).toBe(true);
-        expect(result.someProperty).toBe('defaultValue');
-        expect(result.customDefault).toBe('value');
-      });
-
-      test('should delete qFieldDefs and qFieldLabels from the dimension', () => {
-        const result = handler.createLibraryDimension('libraryId', {});
-
-        expect(result.qDef.qFieldDefs).toBeUndefined();
-        expect(result.qDef.qFieldLabels).toBeUndefined();
-      });
+      expect(result.qLibraryId).toBe('libraryId');
+      expect(result.qDef.qSortCriterias).toEqual(sortingProperties);
+      expect(result.qDef.autoSort).toBe(true);
+      expect(result.someProperty).toBe('defaultValue');
+      expect(result.customDefault).toBe('value');
     });
 
     test('should create a dimension with provided field and label', () => {
@@ -109,6 +100,31 @@ describe('DataPropertyHandler', () => {
 
       expect(result.qDef.qFieldDefs).toEqual(['fieldName']);
       expect(result.qDef.qFieldLabels).toEqual(['fieldLabel']);
+    });
+  });
+
+  describe('createLibraryDimension', () => {
+    beforeEach(() => {
+      handler = new DataPropertyHandler({
+        dimensionProperties: { someProperty: 'defaultValue' },
+      });
+    });
+
+    test('should delete qFieldDefs and qFieldLabels from the dimension', () => {
+      const result = handler.createLibraryDimension('libraryId', {});
+
+      expect(result.qDef.qFieldDefs).toBeUndefined();
+      expect(result.qDef.qFieldLabels).toBeUndefined();
+    });
+
+    test('should create a library dimension with default properties', () => {
+      const result = handler.createLibraryDimension('libraryId', { customDefault: 'value' });
+
+      expect(result.qLibraryId).toBe('libraryId');
+      expect(result.qDef.qSortCriterias).toEqual(sortingProperties);
+      expect(result.qDef.autoSort).toBe(true);
+      expect(result.someProperty).toBe('defaultValue');
+      expect(result.customDefault).toBe('value');
     });
   });
 

@@ -3,6 +3,8 @@ import getValue from '../../../../../conversion/src/utils';
 // eslint-disable-next-line import/no-relative-packages
 import arrayUtil from '../../../../../conversion/src/array-util';
 import { TOTAL_MAX } from '../constants';
+// eslint-disable-next-line import/no-relative-packages
+import uid from '../../../../../nucleus/src/object/uid';
 
 export const notSupportedError = new Error('Not supported in this object, need to implement in subclass.');
 
@@ -36,8 +38,8 @@ export const getHyperCube = (layout, path) => {
 
 export function setDefaultProperties(self) {
   const current = self;
-  current.hcProperties.qDimensions = current.hcProperties.qDimensions ?? [];
-  current.hcProperties.qMeasures = current.hcProperties.qMeasures ?? [];
+  current.hcProperties.qDimensions = current.getDimensions() ?? [];
+  current.hcProperties.qMeasures = current.getMeasures() ?? [];
   current.hcProperties.qInterColumnSortOrder = current.hcProperties.qInterColumnSortOrder ?? [];
   current.hcProperties.qLayoutExclude = current.hcProperties.qLayoutExclude ?? {
     qHyperCubeDef: { qDimensions: [], qMeasures: [] },
@@ -46,10 +48,8 @@ export function setDefaultProperties(self) {
     qDimensions: [],
     qMeasures: [],
   };
-  current.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions =
-    current.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions ?? [];
-  current.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures =
-    current.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures ?? [];
+  current.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions = current.getAlternativeDimensions() ?? [];
+  current.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures = current.getAlternativeMeasures() ?? [];
 }
 
 export function setPropForLineChartWithForecast(self) {
@@ -77,7 +77,7 @@ export function getRemainedFields(fields, indexes) {
 // ----------------------------------
 
 export function addAlternativeDimension(self, dimension, index = undefined) {
-  const dimensions = self.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions;
+  const dimensions = self.getAlternativeDimensions();
   const idx = index ?? dimensions.length;
   dimensions.splice(idx, 0, dimension);
   return Promise.resolve(dimension);
@@ -88,12 +88,45 @@ export function addDimensionToColumnSortOrder(self, dimensions, index) {
 }
 
 export function addDimensionToColumnOrder(self, dimension) {
-  if (typeof self.dimensionDefinition.add === 'function') {
+  if (dimension && typeof self.dimensionDefinition.add === 'function') {
     return Promise.resolve(self.dimensionDefinition.add.call(null, dimension, self.properties, self)).then(
       () => dimension
     );
   }
-  return undefined;
+  return Promise.resolve(dimension);
+}
+
+export function moveDimensionToColumnOrder(self, dimension) {
+  if (typeof self.dimensionDefinition.move === 'function') {
+    return Promise.resolve(self.dimensionDefinition.move.call(self, dimension, self.properties, self)).then(
+      () => dimension
+    );
+  }
+  return Promise.resolve(dimension);
+}
+
+export function replaceDimensionOrder(self, index, dimension) {
+  if (!dimension) {
+    return undefined;
+  }
+
+  const dimensions = self.getDimensions();
+  const replacedDimension = dimensions[index];
+
+  const newDimension = {
+    ...dimension,
+    qDef: {
+      ...dimension.qDef,
+      cId: uid(),
+    },
+  };
+
+  dimensions[index] = newDimension;
+  if (newDimension && typeof self.dimensionDefinition.replace === 'function') {
+    self.dimensionDefinition.replace.call(null, newDimension, replacedDimension, index, self.properties, self);
+  }
+
+  return newDimension;
 }
 
 export function removeDimensionFromColumnSortOrder(self, index) {
@@ -101,12 +134,12 @@ export function removeDimensionFromColumnSortOrder(self, index) {
 }
 
 export function removeDimensionFromColumnOrder(self, index) {
-  const [dimension] = self.hcProperties.qDimensions.splice(index, 1);
+  const [dimension] = self.getDimensions().splice(index, 1);
   if (dimension && typeof self.dimensionDefinition.remove === 'function') {
     return Promise.resolve(self.dimensionDefinition.remove.call(null, dimension, self.properties, self, index));
   }
 
-  return undefined;
+  return Promise.resolve();
 }
 
 export function isTotalDimensionsExceeded(self, dimensions) {
@@ -115,7 +148,7 @@ export function isTotalDimensionsExceeded(self, dimensions) {
 }
 
 export function isDimensionAlternative(self, alternative) {
-  const dimensions = self.hcProperties.qLayoutExclude.qHyperCubeDef.qDimensions;
+  const dimensions = self.getAlternativeDimensions();
   return alternative || (self.maxDimensions() <= dimensions.length && dimensions.length < TOTAL_MAX.DIMENSIONS);
 }
 
@@ -140,12 +173,42 @@ export async function addActiveDimension(
   }
 }
 
+export function moveDimensionFromMainToAlternative(fromIndex, toIndex, dimensions, altDimensions) {
+  const alternativeToIndex = toIndex - dimensions.length;
+
+  let [movingDimension] = altDimensions.splice(0, 1);
+  dimensions.push(movingDimension);
+
+  [movingDimension] = dimensions.splice(fromIndex, 1);
+  altDimensions.splice(alternativeToIndex, 0, movingDimension);
+
+  return Promise.resolve(movingDimension);
+}
+
+export function moveDimensionFromAlternativeToMain(fromIndex, toIndex, dimensions, altDimensions) {
+  const alternativeToIndex = fromIndex - dimensions.length;
+
+  let [movingDimension] = dimensions.splice(dimensions.length - 1, 1);
+  altDimensions.splice(0, 0, movingDimension);
+
+  [movingDimension] = altDimensions.splice(alternativeToIndex + 1, 1);
+  dimensions.splice(toIndex, 0, movingDimension);
+
+  return Promise.resolve(movingDimension);
+}
+
+export function moveDimensionWithinAlternative(fromIndex, toIndex, dimensions, altDimensions) {
+  const alternativeFromIdx = fromIndex - dimensions.length;
+  const alternativeToIndex = toIndex - dimensions.length;
+  arrayUtil.move(altDimensions, alternativeFromIdx, alternativeToIndex);
+}
+
 // ----------------------------------
 // ------------ MEASURES ------------
 // ----------------------------------
 
 export function addAlternativeMeasure(self, measure, index = undefined) {
-  const measures = self.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures;
+  const measures = self.getAlternativeMeasures();
   const idx = index ?? measures.length;
   measures.splice(idx, 0, measure);
   return Promise.resolve(measure);
@@ -156,10 +219,20 @@ export function addMeasureToColumnSortOrder(self, measures) {
 }
 
 export function addMeasureToColumnOrder(self, measure) {
-  if (typeof self.measureDefinition.add === 'function') {
+  if (measure && typeof self.measureDefinition.add === 'function') {
     return Promise.resolve(self.measureDefinition.add.call(null, measure, self.properties, self));
   }
-  return undefined;
+  return Promise.resolve();
+}
+
+export function moveMeasureColumnOrder(self, measure) {
+  if (typeof self.measureDefinition.move === 'function') {
+    return Promise.resolve(self.measureDefinition.move.call(null, measure, self.properties, self, true)).then(
+      () => measure
+    );
+  }
+
+  return Promise.resolve(measure);
 }
 
 export function isTotalMeasureExceeded(self, measures) {
@@ -199,13 +272,64 @@ export function removeMeasureFromColumnSortOrder(self, index) {
 }
 
 export function removeMeasureFromColumnOrder(self, index) {
-  const [measure] = self.hcProperties.qMeasures.splice(index, 1);
+  const [measure] = self.getMeasures().splice(index, 1);
   if (measure && typeof self.measureDefinition.remove === 'function') {
     return Promise.resolve(self.measureDefinition.remove.call(null, measure, self.properties, self, index));
   }
-  return undefined;
+  return Promise.resolve();
 }
 
 export function removeAltMeasureByIndex(self, index) {
-  return self.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures.splice(index, 1);
+  return self.getAlternativeMeasures().splice(index, 1);
+}
+
+export function replaceMeasureToColumnOrder(self, index, measure) {
+  const measures = self.getMeasures();
+  const replacedMeasure = measures[index];
+
+  const newMeasure = {
+    ...measure,
+    qDef: {
+      ...measure.qDef,
+      cId: uid(),
+    },
+  };
+
+  measures[index] = newMeasure;
+
+  if (newMeasure && typeof self.measureDefinition.replace === 'function') {
+    self.dimensionDefinition.replace.call(null, newMeasure, replacedMeasure, index, self.properties, self);
+  }
+
+  return newMeasure;
+}
+
+export function moveMeasureFromMainToAlternative(fromIndex, toIndex, measures, altMeasures) {
+  const alternativeToIndex = toIndex - measures.length;
+
+  let [movingMeasure] = altMeasures.splice(0, 1);
+  measures.push(movingMeasure);
+
+  [movingMeasure] = measures.splice(fromIndex, 1);
+  altMeasures.splice(alternativeToIndex, 0, movingMeasure);
+
+  return Promise.resolve(movingMeasure);
+}
+
+export function moveMeasureFromAlternativeToMain(fromIndex, toIndex, measures, altMeasures) {
+  const alternativeFromIndex = fromIndex - measures.length;
+
+  let [movingMeasure] = measures.splice(measures.length - 1, 1);
+  altMeasures.splice(0, 0, movingMeasure);
+
+  [movingMeasure] = altMeasures.splice(alternativeFromIndex + 1, 1);
+  measures.splice(toIndex, 0, movingMeasure);
+
+  return Promise.resolve(movingMeasure);
+}
+
+export function moveMeasureWithinAlternative(fromIndex, toIndex, measures, altMeasures) {
+  const alternativeFromIndex = fromIndex - measures.length;
+  const alternativeToIndex = toIndex - measures.length;
+  arrayUtil.move(altMeasures, alternativeFromIndex, alternativeToIndex);
 }
