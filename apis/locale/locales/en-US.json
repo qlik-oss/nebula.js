@@ -234,5 +234,145 @@
   "Visualization.Invalid.Measure": {
     "value": "Invalid measure",
     "comment": "Status text shown when a measure is not valid"
+  },
+  "Object.AutoChart": {
+    "value": "Autochart",
+    "comment": "Visualization in the library"
+  },
+  "Object.BarChart": {
+    "value": "Bar chart",
+    "comment": "Visualization in the library"
+  },
+  "Object.ComboChart": {
+    "value": "Combo chart",
+    "comment": "Visualization in the library"
+  },
+  "Object.Container": {
+    "value": "Container",
+    "comment": "Visualization in the library"
+  },
+  "Object.DistributionPlot": {
+    "value": "Distribution plot",
+    "comment": "Visualization in the library"
+  },
+  "Object.BoxPlot": {
+    "value": "Box plot",
+    "comment": "Visualization in the library"
+  },
+  "Object.FilterPane": {
+    "value": "Filter pane",
+    "comment": "Visualization in the library"
+  },
+  "Object.Gauge": {
+    "value": "Gauge",
+    "comment": "Visualization in the library"
+  },
+  "Object.Histogram": {
+    "value": "Histogram",
+    "comment": "Visualization in the library"
+  },
+  "Object.Kpi": {
+    "value": "KPI",
+    "comment": "Do not use more than a total of 19 characters when you translate this string."
+  },
+  "Object.LineChart": {
+    "value": "Line chart",
+    "comment": "Visualization in the library"
+  },
+  "Object.Listbox": {
+    "value": "List box",
+    "comment": "Visualization in the library"
+  },
+  "Object.PieChart": {
+    "value": "Pie chart",
+    "comment": "Visualization in the library"
+  },
+  "Object.PivotTable": {
+    "value": "Pivot table",
+    "comment": "Visualization in the library"
+  },
+  "Object.Map": {
+    "value": "Map",
+    "comment": "Visualization for geographical data"
+  },
+  "Object.ScatterPlot": {
+    "value": "Scatter plot",
+    "comment": "Visualization in the library"
+  },
+  "Object.StraightTable": {
+    "value": "Straight table",
+    "comment": "Visualization in the library."
+  },
+  "Object.TextImage": {
+    "value": "Text & image",
+    "comment": "Visualization in the library. Renamed from Utility object to Text & image"
+  },
+  "Object.Treemap": {
+    "value": "Treemap",
+    "comment": ""
+  },
+  "Object.WaterfallChart":{
+    "value": "Waterfall chart",
+    "comment": "Visualization in the library"
+  },
+  "Object.MekkoChart": {
+    "value": "Mekko chart",
+    "comment": "Visualization for?"
+  },
+  "Object.ActionButton": {
+    "value": "Button",
+    "comment": "Button for selections and navigation"
+  },
+  "Object.NavMenu": {
+    "value": "Navigation menu",
+    "comment": "A navigation menu for navigating sheets."
+  },
+  "Object.BulletChart": {
+    "value": "Bullet chart",
+    "comment": "Visualization for values using bars and ranges"
+  },
+  "Object.NlgChart": {
+    "value": "NL insights",
+    "comment": "Visualization in the library."
+  },
+  "Object.TabContainer": {
+    "value": "Tab container",
+    "comment": "Visualization in the library."
+  },
+  "Object.Table": {
+    "value": "Table",
+    "comment": "Visualization in the library"
+  },
+  "Object.Table.Deprecated": {
+    "value": "Table ",
+    "comment": "Visualization in the library that will be deprecated."
+  },
+  "Object.Text": {
+    "value": "Text",
+    "comment": "A chart used to display text, measures, add tables with rows and columns, etc."
+  },
+  "Object.LayoutContainer": {
+    "value": "Layout container",
+    "comment": "Visualization in the library."
+  },
+  "Object.GridChart": {
+    "value": "Grid chart",
+    "comment": "A chart used to present data in a matrix."
+  },
+  "Object.FunnelChart": {
+    "value": "Funnel chart",
+    "comment": "A chart often used to represent stages of a process."
+  },
+  "Object.SankeyChart": {
+    "value": "Sankey chart",
+    "comment": "A chart that shows the flow from a set of values to another."
+  },
+  "Object.RadarChart": {
+    "value": "Radar chart",
+    "comment": "A chart that displays multivariate data stacked at an axis with the same central point."
+  },
+  "Accessibility.Object.NoTitle": {
+    "value": "No title",
+    "comment": "Screen reader text for objects without a title"
   }
 }

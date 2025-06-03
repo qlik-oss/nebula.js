@@ -39,7 +39,10 @@ const model = {
 function getDefaultProps() {
   const containerRef = React.createRef();
   const defaultProps = {
-    layout: { title: 'The title', qListObject: { qDimensionInfo: { qLocked: false, qGrouping: 'N' } } },
+    layout: {
+      title: 'The title',
+      qListObject: { qDimensionInfo: { qLocked: false, qGrouping: 'N' } },
+    },
     translator,
     styles,
     isRtl: false,

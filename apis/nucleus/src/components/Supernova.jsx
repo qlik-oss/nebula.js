@@ -19,7 +19,7 @@ const VizElement = {
   className: 'njs-viz',
 };
 
-function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo }) {
+function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayout, halo, cellId }) {
   const { component } = sn;
 
   const { theme: themeName, language, constraints, interactions, keyboardNavigation } = useContext(InstanceContext);
@@ -135,7 +135,7 @@ function Supernova({ sn, snOptions: options, snPlugins: plugins, layout, appLayo
       }}
       className={VizElement.className}
     >
-      <div ref={snRef} style={{ position: 'absolute', width: '100%', height: '100%' }} />
+      <div ref={snRef} id={`${cellId}_content`} style={{ position: 'absolute', width: '100%', height: '100%' }} />
     </div>
   );
 }

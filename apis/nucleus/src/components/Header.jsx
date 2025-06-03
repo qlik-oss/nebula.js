@@ -4,6 +4,7 @@ import { styled } from '@mui/material/styles';
 
 import { Grid, Tooltip, Typography } from '@mui/material';
 import ActionsToolbar from './ActionsToolbar';
+import hiddenScreenReaderText from '../utils/style/screen-reader';
 
 const PREFIX = 'Header';
 
@@ -42,7 +43,7 @@ const CellSubTitle = {
   className: 'njs-cell-sub-title',
 };
 
-function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}, isRtl }) {
+function Header({ id, layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}, isRtl, translator }) {
   const showTitle = layout.showTitles && !!layout.title;
   const showSubtitle = layout.showTitles && !!layout.subtitle;
   const showInSelectionActions = layout.qSelectionInfo && layout.qSelectionInfo.qInSelections;
@@ -76,17 +77,28 @@ function Header({ layout, sn, anchorEl, hovering, focusHandler, titleStyles = {}
       isRtl={isRtl}
     />
   );
-
   return (
     <StyledGrid item container wrap="nowrap" className={cls.join(' ')}>
       <Grid item zeroMinWidth xs dir={isRtl ? 'rtl' : 'ltr'}>
         <Grid container wrap="nowrap" direction="column">
-          {showTitle && (
+          {showTitle ? (
             <Tooltip title={layout.title}>
-              <Typography variant="h6" noWrap className={CellTitle.className} style={titleStyles.main}>
+              <Typography
+                id={`${id}_title`}
+                variant="h6"
+                noWrap
+                className={CellTitle.className}
+                style={titleStyles.main}
+              >
                 {layout.title}
               </Typography>
             </Tooltip>
+          ) : (
+            <div
+              id={`${id}_title`}
+              style={hiddenScreenReaderText}
+              aria-label={translator.get('Accessibility.Object.NoTitle')}
+            />
           )}
           {showSubtitle && (
             <Tooltip title={layout.subtitle}>

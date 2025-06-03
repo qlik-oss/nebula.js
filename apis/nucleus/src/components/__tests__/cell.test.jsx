@@ -53,7 +53,7 @@ describe('<Cell />', () => {
     Header = jest.fn().mockImplementation(() => 'Header');
     InstanceContext = React.createContext();
     appLayout = { foo: 'app-layout' };
-    layout = { qSelectionInfo: {}, visualization: '' };
+    layout = { qSelectionInfo: {}, visualization: '', qInfo: { qId: 'id' } };
     layoutState = { validating: true, canCancel: false, canRetry: false };
     longrunning = { cancel: jest.fn(), retry: jest.fn() };
     useLayout = jest.fn().mockReturnValue([layout, layoutState, longrunning]);

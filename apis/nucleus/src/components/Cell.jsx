@@ -20,6 +20,8 @@ import eventmixin from '../selections/event-mixin';
 import useStyling from '../hooks/useStyling';
 import RenderError from '../utils/render-error';
 import getPadding from '../utils/cell-padding';
+import translationKeys from '../utils/extension-translation-keys';
+import hiddenScreenReaderText from '../utils/style/screen-reader';
 
 /**
  * @interface
@@ -583,6 +585,7 @@ const Cell = forwardRef(
           snPlugins={snPlugins}
           layout={layout}
           appLayout={appLayout}
+          cellId={currentId}
         />
       );
     }
@@ -607,7 +610,8 @@ const Cell = forwardRef(
         translator,
       });
     }
-
+    const translationKey = translationKeys.get(layout?.visualization);
+    const translation = translator.get(translationKey);
     return (
       <Paper
         style={{
@@ -644,7 +648,15 @@ const Cell = forwardRef(
             ...(useOldCellPadding ? { padding: theme.spacing(1) } : {}),
             ...(state.longRunningQuery ? { opacity: '0.3' } : {}),
           }}
+          aria-labelledby={`${currentId}_title ${currentId}_type ${currentId}_content`}
         >
+          {layout && (
+            <div
+              id={`${currentId}_type`}
+              style={hiddenScreenReaderText}
+              aria-label={translation ?? layout.visualization}
+            />
+          )}
           {cellNode && layout && state.sn && (
             <Header
               layout={layout}
@@ -654,6 +666,8 @@ const Cell = forwardRef(
               focusHandler={focusHandler.current}
               titleStyles={titleStyles}
               isRtl={isRtl}
+              id={currentId}
+              translator={translator}
             >
               &nbsp;
             </Header>
