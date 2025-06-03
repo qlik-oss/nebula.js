@@ -654,7 +654,7 @@ const Cell = forwardRef(
             <div
               id={`${currentId}_type`}
               style={hiddenScreenReaderText}
-              aria-label={translation ?? layout?.visualization}
+              aria-label={translation ?? layout.visualization}
             />
           )}
           {cellNode && layout && state.sn && (
