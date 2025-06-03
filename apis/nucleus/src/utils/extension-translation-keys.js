@@ -32,6 +32,7 @@ const extensions = [
   ['qlik-radar-chart', 'Object.RadarChart'],
   ['qlik-funnel-chart-ext', 'Object.FunnelChart'],
   ['sn-grid-chart', 'Object.GridChart'],
+  ['sn-layout-container', 'Object.LayoutContainer'],
 ];
 extensions.forEach(([key, value]) => {
   translationKeys.set(key, value);

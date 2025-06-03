@@ -610,10 +610,8 @@ const Cell = forwardRef(
         translator,
       });
     }
-    const translationKey = layout ? translationKeys.get(layout.visualization) : undefined;
-    const translation = translationKey && translator.get(translationKey);
-    const isTranslated = translation && translation !== translationKey;
-
+    const translationKey = translationKeys.get(layout?.visualization);
+    const translation = translator.get(translationKey);
     return (
       <Paper
         style={{
@@ -656,7 +654,7 @@ const Cell = forwardRef(
             <div
               id={`${currentId}_type`}
               style={hiddenScreenReaderText}
-              aria-label={isTranslated ? translation : layout.visualization}
+              aria-label={translation ?? layout?.visualization}
             />
           )}
           {cellNode && layout && state.sn && (
