@@ -530,6 +530,9 @@ const Cell = forwardRef(
           }
           return {};
         },
+        onContextMenu(...args) {
+          return state.sn?.component.onContextMenu(...args);
+        },
         async takeSnapshot() {
           const { width, height } = cellRect;
 
