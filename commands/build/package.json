@@ -34,9 +34,9 @@
     "chalk": "4.1.2",
     "extend": "3.0.2",
     "postcss": "^8.5.4",
-    "rollup": "4.41.1",
+    "rollup": "4.42.0",
     "rollup-plugin-postcss": "4.0.2",
-    "rollup-plugin-visualizer": "6.0.1",
+    "rollup-plugin-visualizer": "6.0.3",
     "yargs": "17.7.2"
   },
   "devDependencies": {
