@@ -1,4 +1,9 @@
 {
+  "Accessibility.Object.NoTitle": {
+    "value": "제목 없음",
+    "comment": "Screen reader text for objects without a title",
+    "version": "I8hJSImuLEsNuAiDMouA5A=="
+  },
   "Cancel": {
     "value": "취소",
     "comment": "Verb, typically button label",
@@ -104,6 +109,46 @@
     "comment": "Verb, typically button label",
     "version": "2COCF0f9Drb54EThSLR/WQ=="
   },
+  "Object.ActionButton": {
+    "value": "버튼",
+    "comment": "Button for selections and navigation",
+    "version": "tQ4sSTfswCgUk2gSKxmidg=="
+  },
+  "Object.AutoChart": {
+    "value": "자동 차트",
+    "comment": "Visualization in the library",
+    "version": "dL1vXu6wWP+XnQXpEhlSiA=="
+  },
+  "Object.BarChart": {
+    "value": "막대형 차트",
+    "comment": "Visualization in the library",
+    "version": "uSqNS/T90yK34Qq6O+cE9Q=="
+  },
+  "Object.BoxPlot": {
+    "value": "상자 그림",
+    "comment": "Visualization in the library",
+    "version": "qP3bHtasWlRNfpPyzLPgFQ=="
+  },
+  "Object.BulletChart": {
+    "value": "글머리 기호 차트",
+    "comment": "Visualization for values using bars and ranges",
+    "version": "MX0ioPztXfBPR3ENPqwH6w=="
+  },
+  "Object.ComboChart": {
+    "value": "콤보 차트",
+    "comment": "Visualization in the library",
+    "version": "HXK6HHFY1jqOd29tsLjQCg=="
+  },
+  "Object.Container": {
+    "value": "컨테이너",
+    "comment": "Visualization in the library",
+    "version": "OJ+Dl1jleBc5v3usBVbilw=="
+  },
+  "Object.DistributionPlot": {
+    "value": "분포도",
+    "comment": "Visualization in the library",
+    "version": "l0w4MJwD7OQ3Zdd/ULa8pw=="
+  },
   "Object.FilterLabel.All": {
     "value": "모두",
     "comment": "Label for when a chart filter has been set to exclude global selections in a field, meaning all field values will be included. (tew 220411)",
@@ -119,10 +164,55 @@
     "comment": "Label for when a chart filter could not be labeled. (tew 220411)",
     "version": "ioRl0mGC3yACYu/4GTN6Iw=="
   },
+  "Object.FilterPane": {
+    "value": "필터 창",
+    "comment": "Visualization in the library",
+    "version": "T6kUiRJlgh18KkfazVOb6w=="
+  },
   "Object.FiltersApplied": {
     "value": "적용된 필터:",
     "comment": "Title for applied filters on a chart.  (tew 220411)",
     "version": "mLoAoFbYrbwDA9qTvJa02Q=="
+  },
+  "Object.FunnelChart": {
+    "value": "깔때기형 차트",
+    "comment": "A chart often used to represent stages of a process.",
+    "version": "hThR1H2x7rbB2HuHQPv48A=="
+  },
+  "Object.Gauge": {
+    "value": "게이지",
+    "comment": "Visualization in the library",
+    "version": "uLQnXAjTqGBb92Z34LzkKg=="
+  },
+  "Object.GridChart": {
+    "value": "그리드형 차트",
+    "comment": "A chart used to present data in a matrix.",
+    "version": "D1uA0rbnZla3mVAovlklcw=="
+  },
+  "Object.Histogram": {
+    "value": "히스토그램",
+    "comment": "Visualization in the library",
+    "version": "llzfuuX+xcAkJAIpTEkivw=="
+  },
+  "Object.Kpi": {
+    "value": "KPI",
+    "comment": "Do not use more than a total of 19 characters when you translate this string.",
+    "version": "ix9A92xX1KrM4+w8mB0uFQ=="
+  },
+  "Object.LayoutContainer": {
+    "value": "레이아웃 컨테이너",
+    "comment": "Visualization in the library.",
+    "version": "uXU12D8F6Biztt3RzXTuaQ=="
+  },
+  "Object.LineChart": {
+    "value": "꺾은선형 차트",
+    "comment": "Visualization in the library",
+    "version": "qn14WL4zYH/7EAkAC2EljQ=="
+  },
+  "Object.Listbox": {
+    "value": "목록 상자",
+    "comment": "Visualization in the library",
+    "version": "N4zaw7OEJMBQPiPl31EA7g=="
   },
   "Object.Listbox.Alternative": {
     "value": "대체 항목",
@@ -159,6 +249,86 @@
     "comment": "Selected excluded state of an item in listbox(buy20180905)",
     "version": "RTchiDrH9lIxerEyRF/fzA=="
   },
+  "Object.Map": {
+    "value": "맵",
+    "comment": "Visualization for geographical data",
+    "version": "BAovnIZNF6TPw7fwpeIRow=="
+  },
+  "Object.MekkoChart": {
+    "value": "메코 차트",
+    "comment": "Visualization for?",
+    "version": "oQ3IbFh5Wu4haFL0Cir4mg=="
+  },
+  "Object.NavMenu": {
+    "value": "탐색 메뉴",
+    "comment": "A navigation menu for navigating sheets.",
+    "version": "QwaENH3WCDt/WpMPG5qJug=="
+  },
+  "Object.NlgChart": {
+    "value": "NL 통찰력",
+    "comment": "Visualization in the library.",
+    "version": "+U3JppQtqA5KgmlstmCjiQ=="
+  },
+  "Object.PieChart": {
+    "value": "원형 차트",
+    "comment": "Visualization in the library",
+    "version": "akBPnjra9ogV8UGPScQ0Mg=="
+  },
+  "Object.PivotTable": {
+    "value": "피벗 테이블",
+    "comment": "Visualization in the library",
+    "version": "STpU/eeQldPPDR3UTpPlXA=="
+  },
+  "Object.RadarChart": {
+    "value": "방사형 차트",
+    "comment": "A chart that displays multivariate data stacked at an axis with the same central point.",
+    "version": "2X2Dors6CPfptaMKQmZnlA=="
+  },
+  "Object.SankeyChart": {
+    "value": "Sankey 차트",
+    "comment": "A chart that shows the flow from a set of values to another.",
+    "version": "pMbtS40rlnxEq4+OgpEXZg=="
+  },
+  "Object.ScatterPlot": {
+    "value": "스캐터 차트",
+    "comment": "Visualization in the library",
+    "version": "90PMUmykNM0gusJ7OTq9NA=="
+  },
+  "Object.StraightTable": {
+    "value": "일반표",
+    "comment": "Visualization in the library.",
+    "version": "/1toymTompGH9G0fhBFSXg=="
+  },
+  "Object.TabContainer": {
+    "value": "탭 컨테이너",
+    "comment": "Visualization in the library.",
+    "version": "thibVW7fyzJiRwJq3iqmkQ=="
+  },
+  "Object.Table": {
+    "value": "테이블",
+    "comment": "Visualization in the library",
+    "version": "HlPJmiKUsbaBi1kUj29zAw=="
+  },
+  "Object.Table.Deprecated": {
+    "value": "테이블",
+    "comment": "Visualization in the library that will be deprecated.",
+    "version": "aSwmP1lyjnKpvd82UmeHmg=="
+  },
+  "Object.Text": {
+    "value": "텍스트",
+    "comment": "A chart used to display text, measures, add tables with rows and columns, etc.",
+    "version": "VFCkCFPKdUBKpNke/VsB4w=="
+  },
+  "Object.TextImage": {
+    "value": "텍스트 및 이미지",
+    "comment": "Visualization in the library. Renamed from Utility object to Text & image",
+    "version": "EFhCadz6PRNXfYqix0UmEg=="
+  },
+  "Object.Treemap": {
+    "value": "트리맵",
+    "comment": "",
+    "version": "91X5xofpmYxGjGFSbWAbzA=="
+  },
   "Object.Update.Active": {
     "value": "데이터 로드 중",
     "comment": "Status text shown when a object's data is being updated",
@@ -168,6 +338,11 @@
     "value": "데이터 업데이트가 취소되었습니다.",
     "comment": "Status text shown when data update has been cancelled",
     "version": "K+VsoedryUo6EV8gXBN7Cg=="
+  },
+  "Object.WaterfallChart": {
+    "value": "폭포형 차트",
+    "comment": "Visualization in the library",
+    "version": "cyWvjmj3D9naXMHE58QQtg=="
   },
   "Retry": {
     "value": "다시 시도",

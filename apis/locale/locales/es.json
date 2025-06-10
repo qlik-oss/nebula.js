@@ -1,4 +1,9 @@
 {
+  "Accessibility.Object.NoTitle": {
+    "value": "Sin título",
+    "comment": "Screen reader text for objects without a title",
+    "version": "I8hJSImuLEsNuAiDMouA5A=="
+  },
   "Cancel": {
     "value": "Cancelar",
     "comment": "Verb, typically button label",
@@ -104,6 +109,46 @@
     "comment": "Verb, typically button label",
     "version": "2COCF0f9Drb54EThSLR/WQ=="
   },
+  "Object.ActionButton": {
+    "value": "Botón",
+    "comment": "Button for selections and navigation",
+    "version": "tQ4sSTfswCgUk2gSKxmidg=="
+  },
+  "Object.AutoChart": {
+    "value": "Gráfico automático",
+    "comment": "Visualization in the library",
+    "version": "dL1vXu6wWP+XnQXpEhlSiA=="
+  },
+  "Object.BarChart": {
+    "value": "Gráfico de barras",
+    "comment": "Visualization in the library",
+    "version": "uSqNS/T90yK34Qq6O+cE9Q=="
+  },
+  "Object.BoxPlot": {
+    "value": "Diagrama de caja",
+    "comment": "Visualization in the library",
+    "version": "qP3bHtasWlRNfpPyzLPgFQ=="
+  },
+  "Object.BulletChart": {
+    "value": "Gráfico de viñetas",
+    "comment": "Visualization for values using bars and ranges",
+    "version": "MX0ioPztXfBPR3ENPqwH6w=="
+  },
+  "Object.ComboChart": {
+    "value": "Gráfico combinado",
+    "comment": "Visualization in the library",
+    "version": "HXK6HHFY1jqOd29tsLjQCg=="
+  },
+  "Object.Container": {
+    "value": "Contenedor",
+    "comment": "Visualization in the library",
+    "version": "OJ+Dl1jleBc5v3usBVbilw=="
+  },
+  "Object.DistributionPlot": {
+    "value": "Diagrama de distribución",
+    "comment": "Visualization in the library",
+    "version": "l0w4MJwD7OQ3Zdd/ULa8pw=="
+  },
   "Object.FilterLabel.All": {
     "value": "TODOS",
     "comment": "Label for when a chart filter has been set to exclude global selections in a field, meaning all field values will be included. (tew 220411)",
@@ -119,10 +164,55 @@
     "comment": "Label for when a chart filter could not be labeled. (tew 220411)",
     "version": "ioRl0mGC3yACYu/4GTN6Iw=="
   },
+  "Object.FilterPane": {
+    "value": "Panel de filtrado",
+    "comment": "Visualization in the library",
+    "version": "T6kUiRJlgh18KkfazVOb6w=="
+  },
   "Object.FiltersApplied": {
     "value": "Filtros aplicados:",
     "comment": "Title for applied filters on a chart.  (tew 220411)",
     "version": "mLoAoFbYrbwDA9qTvJa02Q=="
+  },
+  "Object.FunnelChart": {
+    "value": "Gráfico de embudo",
+    "comment": "A chart often used to represent stages of a process.",
+    "version": "hThR1H2x7rbB2HuHQPv48A=="
+  },
+  "Object.Gauge": {
+    "value": "Indicador",
+    "comment": "Visualization in the library",
+    "version": "uLQnXAjTqGBb92Z34LzkKg=="
+  },
+  "Object.GridChart": {
+    "value": "Gráfico de cuadrícula",
+    "comment": "A chart used to present data in a matrix.",
+    "version": "D1uA0rbnZla3mVAovlklcw=="
+  },
+  "Object.Histogram": {
+    "value": "Histograma",
+    "comment": "Visualization in the library",
+    "version": "llzfuuX+xcAkJAIpTEkivw=="
+  },
+  "Object.Kpi": {
+    "value": "KPI",
+    "comment": "Do not use more than a total of 19 characters when you translate this string.",
+    "version": "ix9A92xX1KrM4+w8mB0uFQ=="
+  },
+  "Object.LayoutContainer": {
+    "value": "Contenedor de diseño",
+    "comment": "Visualization in the library.",
+    "version": "uXU12D8F6Biztt3RzXTuaQ=="
+  },
+  "Object.LineChart": {
+    "value": "Gráfico de líneas",
+    "comment": "Visualization in the library",
+    "version": "qn14WL4zYH/7EAkAC2EljQ=="
+  },
+  "Object.Listbox": {
+    "value": "Cuadro de lista",
+    "comment": "Visualization in the library",
+    "version": "N4zaw7OEJMBQPiPl31EA7g=="
   },
   "Object.Listbox.Alternative": {
     "value": "Alternativo",
@@ -159,6 +249,86 @@
     "comment": "Selected excluded state of an item in listbox(buy20180905)",
     "version": "RTchiDrH9lIxerEyRF/fzA=="
   },
+  "Object.Map": {
+    "value": "Mapa",
+    "comment": "Visualization for geographical data",
+    "version": "BAovnIZNF6TPw7fwpeIRow=="
+  },
+  "Object.MekkoChart": {
+    "value": "Gráfico Mekko",
+    "comment": "Visualization for?",
+    "version": "oQ3IbFh5Wu4haFL0Cir4mg=="
+  },
+  "Object.NavMenu": {
+    "value": "Menú de navegación",
+    "comment": "A navigation menu for navigating sheets.",
+    "version": "QwaENH3WCDt/WpMPG5qJug=="
+  },
+  "Object.NlgChart": {
+    "value": "Información en LN",
+    "comment": "Visualization in the library.",
+    "version": "+U3JppQtqA5KgmlstmCjiQ=="
+  },
+  "Object.PieChart": {
+    "value": "Gráfico de tarta",
+    "comment": "Visualization in the library",
+    "version": "akBPnjra9ogV8UGPScQ0Mg=="
+  },
+  "Object.PivotTable": {
+    "value": "Tabla dinámica",
+    "comment": "Visualization in the library",
+    "version": "STpU/eeQldPPDR3UTpPlXA=="
+  },
+  "Object.RadarChart": {
+    "value": "Gráfico de radar",
+    "comment": "A chart that displays multivariate data stacked at an axis with the same central point.",
+    "version": "2X2Dors6CPfptaMKQmZnlA=="
+  },
+  "Object.SankeyChart": {
+    "value": "Diagrama de Sankey",
+    "comment": "A chart that shows the flow from a set of values to another.",
+    "version": "pMbtS40rlnxEq4+OgpEXZg=="
+  },
+  "Object.ScatterPlot": {
+    "value": "Gráfico de dispersión",
+    "comment": "Visualization in the library",
+    "version": "90PMUmykNM0gusJ7OTq9NA=="
+  },
+  "Object.StraightTable": {
+    "value": "Tabla simple",
+    "comment": "Visualization in the library.",
+    "version": "/1toymTompGH9G0fhBFSXg=="
+  },
+  "Object.TabContainer": {
+    "value": "Contenedor de pestañas",
+    "comment": "Visualization in the library.",
+    "version": "thibVW7fyzJiRwJq3iqmkQ=="
+  },
+  "Object.Table": {
+    "value": "Tabla",
+    "comment": "Visualization in the library",
+    "version": "HlPJmiKUsbaBi1kUj29zAw=="
+  },
+  "Object.Table.Deprecated": {
+    "value": "Tabla",
+    "comment": "Visualization in the library that will be deprecated.",
+    "version": "aSwmP1lyjnKpvd82UmeHmg=="
+  },
+  "Object.Text": {
+    "value": "Texto",
+    "comment": "A chart used to display text, measures, add tables with rows and columns, etc.",
+    "version": "VFCkCFPKdUBKpNke/VsB4w=="
+  },
+  "Object.TextImage": {
+    "value": "Texto e imagen",
+    "comment": "Visualization in the library. Renamed from Utility object to Text & image",
+    "version": "EFhCadz6PRNXfYqix0UmEg=="
+  },
+  "Object.Treemap": {
+    "value": "Gráfico de bloques",
+    "comment": "",
+    "version": "91X5xofpmYxGjGFSbWAbzA=="
+  },
   "Object.Update.Active": {
     "value": "Cargando datos",
     "comment": "Status text shown when a object's data is being updated",
@@ -168,6 +338,11 @@
     "value": "Se ha cancelado la actualización de datos",
     "comment": "Status text shown when data update has been cancelled",
     "version": "K+VsoedryUo6EV8gXBN7Cg=="
+  },
+  "Object.WaterfallChart": {
+    "value": "Gráfico de cascada",
+    "comment": "Visualization in the library",
+    "version": "cyWvjmj3D9naXMHE58QQtg=="
   },
   "Retry": {
     "value": "Intentar de nuevo",
