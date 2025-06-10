@@ -1,4 +1,9 @@
 {
+  "Accessibility.Object.NoTitle": {
+    "value": "無標題",
+    "comment": "Screen reader text for objects without a title",
+    "version": "I8hJSImuLEsNuAiDMouA5A=="
+  },
   "Cancel": {
     "value": "取消",
     "comment": "Verb, typically button label",
@@ -104,6 +109,46 @@
     "comment": "Verb, typically button label",
     "version": "2COCF0f9Drb54EThSLR/WQ=="
   },
+  "Object.ActionButton": {
+    "value": "按鈕",
+    "comment": "Button for selections and navigation",
+    "version": "tQ4sSTfswCgUk2gSKxmidg=="
+  },
+  "Object.AutoChart": {
+    "value": "自動圖表",
+    "comment": "Visualization in the library",
+    "version": "dL1vXu6wWP+XnQXpEhlSiA=="
+  },
+  "Object.BarChart": {
+    "value": "長條圖",
+    "comment": "Visualization in the library",
+    "version": "uSqNS/T90yK34Qq6O+cE9Q=="
+  },
+  "Object.BoxPlot": {
+    "value": "盒狀圖",
+    "comment": "Visualization in the library",
+    "version": "qP3bHtasWlRNfpPyzLPgFQ=="
+  },
+  "Object.BulletChart": {
+    "value": "子彈圖",
+    "comment": "Visualization for values using bars and ranges",
+    "version": "MX0ioPztXfBPR3ENPqwH6w=="
+  },
+  "Object.ComboChart": {
+    "value": "組合圖",
+    "comment": "Visualization in the library",
+    "version": "HXK6HHFY1jqOd29tsLjQCg=="
+  },
+  "Object.Container": {
+    "value": "容器",
+    "comment": "Visualization in the library",
+    "version": "OJ+Dl1jleBc5v3usBVbilw=="
+  },
+  "Object.DistributionPlot": {
+    "value": "分佈圖",
+    "comment": "Visualization in the library",
+    "version": "l0w4MJwD7OQ3Zdd/ULa8pw=="
+  },
   "Object.FilterLabel.All": {
     "value": "全部",
     "comment": "Label for when a chart filter has been set to exclude global selections in a field, meaning all field values will be included. (tew 220411)",
@@ -119,10 +164,55 @@
     "comment": "Label for when a chart filter could not be labeled. (tew 220411)",
     "version": "ioRl0mGC3yACYu/4GTN6Iw=="
   },
+  "Object.FilterPane": {
+    "value": "篩選窗格",
+    "comment": "Visualization in the library",
+    "version": "T6kUiRJlgh18KkfazVOb6w=="
+  },
   "Object.FiltersApplied": {
     "value": "篩選器已套用：",
     "comment": "Title for applied filters on a chart.  (tew 220411)",
     "version": "mLoAoFbYrbwDA9qTvJa02Q=="
+  },
+  "Object.FunnelChart": {
+    "value": "漏斗圖",
+    "comment": "A chart often used to represent stages of a process.",
+    "version": "hThR1H2x7rbB2HuHQPv48A=="
+  },
+  "Object.Gauge": {
+    "value": "量表",
+    "comment": "Visualization in the library",
+    "version": "uLQnXAjTqGBb92Z34LzkKg=="
+  },
+  "Object.GridChart": {
+    "value": "格線圖",
+    "comment": "A chart used to present data in a matrix.",
+    "version": "D1uA0rbnZla3mVAovlklcw=="
+  },
+  "Object.Histogram": {
+    "value": "色階分佈圖",
+    "comment": "Visualization in the library",
+    "version": "llzfuuX+xcAkJAIpTEkivw=="
+  },
+  "Object.Kpi": {
+    "value": "KPI",
+    "comment": "Do not use more than a total of 19 characters when you translate this string.",
+    "version": "ix9A92xX1KrM4+w8mB0uFQ=="
+  },
+  "Object.LayoutContainer": {
+    "value": "版面配置容器",
+    "comment": "Visualization in the library.",
+    "version": "uXU12D8F6Biztt3RzXTuaQ=="
+  },
+  "Object.LineChart": {
+    "value": "折線圖",
+    "comment": "Visualization in the library",
+    "version": "qn14WL4zYH/7EAkAC2EljQ=="
+  },
+  "Object.Listbox": {
+    "value": "清單方塊",
+    "comment": "Visualization in the library",
+    "version": "N4zaw7OEJMBQPiPl31EA7g=="
   },
   "Object.Listbox.Alternative": {
     "value": "替代選項",
@@ -159,6 +249,86 @@
     "comment": "Selected excluded state of an item in listbox(buy20180905)",
     "version": "RTchiDrH9lIxerEyRF/fzA=="
   },
+  "Object.Map": {
+    "value": "地圖",
+    "comment": "Visualization for geographical data",
+    "version": "BAovnIZNF6TPw7fwpeIRow=="
+  },
+  "Object.MekkoChart": {
+    "value": "Mekko 圖",
+    "comment": "Visualization for?",
+    "version": "oQ3IbFh5Wu4haFL0Cir4mg=="
+  },
+  "Object.NavMenu": {
+    "value": "導覽功能表",
+    "comment": "A navigation menu for navigating sheets.",
+    "version": "QwaENH3WCDt/WpMPG5qJug=="
+  },
+  "Object.NlgChart": {
+    "value": "自然語言深入資訊",
+    "comment": "Visualization in the library.",
+    "version": "+U3JppQtqA5KgmlstmCjiQ=="
+  },
+  "Object.PieChart": {
+    "value": "圓形圖",
+    "comment": "Visualization in the library",
+    "version": "akBPnjra9ogV8UGPScQ0Mg=="
+  },
+  "Object.PivotTable": {
+    "value": "樞紐分析表",
+    "comment": "Visualization in the library",
+    "version": "STpU/eeQldPPDR3UTpPlXA=="
+  },
+  "Object.RadarChart": {
+    "value": "雷達圖",
+    "comment": "A chart that displays multivariate data stacked at an axis with the same central point.",
+    "version": "2X2Dors6CPfptaMKQmZnlA=="
+  },
+  "Object.SankeyChart": {
+    "value": "桑基圖",
+    "comment": "A chart that shows the flow from a set of values to another.",
+    "version": "pMbtS40rlnxEq4+OgpEXZg=="
+  },
+  "Object.ScatterPlot": {
+    "value": "散佈圖",
+    "comment": "Visualization in the library",
+    "version": "90PMUmykNM0gusJ7OTq9NA=="
+  },
+  "Object.StraightTable": {
+    "value": "直表",
+    "comment": "Visualization in the library.",
+    "version": "/1toymTompGH9G0fhBFSXg=="
+  },
+  "Object.TabContainer": {
+    "value": "索引標籤容器",
+    "comment": "Visualization in the library.",
+    "version": "thibVW7fyzJiRwJq3iqmkQ=="
+  },
+  "Object.Table": {
+    "value": "表格",
+    "comment": "Visualization in the library",
+    "version": "HlPJmiKUsbaBi1kUj29zAw=="
+  },
+  "Object.Table.Deprecated": {
+    "value": "表格",
+    "comment": "Visualization in the library that will be deprecated.",
+    "version": "aSwmP1lyjnKpvd82UmeHmg=="
+  },
+  "Object.Text": {
+    "value": "文字",
+    "comment": "A chart used to display text, measures, add tables with rows and columns, etc.",
+    "version": "VFCkCFPKdUBKpNke/VsB4w=="
+  },
+  "Object.TextImage": {
+    "value": "文字與影像",
+    "comment": "Visualization in the library. Renamed from Utility object to Text & image",
+    "version": "EFhCadz6PRNXfYqix0UmEg=="
+  },
+  "Object.Treemap": {
+    "value": "樹狀圖",
+    "comment": "",
+    "version": "91X5xofpmYxGjGFSbWAbzA=="
+  },
   "Object.Update.Active": {
     "value": "正在載入資料",
     "comment": "Status text shown when a object's data is being updated",
@@ -168,6 +338,11 @@
     "value": "資料更新已取消",
     "comment": "Status text shown when data update has been cancelled",
     "version": "K+VsoedryUo6EV8gXBN7Cg=="
+  },
+  "Object.WaterfallChart": {
+    "value": "瀑布圖",
+    "comment": "Visualization in the library",
+    "version": "cyWvjmj3D9naXMHE58QQtg=="
   },
   "Retry": {
     "value": "重試",
