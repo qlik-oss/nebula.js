@@ -942,6 +942,12 @@ declare namespace stardust {
     }
 
     /**
+     * Move an element from position old_index to position new_index in
+     * the array.
+     */
+    type move = (array: any, oldIndex: any, newIndex: any)=>void;
+
+    /**
      * Used for exporting and importing properties between backend models. An object that exports to
      * ExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes,
      * each of the cubes should export dimensions and measures in two separate data groups.

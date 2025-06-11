@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.16.0](https://github.com/qlik-oss/nebula.js/compare/v5.15.0...v5.16.0) (2025-06-11)
+
+### Bug Fixes
+
+- **deps:** update dependency rollup-plugin-visualizer to v6 ([#1752](https://github.com/qlik-oss/nebula.js/issues/1752)) ([6fa7183](https://github.com/qlik-oss/nebula.js/commit/6fa7183c13068daf111ae6f92c94322f3e2fd4d9))
+- **deps:** update dependency webpack-dev-server to v5 [security] ([#1762](https://github.com/qlik-oss/nebula.js/issues/1762)) ([466ee88](https://github.com/qlik-oss/nebula.js/commit/466ee884d32205b022902655fcddbb732c163d73))
+- **deps:** update minor and patch ([#1751](https://github.com/qlik-oss/nebula.js/issues/1751)) ([bf5f7de](https://github.com/qlik-oss/nebula.js/commit/bf5f7de50c65d54308db73227ecb62ad43c9ed25))
+- **deps:** update minor and patch ([#1758](https://github.com/qlik-oss/nebula.js/issues/1758)) ([990d707](https://github.com/qlik-oss/nebula.js/commit/990d707b95ab007e2516cb25da635895f409de87))
+- **deps:** update minor and patch ([#1763](https://github.com/qlik-oss/nebula.js/issues/1763)) ([97ca1a8](https://github.com/qlik-oss/nebula.js/commit/97ca1a898ba82e556133f3432aa1d4217bff9349))
+- handle outside navigation ([#1747](https://github.com/qlik-oss/nebula.js/issues/1747)) ([2805fdd](https://github.com/qlik-oss/nebula.js/commit/2805fdd5180d90fdbc2113e2b8697ca996cf733c))
+
+### Features
+
+- include onContextMenu in experimental api ([#1755](https://github.com/qlik-oss/nebula.js/issues/1755)) ([4adc01b](https://github.com/qlik-oss/nebula.js/commit/4adc01b7536f3f419698e9bc4cc15d46316e3529))
+- support screen reader in gridless sheet ([#1756](https://github.com/qlik-oss/nebula.js/issues/1756)) ([ffdbab0](https://github.com/qlik-oss/nebula.js/commit/ffdbab0a28e0da65d22ad0a0fe158f4fccb5bbc5))
+
 # [5.15.0](https://github.com/qlik-oss/nebula.js/compare/v5.14.0...v5.15.0) (2025-05-19)
 
 ### Bug Fixes

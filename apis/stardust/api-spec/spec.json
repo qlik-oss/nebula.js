@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "5.15.0",
+    "version": "5.16.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -3075,6 +3075,24 @@
           }
         }
       }
+    },
+    "move": {
+      "description": "Move an element from position old_index to position new_index in\nthe array.",
+      "kind": "function",
+      "params": [
+        {
+          "name": "array",
+          "type": "any"
+        },
+        {
+          "name": "oldIndex",
+          "type": "any"
+        },
+        {
+          "name": "newIndex",
+          "type": "any"
+        }
+      ]
     },
     "ExportFormat": {
       "description": "Used for exporting and importing properties between backend models. An object that exports to\nExportFormat should put dimensions and measures inside one data group. If an object has two hypercubes,\neach of the cubes should export dimensions and measures in two separate data groups.\nAn object that imports from this structure is responsible for putting the existing properties where they should be\nin the new model.",

@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.16.0](https://github.com/qlik-oss/nebula.js/compare/v5.15.0...v5.16.0) (2025-06-11)
+
+### Bug Fixes
+
+- handle outside navigation ([#1747](https://github.com/qlik-oss/nebula.js/issues/1747)) ([2805fdd](https://github.com/qlik-oss/nebula.js/commit/2805fdd5180d90fdbc2113e2b8697ca996cf733c))
+
 # [5.15.0](https://github.com/qlik-oss/nebula.js/compare/v5.14.0...v5.15.0) (2025-05-19)
 
 ### Bug Fixes
