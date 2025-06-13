@@ -1,0 +1,214 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+
+env:
+  JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Use Node.js 24.x
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn run build
+      - name: Upload workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: workspace
+          path: |
+            .
+          retention-days: 1
+
+  validate:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
+      - name: Locale
+        run: yarn run locale:verify
+      - name: Lint
+        run: yarn run lint
+      - name: Run unit tests and publish to codeclimate
+        run: |
+          ./test/bin/cc-test-reporter before-build
+          yarn test:unit --coverage --reporters=default --reporters=jest-junit
+          ./test/bin/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+      - name: Store test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit
+          path: coverage/junit
+
+  test-integration:
+    runs-on: ubuntu-latest
+    needs: build
+    services:
+      chrome:
+        image: browserless/chrome:1-puppeteer-7.1.0
+        ports:
+          - 3000:3000
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
+      - name: Test component
+        run: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - name: Test mashup
+        run: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - name: Test integration
+        run: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Test rendering
+        run: yarn run test:rendering
+      - name: Store rendering test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendering-xml
+          path: ./test/rendering/reports/xml/report.xml
+      - name: Store rendering artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendering
+          path: ./test/rendering
+      - name: Store rendering HTML reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendering-html
+          path: ./test/rendering/reports/html
+
+  test-create:
+    runs-on: ubuntu-latest
+    needs: build
+    services:
+      chrome:
+        image: browserless/chrome:1-puppeteer-7.1.0
+        ports:
+          - 3000:3000
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Create hello project
+        run: |
+          ./commands/cli/lib/index.js create generated/hello --picasso none --install false --pkgm yarn
+          yarn
+          (cd apis/stardust && yarn link)
+          (cd commands/cli && yarn link)
+          (cd commands/build && yarn link)
+          (cd commands/serve && yarn link)
+          cd generated/hello
+          yarn link "@nebula.js/stardust"
+          yarn link "@nebula.js/cli"
+          yarn link "@nebula.js/cli-build"
+          yarn link "@nebula.js/cli-serve"
+          yarn run build
+          yarn run test:e2e
+      - name: Create barchart project
+        run: |
+          ./commands/cli/lib/index.js create generated/barchart --picasso barchart --install false --pkgm yarn
+          yarn
+          (cd apis/stardust && yarn link)
+          (cd commands/cli && yarn link)
+          (cd commands/build && yarn link)
+          (cd commands/serve && yarn link)
+          cd generated/barchart
+          yarn link "@nebula.js/stardust"
+          yarn link "@nebula.js/cli"
+          yarn link "@nebula.js/cli-build"
+          yarn link "@nebula.js/cli-serve"
+          yarn run build
+          yarn run test:e2e
+      - name: Create hello-mashup project
+        run: |
+          ./commands/cli/lib/index.js create mashup hello-mashup --install true --pkgm yarn
+          yarn
+          (cd apis/stardust && yarn link)
+          (cd commands/cli && yarn link)
+          (cd commands/build && yarn link)
+          (cd commands/serve && yarn link)
+          cd hello-mashup
+          yarn link "@nebula.js/stardust"
+          yarn link "@nebula.js/cli"
+          yarn link "@nebula.js/cli-build"
+          yarn link "@nebula.js/cli-serve"
+          yarn run build
+      - name: Store barchart screenshots
+        uses: actions/upload-artifact@v4
+        with:
+          name: barchart-screenshots
+          path: generated/barchart/screenshots
+      - name: Store mashup artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: mashup-artifacts
+          path: test/mashup/__artifacts__
+
+  api-governance:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref_type == 'tag' || github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
+      - name: Create version.txt
+        run: |
+          if [[ "${GITHUB_REF}" == refs/tags/v* ]]; then
+            version="${GITHUB_REF#refs/tags/v}"
+          else
+            yarn workspace "@nebula.js/stardust" version --prepatch --no-git-tag-version
+            version=$(node -p "require('./apis/stardust/api-spec/spec.json').info.version")
+          fi
+          echo "$version" > ./version.txt
+          echo "Building $version"
+      - name: Prepare API Compliance
+        run: |
+          docker pull ghcr.io/qlik-download/api-compliance
+          docker create -v /specs --name specs alpine:3.4 /bin/true
+          docker cp ./apis/stardust/api-spec/spec.json specs:/specs
+          docker cp ./apis/stardust/api-spec/listbox-spec.json specs:/specs
+      - name: Run API Compliance
+        env:
+          CREDENTIALS_S3_SECRETKEY: ${{ secrets.APICULTURIST_S3 }}
+          CREDENTIALS_GITHUB: ${{ secrets.APICULTURIST_GITHUB }}
+          CREDENTIALS_COLONY: ${{ secrets.APICULTURIST_TOKEN }}
+        run: |
+          VER="v$(cat version.txt)"
+          docker run --volumes-from specs \
+            -e SPEC_PATHS="abdc47c2-921a-45d3-ba5c-80d448574c5b@/specs/spec.json,ba0bcf91-d7a6-4048-a36a-ad9a2dc8c03e@/specs/listbox-spec.json" \
+            -e COMMIT_SHA="${GITHUB_SHA}" \
+            -e RELEASE_TAG="$VER" \
+            -e PRE_RELEASE="true" \
+            -e CREDENTIALS_S3_SECRETKEY="${CREDENTIALS_S3_SECRETKEY}" \
+            -e CREDENTIALS_GITHUB="${CREDENTIALS_GITHUB}" \
+            -e CREDENTIALS_COLONY="${CREDENTIALS_COLONY}" \
+            ghcr.io/qlik-download/api-compliance
