@@ -24,7 +24,7 @@ describe('bar chart', () => {
   });
 
   it('renders', async () => {
-    const url = `${s.url.replace('0.0.0.0', 'host.docker.internal')}/render?fixture=barchart.fix.js`;
+    const url = `${s.url.replace('0.0.0.0', '172.17.0.1')}/render?fixture=barchart.fix.js`;
     await page.goto(url);
     await page.waitForSelector(snSelector, { visible: true });
     await page.waitForFunction(
