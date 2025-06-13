@@ -57,7 +57,6 @@ jobs:
         with:
           name: junit
           path: coverage/junit
-          path: coverage/junit
 
   test-integration:
     runs-on: ubuntu-latest
