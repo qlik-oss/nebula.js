@@ -23,7 +23,7 @@ describe('Table visualization', () => {
 
   describe('basic', () => {
     before(async () => {
-      const url = `${s.url}/render?fixture=table.fix.js`;
+      const url = `${s.url.replace('0.0.0.0', '172.17.0.1')}/render?fixture=table.fix.js`;
       await page.goto(url);
 
       await page.waitForSelector(content, { visible: true });

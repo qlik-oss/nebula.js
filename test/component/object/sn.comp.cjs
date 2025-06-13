@@ -22,7 +22,7 @@ describe('sn', () => {
   });
 
   it('should render with translation', async () => {
-    await page.goto(`${s.url}/render?fixture=sn-locale.fix.js&language=sv-SE`);
+    await page.goto(`${s.url.replace('0.0.0.0', '172.17.0.1')}/render?fixture=sn-locale.fix.js&language=sv-SE`);
 
     await page.waitForSelector(snSelector, { visible: true });
     const text = await page.$eval(snSelector, (el) => el.textContent);
@@ -30,7 +30,7 @@ describe('sn', () => {
   });
 
   it('should show incomplete visualization', async () => {
-    await page.goto(`${s.url}/render?fixture=sn-incomplete.fix.js&theme=dark`);
+    await page.goto(`${s.url.replace('0.0.0.0', '172.17.0.1')}/render?fixture=sn-incomplete.fix.js&theme=dark`);
 
     await page.waitForSelector(errorSelector, { visible: true });
     const text = await page.$eval(errorSelector, (el) => el.textContent);
@@ -38,7 +38,7 @@ describe('sn', () => {
   });
 
   it('should show error caused during load', async () => {
-    await page.goto(`${s.url}/render?fixture=sn-error.fix.js`);
+    await page.goto(`${s.url.replace('0.0.0.0', '172.17.0.1')}/render?fixture=sn-error.fix.js`);
 
     await page.waitForSelector(errorSelector, { visible: true });
     const text = await page.$eval(errorSelector, (el) => el.textContent);
