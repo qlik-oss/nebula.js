@@ -14,10 +14,11 @@ describe('hooks', () => {
       open: false,
       build: true,
       fixturePath: 'test/component/hooks',
+      host: '0.0.0.0',
     });
     puppeteerUtil.addListeners(page);
 
-    const url = `${s.url}/render?fixture=hooked.fix.js`;
+    const url = `${s.url.replace('0.0.0.0', '172.17.0.1')}/render?fixture=hooked.fix.js`;
     await page.goto(url);
     await page.waitForSelector(snSelector, { visible: true });
   });
