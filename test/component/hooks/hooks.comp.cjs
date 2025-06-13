@@ -14,6 +14,7 @@ describe('hooks', () => {
       open: false,
       build: true,
       fixturePath: 'test/component/hooks',
+      host: '0.0.0.0',
     });
     puppeteerUtil.addListeners(page);
 

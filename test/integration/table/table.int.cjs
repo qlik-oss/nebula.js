@@ -12,6 +12,7 @@ describe('Table visualization', () => {
       config: 'nebula.config.cjs',
       open: false,
       fixturePath: 'test/integration/table',
+      host: '0.0.0.0',
     });
     puppeteerUtil.addListeners(page);
   });

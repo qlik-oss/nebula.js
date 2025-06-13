@@ -12,6 +12,7 @@ describe('sn', () => {
       config: 'nebula.config.cjs',
       build: false,
       fixturePath: 'test/component/object',
+      host: '0.0.0.0',
     });
     puppeteerUtil.addListeners(page);
   });
