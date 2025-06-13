@@ -13,6 +13,7 @@ describe('bar chart', () => {
       open: false,
       build: true,
       fixturePath: 'test/component/barchart',
+      host: '0.0.0.0',
     });
     puppeteerUtil.addListeners(page);
   });
