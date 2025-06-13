@@ -59,7 +59,7 @@ jobs:
           path: coverage/junit
           path: coverage/junit
 
-    test-integration:
+  test-integration:
     runs-on: ubuntu-latest
     needs: build
     services:
