@@ -34,6 +34,8 @@ jobs:
   validate:
     runs-on: ubuntu-latest
     needs: build
+    env:
+      CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
     steps:
       - uses: actions/checkout@v4
       - name: Download workspace
@@ -76,7 +78,7 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
       - name: Test component
-        run: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+        run: HOST=0.0.0.0 yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - name: Test mashup
         run: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - name: Test integration
