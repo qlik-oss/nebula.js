@@ -3699,17 +3699,6 @@
     tar-fs "^3.0.8"
     yargs "^17.7.2"
 
-"@qlik/api@1.32.0":
-  version "1.32.0"
-  resolved "https://registry.yarnpkg.com/@qlik/api/-/api-1.32.0.tgz#53250748afa71428d1c0280f20d694c7735e87dd"
-  integrity sha512-nh6JhuNRhKX33JzVnB3jCa5NX6bDBrXHGodSqMg7ZW0e2c6ZnpbV5x0SAyfx/hkq7vd4KySa9MreAa/y+V6Mig==
-  dependencies:
-    enigma.js "^2.14.0"
-    extend "3.0.2"
-    lodash "^4.17.21"
-    nanoid "^5.0.9"
-    ws "^8.18.1"
-
 "@qlik/api@1.34.0":
   version "1.34.0"
   resolved "https://registry.yarnpkg.com/@qlik/api/-/api-1.34.0.tgz#1425627ecd47db090707d3f038906ca84738af95"
@@ -12978,11 +12967,6 @@ nanoid@^3.3.7:
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-3.3.8.tgz#b1be3030bee36aaff18bacb375e5cce521684baf"
   integrity sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==
 
-nanoid@^5.0.9, nanoid@^5.1.5:
-  version "5.1.5"
-  resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.1.5.tgz#f7597f9d9054eb4da9548cdd53ca70f1790e87de"
-  integrity sha512-Ir/+ZpE9fDsNH0hQ3C68uyThDXzYcim2EqcZ8zn8Chtt1iylPT9xXJB0kPCnqzgcEGikO9RxSrh63MsmVCU7Fw==
-
 nanoid@^5.1.5:
   version "5.1.5"
   resolved "https://registry.yarnpkg.com/nanoid/-/nanoid-5.1.5.tgz#f7597f9d9054eb4da9548cdd53ca70f1790e87de"
@@ -18115,7 +18099,7 @@ ws@8.18.0:
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.0.tgz#0d7505a6eafe2b0e712d232b42279f53bc289bbc"
   integrity sha512-8VbfWfHLbbwu3+N6OKsOMpBdT4kXPDDB9cJk2bJ6mh9ucxdlnNvH1e+roYkKmN9Nxw2yjz7VzeO9oOz2zJ04Pw==
 
-ws@8.18.2, ws@^8.18.0, ws@^8.18.1, ws@^8.18.2:
+ws@8.18.2, ws@^8.18.0, ws@^8.18.2:
   version "8.18.2"
   resolved "https://registry.yarnpkg.com/ws/-/ws-8.18.2.tgz#42738b2be57ced85f46154320aabb51ab003705a"
   integrity sha512-DMricUmwGZUVr++AEAe2uiVM7UoO9MAVZMDu05UQOaUII0lp+zOzLLU4Xqh/JvTqklB1T4uELaaPBKyjE1r4fQ==
