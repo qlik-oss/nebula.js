@@ -1,4 +1,4 @@
-import getStyling, { DEFAULT_SELECTION_COLORS, getOverridesAsObject } from '../styling';
+import { getStyles, DEFAULT_SELECTION_COLORS, getOverridesAsObject } from '../styling';
 
 describe('styling', () => {
   let theme = {};
@@ -81,23 +81,23 @@ describe('styling', () => {
           },
         ];
       });
-      it('background color expression should be used', () => {
-        const styles = getStyling({ app, themeApi, theme, components });
+      it('background color expression should be used', async () => {
+        const styles = await getStyles({ app, themeApi, theme, components });
         expect(styles.background.backgroundColor).toEqual('="some expression"');
       });
-      it('background color expression should NOT be used, but instead color picker color', () => {
+      it('background color expression should NOT be used, but instead color picker color', async () => {
         components[0].background.useExpression = false;
-        const styles = getStyling({ app, themeApi, theme, components });
+        const styles = await getStyles({ app, themeApi, theme, components });
         expect(styles.background.backgroundColor).toEqual('#hex-color');
       });
-      it('background image should be exposed', () => {
+      it('background image should be exposed', async () => {
         components[0].background.image = {
           mode: 'media',
           mediaUrl: { qStaticContentUrl: { qUrl: 'some-image.png' } },
           qStaticContentUrl: {},
           sizing: 'stretchFit',
         };
-        const styles = getStyling({ app, themeApi, theme, components });
+        const styles = await getStyles({ app, themeApi, theme, components });
         expect(styles.background.backgroundImage).toEqual("url('https://hey-heysome-image.png')");
         expect(styles.background.backgroundRepeat).toEqual('no-repeat');
         expect(styles.background.backgroundSize).toEqual('100% 100%');
@@ -105,21 +105,21 @@ describe('styling', () => {
       });
     });
 
-    it('search - should get its color from theme style', () => {
-      const styles = getStyling({ app, themeApi, theme, components: [] });
+    it('search - should get its color from theme style', async () => {
+      const styles = await getStyles({ app, themeApi, theme, components: [] });
       expect(styles.search.color).toEqual('object.listBox,content,color');
     });
-    it('search - should get desired color if contrasting enough', () => {
+    it('search - should get desired color if contrasting enough', async () => {
       themeApi.getStyle = () => '#888888';
-      const styles = getStyling({ app, themeApi, theme, components: [] });
+      const styles = await getStyles({ app, themeApi, theme, components: [] });
       expect(styles.search.color).toEqual('#888888');
     });
-    it('search - should get a better contrasting color if not good contrast against white', () => {
+    it('search - should get a better contrasting color if not good contrast against white', async () => {
       themeApi.getStyle = () => '#aaa';
-      const styles = getStyling({ app, themeApi, theme, components: [] });
+      const styles = await getStyles({ app, themeApi, theme, components: [] });
       expect(styles.search.color).toEqual('#000000');
     });
-    it('header', () => {
+    it('header', async () => {
       components = [
         {
           key: 'theme',
@@ -133,18 +133,18 @@ describe('styling', () => {
       ];
       let inst;
       let header;
-      inst = getStyling({ app, themeApi, theme, components: [] });
+      inst = await getStyles({ app, themeApi, theme, components: [] });
       header = inst.header;
       expect(header.fontSize).toEqual('object.listBox,title.main,fontSize');
       expect(header.color).toEqual('object.listBox,title.main,color');
 
-      inst = getStyling({ app, themeApi, theme, components });
+      inst = await getStyles({ app, themeApi, theme, components });
       header = inst.header;
       expect(header.fontSize).toEqual('size-from-component');
       expect(header.color).toEqual('color-from-component');
     });
 
-    it('content - should override text color with a contrasting color since we have specified a text color and useContrastColor is true', () => {
+    it('content - should override text color with a contrasting color since we have specified a text color and useContrastColor is true', async () => {
       components = [
         {
           key: 'theme',
@@ -163,11 +163,11 @@ describe('styling', () => {
 
       themeApi.getStyle = (ns, path, prop) => (prop.includes('possible') ? POSSIBLE_COLOR : `${ns},${path},${prop}`);
       components[0].content.fontColor.color = '#FFFFFF';
-      const styles2 = getStyling({ app, themeApi, theme, components });
+      const styles2 = await getStyles({ app, themeApi, theme, components });
       expect(styles2.content.color).toEqual(CONTRASTING_TO_POSSIBLE);
     });
 
-    it('content - should override with component properties', () => {
+    it('content - should override with component properties', async () => {
       components = [
         {
           key: 'theme',
@@ -181,7 +181,7 @@ describe('styling', () => {
           },
         },
       ];
-      const styles = getStyling({ app, themeApi, theme, components });
+      const styles = await getStyles({ app, themeApi, theme, components });
       const { content } = styles;
       expect(content.fontSize).toEqual('size-from-component');
       expect(content.color).toEqual('color-from-component');
@@ -203,10 +203,12 @@ describe('styling', () => {
       themeApi.getStyle = () => undefined;
     });
 
-    const getStylingCaller = () =>
-      getStyling({ app, themeApi, theme, components, themeSelectionColorsEnabled }).selections;
+    const getStylingCaller = async () => {
+      const res = await getStyles({ app, themeApi, theme, components, themeSelectionColorsEnabled });
+      return res.selections;
+    };
 
-    it('should return selection colors from components', () => {
+    it('should return selection colors from components', async () => {
       components = [
         {
           key: 'selections',
@@ -230,7 +232,8 @@ describe('styling', () => {
         },
       ];
 
-      expect(getStylingCaller()).toMatchObject({
+      const res = await getStylingCaller();
+      expect(res).toMatchObject({
         selected: 'selected-from-component',
         alternative: 'alternative-from-component',
         excluded: 'excluded-from-component',
@@ -239,10 +242,11 @@ describe('styling', () => {
       });
     });
 
-    it('should return selection colors from themeAPI', () => {
+    it('should return selection colors from themeAPI', async () => {
       themeApi.getStyle = (ns, path, prop) => `${ns},${path},${prop}`;
 
-      expect(getStylingCaller()).toMatchObject({
+      const res = await getStylingCaller();
+      expect(res).toMatchObject({
         selected: 'object.listBox,,dataColors.selected',
         alternative: 'object.listBox,,dataColors.alternative',
         excluded: 'object.listBox,,dataColors.excluded',
@@ -250,10 +254,11 @@ describe('styling', () => {
         possible: 'object.listBox,,dataColors.possible',
       });
     });
-    it('should return selection colors from mui theme, except possible which returns background color', () => {
+    it('should return selection colors from mui theme, except possible which returns background color', async () => {
       themeApi.getStyle = (ns, path, prop) => (prop === 'backgroundColor' ? `${ns},${path},${prop}` : undefined);
 
-      expect(getStylingCaller()).toMatchObject({
+      const res = await getStylingCaller();
+      expect(res).toMatchObject({
         selected: 'selected-from-theme',
         alternative: 'alternative-from-theme',
         excluded: 'excluded-from-theme',
@@ -262,8 +267,9 @@ describe('styling', () => {
       });
     });
 
-    it('should return selection colors from mui theme, for all states', () => {
-      expect(getStylingCaller()).toMatchObject({
+    it('should return selection colors from mui theme, for all states', async () => {
+      const res = await getStylingCaller();
+      expect(res).toMatchObject({
         selected: 'selected-from-theme',
         alternative: 'alternative-from-theme',
         excluded: 'excluded-from-theme',
@@ -272,10 +278,10 @@ describe('styling', () => {
       });
     });
 
-    it('should return selection colors from hardcoded default', () => {
+    it('should return selection colors from hardcoded default', async () => {
       theme.palette.selected = {};
-
-      expect(getStylingCaller()).toMatchObject(DEFAULT_SELECTION_COLORS);
+      const res = await getStylingCaller();
+      expect(res).toMatchObject(DEFAULT_SELECTION_COLORS);
     });
   });
 });

@@ -91,7 +91,7 @@ function getSearchBGColor(bgCol, getListboxStyle) {
   return searchBgColorObj.isInvalid() ? bgCol : searchBgColorObj.getRGBA();
 }
 
-async function getStyles({ app, themeApi, theme, hostConfig, components = [], checkboxes = false }) {
+export async function getStyles({ app, themeApi, theme, hostConfig, components = [], checkboxes = false }) {
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
   const getColorPickerColor = (c) => (c?.index > 0 || c?.color ? themeApi.getColorPickerColor(c) : undefined);
