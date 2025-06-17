@@ -140,8 +140,11 @@ jobs:
       - attach_workspace:
           at: ~/project
       - run:
+          name: Install Playwright Browsers
+          command: npx playwright install --with-deps
+      - run:
           name: Test component
-          command: yarn run test:component --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+          command: HOST=0.0.0.0 yarn run test:component
       - run:
           name: Test mashup
           command: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
