@@ -150,7 +150,7 @@ jobs:
           command: yarn run test:mashup --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
       - run:
           name: Test integration
-          command: yarn run test:integration --chrome.browserWSEndpoint "ws://localhost:3000" --no-launch
+          command: yarn run test:integration
       - run: npx playwright install --with-deps chromium
       - run:
           name: Test rendering
