@@ -22,7 +22,7 @@
     "test:coverage": "jest --coverage",
     "test:mashup": "aw puppet -c aw.config.cjs --testExt '*.int.*js' --glob 'test/mashup/**/*.int.*js'",
     "test:rendering": "playwright test --config=./test/rendering/playwright.config.rendering.js --quiet",
-    "test:integration": "aw puppet -c aw.config.cjs --testExt '*.int.*js' --glob 'test/integration/**/*.int.*js'",
+    "test:integration": "playwright test test/integration",
     "test:component": "playwright test test/component",
     "prepare": "husky install"
   },
