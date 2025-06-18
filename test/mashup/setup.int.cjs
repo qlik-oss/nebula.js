@@ -1,16 +1,15 @@
-const puppeteerUtil = require('../utils/puppeteer-util.cjs');
 const server = require('./server.cjs');
+const { test } = require('@playwright/test');
 
-if (!process.env.BASE_URL) {
-  let s;
-  before(async () => {
-    s = await server();
-    process.env.BASE_URL = s.url;
-    puppeteerUtil.addListeners(page);
-  });
+let s;
 
-  after(async () => {
+test.beforeAll(async () => {
+  s = await server();
+  process.env.BASE_URL = s.url;
+});
+
+test.afterAll(async () => {
+  if (s && s.close) {
     await s.close();
-    puppeteerUtil.removeListeners(page);
-  });
-}
+  }
+});
