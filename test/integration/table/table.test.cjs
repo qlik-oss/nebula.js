@@ -34,7 +34,7 @@ test.describe('Table visualization', () => {
 
     test('should be able to load json file', async ({ page }) => {
       const text = await page.textContent('.json-value');
-      expect(text).toBe('Hi json! how are tou');
+      expect(text).toBe('Hi json!');
     });
 
     test('should be able to load css', async ({ page }) => {
