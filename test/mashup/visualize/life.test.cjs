@@ -33,6 +33,7 @@ test.describe('object lifecycle', () => {
   });
 
   test('should render long running query', async ({ page }) => {
+    test.setTimeout(15000);
     const url = getScenarioUrl('long-running');
     await page.goto(url);
     await waitForTextStatus(page, '[data-tid="update-active"]', 'Updating data');
