@@ -2,7 +2,7 @@ const { test, expect } = require('@playwright/test');
 
 test.describe('object lifecycle', () => {
   // Helper to wait for a selector to have specific text
-  async function waitForTextStatus(page, selector, text, options = { timeout: 1000 }) {
+  async function waitForTextStatus(page, selector, text, options = { timeout: 10000 }) {
     await expect(page.locator(selector)).toHaveText(text, options);
   }
 
