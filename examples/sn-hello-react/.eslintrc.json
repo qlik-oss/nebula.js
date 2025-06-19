@@ -28,7 +28,6 @@
         "chai": false,
         "expect": false,
         "sinon": false,
-        "aw": false,
         "page": false
       },
       "plugins": ["mocha"],

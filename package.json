@@ -12,7 +12,6 @@
     "locale:verify": "node tools/verify-translations.cjs",
     "locale:generate": "node apis/locale/scripts/generate-all.mjs",
     "lint": "eslint packages apis commands --ext .js,.jsx",
-    "lint:check": "eslint --print-config ./aw.config.cjs | eslint-config-prettier-check",
     "spec": "lerna run spec --stream --concurrency 99 && lerna run ts --stream --concurrency 99 ",
     "mashup": "node scripts/start-mashup.js",
     "test": "yarn run test:unit",
@@ -37,7 +36,6 @@
     ]
   },
   "devDependencies": {
-    "@after-work.js/aw": "6.0.14",
     "@babel/cli": "7.27.2",
     "@babel/core": "7.27.4",
     "@babel/helper-plugin-utils": "7.27.1",
