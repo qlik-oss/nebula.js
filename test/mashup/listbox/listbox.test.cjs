@@ -4,9 +4,8 @@ test.describe('listbox', () => {
   const awaitText = async (page, selector, text, options = { timeout: 10000 }) => {
     await page.waitForSelector(selector, { state: 'visible' });
     await page.waitForFunction(
-      (s, t) => document.querySelector(s) && document.querySelector(s).innerText.includes(t),
-      selector,
-      text,
+      ({ s, t }) => document.querySelector(s) && document.querySelector(s).innerText.includes(t),
+      { s: selector, t: text },
       options
     );
   };
