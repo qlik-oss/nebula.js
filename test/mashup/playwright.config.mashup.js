@@ -7,7 +7,7 @@ export default defineConfig({
     ['junit', { outputFile: './test/mashup/reports/xml/report.xml' }],
   ],
   testDir: './',
-  globalSetup: import('./setup.cjs'),
+  globalSetup: './setup.cjs',
   forbidOnly: !!process.env.CI,
   timeout: 60000,
   expect: {
