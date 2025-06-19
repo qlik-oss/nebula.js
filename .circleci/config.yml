@@ -151,7 +151,6 @@ jobs:
       - run:
           name: Test integration
           command: yarn run test:integration
-      - run: npx playwright install --with-deps chromium
       - run:
           name: Test rendering
           command: yarn run test:rendering
