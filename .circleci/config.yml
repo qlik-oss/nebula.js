@@ -148,18 +148,16 @@ jobs:
       - run:
           name: Test mashup
           command: yarn run test:mashup
+      - store_artifacts:
+          path: ./test/mashup
       - run:
           name: Test integration
           command: yarn run test:integration
       - run:
           name: Test rendering
           command: yarn run test:rendering
-      - store_test_results:
-          path: ./test/rendering/reports/xml/report.xml
       - store_artifacts:
           path: ./test/rendering
-      - store_artifacts:
-          path: ./test/rendering/reports/html
 
   test-create:
     docker:
