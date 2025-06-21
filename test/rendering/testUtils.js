@@ -1,15 +1,15 @@
 import path from 'path';
-import jimp from 'jimp';
+import { Jimp } from 'jimp';
 
 export async function looksLike(fileName, capturedPath) {
   const artifactsPath = path.resolve(__dirname, './__artifacts__/');
   const storedPath = path.resolve(artifactsPath, 'baseline', fileName);
 
-  const stored = await jimp.read(storedPath);
-  const captured = await jimp.read(capturedPath);
+  const stored = await Jimp.read(storedPath);
+  const captured = await Jimp.read(capturedPath);
 
-  const distance = jimp.distance(stored, captured);
-  const diff = jimp.diff(stored, captured);
+  const distance = Jimp.distance(stored, captured);
+  const diff = Jimp.diff(stored, captured);
 
   if (distance > 0.001 || diff.percent > 0.007) {
     await captured.writeAsync(path.resolve(artifactsPath, 'regression', fileName));
