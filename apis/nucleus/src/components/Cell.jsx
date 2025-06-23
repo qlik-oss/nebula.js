@@ -356,6 +356,7 @@ const Cell = forwardRef(
       externalFocusManagement,
       disableCellPadding = false,
       navigation: navigationApi,
+      queryParams,
     } = useContext(InstanceContext);
     const [internalEmitter] = useState(emitter || createEmitter);
     const theme = useTheme();
@@ -377,7 +378,7 @@ const Cell = forwardRef(
       app: halo.app,
       themeName,
       disableThemeBorder: snOptions?.disableThemeBorder,
-      hostConfig: halo.config.hostConfig,
+      queryParams,
     });
     const isRtl = !!(snOptions?.direction === 'rtl');
 

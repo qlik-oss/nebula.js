@@ -85,10 +85,10 @@ function ListBoxInline({ options, layout }) {
 
   const theme = useTheme();
 
-  const { translator, keyboardNavigation, themeApi, hostConfig, constraints } = useContext(InstanceContext);
+  const { translator, keyboardNavigation, themeApi, queryParams, constraints } = useContext(InstanceContext);
 
   const { checkboxes = checkboxesOption } = layout || {};
-  const styles = useListboxStyling({ app, themeApi, theme, hostConfig, components, checkboxes });
+  const styles = useListboxStyling({ app, themeApi, theme, queryParams, components, checkboxes });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 

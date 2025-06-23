@@ -1,4 +1,5 @@
 /* eslint no-underscore-dangle:0 */
+import auth from '@qlik/api/auth';
 import React from 'react';
 import appLocaleFn from './locale/app-locale';
 import appThemeFn from './app-theme';
@@ -281,7 +282,18 @@ function nuked(configuration = {}) {
       )
     );
 
-    let currentThemePromise = appTheme.setTheme(configuration.context.theme);
+    let currentSetupPromise = new Promise((resolve) => {
+      const p = async () => {
+        await appTheme.setTheme(configuration.context.theme);
+
+        if (configuration.hostConfig && auth && auth.getWebResourceAuthParams) {
+          const { queryParams } = await auth.getWebResourceAuthParams({ hostConfig: configuration.hostConfig });
+          currentContext.queryParams = queryParams;
+          root.context(currentContext);
+        }
+      };
+      p().then(resolve);
+    });
 
     let selectionsApi = null;
     let selectionsComponentReference = null;
@@ -329,7 +341,7 @@ function nuked(configuration = {}) {
        * });
        */
       render: async (cfg) => {
-        await currentThemePromise;
+        await currentSetupPromise;
         if (cfg.id) {
           return get(cfg, halo, modelStore);
         }
@@ -400,8 +412,9 @@ function nuked(configuration = {}) {
         };
 
         if (changes.theme) {
-          currentThemePromise = appTheme.setTheme(changes.theme);
-          await currentThemePromise;
+          await currentSetupPromise;
+          currentSetupPromise = appTheme.setTheme(changes.theme);
+          await currentSetupPromise;
         }
 
         if (changes.language) {

@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { createColor, getContrastingColor } from 'qlik-chart-modules';
 import { resolveBgColor, resolveBgImage } from '../../../utils/style/styling-props';
 
@@ -91,7 +90,7 @@ function getSearchBGColor(bgCol, getListboxStyle) {
   return searchBgColorObj.isInvalid() ? bgCol : searchBgColorObj.getRGBA();
 }
 
-export async function getStyles({ app, themeApi, theme, hostConfig, components = [], checkboxes = false }) {
+export async function getStyles({ app, themeApi, theme, queryParams, components = [], checkboxes = false }) {
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
   const getColorPickerColor = (c) => (c?.index > 0 || c?.color ? themeApi.getColorPickerColor(c) : undefined);
@@ -110,7 +109,7 @@ export async function getStyles({ app, themeApi, theme, hostConfig, components =
   const bgComponentColor = getBackgroundColor({ themeApi, themeOverrides });
 
   const bgImage = themeOverrides.background?.image
-    ? await resolveBgImage({ bgImage: themeOverrides.background.image }, app, hostConfig)
+    ? await resolveBgImage({ bgImage: themeOverrides.background.image }, app, queryParams)
     : undefined;
 
   const bgColor = bgComponentColor || getListboxStyle('', 'backgroundColor') || theme.palette.background.default;
@@ -173,15 +172,6 @@ export async function getStyles({ app, themeApi, theme, hostConfig, components =
   };
 }
 
-export default function useListboxStyling({ app, themeApi, theme, hostConfig, components, checkboxes }) {
-  const [styling, setStyling] = useState(undefined);
-  useEffect(() => {
-    const styl = async () => {
-      const result = await getStyles({ app, themeApi, theme, hostConfig, components, checkboxes });
-      setStyling(result);
-    };
-    styl();
-  }, [app, themeApi, theme, hostConfig, components, checkboxes]);
-
-  return styling;
+export default function useListboxStyling({ app, themeApi, theme, queryParams, components, checkboxes }) {
+  return getStyles({ app, themeApi, theme, queryParams, components, checkboxes });
 }

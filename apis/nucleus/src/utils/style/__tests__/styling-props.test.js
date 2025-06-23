@@ -98,14 +98,14 @@ describe('Styling property resolver', () => {
       expect(color).toBe('resolvedColor');
     });
 
-    test('should resolve background image https', async () => {
-      const { url, pos } = await resolveBgImage(bgCompLayout, app);
+    test('should resolve background image https', () => {
+      const { url, pos } = resolveBgImage(bgCompLayout, app);
       expect(url).toBe('https://example.com/media/Tulips.jpg');
       expect(pos).toBe('top left');
     });
-    test('should resolve background image http', async () => {
+    test('should resolve background image http', () => {
       app.session.config.url = 'ws://example.com/lots/of/paths';
-      const { url, size } = await resolveBgImage(bgCompLayout, app);
+      const { url, size } = resolveBgImage(bgCompLayout, app);
       expect(url).toBe('http://example.com/media/Tulips.jpg');
       expect(size).toBe('contain');
     });

@@ -10,4 +10,5 @@ export default React.createContext({
   modelStore: {},
   selectionStore: {},
   hostConfig: null,
+  queryParams: null,
 });
