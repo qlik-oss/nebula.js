@@ -17,7 +17,7 @@
     "@testing-library/react": "^16.3.0",
     "extend": "3.0.2",
     "node-event-emitter": "0.0.1",
-    "qlik-chart-modules": "0.94.0",
+    "qlik-chart-modules": "0.95.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-test-renderer": "18.3.1",
