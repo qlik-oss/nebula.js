@@ -90,7 +90,7 @@ function getSearchBGColor(bgCol, getListboxStyle) {
   return searchBgColorObj.isInvalid() ? bgCol : searchBgColorObj.getRGBA();
 }
 
-export default function getStyles({ app, themeApi, theme, components = [], checkboxes = false }) {
+export function getStyles({ app, themeApi, theme, queryParams, components = [], checkboxes = false }) {
   const overrides = getOverridesAsObject(components);
   const getListboxStyle = (path, prop) => themeApi.getStyle('object.listBox', path, prop);
   const getColorPickerColor = (c) => (c?.index > 0 || c?.color ? themeApi.getColorPickerColor(c) : undefined);
@@ -109,7 +109,7 @@ export default function getStyles({ app, themeApi, theme, components = [], check
   const bgComponentColor = getBackgroundColor({ themeApi, themeOverrides });
 
   const bgImage = themeOverrides.background?.image
-    ? resolveBgImage({ bgImage: themeOverrides.background.image }, app)
+    ? resolveBgImage({ bgImage: themeOverrides.background.image }, app, queryParams)
     : undefined;
 
   const bgColor = bgComponentColor || getListboxStyle('', 'backgroundColor') || theme.palette.background.default;
@@ -170,4 +170,8 @@ export default function getStyles({ app, themeApi, theme, components = [], check
     },
     selections,
   };
+}
+
+export default function useListboxStyling({ app, themeApi, theme, queryParams, components, checkboxes }) {
+  return getStyles({ app, themeApi, theme, queryParams, components, checkboxes });
 }
