@@ -20,7 +20,7 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --coverage",
     "test:mashup": "playwright test test/mashup --config=./test/mashup/playwright.config.mashup.js",
-    "test:rendering": "playwright test --config=./test/rendering/playwright.config.rendering.js --quiet --update-snapshots",
+    "test:rendering": "playwright test --config=./test/rendering/playwright.config.rendering.js --quiet",
     "test:integration": "playwright test test/integration",
     "test:component": "playwright test test/component",
     "prepare": "husky install"
