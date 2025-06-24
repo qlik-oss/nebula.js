@@ -1,0 +1,24 @@
+version: 2.1
+
+jobs:
+  build:
+    docker:
+      - image: cimg/base:2023.06
+    steps:
+      - run:
+          command: |
+            echo "Empty workflow to not fail PR's on main branch"
+
+job_filters: &job_filters
+  filters:
+    tags:
+      only: a_tag_name_that_matches_no_tags
+    branches:
+      only: a_branch_name_that_matches_no_branches
+
+workflows:
+  version: 2
+  build_workflow:
+    jobs:
+      - build:
+          <<: *job_filters
