@@ -1,0 +1,129 @@
+name: CI
+
+on:
+  push:
+    branches: [master]
+    tags: ['v*']
+  pull_request:
+
+env:
+  JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.x
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Build
+        run: yarn run build
+      - name: Upload workspace
+        uses: actions/upload-artifact@v4
+        with:
+          name: workspace
+          path: .
+          retention-days: 1
+
+  validate:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Locale verify
+        run: yarn run locale:verify
+      - name: Lint
+        run: yarn run lint
+      - name: Run unit tests and publish to codeclimate
+        env:
+          JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
+          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+        run: |
+          ./test/bin/cc-test-reporter before-build
+          yarn test:unit --coverage --reporters=default --reporters=jest-junit
+          ./test/bin/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+      - name: Store junit results
+        uses: actions/upload-artifact@v4
+        with:
+          name: junit
+          path: coverage/junit
+
+  test-integration:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Test component
+        run: yarn run test:component
+      - name: Test mashup
+        run: yarn run test:mashup
+      - name: Store mashup artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mashup
+          path: ./test/mashup
+      - name: Test integration
+        run: yarn run test:integration
+      - name: Test rendering
+        run: yarn run test:rendering
+      - name: Store rendering artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendering
+          path: ./test/rendering
+
+  test-create:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download workspace
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Install Playwright Chromium
+        run: npx playwright install --with-deps chromium
+      - run: chmod +x .github/scripts/nebula_create.sh
+      - name: Create Nebula visualization project (Picasso)
+        run: .github/scripts/nebula_create.sh generated/hello none false false true true
+      - name: Create Nebula visualization project (Barchart)
+        run: .github/scripts/nebula_create.sh generated/barchart barchart false false true true
+      - name: Create Nebula mashup project
+        run: .github/scripts/nebula_create.sh hello-mashup none true true true false
+      - name: Store barchart screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: barchart-screenshots
+          path: generated/barchart/screenshots
+      - name: Store mashup artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mashup-artifacts
+          path: test/mashup/__artifacts__
