@@ -158,7 +158,7 @@ const DEFAULT_CONTEXT = /** @lends Context */ {
    * */
   dataViewType: 'sn-table',
   /** @type {Navigation=} */
-  navigation: {},
+  navigation: undefined,
 };
 
 DEFAULT_CONFIG.context = DEFAULT_CONTEXT;
