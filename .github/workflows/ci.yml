@@ -127,3 +127,60 @@ jobs:
         with:
           name: mashup-artifacts
           path: test/mashup/__artifacts__
+
+  api-governance:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: .
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20.x
+          cache: 'yarn'
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Create version.txt
+        id: version
+        run: |
+          set -x
+          if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
+            version=${GITHUB_REF_NAME#v}
+          else
+            yarn workspace "@nebula.js/stardust" version --prepatch --no-git-tag-version
+            version=$(node -p "require('./apis/stardust/api-spec/spec.json').info.version")
+          fi
+          echo "$version" > ./version.txt
+          echo "version=$version" >> $GITHUB_OUTPUT
+          echo "Building $version"
+
+      - name: Prepare API Compliance
+        run: |
+          docker pull ghcr.io/qlik-download/api-compliance
+          docker create -v /specs --name specs alpine:3.4 /bin/true
+          docker cp ./apis/stardust/api-spec/spec.json specs:/specs
+          docker cp ./apis/stardust/api-spec/listbox-spec.json specs:/specs
+
+      - name: Run API Compliance
+        env:
+          CREDENTIALS_S3_SECRETKEY: ${{ secrets.APICULTURIST_S3 }}
+          CREDENTIALS_GITHUB: ${{ secrets.APICULTURIST_GITHUB }}
+          CREDENTIALS_COLONY: ${{ secrets.APICULTURIST_TOKEN }}
+          COMMIT_SHA: ${{ github.sha }}
+          VER: v${{ steps.version.outputs.version }}
+        run: |
+          docker run --volumes-from specs \
+            -e SPEC_PATHS="abdc47c2-921a-45d3-ba5c-80d448574c5b@/specs/spec.json,ba0bcf91-d7a6-4048-a36a-ad9a2dc8c03e@/specs/listbox-spec.json" \
+            -e COMMIT_SHA="$COMMIT_SHA" \
+            -e RELEASE_TAG="$VER" \
+            -e PRE_RELEASE="true" \
+            -e CREDENTIALS_S3_SECRETKEY="$CREDENTIALS_S3_SECRETKEY" \
+            -e CREDENTIALS_GITHUB="$CREDENTIALS_GITHUB" \
+            -e CREDENTIALS_COLONY="$CREDENTIALS_COLONY" \
+            ghcr.io/qlik-download/api-compliance
