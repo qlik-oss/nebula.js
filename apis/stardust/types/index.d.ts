@@ -765,7 +765,7 @@ declare namespace stardust {
         qLibraryId: string;
         type: "dimension" | "measure";
     }
-
+  
     /**
      * An object literal containing meta information about the plugin and a function containing the plugin implementation.
      */

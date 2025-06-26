@@ -2,11 +2,6 @@
 import uid from '../../../../../nucleus/src/object/uid';
 import { AUTOCALENDAR_NAME } from '../constants';
 
-/**
- * Get the field name from the expression.
- * @param {string} expression
- * @returns the field
- */
 export const getField = (expression) => {
   let exp = expression;
   exp = exp.trim();

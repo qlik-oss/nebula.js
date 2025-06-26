@@ -62,16 +62,24 @@ function resolveImageUrl(app, relativeUrl) {
   return relativeUrl ? getSenseServerUrl(app) + relativeUrl : undefined;
 }
 
-export function resolveBgImage(bgComp, app) {
+export function resolveBgImage(bgComp, app, queryParams) {
   const bgImageDef = bgComp?.bgImage;
 
   if (bgImageDef) {
     let url = '';
     if (bgImageDef.mode === 'media' || bgComp.useImage === 'media') {
+      let authParamsAsString;
       const urlObj = bgImageDef?.mediaUrl;
       const { qUrl } = urlObj?.qStaticContentUrl || {};
       url = qUrl ? decodeURIComponent(qUrl) : undefined;
       url = resolveImageUrl(app, url);
+
+      if (queryParams) {
+        authParamsAsString = Object.entries(queryParams)
+          .map(([key, value]) => `&${key}=${encodeURIComponent(value)}`)
+          .join('&');
+        url = `${url}?${authParamsAsString}`;
+      }
     }
     if (bgImageDef.mode === 'expression') {
       url = bgImageDef.expressionUrl ? decodeURIComponent(bgImageDef.expressionUrl) : undefined;

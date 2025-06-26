@@ -10,6 +10,12 @@ import * as flagsModule from '../flags/flags';
 import * as appThemeModule from '../app-theme';
 import * as deviceTypeModule from '../device-type';
 
+jest.mock('@qlik/api/auth', () => ({
+  getWebResourceAuthParams: async () => ({
+    queryParams: {},
+  }),
+}));
+
 describe('nucleus', () => {
   let createObjectMock;
   let getObjectMock;
@@ -28,7 +34,7 @@ describe('nucleus', () => {
     setThemeMock = jest.fn();
     appThemeFnMock = jest.fn().mockReturnValue({ externalAPI: 'external', setTheme: setThemeMock });
     deviceTypeFnMock = jest.fn().mockReturnValue('desktop');
-    rootAppMock = jest.fn().mockReturnValue([{}]);
+    rootAppMock = jest.fn().mockReturnValue([{ context: () => {} }]);
     translatorAddMock = jest.fn();
     translatorLanguageMock = jest.fn();
     translator = { add: translatorAddMock, language: translatorLanguageMock, hi: 'hi' };
