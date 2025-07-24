@@ -26,11 +26,11 @@
         "type": "#/definitions/Embed"
       },
       "examples": [
-        "import { embed } from '@nebula.js/stardust'\nconst n = embed(app);\nn.render({ id: 'abc' });"
+        "import { embed } from '@nebula.js/stardust'\rconst n = embed(app);\rn.render({ id: 'abc' });"
       ],
       "entries": {
         "createConfiguration": {
-          "description": "Creates a new `embed` scope bound to the specified `configuration`.\n\nThe configuration is merged with all previous scopes.",
+          "description": "Creates a new `embed` scope bound to the specified `configuration`.\r\rThe configuration is merged with all previous scopes.",
           "kind": "function",
           "params": [
             {
@@ -43,7 +43,7 @@
             "type": "#/entries/embed"
           },
           "examples": [
-            "import { embed } from '@nebula.js/stardust';\n// create a 'master' config which registers all types\nconst m = embed.createConfiguration({\n  types: [{\n    name: 'mekko',\n    version: '1.0.0',\n    load: () => Promise.resolve(mekko)\n  }],\n});\n\n// create an alternate config with dark theme\n// and inherit the config from the previous\nconst d = m.createConfiguration({\n context: {\n   theme: 'dark'\n }\n});\n\nm(app).render({ type: 'mekko' }); // will render the object with default theme\nd(app).render({ type: 'mekko' }); // will render the object with 'dark' theme\nembed(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
+            "import { embed } from '@nebula.js/stardust';\r// create a 'master' config which registers all types\rconst m = embed.createConfiguration({\r  types: [{\r    name: 'mekko',\r    version: '1.0.0',\r    load: () => Promise.resolve(mekko)\r  }],\r});\r\r// create an alternate config with dark theme\r// and inherit the config from the previous\rconst d = m.createConfiguration({\r context: {\r   theme: 'dark'\r }\r});\r\rm(app).render({ type: 'mekko' }); // will render the object with default theme\rd(app).render({ type: 'mekko' }); // will render the object with 'dark' theme\rembed(app).render({ type: 'mekko' }); // will throw error since 'mekko' is not a register type on the default instance"
           ]
         }
       }
@@ -682,7 +682,7 @@
         }
       },
       "examples": [
-        "const n = embed(app);\nconst inst = await n.field('field_name');\ninst.mount(document.querySelector('.listbox'), {\n  components: [{\n   key: 'theme',\n   header: {\n     fontColor: { color: '#f00' },\n     fontSize: 23,\n   },\n   content: {\n     fontSize: 16,\n     useContrastColor: false,\n   }\n  },{\n   key: 'selections',\n   colors: {\n     selected: { color: '#0f0' },\n     alternative: { color: '#ededed' },\n     excluded: { color: '#ccc' },\n     selectedExcluded: { color: '#bbb' },\n     possible: { color: '#fefefe' },\n     possible: { color: '#fefefe' },\n   }\n }]\n});"
+        "const n = embed(app);\rconst inst = await n.field('field_name');\rinst.mount(document.querySelector('.listbox'), {\r  components: [{\r   key: 'theme',\r   header: {\r     fontColor: { color: '#f00' },\r     fontSize: 23,\r   },\r   content: {\r     fontSize: 16,\r     useContrastColor: false,\r   }\r  },{\r   key: 'selections',\r   colors: {\r     selected: { color: '#0f0' },\r     alternative: { color: '#ededed' },\r     excluded: { color: '#ccc' },\r     selectedExcluded: { color: '#bbb' },\r     possible: { color: '#fefefe' },\r     possible: { color: '#fefefe' },\r   }\r }]\r});"
       ]
     },
     "LoadFallback": {
@@ -745,7 +745,7 @@
         }
       },
       "examples": [
-        "import { embed } from '@nebula.js/stardust'\nn = embed(app, {\n  context: {\n    keyboardNavigation: true,\n    theme: 'purple',\n  },\n  load: ({ name, version }) => {\n    if (name === 'linechart') {\n      return Promise.resolve(line);\n    }\n  },\n  types: [\n    {\n      name: 'bar',\n      load: () => Promise.resolve(bar),\n    },\n  ],\n  themes: [\n    {\n      id: 'purple',\n      load: () => Promise.resolve(purpleThemeJson),\n    },\n  ],\n});"
+        "import { embed } from '@nebula.js/stardust'\rn = embed(app, {\r  context: {\r    keyboardNavigation: true,\r    theme: 'purple',\r  },\r  load: ({ name, version }) => {\r    if (name === 'linechart') {\r      return Promise.resolve(line);\r    }\r  },\r  types: [\r    {\r      name: 'bar',\r      load: () => Promise.resolve(bar),\r    },\r  ],\r  themes: [\r    {\r      id: 'purple',\r      load: () => Promise.resolve(purpleThemeJson),\r    },\r  ],\r});"
       ]
     },
     "Context": {
@@ -788,7 +788,7 @@
           "type": "boolean"
         },
         "dataViewType": {
-          "description": "Type used for toggling to the data view (toggleDataView)\nThis type need to be registered as well",
+          "description": "Type used for toggling to the data view (toggleDataView)\rThis type need to be registered as well",
           "optional": true,
           "defaultValue": "sn-table",
           "type": "string"
@@ -830,7 +830,7 @@
       },
       "entries": {
         "render": {
-          "description": "Renders a visualization or sheet into an HTMLElement.\nVisualizations can either be existing objects or created on the fly.\nSupport for sense sheets is experimental.",
+          "description": "Renders a visualization or sheet into an HTMLElement.\rVisualizations can either be existing objects or created on the fly.\rSupport for sense sheets is experimental.",
           "kind": "function",
           "params": [
             {
@@ -857,8 +857,8 @@
             ]
           },
           "examples": [
-            "// render from existing object\nn.render({\n  element: el,\n  id: 'abcdef'\n});",
-            "// render on the fly\nn.render({\n  element: el,\n  type: 'barchart',\n  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\n});"
+            "// render from existing object\rn.render({\r  element: el,\r  id: 'abcdef'\r});",
+            "// render on the fly\rn.render({\r  element: el,\r  type: 'barchart',\r  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\r});"
           ]
         },
         "create": {
@@ -881,7 +881,7 @@
             ]
           },
           "examples": [
-            "// create a barchart in the app and return the model\nconst model = await n.create({\n    type: 'barchart',\n    fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }],\n    properties: { showTitle: true }\n  }\n);"
+            "// create a barchart in the app and return the model\rconst model = await n.create({\r    type: 'barchart',\r    fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }],\r    properties: { showTitle: true }\r  }\r);"
           ]
         },
         "generateProperties": {
@@ -904,11 +904,11 @@
             ]
           },
           "examples": [
-            "// generate properties for a barchart\nconst properties = await n.generateProperties({\n    type: 'barchart',\n    fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }],\n    properties: { showTitle: true }\n  },\n);"
+            "// generate properties for a barchart\rconst properties = await n.generateProperties({\r    type: 'barchart',\r    fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }],\r    properties: { showTitle: true }\r  },\r);"
           ]
         },
         "context": {
-          "description": "Updates the current context of this embed instance.\nUse this when you want to change some part of the current context, like theme.",
+          "description": "Updates the current context of this embed instance.\rUse this when you want to change some part of the current context, like theme.",
           "kind": "function",
           "params": [
             {
@@ -926,8 +926,8 @@
             ]
           },
           "examples": [
-            "// change theme\nn.context({ theme: 'dark'});",
-            "// change interactions\nn.context({ interactions: { select: false } });"
+            "// change theme\rn.context({ theme: 'dark'});",
+            "// change interactions\rn.context({ interactions: { select: false } });"
           ]
         },
         "selections": {
@@ -943,7 +943,7 @@
             ]
           },
           "examples": [
-            "const selections = await n.selections();\nselections.mount(element);"
+            "const selections = await n.selections();\rselections.mount(element);"
           ]
         },
         "field": {
@@ -979,7 +979,7 @@
             ]
           },
           "examples": [
-            "const fieldInstance = await n.field(\"MyField\");\nfieldInstance.mount(element, { title: \"Hello Field\"});"
+            "const fieldInstance = await n.field(\"MyField\");\rfieldInstance.mount(element, { title: \"Hello Field\"});"
           ]
         },
         "getRegisteredTypes": {
@@ -994,7 +994,7 @@
             }
           },
           "examples": [
-            "const types = n.getRegisteredTypes();\n// Contains\n//[\n// {\n//   name: \"barchart\"\n//   versions:[undefined, \"1.2.0\"]\n// }\n//]"
+            "const types = n.getRegisteredTypes();\r// Contains\r//[\r// {\r//   name: \"barchart\"\r//   versions:[undefined, \"1.2.0\"]\r// }\r//]"
           ]
         }
       }
@@ -1113,7 +1113,7 @@
             }
           ],
           "examples": [
-            "const handleSomeEvent () => {...};\nfieldInstance.on('someEvent', handleSomeEvent);\n...\nfieldInstance.removeListener('someEvent', handleSomeEvent);"
+            "const handleSomeEvent () => {...};\rfieldInstance.on('someEvent', handleSomeEvent);\r...\rfieldInstance.removeListener('someEvent', handleSomeEvent);"
           ]
         },
         "removeListener": {
@@ -1742,33 +1742,6 @@
         }
       }
     },
-    "Plugin": {
-      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
-      "stability": "experimental",
-      "availability": {
-        "since": "1.2.0"
-      },
-      "kind": "interface",
-      "entries": {
-        "info": {
-          "description": "Object that can hold various meta info about the plugin",
-          "kind": "object",
-          "entries": {
-            "name": {
-              "description": "The name of the plugin",
-              "type": "string"
-            }
-          }
-        },
-        "fn": {
-          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
-          "type": "function"
-        }
-      },
-      "examples": [
-        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
-      ]
-    },
     "Field": {
       "kind": "alias",
       "items": {
@@ -1919,6 +1892,33 @@
           ]
         }
       }
+    },
+    "Plugin": {
+      "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
+      "stability": "experimental",
+      "availability": {
+        "since": "1.2.0"
+      },
+      "kind": "interface",
+      "entries": {
+        "info": {
+          "description": "Object that can hold various meta info about the plugin",
+          "kind": "object",
+          "entries": {
+            "name": {
+              "description": "The name of the plugin",
+              "type": "string"
+            }
+          }
+        },
+        "fn": {
+          "description": "The implementation of the plugin. Input and return value is up to the plugin implementation to decide based on its purpose.",
+          "type": "function"
+        }
+      },
+      "examples": [
+        "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
+      ]
     },
     "LoadType": {
       "kind": "interface",
@@ -2740,6 +2740,621 @@
               "type": "T"
             }
           ]
+        }
+      }
+    },
+    "DataPropertyHandler": {
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "description": "Creates an instance of DataPropertyHandler.",
+        "params": [
+          {
+            "name": "opts",
+            "description": "Options for the handler.",
+            "type": "object"
+          }
+        ]
+      },
+      "entries": {
+        "createLibraryDimension": {
+          "description": "Initializes a dimension and applying default properties and sort criteria.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "id",
+              "description": "Dimension id",
+              "type": "string"
+            },
+            {
+              "name": "defaults",
+              "description": "Default properties for the dimension.",
+              "optional": true,
+              "kind": "union",
+              "items": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            }
+          ],
+          "returns": {
+            "description": "The created dimension object.",
+            "type": "NxDimension"
+          }
+        },
+        "createFieldDimension": {
+          "description": "Initializes a dimension with field definitions, labels, and default properties.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "field",
+              "description": "The field definition for the dimension.",
+              "type": "string"
+            },
+            {
+              "name": "label",
+              "description": "The field label for the dimension.",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            },
+            {
+              "name": "defaults",
+              "description": "Default properties for the dimension.",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            }
+          ],
+          "returns": {
+            "description": "The created dimension object.",
+            "type": "NxDimension"
+          }
+        },
+        "maxDimensions": {
+          "description": "Checks if the max property is a function and calls it with the current number of measures, or returns a default value.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "decrement",
+              "description": "The number to decrement from the maximum dimensions.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "The maximum number of dimensions allowed.",
+            "type": "number"
+          }
+        },
+        "maxMeasures": {
+          "description": "Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "decrement",
+              "description": "The number to decrement from the maximum measures.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "The maximum number of measures allowed.",
+            "type": "number"
+          }
+        }
+      }
+    },
+    "HyperCubeHandler": {
+      "extends": [
+        {
+          "type": "#/definitions/DataPropertyHandler"
+        }
+      ],
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "description": "Creates an instance of HyperCubeHandler.",
+        "params": [
+          {
+            "name": "opts",
+            "description": "Options for the handler.",
+            "type": "object"
+          }
+        ]
+      },
+      "entries": {
+        "setProperties": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "properties",
+              "type": "object"
+            }
+          ],
+          "returns": {
+            "description": "early return if properties is falsy",
+            "type": "any"
+          }
+        },
+        "getDimensions": {
+          "description": "Returns the dimensions of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "dimensions",
+            "kind": "array",
+            "items": {
+              "type": "NxDimension"
+            }
+          },
+          "examples": [
+            "const dimensions = hyperCubeHandler.getDimensions();"
+          ]
+        },
+        "getAlternativeDimensions": {
+          "description": "Returns the alternative dimensions of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "alternative dimensions",
+            "kind": "array",
+            "items": {
+              "type": "NxDimension"
+            }
+          },
+          "examples": [
+            "const alternativeDimensions = hyperCubeHandler.getAlternativeDimensions();"
+          ]
+        },
+        "getDimensionLayout": {
+          "description": "Returns the dimension layout of the hypercube for a given cId.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "cId",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "dimension layout",
+            "type": "NxDimensionInfo"
+          },
+          "examples": [
+            "const dimensionLayout = hyperCubeHandler.getDimensionLayout(cId);"
+          ]
+        },
+        "getDimensionLayouts": {
+          "description": "Returns the dimension layouts of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "dimension layouts",
+            "kind": "array",
+            "items": {
+              "type": "NxDimensionInfo"
+            }
+          },
+          "examples": [
+            "const dimensionLayouts = hyperCubeHandler.getDimensionLayouts();"
+          ]
+        },
+        "addDimension": {
+          "description": "Adds a dimension to the hypercube and updates the orders of the dimensions.\nIf the dimension is an alternative, it will be added to the alternative dimensions.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "dimension",
+              "type": "object"
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            },
+            {
+              "name": "idx",
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "dimension",
+            "type": "NxDimension"
+          },
+          "examples": [
+            "const dimension = hyperCubeHandler.addDimension(dimension, alternative, idx);"
+          ]
+        },
+        "addDimensions": {
+          "description": "Adds multiple dimensions to the hypercube.\nIf the dimensions are alternatives, they will be added to the alternative dimensions.\nIf the total number of dimensions exceeds the limit, it will stop adding dimensions.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "dimensions",
+              "type": "NxDimension"
+            },
+            {
+              "name": "alternative",
+              "defaultValue": false,
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "description": "added dimensions",
+            "kind": "array",
+            "items": {
+              "type": "NxDimension"
+            }
+          },
+          "async": true,
+          "examples": [
+            "const addedDimensions = await hyperCubeHandler.addDimensions(dimensions, alternative);"
+          ]
+        },
+        "removeDimension": {
+          "description": "Removes a dimension from the hypercube by index.\nIf the dimension is an alternative, it will be removed from the alternative dimensions.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "idx",
+              "type": "number"
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            }
+          ],
+          "examples": [
+            "hyperCubeHandler.removeDimension(idx, alternative);"
+          ]
+        },
+        "removeDimensions": {
+          "description": "Removes multiple dimensions from the hypercube by indexes.\nIf the dimensions are alternatives, they will be removed from the alternative dimensions.\nIf the indexes are empty, it will return an empty array.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "indexes",
+              "kind": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "description": "deleted dimensions",
+            "kind": "array",
+            "items": {
+              "type": "NxDimension"
+            }
+          },
+          "async": true,
+          "examples": [
+            "const deletedDimensions = await hyperCubeHandler.removeDimensions(indexes, alternative);"
+          ]
+        },
+        "autoSortDimension": {
+          "description": "Automatically sorts the dimension based on its properties.\nIf the dimension has a qLibraryId, it will use the library dimension auto-sort.\nOtherwise, it will use the field dimension auto-sort.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "dimension",
+              "type": "object"
+            }
+          ],
+          "returns": {
+            "description": "dimension with auto-sort properties",
+            "type": "object"
+          },
+          "examples": [
+            "const sortedDimension = hyperCubeHandler.autoSortDimension(dimension);"
+          ]
+        },
+        "getMeasures": {
+          "description": "Returns the measures of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "measures",
+            "kind": "array",
+            "items": {
+              "type": "NxMeasure"
+            }
+          },
+          "examples": [
+            "const measures = hyperCubeHandler.getMeasures();"
+          ]
+        },
+        "getAlternativeMeasures": {
+          "description": "Returns the alternative measures of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "alternative measures",
+            "kind": "array",
+            "items": {
+              "type": "NxMeasure"
+            }
+          },
+          "examples": [
+            "const alternativeMeasures = hyperCubeHandler.getAlternativeMeasures();"
+          ]
+        },
+        "getMeasureLayouts": {
+          "description": "Returns the measure layouts of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "measure layouts",
+            "kind": "array",
+            "items": {
+              "type": "NxMeasureInfo"
+            }
+          },
+          "examples": [
+            "const measureLayouts = hyperCubeHandler.getMeasureLayouts();"
+          ]
+        },
+        "getMeasureLayout": {
+          "description": "Returns the measure layout of the hypercube for a given cId.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "cId",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "measure layout",
+            "type": "object"
+          },
+          "examples": [
+            "const measureLayout = hyperCubeHandler.getMeasureLayout(cId);"
+          ]
+        },
+        "addMeasure": {
+          "description": "Adds a measure to the hypercube.\nIf the measure is an alternative, it will be added to the alternative measures.\nIf the total number of measures exceeds the limit, it will stop adding measures.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "measure",
+              "type": "object"
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            },
+            {
+              "name": "idx",
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "measure",
+            "type": "object"
+          },
+          "examples": [
+            "const measure = hyperCubeHandler.addMeasure(measure, alternative, idx);"
+          ]
+        },
+        "autoSortMeasure": {
+          "description": "Automatically sorts the measure based on its properties.\nIt sets the qSortByLoadOrder and qSortByNumeric properties.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "measure",
+              "type": "NxMeasure"
+            }
+          ],
+          "returns": {
+            "description": "measure with auto-sort properties",
+            "type": "NxMeasure"
+          },
+          "examples": [
+            "const sortedMeasure = hyperCubeHandler.autoSortMeasure(measure);"
+          ]
+        },
+        "addMeasures": {
+          "description": "Adds multiple measures to the hypercube.\nIf the measures are alternatives, they will be added to the alternative measures.\nIf the total number of measures exceeds the limit, it will stop adding measures.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "measures",
+              "kind": "array",
+              "items": {
+                "type": "NxMeasure"
+              }
+            },
+            {
+              "name": "alternative",
+              "defaultValue": false,
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "description": "added measures",
+            "kind": "array",
+            "items": {
+              "type": "NxMeasure"
+            }
+          },
+          "examples": [
+            "const addedMeasures = await hyperCubeHandler.addMeasures(measures, alternative);"
+          ]
+        },
+        "removeMeasure": {
+          "description": "Removes a measure from the hypercube by index.\nIf the measure is an alternative, it will be removed from the alternative measures.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "idx",
+              "type": "number"
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            }
+          ],
+          "examples": [
+            "hyperCubeHandler.removeMeasure(idx, alternative);"
+          ]
+        },
+        "removeMeasures": {
+          "description": "Removes multiple measures from the hypercube by indexes.\nIf the measures are alternatives, they will be removed from the alternative measures.\nIf the indexes are empty, it will return an empty array.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "indexes",
+              "kind": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "description": "deleted measures",
+            "type": "Promise",
+            "generics": [
+              {
+                "kind": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            ]
+          },
+          "async": true,
+          "examples": [
+            "const deletedMeasures = await hyperCubeHandler.removeMeasures(indexes, alternative);"
+          ]
+        },
+        "createLibraryDimension": {
+          "description": "Initializes a dimension and applying default properties and sort criteria.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "id",
+              "description": "Dimension id",
+              "type": "string"
+            },
+            {
+              "name": "defaults",
+              "description": "Default properties for the dimension.",
+              "optional": true,
+              "kind": "union",
+              "items": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            }
+          ],
+          "returns": {
+            "description": "The created dimension object.",
+            "type": "NxDimension"
+          }
+        },
+        "createFieldDimension": {
+          "description": "Initializes a dimension with field definitions, labels, and default properties.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "field",
+              "description": "The field definition for the dimension.",
+              "type": "string"
+            },
+            {
+              "name": "label",
+              "description": "The field label for the dimension.",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            },
+            {
+              "name": "defaults",
+              "description": "Default properties for the dimension.",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            }
+          ],
+          "returns": {
+            "description": "The created dimension object.",
+            "type": "NxDimension"
+          }
+        },
+        "maxDimensions": {
+          "description": "Checks if the max property is a function and calls it with the current number of measures, or returns a default value.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "decrement",
+              "description": "The number to decrement from the maximum dimensions.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "The maximum number of dimensions allowed.",
+            "type": "number"
+          }
+        },
+        "maxMeasures": {
+          "description": "Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "decrement",
+              "description": "The number to decrement from the maximum measures.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "The maximum number of measures allowed.",
+            "type": "number"
+          }
         }
       }
     },

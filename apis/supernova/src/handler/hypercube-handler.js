@@ -3,7 +3,7 @@ import utils from '../../../conversion/src/utils';
 import DataPropertyHandler from './data-property-handler';
 import * as hcUtils from './utils/hypercube-helper/hypercube-utils';
 import getAutoSortLibraryDimension from './utils/field-helper/get-sorted-library-field';
-import getAutoSortFieldDimension from './utils/field-helper/get-sorted-field';
+import getAutoSortDimension from './utils/field-helper/get-sorted-field';
 import { initializeField, initializeId } from './utils/field-helper/field-utils';
 import addMainDimension from './utils/hypercube-helper/add-main-dimension';
 import addMainMeasure from './utils/hypercube-helper/add-main-measure';
@@ -16,15 +16,31 @@ import reinsertMainMeasure from './utils/hypercube-helper/reinsert-main-measure'
 // eslint-disable-next-line import/no-relative-packages
 import arrayUtil from '../../../conversion/src/array-util';
 
+/**
+ * HyperCubeHandler for managing hypercube data structure.
+ * @class HyperCubeHandler
+ * @extends DataPropertyHandler
+ * @description This class provides methods to handle hypercube properties, dimensions, and measures.
+ * @param {object} opts - Parameters to add a hypercube handlers
+ * @export
+ */
 class HyperCubeHandler extends DataPropertyHandler {
+  /**
+   * Creates an instance of HyperCubeHandler.
+   * @param {object} opts - Options for the handler.
+   */
   constructor(opts) {
     super(opts);
     this.path = opts.path;
   }
 
+  /**
+   * @param {object} properties
+   * @returns early return if properties is falsy
+   */
   setProperties(properties) {
     if (!properties) {
-      return {};
+      return;
     }
 
     super.setProperties(properties);
@@ -32,7 +48,7 @@ class HyperCubeHandler extends DataPropertyHandler {
     this.hcProperties = this.path ? utils.getValue(properties, `${this.path}.qHyperCubeDef`) : properties.qHyperCubeDef;
 
     if (!this.hcProperties) {
-      return {};
+      return;
     }
 
     hcUtils.setDefaultProperties(this);
@@ -41,30 +57,70 @@ class HyperCubeHandler extends DataPropertyHandler {
     // Set auto-sort property (compatibility 0.85 -> 0.9), can probably be removed in 1.0
     this.hcProperties.qDimensions = hcUtils.setFieldProperties(this.hcProperties.qDimensions);
     this.hcProperties.qMeasures = hcUtils.setFieldProperties(this.hcProperties.qMeasures);
-    return {};
   }
 
   // ----------------------------------
   // ----------- DIMENSIONS -----------
   // ----------------------------------
 
+  /**
+   * @returns {NxDimension[]} dimensions
+   * @description Returns the dimensions of the hypercube.
+   * @memberof HyperCubeHandler
+   * @example
+   * const dimensions = hyperCubeHandler.getDimensions();
+   */
   getDimensions() {
     return this.hcProperties ? this.hcProperties.qDimensions : [];
   }
 
+  /**
+   * @returns {NxDimension[]} alternative dimensions
+   * @description Returns the alternative dimensions of the hypercube.
+   * @memberof HyperCubeHandler
+   * @example
+   * const alternativeDimensions = hyperCubeHandler.getAlternativeDimensions();
+   */
   getAlternativeDimensions() {
     return this.hcProperties?.qLayoutExclude?.qHyperCubeDef?.qDimensions ?? [];
   }
 
+  /**
+   * @param {string} cId
+   * @returns {NxDimensionInfo} dimension layout
+   * @description Returns the dimension layout of the hypercube for a given cId.
+   * @memberof HyperCubeHandler
+   * @example
+   * const dimensionLayout = hyperCubeHandler.getDimensionLayout(cId);
+   */
   getDimensionLayout(cId) {
     return this.getDimensionLayouts().filter((item) => cId === item.cId)[0];
   }
 
+  /**
+   * @returns {NxDimensionInfo[]} dimension layouts
+   * @description Returns the dimension layouts of the hypercube.
+   * @memberof HyperCubeHandler
+   * @example
+   * const dimensionLayouts = hyperCubeHandler.getDimensionLayouts();
+   */
   getDimensionLayouts() {
     const hc = hcUtils.getHyperCube(this.layout, this.path);
     return hc ? hc.qDimensionInfo : [];
   }
 
+  /**
+   *
+   * @param {object} dimension
+   * @param {boolean} alternative
+   * @param {number} idx
+   * @returns {NxDimension} dimension
+   * @description Adds a dimension to the hypercube and updates the orders of the dimensions.
+   * If the dimension is an alternative, it will be added to the alternative dimensions.
+   * @memberof HyperCubeHandler
+   * @example
+   * const dimension = hyperCubeHandler.addDimension(dimension, alternative, idx);
+   */
   addDimension(dimension, alternative, idx) {
     const dim = initializeField(dimension);
 
@@ -75,6 +131,17 @@ class HyperCubeHandler extends DataPropertyHandler {
     return addMainDimension(this, dim, idx);
   }
 
+  /**
+   * @param {NxDimension} dimensions
+   * @param {boolean} alternative
+   * @returns {NxDimension[]} added dimensions
+   * @description Adds multiple dimensions to the hypercube.
+   * If the dimensions are alternatives, they will be added to the alternative dimensions.
+   * If the total number of dimensions exceeds the limit, it will stop adding dimensions.
+   * @memberof HyperCubeHandler
+   * @example
+   * const addedDimensions = await hyperCubeHandler.addDimensions(dimensions, alternative);
+   */
   async addDimensions(dimensions, alternative = false) {
     const existingDimensions = this.getDimensions();
     const initialLength = existingDimensions.length;
@@ -101,6 +168,15 @@ class HyperCubeHandler extends DataPropertyHandler {
     return addedDimensions;
   }
 
+  /**
+   * @param {number} idx
+   * @param {boolean} alternative
+   * @description Removes a dimension from the hypercube by index.
+   * If the dimension is an alternative, it will be removed from the alternative dimensions.
+   * @memberof HyperCubeHandler
+   * @example
+   * hyperCubeHandler.removeDimension(idx, alternative);
+   */
   removeDimension(idx, alternative) {
     if (alternative) {
       removeAlternativeDimension(this, idx);
@@ -109,6 +185,17 @@ class HyperCubeHandler extends DataPropertyHandler {
     removeMainDimension(this, idx);
   }
 
+  /**
+   * @param {number[]} indexes
+   * @param {boolean} alternative
+   * @returns {NxDimension[]} deleted dimensions
+   * @description Removes multiple dimensions from the hypercube by indexes.
+   * If the dimensions are alternatives, they will be removed from the alternative dimensions.
+   * If the indexes are empty, it will return an empty array.
+   * @memberof HyperCubeHandler
+   * @example
+   * const deletedDimensions = await hyperCubeHandler.removeDimensions(indexes, alternative);
+   */
   async removeDimensions(indexes, alternative) {
     const altDimensions = this.getAlternativeDimensions();
     const dimensions = this.getDimensions();
@@ -156,16 +243,13 @@ class HyperCubeHandler extends DataPropertyHandler {
   moveDimension(fromIndex, toIndex) {
     const dimensions = this.getDimensions();
     const altDimensions = this.getAlternativeDimensions();
-
     if (fromIndex < dimensions.length && toIndex < dimensions.length) {
-      // Move within main dimensions
       return Promise.resolve(arrayUtil.move(dimensions, fromIndex, toIndex));
     }
 
     if (fromIndex < dimensions.length && toIndex >= dimensions.length) {
       return hcUtils.moveDimensionFromMainToAlternative(fromIndex, toIndex, dimensions, altDimensions);
     }
-
     if (fromIndex >= dimensions.length && toIndex < dimensions.length) {
       return Promise.resolve(hcUtils.moveMeasureFromAlternativeToMain(fromIndex, toIndex, dimensions, altDimensions));
     }
@@ -173,45 +257,105 @@ class HyperCubeHandler extends DataPropertyHandler {
     return Promise.resolve(hcUtils.moveDimensionWithinAlternative(fromIndex, toIndex, dimensions, altDimensions));
   }
 
+  /**
+   * @param {object} dimension
+   * @returns {object} dimension with auto-sort properties
+   * @description Automatically sorts the dimension based on its properties.
+   * If the dimension has a qLibraryId, it will use the library dimension auto-sort.
+   * Otherwise, it will use the field dimension auto-sort.
+   * @memberof HyperCubeHandler
+   * @example
+   * const sortedDimension = hyperCubeHandler.autoSortDimension(dimension);
+   */
   autoSortDimension(dimension) {
     if (dimension.qLibraryId) {
       return getAutoSortLibraryDimension(this, dimension);
     }
-    return getAutoSortFieldDimension(this, dimension);
+    return getAutoSortDimension(this, dimension);
   }
 
   // ----------------------------------
   // ------------ MEASURES ------------
   // ----------------------------------
 
+  /**
+   * @returns {NxMeasure[]} measures
+   * @description Returns the measures of the hypercube.
+   * @memberof HyperCubeHandler
+   * @example
+   * const measures = hyperCubeHandler.getMeasures();
+   */
   getMeasures() {
     return this.hcProperties ? this.hcProperties.qMeasures : [];
   }
 
+  /**
+   * @returns {NxMeasure[]} alternative measures
+   * @description Returns the alternative measures of the hypercube.
+   * @memberof HyperCubeHandler
+   * @example
+   * const alternativeMeasures = hyperCubeHandler.getAlternativeMeasures();
+   */
   getAlternativeMeasures() {
     return this.hcProperties?.qLayoutExclude?.qHyperCubeDef?.qMeasures ?? [];
   }
 
+  /**
+   * @returns {NxMeasureInfo[]} measure layouts
+   * @description Returns the measure layouts of the hypercube.
+   * @memberof HyperCubeHandler
+   * @example
+   * const measureLayouts = hyperCubeHandler.getMeasureLayouts();
+   */
   getMeasureLayouts() {
     const hc = hcUtils.getHyperCube(this.layout, this.path);
     return hc ? hc.qMeasureInfo : [];
   }
 
+  /**
+   * @param {string} cId
+   * @returns {object} measure layout
+   * @description Returns the measure layout of the hypercube for a given cId.
+   * @memberof HyperCubeHandler
+   * @example
+   * const measureLayout = hyperCubeHandler.getMeasureLayout(cId);
+   */
   getMeasureLayout(cId) {
     return this.getMeasureLayouts().filter((item) => cId === item.cId)[0];
   }
 
+  /**
+   * @param {object} measure
+   * @param {boolean} alternative
+   * @param {number} idx
+   * @returns {object} measure
+   * @description Adds a measure to the hypercube.
+   * If the measure is an alternative, it will be added to the alternative measures.
+   * If the total number of measures exceeds the limit, it will stop adding measures.
+   * @memberof HyperCubeHandler
+   * @example
+   * const measure = hyperCubeHandler.addMeasure(measure, alternative, idx);
+   */
   addMeasure(measure, alternative, idx) {
-    const measures = this.getAlternativeMeasure();
-    const meas = initializeId(measure);
+    const meas = initializeField(measure);
 
-    if (hcUtils.isMeasureAlternative(this, measures, alternative)) {
-      return hcUtils.addAlternativeMeasure(this, meas, idx);
+    if (hcUtils.isMeasureAlternative(this, meas, alternative)) {
+      const hcMeasures = this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures;
+      return hcUtils.addAlternativeMeasure(meas, hcMeasures, idx);
     }
 
     return addMainMeasure(this, meas, idx);
   }
 
+  /**
+   * @param {NxMeasure} measure
+   * @returns {NxMeasure} measure with auto-sort properties
+   * @description Automatically sorts the measure based on its properties.
+   * It sets the qSortByLoadOrder and qSortByNumeric properties.
+   * @memberof HyperCubeHandler
+   * @example
+   * const sortedMeasure = hyperCubeHandler.autoSortMeasure(measure);
+   */
   // eslint-disable-next-line class-methods-use-this
   autoSortMeasure(measure) {
     const meas = measure;
@@ -222,6 +366,17 @@ class HyperCubeHandler extends DataPropertyHandler {
     return Promise.resolve(meas);
   }
 
+  /**
+   * @param {NxMeasure[]} measures
+   * @param {boolean} alternative
+   * @returns {NxMeasure[]} added measures
+   * @description Adds multiple measures to the hypercube.
+   * If the measures are alternatives, they will be added to the alternative measures.
+   * If the total number of measures exceeds the limit, it will stop adding measures.
+   * @memberof HyperCubeHandler
+   * @example
+   * const addedMeasures = await hyperCubeHandler.addMeasures(measures, alternative);
+   */
   addMeasures(measures, alternative = false) {
     const existingMeasures = this.getMeasures();
     const addedMeasures = [];
@@ -246,6 +401,15 @@ class HyperCubeHandler extends DataPropertyHandler {
     return addedMeasures;
   }
 
+  /**
+   * @param {number} idx
+   * @param {boolean} alternative
+   * @description Removes a measure from the hypercube by index.
+   * If the measure is an alternative, it will be removed from the alternative measures.
+   * @memberof HyperCubeHandler
+   * @example
+   * hyperCubeHandler.removeMeasure(idx, alternative);
+   */
   removeMeasure(idx, alternative) {
     if (alternative) {
       hcUtils.removeAltMeasureByIndex(this, idx);
@@ -253,12 +417,23 @@ class HyperCubeHandler extends DataPropertyHandler {
     removeMainMeasure(this, idx);
   }
 
+  /**
+   * @param {number[]} indexes
+   * @param {boolean} alternative
+   * @returns {Promise<number[]>} deleted measures
+   * @description Removes multiple measures from the hypercube by indexes.
+   * If the measures are alternatives, they will be removed from the alternative measures.
+   * If the indexes are empty, it will return an empty array.
+   * @memberof HyperCubeHandler
+   * @example
+   * const deletedMeasures = await hyperCubeHandler.removeMeasures(indexes, alternative);
+   */
   async removeMeasures(indexes, alternative) {
     const measures = this.getMeasures();
     const altMeasures = this.getAlternativeMeasures();
-
-    if (indexes.length === 0) return [];
     let deletedMeasures = [];
+
+    if (indexes.length === 0) return deletedMeasures;
 
     if (alternative && altMeasures.length > 0) {
       // Keep the original deleted order
