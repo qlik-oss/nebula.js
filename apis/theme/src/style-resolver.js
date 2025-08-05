@@ -104,10 +104,15 @@ export default function styleResolver(basePath, themeJSON) {
      * @param {string} attribute Name of the style attribute
      * @returns {string|undefined} The style value of the resolved path, undefined if not found
      */
-    getStyle(component, attribute) {
+    getStyle(component, attribute, qId) {
       // TODO - object overrides
       // TODO - feature flag on font-family?
       // TODO - caching
+      // eslint-disable-next-line no-underscore-dangle
+      const overrides = themeJSON._overrides;
+      if (qId && overrides && overrides[qId] && overrides[qId][`${component}.${attribute}`] !== undefined) {
+        return overrides[qId][`${component}.${attribute}`];
+      }
       const baseSteps = basePathSteps.concat();
       const result = searchValue(component, attribute, baseSteps, themeJSON);
 

@@ -104,12 +104,12 @@ export default function theme() {
      * theme.getStyle('object', '', 'title.main.fontSize');
      * theme.getStyle('', '', 'fontSize');
      */
-    getStyle(basePath, path, attribute) {
+    getStyle(basePath, path, attribute, qId) {
       if (!styleResolverInstanceCache[basePath]) {
         styleResolverInstanceCache[basePath] = styleResolverFn(basePath, resolvedThemeJSON);
       }
 
-      return styleResolverInstanceCache[basePath].getStyle(path, attribute);
+      return styleResolverInstanceCache[basePath].getStyle(path, attribute, qId);
     },
     /**
      * Validates a color string using d3-color.
