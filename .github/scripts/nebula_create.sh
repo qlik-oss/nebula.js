@@ -10,24 +10,24 @@ TEST="${6:-true}"
 
 if [ "$MASHUP" = "true" ]; then
   echo "Create mashup project"
-  ./commands/cli/lib/index.js create mashup "$PROJECT_NAME" --install "$INSTALL" --pkgm yarn
+  ./commands/cli/lib/index.js create mashup "$PROJECT_NAME" --install "$INSTALL" --pkgm pnpm
 else
   echo "Create project based on Picasso template"
-  ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm yarn
+  ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm pnpm
 fi
 
-echo "Yarn"
+echo "PNPM"
 yarn
 echo "Linking packages"
-(cd apis/stardust && yarn link)
-(cd commands/cli && yarn link)
-(cd commands/build && yarn link)
-(cd commands/serve && yarn link)
+(cd apis/stardust && pnpm link --global)
+(cd commands/cli && pnpm link --global)
+(cd commands/build && pnpm link --global)
+(cd commands/serve && pnpm link --global)
 cd "$PROJECT_NAME"
-yarn link "@nebula.js/stardust"
-yarn link "@nebula.js/cli"
-yarn link "@nebula.js/cli-build"
-yarn link "@nebula.js/cli-serve"
+pnpm link "@nebula.js/stardust"
+pnpm link "@nebula.js/cli"
+pnpm link "@nebula.js/cli-build"
+pnpm link "@nebula.js/cli-serve"
 echo "Log node_modules/@nebula.js"
 ls -la node_modules/@nebula.js
 if [ "$BUILD" = "true" ]; then
