@@ -93,5 +93,5 @@
     "whatwg-fetch": "^3.6.20",
     "yargs": "17.7.2"
   },
-  "packageManager": "pnpm@9.15.9"
+  "packageManager": "pnpm@10.12.1"
 }
