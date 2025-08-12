@@ -8,6 +8,5 @@
   },
   "ignoreChanges": ["**/*.md", "**/__tests__/**", "**/__stories__/**"],
   "version": "5.17.0",
-  "npmClient": "pnpm",
-  "useWorkspaces": true
+  "npmClient": "pnpm"
 }
