@@ -5,8 +5,8 @@
   "scripts": {
     "build": "pnpm run locale:generate && cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
     "build:dev": "pnpm run locale:generate && cross-env NODE_ENV=development FORCE_COLOR=1 lerna run build --stream",
-    "build:codesandbox": "pnpm run locale:generate &&  cross-env NODE_ENV=production CODESANDBOX=1 FORCE_COLOR=1 lerna run build --stream --scope \"@nebula.js/{stardust,theme,locale,conversion,enigma-mocker}\"",
-    "install:codesandbox": "pnpm --ignore-engines",
+    "build:codesandbox": "pnpm run locale:generate && cross-env NODE_ENV=production CODESANDBOX=1 FORCE_COLOR=1 lerna run build --stream --scope \"@nebula.js/{stardust,theme,locale,conversion,enigma-mocker}\"",
+    "install:codesandbox": "pnpm i",
     "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream --concurrency 99 --no-sort",
     "format": "prettier --write '**/**/*' --ignore-unknown",
     "locale:verify": "node tools/verify-translations.cjs",
