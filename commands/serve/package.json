@@ -30,7 +30,7 @@
     "prepublishOnly": "rm -rf dist && pnpm run build"
   },
   "dependencies": {
-    "@nebula.js/cli-build": "^5.17.0",
+    "@nebula.js/cli-build": "workspace:^5.17.0",
     "@qlik/sdk": "0.28.0",
     "body-parser": "2.2.0",
     "chalk": "4.1.2",

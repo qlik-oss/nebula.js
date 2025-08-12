@@ -526,8 +526,8 @@ importers:
   commands/serve:
     dependencies:
       '@nebula.js/cli-build':
-        specifier: ^5.17.0
-        version: 5.17.0(@types/babel__core@7.20.5)
+        specifier: workspace:^5.17.0
+        version: link:../build
       '@qlik/sdk':
         specifier: 0.28.0
         version: 0.28.0
