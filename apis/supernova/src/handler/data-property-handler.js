@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { merge } from 'lodash';
+import extend from 'extend';
 // eslint-disable-next-line import/no-relative-packages
 import isEnabled from '../../../nucleus/src/flags/flags';
 import { findFieldById, useMasterNumberFormat } from './utils/field-helper/field-utils';
@@ -84,7 +83,7 @@ class DataPropertyHandler {
   }
 
   createLibraryDimension(id, defaults) {
-    const dimension = merge({}, this.dimensionProperties || {}, defaults || {});
+    const dimension = extend(true, {}, this.dimensionProperties || {}, defaults || {});
 
     dimension.qDef = dimension.qDef ?? {};
     dimension.qOtherTotalSpec = dimension.qOtherTotalSpec ?? {};
@@ -100,7 +99,7 @@ class DataPropertyHandler {
   }
 
   createFieldDimension(field, label, defaults) {
-    const dimension = merge({}, this.dimensionProperties || {}, defaults || {});
+    const dimension = extend(true, {}, this.dimensionProperties || {}, defaults || {});
 
     dimension.qDef = dimension.qDef ?? {};
     dimension.qOtherTotalSpec = dimension.qOtherTotalSpec ?? {};
@@ -228,7 +227,7 @@ class DataPropertyHandler {
   }
 
   createExpressionMeasure(expression, label, defaults) {
-    const measure = merge({}, this.measureProperties || {}, defaults || {});
+    const measure = extend(true, {}, this.measureProperties || {}, defaults || {});
 
     measure.qDef = measure.qDef ?? {};
     measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
@@ -253,7 +252,7 @@ class DataPropertyHandler {
   }
 
   createLibraryMeasure(id, defaults) {
-    const measure = merge({}, this.measureProperties || {}, defaults || {});
+    const measure = extend(true, {}, this.measureProperties || {}, defaults || {});
     measure.qDef = measure.qDef ?? {};
     measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
 
