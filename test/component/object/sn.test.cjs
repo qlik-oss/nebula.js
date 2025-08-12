@@ -1,4 +1,5 @@
 const serve = require('@nebula.js/cli-serve');
+const path = require('path');
 const { test, expect } = require('@playwright/test');
 
 const snSelector = '.njs-viz';
