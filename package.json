@@ -61,6 +61,7 @@
     "body-parser": "2.2.0",
     "cross-env": "10.0.0",
     "css-loader": "7.1.2",
+    "d3-color": "3.1.0",
     "enigma.js": "2.14.0",
     "eslint": "8.57.1",
     "eslint-config-airbnb": "19.0.4",

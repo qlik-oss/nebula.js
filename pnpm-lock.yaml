@@ -90,6 +90,9 @@ importers:
       css-loader:
         specifier: 7.1.2
         version: 7.1.2(webpack@5.101.0)
+      d3-color:
+        specifier: 3.1.0
+        version: 3.1.0
       enigma.js:
         specifier: 2.14.0
         version: 2.14.0
