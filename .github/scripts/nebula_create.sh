@@ -17,7 +17,7 @@ else
 fi
 
 echo "PNPM"
-yarn
+pnpm i
 echo "Linking packages"
 (cd apis/stardust && pnpm link --global)
 (cd commands/cli && pnpm link --global)
