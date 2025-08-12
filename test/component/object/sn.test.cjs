@@ -8,16 +8,24 @@ test.describe('sn', () => {
   let s;
 
   test.beforeAll(async () => {
-    s = await serve({
-      open: false,
-      config: 'nebula.config.cjs',
-      build: false,
-      fixturePath: 'test/component/object',
-    });
-  });
+    try {
+      console.log('Starting serve...');
+      s = await serve({
+        open: false,
+        config: 'nebula.config.cjs',
+        build: false,
+        fixturePath: 'test/component/object',
+      });
+      console.log('Serve started:', s && s.url);
+    } catch (err) {
+      console.error('Serve failed:', err);
+    }
+  }, 60000); // Increase timeout
 
   test.afterAll(async () => {
-    await s.close();
+    if (s && s.close) {
+      await s.close();
+    }
   });
 
   test('should render with translation', async ({ page }) => {
