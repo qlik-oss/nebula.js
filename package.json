@@ -3,10 +3,10 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "build": "yarn run locale:generate && cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
-    "build:dev": "yarn run locale:generate && cross-env NODE_ENV=development FORCE_COLOR=1 lerna run build --stream",
-    "build:codesandbox": "yarn run locale:generate &&  cross-env NODE_ENV=production CODESANDBOX=1 FORCE_COLOR=1 lerna run build --stream --scope \"@nebula.js/{stardust,theme,locale,conversion,enigma-mocker}\"",
-    "install:codesandbox": "yarn --ignore-engines",
+    "build": "pnpm run locale:generate && cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
+    "build:dev": "pnpm run locale:generate && cross-env NODE_ENV=development FORCE_COLOR=1 lerna run build --stream",
+    "build:codesandbox": "pnpm run locale:generate &&  cross-env NODE_ENV=production CODESANDBOX=1 FORCE_COLOR=1 lerna run build --stream --scope \"@nebula.js/{stardust,theme,locale,conversion,enigma-mocker}\"",
+    "install:codesandbox": "pnpm --ignore-engines",
     "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream --concurrency 99 --no-sort",
     "format": "prettier --write '**/**/*' --ignore-unknown",
     "locale:verify": "node tools/verify-translations.cjs",
@@ -14,7 +14,7 @@
     "lint": "eslint packages apis commands --ext .js,.jsx",
     "spec": "lerna run spec --stream --concurrency 99 && lerna run ts --stream --concurrency 99 ",
     "mashup": "node scripts/start-mashup.js",
-    "test": "yarn run test:unit",
+    "test": "pnpm run test:unit",
     "test:unit": "jest --maxWorkers=2",
     "test:update": "jest --maxWorkers=2 -u",
     "test:watch": "jest --watch",
@@ -93,19 +93,5 @@
     "whatwg-fetch": "^3.6.20",
     "yargs": "17.7.2"
   },
-  "resolutions": {
-    "**/caniuse-lite": "1.0.30001734",
-    "**/react": "18.3.1",
-    "**/react-dom": "18.3.1",
-    "**/react-is": "18.3.1",
-    "@playwright/test": "1.54.2"
-  },
-  "workspaces": [
-    "generated/*",
-    "packages/*",
-    "commands/*",
-    "apis/*",
-    "test/component/*"
-  ],
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "pnpm@9.15.9"
 }

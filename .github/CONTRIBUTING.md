@@ -62,11 +62,11 @@ To open the visualization, run:
 
 ### Development workflow
 
-- `yarn` install all dependencies
-- `yarn run build` generate UMD bundles for all packages and an ESM bundle for stardust
-- `yarn run lint` check code style
-- `yarn run format` format code style
-- `yarn run test` run all tests
+- `pnpm i` install all dependencies
+- `pnpm run build` generate UMD bundles for all packages and an ESM bundle for stardust
+- `pnpm run lint` check code style
+- `pnpm run format` format code style
+- `pnpm run test` run all tests
 
 ### Cutting a release
 

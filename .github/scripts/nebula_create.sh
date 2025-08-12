@@ -31,8 +31,8 @@ yarn link "@nebula.js/cli-serve"
 echo "Log node_modules/@nebula.js"
 ls -la node_modules/@nebula.js
 if [ "$BUILD" = "true" ]; then
-  yarn run build
+  pnpm run build
 fi
 if [ "$TEST" = "true" ]; then
-  yarn run test:e2e
+  pnpm run test:e2e
 fi

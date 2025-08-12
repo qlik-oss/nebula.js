@@ -17,11 +17,14 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 24.5.0
-          cache: 'yarn'
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Build
-        run: yarn run build
+        run: pnpm run build
       - name: Upload workspace
         uses: actions/upload-artifact@v4
         with:
@@ -40,18 +43,18 @@ jobs:
           name: workspace
           path: .
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Locale verify
-        run: yarn run locale:verify
+        run: pnpm run locale:verify
       - name: Lint
-        run: yarn run lint
+        run: pnpm run lint
       - name: Run unit tests and publish to codeclimate
         env:
           JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         run: |
           ./test/bin/cc-test-reporter before-build
-          yarn test:unit --coverage --reporters=default --reporters=jest-junit
+          pnpm test:unit --coverage --reporters=default --reporters=jest-junit
           ./test/bin/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
       - name: Store junit results
         uses: actions/upload-artifact@v4
@@ -70,13 +73,13 @@ jobs:
           name: workspace
           path: .
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Test component
-        run: yarn run test:component
+        run: pnpm run test:component
       - name: Test mashup
-        run: yarn run test:mashup
+        run: pnpm run test:mashup
       - name: Store mashup artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -84,9 +87,9 @@ jobs:
           name: mashup
           path: ./test/mashup
       - name: Test integration
-        run: yarn run test:integration
+        run: pnpm run test:integration
       - name: Test rendering
-        run: yarn run test:rendering
+        run: pnpm run test:rendering
       - name: Store rendering artifacts
         if: always()
         uses: actions/upload-artifact@v4
@@ -105,7 +108,7 @@ jobs:
           name: workspace
           path: .
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - run: chmod +x .github/scripts/nebula_create.sh
@@ -141,10 +144,12 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 22.18.0
-          cache: 'yarn'
-
+          cache: 'pnpm'
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Create version.txt
         id: version
@@ -153,7 +158,7 @@ jobs:
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
             version=${GITHUB_REF_NAME#v}
           else
-            yarn workspace "@nebula.js/stardust" version --prepatch --no-git-tag-version
+            pnpm --filter "@nebula.js/stardust" version --prepatch --no-git-tag-version
             version=$(node -p "require('./apis/stardust/api-spec/spec.json').info.version")
           fi
           echo "$version" > ./version.txt
