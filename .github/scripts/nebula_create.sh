@@ -16,20 +16,30 @@ else
   ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm pnpm
 fi
 
-echo "***Linking packages***"
-(cd apis/stardust && pnpm link --global)
-(cd commands/cli && pnpm link --global)
-(cd commands/build && pnpm link --global)
-(cd commands/serve && pnpm link --global)
 cd "$PROJECT_NAME"
+echo "***Rewriting package.json for pnpm workspace local linking***"
+node <<'EOF'
+const fs = require('fs');
+const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
+const nebulaDeps = [
+  '@nebula.js/cli',
+  '@nebula.js/cli-build',
+  '@nebula.js/cli-serve',
+  '@nebula.js/cli-sense',
+];
+if (!pkg.devDependencies) pkg.devDependencies = {};
+nebulaDeps.forEach(dep => {
+  if (pkg.devDependencies[dep]) {
+    pkg.devDependencies[dep] = 'workspace:*';
+  }
+});
+pkg.packageManager = 'pnpm@10.12.1';
+fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
+EOF
 echo "***PNPM install***"
-pnpm i --filter "$PROJECT_NAME"
-pnpm link "@nebula.js/stardust"
-pnpm link "@nebula.js/cli"
-pnpm link "@nebula.js/cli-build"
-pnpm link "@nebula.js/cli-serve"
+pnpm install
 echo "***Log node_modules/@nebula.js***"
-ls -la node_modules/@nebula.js
+ls -la node_modules/@nebula.js || true
 echo "***Package.json***"
 cat package.json
 if [ "$BUILD" = "true" ]; then
