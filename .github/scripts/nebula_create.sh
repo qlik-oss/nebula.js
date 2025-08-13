@@ -36,6 +36,8 @@ nebulaDeps.forEach(dep => {
 pkg.packageManager = 'pnpm@10.12.1';
 fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
 EOF
+echo "***Package.json***"
+cat package.json
 echo "***PNPM install***"
 pnpm install --filter "$PROJECT_NAME"
 echo "***Log node_modules/@nebula.js***"
