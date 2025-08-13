@@ -121,8 +121,6 @@ jobs:
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - run: chmod +x .github/scripts/nebula_create.sh
-      - name: Build nebula CLI packages
-        run: pnpm -r --filter "./commands/cli..." --filter "./commands/build..." --filter "./commands/serve..." --filter "./commands/sense..." run build || true
       - name: Create Nebula visualization project (Picasso)
         run: .github/scripts/nebula_create.sh generated/hello none false false true true
       - name: Create Nebula visualization project (Barchart)

@@ -8,20 +8,16 @@ INSTALL="${4:-false}"
 BUILD="${5:-true}"
 TEST="${6:-true}"
 
-# Build all nebula CLI packages before generating the project
-echo "***Building nebula CLI packages***"
-pnpm -r --filter "./commands/cli..." --filter "./commands/build..." --filter "./commands/serve..." --filter "./commands/sense..." run build || true
-
 if [ "$MASHUP" = "true" ]; then
   echo "Create mashup project"
-  ./commands/cli/lib/index.js create mashup "$PROJECT_NAME" --install "$INSTALL" --pkgm pnpm
+  ./commands/cli/lib/index.js create mashup "$PROJECT_NAME" --install "$INSTALL" --pkgm npm
 else
   echo "Create project based on Picasso template"
-  ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm pnpm
+  ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm npm
 fi
 
 cd "$PROJECT_NAME"
-echo "***Rewriting package.json for pnpm file: protocol local linking***"
+echo "***Rewriting package.json for npm file: protocol local linking***"
 node <<'EOF'
 const fs = require('fs');
 const path = require('path');
@@ -41,13 +37,12 @@ Object.entries(nebulaDeps).forEach(([dep, relPath]) => {
 // Add dependency for stardust
 pkg.devDependencies['@nebula.js/stardust'] = 'file:../../apis/stardust';
 
-pkg.packageManager = 'pnpm@10.12.1';
 fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
 EOF
 echo "***Package.json***"
 cat package.json
-echo "***PNPM install***"
-pnpm install --no-frozen-lockfile
+echo "***NPM install***"
+npm install
 echo "***Log node_modules/@nebula.js***"
 ls -la node_modules/@nebula.js || true
 echo "***Package.json***"
@@ -56,11 +51,11 @@ cat package.json
 export PATH="$(cd ../.. && pwd)/node_modules/.bin:$PATH"
 if [ "$BUILD" = "true" ]; then
   echo "***BUILD***"
-  pnpm run build
+  npm run build
 fi
 echo "***Package.json***"
 cat package.json
 if [ "$TEST" = "true" ]; then
   echo "***TEST***"
-  pnpm run test:e2e
+  npm run test:e2e
 fi
