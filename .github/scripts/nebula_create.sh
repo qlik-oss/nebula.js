@@ -40,7 +40,7 @@ EOF
 echo "***Package.json***"
 cat package.json
 echo "***PNPM install***"
-pnpm install --filter "$PROJECT_NAME"
+pnpm install
 echo "***Log node_modules/@nebula.js***"
 ls -la node_modules/@nebula.js || true
 echo "***Package.json***"
