@@ -17,13 +17,13 @@ else
 fi
 
 echo "PNPM"
-pnpm i --shamefully-hoist
 echo "Linking packages"
 (cd apis/stardust && pnpm link --global)
 (cd commands/cli && pnpm link --global)
 (cd commands/build && pnpm link --global)
 (cd commands/serve && pnpm link --global)
 cd "$PROJECT_NAME"
+pnpm i --filter "$PROJECT_NAME"
 pnpm link "@nebula.js/stardust"
 pnpm link "@nebula.js/cli"
 pnpm link "@nebula.js/cli-build"
