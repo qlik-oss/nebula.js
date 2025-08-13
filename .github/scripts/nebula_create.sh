@@ -48,7 +48,7 @@ EOF
 echo "***Package.json***"
 cat package.json
 echo "***PNPM install***"
-pnpm install
+pnpm install --no-frozen-lockfile
 echo "***Log node_modules/@nebula.js***"
 ls -la node_modules/@nebula.js || true
 echo "***Package.json***"
