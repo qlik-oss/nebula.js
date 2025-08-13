@@ -1,5 +1,4 @@
 packages:
-  - 'generated/*'
   - 'packages/*'
   - 'commands/*'
   - 'apis/*'
