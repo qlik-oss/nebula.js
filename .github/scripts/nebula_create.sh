@@ -33,6 +33,7 @@ nebulaDeps.forEach(dep => {
     pkg.devDependencies[dep] = 'workspace:*';
   }
 });
+pkg.peerDependencies['@nebula.js/stardust'] = 'workspace:*';
 pkg.packageManager = 'pnpm@10.12.1';
 fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
 EOF
