@@ -19,7 +19,7 @@
     "lint": "eslint src",
     "start": "nebula serve",
     "sense": "nebula sense --meta src/meta.json",
-    "test:e2e": "playwright test",
+    "test:e2e": "npm run start --port 8077 --open false && playwright test",
     "test:e2e:report": "playwright show-report test/integration/test-report"
   },
   "devDependencies": {
