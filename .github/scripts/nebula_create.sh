@@ -17,30 +17,34 @@ else
 fi
 
 cd "$PROJECT_NAME"
-echo "***Rewriting package.json for pnpm workspace local linking***"
+echo "***Rewriting package.json for pnpm file: protocol local linking***"
 node <<'EOF'
 const fs = require('fs');
+const path = require('path');
 const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-const nebulaDeps = [
-  '@nebula.js/cli',
-  '@nebula.js/cli-build',
-  '@nebula.js/cli-serve',
-  '@nebula.js/cli-sense',
-];
+const nebulaDeps = {
+  '@nebula.js/cli': '../../commands/cli',
+  '@nebula.js/cli-build': '../../commands/build',
+  '@nebula.js/cli-serve': '../../commands/serve',
+  '@nebula.js/cli-sense': '../../commands/sense',
+};
 if (!pkg.devDependencies) pkg.devDependencies = {};
-nebulaDeps.forEach(dep => {
+Object.entries(nebulaDeps).forEach(([dep, relPath]) => {
   if (pkg.devDependencies[dep]) {
-    pkg.devDependencies[dep] = 'workspace:*';
+    pkg.devDependencies[dep] = `file:${relPath}`;
   }
 });
-pkg.peerDependencies['@nebula.js/stardust'] = 'workspace:*';
+// Peer dependency for stardust
+if (pkg.peerDependencies && pkg.peerDependencies['@nebula.js/stardust']) {
+  pkg.peerDependencies['@nebula.js/stardust'] = 'file:../../apis/stardust';
+}
 pkg.packageManager = 'pnpm@10.12.1';
 fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
 EOF
 echo "***Package.json***"
 cat package.json
 echo "***PNPM install***"
-pnpm install --filter "$PROJECT_NAME..."
+pnpm install
 echo "***Log node_modules/@nebula.js***"
 ls -la node_modules/@nebula.js || true
 echo "***Package.json***"
