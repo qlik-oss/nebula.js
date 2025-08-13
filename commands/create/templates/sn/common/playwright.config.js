@@ -15,7 +15,6 @@ export default {
       },
     ],
   ],
-
   webServer: {
     command: 'npm run start --port 8077 --open false',
     reuseExistingServer: !process.env.CI,
