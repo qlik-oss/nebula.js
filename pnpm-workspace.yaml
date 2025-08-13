@@ -3,6 +3,7 @@ packages:
   - 'commands/*'
   - 'apis/*'
   - 'test/component/*'
+  - 'generated/*'
 overrides:
   'caniuse-lite': '1.0.30001734'
   'react': '18.3.1'

@@ -8,6 +8,10 @@ INSTALL="${4:-false}"
 BUILD="${5:-true}"
 TEST="${6:-true}"
 
+# Build all nebula CLI packages before generating the project
+echo "***Building nebula CLI packages***"
+pnpm -r --filter "./commands/cli..." --filter "./commands/build..." --filter "./commands/serve..." --filter "./commands/sense..." run build || true
+
 if [ "$MASHUP" = "true" ]; then
   echo "Create mashup project"
   ./commands/cli/lib/index.js create mashup "$PROJECT_NAME" --install "$INSTALL" --pkgm pnpm
@@ -49,6 +53,8 @@ echo "***Log node_modules/@nebula.js***"
 ls -la node_modules/@nebula.js || true
 echo "***Package.json***"
 cat package.json
+# Add monorepo node_modules/.bin to PATH so nebula CLI is available
+export PATH="$(cd ../.. && pwd)/node_modules/.bin:$PATH"
 if [ "$BUILD" = "true" ]; then
   echo "***BUILD***"
   pnpm run build
