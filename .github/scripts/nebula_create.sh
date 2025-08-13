@@ -36,6 +36,8 @@ if [ "$BUILD" = "true" ]; then
   echo "***BUILD***"
   pnpm run build
 fi
+echo "***Package.json***"
+cat package.json
 if [ "$TEST" = "true" ]; then
   echo "***TEST***"
   pnpm run test:e2e
