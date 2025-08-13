@@ -16,13 +16,13 @@ else
   ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm pnpm
 fi
 
-echo "PNPM"
-echo "Linking packages"
+echo "***Linking packages***"
 (cd apis/stardust && pnpm link --global)
 (cd commands/cli && pnpm link --global)
 (cd commands/build && pnpm link --global)
 (cd commands/serve && pnpm link --global)
 cd "$PROJECT_NAME"
+echo "***PNPM install***"
 pnpm i --filter "$PROJECT_NAME"
 pnpm link "@nebula.js/stardust"
 pnpm link "@nebula.js/cli"
@@ -31,8 +31,10 @@ pnpm link "@nebula.js/cli-serve"
 echo "Log node_modules/@nebula.js"
 ls -la node_modules/@nebula.js
 if [ "$BUILD" = "true" ]; then
+  echo "***BUILD***"
   pnpm run build
 fi
 if [ "$TEST" = "true" ]; then
+  echo "***TEST***"
   pnpm run test:e2e
 fi
