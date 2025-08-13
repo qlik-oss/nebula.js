@@ -28,8 +28,10 @@ pnpm link "@nebula.js/stardust"
 pnpm link "@nebula.js/cli"
 pnpm link "@nebula.js/cli-build"
 pnpm link "@nebula.js/cli-serve"
-echo "Log node_modules/@nebula.js"
+echo "***Log node_modules/@nebula.js***"
 ls -la node_modules/@nebula.js
+echo "***Package.json***"
+cat package.json
 if [ "$BUILD" = "true" ]; then
   echo "***BUILD***"
   pnpm run build

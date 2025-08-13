@@ -73,6 +73,7 @@ const create = async (argv) => {
     author: argv.author ? parseAuthor(argv.author) : await author(),
   };
 
+  console.log('PACKAGEMANAGER:', options.pkgm);
   const results = {};
 
   if (await fse.exists(destination)) {
