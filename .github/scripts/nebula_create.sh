@@ -37,7 +37,7 @@ pkg.packageManager = 'pnpm@10.12.1';
 fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
 EOF
 echo "***PNPM install***"
-pnpm install
+pnpm install --filter "$PROJECT_NAME"
 echo "***Log node_modules/@nebula.js***"
 ls -la node_modules/@nebula.js || true
 echo "***Package.json***"
