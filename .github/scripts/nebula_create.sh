@@ -19,13 +19,13 @@ fi
 # Install all dependencies from the monorepo root (ensure generated/* is in pnpm-workspace.yaml)
 echo "***PNPM install (from monorepo root)***"
 pnpm install --no-lockfile
+echo "***Root Package.json***"
+cat package.json
 cd "$PROJECT_NAME"
 echo "***Log node_modules/@nebula.js***"
 ls -la node_modules/@nebula.js || true
 echo "***Log node_modules/.bin***"
 ls -la node_modules/.bin/nebula || true
-echo "***Package.json***"
-cat package.json
 if [ "$BUILD" = "true" ]; then
   echo "***BUILD***"
   pnpm run build
