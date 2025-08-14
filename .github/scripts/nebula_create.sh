@@ -8,12 +8,13 @@ INSTALL="${4:-false}"
 BUILD="${5:-true}"
 TEST="${6:-true}"
 
+
 if [ "$MASHUP" = "true" ]; then
   echo "Create mashup project"
-  ./commands/cli/lib/index.js create mashup "$PROJECT_NAME" --install "$INSTALL" --pkgm pnpm
+  pnpm exec nebula create mashup "$PROJECT_NAME" --install "$INSTALL" --pkgm pnpm
 else
   echo "Create project based on Picasso template"
-  ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm pnpm
+  pnpm exec nebula create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm pnpm
 fi
 
 # Install all dependencies from the monorepo root (ensure generated/* is in pnpm-workspace.yaml)
