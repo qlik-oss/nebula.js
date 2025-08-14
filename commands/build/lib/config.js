@@ -67,7 +67,7 @@ const config = ({
   mode = 'production',
   format = 'umd',
   cwd = process.cwd(),
-  argv = { sourcemap: true, codeSplit: false },
+  argv = { sourcemap: true, codeSplit: false, inlineDynamic: false },
   core,
   behaviours: {
     getExternal = getExternalDefault,
@@ -134,7 +134,7 @@ const config = ({
     } else {
       outputConfig.dir = path.resolve(dir, outputFile.split('/')[0]);
     }
-    if (format === 'umd') {
+    if (format === 'umd' || argv.inlineDynamic) {
       outputConfig.inlineDynamicImports = true;
     }
     return outputConfig;

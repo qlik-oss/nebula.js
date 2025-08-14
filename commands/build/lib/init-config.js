@@ -60,6 +60,11 @@ const options = {
     type: 'boolean',
     default: false,
   },
+  inlineDynamic: {
+    description: 'Sets inlineDynamicImports to true for all builds to help with certain dependencies',
+    type: 'boolean',
+    default: false,
+  },
 };
 
 // nebula build --watch                - watch umd bundle
