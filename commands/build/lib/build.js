@@ -65,9 +65,9 @@ async function build(argv = {}) {
     return watch(buildConfig);
   }
   console.time('Total build time');
-  console.time('Generate UMD bundle');
+  console.time('Generate UMD bundle BLABLA');
   await umd(buildConfig);
-  console.timeEnd('Generate UMD bundle');
+  console.timeEnd('Generate UMD bundle BLABLA');
   console.time('Create ESM bundle');
   await esm(buildConfig);
   console.timeEnd('Create ESM bundle');

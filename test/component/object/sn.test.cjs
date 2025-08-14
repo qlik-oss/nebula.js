@@ -1,4 +1,5 @@
 const serve = require('@nebula.js/cli-serve');
+const path = require('path');
 const { test, expect } = require('@playwright/test');
 
 const snSelector = '.njs-viz';
@@ -9,10 +10,12 @@ test.describe('sn', () => {
 
   test.beforeAll(async () => {
     s = await serve({
-      open: false,
+      entry: path.resolve(__dirname),
       config: 'nebula.config.cjs',
+      open: false,
       build: false,
       fixturePath: 'test/component/object',
+      port: 0,
     });
   });
 

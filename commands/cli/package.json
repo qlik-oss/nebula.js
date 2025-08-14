@@ -33,5 +33,11 @@
     "@nebula.js/cli-create": "^5.17.0",
     "import-cwd": "3.0.0",
     "yargs": "17.7.2"
+  },
+  "devDependencies": {
+    "@nebula.js/cli-create": "workspace:*",
+    "@nebula.js/cli-build": "workspace:*",
+    "@nebula.js/cli-serve": "workspace:*",
+    "@nebula.js/cli-sense": "workspace:*"
   }
 }
