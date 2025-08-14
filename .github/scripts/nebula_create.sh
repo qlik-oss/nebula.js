@@ -18,8 +18,7 @@ fi
 
 # Install all dependencies from the monorepo root (ensure generated/* is in pnpm-workspace.yaml)
 echo "***PNPM install (from monorepo root)***"
-cd ../..
-pnpm install --frozen-lockfile
+pnpm install --no-lockfile
 cd "$PROJECT_NAME"
 echo "***Log node_modules/@nebula.js***"
 ls -la node_modules/@nebula.js || true
