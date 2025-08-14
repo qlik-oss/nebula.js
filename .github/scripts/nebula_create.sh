@@ -10,52 +10,30 @@ TEST="${6:-true}"
 
 if [ "$MASHUP" = "true" ]; then
   echo "Create mashup project"
-  ./commands/cli/lib/index.js create mashup "$PROJECT_NAME" --install "$INSTALL" --pkgm npm
+  ./commands/cli/lib/index.js create mashup "$PROJECT_NAME" --install "$INSTALL" --pkgm pnpm
 else
   echo "Create project based on Picasso template"
-  ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm npm
+  ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm pnpm
 fi
 
+# Install all dependencies from the monorepo root (ensure generated/* is in pnpm-workspace.yaml)
+echo "***PNPM install (from monorepo root)***"
+cd ../..
+pnpm install --frozen-lockfile
 cd "$PROJECT_NAME"
-echo "***Rewriting package.json for npm file: protocol local linking***"
-node <<'EOF'
-const fs = require('fs');
-const path = require('path');
-const pkg = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-const nebulaDeps = {
-  '@nebula.js/cli': '../../commands/cli',
-  '@nebula.js/cli-build': '../../commands/build',
-  '@nebula.js/cli-serve': '../../commands/serve',
-  '@nebula.js/cli-sense': '../../commands/sense',
-};
-if (!pkg.devDependencies) pkg.devDependencies = {};
-Object.entries(nebulaDeps).forEach(([dep, relPath]) => {
-  if (pkg.devDependencies[dep]) {
-    pkg.devDependencies[dep] = `file:${relPath}`;
-  }
-});
-// Add dependency for stardust
-pkg.devDependencies['@nebula.js/stardust'] = 'file:../../apis/stardust';
-
-fs.writeFileSync('package.json', JSON.stringify(pkg, null, 2));
-EOF
-echo "***Package.json***"
-cat package.json
-echo "***NPM install***"
-npm install
 echo "***Log node_modules/@nebula.js***"
 ls -la node_modules/@nebula.js || true
+echo "***Log node_modules/.bin***"
+ls -la node_modules/.bin/nebula || true
 echo "***Package.json***"
 cat package.json
-# Add monorepo node_modules/.bin to PATH so nebula CLI is available
-export PATH="$(cd ../.. && pwd)/node_modules/.bin:$PATH"
 if [ "$BUILD" = "true" ]; then
   echo "***BUILD***"
-  npm run build
+  pnpm run build
 fi
 echo "***Package.json***"
 cat package.json
 if [ "$TEST" = "true" ]; then
   echo "***TEST***"
-  npm run test:e2e
+  pnpm run test:e2e
 fi
