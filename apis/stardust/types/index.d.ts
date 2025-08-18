@@ -560,16 +560,6 @@ declare namespace stardust {
 
     }
 
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
 
     /**
@@ -611,6 +601,16 @@ declare namespace stardust {
         type: "dimension" | "measure";
     }
 
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
     interface LoadType {
         (type: {
             name: string;
@@ -649,43 +649,43 @@ declare namespace stardust {
 
     }
 
-    interface ActionToolbarElementextends HTMLElement {
+    interface ActionToolbarElement extends HTMLElement{
         className: "njs-action-toolbar-popover";
     }
 
-    interface ActionElementextends HTMLElement {
+    interface ActionElement extends HTMLElement{
         className: "njs-cell-action";
     }
 
-    interface CellElementextends HTMLElement {
+    interface CellElement extends HTMLElement{
         className: "njs-cell";
     }
 
-    interface CellBodyextends HTMLElement {
+    interface CellBody extends HTMLElement{
         className: "njs-cell-body";
     }
 
-    interface CellFooterextends HTMLElement {
+    interface CellFooter extends HTMLElement{
         className: "njs-cell-footer";
     }
 
-    interface CellTitleextends HTMLElement {
+    interface CellTitle extends HTMLElement{
         className: "njs-cell-title";
     }
 
-    interface CellSubTitleextends HTMLElement {
+    interface CellSubTitle extends HTMLElement{
         className: "njs-cell-sub-title";
     }
 
-    interface SheetElementextends HTMLElement {
+    interface SheetElement extends HTMLElement{
         className: "njs-sheet";
     }
 
-    interface VizElementAttributesextends NamedNodeMap {
+    interface VizElementAttributes extends NamedNodeMap{
         "data-render-count": string;
     }
 
-    interface VizElementextends HTMLElement {
+    interface VizElement extends HTMLElement{
         attributes: stardust.VizElementAttributes;
         className: "njs-viz";
     }
@@ -702,7 +702,7 @@ declare namespace stardust {
         component(): void;
     }
 
-    interface SetStateFn<S><S> {
+    interface SetStateFn<S> {
         (newState: S | (($: S)=>S)): void;
     }
 
@@ -716,7 +716,7 @@ declare namespace stardust {
     /**
      * Reference object returned from useRef
      */
-    interface Ref<R><R> {
+    interface Ref<R> {
         current: R;
     }
 
@@ -727,7 +727,7 @@ declare namespace stardust {
         height: number;
     }
 
-    interface ActionDefinition<A><A> {
+    interface ActionDefinition<A> {
         action: A;
         hidden?: boolean;
         disabled?: boolean;
@@ -829,7 +829,7 @@ declare namespace stardust {
 
     type fieldTargetRemovedCallback<T> = (field: T, properties: qix.GenericObjectProperties, index: number)=>void;
 
-    interface FieldTarget<T><T> {
+    interface FieldTarget<T> {
         min?: (()=>void) | number;
         max?: (()=>void) | number;
         added?: stardust.fieldTargetAddedCallback<T>;
