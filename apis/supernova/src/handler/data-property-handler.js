@@ -256,7 +256,7 @@ class DataPropertyHandler {
     measure.qDef = measure.qDef ?? {};
     measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
 
-    if (isEnabled('MASTER_measureURE_FORMAT')) {
+    if (isEnabled('MASTER_MEASURE_FORMAT')) {
       useMasterNumberFormat(measure.qDef);
     }
 
