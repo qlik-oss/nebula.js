@@ -1,7 +1,7 @@
 import findFieldInExpandedList from './find-field-in-expandedList';
 import { setAutoSort } from './field-utils';
 
-function getAutoSortFieldDimension(self, dimension) {
+function getAutoSortDimension(self, dimension) {
   return self.app.getFieldList().then((fieldList) => {
     const field = dimension?.qDef?.qFieldDefs && findFieldInExpandedList(dimension.qDef.qFieldDefs[0], fieldList);
     if (field) {
@@ -11,4 +11,4 @@ function getAutoSortFieldDimension(self, dimension) {
   });
 }
 
-export default getAutoSortFieldDimension;
+export default getAutoSortDimension;

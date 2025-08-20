@@ -1,4 +1,4 @@
-import getAutoSortFieldDimension from '../get-sorted-field';
+import getAutoSortDimension from '../get-sorted-field';
 import findFieldInExpandedList from '../find-field-in-expandedList';
 import { setAutoSort } from '../field-utils';
 
@@ -7,7 +7,7 @@ jest.mock('../field-utils', () => ({
   setAutoSort: jest.fn(),
 }));
 
-describe('getAutoSortFieldDimension', () => {
+describe('getAutoSortDimension', () => {
   let self;
   let dimension;
 
@@ -32,7 +32,7 @@ describe('getAutoSortFieldDimension', () => {
     const fieldList = [{ qName: 'field1' }];
     self.app.getFieldList.mockResolvedValue(fieldList);
 
-    const result = await getAutoSortFieldDimension(self, dimension);
+    const result = await getAutoSortDimension(self, dimension);
 
     expect(self.app.getFieldList).toHaveBeenCalled();
     expect(findFieldInExpandedList).toHaveBeenCalledWith('field1', fieldList);
@@ -45,7 +45,7 @@ describe('getAutoSortFieldDimension', () => {
     self.app.getFieldList.mockResolvedValue(fieldList);
     findFieldInExpandedList.mockReturnValue(field);
 
-    await getAutoSortFieldDimension(self, dimension);
+    await getAutoSortDimension(self, dimension);
 
     expect(setAutoSort).toHaveBeenCalledWith([field], dimension, self);
   });
@@ -54,7 +54,7 @@ describe('getAutoSortFieldDimension', () => {
     self.app.getFieldList.mockResolvedValue([]);
     findFieldInExpandedList.mockReturnValue(null);
 
-    await getAutoSortFieldDimension(self, dimension);
+    await getAutoSortDimension(self, dimension);
 
     expect(setAutoSort).not.toHaveBeenCalled();
   });
@@ -62,7 +62,7 @@ describe('getAutoSortFieldDimension', () => {
   test('should handle empty field list', async () => {
     self.app.getFieldList.mockResolvedValue([]);
 
-    const result = await getAutoSortFieldDimension(self, dimension);
+    const result = await getAutoSortDimension(self, dimension);
 
     expect(result).toBe(dimension);
     expect(setAutoSort).not.toHaveBeenCalled();
@@ -72,7 +72,7 @@ describe('getAutoSortFieldDimension', () => {
     dimension.qDef.qFieldDefs = undefined;
     self.app.getFieldList.mockResolvedValue([]);
 
-    const result = await getAutoSortFieldDimension(self, dimension);
+    const result = await getAutoSortDimension(self, dimension);
 
     expect(result).toBe(dimension);
     expect(setAutoSort).not.toHaveBeenCalled();

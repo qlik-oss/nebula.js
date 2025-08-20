@@ -1,14 +1,14 @@
 /* eslint no-underscore-dangle: 0 */
 import 'regenerator-runtime/runtime'; // Polyfill for using async/await
 import embed from '@nebula.js/nucleus';
-import { generator, hook } from '@nebula.js/supernova';
+import { generator, hook, HyperCubeHandler } from '@nebula.js/supernova';
 import theme from '@nebula.js/theme';
 import locale from '@nebula.js/locale';
 import conversion from '@nebula.js/conversion';
 import EnigmaMocker from '@nebula.js/enigma-mocker';
 
 // mashup api
-export { embed, conversion, EnigmaMocker };
+export { embed, conversion, EnigmaMocker, HyperCubeHandler };
 
 // component api
 export {

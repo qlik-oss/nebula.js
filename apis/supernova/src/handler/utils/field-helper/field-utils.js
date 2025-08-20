@@ -1,5 +1,4 @@
-// eslint-disable-next-line import/no-relative-packages
-import uid from '../../../../../nucleus/src/object/uid';
+import uid from '@nebula.js/nucleus/src/object/uid';
 import { AUTOCALENDAR_NAME } from '../constants';
 
 export const getField = (expression) => {
