@@ -1,8 +1,7 @@
-// eslint-disable-next-line import/no-relative-packages
-import uid from '../../../../../../nucleus/src/object/uid';
+import uid from '@nebula.js/nucleus/src/object/uid';
 import * as hcUtils from '../hypercube-utils';
 
-jest.mock('../../../../../../nucleus/src/object/uid', () => jest.fn());
+jest.mock('@nebula.js/nucleus/src/object/uid', () => jest.fn());
 
 describe('replaceDimensionToColumnOrder', () => {
   let self;

@@ -1505,6 +1505,157 @@
         }
       }
     },
+    "Field": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "qix.NxDimension"
+          },
+          {
+            "type": "qix.NxMeasure"
+          },
+          {
+            "type": "#/definitions/LibraryField"
+          }
+        ]
+      }
+    },
+    "CreateConfig": {
+      "description": "Rendering configuration for creating and rendering a new object",
+      "kind": "interface",
+      "entries": {
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "properties": {
+          "optional": true,
+          "type": "qix.GenericObjectProperties"
+        }
+      }
+    },
+    "RenderConfig": {
+      "description": "Configuration for rendering a visualisation, either creating or fetching an existing object.",
+      "kind": "interface",
+      "entries": {
+        "element": {
+          "description": "Target html element to render in to",
+          "type": "HTMLElement"
+        },
+        "options": {
+          "description": "Options passed into the visualisation",
+          "optional": true,
+          "type": "object"
+        },
+        "onRender": {
+          "description": "Callback function called after rendering successfully",
+          "optional": true,
+          "kind": "function",
+          "params": []
+        },
+        "onError": {
+          "description": "Callback function called if an error occurs",
+          "optional": true,
+          "kind": "function",
+          "params": [
+            {
+              "type": "#/definitions/RenderError"
+            }
+          ]
+        },
+        "plugins": {
+          "description": "plugins passed into the visualisation",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Plugin"
+          }
+        },
+        "id": {
+          "description": "For existing objects: Engine identifier of object to render",
+          "optional": true,
+          "type": "string"
+        },
+        "type": {
+          "description": "For creating objects: Type of visualisation to render",
+          "optional": true,
+          "type": "string"
+        },
+        "version": {
+          "description": "For creating objects: Version of visualization to render",
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "description": "For creating objects: Data fields to use",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "extendProperties": {
+          "description": "For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "properties": {
+          "description": "For creating objects: Explicit properties to set",
+          "optional": true,
+          "type": "qix.GenericObjectProperties"
+        }
+      },
+      "examples": [
+        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst createConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(createConfig);"
+      ]
+    },
+    "LibraryField": {
+      "kind": "interface",
+      "entries": {
+        "qLibraryId": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'dimension'"
+            },
+            {
+              "kind": "literal",
+              "value": "'measure'"
+            }
+          ]
+        }
+      }
+    },
     "AppSelections": {
       "kind": "class",
       "constructor": {
@@ -1739,157 +1890,6 @@
               }
             ]
           }
-        }
-      }
-    },
-    "Field": {
-      "kind": "alias",
-      "items": {
-        "kind": "union",
-        "items": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "qix.NxDimension"
-          },
-          {
-            "type": "qix.NxMeasure"
-          },
-          {
-            "type": "#/definitions/LibraryField"
-          }
-        ]
-      }
-    },
-    "CreateConfig": {
-      "description": "Rendering configuration for creating and rendering a new object",
-      "kind": "interface",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "optional": true,
-          "type": "string"
-        },
-        "fields": {
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "properties": {
-          "optional": true,
-          "type": "qix.GenericObjectProperties"
-        }
-      }
-    },
-    "RenderConfig": {
-      "description": "Configuration for rendering a visualisation, either creating or fetching an existing object.",
-      "kind": "interface",
-      "entries": {
-        "element": {
-          "description": "Target html element to render in to",
-          "type": "HTMLElement"
-        },
-        "options": {
-          "description": "Options passed into the visualisation",
-          "optional": true,
-          "type": "object"
-        },
-        "onRender": {
-          "description": "Callback function called after rendering successfully",
-          "optional": true,
-          "kind": "function",
-          "params": []
-        },
-        "onError": {
-          "description": "Callback function called if an error occurs",
-          "optional": true,
-          "kind": "function",
-          "params": [
-            {
-              "type": "#/definitions/RenderError"
-            }
-          ]
-        },
-        "plugins": {
-          "description": "plugins passed into the visualisation",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/Plugin"
-          }
-        },
-        "id": {
-          "description": "For existing objects: Engine identifier of object to render",
-          "optional": true,
-          "type": "string"
-        },
-        "type": {
-          "description": "For creating objects: Type of visualisation to render",
-          "optional": true,
-          "type": "string"
-        },
-        "version": {
-          "description": "For creating objects: Version of visualization to render",
-          "optional": true,
-          "type": "string"
-        },
-        "fields": {
-          "description": "For creating objects: Data fields to use",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "extendProperties": {
-          "description": "For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
-          "optional": true,
-          "defaultValue": false,
-          "type": "boolean"
-        },
-        "properties": {
-          "description": "For creating objects: Explicit properties to set",
-          "optional": true,
-          "type": "qix.GenericObjectProperties"
-        }
-      },
-      "examples": [
-        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst createConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(createConfig);"
-      ]
-    },
-    "LibraryField": {
-      "kind": "interface",
-      "entries": {
-        "qLibraryId": {
-          "type": "string"
-        },
-        "type": {
-          "kind": "union",
-          "items": [
-            {
-              "kind": "literal",
-              "value": "'dimension'"
-            },
-            {
-              "kind": "literal",
-              "value": "'measure'"
-            }
-          ]
         }
       }
     },
@@ -2740,6 +2740,621 @@
               "type": "T"
             }
           ]
+        }
+      }
+    },
+    "DataPropertyHandler": {
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "description": "Creates an instance of DataPropertyHandler.",
+        "params": [
+          {
+            "name": "opts",
+            "description": "Options for the handler.",
+            "type": "object"
+          }
+        ]
+      },
+      "entries": {
+        "createLibraryDimension": {
+          "description": "Initializes a dimension and applying default properties and sort criteria.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "id",
+              "description": "Dimension id",
+              "type": "string"
+            },
+            {
+              "name": "defaults",
+              "description": "Default properties for the dimension.",
+              "optional": true,
+              "kind": "union",
+              "items": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            }
+          ],
+          "returns": {
+            "description": "The created dimension object.",
+            "type": "NxDimension"
+          }
+        },
+        "createFieldDimension": {
+          "description": "Initializes a dimension with field definitions, labels, and default properties.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "field",
+              "description": "The field definition for the dimension.",
+              "type": "string"
+            },
+            {
+              "name": "label",
+              "description": "The field label for the dimension.",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            },
+            {
+              "name": "defaults",
+              "description": "Default properties for the dimension.",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            }
+          ],
+          "returns": {
+            "description": "The created dimension object.",
+            "type": "NxDimension"
+          }
+        },
+        "maxDimensions": {
+          "description": "Checks if the max property is a function and calls it with the current number of measures, or returns a default value.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "decrement",
+              "description": "The number to decrement from the maximum dimensions.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "The maximum number of dimensions allowed.",
+            "type": "number"
+          }
+        },
+        "maxMeasures": {
+          "description": "Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "decrement",
+              "description": "The number to decrement from the maximum measures.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "The maximum number of measures allowed.",
+            "type": "number"
+          }
+        }
+      }
+    },
+    "HyperCubeHandler": {
+      "extends": [
+        {
+          "type": "#/definitions/DataPropertyHandler"
+        }
+      ],
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "description": "Creates an instance of HyperCubeHandler.",
+        "params": [
+          {
+            "name": "opts",
+            "description": "Options for the handler.",
+            "type": "object"
+          }
+        ]
+      },
+      "entries": {
+        "setProperties": {
+          "kind": "function",
+          "params": [
+            {
+              "name": "properties",
+              "type": "object"
+            }
+          ],
+          "returns": {
+            "description": "early return if properties is falsy",
+            "type": "any"
+          }
+        },
+        "getDimensions": {
+          "description": "Returns the dimensions of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "dimensions",
+            "kind": "array",
+            "items": {
+              "type": "NxDimension"
+            }
+          },
+          "examples": [
+            "const dimensions = hyperCubeHandler.getDimensions();"
+          ]
+        },
+        "getAlternativeDimensions": {
+          "description": "Returns the alternative dimensions of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "alternative dimensions",
+            "kind": "array",
+            "items": {
+              "type": "NxDimension"
+            }
+          },
+          "examples": [
+            "const alternativeDimensions = hyperCubeHandler.getAlternativeDimensions();"
+          ]
+        },
+        "getDimensionLayout": {
+          "description": "Returns the dimension layout of the hypercube for a given cId.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "cId",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "dimension layout",
+            "type": "NxDimensionInfo"
+          },
+          "examples": [
+            "const dimensionLayout = hyperCubeHandler.getDimensionLayout(cId);"
+          ]
+        },
+        "getDimensionLayouts": {
+          "description": "Returns the dimension layouts of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "dimension layouts",
+            "kind": "array",
+            "items": {
+              "type": "NxDimensionInfo"
+            }
+          },
+          "examples": [
+            "const dimensionLayouts = hyperCubeHandler.getDimensionLayouts();"
+          ]
+        },
+        "addDimension": {
+          "description": "Adds a dimension to the hypercube and updates the orders of the dimensions.\rIf the dimension is an alternative, it will be added to the alternative dimensions.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "dimension",
+              "type": "object"
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            },
+            {
+              "name": "idx",
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "dimension",
+            "type": "NxDimension"
+          },
+          "examples": [
+            "const dimension = hyperCubeHandler.addDimension(dimension, alternative, idx);"
+          ]
+        },
+        "addDimensions": {
+          "description": "Adds multiple dimensions to the hypercube.\rIf the dimensions are alternatives, they will be added to the alternative dimensions.\rIf the total number of dimensions exceeds the limit, it will stop adding dimensions.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "dimensions",
+              "type": "NxDimension"
+            },
+            {
+              "name": "alternative",
+              "defaultValue": false,
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "description": "added dimensions",
+            "kind": "array",
+            "items": {
+              "type": "NxDimension"
+            }
+          },
+          "async": true,
+          "examples": [
+            "const addedDimensions = await hyperCubeHandler.addDimensions(dimensions, alternative);"
+          ]
+        },
+        "removeDimension": {
+          "description": "Removes a dimension from the hypercube by index.\rIf the dimension is an alternative, it will be removed from the alternative dimensions.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "idx",
+              "type": "number"
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            }
+          ],
+          "examples": [
+            "hyperCubeHandler.removeDimension(idx, alternative);"
+          ]
+        },
+        "removeDimensions": {
+          "description": "Removes multiple dimensions from the hypercube by indexes.\rIf the dimensions are alternatives, they will be removed from the alternative dimensions.\rIf the indexes are empty, it will return an empty array.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "indexes",
+              "kind": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "description": "deleted dimensions",
+            "kind": "array",
+            "items": {
+              "type": "NxDimension"
+            }
+          },
+          "async": true,
+          "examples": [
+            "const deletedDimensions = await hyperCubeHandler.removeDimensions(indexes, alternative);"
+          ]
+        },
+        "autoSortDimension": {
+          "description": "Automatically sorts the dimension based on its properties.\rIf the dimension has a qLibraryId, it will use the library dimension auto-sort.\rOtherwise, it will use the field dimension auto-sort.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "dimension",
+              "type": "object"
+            }
+          ],
+          "returns": {
+            "description": "dimension with auto-sort properties",
+            "type": "object"
+          },
+          "examples": [
+            "const sortedDimension = hyperCubeHandler.autoSortDimension(dimension);"
+          ]
+        },
+        "getMeasures": {
+          "description": "Returns the measures of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "measures",
+            "kind": "array",
+            "items": {
+              "type": "NxMeasure"
+            }
+          },
+          "examples": [
+            "const measures = hyperCubeHandler.getMeasures();"
+          ]
+        },
+        "getAlternativeMeasures": {
+          "description": "Returns the alternative measures of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "alternative measures",
+            "kind": "array",
+            "items": {
+              "type": "NxMeasure"
+            }
+          },
+          "examples": [
+            "const alternativeMeasures = hyperCubeHandler.getAlternativeMeasures();"
+          ]
+        },
+        "getMeasureLayouts": {
+          "description": "Returns the measure layouts of the hypercube.",
+          "kind": "function",
+          "params": [],
+          "returns": {
+            "description": "measure layouts",
+            "kind": "array",
+            "items": {
+              "type": "NxMeasureInfo"
+            }
+          },
+          "examples": [
+            "const measureLayouts = hyperCubeHandler.getMeasureLayouts();"
+          ]
+        },
+        "getMeasureLayout": {
+          "description": "Returns the measure layout of the hypercube for a given cId.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "cId",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "measure layout",
+            "type": "object"
+          },
+          "examples": [
+            "const measureLayout = hyperCubeHandler.getMeasureLayout(cId);"
+          ]
+        },
+        "addMeasure": {
+          "description": "Adds a measure to the hypercube.\rIf the measure is an alternative, it will be added to the alternative measures.\rIf the total number of measures exceeds the limit, it will stop adding measures.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "measure",
+              "type": "object"
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            },
+            {
+              "name": "idx",
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "measure",
+            "type": "object"
+          },
+          "examples": [
+            "const measure = hyperCubeHandler.addMeasure(measure, alternative, idx);"
+          ]
+        },
+        "autoSortMeasure": {
+          "description": "Automatically sorts the measure based on its properties.\rIt sets the qSortByLoadOrder and qSortByNumeric properties.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "measure",
+              "type": "NxMeasure"
+            }
+          ],
+          "returns": {
+            "description": "measure with auto-sort properties",
+            "type": "NxMeasure"
+          },
+          "examples": [
+            "const sortedMeasure = hyperCubeHandler.autoSortMeasure(measure);"
+          ]
+        },
+        "addMeasures": {
+          "description": "Adds multiple measures to the hypercube.\rIf the measures are alternatives, they will be added to the alternative measures.\rIf the total number of measures exceeds the limit, it will stop adding measures.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "measures",
+              "kind": "array",
+              "items": {
+                "type": "NxMeasure"
+              }
+            },
+            {
+              "name": "alternative",
+              "defaultValue": false,
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "description": "added measures",
+            "kind": "array",
+            "items": {
+              "type": "NxMeasure"
+            }
+          },
+          "examples": [
+            "const addedMeasures = await hyperCubeHandler.addMeasures(measures, alternative);"
+          ]
+        },
+        "removeMeasure": {
+          "description": "Removes a measure from the hypercube by index.\rIf the measure is an alternative, it will be removed from the alternative measures.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "idx",
+              "type": "number"
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            }
+          ],
+          "examples": [
+            "hyperCubeHandler.removeMeasure(idx, alternative);"
+          ]
+        },
+        "removeMeasures": {
+          "description": "Removes multiple measures from the hypercube by indexes.\rIf the measures are alternatives, they will be removed from the alternative measures.\rIf the indexes are empty, it will return an empty array.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "indexes",
+              "kind": "array",
+              "items": {
+                "type": "number"
+              }
+            },
+            {
+              "name": "alternative",
+              "type": "boolean"
+            }
+          ],
+          "returns": {
+            "description": "deleted measures",
+            "type": "Promise",
+            "generics": [
+              {
+                "kind": "array",
+                "items": {
+                  "type": "number"
+                }
+              }
+            ]
+          },
+          "async": true,
+          "examples": [
+            "const deletedMeasures = await hyperCubeHandler.removeMeasures(indexes, alternative);"
+          ]
+        },
+        "createLibraryDimension": {
+          "description": "Initializes a dimension and applying default properties and sort criteria.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "id",
+              "description": "Dimension id",
+              "type": "string"
+            },
+            {
+              "name": "defaults",
+              "description": "Default properties for the dimension.",
+              "optional": true,
+              "kind": "union",
+              "items": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            }
+          ],
+          "returns": {
+            "description": "The created dimension object.",
+            "type": "NxDimension"
+          }
+        },
+        "createFieldDimension": {
+          "description": "Initializes a dimension with field definitions, labels, and default properties.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "field",
+              "description": "The field definition for the dimension.",
+              "type": "string"
+            },
+            {
+              "name": "label",
+              "description": "The field label for the dimension.",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            },
+            {
+              "name": "defaults",
+              "description": "Default properties for the dimension.",
+              "kind": "union",
+              "items": [
+                {
+                  "type": "object"
+                },
+                {
+                  "type": "undefined"
+                }
+              ]
+            }
+          ],
+          "returns": {
+            "description": "The created dimension object.",
+            "type": "NxDimension"
+          }
+        },
+        "maxDimensions": {
+          "description": "Checks if the max property is a function and calls it with the current number of measures, or returns a default value.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "decrement",
+              "description": "The number to decrement from the maximum dimensions.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "The maximum number of dimensions allowed.",
+            "type": "number"
+          }
+        },
+        "maxMeasures": {
+          "description": "Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "decrement",
+              "description": "The number to decrement from the maximum measures.",
+              "optional": true,
+              "defaultValue": 0,
+              "type": "number"
+            }
+          ],
+          "returns": {
+            "description": "The maximum number of measures allowed.",
+            "type": "number"
+          }
         }
       }
     },

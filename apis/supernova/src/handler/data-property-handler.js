@@ -1,11 +1,19 @@
 import extend from 'extend';
-// eslint-disable-next-line import/no-relative-packages
-import isEnabled from '../../../nucleus/src/flags/flags';
-import { findFieldById, useMasterNumberFormat } from './utils/field-helper/field-utils';
+import isEnabled from '@nebula.js/nucleus/src/flags/flags';
+import { findFieldById, initializeField, useMasterNumberFormat } from './utils/field-helper/field-utils';
 import { INITIAL_SORT_CRITERIAS } from './utils/constants';
 import { notSupportedError } from './utils/hypercube-helper/hypercube-utils';
 
+/**
+ * @class DataPropertyHandler
+ * @description A class to handle data properties for dimensions and measures in a data model.
+ * @export
+ */
 class DataPropertyHandler {
+  /**
+   * Creates an instance of DataPropertyHandler.
+   * @param {object} opts - Options for the handler.
+   */
   constructor(opts) {
     const options = opts || {};
 
@@ -82,11 +90,17 @@ class DataPropertyHandler {
     throw notSupportedError;
   }
 
+  /**
+   * Creates a type of library dimension with a field definition.
+   * @param {string} id - Dimension id
+   * @param {object | undefined} [defaults] - Default properties for the dimension.
+   * @returns {NxDimension} The created dimension object.
+   * @description Initializes a dimension and applying default properties and sort criteria.
+   */
   createLibraryDimension(id, defaults) {
-    const dimension = extend(true, {}, this.dimensionProperties || {}, defaults || {});
+    const dimension = merge({}, this.dimensionProperties || {}, defaults || {});
 
-    dimension.qDef = dimension.qDef ?? {};
-    dimension.qOtherTotalSpec = dimension.qOtherTotalSpec ?? {};
+    dimension = initializeField(dimension);
 
     dimension.qLibraryId = id;
     dimension.qDef.autoSort = true;
@@ -98,11 +112,18 @@ class DataPropertyHandler {
     return dimension;
   }
 
+  /**
+   * Creates a type of field dimension with a field definition.
+   * @param {string} field - The field definition for the dimension.
+   * @param {string | undefined} label - The field label for the dimension.
+   * @param {object | undefined} defaults - Default properties for the dimension.
+   * @returns {NxDimension} The created dimension object.
+   * @description Initializes a dimension with field definitions, labels, and default properties.
+   */
   createFieldDimension(field, label, defaults) {
-    const dimension = extend(true, {}, this.dimensionProperties || {}, defaults || {});
+    const dimension = merge({}, this.dimensionProperties || {}, defaults || {});
 
-    dimension.qDef = dimension.qDef ?? {};
-    dimension.qOtherTotalSpec = dimension.qOtherTotalSpec ?? {};
+    dimension = initializeField(dimension);
 
     if (!field) {
       dimension.qDef.qFieldDefs = [];
@@ -164,10 +185,15 @@ class DataPropertyHandler {
     if (typeof this.dimensionDefinition.min === 'function') {
       return this.dimensionDefinition.min.call(null, this.properties, this);
     }
-
     return this.dimensionDefinition.min || 0;
   }
 
+  /**
+   * Gets the maximum number of dimensions allowed.
+   * @param {number} [decrement=0] - The number to decrement from the maximum dimensions.
+   * @returns {number} The maximum number of dimensions allowed.
+   * @description Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
+   */
   maxDimensions(decrement = 0) {
     const measureLength = this.getMeasures().length - decrement;
 
@@ -186,13 +212,6 @@ class DataPropertyHandler {
   // ---------------------------------------
   // ----------------MEASURE----------------
   // ---------------------------------------
-
-  getMeasure(id) {
-    const measures = this.getMeasures();
-    const alternativeMeasures = this.getAlternativeMeasures();
-
-    return findFieldById(measures, id) ?? findFieldById(alternativeMeasures, id);
-  }
 
   static getMeasures() {
     return [];
@@ -220,6 +239,13 @@ class DataPropertyHandler {
 
   static autoSortMeasure() {
     throw notSupportedError;
+  }
+
+  getMeasure(id) {
+    const measures = this.getMeasures();
+    const alternativeMeasures = this.getAlternativeMeasures();
+
+    return findFieldById(measures, id) ?? findFieldById(alternativeMeasures, id);
   }
 
   static replaceMeasure() {
@@ -306,6 +332,12 @@ class DataPropertyHandler {
     return this.measureDefinition.min || 0;
   }
 
+  /**
+   * Gets the maximum number of measures allowed.
+   * @param {number} [decrement=0] - The number to decrement from the maximum measures.
+   * @returns {number} The maximum number of measures allowed.
+   * @description Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
+   */
   maxMeasures(decrement = 0) {
     if (typeof this.measureDefinition.max === 'function') {
       const dimLength = this.getDimensions().length - decrement;
@@ -317,7 +349,6 @@ class DataPropertyHandler {
 
   canAddMeasure() {
     return this.getMeasures().length < this.maxMeasures();
-    //			return this.getMeasures().length < 10000;
   }
 
   // ---------------------------------------
