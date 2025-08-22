@@ -611,6 +611,13 @@ declare namespace stardust {
         fn: ()=>void;
     }
 
+    class RenderError extends Error {
+        constructor(message: string, originalError: Error);
+
+        originalError: Error;
+
+    }
+
     interface LoadType {
         (type: {
             name: string;
@@ -623,13 +630,6 @@ declare namespace stardust {
         version?: string;
         load: stardust.LoadType;
         meta?: object;
-    }
-
-    class RenderError extends Error {
-        constructor(message: string, originalError: Error);
-
-        originalError: Error;
-
     }
 
     class Navigation implements stardust.Emitter {
@@ -898,7 +898,8 @@ declare namespace stardust {
         getDimensionLayouts(): NxDimensionInfo[];
 
         /**
-         * Adds a dimension to the hypercube and updates the orders of the dimensions.If the dimension is an alternative, it will be added to the alternative dimensions.
+         * Adds a dimension to the hypercube and updates the orders of the dimensions.
+         * If the dimension is an alternative, it will be added to the alternative dimensions.
          * @param dimension
          * @param alternative
          * @param idx
@@ -906,28 +907,35 @@ declare namespace stardust {
         addDimension(dimension: object, alternative: boolean, idx: number): NxDimension;
 
         /**
-         * Adds multiple dimensions to the hypercube.If the dimensions are alternatives, they will be added to the alternative dimensions.If the total number of dimensions exceeds the limit, it will stop adding dimensions.
+         * Adds multiple dimensions to the hypercube.
+         * If the dimensions are alternatives, they will be added to the alternative dimensions.
+         * If the total number of dimensions exceeds the limit, it will stop adding dimensions.
          * @param dimensions
          * @param alternative
          */
         addDimensions(dimensions: NxDimension, alternative: boolean): NxDimension[];
 
         /**
-         * Removes a dimension from the hypercube by index.If the dimension is an alternative, it will be removed from the alternative dimensions.
+         * Removes a dimension from the hypercube by index.
+         * If the dimension is an alternative, it will be removed from the alternative dimensions.
          * @param idx
          * @param alternative
          */
         removeDimension(idx: number, alternative: boolean): void;
 
         /**
-         * Removes multiple dimensions from the hypercube by indexes.If the dimensions are alternatives, they will be removed from the alternative dimensions.If the indexes are empty, it will return an empty array.
+         * Removes multiple dimensions from the hypercube by indexes.
+         * If the dimensions are alternatives, they will be removed from the alternative dimensions.
+         * If the indexes are empty, it will return an empty array.
          * @param indexes
          * @param alternative
          */
         removeDimensions(indexes: number[], alternative: boolean): NxDimension[];
 
         /**
-         * Automatically sorts the dimension based on its properties.If the dimension has a qLibraryId, it will use the library dimension auto-sort.Otherwise, it will use the field dimension auto-sort.
+         * Automatically sorts the dimension based on its properties.
+         * If the dimension has a qLibraryId, it will use the library dimension auto-sort.
+         * Otherwise, it will use the field dimension auto-sort.
          * @param dimension
          */
         autoSortDimension(dimension: object): object;
@@ -954,7 +962,9 @@ declare namespace stardust {
         getMeasureLayout(cId: string): object;
 
         /**
-         * Adds a measure to the hypercube.If the measure is an alternative, it will be added to the alternative measures.If the total number of measures exceeds the limit, it will stop adding measures.
+         * Adds a measure to the hypercube.
+         * If the measure is an alternative, it will be added to the alternative measures.
+         * If the total number of measures exceeds the limit, it will stop adding measures.
          * @param measure
          * @param alternative
          * @param idx
@@ -962,27 +972,33 @@ declare namespace stardust {
         addMeasure(measure: object, alternative: boolean, idx: number): object;
 
         /**
-         * Automatically sorts the measure based on its properties.It sets the qSortByLoadOrder and qSortByNumeric properties.
+         * Automatically sorts the measure based on its properties.
+         * It sets the qSortByLoadOrder and qSortByNumeric properties.
          * @param measure
          */
         autoSortMeasure(measure: NxMeasure): NxMeasure;
 
         /**
-         * Adds multiple measures to the hypercube.If the measures are alternatives, they will be added to the alternative measures.If the total number of measures exceeds the limit, it will stop adding measures.
+         * Adds multiple measures to the hypercube.
+         * If the measures are alternatives, they will be added to the alternative measures.
+         * If the total number of measures exceeds the limit, it will stop adding measures.
          * @param measures
          * @param alternative
          */
         addMeasures(measures: NxMeasure[], alternative: boolean): NxMeasure[];
 
         /**
-         * Removes a measure from the hypercube by index.If the measure is an alternative, it will be removed from the alternative measures.
+         * Removes a measure from the hypercube by index.
+         * If the measure is an alternative, it will be removed from the alternative measures.
          * @param idx
          * @param alternative
          */
         removeMeasure(idx: number, alternative: boolean): void;
 
         /**
-         * Removes multiple measures from the hypercube by indexes.If the measures are alternatives, they will be removed from the alternative measures.If the indexes are empty, it will return an empty array.
+         * Removes multiple measures from the hypercube by indexes.
+         * If the measures are alternatives, they will be removed from the alternative measures.
+         * If the indexes are empty, it will return an empty array.
          * @param indexes
          * @param alternative
          */

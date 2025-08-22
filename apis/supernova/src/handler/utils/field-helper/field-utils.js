@@ -1,4 +1,4 @@
-import uid from '@nebula.js/nucleus/src/object/uid';
+import uid from '../../../src/object/uid';
 import { AUTOCALENDAR_NAME } from '../constants';
 
 export const getField = (expression) => {
@@ -59,16 +59,6 @@ export const setAutoSort = (fields, dimension, self) => {
       dim.qDef.qSortCriterias[index] = sortCriterias;
     }
   });
-};
-
-export const useMasterNumberFormat = (formatting) => {
-  const format = formatting;
-  format.quarantine = {
-    qNumFormat: format.qNumFormat || {},
-    isCustomFormatted: format.isCustomFormatted || false,
-  };
-  format.qNumFormat = null;
-  format.isCustomFormatted = undefined;
 };
 
 export const isDateField = (field) =>

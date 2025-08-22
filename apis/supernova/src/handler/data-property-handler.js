@@ -1,6 +1,5 @@
 import extend from 'extend';
-import isEnabled from '@nebula.js/nucleus/src/flags/flags';
-import { findFieldById, initializeField, useMasterNumberFormat } from './utils/field-helper/field-utils';
+import { findFieldById, initializeField } from './utils/field-helper/field-utils';
 import { INITIAL_SORT_CRITERIAS } from './utils/constants';
 import { notSupportedError } from './utils/hypercube-helper/hypercube-utils';
 
@@ -98,7 +97,7 @@ class DataPropertyHandler {
    * @description Initializes a dimension and applying default properties and sort criteria.
    */
   createLibraryDimension(id, defaults) {
-    const dimension = merge({}, this.dimensionProperties || {}, defaults || {});
+    let dimension = extend(true, {}, this.dimensionProperties || {}, defaults || {});
 
     dimension = initializeField(dimension);
 
@@ -121,7 +120,7 @@ class DataPropertyHandler {
    * @description Initializes a dimension with field definitions, labels, and default properties.
    */
   createFieldDimension(field, label, defaults) {
-    const dimension = merge({}, this.dimensionProperties || {}, defaults || {});
+    let dimension = extend({}, this.dimensionProperties || {}, defaults || {});
 
     dimension = initializeField(dimension);
 
@@ -198,7 +197,7 @@ class DataPropertyHandler {
     const measureLength = this.getMeasures().length - decrement;
 
     if (typeof this.dimensionDefinition.max === 'function') {
-      const dimParams = isEnabled('PS_21371_ANALYSIS_TYPES') ? [measureLength, this.properties] : [measureLength];
+      const dimParams = [measureLength];
       return this.dimensionDefinition.max?.apply(null, dimParams);
     }
 
@@ -282,10 +281,6 @@ class DataPropertyHandler {
     measure.qDef = measure.qDef ?? {};
     measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
 
-    if (isEnabled('MASTER_MEASURE_FORMAT')) {
-      useMasterNumberFormat(measure.qDef);
-    }
-
     measure.qLibraryId = id;
     measure.qDef.autoSort = true;
 
@@ -341,7 +336,7 @@ class DataPropertyHandler {
   maxMeasures(decrement = 0) {
     if (typeof this.measureDefinition.max === 'function') {
       const dimLength = this.getDimensions().length - decrement;
-      const measureParams = isEnabled('PS_21371_ANALYSIS_TYPES') ? [dimLength, this.properties] : [dimLength];
+      const measureParams = [dimLength];
       return this.measureDefinition.max.apply(null, measureParams);
     }
     return Number.isNaN(+this.measureDefinition.max) ? 10000 : this.measureDefinition.max;
