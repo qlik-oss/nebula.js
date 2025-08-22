@@ -1,4 +1,5 @@
 import utils from '@nebula.js/conversion/src/utils';
+import arrayUtil from '@nebula.js/conversion/src/array-util';
 import DataPropertyHandler from './data-property-handler';
 import * as hcUtils from './utils/hypercube-helper/hypercube-utils';
 import getAutoSortLibraryDimension from './utils/field-helper/get-sorted-library-field';
@@ -12,7 +13,6 @@ import removeMainMeasure from './utils/hypercube-helper/remove-main-measure';
 import removeAlternativeDimension from './utils/hypercube-helper/remove-alternative-dimension';
 import reinsertMainDimension from './utils/hypercube-helper/reinsert-main-dimension';
 import reinsertMainMeasure from './utils/hypercube-helper/reinsert-main-measure';
-import arrayUtil from '@nebula.js/conversion/src/array-util';
 
 /**
  * HyperCubeHandler for managing hypercube data structure.
@@ -146,6 +146,7 @@ class HyperCubeHandler extends DataPropertyHandler {
     const addedDimensions = [];
     let addedActive = 0;
 
+    // eslint-disable-next-line no-restricted-syntax
     for await (const dimension of dimensions) {
       if (hcUtils.isTotalDimensionsExceeded(this, existingDimensions)) {
         return addedDimensions;
@@ -205,12 +206,14 @@ class HyperCubeHandler extends DataPropertyHandler {
     if (alternative && altDimensions.length > 0) {
       // Keep the original deleted order
       deletedDimensions = hcUtils.getDeletedFields(altDimensions, indexes);
+      // eslint-disable-next-line no-restricted-syntax
       for await (const index of sortedIndexes) {
         await removeAlternativeDimension(this, index);
       }
     } else if (dimensions.length > 0) {
       // Keep the original deleted order
       deletedDimensions = hcUtils.getDeletedFields(dimensions, indexes);
+      // eslint-disable-next-line no-restricted-syntax
       for await (const index of sortedIndexes) {
         await removeMainDimension(this, index);
       }
@@ -351,6 +354,7 @@ class HyperCubeHandler extends DataPropertyHandler {
    * @example
    * const sortedMeasure = hyperCubeHandler.autoSortMeasure(measure);
    */
+  // eslint-disable-next-line class-methods-use-this
   autoSortMeasure(measure) {
     const meas = measure;
     meas.qSortBy = {
@@ -438,6 +442,7 @@ class HyperCubeHandler extends DataPropertyHandler {
       deletedMeasures = hcUtils.getDeletedFields(measures, indexes);
       const sortedIndexes = [...indexes].sort((a, b) => b - a);
 
+      // eslint-disable-next-line no-restricted-syntax
       for await (const index of sortedIndexes) {
         await removeMainMeasure(this, index);
       }

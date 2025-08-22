@@ -195,14 +195,7 @@ describe('DataPropertyHandler', () => {
   });
 
   describe('maxMeasures', () => {
-    let galaxy;
-
     beforeEach(() => {
-      galaxy = {
-        flags: {
-          isEnabled: jest.fn().mockReturnValue(false),
-        },
-      };
       handler = new HyperCubeHandler({
         measureDefinition: { max: 0 },
         dimensionDefinition: { max: 0 },
@@ -216,15 +209,6 @@ describe('DataPropertyHandler', () => {
 
     test('should return the result of measureDefinition.max when it is a function', () => {
       handler.measureDefinition.max = jest.fn().mockReturnValue(5);
-
-      const result = handler.maxMeasures();
-      expect(result).toBe(5);
-    });
-
-    test('should pass properties to measureDefinition.max when feature flag is enabled', () => {
-      handler.measureDefinition.max = jest.fn().mockReturnValue(5);
-      galaxy.flags.isEnabled.mockReturnValue(true);
-      handler.properties = { someProperty: 'value' };
 
       const result = handler.maxMeasures();
       expect(result).toBe(5);
@@ -260,14 +244,7 @@ describe('DataPropertyHandler', () => {
   });
 
   describe('maxDimensions', () => {
-    let galaxy;
-
     beforeEach(() => {
-      galaxy = {
-        flags: {
-          isEnabled: jest.fn().mockReturnValue(false),
-        },
-      };
       handler = new HyperCubeHandler({
         measureDefinition: { max: 0 },
         dimensionDefinition: { max: 0 },
@@ -280,15 +257,6 @@ describe('DataPropertyHandler', () => {
 
       const result = handler.maxDimensions();
       expect(result).toBe(5);
-    });
-
-    test('should pass properties to dimensionDefinition.max when feature flag is enabled', () => {
-      handler.dimensionDefinition.max = jest.fn().mockReturnValue(10);
-      galaxy.flags.isEnabled.mockReturnValue(true);
-      handler.properties = { someProperty: 'value' };
-
-      const result = handler.maxDimensions();
-      expect(result).toBe(10);
     });
 
     test('should return dimensionDefinition.max when it is a valid number', () => {

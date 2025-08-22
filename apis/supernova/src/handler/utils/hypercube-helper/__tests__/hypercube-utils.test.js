@@ -1,7 +1,7 @@
-import uid from '@nebula.js/nucleus/src/object/uid';
+import uid from '../../../../src/object/uid';
 import * as hcUtils from '../hypercube-utils';
 
-jest.mock('@nebula.js/nucleus/src/object/uid', () => jest.fn());
+jest.mock('../../../../src/object/uid', () => jest.fn());
 
 describe('replaceDimensionToColumnOrder', () => {
   let self;
