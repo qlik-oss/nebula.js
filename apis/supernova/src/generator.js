@@ -1,4 +1,4 @@
-import HyperCubeHandler from './handler/hypercube-handler';
+import HyperCubeHandler from '@nebula.js/nucleus/handler/hypercube-handler';
 import create from './creator';
 // import translator from './translator';
 import qae from './qae';
