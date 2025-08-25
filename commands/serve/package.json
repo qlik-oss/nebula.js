@@ -38,20 +38,20 @@
     "cross-env": "10.0.0",
     "express": "5.1.0",
     "extend": "3.0.2",
-    "html-webpack-plugin": "5.6.3",
+    "html-webpack-plugin": "5.6.4",
     "portfinder": "1.0.37",
-    "puppeteer": "24.16.0",
+    "puppeteer": "24.17.0",
     "regenerator-runtime": "0.14.1",
     "source-map-loader": "5.0.0",
-    "webpack": "5.101.0",
+    "webpack": "5.101.3",
     "webpack-cli": "6.0.1",
     "webpack-dev-server": "5.2.2",
     "ws": "8.18.3",
     "yargs": "17.7.2"
   },
   "devDependencies": {
-    "@babel/core": "7.28.0",
-    "@babel/preset-env": "7.28.0",
+    "@babel/core": "7.28.3",
+    "@babel/preset-env": "7.28.3",
     "@babel/preset-react": "7.27.1",
     "@mui/material": "^5.18.0",
     "@mui/system": "^5.18.0",
@@ -71,6 +71,6 @@
     "monaco-editor-webpack-plugin": "7.1.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router": "7.8.0"
+    "react-router": "7.8.2"
   }
 }
