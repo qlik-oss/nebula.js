@@ -1,7 +1,9 @@
-import uid from '../../../../src/object/uid';
+import { uid } from '../../constants';
 import * as hcUtils from '../hypercube-utils';
 
-jest.mock('../../../../src/object/uid', () => jest.fn());
+jest.mock('../../constants', () => ({
+  uid: jest.fn(),
+}));
 
 describe('replaceDimensionToColumnOrder', () => {
   let self;

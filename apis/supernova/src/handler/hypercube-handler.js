@@ -111,7 +111,7 @@ class HyperCubeHandler extends DataPropertyHandler {
    *
    * @param {object} dimension
    * @param {boolean} alternative
-   * @param {number} idx
+   * @param {number} [idx]
    * @returns {NxDimension} dimension
    * @description Adds a dimension to the hypercube and updates the orders of the dimensions.
    * If the dimension is an alternative, it will be added to the alternative dimensions.
@@ -325,7 +325,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   /**
    * @param {object} measure
    * @param {boolean} alternative
-   * @param {number} idx
+   * @param {number} [idx]
    * @returns {object} measure
    * @description Adds a measure to the hypercube.
    * If the measure is an alternative, it will be added to the alternative measures.
@@ -337,7 +337,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   addMeasure(measure, alternative, idx) {
     const meas = initializeField(measure);
 
-    if (hcUtils.isMeasureAlternative(this, meas, alternative)) {
+    if (hcUtils.isMeasureAlternative(this, alternative)) {
       const hcMeasures = this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures;
       return hcUtils.addAlternativeMeasure(meas, hcMeasures, idx);
     }
@@ -387,7 +387,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
       const meas = initializeId(measure);
 
-      if (hcUtils.isMeasureAlternative(this, existingMeasures, alternative)) {
+      if (hcUtils.isMeasureAlternative(this, alternative)) {
         hcUtils.addAlternativeMeasure(this, meas);
         addedMeasures.push(meas);
       } else if (existingMeasures.length < this.maxMeasures()) {
@@ -456,10 +456,9 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   reinsertMeasure(measure, alternative, idx) {
-    const measures = this.getAlternativeMeasures();
     const meas = initializeId(measure);
 
-    if (hcUtils.isMeasureAlternative(this, measures, alternative)) {
+    if (hcUtils.isMeasureAlternative(this, alternative)) {
       return hcUtils.addAlternativeMeasure(this, meas, idx);
     }
 

@@ -1,7 +1,6 @@
 import getValue from '@nebula.js/conversion/src/utils';
 import arrayUtil from '@nebula.js/conversion/src/array-util';
-import uid from '@nebula.js/nucleus/src/object/uid';
-import { TOTAL_MAX } from '../constants';
+import { TOTAL_MAX, uid } from '../constants';
 
 export const notSupportedError = new Error('Not supported in this object, need to implement in subclass.');
 
@@ -238,7 +237,8 @@ export function isTotalMeasureExceeded(self, measures) {
   return altMeasures.length + measures.length >= TOTAL_MAX.MEASURES;
 }
 
-export function isMeasureAlternative(self, measures, alternative) {
+export function isMeasureAlternative(self, alternative) {
+  const measures = self.getMeasures();
   return alternative || (self.maxMeasures() <= measures.length && measures.length < TOTAL_MAX.MEASURES);
 }
 

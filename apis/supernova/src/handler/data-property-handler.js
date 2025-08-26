@@ -12,6 +12,15 @@ class DataPropertyHandler {
   /**
    * Creates an instance of DataPropertyHandler.
    * @param {object} opts - Options for the handler.
+   * opts: {
+   *  app,
+   *  path,
+   *  dimensionDefinition,
+   *  measureDefinition,
+   *  dimensionProperties,
+   *  measureDefinition,
+   *  globalChangeListeners,
+   * }
    */
   constructor(opts) {
     const options = opts || {};
@@ -189,7 +198,7 @@ class DataPropertyHandler {
 
   /**
    * Gets the maximum number of dimensions allowed.
-   * @param {number} [decrement=0] - The number to decrement from the maximum dimensions.
+   * @param {number} [decrement=0] - The number to decrement from the current dimensions.
    * @returns {number} The maximum number of dimensions allowed.
    * @description Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
    */
@@ -329,7 +338,7 @@ class DataPropertyHandler {
 
   /**
    * Gets the maximum number of measures allowed.
-   * @param {number} [decrement=0] - The number to decrement from the maximum measures.
+   * @param {number} [decrement=0] - The number to decrement from the current measures.
    * @returns {number} The maximum number of measures allowed.
    * @description Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
    */

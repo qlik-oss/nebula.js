@@ -1,5 +1,4 @@
-import uid from '../../../src/object/uid';
-import { AUTOCALENDAR_NAME } from '../constants';
+import { AUTOCALENDAR_NAME, uid } from '../constants';
 
 export const getField = (expression) => {
   let exp = expression;
