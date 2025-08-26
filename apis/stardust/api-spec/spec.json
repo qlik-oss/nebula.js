@@ -1485,177 +1485,6 @@
         "const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"
       ]
     },
-    "Flags": {
-      "kind": "interface",
-      "entries": {
-        "isEnabled": {
-          "description": "Checks whether the specified flag is enabled.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "flag",
-              "description": "The value flag to check.",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "True if the specified flag is enabled, false otherwise.",
-            "type": "boolean"
-          }
-        }
-      }
-    },
-    "Field": {
-      "kind": "alias",
-      "items": {
-        "kind": "union",
-        "items": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "qix.NxDimension"
-          },
-          {
-            "type": "qix.NxMeasure"
-          },
-          {
-            "type": "#/definitions/LibraryField"
-          }
-        ]
-      }
-    },
-    "CreateConfig": {
-      "description": "Rendering configuration for creating and rendering a new object",
-      "kind": "interface",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "optional": true,
-          "type": "string"
-        },
-        "fields": {
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "properties": {
-          "optional": true,
-          "type": "qix.GenericObjectProperties"
-        }
-      }
-    },
-    "RenderConfig": {
-      "description": "Configuration for rendering a visualisation, either creating or fetching an existing object.",
-      "kind": "interface",
-      "entries": {
-        "element": {
-          "description": "Target html element to render in to",
-          "type": "HTMLElement"
-        },
-        "options": {
-          "description": "Options passed into the visualisation",
-          "optional": true,
-          "type": "object"
-        },
-        "onRender": {
-          "description": "Callback function called after rendering successfully",
-          "optional": true,
-          "kind": "function",
-          "params": []
-        },
-        "onError": {
-          "description": "Callback function called if an error occurs",
-          "optional": true,
-          "kind": "function",
-          "params": [
-            {
-              "type": "#/definitions/RenderError"
-            }
-          ]
-        },
-        "plugins": {
-          "description": "plugins passed into the visualisation",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/Plugin"
-          }
-        },
-        "id": {
-          "description": "For existing objects: Engine identifier of object to render",
-          "optional": true,
-          "type": "string"
-        },
-        "type": {
-          "description": "For creating objects: Type of visualisation to render",
-          "optional": true,
-          "type": "string"
-        },
-        "version": {
-          "description": "For creating objects: Version of visualization to render",
-          "optional": true,
-          "type": "string"
-        },
-        "fields": {
-          "description": "For creating objects: Data fields to use",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "extendProperties": {
-          "description": "For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
-          "optional": true,
-          "defaultValue": false,
-          "type": "boolean"
-        },
-        "properties": {
-          "description": "For creating objects: Explicit properties to set",
-          "optional": true,
-          "type": "qix.GenericObjectProperties"
-        }
-      },
-      "examples": [
-        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst createConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(createConfig);"
-      ]
-    },
-    "LibraryField": {
-      "kind": "interface",
-      "entries": {
-        "qLibraryId": {
-          "type": "string"
-        },
-        "type": {
-          "kind": "union",
-          "items": [
-            {
-              "kind": "literal",
-              "value": "'dimension'"
-            },
-            {
-              "kind": "literal",
-              "value": "'measure'"
-            }
-          ]
-        }
-      }
-    },
     "AppSelections": {
       "kind": "class",
       "constructor": {
@@ -1893,6 +1722,177 @@
         }
       }
     },
+    "Flags": {
+      "kind": "interface",
+      "entries": {
+        "isEnabled": {
+          "description": "Checks whether the specified flag is enabled.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "flag",
+              "description": "The value flag to check.",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "True if the specified flag is enabled, false otherwise.",
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "Field": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "qix.NxDimension"
+          },
+          {
+            "type": "qix.NxMeasure"
+          },
+          {
+            "type": "#/definitions/LibraryField"
+          }
+        ]
+      }
+    },
+    "CreateConfig": {
+      "description": "Rendering configuration for creating and rendering a new object",
+      "kind": "interface",
+      "entries": {
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "properties": {
+          "optional": true,
+          "type": "qix.GenericObjectProperties"
+        }
+      }
+    },
+    "RenderConfig": {
+      "description": "Configuration for rendering a visualisation, either creating or fetching an existing object.",
+      "kind": "interface",
+      "entries": {
+        "element": {
+          "description": "Target html element to render in to",
+          "type": "HTMLElement"
+        },
+        "options": {
+          "description": "Options passed into the visualisation",
+          "optional": true,
+          "type": "object"
+        },
+        "onRender": {
+          "description": "Callback function called after rendering successfully",
+          "optional": true,
+          "kind": "function",
+          "params": []
+        },
+        "onError": {
+          "description": "Callback function called if an error occurs",
+          "optional": true,
+          "kind": "function",
+          "params": [
+            {
+              "type": "#/definitions/RenderError"
+            }
+          ]
+        },
+        "plugins": {
+          "description": "plugins passed into the visualisation",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Plugin"
+          }
+        },
+        "id": {
+          "description": "For existing objects: Engine identifier of object to render",
+          "optional": true,
+          "type": "string"
+        },
+        "type": {
+          "description": "For creating objects: Type of visualisation to render",
+          "optional": true,
+          "type": "string"
+        },
+        "version": {
+          "description": "For creating objects: Version of visualization to render",
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "description": "For creating objects: Data fields to use",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "extendProperties": {
+          "description": "For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "properties": {
+          "description": "For creating objects: Explicit properties to set",
+          "optional": true,
+          "type": "qix.GenericObjectProperties"
+        }
+      },
+      "examples": [
+        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst createConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(createConfig);"
+      ]
+    },
+    "LibraryField": {
+      "kind": "interface",
+      "entries": {
+        "qLibraryId": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'dimension'"
+            },
+            {
+              "kind": "literal",
+              "value": "'measure'"
+            }
+          ]
+        }
+      }
+    },
     "Plugin": {
       "description": "An object literal containing meta information about the plugin and a function containing the plugin implementation.",
       "stability": "experimental",
@@ -1919,32 +1919,6 @@
       "examples": [
         "const plugin = {\n  info: {\n    name: \"example-plugin\",\n    type: \"meta-type\",\n  },\n  fn: () => {\n    // Plugin implementation goes here\n  }\n};"
       ]
-    },
-    "RenderError": {
-      "extends": [
-        {
-          "type": "Error"
-        }
-      ],
-      "kind": "class",
-      "constructor": {
-        "kind": "function",
-        "params": [
-          {
-            "name": "message",
-            "type": "string"
-          },
-          {
-            "name": "originalError",
-            "type": "Error"
-          }
-        ]
-      },
-      "entries": {
-        "originalError": {
-          "type": "Error"
-        }
-      }
     },
     "LoadType": {
       "kind": "interface",
@@ -1988,6 +1962,32 @@
         "meta": {
           "optional": true,
           "type": "object"
+        }
+      }
+    },
+    "RenderError": {
+      "extends": [
+        {
+          "type": "Error"
+        }
+      ],
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": [
+          {
+            "name": "message",
+            "type": "string"
+          },
+          {
+            "name": "originalError",
+            "type": "Error"
+          }
+        ]
+      },
+      "entries": {
+        "originalError": {
+          "type": "Error"
         }
       }
     },
@@ -2225,7 +2225,7 @@
       },
       "entries": {},
       "examples": [
-        "import { useElement, useLayout } from '@nebula.js/stardust';\n\nexport default function() {\n  return {\n    qae: {\n      properties: {\n        dude: 'Heisenberg',\n      }\n    },\n    component() {\n      const el = useElement();\n      const layout = useLayout();\n      el.innerHTML = `What's my name? ${layout.dude}!!!`;\n    }\n  };\n}"
+        "import { useElement, useLayout } from '@nebula.js/stardust';\r\rexport default function() {\r  return {\r    qae: {\r      properties: {\r        dude: 'Heisenberg',\r      }\r    },\r    component() {\r      const el = useElement();\r      const layout = useLayout();\r      el.innerHTML = `What's my name? ${layout.dude}!!!`;\r    }\r  };\r}"
       ]
     },
     "VisualizationDefinition": {
@@ -2751,7 +2751,7 @@
         "params": [
           {
             "name": "opts",
-            "description": "Options for the handler.",
+            "description": "Options for the handler.\ropts: {\r app,\r path,\r dimensionDefinition,\r measureDefinition,\r dimensionProperties,\r measureDefinition,\r globalChangeListeners,\r}",
             "type": "object"
           }
         ]
@@ -2833,7 +2833,7 @@
           "params": [
             {
               "name": "decrement",
-              "description": "The number to decrement from the maximum dimensions.",
+              "description": "The number to decrement from the current dimensions.",
               "optional": true,
               "defaultValue": 0,
               "type": "number"
@@ -2850,7 +2850,7 @@
           "params": [
             {
               "name": "decrement",
-              "description": "The number to decrement from the maximum measures.",
+              "description": "The number to decrement from the current measures.",
               "optional": true,
               "defaultValue": 0,
               "type": "number"
@@ -2958,7 +2958,7 @@
           ]
         },
         "addDimension": {
-          "description": "Adds a dimension to the hypercube and updates the orders of the dimensions.\nIf the dimension is an alternative, it will be added to the alternative dimensions.",
+          "description": "Adds a dimension to the hypercube and updates the orders of the dimensions.\rIf the dimension is an alternative, it will be added to the alternative dimensions.",
           "kind": "function",
           "params": [
             {
@@ -2971,6 +2971,7 @@
             },
             {
               "name": "idx",
+              "optional": true,
               "type": "number"
             }
           ],
@@ -2983,7 +2984,7 @@
           ]
         },
         "addDimensions": {
-          "description": "Adds multiple dimensions to the hypercube.\nIf the dimensions are alternatives, they will be added to the alternative dimensions.\nIf the total number of dimensions exceeds the limit, it will stop adding dimensions.",
+          "description": "Adds multiple dimensions to the hypercube.\rIf the dimensions are alternatives, they will be added to the alternative dimensions.\rIf the total number of dimensions exceeds the limit, it will stop adding dimensions.",
           "kind": "function",
           "params": [
             {
@@ -3009,7 +3010,7 @@
           ]
         },
         "removeDimension": {
-          "description": "Removes a dimension from the hypercube by index.\nIf the dimension is an alternative, it will be removed from the alternative dimensions.",
+          "description": "Removes a dimension from the hypercube by index.\rIf the dimension is an alternative, it will be removed from the alternative dimensions.",
           "kind": "function",
           "params": [
             {
@@ -3026,7 +3027,7 @@
           ]
         },
         "removeDimensions": {
-          "description": "Removes multiple dimensions from the hypercube by indexes.\nIf the dimensions are alternatives, they will be removed from the alternative dimensions.\nIf the indexes are empty, it will return an empty array.",
+          "description": "Removes multiple dimensions from the hypercube by indexes.\rIf the dimensions are alternatives, they will be removed from the alternative dimensions.\rIf the indexes are empty, it will return an empty array.",
           "kind": "function",
           "params": [
             {
@@ -3054,7 +3055,7 @@
           ]
         },
         "autoSortDimension": {
-          "description": "Automatically sorts the dimension based on its properties.\nIf the dimension has a qLibraryId, it will use the library dimension auto-sort.\nOtherwise, it will use the field dimension auto-sort.",
+          "description": "Automatically sorts the dimension based on its properties.\rIf the dimension has a qLibraryId, it will use the library dimension auto-sort.\rOtherwise, it will use the field dimension auto-sort.",
           "kind": "function",
           "params": [
             {
@@ -3133,7 +3134,7 @@
           ]
         },
         "addMeasure": {
-          "description": "Adds a measure to the hypercube.\nIf the measure is an alternative, it will be added to the alternative measures.\nIf the total number of measures exceeds the limit, it will stop adding measures.",
+          "description": "Adds a measure to the hypercube.\rIf the measure is an alternative, it will be added to the alternative measures.\rIf the total number of measures exceeds the limit, it will stop adding measures.",
           "kind": "function",
           "params": [
             {
@@ -3146,6 +3147,7 @@
             },
             {
               "name": "idx",
+              "optional": true,
               "type": "number"
             }
           ],
@@ -3158,7 +3160,7 @@
           ]
         },
         "autoSortMeasure": {
-          "description": "Automatically sorts the measure based on its properties.\nIt sets the qSortByLoadOrder and qSortByNumeric properties.",
+          "description": "Automatically sorts the measure based on its properties.\rIt sets the qSortByLoadOrder and qSortByNumeric properties.",
           "kind": "function",
           "params": [
             {
@@ -3175,7 +3177,7 @@
           ]
         },
         "addMeasures": {
-          "description": "Adds multiple measures to the hypercube.\nIf the measures are alternatives, they will be added to the alternative measures.\nIf the total number of measures exceeds the limit, it will stop adding measures.",
+          "description": "Adds multiple measures to the hypercube.\rIf the measures are alternatives, they will be added to the alternative measures.\rIf the total number of measures exceeds the limit, it will stop adding measures.",
           "kind": "function",
           "params": [
             {
@@ -3203,7 +3205,7 @@
           ]
         },
         "removeMeasure": {
-          "description": "Removes a measure from the hypercube by index.\nIf the measure is an alternative, it will be removed from the alternative measures.",
+          "description": "Removes a measure from the hypercube by index.\rIf the measure is an alternative, it will be removed from the alternative measures.",
           "kind": "function",
           "params": [
             {
@@ -3220,7 +3222,7 @@
           ]
         },
         "removeMeasures": {
-          "description": "Removes multiple measures from the hypercube by indexes.\nIf the measures are alternatives, they will be removed from the alternative measures.\nIf the indexes are empty, it will return an empty array.",
+          "description": "Removes multiple measures from the hypercube by indexes.\rIf the measures are alternatives, they will be removed from the alternative measures.\rIf the indexes are empty, it will return an empty array.",
           "kind": "function",
           "params": [
             {
@@ -3328,7 +3330,7 @@
           "params": [
             {
               "name": "decrement",
-              "description": "The number to decrement from the maximum dimensions.",
+              "description": "The number to decrement from the current dimensions.",
               "optional": true,
               "defaultValue": 0,
               "type": "number"
@@ -3345,7 +3347,7 @@
           "params": [
             {
               "name": "decrement",
-              "description": "The number to decrement from the maximum measures.",
+              "description": "The number to decrement from the current measures.",
               "optional": true,
               "defaultValue": 0,
               "type": "number"

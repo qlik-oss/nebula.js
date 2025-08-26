@@ -478,55 +478,6 @@ declare namespace stardust {
 
     }
 
-    interface Flags {
-        /**
-         * Checks whether the specified flag is enabled.
-         * @param flag The value flag to check.
-         */
-        isEnabled(flag: string): boolean;
-    }
-
-    type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
-
-    /**
-     * Rendering configuration for creating and rendering a new object
-     */
-    interface CreateConfig {
-        type: string;
-        version?: string;
-        fields?: stardust.Field[];
-        properties?: qix.GenericObjectProperties;
-    }
-
-    /**
-     * Configuration for rendering a visualisation, either creating or fetching an existing object.
-     */
-    interface RenderConfig {
-        element: HTMLElement;
-        options?: object;
-        /**
-         * Callback function called after rendering successfully
-         */
-        onRender?(): void;
-        /**
-         * Callback function called if an error occurs
-         * @param $
-         */
-        onError?($: stardust.RenderError): void;
-        plugins?: stardust.Plugin[];
-        id?: string;
-        type?: string;
-        version?: string;
-        fields?: stardust.Field[];
-        extendProperties?: boolean;
-        properties?: qix.GenericObjectProperties;
-    }
-
-    interface LibraryField {
-        qLibraryId: string;
-        type: "dimension" | "measure";
-    }
-
     class AppSelections {
         constructor();
 
@@ -601,6 +552,55 @@ declare namespace stardust {
 
     }
 
+    interface Flags {
+        /**
+         * Checks whether the specified flag is enabled.
+         * @param flag The value flag to check.
+         */
+        isEnabled(flag: string): boolean;
+    }
+
+    type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
+
+    /**
+     * Rendering configuration for creating and rendering a new object
+     */
+    interface CreateConfig {
+        type: string;
+        version?: string;
+        fields?: stardust.Field[];
+        properties?: qix.GenericObjectProperties;
+    }
+
+    /**
+     * Configuration for rendering a visualisation, either creating or fetching an existing object.
+     */
+    interface RenderConfig {
+        element: HTMLElement;
+        options?: object;
+        /**
+         * Callback function called after rendering successfully
+         */
+        onRender?(): void;
+        /**
+         * Callback function called if an error occurs
+         * @param $
+         */
+        onError?($: stardust.RenderError): void;
+        plugins?: stardust.Plugin[];
+        id?: string;
+        type?: string;
+        version?: string;
+        fields?: stardust.Field[];
+        extendProperties?: boolean;
+        properties?: qix.GenericObjectProperties;
+    }
+
+    interface LibraryField {
+        qLibraryId: string;
+        type: "dimension" | "measure";
+    }
+
     /**
      * An object literal containing meta information about the plugin and a function containing the plugin implementation.
      */
@@ -609,13 +609,6 @@ declare namespace stardust {
             name: string;
         };
         fn: ()=>void;
-    }
-
-    class RenderError extends Error {
-        constructor(message: string, originalError: Error);
-
-        originalError: Error;
-
     }
 
     interface LoadType {
@@ -630,6 +623,13 @@ declare namespace stardust {
         version?: string;
         load: stardust.LoadType;
         meta?: object;
+    }
+
+    class RenderError extends Error {
+        constructor(message: string, originalError: Error);
+
+        originalError: Error;
+
     }
 
     class Navigation implements stardust.Emitter {
@@ -856,13 +856,13 @@ declare namespace stardust {
 
         /**
          * Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
-         * @param decrement The number to decrement from the maximum dimensions.
+         * @param decrement The number to decrement from the current dimensions.
          */
         maxDimensions(decrement?: number): number;
 
         /**
          * Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
-         * @param decrement The number to decrement from the maximum measures.
+         * @param decrement The number to decrement from the current measures.
          */
         maxMeasures(decrement?: number): number;
 
@@ -898,44 +898,36 @@ declare namespace stardust {
         getDimensionLayouts(): NxDimensionInfo[];
 
         /**
-         * Adds a dimension to the hypercube and updates the orders of the dimensions.
-         * If the dimension is an alternative, it will be added to the alternative dimensions.
+         * Adds a dimension to the hypercube and updates the orders of the dimensions.If the dimension is an alternative, it will be added to the alternative dimensions.
          * @param dimension
          * @param alternative
          * @param idx
          */
-        addDimension(dimension: object, alternative: boolean, idx: number): NxDimension;
+        addDimension(dimension: object, alternative: boolean, idx?: number): NxDimension;
 
         /**
-         * Adds multiple dimensions to the hypercube.
-         * If the dimensions are alternatives, they will be added to the alternative dimensions.
-         * If the total number of dimensions exceeds the limit, it will stop adding dimensions.
+         * Adds multiple dimensions to the hypercube.If the dimensions are alternatives, they will be added to the alternative dimensions.If the total number of dimensions exceeds the limit, it will stop adding dimensions.
          * @param dimensions
          * @param alternative
          */
         addDimensions(dimensions: NxDimension, alternative: boolean): NxDimension[];
 
         /**
-         * Removes a dimension from the hypercube by index.
-         * If the dimension is an alternative, it will be removed from the alternative dimensions.
+         * Removes a dimension from the hypercube by index.If the dimension is an alternative, it will be removed from the alternative dimensions.
          * @param idx
          * @param alternative
          */
         removeDimension(idx: number, alternative: boolean): void;
 
         /**
-         * Removes multiple dimensions from the hypercube by indexes.
-         * If the dimensions are alternatives, they will be removed from the alternative dimensions.
-         * If the indexes are empty, it will return an empty array.
+         * Removes multiple dimensions from the hypercube by indexes.If the dimensions are alternatives, they will be removed from the alternative dimensions.If the indexes are empty, it will return an empty array.
          * @param indexes
          * @param alternative
          */
         removeDimensions(indexes: number[], alternative: boolean): NxDimension[];
 
         /**
-         * Automatically sorts the dimension based on its properties.
-         * If the dimension has a qLibraryId, it will use the library dimension auto-sort.
-         * Otherwise, it will use the field dimension auto-sort.
+         * Automatically sorts the dimension based on its properties.If the dimension has a qLibraryId, it will use the library dimension auto-sort.Otherwise, it will use the field dimension auto-sort.
          * @param dimension
          */
         autoSortDimension(dimension: object): object;
@@ -962,43 +954,35 @@ declare namespace stardust {
         getMeasureLayout(cId: string): object;
 
         /**
-         * Adds a measure to the hypercube.
-         * If the measure is an alternative, it will be added to the alternative measures.
-         * If the total number of measures exceeds the limit, it will stop adding measures.
+         * Adds a measure to the hypercube.If the measure is an alternative, it will be added to the alternative measures.If the total number of measures exceeds the limit, it will stop adding measures.
          * @param measure
          * @param alternative
          * @param idx
          */
-        addMeasure(measure: object, alternative: boolean, idx: number): object;
+        addMeasure(measure: object, alternative: boolean, idx?: number): object;
 
         /**
-         * Automatically sorts the measure based on its properties.
-         * It sets the qSortByLoadOrder and qSortByNumeric properties.
+         * Automatically sorts the measure based on its properties.It sets the qSortByLoadOrder and qSortByNumeric properties.
          * @param measure
          */
         autoSortMeasure(measure: NxMeasure): NxMeasure;
 
         /**
-         * Adds multiple measures to the hypercube.
-         * If the measures are alternatives, they will be added to the alternative measures.
-         * If the total number of measures exceeds the limit, it will stop adding measures.
+         * Adds multiple measures to the hypercube.If the measures are alternatives, they will be added to the alternative measures.If the total number of measures exceeds the limit, it will stop adding measures.
          * @param measures
          * @param alternative
          */
         addMeasures(measures: NxMeasure[], alternative: boolean): NxMeasure[];
 
         /**
-         * Removes a measure from the hypercube by index.
-         * If the measure is an alternative, it will be removed from the alternative measures.
+         * Removes a measure from the hypercube by index.If the measure is an alternative, it will be removed from the alternative measures.
          * @param idx
          * @param alternative
          */
         removeMeasure(idx: number, alternative: boolean): void;
 
         /**
-         * Removes multiple measures from the hypercube by indexes.
-         * If the measures are alternatives, they will be removed from the alternative measures.
-         * If the indexes are empty, it will return an empty array.
+         * Removes multiple measures from the hypercube by indexes.If the measures are alternatives, they will be removed from the alternative measures.If the indexes are empty, it will return an empty array.
          * @param indexes
          * @param alternative
          */
@@ -1021,13 +1005,13 @@ declare namespace stardust {
 
         /**
          * Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
-         * @param decrement The number to decrement from the maximum dimensions.
+         * @param decrement The number to decrement from the current dimensions.
          */
         maxDimensions(decrement?: number): number;
 
         /**
          * Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
-         * @param decrement The number to decrement from the maximum measures.
+         * @param decrement The number to decrement from the current measures.
          */
         maxMeasures(decrement?: number): number;
 
