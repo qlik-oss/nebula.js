@@ -4,7 +4,7 @@ import { INITIAL_SORT_CRITERIAS } from './utils/constants';
 import { notSupportedError } from './utils/hypercube-helper/hypercube-utils';
 
 /**
- * @class DataPropertyHandler
+ * @entry DataPropertyHandler
  * @description A class to handle data properties for dimensions and measures in a data model.
  * @export
  */
@@ -102,7 +102,7 @@ class DataPropertyHandler {
    * Creates a type of library dimension with a field definition.
    * @param {string} id - Dimension id
    * @param {object | undefined} [defaults] - Default properties for the dimension.
-   * @returns {NxDimension} The created dimension object.
+   * @returns {qix.NxDimension} The created dimension object.
    * @description Initializes a dimension and applying default properties and sort criteria.
    */
   createLibraryDimension(id, defaults) {
@@ -125,7 +125,7 @@ class DataPropertyHandler {
    * @param {string} field - The field definition for the dimension.
    * @param {string | undefined} label - The field label for the dimension.
    * @param {object | undefined} defaults - Default properties for the dimension.
-   * @returns {NxDimension} The created dimension object.
+   * @returns {qix.NxDimension} The created dimension object.
    * @description Initializes a dimension with field definitions, labels, and default properties.
    */
   createFieldDimension(field, label, defaults) {

@@ -1,7 +1,4 @@
-// eslint-disable-next-line import/no-relative-packages
-import utils from '../../../conversion/src/utils';
-// eslint-disable-next-line import/no-relative-packages
-import arrayUtil from '../../../conversion/src/array-util';
+import { utils, arrayUtil } from '@nebula.js/conversion';
 import DataPropertyHandler from './data-property-handler';
 import * as hcUtils from './utils/hypercube-helper/hypercube-utils';
 import getAutoSortLibraryDimension from './utils/field-helper/get-sorted-library-field';
@@ -23,6 +20,18 @@ import reinsertMainMeasure from './utils/hypercube-helper/reinsert-main-measure'
  * @description This class provides methods to handle hypercube properties, dimensions, and measures.
  * @param {object} opts - Parameters to add a hypercube handlers
  * @export
+ * @entry
+ * @example
+ * import HyperCubeHandler from '@nebula.js/stardust';
+ * const handler = new HyperCubeHandler({
+ *   app: qlikApp,
+ *   dimensionDefinition: { max: 2 },
+ *   measureDefinition: { max: 2 },
+ *   properties: {},
+ * });
+ *
+ * handler.setProperties({ qDimensions: [], qMeasures: [] });
+ * const dims = handler.getDimensions();
  */
 class HyperCubeHandler extends DataPropertyHandler {
   /**
@@ -64,7 +73,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   // ----------------------------------
 
   /**
-   * @returns {NxDimension[]} dimensions
+   * @returns {qix.NxDimension[]} dimensions
    * @description Returns the dimensions of the hypercube.
    * @memberof HyperCubeHandler
    * @example
@@ -75,7 +84,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   * @returns {NxDimension[]} alternative dimensions
+   * @returns {qix.NxDimension[]} alternative dimensions
    * @description Returns the alternative dimensions of the hypercube.
    * @memberof HyperCubeHandler
    * @example
@@ -87,7 +96,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * @param {string} cId
-   * @returns {NxDimensionInfo} dimension layout
+   * @returns {qix.NxDimensionInfo} dimension layout
    * @description Returns the dimension layout of the hypercube for a given cId.
    * @memberof HyperCubeHandler
    * @example
@@ -98,7 +107,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   * @returns {NxDimensionInfo[]} dimension layouts
+   * @returns {qix.NxDimensionInfo[]} dimension layouts
    * @description Returns the dimension layouts of the hypercube.
    * @memberof HyperCubeHandler
    * @example
@@ -114,7 +123,7 @@ class HyperCubeHandler extends DataPropertyHandler {
    * @param {object} dimension
    * @param {boolean} alternative
    * @param {number} [idx]
-   * @returns {NxDimension} dimension
+   * @returns {qix.NxDimension} dimension
    * @description Adds a dimension to the hypercube and updates the orders of the dimensions.
    * If the dimension is an alternative, it will be added to the alternative dimensions.
    * @memberof HyperCubeHandler
@@ -132,9 +141,9 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   * @param {NxDimension} dimensions
+   * @param {qix.NxDimension} dimensions
    * @param {boolean} alternative
-   * @returns {NxDimension[]} added dimensions
+   * @returns {qix.NxDimension[]} added dimensions
    * @description Adds multiple dimensions to the hypercube.
    * If the dimensions are alternatives, they will be added to the alternative dimensions.
    * If the total number of dimensions exceeds the limit, it will stop adding dimensions.
@@ -188,7 +197,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   /**
    * @param {number[]} indexes
    * @param {boolean} alternative
-   * @returns {NxDimension[]} deleted dimensions
+   * @returns {qix.NxDimension[]} deleted dimensions
    * @description Removes multiple dimensions from the hypercube by indexes.
    * If the dimensions are alternatives, they will be removed from the alternative dimensions.
    * If the indexes are empty, it will return an empty array.
@@ -279,7 +288,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   // ----------------------------------
 
   /**
-   * @returns {NxMeasure[]} measures
+   * @returns {qix.NxMeasure[]} measures
    * @description Returns the measures of the hypercube.
    * @memberof HyperCubeHandler
    * @example
@@ -290,7 +299,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   * @returns {NxMeasure[]} alternative measures
+   * @returns {qix.NxMeasure[]} alternative measures
    * @description Returns the alternative measures of the hypercube.
    * @memberof HyperCubeHandler
    * @example
@@ -301,7 +310,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   * @returns {NxMeasureInfo[]} measure layouts
+   * @returns {qix.NxMeasureInfo[]} measure layouts
    * @description Returns the measure layouts of the hypercube.
    * @memberof HyperCubeHandler
    * @example
@@ -348,8 +357,8 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   * @param {NxMeasure} measure
-   * @returns {NxMeasure} measure with auto-sort properties
+   * @param {qix.NxMeasure} measure
+   * @returns {qix.NxMeasure} measure with auto-sort properties
    * @description Automatically sorts the measure based on its properties.
    * It sets the qSortByLoadOrder and qSortByNumeric properties.
    * @memberof HyperCubeHandler
@@ -367,9 +376,9 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   * @param {NxMeasure[]} measures
+   * @param {qix.NxMeasure[]} measures
    * @param {boolean} alternative
-   * @returns {NxMeasure[]} added measures
+   * @returns {qix.NxMeasure[]} added measures
    * @description Adds multiple measures to the hypercube.
    * If the measures are alternatives, they will be added to the alternative measures.
    * If the total number of measures exceeds the limit, it will stop adding measures.
