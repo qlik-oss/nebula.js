@@ -1,5 +1,7 @@
-import utils from '@nebula.js/conversion/src/utils';
-import arrayUtil from '@nebula.js/conversion/src/array-util';
+// eslint-disable-next-line import/no-relative-packages
+import utils from '../../../conversion/src/utils';
+// eslint-disable-next-line import/no-relative-packages
+import arrayUtil from '../../../conversion/src/array-util';
 import DataPropertyHandler from './data-property-handler';
 import * as hcUtils from './utils/hypercube-helper/hypercube-utils';
 import getAutoSortLibraryDimension from './utils/field-helper/get-sorted-library-field';

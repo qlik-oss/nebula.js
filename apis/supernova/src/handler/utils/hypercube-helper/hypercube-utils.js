@@ -1,5 +1,7 @@
-import getValue from '@nebula.js/conversion/src/utils';
-import arrayUtil from '@nebula.js/conversion/src/array-util';
+// eslint-disable-next-line import/no-relative-packages
+import getValue from '../../../../../conversion/src/utils';
+// eslint-disable-next-line import/no-relative-packages
+import arrayUtil from '../../../../../conversion/src/array-util';
 import { TOTAL_MAX, uid } from '../constants';
 
 export const notSupportedError = new Error('Not supported in this object, need to implement in subclass.');
