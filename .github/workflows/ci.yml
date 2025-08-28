@@ -144,6 +144,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - name: Enable Corepack
         run: corepack enable
       - name: Set up Node.js
