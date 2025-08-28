@@ -87,7 +87,6 @@
     "puppeteer": "24.17.0",
     "qix-faker": "0.3.0",
     "rollup": "4.48.1",
-    "rollup-plugin-dependency-flow": "0.3.0",
     "rollup-plugin-sass": "1.15.3",
     "style-loader": "4.0.0",
     "whatwg-fetch": "^3.6.20",
