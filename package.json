@@ -93,10 +93,10 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
-    "**/caniuse-lite": "1.0.30001739",
-    "**/react": "18.3.1",
-    "**/react-dom": "18.3.1",
-    "**/react-is": "18.3.1",
+    "caniuse-lite": "1.0.30001737",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-is": "18.3.1",
     "@playwright/test": "1.55.0"
   },
   "workspaces": [
@@ -106,5 +106,5 @@
     "apis/*",
     "test/component/*"
   ],
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "yarn@4.9.4"
 }

@@ -6,7 +6,6 @@
   "license": "MIT",
   "author": "QlikTech International AB",
   "keywords": [],
-  "scripts": {},
   "peerDependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",

@@ -14,12 +14,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
+      - name: Enable Corepack
+        run: corepack enable
       - uses: actions/setup-node@v4
         with:
           node-version: 24.7.0
           cache: 'yarn'
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Build
         run: yarn run build
       - name: Upload workspace
@@ -34,13 +36,15 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v5
+      - name: Enable Corepack
+        run: corepack enable
       - name: Download workspace
         uses: actions/download-artifact@v5
         with:
           name: workspace
           path: .
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Locale verify
         run: yarn run locale:verify
       - name: Lint
@@ -64,13 +68,15 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v5
+      - name: Enable Corepack
+        run: corepack enable
       - name: Download workspace
         uses: actions/download-artifact@v5
         with:
           name: workspace
           path: .
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Test component
@@ -99,13 +105,15 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v5
+      - name: Enable Corepack
+        run: corepack enable
       - name: Download workspace
         uses: actions/download-artifact@v5
         with:
           name: workspace
           path: .
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - run: chmod +x .github/scripts/nebula_create.sh
@@ -136,7 +144,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
-
+      - name: Enable Corepack
+        run: corepack enable
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -144,7 +153,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Create version.txt
         id: version
@@ -153,7 +162,7 @@ jobs:
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
             version=${GITHUB_REF_NAME#v}
           else
-            yarn workspace "@nebula.js/stardust" version --prepatch --no-git-tag-version
+            yarn workspace "@nebula.js/stardust" version prepatch --no-git-tag-version
             version=$(node -p "require('./apis/stardust/api-spec/spec.json').info.version")
           fi
           echo "$version" > ./version.txt
