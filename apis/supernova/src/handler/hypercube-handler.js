@@ -16,7 +16,6 @@ import reinsertMainMeasure from './utils/hypercube-helper/reinsert-main-measure'
 /**
  * HyperCubeHandler for managing hypercube data structure.
  * @class HyperCubeHandler
- * @extends DataPropertyHandler
  * @description This class provides methods to handle hypercube properties, dimensions, and measures.
  * @param {object} opts - Parameters to add a hypercube handlers
  * @export
@@ -44,7 +43,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   * @param {object} properties
+   * @param {object=} properties
    * @returns early return if properties is falsy
    */
   setProperties(properties) {
@@ -120,9 +119,9 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    *
-   * @param {object} dimension
+   * @param {qix.NxDimension} dimension
    * @param {boolean} alternative
-   * @param {number} [idx]
+   * @param {number=} idx
    * @returns {qix.NxDimension} dimension
    * @description Adds a dimension to the hypercube and updates the orders of the dimensions.
    * If the dimension is an alternative, it will be added to the alternative dimensions.
@@ -141,7 +140,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   * @param {qix.NxDimension} dimensions
+   * @param {qix.NxDimension[]} dimensions
    * @param {boolean} alternative
    * @returns {qix.NxDimension[]} added dimensions
    * @description Adds multiple dimensions to the hypercube.
@@ -233,10 +232,29 @@ class HyperCubeHandler extends DataPropertyHandler {
     return deletedDimensions;
   }
 
+  /**
+   * Replaces a dimension in the hypercube.
+   * @param {number} index - The index of the dimension to replace.
+   * @param {qix.NxDimension} dimension - The new dimension to replace the old one.
+   * @returns {Promise<qix.NxDimension>} replaced dimension.
+   * @memberof HyperCubeHandler
+   * @example
+   * const replacedDimension = await hyperCubeHandler.replaceDimension(index, newDimension);
+   */
   replaceDimension(index, dimension) {
     return this.autoSortDimension(dimension).then(() => hcUtils.replaceDimensionOrder(this, index, dimension));
   }
 
+  /**
+   * Reinserts a dimension into the hypercube.
+   * @param {qix.NxDimension} dimension - The dimension to reinsert.
+   * @param {boolean} alternative - Whether the dimension is an alternative.
+   * @param {number} idx - The index to insert the dimension at.
+   * @returns {Promise<qix.NxDimension>} The reinserted dimension.
+   * @memberof HyperCubeHandler
+   * @example
+   * await hyperCubeHandler.reinsertDimension(dimension, alternative, idx);
+   */
   reinsertDimension(dimension, alternative, idx) {
     const dim = initializeId(dimension);
 
@@ -249,6 +267,15 @@ class HyperCubeHandler extends DataPropertyHandler {
     return reinsertMainDimension(this, dim, idx);
   }
 
+  /**
+   * Moves a dimension within the hypercube.
+   * @param {number} fromIndex - The current index of the dimension.
+   * @param {number} toIndex - The new index of the dimension.
+   * @returns {Promise<qix.NxDimension[]>} updated dimensions.
+   * @memberof HyperCubeHandler
+   * @example
+   * await hyperCubeHandler.moveDimension(fromIndex, toIndex);
+   */
   moveDimension(fromIndex, toIndex) {
     const dimensions = this.getDimensions();
     const altDimensions = this.getAlternativeDimensions();
@@ -267,8 +294,8 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   * @param {object} dimension
-   * @returns {object} dimension with auto-sort properties
+   * @param {qix.NxDimension} dimension
+   * @returns {qix.NxDimension} dimension with auto-sort properties
    * @description Automatically sorts the dimension based on its properties.
    * If the dimension has a qLibraryId, it will use the library dimension auto-sort.
    * Otherwise, it will use the field dimension auto-sort.
@@ -334,10 +361,10 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   * @param {object} measure
+   * @param {qix.NxMeasure} measure
    * @param {boolean} alternative
-   * @param {number} [idx]
-   * @returns {object} measure
+   * @param {number=} idx
+   * @returns {Promise<qix.NxMeasure>} measure
    * @description Adds a measure to the hypercube.
    * If the measure is an alternative, it will be added to the alternative measures.
    * If the total number of measures exceeds the limit, it will stop adding measures.
@@ -358,7 +385,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * @param {qix.NxMeasure} measure
-   * @returns {qix.NxMeasure} measure with auto-sort properties
+   * @returns {Promise<qix.NxMeasure>} measure with auto-sort properties
    * @description Automatically sorts the measure based on its properties.
    * It sets the qSortByLoadOrder and qSortByNumeric properties.
    * @memberof HyperCubeHandler
@@ -462,10 +489,29 @@ class HyperCubeHandler extends DataPropertyHandler {
     return deletedMeasures;
   }
 
+  /**
+   * @param {number} index
+   * @param {qix.NxMeasure} measure
+   * @returns {Promise<qix.NxMeasure>} replaced measure
+   * @description Replaces a measure in the hypercube.
+   * @memberof HyperCubeHandler
+   * @example
+   * const updatedMeasure = await hyperCubeHandler.replaceMeasure(index, measure);
+   */
   replaceMeasure(index, measure) {
     return this.autoSortMeasure(measure).then(() => hcUtils.replaceMeasureToColumnOrder(this, index, measure));
   }
 
+  /**
+   * @param {qix.NxMeasure} measure
+   * @param {boolean} alternative
+   * @param {number} idx
+   * @returns {Promise<qix.NxMeasure>} reinserted measure
+   * @description Reinserts a measure into the hypercube.
+   * @memberof HyperCubeHandler
+   * @example
+   * const reinsertedMeasure = await hyperCubeHandler.reinsertMeasure(measure, alternative, idx);
+   */
   reinsertMeasure(measure, alternative, idx) {
     const meas = initializeId(measure);
 
@@ -476,6 +522,16 @@ class HyperCubeHandler extends DataPropertyHandler {
     return reinsertMainMeasure(this, meas, idx);
   }
 
+  /**
+   * Moves a measure within the hypercube.
+   * @param {number} fromIndex
+   * @param {number} toIndex
+   * @returns {Promise<void>}
+   * @description Move measure from one index to another
+   * @memberof HyperCubeHandler
+   * @example
+   * const result = await hyperCubeHandler.moveMeasure(0, 1);
+   */
   moveMeasure(fromIndex, toIndex) {
     const measures = this.getMeasures();
     const altMeasures = this.getAlternativeMeasures();
@@ -500,31 +556,68 @@ class HyperCubeHandler extends DataPropertyHandler {
   // ------------ OTHERS---- ----------
   // ----------------------------------
 
-  setSorting(ar) {
-    if (ar && ar.length === this.hcProperties.qInterColumnSortOrder.length) {
-      this.hcProperties.qInterColumnSortOrder = ar;
+  /**
+   * Sets the sorting order for the hypercube.
+   * @param {number[]} arr - The new sorting order.
+   * @memberof HyperCubeHandler
+   * @example
+   * const newSortingOrder = [2, 0, 1];
+   * hyperCubeHandler.setSorting(newSortingOrder);
+   */
+  setSorting(arr) {
+    if (arr && arr.length === this.hcProperties.qInterColumnSortOrder.length) {
+      this.hcProperties.qInterColumnSortOrder = arr;
     }
   }
 
+  /**
+   * Gets the sorting order for the hypercube.
+   * @returns {number[]} The current sorting order.
+   * @memberof HyperCubeHandler
+   * @example
+   * const currentSortingOrder = hyperCubeHandler.getSorting();
+   */
   getSorting() {
     return this.hcProperties.qInterColumnSortOrder;
   }
 
+  /**
+   * Changes the sorting order for the hypercube.
+   * @param {number} fromIdx - The index to move from.
+   * @param {number} toIdx - The index to move to.
+   * @memberof HyperCubeHandler
+   * @example
+   * const newSortingOrder = hyperCubeHandler.changeSorting(0, 1);
+   */
   changeSorting(fromIdx, toIdx) {
     utils.move(this.hcProperties.qInterColumnSortOrder, fromIdx, toIdx);
   }
 
+  /**
+   * Returns whether the hypercube is in straight mode or pivot mode.
+   * @returns {string} 'S' for straight mode, 'P' for pivot mode
+   * @memberof HyperCubeHandler
+   */
   IsHCInStraightMode() {
     return this.hcProperties.qMode === 'S';
   }
 
+  /**
+   * @param {boolean} value
+   * @description This flag indicates whether we enabled HC modifier and have at least one script
+   * @memberof HyperCubeHandler
+   */
   setHCEnabled(value) {
-    // this flag indicate whether we enabled HC modifier and have at least one script
     if (this.hcProperties) {
       this.hcProperties.isHCEnabled = value;
     }
   }
 
+  /**
+   * Gets the dynamic scripts for the hypercube.
+   * @returns {Array} The dynamic scripts.
+   * @memberof HyperCubeHandler
+   */
   getDynamicScripts() {
     return this.hcProperties?.qDynamicScript || [];
   }
