@@ -19,7 +19,7 @@ jobs:
           node-version: 24.6.0
           cache: 'yarn'
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Build
         run: yarn run build
       - name: Upload workspace
@@ -40,7 +40,7 @@ jobs:
           name: workspace
           path: .
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Locale verify
         run: yarn run locale:verify
       - name: Lint
@@ -70,7 +70,7 @@ jobs:
           name: workspace
           path: .
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Test component
@@ -105,7 +105,7 @@ jobs:
           name: workspace
           path: .
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
       - run: chmod +x .github/scripts/nebula_create.sh
@@ -144,7 +144,7 @@ jobs:
           cache: 'yarn'
 
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: yarn install --immutable
 
       - name: Create version.txt
         id: version
