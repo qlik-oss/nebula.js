@@ -122,7 +122,7 @@ jobs:
       - name: Create Nebula visualization project (Barchart)
         run: .github/scripts/nebula_create.sh generated/barchart barchart false false true true
       - name: Create Nebula mashup project
-        run: .github/scripts/nebula_create.sh hello-mashup none true true true false
+        run: .github/scripts/nebula_create.sh generated/hello-mashup none true true true false
       - name: Store barchart screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -144,6 +144,8 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
       - name: Enable Corepack
         run: corepack enable
       - name: Set up Node.js
@@ -162,7 +164,7 @@ jobs:
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
             version=${GITHUB_REF_NAME#v}
           else
-            yarn workspace "@nebula.js/stardust" version prepatch --no-git-tag-version
+            yarn workspace "@nebula.js/stardust" version prepatch
             version=$(node -p "require('./apis/stardust/api-spec/spec.json').info.version")
           fi
           echo "$version" > ./version.txt

@@ -20,6 +20,7 @@ test/**/__artifacts__/temp
 apis/*/core/**/*.js
 apis/*/core/**/*.js.map
 apis/locale/all.json
+generated/
 
 Search/
 

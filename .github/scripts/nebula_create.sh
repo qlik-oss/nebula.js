@@ -15,19 +15,15 @@ else
   echo "Create project based on Picasso template"
   ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm yarn
 fi
-
+echo 2>"$PROJECT_NAME"/yarn.lock
 echo "Yarn"
-yarn
+YARN_ENABLE_HARDENED_MODE=0 yarn
 echo "Linking packages"
-(cd apis/stardust && yarn link)
-(cd commands/cli && yarn link)
-(cd commands/build && yarn link)
-(cd commands/serve && yarn link)
 cd "$PROJECT_NAME"
-yarn link "@nebula.js/stardust"
-yarn link "@nebula.js/cli"
-yarn link "@nebula.js/cli-build"
-yarn link "@nebula.js/cli-serve"
+yarn link ../../apis/stardust
+yarn link ../../commands/cli
+yarn link ../../commands/build
+yarn link ../../commands/serve
 echo "Log node_modules/@nebula.js"
 ls -la node_modules/@nebula.js
 if [ "$BUILD" = "true" ]; then
