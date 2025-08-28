@@ -36,6 +36,8 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v5
+      - name: Enable Corepack
+        run: corepack enable
       - name: Download workspace
         uses: actions/download-artifact@v5
         with:
@@ -66,6 +68,8 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v5
+      - name: Enable Corepack
+        run: corepack enable
       - name: Download workspace
         uses: actions/download-artifact@v5
         with:
@@ -101,6 +105,8 @@ jobs:
     needs: build
     steps:
       - uses: actions/checkout@v5
+      - name: Enable Corepack
+        run: corepack enable
       - name: Download workspace
         uses: actions/download-artifact@v5
         with:
@@ -156,7 +162,7 @@ jobs:
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
             version=${GITHUB_REF_NAME#v}
           else
-            yarn workspace "@nebula.js/stardust" version --prepatch --no-git-tag-version
+            yarn workspace "@nebula.js/stardust" version prepatch --no-git-tag-version
             version=$(node -p "require('./apis/stardust/api-spec/spec.json').info.version")
           fi
           echo "$version" > ./version.txt
