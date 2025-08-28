@@ -1,6 +1,4 @@
-// eslint-disable-next-line import/no-relative-packages
-import uid from '../../../../../nucleus/src/object/uid';
-import { AUTOCALENDAR_NAME } from '../constants';
+import { AUTOCALENDAR_NAME, uid } from '../constants';
 
 export const getField = (expression) => {
   let exp = expression;
@@ -60,16 +58,6 @@ export const setAutoSort = (fields, dimension, self) => {
       dim.qDef.qSortCriterias[index] = sortCriterias;
     }
   });
-};
-
-export const useMasterNumberFormat = (formatting) => {
-  const format = formatting;
-  format.quarantine = {
-    qNumFormat: format.qNumFormat || {},
-    isCustomFormatted: format.isCustomFormatted || false,
-  };
-  format.qNumFormat = null;
-  format.isCustomFormatted = undefined;
 };
 
 export const isDateField = (field) =>
