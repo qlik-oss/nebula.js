@@ -2,6 +2,7 @@ import generator from './generator';
 import JSONPatch from './json-patch';
 
 export { default as HyperCubeHandler } from './handler/hypercube-handler';
+export { default as DataPropertyHandler } from './handler/data-property-handler';
 export { generator, JSONPatch };
 
 // core hooks
