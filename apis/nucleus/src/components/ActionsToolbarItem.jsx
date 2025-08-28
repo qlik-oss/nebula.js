@@ -42,6 +42,7 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
       className={[ActionElement.className, btnId].join(' ')}
       size="large"
       disableRipple
+      aria-label={item.label}
       aria-expanded={ariaExpanded}
       aria-controls="moreMenuList"
       data-testid={btnId}
