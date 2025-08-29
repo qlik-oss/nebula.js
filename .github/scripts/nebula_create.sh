@@ -18,7 +18,7 @@ else
 fi
 
 cd "$PROJECT_NAME"
-echo. 2>yarn.lock
+echo 2>yarn.lock
 echo "Yarn"
 yarn
 echo "Linking packages"
