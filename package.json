@@ -100,7 +100,6 @@
     "@playwright/test": "1.55.0"
   },
   "workspaces": [
-    "generated/*",
     "packages/*",
     "commands/*",
     "apis/*",
