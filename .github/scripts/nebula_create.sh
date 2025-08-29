@@ -22,7 +22,7 @@ echo 2>yarn.lock
 echo "nodeLinker: node-modules" >>.yarnrc.yml
 echo "enableHardenedMode: false" >>.yarnrc.yml
 echo "Yarn"
-yarn
+yarn install
 echo "Linking packages"
 yarn link ../../apis/stardust
 yarn link ../../commands/cli
