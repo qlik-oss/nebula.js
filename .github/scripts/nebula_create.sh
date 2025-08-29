@@ -19,8 +19,8 @@ fi
 
 cd "$PROJECT_NAME"
 echo 2>yarn.lock
-echo "nodeLinker: node-modules" 2>.yarnrc.yml
-echo "enableHardenedMode: false" 2>.yarnrc.yml
+echo "nodeLinker: node-modules" >>.yarnrc.yml
+echo "enableHardenedMode: false" >>.yarnrc.yml
 echo "Yarn"
 yarn
 echo "Linking packages"
