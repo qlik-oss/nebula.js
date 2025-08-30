@@ -16,18 +16,16 @@ else
   ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm yarn
 fi
 
-echo "Yarn"
-yarn
-echo "Linking packages"
-(cd apis/stardust && yarn link)
-(cd commands/cli && yarn link)
-(cd commands/build && yarn link)
-(cd commands/serve && yarn link)
 cd "$PROJECT_NAME"
-yarn link "@nebula.js/stardust"
-yarn link "@nebula.js/cli"
-yarn link "@nebula.js/cli-build"
-yarn link "@nebula.js/cli-serve"
+echo 2>yarn.lock
+ls -la
+echo "Yarn"
+yarn install
+echo "Linking packages"
+yarn link ../../apis/stardust
+yarn link ../../commands/cli
+yarn link ../../commands/build
+yarn link ../../commands/serve
 echo "Log node_modules/@nebula.js"
 ls -la node_modules/@nebula.js
 if [ "$BUILD" = "true" ]; then
