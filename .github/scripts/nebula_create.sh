@@ -7,7 +7,6 @@ MASHUP="${3:-false}"
 INSTALL="${4:-false}"
 BUILD="${5:-true}"
 TEST="${6:-true}"
-YARN_ENABLE_HARDENED_MODE=0
 
 if [ "$MASHUP" = "true" ]; then
   echo "Create mashup project"
@@ -19,6 +18,7 @@ fi
 
 cd "$PROJECT_NAME"
 echo 2>yarn.lock
+ls -la
 echo "Yarn"
 yarn install
 echo "Linking packages"
