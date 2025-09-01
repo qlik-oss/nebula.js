@@ -66,3 +66,13 @@ export const isDateField = (field) =>
 export const isGeoField = (field) => field.qTags.indexOf('$geoname') > -1;
 
 export const trimAutoCalendarName = (fieldName) => (fieldName ? fieldName.split(AUTOCALENDAR_NAME).join('') : '');
+
+export const useMasterNumberFormat = (formatting) => {
+  const format = formatting;
+  format.quarantine = {
+    qNumFormat: format.qNumFormat || {},
+    isCustomFormatted: format.isCustomFormatted || false,
+  };
+  format.qNumFormat = null;
+  format.isCustomFormatted = undefined;
+};

@@ -1,5 +1,5 @@
 import extend from 'extend';
-import { findFieldById, initializeField } from './utils/field-helper/field-utils';
+import { findFieldById, initializeField, useMasterNumberFormat } from './utils/field-helper/field-utils';
 import { INITIAL_SORT_CRITERIAS } from './utils/constants';
 import { notSupportedError } from './utils/hypercube-helper/hypercube-utils';
 
@@ -47,26 +47,26 @@ class DataPropertyHandler {
   }
 
   /**
-   * @typeof {object} LibraryDimensions
+   * @typeof {object} LibraryDimension
    * @property {string} id
    * @property {qix.NxDimension=} defaults
    */
 
   /**
-   * @typeof {object} FieldDimensions
+   * @typeof {object} FieldDimension
    * @property {string} field
    * @property {string=} label
    * @property {qix.NxDimension=} defaults
    */
 
   /**
-   * @typeof {object} LibraryMeasures
+   * @typeof {object} LibraryMeasure
    * @property {string} id
    * @property {qix.NxMeasure=} defaults
    */
 
   /**
-   * @typeof {object} ExpressionMeasures
+   * @typeof {object} ExpressionMeasure
    * @property {string} expression
    * @property {string=} label
    * @property {qix.NxMeasure=} defaults
@@ -115,7 +115,8 @@ class DataPropertyHandler {
    * @example
    * DataPropertyHandler.type(); // Throws error
    */
-  static type() {
+  // eslint-disable-next-line class-methods-use-this
+  type() {
     throw new Error('Must override this method');
   }
 
@@ -128,24 +129,25 @@ class DataPropertyHandler {
    * @description Returns the default dimension array.
    * @memberof DataPropertyHandler
    */
-  static getDimensions() {
+  // eslint-disable-next-line class-methods-use-this
+  getDimensions() {
     return [];
   }
 
   /**
    * Gets a dimension by id from dimensions or alternative dimensions.
-   * @param {string} id - The dimension id.
+   * @param {LibraryDimension} libraryDimension
    * @returns {qix.NxDimension} - The found dimension.
    * @description Searches for a dimension by id in both main and alternative dimensions.
    * @memberof DataPropertyHandler
    * @example
-   * const dim = handler.getDimension('dimId');
+   * const dim = handler.getDimension({ id: 'dimId' });
    */
-  getDimension(id) {
+  getDimension(libraryDimension) {
     const dimensions = this.getDimensions();
     const alternativeDimensions = this.getAlternativeDimensions();
 
-    return findFieldById(dimensions, id) ?? findFieldById(alternativeDimensions, id);
+    return findFieldById(dimensions, libraryDimension.id) ?? findFieldById(alternativeDimensions, libraryDimension.id);
   }
 
   /**
@@ -153,7 +155,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static getAlternativeDimensions() {
+  // eslint-disable-next-line class-methods-use-this
+  getAlternativeDimensions() {
     throw new Error('Method not implemented.');
   }
 
@@ -162,7 +165,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static addDimension() {
+  // eslint-disable-next-line class-methods-use-this
+  addDimension() {
     throw notSupportedError;
   }
 
@@ -171,7 +175,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static addDimensions() {
+  // eslint-disable-next-line class-methods-use-this
+  addDimensions() {
     throw notSupportedError;
   }
 
@@ -180,7 +185,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static removeDimension() {
+  // eslint-disable-next-line class-methods-use-this
+  removeDimension() {
     throw notSupportedError;
   }
 
@@ -189,7 +195,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static removeDimensions() {
+  // eslint-disable-next-line class-methods-use-this
+  removeDimensions() {
     throw notSupportedError;
   }
 
@@ -198,7 +205,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static autoSortDimension() {
+  // eslint-disable-next-line class-methods-use-this
+  autoSortDimension() {
     throw notSupportedError;
   }
 
@@ -207,7 +215,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static replaceDimension() {
+  // eslint-disable-next-line class-methods-use-this
+  replaceDimension() {
     throw notSupportedError;
   }
 
@@ -216,26 +225,26 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static getSorting() {
+  // eslint-disable-next-line class-methods-use-this
+  getSorting() {
     throw notSupportedError;
   }
 
   /**
    * Creates a type of library dimension with a field definition.
-   * @param {string} id - Dimension id
-   * @param {qix.NxDimension=} [defaults] - Default properties for the dimension.
+   * @param {LibraryDimension} libraryDimension
    * @returns {qix.NxDimension} The created dimension object.
    * @description Initializes a dimension and applying default properties and sort criteria.
    * @memberof DataPropertyHandler
    * @example
-   * const dim = handler.createLibraryDimension('dimId', { qDef: { cId: 'dim1' } });
+   * const dim = handler.createLibraryDimension({ id:'dimId', { qDef: { cId: 'dim1' } }});
    */
-  createLibraryDimension(id, defaults) {
-    let dimension = extend(true, {}, this.dimensionProperties || {}, defaults || {});
+  createLibraryDimension(libraryDimension) {
+    let dimension = extend(true, {}, this.dimensionProperties || {}, libraryDimension.defaults || {});
 
     dimension = initializeField(dimension);
 
-    dimension.qLibraryId = id;
+    dimension.qLibraryId = libraryDimension.id;
     dimension.qDef.autoSort = true;
     dimension.qDef.qSortCriterias = INITIAL_SORT_CRITERIAS;
 
@@ -247,28 +256,26 @@ class DataPropertyHandler {
 
   /**
    * Creates a type of field dimension with a field definition.
-   * @param {string} field - The field definition for the dimension.
-   * @param {string=} label - The field label for the dimension.
-   * @param {qix.NxDimension=} defaults - Default properties for the dimension.
+   * @param {FieldDimension} fieldDimension
    * @returns {qix.NxDimension} The created dimension object.
    * @description Initializes a dimension with field definitions, labels, and default properties.
    * @memberof DataPropertyHandler
    * @example
-   * handler.addFieldDimension('currentField', 'label');
+   * handler.createFieldDimension({field: 'currentField', label: 'label'});
    */
-  createFieldDimension(field, label, defaults) {
-    let dimension = extend({}, this.dimensionProperties || {}, defaults || {});
+  createFieldDimension(fieldDimension) {
+    let dimension = extend(true, {}, this.dimensionProperties || {}, fieldDimension.defaults || {});
 
     dimension = initializeField(dimension);
 
-    if (!field) {
+    if (!fieldDimension.field) {
       dimension.qDef.qFieldDefs = [];
       dimension.qDef.qFieldLabels = [];
       dimension.qDef.qSortCriterias = [];
     }
 
-    dimension.qDef.qFieldDefs = [field];
-    dimension.qDef.qFieldLabels = label ? [label] : [''];
+    dimension.qDef.qFieldDefs = [fieldDimension.field];
+    dimension.qDef.qFieldLabels = fieldDimension.label ? [fieldDimension.label] : [''];
     dimension.qDef.qSortCriterias = INITIAL_SORT_CRITERIAS;
     dimension.qDef.autoSort = true;
 
@@ -277,119 +284,113 @@ class DataPropertyHandler {
 
   /**
    * Adds a field dimension to the handler.
-   * @param {string} field - The field definition for the dimension.
-   * @param {string=} label - The field label for the dimension.
-   * @param {qix.NxDimension=} defaults - Default properties for the dimension.
+   * @param {FieldDimension} fieldDimension
    * @returns {Promise<qix.NxDimension=>} The result of addDimension.
    * @description Creates and adds a field dimension.
    * @memberof DataPropertyHandler
    * @example
-   * handler.addFieldDimension('A', 'AA');
+   * handler.addFieldDimension({field: 'currentField', label: 'label'});
    */
-  addFieldDimension(field, label, defaults) {
-    const dimension = this.createFieldDimension(field, label, defaults);
+  addFieldDimension(fieldDimension) {
+    const dimension = this.createFieldDimension(fieldDimension);
     return this.addDimension(dimension);
   }
 
   /**
-   * @param {FieldDimensions[]} args - Array of field dimension args.
+   * @param {FieldDimension[]} fieldDimensions - Array of field dimension.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple field dimensions.
    * @memberof DataPropertyHandler
    * @example
    * handler.addFieldDimensions([{ field: 'A', label: 'AA' }, { field: 'B', label: 'BB' }]);
    */
-  addFieldDimensions(args) {
-    const dimensions = args.map(({ field, label, defaults }) => this.createFieldDimension(field, label, defaults));
+  addFieldDimensions(fieldDimensions) {
+    const dimensions = fieldDimensions.map((fieldDimension) => this.createFieldDimension(fieldDimension));
     return this.addDimensions(dimensions);
   }
 
   /**
    * Adds a library dimension to the handler.
-   * @param {string} id - The library dimension id.
-   * @param {qix.NxDimension=} defaults - Default properties for the dimension.
+   * @param {LibraryDimension} libraryDimension
    * @returns {Promise<qix.NxDimension=>} The result of addDimension.
    * @description Creates and adds a library dimension.
    * @memberof DataPropertyHandler
    * @example
-   * handler.addLibraryDimension('A');
+   * handler.addLibraryDimension({ id: 'A'});
    */
-  addLibraryDimension(id, defaults) {
-    const dimension = this.createLibraryDimension(id, defaults);
+  addLibraryDimension(libraryDimension) {
+    const dimension = this.createLibraryDimension(libraryDimension);
     return this.addDimension(dimension);
   }
 
   /**
    * Adds multiple library dimensions to the handler.
-   * @param {LibraryDimensions[]} args - Array of library dimension args.
+   * @param {LibraryDimension[]} libraryDimensions - Array of library dimension.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple library dimensions.
    * @memberof DataPropertyHandler
    * @example
    * handler.addLibraryDimensions([{ id: 'A' }, { id: 'B', defaults: { ... } }]);
    */
-  addLibraryDimensions(args) {
-    const dimensions = args.map(({ id, defaults }) => this.createLibraryDimension(id, defaults));
+  addLibraryDimensions(libraryDimensions) {
+    const dimensions = libraryDimensions.map((libraryDimension) => this.createLibraryDimension(libraryDimension));
     const result = this.addDimensions(dimensions);
     return result;
   }
 
   /**
    * Adds multiple alternative library dimensions to the handler.
-   * @param {LibraryDimensions[]} args - Array of library dimension args.
+   * @param {LibraryDimension[]} libraryDimensions - Array of library dimension.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple alternative library dimensions.
    * @memberof DataPropertyHandler
    * @example
    * await handler.addAltLibraryDimensions([{ id: 'A' }, { id: 'B', defaults: { ... } }]);
    */
-  async addAltLibraryDimensions(args) {
-    const dimensions = args.map(({ id, defaults }) => this.createLibraryDimension(id, defaults));
+  async addAltLibraryDimensions(libraryDimensions) {
+    const dimensions = libraryDimensions.map((libraryDimension) => this.createLibraryDimension(libraryDimension));
     return this.addDimensions(dimensions, true);
   }
 
   /**
    * Adds multiple alternative field dimensions to the handler.
-   * @param {FieldDimensions[]} args - Array of field dimension args.
+   * @param {FieldDimension[]} fieldDimensions - Array of field dimension.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple alternative field dimensions.
    * @memberof DataPropertyHandler
    * @example
-   * await handler.addAltFieldDimensions([{ field: 'A' }, { field: 'B' }]);
+   * await handler.addAltFieldDimensions([{ field: 'A', label: 'Label A' }, { field: 'B', label: 'Label B' }]);
    */
-  async addAltFieldDimensions(args) {
-    const dimensions = args.map(({ field }) => this.createFieldDimension(field));
+  async addAltFieldDimensions(fieldDimensions) {
+    const dimensions = fieldDimensions.map((fieldDimension) => this.createFieldDimension(fieldDimension));
     return this.addDimensions(dimensions, true);
   }
 
   /**
    * Adds an alternative field dimension to the handler.
-   * @param {string} field - The field definition for the dimension.
-   * @param {string=} label - The field label for the dimension.
-   * @param {qix.NxDimension=} defaults - Default properties for the dimension.
+   * @param {FieldDimension} fieldDimension
    * @returns {Promise<qix.NxDimension=>} The result of addDimension.
    * @description Creates and adds an alternative field dimension.
    * @memberof DataPropertyHandler
    * @example
-   * handler.addAlternativeFieldDimension('A', 'AA');
+   * handler.addAlternativeFieldDimension({ field: 'A', label: 'Label A' });
    */
-  addAlternativeFieldDimension(field, label, defaults) {
-    const dimension = this.createFieldDimension(field, label, defaults);
+  addAlternativeFieldDimension(fieldDimension) {
+    const dimension = this.createFieldDimension(fieldDimension);
     return this.addDimension(dimension, true);
   }
 
   /**
    * Adds an alternative library dimension to the handler.
-   * @param {string} id - The library dimension id.
-   * @param {qix.NxDimension=} defaults - Default properties for the dimension.
+   * @param {LibraryDimension} libraryDimension
    * @returns {Promise<qix.NxDimension=>} The result of addDimension.
    * @description Creates and adds an alternative library dimension.
    * @memberof DataPropertyHandler
    * @example
    * handler.addAlternativeLibraryDimension([{ id: 'A' }, { id: 'B', defaults: { ... } }]);
    */
-  addAlternativeLibraryDimension(id, defaults) {
-    const dimension = this.createLibraryDimension(id, defaults);
+  addAlternativeLibraryDimension(libraryDimension) {
+    const dimension = this.createLibraryDimension(libraryDimension);
     return this.addDimension(dimension, true);
   }
 
@@ -410,9 +411,9 @@ class DataPropertyHandler {
 
   /**
    * Gets the maximum number of dimensions allowed.
-   * @param {number} [decrement=0] - The number to decrement from the current number of dimensions.
+   * @param {number} [decrement=0] - The number to decrement from the current number of measures.
    * @returns {number} The maximum number of dimensions allowed.
-   * @description Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
+   * @description Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
    * @memberof DataPropertyHandler
    * @example
    * const max = handler.maxDimensions();
@@ -449,7 +450,8 @@ class DataPropertyHandler {
    * @description Returns the default measure array.
    * @memberof DataPropertyHandler
    */
-  static getMeasures() {
+  // eslint-disable-next-line class-methods-use-this
+  getMeasures() {
     return [];
   }
 
@@ -458,7 +460,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static getAlternativeMeasures() {
+  // eslint-disable-next-line class-methods-use-this
+  getAlternativeMeasures() {
     throw new Error('Method not implemented.');
   }
 
@@ -467,7 +470,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static addMeasure() {
+  // eslint-disable-next-line class-methods-use-this
+  addMeasure() {
     throw notSupportedError;
   }
 
@@ -476,7 +480,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static addMeasures() {
+  // eslint-disable-next-line class-methods-use-this
+  addMeasures() {
     throw notSupportedError;
   }
 
@@ -485,7 +490,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static removeMeasure() {
+  // eslint-disable-next-line class-methods-use-this
+  removeMeasure() {
     throw notSupportedError;
   }
 
@@ -494,7 +500,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static removeMeasures() {
+  // eslint-disable-next-line class-methods-use-this
+  removeMeasures() {
     throw notSupportedError;
   }
 
@@ -503,7 +510,8 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static autoSortMeasure() {
+  // eslint-disable-next-line class-methods-use-this
+  autoSortMeasure() {
     throw notSupportedError;
   }
 
@@ -512,45 +520,44 @@ class DataPropertyHandler {
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
-  static replaceMeasure() {
+  // eslint-disable-next-line class-methods-use-this
+  replaceMeasure() {
     throw notSupportedError;
   }
 
   /**
    * Gets a measure by id from measures or alternative measures.
-   * @param {string} id - The measure id to find.
+   * @param {string} libraryDimension - The measure id to find.
    * @returns {qix.NxMeasure} The found measure or undefined.
    * @description Searches for a measure by id in both main and alternative measures.
    * @memberof DataPropertyHandler
    * @example
    * const measure = handler.getMeasure('measId');
    */
-  getMeasure(id) {
+  getMeasure(libraryDimension) {
     const measures = this.getMeasures();
     const alternativeMeasures = this.getAlternativeMeasures();
 
-    return findFieldById(measures, id) ?? findFieldById(alternativeMeasures, id);
+    return findFieldById(measures, libraryDimension.id) ?? findFieldById(alternativeMeasures, libraryDimension.id);
   }
 
   /**
    * Creates an expression measure.
-   * @param {string} expression - The expression for the measure.
-   * @param {string=} label - The label for the measure.
-   * @param {qix.NxMeasure=} defaults - Default properties for the measure.
+   * @param {ExpressionMeasure} expressionMeasure
    * @returns {Promise<qix.NxMeasure=>} The created measure object.
    * @description Initializes a measure with an expression, label, and default properties.
    * @memberof DataPropertyHandler
    * @example
-   * const meas = handler.createExpressionMeasure('Sum(Sales)', 'Total Sales');
+   * const meas = handler.createExpressionMeasure({ expression: 'Sum(Sales)', label: 'Total Sales' });
    */
-  createExpressionMeasure(expression, label, defaults) {
-    const measure = extend(true, {}, this.measureProperties || {}, defaults || {});
+  createExpressionMeasure(expressionMeasure) {
+    const measure = extend(true, {}, this.measureProperties || {}, expressionMeasure.defaults || {});
 
     measure.qDef = measure.qDef ?? {};
     measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
 
-    measure.qDef.qDef = expression;
-    measure.qDef.qLabel = label;
+    measure.qDef.qDef = expressionMeasure.expression;
+    measure.qDef.qLabel = expressionMeasure.label;
     measure.qDef.autoSort = true;
 
     return measure;
@@ -558,52 +565,50 @@ class DataPropertyHandler {
 
   /**
    * Adds an expression measure to the handler.
-   * @param {string} expression - The expression for the measure.
-   * @param {string=} label - The label for the measure.
-   * @param {qix.NxMeasure=} defaults - Default properties for the measure.
+   * @param {ExpressionMeasure} expressionMeasure
    * @returns {Promise<qix.NxMeasure=>} The result of addMeasure.
    * @description Creates and adds an expression measure.
    * @memberof DataPropertyHandler
    * @example
-   * handler.addExpressionMeasure('Sum(Sales)', 'Total Sales');
+   * handler.addExpressionMeasure({ expression: 'Sum(Sales)', label: 'Total Sales' });
    */
-  addExpressionMeasure(expression, label, defaults) {
-    const measure = this.createExpressionMeasure(expression, label, defaults);
+  addExpressionMeasure(expressionMeasure) {
+    const measure = this.createExpressionMeasure(expressionMeasure);
     return this.addMeasure(measure);
   }
 
   /**
    * Adds multiple expression measures to the handler.
-   * @param {ExpressionMeasures[]} args - Array of expression measure args.
+   * @param {ExpressionMeasure[]} expressionMeasures - Array of expression measure.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple expression measures.
    * @memberof DataPropertyHandler
    * @example
    * handler.addExpressionMeasures([{ expression: 'Sum(A)' }, { expression: 'Sum(B)', label: 'B' }]);
    */
-  addExpressionMeasures(args) {
-    const measures = args.map(({ expression, label, defaults }) =>
-      this.createExpressionMeasure(expression, label, defaults)
-    );
+  addExpressionMeasures(expressionMeasures) {
+    const measures = expressionMeasures.map((expressionMeasure) => this.createExpressionMeasure(expressionMeasure));
     return this.addMeasures(measures);
   }
 
   /**
    * Creates a library measure.
-   * @param {string} id - The library measure id.
-   * @param {qix.NxMeasure=} defaults - Default properties for the measure.
+   * @param {LibraryMeasure} libraryMeasure
    * @returns {qix.NxMeasure} The created measure object.
    * @description Initializes a library measure with default properties.
    * @memberof DataPropertyHandler
    * @example
-   * const meas = handler.createLibraryMeasure('measId', { qDef: { ... } });
+   * const meas = handler.createLibraryMeasure({ id: 'measId', defaults: { qDef: { ... } } });
    */
-  createLibraryMeasure(id, defaults) {
-    const measure = extend(true, {}, this.measureProperties || {}, defaults || {});
+  createLibraryMeasure(libraryMeasure) {
+    const measure = extend(true, {}, this.measureProperties || {}, libraryMeasure.defaults || {});
+
     measure.qDef = measure.qDef ?? {};
     measure.qDef.qNumFormat = measure.qDef.qNumFormat ?? {};
 
-    measure.qLibraryId = id;
+    useMasterNumberFormat(measure.qDef);
+
+    measure.qLibraryId = libraryMeasure.id;
     measure.qDef.autoSort = true;
 
     delete measure.qDef.qDef;
@@ -614,89 +619,85 @@ class DataPropertyHandler {
 
   /**
    * Adds a library measure to the handler.
-   * @param {string} id - The library measure id.
-   * @param {qix.NxMeasure=} defaults - Default properties for the measure.
+   * @param {LibraryMeasure} libraryMeasure
    * @returns {Promise<qix.NxMeasure=>} The result of addMeasure.
    * @description Creates and adds a library measure.
    * @memberof DataPropertyHandler
    * @example
-   * handler.addLibraryMeasure('measId', { qDef: { ... } });
+   * handler.addLibraryMeasure({ id: 'measId', defaults: { qDef: { ... } } });
    */
-  addLibraryMeasure(id, defaults) {
-    const measure = this.createLibraryMeasure(id, defaults);
+  addLibraryMeasure(libraryMeasure) {
+    const measure = this.createLibraryMeasure(libraryMeasure);
     return this.addMeasure(measure);
   }
 
   /**
    * Adds multiple library measures to the handler.
-   * @param {LibraryMeasures[]} args - Array of library measure args.
+   * @param {LibraryMeasure[]} libraryMeasures - Array of library measure.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple library measures.
    * @memberof DataPropertyHandler
    * @example
    * handler.addLibraryMeasures([{ id: 'A' }, { id: 'B', defaults: { qDef: { ... } } }]);
    */
-  addLibraryMeasures(args) {
-    const measures = args.map(({ id, defaults }) => this.createLibraryMeasure(id, defaults));
+  addLibraryMeasures(libraryMeasures) {
+    const measures = libraryMeasures.map((libraryMeasure) => this.createLibraryMeasure(libraryMeasure));
     return this.addMeasures(measures);
   }
 
   /**
    * Adds multiple alternative library measures to the handler.
-   * @param {LibraryMeasures[]} args - Array of library measure args.
+   * @param {LibraryMeasure[]} libraryMeasures - Array of library measure.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple alternative library measures.
    * @memberof DataPropertyHandler
    * @example
    * handler.addAltLibraryMeasures([{ id: 'A' }, { id: 'B' }]);
    */
-  addAltLibraryMeasures(args) {
-    const measures = args.map(({ id }) => this.createLibraryMeasure(id));
+  addAltLibraryMeasures(libraryMeasures) {
+    const measures = libraryMeasures.map((libraryMeasure) => this.createLibraryMeasure(libraryMeasure));
     return this.addMeasures(measures, true);
   }
 
   /**
    * Adds multiple alternative expression measures to the handler.
-   * @param {ExpressionMeasures[]} args - Array of expression measure args.
+   * @param {ExpressionMeasure[]} expressionMeasures - Array of expression measure.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple alternative expression measures.
    * @memberof DataPropertyHandler
    * @example
    * handler.addAltExpressionMeasures([{ expression: 'Sum(A)' }, { expression: 'Sum(B)' }]);
    */
-  addAltExpressionMeasures(args) {
-    const measures = args.map(({ expression }) => this.createExpressionMeasure(expression));
+  addAltExpressionMeasures(libraryMeasures) {
+    const measures = libraryMeasures.map((expressionMeasure) => this.createExpressionMeasure(expressionMeasure));
     return this.addMeasures(measures, true);
   }
 
   /**
    * Adds an alternative expression measure to the handler.
-   * @param {string} expression - The expression for the measure.
-   * @param {string=} label - The label for the measure.
-   * @param {qix.NxMeasure=} defaults - Default properties for the measure.
+   * @param {ExpressionMeasure} expressionMeasure
    * @returns {Promise<qix.NxMeasure=>} The result of addMeasure.
    * @description Creates and adds an alternative expression measure.
    * @memberof DataPropertyHandler
    * @example
-   * handler.addAlternativeExpressionMeasure('Sum(Sales)', 'Total Sales');
+   * handler.addAlternativeExpressionMeasure({ expression: 'Sum(Sales)', label: 'Total Sales'});
    */
-  addAlternativeExpressionMeasure(expression, label, defaults) {
-    const measure = this.createExpressionMeasure(expression, label, defaults);
+  addAlternativeExpressionMeasure(expressionMeasure) {
+    const measure = this.createExpressionMeasure(expressionMeasure);
     return this.addMeasure(measure, true);
   }
 
   /**
    * Adds an alternative library measure to the handler.
-   * @param {string} id - The library measure id.
-   * @param {qix.NxMeasure=} defaults - Default properties for the measure.
+   * @param {LibraryMeasure} libraryMeasure
    * @returns {qix.NxMeasure=} The result of addMeasure.
    * @description Creates and adds an alternative library measure.
    * @memberof DataPropertyHandler
    * @example
-   * handler.addAlternativeLibraryMeasure('measId', { qDef: { ... } });
+   * handler.addAlternativeLibraryMeasure({ id: 'measId', defaults: { qDef: { ... } } });
    */
-  addAlternativeLibraryMeasure(id, defaults) {
-    const measure = this.createLibraryMeasure(id, defaults);
+  addAlternativeLibraryMeasure(libraryMeasure) {
+    const measure = this.createLibraryMeasure(libraryMeasure);
     return this.addMeasure(measure, true);
   }
 
@@ -717,9 +718,9 @@ class DataPropertyHandler {
 
   /**
    * Gets the maximum number of measures allowed.
-   * @param {number} [decrement=0] - The number to decrement from the current number of measures.
+   * @param {number} [decrement=0] - The number to decrement from the current number of dimensions.
    * @returns {number} The maximum number of measures allowed.
-   * @description Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
+   * @description Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
    * @memberof DataPropertyHandler
    * @example
    * const max = handler.maxMeasures();

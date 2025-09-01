@@ -373,7 +373,7 @@ class HyperCubeHandler extends DataPropertyHandler {
    * const measure = hyperCubeHandler.addMeasure(measure, alternative, idx);
    */
   addMeasure(measure, alternative, idx) {
-    const meas = initializeField(measure);
+    const meas = initializeId(measure);
 
     if (hcUtils.isMeasureAlternative(this, alternative)) {
       const hcMeasures = this.hcProperties.qLayoutExclude.qHyperCubeDef.qMeasures;
