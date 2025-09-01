@@ -15,7 +15,7 @@ else
   echo "Create project based on Picasso template"
   ./commands/cli/lib/index.js create "$PROJECT_NAME" --picasso "$PICASSO_TEMPLATE" --install "$INSTALL" --pkgm yarn
 fi
-echo 2>"$PROJECT_NAME"/yarn.lock
+touch "$PROJECT_NAME"/yarn.lock
 echo "Yarn"
 YARN_ENABLE_HARDENED_MODE=0 yarn
 echo "Linking packages"
