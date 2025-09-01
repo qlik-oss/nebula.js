@@ -236,79 +236,120 @@ export class DataPropertyHandler {
     setLayout(layout?: object): void;
 
     /**
-     * Searches for a dimension by id in both main and alternative dimensions.
-     * @param id The dimension id.
+     * Throws an error indicating the method must be overridden.
      */
-    getDimension(id: string): qix.NxDimension;
+    type(): void;
+
+    /**
+     * Returns the default dimension array.
+     */
+    getDimensions(): Array;
+
+    /**
+     * Searches for a dimension by id in both main and alternative dimensions.
+     * @param libraryDimension
+     */
+    getDimension(libraryDimension: LibraryDimension): qix.NxDimension;
+
+    /**
+     * Throws an error indicating the method must be implemented in subclasses.
+     */
+    getAlternativeDimensions(): void;
+
+    /**
+     * Throws an error indicating addDimension is not supported in the base class.
+     */
+    addDimension(): void;
+
+    /**
+     * Throws an error indicating addDimensions is not supported in the base class.
+     */
+    addDimensions(): void;
+
+    /**
+     * Throws an error indicating removeDimension is not supported in the base class.
+     */
+    removeDimension(): void;
+
+    /**
+     * Throws an error indicating removeDimensions is not supported in the base class.
+     */
+    removeDimensions(): void;
+
+    /**
+     * Throws an error indicating autoSortDimension is not supported in the base class.
+     */
+    autoSortDimension(): void;
+
+    /**
+     * Throws an error indicating replaceDimension is not supported in the base class.
+     */
+    replaceDimension(): void;
+
+    /**
+     * Throws an error indicating getSorting is not supported in the base class.
+     */
+    getSorting(): void;
 
     /**
      * Initializes a dimension and applying default properties and sort criteria.
-     * @param id Dimension id
-     * @param defaults Default properties for the dimension.
+     * @param libraryDimension
      */
-    createLibraryDimension(id: string, defaults?: qix.NxDimension): qix.NxDimension;
+    createLibraryDimension(libraryDimension: LibraryDimension): qix.NxDimension;
 
     /**
      * Initializes a dimension with field definitions, labels, and default properties.
-     * @param field The field definition for the dimension.
-     * @param label The field label for the dimension.
-     * @param defaults Default properties for the dimension.
+     * @param fieldDimension
      */
-    createFieldDimension(field: string, label?: string, defaults?: qix.NxDimension): qix.NxDimension;
+    createFieldDimension(fieldDimension: FieldDimension): qix.NxDimension;
 
     /**
      * Creates and adds a field dimension.
-     * @param field The field definition for the dimension.
-     * @param label The field label for the dimension.
-     * @param defaults Default properties for the dimension.
+     * @param fieldDimension
      */
-    addFieldDimension(field: string, label?: string, defaults?: qix.NxDimension): Promise<qix.NxDimension>;
+    addFieldDimension(fieldDimension: FieldDimension): Promise<qix.NxDimension>;
 
     /**
      * Creates and adds multiple field dimensions.
-     * @param args Array of field dimension args.
+     * @param fieldDimensions Array of field dimension.
      */
-    addFieldDimensions(args: FieldDimensions[]): Promise<qix.NxDimension[]>;
+    addFieldDimensions(fieldDimensions: FieldDimension[]): Promise<qix.NxDimension[]>;
 
     /**
      * Creates and adds a library dimension.
-     * @param id The library dimension id.
-     * @param defaults Default properties for the dimension.
+     * @param libraryDimension
      */
-    addLibraryDimension(id: string, defaults?: qix.NxDimension): Promise<qix.NxDimension>;
+    addLibraryDimension(libraryDimension: LibraryDimension): Promise<qix.NxDimension>;
 
     /**
      * Creates and adds multiple library dimensions.
-     * @param args Array of library dimension args.
+     * @param libraryDimensions Array of library dimension.
      */
-    addLibraryDimensions(args: LibraryDimensions[]): Promise<qix.NxDimension[]>;
+    addLibraryDimensions(libraryDimensions: LibraryDimension[]): Promise<qix.NxDimension[]>;
 
     /**
      * Creates and adds multiple alternative library dimensions.
-     * @param args Array of library dimension args.
+     * @param libraryDimensions Array of library dimension.
      */
-    addAltLibraryDimensions(args: LibraryDimensions[]): Promise<qix.NxDimension[]>;
+    addAltLibraryDimensions(libraryDimensions: LibraryDimension[]): Promise<qix.NxDimension[]>;
 
     /**
      * Creates and adds multiple alternative field dimensions.
-     * @param args Array of field dimension args.
+     * @param fieldDimensions Array of field dimension.
      */
-    addAltFieldDimensions(args: FieldDimensions[]): Promise<qix.NxDimension[]>;
+    addAltFieldDimensions(fieldDimensions: FieldDimension[]): Promise<qix.NxDimension[]>;
 
     /**
      * Creates and adds an alternative field dimension.
-     * @param field The field definition for the dimension.
-     * @param label The field label for the dimension.
-     * @param defaults Default properties for the dimension.
+     * @param fieldDimension
      */
-    addAlternativeFieldDimension(field: string, label?: string, defaults?: qix.NxDimension): Promise<qix.NxDimension>;
+    addAlternativeFieldDimension(fieldDimension: FieldDimension): Promise<qix.NxDimension>;
 
     /**
      * Creates and adds an alternative library dimension.
-     * @param id The library dimension id.
-     * @param defaults Default properties for the dimension.
+     * @param libraryDimension
      */
-    addAlternativeLibraryDimension(id: string, defaults?: qix.NxDimension): Promise<qix.NxDimension>;
+    addAlternativeLibraryDimension(libraryDimension: LibraryDimension): Promise<qix.NxDimension>;
 
     /**
      * Returns the minimum number of dimensions allowed by the handler.
@@ -316,8 +357,8 @@ export class DataPropertyHandler {
     minDimensions(): number;
 
     /**
-     * Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
-     * @param decrement The number to decrement from the current number of dimensions.
+     * Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
+     * @param decrement The number to decrement from the current number of measures.
      */
     maxDimensions(decrement?: number): number;
 
@@ -327,79 +368,110 @@ export class DataPropertyHandler {
     canAddDimension(): boolean;
 
     /**
-     * Searches for a measure by id in both main and alternative measures.
-     * @param id The measure id to find.
+     * Returns the default measure array.
      */
-    getMeasure(id: string): qix.NxMeasure;
+    getMeasures(): Array;
+
+    /**
+     * Throws an error indicating the method must be implemented in subclasses.
+     */
+    getAlternativeMeasures(): void;
+
+    /**
+     * Throws an error indicating addMeasure is not supported in the base class.
+     */
+    addMeasure(): void;
+
+    /**
+     * Throws an error indicating addMeasures is not supported in the base class.
+     */
+    addMeasures(): void;
+
+    /**
+     * Throws an error indicating removeMeasure is not supported in the base class.
+     */
+    removeMeasure(): void;
+
+    /**
+     * Throws an error indicating removeMeasures is not supported in the base class.
+     */
+    removeMeasures(): void;
+
+    /**
+     * Throws an error indicating autoSortMeasure is not supported in the base class.
+     */
+    autoSortMeasure(): void;
+
+    /**
+     * Throws an error indicating replaceMeasure is not supported in the base class.
+     */
+    replaceMeasure(): void;
+
+    /**
+     * Searches for a measure by id in both main and alternative measures.
+     * @param libraryDimension The measure id to find.
+     */
+    getMeasure(libraryDimension: string): qix.NxMeasure;
 
     /**
      * Initializes a measure with an expression, label, and default properties.
-     * @param expression The expression for the measure.
-     * @param label The label for the measure.
-     * @param defaults Default properties for the measure.
+     * @param expressionMeasure
      */
-    createExpressionMeasure(expression: string, label?: string, defaults?: qix.NxMeasure): Promise<qix.NxMeasure>;
+    createExpressionMeasure(expressionMeasure: ExpressionMeasure): Promise<qix.NxMeasure>;
 
     /**
      * Creates and adds an expression measure.
-     * @param expression The expression for the measure.
-     * @param label The label for the measure.
-     * @param defaults Default properties for the measure.
+     * @param expressionMeasure
      */
-    addExpressionMeasure(expression: string, label?: string, defaults?: qix.NxMeasure): Promise<qix.NxMeasure>;
+    addExpressionMeasure(expressionMeasure: ExpressionMeasure): Promise<qix.NxMeasure>;
 
     /**
      * Creates and adds multiple expression measures.
-     * @param args Array of expression measure args.
+     * @param expressionMeasures Array of expression measure.
      */
-    addExpressionMeasures(args: ExpressionMeasures[]): Promise<qix.NxMeasure[]>;
+    addExpressionMeasures(expressionMeasures: ExpressionMeasure[]): Promise<qix.NxMeasure[]>;
 
     /**
      * Initializes a library measure with default properties.
-     * @param id The library measure id.
-     * @param defaults Default properties for the measure.
+     * @param libraryMeasure
      */
-    createLibraryMeasure(id: string, defaults?: qix.NxMeasure): qix.NxMeasure;
+    createLibraryMeasure(libraryMeasure: LibraryMeasure): qix.NxMeasure;
 
     /**
      * Creates and adds a library measure.
-     * @param id The library measure id.
-     * @param defaults Default properties for the measure.
+     * @param libraryMeasure
      */
-    addLibraryMeasure(id: string, defaults?: qix.NxMeasure): Promise<qix.NxMeasure>;
+    addLibraryMeasure(libraryMeasure: LibraryMeasure): Promise<qix.NxMeasure>;
 
     /**
      * Creates and adds multiple library measures.
-     * @param args Array of library measure args.
+     * @param libraryMeasures Array of library measure.
      */
-    addLibraryMeasures(args: LibraryMeasures[]): Promise<qix.NxMeasure[]>;
+    addLibraryMeasures(libraryMeasures: LibraryMeasure[]): Promise<qix.NxMeasure[]>;
 
     /**
      * Creates and adds multiple alternative library measures.
-     * @param args Array of library measure args.
+     * @param libraryMeasures Array of library measure.
      */
-    addAltLibraryMeasures(args: LibraryMeasures[]): Promise<qix.NxMeasure[]>;
+    addAltLibraryMeasures(libraryMeasures: LibraryMeasure[]): Promise<qix.NxMeasure[]>;
 
     /**
      * Creates and adds multiple alternative expression measures.
-     * @param args Array of expression measure args.
+     * @param expressionMeasures Array of expression measure.
      */
-    addAltExpressionMeasures(args: ExpressionMeasures[]): Promise<qix.NxMeasure[]>;
+    addAltExpressionMeasures(expressionMeasures: ExpressionMeasure[]): Promise<qix.NxMeasure[]>;
 
     /**
      * Creates and adds an alternative expression measure.
-     * @param expression The expression for the measure.
-     * @param label The label for the measure.
-     * @param defaults Default properties for the measure.
+     * @param expressionMeasure
      */
-    addAlternativeExpressionMeasure(expression: string, label?: string, defaults?: qix.NxMeasure): Promise<qix.NxMeasure>;
+    addAlternativeExpressionMeasure(expressionMeasure: ExpressionMeasure): Promise<qix.NxMeasure>;
 
     /**
      * Creates and adds an alternative library measure.
-     * @param id The library measure id.
-     * @param defaults Default properties for the measure.
+     * @param libraryMeasure
      */
-    addAlternativeLibraryMeasure(id: string, defaults?: qix.NxMeasure): qix.NxMeasure;
+    addAlternativeLibraryMeasure(libraryMeasure: LibraryMeasure): qix.NxMeasure;
 
     /**
      * Returns the minimum number of measures allowed by the handler.
@@ -407,8 +479,8 @@ export class DataPropertyHandler {
     minMeasures(): number;
 
     /**
-     * Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
-     * @param decrement The number to decrement from the current number of measures.
+     * Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
+     * @param decrement The number to decrement from the current number of dimensions.
      */
     maxMeasures(decrement?: number): number;
 
@@ -422,96 +494,6 @@ export class DataPropertyHandler {
      * @param layout The layout object to pass to listeners.
      */
     updateGlobalChangeListeners(layout: object): void;
-
-    /**
-     * Throws an error indicating the method must be overridden.
-     */
-    static type(): void;
-
-    /**
-     * Returns the default dimension array.
-     */
-    static getDimensions(): Array;
-
-    /**
-     * Throws an error indicating the method must be implemented in subclasses.
-     */
-    static getAlternativeDimensions(): void;
-
-    /**
-     * Throws an error indicating addDimension is not supported in the base class.
-     */
-    static addDimension(): void;
-
-    /**
-     * Throws an error indicating addDimensions is not supported in the base class.
-     */
-    static addDimensions(): void;
-
-    /**
-     * Throws an error indicating removeDimension is not supported in the base class.
-     */
-    static removeDimension(): void;
-
-    /**
-     * Throws an error indicating removeDimensions is not supported in the base class.
-     */
-    static removeDimensions(): void;
-
-    /**
-     * Throws an error indicating autoSortDimension is not supported in the base class.
-     */
-    static autoSortDimension(): void;
-
-    /**
-     * Throws an error indicating replaceDimension is not supported in the base class.
-     */
-    static replaceDimension(): void;
-
-    /**
-     * Throws an error indicating getSorting is not supported in the base class.
-     */
-    static getSorting(): void;
-
-    /**
-     * Returns the default measure array.
-     */
-    static getMeasures(): Array;
-
-    /**
-     * Throws an error indicating the method must be implemented in subclasses.
-     */
-    static getAlternativeMeasures(): void;
-
-    /**
-     * Throws an error indicating addMeasure is not supported in the base class.
-     */
-    static addMeasure(): void;
-
-    /**
-     * Throws an error indicating addMeasures is not supported in the base class.
-     */
-    static addMeasures(): void;
-
-    /**
-     * Throws an error indicating removeMeasure is not supported in the base class.
-     */
-    static removeMeasure(): void;
-
-    /**
-     * Throws an error indicating removeMeasures is not supported in the base class.
-     */
-    static removeMeasures(): void;
-
-    /**
-     * Throws an error indicating autoSortMeasure is not supported in the base class.
-     */
-    static autoSortMeasure(): void;
-
-    /**
-     * Throws an error indicating replaceMeasure is not supported in the base class.
-     */
-    static replaceMeasure(): void;
 
 }
 
@@ -1003,57 +985,6 @@ declare namespace stardust {
         isEnabled(flag: string): boolean;
     }
 
-    type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
-
-    /**
-     * Rendering configuration for creating and rendering a new object
-     */
-    interface CreateConfig {
-        type: string;
-        version?: string;
-        fields?: stardust.Field[];
-        properties?: qix.GenericObjectProperties;
-    }
-
-    /**
-     * Configuration for rendering a visualisation, either creating or fetching an existing object.
-     */
-    interface RenderConfig {
-        element: HTMLElement;
-        options?: object;
-        /**
-         * Callback function called after rendering successfully
-         */
-        onRender?(): void;
-        /**
-         * Callback function called if an error occurs
-         * @param $
-         */
-        onError?($: stardust.RenderError): void;
-        plugins?: stardust.Plugin[];
-        id?: string;
-        type?: string;
-        version?: string;
-        fields?: stardust.Field[];
-        extendProperties?: boolean;
-        properties?: qix.GenericObjectProperties;
-    }
-
-    interface LibraryField {
-        qLibraryId: string;
-        type: "dimension" | "measure";
-    }
-
-    /**
-     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
-     */
-    interface Plugin {
-        info: {
-            name: string;
-        };
-        fn: ()=>void;
-    }
-
     class AppSelections {
         constructor();
 
@@ -1126,6 +1057,57 @@ declare namespace stardust {
          */
         noModal(accept?: boolean): Promise<undefined>;
 
+    }
+
+    /**
+     * An object literal containing meta information about the plugin and a function containing the plugin implementation.
+     */
+    interface Plugin {
+        info: {
+            name: string;
+        };
+        fn: ()=>void;
+    }
+
+    type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
+
+    /**
+     * Rendering configuration for creating and rendering a new object
+     */
+    interface CreateConfig {
+        type: string;
+        version?: string;
+        fields?: stardust.Field[];
+        properties?: qix.GenericObjectProperties;
+    }
+
+    /**
+     * Configuration for rendering a visualisation, either creating or fetching an existing object.
+     */
+    interface RenderConfig {
+        element: HTMLElement;
+        options?: object;
+        /**
+         * Callback function called after rendering successfully
+         */
+        onRender?(): void;
+        /**
+         * Callback function called if an error occurs
+         * @param $
+         */
+        onError?($: stardust.RenderError): void;
+        plugins?: stardust.Plugin[];
+        id?: string;
+        type?: string;
+        version?: string;
+        fields?: stardust.Field[];
+        extendProperties?: boolean;
+        properties?: qix.GenericObjectProperties;
+    }
+
+    interface LibraryField {
+        qLibraryId: string;
+        type: "dimension" | "measure";
     }
 
     interface LoadType {
