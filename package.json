@@ -6,7 +6,6 @@
     "build": "yarn run locale:generate && cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
     "build:dev": "yarn run locale:generate && cross-env NODE_ENV=development FORCE_COLOR=1 lerna run build --stream",
     "build:codesandbox": "yarn run locale:generate &&  cross-env NODE_ENV=production CODESANDBOX=1 FORCE_COLOR=1 lerna run build --stream --scope \"@nebula.js/{stardust,theme,locale,conversion,enigma-mocker}\"",
-    "install:codesandbox": "yarn --ignore-engines",
     "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream --concurrency 99 --no-sort",
     "format": "prettier --write '**/**/*' --ignore-unknown",
     "locale:verify": "node tools/verify-translations.cjs",
@@ -93,18 +92,17 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
-    "**/caniuse-lite": "1.0.30001739",
-    "**/react": "18.3.1",
-    "**/react-dom": "18.3.1",
-    "**/react-is": "18.3.1",
+    "caniuse-lite": "1.0.30001739",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-is": "18.3.1",
     "@playwright/test": "1.55.0"
   },
   "workspaces": [
-    "generated/*",
     "packages/*",
     "commands/*",
     "apis/*",
     "test/component/*"
   ],
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "yarn@4.9.4"
 }

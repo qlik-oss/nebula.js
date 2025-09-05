@@ -32,7 +32,7 @@
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-plugin-import": "2.23.4",
     "eslint-plugin-mocha": "9.0.0",
-    "@qlik/sdk": "^0.12.0",
+    "@qlik/sdk": "^0.28.0",
     "picasso.js": "2.1.1",
     "picasso-plugin-q": "2.1.1"
   },
