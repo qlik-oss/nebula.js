@@ -1,6 +1,7 @@
 import hypercube from './hypercube';
 import utils from './utils';
 import helpers from './helpers';
+import arrayUtil from './array-util';
 
 const getType = async ({ halo, name, version }) => {
   const { types } = halo;
@@ -118,4 +119,7 @@ const conversion = {
    */
   hypercube,
 };
+
+export { utils, arrayUtil };
+
 export default conversion;

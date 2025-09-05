@@ -42,6 +42,8 @@ export {
   useEmitter,
   onTakeSnapshot,
   onContextMenu,
+  HyperCubeHandler,
+  DataPropertyHandler,
 } from '@nebula.js/supernova';
 
 // component internals

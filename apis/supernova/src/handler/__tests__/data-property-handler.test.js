@@ -34,17 +34,16 @@ describe('DataPropertyHandler', () => {
   describe('getDimensions()', () => {
     test('should return null when dimension is undefined', () => {
       jest.spyOn(handler, 'getDimensions').mockReturnValue([]);
-      const dimension = handler.getDimension(undefined);
+      const dimension = handler.getDimension({});
       expect(dimension).toBeFalsy();
     });
 
     test('should return dimension when it exists in getDimensions()', () => {
       jest.spyOn(handler, 'getDimensions').mockReturnValue([{ qDef: { cId: 'dim1' } }]);
       jest.spyOn(handler, 'getAlternativeDimensions').mockReturnValue([{ qDef: { cId: 'altDim1' } }]);
-
-      const dimension = handler.getDimension('dim1');
+      const dimension = handler.getDimension({ id: 'dim1' });
       expect(dimension).toEqual({ qDef: { cId: 'dim1' } });
-      const alternativeDimension = handler.getDimension('altDim1');
+      const alternativeDimension = handler.getDimension({ id: 'altDim1' });
       expect(alternativeDimension).toEqual({ qDef: { cId: 'altDim1' } });
     });
   });
@@ -52,7 +51,7 @@ describe('DataPropertyHandler', () => {
   describe('getMeasure()', () => {
     test('should return null when both measures and alternative measures are empty', () => {
       jest.spyOn(handler, 'getMeasures').mockReturnValue([]);
-      const measure = handler.getMeasure(undefined);
+      const measure = handler.getMeasure({});
       expect(measure).toBeFalsy();
     });
 
@@ -60,8 +59,8 @@ describe('DataPropertyHandler', () => {
       jest.spyOn(handler, 'getMeasures').mockReturnValue([{ qDef: { cId: 'measure1' } }]);
       jest.spyOn(handler, 'getAlternativeMeasures').mockReturnValue([{ qDef: { cId: 'altMeasure1' } }]);
 
-      const measure = handler.getMeasure('measure1');
-      const alternativeMeasure = handler.getMeasure('altMeasure1');
+      const measure = handler.getMeasure({ id: 'measure1' });
+      const alternativeMeasure = handler.getMeasure({ id: 'altMeasure1' });
       expect(measure).toEqual({ qDef: { cId: 'measure1' } });
       expect(alternativeMeasure).toEqual({ qDef: { cId: 'altMeasure1' } });
     });
@@ -75,31 +74,26 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should create a dimension with default properties when no field is provided', () => {
-      const result = handler.createFieldDimension(null, null, { customDefault: 'value' });
+      const fieldDimension = { field: '', label: '', defaults: { customDefault: 'value' } };
+      const result = handler.createFieldDimension(fieldDimension);
 
-      expect(result.qDef.qFieldDefs).toEqual([null]);
+      expect(result.qDef.qFieldDefs).toEqual(['']);
       expect(result.qDef.qFieldLabels).toEqual(['']);
       expect(result.qDef.qSortCriterias).toEqual(sortingProperties);
       expect(result.qDef.autoSort).toBe(true);
       expect(result.someProperty).toBe('defaultValue');
       expect(result.customDefault).toBe('value');
-    });
-
-    test('should create a library dimension with default properties', () => {
-      const result = handler.createLibraryDimension('libraryId', { customDefault: 'value' });
-
-      expect(result.qLibraryId).toBe('libraryId');
-      expect(result.qDef.qSortCriterias).toEqual(sortingProperties);
-      expect(result.qDef.autoSort).toBe(true);
-      expect(result.someProperty).toBe('defaultValue');
-      expect(result.customDefault).toBe('value');
+      expect(result.qOtherTotalSpec).toEqual({});
     });
 
     test('should create a dimension with provided field and label', () => {
-      const result = handler.createFieldDimension('fieldName', 'fieldLabel', { customDefault: 'value' });
+      const fieldDimension = { field: 'fieldName', label: 'fieldLabel' };
+      const result = handler.createFieldDimension(fieldDimension);
 
       expect(result.qDef.qFieldDefs).toEqual(['fieldName']);
       expect(result.qDef.qFieldLabels).toEqual(['fieldLabel']);
+      expect(result.qDef.qSortCriterias).toEqual(sortingProperties);
+      expect(result.qDef.autoSort).toBe(true);
     });
   });
 
@@ -110,21 +104,17 @@ describe('DataPropertyHandler', () => {
       });
     });
 
-    test('should delete qFieldDefs and qFieldLabels from the dimension', () => {
-      const result = handler.createLibraryDimension('libraryId', {});
-
-      expect(result.qDef.qFieldDefs).toBeUndefined();
-      expect(result.qDef.qFieldLabels).toBeUndefined();
-    });
-
-    test('should create a library dimension with default properties', () => {
-      const result = handler.createLibraryDimension('libraryId', { customDefault: 'value' });
+    test('should create dimension and delete qFieldDefs and qFieldLabels from it', () => {
+      const libraryDimension = { id: 'libraryId', defaults: { customDefault: 'value' } };
+      const result = handler.createLibraryDimension(libraryDimension);
 
       expect(result.qLibraryId).toBe('libraryId');
       expect(result.qDef.qSortCriterias).toEqual(sortingProperties);
-      expect(result.qDef.autoSort).toBe(true);
       expect(result.someProperty).toBe('defaultValue');
       expect(result.customDefault).toBe('value');
+      expect(result.qDef.autoSort).toBe(true);
+      expect(result.qDef.qFieldDefs).toBeUndefined();
+      expect(result.qDef.qFieldLabels).toBeUndefined();
     });
   });
 
@@ -136,7 +126,12 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should create a measure with provided expression and label', () => {
-      const result = handler.createExpressionMeasure('SUM(Sales)', 'Total Sales', { customDefault: 'value' });
+      const expressionMeasure = {
+        expression: 'SUM(Sales)',
+        label: 'Total Sales',
+        defaults: { customDefault: 'value' },
+      };
+      const result = handler.createExpressionMeasure(expressionMeasure);
 
       expect(result.qDef.qDef).toBe('SUM(Sales)');
       expect(result.qDef.qLabel).toBe('Total Sales');
@@ -146,14 +141,16 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should initialize qDef and qNumFormat if not provided', () => {
-      const result = handler.createExpressionMeasure('SUM(Sales)', 'Total Sales', {});
+      const expressionMeasure = { expression: 'SUM(Sales)', label: 'Total Sales', defaults: {} };
+      const result = handler.createExpressionMeasure(expressionMeasure);
 
       expect(result.qDef).toBeDefined();
       expect(result.qDef.qNumFormat).toBeDefined();
     });
 
     test('should handle empty defaults gracefully', () => {
-      const result = handler.createExpressionMeasure('SUM(Sales)', 'Total Sales', null);
+      const expressionMeasure = { expression: 'SUM(Sales)', label: 'Total Sales' };
+      const result = handler.createExpressionMeasure(expressionMeasure);
 
       expect(result.qDef.qDef).toBe('SUM(Sales)');
       expect(result.qDef.qLabel).toBe('Total Sales');
@@ -170,7 +167,8 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should create a library measure with provided id and defaults', () => {
-      const result = handler.createLibraryMeasure('libraryId', { customDefault: 'value' });
+      const libraryMeasure = { id: 'libraryId', defaults: { customDefault: 'value' } };
+      const result = handler.createLibraryMeasure(libraryMeasure);
 
       expect(result.qLibraryId).toBe('libraryId');
       expect(result.qDef.qNumFormat).toBeDefined();
@@ -180,14 +178,16 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should initialize qDef and qNumFormat if not provided', () => {
-      const result = handler.createLibraryMeasure('libraryId', {});
+      const libraryMeasure = { id: 'libraryId', defaults: {} };
+      const result = handler.createLibraryMeasure(libraryMeasure);
 
       expect(result.qDef).toBeDefined();
       expect(result.qDef.qNumFormat).toBeDefined();
     });
 
     test('should delete qDef.qDef and qDef.qLabel from the measure', () => {
-      const result = handler.createLibraryMeasure('libraryId', {});
+      const libraryMeasure = { id: 'libraryId', defaults: {} };
+      const result = handler.createLibraryMeasure(libraryMeasure);
 
       expect(result.qDef.qDef).toBeUndefined();
       expect(result.qDef.qLabel).toBeUndefined();
@@ -195,14 +195,7 @@ describe('DataPropertyHandler', () => {
   });
 
   describe('maxMeasures', () => {
-    let galaxy;
-
     beforeEach(() => {
-      galaxy = {
-        flags: {
-          isEnabled: jest.fn().mockReturnValue(false),
-        },
-      };
       handler = new HyperCubeHandler({
         measureDefinition: { max: 0 },
         dimensionDefinition: { max: 0 },
@@ -216,15 +209,6 @@ describe('DataPropertyHandler', () => {
 
     test('should return the result of measureDefinition.max when it is a function', () => {
       handler.measureDefinition.max = jest.fn().mockReturnValue(5);
-
-      const result = handler.maxMeasures();
-      expect(result).toBe(5);
-    });
-
-    test('should pass properties to measureDefinition.max when feature flag is enabled', () => {
-      handler.measureDefinition.max = jest.fn().mockReturnValue(5);
-      galaxy.flags.isEnabled.mockReturnValue(true);
-      handler.properties = { someProperty: 'value' };
 
       const result = handler.maxMeasures();
       expect(result).toBe(5);
@@ -260,14 +244,7 @@ describe('DataPropertyHandler', () => {
   });
 
   describe('maxDimensions', () => {
-    let galaxy;
-
     beforeEach(() => {
-      galaxy = {
-        flags: {
-          isEnabled: jest.fn().mockReturnValue(false),
-        },
-      };
       handler = new HyperCubeHandler({
         measureDefinition: { max: 0 },
         dimensionDefinition: { max: 0 },
@@ -280,15 +257,6 @@ describe('DataPropertyHandler', () => {
 
       const result = handler.maxDimensions();
       expect(result).toBe(5);
-    });
-
-    test('should pass properties to dimensionDefinition.max when feature flag is enabled', () => {
-      handler.dimensionDefinition.max = jest.fn().mockReturnValue(10);
-      galaxy.flags.isEnabled.mockReturnValue(true);
-      handler.properties = { someProperty: 'value' };
-
-      const result = handler.maxDimensions();
-      expect(result).toBe(10);
     });
 
     test('should return dimensionDefinition.max when it is a valid number', () => {
