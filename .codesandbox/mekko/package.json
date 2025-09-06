@@ -13,7 +13,7 @@
     "enigma.js": "2.14.0"
   },
   "devDependencies": {
-    "@babel/core": "7.28.3",
+    "@babel/core": "7.28.4",
     "parcel": "^2.15.4"
   }
 }
