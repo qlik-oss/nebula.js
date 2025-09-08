@@ -76,7 +76,7 @@ export default function ListBox({
   const scrollTimeout = 0;
 
   const { frequencyMax, awaitingFrequencyMax } = useFrequencyMax(app, layout);
-
+  // eslint-disable-next-line no-unused-vars
   const { isLoadingData, ...itemsLoader } = useItemsLoader({
     local,
     loaderRef,
