@@ -82,6 +82,7 @@ const RowColRoot = styled('div', {
       'styles',
     ].includes(prop),
 })(({ theme, checkboxes, isGridMode, isGridCol, dense, direction, sizes, frequencyMode, freqHitsValue, styles }) => {
+  // eslint-disable-next-line no-unused-vars
   const { backgroundColor: _, ...contentFontStyles } = styles.content;
 
   const rowSelectionStyle = getRowSelectionStyle({ theme, styles, checkboxes, selectionState: 'selected' });
