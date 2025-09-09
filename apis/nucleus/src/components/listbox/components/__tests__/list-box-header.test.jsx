@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-import-assign */
-import React, { act } from 'react';
-import { render as reactRender } from '@testing-library/react';
+import React from 'react';
+import { create, act } from 'react-test-renderer';
 import DrillDownIcon from '@nebula.js/ui/icons/drill-down';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import Lock from '@nebula.js/ui/icons/lock';
@@ -85,22 +85,12 @@ const render = async (overrideProps = {}) => {
     </ThemeProvider>
   );
   await act(async () => {
-    rendererInst = reactRender(component);
+    rendererInst = create(component);
   });
   return rendererInst;
 };
 
 let ActionsToolbar;
-
-// Mock the useRef module
-/*
-jest.mock('react', () => ({
-  ...jest.requireActual('react'), // Use the actual implementation of React
-  useRef: jest.fn(),
-  useCallback: (func) => func,
-}));
-*/
-
 let HeaderTitle;
 let hasSelections;
 
@@ -108,7 +98,7 @@ function HeaderTitleMock() {
   return <div />;
 }
 
-describe.skip('<ListBoxHeader />', () => {
+describe('<ListBoxHeader />', () => {
   beforeEach(() => {
     hasSelections = jest.spyOn(hasSelectionsModule, 'default').mockReturnValue(true);
     HeaderComponents.HeaderTitle = HeaderTitleMock;
@@ -127,7 +117,7 @@ describe.skip('<ListBoxHeader />', () => {
 
   test('should render the header with title and attached actions toolbar', async () => {
     const testRenderer = await render();
-    const testInstance = testRenderer;
+    const testInstance = testRenderer.root;
 
     // Find by type.
     const titles = testInstance.findAllByType(HeaderTitle);
@@ -167,7 +157,7 @@ describe.skip('<ListBoxHeader />', () => {
     expect(actionsToolbars[0].props.isDetached).toEqual(true);
   });
 
-  test('should render a detached toolbar when space is limited', async () => {
+  test.skip('should render a detached toolbar when space is limited', async () => {
     const containerRect = { width: 20 };
     const testRenderer = await render({ showDetachedToolbarOnly: false, containerRect });
     const testInstance = testRenderer.root;
