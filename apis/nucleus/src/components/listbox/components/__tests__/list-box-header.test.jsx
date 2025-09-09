@@ -93,11 +93,13 @@ const render = async (overrideProps = {}) => {
 let ActionsToolbar;
 
 // Mock the useRef module
-/*jest.mock('react', () => ({
+/*
+jest.mock('react', () => ({
   ...jest.requireActual('react'), // Use the actual implementation of React
   useRef: jest.fn(),
   useCallback: (func) => func,
-}));*/
+}));
+*/
 
 let HeaderTitle;
 let hasSelections;
