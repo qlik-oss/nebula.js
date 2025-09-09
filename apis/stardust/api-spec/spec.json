@@ -620,7 +620,27 @@
           {
             "name": "opts",
             "description": "Parameters to add a hypercube handlers",
-            "type": "object"
+            "kind": "object",
+            "entries": {
+              "app": {
+                "type": "qix.Doc"
+              },
+              "dimensionDefinition": {
+                "type": "object"
+              },
+              "measureDefinition": {
+                "type": "object"
+              },
+              "dimensionProperties": {
+                "type": "object"
+              },
+              "measureProperties": {
+                "type": "object"
+              },
+              "globalChangeListeners": {
+                "type": "object"
+              }
+            }
           }
         ]
       },
@@ -1480,7 +1500,7 @@
         }
       },
       "examples": [
-        "const handler = new DataPropertyHandler({\n  app: qlikApp,\n  dimensionDefinition: { max: 2, min: 1 },\n  measureDefinition: { max: 3, min: 1 },\n  dimensionProperties: { foo: 'bar' },\n  measureProperties: { bar: 'baz' },\n});\n// Get the maximum number of measures allowed\nconst max = handler.maxMeasures();"
+        "import DataPropertyHandler from './data-property-handler';\n\nclass PivotHyperCubeHandler extends DataPropertyHandler {\n\n  addDimensionAsFirstRow: (hypercube: HyperCubeDef, dimension: NxDimension) => {\n    const dimensions = this.getDimensions().length;\n    const { qInterColumnSortOrder } = hypercube;\n\n    if(dimensions !== 0 && dimensions < this.maxDimensions()) {\n      hypercube.qNoOfLeftDims = 1;\n      qInterColumnSortOrder?.unshift(dimensions);\n      dimensions.splice(0, 0, dimension);\n    }\n  }\n}"
       ]
     },
     "HyperCubeHandler": {
@@ -1492,7 +1512,30 @@
           {
             "name": "opts",
             "description": "Parameters to add a hypercube handlers",
-            "type": "object"
+            "kind": "object",
+            "entries": {
+              "app": {
+                "type": "qix.Doc"
+              },
+              "dimensionDefinition": {
+                "type": "object"
+              },
+              "measureDefinition": {
+                "type": "object"
+              },
+              "dimensionProperties": {
+                "type": "object"
+              },
+              "measureProperties": {
+                "type": "object"
+              },
+              "globalChangeListeners": {
+                "type": "object"
+              },
+              "path": {
+                "type": "object"
+              }
+            }
           }
         ]
       },
@@ -2137,7 +2180,7 @@
         }
       },
       "examples": [
-        "import HyperCubeHandler from '@nebula.js/stardust';\nconst handler = new HyperCubeHandler({\n  app: qlikApp,\n  dimensionDefinition: { max: 2 },\n  measureDefinition: { max: 2 },\n  properties: {},\n});\n\nhandler.setProperties({ qDimensions: [], qMeasures: [] });\nconst dims = handler.getDimensions();"
+        "import HyperCubeHandler from './data-property-handler';\n\nclass PivotHyperCubeHandler extends HyperCubeHandler {\n\n  adjustPseudoDimOrder: (pseudoIdx?: number) => {\n   const numberOfDims = this.getDimensions().length;\n   const interColumnSortOrder = this.hcProperties.qInterColumnSortOrder;\n\n   if (!interColumnSortOrder) {\n     return;\n   }\n\n   interColumnSortOrder.splice(pseudoIdx || 0, 1);\n   interColumnSortOrder.push(numberOfDims);\n   interColumnSortOrder.splice((pseudoIdx || -1) + 1, 0, -1);\n };\n}"
       ]
     },
     "Conversion": {
@@ -3014,26 +3057,6 @@
         "const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"
       ]
     },
-    "Flags": {
-      "kind": "interface",
-      "entries": {
-        "isEnabled": {
-          "description": "Checks whether the specified flag is enabled.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "flag",
-              "description": "The value flag to check.",
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "True if the specified flag is enabled, false otherwise.",
-            "type": "boolean"
-          }
-        }
-      }
-    },
     "AppSelections": {
       "kind": "class",
       "constructor": {
@@ -3267,6 +3290,26 @@
                 "type": "undefined"
               }
             ]
+          }
+        }
+      }
+    },
+    "Flags": {
+      "kind": "interface",
+      "entries": {
+        "isEnabled": {
+          "description": "Checks whether the specified flag is enabled.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "flag",
+              "description": "The value flag to check.",
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "True if the specified flag is enabled, false otherwise.",
+            "type": "boolean"
           }
         }
       }
@@ -4271,36 +4314,6 @@
           ]
         }
       }
-    },
-    "DataPropertyHandler": {
-      "kind": "class",
-      "constructor": {
-        "kind": "function",
-        "description": "Creates an instance of DataPropertyHandler.",
-        "params": [
-          {
-            "name": "opts",
-            "description": "Options for the handler.\nopts: {\n app,\n path,\n dimensionDefinition,\n measureDefinition,\n dimensionProperties,\n measureDefinition,\n globalChangeListeners,\n}",
-            "type": "object"
-          }
-        ]
-      },
-      "entries": {}
-    },
-    "HyperCubeHandler": {
-      "kind": "class",
-      "constructor": {
-        "kind": "function",
-        "description": "Creates an instance of HyperCubeHandler.",
-        "params": [
-          {
-            "name": "opts",
-            "description": "Options for the handler.",
-            "type": "object"
-          }
-        ]
-      },
-      "entries": {}
     },
     "Translator": {
       "kind": "class",

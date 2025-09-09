@@ -1,5 +1,5 @@
 import extend from 'extend';
-import { findFieldById, initializeField, useMasterNumberFormat } from './utils/field-helper/field-utils';
+import { findFieldById, initializeDim, useMasterNumberFormat } from './utils/field-helper/field-utils';
 import { INITIAL_SORT_CRITERIAS } from './utils/constants';
 import { notSupportedError } from './utils/hypercube-helper/hypercube-utils';
 
@@ -7,33 +7,32 @@ import { notSupportedError } from './utils/hypercube-helper/hypercube-utils';
  * @class DataPropertyHandler
  * @description A class to handle data properties for dimensions and measures in a data model.
  * @param {object} opts - Parameters to add a hypercube handlers
+ * @param {qix.Doc} opts.app
+ * @param {object} opts.dimensionDefinition
+ * @param {object} opts.measureDefinition
+ * @param {object} opts.dimensionProperties
+ * @param {object} opts.measureProperties
+ * @param {object} opts.globalChangeListeners
  * @entry
  * @export
  * @example
- * const handler = new DataPropertyHandler({
- *   app: qlikApp,
- *   dimensionDefinition: { max: 2, min: 1 },
- *   measureDefinition: { max: 3, min: 1 },
- *   dimensionProperties: { foo: 'bar' },
- *   measureProperties: { bar: 'baz' },
- * });
- * // Get the maximum number of measures allowed
- * const max = handler.maxMeasures();
+ * import DataPropertyHandler from './data-property-handler';
+ *
+ * class PivotHyperCubeHandler extends DataPropertyHandler {
+ *
+ *   addDimensionAsFirstRow: (hypercube: HyperCubeDef, dimension: NxDimension) => {
+ *     const dimensions = this.getDimensions().length;
+ *     const { qInterColumnSortOrder } = hypercube;
+ *
+ *     if(dimensions !== 0 && dimensions < this.maxDimensions()) {
+ *       hypercube.qNoOfLeftDims = 1;
+ *       qInterColumnSortOrder?.unshift(dimensions);
+ *       dimensions.splice(0, 0, dimension);
+ *     }
+ *   }
+ * }
  */
 class DataPropertyHandler {
-  /**
-   * Creates an instance of DataPropertyHandler.
-   * @param {object} opts - Options for the handler.
-   * opts: {
-   *  app,
-   *  path,
-   *  dimensionDefinition,
-   *  measureDefinition,
-   *  dimensionProperties,
-   *  measureDefinition,
-   *  globalChangeListeners,
-   * }
-   */
   constructor(opts) {
     const options = opts || {};
 
@@ -242,7 +241,7 @@ class DataPropertyHandler {
   createLibraryDimension(libraryDimension) {
     let dimension = extend(true, {}, this.dimensionProperties || {}, libraryDimension.defaults || {});
 
-    dimension = initializeField(dimension);
+    dimension = initializeDim(dimension);
 
     dimension.qLibraryId = libraryDimension.id;
     dimension.qDef.autoSort = true;
@@ -266,7 +265,7 @@ class DataPropertyHandler {
   createFieldDimension(fieldDimension) {
     let dimension = extend(true, {}, this.dimensionProperties || {}, fieldDimension.defaults || {});
 
-    dimension = initializeField(dimension);
+    dimension = initializeDim(dimension);
 
     if (!fieldDimension.field) {
       dimension.qDef.qFieldDefs = [];

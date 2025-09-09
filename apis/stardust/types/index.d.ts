@@ -215,7 +215,14 @@ export function useEmitter(): stardust.Emitter;
 export function useKeyboard(): stardust.Keyboard;
 
 export class DataPropertyHandler {
-    constructor(opts: object);
+    constructor(opts: {
+        app: qix.Doc;
+        dimensionDefinition: object;
+        measureDefinition: object;
+        dimensionProperties: object;
+        measureProperties: object;
+        globalChangeListeners: object;
+    });
 
     /**
      * Updates the handler's properties and analysis type flag.
@@ -498,7 +505,15 @@ export class DataPropertyHandler {
 }
 
 export class HyperCubeHandler {
-    constructor(opts: object);
+    constructor(opts: {
+        app: qix.Doc;
+        dimensionDefinition: object;
+        measureDefinition: object;
+        dimensionProperties: object;
+        measureProperties: object;
+        globalChangeListeners: object;
+        path: object;
+    });
 
     /**
      * @param properties
@@ -977,14 +992,6 @@ declare namespace stardust {
 
     }
 
-    interface Flags {
-        /**
-         * Checks whether the specified flag is enabled.
-         * @param flag The value flag to check.
-         */
-        isEnabled(flag: string): boolean;
-    }
-
     class AppSelections {
         constructor();
 
@@ -1057,6 +1064,14 @@ declare namespace stardust {
          */
         noModal(accept?: boolean): Promise<undefined>;
 
+    }
+
+    interface Flags {
+        /**
+         * Checks whether the specified flag is enabled.
+         * @param flag The value flag to check.
+         */
+        isEnabled(flag: string): boolean;
     }
 
     /**
@@ -1333,16 +1348,6 @@ declare namespace stardust {
         max?: (()=>void) | number;
         added?: stardust.fieldTargetAddedCallback<T>;
         removed?: stardust.fieldTargetRemovedCallback<T>;
-    }
-
-    class DataPropertyHandler {
-        constructor(opts: object);
-
-    }
-
-    class HyperCubeHandler {
-        constructor(opts: object);
-
     }
 
     class Translator {

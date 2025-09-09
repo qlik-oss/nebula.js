@@ -31,7 +31,7 @@ export const initializeId = (field) => ({
   },
 });
 
-export const initializeField = (field) => ({
+export const initializeDim = (field) => ({
   ...initializeId(field),
   qOtherTotalSpec: field.qOtherTotalSpec ?? {},
 });

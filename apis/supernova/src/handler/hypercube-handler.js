@@ -3,7 +3,7 @@ import DataPropertyHandler from './data-property-handler';
 import * as hcUtils from './utils/hypercube-helper/hypercube-utils';
 import getAutoSortLibraryDimension from './utils/field-helper/get-sorted-library-field';
 import getAutoSortDimension from './utils/field-helper/get-sorted-field';
-import { initializeField, initializeId } from './utils/field-helper/field-utils';
+import { initializeDim, initializeId } from './utils/field-helper/field-utils';
 import addMainDimension from './utils/hypercube-helper/add-main-dimension';
 import addMainMeasure from './utils/hypercube-helper/add-main-measure';
 import removeMainDimension from './utils/hypercube-helper/remove-main-dimension';
@@ -17,26 +17,36 @@ import reinsertMainMeasure from './utils/hypercube-helper/reinsert-main-measure'
  * HyperCubeHandler for managing hypercube data structure.
  * @class HyperCubeHandler
  * @description This class provides methods to handle hypercube properties, dimensions, and measures.
- * @param {object} opts - Parameters to add a hypercube handlers
- * @export
+ * @param {object} opts Parameters to add a hypercube handlers
+ * @param {qix.Doc} opts.app
+ * @param {object} opts.dimensionDefinition
+ * @param {object} opts.measureDefinition
+ * @param {object} opts.dimensionProperties
+ * @param {object} opts.measureProperties
+ * @param {object} opts.globalChangeListeners
+ * @param {object} opts.path
  * @entry
+ * @export
  * @example
- * import HyperCubeHandler from '@nebula.js/stardust';
- * const handler = new HyperCubeHandler({
- *   app: qlikApp,
- *   dimensionDefinition: { max: 2 },
- *   measureDefinition: { max: 2 },
- *   properties: {},
- * });
+ * import HyperCubeHandler from './data-property-handler';
  *
- * handler.setProperties({ qDimensions: [], qMeasures: [] });
- * const dims = handler.getDimensions();
+ * class PivotHyperCubeHandler extends HyperCubeHandler {
+ *
+ *   adjustPseudoDimOrder: (pseudoIdx?: number) => {
+ *    const numberOfDims = this.getDimensions().length;
+ *    const interColumnSortOrder = this.hcProperties.qInterColumnSortOrder;
+ *
+ *    if (!interColumnSortOrder) {
+ *      return;
+ *    }
+ *
+ *    interColumnSortOrder.splice(pseudoIdx || 0, 1);
+ *    interColumnSortOrder.push(numberOfDims);
+ *    interColumnSortOrder.splice((pseudoIdx || -1) + 1, 0, -1);
+ *  };
+ * }
  */
 class HyperCubeHandler extends DataPropertyHandler {
-  /**
-   * Creates an instance of HyperCubeHandler.
-   * @param {object} opts - Options for the handler.
-   */
   constructor(opts) {
     super(opts);
     this.path = opts.path;
@@ -130,7 +140,7 @@ class HyperCubeHandler extends DataPropertyHandler {
    * const dimension = hyperCubeHandler.addDimension(dimension, alternative, idx);
    */
   addDimension(dimension, alternative, idx) {
-    const dim = initializeField(dimension);
+    const dim = initializeDim(dimension);
 
     if (hcUtils.isDimensionAlternative(this, alternative)) {
       return hcUtils.addAlternativeDimension(this, dim, idx);
@@ -162,7 +172,7 @@ class HyperCubeHandler extends DataPropertyHandler {
         return addedDimensions;
       }
 
-      const dim = initializeField(dimension);
+      const dim = initializeDim(dimension);
 
       if (hcUtils.isDimensionAlternative(this, alternative)) {
         const altDim = await hcUtils.addAlternativeDimension(this, dim);
