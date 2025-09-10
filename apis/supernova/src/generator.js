@@ -1,5 +1,4 @@
 import HyperCubeHandler from './handler/hypercube-handler';
-import DataPropertyHandler from './handler/data-property-handler';
 import create from './creator';
 // import translator from './translator';
 import qae from './qae';
@@ -77,10 +76,7 @@ export default function generatorFn(UserSN, galaxy) {
     },
     definition: galaxy.flags.isEnabled('NEBULA_DATA_HANDLERS')
       ? {
-          dataHandler: (opts) => ({
-            HyperCubeHandler: new HyperCubeHandler(opts),
-            DataPropertyHandler: new DataPropertyHandler(opts),
-          }),
+          dataHandler: (opts) => new HyperCubeHandler(opts),
         }
       : {},
   };

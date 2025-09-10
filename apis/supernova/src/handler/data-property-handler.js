@@ -4,6 +4,7 @@ import { INITIAL_SORT_CRITERIAS } from './utils/constants';
 import { notSupportedError } from './utils/hypercube-helper/hypercube-utils';
 
 /**
+ * @private
  * @class DataPropertyHandler
  * @description A class to handle data properties for dimensions and measures in a data model.
  * @param {object} opts - Parameters to add a hypercube handlers
@@ -46,12 +47,14 @@ class DataPropertyHandler {
   }
 
   /**
+   * @private
    * @typeof {object} LibraryDimension
    * @property {string} id
    * @property {qix.NxDimension=} defaults
    */
 
   /**
+   * @private
    * @typeof {object} FieldDimension
    * @property {string} field
    * @property {string=} label
@@ -59,12 +62,14 @@ class DataPropertyHandler {
    */
 
   /**
+   * @private
    * @typeof {object} LibraryMeasure
    * @property {string} id
    * @property {qix.NxMeasure=} defaults
    */
 
   /**
+   * @private
    * @typeof {object} ExpressionMeasure
    * @property {string} expression
    * @property {string=} label
@@ -73,6 +78,7 @@ class DataPropertyHandler {
 
   /**
    * Sets the properties for the handler.
+   * @private
    * @param {object=} properties - The properties object to set.
    * @description Updates the handler's properties and analysis type flag.
    * @memberof DataPropertyHandler
@@ -86,6 +92,7 @@ class DataPropertyHandler {
 
   /**
    * Sets the global change listeners.
+   * @private
    * @param {Function[]} arr - Array of listener functions.
    * @description Assigns global change listeners to the handler.
    * @memberof DataPropertyHandler
@@ -97,6 +104,7 @@ class DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {object=} layout - The layout object to set.
    * @description Sets the layout for the handler.
    * @memberof DataPropertyHandler
@@ -108,6 +116,7 @@ class DataPropertyHandler {
   }
 
   /**
+   * @private
    * @throws {Error}
    * @description Throws an error indicating the method must be overridden.
    * @memberof DataPropertyHandler
@@ -124,6 +133,7 @@ class DataPropertyHandler {
   // ---------------------------------------
 
   /**
+   * @private
    * @returns {Array} Empty array.
    * @description Returns the default dimension array.
    * @memberof DataPropertyHandler
@@ -135,6 +145,7 @@ class DataPropertyHandler {
 
   /**
    * Gets a dimension by id from dimensions or alternative dimensions.
+   * @private
    * @param {LibraryDimension} libraryDimension
    * @returns {qix.NxDimension} - The found dimension.
    * @description Searches for a dimension by id in both main and alternative dimensions.
@@ -151,6 +162,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating the method must be implemented in subclasses.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -161,6 +173,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating addDimension is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -171,6 +184,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating addDimensions is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -181,6 +195,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating removeDimension is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -191,6 +206,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating removeDimensions is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -201,6 +217,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating autoSortDimension is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -211,6 +228,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating replaceDimension is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -221,6 +239,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating getSorting is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -231,6 +250,7 @@ class DataPropertyHandler {
 
   /**
    * Creates a type of library dimension with a field definition.
+   * @private
    * @param {LibraryDimension} libraryDimension
    * @returns {qix.NxDimension} The created dimension object.
    * @description Initializes a dimension and applying default properties and sort criteria.
@@ -255,6 +275,7 @@ class DataPropertyHandler {
 
   /**
    * Creates a type of field dimension with a field definition.
+   * @private
    * @param {FieldDimension} fieldDimension
    * @returns {qix.NxDimension} The created dimension object.
    * @description Initializes a dimension with field definitions, labels, and default properties.
@@ -283,6 +304,7 @@ class DataPropertyHandler {
 
   /**
    * Adds a field dimension to the handler.
+   * @private
    * @param {FieldDimension} fieldDimension
    * @returns {Promise<qix.NxDimension=>} The result of addDimension.
    * @description Creates and adds a field dimension.
@@ -296,6 +318,7 @@ class DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {FieldDimension[]} fieldDimensions - Array of field dimension.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple field dimensions.
@@ -310,6 +333,7 @@ class DataPropertyHandler {
 
   /**
    * Adds a library dimension to the handler.
+   * @private
    * @param {LibraryDimension} libraryDimension
    * @returns {Promise<qix.NxDimension=>} The result of addDimension.
    * @description Creates and adds a library dimension.
@@ -324,6 +348,7 @@ class DataPropertyHandler {
 
   /**
    * Adds multiple library dimensions to the handler.
+   * @private
    * @param {LibraryDimension[]} libraryDimensions - Array of library dimension.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple library dimensions.
@@ -339,6 +364,7 @@ class DataPropertyHandler {
 
   /**
    * Adds multiple alternative library dimensions to the handler.
+   * @private
    * @param {LibraryDimension[]} libraryDimensions - Array of library dimension.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple alternative library dimensions.
@@ -353,6 +379,7 @@ class DataPropertyHandler {
 
   /**
    * Adds multiple alternative field dimensions to the handler.
+   * @private
    * @param {FieldDimension[]} fieldDimensions - Array of field dimension.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple alternative field dimensions.
@@ -367,6 +394,7 @@ class DataPropertyHandler {
 
   /**
    * Adds an alternative field dimension to the handler.
+   * @private
    * @param {FieldDimension} fieldDimension
    * @returns {Promise<qix.NxDimension=>} The result of addDimension.
    * @description Creates and adds an alternative field dimension.
@@ -381,6 +409,7 @@ class DataPropertyHandler {
 
   /**
    * Adds an alternative library dimension to the handler.
+   * @private
    * @param {LibraryDimension} libraryDimension
    * @returns {Promise<qix.NxDimension=>} The result of addDimension.
    * @description Creates and adds an alternative library dimension.
@@ -395,6 +424,7 @@ class DataPropertyHandler {
 
   /**
    * Gets the minimum number of dimensions allowed.
+   * @private
    * @returns {number} The minimum number of dimensions.
    * @description Returns the minimum number of dimensions allowed by the handler.
    * @memberof DataPropertyHandler
@@ -410,6 +440,7 @@ class DataPropertyHandler {
 
   /**
    * Gets the maximum number of dimensions allowed.
+   * @private
    * @param {number} [decrement=0] - The number to decrement from the current number of measures.
    * @returns {number} The maximum number of dimensions allowed.
    * @description Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
@@ -430,6 +461,7 @@ class DataPropertyHandler {
 
   /**
    * Checks if a new dimension can be added.
+   * @private
    * @returns {boolean} True if a new dimension can be added, false otherwise.
    * @description Returns whether the handler can add another dimension.
    * @memberof DataPropertyHandler
@@ -445,6 +477,7 @@ class DataPropertyHandler {
   // ---------------------------------------
 
   /**
+   * @private
    * @returns {Array} Empty array.
    * @description Returns the default measure array.
    * @memberof DataPropertyHandler
@@ -456,6 +489,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating the method must be implemented in subclasses.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -466,6 +500,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating addMeasure is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -476,6 +511,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating addMeasures is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -486,6 +522,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating removeMeasure is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -496,6 +533,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating removeMeasures is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -506,6 +544,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating autoSortMeasure is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -516,6 +555,7 @@ class DataPropertyHandler {
 
   /**
    * Throws an error indicating replaceMeasure is not supported in the base class.
+   * @private
    * @throws {Error}
    * @memberof DataPropertyHandler
    */
@@ -526,6 +566,7 @@ class DataPropertyHandler {
 
   /**
    * Gets a measure by id from measures or alternative measures.
+   * @private
    * @param {string} libraryDimension - The measure id to find.
    * @returns {qix.NxMeasure} The found measure or undefined.
    * @description Searches for a measure by id in both main and alternative measures.
@@ -542,6 +583,7 @@ class DataPropertyHandler {
 
   /**
    * Creates an expression measure.
+   * @private
    * @param {ExpressionMeasure} expressionMeasure
    * @returns {Promise<qix.NxMeasure=>} The created measure object.
    * @description Initializes a measure with an expression, label, and default properties.
@@ -564,6 +606,7 @@ class DataPropertyHandler {
 
   /**
    * Adds an expression measure to the handler.
+   * @private
    * @param {ExpressionMeasure} expressionMeasure
    * @returns {Promise<qix.NxMeasure=>} The result of addMeasure.
    * @description Creates and adds an expression measure.
@@ -578,6 +621,7 @@ class DataPropertyHandler {
 
   /**
    * Adds multiple expression measures to the handler.
+   * @private
    * @param {ExpressionMeasure[]} expressionMeasures - Array of expression measure.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple expression measures.
@@ -592,6 +636,7 @@ class DataPropertyHandler {
 
   /**
    * Creates a library measure.
+   * @private
    * @param {LibraryMeasure} libraryMeasure
    * @returns {qix.NxMeasure} The created measure object.
    * @description Initializes a library measure with default properties.
@@ -618,6 +663,7 @@ class DataPropertyHandler {
 
   /**
    * Adds a library measure to the handler.
+   * @private
    * @param {LibraryMeasure} libraryMeasure
    * @returns {Promise<qix.NxMeasure=>} The result of addMeasure.
    * @description Creates and adds a library measure.
@@ -632,6 +678,7 @@ class DataPropertyHandler {
 
   /**
    * Adds multiple library measures to the handler.
+   * @private
    * @param {LibraryMeasure[]} libraryMeasures - Array of library measure.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple library measures.
@@ -646,6 +693,7 @@ class DataPropertyHandler {
 
   /**
    * Adds multiple alternative library measures to the handler.
+   * @private
    * @param {LibraryMeasure[]} libraryMeasures - Array of library measure.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple alternative library measures.
@@ -660,6 +708,7 @@ class DataPropertyHandler {
 
   /**
    * Adds multiple alternative expression measures to the handler.
+   * @private
    * @param {ExpressionMeasure[]} expressionMeasures - Array of expression measure.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple alternative expression measures.
@@ -674,6 +723,7 @@ class DataPropertyHandler {
 
   /**
    * Adds an alternative expression measure to the handler.
+   * @private
    * @param {ExpressionMeasure} expressionMeasure
    * @returns {Promise<qix.NxMeasure=>} The result of addMeasure.
    * @description Creates and adds an alternative expression measure.
@@ -688,6 +738,7 @@ class DataPropertyHandler {
 
   /**
    * Adds an alternative library measure to the handler.
+   * @private
    * @param {LibraryMeasure} libraryMeasure
    * @returns {qix.NxMeasure=} The result of addMeasure.
    * @description Creates and adds an alternative library measure.
@@ -702,6 +753,7 @@ class DataPropertyHandler {
 
   /**
    * Gets the minimum number of measures allowed.
+   * @private
    * @returns {number} The minimum number of measures.
    * @description Returns the minimum number of measures allowed by the handler.
    * @memberof DataPropertyHandler
@@ -717,6 +769,7 @@ class DataPropertyHandler {
 
   /**
    * Gets the maximum number of measures allowed.
+   * @private
    * @param {number} [decrement=0] - The number to decrement from the current number of dimensions.
    * @returns {number} The maximum number of measures allowed.
    * @description Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
@@ -735,6 +788,7 @@ class DataPropertyHandler {
 
   /**
    * Checks if a new measure can be added.
+   * @private
    * @returns {boolean} True if a new measure can be added, false otherwise.
    * @description Returns whether the handler can add another measure.
    * @memberof DataPropertyHandler
@@ -751,6 +805,7 @@ class DataPropertyHandler {
 
   /**
    * Calls all global change listeners with the current properties, handler, and layout.
+   * @private
    * @param {object} layout - The layout object to pass to listeners.
    * @description Invokes all registered global change listeners.
    * @memberof DataPropertyHandler

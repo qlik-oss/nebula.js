@@ -15,6 +15,7 @@ import reinsertMainMeasure from './utils/hypercube-helper/reinsert-main-measure'
 
 /**
  * HyperCubeHandler for managing hypercube data structure.
+ * @private
  * @class HyperCubeHandler
  * @description This class provides methods to handle hypercube properties, dimensions, and measures.
  * @param {object} opts Parameters to add a hypercube handlers
@@ -53,6 +54,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {object=} properties
    * @returns early return if properties is falsy
    */
@@ -82,6 +84,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   // ----------------------------------
 
   /**
+   * @private
    * @returns {qix.NxDimension[]} dimensions
    * @description Returns the dimensions of the hypercube.
    * @memberof HyperCubeHandler
@@ -93,6 +96,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @returns {qix.NxDimension[]} alternative dimensions
    * @description Returns the alternative dimensions of the hypercube.
    * @memberof HyperCubeHandler
@@ -104,6 +108,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {string} cId
    * @returns {qix.NxDimensionInfo} dimension layout
    * @description Returns the dimension layout of the hypercube for a given cId.
@@ -116,6 +121,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @returns {qix.NxDimensionInfo[]} dimension layouts
    * @description Returns the dimension layouts of the hypercube.
    * @memberof HyperCubeHandler
@@ -128,7 +134,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
-   *
+   * @private
    * @param {qix.NxDimension} dimension
    * @param {boolean} alternative
    * @param {number=} idx
@@ -150,6 +156,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {qix.NxDimension[]} dimensions
    * @param {boolean} alternative
    * @returns {qix.NxDimension[]} added dimensions
@@ -187,6 +194,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {number} idx
    * @param {boolean} alternative
    * @description Removes a dimension from the hypercube by index.
@@ -204,6 +212,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {number[]} indexes
    * @param {boolean} alternative
    * @returns {qix.NxDimension[]} deleted dimensions
@@ -244,6 +253,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * Replaces a dimension in the hypercube.
+   * @private
    * @param {number} index - The index of the dimension to replace.
    * @param {qix.NxDimension} dimension - The new dimension to replace the old one.
    * @returns {Promise<qix.NxDimension>} replaced dimension.
@@ -257,6 +267,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * Reinserts a dimension into the hypercube.
+   * @private
    * @param {qix.NxDimension} dimension - The dimension to reinsert.
    * @param {boolean} alternative - Whether the dimension is an alternative.
    * @param {number} idx - The index to insert the dimension at.
@@ -279,6 +290,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * Moves a dimension within the hypercube.
+   * @private
    * @param {number} fromIndex - The current index of the dimension.
    * @param {number} toIndex - The new index of the dimension.
    * @returns {Promise<qix.NxDimension[]>} updated dimensions.
@@ -304,6 +316,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {qix.NxDimension} dimension
    * @returns {qix.NxDimension} dimension with auto-sort properties
    * @description Automatically sorts the dimension based on its properties.
@@ -325,6 +338,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   // ----------------------------------
 
   /**
+   * @private
    * @returns {qix.NxMeasure[]} measures
    * @description Returns the measures of the hypercube.
    * @memberof HyperCubeHandler
@@ -336,6 +350,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @returns {qix.NxMeasure[]} alternative measures
    * @description Returns the alternative measures of the hypercube.
    * @memberof HyperCubeHandler
@@ -347,6 +362,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @returns {qix.NxMeasureInfo[]} measure layouts
    * @description Returns the measure layouts of the hypercube.
    * @memberof HyperCubeHandler
@@ -359,6 +375,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {string} cId
    * @returns {object} measure layout
    * @description Returns the measure layout of the hypercube for a given cId.
@@ -371,6 +388,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {qix.NxMeasure} measure
    * @param {boolean} alternative
    * @param {number=} idx
@@ -394,6 +412,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {qix.NxMeasure} measure
    * @returns {Promise<qix.NxMeasure>} measure with auto-sort properties
    * @description Automatically sorts the measure based on its properties.
@@ -413,6 +432,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {qix.NxMeasure[]} measures
    * @param {boolean} alternative
    * @returns {qix.NxMeasure[]} added measures
@@ -448,6 +468,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {number} idx
    * @param {boolean} alternative
    * @description Removes a measure from the hypercube by index.
@@ -464,6 +485,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {number[]} indexes
    * @param {boolean} alternative
    * @returns {Promise<number[]>} deleted measures
@@ -500,6 +522,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {number} index
    * @param {qix.NxMeasure} measure
    * @returns {Promise<qix.NxMeasure>} replaced measure
@@ -513,6 +536,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {qix.NxMeasure} measure
    * @param {boolean} alternative
    * @param {number} idx
@@ -534,6 +558,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * Moves a measure within the hypercube.
+   * @private
    * @param {number} fromIndex
    * @param {number} toIndex
    * @returns {Promise<void>}
@@ -568,6 +593,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * Sets the sorting order for the hypercube.
+   * @private
    * @param {number[]} arr - The new sorting order.
    * @memberof HyperCubeHandler
    * @example
@@ -582,6 +608,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * Gets the sorting order for the hypercube.
+   * @private
    * @returns {number[]} The current sorting order.
    * @memberof HyperCubeHandler
    * @example
@@ -593,6 +620,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * Changes the sorting order for the hypercube.
+   * @private
    * @param {number} fromIdx - The index to move from.
    * @param {number} toIdx - The index to move to.
    * @memberof HyperCubeHandler
@@ -605,6 +633,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * Returns whether the hypercube is in straight mode or pivot mode.
+   * @private
    * @returns {string} 'S' for straight mode, 'P' for pivot mode
    * @memberof HyperCubeHandler
    */
@@ -613,6 +642,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   }
 
   /**
+   * @private
    * @param {boolean} value
    * @description This flag indicates whether we enabled HC modifier and have at least one script
    * @memberof HyperCubeHandler
@@ -625,6 +655,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * Gets the dynamic scripts for the hypercube.
+   * @private
    * @returns {Array} The dynamic scripts.
    * @memberof HyperCubeHandler
    */

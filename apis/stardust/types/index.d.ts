@@ -214,520 +214,6 @@ export function useEmitter(): stardust.Emitter;
  */
 export function useKeyboard(): stardust.Keyboard;
 
-export class DataPropertyHandler {
-    constructor(opts: {
-        app: qix.Doc;
-        dimensionDefinition: object;
-        measureDefinition: object;
-        dimensionProperties: object;
-        measureProperties: object;
-        globalChangeListeners: object;
-    });
-
-    /**
-     * Updates the handler's properties and analysis type flag.
-     * @param properties The properties object to set.
-     */
-    setProperties(properties?: object): void;
-
-    /**
-     * Assigns global change listeners to the handler.
-     * @param arr Array of listener functions.
-     */
-    setGlobalChangeListeners(arr: ()=>void[]): void;
-
-    /**
-     * Sets the layout for the handler.
-     * @param layout The layout object to set.
-     */
-    setLayout(layout?: object): void;
-
-    /**
-     * Throws an error indicating the method must be overridden.
-     */
-    type(): void;
-
-    /**
-     * Returns the default dimension array.
-     */
-    getDimensions(): Array;
-
-    /**
-     * Searches for a dimension by id in both main and alternative dimensions.
-     * @param libraryDimension
-     */
-    getDimension(libraryDimension: LibraryDimension): qix.NxDimension;
-
-    /**
-     * Throws an error indicating the method must be implemented in subclasses.
-     */
-    getAlternativeDimensions(): void;
-
-    /**
-     * Throws an error indicating addDimension is not supported in the base class.
-     */
-    addDimension(): void;
-
-    /**
-     * Throws an error indicating addDimensions is not supported in the base class.
-     */
-    addDimensions(): void;
-
-    /**
-     * Throws an error indicating removeDimension is not supported in the base class.
-     */
-    removeDimension(): void;
-
-    /**
-     * Throws an error indicating removeDimensions is not supported in the base class.
-     */
-    removeDimensions(): void;
-
-    /**
-     * Throws an error indicating autoSortDimension is not supported in the base class.
-     */
-    autoSortDimension(): void;
-
-    /**
-     * Throws an error indicating replaceDimension is not supported in the base class.
-     */
-    replaceDimension(): void;
-
-    /**
-     * Throws an error indicating getSorting is not supported in the base class.
-     */
-    getSorting(): void;
-
-    /**
-     * Initializes a dimension and applying default properties and sort criteria.
-     * @param libraryDimension
-     */
-    createLibraryDimension(libraryDimension: LibraryDimension): qix.NxDimension;
-
-    /**
-     * Initializes a dimension with field definitions, labels, and default properties.
-     * @param fieldDimension
-     */
-    createFieldDimension(fieldDimension: FieldDimension): qix.NxDimension;
-
-    /**
-     * Creates and adds a field dimension.
-     * @param fieldDimension
-     */
-    addFieldDimension(fieldDimension: FieldDimension): Promise<qix.NxDimension>;
-
-    /**
-     * Creates and adds multiple field dimensions.
-     * @param fieldDimensions Array of field dimension.
-     */
-    addFieldDimensions(fieldDimensions: FieldDimension[]): Promise<qix.NxDimension[]>;
-
-    /**
-     * Creates and adds a library dimension.
-     * @param libraryDimension
-     */
-    addLibraryDimension(libraryDimension: LibraryDimension): Promise<qix.NxDimension>;
-
-    /**
-     * Creates and adds multiple library dimensions.
-     * @param libraryDimensions Array of library dimension.
-     */
-    addLibraryDimensions(libraryDimensions: LibraryDimension[]): Promise<qix.NxDimension[]>;
-
-    /**
-     * Creates and adds multiple alternative library dimensions.
-     * @param libraryDimensions Array of library dimension.
-     */
-    addAltLibraryDimensions(libraryDimensions: LibraryDimension[]): Promise<qix.NxDimension[]>;
-
-    /**
-     * Creates and adds multiple alternative field dimensions.
-     * @param fieldDimensions Array of field dimension.
-     */
-    addAltFieldDimensions(fieldDimensions: FieldDimension[]): Promise<qix.NxDimension[]>;
-
-    /**
-     * Creates and adds an alternative field dimension.
-     * @param fieldDimension
-     */
-    addAlternativeFieldDimension(fieldDimension: FieldDimension): Promise<qix.NxDimension>;
-
-    /**
-     * Creates and adds an alternative library dimension.
-     * @param libraryDimension
-     */
-    addAlternativeLibraryDimension(libraryDimension: LibraryDimension): Promise<qix.NxDimension>;
-
-    /**
-     * Returns the minimum number of dimensions allowed by the handler.
-     */
-    minDimensions(): number;
-
-    /**
-     * Checks if the max property is a function and calls it with the current number of measures, or returns a default value.
-     * @param decrement The number to decrement from the current number of measures.
-     */
-    maxDimensions(decrement?: number): number;
-
-    /**
-     * Returns whether the handler can add another dimension.
-     */
-    canAddDimension(): boolean;
-
-    /**
-     * Returns the default measure array.
-     */
-    getMeasures(): Array;
-
-    /**
-     * Throws an error indicating the method must be implemented in subclasses.
-     */
-    getAlternativeMeasures(): void;
-
-    /**
-     * Throws an error indicating addMeasure is not supported in the base class.
-     */
-    addMeasure(): void;
-
-    /**
-     * Throws an error indicating addMeasures is not supported in the base class.
-     */
-    addMeasures(): void;
-
-    /**
-     * Throws an error indicating removeMeasure is not supported in the base class.
-     */
-    removeMeasure(): void;
-
-    /**
-     * Throws an error indicating removeMeasures is not supported in the base class.
-     */
-    removeMeasures(): void;
-
-    /**
-     * Throws an error indicating autoSortMeasure is not supported in the base class.
-     */
-    autoSortMeasure(): void;
-
-    /**
-     * Throws an error indicating replaceMeasure is not supported in the base class.
-     */
-    replaceMeasure(): void;
-
-    /**
-     * Searches for a measure by id in both main and alternative measures.
-     * @param libraryDimension The measure id to find.
-     */
-    getMeasure(libraryDimension: string): qix.NxMeasure;
-
-    /**
-     * Initializes a measure with an expression, label, and default properties.
-     * @param expressionMeasure
-     */
-    createExpressionMeasure(expressionMeasure: ExpressionMeasure): Promise<qix.NxMeasure>;
-
-    /**
-     * Creates and adds an expression measure.
-     * @param expressionMeasure
-     */
-    addExpressionMeasure(expressionMeasure: ExpressionMeasure): Promise<qix.NxMeasure>;
-
-    /**
-     * Creates and adds multiple expression measures.
-     * @param expressionMeasures Array of expression measure.
-     */
-    addExpressionMeasures(expressionMeasures: ExpressionMeasure[]): Promise<qix.NxMeasure[]>;
-
-    /**
-     * Initializes a library measure with default properties.
-     * @param libraryMeasure
-     */
-    createLibraryMeasure(libraryMeasure: LibraryMeasure): qix.NxMeasure;
-
-    /**
-     * Creates and adds a library measure.
-     * @param libraryMeasure
-     */
-    addLibraryMeasure(libraryMeasure: LibraryMeasure): Promise<qix.NxMeasure>;
-
-    /**
-     * Creates and adds multiple library measures.
-     * @param libraryMeasures Array of library measure.
-     */
-    addLibraryMeasures(libraryMeasures: LibraryMeasure[]): Promise<qix.NxMeasure[]>;
-
-    /**
-     * Creates and adds multiple alternative library measures.
-     * @param libraryMeasures Array of library measure.
-     */
-    addAltLibraryMeasures(libraryMeasures: LibraryMeasure[]): Promise<qix.NxMeasure[]>;
-
-    /**
-     * Creates and adds multiple alternative expression measures.
-     * @param expressionMeasures Array of expression measure.
-     */
-    addAltExpressionMeasures(expressionMeasures: ExpressionMeasure[]): Promise<qix.NxMeasure[]>;
-
-    /**
-     * Creates and adds an alternative expression measure.
-     * @param expressionMeasure
-     */
-    addAlternativeExpressionMeasure(expressionMeasure: ExpressionMeasure): Promise<qix.NxMeasure>;
-
-    /**
-     * Creates and adds an alternative library measure.
-     * @param libraryMeasure
-     */
-    addAlternativeLibraryMeasure(libraryMeasure: LibraryMeasure): qix.NxMeasure;
-
-    /**
-     * Returns the minimum number of measures allowed by the handler.
-     */
-    minMeasures(): number;
-
-    /**
-     * Checks if the max property is a function and calls it with the current number of dimensions, or returns a default value.
-     * @param decrement The number to decrement from the current number of dimensions.
-     */
-    maxMeasures(decrement?: number): number;
-
-    /**
-     * Returns whether the handler can add another measure.
-     */
-    canAddMeasure(): boolean;
-
-    /**
-     * Invokes all registered global change listeners.
-     * @param layout The layout object to pass to listeners.
-     */
-    updateGlobalChangeListeners(layout: object): void;
-
-}
-
-export class HyperCubeHandler {
-    constructor(opts: {
-        app: qix.Doc;
-        dimensionDefinition: object;
-        measureDefinition: object;
-        dimensionProperties: object;
-        measureProperties: object;
-        globalChangeListeners: object;
-        path: object;
-    });
-
-    /**
-     * @param properties
-     */
-    setProperties(properties?: object): any;
-
-    /**
-     * Returns the dimensions of the hypercube.
-     */
-    getDimensions(): qix.NxDimension[];
-
-    /**
-     * Returns the alternative dimensions of the hypercube.
-     */
-    getAlternativeDimensions(): qix.NxDimension[];
-
-    /**
-     * Returns the dimension layout of the hypercube for a given cId.
-     * @param cId
-     */
-    getDimensionLayout(cId: string): qix.NxDimensionInfo;
-
-    /**
-     * Returns the dimension layouts of the hypercube.
-     */
-    getDimensionLayouts(): qix.NxDimensionInfo[];
-
-    /**
-     * Adds a dimension to the hypercube and updates the orders of the dimensions.
-     * If the dimension is an alternative, it will be added to the alternative dimensions.
-     * @param dimension
-     * @param alternative
-     * @param idx
-     */
-    addDimension(dimension: qix.NxDimension, alternative: boolean, idx?: number): qix.NxDimension;
-
-    /**
-     * Adds multiple dimensions to the hypercube.
-     * If the dimensions are alternatives, they will be added to the alternative dimensions.
-     * If the total number of dimensions exceeds the limit, it will stop adding dimensions.
-     * @param dimensions
-     * @param alternative
-     */
-    addDimensions(dimensions: qix.NxDimension[], alternative: boolean): qix.NxDimension[];
-
-    /**
-     * Removes a dimension from the hypercube by index.
-     * If the dimension is an alternative, it will be removed from the alternative dimensions.
-     * @param idx
-     * @param alternative
-     */
-    removeDimension(idx: number, alternative: boolean): void;
-
-    /**
-     * Removes multiple dimensions from the hypercube by indexes.
-     * If the dimensions are alternatives, they will be removed from the alternative dimensions.
-     * If the indexes are empty, it will return an empty array.
-     * @param indexes
-     * @param alternative
-     */
-    removeDimensions(indexes: number[], alternative: boolean): qix.NxDimension[];
-
-    /**
-     * Replaces a dimension in the hypercube.
-     * @param index The index of the dimension to replace.
-     * @param dimension The new dimension to replace the old one.
-     */
-    replaceDimension(index: number, dimension: qix.NxDimension): Promise<qix.NxDimension>;
-
-    /**
-     * Reinserts a dimension into the hypercube.
-     * @param dimension The dimension to reinsert.
-     * @param alternative Whether the dimension is an alternative.
-     * @param idx The index to insert the dimension at.
-     */
-    reinsertDimension(dimension: qix.NxDimension, alternative: boolean, idx: number): Promise<qix.NxDimension>;
-
-    /**
-     * Moves a dimension within the hypercube.
-     * @param fromIndex The current index of the dimension.
-     * @param toIndex The new index of the dimension.
-     */
-    moveDimension(fromIndex: number, toIndex: number): Promise<qix.NxDimension[]>;
-
-    /**
-     * Automatically sorts the dimension based on its properties.
-     * If the dimension has a qLibraryId, it will use the library dimension auto-sort.
-     * Otherwise, it will use the field dimension auto-sort.
-     * @param dimension
-     */
-    autoSortDimension(dimension: qix.NxDimension): qix.NxDimension;
-
-    /**
-     * Returns the measures of the hypercube.
-     */
-    getMeasures(): qix.NxMeasure[];
-
-    /**
-     * Returns the alternative measures of the hypercube.
-     */
-    getAlternativeMeasures(): qix.NxMeasure[];
-
-    /**
-     * Returns the measure layouts of the hypercube.
-     */
-    getMeasureLayouts(): qix.NxMeasureInfo[];
-
-    /**
-     * Returns the measure layout of the hypercube for a given cId.
-     * @param cId
-     */
-    getMeasureLayout(cId: string): object;
-
-    /**
-     * Adds a measure to the hypercube.
-     * If the measure is an alternative, it will be added to the alternative measures.
-     * If the total number of measures exceeds the limit, it will stop adding measures.
-     * @param measure
-     * @param alternative
-     * @param idx
-     */
-    addMeasure(measure: qix.NxMeasure, alternative: boolean, idx?: number): Promise<qix.NxMeasure>;
-
-    /**
-     * Automatically sorts the measure based on its properties.
-     * It sets the qSortByLoadOrder and qSortByNumeric properties.
-     * @param measure
-     */
-    autoSortMeasure(measure: qix.NxMeasure): Promise<qix.NxMeasure>;
-
-    /**
-     * Adds multiple measures to the hypercube.
-     * If the measures are alternatives, they will be added to the alternative measures.
-     * If the total number of measures exceeds the limit, it will stop adding measures.
-     * @param measures
-     * @param alternative
-     */
-    addMeasures(measures: qix.NxMeasure[], alternative: boolean): qix.NxMeasure[];
-
-    /**
-     * Removes a measure from the hypercube by index.
-     * If the measure is an alternative, it will be removed from the alternative measures.
-     * @param idx
-     * @param alternative
-     */
-    removeMeasure(idx: number, alternative: boolean): void;
-
-    /**
-     * Removes multiple measures from the hypercube by indexes.
-     * If the measures are alternatives, they will be removed from the alternative measures.
-     * If the indexes are empty, it will return an empty array.
-     * @param indexes
-     * @param alternative
-     */
-    removeMeasures(indexes: number[], alternative: boolean): Promise<number[]>;
-
-    /**
-     * Replaces a measure in the hypercube.
-     * @param index
-     * @param measure
-     */
-    replaceMeasure(index: number, measure: qix.NxMeasure): Promise<qix.NxMeasure>;
-
-    /**
-     * Reinserts a measure into the hypercube.
-     * @param measure
-     * @param alternative
-     * @param idx
-     */
-    reinsertMeasure(measure: qix.NxMeasure, alternative: boolean, idx: number): Promise<qix.NxMeasure>;
-
-    /**
-     * Move measure from one index to another
-     * @param fromIndex
-     * @param toIndex
-     */
-    moveMeasure(fromIndex: number, toIndex: number): Promise<void>;
-
-    /**
-     * Sets the sorting order for the hypercube.
-     * @param arr The new sorting order.
-     */
-    setSorting(arr: number[]): void;
-
-    /**
-     * Gets the sorting order for the hypercube.
-     */
-    getSorting(): number[];
-
-    /**
-     * Changes the sorting order for the hypercube.
-     * @param fromIdx The index to move from.
-     * @param toIdx The index to move to.
-     */
-    changeSorting(fromIdx: number, toIdx: number): void;
-
-    /**
-     * Returns whether the hypercube is in straight mode or pivot mode.
-     */
-    IsHCInStraightMode(): string;
-
-    /**
-     * This flag indicates whether we enabled HC modifier and have at least one script
-     * @param value
-     */
-    setHCEnabled(value: boolean): void;
-
-    /**
-     * Gets the dynamic scripts for the hypercube.
-     */
-    getDynamicScripts(): Array;
-
-}
-
 /**
  * Provides conversion functionality to extensions.
  */
@@ -992,6 +478,55 @@ declare namespace stardust {
 
     }
 
+    interface Flags {
+        /**
+         * Checks whether the specified flag is enabled.
+         * @param flag The value flag to check.
+         */
+        isEnabled(flag: string): boolean;
+    }
+
+    type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
+
+    /**
+     * Rendering configuration for creating and rendering a new object
+     */
+    interface CreateConfig {
+        type: string;
+        version?: string;
+        fields?: stardust.Field[];
+        properties?: qix.GenericObjectProperties;
+    }
+
+    /**
+     * Configuration for rendering a visualisation, either creating or fetching an existing object.
+     */
+    interface RenderConfig {
+        element: HTMLElement;
+        options?: object;
+        /**
+         * Callback function called after rendering successfully
+         */
+        onRender?(): void;
+        /**
+         * Callback function called if an error occurs
+         * @param $
+         */
+        onError?($: stardust.RenderError): void;
+        plugins?: stardust.Plugin[];
+        id?: string;
+        type?: string;
+        version?: string;
+        fields?: stardust.Field[];
+        extendProperties?: boolean;
+        properties?: qix.GenericObjectProperties;
+    }
+
+    interface LibraryField {
+        qLibraryId: string;
+        type: "dimension" | "measure";
+    }
+
     class AppSelections {
         constructor();
 
@@ -1066,14 +601,6 @@ declare namespace stardust {
 
     }
 
-    interface Flags {
-        /**
-         * Checks whether the specified flag is enabled.
-         * @param flag The value flag to check.
-         */
-        isEnabled(flag: string): boolean;
-    }
-
     /**
      * An object literal containing meta information about the plugin and a function containing the plugin implementation.
      */
@@ -1082,47 +609,6 @@ declare namespace stardust {
             name: string;
         };
         fn: ()=>void;
-    }
-
-    type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
-
-    /**
-     * Rendering configuration for creating and rendering a new object
-     */
-    interface CreateConfig {
-        type: string;
-        version?: string;
-        fields?: stardust.Field[];
-        properties?: qix.GenericObjectProperties;
-    }
-
-    /**
-     * Configuration for rendering a visualisation, either creating or fetching an existing object.
-     */
-    interface RenderConfig {
-        element: HTMLElement;
-        options?: object;
-        /**
-         * Callback function called after rendering successfully
-         */
-        onRender?(): void;
-        /**
-         * Callback function called if an error occurs
-         * @param $
-         */
-        onError?($: stardust.RenderError): void;
-        plugins?: stardust.Plugin[];
-        id?: string;
-        type?: string;
-        version?: string;
-        fields?: stardust.Field[];
-        extendProperties?: boolean;
-        properties?: qix.GenericObjectProperties;
-    }
-
-    interface LibraryField {
-        qLibraryId: string;
-        type: "dimension" | "measure";
     }
 
     interface LoadType {
