@@ -29,7 +29,7 @@ import reinsertMainMeasure from './utils/hypercube-helper/reinsert-main-measure'
  * @entry
  * @export
  * @example
- * import HyperCubeHandler from './data-property-handler';
+ * import { HyperCubeHandler } from './data-property-handler';
  *
  * class PivotHyperCubeHandler extends HyperCubeHandler {
  *
