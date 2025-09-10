@@ -486,47 +486,6 @@ declare namespace stardust {
         isEnabled(flag: string): boolean;
     }
 
-    type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
-
-    /**
-     * Rendering configuration for creating and rendering a new object
-     */
-    interface CreateConfig {
-        type: string;
-        version?: string;
-        fields?: stardust.Field[];
-        properties?: qix.GenericObjectProperties;
-    }
-
-    /**
-     * Configuration for rendering a visualisation, either creating or fetching an existing object.
-     */
-    interface RenderConfig {
-        element: HTMLElement;
-        options?: object;
-        /**
-         * Callback function called after rendering successfully
-         */
-        onRender?(): void;
-        /**
-         * Callback function called if an error occurs
-         * @param $
-         */
-        onError?($: stardust.RenderError): void;
-        plugins?: stardust.Plugin[];
-        id?: string;
-        type?: string;
-        version?: string;
-        fields?: stardust.Field[];
-        extendProperties?: boolean;
-        properties?: qix.GenericObjectProperties;
-    }
-
-    interface LibraryField {
-        qLibraryId: string;
-        type: "dimension" | "measure";
-    }
-
     class AppSelections {
         constructor();
 
@@ -599,6 +558,47 @@ declare namespace stardust {
          */
         noModal(accept?: boolean): Promise<undefined>;
 
+    }
+
+    type Field = string | qix.NxDimension | qix.NxMeasure | stardust.LibraryField;
+
+    /**
+     * Rendering configuration for creating and rendering a new object
+     */
+    interface CreateConfig {
+        type: string;
+        version?: string;
+        fields?: stardust.Field[];
+        properties?: qix.GenericObjectProperties;
+    }
+
+    /**
+     * Configuration for rendering a visualisation, either creating or fetching an existing object.
+     */
+    interface RenderConfig {
+        element: HTMLElement;
+        options?: object;
+        /**
+         * Callback function called after rendering successfully
+         */
+        onRender?(): void;
+        /**
+         * Callback function called if an error occurs
+         * @param $
+         */
+        onError?($: stardust.RenderError): void;
+        plugins?: stardust.Plugin[];
+        id?: string;
+        type?: string;
+        version?: string;
+        fields?: stardust.Field[];
+        extendProperties?: boolean;
+        properties?: qix.GenericObjectProperties;
+    }
+
+    interface LibraryField {
+        qLibraryId: string;
+        type: "dimension" | "measure";
     }
 
     /**

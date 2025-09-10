@@ -4,8 +4,8 @@
   "version": "6.0.0-alpha.2",
   "main": "src/index.js",
   "devDependencies": {
+    "@nebula.js/conversion": "^6.0.0-alpha.2",
     "extend": "3.0.2",
-    "node-event-emitter": "0.0.1",
-    "@nebula.js/conversion": "^6.0.0-alpha.2"
+    "node-event-emitter": "0.0.1"
   }
 }

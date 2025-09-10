@@ -1505,157 +1505,6 @@
         }
       }
     },
-    "Field": {
-      "kind": "alias",
-      "items": {
-        "kind": "union",
-        "items": [
-          {
-            "type": "string"
-          },
-          {
-            "type": "qix.NxDimension"
-          },
-          {
-            "type": "qix.NxMeasure"
-          },
-          {
-            "type": "#/definitions/LibraryField"
-          }
-        ]
-      }
-    },
-    "CreateConfig": {
-      "description": "Rendering configuration for creating and rendering a new object",
-      "kind": "interface",
-      "entries": {
-        "type": {
-          "type": "string"
-        },
-        "version": {
-          "optional": true,
-          "type": "string"
-        },
-        "fields": {
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "properties": {
-          "optional": true,
-          "type": "qix.GenericObjectProperties"
-        }
-      }
-    },
-    "RenderConfig": {
-      "description": "Configuration for rendering a visualisation, either creating or fetching an existing object.",
-      "kind": "interface",
-      "entries": {
-        "element": {
-          "description": "Target html element to render in to",
-          "type": "HTMLElement"
-        },
-        "options": {
-          "description": "Options passed into the visualisation",
-          "optional": true,
-          "type": "object"
-        },
-        "onRender": {
-          "description": "Callback function called after rendering successfully",
-          "optional": true,
-          "kind": "function",
-          "params": []
-        },
-        "onError": {
-          "description": "Callback function called if an error occurs",
-          "optional": true,
-          "kind": "function",
-          "params": [
-            {
-              "type": "#/definitions/RenderError"
-            }
-          ]
-        },
-        "plugins": {
-          "description": "plugins passed into the visualisation",
-          "optional": true,
-          "kind": "array",
-          "items": {
-            "type": "#/definitions/Plugin"
-          }
-        },
-        "id": {
-          "description": "For existing objects: Engine identifier of object to render",
-          "optional": true,
-          "type": "string"
-        },
-        "type": {
-          "description": "For creating objects: Type of visualisation to render",
-          "optional": true,
-          "type": "string"
-        },
-        "version": {
-          "description": "For creating objects: Version of visualization to render",
-          "optional": true,
-          "type": "string"
-        },
-        "fields": {
-          "description": "For creating objects: Data fields to use",
-          "optional": true,
-          "kind": "union",
-          "items": [
-            {
-              "kind": "array",
-              "items": {
-                "type": "#/definitions/Field"
-              }
-            }
-          ]
-        },
-        "extendProperties": {
-          "description": "For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
-          "optional": true,
-          "defaultValue": false,
-          "type": "boolean"
-        },
-        "properties": {
-          "description": "For creating objects: Explicit properties to set",
-          "optional": true,
-          "type": "qix.GenericObjectProperties"
-        }
-      },
-      "examples": [
-        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst createConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(createConfig);"
-      ]
-    },
-    "LibraryField": {
-      "kind": "interface",
-      "entries": {
-        "qLibraryId": {
-          "type": "string"
-        },
-        "type": {
-          "kind": "union",
-          "items": [
-            {
-              "kind": "literal",
-              "value": "'dimension'"
-            },
-            {
-              "kind": "literal",
-              "value": "'measure'"
-            }
-          ]
-        }
-      }
-    },
     "AppSelections": {
       "kind": "class",
       "constructor": {
@@ -1890,6 +1739,157 @@
               }
             ]
           }
+        }
+      }
+    },
+    "Field": {
+      "kind": "alias",
+      "items": {
+        "kind": "union",
+        "items": [
+          {
+            "type": "string"
+          },
+          {
+            "type": "qix.NxDimension"
+          },
+          {
+            "type": "qix.NxMeasure"
+          },
+          {
+            "type": "#/definitions/LibraryField"
+          }
+        ]
+      }
+    },
+    "CreateConfig": {
+      "description": "Rendering configuration for creating and rendering a new object",
+      "kind": "interface",
+      "entries": {
+        "type": {
+          "type": "string"
+        },
+        "version": {
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "properties": {
+          "optional": true,
+          "type": "qix.GenericObjectProperties"
+        }
+      }
+    },
+    "RenderConfig": {
+      "description": "Configuration for rendering a visualisation, either creating or fetching an existing object.",
+      "kind": "interface",
+      "entries": {
+        "element": {
+          "description": "Target html element to render in to",
+          "type": "HTMLElement"
+        },
+        "options": {
+          "description": "Options passed into the visualisation",
+          "optional": true,
+          "type": "object"
+        },
+        "onRender": {
+          "description": "Callback function called after rendering successfully",
+          "optional": true,
+          "kind": "function",
+          "params": []
+        },
+        "onError": {
+          "description": "Callback function called if an error occurs",
+          "optional": true,
+          "kind": "function",
+          "params": [
+            {
+              "type": "#/definitions/RenderError"
+            }
+          ]
+        },
+        "plugins": {
+          "description": "plugins passed into the visualisation",
+          "optional": true,
+          "kind": "array",
+          "items": {
+            "type": "#/definitions/Plugin"
+          }
+        },
+        "id": {
+          "description": "For existing objects: Engine identifier of object to render",
+          "optional": true,
+          "type": "string"
+        },
+        "type": {
+          "description": "For creating objects: Type of visualisation to render",
+          "optional": true,
+          "type": "string"
+        },
+        "version": {
+          "description": "For creating objects: Version of visualization to render",
+          "optional": true,
+          "type": "string"
+        },
+        "fields": {
+          "description": "For creating objects: Data fields to use",
+          "optional": true,
+          "kind": "union",
+          "items": [
+            {
+              "kind": "array",
+              "items": {
+                "type": "#/definitions/Field"
+              }
+            }
+          ]
+        },
+        "extendProperties": {
+          "description": "For creating objects: Whether to deeply extend properties or not. If false then subtrees will be overwritten.",
+          "optional": true,
+          "defaultValue": false,
+          "type": "boolean"
+        },
+        "properties": {
+          "description": "For creating objects: Explicit properties to set",
+          "optional": true,
+          "type": "qix.GenericObjectProperties"
+        }
+      },
+      "examples": [
+        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst createConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(createConfig);"
+      ]
+    },
+    "LibraryField": {
+      "kind": "interface",
+      "entries": {
+        "qLibraryId": {
+          "type": "string"
+        },
+        "type": {
+          "kind": "union",
+          "items": [
+            {
+              "kind": "literal",
+              "value": "'dimension'"
+            },
+            {
+              "kind": "literal",
+              "value": "'measure'"
+            }
+          ]
         }
       }
     },
