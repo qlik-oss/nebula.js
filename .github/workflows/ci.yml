@@ -52,11 +52,11 @@ jobs:
       - name: Run unit tests and publish to codeclimate
         env:
           JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        run: |
-          ./test/bin/cc-test-reporter before-build
-          yarn test:unit --coverage --reporters=default --reporters=jest-junit
-          ./test/bin/cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+        run: yarn test:unit --coverage
+      - uses: qltysh/qlty-action/coverage@v2
+        with:
+          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
+          files: coverage/lcov.info
       - name: Store junit results
         uses: actions/upload-artifact@v4
         with:
