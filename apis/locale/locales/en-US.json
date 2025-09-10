@@ -311,7 +311,7 @@
     "value": "Treemap",
     "comment": ""
   },
-  "Object.WaterfallChart":{
+  "Object.WaterfallChart": {
     "value": "Waterfall chart",
     "comment": "Visualization in the library"
   },
