@@ -17,7 +17,7 @@ import { notSupportedError } from './utils/hypercube-helper/hypercube-utils';
  * @entry
  * @export
  * @example
- * import DataPropertyHandler from './data-property-handler';
+ * import DataPropertyHandler from '@nebula.js/stardust';
  *
  * class PivotHyperCubeHandler extends DataPropertyHandler {
  *
