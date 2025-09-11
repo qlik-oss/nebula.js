@@ -9,11 +9,12 @@ function addMainMeasure(self, measure, index) {
 
     return self.autoSortMeasure(measure).then(() => {
       addMeasureToColumnSortOrder(self, measures);
-      return addMeasureToColumnOrder(self, measure).then(() => measure);
+      addMeasureToColumnOrder(self, measure).then(() => measure);
+      return measure;
     });
   }
 
-  return measure;
+  return Promise.resolve();
 }
 
 export default addMainMeasure;

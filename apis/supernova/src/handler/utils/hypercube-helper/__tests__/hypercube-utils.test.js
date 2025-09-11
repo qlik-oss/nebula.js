@@ -1,8 +1,9 @@
-// eslint-disable-next-line import/no-relative-packages
-import uid from '../../../../../../nucleus/src/object/uid';
+import { uid } from '../../constants';
 import * as hcUtils from '../hypercube-utils';
 
-jest.mock('../../../../../../nucleus/src/object/uid', () => jest.fn());
+jest.mock('../../constants', () => ({
+  uid: jest.fn(),
+}));
 
 describe('replaceDimensionToColumnOrder', () => {
   let self;

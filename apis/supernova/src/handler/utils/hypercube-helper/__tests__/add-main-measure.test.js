@@ -44,7 +44,7 @@ describe('addMainMeasure', () => {
 
     const result = await addMainMeasure(self, newMeasure, index);
 
-    expect(result).toEqual(newMeasure);
+    expect(result).toBeUndefined();
     expect(self.autoSortMeasure).not.toHaveBeenCalledWith(newMeasure);
     expect(self.hcProperties.qInterColumnSortOrder).toEqual([1, 0, 2]);
   });

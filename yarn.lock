@@ -4473,6 +4473,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nebula.js/supernova@workspace:apis/supernova"
   dependencies:
+    "@nebula.js/conversion": "npm:^6.0.0-alpha.2"
     extend: "npm:3.0.2"
     node-event-emitter: "npm:0.0.1"
   languageName: unknown

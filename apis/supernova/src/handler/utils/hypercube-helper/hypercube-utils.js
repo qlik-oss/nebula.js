@@ -1,10 +1,5 @@
-// eslint-disable-next-line import/no-relative-packages
-import getValue from '../../../../../conversion/src/utils';
-// eslint-disable-next-line import/no-relative-packages
-import arrayUtil from '../../../../../conversion/src/array-util';
-import { TOTAL_MAX } from '../constants';
-// eslint-disable-next-line import/no-relative-packages
-import uid from '../../../../../nucleus/src/object/uid';
+import { arrayUtil, utils } from '@nebula.js/conversion';
+import { TOTAL_MAX, uid } from '../constants';
 
 export const notSupportedError = new Error('Not supported in this object, need to implement in subclass.');
 
@@ -33,7 +28,7 @@ export const getHyperCube = (layout, path) => {
   if (!layout) {
     return undefined;
   }
-  return path && getValue(layout, path) ? getValue(layout, path).qHyperCube : layout.qHyperCube;
+  return path && utils.getValue(layout, path) ? utils.getValue(layout, path).qHyperCube : layout.qHyperCube;
 };
 
 export function setDefaultProperties(self) {
@@ -241,7 +236,8 @@ export function isTotalMeasureExceeded(self, measures) {
   return altMeasures.length + measures.length >= TOTAL_MAX.MEASURES;
 }
 
-export function isMeasureAlternative(self, measures, alternative) {
+export function isMeasureAlternative(self, alternative) {
+  const measures = self.getMeasures();
   return alternative || (self.maxMeasures() <= measures.length && measures.length < TOTAL_MAX.MEASURES);
 }
 
