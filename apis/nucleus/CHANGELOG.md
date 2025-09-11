@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.2...v6.0.0-alpha.3) (2025-09-11)
+
+### Bug Fixes
+
+- add aria-label to action toolbar items ([#1794](https://github.com/qlik-oss/nebula.js/issues/1794)) ([5499e2e](https://github.com/qlik-oss/nebula.js/commit/5499e2e5d8cf024a294369ef0f331a60555dce9e))
+- **deps:** update minor and patch ([#1790](https://github.com/qlik-oss/nebula.js/issues/1790)) ([cee895a](https://github.com/qlik-oss/nebula.js/commit/cee895adf1be3bd42d255bcb6023fb11638fb0d3))
+- **deps:** update minor and patch ([#1797](https://github.com/qlik-oss/nebula.js/issues/1797)) ([8d9e537](https://github.com/qlik-oss/nebula.js/commit/8d9e537179f0dac4f0b9323c780ee1fd219e671b))
+
 # [6.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.1...v6.0.0-alpha.2) (2025-08-18)
 
 **Note:** Version bump only for package @nebula.js/nucleus

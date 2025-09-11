@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.2...v6.0.0-alpha.3) (2025-09-11)
+
+### Bug Fixes
+
+- misspell of a feature flag ([#1793](https://github.com/qlik-oss/nebula.js/issues/1793)) ([30333d0](https://github.com/qlik-oss/nebula.js/commit/30333d0e52387c327e820db460b8b21e585c4d04))
+
 # [6.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.1...v6.0.0-alpha.2) (2025-08-18)
 
 **Note:** Version bump only for package @nebula.js/supernova

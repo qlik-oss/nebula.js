@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.2...v6.0.0-alpha.3) (2025-09-11)
+
+**Note:** Version bump only for package @nebula.js/conversion
+
 # [6.0.0-alpha.2](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.1...v6.0.0-alpha.2) (2025-08-18)
 
 **Note:** Version bump only for package @nebula.js/conversion
