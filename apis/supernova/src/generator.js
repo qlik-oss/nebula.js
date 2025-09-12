@@ -84,7 +84,16 @@ export default function generatorFn(UserSN, galaxy) {
 
   if (galaxy.flags.isEnabled('NEBULA_DATA_HANDLERS')) {
     if (generator.definition.ext && !generator.definition.ext.getPropertyHandler) {
-      generator.definition.ext.getPropertyHandler = (opts) => new HyperCubeHandler(opts);
+      /*
+       // Where do we get this stuff from?
+        dimensionDefinition: this.dimensionDefinition,
+        measureDefinition: this.measureDefinition,
+        dimensionProperties,
+        measureProperties,
+        globalChangeListeners: globalChange,
+        path: this.options?.hyperCubePath,
+      */
+      generator.definition.ext.getPropertyHandler = (app) => new HyperCubeHandler({ app });
     }
   }
 
