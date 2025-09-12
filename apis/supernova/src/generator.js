@@ -74,11 +74,6 @@ export default function generatorFn(UserSN, galaxy) {
       const ss = create(generator, params, galaxy);
       return ss;
     },
-    definition: galaxy.flags.isEnabled('NEBULA_DATA_HANDLERS')
-      ? {
-          dataHandler: (opts) => new HyperCubeHandler(opts),
-        }
-      : {},
   };
 
   Object.keys(sn).forEach((key) => {
@@ -86,6 +81,12 @@ export default function generatorFn(UserSN, galaxy) {
       generator.definition[key] = sn[key];
     }
   });
+
+  if (galaxy.flags.isEnabled('NEBULA_DATA_HANDLERS')) {
+    if (generator.definition.ext && !generator.definition.ext.getPropertyHandler) {
+      generator.definition.ext.getPropertyHandler = (opts) => new HyperCubeHandler(opts);
+    }
+  }
 
   return generator;
 }
