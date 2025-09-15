@@ -74,6 +74,7 @@ export default function generatorFn(UserSN, galaxy) {
       const ss = create(generator, params, galaxy);
       return ss;
     },
+    definition: {},
   };
 
   Object.keys(sn).forEach((key) => {
@@ -93,7 +94,14 @@ export default function generatorFn(UserSN, galaxy) {
         globalChangeListeners: globalChange,
         path: this.options?.hyperCubePath,
       */
-      generator.definition.ext.getPropertyHandler = (app) => new HyperCubeHandler({ app });
+      const dataDef = generator.definition.ext.data;
+      const dataTargets = generator.qae.data.targets;
+      if (dataDef && dataTargets && dataTargets.length > 0) {
+        const dimensionDefinition = dataDef.dimensions;
+        const measureDefinition = dataDef.measures;
+        generator.definition.ext.getPropertyHandler = (app) =>
+          new HyperCubeHandler({ app, dimensionDefinition, measureDefinition });
+      }
     }
   }
 
