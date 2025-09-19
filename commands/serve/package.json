@@ -39,8 +39,8 @@
     "express": "5.1.0",
     "extend": "3.0.2",
     "html-webpack-plugin": "5.6.4",
-    "portfinder": "1.0.37",
-    "puppeteer": "24.19.0",
+    "portfinder": "1.0.38",
+    "puppeteer": "24.22.0",
     "regenerator-runtime": "0.14.1",
     "source-map-loader": "5.0.0",
     "webpack": "5.101.3",
@@ -53,8 +53,8 @@
     "@babel/core": "7.28.4",
     "@babel/preset-env": "7.28.3",
     "@babel/preset-react": "7.27.1",
-    "@mui/material": "^6.1.0",
-    "@mui/system": "^6.1.0",
+    "@mui/material": "^6.5.0",
+    "@mui/system": "^6.5.0",
     "@nebula.js/enigma-mocker": "^6.0.0-alpha.3",
     "@nebula.js/nucleus": "^6.0.0-alpha.3",
     "@nebula.js/snapshooter": "^6.0.0-alpha.3",
@@ -67,10 +67,10 @@
     "eslint-import-resolver-alias": "1.1.2",
     "eslint-import-resolver-webpack": "0.13.10",
     "file-loader": "^6.2.0",
-    "monaco-editor": "0.52.2",
+    "monaco-editor": "0.53.0",
     "monaco-editor-webpack-plugin": "7.1.0",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router": "7.8.2"
+    "react-router": "7.9.1"
   }
 }
