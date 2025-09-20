@@ -74,11 +74,7 @@ export default function generatorFn(UserSN, galaxy) {
       const ss = create(generator, params, galaxy);
       return ss;
     },
-    definition: galaxy.flags.isEnabled('NEBULA_DATA_HANDLERS')
-      ? {
-          dataHandler: (opts) => new HyperCubeHandler(opts),
-        }
-      : {},
+    definition: {},
   };
 
   Object.keys(sn).forEach((key) => {
@@ -86,6 +82,28 @@ export default function generatorFn(UserSN, galaxy) {
       generator.definition[key] = sn[key];
     }
   });
+
+  if (galaxy.flags.isEnabled('NEBULA_DATA_HANDLERS')) {
+    if (generator.definition.ext && !generator.definition.ext.getPropertyHandler) {
+      /*
+       // Where do we get this stuff from?
+        dimensionDefinition: this.dimensionDefinition,
+        measureDefinition: this.measureDefinition,
+        dimensionProperties,
+        measureProperties,
+        globalChangeListeners: globalChange,
+        path: this.options?.hyperCubePath,
+      */
+      const dataDef = generator.definition.ext.data;
+      const dataTargets = generator.qae.data.targets;
+      if (dataDef && dataTargets && dataTargets.length > 0) {
+        const dimensionDefinition = dataDef.dimensions;
+        const measureDefinition = dataDef.measures;
+        generator.definition.ext.getPropertyHandler = (app) =>
+          new HyperCubeHandler({ app, dimensionDefinition, measureDefinition });
+      }
+    }
+  }
 
   return generator;
 }
