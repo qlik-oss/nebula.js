@@ -167,6 +167,19 @@ const config = ({
           ignoreTryCatch: false, // Avoids problems with require() inside try catch (https://github.com/rollup/plugins/issues/1004)
         }),
         json(),
+        // Handle all CSS with conditional modules processing
+        postcss({
+          // Apply CSS modules only to .module.css files from src/, not node_modules
+          modules: (id) =>
+            id.includes('src/') && id.endsWith('.module.css')
+              ? {
+                  namedExports: false,
+                  exportLocalsConvention: 'as-is',
+                  generateScopedName: '[name]_[local]__[hash:base64:5]',
+                }
+              : false,
+          extract: true,
+        }),
         babel({
           babelHelpers: 'bundled',
           babelrc: false,
@@ -182,11 +195,24 @@ const config = ({
                 },
               },
             ],
+            ...[
+              typescript
+                ? [
+                    '@babel/preset-typescript',
+                    {
+                      allowNamespaces: true,
+                      allowDeclareFields: true,
+                      onlyRemoveTypeImports: true,
+                      // Fixes for _default issues
+                      isolatedModules: true,
+                    },
+                  ]
+                : [],
+            ],
+            ['@babel/preset-react'],
           ],
           plugins: [[jsxPlugin]],
         }),
-        postcss({}),
-        ...[typescript ? typescriptPlugin() : false],
         ...[
           mode === 'production'
             ? terser({
