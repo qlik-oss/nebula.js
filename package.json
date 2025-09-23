@@ -44,7 +44,7 @@
     "@babel/preset-react": "7.27.1",
     "@commitlint/cli": "19.8.1",
     "@commitlint/config-conventional": "19.8.1",
-    "@playwright/test": "1.55.0",
+    "@playwright/test": "1.55.1",
     "@rollup/plugin-babel": "6.0.4",
     "@rollup/plugin-commonjs": "28.0.6",
     "@rollup/plugin-json": "6.1.0",
@@ -61,7 +61,7 @@
     "cross-env": "10.0.0",
     "css-loader": "7.1.2",
     "enigma.js": "2.14.0",
-    "eslint": "9.35.0",
+    "eslint": "9.36.0",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-import": "2.32.0",
@@ -79,15 +79,15 @@
     "jest-location-mock": "^2.0.0",
     "jimp": "^1.6.0",
     "lerna": "8.2.4",
-    "lint-staged": "^16.1.6",
+    "lint-staged": "^16.2.0",
     "mocha-junit-reporter": "2.2.1",
     "picasso-plugin-q": "2.9.0",
     "picasso.js": "2.9.0",
     "prettier": "3.6.2",
-    "puppeteer": "24.22.0",
+    "puppeteer": "24.22.2",
     "qix-faker": "0.3.0",
     "react-is": "18.3.1",
-    "rollup": "4.51.0",
+    "rollup": "4.52.2",
     "rollup-plugin-sass": "1.15.3",
     "style-loader": "4.0.0",
     "whatwg-fetch": "^3.6.20",
@@ -98,7 +98,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-is": "18.3.1",
-    "@playwright/test": "1.55.0"
+    "@playwright/test": "1.55.1"
   },
   "workspaces": [
     "packages/*",
@@ -106,5 +106,5 @@
     "apis/*",
     "test/component/*"
   ],
-  "packageManager": "yarn@4.10.0"
+  "packageManager": "yarn@4.10.3"
 }
