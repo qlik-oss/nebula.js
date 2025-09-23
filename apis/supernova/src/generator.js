@@ -1,4 +1,5 @@
 import create from './creator';
+import HyperCubeHandler from './handler/hypercube-handler';
 // import translator from './translator';
 import qae from './qae';
 
@@ -72,7 +73,11 @@ export default function generatorFn(UserSN, galaxy) {
     create(params) {
       return create(generator, params, galaxy);
     },
-    definition: {},
+    definition: galaxy.flags.isEnabled('NEBULA_DATA_HANDLERS')
+      ? {
+          dataHandler: (opts) => new HyperCubeHandler(opts),
+        }
+      : {},
   };
 
   Object.keys(sn).forEach((key) => {
