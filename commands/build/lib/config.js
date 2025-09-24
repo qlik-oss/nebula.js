@@ -140,6 +140,32 @@ const config = ({
     return outputConfig;
   };
 
+  const babelPresets = [
+    [
+      babelPreset,
+      {
+        modules: false,
+        targets: {
+          browsers: ['chrome 62'],
+        },
+      },
+    ],
+    ['@babel/preset-react'],
+  ];
+
+  if (typescript) {
+    babelPresets.push([
+      '@babel/preset-typescript',
+      {
+        allowNamespaces: true,
+        allowDeclareFields: true,
+        onlyRemoveTypeImports: true,
+        // Fixes for _default issues
+        isolatedModules: true,
+      },
+    ]);
+  }
+
   return {
     input: {
       onwarn(warning, warn) {
@@ -185,32 +211,7 @@ const config = ({
           babelrc: false,
           inputSourceMap: sourcemap,
           extensions,
-          presets: [
-            [
-              babelPreset,
-              {
-                modules: false,
-                targets: {
-                  browsers: ['chrome 62'],
-                },
-              },
-            ],
-            ...[
-              typescript
-                ? [
-                    '@babel/preset-typescript',
-                    {
-                      allowNamespaces: true,
-                      allowDeclareFields: true,
-                      onlyRemoveTypeImports: true,
-                      // Fixes for _default issues
-                      isolatedModules: true,
-                    },
-                  ]
-                : [],
-            ],
-            ['@babel/preset-react'],
-          ],
+          presets: babelPresets,
           plugins: [[jsxPlugin]],
         }),
         ...[
