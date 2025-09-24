@@ -1,5 +1,5 @@
-import HyperCubeHandler from './handler/hypercube-handler';
 import create from './creator';
+import HyperCubeHandler from './handler/hypercube-handler';
 // import translator from './translator';
 import qae from './qae';
 
@@ -71,8 +71,7 @@ export default function generatorFn(UserSN, galaxy) {
      * @param {ObjectSelections} p.selections
      */
     create(params) {
-      const ss = create(generator, params, galaxy);
-      return ss;
+      return create(generator, params, galaxy);
     },
     definition: galaxy.flags.isEnabled('NEBULA_DATA_HANDLERS')
       ? {

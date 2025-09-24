@@ -120,6 +120,6 @@ const conversion = {
   hypercube,
 };
 
-export { utils, arrayUtil };
+export { utils, arrayUtil, helpers };
 
 export default conversion;

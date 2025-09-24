@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import EventEmitter from 'node-event-emitter';
-import { convertTo as conversionConvertTo } from '@nebula.js/conversion';
+import { convertTo as conversionConvertTo, helpers } from '@nebula.js/conversion';
+import { HyperCubeHandler } from '@nebula.js/supernova';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
 import validatePlugins from './plugins/plugins';
@@ -111,6 +112,38 @@ export default function viz({
             : cellRef.current.getExtensionDefinition().definition;
         }
         return false;
+      },
+      /**
+       * Gets the generic hypercube handlers
+       * @private
+       * @returns {Promise<object|undefined>} methods to handle hypercube dimensions and measures definitions and properties.
+       */
+      async getHypercubePropertyHandler() {
+        await rendered;
+        const qae = cellRef.current.getQae();
+
+        if (!qae?.data?.targets?.[0]?.propertyPath) {
+          return undefined;
+        }
+
+        const path = qae.data.targets[0].propertyPath;
+        const dataDefinition = cellRef.current.getExtensionDefinition().data;
+        const properties = await model.getEffectiveProperties();
+
+        if (path && dataDefinition) {
+          const args = {
+            app: model.app,
+            dimensionDefinition: dataDefinition.dimensions,
+            measureDefinition: dataDefinition.measures,
+            dimensionProperties: properties.qHyperCubeDef?.qDimensions?.[0] || helpers.getDefaultDimension(),
+            measureProperties: properties.qHyperCubeDef?.qMeasures?.[0] || helpers.getDefaultMeasure(),
+            globalChangeListeners: undefined,
+            path,
+          };
+          return new HyperCubeHandler(args);
+        }
+
+        return undefined;
       },
       toggleFocus(focus) {
         cellRef.current.toggleFocus(focus);
