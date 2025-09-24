@@ -189,27 +189,20 @@ const config = ({
           browser,
           preferBuiltins,
         }),
+        postcss({
+          exclude: /\.module\.css$/,
+        }),
+        postcss({
+          include: /\.module\.css$/,
+          modules: true,
+          extract: true,
+        }),
         commonjs({
           ignoreTryCatch: false, // Avoids problems with require() inside try catch (https://github.com/rollup/plugins/issues/1004)
         }),
         json(),
         // Handle all CSS with conditional modules processing
-        postcss({
-          modules: (id) => {
-            // Only apply CSS modules to .module.css files
-            if (id.endsWith('.module.css')) {
-              return {
-                namedExports: false,
-                exportLocalsConvention: 'as-is',
-                generateScopedName: '[name]_[local]__[hash:base64:5]',
-              };
-            }
-            // Return false for all other CSS files (they'll be processed as regular CSS)
-            return false;
-          },
-          extract: true,
-          minimize: mode === 'production',
-        }),
+
         babel({
           babelHelpers: 'bundled',
           babelrc: false,
