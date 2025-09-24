@@ -55,10 +55,17 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * @private
-   * @typeof {object} DimensionProps
+   * @typeof {object} DimensionProp
    * @property {qix.NxDimension} dimension
    * @property {boolean=} alternative - Whether the dimension is an alternative
    * @property {number=} index - Index of the dimension.
+   */
+
+  /**
+   * @private
+   * @typeof {object} MultiDimensionProps
+   * @property {qix.NxDimension[]} dimensions
+   * @property {boolean=} alternative - Whether the dimension is an alternative
    */
 
   /**
@@ -71,6 +78,13 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * @private
+   * @typeof {object} MultiMeasureProps
+   * @property {qix.NxMeasure[]} measures
+   * @property {boolean=} alternative - Whether the measure is an alternative
+   */
+
+  /**
+   * @private
    * @typeof {object} Indexes
    * @property {number} fromIndex - The current index of the field.
    * @property {number} toIndex - New index of the field.
@@ -79,7 +93,7 @@ class HyperCubeHandler extends DataPropertyHandler {
   /**
    * @private
    * @typeof {object} MultiFieldsIndexes
-   * @property {array} indexes - Multiple field indexes.
+   * @property {number[]} indexes - Multiple field indexes.
    * @property {boolean} alternative - Whether the field is an alternative.
    */
 
@@ -177,15 +191,15 @@ class HyperCubeHandler extends DataPropertyHandler {
     const dim = initializeDim(dimensionProps.dimension);
 
     if (hcUtils.isDimensionAlternative(this, dimensionProps.alternative)) {
-      return hcUtils.addAlternativeDimension(this, dim, dimensionProps.idx);
+      return hcUtils.addAlternativeDimension(this, dim, dimensionProps.index);
     }
 
-    return addMainDimension(this, dim, dimensionProps.idx);
+    return addMainDimension(this, dim, dimensionProps.index);
   }
 
   /**
    * @private
-   * @param {DimensionProps} dimensionsProps
+   * @param {MultiDimensionProps} multiDimensionProps
    * @returns {qix.NxDimension[]} added dimensions
    * @description Adds multiple dimensions to the hypercube.
    * If the dimensions are alternatives, they will be added to the alternative dimensions.
@@ -194,13 +208,13 @@ class HyperCubeHandler extends DataPropertyHandler {
    * @example
    * const addedDimensions = await hyperCubeHandler.addDimensions(dimensions, alternative);
    */
-  async addDimensions(dimensionsProps) {
-    const { alternative = false, dimensions } = dimensionsProps;
+  async addDimensions(multiDimensionProps) {
     const existingDimensions = this.getDimensions();
     const initialLength = existingDimensions.length;
     const addedDimensions = [];
     let addedActive = 0;
 
+    const { dimensions } = multiDimensionProps;
     // eslint-disable-next-line no-restricted-syntax
     for await (const dimension of dimensions) {
       if (hcUtils.isTotalDimensionsExceeded(this, existingDimensions)) {
@@ -209,7 +223,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
       const dim = initializeDim(dimension);
 
-      if (hcUtils.isDimensionAlternative(this, alternative)) {
+      if (hcUtils.isDimensionAlternative(this, multiDimensionProps.alternative || false)) {
         const altDim = await hcUtils.addAlternativeDimension(this, dim);
         addedDimensions.push(altDim);
       } else if (existingDimensions.length < this.maxDimensions()) {
@@ -231,18 +245,18 @@ class HyperCubeHandler extends DataPropertyHandler {
    * hyperCubeHandler.removeDimension(idx, alternative);
    */
   removeDimension(dimensionProps) {
-    const { alternative, idx } = dimensionProps;
+    const { alternative, index } = dimensionProps;
 
     if (alternative) {
-      removeAlternativeDimension(this, idx);
+      removeAlternativeDimension(this, index);
     }
 
-    removeMainDimension(this, idx);
+    removeMainDimension(this, index);
   }
 
   /**
    * @private
-   * @param {DimensionProps} dimensionProps
+   * @param {MultiDimensionProps} multiDimensionProps
    * @returns {qix.NxDimension[]} deleted dimensions
    * @description Removes multiple dimensions from the hypercube by indexes.
    * If the dimensions are alternatives, they will be removed from the alternative dimensions.
@@ -251,27 +265,25 @@ class HyperCubeHandler extends DataPropertyHandler {
    * @example
    * const deletedDimensions = await hyperCubeHandler.removeDimensions(indexes, alternative);
    */
-  async removeDimensions(dimensionProps) {
-    const { alternative, indexes } = dimensionProps;
-
+  async removeDimensions(multiDimensionProps) {
     const altDimensions = this.getAlternativeDimensions();
     const dimensions = this.getDimensions();
 
-    if (indexes.length === 0) return [];
+    if (multiDimensionProps.indexes.length === 0) return [];
     let deletedDimensions = [];
     // Start deleting from the end of the list first otherwise the idx is messed up
-    const sortedIndexes = [...indexes].sort((a, b) => b - a);
+    const sortedIndexes = [...multiDimensionProps.indexes].sort((a, b) => b - a);
 
-    if (alternative && altDimensions.length > 0) {
+    if (multiDimensionProps.alternative && altDimensions.length > 0) {
       // Keep the original deleted order
-      deletedDimensions = hcUtils.getDeletedFields(altDimensions, indexes);
+      deletedDimensions = hcUtils.getDeletedFields(altDimensions, multiDimensionProps.indexes);
       // eslint-disable-next-line no-restricted-syntax
       for await (const index of sortedIndexes) {
         await removeAlternativeDimension(this, index);
       }
     } else if (dimensions.length > 0) {
       // Keep the original deleted order
-      deletedDimensions = hcUtils.getDeletedFields(dimensions, indexes);
+      deletedDimensions = hcUtils.getDeletedFields(dimensions, multiDimensionProps.indexes);
       // eslint-disable-next-line no-restricted-syntax
       for await (const index of sortedIndexes) {
         await removeMainDimension(this, index);
@@ -462,7 +474,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
   /**
    * @private
-   * @param {MeasureProps} measureProps
+   * @param {MultiMeasureProps} multiMeasureProps
    * @returns {qix.NxMeasure[]} added measures
    * @description Adds multiple measures to the hypercube.
    * If the measures are alternatives, they will be added to the alternative measures.
@@ -471,21 +483,19 @@ class HyperCubeHandler extends DataPropertyHandler {
    * @example
    * const addedMeasures = await hyperCubeHandler.addMeasures(measures, alternative);
    */
-  addMeasures(measureProps) {
-    const { alternative = false, measures } = measureProps;
-
+  addMeasures(multiMeasureProps) {
     const existingMeasures = this.getMeasures();
     const addedMeasures = [];
     let addedActive = 0;
 
-    measures.forEach(async (measure) => {
+    multiMeasureProps.measures.forEach(async (measure) => {
       if (hcUtils.isTotalMeasureExceeded(this, existingMeasures)) {
         return false;
       }
 
       const meas = initializeId(measure);
 
-      if (hcUtils.isMeasureAlternative(this, alternative)) {
+      if (hcUtils.isMeasureAlternative(this, multiMeasureProps.alternative || false)) {
         hcUtils.addAlternativeMeasure(this, meas);
         addedMeasures.push(meas);
       } else if (existingMeasures.length < this.maxMeasures()) {
@@ -578,10 +588,10 @@ class HyperCubeHandler extends DataPropertyHandler {
     const meas = initializeId(measureProps.measure);
 
     if (hcUtils.isMeasureAlternative(this, measureProps.alternative)) {
-      return hcUtils.addAlternativeMeasure(this, meas, measureProps.idx);
+      return hcUtils.addAlternativeMeasure(this, meas, measureProps.index);
     }
 
-    return reinsertMainMeasure(this, meas, measureProps.idx);
+    return reinsertMainMeasure(this, meas, measureProps.index);
   }
 
   /**
