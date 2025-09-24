@@ -195,15 +195,18 @@ const config = ({
         json(),
         // Handle all CSS with conditional modules processing
         postcss({
-          // Apply CSS modules only to .module.css files from src/, not node_modules
-          modules: (id) =>
-            id.includes('src/') && id.endsWith('.module.css')
-              ? {
-                  namedExports: false,
-                  exportLocalsConvention: 'as-is',
-                  generateScopedName: '[name]_[local]__[hash:base64:5]',
-                }
-              : false,
+          // Only process .module.css files with CSS modules
+          include: /\.module\.css$/,
+          modules: {
+            namedExports: false,
+            exportLocalsConvention: 'as-is',
+            generateScopedName: '[name]_[local]__[hash:base64:5]',
+          },
+          extract: true,
+        }),
+        postcss({
+          // Process all other CSS files normally
+          exclude: /\.module\.css$/,
           extract: true,
         }),
         babel({
