@@ -107,6 +107,7 @@ function ListBoxInline({ options, layout }) {
   const isModalMode = useCallback(() => isModal({ app, appSelections }), [app, appSelections]);
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
+  const [hasFocus, setHasFocus] = useState(false);
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown } = useMemo(
     () =>
@@ -276,6 +277,8 @@ function ListBoxInline({ options, layout }) {
         }}
         isGridMode={isGridMode}
         aria-label={keyboard.active ? translator.get('Listbox.ScreenReaderInstructions') : ''}
+        onFocus={() => setHasFocus(true)}
+        onBlur={() => setHasFocus(false)}
       >
         {showAttachedToolbar && listBoxHeader}
         <Grid
@@ -344,6 +347,7 @@ function ListBoxInline({ options, layout }) {
                     onCtrlF={onCtrlF}
                     isModal={isModalMode}
                     styles={styles}
+                    hasFocus={hasFocus}
                   />
                 )}
               </AutoSizer>
