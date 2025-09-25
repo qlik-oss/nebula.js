@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0-alpha.4](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.3...v6.0.0-alpha.4) (2025-09-25)
+
+### Bug Fixes
+
+- **deps:** update minor and patch ([#1804](https://github.com/qlik-oss/nebula.js/issues/1804)) ([5c8a846](https://github.com/qlik-oss/nebula.js/commit/5c8a8464d83279c35790518e76d72080e3a5fc1c))
+
 # [6.0.0-alpha.3](https://github.com/qlik-oss/nebula.js/compare/v6.0.0-alpha.2...v6.0.0-alpha.3) (2025-09-11)
 
 **Note:** Version bump only for package @nebula.js/ui
