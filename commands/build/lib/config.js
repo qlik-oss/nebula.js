@@ -10,6 +10,7 @@ const terser = require('@rollup/plugin-terser');
 const jsxPlugin = require('@babel/plugin-transform-react-jsx');
 const babelPreset = require('@babel/preset-env');
 const { visualizer } = require('rollup-plugin-visualizer');
+const browsersList = require('@qlik/browserslist-config');
 
 const resolveNative = require('./resolveNative');
 
@@ -146,7 +147,7 @@ const config = ({
       {
         modules: false,
         targets: {
-          browsers: ['chrome 62'],
+          browsers: browsersList,
         },
       },
     ],
