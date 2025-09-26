@@ -26,6 +26,7 @@ const THEME_OBJECT_TYPE_MAP = {
   map: 'mapChart',
   mapchart: 'mapChart',
   bulletchart: 'bulletChart',
+  'sn-table': 'straightTableV2',
 };
 
 const getThemeObjectType = (visualization) => {
