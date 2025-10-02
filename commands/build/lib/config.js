@@ -194,6 +194,7 @@ const config = ({
         postcss({
           exclude: /\.module\.css$/,
         }),
+        // Handle all CSS with conditional modules processing
         postcss({
           include: /\.module\.css$/,
           modules: true,
@@ -203,7 +204,6 @@ const config = ({
           ignoreTryCatch: false, // Avoids problems with require() inside try catch (https://github.com/rollup/plugins/issues/1004)
         }),
         json(),
-        // Handle all CSS with conditional modules processing
 
         babel({
           babelHelpers: 'bundled',
