@@ -1,5 +1,3 @@
-const { run } = require('jest');
-
 module.exports = {
   env: {
     test: {
