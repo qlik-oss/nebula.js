@@ -6,6 +6,7 @@ const systemjsBehaviours = {
       'picasso-plugin-q',
       'react',
       'react-dom',
+      '@qlik-trial/sprout-css-modules',
       /^(?!@qlik-trial\/qmfe-data-client-parcels)(@qlik-trial\/qmfe-)/,
     ];
     const { external } = cfg.systemjs || {};

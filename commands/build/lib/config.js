@@ -7,7 +7,6 @@ const json = require('@rollup/plugin-json');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const terser = require('@rollup/plugin-terser');
-const jsxPlugin = require('@babel/plugin-transform-react-jsx');
 const babelPreset = require('@babel/preset-env');
 const { visualizer } = require('rollup-plugin-visualizer');
 const browsersList = require('@qlik/browserslist-config');
@@ -153,7 +152,7 @@ const config = ({
         },
       },
     ],
-    [babelPresetReact],
+    [babelPresetReact, { runtime: 'automatic' }],
   ];
 
   if (typescript) {
@@ -195,6 +194,7 @@ const config = ({
         postcss({
           exclude: /\.module\.css$/,
         }),
+        // Handle all CSS with conditional modules processing
         postcss({
           include: /\.module\.css$/,
           modules: true,
@@ -204,7 +204,6 @@ const config = ({
           ignoreTryCatch: false, // Avoids problems with require() inside try catch (https://github.com/rollup/plugins/issues/1004)
         }),
         json(),
-        // Handle all CSS with conditional modules processing
 
         babel({
           babelHelpers: 'bundled',
@@ -212,7 +211,6 @@ const config = ({
           inputSourceMap: sourcemap,
           extensions,
           presets: babelPresets,
-          plugins: [[jsxPlugin]],
         }),
         ...[
           mode === 'production'
