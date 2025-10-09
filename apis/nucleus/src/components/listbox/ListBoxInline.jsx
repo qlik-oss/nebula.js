@@ -19,6 +19,7 @@ import useRect from '../../hooks/useRect';
 import isDirectQueryEnabled from './utils/is-direct-query';
 import getContainerPadding from './assets/list-sizes/container-padding';
 import ListBoxHeader from './components/ListBoxHeader';
+import ListBoxFocusBorder from './ListBoxFocusBorder';
 
 const PREFIX = 'ListBoxInline';
 const classes = {
@@ -43,12 +44,6 @@ const StyledGrid = styled(Grid, {
   },
   [`& .${classes.listboxWrapper}`]: {
     padding: containerPadding,
-  },
-  '&:focus': {
-    boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
-  },
-  '&:focus ::-webkit-scrollbar-track': {
-    boxShadow: !isGridMode ? 'inset -2px -2px 0px #3F8AB3' : undefined,
   },
   '&:focus-visible': {
     outline: 'none',
@@ -280,6 +275,7 @@ function ListBoxInline({ options, layout }) {
         onFocus={() => setHasFocus(true)}
         onBlur={() => setHasFocus(false)}
       >
+        <ListBoxFocusBorder show={hasFocus && !keyboard.active && !isModalMode()} width={containerRect?.width} height={containerRect?.height} />
         {showAttachedToolbar && listBoxHeader}
         <Grid
           item

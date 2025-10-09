@@ -17,7 +17,6 @@ import useFrequencyMax from './hooks/useFrequencyMax';
 import getScreenReaderAssertiveText from './components/screen-reader/assertive-screen-reader';
 import InstanceContext from '../../contexts/InstanceContext';
 import deduceFrequencyMode from './utils/deduce-frequency-mode';
-import ListBoxFocusBorder from './ListBoxFocusBorder';
 
 const DEFAULT_MIN_BATCH_SIZE = 100;
 
@@ -314,7 +313,6 @@ export default function ListBox({
       <div className="screenReaderOnly" aria-live="assertive">
         {screenReaderText}
       </div>
-      <ListBoxFocusBorder show={hasFocus && !keyboard.active && !isGrid && !isModal()} width={width} height={height} />
       {!listCount && cardinal > 0 && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}

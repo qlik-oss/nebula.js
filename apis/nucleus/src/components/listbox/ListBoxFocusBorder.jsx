@@ -7,7 +7,7 @@ const StyledBorder = styled('div')(({ theme, width, height }) => ({
   zIndex: 1,
   width,
   height,
-  boxShadow: `2px -2px 0px ${theme.palette.custom.focusBorder} inset, -2px -2px 0px ${theme.palette.custom.focusBorder}  inset`,
+  boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
 }));
 
 export default function ListBoxFocusBorder({ show, width, height }) {
