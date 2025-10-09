@@ -4307,13 +4307,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nebula.js/cli-build@npm:^6.0.0-alpha.5, @nebula.js/cli-build@workspace:commands/build":
+"@nebula.js/cli-build@npm:^6.0.1, @nebula.js/cli-build@workspace:commands/build":
   version: 0.0.0-use.local
   resolution: "@nebula.js/cli-build@workspace:commands/build"
   dependencies:
     "@babel/cli": "npm:7.28.3"
     "@babel/core": "npm:7.28.4"
-    "@babel/plugin-transform-react-jsx": "npm:7.27.1"
     "@babel/preset-env": "npm:7.28.3"
     "@babel/preset-react": "npm:7.27.1"
     "@babel/preset-typescript": "npm:7.27.1"
@@ -4328,7 +4327,7 @@ __metadata:
     chalk: "npm:4.1.2"
     extend: "npm:3.0.2"
     postcss: "npm:^8.5.6"
-    rollup: "npm:4.52.2"
+    rollup: "npm:4.52.3"
     rollup-plugin-postcss: "npm:4.0.2"
     rollup-plugin-visualizer: "npm:6.0.3"
     tslib: "npm:*"
@@ -4337,7 +4336,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/cli-create@npm:^6.0.0-alpha.5, @nebula.js/cli-create@workspace:commands/create":
+"@nebula.js/cli-create@npm:^6.0.1, @nebula.js/cli-create@workspace:commands/create":
   version: 0.0.0-use.local
   resolution: "@nebula.js/cli-create@workspace:commands/create"
   dependencies:
@@ -4355,7 +4354,7 @@ __metadata:
     "@babel/cli": "npm:7.28.3"
     "@babel/core": "npm:7.28.4"
     "@babel/preset-env": "npm:7.28.3"
-    "@nebula.js/stardust": "npm:^6.0.0-alpha.5"
+    "@nebula.js/stardust": "npm:^6.0.1"
     "@rollup/plugin-babel": "npm:6.0.4"
     "@rollup/plugin-commonjs": "npm:28.0.6"
     "@rollup/plugin-node-resolve": "npm:16.0.1"
@@ -4364,7 +4363,7 @@ __metadata:
     extend: "npm:3.0.2"
     fs-extra: "npm:11.3.2"
     node-event-emitter: "npm:0.0.1"
-    rollup: "npm:4.52.2"
+    rollup: "npm:4.52.3"
     yargs: "npm:17.7.2"
   languageName: unknown
   linkType: soft
@@ -4378,12 +4377,12 @@ __metadata:
     "@babel/preset-react": "npm:7.27.1"
     "@mui/material": "npm:^6.5.0"
     "@mui/system": "npm:^6.5.0"
-    "@nebula.js/cli-build": "npm:^6.0.0-alpha.5"
-    "@nebula.js/enigma-mocker": "npm:^6.0.0-alpha.5"
-    "@nebula.js/nucleus": "npm:^6.0.0-alpha.5"
-    "@nebula.js/snapshooter": "npm:^6.0.0-alpha.5"
-    "@nebula.js/stardust": "npm:^6.0.0-alpha.5"
-    "@nebula.js/ui": "npm:^6.0.0-alpha.5"
+    "@nebula.js/cli-build": "npm:^6.0.1"
+    "@nebula.js/enigma-mocker": "npm:^6.0.1"
+    "@nebula.js/nucleus": "npm:^6.0.1"
+    "@nebula.js/snapshooter": "npm:^6.0.1"
+    "@nebula.js/stardust": "npm:^6.0.1"
+    "@nebula.js/ui": "npm:^6.0.1"
     "@qlik/sdk": "npm:0.28.0"
     autosuggest-highlight: "npm:3.3.4"
     babel-loader: "npm:10.0.0"
@@ -4402,10 +4401,10 @@ __metadata:
     monaco-editor: "npm:0.53.0"
     monaco-editor-webpack-plugin: "npm:7.1.0"
     portfinder: "npm:1.0.38"
-    puppeteer: "npm:24.22.2"
+    puppeteer: "npm:24.22.3"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
-    react-router: "npm:7.9.1"
+    react-router: "npm:7.9.3"
     regenerator-runtime: "npm:0.14.1"
     source-map-loader: "npm:5.0.0"
     webpack: "npm:5.101.3"
@@ -4420,7 +4419,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nebula.js/cli@workspace:commands/cli"
   dependencies:
-    "@nebula.js/cli-create": "npm:^6.0.0-alpha.5"
+    "@nebula.js/cli-create": "npm:^6.0.1"
     import-cwd: "npm:3.0.0"
     yargs: "npm:17.7.2"
   peerDependencies:
@@ -4432,7 +4431,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/conversion@npm:^6.0.0-alpha.5, @nebula.js/conversion@workspace:apis/conversion":
+"@nebula.js/conversion@npm:^6.0.1, @nebula.js/conversion@workspace:apis/conversion":
   version: 0.0.0-use.local
   resolution: "@nebula.js/conversion@workspace:apis/conversion"
   dependencies:
@@ -4440,7 +4439,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/enigma-mocker@npm:^6.0.0-alpha.5, @nebula.js/enigma-mocker@workspace:apis/enigma-mocker":
+"@nebula.js/enigma-mocker@npm:^6.0.1, @nebula.js/enigma-mocker@workspace:apis/enigma-mocker":
   version: 0.0.0-use.local
   resolution: "@nebula.js/enigma-mocker@workspace:apis/enigma-mocker"
   dependencies:
@@ -4448,7 +4447,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/locale@npm:^6.0.0-alpha.5, @nebula.js/locale@workspace:apis/locale":
+"@nebula.js/locale@npm:^6.0.1, @nebula.js/locale@workspace:apis/locale":
   version: 0.0.0-use.local
   resolution: "@nebula.js/locale@workspace:apis/locale"
   dependencies:
@@ -4456,7 +4455,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/nucleus@npm:^6.0.0-alpha.5, @nebula.js/nucleus@workspace:apis/nucleus":
+"@nebula.js/nucleus@npm:^6.0.1, @nebula.js/nucleus@workspace:apis/nucleus":
   version: 0.0.0-use.local
   resolution: "@nebula.js/nucleus@workspace:apis/nucleus"
   dependencies:
@@ -4464,12 +4463,12 @@ __metadata:
     "@emotion/styled": "npm:^11.14.1"
     "@mui/icons-material": "npm:^6.5.0"
     "@mui/material": "npm:^6.5.0"
-    "@nebula.js/conversion": "npm:^6.0.0-alpha.5"
-    "@nebula.js/locale": "npm:^6.0.0-alpha.5"
-    "@nebula.js/supernova": "npm:^6.0.0-alpha.5"
-    "@nebula.js/theme": "npm:^6.0.0-alpha.5"
-    "@nebula.js/ui": "npm:^6.0.0-alpha.5"
-    "@qlik/api": "npm:1.44.0"
+    "@nebula.js/conversion": "npm:^6.0.1"
+    "@nebula.js/locale": "npm:^6.0.1"
+    "@nebula.js/supernova": "npm:^6.0.1"
+    "@nebula.js/theme": "npm:^6.0.1"
+    "@nebula.js/ui": "npm:^6.0.1"
+    "@qlik/api": "npm:1.46.0"
     "@testing-library/dom": "npm:^10.4.1"
     "@testing-library/react": "npm:^16.3.0"
     extend: "npm:3.0.2"
@@ -4485,13 +4484,13 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/snapshooter@npm:^6.0.0-alpha.5, @nebula.js/snapshooter@workspace:apis/snapshooter":
+"@nebula.js/snapshooter@npm:^6.0.1, @nebula.js/snapshooter@workspace:apis/snapshooter":
   version: 0.0.0-use.local
   resolution: "@nebula.js/snapshooter@workspace:apis/snapshooter"
   languageName: unknown
   linkType: soft
 
-"@nebula.js/stardust@npm:^6.0.0-alpha.5, @nebula.js/stardust@workspace:apis/stardust":
+"@nebula.js/stardust@npm:^6.0.1, @nebula.js/stardust@workspace:apis/stardust":
   version: 0.0.0-use.local
   resolution: "@nebula.js/stardust@workspace:apis/stardust"
   dependencies:
@@ -4499,14 +4498,14 @@ __metadata:
     "@emotion/styled": "npm:^11.14.1"
     "@mui/icons-material": "npm:^6.5.0"
     "@mui/material": "npm:^6.5.0"
-    "@nebula.js/conversion": "npm:^6.0.0-alpha.5"
-    "@nebula.js/enigma-mocker": "npm:^6.0.0-alpha.5"
-    "@nebula.js/locale": "npm:^6.0.0-alpha.5"
-    "@nebula.js/nucleus": "npm:^6.0.0-alpha.5"
-    "@nebula.js/supernova": "npm:^6.0.0-alpha.5"
-    "@nebula.js/theme": "npm:^6.0.0-alpha.5"
-    "@nebula.js/ui": "npm:^6.0.0-alpha.5"
-    "@qlik/api": "npm:1.44.0"
+    "@nebula.js/conversion": "npm:^6.0.1"
+    "@nebula.js/enigma-mocker": "npm:^6.0.1"
+    "@nebula.js/locale": "npm:^6.0.1"
+    "@nebula.js/nucleus": "npm:^6.0.1"
+    "@nebula.js/supernova": "npm:^6.0.1"
+    "@nebula.js/theme": "npm:^6.0.1"
+    "@nebula.js/ui": "npm:^6.0.1"
+    "@qlik/api": "npm:1.46.0"
     "@scriptappy/cli": "npm:0.10.0"
     "@scriptappy/from-jsdoc": "npm:0.19.0"
     "@scriptappy/to-dts": "npm:1.0.0"
@@ -4523,11 +4522,11 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/supernova@npm:^6.0.0-alpha.5, @nebula.js/supernova@workspace:apis/supernova":
+"@nebula.js/supernova@npm:^6.0.1, @nebula.js/supernova@workspace:apis/supernova":
   version: 0.0.0-use.local
   resolution: "@nebula.js/supernova@workspace:apis/supernova"
   dependencies:
-    "@nebula.js/conversion": "npm:^6.0.0-alpha.5"
+    "@nebula.js/conversion": "npm:^6.0.1"
     extend: "npm:3.0.2"
     node-event-emitter: "npm:0.0.1"
   languageName: unknown
@@ -4541,7 +4540,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/theme@npm:^6.0.0-alpha.5, @nebula.js/theme@workspace:apis/theme":
+"@nebula.js/theme@npm:^6.0.1, @nebula.js/theme@workspace:apis/theme":
   version: 0.0.0-use.local
   resolution: "@nebula.js/theme@workspace:apis/theme"
   dependencies:
@@ -4551,7 +4550,7 @@ __metadata:
   languageName: unknown
   linkType: soft
 
-"@nebula.js/ui@npm:^6.0.0-alpha.5, @nebula.js/ui@workspace:packages/ui":
+"@nebula.js/ui@npm:^6.0.1, @nebula.js/ui@workspace:packages/ui":
   version: 0.0.0-use.local
   resolution: "@nebula.js/ui@workspace:packages/ui"
   dependencies:
@@ -5105,16 +5104,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@qlik/api@npm:1.44.0":
-  version: 1.44.0
-  resolution: "@qlik/api@npm:1.44.0"
+"@qlik/api@npm:1.46.0":
+  version: 1.46.0
+  resolution: "@qlik/api@npm:1.46.0"
   dependencies:
     enigma.js: "npm:^2.14.0"
     extend: "npm:3.0.2"
     lodash: "npm:^4.17.21"
-    nanoid: "npm:^5.1.5"
+    nanoid: "npm:^5.1.6"
     ws: "npm:^8.18.3"
-  checksum: 10c0/f92bf7333f4fcfb3698cb4b17f1e1c96fa0b220ecf71e6ec7974d3bba36980943d39eaeb9963b35f9371629e4c7df2ca4ccc7466e1eeecb0ff4d3d01f8c5dfbe
+  checksum: 10c0/5f0993cb0e8880a7f89c4410354db4b945e0f8624db7d4b604165adcd42a59b2292b1de926749bf5bc0842e424731cccca4ffc7d808987a689ce24b7bba3ddac
   languageName: node
   linkType: hard
 
@@ -5290,156 +5289,156 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@rollup/rollup-android-arm-eabi@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-android-arm-eabi@npm:4.52.2"
+"@rollup/rollup-android-arm-eabi@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-android-arm-eabi@npm:4.52.3"
   conditions: os=android & cpu=arm
   languageName: node
   linkType: hard
 
-"@rollup/rollup-android-arm64@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-android-arm64@npm:4.52.2"
+"@rollup/rollup-android-arm64@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-android-arm64@npm:4.52.3"
   conditions: os=android & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-darwin-arm64@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-darwin-arm64@npm:4.52.2"
+"@rollup/rollup-darwin-arm64@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-darwin-arm64@npm:4.52.3"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-darwin-x64@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-darwin-x64@npm:4.52.2"
+"@rollup/rollup-darwin-x64@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-darwin-x64@npm:4.52.3"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-freebsd-arm64@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-freebsd-arm64@npm:4.52.2"
+"@rollup/rollup-freebsd-arm64@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-freebsd-arm64@npm:4.52.3"
   conditions: os=freebsd & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-freebsd-x64@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-freebsd-x64@npm:4.52.2"
+"@rollup/rollup-freebsd-x64@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-freebsd-x64@npm:4.52.3"
   conditions: os=freebsd & cpu=x64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm-gnueabihf@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.52.2"
+"@rollup/rollup-linux-arm-gnueabihf@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-linux-arm-gnueabihf@npm:4.52.3"
   conditions: os=linux & cpu=arm & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm-musleabihf@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-linux-arm-musleabihf@npm:4.52.2"
+"@rollup/rollup-linux-arm-musleabihf@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-linux-arm-musleabihf@npm:4.52.3"
   conditions: os=linux & cpu=arm & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm64-gnu@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.52.2"
+"@rollup/rollup-linux-arm64-gnu@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-linux-arm64-gnu@npm:4.52.3"
   conditions: os=linux & cpu=arm64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-arm64-musl@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.52.2"
+"@rollup/rollup-linux-arm64-musl@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-linux-arm64-musl@npm:4.52.3"
   conditions: os=linux & cpu=arm64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-loong64-gnu@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-linux-loong64-gnu@npm:4.52.2"
+"@rollup/rollup-linux-loong64-gnu@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-linux-loong64-gnu@npm:4.52.3"
   conditions: os=linux & cpu=loong64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-ppc64-gnu@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-linux-ppc64-gnu@npm:4.52.2"
+"@rollup/rollup-linux-ppc64-gnu@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-linux-ppc64-gnu@npm:4.52.3"
   conditions: os=linux & cpu=ppc64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-riscv64-gnu@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.52.2"
+"@rollup/rollup-linux-riscv64-gnu@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-linux-riscv64-gnu@npm:4.52.3"
   conditions: os=linux & cpu=riscv64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-riscv64-musl@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-linux-riscv64-musl@npm:4.52.2"
+"@rollup/rollup-linux-riscv64-musl@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-linux-riscv64-musl@npm:4.52.3"
   conditions: os=linux & cpu=riscv64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-s390x-gnu@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.52.2"
+"@rollup/rollup-linux-s390x-gnu@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-linux-s390x-gnu@npm:4.52.3"
   conditions: os=linux & cpu=s390x & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-gnu@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.52.2"
+"@rollup/rollup-linux-x64-gnu@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-linux-x64-gnu@npm:4.52.3"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@rollup/rollup-linux-x64-musl@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-linux-x64-musl@npm:4.52.2"
+"@rollup/rollup-linux-x64-musl@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-linux-x64-musl@npm:4.52.3"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
 
-"@rollup/rollup-openharmony-arm64@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-openharmony-arm64@npm:4.52.2"
+"@rollup/rollup-openharmony-arm64@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-openharmony-arm64@npm:4.52.3"
   conditions: os=openharmony & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-arm64-msvc@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.52.2"
+"@rollup/rollup-win32-arm64-msvc@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-win32-arm64-msvc@npm:4.52.3"
   conditions: os=win32 & cpu=arm64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-ia32-msvc@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.52.2"
+"@rollup/rollup-win32-ia32-msvc@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-win32-ia32-msvc@npm:4.52.3"
   conditions: os=win32 & cpu=ia32
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-x64-gnu@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-win32-x64-gnu@npm:4.52.2"
+"@rollup/rollup-win32-x64-gnu@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-win32-x64-gnu@npm:4.52.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
-"@rollup/rollup-win32-x64-msvc@npm:4.52.2":
-  version: 4.52.2
-  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.52.2"
+"@rollup/rollup-win32-x64-msvc@npm:4.52.3":
+  version: 4.52.3
+  resolution: "@rollup/rollup-win32-x64-msvc@npm:4.52.3"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
@@ -8024,10 +8023,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:1.0.30001743":
-  version: 1.0.30001743
-  resolution: "caniuse-lite@npm:1.0.30001743"
-  checksum: 10c0/1bd730ca10d881a1ca9f55ce864d34c3b18501718c03976e0d3419f4694b715159e13fdef6d58ad47b6d2445d315940f3a01266658876828c820a3331aac021d
+"caniuse-lite@npm:1.0.30001745":
+  version: 1.0.30001745
+  resolution: "caniuse-lite@npm:1.0.30001745"
+  checksum: 10c0/646ca4b57baaa7a835cf7204c8a257490ee8e36364c04638212e3750c5e8ef45c39f352307e6205114487bcc179d42f5216f6dac146641b16a60b20b29d6f2a6
   languageName: node
   linkType: hard
 
@@ -8174,15 +8173,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chromium-bidi@npm:8.0.0":
-  version: 8.0.0
-  resolution: "chromium-bidi@npm:8.0.0"
+"chromium-bidi@npm:9.1.0":
+  version: 9.1.0
+  resolution: "chromium-bidi@npm:9.1.0"
   dependencies:
     mitt: "npm:^3.0.1"
     zod: "npm:^3.24.1"
   peerDependencies:
     devtools-protocol: "*"
-  checksum: 10c0/d012b76c8b3ef06fd0d1e288668c92db56a8723edeff3a32e7c8029a18e3afcae435a0da381e22145611d9d96f20ea91a43fbb43ae84b6edfc76ab60c65d67f7
+  checksum: 10c0/ab75ab4e3434e1fab11a35a1fa6f64dd55bfcdf046251f4489ece828ae18b3c88b16728b00d02c4ed012b686f455cb589774370ef8f3f07b9d762476c4c672cc
   languageName: node
   linkType: hard
 
@@ -8414,17 +8413,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"commander@npm:14.0.1":
-  version: 14.0.1
-  resolution: "commander@npm:14.0.1"
-  checksum: 10c0/64439c0651ddd01c1d0f48c8f08e97c18a0a1fa693879451f1203ad01132af2c2aa85da24cf0d8e098ab9e6dc385a756be670d2999a3c628ec745c3ec124587b
-  languageName: node
-  linkType: hard
-
 "commander@npm:^12.1.0":
   version: 12.1.0
   resolution: "commander@npm:12.1.0"
   checksum: 10c0/6e1996680c083b3b897bfc1cfe1c58dfbcd9842fd43e1aaf8a795fbc237f65efcc860a3ef457b318e73f29a4f4a28f6403c3d653d021d960e4632dd45bde54a9
+  languageName: node
+  linkType: hard
+
+"commander@npm:^14.0.1":
+  version: 14.0.1
+  resolution: "commander@npm:14.0.1"
+  checksum: 10c0/64439c0651ddd01c1d0f48c8f08e97c18a0a1fa693879451f1203ad01132af2c2aa85da24cf0d8e098ab9e6dc385a756be670d2999a3c628ec745c3ec124587b
   languageName: node
   linkType: hard
 
@@ -14891,24 +14890,24 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lint-staged@npm:^16.2.0":
-  version: 16.2.0
-  resolution: "lint-staged@npm:16.2.0"
+"lint-staged@npm:^16.2.3":
+  version: 16.2.3
+  resolution: "lint-staged@npm:16.2.3"
   dependencies:
-    commander: "npm:14.0.1"
-    listr2: "npm:9.0.4"
-    micromatch: "npm:4.0.8"
-    nano-spawn: "npm:1.0.3"
-    pidtree: "npm:0.6.0"
-    string-argv: "npm:0.3.2"
-    yaml: "npm:2.8.1"
+    commander: "npm:^14.0.1"
+    listr2: "npm:^9.0.4"
+    micromatch: "npm:^4.0.8"
+    nano-spawn: "npm:^1.0.3"
+    pidtree: "npm:^0.6.0"
+    string-argv: "npm:^0.3.2"
+    yaml: "npm:^2.8.1"
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 10c0/0903eea526d390fd04ec10c2b6c3c3accdff53647d1918d3c30236d46fa7714a4a109d1aeda7364ecc689728c7b188bc430911b170834228fe0010d938c9a631
+  checksum: 10c0/9b057949f07f78539cd1540402df97b524a2d72d394e535d7c179025014982e4231fb81145fb1763704424d3dfac1184fee5eb4b7fc7d9534fae4106f5bf07d5
   languageName: node
   linkType: hard
 
-"listr2@npm:9.0.4":
+"listr2@npm:^9.0.4":
   version: 9.0.4
   resolution: "listr2@npm:9.0.4"
   dependencies:
@@ -15531,7 +15530,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"micromatch@npm:4.0.8, micromatch@npm:^4.0.2, micromatch@npm:^4.0.4, micromatch@npm:^4.0.8":
+"micromatch@npm:^4.0.2, micromatch@npm:^4.0.4, micromatch@npm:^4.0.8":
   version: 4.0.8
   resolution: "micromatch@npm:4.0.8"
   dependencies:
@@ -15971,7 +15970,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nano-spawn@npm:1.0.3":
+"nano-spawn@npm:^1.0.3":
   version: 1.0.3
   resolution: "nano-spawn@npm:1.0.3"
   checksum: 10c0/ea18857e493710a50ded333dd71677953bd9bd9e6a17ade74af957763c50a9a02205ef31bc0d6784f5b3ad82db3d9f47531e9baac2acf01118f9b7c35bd9d5de
@@ -15996,12 +15995,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^5.1.5":
-  version: 5.1.5
-  resolution: "nanoid@npm:5.1.5"
+"nanoid@npm:^5.1.6":
+  version: 5.1.6
+  resolution: "nanoid@npm:5.1.6"
   bin:
     nanoid: bin/nanoid.js
-  checksum: 10c0/e6004f1ad6c7123eeb037062c4441d44982037dc043aabb162457ef6986e99964ba98c63c975f96c547403beb0bf95bc537bd7bf9a09baf381656acdc2975c3c
+  checksum: 10c0/27b5b055ad8332cf4f0f9f6e2a494aa7e5ded89df4cab8c8490d4eabefe72c4423971d2745d22002868b1d50576a5e42b7b05214733b19f576382323282dd26e
   languageName: node
   linkType: hard
 
@@ -17326,7 +17325,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pidtree@npm:0.6.0":
+"pidtree@npm:^0.6.0":
   version: 0.6.0
   resolution: "pidtree@npm:0.6.0"
   bin:
@@ -18179,34 +18178,34 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.22.2":
-  version: 24.22.2
-  resolution: "puppeteer-core@npm:24.22.2"
+"puppeteer-core@npm:24.22.3":
+  version: 24.22.3
+  resolution: "puppeteer-core@npm:24.22.3"
   dependencies:
     "@puppeteer/browsers": "npm:2.10.10"
-    chromium-bidi: "npm:8.0.0"
+    chromium-bidi: "npm:9.1.0"
     debug: "npm:^4.4.3"
     devtools-protocol: "npm:0.0.1495869"
     typed-query-selector: "npm:^2.12.0"
     webdriver-bidi-protocol: "npm:0.2.11"
     ws: "npm:^8.18.3"
-  checksum: 10c0/a47a3c96d20ebe5d599b009b06b3fb925fe7eacd2616d800fd68f381707337213c93e62f759555fd91e53b376bad54f41c7ff68df4beaf9e5ea925f54b6c1998
+  checksum: 10c0/e24f1b42b75495830d0d91e167f7a6e3961b0c91dcc2aae8cf23ebd6c2eee69f0869f0ea14c79936f754ac6fd899a1c7a201e96d3f82220c9fb2058ca1b92fd4
   languageName: node
   linkType: hard
 
-"puppeteer@npm:24.22.2":
-  version: 24.22.2
-  resolution: "puppeteer@npm:24.22.2"
+"puppeteer@npm:24.22.3":
+  version: 24.22.3
+  resolution: "puppeteer@npm:24.22.3"
   dependencies:
     "@puppeteer/browsers": "npm:2.10.10"
-    chromium-bidi: "npm:8.0.0"
+    chromium-bidi: "npm:9.1.0"
     cosmiconfig: "npm:^9.0.0"
     devtools-protocol: "npm:0.0.1495869"
-    puppeteer-core: "npm:24.22.2"
+    puppeteer-core: "npm:24.22.3"
     typed-query-selector: "npm:^2.12.0"
   bin:
     puppeteer: lib/cjs/puppeteer/node/cli.js
-  checksum: 10c0/29d2a2cef3c6d66a2b11f5e9552418a8ec63f9f0767e2e8038707a1b212d31dfe2049a78f6d9de2371489f7f8b6577decf9df7410a7df688d6d9eb266c300e03
+  checksum: 10c0/746c4ec0545a6abd26d3998d484b53a03edb552210c37c231a34268a98f36c4e663113041a725ee591ed02438dd271caa7ab97977e524772df53429474335903
   languageName: node
   linkType: hard
 
@@ -18344,9 +18343,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-router@npm:7.9.1":
-  version: 7.9.1
-  resolution: "react-router@npm:7.9.1"
+"react-router@npm:7.9.3":
+  version: 7.9.3
+  resolution: "react-router@npm:7.9.3"
   dependencies:
     cookie: "npm:^1.0.1"
     set-cookie-parser: "npm:^2.6.0"
@@ -18356,7 +18355,7 @@ __metadata:
   peerDependenciesMeta:
     react-dom:
       optional: true
-  checksum: 10c0/27448e4c84199d240f6a15d503cf26509320fd4ea31aec6f12a427ac4a560a320321e9b119981eddad25801c062be0f814d4461174f69efdc9f9e5af14cf6915
+  checksum: 10c0/ad77654d53df38b66415d158dfeb42d589e732691da6cb3ce77e8e31cb295a809f2a280e2ea203119d2b9e944992ca87f309db5c6524649cba6fa6539f6c4a83
   languageName: node
   linkType: hard
 
@@ -19128,32 +19127,32 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rollup@npm:4.52.2":
-  version: 4.52.2
-  resolution: "rollup@npm:4.52.2"
+"rollup@npm:4.52.3":
+  version: 4.52.3
+  resolution: "rollup@npm:4.52.3"
   dependencies:
-    "@rollup/rollup-android-arm-eabi": "npm:4.52.2"
-    "@rollup/rollup-android-arm64": "npm:4.52.2"
-    "@rollup/rollup-darwin-arm64": "npm:4.52.2"
-    "@rollup/rollup-darwin-x64": "npm:4.52.2"
-    "@rollup/rollup-freebsd-arm64": "npm:4.52.2"
-    "@rollup/rollup-freebsd-x64": "npm:4.52.2"
-    "@rollup/rollup-linux-arm-gnueabihf": "npm:4.52.2"
-    "@rollup/rollup-linux-arm-musleabihf": "npm:4.52.2"
-    "@rollup/rollup-linux-arm64-gnu": "npm:4.52.2"
-    "@rollup/rollup-linux-arm64-musl": "npm:4.52.2"
-    "@rollup/rollup-linux-loong64-gnu": "npm:4.52.2"
-    "@rollup/rollup-linux-ppc64-gnu": "npm:4.52.2"
-    "@rollup/rollup-linux-riscv64-gnu": "npm:4.52.2"
-    "@rollup/rollup-linux-riscv64-musl": "npm:4.52.2"
-    "@rollup/rollup-linux-s390x-gnu": "npm:4.52.2"
-    "@rollup/rollup-linux-x64-gnu": "npm:4.52.2"
-    "@rollup/rollup-linux-x64-musl": "npm:4.52.2"
-    "@rollup/rollup-openharmony-arm64": "npm:4.52.2"
-    "@rollup/rollup-win32-arm64-msvc": "npm:4.52.2"
-    "@rollup/rollup-win32-ia32-msvc": "npm:4.52.2"
-    "@rollup/rollup-win32-x64-gnu": "npm:4.52.2"
-    "@rollup/rollup-win32-x64-msvc": "npm:4.52.2"
+    "@rollup/rollup-android-arm-eabi": "npm:4.52.3"
+    "@rollup/rollup-android-arm64": "npm:4.52.3"
+    "@rollup/rollup-darwin-arm64": "npm:4.52.3"
+    "@rollup/rollup-darwin-x64": "npm:4.52.3"
+    "@rollup/rollup-freebsd-arm64": "npm:4.52.3"
+    "@rollup/rollup-freebsd-x64": "npm:4.52.3"
+    "@rollup/rollup-linux-arm-gnueabihf": "npm:4.52.3"
+    "@rollup/rollup-linux-arm-musleabihf": "npm:4.52.3"
+    "@rollup/rollup-linux-arm64-gnu": "npm:4.52.3"
+    "@rollup/rollup-linux-arm64-musl": "npm:4.52.3"
+    "@rollup/rollup-linux-loong64-gnu": "npm:4.52.3"
+    "@rollup/rollup-linux-ppc64-gnu": "npm:4.52.3"
+    "@rollup/rollup-linux-riscv64-gnu": "npm:4.52.3"
+    "@rollup/rollup-linux-riscv64-musl": "npm:4.52.3"
+    "@rollup/rollup-linux-s390x-gnu": "npm:4.52.3"
+    "@rollup/rollup-linux-x64-gnu": "npm:4.52.3"
+    "@rollup/rollup-linux-x64-musl": "npm:4.52.3"
+    "@rollup/rollup-openharmony-arm64": "npm:4.52.3"
+    "@rollup/rollup-win32-arm64-msvc": "npm:4.52.3"
+    "@rollup/rollup-win32-ia32-msvc": "npm:4.52.3"
+    "@rollup/rollup-win32-x64-gnu": "npm:4.52.3"
+    "@rollup/rollup-win32-x64-msvc": "npm:4.52.3"
     "@types/estree": "npm:1.0.8"
     fsevents: "npm:~2.3.2"
   dependenciesMeta:
@@ -19205,7 +19204,7 @@ __metadata:
       optional: true
   bin:
     rollup: dist/bin/rollup
-  checksum: 10c0/2d457b11bbb904f40bde943acb1a784732ef8d8ce7d528e1dc955f6d11df4f9c6ac7885675bac677cface13e420b63dfc8eea959446fbb3329841e49767f7e7d
+  checksum: 10c0/5a7a3a2e8c7558df5652ecc126e0d9133df4d58c5a001777377202b52517fa48b43be5e21a2cbab6d85975b765991af72666b5132813da6e86ea47ae963b4e71
   languageName: node
   linkType: hard
 
@@ -19257,15 +19256,15 @@ __metadata:
     jest-location-mock: "npm:^2.0.0"
     jimp: "npm:^1.6.0"
     lerna: "npm:8.2.4"
-    lint-staged: "npm:^16.2.0"
+    lint-staged: "npm:^16.2.3"
     mocha-junit-reporter: "npm:2.2.1"
     picasso-plugin-q: "npm:2.9.0"
     picasso.js: "npm:2.9.0"
     prettier: "npm:3.6.2"
-    puppeteer: "npm:24.22.2"
+    puppeteer: "npm:24.22.3"
     qix-faker: "npm:0.3.0"
     react-is: "npm:18.3.1"
-    rollup: "npm:4.52.2"
+    rollup: "npm:4.52.3"
     rollup-plugin-sass: "npm:1.15.3"
     style-loader: "npm:4.0.0"
     whatwg-fetch: "npm:^3.6.20"
@@ -20316,7 +20315,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"string-argv@npm:0.3.2":
+"string-argv@npm:^0.3.2":
   version: 0.3.2
   resolution: "string-argv@npm:0.3.2"
   checksum: 10c0/75c02a83759ad1722e040b86823909d9a2fc75d15dd71ec4b537c3560746e33b5f5a07f7332d1e3f88319909f82190843aa2f0a0d8c8d591ec08e93d5b8dec82
@@ -22552,19 +22551,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:2.8.1":
+"yaml@npm:^1.10.0, yaml@npm:^1.10.2":
+  version: 1.10.2
+  resolution: "yaml@npm:1.10.2"
+  checksum: 10c0/5c28b9eb7adc46544f28d9a8d20c5b3cb1215a886609a2fd41f51628d8aaa5878ccd628b755dbcd29f6bb4921bd04ffbc6dcc370689bb96e594e2f9813d2605f
+  languageName: node
+  linkType: hard
+
+"yaml@npm:^2.8.1":
   version: 2.8.1
   resolution: "yaml@npm:2.8.1"
   bin:
     yaml: bin.mjs
   checksum: 10c0/7c587be00d9303d2ae1566e03bc5bc7fe978ba0d9bf39cc418c3139d37929dfcb93a230d9749f2cb578b6aa5d9ebebc322415e4b653cb83acd8bc0bc321707f3
-  languageName: node
-  linkType: hard
-
-"yaml@npm:^1.10.0, yaml@npm:^1.10.2":
-  version: 1.10.2
-  resolution: "yaml@npm:1.10.2"
-  checksum: 10c0/5c28b9eb7adc46544f28d9a8d20c5b3cb1215a886609a2fd41f51628d8aaa5878ccd628b755dbcd29f6bb4921bd04ffbc6dcc370689bb96e594e2f9813d2605f
   languageName: node
   linkType: hard
 

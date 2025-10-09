@@ -7,10 +7,11 @@ const json = require('@rollup/plugin-json');
 const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const terser = require('@rollup/plugin-terser');
-const jsxPlugin = require('@babel/plugin-transform-react-jsx');
 const babelPreset = require('@babel/preset-env');
 const { visualizer } = require('rollup-plugin-visualizer');
 const browsersList = require('@qlik/browserslist-config');
+const babelPresetReact = require('@babel/preset-react');
+const babelPresetTypescript = require('@babel/preset-typescript');
 
 const resolveNative = require('./resolveNative');
 
@@ -151,12 +152,12 @@ const config = ({
         },
       },
     ],
-    ['@babel/preset-react'],
+    [babelPresetReact, { runtime: 'automatic' }],
   ];
 
   if (typescript) {
     babelPresets.push([
-      '@babel/preset-typescript',
+      babelPresetTypescript,
       {
         allowNamespaces: true,
         allowDeclareFields: true,
@@ -193,16 +194,16 @@ const config = ({
         postcss({
           exclude: /\.module\.css$/,
         }),
+        // Handle all CSS with conditional modules processing
         postcss({
           include: /\.module\.css$/,
           modules: true,
-          extract: true,
+          extract: false,
         }),
         commonjs({
           ignoreTryCatch: false, // Avoids problems with require() inside try catch (https://github.com/rollup/plugins/issues/1004)
         }),
         json(),
-        // Handle all CSS with conditional modules processing
 
         babel({
           babelHelpers: 'bundled',
@@ -210,7 +211,6 @@ const config = ({
           inputSourceMap: sourcemap,
           extensions,
           presets: babelPresets,
-          plugins: [[jsxPlugin]],
         }),
         ...[
           mode === 'production'
