@@ -15,5 +15,5 @@ export default function ListBoxFocusBorder({ show, width, height }) {
     return null;
   }
 
-  return <StyledBorder width={width} height={height} />;
+  return <StyledBorder aria-hidden="true" width={width} height={height} />;
 }
