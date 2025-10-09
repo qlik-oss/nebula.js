@@ -55,7 +55,6 @@ export default function ListBox({
   showSearch,
   isModal,
   styles,
-  hasFocus,
 }) {
   const { translator: translatorDynamic } = useContext(InstanceContext);
   const [initScrollPosIsSet, setInitScrollPosIsSet] = useState(false);

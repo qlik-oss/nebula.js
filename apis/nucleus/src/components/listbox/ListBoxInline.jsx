@@ -343,7 +343,6 @@ function ListBoxInline({ options, layout }) {
                     onCtrlF={onCtrlF}
                     isModal={isModalMode}
                     styles={styles}
-                    hasFocus={hasFocus}
                   />
                 )}
               </AutoSizer>
