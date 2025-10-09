@@ -314,7 +314,7 @@ export default function ListBox({
       <div className="screenReaderOnly" aria-live="assertive">
         {screenReaderText}
       </div>
-      <ListBoxFocusBorder show={hasFocus && !keyboard.active && !isGrid} width={width} height={height} />
+      <ListBoxFocusBorder show={hasFocus && !keyboard.active && !isGrid && !isModal()} width={width} height={height} />
       {!listCount && cardinal > 0 && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}
       <InfiniteLoader
         isItemLoaded={isItemLoaded}
