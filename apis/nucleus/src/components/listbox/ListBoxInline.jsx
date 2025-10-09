@@ -29,8 +29,8 @@ const classes = {
 };
 
 const StyledGrid = styled(Grid, {
-  shouldForwardProp: (p) => !['containerPadding', 'isGridMode', 'styles'].includes(p),
-})(({ theme, containerPadding, isGridMode, styles }) => ({
+  shouldForwardProp: (p) => !['containerPadding', 'styles'].includes(p),
+})(({ containerPadding, styles }) => ({
   ...styles.background, // sets background color and image of listbox
   [`& .${classes.listBoxHeader}`]: {
     alignSelf: 'center',
@@ -89,6 +89,7 @@ function ListBoxInline({ options, layout }) {
 
   const containerRef = useRef();
   const searchInputRef = useRef();
+  const listboxChildRef = useRef();
   const [containerRectRef, containerRect] = useRect();
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
@@ -270,12 +271,17 @@ function ListBoxInline({ options, layout }) {
           containerRef.current = el;
           containerRectRef(el);
         }}
-        isGridMode={isGridMode}
         aria-label={keyboard.active ? translator.get('Listbox.ScreenReaderInstructions') : ''}
         onFocus={() => setHasFocus(true)}
         onBlur={() => setHasFocus(false)}
       >
-        <ListBoxFocusBorder show={hasFocus && !keyboard.active && !isModalMode()} width={containerRect?.width} height={containerRect?.height} />
+        <ListBoxFocusBorder
+          width={containerRect?.width}
+          height={containerRect?.height}
+          isModalMode={isModalMode()}
+          childNode={listboxChildRef.current}
+          containerNode={containerRef.current}
+        />
         {showAttachedToolbar && listBoxHeader}
         <Grid
           item
@@ -285,6 +291,7 @@ function ListBoxInline({ options, layout }) {
           minHeight={listBoxMinHeight}
           role="region"
           aria-label={translator.get('Listbox.ResultFilterLabel')}
+          ref={listboxChildRef}
         >
           <Grid item>
             <ListBoxSearch
