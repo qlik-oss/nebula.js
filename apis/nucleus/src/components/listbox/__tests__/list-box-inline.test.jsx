@@ -16,7 +16,7 @@ import * as ListBoxSearchModule from '../components/ListBoxSearch';
 import * as listboxSelectionToolbarModule from '../interactions/listbox-selection-toolbar';
 import * as styling from '../assets/styling';
 import * as isDirectQueryEnabled from '../utils/is-direct-query';
-import * as useAppSelection from '../../../../../nucleus/src/hooks/useAppSelections';
+import * as useAppSelection from '../../../hooks/useAppSelections';
 
 const virtualizedModule = require('react-virtualized-auto-sizer');
 const listboxKeyboardNavigationModule = require('../interactions/keyboard-navigation/keyboard-nav-container');
