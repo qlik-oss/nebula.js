@@ -31,15 +31,15 @@
     "@babel/core": "7.28.4",
     "@babel/preset-env": "7.28.3",
     "@nebula.js/stardust": "^6.0.1",
-    "@rollup/plugin-babel": "6.0.4",
+    "@rollup/plugin-babel": "6.1.0",
     "@rollup/plugin-commonjs": "28.0.6",
-    "@rollup/plugin-node-resolve": "16.0.1",
+    "@rollup/plugin-node-resolve": "16.0.3",
     "@rollup/plugin-replace": "6.0.2",
     "@rollup/plugin-terser": "0.4.4",
     "extend": "3.0.2",
     "fs-extra": "11.3.2",
     "node-event-emitter": "0.0.1",
-    "rollup": "4.52.3",
+    "rollup": "4.52.4",
     "yargs": "17.7.2"
   }
 }
