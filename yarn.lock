@@ -4453,7 +4453,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@nebula.js/locale@workspace:apis/locale"
   dependencies:
-    globby: "npm:14.1.0"
+    globby: "npm:15.0.0"
   languageName: unknown
   linkType: soft
 
@@ -5575,10 +5575,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@sindresorhus/merge-streams@npm:^2.1.0":
-  version: 2.1.0
-  resolution: "@sindresorhus/merge-streams@npm:2.1.0"
-  checksum: 10c0/009e2fcd0d554aec33d30525c23bb31419319c164cf23dc74eb6255107d2f4f7c2b82936b7cbf0a3e62bbc219bed6f86900f778a5a717e72daef8dedfe80eef8
+"@sindresorhus/merge-streams@npm:^4.0.0":
+  version: 4.0.0
+  resolution: "@sindresorhus/merge-streams@npm:4.0.0"
+  checksum: 10c0/482ee543629aa1933b332f811a1ae805a213681ecdd98c042b1c1b89387df63e7812248bb4df3910b02b3cc5589d3d73e4393f30e197c9dde18046ccd471fc6b
   languageName: node
   linkType: hard
 
@@ -12109,17 +12109,17 @@ __metadata:
   languageName: node
   linkType: hard
 
-"globby@npm:14.1.0":
-  version: 14.1.0
-  resolution: "globby@npm:14.1.0"
+"globby@npm:15.0.0":
+  version: 15.0.0
+  resolution: "globby@npm:15.0.0"
   dependencies:
-    "@sindresorhus/merge-streams": "npm:^2.1.0"
+    "@sindresorhus/merge-streams": "npm:^4.0.0"
     fast-glob: "npm:^3.3.3"
-    ignore: "npm:^7.0.3"
+    ignore: "npm:^7.0.5"
     path-type: "npm:^6.0.0"
     slash: "npm:^5.1.0"
     unicorn-magic: "npm:^0.3.0"
-  checksum: 10c0/527a1063c5958255969620c6fa4444a2b2e9278caddd571d46dfbfa307cb15977afb746e84d682ba5b6c94fc081e8997f80ff05dd235441ba1cb16f86153e58e
+  checksum: 10c0/e4107be0579bcdd9642b8dff86aeafeaf62b2b9dd116669ab6e02e0e0c07ada0d972c2db182dee7588b460fe8c8919ddcc6b1cc4db405ca3a2adc9d35fa6eb21
   languageName: node
   linkType: hard
 
@@ -12668,10 +12668,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ignore@npm:^7.0.3":
-  version: 7.0.3
-  resolution: "ignore@npm:7.0.3"
-  checksum: 10c0/8e21637513cbcd888a4873d34d5c651a2e24b3c4c9a6b159335a26bed348c3c386c51d6fab23577f59140e1b226323138fbd50e63882d4568fd12aa6c822029e
+"ignore@npm:^7.0.5":
+  version: 7.0.5
+  resolution: "ignore@npm:7.0.5"
+  checksum: 10c0/ae00db89fe873064a093b8999fe4cc284b13ef2a178636211842cceb650b9c3e390d3339191acb145d81ed5379d2074840cf0c33a20bdbd6f32821f79eb4ad5d
   languageName: node
   linkType: hard
 
