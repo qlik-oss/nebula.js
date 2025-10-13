@@ -35,15 +35,15 @@
     "body-parser": "2.2.0",
     "chalk": "4.1.2",
     "chokidar": "4.0.3",
-    "cross-env": "10.0.0",
+    "cross-env": "10.1.0",
     "express": "5.1.0",
     "extend": "3.0.2",
     "html-webpack-plugin": "5.6.4",
     "portfinder": "1.0.38",
-    "puppeteer": "24.22.3",
+    "puppeteer": "24.24.0",
     "regenerator-runtime": "0.14.1",
     "source-map-loader": "5.0.0",
-    "webpack": "5.101.3",
+    "webpack": "5.102.1",
     "webpack-cli": "6.0.1",
     "webpack-dev-server": "5.2.2",
     "ws": "8.18.3",
@@ -67,10 +67,10 @@
     "eslint-import-resolver-alias": "1.1.2",
     "eslint-import-resolver-webpack": "0.13.10",
     "file-loader": "^6.2.0",
-    "monaco-editor": "0.53.0",
-    "monaco-editor-webpack-plugin": "7.1.0",
+    "monaco-editor": "0.54.0",
+    "monaco-editor-webpack-plugin": "7.1.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router": "7.9.3"
+    "react-router": "7.9.4"
   }
 }

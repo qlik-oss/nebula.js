@@ -18,7 +18,7 @@ jobs:
         run: corepack enable
       - uses: actions/setup-node@v5
         with:
-          node-version: 24.9.0
+          node-version: 24.10.0
           cache: 'yarn'
       - name: Install dependencies
         run: yarn install --immutable
