@@ -89,8 +89,7 @@ function ListBoxInline({ options, layout }) {
 
   const containerRef = useRef();
   const searchInputRef = useRef();
-  const listboxChildRef = useRef();
-  const [containerRectRef, containerRect] = useRect();
+  const [containerRectRef, containerRect, containerNode] = useRect();
   const [showToolbar, setShowToolbar] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
   const hovering = useRef(false);
@@ -104,6 +103,10 @@ function ListBoxInline({ options, layout }) {
   const isInvalid = layout?.qListObject.qDimensionInfo.qError;
   const errorText = isInvalid && constraints.active ? 'Visualization.Invalid.Dimension' : 'Visualization.Incomplete';
   const [, setHasFocus] = useState(false); // Force render on focus change to show/hide ListBoxFocusBorder
+  const [listboxChildNode, setListboxChildNode] = useState(null);
+  const listboxChildRef = useCallback((node) => {
+    setListboxChildNode(node);
+  }, []);
 
   const { handleKeyDown, handleOnMouseEnter, handleOnMouseLeave, globalKeyDown } = useMemo(
     () =>
@@ -269,7 +272,7 @@ function ListBoxInline({ options, layout }) {
         onMouseLeave={handleOnMouseLeave}
         ref={(el) => {
           containerRef.current = el;
-          containerRectRef(el);
+          containerRectRef?.(el);
         }}
         aria-label={keyboard.active ? translator.get('Listbox.ScreenReaderInstructions') : ''}
         onFocus={() => setHasFocus(true)}
@@ -279,8 +282,8 @@ function ListBoxInline({ options, layout }) {
           width={containerRect?.width}
           height={containerRect?.height}
           isModalMode={isModalMode()}
-          childNode={listboxChildRef.current}
-          containerNode={containerRef.current}
+          childNode={listboxChildNode}
+          containerNode={containerNode}
         />
         {showAttachedToolbar && listBoxHeader}
         <Grid

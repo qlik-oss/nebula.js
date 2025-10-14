@@ -190,7 +190,7 @@ describe('<ListboxInline />', () => {
       expect(ListBoxSearch.mock.calls[0][0]).toMatchObject({
         visible: true,
       });
-      expect(getListboxInlineKeyboardNavigation).toHaveBeenCalledTimes(2);
+      expect(getListboxInlineKeyboardNavigation).toHaveBeenCalledTimes(3);
 
       // TODO: MUIv5
       // expect(renderer.toJSON().props.onKeyDown).toBe('keyboard-navigation');
