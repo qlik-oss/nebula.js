@@ -20,16 +20,19 @@ export default function ListBoxFocusBorder({ width, height, isModalMode, childNo
   }, [containerNode, childNode]);
 
   useEffect(() => {
-    document.addEventListener('focusin', checkFocus);
-    document.addEventListener('focusout', checkFocus);
+    if (!containerNode) {
+      return undefined;
+    }
+    containerNode.addEventListener('focusin', checkFocus);
+    containerNode.addEventListener('focusout', checkFocus);
 
     checkFocus();
 
     return () => {
-      document.removeEventListener('focusin', checkFocus);
-      document.removeEventListener('focusout', checkFocus);
+      containerNode.removeEventListener('focusin', checkFocus);
+      containerNode.removeEventListener('focusout', checkFocus);
     };
-  }, [checkFocus]);
+  }, [checkFocus, containerNode]);
 
   const show = !isModalMode && isOnlyContainerFocused;
   if (!show) {
