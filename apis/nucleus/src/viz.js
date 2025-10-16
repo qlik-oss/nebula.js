@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import EventEmitter from 'node-event-emitter';
-import { convertTo as conversionConvertTo, helpers } from '@nebula.js/conversion';
+import { convertTo as conversionConvertTo, helpers, getPath } from '@nebula.js/conversion';
 import { HyperCubeHandler } from '@nebula.js/supernova';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
@@ -10,6 +10,22 @@ import setProperties from './utils/set-properties';
 import saveSoftProperties from './utils/save-soft-properties';
 
 const noopi = () => {};
+
+const getHandlerPath = (cellRef) => {
+  const qae = cellRef.current.getQae();
+  let path = getPath(qae);
+
+  if (!path) {
+    return undefined;
+  }
+
+  const steps = path.split('/');
+  if (steps.length && steps.indexOf('qHyperCubeDef') > -1) {
+    path = 'qHyperCubeDef';
+  }
+
+  return path;
+};
 
 export default function viz({
   model,
@@ -120,15 +136,10 @@ export default function viz({
        */
       async getHypercubePropertyHandler() {
         await rendered;
-        const qae = cellRef.current.getQae();
 
-        if (!qae?.data?.targets?.[0]?.propertyPath) {
-          return undefined;
-        }
-
-        const path = qae.data.targets[0].propertyPath;
         const dataDefinition = cellRef.current.getExtensionDefinition().data;
         const properties = await model.getEffectiveProperties();
+        const path = getHandlerPath(cellRef);
 
         if (path && dataDefinition) {
           const args = {
@@ -140,6 +151,7 @@ export default function viz({
             globalChangeListeners: undefined,
             path,
           };
+
           return new HyperCubeHandler(args);
         }
 
