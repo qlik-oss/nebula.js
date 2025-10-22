@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.2](https://github.com/qlik-oss/nebula.js/compare/v6.0.1...v6.0.2) (2025-10-22)
+
+### Bug Fixes
+
+- add listbox focus border ([#1821](https://github.com/qlik-oss/nebula.js/issues/1821)) ([6b088ff](https://github.com/qlik-oss/nebula.js/commit/6b088ff1c009254647ef7654382639f18f4bbcec))
+- **deps:** update minor and patch ([#1818](https://github.com/qlik-oss/nebula.js/issues/1818)) ([17368a3](https://github.com/qlik-oss/nebula.js/commit/17368a35d0fe1452924c866dd0cbce42c27f6108))
+
 ## [6.0.1](https://github.com/qlik-oss/nebula.js/compare/v6.0.1-alpha.0...v6.0.1) (2025-10-06)
 
 **Note:** Version bump only for package @nebula.js/nucleus
