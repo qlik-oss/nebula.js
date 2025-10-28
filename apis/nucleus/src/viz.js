@@ -136,6 +136,7 @@ export default function viz({
        */
       async getHypercubePropertyHandler() {
         await rendered;
+        const isViz = true;
 
         const dataDefinition = cellRef.current.getExtensionDefinition().data;
         const properties = await model.getEffectiveProperties();
@@ -150,6 +151,7 @@ export default function viz({
             measureProperties: properties.qHyperCubeDef?.qMeasures?.[0] || helpers.getDefaultMeasure(),
             globalChangeListeners: undefined,
             path,
+            isViz,
           };
 
           return new HyperCubeHandler(args);

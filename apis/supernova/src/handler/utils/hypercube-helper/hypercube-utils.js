@@ -72,9 +72,9 @@ export function getRemainedFields(fields, indexes) {
 // ----------------------------------
 
 export function addAlternativeDimension(self, dimension, index = undefined) {
-  const dimensions = self.getAlternativeDimensions();
-  const idx = index ?? dimensions.length;
-  dimensions.splice(idx, 0, dimension);
+  const altDimensions = self.getAlternativeDimensions();
+  const idx = index ?? altDimensions.length;
+  altDimensions.splice(idx, 0, dimension);
   return Promise.resolve(dimension);
 }
 
