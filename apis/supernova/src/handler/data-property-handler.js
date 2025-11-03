@@ -324,15 +324,17 @@ class DataPropertyHandler {
 
   /**
    * @private
-   * @param {FieldDimension[]} args - Array of field dimension.
+   * @param {FieldDimension[]} fieldDimensions - Array of field dimension.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple field dimensions.
    * @memberof DataPropertyHandler
    * @example
    * handler.addFieldDimensions([{ field: 'A', label: 'AA' }, { field: 'B', label: 'BB' }]);
    */
-  addFieldDimensions(args) {
-    const dimensions = args.map(({ field, label, defaults }) => this.createFieldDimension(field, label, defaults));
+  addFieldDimensions(fieldDimensions) {
+    const dimensions = fieldDimensions.map(({ field, label, defaults }) =>
+      this.createFieldDimension(field, label, defaults)
+    );
     return this.addDimensions(dimensions);
   }
 
@@ -355,15 +357,15 @@ class DataPropertyHandler {
   /**
    * Adds multiple library dimensions to the handler.
    * @private
-   * @param {LibraryDimension[]} args - Array of library dimension.
+   * @param {LibraryDimension[]} libraryDimensions - Array of library dimension.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple library dimensions.
    * @memberof DataPropertyHandler
    * @example
    * handler.addLibraryDimensions([{ id: 'A' }, { id: 'B', defaults: { qDef: { qSortCriterias: [{ qSortByAscii: 1 }] } } }]);
    */
-  addLibraryDimensions(args) {
-    const dimensions = args.map(({ id, defaults }) => this.createLibraryDimension(id, defaults));
+  addLibraryDimensions(libraryDimensions) {
+    const dimensions = libraryDimensions.map(({ id, defaults }) => this.createLibraryDimension(id, defaults));
     const result = this.addDimensions(dimensions);
     return result;
   }
@@ -371,30 +373,30 @@ class DataPropertyHandler {
   /**
    * Adds multiple alternative library dimensions to the handler.
    * @private
-   * @param {string[]} args - Array of dimension ids.
+   * @param {string[]} ids - Array of dimension ids.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple alternative library dimensions.
    * @memberof DataPropertyHandler
    * @example
    * await handler.addAltLibraryDimensions([{ id: 'A' }, { id: 'B' }]);
    */
-  async addAltLibraryDimensions(args) {
-    const dimensions = args.map(({ id }) => this.createLibraryDimension(id));
+  async addAltLibraryDimensions(ids) {
+    const dimensions = ids.map(({ id }) => this.createLibraryDimension(id));
     return this.addDimensions(dimensions, true);
   }
 
   /**
    * Adds multiple alternative field dimensions to the handler.
    * @private
-   * @param {string[]} args - Array of field dimension.
+   * @param {string[]} fields - Array of field dimension.
    * @returns {Promise<qix.NxDimension[]>} The result of addDimensions.
    * @description Creates and adds multiple alternative field dimensions.
    * @memberof DataPropertyHandler
    * @example
    * await handler.addAltFieldDimensions([{ field: 'A' }, { field: 'B' }]);
    */
-  async addAltFieldDimensions(args) {
-    const dimensions = args.map(({ field }) => this.createFieldDimension(field));
+  async addAltFieldDimensions(fields) {
+    const dimensions = fields.map(({ field }) => this.createFieldDimension(field));
     return this.addDimensions(dimensions, true);
   }
 
@@ -633,15 +635,15 @@ class DataPropertyHandler {
   /**
    * Adds multiple expression measures to the handler.
    * @private
-   * @param {ExpressionMeasure[]} args
+   * @param {ExpressionMeasure[]} expressionMeasures - Array of expression measures.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple expression measures.
    * @memberof DataPropertyHandler
    * @example
    * handler.addExpressionMeasures([{ expression: 'Sum(A)' }, { expression: 'Sum(B)', label: 'B' }]);
    */
-  addExpressionMeasures(args) {
-    const measures = args.map(({ expression, label, defaults }) =>
+  addExpressionMeasures(expressionMeasures) {
+    const measures = expressionMeasures.map(({ expression, label, defaults }) =>
       this.createExpressionMeasure(expression, label, defaults)
     );
     return this.addMeasures(measures, false);
@@ -694,45 +696,45 @@ class DataPropertyHandler {
   /**
    * Adds multiple library measures to the handler.
    * @private
-   * @param {LibraryMeasure[]} args - Array of library measures.
+   * @param {LibraryMeasure[]} libraryMeasures - Array of library measures.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple library measures.
    * @memberof DataPropertyHandler
    * @example
    * handler.addLibraryMeasures([{ id: 'A' }, { id: 'B', defaults: { qDef: { qNumFormat: { ... } } } }]);
    */
-  addLibraryMeasures(args) {
-    const measures = args.map(({ id, defaults }) => this.createLibraryMeasure(id, defaults));
+  addLibraryMeasures(libraryMeasures) {
+    const measures = libraryMeasures.map(({ id, defaults }) => this.createLibraryMeasure(id, defaults));
     return this.addMeasures(measures, false);
   }
 
   /**
    * Adds multiple alternative library measures to the handler.
    * @private
-   * @param {LibraryMeasure[]} args - Array of library measure.
+   * @param {LibraryMeasure[]} libraryMeasures - Array of library measure.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple alternative library measures.
    * @memberof DataPropertyHandler
    * @example
    * handler.addAltLibraryMeasures([{ id: 'A' }, { id: 'B', defaults: { qDef: { qNumFormat: { ... } } } }]);
    */
-  addAltLibraryMeasures(args) {
-    const measures = args.map(({ id, defaults }) => this.createLibraryMeasure(id, defaults));
+  addAltLibraryMeasures(libraryMeasures) {
+    const measures = libraryMeasures.map(({ id, defaults }) => this.createLibraryMeasure(id, defaults));
     return this.addMeasures(measures, true);
   }
 
   /**
    * Adds multiple alternative expression measures to the handler.
    * @private
-   * @param {ExpressionMeasure[]} args - Array of expression measure.
+   * @param {ExpressionMeasure[]} expressionMeasures - Array of expression measure.
    * @returns {Promise<qix.NxMeasure[]>} The result of addMeasures.
    * @description Creates and adds multiple alternative expression measures.
    * @memberof DataPropertyHandler
    * @example
    * handler.addAltExpressionMeasures([{ expression: 'Sum(A)' }, { expression: 'Sum(B)' }]);
    */
-  addAltExpressionMeasures(args) {
-    const measures = args.map(({ expression }) => this.createExpressionMeasure({ expression }));
+  addAltExpressionMeasures(expressionMeasures) {
+    const measures = expressionMeasures.map(({ expression }) => this.createExpressionMeasure({ expression }));
     return this.addMeasures(measures, true);
   }
 
