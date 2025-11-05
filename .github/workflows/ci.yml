@@ -25,7 +25,7 @@ jobs:
       - name: Build
         run: yarn run build
       - name: Upload workspace
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: workspace
           path: .
@@ -58,7 +58,7 @@ jobs:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: coverage/lcov.info
       - name: Store junit results
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: junit
           path: coverage/junit
@@ -85,7 +85,7 @@ jobs:
         run: yarn run test:mashup
       - name: Store mashup artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: mashup
           path: ./test/mashup
@@ -95,7 +95,7 @@ jobs:
         run: yarn run test:rendering
       - name: Store rendering artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: rendering
           path: ./test/rendering
@@ -125,13 +125,13 @@ jobs:
         run: .github/scripts/nebula_create.sh generated/hello-mashup none true true true false
       - name: Store barchart screenshots
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: barchart-screenshots
           path: generated/barchart/screenshots
       - name: Store mashup artifacts
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: mashup-artifacts
           path: test/mashup/__artifacts__
