@@ -22,13 +22,15 @@ describe('HyperCube Handlers', () => {
   beforeEach(() => {
     index = 1;
     properties = {
-      qDimensions: [{ qDef: { cId: 'dim1' } }, { qDef: { cId: 'dim2' } }],
-      qMeasures: [{ qDef: { cId: 'meas1' } }, { qDef: { cId: 'meas2' } }],
-      qInterColumnSortOrder: [1, 0, 2, 3],
-      qLayoutExclude: {
-        qHyperCubeDef: {
-          qDimensions: [{ qDef: { cId: 'altDim1' } }, { qDef: { cId: 'altDim2' } }],
-          qMeasures: [{ qDef: { cId: 'altMeas1' } }, { qDef: { cId: 'altMeas2' } }],
+      qHyperCubeDef: {
+        qDimensions: [{ qDef: { cId: 'dim1' } }, { qDef: { cId: 'dim2' } }],
+        qMeasures: [{ qDef: { cId: 'meas1' } }, { qDef: { cId: 'meas2' } }],
+        qInterColumnSortOrder: [1, 0, 2, 3],
+        qLayoutExclude: {
+          qHyperCubeDef: {
+            qDimensions: [{ qDef: { cId: 'altDim1' } }, { qDef: { cId: 'altDim2' } }],
+            qMeasures: [{ qDef: { cId: 'altMeas1' } }, { qDef: { cId: 'altMeas2' } }],
+          },
         },
       },
     };
@@ -47,19 +49,9 @@ describe('HyperCube Handlers', () => {
       handler.setProperties(null);
       expect(handler.hcProperties).toBeUndefined();
       handler.setProperties({});
-      expect(handler.hcProperties).toEqual({
-        qDimensions: [],
-        qInterColumnSortOrder: [],
-        qLayoutExclude: { qHyperCubeDef: { qDimensions: [], qMeasures: [] } },
-        qMeasures: [],
-      });
+      expect(handler.hcProperties).toBeUndefined();
       handler.setProperties(undefined);
-      expect(handler.hcProperties).toEqual({
-        qDimensions: [],
-        qInterColumnSortOrder: [],
-        qLayoutExclude: { qHyperCubeDef: { qDimensions: [], qMeasures: [] } },
-        qMeasures: [],
-      });
+      expect(handler.hcProperties).toBeUndefined();
     });
 
     test('should set properties when qHyperCubeDef provides defined values', () => {
@@ -77,7 +69,7 @@ describe('HyperCube Handlers', () => {
     });
 
     test('should set properties when qLayoutExclude.qHyperCubeDef is undefined', () => {
-      properties.qLayoutExclude.qHyperCubeDef = undefined;
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef = undefined;
       handler.setProperties(properties);
 
       expect(handler.hcProperties.qLayoutExclude).toEqual({
@@ -288,7 +280,7 @@ describe('HyperCube Handlers', () => {
 
   describe('addMeasures', () => {
     beforeEach(() => {
-      properties.qMeasures = [{ qDef: { cId: 'meas1' } }];
+      properties.qHyperCubeDef.qMeasures = [{ qDef: { cId: 'meas1' } }];
       handler.setProperties(properties);
       jest.spyOn(hcUtils, 'isTotalMeasureExceeded').mockReturnValue(false);
     });
@@ -366,13 +358,17 @@ describe('HyperCube Handlers', () => {
 
   describe('removeMeasures', () => {
     beforeEach(() => {
-      properties.qMeasures = [{ qDef: { cId: 'meas1' } }, { qDef: { cId: 'meas2' } }, { qDef: { cId: 'meas3' } }];
-      properties.qLayoutExclude.qHyperCubeDef.qMeasures = [
+      properties.qHyperCubeDef.qMeasures = [
+        { qDef: { cId: 'meas1' } },
+        { qDef: { cId: 'meas2' } },
+        { qDef: { cId: 'meas3' } },
+      ];
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures = [
         { qDef: { cId: 'altMeas1' } },
         { qDef: { cId: 'altMeas2' } },
         { qDef: { cId: 'altMeas3' } },
       ];
-      properties.qInterColumnSortOrder = [0, 1, 2];
+      properties.qHyperCubeDef.qInterColumnSortOrder = [0, 1, 2];
       handler.setProperties(properties);
     });
 
@@ -407,7 +403,7 @@ describe('HyperCube Handlers', () => {
     });
 
     test('should return deleted measures in the order when alternative is false', async () => {
-      properties.qInterColumnSortOrder = [0, 1, 2];
+      properties.qHyperCubeDef.qInterColumnSortOrder = [0, 1, 2];
       handler.setProperties(properties);
       const indexes = [1, 2];
 
@@ -424,7 +420,7 @@ describe('HyperCube Handlers', () => {
     });
 
     test('should handle empty qMeasures', async () => {
-      properties.qMeasures = [];
+      properties.qHyperCubeDef.qMeasures = [];
       handler.setProperties(properties);
       const indexes = [1];
 
@@ -436,13 +432,17 @@ describe('HyperCube Handlers', () => {
 
   describe('removeDimensions', () => {
     beforeEach(() => {
-      properties.qDimensions = [{ qDef: { cId: 'dim1' } }, { qDef: { cId: 'dim2' } }, { qDef: { cId: 'dim3' } }];
-      properties.qLayoutExclude.qHyperCubeDef.qDimensions = [
+      properties.qHyperCubeDef.qDimensions = [
+        { qDef: { cId: 'dim1' } },
+        { qDef: { cId: 'dim2' } },
+        { qDef: { cId: 'dim3' } },
+      ];
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [
         { qDef: { cId: 'altDim1' } },
         { qDef: { cId: 'altDim2' } },
         { qDef: { cId: 'altDim3' } },
       ];
-      properties.qInterColumnSortOrder = [0, 1, 2];
+      properties.qHyperCubeDef.qInterColumnSortOrder = [0, 1, 2];
       handler.setProperties(properties);
     });
 
@@ -506,8 +506,8 @@ describe('HyperCube Handlers', () => {
 
       const { removeAlternativeDimension } = await import('../utils/hypercube-helper/remove-alternative-dimension');
 
-      properties.qLayoutExclude.qHyperCubeDef.qDimensions = [];
-      properties.qDimensions = [];
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [];
+      properties.qHyperCubeDef.qDimensions = [];
       handler.setProperties(properties);
       const indexes = [0, 1];
 
@@ -523,8 +523,8 @@ describe('HyperCube Handlers', () => {
       }));
       const { removeMainDimension } = await import('../utils/hypercube-helper/remove-main-dimension');
 
-      properties.qLayoutExclude.qHyperCubeDef.qDimensions = [];
-      properties.qDimensions = [];
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [];
+      properties.qHyperCubeDef.qDimensions = [];
       handler.setProperties(properties);
       const indexes = [0, 1];
 
@@ -537,8 +537,12 @@ describe('HyperCube Handlers', () => {
 
   describe('moveDimension', () => {
     beforeEach(() => {
-      properties.qDimensions = [{ qDef: { cId: 'dim1' } }, { qDef: { cId: 'dim2' } }, { qDef: { cId: 'dim3' } }];
-      properties.qLayoutExclude.qHyperCubeDef.qDimensions = [
+      properties.qHyperCubeDef.qDimensions = [
+        { qDef: { cId: 'dim1' } },
+        { qDef: { cId: 'dim2' } },
+        { qDef: { cId: 'dim3' } },
+      ];
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qDimensions = [
         { qDef: { cId: 'altDim1' } },
         { qDef: { cId: 'altDim2' } },
         { qDef: { cId: 'altDim3' } },
@@ -611,7 +615,7 @@ describe('HyperCube Handlers', () => {
     });
 
     test('handles empty dimensions arrays', async () => {
-      properties.qDimensions = [];
+      properties.qHyperCubeDef.qDimensions = [];
       handler.setProperties(properties);
 
       const result = await handler.moveDimension(0, 1);
@@ -641,8 +645,12 @@ describe('HyperCube Handlers', () => {
 
   describe('moveMeasure', () => {
     beforeEach(() => {
-      properties.qMeasures = [{ qDef: { cId: 'meas1' } }, { qDef: { cId: 'meas2' } }, { qDef: { cId: 'meas3' } }];
-      properties.qLayoutExclude.qHyperCubeDef.qMeasures = [
+      properties.qHyperCubeDef.qMeasures = [
+        { qDef: { cId: 'meas1' } },
+        { qDef: { cId: 'meas2' } },
+        { qDef: { cId: 'meas3' } },
+      ];
+      properties.qHyperCubeDef.qLayoutExclude.qHyperCubeDef.qMeasures = [
         { qDef: { cId: 'altMeas1' } },
         { qDef: { cId: 'altMeas2' } },
         { qDef: { cId: 'altMeas3' } },
@@ -715,7 +723,7 @@ describe('HyperCube Handlers', () => {
     });
 
     test('handles empty measures arrays', async () => {
-      properties.qMeasures = [];
+      properties.qHyperCubeDef.qMeasures = [];
       handler.setProperties(properties);
 
       const result = await handler.moveMeasure(0, 1);
