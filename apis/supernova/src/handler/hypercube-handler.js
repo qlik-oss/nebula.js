@@ -65,7 +65,7 @@ class HyperCubeHandler extends DataPropertyHandler {
 
     super.setProperties(properties);
 
-    this.hcProperties = this.path ? utils.getValue(properties, this.path) : properties;
+    this.hcProperties = this.path ? utils.getValue(properties, `${this.path}.qHyperCubeDef`) : properties.qHyperCubeDef;
 
     if (!this.hcProperties) {
       return;

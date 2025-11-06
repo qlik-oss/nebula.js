@@ -1,6 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import EventEmitter from 'node-event-emitter';
-import { convertTo as conversionConvertTo, helpers, getPath } from '@nebula.js/conversion';
+import { convertTo as conversionConvertTo, helpers } from '@nebula.js/conversion';
 import { HyperCubeHandler } from '@nebula.js/supernova';
 import glueCell from './components/glue';
 import getPatches from './utils/patcher';
@@ -10,22 +10,6 @@ import setProperties from './utils/set-properties';
 import saveSoftProperties from './utils/save-soft-properties';
 
 const noopi = () => {};
-
-const getHandlerPath = (cellRef) => {
-  const qae = cellRef.current.getQae();
-  let path = getPath(qae);
-
-  if (!path) {
-    return undefined;
-  }
-
-  const steps = path.split('/');
-  if (steps.length && steps.indexOf('qHyperCubeDef') > -1) {
-    path = 'qHyperCubeDef';
-  }
-
-  return path;
-};
 
 export default function viz({
   model,
@@ -139,20 +123,19 @@ export default function viz({
 
         const dataDefinition = cellRef.current.getExtensionDefinition().data;
         const properties = await model.getEffectiveProperties();
-        const path = getHandlerPath(cellRef);
 
-        if (path && dataDefinition) {
-          const args = {
+        if (dataDefinition) {
+          const options = {
             app: model.app,
             dimensionDefinition: dataDefinition.dimensions,
             measureDefinition: dataDefinition.measures,
             dimensionProperties: properties.qHyperCubeDef?.qDimensions?.[0] || helpers.getDefaultDimension(),
             measureProperties: properties.qHyperCubeDef?.qMeasures?.[0] || helpers.getDefaultMeasure(),
             globalChangeListeners: undefined,
-            path,
+            path: cellRef.current.getPath(),
           };
 
-          return new HyperCubeHandler(args);
+          return new HyperCubeHandler(options);
         }
 
         return undefined;
