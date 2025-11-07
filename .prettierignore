@@ -1,3 +1,5 @@
 dist/
 **/index.d.ts
 **/spec.json
+
+/.nx/workspace-data
