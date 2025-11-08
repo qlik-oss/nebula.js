@@ -61,7 +61,7 @@
     "cross-env": "10.1.0",
     "css-loader": "7.1.2",
     "enigma.js": "2.14.0",
-    "eslint": "9.39.0",
+    "eslint": "9.39.1",
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-import": "2.32.0",
@@ -84,17 +84,17 @@
     "picasso-plugin-q": "2.10.0",
     "picasso.js": "2.10.0",
     "prettier": "3.6.2",
-    "puppeteer": "24.27.0",
+    "puppeteer": "24.29.1",
     "qix-faker": "0.3.0",
     "react-is": "18.3.1",
-    "rollup": "4.52.5",
+    "rollup": "4.53.1",
     "rollup-plugin-sass": "1.15.3",
     "style-loader": "4.0.0",
     "whatwg-fetch": "^3.6.20",
     "yargs": "17.7.2"
   },
   "resolutions": {
-    "caniuse-lite": "1.0.30001753",
+    "caniuse-lite": "1.0.30001754",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-is": "18.3.1",
@@ -106,5 +106,5 @@
     "apis/*",
     "test/component/*"
   ],
-  "packageManager": "yarn@4.10.3"
+  "packageManager": "yarn@4.11.0"
 }
