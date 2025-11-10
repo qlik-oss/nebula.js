@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/qlik-oss/nebula.js/compare/v6.0.2...v6.1.0) (2025-11-10)
+
+### Bug Fixes
+
+- background image embed ([#1832](https://github.com/qlik-oss/nebula.js/issues/1832)) ([bd1f760](https://github.com/qlik-oss/nebula.js/commit/bd1f760be4ce469552fbbf4c932f00180fe2501f))
+- **deps:** update dependency @rollup/plugin-commonjs to v29 ([#1830](https://github.com/qlik-oss/nebula.js/issues/1830)) ([81f2101](https://github.com/qlik-oss/nebula.js/commit/81f2101089b31f0d65e7273e494fd6da082d77c2))
+- **deps:** update minor and patch ([#1826](https://github.com/qlik-oss/nebula.js/issues/1826)) ([b15b229](https://github.com/qlik-oss/nebula.js/commit/b15b22987591ce50a8a230b5fb75e20656611e29))
+- **deps:** update minor and patch ([#1831](https://github.com/qlik-oss/nebula.js/issues/1831)) ([78d7524](https://github.com/qlik-oss/nebula.js/commit/78d75246f9d0964534b15a6e19eb14be69382ed2))
+- **VNA-408:** hypercube handler path and arguments types ([#1823](https://github.com/qlik-oss/nebula.js/issues/1823)) ([c9ae0e3](https://github.com/qlik-oss/nebula.js/commit/c9ae0e30fbcf8e8233812326223ea6e7a6547dbf))
+
 ## [6.0.2](https://github.com/qlik-oss/nebula.js/compare/v6.0.1...v6.0.2) (2025-10-22)
 
 ### Bug Fixes

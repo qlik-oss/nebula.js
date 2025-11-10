@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/qlik-oss/nebula.js/compare/v6.0.2...v6.1.0) (2025-11-10)
+
+### Bug Fixes
+
+- **VNA-408:** hypercube handler path and arguments types ([#1823](https://github.com/qlik-oss/nebula.js/issues/1823)) ([c9ae0e3](https://github.com/qlik-oss/nebula.js/commit/c9ae0e30fbcf8e8233812326223ea6e7a6547dbf))
+
 ## [6.0.2](https://github.com/qlik-oss/nebula.js/compare/v6.0.1...v6.0.2) (2025-10-22)
 
 **Note:** Version bump only for package @nebula.js/conversion
