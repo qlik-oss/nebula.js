@@ -110,6 +110,14 @@ describe('Styling property resolver', () => {
       expect(size).toBe('contain');
     });
 
+    test('should resolve background image with host', () => {
+      const host = 'https://my-asset-host.com';
+      const { url, pos, size } = resolveBgImage(bgCompLayout, app, null, host);
+      expect(url).toBe('https://my-asset-host.com/media/Tulips.jpg');
+      expect(pos).toBe('top left');
+      expect(size).toBe('contain');
+    });
+
     test('should resolve text style by props', () => {
       const prop = {
         title: {

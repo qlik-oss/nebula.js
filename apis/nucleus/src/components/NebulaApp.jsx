@@ -130,7 +130,7 @@ export default function boot({ app, context }) {
       setMuiThemeName(themeName) {
         (async () => {
           await rendered;
-          appRef.current.setMuiThemeName(themeName);
+          appRef?.current?.setMuiThemeName(themeName);
         })();
       },
       context(ctx) {
@@ -140,7 +140,7 @@ export default function boot({ app, context }) {
           if (ctx) {
             unifyContraintsAndInteractions(ctx);
           }
-          appRef.current.setContext(ctx);
+          appRef?.current?.setContext(ctx);
         })();
       },
       destroy() {
