@@ -34,16 +34,16 @@ describe('DataPropertyHandler', () => {
   describe('getDimensions()', () => {
     test('should return null when dimension is undefined', () => {
       jest.spyOn(handler, 'getDimensions').mockReturnValue([]);
-      const dimension = handler.getDimension({});
+      const dimension = handler.getDimension(undefined);
       expect(dimension).toBeFalsy();
     });
 
     test('should return dimension when it exists in getDimensions()', () => {
       jest.spyOn(handler, 'getDimensions').mockReturnValue([{ qDef: { cId: 'dim1' } }]);
       jest.spyOn(handler, 'getAlternativeDimensions').mockReturnValue([{ qDef: { cId: 'altDim1' } }]);
-      const dimension = handler.getDimension({ id: 'dim1' });
+      const dimension = handler.getDimension('dim1');
       expect(dimension).toEqual({ qDef: { cId: 'dim1' } });
-      const alternativeDimension = handler.getDimension({ id: 'altDim1' });
+      const alternativeDimension = handler.getDimension('altDim1');
       expect(alternativeDimension).toEqual({ qDef: { cId: 'altDim1' } });
     });
   });
@@ -51,7 +51,7 @@ describe('DataPropertyHandler', () => {
   describe('getMeasure()', () => {
     test('should return null when both measures and alternative measures are empty', () => {
       jest.spyOn(handler, 'getMeasures').mockReturnValue([]);
-      const measure = handler.getMeasure({});
+      const measure = handler.getMeasure(undefined);
       expect(measure).toBeFalsy();
     });
 
@@ -59,8 +59,8 @@ describe('DataPropertyHandler', () => {
       jest.spyOn(handler, 'getMeasures').mockReturnValue([{ qDef: { cId: 'measure1' } }]);
       jest.spyOn(handler, 'getAlternativeMeasures').mockReturnValue([{ qDef: { cId: 'altMeasure1' } }]);
 
-      const measure = handler.getMeasure({ id: 'measure1' });
-      const alternativeMeasure = handler.getMeasure({ id: 'altMeasure1' });
+      const measure = handler.getMeasure('measure1');
+      const alternativeMeasure = handler.getMeasure('altMeasure1');
       expect(measure).toEqual({ qDef: { cId: 'measure1' } });
       expect(alternativeMeasure).toEqual({ qDef: { cId: 'altMeasure1' } });
     });
@@ -74,10 +74,9 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should create a dimension with default properties when no field is provided', () => {
-      const fieldDimension = { field: '', label: '', defaults: { customDefault: 'value' } };
-      const result = handler.createFieldDimension(fieldDimension);
+      const result = handler.createFieldDimension(null, null, { customDefault: 'value' });
 
-      expect(result.qDef.qFieldDefs).toEqual(['']);
+      expect(result.qDef.qFieldDefs).toEqual([null]);
       expect(result.qDef.qFieldLabels).toEqual(['']);
       expect(result.qDef.qSortCriterias).toEqual(sortingProperties);
       expect(result.qDef.autoSort).toBe(true);
@@ -87,8 +86,7 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should create a dimension with provided field and label', () => {
-      const fieldDimension = { field: 'fieldName', label: 'fieldLabel' };
-      const result = handler.createFieldDimension(fieldDimension);
+      const result = handler.createFieldDimension('fieldName', 'fieldLabel', { customDefault: 'value' });
 
       expect(result.qDef.qFieldDefs).toEqual(['fieldName']);
       expect(result.qDef.qFieldLabels).toEqual(['fieldLabel']);
@@ -105,8 +103,7 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should create dimension and delete qFieldDefs and qFieldLabels from it', () => {
-      const libraryDimension = { id: 'libraryId', defaults: { customDefault: 'value' } };
-      const result = handler.createLibraryDimension(libraryDimension);
+      const result = handler.createLibraryDimension('libraryId', { customDefault: 'value' });
 
       expect(result.qLibraryId).toBe('libraryId');
       expect(result.qDef.qSortCriterias).toEqual(sortingProperties);
@@ -126,12 +123,7 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should create a measure with provided expression and label', () => {
-      const expressionMeasure = {
-        expression: 'SUM(Sales)',
-        label: 'Total Sales',
-        defaults: { customDefault: 'value' },
-      };
-      const result = handler.createExpressionMeasure(expressionMeasure);
+      const result = handler.createExpressionMeasure('SUM(Sales)', 'Total Sales', { customDefault: 'value' });
 
       expect(result.qDef.qDef).toBe('SUM(Sales)');
       expect(result.qDef.qLabel).toBe('Total Sales');
@@ -141,16 +133,14 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should initialize qDef and qNumFormat if not provided', () => {
-      const expressionMeasure = { expression: 'SUM(Sales)', label: 'Total Sales', defaults: {} };
-      const result = handler.createExpressionMeasure(expressionMeasure);
+      const result = handler.createExpressionMeasure('SUM(Sales)', 'Total Sales', {});
 
       expect(result.qDef).toBeDefined();
       expect(result.qDef.qNumFormat).toBeDefined();
     });
 
     test('should handle empty defaults gracefully', () => {
-      const expressionMeasure = { expression: 'SUM(Sales)', label: 'Total Sales' };
-      const result = handler.createExpressionMeasure(expressionMeasure);
+      const result = handler.createExpressionMeasure('SUM(Sales)', 'Total Sales', null);
 
       expect(result.qDef.qDef).toBe('SUM(Sales)');
       expect(result.qDef.qLabel).toBe('Total Sales');
@@ -167,8 +157,7 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should create a library measure with provided id and defaults', () => {
-      const libraryMeasure = { id: 'libraryId', defaults: { customDefault: 'value' } };
-      const result = handler.createLibraryMeasure(libraryMeasure);
+      const result = handler.createLibraryMeasure('libraryId', { customDefault: 'value' });
 
       expect(result.qLibraryId).toBe('libraryId');
       expect(result.qDef.qNumFormat).toBeDefined();
@@ -178,16 +167,14 @@ describe('DataPropertyHandler', () => {
     });
 
     test('should initialize qDef and qNumFormat if not provided', () => {
-      const libraryMeasure = { id: 'libraryId', defaults: {} };
-      const result = handler.createLibraryMeasure(libraryMeasure);
+      const result = handler.createLibraryMeasure('libraryId', {});
 
       expect(result.qDef).toBeDefined();
       expect(result.qDef.qNumFormat).toBeDefined();
     });
 
     test('should delete qDef.qDef and qDef.qLabel from the measure', () => {
-      const libraryMeasure = { id: 'libraryId', defaults: {} };
-      const result = handler.createLibraryMeasure(libraryMeasure);
+      const result = handler.createLibraryMeasure('libraryId', {});
 
       expect(result.qDef.qDef).toBeUndefined();
       expect(result.qDef.qLabel).toBeUndefined();

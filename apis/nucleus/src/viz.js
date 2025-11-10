@@ -120,27 +120,22 @@ export default function viz({
        */
       async getHypercubePropertyHandler() {
         await rendered;
-        const qae = cellRef.current.getQae();
 
-        if (!qae?.data?.targets?.[0]?.propertyPath) {
-          return undefined;
-        }
-
-        const path = qae.data.targets[0].propertyPath;
         const dataDefinition = cellRef.current.getExtensionDefinition().data;
         const properties = await model.getEffectiveProperties();
 
-        if (path && dataDefinition) {
-          const args = {
+        if (dataDefinition) {
+          const options = {
             app: model.app,
             dimensionDefinition: dataDefinition.dimensions,
             measureDefinition: dataDefinition.measures,
             dimensionProperties: properties.qHyperCubeDef?.qDimensions?.[0] || helpers.getDefaultDimension(),
             measureProperties: properties.qHyperCubeDef?.qMeasures?.[0] || helpers.getDefaultMeasure(),
             globalChangeListeners: undefined,
-            path,
+            path: cellRef.current.getHypercubePath(),
           };
-          return new HyperCubeHandler(args);
+
+          return new HyperCubeHandler(options);
         }
 
         return undefined;
