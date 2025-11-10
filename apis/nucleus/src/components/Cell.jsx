@@ -566,7 +566,7 @@ const Cell = forwardRef(
           const snapshot = await this.takeSnapshot(); // eslint-disable-line
           return halo.config.snapshot.capture(snapshot);
         },
-        getPath() {
+        getHypercubePath() {
           return state.sn.generator.definition.ext?.options?.hypercubePath;
         },
       }),

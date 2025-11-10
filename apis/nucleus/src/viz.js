@@ -132,7 +132,7 @@ export default function viz({
             dimensionProperties: properties.qHyperCubeDef?.qDimensions?.[0] || helpers.getDefaultDimension(),
             measureProperties: properties.qHyperCubeDef?.qMeasures?.[0] || helpers.getDefaultMeasure(),
             globalChangeListeners: undefined,
-            path: cellRef.current.getPath(),
+            path: cellRef.current.getHypercubePath(),
           };
 
           return new HyperCubeHandler(options);
