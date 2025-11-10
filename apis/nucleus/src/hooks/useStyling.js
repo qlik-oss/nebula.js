@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useContext, useMemo } from 'react';
 import {
   resolveBgColor,
   resolveBgImage,
@@ -7,6 +7,7 @@ import {
   resolveBorderRadius,
   resolveBoxShadow,
 } from '../utils/style/styling-props';
+import InstanceContext from '../contexts/InstanceContext';
 
 const THEME_OBJECT_TYPE_MAP = {
   linechart: 'lineChart',
@@ -37,6 +38,7 @@ const getThemeObjectType = (visualization) => {
 };
 
 const useStyling = ({ layout, theme, app, themeName, disableThemeBorder, queryParams }) => {
+  const { hostConfig } = useContext(InstanceContext);
   const styling = useMemo(() => {
     if (layout && theme) {
       const generalComp = layout.components ? layout.components.find((comp) => comp.key === 'general') : null;
@@ -47,7 +49,7 @@ const useStyling = ({ layout, theme, app, themeName, disableThemeBorder, queryPa
         subTitle: resolveTextStyle(generalComp, 'subTitle', theme, objectType),
       };
       const bgColor = resolveBgColor(generalComp, theme, objectType);
-      const bgImage = resolveBgImage(generalComp, app, queryParams);
+      const bgImage = resolveBgImage(generalComp, app, queryParams, hostConfig?.host);
       const border = resolveBorder(generalComp, theme, objectType, disableThemeBorder);
       const borderRadius = resolveBorderRadius(generalComp, theme, objectType);
       const boxShadow = resolveBoxShadow(generalComp, theme, objectType);

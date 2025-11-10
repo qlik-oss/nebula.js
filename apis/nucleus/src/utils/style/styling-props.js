@@ -58,11 +58,17 @@ function getBackgroundSize(bgComp) {
   return bkgImageSize;
 }
 
-function resolveImageUrl(app, relativeUrl) {
-  return relativeUrl ? getSenseServerUrl(app) + relativeUrl : undefined;
+function resolveImageUrl(app, relativeUrl, host) {
+  if (!relativeUrl) {
+    return undefined;
+  }
+  if (host) {
+    return host + relativeUrl;
+  }
+  return getSenseServerUrl(app) + relativeUrl;
 }
 
-export function resolveBgImage(bgComp, app, queryParams) {
+export function resolveBgImage(bgComp, app, queryParams, host) {
   const bgImageDef = bgComp?.bgImage;
 
   if (bgImageDef) {
@@ -72,7 +78,7 @@ export function resolveBgImage(bgComp, app, queryParams) {
       const urlObj = bgImageDef?.mediaUrl;
       const { qUrl } = urlObj?.qStaticContentUrl || {};
       url = qUrl ? decodeURIComponent(qUrl) : undefined;
-      url = resolveImageUrl(app, url);
+      url = resolveImageUrl(app, url, host);
 
       if (queryParams) {
         authParamsAsString = Object.entries(queryParams)
