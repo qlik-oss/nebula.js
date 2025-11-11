@@ -594,6 +594,7 @@ declare namespace stardust {
         fields?: stardust.Field[];
         extendProperties?: boolean;
         properties?: qix.GenericObjectProperties;
+        context?: stardust.Context;
     }
 
     interface LibraryField {
