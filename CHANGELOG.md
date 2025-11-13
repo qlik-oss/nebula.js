@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.1.1](https://github.com/qlik-oss/nebula.js/compare/v6.1.0...v6.1.1) (2025-11-13)
+
+### Bug Fixes
+
+- **AIS-693:** app locale info in layout mock ([#1834](https://github.com/qlik-oss/nebula.js/issues/1834)) ([8e1927a](https://github.com/qlik-oss/nebula.js/commit/8e1927a82b3e8f3a57eff5f78bd720947840184c))
+
 # [6.1.0](https://github.com/qlik-oss/nebula.js/compare/v6.0.2...v6.1.0) (2025-11-10)
 
 ### Bug Fixes
