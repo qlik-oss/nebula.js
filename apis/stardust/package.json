@@ -52,7 +52,7 @@
     "@nebula.js/supernova": "^6.1.1",
     "@nebula.js/theme": "^6.1.1",
     "@nebula.js/ui": "^6.1.1",
-    "@qlik/api": "1.48.0",
+    "@qlik/api": "1.50.0",
     "@scriptappy/cli": "0.10.1",
     "@scriptappy/from-jsdoc": "0.19.1",
     "@scriptappy/to-dts": "1.0.0",
