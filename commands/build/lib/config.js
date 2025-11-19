@@ -175,6 +175,10 @@ const config = ({
         if (warning.code === 'MODULE_LEVEL_DIRECTIVE' && warning.message.includes(`"use client"`)) {
           return;
         }
+        // https://github.com/d3/d3-interpolate/issues/58
+        if (/Circular dependency.*d3-*/.test(warning.message)) {
+          return;
+        }
         warn(warning);
       },
       input: path.resolve(CWD, 'src/index'),
