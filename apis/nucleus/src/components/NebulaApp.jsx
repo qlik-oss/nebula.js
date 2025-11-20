@@ -110,7 +110,7 @@ export default function boot({ app, context }) {
           await rendered;
           components.push(component);
           componentsUnmount.push(unmount);
-          appRef.current.setComps(components);
+          appRef?.current?.setComps(components);
         })();
       },
       remove(component) {
