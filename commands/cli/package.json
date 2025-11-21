@@ -27,7 +27,8 @@
   "peerDependencies": {
     "@nebula.js/cli-build": "5.0.0 - 6",
     "@nebula.js/cli-sense": "5.0.0 - 6",
-    "@nebula.js/cli-serve": "5.0.0 - 6"
+    "@nebula.js/cli-serve": "5.0.0 - 6",
+    "@nebula.js/cli-spec": "5.0.0 - 6"
   },
   "dependencies": {
     "@nebula.js/cli-create": "^6.1.1",
