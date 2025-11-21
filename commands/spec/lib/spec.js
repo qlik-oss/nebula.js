@@ -58,10 +58,6 @@ const generateSchema = async (options) => {
     fs.writeFileSync(outputPath, JSON.stringify(schema, null, 2));
 
     console.log(chalk.green(`✅ JSON Schema generated: ${outputPath}`));
-    console.log(`📊 Schema stats:`);
-    console.log(`   • Properties: ${Object.keys(schema.properties || {}).length}`);
-    console.log(`   • Definitions: ${Object.keys(schema.definitions || schema.$defs || {}).length}`);
-
     return { schema, projectName, schemaFileName, outputPath };
   } catch (error) {
     console.error(chalk.red(`❌ Failed to generate schema: ${error.message}`));
