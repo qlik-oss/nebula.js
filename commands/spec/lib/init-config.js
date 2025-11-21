@@ -38,6 +38,16 @@ const options = {
     description: 'Project name (will be read from package.json if not specified)',
     alias: 'p',
   },
+  schemaOnly: {
+    type: 'boolean',
+    description: 'Generate only JSON schema (skip defaults generation)',
+    default: false,
+  },
+  defaultsOnly: {
+    type: 'boolean',
+    description: 'Generate only defaults file (skip schema generation)',
+    default: false,
+  },
 };
 
 module.exports = (yargs) =>
