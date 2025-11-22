@@ -4859,7 +4859,7 @@ __metadata:
     "@nebula.js/supernova": "npm:^6.1.1"
     "@nebula.js/theme": "npm:^6.1.1"
     "@nebula.js/ui": "npm:^6.1.1"
-    "@qlik/api": "npm:1.50.0"
+    "@qlik/api": "npm:2.0.0"
     "@testing-library/dom": "npm:^10.4.1"
     "@testing-library/react": "npm:^16.3.0"
     extend: "npm:3.0.2"
@@ -4896,7 +4896,7 @@ __metadata:
     "@nebula.js/supernova": "npm:^6.1.1"
     "@nebula.js/theme": "npm:^6.1.1"
     "@nebula.js/ui": "npm:^6.1.1"
-    "@qlik/api": "npm:1.50.0"
+    "@qlik/api": "npm:2.0.0"
     "@scriptappy/cli": "npm:0.10.1"
     "@scriptappy/from-jsdoc": "npm:0.19.1"
     "@scriptappy/to-dts": "npm:1.0.0"
@@ -5513,16 +5513,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@qlik/api@npm:1.50.0":
-  version: 1.50.0
-  resolution: "@qlik/api@npm:1.50.0"
+"@qlik/api@npm:2.0.0":
+  version: 2.0.0
+  resolution: "@qlik/api@npm:2.0.0"
   dependencies:
     enigma.js: "npm:^2.14.0"
     extend: "npm:3.0.2"
     lodash: "npm:^4.17.21"
     nanoid: "npm:^5.1.6"
     ws: "npm:^8.18.3"
-  checksum: 10c0/4062e64f91e3960e84d95e684aa5a4d34c61c441eedb282828c231fbbe5941394fc583c2c8525dbaf720fdbb8821f82e4098d3341dd3ed93032a7e1907312deb
+  checksum: 10c0/a6831e21aa9a591c813150bbb478aeb1cacfebddec3dcaea32a2afeabc409084ff03d8e6539e440817b7c419ad98a5a3cbec3c9b02b4361e9eb060b62e394f4e
   languageName: node
   linkType: hard
 
