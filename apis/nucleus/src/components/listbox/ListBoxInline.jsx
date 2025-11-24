@@ -281,7 +281,7 @@ function ListBoxInline({ options, layout }) {
         <ListBoxFocusBorder
           width={containerRect?.width}
           height={containerRect?.height}
-          isModalMode={isModalMode()}
+          disabled={isModalMode() || isPopover}
           childNode={listboxChildNode}
           containerNode={containerNode}
         />
