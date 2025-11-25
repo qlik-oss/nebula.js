@@ -10,7 +10,7 @@ const StyledBorder = styled('div')(({ theme, width, height }) => ({
   boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
 }));
 
-export default function ListBoxFocusBorder({ width, height, isModalMode, childNode, containerNode }) {
+export default function ListBoxFocusBorder({ width, height, disabled, childNode, containerNode }) {
   const [isOnlyContainerFocused, setIsOnlyContainerFocused] = useState(false);
 
   const checkFocus = useCallback(() => {
@@ -34,7 +34,7 @@ export default function ListBoxFocusBorder({ width, height, isModalMode, childNo
     };
   }, [checkFocus, containerNode]);
 
-  const show = !isModalMode && isOnlyContainerFocused;
+  const show = !disabled && isOnlyContainerFocused;
   if (!show) {
     return null;
   }
