@@ -1,6 +1,6 @@
 module.exports = {
   build: {
-    // Standard nebula build configuration
+    typescript: true,
   },
   spec: {
     input: 'src/PropertyDef.ts',

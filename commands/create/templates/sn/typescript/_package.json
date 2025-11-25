@@ -30,11 +30,13 @@
     "@nebula.js/cli-sense": "<%= nebulaVersion %>",
     "@playwright/test": "^1.28.1",
     "@qlik/sdk": "^0.28.0",
+    "@rollup/plugin-typescript": "^12.1.1",
     "eslint": "7.27.0",
     "eslint-config-airbnb-base": "14.2.1",
     "eslint-plugin-import": "2.23.4",
     "eslint-plugin-mocha": "9.0.0",
     "ts-json-schema-generator": "^2.3.0",
+    "tslib": "^2.8.1",
     "typescript": "^5.3.0"
   },
   "peerDependencies": {

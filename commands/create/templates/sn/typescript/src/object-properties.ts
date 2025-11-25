@@ -16,7 +16,7 @@ const properties = {
   title: '',
   subtitle: '',
   footnote: '',
-  color: 'auto',
+  color: 'auto' as const,
   enableSelection: true,
 };
 
