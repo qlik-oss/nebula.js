@@ -75,7 +75,7 @@ export default function generatorFn(UserSN, galaxy) {
     },
     definition: galaxy.flags.isEnabled('NEBULA_DATA_HANDLERS')
       ? {
-          dataHandler: (opts) => new HyperCubeHandler(opts),
+          dataHandler: sn?.dataHandler || ((opts) => new HyperCubeHandler(opts)),
         }
       : {},
   };

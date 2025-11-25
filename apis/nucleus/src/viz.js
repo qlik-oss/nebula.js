@@ -121,7 +121,8 @@ export default function viz({
       async getHypercubePropertyHandler() {
         await rendered;
 
-        const dataDefinition = cellRef.current.getExtensionDefinition().data;
+        const extensionDefinition = cellRef.current.getExtensionDefinition();
+        const dataDefinition = extensionDefinition.data;
         const properties = await model.getEffectiveProperties();
 
         if (dataDefinition) {
@@ -134,6 +135,13 @@ export default function viz({
             globalChangeListeners: undefined,
             path: cellRef.current.getHypercubePath(),
           };
+
+          if (
+            extensionDefinition.definition?.dataHandler &&
+            typeof extensionDefinition.definition.dataHandler === 'function'
+          ) {
+            return extensionDefinition.definition.dataHandler(options);
+          }
 
           return new HyperCubeHandler(options);
         }
