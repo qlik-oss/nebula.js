@@ -4790,7 +4790,6 @@ __metadata:
     file-loader: "npm:^6.2.0"
     html-webpack-plugin: "npm:5.6.5"
     monaco-editor: "npm:0.55.1"
-    monaco-editor-webpack-plugin: "npm:7.1.1"
     portfinder: "npm:1.0.38"
     puppeteer: "npm:24.31.0"
     react: "npm:18.3.1"
@@ -15376,7 +15375,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"loader-utils@npm:^2.0.0, loader-utils@npm:^2.0.2":
+"loader-utils@npm:^2.0.0":
   version: 2.0.4
   resolution: "loader-utils@npm:2.0.4"
   dependencies:
@@ -16294,18 +16293,6 @@ __metadata:
   version: 1.0.1
   resolution: "modify-values@npm:1.0.1"
   checksum: 10c0/6acb1b82aaf7a02f9f7b554b20cbfc159f223a79c66b0a257511c5933d50b85e12ea1220b0a90a2af6f80bc29ff784f929a52a51881867a93ae6a12ce87a729a
-  languageName: node
-  linkType: hard
-
-"monaco-editor-webpack-plugin@npm:7.1.1":
-  version: 7.1.1
-  resolution: "monaco-editor-webpack-plugin@npm:7.1.1"
-  dependencies:
-    loader-utils: "npm:^2.0.2"
-  peerDependencies:
-    monaco-editor: ">= 0.31.0"
-    webpack: ^4.5.0 || 5.x
-  checksum: 10c0/fe75611813617277330524e502d5413abf03cb0fc0ca92a9f79cd88bb8ed689dd2868676950132decb15765a05ca9c96b31830c8ad70cc3f164d70d543b79461
   languageName: node
   linkType: hard
 
