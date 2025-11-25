@@ -112,10 +112,10 @@ jobs:
         with:
           name: workspace
           path: .
-      - name: Install dependencies
-        run: yarn install --immutable
       - name: Install Playwright Chromium
         run: npx playwright install --with-deps chromium
+      - name: Install dependencies
+        run: yarn install --immutable
       - run: chmod +x .github/scripts/nebula_create.sh
       - name: Create Nebula visualization project (Picasso)
         run: .github/scripts/nebula_create.sh generated/hello none false false true true
