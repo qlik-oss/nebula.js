@@ -136,10 +136,7 @@ export default function viz({
             path: cellRef.current.getHypercubePath(),
           };
 
-          if (
-            extensionDefinition.definition?.dataHandler &&
-            typeof extensionDefinition.definition.dataHandler === 'function'
-          ) {
+          if (typeof extensionDefinition.definition.dataHandler === 'function') {
             return extensionDefinition.definition.dataHandler(options);
           }
 
