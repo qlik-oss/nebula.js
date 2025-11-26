@@ -39,6 +39,11 @@ module.exports = {
       choices: ['none', 'minimal', 'barchart'],
       description: 'Picasso template',
     });
+    yargs.option('typescript', {
+      type: 'boolean',
+      description: 'Use TypeScript template with spec command support',
+      default: false,
+    });
     yargs.option('author', {
       type: 'string',
       description: 'Package author',

@@ -39,8 +39,12 @@ const tryAddCommand = (m) => {
   }
 };
 
-['@nebula.js/cli-create', '@nebula.js/cli-build', '@nebula.js/cli-serve', '@nebula.js/cli-sense'].forEach(
-  tryAddCommand
-);
+[
+  '@nebula.js/cli-create',
+  '@nebula.js/cli-build',
+  '@nebula.js/cli-serve',
+  '@nebula.js/cli-sense',
+  '@nebula.js/cli-spec',
+].forEach(tryAddCommand);
 
 yargs.demandCommand().alias('h', 'help').wrap(Math.min(80, yargs.terminalWidth())).argv;
