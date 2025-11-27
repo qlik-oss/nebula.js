@@ -1,0 +1,23 @@
+name: Find LaunchDarkly flag code references
+on:
+  push:
+    branches:
+      - "main"
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  launchDarklyCodeReferences:
+    name: LaunchDarkly Code References
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 11
+      - name: LaunchDarkly Code References
+        uses: launchdarkly/find-code-references@v2
+        with:
+          accessToken: ${{ secrets.LD_ACCESS_TOKEN }}
+          projKey: QCS
