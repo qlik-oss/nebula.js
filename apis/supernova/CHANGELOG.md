@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.2.0](https://github.com/qlik-oss/nebula.js/compare/v6.1.1...v6.2.0) (2025-11-27)
+
+### Features
+
+- **VNA-409:** check chart own handler ([#1847](https://github.com/qlik-oss/nebula.js/issues/1847)) ([7f03c1c](https://github.com/qlik-oss/nebula.js/commit/7f03c1cd132edc1e35eacae8ed96fefa17b07c4d))
+
 ## [6.1.1](https://github.com/qlik-oss/nebula.js/compare/v6.1.0...v6.1.1) (2025-11-13)
 
 **Note:** Version bump only for package @nebula.js/supernova
