@@ -1,0 +1,9 @@
+{
+  "name": "<%= name %>",
+  "description": "<%= description %>",
+  "icon": "puzzle",
+  "version": "0.1.0",
+  "author": "<%= user %>",
+  "type": "visualization",
+  "supernova": true
+}

@@ -121,6 +121,8 @@ jobs:
         run: .github/scripts/nebula_create.sh generated/hello none false false true true
       - name: Create Nebula visualization project (Barchart)
         run: .github/scripts/nebula_create.sh generated/barchart barchart false false true true
+      - name: Create Nebula TypeScript project with spec command test
+        run: .github/scripts/nebula_create.sh generated/typescript-chart none false false true true true true
       - name: Create Nebula mashup project
         run: .github/scripts/nebula_create.sh generated/hello-mashup none true true true false
       - name: Store barchart screenshots
@@ -129,6 +131,12 @@ jobs:
         with:
           name: barchart-screenshots
           path: generated/barchart/screenshots
+      - name: Store TypeScript spec generated files
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: typescript-spec-generated
+          path: generated/typescript-chart/generated
       - name: Store mashup artifacts
         if: always()
         uses: actions/upload-artifact@v5

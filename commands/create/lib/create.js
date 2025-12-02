@@ -88,7 +88,14 @@ const create = async (argv) => {
         message: 'Pick a picasso template',
         default: 'none',
         choices: ['none', 'minimal', 'barchart'],
-        when: !isMashup && !argv.picasso,
+        when: !isMashup && !argv.picasso && !argv.typescript,
+      },
+      {
+        type: 'confirm',
+        name: 'typescript',
+        message: 'Use TypeScript template with spec command support?',
+        default: false,
+        when: !isMashup && !argv.typescript && !argv.picasso,
       },
     ]);
 
@@ -98,7 +105,7 @@ const create = async (argv) => {
   const write = async () => {
     console.log('\n');
     console.log('> Begin generating files...');
-    const { picasso } = options;
+    const { picasso, typescript } = options;
     fse.ensureDirSync(destination);
 
     const copy = copyFactory(templatesRoot, destination);
@@ -107,6 +114,8 @@ const create = async (argv) => {
     const folders = ['common'];
     if (isMashup) {
       folders.push('mashup');
+    } else if (typescript) {
+      folders.push('sn/typescript');
     } else {
       folders.push('sn/common');
       if (picasso !== 'none') {
