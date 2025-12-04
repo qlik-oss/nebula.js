@@ -279,53 +279,61 @@ function ListBoxSearch(
 
   return (
     <>
-    <StyledOutlinedInput
-      styles={styles}
-      dense={dense}
-      isRtl={isRtl}
-      startAdornment={
-        <InputAdornment position="start" sx={{ marginLeft: dense ? '8px' : `${CELL_PADDING_LEFT}px` }}>
-          <Search size={dense ? 'small' : 'normal'} />
-        </InputAdornment>
-      }
-      endAdornment={
-        <InputAdornment position="end" sx={{ marginLeft: 0 }}>
-          {value !== '' && (
-            <StyledIconButton
-              tabIndex={0}
-              ref={clearSearchRef}
-              title={clearSearchText}
-              aria-label={clearSearchText}
-              onClick={onClearSearch}
-              onKeyDown={onKeyDownClearSearch}
-            >
-              <Close size={dense ? 'small' : 'normal'} />
-            </StyledIconButton>
-          )}
-        </InputAdornment>
-      }
-      className="search"
-      inputRef={inputRef}
-      size="small"
-      fullWidth
-      placeholder={translator.get('Listbox.Search')}
-      value={value}
-      onFocus={handleFocus}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      autoFocus={autoFocus}
-      inputProps={{
-        tabIndex: keyboard.innerTabStops ? 0 : -1,
-        'data-testid': 'search-input-field',
-        'aria-label': translator.get('Listbox.Search'),
-        'aria-describedby': "listbox-search-instructions"
-      }}
-    />
-    {/* Invisible or visually hidden instructions */}
-    <span id="listbox-search-instructions" className="sr-only">
-      {translator.get('Listbox.Search.ScreenReaderInstructions')}
-    </span>
-  </>
+      <StyledOutlinedInput
+        styles={styles}
+        dense={dense}
+        isRtl={isRtl}
+        startAdornment={
+          <InputAdornment position="start" sx={{ marginLeft: dense ? '8px' : `${CELL_PADDING_LEFT}px` }}>
+            <Search size={dense ? 'small' : 'normal'} />
+          </InputAdornment>
+        }
+        endAdornment={
+          <InputAdornment position="end" sx={{ marginLeft: 0 }}>
+            {value !== '' && (
+              <StyledIconButton
+                tabIndex={0}
+                ref={clearSearchRef}
+                title={clearSearchText}
+                aria-label={clearSearchText}
+                onClick={onClearSearch}
+                onKeyDown={onKeyDownClearSearch}
+              >
+                <Close size={dense ? 'small' : 'normal'} />
+              </StyledIconButton>
+            )}
+          </InputAdornment>
+        }
+        className="search"
+        inputRef={inputRef}
+        size="small"
+        fullWidth
+        placeholder={translator.get('Listbox.Search')}
+        value={value}
+        onFocus={handleFocus}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        autoFocus={autoFocus}
+        inputProps={{
+          tabIndex: keyboard.innerTabStops ? 0 : -1,
+          'data-testid': 'search-input-field',
+          'aria-label': translator.get('Listbox.Search'),
+          'aria-describedby': 'listbox-search-instructions',
+        }}
+      />
+      {/* Invisible or visually hidden instructions */}
+      <span
+        id="listbox-search-instructions"
+        style={{
+          position: 'absolute',
+          height: 0,
+          width: 0,
+          overflow: 'hidden',
+        }}
+      >
+        {translator.get('Listbox.Search.ScreenReaderInstructions')}
+      </span>
+    </>
   );
 }
 
