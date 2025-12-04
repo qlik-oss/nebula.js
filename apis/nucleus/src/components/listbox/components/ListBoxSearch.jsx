@@ -278,6 +278,7 @@ function ListBoxSearch(
   }
 
   return (
+    <>
     <StyledOutlinedInput
       styles={styles}
       dense={dense}
@@ -316,9 +317,15 @@ function ListBoxSearch(
       inputProps={{
         tabIndex: keyboard.innerTabStops ? 0 : -1,
         'data-testid': 'search-input-field',
-        'aria-label': translator.get('Listbox.Search.ScreenReaderInstructions'),
+        'aria-label': translator.get('Listbox.Search'),
+        'aria-describedby': "listbox-search-instructions"
       }}
     />
+    {/* Invisible or visually hidden instructions */}
+    <span id="listbox-search-instructions" className="sr-only">
+      {translator.get('Listbox.Search.ScreenReaderInstructions')}
+    </span>
+  </>
   );
 }
 
