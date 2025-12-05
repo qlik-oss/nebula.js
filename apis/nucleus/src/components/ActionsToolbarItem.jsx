@@ -17,7 +17,7 @@ const ActionElement = {
   className: 'njs-cell-action',
 };
 
-const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }, ref) => {
+const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
   const theme = useTheme();
   const { hidden, disabled, style, hasSvgIconShape } = useActionState(item);
   if (hidden) return null;
@@ -43,8 +43,6 @@ const Item = React.forwardRef(({ ariaExpanded = false, item, addAnchor = false }
       size="large"
       disableRipple
       aria-label={item.label}
-      aria-expanded={ariaExpanded}
-      aria-controls="moreMenuList"
       data-testid={btnId}
     >
       {hasSvgIconShape && SvgIcon(item.getSvgIconShape())}
