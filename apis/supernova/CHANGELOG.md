@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/qlik-oss/nebula.js/compare/v6.2.0...v6.3.0) (2025-12-08)
+
+### Bug Fixes
+
+- additional null check on accessibility object ([#1862](https://github.com/qlik-oss/nebula.js/issues/1862)) ([3287508](https://github.com/qlik-oss/nebula.js/commit/3287508baa5616eb18e2cb95c83c2c079aaf87d7))
+
 # [6.2.0](https://github.com/qlik-oss/nebula.js/compare/v6.1.1...v6.2.0) (2025-11-27)
 
 ### Features

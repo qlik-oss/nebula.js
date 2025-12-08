@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/qlik-oss/nebula.js/compare/v6.2.0...v6.3.0) (2025-12-08)
+
+### Bug Fixes
+
+- **deps:** update dependency chokidar to v5 ([#1855](https://github.com/qlik-oss/nebula.js/issues/1855)) ([2ba9e52](https://github.com/qlik-oss/nebula.js/commit/2ba9e52a2cb827d1409297feeecfe61ab9dab99d))
+- **deps:** update minor and patch ([#1853](https://github.com/qlik-oss/nebula.js/issues/1853)) ([2792d1c](https://github.com/qlik-oss/nebula.js/commit/2792d1c7301b574f1fa74d47dda1e33322d6db8e))
+- **deps:** update minor and patch ([#1864](https://github.com/qlik-oss/nebula.js/issues/1864)) ([d85dc51](https://github.com/qlik-oss/nebula.js/commit/d85dc514ceea6ff34b8fda6a99aafb7968415047))
+
 # [6.2.0](https://github.com/qlik-oss/nebula.js/compare/v6.1.1...v6.2.0) (2025-11-27)
 
 ### Bug Fixes

@@ -3,6 +3,16 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/qlik-oss/nebula.js/compare/v6.2.0...v6.3.0) (2025-12-08)
+
+### Bug Fixes
+
+- accessibility issue for unnecessary ARIA attributes ([#1859](https://github.com/qlik-oss/nebula.js/issues/1859)) ([2604b37](https://github.com/qlik-oss/nebula.js/commit/2604b37c652caaf3e1a4b0f9d6782d63c1ab1621))
+- associate instructions with form field ([#1860](https://github.com/qlik-oss/nebula.js/issues/1860)) ([73a1e50](https://github.com/qlik-oss/nebula.js/commit/73a1e50e5fb019c607ac52a580eaadf216475550))
+- **deps:** update minor and patch ([#1853](https://github.com/qlik-oss/nebula.js/issues/1853)) ([2792d1c](https://github.com/qlik-oss/nebula.js/commit/2792d1c7301b574f1fa74d47dda1e33322d6db8e))
+- handle empty queue case to prevent loading state hang ([#1863](https://github.com/qlik-oss/nebula.js/issues/1863)) ([e225609](https://github.com/qlik-oss/nebula.js/commit/e2256090574bfffee0cf56896da4e0a3657bd0cb))
+- scroll the listbox into viewport before the search box is shown ([#1865](https://github.com/qlik-oss/nebula.js/issues/1865)) ([8dcd87d](https://github.com/qlik-oss/nebula.js/commit/8dcd87d0ba04e6193efc018cf19182f1cd42de79))
+
 # [6.2.0](https://github.com/qlik-oss/nebula.js/compare/v6.1.1...v6.2.0) (2025-11-27)
 
 ### Bug Fixes

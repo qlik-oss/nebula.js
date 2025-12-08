@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.3.0](https://github.com/qlik-oss/nebula.js/compare/v6.2.0...v6.3.0) (2025-12-08)
+
+### Bug Fixes
+
+- accessibility issue for unnecessary ARIA attributes ([#1859](https://github.com/qlik-oss/nebula.js/issues/1859)) ([2604b37](https://github.com/qlik-oss/nebula.js/commit/2604b37c652caaf3e1a4b0f9d6782d63c1ab1621))
+- additional null check on accessibility object ([#1862](https://github.com/qlik-oss/nebula.js/issues/1862)) ([3287508](https://github.com/qlik-oss/nebula.js/commit/3287508baa5616eb18e2cb95c83c2c079aaf87d7))
+- associate instructions with form field ([#1860](https://github.com/qlik-oss/nebula.js/issues/1860)) ([73a1e50](https://github.com/qlik-oss/nebula.js/commit/73a1e50e5fb019c607ac52a580eaadf216475550))
+- **deps:** update dependency chokidar to v5 ([#1855](https://github.com/qlik-oss/nebula.js/issues/1855)) ([2ba9e52](https://github.com/qlik-oss/nebula.js/commit/2ba9e52a2cb827d1409297feeecfe61ab9dab99d))
+- **deps:** update minor and patch ([#1853](https://github.com/qlik-oss/nebula.js/issues/1853)) ([2792d1c](https://github.com/qlik-oss/nebula.js/commit/2792d1c7301b574f1fa74d47dda1e33322d6db8e))
+- **deps:** update minor and patch ([#1864](https://github.com/qlik-oss/nebula.js/issues/1864)) ([d85dc51](https://github.com/qlik-oss/nebula.js/commit/d85dc514ceea6ff34b8fda6a99aafb7968415047))
+- handle empty queue case to prevent loading state hang ([#1863](https://github.com/qlik-oss/nebula.js/issues/1863)) ([e225609](https://github.com/qlik-oss/nebula.js/commit/e2256090574bfffee0cf56896da4e0a3657bd0cb))
+- scroll the listbox into viewport before the search box is shown ([#1865](https://github.com/qlik-oss/nebula.js/issues/1865)) ([8dcd87d](https://github.com/qlik-oss/nebula.js/commit/8dcd87d0ba04e6193efc018cf19182f1cd42de79))
+
 # [6.2.0](https://github.com/qlik-oss/nebula.js/compare/v6.1.1...v6.2.0) (2025-11-27)
 
 ### Bug Fixes
