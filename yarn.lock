@@ -4791,7 +4791,7 @@ __metadata:
     html-webpack-plugin: "npm:5.6.5"
     monaco-editor: "npm:0.55.1"
     portfinder: "npm:1.0.38"
-    puppeteer: "npm:24.32.0"
+    puppeteer: "npm:24.32.1"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-router: "npm:7.10.1"
@@ -18608,9 +18608,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"puppeteer-core@npm:24.32.0":
-  version: 24.32.0
-  resolution: "puppeteer-core@npm:24.32.0"
+"puppeteer-core@npm:24.32.1":
+  version: 24.32.1
+  resolution: "puppeteer-core@npm:24.32.1"
   dependencies:
     "@puppeteer/browsers": "npm:2.11.0"
     chromium-bidi: "npm:11.0.0"
@@ -18619,23 +18619,23 @@ __metadata:
     typed-query-selector: "npm:^2.12.0"
     webdriver-bidi-protocol: "npm:0.3.9"
     ws: "npm:^8.18.3"
-  checksum: 10c0/1b1b7a5288d9b3a3f9cc6b81a31775cdfaf62f567956e401d1b9dd55ecedbe4bef9552d261dc0acb1f2213ee94e893315c22582654d1c00ca41d564a8244508d
+  checksum: 10c0/814df095cecfc331a79b5984fc071fbe429e32175bb27949984b49f92212e9a0f26e80f12441d535c7a9dc335d0b90cd2ea7eb686271e26dbfca00166dd8255c
   languageName: node
   linkType: hard
 
-"puppeteer@npm:24.32.0":
-  version: 24.32.0
-  resolution: "puppeteer@npm:24.32.0"
+"puppeteer@npm:24.32.1":
+  version: 24.32.1
+  resolution: "puppeteer@npm:24.32.1"
   dependencies:
     "@puppeteer/browsers": "npm:2.11.0"
     chromium-bidi: "npm:11.0.0"
     cosmiconfig: "npm:^9.0.0"
     devtools-protocol: "npm:0.0.1534754"
-    puppeteer-core: "npm:24.32.0"
+    puppeteer-core: "npm:24.32.1"
     typed-query-selector: "npm:^2.12.0"
   bin:
     puppeteer: lib/cjs/puppeteer/node/cli.js
-  checksum: 10c0/99532667d481bfc473247bcf0fa250936ae9cdfe05d373b8454a5cf04b1225a388ae68d5377fdad26f7b20ea184c74b76a9747f8f01f40416e16d0be2c006777
+  checksum: 10c0/13ea933513312908b2f36938fffd26e10d7be1299b4691f48c5db7ed1bf46dea7ff5bca005cd79e5746e34040b9b1ea382a5c9541a1d6663bf7079354bf81126
   languageName: node
   linkType: hard
 
@@ -19686,7 +19686,7 @@ __metadata:
     picasso-plugin-q: "npm:2.10.0"
     picasso.js: "npm:2.10.0"
     prettier: "npm:3.7.4"
-    puppeteer: "npm:24.32.0"
+    puppeteer: "npm:24.32.1"
     qix-faker: "npm:0.3.0"
     react-is: "npm:18.3.1"
     rollup: "npm:4.53.3"
