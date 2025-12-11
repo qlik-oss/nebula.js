@@ -632,6 +632,14 @@ declare namespace stardust {
 
     }
 
+    /**
+     * Sort items shown in current selections toolbar.
+     * The order is as follows:
+     * 	1. qOneAndOnlyOne
+     * 	2. qSortIndex
+     */
+    type sortSelections = (a: Item | Object, b: Item | Object)=>void;
+
     class Navigation implements stardust.Emitter {
         constructor();
 
