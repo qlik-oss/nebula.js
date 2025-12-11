@@ -7,6 +7,8 @@ import useCurrentSelectionsModel from '../../hooks/useCurrentSelectionsModel';
 import useLayout from '../../hooks/useLayout';
 import useRect from '../../hooks/useRect';
 import InstanceContext from '../../contexts/InstanceContext';
+import { getSinglePublicObjectProps, SINGLE_OBJECT_ID } from './single-public';
+import { sortAllFields, sortSelections } from './utils';
 
 import OneField from './OneField';
 import MultiState from './MultiState';
@@ -54,7 +56,7 @@ function getItems(layout) {
     .filter((f) => !f.selections.some((s) => s.qIsHidden));
 }
 
-export default function SelectedFields({ api, app }) {
+export default function SelectedFields({ api, app, halo }) {
   const theme = useTheme();
   const [currentSelectionsModel] = useCurrentSelectionsModel(app);
   const [layout] = useLayout(currentSelectionsModel);
@@ -63,6 +65,11 @@ export default function SelectedFields({ api, app }) {
   const { modalObjectStore } = useContext(InstanceContext).selectionStore;
   const [containerRef, containerRect] = useRect();
   const [maxItems, setMaxItems] = useState(0);
+  const flags = halo.public.galaxy?.flags;
+  const isPinFieldEnabled = flags?.isEnabled('TLV_1394_PIN_FIELD_TO_TOOLBAR');
+  const [pinnedItems, setPinnedItems] = useState([]);
+  const [masterDimList, setMasterDimList] = useState([]);
+  const [fieldList, setFieldList] = useState([]);
 
   const isInListboxPopover = () => {
     const { model } = modalObjectStore.get(app.id) || {};
@@ -78,10 +85,38 @@ export default function SelectedFields({ api, app }) {
   }, [containerRect]);
 
   useEffect(() => {
+    if (isPinFieldEnabled) {
+      const getPinnedItems = async () => {
+        const singlePublicProps = await getSinglePublicObjectProps(app, SINGLE_OBJECT_ID);
+        return singlePublicProps?.pinnedItems || [];
+      };
+
+      const masterDimList = async () => {
+        const dimensionListObject = await app.getDimensionListObject();
+        return dimensionListObject.getLayout();
+      };
+
+      const getFieldList = async () => {
+        const fieldListObject = await app.getFieldListObject();
+        return fieldListObject.expand();
+      };
+
+      Promise.all([getPinnedItems(), masterDimList(), getFieldList()]).then(([pinnedItems, dimList, fieldList]) => {
+        setPinnedItems(pinnedItems);
+        setMasterDimList(dimList);
+        setFieldList(fieldList);
+      });
+    }
+  }, [app]);
+
+  useEffect(() => {
     if (!app || !currentSelectionsModel || !layout || !maxItems) {
       return;
     }
-    const items = getItems(layout);
+    let items = isPinFieldEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
+    if (isPinFieldEnabled) {
+      items = sortAllFields(fieldList, pinnedItems, items, masterDimList);
+    }
     setState((currState) => {
       const newItems = items;
       // Maintain modal state in app selections
@@ -96,21 +131,49 @@ export default function SelectedFields({ api, app }) {
       }
       let newMoreItems = [];
       if (maxItems < newItems.length) {
-        newMoreItems = newItems.splice(maxItems - newItems.length);
+        if (isPinFieldEnabled) {
+          newMoreItems = newItems.splice(0, newItems.length - maxItems);
+        } else {
+          newMoreItems = newItems.splice(maxItems - newItems.length);
+        }
       }
       return {
         items: newItems,
         more: newMoreItems,
       };
     });
-  }, [app, currentSelectionsModel, layout, api.isInModal(), maxItems]);
+  }, [
+    app,
+    currentSelectionsModel,
+    layout,
+    api.isInModal(),
+    maxItems,
+    isPinFieldEnabled,
+    pinnedItems,
+    masterDimList,
+    fieldList,
+  ]);
 
   return (
     <Grid ref={containerRef} container gap={0} wrap="nowrap" style={{ height: '100%' }}>
+      {isPinFieldEnabled && state.more.length > 0 && (
+        <Grid
+          item
+          style={{
+            position: 'relative',
+            maxWidth: '98px',
+            minWidth: `${MIN_WIDTH_MORE}px`,
+            background: theme.palette.background.paper,
+            borderRight: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <More items={state.more} api={api} isPinFieldEnabled={isPinFieldEnabled} />
+        </Grid>
+      )}
       {state.items.map((s) => (
         <Grid
           item
-          key={`${s.states.join('::')}::${s.name}`}
+          key={`${s.states.join('::')}::${s.id ?? s.qField ?? s.name}`}
           style={{
             position: 'relative',
             maxWidth: '240px',
@@ -119,10 +182,14 @@ export default function SelectedFields({ api, app }) {
             borderRight: `1px solid ${theme.palette.divider}`,
           }}
         >
-          {s.states.length > 1 ? <MultiState field={s} api={api} /> : <OneField field={s} api={api} />}
+          {s.states.length > 1 ? (
+            <MultiState field={s} api={api} isPinFieldEnabled={isPinFieldEnabled} />
+          ) : (
+            <OneField field={s} api={api} isPinFieldEnabled={isPinFieldEnabled} />
+          )}
         </Grid>
       ))}
-      {state.more.length > 0 && (
+      {!isPinFieldEnabled && state.more.length > 0 && (
         <Grid
           item
           style={{
