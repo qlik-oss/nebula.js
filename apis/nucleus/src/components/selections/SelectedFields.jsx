@@ -91,7 +91,7 @@ export default function SelectedFields({ api, app, halo }) {
         return singlePublicProps?.pinnedItems || [];
       };
 
-      const masterDimList = async () => {
+      const getMasterDimList = async () => {
         const dimensionListObject = await app.getDimensionListObject();
         return dimensionListObject.getLayout();
       };
@@ -101,10 +101,10 @@ export default function SelectedFields({ api, app, halo }) {
         return fieldListObject.expand();
       };
 
-      Promise.all([getPinnedItems(), masterDimList(), getFieldList()]).then(([pinnedItems, dimList, fieldList]) => {
-        setPinnedItems(pinnedItems);
+      Promise.all([getPinnedItems(), getMasterDimList(), getFieldList()]).then(([pinnedItemsList, dimList, fields]) => {
+        setPinnedItems(pinnedItemsList);
         setMasterDimList(dimList);
-        setFieldList(fieldList);
+        setFieldList(fields);
       });
     }
   }, [app]);
