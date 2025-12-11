@@ -3,7 +3,7 @@ import { Grid2, Typography } from '@mui/material';
 import { useTheme } from '@nebula.js/ui/theme';
 import ListBoxPopover from '../listbox/ListBoxPopover';
 
-const PinItem = ({
+function PinItem({
   field,
   api,
   showListBoxPopover,
@@ -11,7 +11,7 @@ const PinItem = ({
   skipHandleShowListBoxPopover,
   handleShowListBoxPopover,
   handleCloseShowListBoxPopover,
-}) => {
+}) {
   const theme = useTheme();
   const displayName = field.qName || field.qField;
 
@@ -46,6 +46,6 @@ const PinItem = ({
       )}
     </Grid2>
   );
-};
+}
 
 export default PinItem;

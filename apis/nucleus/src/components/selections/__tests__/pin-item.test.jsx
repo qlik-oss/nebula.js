@@ -8,25 +8,22 @@ jest.mock('@nebula.js/ui/theme', () => ({
   useTheme: jest.fn(),
 }));
 
-jest.mock('../../listbox/ListBoxPopover', () => {
-  return function MockListBoxPopover(props) {
-    return <div data-testid="listbox-popover">ListBoxPopover</div>;
-  };
-});
+jest.mock('../../listbox/ListBoxPopover', () => ({
+  __esModule: true,
+  default: () => <div data-testid="listbox-popover">ListBoxPopover</div>,
+}));
 
 describe('<PinItem />', () => {
   let renderer;
 
   beforeEach(() => {
-    jest
-      .spyOn(NebulaThemeModule, 'useTheme')
-      .mockImplementation(() => ({
-        palette: {
-          background: { paper: '#ffffff' },
-          action: { hover: '#f5f5f5' },
-          divider: '#e0e0e0',
-        },
-      }));
+    jest.spyOn(NebulaThemeModule, 'useTheme').mockImplementation(() => ({
+      palette: {
+        background: { paper: '#ffffff' },
+        action: { hover: '#f5f5f5' },
+        divider: '#e0e0e0',
+      },
+    }));
   });
 
   afterEach(() => {
@@ -53,7 +50,7 @@ describe('<PinItem />', () => {
           api={api}
           showListBoxPopover={false}
           alignTo={React.createRef()}
-          skipHandleShowListBoxPopover={true}
+          skipHandleShowListBoxPopover
           handleShowListBoxPopover={jest.fn()}
           handleCloseShowListBoxPopover={jest.fn()}
         />
@@ -79,7 +76,7 @@ describe('<PinItem />', () => {
           api={api}
           showListBoxPopover={false}
           alignTo={React.createRef()}
-          skipHandleShowListBoxPopover={true}
+          skipHandleShowListBoxPopover
           handleShowListBoxPopover={jest.fn()}
           handleCloseShowListBoxPopover={jest.fn()}
         />
@@ -115,8 +112,7 @@ describe('<PinItem />', () => {
     });
 
     // Find the container div and trigger click
-    const root = renderer.root;
-    const containerInstance = root.findByType(PinItem);
+    const containerInstance = renderer.root.findByType(PinItem);
     expect(containerInstance).toBeDefined();
   });
 
@@ -137,7 +133,7 @@ describe('<PinItem />', () => {
           api={api}
           showListBoxPopover={false}
           alignTo={React.createRef()}
-          skipHandleShowListBoxPopover={true}
+          skipHandleShowListBoxPopover
           handleShowListBoxPopover={handleShowListBoxPopover}
           handleCloseShowListBoxPopover={jest.fn()}
         />
@@ -162,9 +158,9 @@ describe('<PinItem />', () => {
         <PinItem
           field={field}
           api={api}
-          showListBoxPopover={true}
+          showListBoxPopover
           alignTo={alignToRef}
-          skipHandleShowListBoxPopover={true}
+          skipHandleShowListBoxPopover
           handleShowListBoxPopover={jest.fn()}
           handleCloseShowListBoxPopover={jest.fn()}
         />
@@ -193,7 +189,7 @@ describe('<PinItem />', () => {
           api={api}
           showListBoxPopover={false}
           alignTo={alignToRef}
-          skipHandleShowListBoxPopover={true}
+          skipHandleShowListBoxPopover
           handleShowListBoxPopover={jest.fn()}
           handleCloseShowListBoxPopover={jest.fn()}
         />

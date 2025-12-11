@@ -100,7 +100,13 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
         // eslint-disable-next-line react/no-array-index-key
         <ListItem key={ix} title={field.label} onClick={(e) => handleShowState(e, ix)}>
           <Box border={1} width="100%" borderRadius={1} borderColor="divider">
-            <OneField field={field} api={api} stateIx={ix} skipHandleShowListBoxPopover isPinFieldEnabled={isPinFieldEnabled}/>
+            <OneField
+              field={field}
+              api={api}
+              stateIx={ix}
+              skipHandleShowListBoxPopover
+              isPinFieldEnabled={isPinFieldEnabled}
+            />
           </Box>
         </ListItem>
       ))}
