@@ -75,7 +75,9 @@ describe('<SelectedFields />', () => {
       selectionStore: selectionsStoreModule,
     };
 
-    render = async ({ api = {}, app = {}, rendererOptions } = {}) => {
+    const defaultHalo = { public: { galaxy: { flags: { isEnabled: jest.fn().mockReturnValue(false) } } } };
+
+    render = async ({ api = {}, app = {}, halo = {}, rendererOptions } = {}) => {
       api = {
         ...defaultApi,
         ...api,
@@ -84,10 +86,14 @@ describe('<SelectedFields />', () => {
         ...defaultApp,
         ...app,
       };
+      halo = {
+        ...defaultHalo,
+        ...halo,
+      };
       await act(async () => {
         renderer = create(
           <InstanceContext.Provider value={context}>
-            <SelectedFields api={api} app={app} />
+            <SelectedFields api={api} app={app} halo={halo} />
           </InstanceContext.Provider>,
           rendererOptions || null
         );
