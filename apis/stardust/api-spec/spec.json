@@ -1997,6 +1997,36 @@
         }
       }
     },
+    "sortSelections": {
+      "description": "Sort items shown in current selections toolbar.\nThe order is as follows:\n\t1. qOneAndOnlyOne\n\t2. qSortIndex",
+      "kind": "function",
+      "params": [
+        {
+          "name": "a",
+          "kind": "union",
+          "items": [
+            {
+              "type": "Item"
+            },
+            {
+              "type": "Object"
+            }
+          ]
+        },
+        {
+          "name": "b",
+          "kind": "union",
+          "items": [
+            {
+              "type": "Item"
+            },
+            {
+              "type": "Object"
+            }
+          ]
+        }
+      ]
+    },
     "Navigation": {
       "stability": "experimental",
       "availability": {
