@@ -4805,6 +4805,18 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@nebula.js/cli-spec@workspace:commands/spec":
+  version: 0.0.0-use.local
+  resolution: "@nebula.js/cli-spec@workspace:commands/spec"
+  dependencies:
+    chalk: "npm:4.1.2"
+    fs-extra: "npm:^11.1.1"
+    ts-json-schema-generator: "npm:2.4.0"
+    typescript: "npm:>=5.9.3"
+    yargs: "npm:17.7.2"
+  languageName: unknown
+  linkType: soft
+
 "@nebula.js/cli@workspace:commands/cli":
   version: 0.0.0-use.local
   resolution: "@nebula.js/cli@workspace:commands/cli"
@@ -4816,6 +4828,7 @@ __metadata:
     "@nebula.js/cli-build": 5.0.0 - 6
     "@nebula.js/cli-sense": 5.0.0 - 6
     "@nebula.js/cli-serve": 5.0.0 - 6
+    "@nebula.js/cli-spec": 5.0.0 - 6
   bin:
     nebula: lib/index.js
   languageName: unknown
@@ -8830,6 +8843,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"commander@npm:^13.1.0":
+  version: 13.1.0
+  resolution: "commander@npm:13.1.0"
+  checksum: 10c0/7b8c5544bba704fbe84b7cab2e043df8586d5c114a4c5b607f83ae5060708940ed0b5bd5838cf8ce27539cde265c1cbd59ce3c8c6b017ed3eec8943e3a415164
+  languageName: node
+  linkType: hard
+
 "commander@npm:^14.0.2":
   version: 14.0.2
   resolution: "commander@npm:14.0.2"
@@ -11885,7 +11905,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fs-extra@npm:11.3.2":
+"fs-extra@npm:11.3.2, fs-extra@npm:^11.1.1":
   version: 11.3.2
   resolution: "fs-extra@npm:11.3.2"
   dependencies:
@@ -12376,6 +12396,22 @@ __metadata:
   bin:
     glob: dist/cjs/src/bin.js
   checksum: 10c0/50effa4208762e508def5688e4d88242db80b5913f65e9c5d5aefb707c59e66a27e845fbf18127157189f6ed0f055e2c94d7112c97a065b9cbfe002e1b26d330
+  languageName: node
+  linkType: hard
+
+"glob@npm:^11.0.1":
+  version: 11.1.0
+  resolution: "glob@npm:11.1.0"
+  dependencies:
+    foreground-child: "npm:^3.3.1"
+    jackspeak: "npm:^4.1.1"
+    minimatch: "npm:^10.1.1"
+    minipass: "npm:^7.1.2"
+    package-json-from-dist: "npm:^1.0.0"
+    path-scurry: "npm:^2.0.0"
+  bin:
+    glob: dist/esm/bin.mjs
+  checksum: 10c0/1ceae07f23e316a6fa74581d9a74be6e8c2e590d2f7205034dd5c0435c53f5f7b712c2be00c3b65bf0a49294a1c6f4b98cd84c7637e29453b5aa13b79f1763a2
   languageName: node
   linkType: hard
 
@@ -19871,6 +19907,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"safe-stable-stringify@npm:^2.5.0":
+  version: 2.5.0
+  resolution: "safe-stable-stringify@npm:2.5.0"
+  checksum: 10c0/baea14971858cadd65df23894a40588ed791769db21bafb7fd7608397dbdce9c5aac60748abae9995e0fc37e15f2061980501e012cd48859740796bea2987f49
+  languageName: node
+  linkType: hard
+
 "safer-buffer@npm:>= 2.1.2 < 3, safer-buffer@npm:>= 2.1.2 < 3.0.0":
   version: 2.1.2
   resolution: "safer-buffer@npm:2.1.2"
@@ -21546,6 +21589,24 @@ __metadata:
   languageName: node
   linkType: hard
 
+"ts-json-schema-generator@npm:2.4.0":
+  version: 2.4.0
+  resolution: "ts-json-schema-generator@npm:2.4.0"
+  dependencies:
+    "@types/json-schema": "npm:^7.0.15"
+    commander: "npm:^13.1.0"
+    glob: "npm:^11.0.1"
+    json5: "npm:^2.2.3"
+    normalize-path: "npm:^3.0.0"
+    safe-stable-stringify: "npm:^2.5.0"
+    tslib: "npm:^2.8.1"
+    typescript: "npm:^5.8.2"
+  bin:
+    ts-json-schema-generator: bin/ts-json-schema-generator.js
+  checksum: 10c0/b8dad83ab0a13bb938ed0b99fd0afc72dca1e35257d6609ce4c05dd08009e710b5ef4a062db0b1a82bcd43af1870df7f49229a419f414dff4e0e2541cadecc75
+  languageName: node
+  linkType: hard
+
 "tsconfig-paths@npm:^3.15.0":
   version: 3.15.0
   resolution: "tsconfig-paths@npm:3.15.0"
@@ -21576,7 +21637,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tslib@npm:^2.0.0, tslib@npm:^2.0.1":
+"tslib@npm:^2.0.0, tslib@npm:^2.0.1, tslib@npm:^2.8.1":
   version: 2.8.1
   resolution: "tslib@npm:2.8.1"
   checksum: 10c0/9c4759110a19c53f992d9aae23aac5ced636e99887b51b9e61def52611732872ff7668757d4e4c61f19691e36f4da981cd9485e869b4a7408d689f6bf1f14e62
@@ -21872,7 +21933,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:>=5.9.3":
+"typescript@npm:>=5.9.3, typescript@npm:^5.8.2":
   version: 5.9.3
   resolution: "typescript@npm:5.9.3"
   bin:
@@ -21892,7 +21953,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A>=5.9.3#optional!builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A>=5.9.3#optional!builtin<compat/typescript>, typescript@patch:typescript@npm%3A^5.8.2#optional!builtin<compat/typescript>":
   version: 5.9.3
   resolution: "typescript@patch:typescript@npm%3A5.9.3#optional!builtin<compat/typescript>::version=5.9.3&hash=5786d5"
   bin:
