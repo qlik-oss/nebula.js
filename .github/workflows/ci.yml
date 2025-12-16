@@ -39,7 +39,7 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: Download workspace
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: workspace
           path: .
@@ -71,7 +71,7 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: Download workspace
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: workspace
           path: .
@@ -108,7 +108,7 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: Download workspace
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: workspace
           path: .
