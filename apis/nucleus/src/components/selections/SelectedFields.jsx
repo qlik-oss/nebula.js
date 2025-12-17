@@ -67,6 +67,7 @@ export default function SelectedFields({ api, app, halo }) {
   const [maxItems, setMaxItems] = useState(0);
   const flags = halo.public.galaxy?.flags;
   const isPinFieldEnabled = flags?.isEnabled('TLV_1394_PIN_FIELD_TO_TOOLBAR');
+  const isRefactoringEnabled = flags?.isEnabled('TTLV_1394_REFACTORING_SELECTIONS');
   const [pinnedItems, setPinnedItems] = useState([]);
   const [masterDimList, setMasterDimList] = useState([]);
   const [fieldList, setFieldList] = useState([]);
@@ -113,7 +114,7 @@ export default function SelectedFields({ api, app, halo }) {
     if (!app || !currentSelectionsModel || !layout || !maxItems) {
       return;
     }
-    let items = isPinFieldEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
+    let items = isRefactoringEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
     if (isPinFieldEnabled) {
       items = sortAllFields(fieldList, pinnedItems, items, masterDimList);
     }
@@ -131,7 +132,7 @@ export default function SelectedFields({ api, app, halo }) {
       }
       let newMoreItems = [];
       if (maxItems < newItems.length) {
-        if (isPinFieldEnabled) {
+        if (isRefactoringEnabled) {
           newMoreItems = newItems.splice(0, newItems.length - maxItems);
         } else {
           newMoreItems = newItems.splice(maxItems - newItems.length);
@@ -156,7 +157,7 @@ export default function SelectedFields({ api, app, halo }) {
 
   return (
     <Grid ref={containerRef} container gap={0} wrap="nowrap" style={{ height: '100%' }}>
-      {isPinFieldEnabled && state.more.length > 0 && (
+      {isRefactoringEnabled && state.more.length > 0 && (
         <Grid
           item
           style={{
@@ -189,7 +190,7 @@ export default function SelectedFields({ api, app, halo }) {
           )}
         </Grid>
       ))}
-      {!isPinFieldEnabled && state.more.length > 0 && (
+      {!isRefactoringEnabled && state.more.length > 0 && (
         <Grid
           item
           style={{
