@@ -77,7 +77,7 @@ export default function SelectedFields({ api, app, halo }) {
   const [maxItems, setMaxItems] = useState(0);
   const flags = halo.public.galaxy?.flags;
   const isPinFieldEnabled = flags?.isEnabled('TLV_1394_PIN_FIELD_TO_TOOLBAR');
-  const isRefactoringEnabled = flags?.isEnabled('TTLV_1394_REFACTORING_SELECTIONS');
+  const isRefactoringEnabled = flags?.isEnabled('TLV_1394_REFACTORING_SELECTIONS');
 
   const isInListboxPopover = () => {
     const { model } = modalObjectStore.get(app.id) || {};
