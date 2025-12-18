@@ -7,7 +7,11 @@ import useCurrentSelectionsModel from '../../hooks/useCurrentSelectionsModel';
 import useLayout from '../../hooks/useLayout';
 import useRect from '../../hooks/useRect';
 import InstanceContext from '../../contexts/InstanceContext';
-import { getSinglePublicObjectProps, SINGLE_OBJECT_ID } from './single-public';
+import useSingleObject from './hooks/use-single-object';
+import useSingleObjectProps from './hooks/use-single-object-props';
+import useModel from './hooks/use-model';
+import useFieldList from './hooks/use-field-list';
+import useDimensionLayout from './hooks/use-dimenison-layout';
 import { sortAllFields, sortSelections } from './utils';
 
 import OneField from './OneField';
@@ -60,6 +64,12 @@ export default function SelectedFields({ api, app, halo }) {
   const theme = useTheme();
   const [currentSelectionsModel] = useCurrentSelectionsModel(app);
   const [layout] = useLayout(currentSelectionsModel);
+  const [fieldModel] = useModel(app, 'getFieldListObject');
+  const [fieldList] = useFieldList(fieldModel);
+  const [masterDimModel] = useModel(app, 'getDimensionListObject');
+  const [masterDimList] = useDimensionLayout(masterDimModel);
+  const [singleObjectModel] = useSingleObject(app);
+  const [singleObjectProps] = useSingleObjectProps(singleObjectModel);
   const [state, setState] = useState({ items: [], more: [] });
 
   const { modalObjectStore } = useContext(InstanceContext).selectionStore;
@@ -68,9 +78,6 @@ export default function SelectedFields({ api, app, halo }) {
   const flags = halo.public.galaxy?.flags;
   const isPinFieldEnabled = flags?.isEnabled('TLV_1394_PIN_FIELD_TO_TOOLBAR');
   const isRefactoringEnabled = flags?.isEnabled('TTLV_1394_REFACTORING_SELECTIONS');
-  const [pinnedItems, setPinnedItems] = useState([]);
-  const [masterDimList, setMasterDimList] = useState([]);
-  const [fieldList, setFieldList] = useState([]);
 
   const isInListboxPopover = () => {
     const { model } = modalObjectStore.get(app.id) || {};
@@ -86,36 +93,12 @@ export default function SelectedFields({ api, app, halo }) {
   }, [containerRect]);
 
   useEffect(() => {
-    if (isPinFieldEnabled) {
-      const getPinnedItems = async () => {
-        const singlePublicProps = await getSinglePublicObjectProps(app, SINGLE_OBJECT_ID);
-        return singlePublicProps?.pinnedItems || [];
-      };
-
-      const getMasterDimList = async () => {
-        const dimensionListObject = await app.getDimensionListObject();
-        return dimensionListObject.getLayout();
-      };
-
-      const getFieldList = async () => {
-        const fieldListObject = await app.getFieldListObject();
-        return fieldListObject.expand();
-      };
-
-      Promise.all([getPinnedItems(), getMasterDimList(), getFieldList()]).then(([pinnedItemsList, dimList, fields]) => {
-        setPinnedItems(pinnedItemsList);
-        setMasterDimList(dimList);
-        setFieldList(fields);
-      });
-    }
-  }, [app]);
-
-  useEffect(() => {
-    if (!app || !currentSelectionsModel || !layout || !maxItems) {
+    if (!app || !currentSelectionsModel || !layout || !maxItems || !fieldList || !masterDimModel) {
       return;
     }
     let items = isRefactoringEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
     if (isPinFieldEnabled) {
+      const pinnedItems = singleObjectProps?.pinnedItems || [];
       items = sortAllFields(fieldList, pinnedItems, items, masterDimList);
     }
     setState((currState) => {
@@ -149,10 +132,10 @@ export default function SelectedFields({ api, app, halo }) {
     layout,
     api.isInModal(),
     maxItems,
-    isPinFieldEnabled,
-    pinnedItems,
+    singleObjectProps,
     masterDimList,
     fieldList,
+    isPinFieldEnabled,
   ]);
 
   return (

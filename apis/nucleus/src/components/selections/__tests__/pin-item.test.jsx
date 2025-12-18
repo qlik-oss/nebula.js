@@ -111,9 +111,20 @@ describe('<PinItem />', () => {
       );
     });
 
-    // Find the container div and trigger click
-    const containerInstance = renderer.root.findByType(PinItem);
-    expect(containerInstance).toBeDefined();
+    // Verify handler hasn't been called yet
+    expect(handleShowListBoxPopover).not.toHaveBeenCalled();
+
+    // Find the clickable element by data-testid
+    const pinItemElement = renderer.root.findByProps({ 'data-testid': 'pin-item-Product' });
+    expect(pinItemElement).toBeDefined();
+
+    // Simulate click
+    act(() => {
+      pinItemElement.props.onClick();
+    });
+
+    // Verify handler was called
+    expect(handleShowListBoxPopover).toHaveBeenCalledTimes(1);
   });
 
   test('should not call handleShowListBoxPopover when skipHandleShowListBoxPopover is true', () => {

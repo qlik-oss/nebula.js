@@ -52,7 +52,7 @@ const sortAllFields = (fieldList, pinnedItems, selectedFields, masterDimList) =>
     const masterDimInfo = isMasterDim
       ? masterDimList.find((dimItem) => dimItem.qInfo?.qId === pinnedItem[MASTER_ITEM_KEY])
       : null;
-    const fieldName = isMasterDim ? masterDimInfo.qData?.info[0]?.qName : pinnedItem[FIELD_KEY];
+    const fieldName = isMasterDim ? masterDimInfo?.qData?.info[0]?.qName : pinnedItem[FIELD_KEY];
 
     const matchFieldIndex = remainingSelectedFields.findIndex(
       (item) =>
