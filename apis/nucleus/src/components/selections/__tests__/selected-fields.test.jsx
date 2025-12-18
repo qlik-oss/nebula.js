@@ -10,6 +10,11 @@ import * as MoreModule from '../More';
 import * as useCurrentSelectionsModelModule from '../../../hooks/useCurrentSelectionsModel';
 import * as useLayoutModule from '../../../hooks/useLayout';
 import * as useRectModule from '../../../hooks/useRect';
+import * as useFieldListModule from '../hooks/use-field-list';
+import * as useDimensionLayoutModule from '../hooks/use-dimenison-layout';
+import * as useModelModule from '../hooks/use-model';
+import * as useSingleObjectModule from '../hooks/use-single-object';
+import * as useSingleObjectPropsModule from '../hooks/use-single-object-props';
 import initSelectionStores from '../../../stores/new-selections-store';
 import initializeStores from '../../../stores/new-model-store';
 import InstanceContext from '../../../contexts/InstanceContext';
@@ -22,6 +27,11 @@ jest.mock('@nebula.js/ui/theme', () => ({
 describe('<SelectedFields />', () => {
   let currentSelectionsModel;
   let useLayout;
+  let useFieldList;
+  let useDimensionLayout;
+  let useModel;
+  let useSingleObject;
+  let useSingleObjectProps;
   let rect;
   let modalObjectStore;
   let render;
@@ -38,6 +48,11 @@ describe('<SelectedFields />', () => {
       id: 'current-selections',
     };
     useLayout = jest.fn();
+    useFieldList = jest.fn();
+    useDimensionLayout = jest.fn();
+    useModel = jest.fn();
+    useSingleObject = jest.fn();
+    useSingleObjectProps = jest.fn();
     modalObjectStore = {
       get: jest.fn().mockReturnValue(false),
       set: jest.fn(),
@@ -53,7 +68,36 @@ describe('<SelectedFields />', () => {
     MultiState = jest.fn().mockImplementation(() => 'MultiState');
     More = jest.fn().mockImplementation(() => 'More');
 
+    // Hook mocks
     jest.spyOn(useLayoutModule, 'default').mockImplementation(useLayout);
+    jest.spyOn(useModelModule, 'default').mockImplementation((app, fn) => {
+      return [
+        {
+          id: `mock-${fn}`,
+          Invalidated: {
+            bind: jest.fn(),
+            unbind: jest.fn(),
+          },
+        },
+        null,
+      ];
+    });
+    jest.spyOn(useFieldListModule, 'default').mockImplementation(useFieldList);
+    jest.spyOn(useDimensionLayoutModule, 'default').mockImplementation(useDimensionLayout);
+    jest.spyOn(useSingleObjectModule, 'default').mockImplementation(() => [
+      {
+        id: 'mock-single-object',
+        Invalidated: {
+          bind: jest.fn(),
+          unbind: jest.fn(),
+        },
+      },
+      null,
+    ]);
+    useFieldList.mockReturnValue([[]]);
+    useDimensionLayout.mockReturnValue([[]]);
+    useSingleObjectProps.mockReturnValue([[]]);
+
     jest.spyOn(useRectModule, 'default').mockImplementation(() => [() => {}, rect]);
     jest.spyOn(useCurrentSelectionsModelModule, 'default').mockImplementation(() => [currentSelectionsModel]);
 
@@ -104,7 +148,9 @@ describe('<SelectedFields />', () => {
   afterEach(() => {
     jest.resetAllMocks();
     jest.restoreAllMocks();
-    renderer.unmount();
+    if (renderer) {
+      renderer.unmount();
+    }
   });
 
   test('should render `<OneField />`', async () => {
@@ -195,7 +241,8 @@ describe('<SelectedFields />', () => {
       .mockReturnValueOnce([data])
       .mockReturnValueOnce([data])
       .mockReturnValueOnce([newData])
-      .mockReturnValueOnce([newData]);
+      .mockReturnValueOnce([newData])
+      .mockReturnValue([newData]);
     await render();
     const types = renderer.root.findAllByType(OneField);
     expect(types).toHaveLength(3);

@@ -29,4 +29,4 @@ const getSinglePublicObjectProps = async (app, qId) => {
   return props;
 };
 
-export { getSinglePublicObjectProps, SINGLE_OBJECT_ID };
+export { getSinglePublicObject, getSinglePublicObjectProps, SINGLE_OBJECT_ID };

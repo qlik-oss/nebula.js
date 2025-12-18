@@ -20,6 +20,7 @@ function PinItem({
       container
       gap={1}
       ref={alignTo}
+      data-testid={`pin-item-${displayName}`}
       sx={{
         backgroundColor: theme.palette.background.paper,
         position: 'relative',
