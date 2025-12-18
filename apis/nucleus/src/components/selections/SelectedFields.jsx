@@ -93,7 +93,7 @@ export default function SelectedFields({ api, app, halo }) {
   }, [containerRect]);
 
   useEffect(() => {
-    if (!app || !currentSelectionsModel || !layout || !maxItems || !fieldList || !masterDimModel) {
+    if (!app || !currentSelectionsModel || !layout || !maxItems || !fieldList || !masterDimList) {
       return;
     }
     let items = isRefactoringEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
