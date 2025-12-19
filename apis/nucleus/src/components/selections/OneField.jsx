@@ -25,7 +25,9 @@ export default function OneField({
   const theme = useTheme();
   const [showListBoxPopover, setShowListBoxPopover] = useState(false);
   let Component = null;
+  let ChildComponent = null;
   let selection;
+  let displayName = '';
   const isPinnedItem = !!field.isPinned && isPinFieldEnabled;
 
   const handleShowListBoxPopover = (e) => {
@@ -41,17 +43,8 @@ export default function OneField({
   };
 
   if (isPinnedItem) {
-    Component = (
-      <PinItem
-        field={field}
-        api={api}
-        showListBoxPopover={showListBoxPopover}
-        alignTo={alignTo}
-        skipHandleShowListBoxPopover={skipHandleShowListBoxPopover}
-        handleShowListBoxPopover={handleShowListBoxPopover}
-        handleCloseShowListBoxPopover={handleCloseShowListBoxPopover}
-      />
-    );
+    displayName = field.qName || field.qField;
+    ChildComponent = <PinItem displayName={displayName} />;
   } else {
     selection = field.selections[stateIx];
     if (typeof selection.qTotal === 'undefined') {
@@ -159,39 +152,47 @@ export default function OneField({
             ))}
         </div>
       );
-      Component = (
-        <Grid
-          container
-          gap={1}
-          ref={alignTo}
-          sx={{
-            backgroundColor: theme.palette.background.paper,
-            position: 'relative',
-            cursor: 'pointer',
-            padding: '4px',
-            '&:hover': {
-              backgroundColor: theme.palette.action.hover,
-            },
-          }}
-          onClick={(skipHandleShowListBoxPopover === false && handleShowListBoxPopover) || null}
-        >
+      ChildComponent = (
+        <>
           {Header}
           {Icon}
           {SegmentsIndicator}
-          {showListBoxPopover && (
-            <ListBoxPopover
-              alignTo={alignTo}
-              show={showListBoxPopover}
-              close={handleCloseShowListBoxPopover}
-              app={api.model}
-              fieldName={selection.qField}
-              stateName={field.states[stateIx]}
-            />
-          )}
-        </Grid>
+        </>
       );
     }
   }
+
+  Component = (
+    <Grid
+      container
+      gap={1}
+      ref={alignTo}
+      data-testid={isPinnedItem ? `pin-item-${displayName}` : `selection-item-${selection.qField}`}
+      sx={{
+        backgroundColor: theme.palette.background.paper,
+        position: 'relative',
+        cursor: 'pointer',
+        padding: '4px',
+        height: '40px',
+        '&:hover': {
+          backgroundColor: theme.palette.action.hover,
+        },
+      }}
+      onClick={(skipHandleShowListBoxPopover === false && handleShowListBoxPopover) || null}
+    >
+      {ChildComponent}
+      {showListBoxPopover && (
+        <ListBoxPopover
+          alignTo={alignTo}
+          show={showListBoxPopover}
+          close={handleCloseShowListBoxPopover}
+          app={api.model}
+          fieldName={isPinnedItem ? field.qField : selection.qField}
+          stateName={isPinnedItem ? undefined : field.states[stateIx]}
+        />
+      )}
+    </Grid>
+  );
 
   return moreAlignTo ? (
     <ListBoxPopover
