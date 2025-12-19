@@ -47,8 +47,6 @@ describe('<SelectedFields />', () => {
     useLayout = jest.fn();
     useFieldList = jest.fn();
     useDimensionLayout = jest.fn();
-    useModel = jest.fn();
-    useSingleObject = jest.fn();
     useSingleObjectProps = jest.fn();
     modalObjectStore = {
       get: jest.fn().mockReturnValue(false),
