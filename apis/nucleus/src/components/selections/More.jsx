@@ -32,7 +32,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   },
 }));
 
-export default function More({ items = [], api }) {
+export default function More({ items = [], api, isPinFieldEnabled = false }) {
   const theme = useTheme();
   const [showMoreItems, setShowMoreItems] = useState(false);
   const [showItemIx, setShowItemIx] = useState(-1);
@@ -66,7 +66,13 @@ export default function More({ items = [], api }) {
   if (showItemIx > -1) {
     CurrentItem =
       items[showItemIx].states.length > 1 ? (
-        <MultiState field={items[showItemIx]} api={api} moreAlignTo={alignTo} onClose={handleCloseShowItem} />
+        <MultiState
+          field={items[showItemIx]}
+          api={api}
+          moreAlignTo={alignTo}
+          onClose={handleCloseShowItem}
+          isPinFieldEnabled={isPinFieldEnabled}
+        />
       ) : (
         <OneField
           field={items[showItemIx]}
@@ -74,6 +80,7 @@ export default function More({ items = [], api }) {
           skipHandleShowListBoxPopover
           moreAlignTo={alignTo}
           onClose={handleCloseShowItem}
+          isPinFieldEnabled={isPinFieldEnabled}
         />
       );
   }
@@ -125,7 +132,11 @@ export default function More({ items = [], api }) {
               // eslint-disable-next-line react/no-array-index-key
               <ListItem key={ix} title={s.name} onClick={(e) => handleShowItem(e, ix)}>
                 <Box border={1} width="100%" borderRadius={1} borderColor="divider">
-                  {s.states.length > 1 ? <MultiState field={s} api={api} /> : <OneField field={s} api={api} />}
+                  {s.states.length > 1 ? (
+                    <MultiState field={s} api={api} isPinFieldEnabled={isPinFieldEnabled} />
+                  ) : (
+                    <OneField field={s} api={api} isPinFieldEnabled={isPinFieldEnabled} />
+                  )}
                 </Box>
               </ListItem>
             ))}

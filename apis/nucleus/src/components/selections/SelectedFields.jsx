@@ -7,6 +7,12 @@ import useCurrentSelectionsModel from '../../hooks/useCurrentSelectionsModel';
 import useLayout from '../../hooks/useLayout';
 import useRect from '../../hooks/useRect';
 import InstanceContext from '../../contexts/InstanceContext';
+import useSingleObject from './hooks/use-single-object';
+import useSingleObjectProps from './hooks/use-single-object-props';
+import useModel from './hooks/use-model';
+import useFieldList from './hooks/use-field-list';
+import useDimensionLayout from './hooks/use-dimenison-layout';
+import { sortAllFields, sortSelections } from './utils';
 
 import OneField from './OneField';
 import MultiState from './MultiState';
@@ -54,15 +60,24 @@ function getItems(layout) {
     .filter((f) => !f.selections.some((s) => s.qIsHidden));
 }
 
-export default function SelectedFields({ api, app }) {
+export default function SelectedFields({ api, app, halo }) {
   const theme = useTheme();
   const [currentSelectionsModel] = useCurrentSelectionsModel(app);
   const [layout] = useLayout(currentSelectionsModel);
+  const [fieldModel] = useModel(app, 'getFieldListObject');
+  const [fieldList] = useFieldList(fieldModel);
+  const [masterDimModel] = useModel(app, 'getDimensionListObject');
+  const [masterDimList] = useDimensionLayout(masterDimModel);
+  const [singleObjectModel] = useSingleObject(app);
+  const [singleObjectProps] = useSingleObjectProps(singleObjectModel);
   const [state, setState] = useState({ items: [], more: [] });
 
   const { modalObjectStore } = useContext(InstanceContext).selectionStore;
   const [containerRef, containerRect] = useRect();
   const [maxItems, setMaxItems] = useState(0);
+  const flags = halo.public.galaxy?.flags;
+  const isPinFieldEnabled = flags?.isEnabled('TLV_1394_PIN_FIELD_TO_TOOLBAR');
+  const isRefactoringEnabled = flags?.isEnabled('TLV_1394_REFACTORING_SELECTIONS');
 
   const isInListboxPopover = () => {
     const { model } = modalObjectStore.get(app.id) || {};
@@ -78,10 +93,14 @@ export default function SelectedFields({ api, app }) {
   }, [containerRect]);
 
   useEffect(() => {
-    if (!app || !currentSelectionsModel || !layout || !maxItems) {
+    if (!app || !currentSelectionsModel || !layout || !maxItems || !fieldList || !masterDimList) {
       return;
     }
-    const items = getItems(layout);
+    let items = isRefactoringEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
+    if (isPinFieldEnabled) {
+      const pinnedItems = singleObjectProps?.pinnedItems || [];
+      items = sortAllFields(fieldList, pinnedItems, items, masterDimList);
+    }
     setState((currState) => {
       const newItems = items;
       // Maintain modal state in app selections
@@ -96,21 +115,49 @@ export default function SelectedFields({ api, app }) {
       }
       let newMoreItems = [];
       if (maxItems < newItems.length) {
-        newMoreItems = newItems.splice(maxItems - newItems.length);
+        if (isRefactoringEnabled) {
+          newMoreItems = newItems.splice(0, newItems.length - maxItems);
+        } else {
+          newMoreItems = newItems.splice(maxItems - newItems.length);
+        }
       }
       return {
         items: newItems,
         more: newMoreItems,
       };
     });
-  }, [app, currentSelectionsModel, layout, api.isInModal(), maxItems]);
+  }, [
+    app,
+    currentSelectionsModel,
+    layout,
+    api.isInModal(),
+    maxItems,
+    singleObjectProps,
+    masterDimList,
+    fieldList,
+    isPinFieldEnabled,
+  ]);
 
   return (
     <Grid ref={containerRef} container gap={0} wrap="nowrap" style={{ height: '100%' }}>
+      {isRefactoringEnabled && state.more.length > 0 && (
+        <Grid
+          item
+          style={{
+            position: 'relative',
+            maxWidth: '98px',
+            minWidth: `${MIN_WIDTH_MORE}px`,
+            background: theme.palette.background.paper,
+            borderRight: `1px solid ${theme.palette.divider}`,
+          }}
+        >
+          <More items={state.more} api={api} isPinFieldEnabled={isPinFieldEnabled} />
+        </Grid>
+      )}
       {state.items.map((s) => (
         <Grid
           item
-          key={`${s.states.join('::')}::${s.name}`}
+          key={`${s.states.join('::')}::${s.qField ?? s.name}`}
           style={{
             position: 'relative',
             maxWidth: '240px',
@@ -119,10 +166,14 @@ export default function SelectedFields({ api, app }) {
             borderRight: `1px solid ${theme.palette.divider}`,
           }}
         >
-          {s.states.length > 1 ? <MultiState field={s} api={api} /> : <OneField field={s} api={api} />}
+          {s.states.length > 1 ? (
+            <MultiState field={s} api={api} isPinFieldEnabled={isPinFieldEnabled} />
+          ) : (
+            <OneField field={s} api={api} isPinFieldEnabled={isPinFieldEnabled} />
+          )}
         </Grid>
       ))}
-      {state.more.length > 0 && (
+      {!isRefactoringEnabled && state.more.length > 0 && (
         <Grid
           item
           style={{

@@ -28,7 +28,7 @@ const StyledGrid = styled(Grid)(({ theme }) => ({
   },
 }));
 
-export default function MultiState({ field, api, moreAlignTo = null, onClose = () => {} }) {
+export default function MultiState({ field, api, moreAlignTo = null, onClose = () => {}, isPinFieldEnabled = false }) {
   // If originated from the `more` item show fields directly
   const [showFields, setShowFields] = useState(!!moreAlignTo);
   const [showStateIx, setShowStateIx] = useState(-1);
@@ -100,7 +100,13 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
         // eslint-disable-next-line react/no-array-index-key
         <ListItem key={ix} title={field.label} onClick={(e) => handleShowState(e, ix)}>
           <Box border={1} width="100%" borderRadius={1} borderColor="divider">
-            <OneField field={field} api={api} stateIx={ix} skipHandleShowListBoxPopover />
+            <OneField
+              field={field}
+              api={api}
+              stateIx={ix}
+              skipHandleShowListBoxPopover
+              isPinFieldEnabled={isPinFieldEnabled}
+            />
           </Box>
         </ListItem>
       ))}
