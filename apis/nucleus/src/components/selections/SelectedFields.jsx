@@ -157,7 +157,7 @@ export default function SelectedFields({ api, app, halo }) {
       {state.items.map((s) => (
         <Grid
           item
-          key={`${s.states.join('::')}::${s.id ?? s.qField ?? s.name}`}
+          key={`${s.states.join('::')}::${s.qField ?? s.name}`}
           style={{
             position: 'relative',
             maxWidth: '240px',

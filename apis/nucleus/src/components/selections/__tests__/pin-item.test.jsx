@@ -1,214 +1,57 @@
 import React, { act } from 'react';
 import * as ReactTestRenderer from 'react-test-renderer';
-import * as NebulaThemeModule from '@nebula.js/ui/theme';
+import { Typography } from '@mui/material';
 import PinItem from '../PinItem';
-
-jest.mock('@nebula.js/ui/theme', () => ({
-  ...jest.requireActual('@nebula.js/ui/theme'),
-  useTheme: jest.fn(),
-}));
-
-jest.mock('../../listbox/ListBoxPopover', () => ({
-  __esModule: true,
-  default: () => <div data-testid="listbox-popover">ListBoxPopover</div>,
-}));
 
 describe('<PinItem />', () => {
   let renderer;
 
-  beforeEach(() => {
-    jest.spyOn(NebulaThemeModule, 'useTheme').mockImplementation(() => ({
-      palette: {
-        background: { paper: '#ffffff' },
-        action: { hover: '#f5f5f5' },
-        divider: '#e0e0e0',
-      },
-    }));
-  });
-
   afterEach(() => {
-    jest.resetAllMocks();
-    jest.restoreAllMocks();
     if (renderer) {
       renderer.unmount();
     }
   });
 
-  test('should render field name from qName when available', () => {
-    const field = {
-      qName: 'Product',
-      qField: 'product_field',
-    };
-    const api = {
-      model: {},
-    };
-
+  test('should render display name', () => {
     act(() => {
-      renderer = ReactTestRenderer.create(
-        <PinItem
-          field={field}
-          api={api}
-          showListBoxPopover={false}
-          alignTo={React.createRef()}
-          skipHandleShowListBoxPopover
-          handleShowListBoxPopover={jest.fn()}
-          handleCloseShowListBoxPopover={jest.fn()}
-        />
-      );
+      renderer = ReactTestRenderer.create(<PinItem displayName="Product" />);
     });
 
     const output = renderer.toJSON();
     expect(JSON.stringify(output)).toContain('Product');
   });
 
-  test('should render field name from qField as fallback when qName is not available', () => {
-    const field = {
-      qField: 'product_field',
-    };
-    const api = {
-      model: {},
-    };
-
+  test('should render Typography component with correct styles', () => {
     act(() => {
-      renderer = ReactTestRenderer.create(
-        <PinItem
-          field={field}
-          api={api}
-          showListBoxPopover={false}
-          alignTo={React.createRef()}
-          skipHandleShowListBoxPopover
-          handleShowListBoxPopover={jest.fn()}
-          handleCloseShowListBoxPopover={jest.fn()}
-        />
-      );
+      renderer = ReactTestRenderer.create(<PinItem displayName="Test Field" />);
     });
 
-    const output = renderer.toJSON();
-    expect(JSON.stringify(output)).toContain('product_field');
+    const typography = renderer.root.findByType(Typography);
+    expect(typography).toBeDefined();
+    expect(typography.props.noWrap).toBe(true);
+    expect(typography.props.style).toMatchObject({
+      fontSize: '12px',
+      lineHeight: '16px',
+      fontWeight: 600,
+      marginTop: '8px',
+    });
   });
 
-  test('should call handleShowListBoxPopover when clicked and skipHandleShowListBoxPopover is false', () => {
-    const handleShowListBoxPopover = jest.fn();
-    const field = {
-      qName: 'Product',
-      qField: 'product_field',
-    };
-    const api = {
-      model: {},
-    };
-
+  test('should render empty string when displayName is empty', () => {
     act(() => {
-      renderer = ReactTestRenderer.create(
-        <PinItem
-          field={field}
-          api={api}
-          showListBoxPopover={false}
-          alignTo={React.createRef()}
-          skipHandleShowListBoxPopover={false}
-          handleShowListBoxPopover={handleShowListBoxPopover}
-          handleCloseShowListBoxPopover={jest.fn()}
-        />
-      );
+      renderer = ReactTestRenderer.create(<PinItem displayName="" />);
     });
 
-    // Verify handler hasn't been called yet
-    expect(handleShowListBoxPopover).not.toHaveBeenCalled();
-
-    // Find the clickable element by data-testid
-    const pinItemElement = renderer.root.findByProps({ 'data-testid': 'pin-item-Product' });
-    expect(pinItemElement).toBeDefined();
-
-    // Simulate click
-    act(() => {
-      pinItemElement.props.onClick();
-    });
-
-    // Verify handler was called
-    expect(handleShowListBoxPopover).toHaveBeenCalledTimes(1);
+    const typography = renderer.root.findByType(Typography);
+    expect(typography.props.children).toBe('');
   });
 
-  test('should not call handleShowListBoxPopover when skipHandleShowListBoxPopover is true', () => {
-    const handleShowListBoxPopover = jest.fn();
-    const field = {
-      qName: 'Product',
-      qField: 'product_field',
-    };
-    const api = {
-      model: {},
-    };
-
+  test('should handle undefined displayName', () => {
     act(() => {
-      renderer = ReactTestRenderer.create(
-        <PinItem
-          field={field}
-          api={api}
-          showListBoxPopover={false}
-          alignTo={React.createRef()}
-          skipHandleShowListBoxPopover
-          handleShowListBoxPopover={handleShowListBoxPopover}
-          handleCloseShowListBoxPopover={jest.fn()}
-        />
-      );
+      renderer = ReactTestRenderer.create(<PinItem displayName={undefined} />);
     });
 
-    expect(handleShowListBoxPopover).not.toHaveBeenCalled();
-  });
-
-  test('should render ListBoxPopover when showListBoxPopover is true', () => {
-    const field = {
-      qName: 'Product',
-      qField: 'product_field',
-    };
-    const api = {
-      model: {},
-    };
-    const alignToRef = React.createRef();
-
-    act(() => {
-      renderer = ReactTestRenderer.create(
-        <PinItem
-          field={field}
-          api={api}
-          showListBoxPopover
-          alignTo={alignToRef}
-          skipHandleShowListBoxPopover
-          handleShowListBoxPopover={jest.fn()}
-          handleCloseShowListBoxPopover={jest.fn()}
-        />
-      );
-    });
-
-    const output = renderer.toJSON();
-    const serialized = JSON.stringify(output);
-    expect(serialized).toContain('ListBoxPopover');
-  });
-
-  test('should not render ListBoxPopover when showListBoxPopover is false', () => {
-    const field = {
-      qName: 'Product',
-      qField: 'product_field',
-    };
-    const api = {
-      model: {},
-    };
-    const alignToRef = React.createRef();
-
-    act(() => {
-      renderer = ReactTestRenderer.create(
-        <PinItem
-          field={field}
-          api={api}
-          showListBoxPopover={false}
-          alignTo={alignToRef}
-          skipHandleShowListBoxPopover
-          handleShowListBoxPopover={jest.fn()}
-          handleCloseShowListBoxPopover={jest.fn()}
-        />
-      );
-    });
-
-    const output = renderer.toJSON();
-    const serialized = JSON.stringify(output);
-    expect(serialized).not.toContain('ListBoxPopover');
+    const typography = renderer.root.findByType(Typography);
+    expect(typography.props.children).toBeUndefined();
   });
 });
