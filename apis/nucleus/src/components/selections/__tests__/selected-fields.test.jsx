@@ -14,7 +14,6 @@ import * as useFieldListModule from '../hooks/use-field-list';
 import * as useDimensionLayoutModule from '../hooks/use-dimenison-layout';
 import * as useModelModule from '../hooks/use-model';
 import * as useSingleObjectModule from '../hooks/use-single-object';
-import * as useSingleObjectPropsModule from '../hooks/use-single-object-props';
 import initSelectionStores from '../../../stores/new-selections-store';
 import initializeStores from '../../../stores/new-model-store';
 import InstanceContext from '../../../contexts/InstanceContext';
@@ -29,8 +28,6 @@ describe('<SelectedFields />', () => {
   let useLayout;
   let useFieldList;
   let useDimensionLayout;
-  let useModel;
-  let useSingleObject;
   let useSingleObjectProps;
   let rect;
   let modalObjectStore;
@@ -70,18 +67,16 @@ describe('<SelectedFields />', () => {
 
     // Hook mocks
     jest.spyOn(useLayoutModule, 'default').mockImplementation(useLayout);
-    jest.spyOn(useModelModule, 'default').mockImplementation((app, fn) => {
-      return [
-        {
-          id: `mock-${fn}`,
-          Invalidated: {
-            bind: jest.fn(),
-            unbind: jest.fn(),
-          },
+    jest.spyOn(useModelModule, 'default').mockImplementation((app, fn) => [
+      {
+        id: `mock-${fn}`,
+        Invalidated: {
+          bind: jest.fn(),
+          unbind: jest.fn(),
         },
-        null,
-      ];
-    });
+      },
+      null,
+    ]);
     jest.spyOn(useFieldListModule, 'default').mockImplementation(useFieldList);
     jest.spyOn(useDimensionLayoutModule, 'default').mockImplementation(useDimensionLayout);
     jest.spyOn(useSingleObjectModule, 'default').mockImplementation(() => [
