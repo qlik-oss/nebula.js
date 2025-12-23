@@ -40,10 +40,10 @@
     "extend": "3.0.2",
     "html-webpack-plugin": "5.6.5",
     "portfinder": "1.0.38",
-    "puppeteer": "24.33.0",
+    "puppeteer": "24.34.0",
     "regenerator-runtime": "0.14.1",
     "source-map-loader": "5.0.0",
-    "webpack": "5.103.0",
+    "webpack": "5.104.1",
     "webpack-cli": "6.0.1",
     "webpack-dev-server": "5.2.2",
     "ws": "8.18.3",
@@ -70,6 +70,6 @@
     "monaco-editor": "0.55.1",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "react-router": "7.10.1"
+    "react-router": "7.11.0"
   }
 }

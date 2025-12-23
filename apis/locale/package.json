@@ -7,6 +7,6 @@
     "build": "node scripts/generate-all.mjs"
   },
   "devDependencies": {
-    "globby": "16.0.0"
+    "globby": "16.1.0"
   }
 }
