@@ -61,7 +61,8 @@ const sortAllFields = (fieldList, pinnedItems, selectedFields, masterDimList) =>
     );
 
     // Pinned field has already added as selected field, skip it to avoid duplicate display
-    const isDuplicateFieldSelected = sortedFields.findIndex((sf) => sf.qField === fieldName && !sf.isPinned) !== -1;
+    const isDuplicateFieldSelected =
+      sortedFields.findIndex((sf) => sf.selections?.[0]?.qField === fieldName && !sf.isPinned) !== -1;
     if (!isDuplicateFieldSelected) {
       if (matchFieldIndex === -1) {
         // If pinned field is not selected or is duplicated, keep it as pinned.

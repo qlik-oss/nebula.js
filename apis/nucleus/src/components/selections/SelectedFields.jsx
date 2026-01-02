@@ -108,10 +108,12 @@ export default function SelectedFields({ api, app, halo }) {
         const lastDeselectedField = currState.items.filter(
           (f1) => newItems.some((f2) => f1.name === f2.name) === false
         )[0];
-        const { qField } = lastDeselectedField.selections[0];
-        lastDeselectedField.selections = [{ qField }];
-        const wasIx = currState.items.indexOf(lastDeselectedField);
-        newItems.splice(wasIx, 0, lastDeselectedField);
+        if (!isPinFieldEnabled || (lastDeselectedField && !lastDeselectedField.isPinned)) {
+          const { qField } = lastDeselectedField.selections[0];
+          lastDeselectedField.selections = [{ qField }];
+          const wasIx = currState.items.indexOf(lastDeselectedField);
+          newItems.splice(wasIx, 0, lastDeselectedField);
+        }
       }
       let newMoreItems = [];
       if (maxItems < newItems.length) {
@@ -154,10 +156,10 @@ export default function SelectedFields({ api, app, halo }) {
           <More items={state.more} api={api} isPinFieldEnabled={isPinFieldEnabled} />
         </Grid>
       )}
-      {state.items.map((s) => (
+      {state.items.map((s, index) => (
         <Grid
           item
-          key={`${s.states.join('::')}::${s.qField ?? s.name}`}
+          key={`${s.states.join('::')}::${s.qField ?? s.name}${index}`}
           style={{
             position: 'relative',
             maxWidth: '240px',

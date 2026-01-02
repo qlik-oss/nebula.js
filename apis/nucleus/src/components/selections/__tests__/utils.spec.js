@@ -216,7 +216,7 @@ describe('sortAllFields', () => {
   });
 
   describe('duplicate handling', () => {
-    it('should not filter duplicate when selected field structure differs from pinned', () => {
+    it('should filter duplicate when pinned field is already selected', () => {
       const fieldList = createFieldList(['Field1', 'Field2']);
       // Two pinned items for Field1
       const pinnedItems = [{ qField: 'Field1' }, { qField: 'Field1' }];
@@ -225,24 +225,20 @@ describe('sortAllFields', () => {
 
       const result = sortAllFields(fieldList, pinnedItems, selectedFields, []);
 
-      // First pinned Field1 is replaced by selected Field1 (which has selections[0].qField, not qField directly)
-      // Second pinned Field1 is added as pinned because isDuplicateFieldSelected checks for sf.qField (which selected field doesn't have)
-      expect(result).toHaveLength(2);
+      // First pinned Field1 is replaced by selected Field1
+      // Second pinned Field1 is filtered out because isDuplicateFieldSelected finds the selected field
+      expect(result).toHaveLength(1);
       expect(result[0]).toEqual(selectedFields[0]);
       expect(result[0].isPinned).toBeUndefined();
-      expect(result[1]).toMatchObject({ qField: 'Field1', isPinned: true });
     });
 
-    it('should filter duplicate when second pinned field matches first pinned field', () => {
+    it('should show duplicates pinned items when same field is not selected', () => {
       const fieldList = createFieldList(['Field1', 'Field2']);
       const pinnedItems = [{ qField: 'Field1' }, { qField: 'Field1' }, { qField: 'Field2' }];
       const selectedFields = [];
 
       const result = sortAllFields(fieldList, pinnedItems, selectedFields, []);
 
-      // First Field1 is added as pinned
-      // Second Field1 is skipped because first Field1 with qField='Field1' and !isPinned=false exists
-      // Wait, isPinned is true, so !sf.isPinned would be false, so the check won't match
       expect(result).toHaveLength(3);
       expect(result[0]).toMatchObject({ qField: 'Field1', isPinned: true });
       expect(result[1]).toMatchObject({ qField: 'Field1', isPinned: true });
