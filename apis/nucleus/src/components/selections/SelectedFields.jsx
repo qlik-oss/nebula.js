@@ -159,6 +159,7 @@ export default function SelectedFields({ api, app, halo }) {
       {state.items.map((s, index) => (
         <Grid
           item
+          // eslint-disable-next-line react/no-array-index-key
           key={`${s.states.join('::')}::${s.qField ?? s.name}${index}`}
           style={{
             position: 'relative',
