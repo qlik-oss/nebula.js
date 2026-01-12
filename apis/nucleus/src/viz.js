@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import EventEmitter from 'node-event-emitter';
 import { convertTo as conversionConvertTo, helpers } from '@nebula.js/conversion';
 import { HyperCubeHandler } from '@nebula.js/supernova';
@@ -136,8 +135,8 @@ export default function viz({
             path: cellRef.current.getHypercubePath(),
           };
 
-          if (typeof extensionDefinition.definition.dataHandler === 'function') {
-            return extensionDefinition.definition.dataHandler(options);
+          if (typeof extensionDefinition.dataHandler === 'function') {
+            return extensionDefinition.dataHandler(options);
           }
 
           return new HyperCubeHandler(options);
