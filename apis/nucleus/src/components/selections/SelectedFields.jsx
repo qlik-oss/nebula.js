@@ -7,9 +7,7 @@ import useCurrentSelectionsModel from '../../hooks/useCurrentSelectionsModel';
 import useLayout from '../../hooks/useLayout';
 import useRect from '../../hooks/useRect';
 import InstanceContext from '../../contexts/InstanceContext';
-import useSingleObject from './hooks/useSingleObject';
 import useSingleObjectProps from './hooks/useSingleObjectProps';
-import useModel from '../../hooks/useModel';
 import useFieldList from './hooks/useFieldList';
 import useDimensionList from './hooks/useDimenisonList';
 import { sortAllFields, sortSelections } from './utils';
@@ -64,12 +62,9 @@ export default function SelectedFields({ api, app, halo }) {
   const theme = useTheme();
   const [currentSelectionsModel] = useCurrentSelectionsModel(app);
   const [layout] = useLayout(currentSelectionsModel);
-  const [fieldModel] = useModel(app, 'FieldList');
-  const [fieldList] = useFieldList(fieldModel);
-  const [masterDimModel] = useModel(app, 'DimensionList');
-  const [masterDimList] = useDimensionList(masterDimModel);
-  const [singleObjectModel] = useSingleObject(app);
-  const [singleObjectProps] = useSingleObjectProps(singleObjectModel);
+  const [fieldList] = useFieldList(app);
+  const [masterDimList] = useDimensionList(app);
+  const [singleObjectProps] = useSingleObjectProps(app);
   const [state, setState] = useState({ items: [], more: [] });
 
   const { modalObjectStore } = useContext(InstanceContext).selectionStore;

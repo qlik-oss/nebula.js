@@ -1,4 +1,5 @@
 import useOnChange from '../../../hooks/useOnChange';
+import useModel from '../../../hooks/useModel';
 
 const expand = (m) =>
   m.getLayout().then((list) => {
@@ -29,5 +30,8 @@ const expand = (m) =>
     return result;
   });
 
-const useFieldList = (model) => useOnChange(model, (m) => expand(m));
+const useFieldList = (app) => {
+  const [model] = useModel(app, 'FieldList');
+  return useOnChange(model, (m) => expand(m));
+};
 export default useFieldList;
