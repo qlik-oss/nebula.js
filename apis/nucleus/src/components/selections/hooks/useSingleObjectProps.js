@@ -1,4 +1,4 @@
-import useOnChange from './use-on-change';
+import useOnChange from '../../../hooks/useOnChange';
 
 const useSingleObjectProps = (model) =>
   useOnChange(model, async (m) => {

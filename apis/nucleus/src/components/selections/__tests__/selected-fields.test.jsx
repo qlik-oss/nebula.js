@@ -10,10 +10,10 @@ import * as MoreModule from '../More';
 import * as useCurrentSelectionsModelModule from '../../../hooks/useCurrentSelectionsModel';
 import * as useLayoutModule from '../../../hooks/useLayout';
 import * as useRectModule from '../../../hooks/useRect';
-import * as useFieldListModule from '../hooks/use-field-list';
-import * as useDimensionLayoutModule from '../hooks/use-dimenison-layout';
-import * as useModelModule from '../hooks/use-model';
-import * as useSingleObjectModule from '../hooks/use-single-object';
+import * as useFieldListModule from '../hooks/useFieldList';
+import * as useDimensionListModule from '../hooks/useDimenisonList';
+import * as useModelModule from '../../../hooks/useModel';
+import * as useSingleObjectModule from '../hooks/useSingleObject';
 import initSelectionStores from '../../../stores/new-selections-store';
 import initializeStores from '../../../stores/new-model-store';
 import InstanceContext from '../../../contexts/InstanceContext';
@@ -27,7 +27,7 @@ describe('<SelectedFields />', () => {
   let currentSelectionsModel;
   let useLayout;
   let useFieldList;
-  let useDimensionLayout;
+  let useDimensionList;
   let useSingleObjectProps;
   let rect;
   let modalObjectStore;
@@ -46,7 +46,7 @@ describe('<SelectedFields />', () => {
     };
     useLayout = jest.fn();
     useFieldList = jest.fn();
-    useDimensionLayout = jest.fn();
+    useDimensionList = jest.fn();
     useSingleObjectProps = jest.fn();
     modalObjectStore = {
       get: jest.fn().mockReturnValue(false),
@@ -76,7 +76,7 @@ describe('<SelectedFields />', () => {
       null,
     ]);
     jest.spyOn(useFieldListModule, 'default').mockImplementation(useFieldList);
-    jest.spyOn(useDimensionLayoutModule, 'default').mockImplementation(useDimensionLayout);
+    jest.spyOn(useDimensionListModule, 'default').mockImplementation(useDimensionList);
     jest.spyOn(useSingleObjectModule, 'default').mockImplementation(() => [
       {
         id: 'mock-single-object',
@@ -88,7 +88,7 @@ describe('<SelectedFields />', () => {
       null,
     ]);
     useFieldList.mockReturnValue([[]]);
-    useDimensionLayout.mockReturnValue([[]]);
+    useDimensionList.mockReturnValue([[]]);
     useSingleObjectProps.mockReturnValue([[]]);
 
     jest.spyOn(useRectModule, 'default').mockImplementation(() => [() => {}, rect]);
