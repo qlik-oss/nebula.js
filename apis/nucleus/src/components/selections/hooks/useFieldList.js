@@ -1,6 +1,20 @@
 import useOnChange from '../../../hooks/useOnChange';
 import useModel from '../../../hooks/useModel';
 
+const fieldListProps = {
+  qInfo: {
+    qId: 'FieldList',
+    qType: 'FieldList',
+  },
+  qFieldListDef: {
+    qShowSystem: false,
+    qShowHidden: false,
+    qShowSrcTables: true,
+    qShowSemantic: true,
+    qShowDerivedFields: true,
+  },
+};
+
 const expand = (m) =>
   m.getLayout().then((list) => {
     const result = [];
@@ -31,7 +45,7 @@ const expand = (m) =>
   });
 
 const useFieldList = (app) => {
-  const [model] = useModel(app, 'FieldList');
+  const [model] = useModel(app, 'FieldList', fieldListProps);
   return useOnChange(model, (m) => expand(m));
 };
 export default useFieldList;

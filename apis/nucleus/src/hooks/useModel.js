@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useModelStore } from './useModelStore';
 
-const useModel = (app, qId) => {
+const useModel = (app, qId, props) => {
   const [model, setModel] = useState(undefined);
   const [error, setError] = useState(undefined);
   const [modelStore] = useModelStore();
@@ -16,7 +16,17 @@ const useModel = (app, qId) => {
         let m = modelStore.get(cacheKey);
 
         if (!m) {
-          m = await app.getObject(qId);
+          try {
+            m = await app.getObject(qId);
+          } catch (err) {
+            if (err.code === 2 && err.message === 'Object not found') {
+              // create session object
+              m = await app.createSessionObject(props);
+            } else {
+              throw err;
+            }
+          }
+
           if (!alive) {
             return;
           }
