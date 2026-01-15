@@ -1,5 +1,6 @@
-import useOnChange from '../../../hooks/useOnChange';
+import { useMemo } from 'react';
 import useModel from '../../../hooks/useModel';
+import useRpc from '../../../hooks/useRpc';
 
 const dimensionListProps = {
   qInfo: {
@@ -20,10 +21,8 @@ const dimensionListProps = {
 
 const useDimensionList = (app) => {
   const [model] = useModel(app, 'DimensionList', dimensionListProps);
-  return useOnChange(model, async (m) => {
-    const layout = await m.getLayout(true);
-    return layout?.qDimensionList?.qItems;
-  });
+  const [layout] = useRpc(model, 'getLayout');
+  return useMemo(() => [layout?.qDimensionList?.qItems], [layout]);
 };
 
 export default useDimensionList;

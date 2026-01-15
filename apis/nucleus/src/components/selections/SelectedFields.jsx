@@ -7,7 +7,7 @@ import useCurrentSelectionsModel from '../../hooks/useCurrentSelectionsModel';
 import useLayout from '../../hooks/useLayout';
 import useRect from '../../hooks/useRect';
 import InstanceContext from '../../contexts/InstanceContext';
-import useSingleObjectProps from './hooks/useSingleObjectProps';
+import usePinnedList from './hooks/usePinnedList';
 import useFieldList from './hooks/useFieldList';
 import useDimensionList from './hooks/useDimenisonList';
 import { sortAllFields, sortSelections } from './utils';
@@ -64,7 +64,7 @@ export default function SelectedFields({ api, app, halo }) {
   const [layout] = useLayout(currentSelectionsModel);
   const [fieldList] = useFieldList(app);
   const [masterDimList] = useDimensionList(app);
-  const [singleObjectProps] = useSingleObjectProps(app);
+  const [pinnedItems] = usePinnedList(app);
   const [state, setState] = useState({ items: [], more: [] });
 
   const { modalObjectStore } = useContext(InstanceContext).selectionStore;
@@ -93,7 +93,6 @@ export default function SelectedFields({ api, app, halo }) {
     }
     let items = isRefactoringEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
     if (isPinFieldEnabled) {
-      const pinnedItems = singleObjectProps?.pinnedItems || [];
       items = sortAllFields(fieldList, pinnedItems, items, masterDimList);
     }
     setState((currState) => {
@@ -129,7 +128,7 @@ export default function SelectedFields({ api, app, halo }) {
     layout,
     api.isInModal(),
     maxItems,
-    singleObjectProps,
+    pinnedItems,
     masterDimList,
     fieldList,
     isPinFieldEnabled,

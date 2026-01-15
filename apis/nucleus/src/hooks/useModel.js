@@ -19,7 +19,7 @@ const useModel = (app, qId, props) => {
           try {
             m = await app.getObject(qId);
           } catch (err) {
-            if (err.code === 2 && err.message === 'Object not found') {
+            if (err.code === 2 && err.message === 'Object not found' && props) {
               // create session object
               m = await app.createSessionObject(props);
             } else {
@@ -62,7 +62,7 @@ const useModel = (app, qId, props) => {
     }
 
     return undefined;
-  }, [app, qId, modelStore]);
+  }, [app, qId, props, modelStore]);
 
   return [model, error];
 };

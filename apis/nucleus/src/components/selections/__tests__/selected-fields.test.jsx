@@ -14,6 +14,7 @@ import * as useFieldListModule from '../hooks/useFieldList';
 import * as useDimensionListModule from '../hooks/useDimenisonList';
 import * as useModelModule from '../../../hooks/useModel';
 import * as useSingleObjectModule from '../hooks/useSingleObject';
+import * as useRpcModule from '../../../hooks/useRpc';
 import initSelectionStores from '../../../stores/new-selections-store';
 import initializeStores from '../../../stores/new-model-store';
 import InstanceContext from '../../../contexts/InstanceContext';
@@ -58,6 +59,8 @@ describe('<SelectedFields />', () => {
     jest
       .spyOn(NebulaThemeModule, 'useTheme')
       .mockImplementation(() => ({ palette: { divider: 'red', background: { paper: 'pinky' } } }));
+
+    jest.spyOn(useRpcModule, 'default').mockImplementation(() => [null, null]);
 
     OneField = jest.fn().mockImplementation(() => 'OneField');
     MultiState = jest.fn().mockImplementation(() => 'MultiState');

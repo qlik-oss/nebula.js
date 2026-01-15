@@ -1,5 +1,6 @@
-import useOnChange from '../../../hooks/useOnChange';
+import { useMemo } from 'react';
 import useModel from '../../../hooks/useModel';
+import useRpc from '../../../hooks/useRpc';
 
 const fieldListProps = {
   qInfo: {
@@ -15,37 +16,40 @@ const fieldListProps = {
   },
 };
 
-const expand = (m) =>
-  m.getLayout().then((list) => {
-    const result = [];
-    const items = list.qFieldList.qItems;
-    for (let i = 0; i < items.length; ++i) {
-      const field = items[i];
-      result.push(field);
+const expand = (items) => {
+  if (!items) {
+    return undefined;
+  }
+  const result = [];
+  for (let i = 0; i < items.length; ++i) {
+    const field = items[i];
+    result.push(field);
 
-      if (field.qDerivedFieldData) {
-        for (let j = 0; j < field.qDerivedFieldData.qDerivedFieldLists.length; ++j) {
-          const derived = field.qDerivedFieldData.qDerivedFieldLists[j];
-          for (let k = 0; k < derived.qFieldDefs.length; ++k) {
-            const derivedField = derived.qFieldDefs[k];
+    if (field.qDerivedFieldData) {
+      for (let j = 0; j < field.qDerivedFieldData.qDerivedFieldLists.length; ++j) {
+        const derived = field.qDerivedFieldData.qDerivedFieldLists[j];
+        for (let k = 0; k < derived.qFieldDefs.length; ++k) {
+          const derivedField = derived.qFieldDefs[k];
 
-            result.push({
-              qName: derivedField.qName,
-              qSrcTables: field.qSrcTables,
-              qTags: derivedField.qTags,
-              isDerived: true,
-              sourceField: field.qName,
-              derivedDefinitionName: derived.qDerivedDefinitionName,
-            });
-          }
+          result.push({
+            qName: derivedField.qName,
+            qSrcTables: field.qSrcTables,
+            qTags: derivedField.qTags,
+            isDerived: true,
+            sourceField: field.qName,
+            derivedDefinitionName: derived.qDerivedDefinitionName,
+          });
         }
       }
     }
-    return result;
-  });
+  }
+  return result;
+};
 
 const useFieldList = (app) => {
   const [model] = useModel(app, 'FieldList', fieldListProps);
-  return useOnChange(model, (m) => expand(m));
+  const [layout] = useRpc(model, 'getLayout');
+  const fieldList = expand(layout?.qFieldList?.qItems);
+  return useMemo(() => [fieldList], [layout]);
 };
 export default useFieldList;
