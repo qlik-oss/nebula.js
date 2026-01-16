@@ -15,6 +15,7 @@ import ListBoxPopoverWrapper, {
 import createSessionObject from './object/create-session-object';
 import createObject from './object/create-object';
 import get from './object/get-generic-object';
+import raceWithAbort from './utils/abort-utils';
 import flagsFn from './flags/flags';
 import { create as typesFn } from './sn/types';
 import uid from './object/uid';
@@ -339,13 +340,39 @@ function nuked(configuration = {}) {
        *   type: 'barchart',
        *   fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]
        * });
+       * @example
+       * // with AbortSignal
+       * const controller = new AbortController();
+       * n.render({
+       *   element: el,
+       *   type: 'barchart',
+       *   fields: ['Product', '=Sum(Sales)'],
+       *   signal: controller.signal
+       * });
+       * // Later: cancel the render
+       * controller.abort();
        */
       render: async (cfg) => {
         await currentSetupPromise;
-        if (cfg.id) {
-          return get(cfg, halo, modelStore);
+        cfg.signal?.throwIfAborted();
+
+        const vizApiPromise = cfg.id ? get(cfg, halo, modelStore) : createSessionObject(cfg, halo, modelStore);
+
+        if (cfg.signal) {
+          const abortHandler = () => {
+            vizApiPromise.then((vizApi) => vizApi?.destroy()).catch(() => {});
+          };
+
+          cfg.signal.addEventListener('abort', abortHandler, { once: true });
+
+          try {
+            return raceWithAbort(vizApiPromise, cfg.signal);
+          } finally {
+            cfg.signal.removeEventListener('abort', abortHandler);
+          }
         }
-        return createSessionObject(cfg, halo, modelStore);
+
+        return vizApiPromise;
       },
       // TODO - document
       destroy: async () => {
