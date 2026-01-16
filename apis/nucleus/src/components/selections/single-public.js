@@ -20,13 +20,4 @@ const getSinglePublicObject = async (app, qId) => {
   return singlePublicObject;
 };
 
-const getSinglePublicObjectProps = async (app, qId) => {
-  const singlePublicObject = await getSinglePublicObject(app, qId);
-  if (!singlePublicObject) {
-    return undefined;
-  }
-  const props = await singlePublicObject.getProperties();
-  return props;
-};
-
-export { getSinglePublicObject, getSinglePublicObjectProps, SINGLE_OBJECT_ID };
+export { getSinglePublicObject, SINGLE_OBJECT_ID };
