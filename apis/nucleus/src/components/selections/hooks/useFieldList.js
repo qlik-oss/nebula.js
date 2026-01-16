@@ -1,4 +1,3 @@
-import { useMemo } from 'react';
 import useModel from '../../../hooks/useModel';
 import useRpc from '../../../hooks/useRpc';
 
@@ -49,7 +48,7 @@ const expand = (items) => {
 const useFieldList = (app) => {
   const [model] = useModel(app, 'FieldList', fieldListProps);
   const [layout] = useRpc(model, 'getLayout');
-  const items = layout?.qFieldList?.qItems;
-  return useMemo(() => [expand(items)], [items]);
+  const items = expand(layout?.qFieldList?.qItems);
+  return items;
 };
 export default useFieldList;
