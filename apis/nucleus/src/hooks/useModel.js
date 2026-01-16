@@ -62,7 +62,7 @@ const useModel = (app, qId, props) => {
     }
 
     return undefined;
-  }, [app, qId, props, modelStore]);
+  }, [app, qId, modelStore]);
 
   return [model, error];
 };
