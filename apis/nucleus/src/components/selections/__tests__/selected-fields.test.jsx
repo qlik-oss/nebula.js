@@ -13,7 +13,6 @@ import * as useRectModule from '../../../hooks/useRect';
 import * as useFieldListModule from '../hooks/useFieldList';
 import * as useDimensionListModule from '../hooks/useDimenisonList';
 import * as useModelModule from '../../../hooks/useModel';
-import * as useSingleObjectModule from '../hooks/useSingleObject';
 import * as useRpcModule from '../../../hooks/useRpc';
 import initSelectionStores from '../../../stores/new-selections-store';
 import initializeStores from '../../../stores/new-model-store';
@@ -29,7 +28,6 @@ describe('<SelectedFields />', () => {
   let useLayout;
   let useFieldList;
   let useDimensionList;
-  let useSingleObjectProps;
   let rect;
   let modalObjectStore;
   let render;
@@ -48,7 +46,6 @@ describe('<SelectedFields />', () => {
     useLayout = jest.fn();
     useFieldList = jest.fn();
     useDimensionList = jest.fn();
-    useSingleObjectProps = jest.fn();
     modalObjectStore = {
       get: jest.fn().mockReturnValue(false),
       set: jest.fn(),
@@ -94,19 +91,9 @@ describe('<SelectedFields />', () => {
     ]);
     jest.spyOn(useFieldListModule, 'default').mockImplementation(useFieldList);
     jest.spyOn(useDimensionListModule, 'default').mockImplementation(useDimensionList);
-    jest.spyOn(useSingleObjectModule, 'default').mockImplementation(() => [
-      {
-        id: 'mock-single-object',
-        Invalidated: {
-          bind: jest.fn(),
-          unbind: jest.fn(),
-        },
-      },
-      null,
-    ]);
+
     useFieldList.mockReturnValue([[]]);
     useDimensionList.mockReturnValue([[]]);
-    useSingleObjectProps.mockReturnValue([[]]);
 
     jest.spyOn(useRectModule, 'default').mockImplementation(() => [() => {}, rect]);
     jest.spyOn(useCurrentSelectionsModelModule, 'default').mockImplementation(() => [currentSelectionsModel]);
