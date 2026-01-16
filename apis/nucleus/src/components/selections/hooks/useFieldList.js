@@ -49,6 +49,6 @@ const useFieldList = (app) => {
   const [model] = useModel(app, 'FieldList', fieldListProps);
   const [layout] = useRpc(model, 'getLayout');
   const items = expand(layout?.qFieldList?.qItems);
-  return items;
+  return [items];
 };
 export default useFieldList;
