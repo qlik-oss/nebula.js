@@ -49,6 +49,7 @@ const expand = (items) => {
 const useFieldList = (app) => {
   const [model] = useModel(app, 'FieldList', fieldListProps);
   const [layout] = useRpc(model, 'getLayout');
-  return useMemo(() => [expand(layout?.qFieldList?.qItems)], [layout]);
+  const items = layout?.qFieldList?.qItems;
+  return useMemo(() => [expand(items)], [items]);
 };
 export default useFieldList;

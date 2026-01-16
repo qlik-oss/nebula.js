@@ -60,7 +60,21 @@ describe('<SelectedFields />', () => {
       .spyOn(NebulaThemeModule, 'useTheme')
       .mockImplementation(() => ({ palette: { divider: 'red', background: { paper: 'pinky' } } }));
 
-    jest.spyOn(useRpcModule, 'default').mockImplementation(() => [null, null]);
+    // Create stable mock results for useRpc to maintain referential stability
+    const stableResults = new Map();
+    jest.spyOn(useRpcModule, 'default').mockImplementation((model, method) => {
+      const key = `${model?.id}-${method}`;
+      if (!stableResults.has(key)) {
+        stableResults.set(key, {
+          // Mock result object
+          qDimensionList: { qItems: [] },
+          qFieldList: { qItems: [] },
+          pinnedItems: [],
+        });
+      }
+      // Return stable references so memoization works
+      return [stableResults.get(key), { validating: false, canCancel: false, canRetry: false }, {}];
+    });
 
     OneField = jest.fn().mockImplementation(() => 'OneField');
     MultiState = jest.fn().mockImplementation(() => 'MultiState');
