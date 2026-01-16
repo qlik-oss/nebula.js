@@ -29,6 +29,7 @@ const THEME_OBJECT_TYPE_MAP = {
   bulletchart: 'bulletChart',
   'sn-table': 'straightTableV2',
   waterfallchart: 'waterfallChart',
+  'sn-tabbed-container': 'tabContainer',
 };
 
 const getThemeObjectType = (visualization) => {
