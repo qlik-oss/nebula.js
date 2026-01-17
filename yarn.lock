@@ -4806,7 +4806,7 @@ __metadata:
   resolution: "@nebula.js/cli-create@workspace:commands/create"
   dependencies:
     chalk: "npm:4.1.2"
-    ejs: "npm:3.1.10"
+    ejs: "npm:4.0.1"
     fs-extra: "npm:11.3.3"
     inquirer: "npm:8.2.7"
   languageName: unknown
@@ -10368,7 +10368,18 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ejs@npm:3.1.10, ejs@npm:^3.1.7":
+"ejs@npm:4.0.1":
+  version: 4.0.1
+  resolution: "ejs@npm:4.0.1"
+  dependencies:
+    jake: "npm:^10.9.1"
+  bin:
+    ejs: bin/cli.js
+  checksum: 10c0/e937a011c5776e6a4775d79317caa9d5b4c64331d62214ff82de97de555ed338bc435d4fa54798ccc0a6e8a2e9096395cbeb79940ab2c3b29f11213ea79b48d6
+  languageName: node
+  linkType: hard
+
+"ejs@npm:^3.1.7":
   version: 3.1.10
   resolution: "ejs@npm:3.1.10"
   dependencies:
@@ -11940,7 +11951,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"filelist@npm:^1.0.1":
+"filelist@npm:^1.0.1, filelist@npm:^1.0.4":
   version: 1.0.4
   resolution: "filelist@npm:1.0.4"
   dependencies:
@@ -14471,6 +14482,19 @@ __metadata:
   bin:
     jake: ./bin/cli.js
   checksum: 10c0/fc1f59c291b1c5bafad8ccde0e5d97f5f22ceb857f204f15634011e642b9cdf652dae2943b5ffe5ab037fe2f77b263653911ed2a408b2887a6dee31873e5c3d8
+  languageName: node
+  linkType: hard
+
+"jake@npm:^10.9.1":
+  version: 10.9.4
+  resolution: "jake@npm:10.9.4"
+  dependencies:
+    async: "npm:^3.2.6"
+    filelist: "npm:^1.0.4"
+    picocolors: "npm:^1.1.1"
+  bin:
+    jake: bin/cli.js
+  checksum: 10c0/bb52f000340d4a32f1a3893b9abe56ef2b77c25da4dbf2c0c874a8159d082dddda50a5ad10e26060198bd645b928ba8dba3b362710f46a247e335321188c5a9c
   languageName: node
   linkType: hard
 
