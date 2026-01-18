@@ -4862,7 +4862,7 @@ __metadata:
     express: "npm:5.2.1"
     extend: "npm:3.0.2"
     file-loader: "npm:^6.2.0"
-    html-webpack-plugin: "npm:5.6.5"
+    html-webpack-plugin: "npm:5.6.6"
     monaco-editor: "npm:0.55.1"
     portfinder: "npm:1.0.38"
     puppeteer: "npm:24.35.0"
@@ -4932,12 +4932,12 @@ __metadata:
     "@nebula.js/supernova": "npm:^6.3.0"
     "@nebula.js/theme": "npm:^6.3.0"
     "@nebula.js/ui": "npm:^6.3.0"
-    "@qlik/api": "npm:2.2.0"
+    "@qlik/api": "npm:2.3.1"
     "@testing-library/dom": "npm:^10.4.1"
     "@testing-library/react": "npm:^16.3.1"
     extend: "npm:3.0.2"
     node-event-emitter: "npm:0.0.1"
-    qlik-chart-modules: "npm:0.99.3"
+    qlik-chart-modules: "npm:0.100.0"
     react: "npm:18.3.1"
     react-dom: "npm:18.3.1"
     react-test-renderer: "npm:18.3.1"
@@ -4969,7 +4969,7 @@ __metadata:
     "@nebula.js/supernova": "npm:^6.3.0"
     "@nebula.js/theme": "npm:^6.3.0"
     "@nebula.js/ui": "npm:^6.3.0"
-    "@qlik/api": "npm:2.2.0"
+    "@qlik/api": "npm:2.3.1"
     "@scriptappy/cli": "npm:0.10.1"
     "@scriptappy/from-jsdoc": "npm:0.19.1"
     "@scriptappy/to-dts": "npm:1.0.0"
@@ -5696,10 +5696,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pkgr/core@npm:^0.2.4":
-  version: 0.2.4
-  resolution: "@pkgr/core@npm:0.2.4"
-  checksum: 10c0/2528a443bbbef5d4686614e1d73f834f19ccbc975f62b2a64974a6b97bcdf677b9c5e8948e04808ac4f0d853e2f422adfaae2a06e9e9f4f5cf8af76f1adf8dc1
+"@pkgr/core@npm:^0.2.9":
+  version: 0.2.9
+  resolution: "@pkgr/core@npm:0.2.9"
+  checksum: 10c0/ac8e4e8138b1a7a4ac6282873aef7389c352f1f8b577b4850778f5182e4a39a5241facbe48361fec817f56d02b51691b383010843fb08b34a8e8ea3614688fd5
   languageName: node
   linkType: hard
 
@@ -5738,16 +5738,15 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@qlik/api@npm:2.2.0":
-  version: 2.2.0
-  resolution: "@qlik/api@npm:2.2.0"
+"@qlik/api@npm:2.3.1":
+  version: 2.3.1
+  resolution: "@qlik/api@npm:2.3.1"
   dependencies:
     enigma.js: "npm:^2.14.0"
     extend: "npm:3.0.2"
     lodash: "npm:^4.17.21"
-    nanoid: "npm:^5.1.6"
-    ws: "npm:^8.18.3"
-  checksum: 10c0/7b2f84e185fd62c8d67caea5b33ef5c8dc59d1f141676a48fa8524f959e10eb4117c2880755ae7e3c0609d7954e3144d1a8c44d0539978f64fd11ac45238b0cc
+    ws: "npm:^8.19.0"
+  checksum: 10c0/17d9bc2fbb668c1cb8397d902ab0c8070b00c122adc648d6fdd86c8bef1312f85a7b0f1f1139f3434299eee77a4e06e9c834e933aedf31d3a46535e60ac8301f
   languageName: node
   linkType: hard
 
@@ -8713,10 +8712,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"caniuse-lite@npm:1.0.30001764":
-  version: 1.0.30001764
-  resolution: "caniuse-lite@npm:1.0.30001764"
-  checksum: 10c0/3fbc2bcb35792bd860e20210283e7c700aab10c5af435dbb8bfbf952edccaa3e7de8b479af0f600c4d23f269dbc166e16b7b72df5cd1981653b252174c9cbfa8
+"caniuse-lite@npm:1.0.30001765":
+  version: 1.0.30001765
+  resolution: "caniuse-lite@npm:1.0.30001765"
+  checksum: 10c0/2bab28b322ec040dde2b6f56019ffd1e0bbd719111e45f58cb0fb06a783812d8ba8df65755320fd253aa1926dffc7bf0864adc11f6b231ac2b3a5b8221199c29
   languageName: node
   linkType: hard
 
@@ -11331,12 +11330,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"eslint-plugin-prettier@npm:5.5.4":
-  version: 5.5.4
-  resolution: "eslint-plugin-prettier@npm:5.5.4"
+"eslint-plugin-prettier@npm:5.5.5":
+  version: 5.5.5
+  resolution: "eslint-plugin-prettier@npm:5.5.5"
   dependencies:
-    prettier-linter-helpers: "npm:^1.0.0"
-    synckit: "npm:^0.11.7"
+    prettier-linter-helpers: "npm:^1.0.1"
+    synckit: "npm:^0.11.12"
   peerDependencies:
     "@types/eslint": ">=8.0.0"
     eslint: ">=8.0.0"
@@ -11347,7 +11346,7 @@ __metadata:
       optional: true
     eslint-config-prettier:
       optional: true
-  checksum: 10c0/5cc780e0ab002f838ad8057409e86de4ff8281aa2704a50fa8511abff87028060c2e45741bc9cbcbd498712e8d189de8026e70aed9e20e50fe5ba534ee5a8442
+  checksum: 10c0/091449b28c77ab2efbbf674e977181f2c8453d95a4df68218bddd87a4dfaa9ecc4eda60164e416f5986fb5d577e66e8d8e1e23d81e8555f8d735375598b03257
   languageName: node
   linkType: hard
 
@@ -13090,9 +13089,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"html-webpack-plugin@npm:5.6.5":
-  version: 5.6.5
-  resolution: "html-webpack-plugin@npm:5.6.5"
+"html-webpack-plugin@npm:5.6.6":
+  version: 5.6.6
+  resolution: "html-webpack-plugin@npm:5.6.6"
   dependencies:
     "@types/html-minifier-terser": "npm:^6.0.0"
     html-minifier-terser: "npm:^6.0.2"
@@ -13107,7 +13106,7 @@ __metadata:
       optional: true
     webpack:
       optional: true
-  checksum: 10c0/4ae0ae48fec6337e4eb055e730e46340172ec1967bd383d897d03cb3c4e385a8128e8d5179c4658536b00e432c2d3f026d97eb5fdb4cf9dc710498d2e871b84e
+  checksum: 10c0/30c07c46c6125d51f9779e4fc3dd1bf30ebd0ef78e9628d918f8e4c45e116e79a31ca5ba3444d2743833335405616b8772a68d6183b0663f016529802422ca9e
   languageName: node
   linkType: hard
 
@@ -16687,15 +16686,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"nanoid@npm:^5.1.6":
-  version: 5.1.6
-  resolution: "nanoid@npm:5.1.6"
-  bin:
-    nanoid: bin/nanoid.js
-  checksum: 10c0/27b5b055ad8332cf4f0f9f6e2a494aa7e5ded89df4cab8c8490d4eabefe72c4423971d2745d22002868b1d50576a5e42b7b05214733b19f576382323282dd26e
-  languageName: node
-  linkType: hard
-
 "natural-compare@npm:^1.4.0":
   version: 1.4.0
   resolution: "natural-compare@npm:1.4.0"
@@ -18647,21 +18637,21 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier-linter-helpers@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "prettier-linter-helpers@npm:1.0.0"
+"prettier-linter-helpers@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "prettier-linter-helpers@npm:1.0.1"
   dependencies:
     fast-diff: "npm:^1.1.2"
-  checksum: 10c0/81e0027d731b7b3697ccd2129470ed9913ecb111e4ec175a12f0fcfab0096516373bf0af2fef132af50cafb0a905b74ff57996d615f59512bb9ac7378fcc64ab
+  checksum: 10c0/91cea965681bc5f62c9d26bd3ca6358b81557261d4802e96ec1cf0acbd99d4b61632d53320cd2c3ec7d7f7805a81345644108a41ef46ddc9688e783a9ac792d1
   languageName: node
   linkType: hard
 
-"prettier@npm:3.7.4":
-  version: 3.7.4
-  resolution: "prettier@npm:3.7.4"
+"prettier@npm:3.8.0":
+  version: 3.8.0
+  resolution: "prettier@npm:3.8.0"
   bin:
     prettier: bin/prettier.cjs
-  checksum: 10c0/9675d2cd08eacb1faf1d1a2dbfe24bfab6a912b059fc9defdb380a408893d88213e794a40a2700bd29b140eb3172e0b07c852853f6e22f16f3374659a1a13389
+  checksum: 10c0/8926e9c9941a293b76c2d799089d038e9f6d84fb37702fc370bedd03b3c70d7fcf507e2e3c4f151f222d81820a3b74cac5e692c955cfafe34dd0d02616ce8327
   languageName: node
   linkType: hard
 
@@ -18956,16 +18946,16 @@ __metadata:
   languageName: node
   linkType: hard
 
-"qlik-chart-modules@npm:0.99.3":
-  version: 0.99.3
-  resolution: "qlik-chart-modules@npm:0.99.3"
+"qlik-chart-modules@npm:0.100.0":
+  version: 0.100.0
+  resolution: "qlik-chart-modules@npm:0.100.0"
   peerDependencies:
     "@emotion/react": ^11.0.0
     "@emotion/styled": ^11.0.0
     "@mui/material": ^5.0.0
     react: ">=18.3.1"
     react-dom: ">=18.3.1"
-  checksum: 10c0/7d0b42ffb65eb73a0f01d6158962fe671e8a89db59596834e2b0211f6b1844bff122bcc6624afd288ff4c3b839092f97692d6641110c127582cf7203ed08d596
+  checksum: 10c0/a759888891a1b4ef65e0bc70609e8271c670c292b70e83bc4bec11f7ea86acb85b9cece73bc2b59d8b46300453246aea57a98c9d264ab711925e4d89300fb61e
   languageName: node
   linkType: hard
 
@@ -20010,7 +20000,7 @@ __metadata:
     eslint-plugin-jest: "npm:^29.12.1"
     eslint-plugin-jsx-a11y: "npm:6.10.2"
     eslint-plugin-mocha: "npm:11.2.0"
-    eslint-plugin-prettier: "npm:5.5.4"
+    eslint-plugin-prettier: "npm:5.5.5"
     eslint-plugin-react: "npm:7.37.5"
     express: "npm:5.2.1"
     globals: "npm:^17.0.0"
@@ -20025,7 +20015,7 @@ __metadata:
     mocha-junit-reporter: "npm:2.2.1"
     picasso-plugin-q: "npm:2.10.0"
     picasso.js: "npm:2.10.0"
-    prettier: "npm:3.7.4"
+    prettier: "npm:3.8.0"
     puppeteer: "npm:24.35.0"
     qix-faker: "npm:0.3.0"
     react-is: "npm:18.3.1"
@@ -21492,12 +21482,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"synckit@npm:^0.11.7":
-  version: 0.11.8
-  resolution: "synckit@npm:0.11.8"
+"synckit@npm:^0.11.12":
+  version: 0.11.12
+  resolution: "synckit@npm:0.11.12"
   dependencies:
-    "@pkgr/core": "npm:^0.2.4"
-  checksum: 10c0/a1de5131ee527512afcaafceb2399b2f3e63678e56b831e1cb2dc7019c972a8b654703a3b94ef4166868f87eb984ea252b467c9d9e486b018ec2e6a55c24dfd8
+    "@pkgr/core": "npm:^0.2.9"
+  checksum: 10c0/cc4d446806688ae0d728ae7bb3f53176d065cf9536647fb85bdd721dcefbd7bf94874df6799ff61580f2b03a392659219b778a9254ad499f9a1f56c34787c235
   languageName: node
   linkType: hard
 
@@ -23203,21 +23193,6 @@ __metadata:
     utf-8-validate:
       optional: true
   checksum: 10c0/4b50f67931b8c6943c893f59c524f0e4905bbd183016cfb0f2b8653aa7f28dad4e456b9d99d285bbb67cca4fedd9ce90dfdfaa82b898a11414ebd66ee99141e4
-  languageName: node
-  linkType: hard
-
-"ws@npm:^8.18.3":
-  version: 8.18.3
-  resolution: "ws@npm:8.18.3"
-  peerDependencies:
-    bufferutil: ^4.0.1
-    utf-8-validate: ">=5.0.2"
-  peerDependenciesMeta:
-    bufferutil:
-      optional: true
-    utf-8-validate:
-      optional: true
-  checksum: 10c0/eac918213de265ef7cb3d4ca348b891a51a520d839aa51cdb8ca93d4fa7ff9f6ccb339ccee89e4075324097f0a55157c89fa3f7147bde9d8d7e90335dc087b53
   languageName: node
   linkType: hard
 

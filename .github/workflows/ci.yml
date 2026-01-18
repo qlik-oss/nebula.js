@@ -18,7 +18,7 @@ jobs:
         run: corepack enable
       - uses: actions/setup-node@v6
         with:
-          node-version: 24.12.0
+          node-version: 24.13.0
           cache: 'yarn'
       - name: Install dependencies
         run: yarn install --immutable
@@ -151,7 +151,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.12.0
+          node-version: 24.13.0
           cache: 'yarn'
 
       - name: Install dependencies
