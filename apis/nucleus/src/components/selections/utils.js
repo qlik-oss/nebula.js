@@ -3,6 +3,7 @@ const MASTER_ITEM_KEY = 'id';
 
 /**
  * Sort items shown in current selections toolbar.
+ * @ignore
  * The order is as follows:
  * 	1. qOneAndOnlyOne
  * 	2. qSortIndex
