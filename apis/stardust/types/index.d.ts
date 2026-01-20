@@ -583,11 +583,12 @@ declare namespace stardust {
          */
         onRender?(): void;
         /**
-         * Callback function called if an error occurs
+         * Callback function called if an error occurs. Also called with AbortError when signal aborts.
          * @param $
          */
         onError?($: stardust.RenderError): void;
         plugins?: stardust.Plugin[];
+        signal?: AbortSignal;
         id?: string;
         type?: string;
         version?: string;
