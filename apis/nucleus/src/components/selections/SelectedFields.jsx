@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useMemo, useState, useContext } from 'react';
 
 import { Grid } from '@mui/material';
 
@@ -73,6 +73,10 @@ export default function SelectedFields({ api, app, halo }) {
   const flags = halo.public.galaxy?.flags;
   const isPinFieldEnabled = flags?.isEnabled('TLV_1394_PIN_FIELD_TO_TOOLBAR');
   const isRefactoringEnabled = flags?.isEnabled('TLV_1394_REFACTORING_SELECTIONS');
+  const currentItems = useMemo(() => {
+    let items = isRefactoringEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
+    return isPinFieldEnabled ? sortAllFields(fieldList, pinnedItems, items, masterDimList) : items;
+  }, [layout, isRefactoringEnabled, fieldList, pinnedItems, masterDimList, isPinFieldEnabled]);
 
   const isInListboxPopover = () => {
     const { model } = modalObjectStore.get(app.id) || {};
@@ -88,15 +92,12 @@ export default function SelectedFields({ api, app, halo }) {
   }, [containerRect]);
 
   useEffect(() => {
-    if (!app || !currentSelectionsModel || !layout || !maxItems || !fieldList || !masterDimList) {
+    if (!app || !currentSelectionsModel || !layout || !maxItems) {
       return;
     }
-    let items = isRefactoringEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
-    if (isPinFieldEnabled) {
-      items = sortAllFields(fieldList, pinnedItems, items, masterDimList);
-    }
+
     setState((currState) => {
-      const newItems = items;
+      const newItems = [...currentItems];
       // Maintain modal state in app selections
       if (isInListboxPopover() && newItems.length + 1 === currState.items.length) {
         const lastDeselectedField = currState.items.filter(
@@ -122,17 +123,7 @@ export default function SelectedFields({ api, app, halo }) {
         more: newMoreItems,
       };
     });
-  }, [
-    app,
-    currentSelectionsModel,
-    layout,
-    api.isInModal(),
-    maxItems,
-    pinnedItems,
-    masterDimList,
-    fieldList,
-    isPinFieldEnabled,
-  ]);
+  }, [app, currentSelectionsModel, layout, api.isInModal(), maxItems, currentItems, isPinFieldEnabled]);
 
   return (
     <Grid ref={containerRef} container gap={0} wrap="nowrap" style={{ height: '100%' }}>

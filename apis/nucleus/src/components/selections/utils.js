@@ -40,6 +40,9 @@ const getValidPinnedItems = (fieldList, masterDimList, pinnedItems) =>
 // Sorts valid pinned items first, then selected fields.
 // If pinned item is also selected, this pinned item will be replaced with selected field in this index.
 const sortAllFields = (fieldList, pinnedItems, selectedFields, masterDimList) => {
+  if (!fieldList || !masterDimList) {
+    return selectedFields;
+  }
   if (fieldList.length === 0 || (pinnedItems.length === 0 && selectedFields.length === 0)) {
     return [];
   }
