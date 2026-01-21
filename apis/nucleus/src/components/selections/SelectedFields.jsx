@@ -68,6 +68,44 @@ const getMaxItems = (containerRect) => {
   return items;
 };
 
+const getItemsAndMore = ({
+  currentItems,
+  containerRef,
+  maxItems,
+  isInListboxPopover,
+  isPinFieldEnabled,
+  isRefactoringEnabled,
+}) => {
+  if (!containerRef) {
+    return { items: [], more: [] };
+  }
+  const newItems = [...currentItems];
+  const currStateItems = containerRef.items ?? [];
+  // Maintain modal state in app selections
+  if (isInListboxPopover() && newItems.length + 1 === currStateItems.length) {
+    const lastDeselectedField = currStateItems.filter((f1) => newItems.some((f2) => f1.name === f2.name) === false)[0];
+    if (!isPinFieldEnabled || (lastDeselectedField && !lastDeselectedField.isPinned)) {
+      const { qField } = lastDeselectedField.selections[0];
+      lastDeselectedField.selections = [{ qField }];
+      const wasIx = currStateItems.indexOf(lastDeselectedField);
+      newItems.splice(wasIx, 0, lastDeselectedField);
+    }
+  }
+  let newMoreItems = [];
+  if (maxItems < newItems.length) {
+    if (isRefactoringEnabled) {
+      newMoreItems = newItems.splice(0, newItems.length - maxItems);
+    } else {
+      newMoreItems = newItems.splice(maxItems - newItems.length);
+    }
+  }
+  containerRef.items = newItems;
+  return {
+    items: newItems,
+    more: newMoreItems,
+  };
+};
+
 export default function SelectedFields({ api, app, halo }) {
   const theme = useTheme();
   const [currentSelectionsModel] = useCurrentSelectionsModel(app);
@@ -92,43 +130,14 @@ export default function SelectedFields({ api, app, halo }) {
     return model?.genericType === 'njsListbox';
   };
 
-  const getItemsAndMore = () => {
-    if (!containerRef) {
-      return { items: [], more: [] };
-    }
-    const newItems = [...currentItems];
-    const currStateItems = containerRef.items ?? [];
-    // Maintain modal state in app selections
-    if (isInListboxPopover() && newItems.length + 1 === currStateItems.length) {
-      const lastDeselectedField = currStateItems.filter(
-        (f1) => newItems.some((f2) => f1.name === f2.name) === false
-      )[0];
-      if (!isPinFieldEnabled || (lastDeselectedField && !lastDeselectedField.isPinned)) {
-        const { qField } = lastDeselectedField.selections[0];
-        lastDeselectedField.selections = [{ qField }];
-        const wasIx = currStateItems.indexOf(lastDeselectedField);
-        newItems.splice(wasIx, 0, lastDeselectedField);
-      }
-    }
-    let newMoreItems = [];
-    if (maxItems < newItems.length) {
-      if (isRefactoringEnabled) {
-        newMoreItems = newItems.splice(0, newItems.length - maxItems);
-      } else {
-        newMoreItems = newItems.splice(maxItems - newItems.length);
-      }
-    }
-    containerRef.items = newItems;
-    return {
-      items: newItems,
-      more: newMoreItems,
-    };
-  };
-
-  const { items, more } = useMemo(
-    () => getItemsAndMore(),
-    [currentItems, containerRef, maxItems, isInListboxPopover, isPinFieldEnabled, isRefactoringEnabled]
-  );
+  const { items, more } = getItemsAndMore({
+    currentItems,
+    containerRef,
+    maxItems,
+    isInListboxPopover,
+    isPinFieldEnabled,
+    isRefactoringEnabled,
+  });
 
   return (
     <Grid ref={containerRef} container gap={0} wrap="nowrap" style={{ height: '100%' }}>
