@@ -74,7 +74,7 @@ export default function SelectedFields({ api, app, halo }) {
   const isPinFieldEnabled = flags?.isEnabled('TLV_1394_PIN_FIELD_TO_TOOLBAR');
   const isRefactoringEnabled = flags?.isEnabled('TLV_1394_REFACTORING_SELECTIONS');
   const currentItems = useMemo(() => {
-    let items = isRefactoringEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
+    const items = isRefactoringEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
     return isPinFieldEnabled ? sortAllFields(fieldList, pinnedItems, items, masterDimList) : items;
   }, [layout, isRefactoringEnabled, fieldList, pinnedItems, masterDimList, isPinFieldEnabled]);
 
