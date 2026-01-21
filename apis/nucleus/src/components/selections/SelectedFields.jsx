@@ -99,6 +99,7 @@ const getItemsAndMore = ({
       newMoreItems = newItems.splice(maxItems - newItems.length);
     }
   }
+  /* eslint-disable no-param-reassign */
   containerRef.items = newItems;
   return {
     items: newItems,
