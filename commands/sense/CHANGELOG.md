@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.4.0](https://github.com/qlik-oss/nebula.js/compare/v6.3.0...v6.4.0) (2026-01-22)
+
+### Bug Fixes
+
+- **deps:** update minor and patch ([#1868](https://github.com/qlik-oss/nebula.js/issues/1868)) ([08f0ab5](https://github.com/qlik-oss/nebula.js/commit/08f0ab53ec9f6855bfd2c72b0a10dfff7ee1d0b1))
+- **deps:** update minor and patch ([#1873](https://github.com/qlik-oss/nebula.js/issues/1873)) ([d1634e3](https://github.com/qlik-oss/nebula.js/commit/d1634e39e32dee8f4e53ba9e4e256241bb221d9a))
+
 # [6.3.0](https://github.com/qlik-oss/nebula.js/compare/v6.2.0...v6.3.0) (2025-12-08)
 
 **Note:** Version bump only for package @nebula.js/cli-sense

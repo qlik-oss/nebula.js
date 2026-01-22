@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.4.0](https://github.com/qlik-oss/nebula.js/compare/v6.3.0...v6.4.0) (2026-01-22)
+
+### Bug Fixes
+
+- add waterfall chart to mapping since it is documented ([#1871](https://github.com/qlik-oss/nebula.js/issues/1871)) ([47d2074](https://github.com/qlik-oss/nebula.js/commit/47d207467093e41b20dd0bca9e6b3251a1fb7de7))
+- **deps:** update dependency ejs to v4 ([#1885](https://github.com/qlik-oss/nebula.js/issues/1885)) ([1e867fe](https://github.com/qlik-oss/nebula.js/commit/1e867fe74c866a224b51aafd6c972ae7c30df326))
+- **deps:** update minor and patch ([#1868](https://github.com/qlik-oss/nebula.js/issues/1868)) ([08f0ab5](https://github.com/qlik-oss/nebula.js/commit/08f0ab53ec9f6855bfd2c72b0a10dfff7ee1d0b1))
+- **deps:** update minor and patch ([#1873](https://github.com/qlik-oss/nebula.js/issues/1873)) ([d1634e3](https://github.com/qlik-oss/nebula.js/commit/d1634e39e32dee8f4e53ba9e4e256241bb221d9a))
+- **deps:** update minor and patch ([#1884](https://github.com/qlik-oss/nebula.js/issues/1884)) ([e825cca](https://github.com/qlik-oss/nebula.js/commit/e825cca26d3ef1360ccc4a89cebed63ade17d31d))
+- use data handler from ext definition ([#1879](https://github.com/qlik-oss/nebula.js/issues/1879)) ([d7c386b](https://github.com/qlik-oss/nebula.js/commit/d7c386b30c6822624626bd1bdebd7af075e76b45))
+
+### Features
+
+- add abort controller on render in nucleus ([#1883](https://github.com/qlik-oss/nebula.js/issues/1883)) ([f504e68](https://github.com/qlik-oss/nebula.js/commit/f504e68c4d6e8d33f37f84a9fb9b078fc724868c))
+- add pin item to selection bar ([#1867](https://github.com/qlik-oss/nebula.js/issues/1867)) ([6bae6e7](https://github.com/qlik-oss/nebula.js/commit/6bae6e7dacdd577f07cd2a6f8b56e31b7f149dc7))
+- **QCB-33197:** add theme mapping for tab container ([#1881](https://github.com/qlik-oss/nebula.js/issues/1881)) ([43b7365](https://github.com/qlik-oss/nebula.js/commit/43b7365cbe8aec95a6ec4458d3f771351915ca78))
+
 # [6.3.0](https://github.com/qlik-oss/nebula.js/compare/v6.2.0...v6.3.0) (2025-12-08)
 
 ### Bug Fixes
