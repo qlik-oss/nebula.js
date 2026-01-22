@@ -10,7 +10,7 @@ import Nav from './Nav';
 import useAppSelections from '../../hooks/useAppSelections';
 import uid from '../../object/uid';
 
-function AppSelections({ app }) {
+function AppSelections({ app, halo }) {
   const theme = useTheme();
   const [appSelections] = useAppSelections(app);
   if (!appSelections) return null;
@@ -33,7 +33,7 @@ function AppSelections({ app }) {
         <Nav api={appSelections} app={app} />
       </Grid>
       <Grid item xs style={{ backgroundColor: theme.palette.background.darker, overflow: 'hidden' }}>
-        <SelectedFields api={appSelections} app={app} />
+        <SelectedFields api={appSelections} app={app} halo={halo} />
       </Grid>
     </Grid>
   );
@@ -41,6 +41,6 @@ function AppSelections({ app }) {
 
 export { AppSelections };
 
-export default function mount({ element, app }) {
-  return ReactDOM.createPortal(<AppSelections app={app} />, element, uid());
+export default function mount({ element, app, halo }) {
+  return ReactDOM.createPortal(<AppSelections app={app} halo={halo} />, element, uid());
 }
