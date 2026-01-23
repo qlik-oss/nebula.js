@@ -287,8 +287,9 @@ describe('nucleus', () => {
       // Verify listener added with correct options
       expect(mockSignal.addEventListener).toHaveBeenCalledWith('abort', expect.any(Function), { once: true });
 
-      // Verify same handler removed after render completes
-      const addedHandler = mockSignal.addEventListener.mock.calls[0][1];
+      // Verify same handler removed in finally after render completes
+      expect(mockSignal.removeEventListener).toHaveBeenCalledTimes(2);
+      const addedHandler = mockSignal.addEventListener.mock.calls[1][1];
       const removedHandler = mockSignal.removeEventListener.mock.calls[0][1];
       expect(addedHandler).toBe(removedHandler);
     });
