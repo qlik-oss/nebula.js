@@ -20000,7 +20000,7 @@ __metadata:
     "@babel/preset-react": "npm:7.28.5"
     "@commitlint/cli": "npm:20.3.1"
     "@commitlint/config-conventional": "npm:20.3.1"
-    "@playwright/test": "npm:1.57.0"
+    "@playwright/test": "npm:1.58.0"
     "@rollup/plugin-babel": "npm:6.1.0"
     "@rollup/plugin-commonjs": "npm:29.0.0"
     "@rollup/plugin-json": "npm:6.1.0"
