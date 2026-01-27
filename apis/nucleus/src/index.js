@@ -365,11 +365,9 @@ function nuked(configuration = {}) {
 
           cfg.signal.addEventListener('abort', abortHandler, { once: true });
 
-          try {
-            return raceWithAbort(vizApiPromise, cfg.signal);
-          } finally {
+          return raceWithAbort(vizApiPromise, cfg.signal).finally(() => {
             cfg.signal.removeEventListener('abort', abortHandler);
-          }
+          });
         }
 
         return vizApiPromise;
