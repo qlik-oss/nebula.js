@@ -31,7 +31,9 @@ const getValidPinnedItems = (fieldList, masterDimList, pinnedItems) =>
     }
     // Validate master dimension items (those with id) against masterDimList
     if (MASTER_ITEM_KEY in field && field[MASTER_ITEM_KEY]) {
-      return masterDimList.some((dimItem) => dimItem.qInfo?.qId === field[MASTER_ITEM_KEY]);
+      return masterDimList.some(
+        (dimItem) => dimItem.qInfo?.qId === field[MASTER_ITEM_KEY] && dimItem.qData?.grouping === 'N'
+      );
     }
     // Invalid field structure, filter it out
     return false;

@@ -32,12 +32,13 @@ describe('sortSelections', () => {
 describe('sortAllFields', () => {
   const createFieldList = (names) => names.map((name) => ({ qName: name }));
   const createMasterDimList = (dims) =>
-    dims.map(({ id, qName, title, labelExpression }) => ({
+    dims.map(({ id, qName, title, grouping, labelExpression }) => ({
       qInfo: { qId: id },
       qData: {
         info: [{ qName }],
         title,
         labelExpression,
+        grouping,
       },
     }));
 
@@ -96,8 +97,8 @@ describe('sortAllFields', () => {
     it('should include valid pinned master dimension items', () => {
       const fieldList = createFieldList(['DimField1', 'DimField2']);
       const masterDimList = createMasterDimList([
-        { id: 'dim1', qName: 'DimField1', title: 'Dimension 1' },
-        { id: 'dim2', qName: 'DimField2', title: 'Dimension 2' },
+        { id: 'dim1', qName: 'DimField1', title: 'Dimension 1', grouping: 'N' },
+        { id: 'dim2', qName: 'DimField2', title: 'Dimension 2', grouping: 'N' },
       ]);
       const pinnedItems = [{ id: 'dim1' }, { id: 'dim2' }];
 
@@ -123,7 +124,7 @@ describe('sortAllFields', () => {
     it('should use labelExpression over title for master dimension name', () => {
       const fieldList = createFieldList(['DimField1']);
       const masterDimList = createMasterDimList([
-        { id: 'dim1', qName: 'DimField1', title: 'Title', labelExpression: 'Label Expression' },
+        { id: 'dim1', qName: 'DimField1', title: 'Title', grouping: 'N', labelExpression: 'Label Expression' },
       ]);
       const pinnedItems = [{ id: 'dim1' }];
 
@@ -134,7 +135,9 @@ describe('sortAllFields', () => {
 
     it('should use fieldName as fallback when no title or labelExpression exists', () => {
       const fieldList = createFieldList(['DimField1']);
-      const masterDimList = createMasterDimList([{ id: 'dim1', qName: 'DimField1', title: '', labelExpression: '' }]);
+      const masterDimList = createMasterDimList([
+        { id: 'dim1', qName: 'DimField1', title: '', grouping: 'N', labelExpression: '' },
+      ]);
       const pinnedItems = [{ id: 'dim1' }];
 
       const result = sortAllFields(fieldList, pinnedItems, [], masterDimList);
@@ -144,8 +147,11 @@ describe('sortAllFields', () => {
 
     it('should filter out invalid master dimension items not in masterDimList', () => {
       const fieldList = createFieldList(['DimField1']);
-      const masterDimList = createMasterDimList([{ id: 'dim1', qName: 'DimField1', title: 'Dim 1' }]);
-      const pinnedItems = [{ id: 'dim1' }, { id: 'invalidDim' }];
+      const masterDimList = createMasterDimList([
+        { id: 'dim1', qName: 'DimField1', title: 'Dim 1', grouping: 'N' },
+        { id: 'dim2', qName: 'DimField2', title: 'Dim 2', grouping: 'C' },
+      ]);
+      const pinnedItems = [{ id: 'dim1' }, { id: 'invalidDim' }, { id: 'dim2' }];
 
       const result = sortAllFields(fieldList, pinnedItems, [], masterDimList);
 
@@ -250,8 +256,8 @@ describe('sortAllFields', () => {
     it('should handle mix of pinned fields, master dimensions, and selected fields', () => {
       const fieldList = createFieldList(['Field1', 'DimField1', 'Field2', 'DimField2']);
       const masterDimList = createMasterDimList([
-        { id: 'dim1', qName: 'DimField1', title: 'Master Dim 1' },
-        { id: 'dim2', qName: 'DimField2', title: 'Master Dim 2' },
+        { id: 'dim1', qName: 'DimField1', title: 'Master Dim 1', grouping: 'N' },
+        { id: 'dim2', qName: 'DimField2', title: 'Master Dim 2', grouping: 'N' },
       ]);
       const pinnedItems = [{ qField: 'Field1' }, { id: 'dim1' }, { qField: 'Field2' }];
       const selectedFields = [
@@ -284,7 +290,7 @@ describe('sortAllFields', () => {
 
     it('should handle empty id values', () => {
       const fieldList = createFieldList(['DimField1']);
-      const masterDimList = createMasterDimList([{ id: 'dim1', qName: 'DimField1', title: 'Dim 1' }]);
+      const masterDimList = createMasterDimList([{ id: 'dim1', qName: 'DimField1', title: 'Dim 1', grouping: 'N' }]);
       const pinnedItems = [{ id: '' }, { id: 'dim1' }];
 
       const result = sortAllFields(fieldList, pinnedItems, [], masterDimList);

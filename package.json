@@ -44,7 +44,7 @@
     "@babel/preset-react": "7.28.5",
     "@commitlint/cli": "20.3.1",
     "@commitlint/config-conventional": "20.3.1",
-    "@playwright/test": "1.57.0",
+    "@playwright/test": "1.58.0",
     "@rollup/plugin-babel": "6.1.0",
     "@rollup/plugin-commonjs": "29.0.0",
     "@rollup/plugin-json": "6.1.0",
@@ -98,7 +98,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-is": "18.3.1",
-    "@playwright/test": "1.57.0"
+    "@playwright/test": "1.58.0"
   },
   "workspaces": [
     "packages/*",
