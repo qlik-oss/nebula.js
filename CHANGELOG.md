@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.5.0](https://github.com/qlik-oss/nebula.js/compare/v6.4.0...v6.5.0) (2026-01-27)
+
+### Bug Fixes
+
+- check valid master dim ([#1891](https://github.com/qlik-oss/nebula.js/issues/1891)) ([5bcbc32](https://github.com/qlik-oss/nebula.js/commit/5bcbc32ba1e20ab80fa4209e1b8f8364b58dc045))
+- **deps:** update minor and patch ([#1890](https://github.com/qlik-oss/nebula.js/issues/1890)) ([18e6f5e](https://github.com/qlik-oss/nebula.js/commit/18e6f5e1b849b463257719e4f352e71442af626e))
+- ensure abort signal cleanup in finally block ([#1889](https://github.com/qlik-oss/nebula.js/issues/1889)) ([4877c2d](https://github.com/qlik-oss/nebula.js/commit/4877c2d54647cb35d8e5ee9c77ace803ee4c4d9a))
+
 # [6.4.0](https://github.com/qlik-oss/nebula.js/compare/v6.3.0...v6.4.0) (2026-01-22)
 
 ### Bug Fixes
