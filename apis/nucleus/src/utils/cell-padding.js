@@ -14,24 +14,12 @@ const NO_PADDING_IN_CARDS = [
   'sn-tabbed-container',
 ];
 
-const getPaddTitle = (visualization) => NO_BORDER_IN_CARDS.indexOf(visualization) === -1;
-
-const getTitlePadding = (visualization) => {
-  const paddTitle = getPaddTitle(visualization);
-  if (paddTitle) {
-    return '10px 10px 0';
-  }
-  return '10px 0 0';
-};
-const getSubtitlePadding = (visualization, showTitle) => {
-  const paddTitle = getPaddTitle(visualization);
+const getTitlePadding = () => '10px 10px 0';
+const getSubtitlePadding = (showTitle) => {
   if (showTitle) {
-    if (paddTitle) {
-      return '0 10px';
-    }
-    return '0';
+    return '0 10px';
   }
-  return getTitlePadding(visualization);
+  return getTitlePadding();
 };
 
 const getPadding = ({ layout, isError, isCardTheme, titleStyles, translator }) => {
@@ -46,11 +34,11 @@ const getPadding = ({ layout, isError, isCardTheme, titleStyles, translator }) =
 
     if (showTitle) {
       // eslint-disable-next-line no-param-reassign
-      titleStyles.main.padding = getTitlePadding(visualization);
+      titleStyles.main.padding = getTitlePadding();
     }
     if (showSubtitle) {
       // eslint-disable-next-line no-param-reassign
-      titleStyles.subTitle.padding = getSubtitlePadding(visualization, showTitle);
+      titleStyles.subTitle.padding = getSubtitlePadding(showTitle);
     }
     if (showFootnote) {
       if (NO_BORDER_IN_CARDS.indexOf(visualization) === -1) {
