@@ -309,7 +309,7 @@ export default function ListBox({
 
   return (
     <StyledWrapper>
-      <div className="screenReaderOnly" aria-live="assertive">
+      <div className="screenReaderOnly" aria-live="assertive" aria-atomic="true">
         {screenReaderText}
       </div>
       {!listCount && cardinal > 0 && <ListBoxDisclaimer width={width} text="Listbox.NoMatchesForYourTerms" />}

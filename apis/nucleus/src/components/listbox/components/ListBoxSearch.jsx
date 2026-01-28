@@ -98,7 +98,6 @@ function ListBoxSearch(
   const { translator } = useContext(InstanceContext);
   const [value, setValue] = useState('');
   const [wildcardOn, setWildcardOn] = useState(false);
-  const [announceText, setAnnounceText] = useState('');
   const inputRef = useRef();
   const clearSearchRef = useRef();
   const clearSearchText = translator.get('Listbox.Clear.Search');
@@ -141,24 +140,6 @@ function ListBoxSearch(
   useEffect(() => {
     setStoreValue('inputText', value);
   }, [value]);
-
-  // Announce results count when it changes
-  useEffect(() => {
-    const listCount = getStoreValue('listCount');
-    if (value && listCount !== undefined) {
-      let message;
-      if (listCount === 0) {
-        message = translator.get('Listbox.NoMatchesForYourTerms');
-      } else if (listCount === 1) {
-        message = translator.get('ScreenReader.OneSearchResult', [listCount]);
-      } else {
-        message = translator.get('ScreenReader.ManySearchResults', [listCount]);
-      }
-      setAnnounceText(message);
-    } else {
-      setAnnounceText('');
-    }
-  }, [getStoreValue('listCount'), value]);
 
   const onChange = async (e) => {
     const searchValue = limitSearchLength(e.target.value);
@@ -297,66 +278,48 @@ function ListBoxSearch(
   }
 
   return (
-    <>
-      <StyledOutlinedInput
-        styles={styles}
-        dense={dense}
-        isRtl={isRtl}
-        startAdornment={
-          <InputAdornment position="start" sx={{ marginLeft: dense ? '8px' : `${CELL_PADDING_LEFT}px` }}>
-            <Search size={dense ? 'small' : 'normal'} />
-          </InputAdornment>
-        }
-        endAdornment={
-          <InputAdornment position="end" sx={{ marginLeft: 0 }}>
-            {value !== '' && (
-              <StyledIconButton
-                tabIndex={0}
-                ref={clearSearchRef}
-                title={clearSearchText}
-                aria-label={clearSearchText}
-                onClick={onClearSearch}
-                onKeyDown={onKeyDownClearSearch}
-              >
-                <Close size={dense ? 'small' : 'normal'} />
-              </StyledIconButton>
-            )}
-          </InputAdornment>
-        }
-        className="search"
-        inputRef={inputRef}
-        size="small"
-        fullWidth
-        placeholder={translator.get('Listbox.Search')}
-        value={value}
-        onFocus={handleFocus}
-        onChange={onChange}
-        onKeyDown={onKeyDown}
-        autoFocus={autoFocus}
-        inputProps={{
-          tabIndex: keyboard.innerTabStops ? 0 : -1,
-          'data-testid': 'search-input-field',
-          'aria-label': translator.get('Listbox.Search'),
-          'aria-describedby': 'listbox-search-instructions',
-          role: 'searchbox',
-        }}
-      />
-      {/* Live region for announcing search results */}
-      <div
-        aria-live="assertive"
-        aria-atomic="true"
-        className="screenReaderOnly"
-        style={{
-          position: 'absolute',
-          left: '-10000px',
-          width: '1px',
-          height: '1px',
-          overflow: 'hidden',
-        }}
-      >
-        {announceText}
-      </div>
-    </>
+    <StyledOutlinedInput
+      styles={styles}
+      dense={dense}
+      isRtl={isRtl}
+      startAdornment={
+        <InputAdornment position="start" sx={{ marginLeft: dense ? '8px' : `${CELL_PADDING_LEFT}px` }}>
+          <Search size={dense ? 'small' : 'normal'} />
+        </InputAdornment>
+      }
+      endAdornment={
+        <InputAdornment position="end" sx={{ marginLeft: 0 }}>
+          {value !== '' && (
+            <StyledIconButton
+              tabIndex={0}
+              ref={clearSearchRef}
+              title={clearSearchText}
+              aria-label={clearSearchText}
+              onClick={onClearSearch}
+              onKeyDown={onKeyDownClearSearch}
+            >
+              <Close size={dense ? 'small' : 'normal'} />
+            </StyledIconButton>
+          )}
+        </InputAdornment>
+      }
+      className="search"
+      inputRef={inputRef}
+      size="small"
+      fullWidth
+      placeholder={translator.get('Listbox.Search')}
+      value={value}
+      onFocus={handleFocus}
+      onChange={onChange}
+      onKeyDown={onKeyDown}
+      autoFocus={autoFocus}
+      inputProps={{
+        tabIndex: keyboard.innerTabStops ? 0 : -1,
+        'data-testid': 'search-input-field',
+        'aria-label': translator.get('Listbox.Search'),
+        'aria-describedby': 'listbox-search-instructions',
+      }}
+    />
   );
 }
 
