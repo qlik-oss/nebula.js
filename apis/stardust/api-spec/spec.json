@@ -3,7 +3,7 @@
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
-    "version": "6.2.0",
+    "version": "6.5.0",
     "license": "MIT",
     "stability": "stable"
   },
@@ -858,7 +858,8 @@
           },
           "examples": [
             "// render from existing object\nn.render({\n  element: el,\n  id: 'abcdef'\n});",
-            "// render on the fly\nn.render({\n  element: el,\n  type: 'barchart',\n  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\n});"
+            "// render on the fly\nn.render({\n  element: el,\n  type: 'barchart',\n  fields: ['Product', { qLibraryId: 'u378hn', type: 'measure' }]\n});",
+            "// with AbortSignal\nconst controller = new AbortController();\nn.render({\n  element: el,\n  type: 'barchart',\n  fields: ['Product', '=Sum(Sales)'],\n  signal: controller.signal\n});\n// Later: cancel the render\ncontroller.abort();"
           ]
         },
         "create": {
@@ -1811,7 +1812,7 @@
           "params": []
         },
         "onError": {
-          "description": "Callback function called if an error occurs",
+          "description": "Callback function called if an error occurs. Also called with AbortError when signal aborts.",
           "optional": true,
           "kind": "function",
           "params": [
@@ -1827,6 +1828,11 @@
           "items": {
             "type": "#/definitions/Plugin"
           }
+        },
+        "signal": {
+          "description": "Optional AbortSignal to cancel the render operation. When aborted, destroy() is called for cleanup before onError() is called with the AbortError.",
+          "optional": true,
+          "type": "AbortSignal"
         },
         "id": {
           "description": "For existing objects: Engine identifier of object to render",
@@ -1869,7 +1875,7 @@
         }
       },
       "examples": [
-        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst createConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(createConfig);"
+        "// A config for Creating objects:\nconst createConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  extendProperties: true,\n  fields: ['[Country names]', '=Sum(Sales)'],\n  properties: {\n    legend: {\n      show: false,\n    },\n  }\n};\nnebbie.render(createConfig);\n// A config for rendering an existing object:\nconst renderConfig = {\n  id: 'jG5LP',\n  element: document.querySelector('.line'),\n};\nnebbie.render(renderConfig);\n// Using AbortSignal to cancel rendering:\nconst controller = new AbortController();\nconst abortConfig = {\n  type: 'bar',\n  element: document.querySelector('.bar'),\n  fields: ['Country', '=Sum(Sales)'],\n  signal: controller.signal,\n  onError: (err) => {\n    if (err.name === 'AbortError') {\n      console.log('Render was cancelled');\n    } else {\n      console.error('Render failed:', err);\n    }\n  }\n};\nconst vizPromise = nebbie.render(abortConfig);\n// Cancel the render operation\ncontroller.abort();"
       ]
     },
     "LibraryField": {

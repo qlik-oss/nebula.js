@@ -18,14 +18,14 @@ jobs:
         run: corepack enable
       - uses: actions/setup-node@v6
         with:
-          node-version: 24.11.1
+          node-version: 24.13.0
           cache: 'yarn'
       - name: Install dependencies
         run: yarn install --immutable
       - name: Build
         run: yarn run build
       - name: Upload workspace
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: workspace
           path: .
@@ -39,7 +39,7 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: Download workspace
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: workspace
           path: .
@@ -58,7 +58,7 @@ jobs:
           token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
           files: coverage/lcov.info
       - name: Store junit results
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: junit
           path: coverage/junit
@@ -71,7 +71,7 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: Download workspace
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: workspace
           path: .
@@ -85,7 +85,7 @@ jobs:
         run: yarn run test:mashup
       - name: Store mashup artifacts
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: mashup
           path: ./test/mashup
@@ -95,7 +95,7 @@ jobs:
         run: yarn run test:rendering
       - name: Store rendering artifacts
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: rendering
           path: ./test/rendering
@@ -108,7 +108,7 @@ jobs:
       - name: Enable Corepack
         run: corepack enable
       - name: Download workspace
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: workspace
           path: .
@@ -125,13 +125,13 @@ jobs:
         run: .github/scripts/nebula_create.sh generated/hello-mashup none true true true false
       - name: Store barchart screenshots
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: barchart-screenshots
           path: generated/barchart/screenshots
       - name: Store mashup artifacts
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@v6
         with:
           name: mashup-artifacts
           path: test/mashup/__artifacts__
@@ -151,7 +151,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24.11.1
+          node-version: 24.13.0
           cache: 'yarn'
 
       - name: Install dependencies
@@ -164,7 +164,8 @@ jobs:
           if [ "${GITHUB_REF_TYPE}" = "tag" ]; then
             version=${GITHUB_REF_NAME#v}
           else
-            yarn workspace "@nebula.js/stardust" version prepatch
+            yarn workspace "@nebula.js/stardust" version preminor
+            yarn spec
             version=$(node -p "require('./apis/stardust/api-spec/spec.json').info.version")
           fi
           echo "$version" > ./version.txt

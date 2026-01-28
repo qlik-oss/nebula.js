@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.5.0](https://github.com/qlik-oss/nebula.js/compare/v6.4.0...v6.5.0) (2026-01-27)
+
+**Note:** Version bump only for package @nebula.js/stardust
+
+# [6.4.0](https://github.com/qlik-oss/nebula.js/compare/v6.3.0...v6.4.0) (2026-01-22)
+
+### Bug Fixes
+
+- **deps:** update minor and patch ([#1868](https://github.com/qlik-oss/nebula.js/issues/1868)) ([08f0ab5](https://github.com/qlik-oss/nebula.js/commit/08f0ab53ec9f6855bfd2c72b0a10dfff7ee1d0b1))
+- **deps:** update minor and patch ([#1884](https://github.com/qlik-oss/nebula.js/issues/1884)) ([e825cca](https://github.com/qlik-oss/nebula.js/commit/e825cca26d3ef1360ccc4a89cebed63ade17d31d))
+
+### Features
+
+- add abort controller on render in nucleus ([#1883](https://github.com/qlik-oss/nebula.js/issues/1883)) ([f504e68](https://github.com/qlik-oss/nebula.js/commit/f504e68c4d6e8d33f37f84a9fb9b078fc724868c))
+
+# [6.3.0](https://github.com/qlik-oss/nebula.js/compare/v6.2.0...v6.3.0) (2025-12-08)
+
+### Bug Fixes
+
+- **deps:** update minor and patch ([#1853](https://github.com/qlik-oss/nebula.js/issues/1853)) ([2792d1c](https://github.com/qlik-oss/nebula.js/commit/2792d1c7301b574f1fa74d47dda1e33322d6db8e))
+
 # [6.2.0](https://github.com/qlik-oss/nebula.js/compare/v6.1.1...v6.2.0) (2025-11-27)
 
 ### Bug Fixes

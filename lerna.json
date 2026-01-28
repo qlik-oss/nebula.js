@@ -7,7 +7,7 @@
     }
   },
   "ignoreChanges": ["**/*.md", "**/__tests__/**", "**/__stories__/**"],
-  "version": "6.2.0",
+  "version": "6.5.0",
   "npmClient": "yarn",
   "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

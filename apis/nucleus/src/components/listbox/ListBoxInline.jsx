@@ -200,6 +200,13 @@ function ListBoxInline({ options, layout }) {
   const handleShowSearch = () => {
     const newValue = !showSearch;
     setShowSearch(newValue);
+    if (newValue && containerRef.current?.scrollIntoView) {
+      containerRef.current.scrollIntoView({
+        block: 'nearest',
+        inline: 'nearest',
+        behavior: 'instant',
+      });
+    }
   };
 
   const onCtrlF = () => {

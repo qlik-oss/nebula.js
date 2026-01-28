@@ -32,10 +32,14 @@ export default function useItemsLoader({
     clearTimeout(local.current.timeout);
     setIsLoading(true);
     return new Promise((resolve) => {
-      // eslint-disable-next-line no-param-reassign
       local.current.timeout = setTimeout(
         () => {
           const lastItemInQueue = local.current.queue.slice(-1)[0];
+          if (!lastItemInQueue) {
+            setIsLoading(false);
+            resolve();
+            return;
+          }
           const reqPromise = model
             .getListObjectData(
               '/qListObjectDef',

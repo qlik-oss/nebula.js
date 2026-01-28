@@ -353,9 +353,7 @@ describe('viz', () => {
           dimensions: { min: 1, max: 10 },
           measures: { min: 1, max: 10 },
         },
-        definition: {
-          dataHandler: mockCustomDataHandler,
-        },
+        dataHandler: mockCustomDataHandler,
       });
 
       const args = cellRef.current.setSnOptions.mock.lastCall[0];

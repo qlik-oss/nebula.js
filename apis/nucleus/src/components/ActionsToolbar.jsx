@@ -36,17 +36,16 @@ const ActionToolbarElement = {
   className: 'njs-action-toolbar-popover',
 };
 
-const ActionsGroup = React.forwardRef(
-  ({ className, ariaExpanded = false, actions = [], addAnchor = false, isRtl = false }, ref) =>
-    actions.length > 0 ? (
-      <Grid item container gap={0} flexDirection={isRtl ? 'row-reverse' : 'row'} wrap="nowrap" className={className}>
-        {actions.map((e, ix) => (
-          <Grid item key={e.key} className={`${classes.itemSpacing} ${classes.item}`}>
-            <Item ariaExpanded={ariaExpanded} key={e.key} item={e} ref={ix === 0 ? ref : null} addAnchor={addAnchor} />
-          </Grid>
-        ))}
-      </Grid>
-    ) : null
+const ActionsGroup = React.forwardRef(({ className, actions = [], addAnchor = false, isRtl = false }, ref) =>
+  actions.length > 0 ? (
+    <Grid item container gap={0} flexDirection={isRtl ? 'row-reverse' : 'row'} wrap="nowrap" className={className}>
+      {actions.map((e, ix) => (
+        <Grid item key={e.key} className={`${classes.itemSpacing} ${classes.item}`}>
+          <Item key={e.key} item={e} ref={ix === 0 ? ref : null} addAnchor={addAnchor} />
+        </Grid>
+      ))}
+    </Grid>
+  ) : null
 );
 
 const popoverStyle = { pointerEvents: 'none' };
@@ -188,7 +187,6 @@ function ActionsToolbar({
           id="actions-toolbar-show-more"
           data-testid="actions-toolbar-show-more"
           ref={moreRef}
-          ariaExpanded={showMoreItems}
           actions={[moreItem]}
           addAnchor
         />

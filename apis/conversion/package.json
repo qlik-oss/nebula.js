@@ -1,6 +1,6 @@
 {
   "name": "@nebula.js/conversion",
-  "version": "6.2.0",
+  "version": "6.5.0",
   "private": true,
   "main": "src/index.js",
   "devDependencies": {
