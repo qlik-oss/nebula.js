@@ -160,12 +160,24 @@ export default function ListBoxPopover({
         <Grid item container style={{ direction, padding: theme.spacing(1) }}>
           <Grid item>
             {isLocked ? (
-              <IconButton onClick={unlock} disabled={!isLocked} size="large">
-                <Lock title={translator.get('Listbox.Unlock')} />
+              <IconButton
+                onClick={unlock}
+                disabled={!isLocked}
+                size="large"
+                aria-label={translator.get('Listbox.Unlock')}
+                title={translator.get('Listbox.Unlock')}
+              >
+                <Lock />
               </IconButton>
             ) : (
-              <IconButton onClick={lock} disabled={!hasSelections} size="large">
-                <Unlock title={translator.get('Listbox.Lock')} />
+              <IconButton
+                onClick={lock}
+                disabled={!hasSelections}
+                size="large"
+                aria-label={translator.get('Listbox.Lock')}
+                title={translator.get('Listbox.Lock')}
+              >
+                <Unlock />
               </IconButton>
             )}
           </Grid>
