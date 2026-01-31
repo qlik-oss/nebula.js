@@ -39,7 +39,7 @@
     "extend": "3.0.2",
     "fs-extra": "11.3.3",
     "node-event-emitter": "0.0.1",
-    "rollup": "4.57.0",
+    "rollup": "4.57.1",
     "yargs": "17.7.2"
   }
 }
