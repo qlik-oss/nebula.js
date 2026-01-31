@@ -18,7 +18,15 @@ import DimensionIcon from './DimensionIcon';
 const lockTimeFrameMs = 500;
 let lastTime = 0;
 
-function getToggleLock({ isLocked, setLocked, settingLockedState, model, setSettingLockedState }) {
+function getToggleLock({
+  isLocked,
+  setLocked,
+  settingLockedState,
+  model,
+  setSettingLockedState,
+  unlockButtonRef,
+  lockButtonRef,
+}) {
   return () => {
     const now = new Date();
     const curTime = now - lastTime;
@@ -40,6 +48,13 @@ function getToggleLock({ isLocked, setLocked, settingLockedState, model, setSett
       .finally(() => {
         setTimeout(() => {
           setSettingLockedState(false);
+          if (!isLocked) {
+            unlockButtonRef.current?.focus();
+          } else {
+            setTimeout(() => {
+              lockButtonRef.current?.focus();
+            }, 0);
+          }
         }, 0);
       });
   };
@@ -78,6 +93,9 @@ export default function ListBoxHeader({
   }, [layout?.qListObject?.qDimensionInfo?.qLocked]);
 
   const titleRef = useRef(null);
+  const unlockButtonRef = useRef(null);
+  const lockButtonRef = useRef(null);
+
   const iconData = iconUtils.createDimensionIconData({
     dimInfo: layout?.qListObject?.qDimensionInfo,
     app,
@@ -99,7 +117,15 @@ export default function ListBoxHeader({
     (showLockIcon ? BUTTON_ICON_WIDTH : 0) +
     (iconData ? BUTTON_ICON_WIDTH : 0);
 
-  const toggleLock = getToggleLock({ isLocked, setLocked, settingLockedState, setSettingLockedState, model });
+  const toggleLock = getToggleLock({
+    isLocked,
+    setLocked,
+    settingLockedState,
+    setSettingLockedState,
+    model,
+    unlockButtonRef,
+    lockButtonRef,
+  });
   const listboxSelectionToolbarItems = createListboxSelectionToolbar({
     layout,
     model,
@@ -120,6 +146,7 @@ export default function ListBoxHeader({
             getSvgIconShape: unlock,
             enabled: () => !settingLockedState && !selectionState.selectDisabled() && hasSelections(layout),
             action: toggleLock,
+            ref: lockButtonRef,
           },
         ];
 
@@ -209,6 +236,7 @@ export default function ListBoxHeader({
           translator={translator}
           toggleLock={toggleLock}
           keyboard={keyboard}
+          ref={unlockButtonRef}
         />
       )}
       {showLeftIcon && (

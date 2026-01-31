@@ -29,10 +29,11 @@ const Item = React.forwardRef(({ item, addAnchor = false }, ref) => {
   const handleKeyUp = keyboardAction ? (e) => [' ', 'Spacebar'].includes(e.key) && keyboardAction() : null;
 
   const btnId = `actions-toolbar-${item.key}`;
+  const buttonRef = item.ref || (!addAnchor ? ref : null);
 
   return (
     <IconButton
-      ref={!addAnchor ? ref : null}
+      ref={buttonRef}
       title={item.label}
       onClick={item.action}
       onKeyDown={handleKeyDown}
