@@ -24,7 +24,7 @@
     "react-test-renderer": "18.3.1",
     "react-virtualized-auto-sizer": "1.0.25",
     "react-window": "1.8.11",
-    "react-window-infinite-loader": "1.0.10",
+    "react-window-infinite-loader": "2.0.1",
     "semver": "7.7.3"
   }
 }
