@@ -36,11 +36,11 @@
   },
   "devDependencies": {
     "@babel/cli": "7.28.6",
-    "@babel/core": "7.28.6",
+    "@babel/core": "7.29.0",
     "@babel/helper-plugin-utils": "7.28.6",
     "@babel/plugin-proposal-object-rest-spread": "7.20.7",
     "@babel/plugin-transform-react-jsx": "7.28.6",
-    "@babel/preset-env": "7.28.6",
+    "@babel/preset-env": "7.29.0",
     "@babel/preset-react": "7.28.5",
     "@commitlint/cli": "20.4.0",
     "@commitlint/config-conventional": "20.4.0",

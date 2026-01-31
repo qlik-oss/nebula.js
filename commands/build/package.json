@@ -22,8 +22,8 @@
   },
   "dependencies": {
     "@babel/cli": "7.28.6",
-    "@babel/core": "7.28.6",
-    "@babel/preset-env": "7.28.6",
+    "@babel/core": "7.29.0",
+    "@babel/preset-env": "7.29.0",
     "@babel/preset-react": "7.28.5",
     "@babel/preset-typescript": "7.28.5",
     "@qlik/browserslist-config": "^3.0.0",
