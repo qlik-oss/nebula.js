@@ -3,6 +3,9 @@ import { styled } from '@mui/material/styles';
 import classes from '../helpers/classes';
 import { barBorderWidthPx, barPadPx, barWithCheckboxLeftPadPx, CELL_PADDING_LEFT } from '../../../constants';
 
+const focusBlueColor = 'var(--sprout-focus-color-default)' ?? 'rgb(0, 93, 185)';
+const focusWhiteColor = 'var(--sprout-common-background-color-default)' ?? 'rgb(255, 255, 255)';
+
 const getFreqFlexBasis = ({ sizes, frequencyMode, isGridMode, freqHitsValue }) => {
   if (frequencyMode === 'P') {
     return `${sizes.freqMinWidth}px`;
@@ -108,7 +111,7 @@ const RowColRoot = styled('div', {
 
     '& .value': {
       '&:focus': {
-        boxShadow: `inset 0 0 0 2px rgb(0, 93, 185) !important`,
+        boxShadow: `inset 0 0 0 2px ${focusBlueColor} !important`,
       },
       '&:focus-visible': {
         outline: 'none',
@@ -198,7 +201,7 @@ const RowColRoot = styled('div', {
     [`& .${classes.S}`]: {
       ...rowSelectionStyle,
       '&:focus': {
-        boxShadow: `inset 0 0 0 2px rgb(0, 93, 185), inset 0 0 0 4px rgb(255, 255, 255) !important`,
+        boxShadow: `inset 0 0 0 2px ${focusBlueColor}, inset 0 0 0 4px ${focusWhiteColor} !important`,
       },
       '&:focus-visible': {
         outline: 'none',
