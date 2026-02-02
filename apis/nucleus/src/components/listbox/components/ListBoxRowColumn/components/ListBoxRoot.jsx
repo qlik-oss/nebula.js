@@ -108,7 +108,7 @@ const RowColRoot = styled('div', {
 
     '& .value': {
       '&:focus': {
-        boxShadow: `inset 0 0 0 2px var(--sprout-focus-color-default) !important`,
+        boxShadow: `inset 0 0 0 2px rgb(0, 93, 185) !important`,
       },
       '&:focus-visible': {
         outline: 'none',
@@ -198,7 +198,7 @@ const RowColRoot = styled('div', {
     [`& .${classes.S}`]: {
       ...rowSelectionStyle,
       '&:focus': {
-        boxShadow: `inset 0 0 0 2px var(--sprout-focus-color-default), inset 0 0 0 4px var(--sprout-common-background-color-default) !important`,
+        boxShadow: `inset 0 0 0 2px rgb(0, 93, 185), inset 0 0 0 4px rgb(255, 255, 255) !important`,
       },
       '&:focus-visible': {
         outline: 'none',
