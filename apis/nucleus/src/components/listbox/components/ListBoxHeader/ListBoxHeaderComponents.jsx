@@ -51,11 +51,12 @@ export const HeaderTitle = styled(Typography)(({ styles }) => ({
   paddingRight: '1px', // make place for italic font style
 }));
 
-export function UnlockCoverButton({ translator, toggleLock, keyboard, isLoading }) {
+export const UnlockCoverButton = React.forwardRef(({ translator, toggleLock, keyboard, isLoading }, ref) => {
   const fontSize = '14px';
   const unLockText = translator.get('SelectionToolbar.ClickToUnlock');
   const component = (
     <UnlockButton
+      ref={ref}
       title={unLockText}
       tabIndex={keyboard.enabled ? 0 : -1}
       onClick={toggleLock}
@@ -72,4 +73,4 @@ export function UnlockCoverButton({ translator, toggleLock, keyboard, isLoading 
     </UnlockButton>
   );
   return component;
-}
+});
