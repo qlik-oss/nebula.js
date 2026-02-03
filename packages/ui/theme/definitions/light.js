@@ -38,6 +38,8 @@ const light = {
     },
     // --- custom stuff ---
     custom: {
+      whiteBorder: 'rgb(255, 255, 255)',
+      newFocusBorder: colors.blueDark,
       focusBorder: colors.blue,
       focusOutline: 'rgba(70, 157, 205, 0.3)',
       inputBackground: 'rgba(255, 255, 255, 1)',
