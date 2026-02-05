@@ -5,6 +5,7 @@ const colors = {
   redPale: '#F05551',
   blue: '#3F8AB3',
   bluePale: '#469DCD',
+  blueDark: '#005DB9',
 
   // greyscale
   grey100: '#ffffff',

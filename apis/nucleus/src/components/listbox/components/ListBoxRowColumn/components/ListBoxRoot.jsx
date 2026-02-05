@@ -108,7 +108,8 @@ const RowColRoot = styled('div', {
 
     '& .value': {
       '&:focus': {
-        boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
+        boxShadow: `inset 0 0 0 2px ${theme.palette.custom.newFocusBorder} !important`,
+        borderRadius: '4px',
       },
       '&:focus-visible': {
         outline: 'none',
@@ -197,6 +198,13 @@ const RowColRoot = styled('div', {
     // Selection styles (S=Selected, XS=ExcludedSelected, A=Alternative, X=Excluded).
     [`& .${classes.S}`]: {
       ...rowSelectionStyle,
+      '&:focus': {
+        boxShadow: `inset 0 0 0 2px ${theme.palette.custom.newFocusBorder}, inset 0 0 0 4px ${theme.palette.custom.whiteBorder} !important`,
+        borderRadius: '4px',
+      },
+      '&:focus-visible': {
+        outline: 'none',
+      },
       border: isGridMode ? 'none' : undefined,
     },
 
