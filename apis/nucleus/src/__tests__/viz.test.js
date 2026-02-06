@@ -27,7 +27,7 @@ describe('viz', () => {
   let createSessionObjectMock;
   let destroySessionObjectMock;
   let mockCustomHandler;
-  let mockCustomDataHandler;
+  let mockCustomPropertyHandler;
   let mockGetHypercubePath;
 
   let mockElement;
@@ -47,7 +47,7 @@ describe('viz', () => {
       api: 'api',
     }));
     mockCustomHandler = { customMethod: jest.fn() };
-    mockCustomDataHandler = jest.fn().mockReturnValue(mockCustomHandler);
+    mockCustomPropertyHandler = jest.fn().mockReturnValue(mockCustomHandler);
     mockGetHypercubePath = jest.fn().mockReturnValue('customPath');
     cellRef = {
       current: {
@@ -320,7 +320,7 @@ describe('viz', () => {
   });
 
   describe('getHypercubePropertyHandler', () => {
-    test('should return default HyperCubeHandler when no custom dataHandler exists', async () => {
+    test('should return default HyperCubeHandler when no custom propertyHandler exists', async () => {
       const opts = { onInitialRender: jest.fn() };
       api.__DO_NOT_USE__.options(opts);
       await mounted;
@@ -343,7 +343,7 @@ describe('viz', () => {
       expect(model.getEffectiveProperties).toHaveBeenCalled();
     });
 
-    test('should return custom handler when dataHandler exists in extension definition', async () => {
+    test('should return custom handler when propertyHandler exists in extension definition', async () => {
       const opts = { onInitialRender: jest.fn() };
       api.__DO_NOT_USE__.options(opts);
       await mounted;
@@ -353,7 +353,7 @@ describe('viz', () => {
           dimensions: { min: 1, max: 10 },
           measures: { min: 1, max: 10 },
         },
-        dataHandler: mockCustomDataHandler,
+        propertyHandler: mockCustomPropertyHandler,
       });
 
       const args = cellRef.current.setSnOptions.mock.lastCall[0];
@@ -362,7 +362,7 @@ describe('viz', () => {
       const handler = await api.getHypercubePropertyHandler();
 
       expect(handler).toBe(mockCustomHandler);
-      expect(mockCustomDataHandler).toHaveBeenCalledWith({
+      expect(mockCustomPropertyHandler).toHaveBeenCalledWith({
         app: model.app,
         dimensionDefinition: { min: 1, max: 10 },
         measureDefinition: { min: 1, max: 10 },
@@ -381,7 +381,7 @@ describe('viz', () => {
 
       cellRef.current.getExtensionDefinition = jest.fn().mockReturnValue({
         definition: {
-          dataHandler: mockCustomDataHandler,
+          propertyHandler: mockCustomPropertyHandler,
         },
       });
 
@@ -391,10 +391,10 @@ describe('viz', () => {
       const handler = await api.getHypercubePropertyHandler();
 
       expect(handler).toBeUndefined();
-      expect(mockCustomDataHandler).not.toHaveBeenCalled();
+      expect(mockCustomPropertyHandler).not.toHaveBeenCalled();
     });
 
-    test('should handle invalid dataHandler', async () => {
+    test('should handle invalid propertyHandler', async () => {
       const opts = { onInitialRender: jest.fn() };
       api.__DO_NOT_USE__.options(opts);
       await mounted;
@@ -405,7 +405,7 @@ describe('viz', () => {
           measures: { min: 1, max: 10 },
         },
         definition: {
-          dataHandler: 'not-a-function',
+          propertyHandler: 'not-a-function',
         },
       });
 
