@@ -91,7 +91,7 @@
     "rollup-plugin-sass": "1.15.3",
     "style-loader": "4.0.0",
     "whatwg-fetch": "^3.6.20",
-    "yargs": "17.7.2"
+    "yargs": "18.0.0"
   },
   "resolutions": {
     "caniuse-lite": "1.0.30001766",
