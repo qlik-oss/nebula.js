@@ -135,8 +135,8 @@ export default function viz({
             path: cellRef.current.getHypercubePath(),
           };
 
-          if (typeof extensionDefinition.dataHandler === 'function') {
-            return extensionDefinition.dataHandler(options);
+          if (typeof extensionDefinition.propertyHandler === 'function') {
+            return extensionDefinition.propertyHandler(options);
           }
 
           return new HyperCubeHandler(options);
