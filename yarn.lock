@@ -4926,7 +4926,7 @@ __metadata:
     react-test-renderer: "npm:18.3.1"
     react-virtualized-auto-sizer: "npm:1.0.25"
     react-window: "npm:1.8.11"
-    react-window-infinite-loader: "npm:1.0.10"
+    react-window-infinite-loader: "npm:2.0.1"
     semver: "npm:7.7.3"
   languageName: unknown
   linkType: soft
@@ -4963,7 +4963,7 @@ __metadata:
     react-test-renderer: "npm:18.3.1"
     react-virtualized-auto-sizer: "npm:1.0.25"
     react-window: "npm:1.8.11"
-    react-window-infinite-loader: "npm:1.0.10"
+    react-window-infinite-loader: "npm:2.0.1"
     regenerator-runtime: "npm:0.14.1"
     semver: "npm:7.7.3"
   languageName: unknown
@@ -19009,13 +19009,13 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-window-infinite-loader@npm:1.0.10":
-  version: 1.0.10
-  resolution: "react-window-infinite-loader@npm:1.0.10"
+"react-window-infinite-loader@npm:2.0.1":
+  version: 2.0.1
+  resolution: "react-window-infinite-loader@npm:2.0.1"
   peerDependencies:
-    react: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0 || ^19.0.0
-    react-dom: ^15.3.0 || ^16.0.0-alpha || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: 10c0/26283f0c4ac347d355948d54fba8629935563560f4d114ee701555a7d6251f80271edbcfa994bcc16f15f56637141c503963662f5cdbe51fad946793d2645a76
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  checksum: 10c0/da6f355e418337595ee9520edbd303ba3a5110326f38d8a49414bcb050b52b062c915d5c97207694d4d022349825cb8821b160c95c7820724777e8578526c84c
   languageName: node
   linkType: hard
 
