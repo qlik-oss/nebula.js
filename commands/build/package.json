@@ -39,7 +39,7 @@
     "rollup": "4.57.1",
     "rollup-plugin-postcss": "4.0.2",
     "rollup-plugin-visualizer": "6.0.5",
-    "yargs": "17.7.2"
+    "yargs": "18.0.0"
   },
   "devDependencies": {
     "@rollup/plugin-typescript": "12.3.0",
