@@ -42,9 +42,9 @@
     "@babel/plugin-transform-react-jsx": "7.28.6",
     "@babel/preset-env": "7.29.0",
     "@babel/preset-react": "7.28.5",
-    "@commitlint/cli": "20.4.0",
-    "@commitlint/config-conventional": "20.4.0",
-    "@playwright/test": "1.58.1",
+    "@commitlint/cli": "20.4.1",
+    "@commitlint/config-conventional": "20.4.1",
+    "@playwright/test": "1.58.2",
     "@rollup/plugin-babel": "6.1.0",
     "@rollup/plugin-commonjs": "29.0.0",
     "@rollup/plugin-json": "6.1.0",
@@ -65,7 +65,7 @@
     "eslint-config-airbnb": "19.0.4",
     "eslint-config-prettier": "10.1.8",
     "eslint-plugin-import": "2.32.0",
-    "eslint-plugin-jest": "^29.12.1",
+    "eslint-plugin-jest": "^29.12.2",
     "eslint-plugin-jsx-a11y": "6.10.2",
     "eslint-plugin-mocha": "11.2.0",
     "eslint-plugin-prettier": "5.5.5",
@@ -84,7 +84,7 @@
     "picasso-plugin-q": "2.10.0",
     "picasso.js": "2.10.0",
     "prettier": "3.8.1",
-    "puppeteer": "24.36.1",
+    "puppeteer": "24.37.2",
     "qix-faker": "0.3.0",
     "react-is": "18.3.1",
     "rollup": "4.57.1",
@@ -94,11 +94,11 @@
     "yargs": "17.7.2"
   },
   "resolutions": {
-    "caniuse-lite": "1.0.30001766",
+    "caniuse-lite": "1.0.30001769",
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-is": "18.3.1",
-    "@playwright/test": "1.58.1"
+    "@playwright/test": "1.58.2"
   },
   "workspaces": [
     "packages/*",
