@@ -22,8 +22,7 @@
     "test:rendering": "playwright test --config=./test/rendering/playwright.config.rendering.js --quiet",
     "test:integration": "playwright test test/integration",
     "test:component": "playwright test test/component",
-    "prepare": "husky install",
-    "postinstall": "patch-package"
+    "prepare": "husky install"
   },
   "repository": {
     "type": "git",
@@ -84,7 +83,6 @@
     "lerna": "9.0.3",
     "lint-staged": "^16.2.7",
     "mocha-junit-reporter": "2.2.1",
-    "patch-package": "^8.0.1",
     "picasso-plugin-q": "2.10.0",
     "picasso.js": "2.10.0",
     "prettier": "3.8.1",
@@ -102,8 +100,7 @@
     "react": "18.3.1",
     "react-dom": "18.3.1",
     "react-is": "18.3.1",
-    "@playwright/test": "1.58.1",
-    "@typescript-eslint/utils": "^8.56.0"
+    "@playwright/test": "1.58.1"
   },
   "workspaces": [
     "packages/*",

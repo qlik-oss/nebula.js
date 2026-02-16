@@ -21,6 +21,12 @@ export default defineConfig([
   {
     extends: compat.extends('airbnb', 'prettier'),
 
+    settings: {
+      react: {
+        version: 'detect',
+      },
+    },
+
     plugins: {
       prettier,
       jest,
