@@ -100,11 +100,17 @@ describe('Styling property resolver', () => {
 
     test('should resolve background image https', () => {
       const { url, pos } = resolveBgImage(bgCompLayout, app);
-      expect(url).toBe('https://example.com/media/Tulips.jpg');
+      expect(url).toBe('https://example.com/lots/of/paths/media/Tulips.jpg');
       expect(pos).toBe('top left');
     });
     test('should resolve background image http', () => {
       app.session.config.url = 'ws://example.com/lots/of/paths';
+      const { url, size } = resolveBgImage(bgCompLayout, app);
+      expect(url).toBe('http://example.com/lots/of/paths/media/Tulips.jpg');
+      expect(size).toBe('contain');
+    });
+    test('should resolve background image http without paths', () => {
+      app.session.config.url = 'ws://example.com/';
       const { url, size } = resolveBgImage(bgCompLayout, app);
       expect(url).toBe('http://example.com/media/Tulips.jpg');
       expect(size).toBe('contain');
