@@ -1,0 +1,86 @@
+diff --git a/node_modules/eslint-plugin-react/lib/rules/forward-ref-uses-ref.js b/node_modules/eslint-plugin-react/lib/rules/forward-ref-uses-ref.js
+index 3a0b7de..3a02572 100644
+--- a/node_modules/eslint-plugin-react/lib/rules/forward-ref-uses-ref.js
++++ b/node_modules/eslint-plugin-react/lib/rules/forward-ref-uses-ref.js
+@@ -6,6 +6,7 @@
+ 
+ const isParenthesized = require('../util/ast').isParenthesized;
+ const docsUrl = require('../util/docsUrl');
++const getSourceCode = require('../util/eslint').getSourceCode;
+ const report = require('../util/report');
+ const getMessageData = require('../util/message');
+ 
+@@ -57,7 +58,7 @@ module.exports = {
+   },
+ 
+   create(context) {
+-    const sourceCode = context.getSourceCode();
++    const sourceCode = getSourceCode(context);
+ 
+     return {
+       'FunctionExpression, ArrowFunctionExpression'(node) {
+diff --git a/node_modules/eslint-plugin-react/lib/rules/jsx-filename-extension.js b/node_modules/eslint-plugin-react/lib/rules/jsx-filename-extension.js
+index 4a2cfee..0e5f025 100644
+--- a/node_modules/eslint-plugin-react/lib/rules/jsx-filename-extension.js
++++ b/node_modules/eslint-plugin-react/lib/rules/jsx-filename-extension.js
+@@ -7,6 +7,7 @@
+ 
+ const path = require('path');
+ const docsUrl = require('../util/docsUrl');
++const getFilename = require('../util/eslint').getFilename;
+ const report = require('../util/report');
+ 
+ // ------------------------------------------------------------------------------
+@@ -61,7 +62,7 @@ module.exports = {
+   },
+ 
+   create(context) {
+-    const filename = context.getFilename();
++    const filename = getFilename(context);
+ 
+     let jsxNode;
+ 
+diff --git a/node_modules/eslint-plugin-react/lib/util/eslint.js b/node_modules/eslint-plugin-react/lib/util/eslint.js
+index 79a0537..bcf9186 100644
+--- a/node_modules/eslint-plugin-react/lib/util/eslint.js
++++ b/node_modules/eslint-plugin-react/lib/util/eslint.js
+@@ -4,6 +4,10 @@ function getSourceCode(context) {
+   return context.getSourceCode ? context.getSourceCode() : context.sourceCode;
+ }
+ 
++function getFilename(context) {
++  return context.getFilename ? context.getFilename() : context.filename;
++}
++
+ function getAncestors(context, node) {
+   const sourceCode = getSourceCode(context);
+   return sourceCode.getAncestors ? sourceCode.getAncestors(node) : context.getAncestors();
+@@ -38,6 +42,7 @@ function getText(context) {
+ 
+ module.exports = {
+   getAncestors,
++  getFilename,
+   getFirstTokens,
+   getScope,
+   getSourceCode,
+diff --git a/node_modules/eslint-plugin-react/lib/util/version.js b/node_modules/eslint-plugin-react/lib/util/version.js
+index c9dc683..2bfbf2e 100644
+--- a/node_modules/eslint-plugin-react/lib/util/version.js
++++ b/node_modules/eslint-plugin-react/lib/util/version.js
+@@ -11,6 +11,7 @@ const path = require('path');
+ const resolve = require('resolve');
+ const semver = require('semver');
+ const error = require('./error');
++const getFilename = require('./eslint').getFilename;
+ 
+ const ULTIMATE_LATEST_SEMVER = '999.999.999';
+ 
+@@ -28,7 +29,7 @@ function resetDetectedVersion() {
+ 
+ function resolveBasedir(contextOrFilename) {
+   if (contextOrFilename) {
+-    const filename = typeof contextOrFilename === 'string' ? contextOrFilename : contextOrFilename.getFilename();
++    const filename = typeof contextOrFilename === 'string' ? contextOrFilename : getFilename(contextOrFilename);
+     const dirname = path.dirname(filename);
+     try {
+       if (fs.statSync(filename).isFile()) {
