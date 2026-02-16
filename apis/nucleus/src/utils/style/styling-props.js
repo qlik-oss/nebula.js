@@ -36,7 +36,7 @@ function getSenseServerUrl(app) {
 
     isSecure = wsUrl.protocol === 'wss:';
     protocol = isSecure ? 'https://' : 'http://';
-    const basePath = wsUrl.pathname.replace(/\/app\/.*$/, '');
+    const basePath = wsUrl.pathname === '/' ? '' : wsUrl.pathname.replace(/\/app\/.*$/, '');
     return protocol + wsUrl.host + basePath;
   }
   return '';
