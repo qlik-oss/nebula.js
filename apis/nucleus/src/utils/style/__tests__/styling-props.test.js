@@ -115,10 +115,10 @@ describe('Styling property resolver', () => {
       expect(url).toBe('http://example.com/media/Tulips.jpg');
       expect(size).toBe('contain');
     });
-    test('should resolve background image and remove /app', () => {
-      app.session.config.url = 'ws://example.com/lost/of/paths/app/abc123';
+    test('should resolve background image and remove /app and everything after', () => {
+      app.session.config.url = 'wss://example.com/lots/of/paths/app/abc123/identity/tab2';
       const { url, size } = resolveBgImage(bgCompLayout, app);
-      expect(url).toBe('http://example.com/lost/of/paths/media/Tulips.jpg');
+      expect(url).toBe('https://example.com/lots/of/paths/media/Tulips.jpg');
       expect(size).toBe('contain');
     });
 
