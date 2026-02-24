@@ -7,7 +7,7 @@ describe('styling', () => {
   const app = {
     session: {
       config: {
-        url: 'wss://hey-hey/images',
+        url: 'wss://hey-hey/images/',
       },
     },
   };
@@ -98,7 +98,7 @@ describe('styling', () => {
           sizing: 'stretchFit',
         };
         const styles = await getStyles({ app, themeApi, theme, components });
-        expect(styles.background.backgroundImage).toEqual("url('https://hey-heysome-image.png')");
+        expect(styles.background.backgroundImage).toEqual("url('https://hey-hey/images/some-image.png')");
         expect(styles.background.backgroundRepeat).toEqual('no-repeat');
         expect(styles.background.backgroundSize).toEqual('100% 100%');
         expect(styles.background.backgroundPosition).toEqual('center center');

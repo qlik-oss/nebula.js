@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import React, { useContext, useCallback, useRef, useEffect, useState, useMemo } from 'react';
 import { styled } from '@mui/material/styles';
 import AutoSizer from 'react-virtualized-auto-sizer';
@@ -80,10 +79,11 @@ function ListBoxInline({ options, layout }) {
 
   const theme = useTheme();
 
-  const { translator, keyboardNavigation, themeApi, queryParams, constraints } = useContext(InstanceContext);
+  const { translator, keyboardNavigation, themeApi, queryParams, constraints, hostConfig } =
+    useContext(InstanceContext);
 
   const { checkboxes = checkboxesOption } = layout || {};
-  const styles = useListboxStyling({ app, themeApi, theme, queryParams, components, checkboxes });
+  const styles = useListboxStyling({ app, themeApi, theme, queryParams, components, checkboxes, hostConfig });
 
   const isDirectQuery = isDirectQueryEnabled({ appLayout: app?.layout });
 
