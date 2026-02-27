@@ -68,14 +68,7 @@ const getMaxItems = (containerRect) => {
   return items;
 };
 
-const getItemsAndMore = ({
-  currentItems,
-  containerRef,
-  maxItems,
-  isInListboxPopover,
-  isPinFieldEnabled,
-  isRefactoringEnabled,
-}) => {
+const getItemsAndMore = ({ currentItems, containerRef, maxItems, isInListboxPopover }) => {
   if (!containerRef) {
     return { items: [], more: [] };
   }
@@ -84,7 +77,7 @@ const getItemsAndMore = ({
   // Maintain modal state in app selections
   if (isInListboxPopover() && newItems.length + 1 === currStateItems.length) {
     const lastDeselectedField = currStateItems.filter((f1) => newItems.some((f2) => f1.name === f2.name) === false)[0];
-    if (!isPinFieldEnabled || (lastDeselectedField && !lastDeselectedField.isPinned)) {
+    if (lastDeselectedField && !lastDeselectedField.isPinned) {
       const { qField } = lastDeselectedField.selections[0];
       lastDeselectedField.selections = [{ qField }];
       const wasIx = currStateItems.indexOf(lastDeselectedField);
@@ -93,11 +86,7 @@ const getItemsAndMore = ({
   }
   let newMoreItems = [];
   if (maxItems < newItems.length) {
-    if (isRefactoringEnabled) {
-      newMoreItems = newItems.splice(0, newItems.length - maxItems);
-    } else {
-      newMoreItems = newItems.splice(maxItems - newItems.length);
-    }
+    newMoreItems = newItems.splice(0, newItems.length - maxItems);
   }
   /* eslint-disable no-param-reassign */
   containerRef.items = newItems;
@@ -107,7 +96,7 @@ const getItemsAndMore = ({
   };
 };
 
-export default function SelectedFields({ api, app, halo }) {
+export default function SelectedFields({ api, app }) {
   const theme = useTheme();
   const [currentSelectionsModel] = useCurrentSelectionsModel(app);
   const [layout] = useLayout(currentSelectionsModel);
@@ -117,13 +106,10 @@ export default function SelectedFields({ api, app, halo }) {
 
   const { modalObjectStore } = useContext(InstanceContext).selectionStore;
   const [containerRef, containerRect] = useRect();
-  const flags = halo.public.galaxy?.flags;
-  const isPinFieldEnabled = flags?.isEnabled('TLV_1394_PIN_FIELD_TO_TOOLBAR');
-  const isRefactoringEnabled = flags?.isEnabled('TLV_1394_REFACTORING_SELECTIONS');
   const currentItems = useMemo(() => {
-    const items = isRefactoringEnabled ? getItems(layout).sort(sortSelections) : getItems(layout);
-    return isPinFieldEnabled ? sortAllFields(fieldList, pinnedItems, items, masterDimList) : items;
-  }, [layout, isRefactoringEnabled, fieldList, pinnedItems, masterDimList, isPinFieldEnabled]);
+    const items = getItems(layout).sort(sortSelections);
+    return sortAllFields(fieldList, pinnedItems, items, masterDimList);
+  }, [layout, fieldList, pinnedItems, masterDimList]);
   const maxItems = getMaxItems(containerRect);
 
   const isInListboxPopover = () => {
@@ -136,13 +122,11 @@ export default function SelectedFields({ api, app, halo }) {
     containerRef,
     maxItems,
     isInListboxPopover,
-    isPinFieldEnabled,
-    isRefactoringEnabled,
   });
 
   return (
     <Grid ref={containerRef} container gap={0} wrap="nowrap" style={{ height: '100%' }}>
-      {isRefactoringEnabled && more.length > 0 && (
+      {more.length > 0 && (
         <Grid
           item
           style={{
@@ -153,7 +137,7 @@ export default function SelectedFields({ api, app, halo }) {
             borderRight: `1px solid ${theme.palette.divider}`,
           }}
         >
-          <More items={more} api={api} isPinFieldEnabled={isPinFieldEnabled} />
+          <More items={more} api={api} />
         </Grid>
       )}
       {items.map((s, index) => (
@@ -169,27 +153,9 @@ export default function SelectedFields({ api, app, halo }) {
             borderRight: `1px solid ${theme.palette.divider}`,
           }}
         >
-          {s.states.length > 1 ? (
-            <MultiState field={s} api={api} isPinFieldEnabled={isPinFieldEnabled} />
-          ) : (
-            <OneField field={s} api={api} isPinFieldEnabled={isPinFieldEnabled} />
-          )}
+          {s.states.length > 1 ? <MultiState field={s} api={api} /> : <OneField field={s} api={api} />}
         </Grid>
       ))}
-      {!isRefactoringEnabled && more.length > 0 && (
-        <Grid
-          item
-          style={{
-            position: 'relative',
-            maxWidth: '98px',
-            minWidth: `${MIN_WIDTH_MORE}px`,
-            background: theme.palette.background.paper,
-            borderRight: `1px solid ${theme.palette.divider}`,
-          }}
-        >
-          <More items={more} api={api} />
-        </Grid>
-      )}
     </Grid>
   );
 }
