@@ -12,6 +12,7 @@ import * as useLayoutModule from '../../../hooks/useLayout';
 import * as useRectModule from '../../../hooks/useRect';
 import * as useFieldListModule from '../hooks/useFieldList';
 import * as useDimensionListModule from '../hooks/useDimenisonList';
+import * as usePinnedListModule from '../hooks/usePinnedList';
 import * as useModelModule from '../../../hooks/useModel';
 import * as useRpcModule from '../../../hooks/useRpc';
 import initSelectionStores from '../../../stores/new-selections-store';
@@ -26,8 +27,6 @@ jest.mock('@nebula.js/ui/theme', () => ({
 describe('<SelectedFields />', () => {
   let currentSelectionsModel;
   let useLayout;
-  let useFieldList;
-  let useDimensionList;
   let rect;
   let modalObjectStore;
   let render;
@@ -44,8 +43,6 @@ describe('<SelectedFields />', () => {
       id: 'current-selections',
     };
     useLayout = jest.fn();
-    useFieldList = jest.fn();
-    useDimensionList = jest.fn();
     modalObjectStore = {
       get: jest.fn().mockReturnValue(false),
       set: jest.fn(),
@@ -89,12 +86,9 @@ describe('<SelectedFields />', () => {
       },
       null,
     ]);
-    jest.spyOn(useFieldListModule, 'default').mockImplementation(useFieldList);
-    jest.spyOn(useDimensionListModule, 'default').mockImplementation(useDimensionList);
-
-    useFieldList.mockReturnValue([[]]);
-    useDimensionList.mockReturnValue([[]]);
-
+    jest.spyOn(useFieldListModule, 'default').mockImplementation(() => []);
+    jest.spyOn(useDimensionListModule, 'default').mockImplementation(() => []);
+    jest.spyOn(usePinnedListModule, 'default').mockImplementation(() => []);
     jest.spyOn(useRectModule, 'default').mockImplementation(() => [() => {}, rect]);
     jest.spyOn(useCurrentSelectionsModelModule, 'default').mockImplementation(() => [currentSelectionsModel]);
 

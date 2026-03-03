@@ -18,7 +18,6 @@ export default function OneField({
   skipHandleShowListBoxPopover = false,
   moreAlignTo = null,
   onClose = () => {},
-  isPinFieldEnabled = false,
 }) {
   const { translator } = useContext(InstanceContext);
   const alignTo = moreAlignTo || useRef();
@@ -28,7 +27,7 @@ export default function OneField({
   let ChildComponent = null;
   let selection;
   let displayName = '';
-  const isPinnedItem = !!field.isPinned && isPinFieldEnabled;
+  const isPinnedItem = !!field.isPinned;
 
   const handleShowListBoxPopover = (e) => {
     if (e.currentTarget.contains(e.target)) {
