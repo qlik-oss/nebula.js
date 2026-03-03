@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.6.0](https://github.com/qlik-oss/nebula.js/compare/v6.5.0...v6.6.0) (2026-03-03)
+
+### Bug Fixes
+
+- list box item focus border style ([#1898](https://github.com/qlik-oss/nebula.js/issues/1898)) ([111a678](https://github.com/qlik-oss/nebula.js/commit/111a6781aad1d0b90b726e48f2bfe08ddf0ad9ed))
+
 # [6.5.0](https://github.com/qlik-oss/nebula.js/compare/v6.4.0...v6.5.0) (2026-01-27)
 
 **Note:** Version bump only for package @nebula.js/ui

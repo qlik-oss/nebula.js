@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.6.0](https://github.com/qlik-oss/nebula.js/compare/v6.5.0...v6.6.0) (2026-03-03)
+
+### Bug Fixes
+
+- **deps:** update minor and patch ([#1907](https://github.com/qlik-oss/nebula.js/issues/1907)) ([2e674ac](https://github.com/qlik-oss/nebula.js/commit/2e674aca469b51de55bc0d352ff5f4d87ddb4d55))
+
 # [6.5.0](https://github.com/qlik-oss/nebula.js/compare/v6.4.0...v6.5.0) (2026-01-27)
 
 **Note:** Version bump only for package @nebula.js/locale

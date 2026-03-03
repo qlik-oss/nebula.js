@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.6.0](https://github.com/qlik-oss/nebula.js/compare/v6.5.0...v6.6.0) (2026-03-03)
+
+### Bug Fixes
+
+- announce content changes in the search input ([#1892](https://github.com/qlik-oss/nebula.js/issues/1892)) ([f131454](https://github.com/qlik-oss/nebula.js/commit/f13145490ad98399cec798d6bcf4a849594b45df))
+- **deps:** update minor and patch ([#1901](https://github.com/qlik-oss/nebula.js/issues/1901)) ([5a1e84e](https://github.com/qlik-oss/nebula.js/commit/5a1e84ef64554099ece0fb03ae7457dab063bb3a))
+- labels for lock/unlock in listbox popover ([#1893](https://github.com/qlik-oss/nebula.js/issues/1893)) ([515b0b7](https://github.com/qlik-oss/nebula.js/commit/515b0b7439c1c05dc4e7a8eac96cd3c32fdd53a5))
+- list box item focus border style ([#1898](https://github.com/qlik-oss/nebula.js/issues/1898)) ([111a678](https://github.com/qlik-oss/nebula.js/commit/111a6781aad1d0b90b726e48f2bfe08ddf0ad9ed))
+- **Listbox:** add proxy path to bg image QCB-33716 ([#1905](https://github.com/qlik-oss/nebula.js/issues/1905)) ([fc69191](https://github.com/qlik-oss/nebula.js/commit/fc69191f04a0cd16302ea7ca4b830332c1a90819))
+- move focus back to lock/unlock button after activating the button ([#1894](https://github.com/qlik-oss/nebula.js/issues/1894)) ([c950b96](https://github.com/qlik-oss/nebula.js/commit/c950b960721e12a90a820b45a2816ad50316999e))
+- rename dataHandler to propertyHandler ([#1900](https://github.com/qlik-oss/nebula.js/issues/1900)) ([39b8f3b](https://github.com/qlik-oss/nebula.js/commit/39b8f3b2e3666b31424d231d9b3e6065eec5f568))
+
 # [6.5.0](https://github.com/qlik-oss/nebula.js/compare/v6.4.0...v6.5.0) (2026-01-27)
 
 ### Bug Fixes
