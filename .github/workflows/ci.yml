@@ -53,10 +53,6 @@ jobs:
         env:
           JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
         run: yarn test:unit --coverage
-      - uses: qltysh/qlty-action/coverage@v2
-        with:
-          token: ${{ secrets.QLTY_COVERAGE_TOKEN }}
-          files: coverage/lcov.info
       - name: Store junit results
         uses: actions/upload-artifact@v7
         with:
