@@ -22,7 +22,7 @@ const getMaxFreqWidth = ({ sizes, frequencyMode, isGridMode }) => {
   return sizes.freqMaxWidth;
 };
 
-const getRowSelectionStyle = ({ theme, checkboxes, styles, selectionState }) => {
+const getRowSelectionStyle = ({ checkboxes, styles, selectionState }) => {
   if (checkboxes) {
     if (selectionState === 'selected') {
       return {
