@@ -40,10 +40,6 @@ const getRowSelectionStyle = ({ theme, checkboxes, styles, selectionState }) => 
   return {
     background: backgroundColor,
     color: contrastTextColor,
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder}`,
-      outline: 'none',
-    },
     '& $cell': {
       paddingRight: 0,
     },
@@ -99,19 +95,10 @@ const RowColRoot = styled('div', {
   };
 
   return {
-    '&:focus': {
-      boxShadow: `inset 0 0 0 2px ${theme.palette.custom.focusBorder} !important`,
-    },
-    '&:focus-visible': {
-      outline: 'none',
-    },
-
     '& .value': {
-      '&:focus': {
+      '&:focus-visible': {
         boxShadow: `inset 0 0 0 2px ${theme.palette.custom.newFocusBorder} !important`,
         borderRadius: '4px',
-      },
-      '&:focus-visible': {
         outline: 'none',
       },
     },
@@ -198,11 +185,9 @@ const RowColRoot = styled('div', {
     // Selection styles (S=Selected, XS=ExcludedSelected, A=Alternative, X=Excluded).
     [`& .${classes.S}`]: {
       ...rowSelectionStyle,
-      '&:focus': {
+      '&:focus-visible': {
         boxShadow: `inset 0 0 0 2px ${theme.palette.custom.newFocusBorder}, inset 0 0 0 4px ${theme.palette.custom.whiteBorder} !important`,
         borderRadius: '4px',
-      },
-      '&:focus-visible': {
         outline: 'none',
       },
       border: isGridMode ? 'none' : undefined,
