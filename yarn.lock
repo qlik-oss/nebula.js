@@ -14626,18 +14626,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-diff@npm:^29.6.4":
-  version: 29.6.4
-  resolution: "jest-diff@npm:29.6.4"
-  dependencies:
-    chalk: "npm:^4.0.0"
-    diff-sequences: "npm:^29.6.3"
-    jest-get-type: "npm:^29.6.3"
-    pretty-format: "npm:^29.6.3"
-  checksum: 10c0/5f96be0f15ba8e70acfa5512ca49ba67363678e7ce222889612385a8d9dd042822fdd22a514394fe726b1f462e605bc5d7fc130bd81fa2247e7d40413975d576
-  languageName: node
-  linkType: hard
-
 "jest-diff@npm:^29.7.0":
   version: 29.7.0
   resolution: "jest-diff@npm:29.7.0"
@@ -14759,13 +14747,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-location-mock@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "jest-location-mock@npm:2.0.0"
+"jest-location-mock@npm:^3.0.0":
+  version: 3.0.0
+  resolution: "jest-location-mock@npm:3.0.0"
   dependencies:
     "@jedmao/location": "npm:^3.0.0"
-    jest-diff: "npm:^29.6.4"
-  checksum: 10c0/fba4bfbeadf457dc3efa3c129c5baf09deaa78e789a06bc01a5cdcd8ef29bb9f8e287e813a9c0a500ee8587725bdda6950a4fcd2ede1a05d431ad8518f2f1027
+  peerDependencies:
+    "@jest/globals": ^30.0.0
+  checksum: 10c0/164446575a635d7397186edf1ac00df34c1dd85ad09b3b87d163f9d50f1b6ff3a713a7cf908e22d454498aaee5601577158c9ea1364affad47c4ea101e70d910
   languageName: node
   linkType: hard
 
@@ -18642,17 +18631,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"pretty-format@npm:^29.6.3":
-  version: 29.6.3
-  resolution: "pretty-format@npm:29.6.3"
-  dependencies:
-    "@jest/schemas": "npm:^29.6.3"
-    ansi-styles: "npm:^5.0.0"
-    react-is: "npm:^18.0.0"
-  checksum: 10c0/73c6a46acdad4cb9337add02c850769fb831d7154cdb50b1152f3970a8fbf8292188dcccd1ba597f3e34c360af71fc0b63f1db4cf155a0098ffe2812eb7a6b22
-  languageName: node
-  linkType: hard
-
 "pretty-format@npm:^29.7.0":
   version: 29.7.0
   resolution: "pretty-format@npm:29.7.0"
@@ -19946,7 +19924,7 @@ __metadata:
     jest: "npm:^29.7.0"
     jest-environment-jsdom: "npm:^29.7.0"
     jest-junit: "npm:^16.0.0"
-    jest-location-mock: "npm:^2.0.0"
+    jest-location-mock: "npm:^3.0.0"
     jimp: "npm:^1.6.0"
     lerna: "npm:9.0.5"
     lint-staged: "npm:^16.3.2"
