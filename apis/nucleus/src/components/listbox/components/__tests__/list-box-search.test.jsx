@@ -183,8 +183,8 @@ describe('<ListBoxSearch />', () => {
     });
     expect(model.acceptListObjectSearch).toHaveBeenCalledWith('/qListObjectDef', true);
     expect(type.props.value).toBe('');
-    expect(selectionState.clearItemStates).toBeCalledTimes(1);
-    expect(selectionState.clearItemStates).toBeCalledWith(false);
+    expect(selectionState.clearItemStates).toHaveBeenCalledTimes(1);
+    expect(selectionState.clearItemStates).toHaveBeenCalledWith(false);
   });
 
   test('should not accept search result if no hits', async () => {
