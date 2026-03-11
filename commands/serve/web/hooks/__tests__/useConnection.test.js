@@ -1,4 +1,5 @@
 import { renderHook, act } from '@testing-library/react';
+import * as ReactRouter from 'react-router';
 import {
   useConnection,
   handleConnectionSuccess,
@@ -11,9 +12,54 @@ import getCsrfToken from '../../utils/getCsrfToken';
 
 jest.mock('../../utils/getCsrfToken', () => jest.fn());
 
-// TODO: Fix JSDOM WebSocket cleanup issue with Jest 30
-// Error: Cannot read properties of undefined (reading 'delete') at WebSocket-impl.js:229
-describe.skip('useConnection Module', () => {
+// Mock useLocation to control the pathname
+jest.mock('react-router', () => ({
+  ...jest.requireActual('react-router'),
+  useLocation: jest.fn(),
+}));
+
+// Workaround for JSDOM WebSocket cleanup bug: https://github.com/jsdom/jsdom/issues/3816
+// Mock WebSocket to avoid cleanup errors in Jest 30 + JSDOM 26
+class MockWebSocket {
+  constructor(url) {
+    this.url = url;
+    this.readyState = MockWebSocket.CONNECTING;
+    setTimeout(() => {
+      this.readyState = MockWebSocket.OPEN;
+      if (this.onopen) this.onopen();
+    }, 0);
+  }
+
+  send() {
+    // Mock send - validate connection state
+    if (this.readyState !== MockWebSocket.OPEN) {
+      throw new Error('WebSocket is not open');
+    }
+  }
+
+  close() {
+    this.readyState = MockWebSocket.CLOSED;
+    if (this.onclose) this.onclose();
+  }
+
+  addEventListener(event, handler) {
+    this[`on${event}`] = handler;
+  }
+
+  removeEventListener(event) {
+    // Mock cleanup - remove listener
+    delete this[`on${event}`];
+  }
+}
+
+MockWebSocket.CONNECTING = 0;
+MockWebSocket.OPEN = 1;
+MockWebSocket.CLOSING = 2;
+MockWebSocket.CLOSED = 3;
+
+global.WebSocket = MockWebSocket;
+
+describe('useConnection Module', () => {
   let connectMock;
   let renderResult;
   let info;
@@ -35,6 +81,9 @@ describe.skip('useConnection Module', () => {
 
     jest.spyOn(connectModule, 'connect').mockImplementation(connectMock);
     getCsrfToken.mockResolvedValue('A-CSRF-TOKEN');
+
+    // Default mock for useLocation - can be overridden in individual tests
+    ReactRouter.useLocation.mockReturnValue({ pathname: '/' });
   });
 
   afterEach(() => {
@@ -82,7 +131,7 @@ describe.skip('useConnection Module', () => {
     });
 
     test('should not proceed in any flow and NOT cache the provided connection if info was invalid', async () => {
-      window.location.assign('/some-other-route');
+      ReactRouter.useLocation.mockReturnValue({ pathname: '/some-other-route' });
       info = { engineUrl: 'someEngineUrl#01', invalid: true };
 
       await act(async () => {
@@ -97,7 +146,7 @@ describe.skip('useConnection Module', () => {
     });
 
     test('should proceed in success flow and cache the provided connection successfully', async () => {
-      window.location.assign('/some-other-route');
+      ReactRouter.useLocation.mockReturnValue({ pathname: '/some-other-route' });
       info = { engineUrl: 'someEngineUrl#01' };
 
       await act(async () => {
