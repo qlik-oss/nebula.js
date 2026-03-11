@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-import-assign */
 import React from 'react';
@@ -78,7 +77,6 @@ describe('<MultiState />', () => {
     };
     render = async (rendererOptions = null) => {
       await act(async () => {
-        // eslint-disable-next-line react/jsx-props-no-spreading
         renderer = create(
           <InstanceContext.Provider value={{ translator: { get: () => '' } }}>
             <MultiState field={field} api={api} />

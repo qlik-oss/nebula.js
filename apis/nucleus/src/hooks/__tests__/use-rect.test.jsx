@@ -14,18 +14,26 @@ const TestHook = forwardRef(({ hook, hookProps = [] }, ref) => {
 describe('useRect - window resize', () => {
   let addEventListener;
   let removeEventListener;
-  let windowSpy;
+  let originalAddEventListener;
+  let originalRemoveEventListener;
+  let originalResizeObserver;
   let renderer;
   let render;
   let ref;
   beforeEach(() => {
-    windowSpy = jest.spyOn(window, 'window', 'get');
+    // Store originals
+    originalAddEventListener = window.addEventListener;
+    originalRemoveEventListener = window.removeEventListener;
+    originalResizeObserver = global.ResizeObserver;
+
+    // Remove ResizeObserver to force window resize path
+    delete global.ResizeObserver;
+
+    // Mock window add/remove methods
     addEventListener = jest.fn();
     removeEventListener = jest.fn();
-    windowSpy.mockImplementation(() => ({
-      addEventListener,
-      removeEventListener,
-    }));
+    window.addEventListener = addEventListener;
+    window.removeEventListener = removeEventListener;
 
     ref = React.createRef();
     render = async (rendererOptions = null) => {
@@ -36,7 +44,10 @@ describe('useRect - window resize', () => {
   });
 
   afterEach(() => {
-    windowSpy.mockRestore();
+    // Restore originals
+    window.addEventListener = originalAddEventListener;
+    window.removeEventListener = originalRemoveEventListener;
+    global.ResizeObserver = originalResizeObserver;
     jest.resetAllMocks();
     jest.restoreAllMocks();
   });

@@ -1,4 +1,3 @@
-/* eslint-disable no-underscore-dangle */
 import glueSheet from './components/sheetGlue';
 import validatePlugins from './plugins/plugins';
 import getPatches from './utils/patcher';

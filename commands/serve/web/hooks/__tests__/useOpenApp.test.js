@@ -75,9 +75,9 @@ describe('useOpenApp()', () => {
       renderResult = renderHook(() => useOpenApp({ info: null }));
     });
 
-    expect(enigmaCreateMock).not.toBeCalled();
-    expect(enigmaOpenMock).not.toBeCalled();
-    expect(enigmaOpenDocMock).not.toBeCalled();
+    expect(enigmaCreateMock).not.toHaveBeenCalled();
+    expect(enigmaOpenMock).not.toHaveBeenCalled();
+    expect(enigmaOpenDocMock).not.toHaveBeenCalled();
   });
 
   test('should return expected result from hook when tring to connect with localhost', async () => {

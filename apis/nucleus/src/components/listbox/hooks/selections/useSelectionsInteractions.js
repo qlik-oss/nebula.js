@@ -42,7 +42,6 @@ export default function useSelectionsInteractions({
     };
   }, [loaderRef.current?._listRef?._outerRef]);
 
-  // eslint-disable-next-line arrow-body-style
   const doSelect = async () => {
     if (selectionState.selectDisabled?.()) {
       return false;

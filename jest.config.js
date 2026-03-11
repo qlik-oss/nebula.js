@@ -58,6 +58,7 @@ const config = {
   moduleNameMapper: {
     'd3-color': '<rootDir>/node_modules/d3-color/dist/d3-color.min.js',
   },
+  modulePathIgnorePatterns: ['<rootDir>/local-dev/.*/.yalc/'],
 };
 
 export default config;

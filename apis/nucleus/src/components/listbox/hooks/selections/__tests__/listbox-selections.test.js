@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import * as listboxSelections from '../listbox-selections';
 
 describe('use-listbox-interactions', () => {

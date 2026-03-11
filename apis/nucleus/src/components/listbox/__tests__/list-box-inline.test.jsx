@@ -1,7 +1,5 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-import-assign */
-/* eslint-disable array-callback-return */
-/* eslint-disable import/first */
+
 import React, { act } from 'react';
 import { createTheme, ThemeProvider } from '@nebula.js/ui/theme';
 import * as unlockModule from '@nebula.js/ui/icons/unlock';

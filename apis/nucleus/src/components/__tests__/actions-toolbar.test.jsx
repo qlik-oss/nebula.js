@@ -1,5 +1,5 @@
 /* eslint-disable react/jsx-props-no-spreading */
-/* eslint-disable react/jsx-no-constructed-context-values */
+
 /* eslint-disable no-use-before-define */
 /* eslint-disable no-import-assign */
 /* eslint-disable no-underscore-dangle */

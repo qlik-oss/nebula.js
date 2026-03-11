@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-import-assign */
 import React from 'react';
 import renderer, { act } from 'react-test-renderer';
@@ -183,8 +182,8 @@ describe('<ListBoxSearch />', () => {
     });
     expect(model.acceptListObjectSearch).toHaveBeenCalledWith('/qListObjectDef', true);
     expect(type.props.value).toBe('');
-    expect(selectionState.clearItemStates).toBeCalledTimes(1);
-    expect(selectionState.clearItemStates).toBeCalledWith(false);
+    expect(selectionState.clearItemStates).toHaveBeenCalledTimes(1);
+    expect(selectionState.clearItemStates).toHaveBeenCalledWith(false);
   });
 
   test('should not accept search result if no hits', async () => {

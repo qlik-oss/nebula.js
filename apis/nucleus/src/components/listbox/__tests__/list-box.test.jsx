@@ -105,7 +105,7 @@ describe('<Listbox />', () => {
 
     jest.spyOn(reactWindowInfiniteLoaderModule, 'default').mockImplementation((props) => {
       const Component = props.children;
-      // eslint-disable-next-line react/jsx-props-no-spreading
+
       return Component({ ...props, onItemsRendered: jest.fn() });
     });
 

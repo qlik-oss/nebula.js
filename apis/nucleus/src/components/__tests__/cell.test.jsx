@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-/* eslint-disable react/jsx-no-constructed-context-values */
+
 /* eslint-disable no-import-assign */
 import React from 'react';
 import { create, act } from 'react-test-renderer';
