@@ -14,7 +14,6 @@
   "main": "dist/hello-react.js",
   "scripts": {
     "build": "nebula build",
-    "lint": "eslint src",
     "start": "nebula serve"
   },
   "peerDependencies": {
@@ -24,12 +23,6 @@
     "@nebula.js/cli": "latest",
     "@nebula.js/cli-build": "latest",
     "@nebula.js/cli-serve": "latest",
-    "eslint": "8.40.0",
-    "eslint-config-airbnb": "19.0.4",
-    "eslint-plugin-import": "2.27.5",
-    "eslint-plugin-jsx-a11y": "6.7.1",
-    "eslint-plugin-mocha": "10.1.0",
-    "eslint-plugin-react": "7.32.2",
     "react": "18.2.0",
     "react-dom": "18.2.0"
   }
