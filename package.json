@@ -107,7 +107,21 @@
     "minimatch@npm:9.0.3": "^9.0.7",
     "tar@7.x": "^7.5.11",
     "tar@npm:7.4.3": "^7.5.11",
-    "tar@npm:7.5.8": "^7.5.11"
+    "tar@npm:7.5.8": "^7.5.11",
+    "ws": "^8.17.1",
+    "semver@5.x": "^5.7.2",
+    "semver@npm:5.7.1": "^5.7.2",
+    "semver@6.x": "^6.3.1",
+    "semver@npm:6.3.0": "^6.3.1",
+    "normalize-package-data/semver": "^5.7.2",
+    "make-dir/semver": "^5.7.2",
+    "@babel/core/semver": "^6.3.1",
+    "@babel/helper-compilation-targets/semver": "^6.3.1",
+    "eslint-config-airbnb-base/semver": "^6.3.1",
+    "istanbul-lib-instrument/semver": "^6.3.1",
+    "serialize-javascript": "^7.0.3",
+    "axios": "^1.13.5",
+    "cross-spawn": "^7.0.5"
   },
   "workspaces": [
     "packages/*",
