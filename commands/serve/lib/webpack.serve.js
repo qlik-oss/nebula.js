@@ -235,7 +235,6 @@ module.exports = async ({
   let initiated = false;
 
   return new Promise((resolve) => {
-    // eslint-disable-line consistent-return
     compiler.hooks.done.tap('nebula serve', (stats) => {
       if (!initiated) {
         initiated = true;

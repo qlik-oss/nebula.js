@@ -80,7 +80,7 @@ describe('<Supernova />', () => {
   });
   test('should render', async () => {
     let initialRenderResolve;
-    // eslint-disable-next-line no-new
+
     const initialRender = new Promise((resolve) => {
       initialRenderResolve = resolve;
     });

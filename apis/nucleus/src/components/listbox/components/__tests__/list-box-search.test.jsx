@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-no-constructed-context-values */
 /* eslint-disable no-import-assign */
 import React from 'react';
 import renderer, { act } from 'react-test-renderer';

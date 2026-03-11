@@ -178,7 +178,6 @@ module.exports = async (argv) => {
     process.on(signal, close);
   });
 
-  // eslint-disable-next-line consistent-return
   return {
     url: server.url,
     close,

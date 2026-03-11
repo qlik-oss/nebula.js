@@ -2,7 +2,7 @@
 import extend from 'extend';
 
 // To cover test
-// eslint-disable-next-line no-undef
+
 const crt = globalThis.crypto || { getRandomValues: () => 123456 };
 
 // https://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid

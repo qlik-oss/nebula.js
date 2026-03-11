@@ -143,7 +143,7 @@ function flushMacro(hooks) {
   flushPending(hooks.pendingEffects);
   hooks.macro = null;
 
-  maybeEndChain(hooks); // eslint-disable-line no-use-before-define
+  maybeEndChain(hooks);
 }
 
 function maybeEndChain(hooks) {
@@ -957,7 +957,6 @@ export function useAction(fn, deps) {
 export function useConstraints() {
   if (__NEBULA_DEV__) {
     if (currentComponent.__hooks.contraintsWarning) {
-      // eslint-disable-next-line no-console
       console.warn(
         'useContraints has been deprecated, please change to useInteractions instead. Note that interactions uses inverted values compared to contraints.'
       );

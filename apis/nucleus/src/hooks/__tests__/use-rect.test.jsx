@@ -25,10 +25,10 @@ describe('useRect - window resize', () => {
     originalAddEventListener = window.addEventListener;
     originalRemoveEventListener = window.removeEventListener;
     originalResizeObserver = global.ResizeObserver;
-    
+
     // Remove ResizeObserver to force window resize path
     delete global.ResizeObserver;
-    
+
     // Mock window add/remove methods
     addEventListener = jest.fn();
     removeEventListener = jest.fn();
