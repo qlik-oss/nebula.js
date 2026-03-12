@@ -1,13 +1,18 @@
 /* eslint-disable no-console */
-const path = require('path');
-const fs = require('fs');
-const { execSync } = require('child_process');
-const chalk = require('chalk');
-const fse = require('fs-extra');
-const ejs = require('ejs');
-const inquirer = require('inquirer');
+import path from 'path';
+import fs from 'fs';
+import { execSync } from 'child_process';
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+import chalk from 'chalk';
+import fse from 'fs-extra';
+import ejs from 'ejs';
+import inquirer from 'inquirer';
 
+const require = createRequire(import.meta.url);
 const pkg = require('../package.json');
+
+const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
 const hasYarn = () => {
   try {
@@ -63,7 +68,7 @@ const create = async (argv) => {
   const packageName = name.split('/').slice(-1)[0];
 
   const cwd = process.cwd();
-  const templatesRoot = path.resolve(__dirname, '..', 'templates');
+  const templatesRoot = path.resolve(moduleDir, '..', 'templates');
   const destination = path.resolve(cwd, projectFolder);
 
   let options = {
@@ -190,4 +195,4 @@ const create = async (argv) => {
   await end();
 };
 
-module.exports = create;
+export default create;

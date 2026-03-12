@@ -25,4 +25,4 @@ function checkNodeVersion(pkg) {
   }
 }
 
-module.exports = checkNodeVersion;
+export default checkNodeVersion;

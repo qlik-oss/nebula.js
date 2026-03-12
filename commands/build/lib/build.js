@@ -1,13 +1,13 @@
-/* eslint-disable no-console */
-const path = require('path');
-const extend = require('extend');
-const yargs = require('yargs');
-const rollup = require('rollup');
+/* eslint-disable no-console, import/extensions */
+import path from 'path';
+import extend from 'extend';
+import yargs from 'yargs/yargs';
+import * as rollup from 'rollup';
 
-const initConfig = require('./init-config');
-const config = require('./config');
-const watch = require('./watch');
-const systemjsBehaviours = require('./systemjs');
+import initConfig from './init-config.js';
+import config from './config.js';
+import watch from './watch.js';
+import systemjsBehaviours from './systemjs.js';
 
 const umd = async (argv) => {
   const c = config({
@@ -89,4 +89,4 @@ async function build(argv = {}) {
   return undefined;
 }
 
-module.exports = build;
+export default build;
