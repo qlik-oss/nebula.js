@@ -53,6 +53,16 @@ const cfg = ({ srcDir = path.resolve(moduleDir, '../dist'), serveConfig = {} }) 
         fixtures: path.resolve(process.cwd(), serveConfig.fixturePath),
       },
     },
+    module: {
+      rules: [
+        {
+          test: /\.m?js$/,
+          resolve: {
+            fullySpecified: false,
+          },
+        },
+      ],
+    },
     plugins: [
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eRender.html'),

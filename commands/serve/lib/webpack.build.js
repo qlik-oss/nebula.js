@@ -48,6 +48,12 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
     module: {
       rules: [
         {
+          test: /\.m?js$/,
+          resolve: {
+            fullySpecified: false,
+          },
+        },
+        {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],
         },
