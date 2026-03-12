@@ -3,6 +3,13 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.7.0](https://github.com/qlik-oss/nebula.js/compare/v6.6.0...v6.7.0) (2026-03-12)
+
+### Bug Fixes
+
+- **deps:** update dependency ejs to v5 ([#1924](https://github.com/qlik-oss/nebula.js/issues/1924)) ([11a534a](https://github.com/qlik-oss/nebula.js/commit/11a534a8a74055927984d22b2b62b4b9e41af5eb))
+- **deps:** update minor and patch ([#1919](https://github.com/qlik-oss/nebula.js/issues/1919)) ([99933e4](https://github.com/qlik-oss/nebula.js/commit/99933e46b48259827b04f3f5167271cbbe2497b0))
+
 # [6.6.0](https://github.com/qlik-oss/nebula.js/compare/v6.5.0...v6.6.0) (2026-03-03)
 
 **Note:** Version bump only for package @nebula.js/cli-create

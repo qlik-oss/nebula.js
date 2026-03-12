@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.7.0](https://github.com/qlik-oss/nebula.js/compare/v6.6.0...v6.7.0) (2026-03-12)
+
+### Bug Fixes
+
+- **deps:** update dependency @rollup/plugin-babel to v7 ([#1921](https://github.com/qlik-oss/nebula.js/issues/1921)) ([05077d4](https://github.com/qlik-oss/nebula.js/commit/05077d417496916642fd6dbad87f41bf0f235df2))
+- **deps:** update dependency @rollup/plugin-terser to v1 ([#1922](https://github.com/qlik-oss/nebula.js/issues/1922)) ([f119b5b](https://github.com/qlik-oss/nebula.js/commit/f119b5bc47c1f5d06a9066bf773f14b7e8664679))
+- **deps:** update minor and patch ([#1919](https://github.com/qlik-oss/nebula.js/issues/1919)) ([99933e4](https://github.com/qlik-oss/nebula.js/commit/99933e46b48259827b04f3f5167271cbbe2497b0))
+
 # [6.6.0](https://github.com/qlik-oss/nebula.js/compare/v6.5.0...v6.6.0) (2026-03-03)
 
 ### Bug Fixes

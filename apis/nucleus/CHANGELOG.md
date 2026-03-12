@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.7.0](https://github.com/qlik-oss/nebula.js/compare/v6.6.0...v6.7.0) (2026-03-12)
+
+### Bug Fixes
+
+- remove focus border on mouse click ([#1925](https://github.com/qlik-oss/nebula.js/issues/1925)) ([d7401fd](https://github.com/qlik-oss/nebula.js/commit/d7401fde87ad1324f2b8ce628782f8db70fdcc2e))
+
 # [6.6.0](https://github.com/qlik-oss/nebula.js/compare/v6.5.0...v6.6.0) (2026-03-03)
 
 ### Bug Fixes
