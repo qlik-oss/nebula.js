@@ -13,18 +13,11 @@
     "type": "git",
     "url": "https://github.com/qlik-oss/nebula.js.git"
   },
-  "main": "lib/serve.cjs",
+  "main": "lib/serve.js",
   "exports": {
-    ".": {
-      "import": "./lib/serve.js",
-      "require": "./lib/serve.cjs"
-    },
-    "./command": "./command.js",
+    ".": "./lib/serve.js",
     "./command.js": "./command.js",
-    "./lib/snapshot-server": {
-      "import": "./lib/snapshot-server.js",
-      "require": "./lib/snapshot-server.cjs"
-    }
+    "./lib/snapshot-server": "./lib/snapshot-server.js"
   },
   "files": [
     "assets",
