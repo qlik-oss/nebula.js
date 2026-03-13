@@ -1,5 +1,12 @@
-const fs = require('fs');
-const path = require('path');
+/* eslint-disable import/extensions */
+import fs from 'fs';
+import path from 'path';
+import { createRequire } from 'module';
+import { visualizer } from 'rollup-plugin-visualizer';
+
+import resolveNative from './resolveNative.js';
+
+const require = createRequire(import.meta.url);
 const babel = require('@rollup/plugin-babel');
 const postcss = require('rollup-plugin-postcss');
 const replace = require('@rollup/plugin-replace');
@@ -8,12 +15,9 @@ const { nodeResolve } = require('@rollup/plugin-node-resolve');
 const commonjs = require('@rollup/plugin-commonjs');
 const terser = require('@rollup/plugin-terser');
 const babelPreset = require('@babel/preset-env');
-const { visualizer } = require('rollup-plugin-visualizer');
 const browsersList = require('@qlik/browserslist-config');
 const babelPresetReact = require('@babel/preset-react');
 const babelPresetTypescript = require('@babel/preset-typescript');
-
-const resolveNative = require('./resolveNative');
 
 const resolveReplacementStrings = (replacementStrings) => {
   if (typeof replacementStrings !== 'object') {
@@ -238,4 +242,4 @@ const config = ({
   };
 };
 
-module.exports = config;
+export default config;

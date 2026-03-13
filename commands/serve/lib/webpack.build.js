@@ -1,14 +1,19 @@
-const path = require('path');
-const crypto = require('crypto');
-const webpack = require('webpack');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import path from 'path';
+import crypto from 'crypto';
+import webpack from 'webpack';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import { createRequire } from 'module';
+import { fileURLToPath } from 'url';
+
+const require = createRequire(import.meta.url);
+const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
 const babelPath = require.resolve('babel-loader');
 const babelPresetEnvPath = require.resolve('@babel/preset-env');
 const babelPresetReactPath = require.resolve('@babel/preset-react');
 const sourceMapLoaderPath = require.resolve('source-map-loader');
 
-const favicon = path.resolve(__dirname, '../../../docs/assets/njs.png');
+const favicon = path.resolve(moduleDir, '../../../docs/assets/njs.png');
 
 const { version } = require('../package.json');
 
@@ -20,7 +25,7 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
     entry: {
       eRender: [path.resolve(srcDir, 'eRender')],
       eHub: [path.resolve(srcDir, 'eHub')],
-      fixtures: [path.resolve(__dirname, './fixtures.js')],
+      fixtures: [path.resolve(moduleDir, './fixtures.js')],
     },
     devtool: 'source-map',
     output: {
@@ -30,18 +35,24 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
     },
     resolve: {
       alias: {
-        '@nebula.js/stardust': path.resolve(__dirname, '../../../apis/stardust/src'),
-        '@nebula.js/snapshooter/client': path.resolve(__dirname, '../../../apis/snapshooter/src/renderer'),
-        '@nebula.js/theme': path.resolve(__dirname, '../../../apis/theme/src'),
-        '@nebula.js/conversion': path.resolve(__dirname, '../../../apis/conversion/src'),
-        '@nebula.js/locale/all.json$': path.resolve(__dirname, '../../../apis/locale/all.json'),
-        '@nebula.js/locale': path.resolve(__dirname, '../../../apis/locale/src'),
+        '@nebula.js/stardust': path.resolve(moduleDir, '../../../apis/stardust/src'),
+        '@nebula.js/snapshooter/client': path.resolve(moduleDir, '../../../apis/snapshooter/src/renderer'),
+        '@nebula.js/theme': path.resolve(moduleDir, '../../../apis/theme/src'),
+        '@nebula.js/conversion': path.resolve(moduleDir, '../../../apis/conversion/src'),
+        '@nebula.js/locale/all.json$': path.resolve(moduleDir, '../../../apis/locale/all.json'),
+        '@nebula.js/locale': path.resolve(moduleDir, '../../../apis/locale/src'),
         fixtures: path.resolve(process.cwd(), serveConfig.fixturePath || ''),
       },
       extensions: ['.dev.js', '.js', '.jsx'],
     },
     module: {
       rules: [
+        {
+          test: /\.m?js$/,
+          resolve: {
+            fullySpecified: false,
+          },
+        },
         {
           test: /\.css$/,
           use: ['style-loader', 'css-loader'],
@@ -107,12 +118,12 @@ const cfg = ({ srcDir, distDir, dev = false, serveConfig = {} }) => {
   return config;
 };
 
-if (!process.env.DEFAULTS) {
-  module.exports = cfg;
-} else {
-  module.exports = cfg({
-    srcDir: path.resolve(__dirname, '../web'),
-    distDir: path.resolve(__dirname, '../dist'),
-    dev: process.env.NODE_ENV !== 'production',
-  });
-}
+const defaultExport = !process.env.DEFAULTS
+  ? cfg
+  : cfg({
+      srcDir: path.resolve(moduleDir, '../web'),
+      distDir: path.resolve(moduleDir, '../dist'),
+      dev: process.env.NODE_ENV !== 'production',
+    });
+
+export default defaultExport;

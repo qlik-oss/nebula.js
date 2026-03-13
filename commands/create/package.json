@@ -2,6 +2,7 @@
   "name": "@nebula.js/cli-create",
   "version": "6.7.0",
   "description": "",
+  "type": "module",
   "license": "MIT",
   "author": "QlikTech International AB",
   "keywords": [],

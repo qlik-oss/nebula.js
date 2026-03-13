@@ -1,18 +1,22 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+/* eslint-disable import/extensions */
+import path from 'path';
+import { fileURLToPath } from 'url';
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+
+const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
 const isSrc = /^([.]{2}\/)/;
 const namespace = /^webpack:\/\/([^/]+)\//;
 const NM = /node_modules/;
 const WP = /\/\(?webpack\)?/;
 
-const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) => {
+const cfg = ({ srcDir = path.resolve(moduleDir, '../dist'), serveConfig = {} }) => {
   const folderName = process.cwd().split('/').slice(-1)[0];
 
   const config = {
     mode: 'development',
     entry: {
-      fixtures: [path.resolve(__dirname, './fixtures.js')],
+      fixtures: [path.resolve(moduleDir, './fixtures.js')],
     },
     devtool: false,
     infrastructureLogging: {
@@ -49,6 +53,16 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
         fixtures: path.resolve(process.cwd(), serveConfig.fixturePath),
       },
     },
+    module: {
+      rules: [
+        {
+          test: /\.m?js$/,
+          resolve: {
+            fullySpecified: false,
+          },
+        },
+      ],
+    },
     plugins: [
       new HtmlWebpackPlugin({
         template: path.resolve(srcDir, 'eRender.html'),
@@ -64,4 +78,4 @@ const cfg = ({ srcDir = path.resolve(__dirname, '../dist'), serveConfig = {} }) 
   return config;
 };
 
-module.exports = cfg;
+export default cfg;

@@ -1,4 +1,5 @@
-const create = require('./lib/create');
+/* eslint-disable import/extensions */
+import create from './lib/create.js';
 
 const mashup = {
   command: 'mashup <name>',
@@ -14,7 +15,7 @@ const mashup = {
   },
 };
 
-module.exports = {
+export default {
   command: 'create <name>',
   desc: 'Create a visualization',
   builder(yargs) {
