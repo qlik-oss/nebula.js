@@ -1,11 +1,14 @@
-/* eslint-disable no-console */
-const path = require('path');
-const readline = require('readline');
-const chalk = require('chalk');
-const rollup = require('rollup');
+/* eslint-disable no-console, import/extensions */
+import path from 'path';
+import readline from 'readline';
+import { createRequire } from 'module';
+import chalk from 'chalk';
+import * as rollup from 'rollup';
 
-const config = require('./config');
-const systemjsBehaviours = require('./systemjs');
+import config from './config.js';
+import systemjsBehaviours from './systemjs.js';
+
+const require = createRequire(import.meta.url);
 
 const getPackage = (argv, cwd = process.cwd()) => require(path.resolve(argv.cwd || cwd, 'package.json')); // eslint-disable-line
 
@@ -119,4 +122,4 @@ const watch = async (argv) => {
   });
 };
 
-module.exports = watch;
+export default watch;

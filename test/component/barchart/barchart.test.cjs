@@ -1,13 +1,14 @@
 const path = require('path');
-const serve = require('@nebula.js/cli-serve');
 const { test, expect } = require('@playwright/test');
 
 const snSelector = '.njs-viz';
 
 test.describe('bar chart', () => {
   let s;
+  let serve;
 
   test.beforeAll(async () => {
+    ({ default: serve } = await import('@nebula.js/cli-serve'));
     s = await serve({
       entry: path.resolve(__dirname, 'sn-barchart'),
       config: 'nebula.config.cjs',

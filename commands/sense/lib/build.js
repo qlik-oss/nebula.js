@@ -1,19 +1,24 @@
-/* eslint-disable no-console */
-const path = require('path');
-const fs = require('fs-extra');
+/* eslint-disable no-console, import/extensions */
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { createRequire } from 'module';
+import fs from 'fs-extra';
 
-const rollup = require('rollup');
-const { nodeResolve } = require('@rollup/plugin-node-resolve');
-const common = require('@rollup/plugin-commonjs');
-const babel = require('@rollup/plugin-babel');
-const terser = require('@rollup/plugin-terser');
+import * as rollup from 'rollup';
+import { nodeResolve } from '@rollup/plugin-node-resolve';
+import common from '@rollup/plugin-commonjs';
+import babel from '@rollup/plugin-babel';
+import terser from '@rollup/plugin-terser';
+
+const require = createRequire(import.meta.url);
+const moduleDir = path.dirname(fileURLToPath(import.meta.url));
 
 async function build(argv) {
   const cwd = process.cwd();
 
-  const supernovaPkg = require(path.resolve(cwd, 'package.json')); // eslint-disable-line
+  const supernovaPkg = require(path.resolve(cwd, 'package.json'));
 
-  let extName = supernovaPkg.name.split('/').reverse()[0]; // replace(/\//, '-').replace('@', '');
+  let extName = supernovaPkg.name.split('/').reverse()[0];
 
   const { main } = supernovaPkg;
 
@@ -32,7 +37,7 @@ async function build(argv) {
   const createQextFiles = () => {
     const qext = supernovaPkg.qext || {};
     if (argv.meta) {
-      const meta = require(path.resolve(cwd, argv.meta)); // eslint-disable-line
+      const meta = require(path.resolve(cwd, argv.meta));
       Object.assign(qext, meta);
     }
     const contents = {
@@ -46,7 +51,7 @@ async function build(argv) {
       supernova: true,
     };
 
-    let qextjs = fs.readFileSync(path.resolve(__dirname, extDefinition ? '../src/ext.js' : '../src/empty-ext.js'), {
+    let qextjs = fs.readFileSync(path.resolve(moduleDir, extDefinition ? '../src/ext.js' : '../src/empty-ext.js'), {
       encoding: 'utf8',
     });
     qextjs = qextjs.replace('{{DIST}}', `./${main.replace(/^[./]*/, '').replace(/\.js$/, '')}`);
@@ -129,4 +134,4 @@ async function build(argv) {
   createQextFiles();
 }
 
-module.exports = build;
+export default build;

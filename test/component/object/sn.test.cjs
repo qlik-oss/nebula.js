@@ -1,4 +1,3 @@
-const serve = require('@nebula.js/cli-serve');
 const { test, expect } = require('@playwright/test');
 
 const snSelector = '.njs-viz';
@@ -6,8 +5,10 @@ const errorSelector = '.njs-cell [data-tid="error-title"]';
 
 test.describe('sn', () => {
   let s;
+  let serve;
 
   test.beforeAll(async () => {
+    ({ default: serve } = await import('@nebula.js/cli-serve'));
     s = await serve({
       open: false,
       config: 'nebula.config.cjs',
