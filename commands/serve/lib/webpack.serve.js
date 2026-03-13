@@ -241,14 +241,31 @@ export default async ({
       if (!initiated) {
         initiated = true;
 
-        console.log(`     _  _________  __  ____   ___
+        const banner = `
+     _  _________  __  ____   ___
     / |/ / __/ _ )/ / / / /  / _ |
    /    / _// _  / /_/ / /__/ __ |
   /_/|_/___/____/\\____/____/_/ |_|
-    / __/ __/ _ \\ | / / __/
-   _\\ \\/ _// , _/ |/ / _/
-  /___/___/_/|_||___/___/
-         `);
+      / __/ __/ _ \\ | / / __/
+     _\\ \\/ _// , _/ |/ / _/
+    /___/___/_/|_||___/___/
+         `;
+
+        const styledBanner = banner
+          .split('\n')
+          .map((line) => {
+            const trimmedLine = line.trimEnd();
+            if (!trimmedLine) {
+              return '';
+            }
+
+            const leadingWhitespace = trimmedLine.match(/^\s*/)[0];
+            const art = trimmedLine.slice(leadingWhitespace.length);
+            return `${leadingWhitespace}${chalk.bgHex('#91298C').white(art)}`;
+          })
+          .join('\n');
+
+        console.log(styledBanner);
 
         if (serveConfig.mfe) {
           const bundleUrl = `${url}/pkg/${encodeURIComponent(snName)}`;
