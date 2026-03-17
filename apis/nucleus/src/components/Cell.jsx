@@ -139,7 +139,7 @@ const handleModal = ({ sn, layout, model }) => {
       }
     }
   }
-}; //aKZq
+};
 
 const filterData = (d) => (d.qError ? d.qError.qErrorCode === 7005 : true);
 const hasError = (e) => e && e.qErrorCode !== 7005;
