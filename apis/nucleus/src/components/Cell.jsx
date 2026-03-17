@@ -200,11 +200,17 @@ const validateCubes = (translator, targets, layout) => {
   const layoutErrors = [];
   for (let i = 0; i < targets.length; ++i) {
     const def = targets[i];
+
     const minD = def.dimensions.min();
     const minM = def.measures.min();
+
     const c = def.resolveLayout(layout);
-    const d = getInfo(c.qDimensionInfo || c.qItems).filter(filterData); // Filter out optional calc conditions
-    const m = getInfo(c.qMeasureInfo).filter(filterData); // Filter out optional calc conditions
+
+    const dims = getInfo(c.qDimensionInfo || c.qItems);
+    const meas = getInfo(c.qMeasureInfo);
+
+    const d = dims.filter(filterData); // Filter out optional calc conditions
+    const m = meas.filter(filterData); // Filter out optional calc conditions
     aggMinD += minD;
     aggMinM += minM;
     if (d.length < minD || m.length < minM) {
@@ -212,14 +218,14 @@ const validateCubes = (translator, targets, layout) => {
     }
 
     // Check for all non-calc-cond errors
-    for (i = 0; i < c.qDimensionInfo.length; ++i) {
-      if (hasError(c.qDimensionInfo[i].qError)) {
+    for (i = 0; i < dims.length; ++i) {
+      if (hasError(dims[i].qError)) {
         hasUnfulfilledErrors = true;
       }
     }
 
-    for (i = 0; i < c.qMeasureInfo.length; ++i) {
-      if (hasError(c.qMeasureInfo[i].qError)) {
+    for (i = 0; i < meas.length; ++i) {
+      if (hasError(meas[i].qError)) {
         hasUnfulfilledErrors = true;
       }
     }
