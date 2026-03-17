@@ -139,12 +139,13 @@ const handleModal = ({ sn, layout, model }) => {
       }
     }
   }
-};
+}; //aKZq
 
 const filterData = (d) => (d.qError ? d.qError.qErrorCode === 7005 : true);
+const hasError = (e) => e && e.qErrorCode !== 7005;
 
 const validateInfo = (min, info, getDescription, translatedError, translatedCalcCond) =>
-  [...Array(min).keys()].map((i) => {
+  [...Array(Math.max(min, info.length)).keys()].map((i) => {
     const exists = !!(info && info[i]);
     const softError = exists && info[i].qError && info[i].qError.qErrorCode === 7005;
     const error = exists && !softError && info[i].qError;
@@ -173,14 +174,14 @@ const validateTarget = (translator, layout, properties, def) => {
   const reqDimErrors = validateInfo(
     minD,
     getInfo(c.qDimensionInfo || c.qItems),
-    (i) => def.dimensions.description(properties, i),
+    (i) => def.dimensions.description(properties, i, {}),
     translator.get('Visualization.Invalid.Dimension'),
     translator.get('Visualization.UnfulfilledCalculationCondition')
   );
   const reqMeasErrors = validateInfo(
     minM,
     getInfo(c.qMeasureInfo),
-    (i) => def.measures.description(properties, i),
+    (i) => def.measures.description(properties, i, {}),
     translator.get('Visualization.Invalid.Measure'),
     translator.get('Visualization.UnfulfilledCalculationCondition')
   );
@@ -209,6 +210,20 @@ const validateCubes = (translator, targets, layout) => {
     if (d.length < minD || m.length < minM) {
       hasUnfulfilledErrors = true;
     }
+
+    // Check for all non-calc-cond errors
+    for (i = 0; i < c.qDimensionInfo.length; ++i) {
+      if (hasError(c.qDimensionInfo[i].qError)) {
+        hasUnfulfilledErrors = true;
+      }
+    }
+
+    for (i = 0; i < c.qMeasureInfo.length; ++i) {
+      if (hasError(c.qMeasureInfo[i].qError)) {
+        hasUnfulfilledErrors = true;
+      }
+    }
+
     if (c.qError) {
       hasLayoutErrors = true;
       hasLayoutUnfulfilledCalculcationCondition = c.qError.qErrorCode === 7005;
