@@ -144,8 +144,8 @@ const handleModal = ({ sn, layout, model }) => {
 const filterData = (d) => (d.qError ? d.qError.qErrorCode === 7005 : true);
 const hasError = (e) => e && e.qErrorCode !== 7005;
 
-const validateInfo = (min, info, getDescription, translatedError, translatedCalcCond) =>
-  [...Array(Math.max(min, info.length)).keys()].map((i) => {
+const validateInfo = (min, info, getDescription, translatedError, translatedCalcCond) => {
+  return [...Array(Math.max(min, info.length)).keys()].map((i) => {
     const exists = !!(info && info[i]);
     const softError = exists && info[i].qError && info[i].qError.qErrorCode === 7005;
     const error = exists && !softError && info[i].qError;
@@ -164,6 +164,7 @@ const validateInfo = (min, info, getDescription, translatedError, translatedCalc
       error,
     };
   });
+};
 
 const getInfo = (info) => (info && (Array.isArray(info) ? info : [info])) || [];
 
@@ -218,17 +219,16 @@ const validateCubes = (translator, targets, layout) => {
     }
 
     // Check for all non-calc-cond errors
-    for (i = 0; i < dims.length; ++i) {
-      if (hasError(dims[i].qError)) {
+    dims.forEach((dim) => {
+      if (hasError(dim.qError)) {
         hasUnfulfilledErrors = true;
       }
-    }
-
-    for (i = 0; i < meas.length; ++i) {
-      if (hasError(meas[i].qError)) {
+    });
+    meas.forEach((meas) => {
+      if (hasError(meas.qError)) {
         hasUnfulfilledErrors = true;
       }
-    }
+    });
 
     if (c.qError) {
       hasLayoutErrors = true;
