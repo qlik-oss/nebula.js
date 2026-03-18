@@ -1,5 +1,5 @@
 {
-  "scriptappy": "1.1.0",
+  "scriptappy": "1.1.3",
   "info": {
     "name": "@nebula.js/stardust",
     "description": "Product and framework agnostic integration API for Qlik's Associative Engine",
@@ -673,6 +673,84 @@
     }
   },
   "definitions": {
+    "Translator": {
+      "kind": "class",
+      "constructor": {
+        "kind": "function",
+        "params": []
+      },
+      "entries": {
+        "language": {
+          "description": "Returns current locale.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "lang",
+              "description": "language Locale to updated the currentLocale value",
+              "optional": true,
+              "type": "string"
+            }
+          ],
+          "returns": {
+            "description": "current locale.",
+            "type": "string"
+          }
+        },
+        "add": {
+          "description": "Registers a string in multiple locales",
+          "kind": "function",
+          "params": [
+            {
+              "name": "item",
+              "kind": "object",
+              "entries": {
+                "id": {
+                  "type": "string"
+                },
+                "locale": {
+                  "type": "object",
+                  "generics": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "string"
+                    }
+                  ]
+                }
+              }
+            }
+          ],
+          "examples": [
+            "translator.add({\n  id: 'company.hello_user',\n  locale: {\n    'en-US': 'Hello {0}',\n    'sv-SE': 'Hej {0}'\n  }\n});\ntranslator.get('company.hello_user', ['John']); // Hello John"
+          ]
+        },
+        "get": {
+          "description": "Translates a string for current locale.",
+          "kind": "function",
+          "params": [
+            {
+              "name": "str",
+              "description": "ID of the registered string.",
+              "type": "string"
+            },
+            {
+              "name": "args",
+              "description": "Values passed down for string interpolation.",
+              "optional": true,
+              "kind": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          ],
+          "returns": {
+            "description": "The translated string.",
+            "type": "string"
+          }
+        }
+      }
+    },
     "Component": {
       "kind": "interface",
       "entries": {
@@ -1486,6 +1564,167 @@
         "const viz = await embed(app).render({\n  element,\n  type: 'barchart'\n});\nviz.destroy();"
       ]
     },
+    "ActionToolbarElement": {
+      "availability": {
+        "since": "2.1.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-action-toolbar-popover'",
+          "kind": "literal"
+        }
+      }
+    },
+    "ActionElement": {
+      "availability": {
+        "since": "2.0.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-action'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellElement": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellBody": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-body'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellFooter": {
+      "availability": {
+        "since": "2.0.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-footer'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellTitle": {
+      "availability": {
+        "since": "2.0.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-title'",
+          "kind": "literal"
+        }
+      }
+    },
+    "CellSubTitle": {
+      "availability": {
+        "since": "2.0.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-cell-sub-title'",
+          "kind": "literal"
+        }
+      }
+    },
+    "SheetElement": {
+      "stability": "experimental",
+      "availability": {
+        "since": "3.1.0"
+      },
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "className": {
+          "value": "'njs-sheet'",
+          "kind": "literal"
+        }
+      }
+    },
+    "VizElementAttributes": {
+      "extends": [
+        {
+          "type": "NamedNodeMap"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "data-render-count": {
+          "type": "string"
+        }
+      }
+    },
+    "VizElement": {
+      "extends": [
+        {
+          "type": "HTMLElement"
+        }
+      ],
+      "kind": "interface",
+      "entries": {
+        "attributes": {
+          "type": "#/definitions/VizElementAttributes"
+        },
+        "className": {
+          "value": "'njs-viz'",
+          "kind": "literal"
+        }
+      }
+    },
     "Flags": {
       "kind": "interface",
       "entries": {
@@ -2056,167 +2295,6 @@
         "const navigation = useNavigation();\n//...\nuseEffect(() => {\n  const onSheetChanged = () => {\n    // do something\n  };\n  if (navigation?.addListener) {\n    navigation.addListener(\"sheetChanged\", onSheetChanged);\n  }\n  return () => {\n    if (navigation?.removeListener) {\n      navigation.removeListener(\"sheetChanged\", onSheetChanged);\n    }\n  };\n}, [navigation]);\n\nconst onSheetClick = (sheetId: string) => {\n  navigation?.goToSheet(sheetId);\n};"
       ]
     },
-    "ActionToolbarElement": {
-      "availability": {
-        "since": "2.1.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-action-toolbar-popover'",
-          "kind": "literal"
-        }
-      }
-    },
-    "ActionElement": {
-      "availability": {
-        "since": "2.0.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell-action'",
-          "kind": "literal"
-        }
-      }
-    },
-    "CellElement": {
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell'",
-          "kind": "literal"
-        }
-      }
-    },
-    "CellBody": {
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell-body'",
-          "kind": "literal"
-        }
-      }
-    },
-    "CellFooter": {
-      "availability": {
-        "since": "2.0.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell-footer'",
-          "kind": "literal"
-        }
-      }
-    },
-    "CellTitle": {
-      "availability": {
-        "since": "2.0.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell-title'",
-          "kind": "literal"
-        }
-      }
-    },
-    "CellSubTitle": {
-      "availability": {
-        "since": "2.0.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-cell-sub-title'",
-          "kind": "literal"
-        }
-      }
-    },
-    "SheetElement": {
-      "stability": "experimental",
-      "availability": {
-        "since": "3.1.0"
-      },
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "className": {
-          "value": "'njs-sheet'",
-          "kind": "literal"
-        }
-      }
-    },
-    "VizElementAttributes": {
-      "extends": [
-        {
-          "type": "NamedNodeMap"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "data-render-count": {
-          "type": "string"
-        }
-      }
-    },
-    "VizElement": {
-      "extends": [
-        {
-          "type": "HTMLElement"
-        }
-      ],
-      "kind": "interface",
-      "entries": {
-        "attributes": {
-          "type": "#/definitions/VizElementAttributes"
-        },
-        "className": {
-          "value": "'njs-viz'",
-          "kind": "literal"
-        }
-      }
-    },
     "Visualization": {
       "description": "The entry point for defining a visualization.",
       "kind": "interface",
@@ -2746,84 +2824,6 @@
               "type": "T"
             }
           ]
-        }
-      }
-    },
-    "Translator": {
-      "kind": "class",
-      "constructor": {
-        "kind": "function",
-        "params": []
-      },
-      "entries": {
-        "language": {
-          "description": "Returns current locale.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "lang",
-              "description": "language Locale to updated the currentLocale value",
-              "optional": true,
-              "type": "string"
-            }
-          ],
-          "returns": {
-            "description": "current locale.",
-            "type": "string"
-          }
-        },
-        "add": {
-          "description": "Registers a string in multiple locales",
-          "kind": "function",
-          "params": [
-            {
-              "name": "item",
-              "kind": "object",
-              "entries": {
-                "id": {
-                  "type": "string"
-                },
-                "locale": {
-                  "type": "object",
-                  "generics": [
-                    {
-                      "type": "string"
-                    },
-                    {
-                      "type": "string"
-                    }
-                  ]
-                }
-              }
-            }
-          ],
-          "examples": [
-            "translator.add({\n  id: 'company.hello_user',\n  locale: {\n    'en-US': 'Hello {0}',\n    'sv-SE': 'Hej {0}'\n  }\n});\ntranslator.get('company.hello_user', ['John']); // Hello John"
-          ]
-        },
-        "get": {
-          "description": "Translates a string for current locale.",
-          "kind": "function",
-          "params": [
-            {
-              "name": "str",
-              "description": "ID of the registered string.",
-              "type": "string"
-            },
-            {
-              "name": "args",
-              "description": "Values passed down for string interpolation.",
-              "optional": true,
-              "kind": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          ],
-          "returns": {
-            "description": "The translated string.",
-            "type": "string"
-          }
         }
       }
     },
