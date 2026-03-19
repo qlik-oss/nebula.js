@@ -5007,7 +5007,7 @@ __metadata:
     rollup-plugin-visualizer: "npm:7.0.1"
     tslib: "npm:*"
     typescript: "npm:>=5.9.3"
-    yargs: "npm:17.7.2"
+    yargs: "npm:18.0.0"
   languageName: unknown
   linkType: soft
 
@@ -5039,7 +5039,7 @@ __metadata:
     fs-extra: "npm:11.3.4"
     node-event-emitter: "npm:0.0.1"
     rollup: "npm:4.59.0"
-    yargs: "npm:17.7.2"
+    yargs: "npm:18.0.0"
   languageName: unknown
   linkType: soft
 
@@ -5085,7 +5085,7 @@ __metadata:
     webpack-cli: "npm:6.0.1"
     webpack-dev-server: "npm:5.2.3"
     ws: "npm:8.19.0"
-    yargs: "npm:17.7.2"
+    yargs: "npm:18.0.0"
   languageName: unknown
   linkType: soft
 
@@ -5095,7 +5095,7 @@ __metadata:
   dependencies:
     "@nebula.js/cli-create": "npm:^6.7.0"
     import-cwd: "npm:3.0.0"
-    yargs: "npm:17.7.2"
+    yargs: "npm:18.0.0"
   peerDependencies:
     "@nebula.js/cli-build": 5.0.0 - 6
     "@nebula.js/cli-sense": 5.0.0 - 6
@@ -20190,7 +20190,7 @@ __metadata:
     rollup-plugin-sass: "npm:1.15.3"
     style-loader: "npm:4.0.0"
     whatwg-fetch: "npm:^3.6.20"
-    yargs: "npm:17.7.2"
+    yargs: "npm:18.0.0"
   languageName: unknown
   linkType: soft
 
@@ -23519,6 +23519,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"yargs@npm:18.0.0, yargs@npm:^18.0.0":
+  version: 18.0.0
+  resolution: "yargs@npm:18.0.0"
+  dependencies:
+    cliui: "npm:^9.0.1"
+    escalade: "npm:^3.1.1"
+    get-caller-file: "npm:^2.0.5"
+    string-width: "npm:^7.2.0"
+    y18n: "npm:^5.0.5"
+    yargs-parser: "npm:^22.0.0"
+  checksum: 10c0/bf290e4723876ea9c638c786a5c42ac28e03c9ca2325e1424bf43b94e5876456292d3ed905b853ebbba6daf43ed29e772ac2a6b3c5fb1b16533245d6211778f3
+  languageName: node
+  linkType: hard
+
 "yargs@npm:^16.2.0":
   version: 16.2.0
   resolution: "yargs@npm:16.2.0"
@@ -23561,20 +23575,6 @@ __metadata:
     y18n: "npm:^5.0.5"
     yargs-parser: "npm:^21.1.1"
   checksum: 10c0/dd5c89aa8186d2a18625b26b68beb635df648617089135e9661107a92561056427bbd41dbfa228db5a7d968ea1043d96c036c2eb978acf7b61a0ae48bf3be206
-  languageName: node
-  linkType: hard
-
-"yargs@npm:^18.0.0":
-  version: 18.0.0
-  resolution: "yargs@npm:18.0.0"
-  dependencies:
-    cliui: "npm:^9.0.1"
-    escalade: "npm:^3.1.1"
-    get-caller-file: "npm:^2.0.5"
-    string-width: "npm:^7.2.0"
-    y18n: "npm:^5.0.5"
-    yargs-parser: "npm:^22.0.0"
-  checksum: 10c0/bf290e4723876ea9c638c786a5c42ac28e03c9ca2325e1424bf43b94e5876456292d3ed905b853ebbba6daf43ed29e772ac2a6b3c5fb1b16533245d6211778f3
   languageName: node
   linkType: hard
 

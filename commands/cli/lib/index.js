@@ -3,8 +3,7 @@
 import path from 'path';
 import { createRequire } from 'module';
 import { pathToFileURL } from 'url';
-import yargs from 'yargs/yargs';
-import { hideBin } from 'yargs/helpers';
+import yargs from 'yargs';
 
 import checkNodeVersion from './checkNodeVersion.js';
 
@@ -13,7 +12,7 @@ const pkg = require('../package.json');
 
 checkNodeVersion(pkg);
 
-const cli = yargs(hideBin(process.argv));
+const cli = yargs(process.argv.slice(2));
 
 cli.usage('nebula <command> [options]');
 

@@ -4,7 +4,7 @@ import fs from 'fs';
 import { createRequire } from 'module';
 import portfinder from 'portfinder';
 import extend from 'extend';
-import yargs from 'yargs/yargs';
+import yargs from 'yargs';
 import { WebSocketServer } from 'ws';
 import chokidar from 'chokidar';
 import build from '@nebula.js/cli-build';
