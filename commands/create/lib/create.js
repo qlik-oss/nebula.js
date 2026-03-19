@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 import chalk from 'chalk';
 import fse from 'fs-extra';
 import ejs from 'ejs';
-import inquirer from 'inquirer';
+import { select } from '@inquirer/prompts';
 
 const require = createRequire(import.meta.url);
 const pkg = require('../package.json');
@@ -86,18 +86,19 @@ const create = async (argv) => {
   }
 
   const prompt = async () => {
-    const answers = await inquirer.prompt([
-      {
-        type: 'list',
-        name: 'picasso',
+    if (!isMashup && !argv.picasso) {
+      const picasso = await select({
         message: 'Pick a picasso template',
         default: 'none',
-        choices: ['none', 'minimal', 'barchart'],
-        when: !isMashup && !argv.picasso,
-      },
-    ]);
+        choices: [
+          { name: 'none', value: 'none' },
+          { name: 'minimal', value: 'minimal' },
+          { name: 'barchart', value: 'barchart' },
+        ],
+      });
 
-    options = { ...options, ...answers };
+      options = { ...options, picasso };
+    }
   };
 
   const write = async () => {
