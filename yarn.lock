@@ -4722,7 +4722,7 @@ __metadata:
     rollup-plugin-visualizer: "npm:6.0.11"
     tslib: "npm:*"
     typescript: "npm:>=5.9.3"
-    yargs: "npm:17.7.2"
+    yargs: "npm:18.0.0"
   languageName: unknown
   linkType: soft
 
@@ -4754,7 +4754,7 @@ __metadata:
     fs-extra: "npm:11.3.4"
     node-event-emitter: "npm:0.0.1"
     rollup: "npm:4.59.0"
-    yargs: "npm:17.7.2"
+    yargs: "npm:18.0.0"
   languageName: unknown
   linkType: soft
 
@@ -4800,7 +4800,7 @@ __metadata:
     webpack-cli: "npm:7.0.2"
     webpack-dev-server: "npm:5.2.3"
     ws: "npm:8.19.0"
-    yargs: "npm:17.7.2"
+    yargs: "npm:18.0.0"
   languageName: unknown
   linkType: soft
 
@@ -4810,7 +4810,7 @@ __metadata:
   dependencies:
     "@nebula.js/cli-create": "npm:^6.7.0"
     import-cwd: "npm:3.0.0"
-    yargs: "npm:17.7.2"
+    yargs: "npm:18.0.0"
   peerDependencies:
     "@nebula.js/cli-build": 5.0.0 - 6
     "@nebula.js/cli-sense": 5.0.0 - 6
@@ -19704,7 +19704,7 @@ __metadata:
     rollup-plugin-sass: "npm:1.15.3"
     style-loader: "npm:4.0.0"
     whatwg-fetch: "npm:^3.6.20"
-    yargs: "npm:17.7.2"
+    yargs: "npm:18.0.0"
   languageName: unknown
   linkType: soft
 
