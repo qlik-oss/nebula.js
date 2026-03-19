@@ -22,8 +22,8 @@ echo "Linking packages"
 cd "$PROJECT_NAME"
 yarn link ../../apis/stardust
 yarn link ../../commands/cli
-yarn link ../../commands/build
 yarn link ../../commands/serve
+yarn link ../../commands/build
 echo "Log node_modules/@nebula.js"
 ls -la node_modules/@nebula.js
 if [ "$BUILD" = "true" ]; then
