@@ -1,7 +1,7 @@
 /* eslint-disable no-console, import/extensions */
 import path from 'path';
 import extend from 'extend';
-import yargs from 'yargs/yargs';
+import yargs from 'yargs';
 import * as rollup from 'rollup';
 
 import initConfig from './init-config.js';

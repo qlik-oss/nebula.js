@@ -1,6 +1,6 @@
 /* eslint-disable import/extensions */
 import extend from 'extend';
-import yargs from 'yargs/yargs';
+import yargs from 'yargs';
 import initConfig from './init-config.js';
 import sense from './sense.js';
 
