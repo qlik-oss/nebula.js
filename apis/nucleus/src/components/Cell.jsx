@@ -142,10 +142,10 @@ const handleModal = ({ sn, layout, model }) => {
 };
 
 const filterData = (d) => (d.qError ? d.qError.qErrorCode === 7005 : true);
-const hasError = (e) => e && e.qErrorCode !== 7005;
+const hasError = (e) => e && e.qError && e.qError.qErrorCode !== 7005;
 
-const validateInfo = (min, info, getDescription, translatedError, translatedCalcCond) => {
-  return [...Array(Math.max(min, info.length)).keys()].map((i) => {
+const validateInfo = (min, info, getDescription, translatedError, translatedCalcCond) =>
+  [...Array(Math.max(min, info.length)).keys()].map((i) => {
     const exists = !!(info && info[i]);
     const softError = exists && info[i].qError && info[i].qError.qErrorCode === 7005;
     const error = exists && !softError && info[i].qError;
@@ -164,7 +164,6 @@ const validateInfo = (min, info, getDescription, translatedError, translatedCalc
       error,
     };
   });
-};
 
 const getInfo = (info) => (info && (Array.isArray(info) ? info : [info])) || [];
 
@@ -199,6 +198,7 @@ const validateCubes = (translator, targets, layout) => {
   let hasLayoutErrors = false;
   let hasLayoutUnfulfilledCalculcationCondition = false;
   const layoutErrors = [];
+
   for (let i = 0; i < targets.length; ++i) {
     const def = targets[i];
 
@@ -219,16 +219,7 @@ const validateCubes = (translator, targets, layout) => {
     }
 
     // Check for all non-calc-cond errors
-    dims.forEach((dim) => {
-      if (hasError(dim.qError)) {
-        hasUnfulfilledErrors = true;
-      }
-    });
-    meas.forEach((meas) => {
-      if (hasError(meas.qError)) {
-        hasUnfulfilledErrors = true;
-      }
-    });
+    hasUnfulfilledErrors = hasUnfulfilledErrors || dims.some(hasError) || meas.some(hasError);
 
     if (c.qError) {
       hasLayoutErrors = true;
