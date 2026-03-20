@@ -1,5 +1,6 @@
 /* eslint no-underscore-dangle:0 */
 import { embed } from '@nebula.js/stardust';
+// eslint-disable-next-line import/no-unresolved
 import snapshooter from '@nebula.js/snapshooter/client';
 
 import { openApp, getParams, getConnectionInfo } from './connect';

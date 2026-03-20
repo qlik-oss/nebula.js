@@ -17,35 +17,22 @@ env:
   JEST_JUNIT_OUTPUT_DIR: ./coverage/junit/
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-node@v6
-        with:
-          node-version: 24.14.0
-          cache: "yarn"
-          corepack: true
-      - name: Install dependencies
-        run: yarn install --immutable
-      - name: Build
-        run: yarn run build
-
   validate:
     runs-on: ubuntu-latest
     steps:
+      - name: Enable Corepack
+        run: corepack enable
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 24.14.0
           cache: "yarn"
-          corepack: true
       - name: Install dependencies
         run: yarn install --immutable
-      - name: Locale verify
-        run: yarn run locale:verify
       - name: Lint
         run: yarn run lint
+      - name: Locale verify
+        run: yarn run locale:verify
       - name: Run unit tests and publish to codeclimate
         run: yarn test:unit --coverage
       - name: Store junit results
@@ -54,20 +41,48 @@ jobs:
           name: junit
           path: coverage/junit
 
-  test-integration:
+  build:
     runs-on: ubuntu-latest
-    needs: build
     steps:
+      - name: Enable Corepack
+        run: corepack enable
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 24.14.0
           cache: "yarn"
-          corepack: true
       - name: Install dependencies
         run: yarn install --immutable
       - name: Build
         run: yarn run build
+      - name: Store build outputs
+        uses: actions/upload-artifact@v7
+        with:
+          name: build-outputs
+          path: |
+            apis/**/dist
+            commands/**/dist
+            packages/**/dist
+          retention-days: 1
+
+  test-integration:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Enable Corepack
+        run: corepack enable
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: 24.14.0
+          cache: "yarn"
+      - name: Install dependencies
+        run: yarn install --immutable
+      - name: Download build outputs
+        uses: actions/download-artifact@v8
+        with:
+          name: build-outputs
+          path: .
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Test component
@@ -95,16 +110,20 @@ jobs:
     runs-on: ubuntu-latest
     needs: build
     steps:
+      - name: Enable Corepack
+        run: corepack enable
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: 24.14.0
           cache: "yarn"
-          corepack: true
       - name: Install dependencies
         run: yarn install --immutable
-      - name: Build
-        run: yarn run build
+      - name: Download build outputs
+        uses: actions/download-artifact@v8
+        with:
+          name: build-outputs
+          path: .
       - name: Install Playwright Chromium
         run: npx playwright install chromium --with-deps
       - run: chmod +x .github/scripts/nebula_create.sh
@@ -133,6 +152,8 @@ jobs:
       run:
         working-directory: .
     steps:
+      - name: Enable Corepack
+        run: corepack enable
       - name: Checkout repository
         uses: actions/checkout@v6
         with:
@@ -142,7 +163,6 @@ jobs:
         with:
           node-version: 24.14.0
           cache: "yarn"
-          corepack: true
 
       - name: Install dependencies
         run: yarn install --immutable

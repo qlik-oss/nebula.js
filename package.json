@@ -21,7 +21,7 @@
     "test:rendering": "playwright test --config=./test/rendering/playwright.config.rendering.js --quiet",
     "test:integration": "playwright test test/integration",
     "test:component": "playwright test test/component",
-    "prepare": "husky install && yarn run locale:generate"
+    "postinstall": "husky install && yarn run locale:generate"
   },
   "repository": {
     "type": "git",
@@ -43,6 +43,8 @@
     "@babel/preset-react": "7.28.5",
     "@commitlint/cli": "20.5.0",
     "@commitlint/config-conventional": "20.5.0",
+    "@eslint/eslintrc": "^3.3.5",
+    "@eslint/js": "^10.0.1",
     "@jest/globals": "^30.3.0",
     "@playwright/test": "1.58.2",
     "@rollup/plugin-babel": "7.0.0",

@@ -1,3 +1,4 @@
+/* eslint no-underscore-dangle:0 */
 import { defineConfig, globalIgnores } from 'eslint/config';
 import prettier from 'eslint-plugin-prettier';
 import jest from 'eslint-plugin-jest';
