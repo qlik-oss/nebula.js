@@ -3,8 +3,8 @@
   "description": "",
   "type": "module",
   "scripts": {
-    "build": "yarn run locale:generate && cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
-    "build:dev": "yarn run locale:generate && cross-env NODE_ENV=development FORCE_COLOR=1 lerna run build --stream",
+    "build": "cross-env NODE_ENV=production FORCE_COLOR=1 lerna run build --stream",
+    "build:dev": "cross-env NODE_ENV=development FORCE_COLOR=1 lerna run build --stream",
     "build:watch": "FORCE_COLOR=1 lerna run build:watch --stream --concurrency 99 --no-sort",
     "format": "prettier --write '**/**/*' --ignore-unknown",
     "locale:verify": "node tools/verify-translations.cjs",
@@ -21,7 +21,7 @@
     "test:rendering": "playwright test --config=./test/rendering/playwright.config.rendering.js --quiet",
     "test:integration": "playwright test test/integration",
     "test:component": "playwright test test/component",
-    "prepare": "husky install"
+    "prepare": "husky install && yarn run locale:generate"
   },
   "repository": {
     "type": "git",
