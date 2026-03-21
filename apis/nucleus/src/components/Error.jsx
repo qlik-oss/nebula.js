@@ -22,9 +22,9 @@ function DescriptionRow({ d }) {
     </Typography>
   );
   return (
-    <Grid item container alignItems="center" wrap="nowrap">
-      <Grid item>{WrappedIcon}</Grid>
-      <Grid container item zeroMinWidth wrap="nowrap">
+    <Grid container alignItems="center" wrap="nowrap">
+      <Grid>{WrappedIcon}</Grid>
+      <Grid container sx={{ minWidth: 0 }} wrap="nowrap">
         <Typography noWrap component="p">
           <Typography component="span" variant="subtitle2" color={color}>
             {d.description}
@@ -47,14 +47,13 @@ function DescriptionRow({ d }) {
 function Descriptions({ data }) {
   const theme = useTheme();
   return (
-    <Grid container item style={{ maxWidth: '300px', overflow: 'hidden' }}>
+      <Grid container style={{ maxWidth: '300px', overflow: 'hidden' }}>
       {data.map((e, ix) => {
         const Rows = e.descriptions.map((d, dix) => <DescriptionRow d={d} key={dix} />);
         return (
           Rows.length > 0 && (
             <Grid
               container
-              item
               key={ix}
               direction="column"
               style={{
@@ -82,15 +81,15 @@ export default function Error({ title = 'Error', message = '', data = [] }) {
       justifyContent="center"
       style={{ position: 'relative', height: '100%', width: '100%' }}
     >
-      <Grid item>
+        <Grid>
         <WarningTriangle style={{ fontSize: '38px' }} />
       </Grid>
-      <Grid item>
+        <Grid>
         <Typography variant="h6" align="center" data-tid="error-title">
           {title}
         </Typography>
       </Grid>
-      <Grid item>
+        <Grid>
         <Typography variant="subtitle1" align="center" data-tid="error-message">
           {message}
         </Typography>

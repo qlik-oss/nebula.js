@@ -23,7 +23,7 @@ export default function Nav({ api, app }) {
         padding: '0 8px',
       }}
     >
-      <Grid item>
+      <Grid>
         <IconButton
           style={{ marginRight: '8px' }}
           disabled={!navState || !navState.canGoBack}
@@ -34,7 +34,7 @@ export default function Nav({ api, app }) {
           <SelectionsBack />
         </IconButton>
       </Grid>
-      <Grid item>
+        <Grid>
         <IconButton
           style={{ marginRight: '8px' }}
           disabled={!navState || !navState.canGoForward}
@@ -45,7 +45,7 @@ export default function Nav({ api, app }) {
           <SelectionsForward />
         </IconButton>
       </Grid>
-      <Grid item>
+        <Grid>
         <IconButton
           disabled={!navState || !navState.canClear}
           title={translator.get('Selection.ClearAll')}

@@ -80,7 +80,7 @@ export default function More({ items = [], api }) {
 
   return (
     <StyledGrid container gap={0} className={classes.item} onClick={handleShowMoreItems}>
-      <Grid item>
+      <Grid>
         <Box
           borderRadius={theme.shape.borderRadius}
           style={{
@@ -94,7 +94,7 @@ export default function More({ items = [], api }) {
           </Typography>
         </Box>
       </Grid>
-      <Grid item>
+        <Grid>
         <IconButton size="large">
           <DownArrow />
         </IconButton>

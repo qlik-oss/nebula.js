@@ -240,7 +240,7 @@ export default function ListBoxHeader({
         />
       )}
       {showLeftIcon && (
-        <Grid item container alignItems="center" width={iconsWidth} className="header-action-container">
+        <Grid container alignItems="center" width={iconsWidth} className="header-action-container">
           {lockedIconComp || (showSearchIcon && searchIconComp)}
           <DimensionIcon
             iconData={iconData}
@@ -252,9 +252,8 @@ export default function ListBoxHeader({
         </Grid>
       )}
       <Grid
-        item
-        xs
-        minWidth={0} // needed to text-overflow see: https://css-tricks.com/flexbox-truncated-text/
+          size="grow"
+          sx={{ minWidth: 0 }} // needed to text-overflow see: https://css-tricks.com/flexbox-truncated-text/
         justifyContent={isRtl ? 'flex-end' : 'flex-start'}
         className={classes.listBoxHeader}
       >
@@ -262,7 +261,7 @@ export default function ListBoxHeader({
           {layout.title}
         </HeaderTitle>
       </Grid>
-      <Grid item display="flex">
+        <Grid display="flex">
         {actionsToolbar}
       </Grid>
     </StyledGridHeader>

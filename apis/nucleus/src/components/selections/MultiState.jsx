@@ -71,17 +71,17 @@ export default function MultiState({ field, api, moreAlignTo = null, onClose = (
   if (!moreAlignTo) {
     Header = (
       <>
-        <Grid item xs zeroMinWidth>
+          <Grid sx={{ minWidth: 0, flexGrow: 1 }}>
           <Badge style={{ padding: '0px 8px' }} color="secondary" badgeContent={field.states.length}>
             <Typography component="span" noWrap style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600 }}>
               {field.label}
             </Typography>
           </Badge>
         </Grid>
-        <Grid item>
+          <Grid>
           <div style={{ width: '12px' }} />
         </Grid>
-        <Grid item>
+          <Grid>
           <IconButton size="large">
             <DownArrow />
           </IconButton>

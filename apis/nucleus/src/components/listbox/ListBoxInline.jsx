@@ -294,7 +294,6 @@ function ListBoxInline({ options, layout }) {
         />
         {showAttachedToolbar && listBoxHeader}
         <Grid
-          item
           container
           direction="column"
           height="100%"
@@ -303,7 +302,7 @@ function ListBoxInline({ options, layout }) {
           aria-label={translator.get('Listbox.ResultFilterLabel')}
           ref={listboxChildRef}
         >
-          <Grid item>
+           <Grid>
             <ListBoxSearch
               ref={searchInputRef}
               selections={selections}
@@ -322,7 +321,7 @@ function ListBoxInline({ options, layout }) {
               styles={styles}
             />
           </Grid>
-          <Grid item xs className={classes.listboxWrapper}>
+          <Grid size="grow" className={classes.listboxWrapper}>
             {isInvalid ? (
               <ListBoxError text={errorText} />
             ) : (

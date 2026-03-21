@@ -249,7 +249,6 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
           />
         )}
         <Grid
-          item
           style={cellStyle}
           className={joinClassNames([classes.cell, classes.selectedCell])}
           title={`${label}`}
@@ -290,7 +289,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         {freqIsAllowed && <Frequency cell={cell} checkboxes={checkboxes} dense={dense} showGray={showGray} />}
 
         {showAnyIcon && (
-          <Grid item className={classes.icon}>
+          <Grid className={classes.icon}>
             {showLockIcon && <Lock style={iconStyles} size="small" />}
             {showTickIcon && <Tick style={iconStyles} size="small" />}
           </Grid>
