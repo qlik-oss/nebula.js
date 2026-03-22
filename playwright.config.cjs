@@ -6,4 +6,5 @@ module.exports = {
     headless: true,
   },
   testDir: './test',
+  reporter: [['html'], ['junit', { outputFile: './test-results/junit.xml' }]],
 };
