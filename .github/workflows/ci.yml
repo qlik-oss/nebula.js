@@ -99,13 +99,15 @@ jobs:
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
       - name: Test component
+        env:
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: component-junit.xml
         run: yarn run test:component
       - name: Publish component test report
-        if: always()
+        if: ${{ always() && hashFiles('test-results/component-junit.xml') != '' }}
         uses: dorny/test-reporter@v2
         with:
           name: Component Tests
-          path: test-results/junit.xml
+          path: test-results/component-junit.xml
           reporter: jest-junit
           fail-on-error: false
       - name: Test mashup
@@ -117,7 +119,7 @@ jobs:
           name: mashup
           path: ./test/mashup
       - name: Publish mashup test report
-        if: always()
+        if: ${{ always() && hashFiles('test/mashup/reports/xml/*.xml') != '' }}
         uses: dorny/test-reporter@v2
         with:
           name: Mashup Tests
@@ -125,13 +127,15 @@ jobs:
           reporter: jest-junit
           fail-on-error: false
       - name: Test integration
+        env:
+          PLAYWRIGHT_JUNIT_OUTPUT_NAME: integration-junit.xml
         run: yarn run test:integration
       - name: Publish integration test report
-        if: always()
+        if: ${{ always() && hashFiles('test-results/integration-junit.xml') != '' }}
         uses: dorny/test-reporter@v2
         with:
           name: Integration Tests
-          path: test-results/junit.xml
+          path: test-results/integration-junit.xml
           reporter: jest-junit
           fail-on-error: false
       - name: Test rendering
@@ -143,7 +147,7 @@ jobs:
           name: rendering
           path: ./test/rendering
       - name: Publish rendering test report
-        if: always()
+        if: ${{ always() && hashFiles('test/rendering/reports/xml/*.xml') != '' }}
         uses: dorny/test-reporter@v2
         with:
           name: Rendering Tests
