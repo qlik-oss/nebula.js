@@ -222,10 +222,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
         layoutOrder={layoutOrder}
         itemPadding={itemPadding}
         gap={0}
-        className={joinClassNames(['value', ...classArr])}
-        classes={{
-          root: classes.fieldRoot,
-        }}
+        className={joinClassNames(['value', classes.fieldRoot, ...classArr])}
         onClick={onClick}
         onMouseDown={onMouseDown}
         onMouseUp={onMouseUp}
