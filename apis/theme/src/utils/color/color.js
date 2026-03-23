@@ -272,7 +272,7 @@ export default class Color {
           g = round(255 * g);
           b = round(255 * b);
           a = 1.0;
-        } else if (CSSColors[colorString.toLowerCase()]) {
+        } else if (Object.prototype.hasOwnProperty.call(CSSColors, colorString.toLowerCase())) {
           lcs = colorString.toLowerCase();
           r = CSSColors[lcs].r;
           g = CSSColors[lcs].g;
@@ -876,7 +876,7 @@ export default class Color {
       hexShort.test(color) ||
       hsl.test(color) ||
       hsla.test(color) ||
-      CSSColors[color.toLowerCase()]
+      Object.prototype.hasOwnProperty.call(CSSColors, color.toLowerCase())
     );
   }
 
