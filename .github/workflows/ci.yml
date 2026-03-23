@@ -67,7 +67,7 @@ jobs:
           name: junit
           path: coverage/junit
       - name: Publish junit test report
-        if: always()
+        if: ${{ always() && hashFiles('coverage/junit/*.xml') != '' }}
         uses: dorny/test-reporter@v2
         with:
           name: Unit Tests
