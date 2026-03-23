@@ -102,7 +102,7 @@ export default function OneField({
 
       if (selection.qLocked) {
         Icon = (
-            <Grid>
+          <Grid>
             <IconButton size="large">
               <Lock />
             </IconButton>
@@ -110,7 +110,7 @@ export default function OneField({
         );
       } else if (!selection.qOneAndOnlyOne) {
         Icon = (
-            <Grid>
+          <Grid>
             <IconButton
               title={translator.get('Selection.Clear')}
               onClick={(e) => {

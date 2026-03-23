@@ -94,7 +94,7 @@ export default function More({ items = [], api }) {
           </Typography>
         </Box>
       </Grid>
-        <Grid>
+      <Grid>
         <IconButton size="large">
           <DownArrow />
         </IconButton>

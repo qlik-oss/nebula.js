@@ -47,7 +47,7 @@ function DescriptionRow({ d }) {
 function Descriptions({ data }) {
   const theme = useTheme();
   return (
-      <Grid container style={{ maxWidth: '300px', overflow: 'hidden' }}>
+    <Grid container style={{ maxWidth: '300px', overflow: 'hidden' }}>
       {data.map((e, ix) => {
         const Rows = e.descriptions.map((d, dix) => <DescriptionRow d={d} key={dix} />);
         return (
@@ -81,15 +81,15 @@ export default function Error({ title = 'Error', message = '', data = [] }) {
       justifyContent="center"
       style={{ position: 'relative', height: '100%', width: '100%' }}
     >
-        <Grid>
+      <Grid>
         <WarningTriangle style={{ fontSize: '38px' }} />
       </Grid>
-        <Grid>
+      <Grid>
         <Typography variant="h6" align="center" data-tid="error-title">
           {title}
         </Typography>
       </Grid>
-        <Grid>
+      <Grid>
         <Typography variant="subtitle1" align="center" data-tid="error-message">
           {message}
         </Typography>

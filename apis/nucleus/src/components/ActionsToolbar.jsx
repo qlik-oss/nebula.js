@@ -40,7 +40,7 @@ const ActionsGroup = React.forwardRef(({ className, actions = [], addAnchor = fa
   actions.length > 0 ? (
     <Grid container gap={0} flexDirection={isRtl ? 'row-reverse' : 'row'} wrap="nowrap" className={className}>
       {actions.map((e, ix) => (
-      <Grid key={e.key} className={`${classes.itemSpacing} ${classes.item}`}>
+        <Grid key={e.key} className={`${classes.itemSpacing} ${classes.item}`}>
           <Item key={e.key} item={e} ref={ix === 0 ? ref : null} addAnchor={addAnchor} />
         </Grid>
       ))}

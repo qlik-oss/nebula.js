@@ -252,8 +252,8 @@ export default function ListBoxHeader({
         </Grid>
       )}
       <Grid
-          size="grow"
-          sx={{ minWidth: 0 }} // needed to text-overflow see: https://css-tricks.com/flexbox-truncated-text/
+        size="grow"
+        sx={{ minWidth: 0 }} // needed to text-overflow see: https://css-tricks.com/flexbox-truncated-text/
         justifyContent={isRtl ? 'flex-end' : 'flex-start'}
         className={classes.listBoxHeader}
       >
@@ -261,9 +261,7 @@ export default function ListBoxHeader({
           {layout.title}
         </HeaderTitle>
       </Grid>
-        <Grid display="flex">
-        {actionsToolbar}
-      </Grid>
+      <Grid display="flex">{actionsToolbar}</Grid>
     </StyledGridHeader>
   );
 }

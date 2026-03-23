@@ -109,7 +109,7 @@ function Header({ id, layout, sn, anchorEl, hovering, focusHandler, titleStyles 
           )}
         </Grid>
       </Grid>
-        <Grid>{Toolbar}</Grid>
+      <Grid>{Toolbar}</Grid>
     </StyledGrid>
   );
 }

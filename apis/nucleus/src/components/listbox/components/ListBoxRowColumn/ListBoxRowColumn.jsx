@@ -248,11 +248,7 @@ function RowColumn({ index, rowIndex, columnIndex, style, data }) {
             frequencyMax={frequencyMax}
           />
         )}
-        <Grid
-          style={cellStyle}
-          className={joinClassNames([classes.cell, classes.selectedCell])}
-          title={`${label}`}
-        >
+        <Grid style={cellStyle} className={joinClassNames([classes.cell, classes.selectedCell])} title={`${label}`}>
           {labels ? (
             <FieldWithRanges
               onChange={onChange}

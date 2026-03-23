@@ -206,9 +206,9 @@ export default function ListBoxPopover({
             />
           </Grid>
         </Grid>
-          <Grid size="grow">
+        <Grid size="grow">
           <div ref={moreAlignTo} />
-            <Grid>
+          <Grid>
             <ListBoxSearch
               ref={searchInputRef}
               popoverOpen={open}

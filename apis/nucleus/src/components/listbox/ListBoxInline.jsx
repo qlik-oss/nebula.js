@@ -302,7 +302,7 @@ function ListBoxInline({ options, layout }) {
           aria-label={translator.get('Listbox.ResultFilterLabel')}
           ref={listboxChildRef}
         >
-           <Grid>
+          <Grid>
             <ListBoxSearch
               ref={searchInputRef}
               selections={selections}
