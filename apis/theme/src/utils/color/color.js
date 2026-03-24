@@ -90,13 +90,13 @@ export default class Color {
           r = parseInt(matches[2], 10);
           g = parseInt(matches[3], 10);
           b = parseInt(matches[4], 10);
-        } else if ((matches = /^#([A-f0-9]{2})([A-f0-9]{2})([A-f0-9]{2})$/i.exec(colorString))) {
+        } else if ((matches = /^#([A-F0-9]{2})([A-F0-9]{2})([A-F0-9]{2})$/i.exec(colorString))) {
           // #aBc123
           r = parseInt(matches[1], 16);
           g = parseInt(matches[2], 16);
           b = parseInt(matches[3], 16);
           a = 1;
-        } else if ((matches = /^#([A-f0-9])([A-f0-9])([A-f0-9])$/i.exec(colorString))) {
+        } else if ((matches = /^#([A-F0-9])([A-F0-9])([A-F0-9])$/i.exec(colorString))) {
           // #a5F
           r = parseInt(matches[1] + matches[1], 16);
           g = parseInt(matches[2] + matches[2], 16);
