@@ -395,6 +395,98 @@ describe('<Cell />', () => {
       expect(ftypes[0].props.title).toBe('Visualization.Incomplete');
     });
 
+    test('should not render requirements', async () => {
+      const localLayout = { visualization: 'sn', title: 'foo', foo: { qDimensionInfo: [{}], qMeasureInfo: [{}] } };
+      const sn = {
+        generator: {
+          qae: {
+            data: {
+              targets: [
+                {
+                  resolveLayout: () => localLayout.foo,
+                  dimensions: {
+                    min: () => 1,
+                    max: () => 1,
+                    description: (_properties, ix) =>
+                      ix === 0
+                        ? 'Column'
+                        : 'Cells - dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd ',
+                  },
+                  measures: {
+                    min: () => 1,
+                    max: () => 1,
+                    description: () => 'Size',
+                  },
+                },
+              ],
+            },
+          },
+        },
+      };
+      const types = {
+        get: jest.fn().mockReturnValue({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
+      };
+      const model = {
+        getProperties: async () => {},
+      };
+      await render({ types, model });
+
+      const ftypes = renderer.root.findAllByType(CError);
+      expect(ftypes).toHaveLength(0);
+      const renderedSn = renderer.root.findByType(Supernova);
+      expect(renderedSn.props.sn).toEqual(sn);
+    });
+
+    test('should render requirements for dim error', async () => {
+      const localLayout = {
+        visualization: 'sn',
+        foo: { qDimensionInfo: [{}, { qError: { qErrorCode: 7000 } }], qMeasureInfo: [{}] },
+      };
+      const sn = {
+        generator: {
+          qae: {
+            data: {
+              targets: [
+                {
+                  resolveLayout: () => localLayout.foo,
+                  dimensions: {
+                    min: () => 1,
+                    max: () => 2,
+                    description: (_properties, ix) =>
+                      ix === 0
+                        ? 'Column'
+                        : 'Cells - dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd dkslfjd ',
+                  },
+                  measures: {
+                    min: () => 1,
+                    max: () => 1,
+                    description: () => 'Size',
+                  },
+                },
+              ],
+            },
+          },
+        },
+      };
+      const types = {
+        get: jest.fn().mockReturnValue({
+          supernova: async () => ({ create: () => sn }),
+        }),
+        getSupportedVersion: jest.fn().mockReturnValue('1.0.0'),
+      };
+      const model = {
+        getProperties: async () => {},
+      };
+      await render({ types, model });
+
+      const ftypes = renderer.root.findAllByType(CError);
+      expect(ftypes).toHaveLength(1);
+      expect(ftypes[0].props.title).toBe('Visualization.Incomplete');
+    });
+
     test('should render requirements for multiple cubes', async () => {
       const localLayout = { visualization: 'sn', foo: { qDimensionInfo: [], qMeasureInfo: [] } };
       const sn = {

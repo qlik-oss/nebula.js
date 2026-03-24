@@ -243,6 +243,33 @@ export namespace EnigmaMocker {
 }
 
 declare namespace stardust {
+    class Translator {
+        constructor();
+
+        /**
+         * Returns current locale.
+         * @param lang language Locale to updated the currentLocale value
+         */
+        language(lang?: string): string;
+
+        /**
+         * Registers a string in multiple locales
+         * @param item
+         */
+        add(item: {
+            id: string;
+            locale: object;
+        }): void;
+
+        /**
+         * Translates a string for current locale.
+         * @param str ID of the registered string.
+         * @param args Values passed down for string interpolation.
+         */
+        get(str: string, args?: string[]): string;
+
+    }
+
     interface Component {
         key: string;
     }
@@ -478,6 +505,47 @@ declare namespace stardust {
 
     }
 
+    interface ActionToolbarElement extends HTMLElement{
+        className: "njs-action-toolbar-popover";
+    }
+
+    interface ActionElement extends HTMLElement{
+        className: "njs-cell-action";
+    }
+
+    interface CellElement extends HTMLElement{
+        className: "njs-cell";
+    }
+
+    interface CellBody extends HTMLElement{
+        className: "njs-cell-body";
+    }
+
+    interface CellFooter extends HTMLElement{
+        className: "njs-cell-footer";
+    }
+
+    interface CellTitle extends HTMLElement{
+        className: "njs-cell-title";
+    }
+
+    interface CellSubTitle extends HTMLElement{
+        className: "njs-cell-sub-title";
+    }
+
+    interface SheetElement extends HTMLElement{
+        className: "njs-sheet";
+    }
+
+    interface VizElementAttributes extends NamedNodeMap{
+        "data-render-count": string;
+    }
+
+    interface VizElement extends HTMLElement{
+        attributes: stardust.VizElementAttributes;
+        className: "njs-viz";
+    }
+
     interface Flags {
         /**
          * Checks whether the specified flag is enabled.
@@ -650,47 +718,6 @@ declare namespace stardust {
 
     }
 
-    interface ActionToolbarElement extends HTMLElement{
-        className: "njs-action-toolbar-popover";
-    }
-
-    interface ActionElement extends HTMLElement{
-        className: "njs-cell-action";
-    }
-
-    interface CellElement extends HTMLElement{
-        className: "njs-cell";
-    }
-
-    interface CellBody extends HTMLElement{
-        className: "njs-cell-body";
-    }
-
-    interface CellFooter extends HTMLElement{
-        className: "njs-cell-footer";
-    }
-
-    interface CellTitle extends HTMLElement{
-        className: "njs-cell-title";
-    }
-
-    interface CellSubTitle extends HTMLElement{
-        className: "njs-cell-sub-title";
-    }
-
-    interface SheetElement extends HTMLElement{
-        className: "njs-sheet";
-    }
-
-    interface VizElementAttributes extends NamedNodeMap{
-        "data-render-count": string;
-    }
-
-    interface VizElement extends HTMLElement{
-        attributes: stardust.VizElementAttributes;
-        className: "njs-viz";
-    }
-
     /**
      * The entry point for defining a visualization.
      */
@@ -835,33 +862,6 @@ declare namespace stardust {
         max?: (()=>void) | number;
         added?: stardust.fieldTargetAddedCallback<T>;
         removed?: stardust.fieldTargetRemovedCallback<T>;
-    }
-
-    class Translator {
-        constructor();
-
-        /**
-         * Returns current locale.
-         * @param lang language Locale to updated the currentLocale value
-         */
-        language(lang?: string): string;
-
-        /**
-         * Registers a string in multiple locales
-         * @param item
-         */
-        add(item: {
-            id: string;
-            locale: object;
-        }): void;
-
-        /**
-         * Translates a string for current locale.
-         * @param str ID of the registered string.
-         * @param args Values passed down for string interpolation.
-         */
-        get(str: string, args?: string[]): string;
-
     }
 
     class Theme {

@@ -142,9 +142,10 @@ const handleModal = ({ sn, layout, model }) => {
 };
 
 const filterData = (d) => (d.qError ? d.qError.qErrorCode === 7005 : true);
+const hasError = (e) => e && e.qError && e.qError.qErrorCode !== 7005;
 
 const validateInfo = (min, info, getDescription, translatedError, translatedCalcCond) =>
-  [...Array(min).keys()].map((i) => {
+  [...Array(Math.max(min, info.length)).keys()].map((i) => {
     const exists = !!(info && info[i]);
     const softError = exists && info[i].qError && info[i].qError.qErrorCode === 7005;
     const error = exists && !softError && info[i].qError;
@@ -173,14 +174,14 @@ const validateTarget = (translator, layout, properties, def) => {
   const reqDimErrors = validateInfo(
     minD,
     getInfo(c.qDimensionInfo || c.qItems),
-    (i) => def.dimensions.description(properties, i),
+    (i) => def.dimensions.description(properties, i, {}),
     translator.get('Visualization.Invalid.Dimension'),
     translator.get('Visualization.UnfulfilledCalculationCondition')
   );
   const reqMeasErrors = validateInfo(
     minM,
     getInfo(c.qMeasureInfo),
-    (i) => def.measures.description(properties, i),
+    (i) => def.measures.description(properties, i, {}),
     translator.get('Visualization.Invalid.Measure'),
     translator.get('Visualization.UnfulfilledCalculationCondition')
   );
@@ -197,18 +198,29 @@ const validateCubes = (translator, targets, layout) => {
   let hasLayoutErrors = false;
   let hasLayoutUnfulfilledCalculcationCondition = false;
   const layoutErrors = [];
+
   for (let i = 0; i < targets.length; ++i) {
     const def = targets[i];
+
     const minD = def.dimensions.min();
     const minM = def.measures.min();
+
     const c = def.resolveLayout(layout);
-    const d = getInfo(c.qDimensionInfo || c.qItems).filter(filterData); // Filter out optional calc conditions
-    const m = getInfo(c.qMeasureInfo).filter(filterData); // Filter out optional calc conditions
+
+    const dims = getInfo(c.qDimensionInfo || c.qItems);
+    const meas = getInfo(c.qMeasureInfo);
+
+    const d = dims.filter(filterData); // Filter out optional calc conditions
+    const m = meas.filter(filterData); // Filter out optional calc conditions
     aggMinD += minD;
     aggMinM += minM;
     if (d.length < minD || m.length < minM) {
       hasUnfulfilledErrors = true;
     }
+
+    // Check for all non-calc-cond errors
+    hasUnfulfilledErrors = hasUnfulfilledErrors || dims.some(hasError) || meas.some(hasError);
+
     if (c.qError) {
       hasLayoutErrors = true;
       hasLayoutUnfulfilledCalculcationCondition = c.qError.qErrorCode === 7005;
@@ -683,8 +695,7 @@ const Cell = forwardRef(
           <Grid
             tabIndex={keyboardNavigation && !externalFocusManagement ? 0 : -1}
             onKeyDown={keyboardNavigation && !externalFocusManagement ? handleKeyDown : null}
-            item
-            xs
+            size="grow"
             className={CellBody.className}
             style={{
               height: '100%',

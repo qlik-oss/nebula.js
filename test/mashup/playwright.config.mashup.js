@@ -4,7 +4,7 @@ export default defineConfig({
   reporter: [
     ['dot'],
     ['html', { outputFolder: './reports/html' }],
-    ['junit', { outputFile: './test/mashup/reports/xml/report.xml' }],
+    ['junit', { outputFile: './reports/xml/report.xml' }],
   ],
   testDir: './',
   globalSetup: './setup.cjs',

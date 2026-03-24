@@ -90,7 +90,7 @@ export default function OneField({
     let SegmentsIndicator = null;
     if (!moreAlignTo) {
       Header = (
-        <Grid item xs style={{ minWidth: 0, flexGrow: 1, opacity: selection.qLocked ? '0.3' : '' }}>
+        <Grid style={{ minWidth: 0, flexGrow: 1, opacity: selection.qLocked ? '0.3' : '' }}>
           <Typography noWrap style={{ fontSize: '12px', lineHeight: '16px', fontWeight: 600 }}>
             {field.label}
           </Typography>
@@ -102,7 +102,7 @@ export default function OneField({
 
       if (selection.qLocked) {
         Icon = (
-          <Grid item>
+          <Grid>
             <IconButton size="large">
               <Lock />
             </IconButton>
@@ -110,7 +110,7 @@ export default function OneField({
         );
       } else if (!selection.qOneAndOnlyOne) {
         Icon = (
-          <Grid item>
+          <Grid>
             <IconButton
               title={translator.get('Selection.Clear')}
               onClick={(e) => {
