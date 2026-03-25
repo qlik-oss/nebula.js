@@ -157,6 +157,33 @@ describe('utils', () => {
       });
     });
 
+    test('should not pollute prototype via __proto__ as property name', () => {
+      setValue(object, '__proto__', { polluted: true });
+      expect({}.polluted).toBeUndefined();
+      expect(Object.prototype.polluted).toBeUndefined();
+    });
+
+    test('should not pollute prototype via constructor as property name', () => {
+      setValue(object, 'constructor', { polluted: true });
+      expect({}.polluted).toBeUndefined();
+    });
+
+    test('should not pollute prototype via prototype as property name', () => {
+      setValue(object, 'prototype', { polluted: true });
+      expect(object.prototype).toBeUndefined();
+    });
+
+    test('should not pollute prototype via __proto__ as intermediate path key', () => {
+      setValue(object, '__proto__.polluted', true);
+      expect({}.polluted).toBeUndefined();
+      expect(Object.prototype.polluted).toBeUndefined();
+    });
+
+    test('should not pollute prototype via constructor as intermediate path key', () => {
+      setValue(object, 'constructor.polluted', true);
+      expect({}.polluted).toBeUndefined();
+    });
+
     test('should set correct values on third level', () => {
       setValue(object, 'second.third.string', 'string 3');
       setValue(object, 'second.third.number', 3);
