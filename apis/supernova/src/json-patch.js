@@ -91,7 +91,7 @@ function emptyObject(obj) {
   Object.keys(obj).forEach((key) => {
     const config = Object.getOwnPropertyDescriptor(obj, key);
 
-    if (config.configurable && !isSpecialProperty(obj, key)) {
+    if (config.configurable && !isSpecialProperty(obj, key) && isSafeKey(key)) {
       delete obj[key];
     }
   });

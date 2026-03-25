@@ -26,6 +26,8 @@ const getValue = (data, reference, defaultValue) => {
   return dataContainer;
 };
 
+const isSafeKey = (key) => key !== '__proto__' && key !== 'constructor' && key !== 'prototype';
+
 /**
  * Sets a value in a data object using a dot notated reference to point out the path.
  *
@@ -48,13 +50,19 @@ const setValue = (data, reference, value) => {
 
   for (let i = 0; i < steps.length - 1; ++i) {
     const step = steps[i];
+    if (!isSafeKey(step)) {
+      return;
+    }
     if (dataContainer[step] === undefined || dataContainer[step] === null) {
       dataContainer[step] = Number.isNaN(+steps[i + 1]) ? {} : [];
     }
     dataContainer = dataContainer[step];
   }
 
-  if (typeof value !== 'undefined' && propertyName !== '__proto__' && propertyName !== 'constructor') {
+  if (!isSafeKey(propertyName)) {
+    return;
+  }
+  if (typeof value !== 'undefined') {
     dataContainer[propertyName] = value;
   } else {
     delete dataContainer[propertyName];
