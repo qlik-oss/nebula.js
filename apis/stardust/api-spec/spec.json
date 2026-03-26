@@ -3193,6 +3193,11 @@
       },
       "kind": "interface",
       "entries": {
+        "appMethods": {
+          "description": "Object with methods to add to the mocked app.",
+          "optional": true,
+          "type": "object"
+        },
         "delay": {
           "description": "Simulate delay (in ms) for calls in enigma-mocker.",
           "type": "number"
