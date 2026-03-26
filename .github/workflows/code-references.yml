@@ -13,11 +13,11 @@ jobs:
     name: LaunchDarkly Code References
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 11
       - name: LaunchDarkly Code References
-        uses: launchdarkly/find-code-references@v2
+        uses: launchdarkly/find-code-references@89a7d362d1d4b3725fe0fe0ccd0dc69e3bdcba58 # v2
         with:
           accessToken: ${{ secrets.LD_ACCESS_TOKEN }}
           projKey: QCS
