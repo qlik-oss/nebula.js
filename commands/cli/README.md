@@ -19,6 +19,7 @@ Commands:
   nebula build            Build visualization
   nebula serve            Start a development server
   nebula sense            Build a nebula visualization as a Qlik Sense extension
+  nebula validate         Validate a nebula visualization extension
 
 Options:
   --version   Show version number                                      [boolean]
@@ -32,13 +33,13 @@ You can use the package.json script variant of these commands, which are exposed
 When you want to make the `nebula serve`, `nebula build`, and `nebula sense` commands available in your visualization by yourself, run the following command.
 
 ```bash
-npm install @nebula.js/cli @nebula.js/cli-build @nebula.js/cli-sense @nebula.js/cli-serve
+npm install @nebula.js/cli @nebula.js/cli-build @nebula.js/cli-sense @nebula.js/cli-serve @nebula.js/cli-validate
 ```
 
 or
 
 ```bash
-yarn add @nebula.js/cli @nebula.js/cli-build @nebula.js/cli-sense @nebula.js/cli-serve
+yarn add @nebula.js/cli @nebula.js/cli-build @nebula.js/cli-sense @nebula.js/cli-serve @nebula.js/cli-validate
 ```
 
 Open up your package.json, those dependencies are added.
@@ -49,7 +50,8 @@ Open up your package.json, those dependencies are added.
     "@nebula.js/cli": "latest",
     "@nebula.js/cli-build": "latest",
     "@nebula.js/cli-sense": "latest",
-    "@nebula.js/cli-serve": "latest"
+    "@nebula.js/cli-serve": "latest",
+    "@nebula.js/cli-validate": "latest"
   }
 }
 ```
@@ -60,7 +62,8 @@ and add a script like so:
 "scripts": {
     "build": "nebula build",
     "start": "nebula serve",
-    "sense": "nebula sense"
+    "sense": "nebula sense",
+    "validate": "nebula validate"
   },
 ```
 

@@ -35,6 +35,13 @@ const tryAddCommand = async (m) => {
       cmd = await getCommand(pathToFileURL(resolved).href);
     } catch (ee) {
       error = ee;
+      try {
+        const commandFolder = m.replace('@nebula.js/cli-', '');
+        const localCommandPath = new URL(`../../${commandFolder}/command.js`, import.meta.url);
+        cmd = await getCommand(localCommandPath.href);
+      } catch (localError) {
+        error = localError;
+      }
     }
   }
 
@@ -59,7 +66,13 @@ const tryAddCommand = async (m) => {
 };
 
 const run = async () => {
-  await ['@nebula.js/cli-create', '@nebula.js/cli-build', '@nebula.js/cli-serve', '@nebula.js/cli-sense'].reduce(
+  await [
+    '@nebula.js/cli-create',
+    '@nebula.js/cli-build',
+    '@nebula.js/cli-serve',
+    '@nebula.js/cli-sense',
+    '@nebula.js/cli-validate',
+  ].reduce(
     (chain, commandPackage) =>
       // Preserve deterministic command registration order.
       chain.then(() => tryAddCommand(commandPackage)),

@@ -1,0 +1,30 @@
+{
+  "name": "@nebula.js/cli-validate",
+  "version": "6.7.0",
+  "description": "",
+  "type": "module",
+  "license": "MIT",
+  "author": "QlikTech International AB",
+  "keywords": [],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/qlik-oss/nebula.js.git"
+  },
+  "files": [
+    "lib",
+    "command.js"
+  ],
+  "scripts": {
+    "lint": "eslint lib command.js"
+  },
+  "dependencies": {
+    "@playwright/test": "1.58.2",
+    "yargs": "17.7.2"
+  },
+  "peerDependencies": {
+    "@nebula.js/cli-serve": "5.0.0 - 6"
+  }
+}
