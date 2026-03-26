@@ -12,5 +12,9 @@
       "enabled": false
     }
   ],
+  "github-actions": {
+    "enabled": true,
+    "rangeStrategy": "pin"
+  },
   "dependencyDashboard": true
 }
